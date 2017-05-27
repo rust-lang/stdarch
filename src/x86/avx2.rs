@@ -63,7 +63,7 @@ pub fn _mm256_adds_epu8(a: u8x32, b: u8x32) -> u8x32 {
 
 #[inline(always)]
 #[target_feature = "+avx2"]
-pub fn _mm256_adds_epu6(a: u16x16, b: u16x16) -> u16x16 {
+pub fn _mm256_adds_epu16(a: u16x16, b: u16x16) -> u16x16 {
     unsafe { paddusw(a,b) }
 }
 
@@ -97,7 +97,7 @@ mod tests {
 
     #[test]
     #[target_feature = "+avx2"]
-    fn _mm_256_abs_epi32() {
+    fn _mm256_abs_epi32() {
         let a = i32x8::new(0, 1, -1, std::i32::MAX, 
                            std::i32::MIN + 1, 100, -100, -32);
         let r = avx2::_mm256_abs_epi32(a);
@@ -108,7 +108,7 @@ mod tests {
 
     #[test]
     #[target_feature = "+avx2"]
-    fn _mm_256_abs_epi16() {
+    fn _mm256_abs_epi16() {
         let a = i16x16::new(0, 1, -1, 2, 
                             -2, 3, -3, 4, 
                             -4, 5, -5, std::i16::MAX, 
@@ -123,7 +123,7 @@ mod tests {
 
     #[test]
     #[target_feature = "+avx2"]
-    fn _mm_256_abs_epi8() {
+    fn _mm256_abs_epi8() {
         let a = i8x32::new(0, 1, -1, 2, 
                            -2, 3, -3, 4, 
                            -4, 5, -5, std::i8::MAX, 
@@ -139,7 +139,7 @@ mod tests {
 
     #[test]
     #[target_feature = "+avx2"]
-    fn _mm_256_add_epi64() {
+    fn _mm256_add_epi64() {
         let a = i64x4::new(-10, 0, 100, 1_000_000_000);
         let b = i64x4::new(-1, 0, 1, 2);
         let r = avx2::_mm256_add_epi64(a, b);
@@ -149,7 +149,7 @@ mod tests {
 
     #[test]
     #[target_feature = "+avx2"]
-    fn _mm_256_add_epi32() {
+    fn _mm256_add_epi32() {
         let a = i32x8::new(-1, 0, 1, 2, 3, 4, 5, 6);
         let b = i32x8::new(1, 2, 3, 4, 5, 6, 7, 8);
         let r = avx2::_mm256_add_epi32(a, b);
@@ -159,7 +159,7 @@ mod tests {
 
     #[test]
     #[target_feature = "+avx2"]
-    fn _mm_256_add_epi16() {
+    fn _mm256_add_epi16() {
         let a = i16x16::new(0, 1, 2, 3, 4, 5, 6, 7, 
                             8, 9, 10, 11, 12, 13, 14, 15);
         let b = i16x16::new(0, 1, 2, 3, 4, 5, 6, 7, 
@@ -172,7 +172,7 @@ mod tests {
 
     #[test]
     #[target_feature = "+avx2"]
-    fn _mm_256_add_epi8() {
+    fn _mm256_add_epi8() {
         let a = i8x32::new(
             0, 1, 2, 3, 4, 5, 6, 7, 
             8, 9, 10, 11, 12, 13, 14, 15, 
@@ -194,7 +194,7 @@ mod tests {
 
     #[test]
     #[target_feature = "+avx2"]
-    fn _mm_256_adds_epi8() {
+    fn _mm256_adds_epi8() {
         let a = i8x32::new(
             0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
             16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31);
@@ -210,7 +210,7 @@ mod tests {
 
     #[test]
     #[target_feature = "+avx2"]
-    fn _mm_adds_epi8_saturate_positive() {
+    fn _mm256_adds_epi8_saturate_positive() {
         let a = i8x32::splat(0x7F);
         let b = i8x32::splat(1);
         let r = avx2::_mm256_adds_epi8(a, b);
@@ -219,13 +219,96 @@ mod tests {
 
     #[test]
     #[target_feature = "+avx2"]
-    fn _mm_adds_epi8_saturate_negative() {
+    fn _mm256_adds_epi8_saturate_negative() {
         let a = i8x32::splat(-0x80);
         let b = i8x32::splat(-1);
         let r = avx2::_mm256_adds_epi8(a, b);
         assert_eq!(r, a);
     }
 
+    #[test]
+    #[target_feature = "+avx2"]
+    fn _mm256_adds_epi16() {
+        let a = i16x16::new(
+            0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);            
+        let b = i16x16::new(
+            32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47);            
+        let r = avx2::_mm256_adds_epi16(a, b);
+        let e = i16x16::new(
+            32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62);
+            
+        assert_eq!(r, e);
+    }
+
+    #[test]
+    #[target_feature = "+avx2"]
+    fn _mm256_adds_epi16_saturate_positive() {
+        let a = i16x16::splat(0x7FFF);
+        let b = i16x16::splat(1);
+        let r = avx2::_mm256_adds_epi16(a, b);
+        assert_eq!(r, a);
+    }
+
+    #[test]
+    #[target_feature = "+avx2"]
+    fn _mm256_adds_epi16_saturate_negative() {
+        let a = i16x16::splat(-0x8000);
+        let b = i16x16::splat(-1);
+        let r = avx2::_mm256_adds_epi16(a, b);
+        assert_eq!(r, a);
+    }
+
+    //--------------
+    #[test]
+    #[target_feature = "+avx2"]
+    fn _mm256_adds_epu8() {
+        let a = u8x32::new(
+            0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
+            16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31);
+        let b = u8x32::new(
+            32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,
+            48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63);
+        let r = avx2::_mm256_adds_epu8(a, b);
+        let e = u8x32::new(
+            32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,
+            64,66,68,70,72,74,76,78,80,82,84,86,88,90,92,94);
+        assert_eq!(r, e);
+    }
+
+    #[test]
+    #[target_feature = "+avx2"]
+    fn _mm256_adds_epu8_saturate() {
+        let a = u8x32::splat(0xFF);
+        let b = u8x32::splat(1);
+        let r = avx2::_mm256_adds_epu8(a, b);
+        assert_eq!(r, a);
+    }
+
+    
+    #[test]
+    #[target_feature = "+avx2"]
+    fn _mm256_adds_epu16() {
+        let a = u16x16::new(
+            0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);            
+        let b = u16x16::new(
+            32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47);            
+        let r = avx2::_mm256_adds_epu16(a, b);
+        let e = u16x16::new(
+            32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62);
+            
+        assert_eq!(r, e);
+    }
+
+    #[test]
+    #[target_feature = "+avx2"]
+    fn _mm256_adds_epu16_saturate() {
+        let a = u16x16::splat(0xFFFF);
+        let b = u16x16::splat(1);
+        let r = avx2::_mm256_adds_epu16(a, b);
+        assert_eq!(r, a);
+    }
+
+    
 
 
 }
