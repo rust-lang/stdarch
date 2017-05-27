@@ -1,66 +1,76 @@
 use v256::*;
 
+/// Computes the absolute values of packed 32-bit integers in `a`.
 #[inline(always)]
 #[target_feature = "+avx2"]
 pub fn _mm256_abs_epi32(a: i32x8) -> i32x8 {
     unsafe { pabsd(a) }
 }
 
+/// Computes the absolute values of packed 16-bit integers in `a`.
 #[inline(always)]
 #[target_feature = "+avx2"]
 pub fn _mm256_abs_epi16(a: i16x16) -> i16x16 {
     unsafe { pabsw(a) }
 }
 
+/// Computes the absolute values of packed 8-bit integers in `a`.
 #[inline(always)]
 #[target_feature = "+avx2"]
 pub fn _mm256_abs_epi8(a: i8x32) -> i8x32 {
     unsafe { pabsb(a) }
 }
 
+/// Add packed 64-bit integers in `a` and `b`.
 #[inline(always)]
 #[target_feature = "+avx2"]
 pub fn _mm256_add_epi64(a: i64x4, b: i64x4) -> i64x4 {
     a + b
 }
 
+/// Add packed 32-bit integers in `a` and `b`.
 #[inline(always)]
 #[target_feature = "+avx2"]
 pub fn _mm256_add_epi32(a: i32x8, b: i32x8) -> i32x8 {
     a + b
 }
 
+/// Add packed 16-bit integers in `a` and `b`.
 #[inline(always)]
 #[target_feature = "+avx2"]
 pub fn _mm256_add_epi16(a: i16x16, b: i16x16) -> i16x16 {
     a + b
 }
 
+/// Add packed 8-bit integers in `a` and `b`.
 #[inline(always)]
 #[target_feature = "+avx2"]
 pub fn _mm256_add_epi8(a: i8x32, b: i8x32) -> i8x32 {
     a + b
 }
 
+/// Add packed 8-bit integers in `a` and `b` using saturation.
 #[inline(always)]
 #[target_feature = "+avx2"]
 pub fn _mm256_adds_epi8(a: i8x32, b: i8x32) -> i8x32 {
     unsafe { paddsb(a,b) }
 }
 
+/// Add packed 16-bit integers in `a` and `b` using saturation.
 #[inline(always)]
 #[target_feature = "+avx2"]
 pub fn _mm256_adds_epi16(a: i16x16, b: i16x16) -> i16x16 {
     unsafe { paddsw(a,b) }
 }
 
-
+/// Add packed unsigned 8-bit integers in `a` and `b` using saturation.
 #[inline(always)]
 #[target_feature = "+avx2"]
 pub fn _mm256_adds_epu8(a: u8x32, b: u8x32) -> u8x32 {
     unsafe { paddusb(a,b) }
 }
 
+/// Add packed unsigned 16-bit integers in `a` and `b` using saturation.
 #[inline(always)]
 #[target_feature = "+avx2"]
 pub fn _mm256_adds_epu16(a: u16x16, b: u16x16) -> u16x16 {
@@ -257,8 +267,7 @@ mod tests {
         let r = avx2::_mm256_adds_epi16(a, b);
         assert_eq!(r, a);
     }
-
-    //--------------
+    
     #[test]
     #[target_feature = "+avx2"]
     fn _mm256_adds_epu8() {
