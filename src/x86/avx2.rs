@@ -108,6 +108,13 @@ pub fn _mm256_avg_epu8 (a:u8x32,b:u8x32) -> u8x32 {
     unsafe { pavgb(a,b) }
 }
 
+/// Blend packed 8-bit integers from `a` and `b` using `mask`.
+#[inline(always)]
+#[target_feature = "+avx2"]
+pub fn _mm256_blendv_epi8(a:i8x32,b:i8x32,mask:__m256i) -> i8x32 {
+    unsafe { pblendvb(a,b,mask) }
+}
+
 #[allow(improper_ctypes)]
 extern "C" {
     #[link_name = "llvm.x86.avx2.pabs.b"]
@@ -128,6 +135,8 @@ extern "C" {
     fn pavgb(a:u8x32,b:u8x32) -> u8x32;
     #[link_name = "llvm.x86.avx2.pavg.w"]
     fn pavgw(a:u16x16,b:u16x16) -> u16x16;
+    #[link_name = "llvm.x86.avx2.pblendvb"]
+    fn pblendvb(a:i8x32,b:i8x32,mask:__m256i) -> i8x32;
 }
 
 
@@ -380,6 +389,16 @@ mod tests {
         let (a, b) = (u16x16::splat(3), u16x16::splat(9));
         let r = avx2::_mm256_avg_epu16(a, b);
         assert_eq!(r, u16x16::splat(6));
+    }
+
+    #[test]
+    #[target_feature = "+avx2"]
+    fn _mm256_blendv_epi8() {
+        let (a,b) = (i8x32::splat(4),i8x32::splat(2));
+        let mask = i8x32::splat(0).replace(2,-1);
+        let e = i8x32::splat(4).replace(2,2);
+        let r= avx2::_mm256_blendv_epi8(a,b,mask);
+        assert_eq!(r,e);
     }
 
 }
