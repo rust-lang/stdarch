@@ -6,6 +6,8 @@ pub use self::avx2::*;
 
 #[allow(non_camel_case_types)]
 pub type __m128i = ::v128::i8x16;
+#[allow(non_camel_case_types)]
+pub type __m256i = ::v256::i8x32;
 
 mod sse;
 mod sse2;

@@ -1,4 +1,5 @@
 use v256::*;
+use x86::__m256i;
 
 /// Computes the absolute values of packed 32-bit integers in `a`.
 #[inline(always)]
@@ -77,6 +78,22 @@ pub fn _mm256_adds_epu16(a: u16x16, b: u16x16) -> u16x16 {
     unsafe { paddusw(a,b) }
 }
 
+/// Compute the bitwise AND of 256 bits (representing integer data) 
+/// in `a` and `b`.
+#[inline(always)]
+#[target_feature = "+avx2"]
+pub fn _mm256_and_si256(a: __m256i, b:__m256i) -> __m256i {
+    a & b
+}
+
+/// Compute the bitwise NOT of 256 bits (representing integer data) 
+/// in `a` and then AND with `b`.
+#[inline(always)]
+#[target_feature = "+avx2"]
+pub fn _mm256_andnot_si256(a: __m256i, b:__m256i) -> __m256i {
+    (!a) & b
+}
+
 
 #[allow(improper_ctypes)]
 extern "C" {
@@ -103,6 +120,7 @@ extern "C" {
 mod tests {
     use v256::*;
     use x86::avx2;
+    use x86::__m256i;
     use std;
 
     #[test]
@@ -316,8 +334,19 @@ mod tests {
         let r = avx2::_mm256_adds_epu16(a, b);
         assert_eq!(r, a);
     }
-
     
+    #[test]
+    fn _mm_and_si256() {
+        assert_eq!(
+            avx2::_mm256_and_si256(__m256i::splat(5), __m256i::splat(3)),
+            __m256i::splat(1));
+    }
 
+    #[test]
+    fn _mm_andnot_si256() {
+        assert_eq!(
+            avx2::_mm256_andnot_si256(__m256i::splat(5), __m256i::splat(3)),
+            __m256i::splat(2));
+    }
 
 }
