@@ -94,6 +94,19 @@ pub fn _mm256_andnot_si256(a: __m256i, b:__m256i) -> __m256i {
     (!a) & b
 }
 
+/// Average packed unsigned 16-bit integers in `a` and `b`.
+#[inline(always)]
+#[target_feature = "+avx2"]
+pub fn _mm256_avg_epu16 (a:u16x16,b:u16x16) -> u16x16 {
+    unsafe { pavgw(a,b) }
+}
+
+/// Average packed unsigned 8-bit integers in `a` and `b`.
+#[inline(always)]
+#[target_feature = "+avx2"]
+pub fn _mm256_avg_epu8 (a:u8x32,b:u8x32) -> u8x32 {
+    unsafe { pavgb(a,b) }
+}
 
 #[allow(improper_ctypes)]
 extern "C" {
@@ -111,8 +124,10 @@ extern "C" {
     fn paddusb(a:u8x32,b:u8x32) -> u8x32;
     #[link_name = "llvm.x86.avx2.paddus.w"]
     fn paddusw(a:u16x16,b:u16x16) -> u16x16;
-
-
+    #[link_name = "llvm.x86.avx2.pavg.b"]
+    fn pavgb(a:u8x32,b:u8x32) -> u8x32;
+    #[link_name = "llvm.x86.avx2.pavg.w"]
+    fn pavgw(a:u16x16,b:u16x16) -> u16x16;
 }
 
 
@@ -336,17 +351,35 @@ mod tests {
     }
     
     #[test]
-    fn _mm_and_si256() {
+    #[target_feature = "+avx2"]
+    fn _mm256_and_si256() {
         assert_eq!(
             avx2::_mm256_and_si256(__m256i::splat(5), __m256i::splat(3)),
             __m256i::splat(1));
     }
 
     #[test]
-    fn _mm_andnot_si256() {
+    #[target_feature = "+avx2"]
+    fn _mm256_andnot_si256() {
         assert_eq!(
             avx2::_mm256_andnot_si256(__m256i::splat(5), __m256i::splat(3)),
             __m256i::splat(2));
+    }
+
+    #[test]
+    #[target_feature = "+avx2"]
+    fn _mm256_avg_epu8() {
+        let (a, b) = (u8x32::splat(3), u8x32::splat(9));
+        let r = avx2::_mm256_avg_epu8(a, b);
+        assert_eq!(r, u8x32::splat(6));
+    }
+
+    #[test]
+    #[target_feature = "+avx2"]
+    fn _mm256_avg_epu16() {
+        let (a, b) = (u16x16::splat(3), u16x16::splat(9));
+        let r = avx2::_mm256_avg_epu16(a, b);
+        assert_eq!(r, u16x16::splat(6));
     }
 
 }
