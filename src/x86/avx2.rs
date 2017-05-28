@@ -675,7 +675,7 @@ mod tests {
         assert_eq!(r,e);
     }
 
-     #[test]
+    #[test]
     #[target_feature = "+avx2"]
     fn _mm256_hsub_epi32() {
         let a = i32x8::splat(2);
@@ -685,7 +685,7 @@ mod tests {
         assert_eq!(r,e);
     }
 
-     #[test]
+    #[test]
     #[target_feature = "+avx2"]
     fn _mm256_hsubs_epi16() {
         let a = i16x16::splat(2).replace(0,0x7FFF).replace(1,-1);
