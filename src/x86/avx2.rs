@@ -252,7 +252,6 @@ pub fn _mm256_hsubs_epi16(a: i16x16, b: i16x16) -> i16x16 {
     unsafe { phsubsw(a, b) }
 }
 
-
 #[allow(improper_ctypes)]
 extern "C" {
     #[link_name = "llvm.x86.avx2.pabs.b"]
