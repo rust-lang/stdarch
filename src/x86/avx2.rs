@@ -252,6 +252,93 @@ pub fn _mm256_hsubs_epi16(a: i16x16, b: i16x16) -> i16x16 {
     unsafe { phsubsw(a, b) }
 }
 
+
+// TODO _mm_i32gather_epi32 (int const* base_addr, __m128i vindex, const int scale)
+// TODO _mm_mask_i32gather_epi32 (__m128i src, int const* base_addr, __m128i vindex, __m128i mask, const int scale)
+// TODO _mm256_i32gather_epi32 (int const* base_addr, __m256i vindex, const int scale)
+// TODO _mm256_mask_i32gather_epi32 (__m256i src, int const* base_addr, __m256i vindex, __m256i mask, const int scale)
+// TODO _mm_i32gather_epi64 (__int64 const* base_addr, __m128i vindex, const int scale)
+// TODO _mm_mask_i32gather_epi64 (__m128i src, __int64 const* base_addr, __m128i vindex, __m128i mask, const int scale)
+// TODO _mm256_i32gather_epi64 (__int64 const* base_addr, __m128i vindex, const int scale)
+// TODO _mm256_mask_i32gather_epi64 (__m256i src, __int64 const* base_addr, __m128i vindex, __m256i mask, const int scale)
+// TODO _mm_i32gather_pd (double const* base_addr, __m128i vindex, const int scale)
+// TODO _mm_mask_i32gather_pd (__m128d src, double const* base_addr, __m128i vindex, __m128d mask, const int scale)
+// TODO _mm256_i32gather_pd (double const* base_addr, __m128i vindex, const int scale)
+// TODO _mm256_mask_i32gather_pd (__m256d src, double const* base_addr, __m128i vindex, __m256d mask, const int scale)
+// TODO _mm_i32gather_ps (float const* base_addr, __m128i vindex, const int scale)
+// TODO _mm_mask_i32gather_ps (__m128 src, float const* base_addr, __m128i vindex, __m128 mask, const int scale)
+// TODO _mm256_i32gather_ps (float const* base_addr, __m256i vindex, const int scale)
+// TODO _mm256_mask_i32gather_ps (__m256 src, float const* base_addr, __m256i vindex, __m256 mask, const int scale)
+// TODO _mm_i64gather_epi32 (int const* base_addr, __m128i vindex, const int scale)
+// TODO _mm_mask_i64gather_epi32 (__m128i src, int const* base_addr, __m128i vindex, __m128i mask, const int scale)
+// TODO _mm256_i64gather_epi32 (int const* base_addr, __m256i vindex, const int scale)
+// TODO _mm256_mask_i64gather_epi32 (__m128i src, int const* base_addr, __m256i vindex, __m128i mask, const int scale)
+// TODO _mm_i64gather_epi64 (__int64 const* base_addr, __m128i vindex, const int scale)
+// TODO _mm_mask_i64gather_epi64 (__m128i src, __int64 const* base_addr, __m128i vindex, __m128i mask, const int scale)
+// TODO _mm256_i64gather_epi64 (__int64 const* base_addr, __m256i vindex, const int scale)
+// TODO _mm256_mask_i64gather_epi64 (__m256i src, __int64 const* base_addr, __m256i vindex, __m256i mask, const int scale)
+// TODO _mm_i64gather_pd (double const* base_addr, __m128i vindex, const int scale)
+// TODO _mm_mask_i64gather_pd (__m128d src, double const* base_addr, __m128i vindex, __m128d mask, const int scale)
+// TODO _mm256_i64gather_pd (double const* base_addr, __m256i vindex, const int scale)
+// TODO _mm256_mask_i64gather_pd (__m256d src, double const* base_addr, __m256i vindex, __m256d mask, const int scale)
+// TODO _mm_i64gather_ps (float const* base_addr, __m128i vindex, const int scale)
+// TODO _mm_mask_i64gather_ps (__m128 src, float const* base_addr, __m128i vindex, __m128 mask, const int scale)
+// TODO _mm256_i64gather_ps (float const* base_addr, __m256i vindex, const int scale)
+// TODO _mm256_mask_i64gather_ps 
+// TODO _mm256_inserti128_si256
+
+/// Multiply packed signed 16-bit integers in `a` and `b`, producing 
+/// intermediate signed 32-bit integers. Horizontally add adjacent pairs 
+/// of intermediate 32-bit integers.
+#[inline(always)]
+#[target_feature = "+avx2"]
+pub fn _mm256_madd_epi16(a: i16x16, b: i16x16) -> i32x8 {
+    unsafe { pmaddwd(a, b) }
+}
+
+/// Vertically multiply each unsigned 8-bit integer from `a` with the 
+/// corresponding signed 8-bit integer from `b`, producing intermediate 
+/// signed 16-bit integers. Horizontally add adjacent pairs of intermediate 
+/// signed 16-bit integers
+#[inline(always)]
+#[target_feature = "+avx2"]
+pub fn _mm256_maddubs_epi16(a: u8x32, b: u8x32) -> i16x16 {
+    unsafe { pmaddubsw(a, b) }
+}
+
+// TODO _mm_maskload_epi32 (int const* mem_addr, __m128i mask)
+// TODO _mm256_maskload_epi32 (int const* mem_addr, __m256i mask)
+// TODO _mm_maskload_epi64 (__int64 const* mem_addr, __m128i mask)
+// TODO _mm256_maskload_epi64 (__int64 const* mem_addr, __m256i mask)
+// TODO _mm_maskstore_epi32 (int* mem_addr, __m128i mask, __m128i a)
+// TODO _mm256_maskstore_epi32 (int* mem_addr, __m256i mask, __m256i a)
+// TODO _mm_maskstore_epi64 (__int64* mem_addr, __m128i mask, __m128i a)
+// TODO _mm256_maskstore_epi64 (__int64* mem_addr, __m256i mask, __m256i a)
+
+/// Compare packed 16-bit integers in `a` and `b`, and return the packed
+/// maximum values.
+#[inline(always)]
+#[target_feature = "+avx2"]
+pub fn _mm256_max_epi16(a: i16x16, b: i16x16) -> i16x16 {
+    unsafe { pmaxsw(a, b) }
+}
+
+/// Compare packed 32-bit integers in `a` and `b`, and return the packed
+/// maximum values.
+#[inline(always)]
+#[target_feature = "+avx2"]
+pub fn _mm256_max_epi32(a: i32x8, b: i32x8) -> i32x8 {
+    unsafe { pmaxsd(a, b) }
+}
+
+/// Compare packed 8-bit integers in `a` and `b`, and return the packed
+/// maximum values.
+#[inline(always)]
+#[target_feature = "+avx2"]
+pub fn _mm256_max_epi8(a: i8x32, b: i8x32) -> i8x32 {
+    unsafe { pmaxsb(a, b) }
+}
+
 #[allow(improper_ctypes)]
 extern "C" {
     #[link_name = "llvm.x86.avx2.pabs.b"]
@@ -286,6 +373,16 @@ extern "C" {
     fn phsubd(a: i32x8, b: i32x8) -> i32x8;
     #[link_name = "llvm.x86.avx2.phsub.sw"]
     fn phsubsw(a: i16x16, b: i16x16) -> i16x16;
+    #[link_name = "llvm.x86.avx2.pmadd.wd"]
+    fn pmaddwd(a: i16x16, b: i16x16) -> i32x8;
+    #[link_name = "llvm.x86.avx2.pmadd.ub.sw"]
+    fn pmaddubsw(a: u8x32, b: u8x32) -> i16x16;
+    #[link_name = "llvm.x86.avx2.pmaxs.w"]
+    fn pmaxsw(a: i16x16, b: i16x16) -> i16x16;
+    #[link_name = "llvm.x86.avx2.pmaxs.d"]
+    fn pmaxsd(a: i32x8, b: i32x8) -> i32x8;    
+    #[link_name = "llvm.x86.avx2.pmaxs.b"]
+    fn pmaxsb(a: i8x32, b: i8x32) -> i8x32;    
 }
 
 
@@ -693,6 +790,53 @@ mod tests {
         let r = avx2::_mm256_hsubs_epi16(a, b);
         let e = i16x16::splat(0).replace(0,0x7FFF);
         assert_eq!(r, e);
+    }
+
+    #[test]
+    #[target_feature = "+avx2"]
+    fn _mm256_madd_epi16() {
+        let a = i16x16::splat(2);
+        let b = i16x16::splat(4);
+        let r = avx2::_mm256_madd_epi16(a, b);
+        let e = i32x8::splat(16);
+        assert_eq!(r, e);
+    }
+
+    #[test]
+    #[target_feature = "+avx2"]
+    fn _mm256_maddubs_epi16() {
+        let a = u8x32::splat(2);
+        let b = u8x32::splat(4);
+        let r = avx2::_mm256_maddubs_epi16(a, b);
+        let e = i16x16::splat(16);
+        assert_eq!(r, e);
+    }
+
+    #[test]
+    #[target_feature = "+avx2"]
+    fn _mm256_max_epi16() {
+        let a = i16x16::splat(2);
+        let b = i16x16::splat(4);
+        let r = avx2::_mm256_max_epi16(a, b);
+        assert_eq!(r, b);
+    }
+
+    #[test]
+    #[target_feature = "+avx2"]
+    fn _mm256_max_epi32() {
+        let a = i32x8::splat(2);
+        let b = i32x8::splat(4);
+        let r = avx2::_mm256_max_epi32(a, b);
+        assert_eq!(r, b);
+    }
+
+    #[test]
+    #[target_feature = "+avx2"]
+    fn _mm256_max_epi8() {
+        let a = i8x32::splat(2);
+        let b = i8x32::splat(4);
+        let r = avx2::_mm256_max_epi8(a, b);
+        assert_eq!(r, b);
     }
 
 }
