@@ -115,6 +115,64 @@ pub fn _mm256_blendv_epi8(a:i8x32,b:i8x32,mask:__m256i) -> i8x32 {
     unsafe { pblendvb(a,b,mask) }
 }
 
+/// Compare packed 64-bit integers in `a` and `b` for equality.
+#[inline(always)]
+#[target_feature = "+avx2"]
+pub fn _mm256_cmpeq_epi64(a:i64x4,b:i64x4) -> i64x4 {
+    a.eq(b)
+}
+
+/// Compare packed 32-bit integers in `a` and `b` for equality.
+#[inline(always)]
+#[target_feature = "+avx2"]
+pub fn _mm256_cmpeq_epi32(a:i32x8,b:i32x8) -> i32x8 {
+    a.eq(b)
+}
+
+/// Compare packed 16-bit integers in `a` and `b` for equality.
+#[inline(always)]
+#[target_feature = "+avx2"]
+pub fn _mm256_cmpeq_epi16(a:i16x16,b:i16x16) -> i16x16 {
+    a.eq(b)
+}
+
+/// Compare packed 8-bit integers in `a` and `b` for equality.
+#[inline(always)]
+#[target_feature = "+avx2"]
+pub fn _mm256_cmpeq_epi8(a:i8x32,b:i8x32) -> i8x32 {
+    a.eq(b)
+}
+
+/// Compare packed 64-bit integers in `a` and `b` for greater-than.
+#[inline(always)]
+#[target_feature = "+avx2"]
+pub fn _mm256_cmpgt_epi64(a:i64x4,b:i64x4) -> i64x4 {
+    a.gt(b)
+}
+
+/// Compare packed 32-bit integers in `a` and `b` for greater-than.
+#[inline(always)]
+#[target_feature = "+avx2"]
+pub fn _mm256_cmpgt_epi32(a:i32x8,b:i32x8) -> i32x8 {
+    a.gt(b)
+}
+
+/// Compare packed 16-bit integers in `a` and `b` for greater-than.
+#[inline(always)]
+#[target_feature = "+avx2"]
+pub fn _mm256_cmpgt_epi16(a:i16x16,b:i16x16) -> i16x16 {
+    a.gt(b)
+}
+
+/// Compare packed 8-bit integers in `a` and `b` for greater-than.
+#[inline(always)]
+#[target_feature = "+avx2"]
+pub fn _mm256_cmpgt_epi8(a:i8x32,b:i8x32) -> i8x32 {
+    a.gt(b)
+}
+
+
+
 #[allow(improper_ctypes)]
 extern "C" {
     #[link_name = "llvm.x86.avx2.pabs.b"]
@@ -399,6 +457,75 @@ mod tests {
         let e = i8x32::splat(4).replace(2,2);
         let r= avx2::_mm256_blendv_epi8(a,b,mask);
         assert_eq!(r,e);
+    }
+
+
+    #[test]
+    fn _mm256_cmpeq_epi8() {
+        let a = i8x32::new(
+            0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
+            16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31);
+        let b = i8x32::new(
+            31,30,2,28,27,26,25,24,23,22,21,20,19,18,17,16,
+            15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0);
+        let r = avx2::_mm256_cmpeq_epi8(a, b);
+        assert_eq!(r, i8x32::splat(0).replace(2,0xFFu8 as i8));
+    }
+
+    #[test]
+    fn _mm256_cmpeq_epi16() {
+        let a = i16x16::new(0, 1, 2, 3, 4, 5, 6, 7,8,9,10,11,12,13,14,15);
+        let b = i16x16::new(15,14,2,12,11,10,9,8,7, 6, 5, 4, 3, 2, 1, 0);
+        let r = avx2::_mm256_cmpeq_epi16(a, b);
+        assert_eq!(r, i16x16::splat(0).replace(2, 0xFFFFu16 as i16));
+    }
+
+    #[test]
+    fn _mm256_cmpeq_epi32() {
+        let a = i32x8::new(0, 1, 2, 3,4,5,6,7);
+        let b = i32x8::new(7,6,2,4,3, 2, 1, 0);
+        let r = avx2::_mm256_cmpeq_epi32(a, b);
+        assert_eq!(r, i32x8::splat(0).replace(2, 0xFFFFFFFFu32 as i32));
+    }
+
+    #[test]
+    fn _mm256_cmpeq_epi64() {
+        let a = i64x4::new(0, 1, 2, 3);
+        let b = i64x4::new(3, 2, 2, 0);
+        let r = avx2::_mm256_cmpeq_epi64(a, b);
+        assert_eq!(r, i64x4::splat(0).replace(2, 0xFFFFFFFFFFFFFFFFu64 as i64));
+    }
+
+    #[test]
+    fn _mm256_cmpgt_epi8() {
+        let a = i8x32::splat(0).replace(0, 5);
+        let b = i8x32::splat(0);
+        let r = avx2::_mm256_cmpgt_epi8(a, b);
+        assert_eq!(r, i8x32::splat(0).replace(0, 0xFFu8 as i8));
+    }
+
+    #[test]
+    fn _mm256_cmpgt_epi16() {
+        let a = i16x16::splat(0).replace(0, 5);
+        let b = i16x16::splat(0);
+        let r = avx2::_mm256_cmpgt_epi16(a, b);
+        assert_eq!(r, i16x16::splat(0).replace(0, 0xFFFFu16 as i16));
+    }
+
+    #[test]
+    fn _mm256_cmpgt_epi32() {
+        let a = i32x8::splat(0).replace(0, 5);
+        let b = i32x8::splat(0);
+        let r = avx2::_mm256_cmpgt_epi32(a, b);
+        assert_eq!(r, i32x8::splat(0).replace(0, 0xFFFFFFFFu32 as i32));
+    }
+
+    #[test]
+    fn _mm256_cmpgt_epi64() {
+        let a = i64x4::splat(0).replace(0, 5);
+        let b = i64x4::splat(0);
+        let r = avx2::_mm256_cmpgt_epi64(a, b);
+        assert_eq!(r, i64x4::splat(0).replace(0, 0xFFFFFFFFFFFFFFFFu64 as i64));
     }
 
 }
