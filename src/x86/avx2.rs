@@ -54,35 +54,35 @@ pub fn _mm256_add_epi8(a: i8x32, b: i8x32) -> i8x32 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 pub fn _mm256_adds_epi8(a: i8x32, b: i8x32) -> i8x32 {
-    unsafe { paddsb(a,b) }
+    unsafe { paddsb(a, b) }
 }
 
 /// Add packed 16-bit integers in `a` and `b` using saturation.
 #[inline(always)]
 #[target_feature = "+avx2"]
 pub fn _mm256_adds_epi16(a: i16x16, b: i16x16) -> i16x16 {
-    unsafe { paddsw(a,b) }
+    unsafe { paddsw(a, b) }
 }
 
 /// Add packed unsigned 8-bit integers in `a` and `b` using saturation.
 #[inline(always)]
 #[target_feature = "+avx2"]
 pub fn _mm256_adds_epu8(a: u8x32, b: u8x32) -> u8x32 {
-    unsafe { paddusb(a,b) }
+    unsafe { paddusb(a, b) }
 }
 
 /// Add packed unsigned 16-bit integers in `a` and `b` using saturation.
 #[inline(always)]
 #[target_feature = "+avx2"]
 pub fn _mm256_adds_epu16(a: u16x16, b: u16x16) -> u16x16 {
-    unsafe { paddusw(a,b) }
+    unsafe { paddusw(a, b) }
 }
 
 /// Compute the bitwise AND of 256 bits (representing integer data) 
 /// in `a` and `b`.
 #[inline(always)]
 #[target_feature = "+avx2"]
-pub fn _mm256_and_si256(a: __m256i, b:__m256i) -> __m256i {
+pub fn _mm256_and_si256(a: __m256i, b: __m256i) -> __m256i {
     a & b
 }
 
@@ -90,25 +90,28 @@ pub fn _mm256_and_si256(a: __m256i, b:__m256i) -> __m256i {
 /// in `a` and then AND with `b`.
 #[inline(always)]
 #[target_feature = "+avx2"]
-pub fn _mm256_andnot_si256(a: __m256i, b:__m256i) -> __m256i {
+pub fn _mm256_andnot_si256(a: __m256i, b: __m256i) -> __m256i {
     (!a) & b
 }
 
 /// Average packed unsigned 16-bit integers in `a` and `b`.
 #[inline(always)]
 #[target_feature = "+avx2"]
-pub fn _mm256_avg_epu16 (a:u16x16,b:u16x16) -> u16x16 {
-    unsafe { pavgw(a,b) }
+pub fn _mm256_avg_epu16 (a: u16x16, b: u16x16) -> u16x16 {
+    unsafe { pavgw(a, b) }
 }
 
 /// Average packed unsigned 8-bit integers in `a` and `b`.
 #[inline(always)]
 #[target_feature = "+avx2"]
-pub fn _mm256_avg_epu8 (a:u8x32,b:u8x32) -> u8x32 {
-    unsafe { pavgb(a,b) }
+pub fn _mm256_avg_epu8 (a: u8x32, b: u8x32) -> u8x32 {
+    unsafe { pavgb(a, b) }
 }
 
-// TODO alignr
+// TODO _mm256_alignr_epi8
+// TODO _mm256_blend_epi16
+// TODO _mm_blend_epi32
+// TODO _mm256_blend_epi32
 
 /// Blend packed 8-bit integers from `a` and `b` using `mask`.
 #[inline(always)]
@@ -117,67 +120,79 @@ pub fn _mm256_blendv_epi8(a:i8x32,b:i8x32,mask:__m256i) -> i8x32 {
     unsafe { pblendvb(a,b,mask) }
 }
 
-// TODO rest of blend
+// TODO _mm_broadcastb_epi8
+// TODO _mm256_broadcastb_epi8 
+// TODO _mm_broadcastd_epi32 
+// TODO _mm256_broadcastd_epi32 
+// TODO _mm_broadcastq_epi64 
+// TODO _mm256_broadcastq_epi64
+// TODO _mm_broadcastsd_pd 
+// TODO _mm256_broadcastsd_pd 
+// TODO _mm_broadcastsi128_si256 
+// TODO _mm256_broadcastsi128_si256 
+// TODO _mm_broadcastss_ps 
+// TODO _mm256_broadcastss_ps 
+// TODO _mm_broadcastw_epi16 
+// TODO _mm256_broadcastw_epi16 
+// TODO _mm256_bslli_epi128 
+// TODO _mm256_bsrli_epi128 
 
-// TODO broadcast
 
 /// Compare packed 64-bit integers in `a` and `b` for equality.
 #[inline(always)]
 #[target_feature = "+avx2"]
-pub fn _mm256_cmpeq_epi64(a:i64x4,b:i64x4) -> i64x4 {
+pub fn _mm256_cmpeq_epi64(a: i64x4, b: i64x4) -> i64x4 {
     a.eq(b)
 }
 
 /// Compare packed 32-bit integers in `a` and `b` for equality.
 #[inline(always)]
 #[target_feature = "+avx2"]
-pub fn _mm256_cmpeq_epi32(a:i32x8,b:i32x8) -> i32x8 {
+pub fn _mm256_cmpeq_epi32(a: i32x8, b: i32x8) -> i32x8 {
     a.eq(b)
 }
 
 /// Compare packed 16-bit integers in `a` and `b` for equality.
 #[inline(always)]
 #[target_feature = "+avx2"]
-pub fn _mm256_cmpeq_epi16(a:i16x16,b:i16x16) -> i16x16 {
+pub fn _mm256_cmpeq_epi16(a: i16x16, b: i16x16) -> i16x16 {
     a.eq(b)
 }
 
 /// Compare packed 8-bit integers in `a` and `b` for equality.
 #[inline(always)]
 #[target_feature = "+avx2"]
-pub fn _mm256_cmpeq_epi8(a:i8x32,b:i8x32) -> i8x32 {
+pub fn _mm256_cmpeq_epi8(a: i8x32, b: i8x32) -> i8x32 {
     a.eq(b)
 }
 
 /// Compare packed 64-bit integers in `a` and `b` for greater-than.
 #[inline(always)]
 #[target_feature = "+avx2"]
-pub fn _mm256_cmpgt_epi64(a:i64x4,b:i64x4) -> i64x4 {
+pub fn _mm256_cmpgt_epi64(a: i64x4, b: i64x4) -> i64x4 {
     a.gt(b)
 }
 
 /// Compare packed 32-bit integers in `a` and `b` for greater-than.
 #[inline(always)]
 #[target_feature = "+avx2"]
-pub fn _mm256_cmpgt_epi32(a:i32x8,b:i32x8) -> i32x8 {
+pub fn _mm256_cmpgt_epi32(a: i32x8, b: i32x8) -> i32x8 {
     a.gt(b)
 }
 
 /// Compare packed 16-bit integers in `a` and `b` for greater-than.
 #[inline(always)]
 #[target_feature = "+avx2"]
-pub fn _mm256_cmpgt_epi16(a:i16x16,b:i16x16) -> i16x16 {
+pub fn _mm256_cmpgt_epi16(a: i16x16, b: i16x16) -> i16x16 {
     a.gt(b)
 }
 
 /// Compare packed 8-bit integers in `a` and `b` for greater-than.
 #[inline(always)]
 #[target_feature = "+avx2"]
-pub fn _mm256_cmpgt_epi8(a:i8x32,b:i8x32) -> i8x32 {
+pub fn _mm256_cmpgt_epi8(a: i8x32, b: i8x32) -> i8x32 {
     a.gt(b)
 }
-
-
 
 #[allow(improper_ctypes)]
 extern "C" {
@@ -188,19 +203,19 @@ extern "C" {
     #[link_name = "llvm.x86.avx2.pabs.d"]
     fn pabsd(a: i32x8) -> i32x8;    
     #[link_name = "llvm.x86.avx2.padds.b"]
-    fn paddsb(a:i8x32,b:i8x32) -> i8x32;
+    fn paddsb(a: i8x32, b: i8x32) -> i8x32;
     #[link_name = "llvm.x86.avx2.padds.w"]
-    fn paddsw(a:i16x16,b:i16x16) -> i16x16;
+    fn paddsw(a: i16x16, b: i16x16) -> i16x16;
     #[link_name = "llvm.x86.avx2.paddus.b"]
-    fn paddusb(a:u8x32,b:u8x32) -> u8x32;
+    fn paddusb(a: u8x32, b: u8x32) -> u8x32;
     #[link_name = "llvm.x86.avx2.paddus.w"]
-    fn paddusw(a:u16x16,b:u16x16) -> u16x16;
+    fn paddusw(a: u16x16, b: u16x16) -> u16x16;
     #[link_name = "llvm.x86.avx2.pavg.b"]
-    fn pavgb(a:u8x32,b:u8x32) -> u8x32;
+    fn pavgb(a: u8x32, b: u8x32) -> u8x32;
     #[link_name = "llvm.x86.avx2.pavg.w"]
-    fn pavgw(a:u16x16,b:u16x16) -> u16x16;
+    fn pavgw(a: u16x16, b: u16x16) -> u16x16;
     #[link_name = "llvm.x86.avx2.pblendvb"]
-    fn pblendvb(a:i8x32,b:i8x32,mask:__m256i) -> i8x32;
+    fn pblendvb(a: i8x32, b: i8x32, mask: __m256i) -> i8x32;
 }
 
 
@@ -464,7 +479,6 @@ mod tests {
         let r= avx2::_mm256_blendv_epi8(a,b,mask);
         assert_eq!(r,e);
     }
-
 
     #[test]
     fn _mm256_cmpeq_epi8() {
