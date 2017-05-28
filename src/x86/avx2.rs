@@ -108,12 +108,18 @@ pub fn _mm256_avg_epu8 (a:u8x32,b:u8x32) -> u8x32 {
     unsafe { pavgb(a,b) }
 }
 
+// TODO alignr
+
 /// Blend packed 8-bit integers from `a` and `b` using `mask`.
 #[inline(always)]
 #[target_feature = "+avx2"]
 pub fn _mm256_blendv_epi8(a:i8x32,b:i8x32,mask:__m256i) -> i8x32 {
     unsafe { pblendvb(a,b,mask) }
 }
+
+// TODO rest of blend
+
+// TODO broadcast
 
 /// Compare packed 64-bit integers in `a` and `b` for equality.
 #[inline(always)]
