@@ -438,20 +438,60 @@ pub fn _mm256_mpsadbw_epu8(a: u8x32, b: u8x32, imm8: i32) -> u16x16 {
 
 /// Multiply the low 32-bit integers from each packed 64-bit element in 
 /// `a` and `b`
+/// 
+/// Return the 64-bit results.
 #[inline(always)]
 #[target_feature = "+avx2"]
-pub fn _mm256_mul_epi32(a: i32x8, b: i32x8) -> i32x8 {
-    a * b
+pub fn _mm256_mul_epi32(a: i32x8, b: i32x8) -> i64x4 {
+    unsafe { pmuldq(a, b) }
 }
 
 /// Multiply the low unsigned 32-bit integers from each packed 64-bit 
 /// element in `a` and `b`
+///
+/// Return the unsigned 64-bit results.
 #[inline(always)]
 #[target_feature = "+avx2"]
-pub fn _mm256_mul_epu32(a: u32x8, b: u32x8) -> u32x8 {
+pub fn _mm256_mul_epu32(a: u32x8, b: u32x8) -> u64x4 {
+    unsafe { pmuludq(a, b) }
+}
+
+/// Multiply the packed 16-bit integers in `a` and `b`, producing 
+/// intermediate 32-bit integers and returning the high 16 bits of the
+/// intermediate integers.
+#[inline(always)]
+#[target_feature = "+avx2"]
+pub fn _mm256_mulhi_epi16(a: i16x16, b: i16x16) -> i16x16 {
+    unsafe { pmulhw(a, b) }
+}
+
+/// Multiply the packed unsigned 16-bit integers in `a` and `b`, producing
+/// intermediate 32-bit integers and returning the high 16 bits of the
+/// intermediate integers.
+#[inline(always)]
+#[target_feature = "+avx2"]
+pub fn _mm256_mulhi_epu16(a: u16x16, b: u16x16) -> u16x16 {
+    unsafe { pmulhuw(a, b) }
+}
+
+/// Multiply the packed 16-bit integers in `a` and `b`, producing 
+/// intermediate 32-bit integers, and return the low 16 bits of the
+/// intermediate integers
+#[inline(always)]
+#[target_feature = "+avx2"]
+pub fn _mm256_mullo_epi16(a: i16x16, b:i16x16) -> i16x16 {
     a * b
 }
 
+
+/// Multiply the packed 32-bit integers in `a` and `b`, producing 
+/// intermediate 64-bit integers, and return the low 16 bits of the
+/// intermediate integers
+#[inline(always)]
+#[target_feature = "+avx2"]
+pub fn _mm256_mullo_epi32(a: i32x8, b:i32x8) -> i32x8 {
+    a * b
+}
 
 #[allow(improper_ctypes)]
 extern "C" {
@@ -519,6 +559,15 @@ extern "C" {
     fn pmovmskb(a: i8x32) -> i32;
     #[link_name = "llvm.x86.avx2.mpsadbw"]
     fn mpsadbw(a: u8x32, b: u8x32, imm8: i32) -> u16x16;
+    #[link_name = "llvm.x86.avx2.pmulhu.w"]
+    fn pmulhuw(a: u16x16, b: u16x16) -> u16x16;
+    #[link_name = "llvm.x86.avx2.pmulh.w"]
+    fn pmulhw(a: i16x16, b: i16x16) -> i16x16;
+    #[link_name = "llvm.x86.avx2.pmul.dq"]
+    fn pmuldq(a: i32x8, b:i32x8) -> i64x4;
+    #[link_name = "llvm.x86.avx2.pmulu.dq"]
+    fn pmuludq(a: u32x8, b:u32x8) -> u64x4;
+
 
 }
 
@@ -1057,7 +1106,6 @@ mod tests {
         assert_eq!(r, a);
     }
 
-
     // TODO this fails in debug but not release, why?
     #[test]
     #[target_feature ="+avx2"]
@@ -1085,7 +1133,7 @@ mod tests {
         let a = i32x8::new(0, 0, 0, 0, 2, 2, 2, 2);
         let b = i32x8::new(1, 2, 3, 4, 5, 6, 7, 8);
         let r = avx2::_mm256_mul_epi32(a, b);
-        let e = i32x8::new(0, 0, 0, 0, 10, 12, 14, 16);
+        let e = i64x4::new(0, 0, 10, 14);
         assert_eq!(r, e);
     }
 
@@ -1095,7 +1143,47 @@ mod tests {
         let a = u32x8::new(0, 0, 0, 0, 2, 2, 2, 2);
         let b = u32x8::new(1, 2, 3, 4, 5, 6, 7, 8);
         let r = avx2::_mm256_mul_epu32(a, b);
-        let e = u32x8::new(0, 0, 0, 0, 10, 12, 14, 16);
+        let e = u64x4::new(0, 0, 10, 14);
+        assert_eq!(r, e);
+    }
+
+    #[test]
+    #[target_feature = "+avx2"]
+    fn _mm256_mulhi_epi16() {
+        let a = i16x16::splat(6535);
+        let b = i16x16::splat(6535);
+        let r = avx2::_mm256_mulhi_epi16(a, b);
+        let e = i16x16::splat(651);
+        assert_eq!(r, e);
+    }
+
+      #[test]
+    #[target_feature = "+avx2"]
+    fn _mm256_mulhi_epu16() {
+        let a = u16x16::splat(6535);
+        let b = u16x16::splat(6535);
+        let r = avx2::_mm256_mulhi_epu16(a, b);
+        let e = u16x16::splat(651);
+        assert_eq!(r, e);
+    }
+
+    #[test]
+    #[target_feature = "+avx2"]
+    fn _mm256_mullo_epi16() {
+        let a = i16x16::splat(2);
+        let b = i16x16::splat(4);
+        let r = avx2::_mm256_mullo_epi16(a, b);
+        let e = i16x16::splat(8);
+        assert_eq!(r, e);
+    }
+
+      #[test]
+    #[target_feature = "+avx2"]
+    fn _mm256_mullo_epi32() {
+        let a = i32x8::splat(2);
+        let b = i32x8::splat(4);
+        let r = avx2::_mm256_mullo_epi32(a, b);
+        let e = i32x8::splat(8);
         assert_eq!(r, e);
     }
 
