@@ -493,46 +493,61 @@ pub fn _mm256_mullo_epi32(a: i32x8, b:i32x8) -> i32x8 {
     a * b
 }
 
-/// Compute the bitwise OR of 256 bits (representing integer data) in `a` and `b`
+/// Compute the bitwise OR of 256 bits (representing integer data) in `a` 
+/// and `b`
 #[inline(always)]
 #[target_feature = "+avx2"]
 pub fn _mm256_or_si256(a: __m256i, b: __m256i) -> __m256i {
     a | b
 }
 
-/// Convert packed 16-bit integers from `a` and `b` to packed 8-bit integers using 
-/// signed saturation
+/// Convert packed 16-bit integers from `a` and `b` to packed 8-bit integers 
+/// using signed saturation
 #[inline(always)]
 #[target_feature = "+avx2"]
 pub fn _mm256_packs_epi16(a: i16x16, b: i16x16) -> i8x32 {
     unsafe { packsswb(a, b) }
 }
 
-/// Convert packed 32-bit integers from `a` and `b` to packed 16-bit integers using 
-/// signed saturation
+/// Convert packed 32-bit integers from `a` and `b` to packed 16-bit integers 
+/// using signed saturation
 #[inline(always)]
 #[target_feature = "+avx2"]
 pub fn _mm256_packs_epi32(a: i32x8, b: i32x8) -> i16x16 {
     unsafe { packssdw(a, b) }
 }
 
-/// Convert packed 16-bit integers from `a` and `b` to packed 8-bit integers using 
-/// unsigned saturation
+/// Convert packed 16-bit integers from `a` and `b` to packed 8-bit integers
+/// using unsigned saturation
 #[inline(always)]
 #[target_feature = "+avx2"]
 pub fn _mm256_packus_epi16(a: i16x16, b: i16x16) -> u8x32 {
     unsafe { packuswb(a, b) }
 }
 
-/// Convert packed 32-bit integers from `a` and `b` to packed 16-bit integers using 
-/// unsigned saturation
+/// Convert packed 32-bit integers from `a` and `b` to packed 16-bit integers
+/// using unsigned saturation
 #[inline(always)]
 #[target_feature = "+avx2"]
 pub fn _mm256_packus_epi32(a: i32x8, b: i32x8) -> u16x16 {
     unsafe { packusdw(a, b) }
 }
 
+// TODO _mm256_permute2x128_si256 (__m256i a, __m256i b, const int imm8)
+// TODO _mm256_permute4x64_epi64 (__m256i a, const int imm8)
+// TODO _mm256_permute4x64_pd (__m256d a, const int imm8)
+// TODO _mm256_permutevar8x32_epi32 (__m256i a, __m256i idx)
+// TODO _mm256_permutevar8x32_ps (__m256 a, __m256i idx)
 
+/// Compute the absolute differences of packed unsigned 8-bit integers in `a`
+/// and `b`, then horizontally sum each consecutive 8 differences to 
+/// produce four unsigned 16-bit integers, and pack these unsigned 16-bit 
+/// integers in the low 16 bits of the 64-bit return value
+#[inline(always)]
+#[target_feature = "+avx2"]
+pub fn _mm256_sad_epu8 (a: u8x32, b: u8x32) -> u64x4 {
+    unsafe { psadbw(a, b) }
+}
 
 
 
@@ -618,7 +633,8 @@ extern "C" {
     fn packuswb(a: i16x16, b: i16x16) -> u8x32;
     #[link_name = "llvm.x86.avx2.packusdw"]
     fn packusdw(a: i32x8, b: i32x8) -> u16x16;
-
+    #[link_name = "llvm.x86.avx2.psad.bw"]
+    fn psadbw(a: u8x32, b: u8x32) -> u64x4;
 
 }
 
@@ -1307,6 +1323,14 @@ mod tests {
         assert_eq!(r, e);
     }
 
-
+    #[test]
+    #[target_feature = "+avx2"]
+    fn _mm256_sad_epu8() {
+        let a = u8x32::splat(2);
+        let b = u8x32::splat(4);
+        let r = avx2::_mm256_sad_epu8(a, b);
+        let e = u64x4::splat(16);
+        assert_eq!(r, e);
+    }
 
 }
