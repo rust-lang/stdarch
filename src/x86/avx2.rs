@@ -78,6 +78,8 @@ pub fn _mm256_adds_epu16(a: u16x16, b: u16x16) -> u16x16 {
     unsafe { paddusw(a, b) }
 }
 
+// TODO _mm256_alignr_epi8
+
 /// Compute the bitwise AND of 256 bits (representing integer data)
 /// in `a` and `b`.
 #[inline(always)]
@@ -108,7 +110,9 @@ pub fn _mm256_avg_epu8 (a: u8x32, b: u8x32) -> u8x32 {
     unsafe { pavgb(a, b) }
 }
 
-// TODO _mm256_alignr_epi8
+
+
+
 // TODO _mm256_blend_epi16
 // TODO _mm_blend_epi32
 // TODO _mm256_blend_epi32
@@ -284,11 +288,11 @@ pub fn _mm256_hsubs_epi16(a: i16x16, b: i16x16) -> i16x16 {
 // TODO _mm_i64gather_ps (float const* base_addr, __m128i vindex, const int scale)
 // TODO _mm_mask_i64gather_ps (__m128 src, float const* base_addr, __m128i vindex, __m128 mask, const int scale)
 // TODO _mm256_i64gather_ps (float const* base_addr, __m256i vindex, const int scale)
-// TODO _mm256_mask_i64gather_ps 
+// TODO _mm256_mask_i64gather_ps
 // TODO _mm256_inserti128_si256
 
-/// Multiply packed signed 16-bit integers in `a` and `b`, producing 
-/// intermediate signed 32-bit integers. Horizontally add adjacent pairs 
+/// Multiply packed signed 16-bit integers in `a` and `b`, producing
+/// intermediate signed 32-bit integers. Horizontally add adjacent pairs
 /// of intermediate 32-bit integers.
 #[inline(always)]
 #[target_feature = "+avx2"]
@@ -296,9 +300,9 @@ pub fn _mm256_madd_epi16(a: i16x16, b: i16x16) -> i32x8 {
     unsafe { pmaddwd(a, b) }
 }
 
-/// Vertically multiply each unsigned 8-bit integer from `a` with the 
-/// corresponding signed 8-bit integer from `b`, producing intermediate 
-/// signed 16-bit integers. Horizontally add adjacent pairs of intermediate 
+/// Vertically multiply each unsigned 8-bit integer from `a` with the
+/// corresponding signed 8-bit integer from `b`, producing intermediate
+/// signed 16-bit integers. Horizontally add adjacent pairs of intermediate
 /// signed 16-bit integers
 #[inline(always)]
 #[target_feature = "+avx2"]
@@ -339,7 +343,7 @@ pub fn _mm256_max_epi8(a: i8x32, b: i8x32) -> i8x32 {
     unsafe { pmaxsb(a, b) }
 }
 
-/// Compare packed unsigned 16-bit integers in `a` and `b`, and return 
+/// Compare packed unsigned 16-bit integers in `a` and `b`, and return
 /// the packed maximum values.
 #[inline(always)]
 #[target_feature = "+avx2"]
@@ -347,7 +351,7 @@ pub fn _mm256_max_epu16(a: u16x16, b: u16x16) -> u16x16 {
     unsafe { pmaxuw(a, b) }
 }
 
-/// Compare packed unsigned 32-bit integers in `a` and `b`, and return 
+/// Compare packed unsigned 32-bit integers in `a` and `b`, and return
 /// the packed maximum values.
 #[inline(always)]
 #[target_feature = "+avx2"]
@@ -355,7 +359,7 @@ pub fn _mm256_max_epu32(a: u32x8, b: u32x8) -> u32x8 {
     unsafe { pmaxud(a, b) }
 }
 
-/// Compare packed unsigned 8-bit integers in `a` and `b`, and return 
+/// Compare packed unsigned 8-bit integers in `a` and `b`, and return
 /// the packed maximum values.
 #[inline(always)]
 #[target_feature = "+avx2"]
@@ -387,7 +391,7 @@ pub fn _mm256_min_epi8(a: i8x32, b: i8x32) -> i8x32 {
     unsafe { pminsb(a, b) }
 }
 
-/// Compare packed unsigned 16-bit integers in `a` and `b`, and return 
+/// Compare packed unsigned 16-bit integers in `a` and `b`, and return
 /// the packed minimum values.
 #[inline(always)]
 #[target_feature = "+avx2"]
@@ -395,7 +399,7 @@ pub fn _mm256_min_epu16(a: u16x16, b: u16x16) -> u16x16 {
     unsafe { pminuw(a, b) }
 }
 
-/// Compare packed unsigned 32-bit integers in `a` and `b`, and return 
+/// Compare packed unsigned 32-bit integers in `a` and `b`, and return
 /// the packed minimum values.
 #[inline(always)]
 #[target_feature = "+avx2"]
@@ -403,13 +407,51 @@ pub fn _mm256_min_epu32(a: u32x8, b: u32x8) -> u32x8 {
     unsafe { pminud(a, b) }
 }
 
-/// Compare packed unsigned 8-bit integers in `a` and `b`, and return 
+/// Compare packed unsigned 8-bit integers in `a` and `b`, and return
 /// the packed minimum values.
 #[inline(always)]
 #[target_feature = "+avx2"]
 pub fn _mm256_min_epu8(a: u8x32, b: u8x32) -> u8x32 {
     unsafe { pminub(a, b) }
 }
+
+/// Create mask from the most significant bit of each 8-bit element in `a`,
+/// return the result.
+#[inline(always)]
+#[target_feature = "+avx2"]
+pub fn _mm256_movemask_epi8(a: i8x32) -> i32 {
+    unsafe { pmovmskb(a) }
+}
+
+/// Compute the sum of absolute differences (SADs) of quadruplets of unsigned 
+/// 8-bit integers in `a` compared to those in `b`, and store the 16-bit 
+/// results in dst. Eight SADs are performed for each 128-bit lane using one
+/// quadruplet from `b` and eight quadruplets from `a`. One quadruplet is 
+/// selected from `b` starting at on the offset specified in `imm8`. Eight 
+/// quadruplets are formed from sequential 8-bit integers selected from `a` 
+/// starting at the offset specified in `imm8`.
+#[inline(always)]
+#[target_feature = "+avx2"]
+pub fn _mm256_mpsadbw_epu8(a: u8x32, b: u8x32, imm8: i32) -> u16x16 {
+    unsafe { mpsadbw(a, b, imm8) }
+}
+
+/// Multiply the low 32-bit integers from each packed 64-bit element in 
+/// `a` and `b`
+#[inline(always)]
+#[target_feature = "+avx2"]
+pub fn _mm256_mul_epi32(a: i32x8, b: i32x8) -> i32x8 {
+    a * b
+}
+
+/// Multiply the low unsigned 32-bit integers from each packed 64-bit 
+/// element in `a` and `b`
+#[inline(always)]
+#[target_feature = "+avx2"]
+pub fn _mm256_mul_epu32(a: u32x8, b: u32x8) -> u32x8 {
+    a * b
+}
+
 
 #[allow(improper_ctypes)]
 extern "C" {
@@ -426,7 +468,7 @@ extern "C" {
     #[link_name = "llvm.x86.avx2.paddus.b"]
     fn paddusb(a: u8x32, b: u8x32) -> u8x32;
     #[link_name = "llvm.x86.avx2.paddus.w"]
-    fn paddusw(a: u16x16, b: u16x16) -> u16x16;
+    fn paddusw(a: u16x16, b: u16x16) -> u16x16;    
     #[link_name = "llvm.x86.avx2.pavg.b"]
     fn pavgb(a: u8x32, b: u8x32) -> u8x32;
     #[link_name = "llvm.x86.avx2.pavg.w"]
@@ -452,27 +494,32 @@ extern "C" {
     #[link_name = "llvm.x86.avx2.pmaxs.w"]
     fn pmaxsw(a: i16x16, b: i16x16) -> i16x16;
     #[link_name = "llvm.x86.avx2.pmaxs.d"]
-    fn pmaxsd(a: i32x8, b: i32x8) -> i32x8;    
+    fn pmaxsd(a: i32x8, b: i32x8) -> i32x8;
     #[link_name = "llvm.x86.avx2.pmaxs.b"]
-    fn pmaxsb(a: i8x32, b: i8x32) -> i8x32;    
+    fn pmaxsb(a: i8x32, b: i8x32) -> i8x32;
     #[link_name = "llvm.x86.avx2.pmaxu.w"]
     fn pmaxuw(a: u16x16, b: u16x16) -> u16x16;
     #[link_name = "llvm.x86.avx2.pmaxu.d"]
-    fn pmaxud(a: u32x8, b: u32x8) -> u32x8;    
+    fn pmaxud(a: u32x8, b: u32x8) -> u32x8;
     #[link_name = "llvm.x86.avx2.pmaxu.b"]
-    fn pmaxub(a: u8x32, b: u8x32) -> u8x32;    
+    fn pmaxub(a: u8x32, b: u8x32) -> u8x32;
     #[link_name = "llvm.x86.avx2.pmins.w"]
     fn pminsw(a: i16x16, b: i16x16) -> i16x16;
     #[link_name = "llvm.x86.avx2.pmins.d"]
-    fn pminsd(a: i32x8, b: i32x8) -> i32x8;    
+    fn pminsd(a: i32x8, b: i32x8) -> i32x8;
     #[link_name = "llvm.x86.avx2.pmins.b"]
-    fn pminsb(a: i8x32, b: i8x32) -> i8x32;    
+    fn pminsb(a: i8x32, b: i8x32) -> i8x32;
     #[link_name = "llvm.x86.avx2.pminu.w"]
     fn pminuw(a: u16x16, b: u16x16) -> u16x16;
     #[link_name = "llvm.x86.avx2.pminu.d"]
-    fn pminud(a: u32x8, b: u32x8) -> u32x8;    
+    fn pminud(a: u32x8, b: u32x8) -> u32x8;
     #[link_name = "llvm.x86.avx2.pminu.b"]
     fn pminub(a: u8x32, b: u8x32) -> u8x32;    
+    #[link_name = "llvm.x86.avx2.pmovmskb"]
+    fn pmovmskb(a: i8x32) -> i32;
+    #[link_name = "llvm.x86.avx2.mpsadbw"]
+    fn mpsadbw(a: u8x32, b: u8x32, imm8: i32) -> u16x16;
+
 }
 
 
@@ -955,7 +1002,7 @@ mod tests {
         let r = avx2::_mm256_max_epu8(a, b);
         assert_eq!(r, b);
     }
-    
+
     #[test]
     #[target_feature = "+avx2"]
     fn _mm256_min_epi16() {
@@ -1008,6 +1055,48 @@ mod tests {
         let b = u8x32::splat(4);
         let r = avx2::_mm256_min_epu8(a, b);
         assert_eq!(r, a);
+    }
+
+
+    // TODO this fails in debug but not release, why?
+    #[test]
+    #[target_feature ="+avx2"]
+    fn _mm256_movemask_epi8() {
+        let a = i8x32::splat(-1);        
+        let r = avx2::_mm256_movemask_epi8(a);
+        let e : i32 = -1;
+        assert_eq!(r, e);    
+    }
+
+    // TODO This fails in debug but not in release, whhhy?
+    #[test]
+    #[target_feature = "+avx2"]
+    fn _mm256_mpsadbw_epu8() {
+        let a = u8x32::splat(2);
+        let b = u8x32::splat(4);
+        let r = avx2::_mm256_mpsadbw_epu8(a, b, 0);
+        let e = u16x16::splat(8);
+        assert_eq!(r, e);
+    }
+
+    #[test]
+    #[target_feature = "+avx2"]    
+    fn _mm256_mul_epi32() {
+        let a = i32x8::new(0, 0, 0, 0, 2, 2, 2, 2);
+        let b = i32x8::new(1, 2, 3, 4, 5, 6, 7, 8);
+        let r = avx2::_mm256_mul_epi32(a, b);
+        let e = i32x8::new(0, 0, 0, 0, 10, 12, 14, 16);
+        assert_eq!(r, e);
+    }
+
+    #[test]
+    #[target_feature = "+avx2"]
+    fn _mm256_mul_epu32() {
+        let a = u32x8::new(0, 0, 0, 0, 2, 2, 2, 2);
+        let b = u32x8::new(1, 2, 3, 4, 5, 6, 7, 8);
+        let r = avx2::_mm256_mul_epu32(a, b);
+        let e = u32x8::new(0, 0, 0, 0, 10, 12, 14, 16);
+        assert_eq!(r, e);
     }
 
 }
