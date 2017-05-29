@@ -493,6 +493,13 @@ pub fn _mm256_mullo_epi32(a: i32x8, b:i32x8) -> i32x8 {
     a * b
 }
 
+/// Compute the bitwise OR of 256 bits (representing integer data) in `a` and `b`
+#[inline(always)]
+#[target_feature = "+avx2"]
+pub fn _mm256_or_si256(a: __m256i, b: __m256i) -> __m256i {
+    a | b
+}
+
 #[allow(improper_ctypes)]
 extern "C" {
     #[link_name = "llvm.x86.avx2.pabs.b"]
@@ -1177,7 +1184,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-      #[test]
+    #[test]
     #[target_feature = "+avx2"]
     fn _mm256_mullo_epi32() {
         let a = i32x8::splat(2);
@@ -1187,4 +1194,13 @@ mod tests {
         assert_eq!(r, e);
     }
 
+    #[test]
+    #[target_feature = "+avx2"]
+    fn _mm256_or_si256() {
+        let a = __m256i::splat(-1);
+        let b = __m256i::splat(0);
+        let r = avx2::_mm256_or_si256(a, b);
+        assert_eq!(r, a);
+
+    }
 }
