@@ -855,7 +855,7 @@ avx2
 * [x] `_mm256_mul_epu32`
 * [x] `_mm256_mulhi_epi16`
 * [x] `_mm256_mulhi_epu16`
-* [ ] `_mm256_mulhrs_epi16`
+* [x] `_mm256_mulhrs_epi16`
 * [x] `_mm256_mullo_epi16`
 * [x] `_mm256_mullo_epi32`
 * [x] `_mm256_or_si256`
