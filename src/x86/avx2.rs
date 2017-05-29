@@ -500,6 +500,42 @@ pub fn _mm256_or_si256(a: __m256i, b: __m256i) -> __m256i {
     a | b
 }
 
+/// Convert packed 16-bit integers from `a` and `b` to packed 8-bit integers using 
+/// signed saturation
+#[inline(always)]
+#[target_feature = "+avx2"]
+pub fn _mm256_packs_epi16(a: i16x16, b: i16x16) -> i8x32 {
+    unsafe { packsswb(a, b) }
+}
+
+/// Convert packed 32-bit integers from `a` and `b` to packed 16-bit integers using 
+/// signed saturation
+#[inline(always)]
+#[target_feature = "+avx2"]
+pub fn _mm256_packs_epi32(a: i32x8, b: i32x8) -> i16x16 {
+    unsafe { packssdw(a, b) }
+}
+
+/// Convert packed 16-bit integers from `a` and `b` to packed 8-bit integers using 
+/// unsigned saturation
+#[inline(always)]
+#[target_feature = "+avx2"]
+pub fn _mm256_packus_epi16(a: i16x16, b: i16x16) -> u8x32 {
+    unsafe { packuswb(a, b) }
+}
+
+/// Convert packed 32-bit integers from `a` and `b` to packed 16-bit integers using 
+/// unsigned saturation
+#[inline(always)]
+#[target_feature = "+avx2"]
+pub fn _mm256_packus_epi32(a: i32x8, b: i32x8) -> u16x16 {
+    unsafe { packusdw(a, b) }
+}
+
+
+
+
+
 #[allow(improper_ctypes)]
 extern "C" {
     #[link_name = "llvm.x86.avx2.pabs.b"]
@@ -574,6 +610,14 @@ extern "C" {
     fn pmuldq(a: i32x8, b:i32x8) -> i64x4;
     #[link_name = "llvm.x86.avx2.pmulu.dq"]
     fn pmuludq(a: u32x8, b:u32x8) -> u64x4;
+    #[link_name = "llvm.x86.avx2.packsswb"]
+    fn packsswb(a: i16x16, b: i16x16) -> i8x32;
+    #[link_name = "llvm.x86.avx2.packssdw"]
+    fn packssdw(a: i32x8, b: i32x8) -> i16x16;
+    #[link_name = "llvm.x86.avx2.packuswb"]
+    fn packuswb(a: i16x16, b: i16x16) -> u8x32;
+    #[link_name = "llvm.x86.avx2.packusdw"]
+    fn packusdw(a: i32x8, b: i32x8) -> u16x16;
 
 
 }
@@ -1201,6 +1245,68 @@ mod tests {
         let b = __m256i::splat(0);
         let r = avx2::_mm256_or_si256(a, b);
         assert_eq!(r, a);
-
     }
+
+    #[test]
+    #[target_feature = "+avx2"]
+    fn _mm256_packs_epi16() {
+        let a = i16x16::splat(2);
+        let b = i16x16::splat(4);
+        let r = avx2::_mm256_packs_epi16(a, b);
+        let e = i8x32::new(
+            2, 2, 2, 2, 2, 2, 2, 2,
+            4, 4, 4, 4, 4, 4, 4, 4,
+            2, 2, 2, 2, 2, 2, 2, 2,
+            4, 4, 4, 4, 4, 4, 4, 4);
+        
+        assert_eq!(r, e);
+    }
+
+    #[test]
+    #[target_feature = "+avx2"]
+    fn _mm256_packs_epi32() {
+        let a = i32x8::splat(2);
+        let b = i32x8::splat(4);
+        let r = avx2::_mm256_packs_epi32(a, b);
+        let e = i16x16::new(
+            2, 2, 2, 2,
+            4, 4, 4, 4,
+            2, 2, 2, 2,
+            4, 4, 4, 4);
+        
+        assert_eq!(r, e);
+    }
+
+    #[test]
+    #[target_feature = "+avx2"]
+    fn _mm256_packus_epi16() {
+        let a = i16x16::splat(2);
+        let b = i16x16::splat(4);
+        let r = avx2::_mm256_packus_epi16(a, b);
+        let e = u8x32::new(
+            2, 2, 2, 2, 2, 2, 2, 2,
+            4, 4, 4, 4, 4, 4, 4, 4,
+            2, 2, 2, 2, 2, 2, 2, 2,
+            4, 4, 4, 4, 4, 4, 4, 4);
+        
+        assert_eq!(r, e);
+    }
+
+    #[test]
+    #[target_feature = "+avx2"]
+    fn _mm256_packus_epi32() {
+        let a = i32x8::splat(2);
+        let b = i32x8::splat(4);
+        let r = avx2::_mm256_packus_epi32(a, b);
+        let e = u16x16::new(
+            2, 2, 2, 2,
+            4, 4, 4, 4,
+            2, 2, 2, 2,
+            4, 4, 4, 4);
+        
+        assert_eq!(r, e);
+    }
+
+
+
 }
