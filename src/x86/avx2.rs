@@ -497,6 +497,16 @@ pub fn _mm256_mullo_epi32(a: i32x8, b:i32x8) -> i32x8 {
     a * b
 }
 
+/// Multiply packed 16-bit integers in `a` and `b`, producing 
+/// intermediate signed 32-bit integers. Truncate each intermediate
+/// integer to the 18 most significant bits, round by adding 1, and
+/// return bits [16:1]
+#[inline(always)]
+#[target_feature = "+avx2"]
+pub fn _mm256_mulhrs_epi16(a: i16x16, b:i16x16) -> i16x16 {
+    unsafe { pmulhrsw(a, b) }
+}
+
 /// Compute the bitwise OR of 256 bits (representing integer data) in `a` 
 /// and `b`
 #[inline(always)]
@@ -652,6 +662,8 @@ extern "C" {
     fn pmuldq(a: i32x8, b:i32x8) -> i64x4;
     #[link_name = "llvm.x86.avx2.pmulu.dq"]
     fn pmuludq(a: u32x8, b:u32x8) -> u64x4;
+    #[link_name = "llvm.x86.avx2.pmul.hr.sw"]
+    fn pmulhrsw(a: i16x16, b: i16x16) -> i16x16;
     #[link_name = "llvm.x86.avx2.packsswb"]
     fn packsswb(a: i16x16, b: i16x16) -> i8x32;
     #[link_name = "llvm.x86.avx2.packssdw"]
@@ -1287,6 +1299,16 @@ mod tests {
         let b = i32x8::splat(4);
         let r = avx2::_mm256_mullo_epi32(a, b);
         let e = i32x8::splat(8);
+        assert_eq!(r, e);
+    }
+
+    #[test]
+    #[target_feature = "+avx2"]
+    fn _mm256_mulhrs_epi16() {
+        let a = i16x16::splat(2);
+        let b = i16x16::splat(4);
+        let r = avx2::_mm256_mullo_epi16(a, b);
+        let e = i16x16::splat(8);
         assert_eq!(r, e);
     }
 
