@@ -235,6 +235,7 @@ macro_rules! define_casts {
     ($(($ty:ident, $floatty:ident, $floatcast:ident)),+) => {
         $(
             impl $ty {
+                #[inline]
                 pub fn $floatcast(self) -> ::$floatty {
                     unsafe { simd_cast(self) }
                 }
