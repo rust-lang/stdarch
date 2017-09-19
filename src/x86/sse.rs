@@ -69,7 +69,7 @@ pub fn _mm_movemask_ps(a: f32x4) -> i32 {
 }
 
 #[allow(improper_ctypes)]
-extern "C" {
+extern {
     #[link_name = "llvm.x86.sse.sqrt.ps"]
     fn sqrtps(a: f32x4) -> f32x4;
     #[link_name = "llvm.x86.sse.rcp.ps"]
