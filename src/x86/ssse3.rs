@@ -9,18 +9,17 @@ pub fn _mm_abs_epi8(a: i8x16) -> u8x16 {
 }
 
 
-#[inline(always)]
-#[target_feature = "+ssse3"]
+
 /// Shuffle bytes from `a` according to the content of `b`.
 ///
-/// The last 4 bits of each bytes of `b` are used as as many
-/// addresses into the 16 bytes of `a`.
+/// The last 4 bits of each byte of `b` are used as addresses
+/// into the 16 bytes of `a`.
 ///
 /// In addition, if the highest significant bit of a byte of `b`
 /// is set, the respective destination byte is set to 0.
 ///
 /// Picturing `a` and `b` as `[u8; 16]`, `_mm_shuffle_epi8` is
-/// logically equivalent to :
+/// logically equivalent to:
 ///
 /// ```
 /// fn mm_shuffle_epi8(a: [u8; 16], b: [u8; 16]) -> [u8; 16] {
@@ -35,6 +34,8 @@ pub fn _mm_abs_epi8(a: i8x16) -> u8x16 {
 ///     r
 /// }
 /// ```
+#[inline(always)]
+#[target_feature = "+ssse3"]
 pub fn _mm_shuffle_epi8(a: u8x16, b: u8x16) -> u8x16 {
     unsafe { pshufb128(a, b) }
 }
