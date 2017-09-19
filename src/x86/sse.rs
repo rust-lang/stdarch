@@ -1,5 +1,7 @@
 use v128::*;
 
+use simd_llvm::simd_shuffle4;
+
 /// Return the square root of packed single-precision (32-bit) floating-point
 /// elements in `a`.
 #[inline(always)]
@@ -40,6 +42,14 @@ pub fn _mm_max_ps(a: f32x4, b: f32x4) -> f32x4 {
     unsafe { maxps(a, b) }
 }
 
+/// Unpack and interleave single-precision (32-bit) floating-point elements
+/// from the high half of `a` and `b`;
+#[inline(always)]
+#[target_feature = "+sse"]
+pub fn _mm_unpackhi_ps(a: f32x4, b: f32x4) -> f32x4 {
+    unsafe { simd_shuffle4(a, b, [2, 6, 3, 7]) }
+}
+
 /// Return a mask of the most significant bit of each element in `a`.
 ///
 /// The mask is stored in the 4 least significant bits of the return value.
@@ -51,7 +61,7 @@ pub fn _mm_movemask_ps(a: f32x4) -> i32 {
 }
 
 #[allow(improper_ctypes)]
-extern {
+extern "C" {
     #[link_name = "llvm.x86.sse.sqrt.ps"]
     fn sqrtps(a: f32x4) -> f32x4;
     #[link_name = "llvm.x86.sse.rcp.ps"]
@@ -114,6 +124,15 @@ mod tests {
         let b = f32x4::new(-100.0, 20.0, 0.0, -5.0);
         let r = sse::_mm_max_ps(a, b);
         assert_eq!(r, f32x4::new(-1.0, 20.0, 0.0, -5.0));
+    }
+
+    #[test]
+    #[target_feature = "+sse"]
+    fn _mm_unpackhi_ps() {
+        let a = f32x4::new(1.0, 2.0, 3.0, 4.0);
+        let b = f32x4::new(5.0, 6.0, 7.0, 8.0);
+        let r = sse::_mm_unpackhi_ps(a, b);
+        assert_eq!(r, f32x4::new(3.0, 7.0, 4.0, 8.0));
     }
 
     #[test]
