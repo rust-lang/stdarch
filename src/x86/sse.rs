@@ -42,7 +42,7 @@ pub fn _mm_max_ps(a: f32x4, b: f32x4) -> f32x4 {
 }
 
 /// Unpack and interleave single-precision (32-bit) floating-point elements
-/// from the high half of `a` and `b`;
+/// from the high half of `a` and `b`.
 #[inline(always)]
 #[target_feature = "+sse"]
 pub fn _mm_unpackhi_ps(a: f32x4, b: f32x4) -> f32x4 {
@@ -50,11 +50,19 @@ pub fn _mm_unpackhi_ps(a: f32x4, b: f32x4) -> f32x4 {
 }
 
 /// Unpack and interleave single-precision (32-bit) floating-point elements
-/// from the low half of `a` and `b`;
+/// from the low half of `a` and `b`.
 #[inline(always)]
 #[target_feature = "+sse"]
 pub fn _mm_unpacklo_ps(a: f32x4, b: f32x4) -> f32x4 {
     unsafe { simd_shuffle4(a, b, [0, 4, 1, 5]) }
+}
+
+/// Combine high half of `a` and `b`. The high half of `b` occupies the lower
+/// half of result.
+#[inline(always)]
+#[target_feature = "+sse"]
+pub fn _mm_movehl_ps(a: f32x4, b: f32x4) -> f32x4 {
+    unsafe { simd_shuffle4(a, b, [6, 7, 2, 3]) }
 }
 
 /// Return a mask of the most significant bit of each element in `a`.
@@ -149,6 +157,15 @@ mod tests {
         let b = f32x4::new(5.0, 6.0, 7.0, 8.0);
         let r = sse::_mm_unpacklo_ps(a, b);
         assert_eq!(r, f32x4::new(1.0, 5.0, 2.0, 6.0));
+    }
+
+    #[test]
+    #[target_feature = "+sse"]
+    fn _mm_movehl_ps() {
+        let a = f32x4::new(1.0, 2.0, 3.0, 4.0);
+        let b = f32x4::new(5.0, 6.0, 7.0, 8.0);
+        let r = sse::_mm_movehl_ps(a, b);
+        assert_eq!(r, f32x4::new(7.0, 8.0, 3.0, 4.0));
     }
 
     #[test]
