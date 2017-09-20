@@ -157,8 +157,8 @@ sse
 * [ ] `_mm_shuffle_ps`
 * [x] `_mm_unpackhi_ps`
 * [x] `_mm_unpacklo_ps`
-* [ ] `_mm_movehl_ps`
-* [ ] `_mm_movelh_ps`
+* [x] `_mm_movehl_ps`
+* [x] `_mm_movelh_ps`
 * [x] `_mm_movemask_ps`
 * [ ] `_mm_undefined_ps`
 
