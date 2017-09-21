@@ -112,7 +112,7 @@ pub fn _mm_unpackhi_ps(a: f32x4, b: f32x4) -> f32x4 {
 }
 
 /// Unpack and interleave single-precision (32-bit) floating-point elements
-/// from the lowwe half of `a` and `b`.
+/// from the lower half of `a` and `b`.
 #[inline(always)]
 #[target_feature = "+sse"]
 pub fn _mm_unpacklo_ps(a: f32x4, b: f32x4) -> f32x4 {
