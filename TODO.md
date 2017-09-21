@@ -154,7 +154,7 @@ sse
 * [ ] `_mm_storeu_ps`
 * [ ] `_mm_storer_ps`
 * [ ] `_mm_move_ss`
-* [ ] `_mm_shuffle_ps`
+* [x] `_mm_shuffle_ps`
 * [x] `_mm_unpackhi_ps`
 * [x] `_mm_unpacklo_ps`
 * [x] `_mm_movehl_ps`
