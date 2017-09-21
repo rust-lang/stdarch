@@ -1,10 +1,14 @@
 use simd_llvm::simd_shuffle4;
 use v128::*;
 
+#[cfg(test)]
+use assert_instr::assert_instr;
+
 /// Return the square root of packed single-precision (32-bit) floating-point
 /// elements in `a`.
 #[inline(always)]
 #[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(sqrtps))]
 pub fn _mm_sqrt_ps(a: f32x4) -> f32x4 {
     unsafe { sqrtps(a) }
 }
@@ -13,6 +17,7 @@ pub fn _mm_sqrt_ps(a: f32x4) -> f32x4 {
 /// floating-point elements in `a`.
 #[inline(always)]
 #[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(rcpps))]
 pub fn _mm_rcp_ps(a: f32x4) -> f32x4 {
     unsafe { rcpps(a) }
 }
@@ -21,6 +26,7 @@ pub fn _mm_rcp_ps(a: f32x4) -> f32x4 {
 /// (32-bit) floating-point elements in `a`.
 #[inline(always)]
 #[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(rsqrtps))]
 pub fn _mm_rsqrt_ps(a: f32x4) -> f32x4 {
     unsafe { rsqrtps(a) }
 }
@@ -29,6 +35,7 @@ pub fn _mm_rsqrt_ps(a: f32x4) -> f32x4 {
 /// `b`, and return the corresponding minimum values.
 #[inline(always)]
 #[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(minps))]
 pub fn _mm_min_ps(a: f32x4, b: f32x4) -> f32x4 {
     unsafe { minps(a, b) }
 }
@@ -37,18 +44,24 @@ pub fn _mm_min_ps(a: f32x4, b: f32x4) -> f32x4 {
 /// `b`, and return the corresponding maximum values.
 #[inline(always)]
 #[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(maxps))]
 pub fn _mm_max_ps(a: f32x4, b: f32x4) -> f32x4 {
     unsafe { maxps(a, b) }
 }
 
 /// Unpack and interleave single-precision (32-bit) floating-point elements
+<<<<<<< HEAD
 /// from the higher half of `a` and `b`.
+=======
+/// from the high half of `a` and `b`;
+>>>>>>> upstream/master
 #[inline(always)]
 #[target_feature = "+sse"]
 pub fn _mm_unpackhi_ps(a: f32x4, b: f32x4) -> f32x4 {
     unsafe { simd_shuffle4(a, b, [2, 6, 3, 7]) }
 }
 
+<<<<<<< HEAD
 /// Unpack and interleave single-precision (32-bit) floating-point elements
 /// from the lowwe half of `a` and `b`.
 #[inline(always)]
@@ -73,12 +86,15 @@ pub fn _mm_movelh_ps(a: f32x4, b: f32x4) -> f32x4 {
     unsafe { simd_shuffle4(a, b, [0, 1, 4, 5]) }
 }
 
+=======
+>>>>>>> upstream/master
 /// Return a mask of the most significant bit of each element in `a`.
 ///
 /// The mask is stored in the 4 least significant bits of the return value.
 /// All other bits are set to `0`.
 #[inline(always)]
 #[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(movmskps))]
 pub fn _mm_movemask_ps(a: f32x4) -> i32 {
     unsafe { movmskps(a) }
 }
@@ -160,6 +176,7 @@ mod tests {
 
     #[test]
     #[target_feature = "+sse"]
+<<<<<<< HEAD
     fn _mm_unpacklo_ps() {
         let a = f32x4::new(1.0, 2.0, 3.0, 4.0);
         let b = f32x4::new(5.0, 6.0, 7.0, 8.0);
@@ -187,6 +204,8 @@ mod tests {
 
     #[test]
     #[target_feature = "+sse"]
+=======
+>>>>>>> upstream/master
     fn _mm_movemask_ps() {
         let r = sse::_mm_movemask_ps(f32x4::new(-1.0, 5.0, -5.0, 0.0));
         assert_eq!(r, 0b0101);
