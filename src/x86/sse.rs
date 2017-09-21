@@ -119,7 +119,7 @@ pub fn _mm_unpacklo_ps(a: f32x4, b: f32x4) -> f32x4 {
     unsafe { simd_shuffle4(a, b, [0, 4, 1, 5]) }
 }
 
-/// Combine highwe half of `a` and `b`. The highwe half of `b` occupies the lower
+/// Combine higher half of `a` and `b`. The highwe half of `b` occupies the lower
 /// half of result.
 #[inline(always)]
 #[target_feature = "+sse"]
@@ -127,7 +127,7 @@ pub fn _mm_movehl_ps(a: f32x4, b: f32x4) -> f32x4 {
     unsafe { simd_shuffle4(a, b, [6, 7, 2, 3]) }
 }
 
-/// Combine lowwe half of `a` and `b`. The lower half of `b` occupies the higher
+/// Combine lower half of `a` and `b`. The lower half of `b` occupies the higher
 /// half of result.
 #[inline(always)]
 #[target_feature = "+sse"]
