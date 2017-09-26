@@ -118,6 +118,18 @@ pub fn _mm_hsub_epi32(a: i32x4, b: i32x4) -> i32x4 {
     unsafe { phsubd128(a, b) }
 }
 
+/// Multiply corresponding pairs of packed 8-bit unsigned integer
+/// values contained in the first source operand and packed 8-bit signed
+/// integer values contained in the second source operand, add pairs of
+/// contiguous products with signed saturation, and writes the 16-bit sums to
+/// the corresponding bits in the destination.
+#[inline(always)]
+#[target_feature = "+ssse3"]
+#[cfg_attr(test, assert_instr(pmaddubsw128))]
+pub fn _mm_maddubs_epi16(a: u8x16, b: i8x16) -> i16x8 {
+    unsafe { pmaddubsw128(a, b) }
+}
+
 #[allow(improper_ctypes)]
 extern {
     #[link_name = "llvm.x86.ssse3.pabs.b.128"]
@@ -149,6 +161,9 @@ extern {
 
     #[link_name = "llvm.x86.ssse3.phsub.d.128"]
     fn phsubd128(a: i32x4, b: i32x4) -> i32x4;
+
+    #[link_name = "llvm.x86.ssse3.pmadd.ub.sw.128"]
+    fn pmaddubsw128(a: u8x16, b: i8x16) -> i16x8;
 }
 
 #[cfg(all(test, target_feature = "ssse3", any(target_arch = "x86", target_arch = "x86_64")))]
@@ -244,6 +259,16 @@ mod tests {
         let b = i32x4::new(4, 128, 4, 3);
         let expected = i32x4::new(-1, -1, -124, 1);
         let r = ssse3::_mm_hsub_epi32(a, b);
+        assert_eq!(r, expected);
+    }
+
+    #[test]
+    #[target_feature = "+ssse3"]
+    fn _mm_maddubs_epi16() {
+        let a = u8x16::new(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
+        let b = i8x16::new(4, 63, 4, 3, 24, 12, 6, 19, 12, 5, 5, 10, 4, 1, 8, 0);
+        let expected = i16x8::new(130, 24, 192, 194, 158, 175, 66, 120);
+        let r = ssse3::_mm_maddubs_epi16(a, b);
         assert_eq!(r, expected);
     }
 }
