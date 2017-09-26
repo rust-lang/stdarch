@@ -8,7 +8,21 @@ pub fn _mm_abs_epi8(a: i8x16) -> u8x16 {
     unsafe { pabsb128(a) }
 }
 
+/// Compute the absolute value of each of the packed 16-bit signed integers in `a` and
+/// return the 16-bit unsigned integer
+#[inline(always)]
+#[target_feature = "+ssse3"]
+pub fn _mm_abs_epi16(a: i16x8) -> u16x8 {
+    unsafe { pabsw128(a) }
+}
 
+/// Compute the absolute value of each of the packed 32-bit signed integers in `a` and
+/// return the 32-bit unsigned integer
+#[inline(always)]
+#[target_feature = "+ssse3"]
+pub fn _mm_abs_epi32(a: i32x4) -> u32x4 {
+    unsafe { pabsd128(a) }
+}
 
 /// Shuffle bytes from `a` according to the content of `b`.
 ///
@@ -41,13 +55,30 @@ pub fn _mm_shuffle_epi8(a: u8x16, b: u8x16) -> u8x16 {
 }
 
 
+/// Horizontally add the adjacent pairs of values contained in 2 packed
+/// 128-bit vectors of [8 x i16].
+#[inline(always)]
+#[target_feature = "+ssse3"]
+pub fn _mm_hadd_epi16(a: i16x8, b: i16x8) -> i16x8 {
+    unsafe { phaddw128(a, b) }
+}
+
 #[allow(improper_ctypes)]
 extern {
     #[link_name = "llvm.x86.ssse3.pabs.b.128"]
     fn pabsb128(a: i8x16) -> u8x16;
 
+    #[link_name = "llvm.x86.ssse3.pabs.w.128"]
+    fn pabsw128(a: i16x8) -> u16x8;
+
+    #[link_name = "llvm.x86.ssse3.pabs.d.128"]
+    fn pabsd128(a: i32x4) -> u32x4;
+
     #[link_name = "llvm.x86.ssse3.pshuf.b.128"]
     fn pshufb128(a: u8x16, b: u8x16) -> u8x16;
+
+    #[link_name = "llvm.x86.ssse3.phadd.w.128"]
+    fn phaddw128(a: i16x8, b: i16x8) -> i16x8;
 }
 
 #[cfg(all(test, target_feature = "ssse3", any(target_arch = "x86", target_arch = "x86_64")))]
@@ -64,11 +95,35 @@ mod tests {
 
     #[test]
     #[target_feature = "+ssse3"]
+    fn _mm_abs_epi16() {
+        let r = ssse3::_mm_abs_epi16(i16x8::splat(-5));
+        assert_eq!(r, u16x8::splat(5));
+    }
+
+    #[test]
+    #[target_feature = "+ssse3"]
+    fn _mm_abs_epi32() {
+        let r = ssse3::_mm_abs_epi32(i32x4::splat(-5));
+        assert_eq!(r, u32x4::splat(5));
+    }
+
+    #[test]
+    #[target_feature = "+ssse3"]
     fn _mm_shuffle_epi8() {
         let a = u8x16::new(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
         let b = u8x16::new(4, 128, 4, 3, 24, 12, 6, 19, 12, 5, 5, 10, 4, 1, 8, 0);
         let expected = u8x16::new(5, 0, 5, 4, 9, 13, 7, 4, 13, 6, 6, 11, 5, 2, 9, 1);
         let r = ssse3::_mm_shuffle_epi8(a, b);
+        assert_eq!(r, expected);
+    }
+
+    #[test]
+    #[target_feature = "+ssse3"]
+    fn _mm_hadd_epi16() {
+        let a = i16x8::new(1, 2, 3, 4, 5, 6, 7, 8);
+        let b = i16x8::new(4, 128, 4, 3, 24, 12, 6, 19);
+        let expected = i16x8::new(3, 7, 11, 15, 132, 7, 36, 25);
+        let r = ssse3::_mm_hadd_epi16(a, b);
         assert_eq!(r, expected);
     }
 }
