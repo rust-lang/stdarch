@@ -54,13 +54,21 @@ pub fn _mm_shuffle_epi8(a: u8x16, b: u8x16) -> u8x16 {
     unsafe { pshufb128(a, b) }
 }
 
-
 /// Horizontally add the adjacent pairs of values contained in 2 packed
 /// 128-bit vectors of [8 x i16].
 #[inline(always)]
 #[target_feature = "+ssse3"]
 pub fn _mm_hadd_epi16(a: i16x8, b: i16x8) -> i16x8 {
     unsafe { phaddw128(a, b) }
+}
+
+/// Horizontally adds the adjacent pairs of values contained in 2 packed
+/// 128-bit vectors of [8 x i16]. Positive sums greater than 7FFFh are
+/// saturated to 7FFFh. Negative sums less than 8000h are saturated to 8000h.
+#[inline(always)]
+#[target_feature = "+ssse3"]
+pub fn _mm_hadds_epi16(a: i16x8, b: i16x8) -> i16x8 {
+    unsafe { phaddsw128(a, b) }
 }
 
 #[allow(improper_ctypes)]
@@ -79,6 +87,9 @@ extern {
 
     #[link_name = "llvm.x86.ssse3.phadd.w.128"]
     fn phaddw128(a: i16x8, b: i16x8) -> i16x8;
+
+    #[link_name = "llvm.x86.ssse3.phadd.sw.128"]
+    fn phaddsw128(a: i16x8, b: i16x8) -> i16x8;
 }
 
 #[cfg(all(test, target_feature = "ssse3", any(target_arch = "x86", target_arch = "x86_64")))]
@@ -124,6 +135,16 @@ mod tests {
         let b = i16x8::new(4, 128, 4, 3, 24, 12, 6, 19);
         let expected = i16x8::new(3, 7, 11, 15, 132, 7, 36, 25);
         let r = ssse3::_mm_hadd_epi16(a, b);
+        assert_eq!(r, expected);
+    }
+
+    #[test]
+    #[target_feature = "+ssse3"]
+    fn _mm_hadds_epi16() {
+        let a = i16x8::new(1, 2, 3, 4, 5, 6, 7, 8);
+        let b = i16x8::new(4, 128, 4, 3, 32767, 1, -32768, -1);
+        let expected = i16x8::new(3, 7, 11, 15, 132, 7, 32767, -32768);
+        let r = ssse3::_mm_hadds_epi16(a, b);
         assert_eq!(r, expected);
     }
 }
