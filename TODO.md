@@ -440,7 +440,7 @@ ssse3
 * [ ] `_mm_hsubs_pi16`
 * [x] `_mm_maddubs_epi16`
 * [ ] `_mm_maddubs_pi16`
-* [ ] `_mm_mulhrs_epi16`
+* [x] `_mm_mulhrs_epi16`
 * [ ] `_mm_mulhrs_pi16`
 * [ ] `_mm_sign_epi8`
 * [ ] `_mm_sign_epi16`
