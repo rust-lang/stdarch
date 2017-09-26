@@ -427,8 +427,8 @@ ssse3
 * [ ] `_mm_alignr_epi8`
 * [ ] `_mm_alignr_pi8`
 * [x] `_mm_hadd_epi16`
-* [ ] `_mm_hadds_epi16`
-* [ ] `_mm_hadd_epi32`
+* [x] `_mm_hadds_epi16`
+* [x] `_mm_hadd_epi32`
 * [ ] `_mm_hadd_pi16`
 * [ ] `_mm_hadd_pi32`
 * [ ] `_mm_hadds_pi16`
