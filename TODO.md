@@ -443,7 +443,7 @@ ssse3
 * [x] `_mm_mulhrs_epi16`
 * [ ] `_mm_mulhrs_pi16`
 * [x] `_mm_sign_epi8`
-* [ ] `_mm_sign_epi16`
+* [x] `_mm_sign_epi16`
 * [ ] `_mm_sign_epi32`
 * [ ] `_mm_sign_pi8`
 * [ ] `_mm_sign_pi16`
