@@ -162,6 +162,17 @@ pub fn _mm_sign_epi16(a: i16x8, b: i16x8) -> i16x8 {
     unsafe { psignw128(a, b) }
 }
 
+/// Negate packed 32-bit integers in `a` when the corresponding signed 32-bit
+/// integer in `b` is negative, and return the results.
+/// Element in result are zeroed out when the corresponding element in `b`
+/// is zero.
+#[inline(always)]
+#[target_feature = "+ssse3"]
+#[cfg_attr(test, assert_instr(psignd128))]
+pub fn _mm_sign_epi32(a: i32x4, b: i32x4) -> i32x4 {
+    unsafe { psignd128(a, b) }
+}
+
 #[allow(improper_ctypes)]
 extern {
     #[link_name = "llvm.x86.ssse3.pabs.b.128"]
@@ -205,6 +216,9 @@ extern {
 
     #[link_name = "llvm.x86.ssse3.psign.w.128"]
     fn psignw128(a: i16x8, b: i16x8) -> i16x8;
+
+    #[link_name = "llvm.x86.ssse3.psign.d.128"]
+    fn psignd128(a: i32x4, b: i32x4) -> i32x4;
 }
 
 #[cfg(all(test, target_feature = "ssse3", any(target_arch = "x86", target_arch = "x86_64")))]
@@ -326,9 +340,9 @@ mod tests {
     #[test]
     #[target_feature = "+ssse3"]
     fn _mm_sign_epi8() {
-        let a = i8x16::new(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
+        let a = i8x16::new(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, -14, -15, 16);
         let b = i8x16::new(4, 63, -4, 3, 24, 12, -6, -19, 12, 5, -5, 10, 4, 1, -8, 0);
-        let expected = i8x16::new(1, 2, -3, 4, 5, 6, -7, -8, 9, 10, -11, 12, 13, 14, -15, 0);
+        let expected = i8x16::new(1, 2, -3, 4, 5, 6, -7, -8, 9, 10, -11, 12, 13, -14, 15, 0);
         let r = ssse3::_mm_sign_epi8(a, b);
         assert_eq!(r, expected);
     }
@@ -336,10 +350,20 @@ mod tests {
     #[test]
     #[target_feature = "+ssse3"]
     fn _mm_sign_epi16() {
-        let a = i16x8::new(1, 2, 3, 4, 5, 6, 7, 8);
+        let a = i16x8::new(1, 2, 3, 4, -5, -6, 7, 8);
         let b = i16x8::new(4, 128, 0, 3, 1, -1, -2, 1);
-        let expected = i16x8::new(1, 2, 0, 4, 5, -6, -7, 8);
+        let expected = i16x8::new(1, 2, 0, 4, -5, 6, -7, 8);
         let r = ssse3::_mm_sign_epi16(a, b);
+        assert_eq!(r, expected);
+    }
+
+    #[test]
+    #[target_feature = "+ssse3"]
+    fn _mm_sign_epi32() {
+        let a = i32x4::new(-1, 2, 3, 4);
+        let b = i32x4::new(1, -1, 1, 0);
+        let expected = i32x4::new(-1, -2, 3, 0);
+        let r = ssse3::_mm_sign_epi32(a, b);
         assert_eq!(r, expected);
     }
 }
