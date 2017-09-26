@@ -98,6 +98,17 @@ pub fn _mm_hsub_epi16(a: i16x8, b: i16x8) -> i16x8 {
     unsafe { phsubw128(a, b) }
 }
 
+/// Horizontally subtract the adjacent pairs of values contained in 2
+/// packed 128-bit vectors of [8 x i16]. Positive differences greater than
+/// 7FFFh are saturated to 7FFFh. Negative differences less than 8000h are
+/// saturated to 8000h.
+#[inline(always)]
+#[target_feature = "+ssse3"]
+#[cfg_attr(test, assert_instr(phsubsw128))]
+pub fn _mm_hsubs_epi16(a: i16x8, b: i16x8) -> i16x8 {
+    unsafe { phsubsw128(a, b) }
+}
+
 #[allow(improper_ctypes)]
 extern {
     #[link_name = "llvm.x86.ssse3.pabs.b.128"]
@@ -123,6 +134,9 @@ extern {
 
     #[link_name = "llvm.x86.ssse3.phsub.w.128"]
     fn phsubw128(a: i16x8, b: i16x8) -> i16x8;
+
+    #[link_name = "llvm.x86.ssse3.phsub.sw.128"]
+    fn phsubsw128(a: i16x8, b: i16x8) -> i16x8;
 }
 
 #[cfg(all(test, target_feature = "ssse3", any(target_arch = "x86", target_arch = "x86_64")))]
@@ -198,6 +212,16 @@ mod tests {
         let b = i16x8::new(4, 128, 4, 3, 24, 12, 6, 19);
         let expected = i16x8::new(-1, -1, -1, -1, -124, 1, 12, -13);
         let r = ssse3::_mm_hsub_epi16(a, b);
+        assert_eq!(r, expected);
+    }
+
+    #[test]
+    #[target_feature = "+ssse3"]
+    fn _mm_hsubs_epi16() {
+        let a = i16x8::new(1, 2, 3, 4, 5, 6, 7, 8);
+        let b = i16x8::new(4, 128, 4, 3, 32767, -1, -32768, 1);
+        let expected = i16x8::new(-1, -1, -1, -1, -124, 1, 32767, -32768);
+        let r = ssse3::_mm_hsubs_epi16(a, b);
         assert_eq!(r, expected);
     }
 }
