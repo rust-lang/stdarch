@@ -1,9 +1,13 @@
 use v128::*;
 
+#[cfg(test)]
+use assert_instr::assert_instr;
+
 /// Compute the absolute value of packed 8-bit signed integers in `a` and
 /// return the unsigned results.
 #[inline(always)]
 #[target_feature = "+ssse3"]
+#[cfg_attr(test, assert_instr(pabsb128))]
 pub fn _mm_abs_epi8(a: i8x16) -> u8x16 {
     unsafe { pabsb128(a) }
 }
@@ -12,6 +16,7 @@ pub fn _mm_abs_epi8(a: i8x16) -> u8x16 {
 /// return the 16-bit unsigned integer
 #[inline(always)]
 #[target_feature = "+ssse3"]
+#[cfg_attr(test, assert_instr(pabsw128))]
 pub fn _mm_abs_epi16(a: i16x8) -> u16x8 {
     unsafe { pabsw128(a) }
 }
@@ -20,6 +25,7 @@ pub fn _mm_abs_epi16(a: i16x8) -> u16x8 {
 /// return the 32-bit unsigned integer
 #[inline(always)]
 #[target_feature = "+ssse3"]
+#[cfg_attr(test, assert_instr(pabsd128))]
 pub fn _mm_abs_epi32(a: i32x4) -> u32x4 {
     unsafe { pabsd128(a) }
 }
@@ -50,6 +56,7 @@ pub fn _mm_abs_epi32(a: i32x4) -> u32x4 {
 /// ```
 #[inline(always)]
 #[target_feature = "+ssse3"]
+#[cfg_attr(test, assert_instr(pshufb128))]
 pub fn _mm_shuffle_epi8(a: u8x16, b: u8x16) -> u8x16 {
     unsafe { pshufb128(a, b) }
 }
@@ -58,6 +65,7 @@ pub fn _mm_shuffle_epi8(a: u8x16, b: u8x16) -> u8x16 {
 /// 128-bit vectors of [8 x i16].
 #[inline(always)]
 #[target_feature = "+ssse3"]
+#[cfg_attr(test, assert_instr(phaddw128))]
 pub fn _mm_hadd_epi16(a: i16x8, b: i16x8) -> i16x8 {
     unsafe { phaddw128(a, b) }
 }
@@ -67,6 +75,7 @@ pub fn _mm_hadd_epi16(a: i16x8, b: i16x8) -> i16x8 {
 /// saturated to 7FFFh. Negative sums less than 8000h are saturated to 8000h.
 #[inline(always)]
 #[target_feature = "+ssse3"]
+#[cfg_attr(test, assert_instr(phaddsw128))]
 pub fn _mm_hadds_epi16(a: i16x8, b: i16x8) -> i16x8 {
     unsafe { phaddsw128(a, b) }
 }
