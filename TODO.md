@@ -434,7 +434,7 @@ ssse3
 * [ ] `_mm_hadds_pi16`
 * [x] `_mm_hsub_epi16`
 * [x] `_mm_hsubs_epi16`
-* [ ] `_mm_hsub_epi32`
+* [x] `_mm_hsub_epi32`
 * [ ] `_mm_hsub_pi16`
 * [ ] `_mm_hsub_pi32`
 * [ ] `_mm_hsubs_pi16`
