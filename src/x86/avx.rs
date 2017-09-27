@@ -92,13 +92,6 @@ pub fn _mm256_round_pd(a: f64x4, b: i32) -> f64x4 {
     constify_imm8!(b, call)
 }
 
-#[cfg(test)]
-#[cfg_attr(test, assert_instr(vroundpd))]
-#[target_feature = "+avx"]
-fn test_mm256_round_pd(a: f64x4) -> f64x4 {
-    _mm256_round_pd(a, 0x3)
-}
-
 /// Round packed double-precision (64-bit) floating point elements in `a` toward
 /// positive infinity.
 #[inline(always)]
@@ -191,7 +184,23 @@ extern "C" {
     fn sqrtps256(a: f32x8) -> f32x8;
 }
 
+// TODO: Remove once a macro is ipmlemented to automate these tests
+// https://github.com/rust-lang-nursery/stdsimd/issues/49
 #[cfg(test)]
+#[cfg_attr(test, assert_instr(vroundps))]
+fn test_mm256_round_ps(a: f32x8) -> f32x8 {
+    _mm256_round_ps(a, 0x00)
+}
+
+// TODO: Remove once a macro is ipmlemented to automate these tests
+// https://github.com/rust-lang-nursery/stdsimd/issues/49
+#[cfg(test)]
+#[cfg_attr(test, assert_instr(vroundpd))]
+fn test_mm256_round_pd(a: f64x4) -> f64x4 {
+    _mm256_round_pd(a, 0x00)
+}
+
+#[cfg(all(test, target_feature = "avx", any(target_arch = "x86", target_arch = "x86_64")))]
 mod tests {
     use stdsimd_test::simd_test;
 
