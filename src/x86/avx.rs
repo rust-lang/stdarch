@@ -92,6 +92,16 @@ pub fn _mm256_round_pd(a: f64x4, b: i32) -> f64x4 {
     constify_imm8!(b, call)
 }
 
+// TODO: Remove once a macro is ipmlemented to automate these tests
+// https://github.com/rust-lang-nursery/stdsimd/issues/49
+#[cfg(test)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vroundpd))]
+fn test_mm256_round_pd(a: f64x4) -> f64x4 {
+    _mm256_round_pd(a, 0x00)
+}
+
+
 /// Round packed double-precision (64-bit) floating point elements in `a` toward
 /// positive infinity.
 #[inline(always)]
@@ -129,6 +139,15 @@ pub fn _mm256_round_ps(a: f32x8, b: i32) -> f32x8 {
         }
     }
     constify_imm8!(b, call)
+}
+
+// TODO: Remove once a macro is ipmlemented to automate these tests
+// https://github.com/rust-lang-nursery/stdsimd/issues/49
+#[cfg(test)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vroundps))]
+fn test_mm256_round_ps(a: f32x8) -> f32x8 {
+    _mm256_round_ps(a, 0x00)
 }
 
 /// Round packed single-precision (32-bit) floating point elements in `a` toward
@@ -182,24 +201,6 @@ extern "C" {
     fn sqrtpd256(a: f64x4) -> f64x4;
     #[link_name = "llvm.x86.avx.sqrt.ps.256"]
     fn sqrtps256(a: f32x8) -> f32x8;
-}
-
-// TODO: Remove once a macro is ipmlemented to automate these tests
-// https://github.com/rust-lang-nursery/stdsimd/issues/49
-#[cfg(test)]
-#[target_feature = "avx"]
-#[cfg_attr(test, assert_instr(vroundps))]
-fn test_mm256_round_ps(a: f32x8) -> f32x8 {
-    _mm256_round_ps(a, 0x00)
-}
-
-// TODO: Remove once a macro is ipmlemented to automate these tests
-// https://github.com/rust-lang-nursery/stdsimd/issues/49
-#[cfg(test)]
-#[target_feature = "avx"]
-#[cfg_attr(test, assert_instr(vroundpd))]
-fn test_mm256_round_pd(a: f64x4) -> f64x4 {
-    _mm256_round_pd(a, 0x00)
 }
 
 #[cfg(all(test, target_feature = "avx", any(target_arch = "x86", target_arch = "x86_64")))]
