@@ -1,4 +1,4 @@
-//! Runtime support needed for the `#![assert_instr]` macro
+//! Runtime support needed for testing the stdsimd crate.
 //!
 //! This basically just disassembles the current executable and then parses the
 //! output once globally and then provides the `assert` function which makes
@@ -7,6 +7,7 @@
 #![feature(proc_macro)]
 
 extern crate assert_instr_macro;
+extern crate simd_test_macro;
 extern crate backtrace;
 extern crate cc;
 extern crate rustc_demangle;
@@ -19,6 +20,7 @@ use std::process::Command;
 use std::str;
 
 pub use assert_instr_macro::*;
+pub use simd_test_macro::*;
 
 lazy_static! {
     static ref DISASSEMBLY: HashMap<String, Vec<Function>> = disassemble_myself();
@@ -256,15 +258,23 @@ pub fn assert(fnptr: usize, fnname: &str, expected: &str) {
 
     // Look for `expected` as the first part of any instruction in this
     // function, returning if we do indeed find it.
+    let mut found = false;
     for instr in function.instrs.iter() {
         // Gets the first instruction, e.g. tzcntl in tzcntl %rax,%rax
         if let Some(part) = instr.parts.get(0) {
             // Truncates the instruction with the length of the expected
             // instruction: tzcntl => tzcnt and compares that.
             if part.starts_with(expected) {
-                return
+                found = true;
+                break
             }
         }
+    }
+
+    let probably_only_one_instruction = function.instrs.len() < 20;
+
+    if found && probably_only_one_instruction {
+        return
     }
 
     // Help debug by printing out the found disassembly, and then panic as we
@@ -277,5 +287,10 @@ pub fn assert(fnptr: usize, fnname: &str, expected: &str) {
         }
         println!("");
     }
-    panic!("failed to find instruction `{}` in the disassembly", expected);
+
+    if !found {
+        panic!("failed to find instruction `{}` in the disassembly", expected);
+    } else if !probably_only_one_instruction {
+        panic!("too many instructions in the disassembly");
+    }
 }

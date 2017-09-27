@@ -1,14 +1,18 @@
+#[cfg(test)]
+use stdsimd_test::assert_instr;
+
 use v128::*;
 use x86::__m128i;
 
 #[inline(always)]
 #[target_feature = "+sse4.1"]
-pub fn _mm_blendv_epi8(
+#[cfg_attr(test, assert_instr(pblendvb))]
+pub unsafe fn _mm_blendv_epi8(
     a: __m128i,
     b: __m128i,
     mask: __m128i,
 ) -> __m128i {
-    unsafe { pblendvb(a, b, mask) }
+    pblendvb(a, b, mask)
 }
 
 /// Returns the dot product of two f64x2 vectors.
@@ -20,13 +24,18 @@ pub fn _mm_blendv_epi8(
 /// the broadcast mask bit is zero then the return component will be zero.
 #[inline(always)]
 #[target_feature = "+sse4.1"]
-pub fn _mm_dp_pd(a: f64x2, b: f64x2, imm8: u8) -> f64x2 {
+pub unsafe fn _mm_dp_pd(a: f64x2, b: f64x2, imm8: u8) -> f64x2 {
     macro_rules! call {
-        ($imm8:expr) => {
-            unsafe { dppd(a, b, $imm8) }
-        }
+        ($imm8:expr) => { dppd(a, b, $imm8) }
     }
     constify_imm8!(imm8, call)
+}
+
+#[cfg(test)]
+#[target_feature = "+sse4.1"]
+#[cfg_attr(test, assert_instr(dppd))]
+fn _test_mm_dp_pd(a: f64x2, b: f64x2) -> f64x2 {
+    unsafe { _mm_dp_pd(a, b, 0) }
 }
 
 /// Returns the dot product of two f32x4 vectors.
@@ -38,13 +47,18 @@ pub fn _mm_dp_pd(a: f64x2, b: f64x2, imm8: u8) -> f64x2 {
 /// the broadcast mask bit is zero then the return component will be zero.
 #[inline(always)]
 #[target_feature = "+sse4.1"]
-pub fn _mm_dp_ps(a: f32x4, b: f32x4, imm8: u8) -> f32x4 {
+pub unsafe fn _mm_dp_ps(a: f32x4, b: f32x4, imm8: u8) -> f32x4 {
     macro_rules! call {
-        ($imm8:expr) => {
-            unsafe { dpps(a, b, $imm8) }
-        }
+        ($imm8:expr) => { dpps(a, b, $imm8) }
     }
     constify_imm8!(imm8, call)
+}
+
+#[cfg(test)]
+#[target_feature = "+sse4.1"]
+#[cfg_attr(test, assert_instr(dpps))]
+fn _test_mm_dp_ps(a: f32x4, b: f32x4) -> f32x4 {
+    unsafe { _mm_dp_ps(a, b, 0) }
 }
 
 #[allow(improper_ctypes)]
@@ -57,14 +71,15 @@ extern {
     fn dpps(a: f32x4, b: f32x4, imm8: u8) -> f32x4;
 }
 
-#[cfg(all(test, target_feature = "sse4.1", any(target_arch = "x86", target_arch = "x86_64")))]
+#[cfg(test)]
 mod tests {
+    use stdsimd_test::simd_test;
+
     use v128::*;
     use x86::sse41;
 
-    #[test]
-    #[target_feature = "+sse4.1"]
-    fn _mm_blendv_epi8() {
+    #[simd_test = "sse4.1"]
+    unsafe fn _mm_blendv_epi8() {
         let a = i8x16::new(
             0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
         let b = i8x16::new(
@@ -76,18 +91,16 @@ mod tests {
         assert_eq!(sse41::_mm_blendv_epi8(a, b, mask), e);
     }
 
-    #[test]
-    #[target_feature = "+sse4.1"]
-    fn _mm_dp_pd() {
+    #[simd_test = "sse4.1"]
+    unsafe fn _mm_dp_pd() {
         let a = f64x2::new(2.0, 3.0);
         let b = f64x2::new(1.0, 4.0);
         let e = f64x2::new(14.0, 0.0);
         assert_eq!(sse41::_mm_dp_pd(a, b, 0b00110001), e);
     }
 
-    #[test]
-    #[target_feature = "+sse4.1"]
-    fn _mm_dp_ps() {
+    #[simd_test = "sse4.1"]
+    unsafe fn _mm_dp_ps() {
         let a = f32x4::new(2.0, 3.0, 1.0, 10.0);
         let b = f32x4::new(1.0, 4.0, 0.5, 10.0);
         let e = f32x4::new(14.5, 0.0, 14.5, 0.0);
