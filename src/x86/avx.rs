@@ -300,9 +300,8 @@ mod tests {
         assert_eq!(result_up, expected_up);
     }
 
-    #[test]
-    #[target_feature = "+avx"]
-    pub fn _mm256_round_ps() {
+    #[simd_test = "avx"]
+    fn _mm256_round_ps() {
         let a = f32x8::new(1.55, 2.2, 3.99, -1.2, 1.55, 2.2, 3.99, -1.2);
         let result_closest = avx::_mm256_round_ps(a, 0b00000000);
         let result_down = avx::_mm256_round_ps(a, 0b00000001);
@@ -315,9 +314,8 @@ mod tests {
         assert_eq!(result_up, expected_up);
     }
 
-    #[test]
-    #[target_feature = "+avx"]
-    pub fn _mm256_floor_ps() {
+    #[simd_test = "avx"]
+    fn _mm256_floor_ps() {
         let a = f32x8::new(1.55, 2.2, 3.99, -1.2, 1.55, 2.2, 3.99, -1.2);
         let result_down = avx::_mm256_floor_ps(a);
         let expected_down = f32x8::new(1.0, 2.0, 3.0, -2.0, 1.0, 2.0, 3.0, -2.0);
@@ -325,25 +323,23 @@ mod tests {
     }
 
     #[simd_test = "avx"]
-    pub fn _mm256_ceil_ps() {
+    fn _mm256_ceil_ps() {
         let a = f32x8::new(1.55, 2.2, 3.99, -1.2, 1.55, 2.2, 3.99, -1.2);
         let result_up = avx::_mm256_ceil_ps(a);
         let expected_up = f32x8::new(2.0, 3.0, 4.0, -1.0, 2.0, 3.0, 4.0, -1.0);
         assert_eq!(result_up, expected_up);
     }
 
-    #[test]
-    #[target_feature = "+avx"]
-    pub fn _mm256_sqrt_pd() {
+    #[simd_test = "avx"]
+    fn _mm256_sqrt_pd() {
         let a = f64x4::new(4.0, 9.0, 16.0, 25.0);
         let r = avx::_mm256_sqrt_pd(a, );
         let e = f64x4::new(2.0, 3.0, 4.0, 5.0);
         assert_eq!(r, e);
     }
 
-    #[test]
-    #[target_feature = "+avx"]
-    pub fn _mm256_sqrt_ps() {
+    #[simd_test = "avx"]
+    fn _mm256_sqrt_ps() {
         let a = f32x8::new(4.0, 9.0, 16.0, 25.0, 4.0, 9.0, 16.0, 25.0);
         let r = avx::_mm256_sqrt_ps(a);
         let e = f32x8::new(2.0, 3.0, 4.0, 5.0, 2.0, 3.0, 4.0, 5.0);
