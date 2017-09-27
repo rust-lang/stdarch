@@ -187,6 +187,7 @@ extern "C" {
 // TODO: Remove once a macro is ipmlemented to automate these tests
 // https://github.com/rust-lang-nursery/stdsimd/issues/49
 #[cfg(test)]
+#[target_feature = "avx"]
 #[cfg_attr(test, assert_instr(vroundps))]
 fn test_mm256_round_ps(a: f32x8) -> f32x8 {
     _mm256_round_ps(a, 0x00)
@@ -195,6 +196,7 @@ fn test_mm256_round_ps(a: f32x8) -> f32x8 {
 // TODO: Remove once a macro is ipmlemented to automate these tests
 // https://github.com/rust-lang-nursery/stdsimd/issues/49
 #[cfg(test)]
+#[target_feature = "avx"]
 #[cfg_attr(test, assert_instr(vroundpd))]
 fn test_mm256_round_pd(a: f64x4) -> f64x4 {
     _mm256_round_pd(a, 0x00)
