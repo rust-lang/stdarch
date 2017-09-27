@@ -142,8 +142,7 @@ pub fn _mm256_round_ps(a: f32x8, b: i32) -> f32x8 {
 /// positive infinity.
 #[inline(always)]
 #[target_feature = "+avx"]
-// #[cfg_attr(test, assert_instr(vroundps))]
-// TODO: Replace with assert_expanded_instr https://github.com/rust-lang-nursery/stdsimd/issues/49
+#[cfg_attr(test, assert_instr(vroundps))]
 pub fn _mm256_ceil_ps(a: f32x8) -> f32x8 {
     unsafe { roundps256(a, 0x02) }
 }
@@ -152,8 +151,7 @@ pub fn _mm256_ceil_ps(a: f32x8) -> f32x8 {
 /// negative infinity.
 #[inline(always)]
 #[target_feature = "+avx"]
-// #[cfg_attr(test, assert_instr(vroundps))]
-// TODO: Replace with assert_expanded_instr https://github.com/rust-lang-nursery/stdsimd/issues/49
+#[cfg_attr(test, assert_instr(vroundps))]
 pub fn _mm256_floor_ps(a: f32x8) -> f32x8 {
     unsafe { roundps256(a, 0x01) }
 }
@@ -326,8 +324,7 @@ mod tests {
         assert_eq!(result_down, expected_down);
     }
 
-    #[test]
-    #[target_feature = "+avx"]
+    #[simd_test = "avx"]
     pub fn _mm256_ceil_ps() {
         let a = f32x8::new(1.55, 2.2, 3.99, -1.2, 1.55, 2.2, 3.99, -1.2);
         let result_up = avx::_mm256_ceil_ps(a);
