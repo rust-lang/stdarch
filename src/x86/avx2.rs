@@ -9,31 +9,31 @@ use stdsimd_test::assert_instr;
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpabsd))]
-pub fn _mm256_abs_epi32(a: i32x8) -> i32x8 {
-    unsafe { pabsd(a) }
+pub unsafe fn _mm256_abs_epi32(a: i32x8) -> i32x8 {
+    pabsd(a)
 }
 
 /// Computes the absolute values of packed 16-bit integers in `a`.
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpabsw))]
-pub fn _mm256_abs_epi16(a: i16x16) -> i16x16 {
-    unsafe { pabsw(a) }
+pub unsafe fn _mm256_abs_epi16(a: i16x16) -> i16x16 {
+    pabsw(a)
 }
 
 /// Computes the absolute values of packed 8-bit integers in `a`.
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpabsb))]
-pub fn _mm256_abs_epi8(a: i8x32) -> i8x32 {
-    unsafe { pabsb(a) }
+pub unsafe fn _mm256_abs_epi8(a: i8x32) -> i8x32 {
+    pabsb(a)
 }
 
 /// Add packed 64-bit integers in `a` and `b`.
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpaddq))]
-pub fn _mm256_add_epi64(a: i64x4, b: i64x4) -> i64x4 {
+pub unsafe fn _mm256_add_epi64(a: i64x4, b: i64x4) -> i64x4 {
     a + b
 }
 
@@ -41,7 +41,7 @@ pub fn _mm256_add_epi64(a: i64x4, b: i64x4) -> i64x4 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpaddd))]
-pub fn _mm256_add_epi32(a: i32x8, b: i32x8) -> i32x8 {
+pub unsafe fn _mm256_add_epi32(a: i32x8, b: i32x8) -> i32x8 {
     a + b
 }
 
@@ -49,7 +49,7 @@ pub fn _mm256_add_epi32(a: i32x8, b: i32x8) -> i32x8 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpaddw))]
-pub fn _mm256_add_epi16(a: i16x16, b: i16x16) -> i16x16 {
+pub unsafe fn _mm256_add_epi16(a: i16x16, b: i16x16) -> i16x16 {
     a + b
 }
 
@@ -57,7 +57,7 @@ pub fn _mm256_add_epi16(a: i16x16, b: i16x16) -> i16x16 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpaddb))]
-pub fn _mm256_add_epi8(a: i8x32, b: i8x32) -> i8x32 {
+pub unsafe fn _mm256_add_epi8(a: i8x32, b: i8x32) -> i8x32 {
     a + b
 }
 
@@ -65,32 +65,32 @@ pub fn _mm256_add_epi8(a: i8x32, b: i8x32) -> i8x32 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpaddsb))]
-pub fn _mm256_adds_epi8(a: i8x32, b: i8x32) -> i8x32 {
-    unsafe { paddsb(a, b) }
+pub unsafe fn _mm256_adds_epi8(a: i8x32, b: i8x32) -> i8x32 {
+    paddsb(a, b)
 }
 
 /// Add packed 16-bit integers in `a` and `b` using saturation.
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpaddsw))]
-pub fn _mm256_adds_epi16(a: i16x16, b: i16x16) -> i16x16 {
-    unsafe { paddsw(a, b) }
+pub unsafe fn _mm256_adds_epi16(a: i16x16, b: i16x16) -> i16x16 {
+    paddsw(a, b)
 }
 
 /// Add packed unsigned 8-bit integers in `a` and `b` using saturation.
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpaddusb))]
-pub fn _mm256_adds_epu8(a: u8x32, b: u8x32) -> u8x32 {
-    unsafe { paddusb(a, b) }
+pub unsafe fn _mm256_adds_epu8(a: u8x32, b: u8x32) -> u8x32 {
+    paddusb(a, b)
 }
 
 /// Add packed unsigned 16-bit integers in `a` and `b` using saturation.
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpaddusw))]
-pub fn _mm256_adds_epu16(a: u16x16, b: u16x16) -> u16x16 {
-    unsafe { paddusw(a, b) }
+pub unsafe fn _mm256_adds_epu16(a: u16x16, b: u16x16) -> u16x16 {
+    paddusw(a, b)
 }
 
 // TODO _mm256_alignr_epi8
@@ -100,7 +100,7 @@ pub fn _mm256_adds_epu16(a: u16x16, b: u16x16) -> u16x16 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vandps))]
-pub fn _mm256_and_si256(a: __m256i, b: __m256i) -> __m256i {
+pub unsafe fn _mm256_and_si256(a: __m256i, b: __m256i) -> __m256i {
     a & b
 }
 
@@ -109,7 +109,7 @@ pub fn _mm256_and_si256(a: __m256i, b: __m256i) -> __m256i {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vandnps))]
-pub fn _mm256_andnot_si256(a: __m256i, b: __m256i) -> __m256i {
+pub unsafe fn _mm256_andnot_si256(a: __m256i, b: __m256i) -> __m256i {
     (!a) & b
 }
 
@@ -117,16 +117,16 @@ pub fn _mm256_andnot_si256(a: __m256i, b: __m256i) -> __m256i {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpavgw))]
-pub fn _mm256_avg_epu16 (a: u16x16, b: u16x16) -> u16x16 {
-    unsafe { pavgw(a, b) }
+pub unsafe fn _mm256_avg_epu16 (a: u16x16, b: u16x16) -> u16x16 {
+    pavgw(a, b)
 }
 
 /// Average packed unsigned 8-bit integers in `a` and `b`.
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpavgb))]
-pub fn _mm256_avg_epu8 (a: u8x32, b: u8x32) -> u8x32 {
-    unsafe { pavgb(a, b) }
+pub unsafe fn _mm256_avg_epu8 (a: u8x32, b: u8x32) -> u8x32 {
+    pavgb(a, b)
 }
 
 // TODO _mm256_blend_epi16
@@ -137,8 +137,8 @@ pub fn _mm256_avg_epu8 (a: u8x32, b: u8x32) -> u8x32 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpblendvb))]
-pub fn _mm256_blendv_epi8(a:i8x32,b:i8x32,mask:__m256i) -> i8x32 {
-    unsafe { pblendvb(a,b,mask) }
+pub unsafe fn _mm256_blendv_epi8(a:i8x32,b:i8x32,mask:__m256i) -> i8x32 {
+    pblendvb(a,b,mask)
 }
 
 // TODO _mm_broadcastb_epi8
@@ -158,12 +158,11 @@ pub fn _mm256_blendv_epi8(a:i8x32,b:i8x32,mask:__m256i) -> i8x32 {
 // TODO _mm256_bslli_epi128
 // TODO _mm256_bsrli_epi128
 
-
 /// Compare packed 64-bit integers in `a` and `b` for equality.
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpcmpeqq))]
-pub fn _mm256_cmpeq_epi64(a: i64x4, b: i64x4) -> i64x4 {
+pub unsafe fn _mm256_cmpeq_epi64(a: i64x4, b: i64x4) -> i64x4 {
     a.eq(b)
 }
 
@@ -171,7 +170,7 @@ pub fn _mm256_cmpeq_epi64(a: i64x4, b: i64x4) -> i64x4 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpcmpeqd))]
-pub fn _mm256_cmpeq_epi32(a: i32x8, b: i32x8) -> i32x8 {
+pub unsafe fn _mm256_cmpeq_epi32(a: i32x8, b: i32x8) -> i32x8 {
     a.eq(b)
 }
 
@@ -179,7 +178,7 @@ pub fn _mm256_cmpeq_epi32(a: i32x8, b: i32x8) -> i32x8 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpcmpeqw))]
-pub fn _mm256_cmpeq_epi16(a: i16x16, b: i16x16) -> i16x16 {
+pub unsafe fn _mm256_cmpeq_epi16(a: i16x16, b: i16x16) -> i16x16 {
     a.eq(b)
 }
 
@@ -187,7 +186,7 @@ pub fn _mm256_cmpeq_epi16(a: i16x16, b: i16x16) -> i16x16 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpcmpeqb))]
-pub fn _mm256_cmpeq_epi8(a: i8x32, b: i8x32) -> i8x32 {
+pub unsafe fn _mm256_cmpeq_epi8(a: i8x32, b: i8x32) -> i8x32 {
     a.eq(b)
 }
 
@@ -195,7 +194,7 @@ pub fn _mm256_cmpeq_epi8(a: i8x32, b: i8x32) -> i8x32 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpcmpgtq))]
-pub fn _mm256_cmpgt_epi64(a: i64x4, b: i64x4) -> i64x4 {
+pub unsafe fn _mm256_cmpgt_epi64(a: i64x4, b: i64x4) -> i64x4 {
     a.gt(b)
 }
 
@@ -203,7 +202,7 @@ pub fn _mm256_cmpgt_epi64(a: i64x4, b: i64x4) -> i64x4 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpcmpgtd))]
-pub fn _mm256_cmpgt_epi32(a: i32x8, b: i32x8) -> i32x8 {
+pub unsafe fn _mm256_cmpgt_epi32(a: i32x8, b: i32x8) -> i32x8 {
     a.gt(b)
 }
 
@@ -211,7 +210,7 @@ pub fn _mm256_cmpgt_epi32(a: i32x8, b: i32x8) -> i32x8 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpcmpgtw))]
-pub fn _mm256_cmpgt_epi16(a: i16x16, b: i16x16) -> i16x16 {
+pub unsafe fn _mm256_cmpgt_epi16(a: i16x16, b: i16x16) -> i16x16 {
     a.gt(b)
 }
 
@@ -219,7 +218,7 @@ pub fn _mm256_cmpgt_epi16(a: i16x16, b: i16x16) -> i16x16 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpcmpgtb))]
-pub fn _mm256_cmpgt_epi8(a: i8x32, b: i8x32) -> i8x32 {
+pub unsafe fn _mm256_cmpgt_epi8(a: i8x32, b: i8x32) -> i8x32 {
     a.gt(b)
 }
 
@@ -241,16 +240,16 @@ pub fn _mm256_cmpgt_epi8(a: i8x32, b: i8x32) -> i8x32 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vphaddw))]
-pub fn _mm256_hadd_epi16(a: i16x16, b: i16x16) -> i16x16 {
-    unsafe { phaddw(a, b) }
+pub unsafe fn _mm256_hadd_epi16(a: i16x16, b: i16x16) -> i16x16 {
+    phaddw(a, b)
 }
 
 /// Horizontally add adjacent pairs of 32-bit integers in `a` and `b`.
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vphaddd))]
-pub fn _mm256_hadd_epi32(a: i32x8, b: i32x8) -> i32x8 {
-    unsafe { phaddd(a, b) }
+pub unsafe fn _mm256_hadd_epi32(a: i32x8, b: i32x8) -> i32x8 {
+    phaddd(a, b)
 }
 
 /// Horizontally add adjacent pairs of 16-bit integers in `a` and `b`
@@ -258,24 +257,24 @@ pub fn _mm256_hadd_epi32(a: i32x8, b: i32x8) -> i32x8 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vphaddsw))]
-pub fn _mm256_hadds_epi16(a: i16x16, b: i16x16) -> i16x16 {
-    unsafe { phaddsw(a, b) }
+pub unsafe fn _mm256_hadds_epi16(a: i16x16, b: i16x16) -> i16x16 {
+    phaddsw(a, b)
 }
 
 /// Horizontally substract adjacent pairs of 16-bit integers in `a` and `b`.
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vphsubw))]
-pub fn _mm256_hsub_epi16(a: i16x16, b: i16x16) -> i16x16 {
-    unsafe { phsubw(a, b) }
+pub unsafe fn _mm256_hsub_epi16(a: i16x16, b: i16x16) -> i16x16 {
+    phsubw(a, b)
 }
 
 /// Horizontally substract adjacent pairs of 32-bit integers in `a` and `b`.
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vphsubd))]
-pub fn _mm256_hsub_epi32(a: i32x8, b: i32x8) -> i32x8 {
-    unsafe { phsubd(a, b) }
+pub unsafe fn _mm256_hsub_epi32(a: i32x8, b: i32x8) -> i32x8 {
+    phsubd(a, b)
 }
 
 /// Horizontally subtract adjacent pairs of 16-bit integers in `a` and `b`
@@ -283,8 +282,8 @@ pub fn _mm256_hsub_epi32(a: i32x8, b: i32x8) -> i32x8 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vphsubsw))]
-pub fn _mm256_hsubs_epi16(a: i16x16, b: i16x16) -> i16x16 {
-    unsafe { phsubsw(a, b) }
+pub unsafe fn _mm256_hsubs_epi16(a: i16x16, b: i16x16) -> i16x16 {
+    phsubsw(a, b)
 }
 
 
@@ -328,8 +327,8 @@ pub fn _mm256_hsubs_epi16(a: i16x16, b: i16x16) -> i16x16 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpmaddwd))]
-pub fn _mm256_madd_epi16(a: i16x16, b: i16x16) -> i32x8 {
-    unsafe { pmaddwd(a, b) }
+pub unsafe fn _mm256_madd_epi16(a: i16x16, b: i16x16) -> i32x8 {
+    pmaddwd(a, b)
 }
 
 /// Vertically multiply each unsigned 8-bit integer from `a` with the
@@ -339,8 +338,8 @@ pub fn _mm256_madd_epi16(a: i16x16, b: i16x16) -> i32x8 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpmaddubsw))]
-pub fn _mm256_maddubs_epi16(a: u8x32, b: u8x32) -> i16x16 {
-    unsafe { pmaddubsw(a, b) }
+pub unsafe fn _mm256_maddubs_epi16(a: u8x32, b: u8x32) -> i16x16 {
+    pmaddubsw(a, b)
 }
 
 // TODO _mm_maskload_epi32 (int const* mem_addr, __m128i mask)
@@ -357,8 +356,8 @@ pub fn _mm256_maddubs_epi16(a: u8x32, b: u8x32) -> i16x16 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpmaxsw))]
-pub fn _mm256_max_epi16(a: i16x16, b: i16x16) -> i16x16 {
-    unsafe { pmaxsw(a, b) }
+pub unsafe fn _mm256_max_epi16(a: i16x16, b: i16x16) -> i16x16 {
+    pmaxsw(a, b)
 }
 
 /// Compare packed 32-bit integers in `a` and `b`, and return the packed
@@ -366,8 +365,8 @@ pub fn _mm256_max_epi16(a: i16x16, b: i16x16) -> i16x16 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpmaxsd))]
-pub fn _mm256_max_epi32(a: i32x8, b: i32x8) -> i32x8 {
-    unsafe { pmaxsd(a, b) }
+pub unsafe fn _mm256_max_epi32(a: i32x8, b: i32x8) -> i32x8 {
+    pmaxsd(a, b)
 }
 
 /// Compare packed 8-bit integers in `a` and `b`, and return the packed
@@ -375,8 +374,8 @@ pub fn _mm256_max_epi32(a: i32x8, b: i32x8) -> i32x8 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpmaxsb))]
-pub fn _mm256_max_epi8(a: i8x32, b: i8x32) -> i8x32 {
-    unsafe { pmaxsb(a, b) }
+pub unsafe fn _mm256_max_epi8(a: i8x32, b: i8x32) -> i8x32 {
+    pmaxsb(a, b)
 }
 
 /// Compare packed unsigned 16-bit integers in `a` and `b`, and return
@@ -384,8 +383,8 @@ pub fn _mm256_max_epi8(a: i8x32, b: i8x32) -> i8x32 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpmaxuw))]
-pub fn _mm256_max_epu16(a: u16x16, b: u16x16) -> u16x16 {
-    unsafe { pmaxuw(a, b) }
+pub unsafe fn _mm256_max_epu16(a: u16x16, b: u16x16) -> u16x16 {
+    pmaxuw(a, b)
 }
 
 /// Compare packed unsigned 32-bit integers in `a` and `b`, and return
@@ -393,8 +392,8 @@ pub fn _mm256_max_epu16(a: u16x16, b: u16x16) -> u16x16 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpmaxud))]
-pub fn _mm256_max_epu32(a: u32x8, b: u32x8) -> u32x8 {
-    unsafe { pmaxud(a, b) }
+pub unsafe fn _mm256_max_epu32(a: u32x8, b: u32x8) -> u32x8 {
+    pmaxud(a, b)
 }
 
 /// Compare packed unsigned 8-bit integers in `a` and `b`, and return
@@ -402,8 +401,8 @@ pub fn _mm256_max_epu32(a: u32x8, b: u32x8) -> u32x8 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpmaxub))]
-pub fn _mm256_max_epu8(a: u8x32, b: u8x32) -> u8x32 {
-    unsafe { pmaxub(a, b) }
+pub unsafe fn _mm256_max_epu8(a: u8x32, b: u8x32) -> u8x32 {
+    pmaxub(a, b)
 }
 
 /// Compare packed 16-bit integers in `a` and `b`, and return the packed
@@ -411,8 +410,8 @@ pub fn _mm256_max_epu8(a: u8x32, b: u8x32) -> u8x32 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpminsw))]
-pub fn _mm256_min_epi16(a: i16x16, b: i16x16) -> i16x16 {
-    unsafe { pminsw(a, b) }
+pub unsafe fn _mm256_min_epi16(a: i16x16, b: i16x16) -> i16x16 {
+    pminsw(a, b)
 }
 
 /// Compare packed 32-bit integers in `a` and `b`, and return the packed
@@ -420,8 +419,8 @@ pub fn _mm256_min_epi16(a: i16x16, b: i16x16) -> i16x16 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpminsd))]
-pub fn _mm256_min_epi32(a: i32x8, b: i32x8) -> i32x8 {
-    unsafe { pminsd(a, b) }
+pub unsafe fn _mm256_min_epi32(a: i32x8, b: i32x8) -> i32x8 {
+    pminsd(a, b)
 }
 
 /// Compare packed 8-bit integers in `a` and `b`, and return the packed
@@ -429,8 +428,8 @@ pub fn _mm256_min_epi32(a: i32x8, b: i32x8) -> i32x8 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpminsb))]
-pub fn _mm256_min_epi8(a: i8x32, b: i8x32) -> i8x32 {
-    unsafe { pminsb(a, b) }
+pub unsafe fn _mm256_min_epi8(a: i8x32, b: i8x32) -> i8x32 {
+    pminsb(a, b)
 }
 
 /// Compare packed unsigned 16-bit integers in `a` and `b`, and return
@@ -438,8 +437,8 @@ pub fn _mm256_min_epi8(a: i8x32, b: i8x32) -> i8x32 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpminuw))]
-pub fn _mm256_min_epu16(a: u16x16, b: u16x16) -> u16x16 {
-    unsafe { pminuw(a, b) }
+pub unsafe fn _mm256_min_epu16(a: u16x16, b: u16x16) -> u16x16 {
+    pminuw(a, b)
 }
 
 /// Compare packed unsigned 32-bit integers in `a` and `b`, and return
@@ -447,8 +446,8 @@ pub fn _mm256_min_epu16(a: u16x16, b: u16x16) -> u16x16 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpminud))]
-pub fn _mm256_min_epu32(a: u32x8, b: u32x8) -> u32x8 {
-    unsafe { pminud(a, b) }
+pub unsafe fn _mm256_min_epu32(a: u32x8, b: u32x8) -> u32x8 {
+    pminud(a, b)
 }
 
 /// Compare packed unsigned 8-bit integers in `a` and `b`, and return
@@ -456,19 +455,22 @@ pub fn _mm256_min_epu32(a: u32x8, b: u32x8) -> u32x8 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpminub))]
-pub fn _mm256_min_epu8(a: u8x32, b: u8x32) -> u8x32 {
-    unsafe { pminub(a, b) }
+pub unsafe fn _mm256_min_epu8(a: u8x32, b: u8x32) -> u8x32 {
+    pminub(a, b)
 }
 
-/*** The following two functions fail in debug, but work in release
 
 /// Create mask from the most significant bit of each 8-bit element in `a`,
 /// return the result.
 #[inline(always)]
 #[target_feature = "+avx2"]
-pub fn _mm256_movemask_epi8(a: i8x32) -> i32 {
-    unsafe { pmovmskb(a) }
+#[cfg_attr(test, assert_instr(vpmovmskb))]
+pub unsafe fn _mm256_movemask_epi8(a: i8x32) -> i32 {
+    pmovmskb(a)
 }
+
+/*
+LLVM ERROR: Cannot select: intrinsic %llvm.x86.avx2.mpsadbw
 
 /// Compute the sum of absolute differences (SADs) of quadruplets of unsigned
 /// 8-bit integers in `a` compared to those in `b`, and store the 16-bit
@@ -479,11 +481,11 @@ pub fn _mm256_movemask_epi8(a: i8x32) -> i32 {
 /// starting at the offset specified in `imm8`.
 #[inline(always)]
 #[target_feature = "+avx2"]
-pub fn _mm256_mpsadbw_epu8(a: u8x32, b: u8x32, imm8: i32) -> u16x16 {
-    unsafe { mpsadbw(a, b, imm8) }
+#[cfg_attr(test, assert_instr(vmpsadbw))]
+pub unsafe fn _mm256_mpsadbw_epu8(a: u8x32, b: u8x32, imm8: i32) -> u16x16 {
+    mpsadbw(a, b, imm8)
 }
-
-***/
+*/
 
 /// Multiply the low 32-bit integers from each packed 64-bit element in
 /// `a` and `b`
@@ -492,8 +494,8 @@ pub fn _mm256_mpsadbw_epu8(a: u8x32, b: u8x32, imm8: i32) -> u16x16 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpmuldq))]
-pub fn _mm256_mul_epi32(a: i32x8, b: i32x8) -> i64x4 {
-    unsafe { pmuldq(a, b) }
+pub unsafe fn _mm256_mul_epi32(a: i32x8, b: i32x8) -> i64x4 {
+    pmuldq(a, b)
 }
 
 /// Multiply the low unsigned 32-bit integers from each packed 64-bit
@@ -503,8 +505,8 @@ pub fn _mm256_mul_epi32(a: i32x8, b: i32x8) -> i64x4 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpmuludq))]
-pub fn _mm256_mul_epu32(a: u32x8, b: u32x8) -> u64x4 {
-    unsafe { pmuludq(a, b) }
+pub unsafe fn _mm256_mul_epu32(a: u32x8, b: u32x8) -> u64x4 {
+    pmuludq(a, b)
 }
 
 /// Multiply the packed 16-bit integers in `a` and `b`, producing
@@ -513,8 +515,8 @@ pub fn _mm256_mul_epu32(a: u32x8, b: u32x8) -> u64x4 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpmulhw))]
-pub fn _mm256_mulhi_epi16(a: i16x16, b: i16x16) -> i16x16 {
-    unsafe { pmulhw(a, b) }
+pub unsafe fn _mm256_mulhi_epi16(a: i16x16, b: i16x16) -> i16x16 {
+    pmulhw(a, b)
 }
 
 /// Multiply the packed unsigned 16-bit integers in `a` and `b`, producing
@@ -523,8 +525,8 @@ pub fn _mm256_mulhi_epi16(a: i16x16, b: i16x16) -> i16x16 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpmulhuw))]
-pub fn _mm256_mulhi_epu16(a: u16x16, b: u16x16) -> u16x16 {
-    unsafe { pmulhuw(a, b) }
+pub unsafe fn _mm256_mulhi_epu16(a: u16x16, b: u16x16) -> u16x16 {
+    pmulhuw(a, b)
 }
 
 /// Multiply the packed 16-bit integers in `a` and `b`, producing
@@ -533,7 +535,7 @@ pub fn _mm256_mulhi_epu16(a: u16x16, b: u16x16) -> u16x16 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpmullw))]
-pub fn _mm256_mullo_epi16(a: i16x16, b:i16x16) -> i16x16 {
+pub unsafe fn _mm256_mullo_epi16(a: i16x16, b:i16x16) -> i16x16 {
     a * b
 }
 
@@ -544,7 +546,7 @@ pub fn _mm256_mullo_epi16(a: i16x16, b:i16x16) -> i16x16 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpmulld))]
-pub fn _mm256_mullo_epi32(a: i32x8, b:i32x8) -> i32x8 {
+pub unsafe fn _mm256_mullo_epi32(a: i32x8, b:i32x8) -> i32x8 {
     a * b
 }
 
@@ -555,8 +557,8 @@ pub fn _mm256_mullo_epi32(a: i32x8, b:i32x8) -> i32x8 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpmulhrsw))]
-pub fn _mm256_mulhrs_epi16(a: i16x16, b:i16x16) -> i16x16 {
-    unsafe { pmulhrsw(a, b) }
+pub unsafe fn _mm256_mulhrs_epi16(a: i16x16, b:i16x16) -> i16x16 {
+    pmulhrsw(a, b)
 }
 
 /// Compute the bitwise OR of 256 bits (representing integer data) in `a`
@@ -564,7 +566,7 @@ pub fn _mm256_mulhrs_epi16(a: i16x16, b:i16x16) -> i16x16 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vorps))]
-pub fn _mm256_or_si256(a: __m256i, b: __m256i) -> __m256i {
+pub unsafe fn _mm256_or_si256(a: __m256i, b: __m256i) -> __m256i {
     a | b
 }
 
@@ -573,8 +575,8 @@ pub fn _mm256_or_si256(a: __m256i, b: __m256i) -> __m256i {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpacksswb))]
-pub fn _mm256_packs_epi16(a: i16x16, b: i16x16) -> i8x32 {
-    unsafe { packsswb(a, b) }
+pub unsafe fn _mm256_packs_epi16(a: i16x16, b: i16x16) -> i8x32 {
+    packsswb(a, b)
 }
 
 /// Convert packed 32-bit integers from `a` and `b` to packed 16-bit integers
@@ -582,8 +584,8 @@ pub fn _mm256_packs_epi16(a: i16x16, b: i16x16) -> i8x32 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpackssdw))]
-pub fn _mm256_packs_epi32(a: i32x8, b: i32x8) -> i16x16 {
-    unsafe { packssdw(a, b) }
+pub unsafe fn _mm256_packs_epi32(a: i32x8, b: i32x8) -> i16x16 {
+    packssdw(a, b)
 }
 
 /// Convert packed 16-bit integers from `a` and `b` to packed 8-bit integers
@@ -591,8 +593,8 @@ pub fn _mm256_packs_epi32(a: i32x8, b: i32x8) -> i16x16 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpackuswb))]
-pub fn _mm256_packus_epi16(a: i16x16, b: i16x16) -> u8x32 {
-    unsafe { packuswb(a, b) }
+pub unsafe fn _mm256_packus_epi16(a: i16x16, b: i16x16) -> u8x32 {
+    packuswb(a, b)
 }
 
 /// Convert packed 32-bit integers from `a` and `b` to packed 16-bit integers
@@ -600,8 +602,8 @@ pub fn _mm256_packus_epi16(a: i16x16, b: i16x16) -> u8x32 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpackusdw))]
-pub fn _mm256_packus_epi32(a: i32x8, b: i32x8) -> u16x16 {
-    unsafe { packusdw(a, b) }
+pub unsafe fn _mm256_packus_epi32(a: i32x8, b: i32x8) -> u16x16 {
+    packusdw(a, b)
 }
 
 // TODO _mm256_permute2x128_si256 (__m256i a, __m256i b, const int imm8)
@@ -617,8 +619,8 @@ pub fn _mm256_packus_epi32(a: i32x8, b: i32x8) -> u16x16 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpsadbw))]
-pub fn _mm256_sad_epu8 (a: u8x32, b: u8x32) -> u64x4 {
-    unsafe { psadbw(a, b) }
+pub unsafe fn _mm256_sad_epu8 (a: u8x32, b: u8x32) -> u64x4 {
+    psadbw(a, b)
 }
 
 // TODO _mm256_shuffle_epi32 (__m256i a, const int imm8)
@@ -632,8 +634,8 @@ pub fn _mm256_sad_epu8 (a: u8x32, b: u8x32) -> u64x4 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpsignw))]
-pub fn _mm256_sign_epi16(a: i16x16, b: i16x16) -> i16x16 {
-    unsafe { psignw(a, b) }
+pub unsafe fn _mm256_sign_epi16(a: i16x16, b: i16x16) -> i16x16 {
+    psignw(a, b)
 }
 
 /// Negate packed 32-bit integers in `a` when the corresponding signed
@@ -642,8 +644,8 @@ pub fn _mm256_sign_epi16(a: i16x16, b: i16x16) -> i16x16 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpsignd))]
-pub fn _mm256_sign_epi32(a: i32x8, b: i32x8) -> i32x8 {
-    unsafe { psignd(a, b) }
+pub unsafe fn _mm256_sign_epi32(a: i32x8, b: i32x8) -> i32x8 {
+    psignd(a, b)
 }
 
 /// Negate packed 8-bit integers in `a` when the corresponding signed
@@ -652,8 +654,8 @@ pub fn _mm256_sign_epi32(a: i32x8, b: i32x8) -> i32x8 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpsignb))]
-pub fn _mm256_sign_epi8(a: i8x32, b: i8x32) -> i8x32 {
-    unsafe { psignb(a, b) }
+pub unsafe fn _mm256_sign_epi8(a: i8x32, b: i8x32) -> i8x32 {
+    psignb(a, b)
 }
 
 /// Shift packed 16-bit integers in `a` left by `count` while
@@ -661,8 +663,8 @@ pub fn _mm256_sign_epi8(a: i8x32, b: i8x32) -> i8x32 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpsllw))]
-pub fn _mm256_sll_epi16(a: i16x16, count: i16x8) -> i16x16 {
-    unsafe { psllw(a, count) }
+pub unsafe fn _mm256_sll_epi16(a: i16x16, count: i16x8) -> i16x16 {
+    psllw(a, count)
 }
 
 /// Shift packed 32-bit integers in `a` left by `count` while
@@ -670,8 +672,8 @@ pub fn _mm256_sll_epi16(a: i16x16, count: i16x8) -> i16x16 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpslld))]
-pub fn _mm256_sll_epi32(a: i32x8, count: i32x4) -> i32x8 {
-    unsafe { pslld(a, count) }
+pub unsafe fn _mm256_sll_epi32(a: i32x8, count: i32x4) -> i32x8 {
+    pslld(a, count)
 }
 
 /// Shift packed 64-bit integers in `a` left by `count` while
@@ -679,35 +681,35 @@ pub fn _mm256_sll_epi32(a: i32x8, count: i32x4) -> i32x8 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpsllq))]
-pub fn _mm256_sll_epi64(a: i64x4, count: i64x2) -> i64x4 {
-    unsafe { psllq(a, count) }
+pub unsafe fn _mm256_sll_epi64(a: i64x4, count: i64x2) -> i64x4 {
+    psllq(a, count)
 }
 
 /// Shift packed 16-bit integers in `a` left by `imm8` while
 /// shifting in zeros, return the results;
 #[inline(always)]
 #[target_feature = "+avx2"]
-#[cfg_attr(test, assert_instr(vpsllw))] // TODO: should this be pslli
-pub fn _mm256_slli_epi16(a: i16x16, imm8: i32) -> i16x16 {
-    unsafe { pslliw(a, imm8) }
+#[cfg_attr(test, assert_instr(vpsllw))]
+pub unsafe fn _mm256_slli_epi16(a: i16x16, imm8: i32) -> i16x16 {
+    pslliw(a, imm8)
 }
 
 /// Shift packed 32-bit integers in `a` left by `imm8` while
 /// shifting in zeros, return the results;
 #[inline(always)]
 #[target_feature = "+avx2"]
-#[cfg_attr(test, assert_instr(vpslld))] // TODO: should this be pslli
-pub fn _mm256_slli_epi32(a: i32x8, imm8: i32) -> i32x8 {
-    unsafe { psllid(a, imm8) }
+#[cfg_attr(test, assert_instr(vpslld))]
+pub unsafe fn _mm256_slli_epi32(a: i32x8, imm8: i32) -> i32x8 {
+    psllid(a, imm8)
 }
 
 /// Shift packed 64-bit integers in `a` left by `imm8` while
 /// shifting in zeros, return the results;
 #[inline(always)]
 #[target_feature = "+avx2"]
-#[cfg_attr(test, assert_instr(vpsllq))] // TODO: should this be pslli
-pub fn _mm256_slli_epi64(a: i64x4, imm8: i32) -> i64x4 {
-    unsafe { pslliq(a, imm8) }
+#[cfg_attr(test, assert_instr(vpsllq))]
+pub unsafe fn _mm256_slli_epi64(a: i64x4, imm8: i32) -> i64x4 {
+    pslliq(a, imm8)
 }
 
 // TODO _mm256_slli_si256 (__m256i a, const int imm8)
@@ -718,8 +720,8 @@ pub fn _mm256_slli_epi64(a: i64x4, imm8: i32) -> i64x4 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpsllvd))]
-pub fn _mm_sllv_epi32(a: i32x4, count: i32x4) -> i32x4 {
-    unsafe { psllvd(a, count) }
+pub unsafe fn _mm_sllv_epi32(a: i32x4, count: i32x4) -> i32x4 {
+    psllvd(a, count)
 }
 
 /// Shift packed 32-bit integers in `a` left by the amount
@@ -728,8 +730,8 @@ pub fn _mm_sllv_epi32(a: i32x4, count: i32x4) -> i32x4 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpsllvd))]
-pub fn _mm256_sllv_epi32(a: i32x8, count: i32x8) -> i32x8 {
-    unsafe { psllvd256(a, count) }
+pub unsafe fn _mm256_sllv_epi32(a: i32x8, count: i32x8) -> i32x8 {
+    psllvd256(a, count)
 }
 
 /// Shift packed 64-bit integers in `a` left by the amount
@@ -738,8 +740,8 @@ pub fn _mm256_sllv_epi32(a: i32x8, count: i32x8) -> i32x8 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpsllvq))]
-pub fn _mm_sllv_epi64(a: i64x2, count: i64x2) -> i64x2 {
-    unsafe { psllvq(a, count) }
+pub unsafe fn _mm_sllv_epi64(a: i64x2, count: i64x2) -> i64x2 {
+    psllvq(a, count)
 }
 
 /// Shift packed 64-bit integers in `a` left by the amount
@@ -748,8 +750,8 @@ pub fn _mm_sllv_epi64(a: i64x2, count: i64x2) -> i64x2 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpsllvq))]
-pub fn _mm256_sllv_epi64(a: i64x4, count: i64x4) -> i64x4 {
-    unsafe { psllvq256(a, count) }
+pub unsafe fn _mm256_sllv_epi64(a: i64x4, count: i64x4) -> i64x4 {
+    psllvq256(a, count)
 }
 
 /// Shift packed 16-bit integers in `a` right by `count` while
@@ -757,8 +759,8 @@ pub fn _mm256_sllv_epi64(a: i64x4, count: i64x4) -> i64x4 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpsraw))]
-pub fn _mm256_sra_epi16(a: i16x16, count: i16x8) -> i16x16 {
-    unsafe { psraw(a, count) }
+pub unsafe fn _mm256_sra_epi16(a: i16x16, count: i16x8) -> i16x16 {
+    psraw(a, count)
 }
 
 /// Shift packed 32-bit integers in `a` right by `count` while
@@ -766,26 +768,26 @@ pub fn _mm256_sra_epi16(a: i16x16, count: i16x8) -> i16x16 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpsrad))]
-pub fn _mm256_sra_epi32(a: i32x8, count: i32x4) -> i32x8 {
-    unsafe { psrad(a, count) }
+pub unsafe fn _mm256_sra_epi32(a: i32x8, count: i32x4) -> i32x8 {
+    psrad(a, count)
 }
 
 /// Shift packed 16-bit integers in `a` right by `imm8` while
 /// shifting in sign bits.
 #[inline(always)]
 #[target_feature = "+avx2"]
-#[cfg_attr(test, assert_instr(vpsraw))] // TODO: notvpsraiw?
-pub fn _mm256_srai_epi16(a: i16x16, imm8: i32) -> i16x16 {
-    unsafe { psraiw(a, imm8) }
+#[cfg_attr(test, assert_instr(vpsraw))]
+pub unsafe fn _mm256_srai_epi16(a: i16x16, imm8: i32) -> i16x16 {
+    psraiw(a, imm8)
 }
 
 /// Shift packed 32-bit integers in `a` right by `imm8` while
 /// shifting in sign bits.
 #[inline(always)]
 #[target_feature = "+avx2"]
-#[cfg_attr(test, assert_instr(vpsrad))] // TODO: not vpsraid?
-pub fn _mm256_srai_epi32(a: i32x8, imm8: i32) -> i32x8 {
-    unsafe { psraid(a, imm8) }
+#[cfg_attr(test, assert_instr(vpsrad))]
+pub unsafe fn _mm256_srai_epi32(a: i32x8, imm8: i32) -> i32x8 {
+    psraid(a, imm8)
 }
 
 /// Shift packed 32-bit integers in `a` right by the amount specified by the
@@ -793,8 +795,8 @@ pub fn _mm256_srai_epi32(a: i32x8, imm8: i32) -> i32x8 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpsravd))]
-pub fn _mm_srav_epi32(a: i32x4, count: i32x4) -> i32x4 {
-    unsafe { psravd(a, count) }
+pub unsafe fn _mm_srav_epi32(a: i32x4, count: i32x4) -> i32x4 {
+    psravd(a, count)
 }
 
 /// Shift packed 32-bit integers in `a` right by the amount specified by the
@@ -802,8 +804,8 @@ pub fn _mm_srav_epi32(a: i32x4, count: i32x4) -> i32x4 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpsravd))]
-pub fn _mm256_srav_epi32(a: i32x8, count: i32x8) -> i32x8 {
-    unsafe { psravd256(a, count) }
+pub unsafe fn _mm256_srav_epi32(a: i32x8, count: i32x8) -> i32x8 {
+    psravd256(a, count)
 }
 
 
@@ -812,8 +814,8 @@ pub fn _mm256_srav_epi32(a: i32x8, count: i32x8) -> i32x8 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpsrlw))]
-pub fn _mm256_srl_epi16(a: i16x16, count: i16x8) -> i16x16 {
-    unsafe { psrlw(a, count) }
+pub unsafe fn _mm256_srl_epi16(a: i16x16, count: i16x8) -> i16x16 {
+    psrlw(a, count)
 }
 
 /// Shift packed 32-bit integers in `a` right by `count` while shifting in
@@ -821,8 +823,8 @@ pub fn _mm256_srl_epi16(a: i16x16, count: i16x8) -> i16x16 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpsrld))]
-pub fn _mm256_srl_epi32(a: i32x8, count: i32x4) -> i32x8 {
-    unsafe { psrld(a, count) }
+pub unsafe fn _mm256_srl_epi32(a: i32x8, count: i32x4) -> i32x8 {
+    psrld(a, count)
 }
 
 /// Shift packed 64-bit integers in `a` right by `count` while shifting in
@@ -830,35 +832,35 @@ pub fn _mm256_srl_epi32(a: i32x8, count: i32x4) -> i32x8 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpsrlq))]
-pub fn _mm256_srl_epi64(a: i64x4, count: i64x2) -> i64x4 {
-    unsafe { psrlq(a, count) }
+pub unsafe fn _mm256_srl_epi64(a: i64x4, count: i64x2) -> i64x4 {
+    psrlq(a, count)
 }
 
 /// Shift packed 16-bit integers in `a` right by `imm8` while shifting in
 /// zeros
 #[inline(always)]
 #[target_feature = "+avx2"]
-#[cfg_attr(test, assert_instr(vpsrlw))] // TODO not vpsrliw?
-pub fn _mm256_srli_epi16(a: i16x16, imm8: i32) -> i16x16 {
-    unsafe { psrliw(a, imm8) }
+#[cfg_attr(test, assert_instr(vpsrlw))]
+pub unsafe fn _mm256_srli_epi16(a: i16x16, imm8: i32) -> i16x16 {
+    psrliw(a, imm8)
 }
 
 /// Shift packed 32-bit integers in `a` right by `imm8` while shifting in
 /// zeros
 #[inline(always)]
 #[target_feature = "+avx2"]
-#[cfg_attr(test, assert_instr(vpsrld))] // TODO: not vpsrlid?
-pub fn _mm256_srli_epi32(a: i32x8, imm8: i32) -> i32x8 {
-    unsafe { psrlid(a, imm8) }
+#[cfg_attr(test, assert_instr(vpsrld))]
+pub unsafe fn _mm256_srli_epi32(a: i32x8, imm8: i32) -> i32x8 {
+    psrlid(a, imm8)
 }
 
 /// Shift packed 64-bit integers in `a` right by `imm8` while shifting in
 /// zeros
 #[inline(always)]
 #[target_feature = "+avx2"]
-#[cfg_attr(test, assert_instr(vpsrlq))] // TODO: not vpsrliq?
-pub fn _mm256_srli_epi64(a: i64x4, imm8: i32) -> i64x4 {
-    unsafe { psrliq(a, imm8) }
+#[cfg_attr(test, assert_instr(vpsrlq))]
+pub unsafe fn _mm256_srli_epi64(a: i64x4, imm8: i32) -> i64x4 {
+    psrliq(a, imm8)
 }
 
 /// Shift packed 32-bit integers in `a` right by the amount specified by
@@ -866,8 +868,8 @@ pub fn _mm256_srli_epi64(a: i64x4, imm8: i32) -> i64x4 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpsrlvd))]
-pub fn _mm_srlv_epi32(a: i32x4, count: i32x4) -> i32x4 {
-    unsafe { psrlvd(a, count) }
+pub unsafe fn _mm_srlv_epi32(a: i32x4, count: i32x4) -> i32x4 {
+    psrlvd(a, count)
 }
 
 /// Shift packed 32-bit integers in `a` right by the amount specified by
@@ -875,8 +877,8 @@ pub fn _mm_srlv_epi32(a: i32x4, count: i32x4) -> i32x4 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpsrlvd))]
-pub fn _mm256_srlv_epi32(a: i32x8, count: i32x8) -> i32x8 {
-    unsafe { psrlvd256(a, count) }
+pub unsafe fn _mm256_srlv_epi32(a: i32x8, count: i32x8) -> i32x8 {
+    psrlvd256(a, count)
 }
 
 /// Shift packed 64-bit integers in `a` right by the amount specified by
@@ -884,8 +886,8 @@ pub fn _mm256_srlv_epi32(a: i32x8, count: i32x8) -> i32x8 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpsrlvq))]
-pub fn _mm_srlv_epi64(a: i64x2, count: i64x2) -> i64x2 {
-    unsafe { psrlvq(a, count) }
+pub unsafe fn _mm_srlv_epi64(a: i64x2, count: i64x2) -> i64x2 {
+    psrlvq(a, count)
 }
 
 /// Shift packed 64-bit integers in `a` right by the amount specified by
@@ -893,8 +895,8 @@ pub fn _mm_srlv_epi64(a: i64x2, count: i64x2) -> i64x2 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpsrlvq))]
-pub fn _mm256_srlv_epi64(a: i64x4, count: i64x4) -> i64x4 {
-    unsafe { psrlvq256(a, count) }
+pub unsafe fn _mm256_srlv_epi64(a: i64x4, count: i64x4) -> i64x4 {
+    psrlvq256(a, count)
 }
 
 // TODO _mm256_stream_load_si256 (__m256i const* mem_addr)
@@ -903,7 +905,7 @@ pub fn _mm256_srlv_epi64(a: i64x4, count: i64x4) -> i64x4 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpsubw))]
-pub fn _mm256_sub_epi16(a: i16x16, b: i16x16) -> i16x16 {
+pub unsafe fn _mm256_sub_epi16(a: i16x16, b: i16x16) -> i16x16 {
     a - b
 }
 
@@ -911,7 +913,7 @@ pub fn _mm256_sub_epi16(a: i16x16, b: i16x16) -> i16x16 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpsubd))]
-pub fn _mm256_sub_epi32(a: i32x8, b: i32x8) -> i32x8 {
+pub unsafe fn _mm256_sub_epi32(a: i32x8, b: i32x8) -> i32x8 {
     a - b
 }
 
@@ -919,7 +921,7 @@ pub fn _mm256_sub_epi32(a: i32x8, b: i32x8) -> i32x8 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpsubq))]
-pub fn _mm256_sub_epi64(a: i64x4, b: i64x4) -> i64x4 {
+pub unsafe fn _mm256_sub_epi64(a: i64x4, b: i64x4) -> i64x4 {
     a - b
 }
 
@@ -927,7 +929,7 @@ pub fn _mm256_sub_epi64(a: i64x4, b: i64x4) -> i64x4 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpsubb))]
-pub fn _mm256_sub_epi8(a: i8x32, b: i8x32) -> i8x32 {
+pub unsafe fn _mm256_sub_epi8(a: i8x32, b: i8x32) -> i8x32 {
     a - b
 }
 
@@ -936,8 +938,8 @@ pub fn _mm256_sub_epi8(a: i8x32, b: i8x32) -> i8x32 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpsubsw))]
-pub fn _mm256_subs_epi16(a: i16x16, b: i16x16) -> i16x16 {
-    unsafe { psubsw(a, b) }
+pub unsafe fn _mm256_subs_epi16(a: i16x16, b: i16x16) -> i16x16 {
+    psubsw(a, b)
 }
 
 /// Subtract packed 8-bit integers in `b` from packed 8-bit integers in
@@ -945,8 +947,8 @@ pub fn _mm256_subs_epi16(a: i16x16, b: i16x16) -> i16x16 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpsubsb))]
-pub fn _mm256_subs_epi8(a: i8x32, b: i8x32) -> i8x32 {
-    unsafe { psubsb(a, b) }
+pub unsafe fn _mm256_subs_epi8(a: i8x32, b: i8x32) -> i8x32 {
+    psubsb(a, b)
 }
 
 /// Subtract packed unsigned 16-bit integers in `b` from packed 16-bit
@@ -954,8 +956,8 @@ pub fn _mm256_subs_epi8(a: i8x32, b: i8x32) -> i8x32 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpsubusw))]
-pub fn _mm256_subs_epu16(a: u16x16, b: u16x16) -> u16x16 {
-    unsafe { psubusw(a, b) }
+pub unsafe fn _mm256_subs_epu16(a: u16x16, b: u16x16) -> u16x16 {
+    psubusw(a, b)
 }
 
 /// Subtract packed unsigned 8-bit integers in `b` from packed 8-bit
@@ -963,8 +965,8 @@ pub fn _mm256_subs_epu16(a: u16x16, b: u16x16) -> u16x16 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpsubusb))]
-pub fn _mm256_subs_epu8(a: u8x32, b: u8x32) -> u8x32 {
-    unsafe { psubusb(a, b) }
+pub unsafe fn _mm256_subs_epu8(a: u8x32, b: u8x32) -> u8x32 {
+    psubusb(a, b)
 }
 
 // TODO __mm256_unpackhi_epi16 (__m256i a, __m256i b)
@@ -981,10 +983,9 @@ pub fn _mm256_subs_epu8(a: u8x32, b: u8x32) -> u8x32 {
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vxorps))]
-pub fn _mm256_xor_si256(a: __m256i, b: __m256i) -> __m256i {
+pub unsafe fn _mm256_xor_si256(a: __m256i, b: __m256i) -> __m256i {
     a ^ b
 }
-
 
 #[allow(improper_ctypes)]
 extern "C" {
@@ -1048,9 +1049,9 @@ extern "C" {
     fn pminud(a: u32x8, b: u32x8) -> u32x8;
     #[link_name = "llvm.x86.avx2.pminu.b"]
     fn pminub(a: u8x32, b: u8x32) -> u8x32;
-    #[link_name = "llvm.x86.avx2.pmovmskb"]  //fails in debug
+    #[link_name = "llvm.x86.avx2.pmovmskb"]
     fn pmovmskb(a: i8x32) -> i32;
-    #[link_name = "llvm.x86.avx2.mpsadbw"] //fails in debug
+    #[link_name = "llvm.x86.avx2.mpsadbw"]
     fn mpsadbw(a: u8x32, b: u8x32, imm8: i32) -> u16x16;
     #[link_name = "llvm.x86.avx2.pmulhu.w"]
     fn pmulhuw(a: u16x16, b: u16x16) -> u16x16;
@@ -1141,7 +1142,6 @@ extern "C" {
 
 }
 
-
 #[cfg(test)]
 mod tests {
     use stdsimd_test::simd_test;
@@ -1153,7 +1153,7 @@ mod tests {
     use std;
 
     #[simd_test = "avx2"]
-    fn _mm256_abs_epi32() {
+    unsafe fn _mm256_abs_epi32() {
         let a = i32x8::new(
             0, 1, -1, std::i32::MAX,
             std::i32::MIN + 1, 100, -100, -32);
@@ -1165,7 +1165,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_abs_epi16() {
+    unsafe fn _mm256_abs_epi16() {
         let a = i16x16::new(
             0, 1, -1, 2,
             -2, 3, -3, 4,
@@ -1181,7 +1181,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_abs_epi8() {
+    unsafe fn _mm256_abs_epi8() {
         let a = i8x32::new(
             0, 1, -1, 2,
             -2, 3, -3, 4,
@@ -1201,7 +1201,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_add_epi64() {
+    unsafe fn _mm256_add_epi64() {
         let a = i64x4::new(-10, 0, 100, 1_000_000_000);
         let b = i64x4::new(-1, 0, 1, 2);
         let r = avx2::_mm256_add_epi64(a, b);
@@ -1210,7 +1210,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_add_epi32() {
+    unsafe fn _mm256_add_epi32() {
         let a = i32x8::new(-1, 0, 1, 2, 3, 4, 5, 6);
         let b = i32x8::new(1, 2, 3, 4, 5, 6, 7, 8);
         let r = avx2::_mm256_add_epi32(a, b);
@@ -1219,7 +1219,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_add_epi16() {
+    unsafe fn _mm256_add_epi16() {
         let a = i16x16::new(
             0, 1, 2, 3, 4, 5, 6, 7,
             8, 9, 10, 11, 12, 13, 14, 15);
@@ -1234,7 +1234,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_add_epi8() {
+    unsafe fn _mm256_add_epi8() {
         let a = i8x32::new(
             0, 1, 2, 3, 4, 5, 6, 7,
             8, 9, 10, 11, 12, 13, 14, 15,
@@ -1255,7 +1255,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_adds_epi8() {
+    unsafe fn _mm256_adds_epi8() {
         let a = i8x32::new(
             0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
             16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31);
@@ -1270,7 +1270,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_adds_epi8_saturate_positive() {
+    unsafe fn _mm256_adds_epi8_saturate_positive() {
         let a = i8x32::splat(0x7F);
         let b = i8x32::splat(1);
         let r = avx2::_mm256_adds_epi8(a, b);
@@ -1278,7 +1278,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_adds_epi8_saturate_negative() {
+    unsafe fn _mm256_adds_epi8_saturate_negative() {
         let a = i8x32::splat(-0x80);
         let b = i8x32::splat(-1);
         let r = avx2::_mm256_adds_epi8(a, b);
@@ -1286,7 +1286,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_adds_epi16() {
+    unsafe fn _mm256_adds_epi16() {
         let a = i16x16::new(
             0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
         let b = i16x16::new(
@@ -1299,7 +1299,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_adds_epi16_saturate_positive() {
+    unsafe fn _mm256_adds_epi16_saturate_positive() {
         let a = i16x16::splat(0x7FFF);
         let b = i16x16::splat(1);
         let r = avx2::_mm256_adds_epi16(a, b);
@@ -1307,7 +1307,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_adds_epi16_saturate_negative() {
+    unsafe fn _mm256_adds_epi16_saturate_negative() {
         let a = i16x16::splat(-0x8000);
         let b = i16x16::splat(-1);
         let r = avx2::_mm256_adds_epi16(a, b);
@@ -1315,7 +1315,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_adds_epu8() {
+    unsafe fn _mm256_adds_epu8() {
         let a = u8x32::new(
             0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
             16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31);
@@ -1330,7 +1330,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_adds_epu8_saturate() {
+    unsafe fn _mm256_adds_epu8_saturate() {
         let a = u8x32::splat(0xFF);
         let b = u8x32::splat(1);
         let r = avx2::_mm256_adds_epu8(a, b);
@@ -1339,7 +1339,7 @@ mod tests {
 
 
     #[simd_test = "avx2"]
-    fn _mm256_adds_epu16() {
+    unsafe fn _mm256_adds_epu16() {
         let a = u16x16::new(
             0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
         let b = u16x16::new(
@@ -1352,7 +1352,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_adds_epu16_saturate() {
+    unsafe fn _mm256_adds_epu16_saturate() {
         let a = u16x16::splat(0xFFFF);
         let b = u16x16::splat(1);
         let r = avx2::_mm256_adds_epu16(a, b);
@@ -1360,35 +1360,37 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_and_si256() {
-        assert_eq!(
-            avx2::_mm256_and_si256(
-                __m256i::splat(5), __m256i::splat(3)),__m256i::splat(1));
+    unsafe fn _mm256_and_si256() {
+        let a = __m256i::splat(5);
+        let b = __m256i::splat(3);
+        let got = avx2::_mm256_and_si256(a, b);
+        assert_eq!(got, __m256i::splat(1));
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_andnot_si256() {
-        assert_eq!(
-            avx2::_mm256_andnot_si256(__m256i::splat(5), __m256i::splat(3)),
-            __m256i::splat(2));
+    unsafe fn _mm256_andnot_si256() {
+        let a = __m256i::splat(5);
+        let b = __m256i::splat(3);
+        let got = avx2::_mm256_andnot_si256(a, b);
+        assert_eq!(got, __m256i::splat(2));
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_avg_epu8() {
+    unsafe fn _mm256_avg_epu8() {
         let (a, b) = (u8x32::splat(3), u8x32::splat(9));
         let r = avx2::_mm256_avg_epu8(a, b);
         assert_eq!(r, u8x32::splat(6));
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_avg_epu16() {
+    unsafe fn _mm256_avg_epu16() {
         let (a, b) = (u16x16::splat(3), u16x16::splat(9));
         let r = avx2::_mm256_avg_epu16(a, b);
         assert_eq!(r, u16x16::splat(6));
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_blendv_epi8() {
+    unsafe fn _mm256_blendv_epi8() {
         let (a,b) = (i8x32::splat(4),i8x32::splat(2));
         let mask = i8x32::splat(0).replace(2,-1);
         let e = i8x32::splat(4).replace(2,2);
@@ -1397,7 +1399,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_cmpeq_epi8() {
+    unsafe fn _mm256_cmpeq_epi8() {
         let a = i8x32::new(
             0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
             16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31);
@@ -1409,7 +1411,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_cmpeq_epi16() {
+    unsafe fn _mm256_cmpeq_epi16() {
         let a = i16x16::new(
             0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
         let b = i16x16::new(
@@ -1419,7 +1421,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_cmpeq_epi32() {
+    unsafe fn _mm256_cmpeq_epi32() {
         let a = i32x8::new(0, 1, 2, 3,4,5,6,7);
         let b = i32x8::new(7,6,2,4,3, 2, 1, 0);
         let r = avx2::_mm256_cmpeq_epi32(a, b);
@@ -1427,7 +1429,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_cmpeq_epi64() {
+    unsafe fn _mm256_cmpeq_epi64() {
         let a = i64x4::new(0, 1, 2, 3);
         let b = i64x4::new(3, 2, 2, 0);
         let r = avx2::_mm256_cmpeq_epi64(a, b);
@@ -1436,7 +1438,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_cmpgt_epi8() {
+    unsafe fn _mm256_cmpgt_epi8() {
         let a = i8x32::splat(0).replace(0, 5);
         let b = i8x32::splat(0);
         let r = avx2::_mm256_cmpgt_epi8(a, b);
@@ -1444,7 +1446,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_cmpgt_epi16() {
+    unsafe fn _mm256_cmpgt_epi16() {
         let a = i16x16::splat(0).replace(0, 5);
         let b = i16x16::splat(0);
         let r = avx2::_mm256_cmpgt_epi16(a, b);
@@ -1452,7 +1454,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_cmpgt_epi32() {
+    unsafe fn _mm256_cmpgt_epi32() {
         let a = i32x8::splat(0).replace(0, 5);
         let b = i32x8::splat(0);
         let r = avx2::_mm256_cmpgt_epi32(a, b);
@@ -1460,7 +1462,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_cmpgt_epi64() {
+    unsafe fn _mm256_cmpgt_epi64() {
         let a = i64x4::splat(0).replace(0, 5);
         let b = i64x4::splat(0);
         let r = avx2::_mm256_cmpgt_epi64(a, b);
@@ -1469,7 +1471,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_hadd_epi16() {
+    unsafe fn _mm256_hadd_epi16() {
         let a = i16x16::splat(2);
         let b = i16x16::splat(4);
         let r = avx2::_mm256_hadd_epi16(a, b);
@@ -1478,7 +1480,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_hadd_epi32() {
+    unsafe fn _mm256_hadd_epi32() {
         let a = i32x8::splat(2);
         let b = i32x8::splat(4);
         let r = avx2::_mm256_hadd_epi32(a, b);
@@ -1487,7 +1489,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_hadds_epi16() {
+    unsafe fn _mm256_hadds_epi16() {
         let a = i16x16::splat(2).replace(0,0x7FFF).replace(1,1);
         let b = i16x16::splat(4);
         let r = avx2::_mm256_hadds_epi16(a, b);
@@ -1497,7 +1499,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_hsub_epi16() {
+    unsafe fn _mm256_hsub_epi16() {
         let a = i16x16::splat(2);
         let b = i16x16::splat(4);
         let r = avx2::_mm256_hsub_epi16(a, b);
@@ -1506,7 +1508,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_hsub_epi32() {
+    unsafe fn _mm256_hsub_epi32() {
         let a = i32x8::splat(2);
         let b = i32x8::splat(4);
         let r = avx2::_mm256_hsub_epi32(a, b);
@@ -1515,7 +1517,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_hsubs_epi16() {
+    unsafe fn _mm256_hsubs_epi16() {
         let a = i16x16::splat(2).replace(0,0x7FFF).replace(1,-1);
         let b = i16x16::splat(4);
         let r = avx2::_mm256_hsubs_epi16(a, b);
@@ -1524,7 +1526,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_madd_epi16() {
+    unsafe fn _mm256_madd_epi16() {
         let a = i16x16::splat(2);
         let b = i16x16::splat(4);
         let r = avx2::_mm256_madd_epi16(a, b);
@@ -1533,7 +1535,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_maddubs_epi16() {
+    unsafe fn _mm256_maddubs_epi16() {
         let a = u8x32::splat(2);
         let b = u8x32::splat(4);
         let r = avx2::_mm256_maddubs_epi16(a, b);
@@ -1542,7 +1544,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_max_epi16() {
+    unsafe fn _mm256_max_epi16() {
         let a = i16x16::splat(2);
         let b = i16x16::splat(4);
         let r = avx2::_mm256_max_epi16(a, b);
@@ -1550,7 +1552,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_max_epi32() {
+    unsafe fn _mm256_max_epi32() {
         let a = i32x8::splat(2);
         let b = i32x8::splat(4);
         let r = avx2::_mm256_max_epi32(a, b);
@@ -1558,7 +1560,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_max_epi8() {
+    unsafe fn _mm256_max_epi8() {
         let a = i8x32::splat(2);
         let b = i8x32::splat(4);
         let r = avx2::_mm256_max_epi8(a, b);
@@ -1566,7 +1568,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_max_epu16() {
+    unsafe fn _mm256_max_epu16() {
         let a = u16x16::splat(2);
         let b = u16x16::splat(4);
         let r = avx2::_mm256_max_epu16(a, b);
@@ -1574,7 +1576,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_max_epu32() {
+    unsafe fn _mm256_max_epu32() {
         let a = u32x8::splat(2);
         let b = u32x8::splat(4);
         let r = avx2::_mm256_max_epu32(a, b);
@@ -1582,7 +1584,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_max_epu8() {
+    unsafe fn _mm256_max_epu8() {
         let a = u8x32::splat(2);
         let b = u8x32::splat(4);
         let r = avx2::_mm256_max_epu8(a, b);
@@ -1590,7 +1592,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_min_epi16() {
+    unsafe fn _mm256_min_epi16() {
         let a = i16x16::splat(2);
         let b = i16x16::splat(4);
         let r = avx2::_mm256_min_epi16(a, b);
@@ -1598,7 +1600,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_min_epi32() {
+    unsafe fn _mm256_min_epi32() {
         let a = i32x8::splat(2);
         let b = i32x8::splat(4);
         let r = avx2::_mm256_min_epi32(a, b);
@@ -1606,7 +1608,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_min_epi8() {
+    unsafe fn _mm256_min_epi8() {
         let a = i8x32::splat(2);
         let b = i8x32::splat(4);
         let r = avx2::_mm256_min_epi8(a, b);
@@ -1614,7 +1616,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_min_epu16() {
+    unsafe fn _mm256_min_epu16() {
         let a = u16x16::splat(2);
         let b = u16x16::splat(4);
         let r = avx2::_mm256_min_epu16(a, b);
@@ -1622,7 +1624,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_min_epu32() {
+    unsafe fn _mm256_min_epu32() {
         let a = u32x8::splat(2);
         let b = u32x8::splat(4);
         let r = avx2::_mm256_min_epu32(a, b);
@@ -1630,39 +1632,34 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_min_epu8() {
+    unsafe fn _mm256_min_epu8() {
         let a = u8x32::splat(2);
         let b = u8x32::splat(4);
         let r = avx2::_mm256_min_epu8(a, b);
         assert_eq!(r, a);
     }
 
-
-/**
-    // TODO this fails in debug but not release, why?
-    #[test]
-    #[target_feature ="+avx2"]
-    fn _mm256_movemask_epi8() {
+    #[simd_test = "avx2"]
+    unsafe fn _mm256_movemask_epi8() {
         let a = i8x32::splat(-1);
         let r = avx2::_mm256_movemask_epi8(a);
-        let e : i32 = -1;
+        let e = -1;
         assert_eq!(r, e);
     }
 
-    // TODO This fails in debug but not in release, whhhy?
-    #[test]
-    #[target_feature = "+avx2"]
-    fn _mm256_mpsadbw_epu8() {
+    /*
+    #[simd_test = "avx2"]
+    unsafe fn _mm256_mpsadbw_epu8() {
         let a = u8x32::splat(2);
         let b = u8x32::splat(4);
         let r = avx2::_mm256_mpsadbw_epu8(a, b, 0);
         let e = u16x16::splat(8);
         assert_eq!(r, e);
     }
-**/
+    */
 
     #[simd_test = "avx2"]
-    fn _mm256_mul_epi32() {
+    unsafe fn _mm256_mul_epi32() {
         let a = i32x8::new(0, 0, 0, 0, 2, 2, 2, 2);
         let b = i32x8::new(1, 2, 3, 4, 5, 6, 7, 8);
         let r = avx2::_mm256_mul_epi32(a, b);
@@ -1671,7 +1668,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_mul_epu32() {
+    unsafe fn _mm256_mul_epu32() {
         let a = u32x8::new(0, 0, 0, 0, 2, 2, 2, 2);
         let b = u32x8::new(1, 2, 3, 4, 5, 6, 7, 8);
         let r = avx2::_mm256_mul_epu32(a, b);
@@ -1680,7 +1677,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_mulhi_epi16() {
+    unsafe fn _mm256_mulhi_epi16() {
         let a = i16x16::splat(6535);
         let b = i16x16::splat(6535);
         let r = avx2::_mm256_mulhi_epi16(a, b);
@@ -1689,7 +1686,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_mulhi_epu16() {
+    unsafe fn _mm256_mulhi_epu16() {
         let a = u16x16::splat(6535);
         let b = u16x16::splat(6535);
         let r = avx2::_mm256_mulhi_epu16(a, b);
@@ -1698,7 +1695,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_mullo_epi16() {
+    unsafe fn _mm256_mullo_epi16() {
         let a = i16x16::splat(2);
         let b = i16x16::splat(4);
         let r = avx2::_mm256_mullo_epi16(a, b);
@@ -1707,7 +1704,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_mullo_epi32() {
+    unsafe fn _mm256_mullo_epi32() {
         let a = i32x8::splat(2);
         let b = i32x8::splat(4);
         let r = avx2::_mm256_mullo_epi32(a, b);
@@ -1716,7 +1713,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_mulhrs_epi16() {
+    unsafe fn _mm256_mulhrs_epi16() {
         let a = i16x16::splat(2);
         let b = i16x16::splat(4);
         let r = avx2::_mm256_mullo_epi16(a, b);
@@ -1725,7 +1722,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_or_si256() {
+    unsafe fn _mm256_or_si256() {
         let a = __m256i::splat(-1);
         let b = __m256i::splat(0);
         let r = avx2::_mm256_or_si256(a, b);
@@ -1733,7 +1730,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_packs_epi16() {
+    unsafe fn _mm256_packs_epi16() {
         let a = i16x16::splat(2);
         let b = i16x16::splat(4);
         let r = avx2::_mm256_packs_epi16(a, b);
@@ -1747,7 +1744,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_packs_epi32() {
+    unsafe fn _mm256_packs_epi32() {
         let a = i32x8::splat(2);
         let b = i32x8::splat(4);
         let r = avx2::_mm256_packs_epi32(a, b);
@@ -1761,7 +1758,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_packus_epi16() {
+    unsafe fn _mm256_packus_epi16() {
         let a = i16x16::splat(2);
         let b = i16x16::splat(4);
         let r = avx2::_mm256_packus_epi16(a, b);
@@ -1775,7 +1772,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_packus_epi32() {
+    unsafe fn _mm256_packus_epi32() {
         let a = i32x8::splat(2);
         let b = i32x8::splat(4);
         let r = avx2::_mm256_packus_epi32(a, b);
@@ -1789,7 +1786,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_sad_epu8() {
+    unsafe fn _mm256_sad_epu8() {
         let a = u8x32::splat(2);
         let b = u8x32::splat(4);
         let r = avx2::_mm256_sad_epu8(a, b);
@@ -1798,7 +1795,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_sign_epi16() {
+    unsafe fn _mm256_sign_epi16() {
         let a = i16x16::splat(2);
         let b = i16x16::splat(-1);
         let r = avx2::_mm256_sign_epi16(a, b);
@@ -1807,7 +1804,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_sign_epi32() {
+    unsafe fn _mm256_sign_epi32() {
         let a = i32x8::splat(2);
         let b = i32x8::splat(-1);
         let r = avx2::_mm256_sign_epi32(a, b);
@@ -1816,7 +1813,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_sign_epi8() {
+    unsafe fn _mm256_sign_epi8() {
         let a = i8x32::splat(2);
         let b = i8x32::splat(-1);
         let r = avx2::_mm256_sign_epi8(a, b);
@@ -1825,52 +1822,52 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_sll_epi16() {
-         assert_eq!(
-            avx2::_mm256_sll_epi16(i16x16::splat(0xFF), i16x8::splat(0).replace(0,4)),
-            i16x16::splat(0xFF0));
-
+    unsafe fn _mm256_sll_epi16() {
+        let a = i16x16::splat(0xFF);
+        let b = i16x8::splat(0).replace(0, 4);
+        let r = avx2::_mm256_sll_epi16(a, b);
+        assert_eq!(r, i16x16::splat(0xFF0));
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_sll_epi32() {
-         assert_eq!(
-            avx2::_mm256_sll_epi32(i32x8::splat(0xFFFF), i32x4::splat(0).replace(0,4)),
-            i32x8::splat(0xFFFF0));
-
+    unsafe fn _mm256_sll_epi32() {
+        let a = i32x8::splat(0xFFFF);
+        let b = i32x4::splat(0).replace(0, 4);
+        let r = avx2::_mm256_sll_epi32(a, b);
+        assert_eq!(r, i32x8::splat(0xFFFF0));
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_sll_epi64() {
-         assert_eq!(
-            avx2::_mm256_sll_epi64(i64x4::splat(0xFFFFFFFF), i64x2::splat(0).replace(0,4)),
-            i64x4::splat(0xFFFFFFFF0));
-
+    unsafe fn _mm256_sll_epi64() {
+        let a = i64x4::splat(0xFFFFFFFF);
+        let b = i64x2::splat(0).replace(0, 4);
+        let r = avx2::_mm256_sll_epi64(a, b);
+        assert_eq!(r, i64x4::splat(0xFFFFFFFF0));
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_slli_epi16() {
+    unsafe fn _mm256_slli_epi16() {
         assert_eq!(
             avx2::_mm256_slli_epi16(i16x16::splat(0xFF), 4),
             i16x16::splat(0xFF0));
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_slli_epi32() {
+    unsafe fn _mm256_slli_epi32() {
         assert_eq!(
             avx2::_mm256_slli_epi32(i32x8::splat(0xFFFF), 4),
             i32x8::splat(0xFFFF0));
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_slli_epi64() {
+    unsafe fn _mm256_slli_epi64() {
         assert_eq!(
             avx2::_mm256_slli_epi64(i64x4::splat(0xFFFFFFFF), 4),
             i64x4::splat(0xFFFFFFFF0));
     }
 
     #[simd_test = "avx2"]
-    fn _mm_sllv_epi32() {
+    unsafe fn _mm_sllv_epi32() {
         let a = i32x4::splat(2);
         let b = i32x4::splat(1);
         let r = avx2::_mm_sllv_epi32(a, b);
@@ -1879,7 +1876,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_sllv_epi32() {
+    unsafe fn _mm256_sllv_epi32() {
         let a = i32x8::splat(2);
         let b = i32x8::splat(1);
         let r = avx2::_mm256_sllv_epi32(a, b);
@@ -1888,7 +1885,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm_sllv_epi64() {
+    unsafe fn _mm_sllv_epi64() {
         let a = i64x2::splat(2);
         let b = i64x2::splat(1);
         let r = avx2::_mm_sllv_epi64(a, b);
@@ -1897,7 +1894,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_sllv_epi64() {
+    unsafe fn _mm256_sllv_epi64() {
         let a = i64x4::splat(2);
         let b = i64x4::splat(1);
         let r = avx2::_mm256_sllv_epi64(a, b);
@@ -1906,37 +1903,37 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_sra_epi16() {
-         assert_eq!(
-            avx2::_mm256_sra_epi16(
-                i16x16::splat(-1), i16x8::new(1, 0, 0, 0, 0, 0, 0, 0)),
+    unsafe fn _mm256_sra_epi16() {
+        let a = i16x16::splat(-1);
+        let b = i16x8::new(1, 0, 0, 0, 0, 0, 0, 0);
+        let r = avx2::_mm256_sra_epi16(a, b);
+        assert_eq!(r, i16x16::splat(-1));
+    }
+
+    #[simd_test = "avx2"]
+    unsafe fn _mm256_sra_epi32() {
+        let a = i32x8::splat(-1);
+        let b = i32x4::splat(0).replace(0, 1);
+        let r = avx2::_mm256_sra_epi32(a, b);
+        assert_eq!(r, i32x8::splat(-1));
+    }
+
+    #[simd_test = "avx2"]
+    unsafe fn _mm256_srai_epi16() {
+        assert_eq!(
+            avx2::_mm256_srai_epi16(i16x16::splat(-1), 1),
             i16x16::splat(-1));
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_sra_epi32() {
-         assert_eq!(
-            avx2::_mm256_sra_epi32(
-                i32x8::splat(-1), i32x4::splat(0).replace(0,1)),
+    unsafe fn _mm256_srai_epi32() {
+        assert_eq!(
+            avx2::_mm256_srai_epi32(i32x8::splat(-1), 1),
             i32x8::splat(-1));
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_srai_epi16() {
-           assert_eq!(
-            avx2::_mm256_srai_epi16(
-                i16x16::splat(-1), 1), i16x16::splat(-1));
-    }
-
-    #[simd_test = "avx2"]
-    fn _mm256_srai_epi32() {
-           assert_eq!(
-            avx2::_mm256_srai_epi32(
-                i32x8::splat(-1), 1), i32x8::splat(-1));
-    }
-
-    #[simd_test = "avx2"]
-    fn _mm_srav_epi32() {
+    unsafe fn _mm_srav_epi32() {
         let a = i32x4::splat(4);
         let count = i32x4::splat(1);
         let r = avx2::_mm_srav_epi32(a, count);
@@ -1945,7 +1942,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_srav_epi32() {
+    unsafe fn _mm256_srav_epi32() {
         let a = i32x8::splat(4);
         let count = i32x8::splat(1);
         let r = avx2::_mm256_srav_epi32(a, count);
@@ -1954,52 +1951,52 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_srl_epi16() {
-        assert_eq!(
-            avx2::_mm256_srl_epi16(
-                i16x16::splat(0xFF), i16x8::splat(0).replace(0,4)),
-            i16x16::splat(0xF));
+    unsafe fn _mm256_srl_epi16() {
+        let a = i16x16::splat(0xFF);
+        let b = i16x8::splat(0).replace(0, 4);
+        let r = avx2::_mm256_srl_epi16(a, b);
+        assert_eq!(r, i16x16::splat(0xF));
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_srl_epi32() {
-        assert_eq!(
-            avx2::_mm256_srl_epi32(
-                i32x8::splat(0xFFFF), i32x4::splat(0).replace(0,4)),
-            i32x8::splat(0xFFF));
+    unsafe fn _mm256_srl_epi32() {
+        let a = i32x8::splat(0xFFFF);
+        let b = i32x4::splat(0).replace(0, 4);
+        let r = avx2::_mm256_srl_epi32(a, b);
+        assert_eq!(r, i32x8::splat(0xFFF));
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_srl_epi64() {
-        assert_eq!(
-            avx2::_mm256_srl_epi64(
-                i64x4::splat(0xFFFFFFFF), i64x2::splat(0).replace(0,4)),
-            i64x4::splat(0xFFFFFFF));
+    unsafe fn _mm256_srl_epi64() {
+        let a = i64x4::splat(0xFFFFFFFF);
+        let b = i64x2::splat(0).replace(0, 4);
+        let r = avx2::_mm256_srl_epi64(a, b);
+        assert_eq!(r, i64x4::splat(0xFFFFFFF));
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_srli_epi16() {
+    unsafe fn _mm256_srli_epi16() {
         assert_eq!(
             avx2::_mm256_srli_epi16(i16x16::splat(0xFF), 4),
             i16x16::splat(0xF));
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_srli_epi32() {
+    unsafe fn _mm256_srli_epi32() {
         assert_eq!(
             avx2::_mm256_srli_epi32(i32x8::splat(0xFFFF), 4),
             i32x8::splat(0xFFF));
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_srli_epi64() {
+    unsafe fn _mm256_srli_epi64() {
         assert_eq!(
             avx2::_mm256_srli_epi64(i64x4::splat(0xFFFFFFFF), 4),
             i64x4::splat(0xFFFFFFF));
     }
 
     #[simd_test = "avx2"]
-    fn _mm_srlv_epi32() {
+    unsafe fn _mm_srlv_epi32() {
         let a = i32x4::splat(2);
         let count = i32x4::splat(1);
         let r = avx2::_mm_srlv_epi32(a, count);
@@ -2008,7 +2005,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_srlv_epi32() {
+    unsafe fn _mm256_srlv_epi32() {
         let a = i32x8::splat(2);
         let count = i32x8::splat(1);
         let r = avx2::_mm256_srlv_epi32(a, count);
@@ -2017,7 +2014,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm_srlv_epi64() {
+    unsafe fn _mm_srlv_epi64() {
         let a = i64x2::splat(2);
         let count = i64x2::splat(1);
         let r = avx2::_mm_srlv_epi64(a, count);
@@ -2027,7 +2024,7 @@ mod tests {
 
 
     #[simd_test = "avx2"]
-    fn _mm256_srlv_epi64() {
+    unsafe fn _mm256_srlv_epi64() {
         let a = i64x4::splat(2);
         let count = i64x4::splat(1);
         let r = avx2::_mm256_srlv_epi64(a, count);
@@ -2036,7 +2033,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_sub_epi16() {
+    unsafe fn _mm256_sub_epi16() {
         let a = i16x16::splat(4);
         let b = i16x16::splat(2);
         let r = avx2::_mm256_sub_epi16(a, b);
@@ -2044,7 +2041,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_sub_epi32() {
+    unsafe fn _mm256_sub_epi32() {
         let a = i32x8::splat(4);
         let b = i32x8::splat(2);
         let r = avx2::_mm256_sub_epi32(a, b);
@@ -2052,7 +2049,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_sub_epi64() {
+    unsafe fn _mm256_sub_epi64() {
         let a = i64x4::splat(4);
         let b = i64x4::splat(2);
         let r = avx2::_mm256_sub_epi64(a, b);
@@ -2060,7 +2057,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_sub_epi8() {
+    unsafe fn _mm256_sub_epi8() {
         let a = i8x32::splat(4);
         let b = i8x32::splat(2);
         let r = avx2::_mm256_sub_epi8(a, b);
@@ -2068,7 +2065,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_subs_epi16() {
+    unsafe fn _mm256_subs_epi16() {
         let a = i16x16::splat(4);
         let b = i16x16::splat(2);
         let r = avx2::_mm256_subs_epi16(a, b);
@@ -2076,7 +2073,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_subs_epi8() {
+    unsafe fn _mm256_subs_epi8() {
         let a = i8x32::splat(4);
         let b = i8x32::splat(2);
         let r = avx2::_mm256_subs_epi8(a, b);
@@ -2084,7 +2081,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_subs_epu16() {
+    unsafe fn _mm256_subs_epu16() {
         let a = u16x16::splat(4);
         let b = u16x16::splat(2);
         let r = avx2::_mm256_subs_epu16(a, b);
@@ -2092,7 +2089,7 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_subs_epu8() {
+    unsafe fn _mm256_subs_epu8() {
         let a = u8x32::splat(4);
         let b = u8x32::splat(2);
         let r = avx2::_mm256_subs_epu8(a, b);
@@ -2100,9 +2097,10 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
-    fn _mm256_xor_si256() {
-        assert_eq!(
-            avx2::_mm256_xor_si256(__m256i::splat(5), __m256i::splat(3)),
-            __m256i::splat(6));
+    unsafe fn _mm256_xor_si256() {
+        let a = __m256i::splat(5);
+        let b = __m256i::splat(3);
+        let r = avx2::_mm256_xor_si256(a, b);
+        assert_eq!(r, __m256i::splat(6));
     }
 }
