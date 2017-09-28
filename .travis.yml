@@ -17,13 +17,21 @@ matrix:
       script: ci/run.sh
     - install: true
       script: ci/dox.sh
+    - env: RUSTFMT=On NO_ADD=1
+  allow_failures:
+    - env: RUSTFMT=On NO_ADD=1
 
 install:
-  - if [ "$NO_ADD" = "" ]; then rustup target add $TARGET; fi
+  - if [ "$NO_ADD" == "" ]; then rustup target add $TARGET; fi
 
 script:
   - cargo generate-lockfile
   - ci/run-docker.sh $TARGET
+  - |
+    if [[ ${RUSTFMT} == "On" ]]; then
+      cargo install rustfmt-nightly
+      cargo fmt -- --write-mode=diff
+    fi
 
 notifications:
   email:
