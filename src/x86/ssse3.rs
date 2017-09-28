@@ -16,7 +16,7 @@ pub unsafe fn _mm_abs_epi8(a: i8x16) -> u8x16 {
 /// return the 16-bit unsigned integer
 #[inline(always)]
 #[target_feature = "+ssse3"]
-#[cfg_attr(test, assert_instr(pabsw128))]
+#[cfg_attr(test, assert_instr(pabsw))]
 pub unsafe fn _mm_abs_epi16(a: i16x8) -> u16x8 {
     pabsw128(a)
 }
@@ -25,7 +25,7 @@ pub unsafe fn _mm_abs_epi16(a: i16x8) -> u16x8 {
 /// return the 32-bit unsigned integer
 #[inline(always)]
 #[target_feature = "+ssse3"]
-#[cfg_attr(test, assert_instr(pabsd128))]
+#[cfg_attr(test, assert_instr(pabsd))]
 pub unsafe fn _mm_abs_epi32(a: i32x4) -> u32x4 {
     pabsd128(a)
 }
@@ -65,7 +65,7 @@ pub unsafe fn _mm_shuffle_epi8(a: u8x16, b: u8x16) -> u8x16 {
 /// 128-bit vectors of [8 x i16].
 #[inline(always)]
 #[target_feature = "+ssse3"]
-#[cfg_attr(test, assert_instr(phaddw128))]
+#[cfg_attr(test, assert_instr(phaddw))]
 pub unsafe fn _mm_hadd_epi16(a: i16x8, b: i16x8) -> i16x8 {
     phaddw128(a, b)
 }
@@ -75,7 +75,7 @@ pub unsafe fn _mm_hadd_epi16(a: i16x8, b: i16x8) -> i16x8 {
 /// saturated to 7FFFh. Negative sums less than 8000h are saturated to 8000h.
 #[inline(always)]
 #[target_feature = "+ssse3"]
-#[cfg_attr(test, assert_instr(phaddsw128))]
+#[cfg_attr(test, assert_instr(phaddsw))]
 pub unsafe fn _mm_hadds_epi16(a: i16x8, b: i16x8) -> i16x8 {
     phaddsw128(a, b)
 }
@@ -84,7 +84,7 @@ pub unsafe fn _mm_hadds_epi16(a: i16x8, b: i16x8) -> i16x8 {
 /// 128-bit vectors of [4 x i32].
 #[inline(always)]
 #[target_feature = "+ssse3"]
-#[cfg_attr(test, assert_instr(phaddd128))]
+#[cfg_attr(test, assert_instr(phaddd))]
 pub unsafe fn _mm_hadd_epi32(a: i32x4, b: i32x4) -> i32x4 {
     phaddd128(a, b)
 }
@@ -93,7 +93,7 @@ pub unsafe fn _mm_hadd_epi32(a: i32x4, b: i32x4) -> i32x4 {
 /// packed 128-bit vectors of [8 x i16].
 #[inline(always)]
 #[target_feature = "+ssse3"]
-#[cfg_attr(test, assert_instr(phsubw128))]
+#[cfg_attr(test, assert_instr(phsubw))]
 pub unsafe fn _mm_hsub_epi16(a: i16x8, b: i16x8) -> i16x8 {
     phsubw128(a, b)
 }
@@ -104,7 +104,7 @@ pub unsafe fn _mm_hsub_epi16(a: i16x8, b: i16x8) -> i16x8 {
 /// saturated to 8000h.
 #[inline(always)]
 #[target_feature = "+ssse3"]
-#[cfg_attr(test, assert_instr(phsubsw128))]
+#[cfg_attr(test, assert_instr(phsubsw))]
 pub unsafe fn _mm_hsubs_epi16(a: i16x8, b: i16x8) -> i16x8 {
     phsubsw128(a, b)
 }
@@ -113,7 +113,7 @@ pub unsafe fn _mm_hsubs_epi16(a: i16x8, b: i16x8) -> i16x8 {
 /// packed 128-bit vectors of [4 x i32].
 #[inline(always)]
 #[target_feature = "+ssse3"]
-#[cfg_attr(test, assert_instr(phsubd128))]
+#[cfg_attr(test, assert_instr(phsubd))]
 pub unsafe fn _mm_hsub_epi32(a: i32x4, b: i32x4) -> i32x4 {
     phsubd128(a, b)
 }
@@ -125,7 +125,7 @@ pub unsafe fn _mm_hsub_epi32(a: i32x4, b: i32x4) -> i32x4 {
 /// the corresponding bits in the destination.
 #[inline(always)]
 #[target_feature = "+ssse3"]
-#[cfg_attr(test, assert_instr(pmaddubsw128))]
+#[cfg_attr(test, assert_instr(pmaddubsw))]
 pub unsafe fn _mm_maddubs_epi16(a: u8x16, b: i8x16) -> i16x8 {
     pmaddubsw128(a, b)
 }
@@ -135,7 +135,7 @@ pub unsafe fn _mm_maddubs_epi16(a: u8x16, b: i8x16) -> i16x8 {
 /// truncated value by adding 1, and write bits [16:1] to the destination.
 #[inline(always)]
 #[target_feature = "+ssse3"]
-#[cfg_attr(test, assert_instr(pmulhrsw128))]
+#[cfg_attr(test, assert_instr(pmulhrsw))]
 pub unsafe fn _mm_mulhrs_epi16(a: i16x8, b: i16x8) -> i16x8 {
     pmulhrsw128(a, b)
 }
@@ -146,7 +146,7 @@ pub unsafe fn _mm_mulhrs_epi16(a: i16x8, b: i16x8) -> i16x8 {
 /// is zero.
 #[inline(always)]
 #[target_feature = "+ssse3"]
-#[cfg_attr(test, assert_instr(psignb128))]
+#[cfg_attr(test, assert_instr(psignb))]
 pub unsafe fn _mm_sign_epi8(a: i8x16, b: i8x16) -> i8x16 {
     psignb128(a, b)
 }
@@ -157,7 +157,7 @@ pub unsafe fn _mm_sign_epi8(a: i8x16, b: i8x16) -> i8x16 {
 /// is zero.
 #[inline(always)]
 #[target_feature = "+ssse3"]
-#[cfg_attr(test, assert_instr(psignw128))]
+#[cfg_attr(test, assert_instr(psignw))]
 pub unsafe fn _mm_sign_epi16(a: i16x8, b: i16x8) -> i16x8 {
     psignw128(a, b)
 }
@@ -168,7 +168,7 @@ pub unsafe fn _mm_sign_epi16(a: i16x8, b: i16x8) -> i16x8 {
 /// is zero.
 #[inline(always)]
 #[target_feature = "+ssse3"]
-#[cfg_attr(test, assert_instr(psignd128))]
+#[cfg_attr(test, assert_instr(psignd))]
 pub unsafe fn _mm_sign_epi32(a: i32x4, b: i32x4) -> i32x4 {
     psignd128(a, b)
 }
