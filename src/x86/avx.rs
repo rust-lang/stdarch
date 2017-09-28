@@ -20,6 +20,42 @@ pub unsafe fn _mm256_add_ps(a: f32x8, b: f32x8) -> f32x8 {
     a + b
 }
 
+/// Compare packed double-precision (64-bit) floating-point elements 
+/// in `a` and `b`, and return packed maximum values
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vmaxpd))]
+pub unsafe fn _mm256_max_pd(a: f64x4, b: f64x4) -> f64x4 {
+    maxpd256(a, b)
+}
+
+/// Compare packed single-precision (32-bit) floating-point elements in `a` and `b`, 
+/// and return packed maximum values
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vmaxps))]
+pub unsafe fn _mm256_max_ps(a: f32x8, b: f32x8) -> f32x8 {
+    maxps256(a, b)
+}
+
+/// Compare packed double-precision (64-bit) floating-point elements 
+/// in `a` and `b`, and return packed minimum values
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vminpd))]
+pub unsafe fn _mm256_min_pd(a: f64x4, b: f64x4) -> f64x4 {
+    minpd256(a, b)
+}
+
+/// Compare packed single-precision (32-bit) floating-point elements in `a` and `b`, 
+/// and return packed minimum values
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vminps))]
+pub unsafe fn _mm256_min_ps(a: f32x8, b: f32x8) -> f32x8 {
+    minps256(a, b)
+}
+
 /// Add packed double-precision (64-bit) floating-point elements
 /// in `a` and `b`.
 #[inline(always)]
@@ -110,6 +146,62 @@ pub unsafe fn _mm256_floor_pd(a: f64x4) -> f64x4 {
     roundpd256(a, 0x01)
 }
 
+/// Round packed single-precision (32-bit) floating point elements in `a`
+/// according to the flag `b`. The value of `b` may be as follows:
+/// 0x00: Round to the nearest whole number.
+/// 0x01: Round down, toward negative infinity.
+/// 0x02: Round up, toward positive infinity.
+/// 0x03: Truncate the values.
+/// For a few additional values options, check the LLVM docs:
+/// https://github.com/llvm-mirror/clang/blob/dcd8d797b20291f1a6b3e0ddda085aa2bbb382a8/lib/Headers/avxintrin.h#L382
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vroundps, b = 0x00))]
+pub unsafe fn _mm256_round_ps(a: f32x8, b: i32) -> f32x8 {
+    macro_rules! call {
+        ($imm8:expr) => {
+            roundps256(a, $imm8)
+        }
+    }
+    constify_imm8!(b, call)
+}
+
+/// Round packed single-precision (32-bit) floating point elements in `a` toward
+/// positive infinity.
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vroundps))]
+pub unsafe fn _mm256_ceil_ps(a: f32x8) -> f32x8 {
+    roundps256(a, 0x02)
+}
+
+/// Round packed single-precision (32-bit) floating point elements in `a` toward
+/// negative infinity.
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vroundps))]
+pub unsafe fn _mm256_floor_ps(a: f32x8) -> f32x8 {
+    roundps256(a, 0x01)
+}
+
+/// Return the square root of packed single-precision (32-bit) floating point
+/// elements in `a`.
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vsqrtps))]
+pub unsafe fn _mm256_sqrt_ps(a: f32x8) -> f32x8 {
+    sqrtps256(a)
+}
+
+/// Return the square root of packed double-precision (64-bit) floating point
+/// elements in `a`.
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vsqrtpd))]
+pub unsafe fn _mm256_sqrt_pd(a: f64x4) -> f64x4 {
+    sqrtpd256(a)
+}
+
 /// LLVM intrinsics used in the above functions
 #[allow(improper_ctypes)]
 extern "C" {
@@ -117,8 +209,22 @@ extern "C" {
     fn addsubpd256(a: f64x4, b: f64x4) -> f64x4;
     #[link_name = "llvm.x86.avx.addsub.ps.256"]
     fn addsubps256(a: f32x8, b: f32x8) -> f32x8;
+    #[link_name = "llvm.x86.avx.max.pd.256"]
+    fn maxpd256(a: f64x4, b: f64x4) -> f64x4;
+    #[link_name = "llvm.x86.avx.max.ps.256"]
+    fn maxps256(a: f32x8, b: f32x8) -> f32x8;
+    #[link_name = "llvm.x86.avx.min.pd.256"]
+    fn minpd256(a: f64x4, b: f64x4) -> f64x4;
+    #[link_name = "llvm.x86.avx.min.ps.256"]
+    fn minps256(a: f32x8, b: f32x8) -> f32x8;
     #[link_name = "llvm.x86.avx.round.pd.256"]
     fn roundpd256(a: f64x4, b: i32) -> f64x4;
+    #[link_name = "llvm.x86.avx.round.ps.256"]
+    fn roundps256(a: f32x8, b: i32) -> f32x8;
+    #[link_name = "llvm.x86.avx.sqrt.pd.256"]
+    fn sqrtpd256(a: f64x4) -> f64x4;
+    #[link_name = "llvm.x86.avx.sqrt.ps.256"]
+    fn sqrtps256(a: f32x8) -> f32x8;
 }
 
 #[cfg(test)]
@@ -143,6 +249,42 @@ mod tests {
         let b = f32x8::new(9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0);
         let r = avx::_mm256_add_ps(a, b);
         let e = f32x8::new(10.0, 12.0, 14.0, 16.0, 18.0, 20.0, 22.0, 24.0);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_max_pd() {
+        let a = f64x4::new(1.0, 4.0, 5.0, 8.0);
+        let b = f64x4::new(2.0, 3.0, 6.0, 7.0);
+        let r = avx::_mm256_max_pd(a, b);
+        let e = f64x4::new(2.0, 4.0, 6.0, 8.0);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_max_ps() {
+        let a = f32x8::new(1.0, 4.0, 5.0, 8.0, 9.0, 12.0, 13.0, 16.0);
+        let b = f32x8::new(2.0, 3.0, 6.0, 7.0, 10.0, 11.0, 14.0, 15.0);
+        let r = avx::_mm256_max_ps(a, b);
+        let e = f32x8::new(2.0, 4.0, 6.0, 8.0, 10.0, 12.0, 14.0, 16.0);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_min_pd() {
+        let a = f64x4::new(1.0, 4.0, 5.0, 8.0);
+        let b = f64x4::new(2.0, 3.0, 6.0, 7.0);
+        let r = avx::_mm256_min_pd(a, b);
+        let e = f64x4::new(1.0, 3.0, 5.0, 7.0);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_min_ps() {
+        let a = f32x8::new(1.0, 4.0, 5.0, 8.0, 9.0, 12.0, 13.0, 16.0);
+        let b = f32x8::new(2.0, 3.0, 6.0, 7.0, 10.0, 11.0, 14.0, 15.0);
+        let r = avx::_mm256_min_ps(a, b);
+        let e = f32x8::new(1.0, 3.0, 5.0, 7.0, 9.0, 11.0, 13.0, 15.0);
         assert_eq!(r, e);
     }
 
@@ -228,5 +370,51 @@ mod tests {
         let result_up = avx::_mm256_ceil_pd(a);
         let expected_up = f64x4::new(2.0, 3.0, 4.0, -1.0);
         assert_eq!(result_up, expected_up);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_round_ps() {
+        let a = f32x8::new(1.55, 2.2, 3.99, -1.2, 1.55, 2.2, 3.99, -1.2);
+        let result_closest = avx::_mm256_round_ps(a, 0b00000000);
+        let result_down = avx::_mm256_round_ps(a, 0b00000001);
+        let result_up = avx::_mm256_round_ps(a, 0b00000010);
+        let expected_closest = f32x8::new(2.0, 2.0, 4.0, -1.0, 2.0, 2.0, 4.0, -1.0);
+        let expected_down = f32x8::new(1.0, 2.0, 3.0, -2.0, 1.0, 2.0, 3.0, -2.0);
+        let expected_up = f32x8::new(2.0, 3.0, 4.0, -1.0, 2.0, 3.0, 4.0, -1.0);
+        assert_eq!(result_closest, expected_closest);
+        assert_eq!(result_down, expected_down);
+        assert_eq!(result_up, expected_up);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_floor_ps() {
+        let a = f32x8::new(1.55, 2.2, 3.99, -1.2, 1.55, 2.2, 3.99, -1.2);
+        let result_down = avx::_mm256_floor_ps(a);
+        let expected_down = f32x8::new(1.0, 2.0, 3.0, -2.0, 1.0, 2.0, 3.0, -2.0);
+        assert_eq!(result_down, expected_down);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_ceil_ps() {
+        let a = f32x8::new(1.55, 2.2, 3.99, -1.2, 1.55, 2.2, 3.99, -1.2);
+        let result_up = avx::_mm256_ceil_ps(a);
+        let expected_up = f32x8::new(2.0, 3.0, 4.0, -1.0, 2.0, 3.0, 4.0, -1.0);
+        assert_eq!(result_up, expected_up);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_sqrt_pd() {
+        let a = f64x4::new(4.0, 9.0, 16.0, 25.0);
+        let r = avx::_mm256_sqrt_pd(a, );
+        let e = f64x4::new(2.0, 3.0, 4.0, 5.0);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_sqrt_ps() {
+        let a = f32x8::new(4.0, 9.0, 16.0, 25.0, 4.0, 9.0, 16.0, 25.0);
+        let r = avx::_mm256_sqrt_ps(a);
+        let e = f32x8::new(2.0, 3.0, 4.0, 5.0, 2.0, 3.0, 4.0, 5.0);
+        assert_eq!(r, e);
     }
 }
