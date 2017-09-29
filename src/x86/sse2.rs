@@ -1761,7 +1761,7 @@ pub unsafe fn _mm_cvtsd_si64(a: f64x2) -> i64 {
 #[target_feature = "+sse2"]
 #[cfg_attr(test, assert_instr(cvtsd2si64))]
 pub unsafe fn _mm_cvtsd_si64x(a: f64x2) -> i64 {
-    _mm_cvtsd_si64(a)
+    cvtsd2si64(a)
 }
 
 /// Convert the first f64 in `b` to a f32 as first element in the returning vec.
