@@ -3590,11 +3590,6 @@ mod tests {
         assert_eq!(r, f32x4::new(f32::INFINITY, f32::NEG_INFINITY, f32::MAX, f32::NEG_INFINITY));
     }
 
-//    #[simd_test = "sse2"]
-//    unsafe fn _mm_cvtsd_f64() {
-
-//    }
-
     #[simd_test = "sse2"]
     unsafe fn _mm_cvtss_sd() {
         use std::{f64, f32};
