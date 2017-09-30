@@ -1745,7 +1745,7 @@ pub unsafe fn _mm_cvtsd_si32(a: f64x2) -> i32 {
 /// Convert the lower double-precision (64-bit) floating-point element in a to a 64-bit integer.
 #[inline(always)]
 #[target_feature = "+sse2"]
-#[cfg_attr(test, assert_instr(cvtpd2dq))]
+#[cfg_attr(test, assert_instr(cvtsd2si))]
 pub unsafe fn _mm_cvtsd_si64(a: f64x2) -> i64 {
     cvtsd2si64(a)
 }
@@ -1792,7 +1792,7 @@ pub unsafe fn _mm_cvttsd_si32(a: f64x2) -> i32 {
 /// with truncation.
 #[inline(always)]
 #[target_feature = "+sse2"]
-#[cfg_attr(test, assert_instr(cvttsd2si64))]
+#[cfg_attr(test, assert_instr(cvttsd2si))]
 pub unsafe fn _mm_cvttsd_si64(a: f64x2) -> i64 {
     cvttsd2si64(a)
 }
