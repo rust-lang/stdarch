@@ -1750,6 +1750,16 @@ pub unsafe fn _mm_cvtsd_si64(a: f64x2) -> i64 {
     cvtsd2si64(a)
 }
 
+/// Convert the lower double-precision (64-bit) floating-point element in `b` to a
+/// single-precision (32-bit) floating-point element, store the result in the lower element
+/// of the return value, and copy the upper element from `a` to the upper element the return value.
+#[inline(always)]
+#[target_feature = "+sse2"]
+#[cfg_attr(test, assert_instr(cvtsd2ss))]
+pub unsafe fn _mm_cvtsd_ss(a: f32x4, b: f64x2) -> f32x4 {
+    cvtsd2ss(a, b)
+}
+
 /// Return a mask of the most significant bit of each element in `a`.
 ///
 /// The mask is stored in the 2 least significant bits of the return value.
@@ -1922,6 +1932,8 @@ extern {
     fn cvtsd2si32(a: f64x2) -> i32;
     #[link_name = "llvm.x86.sse2.cvtsd2si64"]
     fn cvtsd2si64(a: f64x2) -> i64;
+    #[link_name = "llvm.x86.sse2.cvtsd2ss"]
+    fn cvtsd2ss(a: f32x4, b: f64x2) -> f32x4;
 
 }
 
@@ -3511,5 +3523,24 @@ mod tests {
 
         let r = sse2::_mm_cvtsd_si64(f64x2::new(f64::NAN, f64::NAN));
         assert_eq!(r, i64::MIN);
+    }
+
+    #[simd_test = "sse2"]
+    unsafe fn _mm_cvtsd_ss() {
+        use std::{f64, f32};
+
+        let a = f32x4::new(-1.1, -2.2, 3.3, 4.4);
+        let b = f64x2::new(2.0, -5.0);
+
+        let r = sse2::_mm_cvtsd_ss(a, b);
+
+        assert_eq!(r, f32x4::new(2.0, -2.2, 3.3, 4.4));
+
+        let a = f32x4::new(-1.1, f32::NEG_INFINITY, f32::MAX, f32::NEG_INFINITY);
+        let b = f64x2::new(f64::INFINITY, -5.0);
+
+        let r = sse2::_mm_cvtsd_ss(a, b);
+
+        assert_eq!(r, f32x4::new(f32::INFINITY, f32::NEG_INFINITY, f32::MAX, f32::NEG_INFINITY));
     }
 }
