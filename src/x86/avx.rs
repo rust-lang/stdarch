@@ -68,6 +68,29 @@ pub unsafe fn _mm256_or_ps(a: f32x8, b: f32x8) -> f32x8 {
     mem::transmute(a | b)
 }
 
+/// Compute the bitwise NOT of packed double-precision (64-bit) floating-point elements in `a`
+/// and then AND with `b`.
+#[inline(always)]
+#[target_feature = "+avx"]
+// Should be 'vandnpd' instruction.
+#[cfg_attr(test, assert_instr(vandnps))]
+pub unsafe fn _mm256_andnot_pd(a: f64x4, b: f64x4) -> f64x4 {
+    let a: u64x4 = mem::transmute(a);
+    let b: u64x4 = mem::transmute(b);
+    mem::transmute((!a) & b)
+}
+
+/// Compute the bitwise NOT of packed single-precision (32-bit) floating-point elements in `a`
+/// and then AND with `b`.
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vandnps))]
+pub unsafe fn _mm256_andnot_ps(a: f32x8, b: f32x8) -> f32x8 {
+    let a: u32x8 = mem::transmute(a);
+    let b: u32x8 = mem::transmute(b);
+    mem::transmute((!a) & b)
+}
+
 /// Compare packed double-precision (64-bit) floating-point elements 
 /// in `a` and `b`, and return packed maximum values
 #[inline(always)]
@@ -353,6 +376,22 @@ mod tests {
         let r = avx::_mm256_or_ps(a, b);
         let e = f32x8::splat(1.2);
         assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_andnot_pd() {
+        let a = f64x4::splat(0.0);
+        let b = f64x4::splat(0.6);
+        let r = avx::_mm256_andnot_pd(a, b);
+        assert_eq!(r, b);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_andnot_ps() {
+        let a = f32x8::splat(0.0);
+        let b = f32x8::splat(0.6);
+        let r = avx::_mm256_andnot_ps(a, b);
+        assert_eq!(r, b);
     }
 
     #[simd_test = "avx"]
