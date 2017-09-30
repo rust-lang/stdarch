@@ -3597,18 +3597,6 @@ mod tests {
     }
 
     #[simd_test = "sse2"]
-    unsafe fn _mm_load1_pd() {
-        let d = -5.0;
-        let r = sse2::_mm_load1_pd(&d);
-        assert_eq!(r, f64x2::new(d, d));
-    }
-
-//    #[simd_test = "sse2"]
-//    unsafe fn _mm_cvtsd_f64() {
-
-//    }
-
-    #[simd_test = "sse2"]
     unsafe fn _mm_cvtss_sd() {
         use std::{f64, f32};
 
@@ -3662,5 +3650,12 @@ mod tests {
         let a = f64x2::new(f64::NEG_INFINITY, f64::NAN);
         let r = sse2::_mm_cvttsd_si64(a);
         assert_eq!(r, i64::MIN);
+    }
+    
+    #[simd_test = "sse2"]
+    unsafe fn _mm_load1_pd() {
+        let d = -5.0;
+        let r = sse2::_mm_load1_pd(&d);
+        assert_eq!(r, f64x2::new(d, d));
     }
 }
