@@ -3542,6 +3542,7 @@ mod tests {
         assert_eq!(r, i32x4::new(i32::MIN, i32::MIN, 0, 0));
     }
 
+    #[simd_test = "sse2"]
     unsafe fn _mm_cvtsd_si32() {
         use std::{f64, i32};
 
@@ -3555,6 +3556,7 @@ mod tests {
         assert_eq!(r, i32::MIN);
     }
 
+    #[simd_test = "sse2"]
     unsafe fn _mm_cvtsd_ss() {
         use std::{f64, f32};
 
@@ -3628,7 +3630,7 @@ mod tests {
         let r = sse2::_mm_cvttsd_si64(a);
         assert_eq!(r, i64::MIN);
     }
-    
+
     #[simd_test = "sse2"]
     unsafe fn _mm_load1_pd() {
         let d = -5.0;
