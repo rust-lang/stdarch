@@ -267,6 +267,19 @@ pub unsafe fn _mm_movemask_ps(a: f32x4) -> i32 {
     movmskps(a)
 }
 
+/// Perform a serializing operation on all store-to-memory instructions that
+/// were issued prior to this instruction.
+///
+/// Guarantees that every store instruction that precedes, in program order, is
+/// globally visible before any store instruction which follows the fence in
+/// program order.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(sfence))]
+pub unsafe fn _mm_sfence() {
+    sfence()
+}
+
 #[allow(improper_ctypes)]
 extern {
     #[link_name = "llvm.x86.sse.add.ss"]
@@ -299,6 +312,8 @@ extern {
     fn maxps(a: f32x4, b: f32x4) -> f32x4;
     #[link_name = "llvm.x86.sse.movmsk.ps"]
     fn movmskps(a: f32x4) -> i32;
+    #[link_name = "llvm.x86.sse.sfence"]
+    fn sfence();
 }
 
 #[cfg(test)]
@@ -499,5 +514,10 @@ mod tests {
 
         let r = sse::_mm_movemask_ps(f32x4::new(-1.0, -5.0, -5.0, 0.0));
         assert_eq!(r, 0b0111);
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_sfence() {
+        sse::_mm_sfence();
     }
 }
