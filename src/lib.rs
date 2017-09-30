@@ -92,6 +92,9 @@
 #[cfg(test)]
 extern crate stdsimd_test;
 
+#[cfg(test)]
+extern crate rand;
+
 /// Platform independent SIMD vector types and operations.
 pub mod simd {
     pub use v128::*;
