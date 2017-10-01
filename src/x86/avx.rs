@@ -344,6 +344,15 @@ pub unsafe fn _mm256_blendv_pd(a: f64x4, b: f64x4, c: f64x4) -> f64x4 {
     vblendvpd(a, b, c)
 }
 
+/// Blend packed single-precision (32-bit) floating-point elements from
+/// `a` and `b` using `c` as a mask.
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vblendvps))]
+pub unsafe fn _mm256_blendv_ps(a: f32x8, b: f32x8, c: f32x8) -> f32x8 {
+    vblendvps(a, b, c)
+}
+
 /// LLVM intrinsics used in the above functions
 #[allow(improper_ctypes)]
 extern "C" {
@@ -369,6 +378,8 @@ extern "C" {
     fn sqrtps256(a: f32x8) -> f32x8;
     #[link_name = "llvm.x86.avx.blendv.pd.256"]
     fn vblendvpd(a: f64x4, b: f64x4, c: f64x4) -> f64x4;
+    #[link_name = "llvm.x86.avx.blendv.ps.256"]
+    fn vblendvps(a: f32x8, b: f32x8, c: f32x8) -> f32x8;
 }
 
 #[cfg(test)]
@@ -651,6 +662,16 @@ mod tests {
         let c = f64x4::new(0.0, 0.0, !0 as f64, !0 as f64);
         let r = avx::_mm256_blendv_pd(a, b, c);
         let e = f64x4::new(4.0, 9.0, 2.0, 5.0);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_blendv_ps() {
+        let a = f32x8::new(4.0, 9.0, 16.0, 25.0, 4.0, 9.0, 16.0, 25.0);
+        let b = f32x8::new(4.0, 3.0, 2.0, 5.0, 8.0, 9.0, 64.0, 50.0);
+        let c = f32x8::new(0.0, 0.0, 0.0, 0.0, !0 as f32, !0 as f32, !0 as f32, !0 as f32);
+        let r = avx::_mm256_blendv_ps(a, b, c);
+        let e = f32x8::new(4.0, 9.0, 16.0, 25.0, 8.0, 9.0, 64.0, 50.0);
         assert_eq!(r, e);
     }
 }
