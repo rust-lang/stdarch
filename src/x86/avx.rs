@@ -414,11 +414,20 @@ pub unsafe fn _mm256_xor_ps(a: f32x8, b: f32x8) -> f32x8 {
 }
 
 /// Convert packed 32-bit integers in `a` to packed double-precision (64-bit)
-/// floating-point elements
+/// floating-point elements.
 #[inline(always)]
 #[target_feature = "+avx"]
 #[cfg_attr(test, assert_instr(vcvtdq2pd))]
 pub unsafe fn _mm256_cvtepi32_pd(a: i32x4) -> f64x4 {
+    simd_cast(a)
+}
+
+/// Convert packed 32-bit integers in `a` to packed single-precision (32-bit)
+/// floating-point elements.
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vcvtdq2ps))]
+pub unsafe fn _mm256_cvtepi32_ps(a: i32x8) -> f32x8 {
     simd_cast(a)
 }
 
@@ -810,6 +819,14 @@ mod tests {
         let a = i32x4::new(4, 9, 16, 25);
         let r = avx::_mm256_cvtepi32_pd(a);
         let e = f64x4::new(4.0, 9.0, 16.0, 25.0);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_cvtepi32_ps() {
+        let a = i32x8::new(4, 9, 16, 25, 4, 9, 16, 25);
+        let r = avx::_mm256_cvtepi32_ps(a);
+        let e = f32x8::new(4.0, 9.0, 16.0, 25.0, 4.0, 9.0, 16.0, 25.0);
         assert_eq!(r, e);
     }
 }
