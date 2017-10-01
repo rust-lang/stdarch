@@ -449,6 +449,15 @@ pub unsafe fn _mm256_cvtps_epi32(a: f32x8) -> i32x8 {
     simd_cast(a)
 }
 
+/// Convert packed single-precision (32-bit) floating-point elements in `a`
+/// to packed double-precision (64-bit) floating-point elements.
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vcvtps2pd))]
+pub unsafe fn _mm256_cvtps_pd(a: f32x4) -> f64x4 {
+    simd_cast(a)
+}
+
 /// LLVM intrinsics used in the above functions
 #[allow(improper_ctypes)]
 extern "C" {
@@ -861,6 +870,14 @@ mod tests {
         let a = f32x8::new(4.0, 9.0, 16.0, 25.0, 4.0, 9.0, 16.0, 25.0);
         let r = avx::_mm256_cvtps_epi32(a);
         let e = i32x8::new(4, 9, 16, 25, 4, 9, 16, 25);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_cvtps_pd() {
+        let a = f32x4::new(4.0, 9.0, 16.0, 25.0);
+        let r = avx::_mm256_cvtps_pd(a);
+        let e = f64x4::new(4.0, 9.0, 16.0, 25.0);
         assert_eq!(r, e);
     }
 }
