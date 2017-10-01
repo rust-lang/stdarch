@@ -371,6 +371,15 @@ pub unsafe fn _mm256_hadd_ps(a: f32x8, b: f32x8) -> f32x8 {
     vhaddps(a, b)
 }
 
+/// Horizontally subtract adjacent pairs of double-precision (64-bit) floating-point
+/// elements in `a` and `b`, and pack the results.
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vhsubpd))]
+pub unsafe fn _mm256_hsub_pd(a: f64x4, b: f64x4) -> f64x4 {
+    vhsubpd(a, b)
+}
+
 /// LLVM intrinsics used in the above functions
 #[allow(improper_ctypes)]
 extern "C" {
@@ -402,6 +411,8 @@ extern "C" {
     fn vhaddpd(a: f64x4, b: f64x4) -> f64x4;
     #[link_name = "llvm.x86.avx.hadd.ps.256"]
     fn vhaddps(a: f32x8, b: f32x8) -> f32x8;
+    #[link_name = "llvm.x86.avx.hsub.pd.256"]
+    fn vhsubpd(a: f64x4, b: f64x4) -> f64x4;
 }
 
 #[cfg(test)]
@@ -712,6 +723,15 @@ mod tests {
         let b = f32x8::new(4.0, 3.0, 2.0, 5.0, 8.0, 9.0, 64.0, 50.0);
         let r = avx::_mm256_hadd_ps(a, b);
         let e = f32x8::new(13.0, 41.0, 7.0, 7.0, 13.0, 41.0, 17.0, 114.0);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_hsub_pd() {
+        let a = f64x4::new(4.0, 9.0, 16.0, 25.0);
+        let b = f64x4::new(4.0, 3.0, 2.0, 5.0);
+        let r = avx::_mm256_hsub_pd(a, b);
+        let e = f64x4::new(-5.0, 1.0, -9.0, -3.0);
         assert_eq!(r, e);
     }
 }
