@@ -389,6 +389,18 @@ pub unsafe fn _mm256_hsub_ps(a: f32x8, b: f32x8) -> f32x8 {
     vhsubps(a, b)
 }
 
+/// Compute the bitwise XOR of packed double-precision (64-bit) floating-point
+/// elements in `a` and `b`.
+#[inline(always)]
+#[target_feature = "+avx"]
+// FIXME Should be 'vxorpd' instruction.
+#[cfg_attr(test, assert_instr(vxorps))]
+pub unsafe fn _mm256_xor_pd(a: f64x4, b: f64x4) -> f64x4 {
+    let a: u64x4 = mem::transmute(a);
+    let b: u64x4 = mem::transmute(b);
+    mem::transmute(a ^ b)
+}
+
 /// LLVM intrinsics used in the above functions
 #[allow(improper_ctypes)]
 extern "C" {
@@ -753,5 +765,13 @@ mod tests {
         let r = avx::_mm256_hsub_ps(a, b);
         let e = f32x8::new(-5.0, -9.0, 1.0, -3.0, -5.0, -9.0, -1.0, 14.0);
         assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_xor_pd() {
+        let a = f64x4::new(4.0, 9.0, 16.0, 25.0);
+        let b = f64x4::new(0.0, 0.0, 0.0, 0.0);
+        let r = avx::_mm256_xor_pd(a, b);
+        assert_eq!(r, a);
     }
 }
