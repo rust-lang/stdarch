@@ -3,6 +3,7 @@ use std::mem;
 #[cfg(test)]
 use stdsimd_test::assert_instr;
 
+use simd_llvm::simd_shuffle4;
 use v256::*;
 
 /// Add packed double-precision (64-bit) floating-point elements
@@ -290,6 +291,48 @@ pub unsafe fn _mm256_sqrt_ps(a: f32x8) -> f32x8 {
 #[cfg_attr(test, assert_instr(vsqrtpd))]
 pub unsafe fn _mm256_sqrt_pd(a: f64x4) -> f64x4 {
     sqrtpd256(a)
+}
+
+/// Blend packed double-precision (64-bit) floating-point elements from
+/// `a` and `b` using control mask `imm8`.
+#[inline(always)]
+#[target_feature = "+avx"]
+// FIXME too many instructions in the disassembly
+//#[cfg_attr(test, assert_instr(vblendpd, imm8 = 0))]
+pub unsafe fn _mm256_blend_pd(a: f64x4, b: f64x4, imm8: i32) -> f64x4 {
+    macro_rules! blend4 {
+        ($a:expr, $b:expr, $c:expr, $d:expr) => {
+            simd_shuffle4(a, b, [$a, $b, $c, $d]);
+        }
+    }
+    macro_rules! blend3 {
+        ($a:expr, $b: expr, $c: expr) => {
+            match imm8 & 0x8 {
+                0 => blend4!($a, $b, $c, 3),
+                _ => blend4!($a, $b, $c, 7),
+            }
+        }
+    }
+    macro_rules! blend2 {
+        ($a:expr, $b:expr) => {
+            match imm8 & 0x4 {
+                0 => blend3!($a, $b, 2),
+                _ => blend3!($a, $b, 6),
+            }
+        }
+    }
+    macro_rules! blend1 {
+        ($a:expr) => {
+            match imm8 & 0x2 {
+                0 => blend2!($a, 1),
+                _ => blend2!($a, 5),
+            }
+        }
+    }
+    match imm8 & 0x1 {
+        0 => blend1!(0),
+        _ => blend1!(4),
+    }
 }
 
 /// Blend packed double-precision (64-bit) floating-point elements from
@@ -587,6 +630,18 @@ mod tests {
         let r = avx::_mm256_div_pd(a, b);
         let e = f64x4::new(1.0, 3.0, 8.0, 5.0);
         assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_blend_pd() {
+        let a = f64x4::new(4.0, 9.0, 16.0, 25.0);
+        let b = f64x4::new(4.0, 3.0, 2.0, 5.0);
+        let r = avx::_mm256_blend_pd(a, b, 0x0);
+        assert_eq!(r, f64x4::new(4.0, 9.0, 16.0, 25.0));
+        let r = avx::_mm256_blend_pd(a, b, 0x3);
+        assert_eq!(r, f64x4::new(4.0, 3.0, 16.0, 25.0));
+        let r = avx::_mm256_blend_pd(a, b, 0xF);
+        assert_eq!(r, f64x4::new(4.0, 3.0, 2.0, 5.0));
     }
 
     #[simd_test = "avx"]
