@@ -3,7 +3,8 @@ use std::mem;
 #[cfg(test)]
 use stdsimd_test::assert_instr;
 
-use simd_llvm::simd_shuffle4;
+use simd_llvm::{simd_cast, simd_shuffle4};
+use v128::i32x4;
 use v256::*;
 
 /// Add packed double-precision (64-bit) floating-point elements
@@ -412,6 +413,15 @@ pub unsafe fn _mm256_xor_ps(a: f32x8, b: f32x8) -> f32x8 {
     mem::transmute(a ^ b)
 }
 
+/// Convert packed 32-bit integers in `a` to packed double-precision (64-bit)
+/// floating-point elements
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vcvtdq2pd))]
+pub unsafe fn _mm256_cvtepi32_pd(a: i32x4) -> f64x4 {
+    simd_cast(a)
+}
+
 /// LLVM intrinsics used in the above functions
 #[allow(improper_ctypes)]
 extern "C" {
@@ -453,6 +463,7 @@ extern "C" {
 mod tests {
     use stdsimd_test::simd_test;
 
+    use v128::i32x4;
     use v256::*;
     use x86::avx;
 
@@ -792,5 +803,13 @@ mod tests {
         let b = f32x8::splat(0.0);
         let r = avx::_mm256_xor_ps(a, b);
         assert_eq!(r, a);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_cvtepi32_pd() {
+        let a = i32x4::new(4, 9, 16, 25);
+        let r = avx::_mm256_cvtepi32_pd(a);
+        let e = f64x4::new(4.0, 9.0, 16.0, 25.0);
+        assert_eq!(r, e);
     }
 }
