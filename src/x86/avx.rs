@@ -428,7 +428,7 @@ pub unsafe fn _mm256_cvtepi32_pd(a: i32x4) -> f64x4 {
 #[target_feature = "+avx"]
 #[cfg_attr(test, assert_instr(vcvtdq2ps))]
 pub unsafe fn _mm256_cvtepi32_ps(a: i32x8) -> f32x8 {
-    simd_cast(a)
+    vcvtdq2ps(a)
 }
 
 /// Convert packed double-precision (64-bit) floating-point elements in `a`
@@ -437,16 +437,16 @@ pub unsafe fn _mm256_cvtepi32_ps(a: i32x8) -> f32x8 {
 #[target_feature = "+avx"]
 #[cfg_attr(test, assert_instr(vcvtpd2ps))]
 pub unsafe fn _mm256_cvtpd_ps(a: f64x4) -> f32x4 {
-    simd_cast(a)
+    vcvtpd2ps(a)
 }
 
 /// Convert packed single-precision (32-bit) floating-point elements in `a`
 /// to packed 32-bit integers.
 #[inline(always)]
 #[target_feature = "+avx"]
-#[cfg_attr(test, assert_instr(vcvttps2dq))] // FIXME vcvtps2dq expected
+#[cfg_attr(test, assert_instr(vcvtps2dq))]
 pub unsafe fn _mm256_cvtps_epi32(a: f32x8) -> i32x8 {
-    simd_cast(a)
+    vcvtps2dq(a)
 }
 
 /// Convert packed single-precision (32-bit) floating-point elements in `a`
@@ -464,7 +464,8 @@ pub unsafe fn _mm256_cvtps_pd(a: f32x4) -> f64x4 {
 #[target_feature = "+avx"]
 #[cfg_attr(test, assert_instr(vcvttpd2dq))]
 pub unsafe fn _mm256_cvttpd_epi32(a: f64x4) -> i32x4 {
-    simd_cast(a)
+    vcvttpd2dq(a)
+}
 
 /// Convert packed double-precision (64-bit) floating-point elements in `a`
 /// to packed 32-bit integers.
@@ -510,6 +511,14 @@ extern "C" {
     fn vhsubpd(a: f64x4, b: f64x4) -> f64x4;
     #[link_name = "llvm.x86.avx.hsub.ps.256"]
     fn vhsubps(a: f32x8, b: f32x8) -> f32x8;
+    #[link_name = "llvm.x86.avx.cvtdq2.ps.256"]
+    fn vcvtdq2ps(a: i32x8) -> f32x8;
+    #[link_name = "llvm.x86.avx.cvt.pd2.ps.256"]
+    fn vcvtpd2ps(a: f64x4) -> f32x4;
+    #[link_name = "llvm.x86.avx.cvt.ps2dq.256"]
+    fn vcvtps2dq(a: f32x8) -> i32x8;
+    #[link_name = "llvm.x86.avx.cvtt.pd2dq.256"]
+    fn vcvttpd2dq(a: f64x4) -> i32x4;
     #[link_name = "llvm.x86.avx.cvt.pd2dq.256"]
     fn vcvtpd2dq(a: f64x4) -> i32x4;
 }
