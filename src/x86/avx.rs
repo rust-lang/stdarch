@@ -4,7 +4,7 @@ use std::mem;
 use stdsimd_test::assert_instr;
 
 use simd_llvm::{simd_cast, simd_shuffle2, simd_shuffle4};
-use v128::{f32x4, f64x2, i32x4};
+use v128::{f32x4, f64x2, i32x4, i64x2};
 use v256::*;
 
 /// Add packed double-precision (64-bit) floating-point elements
@@ -509,6 +509,17 @@ pub unsafe fn _mm256_extractf128_pd(a: f64x4, imm8: i32) -> f64x2 {
     }
 }
 
+/// Extract 128 bits (composed of integer data) from `a`, selected with `imm8`.
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vextractf128))]
+pub unsafe fn _mm256_extractf128_si256(a: i64x4, imm8: i32) -> i64x2 {
+    match imm8 & 1 {
+        0 => simd_shuffle2(a, _mm256_undefined_si256(), [0, 1]),
+        _ => simd_shuffle2(a, _mm256_undefined_si256(), [2, 3]),
+    }
+}
+
 /// Return vector of type `f32x8` with undefined elements.
 #[inline(always)]
 #[target_feature = "+avx"]
@@ -520,6 +531,13 @@ pub unsafe fn _mm256_undefined_ps() -> f32x8 {
 #[inline(always)]
 #[target_feature = "+avx"]
 pub unsafe fn _mm256_undefined_pd() -> f64x4 {
+    mem::uninitialized()
+}
+
+/// Return vector of type `i64x4` with undefined elements.
+#[inline(always)]
+#[target_feature = "+avx"]
+pub unsafe fn _mm256_undefined_si256() -> i64x4 {
     mem::uninitialized()
 }
 
@@ -576,7 +594,7 @@ extern "C" {
 mod tests {
     use stdsimd_test::simd_test;
 
-    use v128::{f32x4, f64x2, i32x4};
+    use v128::{f32x4, f64x2, i32x4, i64x2};
     use v256::*;
     use x86::avx;
 
@@ -995,6 +1013,14 @@ mod tests {
         let a = f64x4::new(4.0, 3.0, 2.0, 5.0);
         let r = avx::_mm256_extractf128_pd(a, 0);
         let e = f64x2::new(4.0, 3.0);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_extractf128_si256() {
+        let a = i64x4::new(4, 3, 2, 5);
+        let r = avx::_mm256_extractf128_si256(a, 0);
+        let e = i64x2::new(4, 3);
         assert_eq!(r, e);
     }
 }
