@@ -485,6 +485,25 @@ pub unsafe fn _mm256_cvttps_epi32(a: f32x8) -> i32x8 {
     vcvttps2dq(a)
 }
 
+/// Extract 128 bits (composed of 4 packed single-precision (32-bit)
+/// floating-point elements) from `a`, selected with `imm8`.
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vextractf128))]
+pub unsafe fn _mm256_extractf128_ps(a: f32x8, imm8: i32) -> f32x4 {
+    match imm8 & 0x1 {
+        0 => simd_shuffle4(a, _mm256_undefined_ps(), [0, 1, 2, 3]),
+        _ => simd_shuffle4(a, _mm256_undefined_ps(), [4, 5, 6, 7]),
+    }
+}
+
+/// Return vector of type `f32x8` with undefined elements.
+#[inline(always)]
+#[target_feature = "+avx"]
+pub unsafe fn _mm256_undefined_ps() -> f32x8 {
+    mem::uninitialized()
+}
+
 /// LLVM intrinsics used in the above functions
 #[allow(improper_ctypes)]
 extern "C" {
@@ -941,6 +960,14 @@ mod tests {
         let a = f32x8::new(4.0, 9.0, 16.0, 25.0, 4.0, 9.0, 16.0, 25.0);
         let r = avx::_mm256_cvttps_epi32(a);
         let e = i32x8::new(4, 9, 16, 25, 4, 9, 16, 25);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_extractf128_ps() {
+        let a = f32x8::new(4.0, 3.0, 2.0, 5.0, 8.0, 9.0, 64.0, 50.0);
+        let r = avx::_mm256_extractf128_ps(a, 0);
+        let e = f32x4::new(4.0, 3.0, 2.0, 5.0);
         assert_eq!(r, e);
     }
 }
