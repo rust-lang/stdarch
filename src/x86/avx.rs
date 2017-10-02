@@ -556,6 +556,15 @@ pub unsafe fn _mm256_zeroall() {
     vzeroall()
 }
 
+/// Zero the upper 128 bits of all YMM registers;
+/// the lower 128-bits of the registers are unmodified.
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vzeroupper))]
+pub unsafe fn _mm256_zeroupper() {
+    vzeroupper()
+}
+
 /// Return vector of type `f32x8` with undefined elements.
 #[inline(always)]
 #[target_feature = "+avx"]
@@ -626,6 +635,8 @@ extern "C" {
     fn vcvttps2dq(a: f32x8) -> i32x8;
     #[link_name = "llvm.x86.avx.vzeroall"]
     fn vzeroall();
+    #[link_name = "llvm.x86.avx.vzeroupper"]
+    fn vzeroupper();
 }
 
 #[cfg(test)]
@@ -1099,5 +1110,10 @@ mod tests {
     #[simd_test = "avx"]
     unsafe fn _mm256_zeroall() {
         avx::_mm256_zeroall();
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_zeroupper() {
+        avx::_mm256_zeroupper();
     }
 }
