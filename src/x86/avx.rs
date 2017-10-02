@@ -527,18 +527,25 @@ pub unsafe fn _mm256_extract_epi8(a: i8x32, imm8: i32) -> i32 {
     a.extract(imm8 as u32 & 31) as i32
 }
 
-/// Extract an 16-bit integer from `a`, selected with `imm8`.
+/// Extract a 16-bit integer from `a`, selected with `imm8`.
 #[inline(always)]
 #[target_feature = "+avx"]
 pub unsafe fn _mm256_extract_epi16(a: i16x16, imm8: i32) -> i32 {
     a.extract(imm8 as u32 & 15) as i32
 }
 
-/// Extract an 32-bit integer from `a`, selected with `imm8`.
+/// Extract a 32-bit integer from `a`, selected with `imm8`.
 #[inline(always)]
 #[target_feature = "+avx"]
 pub unsafe fn _mm256_extract_epi32(a: i32x8, imm8: i32) -> i32 {
     a.extract(imm8 as u32 & 7) as i32
+}
+
+/// Extract a 64-bit integer from `a`, selected with `imm8`.
+#[inline(always)]
+#[target_feature = "+avx"]
+pub unsafe fn _mm256_extract_epi64(a: i64x4, imm8: i32) -> i32 {
+    a.extract(imm8 as u32 & 3) as i32
 }
 
 /// Return vector of type `f32x8` with undefined elements.
@@ -1070,5 +1077,12 @@ mod tests {
         let a = i32x8::new(1, 2, 3, 4, 5, 6, 7, 8);
         let r = avx::_mm256_extract_epi32(a, 0);
         assert_eq!(r, 1);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_extract_epi64() {
+        let a = i64x4::new(0, 1, 2, 3);
+        let r = avx::_mm256_extract_epi64(a, 3);
+        assert_eq!(r, 3);
     }
 }
