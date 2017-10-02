@@ -548,6 +548,14 @@ pub unsafe fn _mm256_extract_epi64(a: i64x4, imm8: i32) -> i32 {
     a.extract(imm8 as u32 & 3) as i32
 }
 
+/// Zero the contents of all XMM or YMM registers.
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vzeroall))]
+pub unsafe fn _mm256_zeroall() {
+    vzeroall()
+}
+
 /// Return vector of type `f32x8` with undefined elements.
 #[inline(always)]
 #[target_feature = "+avx"]
@@ -616,6 +624,8 @@ extern "C" {
     fn vcvtpd2dq(a: f64x4) -> i32x4;
     #[link_name = "llvm.x86.avx.cvtt.ps2dq.256"]
     fn vcvttps2dq(a: f32x8) -> i32x8;
+    #[link_name = "llvm.x86.avx.vzeroall"]
+    fn vzeroall();
 }
 
 #[cfg(test)]
@@ -1084,5 +1094,10 @@ mod tests {
         let a = i64x4::new(0, 1, 2, 3);
         let r = avx::_mm256_extract_epi64(a, 3);
         assert_eq!(r, 3);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_zeroall() {
+        avx::_mm256_zeroall();
     }
 }
