@@ -571,6 +571,15 @@ pub unsafe fn _mm256_zeroupper() {
 #[target_feature = "+avx"]
 #[cfg_attr(test, assert_instr(vpermilps))]
 pub unsafe fn _mm256_permutevar_ps(a: f32x8, b: i32x8) -> f32x8 {
+    vpermilps256(a, b)
+}
+
+/// Shuffle single-precision (32-bit) floating-point elements in `a`
+/// using the control in `b`.
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vpermilps))]
+pub unsafe fn _mm_permutevar_ps(a: f32x4, b: i32x4) -> f32x4 {
     vpermilps(a, b)
 }
 
@@ -647,7 +656,9 @@ extern "C" {
     #[link_name = "llvm.x86.avx.vzeroupper"]
     fn vzeroupper();
     #[link_name = "llvm.x86.avx.vpermilvar.ps.256"]
-    fn vpermilps(a: f32x8, b: i32x8) -> f32x8;
+    fn vpermilps256(a: f32x8, b: i32x8) -> f32x8;
+    #[link_name = "llvm.x86.avx.vpermilvar.ps"]
+    fn vpermilps(a: f32x4, b: i32x4) -> f32x4;
 }
 
 #[cfg(test)]
@@ -1134,6 +1145,15 @@ mod tests {
         let b = i32x8::new(1, 2, 3, 4, 5, 6, 7, 8);
         let r = avx::_mm256_permutevar_ps(a, b);
         let e = f32x8::new(3.0, 2.0, 5.0, 4.0, 9.0, 64.0, 50.0, 8.0);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm_permutevar_ps() {
+        let a = f32x4::new(4.0, 3.0, 2.0, 5.0);
+        let b = i32x4::new(1, 2, 3, 4);
+        let r = avx::_mm_permutevar_ps(a, b);
+        let e = f32x4::new(3.0, 2.0, 5.0, 4.0);
         assert_eq!(r, e);
     }
 }
