@@ -565,6 +565,15 @@ pub unsafe fn _mm256_zeroupper() {
     vzeroupper()
 }
 
+/// Shuffle single-precision (32-bit) floating-point elements in `a`
+/// within 128-bit lanes using the control in `b`.
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vpermilps))]
+pub unsafe fn _mm256_permutevar_ps(a: f32x8, b: i32x8) -> f32x8 {
+    vpermilps(a, b)
+}
+
 /// Return vector of type `f32x8` with undefined elements.
 #[inline(always)]
 #[target_feature = "+avx"]
@@ -637,6 +646,8 @@ extern "C" {
     fn vzeroall();
     #[link_name = "llvm.x86.avx.vzeroupper"]
     fn vzeroupper();
+    #[link_name = "llvm.x86.avx.vpermilvar.ps.256"]
+    fn vpermilps(a: f32x8, b: i32x8) -> f32x8;
 }
 
 #[cfg(test)]
@@ -1115,5 +1126,14 @@ mod tests {
     #[simd_test = "avx"]
     unsafe fn _mm256_zeroupper() {
         avx::_mm256_zeroupper();
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_permutevar_ps() {
+        let a = f32x8::new(4.0, 3.0, 2.0, 5.0, 8.0, 9.0, 64.0, 50.0);
+        let b = i32x8::new(1, 2, 3, 4, 5, 6, 7, 8);
+        let r = avx::_mm256_permutevar_ps(a, b);
+        let e = f32x8::new(3.0, 2.0, 5.0, 4.0, 9.0, 64.0, 50.0, 8.0);
+        assert_eq!(r, e);
     }
 }
