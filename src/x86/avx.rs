@@ -3,8 +3,8 @@ use std::mem;
 #[cfg(test)]
 use stdsimd_test::assert_instr;
 
-use simd_llvm::{simd_cast, simd_shuffle4};
-use v128::{f32x4, i32x4};
+use simd_llvm::{simd_cast, simd_shuffle2, simd_shuffle4};
+use v128::{f32x4, f64x2, i32x4};
 use v256::*;
 
 /// Add packed double-precision (64-bit) floating-point elements
@@ -491,9 +491,21 @@ pub unsafe fn _mm256_cvttps_epi32(a: f32x8) -> i32x8 {
 #[target_feature = "+avx"]
 #[cfg_attr(test, assert_instr(vextractf128))]
 pub unsafe fn _mm256_extractf128_ps(a: f32x8, imm8: i32) -> f32x4 {
-    match imm8 & 0x1 {
+    match imm8 & 1 {
         0 => simd_shuffle4(a, _mm256_undefined_ps(), [0, 1, 2, 3]),
         _ => simd_shuffle4(a, _mm256_undefined_ps(), [4, 5, 6, 7]),
+    }
+}
+
+/// Extract 128 bits (composed of 2 packed double-precision (64-bit)
+/// floating-point elements) from `a`, selected with `imm8`.
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vextractf128))]
+pub unsafe fn _mm256_extractf128_pd(a: f64x4, imm8: i32) -> f64x2 {
+    match imm8 & 1 {
+        0 => simd_shuffle2(a, _mm256_undefined_pd(), [0, 1]),
+        _ => simd_shuffle2(a, _mm256_undefined_pd(), [2, 3]),
     }
 }
 
@@ -501,6 +513,13 @@ pub unsafe fn _mm256_extractf128_ps(a: f32x8, imm8: i32) -> f32x4 {
 #[inline(always)]
 #[target_feature = "+avx"]
 pub unsafe fn _mm256_undefined_ps() -> f32x8 {
+    mem::uninitialized()
+}
+
+/// Return vector of type `f64x4` with undefined elements.
+#[inline(always)]
+#[target_feature = "+avx"]
+pub unsafe fn _mm256_undefined_pd() -> f64x4 {
     mem::uninitialized()
 }
 
@@ -557,7 +576,7 @@ extern "C" {
 mod tests {
     use stdsimd_test::simd_test;
 
-    use v128::{f32x4, i32x4};
+    use v128::{f32x4, f64x2, i32x4};
     use v256::*;
     use x86::avx;
 
@@ -968,6 +987,14 @@ mod tests {
         let a = f32x8::new(4.0, 3.0, 2.0, 5.0, 8.0, 9.0, 64.0, 50.0);
         let r = avx::_mm256_extractf128_ps(a, 0);
         let e = f32x4::new(4.0, 3.0, 2.0, 5.0);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_extractf128_pd() {
+        let a = f64x4::new(4.0, 3.0, 2.0, 5.0);
+        let r = avx::_mm256_extractf128_pd(a, 0);
+        let e = f64x2::new(4.0, 3.0);
         assert_eq!(r, e);
     }
 }
