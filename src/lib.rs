@@ -33,7 +33,7 @@
 //! ## Portability
 //!
 //! The `simd` module and its types should be portable to all platforms. The
-//! runtime characteristics of these types may vary per paltform and per CPU
+//! runtime characteristics of these types may vary per platform and per CPU
 //! feature enabled, but they should always have the most optimized
 //! implementation for the target at hand.
 //!
@@ -82,6 +82,7 @@
 //! [vendor]: https://github.com/rust-lang-nursery/stdsimd/issues/40
 
 #![allow(dead_code)]
+#![allow(unused_features)]
 #![feature(
     const_fn, link_llvm_intrinsics, platform_intrinsics, repr_simd, simd_ffi,
     target_feature, cfg_target_feature, i128_type, asm, const_atomic_usize_new
@@ -89,7 +90,7 @@
 #![cfg_attr(test, feature(proc_macro))]
 
 #[cfg(test)]
-extern crate assert_instr;
+extern crate stdsimd_test;
 
 /// Platform independent SIMD vector types and operations.
 pub mod simd {
