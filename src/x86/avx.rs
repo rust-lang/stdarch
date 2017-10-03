@@ -3,7 +3,7 @@ use std::mem;
 #[cfg(test)]
 use stdsimd_test::assert_instr;
 
-use simd_llvm::{simd_cast, simd_shuffle2, simd_shuffle4};
+use simd_llvm::{simd_cast, simd_shuffle2, simd_shuffle4, simd_shuffle8};
 use v128::{f32x4, f64x2, i32x4, i64x2};
 use v256::*;
 
@@ -298,8 +298,7 @@ pub unsafe fn _mm256_sqrt_pd(a: f64x4) -> f64x4 {
 /// `a` and `b` using control mask `imm8`.
 #[inline(always)]
 #[target_feature = "+avx"]
-// FIXME too many instructions in the disassembly
-//#[cfg_attr(test, assert_instr(vblendpd, imm8 = 0))]
+#[cfg_attr(test, assert_instr(vblendpd, imm8 = 9))]
 pub unsafe fn _mm256_blend_pd(a: f64x4, b: f64x4, imm8: i32) -> f64x4 {
     macro_rules! blend4 {
         ($a:expr, $b:expr, $c:expr, $d:expr) => {
@@ -581,6 +580,59 @@ pub unsafe fn _mm256_permutevar_ps(a: f32x8, b: i32x8) -> f32x8 {
 #[cfg_attr(test, assert_instr(vpermilps))]
 pub unsafe fn _mm_permutevar_ps(a: f32x4, b: i32x4) -> f32x4 {
     vpermilps(a, b)
+}
+
+/// Shuffle single-precision (32-bit) floating-point elements in `a`
+/// within 128-bit lanes using the control in `imm8`.
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vpermilps, imm8 = 9))]
+pub unsafe fn _mm256_permute_ps(a: f32x8, imm8: i32) -> f32x8 {
+    let imm8 = imm8 as u32;
+    const fn add4(x: u32) -> u32 { x + 4 }
+    macro_rules! shuffle4 {
+        ($a:expr, $b:expr, $c:expr, $d:expr) => {
+            simd_shuffle8(a, _mm256_undefined_ps(), [
+                $a, $b, $c, $d, add4($a), add4($b), add4($c), add4($d)
+            ])
+        }
+    }
+    macro_rules! shuffle3 {
+        ($a:expr, $b:expr, $c:expr) => {
+            match (imm8 >> 6) & 0b11 {
+                0b00 => shuffle4!($a, $b, $c, 0),
+                0b01 => shuffle4!($a, $b, $c, 1),
+                0b10 => shuffle4!($a, $b, $c, 2),
+                _ => shuffle4!($a, $b, $c, 3),
+            }
+        }
+    }
+    macro_rules! shuffle2 {
+        ($a:expr, $b:expr) => {
+            match (imm8 >> 4) & 0b11 {
+                0b00 => shuffle3!($a, $b, 0),
+                0b01 => shuffle3!($a, $b, 1),
+                0b10 => shuffle3!($a, $b, 2),
+                _ => shuffle3!($a, $b, 3),
+            }
+        }
+    }
+    macro_rules! shuffle1 {
+        ($a:expr) => {
+            match (imm8 >> 2) & 0b11 {
+                0b00 => shuffle2!($a, 0),
+                0b01 => shuffle2!($a, 1),
+                0b10 => shuffle2!($a, 2),
+                _ => shuffle2!($a, 3),
+            }
+        }
+    }
+    match (imm8 >> 0) & 0b11 {
+        0b00 => shuffle1!(0),
+        0b01 => shuffle1!(1),
+        0b10 => shuffle1!(2),
+        _ => shuffle1!(3),
+    }
 }
 
 /// Return vector of type `f32x8` with undefined elements.
@@ -1154,6 +1206,14 @@ mod tests {
         let b = i32x4::new(1, 2, 3, 4);
         let r = avx::_mm_permutevar_ps(a, b);
         let e = f32x4::new(3.0, 2.0, 5.0, 4.0);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_permute_ps() {
+        let a = f32x8::new(4.0, 3.0, 2.0, 5.0, 8.0, 9.0, 64.0, 50.0);
+        let r = avx::_mm256_permute_ps(a, 0x1b);
+        let e = f32x8::new(5.0, 2.0, 3.0, 4.0, 50.0, 64.0, 9.0, 8.0);
         assert_eq!(r, e);
     }
 }
