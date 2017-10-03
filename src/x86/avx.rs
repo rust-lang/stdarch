@@ -455,7 +455,7 @@ pub unsafe fn _mm256_cvtps_epi32(a: f32x8) -> i32x8 {
 #[target_feature = "+avx"]
 #[cfg_attr(test, assert_instr(vcvtps2pd))]
 pub unsafe fn _mm256_cvtps_pd(a: f32x4) -> f64x4 {
-    simd_cast(a)
+    a.as_f64x4()
 }
 
 /// Convert packed double-precision (64-bit) floating-point elements in `a`
