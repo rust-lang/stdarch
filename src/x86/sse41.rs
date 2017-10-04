@@ -15,6 +15,16 @@ pub unsafe fn _mm_blendv_epi8(
     pblendvb(a, b, mask)
 }
 
+#[inline(always)]
+#[target_feature = "+sse4.1"]
+#[cfg_attr(test, assert_instr(pblendw, imm8=0xF0))]
+pub unsafe fn _mm_blend_epi16(a: i16x8, b: i16x8, imm8: u8) -> i16x8 {
+    macro_rules! call {
+        ($imm8:expr) => { pblendw(a, b, $imm8) }
+    }
+    constify_imm8!(imm8, call)
+}
+
 /// Blend packed double-precision (64-bit) floating-point elements from `a` and `b` using `mask`
 #[inline(always)]
 #[target_feature = "+sse4.1"]
@@ -99,6 +109,8 @@ extern {
     fn blendpd(a: f64x2, b: f64x2, imm2: u8) -> f64x2;
     #[link_name = "llvm.x86.sse41.blendps"]
     fn blendps(a: f32x4, b: f32x4, imm4: u8) -> f32x4;
+    #[link_name = "llvm.x86.sse41.pblendw"]
+    fn pblendw(a: i16x8, b: i16x8, imm8: u8) -> i16x8;
     #[link_name = "llvm.x86.sse41.dppd"]
     fn dppd(a: f64x2, b: f64x2, imm8: u8) -> f64x2;
     #[link_name = "llvm.x86.sse41.dpps"]
@@ -160,6 +172,15 @@ mod tests {
         let b = f32x4::splat(1.0);
         let r = sse41::_mm_blend_ps(a, b, 0b1010);
         let e = f32x4::new(0.0, 1.0, 0.0, 1.0);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "sse4.1"]
+    unsafe fn _mm_blend_epi16() {
+        let a = i16x8::splat(0);
+        let b = i16x8::splat(1);
+        let r = sse41::_mm_blend_epi16(a, b, 0b1010_1100);
+        let e = i16x8::new(0, 0, 1, 1, 0, 1, 0, 1);
         assert_eq!(r, e);
     }
 
