@@ -82,6 +82,14 @@ pub unsafe fn _mm_extract_epi8(a: i8x16, imm8: u8) -> i32 {
     a.extract((imm8 & 0b111) as u32) as i32
 }
 
+/// Extract an 32-bit integer from `a` selected with `imm8`
+#[inline(always)]
+#[target_feature = "+sse4.1"]
+#[cfg_attr(test, assert_instr(pextrd, imm8=1))]
+pub unsafe fn _mm_extract_epi32(a: i32x4, imm8: u8) -> i32 {
+    a.extract((imm8 & 0b11) as u32) as i32
+}
+
 /// Returns the dot product of two f64x2 vectors.
 ///
 /// `imm8[1:0]` is the broadcast mask, and `imm8[5:4]` is the condition mask.
@@ -224,6 +232,17 @@ mod tests {
         assert_eq!(r, 1);
 
         let r = sse41::_mm_extract_epi8(a, 17);
+        assert_eq!(r, 1);
+    }
+
+    #[simd_test = "sse4.1"]
+    unsafe fn _mm_extract_epi32() {
+        let a = i32x4::new(0, 1, 2, 3);
+
+        let r = sse41::_mm_extract_epi32(a, 1);
+        assert_eq!(r, 1);
+
+        let r = sse41::_mm_extract_epi32(a, 5);
         assert_eq!(r, 1);
     }
 
