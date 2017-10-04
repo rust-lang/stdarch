@@ -236,7 +236,7 @@ mod tests {
     unsafe fn _mm_blendv_pd() {
         let a = f64x2::splat(0.0);
         let b = f64x2::splat(1.0);
-        let mask = ::std::mem::transmute(i64x2::new(0, -1));
+        let mask = mem::transmute(i64x2::new(0, -1));
         let r = sse41::_mm_blendv_pd(a, b, mask);
         let e = f64x2::new(0.0, 1.0);
         assert_eq!(r, e);
@@ -246,7 +246,7 @@ mod tests {
     unsafe fn _mm_blendv_ps() {
         let a = f32x4::splat(0.0);
         let b = f32x4::splat(1.0);
-        let mask = ::std::mem::transmute(i32x4::new(0,-1, 0, -1));
+        let mask = mem::transmute(i32x4::new(0,-1, 0, -1));
         let r = sse41::_mm_blendv_ps(a, b, mask);
         let e = f32x4::new(0.0, 1.0, 0.0, 1.0);
         assert_eq!(r, e);
@@ -282,10 +282,8 @@ mod tests {
     #[simd_test = "sse4.1"]
     unsafe fn _mm_extract_ps() {
         let a = f32x4::new(0.0, 1.0, 2.0, 3.0);
-
         let r: f32 = mem::transmute(sse41::_mm_extract_ps(a, 1));
         assert_eq!(r, 1.0);
-
         let r: f32 = mem::transmute(sse41::_mm_extract_ps(a, 5));
         assert_eq!(r, 1.0);
     }
@@ -293,10 +291,8 @@ mod tests {
     #[simd_test = "sse4.1"]
     unsafe fn _mm_extract_epi8() {
         let a = i8x16::new(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
-
         let r = sse41::_mm_extract_epi8(a, 1);
         assert_eq!(r, 1);
-
         let r = sse41::_mm_extract_epi8(a, 17);
         assert_eq!(r, 1);
     }
@@ -304,10 +300,8 @@ mod tests {
     #[simd_test = "sse4.1"]
     unsafe fn _mm_extract_epi32() {
         let a = i32x4::new(0, 1, 2, 3);
-
         let r = sse41::_mm_extract_epi32(a, 1);
         assert_eq!(r, 1);
-
         let r = sse41::_mm_extract_epi32(a, 5);
         assert_eq!(r, 1);
     }
@@ -315,10 +309,8 @@ mod tests {
     #[simd_test = "sse4.1"]
     unsafe fn _mm_extract_epi64() {
         let a = i64x2::new(0, 1);
-
         let r = sse41::_mm_extract_epi64(a, 1);
         assert_eq!(r, 1);
-
         let r = sse41::_mm_extract_epi64(a, 3);
         assert_eq!(r, 1);
     }
@@ -335,11 +327,9 @@ mod tests {
     #[simd_test = "sse4.1"]
     unsafe fn _mm_insert_epi8() {
         let a = i8x16::splat(0);
-
         let r = sse41::_mm_insert_epi8(a, 32, 1);
         let e = i8x16::splat(0).replace(1, 32);
         assert_eq!(r, e);
-
         let r = sse41::_mm_insert_epi8(a, 32, 17);
         let e = i8x16::splat(0).replace(1, 32);
         assert_eq!(r, e);
@@ -348,11 +338,9 @@ mod tests {
     #[simd_test = "sse4.1"]
     unsafe fn _mm_insert_epi32() {
         let a = i32x4::splat(0);
-
         let r = sse41::_mm_insert_epi32(a, 32, 1);
         let e = i32x4::splat(0).replace(1, 32);
         assert_eq!(r, e);
-
         let r = sse41::_mm_insert_epi32(a, 32, 5);
         let e = i32x4::splat(0).replace(1, 32);
         assert_eq!(r, e);
@@ -361,7 +349,6 @@ mod tests {
     #[simd_test = "sse4.1"]
     unsafe fn _mm_insert_epi64() {
         let a = i64x2::splat(0);
-
         let r = sse41::_mm_insert_epi64(a, 32, 1);
         let e = i64x2::splat(0).replace(1, 32);
         assert_eq!(r, e);
