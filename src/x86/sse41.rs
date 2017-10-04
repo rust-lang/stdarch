@@ -1,3 +1,6 @@
+
+use std::mem;
+
 #[cfg(test)]
 use stdsimd_test::assert_instr;
 
@@ -63,6 +66,14 @@ pub unsafe fn _mm_blend_ps(a: f32x4, b: f32x4, imm4: u8) -> f32x4 {
     constify_imm4!(imm4, call)
 }
 
+/// Extract a single-precision (32-bit) floating-point element from `a`, selected with `imm8`
+#[inline(always)]
+#[target_feature = "+sse4.1"]
+#[cfg_attr(test, assert_instr(extractps, imm8=0))]
+pub unsafe fn _mm_extract_ps(a: f32x4, imm8: u8) -> i32 {
+    mem::transmute(a.extract((imm8 & 0b11) as u32))
+}
+
 /// Returns the dot product of two f64x2 vectors.
 ///
 /// `imm8[1:0]` is the broadcast mask, and `imm8[5:4]` is the condition mask.
@@ -119,6 +130,8 @@ extern {
 
 #[cfg(test)]
 mod tests {
+    use std::mem;
+
     use stdsimd_test::simd_test;
 
     use v128::*;
@@ -182,6 +195,17 @@ mod tests {
         let r = sse41::_mm_blend_epi16(a, b, 0b1010_1100);
         let e = i16x8::new(0, 0, 1, 1, 0, 1, 0, 1);
         assert_eq!(r, e);
+    }
+
+    #[simd_test = "sse4.1"]
+    unsafe fn _mm_extract_ps() {
+        let a = f32x4::new(0.0, 1.0, 2.0, 3.0);
+
+        let r: f32 = mem::transmute(sse41::_mm_extract_ps(a, 1));
+        assert_eq!(r, 1.0);
+
+        let r: f32 = mem::transmute(sse41::_mm_extract_ps(a, 5));
+        assert_eq!(r, 1.0);
     }
 
     #[simd_test = "sse4.1"]
