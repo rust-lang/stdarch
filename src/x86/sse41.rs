@@ -124,10 +124,18 @@ pub unsafe fn _mm_extract_epi64(a: i64x2, imm8: u8) -> i64 {
 #[target_feature = "+sse4.1"]
 #[cfg_attr(test, assert_instr(insertps, imm8=0b1010))]
 pub unsafe fn _mm_insert_ps(a: f32x4, b: f32x4, imm8: u8) -> f32x4 {
-        macro_rules! call {
+    macro_rules! call {
         ($imm8:expr) => { insertps(a, b, $imm8) }
     }
     constify_imm8!(imm8, call)
+}
+
+/// Return a copy of `a` with an 8-bit integer from `i` inserted at a location specified by `imm8`. 
+#[inline(always)]
+#[target_feature = "+sse4.1"]
+#[cfg_attr(test, assert_instr(pinsrb, imm8=0))]
+pub unsafe fn _mm_insert_epi8(a: i8x16, i: i8, imm8: u8) -> i8x16 {
+    a.replace((imm8 & 0b111) as u32, i)
 }
 
 /// Returns the dot product of two f64x2 vectors.
@@ -305,6 +313,19 @@ mod tests {
         let b = f32x4::new(1.0, 2.0, 3.0, 4.0);
         let r = sse41::_mm_insert_ps(a, b, 0b11_00_1100);
         let e = f32x4::new(4.0, 1.0, 0.0, 0.0);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "sse4.1"]
+    unsafe fn _mm_insert_epi8() {
+        let a = i8x16::splat(0);
+
+        let r = sse41::_mm_insert_epi8(a, 32, 1);
+        let e = i8x16::splat(0).replace(1, 32);
+        assert_eq!(r, e);
+
+        let r = sse41::_mm_insert_epi8(a, 32, 17);
+        let e = i8x16::splat(0).replace(1, 32);
         assert_eq!(r, e);
     }
 
