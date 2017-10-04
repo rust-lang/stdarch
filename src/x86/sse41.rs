@@ -31,6 +31,28 @@ pub unsafe fn _mm_blendv_ps(a: f32x4, b: f32x4, mask: f32x4) -> f32x4 {
     blendvps(a, b, mask)
 }
 
+/// Blend packed double-precision (64-bit) floating-point elements from `a` and `b` using control mask `imm2`
+#[inline(always)]
+#[target_feature = "+sse4.1"]
+#[cfg_attr(test, assert_instr(blendpd, imm2=0b10))]
+pub unsafe fn _mm_blend_pd(a: f64x2, b: f64x2, imm2: u8) -> f64x2 {
+    macro_rules! call {
+        ($imm2:expr) => { blendpd(a, b, $imm2) }
+    }
+    constify_imm2!(imm2, call)
+}
+
+/// Blend packed single-precision (32-bit) floating-point elements from `a` and `b` using mask `imm4`
+#[inline(always)]
+#[target_feature = "+sse4.1"]
+#[cfg_attr(test, assert_instr(blendps, imm4=0b0101))]
+pub unsafe fn _mm_blend_ps(a: f32x4, b: f32x4, imm4: u8) -> f32x4 {
+    macro_rules! call {
+        ($imm4:expr) => { blendps(a, b, $imm4) }
+    }
+    constify_imm4!(imm4, call)
+}
+
 /// Returns the dot product of two f64x2 vectors.
 ///
 /// `imm8[1:0]` is the broadcast mask, and `imm8[5:4]` is the condition mask.
@@ -73,6 +95,10 @@ extern {
     fn blendvpd(a: f64x2, b: f64x2, mask: f64x2) -> f64x2;
     #[link_name = "llvm.x86.sse41.blendvps"]
     fn blendvps(a: f32x4, b: f32x4, mask: f32x4) -> f32x4;
+    #[link_name = "llvm.x86.sse41.blendpd"]
+    fn blendpd(a: f64x2, b: f64x2, imm2: u8) -> f64x2;
+    #[link_name = "llvm.x86.sse41.blendps"]
+    fn blendps(a: f32x4, b: f32x4, imm4: u8) -> f32x4;
     #[link_name = "llvm.x86.sse41.dppd"]
     fn dppd(a: f64x2, b: f64x2, imm8: u8) -> f64x2;
     #[link_name = "llvm.x86.sse41.dpps"]
@@ -115,6 +141,24 @@ mod tests {
         let b = f32x4::splat(1.0);
         let mask = ::std::mem::transmute(i32x4::new(0,-1, 0, -1));
         let r = sse41::_mm_blendv_ps(a, b, mask);
+        let e = f32x4::new(0.0, 1.0, 0.0, 1.0);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "sse4.1"]
+    unsafe fn _mm_blend_pd() {
+        let a = f64x2::splat(0.0);
+        let b = f64x2::splat(1.0);
+        let r = sse41::_mm_blend_pd(a, b, 0b10);
+        let e = f64x2::new(0.0, 1.0);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "sse4.1"]
+    unsafe fn _mm_blend_ps() {
+        let a = f32x4::splat(0.0);
+        let b = f32x4::splat(1.0);
+        let r = sse41::_mm_blend_ps(a, b, 0b1010);
         let e = f32x4::new(0.0, 1.0, 0.0, 1.0);
         assert_eq!(r, e);
     }
