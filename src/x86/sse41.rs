@@ -154,6 +154,38 @@ pub unsafe fn _mm_insert_epi64(a: i64x2, i: i64, imm8: u8) -> i64x2 {
     a.replace((imm8 & 0b1) as u32, i)
 }
 
+/// Compare packed 8-bit integers in `a` and `b`,87 and return packed maximum values in dst. 
+#[inline(always)]
+#[target_feature = "+sse4.1"]
+#[cfg_attr(test, assert_instr(pmaxsb, imm8=0))]
+pub unsafe fn _mm_max_epi8(a: i8x16, b: i8x16) -> i8x16 {
+    pmaxsb(a, b)
+}
+
+/// Compare packed unsigned 16-bit integers in `a` and `b`, and return packed maximum.
+#[inline(always)]
+#[target_feature = "+sse4.1"]
+#[cfg_attr(test, assert_instr(pmaxuw, imm8=0))]
+pub unsafe fn _mm_max_epu16(a: u16x8, b: u16x8) -> u16x8 {
+    pmaxuw(a, b)
+}
+
+// Compare packed 32-bit integers in `a` and `b`, and return packed maximum values.
+#[inline(always)]
+#[target_feature = "+sse4.1"]
+#[cfg_attr(test, assert_instr(pmaxsd, imm8=0))]
+pub unsafe fn _mm_max_epi32(a: i32x4, b: i32x4) -> i32x4 {
+    pmaxsd(a, b)
+}
+
+// Compare packed unsigned 32-bit integers in `a` and `b`, and return packed maximum values.
+#[inline(always)]
+#[target_feature = "+sse4.1"]
+#[cfg_attr(test, assert_instr(pmaxud, imm8=0))]
+pub unsafe fn _mm_max_epu32(a: u32x4, b: u32x4) -> u32x4 {
+    pmaxud(a, b)
+}
+
 /// Returns the dot product of two f64x2 vectors.
 ///
 /// `imm8[1:0]` is the broadcast mask, and `imm8[5:4]` is the condition mask.
@@ -204,6 +236,14 @@ extern {
     fn pblendw(a: i16x8, b: i16x8, imm8: u8) -> i16x8;
     #[link_name = "llvm.x86.sse41.insertps"]
     fn insertps(a: f32x4, b: f32x4, imm8: u8) -> f32x4;
+    #[link_name = "llvm.x86.sse41.pmaxsb"]
+    fn pmaxsb(a: i8x16, b: i8x16) -> i8x16;
+    #[link_name = "llvm.x86.sse41.pmaxuw"]
+    fn pmaxuw(a: u16x8, b: u16x8) -> u16x8;
+    #[link_name = "llvm.x86.sse41.pmaxsd"]
+    fn pmaxsd(a: i32x4, b: i32x4) -> i32x4;
+    #[link_name = "llvm.x86.sse41.pmaxud"]
+    fn pmaxud(a: u32x4, b: u32x4) -> u32x4;
     #[link_name = "llvm.x86.sse41.dppd"]
     fn dppd(a: f64x2, b: f64x2, imm8: u8) -> f64x2;
     #[link_name = "llvm.x86.sse41.dpps"]
@@ -355,6 +395,42 @@ mod tests {
 
         let r = sse41::_mm_insert_epi64(a, 32, 3);
         let e = i64x2::splat(0).replace(1, 32);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm_max_epi8() {
+        let a = i8x16::new(1, 4, 5, 8, 9, 12, 13, 16, 17, 20, 21, 24, 25, 28, 29, 32);
+        let b = i8x16::new(2, 3, 6, 7, 10, 11, 14, 15, 18, 19, 22, 23, 26, 27, 30, 31);
+        let r = sse41::_mm_max_epi8(a, b);
+        let e = i8x16::new(2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm_max_epu16() {
+        let a = u16x8::new(1, 4, 5, 8, 9, 12, 13, 16);
+        let b = u16x8::new(2, 3, 6, 7, 10, 11, 14, 15);
+        let r = sse41::_mm_max_epu16(a, b);
+        let e = u16x8::new(2, 4, 6, 8, 10, 12, 14, 16);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm_max_epi32() {
+        let a = i32x4::new(1, 4, 5, 8);
+        let b = i32x4::new(2, 3, 6, 7);
+        let r = sse41::_mm_max_epi32(a, b);
+        let e = i32x4::new(2, 4, 6, 8);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm_max_epu32() {
+        let a = u32x4::new(1, 4, 5, 8);
+        let b = u32x4::new(2, 3, 6, 7);
+        let r = sse41::_mm_max_epu32(a, b);
+        let e = u32x4::new(2, 4, 6, 8);
         assert_eq!(r, e);
     }
 
