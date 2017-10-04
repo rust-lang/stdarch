@@ -15,6 +15,22 @@ pub unsafe fn _mm_blendv_epi8(
     pblendvb(a, b, mask)
 }
 
+/// Blend packed double-precision (64-bit) floating-point elements from `a` and `b` using `mask`
+#[inline(always)]
+#[target_feature = "+sse4.1"]
+#[cfg_attr(test, assert_instr(blendvpd))]
+pub unsafe fn _mm_blendv_pd(a: f64x2, b: f64x2, mask: f64x2) -> f64x2 {
+    blendvpd(a, b, mask)
+}
+
+/// Blend packed single-precision (32-bit) floating-point elements from `a` and `b` using `mask`
+#[inline(always)]
+#[target_feature = "+sse4.1"]
+#[cfg_attr(test, assert_instr(blendvps))]
+pub unsafe fn _mm_blendv_ps(a: f32x4, b: f32x4, mask: f32x4) -> f32x4 {
+    blendvps(a, b, mask)
+}
+
 /// Returns the dot product of two f64x2 vectors.
 ///
 /// `imm8[1:0]` is the broadcast mask, and `imm8[5:4]` is the condition mask.
@@ -53,6 +69,10 @@ pub unsafe fn _mm_dp_ps(a: f32x4, b: f32x4, imm8: u8) -> f32x4 {
 extern {
     #[link_name = "llvm.x86.sse41.pblendvb"]
     fn pblendvb(a: __m128i, b: __m128i, mask: __m128i) -> __m128i;
+    #[link_name = "llvm.x86.sse41.blendvpd"]
+    fn blendvpd(a: f64x2, b: f64x2, mask: f64x2) -> f64x2;
+    #[link_name = "llvm.x86.sse41.blendvps"]
+    fn blendvps(a: f32x4, b: f32x4, mask: f32x4) -> f32x4;
     #[link_name = "llvm.x86.sse41.dppd"]
     fn dppd(a: f64x2, b: f64x2, imm8: u8) -> f64x2;
     #[link_name = "llvm.x86.sse41.dpps"]
@@ -77,6 +97,26 @@ mod tests {
         let e = i8x16::new(
             0, 17, 2, 19, 4, 21, 6, 23, 8, 25, 10, 27, 12, 29, 14, 31);
         assert_eq!(sse41::_mm_blendv_epi8(a, b, mask), e);
+    }
+
+    #[simd_test = "sse4.1"]
+    unsafe fn _mm_blendv_pd() {
+        let a = f64x2::splat(0.0);
+        let b = f64x2::splat(1.0);
+        let mask = ::std::mem::transmute(i64x2::new(0, -1));
+        let r = sse41::_mm_blendv_pd(a, b, mask);
+        let e = f64x2::new(0.0, 1.0);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "sse4.1"]
+    unsafe fn _mm_blendv_ps() {
+        let a = f32x4::splat(0.0);
+        let b = f32x4::splat(1.0);
+        let mask = ::std::mem::transmute(i32x4::new(0,-1, 0, -1));
+        let r = sse41::_mm_blendv_ps(a, b, mask);
+        let e = f32x4::new(0.0, 1.0, 0.0, 1.0);
+        assert_eq!(r, e);
     }
 
     #[simd_test = "sse4.1"]
