@@ -339,13 +339,13 @@ pub unsafe fn _mm_getcsr() -> u32 {
 ///   raised. Precision exceptions are very common, so they are usually masked.
 ///
 /// Exception flags can be read and set using the convenience functions
-/// `_mm_get_exception_state` and `_mm_set_exception_state`. For example, to
+/// `_MM_GET_EXCEPTION_STATE` and `_MM_SET_EXCEPTION_STATE`. For example, to
 /// check if an operation caused some overflow:
 ///
 /// ```rust,ignore
-/// _mm_set_exception_state(0);  // clear all exception flags
+/// _MM_SET_EXCEPTION_STATE(0);  // clear all exception flags
 /// // perform calculations
-/// if _mm_get_exception_state() & _MM_EXCEPT_OVERFLOW != 0 {
+/// if _MM_GET_EXCEPTION_STATE() & _MM_EXCEPT_OVERFLOW != 0 {
 ///     // handle overflow
 /// }
 /// ```
@@ -359,7 +359,7 @@ pub unsafe fn _mm_getcsr() -> u32 {
 /// A single masking bit can be set via
 ///
 /// ```rust,ignore
-/// _mm_set_exception_mask(_MM_MASK_UNDERFLOW);
+/// _MM_SET_EXCEPTION_MASK(_MM_MASK_UNDERFLOW);
 /// ```
 ///
 /// However, since mask bits are by default all set to 1, it is more common to
@@ -378,8 +378,8 @@ pub unsafe fn _mm_getcsr() -> u32 {
 /// ## Rounding Mode
 ///
 /// The rounding mode is describe using two bits. It can be read and set using
-/// the convenience wrappers `_mm_get_rounding_mode()` and
-/// `_mm_set_rounding_mode(mode)`.
+/// the convenience wrappers `_MM_GET_ROUNDING_MODE()` and
+/// `_MM_SET_ROUNDING_MODE(mode)`.
 ///
 /// The rounding modes are:
 ///
@@ -396,7 +396,7 @@ pub unsafe fn _mm_getcsr() -> u32 {
 /// Example:
 ///
 /// ```rust,ignore
-/// _mm_set_rounding_mode(_MM_ROUND_DOWN)
+/// _MM_SET_ROUNDING_MODE(_MM_ROUND_DOWN)
 /// ```
 ///
 /// ## Denormals-are-zero/Flush-to-zero Mode
@@ -405,11 +405,11 @@ pub unsafe fn _mm_getcsr() -> u32 {
 /// instead. This is turned off by default.
 ///
 /// You can read and enable/disable this mode via the helper functions
-/// `_mm_get_flush_zero_mode()` and `_mm_set_flush_zero_mode()`:
+/// `_MM_GET_FLUSH_ZERO_MODE()` and `_MM_SET_FLUSH_ZERO_MODE()`:
 ///
 /// ```rust,ignore
-/// _mm_set_flush_zero_mode(_MM_FLUSH_ZERO_OFF);  // turn off (default)
-/// _mm_set_flush_zero_mode(_MM_FLUSH_ZERO_ON);  // turn on
+/// _MM_SET_FLUSH_ZERO_MODE(_MM_FLUSH_ZERO_OFF);  // turn off (default)
+/// _MM_SET_FLUSH_ZERO_MODE(_MM_FLUSH_ZERO_ON);  // turn on
 /// ```
 ///
 #[inline(always)]
@@ -464,52 +464,60 @@ pub const _MM_FLUSH_ZERO_ON: u32     = 0x8000;
 pub const _MM_FLUSH_ZERO_OFF: u32    = 0x0000;
 
 #[inline(always)]
+#[allow(non_snake_case)]
 #[target_feature = "+sse"]
-pub unsafe fn _mm_get_exception_mask() -> u32 {
+pub unsafe fn _MM_GET_EXCEPTION_MASK() -> u32 {
     _mm_getcsr() & _MM_MASK_MASK
 }
 
 #[inline(always)]
+#[allow(non_snake_case)]
 #[target_feature = "+sse"]
-pub unsafe fn _mm_get_exception_state() -> u32 {
+pub unsafe fn _MM_GET_EXCEPTION_STATE() -> u32 {
     _mm_getcsr() & _MM_EXCEPT_MASK
 }
 
 #[inline(always)]
+#[allow(non_snake_case)]
 #[target_feature = "+sse"]
-pub unsafe fn _mm_get_flush_zero_mode() -> u32 {
+pub unsafe fn _MM_GET_FLUSH_ZERO_MODE() -> u32 {
     _mm_getcsr() & _MM_FLUSH_ZERO_MASK
 }
 
 #[inline(always)]
+#[allow(non_snake_case)]
 #[target_feature = "+sse"]
-pub unsafe fn _mm_get_rounding_mode() -> u32 {
+pub unsafe fn _MM_GET_ROUNDING_MODE() -> u32 {
     _mm_getcsr() & _MM_ROUND_MASK
 }
 
 #[inline(always)]
+#[allow(non_snake_case)]
 #[target_feature = "+sse"]
-pub unsafe fn _mm_set_exception_mask(x: u32) {
+pub unsafe fn _MM_SET_EXCEPTION_MASK(x: u32) {
     _mm_setcsr((_mm_getcsr() & !_MM_MASK_MASK) | x)
 }
 
 #[inline(always)]
+#[allow(non_snake_case)]
 #[target_feature = "+sse"]
-pub unsafe fn _mm_set_exception_state(x: u32) {
+pub unsafe fn _MM_SET_EXCEPTION_STATE(x: u32) {
     _mm_setcsr((_mm_getcsr() & !_MM_EXCEPT_MASK) | x)
 }
 
 #[inline(always)]
+#[allow(non_snake_case)]
 #[target_feature = "+sse"]
-pub unsafe fn _mm_set_flush_zero_mode(x: u32) {
+pub unsafe fn _MM_SET_FLUSH_ZERO_MODE(x: u32) {
     let val = (_mm_getcsr() & !_MM_FLUSH_ZERO_MASK) | x;
     //println!("setting csr={:x}", val);
     _mm_setcsr(val)
 }
 
 #[inline(always)]
+#[allow(non_snake_case)]
 #[target_feature = "+sse"]
-pub unsafe fn _mm_set_rounding_mode(x: u32) {
+pub unsafe fn _MM_SET_ROUNDING_MODE(x: u32) {
     _mm_setcsr((_mm_getcsr() & !_MM_ROUND_MASK) | x)
 }
 
@@ -767,7 +775,7 @@ mod tests {
         let a = f32x4::new(1.1e-36, 0.0, 0.0, 1.0);
         let b = f32x4::new(0.001, 0.0, 0.0, 1.0);
 
-        sse::_mm_set_flush_zero_mode(sse::_MM_FLUSH_ZERO_ON);
+        sse::_MM_SET_FLUSH_ZERO_MODE(sse::_MM_FLUSH_ZERO_ON);
         let r = sse::_mm_mul_ps(black_box(a), black_box(b));
 
         sse::_mm_setcsr(saved_csr);
@@ -785,7 +793,7 @@ mod tests {
         let a = f32x4::new(1.1e-36, 0.0, 0.0, 1.0);
         let b = f32x4::new(0.001, 0.0, 0.0, 1.0);
 
-        sse::_mm_set_flush_zero_mode(sse::_MM_FLUSH_ZERO_OFF);
+        sse::_MM_SET_FLUSH_ZERO_MODE(sse::_MM_FLUSH_ZERO_OFF);
         let r = sse::_mm_mul_ps(black_box(a), black_box(b));
 
         sse::_mm_setcsr(saved_csr);
@@ -796,12 +804,12 @@ mod tests {
 
     #[simd_test = "sse"]
     unsafe fn _mm_getcsr_setcsr_underflow() {
-        sse::_mm_set_exception_state(0);
+        sse::_MM_SET_EXCEPTION_STATE(0);
 
         let a = f32x4::new(1.1e-36, 0.0, 0.0, 1.0);
         let b = f32x4::new(1e-5, 0.0, 0.0, 1.0);
 
-        assert_eq!(sse::_mm_get_exception_state(), 0);  // just to be sure
+        assert_eq!(sse::_MM_GET_EXCEPTION_STATE(), 0);  // just to be sure
 
         let r = sse::_mm_mul_ps(black_box(a), black_box(b));
 
@@ -809,7 +817,7 @@ mod tests {
         assert_eq!(r, exp);
 
         let underflow =
-            sse::_mm_get_exception_state() & sse::_MM_EXCEPT_UNDERFLOW != 0;
+            sse::_MM_GET_EXCEPTION_STATE() & sse::_MM_EXCEPT_UNDERFLOW != 0;
         assert_eq!(underflow, true);
     }
 }
