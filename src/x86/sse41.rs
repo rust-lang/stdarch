@@ -98,6 +98,38 @@ pub unsafe fn _mm_extract_epi64(a: i64x2, imm8: u8) -> i64 {
     a.extract((imm8 & 0b1) as u32)
 }
 
+/// Select a single value in `a` to store at some position in `b`, 
+/// Then zero elements according to `imm8`.
+/// 
+/// `imm8` specifies which bits from operand `a` will be copied, which bits in the 
+/// result they will be copied to, and which bits in the result will be
+/// cleared. The following assignments are made:
+///
+/// * Bits `[7:6]` specify the bits to copy from operand `a`:
+///     - `00`: Selects bits `[31:0]` from operand `a`.
+///     - `01`: Selects bits `[63:32]` from operand `a`.
+///     - `10`: Selects bits `[95:64]` from operand `a`.
+///     - `11`: Selects bits `[127:96]` from operand `a`.
+///
+/// * Bits `[5:4]` specify the bits in the result to which the selected bits
+/// from operand `a` are copied:
+///     - `00`: Copies the selected bits from `a` to result bits `[31:0]`.
+///     - `01`: Copies the selected bits from `a` to result bits `[63:32]`.
+///     - `10`: Copies the selected bits from `a` to result bits `[95:64]`.
+///     - `11`: Copies the selected bits from `a` to result bits `[127:96]`.
+///
+/// * Bits `[3:0]`: If any of these bits are set, the corresponding result
+/// element is cleared.
+#[inline(always)]
+#[target_feature = "+sse4.1"]
+#[cfg_attr(test, assert_instr(insertps, imm8=0b1010))]
+pub unsafe fn _mm_insert_ps(a: f32x4, b: f32x4, imm8: u8) -> f32x4 {
+        macro_rules! call {
+        ($imm8:expr) => { insertps(a, b, $imm8) }
+    }
+    constify_imm8!(imm8, call)
+}
+
 /// Returns the dot product of two f64x2 vectors.
 ///
 /// `imm8[1:0]` is the broadcast mask, and `imm8[5:4]` is the condition mask.
@@ -146,6 +178,8 @@ extern {
     fn blendps(a: f32x4, b: f32x4, imm4: u8) -> f32x4;
     #[link_name = "llvm.x86.sse41.pblendw"]
     fn pblendw(a: i16x8, b: i16x8, imm8: u8) -> i16x8;
+    #[link_name = "llvm.x86.sse41.insertps"]
+    fn insertps(a: f32x4, b: f32x4, imm8: u8) -> f32x4;
     #[link_name = "llvm.x86.sse41.dppd"]
     fn dppd(a: f64x2, b: f64x2, imm8: u8) -> f64x2;
     #[link_name = "llvm.x86.sse41.dpps"]
@@ -263,6 +297,15 @@ mod tests {
 
         let r = sse41::_mm_extract_epi64(a, 3);
         assert_eq!(r, 1);
+    }
+
+    #[simd_test = "sse4.1"]
+    unsafe fn _mm_insert_ps() {
+        let a = f32x4::splat(1.0);
+        let b = f32x4::new(1.0, 2.0, 3.0, 4.0);
+        let r = sse41::_mm_insert_ps(a, b, 0b11_00_1100);
+        let e = f32x4::new(4.0, 1.0, 0.0, 0.0);
+        assert_eq!(r, e);
     }
 
     #[simd_test = "sse4.1"]
