@@ -70,6 +70,47 @@ pub unsafe fn _mm256_or_ps(a: f32x8, b: f32x8) -> f32x8 {
     mem::transmute(a | b)
 }
 
+/// Shuffle double-precision (64-bit) floating-point elements within 128-bit
+/// lanes using the control in `imm8`.
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vshufpd, imm8 = 0x0))]
+pub unsafe fn _mm256_shuffle_pd(a: f64x4, b: f64x4, imm8: i32) -> f64x4 {
+    macro_rules! shuffle4 {
+        ($a:expr, $b:expr, $c:expr, $d:expr) => {
+            simd_shuffle4(a, b, [$a, $b, $c, $d]);
+        }
+    }
+    macro_rules! shuffle3 {
+        ($a:expr, $b: expr, $c: expr) => {
+            match (imm8 >> 3) & 0x1 {
+                0 => shuffle4!($a, $b, $c, 6),
+                _ => shuffle4!($a, $b, $c, 7),
+            }
+        }
+    }
+    macro_rules! shuffle2 {
+        ($a:expr, $b:expr) => {
+            match (imm8 >> 2) & 0x1 {
+                0 => shuffle3!($a, $b, 2),
+                _ => shuffle3!($a, $b, 3),
+            }
+        }
+    }
+    macro_rules! shuffle1 {
+        ($a:expr) => {
+            match (imm8 >> 1) & 0x1 {
+                0 => shuffle2!($a, 4),
+                _ => shuffle2!($a, 5),
+            }
+        }
+    }
+    match (imm8 >> 0) & 0x1 {
+        0 => shuffle1!(0),
+        _ => shuffle1!(1),
+    }
+}
+
 /// Compute the bitwise NOT of packed double-precision (64-bit) floating-point elements in `a`
 /// and then AND with `b`.
 #[inline(always)]
@@ -788,6 +829,15 @@ mod tests {
         let b = f32x8::splat(0.6);
         let r = avx::_mm256_or_ps(a, b);
         let e = f32x8::splat(1.2);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_shuffle_pd() {
+        let a = f64x4::new(1.0, 4.0, 5.0, 8.0);
+        let b = f64x4::new(2.0, 3.0, 6.0, 7.0);
+        let r = avx::_mm256_shuffle_pd(a, b, 0xF);
+        let e = f64x4::new(4.0, 3.0, 8.0, 7.0);
         assert_eq!(r, e);
     }
 
