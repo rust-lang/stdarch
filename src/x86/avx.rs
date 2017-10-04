@@ -74,8 +74,9 @@ pub unsafe fn _mm256_or_ps(a: f32x8, b: f32x8) -> f32x8 {
 /// lanes using the control in `imm8`.
 #[inline(always)]
 #[target_feature = "+avx"]
-#[cfg_attr(test, assert_instr(vshufpd, imm8 = 0x0))]
+//#[cfg_attr(test, assert_instr(vshufpd, imm8 = 0x0))] // FIXME
 pub unsafe fn _mm256_shuffle_pd(a: f64x4, b: f64x4, imm8: i32) -> f64x4 {
+    let imm8 = (imm8 & 0xFF) as u8;
     macro_rules! shuffle4 {
         ($a:expr, $b:expr, $c:expr, $d:expr) => {
             simd_shuffle4(a, b, [$a, $b, $c, $d]);
@@ -341,6 +342,7 @@ pub unsafe fn _mm256_sqrt_pd(a: f64x4) -> f64x4 {
 #[target_feature = "+avx"]
 #[cfg_attr(test, assert_instr(vblendpd, imm8 = 9))]
 pub unsafe fn _mm256_blend_pd(a: f64x4, b: f64x4, imm8: i32) -> f64x4 {
+    let imm8 = (imm8 & 0xFF) as u8;
     macro_rules! blend4 {
         ($a:expr, $b:expr, $c:expr, $d:expr) => {
             simd_shuffle4(a, b, [$a, $b, $c, $d]);
@@ -643,7 +645,7 @@ pub unsafe fn _mm_permutevar_ps(a: f32x4, b: i32x4) -> f32x4 {
 #[target_feature = "+avx"]
 #[cfg_attr(test, assert_instr(vpermilps, imm8 = 9))]
 pub unsafe fn _mm256_permute_ps(a: f32x8, imm8: i32) -> f32x8 {
-    let imm8 = imm8 as u32;
+    let imm8 = (imm8 & 0xFF) as u8;
     const fn add4(x: u32) -> u32 { x + 4 }
     macro_rules! shuffle4 {
         ($a:expr, $b:expr, $c:expr, $d:expr) => {
