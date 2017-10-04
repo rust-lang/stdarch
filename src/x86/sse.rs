@@ -559,7 +559,7 @@ mod tests {
     use v128::*;
     use x86::sse;
     use stdsimd_test::simd_test;
-    use rand;
+    use test::black_box;  // Used to inhibit constant-folding.
 
     #[simd_test = "sse"]
     unsafe fn _mm_add_ps() {
@@ -761,65 +761,51 @@ mod tests {
     }
 
     #[simd_test = "sse"]
-    unsafe fn _mm_setcsr_1() {
-        // Note: The basic test is to set the _MM_FLUSH_ZERO_ON bit which causes
-        // denormalized floating point numbers to be set to zero. Our test case
-        // is:  1.1e-36 * 0.001 = 0.0, because 1.1e-39 would be a denormalized.
-        // Unfortunately, we have to try really hard to avoid get things
-        // constant-folded by the compiler (which would simply replace the
-        // expression by 1.1e-39.)
-        //
-        // What currently works is to put in some randomness and to not use
-        // `r.extract(0)` in the final check, but to compare with a full `f32x4`
-        // value.
-        let dummy = rand::random::<f32>();
-
+    unsafe fn _mm_getcsr_setcsr_1() {
         let saved_csr = sse::_mm_getcsr();
 
-        let a = f32x4::new(1.1e-36, 0.0, 0.0, dummy);
-        let b = f32x4::new(0.001, 0.0, 0.0, dummy);
+        let a = f32x4::new(1.1e-36, 0.0, 0.0, 1.0);
+        let b = f32x4::new(0.001, 0.0, 0.0, 1.0);
 
         sse::_mm_set_flush_zero_mode(sse::_MM_FLUSH_ZERO_ON);
-        let r = sse::_mm_mul_ps(a, b);
+        let r = sse::_mm_mul_ps(black_box(a), black_box(b));
 
         sse::_mm_setcsr(saved_csr);
 
-        let exp = f32x4::new(0.0, 0.0, 0.0, r.extract(3));
+        let exp = f32x4::new(0.0, 0.0, 0.0, 1.0);
         assert_eq!(r, exp);  // first component is a denormalized f32
     }
 
     #[simd_test = "sse"]
-    unsafe fn _mm_setcsr_2() {
-        // Same as _mm_setcsr_2 test, but with opposite flag value.
-        let dummy = rand::random::<f32>();
+    unsafe fn _mm_getcsr_setcsr_2() {
+        // Same as _mm_setcsr_1 test, but with opposite flag value.
 
         let saved_csr = sse::_mm_getcsr();
 
-        let a = f32x4::new(1.1e-36, 0.0, 0.0, dummy);
-        let b = f32x4::new(0.001, 0.0, 0.0, dummy);
+        let a = f32x4::new(1.1e-36, 0.0, 0.0, 1.0);
+        let b = f32x4::new(0.001, 0.0, 0.0, 1.0);
 
         sse::_mm_set_flush_zero_mode(sse::_MM_FLUSH_ZERO_OFF);
-        let r = sse::_mm_mul_ps(a, b);
+        let r = sse::_mm_mul_ps(black_box(a), black_box(b));
 
         sse::_mm_setcsr(saved_csr);
 
-        let exp = f32x4::new(1.1e-39, 0.0, 0.0, r.extract(3));
+        let exp = f32x4::new(1.1e-39, 0.0, 0.0, 1.0);
         assert_eq!(r, exp);  // first component is a denormalized f32
     }
 
     #[simd_test = "sse"]
-    unsafe fn _mm_csr_underflow() {
+    unsafe fn _mm_getcsr_setcsr_underflow() {
         sse::_mm_set_exception_state(0);
 
-        let dummy = rand::random::<f32>();
-        let a = f32x4::new(1.1e-36, 0.0, 0.0, dummy);
-        let b = f32x4::new(1e-5, 0.0, 0.0, dummy);
+        let a = f32x4::new(1.1e-36, 0.0, 0.0, 1.0);
+        let b = f32x4::new(1e-5, 0.0, 0.0, 1.0);
 
         assert_eq!(sse::_mm_get_exception_state(), 0);  // just to be sure
 
-        let r = sse::_mm_mul_ps(a, b);
+        let r = sse::_mm_mul_ps(black_box(a), black_box(b));
 
-        let exp = f32x4::new(1.1e-41, 0.0, 0.0, r.extract(3));
+        let exp = f32x4::new(1.1e-41, 0.0, 0.0, 1.0);
         assert_eq!(r, exp);
 
         let underflow =

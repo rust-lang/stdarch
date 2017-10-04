@@ -21,4 +21,3 @@ opt-level = 3
 [dev-dependencies]
 stdsimd-test = { path = "stdsimd-test" }
 cupid = "0.3"
-rand = "0.3"
