@@ -1734,6 +1734,62 @@ pub unsafe fn _mm_cvtpd_epi32(a: f64x2) -> i32x4 {
     cvtpd2dq(a)
 }
 
+/// Convert the lower double-precision (64-bit) floating-point element in a to a 32-bit integer.
+#[inline(always)]
+#[target_feature = "+sse2"]
+#[cfg_attr(test, assert_instr(cvtsd2si))]
+pub unsafe fn _mm_cvtsd_si32(a: f64x2) -> i32 {
+    cvtsd2si(a)
+}
+
+/// Convert the lower double-precision (64-bit) floating-point element in `b` to a
+/// single-precision (32-bit) floating-point element, store the result in the lower element
+/// of the return value, and copy the upper element from `a` to the upper element the return value.
+#[inline(always)]
+#[target_feature = "+sse2"]
+#[cfg_attr(test, assert_instr(cvtsd2ss))]
+pub unsafe fn _mm_cvtsd_ss(a: f32x4, b: f64x2) -> f32x4 {
+    cvtsd2ss(a, b)
+}
+
+/// Convert the lower single-precision (32-bit) floating-point element in `b` to a
+/// double-precision (64-bit) floating-point element, store the result in the lower element
+/// of the return value, and copy the upper element from `a` to the upper element the return value.
+#[inline(always)]
+#[target_feature = "+sse2"]
+#[cfg_attr(test, assert_instr(cvtss2sd))]
+pub unsafe fn _mm_cvtss_sd(a: f64x2, b: f32x4 ) -> f64x2 {
+    cvtss2sd(a, b)
+}
+
+/// Convert packed double-precision (64-bit) floating-point elements in `a` to packed
+/// 32-bit integers with truncation.
+#[inline(always)]
+#[target_feature = "+sse2"]
+#[cfg_attr(test, assert_instr(cvttpd2dq))]
+pub unsafe fn _mm_cvttpd_epi32(a: f64x2) -> i32x4 {
+    cvttpd2dq(a)
+}
+
+/// Convert the lower double-precision (64-bit) floating-point element in `a` to a 32-bit integer
+/// with truncation.
+#[inline(always)]
+#[target_feature = "+sse2"]
+#[cfg_attr(test, assert_instr(cvttsd2si))]
+pub unsafe fn _mm_cvttsd_si32(a: f64x2) -> i32 {
+    cvttsd2si(a)
+}
+
+/// Convert packed single-precision (32-bit) floating-point elements in `a` to packed 32-bit
+/// integers with truncation
+#[inline(always)]
+#[target_feature = "+sse2"]
+#[cfg_attr(test, assert_instr(cvttps2dq))]
+pub unsafe fn _mm_cvttps_epi32(a: f32x4) -> i32x4 {
+    cvttps2dq(a)
+}
+
+
 /// Return a mask of the most significant bit of each element in `a`.
 ///
 /// The mask is stored in the 2 least significant bits of the return value.
@@ -1760,6 +1816,15 @@ pub unsafe fn _mm_load_pd(mem_addr: *const f64) -> f64x2 {
 #[cfg_attr(test, assert_instr(movaps))]
 pub unsafe fn _mm_store_pd(mem_addr: *mut f64, a: f64x2) {
     *(mem_addr as *mut f64x2) = a;
+}
+
+/// Load a double-precision (64-bit) floating-point element from memory
+/// into both elements of returned vector.
+#[inline(always)]
+#[target_feature = "+sse2"]
+pub unsafe fn _mm_load1_pd(mem_addr: *const f64) -> f64x2 {
+    let d = *mem_addr;
+    f64x2::new(d, d)
 }
 
 #[allow(improper_ctypes)]
@@ -1902,6 +1967,18 @@ extern {
     fn cvtpd2ps(a: f64x2) -> f32x4;
     #[link_name = "llvm.x86.sse2.cvtpd2dq"]
     fn cvtpd2dq(a: f64x2) -> i32x4;
+    #[link_name = "llvm.x86.sse2.cvtsd2si"]
+    fn cvtsd2si(a: f64x2) -> i32;
+    #[link_name = "llvm.x86.sse2.cvtsd2ss"]
+    fn cvtsd2ss(a: f32x4, b: f64x2) -> f32x4;
+    #[link_name = "llvm.x86.sse2.cvtss2sd"]
+    fn cvtss2sd(a: f64x2, b: f32x4 ) -> f64x2;
+    #[link_name = "llvm.x86.sse2.cvttpd2dq"]
+    fn cvttpd2dq(a: f64x2) -> i32x4;
+    #[link_name = "llvm.x86.sse2.cvttsd2si"]
+    fn cvttsd2si(a: f64x2) -> i32;
+    #[link_name = "llvm.x86.sse2.cvttps2dq"]
+    fn cvttps2dq(a: f32x4) -> i32x4;
 }
 
 #[cfg(test)]
@@ -3462,5 +3539,101 @@ mod tests {
 
         let r = sse2::_mm_cvtpd_epi32(f64x2::new(f64::NAN, f64::NAN));
         assert_eq!(r, i32x4::new(i32::MIN, i32::MIN, 0, 0));
+    }
+
+    #[simd_test = "sse2"]
+    unsafe fn _mm_cvtsd_si32() {
+        use std::{f64, i32};
+
+        let r = sse2::_mm_cvtsd_si32(f64x2::new(-2.0, 5.0));
+        assert_eq!(r, -2);
+
+        let r = sse2::_mm_cvtsd_si32(f64x2::new(f64::MAX, f64::MIN));
+        assert_eq!(r, i32::MIN);
+
+        let r = sse2::_mm_cvtsd_si32(f64x2::new(f64::NAN, f64::NAN));
+        assert_eq!(r, i32::MIN);
+    }
+
+    #[simd_test = "sse2"]
+    unsafe fn _mm_cvtsd_ss() {
+        use std::{f64, f32};
+
+        let a = f32x4::new(-1.1, -2.2, 3.3, 4.4);
+        let b = f64x2::new(2.0, -5.0);
+
+        let r = sse2::_mm_cvtsd_ss(a, b);
+
+        assert_eq!(r, f32x4::new(2.0, -2.2, 3.3, 4.4));
+
+        let a = f32x4::new(-1.1, f32::NEG_INFINITY, f32::MAX, f32::NEG_INFINITY);
+        let b = f64x2::new(f64::INFINITY, -5.0);
+
+        let r = sse2::_mm_cvtsd_ss(a, b);
+
+        assert_eq!(r, f32x4::new(f32::INFINITY, f32::NEG_INFINITY, f32::MAX, f32::NEG_INFINITY));
+    }
+
+    #[simd_test = "sse2"]
+    unsafe fn _mm_cvtss_sd() {
+        use std::{f64, f32};
+
+        let a = f64x2::new(-1.1, 2.2);
+        let b = f32x4::new(1.0, 2.0, 3.0, 4.0);
+
+        let r = sse2::_mm_cvtss_sd(a, b);
+        assert_eq!(r, f64x2::new(1.0, 2.2));
+
+        let a = f64x2::new(-1.1, f64::INFINITY);
+        let b = f32x4::new(f32::NEG_INFINITY, 2.0, 3.0, 4.0);
+
+        let r = sse2::_mm_cvtss_sd(a, b);
+        assert_eq!(r, f64x2::new(f64::NEG_INFINITY, f64::INFINITY));
+    }
+
+    #[simd_test = "sse2"]
+    unsafe fn _mm_cvttpd_epi32() {
+        use std::{f64, i32};
+
+        let a = f64x2::new(-1.1, 2.2);
+        let r = sse2::_mm_cvttpd_epi32(a);
+        assert_eq!(r, i32x4::new(-1, 2, 0, 0));
+
+        let a = f64x2::new(f64::NEG_INFINITY, f64::NAN);
+        let r = sse2::_mm_cvttpd_epi32(a);
+        assert_eq!(r, i32x4::new(i32::MIN, i32::MIN, 0, 0));
+    }
+
+    #[simd_test = "sse2"]
+    unsafe fn _mm_cvttsd_si32() {
+        use std::{f64, i32};
+
+        let a = f64x2::new(-1.1, 2.2);
+        let r = sse2::_mm_cvttsd_si32(a);
+        assert_eq!(r, -1);
+
+        let a = f64x2::new(f64::NEG_INFINITY, f64::NAN);
+        let r = sse2::_mm_cvttsd_si32(a);
+        assert_eq!(r, i32::MIN);
+    }
+
+    #[simd_test = "sse2"]
+    unsafe fn _mm_cvttps_epi32() {
+        use std::{f32, i32};
+
+        let a = f32x4::new(-1.1, 2.2, -3.3, 6.6);
+        let r = sse2::_mm_cvttps_epi32(a);
+        assert_eq!(r, i32x4::new(-1, 2, -3, 6));
+
+        let a = f32x4::new(f32::NEG_INFINITY, f32::INFINITY, f32::MIN, f32::MAX);
+        let r = sse2::_mm_cvttps_epi32(a);
+        assert_eq!(r, i32x4::new(i32::MIN, i32::MIN, i32::MIN, i32::MIN));
+    }
+
+    #[simd_test = "sse2"]
+    unsafe fn _mm_load1_pd() {
+        let d = -5.0;
+        let r = sse2::_mm_load1_pd(&d);
+        assert_eq!(r, f64x2::new(d, d));
     }
 }

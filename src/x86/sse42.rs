@@ -4,7 +4,7 @@ use stdsimd_test::assert_instr;
 use v128::*;
 use x86::__m128i;
 
-/// String contains unsigned 8-bit characters
+/// String contains unsigned 8-bit characters *(Default)*
 pub const _SIDD_UBYTE_OPS: i8 = 0b00000000;
 /// String contains unsigned 16-bit characters
 pub const _SIDD_UWORD_OPS: i8 = 0b00000001;
@@ -13,16 +13,16 @@ pub const _SIDD_SBYTE_OPS: i8 = 0b00000010;
 /// String contains unsigned 16-bit characters
 pub const _SIDD_SWORD_OPS: i8 = 0b00000011;
 
-/// For each character in `a`, find if it is in `b`
+/// For each character in `a`, find if it is in `b` *(Default)*
 pub const _SIDD_CMP_EQUAL_ANY: i8 = 0b00000000;
 /// For each character in `a`, determine if `b[0] <= c <= b[1] or b[1] <= c <= b[2]...`
 pub const _SIDD_CMP_RANGES: i8 = 0b00000100;
-/// String equality
+/// The strings defined by `a` and `b` are equal
 pub const _SIDD_CMP_EQUAL_EACH: i8 = 0b00001000;
-/// Substring search
+/// Search for the defined substring in the target
 pub const _SIDD_CMP_EQUAL_ORDERED: i8 = 0b00001100;
 
-/// Do not negate results
+/// Do not negate results *(Default)*
 pub const _SIDD_POSITIVE_POLARITY: i8 = 0b00000000;
 /// Negate results
 pub const _SIDD_NEGATIVE_POLARITY: i8 = 0b00010000;
@@ -31,14 +31,14 @@ pub const _SIDD_MASKED_POSITIVE_POLARITY: i8 = 0b00100000;
 /// Negate results only before the end of the string
 pub const _SIDD_MASKED_NEGATIVE_POLARITY: i8 = 0b00110000;
 
-/// Index only: return the least significant bit
+/// **Index only**: return the least significant bit *(Default)*
 pub const _SIDD_LEAST_SIGNIFICANT: i8 = 0b00000000;
-/// Index only: return the most significant bit
+/// **Index only**: return the most significant bit
 pub const _SIDD_MOST_SIGNIFICANT: i8 = 0b01000000;
 
-/// Mask only: return the bit mask
+/// **Mask only**: return the bit mask
 pub const _SIDD_BIT_MASK: i8 = 0b00000000;
-/// Mask only: return the byte mask
+/// **Mask only**: return the byte mask
 pub const _SIDD_UNIT_MASK: i8 = 0b01000000;
 
 /// Compare packed strings with implicit lengths in `a` and `b` using the
@@ -59,6 +59,85 @@ pub unsafe fn _mm_cmpistrm(
 
 /// Compare packed strings with implicit lengths in `a` and `b` using the
 /// control in `imm8`, and return the generated index.
+///
+/// # Control modes
+///
+/// The control specified by `imm8` may be one or more of the following.
+///
+/// ## Data size and signedness
+///
+///  - [`_SIDD_UBYTE_OPS`] - Default
+///  - [`_SIDD_UWORD_OPS`]
+///  - [`_SIDD_SBYTE_OPS`]
+///  - [`_SIDD_SWORD_OPS`]
+///
+/// ## Comparison options
+///  - [`_SIDD_CMP_EQUAL_ANY`] - Default
+///  - [`_SIDD_CMP_RANGES`]
+///  - [`_SIDD_CMP_EQUAL_EACH`]
+///  - [`_SIDD_CMP_EQUAL_ORDERED`]
+///
+/// ## Result polarity
+///  - [`_SIDD_POSITIVE_POLARITY`] - Default
+///  - [`_SIDD_NEGATIVE_POLARITY`]
+///
+/// ## Bit returned
+///  - [`_SIDD_LEAST_SIGNIFICANT`] - Default
+///  - [`_SIDD_MOST_SIGNIFICANT`]
+///
+/// # Examples
+///
+/// ```
+/// # #![feature(cfg_target_feature)]
+/// # #![feature(target_feature)]
+/// #
+/// # #[macro_use] extern crate stdsimd;
+/// #
+/// # fn main() {
+/// #     if cfg_feature_enabled!("sse4.2") {
+/// #         #[target_feature = "+sse4.2"]
+/// #         fn worker() {
+///
+/// use stdsimd::simd::u8x16;
+/// use stdsimd::vendor::{__m128i, _mm_cmpistri, _SIDD_CMP_EQUAL_ORDERED};
+///
+/// let haystack = b"This is a long string of text data\r\n\tthat extends multiple lines";
+/// let needle = b"\r\n\t\0\0\0\0\0\0\0\0\0\0\0\0\0";
+///
+/// let a = __m128i::from(u8x16::load(needle, 0));
+/// let hop = 16;
+/// let mut indexes = Vec::new();
+///
+/// // Chunk the haystack into 16 byte chunks and find
+/// // the first "\r\n\t" in the chunk.
+/// for (i, chunk) in haystack.chunks(hop).enumerate() {
+///     let b = __m128i::from(u8x16::load(chunk, 0));
+///     let idx = unsafe {
+///         _mm_cmpistri(a, b, _SIDD_CMP_EQUAL_ORDERED)
+///     };
+///     if idx != 16 {
+///        indexes.push((idx as usize) + (i * hop));
+///     }
+/// }
+/// assert_eq!(indexes, vec![34]);
+/// #         }
+/// #         worker();
+/// #     }
+/// # }
+/// ```
+///
+/// [`_SIDD_UBYTE_OPS`]: constant._SIDD_UBYTE_OPS.html
+/// [`_SIDD_UWORD_OPS`]: constant._SIDD_UWORD_OPS.html
+/// [`_SIDD_SBYTE_OPS`]: constant._SIDD_SBYTE_OPS.html
+/// [`_SIDD_SWORD_OPS`]: constant._SIDD_SWORD_OPS.html
+/// [`_SIDD_CMP_EQUAL_ANY`]: constant._SIDD_CMP_EQUAL_ANY.html
+/// [`_SIDD_CMP_RANGES`]: constant._SIDD_CMP_RANGES.html
+/// [`_SIDD_CMP_EQUAL_EACH`]: constant._SIDD_CMP_EQUAL_EACH.html
+/// [`_SIDD_CMP_EQUAL_ORDERED`]: constant._SIDD_CMP_EQUAL_ORDERED.html
+/// [`_SIDD_POSITIVE_POLARITY`]: constant._SIDD_POSITIVE_POLARITY.html
+/// [`_SIDD_NEGATIVE_POLARITY`]: constant._SIDD_NEGATIVE_POLARITY.html
+/// [`_SIDD_LEAST_SIGNIFICANT`]: constant._SIDD_LEAST_SIGNIFICANT.html
+/// [`_SIDD_MOST_SIGNIFICANT`]: constant._SIDD_MOST_SIGNIFICANT.html
 #[inline(always)]
 #[target_feature = "+sse4.2"]
 #[cfg_attr(test, assert_instr(pcmpistri, imm8 = 0))]
@@ -289,8 +368,56 @@ pub unsafe fn _mm_cmpestra(
     constify_imm8!(imm8, call)
 }
 
+/// Starting with the initial value in `crc`, return the accumulated
+/// CRC32 value for unsigned 8-bit integer `v`.
+#[inline(always)]
+#[target_feature = "+sse4.2"]
+#[cfg_attr(test, assert_instr(crc32))]
+pub unsafe fn _mm_crc32_u8(crc: u32, v: u8) -> u32 {
+    crc32_32_8(crc, v)
+}
+
+/// Starting with the initial value in `crc`, return the accumulated
+/// CRC32 value for unsigned 16-bit integer `v`.
+#[inline(always)]
+#[target_feature = "+sse4.2"]
+#[cfg_attr(test, assert_instr(crc32))]
+pub unsafe fn _mm_crc32_u16(crc: u32, v: u16) -> u32 {
+    crc32_32_16(crc, v)
+}
+
+/// Starting with the initial value in `crc`, return the accumulated
+/// CRC32 value for unsigned 32-bit integer `v`.
+#[inline(always)]
+#[target_feature = "+sse4.2"]
+#[cfg_attr(test, assert_instr(crc32))]
+pub unsafe fn _mm_crc32_u32(crc: u32, v: u32) -> u32 {
+    crc32_32_32(crc, v)
+}
+
+/// Starting with the initial value in `crc`, return the accumulated
+/// CRC32 value for unsigned 64-bit integer `v`.
+#[cfg(target_arch = "x86_64")]
+#[inline(always)]
+#[target_feature = "+sse4.2"]
+#[cfg_attr(test, assert_instr(crc32))]
+pub unsafe fn _mm_crc32_u64(crc: u64, v: u64) -> u64 {
+    crc32_64_64(crc, v)
+}
+
+/// Compare packed 64-bit integers in `a` and `b` for greater-than,
+/// return the results.
+#[cfg(target_arch = "x86_64")]
+#[inline(always)]
+#[target_feature = "+sse4.2"]
+#[cfg_attr(test, assert_instr(pcmpgtq))]
+pub unsafe fn _mm_cmpgt_epi64(a: i64x2, b: i64x2) -> i64x2 {
+    a.gt(b)
+}
+
 #[allow(improper_ctypes)]
 extern {
+    // SSE 4.2 string and text comparison ops
     #[link_name = "llvm.x86.sse42.pcmpestrm128"]
     fn pcmpestrm128(a: __m128i, la: i32, b: __m128i, lb: i32, imm8: i8) -> u8x16;
     #[link_name = "llvm.x86.sse42.pcmpestri128"]
@@ -319,6 +446,15 @@ extern {
     fn pcmpistrio128(a: __m128i, b: __m128i, imm8: i8) -> i32;
     #[link_name = "llvm.x86.sse42.pcmpistria128"]
     fn pcmpistria128(a: __m128i, b: __m128i, imm8: i8) -> i32;
+    // SSE 4.2 CRC instructions
+    #[link_name = "llvm.x86.sse42.crc32.32.8"]
+    fn crc32_32_8(crc: u32, v: u8) -> u32;
+    #[link_name = "llvm.x86.sse42.crc32.32.16"]
+    fn crc32_32_16(crc: u32, v: u16) -> u32;
+    #[link_name = "llvm.x86.sse42.crc32.32.32"]
+    fn crc32_32_32(crc: u32, v: u32) -> u32;
+    #[link_name = "llvm.x86.sse42.crc32.64.64"]
+    fn crc32_64_64(crc: u64, v: u64) -> u64;
 }
 
 #[cfg(test)]
@@ -469,5 +605,47 @@ mod tests {
         let i = sse42::_mm_cmpestra(
                 a, 14, b, 16, sse42::_SIDD_CMP_EQUAL_EACH | sse42::_SIDD_UNIT_MASK);
         assert_eq!(1, i);
+    }
+
+    #[simd_test = "sse4.2"]
+    unsafe fn _mm_crc32_u8() {
+        let crc = 0x2aa1e72b;
+        let v = 0x2a;
+        let i = sse42::_mm_crc32_u8(crc, v);
+        assert_eq!(i, 0xf24122e4);
+    }
+
+    #[simd_test = "sse4.2"]
+    unsafe fn _mm_crc32_u16() {
+        let crc = 0x8ecec3b5;
+        let v = 0x22b;
+        let i = sse42::_mm_crc32_u16(crc, v);
+        assert_eq!(i, 0x13bb2fb);
+    }
+
+    #[simd_test = "sse4.2"]
+    unsafe fn _mm_crc32_u32() {
+        let crc = 0xae2912c8;
+        let v = 0x845fed;
+        let i = sse42::_mm_crc32_u32(crc, v);
+        assert_eq!(i, 0xffae2ed1);
+    }
+
+    #[cfg(target_arch = "x86_64")]
+    #[simd_test = "sse4.2"]
+    unsafe fn _mm_crc32_u64() {
+        let crc = 0x7819dccd3e824;
+        let v = 0x2a22b845fed;
+        let i = sse42::_mm_crc32_u64(crc, v);
+        assert_eq!(i, 0xbb6cdc6c);
+    }
+
+    #[cfg(target_arch = "x86_64")]
+    #[simd_test = "sse4.2"]
+    unsafe fn _mm_cmpgt_epi64() {
+        let a = i64x2::splat(0x00).replace(1, 0x2a);
+        let b = i64x2::splat(0x00);
+        let i = sse42::_mm_cmpgt_epi64(a, b);
+        assert_eq!(i, i64x2::new(0x00, 0xffffffffffffffffu64 as i64));
     }
 }
