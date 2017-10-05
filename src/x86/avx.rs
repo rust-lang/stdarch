@@ -761,6 +761,22 @@ pub unsafe fn _mm_permute_ps(a: f32x4, imm8: i32) -> f32x4 {
     }
 }
 
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vpermilpd))]
+pub unsafe fn _mm256_permutevar_pd(a: f64x4, b: i64x4) -> f64x4 {
+    vpermilpd256(a, b)
+}
+
+/// Shuffle double-precision (64-bit) floating-point elements in `a`
+/// using the control in `b`.
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vpermilpd))]
+pub unsafe fn _mm_permutevar_pd(a: f64x2, b: i64x2) -> f64x2 {
+    vpermilpd(a, b)
+}
+
 /// Return vector of type `f32x8` with undefined elements.
 #[inline(always)]
 #[target_feature = "+avx"]
@@ -839,6 +855,10 @@ extern "C" {
     fn vpermilps256(a: f32x8, b: i32x8) -> f32x8;
     #[link_name = "llvm.x86.avx.vpermilvar.ps"]
     fn vpermilps(a: f32x4, b: i32x4) -> f32x4;
+    #[link_name = "llvm.x86.avx.vpermilvar.pd.256"]
+    fn vpermilpd256(a: f64x4, b: i64x4) -> f64x4;
+    #[link_name = "llvm.x86.avx.vpermilvar.pd"]
+    fn vpermilpd(a: f64x2, b: i64x2) -> f64x2;
 }
 
 #[cfg(test)]
@@ -1393,6 +1413,24 @@ mod tests {
         let a = f32x4::new(4.0, 3.0, 2.0, 5.0);
         let r = avx::_mm_permute_ps(a, 0x1b);
         let e = f32x4::new(5.0, 2.0, 3.0, 4.0);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_permutevar_pd() {
+        let a = f64x4::new(4.0, 3.0, 2.0, 5.0);
+        let b = i64x4::new(1, 2, 3, 4);
+        let r = avx::_mm256_permutevar_pd(a, b);
+        let e = f64x4::new(4.0, 3.0, 5.0, 2.0);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm_permutevar_pd() {
+        let a = f64x2::new(4.0, 3.0);
+        let b = i64x2::new(3, 0);
+        let r = avx::_mm_permutevar_pd(a, b);
+        let e = f64x2::new(3.0, 4.0);
         assert_eq!(r, e);
     }
 }
