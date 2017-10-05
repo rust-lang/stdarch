@@ -7,6 +7,8 @@ use simd_llvm::{simd_cast, simd_shuffle2, simd_shuffle4, simd_shuffle8};
 use v128::{f32x4, f64x2, i32x4, i64x2};
 use v256::*;
 
+use x86::sse::_mm_undefined_ps;
+
 /// Add packed double-precision (64-bit) floating-point elements
 /// in `a` and `b`.
 #[inline(always)]
@@ -707,6 +709,58 @@ pub unsafe fn _mm256_permute_ps(a: f32x8, imm8: i32) -> f32x8 {
     }
 }
 
+/// Shuffle single-precision (32-bit) floating-point elements in `a` 
+/// using the control in `imm8`.
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vpermilps, imm8 = 9))]
+pub unsafe fn _mm_permute_ps(a: f32x4, imm8: i32) -> f32x4 {
+    let imm8 = (imm8 & 0xFF) as u8;
+    macro_rules! shuffle4 {
+        ($a:expr, $b:expr, $c:expr, $d:expr) => {
+            simd_shuffle4(a, _mm_undefined_ps(), [
+                $a, $b, $c, $d
+            ])
+        }
+    }
+    macro_rules! shuffle3 {
+        ($a:expr, $b:expr, $c:expr) => {
+            match (imm8 >> 6) & 0b11 {
+                0b00 => shuffle4!($a, $b, $c, 0),
+                0b01 => shuffle4!($a, $b, $c, 1),
+                0b10 => shuffle4!($a, $b, $c, 2),
+                _ => shuffle4!($a, $b, $c, 3),
+            }
+        }
+    }
+    macro_rules! shuffle2 {
+        ($a:expr, $b:expr) => {
+            match (imm8 >> 4) & 0b11 {
+                0b00 => shuffle3!($a, $b, 0),
+                0b01 => shuffle3!($a, $b, 1),
+                0b10 => shuffle3!($a, $b, 2),
+                _ => shuffle3!($a, $b, 3),
+            }
+        }
+    }
+    macro_rules! shuffle1 {
+        ($a:expr) => {
+            match (imm8 >> 2) & 0b11 {
+                0b00 => shuffle2!($a, 0),
+                0b01 => shuffle2!($a, 1),
+                0b10 => shuffle2!($a, 2),
+                _ => shuffle2!($a, 3),
+            }
+        }
+    }
+    match (imm8 >> 0) & 0b11 {
+        0b00 => shuffle1!(0),
+        0b01 => shuffle1!(1),
+        0b10 => shuffle1!(2),
+        _ => shuffle1!(3),
+    }
+}
+
 /// Return vector of type `f32x8` with undefined elements.
 #[inline(always)]
 #[target_feature = "+avx"]
@@ -1331,6 +1385,14 @@ mod tests {
         let a = f32x8::new(4.0, 3.0, 2.0, 5.0, 8.0, 9.0, 64.0, 50.0);
         let r = avx::_mm256_permute_ps(a, 0x1b);
         let e = f32x8::new(5.0, 2.0, 3.0, 4.0, 50.0, 64.0, 9.0, 8.0);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm_permute_ps() {
+        let a = f32x4::new(4.0, 3.0, 2.0, 5.0);
+        let r = avx::_mm_permute_ps(a, 0x1b);
+        let e = f32x4::new(5.0, 2.0, 3.0, 4.0);
         assert_eq!(r, e);
     }
 }

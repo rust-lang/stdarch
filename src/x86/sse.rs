@@ -1,3 +1,5 @@
+use std::mem;
+
 use simd_llvm::simd_shuffle4;
 use v128::*;
 use std::os::raw::c_void;
@@ -593,6 +595,13 @@ pub unsafe fn _mm_prefetch(p: *const c_void, strategy: i8) {
         }
     }
     pref!(strategy)
+}
+
+/// Return vector of type __m128 with undefined elements.
+#[inline(always)]
+#[target_feature = "+sse"]
+pub unsafe fn _mm_undefined_ps() -> f32x4 {
+    mem::uninitialized()
 }
 
 #[allow(improper_ctypes)]
