@@ -4,7 +4,7 @@ use stdsimd_test::assert_instr;
 use v128::*;
 use x86::__m128i;
 
-/// String contains unsigned 8-bit characters
+/// String contains unsigned 8-bit characters *(Default)*
 pub const _SIDD_UBYTE_OPS: i8 = 0b00000000;
 /// String contains unsigned 16-bit characters
 pub const _SIDD_UWORD_OPS: i8 = 0b00000001;
@@ -13,16 +13,16 @@ pub const _SIDD_SBYTE_OPS: i8 = 0b00000010;
 /// String contains unsigned 16-bit characters
 pub const _SIDD_SWORD_OPS: i8 = 0b00000011;
 
-/// For each character in `a`, find if it is in `b`
+/// For each character in `a`, find if it is in `b` *(Default)*
 pub const _SIDD_CMP_EQUAL_ANY: i8 = 0b00000000;
 /// For each character in `a`, determine if `b[0] <= c <= b[1] or b[1] <= c <= b[2]...`
 pub const _SIDD_CMP_RANGES: i8 = 0b00000100;
-/// String equality
+/// The strings defined by `a` and `b` are equal
 pub const _SIDD_CMP_EQUAL_EACH: i8 = 0b00001000;
-/// Substring search
+/// Search for the defined substring in the target
 pub const _SIDD_CMP_EQUAL_ORDERED: i8 = 0b00001100;
 
-/// Do not negate results
+/// Do not negate results *(Default)*
 pub const _SIDD_POSITIVE_POLARITY: i8 = 0b00000000;
 /// Negate results
 pub const _SIDD_NEGATIVE_POLARITY: i8 = 0b00010000;
@@ -31,14 +31,14 @@ pub const _SIDD_MASKED_POSITIVE_POLARITY: i8 = 0b00100000;
 /// Negate results only before the end of the string
 pub const _SIDD_MASKED_NEGATIVE_POLARITY: i8 = 0b00110000;
 
-/// Index only: return the least significant bit
+/// **Index only**: return the least significant bit *(Default)*
 pub const _SIDD_LEAST_SIGNIFICANT: i8 = 0b00000000;
-/// Index only: return the most significant bit
+/// **Index only**: return the most significant bit
 pub const _SIDD_MOST_SIGNIFICANT: i8 = 0b01000000;
 
-/// Mask only: return the bit mask
+/// **Mask only**: return the bit mask
 pub const _SIDD_BIT_MASK: i8 = 0b00000000;
-/// Mask only: return the byte mask
+/// **Mask only**: return the byte mask
 pub const _SIDD_UNIT_MASK: i8 = 0b01000000;
 
 /// Compare packed strings with implicit lengths in `a` and `b` using the
@@ -58,7 +58,174 @@ pub unsafe fn _mm_cmpistrm(
 }
 
 /// Compare packed strings with implicit lengths in `a` and `b` using the
-/// control in `imm8`, and return the generated index.
+/// control in `imm8`, and return the generated index. Similar to [`_mm_cmpestri`]
+/// with the excception that [`_mm_cmpestri`] requires the lengths of `a` and
+/// `b` to be explicitly specified.
+///
+/// # Control modes
+///
+/// The control specified by `imm8` may be one or more of the following.
+///
+/// ## Data size and signedness
+///
+///  - [`_SIDD_UBYTE_OPS`] - Default
+///  - [`_SIDD_UWORD_OPS`]
+///  - [`_SIDD_SBYTE_OPS`]
+///  - [`_SIDD_SWORD_OPS`]
+///
+/// ## Comparison options
+///  - [`_SIDD_CMP_EQUAL_ANY`] - Default
+///  - [`_SIDD_CMP_RANGES`]
+///  - [`_SIDD_CMP_EQUAL_EACH`]
+///  - [`_SIDD_CMP_EQUAL_ORDERED`]
+///
+/// ## Result polarity
+///  - [`_SIDD_POSITIVE_POLARITY`] - Default
+///  - [`_SIDD_NEGATIVE_POLARITY`]
+///
+/// ## Bit returned
+///  - [`_SIDD_LEAST_SIGNIFICANT`] - Default
+///  - [`_SIDD_MOST_SIGNIFICANT`]
+///
+/// # Examples
+///
+/// Find a substring using [`_SIDD_CMP_EQUAL_ORDERED`]
+///
+/// ```
+/// # #![feature(cfg_target_feature)]
+/// # #![feature(target_feature)]
+/// #
+/// # #[macro_use] extern crate stdsimd;
+/// #
+/// # fn main() {
+/// #     if cfg_feature_enabled!("sse4.2") {
+/// #         #[target_feature = "+sse4.2"]
+/// #         fn worker() {
+///
+/// use stdsimd::simd::u8x16;
+/// use stdsimd::vendor::{__m128i, _mm_cmpistri, _SIDD_CMP_EQUAL_ORDERED};
+///
+/// let haystack = b"This is a long string of text data\r\n\tthat extends multiple lines";
+/// let needle = b"\r\n\t\0\0\0\0\0\0\0\0\0\0\0\0\0";
+///
+/// let a = __m128i::from(u8x16::load(needle, 0));
+/// let hop = 16;
+/// let mut indexes = Vec::new();
+///
+/// // Chunk the haystack into 16 byte chunks and find
+/// // the first "\r\n\t" in the chunk.
+/// for (i, chunk) in haystack.chunks(hop).enumerate() {
+///     let b = __m128i::from(u8x16::load(chunk, 0));
+///     let idx = unsafe {
+///         _mm_cmpistri(a, b, _SIDD_CMP_EQUAL_ORDERED)
+///     };
+///     if idx != 16 {
+///        indexes.push((idx as usize) + (i * hop));
+///     }
+/// }
+/// assert_eq!(indexes, vec![34]);
+/// #         }
+/// #         worker();
+/// #     }
+/// # }
+/// ```
+///
+/// The `_mm_cmpistri` intrinsic may also be used to find the existance of
+/// one or more of a given set of characters in the haystack.
+///
+/// ```
+/// # #![feature(cfg_target_feature)]
+/// # #![feature(target_feature)]
+/// #
+/// # #[macro_use] extern crate stdsimd;
+/// #
+/// # fn main() {
+/// #     if cfg_feature_enabled!("sse4.2") {
+/// #         #[target_feature = "+sse4.2"]
+/// #         fn worker() {
+/// use stdsimd::simd::u8x16;
+/// use stdsimd::vendor::{__m128i, _mm_cmpistri, _SIDD_CMP_EQUAL_ANY};
+///
+/// // Ensure your input is 16 byte aligned
+/// let password = b"hunter2\0\0\0\0\0\0\0\0\0";
+/// let special_chars = b"!@#$%^&*()[]:;<>";
+///
+/// // Load the input
+/// let a = __m128i::from(u8x16::load(special_chars, 0));
+/// let b = __m128i::from(u8x16::load(password, 0));
+///
+/// // Use _SIDD_CMP_EQUAL_ANY to find the index of any bytes in b
+/// let idx = unsafe {
+///     _mm_cmpistri(a, b, _SIDD_CMP_EQUAL_ANY)
+/// };
+///
+/// if idx < 16 {
+///     println!("Congrats! Your password contains a special character");
+///     # panic!("{:?} does not contain a special character", password);
+/// } else {
+///     println!("Your password should contain a special character");
+/// }
+/// #         }
+/// #         worker();
+/// #     }
+/// # }
+/// ```
+///
+/// Working with 16-bit characters.
+///
+/// ```
+/// # #![feature(cfg_target_feature)]
+/// # #![feature(target_feature)]
+/// #
+/// # #[macro_use] extern crate stdsimd;
+/// #
+/// # fn main() {
+/// #     if cfg_feature_enabled!("sse4.2") {
+/// #         #[target_feature = "+sse4.2"]
+/// #         fn worker() {
+/// use stdsimd::simd::u16x8;
+/// use stdsimd::vendor::{__m128i, _mm_cmpistri};
+/// use stdsimd::vendor::{_SIDD_UWORD_OPS, _SIDD_CMP_EQUAL_EACH};
+///
+/// # let mut some_utf16_words = [0u16; 8];
+/// # let mut more_utf16_words = [0u16; 8];
+/// # '❤'.encode_utf16(&mut some_utf16_words);
+/// # '𝕊'.encode_utf16(&mut more_utf16_words);
+/// // Load the input
+/// let a = __m128i::from(u16x8::load(&some_utf16_words, 0));
+/// let b = __m128i::from(u16x8::load(&more_utf16_words, 0));
+///
+/// // Specify _SIDD_UWORD_OPS to compare words instead of bytes, and
+/// // use _SIDD_CMP_EQUAL_EACH to compare the two strings.
+/// let idx = unsafe {
+///     _mm_cmpistri(a, b, _SIDD_UWORD_OPS | _SIDD_CMP_EQUAL_EACH)
+/// };
+///
+/// if idx == 0 {
+///     println!("16-bit unicode strings were equal!");
+///     # panic!("Strings should not be equal!")
+/// } else {
+///     println!("16-bit unicode strings were not equal!");
+/// }
+/// #         }
+/// #         worker();
+/// #     }
+/// # }
+/// ```
+///
+/// [`_SIDD_UBYTE_OPS`]: constant._SIDD_UBYTE_OPS.html
+/// [`_SIDD_UWORD_OPS`]: constant._SIDD_UWORD_OPS.html
+/// [`_SIDD_SBYTE_OPS`]: constant._SIDD_SBYTE_OPS.html
+/// [`_SIDD_SWORD_OPS`]: constant._SIDD_SWORD_OPS.html
+/// [`_SIDD_CMP_EQUAL_ANY`]: constant._SIDD_CMP_EQUAL_ANY.html
+/// [`_SIDD_CMP_RANGES`]: constant._SIDD_CMP_RANGES.html
+/// [`_SIDD_CMP_EQUAL_EACH`]: constant._SIDD_CMP_EQUAL_EACH.html
+/// [`_SIDD_CMP_EQUAL_ORDERED`]: constant._SIDD_CMP_EQUAL_ORDERED.html
+/// [`_SIDD_POSITIVE_POLARITY`]: constant._SIDD_POSITIVE_POLARITY.html
+/// [`_SIDD_NEGATIVE_POLARITY`]: constant._SIDD_NEGATIVE_POLARITY.html
+/// [`_SIDD_LEAST_SIGNIFICANT`]: constant._SIDD_LEAST_SIGNIFICANT.html
+/// [`_SIDD_MOST_SIGNIFICANT`]: constant._SIDD_MOST_SIGNIFICANT.html
+/// [`_mm_cmpestri`]: fn._mm_cmpestri.html
 #[inline(always)]
 #[target_feature = "+sse4.2"]
 #[cfg_attr(test, assert_instr(pcmpistri, imm8 = 0))]
@@ -176,7 +343,87 @@ pub unsafe fn _mm_cmpestrm(
 }
 
 /// Compare packed strings `a` and `b` with lengths `la` and `lb` using the
-/// control in `imm8`, and return the generated index.
+/// control in `imm8`, and return the generated index. Similar to [`_mm_cmpistri`]
+/// with the excception that [`_mm_cmpistri`] implicityly determines the length of
+/// `a` and `b`.
+///
+/// # Control modes
+///
+/// The control specified by `imm8` may be one or more of the following.
+///
+/// ## Data size and signedness
+///
+///  - [`_SIDD_UBYTE_OPS`] - Default
+///  - [`_SIDD_UWORD_OPS`]
+///  - [`_SIDD_SBYTE_OPS`]
+///  - [`_SIDD_SWORD_OPS`]
+///
+/// ## Comparison options
+///  - [`_SIDD_CMP_EQUAL_ANY`] - Default
+///  - [`_SIDD_CMP_RANGES`]
+///  - [`_SIDD_CMP_EQUAL_EACH`]
+///  - [`_SIDD_CMP_EQUAL_ORDERED`]
+///
+/// ## Result polarity
+///  - [`_SIDD_POSITIVE_POLARITY`] - Default
+///  - [`_SIDD_NEGATIVE_POLARITY`]
+///
+/// ## Bit returned
+///  - [`_SIDD_LEAST_SIGNIFICANT`] - Default
+///  - [`_SIDD_MOST_SIGNIFICANT`]
+///
+/// # Examples
+///
+/// ```
+/// # #![feature(cfg_target_feature)]
+/// # #![feature(target_feature)]
+/// #
+/// # #[macro_use] extern crate stdsimd;
+/// #
+/// # fn main() {
+/// #     if cfg_feature_enabled!("sse4.2") {
+/// #         #[target_feature = "+sse4.2"]
+/// #         fn worker() {
+///
+/// use stdsimd::simd::u8x16;
+/// use stdsimd::vendor::{__m128i, _mm_cmpestri, _SIDD_CMP_EQUAL_ORDERED};
+///
+/// // The string we want to find a substring in
+/// let haystack = b"Split \r\n\t line  ";
+///
+/// // The string we want to search for with some
+/// // extra bytes we do not want to search for.
+/// let needle = b"\r\n\t ignore this ";
+///
+/// let a = __m128i::from(u8x16::load(needle, 0));
+/// let b = __m128i::from(u8x16::load(haystack, 0));
+///
+/// // Note: We explicitly specify we only want to search `b` for the
+/// // first 3 characters of a.
+/// let idx = unsafe {
+///     _mm_cmpestri(a, 3, b, 15, _SIDD_CMP_EQUAL_ORDERED)
+/// };
+///
+/// assert_eq!(idx, 6);
+/// #         }
+/// #         worker();
+/// #     }
+/// # }
+/// ```
+///
+/// [`_SIDD_UBYTE_OPS`]: constant._SIDD_UBYTE_OPS.html
+/// [`_SIDD_UWORD_OPS`]: constant._SIDD_UWORD_OPS.html
+/// [`_SIDD_SBYTE_OPS`]: constant._SIDD_SBYTE_OPS.html
+/// [`_SIDD_SWORD_OPS`]: constant._SIDD_SWORD_OPS.html
+/// [`_SIDD_CMP_EQUAL_ANY`]: constant._SIDD_CMP_EQUAL_ANY.html
+/// [`_SIDD_CMP_RANGES`]: constant._SIDD_CMP_RANGES.html
+/// [`_SIDD_CMP_EQUAL_EACH`]: constant._SIDD_CMP_EQUAL_EACH.html
+/// [`_SIDD_CMP_EQUAL_ORDERED`]: constant._SIDD_CMP_EQUAL_ORDERED.html
+/// [`_SIDD_POSITIVE_POLARITY`]: constant._SIDD_POSITIVE_POLARITY.html
+/// [`_SIDD_NEGATIVE_POLARITY`]: constant._SIDD_NEGATIVE_POLARITY.html
+/// [`_SIDD_LEAST_SIGNIFICANT`]: constant._SIDD_LEAST_SIGNIFICANT.html
+/// [`_SIDD_MOST_SIGNIFICANT`]: constant._SIDD_MOST_SIGNIFICANT.html
+/// [`_mm_cmpistri`]: fn._mm_cmpistri.html
 #[inline(always)]
 #[target_feature = "+sse4.2"]
 #[cfg_attr(test, assert_instr(pcmpestri, imm8 = 0))]
