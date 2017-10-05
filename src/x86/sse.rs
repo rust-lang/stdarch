@@ -372,6 +372,27 @@ pub unsafe fn _mm_load_ss(p: *const f32) -> f32x4 {
     f32x4::new(*p, 0.0, 0.0, 0.0)
 }
 
+/// Construct a `f32x4` by duplicating the value read from `p` into all
+/// elements.
+///
+/// This corresponds to instructions `VMOVSS` / `MOVSS` followed by some
+/// shuffling.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(movss))]
+pub unsafe fn _mm_load1_ps(p: *const f32) -> f32x4 {
+    let a = *p;
+    f32x4::new(a, a, a, a)
+}
+
+/// Alias for [`_mm_load1_ps`](fn._mm_load1_ps.html)
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(movss))]
+pub unsafe fn _mm_load_ps1(p: *const f32) -> f32x4 {
+    _mm_load1_ps(p)
+}
+
 /// Perform a serializing operation on all store-to-memory instructions that
 /// were issued prior to this instruction.
 ///
@@ -956,6 +977,13 @@ mod tests {
         let a = 42.0f32;
         let r = sse::_mm_load_ss(&a as *const f32);
         assert_eq!(r, f32x4::new(42.0, 0.0, 0.0, 0.0));
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_load1_ps() {
+        let a = 42.0f32;
+        let r = sse::_mm_load1_ps(&a as *const f32);
+        assert_eq!(r, f32x4::new(42.0, 42.0, 42.0, 42.0));
     }
 
     #[simd_test = "sse"]
