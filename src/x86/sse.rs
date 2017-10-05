@@ -272,11 +272,43 @@ pub unsafe fn _mm_movemask_ps(a: f32x4) -> i32 {
 /// Set the upper two single-precision floating-point values with 64 bits of
 /// data loaded from the address `p`; the lower two values are passed through
 /// from `a`.
+///
+/// This corresponds to the `MOVHPS` / `MOVHPD` / `VMOVHPD` instructions.
+///
+/// ```rust
+/// # #![feature(cfg_target_feature)]
+/// # #![feature(target_feature)]
+/// #
+/// # #[macro_use] extern crate stdsimd;
+/// #
+/// # // The real main function
+/// # fn main() {
+/// #     if cfg_feature_enabled!("sse") {
+/// #         #[target_feature = "+sse"]
+/// #         fn worker() {
+/// #
+/// #   use stdsimd::simd::f32x4;
+/// #   use stdsimd::vendor::_mm_loadh_pi;
+/// #
+/// let a = f32x4::new(1.0, 2.0, 3.0, 4.0);
+/// let data: [f32; 4] = [5.0, 6.0, 7.0, 8.0];
+///
+/// let r = unsafe { _mm_loadh_pi(a, data[..].as_ptr()) };
+///
+/// assert_eq!(r, f32x4::new(1.0, 2.0, 5.0, 6.0));
+/// #
+/// #         }
+/// #         worker();
+/// #     }
+/// # }
+/// ```
 #[inline(always)]
 #[target_feature = "+sse"]
 // TODO: generates MOVHPD if the CPU supports SSE2.
 // #[cfg_attr(test, assert_instr(movhps))]
 #[cfg_attr(test, assert_instr(movhpd))]
+// TODO: This function is actually not limited to floats, but that's what
+// what matches the C type most closely: (__m128, *const __m64) -> __m128
 pub unsafe fn _mm_loadh_pi(a: f32x4, p: *const f32) -> f32x4 {
     let q = p as *const f32x2;
     let b: f32x2 = *q;
