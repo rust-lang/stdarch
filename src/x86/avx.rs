@@ -162,6 +162,29 @@ pub unsafe fn _mm256_hadd_ps(a: f32x8, b: f32x8) -> f32x8 {
     haddps256(a, b)
 }
 
+/// Horizontal subtraction of adjacent pairs in the two packed vectors
+/// of 4 64-bit floating points `a` and `b`.
+/// In the result, sums of elements from `a` are returned in even locations,
+/// while sums of elements from `b` are returned in odd locations.
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vhsubpd))]
+pub unsafe fn _mm256_hsub_pd(a: f64x4, b: f64x4) -> f64x4 {
+    hsubpd256(a, b)
+}
+
+/// Horizontal subtraction of adjacent pairs in the two packed vectors
+/// of 8 32-bit floating points `a` and `b`.
+/// In the result, sums of elements from `a` are returned in locations of
+/// indices 0, 1, 4, 5; while sums of elements from `b` are locations
+/// 2, 3, 6, 7.
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vhsubps))]
+pub unsafe fn _mm256_hsub_ps(a: f32x8, b: f32x8) -> f32x8 {
+    hsubps256(a, b)
+}
+
 /// Subtract packed double-precision (64-bit) floating-point elements in `b`
 /// from packed elements in `a`.
 #[inline(always)]
@@ -308,6 +331,10 @@ extern "C" {
     fn haddpd256(a: f64x4, b: f64x4) -> f64x4;
     #[link_name = "llvm.x86.avx.hadd.ps.256"]
     fn haddps256(a: f32x8, b: f32x8) -> f32x8;
+    #[link_name = "llvm.x86.avx.hsub.pd.256"]
+    fn hsubpd256(a: f64x4, b: f64x4) -> f64x4;
+    #[link_name = "llvm.x86.avx.hsub.ps.256"]
+    fn hsubps256(a: f32x8, b: f32x8) -> f32x8;
     #[link_name = "llvm.x86.avx.max.pd.256"]
     fn maxpd256(a: f64x4, b: f64x4) -> f64x4;
     #[link_name = "llvm.x86.avx.max.ps.256"]
@@ -476,6 +503,25 @@ mod tests {
         let e = f32x8::new(3.0, 7.0, 11.0, 15.0, 3.0, 7.0, 11.0, 15.0);
         assert_eq!(r, e);
     }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_hsub_pd() {
+        let a = f64x4::new(1.0, 2.0, 3.0, 4.0);
+        let b = f64x4::new(5.0, 6.0, 7.0, 8.0);
+        let r = avx::_mm256_hsub_pd(a, b);
+        let e = f64x4::new(-1., -1., -1., -1.);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_hsub_ps() {
+        let a = f32x8::new(1.0, 2.0, 3.0, 4.0, 1.0, 2.0, 3.0, 4.0);
+        let b = f32x8::new(5.0, 6.0, 7.0, 8.0, 5.0, 6.0, 7.0, 8.0);
+        let r = avx::_mm256_hsub_ps(a, b);
+        let e = f32x8::new(-1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0);
+        assert_eq!(r, e);
+    }
+
 
     #[simd_test = "avx"]
     unsafe fn _mm256_sub_pd() {
