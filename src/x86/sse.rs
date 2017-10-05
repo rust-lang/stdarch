@@ -316,6 +316,51 @@ pub unsafe fn _mm_loadh_pi(a: f32x4, p: *const f32) -> f32x4 {
     simd_shuffle4(a, bb, [0, 1, 4, 5])
 }
 
+/// Load two floats from `p` into the lower half of a `f32x4`. The upper half
+/// is copied from the upper half of `a`.
+///
+/// This corresponds to the `MOVLPS` / `MOVLDP` / `VMOVLDP` instructions.
+///
+/// ```rust
+/// # #![feature(cfg_target_feature)]
+/// # #![feature(target_feature)]
+/// #
+/// # #[macro_use] extern crate stdsimd;
+/// #
+/// # // The real main function
+/// # fn main() {
+/// #     if cfg_feature_enabled!("sse") {
+/// #         #[target_feature = "+sse"]
+/// #         fn worker() {
+/// #
+/// #   use stdsimd::simd::f32x4;
+/// #   use stdsimd::vendor::_mm_loadl_pi;
+/// #
+/// let a = f32x4::new(1.0, 2.0, 3.0, 4.0);
+/// let data: [f32; 4] = [5.0, 6.0, 7.0, 8.0];
+///
+/// let r = unsafe { _mm_loadl_pi(a, data[..].as_ptr()) };
+///
+/// assert_eq!(r, f32x4::new(5.0, 6.0, 3.0, 4.0));
+/// #
+/// #         }
+/// #         worker();
+/// #     }
+/// # }
+/// ```
+#[inline(always)]
+#[target_feature = "+sse"]
+// TODO: generates MOVLPD if the CPU supports SSE2.
+// #[cfg_attr(test, assert_instr(movlps))]
+#[cfg_attr(test, assert_instr(movlpd))]
+// TODO: Like _mm_loadh_pi, this also isn't limited to floats.
+pub unsafe fn _mm_loadl_pi(a: f32x4, p: *const f32) -> f32x4 {
+    let q = p as *const f32x2;
+    let b: f32x2 = *q;
+    let bb = simd_shuffle4(b, b, [0, 1, 0, 1]);
+    simd_shuffle4(a, bb, [4, 5, 2, 3])
+}
+
 /// Perform a serializing operation on all store-to-memory instructions that
 /// were issued prior to this instruction.
 ///
@@ -884,6 +929,15 @@ mod tests {
         let p = x[..].as_ptr();
         let r = sse::_mm_loadh_pi(a, p);
         assert_eq!(r, f32x4::new(1.0, 2.0, 5.0, 6.0));
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_loadl_pi() {
+        let a = f32x4::new(1.0, 2.0, 3.0, 4.0);
+        let x: [f32; 4] = [5.0, 6.0, 7.0, 8.0];
+        let p = x[..].as_ptr();
+        let r = sse::_mm_loadl_pi(a, p);
+        assert_eq!(r, f32x4::new(5.0, 6.0, 3.0, 4.0));
     }
 
     #[simd_test = "sse"]
