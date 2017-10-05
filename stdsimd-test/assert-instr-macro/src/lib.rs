@@ -40,7 +40,9 @@ pub fn assert_instr(attr: proc_macro::TokenStream,
         (quote! { #[ignore] }).into()
     };
     let name = &func.ident;
-    let assert_name = syn::Ident::from(&format!("assert_{}", name.sym.as_str())[..]);
+    let assert_name = syn::Ident::from(&format!("assert_{}_{}", 
+                                                name.sym.as_str(), 
+                                                instr.sym.as_str())[..]);
     let shim_name = syn::Ident::from(&format!("{}_shim", name.sym.as_str())[..]);
     let (to_test, test_name) = if invoc.args.len() == 0 {
         (TokenStream::empty(), &func.ident)
