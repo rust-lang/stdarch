@@ -1,5 +1,6 @@
 use simd_llvm::simd_shuffle4;
 use v128::*;
+use v64::f32x2;
 use std::os::raw::c_void;
 
 #[cfg(test)]
@@ -266,6 +267,21 @@ pub unsafe fn _mm_movelh_ps(a: f32x4, b: f32x4) -> f32x4 {
 #[cfg_attr(test, assert_instr(movmskps))]
 pub unsafe fn _mm_movemask_ps(a: f32x4) -> i32 {
     movmskps(a)
+}
+
+/// Set the upper two single-precision floating-point values with 64 bits of
+/// data loaded from the address `p`; the lower two values are passed through
+/// from `a`.
+#[inline(always)]
+#[target_feature = "+sse"]
+// TODO: generates MOVHPD if the CPU supports SSE2.
+// #[cfg_attr(test, assert_instr(movhps))]
+#[cfg_attr(test, assert_instr(movhpd))]
+pub unsafe fn _mm_loadh_pi(a: f32x4, p: *const f32) -> f32x4 {
+    let q = p as *const f32x2;
+    let b: f32x2 = *q;
+    let bb = simd_shuffle4(b, b, [0, 1, 0, 1]);
+    simd_shuffle4(a, bb, [0, 1, 4, 5])
 }
 
 /// Perform a serializing operation on all store-to-memory instructions that
@@ -826,6 +842,15 @@ mod tests {
         let a = f32x4::new(1.0, 2.0, 3.0, 4.0);
         let b = f32x4::new(5.0, 6.0, 7.0, 8.0);
         let r = sse::_mm_movelh_ps(a, b);
+        assert_eq!(r, f32x4::new(1.0, 2.0, 5.0, 6.0));
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_loadh_pi() {
+        let a = f32x4::new(1.0, 2.0, 3.0, 4.0);
+        let x: [f32; 4] = [5.0, 6.0, 7.0, 8.0];
+        let p = x[..].as_ptr();
+        let r = sse::_mm_loadh_pi(a, p);
         assert_eq!(r, f32x4::new(1.0, 2.0, 5.0, 6.0));
     }
 
