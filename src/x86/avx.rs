@@ -45,6 +45,30 @@ pub unsafe fn _mm256_and_ps(a: f32x8, b: f32x8) -> f32x8 {
     mem::transmute(a & b)
 }
 
+/// Compute the bitwise NOT of a packed double-precision (64-bit) floating-point elements in `a` 
+/// and then AND with `b`.
+#[inline(always)]
+#[target_feature = "+avx"]
+// Should be 'vandnpd' instuction.
+// See https://github.com/rust-lang-nursery/stdsimd/issues/71
+#[cfg_attr(test, assert_instr(vandnps))]
+pub unsafe fn _mm256_andnot_pd(a: f64x4, b: f64x4) -> f64x4 {
+    let a: u64x4 = mem::transmute(a);
+    let b: u64x4 = mem::transmute(b);
+    mem::transmute(!a & b)
+}
+
+/// Compute the bitwise NOT of a packed single-precision (32-bit) floating-point elements in `a` 
+/// and then AND with `b`.
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vandnps))]
+pub unsafe fn _mm256_andnot_ps(a: f32x8, b: f32x8) -> f32x8 {
+    let a: u32x8 = mem::transmute(a);
+    let b: u32x8 = mem::transmute(b);
+    mem::transmute(!a & b)
+}
+
 /// Compute the bitwise OR packed double-precision (64-bit) floating-point elements
 /// in `a` and `b`.
 #[inline(always)]
@@ -66,6 +90,24 @@ pub unsafe fn _mm256_or_ps(a: f32x8, b: f32x8) -> f32x8 {
     let a: u32x8 = mem::transmute(a);
     let b: u32x8 = mem::transmute(b);
     mem::transmute(a | b)
+}
+
+/// Blend packed double-precision (64-bit) floating-point elements 
+/// from `a` and `b` using `mask`
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vblendvpd))]
+pub unsafe fn _mm256_blendv_pd(a: f64x4, b: f64x4, mask: f64x4) -> f64x4 {
+    blendvpd256(a, b, mask)
+}
+
+/// Blend packed single-precision (32-bit) floating-point elements 
+/// from `a` and `b` using `mask`
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vblendvps))]
+pub unsafe fn _mm256_blendv_ps(a: f32x8, b: f32x8, mask: f32x8) -> f32x8 {
+    blendvps256(a, b, mask)
 }
 
 /// Compare packed double-precision (64-bit) floating-point elements 
@@ -277,6 +319,10 @@ pub unsafe fn _mm256_sqrt_pd(a: f64x4) -> f64x4 {
 /// LLVM intrinsics used in the above functions
 #[allow(improper_ctypes)]
 extern "C" {
+    #[link_name = "llvm.x86.avx.blendv.pd.256"]
+    fn blendvpd256(a: f64x4, b: f64x4, mask: f64x4) -> f64x4;
+    #[link_name = "llvm.x86.avx.blendv.ps.256"]
+    fn blendvps256(a: f32x8, b: f32x8, mask: f32x8) -> f32x8;
     #[link_name = "llvm.x86.avx.addsub.pd.256"]
     fn addsubpd256(a: f64x4, b: f64x4) -> f64x4;
     #[link_name = "llvm.x86.avx.addsub.ps.256"]
@@ -342,6 +388,24 @@ mod tests {
         assert_eq!(r, e);
     }
 
+ #[simd_test = "avx"]
+    unsafe fn _mm256_andnot_pd() {
+        let a = f64x4::splat(1.0);
+        let b = f64x4::splat(1.0);
+        let r = avx::_mm256_andnot_pd(a, b);
+        let e = f64x4::splat(0.0);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_andnot_ps() {
+        let a = f32x8::splat(1.0);
+        let b = f32x8::splat(1.0);
+        let r = avx::_mm256_andnot_ps(a, b);
+        let e = f32x8::splat(0.0);
+        assert_eq!(r, e);
+    }
+
     #[simd_test = "avx"]
     unsafe fn _mm256_or_pd() {
         let a = f64x4::splat(1.0);
@@ -357,6 +421,28 @@ mod tests {
         let b = f32x8::splat(0.6);
         let r = avx::_mm256_or_ps(a, b);
         let e = f32x8::splat(1.2);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_blendv_pd() {
+        use std::mem::transmute;
+        let a = f64x4::splat(1.0);
+        let b = f64x4::splat(2.0);
+        let mask = transmute(i64x4::splat(0).replace(2, -1));
+        let r = avx::_mm256_blendv_pd(a, b, mask);
+        let e = f64x4::splat(1.0).replace(2, 2.0);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_blendv_ps() {
+        use std::mem::transmute;
+        let a = f32x8::splat(1.0);
+        let b = f32x8::splat(2.0);
+        let mask = transmute(i32x8::splat(0).replace(4, -1));
+        let r = avx::_mm256_blendv_ps(a, b, mask);
+        let e = f32x8::splat(1.0).replace(4, 2.0);
         assert_eq!(r, e);
     }
 
