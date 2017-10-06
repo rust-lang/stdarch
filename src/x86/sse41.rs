@@ -91,6 +91,7 @@ pub unsafe fn _mm_extract_epi32(a: i32x4, imm8: u8) -> i32 {
 }
 
 /// Extract an 64-bit integer from `a` selected with `imm8`
+#[cfg(target_arch = "x86_64")]
 #[inline(always)]
 #[target_feature = "+sse4.1"]
 #[cfg_attr(test, assert_instr(pextrq, imm8=1))]
@@ -147,6 +148,7 @@ pub unsafe fn _mm_insert_epi32(a: i32x4, i: i32, imm8: u8) -> i32x4 {
 }
 
 /// Return a copy of `a` with the 64-bit integer from `i` inserted at a location specified by `imm8`. 
+#[cfg(target_arch = "x86_64")]
 #[inline(always)]
 #[target_feature = "+sse4.1"]
 #[cfg_attr(test, assert_instr(pinsrq, imm8=0))]
@@ -346,6 +348,7 @@ mod tests {
         assert_eq!(r, 1);
     }
 
+    #[cfg(target_arch = "x86_64")]
     #[simd_test = "sse4.1"]
     unsafe fn _mm_extract_epi64() {
         let a = i64x2::new(0, 1);
@@ -384,6 +387,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
+    #[cfg(target_arch = "x86_64")]
     #[simd_test = "sse4.1"]
     unsafe fn _mm_insert_epi64() {
         let a = i64x2::splat(0);
