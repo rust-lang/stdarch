@@ -190,6 +190,24 @@ pub unsafe fn _mm_set_ps1(a: f32) -> f32x4 {
     _mm_set1_ps(a)
 }
 
+/// Construct a `f32x4` from four floating point values highest to lowest.
+///
+/// Note that `a` will be the highest 32 bits of the result, and `d` the lowest.
+/// This matches the standard way of writing bit patterns on x86:
+///
+/// ```text
+///  bit    127 .. 96  95 .. 64  63 .. 32  31 .. 0
+///        +---------+---------+---------+---------+
+///        |    a    |    b    |    c    |    d    |   result
+///        +---------+---------+---------+---------+
+/// ```
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(unpcklps))]
+pub unsafe fn _mm_set_ps(a: f32, b: f32, c: f32, d: f32) -> f32x4 {
+    f32x4::new(d, c, b, a)
+}
+
 /// Shuffle packed single-precision (32-bit) floating-point elements in `a` and
 /// `b` using `mask`.
 ///
@@ -825,6 +843,13 @@ mod tests {
         let r2 = sse::_mm_set_ps1(black_box(4.25));
         assert_eq!(r1, f32x4::splat(4.25));
         assert_eq!(r2, f32x4::splat(4.25));
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_set_ps() {
+        let r = sse::_mm_set_ps(
+            black_box(1.0), black_box(2.0), black_box(3.0), black_box(4.0));
+        assert_eq!(r, f32x4::new(4.0, 3.0, 2.0, 1.0));
     }
 
     #[simd_test = "sse"]
