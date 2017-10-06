@@ -2,6 +2,8 @@ use simd_llvm::simd_shuffle4;
 use v128::*;
 use v64::f32x2;
 use std::os::raw::c_void;
+use std::mem;
+use std::ptr;
 
 #[cfg(test)]
 use stdsimd_test::assert_instr;
@@ -391,6 +393,40 @@ pub unsafe fn _mm_load1_ps(p: *const f32) -> f32x4 {
 #[cfg_attr(test, assert_instr(movss))]
 pub unsafe fn _mm_load_ps1(p: *const f32) -> f32x4 {
     _mm_load1_ps(p)
+}
+
+/// Load four `f32` values from *aligned* memory into a `f32x4`. If the pointer
+/// is not aligned to a 128-bit boundary (16 bytes) a general protection fault
+/// will be triggered (fatal program crash).
+///
+/// Use [`_mm_loadu_ps`](fn._mm_loadu_ps.html) for potentially unaligned memory.
+///
+/// This corresponds to instructions `VMOVAPS` / `MOVAPS`.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(movaps))]
+pub unsafe fn _mm_load_ps(p: *const f32) -> f32x4 {
+    *(p as *const f32x4)
+}
+
+/// Load four `f32` values from memory into a `f32x4`. There are no restrictions
+/// on memory alignment. For aligned memory [`_mm_load_ps`](fn._mm_load_ps.html)
+/// may be faster.
+///
+/// This corresponds to instructions `VMOVUPS` / `MOVUPS`.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(movups))]
+pub unsafe fn _mm_loadu_ps(p: *const f32) -> f32x4 {
+    // TODO: This also seems to generate the same code. Don't know which one
+    // will behave better when inlined into other code.
+    // f32x4::new(*p, *p.offset(1), *p.offset(2), *p.offset(3))
+    let mut dst = mem::uninitialized();
+    ptr::copy_nonoverlapping(
+        p as *const u8,
+        &mut dst as *mut f32x4 as *mut u8,
+        mem::size_of::<f32x4>());
+    dst
 }
 
 /// Perform a serializing operation on all store-to-memory instructions that
@@ -984,6 +1020,35 @@ mod tests {
         let a = 42.0f32;
         let r = sse::_mm_load1_ps(&a as *const f32);
         assert_eq!(r, f32x4::new(42.0, 42.0, 42.0, 42.0));
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_load_ps() {
+        let vals = &[1.0f32, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0];
+
+        let mut p = vals.as_ptr();
+        let mut fixup = 0.0f32;
+
+        // Make sure p is aligned, otherwise we might get a
+        // (signal: 11, SIGSEGV: invalid memory reference)
+
+        let unalignment = (p as usize) & 0xf;
+        if unalignment != 0 {
+            let delta = ((16 - unalignment) >> 2) as isize;
+            fixup = delta as f32;
+            p = p.offset(delta);
+        }
+
+        let r = sse::_mm_load_ps(p);
+        assert_eq!(r, f32x4::new(1.0, 2.0, 3.0, 4.0) + f32x4::splat(fixup));
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_loadu_ps() {
+        let vals = &[1.0f32, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0];
+        let p = vals.as_ptr().offset(3);
+        let r = sse::_mm_loadu_ps(black_box(p));
+        assert_eq!(r, f32x4::new(4.0, 5.0, 6.0, 7.0));
     }
 
     #[simd_test = "sse"]
