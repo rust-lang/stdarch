@@ -224,7 +224,9 @@ pub unsafe fn _mm_set_ps(a: f32, b: f32, c: f32, d: f32) -> f32x4 {
 /// ```
 #[inline(always)]
 #[target_feature = "+sse"]
-#[cfg_attr(test, assert_instr(unpcklps))]
+#[cfg_attr(all(test, target_arch = "x86_64"), assert_instr(unpcklps))]
+// On a 32-bit architecture it just copies the operands from the stack.
+#[cfg_attr(all(test, target_arch = "x86"), assert_instr(movaps))]
 pub unsafe fn _mm_setr_ps(a: f32, b: f32, c: f32, d: f32) -> f32x4 {
     f32x4::new(a, b, c, d)
 }
