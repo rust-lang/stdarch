@@ -418,9 +418,8 @@ pub unsafe fn _mm_load_ps(p: *const f32) -> f32x4 {
 #[target_feature = "+sse"]
 #[cfg_attr(test, assert_instr(movups))]
 pub unsafe fn _mm_loadu_ps(p: *const f32) -> f32x4 {
-    // TODO: This also seems to generate the same code. Don't know which one
-    // will behave better when inlined into other code.
-    // f32x4::new(*p, *p.offset(1), *p.offset(2), *p.offset(3))
+    // Note: Using `*p` would require `f32` alignment, but `movups` has no
+    // alignment restrictions.
     let mut dst = mem::uninitialized();
     ptr::copy_nonoverlapping(
         p as *const u8,
