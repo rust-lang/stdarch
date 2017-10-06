@@ -201,11 +201,32 @@ pub unsafe fn _mm_set_ps1(a: f32) -> f32x4 {
 ///        |    a    |    b    |    c    |    d    |   result
 ///        +---------+---------+---------+---------+
 /// ```
+///
+/// Alternatively:
+///
+/// ```text
+/// assert_eq!(f32x4::new(a, b, c, d), _mm_set_ps(d, c, b, a));
+/// ```
 #[inline(always)]
 #[target_feature = "+sse"]
 #[cfg_attr(test, assert_instr(unpcklps))]
 pub unsafe fn _mm_set_ps(a: f32, b: f32, c: f32, d: f32) -> f32x4 {
     f32x4::new(d, c, b, a)
+}
+
+/// Construct a `f32x4` from four floating point values lowest to highest.
+///
+/// This matches the memory order of `f32x4`, i.e., `a` will be the lowest 32
+/// bits of the result, and `d` the highest.
+///
+/// ```text
+/// assert_eq!(f32x4::new(a, b, c, d), _mm_setr_ps(a, b, c, d));
+/// ```
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(unpcklps))]
+pub unsafe fn _mm_setr_ps(a: f32, b: f32, c: f32, d: f32) -> f32x4 {
+    f32x4::new(a, b, c, d)
 }
 
 /// Shuffle packed single-precision (32-bit) floating-point elements in `a` and
@@ -850,6 +871,13 @@ mod tests {
         let r = sse::_mm_set_ps(
             black_box(1.0), black_box(2.0), black_box(3.0), black_box(4.0));
         assert_eq!(r, f32x4::new(4.0, 3.0, 2.0, 1.0));
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_setr_ps() {
+        let r = sse::_mm_setr_ps(
+            black_box(1.0), black_box(2.0), black_box(3.0), black_box(4.0));
+        assert_eq!(r, f32x4::new(1.0, 2.0, 3.0, 4.0));
     }
 
     #[simd_test = "sse"]
