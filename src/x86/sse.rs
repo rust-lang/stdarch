@@ -429,6 +429,32 @@ pub unsafe fn _mm_loadu_ps(p: *const f32) -> f32x4 {
     dst
 }
 
+/// Load four `f32` values from aligned memory into a `f32x4` in reverse order.
+///
+/// If the pointer is not aligned to a 128-bit boundary (16 bytes) a general
+/// protection fault will be triggered (fatal program crash).
+///
+/// Functionally equivalent to the following code sequence (assuming `p`
+/// satisfies the alignment restrictions):
+///
+/// ```text
+/// let a0 = *p;
+/// let a1 = *p.offset(1);
+/// let a2 = *p.offset(2);
+/// let a3 = *p.offset(3);
+/// f32x4::new(a3, a2, a1, a0)
+/// ```
+///
+/// This corresponds to instructions `VMOVAPS` / `MOVAPS` followed by some
+/// shuffling.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(movaps))]
+pub unsafe fn _mm_loadr_ps(p: *const f32) -> f32x4 {
+    let a = _mm_load_ps(p);
+    simd_shuffle4(a, a, [3, 2, 1, 0])
+}
+
 /// Perform a serializing operation on all store-to-memory instructions that
 /// were issued prior to this instruction.
 ///
@@ -1049,6 +1075,27 @@ mod tests {
         let p = vals.as_ptr().offset(3);
         let r = sse::_mm_loadu_ps(black_box(p));
         assert_eq!(r, f32x4::new(4.0, 5.0, 6.0, 7.0));
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_loadr_ps() {
+        let vals = &[1.0f32, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0];
+
+        let mut p = vals.as_ptr();
+        let mut fixup = 0.0f32;
+
+        // Make sure p is aligned, otherwise we might get a
+        // (signal: 11, SIGSEGV: invalid memory reference)
+
+        let unalignment = (p as usize) & 0xf;
+        if unalignment != 0 {
+            let delta = ((16 - unalignment) >> 2) as isize;
+            fixup = delta as f32;
+            p = p.offset(delta);
+        }
+
+        let r = sse::_mm_loadr_ps(p);
+        assert_eq!(r, f32x4::new(4.0, 3.0, 2.0, 1.0) + f32x4::splat(fixup));
     }
 
     #[simd_test = "sse"]
