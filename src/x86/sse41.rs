@@ -367,38 +367,34 @@ mod tests {
     #[simd_test = "sse4.1"]
     unsafe fn _mm_insert_epi8() {
         let a = i8x16::splat(0);
-        let r = sse41::_mm_insert_epi8(a, 32, 1);
         let e = i8x16::splat(0).replace(1, 32);
+        let r = sse41::_mm_insert_epi8(a, 32, 1);
         assert_eq!(r, e);
         let r = sse41::_mm_insert_epi8(a, 32, 17);
-        let e = i8x16::splat(0).replace(1, 32);
         assert_eq!(r, e);
     }
 
     #[simd_test = "sse4.1"]
     unsafe fn _mm_insert_epi32() {
         let a = i32x4::splat(0);
-        let r = sse41::_mm_insert_epi32(a, 32, 1);
         let e = i32x4::splat(0).replace(1, 32);
+        let r = sse41::_mm_insert_epi32(a, 32, 1);
         assert_eq!(r, e);
         let r = sse41::_mm_insert_epi32(a, 32, 5);
-        let e = i32x4::splat(0).replace(1, 32);
         assert_eq!(r, e);
     }
 
     #[simd_test = "sse4.1"]
     unsafe fn _mm_insert_epi64() {
         let a = i64x2::splat(0);
+        let e = i64x2::splat(0).replace(1, 32);
         let r = sse41::_mm_insert_epi64(a, 32, 1);
-        let e = i64x2::splat(0).replace(1, 32);
         assert_eq!(r, e);
-
         let r = sse41::_mm_insert_epi64(a, 32, 3);
-        let e = i64x2::splat(0).replace(1, 32);
         assert_eq!(r, e);
     }
 
-    #[simd_test = "avx"]
+    #[simd_test = "sse4.1"]
     unsafe fn _mm_max_epi8() {
         let a = i8x16::new(1, 4, 5, 8, 9, 12, 13, 16, 17, 20, 21, 24, 25, 28, 29, 32);
         let b = i8x16::new(2, 3, 6, 7, 10, 11, 14, 15, 18, 19, 22, 23, 26, 27, 30, 31);
@@ -407,7 +403,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test = "avx"]
+    #[simd_test = "sse4.1"]
     unsafe fn _mm_max_epu16() {
         let a = u16x8::new(1, 4, 5, 8, 9, 12, 13, 16);
         let b = u16x8::new(2, 3, 6, 7, 10, 11, 14, 15);
@@ -416,7 +412,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test = "avx"]
+    #[simd_test = "sse4.1"]
     unsafe fn _mm_max_epi32() {
         let a = i32x4::new(1, 4, 5, 8);
         let b = i32x4::new(2, 3, 6, 7);
@@ -425,7 +421,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test = "avx"]
+    #[simd_test = "sse4.1"]
     unsafe fn _mm_max_epu32() {
         let a = u32x4::new(1, 4, 5, 8);
         let b = u32x4::new(2, 3, 6, 7);
