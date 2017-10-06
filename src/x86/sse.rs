@@ -165,6 +165,15 @@ pub unsafe fn _mm_max_ps(a: f32x4, b: f32x4) -> f32x4 {
     maxps(a, b)
 }
 
+/// Construct a `f32x4` with the lowest element set to `a` and the rest set to
+/// zero.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(movss))]
+pub unsafe fn _mm_set_ss(a: f32) -> f32x4 {
+    f32x4::new(a, 0.0, 0.0, 0.0)
+}
+
 /// Shuffle packed single-precision (32-bit) floating-point elements in `a` and
 /// `b` using `mask`.
 ///
@@ -786,6 +795,12 @@ mod tests {
         let b = f32x4::new(-100.0, 20.0, 0.0, -5.0);
         let r = sse::_mm_max_ps(a, b);
         assert_eq!(r, f32x4::new(-1.0, 20.0, 0.0, -5.0));
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_set_ss() {
+        let r = sse::_mm_set_ss(black_box(4.25));
+        assert_eq!(r, f32x4::new(4.25, 0.0, 0.0, 0.0));
     }
 
     #[simd_test = "sse"]
