@@ -174,6 +174,22 @@ pub unsafe fn _mm_set_ss(a: f32) -> f32x4 {
     f32x4::new(a, 0.0, 0.0, 0.0)
 }
 
+/// Construct a `f32x4` with all element set to `a`.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(shufps))]
+pub unsafe fn _mm_set1_ps(a: f32) -> f32x4 {
+    f32x4::new(a, a, a, a)
+}
+
+/// Alias for [`_mm_set1_ps`](fn._mm_set1_ps.html)
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(shufps))]
+pub unsafe fn _mm_set_ps1(a: f32) -> f32x4 {
+    _mm_set1_ps(a)
+}
+
 /// Shuffle packed single-precision (32-bit) floating-point elements in `a` and
 /// `b` using `mask`.
 ///
@@ -801,6 +817,14 @@ mod tests {
     unsafe fn _mm_set_ss() {
         let r = sse::_mm_set_ss(black_box(4.25));
         assert_eq!(r, f32x4::new(4.25, 0.0, 0.0, 0.0));
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_set1_ps() {
+        let r1 = sse::_mm_set1_ps(black_box(4.25));
+        let r2 = sse::_mm_set_ps1(black_box(4.25));
+        assert_eq!(r1, f32x4::splat(4.25));
+        assert_eq!(r2, f32x4::splat(4.25));
     }
 
     #[simd_test = "sse"]
