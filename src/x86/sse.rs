@@ -229,6 +229,14 @@ pub unsafe fn _mm_setr_ps(a: f32, b: f32, c: f32, d: f32) -> f32x4 {
     f32x4::new(a, b, c, d)
 }
 
+/// Construct a `f32x4` with all elements initialized to zero.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(xorps))]
+pub unsafe fn _mm_setzero_ps() -> f32x4 {
+    f32x4::new(0.0, 0.0, 0.0, 0.0)
+}
+
 /// Shuffle packed single-precision (32-bit) floating-point elements in `a` and
 /// `b` using `mask`.
 ///
@@ -878,6 +886,12 @@ mod tests {
         let r = sse::_mm_setr_ps(
             black_box(1.0), black_box(2.0), black_box(3.0), black_box(4.0));
         assert_eq!(r, f32x4::new(1.0, 2.0, 3.0, 4.0));
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_setzero_ps() {
+        let r = black_box(sse::_mm_setzero_ps());
+        assert_eq!(r, f32x4::splat(0.0));
     }
 
     #[simd_test = "sse"]
