@@ -426,7 +426,7 @@ pub unsafe fn _mm_load_ps(p: *const f32) -> f32x4 {
 pub unsafe fn _mm_loadu_ps(p: *const f32) -> f32x4 {
     // Note: Using `*p` would require `f32` alignment, but `movups` has no
     // alignment restrictions.
-    let mut dst = mem::uninitialized();
+    let mut dst = f32x4::splat(mem::uninitialized());
     ptr::copy_nonoverlapping(
         p as *const u8,
         &mut dst as *mut f32x4 as *mut u8,
