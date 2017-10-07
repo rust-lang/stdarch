@@ -168,6 +168,49 @@ pub unsafe fn _mm_max_ps(a: f32x4, b: f32x4) -> f32x4 {
     maxps(a, b)
 }
 
+/// Bitwise AND of packed single-precision (32-bit) floating-point elements.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(andps))]
+pub unsafe fn _mm_and_ps(a: f32x4, b: f32x4) -> f32x4 {
+    let aa: i32x4 = mem::transmute(a);
+    let bb: i32x4 = mem::transmute(b);
+    mem::transmute(aa & bb)
+}
+
+/// Bitwise AND-NOT of packed single-precision (32-bit) floating-point elements.
+///
+/// Computes `!a & b` for each bit in `a` and `b`.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(andnps))]
+pub unsafe fn _mm_andnot_ps(a: f32x4, b: f32x4) -> f32x4 {
+    let aa: i32x4 = mem::transmute(a);
+    let bb: i32x4 = mem::transmute(b);
+    mem::transmute(!aa & bb)
+}
+
+/// Bitwise OR of packed single-precision (32-bit) floating-point elements.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(orps))]
+pub unsafe fn _mm_or_ps(a: f32x4, b: f32x4) -> f32x4 {
+    let aa: i32x4 = mem::transmute(a);
+    let bb: i32x4 = mem::transmute(b);
+    mem::transmute(aa | bb)
+}
+
+/// Bitwise exclusive OR of packed single-precision (32-bit) floating-point
+/// elements.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(xorps))]
+pub unsafe fn _mm_xor_ps(a: f32x4, b: f32x4) -> f32x4 {
+    let aa: i32x4 = mem::transmute(a);
+    let bb: i32x4 = mem::transmute(b);
+    mem::transmute(aa ^ bb)
+}
+
 /// Construct a `f32x4` with the lowest element set to `a` and the rest set to
 /// zero.
 #[inline(always)]
@@ -1059,6 +1102,50 @@ mod tests {
         let b = f32x4::new(-100.0, 20.0, 0.0, -5.0);
         let r = sse::_mm_max_ps(a, b);
         assert_eq!(r, f32x4::new(-1.0, 20.0, 0.0, -5.0));
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_and_ps() {
+        use std::mem::transmute;
+
+        let a: f32x4 = transmute(u32x4::splat(0b0011));
+        let b: f32x4 = transmute(u32x4::splat(0b0101));
+        let r = sse::_mm_and_ps(*black_box(&a), *black_box(&b));
+        let e: f32x4 = transmute(u32x4::splat(0b0001));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_andnot_ps() {
+        use std::mem::transmute;
+
+        let a: f32x4 = transmute(u32x4::splat(0b0011));
+        let b: f32x4 = transmute(u32x4::splat(0b0101));
+        let r = sse::_mm_andnot_ps(*black_box(&a), *black_box(&b));
+        let e: f32x4 = transmute(u32x4::splat(0b0100));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_or_ps() {
+        use std::mem::transmute;
+
+        let a: f32x4 = transmute(u32x4::splat(0b0011));
+        let b: f32x4 = transmute(u32x4::splat(0b0101));
+        let r = sse::_mm_or_ps(*black_box(&a), *black_box(&b));
+        let e: f32x4 = transmute(u32x4::splat(0b0111));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_xor_ps() {
+        use std::mem::transmute;
+
+        let a: f32x4 = transmute(u32x4::splat(0b0011));
+        let b: f32x4 = transmute(u32x4::splat(0b0101));
+        let r = sse::_mm_xor_ps(*black_box(&a), *black_box(&b));
+        let e: f32x4 = transmute(u32x4::splat(0b0110));
+        assert_eq!(r, e);
     }
 
     #[simd_test = "sse"]
