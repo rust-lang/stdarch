@@ -254,7 +254,8 @@ pub unsafe fn _mm_movehl_ps(a: f32x4, b: f32x4) -> f32x4 {
 /// half of result.
 #[inline(always)]
 #[target_feature = "+sse"]
-#[cfg_attr(test, assert_instr(unpcklpd))]
+#[cfg_attr(all(test, target_feature = "sse2"), assert_instr(unpcklpd))]
+#[cfg_attr(all(test, not(target_feature = "sse2")), assert_instr(movlhps))]
 pub unsafe fn _mm_movelh_ps(a: f32x4, b: f32x4) -> f32x4 {
     simd_shuffle4(a, b, [0, 1, 4, 5])
 }
@@ -576,9 +577,9 @@ pub const _MM_HINT_NTA: i8 = 0;
 #[inline(always)]
 #[target_feature = "+sse"]
 #[cfg_attr(test, assert_instr(prefetcht0, strategy = _MM_HINT_T0))]
-// #[cfg_attr(test, assert_instr(prefetcht1, strategy = _MM_HINT_T1))]
-// #[cfg_attr(test, assert_instr(prefetcht2, strategy = _MM_HINT_T2))]
-// #[cfg_attr(test, assert_instr(prefetchnta, strategy = _MM_HINT_NTA))]
+#[cfg_attr(test, assert_instr(prefetcht1, strategy = _MM_HINT_T1))]
+#[cfg_attr(test, assert_instr(prefetcht2, strategy = _MM_HINT_T2))]
+#[cfg_attr(test, assert_instr(prefetchnta, strategy = _MM_HINT_NTA))]
 pub unsafe fn _mm_prefetch(p: *const c_void, strategy: i8) {
     // The `strategy` must be a compile-time constant, so we use a short form of
     // `constify_imm8!` for now.
@@ -860,7 +861,7 @@ mod tests {
         let b = f32x4::new(0.001, 0.0, 0.0, 1.0);
 
         sse::_MM_SET_FLUSH_ZERO_MODE(sse::_MM_FLUSH_ZERO_ON);
-        let r = sse::_mm_mul_ps(black_box(a), black_box(b));
+        let r = sse::_mm_mul_ps(*black_box(&a), *black_box(&b));
 
         sse::_mm_setcsr(saved_csr);
 
@@ -878,7 +879,7 @@ mod tests {
         let b = f32x4::new(0.001, 0.0, 0.0, 1.0);
 
         sse::_MM_SET_FLUSH_ZERO_MODE(sse::_MM_FLUSH_ZERO_OFF);
-        let r = sse::_mm_mul_ps(black_box(a), black_box(b));
+        let r = sse::_mm_mul_ps(*black_box(&a), *black_box(&b));
 
         sse::_mm_setcsr(saved_csr);
 
@@ -895,7 +896,7 @@ mod tests {
 
         assert_eq!(sse::_MM_GET_EXCEPTION_STATE(), 0);  // just to be sure
 
-        let r = sse::_mm_mul_ps(black_box(a), black_box(b));
+        let r = sse::_mm_mul_ps(*black_box(&a), *black_box(&b));
 
         let exp = f32x4::new(1.1e-41, 0.0, 0.0, 1.0);
         assert_eq!(r, exp);
