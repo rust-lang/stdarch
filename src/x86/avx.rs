@@ -870,6 +870,18 @@ pub unsafe fn _mm256_permute2f128_pd(a: f64x4, b: f64x4, imm8: i8) -> f64x4 {
     constify_imm8!(imm8, call)
 }
 
+/// Shuffle 258-bits (composed of integer data) selected by `imm8`
+/// from `a` and `b`.
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vperm2f128, imm8 = 0x31))]
+pub unsafe fn _mm256_permute2f128_si256(a: i32x8, b: i32x8, imm8: i8) -> i32x8 {
+    macro_rules! call {
+        ($imm8:expr) => { vperm2f128si256(a, b, $imm8) }
+    }
+    constify_imm8!(imm8, call)
+}
+
 /// Return vector of type `f32x8` with undefined elements.
 #[inline(always)]
 #[target_feature = "+avx"]
@@ -956,6 +968,8 @@ extern "C" {
     fn vperm2f128ps256(a: f32x8, b: f32x8, imm8: i8) -> f32x8;
     #[link_name = "llvm.x86.avx.vperm2f128.pd.256"]
     fn vperm2f128pd256(a: f64x4, b: f64x4, imm8: i8) -> f64x4;
+    #[link_name = "llvm.x86.avx.vperm2f128.si.256"]
+    fn vperm2f128si256(a: i32x8, b: i32x8, imm8: i8) -> i32x8;
 }
 
 #[cfg(test)]
@@ -1562,6 +1576,15 @@ mod tests {
         let b = f64x4::new(5.0, 6.0, 7.0, 8.0);
         let r = avx::_mm256_permute2f128_pd(a, b, 0x31);
         let e = f64x4::new(3.0, 4.0, 7.0, 8.0);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_permute2f128_si256() {
+        let a = i32x8::new(1, 2, 3, 4, 1, 2, 3, 4);
+        let b = i32x8::new(5, 6, 7, 8, 5, 6, 7, 8);
+        let r = avx::_mm256_permute2f128_si256(a, b, 0x20);
+        let e = i32x8::new(1, 2, 3, 4, 5, 6, 7, 8);
         assert_eq!(r, e);
     }
 }
