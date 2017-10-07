@@ -171,7 +171,9 @@ pub unsafe fn _mm_max_ps(a: f32x4, b: f32x4) -> f32x4 {
 /// Bitwise AND of packed single-precision (32-bit) floating-point elements.
 #[inline(always)]
 #[target_feature = "+sse"]
-#[cfg_attr(test, assert_instr(andps))]
+// i586 only seems to generate plain `and` instructions, so ignore it.
+#[cfg_attr(all(test, any(target_arch = "x86_64", target_feature = "sse2")),
+    assert_instr(andps))]
 pub unsafe fn _mm_and_ps(a: f32x4, b: f32x4) -> f32x4 {
     let aa: i32x4 = mem::transmute(a);
     let bb: i32x4 = mem::transmute(b);
@@ -183,7 +185,9 @@ pub unsafe fn _mm_and_ps(a: f32x4, b: f32x4) -> f32x4 {
 /// Computes `!a & b` for each bit in `a` and `b`.
 #[inline(always)]
 #[target_feature = "+sse"]
-#[cfg_attr(test, assert_instr(andnps))]
+// i586 only seems to generate plain `not` and `and` instructions, so ignore it.
+#[cfg_attr(all(test, any(target_arch = "x86_64", target_feature = "sse2")),
+    assert_instr(andnps))]
 pub unsafe fn _mm_andnot_ps(a: f32x4, b: f32x4) -> f32x4 {
     let aa: i32x4 = mem::transmute(a);
     let bb: i32x4 = mem::transmute(b);
@@ -193,7 +197,9 @@ pub unsafe fn _mm_andnot_ps(a: f32x4, b: f32x4) -> f32x4 {
 /// Bitwise OR of packed single-precision (32-bit) floating-point elements.
 #[inline(always)]
 #[target_feature = "+sse"]
-#[cfg_attr(test, assert_instr(orps))]
+// i586 only seems to generate plain `or` instructions, so we ignore it.
+#[cfg_attr(all(test, any(target_arch = "x86_64", target_feature = "sse2")),
+    assert_instr(orps))]
 pub unsafe fn _mm_or_ps(a: f32x4, b: f32x4) -> f32x4 {
     let aa: i32x4 = mem::transmute(a);
     let bb: i32x4 = mem::transmute(b);
@@ -204,7 +210,9 @@ pub unsafe fn _mm_or_ps(a: f32x4, b: f32x4) -> f32x4 {
 /// elements.
 #[inline(always)]
 #[target_feature = "+sse"]
-#[cfg_attr(test, assert_instr(xorps))]
+// i586 only seems to generate plain `xor` instructions, so we ignore it.
+#[cfg_attr(all(test, any(target_arch = "x86_64", target_feature = "sse2")),
+    assert_instr(xorps))]
 pub unsafe fn _mm_xor_ps(a: f32x4, b: f32x4) -> f32x4 {
     let aa: i32x4 = mem::transmute(a);
     let bb: i32x4 = mem::transmute(b);
