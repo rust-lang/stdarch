@@ -320,6 +320,17 @@ pub unsafe fn _mm_cmpnge_ss(a: f32x4, b: f32x4) -> f32x4 {
     simd_shuffle4(a, cmpss(b, a, 6), [4, 1, 2, 3])
 }
 
+/// Check if the lowest `f32` of both inputs are ordered. The lowest 32 bits of
+/// the result will be `0xffffffff` if neither of `a.extract(0)` or
+/// `b.extract(0)` is a NaN, or `0` otherwise. The upper 96 bits of the result
+/// are the upper 96 bits of `a`.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(cmpordss))]
+pub unsafe fn _mm_cmpord_ss(a: f32x4, b: f32x4) -> f32x4 {
+    cmpss(a, b, 7)
+}
+
 /// Construct a `f32x4` with the lowest element set to `a` and the rest set to
 /// zero.
 #[inline(always)]
@@ -1518,6 +1529,36 @@ mod tests {
         assert_eq!(rc, ec);
 
         let rd: u32x4 = transmute(sse::_mm_cmpnge_ss(a, d));
+        let ed: u32x4 = transmute(f32x4::new(transmute(d1), 2.0, 3.0, 4.0));
+        assert_eq!(rd, ed);
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_cmpord_ss() {
+        // TODO: This test is exactly the same as for _mm_cmplt_ss, but there
+        // must be a difference. It may have to do with behavior in the presence
+        // of NaNs (signaling or quiet). If so, we should add tests for those.
+        use std::mem::transmute;
+        use std::f32::NAN;
+
+        let a = f32x4::new(1.0, 2.0, 3.0, 4.0);
+        let b = f32x4::new(0.0, 5.0, 6.0, 7.0);
+        let c = f32x4::new(NAN, 5.0, 6.0, 7.0);
+        let d = f32x4::new(2.0, 5.0, 6.0, 7.0);
+
+        let b1 = !0u32;  // a.extract(0) ord b.extract(0)
+        let c1 = 0u32;  // a.extract(0) ord c.extract(0)
+        let d1 = !0u32;  // a.extract(0) ord d.extract(0)
+
+        let rb: u32x4 = transmute(sse::_mm_cmpord_ss(a, b));
+        let eb: u32x4 = transmute(f32x4::new(transmute(b1), 2.0, 3.0, 4.0));
+        assert_eq!(rb, eb);
+
+        let rc: u32x4 = transmute(sse::_mm_cmpord_ss(a, c));
+        let ec: u32x4 = transmute(f32x4::new(transmute(c1), 2.0, 3.0, 4.0));
+        assert_eq!(rc, ec);
+
+        let rd: u32x4 = transmute(sse::_mm_cmpord_ss(a, d));
         let ed: u32x4 = transmute(f32x4::new(transmute(d1), 2.0, 3.0, 4.0));
         assert_eq!(rd, ed);
     }
