@@ -76,7 +76,7 @@ pub unsafe fn _mm256_or_ps(a: f32x8, b: f32x8) -> f32x8 {
 /// lanes using the control in `imm8`.
 #[inline(always)]
 #[target_feature = "+avx"]
-//#[cfg_attr(test, assert_instr(vshufpd, imm8 = 0x0))] // FIXME
+#[cfg_attr(test, assert_instr(vshufpd, imm8 = 0x1))]
 pub unsafe fn _mm256_shuffle_pd(a: f64x4, b: f64x4, imm8: i32) -> f64x4 {
     let imm8 = (imm8 & 0xFF) as u8;
     macro_rules! shuffle4 {
