@@ -892,7 +892,7 @@ mod tests {
 
     #[simd_test = "sse"]
     unsafe fn _mm_setzero_ps() {
-        let r = black_box(sse::_mm_setzero_ps());
+        let r = *black_box(&sse::_mm_setzero_ps());
         assert_eq!(r, f32x4::splat(0.0));
     }
 
