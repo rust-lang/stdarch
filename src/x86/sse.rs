@@ -211,6 +211,16 @@ pub unsafe fn _mm_xor_ps(a: f32x4, b: f32x4) -> f32x4 {
     mem::transmute(aa ^ bb)
 }
 
+/// Compare the lowest `f32` of both inputs for equality. The lowest 32 bits of
+/// the result will be `0xffffffff` if the two inputs are equal, or `0`
+/// otherwise. The upper 96 bits of the result are the upper 96 bits of `a`.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(cmpeqss))]
+pub unsafe fn _mm_cmpeq_ss(a: f32x4, b: f32x4) -> f32x4 {
+    cmpss(a, b, 0)
+}
+
 /// Construct a `f32x4` with the lowest element set to `a` and the rest set to
 /// zero.
 #[inline(always)]
@@ -951,6 +961,8 @@ extern {
     fn ldmxcsr(p: *const i8);
     #[link_name = "llvm.prefetch"]
     fn prefetch(p: *const c_void, rw: i32, loc: i32, ty: i32);
+    #[link_name = "llvm.x86.sse.cmp.ss"]
+    fn cmpss(a: f32x4, b: f32x4, imm8: i8) -> f32x4;
 }
 
 #[cfg(test)]
@@ -1146,6 +1158,23 @@ mod tests {
         let r = sse::_mm_xor_ps(*black_box(&a), *black_box(&b));
         let e: f32x4 = transmute(u32x4::splat(0b0110));
         assert_eq!(r, e);
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_cmpeq_ss() {
+        use std::mem::transmute;
+
+        let a = f32x4::new(1.0, 2.0, 3.0, 4.0);
+        let b = f32x4::new(-1.0, 5.0, 6.0, 7.0);
+        let r: u32x4 = transmute(sse::_mm_cmpeq_ss(a, b));
+        let e: u32x4 = transmute(f32x4::new(transmute(0u32), 2.0, 3.0, 4.0));
+        assert_eq!(r, e);
+
+        let b2 = f32x4::new(1.0, 5.0, 6.0, 7.0);
+        let r2: u32x4 = transmute(sse::_mm_cmpeq_ss(a, b2));
+        let e2: u32x4 =
+            transmute(f32x4::new(transmute(0xffffffffu32), 2.0, 3.0, 4.0));
+        assert_eq!(r2, e2);
     }
 
     #[simd_test = "sse"]
