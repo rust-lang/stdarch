@@ -8,6 +8,7 @@ use v128::{f32x4, f64x2, i32x4, i64x2};
 use v256::*;
 
 use x86::sse::_mm_undefined_ps;
+use x86::sse2::_mm_undefined_pd;
 
 /// Add packed double-precision (64-bit) floating-point elements
 /// in `a` and `b`.
@@ -819,6 +820,32 @@ pub unsafe fn _mm256_permute_pd(a: f64x4, imm8: i32) -> f64x4 {
     }
 }
 
+/// Shuffle double-precision (64-bit) floating-point elements in `a`
+/// using the control in `imm8`.
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vpermilpd, imm8 = 0x1))]
+pub unsafe fn _mm_permute_pd(a: f64x2, imm8: i32) -> f64x2 {
+    let imm8 = (imm8 & 0xFF) as u8;
+    macro_rules! shuffle2 {
+        ($a:expr, $b:expr) => {
+            simd_shuffle2(a, _mm_undefined_pd(), [$a, $b]);
+        }
+    }
+    macro_rules! shuffle1 {
+        ($a:expr) => {
+            match (imm8 >> 1) & 0x1 {
+                0 => shuffle2!($a, 0),
+                _ => shuffle2!($a, 1),
+            }
+        }
+    }
+    match (imm8 >> 0) & 0x1 {
+        0 => shuffle1!(0),
+        _ => shuffle1!(1),
+    }
+}
+
 /// Return vector of type `f32x8` with undefined elements.
 #[inline(always)]
 #[target_feature = "+avx"]
@@ -1481,6 +1508,14 @@ mod tests {
         let a = f64x4::new(4.0, 3.0, 2.0, 5.0);
         let r = avx::_mm256_permute_pd(a, 5);
         let e = f64x4::new(3.0, 4.0, 5.0, 2.0);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm_permute_pd() {
+        let a = f64x2::new(4.0, 3.0);
+        let r = avx::_mm_permute_pd(a, 1);
+        let e = f64x2::new(3.0, 4.0);
         assert_eq!(r, e);
     }
 }
