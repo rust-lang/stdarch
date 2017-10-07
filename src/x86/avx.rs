@@ -777,6 +777,48 @@ pub unsafe fn _mm_permutevar_pd(a: f64x2, b: i64x2) -> f64x2 {
     vpermilpd(a, b)
 }
 
+/// Shuffle double-precision (64-bit) floating-point elements in `a`
+/// within 128-bit lanes using the control in `imm8`.
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vpermilpd, imm8 = 0x1))]
+pub unsafe fn _mm256_permute_pd(a: f64x4, imm8: i32) -> f64x4 {
+    let imm8 = (imm8 & 0xFF) as u8;
+    macro_rules! shuffle4 {
+        ($a:expr, $b:expr, $c:expr, $d:expr) => {
+            simd_shuffle4(a, _mm256_undefined_pd(), [$a, $b, $c, $d]);
+        }
+    }
+    macro_rules! shuffle3 {
+        ($a:expr, $b: expr, $c: expr) => {
+            match (imm8 >> 3) & 0x1 {
+                0 => shuffle4!($a, $b, $c, 2),
+                _ => shuffle4!($a, $b, $c, 3),
+            }
+        }
+    }
+    macro_rules! shuffle2 {
+        ($a:expr, $b:expr) => {
+            match (imm8 >> 2) & 0x1 {
+                0 => shuffle3!($a, $b, 2),
+                _ => shuffle3!($a, $b, 3),
+            }
+        }
+    }
+    macro_rules! shuffle1 {
+        ($a:expr) => {
+            match (imm8 >> 1) & 0x1 {
+                0 => shuffle2!($a, 0),
+                _ => shuffle2!($a, 1),
+            }
+        }
+    }
+    match (imm8 >> 0) & 0x1 {
+        0 => shuffle1!(0),
+        _ => shuffle1!(1),
+    }
+}
+
 /// Return vector of type `f32x8` with undefined elements.
 #[inline(always)]
 #[target_feature = "+avx"]
@@ -1431,6 +1473,14 @@ mod tests {
         let b = i64x2::new(3, 0);
         let r = avx::_mm_permutevar_pd(a, b);
         let e = f64x2::new(3.0, 4.0);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_permute_pd() {
+        let a = f64x4::new(4.0, 3.0, 2.0, 5.0);
+        let r = avx::_mm256_permute_pd(a, 5);
+        let e = f64x4::new(3.0, 4.0, 5.0, 2.0);
         assert_eq!(r, e);
     }
 }
