@@ -565,6 +565,19 @@ pub unsafe fn _mm_cmp_pd(a: f64x2, b: f64x2, imm8: i8) -> f64x2 {
     constify_imm6!(imm8, call)
 }
 
+/// Compare packed double-precision (64-bit) floating-point
+/// elements in `a` and `b` based on the comparison operand
+/// specified by `imm8`.
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vcmpeqpd, imm8 = 0))] // TODO Validate vcmppd
+pub unsafe fn _mm256_cmp_pd(a: f64x4, b: f64x4, imm8: i8) -> f64x4 {
+    macro_rules! call {
+        ($imm8:expr) => { vcmppd256(a, b, $imm8) }
+    }
+    constify_imm6!(imm8, call)
+}
+
 /// Convert packed 32-bit integers in `a` to packed double-precision (64-bit)
 /// floating-point elements.
 #[inline(always)]
@@ -1065,6 +1078,8 @@ extern "C" {
     fn vhsubps(a: f32x8, b: f32x8) -> f32x8;
     #[link_name = "llvm.x86.sse2.cmp.pd"]
     fn vcmppd(a: f64x2, b: f64x2, imm8: u8) -> f64x2;
+    #[link_name = "llvm.x86.avx.cmp.pd.256"]
+    fn vcmppd256(a: f64x4, b: f64x4, imm8: u8) -> f64x4;
     #[link_name = "llvm.x86.avx.cvtdq2.ps.256"]
     fn vcvtdq2ps(a: i32x8) -> f32x8;
     #[link_name = "llvm.x86.avx.cvt.pd2.ps.256"]
@@ -1497,6 +1512,15 @@ mod tests {
         let r = avx::_mm_cmp_pd(a, b, avx::_CMP_GE_OS);
         assert!(r.extract(0).is_nan());
         assert!(r.extract(1).is_nan());
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_cmp_pd() {
+        let a = f64x4::new(1.0, 2.0, 3.0, 4.0);
+        let b = f64x4::new(5.0, 6.0, 7.0, 8.0);
+        let r = avx::_mm256_cmp_pd(a, b, avx::_CMP_GE_OS);
+        let e = f64x4::splat(0.0);
+        assert_eq!(r, e);
     }
 
     #[simd_test = "avx"]
