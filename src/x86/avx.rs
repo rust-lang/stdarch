@@ -900,6 +900,15 @@ pub unsafe fn _mm_broadcast_ss(f: &f32) -> f32x4 {
     f32x4::splat(*f)
 }
 
+/// Broadcast a double-precision (64-bit) floating-point element from memory
+/// to all elements of the returned vector.
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vbroadcastsd))]
+pub unsafe fn _mm256_broadcast_sd(f: &f64) -> f64x4 {
+    f64x4::splat(*f)
+}
+
 /// Return vector of type `f32x8` with undefined elements.
 #[inline(always)]
 #[target_feature = "+avx"]
@@ -1618,5 +1627,12 @@ mod tests {
         let r = avx::_mm_broadcast_ss(&3.0);
         let e = f32x4::splat(3.0);
         assert_eq!(r, e);
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_broadcast_sd() {
+        let r = avx::_mm256_broadcast_sd(&3.0);
+        let e = f64x4::splat(3.0);
+        assert_eq!(r, e);
+    }
     }
 }
