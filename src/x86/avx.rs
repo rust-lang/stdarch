@@ -488,69 +488,69 @@ pub unsafe fn _mm256_xor_ps(a: f32x8, b: f32x8) -> f32x8 {
 }
 
 // Equal (ordered, non-signaling)
-pub const _CMP_EQ_OQ: i8 = 0x00;
+pub const _CMP_EQ_OQ: u8 = 0x00;
 // Less-than (ordered, signaling)
-pub const _CMP_LT_OS: i8 = 0x01;
+pub const _CMP_LT_OS: u8 = 0x01;
 // Less-than-or-equal (ordered, signaling)
-pub const _CMP_LE_OS: i8 = 0x02;
+pub const _CMP_LE_OS: u8 = 0x02;
 // Unordered (non-signaling)
-pub const _CMP_UNORD_Q: i8 = 0x03;
+pub const _CMP_UNORD_Q: u8 = 0x03;
 // Not-equal (unordered, non-signaling)
-pub const _CMP_NEQ_UQ: i8 = 0x04;
+pub const _CMP_NEQ_UQ: u8 = 0x04;
 // Not-less-than (unordered, signaling)
-pub const _CMP_NLT_US: i8 = 0x05;
+pub const _CMP_NLT_US: u8 = 0x05;
 // Not-less-than-or-equal (unordered, signaling)
-pub const _CMP_NLE_US: i8 = 0x06;
+pub const _CMP_NLE_US: u8 = 0x06;
 // Ordered (non-signaling)
-pub const _CMP_ORD_Q: i8 = 0x07;
+pub const _CMP_ORD_Q: u8 = 0x07;
 // Equal (unordered, non-signaling)
-pub const _CMP_EQ_UQ: i8 = 0x08;
+pub const _CMP_EQ_UQ: u8 = 0x08;
 // Not-greater-than-or-equal (unordered, signaling)
-pub const _CMP_NGE_US: i8 = 0x09;
+pub const _CMP_NGE_US: u8 = 0x09;
 // Not-greater-than (unordered, signaling)
-pub const _CMP_NGT_US: i8 = 0x0a;
+pub const _CMP_NGT_US: u8 = 0x0a;
 // False (ordered, non-signaling)
-pub const _CMP_FALSE_OQ: i8 = 0x0b;
+pub const _CMP_FALSE_OQ: u8 = 0x0b;
 // Not-equal (ordered, non-signaling)
-pub const _CMP_NEQ_OQ: i8 = 0x0c;
+pub const _CMP_NEQ_OQ: u8 = 0x0c;
 // Greater-than-or-equal (ordered, signaling)
-pub const _CMP_GE_OS: i8 = 0x0d;
+pub const _CMP_GE_OS: u8 = 0x0d;
 // Greater-than (ordered, signaling)
-pub const _CMP_GT_OS: i8 = 0x0e;
+pub const _CMP_GT_OS: u8 = 0x0e;
 // True (unordered, non-signaling)
-pub const _CMP_TRUE_UQ: i8 = 0x0f;
+pub const _CMP_TRUE_UQ: u8 = 0x0f;
 // Equal (ordered, signaling)
-pub const _CMP_EQ_OS: i8 = 0x10;
+pub const _CMP_EQ_OS: u8 = 0x10;
 // Less-than (ordered, non-signaling)
-pub const _CMP_LT_OQ: i8 = 0x11;
+pub const _CMP_LT_OQ: u8 = 0x11;
 // Less-than-or-equal (ordered, non-signaling)
-pub const _CMP_LE_OQ: i8 = 0x12;
+pub const _CMP_LE_OQ: u8 = 0x12;
 // Unordered (signaling)
-pub const _CMP_UNORD_S: i8 = 0x13;
+pub const _CMP_UNORD_S: u8 = 0x13;
 // Not-equal (unordered, signaling)
-pub const _CMP_NEQ_US: i8 = 0x14;
+pub const _CMP_NEQ_US: u8 = 0x14;
 // Not-less-than (unordered, non-signaling)
-pub const _CMP_NLT_UQ: i8 = 0x15;
+pub const _CMP_NLT_UQ: u8 = 0x15;
 // Not-less-than-or-equal (unordered, non-signaling)
-pub const _CMP_NLE_UQ: i8 = 0x16;
+pub const _CMP_NLE_UQ: u8 = 0x16;
 // Ordered (signaling)
-pub const _CMP_ORD_S: i8 = 0x17;
+pub const _CMP_ORD_S: u8 = 0x17;
 // Equal (unordered, signaling)
-pub const _CMP_EQ_US: i8 = 0x18;
+pub const _CMP_EQ_US: u8 = 0x18;
 // Not-greater-than-or-equal (unordered, non-signaling)
-pub const _CMP_NGE_UQ: i8 = 0x19;
+pub const _CMP_NGE_UQ: u8 = 0x19;
 // Not-greater-than (unordered, non-signaling)
-pub const _CMP_NGT_UQ: i8 = 0x1a;
+pub const _CMP_NGT_UQ: u8 = 0x1a;
 // False (ordered, signaling)
-pub const _CMP_FALSE_OS: i8 = 0x1b;
+pub const _CMP_FALSE_OS: u8 = 0x1b;
 // Not-equal (ordered, signaling)
-pub const _CMP_NEQ_OS: i8 = 0x1c;
+pub const _CMP_NEQ_OS: u8 = 0x1c;
 // Greater-than-or-equal (ordered, non-signaling)
-pub const _CMP_GE_OQ: i8 = 0x1d;
+pub const _CMP_GE_OQ: u8 = 0x1d;
 // Greater-than (ordered, non-signaling)
-pub const _CMP_GT_OQ: i8 = 0x1e;
+pub const _CMP_GT_OQ: u8 = 0x1e;
 // True (unordered, signaling)
-pub const _CMP_TRUE_US: i8 = 0x1f;
+pub const _CMP_TRUE_US: u8 = 0x1f;
 
 /// Compare packed double-precision (64-bit) floating-point
 /// elements in `a` and `b` based on the comparison operand
@@ -558,7 +558,7 @@ pub const _CMP_TRUE_US: i8 = 0x1f;
 #[inline(always)]
 #[target_feature = "+avx"]
 #[cfg_attr(test, assert_instr(vcmpeqpd, imm8 = 0))] // TODO Validate vcmppd
-pub unsafe fn _mm_cmp_pd(a: f64x2, b: f64x2, imm8: i8) -> f64x2 {
+pub unsafe fn _mm_cmp_pd(a: f64x2, b: f64x2, imm8: u8) -> f64x2 {
     macro_rules! call {
         ($imm8:expr) => { vcmppd(a, b, $imm8) }
     }
@@ -571,7 +571,7 @@ pub unsafe fn _mm_cmp_pd(a: f64x2, b: f64x2, imm8: i8) -> f64x2 {
 #[inline(always)]
 #[target_feature = "+avx"]
 #[cfg_attr(test, assert_instr(vcmpeqpd, imm8 = 0))] // TODO Validate vcmppd
-pub unsafe fn _mm256_cmp_pd(a: f64x4, b: f64x4, imm8: i8) -> f64x4 {
+pub unsafe fn _mm256_cmp_pd(a: f64x4, b: f64x4, imm8: u8) -> f64x4 {
     macro_rules! call {
         ($imm8:expr) => { vcmppd256(a, b, $imm8) }
     }
@@ -584,9 +584,22 @@ pub unsafe fn _mm256_cmp_pd(a: f64x4, b: f64x4, imm8: i8) -> f64x4 {
 #[inline(always)]
 #[target_feature = "+avx"]
 #[cfg_attr(test, assert_instr(vcmpeqps, imm8 = 0))] // TODO Validate vcmpps
-pub unsafe fn _mm_cmp_ps(a: f32x4, b: f32x4, imm8: i8) -> f32x4 {
+pub unsafe fn _mm_cmp_ps(a: f32x4, b: f32x4, imm8: u8) -> f32x4 {
     macro_rules! call {
         ($imm8:expr) => { vcmpps(a, b, $imm8) }
+    }
+    constify_imm6!(imm8, call)
+}
+
+/// Compare packed single-precision (32-bit) floating-point
+/// elements in `a` and `b` based on the comparison operand
+/// specified by `imm8`.
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vcmpeqps, imm8 = 0))] // TODO Validate vcmpps
+pub unsafe fn _mm256_cmp_ps(a: f32x8, b: f32x8, imm8: u8) -> f32x8 {
+    macro_rules! call {
+        ($imm8:expr) => { vcmpps256(a, b, $imm8) }
     }
     constify_imm6!(imm8, call)
 }
@@ -1095,6 +1108,8 @@ extern "C" {
     fn vcmppd256(a: f64x4, b: f64x4, imm8: u8) -> f64x4;
     #[link_name = "llvm.x86.sse.cmp.ps"]
     fn vcmpps(a: f32x4, b: f32x4, imm8: u8) -> f32x4;
+    #[link_name = "llvm.x86.avx.cmp.ps.256"]
+    fn vcmpps256(a: f32x8, b: f32x8, imm8: u8) -> f32x8;
     #[link_name = "llvm.x86.avx.cvtdq2.ps.256"]
     fn vcvtdq2ps(a: i32x8) -> f32x8;
     #[link_name = "llvm.x86.avx.cvt.pd2.ps.256"]
@@ -1547,6 +1562,15 @@ mod tests {
         assert_eq!(r.extract(1), 0.0);
         assert_eq!(r.extract(2), 0.0);
         assert_eq!(r.extract(3), 0.0);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_cmp_ps() {
+        let a = f32x8::new(1.0, 2.0, 3.0, 4.0, 1.0, 2.0, 3.0, 4.0);
+        let b = f32x8::new(5.0, 6.0, 7.0, 8.0, 5.0, 6.0, 7.0, 8.0);
+        let r = avx::_mm256_cmp_ps(a, b, avx::_CMP_GE_OS);
+        let e = f32x8::splat(0.0);
+        assert_eq!(r, e);
     }
 
     #[simd_test = "avx"]
