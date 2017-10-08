@@ -487,6 +487,84 @@ pub unsafe fn _mm256_xor_ps(a: f32x8, b: f32x8) -> f32x8 {
     mem::transmute(a ^ b)
 }
 
+// Equal (ordered, non-signaling)
+pub const _CMP_EQ_OQ: i8 = 0x00;
+// Less-than (ordered, signaling)
+pub const _CMP_LT_OS: i8 = 0x01;
+// Less-than-or-equal (ordered, signaling)
+pub const _CMP_LE_OS: i8 = 0x02;
+// Unordered (non-signaling)
+pub const _CMP_UNORD_Q: i8 = 0x03;
+// Not-equal (unordered, non-signaling)
+pub const _CMP_NEQ_UQ: i8 = 0x04;
+// Not-less-than (unordered, signaling)
+pub const _CMP_NLT_US: i8 = 0x05;
+// Not-less-than-or-equal (unordered, signaling)
+pub const _CMP_NLE_US: i8 = 0x06;
+// Ordered (non-signaling)
+pub const _CMP_ORD_Q: i8 = 0x07;
+// Equal (unordered, non-signaling)
+pub const _CMP_EQ_UQ: i8 = 0x08;
+// Not-greater-than-or-equal (unordered, signaling)
+pub const _CMP_NGE_US: i8 = 0x09;
+// Not-greater-than (unordered, signaling)
+pub const _CMP_NGT_US: i8 = 0x0a;
+// False (ordered, non-signaling)
+pub const _CMP_FALSE_OQ: i8 = 0x0b;
+// Not-equal (ordered, non-signaling)
+pub const _CMP_NEQ_OQ: i8 = 0x0c;
+// Greater-than-or-equal (ordered, signaling)
+pub const _CMP_GE_OS: i8 = 0x0d;
+// Greater-than (ordered, signaling)
+pub const _CMP_GT_OS: i8 = 0x0e;
+// True (unordered, non-signaling)
+pub const _CMP_TRUE_UQ: i8 = 0x0f;
+// Equal (ordered, signaling)
+pub const _CMP_EQ_OS: i8 = 0x10;
+// Less-than (ordered, non-signaling)
+pub const _CMP_LT_OQ: i8 = 0x11;
+// Less-than-or-equal (ordered, non-signaling)
+pub const _CMP_LE_OQ: i8 = 0x12;
+// Unordered (signaling)
+pub const _CMP_UNORD_S: i8 = 0x13;
+// Not-equal (unordered, signaling)
+pub const _CMP_NEQ_US: i8 = 0x14;
+// Not-less-than (unordered, non-signaling)
+pub const _CMP_NLT_UQ: i8 = 0x15;
+// Not-less-than-or-equal (unordered, non-signaling)
+pub const _CMP_NLE_UQ: i8 = 0x16;
+// Ordered (signaling)
+pub const _CMP_ORD_S: i8 = 0x17;
+// Equal (unordered, signaling)
+pub const _CMP_EQ_US: i8 = 0x18;
+// Not-greater-than-or-equal (unordered, non-signaling)
+pub const _CMP_NGE_UQ: i8 = 0x19;
+// Not-greater-than (unordered, non-signaling)
+pub const _CMP_NGT_UQ: i8 = 0x1a;
+// False (ordered, signaling)
+pub const _CMP_FALSE_OS: i8 = 0x1b;
+// Not-equal (ordered, signaling)
+pub const _CMP_NEQ_OS: i8 = 0x1c;
+// Greater-than-or-equal (ordered, non-signaling)
+pub const _CMP_GE_OQ: i8 = 0x1d;
+// Greater-than (ordered, non-signaling)
+pub const _CMP_GT_OQ: i8 = 0x1e;
+// True (unordered, signaling)
+pub const _CMP_TRUE_US: i8 = 0x1f;
+
+/// Compare packed double-precision (64-bit) floating-point
+/// elements in `a` and `b` based on the comparison operand
+/// specified by `imm8`.
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vcmpeqpd, imm8 = 0))] // TODO Validate vcmppd
+pub unsafe fn _mm_cmp_pd(a: f64x2, b: f64x2, imm8: i8) -> f64x2 {
+    macro_rules! call {
+        ($imm8:expr) => { vcmppd(a, b, $imm8) }
+    }
+    constify_imm6!(imm8, call)
+}
+
 /// Convert packed 32-bit integers in `a` to packed double-precision (64-bit)
 /// floating-point elements.
 #[inline(always)]
@@ -985,6 +1063,8 @@ extern "C" {
     fn vhsubpd(a: f64x4, b: f64x4) -> f64x4;
     #[link_name = "llvm.x86.avx.hsub.ps.256"]
     fn vhsubps(a: f32x8, b: f32x8) -> f32x8;
+    #[link_name = "llvm.x86.sse2.cmp.pd"]
+    fn vcmppd(a: f64x2, b: f64x2, imm8: u8) -> f64x2;
     #[link_name = "llvm.x86.avx.cvtdq2.ps.256"]
     fn vcvtdq2ps(a: i32x8) -> f32x8;
     #[link_name = "llvm.x86.avx.cvt.pd2.ps.256"]
@@ -1408,6 +1488,15 @@ mod tests {
         let b = f32x8::splat(0.0);
         let r = avx::_mm256_xor_ps(a, b);
         assert_eq!(r, a);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm_cmp_pd() {
+        let a = f64x2::new(4.0, 9.0);
+        let b = f64x2::new(4.0, 3.0);
+        let r = avx::_mm_cmp_pd(a, b, avx::_CMP_GE_OS);
+        assert!(r.extract(0).is_nan());
+        assert!(r.extract(1).is_nan());
     }
 
     #[simd_test = "avx"]
