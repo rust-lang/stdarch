@@ -7,9 +7,6 @@ use simd_llvm::{simd_cast, simd_shuffle2, simd_shuffle4, simd_shuffle8};
 use v128::{f32x4, f64x2, i32x4, i64x2};
 use v256::*;
 
-use x86::sse::_mm_undefined_ps;
-use x86::sse2::_mm_undefined_pd;
-
 /// Add packed double-precision (64-bit) floating-point elements
 /// in `a` and `b`.
 #[inline(always)]
@@ -556,7 +553,7 @@ pub const _CMP_TRUE_US: u8 = 0x1f;
 /// elements in `a` and `b` based on the comparison operand
 /// specified by `imm8`.
 #[inline(always)]
-#[target_feature = "+avx"]
+#[target_feature = "+avx,+sse2"]
 #[cfg_attr(test, assert_instr(vcmpeqpd, imm8 = 0))] // TODO Validate vcmppd
 pub unsafe fn _mm_cmp_pd(a: f64x2, b: f64x2, imm8: u8) -> f64x2 {
     macro_rules! call {
@@ -582,7 +579,7 @@ pub unsafe fn _mm256_cmp_pd(a: f64x4, b: f64x4, imm8: u8) -> f64x4 {
 /// elements in `a` and `b` based on the comparison operand
 /// specified by `imm8`.
 #[inline(always)]
-#[target_feature = "+avx"]
+#[target_feature = "+avx,+sse"]
 #[cfg_attr(test, assert_instr(vcmpeqps, imm8 = 0))] // TODO Validate vcmpps
 pub unsafe fn _mm_cmp_ps(a: f32x4, b: f32x4, imm8: u8) -> f32x4 {
     macro_rules! call {
@@ -609,7 +606,7 @@ pub unsafe fn _mm256_cmp_ps(a: f32x8, b: f32x8, imm8: u8) -> f32x8 {
 /// store the result in the lower element of returned vector,
 /// and copy the upper element from `a` to the upper element of returned vector.
 #[inline(always)]
-#[target_feature = "+avx"]
+#[target_feature = "+avx,+sse2"]
 #[cfg_attr(test, assert_instr(vcmpeqsd, imm8 = 0))] // TODO Validate vcmpsd
 pub unsafe fn _mm_cmp_sd(a: f64x2, b: f64x2, imm8: u8) -> f64x2 {
     macro_rules! call {
@@ -624,7 +621,7 @@ pub unsafe fn _mm_cmp_sd(a: f64x2, b: f64x2, imm8: u8) -> f64x2 {
 /// and copy the upper 3 packed elements from `a` to the upper elements of
 /// returned vector.
 #[inline(always)]
-#[target_feature = "+avx"]
+#[target_feature = "+avx,+sse"]
 #[cfg_attr(test, assert_instr(vcmpeqss, imm8 = 0))] // TODO Validate vcmpss
 pub unsafe fn _mm_cmp_ss(a: f32x4, b: f32x4, imm8: u8) -> f32x4 {
     macro_rules! call {
@@ -859,9 +856,11 @@ pub unsafe fn _mm256_permute_ps(a: f32x8, imm8: i32) -> f32x8 {
 /// Shuffle single-precision (32-bit) floating-point elements in `a` 
 /// using the control in `imm8`.
 #[inline(always)]
-#[target_feature = "+avx"]
+#[target_feature = "+avx,+sse"]
 #[cfg_attr(test, assert_instr(vpermilps, imm8 = 9))]
 pub unsafe fn _mm_permute_ps(a: f32x4, imm8: i32) -> f32x4 {
+    use x86::sse::_mm_undefined_ps;
+
     let imm8 = (imm8 & 0xFF) as u8;
     macro_rules! shuffle4 {
         ($a:expr, $b:expr, $c:expr, $d:expr) => {
@@ -969,9 +968,11 @@ pub unsafe fn _mm256_permute_pd(a: f64x4, imm8: i32) -> f64x4 {
 /// Shuffle double-precision (64-bit) floating-point elements in `a`
 /// using the control in `imm8`.
 #[inline(always)]
-#[target_feature = "+avx"]
+#[target_feature = "+avx,+sse2"]
 #[cfg_attr(test, assert_instr(vpermilpd, imm8 = 0x1))]
 pub unsafe fn _mm_permute_pd(a: f64x2, imm8: i32) -> f64x2 {
+    use x86::sse2::_mm_undefined_pd;
+
     let imm8 = (imm8 & 0xFF) as u8;
     macro_rules! shuffle2 {
         ($a:expr, $b:expr) => {
