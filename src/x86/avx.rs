@@ -1129,6 +1129,15 @@ pub unsafe fn _mm256_insert_epi16(a: i16x16, i: i16, index: i32) -> i16x16 {
     c.replace(index as u32 & 15, i)
 }
 
+/// Copy `a` to result, and insert the 32-bit integer `i` into result
+/// at the location specified by `index`.
+#[inline(always)]
+#[target_feature = "+avx"]
+pub unsafe fn _mm256_insert_epi32(a: i32x8, i: i32, index: i32) -> i32x8 {
+    let c = a;
+    c.replace(index as u32 & 7, i)
+}
+
 pub unsafe fn _mm256_castps128_ps256(a: f32x4) -> f32x8 {
     // FIXME simd_shuffle8(a, a, [0, 1, 2, 3, -1, -1, -1, -1])
     simd_shuffle8(a, a, [0, 1, 2, 3, 0, 0, 0, 0])
@@ -2021,6 +2030,14 @@ mod tests {
         let e = i16x16::new(
             0, 1, 2, 3, 4, 5, 6, 7,
             8, 9, 10, 11, 12, 13, 14, 0);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_insert_epi32() {
+        let a = i32x8::new(1, 2, 3, 4, 5, 6, 7, 8);
+        let r = avx::_mm256_insert_epi32(a, 0, 7);
+        let e = i32x8::new(1, 2, 3, 4, 5, 6, 7, 0);
         assert_eq!(r, e);
     }
 }
