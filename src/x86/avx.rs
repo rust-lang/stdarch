@@ -918,6 +918,15 @@ pub unsafe fn _mm256_broadcast_ps(a: &f32x4) -> f32x8 {
     vbroadcastf128ps256(a)
 }
 
+/// Broadcast 128 bits from memory (composed of 2 packed double-precision
+/// (64-bit) floating-point elements) to all elements of the returned vector.
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vbroadcastf128))]
+pub unsafe fn _mm256_broadcast_pd(a: &f64x2) -> f64x4 {
+    vbroadcastf128pd256(a)
+}
+
 /// Return vector of type `f32x8` with undefined elements.
 #[inline(always)]
 #[target_feature = "+avx"]
@@ -1008,6 +1017,8 @@ extern "C" {
     fn vperm2f128si256(a: i32x8, b: i32x8, imm8: i8) -> i32x8;
     #[link_name = "llvm.x86.avx.vbroadcastf128.ps.256"]
     fn vbroadcastf128ps256(a: &f32x4) -> f32x8;
+    #[link_name = "llvm.x86.avx.vbroadcastf128.pd.256"]
+    fn vbroadcastf128pd256(a: &f64x2) -> f64x4;
 }
 
 #[cfg(test)]
@@ -1652,6 +1663,14 @@ mod tests {
         let a = f32x4::new(4.0, 3.0, 2.0, 5.0);
         let r = avx::_mm256_broadcast_ps(&a);
         let e = f32x8::new(4.0, 3.0, 2.0, 5.0, 4.0, 3.0, 2.0, 5.0);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_broadcast_pd() {
+        let a = f64x2::new(4.0, 3.0);
+        let r = avx::_mm256_broadcast_pd(&a);
+        let e = f64x4::new(4.0, 3.0, 4.0, 3.0);
         assert_eq!(r, e);
     }
 }
