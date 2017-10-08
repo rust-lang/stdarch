@@ -1111,6 +1111,15 @@ pub unsafe fn _mm256_insertf128_si256(a: i64x4, b: i64x2, imm8: i32) -> i64x4 {
     }
 }
 
+/// Copy `a` to result, and insert the 8-bit integer `i` into result
+/// at the location specified by `index`.
+#[inline(always)]
+#[target_feature = "+avx"]
+pub unsafe fn _mm256_insert_epi8(a: i8x32, i: i8, index: i32) -> i8x32 {
+    let c = a;
+    c.replace(index as u32, i)
+}
+
 pub unsafe fn _mm256_castps128_ps256(a: f32x4) -> f32x8 {
     // FIXME simd_shuffle8(a, a, [0, 1, 2, 3, -1, -1, -1, -1])
     simd_shuffle8(a, a, [0, 1, 2, 3, 0, 0, 0, 0])
@@ -1975,6 +1984,22 @@ mod tests {
         let b = i64x2::new(5, 6);
         let r = avx::_mm256_insertf128_si256(a, b, 0);
         let e = i64x4::new(5, 6, 3, 4);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_insert_epi8() {
+        let a = i8x32::new(
+            1, 2, 3, 4, 5, 6, 7, 8,
+            9, 10, 11, 12, 13, 14, 15, 16,
+            17, 18, 19, 20, 21, 22, 23, 24,
+            25, 26, 27, 28, 29, 30, 31, 32);
+        let r = avx::_mm256_insert_epi8(a, 0, 31);
+        let e = i8x32::new(
+            1, 2, 3, 4, 5, 6, 7, 8,
+            9, 10, 11, 12, 13, 14, 15, 16,
+            17, 18, 19, 20, 21, 22, 23, 24,
+            25, 26, 27, 28, 29, 30, 31, 0);
         assert_eq!(r, e);
     }
 }
