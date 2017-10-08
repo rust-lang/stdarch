@@ -1148,6 +1148,10 @@ pub unsafe fn _mm256_insert_epi64(a: i64x4, i: i64, index: i32) -> i64x4 {
     c.replace(index as u32 & 3, i)
 }
 
+/// Casts vector of type __m128 to type __m256;
+/// the upper 128 bits of the result are undefined.
+#[inline(always)]
+#[target_feature = "+avx"]
 pub unsafe fn _mm256_castps128_ps256(a: f32x4) -> f32x8 {
     // FIXME simd_shuffle8(a, a, [0, 1, 2, 3, -1, -1, -1, -1])
     simd_shuffle8(a, a, [0, 1, 2, 3, 0, 0, 0, 0])
