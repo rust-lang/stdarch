@@ -1,5 +1,3 @@
-use std::mem;
-
 use simd_llvm::simd_shuffle4;
 use v128::*;
 use v64::f32x2;

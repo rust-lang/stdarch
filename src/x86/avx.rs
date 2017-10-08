@@ -882,6 +882,15 @@ pub unsafe fn _mm256_permute2f128_si256(a: i32x8, b: i32x8, imm8: i8) -> i32x8 {
     constify_imm8!(imm8, call)
 }
 
+/// Broadcast a single-precision (32-bit) floating-point element from memory
+/// to all elements of the returned vector.
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vbroadcastss))]
+pub unsafe fn _mm256_broadcast_ss(f: &f32) -> f32x8 {
+    f32x8::splat(*f)
+}
+
 /// Return vector of type `f32x8` with undefined elements.
 #[inline(always)]
 #[target_feature = "+avx"]
@@ -1585,6 +1594,13 @@ mod tests {
         let b = i32x8::new(5, 6, 7, 8, 5, 6, 7, 8);
         let r = avx::_mm256_permute2f128_si256(a, b, 0x20);
         let e = i32x8::new(1, 2, 3, 4, 5, 6, 7, 8);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_broadcast_ss() {
+        let r = avx::_mm256_broadcast_ss(&3.0);
+        let e = f32x8::splat(3.0);
         assert_eq!(r, e);
     }
 }
