@@ -1073,6 +1073,57 @@ pub unsafe fn _mm256_broadcast_pd(a: &f64x2) -> f64x4 {
     vbroadcastf128pd256(a)
 }
 
+/// Copy `a` to result, then insert 128 bits (composed of 2 packed
+/// double-precision (64-bit) floating-point elements) from `b` into result
+/// at the location specified by `imm8`.
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vinsertf128, imm8 = 1))]
+pub unsafe fn _mm256_insertf128_pd(a: f64x4, b: f64x2, imm8: i32) -> f64x4 {
+    macro_rules! shuffle4 {
+        ($a:expr, $b:expr, $c:expr, $d:expr) => {
+            simd_shuffle4(a, _mm256_castpd128_pd256(b), [$a, $b, $c, $d]);
+        }
+    }
+    macro_rules! shuffle3 {
+        ($a:expr, $b: expr, $c: expr) => {
+            match imm8 & 0x1 {
+                0 => shuffle4!($a, $b, $c, 3),
+                _ => shuffle4!($a, $b, $c, 5),
+            }
+        }
+    }
+    macro_rules! shuffle2 {
+        ($a:expr, $b:expr) => {
+            match imm8 & 0x1 {
+                0 => shuffle3!($a, $b, 2),
+                _ => shuffle3!($a, $b, 4),
+            }
+        }
+    }
+    macro_rules! shuffle1 {
+        ($a:expr) => {
+            match imm8 & 0x1 {
+                0 => shuffle2!($a, 5),
+                _ => shuffle2!($a, 1),
+            }
+        }
+    }
+    match imm8 & 0x1 {
+        0 => shuffle1!(4),
+        _ => shuffle1!(0),
+    }
+}
+
+/// Casts vector of type __m128d to type __m256d;
+/// the upper 128 bits of the result are undefined.
+#[inline(always)]
+#[target_feature = "+avx"]
+pub unsafe fn _mm256_castpd128_pd256(a: f64x2) -> f64x4 {
+    // FIXME simd_shuffle4(a, a, [0, 1, -1, -1])
+    simd_shuffle4(a, a, [0, 1, 1, 1])
+}
+
 /// Return vector of type `f32x8` with undefined elements.
 #[inline(always)]
 #[target_feature = "+avx"]
@@ -1887,6 +1938,15 @@ mod tests {
         let a = f64x2::new(4.0, 3.0);
         let r = avx::_mm256_broadcast_pd(&a);
         let e = f64x4::new(4.0, 3.0, 4.0, 3.0);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_insertf128_pd() {
+        let a = f64x4::new(1.0, 2.0, 3.0, 4.0);
+        let b = f64x2::new(5.0, 6.0);
+        let r = avx::_mm256_insertf128_pd(a, b, 0);
+        let e = f64x4::new(5.0, 6.0, 3.0, 4.0);
         assert_eq!(r, e);
     }
 }
