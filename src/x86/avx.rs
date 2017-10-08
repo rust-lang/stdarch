@@ -1073,6 +1073,19 @@ pub unsafe fn _mm256_broadcast_pd(a: &f64x2) -> f64x4 {
     vbroadcastf128pd256(a)
 }
 
+/// Copy `a` to result, then insert 128 bits (composed of 4 packed
+/// single-precision (32-bit) floating-point elements) from `b` into result
+/// at the location specified by `imm8`.
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vinsertf128, imm8 = 1))]
+pub unsafe fn _mm256_insertf128_ps(a: f32x8, b: f32x4, imm8: i32) -> f32x8 {
+    match imm8 & 1 {
+        0 => simd_shuffle8(a, _mm256_castps128_ps256(b), [8, 9, 10, 11, 4, 5, 6, 7]),
+        _ => simd_shuffle8(a, _mm256_castps128_ps256(b), [0, 1, 2, 3, 8, 9, 10, 11]),
+    }
+}
+
 /// Copy `a` to result, then insert 128 bits (composed of 2 packed
 /// double-precision (64-bit) floating-point elements) from `b` into result
 /// at the location specified by `imm8`.
@@ -1080,38 +1093,9 @@ pub unsafe fn _mm256_broadcast_pd(a: &f64x2) -> f64x4 {
 #[target_feature = "+avx"]
 #[cfg_attr(test, assert_instr(vinsertf128, imm8 = 1))]
 pub unsafe fn _mm256_insertf128_pd(a: f64x4, b: f64x2, imm8: i32) -> f64x4 {
-    macro_rules! shuffle4 {
-        ($a:expr, $b:expr, $c:expr, $d:expr) => {
-            simd_shuffle4(a, _mm256_castpd128_pd256(b), [$a, $b, $c, $d]);
-        }
-    }
-    macro_rules! shuffle3 {
-        ($a:expr, $b: expr, $c: expr) => {
-            match imm8 & 0x1 {
-                0 => shuffle4!($a, $b, $c, 3),
-                _ => shuffle4!($a, $b, $c, 5),
-            }
-        }
-    }
-    macro_rules! shuffle2 {
-        ($a:expr, $b:expr) => {
-            match imm8 & 0x1 {
-                0 => shuffle3!($a, $b, 2),
-                _ => shuffle3!($a, $b, 4),
-            }
-        }
-    }
-    macro_rules! shuffle1 {
-        ($a:expr) => {
-            match imm8 & 0x1 {
-                0 => shuffle2!($a, 5),
-                _ => shuffle2!($a, 1),
-            }
-        }
-    }
-    match imm8 & 0x1 {
-        0 => shuffle1!(4),
-        _ => shuffle1!(0),
+    match imm8 & 1 {
+        0 => simd_shuffle4(a, _mm256_castpd128_pd256(b), [4, 5, 2, 3]),
+        _ => simd_shuffle4(a, _mm256_castpd128_pd256(b), [0, 1, 4, 5]),
     }
 }
 
@@ -1121,39 +1105,15 @@ pub unsafe fn _mm256_insertf128_pd(a: f64x4, b: f64x2, imm8: i32) -> f64x4 {
 #[target_feature = "+avx"]
 #[cfg_attr(test, assert_instr(vinsertf128, imm8 = 1))]
 pub unsafe fn _mm256_insertf128_si256(a: i64x4, b: i64x2, imm8: i32) -> i64x4 {
-    macro_rules! shuffle4 {
-        ($a:expr, $b:expr, $c:expr, $d:expr) => {
-            simd_shuffle4(a, _mm256_castsi128_si256(b), [$a, $b, $c, $d]);
-        }
+    match imm8 & 1 {
+        0 => simd_shuffle4(a, _mm256_castsi128_si256(b), [4, 5, 2, 3]),
+        _ => simd_shuffle4(a, _mm256_castsi128_si256(b), [0, 1, 4, 5]),
     }
-    macro_rules! shuffle3 {
-        ($a:expr, $b: expr, $c: expr) => {
-            match imm8 & 0x1 {
-                0 => shuffle4!($a, $b, $c, 3),
-                _ => shuffle4!($a, $b, $c, 5),
-            }
-        }
-    }
-    macro_rules! shuffle2 {
-        ($a:expr, $b:expr) => {
-            match imm8 & 0x1 {
-                0 => shuffle3!($a, $b, 2),
-                _ => shuffle3!($a, $b, 4),
-            }
-        }
-    }
-    macro_rules! shuffle1 {
-        ($a:expr) => {
-            match imm8 & 0x1 {
-                0 => shuffle2!($a, 5),
-                _ => shuffle2!($a, 1),
-            }
-        }
-    }
-    match imm8 & 0x1 {
-        0 => shuffle1!(4),
-        _ => shuffle1!(0),
-    }
+}
+
+pub unsafe fn _mm256_castps128_ps256(a: f32x4) -> f32x8 {
+    // FIXME simd_shuffle8(a, a, [0, 1, 2, 3, -1, -1, -1, -1])
+    simd_shuffle8(a, a, [0, 1, 2, 3, 0, 0, 0, 0])
 }
 
 /// Casts vector of type __m128d to type __m256d;
@@ -1162,7 +1122,7 @@ pub unsafe fn _mm256_insertf128_si256(a: i64x4, b: i64x2, imm8: i32) -> i64x4 {
 #[target_feature = "+avx"]
 pub unsafe fn _mm256_castpd128_pd256(a: f64x2) -> f64x4 {
     // FIXME simd_shuffle4(a, a, [0, 1, -1, -1])
-    simd_shuffle4(a, a, [0, 1, 1, 1])
+    simd_shuffle4(a, a, [0, 1, 0, 0])
 }
 
 /// Casts vector of type __m128i to type __m256i;
@@ -1171,7 +1131,7 @@ pub unsafe fn _mm256_castpd128_pd256(a: f64x2) -> f64x4 {
 #[target_feature = "+avx"]
 pub unsafe fn _mm256_castsi128_si256(a: i64x2) -> i64x4 {
     // FIXME simd_shuffle4(a, a, [0, 1, -1, -1])
-    simd_shuffle4(a, a, [0, 1, 1, 1])
+    simd_shuffle4(a, a, [0, 1, 0, 0])
 }
 
 /// Return vector of type `f32x8` with undefined elements.
@@ -1988,6 +1948,15 @@ mod tests {
         let a = f64x2::new(4.0, 3.0);
         let r = avx::_mm256_broadcast_pd(&a);
         let e = f64x4::new(4.0, 3.0, 4.0, 3.0);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_insertf128_ps() {
+        let a = f32x8::new(4.0, 3.0, 2.0, 5.0, 8.0, 9.0, 64.0, 50.0);
+        let b = f32x4::new(4.0, 9.0, 16.0, 25.0);
+        let r = avx::_mm256_insertf128_ps(a, b, 0);
+        let e = f32x8::new(4.0, 9.0, 16.0, 25.0, 8.0, 9.0, 64.0, 50.0);
         assert_eq!(r, e);
     }
 
