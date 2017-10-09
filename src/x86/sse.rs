@@ -1,6 +1,9 @@
 use simd_llvm::simd_shuffle4;
 use v128::*;
+use v64::f32x2;
 use std::os::raw::c_void;
+use std::mem;
+use std::ptr;
 
 #[cfg(test)]
 use stdsimd_test::assert_instr;
@@ -165,6 +168,80 @@ pub unsafe fn _mm_max_ps(a: f32x4, b: f32x4) -> f32x4 {
     maxps(a, b)
 }
 
+/// Construct a `f32x4` with the lowest element set to `a` and the rest set to
+/// zero.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(movss))]
+pub unsafe fn _mm_set_ss(a: f32) -> f32x4 {
+    f32x4::new(a, 0.0, 0.0, 0.0)
+}
+
+/// Construct a `f32x4` with all element set to `a`.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(shufps))]
+pub unsafe fn _mm_set1_ps(a: f32) -> f32x4 {
+    f32x4::new(a, a, a, a)
+}
+
+/// Alias for [`_mm_set1_ps`](fn._mm_set1_ps.html)
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(shufps))]
+pub unsafe fn _mm_set_ps1(a: f32) -> f32x4 {
+    _mm_set1_ps(a)
+}
+
+/// Construct a `f32x4` from four floating point values highest to lowest.
+///
+/// Note that `a` will be the highest 32 bits of the result, and `d` the lowest.
+/// This matches the standard way of writing bit patterns on x86:
+///
+/// ```text
+///  bit    127 .. 96  95 .. 64  63 .. 32  31 .. 0
+///        +---------+---------+---------+---------+
+///        |    a    |    b    |    c    |    d    |   result
+///        +---------+---------+---------+---------+
+/// ```
+///
+/// Alternatively:
+///
+/// ```text
+/// assert_eq!(f32x4::new(a, b, c, d), _mm_set_ps(d, c, b, a));
+/// ```
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(unpcklps))]
+pub unsafe fn _mm_set_ps(a: f32, b: f32, c: f32, d: f32) -> f32x4 {
+    f32x4::new(d, c, b, a)
+}
+
+/// Construct a `f32x4` from four floating point values lowest to highest.
+///
+/// This matches the memory order of `f32x4`, i.e., `a` will be the lowest 32
+/// bits of the result, and `d` the highest.
+///
+/// ```text
+/// assert_eq!(f32x4::new(a, b, c, d), _mm_setr_ps(a, b, c, d));
+/// ```
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(all(test, target_arch = "x86_64"), assert_instr(unpcklps))]
+// On a 32-bit architecture it just copies the operands from the stack.
+#[cfg_attr(all(test, target_arch = "x86"), assert_instr(movaps))]
+pub unsafe fn _mm_setr_ps(a: f32, b: f32, c: f32, d: f32) -> f32x4 {
+    f32x4::new(a, b, c, d)
+}
+
+/// Construct a `f32x4` with all elements initialized to zero.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(xorps))]
+pub unsafe fn _mm_setzero_ps() -> f32x4 {
+    f32x4::new(0.0, 0.0, 0.0, 0.0)
+}
+
 /// Shuffle packed single-precision (32-bit) floating-point elements in `a` and
 /// `b` using `mask`.
 ///
@@ -252,7 +329,8 @@ pub unsafe fn _mm_movehl_ps(a: f32x4, b: f32x4) -> f32x4 {
 /// half of result.
 #[inline(always)]
 #[target_feature = "+sse"]
-#[cfg_attr(test, assert_instr(unpcklpd))]
+#[cfg_attr(all(test, target_feature = "sse2"), assert_instr(unpcklpd))]
+#[cfg_attr(all(test, not(target_feature = "sse2")), assert_instr(movlhps))]
 pub unsafe fn _mm_movelh_ps(a: f32x4, b: f32x4) -> f32x4 {
     simd_shuffle4(a, b, [0, 1, 4, 5])
 }
@@ -266,6 +344,201 @@ pub unsafe fn _mm_movelh_ps(a: f32x4, b: f32x4) -> f32x4 {
 #[cfg_attr(test, assert_instr(movmskps))]
 pub unsafe fn _mm_movemask_ps(a: f32x4) -> i32 {
     movmskps(a)
+}
+
+/// Set the upper two single-precision floating-point values with 64 bits of
+/// data loaded from the address `p`; the lower two values are passed through
+/// from `a`.
+///
+/// This corresponds to the `MOVHPS` / `MOVHPD` / `VMOVHPD` instructions.
+///
+/// ```rust
+/// # #![feature(cfg_target_feature)]
+/// # #![feature(target_feature)]
+/// #
+/// # #[macro_use] extern crate stdsimd;
+/// #
+/// # // The real main function
+/// # fn main() {
+/// #     if cfg_feature_enabled!("sse") {
+/// #         #[target_feature = "+sse"]
+/// #         fn worker() {
+/// #
+/// #   use stdsimd::simd::f32x4;
+/// #   use stdsimd::vendor::_mm_loadh_pi;
+/// #
+/// let a = f32x4::new(1.0, 2.0, 3.0, 4.0);
+/// let data: [f32; 4] = [5.0, 6.0, 7.0, 8.0];
+///
+/// let r = unsafe { _mm_loadh_pi(a, data[..].as_ptr()) };
+///
+/// assert_eq!(r, f32x4::new(1.0, 2.0, 5.0, 6.0));
+/// #
+/// #         }
+/// #         worker();
+/// #     }
+/// # }
+/// ```
+#[inline(always)]
+#[target_feature = "+sse"]
+// TODO: generates MOVHPD if the CPU supports SSE2.
+// #[cfg_attr(test, assert_instr(movhps))]
+#[cfg_attr(all(test, target_arch = "x86_64"), assert_instr(movhpd))]
+// 32-bit codegen does not generate `movhps` or `movhpd`, but instead
+// `movsd` followed by `unpcklpd` (or `movss'/`unpcklps` if there's no SSE2).
+#[cfg_attr(all(test, target_arch = "x86", target_feature = "sse2"),
+    assert_instr(unpcklpd))]
+#[cfg_attr(all(test, target_arch = "x86", not(target_feature = "sse2")),
+    assert_instr(unpcklps))]
+// TODO: This function is actually not limited to floats, but that's what
+// what matches the C type most closely: (__m128, *const __m64) -> __m128
+pub unsafe fn _mm_loadh_pi(a: f32x4, p: *const f32) -> f32x4 {
+    let q = p as *const f32x2;
+    let b: f32x2 = *q;
+    let bb = simd_shuffle4(b, b, [0, 1, 0, 1]);
+    simd_shuffle4(a, bb, [0, 1, 4, 5])
+}
+
+/// Load two floats from `p` into the lower half of a `f32x4`. The upper half
+/// is copied from the upper half of `a`.
+///
+/// This corresponds to the `MOVLPS` / `MOVLDP` / `VMOVLDP` instructions.
+///
+/// ```rust
+/// # #![feature(cfg_target_feature)]
+/// # #![feature(target_feature)]
+/// #
+/// # #[macro_use] extern crate stdsimd;
+/// #
+/// # // The real main function
+/// # fn main() {
+/// #     if cfg_feature_enabled!("sse") {
+/// #         #[target_feature = "+sse"]
+/// #         fn worker() {
+/// #
+/// #   use stdsimd::simd::f32x4;
+/// #   use stdsimd::vendor::_mm_loadl_pi;
+/// #
+/// let a = f32x4::new(1.0, 2.0, 3.0, 4.0);
+/// let data: [f32; 4] = [5.0, 6.0, 7.0, 8.0];
+///
+/// let r = unsafe { _mm_loadl_pi(a, data[..].as_ptr()) };
+///
+/// assert_eq!(r, f32x4::new(5.0, 6.0, 3.0, 4.0));
+/// #
+/// #         }
+/// #         worker();
+/// #     }
+/// # }
+/// ```
+#[inline(always)]
+#[target_feature = "+sse"]
+// TODO: generates MOVLPD if the CPU supports SSE2.
+// #[cfg_attr(test, assert_instr(movlps))]
+#[cfg_attr(all(test, target_arch = "x86_64"), assert_instr(movlpd))]
+// On 32-bit targets with SSE2, it just generates two `movsd`.
+#[cfg_attr(all(test, target_arch = "x86", target_feature = "sse2"),
+    assert_instr(movsd))]
+// It should really generate "movlps", but oh well...
+#[cfg_attr(all(test, target_arch = "x86", not(target_feature = "sse2")),
+    assert_instr(movss))]
+// TODO: Like _mm_loadh_pi, this also isn't limited to floats.
+pub unsafe fn _mm_loadl_pi(a: f32x4, p: *const f32) -> f32x4 {
+    let q = p as *const f32x2;
+    let b: f32x2 = *q;
+    let bb = simd_shuffle4(b, b, [0, 1, 0, 1]);
+    simd_shuffle4(a, bb, [4, 5, 2, 3])
+}
+
+/// Construct a `f32x4` with the lowest element read from `p` and the other
+/// elements set to zero.
+///
+/// This corresponds to instructions `VMOVSS` / `MOVSS`.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(movss))]
+pub unsafe fn _mm_load_ss(p: *const f32) -> f32x4 {
+    f32x4::new(*p, 0.0, 0.0, 0.0)
+}
+
+/// Construct a `f32x4` by duplicating the value read from `p` into all
+/// elements.
+///
+/// This corresponds to instructions `VMOVSS` / `MOVSS` followed by some
+/// shuffling.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(movss))]
+pub unsafe fn _mm_load1_ps(p: *const f32) -> f32x4 {
+    let a = *p;
+    f32x4::new(a, a, a, a)
+}
+
+/// Alias for [`_mm_load1_ps`](fn._mm_load1_ps.html)
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(movss))]
+pub unsafe fn _mm_load_ps1(p: *const f32) -> f32x4 {
+    _mm_load1_ps(p)
+}
+
+/// Load four `f32` values from *aligned* memory into a `f32x4`. If the pointer
+/// is not aligned to a 128-bit boundary (16 bytes) a general protection fault
+/// will be triggered (fatal program crash).
+///
+/// Use [`_mm_loadu_ps`](fn._mm_loadu_ps.html) for potentially unaligned memory.
+///
+/// This corresponds to instructions `VMOVAPS` / `MOVAPS`.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(movaps))]
+pub unsafe fn _mm_load_ps(p: *const f32) -> f32x4 {
+    *(p as *const f32x4)
+}
+
+/// Load four `f32` values from memory into a `f32x4`. There are no restrictions
+/// on memory alignment. For aligned memory [`_mm_load_ps`](fn._mm_load_ps.html)
+/// may be faster.
+///
+/// This corresponds to instructions `VMOVUPS` / `MOVUPS`.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(movups))]
+pub unsafe fn _mm_loadu_ps(p: *const f32) -> f32x4 {
+    // Note: Using `*p` would require `f32` alignment, but `movups` has no
+    // alignment restrictions.
+    let mut dst = f32x4::splat(mem::uninitialized());
+    ptr::copy_nonoverlapping(
+        p as *const u8,
+        &mut dst as *mut f32x4 as *mut u8,
+        mem::size_of::<f32x4>());
+    dst
+}
+
+/// Load four `f32` values from aligned memory into a `f32x4` in reverse order.
+///
+/// If the pointer is not aligned to a 128-bit boundary (16 bytes) a general
+/// protection fault will be triggered (fatal program crash).
+///
+/// Functionally equivalent to the following code sequence (assuming `p`
+/// satisfies the alignment restrictions):
+///
+/// ```text
+/// let a0 = *p;
+/// let a1 = *p.offset(1);
+/// let a2 = *p.offset(2);
+/// let a3 = *p.offset(3);
+/// f32x4::new(a3, a2, a1, a0)
+/// ```
+///
+/// This corresponds to instructions `VMOVAPS` / `MOVAPS` followed by some
+/// shuffling.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(movaps))]
+pub unsafe fn _mm_loadr_ps(p: *const f32) -> f32x4 {
+    let a = _mm_load_ps(p);
+    simd_shuffle4(a, a, [3, 2, 1, 0])
 }
 
 /// Perform a serializing operation on all store-to-memory instructions that
@@ -574,9 +847,9 @@ pub const _MM_HINT_NTA: i8 = 0;
 #[inline(always)]
 #[target_feature = "+sse"]
 #[cfg_attr(test, assert_instr(prefetcht0, strategy = _MM_HINT_T0))]
-// #[cfg_attr(test, assert_instr(prefetcht1, strategy = _MM_HINT_T1))]
-// #[cfg_attr(test, assert_instr(prefetcht2, strategy = _MM_HINT_T2))]
-// #[cfg_attr(test, assert_instr(prefetchnta, strategy = _MM_HINT_NTA))]
+#[cfg_attr(test, assert_instr(prefetcht1, strategy = _MM_HINT_T1))]
+#[cfg_attr(test, assert_instr(prefetcht2, strategy = _MM_HINT_T2))]
+#[cfg_attr(test, assert_instr(prefetchnta, strategy = _MM_HINT_NTA))]
 pub unsafe fn _mm_prefetch(p: *const c_void, strategy: i8) {
     // The `strategy` must be a compile-time constant, so we use a short form of
     // `constify_imm8!` for now.
@@ -789,6 +1062,40 @@ mod tests {
     }
 
     #[simd_test = "sse"]
+    unsafe fn _mm_set_ss() {
+        let r = sse::_mm_set_ss(black_box(4.25));
+        assert_eq!(r, f32x4::new(4.25, 0.0, 0.0, 0.0));
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_set1_ps() {
+        let r1 = sse::_mm_set1_ps(black_box(4.25));
+        let r2 = sse::_mm_set_ps1(black_box(4.25));
+        assert_eq!(r1, f32x4::splat(4.25));
+        assert_eq!(r2, f32x4::splat(4.25));
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_set_ps() {
+        let r = sse::_mm_set_ps(
+            black_box(1.0), black_box(2.0), black_box(3.0), black_box(4.0));
+        assert_eq!(r, f32x4::new(4.0, 3.0, 2.0, 1.0));
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_setr_ps() {
+        let r = sse::_mm_setr_ps(
+            black_box(1.0), black_box(2.0), black_box(3.0), black_box(4.0));
+        assert_eq!(r, f32x4::new(1.0, 2.0, 3.0, 4.0));
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_setzero_ps() {
+        let r = *black_box(&sse::_mm_setzero_ps());
+        assert_eq!(r, f32x4::splat(0.0));
+    }
+
+    #[simd_test = "sse"]
     unsafe fn _mm_shuffle_ps() {
         let a = f32x4::new(1.0, 2.0, 3.0, 4.0);
         let b = f32x4::new(5.0, 6.0, 7.0, 8.0);
@@ -830,6 +1137,88 @@ mod tests {
     }
 
     #[simd_test = "sse"]
+    unsafe fn _mm_loadh_pi() {
+        let a = f32x4::new(1.0, 2.0, 3.0, 4.0);
+        let x: [f32; 4] = [5.0, 6.0, 7.0, 8.0];
+        let p = x[..].as_ptr();
+        let r = sse::_mm_loadh_pi(a, p);
+        assert_eq!(r, f32x4::new(1.0, 2.0, 5.0, 6.0));
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_loadl_pi() {
+        let a = f32x4::new(1.0, 2.0, 3.0, 4.0);
+        let x: [f32; 4] = [5.0, 6.0, 7.0, 8.0];
+        let p = x[..].as_ptr();
+        let r = sse::_mm_loadl_pi(a, p);
+        assert_eq!(r, f32x4::new(5.0, 6.0, 3.0, 4.0));
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_load_ss() {
+        let a = 42.0f32;
+        let r = sse::_mm_load_ss(&a as *const f32);
+        assert_eq!(r, f32x4::new(42.0, 0.0, 0.0, 0.0));
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_load1_ps() {
+        let a = 42.0f32;
+        let r = sse::_mm_load1_ps(&a as *const f32);
+        assert_eq!(r, f32x4::new(42.0, 42.0, 42.0, 42.0));
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_load_ps() {
+        let vals = &[1.0f32, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0];
+
+        let mut p = vals.as_ptr();
+        let mut fixup = 0.0f32;
+
+        // Make sure p is aligned, otherwise we might get a
+        // (signal: 11, SIGSEGV: invalid memory reference)
+
+        let unalignment = (p as usize) & 0xf;
+        if unalignment != 0 {
+            let delta = ((16 - unalignment) >> 2) as isize;
+            fixup = delta as f32;
+            p = p.offset(delta);
+        }
+
+        let r = sse::_mm_load_ps(p);
+        assert_eq!(r, f32x4::new(1.0, 2.0, 3.0, 4.0) + f32x4::splat(fixup));
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_loadu_ps() {
+        let vals = &[1.0f32, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0];
+        let p = vals.as_ptr().offset(3);
+        let r = sse::_mm_loadu_ps(black_box(p));
+        assert_eq!(r, f32x4::new(4.0, 5.0, 6.0, 7.0));
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_loadr_ps() {
+        let vals = &[1.0f32, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0];
+
+        let mut p = vals.as_ptr();
+        let mut fixup = 0.0f32;
+
+        // Make sure p is aligned, otherwise we might get a
+        // (signal: 11, SIGSEGV: invalid memory reference)
+
+        let unalignment = (p as usize) & 0xf;
+        if unalignment != 0 {
+            let delta = ((16 - unalignment) >> 2) as isize;
+            fixup = delta as f32;
+            p = p.offset(delta);
+        }
+
+        let r = sse::_mm_loadr_ps(p);
+        assert_eq!(r, f32x4::new(4.0, 3.0, 2.0, 1.0) + f32x4::splat(fixup));
+    }
+
+    #[simd_test = "sse"]
     unsafe fn _mm_movemask_ps() {
         let r = sse::_mm_movemask_ps(f32x4::new(-1.0, 5.0, -5.0, 0.0));
         assert_eq!(r, 0b0101);
@@ -851,7 +1240,7 @@ mod tests {
         let b = f32x4::new(0.001, 0.0, 0.0, 1.0);
 
         sse::_MM_SET_FLUSH_ZERO_MODE(sse::_MM_FLUSH_ZERO_ON);
-        let r = sse::_mm_mul_ps(black_box(a), black_box(b));
+        let r = sse::_mm_mul_ps(*black_box(&a), *black_box(&b));
 
         sse::_mm_setcsr(saved_csr);
 
@@ -869,7 +1258,7 @@ mod tests {
         let b = f32x4::new(0.001, 0.0, 0.0, 1.0);
 
         sse::_MM_SET_FLUSH_ZERO_MODE(sse::_MM_FLUSH_ZERO_OFF);
-        let r = sse::_mm_mul_ps(black_box(a), black_box(b));
+        let r = sse::_mm_mul_ps(*black_box(&a), *black_box(&b));
 
         sse::_mm_setcsr(saved_csr);
 
@@ -886,7 +1275,7 @@ mod tests {
 
         assert_eq!(sse::_MM_GET_EXCEPTION_STATE(), 0);  // just to be sure
 
-        let r = sse::_mm_mul_ps(black_box(a), black_box(b));
+        let r = sse::_mm_mul_ps(*black_box(&a), *black_box(&b));
 
         let exp = f32x4::new(1.1e-41, 0.0, 0.0, 1.0);
         assert_eq!(r, exp);
