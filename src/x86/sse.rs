@@ -872,7 +872,7 @@ pub unsafe fn _mm_prefetch(p: *const c_void, strategy: i8) {
 #[inline(always)]
 #[target_feature = "+sse"]
 pub unsafe fn _mm_undefined_ps() -> f32x4 {
-    mem::uninitialized()
+    f32x4::splat(mem::uninitialized())
 }
 
 #[allow(improper_ctypes)]
