@@ -1164,6 +1164,19 @@ pub unsafe fn _mm256_loadu_pd(mem_addr: *const f64) -> f64x4 {
     dst
 }
 
+/// Store 256-bits (composed of 4 packed double-precision (64-bit)
+/// floating-point elements) from `a` into memory.
+/// `mem_addr` does not need to be aligned on any particular boundary.
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vmovups))] // FIXME vmovupd expected
+pub unsafe fn _mm256_storeu_pd(mem_addr: *mut f64, a: f64x4) {
+    ptr::copy_nonoverlapping(
+        &a as *const _ as *const u8,
+        mem_addr as *mut u8,
+        mem::size_of::<f64x4>());
+}
+
 /// Casts vector of type __m128 to type __m256;
 /// the upper 128 bits of the result are undefined.
 #[inline(always)]
@@ -2087,5 +2100,13 @@ mod tests {
         let r = avx::_mm256_loadu_pd(black_box(p));
         let e = f64x4::new(1.0, 2.0, 3.0, 4.0);
         assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_storeu_pd() {
+        let a = f64x4::splat(9.);
+        let mut r = f64x4::splat(0.);
+        avx::_mm256_storeu_pd(&mut r as *mut _ as *mut f64, a);
+        assert_eq!(r, a);
     }
 }
