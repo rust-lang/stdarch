@@ -1192,6 +1192,19 @@ pub unsafe fn _mm256_loadu_ps(mem_addr: *const f32) -> f32x8 {
     dst
 }
 
+/// Store 256-bits (composed of 8 packed single-precision (32-bit)
+/// floating-point elements) from `a` into memory.
+/// `mem_addr` does not need to be aligned on any particular boundary.
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vmovups))]
+pub unsafe fn _mm256_storeu_ps(mem_addr: *mut f32, a: f32x8) {
+    ptr::copy_nonoverlapping(
+        &a as *const _ as *const u8,
+        mem_addr as *mut u8,
+        mem::size_of::<f32x8>());
+}
+
 /// Casts vector of type __m128 to type __m256;
 /// the upper 128 bits of the result are undefined.
 #[inline(always)]
@@ -2132,5 +2145,13 @@ mod tests {
         let r = avx::_mm256_loadu_ps(black_box(p));
         let e = f32x8::new(4.0, 3.0, 2.0, 5.0, 8.0, 9.0, 64.0, 50.0);
         assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_storeu_ps() {
+        let a = f32x8::splat(9.);
+        let mut r = f32x8::splat(0.);
+        avx::_mm256_storeu_ps(&mut r as *mut _ as *mut f32, a);
+        assert_eq!(r, a);
     }
 }
