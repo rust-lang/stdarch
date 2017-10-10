@@ -1,3 +1,6 @@
+
+use std::mem;
+
 #[cfg(test)]
 use stdsimd_test::assert_instr;
 
@@ -66,9 +69,9 @@ pub unsafe fn _mm_blend_ps(a: f32x4, b: f32x4, imm4: u8) -> f32x4 {
 /// Extract a single-precision (32-bit) floating-point element from `a`, selected with `imm8`
 #[inline(always)]
 #[target_feature = "+sse4.1"]
-#[cfg_attr(test, assert_instr(extractps, imm8=2))]
-pub unsafe fn _mm_extract_ps(a: f32x4, imm8: u8) -> f32 {
-    a.extract(imm8 as u32 & 0b11)
+#[cfg_attr(test, assert_instr(extractps, imm8=0))]
+pub unsafe fn _mm_extract_ps(a: f32x4, imm8: u8) -> i32 {
+    mem::transmute(a.extract(imm8 as u32 & 0b11))
 }
 
 /// Extract an 8-bit integer from `a` selected with `imm8`
@@ -321,9 +324,9 @@ mod tests {
     #[simd_test = "sse4.1"]
     unsafe fn _mm_extract_ps() {
         let a = f32x4::new(0.0, 1.0, 2.0, 3.0);
-        let r = sse41::_mm_extract_ps(a, 1);
+        let r: f32 = mem::transmute(sse41::_mm_extract_ps(a, 1));
         assert_eq!(r, 1.0);
-        let r = sse41::_mm_extract_ps(a, 5);
+        let r: f32 = mem::transmute(sse41::_mm_extract_ps(a, 5));
         assert_eq!(r, 1.0);
     }
 
