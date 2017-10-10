@@ -5,16 +5,11 @@ use std::mem;
 use stdsimd_test::assert_instr;
 
 use v128::*;
-use x86::__m128i;
 
 #[inline(always)]
 #[target_feature = "+sse4.1"]
 #[cfg_attr(test, assert_instr(pblendvb))]
-pub unsafe fn _mm_blendv_epi8(
-    a: __m128i,
-    b: __m128i,
-    mask: __m128i,
-) -> __m128i {
+pub unsafe fn _mm_blendv_epi8(a: i8x16, b: i8x16, mask: i8x16) -> i8x16 {
     pblendvb(a, b, mask)
 }
 
@@ -225,7 +220,7 @@ pub unsafe fn _mm_dp_ps(a: f32x4, b: f32x4, imm8: u8) -> f32x4 {
 #[allow(improper_ctypes)]
 extern {
     #[link_name = "llvm.x86.sse41.pblendvb"]
-    fn pblendvb(a: __m128i, b: __m128i, mask: __m128i) -> __m128i;
+    fn pblendvb(a: i8x16, b: i8x16, mask: i8x16) -> i8x16;
     #[link_name = "llvm.x86.sse41.blendvpd"]
     fn blendvpd(a: f64x2, b: f64x2, mask: f64x2) -> f64x2;
     #[link_name = "llvm.x86.sse41.blendvps"]
