@@ -1,4 +1,5 @@
 use std::mem;
+use std::ptr;
 
 #[cfg(test)]
 use stdsimd_test::assert_instr;
@@ -1148,6 +1149,21 @@ pub unsafe fn _mm256_insert_epi64(a: i64x4, i: i64, index: i32) -> i64x4 {
     c.replace(index as u32 & 3, i)
 }
 
+/// Load 256-bits (composed of 4 packed double-precision (64-bit)
+/// floating-point elements) from memory into result.
+/// `mem_addr` does not need to be aligned on any particular boundary.
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vmovups))] // FIXME vmovupd expected
+pub unsafe fn _mm256_loadu_pd(mem_addr: *const f64) -> f64x4 {
+    let mut dst = f64x4::splat(mem::uninitialized());
+    ptr::copy_nonoverlapping(
+        mem_addr as *const u8,
+        &mut dst as *mut f64x4 as *mut u8,
+        mem::size_of::<f64x4>());
+    dst
+}
+
 /// Casts vector of type __m128 to type __m256;
 /// the upper 128 bits of the result are undefined.
 #[inline(always)]
@@ -1284,6 +1300,7 @@ extern "C" {
 #[cfg(test)]
 mod tests {
     use stdsimd_test::simd_test;
+    use test::black_box;  // Used to inhibit constant-folding.
 
     use v128::{f32x4, f64x2, i32x4, i64x2};
     use v256::*;
@@ -2060,6 +2077,15 @@ mod tests {
         let a = i64x4::new(1, 2, 3, 4);
         let r = avx::_mm256_insert_epi64(a, 0, 3);
         let e = i64x4::new(1, 2, 3, 0);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_loadu_pd() {
+        let a = &[1.0f64, 2.0, 3.0, 4.0];
+        let p = a.as_ptr();
+        let r = avx::_mm256_loadu_pd(black_box(p));
+        let e = f64x4::new(1.0, 2.0, 3.0, 4.0);
         assert_eq!(r, e);
     }
 }
