@@ -1204,13 +1204,22 @@ pub unsafe fn _mm256_storeu_ps(mem_addr: *mut f32, a: f32x8) {
 #[inline(always)]
 #[target_feature = "+avx"]
 #[cfg_attr(test, assert_instr(vmovups))] // FIXME vmovdqu expected
-pub unsafe fn _mm256_loadu_si256(mem_addr: *const i64) -> i64x4 {
+pub unsafe fn _mm256_loadu_si256(mem_addr: *const i64x4) -> i64x4 {
     let mut dst = i64x4::splat(mem::uninitialized());
     ptr::copy_nonoverlapping(
         mem_addr as *const u8,
         &mut dst as *mut i64x4 as *mut u8,
         mem::size_of::<i64x4>());
     dst
+}
+
+/// Store 256-bits of integer data from `a` into memory.
+///	`mem_addr` does not need to be aligned on any particular boundary.
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vmovups))] // FIXME vmovdqu expected
+pub unsafe fn _mm256_storeu_si256(mem_addr: *mut i64x4, a: i64x4) {
+    storeu_si_256(mem_addr, a);
 }
 
 /// Casts vector of type __m128 to type __m256;
@@ -1348,6 +1357,8 @@ extern "C" {
     fn storeu_pd_256(mem_addr: *mut f64, a: f64x4);
     #[link_name = "llvm.x86.avx.storeu.ps.256"]
     fn storeu_ps_256(mem_addr: *mut f32, a: f32x8);
+    #[link_name = "llvm.x86.avx.storeu.si.256"]
+    fn storeu_si_256(mem_addr: *mut i64x4, a: i64x4);
 }
 
 #[cfg(test)]
@@ -2145,7 +2156,7 @@ mod tests {
     #[simd_test = "avx"]
     unsafe fn _mm256_storeu_pd() {
         let a = f64x4::splat(9.);
-        let mut r = f64x4::splat(0.);
+        let mut r = avx::_mm256_undefined_pd();
         avx::_mm256_storeu_pd(&mut r as *mut _ as *mut f64, a);
         assert_eq!(r, a);
     }
@@ -2162,17 +2173,25 @@ mod tests {
     #[simd_test = "avx"]
     unsafe fn _mm256_storeu_ps() {
         let a = f32x8::splat(9.);
-        let mut r = f32x8::splat(0.);
+        let mut r = avx::_mm256_undefined_ps();
         avx::_mm256_storeu_ps(&mut r as *mut _ as *mut f32, a);
         assert_eq!(r, a);
     }
 
     #[simd_test = "avx"]
     unsafe fn _mm256_loadu_si256() {
-        let a = &[1i64, 2, 3, 4];
-        let p = a.as_ptr();
+        let a = i64x4::new(1, 2, 3, 4);
+        let p = &a as *const _;
         let r = avx::_mm256_loadu_si256(black_box(p));
         let e = i64x4::new(1, 2, 3, 4);
         assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_storeu_si256() {
+        let a = i64x4::splat(9);
+        let mut r = avx::_mm256_undefined_si256();
+        avx::_mm256_storeu_si256(&mut r as *mut _, a);
+        assert_eq!(r, a);
     }
 }
