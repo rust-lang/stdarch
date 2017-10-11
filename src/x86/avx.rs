@@ -1171,10 +1171,7 @@ pub unsafe fn _mm256_loadu_pd(mem_addr: *const f64) -> f64x4 {
 #[target_feature = "+avx"]
 #[cfg_attr(test, assert_instr(vmovups))] // FIXME vmovupd expected
 pub unsafe fn _mm256_storeu_pd(mem_addr: *mut f64, a: f64x4) {
-    ptr::copy_nonoverlapping(
-        &a as *const _ as *const u8,
-        mem_addr as *mut u8,
-        mem::size_of::<f64x4>());
+    storeu_pd_256(mem_addr, a);
 }
 
 /// Load 256-bits (composed of 8 packed single-precision (32-bit)
@@ -1199,10 +1196,7 @@ pub unsafe fn _mm256_loadu_ps(mem_addr: *const f32) -> f32x8 {
 #[target_feature = "+avx"]
 #[cfg_attr(test, assert_instr(vmovups))]
 pub unsafe fn _mm256_storeu_ps(mem_addr: *mut f32, a: f32x8) {
-    ptr::copy_nonoverlapping(
-        &a as *const _ as *const u8,
-        mem_addr as *mut u8,
-        mem::size_of::<f32x8>());
+    storeu_ps_256(mem_addr, a);
 }
 
 /// Casts vector of type __m128 to type __m256;
@@ -1336,6 +1330,10 @@ extern "C" {
     fn vbroadcastf128ps256(a: &f32x4) -> f32x8;
     #[link_name = "llvm.x86.avx.vbroadcastf128.pd.256"]
     fn vbroadcastf128pd256(a: &f64x2) -> f64x4;
+    #[link_name = "llvm.x86.avx.storeu.pd.256"]
+    fn storeu_pd_256(mem_addr: *mut f64, a: f64x4);
+    #[link_name = "llvm.x86.avx.storeu.ps.256"]
+    fn storeu_ps_256(mem_addr: *mut f32, a: f32x8);
 }
 
 #[cfg(test)]
