@@ -1199,6 +1199,20 @@ pub unsafe fn _mm256_storeu_ps(mem_addr: *mut f32, a: f32x8) {
     storeu_ps_256(mem_addr, a);
 }
 
+/// Load 256-bits of integer data from memory into result.
+/// `mem_addr` does not need to be aligned on any particular boundary.
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vmovups))] // FIXME vmovdqu expected
+pub unsafe fn _mm256_loadu_si256(mem_addr: *const i64) -> i64x4 {
+    let mut dst = i64x4::splat(mem::uninitialized());
+    ptr::copy_nonoverlapping(
+        mem_addr as *const u8,
+        &mut dst as *mut i64x4 as *mut u8,
+        mem::size_of::<i64x4>());
+    dst
+}
+
 /// Casts vector of type __m128 to type __m256;
 /// the upper 128 bits of the result are undefined.
 #[inline(always)]
@@ -2151,5 +2165,14 @@ mod tests {
         let mut r = f32x8::splat(0.);
         avx::_mm256_storeu_ps(&mut r as *mut _ as *mut f32, a);
         assert_eq!(r, a);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_loadu_si256() {
+        let a = &[1i64, 2, 3, 4];
+        let p = a.as_ptr();
+        let r = avx::_mm256_loadu_si256(black_box(p));
+        let e = i64x4::new(1, 2, 3, 4);
+        assert_eq!(r, e);
     }
 }
