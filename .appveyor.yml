@@ -15,7 +15,6 @@ install:
   - if NOT "%TARGET%" == "x86_64-pc-windows-msvc" rustup target add %TARGET%
   - rustc -vV
   - cargo -vV
-  - cargo install clippy
 
 build: false
 
