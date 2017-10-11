@@ -1171,7 +1171,7 @@ pub unsafe fn _mm256_loadu_pd(mem_addr: *const f64) -> f64x4 {
 #[target_feature = "+avx"]
 #[cfg_attr(test, assert_instr(vmovups))] // FIXME vmovupd expected
 pub unsafe fn _mm256_storeu_pd(mem_addr: *mut f64, a: f64x4) {
-    storeu_pd_256(mem_addr, a);
+    storeupd256(mem_addr, a);
 }
 
 /// Load 256-bits (composed of 8 packed single-precision (32-bit)
@@ -1196,7 +1196,7 @@ pub unsafe fn _mm256_loadu_ps(mem_addr: *const f32) -> f32x8 {
 #[target_feature = "+avx"]
 #[cfg_attr(test, assert_instr(vmovups))]
 pub unsafe fn _mm256_storeu_ps(mem_addr: *mut f32, a: f32x8) {
-    storeu_ps_256(mem_addr, a);
+    storeups256(mem_addr, a);
 }
 
 /// Load 256-bits of integer data from memory into result.
@@ -1219,7 +1219,17 @@ pub unsafe fn _mm256_loadu_si256(mem_addr: *const i64x4) -> i64x4 {
 #[target_feature = "+avx"]
 #[cfg_attr(test, assert_instr(vmovups))] // FIXME vmovdqu expected
 pub unsafe fn _mm256_storeu_si256(mem_addr: *mut i64x4, a: i64x4) {
-    storeu_si_256(mem_addr, a);
+    storeusi256(mem_addr, a);
+}
+
+/// Load packed double-precision (64-bit) floating-point elements from memory
+/// into result using `mask` (elements are zeroed out when the high bit of the
+/// corresponding element is not set).
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vmaskmovpd))]
+pub unsafe fn _mm256_maskload_pd(mem_addr: *const f64, mask: i64x4) -> f64x4  {
+    maskmovpd256(mem_addr as *const i8, mask)
 }
 
 /// Casts vector of type __m128 to type __m256;
@@ -1354,11 +1364,13 @@ extern "C" {
     #[link_name = "llvm.x86.avx.vbroadcastf128.pd.256"]
     fn vbroadcastf128pd256(a: &f64x2) -> f64x4;
     #[link_name = "llvm.x86.avx.storeu.pd.256"]
-    fn storeu_pd_256(mem_addr: *mut f64, a: f64x4);
+    fn storeupd256(mem_addr: *mut f64, a: f64x4);
     #[link_name = "llvm.x86.avx.storeu.ps.256"]
-    fn storeu_ps_256(mem_addr: *mut f32, a: f32x8);
+    fn storeups256(mem_addr: *mut f32, a: f32x8);
     #[link_name = "llvm.x86.avx.storeu.si.256"]
-    fn storeu_si_256(mem_addr: *mut i64x4, a: i64x4);
+    fn storeusi256(mem_addr: *mut i64x4, a: i64x4);
+    #[link_name = "llvm.x86.avx.maskload.pd.256"]
+    fn maskmovpd256(mem_addr: *const i8, mask: i64x4) -> f64x4;
 }
 
 #[cfg(test)]
@@ -2193,5 +2205,15 @@ mod tests {
         let mut r = avx::_mm256_undefined_si256();
         avx::_mm256_storeu_si256(&mut r as *mut _, a);
         assert_eq!(r, a);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_maskload_pd() {
+        let a = &[1.0f64, 2.0, 3.0, 4.0];
+        let p = a.as_ptr();
+        let mask = i64x4::new(0, !0, 0, !0);
+        let r = avx::_mm256_maskload_pd(black_box(p), mask);
+        let e = f64x4::new(0.0, 2.0, 0.0, 4.0);
+        assert_eq!(r, e);
     }
 }
