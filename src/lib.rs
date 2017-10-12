@@ -63,6 +63,34 @@
 //! }
 //! ```
 //!
+//! After verifying that a specified feature is available, use `target_feature`
+//! to enable a given feature and use the desired intrinsic.
+//!
+//! ```
+//! # #![feature(cfg_target_feature)]
+//! # #![feature(target_feature)]
+//! # #[macro_use]
+//! # extern crate stdsimd;
+//! # fn main() {
+//! #     if cfg_feature_enabled!("avx2") {
+//! // avx2 specific code may be used in this function
+//! #[target_feature = "+avx2"]
+//! fn and_256() {
+//!     // avx2 feature specific intrinsics will work here!
+//!     use stdsimd::vendor::{__m256i, _mm256_and_si256};
+//!
+//!     let a = __m256i::splat(5);
+//!     let b = __m256i::splat(3);
+//!
+//!     let got = unsafe { _mm256_and_si256(a, b) };
+//!
+//!     assert_eq!(got, __m256i::splat(1));
+//! }
+//! #         and_256();
+//! #     }
+//! # }
+//! ```
+//!
 //! # Status
 //!
 //! This crate is intended for eventual inclusion into the standard library, but
@@ -87,10 +115,13 @@
     const_fn, link_llvm_intrinsics, platform_intrinsics, repr_simd, simd_ffi,
     target_feature, cfg_target_feature, i128_type, asm, const_atomic_usize_new
 )]
-#![cfg_attr(test, feature(proc_macro))]
+#![cfg_attr(test, feature(proc_macro, test))]
 
 #[cfg(test)]
 extern crate stdsimd_test;
+
+#[cfg(test)]
+extern crate test;
 
 /// Platform independent SIMD vector types and operations.
 pub mod simd {

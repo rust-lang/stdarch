@@ -891,7 +891,7 @@ pub unsafe fn _mm_load_si128(mem_addr: *const __m128i) -> __m128i {
 #[target_feature = "+sse2"]
 #[cfg_attr(test, assert_instr(movups))]
 pub unsafe fn _mm_loadu_si128(mem_addr: *const __m128i) -> __m128i {
-    let mut dst = mem::uninitialized();
+    let mut dst = __m128i::splat(mem::uninitialized());
     ptr::copy_nonoverlapping(
         mem_addr as *const u8,
         &mut dst as *mut __m128i as *mut u8,
@@ -1780,6 +1780,16 @@ pub unsafe fn _mm_cvttsd_si32(a: f64x2) -> i32 {
     cvttsd2si(a)
 }
 
+/// Convert packed single-precision (32-bit) floating-point elements in `a` to packed 32-bit
+/// integers with truncation
+#[inline(always)]
+#[target_feature = "+sse2"]
+#[cfg_attr(test, assert_instr(cvttps2dq))]
+pub unsafe fn _mm_cvttps_epi32(a: f32x4) -> i32x4 {
+    cvttps2dq(a)
+}
+
+
 /// Return a mask of the most significant bit of each element in `a`.
 ///
 /// The mask is stored in the 2 least significant bits of the return value.
@@ -1815,6 +1825,13 @@ pub unsafe fn _mm_store_pd(mem_addr: *mut f64, a: f64x2) {
 pub unsafe fn _mm_load1_pd(mem_addr: *const f64) -> f64x2 {
     let d = *mem_addr;
     f64x2::new(d, d)
+}
+
+/// Return vector of type __m128d with undefined elements.
+#[inline(always)]
+#[target_feature = "+sse2"]
+pub unsafe fn _mm_undefined_pd() -> f64x2 {
+    f64x2::splat(mem::uninitialized())
 }
 
 #[allow(improper_ctypes)]
@@ -1967,6 +1984,8 @@ extern {
     fn cvttpd2dq(a: f64x2) -> i32x4;
     #[link_name = "llvm.x86.sse2.cvttsd2si"]
     fn cvttsd2si(a: f64x2) -> i32;
+    #[link_name = "llvm.x86.sse2.cvttps2dq"]
+    fn cvttps2dq(a: f32x4) -> i32x4;
 }
 
 #[cfg(test)]
@@ -3603,6 +3622,19 @@ mod tests {
         let a = f64x2::new(f64::NEG_INFINITY, f64::NAN);
         let r = sse2::_mm_cvttsd_si32(a);
         assert_eq!(r, i32::MIN);
+    }
+
+    #[simd_test = "sse2"]
+    unsafe fn _mm_cvttps_epi32() {
+        use std::{f32, i32};
+
+        let a = f32x4::new(-1.1, 2.2, -3.3, 6.6);
+        let r = sse2::_mm_cvttps_epi32(a);
+        assert_eq!(r, i32x4::new(-1, 2, -3, 6));
+
+        let a = f32x4::new(f32::NEG_INFINITY, f32::INFINITY, f32::MIN, f32::MAX);
+        let r = sse2::_mm_cvttps_epi32(a);
+        assert_eq!(r, i32x4::new(i32::MIN, i32::MIN, i32::MIN, i32::MIN));
     }
 
     #[simd_test = "sse2"]
