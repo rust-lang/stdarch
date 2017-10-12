@@ -2349,11 +2349,11 @@ mod tests {
             let b = f32x4::new(bb[i], 0.0, 2.0, 4.0);
 
             sse::_MM_SET_EXCEPTION_STATE(0);
-            let r1 = sse::_mm_comieq_ss(a, b);
+            let r1 = sse::_mm_comieq_ss(*black_box(&a), b);
             let s1 = sse::_MM_GET_EXCEPTION_STATE();
 
             sse::_MM_SET_EXCEPTION_STATE(0);
-            let r2 = sse::_mm_ucomieq_ss(a, b);
+            let r2 = sse::_mm_ucomieq_ss(*black_box(&a), b);
             let s2 = sse::_MM_GET_EXCEPTION_STATE();
 
             assert_eq!(ee[i], r1,
