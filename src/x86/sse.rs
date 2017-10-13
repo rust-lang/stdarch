@@ -998,7 +998,9 @@ pub unsafe fn _mm_storeh_pi(p: *mut u64, a: f32x4) {
 /// choose to generate an equivalent sequence of other instructions.
 #[inline(always)]
 #[target_feature = "+sse"]
-#[cfg_attr(test, assert_instr(movlps))]
+#[cfg_attr(all(test, not(target_family = "windows")), assert_instr(movlps))]
+// Win64 passes `a` by reference, which causes it to generate two 64 bit moves.
+#[cfg_attr(all(test, target_family = "windows"), assert_instr(movsd))]
 pub unsafe fn _mm_storel_pi(p: *mut u64, a: f32x4) {
     let a64: f64x2 = mem::transmute(a);
     let a_hi = a64.extract(0);
@@ -2715,7 +2717,7 @@ mod tests {
             p = p.offset(ofs as isize);
         }
 
-        sse::_mm_store1_ps(p, black_box(a));
+        sse::_mm_store1_ps(p, *black_box(&a));
 
         if ofs > 0 {
             assert_eq!(vals[ofs - 1], 0.0);
@@ -2741,7 +2743,7 @@ mod tests {
             p = p.offset(ofs as isize);
         }
 
-        sse::_mm_store_ps(p, black_box(a));
+        sse::_mm_store_ps(p, *black_box(&a));
 
         if ofs > 0 {
             assert_eq!(vals[ofs - 1], 0.0);
@@ -2767,7 +2769,7 @@ mod tests {
             p = p.offset(ofs as isize);
         }
 
-        sse::_mm_storer_ps(p, black_box(a));
+        sse::_mm_storer_ps(p, *black_box(&a));
 
         if ofs > 0 {
             assert_eq!(vals[ofs - 1], 0.0);
@@ -2793,7 +2795,7 @@ mod tests {
             p = p.offset(1);
         }
 
-        sse::_mm_storeu_ps(p, black_box(a));
+        sse::_mm_storeu_ps(p, *black_box(&a));
 
         if ofs > 0 {
             assert_eq!(vals[ofs - 1], 0.0);
