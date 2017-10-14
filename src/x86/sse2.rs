@@ -1830,6 +1830,13 @@ pub unsafe fn _mm_set1_pd(a: f64) -> f64x2 {
     f64x2::new(a, a)
 }
 
+/// Broadcast double-precision (64-bit) floating-point value a to all elements of the return value
+#[inline(always)]
+#[target_feature = "+sse2"]
+pub unsafe fn _mm_set_pd1(a: f64) -> f64x2 {
+    f64x2::new(a, a)
+}
+
 /// Return a mask of the most significant bit of each element in `a`.
 ///
 /// The mask is stored in the 2 least significant bits of the return value.
@@ -3733,6 +3740,12 @@ mod tests {
     unsafe fn _mm_set1_pd() {
         let r = sse2::_mm_set1_pd(-1.0_f64);
         assert_eq!(r, f64x2::new(-1.0_f64, -1.0_f64));
+    }
+
+    #[simd_test = "sse2"]
+    unsafe fn _mm_set_pd1() {
+        let r = sse2::_mm_set_pd1(-2.0_f64);
+        assert_eq!(r, f64x2::new(-2.0_f64, -2.0_f64));
     }
 
     #[simd_test = "sse2"]
