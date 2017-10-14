@@ -1307,6 +1307,15 @@ pub unsafe fn _mm256_movehdup_ps(a: f32x8) -> f32x8 {
     simd_shuffle8(a, a, [1, 1, 3, 3, 5, 5, 7, 7])
 }
 
+/// Duplicate even-indexed single-precision (32-bit) floating-point elements
+/// from `a`, and return the results.
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vmovsldup))]
+pub unsafe fn _mm256_moveldup_ps(a: f32x8) -> f32x8 {
+    simd_shuffle8(a, a, [0, 0, 2, 2, 4, 4, 6, 6])
+}
+
 /// Casts vector of type __m128 to type __m256;
 /// the upper 128 bits of the result are undefined.
 #[inline(always)]
@@ -2381,6 +2390,14 @@ mod tests {
         let a = f32x8::new(1., 2., 3., 4., 5., 6., 7., 8.);
         let r = avx::_mm256_movehdup_ps(a);
         let e = f32x8::new(2., 2., 4., 4., 6., 6., 8., 8.);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_moveldup_ps() {
+        let a = f32x8::new(1., 2., 3., 4., 5., 6., 7., 8.);
+        let r = avx::_mm256_moveldup_ps(a);
+        let e = f32x8::new(1., 1., 3., 3., 5., 5., 7., 7.);
         assert_eq!(r, e);
     }
 }
