@@ -1815,6 +1815,13 @@ pub unsafe fn _mm_cvttps_epi32(a: f32x4) -> i32x4 {
     cvttps2dq(a)
 }
 
+/// Copy double-precision (64-bit) floating-point element `a` to the lower element of the
+/// packed 64-bit return value
+#[inline(always)]
+#[target_feature = "+sse2"]
+pub unsafe fn _mm_set_sd(a: f64) -> f64x2 {
+    f64x2::new(a, 0_f64)
+}
 
 /// Return a mask of the most significant bit of each element in `a`.
 ///
@@ -3707,6 +3714,13 @@ mod tests {
         let a = f32x4::new(f32::NEG_INFINITY, f32::INFINITY, f32::MIN, f32::MAX);
         let r = sse2::_mm_cvttps_epi32(a);
         assert_eq!(r, i32x4::new(i32::MIN, i32::MIN, i32::MIN, i32::MIN));
+    }
+
+    #[simd_test = "sse2"]
+    unsafe fn _mm_set_sd() {
+
+        let r = sse2::_mm_set_sd(-1.0_f64);
+        assert_eq!(r, f64x2::new(-1.0_f64, 0_f64));
     }
 
     #[simd_test = "sse2"]
