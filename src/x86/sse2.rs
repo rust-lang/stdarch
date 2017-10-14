@@ -1726,6 +1726,13 @@ pub unsafe fn _mm_cvtpd_ps(a: f64x2) -> f32x4 {
     cvtpd2ps(a)
 }
 
+#[inline(always)]
+#[target_feature = "+sse2"]
+#[cfg_attr(test, assert_instr(cvtps2pd))]
+pub unsafe fn _mm_cvtps_pd(a: f32x4) -> f64x2 {
+    cvtps2pd(a)
+}
+
 /// Convert packed double-precision (64-bit) floating-point elements in `a` to packed 32-bit integers.
 #[inline(always)]
 #[target_feature = "+sse2"]
@@ -1991,6 +1998,8 @@ extern {
     fn movmskpd(a: f64x2) -> i32;
     #[link_name = "llvm.x86.sse2.cvtpd2ps"]
     fn cvtpd2ps(a: f64x2) -> f32x4;
+    #[link_name = "llvm.x86.sse2.cvtps2pd"]
+    fn cvtps2pd(a: f32x4) -> f64x2;
     #[link_name = "llvm.x86.sse2.cvtpd2dq"]
     fn cvtpd2dq(a: f64x2) -> i32x4;
     #[link_name = "llvm.x86.sse2.cvtsd2si"]
@@ -3549,6 +3558,17 @@ mod tests {
 
         let r = sse2::_mm_cvtpd_ps(f64x2::new(f32::MAX as f64, f32::MIN as f64));
         assert_eq!(r, f32x4::new(f32::MAX, f32::MIN, 0.0,0.0));
+    }
+
+    #[simd_test = "sse2"]
+    unsafe fn _mm_cvtps_pd() {
+        use std::{f64, f32};
+
+        let r = sse2::_mm_cvtps_pd(f32x4::new(-1.0, 2.0, -3.0, 5.0));
+        assert_eq!(r, f64x2::new(-1.0, 2.0));
+
+        let r = sse2::_mm_cvtps_pd(f32x4::new(f32::MAX, f32::INFINITY, f32::NEG_INFINITY, f32::MIN));
+        assert_eq!(r, f64x2::new(f32::MAX as f64, f64::INFINITY));
     }
 
     #[simd_test = "sse2"]
