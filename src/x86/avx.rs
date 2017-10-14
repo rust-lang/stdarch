@@ -1298,6 +1298,15 @@ pub unsafe fn _mm_maskstore_ps(mem_addr: *mut f32, mask: i32x4, a: f32x4) {
     maskstoreps(mem_addr as *mut i8, mask, a);
 }
 
+/// Duplicate odd-indexed single-precision (32-bit) floating-point elements
+/// from `a`, and return the results.
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vmovshdup))]
+pub unsafe fn _mm256_movehdup_ps(a: f32x8) -> f32x8 {
+    simd_shuffle8(a, a, [1, 1, 3, 3, 5, 5, 7, 7])
+}
+
 /// Casts vector of type __m128 to type __m256;
 /// the upper 128 bits of the result are undefined.
 #[inline(always)]
@@ -2364,6 +2373,14 @@ mod tests {
         let a = f32x4::new(1., 2., 3., 4.);
         avx::_mm_maskstore_ps(&mut r as *mut _ as *mut f32, mask, a);
         let e = f32x4::new(0., 2., 0., 4.);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_movehdup_ps() {
+        let a = f32x8::new(1., 2., 3., 4., 5., 6., 7., 8.);
+        let r = avx::_mm256_movehdup_ps(a);
+        let e = f32x8::new(2., 2., 4., 4., 6., 6., 8., 8.);
         assert_eq!(r, e);
     }
 }
