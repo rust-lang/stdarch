@@ -1251,6 +1251,15 @@ pub unsafe fn _mm_maskload_pd(mem_addr: *const f64, mask: i64x2) -> f64x2 {
     maskloadpd(mem_addr as *const i8, mask)
 }
 
+/// Store packed double-precision (64-bit) floating-point elements from `a`
+/// into memory using `mask`.
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vmaskmovpd))]
+pub unsafe fn _mm_maskstore_pd(mem_addr: *mut f64, mask: i64x2, a: f64x2) {
+    maskstorepd(mem_addr as *mut i8, mask, a);
+}
+
 /// Casts vector of type __m128 to type __m256;
 /// the upper 128 bits of the result are undefined.
 #[inline(always)]
@@ -1394,6 +1403,8 @@ extern "C" {
     fn maskstorepd256(mem_addr: *mut i8, mask: i64x4, a: f64x4);
     #[link_name = "llvm.x86.avx.maskload.pd"]
     fn maskloadpd(mem_addr: *const i8, mask: i64x2) -> f64x2;
+    #[link_name = "llvm.x86.avx.maskstore.pd"]
+    fn maskstorepd(mem_addr: *mut i8, mask: i64x2, a: f64x2);
 }
 
 #[cfg(test)]
@@ -2256,6 +2267,16 @@ mod tests {
         let p = a.as_ptr();
         let mask = i64x2::new(0, !0);
         let r = avx::_mm_maskload_pd(black_box(p), mask);
+        let e = f64x2::new(0.0, 2.0);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm_maskstore_pd() {
+        let mut r = f64x2::splat(0.);
+        let mask = i64x2::new(0, !0);
+        let a = f64x2::new(1.0, 2.0);
+        avx::_mm_maskstore_pd(&mut r as *mut _ as *mut f64, mask, a);
         let e = f64x2::new(0.0, 2.0);
         assert_eq!(r, e);
     }
