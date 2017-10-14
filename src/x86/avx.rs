@@ -1279,6 +1279,25 @@ pub unsafe fn _mm256_maskstore_ps(mem_addr: *mut f32, mask: i32x8, a: f32x8) {
     maskstoreps256(mem_addr as *mut i8, mask, a);
 }
 
+/// Load packed single-precision (32-bit) floating-point elements from memory
+/// into result using `mask` (elements are zeroed out when the high bit of the
+/// corresponding element is not set).
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vmaskmovps))]
+pub unsafe fn _mm_maskload_ps(mem_addr: *const f32, mask: i32x4) -> f32x4 {
+    maskloadps(mem_addr as *const i8, mask)
+}
+
+/// Store packed single-precision (32-bit) floating-point elements from `a`
+/// into memory using `mask`.
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vmaskmovps))]
+pub unsafe fn _mm_maskstore_ps(mem_addr: *mut f32, mask: i32x4, a: f32x4) {
+    maskstoreps(mem_addr as *mut i8, mask, a);
+}
+
 /// Casts vector of type __m128 to type __m256;
 /// the upper 128 bits of the result are undefined.
 #[inline(always)]
@@ -1428,6 +1447,10 @@ extern "C" {
     fn maskloadps256(mem_addr: *const i8, mask: i32x8) -> f32x8;
     #[link_name = "llvm.x86.avx.maskstore.ps.256"]
     fn maskstoreps256(mem_addr: *mut i8, mask: i32x8, a: f32x8);
+    #[link_name = "llvm.x86.avx.maskload.ps"]
+    fn maskloadps(mem_addr: *const i8, mask: i32x4) -> f32x4;
+    #[link_name = "llvm.x86.avx.maskstore.ps"]
+    fn maskstoreps(mem_addr: *mut i8, mask: i32x4, a: f32x4);
 }
 
 #[cfg(test)]
@@ -2321,6 +2344,26 @@ mod tests {
         let a = f32x8::new(1., 2., 3., 4., 5., 6., 7., 8.);
         avx::_mm256_maskstore_ps(&mut r as *mut _ as *mut f32, mask, a);
         let e = f32x8::new(0., 2., 0., 4., 0., 6., 0., 8.);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm_maskload_ps() {
+        let a = &[1.0f32, 2., 3., 4.];
+        let p = a.as_ptr();
+        let mask = i32x4::new(0, !0, 0, !0);
+        let r = avx::_mm_maskload_ps(black_box(p), mask);
+        let e = f32x4::new(0., 2., 0., 4.);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm_maskstore_ps() {
+        let mut r = f32x4::splat(0.);
+        let mask = i32x4::new(0, !0, 0, !0);
+        let a = f32x4::new(1., 2., 3., 4.);
+        avx::_mm_maskstore_ps(&mut r as *mut _ as *mut f32, mask, a);
+        let e = f32x4::new(0., 2., 0., 4.);
         assert_eq!(r, e);
     }
 }
