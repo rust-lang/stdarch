@@ -1229,7 +1229,7 @@ pub unsafe fn _mm256_storeu_si256(mem_addr: *mut i64x4, a: i64x4) {
 #[target_feature = "+avx"]
 #[cfg_attr(test, assert_instr(vmaskmovpd))]
 pub unsafe fn _mm256_maskload_pd(mem_addr: *const f64, mask: i64x4) -> f64x4  {
-    maskmovpd256(mem_addr as *const i8, mask)
+    maskloadpd256(mem_addr as *const i8, mask)
 }
 
 /// Store packed double-precision (64-bit) floating-point elements from `a`
@@ -1239,6 +1239,16 @@ pub unsafe fn _mm256_maskload_pd(mem_addr: *const f64, mask: i64x4) -> f64x4  {
 #[cfg_attr(test, assert_instr(vmaskmovpd))]
 pub unsafe fn _mm256_maskstore_pd(mem_addr: *mut f64, mask: i64x4, a: f64x4) {
     maskstorepd256(mem_addr as *mut i8, mask, a);
+}
+
+/// Load packed double-precision (64-bit) floating-point elements from memory
+/// into result using `mask` (elements are zeroed out when the high bit of the
+/// corresponding element is not set).
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vmaskmovpd))]
+pub unsafe fn _mm_maskload_pd(mem_addr: *const f64, mask: i64x2) -> f64x2 {
+    maskloadpd(mem_addr as *const i8, mask)
 }
 
 /// Casts vector of type __m128 to type __m256;
@@ -1379,9 +1389,11 @@ extern "C" {
     #[link_name = "llvm.x86.avx.storeu.si.256"]
     fn storeusi256(mem_addr: *mut i64x4, a: i64x4);
     #[link_name = "llvm.x86.avx.maskload.pd.256"]
-    fn maskmovpd256(mem_addr: *const i8, mask: i64x4) -> f64x4;
+    fn maskloadpd256(mem_addr: *const i8, mask: i64x4) -> f64x4;
     #[link_name = "llvm.x86.avx.maskstore.pd.256"]
     fn maskstorepd256(mem_addr: *mut i8, mask: i64x4, a: f64x4);
+    #[link_name = "llvm.x86.avx.maskload.pd"]
+    fn maskloadpd(mem_addr: *const i8, mask: i64x2) -> f64x2;
 }
 
 #[cfg(test)]
@@ -2235,6 +2247,16 @@ mod tests {
         let a = f64x4::new(1.0, 2.0, 3.0, 4.0);
         avx::_mm256_maskstore_pd(&mut r as *mut _ as *mut f64, mask, a);
         let e = f64x4::new(0.0, 2.0, 0.0, 4.0);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm_maskload_pd() {
+        let a = &[1.0f64, 2.0];
+        let p = a.as_ptr();
+        let mask = i64x2::new(0, !0);
+        let r = avx::_mm_maskload_pd(black_box(p), mask);
+        let e = f64x2::new(0.0, 2.0);
         assert_eq!(r, e);
     }
 }
