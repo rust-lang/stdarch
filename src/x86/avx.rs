@@ -1345,6 +1345,16 @@ pub unsafe fn _mm256_rcp_ps(a: f32x8) -> f32x8 {
     vrcpps(a)
 }
 
+/// Compute the approximate reciprocal square root of packed single-precision
+/// (32-bit) floating-point elements in `a`, and return the results.
+/// The maximum relative error for this approximation is less than 1.5*2^-12.
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vrsqrtps))]
+pub unsafe fn _mm256_rsqrt_ps(a: f32x8) -> f32x8 {
+    vrsqrtps(a)
+}
+
 /// Casts vector of type __m128 to type __m256;
 /// the upper 128 bits of the result are undefined.
 #[inline(always)]
@@ -1502,6 +1512,8 @@ extern "C" {
     fn vlddqu(mem_addr: *const i8) -> i8x32;
     #[link_name = "llvm.x86.avx.rcp.ps.256"]
     fn vrcpps(a: f32x8) -> f32x8;
+    #[link_name = "llvm.x86.avx.rsqrt.ps.256"]
+    fn vrsqrtps(a: f32x8) -> f32x8;
 }
 
 #[cfg(test)]
@@ -2465,6 +2477,15 @@ mod tests {
         let r = avx::_mm256_rcp_ps(a);
         let e = f32x8::new(0.99975586, 0.49987793, 0.33325195, 0.24993896,
                            0.19995117, 0.16662598, 0.14282227, 0.12496948);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_rsqrt_ps() {
+        let a = f32x8::new(1., 2., 3., 4., 5., 6., 7., 8.);
+        let r = avx::_mm256_rsqrt_ps(a);
+        let e = f32x8::new(0.99975586, 0.7069092, 0.5772705, 0.49987793,
+                           0.44714355, 0.40820313, 0.3779297, 0.3534546);
         assert_eq!(r, e);
     }
 }
