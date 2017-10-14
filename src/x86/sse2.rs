@@ -1845,6 +1845,14 @@ pub unsafe fn _mm_set_pd(a: f64, b: f64) -> f64x2 {
     f64x2::new(a, b)
 }
 
+/// Set packed double-precision (64-bit) floating-point elements in the return value with the
+/// supplied values in reverse order.
+#[inline(always)]
+#[target_feature = "+sse2"]
+pub unsafe fn _mm_setr_pd(a: f64, b: f64) -> f64x2 {
+    f64x2::new(b, a)
+}
+
 /// Return a mask of the most significant bit of each element in `a`.
 ///
 /// The mask is stored in the 2 least significant bits of the return value.
@@ -3760,6 +3768,12 @@ mod tests {
     unsafe fn _mm_set_pd() {
         let r = sse2::_mm_set_pd(1.0_f64, 5.0_f64);
         assert_eq!(r, f64x2::new(1.0_f64, 5.0_f64));
+    }
+
+    #[simd_test = "sse2"]
+    unsafe fn _mm_setr_pd() {
+        let r = sse2::_mm_setr_pd(1.0_f64, -5.0_f64);
+        assert_eq!(r, f64x2::new(-5.0_f64, 1.0_f64));
     }
 
     #[simd_test = "sse2"]
