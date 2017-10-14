@@ -1373,6 +1373,24 @@ pub unsafe fn _mm256_unpackhi_ps(a: f32x8, b: f32x8) -> f32x8 {
     simd_shuffle8(a, b, [2, 10, 3, 11, 6, 14, 7, 15])
 }
 
+/// Unpack and interleave double-precision (64-bit) floating-point elements
+/// from the low half of each 128-bit lane in `a` and `b`.
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vunpcklpd))]
+pub unsafe fn _mm256_unpacklo_pd(a: f64x4, b: f64x4) -> f64x4 {
+    simd_shuffle4(a, b, [0, 4, 2, 6])
+}
+
+/// Unpack and interleave single-precision (32-bit) floating-point elements
+/// from the low half of each 128-bit lane in `a` and `b`.
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vunpcklps))]
+pub unsafe fn _mm256_unpacklo_ps(a: f32x8, b: f32x8) -> f32x8 {
+    simd_shuffle8(a, b, [0, 8, 1, 9, 4, 12, 5, 13])
+}
+
 /// Casts vector of type __m128 to type __m256;
 /// the upper 128 bits of the result are undefined.
 #[inline(always)]
@@ -2518,10 +2536,28 @@ mod tests {
 
     #[simd_test = "avx"]
     unsafe fn _mm256_unpackhi_ps() {
-        let a = f32x8::new(1., 2., 3., 4., 1., 2., 3., 4.);
-        let b = f32x8::new(5., 6., 7., 8., 5., 6., 7., 8.);
+        let a = f32x8::new(1., 2., 3., 4., 5., 6., 7., 8.);
+        let b = f32x8::new(9., 10., 11., 12., 13., 14., 15., 16.);
         let r = avx::_mm256_unpackhi_ps(a, b);
-        let e = f32x8::new(3., 7., 4., 8., 3., 7., 4., 8.);
+        let e = f32x8::new(3., 11., 4., 12., 7., 15., 8., 16.);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_unpacklo_pd() {
+        let a = f64x4::new(1., 2., 3., 4.);
+        let b = f64x4::new(5., 6., 7., 8.);
+        let r = avx::_mm256_unpacklo_pd(a, b);
+        let e = f64x4::new(1., 5., 3., 7.);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_unpacklo_ps() {
+        let a = f32x8::new(1., 2., 3., 4., 5., 6., 7., 8.);
+        let b = f32x8::new(9., 10., 11., 12., 13., 14., 15., 16.);
+        let r = avx::_mm256_unpacklo_ps(a, b);
+        let e = f32x8::new(1., 9., 2., 10., 5., 13., 6., 14.);
         assert_eq!(r, e);
     }
 }
