@@ -1325,6 +1325,16 @@ pub unsafe fn _mm256_movedup_pd(a: f64x4) -> f64x4 {
     simd_shuffle4(a, a, [0, 0, 2, 2])
 }
 
+/// Load 256-bits of integer data from unaligned memory into result.
+/// This intrinsic may perform better than `_mm256_loadu_si256` when the
+/// data crosses a cache line boundary.
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vlddqu))]
+pub unsafe fn _mm256_lddqu_si256(mem_addr: *const i8x32) -> i8x32 {
+    vlddqu(mem_addr as *const i8)
+}
+
 /// Casts vector of type __m128 to type __m256;
 /// the upper 128 bits of the result are undefined.
 #[inline(always)]
@@ -1478,6 +1488,8 @@ extern "C" {
     fn maskloadps(mem_addr: *const i8, mask: i32x4) -> f32x4;
     #[link_name = "llvm.x86.avx.maskstore.ps"]
     fn maskstoreps(mem_addr: *mut i8, mask: i32x4, a: f32x4);
+    #[link_name = "llvm.x86.avx.ldu.dq.256"]
+    fn vlddqu(mem_addr: *const i8) -> i8x32;
 }
 
 #[cfg(test)]
@@ -2415,6 +2427,23 @@ mod tests {
         let a = f64x4::new(1., 2., 3., 4.);
         let r = avx::_mm256_movedup_pd(a);
         let e = f64x4::new(1., 1., 3., 3.);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_lddqu_si256() {
+        let a = i8x32::new(
+            1, 2, 3, 4, 5, 6, 7, 8,
+            9, 10, 11, 12, 13, 14, 15, 16,
+            17, 18, 19, 20, 21, 22, 23, 24,
+            25, 26, 27, 28, 29, 30, 31, 32);
+        let p = &a as *const _;
+        let r = avx::_mm256_lddqu_si256(black_box(p));
+        let e = i8x32::new(
+            1, 2, 3, 4, 5, 6, 7, 8,
+            9, 10, 11, 12, 13, 14, 15, 16,
+            17, 18, 19, 20, 21, 22, 23, 24,
+            25, 26, 27, 28, 29, 30, 31, 32);
         assert_eq!(r, e);
     }
 }
