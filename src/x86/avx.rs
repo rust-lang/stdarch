@@ -1355,6 +1355,15 @@ pub unsafe fn _mm256_rsqrt_ps(a: f32x8) -> f32x8 {
     vrsqrtps(a)
 }
 
+/// Unpack and interleave double-precision (64-bit) floating-point elements
+/// from the high half of each 128-bit lane in `a` and `b`.
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vunpckhpd))]
+pub unsafe fn _mm256_unpackhi_pd(a: f64x4, b: f64x4) -> f64x4 {
+    simd_shuffle4(a, b, [1, 5, 3, 7])
+}
+
 /// Casts vector of type __m128 to type __m256;
 /// the upper 128 bits of the result are undefined.
 #[inline(always)]
@@ -2486,6 +2495,15 @@ mod tests {
         let r = avx::_mm256_rsqrt_ps(a);
         let e = f32x8::new(0.99975586, 0.7069092, 0.5772705, 0.49987793,
                            0.44714355, 0.40820313, 0.3779297, 0.3534546);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_unpackhi_pd() {
+        let a = f64x4::new(1., 2., 3., 4.);
+        let b = f64x4::new(5., 6., 7., 8.);
+        let r = avx::_mm256_unpackhi_pd(a, b);
+        let e = f64x4::new(2., 6., 4., 8.);
         assert_eq!(r, e);
     }
 }
