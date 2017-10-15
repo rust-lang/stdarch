@@ -1807,6 +1807,27 @@ pub unsafe fn _mm256_set1_epi8(a: i8) -> i8x32 {
                a, a, a, a, a, a, a, a)
 }
 
+/// Broadcast 16-bit integer `a` to all all elements of returned vector.
+/// This intrinsic may generate the `vpbroadcastw`.
+#[inline(always)]
+#[target_feature = "+avx"]
+//#[cfg_attr(test, assert_instr(vpshufb))]
+#[cfg_attr(test, assert_instr(vinsertf128))]
+pub unsafe fn _mm256_set1_epi16(a: i16) -> i16x16 {
+    i16x16::new(a, a, a, a, a, a, a, a,
+               a, a, a, a, a, a, a, a)
+}
+
+/// Broadcast 32-bit integer `a` to all elements of returned vector.
+/// This intrinsic may generate the `vpbroadcastd`.
+#[inline(always)]
+#[target_feature = "+avx"]
+//#[cfg_attr(test, assert_instr(vpermilps))]
+#[cfg_attr(test, assert_instr(vinsertf128))]
+pub unsafe fn _mm256_set1_epi32(a: i32) -> i32x8 {
+    i32x8::new(a, a, a, a, a, a, a, a)
+}
+
 /// Casts vector of type __m128 to type __m256;
 /// the upper 128 bits of the result are undefined.
 #[inline(always)]
@@ -3305,5 +3326,17 @@ mod tests {
     unsafe fn _mm256_set1_epi8() {
         let r = avx::_mm256_set1_epi8(1);
         assert_eq!(r, i8x32::splat(1));
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_set1_epi16() {
+        let r = avx::_mm256_set1_epi16(1);
+        assert_eq!(r, i16x16::splat(1));
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_set1_epi32() {
+        let r = avx::_mm256_set1_epi32(1);
+        assert_eq!(r, i32x8::splat(1));
     }
 }
