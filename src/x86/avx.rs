@@ -1828,6 +1828,16 @@ pub unsafe fn _mm256_set1_epi32(a: i32) -> i32x8 {
     i32x8::new(a, a, a, a, a, a, a, a)
 }
 
+/// Broadcast 64-bit integer `a` to all elements of returned vector.
+/// This intrinsic may generate the `vpbroadcastq`.
+#[inline(always)]
+#[target_feature = "+avx"]
+//#[cfg_attr(test, assert_instr(vmovddup))]
+#[cfg_attr(test, assert_instr(vinsertf128))]
+pub unsafe fn _mm256_set1_epi64x(a: i64) -> i64x4 {
+    i64x4::new(a, a, a, a)
+}
+
 /// Casts vector of type __m128 to type __m256;
 /// the upper 128 bits of the result are undefined.
 #[inline(always)]
@@ -3338,5 +3348,11 @@ mod tests {
     unsafe fn _mm256_set1_epi32() {
         let r = avx::_mm256_set1_epi32(1);
         assert_eq!(r, i32x8::splat(1));
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_set1_epi64x() {
+        let r = avx::_mm256_set1_epi64x(1);
+        assert_eq!(r, i64x4::splat(1));
     }
 }
