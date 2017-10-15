@@ -1585,6 +1585,23 @@ pub unsafe fn _mm_testnzc_ps(a: f32x4, b: f32x4) -> i32 {
     vtestnzcps(a, b)
 }
 
+/// Set each bit of the returned mask based on the most significant bit of the
+/// corresponding packed double-precision (64-bit) floating-point element in `a`.
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vmovmskpd))]
+pub unsafe fn _mm256_movemask_pd(a: f64x4) -> i32 {
+    movmskpd256(a)
+}
+
+///
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vmovmskps))]
+pub unsafe fn _mm256_movemask_ps(a: f32x8) -> i32 {
+    movmskps256(a)
+}
+
 /// Casts vector of type __m128 to type __m256;
 /// the upper 128 bits of the result are undefined.
 #[inline(always)]
@@ -1772,6 +1789,10 @@ extern "C" {
     fn vtestcps(a: f32x4, b: f32x4) -> i32;
     #[link_name = "llvm.x86.avx.vtestnzc.ps"]
     fn vtestnzcps(a: f32x4, b: f32x4) -> i32;
+    #[link_name = "llvm.x86.avx.movmsk.pd.256"]
+    fn movmskpd256(a: f64x4) -> i32;
+    #[link_name = "llvm.x86.avx.movmsk.ps.256"]
+    fn movmskps256(a: f32x8) -> i32;
 }
 
 #[cfg(test)]
@@ -2935,5 +2956,19 @@ mod tests {
         let b = f32x4::new(-1., -1., 1., 1.);
         let r = avx::_mm_testnzc_ps(a, b);
         assert_eq!(r, 1);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_movemask_pd() {
+        let a = f64x4::new(1., -2., 3., -4.);
+        let r = avx::_mm256_movemask_pd(a);
+        assert_eq!(r, 0xA);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_movemask_ps() {
+        let a = f32x8::new(1., -2., 3., -4., 1., -2., 3., -4.);
+        let r = avx::_mm256_movemask_ps(a);
+        assert_eq!(r, 0xAA);
     }
 }
