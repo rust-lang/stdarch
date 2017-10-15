@@ -1712,6 +1712,28 @@ pub unsafe fn _mm256_setr_ps(a: f32, b: f32, c: f32, d: f32,
     f32x8::new(a, b, c, d, e, f, g, h)
 }
 
+/// Set packed single-precision (32-bit) floating-point elements in returned
+/// vector with the supplied values in reverse order.
+#[inline(always)]
+#[target_feature = "+avx"]
+pub unsafe fn _mm256_setr_epi8(e00: i8, e01: i8, e02: i8, e03: i8,
+                              e04: i8, e05: i8, e06: i8, e07: i8,
+                              e08: i8, e09: i8, e10: i8, e11: i8,
+                              e12: i8, e13: i8, e14: i8, e15: i8,
+                              e16: i8, e17: i8, e18: i8, e19: i8,
+                              e20: i8, e21: i8, e22: i8, e23: i8,
+                              e24: i8, e25: i8, e26: i8, e27: i8,
+                              e28: i8, e29: i8, e30: i8, e31: i8) -> i8x32 {
+    i8x32::new(e00, e01, e02, e03,
+               e04, e05, e06, e07,
+               e08, e09, e10, e11,
+               e12, e13, e14, e15,
+               e16, e17, e18, e19,
+               e20, e21, e22, e23,
+               e24, e25, e26, e27,
+               e28, e29, e30, e31)
+}
+
 /// Casts vector of type __m128 to type __m256;
 /// the upper 128 bits of the result are undefined.
 #[inline(always)]
@@ -3157,5 +3179,18 @@ mod tests {
     unsafe fn _mm256_setr_ps() {
         let r = avx::_mm256_setr_ps(1., 2., 3., 4., 5., 6., 7., 8.);
         assert_eq!(r, f32x8::new(1., 2., 3., 4., 5., 6., 7., 8.));
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_setr_epi8() {
+        let r = avx::_mm256_setr_epi8(
+            1, 2, 3, 4, 5, 6, 7, 8,
+            9, 10, 11, 12, 13, 14, 15, 16,
+            17, 18, 19, 20, 21, 22, 23, 24,
+            25, 26, 27, 28, 29, 30, 31, 32);
+        assert_eq!(r, i8x32::new(1, 2, 3, 4, 5, 6, 7, 8,
+                                 9, 10, 11, 12, 13, 14, 15, 16,
+                                 17, 18, 19, 20, 21, 22, 23, 24,
+                                 25, 26, 27, 28, 29, 30, 31, 32));
     }
 }
