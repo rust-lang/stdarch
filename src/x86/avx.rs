@@ -1666,6 +1666,19 @@ pub unsafe fn _mm256_set_epi8(a00: i8, a01: i8, a02: i8, a03: i8,
                a03, a02, a01, a00)
 }
 
+/// Set packed 16-bit integers in "dst" with the supplied values.
+#[inline(always)]
+#[target_feature = "+avx"]
+pub unsafe fn _mm256_set_epi16(a00: i16, a01: i16, a02: i16, a03: i16,
+                              a04: i16, a05: i16, a06: i16, a07: i16,
+                              a08: i16, a09: i16, a10: i16, a11: i16,
+                              a12: i16, a13: i16, a14: i16, a15: i16) -> i16x16 {
+    i16x16::new(a15, a14, a13, a12,
+               a11, a10, a09, a08,
+               a07, a06, a05, a04,
+               a03, a02, a01, a00)
+}
+
 /// Casts vector of type __m128 to type __m256;
 /// the upper 128 bits of the result are undefined.
 #[inline(always)]
@@ -3076,6 +3089,15 @@ mod tests {
         assert_eq!(r, i8x32::new(32, 31, 30, 29, 28, 27, 26, 25,
                                  24, 23, 22, 21, 20, 19, 18, 17,
                                  16, 15, 14, 13, 12, 11, 10, 9,
+                                 8, 7, 6, 5, 4, 3, 2, 1));
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_set_epi16() {
+        let r = avx::_mm256_set_epi16(
+            1, 2, 3, 4, 5, 6, 7, 8,
+            9, 10, 11, 12, 13, 14, 15, 16);
+        assert_eq!(r, i16x16::new(16, 15, 14, 13, 12, 11, 10, 9,
                                  8, 7, 6, 5, 4, 3, 2, 1));
     }
 }
