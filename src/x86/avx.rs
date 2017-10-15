@@ -1794,6 +1794,19 @@ pub unsafe fn _mm256_set1_ps(a: f32) -> f32x8 {
     f32x8::new(a, a, a, a, a, a, a, a)
 }
 
+/// Broadcast 8-bit integer `a` to all elements of returned vector.
+/// This intrinsic may generate the `vpbroadcastb`.
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vpshufb))]
+#[cfg_attr(test, assert_instr(vinsertf128))]
+pub unsafe fn _mm256_set1_epi8(a: i8) -> i8x32 {
+    i8x32::new(a, a, a, a, a, a, a, a,
+               a, a, a, a, a, a, a, a,
+               a, a, a, a, a, a, a, a,
+               a, a, a, a, a, a, a, a)
+}
+
 /// Casts vector of type __m128 to type __m256;
 /// the upper 128 bits of the result are undefined.
 #[inline(always)]
@@ -3286,5 +3299,11 @@ mod tests {
     unsafe fn _mm256_set1_ps() {
         let r = avx::_mm256_set1_ps(1.);
         assert_eq!(r, f32x8::splat(1.));
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_set1_epi8() {
+        let r = avx::_mm256_set1_epi8(1);
+        assert_eq!(r, i8x32::splat(1));
     }
 }
