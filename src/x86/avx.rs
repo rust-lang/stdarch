@@ -1619,6 +1619,14 @@ pub unsafe fn _mm256_setzero_ps() -> f32x8 {
     f32x8::new(0., 0., 0., 0., 0., 0., 0., 0.)
 }
 
+/// Return vector of type __m256i with all elements set to zero.
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vxor))]
+pub unsafe fn _mm256_setzero_si256() -> i64x4 {
+    i64x4::new(0, 0, 0, 0)
+}
+
 /// Casts vector of type __m128 to type __m256;
 /// the upper 128 bits of the result are undefined.
 #[inline(always)]
@@ -2999,5 +3007,11 @@ mod tests {
     unsafe fn _mm256_setzero_ps() {
         let r = avx::_mm256_setzero_ps();
         assert_eq!(r, f32x8::splat(0.));
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_setzero_si256() {
+        let r = avx::_mm256_setzero_si256();
+        assert_eq!(r, i64x4::splat(0));
     }
 }
