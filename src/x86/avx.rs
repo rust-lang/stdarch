@@ -1695,6 +1695,23 @@ pub unsafe fn _mm256_set_epi64x(a: i64, b: i64, c: i64, d: i64) -> i64x4 {
     i64x4::new(d, c, b, a)
 }
 
+/// Set packed double-precision (64-bit) floating-point elements in returned
+/// vector with the supplied values in reverse order.
+#[inline(always)]
+#[target_feature = "+avx"]
+pub unsafe fn _mm256_setr_pd(a: f64, b: f64, c: f64, d: f64) -> f64x4 {
+    f64x4::new(a, b, c, d)
+}
+
+/// Set packed single-precision (32-bit) floating-point elements in returned
+/// vector with the supplied values in reverse order.
+#[inline(always)]
+#[target_feature = "+avx"]
+pub unsafe fn _mm256_setr_ps(a: f32, b: f32, c: f32, d: f32,
+                            e: f32, f: f32, g: f32, h: f32) -> f32x8 {
+    f32x8::new(a, b, c, d, e, f, g, h)
+}
+
 /// Casts vector of type __m128 to type __m256;
 /// the upper 128 bits of the result are undefined.
 #[inline(always)]
@@ -3128,5 +3145,17 @@ mod tests {
     unsafe fn _mm256_set_epi64x() {
         let r = avx::_mm256_set_epi64x(1, 2, 3, 4);
         assert_eq!(r, i64x4::new(4, 3, 2, 1));
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_setr_pd() {
+        let r = avx::_mm256_setr_pd(1., 2., 3., 4.);
+        assert_eq!(r, f64x4::new(1., 2., 3., 4.));
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_setr_ps() {
+        let r = avx::_mm256_setr_ps(1., 2., 3., 4., 5., 6., 7., 8.);
+        assert_eq!(r, f32x8::new(1., 2., 3., 4., 5., 6., 7., 8.));
     }
 }
