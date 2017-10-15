@@ -1784,6 +1784,16 @@ pub unsafe fn _mm256_set1_pd(a: f64) -> f64x4 {
     f64x4::new(a, a, a, a)
 }
 
+/// Broadcast single-precision (32-bit) floating-point value `a` to all
+/// elements of returned vector.
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vpermilps))]
+#[cfg_attr(test, assert_instr(vinsertf128))]
+pub unsafe fn _mm256_set1_ps(a: f32) -> f32x8 {
+    f32x8::new(a, a, a, a, a, a, a, a)
+}
+
 /// Casts vector of type __m128 to type __m256;
 /// the upper 128 bits of the result are undefined.
 #[inline(always)]
@@ -3270,5 +3280,11 @@ mod tests {
     unsafe fn _mm256_set1_pd() {
         let r = avx::_mm256_set1_pd(1.);
         assert_eq!(r, f64x4::splat(1.));
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_set1_ps() {
+        let r = avx::_mm256_set1_ps(1.);
+        assert_eq!(r, f32x8::splat(1.));
     }
 }
