@@ -1594,12 +1594,29 @@ pub unsafe fn _mm256_movemask_pd(a: f64x4) -> i32 {
     movmskpd256(a)
 }
 
-///
+/// Set each bit of the returned mask based on the most significant bit of the
+/// corresponding packed single-precision (32-bit) floating-point element in `a`.
 #[inline(always)]
 #[target_feature = "+avx"]
 #[cfg_attr(test, assert_instr(vmovmskps))]
 pub unsafe fn _mm256_movemask_ps(a: f32x8) -> i32 {
     movmskps256(a)
+}
+
+/// Return vector of type __m256d with all elements set to zero.
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vxorps))] // FIXME vxorpd expected
+pub unsafe fn _mm256_setzero_pd() -> f64x4 {
+    f64x4::new(0., 0., 0., 0.)
+}
+
+/// Return vector of type __m256 with all elements set to zero.
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vxorps))]
+pub unsafe fn _mm256_setzero_ps() -> f32x8 {
+    f32x8::new(0., 0., 0., 0., 0., 0., 0., 0.)
 }
 
 /// Casts vector of type __m128 to type __m256;
@@ -2970,5 +2987,17 @@ mod tests {
         let a = f32x8::new(1., -2., 3., -4., 1., -2., 3., -4.);
         let r = avx::_mm256_movemask_ps(a);
         assert_eq!(r, 0xAA);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_setzero_pd() {
+        let r = avx::_mm256_setzero_pd();
+        assert_eq!(r, f64x4::splat(0.));
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_setzero_ps() {
+        let r = avx::_mm256_setzero_ps();
+        assert_eq!(r, f32x8::splat(0.));
     }
 }
