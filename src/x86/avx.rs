@@ -1427,6 +1427,20 @@ pub unsafe fn _mm256_testz_pd(a: f64x4, b: f64x4) -> i32 {
     vtestzpd256(a, b)
 }
 
+/// Compute the bitwise AND of 256 bits (representing double-precision (64-bit)
+/// floating-point elements) in `a` and `b`, producing an intermediate 256-bit
+/// value, and set `ZF` to 1 if the sign bit of each 64-bit element in the
+/// intermediate value is zero, otherwise set `ZF` to 0. Compute the bitwise
+/// NOT of `a` and then AND with `b`, producing an intermediate value, and set
+/// `CF` to 1 if the sign bit of each 64-bit element in the intermediate value
+/// is zero, otherwise set `CF` to 0. Return the `CF` value.
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vtestpd))]
+pub unsafe fn _mm256_testc_pd(a: f64x4, b: f64x4) -> i32 {
+    vtestcpd256(a, b)
+}
+
 /// Casts vector of type __m128 to type __m256;
 /// the upper 128 bits of the result are undefined.
 #[inline(always)]
@@ -1592,6 +1606,8 @@ extern "C" {
     fn ptestc256(a: i64x4, b: i64x4) -> i32;
     #[link_name = "llvm.x86.avx.vtestz.pd.256"]
     fn vtestzpd256(a: f64x4, b: f64x4) -> i32;
+    #[link_name = "llvm.x86.avx.vtestc.pd.256"]
+    fn vtestcpd256(a: f64x4, b: f64x4) -> i32;
 }
 
 #[cfg(test)]
@@ -2634,5 +2650,16 @@ mod tests {
         let a = f64x4::splat(-1.);
         let r = avx::_mm256_testz_pd(a, a);
         assert_eq!(r, 0);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_testc_pd() {
+        let a = f64x4::new(1., 2., 3., 4.);
+        let b = f64x4::new(5., 6., 7., 8.);
+        let r = avx::_mm256_testc_pd(a, b);
+        assert_eq!(r, 1);
+        let b = f64x4::splat(0.);
+        let r = avx::_mm256_testc_pd(a, b);
+        assert_eq!(r, 1);
     }
 }
