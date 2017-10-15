@@ -1648,44 +1648,51 @@ pub unsafe fn _mm256_set_ps(a: f32, b: f32, c: f32, d: f32,
 /// reverse order.
 #[inline(always)]
 #[target_feature = "+avx"]
-pub unsafe fn _mm256_set_epi8(a00: i8, a01: i8, a02: i8, a03: i8,
-                              a04: i8, a05: i8, a06: i8, a07: i8,
-                              a08: i8, a09: i8, a10: i8, a11: i8,
-                              a12: i8, a13: i8, a14: i8, a15: i8,
-                              a16: i8, a17: i8, a18: i8, a19: i8,
-                              a20: i8, a21: i8, a22: i8, a23: i8,
-                              a24: i8, a25: i8, a26: i8, a27: i8,
-                              a28: i8, a29: i8, a30: i8, a31: i8) -> i8x32 {
-    i8x32::new(a31, a30, a29, a28,
-               a27, a26, a25, a24,
-               a23, a22, a21, a20,
-               a19, a18, a17, a16,
-               a15, a14, a13, a12,
-               a11, a10, a09, a08,
-               a07, a06, a05, a04,
-               a03, a02, a01, a00)
+pub unsafe fn _mm256_set_epi8(e00: i8, e01: i8, e02: i8, e03: i8,
+                              e04: i8, e05: i8, e06: i8, e07: i8,
+                              e08: i8, e09: i8, e10: i8, e11: i8,
+                              e12: i8, e13: i8, e14: i8, e15: i8,
+                              e16: i8, e17: i8, e18: i8, e19: i8,
+                              e20: i8, e21: i8, e22: i8, e23: i8,
+                              e24: i8, e25: i8, e26: i8, e27: i8,
+                              e28: i8, e29: i8, e30: i8, e31: i8) -> i8x32 {
+    i8x32::new(e31, e30, e29, e28,
+               e27, e26, e25, e24,
+               e23, e22, e21, e20,
+               e19, e18, e17, e16,
+               e15, e14, e13, e12,
+               e11, e10, e09, e08,
+               e07, e06, e05, e04,
+               e03, e02, e01, e00)
 }
 
 /// Set packed 16-bit integers in returned vector with the supplied values.
 #[inline(always)]
 #[target_feature = "+avx"]
-pub unsafe fn _mm256_set_epi16(a00: i16, a01: i16, a02: i16, a03: i16,
-                              a04: i16, a05: i16, a06: i16, a07: i16,
-                              a08: i16, a09: i16, a10: i16, a11: i16,
-                              a12: i16, a13: i16, a14: i16, a15: i16) -> i16x16 {
-    i16x16::new(a15, a14, a13, a12,
-               a11, a10, a09, a08,
-               a07, a06, a05, a04,
-               a03, a02, a01, a00)
+pub unsafe fn _mm256_set_epi16(e00: i16, e01: i16, e02: i16, e03: i16,
+                              e04: i16, e05: i16, e06: i16, e07: i16,
+                              e08: i16, e09: i16, e10: i16, e11: i16,
+                              e12: i16, e13: i16, e14: i16, e15: i16) -> i16x16 {
+    i16x16::new(e15, e14, e13, e12,
+               e11, e10, e09, e08,
+               e07, e06, e05, e04,
+               e03, e02, e01, e00)
 }
 
 /// Set packed 32-bit integers in returned vector with the supplied values.
 #[inline(always)]
 #[target_feature = "+avx"]
-pub unsafe fn _mm256_set_epi32(a0: i32, a1: i32, a2: i32, a3: i32,
-                              a4: i32, a5: i32, a6: i32, a7: i32) -> i32x8 {
-    i32x8::new(a7, a6, a5, a4,
-               a3, a2, a1, a0)
+pub unsafe fn _mm256_set_epi32(e0: i32, e1: i32, e2: i32, e3: i32,
+                              e4: i32, e5: i32, e6: i32, e7: i32) -> i32x8 {
+    i32x8::new(e7, e6, e5, e4,
+               e3, e2, e1, e0)
+}
+
+/// Set packed 64-bit integers in returned vector with the supplied values.
+#[inline(always)]
+#[target_feature = "+avx"]
+pub unsafe fn _mm256_set_epi64x(a: i64, b: i64, c: i64, d: i64) -> i64x4 {
+    i64x4::new(d, c, b, a)
 }
 
 /// Casts vector of type __m128 to type __m256;
@@ -3115,5 +3122,11 @@ mod tests {
         let r = avx::_mm256_set_epi32(
             1, 2, 3, 4, 5, 6, 7, 8);
         assert_eq!(r, i32x8::new(8, 7, 6, 5, 4, 3, 2, 1));
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_set_epi64x() {
+        let r = avx::_mm256_set_epi64x(1, 2, 3, 4);
+        assert_eq!(r, i64x4::new(4, 3, 2, 1));
     }
 }
