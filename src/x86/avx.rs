@@ -1734,7 +1734,8 @@ pub unsafe fn _mm256_setr_epi8(e00: i8, e01: i8, e02: i8, e03: i8,
                e28, e29, e30, e31)
 }
 
-/// Set packed 16-bit integers in  with the supplied values in reverse order.
+/// Set packed 16-bit integers in returned vector with the supplied values in
+/// reverse order.
 #[inline(always)]
 #[target_feature = "+avx"]
 pub unsafe fn _mm256_setr_epi16(e00: i16, e01: i16, e02: i16, e03: i16,
@@ -1745,6 +1746,24 @@ pub unsafe fn _mm256_setr_epi16(e00: i16, e01: i16, e02: i16, e03: i16,
                 e04, e05, e06, e07,
                 e08, e09, e10, e11,
                 e12, e13, e14, e15)
+}
+
+/// Set packed 32-bit integers in returned vector with the supplied values in
+/// reverse order.
+#[inline(always)]
+#[target_feature = "+avx"]
+pub unsafe fn _mm256_setr_epi32(e0: i32, e1: i32, e2: i32, e3: i32,
+                               e4: i32, e5: i32, e6: i32, e7: i32) -> i32x8 {
+    i32x8::new(e0, e1, e2, e3,
+               e4, e5, e6, e7)
+}
+
+/// Set packed 64-bit integers in returned vector with the supplied values in
+/// reverse order.
+#[inline(always)]
+#[target_feature = "+avx"]
+pub unsafe fn _mm256_setr_epi64x(a: i64, b: i64, c: i64, d: i64) -> i64x4 {
+    i64x4::new(a, b, c, d)
 }
 
 /// Casts vector of type __m128 to type __m256;
@@ -3214,5 +3233,18 @@ mod tests {
             9, 10, 11, 12, 13, 14, 15, 16);
         assert_eq!(r, i16x16::new(1, 2, 3, 4, 5, 6, 7, 8,
                                   9, 10, 11, 12, 13, 14, 15, 16));
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_setr_epi32() {
+        let r = avx::_mm256_setr_epi32(
+            1, 2, 3, 4, 5, 6, 7, 8);
+        assert_eq!(r, i32x8::new(1, 2, 3, 4, 5, 6, 7, 8));
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_setr_epi64x() {
+        let r = avx::_mm256_setr_epi64x(1, 2, 3, 4);
+        assert_eq!(r, i64x4::new(1, 2, 3, 4));
     }
 }
