@@ -1631,7 +1631,6 @@ pub unsafe fn _mm256_setzero_si256() -> i64x4 {
 /// vector with the supplied values.
 #[inline(always)]
 #[target_feature = "+avx"]
-#[cfg_attr(test, assert_instr(vunpcklpd))]
 #[cfg_attr(test, assert_instr(vinsertf128))]
 pub unsafe fn _mm256_set_pd(a: f64, b: f64, c: f64, d: f64) -> f64x4 {
     f64x4::new(d, c, b, a)
@@ -1693,7 +1692,6 @@ pub unsafe fn _mm256_set_epi32(e0: i32, e1: i32, e2: i32, e3: i32,
 /// Set packed 64-bit integers in returned vector with the supplied values.
 #[inline(always)]
 #[target_feature = "+avx"]
-#[cfg_attr(test, assert_instr(vpunpcklqdq))]
 #[cfg_attr(test, assert_instr(vinsertf128))]
 pub unsafe fn _mm256_set_epi64x(a: i64, b: i64, c: i64, d: i64) -> i64x4 {
     i64x4::new(d, c, b, a)
@@ -1703,8 +1701,6 @@ pub unsafe fn _mm256_set_epi64x(a: i64, b: i64, c: i64, d: i64) -> i64x4 {
 /// vector with the supplied values in reverse order.
 #[inline(always)]
 #[target_feature = "+avx"]
-#[cfg_attr(test, assert_instr(vunpcklpd))]
-#[cfg_attr(test, assert_instr(vinsertf128))]
 pub unsafe fn _mm256_setr_pd(a: f64, b: f64, c: f64, d: f64) -> f64x4 {
     f64x4::new(a, b, c, d)
 }
@@ -1768,7 +1764,6 @@ pub unsafe fn _mm256_setr_epi32(e0: i32, e1: i32, e2: i32, e3: i32,
 /// reverse order.
 #[inline(always)]
 #[target_feature = "+avx"]
-#[cfg_attr(test, assert_instr(vpunpcklqdq))]
 #[cfg_attr(test, assert_instr(vinsertf128))]
 pub unsafe fn _mm256_setr_epi64x(a: i64, b: i64, c: i64, d: i64) -> i64x4 {
     i64x4::new(a, b, c, d)
@@ -1778,8 +1773,6 @@ pub unsafe fn _mm256_setr_epi64x(a: i64, b: i64, c: i64, d: i64) -> i64x4 {
 /// elements of returned vector.
 #[inline(always)]
 #[target_feature = "+avx"]
-#[cfg_attr(test, assert_instr(vmovddup))]
-#[cfg_attr(test, assert_instr(vinsertf128))]
 pub unsafe fn _mm256_set1_pd(a: f64) -> f64x4 {
     f64x4::new(a, a, a, a)
 }
@@ -1788,8 +1781,6 @@ pub unsafe fn _mm256_set1_pd(a: f64) -> f64x4 {
 /// elements of returned vector.
 #[inline(always)]
 #[target_feature = "+avx"]
-#[cfg_attr(test, assert_instr(vpermilps))]
-#[cfg_attr(test, assert_instr(vinsertf128))]
 pub unsafe fn _mm256_set1_ps(a: f32) -> f32x8 {
     f32x8::new(a, a, a, a, a, a, a, a)
 }
@@ -1822,8 +1813,6 @@ pub unsafe fn _mm256_set1_epi16(a: i16) -> i16x16 {
 /// This intrinsic may generate the `vpbroadcastd`.
 #[inline(always)]
 #[target_feature = "+avx"]
-//#[cfg_attr(test, assert_instr(vpermilps))]
-#[cfg_attr(test, assert_instr(vinsertf128))]
 pub unsafe fn _mm256_set1_epi32(a: i32) -> i32x8 {
     i32x8::new(a, a, a, a, a, a, a, a)
 }
