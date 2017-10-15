@@ -1941,6 +1941,14 @@ pub unsafe fn _mm256_undefined_si256() -> i64x4 {
     i64x4::splat(mem::uninitialized())
 }
 
+/// Set packed __m256 returned vector with the supplied values.
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vinsertf128))]
+pub unsafe fn _mm256_set_m128(hi: f32x4, lo: f32x4) -> f32x8 {
+    simd_shuffle8(lo, hi, [0, 1, 2, 3, 4, 5, 6, 7])
+}
+
 /// LLVM intrinsics used in the above functions
 #[allow(improper_ctypes)]
 extern "C" {
@@ -3459,6 +3467,15 @@ mod tests {
         let a = f64x2::new(1., 2.);
         let r = avx::_mm256_zextpd128_pd256(a);
         let e = f64x4::new(1., 2., 0., 0.);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_set_m128() {
+        let hi = f32x4::new(5., 6., 7., 8.);
+        let lo = f32x4::new(1., 2., 3., 4.);
+        let r = avx::_mm256_set_m128(hi, lo);
+        let e = f32x8::new(1., 2., 3., 4., 5., 6., 7., 8.);
         assert_eq!(r, e);
     }
 }
