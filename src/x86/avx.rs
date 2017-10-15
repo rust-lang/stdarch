@@ -1391,6 +1391,17 @@ pub unsafe fn _mm256_unpacklo_ps(a: f32x8, b: f32x8) -> f32x8 {
     simd_shuffle8(a, b, [0, 8, 1, 9, 4, 12, 5, 13])
 }
 
+/// Compute the bitwise AND of 256 bits (representing integer data) in `a` and
+/// `b`, and set `ZF` to 1 if the result is zero, otherwise set `ZF` to 0.
+/// Compute the bitwise NOT of `a` and then AND with `b`, and set `CF` to 1 if
+/// the result is zero, otherwise set `CF` to 0. Return the `ZF` value.
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vptest))]
+pub unsafe fn _mm256_testz_si256(a: i64x4, b: i64x4) -> i32 {
+    ptestz256(a, b)
+}
+
 /// Casts vector of type __m128 to type __m256;
 /// the upper 128 bits of the result are undefined.
 #[inline(always)]
@@ -1550,6 +1561,8 @@ extern "C" {
     fn vrcpps(a: f32x8) -> f32x8;
     #[link_name = "llvm.x86.avx.rsqrt.ps.256"]
     fn vrsqrtps(a: f32x8) -> f32x8;
+    #[link_name = "llvm.x86.avx.ptestz.256"]
+    fn ptestz256(a: i64x4, b: i64x4) -> i32;
 }
 
 #[cfg(test)]
@@ -2559,5 +2572,16 @@ mod tests {
         let r = avx::_mm256_unpacklo_ps(a, b);
         let e = f32x8::new(1., 9., 2., 10., 5., 13., 6., 14.);
         assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_testz_si256() {
+        let a = i64x4::new(1, 2, 3, 4);
+        let b = i64x4::new(5, 6, 7, 8);
+        let r = avx::_mm256_testz_si256(a, b);
+        assert_eq!(r, 0);
+        let b = i64x4::splat(0);
+        let r = avx::_mm256_testz_si256(a, b);
+        assert_eq!(r, 1);
     }
 }
