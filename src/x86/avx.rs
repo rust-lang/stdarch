@@ -1838,6 +1838,51 @@ pub unsafe fn _mm256_set1_epi64x(a: i64) -> i64x4 {
     i64x4::new(a, a, a, a)
 }
 
+/// Casts vector of type __m256d to type __m256i.
+/// This intrinsic is only used for compilation and does not generate any
+/// instructions, thus it has zero latency.
+#[inline(always)]
+#[target_feature = "+avx"]
+pub unsafe fn _mm256_castpd_si256(a: f64x4) -> i64x4 {
+    simd_cast(a)
+}
+
+/// Casts vector of type __m256i to type __m256d.
+/// This intrinsic is only used for compilation and does not generate any
+/// instructions, thus it has zero latency.
+#[inline(always)]
+#[target_feature = "+avx"]
+pub unsafe fn _mm256_castsi256_pd(a: i64x4) -> f64x4 {
+    simd_cast(a)
+}
+
+/// Casts vector of type __m256 to type __m128.
+/// This intrinsic is only used for compilation and does not generate any
+/// instructions, thus it has zero latency.
+#[inline(always)]
+#[target_feature = "+avx"]
+pub unsafe fn _mm256_castps256_ps128(a: f32x8) -> f32x4 {
+    simd_shuffle4(a, a, [0, 1, 2, 3])
+}
+
+/// Casts vector of type __m256d to type __m128d.
+/// This intrinsic is only used for compilation and does not generate any
+/// instructions, thus it has zero latency.
+#[inline(always)]
+#[target_feature = "+avx"]
+pub unsafe fn _mm256_castpd256_pd128(a: f64x4) -> f64x2 {
+    simd_shuffle2(a, a, [0, 1])
+}
+
+/// Casts vector of type __m256i to type __m128i.
+/// This intrinsic is only used for compilation and does not generate any
+/// instructions, thus it has zero latency.
+#[inline(always)]
+#[target_feature = "+avx"]
+pub unsafe fn _mm256_castsi256_si128(a: i64x4) -> i64x2 {
+    simd_shuffle2(a, a, [0, 1])
+}
+
 /// Casts vector of type __m128 to type __m256;
 /// the upper 128 bits of the result are undefined.
 #[inline(always)]
@@ -3354,5 +3399,40 @@ mod tests {
     unsafe fn _mm256_set1_epi64x() {
         let r = avx::_mm256_set1_epi64x(1);
         assert_eq!(r, i64x4::splat(1));
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_castpd_si256() {
+        let a = f64x4::new(1., 2., 3., 4.);
+        let r = avx::_mm256_castpd_si256(a);
+        assert_eq!(r, i64x4::new(1, 2, 3, 4));
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_castsi256_pd() {
+        let a = i64x4::new(1, 2, 3, 4);
+        let r = avx::_mm256_castsi256_pd(a);
+        assert_eq!(r, f64x4::new(1., 2., 3., 4.));
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_castps256_ps128() {
+        let a = f32x8::new(1., 2., 3., 4., 5., 6., 7., 8.);
+        let r = avx::_mm256_castps256_ps128(a);
+        assert_eq!(r, f32x4::new(1., 2., 3., 4.));
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_castpd256_pd128() {
+        let a = f64x4::new(1., 2., 3., 4.);
+        let r = avx::_mm256_castpd256_pd128(a);
+        assert_eq!(r, f64x2::new(1., 2.));
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_castsi256_si128() {
+        let a = i64x4::new(1, 2, 3, 4);
+        let r = avx::_mm256_castsi256_si128(a);
+        assert_eq!(r, i64x2::new(1, 2));
     }
 }
