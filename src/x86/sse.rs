@@ -977,19 +977,24 @@ pub unsafe fn _mm_loadr_ps(p: *const f32) -> f32x4 {
 /// choose to generate an equivalent sequence of other instructions.
 #[inline(always)]
 #[target_feature = "+sse"]
-// Might generate this on i586/i686
-// #[cfg_attr(test, assert_instr(movhps))]
-#[cfg_attr(test, assert_instr(movhpd))]
+// On i686 and up LLVM actually generates MOVHPD instead of MOVHPS, that's fine.
+// On i586 (no SSE2) it just generates plain MOV instructions.
+#[cfg_attr(all(test, any(target_arch = "x86_64", target_feature = "sse2")),
+    assert_instr(movhpd))]
 pub unsafe fn _mm_storeh_pi(p: *mut u64, a: f32x4) {
-    // Generates shufpd + movq: (shufpd seems to be relatively slow)
-    // let a64: u64x2 = mem::transmute(a);
-    // let a_hi = a64.extract(1);
-    // *p = a_hi;
-
-    // Generates movhpd:
-    let a64: f64x2 = mem::transmute(a);
-    let a_hi = a64.extract(1);
-    *p = mem::transmute(a_hi);
+    if cfg!(target_arch = "x86") {
+        // If this is a `f64x2` then on i586, LLVM generates fldl & fstpl which
+        // is just silly
+        let a64: u64x2 = mem::transmute(a);
+        let a_hi = a64.extract(1);
+        *p = mem::transmute(a_hi);
+    } else { // target_arch = "x86_64"
+        // If this is a `u64x2` LLVM generates a pshufd + movq, but we really
+        // want a a MOVHPD or MOVHPS here.
+        let a64: f64x2 = mem::transmute(a);
+        let a_hi = a64.extract(1);
+        *p = mem::transmute(a_hi);
+    }
 }
 
 /// Store the lower half of `a` (64 bits) into memory.
@@ -998,13 +1003,26 @@ pub unsafe fn _mm_storeh_pi(p: *mut u64, a: f32x4) {
 /// choose to generate an equivalent sequence of other instructions.
 #[inline(always)]
 #[target_feature = "+sse"]
-#[cfg_attr(all(test, not(target_family = "windows")), assert_instr(movlps))]
+// On i586 the codegen just generates plane MOVs. No need to test for that.
+#[cfg_attr(all(test, any(target_arch = "x86_64", target_feature = "sse2"),
+               not(target_family = "windows")),
+    assert_instr(movlps))]
 // Win64 passes `a` by reference, which causes it to generate two 64 bit moves.
-#[cfg_attr(all(test, target_family = "windows"), assert_instr(movsd))]
+#[cfg_attr(all(test, any(target_arch = "x86_64", target_feature = "sse2"),
+               target_family = "windows"),
+    assert_instr(movsd))]
 pub unsafe fn _mm_storel_pi(p: *mut u64, a: f32x4) {
-    let a64: f64x2 = mem::transmute(a);
-    let a_hi = a64.extract(0);
-    *p = mem::transmute(a_hi);
+    if cfg!(target_arch = "x86") {
+        // Same as for _mm_storeh_pi: i586 code gen would use floating point
+        // stack.
+        let a64: u64x2 = mem::transmute(a);
+        let a_hi = a64.extract(0);
+        *p = mem::transmute(a_hi);
+    } else { // target_arch = "x86_64"
+        let a64: f64x2 = mem::transmute(a);
+        let a_hi = a64.extract(0);
+        *p = mem::transmute(a_hi);
+    }
 }
 
 /// Store the lowest 32 bit float of `a` into memory.
