@@ -1949,6 +1949,16 @@ pub unsafe fn _mm256_set_m128(hi: f32x4, lo: f32x4) -> f32x8 {
     simd_shuffle8(lo, hi, [0, 1, 2, 3, 4, 5, 6, 7])
 }
 
+/// Set packed __m256d returned vector with the supplied values.
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vinsertf128))]
+pub unsafe fn _mm256_set_m128d(hi: f64x2, lo: f64x2) -> f64x4 {
+    let hi: f32x4 = mem::transmute(hi);
+    let lo: f32x4 = mem::transmute(lo);
+    mem::transmute(_mm256_set_m128(hi, lo))
+}
+
 /// LLVM intrinsics used in the above functions
 #[allow(improper_ctypes)]
 extern "C" {
@@ -3476,6 +3486,15 @@ mod tests {
         let lo = f32x4::new(1., 2., 3., 4.);
         let r = avx::_mm256_set_m128(hi, lo);
         let e = f32x8::new(1., 2., 3., 4., 5., 6., 7., 8.);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_set_m128d() {
+        let hi = f64x2::new(3., 4.);
+        let lo = f64x2::new(1., 2.);
+        let r = avx::_mm256_set_m128d(hi, lo);
+        let e = f64x4::new(1., 2., 3., 4.);
         assert_eq!(r, e);
     }
 }
