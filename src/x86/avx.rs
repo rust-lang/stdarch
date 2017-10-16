@@ -7,6 +7,7 @@ use stdsimd_test::assert_instr;
 use simd_llvm::{simd_cast, simd_shuffle2, simd_shuffle4, simd_shuffle8};
 use v128::{f32x4, f64x2, i32x4, i64x2};
 use v256::*;
+use x86::{__m128i, __m256i};
 
 /// Add packed double-precision (64-bit) floating-point elements
 /// in `a` and `b`.
@@ -1997,6 +1998,16 @@ pub unsafe fn _mm256_set_m128d(hi: f64x2, lo: f64x2) -> f64x4 {
     mem::transmute(_mm256_set_m128(hi, lo))
 }
 
+/// Set packed __m256i returned vector with the supplied values.
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vinsertf128))]
+pub unsafe fn _mm256_set_m128i(hi: __m128i, lo: __m128i) -> __m256i {
+    let hi: f32x4 = mem::transmute(hi);
+    let lo: f32x4 = mem::transmute(lo);
+    mem::transmute(_mm256_set_m128(hi, lo))
+}
+
 /// LLVM intrinsics used in the above functions
 #[allow(improper_ctypes)]
 extern "C" {
@@ -2147,7 +2158,7 @@ mod tests {
     use stdsimd_test::simd_test;
     use test::black_box;  // Used to inhibit constant-folding.
 
-    use v128::{f32x4, f64x2, i32x4, i64x2};
+    use v128::{f32x4, f64x2, i8x16, i32x4, i64x2};
     use v256::*;
     use x86::avx;
 
@@ -3573,6 +3584,21 @@ mod tests {
         let lo = f64x2::new(1., 2.);
         let r = avx::_mm256_set_m128d(hi, lo);
         let e = f64x4::new(1., 2., 3., 4.);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_set_m128i() {
+        let hi = i8x16::new(17, 18, 19, 20, 21, 22, 23, 24,
+            25, 26, 27, 28, 29, 30, 31, 32);
+        let lo = i8x16::new(1, 2, 3, 4, 5, 6, 7, 8,
+            9, 10, 11, 12, 13, 14, 15, 16);
+        let r = avx::_mm256_set_m128i(hi, lo);
+        let e = i8x32::new(
+            1, 2, 3, 4, 5, 6, 7, 8,
+            9, 10, 11, 12, 13, 14, 15, 16,
+            17, 18, 19, 20, 21, 22, 23, 24,
+            25, 26, 27, 28, 29, 30, 31, 32);
         assert_eq!(r, e);
     }
 }
