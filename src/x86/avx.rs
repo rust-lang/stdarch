@@ -1937,6 +1937,16 @@ pub unsafe fn _mm256_zextps128_ps256(a: f32x4) -> f32x8 {
     simd_shuffle8(a, _mm_setzero_ps(), [0, 1, 2, 3, 4, 5, 6, 7])
 }
 
+/// Constructs a 256-bit integer vector from a 128-bit integer vector.
+/// The lower 128 bits contain the value of the source vector. The upper
+/// 128 bits are set to zero.
+#[inline(always)]
+#[target_feature = "+avx,+sse2"]
+pub unsafe fn _mm256_zextsi128_si256(a: i64x2) -> i64x4 {
+    use x86::sse2::_mm_setzero_si128;
+    simd_shuffle4(a, mem::transmute(_mm_setzero_si128()), [0, 1, 2, 3])
+}
+
 /// Constructs a 256-bit floating-point vector of [4 x double] from a
 /// 128-bit floating-point vector of [2 x double]. The lower 128 bits
 /// contain the value of the source vector. The upper 128 bits are set
@@ -3529,6 +3539,14 @@ mod tests {
         let a = f32x4::new(1., 2., 3., 4.);
         let r = avx::_mm256_zextps128_ps256(a);
         let e = f32x8::new(1., 2., 3., 4., 0., 0., 0., 0.);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_zextsi128_si256() {
+        let a = i64x2::new(1, 2);
+        let r = avx::_mm256_zextsi128_si256(a);
+        let e = i64x4::new(1, 2, 0, 0);
         assert_eq!(r, e);
     }
 
