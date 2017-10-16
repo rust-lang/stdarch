@@ -1827,6 +1827,13 @@ pub unsafe fn _mm256_set1_epi64x(a: i64) -> i64x4 {
     i64x4::new(a, a, a, a)
 }
 
+/// Cast vector of type __m256d to type __m256.
+#[inline(always)]
+#[target_feature = "+avx"]
+pub unsafe fn _mm256_castpd_ps(a: f64x4) -> f32x8 {
+    mem::transmute(a)
+}
+
 /// Casts vector of type __m256d to type __m256i.
 /// This intrinsic is only used for compilation and does not generate any
 /// instructions, thus it has zero latency.
@@ -3427,6 +3434,14 @@ mod tests {
     unsafe fn _mm256_set1_epi64x() {
         let r = avx::_mm256_set1_epi64x(1);
         assert_eq!(r, i64x4::splat(1));
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_castpd_ps() {
+        let a = f64x4::new(1., 2., 3., 4.);
+        let r = avx::_mm256_castpd_ps(a);
+        let e = f32x8::new(0., 1.875, 0., 2., 0., 2.125, 0., 2.25);
+        assert_eq!(r, e);
     }
 
     #[simd_test = "avx"]
