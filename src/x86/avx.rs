@@ -1834,6 +1834,13 @@ pub unsafe fn _mm256_castpd_ps(a: f64x4) -> f32x8 {
     mem::transmute(a)
 }
 
+/// Cast vector of type __m256 to type __m256d.
+#[inline(always)]
+#[target_feature = "+avx"]
+pub unsafe fn _mm256_castps_pd(a: f32x8) -> f64x4 {
+    mem::transmute(a)
+}
+
 /// Casts vector of type __m256d to type __m256i.
 /// This intrinsic is only used for compilation and does not generate any
 /// instructions, thus it has zero latency.
@@ -3441,6 +3448,14 @@ mod tests {
         let a = f64x4::new(1., 2., 3., 4.);
         let r = avx::_mm256_castpd_ps(a);
         let e = f32x8::new(0., 1.875, 0., 2., 0., 2.125, 0., 2.25);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_castps_pd() {
+        let a = f32x8::new(0., 1.875, 0., 2., 0., 2.125, 0., 2.25);
+        let r = avx::_mm256_castps_pd(a);
+        let e = f64x4::new(1., 2., 3., 4.);
         assert_eq!(r, e);
     }
 
