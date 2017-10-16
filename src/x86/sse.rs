@@ -168,6 +168,436 @@ pub unsafe fn _mm_max_ps(a: f32x4, b: f32x4) -> f32x4 {
     maxps(a, b)
 }
 
+/// Bitwise AND of packed single-precision (32-bit) floating-point elements.
+#[inline(always)]
+#[target_feature = "+sse"]
+// i586 only seems to generate plain `and` instructions, so ignore it.
+#[cfg_attr(all(test, any(target_arch = "x86_64", target_feature = "sse2")),
+    assert_instr(andps))]
+pub unsafe fn _mm_and_ps(a: f32x4, b: f32x4) -> f32x4 {
+    let aa: i32x4 = mem::transmute(a);
+    let bb: i32x4 = mem::transmute(b);
+    mem::transmute(aa & bb)
+}
+
+/// Bitwise AND-NOT of packed single-precision (32-bit) floating-point elements.
+///
+/// Computes `!a & b` for each bit in `a` and `b`.
+#[inline(always)]
+#[target_feature = "+sse"]
+// i586 only seems to generate plain `not` and `and` instructions, so ignore it.
+#[cfg_attr(all(test, any(target_arch = "x86_64", target_feature = "sse2")),
+    assert_instr(andnps))]
+pub unsafe fn _mm_andnot_ps(a: f32x4, b: f32x4) -> f32x4 {
+    let aa: i32x4 = mem::transmute(a);
+    let bb: i32x4 = mem::transmute(b);
+    mem::transmute(!aa & bb)
+}
+
+/// Bitwise OR of packed single-precision (32-bit) floating-point elements.
+#[inline(always)]
+#[target_feature = "+sse"]
+// i586 only seems to generate plain `or` instructions, so we ignore it.
+#[cfg_attr(all(test, any(target_arch = "x86_64", target_feature = "sse2")),
+    assert_instr(orps))]
+pub unsafe fn _mm_or_ps(a: f32x4, b: f32x4) -> f32x4 {
+    let aa: i32x4 = mem::transmute(a);
+    let bb: i32x4 = mem::transmute(b);
+    mem::transmute(aa | bb)
+}
+
+/// Bitwise exclusive OR of packed single-precision (32-bit) floating-point
+/// elements.
+#[inline(always)]
+#[target_feature = "+sse"]
+// i586 only seems to generate plain `xor` instructions, so we ignore it.
+#[cfg_attr(all(test, any(target_arch = "x86_64", target_feature = "sse2")),
+    assert_instr(xorps))]
+pub unsafe fn _mm_xor_ps(a: f32x4, b: f32x4) -> f32x4 {
+    let aa: i32x4 = mem::transmute(a);
+    let bb: i32x4 = mem::transmute(b);
+    mem::transmute(aa ^ bb)
+}
+
+/// Compare the lowest `f32` of both inputs for equality. The lowest 32 bits of
+/// the result will be `0xffffffff` if the two inputs are equal, or `0`
+/// otherwise. The upper 96 bits of the result are the upper 96 bits of `a`.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(cmpeqss))]
+pub unsafe fn _mm_cmpeq_ss(a: f32x4, b: f32x4) -> f32x4 {
+    cmpss(a, b, 0)
+}
+
+/// Compare the lowest `f32` of both inputs for less than. The lowest 32 bits of
+/// the result will be `0xffffffff` if `a.extract(0)` is less than
+/// `b.extract(0)`, or `0` otherwise. The upper 96 bits of the result are the
+/// upper 96 bits of `a`.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(cmpltss))]
+pub unsafe fn _mm_cmplt_ss(a: f32x4, b: f32x4) -> f32x4 {
+    cmpss(a, b, 1)
+}
+
+/// Compare the lowest `f32` of both inputs for less than or equal. The lowest
+/// 32 bits of the result will be `0xffffffff` if `a.extract(0)` is less than or
+/// equal `b.extract(0)`, or `0` otherwise. The upper 96 bits of the result are
+/// the upper 96 bits of `a`.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(cmpless))]
+pub unsafe fn _mm_cmple_ss(a: f32x4, b: f32x4) -> f32x4 {
+    cmpss(a, b, 2)
+}
+
+/// Compare the lowest `f32` of both inputs for greater than. The lowest 32 bits of
+/// the result will be `0xffffffff` if `a.extract(0)` is greater than
+/// `b.extract(0)`, or `0` otherwise. The upper 96 bits of the result are the
+/// upper 96 bits of `a`.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(cmpltss))]
+pub unsafe fn _mm_cmpgt_ss(a: f32x4, b: f32x4) -> f32x4 {
+    simd_shuffle4(a, cmpss(b, a, 1), [4, 1, 2, 3])
+}
+
+/// Compare the lowest `f32` of both inputs for greater than or equal. The
+/// lowest 32 bits of the result will be `0xffffffff` if `a.extract(0)` is
+/// greater than or equal `b.extract(0)`, or `0` otherwise. The upper 96 bits of
+/// the result are the upper 96 bits of `a`.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(cmpless))]
+pub unsafe fn _mm_cmpge_ss(a: f32x4, b: f32x4) -> f32x4 {
+    simd_shuffle4(a, cmpss(b, a, 2), [4, 1, 2, 3])
+}
+
+/// Compare the lowest `f32` of both inputs for inequality. The lowest 32 bits
+/// of the result will be `0xffffffff` if `a.extract(0)` is not equal to
+/// `b.extract(0)`, or `0` otherwise. The upper 96 bits of the result are the
+/// upper 96 bits of `a`.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(cmpneqss))]
+pub unsafe fn _mm_cmpneq_ss(a: f32x4, b: f32x4) -> f32x4 {
+    cmpss(a, b, 4)
+}
+
+/// Compare the lowest `f32` of both inputs for not-less-than. The lowest 32
+/// bits of the result will be `0xffffffff` if `a.extract(0)` is not less than
+/// `b.extract(0)`, or `0` otherwise. The upper 96 bits of the result are the
+/// upper 96 bits of `a`.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(cmpnltss))]
+pub unsafe fn _mm_cmpnlt_ss(a: f32x4, b: f32x4) -> f32x4 {
+    cmpss(a, b, 5)
+}
+
+/// Compare the lowest `f32` of both inputs for not-less-than-or-equal. The
+/// lowest 32 bits of the result will be `0xffffffff` if `a.extract(0)` is not
+/// less than or equal to `b.extract(0)`, or `0` otherwise. The upper 96 bits of
+/// the result are the upper 96 bits of `a`.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(cmpnless))]
+pub unsafe fn _mm_cmpnle_ss(a: f32x4, b: f32x4) -> f32x4 {
+    cmpss(a, b, 6)
+}
+
+/// Compare the lowest `f32` of both inputs for not-greater-than. The lowest 32
+/// bits of the result will be `0xffffffff` if `a.extract(0)` is not greater
+/// than `b.extract(0)`, or `0` otherwise. The upper 96 bits of the result are
+/// the upper 96 bits of `a`.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(cmpnltss))]
+pub unsafe fn _mm_cmpngt_ss(a: f32x4, b: f32x4) -> f32x4 {
+    simd_shuffle4(a, cmpss(b, a, 5), [4, 1, 2, 3])
+}
+
+/// Compare the lowest `f32` of both inputs for not-greater-than-or-equal. The
+/// lowest 32 bits of the result will be `0xffffffff` if `a.extract(0)` is not
+/// greater than or equal to `b.extract(0)`, or `0` otherwise. The upper 96 bits
+/// of the result are the upper 96 bits of `a`.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(cmpnless))]
+pub unsafe fn _mm_cmpnge_ss(a: f32x4, b: f32x4) -> f32x4 {
+    simd_shuffle4(a, cmpss(b, a, 6), [4, 1, 2, 3])
+}
+
+/// Check if the lowest `f32` of both inputs are ordered. The lowest 32 bits of
+/// the result will be `0xffffffff` if neither of `a.extract(0)` or
+/// `b.extract(0)` is a NaN, or `0` otherwise. The upper 96 bits of the result
+/// are the upper 96 bits of `a`.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(cmpordss))]
+pub unsafe fn _mm_cmpord_ss(a: f32x4, b: f32x4) -> f32x4 {
+    cmpss(a, b, 7)
+}
+
+/// Check if the lowest `f32` of both inputs are unordered. The lowest 32 bits
+/// of the result will be `0xffffffff` if any of `a.extract(0)` or
+/// `b.extract(0)` is a NaN, or `0` otherwise. The upper 96 bits of the result
+/// are the upper 96 bits of `a`.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(cmpunordss))]
+pub unsafe fn _mm_cmpunord_ss(a: f32x4, b: f32x4) -> f32x4 {
+    cmpss(a, b, 3)
+}
+
+/// Compare each of the four floats in `a` to the corresponding element in `b`.
+/// The result in the output vector will be `0xffffffff` if the input elements
+/// were equal, or `0` otherwise.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(cmpeqps))]
+pub unsafe fn _mm_cmpeq_ps(a: f32x4, b: f32x4) -> f32x4 {
+    cmpps(a, b, 0)
+}
+
+/// Compare each of the four floats in `a` to the corresponding element in `b`.
+/// The result in the output vector will be `0xffffffff` if the input element in
+/// `a` is less than the corresponding element in `b`, or `0` otherwise.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(cmpltps))]
+pub unsafe fn _mm_cmplt_ps(a: f32x4, b: f32x4) -> f32x4 {
+    cmpps(a, b, 1)
+}
+
+/// Compare each of the four floats in `a` to the corresponding element in `b`.
+/// The result in the output vector will be `0xffffffff` if the input element in
+/// `a` is less than or equal to the corresponding element in `b`, or `0`
+/// otherwise.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(cmpleps))]
+pub unsafe fn _mm_cmple_ps(a: f32x4, b: f32x4) -> f32x4 {
+    cmpps(a, b, 2)
+}
+
+/// Compare each of the four floats in `a` to the corresponding element in `b`.
+/// The result in the output vector will be `0xffffffff` if the input element in
+/// `a` is greater than the corresponding element in `b`, or `0` otherwise.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(cmpltps))]
+pub unsafe fn _mm_cmpgt_ps(a: f32x4, b: f32x4) -> f32x4 {
+    cmpps(b, a, 1)
+}
+
+/// Compare each of the four floats in `a` to the corresponding element in `b`.
+/// The result in the output vector will be `0xffffffff` if the input element in
+/// `a` is greater than or equal to the corresponding element in `b`, or `0`
+/// otherwise.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(cmpleps))]
+pub unsafe fn _mm_cmpge_ps(a: f32x4, b: f32x4) -> f32x4 {
+    cmpps(b, a, 2)
+}
+
+/// Compare each of the four floats in `a` to the corresponding element in `b`.
+/// The result in the output vector will be `0xffffffff` if the input elements
+/// are *not* equal, or `0` otherwise.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(cmpneqps))]
+pub unsafe fn _mm_cmpneq_ps(a: f32x4, b: f32x4) -> f32x4 {
+    cmpps(a, b, 4)
+}
+
+/// Compare each of the four floats in `a` to the corresponding element in `b`.
+/// The result in the output vector will be `0xffffffff` if the input element in
+/// `a` is *not* less than the corresponding element in `b`, or `0` otherwise.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(cmpnltps))]
+pub unsafe fn _mm_cmpnlt_ps(a: f32x4, b: f32x4) -> f32x4 {
+    cmpps(a, b, 5)
+}
+
+/// Compare each of the four floats in `a` to the corresponding element in `b`.
+/// The result in the output vector will be `0xffffffff` if the input element in
+/// `a` is *not* less than or equal to the corresponding element in `b`, or `0`
+/// otherwise.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(cmpnleps))]
+pub unsafe fn _mm_cmpnle_ps(a: f32x4, b: f32x4) -> f32x4 {
+    cmpps(a, b, 6)
+}
+
+/// Compare each of the four floats in `a` to the corresponding element in `b`.
+/// The result in the output vector will be `0xffffffff` if the input element in
+/// `a` is *not* greater than the corresponding element in `b`, or `0`
+/// otherwise.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(cmpnltps))]
+pub unsafe fn _mm_cmpngt_ps(a: f32x4, b: f32x4) -> f32x4 {
+    cmpps(b, a, 5)
+}
+
+/// Compare each of the four floats in `a` to the corresponding element in `b`.
+/// The result in the output vector will be `0xffffffff` if the input element in
+/// `a` is *not* greater than or equal to the corresponding element in `b`, or
+/// `0` otherwise.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(cmpnleps))]
+pub unsafe fn _mm_cmpnge_ps(a: f32x4, b: f32x4) -> f32x4 {
+    cmpps(b, a, 6)
+}
+
+/// Compare each of the four floats in `a` to the corresponding element in `b`.
+/// Returns four floats that have one of two possible bit patterns. The element
+/// in the output vector will be `0xffffffff` if the input elements in `a` and
+/// `b` are ordered (i.e., neither of them is a NaN), or 0 otherwise.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(cmpordps))]
+pub unsafe fn _mm_cmpord_ps(a: f32x4, b: f32x4) -> f32x4 {
+    cmpps(b, a, 7)
+}
+
+/// Compare each of the four floats in `a` to the corresponding element in `b`.
+/// Returns four floats that have one of two possible bit patterns. The element
+/// in the output vector will be `0xffffffff` if the input elements in `a` and
+/// `b` are unordered (i.e., at least on of them is a NaN), or 0 otherwise.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(cmpunordps))]
+pub unsafe fn _mm_cmpunord_ps(a: f32x4, b: f32x4) -> f32x4 {
+    cmpps(b, a, 3)
+}
+
+/// Compare two 32-bit floats from the low-order bits of `a` and `b`. Returns
+/// `1` if they are equal, or `0` otherwise.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(comiss))]
+pub unsafe fn _mm_comieq_ss(a: f32x4, b: f32x4) -> i32 {
+    comieq_ss(a, b)
+}
+
+/// Compare two 32-bit floats from the low-order bits of `a` and `b`. Returns
+/// `1` if the value from `a` is less than the one from `b`, or `0` otherwise.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(comiss))]
+pub unsafe fn _mm_comilt_ss(a: f32x4, b: f32x4) -> i32 {
+    comilt_ss(a, b)
+}
+
+/// Compare two 32-bit floats from the low-order bits of `a` and `b`. Returns
+/// `1` if the value from `a` is less than or equal to the one from `b`, or `0`
+/// otherwise.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(comiss))]
+pub unsafe fn _mm_comile_ss(a: f32x4, b: f32x4) -> i32 {
+    comile_ss(a, b)
+}
+
+/// Compare two 32-bit floats from the low-order bits of `a` and `b`. Returns
+/// `1` if the value from `a` is greater than the one from `b`, or `0`
+/// otherwise.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(comiss))]
+pub unsafe fn _mm_comigt_ss(a: f32x4, b: f32x4) -> i32 {
+    comigt_ss(a, b)
+}
+
+/// Compare two 32-bit floats from the low-order bits of `a` and `b`. Returns
+/// `1` if the value from `a` is greater than or equal to the one from `b`, or
+/// `0` otherwise.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(comiss))]
+pub unsafe fn _mm_comige_ss(a: f32x4, b: f32x4) -> i32 {
+    comige_ss(a, b)
+}
+
+/// Compare two 32-bit floats from the low-order bits of `a` and `b`. Returns
+/// `1` if they are *not* equal, or `0` otherwise.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(comiss))]
+pub unsafe fn _mm_comineq_ss(a: f32x4, b: f32x4) -> i32 {
+    comineq_ss(a, b)
+}
+
+/// Compare two 32-bit floats from the low-order bits of `a` and `b`. Returns
+/// `1` if they are equal, or `0` otherwise. This instruction will not signal
+/// an exception if either argument is a quiet NaN.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(ucomiss))]
+pub unsafe fn _mm_ucomieq_ss(a: f32x4, b: f32x4) -> i32 {
+    ucomieq_ss(a, b)
+}
+
+/// Compare two 32-bit floats from the low-order bits of `a` and `b`. Returns
+/// `1` if the value from `a` is less than the one from `b`, or `0` otherwise.
+/// This instruction will not signal an exception if either argument is a quiet
+/// NaN.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(ucomiss))]
+pub unsafe fn _mm_ucomilt_ss(a: f32x4, b: f32x4) -> i32 {
+    ucomilt_ss(a, b)
+}
+
+/// Compare two 32-bit floats from the low-order bits of `a` and `b`. Returns
+/// `1` if the value from `a` is less than or equal to the one from `b`, or `0`
+/// otherwise. This instruction will not signal an exception if either argument
+/// is a quiet NaN.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(ucomiss))]
+pub unsafe fn _mm_ucomile_ss(a: f32x4, b: f32x4) -> i32 {
+    ucomile_ss(a, b)
+}
+
+/// Compare two 32-bit floats from the low-order bits of `a` and `b`. Returns
+/// `1` if the value from `a` is greater than the one from `b`, or `0`
+/// otherwise. This instruction will not signal an exception if either argument
+/// is a quiet NaN.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(ucomiss))]
+pub unsafe fn _mm_ucomigt_ss(a: f32x4, b: f32x4) -> i32 {
+    ucomigt_ss(a, b)
+}
+
+/// Compare two 32-bit floats from the low-order bits of `a` and `b`. Returns
+/// `1` if the value from `a` is greater than or equal to the one from `b`, or
+/// `0` otherwise. This instruction will not signal an exception if either
+/// argument is a quiet NaN.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(ucomiss))]
+pub unsafe fn _mm_ucomige_ss(a: f32x4, b: f32x4) -> i32 {
+    ucomige_ss(a, b)
+}
+
+/// Compare two 32-bit floats from the low-order bits of `a` and `b`. Returns
+/// `1` if they are *not* equal, or `0` otherwise. This instruction will not
+/// signal an exception if either argument is a quiet NaN.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(ucomiss))]
+pub unsafe fn _mm_ucomineq_ss(a: f32x4, b: f32x4) -> i32 {
+    ucomineq_ss(a, b)
+}
+
 /// Construct a `f32x4` with the lowest element set to `a` and the rest set to
 /// zero.
 #[inline(always)]
@@ -875,6 +1305,22 @@ pub unsafe fn _mm_undefined_ps() -> f32x4 {
     f32x4::splat(mem::uninitialized())
 }
 
+/// Transpose the 4x4 matrix formed by 4 rows of f32x4 in place.
+#[inline(always)]
+#[allow(non_snake_case)]
+#[target_feature = "+sse"]
+pub unsafe fn _MM_TRANSPOSE4_PS(row0: &mut f32x4, row1: &mut f32x4, row2: &mut f32x4, row3: &mut f32x4) {
+    let tmp0 = _mm_unpacklo_ps(*row0, *row1);
+    let tmp2 = _mm_unpacklo_ps(*row2, *row3);
+    let tmp1 = _mm_unpackhi_ps(*row0, *row1);
+    let tmp3 = _mm_unpackhi_ps(*row2, *row3);
+
+    *row0 = _mm_movelh_ps(tmp0, tmp2);
+    *row1 = _mm_movehl_ps(tmp2, tmp0);
+    *row2 = _mm_movelh_ps(tmp1, tmp3);
+    *row3 = _mm_movehl_ps(tmp3, tmp1);
+}
+
 #[allow(improper_ctypes)]
 extern {
     #[link_name = "llvm.x86.sse.add.ss"]
@@ -907,6 +1353,32 @@ extern {
     fn maxps(a: f32x4, b: f32x4) -> f32x4;
     #[link_name = "llvm.x86.sse.movmsk.ps"]
     fn movmskps(a: f32x4) -> i32;
+    #[link_name = "llvm.x86.sse.cmp.ps"]
+    fn cmpps(a: f32x4, b: f32x4, imm8: i8) -> f32x4;
+    #[link_name = "llvm.x86.sse.comieq.ss"]
+    fn comieq_ss(a: f32x4, b: f32x4) -> i32;
+    #[link_name = "llvm.x86.sse.comilt.ss"]
+    fn comilt_ss(a: f32x4, b: f32x4) -> i32;
+    #[link_name = "llvm.x86.sse.comile.ss"]
+    fn comile_ss(a: f32x4, b: f32x4) -> i32;
+    #[link_name = "llvm.x86.sse.comigt.ss"]
+    fn comigt_ss(a: f32x4, b: f32x4) -> i32;
+    #[link_name = "llvm.x86.sse.comige.ss"]
+    fn comige_ss(a: f32x4, b: f32x4) -> i32;
+    #[link_name = "llvm.x86.sse.comineq.ss"]
+    fn comineq_ss(a: f32x4, b: f32x4) -> i32;
+    #[link_name = "llvm.x86.sse.ucomieq.ss"]
+    fn ucomieq_ss(a: f32x4, b: f32x4) -> i32;
+    #[link_name = "llvm.x86.sse.ucomilt.ss"]
+    fn ucomilt_ss(a: f32x4, b: f32x4) -> i32;
+    #[link_name = "llvm.x86.sse.ucomile.ss"]
+    fn ucomile_ss(a: f32x4, b: f32x4) -> i32;
+    #[link_name = "llvm.x86.sse.ucomigt.ss"]
+    fn ucomigt_ss(a: f32x4, b: f32x4) -> i32;
+    #[link_name = "llvm.x86.sse.ucomige.ss"]
+    fn ucomige_ss(a: f32x4, b: f32x4) -> i32;
+    #[link_name = "llvm.x86.sse.ucomineq.ss"]
+    fn ucomineq_ss(a: f32x4, b: f32x4) -> i32;
     #[link_name = "llvm.x86.sse.sfence"]
     fn sfence();
     #[link_name = "llvm.x86.sse.stmxcsr"]
@@ -915,6 +1387,8 @@ extern {
     fn ldmxcsr(p: *const i8);
     #[link_name = "llvm.prefetch"]
     fn prefetch(p: *const c_void, rw: i32, loc: i32, ty: i32);
+    #[link_name = "llvm.x86.sse.cmp.ss"]
+    fn cmpss(a: f32x4, b: f32x4, imm8: i8) -> f32x4;
 }
 
 #[cfg(test)]
@@ -1066,6 +1540,833 @@ mod tests {
         let b = f32x4::new(-100.0, 20.0, 0.0, -5.0);
         let r = sse::_mm_max_ps(a, b);
         assert_eq!(r, f32x4::new(-1.0, 20.0, 0.0, -5.0));
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_and_ps() {
+        use std::mem::transmute;
+
+        let a: f32x4 = transmute(u32x4::splat(0b0011));
+        let b: f32x4 = transmute(u32x4::splat(0b0101));
+        let r = sse::_mm_and_ps(*black_box(&a), *black_box(&b));
+        let e: f32x4 = transmute(u32x4::splat(0b0001));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_andnot_ps() {
+        use std::mem::transmute;
+
+        let a: f32x4 = transmute(u32x4::splat(0b0011));
+        let b: f32x4 = transmute(u32x4::splat(0b0101));
+        let r = sse::_mm_andnot_ps(*black_box(&a), *black_box(&b));
+        let e: f32x4 = transmute(u32x4::splat(0b0100));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_or_ps() {
+        use std::mem::transmute;
+
+        let a: f32x4 = transmute(u32x4::splat(0b0011));
+        let b: f32x4 = transmute(u32x4::splat(0b0101));
+        let r = sse::_mm_or_ps(*black_box(&a), *black_box(&b));
+        let e: f32x4 = transmute(u32x4::splat(0b0111));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_xor_ps() {
+        use std::mem::transmute;
+
+        let a: f32x4 = transmute(u32x4::splat(0b0011));
+        let b: f32x4 = transmute(u32x4::splat(0b0101));
+        let r = sse::_mm_xor_ps(*black_box(&a), *black_box(&b));
+        let e: f32x4 = transmute(u32x4::splat(0b0110));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_cmpeq_ss() {
+        use std::mem::transmute;
+
+        let a = f32x4::new(1.0, 2.0, 3.0, 4.0);
+        let b = f32x4::new(-1.0, 5.0, 6.0, 7.0);
+        let r: u32x4 = transmute(sse::_mm_cmpeq_ss(a, b));
+        let e: u32x4 = transmute(f32x4::new(transmute(0u32), 2.0, 3.0, 4.0));
+        assert_eq!(r, e);
+
+        let b2 = f32x4::new(1.0, 5.0, 6.0, 7.0);
+        let r2: u32x4 = transmute(sse::_mm_cmpeq_ss(a, b2));
+        let e2: u32x4 =
+            transmute(f32x4::new(transmute(0xffffffffu32), 2.0, 3.0, 4.0));
+        assert_eq!(r2, e2);
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_cmplt_ss() {
+        use std::mem::transmute;
+
+        let a = f32x4::new(1.0, 2.0, 3.0, 4.0);
+        let b = f32x4::new(0.0, 5.0, 6.0, 7.0);
+        let c = f32x4::new(1.0, 5.0, 6.0, 7.0);
+        let d = f32x4::new(2.0, 5.0, 6.0, 7.0);
+
+        let b1 = 0u32;  // a.extract(0) < b.extract(0)
+        let c1 = 0u32;  // a.extract(0) < c.extract(0)
+        let d1 = !0u32;  // a.extract(0) < d.extract(0)
+
+        let rb: u32x4 = transmute(sse::_mm_cmplt_ss(a, b));
+        let eb: u32x4 = transmute(f32x4::new(transmute(b1), 2.0, 3.0, 4.0));
+        assert_eq!(rb, eb);
+
+        let rc: u32x4 = transmute(sse::_mm_cmplt_ss(a, c));
+        let ec: u32x4 = transmute(f32x4::new(transmute(c1), 2.0, 3.0, 4.0));
+        assert_eq!(rc, ec);
+
+        let rd: u32x4 = transmute(sse::_mm_cmplt_ss(a, d));
+        let ed: u32x4 = transmute(f32x4::new(transmute(d1), 2.0, 3.0, 4.0));
+        assert_eq!(rd, ed);
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_cmple_ss() {
+        use std::mem::transmute;
+
+        let a = f32x4::new(1.0, 2.0, 3.0, 4.0);
+        let b = f32x4::new(0.0, 5.0, 6.0, 7.0);
+        let c = f32x4::new(1.0, 5.0, 6.0, 7.0);
+        let d = f32x4::new(2.0, 5.0, 6.0, 7.0);
+
+        let b1 = 0u32;  // a.extract(0) <= b.extract(0)
+        let c1 = !0u32;  // a.extract(0) <= c.extract(0)
+        let d1 = !0u32;  // a.extract(0) <= d.extract(0)
+
+        let rb: u32x4 = transmute(sse::_mm_cmple_ss(a, b));
+        let eb: u32x4 = transmute(f32x4::new(transmute(b1), 2.0, 3.0, 4.0));
+        assert_eq!(rb, eb);
+
+        let rc: u32x4 = transmute(sse::_mm_cmple_ss(a, c));
+        let ec: u32x4 = transmute(f32x4::new(transmute(c1), 2.0, 3.0, 4.0));
+        assert_eq!(rc, ec);
+
+        let rd: u32x4 = transmute(sse::_mm_cmple_ss(a, d));
+        let ed: u32x4 = transmute(f32x4::new(transmute(d1), 2.0, 3.0, 4.0));
+        assert_eq!(rd, ed);
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_cmpgt_ss() {
+        use std::mem::transmute;
+
+        let a = f32x4::new(1.0, 2.0, 3.0, 4.0);
+        let b = f32x4::new(0.0, 5.0, 6.0, 7.0);
+        let c = f32x4::new(1.0, 5.0, 6.0, 7.0);
+        let d = f32x4::new(2.0, 5.0, 6.0, 7.0);
+
+        let b1 = !0u32;  // a.extract(0) > b.extract(0)
+        let c1 = 0u32;  // a.extract(0) > c.extract(0)
+        let d1 = 0u32;  // a.extract(0) > d.extract(0)
+
+        let rb: u32x4 = transmute(sse::_mm_cmpgt_ss(a, b));
+        let eb: u32x4 = transmute(f32x4::new(transmute(b1), 2.0, 3.0, 4.0));
+        assert_eq!(rb, eb);
+
+        let rc: u32x4 = transmute(sse::_mm_cmpgt_ss(a, c));
+        let ec: u32x4 = transmute(f32x4::new(transmute(c1), 2.0, 3.0, 4.0));
+        assert_eq!(rc, ec);
+
+        let rd: u32x4 = transmute(sse::_mm_cmpgt_ss(a, d));
+        let ed: u32x4 = transmute(f32x4::new(transmute(d1), 2.0, 3.0, 4.0));
+        assert_eq!(rd, ed);
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_cmpge_ss() {
+        use std::mem::transmute;
+
+        let a = f32x4::new(1.0, 2.0, 3.0, 4.0);
+        let b = f32x4::new(0.0, 5.0, 6.0, 7.0);
+        let c = f32x4::new(1.0, 5.0, 6.0, 7.0);
+        let d = f32x4::new(2.0, 5.0, 6.0, 7.0);
+
+        let b1 = !0u32;  // a.extract(0) >= b.extract(0)
+        let c1 = !0u32;  // a.extract(0) >= c.extract(0)
+        let d1 = 0u32;  // a.extract(0) >= d.extract(0)
+
+        let rb: u32x4 = transmute(sse::_mm_cmpge_ss(a, b));
+        let eb: u32x4 = transmute(f32x4::new(transmute(b1), 2.0, 3.0, 4.0));
+        assert_eq!(rb, eb);
+
+        let rc: u32x4 = transmute(sse::_mm_cmpge_ss(a, c));
+        let ec: u32x4 = transmute(f32x4::new(transmute(c1), 2.0, 3.0, 4.0));
+        assert_eq!(rc, ec);
+
+        let rd: u32x4 = transmute(sse::_mm_cmpge_ss(a, d));
+        let ed: u32x4 = transmute(f32x4::new(transmute(d1), 2.0, 3.0, 4.0));
+        assert_eq!(rd, ed);
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_cmpneq_ss() {
+        use std::mem::transmute;
+
+        let a = f32x4::new(1.0, 2.0, 3.0, 4.0);
+        let b = f32x4::new(0.0, 5.0, 6.0, 7.0);
+        let c = f32x4::new(1.0, 5.0, 6.0, 7.0);
+        let d = f32x4::new(2.0, 5.0, 6.0, 7.0);
+
+        let b1 = !0u32;  // a.extract(0) != b.extract(0)
+        let c1 = 0u32;  // a.extract(0) != c.extract(0)
+        let d1 = !0u32;  // a.extract(0) != d.extract(0)
+
+        let rb: u32x4 = transmute(sse::_mm_cmpneq_ss(a, b));
+        let eb: u32x4 = transmute(f32x4::new(transmute(b1), 2.0, 3.0, 4.0));
+        assert_eq!(rb, eb);
+
+        let rc: u32x4 = transmute(sse::_mm_cmpneq_ss(a, c));
+        let ec: u32x4 = transmute(f32x4::new(transmute(c1), 2.0, 3.0, 4.0));
+        assert_eq!(rc, ec);
+
+        let rd: u32x4 = transmute(sse::_mm_cmpneq_ss(a, d));
+        let ed: u32x4 = transmute(f32x4::new(transmute(d1), 2.0, 3.0, 4.0));
+        assert_eq!(rd, ed);
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_cmpnlt_ss() {
+        // TODO: This test is exactly the same as for _mm_cmpge_ss, but there
+        // must be a difference. It may have to do with behavior in the presence
+        // of NaNs (signaling or quiet). If so, we should add tests for those.
+        use std::mem::transmute;
+
+        let a = f32x4::new(1.0, 2.0, 3.0, 4.0);
+        let b = f32x4::new(0.0, 5.0, 6.0, 7.0);
+        let c = f32x4::new(1.0, 5.0, 6.0, 7.0);
+        let d = f32x4::new(2.0, 5.0, 6.0, 7.0);
+
+        let b1 = !0u32;  // a.extract(0) >= b.extract(0)
+        let c1 = !0u32;  // a.extract(0) >= c.extract(0)
+        let d1 = 0u32;  // a.extract(0) >= d.extract(0)
+
+        let rb: u32x4 = transmute(sse::_mm_cmpnlt_ss(a, b));
+        let eb: u32x4 = transmute(f32x4::new(transmute(b1), 2.0, 3.0, 4.0));
+        assert_eq!(rb, eb);
+
+        let rc: u32x4 = transmute(sse::_mm_cmpnlt_ss(a, c));
+        let ec: u32x4 = transmute(f32x4::new(transmute(c1), 2.0, 3.0, 4.0));
+        assert_eq!(rc, ec);
+
+        let rd: u32x4 = transmute(sse::_mm_cmpnlt_ss(a, d));
+        let ed: u32x4 = transmute(f32x4::new(transmute(d1), 2.0, 3.0, 4.0));
+        assert_eq!(rd, ed);
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_cmpnle_ss() {
+        // TODO: This test is exactly the same as for _mm_cmpgt_ss, but there
+        // must be a difference. It may have to do with behavior in the presence
+        // of NaNs (signaling or quiet). If so, we should add tests for those.
+        use std::mem::transmute;
+
+        let a = f32x4::new(1.0, 2.0, 3.0, 4.0);
+        let b = f32x4::new(0.0, 5.0, 6.0, 7.0);
+        let c = f32x4::new(1.0, 5.0, 6.0, 7.0);
+        let d = f32x4::new(2.0, 5.0, 6.0, 7.0);
+
+        let b1 = !0u32;  // a.extract(0) > b.extract(0)
+        let c1 = 0u32;  // a.extract(0) > c.extract(0)
+        let d1 = 0u32;  // a.extract(0) > d.extract(0)
+
+        let rb: u32x4 = transmute(sse::_mm_cmpnle_ss(a, b));
+        let eb: u32x4 = transmute(f32x4::new(transmute(b1), 2.0, 3.0, 4.0));
+        assert_eq!(rb, eb);
+
+        let rc: u32x4 = transmute(sse::_mm_cmpnle_ss(a, c));
+        let ec: u32x4 = transmute(f32x4::new(transmute(c1), 2.0, 3.0, 4.0));
+        assert_eq!(rc, ec);
+
+        let rd: u32x4 = transmute(sse::_mm_cmpnle_ss(a, d));
+        let ed: u32x4 = transmute(f32x4::new(transmute(d1), 2.0, 3.0, 4.0));
+        assert_eq!(rd, ed);
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_cmpngt_ss() {
+        // TODO: This test is exactly the same as for _mm_cmple_ss, but there
+        // must be a difference. It may have to do with behavior in the presence
+        // of NaNs (signaling or quiet). If so, we should add tests for those.
+        use std::mem::transmute;
+
+        let a = f32x4::new(1.0, 2.0, 3.0, 4.0);
+        let b = f32x4::new(0.0, 5.0, 6.0, 7.0);
+        let c = f32x4::new(1.0, 5.0, 6.0, 7.0);
+        let d = f32x4::new(2.0, 5.0, 6.0, 7.0);
+
+        let b1 = 0u32;  // a.extract(0) <= b.extract(0)
+        let c1 = !0u32;  // a.extract(0) <= c.extract(0)
+        let d1 = !0u32;  // a.extract(0) <= d.extract(0)
+
+        let rb: u32x4 = transmute(sse::_mm_cmpngt_ss(a, b));
+        let eb: u32x4 = transmute(f32x4::new(transmute(b1), 2.0, 3.0, 4.0));
+        assert_eq!(rb, eb);
+
+        let rc: u32x4 = transmute(sse::_mm_cmpngt_ss(a, c));
+        let ec: u32x4 = transmute(f32x4::new(transmute(c1), 2.0, 3.0, 4.0));
+        assert_eq!(rc, ec);
+
+        let rd: u32x4 = transmute(sse::_mm_cmpngt_ss(a, d));
+        let ed: u32x4 = transmute(f32x4::new(transmute(d1), 2.0, 3.0, 4.0));
+        assert_eq!(rd, ed);
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_cmpnge_ss() {
+        // TODO: This test is exactly the same as for _mm_cmplt_ss, but there
+        // must be a difference. It may have to do with behavior in the presence
+        // of NaNs (signaling or quiet). If so, we should add tests for those.
+        use std::mem::transmute;
+
+        let a = f32x4::new(1.0, 2.0, 3.0, 4.0);
+        let b = f32x4::new(0.0, 5.0, 6.0, 7.0);
+        let c = f32x4::new(1.0, 5.0, 6.0, 7.0);
+        let d = f32x4::new(2.0, 5.0, 6.0, 7.0);
+
+        let b1 = 0u32;  // a.extract(0) < b.extract(0)
+        let c1 = 0u32;  // a.extract(0) < c.extract(0)
+        let d1 = !0u32;  // a.extract(0) < d.extract(0)
+
+        let rb: u32x4 = transmute(sse::_mm_cmpnge_ss(a, b));
+        let eb: u32x4 = transmute(f32x4::new(transmute(b1), 2.0, 3.0, 4.0));
+        assert_eq!(rb, eb);
+
+        let rc: u32x4 = transmute(sse::_mm_cmpnge_ss(a, c));
+        let ec: u32x4 = transmute(f32x4::new(transmute(c1), 2.0, 3.0, 4.0));
+        assert_eq!(rc, ec);
+
+        let rd: u32x4 = transmute(sse::_mm_cmpnge_ss(a, d));
+        let ed: u32x4 = transmute(f32x4::new(transmute(d1), 2.0, 3.0, 4.0));
+        assert_eq!(rd, ed);
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_cmpord_ss() {
+        use std::mem::transmute;
+        use std::f32::NAN;
+
+        let a = f32x4::new(1.0, 2.0, 3.0, 4.0);
+        let b = f32x4::new(0.0, 5.0, 6.0, 7.0);
+        let c = f32x4::new(NAN, 5.0, 6.0, 7.0);
+        let d = f32x4::new(2.0, 5.0, 6.0, 7.0);
+
+        let b1 = !0u32;  // a.extract(0) ord b.extract(0)
+        let c1 = 0u32;  // a.extract(0) ord c.extract(0)
+        let d1 = !0u32;  // a.extract(0) ord d.extract(0)
+
+        let rb: u32x4 = transmute(sse::_mm_cmpord_ss(a, b));
+        let eb: u32x4 = transmute(f32x4::new(transmute(b1), 2.0, 3.0, 4.0));
+        assert_eq!(rb, eb);
+
+        let rc: u32x4 = transmute(sse::_mm_cmpord_ss(a, c));
+        let ec: u32x4 = transmute(f32x4::new(transmute(c1), 2.0, 3.0, 4.0));
+        assert_eq!(rc, ec);
+
+        let rd: u32x4 = transmute(sse::_mm_cmpord_ss(a, d));
+        let ed: u32x4 = transmute(f32x4::new(transmute(d1), 2.0, 3.0, 4.0));
+        assert_eq!(rd, ed);
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_cmpunord_ss() {
+        use std::mem::transmute;
+        use std::f32::NAN;
+
+        let a = f32x4::new(1.0, 2.0, 3.0, 4.0);
+        let b = f32x4::new(0.0, 5.0, 6.0, 7.0);
+        let c = f32x4::new(NAN, 5.0, 6.0, 7.0);
+        let d = f32x4::new(2.0, 5.0, 6.0, 7.0);
+
+        let b1 = 0u32;  // a.extract(0) unord b.extract(0)
+        let c1 = !0u32;  // a.extract(0) unord c.extract(0)
+        let d1 = 0u32;  // a.extract(0) unord d.extract(0)
+
+        let rb: u32x4 = transmute(sse::_mm_cmpunord_ss(a, b));
+        let eb: u32x4 = transmute(f32x4::new(transmute(b1), 2.0, 3.0, 4.0));
+        assert_eq!(rb, eb);
+
+        let rc: u32x4 = transmute(sse::_mm_cmpunord_ss(a, c));
+        let ec: u32x4 = transmute(f32x4::new(transmute(c1), 2.0, 3.0, 4.0));
+        assert_eq!(rc, ec);
+
+        let rd: u32x4 = transmute(sse::_mm_cmpunord_ss(a, d));
+        let ed: u32x4 = transmute(f32x4::new(transmute(d1), 2.0, 3.0, 4.0));
+        assert_eq!(rd, ed);
+    }
+
+    unsafe fn _mm_cmpeq_ps() {
+        use std::mem::transmute;
+        use std::f32::NAN;
+
+        let a = f32x4::new(10.0, 50.0, 1.0, NAN);
+        let b = f32x4::new(15.0, 20.0, 1.0, NAN);
+        let tru = !0u32;
+        let fls = 0u32;
+
+        let e = u32x4::new(fls, fls, tru, fls);
+        let r: u32x4 = transmute(sse::_mm_cmpeq_ps(a, b));
+        assert_eq!(r, e);
+    }
+
+    unsafe fn _mm_cmplt_ps() {
+        use std::mem::transmute;
+        use std::f32::NAN;
+
+        let a = f32x4::new(10.0, 50.0, 1.0, NAN);
+        let b = f32x4::new(15.0, 20.0, 1.0, NAN);
+        let tru = !0u32;
+        let fls = 0u32;
+
+        let e = u32x4::new(tru, fls, fls, fls);
+        let r: u32x4 = transmute(sse::_mm_cmplt_ps(a, b));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_cmple_ps() {
+        use std::mem::transmute;
+        use std::f32::NAN;
+
+        let a = f32x4::new(10.0, 50.0, 1.0, 4.0);
+        let b = f32x4::new(15.0, 20.0, 1.0, NAN);
+        let tru = !0u32;
+        let fls = 0u32;
+
+        let e = u32x4::new(tru, fls, tru, fls);
+        let r: u32x4 = transmute(sse::_mm_cmple_ps(a, b));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_cmpgt_ps() {
+        use std::mem::transmute;
+        use std::f32::NAN;
+
+        let a = f32x4::new(10.0, 50.0, 1.0, NAN);
+        let b = f32x4::new(15.0, 20.0, 1.0, 42.0);
+        let tru = !0u32;
+        let fls = 0u32;
+
+        let e = u32x4::new(fls, tru, fls, fls);
+        let r: u32x4 = transmute(sse::_mm_cmpgt_ps(a, b));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_cmpge_ps() {
+        use std::mem::transmute;
+        use std::f32::NAN;
+
+        let a = f32x4::new(10.0, 50.0, 1.0, NAN);
+        let b = f32x4::new(15.0, 20.0, 1.0, 42.0);
+        let tru = !0u32;
+        let fls = 0u32;
+
+        let e = u32x4::new(fls, tru, tru, fls);
+        let r: u32x4 = transmute(sse::_mm_cmpge_ps(a, b));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_cmpneq_ps() {
+        use std::mem::transmute;
+        use std::f32::NAN;
+
+        let a = f32x4::new(10.0, 50.0, 1.0, NAN);
+        let b = f32x4::new(15.0, 20.0, 1.0, NAN);
+        let tru = !0u32;
+        let fls = 0u32;
+
+        let e = u32x4::new(tru, tru, fls, tru);
+        let r: u32x4 = transmute(sse::_mm_cmpneq_ps(a, b));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_cmpnlt_ps() {
+        use std::mem::transmute;
+        use std::f32::NAN;
+
+        let a = f32x4::new(10.0, 50.0, 1.0, NAN);
+        let b = f32x4::new(15.0, 20.0, 1.0, 5.0);
+        let tru = !0u32;
+        let fls = 0u32;
+
+        let e = u32x4::new(fls, tru, tru, tru);
+        let r: u32x4 = transmute(sse::_mm_cmpnlt_ps(a, b));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_cmpnle_ps() {
+        use std::mem::transmute;
+        use std::f32::NAN;
+
+        let a = f32x4::new(10.0, 50.0, 1.0, NAN);
+        let b = f32x4::new(15.0, 20.0, 1.0, 5.0);
+        let tru = !0u32;
+        let fls = 0u32;
+
+        let e = u32x4::new(fls, tru, fls, tru);
+        let r: u32x4 = transmute(sse::_mm_cmpnle_ps(a, b));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_cmpngt_ps() {
+        use std::mem::transmute;
+        use std::f32::NAN;
+
+        let a = f32x4::new(10.0, 50.0, 1.0, NAN);
+        let b = f32x4::new(15.0, 20.0, 1.0, 5.0);
+        let tru = !0u32;
+        let fls = 0u32;
+
+        let e = u32x4::new(tru, fls, tru, tru);
+        let r: u32x4 = transmute(sse::_mm_cmpngt_ps(a, b));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_cmpnge_ps() {
+        use std::mem::transmute;
+        use std::f32::NAN;
+
+        let a = f32x4::new(10.0, 50.0, 1.0, NAN);
+        let b = f32x4::new(15.0, 20.0, 1.0, 5.0);
+        let tru = !0u32;
+        let fls = 0u32;
+
+        let e = u32x4::new(tru, fls, fls, tru);
+        let r: u32x4 = transmute(sse::_mm_cmpnge_ps(a, b));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_cmpord_ps() {
+        use std::mem::transmute;
+        use std::f32::NAN;
+
+        let a = f32x4::new(10.0, 50.0, NAN, NAN);
+        let b = f32x4::new(15.0, NAN, 1.0, NAN);
+        let tru = !0u32;
+        let fls = 0u32;
+
+        let e = u32x4::new(tru, fls, fls, fls);
+        let r: u32x4 = transmute(sse::_mm_cmpord_ps(a, b));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_cmpunord_ps() {
+        use std::mem::transmute;
+        use std::f32::NAN;
+
+        let a = f32x4::new(10.0, 50.0, NAN, NAN);
+        let b = f32x4::new(15.0, NAN, 1.0, NAN);
+        let tru = !0u32;
+        let fls = 0u32;
+
+        let e = u32x4::new(fls, tru, tru, tru);
+        let r: u32x4 = transmute(sse::_mm_cmpunord_ps(a, b));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_comieq_ss() {
+        use std::f32::NAN;
+
+        let aa = &[3.0f32, 12.0, 23.0, NAN];
+        let bb = &[3.0f32, 47.5, 1.5, NAN];
+
+        let ee = &[1i32, 0, 0, 0];
+
+        for i in 0..4 {
+            let a = f32x4::new(aa[i], 1.0, 2.0, 3.0);
+            let b = f32x4::new(bb[i], 0.0, 2.0, 4.0);
+
+            let r = sse::_mm_comieq_ss(a, b);
+
+            assert_eq!(ee[i], r,
+                "_mm_comieq_ss({:?}, {:?}) = {}, expected: {} (i={})",
+                a, b, r, ee[i], i);
+        }
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_comilt_ss() {
+        use std::f32::NAN;
+
+        let aa = &[3.0f32, 12.0, 23.0, NAN];
+        let bb = &[3.0f32, 47.5, 1.5, NAN];
+
+        let ee = &[0i32, 1, 0, 0];
+
+        for i in 0..4 {
+            let a = f32x4::new(aa[i], 1.0, 2.0, 3.0);
+            let b = f32x4::new(bb[i], 0.0, 2.0, 4.0);
+
+            let r = sse::_mm_comilt_ss(a, b);
+
+            assert_eq!(ee[i], r,
+                "_mm_comilt_ss({:?}, {:?}) = {}, expected: {} (i={})",
+                a, b, r, ee[i], i);
+        }
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_comile_ss() {
+        use std::f32::NAN;
+
+        let aa = &[3.0f32, 12.0, 23.0, NAN];
+        let bb = &[3.0f32, 47.5, 1.5, NAN];
+
+        let ee = &[1i32, 1, 0, 0];
+
+        for i in 0..4 {
+            let a = f32x4::new(aa[i], 1.0, 2.0, 3.0);
+            let b = f32x4::new(bb[i], 0.0, 2.0, 4.0);
+
+            let r = sse::_mm_comile_ss(a, b);
+
+            assert_eq!(ee[i], r,
+                "_mm_comile_ss({:?}, {:?}) = {}, expected: {} (i={})",
+                a, b, r, ee[i], i);
+        }
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_comigt_ss() {
+        use std::f32::NAN;
+
+        let aa = &[3.0f32, 12.0, 23.0, NAN];
+        let bb = &[3.0f32, 47.5, 1.5, NAN];
+
+        let ee = &[0i32, 0, 1, 0];
+
+        for i in 0..4 {
+            let a = f32x4::new(aa[i], 1.0, 2.0, 3.0);
+            let b = f32x4::new(bb[i], 0.0, 2.0, 4.0);
+
+            let r = sse::_mm_comigt_ss(a, b);
+
+            assert_eq!(ee[i], r,
+                "_mm_comigt_ss({:?}, {:?}) = {}, expected: {} (i={})",
+                a, b, r, ee[i], i);
+        }
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_comige_ss() {
+        use std::f32::NAN;
+
+        let aa = &[3.0f32, 12.0, 23.0, NAN];
+        let bb = &[3.0f32, 47.5, 1.5, NAN];
+
+        let ee = &[1i32, 0, 1, 0];
+
+        for i in 0..4 {
+            let a = f32x4::new(aa[i], 1.0, 2.0, 3.0);
+            let b = f32x4::new(bb[i], 0.0, 2.0, 4.0);
+
+            let r = sse::_mm_comige_ss(a, b);
+
+            assert_eq!(ee[i], r,
+                "_mm_comige_ss({:?}, {:?}) = {}, expected: {} (i={})",
+                a, b, r, ee[i], i);
+        }
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_comineq_ss() {
+        use std::f32::NAN;
+
+        let aa = &[3.0f32, 12.0, 23.0, NAN];
+        let bb = &[3.0f32, 47.5, 1.5, NAN];
+
+        let ee = &[0i32, 1, 1, 1];
+
+        for i in 0..4 {
+            let a = f32x4::new(aa[i], 1.0, 2.0, 3.0);
+            let b = f32x4::new(bb[i], 0.0, 2.0, 4.0);
+
+            let r = sse::_mm_comineq_ss(a, b);
+
+            assert_eq!(ee[i], r,
+                "_mm_comineq_ss({:?}, {:?}) = {}, expected: {} (i={})",
+                a, b, r, ee[i], i);
+        }
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_ucomieq_ss() {
+        use std::f32::NAN;
+
+        let aa = &[3.0f32, 12.0, 23.0, NAN];
+        let bb = &[3.0f32, 47.5, 1.5, NAN];
+
+        let ee = &[1i32, 0, 0, 0];
+
+        for i in 0..4 {
+            let a = f32x4::new(aa[i], 1.0, 2.0, 3.0);
+            let b = f32x4::new(bb[i], 0.0, 2.0, 4.0);
+
+            let r = sse::_mm_ucomieq_ss(a, b);
+
+            assert_eq!(ee[i], r,
+                "_mm_ucomieq_ss({:?}, {:?}) = {}, expected: {} (i={})",
+                a, b, r, ee[i], i);
+        }
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_ucomilt_ss() {
+        use std::f32::NAN;
+
+        let aa = &[3.0f32, 12.0, 23.0, NAN];
+        let bb = &[3.0f32, 47.5, 1.5, NAN];
+
+        let ee = &[0i32, 1, 0, 0];
+
+        for i in 0..4 {
+            let a = f32x4::new(aa[i], 1.0, 2.0, 3.0);
+            let b = f32x4::new(bb[i], 0.0, 2.0, 4.0);
+
+            let r = sse::_mm_ucomilt_ss(a, b);
+
+            assert_eq!(ee[i], r,
+                "_mm_ucomilt_ss({:?}, {:?}) = {}, expected: {} (i={})",
+                a, b, r, ee[i], i);
+        }
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_ucomile_ss() {
+        use std::f32::NAN;
+
+        let aa = &[3.0f32, 12.0, 23.0, NAN];
+        let bb = &[3.0f32, 47.5, 1.5, NAN];
+
+        let ee = &[1i32, 1, 0, 0];
+
+        for i in 0..4 {
+            let a = f32x4::new(aa[i], 1.0, 2.0, 3.0);
+            let b = f32x4::new(bb[i], 0.0, 2.0, 4.0);
+
+            let r = sse::_mm_ucomile_ss(a, b);
+
+            assert_eq!(ee[i], r,
+                "_mm_ucomile_ss({:?}, {:?}) = {}, expected: {} (i={})",
+                a, b, r, ee[i], i);
+        }
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_ucomigt_ss() {
+        use std::f32::NAN;
+
+        let aa = &[3.0f32, 12.0, 23.0, NAN];
+        let bb = &[3.0f32, 47.5, 1.5, NAN];
+
+        let ee = &[0i32, 0, 1, 0];
+
+        for i in 0..4 {
+            let a = f32x4::new(aa[i], 1.0, 2.0, 3.0);
+            let b = f32x4::new(bb[i], 0.0, 2.0, 4.0);
+
+            let r = sse::_mm_ucomigt_ss(a, b);
+
+            assert_eq!(ee[i], r,
+                "_mm_ucomigt_ss({:?}, {:?}) = {}, expected: {} (i={})",
+                a, b, r, ee[i], i);
+        }
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_ucomige_ss() {
+        use std::f32::NAN;
+
+        let aa = &[3.0f32, 12.0, 23.0, NAN];
+        let bb = &[3.0f32, 47.5, 1.5, NAN];
+
+        let ee = &[1i32, 0, 1, 0];
+
+        for i in 0..4 {
+            let a = f32x4::new(aa[i], 1.0, 2.0, 3.0);
+            let b = f32x4::new(bb[i], 0.0, 2.0, 4.0);
+
+            let r = sse::_mm_ucomige_ss(a, b);
+
+            assert_eq!(ee[i], r,
+                "_mm_ucomige_ss({:?}, {:?}) = {}, expected: {} (i={})",
+                a, b, r, ee[i], i);
+        }
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_ucomineq_ss() {
+        use std::f32::NAN;
+
+        let aa = &[3.0f32, 12.0, 23.0, NAN];
+        let bb = &[3.0f32, 47.5, 1.5, NAN];
+
+        let ee = &[0i32, 1, 1, 1];
+
+        for i in 0..4 {
+            let a = f32x4::new(aa[i], 1.0, 2.0, 3.0);
+            let b = f32x4::new(bb[i], 0.0, 2.0, 4.0);
+
+            let r = sse::_mm_ucomineq_ss(a, b);
+
+            assert_eq!(ee[i], r,
+                "_mm_ucomineq_ss({:?}, {:?}) = {}, expected: {} (i={})",
+                a, b, r, ee[i], i);
+        }
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_comieq_ss_vs_ucomieq_ss() {
+        // If one of the arguments is a quiet NaN `comieq_ss` should signal an
+        // Invalid Operation Exception while `ucomieq_ss` should not.
+        use std::f32::NAN;  // This is a quiet NaN.
+        let aa = &[3.0f32, NAN, 23.0, NAN];
+        let bb = &[3.0f32, 47.5, NAN, NAN];
+
+        let ee = &[1i32, 0, 0, 0];
+        let exc = &[0u32, 1, 1, 1];  // Should comieq_ss signal an exception?
+
+        for i in 0..4 {
+            let a = f32x4::new(aa[i], 1.0, 2.0, 3.0);
+            let b = f32x4::new(bb[i], 0.0, 2.0, 4.0);
+
+            sse::_MM_SET_EXCEPTION_STATE(0);
+            let r1 = sse::_mm_comieq_ss(*black_box(&a), b);
+            let s1 = sse::_MM_GET_EXCEPTION_STATE();
+
+            sse::_MM_SET_EXCEPTION_STATE(0);
+            let r2 = sse::_mm_ucomieq_ss(*black_box(&a), b);
+            let s2 = sse::_MM_GET_EXCEPTION_STATE();
+
+            assert_eq!(ee[i], r1,
+                "_mm_comeq_ss({:?}, {:?}) = {}, expected: {} (i={})",
+                a, b, r1, ee[i], i);
+            assert_eq!(ee[i], r2,
+                "_mm_ucomeq_ss({:?}, {:?}) = {}, expected: {} (i={})",
+                a, b, r2, ee[i], i);
+            assert_eq!(s1, exc[i] * sse::_MM_EXCEPT_INVALID,
+                "_mm_comieq_ss() set exception flags: {} (i={})", s1, i);
+            assert_eq!(s2, 0,  // ucomieq_ss should not signal an exception
+                "_mm_ucomieq_ss() set exception flags: {} (i={})", s2, i);
+        }
     }
 
     #[simd_test = "sse"]
@@ -1290,5 +2591,20 @@ mod tests {
         let underflow =
             sse::_MM_GET_EXCEPTION_STATE() & sse::_MM_EXCEPT_UNDERFLOW != 0;
         assert_eq!(underflow, true);
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _MM_TRANSPOSE4_PS() {
+        let mut a = f32x4::new(1.0, 2.0, 3.0, 4.0);
+        let mut b = f32x4::new(5.0, 6.0, 7.0, 8.0);
+        let mut c = f32x4::new(9.0, 10.0, 11.0, 12.0);
+        let mut d = f32x4::new(13.0, 14.0, 15.0, 16.0);
+
+        sse::_MM_TRANSPOSE4_PS(&mut a, &mut b, &mut c, &mut d);
+
+        assert_eq!(a, f32x4::new(1.0, 5.0, 9.0, 13.0));
+        assert_eq!(b, f32x4::new(2.0, 6.0, 10.0, 14.0));
+        assert_eq!(c, f32x4::new(3.0, 7.0, 11.0, 15.0));
+        assert_eq!(d, f32x4::new(4.0, 8.0, 12.0, 16.0));
     }
 }
