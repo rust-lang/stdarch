@@ -64,46 +64,34 @@ pub unsafe fn _mm_blend_ps(a: f32x4, b: f32x4, imm4: u8) -> f32x4 {
 /// Extract a single-precision (32-bit) floating-point element from `a`, selected with `imm8`
 #[inline(always)]
 #[target_feature = "+sse4.1"]
-#[cfg_attr(test, assert_instr(extractps, imm2=0))]
-pub unsafe fn _mm_extract_ps(a: f32x4, imm2: u8) -> i32 {
-    macro_rules! call {
-        ($imm2:expr) => { mem::transmute(a.extract($imm2)) }
-    }
-    constify_imm2!(imm2, call)
+#[cfg_attr(test, assert_instr(extractps, imm8=0))]
+pub unsafe fn _mm_extract_ps(a: f32x4, imm8: u8) -> i32 {
+    mem::transmute(a.extract(imm8 as u32 & 0b11))
 }
 
 /// Extract an 8-bit integer from `a` selected with `imm8`
 #[inline(always)]
 #[target_feature = "+sse4.1"]
-#[cfg_attr(test, assert_instr(pextrb, imm4=0))]
-pub unsafe fn _mm_extract_epi8(a: i8x16, imm4: u8) -> i8 {
-    macro_rules! call {
-        ($imm4:expr) => { a.extract($imm4) }
-    }
-    constify_imm4!(imm4, call)
+#[cfg_attr(test, assert_instr(pextrb, imm8=0))]
+pub unsafe fn _mm_extract_epi8(a: i8x16, imm8: u8) -> i8 {
+    a.extract((imm8 & 0b1111) as u32)
 }
 
 /// Extract an 32-bit integer from `a` selected with `imm8`
 #[inline(always)]
 #[target_feature = "+sse4.1"]
-#[cfg_attr(test, assert_instr(pextrd, imm2=1))]
-pub unsafe fn _mm_extract_epi32(a: i32x4, imm2: u8) -> i32 {
-    macro_rules! call {
-        ($imm2:expr) => { a.extract($imm2) }
-    }
-    constify_imm2!(imm2, call)
+#[cfg_attr(test, assert_instr(pextrd, imm8=1))]
+pub unsafe fn _mm_extract_epi32(a: i32x4, imm8: u8) -> i32 {
+    a.extract((imm8 & 0b11) as u32)
 }
 
 /// Extract an 64-bit integer from `a` selected with `imm8`
 #[cfg(target_arch = "x86_64")]
 #[inline(always)]
 #[target_feature = "+sse4.1"]
-#[cfg_attr(test, assert_instr(pextrq, imm1=1))]
-pub unsafe fn _mm_extract_epi64(a: i64x2, imm1: u8) -> i64 {
-    macro_rules! call {
-        ($imm1:expr) => { a.extract($imm1) }
-    }
-    constify_imm1!(imm1, call)
+#[cfg_attr(test, assert_instr(pextrq, imm8=1))]
+pub unsafe fn _mm_extract_epi64(a: i64x2, imm8: u8) -> i64 {
+    a.extract((imm8 & 0b1) as u32)
 }
 
 /// Select a single value in `a` to store at some position in `b`, 
