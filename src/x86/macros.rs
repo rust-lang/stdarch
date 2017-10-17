@@ -338,4 +338,12 @@ macro_rules! constify_imm2 {
     }
 }
 
-
+macro_rules! constify_imm1 {
+    ($imm8:expr, $expand:ident) => {
+        #[allow(overflowing_literals)]
+        match $imm8 & 0b1 {
+            0 => $expand!(0),
+            _ => $expand!(1),
+        }
+    }
+}
