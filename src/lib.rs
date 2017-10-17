@@ -111,10 +111,9 @@
 
 #![allow(dead_code)]
 #![allow(unused_features)]
-
 #![feature(
     const_fn, link_llvm_intrinsics, platform_intrinsics, repr_simd, simd_ffi,
-    target_feature, cfg_target_feature, i128_type, asm, const_atomic_usize_new, abi_vectorcall
+    target_feature, cfg_target_feature, i128_type, asm, const_atomic_usize_new
 )]
 #![cfg_attr(test, feature(proc_macro, test))]
 

@@ -65,7 +65,7 @@ pub unsafe fn _mm_blend_ps(a: f32x4, b: f32x4, imm4: u8) -> f32x4 {
 #[inline(always)]
 #[target_feature = "+sse4.1"]
 #[cfg_attr(test, assert_instr(extractps, imm2=0))]
-pub unsafe extern "vectorcall" fn _mm_extract_ps(a: f32x4, imm2: u8) -> i32 {
+pub unsafe fn _mm_extract_ps(a: f32x4, imm2: u8) -> i32 {
     macro_rules! call {
         ($imm2:expr) => { mem::transmute(a.extract($imm2)) }
     }
@@ -76,7 +76,7 @@ pub unsafe extern "vectorcall" fn _mm_extract_ps(a: f32x4, imm2: u8) -> i32 {
 #[inline(always)]
 #[target_feature = "+sse4.1"]
 #[cfg_attr(test, assert_instr(pextrb, imm4=0))]
-pub unsafe extern "vectorcall" fn _mm_extract_epi8(a: i8x16, imm4: u8) -> i8 {
+pub unsafe fn _mm_extract_epi8(a: i8x16, imm4: u8) -> i8 {
     macro_rules! call {
         ($imm4:expr) => { a.extract($imm4) }
     }
@@ -87,7 +87,7 @@ pub unsafe extern "vectorcall" fn _mm_extract_epi8(a: i8x16, imm4: u8) -> i8 {
 #[inline(always)]
 #[target_feature = "+sse4.1"]
 #[cfg_attr(test, assert_instr(pextrd, imm2=1))]
-pub unsafe extern "vectorcall" fn _mm_extract_epi32(a: i32x4, imm2: u8) -> i32 {
+pub unsafe fn _mm_extract_epi32(a: i32x4, imm2: u8) -> i32 {
     macro_rules! call {
         ($imm2:expr) => { a.extract($imm2) }
     }
@@ -99,7 +99,7 @@ pub unsafe extern "vectorcall" fn _mm_extract_epi32(a: i32x4, imm2: u8) -> i32 {
 #[inline(always)]
 #[target_feature = "+sse4.1"]
 #[cfg_attr(test, assert_instr(pextrq, imm1=1))]
-pub unsafe extern "vectorcall" fn _mm_extract_epi64(a: i64x2, imm1: u8) -> i64 {
+pub unsafe fn _mm_extract_epi64(a: i64x2, imm1: u8) -> i64 {
     macro_rules! call {
         ($imm1:expr) => { a.extract($imm1) }
     }
