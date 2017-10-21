@@ -897,10 +897,20 @@ pub unsafe fn _mm256_packus_epi32(a: i32x8, b: i32x8) -> u16x16 {
     packusdw(a, b)
 }
 
+/// Permutes packed 32-bit integers from `a` according to the content of `b`.
+///
+/// The last 3 bits of each integer of `b` are used as addresses into the 8
+/// integers of `a`.
+#[inline(always)]
+#[target_feature = "+avx2"]
+#[cfg_attr(test, assert_instr(vpermd))]
+pub unsafe fn _mm256_permutevar8x32_epi32(a: u32x8, b: u32x8) -> u32x8 {
+    permd(a, b)
+}
+
 // TODO _mm256_permute2x128_si256 (__m256i a, __m256i b, const int imm8)
 // TODO _mm256_permute4x64_epi64 (__m256i a, const int imm8)
 // TODO _mm256_permute4x64_pd (__m256d a, const int imm8)
-// TODO _mm256_permutevar8x32_epi32 (__m256i a, __m256i idx)
 // TODO _mm256_permutevar8x32_ps (__m256 a, __m256i idx)
 
 /// Compute the absolute differences of packed unsigned 8-bit integers in `a`
@@ -943,6 +953,7 @@ pub unsafe fn _mm256_sad_epu8 (a: u8x32, b: u8x32) -> u64x4 {
 ///     r
 /// }
 /// ```
+#[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpshufb))]
 pub unsafe fn _mm256_shuffle_epi8(a: u8x32, b: u8x32) -> u8x32 {
@@ -1466,7 +1477,8 @@ extern "C" {
     fn psubusw(a: u16x16, b: u16x16) -> u16x16;
     #[link_name = "llvm.x86.avx2.pshuf.b"]
     fn pshufb(a: u8x32, b: u8x32) -> u8x32;
-
+    #[link_name = "llvm.x86.avx2.permd"]
+    fn permd(a: u32x8, b: u32x8) -> u32x8;
 }
 
 #[cfg(test)]
@@ -2624,6 +2636,15 @@ mod tests {
             29, 22, 22, 27, 21, 18, 25, 17,
         );
         let r = avx2::_mm256_shuffle_epi8(a, b);
+        assert_eq!(r, expected);
+    }
+
+    #[simd_test = "avx2"]
+    unsafe fn _mm256_permutevar8x32_epi32() {
+        let a = u32x8::new(100, 200, 300, 400, 500, 600, 700, 800);
+        let b = u32x8::new(5, 0, 5, 1, 7, 6, 3, 4);
+        let expected = u32x8::new(600, 100, 600, 200, 800, 700, 400, 500);
+        let r = avx2::_mm256_permutevar8x32_epi32(a, b);
         assert_eq!(r, expected);
     }
 }
