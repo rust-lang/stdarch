@@ -694,6 +694,44 @@ pub unsafe fn _mm_cvtss_f32(a: f32x4) -> f32 {
     a.extract(0)
 }
 
+/// Convert a 32 bit integer to a 32 bit float. The result vector is the input
+/// vector `a` with the lowest 32 bit float replaced by the converted integer.
+///
+/// This intrinsic corresponds to the `CVTSI2SS` instruction (with 32 bit
+/// input).
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(cvtsi2ssl))]
+pub unsafe fn _mm_cvtsi32_ss(a: f32x4, b: i32) -> f32x4 {
+    a.replace(0, b as f32)
+}
+
+/// Alias for [`_mm_cvtsi32_ss`](fn._mm_cvtsi32_ss.html).
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(cvtsi2ssl))]
+pub unsafe fn _mm_cvt_si2ss(a: f32x4, b: i32) -> f32x4 {
+    _mm_cvtsi32_ss(a, b)
+}
+
+/// Convert a 64 bit integer to a 32 bit float. The result vector is the input
+/// vector `a` with the lowest 32 bit float replaced by the converted integer.
+///
+/// This intrinsic corresponds to the `CVTSI2SS` instruction (with 64 bit
+/// input).
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(cvtsi2ssq))]
+pub unsafe fn _mm_cvtsi64_ss(a: f32x4, b: i64) -> f32x4 {
+    a.replace(0, b as f32)
+}
+
+// Blocked by https://github.com/rust-lang-nursery/stdsimd/issues/74
+// pub unsafe fn _mm_cvtpi32_ps(a: f32x4, b: i32x2) -> f32x4
+// pub unsafe fn _mm_cvt_pi2ps(a: f32x4, b: i32x2) -> f32x4 {
+//     _mm_cvtpi32_ps(a, b)
+// }
+
 /// Construct a `f32x4` with the lowest element set to `a` and the rest set to
 /// zero.
 #[inline(always)]
@@ -2728,6 +2766,48 @@ mod tests {
             assert_eq!(e, r,
                 "TestCase #{} _mm_cvttss_si64({:?}) = {}, expected: {}",
                 i, x, r, e);
+        }
+    }
+
+    #[simd_test = "sse"]
+    pub unsafe fn _mm_cvtsi32_ss() {
+        let inputs = &[
+            (4555i32,   4555.0f32),
+            (322223333, 322223330.0),
+            (-432,      -432.0),
+            (-322223333, -322223330.0)
+        ];
+
+        for i in 0..inputs.len() {
+            let (x, f) = inputs[i];
+            let a = f32x4::new(5.0, 6.0, 7.0, 8.0);
+            let r = sse::_mm_cvtsi32_ss(a, x);
+            let e = a.replace(0, f);
+            assert_eq!(e, r,
+                "TestCase #{} _mm_cvtsi32_ss({:?}, {}) = {:?}, expected: {:?}",
+                i, a, x, r, e);
+        }
+    }
+
+    #[simd_test = "sse"]
+    pub unsafe fn _mm_cvtsi64_ss() {
+        let inputs = &[
+            (4555i64,   4555.0f32),
+            (322223333, 322223330.0),
+            (-432,      -432.0),
+            (-322223333, -322223330.0),
+            (9223372036854775807, 9.223372e18),
+            (-9223372036854775808, -9.223372e18)
+        ];
+
+        for i in 0..inputs.len() {
+            let (x, f) = inputs[i];
+            let a = f32x4::new(5.0, 6.0, 7.0, 8.0);
+            let r = sse::_mm_cvtsi64_ss(a, x);
+            let e = a.replace(0, f);
+            assert_eq!(e, r,
+                "TestCase #{} _mm_cvtsi64_ss({:?}, {}) = {:?}, expected: {:?}",
+                i, a, x, r, e);
         }
     }
 
