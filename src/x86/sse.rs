@@ -633,6 +633,7 @@ pub unsafe fn _mm_cvt_ss2si(a: f32x4) -> i32 {
 #[inline(always)]
 #[target_feature = "+sse"]
 #[cfg_attr(test, assert_instr(cvtss2si))]
+#[cfg(target_arch = "x86_64")]
 pub unsafe fn _mm_cvtss_si64(a: f32x4) -> i64 {
     cvtss2si64(a)
 }
@@ -677,6 +678,7 @@ pub unsafe fn _mm_cvtt_ss2si(a: f32x4) -> i32 {
 #[inline(always)]
 #[target_feature = "+sse"]
 #[cfg_attr(test, assert_instr(cvttss2si))]
+#[cfg(target_arch = "x86_64")]
 pub unsafe fn _mm_cvttss_si64(a: f32x4) -> i64 {
     cvttss2si64(a)
 }
@@ -701,7 +703,8 @@ pub unsafe fn _mm_cvtss_f32(a: f32x4) -> f32 {
 /// input).
 #[inline(always)]
 #[target_feature = "+sse"]
-#[cfg_attr(test, assert_instr(cvtsi2ssl))]
+#[cfg_attr(all(test, target_os = "macos"), assert_instr(cvtsi2ssl))]
+#[cfg_attr(all(test, not(target_os = "macos")), assert_instr(cvtsi2ss))]
 pub unsafe fn _mm_cvtsi32_ss(a: f32x4, b: i32) -> f32x4 {
     a.replace(0, b as f32)
 }
@@ -709,7 +712,8 @@ pub unsafe fn _mm_cvtsi32_ss(a: f32x4, b: i32) -> f32x4 {
 /// Alias for [`_mm_cvtsi32_ss`](fn._mm_cvtsi32_ss.html).
 #[inline(always)]
 #[target_feature = "+sse"]
-#[cfg_attr(test, assert_instr(cvtsi2ssl))]
+#[cfg_attr(all(test, target_os = "macos"), assert_instr(cvtsi2ssl))]
+#[cfg_attr(all(test, not(target_os = "macos")), assert_instr(cvtsi2ss))]
 pub unsafe fn _mm_cvt_si2ss(a: f32x4, b: i32) -> f32x4 {
     _mm_cvtsi32_ss(a, b)
 }
@@ -721,7 +725,9 @@ pub unsafe fn _mm_cvt_si2ss(a: f32x4, b: i32) -> f32x4 {
 /// input).
 #[inline(always)]
 #[target_feature = "+sse"]
-#[cfg_attr(test, assert_instr(cvtsi2ssq))]
+#[cfg_attr(all(test, target_os = "macos"), assert_instr(cvtsi2ssq))]
+#[cfg_attr(all(test, not(target_os = "macos")), assert_instr(cvtsi2ss))]
+#[cfg(target_arch = "x86_64")]
 pub unsafe fn _mm_cvtsi64_ss(a: f32x4, b: i64) -> f32x4 {
     a.replace(0, b as f32)
 }
@@ -1679,10 +1685,12 @@ extern {
     #[link_name = "llvm.x86.sse.cvtss2si"]
     fn cvtss2si(a: f32x4) -> i32;
     #[link_name = "llvm.x86.sse.cvtss2si64"]
+    #[cfg(target_arch = "x86_64")]
     fn cvtss2si64(a: f32x4) -> i64;
     #[link_name = "llvm.x86.sse.cvttss2si"]
     fn cvttss2si(a: f32x4) -> i32;
     #[link_name = "llvm.x86.sse.cvttss2si64"]
+    #[cfg(target_arch = "x86_64")]
     fn cvttss2si64(a: f32x4) -> i64;
     #[link_name = "llvm.x86.sse.sfence"]
     fn sfence();
@@ -2691,6 +2699,7 @@ mod tests {
     }
 
     #[simd_test = "sse"]
+    #[cfg(target_arch = "x86_64")]
     unsafe fn _mm_cvtss_si64() {
         use std::f32::NAN;
         use std::i64::MIN;
@@ -2742,6 +2751,7 @@ mod tests {
     }
 
     #[simd_test = "sse"]
+    #[cfg(target_arch = "x86_64")]
     unsafe fn _mm_cvttss_si64() {
         use std::f32::NAN;
         use std::i64::MIN;
@@ -2790,6 +2800,7 @@ mod tests {
     }
 
     #[simd_test = "sse"]
+    #[cfg(target_arch = "x86_64")]
     pub unsafe fn _mm_cvtsi64_ss() {
         let inputs = &[
             (4555i64,   4555.0f32),
