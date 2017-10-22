@@ -1,3 +1,4 @@
+#![cfg_attr(feature = "strict", deny(warnings))]
 #![feature(cfg_target_feature)]
 #![feature(target_feature)]
 
