@@ -1989,6 +1989,13 @@ pub unsafe fn _mm_undefined_pd() -> f64x2 {
     f64x2::splat(mem::uninitialized())
 }
 
+/// Return vector of type __m128i with undefined elements.
+#[inline(always)]
+#[target_feature = "+sse2"]
+pub unsafe fn _mm_undefined_si128() -> __m128i {
+    mem::transmute(i32x4::splat(mem::uninitialized()))
+}
+
 #[allow(improper_ctypes)]
 extern {
     #[link_name = "llvm.x86.sse2.pause"]
