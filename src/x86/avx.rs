@@ -732,11 +732,12 @@ pub unsafe fn _mm256_extractf128_pd(a: f64x4, imm8: i32) -> f64x2 {
 #[inline(always)]
 #[target_feature = "+avx"]
 #[cfg_attr(test, assert_instr(vextractf128))]
-pub unsafe fn _mm256_extractf128_si256(a: i64x4, imm8: i32) -> i64x2 {
-    match imm8 & 1 {
-        0 => simd_shuffle2(a, _mm256_undefined_si256(), [0, 1]),
-        _ => simd_shuffle2(a, _mm256_undefined_si256(), [2, 3]),
-    }
+pub unsafe fn _mm256_extractf128_si256(a: __m256i, imm8: i32) -> __m128i {
+    let b = i64x4::from(_mm256_undefined_si256());
+    i64x2::into(match imm8 & 1 {
+        0 => simd_shuffle2(i64x4::from(a), b, [0, 1]),
+        _ => simd_shuffle2(i64x4::from(a), b, [2, 3]),
+    })
 }
 
 /// Extract an 8-bit integer from `a`, selected with `imm8`.
@@ -1083,9 +1084,10 @@ pub unsafe fn _mm256_broadcast_pd(a: &f64x2) -> f64x4 {
 #[target_feature = "+avx"]
 #[cfg_attr(test, assert_instr(vinsertf128, imm8 = 1))]
 pub unsafe fn _mm256_insertf128_ps(a: f32x8, b: f32x4, imm8: i32) -> f32x8 {
+    let b = _mm256_castps128_ps256(b);
     match imm8 & 1 {
-        0 => simd_shuffle8(a, _mm256_castps128_ps256(b), [8, 9, 10, 11, 4, 5, 6, 7]),
-        _ => simd_shuffle8(a, _mm256_castps128_ps256(b), [0, 1, 2, 3, 8, 9, 10, 11]),
+        0 => simd_shuffle8(a, b, [8, 9, 10, 11, 4, 5, 6, 7]),
+        _ => simd_shuffle8(a, b, [0, 1, 2, 3, 8, 9, 10, 11]),
     }
 }
 
@@ -1107,11 +1109,12 @@ pub unsafe fn _mm256_insertf128_pd(a: f64x4, b: f64x2, imm8: i32) -> f64x4 {
 #[inline(always)]
 #[target_feature = "+avx"]
 #[cfg_attr(test, assert_instr(vinsertf128, imm8 = 1))]
-pub unsafe fn _mm256_insertf128_si256(a: i64x4, b: i64x2, imm8: i32) -> i64x4 {
-    match imm8 & 1 {
-        0 => simd_shuffle4(a, _mm256_castsi128_si256(b), [4, 5, 2, 3]),
-        _ => simd_shuffle4(a, _mm256_castsi128_si256(b), [0, 1, 4, 5]),
-    }
+pub unsafe fn _mm256_insertf128_si256(a: __m256i, b: __m128i, imm8: i32) -> __m256i {
+    let b = i64x4::from(_mm256_castsi128_si256(b));
+    i64x4::into(match imm8 & 1 {
+        0 => simd_shuffle4(i64x4::from(a), b, [4, 5, 2, 3]),
+        _ => simd_shuffle4(i64x4::from(a), b, [0, 1, 4, 5]),
+    })
 }
 
 /// Copy `a` to result, and insert the 8-bit integer `i` into result
@@ -1205,12 +1208,12 @@ pub unsafe fn _mm256_storeu_ps(mem_addr: *mut f32, a: f32x8) {
 #[inline(always)]
 #[target_feature = "+avx"]
 #[cfg_attr(test, assert_instr(vmovups))] // FIXME vmovdqu expected
-pub unsafe fn _mm256_loadu_si256(mem_addr: *const i64x4) -> i64x4 {
-    let mut dst = i64x4::splat(mem::uninitialized());
+pub unsafe fn _mm256_loadu_si256(mem_addr: *const __m256i) -> __m256i {
+    let mut dst = __m256i::splat(mem::uninitialized());
     ptr::copy_nonoverlapping(
         mem_addr as *const u8,
-        &mut dst as *mut i64x4 as *mut u8,
-        mem::size_of::<i64x4>());
+        &mut dst as *mut __m256i as *mut u8,
+        mem::size_of::<__m256i>());
     dst
 }
 
@@ -1219,7 +1222,7 @@ pub unsafe fn _mm256_loadu_si256(mem_addr: *const i64x4) -> i64x4 {
 #[inline(always)]
 #[target_feature = "+avx"]
 #[cfg_attr(test, assert_instr(vmovups))] // FIXME vmovdqu expected
-pub unsafe fn _mm256_storeu_si256(mem_addr: *mut i64x4, a: i64x4) {
+pub unsafe fn _mm256_storeu_si256(mem_addr: *mut __m256i, a: __m256i) {
     storeusi256(mem_addr, a);
 }
 
@@ -1624,8 +1627,8 @@ pub unsafe fn _mm256_setzero_ps() -> f32x8 {
 #[inline(always)]
 #[target_feature = "+avx"]
 #[cfg_attr(test, assert_instr(vxor))]
-pub unsafe fn _mm256_setzero_si256() -> i64x4 {
-    i64x4::new(0, 0, 0, 0)
+pub unsafe fn _mm256_setzero_si256() -> __m256i {
+    mem::transmute(i64x4::new(0, 0, 0, 0))
 }
 
 /// Set packed double-precision (64-bit) floating-point elements in returned
@@ -1845,14 +1848,14 @@ pub unsafe fn _mm256_castps_pd(a: f32x8) -> f64x4 {
 /// Casts vector of type __m256 to type __m256i.
 #[inline(always)]
 #[target_feature = "+avx"]
-pub unsafe fn _mm256_castps_si256(a: f32x8) -> i64x4 {
+pub unsafe fn _mm256_castps_si256(a: f32x8) -> __m256i {
     mem::transmute(a)
 }
 
 /// Casts vector of type __m256i to type __m256.
 #[inline(always)]
 #[target_feature = "+avx"]
-pub unsafe fn _mm256_castsi256_ps(a: i64x4) -> f32x8 {
+pub unsafe fn _mm256_castsi256_ps(a: __m256i) -> f32x8 {
     mem::transmute(a)
 }
 
@@ -1861,8 +1864,8 @@ pub unsafe fn _mm256_castsi256_ps(a: i64x4) -> f32x8 {
 /// instructions, thus it has zero latency.
 #[inline(always)]
 #[target_feature = "+avx"]
-pub unsafe fn _mm256_castpd_si256(a: f64x4) -> i64x4 {
-    simd_cast(a)
+pub unsafe fn _mm256_castpd_si256(a: f64x4) -> __m256i {
+    i64x4::into(simd_cast(a))
 }
 
 /// Casts vector of type __m256i to type __m256d.
@@ -1870,8 +1873,8 @@ pub unsafe fn _mm256_castpd_si256(a: f64x4) -> i64x4 {
 /// instructions, thus it has zero latency.
 #[inline(always)]
 #[target_feature = "+avx"]
-pub unsafe fn _mm256_castsi256_pd(a: i64x4) -> f64x4 {
-    simd_cast(a)
+pub unsafe fn _mm256_castsi256_pd(a: __m256i) -> f64x4 {
+    simd_cast(i64x4::from(a))
 }
 
 /// Casts vector of type __m256 to type __m128.
@@ -1897,8 +1900,8 @@ pub unsafe fn _mm256_castpd256_pd128(a: f64x4) -> f64x2 {
 /// instructions, thus it has zero latency.
 #[inline(always)]
 #[target_feature = "+avx"]
-pub unsafe fn _mm256_castsi256_si128(a: i64x4) -> i64x2 {
-    simd_shuffle2(a, a, [0, 1])
+pub unsafe fn _mm256_castsi256_si128(a: __m256i) -> __m128i {
+    i64x2::into(simd_shuffle2(i64x4::from(a), i64x4::from(a), [0, 1]))
 }
 
 /// Casts vector of type __m128 to type __m256;
@@ -1923,9 +1926,9 @@ pub unsafe fn _mm256_castpd128_pd256(a: f64x2) -> f64x4 {
 /// the upper 128 bits of the result are undefined.
 #[inline(always)]
 #[target_feature = "+avx"]
-pub unsafe fn _mm256_castsi128_si256(a: i64x2) -> i64x4 {
+pub unsafe fn _mm256_castsi128_si256(a: __m128i) -> __m256i {
     // FIXME simd_shuffle4(a, a, [0, 1, -1, -1])
-    simd_shuffle4(a, a, [0, 1, 0, 0])
+    i64x4::into(simd_shuffle4(i64x2::from(a), i64x2::from(a), [0, 1, 0, 0]))
 }
 
 /// Constructs a 256-bit floating-point vector of [8 x float] from a
@@ -1943,9 +1946,10 @@ pub unsafe fn _mm256_zextps128_ps256(a: f32x4) -> f32x8 {
 /// 128 bits are set to zero.
 #[inline(always)]
 #[target_feature = "+avx,+sse2"]
-pub unsafe fn _mm256_zextsi128_si256(a: i64x2) -> i64x4 {
+pub unsafe fn _mm256_zextsi128_si256(a: __m128i) -> __m256i {
     use x86::sse2::_mm_setzero_si128;
-    simd_shuffle4(a, mem::transmute(_mm_setzero_si128()), [0, 1, 2, 3])
+    let b =  mem::transmute(_mm_setzero_si128());
+    i64x4::into(simd_shuffle4(i64x2::from(a), b, [0, 1, 2, 3]))
 }
 
 /// Constructs a 256-bit floating-point vector of [4 x double] from a
@@ -1973,11 +1977,11 @@ pub unsafe fn _mm256_undefined_pd() -> f64x4 {
     f64x4::splat(mem::uninitialized())
 }
 
-/// Return vector of type `i64x4` with undefined elements.
+/// Return vector of type __m256i with undefined elements.
 #[inline(always)]
 #[target_feature = "+avx"]
-pub unsafe fn _mm256_undefined_si256() -> i64x4 {
-    i64x4::splat(mem::uninitialized())
+pub unsafe fn _mm256_undefined_si256() -> __m256i {
+    mem::transmute(i64x4::splat(mem::uninitialized()))
 }
 
 /// Set packed __m256 returned vector with the supplied values.
@@ -2096,7 +2100,7 @@ extern "C" {
     #[link_name = "llvm.x86.avx.storeu.ps.256"]
     fn storeups256(mem_addr: *mut f32, a: f32x8);
     #[link_name = "llvm.x86.avx.storeu.si.256"]
-    fn storeusi256(mem_addr: *mut i64x4, a: i64x4);
+    fn storeusi256(mem_addr: *mut __m256i, a: __m256i);
     #[link_name = "llvm.x86.avx.maskload.pd.256"]
     fn maskloadpd256(mem_addr: *const i8, mask: i64x4) -> f64x4;
     #[link_name = "llvm.x86.avx.maskstore.pd.256"]
@@ -2161,6 +2165,7 @@ mod tests {
     use v128::{f32x4, f64x2, i8x16, i32x4, i64x2};
     use v256::*;
     use x86::avx;
+    use x86::{__m128i, __m256i};
 
     #[simd_test = "avx"]
     unsafe fn _mm256_add_pd() {
@@ -2684,9 +2689,9 @@ mod tests {
     #[simd_test = "avx"]
     unsafe fn _mm256_extractf128_si256() {
         let a = i64x4::new(4, 3, 2, 5);
-        let r = avx::_mm256_extractf128_si256(a, 0);
+        let r = avx::_mm256_extractf128_si256(__m256i::from(a), 0);
         let e = i64x2::new(4, 3);
-        assert_eq!(r, e);
+        assert_eq!(r, __m128i::from(e));
     }
 
     #[simd_test = "avx"]
@@ -2885,11 +2890,11 @@ mod tests {
 
     #[simd_test = "avx"]
     unsafe fn _mm256_insertf128_si256() {
-        let a = i64x4::new(1, 2, 3, 4);
-        let b = i64x2::new(5, 6);
+        let a = __m256i::from(i64x4::new(1, 2, 3, 4));
+        let b = __m128i::from(i64x2::new(5, 6));
         let r = avx::_mm256_insertf128_si256(a, b, 0);
         let e = i64x4::new(5, 6, 3, 4);
-        assert_eq!(r, e);
+        assert_eq!(r, __m256i::from(e));
     }
 
     #[simd_test = "avx"]
@@ -2972,16 +2977,16 @@ mod tests {
 
     #[simd_test = "avx"]
     unsafe fn _mm256_loadu_si256() {
-        let a = i64x4::new(1, 2, 3, 4);
+        let a = __m256i::from(i64x4::new(1, 2, 3, 4));
         let p = &a as *const _;
         let r = avx::_mm256_loadu_si256(black_box(p));
         let e = i64x4::new(1, 2, 3, 4);
-        assert_eq!(r, e);
+        assert_eq!(r, __m256i::from(e));
     }
 
     #[simd_test = "avx"]
     unsafe fn _mm256_storeu_si256() {
-        let a = i64x4::splat(9);
+        let a = i8x32::splat(9);
         let mut r = avx::_mm256_undefined_si256();
         avx::_mm256_storeu_si256(&mut r as *mut _, a);
         assert_eq!(r, a);
@@ -3345,7 +3350,7 @@ mod tests {
     #[simd_test = "avx"]
     unsafe fn _mm256_setzero_si256() {
         let r = avx::_mm256_setzero_si256();
-        assert_eq!(r, i64x4::splat(0));
+        assert_eq!(r, i8x32::splat(0));
     }
 
     #[simd_test = "avx"]
@@ -3498,13 +3503,19 @@ mod tests {
     unsafe fn _mm256_castps_si256() {
         let a = f32x8::new(1., 2., 3., 4., 5., 6., 7., 8.);
         let r = avx::_mm256_castps_si256(a);
-        let e = i64x4::new(4611686019492741120, 4647714816524288000, 4665729215040061440, 4683743613553737728);
+        let e = i8x32::new(0, 0, -128, 63, 0, 0, 0, 64,
+                      0, 0, 64, 64, 0, 0, -128, 64,
+                      0, 0, -96, 64, 0, 0, -64, 64,
+                      0, 0, -32, 64, 0, 0, 0, 65);
         assert_eq!(r, e);
     }
 
     #[simd_test = "avx"]
     unsafe fn _mm256_castsi256_ps() {
-        let a = i64x4::new(4611686019492741120, 4647714816524288000, 4665729215040061440, 4683743613553737728);
+        let a = i8x32::new(0, 0, -128, 63, 0, 0, 0, 64,
+                      0, 0, 64, 64, 0, 0, -128, 64,
+                      0, 0, -96, 64, 0, 0, -64, 64,
+                      0, 0, -32, 64, 0, 0, 0, 65);
         let r = avx::_mm256_castsi256_ps(a);
         let e = f32x8::new(1., 2., 3., 4., 5., 6., 7., 8.);
         assert_eq!(r, e);
@@ -3514,12 +3525,12 @@ mod tests {
     unsafe fn _mm256_castpd_si256() {
         let a = f64x4::new(1., 2., 3., 4.);
         let r = avx::_mm256_castpd_si256(a);
-        assert_eq!(r, i64x4::new(1, 2, 3, 4));
+        assert_eq!(r, __m256i::from(i64x4::new(1, 2, 3, 4)));
     }
 
     #[simd_test = "avx"]
     unsafe fn _mm256_castsi256_pd() {
-        let a = i64x4::new(1, 2, 3, 4);
+        let a = __m256i::from(i64x4::new(1, 2, 3, 4));
         let r = avx::_mm256_castsi256_pd(a);
         assert_eq!(r, f64x4::new(1., 2., 3., 4.));
     }
@@ -3540,9 +3551,9 @@ mod tests {
 
     #[simd_test = "avx"]
     unsafe fn _mm256_castsi256_si128() {
-        let a = i64x4::new(1, 2, 3, 4);
+        let a = __m256i::from(i64x4::new(1, 2, 3, 4));
         let r = avx::_mm256_castsi256_si128(a);
-        assert_eq!(r, i64x2::new(1, 2));
+        assert_eq!(r, __m128i::from(i64x2::new(1, 2)));
     }
 
     #[simd_test = "avx"]
@@ -3555,9 +3566,9 @@ mod tests {
 
     #[simd_test = "avx"]
     unsafe fn _mm256_zextsi128_si256() {
-        let a = i64x2::new(1, 2);
+        let a = __m128i::from(i64x2::new(1, 2));
         let r = avx::_mm256_zextsi128_si256(a);
-        let e = i64x4::new(1, 2, 0, 0);
+        let e = __m256i::from(i64x4::new(1, 2, 0, 0));
         assert_eq!(r, e);
     }
 
