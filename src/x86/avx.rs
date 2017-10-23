@@ -2097,6 +2097,19 @@ pub unsafe fn _mm256_storeu2_m128d(hiaddr: *mut f64, loaddr: *mut f64, a: f64x4)
     _mm_storeu_pd(hiaddr, hi);
 }
 
+/// Store the high and low 128-bit halves (each composed of integer data) from
+/// `a` into memory two different 128-bit locations.
+/// `hiaddr` and `loaddr` do not need to be aligned on any particular boundary.
+#[inline(always)]
+#[target_feature = "+avx,+sse2"]
+pub unsafe fn _mm256_storeu2_m128i(hiaddr: *mut __m128i, loaddr: *mut __m128i, a: __m256i) {
+    use x86::sse2::_mm_storeu_si128;
+    let lo = _mm256_castsi256_si128(a);
+    _mm_storeu_si128(loaddr, lo);
+    let hi = _mm256_extractf128_si256(a, 1);
+    _mm_storeu_si128(hiaddr, hi);
+}
+
 /// LLVM intrinsics used in the above functions
 #[allow(improper_ctypes)]
 extern "C" {
@@ -3793,5 +3806,22 @@ mod tests {
                               a);
         assert_eq!(hi, f64x2::new(3., 4.));
         assert_eq!(lo, f64x2::new(1., 2.));
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_storeu2_m128i() {
+        use x86::sse2::_mm_undefined_si128;
+        let a = i8x32::new(
+            1, 2, 3, 4, 5, 6, 7, 8,
+            9, 10, 11, 12, 13, 14, 15, 16,
+            17, 18, 19, 20, 21, 22, 23, 24,
+            25, 26, 27, 28, 29, 30, 31, 32);
+        let mut hi = _mm_undefined_si128();
+        let mut lo = _mm_undefined_si128();
+        avx::_mm256_storeu2_m128i(&mut hi as *mut _, &mut lo as *mut _, a);
+        assert_eq!(hi, i8x16::new(17, 18, 19, 20, 21, 22, 23, 24,
+            25, 26, 27, 28, 29, 30, 31, 32));
+        assert_eq!(lo, i8x16::new(1, 2, 3, 4, 5, 6, 7, 8,
+            9, 10, 11, 12, 13, 14, 15, 16));
     }
 }
