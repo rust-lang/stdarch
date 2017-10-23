@@ -2036,6 +2036,17 @@ pub unsafe fn _mm256_setr_m128i(lo: __m128i, hi: __m128i) -> __m256i {
     _mm256_set_m128i(hi, lo)
 }
 
+/// Load two 128-bit values (composed of 4 packed single-precision (32-bit)
+/// floating-point elements) from memory, and combine them into a 256-bit value.
+/// `hiaddr` and `loaddr` do not need to be aligned on any particular boundary.
+#[inline(always)]
+#[target_feature = "+avx,+sse"]
+pub unsafe fn _mm256_loadu2_m128(hiaddr: *const f32, loaddr: *const f32) -> f32x8 {
+    use x86::sse::_mm_loadu_ps;
+    let a = _mm256_castps128_ps256(_mm_loadu_ps(loaddr));
+    _mm256_insertf128_ps(a, _mm_loadu_ps(hiaddr), 1)
+}
+
 /// LLVM intrinsics used in the above functions
 #[allow(improper_ctypes)]
 extern "C" {
@@ -3667,6 +3678,17 @@ mod tests {
             9, 10, 11, 12, 13, 14, 15, 16,
             17, 18, 19, 20, 21, 22, 23, 24,
             25, 26, 27, 28, 29, 30, 31, 32);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_loadu2_m128() {
+        let hi = &[5., 6., 7., 8.];
+        let hiaddr = hi.as_ptr();
+        let lo = &[1., 2., 3., 4.];
+        let loaddr = lo.as_ptr();
+        let r = avx::_mm256_loadu2_m128(hiaddr, loaddr);
+        let e = f32x8::new(1., 2., 3., 4., 5., 6., 7., 8.);
         assert_eq!(r, e);
     }
 }
