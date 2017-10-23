@@ -2083,6 +2083,20 @@ pub unsafe fn _mm256_storeu2_m128(hiaddr: *mut f32, loaddr: *mut f32, a: f32x8) 
     _mm_storeu_ps(hiaddr, hi);
 }
 
+/// Store the high and low 128-bit halves (each composed of 2 packed
+/// double-precision (64-bit) floating-point elements) from `a` into memory two
+/// different 128-bit locations.
+/// `hiaddr` and `loaddr` do not need to be aligned on any particular boundary.
+#[inline(always)]
+#[target_feature = "+avx,+sse2"]
+pub unsafe fn _mm256_storeu2_m128d(hiaddr: *mut f64, loaddr: *mut f64, a: f64x4) {
+    use x86::sse2::_mm_storeu_pd;
+    let lo = _mm256_castpd256_pd128(a);
+    _mm_storeu_pd(loaddr, lo);
+    let hi = _mm256_extractf128_pd(a, 1);
+    _mm_storeu_pd(hiaddr, hi);
+}
+
 /// LLVM intrinsics used in the above functions
 #[allow(improper_ctypes)]
 extern "C" {
@@ -3766,5 +3780,18 @@ mod tests {
                               a);
         assert_eq!(hi, f32x4::new(5., 6., 7., 8.));
         assert_eq!(lo, f32x4::new(1., 2., 3., 4.));
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_storeu2_m128d() {
+        use x86::sse2::_mm_undefined_pd;
+        let a = f64x4::new(1., 2., 3., 4.);
+        let mut hi = _mm_undefined_pd();
+        let mut lo = _mm_undefined_pd();
+        avx::_mm256_storeu2_m128d(&mut hi as *mut _ as *mut f64,
+                              &mut lo as *mut _ as *mut f64,
+                              a);
+        assert_eq!(hi, f64x2::new(3., 4.));
+        assert_eq!(lo, f64x2::new(1., 2.));
     }
 }
