@@ -2028,6 +2028,14 @@ pub unsafe fn _mm256_setr_m128d(lo: f64x2, hi: f64x2) -> f64x4 {
     _mm256_set_m128d(hi, lo)
 }
 
+/// Set packed __m256i returned vector with the supplied values.
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vinsertf128))]
+pub unsafe fn _mm256_setr_m128i(lo: __m128i, hi: __m128i) -> __m256i {
+    _mm256_set_m128i(hi, lo)
+}
+
 /// LLVM intrinsics used in the above functions
 #[allow(improper_ctypes)]
 extern "C" {
@@ -3644,6 +3652,21 @@ mod tests {
         let hi = f64x2::new(3., 4.);
         let r = avx::_mm256_setr_m128d(lo, hi);
         let e = f64x4::new(1., 2., 3., 4.);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_setr_m128i() {
+        let lo = i8x16::new(1, 2, 3, 4, 5, 6, 7, 8,
+            9, 10, 11, 12, 13, 14, 15, 16);
+        let hi = i8x16::new(17, 18, 19, 20, 21, 22, 23, 24,
+            25, 26, 27, 28, 29, 30, 31, 32);
+        let r = avx::_mm256_setr_m128i(lo, hi);
+        let e = i8x32::new(
+            1, 2, 3, 4, 5, 6, 7, 8,
+            9, 10, 11, 12, 13, 14, 15, 16,
+            17, 18, 19, 20, 21, 22, 23, 24,
+            25, 26, 27, 28, 29, 30, 31, 32);
         assert_eq!(r, e);
     }
 }
