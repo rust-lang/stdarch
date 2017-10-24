@@ -734,10 +734,11 @@ pub unsafe fn _mm256_extractf128_pd(a: f64x4, imm8: i32) -> f64x2 {
 #[cfg_attr(test, assert_instr(vextractf128))]
 pub unsafe fn _mm256_extractf128_si256(a: __m256i, imm8: i32) -> __m128i {
     let b = i64x4::from(_mm256_undefined_si256());
-    i64x2::into(match imm8 & 1 {
+    let dst: i64x2 = match imm8 & 1 {
         0 => simd_shuffle2(i64x4::from(a), b, [0, 1]),
         _ => simd_shuffle2(i64x4::from(a), b, [2, 3]),
-    })
+    };
+    __m128i::from(dst)
 }
 
 /// Extract an 8-bit integer from `a`, selected with `imm8`.
@@ -1111,10 +1112,11 @@ pub unsafe fn _mm256_insertf128_pd(a: f64x4, b: f64x2, imm8: i32) -> f64x4 {
 #[cfg_attr(test, assert_instr(vinsertf128, imm8 = 1))]
 pub unsafe fn _mm256_insertf128_si256(a: __m256i, b: __m128i, imm8: i32) -> __m256i {
     let b = i64x4::from(_mm256_castsi128_si256(b));
-    i64x4::into(match imm8 & 1 {
+    let dst: i64x4 = match imm8 & 1 {
         0 => simd_shuffle4(i64x4::from(a), b, [4, 5, 2, 3]),
         _ => simd_shuffle4(i64x4::from(a), b, [0, 1, 4, 5]),
-    })
+    };
+    __m256i::from(dst)
 }
 
 /// Copy `a` to result, and insert the 8-bit integer `i` into result
@@ -1865,7 +1867,7 @@ pub unsafe fn _mm256_castsi256_ps(a: __m256i) -> f32x8 {
 #[inline(always)]
 #[target_feature = "+avx"]
 pub unsafe fn _mm256_castpd_si256(a: f64x4) -> __m256i {
-    i64x4::into(simd_cast(a))
+    __m256i::from(a.as_i64x4())
 }
 
 /// Casts vector of type __m256i to type __m256d.
@@ -1901,7 +1903,9 @@ pub unsafe fn _mm256_castpd256_pd128(a: f64x4) -> f64x2 {
 #[inline(always)]
 #[target_feature = "+avx"]
 pub unsafe fn _mm256_castsi256_si128(a: __m256i) -> __m128i {
-    i64x2::into(simd_shuffle2(i64x4::from(a), i64x4::from(a), [0, 1]))
+    let a = i64x4::from(a);
+    let dst: i64x2 = simd_shuffle2(a, a, [0, 1]);
+    __m128i::from(dst)
 }
 
 /// Casts vector of type __m128 to type __m256;
@@ -1927,8 +1931,10 @@ pub unsafe fn _mm256_castpd128_pd256(a: f64x2) -> f64x4 {
 #[inline(always)]
 #[target_feature = "+avx"]
 pub unsafe fn _mm256_castsi128_si256(a: __m128i) -> __m256i {
+    let a = i64x2::from(a);
     // FIXME simd_shuffle4(a, a, [0, 1, -1, -1])
-    i64x4::into(simd_shuffle4(i64x2::from(a), i64x2::from(a), [0, 1, 0, 0]))
+    let dst: i64x4 = simd_shuffle4(a, a, [0, 1, 0, 0]);
+    __m256i::from(dst)
 }
 
 /// Constructs a 256-bit floating-point vector of [8 x float] from a
@@ -1949,7 +1955,8 @@ pub unsafe fn _mm256_zextps128_ps256(a: f32x4) -> f32x8 {
 pub unsafe fn _mm256_zextsi128_si256(a: __m128i) -> __m256i {
     use x86::sse2::_mm_setzero_si128;
     let b =  mem::transmute(_mm_setzero_si128());
-    i64x4::into(simd_shuffle4(i64x2::from(a), b, [0, 1, 2, 3]))
+    let dst: i64x4 = simd_shuffle4(i64x2::from(a), b, [0, 1, 2, 3]);
+    __m256i::from(dst)
 }
 
 /// Constructs a 256-bit floating-point vector of [4 x double] from a
