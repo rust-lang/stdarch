@@ -684,9 +684,37 @@ pub unsafe fn _mm256_maddubs_epi16(a: u8x32, b: u8x32) -> i16x16 {
 }
 
 // TODO _mm_maskload_epi32 (int const* mem_addr, __m128i mask)
+#[inline(always)]
+#[target_feature = "+avx2"]
+#[cfg_attr(test, assert_instr(vpmaskmovd))]
+pub unsafe fn _mm_maskload_epi32(a: *const i32, mask: i32x4) -> i32x4 {
+    maskloadd(a, mask)
+}
+
 // TODO _mm256_maskload_epi32 (int const* mem_addr, __m256i mask)
+#[inline(always)]
+#[target_feature = "+avx2"]
+#[cfg_attr(test, assert_instr(vpmaskmovd))]
+pub unsafe fn _mm256_maskload_epi32(a: *const i32, mask: i32x8) -> i32x8 {
+    maskloadd256(a, mask)
+}
+
 // TODO _mm_maskload_epi64 (__int64 const* mem_addr, __m128i mask)
+#[inline(always)]
+#[target_feature = "+avx2"]
+#[cfg_attr(test, assert_instr(vpmaskmovq))]
+pub unsafe fn _mm_maskload_epi64(a: *const i64, mask: i64x2) -> i64x2 {
+    maskloadq(a, mask)
+}
+
 // TODO _mm256_maskload_epi64 (__int64 const* mem_addr, __m256i mask)
+#[inline(always)]
+#[target_feature = "+avx2"]
+#[cfg_attr(test, assert_instr(vpmaskmovq))]
+pub unsafe fn _mm256_maskload_epi64(a: *const i64, mask: i64x4) -> i64x4 {
+    maskloadq256(a, mask)
+}
+
 // TODO _mm_maskstore_epi32 (int* mem_addr, __m128i mask, __m128i a)
 // TODO _mm256_maskstore_epi32 (int* mem_addr, __m256i mask, __m256i a)
 // TODO _mm_maskstore_epi64 (__int64* mem_addr, __m128i mask, __m128i a)
@@ -1761,6 +1789,14 @@ extern "C" {
     fn pmaddwd(a: i16x16, b: i16x16) -> i32x8;
     #[link_name = "llvm.x86.avx2.pmadd.ub.sw"]
     fn pmaddubsw(a: u8x32, b: u8x32) -> i16x16;
+    #[link_name = "llvm.x86.avx2.maskload.d"]
+    fn maskloadd(a: *const i32, mask: i32x4) -> i32x4;
+    #[link_name = "llvm.x86.avx2.maskload.d.256"]
+    fn maskloadd256(a: *const i32, mask: i32x8) -> i32x8;
+    #[link_name = "llvm.x86.avx2.maskload.q"]
+    fn maskloadq(a: *const i64, mask: i64x2) -> i64x2;
+    #[link_name = "llvm.x86.avx2.maskload.q.256"]
+    fn maskloadq256(a: *const i64, mask: i64x4) -> i64x4;
     #[link_name = "llvm.x86.avx2.pmaxs.w"]
     fn pmaxsw(a: i16x16, b: i16x16) -> i16x16;
     #[link_name = "llvm.x86.avx2.pmaxs.d"]
