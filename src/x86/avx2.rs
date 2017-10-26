@@ -723,10 +723,45 @@ pub unsafe fn _mm256_maskload_epi64(mem_addr: *const i64, mask: i64x4) -> i64x4 
     maskloadq256(mem_addr as *const i8, mask)
 }
 
-// TODO _mm_maskstore_epi32 (int* mem_addr, __m128i mask, __m128i a)
-// TODO _mm256_maskstore_epi32 (int* mem_addr, __m256i mask, __m256i a)
-// TODO _mm_maskstore_epi64 (__int64* mem_addr, __m128i mask, __m128i a)
-// TODO _mm256_maskstore_epi64 (__int64* mem_addr, __m256i mask, __m256i a)
+/// Store packed 32-bit integers from `a` into memory pointed by `mem_addr`
+/// using `mask` (elements are not stored when the highest bit is not set
+/// in the corresponding element).
+#[inline(always)]
+#[target_feature = "+avx2"]
+#[cfg_attr(test, assert_instr(vpmaskmovd))]
+pub unsafe fn _mm_maskstore_epi32(mem_addr: *mut i32, mask: i32x4, a: i32x4) {
+    maskstored(mem_addr as *mut i8, mask, a)
+}
+
+/// Store packed 32-bit integers from `a` into memory pointed by `mem_addr`
+/// using `mask` (elements are not stored when the highest bit is not set
+/// in the corresponding element).
+#[inline(always)]
+#[target_feature = "+avx2"]
+#[cfg_attr(test, assert_instr(vpmaskmovd))]
+pub unsafe fn _mm256_maskstore_epi32(mem_addr: *mut i32, mask: i32x8, a: i32x8) {
+    maskstored256(mem_addr as *mut i8, mask, a)
+}
+
+/// Store packed 64-bit integers from `a` into memory pointed by `mem_addr`
+/// using `mask` (elements are not stored when the highest bit is not set
+/// in the corresponding element).
+#[inline(always)]
+#[target_feature = "+avx2"]
+#[cfg_attr(test, assert_instr(vpmaskmovq))]
+pub unsafe fn _mm_maskstore_epi64(mem_addr: *mut i64, mask: i64x2, a: i64x2) {
+    maskstoreq(mem_addr as *mut i8, mask, a)
+}
+
+/// Store packed 64-bit integers from `a` into memory pointed by `mem_addr`
+/// using `mask` (elements are not stored when the highest bit is not set
+/// in the corresponding element).
+#[inline(always)]
+#[target_feature = "+avx2"]
+#[cfg_attr(test, assert_instr(vpmaskmovq))]
+pub unsafe fn _mm256_maskstore_epi64(mem_addr: *mut i64, mask: i64x4, a: i64x4) {
+    maskstoreq256(mem_addr as *mut i8, mask, a)
+}
 
 /// Compare packed 16-bit integers in `a` and `b`, and return the packed
 /// maximum values.
@@ -1805,6 +1840,14 @@ extern "C" {
     fn maskloadq(mem_addr: *const i8, mask: i64x2) -> i64x2;
     #[link_name = "llvm.x86.avx2.maskload.q.256"]
     fn maskloadq256(mem_addr: *const i8, mask: i64x4) -> i64x4;
+    #[link_name = "llvm.x86.avx2.maskstore.d"]
+    fn maskstored(mem_addr: *mut i8, mask: i32x4, a: i32x4);
+    #[link_name = "llvm.x86.avx2.maskstore.d.256"]
+    fn maskstored256(mem_addr: *mut i8, mask: i32x8, a: i32x8);
+    #[link_name = "llvm.x86.avx2.maskstore.q"]
+    fn maskstoreq(mem_addr: *mut i8, mask: i64x2, a: i64x2);
+    #[link_name = "llvm.x86.avx2.maskstore.q.256"]
+    fn maskstoreq256(mem_addr: *mut i8, mask: i64x4, a: i64x4);
     #[link_name = "llvm.x86.avx2.pmaxs.w"]
     fn pmaxsw(a: i16x16, b: i16x16) -> i16x16;
     #[link_name = "llvm.x86.avx2.pmaxs.d"]
@@ -2537,6 +2580,46 @@ mod tests {
         let r = avx2::_mm256_maskload_epi64(a, mask);
         let e = i64x4::new(0, 2, 3, 0);
         assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx2"]
+    unsafe fn _mm_maskstore_epi32() {
+        let a = i32x4::new(1, 2, 3, 4);
+        let mut arr = [-1, -1, -1, -1];
+        let mask = i32x4::new(-1, 0, 0, -1);
+        avx2::_mm_maskstore_epi32(arr.as_mut_ptr(), mask, a);
+        let e = [1, -1, -1, 4];
+        assert_eq!(arr, e);
+    }
+
+    #[simd_test = "avx2"]
+    unsafe fn _mm256_maskstore_epi32() {
+        let a = i32x8::new(1, 0x6d726f, 3, 42, 0x777161, 6, 7, 8);
+        let mut arr = [-1, -1, -1, 0x776173, -1, 0x68657265, -1, -1];
+        let mask = i32x8::new(-1, 0, 0, -1, 0, -1, -1, 0);
+        avx2::_mm256_maskstore_epi32(arr.as_mut_ptr(), mask, a);
+        let e = [1, -1, -1, 42, -1, 6, 7, -1];
+        assert_eq!(arr, e);
+    }
+
+    #[simd_test = "avx2"]
+    unsafe fn _mm_maskstore_epi64() {
+        let a = i64x2::new(1_i64, 2_i64);
+        let mut arr = [-1_i64, -1_i64];
+        let mask = i64x2::new(0, -1);
+        avx2::_mm_maskstore_epi64(arr.as_mut_ptr(), mask, a);
+        let e = [-1, 2];
+        assert_eq!(arr, e);
+    }
+
+    #[simd_test = "avx2"]
+    unsafe fn _mm256_maskstore_epi64() {
+        let a = i64x4::new(1_i64, 2_i64, 3_i64, 4_i64);
+        let mut arr = [-1_i64, -1_i64, -1_i64, -1_i64];
+        let mask = i64x4::new(0, -1, -1, 0);
+        avx2::_mm256_maskstore_epi64(arr.as_mut_ptr(), mask, a);
+        let e = [-1, 2, 3, -1];
+        assert_eq!(arr, e);
     }
 
     #[simd_test = "avx2"]
