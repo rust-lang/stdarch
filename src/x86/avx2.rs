@@ -683,44 +683,44 @@ pub unsafe fn _mm256_maddubs_epi16(a: u8x32, b: u8x32) -> i16x16 {
     pmaddubsw(a, b)
 }
 
-/// Load packed 32-bit integers from memory pointed by `a` using `mask`
+/// Load packed 32-bit integers from memory pointed by `mem_addr` using `mask`
 /// (elements are zeroed out when the highest bit is not set in the
 /// corresponding element).
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpmaskmovd))]
-pub unsafe fn _mm_maskload_epi32(a: *const i32, mask: i32x4) -> i32x4 {
-    maskloadd(a as *const i8, mask)
+pub unsafe fn _mm_maskload_epi32(mem_addr: *const i32, mask: i32x4) -> i32x4 {
+    maskloadd(mem_addr as *const i8, mask)
 }
 
-/// Load packed 32-bit integers from memory pointed by `a` using `mask`
+/// Load packed 32-bit integers from memory pointed by `mem_addr` using `mask`
 /// (elements are zeroed out when the highest bit is not set in the
 /// corresponding element).
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpmaskmovd))]
-pub unsafe fn _mm256_maskload_epi32(a: *const i32, mask: i32x8) -> i32x8 {
-    maskloadd256(a as *const i8, mask)
+pub unsafe fn _mm256_maskload_epi32(mem_addr: *const i32, mask: i32x8) -> i32x8 {
+    maskloadd256(mem_addr as *const i8, mask)
 }
 
-/// Load packed 64-bit integers from memory pointed by `a` using `mask`
+/// Load packed 64-bit integers from memory pointed by `mem_addr` using `mask`
 /// (elements are zeroed out when the highest bit is not set in the
 /// corresponding element).
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpmaskmovq))]
-pub unsafe fn _mm_maskload_epi64(a: *const i64, mask: i64x2) -> i64x2 {
-    maskloadq(a as *const i8, mask)
+pub unsafe fn _mm_maskload_epi64(mem_addr: *const i64, mask: i64x2) -> i64x2 {
+    maskloadq(mem_addr as *const i8, mask)
 }
 
-/// Load packed 64-bit integers from memory pointed by `a` using `mask`
+/// Load packed 64-bit integers from memory pointed by `mem_addr` using `mask`
 /// (elements are zeroed out when the highest bit is not set in the
 /// corresponding element).
 #[inline(always)]
 #[target_feature = "+avx2"]
 #[cfg_attr(test, assert_instr(vpmaskmovq))]
-pub unsafe fn _mm256_maskload_epi64(a: *const i64, mask: i64x4) -> i64x4 {
-    maskloadq256(a as *const i8, mask)
+pub unsafe fn _mm256_maskload_epi64(mem_addr: *const i64, mask: i64x4) -> i64x4 {
+    maskloadq256(mem_addr as *const i8, mask)
 }
 
 // TODO _mm_maskstore_epi32 (int* mem_addr, __m128i mask, __m128i a)
@@ -1798,13 +1798,13 @@ extern "C" {
     #[link_name = "llvm.x86.avx2.pmadd.ub.sw"]
     fn pmaddubsw(a: u8x32, b: u8x32) -> i16x16;
     #[link_name = "llvm.x86.avx2.maskload.d"]
-    fn maskloadd(a: *const i8, mask: i32x4) -> i32x4;
+    fn maskloadd(mem_addr: *const i8, mask: i32x4) -> i32x4;
     #[link_name = "llvm.x86.avx2.maskload.d.256"]
-    fn maskloadd256(a: *const i8, mask: i32x8) -> i32x8;
+    fn maskloadd256(mem_addr: *const i8, mask: i32x8) -> i32x8;
     #[link_name = "llvm.x86.avx2.maskload.q"]
-    fn maskloadq(a: *const i8, mask: i64x2) -> i64x2;
+    fn maskloadq(mem_addr: *const i8, mask: i64x2) -> i64x2;
     #[link_name = "llvm.x86.avx2.maskload.q.256"]
-    fn maskloadq256(a: *const i8, mask: i64x4) -> i64x4;
+    fn maskloadq256(mem_addr: *const i8, mask: i64x4) -> i64x4;
     #[link_name = "llvm.x86.avx2.pmaxs.w"]
     fn pmaxsw(a: i16x16, b: i16x16) -> i16x16;
     #[link_name = "llvm.x86.avx2.pmaxs.d"]
