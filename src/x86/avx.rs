@@ -2658,10 +2658,10 @@ mod tests {
 
     #[simd_test = "avx"]
     unsafe fn _mm256_shuffle_ps() {
-        let a = f32x8::new(1.0, 4.0, 5.0, 8.0, 9.0, 12.0, 13.0, 16.0);
-        let b = f32x8::new(2.0, 3.0, 6.0, 7.0, 10.0, 11.0, 14.0, 15.0);
+        let a = f32x8::new(1., 4., 5., 8., 9., 12., 13., 16.);
+        let b = f32x8::new(2., 3., 6., 7., 10., 11., 14., 15.);
         let r = avx::_mm256_shuffle_ps(a, b, 0x0F);
-        let e = f32x8::new(8.0, 8.0, 2.0, 2.0, 16.0, 16.0, 10.0, 10.0);
+        let e = f32x8::new(8., 8., 2., 2., 16., 16., 10., 10.);
         assert_eq!(r, e);
     }
 
@@ -2711,7 +2711,7 @@ mod tests {
     #[simd_test = "avx"]
     unsafe fn _mm256_min_ps() {
         let a = f32x8::new(1., 4., 5., 8., 9., 12., 13., 16.);
-        let b = f32x8::new(2., 3., 6., 7., 10.0, 11., 14., 15.);
+        let b = f32x8::new(2., 3., 6., 7., 10., 11., 14., 15.);
         let r = avx::_mm256_min_ps(a, b);
         let e = f32x8::new(1., 3., 5., 7., 9., 11., 13., 15.);
         assert_eq!(r, e);
@@ -2729,9 +2729,9 @@ mod tests {
     #[simd_test = "avx"]
     unsafe fn _mm256_mul_ps() {
         let a = f32x8::new(1., 2., 3., 4., 5., 6., 7., 8.);
-        let b = f32x8::new(9., 10.0, 11., 12., 13., 14., 15., 16.);
+        let b = f32x8::new(9., 10., 11., 12., 13., 14., 15., 16.);
         let r = avx::_mm256_mul_ps(a, b);
-        let e = f32x8::new(9., 20.0, 33., 48., 65., 84., 105., 128.);
+        let e = f32x8::new(9., 20., 33., 48., 65., 84., 105., 128.);
         assert_eq!(r, e);
     }
 
@@ -2850,7 +2850,7 @@ mod tests {
     #[simd_test = "avx"]
     unsafe fn _mm256_div_ps() {
         let a = f32x8::new(4., 9., 16., 25., 4., 9., 16., 25.);
-        let b = f32x8::new(4., 3., 2., 5., 8., 9., 64., 50.0);
+        let b = f32x8::new(4., 3., 2., 5., 8., 9., 64., 50.);
         let r = avx::_mm256_div_ps(a, b);
         let e = f32x8::new(1., 3., 8., 5., 0.5, 1., 0.25, 0.5);
         assert_eq!(r, e);
@@ -2890,23 +2890,23 @@ mod tests {
     #[simd_test = "avx"]
     unsafe fn _mm256_blendv_ps() {
         let a = f32x8::new(4., 9., 16., 25., 4., 9., 16., 25.);
-        let b = f32x8::new(4., 3., 2., 5., 8., 9., 64., 50.0);
+        let b = f32x8::new(4., 3., 2., 5., 8., 9., 64., 50.);
         #[cfg_attr(rustfmt, rustfmt_skip)]
         let c = f32x8::new(
             0., 0., 0., 0., !0 as f32, !0 as f32, !0 as f32, !0 as f32,
         );
         let r = avx::_mm256_blendv_ps(a, b, c);
-        let e = f32x8::new(4., 9., 16., 25., 8., 9., 64., 50.0);
+        let e = f32x8::new(4., 9., 16., 25., 8., 9., 64., 50.);
         assert_eq!(r, e);
     }
 
     #[simd_test = "avx"]
     unsafe fn _mm256_dp_ps() {
         let a = f32x8::new(4., 9., 16., 25., 4., 9., 16., 25.);
-        let b = f32x8::new(4., 3., 2., 5., 8., 9., 64., 50.0);
+        let b = f32x8::new(4., 3., 2., 5., 8., 9., 64., 50.);
         let r = avx::_mm256_dp_ps(a, b, 0xFF);
         let e =
-            f32x8::new(200.0, 200.0, 200.0, 200.0, 2387., 2387., 2387., 2387.);
+            f32x8::new(200., 200., 200., 200., 2387., 2387., 2387., 2387.);
         assert_eq!(r, e);
     }
 
@@ -2928,7 +2928,7 @@ mod tests {
     #[simd_test = "avx"]
     unsafe fn _mm256_hadd_ps() {
         let a = f32x8::new(4., 9., 16., 25., 4., 9., 16., 25.);
-        let b = f32x8::new(4., 3., 2., 5., 8., 9., 64., 50.0);
+        let b = f32x8::new(4., 3., 2., 5., 8., 9., 64., 50.);
         let r = avx::_mm256_hadd_ps(a, b);
         let e = f32x8::new(13., 41., 7., 7., 13., 41., 17., 114.);
         assert_eq!(r, e);
@@ -2958,7 +2958,7 @@ mod tests {
     #[simd_test = "avx"]
     unsafe fn _mm256_hsub_ps() {
         let a = f32x8::new(4., 9., 16., 25., 4., 9., 16., 25.);
-        let b = f32x8::new(4., 3., 2., 5., 8., 9., 64., 50.0);
+        let b = f32x8::new(4., 3., 2., 5., 8., 9., 64., 50.);
         let r = avx::_mm256_hsub_ps(a, b);
         let e = f32x8::new(-5., -9., 1., -3., -5., -9., -1., 14.);
         assert_eq!(r, e);
@@ -3111,7 +3111,7 @@ mod tests {
 
     #[simd_test = "avx"]
     unsafe fn _mm256_extractf128_ps() {
-        let a = f32x8::new(4., 3., 2., 5., 8., 9., 64., 50.0);
+        let a = f32x8::new(4., 3., 2., 5., 8., 9., 64., 50.);
         let r = avx::_mm256_extractf128_ps(a, 0);
         let e = f32x4::new(4., 3., 2., 5.);
         assert_eq!(r, e);
@@ -3180,10 +3180,10 @@ mod tests {
 
     #[simd_test = "avx"]
     unsafe fn _mm256_permutevar_ps() {
-        let a = f32x8::new(4., 3., 2., 5., 8., 9., 64., 50.0);
+        let a = f32x8::new(4., 3., 2., 5., 8., 9., 64., 50.);
         let b = i32x8::new(1, 2, 3, 4, 5, 6, 7, 8);
         let r = avx::_mm256_permutevar_ps(a, b);
-        let e = f32x8::new(3., 2., 5., 4., 9., 64., 50.0, 8.);
+        let e = f32x8::new(3., 2., 5., 4., 9., 64., 50., 8.);
         assert_eq!(r, e);
     }
 
@@ -3198,9 +3198,9 @@ mod tests {
 
     #[simd_test = "avx"]
     unsafe fn _mm256_permute_ps() {
-        let a = f32x8::new(4., 3., 2., 5., 8., 9., 64., 50.0);
+        let a = f32x8::new(4., 3., 2., 5., 8., 9., 64., 50.);
         let r = avx::_mm256_permute_ps(a, 0x1b);
-        let e = f32x8::new(5., 2., 3., 4., 50.0, 64., 9., 8.);
+        let e = f32x8::new(5., 2., 3., 4., 50., 64., 9., 8.);
         assert_eq!(r, e);
     }
 
@@ -3312,10 +3312,10 @@ mod tests {
 
     #[simd_test = "avx"]
     unsafe fn _mm256_insertf128_ps() {
-        let a = f32x8::new(4., 3., 2., 5., 8., 9., 64., 50.0);
+        let a = f32x8::new(4., 3., 2., 5., 8., 9., 64., 50.);
         let b = f32x4::new(4., 9., 16., 25.);
         let r = avx::_mm256_insertf128_ps(a, b, 0);
-        let e = f32x8::new(4., 9., 16., 25., 8., 9., 64., 50.0);
+        let e = f32x8::new(4., 9., 16., 25., 8., 9., 64., 50.);
         assert_eq!(r, e);
     }
 
@@ -3402,10 +3402,10 @@ mod tests {
 
     #[simd_test = "avx"]
     unsafe fn _mm256_loadu_ps() {
-        let a = &[4., 3., 2., 5., 8., 9., 64., 50.0];
+        let a = &[4., 3., 2., 5., 8., 9., 64., 50.];
         let p = a.as_ptr();
         let r = avx::_mm256_loadu_ps(black_box(p));
-        let e = f32x8::new(4., 3., 2., 5., 8., 9., 64., 50.0);
+        let e = f32x8::new(4., 3., 2., 5., 8., 9., 64., 50.);
         assert_eq!(r, e);
     }
 
