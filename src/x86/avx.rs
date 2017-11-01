@@ -443,6 +443,56 @@ pub unsafe fn _mm256_blend_pd(a: f64x4, b: f64x4, imm8: i32) -> f64x4 {
     }
 }
 
+/// Blend packed single-precision (32-bit) floating-point elements from
+/// `a` and `b` using control mask `imm8`.
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vblendps, imm8 = 9))]
+pub unsafe fn _mm256_blend_ps(a: f32x8, b: f32x8, imm8: i32) -> f32x8 {
+    let imm8 = (imm8 & 0xFF) as u8;
+    macro_rules! blend4 {
+        ($a:expr, $b:expr, $c:expr, $d:expr, $e:expr, $f:expr, $g:expr, $h:expr) => {
+            simd_shuffle8(a, b, [$a, $b, $c, $d, $e, $f, $g, $h]);
+        }
+    }
+    macro_rules! blend3 {
+        ($a:expr, $b:expr, $c:expr, $d:expr, $e:expr, $f:expr) => {
+            match (imm8 >> 6) & 0b11 {
+                0b00 => blend4!($a, $b, $c, $d, $e, $f, 6, 7),
+                0b01 => blend4!($a, $b, $c, $d, $e, $f, 14, 7),
+                0b10 => blend4!($a, $b, $c, $d, $e, $f, 6, 15),
+                _ => blend4!($a, $b, $c, $d, $e, $f, 14, 15),
+            }
+        }
+    }
+    macro_rules! blend2 {
+        ($a:expr, $b:expr, $c:expr, $d:expr) => {
+            match (imm8 >> 4) & 0b11 {
+                0b00 => blend3!($a, $b, $c, $d, 4, 5),
+                0b01 => blend3!($a, $b, $c, $d, 12, 5),
+                0b10 => blend3!($a, $b, $c, $d, 4, 13),
+                _ => blend3!($a, $b, $c, $d, 12, 13),
+            }
+        }
+    }
+    macro_rules! blend1 {
+        ($a:expr, $b:expr) => {
+            match (imm8 >> 2) & 0b11 {
+                0b00 => blend2!($a, $b, 2, 3),
+                0b01 => blend2!($a, $b, 10, 3),
+                0b10 => blend2!($a, $b, 2, 11),
+                _ => blend2!($a, $b, 10, 11),
+            }
+        }
+    }
+    match imm8 & 0b11 {
+        0b00 => blend1!(0, 1),
+        0b01 => blend1!(8, 1),
+        0b10 => blend1!(0, 9),
+        _ => blend1!(8, 9),
+    }
+}
+
 /// Blend packed double-precision (64-bit) floating-point elements from
 /// `a` and `b` using `c` as a mask.
 #[inline(always)]
@@ -2658,6 +2708,18 @@ mod tests {
         assert_eq!(r, f64x4::new(4., 3., 16., 25.));
         let r = avx::_mm256_blend_pd(a, b, 0xF);
         assert_eq!(r, f64x4::new(4., 3., 2., 5.));
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_blend_ps() {
+        let a = f32x8::new(1., 4., 5., 8., 9., 12., 13., 16.);
+        let b = f32x8::new(2., 3., 6., 7., 10., 11., 14., 15.);
+        let r = avx::_mm256_blend_ps(a, b, 0x0);
+        assert_eq!(r, f32x8::new(1., 4., 5., 8., 9., 12., 13., 16.));
+        let r = avx::_mm256_blend_ps(a, b, 0x3);
+        assert_eq!(r, f32x8::new(2., 3., 5., 8., 9., 12., 13., 16.));
+        let r = avx::_mm256_blend_ps(a, b, 0xF);
+        assert_eq!(r, f32x8::new(2., 3., 6., 7., 9., 12., 13., 16.));
     }
 
     #[simd_test = "avx"]
