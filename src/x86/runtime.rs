@@ -159,31 +159,37 @@ fn test_bit(x: usize, bit: u32) -> bool {
 /// [intel64_ref]: http://www.intel.de/content/dam/www/public/us/en/documents/manuals/64-ia-32-architectures-software-developer-instruction-set-reference-manual-325383.pdf
 /// [amd64_ref]: http://support.amd.com/TechDocs/24594.pdf
 fn detect_features() -> usize {
-    let extended_features_ebx;
-    let proc_info_ecx;
-    let proc_info_edx;
+    use super::cpuid::{__cpuid, has_cpuid, CpuidResult};
+    let mut value: usize = 0;
 
-    unsafe {
-        /// To obtain all feature flags we need two CPUID queries:
-
-        /// 1. EAX=1, ECX=0: Queries "Processor Info and Feature Bits"
-        /// This gives us most of the CPU features in ECX and EDX (see
-        /// below).
-        asm!("cpuid"
-             : "={ecx}"(proc_info_ecx), "={edx}"(proc_info_edx)
-             : "{eax}"(0x0000_0001_u32), "{ecx}"(0 as u32)
-             : :);
-
-        /// 2. EAX=7, ECX=0: Queries "Extended Features"
-        /// This gives us information about bmi,bmi2, and avx2 support
-        /// (see below); the result in ECX is not currently needed.
-        asm!("cpuid"
-             : "={ebx}"(extended_features_ebx)
-             : "{eax}"(0x0000_0007_u32), "{ecx}"(0 as u32)
-             : :);
+    // If the x86 CPU does not support the CPUID instruction then it is too
+    // old to support any of the currently-detectable features.
+    if !has_cpuid() {
+        return value;
     }
 
-    let mut value: usize = 0;
+    // Calling `cpuid` from here on is safe because the CPU has the `cpuid`
+    // instruction.
+
+    // 1. EAX=1, ECX=0: Queries "Processor Info and Feature Bits";
+    // Contains information about most x86 features.
+    let CpuidResult {
+        ecx: proc_info_ecx,
+        edx: proc_info_edx,
+        ..
+    } = unsafe { __cpuid(0x0000_0001_u32) };
+
+    // 2. EAX=7, ECX=0: Queries "Extended Features";
+    // Contains information about bmi,bmi2, and avx2 support.
+    let CpuidResult {
+        ebx: extended_features_ebx,
+        ..
+    } = unsafe { __cpuid(0x0000_0007_u32) };
+
+    let proc_info_ecx = proc_info_ecx as usize;
+    let proc_info_edx = proc_info_edx as usize;
+
+    let extended_features_ebx = extended_features_ebx as usize;
 
     if test_bit(extended_features_ebx, 3) {
         value = set_bit(value, __Feature::bmi as u32);
@@ -233,21 +239,10 @@ fn detect_features() -> usize {
     // org/mozilla-central/file/64bab5cbb9b6/mozglue/build/SSE.cpp#l190
     //
     if test_bit(proc_info_ecx, 26) && test_bit(proc_info_ecx, 27) {
-        /// XGETBV: reads the contents of the extended control
-        /// register (XCR).
-        unsafe fn xgetbv(xcr_no: u32) -> u64 {
-            let eax: u32;
-            let edx: u32;
-            // xgetbv
-            asm!("xgetbv"
-                 : "={eax}"(eax),  "={edx}"(edx)
-                 : "{ecx}"(xcr_no)
-                 : :);
-            ((edx as u64) << 32) | (eax as u64)
-        }
+        use super::xsave::_xgetbv;
 
         // This is safe because on x86 `xgetbv` is always available.
-        if unsafe { xgetbv(0) } & 6 == 6 {
+        if unsafe { _xgetbv(0) } & 6 == 6 {
             if test_bit(proc_info_ecx, 28) {
                 value = set_bit(value, __Feature::avx as u32);
             }
