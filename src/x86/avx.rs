@@ -1381,6 +1381,26 @@ pub unsafe fn _mm256_storeu_ps(mem_addr: *mut f32, a: f32x8) {
 }
 
 /// Load 256-bits of integer data from memory into result.
+/// `mem_addr` must be aligned on a 32-byte boundary or a
+/// general-protection exception may be generated.
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vmovaps))] // FIXME vmovdqa expected
+pub unsafe fn _mm256_load_si256(mem_addr: *const __m256i) -> __m256i {
+    *mem_addr
+}
+
+/// Store 256-bits of integer data from `a` into memory.
+/// `mem_addr` must be aligned on a 32-byte boundary or a
+/// general-protection exception may be generated.
+#[inline(always)]
+#[target_feature = "+avx"]
+#[cfg_attr(test, assert_instr(vmovaps))] // FIXME vmovdqa expected
+pub unsafe fn _mm256_store_si256(mem_addr: *mut __m256i, a: __m256i) {
+    *mem_addr = a;
+}
+
+/// Load 256-bits of integer data from memory into result.
 /// `mem_addr` does not need to be aligned on any particular boundary.
 #[inline(always)]
 #[target_feature = "+avx"]
@@ -3350,6 +3370,23 @@ mod tests {
         let a = f32x8::splat(9.);
         let mut r = avx::_mm256_undefined_ps();
         avx::_mm256_storeu_ps(&mut r as *mut _ as *mut f32, a);
+        assert_eq!(r, a);
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_load_si256() {
+        let a = __m256i::from(avx::_mm256_setr_epi64x(1, 2, 3, 4));
+        let p = &a as *const _;
+        let r = avx::_mm256_load_si256(p);
+        let e = i64x4::new(1, 2, 3, 4);
+        assert_eq!(r, __m256i::from(e));
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn _mm256_store_si256() {
+        let a = __m256i::from(avx::_mm256_setr_epi64x(1, 2, 3, 4));
+        let mut r = avx::_mm256_undefined_si256();
+        avx::_mm256_store_si256(&mut r as *mut _, a);
         assert_eq!(r, a);
     }
 
