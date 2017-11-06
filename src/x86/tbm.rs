@@ -14,31 +14,31 @@
 #[cfg(test)]
 use stdsimd_test::assert_instr;
 
-// TODO: LLVM-CODEGEN ERROR: LLVM ERROR: Cannot select:
-// intrinsic %llvm.x86.tbm.bextri.u32
-/*
 #[allow(dead_code)]
 extern "C" {
-    #[link_name="llvm.x86.tbm.bextri.u32"]
-    fn x86_tbm_bextri_u32(a: u32, y: u32) -> u32;
-    #[link_name="llvm.x86.tbm.bextri.u64"]
-    fn x86_tbm_bextri_u64(x: u64, y: u64) -> u64;
+    #[link_name = "llvm.x86.tbm.bextri.u32"]
+    fn x86_tbm_bextri_u32(a: u32, control: u32) -> u32;
+    #[link_name = "llvm.x86.tbm.bextri.u64"]
+    fn x86_tbm_bextri_u64(a: u64, control: u64) -> u64;
 }
 
 /// Extracts bits in range [`start`, `start` + `length`) from `a` into
 /// the least significant bits of the result.
 #[inline(always)]
 #[target_feature = "+tbm"]
-pub fn _bextr_u32(a: u32, start: u32, len: u32) -> u32 {
-    _bextr2_u32(a, (start & 0xffu32) | ((len & 0xffu32) << 8u32))
+#[cfg_attr(test, assert_instr(bextr, start = 4, len = 4))]
+pub unsafe fn _bextri_u32(a: u32, start: u32, len: u32) -> u32 {
+    _bextri2_u32(a, (start & 0xff_u32) | ((len & 0xff_u32) << 8_u32))
 }
 
 /// Extracts bits in range [`start`, `start` + `length`) from `a` into
 /// the least significant bits of the result.
 #[inline(always)]
 #[target_feature = "+tbm"]
-pub fn _bextr_u64(a: u64, start: u64, len: u64) -> u64 {
-    _bextr2_u64(a, (start & 0xffu64) | ((len & 0xffu64) << 8u64))
+#[cfg(not(target_arch = "x86"))]
+#[cfg_attr(test, assert_instr(bextr, start = 4, len = 4))]
+pub unsafe fn _bextri_u64(a: u64, start: u64, len: u64) -> u64 {
+    _bextri2_u64(a, (start & 0xff_u64) | ((len & 0xff_u64) << 8_u64))
 }
 
 /// Extracts bits of `a` specified by `control` into
@@ -48,8 +48,14 @@ pub fn _bextr_u64(a: u64, start: u64, len: u64) -> u64 {
 /// be extracted, and bits [15,8] specify the length of the range.
 #[inline(always)]
 #[target_feature = "+tbm"]
-pub fn _bextr2_u32(a: u32, control: u32) -> u32 {
-    unsafe { x86_tbm_bextri_u32(a, control) }
+#[cfg_attr(test, assert_instr(bextr, control = 1026))]
+pub unsafe fn _bextri2_u32(a: u32, control: u32) -> u32 {
+    macro_rules! call {
+        ($imm16:expr) => {
+            x86_tbm_bextri_u32(a, $imm16)
+        }
+    }
+    constify_bextri2!(control, call)
 }
 
 /// Extracts bits of `a` specified by `control` into
@@ -59,10 +65,16 @@ pub fn _bextr2_u32(a: u32, control: u32) -> u32 {
 /// be extracted, and bits [15,8] specify the length of the range.
 #[inline(always)]
 #[target_feature = "+tbm"]
-pub fn _bextr2_u64(a: u64, control: u64) -> u64 {
-    unsafe { x86_tbm_bextri_u64(a, control) }
+#[cfg(not(target_arch = "x86"))]
+#[cfg_attr(test, assert_instr(bextr, control = 1026))]
+pub unsafe fn _bextri2_u64(a: u64, control: u64) -> u64 {
+    macro_rules! call {
+        ($imm16:expr) => {
+            x86_tbm_bextri_u64(a, $imm16)
+        }
+    }
+    constify_bextri2!(control, call)
 }
-*/
 
 /// Clears all bits below the least significant zero bit of `x`.
 ///
@@ -265,17 +277,24 @@ mod tests {
 
     use x86::tbm;
 
-    /*
     #[simd_test = "tbm"]
-    unsafe fn _bextr_u32() {
-        assert_eq!(tbm::_bextr_u32(0b0101_0000u32, 4, 4), 0b0000_0101u32);
+    unsafe fn _bextri_u32() {
+        let r = tbm::_bextri2_u32(0b0101_0000u32, 1026);
+        assert_eq!(r, 0b0000_0101u32);
+
+        let r2 = tbm::_bextri_u32(0b0101_0000u32, 4, 4);
+        assert_eq!(r2, 0b0000_0101u32);
     }
 
+    #[cfg(not(target_arch = "x86"))]
     #[simd_test = "tbm"]
-    unsafe fn _bextr_u64() {
-        assert_eq!(tbm::_bextr_u64(0b0101_0000u64, 4, 4), 0b0000_0101u64);
+    unsafe fn _bextri_u64() {
+        let r = tbm::_bextri2_u64(0b0101_0000u64, 1026);
+        assert_eq!(r, 0b0000_0101u64);
+
+        let r2 = tbm::_bextri_u64(0b0101_0000u64, 4, 4);
+        assert_eq!(r2, 0b0000_0101u64);
     }
-    */
 
     #[simd_test = "tbm"]
     unsafe fn _blcfill_u32() {
