@@ -358,6 +358,7 @@ macro_rules! assert_approx_eq {
 // ranges 0:7 and 8:15 are at most in range [0, 64). This macro
 // expands all 16 bit integers whose bits in 0:7 and 8:15 are in
 // that range. This results in 4096 (64 * 64) match arms.
+#[cfg(not(feature = "intel"))]
 macro_rules! constify_bextri2 {
     ($v:expr, $expand:ident) => {
         #[cfg_attr(feature = "cargo-clippy", allow(unreadable_literal))]
