@@ -542,6 +542,65 @@ pub unsafe fn _mm_round_ss(a: f32x4, b: f32x4, rounding: i32) -> f32x4 {
     constify_imm4!(rounding, call)
 }
 
+/// Zero-extends each of the lower eight 8-bit integer values of a `i8x16`
+/// element to 16-bit values and returns them in a `i16x8` element. The
+/// upper eight values of the input are unused.
+#[inline(always)]
+#[target_feature = "+sse4.1"]
+#[cfg_attr(test, assert_instr(pmovzxbw))]
+pub unsafe fn _mm_cvtepu8_epi16(a: i8x16) -> i16x8 {
+    pmovzxbw(a)
+}
+
+/// Zero-extends each of the lower four 8-bit integer values of a `i8x16`
+/// element to 32-bit values and returns them in a `i32x4` element. The
+/// upper twelve values of the input are unused.
+#[inline(always)]
+#[target_feature = "+sse4.1"]
+#[cfg_attr(test, assert_instr(pmovzxbd))]
+pub unsafe fn _mm_cvtepu8_epi32(a: i8x16) -> i32x4 {
+    pmovzxbd(a)
+}
+
+/// Zero-extends each of the lower two 8-bit integer values of a `i8x16`
+/// element to 64-bit values and returns them in a `i64x4` element. The
+/// upper fourteen values of the input are unused.
+#[inline(always)]
+#[target_feature = "+sse4.1"]
+#[cfg_attr(test, assert_instr(pmovzxbq))]
+pub unsafe fn _mm_cvtepu8_epi64(a: i8x16) -> i64x2 {
+    pmovzxbq(a)
+}
+
+/// Zero-extends each of the lower four 16-bit integer values of a `i16x8`
+/// element to 32-bit values and returns them in a `i32x4` element. The
+/// upper four values of the input are unused.
+#[inline(always)]
+#[target_feature = "+sse4.1"]
+#[cfg_attr(test, assert_instr(pmovzxwd))]
+pub unsafe fn _mm_cvtepu16_epi32(a: i16x8) -> i32x4 {
+    pmovzxwd(a)
+}
+
+/// Zero-extends each of the lower two 16-bit integer values of a `i16x8`
+/// element to 64-bit values and returns them in a `i64x2` element. The
+/// upper six values of the input are unused.
+#[inline(always)]
+#[target_feature = "+sse4.1"]
+#[cfg_attr(test, assert_instr(pmovzxwq))]
+pub unsafe fn _mm_cvtepu16_epi64(a: i16x8) -> i64x2 {
+    pmovzxwq(a)
+}
+
+/// Zero-extends each of the lower two 32-bit integer values of a `i32x4`
+/// element to 64-bit values and returns them in a `i64x2` element. The
+/// upper two values of the input are unused.
+#[inline(always)]
+#[target_feature = "+sse4.1"]
+#[cfg_attr(test, assert_instr(pmovzxdq))]
+pub unsafe fn _mm_cvtepu32_epi64(a: i32x4) -> i64x2 {
+    pmovzxdq(a)
+}
 
 #[allow(improper_ctypes)]
 extern "C" {
@@ -581,6 +640,18 @@ extern "C" {
     fn roundsd(a: f64x2, b: f64x2, rounding: i32) -> f64x2;
     #[link_name = "llvm.x86.sse41.round.ss"]
     fn roundss(a: f32x4, b: f32x4, rounding: i32) -> f32x4;
+    #[link_name = "llvm.x86.sse41.pmovzxbw"]
+    fn pmovzxbw(a: i8x16) -> i16x8;
+    #[link_name = "llvm.x86.sse41.pmovzxbd"]
+    fn pmovzxbd(a: i8x16) -> i32x4;
+    #[link_name = "llvm.x86.sse41.pmovzxbq"]
+    fn pmovzxbq(a: i8x16) -> i64x2;
+    #[link_name = "llvm.x86.sse41.pmovzxwd"]
+    fn pmovzxwd(a: i16x8) -> i32x4;
+    #[link_name = "llvm.x86.sse41.pmovzxwq"]
+    fn pmovzxwq(a: i16x8) -> i64x2;
+    #[link_name = "llvm.x86.sse41.pmovzxdq"]
+    fn pmovzxdq(a: i32x4) -> i64x2;
 }
 
 #[cfg(test)]
@@ -984,5 +1055,50 @@ mod tests {
         sse::_MM_SET_ROUNDING_MODE(old_mode);
         let e = f32x4::new(-2.0, 3.5, 7.5, 15.5);
         assert_eq!(r, e);
+    }
+
+    #[simd_test = "sse4.1"]
+    unsafe fn _mm_cvtepu8_epi16() {
+        let a =
+            i8x16::new(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
+        let r = sse41::_mm_cvtepu8_epi16(a);
+        assert_eq!(r, i16x8::new(1, 2, 3, 4, 5, 6, 7, 8));
+    }
+
+    #[simd_test = "sse4.1"]
+    unsafe fn _mm_cvtepu8_epi32() {
+        let a =
+            i8x16::new(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
+        let r = sse41::_mm_cvtepu8_epi32(a);
+        assert_eq!(r, i32x4::new(1, 2, 3, 4));
+    }
+
+    #[simd_test = "sse4.1"]
+    unsafe fn _mm_cvtepu8_epi64() {
+        let a =
+            i8x16::new(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
+        let r = sse41::_mm_cvtepu8_epi64(a);
+        assert_eq!(r, i64x2::new(1, 2));
+    }
+
+    #[simd_test = "sse4.1"]
+    unsafe fn _mm_cvtepu16_epi32() {
+        let a = i16x8::new(1, 2, 3, 4, 5, 6, 7, 8);
+        let r = sse41::_mm_cvtepu16_epi32(a);
+        assert_eq!(r, i32x4::new(1, 2, 3, 4));
+    }
+
+    #[simd_test = "sse4.1"]
+    unsafe fn _mm_cvtepu16_epi64() {
+        let a = i16x8::new(1, 2, 3, 4, 5, 6, 7, 8);
+        let r = sse41::_mm_cvtepu16_epi64(a);
+        assert_eq!(r, i64x2::new(1, 2));
+    }
+
+    #[simd_test = "sse4.1"]
+    unsafe fn _mm_cvtepu32_epi64() {
+        let a = i32x4::new(1, 2, 3, 4);
+        let r = sse41::_mm_cvtepu32_epi64(a);
+        assert_eq!(r, i64x2::new(1, 2));
     }
 }
