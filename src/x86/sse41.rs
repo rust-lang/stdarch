@@ -1059,21 +1059,24 @@ mod tests {
 
     #[simd_test = "sse4.1"]
     unsafe fn _mm_cvtepu8_epi16() {
-        let a = i8x16::new(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
+        let a =
+            i8x16::new(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
         let r = sse41::_mm_cvtepu8_epi16(a);
         assert_eq!(r, i16x8::new(1, 2, 3, 4, 5, 6, 7, 8));
     }
 
     #[simd_test = "sse4.1"]
     unsafe fn _mm_cvtepu8_epi32() {
-        let a = i8x16::new(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
+        let a =
+            i8x16::new(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
         let r = sse41::_mm_cvtepu8_epi32(a);
         assert_eq!(r, i32x4::new(1, 2, 3, 4));
     }
 
     #[simd_test = "sse4.1"]
     unsafe fn _mm_cvtepu8_epi64() {
-        let a = i8x16::new(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
+        let a =
+            i8x16::new(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
         let r = sse41::_mm_cvtepu8_epi64(a);
         assert_eq!(r, i64x2::new(1, 2));
     }
