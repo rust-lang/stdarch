@@ -2061,7 +2061,7 @@ pub unsafe fn _mm_undefined_si128() -> __m128i {
 #[target_feature = "+sse2"]
 #[cfg_attr(test, assert_instr(unpckhpd))]
 pub unsafe fn _mm_unpackhi_pd(a: f64x2, b: f64x2) -> f64x2 {
-    simd_shuffle2(a, b, [2, 0])
+    simd_shuffle2(a, b, [1, 3])
 }
 
 /// The resulting `f64x2` element is composed by the high-order values of
@@ -2073,7 +2073,7 @@ pub unsafe fn _mm_unpackhi_pd(a: f64x2, b: f64x2) -> f64x2 {
 #[target_feature = "+sse2"]
 #[cfg_attr(test, assert_instr(unpcklpd))]
 pub unsafe fn _mm_unpacklo_pd(a: f64x2, b: f64x2) -> f64x2 {
-    simd_shuffle2(a, b, [3, 1])
+    simd_shuffle2(a, b, [0, 2])
 }
 
 #[allow(improper_ctypes)]
@@ -4200,7 +4200,7 @@ mod tests {
         let a = f64x2::new(1.0, 2.0);
         let b = f64x2::new(3.0, 4.0);
         let r = sse2::_mm_unpackhi_pd(a, b);
-        assert_eq!(r, f64x2::new(3.0, 1.0));
+        assert_eq!(r, f64x2::new(2.0, 4.0));
     }
 
     #[simd_test = "sse2"]
@@ -4208,6 +4208,6 @@ mod tests {
         let a = f64x2::new(1.0, 2.0);
         let b = f64x2::new(3.0, 4.0);
         let r = sse2::_mm_unpacklo_pd(a, b);
-        assert_eq!(r, f64x2::new(4.0, 2.0));
+        assert_eq!(r, f64x2::new(1.0, 3.0));
     }
 }
