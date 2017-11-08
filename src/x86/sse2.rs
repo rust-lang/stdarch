@@ -2055,8 +2055,8 @@ pub unsafe fn _mm_undefined_si128() -> __m128i {
 /// The resulting `f64x2` element is composed by the low-order values of
 /// the two `f64x2` interleaved input elements, i.e.:
 ///
-/// * The [127:64] bits are copied from the [63:0] bits of the second input
-/// * The [63:0] bits are copied from the [63:0] bits of the first input
+/// * The [127:64] bits are copied from the [127:64] bits of the second input
+/// * The [63:0] bits are copied from the [127:64] bits of the first input
 #[inline(always)]
 #[target_feature = "+sse2"]
 #[cfg_attr(test, assert_instr(unpckhpd))]
@@ -2067,8 +2067,8 @@ pub unsafe fn _mm_unpackhi_pd(a: f64x2, b: f64x2) -> f64x2 {
 /// The resulting `f64x2` element is composed by the high-order values of
 /// the two `f64x2` interleaved input elements, i.e.:
 ///
-/// * The [127:64] bits are copied from the [127:64] bits of the second input
-/// * The [63:0] bits are copied from the [127:64] bits of the first input
+/// * The [127:64] bits are copied from the [63:0] bits of the second input
+/// * The [63:0] bits are copied from the [63:0] bits of the first input
 #[inline(always)]
 #[target_feature = "+sse2"]
 #[cfg_attr(test, assert_instr(unpcklpd))]
