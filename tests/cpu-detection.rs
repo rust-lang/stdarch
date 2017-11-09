@@ -24,6 +24,7 @@ fn works() {
     assert_eq!(cfg_feature_enabled!("bmi"), information.bmi1());
     assert_eq!(cfg_feature_enabled!("bmi2"), information.bmi2());
     assert_eq!(cfg_feature_enabled!("popcnt"), information.popcnt());
-
-    // TODO: tbm, abm, lzcnt
+    // assert_eq!(cfg_feature_enabled!("tbm"), information.tbm());
+    assert_eq!(cfg_feature_enabled!("lzcnt"), information.lzcnt());
+    assert_eq!(cfg_feature_enabled!("abm"), information.lzcnt());
 }
