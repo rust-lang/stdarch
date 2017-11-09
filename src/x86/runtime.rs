@@ -159,9 +159,10 @@ fn test_bit(x: usize, bit: u32) -> bool {
 /// [intel64_ref]: http://www.intel.de/content/dam/www/public/us/en/documents/manuals/64-ia-32-architectures-software-developer-instruction-set-reference-manual-325383.pdf
 /// [amd64_ref]: http://support.amd.com/TechDocs/24594.pdf
 fn detect_features() -> usize {
-    let extended_features_ebx;
-    let proc_info_ecx;
-    let proc_info_edx;
+    let extended_features_ebx: u32;
+    let proc_info_ecx: u32;
+    let proc_info_edx: u32;
+    let extended_proc_info_ecx: u32;
 
     unsafe {
         /// To obtain all feature flags we need two CPUID queries:
@@ -181,7 +182,19 @@ fn detect_features() -> usize {
              : "={ebx}"(extended_features_ebx)
              : "{eax}"(0x0000_0007_u32), "{ecx}"(0 as u32)
              : :);
+
+        /// 3. EAX=80000001h: Queries "Extended Processor Info and
+        /// Feature Bits"
+        asm!("cpuid"
+             : "={ecx}"(extended_proc_info_ecx)
+             : "{eax}"(0x8000_0001_u32), "{ecx}"(0 as u32)
+             : :);
     }
+
+    let extended_features_ebx = extended_features_ebx as usize;
+    let proc_info_ecx = proc_info_ecx as usize;
+    let proc_info_edx = proc_info_edx as usize;
+    let extended_proc_info_ecx = extended_proc_info_ecx as usize;
 
     let mut value: usize = 0;
 
@@ -194,9 +207,6 @@ fn detect_features() -> usize {
 
     if test_bit(proc_info_ecx, 0) {
         value = set_bit(value, __Feature::sse3 as u32);
-    }
-    if test_bit(proc_info_ecx, 5) {
-        value = set_bit(value, __Feature::abm as u32);
     }
     if test_bit(proc_info_ecx, 9) {
         value = set_bit(value, __Feature::ssse3 as u32);
@@ -254,7 +264,11 @@ fn detect_features() -> usize {
         }
     }
 
-    if test_bit(proc_info_ecx, 21) && is_amd() {
+    if test_bit(extended_proc_info_ecx, 5) {
+        value = set_bit(value, __Feature::abm as u32);
+    }
+
+    if test_bit(extended_proc_info_ecx, 21) && is_amd() {
         value = set_bit(value, __Feature::tbm as u32);
     }
 
