@@ -1,7 +1,7 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 # Builds documentation for all target triples that we have a registered URL for
-# in liblibc. This scrapes the list of triples to document from `src/lib.rs`
+# in stdsimd. This scrapes the list of triples to document from `src/lib.rs`
 # which has a bunch of `html_root_url` directives we pick up.
 
 set -e

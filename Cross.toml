@@ -1,0 +1,14 @@
+[build.env]
+passthrough = [
+    "RUST_BACKTRACE",
+    "RUST_LOG",
+    "TRAVIS"
+]
+
+[target.aarch64-unknown-linux-gnu]
+image = "stdsimd_aarch64-unknown-linux-gnu"
+passthrough = [ "OBJDUMP" ]
+
+[target.armv7-unknown-linux-gnueabihf]
+image = "stdsimd_armv7-unknown-linux-gnueabihf"
+passthrough = [ "OBJDUMP" ]

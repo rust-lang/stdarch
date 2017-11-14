@@ -294,8 +294,12 @@ pub fn detect_features() -> usize {
 
     // EAX = 7, ECX = 0: Queries "Extended Features";
     // Contains information about bmi,bmi2, and avx2 support.
+<<<<<<< HEAD
     let (extended_features_ebx, extended_features_ecx) = if max_basic_leaf >= 7
     {
+=======
+    let (extended_features_ebx, extended_features_ecx) = if max_basic_leaf >= 7 {
+>>>>>>> fixup
         let CpuidResult { ebx, ecx, .. } = unsafe { __cpuid(0x0000_0007_u32) };
         (ebx, ecx)
     } else {
