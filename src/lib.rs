@@ -169,14 +169,20 @@ mod v32 {
 
     define_ty! { i16x2, i16, i16 }
     define_impl! { i16x2, i16, 2, i16x2, x0, x1 }
+    define_ty! { u16x2, u16, u16 }
+    define_impl! { u16x2, u16, 2, i16x2, x0, x1 }
 
     define_ty! { i8x4, i8, i8, i8, i8 }
     define_impl! { i8x4, i8, 4, i8x4, x0, x1, x2, x3 }
-
     define_ty! { u8x4, u8, u8, u8, u8 }
     define_impl! { u8x4, u8, 4, i8x4, x0, x1, x2, x3 }
 
-    define_casts!((i8x4, i32x4, as_i32x4), (i16x2, i64x2, as_i64x2));
+    define_casts!(
+        (i16x2, i64x2, as_i64x2),
+        (u16x2, i64x2, as_i64x2),
+        (i8x4, i32x4, as_i32x4),
+        (u8x4, i32x4, as_i32x4)
+    );
 }
 
 /// 16-bit wide vector tpyes
@@ -185,8 +191,10 @@ mod v16 {
 
     define_ty! { i8x2, i8, i8 }
     define_impl! { i8x2, i8, 2, i8x2, x0, x1 }
+    define_ty! { u8x2, u8, u8 }
+    define_impl! { u8x2, u8, 2, i8x2, x0, x1 }
 
-    define_casts!((i8x2, i64x2, as_i64x2));
+    define_casts!((i8x2, i64x2, as_i64x2), (u8x2, i64x2, as_i64x2));
 }
 
 #[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
