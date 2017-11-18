@@ -1760,8 +1760,115 @@ pub unsafe fn _mm256_shuffle_epi32(a: i32x8, imm8: i32) -> i32x8 {
     }
 }
 
-// TODO _mm256_shufflehi_epi16 (__m256i a, const int imm8)
-// TODO _mm256_shufflelo_epi16 (__m256i a, const int imm8)
+/// Shuffle 16-bit integers in the high 64 bits of 128-bit lanes of `a` using
+/// the control in `imm8`. The low 64 bits of 128-bit lanes of `a` are copied
+/// to the output.
+#[inline(always)]
+#[target_feature = "+avx2"]
+#[cfg_attr(test, assert_instr(vpshufhw, imm8 = 9))]
+pub unsafe fn _mm256_shufflehi_epi16(a: i16x16, imm8: i32) -> i16x16 {
+    let imm8 = (imm8 & 0xFF) as u8;
+    macro_rules! shuffle_done {
+        ($x01:expr, $x23:expr, $x45:expr, $x67:expr) => {
+            #[cfg_attr(rustfmt, rustfmt_skip)]
+            simd_shuffle16(a, a, [
+                0, 1, 2, 3, 4+$x01, 4+$x23, 4+$x45, 4+$x67,
+                8, 9, 10, 11, 12+$x01, 12+$x23, 12+$x45, 12+$x67
+            ]);
+        }
+    }
+    macro_rules! shuffle_x67 {
+        ($x01:expr, $x23:expr, $x45:expr) => {
+            match (imm8 >> 6) & 0b11 {
+                0b00 => shuffle_done!($x01, $x23, $x45, 0),
+                0b01 => shuffle_done!($x01, $x23, $x45, 1),
+                0b10 => shuffle_done!($x01, $x23, $x45, 2),
+                _ => shuffle_done!($x01, $x23, $x45, 3),
+            }
+        }
+    }
+    macro_rules! shuffle_x45 {
+        ($x01:expr, $x23:expr) => {
+            match (imm8 >> 4) & 0b11 {
+                0b00 => shuffle_x67!($x01, $x23, 0),
+                0b01 => shuffle_x67!($x01, $x23, 1),
+                0b10 => shuffle_x67!($x01, $x23, 2),
+                _ => shuffle_x67!($x01, $x23, 3),
+            }
+        }
+    }
+    macro_rules! shuffle_x23 {
+        ($x01:expr) => {
+            match (imm8 >> 2) & 0b11 {
+                0b00 => shuffle_x45!($x01, 0),
+                0b01 => shuffle_x45!($x01, 1),
+                0b10 => shuffle_x45!($x01, 2),
+                _ => shuffle_x45!($x01, 3),
+            }
+        }
+    }
+    match imm8 & 0b11 {
+        0b00 => shuffle_x23!(0),
+        0b01 => shuffle_x23!(1),
+        0b10 => shuffle_x23!(2),
+        _ => shuffle_x23!(3),
+    }
+}
+
+/// Shuffle 16-bit integers in the low 64 bits of 128-bit lanes of `a` using
+/// the control in `imm8`. The high 64 bits of 128-bit lanes of `a` are copied
+/// to the output.
+#[inline(always)]
+#[target_feature = "+avx2"]
+#[cfg_attr(test, assert_instr(vpshuflw, imm8 = 9))]
+pub unsafe fn _mm256_shufflelo_epi16(a: i16x16, imm8: i32) -> i16x16 {
+    let imm8 = (imm8 & 0xFF) as u8;
+    macro_rules! shuffle_done {
+        ($x01:expr, $x23:expr, $x45:expr, $x67:expr) => {
+            #[cfg_attr(rustfmt, rustfmt_skip)]
+            simd_shuffle16(a, a, [
+                0+$x01, 0+$x23, 0+$x45, 0+$x67, 4, 5, 6, 7,
+                8+$x01, 8+$x23, 8+$x45, 8+$x67, 12, 13, 14, 15,
+            ])
+        }
+    }
+    macro_rules! shuffle_x67 {
+        ($x01:expr, $x23:expr, $x45:expr) => {
+            match (imm8 >> 6) & 0b11 {
+                0b00 => shuffle_done!($x01, $x23, $x45, 0),
+                0b01 => shuffle_done!($x01, $x23, $x45, 1),
+                0b10 => shuffle_done!($x01, $x23, $x45, 2),
+                _ => shuffle_done!($x01, $x23, $x45, 3),
+            }
+        }
+    }
+    macro_rules! shuffle_x45 {
+        ($x01:expr, $x23:expr) => {
+            match (imm8 >> 4) & 0b11 {
+                0b00 => shuffle_x67!($x01, $x23, 0),
+                0b01 => shuffle_x67!($x01, $x23, 1),
+                0b10 => shuffle_x67!($x01, $x23, 2),
+                _ => shuffle_x67!($x01, $x23, 3),
+            }
+        }
+    }
+    macro_rules! shuffle_x23 {
+        ($x01:expr) => {
+            match (imm8 >> 2) & 0b11 {
+                0b00 => shuffle_x45!($x01, 0),
+                0b01 => shuffle_x45!($x01, 1),
+                0b10 => shuffle_x45!($x01, 2),
+                _ => shuffle_x45!($x01, 3),
+            }
+        }
+    }
+    match imm8 & 0b11 {
+        0b00 => shuffle_x23!(0),
+        0b01 => shuffle_x23!(1),
+        0b10 => shuffle_x23!(2),
+        _ => shuffle_x23!(3),
+    }
+}
 
 /// Negate packed 16-bit integers in `a` when the corresponding signed
 /// 16-bit integer in `b` is negative, and return the results.
@@ -3701,6 +3808,38 @@ mod tests {
         let b = u8x32::splat(4);
         let r = avx2::_mm256_sad_epu8(a, b);
         let e = u64x4::splat(16);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx2"]
+    unsafe fn _mm256_shufflehi_epi16() {
+        #[cfg_attr(rustfmt, rustfmt_skip)]
+        let a = i16x16::new(
+            0, 1, 2, 3, 11, 22, 33, 44,
+            4, 5, 6, 7, 55, 66, 77, 88,
+        );
+        #[cfg_attr(rustfmt, rustfmt_skip)]
+        let e = i16x16::new(
+            0, 1, 2, 3, 44, 22, 22, 11,
+            4, 5, 6, 7, 88, 66, 66, 55,
+        );
+        let r = avx2::_mm256_shufflehi_epi16(a, 0b00_01_01_11);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx2"]
+    unsafe fn _mm256_shufflelo_epi16() {
+        #[cfg_attr(rustfmt, rustfmt_skip)]
+        let a = i16x16::new(
+            11, 22, 33, 44, 0, 1, 2, 3,
+            55, 66, 77, 88, 4, 5, 6, 7,
+        );
+        #[cfg_attr(rustfmt, rustfmt_skip)]
+        let e = i16x16::new(
+            44, 22, 22, 11, 0, 1, 2, 3,
+            88, 66, 66, 55, 4, 5, 6, 7,
+        );
+        let r = avx2::_mm256_shufflelo_epi16(a, 0b00_01_01_11);
         assert_eq!(r, e);
     }
 
