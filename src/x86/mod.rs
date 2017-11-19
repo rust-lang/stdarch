@@ -10,6 +10,10 @@ pub use self::i386::*;
 mod i586;
 pub use self::i586::*;
 
+// `i686` is `i586 + sse2`.
+//
+// This module is not available for `i586` targets,
+// but available for all `i686` targets by default
 #[cfg(any(all(target_arch = "x86", target_feature = "sse2"),
           target_arch = "x86_64"))]
 mod i686;
