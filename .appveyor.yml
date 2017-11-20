@@ -20,7 +20,3 @@ build: false
 
 test_script:
   - C:\msys64\usr\bin\sh ci\windows.sh
-
-branches:
-  only:
-    - master
