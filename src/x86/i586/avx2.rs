@@ -702,7 +702,7 @@ pub unsafe fn _mm256_hsubs_epi16(a: i16x16, b: i16x16) -> i16x16 {
 #[cfg_attr(test, assert_instr(vpgatherdd))]
 pub unsafe fn _mm_i32gather_epi32(slice: &[i32], offsets: i32x4, scale: i8) -> i32x4 {
     macro_rules! call {
-        ($imm8:expr) => (pgatherdd(i32x4::splat(0), slice.as_ptr(), offsets, i32x4::splat(0), $imm8))
+        ($imm8:expr) => (pgatherdd(i32x4::splat(0), slice.as_ptr() as *const i8, offsets, i32x4::splat(0), $imm8))
     }
     constify_imm8!(scale, call)
 }
@@ -715,7 +715,7 @@ pub unsafe fn _mm_i32gather_epi32(slice: &[i32], offsets: i32x4, scale: i8) -> i
 #[cfg_attr(test, assert_instr(vpgatherdd))]
 pub unsafe fn _mm_mask_i32gather_epi32(src: i32x4, slice: &[i32], offsets: i32x4, mask: i32x4, scale: i8) -> i32x4 {
     macro_rules! call {
-        ($imm8:expr) => (pgatherdd(src, slice.as_ptr(), offsets, mask, $imm8))
+        ($imm8:expr) => (pgatherdd(src, slice.as_ptr() as *const i8, offsets, mask, $imm8))
     }
     constify_imm8!(scale, call)
 }
@@ -2234,7 +2234,7 @@ extern "C" {
     #[link_name = "llvm.x86.avx2.permd"]
     fn permd(a: u32x8, b: u32x8) -> u32x8;
     #[link_name = "llvm.x86.avx2.gather.d.d"]
-    fn pgatherdd(src: i32x4, slice: *const i32, offsets: i32x4, mask: i32x4, scale: i8) -> i32x4;
+    fn pgatherdd(src: i32x4, slice: *const i8, offsets: i32x4, mask: i32x4, scale: i8) -> i32x4;
 }
 
 #[cfg(test)]
@@ -3665,18 +3665,24 @@ mod tests {
 
     #[simd_test = "avx2"]
     unsafe fn _mm_i32gather_epi32() {
-        let mut i = -1;
-        let arr = [0; 128].map(|_| { i += 1; i }).collect::<Vec<i32>>().as_slice();
-        let r = _mm_i32gather_epi32(arr, i32x4::new(0, 16, 32, 48), 2);
+        let mut arr = [0i32; 128];
+        for (ref mut a, ref mut i) in arr.iter_mut().zip(0..128i32) {
+            *a = i
+        }
+        let r = avx2::_mm_i32gather_epi32(&arr, i32x4::new(0, 16, 32, 48), 2);
         assert_eq!(r, i32x4::new(0, 32, 64, 96));
     }
 
     #[simd_test = "avx2"]
     unsafe fn _mm_mask_i32gather_epi32() {
-        let mut i = -1;
-        let arr = [0; 128].map(|_| { i += 1; i }).collect::<Vec<i32>>().as_slice();
-        let r = _mm_mask_i32gather_epi32(i32x4::splat(256), arr, i32x4::new(0, 16, 64, 96),
-                                         i32x4::new(0, 0, 0, 0xFFFFFFFF), 1);
+        let mut arr = [0i32; 128];
+        for (ref mut a, ref mut i) in arr.iter_mut().zip(0..128i32) {
+            *a = i
+        }
+        let r = avx2::_mm_mask_i32gather_epi32(i32x4::splat(256), &arr,
+                                               i32x4::new(0, 16, 64, 96),
+                                               i32x4::new(0, 0, 0, -1),
+                                               1);
         assert_eq!(r, i32x4::new(0, 16, 64, 256));
     }
 }
