@@ -695,6 +695,30 @@ pub unsafe fn _mm256_hsubs_epi16(a: i16x16, b: i16x16) -> i16x16 {
     phsubsw(a, b)
 }
 
+/// Return values from `slice` at offsets determined by `offsets * scale`, where
+/// `scale` is between 1 and 8.
+#[inline(always)]
+#[target_feature = "+avx2"]
+#[cfg_attr(test, assert_instr(vpgatherdd))]
+pub unsafe fn _mm_i32gather_epi32(slice: &[i32], offsets: i32x4, scale: i8) -> i32x4 {
+    macro_rules! call {
+        ($imm8:expr) => (pgatherdd(i32x4::splat(0), slice.as_ptr(), offsets, i32x4::splat(0), $imm8))
+    }
+    constify_imm8!(scale, call)
+}
+
+/// Return values from `slice` at offsets determined by `offsets * scale`, where
+/// `scale` is between 1 and 8. If mask is set, load the value from `src` in
+/// that position instead.
+#[inline(always)]
+#[target_feature = "+avx2"]
+#[cfg_attr(test, assert_instr(vpgatherdd))]
+pub unsafe fn _mm_mask_i32gather_epi32(src: i32x4, slice: &[i32], offsets: i32x4, mask: i32x4, scale: i8) -> i32x4 {
+    macro_rules! call {
+        ($imm8:expr) => (pgatherdd(src, slice.as_ptr(), offsets, mask, $imm8))
+    }
+    constify_imm8!(scale, call)
+}
 
 // TODO _mm_i32gather_epi32 (int const* base_addr, __m128i vindex,
 //                           const int scale)
@@ -2209,6 +2233,8 @@ extern "C" {
     fn pshufb(a: u8x32, b: u8x32) -> u8x32;
     #[link_name = "llvm.x86.avx2.permd"]
     fn permd(a: u32x8, b: u32x8) -> u32x8;
+    #[link_name = "llvm.x86.avx2.gather.d.d"]
+    fn pgatherdd(src: i32x4, slice: *const i32, offsets: i32x4, mask: i32x4, scale: i8) -> i32x4;
 }
 
 #[cfg(test)]
@@ -3635,5 +3661,22 @@ mod tests {
         let expected = i64x4::new(400, 100, 200, 100);
         let r = avx2::_mm256_permute4x64_epi64(a, 0b00010011);
         assert_eq!(r, expected);
+    }
+
+    #[simd_test = "avx2"]
+    unsafe fn _mm_i32gather_epi32() {
+        let mut i = -1;
+        let arr = [0; 128].map(|_| { i += 1; i }).collect::<Vec<i32>>().as_slice();
+        let r = _mm_i32gather_epi32(arr, i32x4::new(0, 16, 32, 48), 2);
+        assert_eq!(r, i32x4::new(0, 32, 64, 96));
+    }
+
+    #[simd_test = "avx2"]
+    unsafe fn _mm_mask_i32gather_epi32() {
+        let mut i = -1;
+        let arr = [0; 128].map(|_| { i += 1; i }).collect::<Vec<i32>>().as_slice();
+        let r = _mm_mask_i32gather_epi32(i32x4::splat(256), arr, i32x4::new(0, 16, 64, 96),
+                                         i32x4::new(0, 0, 0, 0xFFFFFFFF), 1);
+        assert_eq!(r, i32x4::new(0, 16, 64, 256));
     }
 }
