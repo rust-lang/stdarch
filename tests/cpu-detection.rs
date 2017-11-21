@@ -27,12 +27,12 @@ fn works() {
     assert_eq!(cfg_feature_enabled!("avx512bw"), information.avx512bw());
     assert_eq!(cfg_feature_enabled!("avx512dq"), information.avx512dq());
     assert_eq!(cfg_feature_enabled!("avx512vl"), information.avx512vl());
-    assert_eq!(cfg_feature_enabled!("avx512ifma"),
-    information.avx512_ifma());
-    assert_eq!(cfg_feature_enabled!("avx512vbmi"),
-    information.avx512_vbmi());
-    assert_eq!(cfg_feature_enabled!("avx512vpopcntdq"),
-    information.avx512_vpopcntdq());
+    assert_eq!(cfg_feature_enabled!("avx512ifma"), information.avx512_ifma());
+    assert_eq!(cfg_feature_enabled!("avx512vbmi"), information.avx512_vbmi());
+    assert_eq!(
+        cfg_feature_enabled!("avx512vpopcntdq"),
+        information.avx512_vpopcntdq()
+    );
     assert_eq!(cfg_feature_enabled!("fma"), information.fma());
     assert_eq!(cfg_feature_enabled!("bmi"), information.bmi1());
     assert_eq!(cfg_feature_enabled!("bmi2"), information.bmi2());
