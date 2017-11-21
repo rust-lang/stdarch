@@ -24,7 +24,7 @@ use simd_llvm::{simd_shuffle16, simd_shuffle32};
 
 use v256::*;
 use v128::*;
-use x86::__m256i;
+use x86::{__m128i, __m256i};
 
 #[cfg(test)]
 use stdsimd_test::assert_instr;
@@ -643,7 +643,20 @@ pub unsafe fn _mm256_cvtepu8_epi64(a: u8x16) -> i64x4 {
     simd_cast::<::v32::u8x4, _>(simd_shuffle4(a, a, [0, 1, 2, 3]))
 }
 
-// TODO _m128i _mm256_extracti128_si256
+/// Extract 128 bits (of integer data) from `a` selected with `imm8`.
+#[inline(always)]
+#[target_feature = "+avx2"]
+#[cfg_attr(test, assert_instr(vextractf128, imm8 = 1))]
+pub unsafe fn _mm256_extracti128_si256(a: __m256i, imm8: i32) -> __m128i {
+    use x86::i586::avx::_mm256_undefined_si256;
+    let imm8 = (imm8 & 0xFF) as u8;
+    let b = i64x4::from(_mm256_undefined_si256());
+    let dst: i64x2 = match imm8 & 0b01 {
+        0 => simd_shuffle2(i64x4::from(a), b, [0, 1]),
+        _ => simd_shuffle2(i64x4::from(a), b, [2, 3]),
+    };
+    __m128i::from(dst)
+}
 
 /// Horizontally add adjacent pairs of 16-bit integers in `a` and `b`.
 #[inline(always)]
@@ -1191,7 +1204,23 @@ pub unsafe fn _mm256_mask_i64gather_pd(
     constify_imm8!(scale, call)
 }
 
-// TODO _mm256_inserti128_si256
+/// Copy `a` to `dst`, then insert 128 bits (of integer data) from `b` at the
+/// location specified by `imm8`.
+#[inline(always)]
+#[target_feature = "+avx2"]
+#[cfg_attr(test, assert_instr(vinsertf128, imm8 = 1))]
+pub unsafe fn _mm256_inserti128_si256(
+    a: __m256i, b: __m128i, imm8: i32
+) -> __m256i {
+    use x86::i586::avx::_mm256_castsi128_si256;
+    let imm8 = (imm8 & 0b01) as u8;
+    let b = i64x4::from(_mm256_castsi128_si256(b));
+    let dst: i64x4 = match imm8 & 0b01 {
+        0 => simd_shuffle4(i64x4::from(a), b, [4, 5, 2, 3]),
+        _ => simd_shuffle4(i64x4::from(a), b, [0, 1, 4, 5]),
+    };
+    __m256i::from(dst)
+}
 
 /// Multiply packed signed 16-bit integers in `a` and `b`, producing
 /// intermediate signed 32-bit integers. Horizontally add adjacent pairs
@@ -1829,7 +1858,7 @@ pub unsafe fn _mm256_shufflelo_epi16(a: i16x16, imm8: i32) -> i16x16 {
             simd_shuffle16(a, a, [
                 0+$x01, 0+$x23, 0+$x45, 0+$x67, 4, 5, 6, 7,
                 8+$x01, 8+$x23, 8+$x45, 8+$x67, 12, 13, 14, 15,
-            ])
+            ]);
         }
     }
     macro_rules! shuffle_x67 {
@@ -2807,7 +2836,7 @@ mod tests {
     use v256::*;
     use v128::*;
     use x86::i586::avx2;
-    use x86::__m256i;
+    use x86::{__m128i, __m256i};
     use std;
 
     #[simd_test = "avx2"]
@@ -3414,6 +3443,14 @@ mod tests {
     }
 
     #[simd_test = "avx2"]
+    unsafe fn _mm256_extracti128_si256() {
+        let a = __m256i::from(i64x4::new(1, 2, 3, 4));
+        let r = avx2::_mm256_extracti128_si256(a, 0b01);
+        let e = __m128i::from(i64x2::new(3, 4));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx2"]
     unsafe fn _mm256_hadd_epi16() {
         let a = i16x16::splat(2);
         let b = i16x16::splat(4);
@@ -3475,6 +3512,15 @@ mod tests {
         let r = avx2::_mm256_madd_epi16(a, b);
         let e = i32x8::splat(16);
         assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx2"]
+    unsafe fn _mm256_inserti128_si256() {
+        let a = __m256i::from(i64x4::new(1, 2, 3, 4));
+        let b = __m128i::from(i64x2::new(7, 8));
+        let r = avx2::_mm256_inserti128_si256(a, b, 0b01);
+        let e = i64x4::new(1, 2, 7, 8);
+        assert_eq!(r, __m256i::from(e));
     }
 
     #[simd_test = "avx2"]
