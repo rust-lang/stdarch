@@ -132,6 +132,10 @@ macro_rules! __unstable_detect_feature {
         $crate::vendor::__unstable_detect_feature(
             $crate::vendor::__Feature::popcnt{})
     };
+    ("fxsr") => {
+        $crate::vendor::__unstable_detect_feature(
+            $crate::vendor::__Feature::fxsr{})
+    };
     ("xsave") => {
         $crate::vendor::__unstable_detect_feature(
             $crate::vendor::__Feature::xsave{})
@@ -212,6 +216,8 @@ pub enum __Feature {
     tbm,
     /// POPCNT (Population Count)
     popcnt,
+    /// FXSR (Floating-point context fast save and restor)
+    fxsr,
     /// XSAVE (Save Processor Extended States)
     xsave,
     /// XSAVEOPT (Save Processor Extended States Optimized)
@@ -325,6 +331,7 @@ pub fn detect_features() -> usize {
         enable(proc_info_ecx, 19, __Feature::sse4_1);
         enable(proc_info_ecx, 20, __Feature::sse4_2);
         enable(proc_info_ecx, 23, __Feature::popcnt);
+        enable(proc_info_edx, 24, __Feature::fxsr);
         enable(proc_info_edx, 25, __Feature::sse);
         enable(proc_info_edx, 26, __Feature::sse2);
 
@@ -448,10 +455,11 @@ mod tests {
         println!("tbm: {:?}", cfg_feature_enabled!("tbm"));
         println!("popcnt: {:?}", cfg_feature_enabled!("popcnt"));
         println!("lzcnt: {:?}", cfg_feature_enabled!("lzcnt"));
-        println!("xsave {:?}", cfg_feature_enabled!("xsave"));
-        println!("xsaveopt {:?}", cfg_feature_enabled!("xsaveopt"));
-        println!("xsaves {:?}", cfg_feature_enabled!("xsaves"));
-        println!("xsavec {:?}", cfg_feature_enabled!("xsavec"));
+        println!("fxsr: {:?}", cfg_feature_enabled!("fxsr"));
+        println!("xsave: {:?}", cfg_feature_enabled!("xsave"));
+        println!("xsaveopt: {:?}", cfg_feature_enabled!("xsaveopt"));
+        println!("xsaves: {:?}", cfg_feature_enabled!("xsaves"));
+        println!("xsavec: {:?}", cfg_feature_enabled!("xsavec"));
     }
 
     #[test]
