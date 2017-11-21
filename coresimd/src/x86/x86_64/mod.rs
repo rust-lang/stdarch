@@ -1,5 +1,8 @@
 //! `x86_64` intrinsics
 
+mod fxsr;
+pub use self::fxsr::*;
+
 mod sse;
 pub use self::sse::*;
 
