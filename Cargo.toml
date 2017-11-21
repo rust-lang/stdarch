@@ -31,8 +31,8 @@ stdsimd-test = { version = "0.*", path = "stdsimd-test" }
 cupid = "0.5.0"
 
 [features]
+default = ["std"]
 std = []
-
 # Internal-only: denies all warnings.
 strict = []
 # Internal-only: enables only those intrinsics supported by Intel's

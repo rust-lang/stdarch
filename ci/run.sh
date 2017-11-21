@@ -22,8 +22,8 @@ echo "RUSTFLAGS=${RUSTFLAGS}"
 echo "FEATURES=${FEATURES}"
 echo "OBJDUMP=${OBJDUMP}"
 
-cargo test --target $TARGET --features $FEATURES --verbose -- --nocapture
-cargo test --release --target $TARGET --features $FEATURES --verbose -- --nocapture
+cargo test --target $TARGET --no-default-features --features $FEATURES --verbose -- --nocapture
+cargo test --release --target $TARGET --no-default-features --features $FEATURES --verbose -- --nocapture
 
-cargo test --target $TARGET --features $FEATURES_STD --verbose -- --nocapture
-cargo test --release --target $TARGET --features $FEATURES_STD --verbose -- --nocapture
+cargo test --target $TARGET --no-default-features --features $FEATURES_STD --verbose -- --nocapture
+cargo test --release --target $TARGET --no-default-features --features $FEATURES_STD --verbose -- --nocapture
