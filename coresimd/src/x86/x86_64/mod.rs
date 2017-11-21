@@ -11,3 +11,6 @@ pub use self::sse2::*;
 
 mod sse42;
 pub use self::sse42::*;
+
+mod xsave;
+pub use self::xsave::*;
