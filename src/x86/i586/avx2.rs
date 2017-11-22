@@ -752,7 +752,7 @@ pub unsafe fn _mm256_mask_i32gather_epi32(src: i32x8, slice: *const i32, offsets
 #[cfg_attr(test, assert_instr(vgatherdps, scale = 1))]
 pub unsafe fn _mm_i32gather_ps(slice: *const f32, offsets: i32x4, scale: i8) -> f32x4 {
     macro_rules! call {
-        ($imm8:expr) => (pgatherdps(f32x4::splat(0), slice as *const i8, offsets, f32x4::splat(-1), $imm8))
+        ($imm8:expr) => (pgatherdps(f32x4::splat(0.0), slice as *const i8, offsets, f32x4::splat(-1.0), $imm8))
     }
     constify_imm8!(scale, call)
 }
@@ -777,7 +777,7 @@ pub unsafe fn _mm_mask_i32gather_ps(src: f32x4, slice: *const f32, offsets: i32x
 #[cfg_attr(test, assert_instr(vgatherdps, scale = 1))]
 pub unsafe fn _mm256_i32gather_ps(slice: *const f32, offsets: i32x8, scale: i8) -> f32x8 {
     macro_rules! call {
-        ($imm8:expr) => (vpgatherdps(f32x8::splat(0), slice as *const i8, offsets, f32x8::splat(-1), $imm8))
+        ($imm8:expr) => (vpgatherdps(f32x8::splat(0.0), slice as *const i8, offsets, f32x8::splat(-1.0), $imm8))
     }
     constify_imm8!(scale, call)
 }
@@ -3891,7 +3891,7 @@ mod tests {
 
     #[simd_test = "avx2"]
     unsafe fn _mm_i32gather_ps() {
-        let mut arr = [0.0f64; 128];
+        let mut arr = [0.0f32; 128];
         let mut j = 0.0;
         for i in 0..128usize {
             arr[i] = j;
@@ -3904,7 +3904,7 @@ mod tests {
 
     #[simd_test = "avx2"]
     unsafe fn _mm_mask_i32gather_ps() {
-        let mut arr = [0.0f64; 128];
+        let mut arr = [0.0f32; 128];
         let mut j = 0.0;
         for i in 0..128usize {
             arr[i] = j;
@@ -3920,7 +3920,7 @@ mod tests {
 
     #[simd_test = "avx2"]
     unsafe fn _mm256_i32gather_ps() {
-        let mut arr = [0.0f64; 128];
+        let mut arr = [0.0f32; 128];
         let mut j = 0.0;
         for i in 0..128usize {
             arr[i] = j;
@@ -3933,7 +3933,7 @@ mod tests {
 
     #[simd_test = "avx2"]
     unsafe fn _mm256_mask_i32gather_ps() {
-        let mut arr = [0.0f64; 128];
+        let mut arr = [0.0f32; 128];
         let mut j = 0.0;
         for i in 0..128usize {
             arr[i] = j;
@@ -3944,7 +3944,7 @@ mod tests {
                                                i32x8::new(0, 16, 64, 96, 0, 0, 0, 0),
                                                f32x8::new(-1.0, -1.0, -1.0, 0.0, 0.0, 0.0, 0.0, 0.0),
                                                4);
-        assert_eq!(r, f32x8::new(0, 16.0, 64.0, 256.0, 256.0, 256.0, 256.0, 256.0));
+        assert_eq!(r, f32x8::new(0.0, 16.0, 64.0, 256.0, 256.0, 256.0, 256.0, 256.0));
     }
 
 
