@@ -37,7 +37,7 @@ extern "C" {
 #[target_feature = "+xsave"]
 #[cfg_attr(test, assert_instr(xsave))]
 pub unsafe fn _xsave(mem_addr: *mut u8, save_mask: u64) -> () {
-    xsave(mem_addr as *mut u8, (save_mask >> 32) as u32, save_mask as u32);
+    xsave(mem_addr, (save_mask >> 32) as u32, save_mask as u32);
 }
 
 /// Perform a full or partial restore of the enabled processor states using
@@ -66,7 +66,7 @@ const _XCR_XFEATURE_ENABLED_MASK: u32 = 0;
 #[target_feature = "+xsave"]
 #[cfg_attr(test, assert_instr(xsetbv))]
 pub unsafe fn _xsetbv(a: u32, val: u64) -> () {
-    xsetbv(a as u32, (val >> 32) as u32, val as u32);
+    xsetbv(a, (val >> 32) as u32, val as u32);
 }
 
 /// Reads the contents of the extended control register `XCR`
@@ -75,7 +75,7 @@ pub unsafe fn _xsetbv(a: u32, val: u64) -> () {
 #[target_feature = "+xsave"]
 #[cfg_attr(test, assert_instr(xgetbv))]
 pub unsafe fn _xgetbv(xcr_no: u32) -> u64 {
-    xgetbv(xcr_no as u32) as u64
+    xgetbv(xcr_no) as u64
 }
 
 /// Perform a full or partial save of the enabled processor states to memory at
@@ -89,7 +89,7 @@ pub unsafe fn _xgetbv(xcr_no: u32) -> u64 {
 #[target_feature = "+xsave,+xsaveopt"]
 #[cfg_attr(test, assert_instr(xsaveopt))]
 pub unsafe fn _xsaveopt(mem_addr: *mut u8, save_mask: u64) -> () {
-    xsaveopt(mem_addr as *mut u8, (save_mask >> 32) as u32, save_mask as u32);
+    xsaveopt(mem_addr, (save_mask >> 32) as u32, save_mask as u32);
 }
 
 /// Perform a full or partial save of the enabled processor states to memory
@@ -102,7 +102,7 @@ pub unsafe fn _xsaveopt(mem_addr: *mut u8, save_mask: u64) -> () {
 #[target_feature = "+xsave,+xsavec"]
 #[cfg_attr(test, assert_instr(xsavec))]
 pub unsafe fn _xsavec(mem_addr: *mut u8, save_mask: u64) -> () {
-    xsavec(mem_addr as *mut u8, (save_mask >> 32) as u32, save_mask as u32);
+    xsavec(mem_addr, (save_mask >> 32) as u32, save_mask as u32);
 }
 
 /// Perform a full or partial save of the enabled processor states to memory at
@@ -116,7 +116,7 @@ pub unsafe fn _xsavec(mem_addr: *mut u8, save_mask: u64) -> () {
 #[target_feature = "+xsave,+xsaves"]
 #[cfg_attr(test, assert_instr(xsaves))]
 pub unsafe fn _xsaves(mem_addr: *mut u8, save_mask: u64) -> () {
-    xsaves(mem_addr as *mut u8, (save_mask >> 32) as u32, save_mask as u32);
+    xsaves(mem_addr, (save_mask >> 32) as u32, save_mask as u32);
 }
 
 /// Perform a full or partial restore of the enabled processor states using the
