@@ -3845,8 +3845,8 @@ mod tests {
         for i in 0..128i64 {
             arr[i as usize] = i;
         }
-        // A multiplier of 4 is word-addressing
-        let r = avx2::_mm_i32gather_epi64(arr.as_ptr(), i32x4::new(0, 16, 0, 0), 4);
+        // A multiplier of 8 is word-addressing for i64s
+        let r = avx2::_mm_i32gather_epi64(arr.as_ptr(), i32x4::new(0, 16, 0, 0), 8);
         assert_eq!(r, i64x2::new(0, 16));
     }
 
@@ -3856,11 +3856,11 @@ mod tests {
         for i in 0..128i64 {
             arr[i as usize] = i;
         }
-        // A multiplier of 4 is word-addressing
+        // A multiplier of 8 is word-addressing for i64s
         let r = avx2::_mm_mask_i32gather_epi64(i64x2::splat(256), arr.as_ptr(),
                                                i32x4::new(16, 16, 16, 16),
                                                i64x2::new(-1, 0),
-                                               4);
+                                               8);
         assert_eq!(r, i64x2::new(16, 256));
     }
 
@@ -3870,8 +3870,8 @@ mod tests {
         for i in 0..128i64 {
             arr[i as usize] = i;
         }
-        // A multiplier of 4 is word-addressing
-        let r = avx2::_mm256_i32gather_epi64(arr.as_ptr(), i32x4::new(0, 16, 32, 48), 4);
+        // A multiplier of 8 is word-addressing for i64s
+        let r = avx2::_mm256_i32gather_epi64(arr.as_ptr(), i32x4::new(0, 16, 32, 48), 8);
         assert_eq!(r, i64x4::new(0, 16, 32, 48));
     }
 
@@ -3881,11 +3881,11 @@ mod tests {
         for i in 0..128i64 {
             arr[i as usize] = i;
         }
-        // A multiplier of 4 is word-addressing
+        // A multiplier of 8 is word-addressing for i64s
         let r = avx2::_mm256_mask_i32gather_epi64(i64x4::splat(256), arr.as_ptr(),
                                                   i32x4::new(0, 16, 64, 96),
                                                   i64x4::new(-1, -1, -1, 0),
-                                                  4);
+                                                  8);
         assert_eq!(r, i64x4::new(0, 16, 64, 256));
     }
 
@@ -3897,8 +3897,8 @@ mod tests {
             arr[i] = j;
             j += 1.0;
         }
-        // A multiplier of 4 is word-addressing
-        let r = avx2::_mm_i32gather_pd(arr.as_ptr(), i32x4::new(0, 16, 0, 0), 4);
+        // A multiplier of 8 is word-addressing for f64s
+        let r = avx2::_mm_i32gather_pd(arr.as_ptr(), i32x4::new(0, 16, 0, 0), 8);
         assert_eq!(r, f64x2::new(0.0, 16.0));
     }
 
@@ -3910,11 +3910,11 @@ mod tests {
             arr[i] = j;
             j += 1.0;
         }
-        // A multiplier of 4 is word-addressing
+        // A multiplier of 8 is word-addressing for f64s
         let r = avx2::_mm_mask_i32gather_pd(f64x2::splat(256.0), arr.as_ptr(),
                                             i32x4::new(16, 16, 16, 16),
                                             f64x2::new(-1.0, 0.0),
-                                            4);
+                                            8);
         assert_eq!(r, f64x2::new(16.0, 256.0));
     }
 
@@ -3926,8 +3926,8 @@ mod tests {
             arr[i] = j;
             j += 1.0;
         }
-        // A multiplier of 4 is word-addressing
-        let r = avx2::_mm256_i32gather_pd(arr.as_ptr(), i32x4::new(0, 16, 32, 48), 4);
+        // A multiplier of 8 is word-addressing for f64s
+        let r = avx2::_mm256_i32gather_pd(arr.as_ptr(), i32x4::new(0, 16, 32, 48), 8);
         assert_eq!(r, f64x4::new(0.0, 16.0, 32.0, 48.0));
     }
 
@@ -3939,11 +3939,11 @@ mod tests {
             arr[i] = j;
             j += 1.0;
         }
-        // A multiplier of 4 is word-addressing
+        // A multiplier of 8 is word-addressing for f64s
         let r = avx2::_mm256_mask_i32gather_pd(f64x4::splat(256.0), arr.as_ptr(),
-                                                  i32x4::new(0, 16, 64, 96),
-                                                  f64x4::new(-1.0, -1.0, -1.0, 0.0),
-                                                  4);
+                                               i32x4::new(0, 16, 64, 96),
+                                               f64x4::new(-1.0, -1.0, -1.0, 0.0),
+                                               8);
         assert_eq!(r, f64x4::new(0.0, 16.0, 64.0, 256.0));
     }
 }
