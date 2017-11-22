@@ -699,10 +699,11 @@ pub unsafe fn _mm256_hsubs_epi16(a: i16x16, b: i16x16) -> i16x16 {
 /// `scale` is between 1 and 8.
 #[inline(always)]
 #[target_feature = "+avx2"]
-#[cfg_attr(test, assert_instr(vpgatherdd))]
-pub unsafe fn _mm_i32gather_epi32(slice: &[i32], offsets: i32x4, scale: i8) -> i32x4 {
+#[cfg_attr(test, assert_instr(vpgatherdd, scale = 1))]
+pub unsafe fn _mm_i32gather_epi32(slice: *const i32, offsets: i32x4, scale: i8) -> i32x4 {
+    use core::mem;
     macro_rules! call {
-        ($imm8:expr) => (pgatherdd(i32x4::splat(0), slice.as_ptr() as *const i8, offsets, i32x4::splat(-1), $imm8))
+        ($imm8:expr) => (pgatherdd(i32x4::splat(0), slice as *const i8, offsets, i32x4::splat(-1), $imm8))
     }
     constify_imm8!(scale, call)
 }
@@ -712,24 +713,40 @@ pub unsafe fn _mm_i32gather_epi32(slice: &[i32], offsets: i32x4, scale: i8) -> i
 /// that position instead.
 #[inline(always)]
 #[target_feature = "+avx2"]
-#[cfg_attr(test, assert_instr(vpgatherdd))]
-pub unsafe fn _mm_mask_i32gather_epi32(src: i32x4, slice: &[i32], offsets: i32x4, mask: i32x4, scale: i8) -> i32x4 {
+#[cfg_attr(test, assert_instr(vpgatherdd, scale = 1))]
+pub unsafe fn _mm_mask_i32gather_epi32(src: i32x4, slice: *const i32, offsets: i32x4, mask: i32x4, scale: i8) -> i32x4 {
+    // use core::mem;
     macro_rules! call {
-        ($imm8:expr) => (pgatherdd(src, slice.as_ptr() as *const i8, offsets, mask, $imm8))
+        ($imm8:expr) => (pgatherdd(src, slice as *const i8, offsets, mask, $imm8))
     }
     constify_imm8!(scale, call)
 }
 
-// TODO _mm_i32gather_epi32 (int const* base_addr, __m128i vindex,
-//                           const int scale)
-// TODO _mm_mask_i32gather_epi32 (__m128i src, int const* base_addr,
-//                                __m128i vindex, __m128i mask,
-//                                const int scale)
-// TODO _mm256_i32gather_epi32 (int const* base_addr, __m256i vindex,
-//                              const int scale)
-// TODO _mm256_mask_i32gather_epi32 (__m256i src, int const* base_addr,
-//                                   __m256i vindex, __m256i mask,
-//                                   const int scale)
+// /// Return values from `slice` at offsets determined by `offsets * scale`, where
+// /// `scale` is between 1 and 8.
+// #[inline(always)]
+// #[target_feature = "+avx2"]
+// #[cfg_attr(test, assert_instr(vpgatherdd))]
+// pub unsafe fn _mm256_i32gather_epi32(slice: &[i32], offsets: i32x8, scale: i8) -> i32x8 {
+//     macro_rules! call {
+//         ($imm8:expr) => (vpgatherdd(i32x8::splat(0), slice.as_ptr() as *const i8, offsets, i32x8::splat(-1), $imm8))
+//     }
+//     constify_imm8!(scale, call)
+// }
+
+// /// Return values from `slice` at offsets determined by `offsets * scale`, where
+// /// `scale` is between 1 and 8. If mask is set, load the value from `src` in
+// /// that position instead.
+// #[inline(always)]
+// #[target_feature = "+avx2"]
+// #[cfg_attr(test, assert_instr(vpgatherdd))]
+// pub unsafe fn _mm256_mask_i32gather_epi32(src: i32x8, slice: &[i32], offsets: i32x8, mask: i32x8, scale: i8) -> i32x8 {
+//     macro_rules! call {
+//         ($imm8:expr) => (vpgatherdd(src, slice.as_ptr() as *const i8, offsets, mask, $imm8))
+//     }
+//     constify_imm8!(scale, call)
+// }
+
 // TODO _mm_i32gather_epi64 (__int64 const* base_addr, __m128i vindex,
 //                           const int scale)
 // TODO _mm_mask_i32gather_epi64 (__m128i src, __int64 const* base_addr,
@@ -2235,6 +2252,17 @@ extern "C" {
     fn permd(a: u32x8, b: u32x8) -> u32x8;
     #[link_name = "llvm.x86.avx2.gather.d.d"]
     fn pgatherdd(src: i32x4, slice: *const i8, offsets: i32x4, mask: i32x4, scale: i8) -> i32x4;
+    #[link_name = "llvm.x86.avx2.gather.d.d.256"]
+    fn vpgatherdd(src: i32x8, slice: *const i8, offsets: i32x8, mask: i32x8, scale: i8) -> i32x8;
+    #[link_name = "llvm.x86.avx2.gather.d.q"]
+    fn pgatherdq(src: i64x2, slice: *const i8, offsets: i32x4, mask: i64x2, scale: i8) -> i64x2;
+    #[link_name = "llvm.x86.avx2.gather.d.q.256"]
+    fn vpgatherdq(src: i64x4, slice: *const i8, offsets: i32x4, mask: i64x4, scale: i8) -> i64x4;
+
+    #[link_name = "llvm.x86.avx2.gather.q.d"]
+    fn pgatherqd(src: i64x2, slice: *const i8, offsets: i32x4, mask: i64x2, scale: i8) -> i64x2;
+    #[link_name = "llvm.x86.avx2.gather.q.d.256"]
+    fn vpgatherqd(src: i64x4, slice: *const i8, offsets: i32x4, mask: i32x8, scale: i8) -> i64x4;
 }
 
 #[cfg(test)]
@@ -3670,7 +3698,7 @@ mod tests {
             arr[i as usize] = i;
         }
         // A multiplier of 4 is word-addressing
-        let r = avx2::_mm_i32gather_epi32(&arr, i32x4::new(0, 16, 32, 48), 4);
+        let r = avx2::_mm_i32gather_epi32(arr.as_ptr(), i32x4::new(0, 16, 32, 48), 4);
         assert_eq!(r, i32x4::new(0, 16, 32, 48));
     }
 
@@ -3681,7 +3709,7 @@ mod tests {
             arr[i as usize] = i;
         }
         // A multiplier of 4 is word-addressing
-        let r = avx2::_mm_mask_i32gather_epi32(i32x4::splat(256), &arr,
+        let r = avx2::_mm_mask_i32gather_epi32(i32x4::splat(256), arr.as_ptr(),
                                                i32x4::new(0, 16, 64, 96),
                                                i32x4::new(-1, -1, -1, 0),
                                                4);
