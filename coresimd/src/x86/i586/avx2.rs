@@ -1645,9 +1645,80 @@ pub unsafe fn _mm256_permute4x64_epi64(a: i64x4, imm8: i32) -> i64x4 {
     }
 }
 
-// TODO _mm256_permute2x128_si256 (__m256i a, __m256i b, const int imm8)
-// TODO _mm256_permute4x64_pd (__m256d a, const int imm8)
-// TODO _mm256_permutevar8x32_ps (__m256 a, __m256i idx)
+/// Shuffle 128-bits of integer data selected by `imm8` from `a` and `b`.
+#[inline(always)]
+#[target_feature = "+avx2"]
+#[cfg_attr(test, assert_instr(vperm2f128, imm8 = 9))]
+pub unsafe fn _mm256_permute2x128_si256(
+    a: __m256i, b: __m256i, imm8: i32
+) -> __m256i {
+    macro_rules! call {
+        ($imm8:expr) => {
+            __m256i::from(vperm2i128(i64x4::from(a), i64x4::from(b), $imm8))
+        }
+    }
+    constify_imm8!(imm8, call)
+}
+
+/// Shuffle 64-bit floating-point elements in `a` across lanes using the
+/// control in `imm8`.
+#[inline(always)]
+#[target_feature = "+avx2"]
+#[cfg_attr(test, assert_instr(vpermpd, imm8 = 1))]
+pub unsafe fn _mm256_permute4x64_pd(a: f64x4, imm8: i32) -> f64x4 {
+    use x86::i586::avx::_mm256_undefined_pd;
+    let imm8 = (imm8 & 0xFF) as u8;
+    macro_rules! shuffle_done {
+        ($x01:expr, $x23:expr, $x45:expr, $x67:expr) => {
+            simd_shuffle4(a, _mm256_undefined_pd(), [$x01, $x23, $x45, $x67])
+        }
+    }
+    macro_rules! shuffle_x67 {
+        ($x01:expr, $x23:expr, $x45:expr) => {
+            match (imm8 >> 6) & 0b11 {
+                0b00 => shuffle_done!($x01, $x23, $x45, 0),
+                0b01 => shuffle_done!($x01, $x23, $x45, 1),
+                0b10 => shuffle_done!($x01, $x23, $x45, 2),
+                _ => shuffle_done!($x01, $x23, $x45, 3),
+            }
+        }
+    }
+    macro_rules! shuffle_x45 {
+        ($x01:expr, $x23:expr) => {
+            match (imm8 >> 4) & 0b11 {
+                0b00 => shuffle_x67!($x01, $x23, 0),
+                0b01 => shuffle_x67!($x01, $x23, 1),
+                0b10 => shuffle_x67!($x01, $x23, 2),
+                _ => shuffle_x67!($x01, $x23, 3),
+            }
+        }
+    }
+    macro_rules! shuffle_x23 {
+        ($x01:expr) => {
+            match (imm8 >> 2) & 0b11 {
+                0b00 => shuffle_x45!($x01, 0),
+                0b01 => shuffle_x45!($x01, 1),
+                0b10 => shuffle_x45!($x01, 2),
+                _ => shuffle_x45!($x01, 3),
+            }
+        }
+    }
+    match imm8 & 0b11 {
+        0b00 => shuffle_x23!(0),
+        0b01 => shuffle_x23!(1),
+        0b10 => shuffle_x23!(2),
+        _ => shuffle_x23!(3),
+    }
+}
+
+/// Shuffle eight 32-bit foating-point elements in `a` across lanes using
+/// the corresponding 32-bit integer index in `idx`.
+#[inline(always)]
+#[target_feature = "+avx2"]
+#[cfg_attr(test, assert_instr(vpermps))]
+pub unsafe fn _mm256_permutevar8x32_ps(a: f32x8, idx: i32x8) -> f32x8 {
+    permps(a, idx)
+}
 
 /// Compute the absolute differences of packed unsigned 8-bit integers in `a`
 /// and `b`, then horizontally sum each consecutive 8 differences to
@@ -2762,6 +2833,10 @@ extern "C" {
     fn pshufb(a: u8x32, b: u8x32) -> u8x32;
     #[link_name = "llvm.x86.avx2.permd"]
     fn permd(a: u32x8, b: u32x8) -> u32x8;
+    #[link_name = "llvm.x86.avx2.permps"]
+    fn permps(a: f32x8, b: i32x8) -> f32x8;
+    #[link_name = "llvm.x86.avx2.vperm2i128"]
+    fn vperm2i128(a: i64x4, b: i64x4, imm8: i8) -> i64x4;
     #[link_name = "llvm.x86.avx2.gather.d.d"]
     fn pgatherdd(
         src: i32x4, slice: *const i8, offsets: i32x4, mask: i32x4, scale: i8
@@ -4302,6 +4377,32 @@ mod tests {
         let expected = i64x4::new(400, 100, 200, 100);
         let r = avx2::_mm256_permute4x64_epi64(a, 0b00010011);
         assert_eq!(r, expected);
+    }
+
+    #[simd_test = "avx2"]
+    unsafe fn _mm256_permute2x128_si256() {
+        let a = __m256i::from(i64x4::new(100, 200, 500, 600));
+        let b = __m256i::from(i64x4::new(300, 400, 700, 800));
+        let r = avx2::_mm256_permute2x128_si256(a, b, 0b00_01_00_11);
+        let e = i64x4::new(700, 800, 500, 600);
+        assert_eq!(i64x4::from(r), e);
+    }
+
+    #[simd_test = "avx2"]
+    unsafe fn _mm256_permute4x64_pd() {
+        let a = f64x4::new(1., 2., 3., 4.);
+        let r = avx2::_mm256_permute4x64_pd(a, 0b00_01_00_11);
+        let e = f64x4::new(4., 1., 2., 1.);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "avx2"]
+    unsafe fn _mm256_permutevar8x32_ps() {
+        let a = f32x8::new(1., 2., 3., 4., 5., 6., 7., 8.);
+        let b = i32x8::new(5, 0, 5, 1, 7, 6, 3, 4);
+        let r = avx2::_mm256_permutevar8x32_ps(a, b);
+        let e = f32x8::new(6., 1., 6., 2., 8., 7., 4., 5.);
+        assert_eq!(r, e);
     }
 
     #[simd_test = "avx2"]
