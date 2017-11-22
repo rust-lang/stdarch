@@ -15,10 +15,13 @@ function ci_install() {
 
     if [[ "${TARGET}" == x86_64-unknown-linux-gnu-emulated ]]; then
         # Install Intel's Software Development Emulator
-        INTEL_SDE_URL=https://s3-us-west-1.amazonaws.com/rust-lang-ci2/rust-ci-mirror/sde-external-8.9.0-2017-08-06-lin.tar.bz2
-        curl $INTEL_SDE_URL | tar xjf -
+        INTEL_SDE=sde-external-8.12.0-2017-10-23-lin
+        INTEL_SDE_URL=https://github.com/gnzlbg/intel_sde/raw/master/$INTEL_SDE.tar.bz2
+        wget $INTEL_SDE_URL
+        tar -xjf $INTEL_SDE.tar.bz2
         export TARGET=$(echo $TARGET | sed 's/-emulated//')
         export FEATURES="intel_sde"
+        export CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_RUNNER="$(pwd)/$INTEL_SDE/sde64 -knm --"
     fi
 
     if [[ "${TARGET}" == arm-unknown-linux-gnueabihf ]] \
