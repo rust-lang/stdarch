@@ -19,6 +19,12 @@ extern "C" {
     fn xsaves64(p: *mut u8, hi: u32, lo: u32) -> ();
     #[link_name = "llvm.x86.xrstors64"]
     fn xrstors64(p: *const u8, hi: u32, lo: u32) -> ();
+    #[link_name = "llvm.x86.xsavec"]
+    fn xsavec(p: *mut u8, hi: u32, lo: u32) -> ();
+    #[link_name = "llvm.x86.xsaves"]
+    fn xsaves(p: *mut u8, hi: u32, lo: u32) -> ();
+    #[link_name = "llvm.x86.xrstors"]
+    fn xrstors(p: *const u8, hi: u32, lo: u32) -> ();
 }
 
 /// Perform a full or partial save of the enabled processor states to memory at
@@ -106,10 +112,53 @@ pub unsafe fn _xrstors64(mem_addr: *const u8, rs_mask: u64) -> () {
     xrstors64(mem_addr, (rs_mask >> 32) as u32, rs_mask as u32);
 }
 
+/// Perform a full or partial save of the enabled processor states to memory
+/// at `mem_addr`.
+///
+/// `xsavec` differs from `xsave` in that it uses compaction and that it may
+/// use init optimization. State is saved based on bits [62:0] in `save_mask`
+/// and `XCR0`. `mem_addr` must be aligned on a 64-byte boundary.
+#[inline(always)]
+#[target_feature = "+xsave,+xsavec"]
+#[cfg_attr(test, assert_instr(xsavec))]
+pub unsafe fn _xsavec(mem_addr: *mut u8, save_mask: u64) -> () {
+    xsavec(mem_addr, (save_mask >> 32) as u32, save_mask as u32);
+}
+
+/// Perform a full or partial save of the enabled processor states to memory at
+/// `mem_addr`
+///
+/// `xsaves` differs from xsave in that it can save state components
+/// corresponding to bits set in `IA32_XSS` `MSR` and that it may use the
+/// modified optimization. State is saved based on bits [62:0] in `save_mask`
+/// and `XCR0`. `mem_addr` must be aligned on a 64-byte boundary.
+#[inline(always)]
+#[target_feature = "+xsave,+xsaves"]
+#[cfg_attr(test, assert_instr(xsaves))]
+pub unsafe fn _xsaves(mem_addr: *mut u8, save_mask: u64) -> () {
+    xsaves(mem_addr, (save_mask >> 32) as u32, save_mask as u32);
+}
+
+/// Perform a full or partial restore of the enabled processor states using the
+/// state information stored in memory at `mem_addr`.
+///
+/// `xrstors` differs from `xrstor` in that it can restore state components
+/// corresponding to bits set in the `IA32_XSS` `MSR`; `xrstors` cannot restore
+/// from an `xsave` area in which the extended region is in the standard form.
+/// State is restored based on bits [62:0] in `rs_mask`, `XCR0`, and
+/// `mem_addr.HEADER.XSTATE_BV`. `mem_addr` must be aligned on a 64-byte
+/// boundary.
+#[inline(always)]
+#[target_feature = "+xsave,+xsaves"]
+#[cfg_attr(test, assert_instr(xrstors))]
+pub unsafe fn _xrstors(mem_addr: *const u8, rs_mask: u64) -> () {
+    xrstors(mem_addr, (rs_mask >> 32) as u32, rs_mask as u32);
+}
+
 // FIXME: https://github.com/rust-lang-nursery/stdsimd/issues/209
 // All these tests fail with Intel SDE.
-/*
 #[cfg(test)]
+#[cfg(not(feature = "intel_sde"))]
 mod tests {
     use x86::x86_64::xsave;
     use stdsimd_test::simd_test;
@@ -194,6 +243,8 @@ mod tests {
         assert_eq!(a, b);
     }
 
+    // This test requires CPL = 0 (ring 0)
+    /*
     #[simd_test = "xsave,xsaves"]
     unsafe fn xsaves64() {
         let m = 0xFFFFFFFFFFFFFFFF_u64; //< all registers
@@ -205,5 +256,34 @@ mod tests {
         xsave::_xsaves64(b.ptr(), m);
         assert_eq!(a, b);
     }
+    */
+
+    #[simd_test = "xsave,xsavec"]
+    unsafe fn xsavec() {
+        use x86::i586::_xrstor;
+
+        let m = 0xFFFFFFFFFFFFFFFF_u64; //< all registers
+        let mut a = XsaveArea::new();
+        let mut b = XsaveArea::new();
+
+        xsave::_xsavec(a.ptr(), m);
+        _xrstor(a.ptr(), m);
+        xsave::_xsavec(b.ptr(), m);
+        assert_eq!(a, b);
+    }
+
+    // This test requires CPL = 0 (ring 0)
+    /*
+    #[simd_test = "xsave,xsaves"]
+    unsafe fn xsaves() {
+        let m = 0xFFFFFFFFFFFFFFFF_u64; //< all registers
+        let mut a = XsaveArea::new();
+        let mut b = XsaveArea::new();
+
+        xsave::_xsaves(a.ptr(), m);
+        xsave::_xrstors(a.ptr(), m);
+        xsave::_xsaves(b.ptr(), m);
+        assert_eq!(a, b);
+    }
+    */
 }
-*/
