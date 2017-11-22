@@ -4230,7 +4230,7 @@ mod tests {
                                                i64x2::new(0, 16),
                                                i32x4::new(-1, 0, -1, 0),
                                                4);
-        assert_eq!(r, i32x4::new(0, 16, 0, 0));
+        assert_eq!(r, i32x4::new(0, 256, 0, 0));
     }
 
     #[simd_test = "avx2"]
