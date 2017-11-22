@@ -702,7 +702,7 @@ pub unsafe fn _mm256_hsubs_epi16(a: i16x16, b: i16x16) -> i16x16 {
 #[cfg_attr(test, assert_instr(vpgatherdd))]
 pub unsafe fn _mm_i32gather_epi32(slice: &[i32], offsets: i32x4, scale: i8) -> i32x4 {
     macro_rules! call {
-        ($imm8:expr) => (pgatherdd(i32x4::splat(0), slice.as_ptr() as *const i8, offsets, i32x4::splat(0), $imm8))
+        ($imm8:expr) => (pgatherdd(i32x4::splat(0), slice.as_ptr() as *const i8, offsets, i32x4::splat(-1), $imm8))
     }
     constify_imm8!(scale, call)
 }
@@ -3666,23 +3666,25 @@ mod tests {
     #[simd_test = "avx2"]
     unsafe fn _mm_i32gather_epi32() {
         let mut arr = [0i32; 128];
-        for (ref mut a, ref mut i) in arr.iter_mut().zip(0..128i32) {
-            *a = i
+        for i in 0..128i32 {
+            arr[i as usize] = i;
         }
-        let r = avx2::_mm_i32gather_epi32(&arr, i32x4::new(0, 16, 32, 48), 2);
-        assert_eq!(r, i32x4::new(0, 32, 64, 96));
+        // A multiplier of 4 is word-addressing
+        let r = avx2::_mm_i32gather_epi32(&arr, i32x4::new(0, 16, 32, 48), 4);
+        assert_eq!(r, i32x4::new(0, 16, 32, 48));
     }
 
     #[simd_test = "avx2"]
     unsafe fn _mm_mask_i32gather_epi32() {
         let mut arr = [0i32; 128];
-        for (ref mut a, ref mut i) in arr.iter_mut().zip(0..128i32) {
-            *a = i
+        for i in 0..128i32 {
+            arr[i as usize] = i;
         }
+        // A multiplier of 4 is word-addressing
         let r = avx2::_mm_mask_i32gather_epi32(i32x4::splat(256), &arr,
                                                i32x4::new(0, 16, 64, 96),
-                                               i32x4::new(0, 0, 0, -1),
-                                               1);
+                                               i32x4::new(-1, -1, -1, 0),
+                                               4);
         assert_eq!(r, i32x4::new(0, 16, 64, 256));
     }
 }
