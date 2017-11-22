@@ -31,7 +31,8 @@ function ci_install() {
     fi
 
     if [[ "${TARGET}" == x86_64-unknown-linux-gnu ]] \
-           || [[ "${TARGET}" == x86_64-apple-darwin ]]; then
+           || [[ "${TARGET}" == x86_64-apple-darwin ]] \
+           || [[ "${TARGET}" == x86_64-pc-windows-msvc ]]; then
         export CARGO_DRIVER=cargo
     else
         export CARGO_DRIVER=cross
