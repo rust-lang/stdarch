@@ -4,7 +4,17 @@
 use stdsimd_test::assert_instr;
 
 use simd_llvm::simd_shuffle16;
+use v64::*;
 use v128::*;
+
+/// Compute the absolute value of packed 8-bit integers in `a` and
+/// return the unsigned results.
+#[inline(always)]
+#[target_feature = "+ssse3"]
+#[cfg_attr(test, assert_instr(pabsb))]
+pub unsafe fn _mm_abs_pi8(a: i8x8) -> u8x8 {
+     pabsb(a)
+}
 
 /// Compute the absolute value of packed 8-bit signed integers in `a` and
 /// return the unsigned results.
@@ -235,6 +245,9 @@ pub unsafe fn _mm_sign_epi32(a: i32x4, b: i32x4) -> i32x4 {
 
 #[allow(improper_ctypes)]
 extern "C" {
+    #[link_name = "llvm.x86.ssse3.pabs.b"]
+    fn pabsb(a: i8x8) -> u8x8;
+
     #[link_name = "llvm.x86.ssse3.pabs.b.128"]
     fn pabsb128(a: i8x16) -> u8x16;
 
@@ -285,8 +298,15 @@ extern "C" {
 mod tests {
     use stdsimd_test::simd_test;
 
+    use v64::*;
     use v128::*;
     use x86::i586::ssse3;
+
+    #[simd_test = "ssse3"]
+    unsafe fn _mm_abs_pi8() {
+        let r = ssse3::_mm_abs_pi8(i8x8::splat(-5));
+        assert_eq!(r, u8x8::splat(5));
+    }
 
     #[simd_test = "ssse3"]
     unsafe fn _mm_abs_epi8() {
