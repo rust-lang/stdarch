@@ -96,15 +96,15 @@ pub unsafe fn _mm_cmpistrm(a: __m128i, b: __m128i, imm8: i8) -> u8x16 {
 /// # #![feature(cfg_target_feature)]
 /// # #![feature(target_feature)]
 /// #
-/// # #[macro_use] extern crate coresimd as stdsimd;
+/// # #[macro_use] extern crate coresimd;
 /// #
 /// # fn main() {
 /// #     if cfg_feature_enabled!("sse4.2") {
 /// #         #[target_feature = "+sse4.2"]
 /// #         fn worker() {
 ///
-/// use stdsimd::simd::u8x16;
-/// use stdsimd::vendor::{__m128i, _mm_cmpistri, _SIDD_CMP_EQUAL_ORDERED};
+/// use coresimd::simd::u8x16;
+/// use coresimd::vendor::{__m128i, _mm_cmpistri, _SIDD_CMP_EQUAL_ORDERED};
 ///
 /// let haystack = b"This is a long string of text data\r\n\tthat extends
 /// multiple lines";
@@ -139,14 +139,14 @@ pub unsafe fn _mm_cmpistrm(a: __m128i, b: __m128i, imm8: i8) -> u8x16 {
 /// # #![feature(cfg_target_feature)]
 /// # #![feature(target_feature)]
 /// #
-/// # #[macro_use] extern crate coresimd as stdsimd;
+/// # #[macro_use] extern crate coresimd;
 /// #
 /// # fn main() {
 /// #     if cfg_feature_enabled!("sse4.2") {
 /// #         #[target_feature = "+sse4.2"]
 /// #         fn worker() {
-/// use stdsimd::simd::u8x16;
-/// use stdsimd::vendor::{__m128i, _mm_cmpistri, _SIDD_CMP_EQUAL_ANY};
+/// use coresimd::simd::u8x16;
+/// use coresimd::vendor::{__m128i, _mm_cmpistri, _SIDD_CMP_EQUAL_ANY};
 ///
 /// // Ensure your input is 16 byte aligned
 /// let password = b"hunter2\0\0\0\0\0\0\0\0\0";
@@ -180,14 +180,14 @@ pub unsafe fn _mm_cmpistrm(a: __m128i, b: __m128i, imm8: i8) -> u8x16 {
 /// # #![feature(cfg_target_feature)]
 /// # #![feature(target_feature)]
 /// #
-/// # #[macro_use] extern crate coresimd as stdsimd;
+/// # #[macro_use] extern crate coresimd;
 /// #
 /// # fn main() {
 /// #     if cfg_feature_enabled!("sse4.2") {
 /// #         #[target_feature = "+sse4.2"]
 /// #         fn worker() {
-/// use stdsimd::simd::u8x16;
-/// use stdsimd::vendor::{__m128i, _mm_cmpistri, _SIDD_CMP_RANGES};
+/// use coresimd::simd::u8x16;
+/// use coresimd::vendor::{__m128i, _mm_cmpistri, _SIDD_CMP_RANGES};
 /// # let b = __m128i::from(u8x16::load(b":;<=>?@[\\]^_`abc", 0));
 ///
 /// // Specify the ranges of values to be searched for [A-Za-z0-9].
@@ -219,15 +219,15 @@ pub unsafe fn _mm_cmpistrm(a: __m128i, b: __m128i, imm8: i8) -> u8x16 {
 /// # #![feature(cfg_target_feature)]
 /// # #![feature(target_feature)]
 /// #
-/// # #[macro_use] extern crate coresimd as stdsimd;
+/// # #[macro_use] extern crate coresimd;
 /// #
 /// # fn main() {
 /// #     if cfg_feature_enabled!("sse4.2") {
 /// #         #[target_feature = "+sse4.2"]
 /// #         fn worker() {
-/// use stdsimd::simd::u16x8;
-/// use stdsimd::vendor::{__m128i, _mm_cmpistri};
-/// use stdsimd::vendor::{_SIDD_UWORD_OPS, _SIDD_CMP_EQUAL_EACH};
+/// use coresimd::simd::u16x8;
+/// use coresimd::vendor::{__m128i, _mm_cmpistri};
+/// use coresimd::vendor::{_SIDD_UWORD_OPS, _SIDD_CMP_EQUAL_EACH};
 ///
 /// # let mut some_utf16_words = [0u16; 8];
 /// # let mut more_utf16_words = [0u16; 8];
@@ -392,15 +392,15 @@ pub unsafe fn _mm_cmpestrm(
 /// # #![feature(cfg_target_feature)]
 /// # #![feature(target_feature)]
 /// #
-/// # #[macro_use] extern crate coresimd as stdsimd;
+/// # #[macro_use] extern crate coresimd;
 /// #
 /// # fn main() {
 /// #     if cfg_feature_enabled!("sse4.2") {
 /// #         #[target_feature = "+sse4.2"]
 /// #         fn worker() {
 ///
-/// use stdsimd::simd::u8x16;
-/// use stdsimd::vendor::{__m128i, _mm_cmpestri, _SIDD_CMP_EQUAL_ORDERED};
+/// use coresimd::simd::u8x16;
+/// use coresimd::vendor::{__m128i, _mm_cmpestri, _SIDD_CMP_EQUAL_ORDERED};
 ///
 /// // The string we want to find a substring in
 /// let haystack = b"Split \r\n\t line  ";
