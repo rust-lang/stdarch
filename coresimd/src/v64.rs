@@ -34,26 +34,13 @@ define_impl! { i8x8, i8, 8, i8x8, x0, x1, x2, x3, x4, x5, x6, x7 }
 #[allow(non_camel_case_types)]
 pub struct x86_mmx(u64);
 
-impl From<i8x8> for x86_mmx {
-    #[inline(always)]
-    fn from(f: i8x8) -> Self {
-        unsafe { ::core::mem::transmute(f) }
-    }
-}
-
-impl Into<u8x8> for x86_mmx {
-    #[inline(always)]
-    fn into(self) -> u8x8 {
-        unsafe { ::core::mem::transmute(self) }
-    }
-}
-
-define_from!(u32x2, i32x2, u16x4, i16x4, u8x8, i8x8);
-define_from!(i32x2, u32x2, u16x4, i16x4, u8x8, i8x8);
-define_from!(u16x4, u32x2, i32x2, i16x4, u8x8, i8x8);
-define_from!(i16x4, u32x2, i32x2, u16x4, u8x8, i8x8);
-define_from!(u8x8, u32x2, i32x2, u16x4, i16x4, i8x8);
-define_from!(i8x8, u32x2, i32x2, u16x4, i16x4, u8x8);
+define_from!(u32x2, i32x2, u16x4, i16x4, u8x8, i8x8, x86_mmx);
+define_from!(i32x2, u32x2, u16x4, i16x4, u8x8, i8x8, x86_mmx);
+define_from!(u16x4, u32x2, i32x2, i16x4, u8x8, i8x8, x86_mmx);
+define_from!(i16x4, u32x2, i32x2, u16x4, u8x8, i8x8, x86_mmx);
+define_from!(u8x8, u32x2, i32x2, u16x4, i16x4, i8x8, x86_mmx);
+define_from!(i8x8, u32x2, i32x2, u16x4, i16x4, u8x8, x86_mmx);
+define_from!(x86_mmx, u32x2, i32x2, u16x4, i16x4, u8x8, i8x8);
 
 define_common_ops!(f32x2, u32x2, i32x2, u16x4, i16x4, u8x8, i8x8);
 define_float_ops!(f32x2);

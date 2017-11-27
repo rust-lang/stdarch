@@ -25,6 +25,15 @@ pub unsafe fn _mm_abs_epi8(a: i8x16) -> u8x16 {
     pabsb128(a)
 }
 
+/// Compute the absolute value of packed 8-bit integers in `a`, and return the
+/// unsigned results.
+#[inline(always)]
+#[target_feature = "+ssse3"]
+#[cfg_attr(test, assert_instr(pabsw))]
+pub unsafe fn _mm_abs_pi16(a: i16x4) -> u16x4 {
+    pabsw(x86_mmx::from(a)).into()
+}
+
 /// Compute the absolute value of each of the packed 16-bit signed integers in
 /// `a` and
 /// return the 16-bit unsigned integer
@@ -33,6 +42,15 @@ pub unsafe fn _mm_abs_epi8(a: i8x16) -> u8x16 {
 #[cfg_attr(test, assert_instr(pabsw))]
 pub unsafe fn _mm_abs_epi16(a: i16x8) -> u16x8 {
     pabsw128(a)
+}
+
+/// Compute the absolute value of packed 32-bit integers in `a`, and return the
+/// unsigned results.
+#[inline(always)]
+#[target_feature = "+ssse3"]
+#[cfg_attr(test, assert_instr(pabsd))]
+pub unsafe fn _mm_abs_pi32(a: i32x2) -> u32x2 {
+    pabsd(x86_mmx::from(a)).into()
 }
 
 /// Compute the absolute value of each of the packed 32-bit signed integers in
@@ -74,6 +92,15 @@ pub unsafe fn _mm_abs_epi32(a: i32x4) -> u32x4 {
 #[cfg_attr(test, assert_instr(pshufb))]
 pub unsafe fn _mm_shuffle_epi8(a: u8x16, b: u8x16) -> u8x16 {
     pshufb128(a, b)
+}
+
+/// Shuffle packed 8-bit integers in `a` according to shuffle control mask in
+/// the corresponding 8-bit element of `b`, and return the results
+#[inline(always)]
+#[target_feature = "+ssse3"]
+#[cfg_attr(test, assert_instr(pshufb))]
+pub unsafe fn _mm_shuffle_pi8(a: u8x8, b: u8x8) -> u8x8 {
+    pshufb(x86_mmx::from(a), x86_mmx::from(b)).into()
 }
 
 /// Concatenate 16-byte blocks in `a` and `b` into a 32-byte temporary result,
@@ -251,14 +278,23 @@ extern "C" {
     #[link_name = "llvm.x86.ssse3.pabs.b.128"]
     fn pabsb128(a: i8x16) -> u8x16;
 
+    #[link_name = "llvm.x86.ssse3.pabs.w"]
+    fn pabsw(a: x86_mmx) -> x86_mmx;
+
     #[link_name = "llvm.x86.ssse3.pabs.w.128"]
     fn pabsw128(a: i16x8) -> u16x8;
+
+    #[link_name = "llvm.x86.ssse3.pabs.d"]
+    fn pabsd(a: x86_mmx) -> x86_mmx;
 
     #[link_name = "llvm.x86.ssse3.pabs.d.128"]
     fn pabsd128(a: i32x4) -> u32x4;
 
     #[link_name = "llvm.x86.ssse3.pshuf.b.128"]
     fn pshufb128(a: u8x16, b: u8x16) -> u8x16;
+
+    #[link_name = "llvm.x86.ssse3.pshuf.b"]
+    fn pshufb(a: x86_mmx, b: x86_mmx) -> x86_mmx;
 
     #[link_name = "llvm.x86.ssse3.phadd.w.128"]
     fn phaddw128(a: i16x8, b: i16x8) -> i16x8;
