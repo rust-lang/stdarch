@@ -351,9 +351,21 @@ mod tests {
     }
 
     #[simd_test = "ssse3"]
+    unsafe fn _mm_abs_pi16() {
+        let r = ssse3::_mm_abs_pi16(i16x4::splat(-5));
+        assert_eq!(r, u16x4::splat(5));
+    }
+
+    #[simd_test = "ssse3"]
     unsafe fn _mm_abs_epi16() {
         let r = ssse3::_mm_abs_epi16(i16x8::splat(-5));
         assert_eq!(r, u16x8::splat(5));
+    }
+
+    #[simd_test = "ssse3"]
+    unsafe fn _mm_abs_pi32() {
+        let r = ssse3::_mm_abs_pi32(i32x2::splat(-5));
+        assert_eq!(r, u32x2::splat(5));
     }
 
     #[simd_test = "ssse3"]
@@ -371,6 +383,15 @@ mod tests {
         let expected =
             u8x16::new(5, 0, 5, 4, 9, 13, 7, 4, 13, 6, 6, 11, 5, 2, 9, 1);
         let r = ssse3::_mm_shuffle_epi8(a, b);
+        assert_eq!(r, expected);
+    }
+
+    #[simd_test = "ssse3"]
+    unsafe fn _mm_shuffle_pi8() {
+        let a = u8x8::new(1, 2, 3, 4, 5, 6, 7, 8);
+        let b = u8x8::new(4, 128, 4, 3, 24, 12, 6, 19);
+        let expected = u8x8::new(5, 0, 5, 4, 1, 5, 7, 4);
+        let r = ssse3::_mm_shuffle_pi8(a, b);
         assert_eq!(r, expected);
     }
 
