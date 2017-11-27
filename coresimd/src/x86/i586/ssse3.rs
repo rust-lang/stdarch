@@ -13,7 +13,7 @@ use v128::*;
 #[target_feature = "+ssse3"]
 #[cfg_attr(test, assert_instr(pabsb))]
 pub unsafe fn _mm_abs_pi8(a: i8x8) -> u8x8 {
-     pabsb(a)
+    pabsb(x86_mmx::from(a)).into()
 }
 
 /// Compute the absolute value of packed 8-bit signed integers in `a` and
@@ -246,7 +246,7 @@ pub unsafe fn _mm_sign_epi32(a: i32x4, b: i32x4) -> i32x4 {
 #[allow(improper_ctypes)]
 extern "C" {
     #[link_name = "llvm.x86.ssse3.pabs.b"]
-    fn pabsb(a: i8x8) -> u8x8;
+    fn pabsb(a: x86_mmx) -> x86_mmx;
 
     #[link_name = "llvm.x86.ssse3.pabs.b.128"]
     fn pabsb128(a: i8x16) -> u8x16;
