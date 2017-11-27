@@ -1774,14 +1774,14 @@ pub unsafe fn _mm256_shuffle_epi8(a: u8x32, b: u8x32) -> u8x32 {
 /// # #![feature(cfg_target_feature)]
 /// # #![feature(target_feature)]
 /// #
-/// # #[macro_use] extern crate coresimd;
+/// # #[macro_use] extern crate stdsimd;
 /// #
 /// # fn main() {
 /// #     if cfg_feature_enabled!("avx2") {
 /// #         #[target_feature = "+avx2"]
 /// #         fn worker() {
-/// use coresimd::simd::i32x8;
-/// use coresimd::vendor::_mm256_shuffle_epi32;
+/// use stdsimd::simd::i32x8;
+/// use stdsimd::vendor::_mm256_shuffle_epi32;
 ///
 /// let a = i32x8::new(0, 1, 2, 3, 4, 5, 6, 7);
 ///
@@ -2318,14 +2318,14 @@ pub unsafe fn _mm256_subs_epu8(a: u8x32, b: u8x32) -> u8x32 {
 /// # #![feature(cfg_target_feature)]
 /// # #![feature(target_feature)]
 /// #
-/// # #[macro_use] extern crate coresimd;
+/// # #[macro_use] extern crate stdsimd;
 /// #
 /// # fn main() {
 /// #     if cfg_feature_enabled!("avx2") {
 /// #         #[target_feature = "+avx2"]
 /// #         fn worker() {
-/// use coresimd::simd::i8x32;
-/// use coresimd::vendor::_mm256_unpackhi_epi8;
+/// use stdsimd::simd::i8x32;
+/// use stdsimd::vendor::_mm256_unpackhi_epi8;
 ///
 /// let a = i8x32::new(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
 /// 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31);
@@ -2367,14 +2367,14 @@ pub unsafe fn _mm256_unpackhi_epi8(a: i8x32, b: i8x32) -> i8x32 {
 /// # #![feature(cfg_target_feature)]
 /// # #![feature(target_feature)]
 /// #
-/// # #[macro_use] extern crate coresimd;
+/// # #[macro_use] extern crate stdsimd;
 /// #
 /// # fn main() {
 /// #     if cfg_feature_enabled!("avx2") {
 /// #         #[target_feature = "+avx2"]
 /// #         fn worker() {
-/// use coresimd::simd::i8x32;
-/// use coresimd::vendor::_mm256_unpacklo_epi8;
+/// use stdsimd::simd::i8x32;
+/// use stdsimd::vendor::_mm256_unpacklo_epi8;
 ///
 /// let a = i8x32::new(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
 /// 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31);
@@ -2415,14 +2415,14 @@ pub unsafe fn _mm256_unpacklo_epi8(a: i8x32, b: i8x32) -> i8x32 {
 /// # #![feature(cfg_target_feature)]
 /// # #![feature(target_feature)]
 /// #
-/// # #[macro_use] extern crate coresimd;
+/// # #[macro_use] extern crate stdsimd;
 /// #
 /// # fn main() {
 /// #     if cfg_feature_enabled!("avx2") {
 /// #         #[target_feature = "+avx2"]
 /// #         fn worker() {
-/// use coresimd::simd::i16x16;
-/// use coresimd::vendor::_mm256_unpackhi_epi16;
+/// use stdsimd::simd::i16x16;
+/// use stdsimd::vendor::_mm256_unpackhi_epi16;
 ///
 /// let a = i16x16::new(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
 /// let b = i16x16::new(0,-1,-2,-3,-4,-5,-6,-7,-8,-9,-10,-11,-12,-13,-14,-15);
@@ -2459,14 +2459,14 @@ pub unsafe fn _mm256_unpackhi_epi16(a: i16x16, b: i16x16) -> i16x16 {
 /// # #![feature(cfg_target_feature)]
 /// # #![feature(target_feature)]
 /// #
-/// # #[macro_use] extern crate coresimd;
+/// # #[macro_use] extern crate stdsimd;
 /// #
 /// # fn main() {
 /// #     if cfg_feature_enabled!("avx2") {
 /// #         #[target_feature = "+avx2"]
 /// #         fn worker() {
-/// use coresimd::simd::i16x16;
-/// use coresimd::vendor::_mm256_unpacklo_epi16;
+/// use stdsimd::simd::i16x16;
+/// use stdsimd::vendor::_mm256_unpacklo_epi16;
 ///
 /// let a = i16x16::new(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
 /// let b = i16x16::new(0,-1,-2,-3,-4,-5,-6,-7,-8,-9,-10,-11,-12,-13,-14,-15);
@@ -2503,14 +2503,14 @@ pub unsafe fn _mm256_unpacklo_epi16(a: i16x16, b: i16x16) -> i16x16 {
 /// # #![feature(cfg_target_feature)]
 /// # #![feature(target_feature)]
 /// #
-/// # #[macro_use] extern crate coresimd;
+/// # #[macro_use] extern crate stdsimd;
 /// #
 /// # fn main() {
 /// #     if cfg_feature_enabled!("avx2") {
 /// #         #[target_feature = "+avx2"]
 /// #         fn worker() {
-/// use coresimd::simd::i32x8;
-/// use coresimd::vendor::_mm256_unpackhi_epi32;
+/// use stdsimd::simd::i32x8;
+/// use stdsimd::vendor::_mm256_unpackhi_epi32;
 ///
 /// let a = i32x8::new(0, 1, 2, 3, 4, 5, 6, 7);
 /// let b = i32x8::new(0,-1,-2,-3,-4,-5,-6,-7);
@@ -2542,14 +2542,14 @@ pub unsafe fn _mm256_unpackhi_epi32(a: i32x8, b: i32x8) -> i32x8 {
 /// # #![feature(cfg_target_feature)]
 /// # #![feature(target_feature)]
 /// #
-/// # #[macro_use] extern crate coresimd;
+/// # #[macro_use] extern crate stdsimd;
 /// #
 /// # fn main() {
 /// #     if cfg_feature_enabled!("avx2") {
 /// #         #[target_feature = "+avx2"]
 /// #         fn worker() {
-/// use coresimd::simd::i32x8;
-/// use coresimd::vendor::_mm256_unpacklo_epi32;
+/// use stdsimd::simd::i32x8;
+/// use stdsimd::vendor::_mm256_unpacklo_epi32;
 ///
 /// let a = i32x8::new(0, 1, 2, 3, 4, 5, 6, 7);
 /// let b = i32x8::new(0,-1,-2,-3,-4,-5,-6,-7);
@@ -2581,14 +2581,14 @@ pub unsafe fn _mm256_unpacklo_epi32(a: i32x8, b: i32x8) -> i32x8 {
 /// # #![feature(cfg_target_feature)]
 /// # #![feature(target_feature)]
 /// #
-/// # #[macro_use] extern crate coresimd;
+/// # #[macro_use] extern crate stdsimd;
 /// #
 /// # fn main() {
 /// #     if cfg_feature_enabled!("avx2") {
 /// #         #[target_feature = "+avx2"]
 /// #         fn worker() {
-/// use coresimd::simd::i64x4;
-/// use coresimd::vendor::_mm256_unpackhi_epi64;
+/// use stdsimd::simd::i64x4;
+/// use stdsimd::vendor::_mm256_unpackhi_epi64;
 ///
 /// let a = i64x4::new(0, 1, 2, 3);
 /// let b = i64x4::new(0,-1,-2,-3);
@@ -2620,14 +2620,14 @@ pub unsafe fn _mm256_unpackhi_epi64(a: i64x4, b: i64x4) -> i64x4 {
 /// # #![feature(cfg_target_feature)]
 /// # #![feature(target_feature)]
 /// #
-/// # #[macro_use] extern crate coresimd;
+/// # #[macro_use] extern crate stdsimd;
 /// #
 /// # fn main() {
 /// #     if cfg_feature_enabled!("avx2") {
 /// #         #[target_feature = "+avx2"]
 /// #         fn worker() {
-/// use coresimd::simd::i64x4;
-/// use coresimd::vendor::_mm256_unpacklo_epi64;
+/// use stdsimd::simd::i64x4;
+/// use stdsimd::vendor::_mm256_unpacklo_epi64;
 ///
 /// let a = i64x4::new(0, 1, 2, 3);
 /// let b = i64x4::new(0,-1,-2,-3);
