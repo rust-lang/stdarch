@@ -19,8 +19,4 @@ install:
 build: false
 
 test_script:
-  - C:\msys64\usr\bin\sh ci\run.sh
-
-branches:
-  only:
-    - master
+  - C:\msys64\usr\bin\sh ci\windows.sh

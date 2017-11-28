@@ -1,40 +1,32 @@
 language: rust
 sudo: false
 rust: nightly
+services: docker
 
 matrix:
   fast_finish: true
   include:
     - env: TARGET=i586-unknown-linux-gnu
     - env: TARGET=i686-unknown-linux-gnu
-    - env: TARGET=x86_64-unknown-linux-gnu NO_ADD=1
-    - env: TARGET=x86_64-unknown-linux-gnu-emulated NO_ADD=1 STDSIMD_TEST_EVERYTHING=1 FEATURES="intel_sde"
-    - env: TARGET=arm-unknown-linux-gnueabihf
+    - env: TARGET=x86_64-unknown-linux-gnu
     - env: TARGET=armv7-unknown-linux-gnueabihf
     - env: TARGET=aarch64-unknown-linux-gnu
+    - env: TARGET=x86_64-unknown-linux-gnu-emulated
     - os: osx
-      env: TARGET=x86_64-apple-darwin NO_ADD=1
-      script: ci/run.sh
+      env: TARGET=x86_64-apple-darwin
     - env: DOCUMENTATION
       install: true
       script: ci/dox.sh
-    - env: RUSTFMT=On TARGET=x86_64-unknown-linux-gnu NO_ADD=1
-      script: |
-        cargo install rustfmt-nightly
-        cargo fmt --all -- --write-mode=diff
-    - env: CLIPPY=On TARGET=x86_64-unknown-linux-gnu NO_ADD=1
-      script: |
-        cargo install clippy
-        cargo clippy --all -- -D clippy-pedantic
+    - env: RUSTFMT=On TARGET=x86_64-unknown-linux-gnu
+    - env: CLIPPY=On TARGET=x86_64-unknown-linux-gnu
   allow_failures:
-    - env: RUSTFMT=On TARGET=x86_64-unknown-linux-gnu NO_ADD=1
-    - env: CLIPPY=On TARGET=x86_64-unknown-linux-gnu NO_ADD=1
+    - env: RUSTFMT=On TARGET=x86_64-unknown-linux-gnu
+    - env: CLIPPY=On TARGET=x86_64-unknown-linux-gnu
 install:
-  - if [ "$NO_ADD" == "" ]; then rustup target add $TARGET; fi
+  - source ci/ci.sh && ci_install
 
 script:
-  - cargo generate-lockfile
-  - ci/run-docker.sh $TARGET $FEATURES
+  - source ci/ci.sh && ci_run
 
 notifications:
   email:

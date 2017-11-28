@@ -17,12 +17,6 @@ extern "C" {
     fn xgetbv(x: u32) -> i64;
     #[link_name = "llvm.x86.xsaveopt"]
     fn xsaveopt(p: *mut u8, hi: u32, lo: u32) -> ();
-    #[link_name = "llvm.x86.xsavec"]
-    fn xsavec(p: *mut u8, hi: u32, lo: u32) -> ();
-    #[link_name = "llvm.x86.xsaves"]
-    fn xsaves(p: *mut u8, hi: u32, lo: u32) -> ();
-    #[link_name = "llvm.x86.xrstors"]
-    fn xrstors(p: *const u8, hi: u32, lo: u32) -> ();
 }
 
 /// Perform a full or partial save of the enabled processor states to memory at
@@ -71,6 +65,12 @@ pub unsafe fn _xsetbv(a: u32, val: u64) -> () {
 
 /// Reads the contents of the extended control register `XCR`
 /// specified in `xcr_no`.
+///
+/// This instruction must be executed at privilege level `0` or in real-address
+/// mode; otherwise, a general protection exception `#GP(0)` is generated.
+/// Specifying a reserved or unimplemented XCR in ECX will also cause a general
+/// protection exception. The processor will also generate a general protection
+/// exception if software attempts to write to reserved bits in an XCR.
 #[inline(always)]
 #[target_feature = "+xsave"]
 #[cfg_attr(test, assert_instr(xgetbv))]
@@ -90,49 +90,6 @@ pub unsafe fn _xgetbv(xcr_no: u32) -> u64 {
 #[cfg_attr(test, assert_instr(xsaveopt))]
 pub unsafe fn _xsaveopt(mem_addr: *mut u8, save_mask: u64) -> () {
     xsaveopt(mem_addr, (save_mask >> 32) as u32, save_mask as u32);
-}
-
-/// Perform a full or partial save of the enabled processor states to memory
-/// at `mem_addr`.
-///
-/// `xsavec` differs from `xsave` in that it uses compaction and that it may
-/// use init optimization. State is saved based on bits [62:0] in `save_mask`
-/// and `XCR0`. `mem_addr` must be aligned on a 64-byte boundary.
-#[inline(always)]
-#[target_feature = "+xsave,+xsavec"]
-#[cfg_attr(test, assert_instr(xsavec))]
-pub unsafe fn _xsavec(mem_addr: *mut u8, save_mask: u64) -> () {
-    xsavec(mem_addr, (save_mask >> 32) as u32, save_mask as u32);
-}
-
-/// Perform a full or partial save of the enabled processor states to memory at
-/// `mem_addr`
-///
-/// `xsaves` differs from xsave in that it can save state components
-/// corresponding to bits set in `IA32_XSS` `MSR` and that it may use the
-/// modified optimization. State is saved based on bits [62:0] in `save_mask`
-/// and `XCR0`. `mem_addr` must be aligned on a 64-byte boundary.
-#[inline(always)]
-#[target_feature = "+xsave,+xsaves"]
-#[cfg_attr(test, assert_instr(xsaves))]
-pub unsafe fn _xsaves(mem_addr: *mut u8, save_mask: u64) -> () {
-    xsaves(mem_addr, (save_mask >> 32) as u32, save_mask as u32);
-}
-
-/// Perform a full or partial restore of the enabled processor states using the
-/// state information stored in memory at `mem_addr`.
-///
-/// `xrstors` differs from `xrstor` in that it can restore state components
-/// corresponding to bits set in the `IA32_XSS` `MSR`; `xrstors` cannot restore
-/// from an `xsave` area in which the extended region is in the standard form.
-/// State is restored based on bits [62:0] in `rs_mask`, `XCR0`, and
-/// `mem_addr.HEADER.XSTATE_BV`. `mem_addr` must be aligned on a 64-byte
-/// boundary.
-#[inline(always)]
-#[target_feature = "+xsave,+xsaves"]
-#[cfg_attr(test, assert_instr(xrstors))]
-pub unsafe fn _xrstors(mem_addr: *const u8, rs_mask: u64) -> () {
-    xrstors(mem_addr, (rs_mask >> 32) as u32, rs_mask as u32);
 }
 
 #[cfg(test)]
@@ -183,8 +140,7 @@ mod tests {
         }
     }
 
-    // FIXME: https://github.com/rust-lang-nursery/stdsimd/issues/209
-    /*
+    #[cfg(not(feature = "intel_sde"))]
     #[simd_test = "xsave"]
     unsafe fn xsave() {
         let m = 0xFFFFFFFFFFFFFFFF_u64; //< all registers
@@ -196,7 +152,6 @@ mod tests {
         xsave::_xsave(b.ptr(), m);
         assert_eq!(a, b);
     }
-    */
 
     #[simd_test = "xsave"]
     unsafe fn xgetbv_xsetbv() {
@@ -211,8 +166,7 @@ mod tests {
         assert_eq!(xcr, xcr_cpy);
     }
 
-    // FIXME: https://github.com/rust-lang-nursery/stdsimd/issues/209
-    /*
+    #[cfg(not(feature = "intel_sde"))]
     #[simd_test = "xsave,xsaveopt"]
     unsafe fn xsaveopt() {
         let m = 0xFFFFFFFFFFFFFFFF_u64; //< all registers
@@ -224,34 +178,4 @@ mod tests {
         xsave::_xsaveopt(b.ptr(), m);
         assert_eq!(a, b);
     }
-    */
-
-    // FIXME: this looks like a bug in Intel's SDE:
-    #[cfg(not(feature = "intel_sde"))]
-    #[simd_test = "xsave,xsavec"]
-    unsafe fn xsavec() {
-        let m = 0xFFFFFFFFFFFFFFFF_u64; //< all registers
-        let mut a = XsaveArea::new();
-        let mut b = XsaveArea::new();
-
-        xsave::_xsavec(a.ptr(), m);
-        xsave::_xrstor(a.ptr(), m);
-        xsave::_xsavec(b.ptr(), m);
-        assert_eq!(a, b);
-    }
-
-    // FIXME: https://github.com/rust-lang-nursery/stdsimd/issues/209
-    /*
-    #[simd_test = "xsave,xsaves"]
-    unsafe fn xsaves() {
-        let m = 0xFFFFFFFFFFFFFFFF_u64; //< all registers
-        let mut a = XsaveArea::new();
-        let mut b = XsaveArea::new();
-
-        xsave::_xsaves(a.ptr(), m);
-        xsave::_xrstors(a.ptr(), m);
-        xsave::_xsaves(b.ptr(), m);
-        assert_eq!(a, b);
-    }
-    */
 }
