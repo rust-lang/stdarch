@@ -18,7 +18,8 @@ use stdsimd_test::assert_instr;
 /// Constructs a 64-bit integer vector initialized to zero.
 #[inline(always)]
 #[target_feature = "+mmx,+sse"]
-#[cfg_attr(all(test, target_arch = "x86"), assert_instr(xorps))]
+// FIXME: this produces a movl instead of xorps on x86
+// FIXME: this produces a xor intrinsic instead of xorps on x86_64
 #[cfg_attr(all(test, target_arch = "x86_64"), assert_instr(xor))]
 pub unsafe fn _mm_setzero_si64() -> __m64 {
     mem::transmute(0_i64)
@@ -59,7 +60,7 @@ extern "C" {
 #[cfg(test)]
 mod tests {
     use v64::{i16x4, i32x2, i8x8};
-    use x86::i586::mmx;
+    use x86::i686::mmx;
     use x86::__m64;
     use stdsimd_test::simd_test;
 

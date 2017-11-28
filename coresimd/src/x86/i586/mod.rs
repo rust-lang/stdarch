@@ -3,7 +3,6 @@
 pub use self::cpuid::*;
 pub use self::xsave::*;
 
-pub use self::mmx::*;
 pub use self::sse::*;
 pub use self::sse2::*;
 pub use self::sse3::*;
@@ -23,7 +22,6 @@ pub use self::tbm::*;
 mod cpuid;
 mod xsave;
 
-mod mmx;
 mod sse;
 mod sse2;
 mod sse3;

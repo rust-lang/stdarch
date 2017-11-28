@@ -4,6 +4,8 @@ use v128::f32x4;
 use v64::{i16x4, i32x2, i8x8, u8x8};
 use x86::__m64;
 use core::mem;
+use x86::i586;
+use x86::i686::mmx;
 
 #[cfg(test)]
 use stdsimd_test::assert_instr;
@@ -139,9 +141,9 @@ pub unsafe fn _mm_cvt_ps2pi(a: f32x4) -> i32x2 {
 #[cfg_attr(test, assert_instr(cvtps2pi))]
 pub unsafe fn _mm_cvtps_pi16(a: f32x4) -> i16x4 {
     let b = _mm_cvtps_pi32(a);
-    let a = ::x86::_mm_movehl_ps(a, a);
+    let a = i586::_mm_movehl_ps(a, a);
     let c = _mm_cvtps_pi32(a);
-    ::x86::_mm_packs_pi32(b, c)
+    mmx::_mm_packs_pi32(b, c)
 }
 
 /// Convert packed single-precision (32-bit) floating-point elements in `a` to
@@ -152,8 +154,8 @@ pub unsafe fn _mm_cvtps_pi16(a: f32x4) -> i16x4 {
 #[cfg_attr(test, assert_instr(cvtps2pi))]
 pub unsafe fn _mm_cvtps_pi8(a: f32x4) -> i8x8 {
     let b = _mm_cvtps_pi16(a);
-    let c = ::x86::_mm_setzero_si64();
-    ::x86::_mm_packs_pi16(b, mem::transmute(c))
+    let c = mmx::_mm_setzero_si64();
+    mmx::_mm_packs_pi16(b, mem::transmute(c))
 }
 
 #[cfg(test)]
