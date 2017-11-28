@@ -26,6 +26,14 @@ mod x86_64;
 #[cfg(target_arch = "x86_64")]
 pub use self::x86_64::*;
 
+/// (private) 64-bit wide integer vector type.
+///
+/// This type is only used to interface with the llvm's intrinsics via llvm's
+/// `x86_mmx` type.
+#[allow(non_camel_case_types)]
+#[repr(simd)]
+struct __m64(i64);
+
 /// 128-bit wide signed integer vector type
 #[allow(non_camel_case_types)]
 pub type __m128i = ::v128::i8x16;

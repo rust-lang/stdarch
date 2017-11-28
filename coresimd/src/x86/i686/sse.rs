@@ -1,16 +1,11 @@
 //! `i686` Streaming SIMD Extensions (SSE)
 
 use v64::{i16x4, u8x8};
+use x86::__m64;
 use core::mem;
 
 #[cfg(test)]
 use stdsimd_test::assert_instr;
-
-/// This type is only required for mapping vector types to llvm's `x86_mmx`
-/// type.
-#[allow(non_camel_case_types)]
-#[repr(simd)]
-struct __m64(i64);
 
 #[allow(improper_ctypes)]
 extern "C" {

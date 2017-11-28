@@ -5,7 +5,8 @@ use core::ptr;
 
 use simd_llvm::simd_shuffle4;
 use v128::*;
-use v64::f32x2;
+use v64::{f32x2, i32x2};
+use x86::__m64;
 
 #[cfg(test)]
 use stdsimd_test::assert_instr;
@@ -626,9 +627,23 @@ pub unsafe fn _mm_cvt_ss2si(a: f32x4) -> i32 {
     _mm_cvtss_si32(a)
 }
 
-// Blocked by https://github.com/rust-lang-nursery/stdsimd/issues/74
-// pub unsafe fn _mm_cvtps_pi32(a: f32x4) -> i32x2
-// pub unsafe fn _mm_cvt_ps2pi(a: f32x4) -> i32x2 { _mm_cvtps_pi32(a) }
+/// Convert packed single-precision (32-bit) floating-point elements in `a` to
+/// packed 32-bit integers.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(cvtps2pi))]
+pub unsafe fn _mm_cvtps_pi32(a: f32x4) -> i32x2 {
+    mem::transmute(cvtps2pi(a))
+}
+
+/// Convert packed single-precision (32-bit) floating-point elements in `a` to
+/// packed 32-bit integers.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(cvtps2pi))]
+pub unsafe fn _mm_cvt_ps2pi(a: f32x4) -> i32x2 {
+    _mm_cvtps_pi32(a)
+}
 
 /// Convert the lowest 32 bit float in the input vector to a 32 bit integer
 /// with
@@ -1686,11 +1701,14 @@ extern "C" {
     fn prefetch(p: *const u8, rw: i32, loc: i32, ty: i32);
     #[link_name = "llvm.x86.sse.cmp.ss"]
     fn cmpss(a: f32x4, b: f32x4, imm8: i8) -> f32x4;
+    #[link_name = "llvm.x86.sse.cvtps2pi"]
+    fn cvtps2pi(a: f32x4) -> __m64;
 }
 
 #[cfg(test)]
 mod tests {
     use v128::*;
+    use v64::i32x2;
     use x86::i586::sse;
     use stdsimd_test::simd_test;
     use test::black_box; // Used to inhibit constant-folding.
@@ -3268,5 +3286,14 @@ mod tests {
         assert_eq!(b, f32x4::new(2.0, 6.0, 10.0, 14.0));
         assert_eq!(c, f32x4::new(3.0, 7.0, 11.0, 15.0));
         assert_eq!(d, f32x4::new(4.0, 8.0, 12.0, 16.0));
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_cvtps_pi32() {
+        let a = f32x4::new(1.0, 2.0, 3.0, 4.0);
+        let r = i32x2::new(1, 2);
+
+        assert_eq!(r, sse::_mm_cvtps_pi32(a));
+        assert_eq!(r, sse::_mm_cvt_ps2pi(a));
     }
 }
