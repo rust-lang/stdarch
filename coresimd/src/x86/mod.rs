@@ -30,7 +30,7 @@ pub use self::x86_64::*;
 #[allow(non_camel_case_types)]
 #[repr(simd)]
 #[derive(Copy, Clone, Debug, PartialEq, Eq, PartialOrd, Ord)]
-pub struct __m64(i64);  // corresponds to llvm's `x86_mmx` type
+pub struct __m64(i64); // corresponds to llvm's `x86_mmx` type
 /// 128-bit wide signed integer vector type
 #[allow(non_camel_case_types)]
 pub type __m128i = ::v128::i8x16;

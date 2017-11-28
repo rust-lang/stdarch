@@ -5,9 +5,7 @@ use core::ptr;
 
 use simd_llvm::simd_shuffle4;
 use v128::*;
-use v64::{i8x8, i16x4, f32x2, i32x2};
-use x86::__m64;
-use x86::i586::mmx;
+use v64::f32x2;
 
 #[cfg(test)]
 use stdsimd_test::assert_instr;
@@ -628,47 +626,6 @@ pub unsafe fn _mm_cvt_ss2si(a: f32x4) -> i32 {
     _mm_cvtss_si32(a)
 }
 
-/// Convert the two lower packed single-precision (32-bit) floating-point
-/// elements in `a` to packed 32-bit integers.
-#[inline(always)]
-#[target_feature = "+sse"]
-#[cfg_attr(test, assert_instr(cvtps2pi))]
-pub unsafe fn _mm_cvtps_pi32(a: f32x4) -> i32x2 {
-    mem::transmute(cvtps2pi(a))
-}
-
-/// Convert the two lower packed single-precision (32-bit) floating-point
-/// elements in `a` to packed 32-bit integers.
-#[inline(always)]
-#[target_feature = "+sse"]
-#[cfg_attr(test, assert_instr(cvtps2pi))]
-pub unsafe fn _mm_cvt_ps2pi(a: f32x4) -> i32x2 {
-    _mm_cvtps_pi32(a)
-}
-
-/// Convert packed single-precision (32-bit) floating-point elements in `a` to
-/// packed 16-bit integers.
-#[inline(always)]
-#[target_feature = "+sse"]
-#[cfg_attr(test, assert_instr(cvtps2pi))]
-pub unsafe fn _mm_cvtps_pi16(a : f32x4) -> i16x4 {
-    let b = _mm_cvtps_pi32(a);
-    let a = _mm_movehl_ps(a, a);
-    let c = _mm_cvtps_pi32(a);
-    mmx::_mm_packs_pi32(b, c)
-}
-
-/// Convert packed single-precision (32-bit) floating-point elements in `a` to
-/// packed 8-bit integers, and returns theem in the lower 4 elements of the result.
-#[inline(always)]
-#[target_feature = "+sse"]
-#[cfg_attr(test, assert_instr(cvtps2pi))]
-pub unsafe fn _mm_cvtps_pi8(a: f32x4) -> i8x8 {
-    let b = _mm_cvtps_pi16(a);
-    let c = mmx::_mm_setzero_si64();
-    mmx::_mm_packs_pi16(b, mem::transmute(c))
-}
-
 /// Convert the lowest 32 bit float in the input vector to a 32 bit integer
 /// with
 /// truncation.
@@ -693,22 +650,6 @@ pub unsafe fn _mm_cvttss_si32(a: f32x4) -> i32 {
 pub unsafe fn _mm_cvtt_ss2si(a: f32x4) -> i32 {
     _mm_cvttss_si32(a)
 }
-
-/// Convert the two lower packed single-precision (32-bit) floating-point
-/// elements in `a` to packed 32-bit integers with truncation.
-#[inline(always)]
-#[target_feature = "+sse"]
-#[cfg_attr(test, assert_instr(cvttps2pi))]
-pub unsafe fn _mm_cvttps_pi32(a: f32x4) -> i32x2 {
-    mem::transmute(cvttps2pi(a))
-}
-
-/// Convert the two lower packed single-precision (32-bit) floating-point
-/// elements in `a` to packed 32-bit integers with truncation.
-#[inline(always)]
-#[target_feature = "+sse"]
-#[cfg_attr(test, assert_instr(cvttps2pi))]
-pub unsafe fn _mm_cvtt_ps2pi(a: f32x4) -> i32x2 { _mm_cvttps_pi32(a) }
 
 /// Extract the lowest 32 bit float from the input vector.
 #[inline(always)]
@@ -1737,16 +1678,11 @@ extern "C" {
     fn prefetch(p: *const u8, rw: i32, loc: i32, ty: i32);
     #[link_name = "llvm.x86.sse.cmp.ss"]
     fn cmpss(a: f32x4, b: f32x4, imm8: i8) -> f32x4;
-    #[link_name = "llvm.x86.sse.cvtps2pi"]
-    fn cvtps2pi(a: f32x4) -> __m64;
-    #[link_name = "llvm.x86.sse.cvttps2pi"]
-    fn cvttps2pi(a: f32x4) -> __m64;
 }
 
 #[cfg(test)]
 mod tests {
     use v128::*;
-    use v64::{i8x8, i32x2, i16x4};
     use x86::i586::sse;
     use stdsimd_test::simd_test;
     use test::black_box; // Used to inhibit constant-folding.
@@ -3325,37 +3261,4 @@ mod tests {
         assert_eq!(c, f32x4::new(3.0, 7.0, 11.0, 15.0));
         assert_eq!(d, f32x4::new(4.0, 8.0, 12.0, 16.0));
     }
-
-    #[simd_test = "sse"]
-    unsafe fn _mm_cvtps_pi32() {
-        let a = f32x4::new(1.0, 2.0, 3.0, 4.0);
-        let r = i32x2::new(1, 2);
-
-        assert_eq!(r, sse::_mm_cvtps_pi32(a));
-        assert_eq!(r, sse::_mm_cvt_ps2pi(a));
-    }
-
-    #[simd_test = "sse"]
-    unsafe fn _mm_cvttps_pi32() {
-        let a = f32x4::new(7.0, 2.0, 3.0, 4.0);
-        let r = i32x2::new(7, 2);
-
-        assert_eq!(r, sse::_mm_cvttps_pi32(a));
-        assert_eq!(r, sse::_mm_cvtt_ps2pi(a));
-    }
-
-    #[simd_test = "sse"]
-    unsafe fn _mm_cvtps_pi16() {
-        let a = f32x4::new(7.0, 2.0, 3.0, 4.0);
-        let r = i16x4::new(7, 2, 3, 4);
-        assert_eq!(r, sse::_mm_cvtps_pi16(a));
-    }
-
-    #[simd_test = "sse"]
-    unsafe fn _mm_cvtps_pi8() {
-        let a = f32x4::new(7.0, 2.0, 3.0, 4.0);
-        let r = i8x8::new(7, 2, 3, 4, 0, 0, 0, 0);
-        assert_eq!(r, sse::_mm_cvtps_pi8(a));
-    }
-
 }

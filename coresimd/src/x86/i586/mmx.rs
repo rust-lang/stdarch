@@ -8,7 +8,7 @@
 //!
 //! [intel64_ref]: http://www.intel.de/content/dam/www/public/us/en/documents/manuals/64-ia-32-architectures-software-developer-instruction-set-reference-manual-325383.pdf
 
-use v64::{i8x8, i16x4, i32x2};
+use v64::{i16x4, i32x2, i8x8};
 use x86::__m64;
 use core::mem;
 
@@ -19,7 +19,7 @@ use stdsimd_test::assert_instr;
 #[inline(always)]
 #[target_feature = "+mmx,+sse"]
 #[cfg_attr(all(test, target_arch = "x86"), assert_instr(xorps))]
-#[cfg_attr(all(test, target_arch = "x86_64"), assert_instr(xorl))]
+#[cfg_attr(all(test, target_arch = "x86_64"), assert_instr(xor))]
 pub unsafe fn _mm_setzero_si64() -> __m64 {
     mem::transmute(0_i64)
 }
@@ -32,7 +32,7 @@ pub unsafe fn _mm_setzero_si64() -> __m64 {
 #[inline(always)]
 #[target_feature = "+mmx,+sse"]
 #[cfg_attr(test, assert_instr(packsswb))]
-pub unsafe fn _mm_packs_pi16 (a: i16x4, b: i16x4) -> i8x8 {
+pub unsafe fn _mm_packs_pi16(a: i16x4, b: i16x4) -> i8x8 {
     mem::transmute(packsswb(mem::transmute(a), mem::transmute(b)))
 }
 
@@ -44,7 +44,7 @@ pub unsafe fn _mm_packs_pi16 (a: i16x4, b: i16x4) -> i8x8 {
 #[inline(always)]
 #[target_feature = "+mmx,+sse"]
 #[cfg_attr(test, assert_instr(packssdw))]
-pub unsafe fn _mm_packs_pi32 (a: i32x2, b: i32x2) -> i16x4 {
+pub unsafe fn _mm_packs_pi32(a: i32x2, b: i32x2) -> i16x4 {
     mem::transmute(packssdw(mem::transmute(a), mem::transmute(b)))
 }
 
@@ -58,7 +58,7 @@ extern "C" {
 
 #[cfg(test)]
 mod tests {
-    use v64::{i8x8, i16x4, i32x2};
+    use v64::{i16x4, i32x2, i8x8};
     use x86::i586::mmx;
     use x86::__m64;
     use stdsimd_test::simd_test;
