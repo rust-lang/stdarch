@@ -42,13 +42,27 @@ macro_rules! define_impl {
             #[inline(always)]
             pub fn extract(self, idx: u32) -> $elemty {
                 assert!(idx < $nelems);
-                unsafe { simd_extract(self, idx) }
+                unsafe { self.extract_unchecked(idx) }
+            }
+
+            #[inline(always)]
+            pub unsafe fn extract_unchecked(self, idx: u32) -> $elemty {
+                simd_extract(self, idx)
             }
 
             #[inline(always)]
             pub fn replace(self, idx: u32, val: $elemty) -> $name {
                 assert!(idx < $nelems);
-                unsafe { simd_insert(self, idx, val) }
+                unsafe { self.replace_unchecked(idx, val) }
+            }
+
+            #[inline(always)]
+            pub unsafe fn replace_unchecked(
+                self,
+                idx: u32,
+                val: $elemty,
+            ) -> $name {
+                simd_insert(self, idx, val)
             }
 
             #[inline(always)]
