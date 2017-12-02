@@ -239,6 +239,16 @@ pub unsafe fn _mm_mulhrs_epi16(a: i16x8, b: i16x8) -> i16x8 {
     pmulhrsw128(a, b)
 }
 
+/// Multiplies packed 16-bit signed integer values, truncates the 32-bit
+/// products to the 18 most significant bits by right-shifting, rounds the
+/// truncated value by adding 1, and writes bits [16:1] to the destination.
+#[inline(always)]
+#[target_feature = "+ssse3"]
+#[cfg_attr(test, assert_instr(pmulhrsw))]
+pub unsafe fn _mm_mulhrs_pi16(a: i16x4, b: i16x4) -> i16x4 {
+    mem::transmute(pmulhrsw(mem::transmute(a), mem::transmute(b)))
+}
+
 /// Negate packed 8-bit integers in `a` when the corresponding signed 8-bit
 /// integer in `b` is negative, and return the result.
 /// Elements in result are zeroed out when the corresponding element in `b`
@@ -354,6 +364,9 @@ extern "C" {
 
     #[link_name = "llvm.x86.ssse3.pmul.hr.sw.128"]
     fn pmulhrsw128(a: i16x8, b: i16x8) -> i16x8;
+
+    #[link_name = "llvm.x86.ssse3.pmul.hr.sw"]
+    fn pmulhrsw(a: __m64, b: __m64) -> __m64;
 
     #[link_name = "llvm.x86.ssse3.psign.b.128"]
     fn psignb128(a: i8x16, b: i8x16) -> i8x16;
@@ -536,6 +549,15 @@ mod tests {
         let b = i16x8::new(4, 128, 4, 3, 32767, -1, -32768, 1);
         let expected = i16x8::new(0, 0, 0, 0, 5, 0, -7, 0);
         let r = ssse3::_mm_mulhrs_epi16(a, b);
+        assert_eq!(r, expected);
+    }
+
+    #[simd_test = "ssse3"]
+    unsafe fn _mm_mulhrs_pi16() {
+        let a = i16x4::new(1, 2, 3, 4);
+        let b = i16x4::new(4, 32767, -1, -32768);
+        let expected = i16x4::new(0, 2, 0, -4);
+        let r = ssse3::_mm_mulhrs_pi16(a, b);
         assert_eq!(r, expected);
     }
 
