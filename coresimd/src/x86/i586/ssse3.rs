@@ -272,6 +272,39 @@ pub unsafe fn _mm_sign_epi32(a: i32x4, b: i32x4) -> i32x4 {
     psignd128(a, b)
 }
 
+/// Negate packed 8-bit integers in `a` when the corresponding signed 8-bit
+/// integer in `b` is negative, and return the results.
+/// Element in result are zeroed out when the corresponding element in `b` is
+/// zero.
+#[inline(always)]
+#[target_feature = "+ssse3"]
+#[cfg_attr(test, assert_instr(psignb))]
+pub unsafe fn _mm_sign_pi8(a: i8x8, b: i8x8) -> i8x8 {
+    mem::transmute(psignb(mem::transmute(a), mem::transmute(b)))
+}
+
+/// Negate packed 16-bit integers in `a` when the corresponding signed 16-bit
+/// integer in `b` is negative, and return the results.
+/// Element in result are zeroed out when the corresponding element in `b` is
+/// zero.
+#[inline(always)]
+#[target_feature = "+ssse3"]
+#[cfg_attr(test, assert_instr(psignw))]
+pub unsafe fn _mm_sign_pi16(a: i16x4, b: i16x4) -> i16x4 {
+    mem::transmute(psignw(mem::transmute(a), mem::transmute(b)))
+}
+
+/// Negate packed 32-bit integers in `a` when the corresponding signed 32-bit
+/// integer in `b` is negative, and return the results.
+/// Element in result are zeroed out when the corresponding element in `b` is
+/// zero.
+#[inline(always)]
+#[target_feature = "+ssse3"]
+#[cfg_attr(test, assert_instr(psignd))]
+pub unsafe fn _mm_sign_pi32(a: i32x2, b: i32x2) -> i32x2 {
+    mem::transmute(psignd(mem::transmute(a), mem::transmute(b)))
+}
+
 #[allow(improper_ctypes)]
 extern "C" {
     #[link_name = "llvm.x86.ssse3.pabs.b"]
@@ -330,6 +363,15 @@ extern "C" {
 
     #[link_name = "llvm.x86.ssse3.psign.d.128"]
     fn psignd128(a: i32x4, b: i32x4) -> i32x4;
+
+    #[link_name = "llvm.x86.ssse3.psign.b"]
+    fn psignb(a: __m64, b: __m64) -> __m64;
+
+    #[link_name = "llvm.x86.ssse3.psign.w"]
+    fn psignw(a: __m64, b: __m64) -> __m64;
+
+    #[link_name = "llvm.x86.ssse3.psign.d"]
+    fn psignd(a: __m64, b: __m64) -> __m64;
 }
 
 #[cfg(test)]
@@ -533,6 +575,33 @@ mod tests {
         let b = i32x4::new(1, -1, 1, 0);
         let expected = i32x4::new(-1, -2, 3, 0);
         let r = ssse3::_mm_sign_epi32(a, b);
+        assert_eq!(r, expected);
+    }
+
+    #[simd_test = "ssse3"]
+    unsafe fn _mm_sign_pi8() {
+        let a = i8x8::new(1, 2, 3, 4, -5, -6, 7, 8);
+        let b = i8x8::new(4, 64, 0, 3, 1, -1, -2, 1);
+        let expected = i8x8::new(1, 2, 0, 4, -5, 6, -7, 8);
+        let r = ssse3::_mm_sign_pi8(a, b);
+        assert_eq!(r, expected);
+    }
+
+    #[simd_test = "ssse3"]
+    unsafe fn _mm_sign_pi16() {
+        let a = i16x4::new(-1, 2, 3, 4);
+        let b = i16x4::new(1, -1, 1, 0);
+        let expected = i16x4::new(-1, -2, 3, 0);
+        let r = ssse3::_mm_sign_pi16(a, b);
+        assert_eq!(r, expected);
+    }
+
+    #[simd_test = "ssse3"]
+    unsafe fn _mm_sign_pi32() {
+        let a = i32x2::new(-1, 2);
+        let b = i32x2::new(1, 0);
+        let expected = i32x2::new(-1, 0);
+        let r = ssse3::_mm_sign_pi32(a, b);
         assert_eq!(r, expected);
     }
 }
