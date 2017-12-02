@@ -229,6 +229,18 @@ pub unsafe fn _mm_maddubs_epi16(a: u8x16, b: i8x16) -> i16x8 {
     pmaddubsw128(a, b)
 }
 
+/// Multiplies corresponding pairs of packed 8-bit unsigned integer
+/// values contained in the first source operand and packed 8-bit signed
+/// integer values contained in the second source operand, adds pairs of
+/// contiguous products with signed saturation, and writes the 16-bit sums to
+/// the corresponding bits in the destination.
+#[inline(always)]
+#[target_feature = "+ssse3"]
+#[cfg_attr(test, assert_instr(pmaddubsw))]
+pub unsafe fn _mm_maddubs_pi16(a: u8x8, b: i8x8) -> i16x4 {
+    mem::transmute(pmaddubsw(mem::transmute(a), mem::transmute(b)))
+}
+
 /// Multiply packed 16-bit signed integer values, truncate the 32-bit
 /// product to the 18 most significant bits by right-shifting, round the
 /// truncated value by adding 1, and write bits [16:1] to the destination.
@@ -361,6 +373,9 @@ extern "C" {
 
     #[link_name = "llvm.x86.ssse3.pmadd.ub.sw.128"]
     fn pmaddubsw128(a: u8x16, b: i8x16) -> i16x8;
+
+    #[link_name = "llvm.x86.ssse3.pmadd.ub.sw"]
+    fn pmaddubsw(a: __m64, b: __m64) -> __m64;
 
     #[link_name = "llvm.x86.ssse3.pmul.hr.sw.128"]
     fn pmulhrsw128(a: i16x8, b: i16x8) -> i16x8;
@@ -540,6 +555,15 @@ mod tests {
             i8x16::new(4, 63, 4, 3, 24, 12, 6, 19, 12, 5, 5, 10, 4, 1, 8, 0);
         let expected = i16x8::new(130, 24, 192, 194, 158, 175, 66, 120);
         let r = ssse3::_mm_maddubs_epi16(a, b);
+        assert_eq!(r, expected);
+    }
+
+    #[simd_test = "ssse3"]
+    unsafe fn _mm_maddubs_pi16() {
+        let a = u8x8::new(1, 2, 3, 4, 5, 6, 7, 8);
+        let b = i8x8::new(4, 63, 4, 3, 24, 12, 6, 19);
+        let expected = i16x4::new(130, 24, 192, 194);
+        let r = ssse3::_mm_maddubs_pi16(a, b);
         assert_eq!(r, expected);
     }
 
