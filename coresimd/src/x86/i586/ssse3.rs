@@ -217,6 +217,35 @@ pub unsafe fn _mm_hsub_epi32(a: i32x4, b: i32x4) -> i32x4 {
     phsubd128(a, b)
 }
 
+/// Horizontally subtracts the adjacent pairs of values contained in 2
+/// packed 64-bit vectors of [4 x i16].
+#[inline(always)]
+#[target_feature = "+ssse3"]
+#[cfg_attr(test, assert_instr(phsubsw))]
+pub unsafe fn _mm_hsub_pi16(a: i16x4, b: i16x4) -> i16x4 {
+    mem::transmute(phsubsw(mem::transmute(a), mem::transmute(b)))
+}
+
+/// Horizontally subtracts the adjacent pairs of values contained in 2
+/// packed 64-bit vectors of [2 x i32].
+#[inline(always)]
+#[target_feature = "+ssse3"]
+#[cfg_attr(test, assert_instr(phsubd))]
+pub unsafe fn _mm_hsub_pi32(a: i32x2, b: i32x2) -> i32x2 {
+    mem::transmute(phsubd(mem::transmute(a), mem::transmute(b)))
+}
+
+/// Horizontally subtracts the adjacent pairs of values contained in 2
+/// packed 64-bit vectors of [4 x i16]. Positive differences greater than
+/// 7FFFh are saturated to 7FFFh. Negative differences less than 8000h are
+/// saturated to 8000h.
+#[inline(always)]
+#[target_feature = "+ssse3"]
+#[cfg_attr(test, assert_instr(phsubsw))]
+pub unsafe fn _mm_hsubs_pi16(a: i16x4, b: i16x4) -> i16x4 {
+    mem::transmute(phsubsw(mem::transmute(a), mem::transmute(b)))
+}
+
 /// Multiply corresponding pairs of packed 8-bit unsigned integer
 /// values contained in the first source operand and packed 8-bit signed
 /// integer values contained in the second source operand, add pairs of
@@ -370,6 +399,15 @@ extern "C" {
 
     #[link_name = "llvm.x86.ssse3.phsub.d.128"]
     fn phsubd128(a: i32x4, b: i32x4) -> i32x4;
+
+    #[link_name = "llvm.x86.ssse3.phsub.w"]
+    fn phsubw(a: __m64, b: __m64) -> __m64;
+
+    #[link_name = "llvm.x86.ssse3.phsub.d"]
+    fn phsubd(a: __m64, b: __m64) -> __m64;
+
+    #[link_name = "llvm.x86.ssse3.phsub.sw"]
+    fn phsubsw(a: __m64, b: __m64) -> __m64;
 
     #[link_name = "llvm.x86.ssse3.pmadd.ub.sw.128"]
     fn pmaddubsw128(a: u8x16, b: i8x16) -> i16x8;
@@ -544,6 +582,33 @@ mod tests {
         let b = i32x4::new(4, 128, 4, 3);
         let expected = i32x4::new(-1, -1, -124, 1);
         let r = ssse3::_mm_hsub_epi32(a, b);
+        assert_eq!(r, expected);
+    }
+
+    #[simd_test = "ssse3"]
+    unsafe fn _mm_hsub_pi16() {
+        let a = i16x4::new(1, 2, 3, 4);
+        let b = i16x4::new(4, 128, 4, 3);
+        let expected = i16x4::new(-1, -1, -124, 1);
+        let r = ssse3::_mm_hsub_pi16(a, b);
+        assert_eq!(r, expected);
+    }
+
+    #[simd_test = "ssse3"]
+    unsafe fn _mm_hsub_pi32() {
+        let a = i32x2::new(1, 2);
+        let b = i32x2::new(4, 128);
+        let expected = i32x2::new(-1, -124);
+        let r = ssse3::_mm_hsub_pi32(a, b);
+        assert_eq!(r, expected);
+    }
+
+    #[simd_test = "ssse3"]
+    unsafe fn _mm_hsubs_pi16() {
+        let a = i16x4::new(1, 2, 3, 4);
+        let b = i16x4::new(4, 128, 4, 3);
+        let expected = i16x4::new(-1, -1, -124, 1);
+        let r = ssse3::_mm_hsubs_pi16(a, b);
         assert_eq!(r, expected);
     }
 
