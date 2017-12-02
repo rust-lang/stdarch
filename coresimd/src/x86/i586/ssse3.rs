@@ -188,6 +188,34 @@ pub unsafe fn _mm_hadd_epi32(a: i32x4, b: i32x4) -> i32x4 {
     phaddd128(a, b)
 }
 
+/// Horizontally add the adjacent pairs of values contained in 2 packed
+/// 64-bit vectors of [4 x i16].
+#[inline(always)]
+#[target_feature = "+ssse3"]
+#[cfg_attr(test, assert_instr(phaddw))]
+pub unsafe fn _mm_hadd_pi16(a: i16x4, b: i16x4) -> i16x4 {
+    mem::transmute(phaddw(mem::transmute(a), mem::transmute(b)))
+}
+
+/// Horizontally add the adjacent pairs of values contained in 2 packed
+/// 64-bit vectors of [2 x i32].
+#[inline(always)]
+#[target_feature = "+ssse3"]
+#[cfg_attr(test, assert_instr(phaddd))]
+pub unsafe fn _mm_hadd_pi32(a: i32x2, b: i32x2) -> i32x2 {
+    mem::transmute(phaddd(mem::transmute(a), mem::transmute(b)))
+}
+
+/// Horizontally add the adjacent pairs of values contained in 2 packed
+/// 64-bit vectors of [4 x i16]. Positive sums greater than 7FFFh are
+/// saturated to 7FFFh. Negative sums less than 8000h are saturated to 8000h.
+#[inline(always)]
+#[target_feature = "+ssse3"]
+#[cfg_attr(test, assert_instr(phaddsw))]
+pub unsafe fn _mm_hadds_pi16(a: i16x4, b: i16x4) -> i16x4 {
+    mem::transmute(phaddsw(mem::transmute(a), mem::transmute(b)))
+}
+
 /// Horizontally subtract the adjacent pairs of values contained in 2
 /// packed 128-bit vectors of [8 x i16].
 #[inline(always)]
@@ -391,6 +419,15 @@ extern "C" {
     #[link_name = "llvm.x86.ssse3.phadd.d.128"]
     fn phaddd128(a: i32x4, b: i32x4) -> i32x4;
 
+    #[link_name = "llvm.x86.ssse3.phadd.w"]
+    fn phaddw(a: __m64, b: __m64) -> __m64;
+
+    #[link_name = "llvm.x86.ssse3.phadd.d"]
+    fn phaddd(a: __m64, b: __m64) -> __m64;
+
+    #[link_name = "llvm.x86.ssse3.phadd.sw"]
+    fn phaddsw(a: __m64, b: __m64) -> __m64;
+
     #[link_name = "llvm.x86.ssse3.phsub.w.128"]
     fn phsubw128(a: i16x8, b: i16x8) -> i16x8;
 
@@ -555,6 +592,33 @@ mod tests {
         let b = i32x4::new(4, 128, 4, 3);
         let expected = i32x4::new(3, 7, 132, 7);
         let r = ssse3::_mm_hadd_epi32(a, b);
+        assert_eq!(r, expected);
+    }
+
+    #[simd_test = "ssse3"]
+    unsafe fn _mm_hadd_pi16() {
+        let a = i16x4::new(1, 2, 3, 4);
+        let b = i16x4::new(4, 128, 4, 3);
+        let expected = i16x4::new(3, 7, 132, 7);
+        let r = ssse3::_mm_hadd_pi16(a, b);
+        assert_eq!(r, expected);
+    }
+
+    #[simd_test = "ssse3"]
+    unsafe fn _mm_hadd_pi32() {
+        let a = i32x2::new(1, 2);
+        let b = i32x2::new(4, 128);
+        let expected = i32x2::new(3, 132);
+        let r = ssse3::_mm_hadd_pi32(a, b);
+        assert_eq!(r, expected);
+    }
+
+    #[simd_test = "ssse3"]
+    unsafe fn _mm_hadds_pi16() {
+        let a = i16x4::new(1, 2, 3, 4);
+        let b = i16x4::new(32767, 1, -32768, -1);
+        let expected = i16x4::new(3, 7, 32767, -32768);
+        let r = ssse3::_mm_hadds_pi16(a, b);
         assert_eq!(r, expected);
     }
 
