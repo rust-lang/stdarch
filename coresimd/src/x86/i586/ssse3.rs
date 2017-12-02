@@ -3,9 +3,11 @@
 #[cfg(test)]
 use stdsimd_test::assert_instr;
 
+use core::mem;
 use simd_llvm::simd_shuffle16;
 use v64::*;
 use v128::*;
+use x86::__m64;
 
 /// Compute the absolute value of packed 8-bit integers in `a` and
 /// return the unsigned results.
@@ -13,7 +15,7 @@ use v128::*;
 #[target_feature = "+ssse3"]
 #[cfg_attr(test, assert_instr(pabsb))]
 pub unsafe fn _mm_abs_pi8(a: i8x8) -> u8x8 {
-    pabsb(x86_mmx::from(a)).into()
+    mem::transmute(pabsb(mem::transmute(a)))
 }
 
 /// Compute the absolute value of packed 8-bit signed integers in `a` and
@@ -31,7 +33,7 @@ pub unsafe fn _mm_abs_epi8(a: i8x16) -> u8x16 {
 #[target_feature = "+ssse3"]
 #[cfg_attr(test, assert_instr(pabsw))]
 pub unsafe fn _mm_abs_pi16(a: i16x4) -> u16x4 {
-    pabsw(x86_mmx::from(a)).into()
+    mem::transmute(pabsw(mem::transmute(a)))
 }
 
 /// Compute the absolute value of each of the packed 16-bit signed integers in
@@ -50,7 +52,7 @@ pub unsafe fn _mm_abs_epi16(a: i16x8) -> u16x8 {
 #[target_feature = "+ssse3"]
 #[cfg_attr(test, assert_instr(pabsd))]
 pub unsafe fn _mm_abs_pi32(a: i32x2) -> u32x2 {
-    pabsd(x86_mmx::from(a)).into()
+    mem::transmute(pabsd(mem::transmute(a)))
 }
 
 /// Compute the absolute value of each of the packed 32-bit signed integers in
@@ -100,7 +102,7 @@ pub unsafe fn _mm_shuffle_epi8(a: u8x16, b: u8x16) -> u8x16 {
 #[target_feature = "+ssse3"]
 #[cfg_attr(test, assert_instr(pshufb))]
 pub unsafe fn _mm_shuffle_pi8(a: u8x8, b: u8x8) -> u8x8 {
-    pshufb(x86_mmx::from(a), x86_mmx::from(b)).into()
+    mem::transmute(pshufb(mem::transmute(a), mem::transmute(b)))
 }
 
 /// Concatenate 16-byte blocks in `a` and `b` into a 32-byte temporary result,
@@ -273,19 +275,19 @@ pub unsafe fn _mm_sign_epi32(a: i32x4, b: i32x4) -> i32x4 {
 #[allow(improper_ctypes)]
 extern "C" {
     #[link_name = "llvm.x86.ssse3.pabs.b"]
-    fn pabsb(a: x86_mmx) -> x86_mmx;
+    fn pabsb(a: __m64) -> __m64;
 
     #[link_name = "llvm.x86.ssse3.pabs.b.128"]
     fn pabsb128(a: i8x16) -> u8x16;
 
     #[link_name = "llvm.x86.ssse3.pabs.w"]
-    fn pabsw(a: x86_mmx) -> x86_mmx;
+    fn pabsw(a: __m64) -> __m64;
 
     #[link_name = "llvm.x86.ssse3.pabs.w.128"]
     fn pabsw128(a: i16x8) -> u16x8;
 
     #[link_name = "llvm.x86.ssse3.pabs.d"]
-    fn pabsd(a: x86_mmx) -> x86_mmx;
+    fn pabsd(a: __m64) -> __m64;
 
     #[link_name = "llvm.x86.ssse3.pabs.d.128"]
     fn pabsd128(a: i32x4) -> u32x4;
@@ -294,7 +296,7 @@ extern "C" {
     fn pshufb128(a: u8x16, b: u8x16) -> u8x16;
 
     #[link_name = "llvm.x86.ssse3.pshuf.b"]
-    fn pshufb(a: x86_mmx, b: x86_mmx) -> x86_mmx;
+    fn pshufb(a: __m64, b: __m64) -> __m64;
 
     #[link_name = "llvm.x86.ssse3.phadd.w.128"]
     fn phaddw128(a: i16x8, b: i16x8) -> i16x8;
