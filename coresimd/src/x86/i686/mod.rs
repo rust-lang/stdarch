@@ -1,5 +1,11 @@
 //! `i686` intrinsics
 
+mod mmx;
+pub use self::mmx::*;
+
+mod sse;
+pub use self::sse::*;
+
 mod sse2;
 pub use self::sse2::*;
 

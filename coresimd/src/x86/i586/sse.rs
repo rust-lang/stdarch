@@ -626,10 +626,6 @@ pub unsafe fn _mm_cvt_ss2si(a: f32x4) -> i32 {
     _mm_cvtss_si32(a)
 }
 
-// Blocked by https://github.com/rust-lang-nursery/stdsimd/issues/74
-// pub unsafe fn _mm_cvtps_pi32(a: f32x4) -> i32x2
-// pub unsafe fn _mm_cvt_ps2pi(a: f32x4) -> i32x2 { _mm_cvtps_pi32(a) }
-
 /// Convert the lowest 32 bit float in the input vector to a 32 bit integer
 /// with
 /// truncation.
@@ -654,10 +650,6 @@ pub unsafe fn _mm_cvttss_si32(a: f32x4) -> i32 {
 pub unsafe fn _mm_cvtt_ss2si(a: f32x4) -> i32 {
     _mm_cvttss_si32(a)
 }
-
-// Blocked by https://github.com/rust-lang-nursery/stdsimd/issues/74
-// pub unsafe fn _mm_cvttps_pi32(a: f32x4) -> i32x2;
-// pub unsafe fn _mm_cvtt_ps2pi(a: f32x4) -> i32x2 { _mm_cvttps_pi32(a) }
 
 /// Extract the lowest 32 bit float from the input vector.
 #[inline(always)]
@@ -884,7 +876,7 @@ pub unsafe fn _mm_movemask_ps(a: f32x4) -> i32 {
 /// # #![feature(cfg_target_feature)]
 /// # #![feature(target_feature)]
 /// #
-/// # #[macro_use] extern crate coresimd as stdsimd;
+/// # #[macro_use] extern crate stdsimd;
 /// #
 /// # // The real main function
 /// # fn main() {
@@ -936,7 +928,7 @@ pub unsafe fn _mm_loadh_pi(a: f32x4, p: *const f32) -> f32x4 {
 /// # #![feature(cfg_target_feature)]
 /// # #![feature(target_feature)]
 /// #
-/// # #[macro_use] extern crate coresimd as stdsimd;
+/// # #[macro_use] extern crate stdsimd;
 /// #
 /// # // The real main function
 /// # fn main() {
@@ -1686,6 +1678,30 @@ extern "C" {
     fn prefetch(p: *const u8, rw: i32, loc: i32, ty: i32);
     #[link_name = "llvm.x86.sse.cmp.ss"]
     fn cmpss(a: f32x4, b: f32x4, imm8: i8) -> f32x4;
+}
+
+/// Stores `a` into the memory at `mem_addr` using a non-temporal memory hint.
+///
+/// `mem_addr` must be aligned on a 16-byte boundary or a general-protection
+/// exception _may_ be generated.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(movntps))]
+pub unsafe fn _mm_stream_ps(mem_addr: *mut f32, a: f32x4) {
+    ::core::intrinsics::nontemporal_store(mem::transmute(mem_addr), a);
+}
+
+/// Store 64-bits of integer data from a into memory using a non-temporal
+/// memory hint.
+#[inline(always)]
+#[target_feature = "+sse"]
+// generates movnti on i686 and x86_64 but just a mov on i586
+#[cfg_attr(all(test,
+               any(target_arch = "x86_64",
+                   all(target_arch = "x86", target_feature = "sse2"))),
+           assert_instr(movnti))]
+pub unsafe fn _mm_stream_pi(mem_addr: *mut i64, a: i64) {
+    ::core::intrinsics::nontemporal_store(mem_addr, a);
 }
 
 #[cfg(test)]
@@ -3268,5 +3284,29 @@ mod tests {
         assert_eq!(b, f32x4::new(2.0, 6.0, 10.0, 14.0));
         assert_eq!(c, f32x4::new(3.0, 7.0, 11.0, 15.0));
         assert_eq!(d, f32x4::new(4.0, 8.0, 12.0, 16.0));
+    }
+
+    #[repr(align(16))]
+    struct Memory {
+        pub data: [f32; 4],
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_stream_ps() {
+        let a = f32x4::splat(7.0);
+        let mut mem = Memory { data: [-1.0; 4] };
+
+        sse::_mm_stream_ps(&mut mem.data[0] as *mut f32, a);
+        for i in 0..4 {
+            assert_eq!(mem.data[i], a.extract(i as u32));
+        }
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_stream_pi() {
+        let a: i64 = 7;
+        let mut mem = ::std::boxed::Box::<i64>::new(-1);
+        sse::_mm_stream_pi(&mut *mem as *mut i64, a);
+        assert_eq!(a, *mem);
     }
 }
