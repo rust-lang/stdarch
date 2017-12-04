@@ -20,6 +20,8 @@ extern "C" {
     fn pinsrw(a: __m64, d: i32, imm8: i32) -> __m64;
     #[link_name = "llvm.x86.mmx.pmovmskb"]
     fn pmovmskb(a: __m64) -> i32;
+    #[link_name = "llvm.x86.sse.pshuf.w"]
+    fn pshufw(a: __m64, imm8: i8) -> __m64;
     #[link_name = "llvm.x86.mmx.pmaxs.w"]
     fn pmaxsw(a: __m64, b: __m64) -> __m64;
     #[link_name = "llvm.x86.mmx.pmaxu.b"]
@@ -145,6 +147,18 @@ pub unsafe fn _mm_insert_pi16(a: i16x4, d: i32, imm8: i32) -> i16x4 {
 #[cfg_attr(test, assert_instr(pmovmskb))]
 pub unsafe fn _mm_movemask_pi8(a: i16x4) -> i32 {
     pmovmskb(mem::transmute(a))
+}
+
+/// Shuffles the 4 16-bit integers from a 64-bit integer vector to the
+/// destination, as specified by the immediate value operand.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(pshufw, imm8 = 0))]
+pub unsafe fn _mm_shuffle_pi16(a: i16x4, imm8: i8) -> i16x4 {
+    macro_rules! call {
+        ($imm8:expr) => { mem::transmute(pshufw(mem::transmute(a), $imm8)) }
+    }
+    constify_imm8!(imm8, call)
 }
 
 /// Convert the two lower packed single-precision (32-bit) floating-point
