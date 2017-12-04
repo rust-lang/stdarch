@@ -18,6 +18,8 @@ extern "C" {
     fn pextrw(a: __m64, imm8: i32) -> i32;
     #[link_name = "llvm.x86.mmx.pinsr.w"]
     fn pinsrw(a: __m64, d: i32, imm8: i32) -> __m64;
+    #[link_name = "llvm.x86.mmx.pmovmskb"]
+    fn pmovmskb(a: __m64) -> i32;
     #[link_name = "llvm.x86.mmx.pmaxs.w"]
     fn pmaxsw(a: __m64, b: __m64) -> __m64;
     #[link_name = "llvm.x86.mmx.pmaxu.b"]
@@ -135,6 +137,15 @@ pub unsafe fn _mm_insert_pi16(a: i16x4, d: i32, imm8: i32) -> i16x4 {
     mem::transmute(pinsrw(mem::transmute(a), d, imm8))
 }
 
+/// Takes the most significant bit from each 8-bit element in a 64-bit
+/// integer vector to create a 16-bit mask value. Zero-extends the value to
+/// 32-bit integer and writes it to the destination.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(pmovmskb))]
+pub unsafe fn _mm_movemask_pi8(a: i16x4) -> i32 {
+    pmovmskb(mem::transmute(a))
+}
 
 /// Convert the two lower packed single-precision (32-bit) floating-point
 /// elements in `a` to packed 32-bit integers with truncation.
