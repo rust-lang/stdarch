@@ -14,6 +14,8 @@ use stdsimd_test::assert_instr;
 extern "C" {
     #[link_name = "llvm.x86.sse.cvtpi2ps"]
     fn cvtpi2ps(a: f32x4, b: __m64) -> f32x4;
+    #[link_name = "llvm.x86.mmx.pextr.w"]
+    fn pextrw(a: __m64, imm8: i32) -> i32;
     #[link_name = "llvm.x86.mmx.pmaxs.w"]
     fn pmaxsw(a: __m64, b: __m64) -> __m64;
     #[link_name = "llvm.x86.mmx.pmaxu.b"]
@@ -109,6 +111,16 @@ pub unsafe fn _m_pminub(a: u8x8, b: u8x8) -> u8x8 {
 #[cfg_attr(test, assert_instr(cvtpi2ps))]
 pub unsafe fn _mm_cvt_pi2ps(a: f32x4, b: i32x2) -> f32x4 {
     cvtpi2ps(a, mem::transmute(b))
+}
+
+/// Extracts 16-bit element from a 64-bit vector of [4 x i16] and
+/// returns it, as specified by the immediate integer operand.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(pextrw, imm8 = 0))]
+pub unsafe fn _mm_extract_pi16(a: i16x4, imm8: i32) -> i16 {
+    // a.extract((imm8 & 0b11) as u32)
+    pextrw(mem::transmute(a), imm8) as i16
 }
 
 /// Convert the two lower packed single-precision (32-bit) floating-point
