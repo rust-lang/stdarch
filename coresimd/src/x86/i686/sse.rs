@@ -16,6 +16,8 @@ extern "C" {
     fn cvtpi2ps(a: f32x4, b: __m64) -> f32x4;
     #[link_name = "llvm.x86.mmx.pextr.w"]
     fn pextrw(a: __m64, imm8: i32) -> i32;
+    #[link_name = "llvm.x86.mmx.pinsr.w"]
+    fn pinsrw(a: __m64, d: i32, imm8: i32) -> __m64;
     #[link_name = "llvm.x86.mmx.pmaxs.w"]
     fn pmaxsw(a: __m64, b: __m64) -> __m64;
     #[link_name = "llvm.x86.mmx.pmaxu.b"]
@@ -122,6 +124,17 @@ pub unsafe fn _mm_extract_pi16(a: i16x4, imm8: i32) -> i16 {
     // a.extract((imm8 & 0b11) as u32)
     pextrw(mem::transmute(a), imm8) as i16
 }
+
+/// Copies data from the 64-bit vector of [4 x i16] to the destination,
+/// and inserts the lower 16-bits of an integer operand at the 16-bit offset
+/// specified by the immediate operand `n`.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(pinsrw, imm8 = 0))]
+pub unsafe fn _mm_insert_pi16(a: i16x4, d: i32, imm8: i32) -> i16x4 {
+    mem::transmute(pinsrw(mem::transmute(a), d, imm8))
+}
+
 
 /// Convert the two lower packed single-precision (32-bit) floating-point
 /// elements in `a` to packed 32-bit integers with truncation.
