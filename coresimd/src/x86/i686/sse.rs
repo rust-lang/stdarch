@@ -12,6 +12,8 @@ use stdsimd_test::assert_instr;
 
 #[allow(improper_ctypes)]
 extern "C" {
+    #[link_name = "llvm.x86.sse.cvtpi2ps"]
+    fn cvtpi2ps(a: f32x4, b: __m64) -> f32x4;
     #[link_name = "llvm.x86.mmx.pmaxs.w"]
     fn pmaxsw(a: __m64, b: __m64) -> __m64;
     #[link_name = "llvm.x86.mmx.pmaxu.b"]
@@ -96,6 +98,17 @@ pub unsafe fn _mm_min_pu8(a: u8x8, b: u8x8) -> u8x8 {
 #[cfg_attr(test, assert_instr(pminub))]
 pub unsafe fn _m_pminub(a: u8x8, b: u8x8) -> u8x8 {
     _mm_min_pu8(a, b)
+}
+
+/// Converts two elements of a 64-bit vector of [2 x i32] into two
+/// floating point values and writes them to the lower 64-bits of the
+/// destination. The remaining higher order elements of the destination are
+/// copied from the corresponding elements in the first operand.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(cvtpi2ps))]
+pub unsafe fn _mm_cvt_pi2ps(a: f32x4, b: i32x2) -> f32x4 {
+    cvtpi2ps(a, mem::transmute(b))
 }
 
 /// Convert the two lower packed single-precision (32-bit) floating-point
