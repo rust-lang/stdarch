@@ -123,10 +123,12 @@ pub unsafe fn _mm_cvt_pi2ps(a: f32x4, b: i32x2) -> f32x4 {
 /// returns it, as specified by the immediate integer operand.
 #[inline(always)]
 #[target_feature = "+sse"]
-#[cfg_attr(test, assert_instr(pextrw, imm8 = 0))]
-pub unsafe fn _mm_extract_pi16(a: i16x4, imm8: i32) -> i16 {
-    // a.extract((imm8 & 0b11) as u32)
-    pextrw(mem::transmute(a), imm8) as i16
+#[cfg_attr(test, assert_instr(pextrw, imm2 = 0))]
+pub unsafe fn _mm_extract_pi16(a: i16x4, imm2: i32) -> i16 {
+    macro_rules! call {
+        ($imm2:expr) => { pextrw(mem::transmute(a), $imm2) as i16 }
+    }
+    constify_imm2!(imm2, call)
 }
 
 /// Copies data from the 64-bit vector of [4 x i16] to the destination,
@@ -134,9 +136,12 @@ pub unsafe fn _mm_extract_pi16(a: i16x4, imm8: i32) -> i16 {
 /// specified by the immediate operand `n`.
 #[inline(always)]
 #[target_feature = "+sse"]
-#[cfg_attr(test, assert_instr(pinsrw, imm8 = 0))]
-pub unsafe fn _mm_insert_pi16(a: i16x4, d: i32, imm8: i32) -> i16x4 {
-    mem::transmute(pinsrw(mem::transmute(a), d, imm8))
+#[cfg_attr(test, assert_instr(pinsrw, imm2 = 0))]
+pub unsafe fn _mm_insert_pi16(a: i16x4, d: i32, imm2: i32) -> i16x4 {
+    macro_rules! call {
+        ($imm2:expr) => { mem::transmute(pinsrw(mem::transmute(a), d, $imm2)) }
+    }
+    constify_imm2!(imm2, call)
 }
 
 /// Takes the most significant bit from each 8-bit element in a 64-bit
