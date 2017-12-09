@@ -98,4 +98,12 @@ mod tests {
         let r = sse2::_mm_cvttsd_si64x(a);
         assert_eq!(r, i64::MIN);
     }
+
+    #[simd_test = "sse2"]
+    unsafe fn _mm_stream_si64() {
+        let a: i64 = 7;
+        let mut mem = ::std::boxed::Box::<i64>::new(-1);
+        sse2::_mm_stream_si64(&mut *mem as *mut i64, a);
+        assert_eq!(a, *mem);
+    }
 }

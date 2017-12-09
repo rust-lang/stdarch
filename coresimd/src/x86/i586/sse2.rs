@@ -3055,6 +3055,22 @@ mod tests {
     }
 
     #[simd_test = "sse2"]
+    unsafe fn _mm_stream_si128() {
+        let a = __m128i::from(sse2::_mm_setr_epi32(1, 2, 3, 4));
+        let mut r = sse2::_mm_undefined_si128();
+        sse2::_mm_stream_si128(&mut r as *mut _, a);
+        assert_eq!(r, a);
+    }
+
+    #[simd_test = "sse2"]
+    unsafe fn _mm_stream_si32() {
+        let a: i32 = 7;
+        let mut mem = ::std::boxed::Box::<i32>::new(-1);
+        sse2::_mm_stream_si32(&mut *mem as *mut i32, a);
+        assert_eq!(a, *mem);
+    }
+
+    #[simd_test = "sse2"]
     unsafe fn _mm_move_epi64() {
         let a = i64x2::new(5, 6);
         let r = sse2::_mm_move_epi64(a);
@@ -3732,6 +3748,21 @@ mod tests {
 
         let r = sse2::_mm_load_pd(d);
         assert_eq!(r, f64x2::new(1.0, 2.0));
+    }
+
+    #[simd_test = "sse2"]
+    unsafe fn _mm_stream_pd() {
+        #[repr(align(128))]
+        struct Memory {
+            pub data: [f64; 2],
+        }
+        let a = f64x2::splat(7.0);
+        let mut mem = Memory { data: [-1.0; 2] };
+
+        sse2::_mm_stream_pd(&mut mem.data[0] as *mut f64, a);
+        for i in 0..2 {
+            assert_eq!(mem.data[i], a.extract(i as u32));
+        }
     }
 
     #[simd_test = "sse2"]
