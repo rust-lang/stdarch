@@ -274,6 +274,50 @@ mod tests {
     }
 
     #[simd_test = "sse"]
+    unsafe fn _mm_cvt_pi2ps() {
+        let a = f32x4::new(0., 0., 3., 4.);
+        let b = i32x2::new(1, 2);
+        let expected = f32x4::new(1., 2., 3., 4.);
+        let r = sse::_mm_cvt_pi2ps(a, b);
+        assert_eq!(r, expected);
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_extract_pi16() {
+        let a = i16x4::new(1, 2, 3, 4);
+        let r = sse::_mm_extract_pi16(a, 0);
+        assert_eq!(r, 1);
+        let r = sse::_mm_extract_pi16(a, 1);
+        assert_eq!(r, 2);
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_insert_pi16() {
+        let a = i16x4::new(1, 2, 3, 4);
+        let r = sse::_mm_insert_pi16(a, 0, 0b0);
+        let expected = i16x4::new(0, 2, 3, 4);
+        assert_eq!(r, expected);
+        let r = sse::_mm_insert_pi16(a, 0, 0b10);
+        let expected = i16x4::new(1, 2, 0, 4);
+        assert_eq!(r, expected);
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_movemask_pi8() {
+        let a = i16x4::new(0b1000_0000, 0b0100_0000, 0b1000_0000, 0b0100_0000);
+        let r = sse::_mm_movemask_pi8(a);
+        assert_eq!(r, 0b10001);
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_shuffle_pi16() {
+        let a = i16x4::new(1, 2, 3, 4);
+        let r = sse::_mm_shuffle_pi16(a, 0b00_01_01_11);
+        let expected = i16x4::new(4, 2, 2, 1);
+        assert_eq!(r, expected);
+    }
+
+    #[simd_test = "sse"]
     unsafe fn _mm_cvtps_pi32() {
         let a = f32x4::new(1.0, 2.0, 3.0, 4.0);
         let r = i32x2::new(1, 2);
