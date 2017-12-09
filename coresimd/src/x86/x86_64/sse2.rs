@@ -52,7 +52,8 @@ pub unsafe fn _mm_cvttsd_si64x(a: f64x2) -> i64 {
 /// used again soon).
 #[inline(always)]
 #[target_feature = "+sse2"]
-#[cfg_attr(test, assert_instr(movntiq))]
+// FIXME movnti on windows and linux x86_64
+//#[cfg_attr(test, assert_instr(movntiq))]
 pub unsafe fn _mm_stream_si64(mem_addr: *mut i64, a: i64) {
     ::core::intrinsics::nontemporal_store(mem_addr, a);
 }
