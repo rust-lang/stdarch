@@ -911,6 +911,26 @@ pub unsafe fn _mm_storel_epi64(mem_addr: *mut __m128i, a: __m128i) {
     );
 }
 
+/// Stores a 128-bit integer vector to a 128-bit aligned memory location.
+/// To minimize caching, the data is flagged as non-temporal (unlikely to be
+/// used again soon).
+#[inline(always)]
+#[target_feature = "+sse2"]
+#[cfg_attr(test, assert_instr(movntps))] // FIXME movntdq
+pub unsafe fn _mm_stream_si128(mem_addr: *mut __m128i, a: __m128i) {
+    ::core::intrinsics::nontemporal_store(mem::transmute(mem_addr), a);
+}
+
+/// Stores a 32-bit integer value in the specified memory location.
+/// To minimize caching, the data is flagged as non-temporal (unlikely to be
+/// used again soon).
+#[inline(always)]
+#[target_feature = "+sse2"]
+#[cfg_attr(test, assert_instr(movnti))]
+pub unsafe fn _mm_stream_si32(mem_addr: *mut i32, a: i32) {
+    ::core::intrinsics::nontemporal_store(mem_addr, a);
+}
+
 /// Return a vector where the low element is extracted from `a` and its upper
 /// element is zero.
 #[inline(always)]
@@ -1843,6 +1863,17 @@ pub unsafe fn _mm_movemask_pd(a: f64x2) -> i32 {
 #[cfg_attr(test, assert_instr(movaps))]
 pub unsafe fn _mm_load_pd(mem_addr: *const f64) -> f64x2 {
     *(mem_addr as *const f64x2)
+}
+
+/// Stores a 128-bit floating point vector of [2 x double] to a 128-bit
+/// aligned memory location.
+/// To minimize caching, the data is flagged as non-temporal (unlikely to be
+/// used again soon).
+#[inline(always)]
+#[target_feature = "+sse2"]
+#[cfg_attr(test, assert_instr(movntps))] // FIXME movntpd
+pub unsafe fn _mm_stream_pd(mem_addr: *mut f64, a: f64x2) {
+    ::core::intrinsics::nontemporal_store(mem::transmute(mem_addr), a);
 }
 
 /// Store 128-bits (composed of 2 packed double-precision (64-bit)

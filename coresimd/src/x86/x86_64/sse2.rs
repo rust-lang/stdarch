@@ -47,6 +47,16 @@ pub unsafe fn _mm_cvttsd_si64x(a: f64x2) -> i64 {
     _mm_cvttsd_si64(a)
 }
 
+/// Stores a 64-bit integer value in the specified memory location.
+/// To minimize caching, the data is flagged as non-temporal (unlikely to be
+/// used again soon).
+#[inline(always)]
+#[target_feature = "+sse2"]
+#[cfg_attr(test, assert_instr(movntiq))]
+pub unsafe fn _mm_stream_si64(mem_addr: *mut i64, a: i64) {
+    ::core::intrinsics::nontemporal_store(mem_addr, a);
+}
+
 #[cfg(test)]
 mod tests {
     use stdsimd_test::simd_test;
