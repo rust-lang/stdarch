@@ -207,8 +207,19 @@ pub unsafe fn _m_psadbw(a: u8x8, b: u8x8) -> u64 {
 #[inline(always)]
 #[target_feature = "+sse"]
 #[cfg_attr(test, assert_instr(cvtpi2ps))]
-pub unsafe fn _mm_cvt_pi2ps(a: f32x4, b: i32x2) -> f32x4 {
+pub unsafe fn _mm_cvtpi32_ps(a: f32x4, b: i32x2) -> f32x4 {
     cvtpi2ps(a, mem::transmute(b))
+}
+
+/// Converts two elements of a 64-bit vector of [2 x i32] into two
+/// floating point values and writes them to the lower 64-bits of the
+/// destination. The remaining higher order elements of the destination are
+/// copied from the corresponding elements in the first operand.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(cvtpi2ps))]
+pub unsafe fn _mm_cvt_pi2ps(a: f32x4, b: i32x2) -> f32x4 {
+    _mm_cvtpi32_ps(a, b)
 }
 
 /// Conditionally copies the values from each 8-bit element in the first
@@ -470,10 +481,13 @@ mod tests {
     }
 
     #[simd_test = "sse"]
-    unsafe fn _mm_cvt_pi2ps() {
+    unsafe fn _mm_cvtpi32_ps() {
         let a = f32x4::new(0., 0., 3., 4.);
         let b = i32x2::new(1, 2);
         let expected = f32x4::new(1., 2., 3., 4.);
+        let r = sse::_mm_cvtpi32_ps(a, b);
+        assert_eq!(r, expected);
+
         let r = sse::_mm_cvt_pi2ps(a, b);
         assert_eq!(r, expected);
     }
