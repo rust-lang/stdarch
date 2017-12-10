@@ -1,7 +1,7 @@
 //! `i686` Streaming SIMD Extensions (SSE)
 
 use v128::f32x4;
-use v64::{i16x4, i32x2, i8x8, u8x8};
+use v64::{i16x4, i32x2, i8x8, u8x8, u16x4};
 use x86::__m64;
 use core::mem;
 use x86::i586;
@@ -32,6 +32,8 @@ extern "C" {
     fn pminsw(a: __m64, b: __m64) -> __m64;
     #[link_name = "llvm.x86.mmx.pminu.b"]
     fn pminub(a: __m64, b: __m64) -> __m64;
+    #[link_name = "llvm.x86.mmx.pmulhu.w"]
+    fn pmulhuw(a: __m64, b: __m64) -> __m64;
     #[link_name = "llvm.x86.sse.cvtps2pi"]
     fn cvtps2pi(a: f32x4) -> __m64;
     #[link_name = "llvm.x86.sse.cvttps2pi"]
@@ -109,6 +111,28 @@ pub unsafe fn _mm_min_pu8(a: u8x8, b: u8x8) -> u8x8 {
 pub unsafe fn _m_pminub(a: u8x8, b: u8x8) -> u8x8 {
     _mm_min_pu8(a, b)
 }
+
+/// Multiplies packed 16-bit unsigned integer values and writes the
+/// high-order 16 bits of each 32-bit product to the corresponding bits in
+/// the destination.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(pmulhuw))]
+pub unsafe fn _mm_mulhi_pu16(a: u16x4, b: u16x4) -> u16x4 {
+    mem::transmute(pmulhuw(mem::transmute(a), mem::transmute(b)))
+}
+
+
+/// Multiplies packed 16-bit unsigned integer values and writes the
+/// high-order 16 bits of each 32-bit product to the corresponding bits in
+/// the destination.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(pmulhuw))]
+pub unsafe fn _m_pmulhuw(a: u16x4, b: u16x4) -> u16x4 {
+    _mm_mulhi_pu16(a, b)
+}
+//
 
 /// Converts two elements of a 64-bit vector of [2 x i32] into two
 /// floating point values and writes them to the lower 64-bits of the
@@ -297,7 +321,7 @@ pub unsafe fn _mm_cvtps_pi8(a: f32x4) -> i8x8 {
 #[cfg(test)]
 mod tests {
     use v128::f32x4;
-    use v64::{i16x4, i32x2, i8x8, u8x8};
+    use v64::{i16x4, i32x2, i8x8, u8x8, u16x4};
     use x86::i686::sse;
     use stdsimd_test::simd_test;
 
@@ -339,6 +363,13 @@ mod tests {
 
         assert_eq!(r, sse::_mm_min_pu8(a, b));
         assert_eq!(r, sse::_m_pminub(a, b));
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_mulhi_pu16() {
+        let (a, b) = (u16x4::splat(1000), u16x4::splat(1001));
+        let r = sse::_mm_mulhi_pu16(a, b);
+        assert_eq!(r, u16x4::splat(15));
     }
 
     #[simd_test = "sse"]
