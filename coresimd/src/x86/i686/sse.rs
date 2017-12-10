@@ -38,6 +38,8 @@ extern "C" {
     fn pavgb(a: __m64, b: __m64) -> __m64;
     #[link_name = "llvm.x86.mmx.pavg.w"]
     fn pavgw(a: __m64, b: __m64) -> __m64;
+    #[link_name = "llvm.x86.mmx.psad.bw"]
+    fn psadbw(a: __m64, b: __m64) -> __m64;
     #[link_name = "llvm.x86.sse.cvtps2pi"]
     fn cvtps2pi(a: f32x4) -> __m64;
     #[link_name = "llvm.x86.sse.cvttps2pi"]
@@ -174,6 +176,28 @@ pub unsafe fn _mm_avg_pu16(a: u16x4, b: u16x4) -> u16x4 {
 #[cfg_attr(test, assert_instr(pavgw))]
 pub unsafe fn _m_pavgw(a: u16x4, b: u16x4) -> u16x4 {
     _mm_avg_pu16(a, b)
+}
+
+/// Subtracts the corresponding 8-bit unsigned integer values of the two
+/// 64-bit vector operands and computes the absolute value for each of the
+/// difference. Then sum of the 8 absolute differences is written to the
+/// bits [15:0] of the destination; the remaining bits [63:16] are cleared.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(psadbw))]
+pub unsafe fn _mm_sad_pu8(a: u8x8, b: u8x8) -> u64 {
+    mem::transmute(psadbw(mem::transmute(a), mem::transmute(b)))
+}
+
+/// Subtracts the corresponding 8-bit unsigned integer values of the two
+/// 64-bit vector operands and computes the absolute value for each of the
+/// difference. Then sum of the 8 absolute differences is written to the
+/// bits [15:0] of the destination; the remaining bits [63:16] are cleared.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(psadbw))]
+pub unsafe fn _m_psadbw(a: u8x8, b: u8x8) -> u64 {
+    _mm_sad_pu8(a, b)
 }
 
 /// Converts two elements of a 64-bit vector of [2 x i32] into two
@@ -432,6 +456,17 @@ mod tests {
 
         let r = sse::_m_pavgw(a, b);
         assert_eq!(r, u16x4::splat(6));
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_sad_pu8() {
+        let a = u8x8::new(255, 254, 253, 252, 1, 2, 3, 4);
+        let b = u8x8::new(0, 0, 0, 0, 2, 1, 2, 1);
+        let r = sse::_mm_sad_pu8(a, b);
+        assert_eq!(r, 1020);
+
+        let r = sse::_m_psadbw(a, b);
+        assert_eq!(r, 1020);
     }
 
     #[simd_test = "sse"]
