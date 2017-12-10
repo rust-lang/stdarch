@@ -14,6 +14,8 @@ use stdsimd_test::assert_instr;
 extern "C" {
     #[link_name = "llvm.x86.sse.cvtpi2ps"]
     fn cvtpi2ps(a: f32x4, b: __m64) -> f32x4;
+    #[link_name = "llvm.x86.mmx.maskmovq"]
+    fn maskmovq(a: __m64, mask: __m64, mem_addr: *mut i8);
     #[link_name = "llvm.x86.mmx.pextr.w"]
     fn pextrw(a: __m64, imm8: i32) -> i32;
     #[link_name = "llvm.x86.mmx.pinsr.w"]
@@ -117,6 +119,34 @@ pub unsafe fn _m_pminub(a: u8x8, b: u8x8) -> u8x8 {
 #[cfg_attr(test, assert_instr(cvtpi2ps))]
 pub unsafe fn _mm_cvt_pi2ps(a: f32x4, b: i32x2) -> f32x4 {
     cvtpi2ps(a, mem::transmute(b))
+}
+
+/// Conditionally copies the values from each 8-bit element in the first
+/// 64-bit integer vector operand to the specified memory location, as
+/// specified by the most significant bit in the corresponding element in the
+/// second 64-bit integer vector operand.
+///
+/// To minimize caching, the data is flagged as non-temporal
+/// (unlikely to be used again soon).
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(maskmovq))]
+pub unsafe fn _mm_maskmove_si64(a: i8x8, mask: i8x8, mem_addr: *mut i8) {
+    maskmovq(mem::transmute(a), mem::transmute(mask), mem_addr)
+}
+
+/// Conditionally copies the values from each 8-bit element in the first
+/// 64-bit integer vector operand to the specified memory location, as
+/// specified by the most significant bit in the corresponding element in the
+/// second 64-bit integer vector operand.
+///
+/// To minimize caching, the data is flagged as non-temporal
+/// (unlikely to be used again soon).
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(maskmovq))]
+pub unsafe fn _m_maskmovq(a: i8x8, mask: i8x8, mem_addr: *mut i8) {
+    _mm_maskmove_si64(a, mask, mem_addr)
 }
 
 /// Extracts 16-bit element from a 64-bit vector of [4 x i16] and
@@ -318,6 +348,19 @@ mod tests {
         let expected = f32x4::new(1., 2., 3., 4.);
         let r = sse::_mm_cvt_pi2ps(a, b);
         assert_eq!(r, expected);
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_maskmove_si64() {
+        let a = i8x8::splat(9);
+        let mask = i8x8::splat(0).replace(2, 0x80u8 as i8);
+        let mut r = i8x8::splat(0);
+        sse::_mm_maskmove_si64(a, mask, &mut r as *mut _ as *mut i8);
+        assert_eq!(r, i8x8::splat(0).replace(2, 9));
+
+        let mut r = i8x8::splat(0);
+        sse::_m_maskmovq(a, mask, &mut r as *mut _ as *mut i8);
+        assert_eq!(r, i8x8::splat(0).replace(2, 9));
     }
 
     #[simd_test = "sse"]
