@@ -131,6 +131,15 @@ pub unsafe fn _mm_extract_pi16(a: i16x4, imm2: i32) -> i16 {
     constify_imm2!(imm2, call)
 }
 
+/// Extracts 16-bit element from a 64-bit vector of [4 x i16] and
+/// returns it, as specified by the immediate integer operand.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(pextrw, imm2 = 0))]
+pub unsafe fn _m_pextrw(a: i16x4, imm2: i32) -> i16 {
+    _mm_extract_pi16(a, imm2)
+}
+
 /// Copies data from the 64-bit vector of [4 x i16] to the destination,
 /// and inserts the lower 16-bits of an integer operand at the 16-bit offset
 /// specified by the immediate operand `n`.
@@ -144,6 +153,16 @@ pub unsafe fn _mm_insert_pi16(a: i16x4, d: i32, imm2: i32) -> i16x4 {
     constify_imm2!(imm2, call)
 }
 
+/// Copies data from the 64-bit vector of [4 x i16] to the destination,
+/// and inserts the lower 16-bits of an integer operand at the 16-bit offset
+/// specified by the immediate operand `n`.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(pinsrw, imm2 = 0))]
+pub unsafe fn _m_pinsrw(a: i16x4, d: i32, imm2: i32) -> i16x4 {
+    _mm_insert_pi16(a, d, imm2)
+}
+
 /// Takes the most significant bit from each 8-bit element in a 64-bit
 /// integer vector to create a 16-bit mask value. Zero-extends the value to
 /// 32-bit integer and writes it to the destination.
@@ -152,6 +171,16 @@ pub unsafe fn _mm_insert_pi16(a: i16x4, d: i32, imm2: i32) -> i16x4 {
 #[cfg_attr(test, assert_instr(pmovmskb))]
 pub unsafe fn _mm_movemask_pi8(a: i16x4) -> i32 {
     pmovmskb(mem::transmute(a))
+}
+
+/// Takes the most significant bit from each 8-bit element in a 64-bit
+/// integer vector to create a 16-bit mask value. Zero-extends the value to
+/// 32-bit integer and writes it to the destination.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(pmovmskb))]
+pub unsafe fn _m_pmovmskb(a: i16x4) -> i32 {
+    _mm_movemask_pi8(a)
 }
 
 /// Shuffles the 4 16-bit integers from a 64-bit integer vector to the
@@ -164,6 +193,15 @@ pub unsafe fn _mm_shuffle_pi16(a: i16x4, imm8: i8) -> i16x4 {
         ($imm8:expr) => { mem::transmute(pshufw(mem::transmute(a), $imm8)) }
     }
     constify_imm8!(imm8, call)
+}
+
+/// Shuffles the 4 16-bit integers from a 64-bit integer vector to the
+/// destination, as specified by the immediate value operand.
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(pshufw, imm8 = 0))]
+pub unsafe fn _m_pshufw(a: i16x4, imm8: i8) -> i16x4 {
+    _mm_shuffle_pi16(a, imm8)
 }
 
 /// Convert the two lower packed single-precision (32-bit) floating-point
@@ -289,6 +327,9 @@ mod tests {
         assert_eq!(r, 1);
         let r = sse::_mm_extract_pi16(a, 1);
         assert_eq!(r, 2);
+
+        let r = sse::_m_pextrw(a, 1);
+        assert_eq!(r, 2);
     }
 
     #[simd_test = "sse"]
@@ -300,12 +341,18 @@ mod tests {
         let r = sse::_mm_insert_pi16(a, 0, 0b10);
         let expected = i16x4::new(1, 2, 0, 4);
         assert_eq!(r, expected);
+
+        let r = sse::_m_pinsrw(a, 0, 0b10);
+        assert_eq!(r, expected);
     }
 
     #[simd_test = "sse"]
     unsafe fn _mm_movemask_pi8() {
         let a = i16x4::new(0b1000_0000, 0b0100_0000, 0b1000_0000, 0b0100_0000);
         let r = sse::_mm_movemask_pi8(a);
+        assert_eq!(r, 0b10001);
+
+        let r = sse::_m_pmovmskb(a);
         assert_eq!(r, 0b10001);
     }
 
@@ -314,6 +361,9 @@ mod tests {
         let a = i16x4::new(1, 2, 3, 4);
         let r = sse::_mm_shuffle_pi16(a, 0b00_01_01_11);
         let expected = i16x4::new(4, 2, 2, 1);
+        assert_eq!(r, expected);
+
+        let r = sse::_m_pshufw(a, 0b00_01_01_11);
         assert_eq!(r, expected);
     }
 
