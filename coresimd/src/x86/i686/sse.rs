@@ -222,6 +222,18 @@ pub unsafe fn _mm_cvt_pi2ps(a: f32x4, b: i32x2) -> f32x4 {
     _mm_cvtpi32_ps(a, b)
 }
 
+/// Converts the two 32-bit signed integer values from each 64-bit vector
+/// operand of [2 x i32] into a 128-bit vector of [4 x float].
+#[inline(always)]
+#[target_feature = "+sse"]
+#[cfg_attr(test, assert_instr(cvtpi2ps))]
+pub unsafe fn _mm_cvtpi32x2_ps(a: i32x2, b: i32x2) -> f32x4 {
+    let c = i586::_mm_setzero_ps();
+    let c = _mm_cvtpi32_ps(c, b);
+    let c = i586::_mm_movelh_ps(c, c);
+    _mm_cvtpi32_ps(c, a)
+}
+
 /// Conditionally copies the values from each 8-bit element in the first
 /// 64-bit integer vector operand to the specified memory location, as
 /// specified by the most significant bit in the corresponding element in the
@@ -489,6 +501,15 @@ mod tests {
         assert_eq!(r, expected);
 
         let r = sse::_mm_cvt_pi2ps(a, b);
+        assert_eq!(r, expected);
+    }
+
+    #[simd_test = "sse"]
+    unsafe fn _mm_cvtpi32x2_ps() {
+        let a = i32x2::new(1, 2);
+        let b = i32x2::new(3, 4);
+        let expected = f32x4::new(1., 2., 3., 4.);
+        let r = sse::_mm_cvtpi32x2_ps(a, b);
         assert_eq!(r, expected);
     }
 
