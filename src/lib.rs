@@ -139,8 +139,7 @@ pub mod vendor {
     pub use coresimd::vendor::*;
 
     #[cfg(all(target_os = "linux",
-              any(target_arch = "arm",
-                  target_arch = "aarch64",
+              any(target_arch = "arm", target_arch = "aarch64",
                   target_arch = "powerpc64")))]
     pub use super::runtime::{__unstable_detect_feature, __Feature};
 }
@@ -151,8 +150,7 @@ pub mod simd {
 }
 
 #[cfg(all(target_os = "linux",
-          any(target_arch = "arm",
-              target_arch = "aarch64",
+          any(target_arch = "arm", target_arch = "aarch64",
               target_arch = "powerpc64")))]
 #[macro_use]
 mod runtime;

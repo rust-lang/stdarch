@@ -1157,7 +1157,6 @@ mod tests {
         assert_eq!(r, e);
     }
 
-
     #[simd_test = "sse4.1"]
     unsafe fn _mm_dp_pd() {
         let a = f64x2::new(2.0, 3.0);
