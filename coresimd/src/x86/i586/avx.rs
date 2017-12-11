@@ -4058,6 +4058,42 @@ mod tests {
         assert_eq!(r, e);
     }
 
+    #[target_feature = "+avx"]
+    unsafe fn into_fail_test() {
+        #[cfg_attr(rustfmt, rustfmt_skip)]
+        let a = i64x4::new(
+            4611686019492741120, 4647714816524288000,
+            4665729215040061440, 4683743613553737728
+        );
+        let e = f32x8::new(1., 2., 3., 4., 5., 6., 7., 8.);
+        // FIXME: the default implementaiton of `into` is
+        // #[inline] instead of #[inline(always)] so if this
+        // call here is not inlined, bad codegen is produced,
+        // which causes some targets to segfault:
+        let r = avx::_mm256_castsi256_ps(a.into());
+        assert_eq!(e, r);
+    }
+
+    #[test]
+    #[ignore]
+    fn into_fail() {
+        if !cfg_feature_enabled!("avx") { return; }
+        unsafe { into_fail_test() }
+    }
+
+    #[simd_test = "avx"]
+    unsafe fn from_pass() {
+        #[cfg_attr(rustfmt, rustfmt_skip)]
+        let a = i64x4::new(
+            4611686019492741120, 4647714816524288000,
+            4665729215040061440, 4683743613553737728
+        );
+        let e = f32x8::new(1., 2., 3., 4., 5., 6., 7., 8.);
+        // `from` is #[inline(always)], so this always works:
+        let r = avx::_mm256_castsi256_ps(__m256i::from(a));
+        assert_eq!(e, r);
+    }
+
     #[simd_test = "avx"]
     unsafe fn _mm256_castpd_si256() {
         let a = f64x4::new(1., 2., 3., 4.);
