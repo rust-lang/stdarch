@@ -123,25 +123,27 @@
 //! [simd_soundness_bug]: https://github.com/rust-lang/rust/issues/44367
 //! [target_feature_impr]: https://github.com/rust-lang/rust/issues/44839
 
-#![feature(macro_reexport, const_fn, const_atomic_usize_new)]
+#![feature(const_fn, const_size_of, use_extern_macros, cfg_target_feature)]
 
-/// We re-export run-time feature detection for those architectures that have
-/// suport for it in `core`:
-#[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
-#[macro_reexport(cfg_feature_enabled, __unstable_detect_feature)]
 extern crate coresimd;
 
-#[cfg(not(any(target_arch = "x86", target_arch = "x86_64")))]
-extern crate coresimd;
+#[cfg(any(target_arch = "x86", target_arch = "x86_64", target_arch = "arm",
+          target_arch = "aarch64", target_arch = "powerpc64"))]
+pub use coresimd::{__unstable_detect_feature, cfg_feature_enabled};
 
 /// Platform dependent vendor intrinsics.
 pub mod vendor {
     pub use coresimd::vendor::*;
+}
 
-    #[cfg(all(target_os = "linux",
-              any(target_arch = "arm", target_arch = "aarch64",
-                  target_arch = "powerpc64")))]
-    pub use super::runtime::{__unstable_detect_feature, __Feature};
+/// Run-time feature detection.
+#[doc(hidden)]
+pub mod __vendor_runtime {
+    #[cfg(any(target_arch = "x86", target_arch = "x86_64",
+              all(target_os = "linux",
+                  any(target_arch = "arm", target_arch = "aarch64",
+                      target_arch = "powerpc64"))))]
+    pub use runtime::std::*;
 }
 
 /// Platform independent SIMD vector types and operations.
@@ -149,8 +151,9 @@ pub mod simd {
     pub use coresimd::simd::*;
 }
 
-#[cfg(all(target_os = "linux",
-          any(target_arch = "arm", target_arch = "aarch64",
-              target_arch = "powerpc64")))]
-#[macro_use]
+/// The `stdsimd` run-time.
+#[cfg(any(target_arch = "x86", target_arch = "x86_64",
+          all(target_os = "linux",
+              any(target_arch = "arm", target_arch = "aarch64",
+                  target_arch = "powerpc64"))))]
 mod runtime;

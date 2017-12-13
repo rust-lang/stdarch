@@ -56,18 +56,34 @@ pub mod vendor {
     #[cfg(not(any(target_arch = "x86", target_arch = "x86_64",
                   target_arch = "arm", target_arch = "aarch64")))]
     pub use nvptx::*;
-
-    #[cfg(
-        // x86/x86_64:
-        any(target_arch = "x86", target_arch = "x86_64")
-    )]
-    pub use runtime::{__unstable_detect_feature, __Feature};
 }
 
-#[cfg(
-    // x86/x86_64:
-    any(target_arch = "x86", target_arch = "x86_64")
-)]
+/// Run-time feature detection.
+#[doc(hidden)]
+pub mod __vendor_runtime {
+    #[cfg(any(target_arch = "x86", target_arch = "x86_64",
+              all(target_os = "linux",
+                  any(target_arch = "arm", target_arch = "aarch64",
+                      target_arch = "powerpc64"))))]
+    pub use runtime::core::*;
+
+    // The `stdsimd` runtime for these targets builds on top of
+    // the `coresimd` one, but its not exactly the same. This
+    // re-exports are only intended to be used by the `stdsimd`
+    // run-time but not re-exported by it.
+    #[cfg(all(target_os = "linux",
+              any(target_arch = "arm", target_arch = "aarch64",
+                  target_arch = "powerpc64")))]
+    #[doc(hidden)]
+    pub mod __runtime {
+        pub use runtime::*;
+    }
+}
+
+#[cfg(any(target_arch = "x86", target_arch = "x86_64",
+          all(target_os = "linux",
+              any(target_arch = "arm", target_arch = "aarch64",
+                  target_arch = "powerpc64"))))]
 #[macro_use]
 mod runtime;
 
