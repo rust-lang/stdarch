@@ -34,7 +34,7 @@ pub fn assert_instr(
     };
 
     let instr = &invoc.instr;
-    let maybe_ignore = if cfg!(optimized) {
+    let maybe_ignore = if cfg!(optimized) && !cfg!(native) {
         TokenStream::empty()
     } else {
         (quote! { #[ignore] }).into()

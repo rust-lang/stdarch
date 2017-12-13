@@ -6,8 +6,12 @@ fn main() {
         .ok()
         .and_then(|s| s.parse().ok())
         .unwrap_or(0);
+    let rustflags = env::var("RUSTFLAGS").unwrap_or(String::new());
     let profile = env::var("PROFILE").unwrap_or(String::new());
     if profile == "release" || opt_level >= 2 {
         println!("cargo:rustc-cfg=optimized");
+    }
+    if rustflags.contains("target-cpu") {
+        println!("cargo:rustc-cfg=native");
     }
 }
