@@ -34,9 +34,18 @@ pub fn assert_instr(
     };
 
     let instr = &invoc.instr;
-    let maybe_ignore = if cfg!(optimized) {
+    let maybe_ignore = if cfg!(optimized) && !cfg!(native) {
         TokenStream::empty()
     } else {
+        // If optimizations are disabled some of the instructions are not
+        // properly generated, so the assert_instr tests are disabled.
+        //
+        // If cfg!(native) the tests are being compiled with a RUSTFLAGS containing
+        // "target-cpu=...", that is, the intrinsics might be compiled with a
+        // larger feature set than the one specified by the #[target_feature =
+        // "..."] attribute. In many cases this allows the compiler to choose a
+        // better instruction that the one expected by the assert_instr macro,
+        // so we disable the tests in this case.
         (quote! { #[ignore] }).into()
     };
     let name = &func.ident;
