@@ -29,17 +29,36 @@ pub enum __Feature {
 }
 
 pub fn detect_features<T: linux::FeatureQuery>(mut x: T) -> usize {
-    let value: usize = 0;
+    let mut value: usize = 0;
     {
         let mut enable_feature = |f| {
             if x.has_feature(&f) {
-                bit::set(value, f as u32);
+                value = bit::set(value, f as u32);
             }
         };
         enable_feature(__Feature::neon);
         enable_feature(__Feature::pmull);
     }
     value
+}
+
+/// Probe the ELF Auxiliary vector for hardware capabilities
+///
+/// The values are part of the platform-specific [asm/hwcap.h][hwcap]
+///
+/// [hwcap]: https://github.com/torvalds/linux/blob/master/arch/arm64/include/uapi/asm/hwcap.h
+impl linux::FeatureQuery for linux::AuxVec {
+    fn has_feature(&mut self, x: &__Feature) -> bool {
+        use self::__Feature::*;
+        match *x {
+            neon => self.lookup(linux::AT::HWCAP)
+                .map(|caps| caps & (1 << 12) != 0)
+                .unwrap_or(false),
+            pmull => self.lookup(linux::AT::HWCAP2)
+                .map(|caps| caps & (1 << 1) != 0)
+                .unwrap_or(false),
+        }
+    }
 }
 
 /// Is the CPU known to have a broken NEON unit?

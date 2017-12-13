@@ -1,6 +1,5 @@
 //! Streaming SIMD Extensions 3 (SSE3)
 
-use x86::__m128i;
 use simd_llvm::{simd_shuffle2, simd_shuffle4};
 use v128::*;
 
@@ -68,7 +67,7 @@ pub unsafe fn _mm_hsub_ps(a: f32x4, b: f32x4) -> f32x4 {
 #[target_feature = "+sse3"]
 #[cfg_attr(test, assert_instr(lddqu))]
 pub unsafe fn _mm_lddqu_si128(mem_addr: *const __m128i) -> __m128i {
-    lddqu(mem_addr as *const _)
+    __m128i::from(lddqu(mem_addr as *const _))
 }
 
 /// Duplicate the low double-precision (64-bit) floating-point element
@@ -122,9 +121,8 @@ extern "C" {
     #[link_name = "llvm.x86.sse3.hsub.ps"]
     fn hsubps(a: f32x4, b: f32x4) -> f32x4;
     #[link_name = "llvm.x86.sse3.ldu.dq"]
-    fn lddqu(mem_addr: *const i8) -> __m128i;
+    fn lddqu(mem_addr: *const i8) -> i8x16;
 }
-
 
 #[cfg(test)]
 mod tests {
@@ -183,8 +181,9 @@ mod tests {
 
     #[simd_test = "sse3"]
     unsafe fn _mm_lddqu_si128() {
-        let a =
-            i8x16::new(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
+        let a = __m128i::from(
+            i8x16::new(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16),
+        );
         let r = sse3::_mm_lddqu_si128(&a);
         assert_eq!(a, r);
     }

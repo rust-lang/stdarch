@@ -2,6 +2,9 @@
 mod cpuinfo;
 pub use self::cpuinfo::CpuInfo;
 
+mod auxvec;
+pub use self::auxvec::*;
+
 use super::__Feature;
 
 pub trait FeatureQuery {
@@ -17,11 +20,18 @@ fn detect_features_impl<T: FeatureQuery>(x: T) -> usize {
     {
         super::aarch64::detect_features(x)
     }
+    #[cfg(target_arch = "powerpc64")]
+    {
+        super::powerpc64::detect_features(x)
+    }
 }
 
-/// Detects ARM features:
+/// Detects CPU features:
 pub fn detect_features() -> usize {
-    // FIXME: use libc::getauxval, and if that fails /proc/auxv
+    // Try to read the ELF Auxiliary Vector
+    if let Ok(v) = auxvec::AuxVec::new() {
+        return detect_features_impl(v);
+    }
     // Try to read /proc/cpuinfo
     if let Ok(v) = cpuinfo::CpuInfo::new() {
         return detect_features_impl(v);
