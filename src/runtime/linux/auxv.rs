@@ -41,7 +41,7 @@ pub mod proc_self {
             for el in buf.chunks(2) {
                 match el[0] {
                     AT_HWCAP => return Ok(AuxVec { hwcap: el[1] }),
-                    _ => println!("reading auxv: ({},{})", el[0], el[1]),
+                    _ => (),
                 }
             }
             return Ok(AuxVec { hwcap: 0 });
@@ -55,7 +55,7 @@ pub mod proc_self {
                 match el[0] {
                     AT_HWCAP => hwcap = el[1],
                     AT_HWCAP2 => hwcap2 = el[1],
-                    _ => println!("reading auxv: ({},{})", el[0], el[1]),
+                    _ => (),
                 }
             }
             return Ok(AuxVec { hwcap, hwcap2 });
@@ -64,15 +64,48 @@ pub mod proc_self {
 
     #[cfg(test)]
     mod tests {
+        extern crate auxv as auxv_crate;
         use super::*;
 
-        #[cfg(target_os = "linux")]
+        // Reads the Auxiliary Vector key from /proc/self/auxv
+        // using the auxv crate.
+        fn auxv_crate_get(key: usize) -> Option<usize> {
+            use self::auxv_crate::AuxvType;
+            use self::auxv_crate::procfs::search_procfs_auxv;
+            let k = key as AuxvType;
+            match search_procfs_auxv(&[k]) {
+                Ok(v) => Some(v[&k] as usize),
+                Err(_) => None,
+            }
+        }
+
         #[test]
         fn auxv_dump() {
             if let Ok(auxvec) = auxv() {
                 println!("{:?}", auxvec);
             } else {
                 println!("reading /proc/self/auxv failed!");
+            }
+        }
+
+        #[cfg(any(target_arch = "arm", target_arch = "powerpc64"))]
+        #[test]
+        fn auxv_crate() {
+            let v = auxv();
+            if let Some(hwcap) = auxv_crate_get(AT_HWCAP) {
+                assert_eq!(v.unwrap().hwcap, hwcap);
+            }
+            if let Some(hwcap2) = auxv_crate_get(AT_HWCAP2) {
+                assert_eq!(v.unwrap().hwcap2, hwcap2);
+            }
+        }
+
+        #[cfg(target_arch = "aarch64")]
+        #[test]
+        fn auxv_crate() {
+            let v = auxv();
+            if let Some(hwcap) = auxv_crate_get(AT_HWCAP) {
+                assert_eq!(v.unwrap().hwcap, hwcap);
             }
         }
     }

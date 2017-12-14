@@ -22,6 +22,7 @@ maintenance = { status = "experimental" }
 cc = "1.0"
 
 [dev-dependencies]
+auxv = "0.3.3"
 cupid = "0.5.0"
 stdsimd-test = { version = "0.*", path = "../stdsimd-test" }
 stdsimd = { version = "0.0.3", path = ".." }

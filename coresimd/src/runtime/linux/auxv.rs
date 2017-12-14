@@ -27,7 +27,7 @@ pub const AT_HWCAP2: usize = 26;
 
 /// Cache HWCAP entries of the ELF Auxiliary Vector
 #[cfg(any(target_arch = "arm", target_arch = "powerpc64"))]
-#[derive(Debug)]
+#[derive(Debug, Copy, Clone)]
 pub struct AuxVec {
     pub hwcap: usize,
     pub hwcap2: usize,
@@ -35,7 +35,7 @@ pub struct AuxVec {
 
 /// Cache HWCAP entries of the ELF Auxiliary Vector
 #[cfg(target_arch = "aarch64")]
-#[derive(Debug)]
+#[derive(Debug, Copy, Clone)]
 pub struct AuxVec {
     pub hwcap: usize,
 }
@@ -78,7 +78,20 @@ pub mod libc {
 
     #[cfg(test)]
     mod tests {
+        extern crate auxv as auxv_crate;
         use super::*;
+
+        // Reads the Auxiliary Vector key from getauxval()
+        // using the auxv crate.
+        fn auxv_crate_get(key: usize) -> Option<usize> {
+            use self::auxv_crate::AuxvType;
+            use self::auxv_crate::getauxval::Getauxval;
+            let q = auxv_crate::getauxval::NativeGetauxval{};
+            match q.getauxval(key as AuxvType) {
+                Ok(v) => Some(v as usize),
+                Err(_) => None,
+            }
+        }
 
         #[test]
         fn auxv_dump() {
@@ -88,6 +101,26 @@ pub mod libc {
                 println!("reading /proc/self/auxv failed!");
             }
         }
-    }
 
+        #[cfg(any(target_arch = "arm", target_arch = "powerpc64"))]
+        #[test]
+        fn auxv_crate() {
+            let v = auxv();
+            if let Some(hwcap) = auxv_crate_get(AT_HWCAP) {
+                assert_eq!(v.unwrap().hwcap, hwcap);
+            }
+            if let Some(hwcap2) = auxv_crate_get(AT_HWCAP2) {
+                assert_eq!(v.unwrap().hwcap2, hwcap2);
+            }
+        }
+
+        #[cfg(target_arch = "aarch64")]
+        #[test]
+        fn auxv_crate() {
+            let v = auxv();
+            if let Some(hwcap) = auxv_crate_get(AT_HWCAP) {
+                assert_eq!(v.unwrap().hwcap, hwcap);
+            }
+        }
+    }
 }
