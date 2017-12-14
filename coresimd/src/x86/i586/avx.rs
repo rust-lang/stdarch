@@ -864,7 +864,8 @@ pub unsafe fn _mm256_extractf128_si256(a: __m256i, imm8: i32) -> __m128i {
 
 /// Extract an 8-bit integer from `a`, selected with `imm8`. Returns a 32-bit
 /// integer containing the zero-extended integer data.
-/// See: https://reviews.llvm.org/D20468
+///
+/// See [LLVM commit D20468][https://reviews.llvm.org/D20468].
 #[inline(always)]
 #[target_feature = "+avx"]
 // This intrinsic has no corresponding instruction.
@@ -875,7 +876,8 @@ pub unsafe fn _mm256_extract_epi8(a: i8x32, imm8: i32) -> i32 {
 
 /// Extract a 16-bit integer from `a`, selected with `imm8`. Returns a 32-bit
 /// integer containing the zero-extended integer data.
-/// See: https://reviews.llvm.org/D20468
+///
+/// See [LLVM commit D20468][https://reviews.llvm.org/D20468].
 #[inline(always)]
 #[target_feature = "+avx"]
 // This intrinsic has no corresponding instruction.

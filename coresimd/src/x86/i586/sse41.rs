@@ -122,7 +122,8 @@ pub unsafe fn _mm_extract_ps(a: f32x4, imm8: u8) -> i32 {
 
 /// Extract an 8-bit integer from `a`, selected with `imm8`. Returns a 32-bit
 /// integer containing the zero-extended integer data.
-/// See: https://reviews.llvm.org/D20468
+///
+/// See [LLVM commit D20468][https://reviews.llvm.org/D20468].
 #[inline(always)]
 #[target_feature = "+sse4.1"]
 #[cfg_attr(test, assert_instr(pextrb, imm8 = 0))]
