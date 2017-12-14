@@ -4208,23 +4208,12 @@ mod tests {
             25, 26, 27, 28,
             29, 30, 31, 32,
         ));
+        #[cfg_attr(rustfmt, rustfmt_skip)]
         let lo = __m128i::from(i8x16::new(
-            1,
-            2,
-            3,
-            4,
-            5,
-            6,
-            7,
-            8,
-            9,
-            10,
-            11,
-            12,
-            13,
-            14,
-            15,
-            16,
+            1, 2, 3, 4,
+            5, 6, 7, 8,
+            9, 10, 11, 12,
+            13, 14, 15, 16,
         ));
         let r = avx::_mm256_set_m128i(hi, lo);
         #[cfg_attr(rustfmt, rustfmt_skip)]
@@ -4257,23 +4246,12 @@ mod tests {
 
     #[simd_test = "avx"]
     unsafe fn _mm256_setr_m128i() {
+        #[cfg_attr(rustfmt, rustfmt_skip)]
         let lo = __m128i::from(i8x16::new(
-            1,
-            2,
-            3,
-            4,
-            5,
-            6,
-            7,
-            8,
-            9,
-            10,
-            11,
-            12,
-            13,
-            14,
-            15,
-            16,
+            1, 2, 3, 4,
+            5, 6, 7, 8,
+            9, 10, 11, 12,
+            13, 14, 15, 16,
         ));
         #[cfg_attr(rustfmt, rustfmt_skip)]
         let hi = __m128i::from(i8x16::new(
