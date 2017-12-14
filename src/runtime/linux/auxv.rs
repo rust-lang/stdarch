@@ -108,5 +108,34 @@ pub mod proc_self {
                 assert_eq!(v.unwrap().hwcap, hwcap);
             }
         }
+
+        #[cfg(all(target_arch = "arm", target_pointer_width = "32"))]
+        #[test]
+        fn linux_rpi3() {
+            let v = auxv_from_file(
+                "src/runtime/linux/test_data/linux-rpi3.auxv"
+            ).unwrap();
+            assert_eq!(v.hwcap, 4174038);
+            assert_eq!(v.hwcap2, 16);
+        }
+
+        #[cfg(all(target_arch = "arm", target_pointer_width = "32"))]
+        #[test]
+        fn linux_macos_vb() {
+            let v = auxv_from_file(
+                "src/runtime/linux/test_data/macos-virtualbox-linux-x86-4850HQ.auxv"
+            ).unwrap();
+            assert_eq!(v.hwcap, 126614527);
+            assert_eq!(v.hwcap2, 0);
+        }
+
+        #[cfg(all(target_arch = "aarch64", target_pointer_width = "64"))]
+        #[test]
+        fn linux_x64() {
+            let v = auxv_from_file(
+                "src/runtime/linux/test_data/linux-x64-i7-6850k.auxv"
+            ).unwrap();
+            assert_eq!(v.hwcap, 3219913727);
+        }
     }
 }
