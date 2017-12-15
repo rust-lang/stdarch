@@ -11,7 +11,7 @@ mod powerpc64;
 
 pub mod auxv;
 
-/// Detects CPU features:
+/// Detects CPU features in `coresimd`.
 pub fn detect_features() -> usize {
     // Try to read the ELF Auxiliary Vector using libc's getauxval:
     if let Ok(v) = auxv::libc::auxv() {

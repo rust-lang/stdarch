@@ -1,5 +1,6 @@
 //! Reads ELF Auxiliary Vector
 
+/// Reads the ELF Auxiliary Vector using libc's `getauxval`.
 pub use coresimd::__vendor_runtime::__runtime::linux::auxv::libc;
 
 /// Reads the ELF Auxiliary Vector from `/proc/self/auxv`.

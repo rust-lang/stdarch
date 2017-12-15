@@ -10,9 +10,8 @@
 //! There is no perfect way of reading the auxiliary vector.
 //!
 //! - `coresimd`: if `getauxval` is available, `coresimd` will try to use it.
-//! - `stdsimd`: if `getauxval` is not available, or it returns that a feature
-//! is not supported, it will try to read `/proc/self/auxv`. If that fails,
-//! it   will try to read `/proc/cpuinfo`.
+//! - `stdsimd`: if `getauxval` is not available, it will try to read
+//! `/proc/self/auxv`, and if that fails it will try to read `/proc/cpuinfo`.
 //!
 //! For more information about when `getauxval` is available check the great
 //! [`auxv` crate documentation][auxv_docs].
@@ -20,12 +19,15 @@
 //! [auxvec_h]: https://github.com/torvalds/linux/blob/master/include/uapi/linux/auxvec.h
 //! [auxv_docs]: https://docs.rs/auxv/0.3.3/auxv/
 
-/// CPU Hardware capabilities (bitfield).
+/// Key to access the CPU Hardware capabilities bitfield.
 pub const AT_HWCAP: usize = 16;
-/// CPU Hardware capabilities 2 (bitfield).
+/// Key to access the CPU Hardware capabilities 2 bitfield.
 pub const AT_HWCAP2: usize = 26;
 
-/// Cache HWCAP entries of the ELF Auxiliary Vector
+/// Cache HWCAP bitfields of the ELF Auxiliary Vector.
+///
+/// If an entry cannot be read all the bits in the bitfield
+/// are set to zero.
 #[cfg(any(target_arch = "arm", target_arch = "powerpc64"))]
 #[derive(Debug, Copy, Clone)]
 pub struct AuxVec {
@@ -33,7 +35,10 @@ pub struct AuxVec {
     pub hwcap2: usize,
 }
 
-/// Cache HWCAP entries of the ELF Auxiliary Vector
+/// Cache HWCAP bitfields of the ELF Auxiliary Vector.
+///
+/// If an entry cannot be read all the bits in the bitfield
+/// are set to zero.
 #[cfg(target_arch = "aarch64")]
 #[derive(Debug, Copy, Clone)]
 pub struct AuxVec {
@@ -41,13 +46,22 @@ pub struct AuxVec {
 }
 
 pub mod libc {
-
     use super::*;
 
+    // Since Rust does not support weak lining yet, we use the
+    // system C compiler to weakly-link `getauxval`.
     extern "C" {
         fn getauxval_wrapper(key: usize, success: *mut usize) -> i32;
     }
 
+    /// Returns the value of the ELF Auxiliary Vector associated with `key`.
+    ///
+    /// This can fail if the auxiliary vector does not contain the key,
+    /// the final binary is not linked against a libc library containing
+    /// `getauxval`, etc.
+    ///
+    /// This only returns the value if reading the key from the auxiliary
+    /// vector properly succeeds.
     fn getauxval(key: usize) -> Result<usize, ()> {
         let mut auxv = 0;
         unsafe {

@@ -68,7 +68,7 @@ pub mod __vendor_runtime {
     pub use runtime::core::*;
 
     // The `stdsimd` runtime for these targets builds on top of
-    // the `coresimd` one, but its not exactly the same. This
+    // the `coresimd` one, but it is not exactly the same. These
     // re-exports are only intended to be used by the `stdsimd`
     // run-time but not re-exported by it.
     #[cfg(all(target_os = "linux",

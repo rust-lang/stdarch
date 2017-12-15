@@ -127,6 +127,7 @@
 
 extern crate coresimd;
 
+/// Re-export run-time feature detection macros.
 #[cfg(any(target_arch = "x86", target_arch = "x86_64", target_arch = "arm",
           target_arch = "aarch64", target_arch = "powerpc64"))]
 pub use coresimd::{__unstable_detect_feature, cfg_feature_enabled};

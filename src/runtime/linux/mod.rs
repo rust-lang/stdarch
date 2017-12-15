@@ -22,11 +22,11 @@ pub fn detect_features() -> usize {
     if let Ok(v) = auxv::libc::auxv() {
         return arch::detect_features(v);
     }
-    // Try to read the ELF Auxiliary Vector from /proc/self/auxv
+    // Try to read the ELF Auxiliary Vector from /proc/self/auxv:
     if let Ok(v) = auxv::proc_self::auxv() {
         return arch::detect_features(v);
     }
-    // Try to read /proc/cpuinfo
+    // Try to read /proc/cpuinfo:
     if let Ok(v) = cpuinfo::CpuInfo::new() {
         return arch::detect_features(v);
     }
