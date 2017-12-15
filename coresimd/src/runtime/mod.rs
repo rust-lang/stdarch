@@ -26,6 +26,8 @@ pub mod powerpc64;
               target_arch = "powerpc64")))]
 pub mod linux;
 
+/// Exports architecture specific functionality for
+/// reuse in `stdsimd`.
 pub mod arch {
     #[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
     pub use super::x86::{detect_features, __Feature};
@@ -39,8 +41,9 @@ pub mod arch {
     #[cfg(target_arch = "powerpc64")]
     pub use runtime::powerpc64::{detect_features, __Feature};
 
-    /// Interface for querying whether a feature is enabled
+    /// Interface for querying whether a feature is enabled.
     pub trait HasFeature {
+        /// Is the feature `x` enabled at run-time?
         fn has_feature(&mut self, x: &__Feature) -> bool;
     }
 }
