@@ -86,7 +86,7 @@ pub mod libc {
         fn auxv_crate_get(key: usize) -> Option<usize> {
             use self::auxv_crate::AuxvType;
             use self::auxv_crate::getauxval::Getauxval;
-            let q = auxv_crate::getauxval::NativeGetauxval{};
+            let q = auxv_crate::getauxval::NativeGetauxval {};
             match q.getauxval(key as AuxvType) {
                 Ok(v) => Some(v as usize),
                 Err(_) => None,

@@ -113,7 +113,7 @@ pub mod proc_self {
         #[test]
         fn linux_rpi3() {
             let v = auxv_from_file(
-                "src/runtime/linux/test_data/linux-rpi3.auxv"
+                "src/runtime/linux/test_data/linux-rpi3.auxv",
             ).unwrap();
             assert_eq!(v.hwcap, 4174038);
             assert_eq!(v.hwcap2, 16);
@@ -133,7 +133,7 @@ pub mod proc_self {
         #[test]
         fn linux_x64() {
             let v = auxv_from_file(
-                "src/runtime/linux/test_data/linux-x64-i7-6850k.auxv"
+                "src/runtime/linux/test_data/linux-x64-i7-6850k.auxv",
             ).unwrap();
             assert_eq!(v.hwcap, 3219913727);
         }

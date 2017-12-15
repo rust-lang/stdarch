@@ -42,7 +42,7 @@ pub unsafe fn vaddd_u64(a: u64, b: u64) -> u64 {
 #[cfg(test)]
 mod tests {
     use super::f64x2;
-    use ::aarch64::neon;
+    use aarch64::neon;
     use stdsimd_test::simd_test;
 
     #[simd_test = "neon"]

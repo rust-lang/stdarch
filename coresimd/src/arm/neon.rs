@@ -215,8 +215,8 @@ pub unsafe fn vrsqrte_f32(a: f32x2) -> f32x2 {
 #[cfg(test)]
 mod tests {
     use stdsimd_test::simd_test;
-    use ::simd::*;
-    use ::arm::neon;
+    use simd::*;
+    use arm::neon;
 
     #[simd_test = "neon"]
     unsafe fn vadd_s8() {
