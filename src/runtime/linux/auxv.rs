@@ -45,22 +45,24 @@ pub mod proc_self {
                     _ => (),
                 }
             }
-            return Ok(AuxVec { hwcap: 0 });
         }
 
         #[cfg(any(target_arch = "arm", target_arch = "powerpc64"))]
         {
-            let mut hwcap = 0;
-            let mut hwcap2 = 0;
+            let mut hwcap = None;
+            let mut hwcap2 = None;
             for el in buf.chunks(2) {
                 match el[0] {
-                    AT_HWCAP => hwcap = el[1],
-                    AT_HWCAP2 => hwcap2 = el[1],
+                    AT_HWCAP => hwcap = Some(el[1]),
+                    AT_HWCAP2 => hwcap2 = Some(el[1]),
                     _ => (),
                 }
             }
-            return Ok(AuxVec { hwcap, hwcap2 });
+            if hwcap.is_some() && hwcap2.is_some() {
+                return Ok(AuxVec { hwcap: hwcap.unwrap(), hwcap2: hwcap2.unwrap() });
+            }
         }
+        Err(())
     }
 
     #[cfg(test)]
@@ -122,12 +124,15 @@ pub mod proc_self {
 
         #[cfg(all(target_arch = "arm", target_pointer_width = "32"))]
         #[test]
+        #[should_panic]
         fn linux_macos_vb() {
-            let v = auxv_from_file(
+            let _ = auxv_from_file(
                 "src/runtime/linux/test_data/macos-virtualbox-linux-x86-4850HQ.auxv"
             ).unwrap();
-            assert_eq!(v.hwcap, 126614527);
-            assert_eq!(v.hwcap2, 0);
+            // this file is incomplete (contains hwcap but not hwcap2), we want to
+            // fall back to /proc/cpuinfo in this case, so reading should fail.
+            //assert_eq!(v.hwcap, 126614527);
+            //assert_eq!(v.hwcap2, 0);
         }
 
         #[cfg(all(target_arch = "aarch64", target_pointer_width = "64"))]

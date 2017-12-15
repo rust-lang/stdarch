@@ -19,7 +19,7 @@ pub mod std {
 
 #[cfg(test)]
 mod tests {
-    use coresimd::*;
+    use super::super::*;
 
     #[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
     #[test]
@@ -27,21 +27,21 @@ mod tests {
         println!("avx {}", cfg_feature_enabled!("avx"));
     }
 
-    #[cfg(target_arch = "arm")]
+    #[cfg(all(target_arch = "arm", target_os = "linux"))]
     #[test]
     fn detect_feature() {
         println!("neon {}", cfg_feature_enabled!("neon"));
         println!("pmull {}", cfg_feature_enabled!("pmull"));
     }
 
-    #[cfg(target_arch = "aarch64")]
+    #[cfg(all(target_arch = "aarch64", target_os = "linux"))]
     #[test]
     fn detect_feature() {
         println!("asimd {}", cfg_feature_enabled!("asimd"));
         println!("pmull {}", cfg_feature_enabled!("pmull"));
     }
 
-    #[cfg(target_arch = "powerpc64")]
+    #[cfg(all(target_arch = "powerpc64", target_os = "linux"))]
     #[test]
     fn detect_feature() {
         println!("altivec {}", cfg_feature_enabled!("altivec"));
