@@ -1909,7 +1909,7 @@ pub unsafe fn _mm_stream_pd(mem_addr: *mut f64, a: f64x2) {
 /// memory location.
 #[inline(always)]
 #[target_feature = "+sse2"]
-#[cfg_attr(test, assert_instr(movsd))]
+#[cfg_attr(test, assert_instr(movlps))] // FIXME movsd
 pub unsafe fn _mm_store_sd(mem_addr: *mut f64, a: f64x2) {
     *mem_addr = a.extract(0)
 }
@@ -1982,7 +1982,7 @@ pub unsafe fn _mm_storeh_pd(mem_addr: *mut f64, a: f64x2) {
 /// memory location.
 #[inline(always)]
 #[target_feature = "+sse2"]
-#[cfg_attr(test, assert_instr(movlpd))]
+#[cfg_attr(test, assert_instr(movlps))] // FIXME movlpd
 pub unsafe fn _mm_storel_pd(mem_addr: *mut f64, a: f64x2) {
     *mem_addr = a.extract(0)
 }
@@ -2030,6 +2030,31 @@ pub unsafe fn _mm_loadu_pd(mem_addr: *const f64) -> f64x2 {
         mem::size_of::<f64x2>(),
     );
     dst
+}
+
+/// Constructs a 128-bit floating-point vector of [2 x double] from two
+/// 128-bit vector parameters of [2 x double], using the immediate-value
+/// parameter as a specifier.
+#[inline(always)]
+#[target_feature = "+sse2"]
+#[cfg_attr(test, assert_instr(shufpd))]
+pub unsafe fn _mm_shuffle_pd(a: f64x2, b: f64x2, imm8: i32) -> f64x2 {
+    match imm8 & 0b11 {
+        0b00 => simd_shuffle2(a, b, [0, 2]),
+        0b01 => simd_shuffle2(a, b, [1, 2]),
+        0b10 => simd_shuffle2(a, b, [0, 3]),
+        _ => simd_shuffle2(a, b, [1, 3]),
+    }
+}
+
+/// Constructs a 128-bit floating-point vector of [2 x double]. The lower
+/// 64 bits are set to the lower 64 bits of the second parameter. The upper
+/// 64 bits are set to the upper 64 bits of the first parameter.
+#[inline(always)]
+#[target_feature = "+sse2"]
+#[cfg_attr(test, assert_instr(movsd))]
+pub unsafe fn _mm_move_sd(a: f64x2, b: f64x2) -> f64x2 {
+    f64x2::new(b.extract(0), a.extract(1))
 }
 
 /// Return vector of type __m128d with undefined elements.
