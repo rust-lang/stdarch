@@ -2057,6 +2057,54 @@ pub unsafe fn _mm_move_sd(a: f64x2, b: f64x2) -> f64x2 {
     f64x2::new(b.extract(0), a.extract(1))
 }
 
+/// Casts a 128-bit floating-point vector of [2 x double] into a 128-bit
+/// floating-point vector of [4 x float].
+#[inline(always)]
+#[target_feature = "+sse2"]
+pub unsafe fn _mm_castpd_ps(a: f64x2) -> f32x4 {
+    simd_cast(a)
+}
+
+/// Casts a 128-bit floating-point vector of [2 x double] into a 128-bit
+/// integer vector.
+#[inline(always)]
+#[target_feature = "+sse2"]
+pub unsafe fn _mm_castpd_si128(a: f64x2) -> __m128i {
+    simd_cast(a)
+}
+
+/// Casts a 128-bit floating-point vector of [4 x float] into a 128-bit
+/// floating-point vector of [2 x double].
+#[inline(always)]
+#[target_feature = "+sse2"]
+pub unsafe fn _mm_castps_pd(a: f32x4) -> f64x2 {
+    simd_cast(a)
+}
+
+/// Casts a 128-bit floating-point vector of [4 x float] into a 128-bit
+/// integer vector.
+#[inline(always)]
+#[target_feature = "+sse2"]
+pub unsafe fn _mm_castps_si128(a: f32x4) -> __m128i {
+    simd_cast(a)
+}
+
+/// Casts a 128-bit integer vector into a 128-bit floating-point vector
+/// of [2 x double].
+#[inline(always)]
+#[target_feature = "+sse2"]
+pub unsafe fn _mm_castsi128_pd(a: __m128i) -> f64x2 {
+    simd_cast(a)
+}
+
+/// Casts a 128-bit integer vector into a 128-bit floating-point vector
+/// of [4 x float].
+#[inline(always)]
+#[target_feature = "+sse2"]
+pub unsafe fn _mm_castsi128_ps(a: __m128i) -> f32x4 {
+    simd_cast(a)
+}
+
 /// Return vector of type __m128d with undefined elements.
 #[inline(always)]
 #[target_feature = "+sse2"]
