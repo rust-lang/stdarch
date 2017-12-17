@@ -1905,6 +1905,15 @@ pub unsafe fn _mm_stream_pd(mem_addr: *mut f64, a: f64x2) {
     ::core::intrinsics::nontemporal_store(mem::transmute(mem_addr), a);
 }
 
+/// Stores the lower 64 bits of a 128-bit vector of [2 x double] to a
+/// memory location.
+#[inline(always)]
+#[target_feature = "+sse2"]
+#[cfg_attr(test, assert_instr(movsd))]
+pub unsafe fn _mm_store_sd(mem_addr: *mut f64, a: f64x2) {
+    *mem_addr = a.extract(0)
+}
+
 /// Store 128-bits (composed of 2 packed double-precision (64-bit)
 /// floating-point elements) from `a` into memory. `mem_addr` must be aligned
 /// on a 16-byte boundary or a general-protection exception may be generated.
@@ -1958,6 +1967,24 @@ pub unsafe fn _mm_store_pd1(mem_addr: *mut f64, a: f64x2) {
 pub unsafe fn _mm_storer_pd(mem_addr: *mut f64, a: f64x2) {
     let b: f64x2 = simd_shuffle2(a, a, [1, 0]);
     *(mem_addr as *mut f64x2) = b;
+}
+
+/// Stores the upper 64 bits of a 128-bit vector of [2 x double] to a
+/// memory location.
+#[inline(always)]
+#[target_feature = "+sse2"]
+#[cfg_attr(test, assert_instr(movhpd))]
+pub unsafe fn _mm_storeh_pd(mem_addr: *mut f64, a: f64x2) {
+    *mem_addr = a.extract(1)
+}
+
+/// Stores the lower 64 bits of a 128-bit vector of [2 x double] to a
+/// memory location.
+#[inline(always)]
+#[target_feature = "+sse2"]
+#[cfg_attr(test, assert_instr(movlpd))]
+pub unsafe fn _mm_storel_pd(mem_addr: *mut f64, a: f64x2) {
+    *mem_addr = a.extract(0)
 }
 
 /// Load a double-precision (64-bit) floating-point element from memory
