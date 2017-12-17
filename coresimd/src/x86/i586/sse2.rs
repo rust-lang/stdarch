@@ -2062,7 +2062,7 @@ pub unsafe fn _mm_move_sd(a: f64x2, b: f64x2) -> f64x2 {
 #[inline(always)]
 #[target_feature = "+sse2"]
 pub unsafe fn _mm_castpd_ps(a: f64x2) -> f32x4 {
-    simd_cast(a)
+    mem::transmute(a)
 }
 
 /// Casts a 128-bit floating-point vector of [2 x double] into a 128-bit
@@ -2078,7 +2078,7 @@ pub unsafe fn _mm_castpd_si128(a: f64x2) -> __m128i {
 #[inline(always)]
 #[target_feature = "+sse2"]
 pub unsafe fn _mm_castps_pd(a: f32x4) -> f64x2 {
-    simd_cast(a)
+    mem::transmute(a)
 }
 
 /// Casts a 128-bit floating-point vector of [4 x float] into a 128-bit
@@ -2086,7 +2086,7 @@ pub unsafe fn _mm_castps_pd(a: f32x4) -> f64x2 {
 #[inline(always)]
 #[target_feature = "+sse2"]
 pub unsafe fn _mm_castps_si128(a: f32x4) -> __m128i {
-    simd_cast(a)
+    mem::transmute(a)
 }
 
 /// Casts a 128-bit integer vector into a 128-bit floating-point vector
@@ -2102,7 +2102,7 @@ pub unsafe fn _mm_castsi128_pd(a: __m128i) -> f64x2 {
 #[inline(always)]
 #[target_feature = "+sse2"]
 pub unsafe fn _mm_castsi128_ps(a: __m128i) -> f32x4 {
-    simd_cast(a)
+    mem::transmute(a)
 }
 
 /// Return vector of type __m128d with undefined elements.
@@ -3890,6 +3890,32 @@ mod tests {
     }
 
     #[simd_test = "sse2"]
+    unsafe fn _mm_load_sd() {
+        let a = 1.;
+        let expected = f64x2::new(a, 0.);
+        let r = sse2::_mm_load_sd(&a);
+        assert_eq!(r, expected);
+    }
+
+    #[simd_test = "sse2"]
+    unsafe fn _mm_loadh_pd() {
+        let a = f64x2::new(1., 2.);
+        let b = 3.;
+        let expected = f64x2::new(a.extract(0), 3.);
+        let r = sse2::_mm_loadh_pd(a, &b);
+        assert_eq!(r, expected);
+    }
+
+    #[simd_test = "sse2"]
+    unsafe fn _mm_loadl_pd() {
+        let a = f64x2::new(1., 2.);
+        let b = 3.;
+        let expected = f64x2::new(3., a.extract(1));
+        let r = sse2::_mm_loadl_pd(a, &b);
+        assert_eq!(r, expected);
+    }
+
+    #[simd_test = "sse2"]
     unsafe fn _mm_stream_pd() {
         #[repr(align(128))]
         struct Memory {
@@ -3902,6 +3928,14 @@ mod tests {
         for i in 0..2 {
             assert_eq!(mem.data[i], a.extract(i as u32));
         }
+    }
+
+    #[simd_test = "sse2"]
+    unsafe fn _mm_store_sd() {
+        let mut dest = 0.;
+        let a = f64x2::new(1., 2.);
+        sse2::_mm_store_sd(&mut dest, a);
+        assert_eq!(dest, a.extract(0));
     }
 
     #[simd_test = "sse2"]
@@ -3991,6 +4025,22 @@ mod tests {
         sse2::_mm_storer_pd(d, *black_box(&a));
         assert_eq!(vals[offset + 0], 2.0);
         assert_eq!(vals[offset + 1], 1.0);
+    }
+
+    #[simd_test = "sse2"]
+    unsafe fn _mm_storeh_pd() {
+        let mut dest = 0.;
+        let a = f64x2::new(1., 2.);
+        sse2::_mm_storeh_pd(&mut dest, a);
+        assert_eq!(dest, a.extract(1));
+    }
+
+    #[simd_test = "sse2"]
+    unsafe fn _mm_storel_pd() {
+        let mut dest = 0.;
+        let a = f64x2::new(1., 2.);
+        sse2::_mm_storel_pd(&mut dest, a);
+        assert_eq!(dest, a.extract(0));
     }
 
     #[simd_test = "sse2"]
@@ -4251,5 +4301,71 @@ mod tests {
         let b = f64x2::new(3.0, 4.0);
         let r = sse2::_mm_unpacklo_pd(a, b);
         assert_eq!(r, f64x2::new(1.0, 3.0));
+    }
+
+    #[simd_test = "sse2"]
+    unsafe fn _mm_shuffle_pd() {
+        let a = f64x2::new(1., 2.);
+        let b = f64x2::new(3., 4.);
+        let expected = f64x2::new(1., 3.);
+        let r = sse2::_mm_shuffle_pd(a, b, 0);
+        assert_eq!(r, expected);
+    }
+
+    #[simd_test = "sse2"]
+    unsafe fn _mm_move_sd() {
+        let a = f64x2::new(1., 2.);
+        let b = f64x2::new(3., 4.);
+        let expected = f64x2::new(3., 2.);
+        let r = sse2::_mm_move_sd(a, b);
+        assert_eq!(r, expected);
+    }
+
+    #[simd_test = "sse2"]
+    unsafe fn _mm_castpd_ps() {
+        let a = f64x2::splat(0.);
+        let expected = f32x4::splat(0.);
+        let r = sse2::_mm_castpd_ps(a);
+        assert_eq!(r, expected);
+    }
+
+    #[simd_test = "sse2"]
+    unsafe fn _mm_castpd_si128() {
+        let a = f64x2::splat(0.);
+        let expected = i64x2::splat(0);
+        let r = sse2::_mm_castpd_si128(a);
+        assert_eq!(r, __m128i::from(expected));
+    }
+
+    #[simd_test = "sse2"]
+    unsafe fn _mm_castps_pd() {
+        let a = f32x4::splat(0.);
+        let expected = f64x2::splat(0.);
+        let r = sse2::_mm_castps_pd(a);
+        assert_eq!(r, expected);
+    }
+
+    #[simd_test = "sse2"]
+    unsafe fn _mm_castps_si128() {
+        let a = f32x4::splat(0.);
+        let expected = i32x4::splat(0);
+        let r = sse2::_mm_castps_si128(a);
+        assert_eq!(r, __m128i::from(expected));
+    }
+
+    #[simd_test = "sse2"]
+    unsafe fn _mm_castsi128_pd() {
+        let a = __m128i::from(i64x2::splat(0));
+        let expected = f64x2::splat(0.);
+        let r = sse2::_mm_castsi128_pd(a);
+        assert_eq!(r, expected);
+    }
+
+    #[simd_test = "sse2"]
+    unsafe fn _mm_castsi128_ps() {
+        let a = __m128i::from(i32x4::splat(0));
+        let expected = f32x4::splat(0.);
+        let r = sse2::_mm_castsi128_ps(a);
+        assert_eq!(r, expected);
     }
 }

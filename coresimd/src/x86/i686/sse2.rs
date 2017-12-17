@@ -196,6 +196,14 @@ mod tests {
     }
 
     #[simd_test = "sse2"]
+    unsafe fn _mm_cvtpi32_pd() {
+        let a = i32x2::new(1, 2);
+        let expected = f64x2::new(1., 2.);
+        let r = sse2::_mm_cvtpi32_pd(a);
+        assert_eq!(r, expected);
+    }
+
+    #[simd_test = "sse2"]
     unsafe fn _mm_cvtsi64_si128() {
         let r = sse2::_mm_cvtsi64_si128(5);
         assert_eq!(r, i64x2::new(5, 0));
@@ -205,6 +213,24 @@ mod tests {
     unsafe fn _mm_cvtsi128_si64() {
         let r = sse2::_mm_cvtsi128_si64(i64x2::new(5, 0));
         assert_eq!(r, 5);
+    }
+
+    #[simd_test = "sse2"]
+    unsafe fn _mm_set_epi64() {
+        let r = sse2::_mm_set_epi64(1, 2);
+        assert_eq!(r, i64x2::new(2, 1));
+    }
+
+    #[simd_test = "sse2"]
+    unsafe fn _mm_set1_epi64() {
+        let r = sse2::_mm_set1_epi64(1);
+        assert_eq!(r, i64x2::new(1, 1));
+    }
+
+    #[simd_test = "sse2"]
+    unsafe fn _mm_setr_epi64() {
+        let r = sse2::_mm_setr_epi64(1, 2);
+        assert_eq!(r, i64x2::new(1, 2));
     }
 
     #[simd_test = "sse2"]
