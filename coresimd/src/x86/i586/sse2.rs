@@ -1865,6 +1865,35 @@ pub unsafe fn _mm_load_pd(mem_addr: *const f64) -> f64x2 {
     *(mem_addr as *const f64x2)
 }
 
+/// Loads a 64-bit double-precision value to the low element of a
+/// 128-bit integer vector and clears the upper element.
+#[inline(always)]
+#[target_feature = "+sse2"]
+#[cfg_attr(test, assert_instr(movsd))]
+pub unsafe fn _mm_load_sd(mem_addr: *const f64) -> f64x2 {
+    f64x2::new(*mem_addr, 0.)
+}
+
+/// Loads a double-precision value into the high-order bits of a 128-bit
+/// vector of [2 x double]. The low-order bits are copied from the low-order
+/// bits of the first operand.
+#[inline(always)]
+#[target_feature = "+sse2"]
+#[cfg_attr(test, assert_instr(movhpd))]
+pub unsafe fn _mm_loadh_pd(a: f64x2, mem_addr: *const f64) -> f64x2 {
+    f64x2::new(a.extract(0), *mem_addr)
+}
+
+/// Loads a double-precision value into the low-order bits of a 128-bit
+/// vector of [2 x double]. The high-order bits are copied from the
+/// high-order bits of the first operand.
+#[inline(always)]
+#[target_feature = "+sse2"]
+#[cfg_attr(test, assert_instr(movlpd))]
+pub unsafe fn _mm_loadl_pd(a: f64x2, mem_addr: *const f64) -> f64x2 {
+    f64x2::new(*mem_addr, a.extract(1))
+}
+
 /// Stores a 128-bit floating point vector of [2 x double] to a 128-bit
 /// aligned memory location.
 /// To minimize caching, the data is flagged as non-temporal (unlikely to be
