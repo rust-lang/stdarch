@@ -184,9 +184,37 @@ extern "C" {
 mod tests {
     use stdsimd_test::simd_test;
 
+    use core::mem;
     use v128::*;
-    use v64::i32x2;
+    use v64::{__m64, i32x2, u32x2};
     use x86::i686::sse2;
+
+    #[simd_test = "sse2"]
+    unsafe fn _mm_add_si64() {
+        let a = 1i64;
+        let b = 2i64;
+        let expected = 3i64;
+        let r = sse2::_mm_add_si64(mem::transmute(a), mem::transmute(b));
+        assert_eq!(mem::transmute::<__m64, i64>(r), expected);
+    }
+
+    #[simd_test = "sse2"]
+    unsafe fn _mm_mul_su32() {
+        let a = u32x2::new(1, 2);
+        let b = u32x2::new(3, 4);
+        let expected = 3u64;
+        let r = sse2::_mm_mul_su32(a, b);
+        assert_eq!(r, expected);
+    }
+
+    #[simd_test = "sse2"]
+    unsafe fn _mm_sub_si64() {
+        let a = 1i64;
+        let b = 2i64;
+        let expected = -1i64;
+        let r = sse2::_mm_sub_si64(mem::transmute(a), mem::transmute(b));
+        assert_eq!(mem::transmute::<__m64, i64>(r), expected);
+    }
 
     #[simd_test = "sse2"]
     unsafe fn _mm_cvtsi64_sd() {
