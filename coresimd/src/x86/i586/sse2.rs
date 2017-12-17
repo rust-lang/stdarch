@@ -1909,7 +1909,7 @@ pub unsafe fn _mm_stream_pd(mem_addr: *mut f64, a: f64x2) {
 /// memory location.
 #[inline(always)]
 #[target_feature = "+sse2"]
-#[cfg_attr(test, assert_instr(movlps))] // FIXME movsd
+#[cfg_attr(all(test, not(windows)), assert_instr(movlps))] // FIXME movsd only on windows
 pub unsafe fn _mm_store_sd(mem_addr: *mut f64, a: f64x2) {
     *mem_addr = a.extract(0)
 }
@@ -1982,7 +1982,7 @@ pub unsafe fn _mm_storeh_pd(mem_addr: *mut f64, a: f64x2) {
 /// memory location.
 #[inline(always)]
 #[target_feature = "+sse2"]
-#[cfg_attr(test, assert_instr(movlps))] // FIXME movlpd
+#[cfg_attr(all(test, not(windows)), assert_instr(movlps))] // FIXME movlpd (movsd on windows)
 pub unsafe fn _mm_storel_pd(mem_addr: *mut f64, a: f64x2) {
     *mem_addr = a.extract(0)
 }
