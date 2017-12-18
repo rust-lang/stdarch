@@ -48,10 +48,13 @@ pub struct AuxVec {
 pub mod libc {
     use super::*;
 
-    // Since Rust does not support weak lining yet, we use the
-    // system C compiler to weakly-link `getauxval`.
-    extern "C" {
-        fn getauxval_wrapper(key: usize, success: *mut usize) -> i32;
+    mod ffi {
+        pub type F = unsafe extern "C" fn(usize) -> usize;
+        #[allow(improper_ctypes)]
+        extern "C" {
+            #[linkage = "extern_weak"]
+            pub static getauxval: *const ();
+        }
     }
 
     /// Returns the value of the ELF Auxiliary Vector associated with `key`.
@@ -63,12 +66,13 @@ pub mod libc {
     /// This only returns the value if reading the key from the auxiliary
     /// vector properly succeeds.
     fn getauxval(key: usize) -> Result<usize, ()> {
-        let mut auxv = 0;
         unsafe {
-            match getauxval_wrapper(key, &mut auxv) {
-                1 => Ok(auxv),
-                _ => Err(()),
+            if ffi::getauxval.is_null() {
+                return Err(());
             }
+
+            let ffi_getauxval: ffi::F = ::core::mem::transmute(ffi::getauxval);
+             Ok(ffi_getauxval(key))
         }
     }
 

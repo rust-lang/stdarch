@@ -14,6 +14,7 @@
 #![feature(const_fn, link_llvm_intrinsics, platform_intrinsics, repr_simd,
            simd_ffi, target_feature, cfg_target_feature, i128_type, asm,
            const_atomic_usize_new, stmt_expr_attributes, core_intrinsics)]
+#![cfg_attr(target_os = "linux", feature(linkage))]
 #![cfg_attr(test, feature(proc_macro, test, repr_align, attr_literals))]
 #![cfg_attr(feature = "cargo-clippy",
             allow(inline_always, too_many_arguments, cast_sign_loss,
