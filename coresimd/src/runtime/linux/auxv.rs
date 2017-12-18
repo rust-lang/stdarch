@@ -73,7 +73,7 @@ pub mod libc {
             }
 
             let ffi_getauxval: ffi::F = ::core::mem::transmute(ffi::getauxval);
-             Ok(ffi_getauxval(key))
+            Ok(ffi_getauxval(key))
         }
     }
 
