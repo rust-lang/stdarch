@@ -59,12 +59,13 @@ pub mod libc {
 
     /// Returns the value of the ELF Auxiliary Vector associated with `key`.
     ///
-    /// This can fail if the auxiliary vector does not contain the key,
-    /// the final binary is not linked against a libc library containing
-    /// `getauxval`, etc.
+    /// This only fails if the `getauxval` function is not linked.
     ///
-    /// This only returns the value if reading the key from the auxiliary
-    /// vector properly succeeds.
+    /// The errno value is not checked, but if the key is not found
+    /// `getauxval` returns zero, and in that case, independently of
+    /// whether the key was found or no features were detected the
+    /// `auxv` function below returns `Err` to allow more
+    /// accurate run-time feature detection to run afterwards.
     fn getauxval(key: usize) -> Result<usize, ()> {
         unsafe {
             if ffi::getauxval.is_null() {
@@ -82,12 +83,16 @@ pub mod libc {
         if let Ok(hwcap) = getauxval(AT_HWCAP) {
             #[cfg(target_arch = "aarch64")]
             {
-                return Ok(AuxVec { hwcap });
+                if hwcap != 0 {
+                    return Ok(AuxVec { hwcap });
+                }
             }
             #[cfg(any(target_arch = "arm", target_arch = "powerpc64"))]
             {
                 if let Ok(hwcap2) = getauxval(AT_HWCAP2) {
-                    return Ok(AuxVec { hwcap, hwcap2 });
+                    if hwcap != 0 && hwcap2 != 0 {
+                        return Ok(AuxVec { hwcap, hwcap2 });
+                    }
                 }
             }
         }
