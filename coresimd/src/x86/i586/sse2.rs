@@ -2037,7 +2037,7 @@ pub unsafe fn _mm_loadu_pd(mem_addr: *const f64) -> f64x2 {
 /// parameter as a specifier.
 #[inline(always)]
 #[target_feature = "+sse2"]
-#[cfg_attr(test, assert_instr(shufpd))]
+#[cfg_attr(test, assert_instr(shufpd, imm8 = 0))]
 pub unsafe fn _mm_shuffle_pd(a: f64x2, b: f64x2, imm8: i32) -> f64x2 {
     match imm8 & 0b11 {
         0b00 => simd_shuffle2(a, b, [0, 2]),
