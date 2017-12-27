@@ -184,9 +184,13 @@ extern "C" {
 mod tests {
     use stdsimd_test::simd_test;
 
+    #[cfg(not(windows))]
     use core::mem;
     use v128::*;
+    #[cfg(not(windows))]
     use v64::{__m64, i32x2, u32x2};
+    #[cfg(windows)]
+    use v64::i32x2;
     use x86::i686::sse2;
 
     #[simd_test = "sse2"]
