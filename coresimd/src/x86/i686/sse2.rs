@@ -190,6 +190,7 @@ mod tests {
     use x86::i686::sse2;
 
     #[simd_test = "sse2"]
+    #[cfg(not(windows))] // FIXME
     unsafe fn _mm_add_si64() {
         let a = 1i64;
         let b = 2i64;
@@ -199,6 +200,7 @@ mod tests {
     }
 
     #[simd_test = "sse2"]
+    #[cfg(not(windows))] // FIXME
     unsafe fn _mm_mul_su32() {
         let a = u32x2::new(1, 2);
         let b = u32x2::new(3, 4);
@@ -208,6 +210,7 @@ mod tests {
     }
 
     #[simd_test = "sse2"]
+    #[cfg(not(windows))] // FIXME
     unsafe fn _mm_sub_si64() {
         let a = 1i64;
         let b = 2i64;
