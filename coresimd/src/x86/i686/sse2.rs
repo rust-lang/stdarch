@@ -63,40 +63,6 @@ pub unsafe fn _mm_cvtpi32_pd(a: i32x2) -> f64x2 {
     cvtpi2pd(mem::transmute(a))
 }
 
-/// Return a vector whose lowest element is `a` and all higher elements are
-/// `0`.
-#[inline(always)]
-#[target_feature = "+sse2"]
-// no particular instruction to test
-pub unsafe fn _mm_cvtsi64_si128(a: i64) -> i64x2 {
-    i64x2::new(a, 0)
-}
-
-/// Return a vector whose lowest element is `a` and all higher elements are
-/// `0`.
-#[inline(always)]
-#[target_feature = "+sse2"]
-// no particular instruction to test
-pub unsafe fn _mm_cvtsi64x_si128(a: i64) -> i64x2 {
-    _mm_cvtsi64_si128(a)
-}
-
-/// Return the lowest element of `a`.
-#[inline(always)]
-#[target_feature = "+sse2"]
-// no particular instruction to test
-pub unsafe fn _mm_cvtsi128_si64(a: i64x2) -> i64 {
-    a.extract(0)
-}
-
-/// Return the lowest element of `a`.
-#[inline(always)]
-#[target_feature = "+sse2"]
-// no particular instruction to test
-pub unsafe fn _mm_cvtsi128_si64x(a: i64x2) -> i64 {
-    _mm_cvtsi128_si64(a)
-}
-
 /// Initializes both 64-bit values in a 128-bit vector of [2 x i64] with
 /// the specified 64-bit integer values.
 #[inline(always)]
@@ -233,18 +199,6 @@ mod tests {
         let expected = f64x2::new(1., 2.);
         let r = sse2::_mm_cvtpi32_pd(a);
         assert_eq!(r, expected);
-    }
-
-    #[simd_test = "sse2"]
-    unsafe fn _mm_cvtsi64_si128() {
-        let r = sse2::_mm_cvtsi64_si128(5);
-        assert_eq!(r, i64x2::new(5, 0));
-    }
-
-    #[simd_test = "sse2"]
-    unsafe fn _mm_cvtsi128_si64() {
-        let r = sse2::_mm_cvtsi128_si64(i64x2::new(5, 0));
-        assert_eq!(r, 5);
     }
 
     #[simd_test = "sse2"]
