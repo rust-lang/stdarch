@@ -697,8 +697,7 @@ pub unsafe fn _mm_cvtps_epi32(a: f32x4) -> i32x4 {
 /// `0`.
 #[inline(always)]
 #[target_feature = "+sse2"]
-#[cfg_attr(all(test, target_arch = "x86_64"),
-           assert_instr(movd))]
+#[cfg_attr(all(test, target_arch = "x86_64"), assert_instr(movd))]
 pub unsafe fn _mm_cvtsi32_si128(a: i32) -> i32x4 {
     i32x4::new(a, 0, 0, 0)
 }
@@ -828,7 +827,9 @@ pub unsafe fn _mm_setzero_si128() -> __m128i {
 #[inline(always)]
 #[target_feature = "+sse2"]
 // FIXME movsd on windows
-#[cfg_attr(all(test, not(windows), target_arch = "x86_64"),
+#[cfg_attr(all(test, not(windows),
+               not(all(target_os = "linux", target_arch = "x86_64")),
+               target_arch = "x86_64"),
            assert_instr(movq))]
 pub unsafe fn _mm_loadl_epi64(mem_addr: *const i64x2) -> i64x2 {
     i64x2::new((*mem_addr).extract(0), 0)
@@ -905,7 +906,9 @@ pub unsafe fn _mm_storeu_si128(mem_addr: *mut __m128i, a: __m128i) {
 #[inline(always)]
 #[target_feature = "+sse2"]
 // FIXME mov on windows, movlps on i686
-#[cfg_attr(all(test, not(windows), target_arch = "x86_64"),
+#[cfg_attr(all(test, not(windows),
+               not(all(target_os = "linux", target_arch = "x86_64")),
+               target_arch = "x86_64"),
            assert_instr(movq))]
 pub unsafe fn _mm_storel_epi64(mem_addr: *mut __m128i, a: __m128i) {
     ptr::copy_nonoverlapping(
