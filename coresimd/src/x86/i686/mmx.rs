@@ -149,7 +149,7 @@ mod tests {
     unsafe fn _mm_cmpgt_pi8() {
         let a = i8x8::new(0, 1, 2, 3, 4, 5, 6, 7);
         let b = i8x8::new(8, 7, 6, 5, 4, 3, 2, 1);
-        let r = i8x8::new(0, 0, 0, 0, 0, 0xFFFF, 0xFFFF, 0xFFFF);
+        let r = i8x8::new(0, 0, 0, 0, 0, -1, -1, -1);
         assert_eq!(r, mmx::_mm_cmpgt_pi8(a, b));
     }
 
@@ -157,7 +157,7 @@ mod tests {
     unsafe fn _mm_cmpgt_pi16() {
         let a = i16x4::new(0, 1, 2, 3);
         let b = i16x4::new(4, 3, 2, 1);
-        let r = i16x4::new(0, 0, 0, 0xFFFF);
+        let r = i16x4::new(0, 0, 0, -1);
         assert_eq!(r, mmx::_mm_cmpgt_pi16(a, b));
     }
 
