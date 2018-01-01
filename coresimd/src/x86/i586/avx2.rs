@@ -2698,6 +2698,22 @@ pub unsafe fn _mm256_extract_epi64(a: i64x4, imm8: i32) -> i64 {
     a.extract_unchecked(imm8)
 }
 
+/// Returns the first element of the input vector of [4 x double].
+#[inline(always)]
+#[target_feature = "+avx2"]
+//#[cfg_attr(test, assert_instr(movsd))] FIXME
+pub unsafe fn _mm256_cvtsd_f64(a: f64x4) -> f64 {
+    a.extract(0)
+}
+
+/// Returns the first element of the input vector of [8 x i32].
+#[inline(always)]
+#[target_feature = "+avx2"]
+//#[cfg_attr(test, assert_instr(movd))] FIXME
+pub unsafe fn _mm256_cvtsi256_si32(a: i32x8) -> i32 {
+    a.extract(0)
+}
+
 #[allow(improper_ctypes)]
 extern "C" {
     #[link_name = "llvm.x86.avx2.pabs.b"]
@@ -5004,5 +5020,19 @@ mod tests {
         let a = i64x4::new(0, 1, 2, 3);
         let r = avx2::_mm256_extract_epi64(a, 3);
         assert_eq!(r, 3);
+    }
+
+    #[simd_test = "avx2"]
+    unsafe fn _mm256_cvtsd_f64() {
+        let a = f64x4::new(1., 2., 3., 4.);
+        let r = avx2::_mm256_cvtsd_f64(a);
+        assert_eq!(r, 1.);
+    }
+
+    #[simd_test = "avx2"]
+    unsafe fn _mm256_cvtsi256_si32() {
+        let a = i32x8::new(1, 2, 3, 4, 5, 6, 7, 8);
+        let r = avx2::_mm256_cvtsi256_si32(a);
+        assert_eq!(r, 1);
     }
 }
