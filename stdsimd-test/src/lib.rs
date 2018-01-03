@@ -298,13 +298,29 @@ pub fn assert(fnptr: usize, fnname: &str, expected: &str) {
     // calling one intrinsic from another should not generate `call`
     // instructions.
     let mut inlining_failed = false;
-    for instr in &function.instrs {
-        if let Some(part) = instr.parts.get(0) {
-            if part.contains("call") {
-                inlining_failed = true;
-                break;
-            }
+    for (i, instr) in function.instrs.iter().enumerate() {
+        let part = match instr.parts.get(0) {
+            Some(part) => part,
+            None => continue,
+        };
+        if !part.contains("call") {
+            continue
         }
+
+        // On 32-bit x86 position independent code will call itself and be
+        // immediately followed by a `pop` to learn about the current address.
+        // Let's not take that into account when considering whether a function
+        // failed inlining something.
+        let followed_by_pop = function.instrs.get(i + 1)
+            .and_then(|i| i.parts.get(0))
+            .map(|s| s.contains("pop"))
+            .unwrap_or(false);
+        if followed_by_pop && cfg!(target_arch = "x86") {
+            continue
+        }
+
+        inlining_failed = true;
+        break;
     }
 
     let instruction_limit = 30;
