@@ -293,9 +293,25 @@ pub fn assert(fnptr: usize, fnname: &str, expected: &str) {
         }
     }
 
-    let probably_only_one_instruction = function.instrs.len() < 30;
+    // Look for `call` instructions in the disassembly to detect whether
+    // inlining failed: all intrinsics are `#[inline(always)]`, so
+    // calling one intrinsic from another should not generate `call`
+    // instructions.
+    let mut inlining_failed = false;
+    for instr in &function.instrs {
+        if let Some(part) = instr.parts.get(0) {
+            if part.contains("call") {
+                inlining_failed = true;
+                break;
+            }
+        }
+    }
 
-    if found && probably_only_one_instruction {
+    let instruction_limit = 30;
+    let probably_only_one_instruction =
+        function.instrs.len() < instruction_limit;
+
+    if found && probably_only_one_instruction && !inlining_failed {
         return;
     }
 
@@ -319,7 +335,12 @@ pub fn assert(fnptr: usize, fnname: &str, expected: &str) {
             expected
         );
     } else if !probably_only_one_instruction {
-        panic!("too many instructions in the disassembly");
+        panic!("instruction found, but the disassembly contains too many \
+                instructions: #instructions = {} >= {} (limit)",
+               function.instrs.len(), instruction_limit);
+    } else if inlining_failed {
+        panic!("instruction found, but the disassembly contains `call` \
+                instructions, which hint that inlining failed");
     }
 }
 
