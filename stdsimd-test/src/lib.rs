@@ -335,6 +335,10 @@ pub fn assert(fnptr: usize, fnname: &str, expected: &str) {
         // guess?) we probably can't do much about it...
         "vzeroall" | "vzeroupper" if cfg!(windows) => 30,
 
+        // Intrinsics using `cvtpi2ps` are typically "composites" and in some
+        // cases exceed the limit.
+        "cvtpi2ps" => 25,
+
         _ => 20,
     };
     let probably_only_one_instruction =
