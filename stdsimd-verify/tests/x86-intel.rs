@@ -1,5 +1,7 @@
 #![feature(proc_macro)]
 #![allow(bad_style)]
+#![cfg_attr(feature = "cargo-clippy",
+            allow(shadow_reuse, cast_lossless, match_same_arms))]
 
 #[macro_use]
 extern crate serde_derive;
@@ -111,7 +113,7 @@ fn verify_all_signatures() {
     let data: Data =
         serde_xml_rs::deserialize(xml).expect("failed to deserialize xml");
     let mut map = HashMap::new();
-    for intrinsic in data.intrinsics.iter() {
+    for intrinsic in &data.intrinsics {
         // This intrinsic has multiple definitions in the XML, so just ignore
         // it.
         if intrinsic.name == "_mm_prefetch" {
@@ -148,8 +150,8 @@ fn verify_all_signatures() {
         // Verify that all `#[target_feature]` annotations are correct,
         // ensuring that we've actually enabled the right instruction
         // set for this intrinsic.
-        assert!(intel.cpuid.len() > 0, "missing cpuid for {}", rust.name);
-        for cpuid in intel.cpuid.iter() {
+        assert!(!intel.cpuid.is_empty(), "missing cpuid for {}", rust.name);
+        for cpuid in &intel.cpuid {
             // this is needed by _xsave and probably some related intrinsics,
             // but let's just skip it for now.
             if *cpuid == "XSS" {
@@ -181,7 +183,7 @@ fn verify_all_signatures() {
         // TODO: we should test this, but it generates too many failures right
         // now
         if false {
-            if rust.instrs.len() == 0 {
+            if rust.instrs.is_empty() {
                 assert_eq!(
                     intel.instruction.len(),
                     0,
@@ -192,8 +194,8 @@ fn verify_all_signatures() {
             // If intel doesn't list any instructions and we do then don't
             // bother trying to look for instructions in intel, we've just got
             // some extra assertions on our end.
-            } else if intel.instruction.len() > 0 {
-                for instr in rust.instrs.iter() {
+            } else if !intel.instruction.is_empty() {
+                for instr in rust.instrs {
                     assert!(
                         intel
                             .instruction
@@ -208,25 +210,22 @@ fn verify_all_signatures() {
         }
 
         // Make sure we've got the right return type.
-        match rust.ret {
-            Some(t) => equate(t, &intel.rettype, &rust.name),
-            None => {
-                assert!(
-                    intel.rettype == "" || intel.rettype == "void",
-                    "{} returns `{}` with intel, void in rust",
-                    rust.name,
-                    intel.rettype
-                );
-            }
+        if let Some(t) = rust.ret {
+            equate(t, &intel.rettype, rust.name);
+        } else {
+            assert!(
+                intel.rettype == "" || intel.rettype == "void",
+                "{} returns `{}` with intel, void in rust",
+                rust.name,
+                intel.rettype
+            );
         }
 
         // If there's no arguments on Rust's side intel may list one "void"
         // argument, so handle that here.
-        if rust.arguments.len() == 0 {
-            if intel.parameters.len() == 1 {
-                assert_eq!(intel.parameters[0].type_, "void");
-                continue;
-            }
+        if rust.arguments.is_empty() && intel.parameters.len() == 1 {
+            assert_eq!(intel.parameters[0].type_, "void");
+            continue;
         }
 
         // Otherwise we want all parameters to be exactly the same
