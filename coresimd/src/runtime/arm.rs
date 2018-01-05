@@ -5,13 +5,13 @@ use runtime::arch::HasFeature;
 #[macro_export]
 #[doc(hidden)]
 macro_rules! __unstable_detect_feature {
-    ("neon") => {
-        $crate::__vendor_runtime::__unstable_detect_feature($crate::__vendor_runtime::__Feature::neon{})
+    ("neon", $unstable_detect_feature:path) => {
+        $unstable_detect_feature($crate::__vendor_runtime::__Feature::neon{})
     };
-    ("pmull") => {
-        $crate::__vendor_runtime::__unstable_detect_feature($crate::__vendor_runtime::__Feature::pmull{})
+    ("pmull", $unstable_detect_feature:path) => {
+        $unstable_detect_feature($crate::__vendor_runtime::__Feature::pmull{})
     };
-    ($t:tt) => { compile_error!(concat!("unknown arm target feature: ", $t)) };
+    ($t:tt, $unstable_detect_feature:path) => { compile_error!(concat!("unknown arm target feature: ", $t)) };
 }
 
 /// ARM CPU Feature enum. Each variant denotes a position in a bitset for a

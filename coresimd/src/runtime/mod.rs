@@ -55,15 +55,10 @@ pub mod core {
     #[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
     pub use super::arch::detect_features;
 
-    #[cfg(all(target_os = "linux",
-              any(target_arch = "arm", target_arch = "aarch64",
-                  target_arch = "powerpc64")))]
-    pub use super::linux::detect_features;
-
     /// Performs run-time feature detection.
+    #[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
     #[doc(hidden)]
     pub fn __unstable_detect_feature(x: __Feature) -> bool {
         super::cache::test(x as u32, detect_features)
     }
-
 }

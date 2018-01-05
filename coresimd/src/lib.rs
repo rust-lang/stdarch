@@ -13,8 +13,8 @@
 #![allow(unused_features)]
 #![feature(const_fn, link_llvm_intrinsics, platform_intrinsics, repr_simd,
            simd_ffi, target_feature, cfg_target_feature, i128_type, asm,
-           const_atomic_usize_new, stmt_expr_attributes, core_intrinsics)]
-#![cfg_attr(target_os = "linux", feature(linkage))]
+           const_atomic_usize_new, stmt_expr_attributes, core_intrinsics,
+           crate_in_paths)]
 #![cfg_attr(test, feature(proc_macro, test, repr_align, attr_literals))]
 #![cfg_attr(feature = "cargo-clippy",
             allow(inline_always, too_many_arguments, cast_sign_loss,
@@ -68,10 +68,8 @@ pub mod __vendor_runtime {
                       target_arch = "powerpc64"))))]
     pub use runtime::core::*;
 
-    // The `stdsimd` runtime for these targets builds on top of
-    // the `coresimd` one, but it is not exactly the same. These
-    // re-exports are only intended to be used by the `stdsimd`
-    // run-time but not re-exported by it.
+    // Re-exports `coresimd` run-time building blocks for usage in the
+    // `stdsimd` run-time.
     #[cfg(all(target_os = "linux",
               any(target_arch = "arm", target_arch = "aarch64",
                   target_arch = "powerpc64")))]

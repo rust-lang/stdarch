@@ -5,16 +5,16 @@ use runtime::arch::HasFeature;
 #[macro_export]
 #[doc(hidden)]
 macro_rules! __unstable_detect_feature {
-    ("altivec") => {
-        $crate::__vendor_runtime::__unstable_detect_feature($crate::__vendor_runtime::__Feature::altivec{})
+    ("altivec", $unstable_detect_feature:path) => {
+        $unstable_detect_feature($crate::__vendor_runtime::__Feature::altivec{})
     };
-    ("vsx") => {
-        $crate::__vendor_runtime::__unstable_detect_feature($crate::__vendor_runtime::__Feature::vsx{})
+    ("vsx", $unstable_detect_feature:path) => {
+        $unstable_detect_feature($crate::__vendor_runtime::__Feature::vsx{})
     };
-    ("power8") => {
-        $crate::__vendor_runtime::__unstable_detect_feature($crate::__vendor_runtime::__Feature::power8{})
+    ("power8", $unstable_detect_feature:path) => {
+        $unstable_detect_feature($crate::__vendor_runtime::__Feature::power8{})
     };
-    ($t:tt) => { compile_error!(concat!("unknown PowerPC target feature: ", $t)) };
+    ($t:tt, $unstable_detect_feature:path) => { compile_error!(concat!("unknown PowerPC target feature: ", $t)) };
 }
 
 /// PowerPC CPU Feature enum. Each variant denotes a position in a bitset
@@ -46,14 +46,4 @@ pub fn detect_features<T: HasFeature>(mut x: T) -> usize {
         enable_feature(__Feature::power8);
     }
     value
-}
-
-#[cfg(test)]
-mod tests {
-    #[test]
-    fn detect_feature() {
-        println!("altivec {}", __unstable_detect_feature!("altivec"));
-        println!("vsx {}", __unstable_detect_feature!("vsx"));
-        println!("power8 {}", __unstable_detect_feature!("power8"));
-    }
 }

@@ -29,133 +29,133 @@ use super::bit;
 #[macro_export]
 #[doc(hidden)]
 macro_rules! __unstable_detect_feature {
-    ("mmx") => {
-        $crate::__vendor_runtime::__unstable_detect_feature(
+    ("mmx", $unstable_detect_feature:path) => {
+        $unstable_detect_feature(
             $crate::__vendor_runtime::__Feature::mmx{})  };
-    ("sse") => {
-        $crate::__vendor_runtime::__unstable_detect_feature(
+    ("sse", $unstable_detect_feature:path) => {
+        $unstable_detect_feature(
             $crate::__vendor_runtime::__Feature::sse{})  };
-    ("sse2") => {
-        $crate::__vendor_runtime::__unstable_detect_feature(
+    ("sse2", $unstable_detect_feature:path) => {
+        $unstable_detect_feature(
             $crate::__vendor_runtime::__Feature::sse2{})
     };
-    ("sse3") => {
-        $crate::__vendor_runtime::__unstable_detect_feature(
+    ("sse3", $unstable_detect_feature:path) => {
+        $unstable_detect_feature(
             $crate::__vendor_runtime::__Feature::sse3{})
     };
-    ("ssse3") => {
-        $crate::__vendor_runtime::__unstable_detect_feature(
+    ("ssse3", $unstable_detect_feature:path) => {
+        $unstable_detect_feature(
             $crate::__vendor_runtime::__Feature::ssse3{})
     };
-    ("sse4.1") => {
-        $crate::__vendor_runtime::__unstable_detect_feature(
+    ("sse4.1", $unstable_detect_feature:path) => {
+        $unstable_detect_feature(
             $crate::__vendor_runtime::__Feature::sse4_1{})
     };
-    ("sse4.2") => {
-        $crate::__vendor_runtime::__unstable_detect_feature(
+    ("sse4.2", $unstable_detect_feature:path) => {
+        $unstable_detect_feature(
             $crate::__vendor_runtime::__Feature::sse4_2{})
     };
-    ("sse4a") => {
-        $crate::__vendor_runtime::__unstable_detect_feature(
+    ("sse4a", $unstable_detect_feature:path) => {
+        $unstable_detect_feature(
             $crate::__vendor_runtime::__Feature::sse4a{})
     };
-    ("avx") => {
-        $crate::__vendor_runtime::__unstable_detect_feature(
+    ("avx", $unstable_detect_feature:path) => {
+        $unstable_detect_feature(
             $crate::__vendor_runtime::__Feature::avx{})
     };
-    ("avx2") => {
-        $crate::__vendor_runtime::__unstable_detect_feature(
+    ("avx2", $unstable_detect_feature:path) => {
+        $unstable_detect_feature(
             $crate::__vendor_runtime::__Feature::avx2{})
     };
-    ("avx512f") => {
-        $crate::__vendor_runtime::__unstable_detect_feature(
+    ("avx512f", $unstable_detect_feature:path) => {
+        $unstable_detect_feature(
             $crate::__vendor_runtime::__Feature::avx512f{})
     };
-    ("avx512cd") => {
-        $crate::__vendor_runtime::__unstable_detect_feature(
+    ("avx512cd", $unstable_detect_feature:path) => {
+        $unstable_detect_feature(
             $crate::__vendor_runtime::__Feature::avx512cd{})
     };
-    ("avx512er") => {
-        $crate::__vendor_runtime::__unstable_detect_feature(
+    ("avx512er", $unstable_detect_feature:path) => {
+        $unstable_detect_feature(
             $crate::__vendor_runtime::__Feature::avx512er{})
     };
-    ("avx512pf") => {
-        $crate::__vendor_runtime::__unstable_detect_feature(
+    ("avx512pf", $unstable_detect_feature:path) => {
+        $unstable_detect_feature(
             $crate::__vendor_runtime::__Feature::avx512pf{})
     };
-    ("avx512bw") => {
-        $crate::__vendor_runtime::__unstable_detect_feature(
+    ("avx512bw", $unstable_detect_feature:path) => {
+        $unstable_detect_feature(
             $crate::__vendor_runtime::__Feature::avx512bw{})
     };
-    ("avx512dq") => {
-        $crate::__vendor_runtime::__unstable_detect_feature(
+    ("avx512dq", $unstable_detect_feature:path) => {
+        $unstable_detect_feature(
             $crate::__vendor_runtime::__Feature::avx512dq{})
     };
-    ("avx512vl") => {
-        $crate::__vendor_runtime::__unstable_detect_feature(
+    ("avx512vl", $unstable_detect_feature:path) => {
+        $unstable_detect_feature(
             $crate::__vendor_runtime::__Feature::avx512vl{})
     };
-    ("avx512ifma") => {
-        $crate::__vendor_runtime::__unstable_detect_feature(
+    ("avx512ifma", $unstable_detect_feature:path) => {
+        $unstable_detect_feature(
             $crate::__vendor_runtime::__Feature::avx512_ifma{})
     };
-    ("avx512vbmi") => {
-        $crate::__vendor_runtime::__unstable_detect_feature(
+    ("avx512vbmi", $unstable_detect_feature:path) => {
+        $unstable_detect_feature(
             $crate::__vendor_runtime::__Feature::avx512_vbmi{})
     };
-    ("avx512vpopcntdq") => {
-        $crate::__vendor_runtime::__unstable_detect_feature(
+    ("avx512vpopcntdq", $unstable_detect_feature:path) => {
+        $unstable_detect_feature(
             $crate::__vendor_runtime::__Feature::avx512_vpopcntdq{})
     };
-    ("fma") => {
-        $crate::__vendor_runtime::__unstable_detect_feature(
+    ("fma", $unstable_detect_feature:path) => {
+        $unstable_detect_feature(
             $crate::__vendor_runtime::__Feature::fma{})
     };
-    ("bmi") => {
-        $crate::__vendor_runtime::__unstable_detect_feature(
+    ("bmi", $unstable_detect_feature:path) => {
+        $unstable_detect_feature(
             $crate::__vendor_runtime::__Feature::bmi{})
     };
-    ("bmi2") => {
-        $crate::__vendor_runtime::__unstable_detect_feature(
+    ("bmi2", $unstable_detect_feature:path) => {
+        $unstable_detect_feature(
             $crate::__vendor_runtime::__Feature::bmi2{})
     };
-    ("abm") => {
-        $crate::__vendor_runtime::__unstable_detect_feature(
+    ("abm", $unstable_detect_feature:path) => {
+        $unstable_detect_feature(
             $crate::__vendor_runtime::__Feature::abm{})
     };
-    ("lzcnt") => {
-        $crate::__vendor_runtime::__unstable_detect_feature(
+    ("lzcnt", $unstable_detect_feature:path) => {
+        $unstable_detect_feature(
             $crate::__vendor_runtime::__Feature::abm{})
     };
-    ("tbm") => {
-        $crate::__vendor_runtime::__unstable_detect_feature(
+    ("tbm", $unstable_detect_feature:path) => {
+        $unstable_detect_feature(
             $crate::__vendor_runtime::__Feature::tbm{})
     };
-    ("popcnt") => {
-        $crate::__vendor_runtime::__unstable_detect_feature(
+    ("popcnt", $unstable_detect_feature:path) => {
+        $unstable_detect_feature(
             $crate::__vendor_runtime::__Feature::popcnt{})
     };
-    ("fxsr") => {
-        $crate::__vendor_runtime::__unstable_detect_feature(
+    ("fxsr", $unstable_detect_feature:path) => {
+        $unstable_detect_feature(
             $crate::__vendor_runtime::__Feature::fxsr{})
     };
-    ("xsave") => {
-        $crate::__vendor_runtime::__unstable_detect_feature(
+    ("xsave", $unstable_detect_feature:path) => {
+        $unstable_detect_feature(
             $crate::__vendor_runtime::__Feature::xsave{})
     };
-    ("xsaveopt") => {
-        $crate::__vendor_runtime::__unstable_detect_feature(
+    ("xsaveopt", $unstable_detect_feature:path) => {
+        $unstable_detect_feature(
             $crate::__vendor_runtime::__Feature::xsaveopt{})
     };
-    ("xsaves") => {
-        $crate::__vendor_runtime::__unstable_detect_feature(
+    ("xsaves", $unstable_detect_feature:path) => {
+        $unstable_detect_feature(
             $crate::__vendor_runtime::__Feature::xsaves{})
     };
-    ("xsavec") => {
-        $crate::__vendor_runtime::__unstable_detect_feature(
+    ("xsavec", $unstable_detect_feature:path) => {
+        $unstable_detect_feature(
             $crate::__vendor_runtime::__Feature::xsavec{})
     };
-    ($t:tt) => {
+    ($t:tt, $unstable_detect_feature:path) => {
         compile_error!(concat!("unknown target feature: ", $t))
     };
 }

@@ -124,13 +124,13 @@
 //! [target_feature_impr]: https://github.com/rust-lang/rust/issues/44839
 
 #![feature(const_fn, const_size_of, use_extern_macros, cfg_target_feature)]
-
+#![cfg_attr(target_os = "linux", feature(linkage))]
 extern crate coresimd;
 
 /// Re-export run-time feature detection macros.
 #[cfg(any(target_arch = "x86", target_arch = "x86_64", target_arch = "arm",
           target_arch = "aarch64", target_arch = "powerpc64"))]
-pub use coresimd::{__unstable_detect_feature, cfg_feature_enabled};
+pub use coresimd::__unstable_detect_feature;
 
 /// Platform dependent vendor intrinsics.
 pub mod vendor {
@@ -153,8 +153,24 @@ pub mod simd {
 }
 
 /// The `stdsimd` run-time.
+#[macro_use]
 #[cfg(any(target_arch = "x86", target_arch = "x86_64",
           all(target_os = "linux",
               any(target_arch = "arm", target_arch = "aarch64",
                   target_arch = "powerpc64"))))]
 mod runtime;
+
+/// Error gracefully in architectures without run-time detection support.
+#[cfg(not(any(target_arch = "x86", target_arch = "x86_64",
+              all(target_os = "linux",
+                  any(target_arch = "arm", target_arch = "aarch64",
+                      target_arch = "powerpc64")))))]
+#[doc(hidden)]
+#[macro_export]
+macro_rules! cfg_feature_enabled {
+    ($name:tt) => (
+        {
+            compile_error!("cfg_target_feature! is not supported in this architecture")
+        }
+    )
+}

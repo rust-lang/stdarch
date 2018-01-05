@@ -5,6 +5,9 @@
               target_arch = "powerpc64")))]
 mod linux;
 
+#[macro_use]
+mod macros;
+
 /// Run-time feature detection exposed by `stdsimd`.
 pub mod std {
     // The x86/x86_64 run-time from `coresimd` is re-exported as is.
@@ -15,6 +18,21 @@ pub mod std {
               any(target_arch = "arm", target_arch = "aarch64",
                   target_arch = "powerpc64")))]
     pub use super::linux::{detect_features, __Feature};
+
+    /// Performs run-time feature detection.
+    ///
+    /// For those platforms in which run-time detection differs between `core`
+    /// and `std`.
+    #[cfg(all(target_os = "linux",
+              any(target_arch = "arm", target_arch = "aarch64",
+                  target_arch = "powerpc64")))]
+    #[doc(hidden)]
+    pub fn __unstable_detect_feature(x: __Feature) -> bool {
+        ::coresimd::__vendor_runtime::__runtime::cache::test(
+            x as u32,
+            detect_features,
+        )
+    }
 }
 
 #[cfg(test)]
