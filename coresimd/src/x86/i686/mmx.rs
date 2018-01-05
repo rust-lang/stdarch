@@ -24,6 +24,14 @@ pub unsafe fn _mm_setzero_si64() -> __m64 {
     mem::transmute(0_i64)
 }
 
+/// Add packed 8-bit integers in `a` and `b`.
+#[inline(always)]
+#[target_feature = "+mmx"]
+#[cfg_attr(test, assert_instr(paddb))]
+pub unsafe fn _mm_add_pi8(a: __m64, b: __m64) -> __m64 {
+    paddb(a, b)
+}
+
 /// Add packed 16-bit integers in `a` and `b`.
 #[inline(always)]
 #[target_feature = "+mmx"]
@@ -139,6 +147,8 @@ pub unsafe fn _mm_unpacklo_pi32(a: __m64, b: __m64) -> __m64 {
 
 #[allow(improper_ctypes)]
 extern "C" {
+    #[link_name = "llvm.x86.mmx.padd.b"]
+    fn paddb(a: __m64, b: __m64) -> __m64;
     #[link_name = "llvm.x86.mmx.padd.w"]
     fn paddw(a: __m64, b: __m64) -> __m64;
     #[link_name = "llvm.x86.mmx.packsswb"]
@@ -178,11 +188,25 @@ mod tests {
     }
 
     #[simd_test = "mmx"]
+    unsafe fn _mm_add_pi8() {
+        let a = i8x8::new(-1, -1, 1, 1, -1, 0, 1, 0);
+        let b = i8x8::new(-127, 101, 99, 126, 0, -1, 0, 1);
+        let r = i8x8::from(mmx::_mm_add_pi8(a.into(), b.into()));
+        let e = i8x8::new(-128, 100, 100, 127, -1, -1, 1, 1);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "mmx"]
     unsafe fn _mm_add_pi16() {
         let a = i16x4::new(-1, -1, 1, 1);
-        let b = i16x4::new(-65535, 30001, -30001, 65534);
+        let b = i16x4::new(
+            i16::min_value() + 1,
+            30001,
+            -30001,
+            i16::max_value() - 1,
+        );
         let r = i16x4::from(mmx::_mm_add_pi16(a.into(), b.into()));
-        let e = i16x4::new(-65536, 30000, -30000, 65535);
+        let e = i16x4::new(i16::min_value(), 30000, -30000, i16::max_value());
         assert_eq!(r, e);
     }
 
