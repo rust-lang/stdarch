@@ -48,6 +48,14 @@ pub unsafe fn _mm_add_pi32(a: __m64, b: __m64) -> __m64 {
     paddd(a, b)
 }
 
+/// Add packed 8-bit integers in `a` and `b` using saturation.
+#[inline(always)]
+#[target_feature = "+mmx"]
+#[cfg_attr(test, assert_instr(paddsb))]
+pub unsafe fn _mm_adds_pi8(a: __m64, b: __m64) -> __m64 {
+    paddsb(a, b)
+}
+
 /// Add packed 16-bit integers in `a` and `b` using saturation.
 #[inline(always)]
 #[target_feature = "+mmx"]
@@ -169,6 +177,8 @@ extern "C" {
     fn paddw(a: __m64, b: __m64) -> __m64;
     #[link_name = "llvm.x86.mmx.padd.d"]
     fn paddd(a: __m64, b: __m64) -> __m64;
+    #[link_name = "llvm.x86.mmx.padds.b"]
+    fn paddsb(a: __m64, b: __m64) -> __m64;
     #[link_name = "llvm.x86.mmx.padds.w"]
     fn paddsw(a: __m64, b: __m64) -> __m64;
     #[link_name = "llvm.x86.mmx.packsswb"]
@@ -236,6 +246,16 @@ mod tests {
         let b = i32x2::new(i32::max_value() - 1, i32::min_value() + 1);
         let r = i32x2::from(mmx::_mm_add_pi32(a.into(), b.into()));
         let e = i32x2::new(i32::max_value(), i32::min_value());
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "mmx"]
+    unsafe fn _mm_adds_pi8() {
+        let a = i8x8::new(-100, -1, 1, 100, -1, 0, 1, 0);
+        let b = i8x8::new(-100, 1, -1, 100, 0, -1, 0, 1);
+        let r = i8x8::from(mmx::_mm_adds_pi8(a.into(), b.into()));
+        let e =
+            i8x8::new(i8::min_value(), 0, 0, i8::max_value(), -1, -1, 1, 1);
         assert_eq!(r, e);
     }
 
