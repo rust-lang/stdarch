@@ -14,14 +14,13 @@ use core::mem;
 #[cfg(test)]
 use stdsimd_test::assert_instr;
 
-/// Constructs a 64-bit integer vector initialized to zero.
+/// Return vector of type `__m64` with all elements set to zero.
 #[inline(always)]
 #[target_feature = "+mmx"]
-// FIXME: this produces a movl instead of xorps on x86
-// FIXME: this produces a xor intrinsic instead of xorps on x86_64
-#[cfg_attr(all(test, target_arch = "x86_64"), assert_instr(xor))]
+#[cfg_attr(test, assert_instr(pxor))]
 pub unsafe fn _mm_setzero_si64() -> __m64 {
-    mem::transmute(0_i64)
+    let a: __m64 = mem::uninitialized();
+    pxor(a, a)
 }
 
 /// Convert packed 16-bit integers from `a` and `b` to packed 8-bit integers
@@ -131,6 +130,8 @@ pub unsafe fn _mm_unpacklo_pi32(a: __m64, b: __m64) -> __m64 {
 
 #[allow(improper_ctypes)]
 extern "C" {
+    #[link_name = "llvm.x86.mmx.pxor"]
+    fn pxor(a: __m64, b: __m64) -> __m64;
     #[link_name = "llvm.x86.mmx.packsswb"]
     fn packsswb(a: __m64, b: __m64) -> __m64;
     #[link_name = "llvm.x86.mmx.packssdw"]
