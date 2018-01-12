@@ -122,6 +122,15 @@ pub unsafe fn _m_psubsw(a: __m64, b: __m64) -> __m64 {
     psubsw(a, b)
 }
 
+/// Subtract packed unsigned 8-bit integers in `b` from packed unsigned 8-bit
+/// integers in `a` using saturation.
+#[inline(always)]
+#[target_feature = "+mmx"]
+#[cfg_attr(test, assert_instr(psubusb))]
+pub unsafe fn _m_psubusb(a: __m64, b: __m64) -> __m64 {
+    psubusb(a, b)
+}
+
 /// Convert packed 16-bit integers from `a` and `b` to packed 8-bit integers
 /// using signed saturation.
 ///
@@ -322,6 +331,8 @@ extern "C" {
     fn psubsb(a: __m64, b: __m64) -> __m64;
     #[link_name = "llvm.x86.mmx.psubs.w"]
     fn psubsw(a: __m64, b: __m64) -> __m64;
+    #[link_name = "llvm.x86.mmx.psubus.b"]
+    fn psubusb(a: __m64, b: __m64) -> __m64;
     #[link_name = "llvm.x86.mmx.packsswb"]
     fn packsswb(a: __m64, b: __m64) -> __m64;
     #[link_name = "llvm.x86.mmx.packssdw"]
@@ -478,6 +489,15 @@ mod tests {
         let b = i16x4::new(20000, -20000, -1, 1);
         let r = i16x4::from(mmx::_m_psubsw(a.into(), b.into()));
         let e = i16x4::new(i16::min_value(), i16::max_value(), 1, -1);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "mmx"]
+    unsafe fn _m_psubusb() {
+        let a = u8x8::new(50, 10, 20, 30, 40, 60, 70, 80);
+        let b = u8x8::new(60, 20, 30, 40, 30, 20, 10, 0);
+        let r = u8x8::from(mmx::_m_psubusb(a.into(), b.into()));
+        let e = u8x8::new(0, 0, 0, 0, 10, 40, 60, 80);
         assert_eq!(r, e);
     }
 
