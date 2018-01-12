@@ -84,7 +84,7 @@ pub unsafe fn _mm_adds_pu16(a: __m64, b: __m64) -> __m64 {
 #[inline(always)]
 #[target_feature = "+mmx"]
 #[cfg_attr(test, assert_instr(psubb))]
-pub unsafe fn _m_psubb(a: __m64, b: __m64) -> __m64 {
+pub unsafe fn _mm_sub_pi8(a: __m64, b: __m64) -> __m64 {
     psubb(a, b)
 }
 
@@ -92,7 +92,7 @@ pub unsafe fn _m_psubb(a: __m64, b: __m64) -> __m64 {
 #[inline(always)]
 #[target_feature = "+mmx"]
 #[cfg_attr(test, assert_instr(psubw))]
-pub unsafe fn _m_psubw(a: __m64, b: __m64) -> __m64 {
+pub unsafe fn _mm_sub_pi16(a: __m64, b: __m64) -> __m64 {
     psubw(a, b)
 }
 
@@ -100,7 +100,7 @@ pub unsafe fn _m_psubw(a: __m64, b: __m64) -> __m64 {
 #[inline(always)]
 #[target_feature = "+mmx"]
 #[cfg_attr(test, assert_instr(psubd))]
-pub unsafe fn _m_psubd(a: __m64, b: __m64) -> __m64 {
+pub unsafe fn _mm_sub_pi32(a: __m64, b: __m64) -> __m64 {
     psubd(a, b)
 }
 
@@ -109,7 +109,7 @@ pub unsafe fn _m_psubd(a: __m64, b: __m64) -> __m64 {
 #[inline(always)]
 #[target_feature = "+mmx"]
 #[cfg_attr(test, assert_instr(psubsb))]
-pub unsafe fn _m_psubsb(a: __m64, b: __m64) -> __m64 {
+pub unsafe fn _mm_subs_pi8(a: __m64, b: __m64) -> __m64 {
     psubsb(a, b)
 }
 
@@ -118,7 +118,7 @@ pub unsafe fn _m_psubsb(a: __m64, b: __m64) -> __m64 {
 #[inline(always)]
 #[target_feature = "+mmx"]
 #[cfg_attr(test, assert_instr(psubsw))]
-pub unsafe fn _m_psubsw(a: __m64, b: __m64) -> __m64 {
+pub unsafe fn _mm_subs_pi16(a: __m64, b: __m64) -> __m64 {
     psubsw(a, b)
 }
 
@@ -127,7 +127,7 @@ pub unsafe fn _m_psubsw(a: __m64, b: __m64) -> __m64 {
 #[inline(always)]
 #[target_feature = "+mmx"]
 #[cfg_attr(test, assert_instr(psubusb))]
-pub unsafe fn _m_psubusb(a: __m64, b: __m64) -> __m64 {
+pub unsafe fn _mm_subs_pu8(a: __m64, b: __m64) -> __m64 {
     psubusb(a, b)
 }
 
@@ -136,7 +136,7 @@ pub unsafe fn _m_psubusb(a: __m64, b: __m64) -> __m64 {
 #[inline(always)]
 #[target_feature = "+mmx"]
 #[cfg_attr(test, assert_instr(psubusw))]
-pub unsafe fn _m_psubusw(a: __m64, b: __m64) -> __m64 {
+pub unsafe fn _mm_subs_pu16(a: __m64, b: __m64) -> __m64 {
     psubusw(a, b)
 }
 
@@ -450,10 +450,10 @@ mod tests {
     }
 
     #[simd_test = "mmx"]
-    unsafe fn _m_psubb() {
+    unsafe fn _mm_sub_pi8() {
         let a = i8x8::new(0, 0, 1, 1, -1, -1, 0, 0);
         let b = i8x8::new(-1, 1, -2, 2, 100, -100, -127, 127);
-        let r = i8x8::from(mmx::_m_psubb(a.into(), b.into()));
+        let r = i8x8::from(mmx::_mm_sub_pi8(a.into(), b.into()));
         let e = i8x8::new(1, -1, 3, -1, -101, 99, 127, -127);
         assert_eq!(r, e);
     }
@@ -462,25 +462,25 @@ mod tests {
     unsafe fn _m_psubw() {
         let a = i16x4::new(-20000, -20000, 20000, 30000);
         let b = i16x4::new(-10000, 10000, -10000, 30000);
-        let r = i16x4::from(mmx::_m_psubw(a.into(), b.into()));
+        let r = i16x4::from(mmx::_mm_sub_pi16(a.into(), b.into()));
         let e = i16x4::new(-10000, -30000, 30000, 0);
         assert_eq!(r, e);
     }
 
     #[simd_test = "mmx"]
-    unsafe fn _m_psubd() {
+    unsafe fn _mm_sub_pi32() {
         let a = i32x2::new(500_000, -500_000);
         let b = i32x2::new(500_000, 500_000);
-        let r = i32x2::from(mmx::_m_psubd(a.into(), b.into()));
+        let r = i32x2::from(mmx::_mm_sub_pi32(a.into(), b.into()));
         let e = i32x2::new(0, -1_000_000);
         assert_eq!(r, e);
     }
 
     #[simd_test = "mmx"]
-    unsafe fn _m_psubsb() {
+    unsafe fn _mm_subs_pi8() {
         let a = i8x8::new(-100, 100, 0, 0, 0, 0, -5, 5);
         let b = i8x8::new(100, -100, i8::min_value(), 127, -1, 1, 3, -3);
-        let r = i8x8::from(mmx::_m_psubsb(a.into(), b.into()));
+        let r = i8x8::from(mmx::_mm_subs_pi8(a.into(), b.into()));
         let e = i8x8::new(
             i8::min_value(),
             i8::max_value(),
@@ -495,28 +495,28 @@ mod tests {
     }
 
     #[simd_test = "mmx"]
-    unsafe fn _m_psubsw() {
+    unsafe fn _mm_subs_pi16() {
         let a = i16x4::new(-20000, 20000, 0, 0);
         let b = i16x4::new(20000, -20000, -1, 1);
-        let r = i16x4::from(mmx::_m_psubsw(a.into(), b.into()));
+        let r = i16x4::from(mmx::_mm_subs_pi16(a.into(), b.into()));
         let e = i16x4::new(i16::min_value(), i16::max_value(), 1, -1);
         assert_eq!(r, e);
     }
 
     #[simd_test = "mmx"]
-    unsafe fn _m_psubusb() {
+    unsafe fn _mm_subs_pu8() {
         let a = u8x8::new(50, 10, 20, 30, 40, 60, 70, 80);
         let b = u8x8::new(60, 20, 30, 40, 30, 20, 10, 0);
-        let r = u8x8::from(mmx::_m_psubusb(a.into(), b.into()));
+        let r = u8x8::from(mmx::_mm_subs_pu8(a.into(), b.into()));
         let e = u8x8::new(0, 0, 0, 0, 10, 40, 60, 80);
         assert_eq!(r, e);
     }
 
     #[simd_test = "mmx"]
-    unsafe fn _m_psubusw() {
+    unsafe fn _mm_subs_pu16() {
         let a = u16x4::new(10000, 200, 0, 44444);
         let b = u16x4::new(20000, 300, 1, 11111);
-        let r = u16x4::from(mmx::_m_psubusw(a.into(), b.into()));
+        let r = u16x4::from(mmx::_mm_subs_pu16(a.into(), b.into()));
         let e = u16x4::new(0, 0, 0, 33333);
         assert_eq!(r, e);
     }
