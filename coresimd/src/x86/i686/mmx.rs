@@ -113,6 +113,15 @@ pub unsafe fn _m_psubsb(a: __m64, b: __m64) -> __m64 {
     psubsb(a, b)
 }
 
+/// Subtract packed 16-bit integers in `b` from packed 16-bit integers in `a`
+/// using saturation.
+#[inline(always)]
+#[target_feature = "+mmx"]
+#[cfg_attr(test, assert_instr(psubsw))]
+pub unsafe fn _m_psubsw(a: __m64, b: __m64) -> __m64 {
+    psubsw(a, b)
+}
+
 /// Convert packed 16-bit integers from `a` and `b` to packed 8-bit integers
 /// using signed saturation.
 ///
@@ -235,7 +244,9 @@ pub unsafe fn _mm_set_pi32(e1: i32, e0: i32) -> __m64 {
 /// Set packed 8-bit integers in dst with the supplied values.
 #[inline(always)]
 #[target_feature = "+mmx"]
-pub unsafe fn _mm_set_pi8(e7: i8, e6: i8, e5: i8, e4: i8, e3: i8, e2: i8, e1: i8, e0: i8) -> __m64 {
+pub unsafe fn _mm_set_pi8(
+    e7: i8, e6: i8, e5: i8, e4: i8, e3: i8, e2: i8, e1: i8, e0: i8
+) -> __m64 {
     _mm_setr_pi8(e0, e1, e2, e3, e4, e5, e6, e7)
 }
 
@@ -260,14 +271,16 @@ pub unsafe fn _mm_set1_pi8(a: i8) -> __m64 {
     _mm_setr_pi8(a, a, a, a, a, a, a, a)
 }
 
-/// Set packed 16-bit integers in dst with the supplied values in reverse order.
+/// Set packed 16-bit integers in dst with the supplied values in reverse
+/// order.
 #[inline(always)]
 #[target_feature = "+mmx"]
 pub unsafe fn _mm_setr_pi16(e0: i16, e1: i16, e2: i16, e3: i16) -> __m64 {
     mem::transmute(i16x4::new(e0, e1, e2, e3))
 }
 
-/// Set packed 32-bit integers in dst with the supplied values in reverse order.
+/// Set packed 32-bit integers in dst with the supplied values in reverse
+/// order.
 #[inline(always)]
 #[target_feature = "+mmx"]
 pub unsafe fn _mm_setr_pi32(e0: i32, e1: i32) -> __m64 {
@@ -277,7 +290,9 @@ pub unsafe fn _mm_setr_pi32(e0: i32, e1: i32) -> __m64 {
 /// Set packed 8-bit integers in dst with the supplied values in reverse order.
 #[inline(always)]
 #[target_feature = "+mmx"]
-pub unsafe fn _mm_setr_pi8(e0: i8, e1: i8, e2: i8, e3: i8, e4: i8, e5: i8, e6: i8, e7: i8) -> __m64 {
+pub unsafe fn _mm_setr_pi8(
+    e0: i8, e1: i8, e2: i8, e3: i8, e4: i8, e5: i8, e6: i8, e7: i8
+) -> __m64 {
     mem::transmute(i8x8::new(e0, e1, e2, e3, e4, e5, e6, e7))
 }
 
@@ -305,6 +320,8 @@ extern "C" {
     fn psubd(a: __m64, b: __m64) -> __m64;
     #[link_name = "llvm.x86.mmx.psubs.b"]
     fn psubsb(a: __m64, b: __m64) -> __m64;
+    #[link_name = "llvm.x86.mmx.psubs.w"]
+    fn psubsw(a: __m64, b: __m64) -> __m64;
     #[link_name = "llvm.x86.mmx.packsswb"]
     fn packsswb(a: __m64, b: __m64) -> __m64;
     #[link_name = "llvm.x86.mmx.packssdw"]
@@ -452,6 +469,15 @@ mod tests {
             -8,
             8,
         );
+        assert_eq!(r, e);
+    }
+
+    #[simd_test = "mmx"]
+    unsafe fn _m_psubsw() {
+        let a = i16x4::new(-20000, 20000, 0, 0);
+        let b = i16x4::new(20000, -20000, -1, 1);
+        let r = i16x4::from(mmx::_m_psubsw(a.into(), b.into()));
+        let e = i16x4::new(i16::min_value(), i16::max_value(), 1, -1);
         assert_eq!(r, e);
     }
 
