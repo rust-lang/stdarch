@@ -9,7 +9,7 @@ use v128::*;
 /// Compute the absolute value of packed 8-bit signed integers in `a` and
 /// return the unsigned results.
 #[inline(always)]
-#[target_feature = "+ssse3"]
+#[target_feature(enable = "ssse3")]
 #[cfg_attr(test, assert_instr(pabsb))]
 pub unsafe fn _mm_abs_epi8(a: i8x16) -> u8x16 {
     pabsb128(a)
@@ -19,7 +19,7 @@ pub unsafe fn _mm_abs_epi8(a: i8x16) -> u8x16 {
 /// `a` and
 /// return the 16-bit unsigned integer
 #[inline(always)]
-#[target_feature = "+ssse3"]
+#[target_feature(enable = "ssse3")]
 #[cfg_attr(test, assert_instr(pabsw))]
 pub unsafe fn _mm_abs_epi16(a: i16x8) -> u16x8 {
     pabsw128(a)
@@ -29,7 +29,7 @@ pub unsafe fn _mm_abs_epi16(a: i16x8) -> u16x8 {
 /// `a` and
 /// return the 32-bit unsigned integer
 #[inline(always)]
-#[target_feature = "+ssse3"]
+#[target_feature(enable = "ssse3")]
 #[cfg_attr(test, assert_instr(pabsd))]
 pub unsafe fn _mm_abs_epi32(a: i32x4) -> u32x4 {
     pabsd128(a)
@@ -60,7 +60,7 @@ pub unsafe fn _mm_abs_epi32(a: i32x4) -> u32x4 {
 /// }
 /// ```
 #[inline(always)]
-#[target_feature = "+ssse3"]
+#[target_feature(enable = "ssse3")]
 #[cfg_attr(test, assert_instr(pshufb))]
 pub unsafe fn _mm_shuffle_epi8(a: u8x16, b: u8x16) -> u8x16 {
     pshufb128(a, b)
@@ -69,7 +69,7 @@ pub unsafe fn _mm_shuffle_epi8(a: u8x16, b: u8x16) -> u8x16 {
 /// Concatenate 16-byte blocks in `a` and `b` into a 32-byte temporary result,
 /// shift the result right by `n` bytes, and return the low 16 bytes.
 #[inline(always)]
-#[target_feature = "+ssse3"]
+#[target_feature(enable = "ssse3")]
 #[cfg_attr(test, assert_instr(palignr, n = 15))]
 pub unsafe fn _mm_alignr_epi8(a: i8x16, b: i8x16, n: i32) -> i8x16 {
     let n = n as u32;
@@ -124,7 +124,7 @@ pub unsafe fn _mm_alignr_epi8(a: i8x16, b: i8x16, n: i32) -> i8x16 {
 /// Horizontally add the adjacent pairs of values contained in 2 packed
 /// 128-bit vectors of [8 x i16].
 #[inline(always)]
-#[target_feature = "+ssse3"]
+#[target_feature(enable = "ssse3")]
 #[cfg_attr(test, assert_instr(phaddw))]
 pub unsafe fn _mm_hadd_epi16(a: i16x8, b: i16x8) -> i16x8 {
     phaddw128(a, b)
@@ -134,7 +134,7 @@ pub unsafe fn _mm_hadd_epi16(a: i16x8, b: i16x8) -> i16x8 {
 /// 128-bit vectors of [8 x i16]. Positive sums greater than 7FFFh are
 /// saturated to 7FFFh. Negative sums less than 8000h are saturated to 8000h.
 #[inline(always)]
-#[target_feature = "+ssse3"]
+#[target_feature(enable = "ssse3")]
 #[cfg_attr(test, assert_instr(phaddsw))]
 pub unsafe fn _mm_hadds_epi16(a: i16x8, b: i16x8) -> i16x8 {
     phaddsw128(a, b)
@@ -143,7 +143,7 @@ pub unsafe fn _mm_hadds_epi16(a: i16x8, b: i16x8) -> i16x8 {
 /// Horizontally add the adjacent pairs of values contained in 2 packed
 /// 128-bit vectors of [4 x i32].
 #[inline(always)]
-#[target_feature = "+ssse3"]
+#[target_feature(enable = "ssse3")]
 #[cfg_attr(test, assert_instr(phaddd))]
 pub unsafe fn _mm_hadd_epi32(a: i32x4, b: i32x4) -> i32x4 {
     phaddd128(a, b)
@@ -152,7 +152,7 @@ pub unsafe fn _mm_hadd_epi32(a: i32x4, b: i32x4) -> i32x4 {
 /// Horizontally subtract the adjacent pairs of values contained in 2
 /// packed 128-bit vectors of [8 x i16].
 #[inline(always)]
-#[target_feature = "+ssse3"]
+#[target_feature(enable = "ssse3")]
 #[cfg_attr(test, assert_instr(phsubw))]
 pub unsafe fn _mm_hsub_epi16(a: i16x8, b: i16x8) -> i16x8 {
     phsubw128(a, b)
@@ -163,7 +163,7 @@ pub unsafe fn _mm_hsub_epi16(a: i16x8, b: i16x8) -> i16x8 {
 /// 7FFFh are saturated to 7FFFh. Negative differences less than 8000h are
 /// saturated to 8000h.
 #[inline(always)]
-#[target_feature = "+ssse3"]
+#[target_feature(enable = "ssse3")]
 #[cfg_attr(test, assert_instr(phsubsw))]
 pub unsafe fn _mm_hsubs_epi16(a: i16x8, b: i16x8) -> i16x8 {
     phsubsw128(a, b)
@@ -172,7 +172,7 @@ pub unsafe fn _mm_hsubs_epi16(a: i16x8, b: i16x8) -> i16x8 {
 /// Horizontally subtract the adjacent pairs of values contained in 2
 /// packed 128-bit vectors of [4 x i32].
 #[inline(always)]
-#[target_feature = "+ssse3"]
+#[target_feature(enable = "ssse3")]
 #[cfg_attr(test, assert_instr(phsubd))]
 pub unsafe fn _mm_hsub_epi32(a: i32x4, b: i32x4) -> i32x4 {
     phsubd128(a, b)
@@ -184,7 +184,7 @@ pub unsafe fn _mm_hsub_epi32(a: i32x4, b: i32x4) -> i32x4 {
 /// contiguous products with signed saturation, and writes the 16-bit sums to
 /// the corresponding bits in the destination.
 #[inline(always)]
-#[target_feature = "+ssse3"]
+#[target_feature(enable = "ssse3")]
 #[cfg_attr(test, assert_instr(pmaddubsw))]
 pub unsafe fn _mm_maddubs_epi16(a: u8x16, b: i8x16) -> i16x8 {
     pmaddubsw128(a, b)
@@ -194,7 +194,7 @@ pub unsafe fn _mm_maddubs_epi16(a: u8x16, b: i8x16) -> i16x8 {
 /// product to the 18 most significant bits by right-shifting, round the
 /// truncated value by adding 1, and write bits [16:1] to the destination.
 #[inline(always)]
-#[target_feature = "+ssse3"]
+#[target_feature(enable = "ssse3")]
 #[cfg_attr(test, assert_instr(pmulhrsw))]
 pub unsafe fn _mm_mulhrs_epi16(a: i16x8, b: i16x8) -> i16x8 {
     pmulhrsw128(a, b)
@@ -205,7 +205,7 @@ pub unsafe fn _mm_mulhrs_epi16(a: i16x8, b: i16x8) -> i16x8 {
 /// Elements in result are zeroed out when the corresponding element in `b`
 /// is zero.
 #[inline(always)]
-#[target_feature = "+ssse3"]
+#[target_feature(enable = "ssse3")]
 #[cfg_attr(test, assert_instr(psignb))]
 pub unsafe fn _mm_sign_epi8(a: i8x16, b: i8x16) -> i8x16 {
     psignb128(a, b)
@@ -216,7 +216,7 @@ pub unsafe fn _mm_sign_epi8(a: i8x16, b: i8x16) -> i8x16 {
 /// Elements in result are zeroed out when the corresponding element in `b`
 /// is zero.
 #[inline(always)]
-#[target_feature = "+ssse3"]
+#[target_feature(enable = "ssse3")]
 #[cfg_attr(test, assert_instr(psignw))]
 pub unsafe fn _mm_sign_epi16(a: i16x8, b: i16x8) -> i16x8 {
     psignw128(a, b)
@@ -227,7 +227,7 @@ pub unsafe fn _mm_sign_epi16(a: i16x8, b: i16x8) -> i16x8 {
 /// Element in result are zeroed out when the corresponding element in `b`
 /// is zero.
 #[inline(always)]
-#[target_feature = "+ssse3"]
+#[target_feature(enable = "ssse3")]
 #[cfg_attr(test, assert_instr(psignd))]
 pub unsafe fn _mm_sign_epi32(a: i32x4, b: i32x4) -> i32x4 {
     psignd128(a, b)
