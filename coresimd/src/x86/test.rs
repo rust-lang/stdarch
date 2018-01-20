@@ -2,6 +2,12 @@
 
 use x86::*;
 
+#[target_feature(enable = "mmx")]
+pub unsafe fn assert_eq_m64(a: __m64, b: __m64) {
+    union A { a: __m64, b: u64 }
+    assert_eq!(A { a }.b, A { a: b }.b)
+}
+
 #[target_feature(enable = "sse2")]
 pub unsafe fn assert_eq_m128d(a: __m128d, b: __m128d) {
     if _mm_movemask_pd(_mm_cmpeq_pd(a, b)) != 0b11 {

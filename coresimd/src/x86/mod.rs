@@ -67,7 +67,6 @@ types! {
     /// # if cfg_feature_enabled!("mmx") { unsafe { foo() } }
     /// # }
     /// ```
-    #[derive(PartialEq)]
     pub struct __m64(i64);
 
     /// 128-bit wide integer vector type, x86-specific
