@@ -110,7 +110,6 @@ types! {
     /// # if cfg_feature_enabled!("sse2") { unsafe { foo() } }
     /// # }
     /// ```
-    #[derive(PartialEq)]
     pub struct __m128i(i64, i64);
 
     /// 128-bit wide set of four `f32` types, x86-specific

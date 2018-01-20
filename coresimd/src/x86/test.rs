@@ -8,6 +8,12 @@ pub unsafe fn assert_eq_m64(a: __m64, b: __m64) {
     assert_eq!(A { a }.b, A { a: b }.b)
 }
 
+#[target_feature(enable = "sse")]
+pub unsafe fn assert_eq_m128i(a: __m128i, b: __m128i) {
+    union A { a: __m128i, b: [u64; 2] }
+    assert_eq!(A { a }.b, A { a: b }.b)
+}
+
 #[target_feature(enable = "sse2")]
 pub unsafe fn assert_eq_m128d(a: __m128d, b: __m128d) {
     if _mm_movemask_pd(_mm_cmpeq_pd(a, b)) != 0b11 {

@@ -3057,7 +3057,7 @@ mod tests {
         let a = _mm256_setr_pd(4., 9., 16., 25.);
         let r = _mm256_cvttpd_epi32(a);
         let e = _mm_setr_epi32(4, 9, 16, 25);
-        assert_eq!(r, e);
+        assert_eq_m128i(r, e);
     }
 
     #[simd_test = "avx"]
@@ -3065,7 +3065,7 @@ mod tests {
         let a = _mm256_setr_pd(4., 9., 16., 25.);
         let r = _mm256_cvtpd_epi32(a);
         let e = _mm_setr_epi32(4, 9, 16, 25);
-        assert_eq!(r, e);
+        assert_eq_m128i(r, e);
     }
 
     #[simd_test = "avx"]
@@ -3097,7 +3097,7 @@ mod tests {
         let a = _mm256_setr_epi64x(4, 3, 2, 5);
         let r = _mm256_extractf128_si256(a, 0);
         let e = _mm_setr_epi64x(4, 3);
-        assert_eq!(r, e);
+        assert_eq_m128i(r, e);
     }
 
     #[simd_test = "avx"]
@@ -4069,7 +4069,7 @@ mod tests {
     unsafe fn test_mm256_castsi256_si128() {
         let a = _mm256_setr_epi64x(1, 2, 3, 4);
         let r = _mm256_castsi256_si128(a);
-        assert_eq!(r, _mm_setr_epi64x(1, 2));
+        assert_eq_m128i(r, _mm_setr_epi64x(1, 2));
     }
 
     #[simd_test = "avx"]
@@ -4280,8 +4280,8 @@ mod tests {
             9, 10, 11, 12, 13, 14, 15, 16
         );
 
-        assert_eq!(hi, e_hi);
-        assert_eq!(lo, e_lo);
+        assert_eq_m128i(hi, e_hi);
+        assert_eq_m128i(lo, e_lo);
     }
 
     #[simd_test = "avx"]

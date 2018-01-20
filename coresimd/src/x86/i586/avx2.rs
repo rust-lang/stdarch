@@ -3452,10 +3452,10 @@ mod tests {
         let (a, b) = (_mm_set1_epi32(3), _mm_set1_epi32(9));
         let e = _mm_setr_epi32(9, 3, 3, 3);
         let r = _mm_blend_epi32(a, b, 0x01 as i32);
-        assert_eq!(r, e);
+        assert_eq_m128i(r, e);
 
         let r = _mm_blend_epi32(b, a, 0x0E as i32);
-        assert_eq!(r, e);
+        assert_eq_m128i(r, e);
     }
 
     #[simd_test = "avx2"]
@@ -3498,7 +3498,7 @@ mod tests {
     unsafe fn test_mm_broadcastb_epi8() {
         let a = _mm_insert_epi8(_mm_set1_epi8(0x00), 0x2a, 0);
         let res = _mm_broadcastb_epi8(a);
-        assert_eq!(res, _mm_set1_epi8(0x2a));
+        assert_eq_m128i(res, _mm_set1_epi8(0x2a));
     }
 
     #[simd_test = "avx2"]
@@ -3512,7 +3512,7 @@ mod tests {
     unsafe fn test_mm_broadcastd_epi32() {
         let a = _mm_setr_epi32(0x2a, 0x8000000, 0, 0);
         let res = _mm_broadcastd_epi32(a);
-        assert_eq!(res, _mm_set1_epi32(0x2a));
+        assert_eq_m128i(res, _mm_set1_epi32(0x2a));
     }
 
     #[simd_test = "avx2"]
@@ -3526,7 +3526,7 @@ mod tests {
     unsafe fn test_mm_broadcastq_epi64() {
         let a = _mm_setr_epi64x(0x1ffffffff, 0);
         let res = _mm_broadcastq_epi64(a);
-        assert_eq!(res, _mm_set1_epi64x(0x1ffffffff));
+        assert_eq_m128i(res, _mm_set1_epi64x(0x1ffffffff));
     }
 
     #[simd_test = "avx2"]
@@ -3581,7 +3581,7 @@ mod tests {
     unsafe fn test_mm_broadcastw_epi16() {
         let a = _mm_insert_epi16(_mm_set1_epi16(0x2a), 0x22b, 0);
         let res = _mm_broadcastw_epi16(a);
-        assert_eq!(res, _mm_set1_epi16(0x22b));
+        assert_eq_m128i(res, _mm_set1_epi16(0x22b));
     }
 
     #[simd_test = "avx2"]
@@ -3774,7 +3774,7 @@ mod tests {
         let a = _mm256_setr_epi64x(1, 2, 3, 4);
         let r = _mm256_extracti128_si256(a, 0b01);
         let e = _mm_setr_epi64x(3, 4);
-        assert_eq!(r, e);
+        assert_eq_m128i(r, e);
     }
 
     #[simd_test = "avx2"]
@@ -3870,7 +3870,7 @@ mod tests {
         let mask = _mm_setr_epi32(-1, 0, 0, -1);
         let r = _mm_maskload_epi32(a, mask);
         let e = _mm_setr_epi32(1, 0, 0, 4);
-        assert_eq!(r, e);
+        assert_eq_m128i(r, e);
     }
 
     #[simd_test = "avx2"]
@@ -3890,7 +3890,7 @@ mod tests {
         let mask = _mm_setr_epi64x(0, -1);
         let r = _mm_maskload_epi64(a, mask);
         let e = _mm_setr_epi64x(0, 2);
-        assert_eq!(r, e);
+        assert_eq_m128i(r, e);
     }
 
     #[simd_test = "avx2"]
@@ -4308,7 +4308,7 @@ mod tests {
         let b = _mm_set1_epi32(1);
         let r = _mm_sllv_epi32(a, b);
         let e = _mm_set1_epi32(4);
-        assert_eq!(r, e);
+        assert_eq_m128i(r, e);
     }
 
     #[simd_test = "avx2"]
@@ -4326,7 +4326,7 @@ mod tests {
         let b = _mm_set1_epi64x(1);
         let r = _mm_sllv_epi64(a, b);
         let e = _mm_set1_epi64x(4);
-        assert_eq!(r, e);
+        assert_eq_m128i(r, e);
     }
 
     #[simd_test = "avx2"]
@@ -4376,7 +4376,7 @@ mod tests {
         let count = _mm_set1_epi32(1);
         let r = _mm_srav_epi32(a, count);
         let e = _mm_set1_epi32(2);
-        assert_eq!(r, e);
+        assert_eq_m128i(r, e);
     }
 
     #[simd_test = "avx2"]
@@ -4462,7 +4462,7 @@ mod tests {
         let count = _mm_set1_epi32(1);
         let r = _mm_srlv_epi32(a, count);
         let e = _mm_set1_epi32(1);
-        assert_eq!(r, e);
+        assert_eq_m128i(r, e);
     }
 
     #[simd_test = "avx2"]
@@ -4480,7 +4480,7 @@ mod tests {
         let count = _mm_set1_epi64x(1);
         let r = _mm_srlv_epi64(a, count);
         let e = _mm_set1_epi64x(1);
-        assert_eq!(r, e);
+        assert_eq_m128i(r, e);
     }
 
     #[simd_test = "avx2"]
@@ -4699,7 +4699,7 @@ mod tests {
             _mm_setr_epi32(0, 16, 32, 48),
             4,
         );
-        assert_eq!(r, _mm_setr_epi32(0, 16, 32, 48));
+        assert_eq_m128i(r, _mm_setr_epi32(0, 16, 32, 48));
     }
 
     #[simd_test = "avx2"]
@@ -4716,7 +4716,7 @@ mod tests {
             _mm_setr_epi32(-1, -1, -1, 0),
             4,
         );
-        assert_eq!(r, _mm_setr_epi32(0, 16, 64, 256));
+        assert_eq_m128i(r, _mm_setr_epi32(0, 16, 64, 256));
     }
 
     #[simd_test = "avx2"]
@@ -4835,7 +4835,7 @@ mod tests {
             _mm_setr_epi32(0, 16, 0, 0),
             8,
         );
-        assert_eq!(r, _mm_setr_epi64x(0, 16));
+        assert_eq_m128i(r, _mm_setr_epi64x(0, 16));
     }
 
     #[simd_test = "avx2"]
@@ -4852,7 +4852,7 @@ mod tests {
             _mm_setr_epi64x(-1, 0),
             8,
         );
-        assert_eq!(r, _mm_setr_epi64x(16, 256));
+        assert_eq_m128i(r, _mm_setr_epi64x(16, 256));
     }
 
     #[simd_test = "avx2"]
@@ -4964,7 +4964,7 @@ mod tests {
         }
         // A multiplier of 4 is word-addressing
         let r = _mm_i64gather_epi32(arr.as_ptr(), _mm_setr_epi64x(0, 16), 4);
-        assert_eq!(r, _mm_setr_epi32(0, 16, 0, 0));
+        assert_eq_m128i(r, _mm_setr_epi32(0, 16, 0, 0));
     }
 
     #[simd_test = "avx2"]
@@ -4981,7 +4981,7 @@ mod tests {
             _mm_setr_epi32(-1, 0, -1, 0),
             4,
         );
-        assert_eq!(r, _mm_setr_epi32(0, 256, 0, 0));
+        assert_eq_m128i(r, _mm_setr_epi32(0, 256, 0, 0));
     }
 
     #[simd_test = "avx2"]
@@ -4996,7 +4996,7 @@ mod tests {
             _mm256_setr_epi64x(0, 16, 32, 48),
             4,
         );
-        assert_eq!(r, _mm_setr_epi32(0, 16, 32, 48));
+        assert_eq_m128i(r, _mm_setr_epi32(0, 16, 32, 48));
     }
 
     #[simd_test = "avx2"]
@@ -5013,7 +5013,7 @@ mod tests {
             _mm_setr_epi32(-1, -1, -1, 0),
             4,
         );
-        assert_eq!(r, _mm_setr_epi32(0, 16, 64, 256));
+        assert_eq_m128i(r, _mm_setr_epi32(0, 16, 64, 256));
     }
 
     #[simd_test = "avx2"]
@@ -5092,7 +5092,7 @@ mod tests {
         }
         // A multiplier of 8 is word-addressing for i64s
         let r = _mm_i64gather_epi64(arr.as_ptr(), _mm_setr_epi64x(0, 16), 8);
-        assert_eq!(r, _mm_setr_epi64x(0, 16));
+        assert_eq_m128i(r, _mm_setr_epi64x(0, 16));
     }
 
     #[simd_test = "avx2"]
@@ -5109,7 +5109,7 @@ mod tests {
             _mm_setr_epi64x(-1, 0),
             8,
         );
-        assert_eq!(r, _mm_setr_epi64x(16, 256));
+        assert_eq_m128i(r, _mm_setr_epi64x(16, 256));
     }
 
     #[simd_test = "avx2"]
