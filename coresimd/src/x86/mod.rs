@@ -222,7 +222,6 @@ types! {
     /// # if cfg_feature_enabled!("avx") { unsafe { foo() } }
     /// # }
     /// ```
-    #[derive(PartialEq)]
     pub struct __m256i(i64, i64, i64, i64);
 
     /// 256-bit wide set of eight `f32` types, x86-specific
