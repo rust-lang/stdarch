@@ -4,7 +4,6 @@ use v128::f32x4;
 use v64::*;
 use core::mem;
 use x86::i586;
-use x86::i686::mmx;
 
 #[cfg(test)]
 use stdsimd_test::assert_instr;
@@ -48,7 +47,7 @@ extern "C" {
 /// Compares the packed 16-bit signed integers of `a` and `b` writing the
 /// greatest value into the result.
 #[inline(always)]
-#[target_feature = "+sse"]
+#[target_feature(enable = "sse")]
 #[cfg_attr(test, assert_instr(pmaxsw))]
 pub unsafe fn _mm_max_pi16(a: __m64, b: __m64) -> __m64 {
     pmaxsw(a, b)
@@ -57,7 +56,7 @@ pub unsafe fn _mm_max_pi16(a: __m64, b: __m64) -> __m64 {
 /// Compares the packed 16-bit signed integers of `a` and `b` writing the
 /// greatest value into the result.
 #[inline(always)]
-#[target_feature = "+sse"]
+#[target_feature(enable = "sse")]
 #[cfg_attr(test, assert_instr(pmaxsw))]
 pub unsafe fn _m_pmaxsw(a: __m64, b: __m64) -> __m64 {
     _mm_max_pi16(a, b)
@@ -66,7 +65,7 @@ pub unsafe fn _m_pmaxsw(a: __m64, b: __m64) -> __m64 {
 /// Compares the packed 8-bit signed integers of `a` and `b` writing the
 /// greatest value into the result.
 #[inline(always)]
-#[target_feature = "+sse"]
+#[target_feature(enable = "sse")]
 #[cfg_attr(test, assert_instr(pmaxub))]
 pub unsafe fn _mm_max_pu8(a: __m64, b: __m64) -> __m64 {
     pmaxub(a, b)
@@ -75,7 +74,7 @@ pub unsafe fn _mm_max_pu8(a: __m64, b: __m64) -> __m64 {
 /// Compares the packed 8-bit signed integers of `a` and `b` writing the
 /// greatest value into the result.
 #[inline(always)]
-#[target_feature = "+sse"]
+#[target_feature(enable = "sse")]
 #[cfg_attr(test, assert_instr(pmaxub))]
 pub unsafe fn _m_pmaxub(a: __m64, b: __m64) -> __m64 {
     _mm_max_pu8(a, b)
@@ -84,7 +83,7 @@ pub unsafe fn _m_pmaxub(a: __m64, b: __m64) -> __m64 {
 /// Compares the packed 16-bit signed integers of `a` and `b` writing the
 /// smallest value into the result.
 #[inline(always)]
-#[target_feature = "+sse"]
+#[target_feature(enable = "sse")]
 #[cfg_attr(test, assert_instr(pminsw))]
 pub unsafe fn _mm_min_pi16(a: __m64, b: __m64) -> __m64 {
     pminsw(a, b)
@@ -93,7 +92,7 @@ pub unsafe fn _mm_min_pi16(a: __m64, b: __m64) -> __m64 {
 /// Compares the packed 16-bit signed integers of `a` and `b` writing the
 /// smallest value into the result.
 #[inline(always)]
-#[target_feature = "+sse"]
+#[target_feature(enable = "sse")]
 #[cfg_attr(test, assert_instr(pminsw))]
 pub unsafe fn _m_pminsw(a: __m64, b: __m64) -> __m64 {
     _mm_min_pi16(a, b)
@@ -102,7 +101,7 @@ pub unsafe fn _m_pminsw(a: __m64, b: __m64) -> __m64 {
 /// Compares the packed 8-bit signed integers of `a` and `b` writing the
 /// smallest value into the result.
 #[inline(always)]
-#[target_feature = "+sse"]
+#[target_feature(enable = "sse")]
 #[cfg_attr(test, assert_instr(pminub))]
 pub unsafe fn _mm_min_pu8(a: __m64, b: __m64) -> __m64 {
     pminub(a, b)
@@ -111,7 +110,7 @@ pub unsafe fn _mm_min_pu8(a: __m64, b: __m64) -> __m64 {
 /// Compares the packed 8-bit signed integers of `a` and `b` writing the
 /// smallest value into the result.
 #[inline(always)]
-#[target_feature = "+sse"]
+#[target_feature(enable = "sse")]
 #[cfg_attr(test, assert_instr(pminub))]
 pub unsafe fn _m_pminub(a: __m64, b: __m64) -> __m64 {
     _mm_min_pu8(a, b)
@@ -121,7 +120,7 @@ pub unsafe fn _m_pminub(a: __m64, b: __m64) -> __m64 {
 /// high-order 16 bits of each 32-bit product to the corresponding bits in
 /// the destination.
 #[inline(always)]
-#[target_feature = "+sse"]
+#[target_feature(enable = "sse")]
 #[cfg_attr(test, assert_instr(pmulhuw))]
 pub unsafe fn _mm_mulhi_pu16(a: __m64, b: __m64) -> __m64 {
     pmulhuw(a, b)
@@ -131,7 +130,7 @@ pub unsafe fn _mm_mulhi_pu16(a: __m64, b: __m64) -> __m64 {
 /// high-order 16 bits of each 32-bit product to the corresponding bits in
 /// the destination.
 #[inline(always)]
-#[target_feature = "+sse"]
+#[target_feature(enable = "sse")]
 #[cfg_attr(test, assert_instr(pmulhuw))]
 pub unsafe fn _m_pmulhuw(a: __m64, b: __m64) -> __m64 {
     _mm_mulhi_pu16(a, b)
@@ -141,7 +140,7 @@ pub unsafe fn _m_pmulhuw(a: __m64, b: __m64) -> __m64 {
 /// values and writes the averages to the corresponding bits in the
 /// destination.
 #[inline(always)]
-#[target_feature = "+sse"]
+#[target_feature(enable = "sse")]
 #[cfg_attr(test, assert_instr(pavgb))]
 pub unsafe fn _mm_avg_pu8(a: __m64, b: __m64) -> __m64 {
     pavgb(a, b)
@@ -151,7 +150,7 @@ pub unsafe fn _mm_avg_pu8(a: __m64, b: __m64) -> __m64 {
 /// values and writes the averages to the corresponding bits in the
 /// destination.
 #[inline(always)]
-#[target_feature = "+sse"]
+#[target_feature(enable = "sse")]
 #[cfg_attr(test, assert_instr(pavgb))]
 pub unsafe fn _m_pavgb(a: __m64, b: __m64) -> __m64 {
     _mm_avg_pu8(a, b)
@@ -161,7 +160,7 @@ pub unsafe fn _m_pavgb(a: __m64, b: __m64) -> __m64 {
 /// values and writes the averages to the corresponding bits in the
 /// destination.
 #[inline(always)]
-#[target_feature = "+sse"]
+#[target_feature(enable = "sse")]
 #[cfg_attr(test, assert_instr(pavgw))]
 pub unsafe fn _mm_avg_pu16(a: __m64, b: __m64) -> __m64 {
     pavgw(a, b)
@@ -171,7 +170,7 @@ pub unsafe fn _mm_avg_pu16(a: __m64, b: __m64) -> __m64 {
 /// values and writes the averages to the corresponding bits in the
 /// destination.
 #[inline(always)]
-#[target_feature = "+sse"]
+#[target_feature(enable = "sse")]
 #[cfg_attr(test, assert_instr(pavgw))]
 pub unsafe fn _m_pavgw(a: __m64, b: __m64) -> __m64 {
     _mm_avg_pu16(a, b)
@@ -182,7 +181,7 @@ pub unsafe fn _m_pavgw(a: __m64, b: __m64) -> __m64 {
 /// difference. Then sum of the 8 absolute differences is written to the
 /// bits [15:0] of the destination; the remaining bits [63:16] are cleared.
 #[inline(always)]
-#[target_feature = "+sse"]
+#[target_feature(enable = "sse")]
 #[cfg_attr(test, assert_instr(psadbw))]
 pub unsafe fn _mm_sad_pu8(a: __m64, b: __m64) -> __m64 {
     psadbw(a, b)
@@ -193,7 +192,7 @@ pub unsafe fn _mm_sad_pu8(a: __m64, b: __m64) -> __m64 {
 /// difference. Then sum of the 8 absolute differences is written to the
 /// bits [15:0] of the destination; the remaining bits [63:16] are cleared.
 #[inline(always)]
-#[target_feature = "+sse"]
+#[target_feature(enable = "sse")]
 #[cfg_attr(test, assert_instr(psadbw))]
 pub unsafe fn _m_psadbw(a: __m64, b: __m64) -> __m64 {
     _mm_sad_pu8(a, b)
@@ -204,7 +203,7 @@ pub unsafe fn _m_psadbw(a: __m64, b: __m64) -> __m64 {
 /// destination. The remaining higher order elements of the destination are
 /// copied from the corresponding elements in the first operand.
 #[inline(always)]
-#[target_feature = "+sse"]
+#[target_feature(enable = "sse")]
 #[cfg_attr(test, assert_instr(cvtpi2ps))]
 pub unsafe fn _mm_cvtpi32_ps(a: f32x4, b: i32x2) -> f32x4 {
     cvtpi2ps(a, mem::transmute(b))
@@ -215,66 +214,16 @@ pub unsafe fn _mm_cvtpi32_ps(a: f32x4, b: i32x2) -> f32x4 {
 /// destination. The remaining higher order elements of the destination are
 /// copied from the corresponding elements in the first operand.
 #[inline(always)]
-#[target_feature = "+sse"]
+#[target_feature(enable = "sse")]
 #[cfg_attr(test, assert_instr(cvtpi2ps))]
 pub unsafe fn _mm_cvt_pi2ps(a: f32x4, b: i32x2) -> f32x4 {
     _mm_cvtpi32_ps(a, b)
 }
 
-/// Converts the lower 4 8-bit values of `a` into a 128-bit vector of 4 `f32`s.
-#[inline(always)]
-#[target_feature = "+sse"]
-#[cfg_attr(test, assert_instr(cvtpi2ps))]
-pub unsafe fn _mm_cvtpi8_ps(a: __m64) -> f32x4 {
-    let b = mmx::_mm_setzero_si64();
-    let b = mmx::_mm_cmpgt_pi8(b, a);
-    let b = mmx::_mm_unpacklo_pi8(a, b);
-    _mm_cvtpi16_ps(b)
-}
-
-/// Converts the lower 4 8-bit values of `a` into a 128-bit vector of 4 `f32`s.
-#[inline(always)]
-#[target_feature = "+sse"]
-#[cfg_attr(test, assert_instr(cvtpi2ps))]
-pub unsafe fn _mm_cvtpu8_ps(a: __m64) -> f32x4 {
-    let b = mmx::_mm_setzero_si64();
-    let b = mmx::_mm_unpacklo_pi8(a, b);
-    _mm_cvtpi16_ps(b)
-}
-
-/// Converts a 64-bit vector of `i16`s into a 128-bit vector of 4 `f32`s.
-#[inline(always)]
-#[target_feature = "+sse"]
-#[cfg_attr(test, assert_instr(cvtpi2ps))]
-pub unsafe fn _mm_cvtpi16_ps(a: __m64) -> f32x4 {
-    let b = mmx::_mm_setzero_si64();
-    let b = mmx::_mm_cmpgt_pi16(b, a);
-    let c = mmx::_mm_unpackhi_pi16(a, b);
-    let r = i586::_mm_setzero_ps();
-    let r = cvtpi2ps(r, c);
-    let r = i586::_mm_movelh_ps(r, r);
-    let c = mmx::_mm_unpacklo_pi16(a, b);
-    cvtpi2ps(r, c)
-}
-
-/// Converts a 64-bit vector of `i16`s into a 128-bit vector of 4 `f32`s.
-#[inline(always)]
-#[target_feature = "+sse"]
-#[cfg_attr(test, assert_instr(cvtpi2ps))]
-pub unsafe fn _mm_cvtpu16_ps(a: __m64) -> f32x4 {
-    let b = mmx::_mm_setzero_si64();
-    let c = mmx::_mm_unpackhi_pi16(a, b);
-    let r = i586::_mm_setzero_ps();
-    let r = cvtpi2ps(r, c);
-    let r = i586::_mm_movelh_ps(r, r);
-    let c = mmx::_mm_unpacklo_pi16(a, b);
-    cvtpi2ps(r, c)
-}
-
 /// Converts the two 32-bit signed integer values from each 64-bit vector
 /// operand of [2 x i32] into a 128-bit vector of [4 x float].
 #[inline(always)]
-#[target_feature = "+sse"]
+#[target_feature(enable = "sse")]
 #[cfg_attr(test, assert_instr(cvtpi2ps))]
 pub unsafe fn _mm_cvtpi32x2_ps(a: i32x2, b: i32x2) -> f32x4 {
     let c = i586::_mm_setzero_ps();
@@ -291,7 +240,7 @@ pub unsafe fn _mm_cvtpi32x2_ps(a: i32x2, b: i32x2) -> f32x4 {
 /// To minimize caching, the data is flagged as non-temporal
 /// (unlikely to be used again soon).
 #[inline(always)]
-#[target_feature = "+sse"]
+#[target_feature(enable = "sse")]
 #[cfg_attr(test, assert_instr(maskmovq))]
 pub unsafe fn _mm_maskmove_si64(a: __m64, mask: __m64, mem_addr: *mut i8) {
     maskmovq(a, mask, mem_addr)
@@ -305,7 +254,7 @@ pub unsafe fn _mm_maskmove_si64(a: __m64, mask: __m64, mem_addr: *mut i8) {
 /// To minimize caching, the data is flagged as non-temporal
 /// (unlikely to be used again soon).
 #[inline(always)]
-#[target_feature = "+sse"]
+#[target_feature(enable = "sse")]
 #[cfg_attr(test, assert_instr(maskmovq))]
 pub unsafe fn _m_maskmovq(a: __m64, mask: __m64, mem_addr: *mut i8) {
     _mm_maskmove_si64(a, mask, mem_addr)
@@ -314,7 +263,7 @@ pub unsafe fn _m_maskmovq(a: __m64, mask: __m64, mem_addr: *mut i8) {
 /// Extracts 16-bit element from a 64-bit vector of [4 x i16] and
 /// returns it, as specified by the immediate integer operand.
 #[inline(always)]
-#[target_feature = "+sse"]
+#[target_feature(enable = "sse")]
 #[cfg_attr(test, assert_instr(pextrw, imm2 = 0))]
 pub unsafe fn _mm_extract_pi16(a: i16x4, imm2: i32) -> i16 {
     macro_rules! call {
@@ -326,7 +275,7 @@ pub unsafe fn _mm_extract_pi16(a: i16x4, imm2: i32) -> i16 {
 /// Extracts 16-bit element from a 64-bit vector of [4 x i16] and
 /// returns it, as specified by the immediate integer operand.
 #[inline(always)]
-#[target_feature = "+sse"]
+#[target_feature(enable = "sse")]
 #[cfg_attr(test, assert_instr(pextrw, imm2 = 0))]
 pub unsafe fn _m_pextrw(a: i16x4, imm2: i32) -> i16 {
     _mm_extract_pi16(a, imm2)
@@ -336,7 +285,7 @@ pub unsafe fn _m_pextrw(a: i16x4, imm2: i32) -> i16 {
 /// and inserts the lower 16-bits of an integer operand at the 16-bit offset
 /// specified by the immediate operand `n`.
 #[inline(always)]
-#[target_feature = "+sse"]
+#[target_feature(enable = "sse")]
 #[cfg_attr(test, assert_instr(pinsrw, imm2 = 0))]
 pub unsafe fn _mm_insert_pi16(a: __m64, d: i32, imm2: i32) -> __m64 {
     macro_rules! call {
@@ -349,7 +298,7 @@ pub unsafe fn _mm_insert_pi16(a: __m64, d: i32, imm2: i32) -> __m64 {
 /// and inserts the lower 16-bits of an integer operand at the 16-bit offset
 /// specified by the immediate operand `n`.
 #[inline(always)]
-#[target_feature = "+sse"]
+#[target_feature(enable = "sse")]
 #[cfg_attr(test, assert_instr(pinsrw, imm2 = 0))]
 pub unsafe fn _m_pinsrw(a: __m64, d: i32, imm2: i32) -> __m64 {
     _mm_insert_pi16(a, d, imm2)
@@ -359,7 +308,7 @@ pub unsafe fn _m_pinsrw(a: __m64, d: i32, imm2: i32) -> __m64 {
 /// integer vector to create a 16-bit mask value. Zero-extends the value to
 /// 32-bit integer and writes it to the destination.
 #[inline(always)]
-#[target_feature = "+sse"]
+#[target_feature(enable = "sse")]
 #[cfg_attr(test, assert_instr(pmovmskb))]
 pub unsafe fn _mm_movemask_pi8(a: i16x4) -> i32 {
     pmovmskb(mem::transmute(a))
@@ -369,7 +318,7 @@ pub unsafe fn _mm_movemask_pi8(a: i16x4) -> i32 {
 /// integer vector to create a 16-bit mask value. Zero-extends the value to
 /// 32-bit integer and writes it to the destination.
 #[inline(always)]
-#[target_feature = "+sse"]
+#[target_feature(enable = "sse")]
 #[cfg_attr(test, assert_instr(pmovmskb))]
 pub unsafe fn _m_pmovmskb(a: i16x4) -> i32 {
     _mm_movemask_pi8(a)
@@ -378,7 +327,7 @@ pub unsafe fn _m_pmovmskb(a: i16x4) -> i32 {
 /// Shuffles the 4 16-bit integers from a 64-bit integer vector to the
 /// destination, as specified by the immediate value operand.
 #[inline(always)]
-#[target_feature = "+sse"]
+#[target_feature(enable = "sse")]
 #[cfg_attr(test, assert_instr(pshufw, imm8 = 0))]
 pub unsafe fn _mm_shuffle_pi16(a: __m64, imm8: i32) -> __m64 {
     macro_rules! call {
@@ -390,7 +339,7 @@ pub unsafe fn _mm_shuffle_pi16(a: __m64, imm8: i32) -> __m64 {
 /// Shuffles the 4 16-bit integers from a 64-bit integer vector to the
 /// destination, as specified by the immediate value operand.
 #[inline(always)]
-#[target_feature = "+sse"]
+#[target_feature(enable = "sse")]
 #[cfg_attr(test, assert_instr(pshufw, imm8 = 0))]
 pub unsafe fn _m_pshufw(a: __m64, imm8: i32) -> __m64 {
     _mm_shuffle_pi16(a, imm8)
@@ -399,7 +348,7 @@ pub unsafe fn _m_pshufw(a: __m64, imm8: i32) -> __m64 {
 /// Convert the two lower packed single-precision (32-bit) floating-point
 /// elements in `a` to packed 32-bit integers with truncation.
 #[inline(always)]
-#[target_feature = "+sse"]
+#[target_feature(enable = "sse")]
 #[cfg_attr(test, assert_instr(cvttps2pi))]
 pub unsafe fn _mm_cvttps_pi32(a: f32x4) -> i32x2 {
     mem::transmute(cvttps2pi(a))
@@ -408,7 +357,7 @@ pub unsafe fn _mm_cvttps_pi32(a: f32x4) -> i32x2 {
 /// Convert the two lower packed single-precision (32-bit) floating-point
 /// elements in `a` to packed 32-bit integers with truncation.
 #[inline(always)]
-#[target_feature = "+sse"]
+#[target_feature(enable = "sse")]
 #[cfg_attr(test, assert_instr(cvttps2pi))]
 pub unsafe fn _mm_cvtt_ps2pi(a: f32x4) -> i32x2 {
     _mm_cvttps_pi32(a)
@@ -417,7 +366,7 @@ pub unsafe fn _mm_cvtt_ps2pi(a: f32x4) -> i32x2 {
 /// Convert the two lower packed single-precision (32-bit) floating-point
 /// elements in `a` to packed 32-bit integers.
 #[inline(always)]
-#[target_feature = "+sse"]
+#[target_feature(enable = "sse")]
 #[cfg_attr(test, assert_instr(cvtps2pi))]
 pub unsafe fn _mm_cvtps_pi32(a: f32x4) -> __m64 {
     cvtps2pi(a)
@@ -426,34 +375,10 @@ pub unsafe fn _mm_cvtps_pi32(a: f32x4) -> __m64 {
 /// Convert the two lower packed single-precision (32-bit) floating-point
 /// elements in `a` to packed 32-bit integers.
 #[inline(always)]
-#[target_feature = "+sse"]
+#[target_feature(enable = "sse")]
 #[cfg_attr(test, assert_instr(cvtps2pi))]
 pub unsafe fn _mm_cvt_ps2pi(a: f32x4) -> __m64 {
     _mm_cvtps_pi32(a)
-}
-
-/// Convert packed single-precision (32-bit) floating-point elements in `a` to
-/// packed 16-bit integers.
-#[inline(always)]
-#[target_feature = "+sse"]
-#[cfg_attr(test, assert_instr(cvtps2pi))]
-pub unsafe fn _mm_cvtps_pi16(a: f32x4) -> __m64 {
-    let b = _mm_cvtps_pi32(a);
-    let a = i586::_mm_movehl_ps(a, a);
-    let c = _mm_cvtps_pi32(a);
-    mmx::_mm_packs_pi32(b, c)
-}
-
-/// Convert packed single-precision (32-bit) floating-point elements in `a` to
-/// packed 8-bit integers, and returns theem in the lower 4 elements of the
-/// result.
-#[inline(always)]
-#[target_feature = "+sse"]
-#[cfg_attr(test, assert_instr(cvtps2pi))]
-pub unsafe fn _mm_cvtps_pi8(a: f32x4) -> __m64 {
-    let b = _mm_cvtps_pi16(a);
-    let c = mmx::_mm_setzero_si64();
-    mmx::_mm_packs_pi16(b, c)
 }
 
 #[cfg(test)]
@@ -563,38 +488,6 @@ mod tests {
     }
 
     #[simd_test = "sse"]
-    unsafe fn _mm_cvtpi16_ps() {
-        let a = i16x4::new(1, 2, 3, 4);
-        let expected = f32x4::new(1., 2., 3., 4.);
-        let r = sse::_mm_cvtpi16_ps(a.into());
-        assert_eq!(r, expected);
-    }
-
-    #[simd_test = "sse"]
-    unsafe fn _mm_cvtpu16_ps() {
-        let a = u16x4::new(1, 2, 3, 4);
-        let expected = f32x4::new(1., 2., 3., 4.);
-        let r = sse::_mm_cvtpu16_ps(a.into());
-        assert_eq!(r, expected);
-    }
-
-    #[simd_test = "sse"]
-    unsafe fn _mm_cvtpi8_ps() {
-        let a = i8x8::new(1, 2, 3, 4, 5, 6, 7, 8);
-        let expected = f32x4::new(1., 2., 3., 4.);
-        let r = sse::_mm_cvtpi8_ps(a.into());
-        assert_eq!(r, expected);
-    }
-
-    #[simd_test = "sse"]
-    unsafe fn _mm_cvtpu8_ps() {
-        let a = u8x8::new(1, 2, 3, 4, 5, 6, 7, 8);
-        let expected = f32x4::new(1., 2., 3., 4.);
-        let r = sse::_mm_cvtpu8_ps(a.into());
-        assert_eq!(r, expected);
-    }
-
-    #[simd_test = "sse"]
     unsafe fn _mm_cvtpi32x2_ps() {
         let a = i32x2::new(1, 2);
         let b = i32x2::new(3, 4);
@@ -683,19 +576,5 @@ mod tests {
 
         assert_eq!(r, sse::_mm_cvttps_pi32(a));
         assert_eq!(r, sse::_mm_cvtt_ps2pi(a));
-    }
-
-    #[simd_test = "sse"]
-    unsafe fn _mm_cvtps_pi16() {
-        let a = f32x4::new(7.0, 2.0, 3.0, 4.0);
-        let r = i16x4::new(7, 2, 3, 4);
-        assert_eq!(r, i16x4::from(sse::_mm_cvtps_pi16(a)));
-    }
-
-    #[simd_test = "sse"]
-    unsafe fn _mm_cvtps_pi8() {
-        let a = f32x4::new(7.0, 2.0, 3.0, 4.0);
-        let r = i8x8::new(7, 2, 3, 4, 0, 0, 0, 0);
-        assert_eq!(r, i8x8::from(sse::_mm_cvtps_pi8(a)));
     }
 }
