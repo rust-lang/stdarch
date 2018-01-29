@@ -23,6 +23,9 @@ pub use self::xsave::*;
 mod abm;
 pub use self::abm::*;
 
+mod aes;
+pub use self::aes::*;
+
 mod avx;
 pub use self::avx::*;
 
