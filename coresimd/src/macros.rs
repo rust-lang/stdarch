@@ -25,17 +25,17 @@ macro_rules! define_impl {
         $($elname:ident),+
     ) => {
         impl $name {
-            #[inline(always)]
+            #[inline]
             pub const fn new($($elname: $elemty),*) -> $name {
                 $name($($elname),*)
             }
 
-            #[inline(always)]
+            #[inline]
             pub fn len() -> i32 {
                 $nelems
             }
 
-            #[inline(always)]
+            #[inline]
             pub const fn splat(value: $elemty) -> $name {
                 $name($({
                     #[allow(non_camel_case_types, dead_code)]
@@ -44,24 +44,24 @@ macro_rules! define_impl {
                 }),*)
             }
 
-            #[inline(always)]
+            #[inline]
             pub fn extract(self, idx: u32) -> $elemty {
                 assert!(idx < $nelems);
                 unsafe { self.extract_unchecked(idx) }
             }
 
-            #[inline(always)]
+            #[inline]
             pub unsafe fn extract_unchecked(self, idx: u32) -> $elemty {
                 simd_extract(self, idx)
             }
 
-            #[inline(always)]
+            #[inline]
             pub fn replace(self, idx: u32, val: $elemty) -> $name {
                 assert!(idx < $nelems);
                 unsafe { self.replace_unchecked(idx, val) }
             }
 
-            #[inline(always)]
+            #[inline]
             pub unsafe fn replace_unchecked(
                 self,
                 idx: u32,
@@ -70,13 +70,13 @@ macro_rules! define_impl {
                 simd_insert(self, idx, val)
             }
 
-            #[inline(always)]
+            #[inline]
             pub fn store(self, slice: &mut [$elemty], offset: usize) {
                 assert!(slice[offset..].len() >= $nelems);
                 unsafe { self.store_unchecked(slice, offset) }
             }
 
-            #[inline(always)]
+            #[inline]
             pub unsafe fn store_unchecked(
                 self,
                 slice: &mut [$elemty],
@@ -91,13 +91,13 @@ macro_rules! define_impl {
                     size_of::<$name>());
             }
 
-            #[inline(always)]
+            #[inline]
             pub fn load(slice: &[$elemty], offset: usize) -> $name {
                 assert!(slice[offset..].len() >= $nelems);
                 unsafe { $name::load_unchecked(slice, offset) }
             }
 
-            #[inline(always)]
+            #[inline]
             pub unsafe fn load_unchecked(
                 slice: &[$elemty],
                 offset: usize,
@@ -113,32 +113,32 @@ macro_rules! define_impl {
                 x
             }
 
-            #[inline(always)]
+            #[inline]
             pub fn eq(self, other: $name) -> $boolname {
                 unsafe { simd_eq(self, other) }
             }
 
-            #[inline(always)]
+            #[inline]
             pub fn ne(self, other: $name) -> $boolname {
                 unsafe { simd_ne(self, other) }
             }
 
-            #[inline(always)]
+            #[inline]
             pub fn lt(self, other: $name) -> $boolname {
                 unsafe { simd_lt(self, other) }
             }
 
-            #[inline(always)]
+            #[inline]
             pub fn le(self, other: $name) -> $boolname {
                 unsafe { simd_le(self, other) }
             }
 
-            #[inline(always)]
+            #[inline]
             pub fn gt(self, other: $name) -> $boolname {
                 unsafe { simd_gt(self, other) }
             }
 
-            #[inline(always)]
+            #[inline]
             pub fn ge(self, other: $name) -> $boolname {
                 unsafe { simd_ge(self, other) }
             }
@@ -150,7 +150,7 @@ macro_rules! define_from {
     ($to:ident, $($from:ident),+) => {
         $(
             impl From<$from> for $to {
-                #[inline(always)]
+                #[inline]
                 fn from(f: $from) -> $to {
                     unsafe { ::core::mem::transmute(f) }
                 }
@@ -164,7 +164,7 @@ macro_rules! define_common_ops {
         $(
             impl ::core::ops::Add for $ty {
                 type Output = Self;
-                #[inline(always)]
+                #[inline]
                 fn add(self, other: Self) -> Self {
                     unsafe { simd_add(self, other) }
                 }
@@ -172,7 +172,7 @@ macro_rules! define_common_ops {
 
             impl ::core::ops::Sub for $ty {
                 type Output = Self;
-                #[inline(always)]
+                #[inline]
                 fn sub(self, other: Self) -> Self {
                     unsafe { simd_sub(self, other) }
                 }
@@ -180,7 +180,7 @@ macro_rules! define_common_ops {
 
             impl ::core::ops::Mul for $ty {
                 type Output = Self;
-                #[inline(always)]
+                #[inline]
                 fn mul(self, other: Self) -> Self {
                     unsafe { simd_mul(self, other) }
                 }
@@ -188,7 +188,7 @@ macro_rules! define_common_ops {
 
             impl ::core::ops::Div for $ty {
                 type Output = Self;
-                #[inline(always)]
+                #[inline]
                 fn div(self, other: Self) -> Self {
                     unsafe { simd_div(self, other) }
                 }
@@ -196,42 +196,42 @@ macro_rules! define_common_ops {
 
             impl ::core::ops::Rem for $ty {
                 type Output = Self;
-                #[inline(always)]
+                #[inline]
                 fn rem(self, other: Self) -> Self {
                     unsafe { simd_rem(self, other) }
                 }
             }
 
             impl ::core::ops::AddAssign for $ty {
-                #[inline(always)]
+                #[inline]
                 fn add_assign(&mut self, other: Self) {
                     *self = *self + other;
                 }
             }
 
             impl ::core::ops::SubAssign for $ty {
-                #[inline(always)]
+                #[inline]
                 fn sub_assign(&mut self, other: Self) {
                     *self = *self - other;
                 }
             }
 
             impl ::core::ops::MulAssign for $ty {
-                #[inline(always)]
+                #[inline]
                 fn mul_assign(&mut self, other: Self) {
                     *self = *self * other;
                 }
             }
 
             impl ::core::ops::DivAssign for $ty {
-                #[inline(always)]
+                #[inline]
                 fn div_assign(&mut self, other: Self) {
                     *self = *self / other;
                 }
             }
 
             impl ::core::ops::RemAssign for $ty {
-                #[inline(always)]
+                #[inline]
                 fn rem_assign(&mut self, other: Self) {
                     *self = *self % other;
                 }
@@ -246,27 +246,27 @@ macro_rules! define_shifts {
         $(
             impl ::core::ops::Shl<$by> for $ty {
                 type Output = Self;
-                #[inline(always)]
+                #[inline]
                 fn shl(self, other: $by) -> Self {
                     unsafe { simd_shl(self, $ty::splat(other as $elem)) }
                 }
             }
             impl ::core::ops::Shr<$by> for $ty {
                 type Output = Self;
-                #[inline(always)]
+                #[inline]
                 fn shr(self, other: $by) -> Self {
                     unsafe { simd_shr(self, $ty::splat(other as $elem)) }
                 }
             }
 
             impl ::core::ops::ShlAssign<$by> for $ty {
-                #[inline(always)]
+                #[inline]
                 fn shl_assign(&mut self, other: $by) {
                     *self = *self << other;
                 }
             }
             impl ::core::ops::ShrAssign<$by> for $ty {
-                #[inline(always)]
+                #[inline]
                 fn shr_assign(&mut self, other: $by) {
                     *self = *self >> other;
                 }
@@ -281,7 +281,7 @@ macro_rules! define_float_ops {
         $(
             impl ::core::ops::Neg for $ty {
                 type Output = Self;
-                #[inline(always)]
+                #[inline]
                 fn neg(self) -> Self {
                     Self::splat(-1.0) * self
                 }
@@ -295,7 +295,7 @@ macro_rules! define_signed_integer_ops {
         $(
             impl ::core::ops::Neg for $ty {
                 type Output = Self;
-                #[inline(always)]
+                #[inline]
                 fn neg(self) -> Self {
                     Self::splat(-1) * self
                 }
@@ -309,7 +309,7 @@ macro_rules! define_integer_ops {
         $(
             impl ::core::ops::Not for $ty {
                 type Output = Self;
-                #[inline(always)]
+                #[inline]
                 fn not(self) -> Self {
                     $ty::splat(!0) ^ self
                 }
@@ -317,39 +317,39 @@ macro_rules! define_integer_ops {
 
             impl ::core::ops::BitAnd for $ty {
                 type Output = Self;
-                #[inline(always)]
+                #[inline]
                 fn bitand(self, other: Self) -> Self {
                     unsafe { simd_and(self, other) }
                 }
             }
             impl ::core::ops::BitOr for $ty {
                 type Output = Self;
-                #[inline(always)]
+                #[inline]
                 fn bitor(self, other: Self) -> Self {
                     unsafe { simd_or(self, other) }
                 }
             }
             impl ::core::ops::BitXor for $ty {
                 type Output = Self;
-                #[inline(always)]
+                #[inline]
                 fn bitxor(self, other: Self) -> Self {
                     unsafe { simd_xor(self, other) }
                 }
             }
             impl ::core::ops::BitAndAssign for $ty {
-                #[inline(always)]
+                #[inline]
                 fn bitand_assign(&mut self, other: Self) {
                     *self = *self & other;
                 }
             }
             impl ::core::ops::BitOrAssign for $ty {
-                #[inline(always)]
+                #[inline]
                 fn bitor_assign(&mut self, other: Self) {
                     *self = *self | other;
                 }
             }
             impl ::core::ops::BitXorAssign for $ty {
-                #[inline(always)]
+                #[inline]
                 fn bitxor_assign(&mut self, other: Self) {
                     *self = *self ^ other;
                 }
@@ -383,7 +383,7 @@ macro_rules! define_casts {
     ($(($fromty:ident, $toty:ident, $cast:ident)),+) => {
         $(
             impl $fromty {
-                #[inline(always)]
+                #[inline]
                 pub fn $cast(self) -> ::simd::$toty {
                     unsafe { simd_cast(self) }
                 }
