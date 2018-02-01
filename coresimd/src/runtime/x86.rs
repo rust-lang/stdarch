@@ -29,6 +29,9 @@ use super::bit;
 #[macro_export]
 #[doc(hidden)]
 macro_rules! __unstable_detect_feature {
+    ("aes", $unstable_detect_feature:path) => {
+        $unstable_detect_feature(
+            $crate::__vendor_runtime::__Feature::aes{})  };
     ("mmx", $unstable_detect_feature:path) => {
         $unstable_detect_feature(
             $crate::__vendor_runtime::__Feature::mmx{})  };
@@ -168,6 +171,8 @@ macro_rules! __unstable_detect_feature {
 #[allow(non_camel_case_types)]
 #[repr(u8)]
 pub enum __Feature {
+    /// AES (Advanced Encryption Standard New Instructions AES-NI)
+    aes,
     /// MMX
     mmx,
     /// SSE (Streaming SIMD Extensions)
@@ -339,6 +344,7 @@ pub fn detect_features() -> usize {
         enable(proc_info_ecx, 19, __Feature::sse4_1);
         enable(proc_info_ecx, 20, __Feature::sse4_2);
         enable(proc_info_ecx, 23, __Feature::popcnt);
+        enable(proc_info_ecx, 25, __Feature::aes);
         enable(proc_info_edx, 24, __Feature::fxsr);
         enable(proc_info_edx, 23, __Feature::mmx);
         enable(proc_info_edx, 25, __Feature::sse);
@@ -449,6 +455,7 @@ mod tests {
 
     #[test]
     fn dump() {
+        println!("aes: {:?}", cfg_feature_enabled!("aes"));
         println!("sse: {:?}", cfg_feature_enabled!("sse"));
         println!("sse2: {:?}", cfg_feature_enabled!("sse2"));
         println!("sse3: {:?}", cfg_feature_enabled!("sse3"));
@@ -488,6 +495,7 @@ mod tests {
     #[test]
     fn compare_with_cupid() {
         let information = cupid::master().unwrap();
+        assert_eq!(cfg_feature_enabled!("aes"), information.aesni());
         assert_eq!(cfg_feature_enabled!("sse"), information.sse());
         assert_eq!(cfg_feature_enabled!("sse2"), information.sse2());
         assert_eq!(cfg_feature_enabled!("sse3"), information.sse3());
