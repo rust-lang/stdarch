@@ -24,7 +24,7 @@ pub unsafe fn _mm_add_si64(a: __m64, b: __m64) -> __m64 {
 #[target_feature(enable = "sse2,mmx")]
 #[cfg_attr(test, assert_instr(pmuludq))]
 pub unsafe fn _mm_mul_su32(a: __m64, b: __m64) -> __m64 {
-    pmuludq(mem::transmute(a), mem::transmute(b))
+    pmuludq(a, b)
 }
 
 /// Subtracts signed or unsigned 64-bit integer values and writes the

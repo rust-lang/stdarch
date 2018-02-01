@@ -106,7 +106,7 @@ unsafe fn hex_encode_avx2<'a>(
     }
 
     let i = i as usize;
-    drop(hex_encode_sse41(src, &mut dst[i * 2..]));
+    let _ = hex_encode_sse41(src, &mut dst[i * 2..]);
 
     Ok(str::from_utf8_unchecked(&dst[..src.len() * 2 + i * 2]))
 }
@@ -154,7 +154,7 @@ unsafe fn hex_encode_sse41<'a>(
     }
 
     let i = i as usize;
-    drop(hex_encode_fallback(src, &mut dst[i * 2..]));
+    let _ = hex_encode_fallback(src, &mut dst[i * 2..]);
 
     Ok(str::from_utf8_unchecked(&dst[..src.len() * 2 + i * 2]))
 }

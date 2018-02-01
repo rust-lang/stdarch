@@ -279,7 +279,7 @@ pub fn assert(fnptr: usize, fnname: &str, expected: &str) {
     let function = &functions[0];
 
     let mut instrs = &function.instrs[..];
-    while instrs.last().map(|s| s.parts == ["nop"]).unwrap_or(false) {
+    while instrs.last().map_or(false, |s| s.parts == ["nop"]) {
         instrs = &instrs[..instrs.len() - 1];
     }
 
