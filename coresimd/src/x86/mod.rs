@@ -350,7 +350,9 @@ trait m128iExt: Sized {
 
 impl m128iExt for __m128i {
     #[inline]
-    fn as_m128i(self) -> __m128i { self }
+    fn as_m128i(self) -> Self {
+        self
+    }
 }
 
 #[doc(hidden)]
@@ -401,7 +403,9 @@ trait m256iExt: Sized {
 
 impl m256iExt for __m256i {
     #[inline]
-    fn as_m256i(self) -> __m256i { self }
+    fn as_m256i(self) -> Self {
+        self
+    }
 }
 
 mod i386;

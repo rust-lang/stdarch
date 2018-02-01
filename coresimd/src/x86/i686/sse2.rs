@@ -176,8 +176,7 @@ mod tests {
 
     #[simd_test = "sse2,mmx"]
     unsafe fn test_mm_set_epi64() {
-        let r =
-            _mm_set_epi64(mem::transmute(1i64), mem::transmute(2i64));
+        let r = _mm_set_epi64(mem::transmute(1i64), mem::transmute(2i64));
         assert_eq_m128i(r, _mm_setr_epi64x(2, 1));
     }
 
@@ -189,8 +188,7 @@ mod tests {
 
     #[simd_test = "sse2,mmx"]
     unsafe fn test_mm_setr_epi64() {
-        let r =
-            _mm_setr_epi64(mem::transmute(1i64), mem::transmute(2i64));
+        let r = _mm_setr_epi64(mem::transmute(1i64), mem::transmute(2i64));
         assert_eq_m128i(r, _mm_setr_epi64x(1, 2));
     }
 
@@ -202,16 +200,7 @@ mod tests {
 
     #[simd_test = "sse2,mmx"]
     unsafe fn test_mm_movpi64_epi64() {
-        let r = _mm_movpi64_epi64(_mm_setr_pi8(
-            5,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-        ));
+        let r = _mm_movpi64_epi64(_mm_setr_pi8(5, 0, 0, 0, 0, 0, 0, 0));
         assert_eq_m128i(r, _mm_setr_epi64x(5, 0));
     }
 

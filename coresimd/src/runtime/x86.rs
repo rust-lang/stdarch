@@ -237,7 +237,8 @@ pub enum __Feature {
     xsaves,
     /// XSAVEC (Save Processor Extended States Compacted)
     xsavec,
-    #[doc(hidden)] __NonExhaustive,
+    #[doc(hidden)]
+    __NonExhaustive,
 }
 
 /// Run-time feature detection on x86 works by using the CPUID instruction.

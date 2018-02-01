@@ -534,8 +534,16 @@ mod tests {
 
     #[simd_test = "sse,mmx"]
     unsafe fn test_mm_sad_pu8() {
-        let a = _mm_setr_pi8(255u8 as i8, 254u8 as i8, 253u8 as i8, 252u8 as i8,
-                             1, 2, 3, 4);
+        let a = _mm_setr_pi8(
+            255u8 as i8,
+            254u8 as i8,
+            253u8 as i8,
+            252u8 as i8,
+            1,
+            2,
+            3,
+            4,
+        );
         let b = _mm_setr_pi8(0, 0, 0, 0, 2, 1, 2, 1);
         let r = _mm_sad_pu8(a, b);
         assert_eq_m64(r, _mm_setr_pi16(1020, 0, 0, 0));
@@ -602,11 +610,7 @@ mod tests {
         let a = _mm_set1_pi8(9);
         let mask = _mm_setr_pi8(0, 0, 0x80u8 as i8, 0, 0, 0, 0, 0);
         let mut r = _mm_set1_pi8(0);
-        _mm_maskmove_si64(
-            a,
-            mask,
-            &mut r as *mut _ as *mut i8,
-        );
+        _mm_maskmove_si64(a, mask, &mut r as *mut _ as *mut i8);
         let e = _mm_setr_pi8(0, 0, 9, 0, 0, 0, 0, 0);
         assert_eq_m64(r, e);
 
@@ -643,7 +647,8 @@ mod tests {
 
     #[simd_test = "sse,mmx"]
     unsafe fn test_mm_movemask_pi8() {
-        let a = _mm_setr_pi16(0b1000_0000, 0b0100_0000, 0b1000_0000, 0b0100_0000);
+        let a =
+            _mm_setr_pi16(0b1000_0000, 0b0100_0000, 0b1000_0000, 0b0100_0000);
         let r = _mm_movemask_pi8(a);
         assert_eq!(r, 0b10001);
 

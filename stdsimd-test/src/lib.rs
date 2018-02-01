@@ -346,8 +346,7 @@ pub fn assert(fnptr: usize, fnname: &str, expected: &str) {
 
         _ => 20,
     };
-    let probably_only_one_instruction =
-        instrs.len() < instruction_limit;
+    let probably_only_one_instruction = instrs.len() < instruction_limit;
 
     if found && probably_only_one_instruction && !inlining_failed {
         return;

@@ -1,14 +1,13 @@
 //! Cache of run-time feature detection
 
 use core::sync::atomic::{AtomicUsize, Ordering};
-use core::usize;
 
 use super::bit;
 
 /// This global variable is a bitset used to cache the features supported by
 /// the
 /// CPU.
-static CACHE: AtomicUsize = AtomicUsize::new(usize::MAX);
+static CACHE: AtomicUsize = AtomicUsize::new(usize::max_value());
 
 /// Test the `bit` of the storage. If the storage has not been initialized,
 /// initializes it with the result of `f()`.
@@ -24,7 +23,7 @@ pub fn test<F>(bit: u32, f: F) -> bool
 where
     F: FnOnce() -> usize,
 {
-    if CACHE.load(Ordering::Relaxed) == usize::MAX {
+    if CACHE.load(Ordering::Relaxed) == usize::max_value() {
         CACHE.store(f(), Ordering::Relaxed);
     }
     bit::test(CACHE.load(Ordering::Relaxed), bit)
