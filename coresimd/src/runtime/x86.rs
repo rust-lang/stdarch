@@ -18,7 +18,7 @@
 
 use core::mem;
 
-use super::bit;
+use super::{bit, cache};
 
 /// This macro maps the string-literal feature names to values of the
 /// `__Feature` enum at compile-time. The feature names used are the same as
@@ -261,10 +261,10 @@ pub enum __Feature {
 /// [wiki_cpuid]: https://en.wikipedia.org/wiki/CPUID
 /// [intel64_ref]: http://www.intel.de/content/dam/www/public/us/en/documents/manuals/64-ia-32-architectures-software-developer-instruction-set-reference-manual-325383.pdf
 /// [amd64_ref]: http://support.amd.com/TechDocs/24594.pdf
-pub fn detect_features() -> usize {
+pub fn detect_features() -> cache::Initializer {
     use vendor::{__cpuid, __cpuid_count, has_cpuid, CpuidResult};
     use vendor::_xgetbv;
-    let mut value: usize = 0;
+    let mut value = cache::Initializer::new();
 
     // If the x86 CPU does not support the CPUID instruction then it is too
     // old to support any of the currently-detectable features.
@@ -340,7 +340,7 @@ pub fn detect_features() -> usize {
         // borrows value till the end of this scope:
         let mut enable = |r, rb, f| {
             if bit::test(r as usize, rb) {
-                value = bit::set(value, f as u32);
+                value.set(f as u32);
             }
         };
 
