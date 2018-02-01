@@ -533,15 +533,10 @@ mod tests {
 
     #[simd_test = "sse,mmx"]
     unsafe fn test_mm_sad_pu8() {
+        #[cfg_attr(rustfmt, rustfmt_skip)]
         let a = _mm_setr_pi8(
-            255u8 as i8,
-            254u8 as i8,
-            253u8 as i8,
-            252u8 as i8,
-            1,
-            2,
-            3,
-            4,
+            255u8 as i8, 254u8 as i8, 253u8 as i8, 252u8 as i8,
+            1, 2, 3, 4,
         );
         let b = _mm_setr_pi8(0, 0, 0, 0, 2, 1, 2, 1);
         let r = _mm_sad_pu8(a, b);

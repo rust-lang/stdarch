@@ -3268,41 +3268,15 @@ mod tests {
 
     #[simd_test = "avx2"]
     unsafe fn test_mm256_add_epi16() {
+        #[cfg_attr(rustfmt, rustfmt_skip)]
         let a = _mm256_setr_epi16(
-            0,
-            1,
-            2,
-            3,
-            4,
-            5,
-            6,
-            7,
-            8,
-            9,
-            10,
-            11,
-            12,
-            13,
-            14,
-            15,
+            0, 1, 2, 3, 4, 5, 6, 7,
+            8, 9, 10, 11, 12, 13, 14, 15,
         );
+        #[cfg_attr(rustfmt, rustfmt_skip)]
         let b = _mm256_setr_epi16(
-            0,
-            1,
-            2,
-            3,
-            4,
-            5,
-            6,
-            7,
-            8,
-            9,
-            10,
-            11,
-            12,
-            13,
-            14,
-            15,
+            0, 1, 2, 3, 4, 5, 6, 7,
+            8, 9, 10, 11, 12, 13, 14, 15,
         );
         let r = _mm256_add_epi16(a, b);
         #[cfg_attr(rustfmt, rustfmt_skip)]
@@ -3385,23 +3359,10 @@ mod tests {
 
     #[simd_test = "avx2"]
     unsafe fn test_mm256_adds_epi16() {
+        #[cfg_attr(rustfmt, rustfmt_skip)]
         let a = _mm256_setr_epi16(
-            0,
-            1,
-            2,
-            3,
-            4,
-            5,
-            6,
-            7,
-            8,
-            9,
-            10,
-            11,
-            12,
-            13,
-            14,
-            15,
+            0, 1, 2, 3, 4, 5, 6, 7,
+            8, 9, 10, 11, 12, 13, 14, 15,
         );
         #[cfg_attr(rustfmt, rustfmt_skip)]
         let b = _mm256_setr_epi16(
@@ -3471,23 +3432,10 @@ mod tests {
 
     #[simd_test = "avx2"]
     unsafe fn test_mm256_adds_epu16() {
+        #[cfg_attr(rustfmt, rustfmt_skip)]
         let a = _mm256_setr_epi16(
-            0,
-            1,
-            2,
-            3,
-            4,
-            5,
-            6,
-            7,
-            8,
-            9,
-            10,
-            11,
-            12,
-            13,
-            14,
-            15,
+            0, 1, 2, 3, 4, 5, 6, 7,
+            8, 9, 10, 11, 12, 13, 14, 15,
         );
         #[cfg_attr(rustfmt, rustfmt_skip)]
         let b = _mm256_setr_epi16(
@@ -3709,41 +3657,15 @@ mod tests {
 
     #[simd_test = "avx2"]
     unsafe fn test_mm256_cmpeq_epi16() {
+        #[cfg_attr(rustfmt, rustfmt_skip)]
         let a = _mm256_setr_epi16(
-            0,
-            1,
-            2,
-            3,
-            4,
-            5,
-            6,
-            7,
-            8,
-            9,
-            10,
-            11,
-            12,
-            13,
-            14,
-            15,
+            0, 1, 2, 3, 4, 5, 6, 7,
+            8, 9, 10, 11, 12, 13, 14, 15,
         );
+        #[cfg_attr(rustfmt, rustfmt_skip)]
         let b = _mm256_setr_epi16(
-            15,
-            14,
-            2,
-            12,
-            11,
-            10,
-            9,
-            8,
-            7,
-            6,
-            5,
-            4,
-            3,
-            2,
-            1,
-            0,
+            15, 14, 2, 12, 11, 10, 9, 8,
+            7, 6, 5, 4, 3, 2, 1, 0,
         );
         let r = _mm256_cmpeq_epi16(a, b);
         assert_eq_m256i(r, _mm256_insert_epi16(_mm256_set1_epi16(0), !0, 2));
@@ -3801,64 +3723,25 @@ mod tests {
 
     #[simd_test = "avx2"]
     unsafe fn test_mm256_cvtepi8_epi16() {
+        #[cfg_attr(rustfmt, rustfmt_skip)]
         let a = _mm_setr_epi8(
-            0,
-            0,
-            -1,
-            1,
-            -2,
-            2,
-            -3,
-            3,
-            -4,
-            4,
-            -5,
-            5,
-            -6,
-            6,
-            -7,
-            7,
+            0, 0, -1, 1, -2, 2, -3, 3,
+            -4, 4, -5, 5, -6, 6, -7, 7,
         );
+        #[cfg_attr(rustfmt, rustfmt_skip)]
         let r = _mm256_setr_epi16(
-            0,
-            0,
-            -1,
-            1,
-            -2,
-            2,
-            -3,
-            3,
-            -4,
-            4,
-            -5,
-            5,
-            -6,
-            6,
-            -7,
-            7,
+            0, 0, -1, 1, -2, 2, -3, 3,
+            -4, 4, -5, 5, -6, 6, -7, 7,
         );
         assert_eq_m256i(r, _mm256_cvtepi8_epi16(a));
     }
 
     #[simd_test = "avx2"]
     unsafe fn test_mm256_cvtepi8_epi32() {
+        #[cfg_attr(rustfmt, rustfmt_skip)]
         let a = _mm_setr_epi8(
-            0,
-            0,
-            -1,
-            1,
-            -2,
-            2,
-            -3,
-            3,
-            -4,
-            4,
-            -5,
-            5,
-            -6,
-            6,
-            -7,
-            7,
+            0, 0, -1, 1, -2, 2, -3, 3,
+            -4, 4, -5, 5, -6, 6, -7, 7,
         );
         let r = _mm256_setr_epi32(0, 0, -1, 1, -2, 2, -3, 3);
         assert_eq_m256i(r, _mm256_cvtepi8_epi32(a));
@@ -3866,23 +3749,10 @@ mod tests {
 
     #[simd_test = "avx2"]
     unsafe fn test_mm256_cvtepi8_epi64() {
+        #[cfg_attr(rustfmt, rustfmt_skip)]
         let a = _mm_setr_epi8(
-            0,
-            0,
-            -1,
-            1,
-            -2,
-            2,
-            -3,
-            3,
-            -4,
-            4,
-            -5,
-            5,
-            -6,
-            6,
-            -7,
-            7,
+            0, 0, -1, 1, -2, 2, -3, 3,
+            -4, 4, -5, 5, -6, 6, -7, 7,
         );
         let r = _mm256_setr_epi64x(0, 0, -1, 1);
         assert_eq_m256i(r, _mm256_cvtepi8_epi64(a));
@@ -3932,64 +3802,25 @@ mod tests {
 
     #[simd_test = "avx2"]
     unsafe fn test_mm256_cvtepu8_epi16() {
+        #[cfg_attr(rustfmt, rustfmt_skip)]
         let a = _mm_setr_epi8(
-            0,
-            1,
-            2,
-            3,
-            4,
-            5,
-            6,
-            7,
-            8,
-            9,
-            10,
-            11,
-            12,
-            13,
-            14,
-            15,
+            0, 1, 2, 3, 4, 5, 6, 7,
+            8, 9, 10, 11, 12, 13, 14, 15,
         );
+        #[cfg_attr(rustfmt, rustfmt_skip)]
         let r = _mm256_setr_epi16(
-            0,
-            1,
-            2,
-            3,
-            4,
-            5,
-            6,
-            7,
-            8,
-            9,
-            10,
-            11,
-            12,
-            13,
-            14,
-            15,
+            0, 1, 2, 3, 4, 5, 6, 7,
+            8, 9, 10, 11, 12, 13, 14, 15,
         );
         assert_eq_m256i(r, _mm256_cvtepu8_epi16(a));
     }
 
     #[simd_test = "avx2"]
     unsafe fn test_mm256_cvtepu8_epi32() {
+        #[cfg_attr(rustfmt, rustfmt_skip)]
         let a = _mm_setr_epi8(
-            0,
-            1,
-            2,
-            3,
-            4,
-            5,
-            6,
-            7,
-            8,
-            9,
-            10,
-            11,
-            12,
-            13,
-            14,
-            15,
+            0, 1, 2, 3, 4, 5, 6, 7,
+            8, 9, 10, 11, 12, 13, 14, 15,
         );
         let r = _mm256_setr_epi32(0, 1, 2, 3, 4, 5, 6, 7);
         assert_eq_m256i(r, _mm256_cvtepu8_epi32(a));
@@ -3997,23 +3828,10 @@ mod tests {
 
     #[simd_test = "avx2"]
     unsafe fn test_mm256_cvtepu8_epi64() {
+        #[cfg_attr(rustfmt, rustfmt_skip)]
         let a = _mm_setr_epi8(
-            0,
-            1,
-            2,
-            3,
-            4,
-            5,
-            6,
-            7,
-            8,
-            9,
-            10,
-            11,
-            12,
-            13,
-            14,
-            15,
+            0, 1, 2, 3, 4, 5, 6, 7,
+            8, 9, 10, 11, 12, 13, 14, 15,
         );
         let r = _mm256_setr_epi64x(0, 1, 2, 3);
         assert_eq_m256i(r, _mm256_cvtepu8_epi64(a));
@@ -4053,23 +3871,10 @@ mod tests {
         let a = _mm256_insert_epi16(a, 1, 1);
         let b = _mm256_set1_epi16(4);
         let r = _mm256_hadds_epi16(a, b);
+        #[cfg_attr(rustfmt, rustfmt_skip)]
         let e = _mm256_setr_epi16(
-            0x7FFF,
-            4,
-            4,
-            4,
-            8,
-            8,
-            8,
-            8,
-            4,
-            4,
-            4,
-            4,
-            8,
-            8,
-            8,
-            8,
+            0x7FFF, 4, 4, 4, 8, 8, 8, 8,
+            4, 4, 4, 4, 8, 8, 8, 8,
         );
         assert_eq_m256i(r, e);
     }
@@ -5501,23 +5306,10 @@ mod tests {
 
     #[simd_test = "avx2"]
     unsafe fn test_mm256_extract_epi16() {
+        #[cfg_attr(rustfmt, rustfmt_skip)]
         let a = _mm256_setr_epi16(
-            -1,
-            1,
-            2,
-            3,
-            4,
-            5,
-            6,
-            7,
-            8,
-            9,
-            10,
-            11,
-            12,
-            13,
-            14,
-            15,
+            -1, 1, 2, 3, 4, 5, 6, 7,
+            8, 9, 10, 11, 12, 13, 14, 15,
         );
         let r1 = _mm256_extract_epi16(a, 0);
         let r2 = _mm256_extract_epi16(a, 19);

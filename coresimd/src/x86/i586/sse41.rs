@@ -805,45 +805,19 @@ mod tests {
 
     #[simd_test = "sse4.1"]
     unsafe fn test_mm_blendv_epi8() {
+        #[cfg_attr(rustfmt, rustfmt_skip)]
         let a = _mm_setr_epi8(
-            0,
-            1,
-            2,
-            3,
-            4,
-            5,
-            6,
-            7,
-            8,
-            9,
-            10,
-            11,
-            12,
-            13,
-            14,
-            15,
+            0, 1, 2, 3, 4, 5, 6, 7,
+            8, 9, 10, 11, 12, 13, 14, 15,
         );
         #[cfg_attr(rustfmt, rustfmt_skip)]
         let b = _mm_setr_epi8(
             16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
         );
+        #[cfg_attr(rustfmt, rustfmt_skip)]
         let mask = _mm_setr_epi8(
-            0,
-            -1,
-            0,
-            -1,
-            0,
-            -1,
-            0,
-            -1,
-            0,
-            -1,
-            0,
-            -1,
-            0,
-            -1,
-            0,
-            -1,
+            0, -1, 0, -1, 0, -1, 0, -1,
+            0, -1, 0, -1, 0, -1, 0, -1,
         );
         #[cfg_attr(rustfmt, rustfmt_skip)]
         let e = _mm_setr_epi8(
@@ -910,23 +884,10 @@ mod tests {
 
     #[simd_test = "sse4.1"]
     unsafe fn test_mm_extract_epi8() {
+        #[cfg_attr(rustfmt, rustfmt_skip)]
         let a = _mm_setr_epi8(
-            -1,
-            1,
-            2,
-            3,
-            4,
-            5,
-            6,
-            7,
-            8,
-            9,
-            10,
-            11,
-            12,
-            13,
-            14,
-            15,
+            -1, 1, 2, 3, 4, 5, 6, 7,
+            8, 9, 10, 11, 12, 13, 14, 15
         );
         let r1 = _mm_extract_epi8(a, 0);
         let r2 = _mm_extract_epi8(a, 19);
@@ -1435,23 +1396,10 @@ mod tests {
 
     #[simd_test = "sse4.1"]
     unsafe fn test_mm_mpsadbw_epu8() {
+        #[cfg_attr(rustfmt, rustfmt_skip)]
         let a = _mm_setr_epi8(
-            0,
-            1,
-            2,
-            3,
-            4,
-            5,
-            6,
-            7,
-            8,
-            9,
-            10,
-            11,
-            12,
-            13,
-            14,
-            15,
+            0, 1, 2, 3, 4, 5, 6, 7,
+            8, 9, 10, 11, 12, 13, 14, 15,
         );
 
         let r = _mm_mpsadbw_epu8(a, a, 0b000);

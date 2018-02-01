@@ -3206,23 +3206,10 @@ mod tests {
         let r = _mm_set_epi8(
             0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
         );
+        #[cfg_attr(rustfmt, rustfmt_skip)]
         let e = _mm_setr_epi8(
-            15,
-            14,
-            13,
-            12,
-            11,
-            10,
-            9,
-            8,
-            7,
-            6,
-            5,
-            4,
-            3,
-            2,
-            1,
-            0,
+            15, 14, 13, 12, 11, 10, 9, 8,
+            7, 6, 5, 4, 3, 2, 1, 0,
         );
         assert_eq_m128i(r, e);
     }
@@ -3269,23 +3256,10 @@ mod tests {
         let r = _mm_setr_epi8(
             0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
         );
+        #[cfg_attr(rustfmt, rustfmt_skip)]
         let e = _mm_setr_epi8(
-            0,
-            1,
-            2,
-            3,
-            4,
-            5,
-            6,
-            7,
-            8,
-            9,
-            10,
-            11,
-            12,
-            13,
-            14,
-            15,
+            0, 1, 2, 3, 4, 5, 6, 7,
+            8, 9, 10, 11, 12, 13, 14, 15,
         );
         assert_eq_m128i(r, e);
     }
@@ -3320,23 +3294,10 @@ mod tests {
     #[simd_test = "sse2"]
     unsafe fn test_mm_maskmoveu_si128() {
         let a = _mm_set1_epi8(9);
+        #[cfg_attr(rustfmt, rustfmt_skip)]
         let mask = _mm_set_epi8(
-            0,
-            0,
-            0x80u8 as i8,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
+            0, 0, 0x80u8 as i8, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
         );
         let mut r = _mm_set1_epi8(0);
         _mm_maskmoveu_si128(a, mask, &mut r as *mut _ as *mut i8);
@@ -3483,23 +3444,10 @@ mod tests {
 
     #[simd_test = "sse2"]
     unsafe fn test_mm_unpackhi_epi8() {
+        #[cfg_attr(rustfmt, rustfmt_skip)]
         let a = _mm_setr_epi8(
-            0,
-            1,
-            2,
-            3,
-            4,
-            5,
-            6,
-            7,
-            8,
-            9,
-            10,
-            11,
-            12,
-            13,
-            14,
-            15,
+            0, 1, 2, 3, 4, 5, 6, 7,
+            8, 9, 10, 11, 12, 13, 14, 15,
         );
         #[cfg_attr(rustfmt, rustfmt_skip)]
         let b = _mm_setr_epi8(
@@ -3542,46 +3490,20 @@ mod tests {
 
     #[simd_test = "sse2"]
     unsafe fn test_mm_unpacklo_epi8() {
+        #[cfg_attr(rustfmt, rustfmt_skip)]
         let a = _mm_setr_epi8(
-            0,
-            1,
-            2,
-            3,
-            4,
-            5,
-            6,
-            7,
-            8,
-            9,
-            10,
-            11,
-            12,
-            13,
-            14,
-            15,
+            0, 1, 2, 3, 4, 5, 6, 7,
+            8, 9, 10, 11, 12, 13, 14, 15,
         );
         #[cfg_attr(rustfmt, rustfmt_skip)]
         let b = _mm_setr_epi8(
             16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
         );
         let r = _mm_unpacklo_epi8(a, b);
+        #[cfg_attr(rustfmt, rustfmt_skip)]
         let e = _mm_setr_epi8(
-            0,
-            16,
-            1,
-            17,
-            2,
-            18,
-            3,
-            19,
-            4,
-            20,
-            5,
-            21,
-            6,
-            22,
-            7,
-            23,
+            0, 16, 1, 17, 2, 18, 3, 19,
+            4, 20, 5, 21, 6, 22, 7, 23,
         );
         assert_eq_m128i(r, e);
     }
