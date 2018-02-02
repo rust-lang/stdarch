@@ -33,7 +33,7 @@ pub enum __Feature {
 }
 
 pub fn detect_features<T: HasFeature>(mut x: T) -> cache::Initializer {
-    let mut value = cache::Initializer::new();
+    let mut value = cache::Initializer::default();
     {
         let mut enable_feature = |f| {
             if x.has_feature(&f) {

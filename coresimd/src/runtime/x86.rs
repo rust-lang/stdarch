@@ -264,7 +264,7 @@ pub enum __Feature {
 pub fn detect_features() -> cache::Initializer {
     use vendor::{__cpuid, __cpuid_count, has_cpuid, CpuidResult};
     use vendor::_xgetbv;
-    let mut value = cache::Initializer::new();
+    let mut value = cache::Initializer::default();
 
     // If the x86 CPU does not support the CPUID instruction then it is too
     // old to support any of the currently-detectable features.

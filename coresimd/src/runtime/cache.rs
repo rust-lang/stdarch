@@ -1,7 +1,13 @@
 //! Caches run-time feature detection so that it only needs to be computed
 //! once.
 
-use core::sync::atomic::{AtomicU64, Ordering};
+use core::sync::atomic::Ordering;
+
+#[cfg(target_pointer_width = "64")]
+use core::sync::atomic::AtomicU64;
+
+#[cfg(target_pointer_width = "32")]
+use core::sync::atomic::AtomicU32;
 
 /// Sets the `bit` of `x`.
 pub const fn set_bit(x: u64, bit: u32) -> u64 {
@@ -19,11 +25,13 @@ const CACHE_CAPACITY: u32 = 63;
 /// This type is used to initialize the cache
 pub struct Initializer(u64);
 
-impl Initializer {
-    /// Creates a cleared cache.
-    pub fn new() -> Self {
+impl Default for Initializer {
+    fn default() -> Self {
         Initializer(0)
     }
+}
+
+impl Initializer {
     /// Tests the `bit` of the cache.
     pub fn test(&self, bit: u32) -> bool {
         // FIXME: this way of making sure that the cache is large enough is
@@ -47,15 +55,17 @@ impl Initializer {
     }
 }
 
+/// This global variable is a cache of the features supported by the CPU.
+static CACHE: Cache = Cache::uninitialized();
+
 /// Feature cache with capacity for `CACHE_CAPACITY` features.
 ///
 /// Note: the last feature bit is used to represent an
 /// uninitialized cache.
+#[cfg(target_pointer_width = "64")]
 struct Cache(AtomicU64);
 
-/// This global variable is a cache of the features supported by the CPU.
-static CACHE: Cache = Cache::uninitialized();
-
+#[cfg(target_pointer_width = "64")]
 impl Cache {
     /// Creates an uninitialized cache.
     const fn uninitialized() -> Self {
@@ -71,8 +81,48 @@ impl Cache {
         test_bit(CACHE.0.load(Ordering::Relaxed), bit)
     }
 
-    pub fn set(&self, value: Initializer) {
+    /// Initializes the cache.
+    pub fn initialize(&self, value: Initializer) {
         self.0.store(value.0, Ordering::Relaxed);
+    }
+}
+
+/// Feature cache with capacity for `CACHE_CAPACITY` features.
+///
+/// Note: the last feature bit is used to represent an
+/// uninitialized cache.
+#[cfg(target_pointer_width = "32")]
+struct Cache(AtomicU32, AtomicU32);
+
+#[cfg(target_pointer_width = "32")]
+impl Cache {
+    /// Creates an uninitialized cache.
+    const fn uninitialized() -> Self {
+        Cache(
+            AtomicU32::new(u32::max_value()),
+            AtomicU32::new(u32::max_value()),
+        )
+    }
+    /// Is the cache uninitialized?
+    pub fn is_uninitialized(&self) -> bool {
+        self.1.load(Ordering::Relaxed) == u32::max_value()
+    }
+
+    /// Is the `bit` in the cache set?
+    pub fn test(&self, bit: u32) -> bool {
+        if bit < 32 {
+            test_bit(CACHE.0.load(Ordering::Relaxed) as u64, bit)
+        } else {
+            test_bit(CACHE.1.load(Ordering::Relaxed) as u64, bit - 32)
+        }
+    }
+
+    /// Initializes the cache.
+    pub fn initialize(&self, value: Initializer) {
+        let lo: u32 = value.0 as u32;
+        let hi: u32 = (value.0 >> 32) as u32;
+        self.0.store(lo, Ordering::Relaxed);
+        self.1.store(hi, Ordering::Relaxed);
     }
 }
 
@@ -91,7 +141,7 @@ where
     F: FnOnce() -> Initializer,
 {
     if CACHE.is_uninitialized() {
-        CACHE.set(f());
+        CACHE.initialize(f());
     }
     CACHE.test(bit)
 }
