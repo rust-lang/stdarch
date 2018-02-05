@@ -61,9 +61,9 @@ pub unsafe fn _mm_aesimc_si128(a: __m128i) -> __m128i {
 
 /// Assist in expanding the AES cipher key.
 ///
-/// Assist in expanding the AES cipher key by computing steps towards generating
-/// a round key for encryption cipher using data from `a` and an 8-bit round
-/// constant `imm8`.
+/// Assist in expanding the AES cipher key by computing steps towards
+/// generating a round key for encryption cipher using data from `a` and an
+/// 8-bit round constant `imm8`.
 #[inline]
 #[target_feature(enable = "aes")]
 #[cfg_attr(test, assert_instr(aeskeygenassist, imm8 = 0))]
