@@ -65,7 +65,7 @@ pub unsafe fn _mm_aesimc_si128(a: __m128i) -> __m128i {
 /// a round key for encryption cipher using data from `a` and an 8-bit round constant.
 #[inline]
 #[target_feature(enable = "aes")]
-#[cfg_attr(test, assert_instr(aeskeygenassist))]
+#[cfg_attr(test, assert_instr(aeskeygenassist, imm8 = 0))]
 pub unsafe fn _mm_aeskeygenassist_si128(a: __m128i, imm8: u8) -> __m128i {
     macro_rules! call {
         ($imm8:expr) => (aeskeygenassist(a, $imm8))
