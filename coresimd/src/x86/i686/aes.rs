@@ -1,3 +1,11 @@
+//! AES New Instructions (AES-NI)
+//!
+//! The intrinsics here correspond to those in the `wmmintrin.h` C header.
+//!
+//! The reference is [Intel 64 and IA-32 Architectures Software Developer's
+//! Manual Volume 2: Instruction Set Reference, A-Z][intel64_ref].
+//!
+//! [intel64_ref]: http://www.intel.de/content/dam/www/public/us/en/documents/manuals/64-ia-32-architectures-software-developer-instruction-set-reference-manual-325383.pdf
 use x86::__m128i;
 
 #[cfg(test)]
