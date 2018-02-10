@@ -3,6 +3,9 @@
 mod aes;
 pub use self::aes::*;
 
+mod clmul;
+pub use self::clmul::*;
+
 mod mmx;
 pub use self::mmx::*;
 
