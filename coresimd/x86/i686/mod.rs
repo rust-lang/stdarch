@@ -3,11 +3,11 @@
 mod aes;
 pub use self::aes::*;
 
-mod clmul;
-pub use self::clmul::*;
-
 mod mmx;
 pub use self::mmx::*;
+
+mod pclmulqdq;
+pub use self::pclmulqdq::*;
 
 mod sse;
 pub use self::sse::*;
