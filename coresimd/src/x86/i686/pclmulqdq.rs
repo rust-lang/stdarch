@@ -23,7 +23,7 @@ extern "C" {
 #[inline]
 #[target_feature(enable = "pclmulqdq")]
 #[cfg_attr(test, assert_instr(pclmulqdq, imm8 = 0))]
-pub unsafe fn _mm_clmulepi64_si128(a: __m128i, b: __m128i, imm8: u8) -> __m128i {
+pub unsafe fn _mm_clmulepi64_si128(a: __m128i, b: __m128i, imm8: i32) -> __m128i {
     macro_rules! call {
         ($imm8:expr) => (pclmulqdq(a, b, $imm8))
     }
