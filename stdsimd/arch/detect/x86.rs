@@ -463,7 +463,7 @@ mod tests {
     #[test]
     fn dump() {
         println!("aes: {:?}", is_target_feature_detected!("aes"));
-        println!("pclmulqdq: {:?}", cfg_feature_enabled!("pclmulqdq"));
+        println!("pclmulqdq: {:?}", is_target_feature_detected!("pclmulqdq"));
         println!("tsc: {:?}", is_target_feature_detected!("tsc"));
         println!("sse: {:?}", is_target_feature_detected!("sse"));
         println!("sse2: {:?}", is_target_feature_detected!("sse2"));
@@ -505,7 +505,7 @@ mod tests {
     fn compare_with_cupid() {
         let information = cupid::master().unwrap();
         assert_eq!(is_target_feature_detected!("aes"), information.aesni());
-        assert_eq!(cfg_feature_enabled!("pclmulqdq"), information.pclmulqdq());
+        assert_eq!(is_target_feature_detected!("pclmulqdq"), information.pclmulqdq());
         assert_eq!(is_target_feature_detected!("tsc"), information.tsc());
         assert_eq!(is_target_feature_detected!("sse"), information.sse());
         assert_eq!(is_target_feature_detected!("sse2"), information.sse2());

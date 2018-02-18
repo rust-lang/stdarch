@@ -4,7 +4,8 @@
 //! Manual Volume 2: Instruction Set Reference, A-Z][intel64_ref] (p. 4-241).
 //!
 //! [intel64_ref]: http://www.intel.com/content/dam/www/public/us/en/documents/manuals/64-ia-32-architectures-software-developer-instruction-set-reference-manual-325383.pdf
-use x86::__m128i;
+
+use coresimd::x86::__m128i;
 
 #[cfg(test)]
 use stdsimd_test::assert_instr;
@@ -40,7 +41,7 @@ mod tests {
 
     use stdsimd_test::simd_test;
 
-    use x86::*;
+    use coresimd::x86::*;
 
     #[simd_test = "pclmulqdq"]
     unsafe fn test_mm_clmulepi64_si128() {
