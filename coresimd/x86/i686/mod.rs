@@ -9,6 +9,9 @@ pub use self::mmx::*;
 mod pclmulqdq;
 pub use self::pclmulqdq::*;
 
+mod rdrand;
+pub use self::rdrand::*;
+
 mod sse;
 pub use self::sse::*;
 
