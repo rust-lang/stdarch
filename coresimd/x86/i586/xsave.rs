@@ -13,8 +13,8 @@ extern "C" {
     fn xrstor(p: *const u8, hi: u32, lo: u32) -> ();
     #[link_name = "llvm.x86.xsetbv"]
     fn xsetbv(v: u32, hi: u32, lo: u32) -> ();
-    #[link_name = "llvm.x86.xgetbv"]
-    fn xgetbv(x: u32) -> i64;
+    // #[link_name = "llvm.x86.xgetbv"]
+    // fn xgetbv(x: u32) -> i64;
     #[link_name = "llvm.x86.xsaveopt"]
     fn xsaveopt(p: *mut u8, hi: u32, lo: u32) -> ();
     #[link_name = "llvm.x86.xsavec"]
@@ -69,14 +69,14 @@ pub unsafe fn _xsetbv(a: u32, val: u64) {
     xsetbv(a, (val >> 32) as u32, val as u32);
 }
 
-/// Reads the contents of the extended control register `XCR`
-/// specified in `xcr_no`.
-#[inline]
-#[target_feature(enable = "xsave")]
-#[cfg_attr(test, assert_instr(xgetbv))]
-pub unsafe fn _xgetbv(xcr_no: u32) -> u64 {
-    xgetbv(xcr_no) as u64
-}
+// /// Reads the contents of the extended control register `XCR`
+// /// specified in `xcr_no`.
+// #[inline]
+// #[target_feature(enable = "xsave")]
+// #[cfg_attr(test, assert_instr(xgetbv))]
+// pub unsafe fn _xgetbv(xcr_no: u32) -> u64 {
+//     xgetbv(xcr_no) as u64
+// }
 
 /// Perform a full or partial save of the enabled processor states to memory at
 /// `mem_addr`.
@@ -200,18 +200,18 @@ mod tests {
     }
     */
 
-    #[simd_test = "xsave"]
-    unsafe fn xgetbv_xsetbv() {
-        let xcr_n: u32 = xsave::_XCR_XFEATURE_ENABLED_MASK;
-
-        let xcr: u64 = xsave::_xgetbv(xcr_n);
-        // FIXME: XSETBV is a privileged instruction we should only test this
-        // when running in privileged mode:
-        //
-        // _xsetbv(xcr_n, xcr);
-        let xcr_cpy: u64 = xsave::_xgetbv(xcr_n);
-        assert_eq!(xcr, xcr_cpy);
-    }
+    // #[simd_test = "xsave"]
+    // unsafe fn xgetbv_xsetbv() {
+    //     let xcr_n: u32 = xsave::_XCR_XFEATURE_ENABLED_MASK;
+    //
+    //     let xcr: u64 = xsave::_xgetbv(xcr_n);
+    //     // FIXME: XSETBV is a privileged instruction we should only test this
+    //     // when running in privileged mode:
+    //     //
+    //     // _xsetbv(xcr_n, xcr);
+    //     let xcr_cpy: u64 = xsave::_xgetbv(xcr_n);
+    //     assert_eq!(xcr, xcr_cpy);
+    // }
 
     // FIXME: https://github.com/rust-lang-nursery/stdsimd/issues/209
     /*
