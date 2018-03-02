@@ -1,7 +1,7 @@
 //! SIMD and vendor intrinsics support library.
 //!
-//! This documentation is for the `coresimd` crate, but you probably want to use
-//! the [`stdsimd` crate][stdsimd] which should have more complete
+//! This documentation is for the `coresimd` crate, but you probably want to
+//! use the [`stdsimd` crate][stdsimd] which should have more complete
 //! documentation.
 //!
 //! [stdsimd]: https://rust-lang-nursery.github.io/stdsimd/x86_64/stdsimd/
@@ -14,8 +14,9 @@
            integer_atomics, stmt_expr_attributes, core_intrinsics,
            crate_in_paths, no_core, attr_literals, rustc_attrs, stdsimd,
            staged_api, fn_must_use, core_float, core_slice_ext, align_offset)]
-#![cfg_attr(test, feature(proc_macro, test, attr_literals, abi_vectorcall,
-                          untagged_unions))]
+#![cfg_attr(test,
+            feature(proc_macro, test, attr_literals, abi_vectorcall,
+                    untagged_unions))]
 #![cfg_attr(feature = "cargo-clippy",
             allow(inline_always, too_many_arguments, cast_sign_loss,
                   cast_lossless, cast_possible_wrap,
@@ -26,7 +27,8 @@
 #![no_core]
 #![unstable(feature = "stdsimd", issue = "0")]
 #![doc(test(attr(deny(warnings))),
-       test(attr(allow(dead_code, deprecated, unused_variables, unused_mut))))]
+       test(attr(allow(dead_code, deprecated, unused_variables,
+                       unused_mut))))]
 
 #[cfg_attr(not(test), macro_use)]
 extern crate core as _core;
@@ -34,12 +36,12 @@ extern crate core as _core;
 #[macro_use]
 extern crate std;
 #[cfg(test)]
+#[macro_use]
+extern crate stdsimd;
+#[cfg(test)]
 extern crate stdsimd_test;
 #[cfg(test)]
 extern crate test;
-#[cfg(test)]
-#[macro_use]
-extern crate stdsimd;
 
 #[path = "../../../coresimd/mod.rs"]
 mod coresimd;

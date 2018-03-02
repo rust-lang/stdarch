@@ -18,8 +18,8 @@
 //! The portable packed vector types are named using the following schema:
 //! `{t}{l_w}x{l_n}`:
 //!
-//! * `t`: type - single letter corresponding to the following Rust literal types:
-//!   * `i`: signed integer
+//! * `t`: type - single letter corresponding to the following Rust literal
+//! types:   * `i`: signed integer
 //!   * `u`: unsigned integer
 //!   * `f`: floating point
 //!   * `b`: boolean
@@ -58,7 +58,9 @@ pub trait IntoBits<T>: marker::Sized {
 }
 
 // FromBits implies IntoBits
-impl<T, U> IntoBits<U> for T where U: FromBits<T>
+impl<T, U> IntoBits<U> for T
+where
+    U: FromBits<T>,
 {
     #[inline(always)]
     fn into_bits(self) -> U {
@@ -69,5 +71,7 @@ impl<T, U> IntoBits<U> for T where U: FromBits<T>
 // FromBits (and thus IntoBits) is reflexive
 impl<T> FromBits<T> for T {
     #[inline(always)]
-    fn from_bits(t: T) -> T { t }
+    fn from_bits(t: T) -> T {
+        t
+    }
 }

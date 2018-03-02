@@ -72,23 +72,89 @@ simd_b_ty! {
     /// A 64-bit vector with 2 `bool` lanes.
 }
 
-impl_from_bits!(u32x2: u32, u32x2_from_bits |
-                i32x2, f32x2, b32x2, u16x4, i16x4, b16x4, u8x8, i8x8, b8x8);
-impl_from_bits!(i32x2: i32, i32x2_from_bits |
-                u32x2, f32x2, b32x2, u16x4, i16x4, b16x4, u8x8, i8x8, b8x8);
-impl_from_bits!(f32x2: f32, f32x2_from_bits |
-                i32x2, u32x2, b32x2, u16x4, i16x4, b16x4, u8x8, i8x8, b8x8);
-impl_from_bits!(u16x4: u16, u16x4_from_bits |
-                u32x2, i32x2, b32x2, i16x4, b16x4, u8x8, i8x8, b8x8);
-impl_from_bits!(i16x4: i16, i16x4_from_bits |
-                u32x2, i32x2, b32x2, u16x4, b16x4, u8x8, i8x8, b8x8);
-impl_from_bits!(u8x8: u8, u8x8_from_bits |
-                u32x2, i32x2, b32x2, u16x4, i16x4, b16x4, i8x8, b8x8);
-impl_from_bits!(i8x8: i8, i8x8_from_bits |
-                u32x2, i32x2, b32x2, u16x4, i16x4, b16x4, u8x8, b8x8);
+impl_from_bits!(
+    u32x2: u32,
+    u32x2_from_bits | i32x2,
+    f32x2,
+    b32x2,
+    u16x4,
+    i16x4,
+    b16x4,
+    u8x8,
+    i8x8,
+    b8x8
+);
+impl_from_bits!(
+    i32x2: i32,
+    i32x2_from_bits | u32x2,
+    f32x2,
+    b32x2,
+    u16x4,
+    i16x4,
+    b16x4,
+    u8x8,
+    i8x8,
+    b8x8
+);
+impl_from_bits!(
+    f32x2: f32,
+    f32x2_from_bits | i32x2,
+    u32x2,
+    b32x2,
+    u16x4,
+    i16x4,
+    b16x4,
+    u8x8,
+    i8x8,
+    b8x8
+);
+impl_from_bits!(
+    u16x4: u16,
+    u16x4_from_bits | u32x2,
+    i32x2,
+    b32x2,
+    i16x4,
+    b16x4,
+    u8x8,
+    i8x8,
+    b8x8
+);
+impl_from_bits!(
+    i16x4: i16,
+    i16x4_from_bits | u32x2,
+    i32x2,
+    b32x2,
+    u16x4,
+    b16x4,
+    u8x8,
+    i8x8,
+    b8x8
+);
+impl_from_bits!(
+    u8x8: u8,
+    u8x8_from_bits | u32x2,
+    i32x2,
+    b32x2,
+    u16x4,
+    i16x4,
+    b16x4,
+    i8x8,
+    b8x8
+);
+impl_from_bits!(
+    i8x8: i8,
+    i8x8_from_bits | u32x2,
+    i32x2,
+    b32x2,
+    u16x4,
+    i16x4,
+    b16x4,
+    u8x8,
+    b8x8
+);
 
 #[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
-use ::coresimd::x86::__m64 as __m64;
+use coresimd::x86::__m64;
 
 #[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
 impl_from_bits_!(f32x2: __m64);
@@ -105,28 +171,91 @@ impl_from_bits_!(u8x8: __m64);
 #[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
 impl_from_bits_!(i8x8: __m64);
 
-impl_from!(f32x2: f32, f32x2_from | f64x2, u64x2, i64x2, u32x2, i32x2,
-           u16x2, i16x2, u8x2, i8x2
+impl_from!(
+    f32x2: f32,
+    f32x2_from | f64x2,
+    u64x2,
+    i64x2,
+    u32x2,
+    i32x2,
+    u16x2,
+    i16x2,
+    u8x2,
+    i8x2
 );
 
-impl_from!(u32x2: u32, u32x2_from | f64x2, u64x2, i64x2, f32x2, i32x2,
-           u16x2, i16x2, u8x2, i8x2
+impl_from!(
+    u32x2: u32,
+    u32x2_from | f64x2,
+    u64x2,
+    i64x2,
+    f32x2,
+    i32x2,
+    u16x2,
+    i16x2,
+    u8x2,
+    i8x2
 );
 
-impl_from!(i32x2: i32, i32x2_from | f64x2, u64x2, i64x2, f32x2, u32x2,
-           u16x2, i16x2, u8x2, i8x2
+impl_from!(
+    i32x2: i32,
+    i32x2_from | f64x2,
+    u64x2,
+    i64x2,
+    f32x2,
+    u32x2,
+    u16x2,
+    i16x2,
+    u8x2,
+    i8x2
 );
 
-impl_from!(u16x4: u16, u16x4_from | f64x4, u64x4, i64x4, f32x4, i32x4, u32x4,
-           i16x4, u8x4, i8x4
+impl_from!(
+    u16x4: u16,
+    u16x4_from | f64x4,
+    u64x4,
+    i64x4,
+    f32x4,
+    i32x4,
+    u32x4,
+    i16x4,
+    u8x4,
+    i8x4
 );
 
-impl_from!(i16x4: i16, i16x4_from | f64x4, u64x4, i64x4, f32x4, i32x4, u32x4,
-           u16x4, u8x4, i8x4
+impl_from!(
+    i16x4: i16,
+    i16x4_from | f64x4,
+    u64x4,
+    i64x4,
+    f32x4,
+    i32x4,
+    u32x4,
+    u16x4,
+    u8x4,
+    i8x4
 );
-impl_from!(i8x8: i8, i8x8_from |
-           f64x8, u64x8, i64x8, f32x8, u32x8, i32x8, i16x8, u16x8, u8x8
+impl_from!(
+    i8x8: i8,
+    i8x8_from | f64x8,
+    u64x8,
+    i64x8,
+    f32x8,
+    u32x8,
+    i32x8,
+    i16x8,
+    u16x8,
+    u8x8
 );
-impl_from!(u8x8: u8, u8x8_from |
-           f64x8, u64x8, i64x8, f32x8, u32x8, i32x8, i16x8, u16x8, i8x8
+impl_from!(
+    u8x8: u8,
+    u8x8_from | f64x8,
+    u64x8,
+    i64x8,
+    f32x8,
+    u32x8,
+    i32x8,
+    i16x8,
+    u16x8,
+    i8x8
 );

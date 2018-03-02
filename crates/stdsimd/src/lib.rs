@@ -1,4 +1,3 @@
-
 //! SIMD and vendor intrinsics support library.
 //!
 //! This crate defines the vendor intrinsics and types primarily used for SIMD
@@ -13,11 +12,11 @@
 #![no_std]
 #![unstable(feature = "stdsimd", issue = "0")]
 
-extern crate std as _std;
-extern crate coresimd;
-extern crate libc;
 #[macro_use]
 extern crate cfg_if;
+extern crate coresimd;
+extern crate libc;
+extern crate std as _std;
 
 #[cfg(test)]
 #[macro_use]

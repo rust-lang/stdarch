@@ -169,4 +169,3 @@ macro_rules! test_bool_bitwise_ops {
         }
     }
 }
-

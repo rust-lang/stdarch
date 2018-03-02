@@ -459,32 +459,119 @@ impl m256iExt for __m256i {
     }
 }
 
-use ::coresimd::simd::{u32x2, i32x2, b32x2, u16x4, i16x4, b16x4, u8x8, i8x8, b8x8,
-             u64x2, i64x2, f64x2, b64x2, u32x4, i32x4, f32x4, b32x4,
-             u16x8, i16x8, b16x8, u8x16, i8x16, b8x16, u64x4, i64x4, f64x4, b64x4,
-             u32x8, i32x8, f32x8, b32x8,
-             u16x16, i16x16, b16x16,
-             u8x32, i8x32, b8x32};
+use coresimd::simd::{b16x16, b16x4, b16x8, b32x2, b32x4, b32x8, b64x2, b64x4,
+                     b8x16, b8x32, b8x8, f32x4, f32x8, f64x2, f64x4, i16x16,
+                     i16x4, i16x8, i32x2, i32x4, i32x8, i64x2, i64x4, i8x16,
+                     i8x32, i8x8, u16x16, u16x4, u16x8, u32x2, u32x4, u32x8,
+                     u64x2, u64x4, u8x16, u8x32, u8x8};
 
-impl_from_bits_!(__m64: u32x2, i32x2, b32x2, u16x4, i16x4, b16x4, u8x8, i8x8, b8x8);
-impl_from_bits_!(__m128: u64x2, i64x2, f64x2, b64x2, u32x4, i32x4, f32x4, b32x4,
-                 u16x8, i16x8, b16x8, u8x16, i8x16, b8x16);
-impl_from_bits_!(__m128i: u64x2, i64x2, f64x2, b64x2, u32x4, i32x4, f32x4, b32x4,
-                 u16x8, i16x8, b16x8, u8x16, i8x16, b8x16);
-impl_from_bits_!(__m128d: u64x2, i64x2, f64x2, b64x2, u32x4, i32x4, f32x4, b32x4,
-                 u16x8, i16x8, b16x8, u8x16, i8x16, b8x16);
-impl_from_bits_!(__m256: u64x4, i64x4, f64x4, b64x4,
-                 u32x8, i32x8, f32x8, b32x8,
-                 u16x16, i16x16, b16x16,
-                 u8x32, i8x32, b8x32);
-impl_from_bits_!(__m256i: u64x4, i64x4, f64x4, b64x4,
-                 u32x8, i32x8, f32x8, b32x8,
-                 u16x16, i16x16, b16x16,
-                 u8x32, i8x32, b8x32);
-impl_from_bits_!(__m256d: u64x4, i64x4, f64x4, b64x4,
-                 u32x8, i32x8, f32x8, b32x8,
-                 u16x16, i16x16, b16x16,
-                 u8x32, i8x32, b8x32);
+impl_from_bits_!(
+    __m64: u32x2,
+    i32x2,
+    b32x2,
+    u16x4,
+    i16x4,
+    b16x4,
+    u8x8,
+    i8x8,
+    b8x8
+);
+impl_from_bits_!(
+    __m128: u64x2,
+    i64x2,
+    f64x2,
+    b64x2,
+    u32x4,
+    i32x4,
+    f32x4,
+    b32x4,
+    u16x8,
+    i16x8,
+    b16x8,
+    u8x16,
+    i8x16,
+    b8x16
+);
+impl_from_bits_!(
+    __m128i: u64x2,
+    i64x2,
+    f64x2,
+    b64x2,
+    u32x4,
+    i32x4,
+    f32x4,
+    b32x4,
+    u16x8,
+    i16x8,
+    b16x8,
+    u8x16,
+    i8x16,
+    b8x16
+);
+impl_from_bits_!(
+    __m128d: u64x2,
+    i64x2,
+    f64x2,
+    b64x2,
+    u32x4,
+    i32x4,
+    f32x4,
+    b32x4,
+    u16x8,
+    i16x8,
+    b16x8,
+    u8x16,
+    i8x16,
+    b8x16
+);
+impl_from_bits_!(
+    __m256: u64x4,
+    i64x4,
+    f64x4,
+    b64x4,
+    u32x8,
+    i32x8,
+    f32x8,
+    b32x8,
+    u16x16,
+    i16x16,
+    b16x16,
+    u8x32,
+    i8x32,
+    b8x32
+);
+impl_from_bits_!(
+    __m256i: u64x4,
+    i64x4,
+    f64x4,
+    b64x4,
+    u32x8,
+    i32x8,
+    f32x8,
+    b32x8,
+    u16x16,
+    i16x16,
+    b16x16,
+    u8x32,
+    i8x32,
+    b8x32
+);
+impl_from_bits_!(
+    __m256d: u64x4,
+    i64x4,
+    f64x4,
+    b64x4,
+    u32x8,
+    i32x8,
+    f32x8,
+    b32x8,
+    u16x16,
+    i16x16,
+    b16x16,
+    u8x32,
+    i8x32,
+    b8x32
+);
 
 mod eflags;
 pub use self::eflags::*;

@@ -100,43 +100,173 @@ simd_b_ty! {
     /// A 128-bit vector with 2 `bool` lanes.
 }
 
-impl_from_bits!(u64x2: u64, u64x2_from_bits |
-                i64x2, f64x2, b64x2, u32x4, i32x4, f32x4, b32x4,
-                u16x8, i16x8, b16x8, u8x16, i8x16, b8x16);
-impl_from_bits!(i64x2: i64, i64x2_from_bits |
-                u64x2, f64x2, b64x2, u32x4, i32x4, f32x4, b32x4,
-                u16x8, i16x8, b16x8, u8x16, i8x16, b8x16);
-impl_from_bits!(f64x2: f64, f64x2_from_bits |
-                i64x2, u64x2, b64x2, u32x4, i32x4, f32x4, b32x4,
-                u16x8, i16x8, b16x8, u8x16, i8x16, b8x16);
-impl_from_bits!(u32x4: u32, u32x4_from_bits |
-                u64x2, i64x2, f64x2, b64x2, i32x4, f32x4, b32x4,
-                u16x8, i16x8, b16x8, u8x16, i8x16, b8x16);
-impl_from_bits!(i32x4: i32, i32x4_from_bits |
-                u64x2, i64x2, f64x2, b64x2, u32x4, f32x4, b32x4,
-                u16x8, i16x8, b16x8, u8x16, i8x16, b8x16);
-impl_from_bits!(f32x4: f32, f32x4_from_bits |
-                u64x2, i64x2, f64x2, b64x2, i32x4, u32x4, b32x4,
-                u16x8, i16x8, b16x8, u8x16, i8x16, b8x16);
-impl_from_bits!(u16x8: u16, u16x8_from_bits |
-                u64x2, i64x2, f64x2, b64x2, u32x4, i32x4, f32x4, b32x4,
-                i16x8, b16x8, u8x16, i8x16, b8x16);
-impl_from_bits!(i16x8: i16, i16x8_from_bits |
-                u64x2, i64x2, f64x2, b64x2, u32x4, i32x4, f32x4, b32x4,
-                u16x8, b16x8, u8x16, i8x16, b8x16);
-impl_from_bits!(u8x16: u8, u8x16_from_bits |
-                u64x2, i64x2, f64x2, b64x2, u32x4, i32x4, f32x4, b32x4,
-                u16x8, i16x8, b16x8, i8x16, b8x16);
-impl_from_bits!(i8x16: i8, i8x16_from_bits |
-                u64x2, i64x2, f64x2, b64x2, u32x4, i32x4, f32x4, b32x4,
-                u16x8, i16x8, b16x8, u8x16, b8x16);
+impl_from_bits!(
+    u64x2: u64,
+    u64x2_from_bits | i64x2,
+    f64x2,
+    b64x2,
+    u32x4,
+    i32x4,
+    f32x4,
+    b32x4,
+    u16x8,
+    i16x8,
+    b16x8,
+    u8x16,
+    i8x16,
+    b8x16
+);
+impl_from_bits!(
+    i64x2: i64,
+    i64x2_from_bits | u64x2,
+    f64x2,
+    b64x2,
+    u32x4,
+    i32x4,
+    f32x4,
+    b32x4,
+    u16x8,
+    i16x8,
+    b16x8,
+    u8x16,
+    i8x16,
+    b8x16
+);
+impl_from_bits!(
+    f64x2: f64,
+    f64x2_from_bits | i64x2,
+    u64x2,
+    b64x2,
+    u32x4,
+    i32x4,
+    f32x4,
+    b32x4,
+    u16x8,
+    i16x8,
+    b16x8,
+    u8x16,
+    i8x16,
+    b8x16
+);
+impl_from_bits!(
+    u32x4: u32,
+    u32x4_from_bits | u64x2,
+    i64x2,
+    f64x2,
+    b64x2,
+    i32x4,
+    f32x4,
+    b32x4,
+    u16x8,
+    i16x8,
+    b16x8,
+    u8x16,
+    i8x16,
+    b8x16
+);
+impl_from_bits!(
+    i32x4: i32,
+    i32x4_from_bits | u64x2,
+    i64x2,
+    f64x2,
+    b64x2,
+    u32x4,
+    f32x4,
+    b32x4,
+    u16x8,
+    i16x8,
+    b16x8,
+    u8x16,
+    i8x16,
+    b8x16
+);
+impl_from_bits!(
+    f32x4: f32,
+    f32x4_from_bits | u64x2,
+    i64x2,
+    f64x2,
+    b64x2,
+    i32x4,
+    u32x4,
+    b32x4,
+    u16x8,
+    i16x8,
+    b16x8,
+    u8x16,
+    i8x16,
+    b8x16
+);
+impl_from_bits!(
+    u16x8: u16,
+    u16x8_from_bits | u64x2,
+    i64x2,
+    f64x2,
+    b64x2,
+    u32x4,
+    i32x4,
+    f32x4,
+    b32x4,
+    i16x8,
+    b16x8,
+    u8x16,
+    i8x16,
+    b8x16
+);
+impl_from_bits!(
+    i16x8: i16,
+    i16x8_from_bits | u64x2,
+    i64x2,
+    f64x2,
+    b64x2,
+    u32x4,
+    i32x4,
+    f32x4,
+    b32x4,
+    u16x8,
+    b16x8,
+    u8x16,
+    i8x16,
+    b8x16
+);
+impl_from_bits!(
+    u8x16: u8,
+    u8x16_from_bits | u64x2,
+    i64x2,
+    f64x2,
+    b64x2,
+    u32x4,
+    i32x4,
+    f32x4,
+    b32x4,
+    u16x8,
+    i16x8,
+    b16x8,
+    i8x16,
+    b8x16
+);
+impl_from_bits!(
+    i8x16: i8,
+    i8x16_from_bits | u64x2,
+    i64x2,
+    f64x2,
+    b64x2,
+    u32x4,
+    i32x4,
+    f32x4,
+    b32x4,
+    u16x8,
+    i16x8,
+    b16x8,
+    u8x16,
+    b8x16
+);
 
 #[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
-use ::coresimd::x86::__m128 as __m128;
+use coresimd::x86::__m128;
 #[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
-use ::coresimd::x86::__m128i as __m128i;
+use coresimd::x86::__m128i;
 #[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
-use ::coresimd::x86::__m128d as __m128d;
+use coresimd::x86::__m128d;
 
 #[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
 impl_from_bits_!(f64x2: __m128, __m128i, __m128d);
@@ -159,27 +289,99 @@ impl_from_bits_!(u8x16: __m128, __m128i, __m128d);
 #[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
 impl_from_bits_!(i8x16: __m128, __m128i, __m128d);
 
-impl_from!(f64x2: f64, f64x2_from | f32x2, u64x2, i64x2, u32x2, i32x2,
-           u16x2, i16x2, u8x2, i8x2
+impl_from!(
+    f64x2: f64,
+    f64x2_from | f32x2,
+    u64x2,
+    i64x2,
+    u32x2,
+    i32x2,
+    u16x2,
+    i16x2,
+    u8x2,
+    i8x2
 );
-impl_from!(f32x4: f32, f32x4_from | f64x4, u64x4, i64x4, u32x4, i32x4,
-           u16x4, i16x4, u8x4, i8x4
+impl_from!(
+    f32x4: f32,
+    f32x4_from | f64x4,
+    u64x4,
+    i64x4,
+    u32x4,
+    i32x4,
+    u16x4,
+    i16x4,
+    u8x4,
+    i8x4
 );
-impl_from!(u64x2: u64, u64x2_from | f32x2, f64x2, i64x2, i32x2, u32x2,
-           i16x2, u16x2, i8x2, u8x2
+impl_from!(
+    u64x2: u64,
+    u64x2_from | f32x2,
+    f64x2,
+    i64x2,
+    i32x2,
+    u32x2,
+    i16x2,
+    u16x2,
+    i8x2,
+    u8x2
 );
-impl_from!(i64x2: i64, i64x2_from | f32x2, f64x2, u64x2, i32x2, u32x2,
-           i16x2, u16x2, i8x2, u8x2
+impl_from!(
+    i64x2: i64,
+    i64x2_from | f32x2,
+    f64x2,
+    u64x2,
+    i32x2,
+    u32x2,
+    i16x2,
+    u16x2,
+    i8x2,
+    u8x2
 );
-impl_from!(u32x4: u32, u32x4_from | f64x4, u64x4, i64x4, f32x4, i32x4,
-           u16x4, i16x4, u8x4, i8x4
+impl_from!(
+    u32x4: u32,
+    u32x4_from | f64x4,
+    u64x4,
+    i64x4,
+    f32x4,
+    i32x4,
+    u16x4,
+    i16x4,
+    u8x4,
+    i8x4
 );
-impl_from!(i32x4: i32, i32x4_from | f64x4, u64x4, i64x4, f32x4, u32x4,
-           u16x4, i16x4, u8x4, i8x4
+impl_from!(
+    i32x4: i32,
+    i32x4_from | f64x4,
+    u64x4,
+    i64x4,
+    f32x4,
+    u32x4,
+    u16x4,
+    i16x4,
+    u8x4,
+    i8x4
 );
-impl_from!(i16x8: i16, i16x8_from |
-           f64x8, u64x8, i64x8, f32x8, u32x8, i32x8, u16x8, u8x8, i8x8
+impl_from!(
+    i16x8: i16,
+    i16x8_from | f64x8,
+    u64x8,
+    i64x8,
+    f32x8,
+    u32x8,
+    i32x8,
+    u16x8,
+    u8x8,
+    i8x8
 );
-impl_from!(u16x8: u16, u16x8_from |
-           f64x8, u64x8, i64x8, f32x8, u32x8, i32x8, i16x8, u8x8, i8x8
+impl_from!(
+    u16x8: u16,
+    u16x8_from | f64x8,
+    u64x8,
+    i64x8,
+    f32x8,
+    u32x8,
+    i32x8,
+    i16x8,
+    u8x8,
+    i8x8
 );

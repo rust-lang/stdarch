@@ -81,4 +81,3 @@ macro_rules! test_bool_reductions {
         }
     }
 }
-

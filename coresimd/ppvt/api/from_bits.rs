@@ -1,5 +1,5 @@
-//! Implements the FromBits trait for vector types, which performs bitwise lossless
-//! transmutes between equally-sized vector types.
+//! Implements the FromBits trait for vector types, which performs bitwise
+//! lossless transmutes between equally-sized vector types.
 
 macro_rules! impl_from_bits_ {
     ($to:ident: $($from:ident),+) => {
@@ -13,7 +13,6 @@ macro_rules! impl_from_bits_ {
         )+
     }
 }
-
 
 macro_rules! impl_from_bits {
     ($to:ident: $elem_ty:ident, $test_mod:ident | $($from:ident),+) => {

@@ -208,7 +208,7 @@ macro_rules! test_load_store {
         #[test]
         #[should_panic]
         fn store_aligned_fail_align() {
-            unsafe { 
+            unsafe {
                 use ::coresimd::simd::$id;
                 use ::std::{slice, mem};
                 let mut aligned = A { data: [0 as $elem_ty; 2 * $id::lanes()] };

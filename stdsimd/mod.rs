@@ -1,10 +1,10 @@
 /// SIMD and vendor intrinsics module.
 ///
-/// This module is intended to be the gateway to architecture-specific intrinsic
-/// functions, typically related to SIMD (but not always!). Each architecture
-/// that Rust compiles to may contain a submodule here, which means that this is
-/// not a portable module! If you're writing a portable library take care when
-/// using these APIs!
+/// This module is intended to be the gateway to architecture-specific
+/// intrinsic functions, typically related to SIMD (but not always!). Each
+/// architecture that Rust compiles to may contain a submodule here, which
+/// means that this is not a portable module! If you're writing a portable
+/// library take care when using these APIs!
 ///
 /// Under this module you'll find an architecture-named module, such as
 /// `x86_64`. Each `#[cfg(target_arch)]` that Rust can compile to may have a
@@ -42,13 +42,13 @@
 ///
 /// # CPU Feature Detection
 ///
-/// In order to call these APIs in a safe fashion there's a number of mechanisms
-/// available to ensure that the correct CPU feature is available to call an
-/// intrinsic. Let's consider, for example, the `_mm256_add_epi64` intrinsics on
-/// the `x86` and `x86_64` architectures. This function requires the AVX2
-/// feature as [documented by Intel][intel-dox] so to correctly call this
-/// function we need to (a) guarantee we only call it on x86/x86_64 and (b)
-/// ensure that the CPU feature is available
+/// In order to call these APIs in a safe fashion there's a number of
+/// mechanisms available to ensure that the correct CPU feature is available
+/// to call an intrinsic. Let's consider, for example, the `_mm256_add_epi64`
+/// intrinsics on the `x86` and `x86_64` architectures. This function requires
+/// the AVX2 feature as [documented by Intel][intel-dox] so to correctly call
+/// this function we need to (a) guarantee we only call it on x86/x86_64 and
+/// (b) ensure that the CPU feature is available
 ///
 /// [intel-dox]: https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_add_epi64&expand=100
 ///
@@ -80,9 +80,9 @@
 /// `#[cfg]` to only compile the code in situations where the safety guarantees
 /// are upheld.
 ///
-/// Statically enabling a feature is typically done with the `-C target-feature`
-/// or `-C target-cpu` flags to the compiler. For example if your local CPU
-/// supports AVX2 then you can compile the above function with:
+/// Statically enabling a feature is typically done with the `-C
+/// target-feature` or `-C target-cpu` flags to the compiler. For example if
+/// your local CPU supports AVX2 then you can compile the above function with:
 ///
 /// ```sh
 /// $ RUSTFLAGS='-C target-cpu=native' cargo build
@@ -107,8 +107,8 @@
 /// sections more optimized for different CPUs.
 ///
 /// Taking our previous example from before, we're going to compile our binary
-/// *without* AVX2 support, but we'd like to enable it for just one function. We
-/// can do that in a manner like:
+/// *without* AVX2 support, but we'd like to enable it for just one function.
+/// We can do that in a manner like:
 ///
 /// ```ignore
 /// fn foo() {
@@ -141,7 +141,8 @@
 ///   the standard library, this macro will perform necessary runtime detection
 ///   to determine whether the CPU the program is running on supports the
 ///   specified feature. In this case the macro will expand to a boolean
-///   expression evaluating to whether the local CPU has the AVX2 feature or not.
+/// expression evaluating to whether the local CPU has the AVX2 feature or
+/// not.
 ///
 ///   Note that this macro, like the `arch` module, is platform-specific. The
 ///   name of the macro is the same across platforms, but the arguments to the
@@ -166,9 +167,9 @@
 ///
 /// # Ergonomics
 ///
-/// It's important to note that using the `arch` module is not the easiest thing
-/// in the world, so if you're curious to try it out you may want to brace
-/// yourself for some wordiness!
+/// It's important to note that using the `arch` module is not the easiest
+/// thing in the world, so if you're curious to try it out you may want to
+/// brace yourself for some wordiness!
 ///
 /// The primary purpose of this module is to enable stable crates on crates.io
 /// to build up much more ergonomic abstractions which end up using SIMD under
@@ -240,101 +241,6 @@
 /// we'll be using SSE4.1 features to implement hex encoding.
 ///
 /// ```
-/// #![feature(cfg_target_feature, target_feature, stdsimd)]
-/// # #![cfg_attr(not(dox), no_std)]
-/// # #[cfg(not(dox))]
-/// # extern crate std as real_std;
-/// # #[cfg(not(dox))]
-/// # #[macro_use]
-/// # extern crate stdsimd as std;
-///
-/// fn main() {
-///     let mut dst = [0; 32];
-///     hex_encode(b"\x01\x02\x03", &mut dst);
-///     assert_eq!(&dst[..6], b"010203");
-///
-///     let mut src = [0; 16];
-///     for i in 0..16 {
-///         src[i] = (i + 1) as u8;
-///     }
-///     hex_encode(&src, &mut dst);
-///     assert_eq!(&dst, b"0102030405060708090a0b0c0d0e0f10");
-/// }
-///
-/// pub fn hex_encode(src: &[u8], dst: &mut [u8]) {
-///     let len = src.len().checked_mul(2).unwrap();
-///     assert!(dst.len() >= len);
-///
-///     #[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
-///     {
-///         if is_target_feature_detected!("sse4.1") {
-///             return unsafe { hex_encode_sse41(src, dst) };
-///         }
-///     }
-///
-///     hex_encode_fallback(src, dst)
-/// }
-///
-/// // translated from https://github.com/Matherunner/bin2hex-sse/blob/master/base16_sse4.cpp
-/// #[target_feature(enable = "sse4.1")]
-/// #[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
-/// unsafe fn hex_encode_sse41(mut src: &[u8], dst: &mut [u8]) {
-///     #[cfg(target_arch = "x86")]
-///     use std::arch::x86::*;
-///     #[cfg(target_arch = "x86_64")]
-///     use std::arch::x86_64::*;
-///
-///     let ascii_zero = _mm_set1_epi8(b'0' as i8);
-///     let nines = _mm_set1_epi8(9);
-///     let ascii_a = _mm_set1_epi8((b'a' - 9 - 1) as i8);
-///     let and4bits = _mm_set1_epi8(0xf);
-///
-///     let mut i = 0_isize;
-///     while src.len() >= 16 {
-///         let invec = _mm_loadu_si128(src.as_ptr() as *const _);
-///
-///         let masked1 = _mm_and_si128(invec, and4bits);
-///         let masked2 = _mm_and_si128(_mm_srli_epi64(invec, 4), and4bits);
-///
-///         // return 0xff corresponding to the elements > 9, or 0x00 otherwise
-///         let cmpmask1 = _mm_cmpgt_epi8(masked1, nines);
-///         let cmpmask2 = _mm_cmpgt_epi8(masked2, nines);
-///
-///         // add '0' or the offset depending on the masks
-///         let masked1 = _mm_add_epi8(
-///             masked1,
-///             _mm_blendv_epi8(ascii_zero, ascii_a, cmpmask1),
-///         );
-///         let masked2 = _mm_add_epi8(
-///             masked2,
-///             _mm_blendv_epi8(ascii_zero, ascii_a, cmpmask2),
-///         );
-///
-///         // interleave masked1 and masked2 bytes
-///         let res1 = _mm_unpacklo_epi8(masked2, masked1);
-///         let res2 = _mm_unpackhi_epi8(masked2, masked1);
-///
-///         _mm_storeu_si128(dst.as_mut_ptr().offset(i * 2) as *mut _, res1);
-///         _mm_storeu_si128(dst.as_mut_ptr().offset(i * 2 + 16) as *mut _, res2);
-///         src = &src[16..];
-///         i += 16;
-///     }
-///
-///     let i = i as usize;
-///     hex_encode_fallback(src, &mut dst[i * 2..]);
-/// }
-///
-/// fn hex_encode_fallback(src: &[u8], dst: &mut [u8]) {
-///     fn hex(byte: u8) -> u8 {
-///         static TABLE: &[u8] = b"0123456789abcdef";
-///         TABLE[byte as usize]
-///     }
-///
-///     for (byte, slots) in src.iter().zip(dst.chunks_mut(2)) {
-///         slots[0] = hex((*byte >> 4) & 0xf);
-///         slots[1] = hex(*byte & 0xf);
-///     }
-/// }
 /// ```
 
 #[unstable(feature = "stdsimd", issue = "0")]

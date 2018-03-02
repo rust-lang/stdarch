@@ -3,9 +3,9 @@ mod ppvt;
 
 /// Platform independent SIMD vector types and operations.
 ///
-/// This is an **unstable** module for portable SIMD operations. This module has
-/// not yet gone through an RFC and is likely to change, but feedback is always
-/// welcome!
+/// This is an **unstable** module for portable SIMD operations. This module
+/// has not yet gone through an RFC and is likely to change, but feedback is
+/// always welcome!
 #[unstable(feature = "stdsimd", issue = "0")]
 pub mod simd {
     pub use coresimd::ppvt::*;

@@ -1,4 +1,3 @@
-
 #![allow(dead_code)]
 
 use core::mem;
@@ -45,7 +44,7 @@ pub struct AuxVec {
 /// [auxv_docs]: https://docs.rs/auxv/0.3.3/auxv/
 pub fn auxv() -> Result<AuxVec, ()> {
     if !cfg!(target_os = "linux") {
-        return Err(())
+        return Err(());
     }
     if let Ok(hwcap) = getauxval(AT_HWCAP) {
         #[cfg(target_arch = "aarch64")]
@@ -78,7 +77,10 @@ pub fn auxv() -> Result<AuxVec, ()> {
         pub type F = unsafe extern "C" fn(usize) -> usize;
 
         unsafe {
-            let ptr = libc::dlsym(libc::RTLD_DEFAULT, "getauxval\0".as_ptr() as *const _);
+            let ptr = libc::dlsym(
+                libc::RTLD_DEFAULT,
+                "getauxval\0".as_ptr() as *const _,
+            );
             if ptr.is_null() {
                 return Err(());
             }
@@ -259,10 +261,10 @@ mod tests {
 
     #[test]
     fn auxv_crate() {
-        if cfg!(target_arch = "x86") ||
-            cfg!(target_arch = "x86_64") ||
-            cfg!(target_arch = "powerpc") {
-            return
+        if cfg!(target_arch = "x86") || cfg!(target_arch = "x86_64")
+            || cfg!(target_arch = "powerpc")
+        {
+            return;
         }
         let v = auxv();
         if let Some(hwcap) = auxv_crate_getauxval(AT_HWCAP) {
@@ -280,8 +282,9 @@ mod tests {
     #[cfg(target_arch = "arm")]
     #[test]
     fn linux_rpi3() {
-        let v = auxv_from_file("../../stdsimd/arch/detect/test_data/linux-rpi3.auxv")
-            .unwrap();
+        let v = auxv_from_file(
+            "../../stdsimd/arch/detect/test_data/linux-rpi3.auxv",
+        ).unwrap();
         assert_eq!(v.hwcap, 4174038);
         assert_eq!(v.hwcap2, 16);
     }
@@ -320,7 +323,7 @@ mod tests {
     #[test]
     fn auxv_crate_procfs() {
         if cfg!(target_arch = "x86") || cfg!(target_arch = "x86_64") {
-            return
+            return;
         }
         let v = auxv();
         if let Some(hwcap) = auxv_crate_getprocfs(AT_HWCAP) {

@@ -10,9 +10,9 @@
 //! * [x] `Clone`,
 //! * [x] `Debug`,
 //! * [x] `Default` (TODO: implement meaningfull defaults)
-//! * [x] `PartialEq` (TODO: re-write in term of comparison operations and boolean reductions),
-//! * [x] `PartialOrd` (TODO: re-write in term of comparison operations and boolean reductions),
-//! * [x] `Hash`.
+//! * [x] `PartialEq` (TODO: re-write in term of comparison operations and
+//! boolean reductions), * [x] `PartialOrd` (TODO: re-write in term of
+//! comparison operations and boolean reductions), * [x] `Hash`.
 //!
 //! Non-floating-point vector types also implement:
 //!
@@ -27,24 +27,25 @@
 //!
 //! * [x]: `FromBits/IntoBits`: bitwise lossless transmutes between vectors of
 //!        the same size (i.e., same `mem::size_of`).
-//! * [x]: `From/Into`: casts between vectors with the same number of lanes (potentially lossy).
+//! * [x]: `From/Into`: casts between vectors with the same number of lanes
+//! (potentially lossy).
 //!
 //! ## Inherent methods
 //!
-//! * [x] minimal API: implemented by all vector types except for boolean vectors.
-//! * [x] minimal boolean vector API: implemented by boolean vectors.
+//! * [x] minimal API: implemented by all vector types except for boolean
+//! vectors. * [x] minimal boolean vector API: implemented by boolean vectors.
 //! * [x] load/store API: aligned and unaligned memory loads and
 //!       stores - implemented by all vectors.
 //! * [x] comparison API: vector lane-wise comparison producing
 //!       boolean vectors - implemented by all non-boolean vectors.
 //! * [ ] comparison API for boolean vectors: does this make sense?
 //! * [x] arithmetic operations: implemented by all non-boolean vectors.
-//! * [x] `std::ops::Neg`: implemented by signed-integer and floating-point vectors.
-//! * [x] bitwise operations: implemented by integer and boolean vectors.
-//! * [x] shift operations: implemented by integer vectors.
-//! * [x] arithmetic reductions: implemented by integer and floating-point vectors.
-//! * [x] bitwise reductions: implemented by integer and boolean vectors.
-//! * [x] boolean reductions: implemented by boolean vectors.
+//! * [x] `std::ops::Neg`: implemented by signed-integer and floating-point
+//! vectors. * [x] bitwise operations: implemented by integer and boolean
+//! vectors. * [x] shift operations: implemented by integer vectors.
+//! * [x] arithmetic reductions: implemented by integer and floating-point
+//! vectors. * [x] bitwise reductions: implemented by integer and boolean
+//! vectors. * [x] boolean reductions: implemented by boolean vectors.
 //! * [ ] portable shuffles: shuffle_vector.
 //! * [ ] portable gather/scatter:
 

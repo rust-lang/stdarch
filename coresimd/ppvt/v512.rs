@@ -156,75 +156,230 @@ simd_b_ty! {
     /// A 512-bit vector with 8 `bool` lanes.
 }
 
-impl_from_bits!(i8x64: i8, i8x64_from_bits |
-                u64x8, i64x8, f64x8, b64x8,
-                u32x16, i32x16, f32x16, b32x16,
-                u16x32, i16x32, b16x32,
-                u8x64, b8x64);
-impl_from_bits!(u8x64: u8, u8x64_from_bits |
-                u64x8, i64x8, f64x8, b64x8,
-                u32x16, i32x16, f32x16, b32x16,
-                u16x32, i16x32, b16x32,
-                i8x64, b8x64);
-impl_from_bits!(i16x32: i16, i16x32_from_bits |
-                u64x8, i64x8, f64x8, b64x8,
-                u32x16, i32x16, f32x16, b32x16,
-                u16x32, b16x32,
-                i8x64, u8x64, b8x64);
-impl_from_bits!(u16x32: u16, u16x32_from_bits |
-                u64x8, i64x8, f64x8, b64x8,
-                u32x16, i32x16, f32x16, b32x16,
-                i16x32, b16x32,
-                i8x64, u8x64, b8x64);
-impl_from_bits!(i32x16: i32, i32x16_from_bits |
-                u64x8, i64x8, f64x8, b64x8,
-                u32x16, f32x16, b32x16,
-                u16x32, i16x32, b16x32,
-                i8x64, u8x64, b8x64);
-impl_from_bits!(u32x16: u32, u32x16_from_bits |
-                u64x8, i64x8, f64x8, b64x8,
-                i32x16, f32x16, b32x16,
-                u16x32, i16x32, b16x32,
-                i8x64, u8x64, b8x64);
-impl_from_bits!(f32x16: f32, f32x16_from_bits |
-                u64x8, i64x8, f64x8, b64x8,
-                u32x16, i32x16, b32x16,
-                u16x32, i16x32, b16x32,
-                i8x64, u8x64, b8x64);
-impl_from_bits!(i64x8: i64, i64x8_from_bits |
-                u64x8, f64x8, b64x8,
-                u32x16, i32x16, f32x16, b32x16,
-                u16x32, i16x32, b16x32,
-                i8x64, u8x64, b8x64);
-impl_from_bits!(u64x8: u64, u64x8_from_bits |
-                i64x8, f64x8, b64x8,
-                u32x16, i32x16, f32x16, b32x16,
-                u16x32, i16x32, b16x32,
-                i8x64, u8x64, b8x64);
-impl_from_bits!(f64x8: f64, f64x8_from_bits |
-                u64x8, i64x8, b64x8,
-                u32x16, i32x16, f32x16, b32x16,
-                u16x32, i16x32, b16x32,
-                i8x64, u8x64, b8x64);
+impl_from_bits!(
+    i8x64: i8,
+    i8x64_from_bits | u64x8,
+    i64x8,
+    f64x8,
+    b64x8,
+    u32x16,
+    i32x16,
+    f32x16,
+    b32x16,
+    u16x32,
+    i16x32,
+    b16x32,
+    u8x64,
+    b8x64
+);
+impl_from_bits!(
+    u8x64: u8,
+    u8x64_from_bits | u64x8,
+    i64x8,
+    f64x8,
+    b64x8,
+    u32x16,
+    i32x16,
+    f32x16,
+    b32x16,
+    u16x32,
+    i16x32,
+    b16x32,
+    i8x64,
+    b8x64
+);
+impl_from_bits!(
+    i16x32: i16,
+    i16x32_from_bits | u64x8,
+    i64x8,
+    f64x8,
+    b64x8,
+    u32x16,
+    i32x16,
+    f32x16,
+    b32x16,
+    u16x32,
+    b16x32,
+    i8x64,
+    u8x64,
+    b8x64
+);
+impl_from_bits!(
+    u16x32: u16,
+    u16x32_from_bits | u64x8,
+    i64x8,
+    f64x8,
+    b64x8,
+    u32x16,
+    i32x16,
+    f32x16,
+    b32x16,
+    i16x32,
+    b16x32,
+    i8x64,
+    u8x64,
+    b8x64
+);
+impl_from_bits!(
+    i32x16: i32,
+    i32x16_from_bits | u64x8,
+    i64x8,
+    f64x8,
+    b64x8,
+    u32x16,
+    f32x16,
+    b32x16,
+    u16x32,
+    i16x32,
+    b16x32,
+    i8x64,
+    u8x64,
+    b8x64
+);
+impl_from_bits!(
+    u32x16: u32,
+    u32x16_from_bits | u64x8,
+    i64x8,
+    f64x8,
+    b64x8,
+    i32x16,
+    f32x16,
+    b32x16,
+    u16x32,
+    i16x32,
+    b16x32,
+    i8x64,
+    u8x64,
+    b8x64
+);
+impl_from_bits!(
+    f32x16: f32,
+    f32x16_from_bits | u64x8,
+    i64x8,
+    f64x8,
+    b64x8,
+    u32x16,
+    i32x16,
+    b32x16,
+    u16x32,
+    i16x32,
+    b16x32,
+    i8x64,
+    u8x64,
+    b8x64
+);
+impl_from_bits!(
+    i64x8: i64,
+    i64x8_from_bits | u64x8,
+    f64x8,
+    b64x8,
+    u32x16,
+    i32x16,
+    f32x16,
+    b32x16,
+    u16x32,
+    i16x32,
+    b16x32,
+    i8x64,
+    u8x64,
+    b8x64
+);
+impl_from_bits!(
+    u64x8: u64,
+    u64x8_from_bits | i64x8,
+    f64x8,
+    b64x8,
+    u32x16,
+    i32x16,
+    f32x16,
+    b32x16,
+    u16x32,
+    i16x32,
+    b16x32,
+    i8x64,
+    u8x64,
+    b8x64
+);
+impl_from_bits!(
+    f64x8: f64,
+    f64x8_from_bits | u64x8,
+    i64x8,
+    b64x8,
+    u32x16,
+    i32x16,
+    f32x16,
+    b32x16,
+    u16x32,
+    i16x32,
+    b16x32,
+    i8x64,
+    u8x64,
+    b8x64
+);
 
-impl_from!(f64x8: f64, f64x8_from | u64x8, i64x8, u32x8, i32x8, f32x8,
-           u16x8, i16x8, u8x8, i8x8
+impl_from!(
+    f64x8: f64,
+    f64x8_from | u64x8,
+    i64x8,
+    u32x8,
+    i32x8,
+    f32x8,
+    u16x8,
+    i16x8,
+    u8x8,
+    i8x8
 );
-impl_from!(i64x8: i64, i64x8_from | u64x8, f64x8, u32x8, i32x8, f32x8,
-           u16x8, i16x8, u8x8, i8x8
+impl_from!(
+    i64x8: i64,
+    i64x8_from | u64x8,
+    f64x8,
+    u32x8,
+    i32x8,
+    f32x8,
+    u16x8,
+    i16x8,
+    u8x8,
+    i8x8
 );
-impl_from!(u64x8: u64, u64x8_from | i64x8, f64x8, u32x8, i32x8, f32x8,
-           u16x8, i16x8, u8x8, i8x8
+impl_from!(
+    u64x8: u64,
+    u64x8_from | i64x8,
+    f64x8,
+    u32x8,
+    i32x8,
+    f32x8,
+    u16x8,
+    i16x8,
+    u8x8,
+    i8x8
 );
 
-impl_from!(f32x16: f32, f32x16_from | u32x16, i32x16,
-           u16x16, i16x16, u8x16, i8x16
+impl_from!(
+    f32x16: f32,
+    f32x16_from | u32x16,
+    i32x16,
+    u16x16,
+    i16x16,
+    u8x16,
+    i8x16
 );
-impl_from!(i32x16: i32, i32x16_from | u32x16, f32x16,
-           u16x16, i16x16, u8x16, i8x16
+impl_from!(
+    i32x16: i32,
+    i32x16_from | u32x16,
+    f32x16,
+    u16x16,
+    i16x16,
+    u8x16,
+    i8x16
 );
-impl_from!(u32x16: u32, u32x16_from | i32x16, f32x16,
-           u16x16, i16x16, u8x16, i8x16
+impl_from!(
+    u32x16: u32,
+    u32x16_from | i32x16,
+    f32x16,
+    u16x16,
+    i16x16,
+    u8x16,
+    i8x16
 );
 
 impl_from!(i16x32: i16, i16x32_from | u16x32, u8x32, i8x32);

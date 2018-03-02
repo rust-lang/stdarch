@@ -26,5 +26,25 @@ simd_b_ty! {
 impl_from_bits!(i8x2: i8, i8x2_from_bits | u8x2, b8x2);
 impl_from_bits!(u8x2: u8, u8x2_from_bits | i8x2, b8x2);
 
-impl_from!(i8x2: i8, i8x2_from | f64x2, u64x2, i64x2, f32x2, u32x2, i32x2, u16x2, u8x2);
-impl_from!(u8x2: u8, u8x2_from | f64x2, u64x2, i64x2, f32x2, u32x2, i32x2, u16x2, i8x2);
+impl_from!(
+    i8x2: i8,
+    i8x2_from | f64x2,
+    u64x2,
+    i64x2,
+    f32x2,
+    u32x2,
+    i32x2,
+    u16x2,
+    u8x2
+);
+impl_from!(
+    u8x2: u8,
+    u8x2_from | f64x2,
+    u64x2,
+    i64x2,
+    f32x2,
+    u32x2,
+    i32x2,
+    u16x2,
+    i8x2
+);
