@@ -1,3 +1,4 @@
+
 //! SIMD and vendor intrinsics support library.
 //!
 //! This crate defines the vendor intrinsics and types primarily used for SIMD

@@ -19,10 +19,7 @@
 //! [wiki_fma]: https://en.wikipedia.org/wiki/Fused_multiply-accumulate
 
 use coresimd::simd_llvm::*;
-use coresimd::v256::*;
-use coresimd::v128::*;
-use coresimd::v64::*;
-use coresimd::v32::*;
+use coresimd::simd::*;
 use coresimd::x86::*;
 use mem;
 

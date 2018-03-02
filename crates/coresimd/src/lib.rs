@@ -13,8 +13,9 @@
            simd_ffi, target_feature, cfg_target_feature, i128_type, asm,
            integer_atomics, stmt_expr_attributes, core_intrinsics,
            crate_in_paths, no_core, attr_literals, rustc_attrs, stdsimd,
-           staged_api)]
-#![cfg_attr(test, feature(proc_macro, test, attr_literals, abi_vectorcall))]
+           staged_api, fn_must_use, core_float, core_slice_ext, align_offset)]
+#![cfg_attr(test, feature(proc_macro, test, attr_literals, abi_vectorcall,
+                          untagged_unions))]
 #![cfg_attr(feature = "cargo-clippy",
             allow(inline_always, too_many_arguments, cast_sign_loss,
                   cast_lossless, cast_possible_wrap,
@@ -53,7 +54,11 @@ use _core::cmp;
 #[allow(unused_imports)]
 use _core::convert;
 #[allow(unused_imports)]
+use _core::default;
+#[allow(unused_imports)]
 use _core::fmt;
+#[allow(unused_imports)]
+use _core::hash;
 #[allow(unused_imports)]
 use _core::intrinsics;
 #[allow(unused_imports)]
@@ -62,6 +67,8 @@ use _core::iter;
 use _core::marker;
 #[allow(unused_imports)]
 use _core::mem;
+#[allow(unused_imports)]
+use _core::num;
 #[allow(unused_imports)]
 use _core::ops;
 #[allow(unused_imports)]
@@ -72,3 +79,5 @@ use _core::prelude;
 use _core::ptr;
 #[allow(unused_imports)]
 use _core::result;
+#[allow(unused_imports)]
+use _core::slice;

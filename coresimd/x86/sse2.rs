@@ -4,8 +4,7 @@
 use stdsimd_test::assert_instr;
 
 use coresimd::simd_llvm::*;
-use coresimd::v128::*;
-use coresimd::v64::*;
+use coresimd::simd::*;
 use coresimd::x86::*;
 use intrinsics;
 use mem;
@@ -2502,7 +2501,7 @@ mod tests {
     use stdsimd_test::simd_test;
     use test::black_box; // Used to inhibit constant-folding.
     use coresimd::x86::*;
-    use coresimd::v128::*;
+    use coresimd::simd::*;
 
     #[simd_test = "sse2"]
     unsafe fn test_mm_pause() {
