@@ -208,10 +208,20 @@ macro_rules! test_load_store {
         #[test]
         #[should_panic]
         fn store_aligned_fail_align() {
-            use ::coresimd::simd::$id;
-            let mut aligned = A { data: [0 as $elem_ty; 2 * $id::lanes()] };
-            let vec = $id::splat(42 as $elem_ty);
-            unsafe { vec.store_aligned(&mut aligned.data[1..]) };
+            unsafe { 
+                use ::coresimd::simd::$id;
+                use ::std::{slice, mem};
+                let mut aligned = A { data: [0 as $elem_ty; 2 * $id::lanes()] };
+                // offset the aligned data by one byte:
+                let s: &mut [u8; 2 * $id::lanes() * mem::size_of::<$elem_ty>()]
+                    = mem::transmute(&mut aligned.data);
+                let s: &mut [$elem_ty] = slice::from_raw_parts_mut(
+                    s.get_unchecked_mut(1) as *mut u8 as *mut $elem_ty,
+                    $id::lanes()
+                );
+                let vec = $id::splat(42 as $elem_ty);
+                vec.store_aligned(s);
+            }
         }
 
         #[test]
@@ -244,9 +254,19 @@ macro_rules! test_load_store {
         #[test]
         #[should_panic]
         fn load_aligned_fail_align() {
-            use ::coresimd::simd::$id;
-            let aligned = A { data: [0 as $elem_ty; 2 * $id::lanes()] };
-            let _vec = unsafe { $id::load_aligned(&aligned.data[1..]) };
+            unsafe {
+                use ::coresimd::simd::$id;
+                use ::std::{slice, mem};
+                let aligned = A { data: [0 as $elem_ty; 2 * $id::lanes()] };
+                // offset the aligned data by one byte:
+                let s: &[u8; 2 * $id::lanes() * mem::size_of::<$elem_ty>()]
+                    = mem::transmute(&aligned.data);
+                let s: &[$elem_ty] = slice::from_raw_parts(
+                    s.get_unchecked(1) as *const u8 as *const $elem_ty,
+                    $id::lanes()
+                );
+                let _vec =  $id::load_aligned(s);
+            }
         }
     }
 }
