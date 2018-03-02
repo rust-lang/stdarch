@@ -5,7 +5,7 @@ macro_rules! impl_arithmetic_reductions {
         impl $id {
             /// Lane-wise addition of the vector elements.
             #[inline(always)]
-            pub fn add(&self) -> $elem_ty {
+            pub fn add(self) -> $elem_ty {
                 let mut r = self.extract(0);
                 for i in 1..$id::lanes() {
                     r += self.extract(i);
@@ -14,7 +14,7 @@ macro_rules! impl_arithmetic_reductions {
             }
             /// Lane-wise substraction of the vector elements.
             #[inline(always)]
-            pub fn sub(&self) -> $elem_ty {
+            pub fn sub(self) -> $elem_ty {
                 let mut r = self.extract(0);
                 for i in 1..$id::lanes() {
                     r -= self.extract(i);
@@ -23,7 +23,7 @@ macro_rules! impl_arithmetic_reductions {
             }
             /// Lane-wise multiplication of the vector elements.
             #[inline(always)]
-            pub fn mul(&self) -> $elem_ty {
+            pub fn mul(self) -> $elem_ty {
                 let mut r = self.extract(0);
                 for i in 1..$id::lanes() {
                     r *= self.extract(i);
@@ -32,7 +32,7 @@ macro_rules! impl_arithmetic_reductions {
             }
             /// Lane-wise division of the vector elements.
             #[inline(always)]
-            pub fn div(&self) -> $elem_ty {
+            pub fn div(self) -> $elem_ty {
                 let mut r = self.extract(0);
                 for i in 1..$id::lanes() {
                     r /= self.extract(i);
@@ -41,7 +41,7 @@ macro_rules! impl_arithmetic_reductions {
             }
             /// Lane-wise remainder of the vector elements.
             #[inline(always)]
-            pub fn rem(&self) -> $elem_ty {
+            pub fn rem(self) -> $elem_ty {
                 let mut r = self.extract(0);
                 for i in 1..$id::lanes() {
                     r %= self.extract(i);

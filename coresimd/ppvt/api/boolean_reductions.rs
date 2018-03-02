@@ -5,17 +5,17 @@ macro_rules! impl_bool_reductions {
         impl $id {
             /// Are `all` vector lanes `true`?
             #[inline(always)]
-            pub fn all(&self) -> bool {
+            pub fn all(self) -> bool {
                 self.and()
             }
             /// Is `any` vector lanes `true`?
             #[inline(always)]
-            pub fn any(&self) -> bool {
+            pub fn any(self) -> bool {
                 self.or()
             }
             /// Are `all` vector lanes `false`?
             #[inline(always)]
-            pub fn none(&self) -> bool {
+            pub fn none(self) -> bool {
                 !self.or()
             }
         }

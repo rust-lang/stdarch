@@ -4,7 +4,7 @@ macro_rules! impl_bitwise_reductions {
     ($id:ident, $elem_ty:ident) => {
         impl $id {
             /// Lane-wise bitwise `and` of the vector elements.
-            pub fn and(&self) -> $elem_ty {
+            pub fn and(self) -> $elem_ty {
                 let mut r = self.extract(0);
                 for i in 1..$id::lanes() {
                     r &= self.extract(i);
@@ -12,7 +12,7 @@ macro_rules! impl_bitwise_reductions {
                 r
             }
             /// Lane-wise bitwise `or` of the vector elements.
-            pub fn or(&self) -> $elem_ty {
+            pub fn or(self) -> $elem_ty {
                 let mut r = self.extract(0);
                 for i in 1..$id::lanes() {
                     r |= self.extract(i);
@@ -20,7 +20,7 @@ macro_rules! impl_bitwise_reductions {
                 r
             }
             /// Lane-wise bitwise `xor` of the vector elements.
-            pub fn xor(&self) -> $elem_ty {
+            pub fn xor(self) -> $elem_ty {
                 let mut r = self.extract(0);
                 for i in 1..$id::lanes() {
                     r ^= self.extract(i);

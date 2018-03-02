@@ -6,7 +6,7 @@ macro_rules! impl_minmax_reductions {
             /// Largest vector value.
             #[inline(always)]
             #[allow(unused_imports)]
-            pub fn max(&self) -> $elem_ty {
+            pub fn max(self) -> $elem_ty {
                 use num::Float;
                 let mut r = self.extract(0);
                 for i in 1..$id::lanes() {
@@ -17,7 +17,7 @@ macro_rules! impl_minmax_reductions {
             /// Smallest vector value.
             #[inline(always)]
             #[allow(unused_imports)]
-            pub fn min(&self) -> $elem_ty {
+            pub fn min(self) -> $elem_ty {
                 use num::Float;
                 let mut r = self.extract(0);
                 for i in 1..$id::lanes() {
