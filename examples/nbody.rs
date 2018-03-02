@@ -51,7 +51,7 @@ impl Frsqrt for f64x2 {
             #[cfg(target_arch = "aarch64")]
             use stdsimd::arch::aarch64::*;
 
-            unsafe { vrsqrte_f32(self.into()).into() }
+            unsafe { vrsqrte_f32((*self).into()).into() }
         }
         #[cfg(not(any(all(any(target_arch = "x86",
                               target_arch = "x86_64"),
