@@ -82,7 +82,7 @@ impl Body {
             x: [x0, x1, x2],
             _fill: 0.0,
             v: [v0, v1, v2],
-            mass: mass,
+            mass,
         }
     }
 }

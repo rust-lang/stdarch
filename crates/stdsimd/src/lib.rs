@@ -8,6 +8,7 @@
 //! [stdsimd]: https://rust-lang-nursery.github.io/stdsimd/x86_64/stdsimd/
 
 #![feature(const_fn, integer_atomics, staged_api, stdsimd)]
+#![cfg_attr(feature = "cargo-clippy", allow(shadow_reuse))]
 #![cfg_attr(target_os = "linux", feature(linkage))]
 #![no_std]
 #![unstable(feature = "stdsimd", issue = "0")]

@@ -242,7 +242,7 @@
 ///
 /// ```
 /// ```
-
+/// Architecture-specific vendor intrinsics.
 #[unstable(feature = "stdsimd", issue = "0")]
 pub mod arch {
     #[cfg(target_arch = "x86")]

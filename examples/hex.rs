@@ -14,6 +14,10 @@
 
 #![feature(cfg_target_feature, target_feature, stdsimd)]
 #![cfg_attr(test, feature(test))]
+#![cfg_attr(feature = "cargo-clippy",
+            allow(result_unwrap_used, print_stdout, option_unwrap_used,
+                  shadow_reuse, cast_possible_wrap, cast_sign_loss,
+                  missing_docs_in_private_items))]
 
 #[macro_use]
 extern crate stdsimd;
