@@ -19,7 +19,11 @@
                   shadow_reuse, cast_possible_wrap, cast_sign_loss,
                   missing_docs_in_private_items))]
 
+#[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
 #[macro_use]
+extern crate stdsimd;
+
+#[cfg(not(any(target_arch = "x86", target_arch = "x86_64")))]
 extern crate stdsimd;
 
 #[cfg(test)]
