@@ -9,9 +9,8 @@
 //! * [x] `Copy`,
 //! * [x] `Clone`,
 //! * [x] `Debug`,
-//! * [x] `Default` (TODO: implement meaningfull defaults)
-//! * [x] `PartialEq` (TODO: re-write in term of comparison operations and
-//!        boolean reductions),
+//! * [x] `Default`
+//! * [x] `PartialEq`
 //! * [x] `PartialOrd` (TODO: re-write in term of
 //!        comparison operations and boolean reductions),
 //!
@@ -60,8 +59,7 @@ macro_rules! define_ty {
     ($id:ident, $($elem_tys:ident),+ | $(#[$doc:meta])*) => {
         $(#[$doc])*
             #[repr(simd)]
-        #[derive(Copy, Debug, /*FIXME:*/ Default,
-                 /*FIXME:*/ PartialEq, /*FIXME:*/ PartialOrd)]
+        #[derive(Copy, Debug, /*FIXME:*/ PartialOrd)]
         #[allow(non_camel_case_types)]
         pub struct $id($($elem_tys),*);
     }
@@ -82,6 +80,8 @@ mod bool_vectors;
 #[macro_use]
 mod cmp;
 #[macro_use]
+mod default;
+#[macro_use]
 mod eq;
 #[macro_use]
 mod fmt;
@@ -99,9 +99,8 @@ mod minimal;
 mod minmax_reductions;
 #[macro_use]
 mod neg;
-//  TODO:
-//#[macro_use]
-//mod partial_eq;
+#[macro_use]
+mod partial_eq;
 // TODO:
 //#[macro_use]
 //mod partial_ord;
@@ -124,7 +123,7 @@ macro_rules! simd_api_imports {
         use ops;
         #[allow(unused_imports)]
         use num;
-        use cmp::{Eq};
+        use cmp::{Eq, PartialEq};
         use ptr;
         use mem;
         #[allow(unused_imports)]
@@ -157,6 +156,8 @@ macro_rules! simd_f_ty {
         impl_arithmetic_reductions!($id, $elem_ty);
         impl_minmax_reductions!($id, $elem_ty);
         impl_neg_op!($id, $elem_ty);
+        impl_partial_eq!($id);
+        impl_default!($id, $elem_ty);
 
         #[cfg(test)]
         mod $test_mod {
@@ -167,6 +168,8 @@ macro_rules! simd_f_ty {
             test_arithmetic_reductions!($id, $elem_ty);
             test_minmax_reductions!($id, $elem_ty);
             test_neg_op!($id, $elem_ty);
+            test_partial_eq!($id, 1. as $elem_ty, 0. as $elem_ty);
+            test_default!($id, $elem_ty);
         }
     }
 }
@@ -189,6 +192,8 @@ macro_rules! simd_i_ty {
         impl_all_shifts!($id, $elem_ty);
         impl_hex_fmt!($id, $elem_ty);
         impl_eq!($id);
+        impl_partial_eq!($id);
+        impl_default!($id, $elem_ty);
 
         #[cfg(test)]
         mod $test_mod {
@@ -204,6 +209,8 @@ macro_rules! simd_i_ty {
             test_bitwise_reductions!($id, !(0 as $elem_ty));
             test_all_shift_ops!($id, $elem_ty);
             test_hex_fmt!($id, $elem_ty);
+            test_partial_eq!($id, 1 as $elem_ty, 0 as $elem_ty);
+            test_default!($id, $elem_ty);
         }
     }
 }
@@ -225,6 +232,8 @@ macro_rules! simd_u_ty {
         impl_all_shifts!($id, $elem_ty);
         impl_hex_fmt!($id, $elem_ty);
         impl_eq!($id);
+        impl_partial_eq!($id);
+        impl_default!($id, $elem_ty);
 
         #[cfg(test)]
         mod $test_mod {
@@ -239,6 +248,8 @@ macro_rules! simd_u_ty {
             test_bitwise_reductions!($id, !(0 as $elem_ty));
             test_all_shift_ops!($id, $elem_ty);
             test_hex_fmt!($id, $elem_ty);
+            test_partial_eq!($id, 1 as $elem_ty, 0 as $elem_ty);
+            test_default!($id, $elem_ty);
         }
     }
 }
@@ -254,6 +265,8 @@ macro_rules! simd_b_ty {
         impl_bool_reductions!($id);
         impl_bool_cmp!($id, $id);
         impl_eq!($id);
+        impl_partial_eq!($id);
+        impl_default!($id, bool);
 
         #[cfg(test)]
         mod $test_mod {
@@ -262,6 +275,8 @@ macro_rules! simd_b_ty {
             test_bool_reductions!($id);
             test_bitwise_reductions!($id, true);
             test_cmp!($id, $elem_ty, $id, true, false);
+            test_partial_eq!($id, true, false);
+            test_default!($id, bool);
         }
     }
 }
