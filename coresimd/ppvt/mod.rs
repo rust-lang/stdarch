@@ -50,11 +50,15 @@ pub use self::v512::*;
 
 use marker;
 
+/// Safe lossless bitwise conversion from `T` to `Self`.
 pub trait FromBits<T>: marker::Sized {
+    /// Safe lossless bitwise from `T` to `Self`.
     fn from_bits(T) -> Self;
 }
 
+/// Safe lossless bitwise conversion from `Self` to `T`.
 pub trait IntoBits<T>: marker::Sized {
+    /// Safe lossless bitwise transmute from `self` to `T`.
     fn into_bits(self) -> T;
 }
 
@@ -72,7 +76,7 @@ where
 // FromBits (and thus IntoBits) is reflexive
 impl<T> FromBits<T> for T {
     #[inline(always)]
-    fn from_bits(t: T) -> T {
+    fn from_bits(t: Self) -> Self {
         t
     }
 }

@@ -4,7 +4,7 @@ use ::coresimd::simd::*;
 /// LLVM intrinsics used in the sum reduction
 #[allow(improper_ctypes)]
 extern "C" {
-    #[link_name = "llvm.experimental.vector.reduce.add.i8.i8x2"]
+    #[link_name = "llvm.experimental.vector.reduce.add.i8.v2i8"]
     fn reduce_add_i8x2(x: i8x2) -> i8;
     #[link_name = "llvm.experimental.vector.reduce.add.u8.u8x2"]
     fn reduce_add_u8x2(x: u8x2) -> u8;
@@ -92,8 +92,11 @@ extern "C" {
     fn reduce_fadd_f32x16(acc: f32, x: f32x16) -> f32;
 }
 
+/// Reduction: horizontal sum of the vector elements.
 pub trait ReduceAdd {
+    /// Result type of the reduction.
     type Acc;
+    /// Computes the horizontal sum of the vector elements.
     fn reduce_add(self) -> Self::Acc;
 }
 

@@ -318,6 +318,8 @@ pub unsafe fn _mm_slli_si128(a: __m128i, imm8: i32) -> __m128i {
     _mm_slli_si128_impl(a, imm8)
 }
 
+/// Implementation detail: converts the immediate argument of the
+/// `_mm_slli_si128` intrinsic into a compile-time constant.
 #[inline]
 #[target_feature(enable = "sse2")]
 unsafe fn _mm_slli_si128_impl(a: __m128i, imm8: i32) -> __m128i {
@@ -478,6 +480,8 @@ pub unsafe fn _mm_srli_si128(a: __m128i, imm8: i32) -> __m128i {
     _mm_srli_si128_impl(a, imm8)
 }
 
+/// Implementation detail: converts the immediate argument of the
+/// `_mm_srli_si128` intrinsic into a compile-time constant.
 #[inline]
 #[target_feature(enable = "sse2")]
 unsafe fn _mm_srli_si128_impl(a: __m128i, imm8: i32) -> __m128i {

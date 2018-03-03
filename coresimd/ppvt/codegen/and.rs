@@ -78,8 +78,12 @@ extern "C" {
     fn reduce_and_u8x64(x: u8x64) -> u8;
 }
 
+/// Reduction: horizontal bitwise and of the vector elements.
+#[cfg_attr(feature = "cargo-clippy", allow(stutter))]
 pub trait ReduceAnd {
+    /// Result type of the reduction.
     type Acc;
+    /// Computes the horizontal bitwise and of the vector elements
     fn reduce_and(self) -> Self::Acc;
 }
 

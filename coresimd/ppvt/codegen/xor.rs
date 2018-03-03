@@ -78,8 +78,12 @@ extern "C" {
     fn reduce_xor_u8x64(x: u8x64) -> u8;
 }
 
+/// Reduction: horizontal bitwise xor of the vector elements.
+#[cfg_attr(feature = "cargo-clippy", allow(stutter))]
 pub trait ReduceXor {
+    /// Result type of the reduction.
     type Acc;
+    /// Computes the horizontal bitwise xor of the vector elements.
     fn reduce_xor(self) -> Self::Acc;
 }
 

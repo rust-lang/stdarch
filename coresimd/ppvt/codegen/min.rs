@@ -92,8 +92,12 @@ extern "C" {
     fn reduce_fmin_f32x16(x: f32x16) -> f32;
 }
 
+/// Reduction: horizontal max of the vector elements.
+#[cfg_attr(feature = "cargo-clippy", allow(stutter))]
 pub trait ReduceMin {
+    /// Result type of the reduction.
     type Acc;
+    /// Computes the horizontal max of the vector elements.
     fn reduce_min(self) -> Self::Acc;
 }
 

@@ -78,8 +78,12 @@ extern "C" {
     fn reduce_or_u8x64(x: u8x64) -> u8;
 }
 
+/// Reduction: horizontal bitwise or of the vector elements.
+#[cfg_attr(feature = "cargo-clippy", allow(stutter))]
 pub trait ReduceOr {
+    /// Result of the reduction.
     type Acc;
+    /// Computes the horizontal bitwise or of the vector elements.
     fn reduce_or(self) -> Self::Acc;
 }
 

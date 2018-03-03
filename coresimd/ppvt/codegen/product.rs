@@ -94,8 +94,11 @@ extern "C" {
     */
 }
 
+/// Reduction: horizontal product of the vector elements.
 pub trait ReduceMul {
+    /// Result type of the reduction.
     type Acc;
+    /// Computes the horizontal product of the vector elements.
     fn reduce_mul(self) -> Self::Acc;
 }
 

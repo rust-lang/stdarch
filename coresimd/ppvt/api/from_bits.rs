@@ -1,4 +1,4 @@
-//! Implements the FromBits trait for vector types, which performs bitwise
+//! Implements the `FromBits` trait for vector types, which performs bitwise
 //! lossless transmutes between equally-sized vector types.
 
 macro_rules! impl_from_bits_ {

@@ -18,8 +18,8 @@
 //! Non-floating-point vector types also implement:
 //!
 //! * [x] `Hash`,
-//! * [ ] `Eq`, and
-//! * [ ] `Ord`.
+//! * [x] `Eq`, and
+//! * [x] `Ord`.
 //!
 //! Integer vector types also implement:
 //!
@@ -40,8 +40,7 @@
 //! * [x] load/store API: aligned and unaligned memory loads and
 //!       stores - implemented by all vectors.
 //! * [x] comparison API: vector lane-wise comparison producing
-//!       boolean vectors - implemented by all non-boolean vectors.
-//! * [ ] comparison API for boolean vectors: does this make sense?
+//!       boolean vectors - implemented by all vectors.
 //! * [x] arithmetic operations: implemented by all non-boolean vectors.
 //! * [x] `std::ops::Neg`: implemented by signed-integer and floating-point
 //!       vectors.
@@ -53,10 +52,10 @@
 //! * [x] bitwise reductions: implemented by integer and boolean
 //!       vectors.
 //! * [x] boolean reductions: implemented by boolean vectors.
-//! * [ ] portable shuffles: shuffle_vector.
-//! * [ ] portable gather/scatter:
+//! * [ ] portable shuffles: `shufflevector`.
+//! * [ ] portable `gather`/`scatter`:
 
-/// Adds the vector type $id, with elements of types $elem_tys.
+/// Adds the vector type `$id`, with elements of types `$elem_tys`.
 macro_rules! define_ty {
     ($id:ident, $($elem_tys:ident),+ | $(#[$doc:meta])*) => {
         $(#[$doc])*
@@ -82,6 +81,8 @@ mod boolean_reductions;
 mod bool_vectors;
 #[macro_use]
 mod cmp;
+#[macro_use]
+mod eq;
 #[macro_use]
 mod fmt;
 #[macro_use]
@@ -123,6 +124,7 @@ macro_rules! simd_api_imports {
         use ops;
         #[allow(unused_imports)]
         use num;
+        use cmp::{Eq};
         use ptr;
         use mem;
         #[allow(unused_imports)]
@@ -160,7 +162,7 @@ macro_rules! simd_f_ty {
         mod $test_mod {
             test_minimal!($id, $elem_ty, $elem_count);
             test_load_store!($id, $elem_ty);
-            test_cmp!($id, $elem_ty, $bool_ty);
+            test_cmp!($id, $elem_ty, $bool_ty, 1. as $elem_ty, 0. as $elem_ty);
             test_arithmetic_ops!($id, $elem_ty);
             test_arithmetic_reductions!($id, $elem_ty);
             test_minmax_reductions!($id, $elem_ty);
@@ -186,12 +188,13 @@ macro_rules! simd_i_ty {
         impl_bitwise_reductions!($id, $elem_ty);
         impl_all_shifts!($id, $elem_ty);
         impl_hex_fmt!($id, $elem_ty);
+        impl_eq!($id);
 
         #[cfg(test)]
         mod $test_mod {
             test_minimal!($id, $elem_ty, $elem_count);
             test_load_store!($id, $elem_ty);
-            test_cmp!($id, $elem_ty, $bool_ty);
+            test_cmp!($id, $elem_ty, $bool_ty, 1 as $elem_ty, 0 as $elem_ty);
             test_hash!($id, $elem_ty);
             test_arithmetic_ops!($id, $elem_ty);
             test_arithmetic_reductions!($id, $elem_ty);
@@ -221,12 +224,13 @@ macro_rules! simd_u_ty {
         impl_bitwise_reductions!($id, $elem_ty);
         impl_all_shifts!($id, $elem_ty);
         impl_hex_fmt!($id, $elem_ty);
+        impl_eq!($id);
 
         #[cfg(test)]
         mod $test_mod {
             test_minimal!($id, $elem_ty, $elem_count);
             test_load_store!($id, $elem_ty);
-            test_cmp!($id, $elem_ty, $bool_ty);
+            test_cmp!($id, $elem_ty, $bool_ty, 1 as $elem_ty, 0 as $elem_ty);
             test_hash!($id, $elem_ty);
             test_arithmetic_ops!($id, $elem_ty);
             test_arithmetic_reductions!($id, $elem_ty);
@@ -248,6 +252,8 @@ macro_rules! simd_b_ty {
         impl_bitwise_ops!($id, true);
         impl_bool_bitwise_reductions!($id, bool);
         impl_bool_reductions!($id);
+        impl_bool_cmp!($id, $id);
+        impl_eq!($id);
 
         #[cfg(test)]
         mod $test_mod {
@@ -255,6 +261,7 @@ macro_rules! simd_b_ty {
             test_bool_bitwise_ops!($id);
             test_bool_reductions!($id);
             test_bitwise_reductions!($id, true);
+            test_cmp!($id, $elem_ty, $id, true, false);
         }
     }
 }
