@@ -11,11 +11,13 @@
 //! * [x] `Debug`,
 //! * [x] `Default` (TODO: implement meaningfull defaults)
 //! * [x] `PartialEq` (TODO: re-write in term of comparison operations and
-//! boolean reductions), * [x] `PartialOrd` (TODO: re-write in term of
-//! comparison operations and boolean reductions), * [x] `Hash`.
+//!        boolean reductions),
+//! * [x] `PartialOrd` (TODO: re-write in term of
+//!        comparison operations and boolean reductions),
 //!
 //! Non-floating-point vector types also implement:
 //!
+//! * [x] `Hash`,
 //! * [ ] `Eq`, and
 //! * [ ] `Ord`.
 //!
@@ -28,12 +30,13 @@
 //! * [x]: `FromBits/IntoBits`: bitwise lossless transmutes between vectors of
 //!        the same size (i.e., same `mem::size_of`).
 //! * [x]: `From/Into`: casts between vectors with the same number of lanes
-//! (potentially lossy).
+//!        (potentially lossy).
 //!
 //! ## Inherent methods
 //!
 //! * [x] minimal API: implemented by all vector types except for boolean
-//! vectors. * [x] minimal boolean vector API: implemented by boolean vectors.
+//!       vectors.
+//! * [x] minimal boolean vector API: implemented by boolean vectors.
 //! * [x] load/store API: aligned and unaligned memory loads and
 //!       stores - implemented by all vectors.
 //! * [x] comparison API: vector lane-wise comparison producing
@@ -41,11 +44,15 @@
 //! * [ ] comparison API for boolean vectors: does this make sense?
 //! * [x] arithmetic operations: implemented by all non-boolean vectors.
 //! * [x] `std::ops::Neg`: implemented by signed-integer and floating-point
-//! vectors. * [x] bitwise operations: implemented by integer and boolean
-//! vectors. * [x] shift operations: implemented by integer vectors.
+//!       vectors.
+//! * [x] bitwise operations: implemented by integer and boolean
+//!       vectors.
+//! * [x] shift operations: implemented by integer vectors.
 //! * [x] arithmetic reductions: implemented by integer and floating-point
-//! vectors. * [x] bitwise reductions: implemented by integer and boolean
-//! vectors. * [x] boolean reductions: implemented by boolean vectors.
+//!       vectors.
+//! * [x] bitwise reductions: implemented by integer and boolean
+//!       vectors.
+//! * [x] boolean reductions: implemented by boolean vectors.
 //! * [ ] portable shuffles: shuffle_vector.
 //! * [ ] portable gather/scatter:
 
@@ -118,7 +125,6 @@ macro_rules! simd_api_imports {
         use num;
         use ptr;
         use mem;
-        use slice;
         #[allow(unused_imports)]
         use convert::{From, Into};
         use cmp::Ord;
@@ -139,7 +145,6 @@ macro_rules! simd_f_ty {
         impl_minimal!($id, $elem_ty, $elem_count, $($elem_name),*);
         impl_load_store!($id, $elem_ty, $elem_count);
         impl_cmp!($id, $bool_ty);
-        impl_hash!($id, $elem_ty);
         impl_arithmetic_ops!($id);
         impl_arithmetic_reductions!($id, $elem_ty);
         impl_minmax_reductions!($id, $elem_ty);
@@ -150,7 +155,6 @@ macro_rules! simd_f_ty {
             test_minimal!($id, $elem_ty, $elem_count);
             test_load_store!($id, $elem_ty);
             test_cmp!($id, $elem_ty, $bool_ty);
-            test_hash!($id, $elem_ty);
             test_arithmetic_ops!($id, $elem_ty);
             test_arithmetic_reductions!($id, $elem_ty);
             test_minmax_reductions!($id, $elem_ty);
