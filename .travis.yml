@@ -47,7 +47,7 @@ install:
 
 script:
   - cargo generate-lockfile
-  - ci/run-docker.sh $TARGET $FEATURES
+  - travis_wait ci/run-docker.sh $TARGET $FEATURES
 
 notifications:
   email:
