@@ -12,7 +12,7 @@ macro_rules! impl_hex_fmt {
                     if i > 0 {
                         write!(f, ", ")?;
                     }
-                    write!(f, "{:#x}", self.extract(i))?;
+                    self.extract(i).fmt(f)?;
                 }
                 write!(f, ")")
             }
