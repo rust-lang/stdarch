@@ -157,6 +157,7 @@ fn fill_features(value: &mut cache::Initializer) {
         return
     }
 
+    // FIXME: the logic for enabling features should be unified with auxv.
     if let Ok(c) = linux::CpuInfo::new() {
         let f = &c.field("Features");
 
@@ -205,9 +206,6 @@ fn fill_features(value: &mut cache::Initializer) {
         enable_feature(Feature::sve, sve && asimd);
 
         enable_feature(Feature::crypto, aes && pmull && sha1 && sha2);
-
-        enable_feature(Feature::asimd, c.field("Features").has("asimd"));
-        enable_feature(Feature::pmull, c.field("Features").has("pmull"));
         return
     }
 }
