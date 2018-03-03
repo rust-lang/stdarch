@@ -6,20 +6,12 @@ macro_rules! impl_arithmetic_reductions {
             /// Lane-wise addition of the vector elements.
             #[inline(always)]
             pub fn sum(self) -> $elem_ty {
-                let mut r = self.extract(0);
-                for i in 1..$id::lanes() {
-                    r += self.extract(i);
-                }
-                r
+                ReduceAdd::reduce_add(self)
             }
             /// Lane-wise multiplication of the vector elements.
             #[inline(always)]
             pub fn product(self) -> $elem_ty {
-                let mut r = self.extract(0);
-                for i in 1..$id::lanes() {
-                    r *= self.extract(i);
-                }
-                r
+                ReduceMul::reduce_mul(self)
             }
         }
     }

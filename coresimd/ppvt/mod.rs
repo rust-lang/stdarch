@@ -32,6 +32,7 @@
 
 #[macro_use]
 mod api;
+mod codegen;
 
 mod v16;
 mod v32;

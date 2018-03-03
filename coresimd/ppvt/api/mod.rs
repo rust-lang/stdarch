@@ -127,13 +127,19 @@ macro_rules! simd_api_imports {
         use mem;
         #[allow(unused_imports)]
         use convert::{From, Into};
-        use cmp::Ord;
         use slice::SliceExt;
         #[allow(unused_imports)]
         use iter::Iterator;
         #[allow(unused_imports)]
         use default::Default;
         use clone::Clone;
+        use ::coresimd::ppvt::codegen::sum::{ReduceAdd};
+        use ::coresimd::ppvt::codegen::product::{ReduceMul};
+        use ::coresimd::ppvt::codegen::and::{ReduceAnd};
+        use ::coresimd::ppvt::codegen::or::{ReduceOr};
+        use ::coresimd::ppvt::codegen::xor::{ReduceXor};
+        use ::coresimd::ppvt::codegen::min::{ReduceMin};
+        use ::coresimd::ppvt::codegen::max::{ReduceMax};
     }
 }
 
@@ -240,7 +246,7 @@ macro_rules! simd_b_ty {
         define_ty!($id, $($elem_tys),+ | $(#[$doc])*);
         impl_bool_minimal!($id, $elem_ty, $elem_count, $($elem_name),*);
         impl_bitwise_ops!($id, true);
-        impl_bitwise_reductions!($id, bool);
+        impl_bool_bitwise_reductions!($id, bool);
         impl_bool_reductions!($id);
 
         #[cfg(test)]
