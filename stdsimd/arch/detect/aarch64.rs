@@ -132,23 +132,27 @@ fn fill_features(value: &mut cache::Initializer) {
         // let sha512 = bit::test(auxv.hwcap, 21);
         let sve = bit::test(auxv.hwcap, 22);
 
+        // The features are enabled approximately like in LLVM host feature detection:
+        // https://github.com/llvm-mirror/llvm/blob/master/lib/Support/Host.cpp#L1273
+
         enable_feature(Feature::fp, fp);
+        // Half-float support requires float support
         enable_feature(Feature::fp16, fp && fphp);
         enable_feature(Feature::pmull, pmull);
         enable_feature(Feature::crc, crc32);
         enable_feature(Feature::lse, atomics);
         enable_feature(Feature::rcpc, lrcpc);
 
-        let asimd = if fphp {
-            fp && fphp && asimd && asimdhp
-        } else {
-            fp && asimd
-        };
+        // SIMD support requires float support. If half-floats are supported,
+        // SIMD support also requires half-float support
+        let asimd = fp && asimd && (!fphp | asimdhp);
         enable_feature(Feature::asimd, asimd);
+        // SIMD extensions require SIMD support:
         enable_feature(Feature::rdm, asimdrdm && asimd);
         enable_feature(Feature::dotprod, asimddp && asimd);
         enable_feature(Feature::sve, sve && asimd);
 
+        // Crypto is specified as AES + PMULL + SHA1 + SHA2 per LLVM/hosts.cpp
         enable_feature(Feature::crypto, aes && pmull && sha1 && sha2);
         return
     }
