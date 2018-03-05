@@ -117,7 +117,7 @@ macro_rules! red_mul {
             fn reduce_mul(self) -> Self::Acc {
                 let mut x = self.extract(0);
                 for i in 1..$id::lanes() {
-                    x += self.extract(i);
+                    x *= self.extract(i);
                 }
                 x
             }

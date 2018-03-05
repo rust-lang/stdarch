@@ -193,5 +193,4 @@ mod tests {
         let v = f32x4::new(4., 2., -1., 3.);
         assert_eq!(v.reduce_min(), -1.);
     }
-
 }
