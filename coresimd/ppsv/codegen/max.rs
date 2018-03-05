@@ -105,9 +105,23 @@ macro_rules! red_max {
     ($id:ident, $elem_ty:ident, $llvm_intr:ident) => {
         impl ReduceMax for $id {
             type Acc = $elem_ty;
+            #[cfg(not(target_arch = "aarch64"))]
             #[inline]
             fn reduce_max(self) -> Self::Acc {
                 unsafe { $llvm_intr(self) }
+            }
+            // FIXME: broken on AArch64
+            #[cfg(target_arch = "aarch64")]
+            #[allow(unused_imports)]
+            #[inline]
+            fn reduce_max(self) -> Self::Acc {
+                use num::Float;
+                use cmp::Ord;
+                let mut x = self.extract(0);
+                for i in 1..$id::lanes() {
+                    x = x.max(self.extract(i));
+                }
+                x
             }
         }
     };

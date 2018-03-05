@@ -121,7 +121,6 @@ macro_rules! red_mul {
                 }
                 x
             }
-
         }
     };
 }
