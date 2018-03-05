@@ -105,7 +105,7 @@ macro_rules! red_max {
     ($id:ident, $elem_ty:ident, $llvm_intr:ident) => {
         impl ReduceMax for $id {
             type Acc = $elem_ty;
-            #[inline(always)]
+            #[inline]
             fn reduce_max(self) -> Self::Acc {
                 unsafe { $llvm_intr(self) }
             }

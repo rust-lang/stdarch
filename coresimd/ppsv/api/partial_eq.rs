@@ -3,11 +3,11 @@
 macro_rules! impl_partial_eq {
     ($id:ident) => {
         impl PartialEq<$id> for $id {
-            #[inline(always)]
+            #[inline]
             fn eq(&self, other: &Self) -> bool {
                 $id::eq(*self, *other).all()
             }
-            #[inline(always)]
+            #[inline]
             fn ne(&self, other: &Self) -> bool {
                 $id::ne(*self, *other).all()
             }

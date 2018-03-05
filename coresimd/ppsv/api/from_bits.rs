@@ -5,7 +5,7 @@ macro_rules! impl_from_bits_ {
     ($to:ident: $($from:ident),+) => {
         $(
             impl ::simd::FromBits<$from> for $to {
-                #[inline(always)]
+                #[inline]
                 fn from_bits(f: $from) -> $to {
                     unsafe { mem::transmute(f) }
                 }

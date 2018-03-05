@@ -14,20 +14,20 @@ macro_rules! impl_minimal {
         impl $id {
             /// Creates a new instance with each vector elements initialized
             /// with the provided values.
-            #[inline(always)]
+            #[inline]
             pub const fn new($($elem_name: $elem_ty),*) -> Self {
                 $id($($elem_name),*)
             }
 
             /// Returns the number of vector lanes.
-            #[inline(always)]
+            #[inline]
             pub const fn lanes() -> usize {
                 $elem_count
             }
 
             /// Constructs a new instance with each element initialized to
             /// `value`.
-            #[inline(always)]
+            #[inline]
             pub const fn splat(value: $elem_ty) -> Self {
                 $id($({
                     #[allow(non_camel_case_types, dead_code)]
@@ -41,7 +41,7 @@ macro_rules! impl_minimal {
             /// # Panics
             ///
             /// If `index >= Self::lanes()`.
-            #[inline(always)]
+            #[inline]
             pub fn extract(self, index: usize) -> $elem_ty {
                 assert!(index < $elem_count);
                 unsafe { self.extract_unchecked(index) }
@@ -50,7 +50,7 @@ macro_rules! impl_minimal {
             /// Extracts the value at `index`.
             ///
             /// If `index >= Self::lanes()` the behavior is undefined.
-            #[inline(always)]
+            #[inline]
             pub unsafe fn extract_unchecked(self, index: usize) -> $elem_ty {
                 simd_extract(self, index as u32)
             }
@@ -60,7 +60,7 @@ macro_rules! impl_minimal {
             /// # Panics
             ///
             /// If `index >= Self::lanes()`.
-            #[inline(always)]
+            #[inline]
             #[must_use = "replace does not modify the original value - it returns a new vector with the value at `index` replaced by `new_value`d"]
             pub fn replace(self, index: usize, new_value: $elem_ty) -> Self {
                 assert!(index < $elem_count);
@@ -72,7 +72,7 @@ macro_rules! impl_minimal {
             /// # Panics
             ///
             /// If `index >= Self::lanes()`.
-            #[inline(always)]
+            #[inline]
             #[must_use = "replace_unchecked does not modify the original value - it returns a new vector with the value at `index` replaced by `new_value`d"]
             pub unsafe fn replace_unchecked(
                 self,

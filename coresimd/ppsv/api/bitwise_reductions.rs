@@ -4,17 +4,17 @@ macro_rules! impl_bitwise_reductions {
     ($id:ident, $elem_ty:ident) => {
         impl $id {
             /// Lane-wise bitwise `and` of the vector elements.
-            #[inline(always)]
+            #[inline]
             pub fn and(self) -> $elem_ty {
                 ReduceAnd::reduce_and(self)
             }
             /// Lane-wise bitwise `or` of the vector elements.
-            #[inline(always)]
+            #[inline]
             pub fn or(self) -> $elem_ty {
                 ReduceOr::reduce_or(self)
             }
             /// Lane-wise bitwise `xor` of the vector elements.
-            #[inline(always)]
+            #[inline]
             pub fn xor(self) -> $elem_ty {
                 ReduceXor::reduce_xor(self)
             }
@@ -26,17 +26,17 @@ macro_rules! impl_bool_bitwise_reductions {
     ($id:ident, $elem_ty:ident) => {
         impl $id {
             /// Lane-wise bitwise `and` of the vector elements.
-            #[inline(always)]
+            #[inline]
             pub fn and(self) -> $elem_ty {
                 ReduceAnd::reduce_and(self) !=0
             }
             /// Lane-wise bitwise `or` of the vector elements.
-            #[inline(always)]
+            #[inline]
             pub fn or(self) -> $elem_ty {
                 ReduceOr::reduce_or(self) != 0
             }
             /// Lane-wise bitwise `xor` of the vector elements.
-            #[inline(always)]
+            #[inline]
             pub fn xor(self) -> $elem_ty {
                 ReduceXor::reduce_xor(self) != 0
             }

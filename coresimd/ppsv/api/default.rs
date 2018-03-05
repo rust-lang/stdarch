@@ -3,7 +3,7 @@
 macro_rules! impl_default {
     ($id:ident, $elem_ty:ident) => {
         impl Default for $id {
-            #[inline(always)]
+            #[inline]
             fn default() -> Self {
                 Self::splat($elem_ty::default())
             }

@@ -31,4 +31,5 @@ cargo_test() {
 }
 
 cargo_test
+cargo clean
 cargo_test "--release"

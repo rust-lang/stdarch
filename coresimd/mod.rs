@@ -1,7 +1,7 @@
 //! `coresimd`
 
 #[macro_use]
-mod ppvt;
+mod ppsv;
 
 /// Platform independent SIMD vector types and operations.
 ///
@@ -10,7 +10,7 @@ mod ppvt;
 /// always welcome!
 #[unstable(feature = "stdsimd", issue = "0")]
 pub mod simd {
-    pub use coresimd::ppvt::*;
+    pub use coresimd::ppsv::*;
 }
 
 /// Platform dependent vendor intrinsics.

@@ -106,7 +106,7 @@ macro_rules! red_mul {
     ($id:ident, $elem_ty:ident, $llvm_intr:ident) => {
         impl ReduceMul for $id {
             type Acc = $elem_ty;
-            #[inline(always)]
+            #[inline]
             fn reduce_mul(self) -> Self::Acc {
                 unsafe { $llvm_intr(self) }
             }
@@ -154,7 +154,7 @@ macro_rules! red_fmul {
     ($id:ident, $elem_ty:ident, $llvm_intr:ident) => {
         impl ReduceMul for $id {
             type Acc = $elem_ty;
-            #[inline(always)]
+            #[inline]
             fn reduce_mul(self) -> Self::Acc {
                 // FIXME:
                 // unsafe { $llvm_intr(1. as $elem_ty, self) }

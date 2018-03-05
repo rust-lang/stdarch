@@ -104,7 +104,7 @@ macro_rules! red_add {
     ($id:ident, $elem_ty:ident, $llvm_intr:ident) => {
         impl ReduceAdd for $id {
             type Acc = $elem_ty;
-            #[inline(always)]
+            #[inline]
             fn reduce_add(self) -> Self::Acc {
                 unsafe { $llvm_intr(self) }
             }
@@ -152,7 +152,7 @@ macro_rules! red_fadd {
     ($id:ident, $elem_ty:ident, $llvm_intr:ident) => {
         impl ReduceAdd for $id {
             type Acc = $elem_ty;
-            #[inline(always)]
+            #[inline]
             fn reduce_add(self) -> Self::Acc {
                 // FIXME:
                 //unsafe { $llvm_intr(0. as $elem_ty, self) }

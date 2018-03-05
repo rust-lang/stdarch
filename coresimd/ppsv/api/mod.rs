@@ -134,13 +134,13 @@ macro_rules! simd_api_imports {
         #[allow(unused_imports)]
         use default::Default;
         use clone::Clone;
-        use ::coresimd::ppvt::codegen::sum::{ReduceAdd};
-        use ::coresimd::ppvt::codegen::product::{ReduceMul};
-        use ::coresimd::ppvt::codegen::and::{ReduceAnd};
-        use ::coresimd::ppvt::codegen::or::{ReduceOr};
-        use ::coresimd::ppvt::codegen::xor::{ReduceXor};
-        use ::coresimd::ppvt::codegen::min::{ReduceMin};
-        use ::coresimd::ppvt::codegen::max::{ReduceMax};
+        use super::codegen::sum::{ReduceAdd};
+        use super::codegen::product::{ReduceMul};
+        use super::codegen::and::{ReduceAnd};
+        use super::codegen::or::{ReduceOr};
+        use super::codegen::xor::{ReduceXor};
+        use super::codegen::min::{ReduceMin};
+        use super::codegen::max::{ReduceMax};
     }
 }
 

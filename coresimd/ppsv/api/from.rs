@@ -5,7 +5,7 @@ macro_rules! impl_from {
     ($to:ident: $elem_ty:ident, $test_mod:ident | $($from:ident),+) => {
         $(
             impl From<::simd::$from> for $to {
-                #[inline(always)]
+                #[inline]
                 fn from(f: ::simd::$from) -> $to {
                     unsafe { simd_cast(f) }
                 }

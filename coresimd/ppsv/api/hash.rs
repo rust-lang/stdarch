@@ -3,7 +3,7 @@
 macro_rules! impl_hash {
     ($id:ident, $elem_ty:ident) => {
         impl hash::Hash for $id {
-            #[inline(always)]
+            #[inline]
             fn hash<H: hash::Hasher>(&self, state: &mut H) {
                 union A {
                     data: [$elem_ty; $id::lanes()],

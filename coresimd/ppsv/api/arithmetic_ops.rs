@@ -4,7 +4,7 @@ macro_rules! impl_arithmetic_ops {
     ($id:ident) => {
         impl ops::Add for $id {
             type Output = Self;
-            #[inline(always)]
+            #[inline]
             fn add(self, other: Self) -> Self {
                 unsafe { simd_add(self, other) }
             }
@@ -12,7 +12,7 @@ macro_rules! impl_arithmetic_ops {
 
         impl ops::Sub for $id {
             type Output = Self;
-            #[inline(always)]
+            #[inline]
             fn sub(self, other: Self) -> Self {
                 unsafe { simd_sub(self, other) }
             }
@@ -20,7 +20,7 @@ macro_rules! impl_arithmetic_ops {
 
         impl ops::Mul for $id {
             type Output = Self;
-            #[inline(always)]
+            #[inline]
             fn mul(self, other: Self) -> Self {
                 unsafe { simd_mul(self, other) }
             }
@@ -28,7 +28,7 @@ macro_rules! impl_arithmetic_ops {
 
         impl ops::Div for $id {
             type Output = Self;
-            #[inline(always)]
+            #[inline]
             fn div(self, other: Self) -> Self {
                 unsafe { simd_div(self, other) }
             }
@@ -36,42 +36,42 @@ macro_rules! impl_arithmetic_ops {
 
         impl ops::Rem for $id {
             type Output = Self;
-            #[inline(always)]
+            #[inline]
             fn rem(self, other: Self) -> Self {
                 unsafe { simd_rem(self, other) }
             }
         }
 
         impl ops::AddAssign for $id {
-            #[inline(always)]
+            #[inline]
             fn add_assign(&mut self, other: Self) {
                 *self = *self + other;
             }
         }
 
         impl ops::SubAssign for $id {
-            #[inline(always)]
+            #[inline]
             fn sub_assign(&mut self, other: Self) {
                 *self = *self - other;
             }
         }
 
         impl ops::MulAssign for $id {
-            #[inline(always)]
+            #[inline]
             fn mul_assign(&mut self, other: Self) {
                 *self = *self * other;
             }
         }
 
         impl ops::DivAssign for $id {
-            #[inline(always)]
+            #[inline]
             fn div_assign(&mut self, other: Self) {
                 *self = *self / other;
             }
         }
 
         impl ops::RemAssign for $id {
-            #[inline(always)]
+            #[inline]
             fn rem_assign(&mut self, other: Self) {
                 *self = *self % other;
             }

@@ -4,14 +4,12 @@ macro_rules! impl_minmax_reductions {
     ($id:ident, $elem_ty:ident) => {
         impl $id {
             /// Largest vector value.
-            #[inline(always)]
-            #[allow(unused_imports)]
+            #[inline]
             pub fn max(self) -> $elem_ty {
                 ReduceMax::reduce_max(self)
             }
             /// Smallest vector value.
-            #[inline(always)]
-            #[allow(unused_imports)]
+            #[inline]
             pub fn min(self) -> $elem_ty {
                 ReduceMin::reduce_min(self)
             }

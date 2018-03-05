@@ -5,27 +5,27 @@ macro_rules! impl_shifts {
         $(
             impl ::ops::Shl<$by> for $id {
                 type Output = Self;
-                #[inline(always)]
+                #[inline]
                 fn shl(self, other: $by) -> Self {
                     unsafe { simd_shl(self, $id::splat(other as $elem_ty)) }
                 }
             }
             impl ::ops::Shr<$by> for $id {
                 type Output = Self;
-                #[inline(always)]
+                #[inline]
                 fn shr(self, other: $by) -> Self {
                     unsafe { simd_shr(self, $id::splat(other as $elem_ty)) }
                 }
             }
 
             impl ::ops::ShlAssign<$by> for $id {
-                #[inline(always)]
+                #[inline]
                 fn shl_assign(&mut self, other: $by) {
                     *self = *self << other;
                 }
             }
             impl ::ops::ShrAssign<$by> for $id {
-                #[inline(always)]
+                #[inline]
                 fn shr_assign(&mut self, other: $by) {
                     *self = *self >> other;
                 }

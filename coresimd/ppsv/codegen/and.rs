@@ -91,7 +91,7 @@ macro_rules! red_and {
     ($id:ident, $elem_ty:ident, $llvm_intr:ident) => {
         impl ReduceAnd for $id {
             type Acc = $elem_ty;
-            #[inline(always)]
+            #[inline]
             fn reduce_and(self) -> Self::Acc {
                 unsafe { $llvm_intr(self.into_bits()) }
             }

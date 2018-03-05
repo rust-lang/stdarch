@@ -1,9 +1,9 @@
-//! Portable Packed-Vector Types.
+//! Portable Packed-SIMD Vectors.
 //!
 //! These types are:
 //!
-//! * portable: these types work correctly on all architectures,
-//! * packed: the vector types have a size fixed at compile-time.
+//! * portable: work correctly on all architectures,
+//! * packed: have a size fixed at compile-time.
 //!
 //! These two terms are the opposites of:
 //!
@@ -67,7 +67,7 @@ impl<T, U> IntoBits<U> for T
 where
     U: FromBits<T>,
 {
-    #[inline(always)]
+    #[inline]
     fn into_bits(self) -> U {
         U::from_bits(self)
     }
@@ -75,7 +75,7 @@ where
 
 // FromBits (and thus IntoBits) is reflexive
 impl<T> FromBits<T> for T {
-    #[inline(always)]
+    #[inline]
     fn from_bits(t: Self) -> Self {
         t
     }

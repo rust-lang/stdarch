@@ -105,7 +105,7 @@ macro_rules! red_min {
     ($id:ident, $elem_ty:ident, $llvm_intr:ident) => {
         impl ReduceMin for $id {
             type Acc = $elem_ty;
-            #[inline(always)]
+            #[inline]
             fn reduce_min(self) -> Self::Acc {
                 unsafe { $llvm_intr(self) }
             }

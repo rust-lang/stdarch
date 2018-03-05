@@ -4,7 +4,7 @@ macro_rules! impl_neg_op {
     ($id:ident, $elem_ty:ident) => {
         impl ops::Neg for $id {
             type Output = Self;
-            #[inline(always)]
+            #[inline]
             fn neg(self) -> Self {
                 Self::splat(-1 as $elem_ty) * self
             }

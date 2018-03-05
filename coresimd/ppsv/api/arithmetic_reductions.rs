@@ -4,12 +4,12 @@ macro_rules! impl_arithmetic_reductions {
     ($id:ident, $elem_ty:ident) => {
         impl $id {
             /// Lane-wise addition of the vector elements.
-            #[inline(always)]
+            #[inline]
             pub fn sum(self) -> $elem_ty {
                 ReduceAdd::reduce_add(self)
             }
             /// Lane-wise multiplication of the vector elements.
-            #[inline(always)]
+            #[inline]
             pub fn product(self) -> $elem_ty {
                 ReduceMul::reduce_mul(self)
             }

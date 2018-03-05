@@ -91,7 +91,7 @@ macro_rules! red_or {
     ($id:ident, $elem_ty:ident, $llvm_intr:ident) => {
         impl ReduceOr for $id {
             type Acc = $elem_ty;
-            #[inline(always)]
+            #[inline]
             fn reduce_or(self) -> Self::Acc {
                 unsafe { $llvm_intr(self.into_bits()) }
             }

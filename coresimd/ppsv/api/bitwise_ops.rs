@@ -4,46 +4,46 @@ macro_rules! impl_bitwise_ops {
     ($ty:ident, $true_val:expr) => {
         impl ops::Not for $ty {
             type Output = Self;
-            #[inline(always)]
+            #[inline]
             fn not(self) -> Self {
                 Self::splat($true_val) ^ self
             }
         }
         impl ops::BitXor for $ty {
             type Output = Self;
-            #[inline(always)]
+            #[inline]
             fn bitxor(self, other: Self) -> Self {
                 unsafe { simd_xor(self, other) }
             }
         }
         impl ops::BitAnd for $ty {
             type Output = Self;
-            #[inline(always)]
+            #[inline]
             fn bitand(self, other: Self) -> Self {
                 unsafe { simd_and(self, other) }
             }
         }
         impl ops::BitOr for $ty {
             type Output = Self;
-            #[inline(always)]
+            #[inline]
             fn bitor(self, other: Self) -> Self {
                 unsafe { simd_or(self, other) }
             }
         }
         impl ops::BitAndAssign for $ty {
-            #[inline(always)]
+            #[inline]
             fn bitand_assign(&mut self, other: Self) {
                 *self = *self & other;
             }
         }
         impl ops::BitOrAssign for $ty {
-            #[inline(always)]
+            #[inline]
             fn bitor_assign(&mut self, other: Self) {
                 *self = *self | other;
             }
         }
         impl ops::BitXorAssign for $ty {
-            #[inline(always)]
+            #[inline]
             fn bitxor_assign(&mut self, other: Self) {
                 *self = *self ^ other;
             }
