@@ -123,7 +123,6 @@ macro_rules! red_min {
                 }
                 x
             }
-
         }
     };
 }
