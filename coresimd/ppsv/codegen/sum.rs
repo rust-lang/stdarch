@@ -152,6 +152,7 @@ macro_rules! red_fadd {
     ($id:ident, $elem_ty:ident, $llvm_intr:ident) => {
         impl ReduceAdd for $id {
             type Acc = $elem_ty;
+            #[cfg(not(target_arch = "aarch64"))]
             #[inline]
             fn reduce_add(self) -> Self::Acc {
                 // FIXME:
@@ -159,6 +160,16 @@ macro_rules! red_fadd {
                 let mut x = self.extract(0);
                 for i in 1..$id::lanes() {
                     x += self.extract(i);
+                }
+                x
+            }
+            // FIXME: broken in AArch64
+            #[cfg(target_arch = "aarch64")]
+            #[inline]
+            fn reduce_add(self) -> Self::Acc {
+                let mut x = self.extract(0) as Self::Acc;
+                for i in 1..$id::lanes() {
+                    x += self.extract(i) as Self::Acc;
                 }
                 x
             }

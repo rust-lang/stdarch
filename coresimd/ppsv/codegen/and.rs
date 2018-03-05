@@ -106,7 +106,6 @@ macro_rules! red_and {
                 }
                 x
             }
-
         }
     };
 }
