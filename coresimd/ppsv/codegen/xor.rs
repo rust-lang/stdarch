@@ -147,22 +147,10 @@ red_xor!(i8x64, i8, reduce_xor_i8x64);
 red_xor!(u8x64, u8, reduce_xor_u8x64);
 
 red_xor!(b8x2, i8, reduce_xor_i8x2);
-red_xor!(b16x2, i16, reduce_xor_i16x2);
-red_xor!(b32x2, i32, reduce_xor_i32x2);
-red_xor!(b64x2, i64, reduce_xor_i64x2);
 red_xor!(b8x4, i8, reduce_xor_i8x4);
-red_xor!(b16x4, i16, reduce_xor_i16x4);
-red_xor!(b32x4, i32, reduce_xor_i32x4);
-red_xor!(b64x4, i64, reduce_xor_i64x4);
 red_xor!(b8x8, i8, reduce_xor_i8x8);
-red_xor!(b16x8, i16, reduce_xor_i16x8);
-red_xor!(b32x8, i32, reduce_xor_i32x8);
-red_xor!(b64x8, i64, reduce_xor_i64x8);
 red_xor!(b8x16, i8, reduce_xor_i8x16);
-red_xor!(b16x16, i16, reduce_xor_i16x16);
-red_xor!(b32x16, i32, reduce_xor_i32x16);
 red_xor!(b8x32, i8, reduce_xor_i8x32);
-red_xor!(b16x32, i16, reduce_xor_i16x32);
 red_xor!(b8x64, i8, reduce_xor_i8x64);
 
 #[cfg(test)]

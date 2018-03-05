@@ -2,6 +2,8 @@
 
 simd_api_imports!();
 
+use ::coresimd::simd::{b8x2, b8x4, b8x8};
+
 simd_i_ty! {
     i8x16: 16, i8, b8x16, i8x16_tests |
     i8, i8, i8, i8, i8, i8, i8, i8, i8, i8, i8, i8, i8, i8, i8, i8  |
@@ -24,94 +26,70 @@ simd_b_ty! {
 }
 
 simd_i_ty! {
-    i16x8: 8, i16, b16x8, i16x8_tests |
+    i16x8: 8, i16, b8x8, i16x8_tests |
     i16, i16, i16, i16, i16, i16, i16, i16 |
     x0, x1, x2, x3, x4, x5, x6, x7 |
     /// A 128-bit vector with 8 `i16` lanes.
 }
 
 simd_u_ty! {
-    u16x8: 8, u16, b16x8, u16x8_tests |
+    u16x8: 8, u16, b8x8, u16x8_tests |
     u16, u16, u16, u16, u16, u16, u16, u16 |
     x0, x1, x2, x3, x4, x5, x6, x7 |
     /// A 128-bit vector with 8 `u16` lanes.
 }
 
-simd_b_ty! {
-    b16x8: 8, i16, b16x8_tests |
-    i16, i16, i16, i16, i16, i16, i16, i16 |
-    x0, x1, x2, x3, x4, x5, x6, x7 |
-    /// A 128-bit vector with 8 `bool` lanes.
-}
-
 simd_i_ty! {
-    i32x4: 4, i32, b32x4, i32x4_tests |
+    i32x4: 4, i32, b8x4, i32x4_tests |
     i32, i32, i32, i32 |
     x0, x1, x2, x3 |
     /// A 128-bit vector with 4 `i32` lanes.
 }
 
 simd_u_ty! {
-    u32x4: 4, u32, b32x4, u32x4_tests |
+    u32x4: 4, u32, b8x4, u32x4_tests |
     u32, u32, u32, u32 |
     x0, x1, x2, x3 |
     /// A 128-bit vector with 4 `u32` lanes.
 }
 
 simd_f_ty! {
-    f32x4: 4, f32, b32x4, f32x4_tests |
+    f32x4: 4, f32, b8x4, f32x4_tests |
     f32, f32, f32, f32 |
     x0, x1, x2, x3 |
     /// A 128-bit vector with 4 `f32` lanes.
 }
 
-simd_b_ty! {
-    b32x4: 4, i32, b32x4_tests |
-    i32, i32, i32, i32 |
-    x0, x1, x2, x3 |
-    /// A 128-bit vector with 4 `bool` lanes.
-}
-
 simd_i_ty! {
-    i64x2: 2, i64, b64x2, i64x2_tests |
+    i64x2: 2, i64, b8x2, i64x2_tests |
     i64, i64 |
     x0, x1 |
     /// A 128-bit vector with 2 `u64` lanes.
 }
 
 simd_u_ty! {
-    u64x2: 2, u64, b64x2, u64x2_tests |
+    u64x2: 2, u64, b8x2, u64x2_tests |
     u64, u64 |
     x0, x1 |
     /// A 128-bit vector with 2 `u64` lanes.
 }
 
 simd_f_ty! {
-    f64x2: 2, f64, b64x2, f64x2_tests |
+    f64x2: 2, f64, b8x2, f64x2_tests |
     f64, f64 |
     x0, x1 |
     /// A 128-bit vector with 2 `f64` lanes.
-}
-
-simd_b_ty! {
-    b64x2: 2, i64, b64x2_tests |
-    i64, i64 |
-    x0, x1 |
-    /// A 128-bit vector with 2 `bool` lanes.
 }
 
 impl_from_bits!(
     u64x2: u64,
     u64x2_from_bits | i64x2,
     f64x2,
-    b64x2,
     u32x4,
     i32x4,
     f32x4,
-    b32x4,
     u16x8,
     i16x8,
-    b16x8,
     u8x16,
     i8x16,
     b8x16
@@ -120,14 +98,11 @@ impl_from_bits!(
     i64x2: i64,
     i64x2_from_bits | u64x2,
     f64x2,
-    b64x2,
     u32x4,
     i32x4,
     f32x4,
-    b32x4,
     u16x8,
     i16x8,
-    b16x8,
     u8x16,
     i8x16,
     b8x16
@@ -136,14 +111,11 @@ impl_from_bits!(
     f64x2: f64,
     f64x2_from_bits | i64x2,
     u64x2,
-    b64x2,
     u32x4,
     i32x4,
     f32x4,
-    b32x4,
     u16x8,
     i16x8,
-    b16x8,
     u8x16,
     i8x16,
     b8x16
@@ -153,13 +125,10 @@ impl_from_bits!(
     u32x4_from_bits | u64x2,
     i64x2,
     f64x2,
-    b64x2,
     i32x4,
     f32x4,
-    b32x4,
     u16x8,
     i16x8,
-    b16x8,
     u8x16,
     i8x16,
     b8x16
@@ -169,13 +138,10 @@ impl_from_bits!(
     i32x4_from_bits | u64x2,
     i64x2,
     f64x2,
-    b64x2,
     u32x4,
     f32x4,
-    b32x4,
     u16x8,
     i16x8,
-    b16x8,
     u8x16,
     i8x16,
     b8x16
@@ -185,13 +151,10 @@ impl_from_bits!(
     f32x4_from_bits | u64x2,
     i64x2,
     f64x2,
-    b64x2,
     i32x4,
     u32x4,
-    b32x4,
     u16x8,
     i16x8,
-    b16x8,
     u8x16,
     i8x16,
     b8x16
@@ -201,13 +164,10 @@ impl_from_bits!(
     u16x8_from_bits | u64x2,
     i64x2,
     f64x2,
-    b64x2,
     u32x4,
     i32x4,
     f32x4,
-    b32x4,
     i16x8,
-    b16x8,
     u8x16,
     i8x16,
     b8x16
@@ -217,13 +177,10 @@ impl_from_bits!(
     i16x8_from_bits | u64x2,
     i64x2,
     f64x2,
-    b64x2,
     u32x4,
     i32x4,
     f32x4,
-    b32x4,
     u16x8,
-    b16x8,
     u8x16,
     i8x16,
     b8x16
@@ -233,14 +190,11 @@ impl_from_bits!(
     u8x16_from_bits | u64x2,
     i64x2,
     f64x2,
-    b64x2,
     u32x4,
     i32x4,
     f32x4,
-    b32x4,
     u16x8,
     i16x8,
-    b16x8,
     i8x16,
     b8x16
 );
@@ -249,14 +203,11 @@ impl_from_bits!(
     i8x16_from_bits | u64x2,
     i64x2,
     f64x2,
-    b64x2,
     u32x4,
     i32x4,
     f32x4,
-    b32x4,
     u16x8,
     i16x8,
-    b16x8,
     u8x16,
     b8x16
 );

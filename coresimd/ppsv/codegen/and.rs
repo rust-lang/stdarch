@@ -148,22 +148,10 @@ red_and!(i8x64, i8, reduce_and_i8x64);
 red_and!(u8x64, u8, reduce_and_u8x64);
 
 red_and!(b8x2, i8, reduce_and_i8x2);
-red_and!(b16x2, i16, reduce_and_i16x2);
-red_and!(b32x2, i32, reduce_and_i32x2);
-red_and!(b64x2, i64, reduce_and_i64x2);
 red_and!(b8x4, i8, reduce_and_i8x4);
-red_and!(b16x4, i16, reduce_and_i16x4);
-red_and!(b32x4, i32, reduce_and_i32x4);
-red_and!(b64x4, i64, reduce_and_i64x4);
 red_and!(b8x8, i8, reduce_and_i8x8);
-red_and!(b16x8, i16, reduce_and_i16x8);
-red_and!(b32x8, i32, reduce_and_i32x8);
-red_and!(b64x8, i64, reduce_and_i64x8);
 red_and!(b8x16, i8, reduce_and_i8x16);
-red_and!(b16x16, i16, reduce_and_i16x16);
-red_and!(b32x16, i32, reduce_and_i32x16);
 red_and!(b8x32, i8, reduce_and_i8x32);
-red_and!(b16x32, i16, reduce_and_i16x32);
 red_and!(b8x64, i8, reduce_and_i8x64);
 
 #[cfg(test)]

@@ -1,26 +1,20 @@
 //! 32-bit wide portable packed vector types.
 
 simd_api_imports!();
+use ::coresimd::simd::{b8x2};
 
 simd_i_ty! {
-    i16x2: 2, i16, b16x2, i16x2_tests |
+    i16x2: 2, i16, b8x2, i16x2_tests |
     i16, i16 |
     x0, x1 |
     /// A 32-bit wide vector with 2 `i16` lanes.
 }
 
 simd_u_ty! {
-    u16x2: 2, u16, b16x2, u16x2_tests |
+    u16x2: 2, u16, b8x2, u16x2_tests |
     u16, u16 |
     x0, x1 |
     /// A 32-bit wide vector with 2 `u16` lanes.
-}
-
-simd_b_ty! {
-    b16x2: 2, i16, b16x2_tests |
-    i16, i16 |
-    x0, x1 |
-    /// A 32-bit wide vector with 2 `bool` lanes.
 }
 
 simd_i_ty! {
@@ -44,10 +38,10 @@ simd_b_ty! {
     /// A 32-bit wide vector with 4 `bool` lanes.
 }
 
-impl_from_bits!(i16x2: i16, i16x2_from_bits | u16x2, b16x2, i8x4, u8x4, b8x4);
-impl_from_bits!(u16x2: u16, u16x2_from_bits | i16x2, b16x2, i8x4, u8x4, b8x4);
-impl_from_bits!(i8x4: i8, i8x2_from_bits | i16x2, u16x2, b16x2, u8x4, b8x4);
-impl_from_bits!(u8x4: u8, u8x2_from_bits | i16x2, u16x2, b16x2, i8x4, b8x4);
+impl_from_bits!(i16x2: i16, i16x2_from_bits | u16x2, i8x4, u8x4, b8x4);
+impl_from_bits!(u16x2: u16, u16x2_from_bits | i16x2, i8x4, u8x4, b8x4);
+impl_from_bits!(i8x4: i8, i8x2_from_bits | i16x2, u16x2, u8x4, b8x4);
+impl_from_bits!(u8x4: u8, u8x2_from_bits | i16x2, u16x2, i8x4, b8x4);
 
 impl_from!(
     i16x2: i16,

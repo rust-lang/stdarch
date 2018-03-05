@@ -147,22 +147,10 @@ red_or!(i8x64, i8, reduce_or_i8x64);
 red_or!(u8x64, u8, reduce_or_u8x64);
 
 red_or!(b8x2, i8, reduce_or_i8x2);
-red_or!(b16x2, i16, reduce_or_i16x2);
-red_or!(b32x2, i32, reduce_or_i32x2);
-red_or!(b64x2, i64, reduce_or_i64x2);
 red_or!(b8x4, i8, reduce_or_i8x4);
-red_or!(b16x4, i16, reduce_or_i16x4);
-red_or!(b32x4, i32, reduce_or_i32x4);
-red_or!(b64x4, i64, reduce_or_i64x4);
 red_or!(b8x8, i8, reduce_or_i8x8);
-red_or!(b16x8, i16, reduce_or_i16x8);
-red_or!(b32x8, i32, reduce_or_i32x8);
-red_or!(b64x8, i64, reduce_or_i64x8);
 red_or!(b8x16, i8, reduce_or_i8x16);
-red_or!(b16x16, i16, reduce_or_i16x16);
-red_or!(b32x16, i32, reduce_or_i32x16);
 red_or!(b8x32, i8, reduce_or_i8x32);
-red_or!(b16x32, i16, reduce_or_i16x32);
 red_or!(b8x64, i8, reduce_or_i8x64);
 
 #[cfg(test)]
