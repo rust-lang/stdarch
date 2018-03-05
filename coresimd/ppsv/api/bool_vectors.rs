@@ -16,18 +16,14 @@ macro_rules! impl_bool_minimal {
             /// Creates a new instance with each vector elements initialized
             /// with the provided values.
             #[inline]
-            pub /*const*/ fn new($($elem_name: bool),*) -> Self {
+            pub const fn new($($elem_name: bool),*) -> Self {
                 $id($(Self::bool_to_internal($elem_name)),*)
             }
 
             /// Converts a boolean type into the type of the vector lanes.
             #[inline]
-            /* const */ fn bool_to_internal(x: bool) -> $elem_ty {
-                if x  {
-                    !(0 as $elem_ty)
-                } else {
-                    0 as $elem_ty
-                }
+            const fn bool_to_internal(x: bool) -> $elem_ty {
+                [0 as $elem_ty, !(0 as $elem_ty)][x as usize]
             }
 
             /// Returns the number of vector lanes.
@@ -39,12 +35,11 @@ macro_rules! impl_bool_minimal {
             /// Constructs a new instance with each element initialized to
             /// `value`.
             #[inline]
-            pub /*const*/ fn splat(value: bool) -> Self {
-                let value = Self::bool_to_internal(value);
+            pub const fn splat(value: bool) -> Self {
                 $id($({
                     #[allow(non_camel_case_types, dead_code)]
                     struct $elem_name;
-                    value
+                    Self::bool_to_internal(value)
                 }),*)
             }
 
