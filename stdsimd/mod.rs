@@ -188,11 +188,13 @@
 /// * [`x86_64`]
 /// * [`arm`]
 /// * [`aarch64`]
+/// * [`mips64`]
 ///
 /// [`x86`]: https://rust-lang-nursery.github.io/stdsimd/i686/stdsimd/arch/x86/index.html
 /// [`x86_64`]: https://rust-lang-nursery.github.io/stdsimd/x86_64/stdsimd/arch/x86_64/index.html
 /// [`arm`]: https://rust-lang-nursery.github.io/stdsimd/arm/stdsimd/arch/arm/index.html
 /// [`aarch64`]: https://rust-lang-nursery.github.io/stdsimd/aarch64/stdsimd/arch/aarch64/index.html
+/// [`mips64`]: https://rust-lang-nursery.github.io/stdsimd/aarch64/stdsimd/arch/mips64/index.html
 ///
 /// # Examples
 ///
@@ -355,6 +357,9 @@ pub mod arch {
 
     #[cfg(target_arch = "wasm32")]
     pub use coresimd::arch::wasm32;
+
+    #[cfg(target_arch = "mips64")]
+    pub use coresimd::arch::mips64;
 
     #[doc(hidden)] // unstable implementation detail
     pub mod detect;

@@ -18,7 +18,7 @@ macro_rules! is_powerpc64_feature_detected {
         cfg!(target_feature = "power8") ||
             $crate::arch::detect::check_for($crate::arch::detect::Feature::power8)
     };
-    ($t:tt) => { compile_error!(concat!("unknown arm target feature: ", $t)) };
+    ($t:tt) => { compile_error!(concat!("unknown powerpc64 target feature: ", $t)) };
 }
 
 

@@ -16,6 +16,9 @@ cfg_if! {
     } else if #[cfg(target_arch = "powerpc64")] {
         #[path = "powerpc64.rs"]
         mod arch;
+    } else if #[cfg(target_arch = "mips64")] {
+        #[path = "mips64.rs"]
+        mod arch;
     } else {
         mod arch {
             pub enum Feature {

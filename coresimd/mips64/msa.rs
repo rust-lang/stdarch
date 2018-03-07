@@ -21,8 +21,8 @@ extern "C" {
 ///
 /// Adds the absolute values of the elements in `a` and `b` into the result vector.
 #[inline]
-#[target_feature(enabled = "msa")]
-//#[cfg_attr(test, assert_instr(add_a))]
+#[target_feature(enable = "msa")]
+#[cfg_attr(test, assert_instr(add_a.b))]
 pub unsafe fn __msa_add_a_b(a: i8x16, b: i8x16) -> i8x16 {
     msa_add_a_b(a, b)
 }
@@ -31,8 +31,8 @@ pub unsafe fn __msa_add_a_b(a: i8x16, b: i8x16) -> i8x16 {
 mod tests {
     use mips64::msa;
 
-    #[test]
-    fn __msa_add_a_b() {
+    #[simd_test = "msa"]
+    unsafe fn __msa_add_a_b() {
         let a = i8x16::new(1, 2, 3, 4,
                            1, 2, 3, 4,
                            1, 2, 3, 4,

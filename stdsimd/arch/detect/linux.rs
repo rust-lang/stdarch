@@ -17,8 +17,14 @@ pub const AT_HWCAP2: usize = 26;
 /// are set to zero.
 #[derive(Debug, Copy, Clone)]
 pub struct AuxVec {
+    #[cfg(any(
+        target_arch = "aarch64",
+        target_arch = "arm",
+        target_arch = "powerpc64",
+        target_arch = "mips64",
+    ))]
     pub hwcap: usize,
-    #[cfg(not(target_arch = "aarch64"))]
+    #[cfg(any(target_arch = "arm", target_arch = "powerpc64"))]
     pub hwcap2: usize,
 }
 
@@ -44,23 +50,29 @@ pub struct AuxVec {
 /// [auxv_docs]: https://docs.rs/auxv/0.3.3/auxv/
 #[cfg_attr(feature = "cargo-clippy", allow(items_after_statements))]
 pub fn auxv() -> Result<AuxVec, ()> {
-    if !cfg!(target_os = "linux") {
+    if cfg!(target_os = "linux") {
         return Err(());
     }
     if let Ok(hwcap) = getauxval(AT_HWCAP) {
-        #[cfg(target_arch = "aarch64")]
-        {
+        // Targets with only AT_HWCAP:
+        #[cfg(any(target_arch = "aarch64", target_arch = "mips64"))] {
             if hwcap != 0 {
                 return Ok(AuxVec { hwcap });
             }
         }
-        #[cfg(not(target_arch = "aarch64"))]
-        {
+        #[cfg(any(target_arch = "arm", target_arch = "powerpc64"))] {
             if let Ok(hwcap2) = getauxval(AT_HWCAP2) {
                 if hwcap != 0 && hwcap2 != 0 {
                     return Ok(AuxVec { hwcap, hwcap2 });
                 }
             }
+        }
+        #[cfg(not(any(target_arch = "aarch64", target_arch = "mips64",
+                      target_arch = "arm", target_arch = "powerpc64"
+        )))] {
+            // TODO: error msg
+            let _ = hwcap;
+            return Ok(AuxVec{});
         }
     }
 
@@ -110,7 +122,7 @@ fn auxv_from_file(file: &str) -> Result<AuxVec, ()> {
 }
 
 fn auxv_from_buf(buf: &[usize; 64]) -> Result<AuxVec, ()> {
-    #[cfg(target_arch = "aarch64")]
+    #[cfg(any(target_arch = "aarch64", target_arch = "mips64"))]
     {
         for el in buf.chunks(2) {
             match el[0] {
@@ -120,7 +132,7 @@ fn auxv_from_buf(buf: &[usize; 64]) -> Result<AuxVec, ()> {
         }
     }
 
-    #[cfg(not(target_arch = "aarch64"))]
+    #[cfg(any(target_arch = "arm", target_arch = "powerpc64"))]
     {
         let mut hwcap = None;
         let mut hwcap2 = None;
@@ -135,6 +147,12 @@ fn auxv_from_buf(buf: &[usize; 64]) -> Result<AuxVec, ()> {
         if let (Some(hwcap), Some(hwcap2)) = (hwcap, hwcap2) {
             return Ok(AuxVec { hwcap, hwcap2 });
         }
+    }
+
+    #[cfg(not(any(target_arch = "aarch64", target_arch = "mips64",
+                  target_arch = "arm", target_arch = "powerpc64")))] {
+        // TODO: error msg
+        let _ = buf;
     }
 
     Err(())

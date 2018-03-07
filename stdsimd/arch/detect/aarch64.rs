@@ -68,7 +68,7 @@ macro_rules! is_aarch64_feature_detected {
     ("v8.3a") => {
         compile_error!("\"v8.3a\" feature cannot be detected at run-time")
     };
-    ($t:tt) => { compile_error!(concat!("unknown arm target feature: ", $t)) };
+    ($t:tt) => { compile_error!(concat!("unknown aarch64 target feature: ", $t)) };
 }
 
 /// ARM Aarch64 CPU Feature enum. Each variant denotes a position in a bitset
