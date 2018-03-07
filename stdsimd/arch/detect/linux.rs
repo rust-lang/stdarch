@@ -287,7 +287,7 @@ mod tests {
             assert_eq!(v.unwrap().hwcap, hwcap);
         }
 
-        #[cfg(not(target_arch = "aarch64"))]
+        #[cfg(not(any(target_arch = "aarch64", target_arch = "mips64")))]
         {
             if let Some(hwcap2) = auxv_crate_getauxval(AT_HWCAP2) {
                 assert_eq!(v.unwrap().hwcap2, hwcap2);
@@ -346,7 +346,7 @@ mod tests {
             assert_eq!(v.unwrap().hwcap, hwcap);
         }
 
-        #[cfg(not(target_arch = "aarch64"))]
+        #[cfg(not(any(target_arch = "aarch64", target_arch = "mips64")))]
         {
             if let Some(hwcap2) = auxv_crate_getprocfs(AT_HWCAP2) {
                 assert_eq!(v.unwrap().hwcap2, hwcap2);

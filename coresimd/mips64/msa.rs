@@ -5,11 +5,9 @@
 //!
 //! [msa_ref]: http://cdn2.imgtec.com/documentation/MD00866-2B-MSA32-AFP-01.12.pdf
 
+#[cfg(test)]
+use stdsimd_test::assert_instr;
 use ::coresimd::simd::*;
-
-//#[cfg(test)]
-//use stdsimd_test::assert_instr;
-
 
 #[allow(improper_ctypes)]
 extern "C" {
@@ -29,22 +27,28 @@ pub unsafe fn __msa_add_a_b(a: i8x16, b: i8x16) -> i8x16 {
 
 #[cfg(test)]
 mod tests {
-    use mips64::msa;
+    use simd::*;
+    use stdsimd_test::simd_test;
+    use coresimd::mips64::msa;
 
     #[simd_test = "msa"]
     unsafe fn __msa_add_a_b() {
-        let a = i8x16::new(1, 2, 3, 4,
-                           1, 2, 3, 4,
-                           1, 2, 3, 4,
-                           1, 2, 3, 4,
+        #[cfg_attr(rustfmt, rustfmt_skip)]
+        let a = i8x16::new(
+            1, 2, 3, 4,
+            1, 2, 3, 4,
+            1, 2, 3, 4,
+            1, 2, 3, 4,
         );
-        let b = i8x16::new(-4, -3, -2, -1,
-                           -4, -3, -2, -1,
-                           -4, -3, -2, -1,
-                           -4, -3, -2, -1,
+        #[cfg_attr(rustfmt, rustfmt_skip)]
+        let b = i8x16::new(
+            -4, -3, -2, -1,
+            -4, -3, -2, -1,
+            -4, -3, -2, -1,
+            -4, -3, -2, -1,
         );
         let r = i8x16::splat(5);
 
-        assert_eq!(r, unsafe { msa::__msa_add_a_b(a, b) });
+        assert_eq!(r, msa::__msa_add_a_b(a, b));
     }
 }
