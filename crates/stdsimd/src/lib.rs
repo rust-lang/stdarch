@@ -18,7 +18,6 @@
 extern crate cfg_if;
 extern crate coresimd;
 extern crate libc;
-#[macro_use]
 extern crate std as _std;
 
 #[cfg(test)]
