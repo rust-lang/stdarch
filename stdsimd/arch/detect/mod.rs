@@ -48,7 +48,7 @@ You can prevent it from being used in other architectures by
 guarding it behind a cfg(target_arch) as follows:
 
     #[cfg(any(target_arch = "x86", target_arch = "x86_64"))] {
-        if is_x86_target_feature_detected(...) { ... }
+        if is_x86_feature_detected(...) { ... }
     }
 "#)
     };
@@ -65,7 +65,7 @@ You can prevent it from being used in other architectures by
 guarding it behind a cfg(target_arch) as follows:
 
     #[cfg(target_arch = "arm")] {
-        if is_arm_target_feature_detected(...) { ... }
+        if is_arm_feature_detected(...) { ... }
     }
 "#)
     };
@@ -82,7 +82,7 @@ You can prevent it from being used in other architectures by
 guarding it behind a cfg(target_arch) as follows:
 
     #[cfg(target_arch = "aarch64")] {
-        if is_aarch64_target_feature_detected(...) { ... }
+        if is_aarch64_feature_detected(...) { ... }
     }
 "#)
     };
@@ -99,7 +99,7 @@ You can prevent it from being used in other architectures by
 guarding it behind a cfg(target_arch) as follows:
 
     #[cfg(target_arch = "powerpc64")] {
-        if is_powerpc64_target_feature_detected(...) { ... }
+        if is_powerpc64_feature_detected(...) { ... }
     }
 "#)
     };
