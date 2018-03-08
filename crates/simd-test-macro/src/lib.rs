@@ -53,10 +53,12 @@ pub fn simd_test(
     let item = TokenStream::from(item);
     let name = find_name(item.clone());
 
-    let name: TokenStream = name.as_str().parse().unwrap();
+    let name: TokenStream = name.as_str().parse()
+        .expect(&format!("failed to parse name: {}", name.clone().as_str()));
 
-    let target = env::var("TARGET").unwrap();
-    let macro_test = match target.split('-').next().unwrap() {
+    let target = env::var("TARGET").expect("TARGET environment variable not set");
+    let macro_test = match target.split('-').next()
+        .expect(&format!("target triple contained no \"-\": {}", target)) {
         "i686" | "x86_64" | "i586" => "is_x86_feature_detected",
         "arm" => "is_arm_feature_detected",
         "aarch64" => "is_aarch64_feature_detected",
