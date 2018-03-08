@@ -204,26 +204,24 @@ mod tests {
         if let Ok(auxvec) = auxv() {
             println!("{:?}", auxvec);
         } else {
-            println!("reading /proc/self/auxv failed!");
+            println!("both getauxval() and reading /proc/self/auxv failed!");
         }
     }
 
+
     #[test]
     fn auxv_crate() {
-        if cfg!(target_arch = "x86") || cfg!(target_arch = "x86_64")
-            || cfg!(target_arch = "powerpc")
-        {
-            return;
-        }
         let v = auxv();
         if let Some(hwcap) = auxv_crate_getauxval(AT_HWCAP) {
-            assert_eq!(v.unwrap().hwcap, hwcap);
+            let rt_hwcap = v.expect("failed to find hwcap key").hwcap;
+            assert_eq!(rt_hwcap, hwcap);
         }
 
         #[cfg(not(any(target_arch = "aarch64", target_arch = "mips64")))]
         {
             if let Some(hwcap2) = auxv_crate_getauxval(AT_HWCAP2) {
-                assert_eq!(v.unwrap().hwcap2, hwcap2);
+                let rt_hwcap2 = v.expect("failed to find hwcap2 key").hwcap2;
+                assert_eq!(rt_hwcap2, hwcap2);
             }
         }
     }
