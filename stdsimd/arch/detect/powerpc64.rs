@@ -1,6 +1,8 @@
 //! Run-time feature detection on PowerPC64.
 
 use super::cache;
+
+#[cfg(target_os = "linux")]
 use super::linux;
 
 #[macro_export]
@@ -44,6 +46,10 @@ pub fn detect_features() -> cache::Initializer {
     return value
 }
 
+#[cfg(not(target_os = "linux"))]
+fn fill_features(_value: &mut cache::Initializer) {}
+
+#[cfg(target_os = "linux")]
 fn fill_features(value: &mut cache::Initializer) {
     let mut enable_feature = |f, enable| {
         if enable {
@@ -54,7 +60,7 @@ fn fill_features(value: &mut cache::Initializer) {
     // The values are part of the platform-specific [asm/cputable.h][cputable]
     //
     // [cputable]: https://github.com/torvalds/linux/blob/master/arch/powerpc/include/uapi/asm/cputable.h
-    if let Ok(auxv) = linux::auxv() {
+    if let Ok(auxv) = linux::auxvec::auxv() {
         // note: the PowerPC values are the mask to do the test (instead of the
         // index of the bit to test like in ARM and Aarch64)
         enable_feature(Feature::altivec, auxv.hwcap & 0x10000000 != 0);
@@ -65,7 +71,7 @@ fn fill_features(value: &mut cache::Initializer) {
 
     // PowerPC's /proc/cpuinfo lacks a proper Feature field,
     // but `altivec` support is indicated in the `cpu` field.
-    if let Ok(c) = linux::CpuInfo::new() {
+    if let Ok(c) = linux::cpuinfo::CpuInfo::new() {
         enable_feature(Feature::altivec, c.field("cpu").has("altivec"));
         return
     }

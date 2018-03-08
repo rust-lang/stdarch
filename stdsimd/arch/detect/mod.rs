@@ -31,6 +31,12 @@ cfg_if! {
     }
 }
 
+#[cfg(all(target_os = "linux",
+          any(target_arch = "arm",
+              target_arch = "aarch64",
+              target_arch = "powerpc64",
+              target_arch = "mips64"
+          )))]
 mod linux;
 
 pub use self::arch::Feature;
@@ -103,6 +109,23 @@ guarding it behind a cfg(target_arch) as follows:
 
     #[cfg(target_arch = "powerpc64")] {
         if is_powerpc64_feature_detected(...) { ... }
+    }
+"#)
+    };
+}
+
+#[cfg(not(target_arch = "mips64"))]
+#[macro_export]
+#[unstable(feature = "stdsimd", issue = "0")]
+macro_rules! is_mips64_feature_detected {
+    ($t:tt) => {
+        compile_error!(r#"
+is_mips64_feature_detected can only be used on MIPS64 targets.
+You can prevent it from being used in other architectures by
+guarding it behind a cfg(target_arch) as follows:
+
+    #[cfg(target_arch = "mips64")] {
+        if is_mips64_feature_detected(...) { ... }
     }
 "#)
     };

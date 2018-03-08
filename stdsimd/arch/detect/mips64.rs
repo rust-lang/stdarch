@@ -1,8 +1,9 @@
 //! Run-time feature detection on MIPS64.
 
-use super::bit;
 use super::cache;
-use super::linux;
+
+#[cfg(target_os = "linux")]
+use super::{bit, linux};
 
 #[macro_export]
 #[unstable(feature = "stdsimd", issue = "0")]
@@ -29,9 +30,13 @@ pub enum Feature {
 pub fn detect_features() -> cache::Initializer {
     let mut value = cache::Initializer::default();
     fill_features(&mut value);
-    return value
+    value
 }
 
+#[cfg(not(target_os = "linux"))]
+fn fill_features(_value: &mut cache::Initializer) {}
+
+#[cfg(target_os = "linux")]
 fn fill_features(value: &mut cache::Initializer) {
     let mut enable_feature = |f, enable| {
         if enable {
@@ -42,7 +47,7 @@ fn fill_features(value: &mut cache::Initializer) {
     // The values are part of the platform-specific [asm/cputable.h][cputable]
     //
     // [cputable]: https://github.com/torvalds/linux/blob/master/arch/mips/include/uapi/asm/hwcap.h
-    if let Ok(auxv) = linux::auxv() {
+    if let Ok(auxv) = linux::auxvec::auxv() {
         enable_feature(Feature::msa, bit::test(auxv.hwcap, 1));
         return
     }

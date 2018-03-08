@@ -28,7 +28,3 @@ extern crate std;
 mod stdsimd;
 
 pub use stdsimd::*;
-
-use _std::prelude;
-use _std::fs;
-use _std::io;
