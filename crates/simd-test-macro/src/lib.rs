@@ -61,6 +61,7 @@ pub fn simd_test(
         "arm" => "is_arm_feature_detected",
         "aarch64" => "is_aarch64_feature_detected",
         "powerpc64" => "is_powerpc64_feature_detected",
+        "mips64" | "mips64el" => "is_mips64_feature_detected",
         t => panic!("unknown target: {}", t),
     };
     let macro_test = proc_macro2::Term::intern(macro_test);
