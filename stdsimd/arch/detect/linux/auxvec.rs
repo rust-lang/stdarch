@@ -73,6 +73,7 @@ pub fn auxv() -> Result<AuxVec, ()> {
                 return Ok(AuxVec { hwcap });
             }
         }
+
         // Targets with AT_HWCAP and AT_HWCAP2:
         #[cfg(any(target_arch = "arm", target_arch = "powerpc64"))] {
             if let Ok(hwcap2) = getauxval(AT_HWCAP2) {
@@ -104,7 +105,6 @@ fn getauxval(key: usize) -> Result<usize, ()> {
             "getauxval\0".as_ptr() as *const _,
         );
         if ptr.is_null() {
-            eprintln!("getauxval was not linked");
             return Err(());
         }
 
@@ -127,7 +127,7 @@ fn auxv_from_file(file: &str) -> Result<AuxVec, ()> {
     {
         let raw: &mut [u8; 64 * mem::size_of::<usize>()] =
             unsafe { mem::transmute(&mut buf) };
-        file.read(raw).map_err(|e| { eprintln!("error reading /proc/self/auxv: {}", e); ()})?;
+        file.read(raw).map_err(|_| ())?;
     }
     auxv_from_buf(&buf)
 }
@@ -167,8 +167,6 @@ fn auxv_from_buf(buf: &[usize; 64]) -> Result<AuxVec, ()> {
                   target_arch = "arm", target_arch = "powerpc64")))] {
         compile_error!("this function is not implemented for this target");
     }
-
-    eprintln!("error couldn't find key AT_HWCAP in file buffer");
 
     Err(())
 }
@@ -212,6 +210,9 @@ mod tests {
     }
 
 
+    // FIXME: on mips64 getauxval returns 0, and /proc/self/auxv
+    // does not always contain the AT_HWCAP key under qemu.
+    #[cfg(not(target_arch = "mips64"))]
     #[test]
     fn auxv_crate() {
         let v = auxv();

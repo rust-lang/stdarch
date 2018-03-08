@@ -57,13 +57,21 @@ pub fn simd_test(
         .expect(&format!("failed to parse name: {}", name.clone().as_str()));
 
     let target = env::var("TARGET").expect("TARGET environment variable not set");
+    let mut force_test = false;
     let macro_test = match target.split('-').next()
         .expect(&format!("target triple contained no \"-\": {}", target)) {
         "i686" | "x86_64" | "i586" => "is_x86_feature_detected",
         "arm" => "is_arm_feature_detected",
-        "aarch64" => "is_aarch64_feature_detected",
+        "aarch64" => "is_aarch64_feature_detected", 
         "powerpc64" => "is_powerpc64_feature_detected",
-        "mips64" | "mips64el" => "is_mips64_feature_detected",
+        "mips64" | "mips64el" => {
+            // On MIPS CI run-time feature detection always returns false due to
+            // this qemu bug: https://bugs.launchpad.net/qemu/+bug/1754372
+            //
+            // This is a workaround to force the MIPS tests to always run on CI.
+            force_test = true;
+            "is_mips64_feature_detected"
+        },
         t => panic!("unknown target: {}", t),
     };
     let macro_test = proc_macro2::Term::intern(macro_test);
@@ -85,7 +93,7 @@ pub fn simd_test(
         #[allow(non_snake_case)]
         #[test]
         fn #name() {
-            if #cfg_target_features {
+            if #force_test | (#cfg_target_features) {
                 return unsafe { #name() };
             } else {
                 ::stdsimd_test::assert_skip_test_ok(stringify!(#name));
