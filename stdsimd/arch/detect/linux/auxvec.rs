@@ -190,6 +190,7 @@ mod tests {
 
     // Reads the Auxiliary Vector key from getauxval()
     // using the auxv crate.
+    #[cfg(not(target_arch = "mips64"))]
     fn auxv_crate_getauxval(key: usize) -> Option<usize> {
         use self::auxv_crate::AuxvType;
         use self::auxv_crate::getauxval::Getauxval;
