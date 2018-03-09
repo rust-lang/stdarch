@@ -66,7 +66,7 @@ script:
   - cargo generate-lockfile
   - |
     if [ "$NORUN" == "1" ]; then
-      cd crates/stdsimd
+      cd -p crates/stdsimd
       cargo build --target=$TARGET
       cargo build --release --target=$TARGET
     else
