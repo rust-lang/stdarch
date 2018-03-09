@@ -89,7 +89,8 @@ pub mod arch {
     /// Platform-specific intrinsics for the `mips` platform.
     ///
     /// See the [module documentation](../index.html) for more details.
-    #[cfg(target_arch = "mips")]
+    #[cfg(any(target_arch = "mips", dox))]
+    #[doc(cfg(target_arch = "mips"))]
     pub mod mips {
         pub use coresimd::mips::*;
     }
@@ -97,7 +98,8 @@ pub mod arch {
     /// Platform-specific intrinsics for the `mips64` platform.
     ///
     /// See the [module documentation](../index.html) for more details.
-    #[cfg(target_arch = "mips64")]
+    #[cfg(any(target_arch = "mips64", dox))]
+    #[doc(cfg(target_arch = "mips64"))]
     pub mod mips64 {
         pub use coresimd::mips::*;
     }
@@ -117,7 +119,7 @@ mod aarch64;
 #[cfg(target_arch = "wasm32")]
 mod wasm32;
 
-#[cfg(any(target_arch = "mips", target_arch = "mips64"))]
+#[cfg(any(target_arch = "mips", target_arch = "mips64", dox))]
 mod mips;
 
 mod nvptx;

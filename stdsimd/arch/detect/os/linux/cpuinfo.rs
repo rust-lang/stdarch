@@ -1,8 +1,8 @@
 //! Parses /proc/cpuinfo
 
-use _std::prelude::v1::*;
-use _std::fs::File;
-use _std::io::{self, Read};
+use prelude::v1::*;
+use fs::File;
+use io::{self, Read};
 
 /// cpuinfo
 pub struct CpuInfo {

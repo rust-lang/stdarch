@@ -5,16 +5,7 @@ use _std::prelude::v1::*;
 use _std::fs::File;
 use _std::io::Read;
 
-#[cfg(not(all(target_os = "linux",
-              any(target_arch = "aarch64", target_arch = "arm",
-                  target_arch = "powerpc64", target_arch = "mips",
-                  target_arch = "mips64"))))]
-compile_error!("ELF auxiliary vectors are not implemented for this target.");
-
 /// Key to access the CPU Hardware capabilities bitfield.
-#[cfg(any(target_arch = "aarch64", target_arch = "arm",
-          target_arch = "powerpc64", target_arch = "mips",
-          target_arch = "mips64"))]
 pub const AT_HWCAP: usize = 16;
 /// Key to access the CPU Hardware capabilities 2 bitfield.
 #[cfg(any(target_arch = "arm", target_arch = "powerpc64"))]
@@ -26,9 +17,6 @@ pub const AT_HWCAP2: usize = 26;
 /// This should be interpreted as all the features being disabled.
 #[derive(Debug, Copy, Clone)]
 pub struct AuxVec {
-    #[cfg(any(target_arch = "aarch64", target_arch = "arm",
-              target_arch = "powerpc64", target_arch = "mips",
-              target_arch = "mips64"))]
     pub hwcap: usize,
     #[cfg(any(target_arch = "arm", target_arch = "powerpc64"))]
     pub hwcap2: usize,
@@ -79,12 +67,6 @@ pub fn auxv() -> Result<AuxVec, ()> {
                     return Ok(AuxVec { hwcap, hwcap2 });
                 }
             }
-        }
-        #[cfg(not(any(target_arch = "aarch64", target_arch = "mips",
-                      target_arch = "mips64", target_arch = "arm",
-                      target_arch = "powerpc64")))]
-        {
-            compile_error!("function not implemented for this target");
         }
     }
     // If calling getauxval fails, try to read the auxiliary vector from
@@ -162,14 +144,6 @@ fn auxv_from_buf(buf: &[usize; 64]) -> Result<AuxVec, ()> {
             return Ok(AuxVec { hwcap, hwcap2 });
         }
     }
-
-    #[cfg(not(any(target_arch = "aarch64", target_arch = "mips",
-                  target_arch = "mips64", target_arch = "arm",
-                  target_arch = "powerpc64")))]
-    {
-        compile_error!("this function is not implemented for this target");
-    }
-
     Err(())
 }
 
@@ -203,15 +177,6 @@ mod tests {
         }
     }
 
-    #[test]
-    fn auxv_dump() {
-        if let Ok(auxvec) = auxv() {
-            println!("{:?}", auxvec);
-        } else {
-            println!("both getauxval() and reading /proc/self/auxv failed!");
-        }
-    }
-
     // FIXME: on mips/mips64 getauxval returns 0, and /proc/self/auxv
     // does not always contain the AT_HWCAP key under qemu.
     #[cfg(not(any(target_arch = "mips", target_arch = "mips64")))]
@@ -223,7 +188,8 @@ mod tests {
             assert_eq!(rt_hwcap, hwcap);
         }
 
-        #[cfg(not(any(target_arch = "aarch64", target_arch = "mips64")))]
+        // Targets with AT_HWCAP and AT_HWCAP2:
+        #[cfg(any(target_arch = "arm", target_arch = "powerpc64"))]
         {
             if let Some(hwcap2) = auxv_crate_getauxval(AT_HWCAP2) {
                 let rt_hwcap2 = v.expect("failed to find hwcap2 key").hwcap2;
@@ -232,36 +198,46 @@ mod tests {
         }
     }
 
-    #[cfg(target_arch = "arm")]
     #[test]
-    fn linux_rpi3() {
-        let v = auxv_from_file(
-            "../../stdsimd/arch/detect/test_data/linux-rpi3.auxv",
-        ).unwrap();
-        assert_eq!(v.hwcap, 4174038);
-        assert_eq!(v.hwcap2, 16);
+    fn auxv_dump() {
+        if let Ok(auxvec) = auxv() {
+            println!("{:?}", auxvec);
+        } else {
+            println!("both getauxval() and reading /proc/self/auxv failed!");
+        }
     }
 
-    #[cfg(target_arch = "arm")]
-    #[test]
-    #[should_panic]
-    fn linux_macos_vb() {
-        let _ = auxv_from_file(
-                "../../stdsimd/arch/detect/test_data/macos-virtualbox-linux-x86-4850HQ.auxv"
-            ).unwrap();
-        // this file is incomplete (contains hwcap but not hwcap2), we
-        // want to fall back to /proc/cpuinfo in this case, so
-        // reading should fail. assert_eq!(v.hwcap, 126614527);
-        // assert_eq!(v.hwcap2, 0);
-    }
+    cfg_if! {
+        if #[cfg(target_arch = "arm")] {
+            #[test]
+            fn linux_rpi3() {
+                let v = auxv_from_file(
+                    "../../stdsimd/arch/detect/test_data/linux-rpi3.auxv",
+                ).unwrap();
+                assert_eq!(v.hwcap, 4174038);
+                assert_eq!(v.hwcap2, 16);
+            }
 
-    #[cfg(target_arch = "aarch64")]
-    #[test]
-    fn linux_x64() {
-        let v = auxv_from_file(
-            "../../stdsimd/arch/detect/test_data/linux-x64-i7-6850k.auxv",
-        ).unwrap();
-        assert_eq!(v.hwcap, 3219913727);
+            #[test]
+            #[should_panic]
+            fn linux_macos_vb() {
+                let _ = auxv_from_file(
+                    "../../stdsimd/arch/detect/test_data/macos-virtualbox-linux-x86-4850HQ.auxv"
+                ).unwrap();
+                // this file is incomplete (contains hwcap but not hwcap2), we
+                // want to fall back to /proc/cpuinfo in this case, so
+                // reading should fail. assert_eq!(v.hwcap, 126614527);
+                // assert_eq!(v.hwcap2, 0);
+            }
+        } else if #[cfg(target_arch = "aarch64")] {
+            #[test]
+            fn linux_x64() {
+                let v = auxv_from_file(
+                    "../../stdsimd/arch/detect/test_data/linux-x64-i7-6850k.auxv",
+                ).unwrap();
+                assert_eq!(v.hwcap, 3219913727);
+            }
+        }
     }
 
     #[test]
@@ -280,6 +256,7 @@ mod tests {
             assert_eq!(v.unwrap().hwcap, hwcap);
         }
 
+        // Targets with AT_HWCAP and AT_HWCAP2:
         #[cfg(any(target_arch = "arm", target_arch = "powerpc64"))]
         {
             if let Some(hwcap2) = auxv_crate_getprocfs(AT_HWCAP2) {

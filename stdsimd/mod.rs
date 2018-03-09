@@ -360,10 +360,10 @@ pub mod arch {
     #[cfg(target_arch = "wasm32")]
     pub use coresimd::arch::wasm32;
 
-    #[cfg(target_arch = "mips")]
+    #[cfg(all(not(dox), target_arch = "mips"))]
     pub use coresimd::arch::mips;
 
-    #[cfg(target_arch = "mips64")]
+    #[cfg(all(not(dox), target_arch = "mips64"))]
     pub use coresimd::arch::mips64;
 
     #[doc(hidden)] // unstable implementation detail
@@ -412,6 +412,28 @@ pub mod arch {
     #[cfg(dox)]
     #[doc(cfg(target_arch = "aarch64"))]
     pub mod aarch64 {}
+
+    /// Platform-specific intrinsics for the `mips` platform.
+    ///
+    /// The documentation with the full listing of `mips` intrinsics is
+    /// available in [libcore], but the module is re-exported here in std
+    /// as well.
+    ///
+    /// [libcore]: ../../../core/arch/mips/index.html
+    #[cfg(dox)]
+    #[doc(cfg(target_arch = "mips"))]
+    pub mod mips {}
+
+    /// Platform-specific intrinsics for the `mips64` platform.
+    ///
+    /// The documentation with the full listing of `mips64` intrinsics is
+    /// available in [libcore], but the module is re-exported here in std
+    /// as well.
+    ///
+    /// [libcore]: ../../../core/arch/mips64/index.html
+    #[cfg(dox)]
+    #[doc(cfg(target_arch = "mips64"))]
+    pub mod mips64 {}
 }
 
 #[unstable(feature = "stdsimd", issue = "0")]
