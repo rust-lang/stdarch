@@ -13,9 +13,6 @@ case ${TARGET} in
     aarch*)
         export RUSTFLAGS="${RUSTFLAGS} -C target-feature=+neon"
         ;;
-    mips64*)
-        export RUSTFLAGS="${RUSTFLAGS} -C target-cpu=mips64r6"
-        ;;
     *)
         ;;
 esac
