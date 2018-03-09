@@ -84,3 +84,9 @@ use _core::ptr;
 use _core::result;
 #[allow(unused_imports)]
 use _core::slice;
+
+pub fn foo() -> coresimd::simd::i8x16 {
+    use coresimd::simd::i8x16;
+    let a = i8x16::splat(1);
+    unsafe { coresimd::arch::mips::__msa_add_a_b(a, a) }
+}
