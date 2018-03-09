@@ -66,9 +66,8 @@ script:
   - cargo generate-lockfile
   - |
     if [ "$NORUN" == "1" ]; then
-      cd -p crates/stdsimd
-      cargo build --target=$TARGET
-      cargo build --release --target=$TARGET
+      cargo build --target=$TARGET -p coresimd -p stdsimd --manifest-path crates/stdsimd/Cargo.toml
+      cargo build --release --target=$TARGET -p coresimd -p stdsimd --manifest-path crates/stdsimd/Cargo.toml
     else
       ci/run-docker.sh $TARGET $FEATURES
     fi
