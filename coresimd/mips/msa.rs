@@ -1,13 +1,13 @@
 //! MIPS SIMD Architecture intrinsics
 //!
-//! The reference is [MIPS Architecture for Programmers Volume IV-j: The MIPS32 SIMD
-//! Architecture Module Revision 1.12][msa_ref].
+//! The reference is [MIPS Architecture for Programmers Volume IV-j: The
+//! MIPS32 SIMD Architecture Module Revision 1.12][msa_ref].
 //!
 //! [msa_ref]: http://cdn2.imgtec.com/documentation/MD00866-2B-MSA32-AFP-01.12.pdf
 
 #[cfg(test)]
 use stdsimd_test::assert_instr;
-use ::coresimd::simd::*;
+use coresimd::simd::*;
 
 #[allow(improper_ctypes)]
 extern "C" {

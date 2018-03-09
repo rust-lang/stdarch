@@ -40,8 +40,12 @@ pub fn assert_instr(
     };
     let name = &func.ident;
     use quote::ToTokens;
-    let instr_str = instr.clone().into_tokens().to_string()
-        .replace('.', "_").replace(|c: char| c.is_whitespace(), "");
+    let instr_str = instr
+        .clone()
+        .into_tokens()
+        .to_string()
+        .replace('.', "_")
+        .replace(|c: char| c.is_whitespace(), "");
     let assert_name = syn::Ident::from(
         &format!("assert_{}_{}", name.as_ref(), instr_str)[..],
     );
@@ -112,7 +116,8 @@ pub fn assert_instr(
         }
     }.into();
     // why? necessary now to get tests to work?
-    let tts: TokenStream = tts.to_string().parse().expect("cannot parse tokenstream");
+    let tts: TokenStream =
+        tts.to_string().parse().expect("cannot parse tokenstream");
 
     let tts: TokenStream = quote! {
         #item

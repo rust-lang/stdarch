@@ -53,7 +53,8 @@ pub fn simd_test(
     let item = TokenStream::from(item);
     let name = find_name(item.clone());
 
-    let name: TokenStream = name.as_str().parse()
+    let name: TokenStream = name.as_str()
+        .parse()
         .expect(&format!("failed to parse name: {}", name.clone().as_str()));
 
     let default_target = if cfg!(target_os = "windows") {
@@ -66,28 +67,34 @@ pub fn simd_test(
         None
     };
 
-    let target = env::var("TARGET").unwrap_or_else(|_| default_target.expect("TARGET environment variable not set and no default target known for the current target.").to_string());
+    let target = env::var("TARGET").unwrap_or_else(|_| {
+        default_target.expect("TARGET environment variable not set and no default target known for the current target.").to_string()
+    });
     let mut force_test = false;
-    let macro_test = match target.split('-').next()
-        .expect(&format!("target triple contained no \"-\": {}", target)) {
+    let macro_test = match target
+        .split('-')
+        .next()
+        .expect(&format!("target triple contained no \"-\": {}", target))
+    {
         "i686" | "x86_64" | "i586" => "is_x86_feature_detected",
         "arm" => "is_arm_feature_detected",
         "aarch64" => "is_aarch64_feature_detected",
         "powerpc64" => "is_powerpc64_feature_detected",
         "mips" | "mipsel" => {
             // FIXME:
-            // On MIPS CI run-time feature detection always returns false due to
-            // this qemu bug: https://bugs.launchpad.net/qemu/+bug/1754372
+            // On MIPS CI run-time feature detection always returns false due
+            // to this qemu bug: https://bugs.launchpad.net/qemu/+bug/1754372
             //
-            // This is a workaround to force the MIPS tests to always run on CI.
+            // This is a workaround to force the MIPS tests to always run on
+            // CI.
             force_test = true;
             "is_mips_feature_detected"
-        },
+        }
         "mips64" | "mips64el" => {
             // FIXME: see above
             force_test = true;
             "is_mips64_feature_detected"
-        },
+        }
         t => panic!("unknown target: {}", t),
     };
     let macro_test = proc_macro2::Term::intern(macro_test);

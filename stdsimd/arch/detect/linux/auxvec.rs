@@ -6,18 +6,14 @@ use _std::fs::File;
 use _std::io::Read;
 
 #[cfg(not(all(target_os = "linux",
-              any(target_arch = "aarch64",
-                  target_arch = "arm",
-                  target_arch = "powerpc64",
-                  target_arch = "mips",
+              any(target_arch = "aarch64", target_arch = "arm",
+                  target_arch = "powerpc64", target_arch = "mips",
                   target_arch = "mips64"))))]
 compile_error!("ELF auxiliary vectors are not implemented for this target.");
 
 /// Key to access the CPU Hardware capabilities bitfield.
-#[cfg(any(target_arch = "aarch64",
-          target_arch = "arm",
-          target_arch = "powerpc64",
-          target_arch = "mips",
+#[cfg(any(target_arch = "aarch64", target_arch = "arm",
+          target_arch = "powerpc64", target_arch = "mips",
           target_arch = "mips64"))]
 pub const AT_HWCAP: usize = 16;
 /// Key to access the CPU Hardware capabilities 2 bitfield.
@@ -30,13 +26,9 @@ pub const AT_HWCAP2: usize = 26;
 /// This should be interpreted as all the features being disabled.
 #[derive(Debug, Copy, Clone)]
 pub struct AuxVec {
-    #[cfg(any(
-        target_arch = "aarch64",
-        target_arch = "arm",
-        target_arch = "powerpc64",
-        target_arch = "mips",
-        target_arch = "mips64",
-    ))]
+    #[cfg(any(target_arch = "aarch64", target_arch = "arm",
+              target_arch = "powerpc64", target_arch = "mips",
+              target_arch = "mips64"))]
     pub hwcap: usize,
     #[cfg(any(target_arch = "arm", target_arch = "powerpc64"))]
     pub hwcap2: usize,
@@ -57,10 +49,10 @@ pub struct AuxVec {
 /// - Otherwise, try to read `/proc/self/auxv`.
 /// - If that fails, this function returns an error.
 ///
-/// Note that run-time feature detection is not invoked for features that can be
-/// detected at compile-time. Also note that if this function returns an error,
-/// cpuinfo still can (and will) be used to try to perform run-time feature
-/// detecton on some platforms.
+/// Note that run-time feature detection is not invoked for features that can
+/// be detected at compile-time. Also note that if this function returns an
+/// error, cpuinfo still can (and will) be used to try to perform run-time
+/// feature detecton on some platforms.
 ///
 /// For more information about when `getauxval` is available check the great
 /// [`auxv` crate documentation][auxv_docs].
@@ -71,23 +63,27 @@ pub fn auxv() -> Result<AuxVec, ()> {
     // Try to call a dynamically-linked getauxval function.
     if let Ok(hwcap) = getauxval(AT_HWCAP) {
         // Targets with only AT_HWCAP:
-        #[cfg(any(target_arch = "aarch64", target_arch = "mips", target_arch = "mips64"))] {
+        #[cfg(any(target_arch = "aarch64", target_arch = "mips",
+                  target_arch = "mips64"))]
+        {
             if hwcap != 0 {
                 return Ok(AuxVec { hwcap });
             }
         }
 
         // Targets with AT_HWCAP and AT_HWCAP2:
-        #[cfg(any(target_arch = "arm", target_arch = "powerpc64"))] {
+        #[cfg(any(target_arch = "arm", target_arch = "powerpc64"))]
+        {
             if let Ok(hwcap2) = getauxval(AT_HWCAP2) {
                 if hwcap != 0 && hwcap2 != 0 {
                     return Ok(AuxVec { hwcap, hwcap2 });
                 }
             }
         }
-        #[cfg(not(any(target_arch = "aarch64", target_arch = "mips", target_arch = "mips64",
-                      target_arch = "arm", target_arch = "powerpc64"
-        )))] {
+        #[cfg(not(any(target_arch = "aarch64", target_arch = "mips",
+                      target_arch = "mips64", target_arch = "arm",
+                      target_arch = "powerpc64")))]
+        {
             compile_error!("function not implemented for this target");
         }
     }
@@ -97,8 +93,8 @@ pub fn auxv() -> Result<AuxVec, ()> {
 }
 
 /// Tries to read the `key` from the auxiliary vector by calling the
-/// dynamically-linked `getauxval` function. If the function is not linked, this
-/// function return `Err`.
+/// dynamically-linked `getauxval` function. If the function is not linked,
+/// this function return `Err`.
 fn getauxval(key: usize) -> Result<usize, ()> {
     use libc;
     pub type F = unsafe extern "C" fn(usize) -> usize;
@@ -139,7 +135,8 @@ fn auxv_from_file(file: &str) -> Result<AuxVec, ()> {
 /// function returns `Err`.
 fn auxv_from_buf(buf: &[usize; 64]) -> Result<AuxVec, ()> {
     // Targets with only AT_HWCAP:
-    #[cfg(any(target_arch = "aarch64", target_arch = "mips", target_arch = "mips64"))]
+    #[cfg(any(target_arch = "aarch64", target_arch = "mips",
+              target_arch = "mips64"))]
     {
         for el in buf.chunks(2) {
             match el[0] {
@@ -167,8 +164,9 @@ fn auxv_from_buf(buf: &[usize; 64]) -> Result<AuxVec, ()> {
     }
 
     #[cfg(not(any(target_arch = "aarch64", target_arch = "mips",
-                  target_arch = "mips64",
-                  target_arch = "arm", target_arch = "powerpc64")))] {
+                  target_arch = "mips64", target_arch = "arm",
+                  target_arch = "powerpc64")))]
+    {
         compile_error!("this function is not implemented for this target");
     }
 
