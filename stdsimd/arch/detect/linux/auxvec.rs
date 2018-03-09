@@ -9,6 +9,7 @@ use _std::io::Read;
               any(target_arch = "aarch64",
                   target_arch = "arm",
                   target_arch = "powerpc64",
+                  target_arch = "mips",
                   target_arch = "mips64"))))]
 compile_error!("ELF auxiliary vectors are not implemented for this target.");
 
@@ -16,6 +17,7 @@ compile_error!("ELF auxiliary vectors are not implemented for this target.");
 #[cfg(any(target_arch = "aarch64",
           target_arch = "arm",
           target_arch = "powerpc64",
+          target_arch = "mips",
           target_arch = "mips64"))]
 pub const AT_HWCAP: usize = 16;
 /// Key to access the CPU Hardware capabilities 2 bitfield.
@@ -32,6 +34,7 @@ pub struct AuxVec {
         target_arch = "aarch64",
         target_arch = "arm",
         target_arch = "powerpc64",
+        target_arch = "mips",
         target_arch = "mips64",
     ))]
     pub hwcap: usize,
@@ -68,7 +71,7 @@ pub fn auxv() -> Result<AuxVec, ()> {
     // Try to call a dynamically-linked getauxval function.
     if let Ok(hwcap) = getauxval(AT_HWCAP) {
         // Targets with only AT_HWCAP:
-        #[cfg(any(target_arch = "aarch64", target_arch = "mips64"))] {
+        #[cfg(any(target_arch = "aarch64", target_arch = "mips", target_arch = "mips64"))] {
             if hwcap != 0 {
                 return Ok(AuxVec { hwcap });
             }
@@ -82,7 +85,7 @@ pub fn auxv() -> Result<AuxVec, ()> {
                 }
             }
         }
-        #[cfg(not(any(target_arch = "aarch64", target_arch = "mips64",
+        #[cfg(not(any(target_arch = "aarch64", target_arch = "mips", target_arch = "mips64",
                       target_arch = "arm", target_arch = "powerpc64"
         )))] {
             compile_error!("function not implemented for this target");
@@ -136,7 +139,7 @@ fn auxv_from_file(file: &str) -> Result<AuxVec, ()> {
 /// function returns `Err`.
 fn auxv_from_buf(buf: &[usize; 64]) -> Result<AuxVec, ()> {
     // Targets with only AT_HWCAP:
-    #[cfg(any(target_arch = "aarch64", target_arch = "mips64"))]
+    #[cfg(any(target_arch = "aarch64", target_arch = "mips", target_arch = "mips64"))]
     {
         for el in buf.chunks(2) {
             match el[0] {
@@ -163,7 +166,8 @@ fn auxv_from_buf(buf: &[usize; 64]) -> Result<AuxVec, ()> {
         }
     }
 
-    #[cfg(not(any(target_arch = "aarch64", target_arch = "mips64",
+    #[cfg(not(any(target_arch = "aarch64", target_arch = "mips",
+                  target_arch = "mips64",
                   target_arch = "arm", target_arch = "powerpc64")))] {
         compile_error!("this function is not implemented for this target");
     }
@@ -190,7 +194,7 @@ mod tests {
 
     // Reads the Auxiliary Vector key from getauxval()
     // using the auxv crate.
-    #[cfg(not(target_arch = "mips64"))]
+    #[cfg(not(any(target_arch = "mips", target_arch = "mips64")))]
     fn auxv_crate_getauxval(key: usize) -> Option<usize> {
         use self::auxv_crate::AuxvType;
         use self::auxv_crate::getauxval::Getauxval;
@@ -210,10 +214,9 @@ mod tests {
         }
     }
 
-
-    // FIXME: on mips64 getauxval returns 0, and /proc/self/auxv
+    // FIXME: on mips/mips64 getauxval returns 0, and /proc/self/auxv
     // does not always contain the AT_HWCAP key under qemu.
-    #[cfg(not(target_arch = "mips64"))]
+    #[cfg(not(any(target_arch = "mips", target_arch = "mips64")))]
     #[test]
     fn auxv_crate() {
         let v = auxv();

@@ -29,12 +29,14 @@ pub mod simd {
 /// * [`x86_64`]
 /// * [`arm`]
 /// * [`aarch64`]
+/// * [`mips`]
 /// * [`mips64`]
 ///
 /// [`x86`]: https://rust-lang-nursery.github.io/stdsimd/x86/stdsimd/arch/index.html
 /// [`x86_64`]: https://rust-lang-nursery.github.io/stdsimd/x86_64/stdsimd/arch/index.html
 /// [`arm`]: https://rust-lang-nursery.github.io/stdsimd/arm/stdsimd/arch/index.html
 /// [`aarch64`]: https://rust-lang-nursery.github.io/stdsimd/aarch64/stdsimd/arch/index.html
+/// [`mips`]: https://rust-lang-nursery.github.io/stdsimd/mips/stdsimd/arch/index.html
 /// [`mips64`]: https://rust-lang-nursery.github.io/stdsimd/mips64/stdsimd/arch/index.html
 #[unstable(feature = "stdsimd", issue = "0")]
 pub mod arch {
@@ -115,7 +117,7 @@ mod aarch64;
 #[cfg(target_arch = "wasm32")]
 mod wasm32;
 
-#[cfg(target_arch = "mips")]
+#[cfg(any(target_arch = "mips", target_arch = "mips64"))]
 mod mips;
 
 mod nvptx;

@@ -16,6 +16,9 @@ cfg_if! {
     } else if #[cfg(target_arch = "powerpc64")] {
         #[path = "powerpc64.rs"]
         mod arch;
+    } else if #[cfg(target_arch = "mips")] {
+        #[path = "mips.rs"]
+        mod arch;
     } else if #[cfg(target_arch = "mips64")] {
         #[path = "mips64.rs"]
         mod arch;
@@ -35,6 +38,7 @@ cfg_if! {
           any(target_arch = "arm",
               target_arch = "aarch64",
               target_arch = "powerpc64",
+              target_arch = "mips",
               target_arch = "mips64"
           )))]
 mod linux;
@@ -114,12 +118,29 @@ guarding it behind a cfg(target_arch) as follows:
     };
 }
 
-#[cfg(not(target_arch = "mips64"))]
+#[cfg(not(target_arch = "mips"))]
 #[macro_export]
 #[unstable(feature = "stdsimd", issue = "0")]
-macro_rules! is_mips64_feature_detected {
+macro_rules! is_mips_feature_detected {
     ($t:tt) => {
         compile_error!(r#"
+is_mips_feature_detected can only be used on MIPS targets.
+You can prevent it from being used in other architectures by
+guarding it behind a cfg(target_arch) as follows:
+
+    #[cfg(target_arch = "mips")] {
+        if is_mips_feature_detected(...) { ... }
+    }
+"#)
+    };
+}
+
+  #[cfg(not(target_arch = "mips64"))]
+    #[macro_export]
+    #[unstable(feature = "stdsimd", issue = "0")]
+    macro_rules! is_mips64_feature_detected {
+        ($t:tt) => {
+            compile_error!(r#"
 is_mips64_feature_detected can only be used on MIPS64 targets.
 You can prevent it from being used in other architectures by
 guarding it behind a cfg(target_arch) as follows:
