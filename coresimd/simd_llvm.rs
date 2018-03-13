@@ -31,4 +31,12 @@ extern "platform-intrinsic" {
     pub fn simd_and<T>(x: T, y: T) -> T;
     pub fn simd_or<T>(x: T, y: T) -> T;
     pub fn simd_xor<T>(x: T, y: T) -> T;
+
+    pub fn simd_reduce_add<T, U>(x: T) -> U;
+    pub fn simd_reduce_mul<T, U>(x: T) -> U;
+    pub fn simd_reduce_min<T, U>(x: T) -> U;
+    pub fn simd_reduce_max<T, U>(x: T) -> U;
+    pub fn simd_reduce_and<T, U>(x: T) -> U;
+    pub fn simd_reduce_or<T, U>(x: T) -> U;
+    pub fn simd_reduce_xor<T, U>(x: T) -> U;
 }
