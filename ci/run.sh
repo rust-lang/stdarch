@@ -17,8 +17,6 @@ echo "FEATURES=${FEATURES}"
 echo "OBJDUMP=${OBJDUMP}"
 
 cargo_test() {
-    cargo clean
-
     # Test cfg(test) tests:
     cmd="cargo test --target=${TARGET} --features ${FEATURES} $1"
     cmd="$cmd -p coresimd -p stdsimd --manifest-path crates/stdsimd/Cargo.toml"
