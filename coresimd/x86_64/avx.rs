@@ -27,7 +27,7 @@ pub unsafe fn _mm256_insert_epi64(a: __m256i, i: i64, index: i32) -> __m256i {
     mem::transmute(simd_insert(a.as_i64x4(), (index as u32) & 3, i))
 }
 
-#[cfg(test)]
+#[cfg(test_intr)]
 mod tests {
     use stdsimd_test::simd_test;
 

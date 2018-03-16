@@ -7,7 +7,7 @@
 
 use coresimd::x86::__m128i;
 
-#[cfg(test)]
+#[cfg(test_intr)]
 use stdsimd_test::assert_instr;
 
 #[allow(improper_ctypes)]
@@ -23,15 +23,15 @@ extern "C" {
 /// should be used. Immediate bits other than 0 and 4 are ignored.
 #[inline]
 #[target_feature(enable = "pclmulqdq")]
-#[cfg_attr(all(test, not(target_os = "linux")),
+#[cfg_attr(all(test_intr, not(target_os = "linux")),
            assert_instr(pclmulqdq, imm8 = 0))]
-#[cfg_attr(all(test, target_os = "linux"),
+#[cfg_attr(all(test_intr, target_os = "linux"),
            assert_instr(pclmullqlqdq, imm8 = 0))]
-#[cfg_attr(all(test, target_os = "linux"),
+#[cfg_attr(all(test_intr, target_os = "linux"),
            assert_instr(pclmulhqlqdq, imm8 = 1))]
-#[cfg_attr(all(test, target_os = "linux"),
+#[cfg_attr(all(test_intr, target_os = "linux"),
            assert_instr(pclmullqhqdq, imm8 = 16))]
-#[cfg_attr(all(test, target_os = "linux"),
+#[cfg_attr(all(test_intr, target_os = "linux"),
            assert_instr(pclmulhqhqdq, imm8 = 17))]
 #[rustc_args_required_const(2)]
 pub unsafe fn _mm_clmulepi64_si128(
@@ -43,7 +43,7 @@ pub unsafe fn _mm_clmulepi64_si128(
     constify_imm8!(imm8, call)
 }
 
-#[cfg(test)]
+#[cfg(test_intr)]
 mod tests {
     // The constants in the tests below are just bit patterns. They should not
     // be interpreted as integers; signedness does not make sense for them, but

@@ -5,14 +5,14 @@ use coresimd::simd::*;
 use coresimd::x86::*;
 use mem;
 
-#[cfg(test)]
+#[cfg(test_intr)]
 use stdsimd_test::assert_instr;
 
 /// Compute the absolute value of packed 8-bit signed integers in `a` and
 /// return the unsigned results.
 #[inline]
 #[target_feature(enable = "ssse3")]
-#[cfg_attr(test, assert_instr(pabsb))]
+#[cfg_attr(test_intr, assert_instr(pabsb))]
 pub unsafe fn _mm_abs_epi8(a: __m128i) -> __m128i {
     mem::transmute(pabsb128(a.as_i8x16()))
 }
@@ -22,7 +22,7 @@ pub unsafe fn _mm_abs_epi8(a: __m128i) -> __m128i {
 /// return the 16-bit unsigned integer
 #[inline]
 #[target_feature(enable = "ssse3")]
-#[cfg_attr(test, assert_instr(pabsw))]
+#[cfg_attr(test_intr, assert_instr(pabsw))]
 pub unsafe fn _mm_abs_epi16(a: __m128i) -> __m128i {
     mem::transmute(pabsw128(a.as_i16x8()))
 }
@@ -32,7 +32,7 @@ pub unsafe fn _mm_abs_epi16(a: __m128i) -> __m128i {
 /// return the 32-bit unsigned integer
 #[inline]
 #[target_feature(enable = "ssse3")]
-#[cfg_attr(test, assert_instr(pabsd))]
+#[cfg_attr(test_intr, assert_instr(pabsd))]
 pub unsafe fn _mm_abs_epi32(a: __m128i) -> __m128i {
     mem::transmute(pabsd128(a.as_i32x4()))
 }
@@ -63,7 +63,7 @@ pub unsafe fn _mm_abs_epi32(a: __m128i) -> __m128i {
 /// ```
 #[inline]
 #[target_feature(enable = "ssse3")]
-#[cfg_attr(test, assert_instr(pshufb))]
+#[cfg_attr(test_intr, assert_instr(pshufb))]
 pub unsafe fn _mm_shuffle_epi8(a: __m128i, b: __m128i) -> __m128i {
     mem::transmute(pshufb128(a.as_u8x16(), b.as_u8x16()))
 }
@@ -72,7 +72,7 @@ pub unsafe fn _mm_shuffle_epi8(a: __m128i, b: __m128i) -> __m128i {
 /// shift the result right by `n` bytes, and return the low 16 bytes.
 #[inline]
 #[target_feature(enable = "ssse3")]
-#[cfg_attr(test, assert_instr(palignr, n = 15))]
+#[cfg_attr(test_intr, assert_instr(palignr, n = 15))]
 #[rustc_args_required_const(2)]
 pub unsafe fn _mm_alignr_epi8(a: __m128i, b: __m128i, n: i32) -> __m128i {
     let n = n as u32;
@@ -131,7 +131,7 @@ pub unsafe fn _mm_alignr_epi8(a: __m128i, b: __m128i, n: i32) -> __m128i {
 /// 128-bit vectors of [8 x i16].
 #[inline]
 #[target_feature(enable = "ssse3")]
-#[cfg_attr(test, assert_instr(phaddw))]
+#[cfg_attr(test_intr, assert_instr(phaddw))]
 pub unsafe fn _mm_hadd_epi16(a: __m128i, b: __m128i) -> __m128i {
     mem::transmute(phaddw128(a.as_i16x8(), b.as_i16x8()))
 }
@@ -141,7 +141,7 @@ pub unsafe fn _mm_hadd_epi16(a: __m128i, b: __m128i) -> __m128i {
 /// saturated to 7FFFh. Negative sums less than 8000h are saturated to 8000h.
 #[inline]
 #[target_feature(enable = "ssse3")]
-#[cfg_attr(test, assert_instr(phaddsw))]
+#[cfg_attr(test_intr, assert_instr(phaddsw))]
 pub unsafe fn _mm_hadds_epi16(a: __m128i, b: __m128i) -> __m128i {
     mem::transmute(phaddsw128(a.as_i16x8(), b.as_i16x8()))
 }
@@ -150,7 +150,7 @@ pub unsafe fn _mm_hadds_epi16(a: __m128i, b: __m128i) -> __m128i {
 /// 128-bit vectors of [4 x i32].
 #[inline]
 #[target_feature(enable = "ssse3")]
-#[cfg_attr(test, assert_instr(phaddd))]
+#[cfg_attr(test_intr, assert_instr(phaddd))]
 pub unsafe fn _mm_hadd_epi32(a: __m128i, b: __m128i) -> __m128i {
     mem::transmute(phaddd128(a.as_i32x4(), b.as_i32x4()))
 }
@@ -159,7 +159,7 @@ pub unsafe fn _mm_hadd_epi32(a: __m128i, b: __m128i) -> __m128i {
 /// packed 128-bit vectors of [8 x i16].
 #[inline]
 #[target_feature(enable = "ssse3")]
-#[cfg_attr(test, assert_instr(phsubw))]
+#[cfg_attr(test_intr, assert_instr(phsubw))]
 pub unsafe fn _mm_hsub_epi16(a: __m128i, b: __m128i) -> __m128i {
     mem::transmute(phsubw128(a.as_i16x8(), b.as_i16x8()))
 }
@@ -170,7 +170,7 @@ pub unsafe fn _mm_hsub_epi16(a: __m128i, b: __m128i) -> __m128i {
 /// saturated to 8000h.
 #[inline]
 #[target_feature(enable = "ssse3")]
-#[cfg_attr(test, assert_instr(phsubsw))]
+#[cfg_attr(test_intr, assert_instr(phsubsw))]
 pub unsafe fn _mm_hsubs_epi16(a: __m128i, b: __m128i) -> __m128i {
     mem::transmute(phsubsw128(a.as_i16x8(), b.as_i16x8()))
 }
@@ -179,7 +179,7 @@ pub unsafe fn _mm_hsubs_epi16(a: __m128i, b: __m128i) -> __m128i {
 /// packed 128-bit vectors of [4 x i32].
 #[inline]
 #[target_feature(enable = "ssse3")]
-#[cfg_attr(test, assert_instr(phsubd))]
+#[cfg_attr(test_intr, assert_instr(phsubd))]
 pub unsafe fn _mm_hsub_epi32(a: __m128i, b: __m128i) -> __m128i {
     mem::transmute(phsubd128(a.as_i32x4(), b.as_i32x4()))
 }
@@ -191,7 +191,7 @@ pub unsafe fn _mm_hsub_epi32(a: __m128i, b: __m128i) -> __m128i {
 /// the corresponding bits in the destination.
 #[inline]
 #[target_feature(enable = "ssse3")]
-#[cfg_attr(test, assert_instr(pmaddubsw))]
+#[cfg_attr(test_intr, assert_instr(pmaddubsw))]
 pub unsafe fn _mm_maddubs_epi16(a: __m128i, b: __m128i) -> __m128i {
     mem::transmute(pmaddubsw128(a.as_u8x16(), b.as_i8x16()))
 }
@@ -201,7 +201,7 @@ pub unsafe fn _mm_maddubs_epi16(a: __m128i, b: __m128i) -> __m128i {
 /// truncated value by adding 1, and write bits [16:1] to the destination.
 #[inline]
 #[target_feature(enable = "ssse3")]
-#[cfg_attr(test, assert_instr(pmulhrsw))]
+#[cfg_attr(test_intr, assert_instr(pmulhrsw))]
 pub unsafe fn _mm_mulhrs_epi16(a: __m128i, b: __m128i) -> __m128i {
     mem::transmute(pmulhrsw128(a.as_i16x8(), b.as_i16x8()))
 }
@@ -212,7 +212,7 @@ pub unsafe fn _mm_mulhrs_epi16(a: __m128i, b: __m128i) -> __m128i {
 /// is zero.
 #[inline]
 #[target_feature(enable = "ssse3")]
-#[cfg_attr(test, assert_instr(psignb))]
+#[cfg_attr(test_intr, assert_instr(psignb))]
 pub unsafe fn _mm_sign_epi8(a: __m128i, b: __m128i) -> __m128i {
     mem::transmute(psignb128(a.as_i8x16(), b.as_i8x16()))
 }
@@ -223,7 +223,7 @@ pub unsafe fn _mm_sign_epi8(a: __m128i, b: __m128i) -> __m128i {
 /// is zero.
 #[inline]
 #[target_feature(enable = "ssse3")]
-#[cfg_attr(test, assert_instr(psignw))]
+#[cfg_attr(test_intr, assert_instr(psignw))]
 pub unsafe fn _mm_sign_epi16(a: __m128i, b: __m128i) -> __m128i {
     mem::transmute(psignw128(a.as_i16x8(), b.as_i16x8()))
 }
@@ -234,7 +234,7 @@ pub unsafe fn _mm_sign_epi16(a: __m128i, b: __m128i) -> __m128i {
 /// is zero.
 #[inline]
 #[target_feature(enable = "ssse3")]
-#[cfg_attr(test, assert_instr(psignd))]
+#[cfg_attr(test_intr, assert_instr(psignd))]
 pub unsafe fn _mm_sign_epi32(a: __m128i, b: __m128i) -> __m128i {
     mem::transmute(psignd128(a.as_i32x4(), b.as_i32x4()))
 }
@@ -243,7 +243,7 @@ pub unsafe fn _mm_sign_epi32(a: __m128i, b: __m128i) -> __m128i {
 /// return the unsigned results.
 #[inline]
 #[target_feature(enable = "ssse3,mmx")]
-#[cfg_attr(test, assert_instr(pabsb))]
+#[cfg_attr(test_intr, assert_instr(pabsb))]
 pub unsafe fn _mm_abs_pi8(a: __m64) -> __m64 {
     pabsb(a)
 }
@@ -252,7 +252,7 @@ pub unsafe fn _mm_abs_pi8(a: __m64) -> __m64 {
 /// unsigned results.
 #[inline]
 #[target_feature(enable = "ssse3,mmx")]
-#[cfg_attr(test, assert_instr(pabsw))]
+#[cfg_attr(test_intr, assert_instr(pabsw))]
 pub unsafe fn _mm_abs_pi16(a: __m64) -> __m64 {
     pabsw(a)
 }
@@ -261,7 +261,7 @@ pub unsafe fn _mm_abs_pi16(a: __m64) -> __m64 {
 /// unsigned results.
 #[inline]
 #[target_feature(enable = "ssse3,mmx")]
-#[cfg_attr(test, assert_instr(pabsd))]
+#[cfg_attr(test_intr, assert_instr(pabsd))]
 pub unsafe fn _mm_abs_pi32(a: __m64) -> __m64 {
     pabsd(a)
 }
@@ -270,7 +270,7 @@ pub unsafe fn _mm_abs_pi32(a: __m64) -> __m64 {
 /// the corresponding 8-bit element of `b`, and return the results
 #[inline]
 #[target_feature(enable = "ssse3,mmx")]
-#[cfg_attr(test, assert_instr(pshufb))]
+#[cfg_attr(test_intr, assert_instr(pshufb))]
 pub unsafe fn _mm_shuffle_pi8(a: __m64, b: __m64) -> __m64 {
     pshufb(a, b)
 }
@@ -279,7 +279,7 @@ pub unsafe fn _mm_shuffle_pi8(a: __m64, b: __m64) -> __m64 {
 /// the result by the number of bytes specified in the immediate operand.
 #[inline]
 #[target_feature(enable = "ssse3,mmx")]
-#[cfg_attr(test, assert_instr(palignr, n = 15))]
+#[cfg_attr(test_intr, assert_instr(palignr, n = 15))]
 #[rustc_args_required_const(2)]
 pub unsafe fn _mm_alignr_pi8(a: __m64, b: __m64, n: i32) -> __m64 {
     macro_rules! call {
@@ -294,7 +294,7 @@ pub unsafe fn _mm_alignr_pi8(a: __m64, b: __m64, n: i32) -> __m64 {
 /// 64-bit vectors of [4 x i16].
 #[inline]
 #[target_feature(enable = "ssse3,mmx")]
-#[cfg_attr(test, assert_instr(phaddw))]
+#[cfg_attr(test_intr, assert_instr(phaddw))]
 pub unsafe fn _mm_hadd_pi16(a: __m64, b: __m64) -> __m64 {
     phaddw(a, b)
 }
@@ -303,7 +303,7 @@ pub unsafe fn _mm_hadd_pi16(a: __m64, b: __m64) -> __m64 {
 /// 64-bit vectors of [2 x i32].
 #[inline]
 #[target_feature(enable = "ssse3,mmx")]
-#[cfg_attr(test, assert_instr(phaddd))]
+#[cfg_attr(test_intr, assert_instr(phaddd))]
 pub unsafe fn _mm_hadd_pi32(a: __m64, b: __m64) -> __m64 {
     phaddd(a, b)
 }
@@ -313,7 +313,7 @@ pub unsafe fn _mm_hadd_pi32(a: __m64, b: __m64) -> __m64 {
 /// saturated to 7FFFh. Negative sums less than 8000h are saturated to 8000h.
 #[inline]
 #[target_feature(enable = "ssse3,mmx")]
-#[cfg_attr(test, assert_instr(phaddsw))]
+#[cfg_attr(test_intr, assert_instr(phaddsw))]
 pub unsafe fn _mm_hadds_pi16(a: __m64, b: __m64) -> __m64 {
     phaddsw(a, b)
 }
@@ -322,7 +322,7 @@ pub unsafe fn _mm_hadds_pi16(a: __m64, b: __m64) -> __m64 {
 /// packed 64-bit vectors of [4 x i16].
 #[inline]
 #[target_feature(enable = "ssse3,mmx")]
-#[cfg_attr(test, assert_instr(phsubw))]
+#[cfg_attr(test_intr, assert_instr(phsubw))]
 pub unsafe fn _mm_hsub_pi16(a: __m64, b: __m64) -> __m64 {
     phsubw(a, b)
 }
@@ -331,7 +331,7 @@ pub unsafe fn _mm_hsub_pi16(a: __m64, b: __m64) -> __m64 {
 /// packed 64-bit vectors of [2 x i32].
 #[inline]
 #[target_feature(enable = "ssse3,mmx")]
-#[cfg_attr(test, assert_instr(phsubd))]
+#[cfg_attr(test_intr, assert_instr(phsubd))]
 pub unsafe fn _mm_hsub_pi32(a: __m64, b: __m64) -> __m64 {
     phsubd(a, b)
 }
@@ -342,7 +342,7 @@ pub unsafe fn _mm_hsub_pi32(a: __m64, b: __m64) -> __m64 {
 /// saturated to 8000h.
 #[inline]
 #[target_feature(enable = "ssse3,mmx")]
-#[cfg_attr(test, assert_instr(phsubsw))]
+#[cfg_attr(test_intr, assert_instr(phsubsw))]
 pub unsafe fn _mm_hsubs_pi16(a: __m64, b: __m64) -> __m64 {
     phsubsw(a, b)
 }
@@ -354,7 +354,7 @@ pub unsafe fn _mm_hsubs_pi16(a: __m64, b: __m64) -> __m64 {
 /// the corresponding bits in the destination.
 #[inline]
 #[target_feature(enable = "ssse3,mmx")]
-#[cfg_attr(test, assert_instr(pmaddubsw))]
+#[cfg_attr(test_intr, assert_instr(pmaddubsw))]
 pub unsafe fn _mm_maddubs_pi16(a: __m64, b: __m64) -> __m64 {
     pmaddubsw(a, b)
 }
@@ -364,7 +364,7 @@ pub unsafe fn _mm_maddubs_pi16(a: __m64, b: __m64) -> __m64 {
 /// truncated value by adding 1, and writes bits [16:1] to the destination.
 #[inline]
 #[target_feature(enable = "ssse3,mmx")]
-#[cfg_attr(test, assert_instr(pmulhrsw))]
+#[cfg_attr(test_intr, assert_instr(pmulhrsw))]
 pub unsafe fn _mm_mulhrs_pi16(a: __m64, b: __m64) -> __m64 {
     pmulhrsw(a, b)
 }
@@ -375,7 +375,7 @@ pub unsafe fn _mm_mulhrs_pi16(a: __m64, b: __m64) -> __m64 {
 /// zero.
 #[inline]
 #[target_feature(enable = "ssse3,mmx")]
-#[cfg_attr(test, assert_instr(psignb))]
+#[cfg_attr(test_intr, assert_instr(psignb))]
 pub unsafe fn _mm_sign_pi8(a: __m64, b: __m64) -> __m64 {
     psignb(a, b)
 }
@@ -386,7 +386,7 @@ pub unsafe fn _mm_sign_pi8(a: __m64, b: __m64) -> __m64 {
 /// zero.
 #[inline]
 #[target_feature(enable = "ssse3,mmx")]
-#[cfg_attr(test, assert_instr(psignw))]
+#[cfg_attr(test_intr, assert_instr(psignw))]
 pub unsafe fn _mm_sign_pi16(a: __m64, b: __m64) -> __m64 {
     psignw(a, b)
 }
@@ -397,7 +397,7 @@ pub unsafe fn _mm_sign_pi16(a: __m64, b: __m64) -> __m64 {
 /// zero.
 #[inline]
 #[target_feature(enable = "ssse3,mmx")]
-#[cfg_attr(test, assert_instr(psignd))]
+#[cfg_attr(test_intr, assert_instr(psignd))]
 pub unsafe fn _mm_sign_pi32(a: __m64, b: __m64) -> __m64 {
     psignd(a, b)
 }
@@ -498,7 +498,7 @@ extern "C" {
     fn psignd(a: __m64, b: __m64) -> __m64;
 }
 
-#[cfg(test)]
+#[cfg(test_intr)]
 mod tests {
     use stdsimd_test::simd_test;
 

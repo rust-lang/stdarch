@@ -9,33 +9,33 @@
 
 pub use super::v6::*;
 
-#[cfg(test)]
+#[cfg(test_intr)]
 use stdsimd_test::assert_instr;
 
 /// Count Leading Zeros.
 #[inline]
-#[cfg_attr(test, assert_instr(clz))]
+#[cfg_attr(test_intr, assert_instr(clz))]
 pub unsafe fn _clz_u8(x: u8) -> u8 {
     x.leading_zeros() as u8
 }
 
 /// Count Leading Zeros.
 #[inline]
-#[cfg_attr(test, assert_instr(clz))]
+#[cfg_attr(test_intr, assert_instr(clz))]
 pub unsafe fn _clz_u16(x: u16) -> u16 {
     x.leading_zeros() as u16
 }
 
 /// Count Leading Zeros.
 #[inline]
-#[cfg_attr(test, assert_instr(clz))]
+#[cfg_attr(test_intr, assert_instr(clz))]
 pub unsafe fn _clz_u32(x: u32) -> u32 {
     x.leading_zeros() as u32
 }
 
 /// Reverse the bit order.
 #[inline]
-#[cfg_attr(test, assert_instr(rbit))]
+#[cfg_attr(test_intr, assert_instr(rbit))]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg(dont_compile_me)] // FIXME need to add `v7` upstream in rustc
 pub unsafe fn _rbit_u32(x: u32) -> u32 {
@@ -48,7 +48,7 @@ extern "C" {
     fn rbit_u32(i: i32) -> i32;
 }
 
-#[cfg(test)]
+#[cfg(test_intr)]
 mod tests {
     use coresimd::arm::v7;
 

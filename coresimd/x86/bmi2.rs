@@ -10,7 +10,7 @@
 //! [wikipedia_bmi]:
 //! https://en.wikipedia.org/wiki/Bit_Manipulation_Instruction_Sets#ABM_.28Advanced_Bit_Manipulation.29
 
-#[cfg(test)]
+#[cfg(test_intr)]
 use stdsimd_test::assert_instr;
 
 /// Unsigned multiply without affecting flags.
@@ -19,8 +19,8 @@ use stdsimd_test::assert_instr;
 /// the low half and the high half of the result.
 #[inline]
 // LLVM BUG (should be mulxl): https://bugs.llvm.org/show_bug.cgi?id=34232
-#[cfg_attr(all(test, target_arch = "x86_64"), assert_instr(imul))]
-#[cfg_attr(all(test, target_arch = "x86"), assert_instr(mulx))]
+#[cfg_attr(all(test_intr, target_arch = "x86_64"), assert_instr(imul))]
+#[cfg_attr(all(test_intr, target_arch = "x86"), assert_instr(mulx))]
 #[target_feature(enable = "bmi2")]
 pub unsafe fn _mulx_u32(a: u32, b: u32, hi: &mut u32) -> u32 {
     let result: u64 = (a as u64) * (b as u64);
@@ -31,7 +31,7 @@ pub unsafe fn _mulx_u32(a: u32, b: u32, hi: &mut u32) -> u32 {
 /// Zero higher bits of `a` >= `index`.
 #[inline]
 #[target_feature(enable = "bmi2")]
-#[cfg_attr(test, assert_instr(bzhi))]
+#[cfg_attr(test_intr, assert_instr(bzhi))]
 pub unsafe fn _bzhi_u32(a: u32, index: u32) -> u32 {
     x86_bmi2_bzhi_32(a, index)
 }
@@ -40,7 +40,7 @@ pub unsafe fn _bzhi_u32(a: u32, index: u32) -> u32 {
 /// specified by the `mask`.
 #[inline]
 #[target_feature(enable = "bmi2")]
-#[cfg_attr(test, assert_instr(pdep))]
+#[cfg_attr(test_intr, assert_instr(pdep))]
 pub unsafe fn _pdep_u32(a: u32, mask: u32) -> u32 {
     x86_bmi2_pdep_32(a, mask)
 }
@@ -49,7 +49,7 @@ pub unsafe fn _pdep_u32(a: u32, mask: u32) -> u32 {
 /// order bit positions of the result.
 #[inline]
 #[target_feature(enable = "bmi2")]
-#[cfg_attr(test, assert_instr(pext))]
+#[cfg_attr(test_intr, assert_instr(pext))]
 pub unsafe fn _pext_u32(a: u32, mask: u32) -> u32 {
     x86_bmi2_pext_32(a, mask)
 }
@@ -63,7 +63,7 @@ extern "C" {
     fn x86_bmi2_pext_32(x: u32, y: u32) -> u32;
 }
 
-#[cfg(test)]
+#[cfg(test_intr)]
 mod tests {
     use stdsimd_test::simd_test;
 

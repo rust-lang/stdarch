@@ -15,10 +15,10 @@ macro_rules! impl_from_bits_ {
 }
 
 macro_rules! impl_from_bits {
-    ($to:ident: $elem_ty:ident, $test_mod:ident | $($from:ident),+) => {
+    ($to:ident: $elem_ty:ident, $test_mod:ident, $test_feature:ident | $($from:ident),+) => {
         impl_from_bits_!($to: $($from),+);
 
-        #[cfg(test)]
+        #[cfg($test_feature)]
         mod $test_mod {
             $(
                 #[test]

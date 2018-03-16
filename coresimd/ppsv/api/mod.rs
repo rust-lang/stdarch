@@ -146,7 +146,7 @@ macro_rules! simd_api_imports {
 
 /// Defines a portable packed SIMD floating-point vector type.
 macro_rules! simd_f_ty {
-    ($id:ident : $elem_count:expr, $elem_ty:ident, $bool_ty:ident, $test_mod:ident |
+    ($id:ident : $elem_count:expr, $elem_ty:ident, $bool_ty:ident, $test_mod:ident, $test_feature:ident |
      $($elem_tys:ident),+ | $($elem_name:ident),+ | $(#[$doc:meta])*) => {
         define_ty!($id, $($elem_tys),+ | $(#[$doc])*);
         impl_minimal!($id, $elem_ty, $elem_count, $($elem_name),*);
@@ -159,7 +159,7 @@ macro_rules! simd_f_ty {
         impl_partial_eq!($id);
         impl_default!($id, $elem_ty);
 
-        #[cfg(test)]
+        #[cfg($test_feature)]
         mod $test_mod {
             test_minimal!($id, $elem_ty, $elem_count);
             test_load_store!($id, $elem_ty);
@@ -176,7 +176,7 @@ macro_rules! simd_f_ty {
 
 /// Defines a portable packed SIMD signed-integer vector type.
 macro_rules! simd_i_ty {
-    ($id:ident : $elem_count:expr, $elem_ty:ident, $bool_ty:ident, $test_mod:ident |
+    ($id:ident : $elem_count:expr, $elem_ty:ident, $bool_ty:ident, $test_mod:ident, $test_feature:ident |
      $($elem_tys:ident),+ | $($elem_name:ident),+ | $(#[$doc:meta])*) => {
         define_ty!($id, $($elem_tys),+ | $(#[$doc])*);
         impl_minimal!($id, $elem_ty, $elem_count, $($elem_name),*);
@@ -195,7 +195,7 @@ macro_rules! simd_i_ty {
         impl_partial_eq!($id);
         impl_default!($id, $elem_ty);
 
-        #[cfg(test)]
+        #[cfg($test_feature)]
         mod $test_mod {
             test_minimal!($id, $elem_ty, $elem_count);
             test_load_store!($id, $elem_ty);
@@ -217,7 +217,7 @@ macro_rules! simd_i_ty {
 
 /// Defines a portable packed SIMD unsigned-integer vector type.
 macro_rules! simd_u_ty {
-    ($id:ident : $elem_count:expr, $elem_ty:ident, $bool_ty:ident, $test_mod:ident |
+    ($id:ident : $elem_count:expr, $elem_ty:ident, $bool_ty:ident, $test_mod:ident, $test_feature:ident |
      $($elem_tys:ident),+ | $($elem_name:ident),+ | $(#[$doc:meta])*) => {
         define_ty!($id, $($elem_tys),+ | $(#[$doc])*);
         impl_minimal!($id, $elem_ty, $elem_count, $($elem_name),*);
@@ -235,7 +235,7 @@ macro_rules! simd_u_ty {
         impl_partial_eq!($id);
         impl_default!($id, $elem_ty);
 
-        #[cfg(test)]
+        #[cfg($test_feature)]
         mod $test_mod {
             test_minimal!($id, $elem_ty, $elem_count);
             test_load_store!($id, $elem_ty);
@@ -256,7 +256,7 @@ macro_rules! simd_u_ty {
 
 /// Defines a portable packed SIMD boolean vector type.
 macro_rules! simd_b_ty {
-    ($id:ident : $elem_count:expr, $elem_ty:ident, $test_mod:ident |
+    ($id:ident : $elem_count:expr, $elem_ty:ident, $test_mod:ident, $test_feature:ident |
      $($elem_tys:ident),+ | $($elem_name:ident),+ | $(#[$doc:meta])*) => {
         define_ty!($id, $($elem_tys),+ | $(#[$doc])*);
         impl_bool_minimal!($id, $elem_ty, $elem_count, $($elem_name),*);
@@ -268,7 +268,7 @@ macro_rules! simd_b_ty {
         impl_partial_eq!($id);
         impl_default!($id, bool);
 
-        #[cfg(test)]
+        #[cfg($test_feature)]
         mod $test_mod {
             test_bool_minimal!($id, $elem_count);
             test_bool_bitwise_ops!($id);

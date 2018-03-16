@@ -2,7 +2,7 @@
 
 use coresimd::x86::*;
 
-#[cfg(test)]
+#[cfg(test_intr)]
 use stdsimd_test::assert_instr;
 
 #[allow(improper_ctypes)]
@@ -26,7 +26,7 @@ extern "C" {
 /// This corresponds to the `CVTSS2SI` instruction (with 64 bit output).
 #[inline]
 #[target_feature(enable = "sse")]
-#[cfg_attr(test, assert_instr(cvtss2si))]
+#[cfg_attr(test_intr, assert_instr(cvtss2si))]
 pub unsafe fn _mm_cvtss_si64(a: __m128) -> i64 {
     cvtss2si64(a)
 }
@@ -42,7 +42,7 @@ pub unsafe fn _mm_cvtss_si64(a: __m128) -> i64 {
 /// This corresponds to the `CVTTSS2SI` instruction (with 64 bit output).
 #[inline]
 #[target_feature(enable = "sse")]
-#[cfg_attr(test, assert_instr(cvttss2si))]
+#[cfg_attr(test_intr, assert_instr(cvttss2si))]
 pub unsafe fn _mm_cvttss_si64(a: __m128) -> i64 {
     cvttss2si64(a)
 }
@@ -54,12 +54,12 @@ pub unsafe fn _mm_cvttss_si64(a: __m128) -> i64 {
 /// input).
 #[inline]
 #[target_feature(enable = "sse")]
-#[cfg_attr(test, assert_instr(cvtsi2ss))]
+#[cfg_attr(test_intr, assert_instr(cvtsi2ss))]
 pub unsafe fn _mm_cvtsi64_ss(a: __m128, b: i64) -> __m128 {
     cvtsi642ss(a, b)
 }
 
-#[cfg(test)]
+#[cfg(test_intr)]
 mod tests {
     use std::f32::NAN;
     use std::i64::MIN;

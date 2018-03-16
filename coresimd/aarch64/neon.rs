@@ -2,7 +2,7 @@
 
 // FIXME: replace neon with asimd
 
-#[cfg(test)]
+#[cfg(test_intr)]
 use stdsimd_test::assert_instr;
 use coresimd::simd_llvm::simd_add;
 use coresimd::simd::*;
@@ -10,7 +10,7 @@ use coresimd::simd::*;
 /// Vector add.
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(fadd))]
+#[cfg_attr(test_intr, assert_instr(fadd))]
 pub unsafe fn vadd_f64(a: f64, b: f64) -> f64 {
     a + b
 }
@@ -18,7 +18,7 @@ pub unsafe fn vadd_f64(a: f64, b: f64) -> f64 {
 /// Vector add.
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(fadd))]
+#[cfg_attr(test_intr, assert_instr(fadd))]
 pub unsafe fn vaddq_f64(a: f64x2, b: f64x2) -> f64x2 {
     simd_add(a, b)
 }
@@ -26,7 +26,7 @@ pub unsafe fn vaddq_f64(a: f64x2, b: f64x2) -> f64x2 {
 /// Vector add.
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(add))]
+#[cfg_attr(test_intr, assert_instr(add))]
 pub unsafe fn vaddd_s64(a: i64, b: i64) -> i64 {
     a + b
 }
@@ -34,7 +34,7 @@ pub unsafe fn vaddd_s64(a: i64, b: i64) -> i64 {
 /// Vector add.
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(add))]
+#[cfg_attr(test_intr, assert_instr(add))]
 pub unsafe fn vaddd_u64(a: u64, b: u64) -> u64 {
     a + b
 }
@@ -112,7 +112,7 @@ extern "C" {
 /// Horizontal vector max.
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(smaxv))]
+#[cfg_attr(test_intr, assert_instr(smaxv))]
 pub unsafe fn vmaxv_s8(a: i8x8) -> i8 {
     vmaxv_s8_(a)
 }
@@ -120,7 +120,7 @@ pub unsafe fn vmaxv_s8(a: i8x8) -> i8 {
 /// Horizontal vector max.
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(smaxv))]
+#[cfg_attr(test_intr, assert_instr(smaxv))]
 pub unsafe fn vmaxvq_s8(a: i8x16) -> i8 {
     vmaxvq_s8_(a)
 }
@@ -128,7 +128,7 @@ pub unsafe fn vmaxvq_s8(a: i8x16) -> i8 {
 /// Horizontal vector max.
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(smaxv))]
+#[cfg_attr(test_intr, assert_instr(smaxv))]
 pub unsafe fn vmaxv_s16(a: i16x4) -> i16 {
     vmaxv_s16_(a)
 }
@@ -136,7 +136,7 @@ pub unsafe fn vmaxv_s16(a: i16x4) -> i16 {
 /// Horizontal vector max.
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(smaxv))]
+#[cfg_attr(test_intr, assert_instr(smaxv))]
 pub unsafe fn vmaxvq_s16(a: i16x8) -> i16 {
     vmaxvq_s16_(a)
 }
@@ -144,7 +144,7 @@ pub unsafe fn vmaxvq_s16(a: i16x8) -> i16 {
 /// Horizontal vector max.
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(smaxp))]
+#[cfg_attr(test_intr, assert_instr(smaxp))]
 pub unsafe fn vmaxv_s32(a: i32x2) -> i32 {
     vmaxv_s32_(a)
 }
@@ -152,7 +152,7 @@ pub unsafe fn vmaxv_s32(a: i32x2) -> i32 {
 /// Horizontal vector max.
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(smaxv))]
+#[cfg_attr(test_intr, assert_instr(smaxv))]
 pub unsafe fn vmaxvq_s32(a: i32x4) -> i32 {
     vmaxvq_s32_(a)
 }
@@ -160,7 +160,7 @@ pub unsafe fn vmaxvq_s32(a: i32x4) -> i32 {
 /// Horizontal vector max.
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(umaxv))]
+#[cfg_attr(test_intr, assert_instr(umaxv))]
 pub unsafe fn vmaxv_u8(a: u8x8) -> u8 {
     vmaxv_u8_(a)
 }
@@ -168,7 +168,7 @@ pub unsafe fn vmaxv_u8(a: u8x8) -> u8 {
 /// Horizontal vector max.
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(umaxv))]
+#[cfg_attr(test_intr, assert_instr(umaxv))]
 pub unsafe fn vmaxvq_u8(a: u8x16) -> u8 {
     vmaxvq_u8_(a)
 }
@@ -176,7 +176,7 @@ pub unsafe fn vmaxvq_u8(a: u8x16) -> u8 {
 /// Horizontal vector max.
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(umaxv))]
+#[cfg_attr(test_intr, assert_instr(umaxv))]
 pub unsafe fn vmaxv_u16(a: u16x4) -> u16 {
     vmaxv_u16_(a)
 }
@@ -184,7 +184,7 @@ pub unsafe fn vmaxv_u16(a: u16x4) -> u16 {
 /// Horizontal vector max.
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(umaxv))]
+#[cfg_attr(test_intr, assert_instr(umaxv))]
 pub unsafe fn vmaxvq_u16(a: u16x8) -> u16 {
     vmaxvq_u16_(a)
 }
@@ -192,7 +192,7 @@ pub unsafe fn vmaxvq_u16(a: u16x8) -> u16 {
 /// Horizontal vector max.
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(umaxp))]
+#[cfg_attr(test_intr, assert_instr(umaxp))]
 pub unsafe fn vmaxv_u32(a: u32x2) -> u32 {
     vmaxv_u32_(a)
 }
@@ -200,7 +200,7 @@ pub unsafe fn vmaxv_u32(a: u32x2) -> u32 {
 /// Horizontal vector max.
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(umaxv))]
+#[cfg_attr(test_intr, assert_instr(umaxv))]
 pub unsafe fn vmaxvq_u32(a: u32x4) -> u32 {
     vmaxvq_u32_(a)
 }
@@ -208,7 +208,7 @@ pub unsafe fn vmaxvq_u32(a: u32x4) -> u32 {
 /// Horizontal vector max.
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(fmaxp))]
+#[cfg_attr(test_intr, assert_instr(fmaxp))]
 pub unsafe fn vmaxv_f32(a: f32x2) -> f32 {
     vmaxv_f32_(a)
 }
@@ -216,7 +216,7 @@ pub unsafe fn vmaxv_f32(a: f32x2) -> f32 {
 /// Horizontal vector max.
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(fmaxv))]
+#[cfg_attr(test_intr, assert_instr(fmaxv))]
 pub unsafe fn vmaxvq_f32(a: f32x4) -> f32 {
     vmaxvq_f32_(a)
 }
@@ -224,7 +224,7 @@ pub unsafe fn vmaxvq_f32(a: f32x4) -> f32 {
 /// Horizontal vector max.
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(fmaxp))]
+#[cfg_attr(test_intr, assert_instr(fmaxp))]
 pub unsafe fn vmaxvq_f64(a: f64x2) -> f64 {
     vmaxvq_f64_(a)
 }
@@ -232,7 +232,7 @@ pub unsafe fn vmaxvq_f64(a: f64x2) -> f64 {
 /// Horizontal vector min.
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(sminv))]
+#[cfg_attr(test_intr, assert_instr(sminv))]
 pub unsafe fn vminv_s8(a: i8x8) -> i8 {
     vminv_s8_(a)
 }
@@ -240,7 +240,7 @@ pub unsafe fn vminv_s8(a: i8x8) -> i8 {
 /// Horizontal vector min.
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(sminv))]
+#[cfg_attr(test_intr, assert_instr(sminv))]
 pub unsafe fn vminvq_s8(a: i8x16) -> i8 {
     vminvq_s8_(a)
 }
@@ -248,7 +248,7 @@ pub unsafe fn vminvq_s8(a: i8x16) -> i8 {
 /// Horizontal vector min.
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(sminv))]
+#[cfg_attr(test_intr, assert_instr(sminv))]
 pub unsafe fn vminv_s16(a: i16x4) -> i16 {
     vminv_s16_(a)
 }
@@ -256,7 +256,7 @@ pub unsafe fn vminv_s16(a: i16x4) -> i16 {
 /// Horizontal vector min.
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(sminv))]
+#[cfg_attr(test_intr, assert_instr(sminv))]
 pub unsafe fn vminvq_s16(a: i16x8) -> i16 {
     vminvq_s16_(a)
 }
@@ -264,7 +264,7 @@ pub unsafe fn vminvq_s16(a: i16x8) -> i16 {
 /// Horizontal vector min.
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(sminp))]
+#[cfg_attr(test_intr, assert_instr(sminp))]
 pub unsafe fn vminv_s32(a: i32x2) -> i32 {
     vminv_s32_(a)
 }
@@ -272,7 +272,7 @@ pub unsafe fn vminv_s32(a: i32x2) -> i32 {
 /// Horizontal vector min.
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(sminv))]
+#[cfg_attr(test_intr, assert_instr(sminv))]
 pub unsafe fn vminvq_s32(a: i32x4) -> i32 {
     vminvq_s32_(a)
 }
@@ -280,7 +280,7 @@ pub unsafe fn vminvq_s32(a: i32x4) -> i32 {
 /// Horizontal vector min.
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(uminv))]
+#[cfg_attr(test_intr, assert_instr(uminv))]
 pub unsafe fn vminv_u8(a: u8x8) -> u8 {
     vminv_u8_(a)
 }
@@ -288,7 +288,7 @@ pub unsafe fn vminv_u8(a: u8x8) -> u8 {
 /// Horizontal vector min.
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(uminv))]
+#[cfg_attr(test_intr, assert_instr(uminv))]
 pub unsafe fn vminvq_u8(a: u8x16) -> u8 {
     vminvq_u8_(a)
 }
@@ -296,7 +296,7 @@ pub unsafe fn vminvq_u8(a: u8x16) -> u8 {
 /// Horizontal vector min.
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(uminv))]
+#[cfg_attr(test_intr, assert_instr(uminv))]
 pub unsafe fn vminv_u16(a: u16x4) -> u16 {
     vminv_u16_(a)
 }
@@ -304,7 +304,7 @@ pub unsafe fn vminv_u16(a: u16x4) -> u16 {
 /// Horizontal vector min.
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(uminv))]
+#[cfg_attr(test_intr, assert_instr(uminv))]
 pub unsafe fn vminvq_u16(a: u16x8) -> u16 {
     vminvq_u16_(a)
 }
@@ -312,7 +312,7 @@ pub unsafe fn vminvq_u16(a: u16x8) -> u16 {
 /// Horizontal vector min.
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(uminp))]
+#[cfg_attr(test_intr, assert_instr(uminp))]
 pub unsafe fn vminv_u32(a: u32x2) -> u32 {
     vminv_u32_(a)
 }
@@ -320,7 +320,7 @@ pub unsafe fn vminv_u32(a: u32x2) -> u32 {
 /// Horizontal vector min.
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(uminv))]
+#[cfg_attr(test_intr, assert_instr(uminv))]
 pub unsafe fn vminvq_u32(a: u32x4) -> u32 {
     vminvq_u32_(a)
 }
@@ -328,7 +328,7 @@ pub unsafe fn vminvq_u32(a: u32x4) -> u32 {
 /// Horizontal vector min.
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(fminp))]
+#[cfg_attr(test_intr, assert_instr(fminp))]
 pub unsafe fn vminv_f32(a: f32x2) -> f32 {
     vminv_f32_(a)
 }
@@ -336,7 +336,7 @@ pub unsafe fn vminv_f32(a: f32x2) -> f32 {
 /// Horizontal vector min.
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(fminv))]
+#[cfg_attr(test_intr, assert_instr(fminv))]
 pub unsafe fn vminvq_f32(a: f32x4) -> f32 {
     vminvq_f32_(a)
 }
@@ -344,12 +344,12 @@ pub unsafe fn vminvq_f32(a: f32x4) -> f32 {
 /// Horizontal vector min.
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(fminp))]
+#[cfg_attr(test_intr, assert_instr(fminp))]
 pub unsafe fn vminvq_f64(a: f64x2) -> f64 {
     vminvq_f64_(a)
 }
 
-#[cfg(test)]
+#[cfg(test_intr)]
 mod tests {
     use simd::*;
     use coresimd::aarch64::neon;

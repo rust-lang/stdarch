@@ -9,14 +9,14 @@
 //! [intel64_ref]: http://www.intel.de/content/dam/www/public/us/en/documents/manuals/64-ia-32-architectures-software-developer-instruction-set-reference-manual-325383.pdf
 //! [wikipedia_bmi]: https://en.wikipedia.org/wiki/Bit_Manipulation_Instruction_Sets#ABM_.28Advanced_Bit_Manipulation.29
 
-#[cfg(test)]
+#[cfg(test_intr)]
 use stdsimd_test::assert_instr;
 
 /// Extracts bits in range [`start`, `start` + `length`) from `a` into
 /// the least significant bits of the result.
 #[inline]
 #[target_feature(enable = "bmi1")]
-#[cfg_attr(test, assert_instr(bextr))]
+#[cfg_attr(test_intr, assert_instr(bextr))]
 #[cfg(not(target_arch = "x86"))]
 pub unsafe fn _bextr_u64(a: u64, start: u32, len: u32) -> u64 {
     _bextr2_u64(a, ((start & 0xff) | ((len & 0xff) << 8)) as u64)
@@ -29,7 +29,7 @@ pub unsafe fn _bextr_u64(a: u64, start: u32, len: u32) -> u64 {
 /// be extracted, and bits [15,8] specify the length of the range.
 #[inline]
 #[target_feature(enable = "bmi1")]
-#[cfg_attr(test, assert_instr(bextr))]
+#[cfg_attr(test_intr, assert_instr(bextr))]
 #[cfg(not(target_arch = "x86"))]
 pub unsafe fn _bextr2_u64(a: u64, control: u64) -> u64 {
     x86_bmi_bextr_64(a, control)
@@ -38,7 +38,7 @@ pub unsafe fn _bextr2_u64(a: u64, control: u64) -> u64 {
 /// Bitwise logical `AND` of inverted `a` with `b`.
 #[inline]
 #[target_feature(enable = "bmi1")]
-#[cfg_attr(test, assert_instr(andn))]
+#[cfg_attr(test_intr, assert_instr(andn))]
 pub unsafe fn _andn_u64(a: u64, b: u64) -> u64 {
     !a & b
 }
@@ -46,7 +46,7 @@ pub unsafe fn _andn_u64(a: u64, b: u64) -> u64 {
 /// Extract lowest set isolated bit.
 #[inline]
 #[target_feature(enable = "bmi1")]
-#[cfg_attr(test, assert_instr(blsi))]
+#[cfg_attr(test_intr, assert_instr(blsi))]
 #[cfg(not(target_arch = "x86"))] // generates lots of instructions
 pub unsafe fn _blsi_u64(x: u64) -> u64 {
     x & x.wrapping_neg()
@@ -55,7 +55,7 @@ pub unsafe fn _blsi_u64(x: u64) -> u64 {
 /// Get mask up to lowest set bit.
 #[inline]
 #[target_feature(enable = "bmi1")]
-#[cfg_attr(test, assert_instr(blsmsk))]
+#[cfg_attr(test_intr, assert_instr(blsmsk))]
 #[cfg(not(target_arch = "x86"))] // generates lots of instructions
 pub unsafe fn _blsmsk_u64(x: u64) -> u64 {
     x ^ (x.wrapping_sub(1_u64))
@@ -66,7 +66,7 @@ pub unsafe fn _blsmsk_u64(x: u64) -> u64 {
 /// If `x` is sets CF.
 #[inline]
 #[target_feature(enable = "bmi1")]
-#[cfg_attr(test, assert_instr(blsr))]
+#[cfg_attr(test_intr, assert_instr(blsr))]
 #[cfg(not(target_arch = "x86"))] // generates lots of instructions
 pub unsafe fn _blsr_u64(x: u64) -> u64 {
     x & (x.wrapping_sub(1))
@@ -77,7 +77,7 @@ pub unsafe fn _blsr_u64(x: u64) -> u64 {
 /// When the source operand is 0, it returns its size in bits.
 #[inline]
 #[target_feature(enable = "bmi1")]
-#[cfg_attr(test, assert_instr(tzcnt))]
+#[cfg_attr(test_intr, assert_instr(tzcnt))]
 pub unsafe fn _tzcnt_u64(x: u64) -> u64 {
     x.trailing_zeros() as u64
 }
@@ -87,7 +87,7 @@ pub unsafe fn _tzcnt_u64(x: u64) -> u64 {
 /// When the source operand is 0, it returns its size in bits.
 #[inline]
 #[target_feature(enable = "bmi1")]
-#[cfg_attr(test, assert_instr(tzcnt))]
+#[cfg_attr(test_intr, assert_instr(tzcnt))]
 pub unsafe fn _mm_tzcnt_64(x: u64) -> i64 {
     x.trailing_zeros() as i64
 }
@@ -97,7 +97,7 @@ extern "C" {
     fn x86_bmi_bextr_64(x: u64, y: u64) -> u64;
 }
 
-#[cfg(test)]
+#[cfg(test_intr)]
 mod tests {
     use stdsimd_test::simd_test;
 

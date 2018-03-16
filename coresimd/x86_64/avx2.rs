@@ -31,7 +31,7 @@ pub unsafe fn _mm256_extract_epi64(a: __m256i, imm8: i32) -> i64 {
     simd_extract(a.as_i64x4(), imm8)
 }
 
-#[cfg(test)]
+#[cfg(test_intr)]
 mod tests {
     use stdsimd_test::simd_test;
 

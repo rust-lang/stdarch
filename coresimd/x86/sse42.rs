@@ -2,7 +2,7 @@
 //!
 //! Extends SSE4.1 with STTNI (String and Text New Instructions).
 
-#[cfg(test)]
+#[cfg(test_intr)]
 use stdsimd_test::assert_instr;
 
 use coresimd::simd_llvm::*;
@@ -51,7 +51,7 @@ pub const _SIDD_UNIT_MASK: i32 = 0b0100_0000;
 /// control in `imm8`, and return the generated mask.
 #[inline]
 #[target_feature(enable = "sse4.2")]
-#[cfg_attr(test, assert_instr(pcmpistrm, imm8 = 0))]
+#[cfg_attr(test_intr, assert_instr(pcmpistrm, imm8 = 0))]
 #[rustc_args_required_const(2)]
 pub unsafe fn _mm_cmpistrm(a: __m128i, b: __m128i, imm8: i32) -> __m128i {
     let a = a.as_i8x16();
@@ -296,7 +296,7 @@ pub unsafe fn _mm_cmpistrm(a: __m128i, b: __m128i, imm8: i32) -> __m128i {
 /// [`_mm_cmpestri`]: fn._mm_cmpestri.html
 #[inline]
 #[target_feature(enable = "sse4.2")]
-#[cfg_attr(test, assert_instr(pcmpistri, imm8 = 0))]
+#[cfg_attr(test_intr, assert_instr(pcmpistri, imm8 = 0))]
 #[rustc_args_required_const(2)]
 pub unsafe fn _mm_cmpistri(a: __m128i, b: __m128i, imm8: i32) -> i32 {
     let a = a.as_i8x16();
@@ -312,7 +312,7 @@ pub unsafe fn _mm_cmpistri(a: __m128i, b: __m128i, imm8: i32) -> i32 {
 /// and `0` otherwise.
 #[inline]
 #[target_feature(enable = "sse4.2")]
-#[cfg_attr(test, assert_instr(pcmpistri, imm8 = 0))]
+#[cfg_attr(test_intr, assert_instr(pcmpistri, imm8 = 0))]
 #[rustc_args_required_const(2)]
 pub unsafe fn _mm_cmpistrz(a: __m128i, b: __m128i, imm8: i32) -> i32 {
     let a = a.as_i8x16();
@@ -328,7 +328,7 @@ pub unsafe fn _mm_cmpistrz(a: __m128i, b: __m128i, imm8: i32) -> i32 {
 /// and `0` otherwise.
 #[inline]
 #[target_feature(enable = "sse4.2")]
-#[cfg_attr(test, assert_instr(pcmpistri, imm8 = 0))]
+#[cfg_attr(test_intr, assert_instr(pcmpistri, imm8 = 0))]
 #[rustc_args_required_const(2)]
 pub unsafe fn _mm_cmpistrc(a: __m128i, b: __m128i, imm8: i32) -> i32 {
     let a = a.as_i8x16();
@@ -344,7 +344,7 @@ pub unsafe fn _mm_cmpistrc(a: __m128i, b: __m128i, imm8: i32) -> i32 {
 /// and `0` otherwise.
 #[inline]
 #[target_feature(enable = "sse4.2")]
-#[cfg_attr(test, assert_instr(pcmpistri, imm8 = 0))]
+#[cfg_attr(test_intr, assert_instr(pcmpistri, imm8 = 0))]
 #[rustc_args_required_const(2)]
 pub unsafe fn _mm_cmpistrs(a: __m128i, b: __m128i, imm8: i32) -> i32 {
     let a = a.as_i8x16();
@@ -359,7 +359,7 @@ pub unsafe fn _mm_cmpistrs(a: __m128i, b: __m128i, imm8: i32) -> i32 {
 /// control in `imm8`, and return bit `0` of the resulting bit mask.
 #[inline]
 #[target_feature(enable = "sse4.2")]
-#[cfg_attr(test, assert_instr(pcmpistri, imm8 = 0))]
+#[cfg_attr(test_intr, assert_instr(pcmpistri, imm8 = 0))]
 #[rustc_args_required_const(2)]
 pub unsafe fn _mm_cmpistro(a: __m128i, b: __m128i, imm8: i32) -> i32 {
     let a = a.as_i8x16();
@@ -375,7 +375,7 @@ pub unsafe fn _mm_cmpistro(a: __m128i, b: __m128i, imm8: i32) -> i32 {
 /// character and the resulting mask was zero, and `0` otherwise.
 #[inline]
 #[target_feature(enable = "sse4.2")]
-#[cfg_attr(test, assert_instr(pcmpistri, imm8 = 0))]
+#[cfg_attr(test_intr, assert_instr(pcmpistri, imm8 = 0))]
 #[rustc_args_required_const(2)]
 pub unsafe fn _mm_cmpistra(a: __m128i, b: __m128i, imm8: i32) -> i32 {
     let a = a.as_i8x16();
@@ -390,7 +390,7 @@ pub unsafe fn _mm_cmpistra(a: __m128i, b: __m128i, imm8: i32) -> i32 {
 /// using the control in `imm8`, and return the generated mask.
 #[inline]
 #[target_feature(enable = "sse4.2")]
-#[cfg_attr(test, assert_instr(pcmpestrm, imm8 = 0))]
+#[cfg_attr(test_intr, assert_instr(pcmpestrm, imm8 = 0))]
 #[rustc_args_required_const(4)]
 pub unsafe fn _mm_cmpestrm(
     a: __m128i, la: i32, b: __m128i, lb: i32, imm8: i32
@@ -492,7 +492,7 @@ pub unsafe fn _mm_cmpestrm(
 /// [`_mm_cmpistri`]: fn._mm_cmpistri.html
 #[inline]
 #[target_feature(enable = "sse4.2")]
-#[cfg_attr(test, assert_instr(pcmpestri, imm8 = 0))]
+#[cfg_attr(test_intr, assert_instr(pcmpestri, imm8 = 0))]
 #[rustc_args_required_const(4)]
 pub unsafe fn _mm_cmpestri(
     a: __m128i, la: i32, b: __m128i, lb: i32, imm8: i32
@@ -510,7 +510,7 @@ pub unsafe fn _mm_cmpestri(
 /// `b` was null, and `0` otherwise.
 #[inline]
 #[target_feature(enable = "sse4.2")]
-#[cfg_attr(test, assert_instr(pcmpestri, imm8 = 0))]
+#[cfg_attr(test_intr, assert_instr(pcmpestri, imm8 = 0))]
 #[rustc_args_required_const(4)]
 pub unsafe fn _mm_cmpestrz(
     a: __m128i, la: i32, b: __m128i, lb: i32, imm8: i32
@@ -528,7 +528,7 @@ pub unsafe fn _mm_cmpestrz(
 /// was non-zero, and `0` otherwise.
 #[inline]
 #[target_feature(enable = "sse4.2")]
-#[cfg_attr(test, assert_instr(pcmpestri, imm8 = 0))]
+#[cfg_attr(test_intr, assert_instr(pcmpestri, imm8 = 0))]
 #[rustc_args_required_const(4)]
 pub unsafe fn _mm_cmpestrc(
     a: __m128i, la: i32, b: __m128i, lb: i32, imm8: i32
@@ -546,7 +546,7 @@ pub unsafe fn _mm_cmpestrc(
 /// a was null, and `0` otherwise.
 #[inline]
 #[target_feature(enable = "sse4.2")]
-#[cfg_attr(test, assert_instr(pcmpestri, imm8 = 0))]
+#[cfg_attr(test_intr, assert_instr(pcmpestri, imm8 = 0))]
 #[rustc_args_required_const(4)]
 pub unsafe fn _mm_cmpestrs(
     a: __m128i, la: i32, b: __m128i, lb: i32, imm8: i32
@@ -564,7 +564,7 @@ pub unsafe fn _mm_cmpestrs(
 /// bit mask.
 #[inline]
 #[target_feature(enable = "sse4.2")]
-#[cfg_attr(test, assert_instr(pcmpestri, imm8 = 0))]
+#[cfg_attr(test_intr, assert_instr(pcmpestri, imm8 = 0))]
 #[rustc_args_required_const(4)]
 pub unsafe fn _mm_cmpestro(
     a: __m128i, la: i32, b: __m128i, lb: i32, imm8: i32
@@ -583,7 +583,7 @@ pub unsafe fn _mm_cmpestro(
 /// otherwise.
 #[inline]
 #[target_feature(enable = "sse4.2")]
-#[cfg_attr(test, assert_instr(pcmpestri, imm8 = 0))]
+#[cfg_attr(test_intr, assert_instr(pcmpestri, imm8 = 0))]
 #[rustc_args_required_const(4)]
 pub unsafe fn _mm_cmpestra(
     a: __m128i, la: i32, b: __m128i, lb: i32, imm8: i32
@@ -600,7 +600,7 @@ pub unsafe fn _mm_cmpestra(
 /// CRC32 value for unsigned 8-bit integer `v`.
 #[inline]
 #[target_feature(enable = "sse4.2")]
-#[cfg_attr(test, assert_instr(crc32))]
+#[cfg_attr(test_intr, assert_instr(crc32))]
 pub unsafe fn _mm_crc32_u8(crc: u32, v: u8) -> u32 {
     crc32_32_8(crc, v)
 }
@@ -609,7 +609,7 @@ pub unsafe fn _mm_crc32_u8(crc: u32, v: u8) -> u32 {
 /// CRC32 value for unsigned 16-bit integer `v`.
 #[inline]
 #[target_feature(enable = "sse4.2")]
-#[cfg_attr(test, assert_instr(crc32))]
+#[cfg_attr(test_intr, assert_instr(crc32))]
 pub unsafe fn _mm_crc32_u16(crc: u32, v: u16) -> u32 {
     crc32_32_16(crc, v)
 }
@@ -618,7 +618,7 @@ pub unsafe fn _mm_crc32_u16(crc: u32, v: u16) -> u32 {
 /// CRC32 value for unsigned 32-bit integer `v`.
 #[inline]
 #[target_feature(enable = "sse4.2")]
-#[cfg_attr(test, assert_instr(crc32))]
+#[cfg_attr(test_intr, assert_instr(crc32))]
 pub unsafe fn _mm_crc32_u32(crc: u32, v: u32) -> u32 {
     crc32_32_32(crc, v)
 }
@@ -627,7 +627,7 @@ pub unsafe fn _mm_crc32_u32(crc: u32, v: u32) -> u32 {
 /// return the results.
 #[inline]
 #[target_feature(enable = "sse4.2")]
-#[cfg_attr(test, assert_instr(pcmpgtq))]
+#[cfg_attr(test_intr, assert_instr(pcmpgtq))]
 pub unsafe fn _mm_cmpgt_epi64(a: __m128i, b: __m128i) -> __m128i {
     mem::transmute(simd_gt::<_, i64x2>(a.as_i64x2(), b.as_i64x2()))
 }
@@ -672,7 +672,7 @@ extern "C" {
     fn crc32_32_32(crc: u32, v: u32) -> u32;
 }
 
-#[cfg(test)]
+#[cfg(test_intr)]
 mod tests {
     use stdsimd_test::simd_test;
 

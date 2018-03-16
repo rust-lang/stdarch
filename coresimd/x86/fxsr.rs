@@ -1,6 +1,6 @@
 //! FXSR floating-point context fast save and restor.
 
-#[cfg(test)]
+#[cfg(test_intr)]
 use stdsimd_test::assert_instr;
 
 #[allow(improper_ctypes)]
@@ -23,7 +23,7 @@ extern "C" {
 /// [fxrstor]: http://www.felixcloutier.com/x86/FXRSTOR.html
 #[inline]
 #[target_feature(enable = "fxsr")]
-#[cfg_attr(test, assert_instr(fxsave))]
+#[cfg_attr(test_intr, assert_instr(fxsave))]
 pub unsafe fn _fxsave(mem_addr: *mut u8) {
     fxsave(mem_addr)
 }
@@ -44,12 +44,12 @@ pub unsafe fn _fxsave(mem_addr: *mut u8) {
 /// [fxrstor]: http://www.felixcloutier.com/x86/FXRSTOR.html
 #[inline]
 #[target_feature(enable = "fxsr")]
-#[cfg_attr(test, assert_instr(fxrstor))]
+#[cfg_attr(test_intr, assert_instr(fxrstor))]
 pub unsafe fn _fxrstor(mem_addr: *const u8) {
     fxrstor(mem_addr)
 }
 
-#[cfg(test)]
+#[cfg(test_intr)]
 mod tests {
     use coresimd::x86::i386::fxsr;
     use stdsimd_test::simd_test;

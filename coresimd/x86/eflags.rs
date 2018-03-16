@@ -32,7 +32,7 @@ pub unsafe fn __writeeflags(eflags: u64) {
     asm!("pushq $0; popfq" : : "r"(eflags) : "cc", "flags" : "volatile");
 }
 
-#[cfg(test)]
+#[cfg(test_intr)]
 mod tests {
     use coresimd::x86::*;
 

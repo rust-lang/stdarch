@@ -5,7 +5,7 @@
 //!
 //! [msa_ref]: http://cdn2.imgtec.com/documentation/MD00866-2B-MSA32-AFP-01.12.pdf
 
-#[cfg(test)]
+#[cfg(test_intr)]
 use stdsimd_test::assert_instr;
 use coresimd::simd::*;
 
@@ -20,12 +20,12 @@ extern "C" {
 /// Adds the absolute values of the elements in `a` and `b` into the result vector.
 #[inline]
 #[target_feature(enable = "msa")]
-#[cfg_attr(test, assert_instr(add_a.b))]
+#[cfg_attr(test_intr, assert_instr(add_a.b))]
 pub unsafe fn __msa_add_a_b(a: i8x16, b: i8x16) -> i8x16 {
     msa_add_a_b(a, b)
 }
 
-#[cfg(test)]
+#[cfg(test_intr)]
 mod tests {
     use simd::*;
     use stdsimd_test::simd_test;

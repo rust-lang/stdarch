@@ -4,7 +4,7 @@ use coresimd::simd::*;
 use coresimd::x86::*;
 use mem;
 
-#[cfg(test)]
+#[cfg(test_intr)]
 use stdsimd_test::assert_instr;
 
 #[allow(improper_ctypes)]
@@ -35,7 +35,7 @@ extern "C" {
 /// undefined.
 #[inline]
 #[target_feature(enable = "sse4a")]
-#[cfg_attr(test, assert_instr(extrq))]
+#[cfg_attr(test_intr, assert_instr(extrq))]
 pub unsafe fn _mm_extract_si64(x: __m128i, y: __m128i) -> __m128i {
     mem::transmute(extrq(x.as_i64x2(), y.as_i8x16()))
 }
@@ -51,7 +51,7 @@ pub unsafe fn _mm_extract_si64(x: __m128i, y: __m128i) -> __m128i {
 /// or `index > 0 && length == 0` the result is undefined.
 #[inline]
 #[target_feature(enable = "sse4a")]
-#[cfg_attr(test, assert_instr(insertq))]
+#[cfg_attr(test_intr, assert_instr(insertq))]
 pub unsafe fn _mm_insert_si64(x: __m128i, y: __m128i) -> __m128i {
     mem::transmute(insertq(x.as_i64x2(), y.as_i64x2()))
 }
@@ -59,7 +59,7 @@ pub unsafe fn _mm_insert_si64(x: __m128i, y: __m128i) -> __m128i {
 /// Non-temporal store of `a.0` into `p`.
 #[inline]
 #[target_feature(enable = "sse4a")]
-#[cfg_attr(test, assert_instr(movntsd))]
+#[cfg_attr(test_intr, assert_instr(movntsd))]
 pub unsafe fn _mm_stream_sd(p: *mut f64, a: __m128d) {
     movntsd(p, a);
 }
@@ -67,12 +67,12 @@ pub unsafe fn _mm_stream_sd(p: *mut f64, a: __m128d) {
 /// Non-temporal store of `a.0` into `p`.
 #[inline]
 #[target_feature(enable = "sse4a")]
-#[cfg_attr(test, assert_instr(movntss))]
+#[cfg_attr(test_intr, assert_instr(movntss))]
 pub unsafe fn _mm_stream_ss(p: *mut f32, a: __m128) {
     movntss(p, a);
 }
 
-#[cfg(test)]
+#[cfg(test_intr)]
 mod tests {
     use stdsimd_test::simd_test;
     use coresimd::x86::*;

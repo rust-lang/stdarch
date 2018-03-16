@@ -4,14 +4,14 @@ use coresimd::simd_llvm::{simd_shuffle2, simd_shuffle4};
 use coresimd::simd::*;
 use coresimd::x86::*;
 
-#[cfg(test)]
+#[cfg(test_intr)]
 use stdsimd_test::assert_instr;
 
 /// Alternatively add and subtract packed single-precision (32-bit)
 /// floating-point elements in `a` to/from packed elements in `b`.
 #[inline]
 #[target_feature(enable = "sse3")]
-#[cfg_attr(test, assert_instr(addsubps))]
+#[cfg_attr(test_intr, assert_instr(addsubps))]
 pub unsafe fn _mm_addsub_ps(a: __m128, b: __m128) -> __m128 {
     addsubps(a, b)
 }
@@ -20,7 +20,7 @@ pub unsafe fn _mm_addsub_ps(a: __m128, b: __m128) -> __m128 {
 /// floating-point elements in `a` to/from packed elements in `b`.
 #[inline]
 #[target_feature(enable = "sse3")]
-#[cfg_attr(test, assert_instr(addsubpd))]
+#[cfg_attr(test_intr, assert_instr(addsubpd))]
 pub unsafe fn _mm_addsub_pd(a: __m128d, b: __m128d) -> __m128d {
     addsubpd(a, b)
 }
@@ -29,7 +29,7 @@ pub unsafe fn _mm_addsub_pd(a: __m128d, b: __m128d) -> __m128d {
 /// floating-point elements in `a` and `b`, and pack the results.
 #[inline]
 #[target_feature(enable = "sse3")]
-#[cfg_attr(test, assert_instr(haddpd))]
+#[cfg_attr(test_intr, assert_instr(haddpd))]
 pub unsafe fn _mm_hadd_pd(a: __m128d, b: __m128d) -> __m128d {
     haddpd(a, b)
 }
@@ -38,7 +38,7 @@ pub unsafe fn _mm_hadd_pd(a: __m128d, b: __m128d) -> __m128d {
 /// floating-point elements in `a` and `b`, and pack the results.
 #[inline]
 #[target_feature(enable = "sse3")]
-#[cfg_attr(test, assert_instr(haddps))]
+#[cfg_attr(test_intr, assert_instr(haddps))]
 pub unsafe fn _mm_hadd_ps(a: __m128, b: __m128) -> __m128 {
     haddps(a, b)
 }
@@ -47,7 +47,7 @@ pub unsafe fn _mm_hadd_ps(a: __m128, b: __m128) -> __m128 {
 /// floating-point elements in `a` and `b`, and pack the results.
 #[inline]
 #[target_feature(enable = "sse3")]
-#[cfg_attr(test, assert_instr(hsubpd))]
+#[cfg_attr(test_intr, assert_instr(hsubpd))]
 pub unsafe fn _mm_hsub_pd(a: __m128d, b: __m128d) -> __m128d {
     hsubpd(a, b)
 }
@@ -56,7 +56,7 @@ pub unsafe fn _mm_hsub_pd(a: __m128d, b: __m128d) -> __m128d {
 /// floating-point elements in `a` and `b`, and pack the results.
 #[inline]
 #[target_feature(enable = "sse3")]
-#[cfg_attr(test, assert_instr(hsubps))]
+#[cfg_attr(test_intr, assert_instr(hsubps))]
 pub unsafe fn _mm_hsub_ps(a: __m128, b: __m128) -> __m128 {
     hsubps(a, b)
 }
@@ -66,7 +66,7 @@ pub unsafe fn _mm_hsub_ps(a: __m128, b: __m128) -> __m128 {
 /// when the data crosses a cache line boundary.
 #[inline]
 #[target_feature(enable = "sse3")]
-#[cfg_attr(test, assert_instr(lddqu))]
+#[cfg_attr(test_intr, assert_instr(lddqu))]
 pub unsafe fn _mm_lddqu_si128(mem_addr: *const __m128i) -> __m128i {
     mem::transmute(lddqu(mem_addr as *const _))
 }
@@ -75,7 +75,7 @@ pub unsafe fn _mm_lddqu_si128(mem_addr: *const __m128i) -> __m128i {
 /// from `a`.
 #[inline]
 #[target_feature(enable = "sse3")]
-#[cfg_attr(test, assert_instr(movddup))]
+#[cfg_attr(test_intr, assert_instr(movddup))]
 pub unsafe fn _mm_movedup_pd(a: __m128d) -> __m128d {
     simd_shuffle2(a, a, [0, 0])
 }
@@ -84,7 +84,7 @@ pub unsafe fn _mm_movedup_pd(a: __m128d) -> __m128d {
 /// into both elements of return vector.
 #[inline]
 #[target_feature(enable = "sse3")]
-#[cfg_attr(test, assert_instr(movddup))]
+#[cfg_attr(test_intr, assert_instr(movddup))]
 pub unsafe fn _mm_loaddup_pd(mem_addr: *const f64) -> __m128d {
     _mm_load1_pd(mem_addr)
 }
@@ -93,7 +93,7 @@ pub unsafe fn _mm_loaddup_pd(mem_addr: *const f64) -> __m128d {
 /// from `a`.
 #[inline]
 #[target_feature(enable = "sse3")]
-#[cfg_attr(test, assert_instr(movshdup))]
+#[cfg_attr(test_intr, assert_instr(movshdup))]
 pub unsafe fn _mm_movehdup_ps(a: __m128) -> __m128 {
     simd_shuffle4(a, a, [1, 1, 3, 3])
 }
@@ -102,7 +102,7 @@ pub unsafe fn _mm_movehdup_ps(a: __m128) -> __m128 {
 /// from `a`.
 #[inline]
 #[target_feature(enable = "sse3")]
-#[cfg_attr(test, assert_instr(movsldup))]
+#[cfg_attr(test_intr, assert_instr(movsldup))]
 pub unsafe fn _mm_moveldup_ps(a: __m128) -> __m128 {
     simd_shuffle4(a, a, [0, 0, 2, 2])
 }
@@ -125,7 +125,7 @@ extern "C" {
     fn lddqu(mem_addr: *const i8) -> i8x16;
 }
 
-#[cfg(test)]
+#[cfg(test_intr)]
 mod tests {
     use stdsimd_test::simd_test;
 
