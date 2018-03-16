@@ -2,7 +2,7 @@
 //! cast vector types with the same number of lanes.
 
 macro_rules! impl_from {
-    ($to:ident: $elem_ty:ident, $test_mod:ident | $($from:ident),+) => {
+    ($to:ident: $elem_ty:ident, $test_mod:ident, $test_feature:ident | $($from:ident),+) => {
         $(
             impl From<::simd::$from> for $to {
                 #[inline]
@@ -12,7 +12,7 @@ macro_rules! impl_from {
             }
         )+
 
-        #[cfg(test)]
+        #[cfg($test_feature)]
         mod $test_mod {
             $(
                 #[test]

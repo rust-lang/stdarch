@@ -11,8 +11,7 @@ macro_rules! impl_default {
     }
 }
 
-#[cfg(test)]
-#[macro_export]
+#[cfg(any(test_v16, test_v32, test_v64, test_v128, test_v256, test_v512))]
 macro_rules! test_default {
     ($id:ident, $elem_ty:ident) => {
         #[test]

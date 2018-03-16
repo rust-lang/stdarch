@@ -49,6 +49,8 @@ macro_rules! impl_minimal {
 
             /// Extracts the value at `index`.
             ///
+            /// # Precondition
+            ///
             /// If `index >= Self::lanes()` the behavior is undefined.
             #[inline]
             pub unsafe fn extract_unchecked(self, index: usize) -> $elem_ty {
@@ -69,7 +71,7 @@ macro_rules! impl_minimal {
 
             /// Returns a new vector where the value at `index` is replaced by `new_value`.
             ///
-            /// # Panics
+            /// # Precondition
             ///
             /// If `index >= Self::lanes()`.
             #[inline]
@@ -85,7 +87,7 @@ macro_rules! impl_minimal {
     }
 }
 
-#[cfg(test)]
+#[cfg(any(test_v16, test_v32, test_v64, test_v128, test_v256, test_v512))]
 macro_rules! test_minimal {
     ($id:ident, $elem_ty:ident, $elem_count:expr) => {
         #[test]

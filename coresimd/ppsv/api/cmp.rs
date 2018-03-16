@@ -84,8 +84,7 @@ macro_rules! impl_bool_cmp {
     }
 }
 
-#[cfg(test)]
-#[macro_export]
+#[cfg(any(test_v16, test_v32, test_v64, test_v128, test_v256, test_v512))]
 macro_rules! test_cmp {
     ($id:ident, $elem_ty:ident, $bool_ty:ident,
      $true:expr, $false:expr) => {

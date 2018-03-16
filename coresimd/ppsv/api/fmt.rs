@@ -20,7 +20,7 @@ macro_rules! impl_hex_fmt {
     }
 }
 
-#[cfg(test)]
+#[cfg(any(test_v16, test_v32, test_v64, test_v128, test_v256, test_v512))]
 macro_rules! test_hex_fmt_impl {
     ($id:ident, $elem_ty:ident, $($values:expr),+) => {
         #[test]
@@ -45,7 +45,7 @@ macro_rules! test_hex_fmt_impl {
     }
 }
 
-#[cfg(test)]
+#[cfg(any(test_v16, test_v32, test_v64, test_v128, test_v256, test_v512))]
 macro_rules! test_hex_fmt {
     ($id:ident, $elem_ty:ident) => {
         test_hex_fmt_impl!($id, $elem_ty, 0 as $elem_ty, !(0 as $elem_ty), (1 as $elem_ty));
