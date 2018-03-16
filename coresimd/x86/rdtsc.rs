@@ -1,6 +1,6 @@
 //! RDTSC instructions.
 
-#[cfg(test)]
+#[cfg(test_intr)]
 use stdsimd_test::assert_instr;
 
 /// Reads the current value of the processor’s time-stamp counter.
@@ -18,7 +18,7 @@ use stdsimd_test::assert_instr;
 /// On processors that support the Intel 64 architecture, the
 /// high-order 32 bits of each of RAX and RDX are cleared.
 #[inline]
-#[cfg_attr(test, assert_instr(rdtsc))]
+#[cfg_attr(test_intr, assert_instr(rdtsc))]
 pub unsafe fn _rdtsc() -> i64 {
     rdtsc()
 }
@@ -38,7 +38,7 @@ pub unsafe fn _rdtsc() -> i64 {
 /// On processors that support the Intel 64 architecture, the
 /// high-order 32 bits of each of RAX, RDX, and RCX are cleared.
 #[inline]
-#[cfg_attr(test, assert_instr(rdtscp))]
+#[cfg_attr(test_intr, assert_instr(rdtscp))]
 pub unsafe fn __rdtscp(aux: *mut u32) -> u64 {
     rdtscp(aux as *mut _)
 }
@@ -51,7 +51,7 @@ extern "C" {
     fn rdtscp(aux: *mut u8) -> u64;
 }
 
-#[cfg(test)]
+#[cfg(test_intr)]
 mod tests {
     use stdsimd_test::simd_test;
     use coresimd::x86::rdtsc;

@@ -1,6 +1,6 @@
 //! `x86_64`'s Streaming SIMD Extensions 4.2 (SSE4.2)
 
-#[cfg(test)]
+#[cfg(test_intr)]
 use stdsimd_test::assert_instr;
 
 #[allow(improper_ctypes)]
@@ -13,12 +13,12 @@ extern "C" {
 /// CRC32 value for unsigned 64-bit integer `v`.
 #[inline]
 #[target_feature(enable = "sse4.2")]
-#[cfg_attr(test, assert_instr(crc32))]
+#[cfg_attr(test_intr, assert_instr(crc32))]
 pub unsafe fn _mm_crc32_u64(crc: u64, v: u64) -> u64 {
     crc32_64_64(crc, v)
 }
 
-#[cfg(test)]
+#[cfg(test_intr)]
 mod tests {
     use coresimd::arch::x86_64::*;
 

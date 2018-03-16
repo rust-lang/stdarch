@@ -9,7 +9,7 @@
 
 use coresimd::x86::__m128i;
 
-#[cfg(test)]
+#[cfg(test_intr)]
 use stdsimd_test::assert_instr;
 
 #[allow(improper_ctypes)]
@@ -31,7 +31,7 @@ extern "C" {
 /// Perform one round of an AES decryption flow on data (state) in `a`.
 #[inline]
 #[target_feature(enable = "aes")]
-#[cfg_attr(test, assert_instr(aesdec))]
+#[cfg_attr(test_intr, assert_instr(aesdec))]
 pub unsafe fn _mm_aesdec_si128(a: __m128i, round_key: __m128i) -> __m128i {
     aesdec(a, round_key)
 }
@@ -39,7 +39,7 @@ pub unsafe fn _mm_aesdec_si128(a: __m128i, round_key: __m128i) -> __m128i {
 /// Perform the last round of an AES decryption flow on data (state) in `a`.
 #[inline]
 #[target_feature(enable = "aes")]
-#[cfg_attr(test, assert_instr(aesdeclast))]
+#[cfg_attr(test_intr, assert_instr(aesdeclast))]
 pub unsafe fn _mm_aesdeclast_si128(a: __m128i, round_key: __m128i) -> __m128i {
     aesdeclast(a, round_key)
 }
@@ -47,7 +47,7 @@ pub unsafe fn _mm_aesdeclast_si128(a: __m128i, round_key: __m128i) -> __m128i {
 /// Perform one round of an AES encryption flow on data (state) in `a`.
 #[inline]
 #[target_feature(enable = "aes")]
-#[cfg_attr(test, assert_instr(aesenc))]
+#[cfg_attr(test_intr, assert_instr(aesenc))]
 pub unsafe fn _mm_aesenc_si128(a: __m128i, round_key: __m128i) -> __m128i {
     aesenc(a, round_key)
 }
@@ -55,7 +55,7 @@ pub unsafe fn _mm_aesenc_si128(a: __m128i, round_key: __m128i) -> __m128i {
 /// Perform the last round of an AES encryption flow on data (state) in `a`.
 #[inline]
 #[target_feature(enable = "aes")]
-#[cfg_attr(test, assert_instr(aesenclast))]
+#[cfg_attr(test_intr, assert_instr(aesenclast))]
 pub unsafe fn _mm_aesenclast_si128(a: __m128i, round_key: __m128i) -> __m128i {
     aesenclast(a, round_key)
 }
@@ -63,7 +63,7 @@ pub unsafe fn _mm_aesenclast_si128(a: __m128i, round_key: __m128i) -> __m128i {
 /// Perform the `InvMixColumns` transformation on `a`.
 #[inline]
 #[target_feature(enable = "aes")]
-#[cfg_attr(test, assert_instr(aesimc))]
+#[cfg_attr(test_intr, assert_instr(aesimc))]
 pub unsafe fn _mm_aesimc_si128(a: __m128i) -> __m128i {
     aesimc(a)
 }
@@ -75,7 +75,7 @@ pub unsafe fn _mm_aesimc_si128(a: __m128i) -> __m128i {
 /// 8-bit round constant `imm8`.
 #[inline]
 #[target_feature(enable = "aes")]
-#[cfg_attr(test, assert_instr(aeskeygenassist, imm8 = 0))]
+#[cfg_attr(test_intr, assert_instr(aeskeygenassist, imm8 = 0))]
 #[rustc_args_required_const(1)]
 pub unsafe fn _mm_aeskeygenassist_si128(a: __m128i, imm8: i32) -> __m128i {
     macro_rules! call {
@@ -84,7 +84,7 @@ pub unsafe fn _mm_aeskeygenassist_si128(a: __m128i, imm8: i32) -> __m128i {
     constify_imm8!(imm8, call)
 }
 
-#[cfg(test)]
+#[cfg(test_intr)]
 mod tests {
     // The constants in the tests below are just bit patterns. They should not
     // be interpreted as integers; signedness does not make sense for them, but

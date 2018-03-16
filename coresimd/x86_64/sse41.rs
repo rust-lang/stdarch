@@ -4,14 +4,14 @@ use coresimd::x86::*;
 use coresimd::simd_llvm::*;
 use mem;
 
-#[cfg(test)]
+#[cfg(test_intr)]
 use stdsimd_test::assert_instr;
 
 /// Extract an 64-bit integer from `a` selected with `imm8`
 #[inline]
 #[target_feature(enable = "sse4.1")]
 // TODO: Add test for Windows
-#[cfg_attr(test, assert_instr(pextrq, imm8 = 1))]
+#[cfg_attr(test_intr, assert_instr(pextrq, imm8 = 1))]
 #[rustc_args_required_const(1)]
 pub unsafe fn _mm_extract_epi64(a: __m128i, imm8: i32) -> i64 {
     let imm8 = (imm8 & 1) as u32;
@@ -22,13 +22,13 @@ pub unsafe fn _mm_extract_epi64(a: __m128i, imm8: i32) -> i64 {
 /// location specified by `imm8`.
 #[inline]
 #[target_feature(enable = "sse4.1")]
-#[cfg_attr(test, assert_instr(pinsrq, imm8 = 0))]
+#[cfg_attr(test_intr, assert_instr(pinsrq, imm8 = 0))]
 #[rustc_args_required_const(2)]
 pub unsafe fn _mm_insert_epi64(a: __m128i, i: i64, imm8: i32) -> __m128i {
     mem::transmute(simd_insert(a.as_i64x2(), (imm8 & 1) as u32, i))
 }
 
-#[cfg(test)]
+#[cfg(test_intr)]
 mod tests {
     use stdsimd_test::simd_test;
     use coresimd::arch::x86_64::*;

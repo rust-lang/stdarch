@@ -356,7 +356,7 @@ macro_rules! constify_imm2 {
     }
 }
 
-#[cfg(test)]
+#[cfg(test_intr)]
 macro_rules! assert_approx_eq {
     ($a:expr, $b:expr, $eps:expr) => ({
         let (a, b) = (&$a, &$b);

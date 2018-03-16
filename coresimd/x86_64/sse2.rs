@@ -4,7 +4,7 @@ use coresimd::x86::*;
 use coresimd::simd_llvm::*;
 use intrinsics;
 
-#[cfg(test)]
+#[cfg(test_intr)]
 use stdsimd_test::assert_instr;
 
 #[allow(improper_ctypes)]
@@ -19,7 +19,7 @@ extern "C" {
 /// a 64-bit integer.
 #[inline]
 #[target_feature(enable = "sse2")]
-#[cfg_attr(test, assert_instr(cvtsd2si))]
+#[cfg_attr(test_intr, assert_instr(cvtsd2si))]
 pub unsafe fn _mm_cvtsd_si64(a: __m128d) -> i64 {
     cvtsd2si64(a)
 }
@@ -27,7 +27,7 @@ pub unsafe fn _mm_cvtsd_si64(a: __m128d) -> i64 {
 /// Alias for `_mm_cvtsd_si64`
 #[inline]
 #[target_feature(enable = "sse2")]
-#[cfg_attr(test, assert_instr(cvtsd2si))]
+#[cfg_attr(test_intr, assert_instr(cvtsd2si))]
 pub unsafe fn _mm_cvtsd_si64x(a: __m128d) -> i64 {
     _mm_cvtsd_si64(a)
 }
@@ -36,7 +36,7 @@ pub unsafe fn _mm_cvtsd_si64x(a: __m128d) -> i64 {
 /// to a 64-bit integer with truncation.
 #[inline]
 #[target_feature(enable = "sse2")]
-#[cfg_attr(test, assert_instr(cvttsd2si))]
+#[cfg_attr(test_intr, assert_instr(cvttsd2si))]
 pub unsafe fn _mm_cvttsd_si64(a: __m128d) -> i64 {
     cvttsd2si64(a)
 }
@@ -44,7 +44,7 @@ pub unsafe fn _mm_cvttsd_si64(a: __m128d) -> i64 {
 /// Alias for `_mm_cvttsd_si64`
 #[inline]
 #[target_feature(enable = "sse2")]
-#[cfg_attr(test, assert_instr(cvttsd2si))]
+#[cfg_attr(test_intr, assert_instr(cvttsd2si))]
 pub unsafe fn _mm_cvttsd_si64x(a: __m128d) -> i64 {
     _mm_cvttsd_si64(a)
 }
@@ -54,7 +54,7 @@ pub unsafe fn _mm_cvttsd_si64x(a: __m128d) -> i64 {
 /// used again soon).
 #[inline]
 #[target_feature(enable = "sse2")]
-#[cfg_attr(test, assert_instr(movnti))]
+#[cfg_attr(test_intr, assert_instr(movnti))]
 pub unsafe fn _mm_stream_si64(mem_addr: *mut i64, a: i64) {
     intrinsics::nontemporal_store(mem_addr, a);
 }
@@ -63,7 +63,7 @@ pub unsafe fn _mm_stream_si64(mem_addr: *mut i64, a: i64) {
 /// `0`.
 #[inline]
 #[target_feature(enable = "sse2")]
-#[cfg_attr(all(test, not(windows)), assert_instr(movq))]
+#[cfg_attr(all(test_intr, not(windows)), assert_instr(movq))]
 pub unsafe fn _mm_cvtsi64_si128(a: i64) -> __m128i {
     _mm_set_epi64x(0, a)
 }
@@ -72,7 +72,7 @@ pub unsafe fn _mm_cvtsi64_si128(a: i64) -> __m128i {
 /// `0`.
 #[inline]
 #[target_feature(enable = "sse2")]
-#[cfg_attr(all(test, not(windows)), assert_instr(movq))]
+#[cfg_attr(all(test_intr, not(windows)), assert_instr(movq))]
 pub unsafe fn _mm_cvtsi64x_si128(a: i64) -> __m128i {
     _mm_cvtsi64_si128(a)
 }
@@ -80,7 +80,7 @@ pub unsafe fn _mm_cvtsi64x_si128(a: i64) -> __m128i {
 /// Return the lowest element of `a`.
 #[inline]
 #[target_feature(enable = "sse2")]
-#[cfg_attr(all(test, not(windows)), assert_instr(movq))]
+#[cfg_attr(all(test_intr, not(windows)), assert_instr(movq))]
 pub unsafe fn _mm_cvtsi128_si64(a: __m128i) -> i64 {
     simd_extract(a.as_i64x2(), 0)
 }
@@ -88,7 +88,7 @@ pub unsafe fn _mm_cvtsi128_si64(a: __m128i) -> i64 {
 /// Return the lowest element of `a`.
 #[inline]
 #[target_feature(enable = "sse2")]
-#[cfg_attr(all(test, not(windows)), assert_instr(movq))]
+#[cfg_attr(all(test_intr, not(windows)), assert_instr(movq))]
 pub unsafe fn _mm_cvtsi128_si64x(a: __m128i) -> i64 {
     _mm_cvtsi128_si64(a)
 }
@@ -97,7 +97,7 @@ pub unsafe fn _mm_cvtsi128_si64x(a: __m128i) -> i64 {
 /// an `f64`.
 #[inline]
 #[target_feature(enable = "sse2")]
-#[cfg_attr(test, assert_instr(cvtsi2sd))]
+#[cfg_attr(test_intr, assert_instr(cvtsi2sd))]
 pub unsafe fn _mm_cvtsi64_sd(a: __m128d, b: i64) -> __m128d {
     simd_insert(a, 0, b as f64)
 }
@@ -106,12 +106,12 @@ pub unsafe fn _mm_cvtsi64_sd(a: __m128d, b: i64) -> __m128d {
 /// an `f64`.
 #[inline]
 #[target_feature(enable = "sse2")]
-#[cfg_attr(test, assert_instr(cvtsi2sd))]
+#[cfg_attr(test_intr, assert_instr(cvtsi2sd))]
 pub unsafe fn _mm_cvtsi64x_sd(a: __m128d, b: i64) -> __m128d {
     _mm_cvtsi64_sd(a, b)
 }
 
-#[cfg(test)]
+#[cfg(test_intr)]
 mod tests {
     use std::{f64, i64};
 

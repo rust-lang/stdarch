@@ -2,7 +2,7 @@
 
 #![cfg_attr(feature = "cargo-clippy", allow(stutter))]
 
-#[cfg(test)]
+#[cfg(test_intr)]
 use stdsimd_test::assert_instr;
 
 #[allow(improper_ctypes)]
@@ -31,7 +31,7 @@ extern "C" {
 /// Intel® 64 and IA-32 Architectures Software Developer’s Manual, Volume 1.
 #[inline]
 #[target_feature(enable = "xsave")]
-#[cfg_attr(test, assert_instr(xsave64))]
+#[cfg_attr(test_intr, assert_instr(xsave64))]
 pub unsafe fn _xsave64(mem_addr: *mut u8, save_mask: u64) {
     xsave64(mem_addr, (save_mask >> 32) as u32, save_mask as u32);
 }
@@ -44,7 +44,7 @@ pub unsafe fn _xsave64(mem_addr: *mut u8, save_mask: u64) {
 /// boundary.
 #[inline]
 #[target_feature(enable = "xsave")]
-#[cfg_attr(test, assert_instr(xrstor64))]
+#[cfg_attr(test_intr, assert_instr(xrstor64))]
 pub unsafe fn _xrstor64(mem_addr: *const u8, rs_mask: u64) {
     xrstor64(mem_addr, (rs_mask >> 32) as u32, rs_mask as u32);
 }
@@ -58,7 +58,7 @@ pub unsafe fn _xrstor64(mem_addr: *const u8, rs_mask: u64) {
 /// be equal to or better than using the `XSAVE64` instruction.
 #[inline]
 #[target_feature(enable = "xsave,xsaveopt")]
-#[cfg_attr(test, assert_instr(xsaveopt64))]
+#[cfg_attr(test_intr, assert_instr(xsaveopt64))]
 pub unsafe fn _xsaveopt64(mem_addr: *mut u8, save_mask: u64) {
     xsaveopt64(mem_addr, (save_mask >> 32) as u32, save_mask as u32);
 }
@@ -71,7 +71,7 @@ pub unsafe fn _xsaveopt64(mem_addr: *mut u8, save_mask: u64) {
 /// and `XCR0`. `mem_addr` must be aligned on a 64-byte boundary.
 #[inline]
 #[target_feature(enable = "xsave,xsavec")]
-#[cfg_attr(test, assert_instr(xsavec64))]
+#[cfg_attr(test_intr, assert_instr(xsavec64))]
 pub unsafe fn _xsavec64(mem_addr: *mut u8, save_mask: u64) {
     xsavec64(mem_addr, (save_mask >> 32) as u32, save_mask as u32);
 }
@@ -85,7 +85,7 @@ pub unsafe fn _xsavec64(mem_addr: *mut u8, save_mask: u64) {
 /// and `XCR0`. `mem_addr` must be aligned on a 64-byte boundary.
 #[inline]
 #[target_feature(enable = "xsave,xsaves")]
-#[cfg_attr(test, assert_instr(xsaves64))]
+#[cfg_attr(test_intr, assert_instr(xsaves64))]
 pub unsafe fn _xsaves64(mem_addr: *mut u8, save_mask: u64) {
     xsaves64(mem_addr, (save_mask >> 32) as u32, save_mask as u32);
 }
@@ -101,7 +101,7 @@ pub unsafe fn _xsaves64(mem_addr: *mut u8, save_mask: u64) {
 /// boundary.
 #[inline]
 #[target_feature(enable = "xsave,xsaves")]
-#[cfg_attr(test, assert_instr(xrstors64))]
+#[cfg_attr(test_intr, assert_instr(xrstors64))]
 pub unsafe fn _xrstors64(mem_addr: *const u8, rs_mask: u64) {
     xrstors64(mem_addr, (rs_mask >> 32) as u32, rs_mask as u32);
 }
@@ -109,7 +109,7 @@ pub unsafe fn _xrstors64(mem_addr: *const u8, rs_mask: u64) {
 // FIXME: https://github.com/rust-lang-nursery/stdsimd/issues/209
 // All these tests fail with Intel SDE.
 /*
-#[cfg(test)]
+#[cfg(test_intr)]
 mod tests {
     use coresimd::x86::x86_64::xsave;
     use stdsimd_test::simd_test;

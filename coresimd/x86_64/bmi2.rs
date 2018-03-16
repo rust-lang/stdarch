@@ -10,7 +10,7 @@
 //! [wikipedia_bmi]:
 //! https://en.wikipedia.org/wiki/Bit_Manipulation_Instruction_Sets#ABM_.28Advanced_Bit_Manipulation.29
 
-#[cfg(test)]
+#[cfg(test_intr)]
 use stdsimd_test::assert_instr;
 
 /// Unsigned multiply without affecting flags.
@@ -18,7 +18,7 @@ use stdsimd_test::assert_instr;
 /// Unsigned multiplication of `a` with `b` returning a pair `(lo, hi)` with
 /// the low half and the high half of the result.
 #[inline]
-#[cfg_attr(test, assert_instr(mulx))]
+#[cfg_attr(test_intr, assert_instr(mulx))]
 #[target_feature(enable = "bmi2")]
 #[cfg(not(target_arch = "x86"))] // calls an intrinsic
 pub unsafe fn _mulx_u64(a: u64, b: u64, hi: &mut u64) -> u64 {
@@ -30,7 +30,7 @@ pub unsafe fn _mulx_u64(a: u64, b: u64, hi: &mut u64) -> u64 {
 /// Zero higher bits of `a` >= `index`.
 #[inline]
 #[target_feature(enable = "bmi2")]
-#[cfg_attr(test, assert_instr(bzhi))]
+#[cfg_attr(test_intr, assert_instr(bzhi))]
 #[cfg(not(target_arch = "x86"))]
 pub unsafe fn _bzhi_u64(a: u64, index: u32) -> u64 {
     x86_bmi2_bzhi_64(a, index as u64)
@@ -40,7 +40,7 @@ pub unsafe fn _bzhi_u64(a: u64, index: u32) -> u64 {
 /// specified by the `mask`.
 #[inline]
 #[target_feature(enable = "bmi2")]
-#[cfg_attr(test, assert_instr(pdep))]
+#[cfg_attr(test_intr, assert_instr(pdep))]
 #[cfg(not(target_arch = "x86"))]
 pub unsafe fn _pdep_u64(a: u64, mask: u64) -> u64 {
     x86_bmi2_pdep_64(a, mask)
@@ -50,7 +50,7 @@ pub unsafe fn _pdep_u64(a: u64, mask: u64) -> u64 {
 /// order bit positions of the result.
 #[inline]
 #[target_feature(enable = "bmi2")]
-#[cfg_attr(test, assert_instr(pext))]
+#[cfg_attr(test_intr, assert_instr(pext))]
 #[cfg(not(target_arch = "x86"))]
 pub unsafe fn _pext_u64(a: u64, mask: u64) -> u64 {
     x86_bmi2_pext_64(a, mask)
@@ -65,7 +65,7 @@ extern "C" {
     fn x86_bmi2_pext_64(x: u64, y: u64) -> u64;
 }
 
-#[cfg(test)]
+#[cfg(test_intr)]
 mod tests {
     use stdsimd_test::simd_test;
 

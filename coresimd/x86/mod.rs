@@ -348,9 +348,9 @@ types! {
     pub struct __m256d(f64, f64, f64, f64);
 }
 
-#[cfg(test)]
+#[cfg(test_intr)]
 mod test;
-#[cfg(test)]
+#[cfg(test_intr)]
 pub use self::test::*;
 
 #[doc(hidden)]

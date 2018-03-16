@@ -2,7 +2,7 @@
 
 #![cfg_attr(feature = "cargo-clippy", allow(stutter))]
 
-#[cfg(test)]
+#[cfg(test_intr)]
 use stdsimd_test::assert_instr;
 
 #[allow(improper_ctypes)]
@@ -33,7 +33,7 @@ extern "C" {
 /// Intel® 64 and IA-32 Architectures Software Developer’s Manual, Volume 1.
 #[inline]
 #[target_feature(enable = "xsave")]
-#[cfg_attr(test, assert_instr(xsave))]
+#[cfg_attr(test_intr, assert_instr(xsave))]
 pub unsafe fn _xsave(mem_addr: *mut u8, save_mask: u64) {
     xsave(mem_addr, (save_mask >> 32) as u32, save_mask as u32);
 }
@@ -46,7 +46,7 @@ pub unsafe fn _xsave(mem_addr: *mut u8, save_mask: u64) {
 /// boundary.
 #[inline]
 #[target_feature(enable = "xsave")]
-#[cfg_attr(test, assert_instr(xrstor))]
+#[cfg_attr(test_intr, assert_instr(xrstor))]
 pub unsafe fn _xrstor(mem_addr: *const u8, rs_mask: u64) {
     xrstor(mem_addr, (rs_mask >> 32) as u32, rs_mask as u32);
 }
@@ -62,7 +62,7 @@ pub const _XCR_XFEATURE_ENABLED_MASK: u32 = 0;
 /// Currently only `XFEATURE_ENABLED_MASK` `XCR` is supported.
 #[inline]
 #[target_feature(enable = "xsave")]
-#[cfg_attr(test, assert_instr(xsetbv))]
+#[cfg_attr(test_intr, assert_instr(xsetbv))]
 pub unsafe fn _xsetbv(a: u32, val: u64) {
     xsetbv(a, (val >> 32) as u32, val as u32);
 }
@@ -71,7 +71,7 @@ pub unsafe fn _xsetbv(a: u32, val: u64) {
 /// specified in `xcr_no`.
 #[inline]
 #[target_feature(enable = "xsave")]
-#[cfg_attr(test, assert_instr(xgetbv))]
+#[cfg_attr(test_intr, assert_instr(xgetbv))]
 pub unsafe fn _xgetbv(xcr_no: u32) -> u64 {
     let eax: u32;
     let edx: u32;
@@ -88,7 +88,7 @@ pub unsafe fn _xgetbv(xcr_no: u32) -> u64 {
 /// be equal to or better than using the `XSAVE` instruction.
 #[inline]
 #[target_feature(enable = "xsave,xsaveopt")]
-#[cfg_attr(test, assert_instr(xsaveopt))]
+#[cfg_attr(test_intr, assert_instr(xsaveopt))]
 pub unsafe fn _xsaveopt(mem_addr: *mut u8, save_mask: u64) {
     xsaveopt(mem_addr, (save_mask >> 32) as u32, save_mask as u32);
 }
@@ -101,7 +101,7 @@ pub unsafe fn _xsaveopt(mem_addr: *mut u8, save_mask: u64) {
 /// and `XCR0`. `mem_addr` must be aligned on a 64-byte boundary.
 #[inline]
 #[target_feature(enable = "xsave,xsavec")]
-#[cfg_attr(test, assert_instr(xsavec))]
+#[cfg_attr(test_intr, assert_instr(xsavec))]
 pub unsafe fn _xsavec(mem_addr: *mut u8, save_mask: u64) {
     xsavec(mem_addr, (save_mask >> 32) as u32, save_mask as u32);
 }
@@ -115,7 +115,7 @@ pub unsafe fn _xsavec(mem_addr: *mut u8, save_mask: u64) {
 /// and `XCR0`. `mem_addr` must be aligned on a 64-byte boundary.
 #[inline]
 #[target_feature(enable = "xsave,xsaves")]
-#[cfg_attr(test, assert_instr(xsaves))]
+#[cfg_attr(test_intr, assert_instr(xsaves))]
 pub unsafe fn _xsaves(mem_addr: *mut u8, save_mask: u64) {
     xsaves(mem_addr, (save_mask >> 32) as u32, save_mask as u32);
 }
@@ -131,12 +131,12 @@ pub unsafe fn _xsaves(mem_addr: *mut u8, save_mask: u64) {
 /// boundary.
 #[inline]
 #[target_feature(enable = "xsave,xsaves")]
-#[cfg_attr(test, assert_instr(xrstors))]
+#[cfg_attr(test_intr, assert_instr(xrstors))]
 pub unsafe fn _xrstors(mem_addr: *const u8, rs_mask: u64) {
     xrstors(mem_addr, (rs_mask >> 32) as u32, rs_mask as u32);
 }
 
-#[cfg(test)]
+#[cfg(test_intr)]
 mod tests {
     use std::fmt;
     use std::prelude::v1::*;

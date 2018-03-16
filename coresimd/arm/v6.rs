@@ -6,24 +6,24 @@
 //! http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.ddi0419c/index.
 //! html
 
-#[cfg(test)]
+#[cfg(test_intr)]
 use stdsimd_test::assert_instr;
 
 /// Reverse the order of the bytes.
 #[inline]
-#[cfg_attr(test, assert_instr(rev))]
+#[cfg_attr(test_intr, assert_instr(rev))]
 pub unsafe fn _rev_u16(x: u16) -> u16 {
     x.swap_bytes() as u16
 }
 
 /// Reverse the order of the bytes.
 #[inline]
-#[cfg_attr(test, assert_instr(rev))]
+#[cfg_attr(test_intr, assert_instr(rev))]
 pub unsafe fn _rev_u32(x: u32) -> u32 {
     x.swap_bytes() as u32
 }
 
-#[cfg(test)]
+#[cfg(test_intr)]
 mod tests {
     use coresimd::arm::v6;
 

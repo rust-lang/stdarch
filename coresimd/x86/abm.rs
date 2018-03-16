@@ -17,7 +17,7 @@
 //! [wikipedia_bmi]:
 //! https://en.wikipedia.org/wiki/Bit_Manipulation_Instruction_Sets#ABM_.28Advanced_Bit_Manipulation.29
 
-#[cfg(test)]
+#[cfg(test_intr)]
 use stdsimd_test::assert_instr;
 
 /// Counts the leading most significant zero bits.
@@ -25,7 +25,7 @@ use stdsimd_test::assert_instr;
 /// When the operand is zero, it returns its size in bits.
 #[inline]
 #[target_feature(enable = "lzcnt")]
-#[cfg_attr(test, assert_instr(lzcnt))]
+#[cfg_attr(test_intr, assert_instr(lzcnt))]
 pub unsafe fn _lzcnt_u32(x: u32) -> u32 {
     x.leading_zeros()
 }
@@ -33,12 +33,12 @@ pub unsafe fn _lzcnt_u32(x: u32) -> u32 {
 /// Counts the bits that are set.
 #[inline]
 #[target_feature(enable = "popcnt")]
-#[cfg_attr(test, assert_instr(popcnt))]
+#[cfg_attr(test_intr, assert_instr(popcnt))]
 pub unsafe fn _popcnt32(x: i32) -> i32 {
     x.count_ones() as i32
 }
 
-#[cfg(test)]
+#[cfg(test_intr)]
 mod tests {
     use stdsimd_test::simd_test;
 

@@ -2,12 +2,12 @@
 
 #![cfg_attr(feature = "cargo-clippy", allow(stutter))]
 
-#[cfg(test)]
+#[cfg(test_intr)]
 use stdsimd_test::assert_instr;
 
 /// Return an integer with the reversed byte order of x
 #[inline]
-#[cfg_attr(test, assert_instr(bswap))]
+#[cfg_attr(test_intr, assert_instr(bswap))]
 pub unsafe fn _bswap64(x: i64) -> i64 {
     bswap_i64(x)
 }
@@ -18,7 +18,7 @@ extern "C" {
     fn bswap_i64(x: i64) -> i64;
 }
 
-#[cfg(test)]
+#[cfg(test_intr)]
 mod tests {
     use super::*;
 

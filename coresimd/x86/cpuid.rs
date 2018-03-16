@@ -4,7 +4,7 @@
 
 use mem;
 
-#[cfg(test)]
+#[cfg(test_intr)]
 use stdsimd_test::assert_instr;
 
 /// Result of the `cpuid` instruction.
@@ -45,7 +45,7 @@ pub struct CpuidResult {
 /// [intel64_ref]: http://www.intel.de/content/dam/www/public/us/en/documents/manuals/64-ia-32-architectures-software-developer-instruction-set-reference-manual-325383.pdf
 /// [amd64_ref]: http://support.amd.com/TechDocs/24594.pdf
 #[inline]
-#[cfg_attr(test, assert_instr(cpuid))]
+#[cfg_attr(test_intr, assert_instr(cpuid))]
 pub unsafe fn __cpuid_count(leaf: u32, sub_leaf: u32) -> CpuidResult {
     let mut r = mem::uninitialized::<CpuidResult>();
     if cfg!(target_arch = "x86") {
@@ -65,7 +65,7 @@ pub unsafe fn __cpuid_count(leaf: u32, sub_leaf: u32) -> CpuidResult {
 
 /// See [`__cpuid_count`](fn.__cpuid_count.html).
 #[inline]
-#[cfg_attr(test, assert_instr(cpuid))]
+#[cfg_attr(test_intr, assert_instr(cpuid))]
 pub unsafe fn __cpuid(leaf: u32) -> CpuidResult {
     __cpuid_count(leaf, 0)
 }
@@ -119,7 +119,7 @@ pub unsafe fn __get_cpuid_max(leaf: u32) -> (u32, u32) {
     (eax, ebx)
 }
 
-#[cfg(test)]
+#[cfg(test_intr)]
 mod tests {
     use coresimd::x86::*;
 
