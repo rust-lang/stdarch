@@ -1,4 +1,5 @@
 //! Implements portable arithmetic vector reductions.
+#![allow(unused)]
 
 macro_rules! impl_arithmetic_reductions {
     ($id:ident, $elem_ty:ident) => {
@@ -6,12 +7,12 @@ macro_rules! impl_arithmetic_reductions {
             /// Lane-wise addition of the vector elements.
             #[inline]
             pub fn sum(self) -> $elem_ty {
-                ReduceAdd::reduce_add(self)
+                super::codegen::sum::ReduceAdd::reduce_add(self)
             }
             /// Lane-wise multiplication of the vector elements.
             #[inline]
             pub fn product(self) -> $elem_ty {
-                ReduceMul::reduce_mul(self)
+                super::codegen::product::ReduceMul::reduce_mul(self)
             }
         }
     }

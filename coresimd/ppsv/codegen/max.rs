@@ -115,8 +115,8 @@ macro_rules! red_max {
             #[allow(unused_imports)]
             #[inline]
             fn reduce_max(self) -> Self::Acc {
-                use num::Float;
-                use cmp::Ord;
+                use ::num::Float;
+                use ::cmp::Ord;
                 let mut x = self.extract(0);
                 for i in 1..$id::lanes() {
                     x = x.max(self.extract(i));

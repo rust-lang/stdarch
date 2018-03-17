@@ -1,4 +1,5 @@
 //! Implements portable arithmetic vector reductions.
+#![allow(unused)]
 
 macro_rules! impl_minmax_reductions {
     ($id:ident, $elem_ty:ident) => {
@@ -6,12 +7,12 @@ macro_rules! impl_minmax_reductions {
             /// Largest vector value.
             #[inline]
             pub fn max(self) -> $elem_ty {
-                ReduceMax::reduce_max(self)
+                super::codegen::max::ReduceMax::reduce_max(self)
             }
             /// Smallest vector value.
             #[inline]
             pub fn min(self) -> $elem_ty {
-                ReduceMin::reduce_min(self)
+                super::codegen::min::ReduceMin::reduce_min(self)
             }
         }
     }

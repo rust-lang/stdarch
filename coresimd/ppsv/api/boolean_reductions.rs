@@ -1,4 +1,5 @@
 //! Lane-wise boolean vector reductions.
+#![allow(unused)]
 
 macro_rules! impl_bool_reductions {
     ($id:ident) => {

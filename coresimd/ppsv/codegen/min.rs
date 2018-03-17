@@ -115,8 +115,8 @@ macro_rules! red_min {
             #[allow(unused_imports)]
             #[inline]
             fn reduce_min(self) -> Self::Acc {
-                use num::Float;
-                use cmp::Ord;
+                use ::num::Float;
+                use ::cmp::Ord;
                 let mut x = self.extract(0);
                 for i in 1..$id::lanes() {
                     x = x.min(self.extract(i));
