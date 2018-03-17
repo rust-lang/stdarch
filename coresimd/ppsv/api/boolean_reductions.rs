@@ -6,17 +6,23 @@ macro_rules! impl_bool_reductions {
             /// Are `all` vector lanes `true`?
             #[inline]
             pub fn all(self) -> bool {
-                self.and()
+                unsafe {
+                    use coresimd::simd_llvm::simd_reduce_all;
+                    simd_reduce_all(self)
+                }
             }
             /// Is `any` vector lanes `true`?
             #[inline]
             pub fn any(self) -> bool {
-                self.or()
+                unsafe {
+                    use coresimd::simd_llvm::simd_reduce_any;
+                    simd_reduce_any(self)
+                }
             }
             /// Are `all` vector lanes `false`?
             #[inline]
             pub fn none(self) -> bool {
-                !self.or()
+                !self.any()
             }
         }
     }
