@@ -244,7 +244,7 @@ macro_rules! simd_b_ty {
             [define_ty, $id, $($elem_tys),+ | $(#[$doc])*],
             [impl_bool_minimal, $id, $elem_ty, $elem_count, $($elem_name),*],
             [impl_bitwise_ops, $id, true],
-            [impl_bool_bitwise_reductions, $id, bool],
+            [impl_bool_bitwise_reductions, $id, bool, $elem_ty],
             [impl_bool_reductions, $id],
             [impl_bool_cmp, $id, $id],
             [impl_eq, $id],
