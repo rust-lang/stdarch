@@ -6,7 +6,13 @@ macro_rules! impl_minmax_reductions {
         impl $id {
             /// Largest vector value.
             ///
-            /// FIXME: document behavior for float vectors with NaNs.
+            /// # Floating-point behvior
+            ///
+            /// If the vector contains only `NaN` values,
+            /// the result is a `NaN`.
+            ///
+            /// Otherwise, if the vector contains `NaN` values, either the
+            /// largest element of the vector or a `NaN` is returned.
             #[cfg(not(target_arch = "aarch64"))]
             #[inline]
             pub fn max(self) -> $elem_ty {
@@ -15,9 +21,16 @@ macro_rules! impl_minmax_reductions {
                     simd_reduce_max(self)
                 }
             }
+
             /// Largest vector value.
             ///
-            /// FIXME: document behavior for float vectors with NaNs.
+            /// # Floating-point behvior
+            ///
+            /// If the vector contains only `NaN` values,
+            /// the result is a `NaN`.
+            ///
+            /// Otherwise, if the vector contains `NaN` values, either the
+            /// largest element of the vector or a `NaN` is returned.
             #[cfg(target_arch = "aarch64")]
             #[allow(unused_imports)]
             #[inline]
@@ -35,7 +48,13 @@ macro_rules! impl_minmax_reductions {
 
             /// Smallest vector value.
             ///
-            /// FIXME: document behavior for float vectors with NaNs.
+            /// # Floating-point behvior
+            ///
+            /// If the vector contains only `NaN` values,
+            /// the result is a `NaN`.
+            ///
+            /// Otherwise, if the vector contains `NaN` values, either the
+            /// smallest element of the vector or a `NaN` is returned.
             #[cfg(not(target_arch = "aarch64"))]
             #[inline]
             pub fn min(self) -> $elem_ty {
@@ -44,9 +63,14 @@ macro_rules! impl_minmax_reductions {
                     simd_reduce_min(self)
                 }
             }
-            /// Smallest vector value.
+
+            /// # Floating-point behvior
             ///
-            /// FIXME: document behavior for float vectors with NaNs.
+            /// If the vector contains only `NaN` values,
+            /// the result is a `NaN`.
+            ///
+            /// Otherwise, if the vector contains `NaN` values, either the
+            /// smallest element of the vector or a `NaN` is returned.
             #[cfg(target_arch = "aarch64")]
             #[allow(unused_imports)]
             #[inline]
