@@ -6,9 +6,20 @@ macro_rules! impl_arithmetic_reductions {
         impl $id {
             /// Lane-wise addition of the vector elements.
             ///
-            /// FIXME: document guarantees with respect to:
-            ///    * integers: overflow behavior
-            ///    * floats: order and NaNs
+            /// The intrinsic performs a tree-reduction of the vector elements.
+            /// That is, for an 8 element vector:
+            ///
+            /// > ((x0 + x1) + (x2 + x3)) + ((x4 + x5) + (x6 + x7))
+            ///
+            /// # Integer vectors
+            ///
+            /// If an operation overflows it returns the mathematical result
+            /// modulo `2^n` where `n` is the number of times it overflows.
+            ///
+            /// # Floating-point vectors
+            ///
+            /// If one of the vector element is `NaN` the reduction returns
+            /// `NaN`.
             #[cfg(not(target_arch = "aarch64"))]
             #[inline]
             pub fn sum(self) -> $elem_ty {
@@ -19,9 +30,20 @@ macro_rules! impl_arithmetic_reductions {
             }
             /// Lane-wise addition of the vector elements.
             ///
-            /// FIXME: document guarantees with respect to:
-            ///    * integers: overflow behavior
-            ///    * floats: order and NaNs
+            /// The intrinsic performs a tree-reduction of the vector elements.
+            /// That is, for an 8 element vector:
+            ///
+            /// > ((x0 + x1) + (x2 + x3)) + ((x4 + x5) + (x6 + x7))
+            ///
+            /// # Integer vectors
+            ///
+            /// If an operation overflows it returns the mathematical result
+            /// modulo `2^n` where `n` is the number of times it overflows.
+            ///
+            /// # Floating-point vectors
+            ///
+            /// If one of the vector element is `NaN` the reduction returns
+            /// `NaN`.
             #[cfg(target_arch = "aarch64")]
             #[inline]
             pub fn sum(self) -> $elem_ty {
@@ -36,9 +58,20 @@ macro_rules! impl_arithmetic_reductions {
 
             /// Lane-wise multiplication of the vector elements.
             ///
-            /// FIXME: document guarantees with respect to:
-            ///    * integers: overflow behavior
-            ///    * floats: order and NaNs
+            /// The intrinsic performs a tree-reduction of the vector elements.
+            /// That is, for an 8 element vector:
+            ///
+            /// > ((x0 * x1) * (x2 * x3)) * ((x4 * x5) * (x6 * x7))
+            ///
+            /// # Integer vectors
+            ///
+            /// If an operation overflows it returns the mathematical result
+            /// modulo `2^n` where `n` is the number of times it overflows.
+            ///
+            /// # Floating-point vectors
+            ///
+            /// If one of the vector element is `NaN` the reduction returns
+            /// `NaN`.
             #[cfg(not(target_arch = "aarch64"))]
             #[inline]
             pub fn product(self) -> $elem_ty {
@@ -49,9 +82,20 @@ macro_rules! impl_arithmetic_reductions {
             }
             /// Lane-wise multiplication of the vector elements.
             ///
-            /// FIXME: document guarantees with respect to:
-            ///    * integers: overflow behavior
-            ///    * floats: order and NaNs
+            /// The intrinsic performs a tree-reduction of the vector elements.
+            /// That is, for an 8 element vector:
+            ///
+            /// > ((x0 * x1) * (x2 * x3)) * ((x4 * x5) * (x6 * x7))
+            ///
+            /// # Integer vectors
+            ///
+            /// If an operation overflows it returns the mathematical result
+            /// modulo `2^n` where `n` is the number of times it overflows.
+            ///
+            /// # Floating-point vectors
+            ///
+            /// If one of the vector element is `NaN` the reduction returns
+            /// `NaN`.
             #[cfg(target_arch = "aarch64")]
             #[inline]
             pub fn product(self) -> $elem_ty {
