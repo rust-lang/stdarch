@@ -18,7 +18,24 @@ fn endian_indexing() {
 
 #[test]
 fn endian_bitcasts() {
-    let x = i8x16::new(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
+    let x = i8x16::new(
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+    );
     let t: i16x8 = unsafe { mem::transmute(x) };
     if cfg!(target_endian = "little") {
         let t_el = i16x8::new(256, 770, 1284, 1798, 2312, 2826, 3340, 3854);
@@ -31,15 +48,66 @@ fn endian_bitcasts() {
 
 #[test]
 fn endian_casts() {
-    let x = i8x16::new(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
+    let x = i8x16::new(
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+    );
     let t: i16x16 = x.into(); // simd_cast
-    let e = i16x16::new(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
+    let e = i16x16::new(
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+    );
     assert_eq!(t, e);
 }
 
 #[test]
 fn endian_load_and_stores() {
-    let x = i8x16::new(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
+    let x = i8x16::new(
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+    );
     let mut y: [i16; 8] = [0; 8];
     x.store_unaligned(unsafe {
         slice::from_raw_parts_mut(&mut y as *mut _ as *mut i8, 16)

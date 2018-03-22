@@ -98,10 +98,10 @@ macro_rules! impl_bool_minimal {
 
 #[cfg(test)]
 macro_rules! test_bool_minimal {
-    ($id:ident, $elem_count:expr) => {
+    ($id: ident, $elem_count: expr) => {
         #[test]
         fn minimal() {
-            use ::coresimd::simd::$id;
+            use coresimd::simd::$id;
             // TODO: test new
 
             // lanes:
@@ -135,16 +135,16 @@ macro_rules! test_bool_minimal {
         #[test]
         #[should_panic]
         fn minimal_extract_panic_on_out_of_bounds() {
-            use ::coresimd::simd::$id;
+            use coresimd::simd::$id;
             let vec = $id::splat(false);
             let _ = vec.extract($id::lanes());
         }
         #[test]
         #[should_panic]
         fn minimal_replace_panic_on_out_of_bounds() {
-            use ::coresimd::simd::$id;
+            use coresimd::simd::$id;
             let vec = $id::splat(false);
             let _ = vec.replace($id::lanes(), true);
         }
-    }
+    };
 }
