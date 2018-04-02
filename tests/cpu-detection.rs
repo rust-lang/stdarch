@@ -58,7 +58,7 @@ fn x86_all() {
     );
     println!("fma: {:?}", cfg_feature_enabled!("fma"));
     println!("abm: {:?}", cfg_feature_enabled!("abm"));
-    println!("bmi: {:?}", cfg_feature_enabled!("bmi"));
+    println!("bmi: {:?}", cfg_feature_enabled!("bmi1"));
     println!("bmi2: {:?}", cfg_feature_enabled!("bmi2"));
     println!("tbm: {:?}", cfg_feature_enabled!("tbm"));
     println!("popcnt: {:?}", cfg_feature_enabled!("popcnt"));

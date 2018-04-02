@@ -2,7 +2,7 @@
 
 /// Reads EFLAGS.
 #[cfg(target_arch = "x86")]
-#[inline(always)]
+#[inline]
 pub unsafe fn __readeflags() -> u32 {
     let eflags: u32;
     asm!("pushfd; popl $0" : "=r"(eflags) : : : "volatile");
@@ -11,7 +11,7 @@ pub unsafe fn __readeflags() -> u32 {
 
 /// Reads EFLAGS.
 #[cfg(target_arch = "x86_64")]
-#[inline(always)]
+#[inline]
 pub unsafe fn __readeflags() -> u64 {
     let eflags: u64;
     asm!("pushfq; popq $0" : "=r"(eflags) : : : "volatile");
@@ -20,14 +20,14 @@ pub unsafe fn __readeflags() -> u64 {
 
 /// Write EFLAGS.
 #[cfg(target_arch = "x86")]
-#[inline(always)]
+#[inline]
 pub unsafe fn __writeeflags(eflags: u32) {
     asm!("pushl $0; popfd" : : "r"(eflags) : "cc", "flags" : "volatile");
 }
 
 /// Write EFLAGS.
 #[cfg(target_arch = "x86_64")]
-#[inline(always)]
+#[inline]
 pub unsafe fn __writeeflags(eflags: u64) {
     asm!("pushq $0; popfq" : : "r"(eflags) : "cc", "flags" : "volatile");
 }

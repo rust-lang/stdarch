@@ -15,7 +15,7 @@ use v64::*;
 ///
 /// This can help improve the performance and power consumption of spin-wait
 /// loops.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(pause))]
 pub unsafe fn _mm_pause() {
@@ -24,7 +24,7 @@ pub unsafe fn _mm_pause() {
 
 /// Invalidate and flush the cache line that contains `p` from all levels of
 /// the cache hierarchy.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(clflush))]
 pub unsafe fn _mm_clflush(p: *mut u8) {
@@ -37,7 +37,7 @@ pub unsafe fn _mm_clflush(p: *mut u8) {
 /// Guarantees that every load instruction that precedes, in program order, is
 /// globally visible before any load instruction which follows the fence in
 /// program order.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(lfence))]
 pub unsafe fn _mm_lfence() {
@@ -50,7 +50,7 @@ pub unsafe fn _mm_lfence() {
 /// Guarantees that every memory access that precedes, in program order, the
 /// memory fence instruction is globally visible before any memory instruction
 /// which follows the fence in program order.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(mfence))]
 pub unsafe fn _mm_mfence() {
@@ -58,7 +58,7 @@ pub unsafe fn _mm_mfence() {
 }
 
 /// Add packed 8-bit integers in `a` and `b`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(paddb))]
 pub unsafe fn _mm_add_epi8(a: i8x16, b: i8x16) -> i8x16 {
@@ -66,7 +66,7 @@ pub unsafe fn _mm_add_epi8(a: i8x16, b: i8x16) -> i8x16 {
 }
 
 /// Add packed 16-bit integers in `a` and `b`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(paddw))]
 pub unsafe fn _mm_add_epi16(a: i16x8, b: i16x8) -> i16x8 {
@@ -74,7 +74,7 @@ pub unsafe fn _mm_add_epi16(a: i16x8, b: i16x8) -> i16x8 {
 }
 
 /// Add packed 32-bit integers in `a` and `b`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(paddd))]
 pub unsafe fn _mm_add_epi32(a: i32x4, b: i32x4) -> i32x4 {
@@ -82,7 +82,7 @@ pub unsafe fn _mm_add_epi32(a: i32x4, b: i32x4) -> i32x4 {
 }
 
 /// Add packed 64-bit integers in `a` and "b`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(paddq))]
 pub unsafe fn _mm_add_epi64(a: i64x2, b: i64x2) -> i64x2 {
@@ -90,7 +90,7 @@ pub unsafe fn _mm_add_epi64(a: i64x2, b: i64x2) -> i64x2 {
 }
 
 /// Add packed 8-bit integers in `a` and `b` using saturation.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(paddsb))]
 pub unsafe fn _mm_adds_epi8(a: i8x16, b: i8x16) -> i8x16 {
@@ -98,7 +98,7 @@ pub unsafe fn _mm_adds_epi8(a: i8x16, b: i8x16) -> i8x16 {
 }
 
 /// Add packed 16-bit integers in `a` and `b` using saturation.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(paddsw))]
 pub unsafe fn _mm_adds_epi16(a: i16x8, b: i16x8) -> i16x8 {
@@ -106,7 +106,7 @@ pub unsafe fn _mm_adds_epi16(a: i16x8, b: i16x8) -> i16x8 {
 }
 
 /// Add packed unsigned 8-bit integers in `a` and `b` using saturation.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(paddusb))]
 pub unsafe fn _mm_adds_epu8(a: u8x16, b: u8x16) -> u8x16 {
@@ -114,7 +114,7 @@ pub unsafe fn _mm_adds_epu8(a: u8x16, b: u8x16) -> u8x16 {
 }
 
 /// Add packed unsigned 16-bit integers in `a` and `b` using saturation.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(paddusw))]
 pub unsafe fn _mm_adds_epu16(a: u16x8, b: u16x8) -> u16x8 {
@@ -122,7 +122,7 @@ pub unsafe fn _mm_adds_epu16(a: u16x8, b: u16x8) -> u16x8 {
 }
 
 /// Average packed unsigned 8-bit integers in `a` and `b`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(pavgb))]
 pub unsafe fn _mm_avg_epu8(a: u8x16, b: u8x16) -> u8x16 {
@@ -130,7 +130,7 @@ pub unsafe fn _mm_avg_epu8(a: u8x16, b: u8x16) -> u8x16 {
 }
 
 /// Average packed unsigned 16-bit integers in `a` and `b`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(pavgw))]
 pub unsafe fn _mm_avg_epu16(a: u16x8, b: u16x8) -> u16x8 {
@@ -142,7 +142,7 @@ pub unsafe fn _mm_avg_epu16(a: u16x8, b: u16x8) -> u16x8 {
 /// Multiply packed signed 16-bit integers in `a` and `b`, producing
 /// intermediate signed 32-bit integers. Horizontally add adjacent pairs of
 /// intermediate 32-bit integers.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(pmaddwd))]
 pub unsafe fn _mm_madd_epi16(a: i16x8, b: i16x8) -> i32x4 {
@@ -151,7 +151,7 @@ pub unsafe fn _mm_madd_epi16(a: i16x8, b: i16x8) -> i32x4 {
 
 /// Compare packed 16-bit integers in `a` and `b`, and return the packed
 /// maximum values.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(pmaxsw))]
 pub unsafe fn _mm_max_epi16(a: i16x8, b: i16x8) -> i16x8 {
@@ -160,7 +160,7 @@ pub unsafe fn _mm_max_epi16(a: i16x8, b: i16x8) -> i16x8 {
 
 /// Compare packed unsigned 8-bit integers in `a` and `b`, and return the
 /// packed maximum values.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(pmaxub))]
 pub unsafe fn _mm_max_epu8(a: u8x16, b: u8x16) -> u8x16 {
@@ -169,7 +169,7 @@ pub unsafe fn _mm_max_epu8(a: u8x16, b: u8x16) -> u8x16 {
 
 /// Compare packed 16-bit integers in `a` and `b`, and return the packed
 /// minimum values.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(pminsw))]
 pub unsafe fn _mm_min_epi16(a: i16x8, b: i16x8) -> i16x8 {
@@ -178,7 +178,7 @@ pub unsafe fn _mm_min_epi16(a: i16x8, b: i16x8) -> i16x8 {
 
 /// Compare packed unsigned 8-bit integers in `a` and `b`, and return the
 /// packed minimum values.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(pminub))]
 pub unsafe fn _mm_min_epu8(a: u8x16, b: u8x16) -> u8x16 {
@@ -189,7 +189,7 @@ pub unsafe fn _mm_min_epu8(a: u8x16, b: u8x16) -> u8x16 {
 ///
 /// The multiplication produces intermediate 32-bit integers, and returns the
 /// high 16 bits of the intermediate integers.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(pmulhw))]
 pub unsafe fn _mm_mulhi_epi16(a: i16x8, b: i16x8) -> i16x8 {
@@ -200,7 +200,7 @@ pub unsafe fn _mm_mulhi_epi16(a: i16x8, b: i16x8) -> i16x8 {
 ///
 /// The multiplication produces intermediate 32-bit integers, and returns the
 /// high 16 bits of the intermediate integers.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(pmulhuw))]
 pub unsafe fn _mm_mulhi_epu16(a: u16x8, b: u16x8) -> u16x8 {
@@ -211,7 +211,7 @@ pub unsafe fn _mm_mulhi_epu16(a: u16x8, b: u16x8) -> u16x8 {
 ///
 /// The multiplication produces intermediate 32-bit integers, and returns the
 /// low 16 bits of the intermediate integers.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(pmullw))]
 pub unsafe fn _mm_mullo_epi16(a: i16x8, b: i16x8) -> i16x8 {
@@ -222,7 +222,7 @@ pub unsafe fn _mm_mullo_epi16(a: i16x8, b: i16x8) -> i16x8 {
 /// in `a` and `b`.
 ///
 /// Return the unsigned 64-bit results.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(pmuludq))]
 pub unsafe fn _mm_mul_epu32(a: u32x4, b: u32x4) -> u64x2 {
@@ -235,7 +235,7 @@ pub unsafe fn _mm_mul_epu32(a: u32x4, b: u32x4) -> u64x2 {
 /// and `b`, then horizontally sum each consecutive 8 differences to produce
 /// two unsigned 16-bit integers, and pack these unsigned 16-bit integers in
 /// the low 16 bits of 64-bit elements returned.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(psadbw))]
 pub unsafe fn _mm_sad_epu8(a: u8x16, b: u8x16) -> u64x2 {
@@ -243,7 +243,7 @@ pub unsafe fn _mm_sad_epu8(a: u8x16, b: u8x16) -> u64x2 {
 }
 
 /// Subtract packed 8-bit integers in `b` from packed 8-bit integers in `a`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(psubb))]
 pub unsafe fn _mm_sub_epi8(a: i8x16, b: i8x16) -> i8x16 {
@@ -251,7 +251,7 @@ pub unsafe fn _mm_sub_epi8(a: i8x16, b: i8x16) -> i8x16 {
 }
 
 /// Subtract packed 16-bit integers in `b` from packed 16-bit integers in `a`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(psubw))]
 pub unsafe fn _mm_sub_epi16(a: i16x8, b: i16x8) -> i16x8 {
@@ -259,7 +259,7 @@ pub unsafe fn _mm_sub_epi16(a: i16x8, b: i16x8) -> i16x8 {
 }
 
 /// Subtract packed 32-bit integers in `b` from packed 32-bit integers in `a`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(psubd))]
 pub unsafe fn _mm_sub_epi32(a: i32x4, b: i32x4) -> i32x4 {
@@ -267,7 +267,7 @@ pub unsafe fn _mm_sub_epi32(a: i32x4, b: i32x4) -> i32x4 {
 }
 
 /// Subtract packed 64-bit integers in `b` from packed 64-bit integers in `a`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(psubq))]
 pub unsafe fn _mm_sub_epi64(a: i64x2, b: i64x2) -> i64x2 {
@@ -276,7 +276,7 @@ pub unsafe fn _mm_sub_epi64(a: i64x2, b: i64x2) -> i64x2 {
 
 /// Subtract packed 8-bit integers in `b` from packed 8-bit integers in `a`
 /// using saturation.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(psubsb))]
 pub unsafe fn _mm_subs_epi8(a: i8x16, b: i8x16) -> i8x16 {
@@ -285,7 +285,7 @@ pub unsafe fn _mm_subs_epi8(a: i8x16, b: i8x16) -> i8x16 {
 
 /// Subtract packed 16-bit integers in `b` from packed 16-bit integers in `a`
 /// using saturation.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(psubsw))]
 pub unsafe fn _mm_subs_epi16(a: i16x8, b: i16x8) -> i16x8 {
@@ -294,7 +294,7 @@ pub unsafe fn _mm_subs_epi16(a: i16x8, b: i16x8) -> i16x8 {
 
 /// Subtract packed unsigned 8-bit integers in `b` from packed unsigned 8-bit
 /// integers in `a` using saturation.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(psubusb))]
 pub unsafe fn _mm_subs_epu8(a: u8x16, b: u8x16) -> u8x16 {
@@ -303,7 +303,7 @@ pub unsafe fn _mm_subs_epu8(a: u8x16, b: u8x16) -> u8x16 {
 
 /// Subtract packed unsigned 16-bit integers in `b` from packed unsigned 16-bit
 /// integers in `a` using saturation.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(psubusw))]
 pub unsafe fn _mm_subs_epu16(a: u16x8, b: u16x8) -> u16x8 {
@@ -311,7 +311,7 @@ pub unsafe fn _mm_subs_epu16(a: u16x8, b: u16x8) -> u16x8 {
 }
 
 /// Shift `a` left by `imm8` bytes while shifting in zeros.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(pslldq, imm8 = 1))]
 pub unsafe fn _mm_slli_si128(a: i8x16, imm8: i32) -> i8x16 {
@@ -352,7 +352,7 @@ pub unsafe fn _mm_slli_si128(a: i8x16, imm8: i32) -> i8x16 {
 }
 
 /// Shift `a` left by `imm8` bytes while shifting in zeros.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(pslldq, imm8 = 1))]
 pub unsafe fn _mm_bslli_si128(a: i8x16, imm8: i32) -> i8x16 {
@@ -360,7 +360,7 @@ pub unsafe fn _mm_bslli_si128(a: i8x16, imm8: i32) -> i8x16 {
 }
 
 /// Shift `a` right by `imm8` bytes while shifting in zeros.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(psrldq, imm8 = 1))]
 pub unsafe fn _mm_bsrli_si128(a: i8x16, imm8: i32) -> i8x16 {
@@ -368,7 +368,7 @@ pub unsafe fn _mm_bsrli_si128(a: i8x16, imm8: i32) -> i8x16 {
 }
 
 /// Shift packed 16-bit integers in `a` left by `imm8` while shifting in zeros.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(psllw))]
 pub unsafe fn _mm_slli_epi16(a: i16x8, imm8: i32) -> i16x8 {
@@ -377,7 +377,7 @@ pub unsafe fn _mm_slli_epi16(a: i16x8, imm8: i32) -> i16x8 {
 
 /// Shift packed 16-bit integers in `a` left by `count` while shifting in
 /// zeros.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(psllw))]
 pub unsafe fn _mm_sll_epi16(a: i16x8, count: i16x8) -> i16x8 {
@@ -385,7 +385,7 @@ pub unsafe fn _mm_sll_epi16(a: i16x8, count: i16x8) -> i16x8 {
 }
 
 /// Shift packed 32-bit integers in `a` left by `imm8` while shifting in zeros.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(pslld))]
 pub unsafe fn _mm_slli_epi32(a: i32x4, imm8: i32) -> i32x4 {
@@ -394,7 +394,7 @@ pub unsafe fn _mm_slli_epi32(a: i32x4, imm8: i32) -> i32x4 {
 
 /// Shift packed 32-bit integers in `a` left by `count` while shifting in
 /// zeros.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(pslld))]
 pub unsafe fn _mm_sll_epi32(a: i32x4, count: i32x4) -> i32x4 {
@@ -402,7 +402,7 @@ pub unsafe fn _mm_sll_epi32(a: i32x4, count: i32x4) -> i32x4 {
 }
 
 /// Shift packed 64-bit integers in `a` left by `imm8` while shifting in zeros.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(psllq))]
 pub unsafe fn _mm_slli_epi64(a: i64x2, imm8: i32) -> i64x2 {
@@ -411,7 +411,7 @@ pub unsafe fn _mm_slli_epi64(a: i64x2, imm8: i32) -> i64x2 {
 
 /// Shift packed 64-bit integers in `a` left by `count` while shifting in
 /// zeros.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(psllq))]
 pub unsafe fn _mm_sll_epi64(a: i64x2, count: i64x2) -> i64x2 {
@@ -420,7 +420,7 @@ pub unsafe fn _mm_sll_epi64(a: i64x2, count: i64x2) -> i64x2 {
 
 /// Shift packed 16-bit integers in `a` right by `imm8` while shifting in sign
 /// bits.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(psraw))]
 pub unsafe fn _mm_srai_epi16(a: i16x8, imm8: i32) -> i16x8 {
@@ -429,7 +429,7 @@ pub unsafe fn _mm_srai_epi16(a: i16x8, imm8: i32) -> i16x8 {
 
 /// Shift packed 16-bit integers in `a` right by `count` while shifting in sign
 /// bits.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(psraw))]
 pub unsafe fn _mm_sra_epi16(a: i16x8, count: i16x8) -> i16x8 {
@@ -438,7 +438,7 @@ pub unsafe fn _mm_sra_epi16(a: i16x8, count: i16x8) -> i16x8 {
 
 /// Shift packed 32-bit integers in `a` right by `imm8` while shifting in sign
 /// bits.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(psrad))]
 pub unsafe fn _mm_srai_epi32(a: i32x4, imm8: i32) -> i32x4 {
@@ -447,7 +447,7 @@ pub unsafe fn _mm_srai_epi32(a: i32x4, imm8: i32) -> i32x4 {
 
 /// Shift packed 32-bit integers in `a` right by `count` while shifting in sign
 /// bits.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(psrad))]
 pub unsafe fn _mm_sra_epi32(a: i32x4, count: i32x4) -> i32x4 {
@@ -455,7 +455,7 @@ pub unsafe fn _mm_sra_epi32(a: i32x4, count: i32x4) -> i32x4 {
 }
 
 /// Shift `a` right by `imm8` bytes while shifting in zeros.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(psrldq, imm8 = 1))]
 pub unsafe fn _mm_srli_si128(a: i8x16, imm8: i32) -> i8x16 {
@@ -497,7 +497,7 @@ pub unsafe fn _mm_srli_si128(a: i8x16, imm8: i32) -> i8x16 {
 
 /// Shift packed 16-bit integers in `a` right by `imm8` while shifting in
 /// zeros.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(psrlw))]
 pub unsafe fn _mm_srli_epi16(a: i16x8, imm8: i32) -> i16x8 {
@@ -506,7 +506,7 @@ pub unsafe fn _mm_srli_epi16(a: i16x8, imm8: i32) -> i16x8 {
 
 /// Shift packed 16-bit integers in `a` right by `count` while shifting in
 /// zeros.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(psrlw))]
 pub unsafe fn _mm_srl_epi16(a: i16x8, count: i16x8) -> i16x8 {
@@ -515,7 +515,7 @@ pub unsafe fn _mm_srl_epi16(a: i16x8, count: i16x8) -> i16x8 {
 
 /// Shift packed 32-bit integers in `a` right by `imm8` while shifting in
 /// zeros.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(psrld))]
 pub unsafe fn _mm_srli_epi32(a: i32x4, imm8: i32) -> i32x4 {
@@ -524,7 +524,7 @@ pub unsafe fn _mm_srli_epi32(a: i32x4, imm8: i32) -> i32x4 {
 
 /// Shift packed 32-bit integers in `a` right by `count` while shifting in
 /// zeros.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(psrld))]
 pub unsafe fn _mm_srl_epi32(a: i32x4, count: i32x4) -> i32x4 {
@@ -533,7 +533,7 @@ pub unsafe fn _mm_srl_epi32(a: i32x4, count: i32x4) -> i32x4 {
 
 /// Shift packed 64-bit integers in `a` right by `imm8` while shifting in
 /// zeros.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(psrlq))]
 pub unsafe fn _mm_srli_epi64(a: i64x2, imm8: i32) -> i64x2 {
@@ -542,7 +542,7 @@ pub unsafe fn _mm_srli_epi64(a: i64x2, imm8: i32) -> i64x2 {
 
 /// Shift packed 64-bit integers in `a` right by `count` while shifting in
 /// zeros.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(psrlq))]
 pub unsafe fn _mm_srl_epi64(a: i64x2, count: i64x2) -> i64x2 {
@@ -551,7 +551,7 @@ pub unsafe fn _mm_srl_epi64(a: i64x2, count: i64x2) -> i64x2 {
 
 /// Compute the bitwise AND of 128 bits (representing integer data) in `a` and
 /// `b`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(andps))]
 pub unsafe fn _mm_and_si128(a: __m128i, b: __m128i) -> __m128i {
@@ -560,7 +560,7 @@ pub unsafe fn _mm_and_si128(a: __m128i, b: __m128i) -> __m128i {
 
 /// Compute the bitwise NOT of 128 bits (representing integer data) in `a` and
 /// then AND with `b`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(andnps))]
 pub unsafe fn _mm_andnot_si128(a: __m128i, b: __m128i) -> __m128i {
@@ -569,7 +569,7 @@ pub unsafe fn _mm_andnot_si128(a: __m128i, b: __m128i) -> __m128i {
 
 /// Compute the bitwise OR of 128 bits (representing integer data) in `a` and
 /// `b`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(orps))]
 pub unsafe fn _mm_or_si128(a: __m128i, b: __m128i) -> __m128i {
@@ -578,7 +578,7 @@ pub unsafe fn _mm_or_si128(a: __m128i, b: __m128i) -> __m128i {
 
 /// Compute the bitwise XOR of 128 bits (representing integer data) in `a` and
 /// `b`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(xorps))]
 pub unsafe fn _mm_xor_si128(a: __m128i, b: __m128i) -> __m128i {
@@ -586,7 +586,7 @@ pub unsafe fn _mm_xor_si128(a: __m128i, b: __m128i) -> __m128i {
 }
 
 /// Compare packed 8-bit integers in `a` and `b` for equality.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(pcmpeqb))]
 pub unsafe fn _mm_cmpeq_epi8(a: i8x16, b: i8x16) -> i8x16 {
@@ -594,7 +594,7 @@ pub unsafe fn _mm_cmpeq_epi8(a: i8x16, b: i8x16) -> i8x16 {
 }
 
 /// Compare packed 16-bit integers in `a` and `b` for equality.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(pcmpeqw))]
 pub unsafe fn _mm_cmpeq_epi16(a: i16x8, b: i16x8) -> i16x8 {
@@ -602,7 +602,7 @@ pub unsafe fn _mm_cmpeq_epi16(a: i16x8, b: i16x8) -> i16x8 {
 }
 
 /// Compare packed 32-bit integers in `a` and `b` for equality.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(pcmpeqd))]
 pub unsafe fn _mm_cmpeq_epi32(a: i32x4, b: i32x4) -> i32x4 {
@@ -610,7 +610,7 @@ pub unsafe fn _mm_cmpeq_epi32(a: i32x4, b: i32x4) -> i32x4 {
 }
 
 /// Compare packed 8-bit integers in `a` and `b` for greater-than.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(pcmpgtb))]
 pub unsafe fn _mm_cmpgt_epi8(a: i8x16, b: i8x16) -> i8x16 {
@@ -618,7 +618,7 @@ pub unsafe fn _mm_cmpgt_epi8(a: i8x16, b: i8x16) -> i8x16 {
 }
 
 /// Compare packed 16-bit integers in `a` and `b` for greater-than.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(pcmpgtw))]
 pub unsafe fn _mm_cmpgt_epi16(a: i16x8, b: i16x8) -> i16x8 {
@@ -626,7 +626,7 @@ pub unsafe fn _mm_cmpgt_epi16(a: i16x8, b: i16x8) -> i16x8 {
 }
 
 /// Compare packed 32-bit integers in `a` and `b` for greater-than.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(pcmpgtd))]
 pub unsafe fn _mm_cmpgt_epi32(a: i32x4, b: i32x4) -> i32x4 {
@@ -634,7 +634,7 @@ pub unsafe fn _mm_cmpgt_epi32(a: i32x4, b: i32x4) -> i32x4 {
 }
 
 /// Compare packed 8-bit integers in `a` and `b` for less-than.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(pcmpgtb))]
 pub unsafe fn _mm_cmplt_epi8(a: i8x16, b: i8x16) -> i8x16 {
@@ -642,7 +642,7 @@ pub unsafe fn _mm_cmplt_epi8(a: i8x16, b: i8x16) -> i8x16 {
 }
 
 /// Compare packed 16-bit integers in `a` and `b` for less-than.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(pcmpgtw))]
 pub unsafe fn _mm_cmplt_epi16(a: i16x8, b: i16x8) -> i16x8 {
@@ -650,7 +650,7 @@ pub unsafe fn _mm_cmplt_epi16(a: i16x8, b: i16x8) -> i16x8 {
 }
 
 /// Compare packed 32-bit integers in `a` and `b` for less-than.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(pcmpgtd))]
 pub unsafe fn _mm_cmplt_epi32(a: i32x4, b: i32x4) -> i32x4 {
@@ -659,7 +659,7 @@ pub unsafe fn _mm_cmplt_epi32(a: i32x4, b: i32x4) -> i32x4 {
 
 /// Convert the lower two packed 32-bit integers in `a` to packed
 /// double-precision (64-bit) floating-point elements.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(cvtdq2pd))]
 pub unsafe fn _mm_cvtepi32_pd(a: i32x4) -> f64x2 {
@@ -668,7 +668,7 @@ pub unsafe fn _mm_cvtepi32_pd(a: i32x4) -> f64x2 {
 
 /// Return `a` with its lower element replaced by `b` after converting it to
 /// an `f64`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(cvtsi2sd))]
 pub unsafe fn _mm_cvtsi32_sd(a: f64x2, b: i32) -> f64x2 {
@@ -677,7 +677,7 @@ pub unsafe fn _mm_cvtsi32_sd(a: f64x2, b: i32) -> f64x2 {
 
 /// Convert packed 32-bit integers in `a` to packed single-precision (32-bit)
 /// floating-point elements.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(cvtdq2ps))]
 pub unsafe fn _mm_cvtepi32_ps(a: i32x4) -> f32x4 {
@@ -686,7 +686,7 @@ pub unsafe fn _mm_cvtepi32_ps(a: i32x4) -> f32x4 {
 
 /// Convert packed single-precision (32-bit) floating-point elements in `a`
 /// to packed 32-bit integers.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(cvtps2dq))]
 pub unsafe fn _mm_cvtps_epi32(a: f32x4) -> i32x4 {
@@ -695,7 +695,7 @@ pub unsafe fn _mm_cvtps_epi32(a: f32x4) -> i32x4 {
 
 /// Return a vector whose lowest element is `a` and all higher elements are
 /// `0`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(all(test, target_arch = "x86_64"), assert_instr(movd))]
 pub unsafe fn _mm_cvtsi32_si128(a: i32) -> i32x4 {
@@ -703,7 +703,7 @@ pub unsafe fn _mm_cvtsi32_si128(a: i32) -> i32x4 {
 }
 
 /// Return the lowest element of `a`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(all(test, not(windows)), assert_instr(movd))] // FIXME mov on windows
 pub unsafe fn _mm_cvtsi128_si32(a: i32x4) -> i32 {
@@ -712,7 +712,7 @@ pub unsafe fn _mm_cvtsi128_si32(a: i32x4) -> i32 {
 
 /// Set packed 64-bit integers with the supplied values, from highest to
 /// lowest.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 // no particular instruction to test
 pub unsafe fn _mm_set_epi64x(e1: i64, e0: i64) -> i64x2 {
@@ -720,7 +720,7 @@ pub unsafe fn _mm_set_epi64x(e1: i64, e0: i64) -> i64x2 {
 }
 
 /// Set packed 32-bit integers with the supplied values.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 // no particular instruction to test
 pub unsafe fn _mm_set_epi32(e3: i32, e2: i32, e1: i32, e0: i32) -> i32x4 {
@@ -728,7 +728,7 @@ pub unsafe fn _mm_set_epi32(e3: i32, e2: i32, e1: i32, e0: i32) -> i32x4 {
 }
 
 /// Set packed 16-bit integers with the supplied values.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 // no particular instruction to test
 pub unsafe fn _mm_set_epi16(
@@ -738,7 +738,7 @@ pub unsafe fn _mm_set_epi16(
 }
 
 /// Set packed 8-bit integers with the supplied values.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 // no particular instruction to test
 pub unsafe fn _mm_set_epi8(
@@ -752,7 +752,7 @@ pub unsafe fn _mm_set_epi8(
 }
 
 /// Broadcast 64-bit integer `a` to all elements.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 // no particular instruction to test
 pub unsafe fn _mm_set1_epi64x(a: i64) -> i64x2 {
@@ -760,7 +760,7 @@ pub unsafe fn _mm_set1_epi64x(a: i64) -> i64x2 {
 }
 
 /// Broadcast 32-bit integer `a` to all elements.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 // no particular instruction to test
 pub unsafe fn _mm_set1_epi32(a: i32) -> i32x4 {
@@ -768,7 +768,7 @@ pub unsafe fn _mm_set1_epi32(a: i32) -> i32x4 {
 }
 
 /// Broadcast 16-bit integer `a` to all elements.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 // no particular instruction to test
 pub unsafe fn _mm_set1_epi16(a: i16) -> i16x8 {
@@ -776,7 +776,7 @@ pub unsafe fn _mm_set1_epi16(a: i16) -> i16x8 {
 }
 
 /// Broadcast 8-bit integer `a` to all elements.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 // no particular instruction to test
 pub unsafe fn _mm_set1_epi8(a: i8) -> i8x16 {
@@ -784,7 +784,7 @@ pub unsafe fn _mm_set1_epi8(a: i8) -> i8x16 {
 }
 
 /// Set packed 32-bit integers with the supplied values in reverse order.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 // no particular instruction to test
 pub unsafe fn _mm_setr_epi32(e3: i32, e2: i32, e1: i32, e0: i32) -> i32x4 {
@@ -792,7 +792,7 @@ pub unsafe fn _mm_setr_epi32(e3: i32, e2: i32, e1: i32, e0: i32) -> i32x4 {
 }
 
 /// Set packed 16-bit integers with the supplied values in reverse order.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 // no particular instruction to test
 pub unsafe fn _mm_setr_epi16(
@@ -802,7 +802,7 @@ pub unsafe fn _mm_setr_epi16(
 }
 
 /// Set packed 8-bit integers with the supplied values in reverse order.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 // no particular instruction to test
 pub unsafe fn _mm_setr_epi8(
@@ -816,7 +816,7 @@ pub unsafe fn _mm_setr_epi8(
 }
 
 /// Returns a vector with all elements set to zero.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(xorps))]
 pub unsafe fn _mm_setzero_si128() -> __m128i {
@@ -824,7 +824,7 @@ pub unsafe fn _mm_setzero_si128() -> __m128i {
 }
 
 /// Load 64-bit integer from memory into first element of returned vector.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 // FIXME movsd on windows
 #[cfg_attr(all(test, not(windows),
@@ -838,7 +838,7 @@ pub unsafe fn _mm_loadl_epi64(mem_addr: *const i64x2) -> i64x2 {
 /// Load 128-bits of integer data from memory into a new vector.
 ///
 /// `mem_addr` must be aligned on a 16-byte boundary.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(movaps))]
 pub unsafe fn _mm_load_si128(mem_addr: *const __m128i) -> __m128i {
@@ -848,7 +848,7 @@ pub unsafe fn _mm_load_si128(mem_addr: *const __m128i) -> __m128i {
 /// Load 128-bits of integer data from memory into a new vector.
 ///
 /// `mem_addr` does not need to be aligned on any particular boundary.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(movups))]
 pub unsafe fn _mm_loadu_si128(mem_addr: *const __m128i) -> __m128i {
@@ -869,7 +869,7 @@ pub unsafe fn _mm_loadu_si128(mem_addr: *const __m128i) -> __m128i {
 ///
 /// `mem_addr` should correspond to a 128-bit memory location and does not need
 /// to be aligned on any particular boundary.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(maskmovdqu))]
 pub unsafe fn _mm_maskmoveu_si128(a: i8x16, mask: i8x16, mem_addr: *mut i8) {
@@ -879,7 +879,7 @@ pub unsafe fn _mm_maskmoveu_si128(a: i8x16, mask: i8x16, mem_addr: *mut i8) {
 /// Store 128-bits of integer data from `a` into memory.
 ///
 /// `mem_addr` must be aligned on a 16-byte boundary.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(movaps))]
 pub unsafe fn _mm_store_si128(mem_addr: *mut __m128i, a: __m128i) {
@@ -889,7 +889,7 @@ pub unsafe fn _mm_store_si128(mem_addr: *mut __m128i, a: __m128i) {
 /// Store 128-bits of integer data from `a` into memory.
 ///
 /// `mem_addr` does not need to be aligned on any particular boundary.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(movups))] // FIXME movdqu expected
 pub unsafe fn _mm_storeu_si128(mem_addr: *mut __m128i, a: __m128i) {
@@ -899,7 +899,7 @@ pub unsafe fn _mm_storeu_si128(mem_addr: *mut __m128i, a: __m128i) {
 /// Store the lower 64-bit integer `a` to a memory location.
 ///
 /// `mem_addr` does not need to be aligned on any particular boundary.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 // FIXME mov on windows, movlps on i686
 #[cfg_attr(all(test, not(windows),
@@ -917,7 +917,7 @@ pub unsafe fn _mm_storel_epi64(mem_addr: *mut __m128i, a: __m128i) {
 /// Stores a 128-bit integer vector to a 128-bit aligned memory location.
 /// To minimize caching, the data is flagged as non-temporal (unlikely to be
 /// used again soon).
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(movntps))] // FIXME movntdq
 pub unsafe fn _mm_stream_si128(mem_addr: *mut __m128i, a: __m128i) {
@@ -927,7 +927,7 @@ pub unsafe fn _mm_stream_si128(mem_addr: *mut __m128i, a: __m128i) {
 /// Stores a 32-bit integer value in the specified memory location.
 /// To minimize caching, the data is flagged as non-temporal (unlikely to be
 /// used again soon).
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(movnti))]
 pub unsafe fn _mm_stream_si32(mem_addr: *mut i32, a: i32) {
@@ -936,7 +936,7 @@ pub unsafe fn _mm_stream_si32(mem_addr: *mut i32, a: i32) {
 
 /// Return a vector where the low element is extracted from `a` and its upper
 /// element is zero.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 // FIXME movd on windows, movd on i686
 #[cfg_attr(all(test, not(windows), target_arch = "x86_64"),
@@ -947,7 +947,7 @@ pub unsafe fn _mm_move_epi64(a: i64x2) -> i64x2 {
 
 /// Convert packed 16-bit integers from `a` and `b` to packed 8-bit integers
 /// using signed saturation.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(packsswb))]
 pub unsafe fn _mm_packs_epi16(a: i16x8, b: i16x8) -> i8x16 {
@@ -956,7 +956,7 @@ pub unsafe fn _mm_packs_epi16(a: i16x8, b: i16x8) -> i8x16 {
 
 /// Convert packed 32-bit integers from `a` and `b` to packed 16-bit integers
 /// using signed saturation.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(packssdw))]
 pub unsafe fn _mm_packs_epi32(a: i32x4, b: i32x4) -> i16x8 {
@@ -965,7 +965,7 @@ pub unsafe fn _mm_packs_epi32(a: i32x4, b: i32x4) -> i16x8 {
 
 /// Convert packed 16-bit integers from `a` and `b` to packed 8-bit integers
 /// using unsigned saturation.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(packuswb))]
 pub unsafe fn _mm_packus_epi16(a: i16x8, b: i16x8) -> u8x16 {
@@ -973,7 +973,7 @@ pub unsafe fn _mm_packus_epi16(a: i16x8, b: i16x8) -> u8x16 {
 }
 
 /// Return the `imm8` element of `a`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(pextrw, imm8 = 9))]
 pub unsafe fn _mm_extract_epi16(a: i16x8, imm8: i32) -> i32 {
@@ -982,7 +982,7 @@ pub unsafe fn _mm_extract_epi16(a: i16x8, imm8: i32) -> i32 {
 }
 
 /// Return a new vector where the `imm8` element of `a` is replaced with `i`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(pinsrw, imm8 = 9))]
 pub unsafe fn _mm_insert_epi16(a: i16x8, i: i32, imm8: i32) -> i16x8 {
@@ -990,7 +990,7 @@ pub unsafe fn _mm_insert_epi16(a: i16x8, i: i32, imm8: i32) -> i16x8 {
 }
 
 /// Return a mask of the most significant bit of each element in `a`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(pmovmskb))]
 pub unsafe fn _mm_movemask_epi8(a: i8x16) -> i32 {
@@ -998,7 +998,7 @@ pub unsafe fn _mm_movemask_epi8(a: i8x16) -> i32 {
 }
 
 /// Shuffle 32-bit integers in `a` using the control in `imm8`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(pshufd, imm8 = 9))]
 pub unsafe fn _mm_shuffle_epi32(a: i32x4, imm8: i32) -> i32x4 {
@@ -1059,7 +1059,7 @@ pub unsafe fn _mm_shuffle_epi32(a: i32x4, imm8: i32) -> i32x4 {
 ///
 /// Put the results in the high 64 bits of the returned vector, with the low 64
 /// bits being copied from from `a`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(pshufhw, imm8 = 9))]
 pub unsafe fn _mm_shufflehi_epi16(a: i16x8, imm8: i32) -> i16x8 {
@@ -1115,7 +1115,7 @@ pub unsafe fn _mm_shufflehi_epi16(a: i16x8, imm8: i32) -> i16x8 {
 ///
 /// Put the results in the low 64 bits of the returned vector, with the high 64
 /// bits being copied from from `a`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(pshuflw, imm8 = 9))]
 pub unsafe fn _mm_shufflelo_epi16(a: i16x8, imm8: i32) -> i16x8 {
@@ -1166,7 +1166,7 @@ pub unsafe fn _mm_shufflelo_epi16(a: i16x8, imm8: i32) -> i16x8 {
 }
 
 /// Unpack and interleave 8-bit integers from the high half of `a` and `b`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(punpckhbw))]
 pub unsafe fn _mm_unpackhi_epi8(a: i8x16, b: i8x16) -> i8x16 {
@@ -1178,7 +1178,7 @@ pub unsafe fn _mm_unpackhi_epi8(a: i8x16, b: i8x16) -> i8x16 {
 }
 
 /// Unpack and interleave 16-bit integers from the high half of `a` and `b`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(punpckhwd))]
 pub unsafe fn _mm_unpackhi_epi16(a: i16x8, b: i16x8) -> i16x8 {
@@ -1186,7 +1186,7 @@ pub unsafe fn _mm_unpackhi_epi16(a: i16x8, b: i16x8) -> i16x8 {
 }
 
 /// Unpack and interleave 32-bit integers from the high half of `a` and `b`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(punpckhdq))]
 pub unsafe fn _mm_unpackhi_epi32(a: i32x4, b: i32x4) -> i32x4 {
@@ -1194,7 +1194,7 @@ pub unsafe fn _mm_unpackhi_epi32(a: i32x4, b: i32x4) -> i32x4 {
 }
 
 /// Unpack and interleave 64-bit integers from the high half of `a` and `b`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(punpckhqdq))]
 pub unsafe fn _mm_unpackhi_epi64(a: i64x2, b: i64x2) -> i64x2 {
@@ -1202,7 +1202,7 @@ pub unsafe fn _mm_unpackhi_epi64(a: i64x2, b: i64x2) -> i64x2 {
 }
 
 /// Unpack and interleave 8-bit integers from the low half of `a` and `b`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(punpcklbw))]
 pub unsafe fn _mm_unpacklo_epi8(a: i8x16, b: i8x16) -> i8x16 {
@@ -1214,7 +1214,7 @@ pub unsafe fn _mm_unpacklo_epi8(a: i8x16, b: i8x16) -> i8x16 {
 }
 
 /// Unpack and interleave 16-bit integers from the low half of `a` and `b`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(punpcklwd))]
 pub unsafe fn _mm_unpacklo_epi16(a: i16x8, b: i16x8) -> i16x8 {
@@ -1222,7 +1222,7 @@ pub unsafe fn _mm_unpacklo_epi16(a: i16x8, b: i16x8) -> i16x8 {
 }
 
 /// Unpack and interleave 32-bit integers from the low half of `a` and `b`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(punpckldq))]
 pub unsafe fn _mm_unpacklo_epi32(a: i32x4, b: i32x4) -> i32x4 {
@@ -1230,7 +1230,7 @@ pub unsafe fn _mm_unpacklo_epi32(a: i32x4, b: i32x4) -> i32x4 {
 }
 
 /// Unpack and interleave 64-bit integers from the low half of `a` and `b`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(punpcklqdq))]
 pub unsafe fn _mm_unpacklo_epi64(a: i64x2, b: i64x2) -> i64x2 {
@@ -1239,7 +1239,7 @@ pub unsafe fn _mm_unpacklo_epi64(a: i64x2, b: i64x2) -> i64x2 {
 
 /// Return a new vector with the low element of `a` replaced by the sum of the
 /// low elements of `a` and `b`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(addsd))]
 pub unsafe fn _mm_add_sd(a: f64x2, b: f64x2) -> f64x2 {
@@ -1248,7 +1248,7 @@ pub unsafe fn _mm_add_sd(a: f64x2, b: f64x2) -> f64x2 {
 
 /// Add packed double-precision (64-bit) floating-point elements in `a` and
 /// `b`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(addpd))]
 pub unsafe fn _mm_add_pd(a: f64x2, b: f64x2) -> f64x2 {
@@ -1257,7 +1257,7 @@ pub unsafe fn _mm_add_pd(a: f64x2, b: f64x2) -> f64x2 {
 
 /// Return a new vector with the low element of `a` replaced by the result of
 /// diving the lower element of `a` by the lower element of `b`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(divsd))]
 pub unsafe fn _mm_div_sd(a: f64x2, b: f64x2) -> f64x2 {
@@ -1266,7 +1266,7 @@ pub unsafe fn _mm_div_sd(a: f64x2, b: f64x2) -> f64x2 {
 
 /// Divide packed double-precision (64-bit) floating-point elements in `a` by
 /// packed elements in `b`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(divpd))]
 pub unsafe fn _mm_div_pd(a: f64x2, b: f64x2) -> f64x2 {
@@ -1275,7 +1275,7 @@ pub unsafe fn _mm_div_pd(a: f64x2, b: f64x2) -> f64x2 {
 
 /// Return a new vector with the low element of `a` replaced by the maximum
 /// of the lower elements of `a` and `b`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(maxsd))]
 pub unsafe fn _mm_max_sd(a: f64x2, b: f64x2) -> f64x2 {
@@ -1284,7 +1284,7 @@ pub unsafe fn _mm_max_sd(a: f64x2, b: f64x2) -> f64x2 {
 
 /// Return a new vector with the maximum values from corresponding elements in
 /// `a` and `b`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(maxpd))]
 pub unsafe fn _mm_max_pd(a: f64x2, b: f64x2) -> f64x2 {
@@ -1293,7 +1293,7 @@ pub unsafe fn _mm_max_pd(a: f64x2, b: f64x2) -> f64x2 {
 
 /// Return a new vector with the low element of `a` replaced by the minimum
 /// of the lower elements of `a` and `b`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(minsd))]
 pub unsafe fn _mm_min_sd(a: f64x2, b: f64x2) -> f64x2 {
@@ -1302,7 +1302,7 @@ pub unsafe fn _mm_min_sd(a: f64x2, b: f64x2) -> f64x2 {
 
 /// Return a new vector with the minimum values from corresponding elements in
 /// `a` and `b`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(minpd))]
 pub unsafe fn _mm_min_pd(a: f64x2, b: f64x2) -> f64x2 {
@@ -1311,7 +1311,7 @@ pub unsafe fn _mm_min_pd(a: f64x2, b: f64x2) -> f64x2 {
 
 /// Return a new vector with the low element of `a` replaced by multiplying the
 /// low elements of `a` and `b`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(mulsd))]
 pub unsafe fn _mm_mul_sd(a: f64x2, b: f64x2) -> f64x2 {
@@ -1320,7 +1320,7 @@ pub unsafe fn _mm_mul_sd(a: f64x2, b: f64x2) -> f64x2 {
 
 /// Multiply packed double-precision (64-bit) floating-point elements in `a`
 /// and `b`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(mulpd))]
 pub unsafe fn _mm_mul_pd(a: f64x2, b: f64x2) -> f64x2 {
@@ -1329,7 +1329,7 @@ pub unsafe fn _mm_mul_pd(a: f64x2, b: f64x2) -> f64x2 {
 
 /// Return a new vector with the low element of `a` replaced by the square
 /// root of the lower element `b`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(sqrtsd))]
 pub unsafe fn _mm_sqrt_sd(a: f64x2, b: f64x2) -> f64x2 {
@@ -1337,7 +1337,7 @@ pub unsafe fn _mm_sqrt_sd(a: f64x2, b: f64x2) -> f64x2 {
 }
 
 /// Return a new vector with the square root of each of the values in `a`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(sqrtpd))]
 pub unsafe fn _mm_sqrt_pd(a: f64x2) -> f64x2 {
@@ -1346,7 +1346,7 @@ pub unsafe fn _mm_sqrt_pd(a: f64x2) -> f64x2 {
 
 /// Return a new vector with the low element of `a` replaced by subtracting the
 /// low element by `b` from the low element of `a`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(subsd))]
 pub unsafe fn _mm_sub_sd(a: f64x2, b: f64x2) -> f64x2 {
@@ -1355,7 +1355,7 @@ pub unsafe fn _mm_sub_sd(a: f64x2, b: f64x2) -> f64x2 {
 
 /// Subtract packed double-precision (64-bit) floating-point elements in `b`
 /// from `a`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(subpd))]
 pub unsafe fn _mm_sub_pd(a: f64x2, b: f64x2) -> f64x2 {
@@ -1364,7 +1364,7 @@ pub unsafe fn _mm_sub_pd(a: f64x2, b: f64x2) -> f64x2 {
 
 /// Compute the bitwise AND of packed double-precision (64-bit) floating-point
 /// elements in `a` and `b`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(andps))]
 pub unsafe fn _mm_and_pd(a: f64x2, b: f64x2) -> f64x2 {
@@ -1374,7 +1374,7 @@ pub unsafe fn _mm_and_pd(a: f64x2, b: f64x2) -> f64x2 {
 }
 
 /// Compute the bitwise NOT of `a` and then AND with `b`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(andnps))]
 pub unsafe fn _mm_andnot_pd(a: f64x2, b: f64x2) -> f64x2 {
@@ -1384,7 +1384,7 @@ pub unsafe fn _mm_andnot_pd(a: f64x2, b: f64x2) -> f64x2 {
 }
 
 /// Compute the bitwise OR of `a` and `b`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(orps))]
 pub unsafe fn _mm_or_pd(a: f64x2, b: f64x2) -> f64x2 {
@@ -1394,7 +1394,7 @@ pub unsafe fn _mm_or_pd(a: f64x2, b: f64x2) -> f64x2 {
 }
 
 /// Compute the bitwise OR of `a` and `b`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(xorps))]
 pub unsafe fn _mm_xor_pd(a: f64x2, b: f64x2) -> f64x2 {
@@ -1405,7 +1405,7 @@ pub unsafe fn _mm_xor_pd(a: f64x2, b: f64x2) -> f64x2 {
 
 /// Return a new vector with the low element of `a` replaced by the equality
 /// comparison of the lower elements of `a` and `b`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(cmpeqsd))]
 pub unsafe fn _mm_cmpeq_sd(a: f64x2, b: f64x2) -> f64x2 {
@@ -1414,7 +1414,7 @@ pub unsafe fn _mm_cmpeq_sd(a: f64x2, b: f64x2) -> f64x2 {
 
 /// Return a new vector with the low element of `a` replaced by the less-than
 /// comparison of the lower elements of `a` and `b`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(cmpltsd))]
 pub unsafe fn _mm_cmplt_sd(a: f64x2, b: f64x2) -> f64x2 {
@@ -1423,7 +1423,7 @@ pub unsafe fn _mm_cmplt_sd(a: f64x2, b: f64x2) -> f64x2 {
 
 /// Return a new vector with the low element of `a` replaced by the
 /// less-than-or-equal comparison of the lower elements of `a` and `b`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(cmplesd))]
 pub unsafe fn _mm_cmple_sd(a: f64x2, b: f64x2) -> f64x2 {
@@ -1432,7 +1432,7 @@ pub unsafe fn _mm_cmple_sd(a: f64x2, b: f64x2) -> f64x2 {
 
 /// Return a new vector with the low element of `a` replaced by the
 /// greater-than comparison of the lower elements of `a` and `b`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(cmpltsd))]
 pub unsafe fn _mm_cmpgt_sd(a: f64x2, b: f64x2) -> f64x2 {
@@ -1441,7 +1441,7 @@ pub unsafe fn _mm_cmpgt_sd(a: f64x2, b: f64x2) -> f64x2 {
 
 /// Return a new vector with the low element of `a` replaced by the
 /// greater-than-or-equal comparison of the lower elements of `a` and `b`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(cmplesd))]
 pub unsafe fn _mm_cmpge_sd(a: f64x2, b: f64x2) -> f64x2 {
@@ -1452,7 +1452,7 @@ pub unsafe fn _mm_cmpge_sd(a: f64x2, b: f64x2) -> f64x2 {
 /// of comparing both of the lower elements of `a` and `b` to `NaN`. If
 /// neither are equal to `NaN` then `0xFFFFFFFFFFFFFFFF` is used and `0`
 /// otherwise.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(cmpordsd))]
 pub unsafe fn _mm_cmpord_sd(a: f64x2, b: f64x2) -> f64x2 {
@@ -1462,7 +1462,7 @@ pub unsafe fn _mm_cmpord_sd(a: f64x2, b: f64x2) -> f64x2 {
 /// Return a new vector with the low element of `a` replaced by the result of
 /// comparing both of the lower elements of `a` and `b` to `NaN`. If either is
 /// equal to `NaN` then `0xFFFFFFFFFFFFFFFF` is used and `0` otherwise.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(cmpunordsd))]
 pub unsafe fn _mm_cmpunord_sd(a: f64x2, b: f64x2) -> f64x2 {
@@ -1471,7 +1471,7 @@ pub unsafe fn _mm_cmpunord_sd(a: f64x2, b: f64x2) -> f64x2 {
 
 /// Return a new vector with the low element of `a` replaced by the not-equal
 /// comparison of the lower elements of `a` and `b`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(cmpneqsd))]
 pub unsafe fn _mm_cmpneq_sd(a: f64x2, b: f64x2) -> f64x2 {
@@ -1480,7 +1480,7 @@ pub unsafe fn _mm_cmpneq_sd(a: f64x2, b: f64x2) -> f64x2 {
 
 /// Return a new vector with the low element of `a` replaced by the
 /// not-less-than comparison of the lower elements of `a` and `b`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(cmpnltsd))]
 pub unsafe fn _mm_cmpnlt_sd(a: f64x2, b: f64x2) -> f64x2 {
@@ -1489,7 +1489,7 @@ pub unsafe fn _mm_cmpnlt_sd(a: f64x2, b: f64x2) -> f64x2 {
 
 /// Return a new vector with the low element of `a` replaced by the
 /// not-less-than-or-equal comparison of the lower elements of `a` and `b`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(cmpnlesd))]
 pub unsafe fn _mm_cmpnle_sd(a: f64x2, b: f64x2) -> f64x2 {
@@ -1498,7 +1498,7 @@ pub unsafe fn _mm_cmpnle_sd(a: f64x2, b: f64x2) -> f64x2 {
 
 /// Return a new vector with the low element of `a` replaced by the
 /// not-greater-than comparison of the lower elements of `a` and `b`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(cmpnltsd))]
 pub unsafe fn _mm_cmpngt_sd(a: f64x2, b: f64x2) -> f64x2 {
@@ -1507,7 +1507,7 @@ pub unsafe fn _mm_cmpngt_sd(a: f64x2, b: f64x2) -> f64x2 {
 
 /// Return a new vector with the low element of `a` replaced by the
 /// not-greater-than-or-equal comparison of the lower elements of `a` and `b`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(cmpnlesd))]
 pub unsafe fn _mm_cmpnge_sd(a: f64x2, b: f64x2) -> f64x2 {
@@ -1515,7 +1515,7 @@ pub unsafe fn _mm_cmpnge_sd(a: f64x2, b: f64x2) -> f64x2 {
 }
 
 /// Compare corresponding elements in `a` and `b` for equality.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(cmpeqpd))]
 pub unsafe fn _mm_cmpeq_pd(a: f64x2, b: f64x2) -> f64x2 {
@@ -1523,7 +1523,7 @@ pub unsafe fn _mm_cmpeq_pd(a: f64x2, b: f64x2) -> f64x2 {
 }
 
 /// Compare corresponding elements in `a` and `b` for less-than.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(cmpltpd))]
 pub unsafe fn _mm_cmplt_pd(a: f64x2, b: f64x2) -> f64x2 {
@@ -1531,7 +1531,7 @@ pub unsafe fn _mm_cmplt_pd(a: f64x2, b: f64x2) -> f64x2 {
 }
 
 /// Compare corresponding elements in `a` and `b` for less-than-or-equal
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(cmplepd))]
 pub unsafe fn _mm_cmple_pd(a: f64x2, b: f64x2) -> f64x2 {
@@ -1539,7 +1539,7 @@ pub unsafe fn _mm_cmple_pd(a: f64x2, b: f64x2) -> f64x2 {
 }
 
 /// Compare corresponding elements in `a` and `b` for greater-than.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(cmpltpd))]
 pub unsafe fn _mm_cmpgt_pd(a: f64x2, b: f64x2) -> f64x2 {
@@ -1547,7 +1547,7 @@ pub unsafe fn _mm_cmpgt_pd(a: f64x2, b: f64x2) -> f64x2 {
 }
 
 /// Compare corresponding elements in `a` and `b` for greater-than-or-equal.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(cmplepd))]
 pub unsafe fn _mm_cmpge_pd(a: f64x2, b: f64x2) -> f64x2 {
@@ -1555,7 +1555,7 @@ pub unsafe fn _mm_cmpge_pd(a: f64x2, b: f64x2) -> f64x2 {
 }
 
 /// Compare corresponding elements in `a` and `b` to see if neither is `NaN`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(cmpordpd))]
 pub unsafe fn _mm_cmpord_pd(a: f64x2, b: f64x2) -> f64x2 {
@@ -1563,7 +1563,7 @@ pub unsafe fn _mm_cmpord_pd(a: f64x2, b: f64x2) -> f64x2 {
 }
 
 /// Compare corresponding elements in `a` and `b` to see if either is `NaN`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(cmpunordpd))]
 pub unsafe fn _mm_cmpunord_pd(a: f64x2, b: f64x2) -> f64x2 {
@@ -1571,7 +1571,7 @@ pub unsafe fn _mm_cmpunord_pd(a: f64x2, b: f64x2) -> f64x2 {
 }
 
 /// Compare corresponding elements in `a` and `b` for not-equal.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(cmpneqpd))]
 pub unsafe fn _mm_cmpneq_pd(a: f64x2, b: f64x2) -> f64x2 {
@@ -1579,7 +1579,7 @@ pub unsafe fn _mm_cmpneq_pd(a: f64x2, b: f64x2) -> f64x2 {
 }
 
 /// Compare corresponding elements in `a` and `b` for not-less-than.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(cmpnltpd))]
 pub unsafe fn _mm_cmpnlt_pd(a: f64x2, b: f64x2) -> f64x2 {
@@ -1587,7 +1587,7 @@ pub unsafe fn _mm_cmpnlt_pd(a: f64x2, b: f64x2) -> f64x2 {
 }
 
 /// Compare corresponding elements in `a` and `b` for not-less-than-or-equal.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(cmpnlepd))]
 pub unsafe fn _mm_cmpnle_pd(a: f64x2, b: f64x2) -> f64x2 {
@@ -1595,7 +1595,7 @@ pub unsafe fn _mm_cmpnle_pd(a: f64x2, b: f64x2) -> f64x2 {
 }
 
 /// Compare corresponding elements in `a` and `b` for not-greater-than.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(cmpnltpd))]
 pub unsafe fn _mm_cmpngt_pd(a: f64x2, b: f64x2) -> f64x2 {
@@ -1604,7 +1604,7 @@ pub unsafe fn _mm_cmpngt_pd(a: f64x2, b: f64x2) -> f64x2 {
 
 /// Compare corresponding elements in `a` and `b` for
 /// not-greater-than-or-equal.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(cmpnlepd))]
 pub unsafe fn _mm_cmpnge_pd(a: f64x2, b: f64x2) -> f64x2 {
@@ -1612,7 +1612,7 @@ pub unsafe fn _mm_cmpnge_pd(a: f64x2, b: f64x2) -> f64x2 {
 }
 
 /// Compare the lower element of `a` and `b` for equality.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(comisd))]
 pub unsafe fn _mm_comieq_sd(a: f64x2, b: f64x2) -> bool {
@@ -1620,7 +1620,7 @@ pub unsafe fn _mm_comieq_sd(a: f64x2, b: f64x2) -> bool {
 }
 
 /// Compare the lower element of `a` and `b` for less-than.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(comisd))]
 pub unsafe fn _mm_comilt_sd(a: f64x2, b: f64x2) -> bool {
@@ -1628,7 +1628,7 @@ pub unsafe fn _mm_comilt_sd(a: f64x2, b: f64x2) -> bool {
 }
 
 /// Compare the lower element of `a` and `b` for less-than-or-equal.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(comisd))]
 pub unsafe fn _mm_comile_sd(a: f64x2, b: f64x2) -> bool {
@@ -1636,7 +1636,7 @@ pub unsafe fn _mm_comile_sd(a: f64x2, b: f64x2) -> bool {
 }
 
 /// Compare the lower element of `a` and `b` for greater-than.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(comisd))]
 pub unsafe fn _mm_comigt_sd(a: f64x2, b: f64x2) -> bool {
@@ -1644,7 +1644,7 @@ pub unsafe fn _mm_comigt_sd(a: f64x2, b: f64x2) -> bool {
 }
 
 /// Compare the lower element of `a` and `b` for greater-than-or-equal.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(comisd))]
 pub unsafe fn _mm_comige_sd(a: f64x2, b: f64x2) -> bool {
@@ -1652,7 +1652,7 @@ pub unsafe fn _mm_comige_sd(a: f64x2, b: f64x2) -> bool {
 }
 
 /// Compare the lower element of `a` and `b` for not-equal.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(comisd))]
 pub unsafe fn _mm_comineq_sd(a: f64x2, b: f64x2) -> bool {
@@ -1660,7 +1660,7 @@ pub unsafe fn _mm_comineq_sd(a: f64x2, b: f64x2) -> bool {
 }
 
 /// Compare the lower element of `a` and `b` for equality.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(ucomisd))]
 pub unsafe fn _mm_ucomieq_sd(a: f64x2, b: f64x2) -> bool {
@@ -1668,7 +1668,7 @@ pub unsafe fn _mm_ucomieq_sd(a: f64x2, b: f64x2) -> bool {
 }
 
 /// Compare the lower element of `a` and `b` for less-than.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(ucomisd))]
 pub unsafe fn _mm_ucomilt_sd(a: f64x2, b: f64x2) -> bool {
@@ -1676,7 +1676,7 @@ pub unsafe fn _mm_ucomilt_sd(a: f64x2, b: f64x2) -> bool {
 }
 
 /// Compare the lower element of `a` and `b` for less-than-or-equal.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(ucomisd))]
 pub unsafe fn _mm_ucomile_sd(a: f64x2, b: f64x2) -> bool {
@@ -1684,7 +1684,7 @@ pub unsafe fn _mm_ucomile_sd(a: f64x2, b: f64x2) -> bool {
 }
 
 /// Compare the lower element of `a` and `b` for greater-than.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(ucomisd))]
 pub unsafe fn _mm_ucomigt_sd(a: f64x2, b: f64x2) -> bool {
@@ -1692,7 +1692,7 @@ pub unsafe fn _mm_ucomigt_sd(a: f64x2, b: f64x2) -> bool {
 }
 
 /// Compare the lower element of `a` and `b` for greater-than-or-equal.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(ucomisd))]
 pub unsafe fn _mm_ucomige_sd(a: f64x2, b: f64x2) -> bool {
@@ -1700,7 +1700,7 @@ pub unsafe fn _mm_ucomige_sd(a: f64x2, b: f64x2) -> bool {
 }
 
 /// Compare the lower element of `a` and `b` for not-equal.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(ucomisd))]
 pub unsafe fn _mm_ucomineq_sd(a: f64x2, b: f64x2) -> bool {
@@ -1709,7 +1709,7 @@ pub unsafe fn _mm_ucomineq_sd(a: f64x2, b: f64x2) -> bool {
 
 /// Convert packed double-precision (64-bit) floating-point elements in "a" to
 /// packed single-precision (32-bit) floating-point elements
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(cvtpd2ps))]
 pub unsafe fn _mm_cvtpd_ps(a: f64x2) -> f32x4 {
@@ -1719,7 +1719,7 @@ pub unsafe fn _mm_cvtpd_ps(a: f64x2) -> f32x4 {
 /// Convert packed single-precision (32-bit) floating-point elements in `a` to
 /// packed
 /// double-precision (64-bit) floating-point elements.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(cvtps2pd))]
 pub unsafe fn _mm_cvtps_pd(a: f32x4) -> f64x2 {
@@ -1728,7 +1728,7 @@ pub unsafe fn _mm_cvtps_pd(a: f32x4) -> f64x2 {
 
 /// Convert packed double-precision (64-bit) floating-point elements in `a` to
 /// packed 32-bit integers.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(cvtpd2dq))]
 pub unsafe fn _mm_cvtpd_epi32(a: f64x2) -> i32x4 {
@@ -1737,7 +1737,7 @@ pub unsafe fn _mm_cvtpd_epi32(a: f64x2) -> i32x4 {
 
 /// Convert the lower double-precision (64-bit) floating-point element in a to
 /// a 32-bit integer.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(cvtsd2si))]
 pub unsafe fn _mm_cvtsd_si32(a: f64x2) -> i32 {
@@ -1748,7 +1748,7 @@ pub unsafe fn _mm_cvtsd_si32(a: f64x2) -> i32 {
 /// to a single-precision (32-bit) floating-point element, store the result in
 /// the lower element of the return value, and copy the upper element from `a`
 /// to the upper element the return value.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(cvtsd2ss))]
 pub unsafe fn _mm_cvtsd_ss(a: f32x4, b: f64x2) -> f32x4 {
@@ -1756,7 +1756,7 @@ pub unsafe fn _mm_cvtsd_ss(a: f32x4, b: f64x2) -> f32x4 {
 }
 
 /// Return the lower double-precision (64-bit) floating-point element of "a".
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(all(test, windows), assert_instr(movsd))] // FIXME movq/movlps/mov on other platform
 pub unsafe fn _mm_cvtsd_f64(a: f64x2) -> f64 {
@@ -1767,7 +1767,7 @@ pub unsafe fn _mm_cvtsd_f64(a: f64x2) -> f64 {
 /// to a double-precision (64-bit) floating-point element, store the result in
 /// the lower element of the return value, and copy the upper element from `a`
 /// to the upper element the return value.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(cvtss2sd))]
 pub unsafe fn _mm_cvtss_sd(a: f64x2, b: f32x4) -> f64x2 {
@@ -1776,7 +1776,7 @@ pub unsafe fn _mm_cvtss_sd(a: f64x2, b: f32x4) -> f64x2 {
 
 /// Convert packed double-precision (64-bit) floating-point elements in `a` to
 /// packed 32-bit integers with truncation.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(cvttpd2dq))]
 pub unsafe fn _mm_cvttpd_epi32(a: f64x2) -> i32x4 {
@@ -1785,7 +1785,7 @@ pub unsafe fn _mm_cvttpd_epi32(a: f64x2) -> i32x4 {
 
 /// Convert the lower double-precision (64-bit) floating-point element in `a`
 /// to a 32-bit integer with truncation.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(cvttsd2si))]
 pub unsafe fn _mm_cvttsd_si32(a: f64x2) -> i32 {
@@ -1794,7 +1794,7 @@ pub unsafe fn _mm_cvttsd_si32(a: f64x2) -> i32 {
 
 /// Convert packed single-precision (32-bit) floating-point elements in `a` to
 /// packed 32-bit integers with truncation.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(cvttps2dq))]
 pub unsafe fn _mm_cvttps_epi32(a: f32x4) -> i32x4 {
@@ -1803,7 +1803,7 @@ pub unsafe fn _mm_cvttps_epi32(a: f32x4) -> i32x4 {
 
 /// Copy double-precision (64-bit) floating-point element `a` to the lower
 /// element of the packed 64-bit return value.
-#[inline(always)]
+#[inline]
 
 #[target_feature(enable = "sse2")]
 pub unsafe fn _mm_set_sd(a: f64) -> f64x2 {
@@ -1812,7 +1812,7 @@ pub unsafe fn _mm_set_sd(a: f64) -> f64x2 {
 
 /// Broadcast double-precision (64-bit) floating-point value a to all elements
 /// of the return value.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 pub unsafe fn _mm_set1_pd(a: f64) -> f64x2 {
     f64x2::new(a, a)
@@ -1820,7 +1820,7 @@ pub unsafe fn _mm_set1_pd(a: f64) -> f64x2 {
 
 /// Broadcast double-precision (64-bit) floating-point value a to all elements
 /// of the return value.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 pub unsafe fn _mm_set_pd1(a: f64) -> f64x2 {
     f64x2::new(a, a)
@@ -1828,7 +1828,7 @@ pub unsafe fn _mm_set_pd1(a: f64) -> f64x2 {
 
 /// Set packed double-precision (64-bit) floating-point elements in the return
 /// value with the supplied values.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 pub unsafe fn _mm_set_pd(a: f64, b: f64) -> f64x2 {
     f64x2::new(b, a)
@@ -1836,7 +1836,7 @@ pub unsafe fn _mm_set_pd(a: f64, b: f64) -> f64x2 {
 
 /// Set packed double-precision (64-bit) floating-point elements in the return
 /// value with the supplied values in reverse order.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 pub unsafe fn _mm_setr_pd(a: f64, b: f64) -> f64x2 {
     f64x2::new(a, b)
@@ -1844,7 +1844,7 @@ pub unsafe fn _mm_setr_pd(a: f64, b: f64) -> f64x2 {
 
 /// Returns packed double-precision (64-bit) floating-point elements with all
 /// zeros.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(xorps))] // FIXME xorpd expected
 pub unsafe fn _mm_setzero_pd() -> f64x2 {
@@ -1855,7 +1855,7 @@ pub unsafe fn _mm_setzero_pd() -> f64x2 {
 ///
 /// The mask is stored in the 2 least significant bits of the return value.
 /// All other bits are set to `0`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(movmskpd))]
 pub unsafe fn _mm_movemask_pd(a: f64x2) -> i32 {
@@ -1866,7 +1866,7 @@ pub unsafe fn _mm_movemask_pd(a: f64x2) -> i32 {
 /// floating-point elements) from memory into the returned vector.
 /// `mem_addr` must be aligned on a 16-byte boundary or a general-protection
 /// exception may be generated.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(movaps))]
 pub unsafe fn _mm_load_pd(mem_addr: *const f64) -> f64x2 {
@@ -1875,7 +1875,7 @@ pub unsafe fn _mm_load_pd(mem_addr: *const f64) -> f64x2 {
 
 /// Loads a 64-bit double-precision value to the low element of a
 /// 128-bit integer vector and clears the upper element.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(movsd))]
 pub unsafe fn _mm_load_sd(mem_addr: *const f64) -> f64x2 {
@@ -1885,7 +1885,7 @@ pub unsafe fn _mm_load_sd(mem_addr: *const f64) -> f64x2 {
 /// Loads a double-precision value into the high-order bits of a 128-bit
 /// vector of [2 x double]. The low-order bits are copied from the low-order
 /// bits of the first operand.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(movhpd))]
 pub unsafe fn _mm_loadh_pd(a: f64x2, mem_addr: *const f64) -> f64x2 {
@@ -1895,7 +1895,7 @@ pub unsafe fn _mm_loadh_pd(a: f64x2, mem_addr: *const f64) -> f64x2 {
 /// Loads a double-precision value into the low-order bits of a 128-bit
 /// vector of [2 x double]. The high-order bits are copied from the
 /// high-order bits of the first operand.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(movlpd))]
 pub unsafe fn _mm_loadl_pd(a: f64x2, mem_addr: *const f64) -> f64x2 {
@@ -1906,7 +1906,7 @@ pub unsafe fn _mm_loadl_pd(a: f64x2, mem_addr: *const f64) -> f64x2 {
 /// aligned memory location.
 /// To minimize caching, the data is flagged as non-temporal (unlikely to be
 /// used again soon).
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(movntps))] // FIXME movntpd
 pub unsafe fn _mm_stream_pd(mem_addr: *mut f64, a: f64x2) {
@@ -1915,7 +1915,7 @@ pub unsafe fn _mm_stream_pd(mem_addr: *mut f64, a: f64x2) {
 
 /// Stores the lower 64 bits of a 128-bit vector of [2 x double] to a
 /// memory location.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(all(test, not(windows)), assert_instr(movlps))] // FIXME movsd only on windows
 pub unsafe fn _mm_store_sd(mem_addr: *mut f64, a: f64x2) {
@@ -1925,7 +1925,7 @@ pub unsafe fn _mm_store_sd(mem_addr: *mut f64, a: f64x2) {
 /// Store 128-bits (composed of 2 packed double-precision (64-bit)
 /// floating-point elements) from `a` into memory. `mem_addr` must be aligned
 /// on a 16-byte boundary or a general-protection exception may be generated.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(movaps))]
 pub unsafe fn _mm_store_pd(mem_addr: *mut f64, a: f64x2) {
@@ -1935,7 +1935,7 @@ pub unsafe fn _mm_store_pd(mem_addr: *mut f64, a: f64x2) {
 /// Store 128-bits (composed of 2 packed double-precision (64-bit)
 /// floating-point elements) from `a` into memory.
 /// `mem_addr` does not need to be aligned on any particular boundary.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(movups))] // FIXME movupd expected
 pub unsafe fn _mm_storeu_pd(mem_addr: *mut f64, a: f64x2) {
@@ -1945,7 +1945,7 @@ pub unsafe fn _mm_storeu_pd(mem_addr: *mut f64, a: f64x2) {
 /// Store the lower double-precision (64-bit) floating-point element from `a`
 /// into 2 contiguous elements in memory. `mem_addr` must be aligned on a
 /// 16-byte boundary or a general-protection exception may be generated.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 pub unsafe fn _mm_store1_pd(mem_addr: *mut f64, a: f64x2) {
     let b: f64x2 = simd_shuffle2(a, a, [0, 0]);
@@ -1955,7 +1955,7 @@ pub unsafe fn _mm_store1_pd(mem_addr: *mut f64, a: f64x2) {
 /// Store the lower double-precision (64-bit) floating-point element from `a`
 /// into 2 contiguous elements in memory. `mem_addr` must be aligned on a
 /// 16-byte boundary or a general-protection exception may be generated.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 pub unsafe fn _mm_store_pd1(mem_addr: *mut f64, a: f64x2) {
     let b: f64x2 = simd_shuffle2(a, a, [0, 0]);
@@ -1966,7 +1966,7 @@ pub unsafe fn _mm_store_pd1(mem_addr: *mut f64, a: f64x2) {
 /// memory in reverse order.
 /// `mem_addr` must be aligned on a 16-byte boundary or a general-protection
 /// exception may be generated.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 pub unsafe fn _mm_storer_pd(mem_addr: *mut f64, a: f64x2) {
     let b: f64x2 = simd_shuffle2(a, a, [1, 0]);
@@ -1975,7 +1975,7 @@ pub unsafe fn _mm_storer_pd(mem_addr: *mut f64, a: f64x2) {
 
 /// Stores the upper 64 bits of a 128-bit vector of [2 x double] to a
 /// memory location.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(movhpd))]
 pub unsafe fn _mm_storeh_pd(mem_addr: *mut f64, a: f64x2) {
@@ -1984,7 +1984,7 @@ pub unsafe fn _mm_storeh_pd(mem_addr: *mut f64, a: f64x2) {
 
 /// Stores the lower 64 bits of a 128-bit vector of [2 x double] to a
 /// memory location.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(all(test, not(windows)), assert_instr(movlps))] // FIXME movlpd (movsd on windows)
 pub unsafe fn _mm_storel_pd(mem_addr: *mut f64, a: f64x2) {
@@ -1993,7 +1993,7 @@ pub unsafe fn _mm_storel_pd(mem_addr: *mut f64, a: f64x2) {
 
 /// Load a double-precision (64-bit) floating-point element from memory
 /// into both elements of returned vector.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 //#[cfg_attr(test, assert_instr(movapd))] FIXME movapd expected
 pub unsafe fn _mm_load1_pd(mem_addr: *const f64) -> f64x2 {
@@ -2003,7 +2003,7 @@ pub unsafe fn _mm_load1_pd(mem_addr: *const f64) -> f64x2 {
 
 /// Load a double-precision (64-bit) floating-point element from memory
 /// into both elements of returned vector.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 //#[cfg_attr(test, assert_instr(movapd))] FIXME movapd expected
 pub unsafe fn _mm_load_pd1(mem_addr: *const f64) -> f64x2 {
@@ -2014,7 +2014,7 @@ pub unsafe fn _mm_load_pd1(mem_addr: *const f64) -> f64x2 {
 /// Load 2 double-precision (64-bit) floating-point elements from memory into
 /// the returned vector in reverse order. `mem_addr` must be aligned on a
 /// 16-byte boundary or a general-protection exception may be generated.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(movapd))]
 pub unsafe fn _mm_loadr_pd(mem_addr: *const f64) -> f64x2 {
@@ -2025,7 +2025,7 @@ pub unsafe fn _mm_loadr_pd(mem_addr: *const f64) -> f64x2 {
 /// Load 128-bits (composed of 2 packed double-precision (64-bit)
 /// floating-point elements) from memory into the returned vector.
 /// `mem_addr` does not need to be aligned on any particular boundary.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(movups))]
 pub unsafe fn _mm_loadu_pd(mem_addr: *const f64) -> f64x2 {
@@ -2041,7 +2041,7 @@ pub unsafe fn _mm_loadu_pd(mem_addr: *const f64) -> f64x2 {
 /// Constructs a 128-bit floating-point vector of [2 x double] from two
 /// 128-bit vector parameters of [2 x double], using the immediate-value
 /// parameter as a specifier.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(shufpd, imm8 = 1))]
 pub unsafe fn _mm_shuffle_pd(a: f64x2, b: f64x2, imm8: i32) -> f64x2 {
@@ -2056,7 +2056,7 @@ pub unsafe fn _mm_shuffle_pd(a: f64x2, b: f64x2, imm8: i32) -> f64x2 {
 /// Constructs a 128-bit floating-point vector of [2 x double]. The lower
 /// 64 bits are set to the lower 64 bits of the second parameter. The upper
 /// 64 bits are set to the upper 64 bits of the first parameter.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(movsd))]
 pub unsafe fn _mm_move_sd(a: f64x2, b: f64x2) -> f64x2 {
@@ -2065,7 +2065,7 @@ pub unsafe fn _mm_move_sd(a: f64x2, b: f64x2) -> f64x2 {
 
 /// Casts a 128-bit floating-point vector of [2 x double] into a 128-bit
 /// floating-point vector of [4 x float].
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 pub unsafe fn _mm_castpd_ps(a: f64x2) -> f32x4 {
     mem::transmute(a)
@@ -2073,7 +2073,7 @@ pub unsafe fn _mm_castpd_ps(a: f64x2) -> f32x4 {
 
 /// Casts a 128-bit floating-point vector of [2 x double] into a 128-bit
 /// integer vector.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 pub unsafe fn _mm_castpd_si128(a: f64x2) -> __m128i {
     simd_cast(a)
@@ -2081,7 +2081,7 @@ pub unsafe fn _mm_castpd_si128(a: f64x2) -> __m128i {
 
 /// Casts a 128-bit floating-point vector of [4 x float] into a 128-bit
 /// floating-point vector of [2 x double].
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 pub unsafe fn _mm_castps_pd(a: f32x4) -> f64x2 {
     mem::transmute(a)
@@ -2089,7 +2089,7 @@ pub unsafe fn _mm_castps_pd(a: f32x4) -> f64x2 {
 
 /// Casts a 128-bit floating-point vector of [4 x float] into a 128-bit
 /// integer vector.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 pub unsafe fn _mm_castps_si128(a: f32x4) -> __m128i {
     mem::transmute(a)
@@ -2097,7 +2097,7 @@ pub unsafe fn _mm_castps_si128(a: f32x4) -> __m128i {
 
 /// Casts a 128-bit integer vector into a 128-bit floating-point vector
 /// of [2 x double].
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 pub unsafe fn _mm_castsi128_pd(a: __m128i) -> f64x2 {
     simd_cast(a)
@@ -2105,21 +2105,21 @@ pub unsafe fn _mm_castsi128_pd(a: __m128i) -> f64x2 {
 
 /// Casts a 128-bit integer vector into a 128-bit floating-point vector
 /// of [4 x float].
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 pub unsafe fn _mm_castsi128_ps(a: __m128i) -> f32x4 {
     mem::transmute(a)
 }
 
 /// Return vector of type __m128d with undefined elements.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 pub unsafe fn _mm_undefined_pd() -> f64x2 {
     f64x2::splat(mem::uninitialized())
 }
 
 /// Return vector of type __m128i with undefined elements.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 pub unsafe fn _mm_undefined_si128() -> __m128i {
     mem::transmute(i32x4::splat(mem::uninitialized()))
@@ -2130,7 +2130,7 @@ pub unsafe fn _mm_undefined_si128() -> __m128i {
 ///
 /// * The [127:64] bits are copied from the [127:64] bits of the second input
 /// * The [63:0] bits are copied from the [127:64] bits of the first input
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(unpckhpd))]
 pub unsafe fn _mm_unpackhi_pd(a: f64x2, b: f64x2) -> f64x2 {
@@ -2142,7 +2142,7 @@ pub unsafe fn _mm_unpackhi_pd(a: f64x2, b: f64x2) -> f64x2 {
 ///
 /// * The [127:64] bits are copied from the [63:0] bits of the second input
 /// * The [63:0] bits are copied from the [63:0] bits of the first input
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(unpcklpd))]
 pub unsafe fn _mm_unpacklo_pd(a: f64x2, b: f64x2) -> f64x2 {

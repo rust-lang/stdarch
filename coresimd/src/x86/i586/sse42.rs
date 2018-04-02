@@ -47,7 +47,7 @@ pub const _SIDD_UNIT_MASK: i32 = 0b0100_0000;
 
 /// Compare packed strings with implicit lengths in `a` and `b` using the
 /// control in `imm8`, and return the generated mask.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse4.2")]
 #[cfg_attr(test, assert_instr(pcmpistrm, imm8 = 0))]
 pub unsafe fn _mm_cmpistrm(a: __m128i, b: __m128i, imm8: i32) -> __m128i {
@@ -267,7 +267,7 @@ pub unsafe fn _mm_cmpistrm(a: __m128i, b: __m128i, imm8: i32) -> __m128i {
 /// [`_SIDD_LEAST_SIGNIFICANT`]: constant._SIDD_LEAST_SIGNIFICANT.html
 /// [`_SIDD_MOST_SIGNIFICANT`]: constant._SIDD_MOST_SIGNIFICANT.html
 /// [`_mm_cmpestri`]: fn._mm_cmpestri.html
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse4.2")]
 #[cfg_attr(test, assert_instr(pcmpistri, imm8 = 0))]
 pub unsafe fn _mm_cmpistri(a: __m128i, b: __m128i, imm8: i32) -> i32 {
@@ -280,7 +280,7 @@ pub unsafe fn _mm_cmpistri(a: __m128i, b: __m128i, imm8: i32) -> i32 {
 /// Compare packed strings with implicit lengths in `a` and `b` using the
 /// control in `imm8`, and return `1` if any character in `b` was null.
 /// and `0` otherwise.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse4.2")]
 #[cfg_attr(test, assert_instr(pcmpistri, imm8 = 0))]
 pub unsafe fn _mm_cmpistrz(a: __m128i, b: __m128i, imm8: i32) -> i32 {
@@ -295,7 +295,7 @@ pub unsafe fn _mm_cmpistrz(a: __m128i, b: __m128i, imm8: i32) -> i32 {
 /// Compare packed strings with implicit lengths in `a` and `b` using the
 /// control in `imm8`, and return `1` if the resulting mask was non-zero,
 /// and `0` otherwise.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse4.2")]
 #[cfg_attr(test, assert_instr(pcmpistri, imm8 = 0))]
 pub unsafe fn _mm_cmpistrc(a: __m128i, b: __m128i, imm8: i32) -> i32 {
@@ -308,7 +308,7 @@ pub unsafe fn _mm_cmpistrc(a: __m128i, b: __m128i, imm8: i32) -> i32 {
 /// Compare packed strings with implicit lengths in `a` and `b` using the
 /// control in `imm8`, and returns `1` if any character in `a` was null,
 /// and `0` otherwise.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse4.2")]
 #[cfg_attr(test, assert_instr(pcmpistri, imm8 = 0))]
 pub unsafe fn _mm_cmpistrs(a: __m128i, b: __m128i, imm8: i32) -> i32 {
@@ -320,7 +320,7 @@ pub unsafe fn _mm_cmpistrs(a: __m128i, b: __m128i, imm8: i32) -> i32 {
 
 /// Compare packed strings with implicit lengths in `a` and `b` using the
 /// control in `imm8`, and return bit `0` of the resulting bit mask.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse4.2")]
 #[cfg_attr(test, assert_instr(pcmpistri, imm8 = 0))]
 pub unsafe fn _mm_cmpistro(a: __m128i, b: __m128i, imm8: i32) -> i32 {
@@ -333,7 +333,7 @@ pub unsafe fn _mm_cmpistro(a: __m128i, b: __m128i, imm8: i32) -> i32 {
 /// Compare packed strings with implicit lengths in `a` and `b` using the
 /// control in `imm8`, and return `1` if `b` did not contain a null
 /// character and the resulting mask was zero, and `0` otherwise.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse4.2")]
 #[cfg_attr(test, assert_instr(pcmpistri, imm8 = 0))]
 pub unsafe fn _mm_cmpistra(a: __m128i, b: __m128i, imm8: i32) -> i32 {
@@ -345,7 +345,7 @@ pub unsafe fn _mm_cmpistra(a: __m128i, b: __m128i, imm8: i32) -> i32 {
 
 /// Compare packed strings in `a` and `b` with lengths `la` and `lb`
 /// using the control in `imm8`, and return the generated mask.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse4.2")]
 #[cfg_attr(test, assert_instr(pcmpestrm, imm8 = 0))]
 pub unsafe fn _mm_cmpestrm(
@@ -441,7 +441,7 @@ pub unsafe fn _mm_cmpestrm(
 /// [`_SIDD_LEAST_SIGNIFICANT`]: constant._SIDD_LEAST_SIGNIFICANT.html
 /// [`_SIDD_MOST_SIGNIFICANT`]: constant._SIDD_MOST_SIGNIFICANT.html
 /// [`_mm_cmpistri`]: fn._mm_cmpistri.html
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse4.2")]
 #[cfg_attr(test, assert_instr(pcmpestri, imm8 = 0))]
 pub unsafe fn _mm_cmpestri(
@@ -456,7 +456,7 @@ pub unsafe fn _mm_cmpestri(
 /// Compare packed strings in `a` and `b` with lengths `la` and `lb`
 /// using the control in `imm8`, and return `1` if any character in
 /// `b` was null, and `0` otherwise.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse4.2")]
 #[cfg_attr(test, assert_instr(pcmpestri, imm8 = 0))]
 pub unsafe fn _mm_cmpestrz(
@@ -471,7 +471,7 @@ pub unsafe fn _mm_cmpestrz(
 /// Compare packed strings in `a` and `b` with lengths `la` and `lb`
 /// using the control in `imm8`, and return `1` if the resulting mask
 /// was non-zero, and `0` otherwise.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse4.2")]
 #[cfg_attr(test, assert_instr(pcmpestri, imm8 = 0))]
 pub unsafe fn _mm_cmpestrc(
@@ -486,7 +486,7 @@ pub unsafe fn _mm_cmpestrc(
 /// Compare packed strings in `a` and `b` with lengths `la` and `lb`
 /// using the control in `imm8`, and return `1` if any character in
 /// a was null, and `0` otherwise.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse4.2")]
 #[cfg_attr(test, assert_instr(pcmpestri, imm8 = 0))]
 pub unsafe fn _mm_cmpestrs(
@@ -501,7 +501,7 @@ pub unsafe fn _mm_cmpestrs(
 /// Compare packed strings in `a` and `b` with lengths `la` and `lb`
 /// using the control in `imm8`, and return bit `0` of the resulting
 /// bit mask.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse4.2")]
 #[cfg_attr(test, assert_instr(pcmpestri, imm8 = 0))]
 pub unsafe fn _mm_cmpestro(
@@ -517,7 +517,7 @@ pub unsafe fn _mm_cmpestro(
 /// using the control in `imm8`, and return `1` if `b` did not
 /// contain a null character and the resulting mask was zero, and `0`
 /// otherwise.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse4.2")]
 #[cfg_attr(test, assert_instr(pcmpestri, imm8 = 0))]
 pub unsafe fn _mm_cmpestra(
@@ -531,7 +531,7 @@ pub unsafe fn _mm_cmpestra(
 
 /// Starting with the initial value in `crc`, return the accumulated
 /// CRC32 value for unsigned 8-bit integer `v`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse4.2")]
 #[cfg_attr(test, assert_instr(crc32))]
 pub unsafe fn _mm_crc32_u8(crc: u32, v: u8) -> u32 {
@@ -540,7 +540,7 @@ pub unsafe fn _mm_crc32_u8(crc: u32, v: u8) -> u32 {
 
 /// Starting with the initial value in `crc`, return the accumulated
 /// CRC32 value for unsigned 16-bit integer `v`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse4.2")]
 #[cfg_attr(test, assert_instr(crc32))]
 pub unsafe fn _mm_crc32_u16(crc: u32, v: u16) -> u32 {
@@ -549,7 +549,7 @@ pub unsafe fn _mm_crc32_u16(crc: u32, v: u16) -> u32 {
 
 /// Starting with the initial value in `crc`, return the accumulated
 /// CRC32 value for unsigned 32-bit integer `v`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse4.2")]
 #[cfg_attr(test, assert_instr(crc32))]
 pub unsafe fn _mm_crc32_u32(crc: u32, v: u32) -> u32 {
