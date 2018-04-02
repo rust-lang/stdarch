@@ -111,7 +111,7 @@ macro_rules! __unstable_detect_feature {
         $unstable_detect_feature(
             $crate::__vendor_runtime::__Feature::fma{})
     };
-    ("bmi", $unstable_detect_feature:path) => {
+    ("bmi1", $unstable_detect_feature:path) => {
         $unstable_detect_feature(
             $crate::__vendor_runtime::__Feature::bmi{})
     };
@@ -473,7 +473,7 @@ mod tests {
         );
         println!("fma: {:?}", cfg_feature_enabled!("fma"));
         println!("abm: {:?}", cfg_feature_enabled!("abm"));
-        println!("bmi: {:?}", cfg_feature_enabled!("bmi"));
+        println!("bmi: {:?}", cfg_feature_enabled!("bmi1"));
         println!("bmi2: {:?}", cfg_feature_enabled!("bmi2"));
         println!("tbm: {:?}", cfg_feature_enabled!("tbm"));
         println!("popcnt: {:?}", cfg_feature_enabled!("popcnt"));
@@ -517,7 +517,7 @@ mod tests {
             information.avx512_vpopcntdq()
         );
         assert_eq!(cfg_feature_enabled!("fma"), information.fma());
-        assert_eq!(cfg_feature_enabled!("bmi"), information.bmi1());
+        assert_eq!(cfg_feature_enabled!("bmi1"), information.bmi1());
         assert_eq!(cfg_feature_enabled!("bmi2"), information.bmi2());
         assert_eq!(cfg_feature_enabled!("popcnt"), information.popcnt());
         assert_eq!(cfg_feature_enabled!("abm"), information.lzcnt());
