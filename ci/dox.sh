@@ -22,14 +22,14 @@ dox() {
   rm -rf target/doc/$arch
   mkdir target/doc/$arch
 
-  cargo build --target $target --manifest-path crates/stdsimd/Cargo.toml
+  cargo build --target $target
 
   rustdoc --target $target \
-          -o target/doc/$arch crates/coresimd/src/lib.rs \
+          -o target/doc/$arch coresimd/src/lib.rs \
           --crate-name coresimd \
           --library-path target/$target/debug/deps
   rustdoc --target $target \
-          -o target/doc/$arch crates/stdsimd/src/lib.rs \
+          -o target/doc/$arch src/lib.rs \
           --crate-name stdsimd \
           --library-path target/$target/debug/deps \
           --extern cfg_if=`ls target/$target/debug/deps/libcfg_if-*.rlib` \
