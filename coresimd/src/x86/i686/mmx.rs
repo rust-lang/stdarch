@@ -15,7 +15,7 @@ use core::mem;
 use stdsimd_test::assert_instr;
 
 /// Constructs a 64-bit integer vector initialized to zero.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "mmx")]
 // FIXME: this produces a movl instead of xorps on x86
 // FIXME: this produces a xor intrinsic instead of xorps on x86_64
@@ -25,7 +25,7 @@ pub unsafe fn _mm_setzero_si64() -> __m64 {
 }
 
 /// Add packed 8-bit integers in `a` and `b`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "mmx")]
 #[cfg_attr(test, assert_instr(paddb))]
 pub unsafe fn _mm_add_pi8(a: __m64, b: __m64) -> __m64 {
@@ -33,7 +33,7 @@ pub unsafe fn _mm_add_pi8(a: __m64, b: __m64) -> __m64 {
 }
 
 /// Add packed 16-bit integers in `a` and `b`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "mmx")]
 #[cfg_attr(test, assert_instr(paddw))]
 pub unsafe fn _mm_add_pi16(a: __m64, b: __m64) -> __m64 {
@@ -41,7 +41,7 @@ pub unsafe fn _mm_add_pi16(a: __m64, b: __m64) -> __m64 {
 }
 
 /// Add packed 32-bit integers in `a` and `b`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "mmx")]
 #[cfg_attr(test, assert_instr(paddd))]
 pub unsafe fn _mm_add_pi32(a: __m64, b: __m64) -> __m64 {
@@ -49,7 +49,7 @@ pub unsafe fn _mm_add_pi32(a: __m64, b: __m64) -> __m64 {
 }
 
 /// Add packed 8-bit integers in `a` and `b` using saturation.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "mmx")]
 #[cfg_attr(test, assert_instr(paddsb))]
 pub unsafe fn _mm_adds_pi8(a: __m64, b: __m64) -> __m64 {
@@ -57,7 +57,7 @@ pub unsafe fn _mm_adds_pi8(a: __m64, b: __m64) -> __m64 {
 }
 
 /// Add packed 16-bit integers in `a` and `b` using saturation.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "mmx")]
 #[cfg_attr(test, assert_instr(paddsw))]
 pub unsafe fn _mm_adds_pi16(a: __m64, b: __m64) -> __m64 {
@@ -65,7 +65,7 @@ pub unsafe fn _mm_adds_pi16(a: __m64, b: __m64) -> __m64 {
 }
 
 /// Add packed unsigned 8-bit integers in `a` and `b` using saturation.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "mmx")]
 #[cfg_attr(test, assert_instr(paddusb))]
 pub unsafe fn _mm_adds_pu8(a: __m64, b: __m64) -> __m64 {
@@ -73,7 +73,7 @@ pub unsafe fn _mm_adds_pu8(a: __m64, b: __m64) -> __m64 {
 }
 
 /// Add packed unsigned 16-bit integers in `a` and `b` using saturation.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "mmx")]
 #[cfg_attr(test, assert_instr(paddusw))]
 pub unsafe fn _mm_adds_pu16(a: __m64, b: __m64) -> __m64 {

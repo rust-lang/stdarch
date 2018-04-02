@@ -15,7 +15,7 @@ extern "C" {
 
 /// Convert the lower double-precision (64-bit) floating-point element in a to
 /// a 64-bit integer.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(cvtsd2si))]
 pub unsafe fn _mm_cvtsd_si64(a: f64x2) -> i64 {
@@ -23,7 +23,7 @@ pub unsafe fn _mm_cvtsd_si64(a: f64x2) -> i64 {
 }
 
 /// Alias for [`_mm_cvtsd_si64`](fn._mm_cvtsd_si64_ss.html).
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(cvtsd2si))]
 pub unsafe fn _mm_cvtsd_si64x(a: f64x2) -> i64 {
@@ -32,7 +32,7 @@ pub unsafe fn _mm_cvtsd_si64x(a: f64x2) -> i64 {
 
 /// Convert the lower double-precision (64-bit) floating-point element in `a`
 /// to a 64-bit integer with truncation.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(cvttsd2si))]
 pub unsafe fn _mm_cvttsd_si64(a: f64x2) -> i64 {
@@ -40,7 +40,7 @@ pub unsafe fn _mm_cvttsd_si64(a: f64x2) -> i64 {
 }
 
 /// Alias for [`_mm_cvttsd_si64`](fn._mm_cvttsd_si64_ss.html).
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(cvttsd2si))]
 pub unsafe fn _mm_cvttsd_si64x(a: f64x2) -> i64 {
@@ -50,7 +50,7 @@ pub unsafe fn _mm_cvttsd_si64x(a: f64x2) -> i64 {
 /// Stores a 64-bit integer value in the specified memory location.
 /// To minimize caching, the data is flagged as non-temporal (unlikely to be
 /// used again soon).
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 // FIXME movnti on windows and linux x86_64
 //#[cfg_attr(test, assert_instr(movntiq))]
@@ -60,7 +60,7 @@ pub unsafe fn _mm_stream_si64(mem_addr: *mut i64, a: i64) {
 
 /// Return a vector whose lowest element is `a` and all higher elements are
 /// `0`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(all(test, not(windows)), assert_instr(movq))]
 pub unsafe fn _mm_cvtsi64_si128(a: i64) -> i64x2 {
@@ -69,7 +69,7 @@ pub unsafe fn _mm_cvtsi64_si128(a: i64) -> i64x2 {
 
 /// Return a vector whose lowest element is `a` and all higher elements are
 /// `0`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(all(test, not(windows)), assert_instr(movq))]
 pub unsafe fn _mm_cvtsi64x_si128(a: i64) -> i64x2 {
@@ -77,7 +77,7 @@ pub unsafe fn _mm_cvtsi64x_si128(a: i64) -> i64x2 {
 }
 
 /// Return the lowest element of `a`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(all(test, not(windows)), assert_instr(movq))]
 pub unsafe fn _mm_cvtsi128_si64(a: i64x2) -> i64 {
@@ -85,7 +85,7 @@ pub unsafe fn _mm_cvtsi128_si64(a: i64x2) -> i64 {
 }
 
 /// Return the lowest element of `a`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(all(test, not(windows)), assert_instr(movq))]
 pub unsafe fn _mm_cvtsi128_si64x(a: i64x2) -> i64 {
@@ -94,7 +94,7 @@ pub unsafe fn _mm_cvtsi128_si64x(a: i64x2) -> i64 {
 
 /// Return `a` with its lower element replaced by `b` after converting it to
 /// an `f64`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(cvtsi2sd))]
 pub unsafe fn _mm_cvtsi64_sd(a: f64x2, b: i64) -> f64x2 {
@@ -103,7 +103,7 @@ pub unsafe fn _mm_cvtsi64_sd(a: f64x2, b: i64) -> f64x2 {
 
 /// Return `a` with its lower element replaced by `b` after converting it to
 /// an `f64`.
-#[inline(always)]
+#[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(cvtsi2sd))]
 pub unsafe fn _mm_cvtsi64x_sd(a: f64x2, b: i64) -> f64x2 {
