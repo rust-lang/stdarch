@@ -5,7 +5,7 @@ macro_rules! impl_minmax_reductions {
     ($id:ident, $elem_ty:ident) => {
         impl $id {
             /// Largest vector element value.
-            #[cfg(not(target_arch = "aarch64"))]
+            #[cfg(not(any(target_arch = "aarch64", target_arch = "arm")))]
             #[inline]
             pub fn max_element(self) -> $elem_ty {
                 use coresimd::simd_llvm::simd_reduce_max;
@@ -13,7 +13,7 @@ macro_rules! impl_minmax_reductions {
             }
 
             /// Largest vector element value.
-            #[cfg(target_arch = "aarch64")]
+            #[cfg(any(target_arch = "aarch64", target_arch = "arm"))]
             #[allow(unused_imports)]
             #[inline]
             pub fn max_element(self) -> $elem_ty {
@@ -29,7 +29,7 @@ macro_rules! impl_minmax_reductions {
             }
 
             /// Smallest vector element value.
-            #[cfg(not(target_arch = "aarch64"))]
+            #[cfg(not(any(target_arch = "aarch64", target_arch = "arm")))]
             #[inline]
             pub fn min_element(self) -> $elem_ty {
                 use coresimd::simd_llvm::simd_reduce_min;
@@ -37,7 +37,7 @@ macro_rules! impl_minmax_reductions {
             }
 
             /// Smallest vector element value.
-            #[cfg(target_arch = "aarch64")]
+            #[cfg(any(target_arch = "aarch64", target_arch = "arm"))]
             #[allow(unused_imports)]
             #[inline]
             pub fn min_element(self) -> $elem_ty {
