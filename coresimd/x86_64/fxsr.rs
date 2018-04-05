@@ -55,7 +55,6 @@ mod tests {
     use std::{fmt, cmp::PartialEq};
     use stdsimd_test::simd_test;
 
-
     #[repr(align(16))]
     struct FxsaveArea {
         data: [u8; 512], // 512 bytes
