@@ -5,6 +5,7 @@ extern crate stdsimd;
 
 use stdsimd::simd::*;
 
+#[cfg(target_arch = "powerpc")]
 macro_rules! is_powerpc_feature_detected {
     ($t:tt) => {
         false
@@ -305,10 +306,12 @@ macro_rules! tree_reduce_add_f {
             type R = $elem_ty;
             fn tree_reduce_add(self) -> $elem_ty {
                 if self.len() == 2 {
+                    println!("  lv: {}, rv: {} => {}", self[0], self[1], self[0] + self[1]);
                     self[0] + self[1]
                 } else {
                     let mid = self.len() / 2;
                     let (left, right) = self.split_at(mid);
+                    println!("  splitting self: {:?} at mid {} into left: {:?}, right: {:?}", self, mid, self[0], self[1]);
                     Self::tree_reduce_add(left) + Self::tree_reduce_add(right)
                 }
             }
@@ -402,10 +405,12 @@ macro_rules! tree_reduce_mul_f {
             type R = $elem_ty;
             fn tree_reduce_mul(self) -> $elem_ty {
                 if self.len() == 2 {
+                    println!("  lv: {}, rv: {} => {}", self[0], self[1], self[0] * self[1]);
                     self[0] * self[1]
                 } else {
                     let mid = self.len() / 2;
                     let (left, right) = self.split_at(mid);
+                    println!("  splitting self: {:?} at mid {} into left: {:?}, right: {:?}", self, mid, self[0], self[1]);
                     Self::tree_reduce_mul(left) * Self::tree_reduce_mul(right)
                 }
             }
@@ -416,7 +421,7 @@ macro_rules! tree_reduce_mul_f {
 tree_reduce_mul_f!(f32);
 tree_reduce_mul_f!(f64);
 
-macro_rules! mul_roundoff_test {
+macro_rules! wrapping_product_roundoff_test {
     ($feature:tt, $feature_macro:ident, $id:ident, $elem_ty:ident) => {
         if $feature_macro!($feature) {
             #[target_feature(enable = $feature)]
@@ -471,8 +476,8 @@ macro_rules! mul_roundoff_test {
 }
 
 #[test]
-fn mul_roundoff_test() {
-    finvoke!(mul_roundoff_test);
+fn wrapping_product_roundoff_test() {
+    finvoke!(wrapping_product_roundoff_test);
 }
 
 macro_rules! wrapping_sum_overflow_test {
