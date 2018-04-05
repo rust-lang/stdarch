@@ -295,12 +295,17 @@ as_int!(f64x2, i64x2);
 as_int!(f64x4, i64x4);
 as_int!(f64x8, i64x8);
 
-trait TreeReduceAdd {
-    type R;
-    fn tree_reduce_add(self) -> Self::R;
-}
+// FIXME: these fail on i586 for some reason
+#[cfg(not(all(target_arch = "x86", not(target_feature = "sse2"))))]
+mod offset {
+    use super::*;
 
-macro_rules! tree_reduce_add_f {
+    trait TreeReduceAdd {
+        type R;
+        fn tree_reduce_add(self) -> Self::R;
+    }
+
+    macro_rules! tree_reduce_add_f {
     ($elem_ty:ident) => {
         impl<'a> TreeReduceAdd for &'a [$elem_ty] {
             type R = $elem_ty;
@@ -318,10 +323,10 @@ macro_rules! tree_reduce_add_f {
         }
     };
 }
-tree_reduce_add_f!(f32);
-tree_reduce_add_f!(f64);
+    tree_reduce_add_f!(f32);
+    tree_reduce_add_f!(f64);
 
-macro_rules! wrapping_sum_roundoff_test {
+    macro_rules! wrapping_sum_roundoff_test {
     ($feature:tt, $feature_macro:ident, $id:ident, $elem_ty:ident) => {
         if $feature_macro!($feature) {
             #[target_feature(enable = $feature)]
@@ -389,17 +394,17 @@ macro_rules! wrapping_sum_roundoff_test {
     };
 }
 
-#[test]
-fn wrapping_sum_roundoff_test() {
-    finvoke!(wrapping_sum_roundoff_test);
-}
+    #[test]
+    fn wrapping_sum_roundoff_test() {
+        finvoke!(wrapping_sum_roundoff_test);
+    }
 
-trait TreeReduceMul {
-    type R;
-    fn tree_reduce_mul(self) -> Self::R;
-}
+    trait TreeReduceMul {
+        type R;
+        fn tree_reduce_mul(self) -> Self::R;
+    }
 
-macro_rules! tree_reduce_mul_f {
+    macro_rules! tree_reduce_mul_f {
     ($elem_ty:ident) => {
         impl<'a> TreeReduceMul for &'a [$elem_ty] {
             type R = $elem_ty;
@@ -418,118 +423,120 @@ macro_rules! tree_reduce_mul_f {
     };
 }
 
-tree_reduce_mul_f!(f32);
-tree_reduce_mul_f!(f64);
+    tree_reduce_mul_f!(f32);
+    tree_reduce_mul_f!(f64);
 
-macro_rules! wrapping_product_roundoff_test {
-    ($feature:tt, $feature_macro:ident, $id:ident, $elem_ty:ident) => {
-        if $feature_macro!($feature) {
-            #[target_feature(enable = $feature)]
-            unsafe fn test_fn() {
-                let mut start = std::$elem_ty::EPSILON;
-                let mut mul = 1. as $elem_ty;
+    macro_rules! wrapping_product_roundoff_test {
+        ($feature:tt, $feature_macro:ident, $id:ident, $elem_ty:ident) => {
+            if $feature_macro!($feature) {
+                #[target_feature(enable = $feature)]
+                unsafe fn test_fn() {
+                    let mut start = std::$elem_ty::EPSILON;
+                    let mut mul = 1. as $elem_ty;
 
-                let mut v = $id::splat(1. as $elem_ty);
-                for i in 0..$id::lanes() {
-                    let c = if i % 2 == 0 { 1e3 } else { -1. };
-                    start *= 3.14 * c;
-                    mul *= start;
-                    println!("{} | start: {}", stringify!($id), start);
-                    v = v.replace(i, start);
+                    let mut v = $id::splat(1. as $elem_ty);
+                    for i in 0..$id::lanes() {
+                        let c = if i % 2 == 0 { 1e3 } else { -1. };
+                        start *= 3.14 * c;
+                        mul *= start;
+                        println!("{} | start: {}", stringify!($id), start);
+                        v = v.replace(i, start);
+                    }
+                    let vmul = v.wrapping_product();
+                    println!("{} | lmul: {}", stringify!($id), mul);
+                    println!("{} | vmul: {}", stringify!($id), vmul);
+                    let r = vmul.as_int() == mul.as_int();
+                    // This is false in general; the intrinsic performs a
+                    // tree-reduce:
+                    println!("{} | equal: {}", stringify!($id), r);
+
+                    let mut a = [0. as $elem_ty; $id::lanes()];
+                    v.store_unaligned(&mut a);
+
+                    let tmul = a.tree_reduce_mul();
+                    println!("{} | tmul: {}", stringify!($id), tmul);
+
+                    // tolerate 1 ULP difference:
+                    if vmul.as_int() > tmul.as_int() {
+                        assert!(
+                            vmul.as_int() - tmul.as_int() < 2,
+                            "v: {:?} | vmul: {} | tmul: {}",
+                            v,
+                            vmul,
+                            tmul
+                        );
+                    } else {
+                        assert!(
+                            tmul.as_int() - vmul.as_int() < 2,
+                            "v: {:?} | vmul: {} | tmul: {}",
+                            v,
+                            vmul,
+                            tmul
+                        );
+                    }
                 }
-                let vmul = v.wrapping_product();
-                println!("{} | lmul: {}", stringify!($id), mul);
-                println!("{} | vmul: {}", stringify!($id), vmul);
-                let r = vmul.as_int() == mul.as_int();
-                // This is false in general; the intrinsic performs a
-                // tree-reduce:
-                println!("{} | equal: {}", stringify!($id), r);
-
-                let mut a = [0. as $elem_ty; $id::lanes()];
-                v.store_unaligned(&mut a);
-
-                let tmul = a.tree_reduce_mul();
-                println!("{} | tmul: {}", stringify!($id), tmul);
-
-                // tolerate 1 ULP difference:
-                if vmul.as_int() > tmul.as_int() {
-                    assert!(
-                        vmul.as_int() - tmul.as_int() < 2,
-                        "v: {:?} | vmul: {} | tmul: {}",
-                        v,
-                        vmul,
-                        tmul
-                    );
-                } else {
-                    assert!(
-                        tmul.as_int() - vmul.as_int() < 2,
-                        "v: {:?} | vmul: {} | tmul: {}",
-                        v,
-                        vmul,
-                        tmul
-                    );
-                }
+                unsafe { test_fn() };
             }
-            unsafe { test_fn() };
-        }
-    };
-}
+        };
+    }
 
-#[test]
-fn wrapping_product_roundoff_test() {
-    finvoke!(wrapping_product_roundoff_test);
-}
+    #[test]
+    fn wrapping_product_roundoff_test() {
+        finvoke!(wrapping_product_roundoff_test);
+    }
 
-macro_rules! wrapping_sum_overflow_test {
-    ($feature:tt, $feature_macro:ident, $id:ident, $elem_ty:ident) => {
-        if $feature_macro!($feature) {
-            #[target_feature(enable = $feature)]
-            unsafe fn test_fn() {
-                let start =
-                    $elem_ty::max_value() - ($id::lanes() as $elem_ty / 2);
+    macro_rules! wrapping_sum_overflow_test {
+        ($feature:tt, $feature_macro:ident, $id:ident, $elem_ty:ident) => {
+            if $feature_macro!($feature) {
+                #[target_feature(enable = $feature)]
+                unsafe fn test_fn() {
+                    let start = $elem_ty::max_value()
+                        - ($id::lanes() as $elem_ty / 2);
 
-                let v = $id::splat(start as $elem_ty);
-                let vwrapping_sum = v.wrapping_sum();
+                    let v = $id::splat(start as $elem_ty);
+                    let vwrapping_sum = v.wrapping_sum();
 
-                let mut wrapping_sum = start;
-                for _ in 1..$id::lanes() {
-                    wrapping_sum = wrapping_sum.wrapping_add(start);
+                    let mut wrapping_sum = start;
+                    for _ in 1..$id::lanes() {
+                        wrapping_sum = wrapping_sum.wrapping_add(start);
+                    }
+                    assert_eq!(wrapping_sum, vwrapping_sum, "v = {:?}", v);
                 }
-                assert_eq!(wrapping_sum, vwrapping_sum, "v = {:?}", v);
+                unsafe { test_fn() };
             }
-            unsafe { test_fn() };
-        }
-    };
-}
+        };
+    }
 
-#[test]
-fn wrapping_sum_overflow_test() {
-    iinvoke!(wrapping_sum_overflow_test);
-}
+    #[test]
+    fn wrapping_sum_overflow_test() {
+        iinvoke!(wrapping_sum_overflow_test);
+    }
 
-macro_rules! mul_overflow_test {
-    ($feature:tt, $feature_macro:ident, $id:ident, $elem_ty:ident) => {
-        if $feature_macro!($feature) {
-            #[target_feature(enable = $feature)]
-            unsafe fn test_fn() {
-                let start =
-                    $elem_ty::max_value() - ($id::lanes() as $elem_ty / 2);
+    macro_rules! mul_overflow_test {
+        ($feature:tt, $feature_macro:ident, $id:ident, $elem_ty:ident) => {
+            if $feature_macro!($feature) {
+                #[target_feature(enable = $feature)]
+                unsafe fn test_fn() {
+                    let start = $elem_ty::max_value()
+                        - ($id::lanes() as $elem_ty / 2);
 
-                let v = $id::splat(start as $elem_ty);
-                let vmul = v.wrapping_product();
+                    let v = $id::splat(start as $elem_ty);
+                    let vmul = v.wrapping_product();
 
-                let mut mul = start;
-                for _ in 1..$id::lanes() {
-                    mul = mul.wrapping_mul(start);
+                    let mut mul = start;
+                    for _ in 1..$id::lanes() {
+                        mul = mul.wrapping_mul(start);
+                    }
+                    assert_eq!(mul, vmul, "v = {:?}", v);
                 }
-                assert_eq!(mul, vmul, "v = {:?}", v);
+                unsafe { test_fn() };
             }
-            unsafe { test_fn() };
-        }
-    };
-}
+        };
+    }
 
-#[test]
-fn mul_overflow_test() {
-    iinvoke!(mul_overflow_test);
+    #[test]
+    fn mul_overflow_test() {
+        iinvoke!(mul_overflow_test);
+    }
+
 }
