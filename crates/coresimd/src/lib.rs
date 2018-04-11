@@ -45,6 +45,8 @@ extern crate stdsimd;
 extern crate stdsimd_test;
 #[cfg(test)]
 extern crate test;
+#[macro_use]
+extern crate cfg_if;
 
 macro_rules! test_v16 {
     ($item:item) => {};
