@@ -35,3 +35,12 @@ cargo_test() {
 
 cargo_test
 cargo_test "--release"
+
+case ${TARGET} in
+    x86*)
+        RUSTFLAGS="${RUSTFLAGS} -C target-feature=+avx"
+        cargo_test "--release"
+        ;;
+    *)
+        ;;
+esac
