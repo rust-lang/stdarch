@@ -5,7 +5,7 @@
 
 #![cfg_attr(feature = "strict", deny(warnings))]
 #![feature(stdsimd)]
-#![feature(target_feature)]
+#![feature(aarch64_target_feature)] // FIXME(rust-lang/rust#50094)
 #![cfg_attr(feature = "cargo-clippy",
             allow(similar_names, missing_docs_in_private_items,
                   shadow_reuse, print_stdout))]
