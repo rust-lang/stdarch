@@ -2792,8 +2792,6 @@ pub unsafe fn _mm256_shuffle_epi8(a: __m256i, b: __m256i) -> __m256i {
 /// `imm8`.
 ///
 /// ```rust
-/// # #![feature(cfg_target_feature)]
-/// # #![feature(target_feature, stdsimd)]
 /// # #![cfg_attr(not(dox), no_std)]
 /// # #[cfg(not(dox))]
 /// # extern crate std as real_std;
@@ -3546,8 +3544,6 @@ pub unsafe fn _mm256_subs_epu8(a: __m256i, b: __m256i) -> __m256i {
 /// 128-bit lane in `a` and `b`.
 ///
 /// ```rust
-/// # #![feature(cfg_target_feature)]
-/// # #![feature(target_feature, stdsimd)]
 /// # #![cfg_attr(not(dox), no_std)]
 /// # #[cfg(not(dox))]
 /// # extern crate std as real_std;
@@ -3601,8 +3597,6 @@ pub unsafe fn _mm256_unpackhi_epi8(a: __m256i, b: __m256i) -> __m256i {
 /// 128-bit lane of `a` and `b`.
 ///
 /// ```rust
-/// # #![feature(cfg_target_feature)]
-/// # #![feature(target_feature, stdsimd)]
 /// # #![cfg_attr(not(dox), no_std)]
 /// # #[cfg(not(dox))]
 /// # extern crate std as real_std;
@@ -3655,8 +3649,6 @@ pub unsafe fn _mm256_unpacklo_epi8(a: __m256i, b: __m256i) -> __m256i {
 /// 128-bit lane of `a` and `b`.
 ///
 /// ```rust
-/// # #![feature(cfg_target_feature)]
-/// # #![feature(target_feature, stdsimd)]
 /// # #![cfg_attr(not(dox), no_std)]
 /// # #[cfg(not(dox))]
 /// # extern crate std as real_std;
@@ -3707,8 +3699,6 @@ pub unsafe fn _mm256_unpackhi_epi16(a: __m256i, b: __m256i) -> __m256i {
 /// 128-bit lane of `a` and `b`.
 ///
 /// ```rust
-/// # #![feature(cfg_target_feature)]
-/// # #![feature(target_feature, stdsimd)]
 /// # #![cfg_attr(not(dox), no_std)]
 /// # #[cfg(not(dox))]
 /// # extern crate std as real_std;
@@ -3760,8 +3750,6 @@ pub unsafe fn _mm256_unpacklo_epi16(a: __m256i, b: __m256i) -> __m256i {
 /// 128-bit lane of `a` and `b`.
 ///
 /// ```rust
-/// # #![feature(cfg_target_feature)]
-/// # #![feature(target_feature, stdsimd)]
 /// # #![cfg_attr(not(dox), no_std)]
 /// # #[cfg(not(dox))]
 /// # extern crate std as real_std;
@@ -3809,8 +3797,6 @@ pub unsafe fn _mm256_unpackhi_epi32(a: __m256i, b: __m256i) -> __m256i {
 /// 128-bit lane of `a` and `b`.
 ///
 /// ```rust
-/// # #![feature(cfg_target_feature)]
-/// # #![feature(target_feature, stdsimd)]
 /// # #![cfg_attr(not(dox), no_std)]
 /// # #[cfg(not(dox))]
 /// # extern crate std as real_std;
@@ -3858,8 +3844,6 @@ pub unsafe fn _mm256_unpacklo_epi32(a: __m256i, b: __m256i) -> __m256i {
 /// 128-bit lane of `a` and `b`.
 ///
 /// ```rust
-/// # #![feature(cfg_target_feature)]
-/// # #![feature(target_feature, stdsimd)]
 /// # #![cfg_attr(not(dox), no_std)]
 /// # #[cfg(not(dox))]
 /// # extern crate std as real_std;
@@ -3903,8 +3887,6 @@ pub unsafe fn _mm256_unpackhi_epi64(a: __m256i, b: __m256i) -> __m256i {
 /// 128-bit lane of `a` and `b`.
 ///
 /// ```rust
-/// # #![feature(cfg_target_feature)]
-/// # #![feature(target_feature, stdsimd)]
 /// # #![cfg_attr(not(dox), no_std)]
 /// # #[cfg(not(dox))]
 /// # extern crate std as real_std;

@@ -118,8 +118,6 @@ pub unsafe fn _mm_cmpistrm(a: __m128i, b: __m128i, imm8: i32) -> __m128i {
 /// Find a substring using [`_SIDD_CMP_EQUAL_ORDERED`]
 ///
 /// ```
-/// # #![feature(cfg_target_feature)]
-/// # #![feature(target_feature)]
 /// # #![feature(stdsimd)]
 /// # #![cfg_attr(not(dox), no_std)]
 /// # #[cfg(not(dox))]
@@ -167,8 +165,6 @@ pub unsafe fn _mm_cmpistrm(a: __m128i, b: __m128i, imm8: i32) -> __m128i {
 /// one or more of a given set of characters in the haystack.
 ///
 /// ```
-/// # #![feature(cfg_target_feature)]
-/// # #![feature(target_feature)]
 /// # #![feature(stdsimd)]
 /// # #![cfg_attr(not(dox), no_std)]
 /// # #[cfg(not(dox))]
@@ -213,8 +209,6 @@ pub unsafe fn _mm_cmpistrm(a: __m128i, b: __m128i, imm8: i32) -> __m128i {
 /// range of characters.
 ///
 /// ```
-/// # #![feature(cfg_target_feature)]
-/// # #![feature(target_feature)]
 /// # #![feature(stdsimd)]
 /// # #![cfg_attr(not(dox), no_std)]
 /// # #[cfg(not(dox))]
@@ -259,8 +253,6 @@ pub unsafe fn _mm_cmpistrm(a: __m128i, b: __m128i, imm8: i32) -> __m128i {
 /// Working with 16-bit characters.
 ///
 /// ```
-/// # #![feature(cfg_target_feature)]
-/// # #![feature(target_feature)]
 /// # #![feature(stdsimd)]
 /// # #![cfg_attr(not(dox), no_std)]
 /// # #[cfg(not(dox))]
@@ -492,8 +484,6 @@ pub unsafe fn _mm_cmpestrm(
 /// # Examples
 ///
 /// ```
-/// # #![feature(cfg_target_feature)]
-/// # #![feature(target_feature)]
 /// # #![feature(stdsimd)]
 /// # #![cfg_attr(not(dox), no_std)]
 /// # #[cfg(not(dox))]
