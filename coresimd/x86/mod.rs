@@ -33,8 +33,7 @@ types! {
     /// # Examples
     ///
     /// ```
-    /// # #![feature(stdsimd)]
-    /// # #![cfg_attr(dox, feature(mmx_target_feature))]
+    /// # #![feature(stdsimd, mmx_target_feature)]
     /// # #![cfg_attr(not(dox), no_std)]
     /// # #[cfg(not(dox))]
     /// # extern crate std as real_std;
