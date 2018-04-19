@@ -1,4 +1,4 @@
-#![feature(cfg_target_feature, stdsimd, target_feature)]
+#![feature(stdsimd, sse4a_target_feature, avx512_target_feature)]
 
 #[macro_use]
 extern crate stdsimd;

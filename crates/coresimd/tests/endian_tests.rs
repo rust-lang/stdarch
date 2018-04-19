@@ -1,4 +1,4 @@
-#![feature(cfg_target_feature, stdsimd)]
+#![feature(stdsimd)]
 #![cfg_attr(feature = "strict", deny(warnings))]
 
 extern crate core;

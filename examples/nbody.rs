@@ -4,7 +4,7 @@
 //! html#nbody
 
 #![cfg_attr(feature = "strict", deny(warnings))]
-#![feature(cfg_target_feature, stdsimd)]
+#![feature(stdsimd)]
 #![feature(target_feature)]
 #![cfg_attr(feature = "cargo-clippy",
             allow(similar_names, missing_docs_in_private_items,
