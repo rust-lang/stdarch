@@ -17,7 +17,6 @@ run() {
       --env CARGO_HOME=/cargo \
       --volume `rustc --print sysroot`:/rust:ro \
       --env TARGET=$target \
-      --env RUSTFLAGS \
       --env STDSIMD_TEST_EVERYTHING \
       --volume `pwd`:/checkout:ro \
       --volume `pwd`/target:/checkout/target \
