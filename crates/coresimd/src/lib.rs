@@ -32,7 +32,6 @@
 #![doc(test(attr(deny(warnings))),
        test(attr(allow(dead_code, deprecated, unused_variables,
                        unused_mut))))]
-#![allow(unused_attributes)] // FIXME: spurious warnings?
 
 #[cfg_attr(not(test), macro_use)]
 extern crate core as _core;
