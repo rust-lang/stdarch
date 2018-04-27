@@ -38,7 +38,7 @@ cargo_test "--release"
 
 case ${TARGET} in
     x86*)
-        RUSTFLAGS="${RUSTFLAGS} -C target-feature=+avx"
+        RUSTFLAGS="${RUSTFLAGS} -C target-feature=+sse3,+ssse3,+sse4.1,+sse4.2,+avx,+popcnt,+lzcnt"
         export STDSIMD_IGNORE_ASSERT_INSTR=1
         cargo_test "--release"
         ;;
