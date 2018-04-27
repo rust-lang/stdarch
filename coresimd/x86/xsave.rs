@@ -273,7 +273,7 @@ mod tests {
     */
 
     // FIXME: this looks like a bug in Intel's SDE:
-    #[cfg(not(feature = "intel_sde"))]
+    #[cfg(not(stdsimd_intel_sde))]
     #[simd_test(enable = "xsave,xsavec")]
     unsafe fn xsavec() {
         let m = 0xFFFFFFFFFFFFFFFF_u64; //< all registers

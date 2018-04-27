@@ -1,5 +1,5 @@
 #![feature(stdsimd)]
-#![cfg_attr(feature = "strict", deny(warnings))]
+#![cfg_attr(stdsimd_strict, deny(warnings))]
 
 extern crate core;
 extern crate coresimd;

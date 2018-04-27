@@ -6,7 +6,7 @@
 //!
 //! [stdsimd]: https://rust-lang-nursery.github.io/stdsimd/x86_64/stdsimd/
 
-#![cfg_attr(feature = "strict", deny(warnings))]
+#![cfg_attr(stdsimd_strict, deny(warnings))]
 #![allow(dead_code)]
 #![allow(unused_features)]
 #![feature(const_fn, link_llvm_intrinsics, platform_intrinsics, repr_simd,

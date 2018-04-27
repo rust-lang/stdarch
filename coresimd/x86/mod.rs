@@ -604,14 +604,14 @@ pub use self::bmi1::*;
 mod bmi2;
 pub use self::bmi2::*;
 
-#[cfg(not(feature = "intel_sde"))]
+#[cfg(not(stdsimd_intel_sde))]
 mod sse4a;
-#[cfg(not(feature = "intel_sde"))]
+#[cfg(not(stdsimd_intel_sde))]
 pub use self::sse4a::*;
 
-#[cfg(not(feature = "intel_sde"))]
+#[cfg(not(stdsimd_intel_sde))]
 mod tbm;
-#[cfg(not(feature = "intel_sde"))]
+#[cfg(not(stdsimd_intel_sde))]
 pub use self::tbm::*;
 
 mod mmx;

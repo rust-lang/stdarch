@@ -3,7 +3,7 @@
 //! [bg]: https://benchmarksgame.alioth.debian.org/u64q/nbody-description.
 //! html#nbody
 
-#![cfg_attr(feature = "strict", deny(warnings))]
+#![cfg_attr(stdsimd_strict, deny(warnings))]
 #![feature(stdsimd)]
 #![cfg_attr(feature = "cargo-clippy",
             allow(similar_names, missing_docs_in_private_items,

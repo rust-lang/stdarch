@@ -1,6 +1,6 @@
 //! coresimd 128-bit wide vector tests
 
-#![cfg_attr(feature = "strict", deny(warnings))]
+#![cfg_attr(stdsimd_strict, deny(warnings))]
 #![feature(stdsimd, link_llvm_intrinsics, simd_ffi, core_float)]
 #![allow(unused_imports, dead_code)]
 
