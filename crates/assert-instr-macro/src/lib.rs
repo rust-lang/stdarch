@@ -33,7 +33,8 @@ pub fn assert_instr(
     };
 
     let instr = &invoc.instr;
-    let maybe_ignore = if cfg!(optimized) {
+    let maybe_ignore = if cfg!(optimized) ||
+        ::std::env::var("STDSIMD_IGNORE_ASSERT_INSTR").is_ok() {
         TokenStream::empty()
     } else {
         (quote! { #[ignore] }).into()
