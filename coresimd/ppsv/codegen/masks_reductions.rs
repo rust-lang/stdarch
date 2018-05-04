@@ -454,7 +454,7 @@ macro_rules! impl_mask_all_any {
     // 64-bit wide masks
     (m8x8) => {
         cfg_if! {
-            if #[cfg(any(target_arch = "x86", target_arch = "x86_64"))] {
+            if #[cfg(target_arch = "x86_64")] {
                 x86_64_mmx_movemask_impl!(m8x8, m8x16);
             } else if #[cfg(all(target_arch = "arm", target_feature = "v7", target_feature = "neon"))] {
                 arm_64_x8_v7_neon_impl!(m8x8, vpmin_u8, vpmax_u8);
@@ -467,7 +467,7 @@ macro_rules! impl_mask_all_any {
     };
     (m16x4) => {
         cfg_if! {
-            if #[cfg(any(target_arch = "x86", target_arch = "x86_64"))] {
+            if #[cfg(target_arch = "x86_64")] {
                 x86_64_mmx_movemask_impl!(m16x4, m16x8);
             } else if #[cfg(all(target_arch = "arm", target_feature = "v7", target_feature = "neon"))] {
                 arm_64_x4_v7_neon_impl!(m16x4, vpmin_u16, vpmax_u16);
@@ -480,7 +480,7 @@ macro_rules! impl_mask_all_any {
     };
     (m32x2) => {
         cfg_if! {
-            if #[cfg(any(target_arch = "x86", target_arch = "x86_64"))] {
+            if #[cfg(target_arch = "x86_64")] {
                 x86_64_mmx_movemask_impl!(m32x2, m32x4);
             } else if #[cfg(all(target_arch = "arm", target_feature = "v7", target_feature = "neon"))] {
                 arm_64_x2_v7_neon_impl!(m32x2, vpmin_u32, vpmax_u32);
