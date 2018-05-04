@@ -18,9 +18,6 @@ is-it-maintained-issue-resolution = { repository = "rust-lang-nursery/stdsimd" }
 is-it-maintained-open-issues = { repository = "rust-lang-nursery/stdsimd" }
 maintenance = { status = "experimental" }
 
-[dependencies]
-cfg-if = "0.1"
-
 [dev-dependencies]
 stdsimd-test = { version = "0.*", path = "../stdsimd-test" }
 stdsimd = { version = "0.0.3", path = "../stdsimd" }
