@@ -33,8 +33,12 @@ pub fn assert_instr(
     };
 
     let instr = &invoc.instr;
-    let maybe_ignore = if cfg!(optimized) ||
-        ::std::env::var("STDSIMD_IGNORE_ASSERT_INSTR").is_ok() {
+    // Disable assert_instr for x86 targets compiled with avx enabled, which
+    // causes LLVM to generate different intrinsics that the ones we are testing
+    // for.
+    let x86_with_avx = (cfg!(target_arch = "x86") || cfg!(target_arch = "x86_64"))
+        && cfg!(target_feature = "avx");
+    let maybe_ignore = if cfg!(optimized) && !x86_with_avx {
         TokenStream::empty()
     } else {
         (quote! { #[ignore] }).into()

@@ -36,10 +36,10 @@ cargo_test() {
 cargo_test
 cargo_test "--release"
 
+# Test x86 targets compiled with AVX.
 case ${TARGET} in
     x86*)
-        RUSTFLAGS="${RUSTFLAGS} -C target-feature=+sse3,+ssse3,+sse4.1,+sse4.2,+avx,+popcnt,+lzcnt"
-        export STDSIMD_IGNORE_ASSERT_INSTR=1
+        RUSTFLAGS="${RUSTFLAGS} -C target-feature=+avx"
         cargo_test "--release"
         ;;
     *)
