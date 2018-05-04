@@ -480,7 +480,8 @@ macro_rules! impl_mask_all_any {
     };
     (m32x2) => {
         cfg_if! {
-            if #[cfg(target_arch = "x86_64")] {
+            if #[cfg(all(target_arch = "x86_64", not(target_os = "macos")))] {
+                // FIXME: this fails on travis-ci osx build bots.
                 x86_64_mmx_movemask_impl!(m32x2, m32x4);
             } else if #[cfg(all(target_arch = "arm", target_feature = "v7", target_feature = "neon"))] {
                 arm_64_x2_v7_neon_impl!(m32x2, vpmin_u32, vpmax_u32);
