@@ -59,8 +59,8 @@ impl Frsqrt for f64x2 {
                       all(target_arch = "aarch64",
                           target_feature = "neon"))))]
         {
-            self = self.replace(0, 1. / self.extract(0).sqrt());
-            self = self.replace(1, 1. / self.extract(1).sqrt());
+            *self = self.replace(0, 1. / self.extract(0).sqrt());
+            *self = self.replace(1, 1. / self.extract(1).sqrt());
             *self
         }
     }
