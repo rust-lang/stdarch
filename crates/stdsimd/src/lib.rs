@@ -34,6 +34,6 @@ use __do_not_use_this_import::fs;
 #[allow(unused_imports)]
 use __do_not_use_this_import::io;
 #[allow(unused_imports)]
-use __do_not_use_this_import::prelude;
-#[allow(unused_imports)]
 use __do_not_use_this_import::mem;
+#[allow(unused_imports)]
+use __do_not_use_this_import::prelude;

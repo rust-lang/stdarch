@@ -5,9 +5,13 @@
 
 #![cfg_attr(stdsimd_strict, deny(warnings))]
 #![feature(stdsimd)]
-#![cfg_attr(feature = "cargo-clippy",
-            allow(similar_names, missing_docs_in_private_items,
-                  shadow_reuse, print_stdout))]
+#![cfg_attr(
+    feature = "cargo-clippy",
+    allow(
+        similar_names, missing_docs_in_private_items, shadow_reuse,
+        print_stdout
+    )
+)]
 
 extern crate stdsimd;
 use stdsimd::simd::*;
@@ -22,8 +26,12 @@ pub trait Frsqrt {
 
 impl Frsqrt for f64x2 {
     fn frsqrt(&self) -> Self {
-        #[cfg(all(any(target_arch = "x86", target_arch = "x86_64"),
-                  target_feature = "sse"))]
+        #[cfg(
+            all(
+                any(target_arch = "x86", target_arch = "x86_64"),
+                target_feature = "sse"
+            )
+        )]
         {
             #[cfg(target_arch = "x86")]
             use stdsimd::arch::x86::*;
@@ -53,11 +61,17 @@ impl Frsqrt for f64x2 {
             let t: f32x2 = unsafe { vrsqrte_f32(t.into_bits()).into_bits() };
             t.into()
         }
-        #[cfg(not(any(all(any(target_arch = "x86",
-                              target_arch = "x86_64"),
-                          target_feature = "sse"),
-                      all(target_arch = "aarch64",
-                          target_feature = "neon"))))]
+        #[cfg(
+            not(
+                any(
+                    all(
+                        any(target_arch = "x86", target_arch = "x86_64"),
+                        target_feature = "sse"
+                    ),
+                    all(target_arch = "aarch64", target_feature = "neon")
+                )
+            )
+        )]
         {
             let r = self.replace(0, 1. / self.extract(0).sqrt());
             let r = r.replace(1, 1. / self.extract(1).sqrt());
@@ -75,7 +89,7 @@ struct Body {
 
 impl Body {
     fn new(
-        x0: f64, x1: f64, x2: f64, v0: f64, v1: f64, v2: f64, mass: f64
+        x0: f64, x1: f64, x2: f64, v0: f64, v1: f64, v2: f64, mass: f64,
     ) -> Self {
         Self {
             x: [x0, x1, x2],
