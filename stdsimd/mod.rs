@@ -247,8 +247,8 @@
 /// we'll be using SSE4.1 features to implement hex encoding.
 ///
 /// ```
-/// # #![cfg_attr(not(dox), feature(cfg_target_feature, target_feature, stdsimd))]
-/// # #![cfg_attr(not(dox), no_std)]
+/// # #![cfg_attr(not(dox), feature(cfg_target_feature, target_feature,
+/// stdsimd))] # #![cfg_attr(not(dox), no_std)]
 /// # #[cfg(not(dox))]
 /// # extern crate std as real_std;
 /// # #[cfg(not(dox))]

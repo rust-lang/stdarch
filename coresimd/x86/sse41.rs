@@ -66,13 +66,9 @@ pub const _MM_FROUND_NEARBYINT: i32 =
 #[cfg_attr(test, assert_instr(pblendvb))]
 #[stable(feature = "simd_x86", since = "1.27.0")]
 pub unsafe fn _mm_blendv_epi8(
-    a: __m128i, b: __m128i, mask: __m128i
+    a: __m128i, b: __m128i, mask: __m128i,
 ) -> __m128i {
-    mem::transmute(pblendvb(
-        a.as_i8x16(),
-        b.as_i8x16(),
-        mask.as_i8x16(),
-    ))
+    mem::transmute(pblendvb(a.as_i8x16(), b.as_i8x16(), mask.as_i8x16()))
 }
 
 /// Blend packed 16-bit integers from `a` and `b` using the mask `imm8`.
@@ -250,11 +246,7 @@ pub unsafe fn _mm_insert_ps(a: __m128, b: __m128, imm8: i32) -> __m128 {
 #[rustc_args_required_const(2)]
 #[stable(feature = "simd_x86", since = "1.27.0")]
 pub unsafe fn _mm_insert_epi8(a: __m128i, i: i32, imm8: i32) -> __m128i {
-    mem::transmute(simd_insert(
-        a.as_i8x16(),
-        (imm8 & 0b1111) as u32,
-        i as i8,
-    ))
+    mem::transmute(simd_insert(a.as_i8x16(), (imm8 & 0b1111) as u32, i as i8))
 }
 
 /// Return a copy of `a` with the 32-bit integer from `i` inserted at a
@@ -267,11 +259,7 @@ pub unsafe fn _mm_insert_epi8(a: __m128i, i: i32, imm8: i32) -> __m128i {
 #[rustc_args_required_const(2)]
 #[stable(feature = "simd_x86", since = "1.27.0")]
 pub unsafe fn _mm_insert_epi32(a: __m128i, i: i32, imm8: i32) -> __m128i {
-    mem::transmute(simd_insert(
-        a.as_i32x4(),
-        (imm8 & 0b11) as u32,
-        i,
-    ))
+    mem::transmute(simd_insert(a.as_i32x4(), (imm8 & 0b11) as u32, i))
 }
 
 /// Compare packed 8-bit integers in `a` and `b` and return packed maximum

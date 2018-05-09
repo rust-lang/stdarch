@@ -25,7 +25,7 @@ macro_rules! is_x86_feature_detected {
 #[macro_export]
 #[unstable(feature = "stdsimd", issue = "0")]
 macro_rules! is_arm_feature_detected {
-    ($t: tt) => {
+    ($t:tt) => {
         compile_error!(
             r#"
         is_arm_feature_detected can only be used on ARM targets.
@@ -64,7 +64,8 @@ macro_rules! is_aarch64_feature_detected {
 #[unstable(feature = "stdsimd", issue = "0")]
 macro_rules! is_powerpc64_feature_detected {
     ($t:tt) => {
-        compile_error!(r#"
+        compile_error!(
+            r#"
 is_powerpc64_feature_detected can only be used on PowerPC64 targets.
 You can prevent it from being used in other architectures by
 guarding it behind a cfg(target_arch) as follows:
@@ -72,7 +73,8 @@ guarding it behind a cfg(target_arch) as follows:
     #[cfg(target_arch = "powerpc64")] {
         if is_powerpc64_feature_detected(...) { ... }
     }
-"#)
+"#
+        )
     };
 }
 
@@ -80,7 +82,7 @@ guarding it behind a cfg(target_arch) as follows:
 #[macro_export]
 #[unstable(feature = "stdsimd", issue = "0")]
 macro_rules! is_mips_feature_detected {
-    ($t: tt) => {
+    ($t:tt) => {
         compile_error!(
             r#"
         is_mips_feature_detected can only be used on MIPS targets.
@@ -99,7 +101,7 @@ macro_rules! is_mips_feature_detected {
 #[macro_export]
 #[unstable(feature = "stdsimd", issue = "0")]
 macro_rules! is_mips64_feature_detected {
-    ($t: tt) => {
+    ($t:tt) => {
         compile_error!(
             r#"
         is_mips64_feature_detected can only be used on MIPS64 targets.
