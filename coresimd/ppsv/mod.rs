@@ -65,7 +65,7 @@ impl<T, U> IntoBits<U> for T
 where
     U: FromBits<T>,
 {
-    #[inline]
+    #[inline(always)]
     fn into_bits(self) -> U {
         debug_assert!(::mem::size_of::<Self>() == ::mem::size_of::<U>());
         U::from_bits(self)
@@ -74,7 +74,7 @@ where
 
 // FromBits (and thus IntoBits) is reflexive.
 impl<T> FromBits<T> for T {
-    #[inline]
+    #[inline(always)]
     fn from_bits(t: Self) -> Self {
         t
     }
