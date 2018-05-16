@@ -139,7 +139,7 @@ pub mod arch {
     #[doc(cfg(target_arch = "powerpc64"))]
     #[unstable(feature = "stdsimd", issue = "0")]
     pub mod powerpc64 {
-        pub use coresimd::powerpc::*;
+        pub use coresimd::powerpc64::*;
     }
 }
 
@@ -160,7 +160,10 @@ mod wasm32;
 #[cfg(any(target_arch = "mips", target_arch = "mips64", dox))]
 mod mips;
 
-#[cfg(any(target_arch = "powerpc", target_arch = "powerpc64"))]
+#[cfg(any(target_arch = "powerpc", target_arch = "powerpc64", dox))]
 mod powerpc;
+
+#[cfg(any(target_arch = "powerpc64", dox))]
+mod powerpc64;
 
 mod nvptx;
