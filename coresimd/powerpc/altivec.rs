@@ -666,7 +666,9 @@ mod tests {
     unsafe fn vec_add_i32x4_i32x4() {
         let x = i32x4::new(1, 2, 3, 4);
         let y = i32x4::new(4, 3, 2, 1);
+        let x: vector_signed_int = x.into_bits();
+        let y: vector_signed_int = y.into_bits();
         let z = vec_add(x, y);
-        assert_eq!(z, i32x4::splat(5));
+        assert_eq!(i32x4::splat(5), z.into_bits());
     }
 }
