@@ -109,15 +109,27 @@ pub fn assert_instr(
     } else {
         syn::LitStr::new("C", proc_macro2::Span::call_site())
     };
+    let shim_name_str = format!("{}{}", shim_name, assert_name);
     let to_test = quote! {
         #attrs
         unsafe extern #abi fn #shim_name(#(#inputs),*) #ret {
+            // The compiler in optimized mode by default runs a pass called
+            // "mergefunc" where it'll merge functions that look identical.
+            // Turns out some intrinsics produce identical code and they're
+            // folded together, meaning that one just jumps to another. This
+            // messes up our inspection of the disassembly of this function and
+            // we're not a huge fan of that.
+            //
+            // To thwart this pass and prevent functions from being merged we
+            // generate some code that's hopefully very tight in terms of
+            // codegen but is otherwise unique to prevent code from being
+            // folded.
+            ::stdsimd_test::_DONT_DEDUP = #shim_name_str;
             #name(#(#input_vals),*)
         }
     };
 
-    let tts: TokenStream = quote_spanned! {
-        proc_macro2::Span::call_site() =>
+    let tts: TokenStream = quote! {
         #[test]
         #[allow(non_snake_case)]
         #maybe_ignore
