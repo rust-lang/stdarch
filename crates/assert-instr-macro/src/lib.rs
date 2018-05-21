@@ -53,10 +53,10 @@ pub fn assert_instr(
         .replace('.', "_")
         .replace(|c: char| c.is_whitespace(), "");
     let assert_name = syn::Ident::new(
-        &format!("assert_{}_{}", name.to_string(), instr_str)[..],
-        proc_macro2::Span::call_site(),
+        &format!("assert_{}_{}", name, instr_str),
+        name.span(),
     );
-    let shim_name = syn::Ident::new(&format!("{}_shim", name.to_string()), proc_macro2::Span::call_site());
+    let shim_name = syn::Ident::new(&format!("{}_shim", name), name.span());
     let mut inputs = Vec::new();
     let mut input_vals = Vec::new();
     let ret = &func.decl.output;
@@ -75,7 +75,7 @@ pub fn assert_instr(
         match invoc
             .args
             .iter()
-            .find(|a| a.0 == &ident.to_string())
+            .find(|a| *ident == a.0)
         {
             Some(&(_, ref tts)) => {
                 input_vals.push(quote! { #tts });

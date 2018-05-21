@@ -123,7 +123,7 @@ fn find_name(item: TokenStream) -> Ident {
     let mut tokens = item.into_iter();
     while let Some(tok) = tokens.next() {
         if let TokenTree::Ident(word) = tok {
-            if word.to_string() == "fn" {
+            if word == "fn" {
                 break;
             }
         }
