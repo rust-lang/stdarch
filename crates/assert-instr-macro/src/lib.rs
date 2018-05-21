@@ -48,14 +48,15 @@ pub fn assert_instr(
     use quote::ToTokens;
     let instr_str = instr
         .clone()
-        .into_tokens()
+        .into_token_stream()
         .to_string()
         .replace('.', "_")
         .replace(|c: char| c.is_whitespace(), "");
-    let assert_name = syn::Ident::from(
-        &format!("assert_{}_{}", name.as_ref(), instr_str)[..],
+    let assert_name = syn::Ident::new(
+        &format!("assert_{}_{}", name.to_string(), instr_str)[..],
+        proc_macro2::Span::call_site(),
     );
-    let shim_name = syn::Ident::from(format!("{}_shim", name.as_ref()));
+    let shim_name = syn::Ident::new(&format!("{}_shim", name.to_string()), proc_macro2::Span::call_site());
     let mut inputs = Vec::new();
     let mut input_vals = Vec::new();
     let ret = &func.decl.output;
@@ -64,7 +65,7 @@ pub fn assert_instr(
             syn::FnArg::Captured(ref c) => c,
             ref v => panic!(
                 "arguments must not have patterns: `{:?}`",
-                v.clone().into_tokens()
+                v.clone().into_token_stream()
             ),
         };
         let ident = match capture.pat {
@@ -74,7 +75,7 @@ pub fn assert_instr(
         match invoc
             .args
             .iter()
-            .find(|a| a.0 == ident.as_ref())
+            .find(|a| a.0 == &ident.to_string())
         {
             Some(&(_, ref tts)) => {
                 input_vals.push(quote! { #tts });
@@ -95,7 +96,7 @@ pub fn assert_instr(
                 .expect("attr.path.segments.first() failed")
                 .value()
                 .ident
-                .as_ref()
+                .to_string()
                 .starts_with("target")
         })
         .collect::<Vec<_>>();
@@ -169,7 +170,7 @@ where
     T: Clone + IntoIterator,
     T::Item: quote::ToTokens,
 {
-    fn to_tokens(&self, tokens: &mut quote::Tokens) {
+    fn to_tokens(&self, tokens: &mut proc_macro2::TokenStream) {
         for item in self.0.clone() {
             item.to_tokens(tokens);
         }
