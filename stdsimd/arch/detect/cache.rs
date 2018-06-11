@@ -12,11 +12,13 @@ use core::sync::atomic::AtomicU64;
 use core::sync::atomic::AtomicU32;
 
 /// Sets the `bit` of `x`.
+#[promotable_const_fn]
 pub const fn set_bit(x: u64, bit: u32) -> u64 {
     x | 1 << bit
 }
 
 /// Tests the `bit` of `x`.
+#[promotable_const_fn]
 pub const fn test_bit(x: u64, bit: u32) -> bool {
     x & (1 << bit) != 0
 }
