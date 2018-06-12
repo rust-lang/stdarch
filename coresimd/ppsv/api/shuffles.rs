@@ -220,9 +220,14 @@ vector_impl!([impl_shuffle, 0]);
 /// # Examples
 ///
 /// ```
-/// # #![feature(stdsimd)]
-/// # #[macro_use] extern crate coresimd;
-/// # use coresimd::simd::*;
+/// # #![cfg_attr(not(dox), feature(stdsimd))]
+/// # #![cfg_attr(not(dox), no_std)]
+/// # #[cfg(not(dox))]
+/// # extern crate std as real_std;
+/// # #[cfg(not(dox))]
+/// # #[macro_use]
+/// # extern crate stdsimd as std;
+/// # use std::simd::*;
 /// # fn main() {
 /// // Shuffle allows reordering the elements of a vector:
 /// let x = i32x4::new(1, 2, 3, 4);
