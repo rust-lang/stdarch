@@ -386,6 +386,8 @@ macro_rules! shuffle {
         }
     };
     ($vec:expr, [$($l:expr),*]) => {
-        shuffle!($vec, $vec, [$($l),*])
+        match $vec {
+            v => shuffle!(v, v, [$($l),*])
+        }
     }
 }
