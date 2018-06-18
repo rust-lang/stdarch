@@ -9,6 +9,7 @@
 
 #![feature(const_fn, integer_atomics, staged_api, stdsimd)]
 #![feature(doc_cfg, allow_internal_unstable)]
+#![feature(promotable_const_fn, custom_attributes)]
 #![cfg_attr(feature = "cargo-clippy", allow(shadow_reuse))]
 #![cfg_attr(target_os = "linux", feature(linkage))]
 #![no_std]
