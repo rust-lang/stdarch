@@ -194,8 +194,8 @@
 /// [`aarch64`]: aarch64/index.html
 /// [`mips`]: mips/index.html
 /// [`mips64`]: mips64/index.html
-/// [`powerpc`]: https://rust-lang-nursery.github.io/stdsimd/aarch64/stdsimd/arch/powerpc/index.html
-/// [`powerpc64`]: https://rust-lang-nursery.github.io/stdsimd/aarch64/stdsimd/arch/powerpc64/index.html
+/// [`powerpc`]: powerpc/index.html
+/// [`powerpc64`]: powerpc64/index.html
 ///
 /// # Examples
 ///
