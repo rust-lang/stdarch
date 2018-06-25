@@ -9,8 +9,8 @@ macro_rules! impl_vector_rotates {
             /// the end of the resulting integer.
             ///
             /// Please note this isn't the same operation as `<<`!. Also note it
-            /// isn't equivalent to `slice::rotate_left` (that can be implemented
-            /// with vector shuffles).
+            /// isn't equivalent to `slice::rotate_left`, it doesn't move the vector's
+            /// lanes around. (that can be implemented with vector shuffles).
             #[inline]
             pub fn rotate_left(self, n: $id) -> $id {
                 const LANE_WIDTH: $elem_ty = ::mem::size_of::<$elem_ty>() as $elem_ty * 8;
