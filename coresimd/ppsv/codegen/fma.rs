@@ -1,5 +1,5 @@
 //! Vector fused multiply add
-
+#![allow(dead_code)]
 use coresimd::simd::*;
 
 #[allow(improper_ctypes)]
@@ -25,13 +25,21 @@ pub(crate) trait FloatFma {
 }
 
 macro_rules! impl_fma {
-    ($id:ident: $fn:ident) => {
+    ($id:ident : $fn:ident) => {
+        #[cfg(not(target_arch = "s390x"))]
         impl FloatFma for $id {
             fn fma(self, y: Self, z: Self) -> Self {
                 unsafe { $fn(self, y, z) }
             }
         }
-    }
+        // FIXME: https://github.com/rust-lang-nursery/stdsimd/issues/501
+        #[cfg(target_arch = "s390x")]
+        impl FloatFma for $id {
+            fn fma(self, y: Self, z: Self) -> Self {
+                self * y + z
+            }
+        }
+    };
 }
 
 impl_fma!(f32x2: fma_v2f32);
