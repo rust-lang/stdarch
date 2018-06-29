@@ -9,16 +9,20 @@ matrix:
     - env: TARGET=i686-unknown-linux-gnu
     - env: TARGET=x86_64-unknown-linux-gnu NO_ADD=1
     - env: TARGET=x86_64-unknown-linux-gnu-emulated NO_ADD=1 STDSIMD_TEST_EVERYTHING=1
+    - env: TARGET=x86_64-linux-android
     - env: TARGET=arm-unknown-linux-gnueabihf
+    - env: TARGET=arm-linux-androideabi
     - env: TARGET=armv7-unknown-linux-gnueabihf
     - env: TARGET=aarch64-unknown-linux-gnu
     - env: TARGET=mips-unknown-linux-gnu NORUN=1
     - env: TARGET=mipsel-unknown-linux-gnu NORUN=1
     - env: TARGET=mips64-unknown-linux-gnuabi64 NORUN=1
     - env: TARGET=mips64el-unknown-linux-gnuabi64 NORUN=1
+    - env: TARGET=aarch64-linux-android
     - env: TARGET=powerpc-unknown-linux-gnu
     - env: TARGET=powerpc64-unknown-linux-gnu
     - env: TARGET=powerpc64le-unknown-linux-gnu
+    - env: TARGET=s390x-unknown-linux-gnu NORUN=1
     - os: osx
       env: TARGET=i686-apple-darwin
       script: ci/run.sh

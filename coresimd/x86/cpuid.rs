@@ -86,26 +86,58 @@ pub fn has_cpuid() -> bool {
     }
     #[cfg(target_arch = "x86")]
     {
-        use coresimd::x86::{__readeflags, __writeeflags};
+        // Optimization for i586 and i686 Rust targets which SSE enabled
+        // and support cpuid:
+        #[cfg(target_feature = "sse")] {
+            true
+        }
 
-        // On `x86` the `cpuid` instruction is not always available.
-        // This follows the approach indicated in:
-        // http://wiki.osdev.org/CPUID#Checking_CPUID_availability
+        // If SSE is not enabled, detect whether cpuid is available:
+        #[cfg(not(target_feature = "sse"))]
         unsafe {
-            // Read EFLAGS:
-            let eflags: u32 = __readeflags();
-
-            // Invert the ID bit in EFLAGS:
-            let eflags_mod: u32 = eflags | 0x0020_0000;
-
-            // Store the modified EFLAGS (ID bit may or may not be inverted)
-            __writeeflags(eflags_mod);
-
-            // Read EFLAGS again:
-            let eflags_after: u32 = __readeflags();
-
-            // Check if the ID bit changed:
-            eflags_after != eflags
+            // On `x86` the `cpuid` instruction is not always available.
+            // This follows the approach indicated in:
+            // http://wiki.osdev.org/CPUID#Checking_CPUID_availability
+            // https://software.intel.com/en-us/articles/using-cpuid-to-detect-the-presence-of-sse-41-and-sse-42-instruction-sets/
+            // which detects whether `cpuid` is available by checking whether the 21st bit of the EFLAGS register is modifiable or not.
+            // If it is, then `cpuid` is available.
+            let result: u32;
+            let _temp: u32;
+            asm!(r#"
+                 # Read eflags into $0 and copy it into $1:
+                 pushfd
+                 pop     $0
+                 mov     $1, $0
+                 # Flip 21st bit of $0.
+                 xor     $0, 0x200000
+                 # Set eflags to the value of $0
+                 #
+                 # Bit 21st can only be modified if cpuid is available
+                 push    $0
+                 popfd          # A
+                 # Read eflags into $0:
+                 pushfd         # B
+                 pop     $0
+                 # xor with the original eflags sets the bits that
+                 # have been modified:
+                 xor     $0, $1
+                 "#
+                 : "=r"(result), "=r"(_temp)
+                 :
+                 : "cc", "memory"
+                 : "intel");
+            // There is a race between popfd (A) and pushfd (B)
+            // where other bits beyond 21st may have been modified due to
+            // interrupts, a debugger stepping through the asm, etc.
+            //
+            // Therefore, explicitly check whether the 21st bit
+            // was modified or not.
+            //
+            // If the result is zero, the cpuid bit was not modified.
+            // If the result is 0x200000 (non-zero), then the cpuid
+            // was correctly modified and the CPU supports the cpuid
+            // instruction:
+            (result & 0x200000) != 0
         }
     }
 }
@@ -138,17 +170,8 @@ mod tests {
         assert!(cpuid::has_cpuid());
     }
 
-    #[cfg(target_arch = "x86")]
     #[test]
-    fn test_has_cpuid() {
-        unsafe {
-            let before = __readeflags();
-
-            if cpuid::has_cpuid() {
-                assert!(before != __readeflags());
-            } else {
-                assert!(before == __readeflags());
-            }
-        }
+    fn test_has_cpuid_idempotent() {
+        assert_eq!(cpuid::has_cpuid(), cpuid::has_cpuid());
     }
 }

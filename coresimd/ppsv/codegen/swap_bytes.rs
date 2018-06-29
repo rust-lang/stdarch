@@ -12,7 +12,7 @@ macro_rules! impl_swap_bytes {
             fn swap_bytes(self) -> Self {
                 let vec8 = $vec8::from_bits(self);
                 let shuffled: $vec8 = unsafe { $shuf(vec8, vec8, $indices) };
-                $ty::from_bits(shuffled)
+                $id::from_bits(shuffled)
             }
         }
     );
@@ -83,4 +83,59 @@ impl_swap_bytes! {
     u16x32, i16x32,
     u32x16, i32x16,
     u64x8, i64x8,
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::mem;
+
+    // testing larger vectors is less simple
+    #[test]
+    #[cfg(feature = "simd_support")]
+    fn swap_bytes_128() {
+        let x: u128 = 0x2d99787926d46932a4c1f32680f70c55;
+        let expected = x.swap_bytes();
+
+        let vec: u8x16 = unsafe { mem::transmute(x) };
+        let actual = unsafe { mem::transmute(vec.swap_bytes()) };
+
+        assert_eq!(expected, actual);
+    }
+
+    #[test]
+    #[cfg(feature = "simd_support")]
+    fn swap_bytes_64() {
+        let x: u64 = 0x2d99787926d46932;
+        let expected = x.swap_bytes();
+
+        let vec: u8x8 = unsafe { mem::transmute(x) };
+        let actual = unsafe { mem::transmute(vec.swap_bytes()) };
+
+        assert_eq!(expected, actual);
+    }
+
+    #[test]
+    #[cfg(feature = "simd_support")]
+    fn swap_bytes_32() {
+        let x: u32 = 0x2d997872;
+        let expected = x.swap_bytes();
+
+        let vec: u8x4 = unsafe { mem::transmute(x) };
+        let actual = unsafe { mem::transmute(vec.swap_bytes()) };
+
+        assert_eq!(expected, actual);
+    }
+
+    #[test]
+    #[cfg(feature = "simd_support")]
+    fn swap_bytes_16() {
+        let x: u16 = 0x2d99;
+        let expected = x.swap_bytes();
+
+        let vec: u8x2 = unsafe { mem::transmute(x) };
+        let actual = unsafe { mem::transmute(vec.swap_bytes()) };
+
+        assert_eq!(expected, actual);
+    }
 }
