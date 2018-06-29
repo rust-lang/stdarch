@@ -10,3 +10,5 @@ pub mod cos;
 pub mod fma;
 pub mod sin;
 pub mod sqrt;
+
+pub mod swap_bytes;
