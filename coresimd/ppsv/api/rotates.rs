@@ -16,7 +16,7 @@ macro_rules! impl_vector_rotates {
                 const LANE_WIDTH: $elem_ty = ::mem::size_of::<$elem_ty>() as $elem_ty * 8;
                 // Protect against undefined behavior for over-long bit shifts
                 let n = n % LANE_WIDTH;
-                (self << n) | (self >> (LANE_WIDTH - n))
+                (self << n) | (self >> ((LANE_WIDTH - n) % LANE_WIDTH))
             }
 
             /// Shifts the bits of each lane to the right by the specified amount in
@@ -31,7 +31,7 @@ macro_rules! impl_vector_rotates {
                 const LANE_WIDTH: $elem_ty = ::mem::size_of::<$elem_ty>() as $elem_ty * 8;
                 // Protect against undefined behavior for over-long bit shifts
                 let n = n % LANE_WIDTH;
-                (self >> n) | (self << (LANE_WIDTH - n))
+                (self >> n) | (self << ((LANE_WIDTH - n) % LANE_WIDTH))
             }
         }
     };
