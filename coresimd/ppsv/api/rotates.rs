@@ -1,6 +1,8 @@
 //! Implements integer rotates.
 #![allow(unused)]
 
+// inline(always) to encourage the compiler to generate rotate instructions
+// where available
 macro_rules! impl_vector_rotates {
     ($id:ident, $elem_ty:ident) => {
         impl $id {
@@ -11,7 +13,7 @@ macro_rules! impl_vector_rotates {
             /// Please note this isn't the same operation as `<<`!. Also note it
             /// isn't equivalent to `slice::rotate_left`, it doesn't move the vector's
             /// lanes around. (that can be implemented with vector shuffles).
-            #[inline]
+            #[inline(always)]
             pub fn rotate_left(self, n: $id) -> $id {
                 const LANE_WIDTH: $elem_ty = ::mem::size_of::<$elem_ty>() as $elem_ty * 8;
                 // Protect against undefined behavior for over-long bit shifts
@@ -26,7 +28,7 @@ macro_rules! impl_vector_rotates {
             /// Please note this isn't the same operation as `>>`!. Also note it
             /// isn't similar to `slice::rotate_right`, it doesn't move the vector's
             /// lanes around. (that can be implemented with vector shuffles).
-            #[inline]
+            #[inline(always)]
             pub fn rotate_right(self, n: $id) -> $id {
                 const LANE_WIDTH: $elem_ty = ::mem::size_of::<$elem_ty>() as $elem_ty * 8;
                 // Protect against undefined behavior for over-long bit shifts

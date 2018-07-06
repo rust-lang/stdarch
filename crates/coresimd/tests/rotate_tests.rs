@@ -5,8 +5,8 @@
 #![feature(avx512_target_feature)]
 #![feature(abi_vectorcall)]
 
-extern crate stdsimd_test;
 extern crate stdsimd;
+extern crate stdsimd_test;
 
 use stdsimd::simd::*;
 use stdsimd_test::assert_instr;
