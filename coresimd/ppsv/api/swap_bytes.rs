@@ -23,6 +23,21 @@ macro_rules! impl_swap_bytes {
                     self.swap_bytes()
                 }
             }
+
+            /// Converts self to big endian from the target's endianness.
+            ///
+            /// On big endian this is a no-op. On little endian the bytes are swapped.
+            #[inline]
+            pub fn to_be(self) -> Self {
+                #[cfg(target_endian = "big")]
+                {
+                    self
+                }
+                #[cfg(not(target_endian = "big"))]
+                {
+                    self.swap_bytes()
+                }
+            }
         }
     };
 }
