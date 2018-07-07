@@ -72,6 +72,8 @@ mod masks_select;
 mod scalar_shifts;
 #[macro_use]
 mod shifts;
+#[macro_use]
+mod rotates;
 
 /// Sealed trait used for constraining select implementations.
 pub trait Lanes<A> {}
@@ -139,6 +141,7 @@ macro_rules! simd_i_ty {
             [impl_bitwise_reductions, $id, $elem_ty],
             [impl_all_scalar_shifts, $id, $elem_ty],
             [impl_vector_shifts, $id, $elem_ty],
+            [impl_vector_rotates, $id, $elem_ty],
             [impl_hex_fmt, $id, $elem_ty],
             [impl_eq, $id],
             [impl_partial_eq, $id],
@@ -163,6 +166,7 @@ macro_rules! simd_i_ty {
                 test_bitwise_reductions!($id, !(0 as $elem_ty));
                 test_all_scalar_shift_ops!($id, $elem_ty);
                 test_vector_shift_ops!($id, $elem_ty);
+                test_vector_rotate_ops!($id, $elem_ty);
                 test_hex_fmt!($id, $elem_ty);
                 test_partial_eq!($id, 1 as $elem_ty, 0 as $elem_ty);
                 test_default!($id, $elem_ty);
@@ -193,6 +197,7 @@ macro_rules! simd_u_ty {
             [impl_bitwise_reductions, $id, $elem_ty],
             [impl_all_scalar_shifts, $id, $elem_ty],
             [impl_vector_shifts, $id, $elem_ty],
+            [impl_vector_rotates, $id, $elem_ty],
             [impl_hex_fmt, $id, $elem_ty],
             [impl_eq, $id],
             [impl_partial_eq, $id],
@@ -216,6 +221,7 @@ macro_rules! simd_u_ty {
                 test_bitwise_reductions!($id, !(0 as $elem_ty));
                 test_all_scalar_shift_ops!($id, $elem_ty);
                 test_vector_shift_ops!($id, $elem_ty);
+                test_vector_rotate_ops!($id, $elem_ty);
                 test_hex_fmt!($id, $elem_ty);
                 test_partial_eq!($id, 1 as $elem_ty, 0 as $elem_ty);
                 test_default!($id, $elem_ty);

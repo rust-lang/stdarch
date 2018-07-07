@@ -53,7 +53,6 @@ macro_rules! test_vector_shift_ops {
             assert_eq!(z >> z, z);
             assert_eq!(z >> o, z);
             assert_eq!(z >> t, z);
-            assert_eq!(z >> t, z);
 
             assert_eq!(o >> z, o);
             assert_eq!(t >> z, t);
@@ -65,7 +64,6 @@ macro_rules! test_vector_shift_ops {
             assert_eq!(t >> t, z);
             assert_eq!(f >> o, t);
             assert_eq!(f >> t, o);
-            assert_eq!(f >> max, z);
 
             // shl
             assert_eq!(z << z, z);
