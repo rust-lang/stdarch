@@ -46,38 +46,56 @@ macro_rules! impl_swap_bytes {
     };
 }
 
-macro_rules! impl_test {
-    ($id:ident, $vec8:ident) => {
-        use coresimd::simd::$id as Vector;
-        use coresimd::simd::$vec8;
-        use coresimd::simd::FromBits;
+#[cfg(test)]
+macro_rules! test_swap_bytes {
+    ($id:ident, $elem_ty:ty) => {
+        use coresimd::simd::$id;
+        use std::{mem, slice};
+
+        const BYTES: [u8; 64] = [
+            0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18,
+            19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34,
+            35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50,
+            51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63,
+        ];
+
+        macro_rules! swap {
+            ($func: ident) => {{
+                // catch possible future >512 vectors
+                assert!(mem::size_of::<$id>() <= 64);
+
+                let mut actual = BYTES;
+                let elems: &mut [$elem_ty] = unsafe {
+                    slice::from_raw_parts_mut(
+                        actual.as_mut_ptr() as *mut $elem_ty,
+                        $id::lanes(),
+                    )
+                };
+
+                let vec = $id::load_unaligned(elems);
+                vec.$func().store_unaligned(elems);
+
+                actual
+            }};
+        }
 
         macro_rules! test_swap {
-            ($func: ident) => {
-                let mut x = $vec8::splat(0);
-                let mut exp = $vec8::splat(0);
-                for i in 0..$vec8::lanes() {
-                    x = x.replace(i, i as u8);
-                    exp = exp.replace(i, ($vec8::lanes() - 1 - i) as u8);
-                }
-                let actual = Vector::from_bits(x).$func();
+            ($func: ident) => {{
+                let actual = swap!($func);
+                let expected =
+                    BYTES.iter().rev().skip(64 - mem::size_of::<$id>());
 
-                assert_eq!(Vector::from_bits(exp), actual);
-            };
+                assert!(actual.iter().zip(expected).all(|(x, y)| x == y));
+            }};
         }
 
         macro_rules! test_no_swap {
-            ($func: ident) => {
-                let mut x = $vec8::splat(0);
-                for i in 0..$vec8::lanes() {
-                    x = x.replace(i, i as u8);
-                }
+            ($func: ident) => {{
+                let actual = swap!($func);
+                let expected = BYTES.iter().take(mem::size_of::<$id>());
 
-                let exp = Vector::from_bits(x);
-                let actual = Vector::from_bits(x).$func();
-
-                assert_eq!(exp, actual);
-            };
+                assert!(actual.iter().zip(expected).all(|(x, y)| x == y));
+            }};
         }
 
         #[test]
@@ -109,49 +127,4 @@ macro_rules! impl_test {
             }
         }
     };
-}
-
-#[cfg(test)]
-macro_rules! test_swap_bytes {
-    (u8x2)   => { impl_test! { u8x2,   u8x2  } };
-    (i8x2)   => { impl_test! { i8x2,   u8x2  } };
-
-    (u8x4)   => { impl_test! { u8x4,   u8x4  } };
-    (i8x4)   => { impl_test! { i8x4,   u8x4  } };
-    (u16x2)  => { impl_test! { u16x2,  u8x4  } };
-    (i16x2)  => { impl_test! { i16x2,  u8x4  } };
-
-    (u8x8)   => { impl_test! { u8x8,   u8x8  } };
-    (i8x8)   => { impl_test! { i8x8,   u8x8  } };
-    (u16x4)  => { impl_test! { u16x4,  u8x8  } };
-    (i16x4)  => { impl_test! { i16x4,  u8x8  } };
-    (u32x2)  => { impl_test! { u32x2,  u8x8  } };
-    (i32x2)  => { impl_test! { i32x2,  u8x8  } };
-
-    (u8x16)  => { impl_test! { u8x16,  u8x16 } };
-    (i8x16)  => { impl_test! { i8x16,  u8x16 } };
-    (u16x8)  => { impl_test! { u16x8,  u8x16 } };
-    (i16x8)  => { impl_test! { i16x8,  u8x16 } };
-    (u32x4)  => { impl_test! { u32x4,  u8x16 } };
-    (i32x4)  => { impl_test! { i32x4,  u8x16 } };
-    (u64x2)  => { impl_test! { u64x2,  u8x16 } };
-    (i64x2)  => { impl_test! { i64x2,  u8x16 } };
-
-    (u8x32)  => { impl_test! { u8x32,  u8x32 } };
-    (i8x32)  => { impl_test! { i8x32,  u8x32 } };
-    (u16x16) => { impl_test! { u16x16, u8x32 } };
-    (i16x16) => { impl_test! { i16x16, u8x32 } };
-    (u32x8)  => { impl_test! { u32x8,  u8x32 } };
-    (i32x8)  => { impl_test! { i32x8,  u8x32 } };
-    (u64x4)  => { impl_test! { u64x4,  u8x32 } };
-    (i64x4)  => { impl_test! { i64x4,  u8x32 } };
-
-    (u8x64)  => { impl_test! { u8x64,  u8x64 } };
-    (i8x64)  => { impl_test! { i8x64,  u8x64 } };
-    (u16x32) => { impl_test! { u16x32, u8x64 } };
-    (i16x32) => { impl_test! { i16x32, u8x64 } };
-    (u32x16) => { impl_test! { u32x16, u8x64 } };
-    (i32x16) => { impl_test! { i32x16, u8x64 } };
-    (u64x8)  => { impl_test! { u64x8,  u8x64 } };
-    (i64x8)  => { impl_test! { i64x8,  u8x64 } };
 }

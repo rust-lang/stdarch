@@ -146,7 +146,7 @@ macro_rules! simd_i_ty {
             [impl_partial_eq, $id],
             [impl_default, $id, $elem_ty],
             [impl_int_minmax_ops, $id],
-            [impl_swap_bytes, $id],
+            [impl_swap_bytes, $id]
         );
 
         $test_macro!(
@@ -225,7 +225,7 @@ macro_rules! simd_u_ty {
                 test_default!($id, $elem_ty);
                 test_mask_select!($mask_ty, $id, $elem_ty);
                 test_int_minmax_ops!($id, $elem_ty);
-                test_swap_bytes!($id);
+                test_swap_bytes!($id, $elem_ty);
             }
         );
     }
