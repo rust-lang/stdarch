@@ -96,12 +96,16 @@ mod sealed {
     }
 
     impl VectorMsums<vector_unsigned_int> for vector_unsigned_short {
+        #[inline]
+        #[target_feature(enable = "altivec")]
         unsafe fn vec_msums(self, b: Self, c: vector_unsigned_int) -> vector_unsigned_int {
             vmsumuhs(self, b, c)
         }
     }
 
     impl VectorMsums<vector_signed_int> for vector_signed_short {
+        #[inline]
+        #[target_feature(enable = "altivec")]
         unsafe fn vec_msums(self, b: Self, c: vector_signed_int) -> vector_signed_int {
             vmsumshs(self, b, c)
         }
