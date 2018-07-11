@@ -434,6 +434,40 @@ mod sealed {
             vec_add_float_float(self, other)
         }
     }
+
+    pub trait VectorMladd<Other> {
+        type Result;
+        unsafe fn vec_mladd(self, b: Other, c: Other) -> Self::Result;
+    }
+
+    #[inline]
+    #[target_feature(enable = "altivec")]
+    #[cfg_attr(test, assert_instr(vmladduhm))]
+    unsafe fn mladd(a: i16x8, b: i16x8, c: i16x8) -> i16x8 {
+        simd_add(simd_mul(a, b), c)
+    }
+
+    macro_rules! vector_mladd {
+        ($a: ident, $bc: ident, $d: ident) => {
+            impl VectorMladd<$bc> for $a {
+                type Result = $d;
+                #[inline]
+                #[target_feature(enable = "altivec")]
+                unsafe fn vec_mladd(self, b: $bc, c: $bc) -> Self::Result {
+                    let a: i16x8 = ::mem::transmute(self);
+                    let b: i16x8 = ::mem::transmute(b);
+                    let c: i16x8 = ::mem::transmute(c);
+
+                    ::mem::transmute(mladd(a, b, c))
+                }
+            }
+        }
+    }
+
+    vector_mladd! { vector_unsigned_short, vector_unsigned_short, vector_unsigned_short }
+    vector_mladd! { vector_unsigned_short, vector_signed_short, vector_signed_short }
+    vector_mladd! { vector_signed_short, vector_unsigned_short, vector_signed_short }
+    vector_mladd! { vector_signed_short, vector_signed_short, vector_signed_short }
 }
 
 /// Vector add.
@@ -478,6 +512,15 @@ pub unsafe fn vec_madds(
     a: vector_signed_short, b: vector_signed_short, c: vector_signed_short,
 ) -> vector_signed_short {
     vmhaddshs(a, b, c)
+}
+
+/// Vector Multiply Low and Add Unsigned Half Word
+#[inline]
+#[target_feature(enable = "altivec")]
+pub unsafe fn vec_mladd<T, U>(a: T, b: U, c: U) -> <T as sealed::VectorMladd<U>>::Result
+where
+    T: sealed::VectorMladd<U> {
+    a.vec_mladd(b, c)
 }
 
 /// Vector Multiply Round and Add Saturated
@@ -657,6 +700,34 @@ mod tests {
         let d = i16x8::new(0, 3, 6, 9, 12, 15, 18, i16::max_value());
 
         assert_eq!(d, ::mem::transmute(vec_mradds(a, b, c)));
+    }
+
+    macro_rules! test_vec_mladd {
+        {$name:ident, $sa:ident, $la:ident, $sbc:ident, $lbc:ident, $sd:ident,
+            [$($a:expr),+], [$($b:expr),+], [$($c:expr),+], [$($d:expr),+]} => {
+            #[simd_test(enable = "altivec")]
+            unsafe fn $name() {
+                let a: $la = ::mem::transmute($sa::new($($a),+));
+                let b: $lbc = ::mem::transmute($sbc::new($($b),+));
+                let c = ::mem::transmute($sbc::new($($c),+));
+                let d = $sd::new($($d),+);
+
+                assert_eq!(d, ::mem::transmute(vec_mladd(a, b, c)));
+            }
+        }
+    }
+
+    test_vec_mladd! { test_vec_mladd_u16x8_u16x8, u16x8, vector_unsigned_short, u16x8, vector_unsigned_short, u16x8,
+        [0, 1, 2, 3, 4, 5, 6, 7], [0, 1, 2, 3, 4, 5, 6, 7], [0, 1, 2, 3, 4, 5, 6, 7], [0, 2, 6, 12, 20, 30, 42, 56]
+    }
+    test_vec_mladd! { test_vec_mladd_u16x8_i16x8, u16x8, vector_unsigned_short, i16x8, vector_unsigned_short, i16x8,
+        [0, 1, 2, 3, 4, 5, 6, 7], [0, 1, 2, 3, 4, 5, 6, 7], [0, 1, 2, 3, 4, 5, 6, 7], [0, 2, 6, 12, 20, 30, 42, 56]
+    }
+    test_vec_mladd! { test_vec_mladd_i16x8_u16x8, i16x8, vector_signed_short, u16x8, vector_unsigned_short, i16x8,
+        [0, 1, 2, 3, 4, 5, 6, 7], [0, 1, 2, 3, 4, 5, 6, 7], [0, 1, 2, 3, 4, 5, 6, 7], [0, 2, 6, 12, 20, 30, 42, 56]
+    }
+    test_vec_mladd! { test_vec_mladd_i16x8_i16x8, i16x8, vector_signed_short, i16x8, vector_unsigned_short, i16x8,
+        [0, 1, 2, 3, 4, 5, 6, 7], [0, 1, 2, 3, 4, 5, 6, 7], [0, 1, 2, 3, 4, 5, 6, 7], [0, 2, 6, 12, 20, 30, 42, 56]
     }
 
     #[simd_test(enable = "altivec")]
