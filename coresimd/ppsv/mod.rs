@@ -94,3 +94,21 @@ impl<T> FromBits<T> for T {
 
 /// Work arounds code generation issues.
 mod codegen;
+
+/// Exposes private shuffle intrinsics
+/// used by the `shuffle!` macro.
+#[allow(unused)]
+macro_rules! expose_shuffles {
+    ($_e:expr) => {
+        pub use self::api::shuffles::{
+            __shuffle_vector2,
+            __shuffle_vector4,
+            __shuffle_vector8,
+            __shuffle_vector16,
+            __shuffle_vector32,
+            __shuffle_vector64,
+        };
+    }
+}
+
+vector_impl!([expose_shuffles, 0]);

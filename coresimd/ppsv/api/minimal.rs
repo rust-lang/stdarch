@@ -81,6 +81,10 @@ macro_rules! impl_minimal {
                 simd_insert(self, index as u32, new_value)
             }
         }
+
+        impl super::api::Simd for $id {
+            type Element = $elem_ty;
+        }
     }
 }
 

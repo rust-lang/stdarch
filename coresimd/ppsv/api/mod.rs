@@ -60,9 +60,8 @@ mod partial_eq;
 // TODO:
 //#[macro_use]
 //mod partial_ord;
-// TODO:
-//#[macro_use]
-//mod shuffles;
+#[macro_use]
+pub mod shuffles;
 // TODO:
 //#[macro_use]
 //mod gather_scatter;
@@ -75,8 +74,14 @@ mod shifts;
 #[macro_use]
 mod swap_bytes;
 
-/// Sealed trait used for constraining select implementations.
+/// Sealed trait used to constrain select implementations.
 pub trait Lanes<A> {}
+
+/// Sealed trait used to constraint vector shuffles.
+pub trait Simd {
+    /// Element type of the SIMD vector.
+    type Element;
+}
 
 /// Defines a portable packed SIMD floating-point vector type.
 macro_rules! simd_f_ty {
