@@ -1,6 +1,5 @@
 //! ARM DSP Intrinsics.
 
-use coresimd::simd::*;
 #[cfg(test)]
 use stdsimd_test::assert_instr;
 
@@ -14,11 +13,6 @@ types! {
     /// ARM-specific 32-bit wide vector of two packed `u16`.
     pub struct uint16x2_t(u16, u16);
 }
-
-impl_from_bits_!(int8x4_t: u32, i32, u16x2, i16x2, m16x2, u8x4, i8x4, m8x4);
-impl_from_bits_!(uint8x4_t: u32, i32, u16x2, i16x2, m16x2, u8x4, i8x4, m8x4);
-impl_from_bits_!(int16x2_t: u32, i32, u16x2, i16x2, m16x2, u8x4, i8x4, m8x4);
-impl_from_bits_!(uint16x2_t: u32, i32, u16x2, i16x2, m16x2, u8x4, i8x4, m8x4);
 
 extern "C" {
     #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.qadd")]
@@ -69,7 +63,7 @@ pub unsafe fn qsub(a: i32, b: i32) -> i32 {
 #[inline]
 #[cfg_attr(test, assert_instr(qadd8))]
 pub unsafe fn qadd8(a: int8x4_t, b: int8x4_t) -> int8x4_t {
-    arm_qadd8(a.into_bits(), b.into_bits()).into_bits()
+    ::mem::transmute(arm_qadd8(::mem::transmute(a), ::mem::transmute(b)))
 }
 
 /// Saturating two 8-bit integer subtraction
@@ -83,7 +77,7 @@ pub unsafe fn qadd8(a: int8x4_t, b: int8x4_t) -> int8x4_t {
 #[inline]
 #[cfg_attr(test, assert_instr(qsub8))]
 pub unsafe fn qsub8(a: int8x4_t, b: int8x4_t) -> int8x4_t {
-    arm_qsub8(a.into_bits(), b.into_bits()).into_bits()
+    ::mem::transmute(arm_qsub8(::mem::transmute(a), ::mem::transmute(b)))
 }
 
 /// Saturating two 16-bit integer subtraction
@@ -95,7 +89,7 @@ pub unsafe fn qsub8(a: int8x4_t, b: int8x4_t) -> int8x4_t {
 #[inline]
 #[cfg_attr(test, assert_instr(qsub16))]
 pub unsafe fn qsub16(a: int16x2_t, b: int16x2_t) -> int16x2_t {
-    arm_qsub16(a.into_bits(), b.into_bits()).into_bits()
+    ::mem::transmute(arm_qsub16(::mem::transmute(a), ::mem::transmute(b)))
 }
 
 /// Saturating two 16-bit integer additions
@@ -107,7 +101,7 @@ pub unsafe fn qsub16(a: int16x2_t, b: int16x2_t) -> int16x2_t {
 #[inline]
 #[cfg_attr(test, assert_instr(qadd16))]
 pub unsafe fn qadd16(a: int16x2_t, b: int16x2_t) -> int16x2_t {
-    arm_qadd16(a.into_bits(), b.into_bits()).into_bits()
+    ::mem::transmute(arm_qadd16(::mem::transmute(a), ::mem::transmute(b)))
 }
 
 #[cfg(test)]
@@ -141,7 +135,7 @@ mod tests {
             let a = i8x4::new(1, 2, 3, ::std::i8::MAX);
             let b = i8x4::new(2, -1, 0, 1);
             let c = i8x4::new(3, 1, 3, ::std::i8::MAX);
-            let r: i8x4 = dsp::qadd8(a.into_bits(), b.into_bits()).into_bits();
+            let r: i8x4 = ::mem::transmute(dsp::qadd8(::mem::transmute(a), ::mem::transmute(b)));
             assert_eq!(r, c);
         }
     }
@@ -152,7 +146,7 @@ mod tests {
             let a = i8x4::new(1, 2, 3, ::std::i8::MIN);
             let b = i8x4::new(2, -1, 0, 1);
             let c = i8x4::new(-1, 3, 3, ::std::i8::MIN);
-            let r: i8x4 = dsp::qsub8(a.into_bits(), b.into_bits()).into_bits();
+            let r: i8x4 = ::mem::transmute(dsp::qsub8(::mem::transmute(a),::mem::transmute(b)));
             assert_eq!(r, c);
         }
     }
@@ -163,8 +157,7 @@ mod tests {
             let a = i16x2::new(1, 2);
             let b = i16x2::new(2, -1);
             let c = i16x2::new(3, 1);
-            let r: i16x2 =
-                dsp::qadd16(a.into_bits(), b.into_bits()).into_bits();
+            let r: i16x2 = ::mem::transmute(dsp::qadd16(::mem::transmute(a),::mem::transmute(b)));
             assert_eq!(r, c);
         }
     }
@@ -175,8 +168,7 @@ mod tests {
             let a = i16x2::new(10, 20);
             let b = i16x2::new(20, -10);
             let c = i16x2::new(-10, 30);
-            let r: i16x2 =
-                dsp::qsub16(a.into_bits(), b.into_bits()).into_bits();
+            let r: i16x2 = ::mem::transmute(dsp::qsub16(::mem::transmute(a), ::mem::transmute(b)));
             assert_eq!(r, c);
         }
     }
