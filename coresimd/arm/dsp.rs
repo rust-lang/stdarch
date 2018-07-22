@@ -56,6 +56,12 @@ extern "C" {
 
     #[cfg_attr(not(target_feature = "mclass"), link_name = "llvm.arm.sel")]
     fn arm_sel(a: i32, b: i32) -> i32;
+
+    #[link_name = "llvm.arm.shsub8"]
+    fn arm_shsub8(a: i32, b: i32) -> i32;
+
+    #[link_name = "llvm.arm.shsub16"]
+    fn arm_shsub16(a: i32, b: i32) -> i32;
 }
 
 /// Signed saturating addition
@@ -201,6 +207,32 @@ pub unsafe fn sel(a: int8x4_t, b: int8x4_t) -> int8x4_t {
     dsp_call!(arm_sel, a, b)
 }
 
+/// Signed halving parallel byte-wise subtraction.
+///
+/// Returns the 8-bit signed equivalent of
+///
+/// res[0] = (a[0] - b[0]) / 2
+/// res[1] = (a[1] - b[1]) / 2
+/// res[2] = (a[2] - b[2]) / 2
+/// res[3] = (a[3] - b[3]) / 2
+#[inline]
+#[cfg_attr(test, assert_instr(shsub8))]
+pub unsafe fn shsub8(a: int8x4_t, b: int8x4_t) -> int8x4_t {
+    dsp_call!(arm_shsub8, a, b)
+}
+
+/// Signed halving parallel halfword-wise subtraction.
+///
+/// Returns the 16-bit signed equivalent of
+///
+/// res[0] = (a[0] - b[0]) / 2
+/// res[1] = (a[1] - b[1]) / 2
+#[inline]
+#[cfg_attr(test, assert_instr(shsub16))]
+pub unsafe fn shsub16(a: int16x2_t, b: int16x2_t) -> int16x2_t {
+    dsp_call!(arm_shsub16, a, b)
+}
+
 #[cfg(test)]
 mod tests {
     use coresimd::arm::*;
@@ -334,6 +366,28 @@ mod tests {
             dsp::sadd8(::mem::transmute(a), ::mem::transmute(b));
             let c = i8x4::new(1, 2, 3, ::std::i8::MAX);
             let r: i8x4 = dsp_call!(dsp::sel, a, b);
+            assert_eq!(r, c);
+        }
+    }
+
+    #[test]
+    fn shsub8() {
+        unsafe {
+            let a = i8x4::new(1, 2, 3, 4);
+            let b = i8x4::new(5, 4, 3, 2);
+            let c = i8x4::new(-2, -1, 0, 1);
+            let r: i8x4 = dsp_call!(dsp::shsub8, a, b);
+            assert_eq!(r, c);
+        }
+    }
+
+    #[test]
+    fn shsub16() {
+        unsafe {
+            let a = i16x2::new(1, 2);
+            let b = i16x2::new(5, 4);
+            let c = i16x2::new(-2, -1);
+            let r: i16x2 = dsp_call!(dsp::shsub16, a, b);
             assert_eq!(r, c);
         }
     }
