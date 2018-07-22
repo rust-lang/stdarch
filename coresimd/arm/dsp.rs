@@ -57,6 +57,12 @@ extern "C" {
     #[cfg_attr(not(target_feature = "mclass"), link_name = "llvm.arm.sel")]
     fn arm_sel(a: i32, b: i32) -> i32;
 
+    #[link_name = "llvm.arm.shadd8"]
+    fn arm_shadd8(a: i32, b: i32) -> i32;
+
+    #[link_name = "llvm.arm.shadd16"]
+    fn arm_shadd16(a: i32, b: i32) -> i32;
+
     #[link_name = "llvm.arm.shsub8"]
     fn arm_shsub8(a: i32, b: i32) -> i32;
 
@@ -205,6 +211,32 @@ pub unsafe fn sasx(a: int16x2_t, b: int16x2_t) -> int16x2_t {
 #[cfg(all(not(target_feature = "mclass")))]
 pub unsafe fn sel(a: int8x4_t, b: int8x4_t) -> int8x4_t {
     dsp_call!(arm_sel, a, b)
+}
+
+/// Signed halving parallel byte-wise addition.
+///
+/// Returns the 8-bit signed equivalent of
+///
+/// res[0] = (a[0] + b[0]) / 2
+/// res[1] = (a[1] + b[1]) / 2
+/// res[2] = (a[2] + b[2]) / 2
+/// res[3] = (a[3] + b[3]) / 2
+#[inline]
+#[cfg_attr(test, assert_instr(shadd8))]
+pub unsafe fn shadd8(a: int8x4_t, b: int8x4_t) -> int8x4_t {
+    dsp_call!(arm_shadd8, a, b)
+}
+
+/// Signed halving parallel halfword-wise addition.
+///
+/// Returns the 16-bit signed equivalent of
+///
+/// res[0] = (a[0] + b[0]) / 2
+/// res[1] = (a[1] + b[1]) / 2
+#[inline]
+#[cfg_attr(test, assert_instr(shadd16))]
+pub unsafe fn shadd16(a: int16x2_t, b: int16x2_t) -> int16x2_t {
+    dsp_call!(arm_shadd16, a, b)
 }
 
 /// Signed halving parallel byte-wise subtraction.
@@ -366,6 +398,28 @@ mod tests {
             dsp::sadd8(::mem::transmute(a), ::mem::transmute(b));
             let c = i8x4::new(1, 2, 3, ::std::i8::MAX);
             let r: i8x4 = dsp_call!(dsp::sel, a, b);
+            assert_eq!(r, c);
+        }
+    }
+
+    #[test]
+    fn shadd8() {
+        unsafe {
+            let a = i8x4::new(1, 2, 3, 4);
+            let b = i8x4::new(5, 4, 3, 2);
+            let c = i8x4::new(3, 3, 3, 3);
+            let r: i8x4 = dsp_call!(dsp::shadd8, a, b);
+            assert_eq!(r, c);
+        }
+    }
+
+    #[test]
+    fn shadd16() {
+        unsafe {
+            let a = i16x2::new(1, 2);
+            let b = i16x2::new(5, 4);
+            let c = i16x2::new(3, 3);
+            let r: i16x2 = dsp_call!(dsp::shadd16, a, b);
             assert_eq!(r, c);
         }
     }
