@@ -54,7 +54,7 @@ extern "C" {
     #[link_name = "llvm.arm.sasx"]
     fn arm_sasx(a: i32, b: i32) -> i32;
 
-    #[cfg_attr(not(target_feature = "mclass"), link_name = "llvm.arm.sel")]
+    #[link_name = "llvm.arm.sel"]
     fn arm_sel(a: i32, b: i32) -> i32;
 
     #[link_name = "llvm.arm.shadd8"]
@@ -69,16 +69,16 @@ extern "C" {
     #[link_name = "llvm.arm.shsub16"]
     fn arm_shsub16(a: i32, b: i32) -> i32;
 
-    #[cfg_attr(not(target_feature = "mclass"), link_name = "llvm.arm.smuad")]
+    #[link_name = "llvm.arm.smuad"]
     fn arm_smuad(a: i32, b: i32) -> i32;
 
-    #[cfg_attr(not(target_feature = "mclass"), link_name = "llvm.arm.smuadx")]
+    #[link_name = "llvm.arm.smuadx"]
     fn arm_smuadx(a: i32, b: i32) -> i32;
 
-    #[cfg_attr(not(target_feature = "mclass"), link_name = "llvm.arm.smusd")]
+    #[link_name = "llvm.arm.smusd"]
     fn arm_smusd(a: i32, b: i32) -> i32;
 
-    #[cfg_attr(not(target_feature = "mclass"), link_name = "llvm.arm.smusdx")]
+    #[link_name = "llvm.arm.smusdx"]
     fn arm_smusdx(a: i32, b: i32) -> i32;
 }
 
