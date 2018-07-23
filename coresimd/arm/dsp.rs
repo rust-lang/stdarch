@@ -229,10 +229,10 @@ pub unsafe fn sel(a: int8x4_t, b: int8x4_t) -> int8x4_t {
 ///
 /// Returns the 8-bit signed equivalent of
 ///
-/// res[0] = (a[0] + b[0]) / 2
-/// res[1] = (a[1] + b[1]) / 2
-/// res[2] = (a[2] + b[2]) / 2
-/// res[3] = (a[3] + b[3]) / 2
+/// res\[0\] = (a\[0\] + b\[0\]) / 2
+/// res\[1\] = (a\[1\] + b\[1\]) / 2
+/// res\[2\] = (a\[2\] + b\[2\]) / 2
+/// res\[3\] = (a\[3\] + b\[3\]) / 2
 #[inline]
 #[cfg_attr(test, assert_instr(shadd8))]
 pub unsafe fn shadd8(a: int8x4_t, b: int8x4_t) -> int8x4_t {
@@ -243,8 +243,8 @@ pub unsafe fn shadd8(a: int8x4_t, b: int8x4_t) -> int8x4_t {
 ///
 /// Returns the 16-bit signed equivalent of
 ///
-/// res[0] = (a[0] + b[0]) / 2
-/// res[1] = (a[1] + b[1]) / 2
+/// res\[0\] = (a\[0\] + b\[0\]) / 2
+/// res\[1\] = (a\[1\] + b\[1\]) / 2
 #[inline]
 #[cfg_attr(test, assert_instr(shadd16))]
 pub unsafe fn shadd16(a: int16x2_t, b: int16x2_t) -> int16x2_t {
@@ -255,10 +255,10 @@ pub unsafe fn shadd16(a: int16x2_t, b: int16x2_t) -> int16x2_t {
 ///
 /// Returns the 8-bit signed equivalent of
 ///
-/// res[0] = (a[0] - b[0]) / 2
-/// res[1] = (a[1] - b[1]) / 2
-/// res[2] = (a[2] - b[2]) / 2
-/// res[3] = (a[3] - b[3]) / 2
+/// res\[0\] = (a\[0\] - b\[0\]) / 2
+/// res\[1\] = (a\[1\] - b\[1\]) / 2
+/// res\[2\] = (a\[2\] - b\[2\]) / 2
+/// res\[3\] = (a\[3\] - b\[3\]) / 2
 #[inline]
 #[cfg_attr(test, assert_instr(shsub8))]
 pub unsafe fn shsub8(a: int8x4_t, b: int8x4_t) -> int8x4_t {
@@ -269,8 +269,8 @@ pub unsafe fn shsub8(a: int8x4_t, b: int8x4_t) -> int8x4_t {
 ///
 /// Returns the 16-bit signed equivalent of
 ///
-/// res[0] = (a[0] - b[0]) / 2
-/// res[1] = (a[1] - b[1]) / 2
+/// res\[0\] = (a\[0\] - b\[0\]) / 2
+/// res\[1\] = (a\[1\] - b\[1\]) / 2
 #[inline]
 #[cfg_attr(test, assert_instr(shsub16))]
 pub unsafe fn shsub16(a: int16x2_t, b: int16x2_t) -> int16x2_t {
@@ -281,7 +281,7 @@ pub unsafe fn shsub16(a: int16x2_t, b: int16x2_t) -> int16x2_t {
 ///
 /// Returns the equivalent of
 ///
-/// res = a[0] * b[0] + a[1] * b[1]
+/// res = a\[0\] * b\[0\] + a\[1\] * b\[1\]
 ///
 /// and sets the Q flag if overflow occurs on the addition.
 #[cfg_attr(test, assert_instr(smuad))]
@@ -293,7 +293,7 @@ pub unsafe fn smuad(a: int16x2_t, b: int16x2_t) -> i32 {
 ///
 /// Returns the equivalent of
 ///
-/// res = a[0] * b[1] + a[1] * b[0]
+/// res = a\[0\] * b\[1\] + a\[1\] * b\[0\]
 ///
 /// and sets the Q flag if overflow occurs on the addition.
 #[inline]
@@ -306,7 +306,7 @@ pub unsafe fn smuadx(a: int16x2_t, b: int16x2_t) -> i32 {
 ///
 /// Returns the equivalent of
 ///
-/// res = a[0] * b[0] - a[1] * b[1]
+/// res = a\[0\] * b\[0\] - a\[1\] * b\[1\]
 ///
 /// and sets the Q flag if overflow occurs on the addition.
 #[inline]
@@ -319,7 +319,7 @@ pub unsafe fn smusd(a: int16x2_t, b: int16x2_t) -> i32 {
 ///
 /// Returns the equivalent of
 ///
-/// res = a[0] * b[1] - a[1] * b[0]
+/// res = a\[0\] * b\[1\] - a\[1\] * b\[0\]
 ///
 /// and sets the Q flag if overflow occurs on the addition.
 #[inline]
