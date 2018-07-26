@@ -84,11 +84,22 @@ extern "C" {
     #[link_name = "llvm.ppc.altivec.vmaddfp"]
     fn vmaddfp(
         a: vector_float, b: vector_float, c: vector_float) -> vector_float;
+    #[link_name = "llvm.ppc.altivec.vnmsubfp"]
+    fn vnmsubfp(
+        a: vector_float, b: vector_float, c: vector_float) -> vector_float;
 }
 
 mod sealed {
 
     use super::*;
+
+    #[inline]
+    #[target_feature(enable = "altivec")]
+    #[cfg_attr(test, assert_instr(vnmsubfp))]
+    unsafe fn vec_vnmsubfp(
+        a: vector_float, b: vector_float, c: vector_float) -> vector_float {
+        vnmsubfp(a, b, c)
+    }
 
     #[inline]
     #[target_feature(enable = "altivec")]
@@ -647,6 +658,13 @@ pub unsafe fn vec_madd(a: vector_float, b: vector_float, c: vector_float) -> vec
     vmaddfp(a, b, c)
 }
 
+/// Vector Negative Multiply Subtract
+#[inline]
+#[target_feature(enable = "altivec")]
+pub unsafe fn vec_nmsub(a: vector_float, b: vector_float, c: vector_float) -> vector_float {
+    vnmsubfp(a, b, c)
+}
+
 #[cfg(target_endian = "big")]
 mod endian {
     use super::*;
@@ -798,6 +816,20 @@ mod tests {
             0.4 * 0.4 + 0.4);
 
         assert_eq!(d, ::mem::transmute(vec_madd(a, b, c)));
+    }
+
+    #[simd_test(enable = "altivec")]
+    unsafe fn test_vec_nmsub_float() {
+        let a: vector_float = ::mem::transmute(f32x4::new(0.1, 0.2, 0.3, 0.4));
+        let b: vector_float = ::mem::transmute(f32x4::new(0.1, 0.2, 0.3, 0.4));
+        let c: vector_float = ::mem::transmute(f32x4::new(0.1, 0.2, 0.3, 0.4));
+        let d = f32x4::new(
+            -(0.1 * 0.1 - 0.1),
+            -(0.2 * 0.2 - 0.2),
+            -(0.3 * 0.3 - 0.3),
+            -(0.4 * 0.4 - 0.4),
+        );
+        assert_eq!(d, ::mem::transmute(vec_nmsub(a, b, c)));
     }
 
     #[simd_test(enable = "altivec")]
