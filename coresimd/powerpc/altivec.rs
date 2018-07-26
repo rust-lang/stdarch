@@ -89,11 +89,67 @@ extern "C" {
         a: vector_float, b: vector_float, c: vector_float) -> vector_float;
     #[link_name = "llvm.ppc.altivec.vsum2sws"]
     fn vsum2sws(a: vector_signed_int, b: vector_signed_int) -> vector_signed_int;
+    #[link_name = "llvm.ppc.altivec.vsum4ubs"]
+    fn vsum4ubs(a: vector_unsigned_char, b: vector_unsigned_int) -> vector_unsigned_int;
+    #[link_name = "llvm.ppc.altivec.vsum4sbs"]
+    fn vsum4sbs(a: vector_signed_char, b: vector_signed_int) -> vector_signed_int;
+    #[link_name = "llvm.ppc.altivec.vsum4shs"]
+    fn vsum4shs(a: vector_signed_short, b: vector_signed_int) -> vector_signed_int;
 }
 
 mod sealed {
 
     use super::*;
+
+    #[inline]
+    #[target_feature(enable = "altivec")]
+    #[cfg_attr(test, assert_instr(vsum4ubs))]
+    unsafe fn vec_vsum4ubs(a: vector_unsigned_char, b: vector_unsigned_int) -> vector_unsigned_int {
+        vsum4ubs(a, b)
+    }
+
+    #[inline]
+    #[target_feature(enable = "altivec")]
+    #[cfg_attr(test, assert_instr(vsum4sbs))]
+    unsafe fn vec_vsum4sbs(a: vector_signed_char, b: vector_signed_int) -> vector_signed_int {
+        vsum4sbs(a, b)
+    }
+
+    #[inline]
+    #[target_feature(enable = "altivec")]
+    #[cfg_attr(test, assert_instr(vsum4shs))]
+    unsafe fn vec_vsum4shs(a: vector_signed_short, b: vector_signed_int) -> vector_signed_int {
+        vsum4shs(a, b)
+    }
+
+
+    pub trait VectorSum4s<Other> {
+        unsafe fn vec_sum4s(self, b: Other) -> Other;
+    }
+
+    impl VectorSum4s<vector_unsigned_int> for vector_unsigned_char {
+        #[inline]
+        #[target_feature(enable = "altivec")]
+        unsafe fn vec_sum4s(self, b: vector_unsigned_int) -> vector_unsigned_int {
+            vsum4ubs(self, b)
+        }
+    }
+
+    impl VectorSum4s<vector_signed_int> for vector_signed_char {
+        #[inline]
+        #[target_feature(enable = "altivec")]
+        unsafe fn vec_sum4s(self, b: vector_signed_int) -> vector_signed_int {
+            vsum4sbs(self, b)
+        }
+    }
+
+    impl VectorSum4s<vector_signed_int> for vector_signed_short {
+        #[inline]
+        #[target_feature(enable = "altivec")]
+        unsafe fn vec_sum4s(self, b: vector_signed_int) -> vector_signed_int {
+            vsum4shs(self, b)
+        }
+    }
 
     #[inline]
     #[target_feature(enable = "altivec")]
@@ -688,6 +744,15 @@ pub unsafe fn vec_nmsub(a: vector_float, b: vector_float, c: vector_float) -> ve
     vnmsubfp(a, b, c)
 }
 
+/// Vector Sum Across Partial (1/4) Saturated
+#[inline]
+#[target_feature(enable = "altivec")]
+pub unsafe fn vec_sum4s<T, U>(a: T, b: U) -> U
+where
+    T: sealed::VectorSum4s<U> {
+    a.vec_sum4s(b)
+}
+
 #[cfg(target_endian = "big")]
 mod endian {
     use super::*;
@@ -1096,6 +1161,96 @@ mod tests {
             2 + 3 + 3);
 
         assert_eq!(d, ::mem::transmute(vec_sum2s(a, b)));
+    }
+
+    #[simd_test(enable = "altivec")]
+    unsafe fn test_vec_sum4s_unsigned_char() {
+        let a: vector_unsigned_char = ::mem::transmute(u8x16::new(
+            0,
+            1,
+            2,
+            3,
+
+            4,
+            5,
+            6,
+            7,
+
+            0,
+            1,
+            2,
+            3,
+
+            4,
+            5,
+            6,
+            7,
+        ));
+        let b: vector_unsigned_int = ::mem::transmute(u32x4::new(0, 1, 2, 3));
+        let d = u32x4::new(
+            0 + 1 + 2 + 3 + 0,
+            4 + 5 + 6 + 7 + 1,
+            0 + 1 + 2 + 3 + 2,
+            4 + 5 + 6 + 7 + 3,
+        );
+
+        assert_eq!(d, ::mem::transmute(vec_sum4s(a, b)));
+    }
+    #[simd_test(enable = "altivec")]
+    unsafe fn test_vec_sum4s_signed_char() {
+        let a: vector_signed_char = ::mem::transmute(i8x16::new(
+            0,
+            1,
+            2,
+            3,
+
+            4,
+            5,
+            6,
+            7,
+
+            0,
+            1,
+            2,
+            3,
+
+            4,
+            5,
+            6,
+            7,
+        ));
+        let b: vector_signed_int = ::mem::transmute(i32x4::new(0, 1, 2, 3));
+        let d = i32x4::new(
+            0 + 1 + 2 + 3 + 0,
+            4 + 5 + 6 + 7 + 1,
+            0 + 1 + 2 + 3 + 2,
+            4 + 5 + 6 + 7 + 3,
+        );
+
+        assert_eq!(d, ::mem::transmute(vec_sum4s(a, b)));
+    }
+    #[simd_test(enable = "altivec")]
+    unsafe fn test_vec_sum4s_signed_short() {
+        let a: vector_signed_short = ::mem::transmute(i16x8::new(
+            0,
+            1,
+            2,
+            3,
+
+            4,
+            5,
+            6,
+            7,
+        ));
+        let b: vector_signed_int = ::mem::transmute(i32x4::new(0, 1, 2, 3));
+        let d = i32x4::new(
+            0 + 1 + 0,
+            2 + 3 + 1,
+            4 + 5 + 2,
+            6 + 7 + 3,
+        );
+
+        assert_eq!(d, ::mem::transmute(vec_sum4s(a, b)));
     }
 
     #[simd_test(enable = "altivec")]
