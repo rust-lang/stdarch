@@ -87,11 +87,20 @@ extern "C" {
     #[link_name = "llvm.ppc.altivec.vnmsubfp"]
     fn vnmsubfp(
         a: vector_float, b: vector_float, c: vector_float) -> vector_float;
+    #[link_name = "llvm.ppc.altivec.vsum2sws"]
+    fn vsum2sws(a: vector_signed_int, b: vector_signed_int) -> vector_signed_int;
 }
 
 mod sealed {
 
     use super::*;
+
+    #[inline]
+    #[target_feature(enable = "altivec")]
+    #[cfg_attr(test, assert_instr(vsum2sws))]
+    unsafe fn vec_vsum2sws(a: vector_signed_int, b: vector_signed_int) -> vector_signed_int {
+        vsum2sws(a, b)
+    }
 
     #[inline]
     #[target_feature(enable = "altivec")]
@@ -604,6 +613,20 @@ mod endian {
 
         b.vec_vperm(a, c)
     }
+
+    /// Vector Sum Across Partial (1/2) Saturated
+    #[inline]
+    #[target_feature(enable = "altivec")]
+    pub unsafe fn vec_sum2s(a: vector_signed_int, b: vector_signed_int) -> vector_signed_int {
+        // vsum2sws has big-endian bias
+        //
+        // swap the even b elements with the odd ones
+        let flip = ::mem::transmute(u8x16::new(4, 5, 6, 7, 0, 1, 2, 3, 12, 13, 14, 15, 8, 9, 10, 11));
+        let b = vec_perm(b, b, flip);
+        let c = vsum2sws(a, b);
+
+        vec_perm(c, c, flip)
+    }
 }
 
 /// Vector Multiply Add Saturated
@@ -676,6 +699,13 @@ mod endian {
         T: sealed::VectorPerm,
     {
         a.vec_vperm(b, c)
+    }
+
+    /// Vector Sum Across Partial (1/2) Saturated
+    #[inline]
+    #[target_feature(enable = "altivec")]
+    pub unsafe fn vec_sum2s(a: vector_signed_int, b: vector_signed_int) -> vector_signed_int {
+        vsum2sws(a, b)
     }
 }
 
@@ -1053,6 +1083,19 @@ mod tests {
         );
 
         assert_eq!(d, ::mem::transmute(vec_msums(a, b, c)));
+    }
+
+    #[simd_test(enable = "altivec")]
+    unsafe fn test_vec_sum2s() {
+        let a: vector_signed_int = ::mem::transmute(i32x4::new(0, 1, 2, 3));
+        let b: vector_signed_int = ::mem::transmute(i32x4::new(0, 1, 2, 3));
+        let d = i32x4::new(
+            0,
+            0 + 1 + 1,
+            0,
+            2 + 3 + 3);
+
+        assert_eq!(d, ::mem::transmute(vec_sum2s(a, b)));
     }
 
     #[simd_test(enable = "altivec")]
