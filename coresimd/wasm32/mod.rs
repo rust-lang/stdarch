@@ -1,3 +1,7 @@
+//! WASM32 intrinsics
+
+mod simd128;
+
 extern "C" {
     #[link_name = "llvm.wasm.grow.memory.i32"]
     fn llvm_grow_memory(pages: i32) -> i32;
