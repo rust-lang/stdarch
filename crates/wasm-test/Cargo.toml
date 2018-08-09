@@ -1,0 +1,11 @@
+[package]
+name = "wasm-test"
+version = "0.1.0"
+authors = ["gnzlbg <gonzalobg88@gmail.com>"]
+
+[target.'cfg(target_arch = "wasm32")'.dev-dependencies]
+wasm-bindgen-test = { git = 'https://github.com/rustwasm/wasm-bindgen' }
+coresimd = { path = "../coresimd" }
+
+[patch.crates-io]
+wasm-bindgen = { git = 'https://github.com/rustwasm/wasm-bindgen' }

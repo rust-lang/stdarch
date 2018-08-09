@@ -34,6 +34,8 @@ matrix:
         - git clone --recursive https://github.com/WebAssembly/wabt
         - (cd wabt && git reset --hard a0bdeb7 && make -j4)
         - export PATH=$PATH:$PWD/wabt/bin
+        - git clone https://github.com/rustwasm/wasm-bindgen
+        - (cd wasm-bindgen && cargo install --path crates/cli)
       script:
         - cargo build --target wasm32-unknown-unknown -p stdsimd
         - cargo build --target wasm32-unknown-unknown -p stdsimd --release
@@ -42,6 +44,9 @@ matrix:
         - cat wasm.wat
         - grep current_memory wasm.wat
         - grep grow_memory wasm.wat
+        - cd crates/wasm-test
+        - cargo test --target=$TARGET
+        - cargo test --target=$TARGET --release
     - env: TARGET=thumbv6m-none-eabi NOSTD=1
     - env: TARGET=thumbv7m-none-eabi NOSTD=1
     - env: TARGET=thumbv7em-none-eabi NOSTD=1

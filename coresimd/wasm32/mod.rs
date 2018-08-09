@@ -1,6 +1,8 @@
 //! WASM32 intrinsics
 
+#[macro_use]
 mod simd128;
+pub use self::simd128::*;
 
 extern "C" {
     #[link_name = "llvm.wasm.grow.memory.i32"]

@@ -6,48 +6,17 @@
 #![allow(non_camel_case_types)]
 
 /// A single unconstrained byte (0-255).
-#[derive(Copy, Clone, Debug)]
-pub struct ImmByte(u8);
-impl ImmByte {
-    /// Constructor
-    #[inline]
-    #[rustc_args_required_const(0)]
-    pub const fn new(value: u8) -> Self {
-        ImmByte(value)
-    }
-}
-
-macro_rules! impl_laneidx {
-    ($id:ident($ty:ty): [$_from:expr, $_to:expr] | $(#[$doc:meta])*) => {
-        #[derive(Copy, Clone, Debug)]
-        pub struct $id($ty);
-        impl $id {
-            #[inline]
-            #[rustc_args_required_const(0)]
-            pub const fn new(x: $ty) -> Self {
-                // FIXME: not allowed in const fn:
-                // * if statements
-                // * unreachable_unchecked / panic / abort
-                //
-                // if x < $from || x > $to {
-                //     unsafe { ::_core::hint::unreachable_unchecked() };
-                //     debug_assert!(...)
-                // }
-                $id(x)
-            }
-        }
-    };
-}
-impl_laneidx!(LaneIdx2(u8): [0, 1] | /// A byte with values in the range 0–1 identifying a lane.
-);
-impl_laneidx!(LaneIdx4(u8): [0, 3] | /// A byte with values in the range 0–3 identifying a lane.
-);
-impl_laneidx!(LaneIdx8(u8): [0, 7] | /// A byte with values in the range 0–7 identifying a lane.
-);
-impl_laneidx!(LaneIdx16(u8): [0, 15] | /// A byte with values in the range 0–15 identifying a lane.
-);
-impl_laneidx!(LaneIdx32(u8): [0, 31] | /// A byte with values in the range 0–31 identifying a lane.
-);
+pub type ImmByte = u8;
+/// A byte with values in the range 0–1 identifying a lane.
+pub type LaneIdx2 = u8;
+/// A byte with values in the range 0–3 identifying a lane.
+pub type LaneIdx4 = u8;
+/// A byte with values in the range 0–7 identifying a lane.
+pub type LaneIdx8 = u8;
+/// A byte with values in the range 0–15 identifying a lane.
+pub type LaneIdx16 = u8;
+/// A byte with values in the range 0–31 identifying a lane.
+pub type LaneIdx32 = u8;
 
 types! {
     /// WASM-specific 128-bit wide SIMD vector type
@@ -102,6 +71,9 @@ mod sealed {
         fn sqrt_v4f32(x: f32x4) -> f32x4;
         #[link_name = "llvm.sqrt.v2f64"]
         fn sqrt_v2f64(x: f64x2) -> f64x2;
+        #[link_name = "shufflevector"]
+        pub fn shufflevector_v16i8(x: v8x16, y: v8x16, i: v8x16) -> v8x16;
+
     }
     impl f32x4 {
         #[inline(always)]
@@ -214,7 +186,7 @@ macro_rules! impl_extract_lane {
                     a: v128
                 }
                 // the vectors store a signed integer => extract into it
-                let v: $selem_ty = simd_extract(U { a }.vec, imm.0 as u32 /* zero-extends index */);
+                let v: $selem_ty = simd_extract(U { a }.vec, imm as u32 /* zero-extends index */);
                 v as $x_ty
             }
 
@@ -233,7 +205,7 @@ macro_rules! impl_extract_lane {
                     a: v128
                 }
                 // the vectors store a signed integer => extract into it
-                let v: $selem_ty = simd_extract(U { a }.vec, imm.0 as u32  /* zero-extends index */);
+                let v: $selem_ty = simd_extract(U { a }.vec, imm as u32  /* zero-extends index */);
                 // re-interpret the signed integer as an unsigned one of the same size (no-op)
                 let v: $uelem_ty= ::mem::transmute(v);
                 // cast the internal unsigned integer to a larger signed integer (zero-extends)
@@ -258,7 +230,7 @@ macro_rules! impl_extract_lane {
                     a: v128
                 }
                 // the vectors store a signed integer => extract into it
-                simd_extract(U { a }.vec, imm.0 as u32  /* zero-extends index */)
+                simd_extract(U { a }.vec, imm as u32  /* zero-extends index */)
             }
         }
     };
@@ -291,7 +263,7 @@ macro_rules! impl_replace_lane {
                 // the vectors store a signed integer => extract into it
                 ::mem::transmute(
                     simd_insert(U { a }.vec,
-                                imm.0 as u32  /* zero-extends index */,
+                                imm as u32  /* zero-extends index */,
                                 x as $ielem_ty)
                 )
             }
@@ -306,23 +278,44 @@ impl_replace_lane!(i64x2[v64x2:i64](LaneIdx2) <= i64);
 impl_replace_lane!(f32x4[f32x4:f32](LaneIdx4) <= f32);
 impl_replace_lane!(f64x2[f64x2:f64](LaneIdx2) <= f64);
 
-impl v8x16 {
-    /// Shuffle lanes
-    ///
-    /// Create vector with lanes selected from the lanes of two input vectors
-    /// `a` and `b` by the indices specified in the immediate mode operand
-    /// `imm`. Each index selects an element of the result vector, where the
-    /// indices `i` in range `[0, 15]` select the `i`-th elements of `a`, and
-    /// the indices in range `[16, 31]` select the `i - 16`-th element of `b`.
-    #[inline]
-    // #[target_feature(enable = "simd128")]
-    // FIXME: #[cfg_attr(test, assert_instr(v8x16.shuffle))]
-    #[rustc_args_required_const(2)]
-    pub unsafe fn shuffle(a: v128, b: v128, imm: [LaneIdx32; 16]) -> v128 {
-        // FIXME: LLVM does not support v8x16.shuffle (use inline assembly?)
-        let result: v128;
-        asm!("v8x16.shuffle $0, $1, $2" : "=r"(result) : "r"(a), "r"(b), "r"(imm) : : );
-        result
+pub use ::coresimd::simd_llvm::simd_shuffle16 as __internal_v8x16_shuffle;
+pub use self::sealed::v8x16 as __internal_v8x16;
+
+/// Shuffle lanes
+///
+/// Create vector with lanes selected from the lanes of two input vectors
+/// `a` and `b` by the indices specified in the immediate mode operand
+/// `imm`. Each index selects an element of the result vector, where the
+/// indices `i` in range `[0, 15]` select the `i`-th elements of `a`, and
+/// the indices in range `[16, 31]` select the `i - 16`-th element of `b`.
+#[macro_export]
+macro_rules! v8x16_shuffle {
+    ($a:expr, $b:expr, [
+        $imm0:expr, $imm1:expr, $imm2:expr, $imm3:expr,
+        $imm4:expr, $imm5:expr, $imm6:expr, $imm7:expr,
+        $imm8:expr, $imm9:expr, $imm10:expr, $imm11:expr,
+        $imm12:expr, $imm13:expr, $imm14:expr, $imm15:expr
+    ]) => {
+        #[allow(unused_unsafe)]
+        unsafe {
+            let a: $crate::arch::wasm32::v128 = $a;
+            let b: $crate::arch::wasm32::v128 = $b;
+            union U {
+                e: v128,
+                i: $crate::arch::wasm32::__internal_v8x16,
+            }
+            let a = U { e: a }.i;
+            let b = U { e: b }.i;
+
+            let r: $crate::arch::wasm32::__internal_v8x16 =
+                $crate::arch::wasm32::__internal_v8x16_shuffle(a, b, [
+                    $imm0 as u32, $imm1, $imm2, $imm3,
+                    $imm4, $imm5, $imm6, $imm7,
+                    $imm8, $imm9, $imm10, $imm11,
+                    $imm12, $imm13, $imm14, $imm15
+                ]);
+            U { i: r }.e
+        }
     }
 }
 
@@ -557,6 +550,9 @@ impl_boolean_reduction!(i64x2[v64x2]);
 
 macro_rules! impl_comparisons {
     ($id:ident[$ivec_ty:ident]) => {
+        impl_comparisons!($id[$ivec_ty=>$ivec_ty]);
+    };
+    ($id:ident[$ivec_ty:ident=>$rvec_ty:ident]) => {
         impl $id {
             /// Equality
             #[inline]
@@ -566,7 +562,7 @@ macro_rules! impl_comparisons {
                 use coresimd::simd_llvm::simd_eq;
                 let a: sealed::$ivec_ty = ::mem::transmute(a);
                 let b: sealed::$ivec_ty = ::mem::transmute(b);
-                let c: sealed::$ivec_ty = simd_eq(a, b);
+                let c: sealed::$rvec_ty = simd_eq(a, b);
                 ::mem::transmute(c)
             }
             /// Non-Equality
@@ -577,7 +573,7 @@ macro_rules! impl_comparisons {
                 use coresimd::simd_llvm::simd_ne;
                 let a: sealed::$ivec_ty = ::mem::transmute(a);
                 let b: sealed::$ivec_ty = ::mem::transmute(b);
-                let c: sealed::$ivec_ty = simd_ne(a, b);
+                let c: sealed::$rvec_ty = simd_ne(a, b);
                 ::mem::transmute(c)
             }
             /// Less-than
@@ -588,7 +584,7 @@ macro_rules! impl_comparisons {
                 use coresimd::simd_llvm::simd_lt;
                 let a: sealed::$ivec_ty = ::mem::transmute(a);
                 let b: sealed::$ivec_ty = ::mem::transmute(b);
-                let c: sealed::$ivec_ty = simd_lt(a, b);
+                let c: sealed::$rvec_ty = simd_lt(a, b);
                 ::mem::transmute(c)
             }
 
@@ -600,7 +596,7 @@ macro_rules! impl_comparisons {
                 use coresimd::simd_llvm::simd_le;
                 let a: sealed::$ivec_ty = ::mem::transmute(a);
                 let b: sealed::$ivec_ty = ::mem::transmute(b);
-                let c: sealed::$ivec_ty = simd_le(a, b);
+                let c: sealed::$rvec_ty = simd_le(a, b);
                 ::mem::transmute(c)
             }
 
@@ -612,7 +608,7 @@ macro_rules! impl_comparisons {
                 use coresimd::simd_llvm::simd_gt;
                 let a: sealed::$ivec_ty = ::mem::transmute(a);
                 let b: sealed::$ivec_ty = ::mem::transmute(b);
-                let c: sealed::$ivec_ty = simd_gt(a, b);
+                let c: sealed::$rvec_ty = simd_gt(a, b);
                 ::mem::transmute(c)
             }
 
@@ -624,7 +620,7 @@ macro_rules! impl_comparisons {
                 use coresimd::simd_llvm::simd_ge;
                 let a: sealed::$ivec_ty = ::mem::transmute(a);
                 let b: sealed::$ivec_ty = ::mem::transmute(b);
-                let c: sealed::$ivec_ty = simd_ge(a, b);
+                let c: sealed::$rvec_ty = simd_ge(a, b);
                 ::mem::transmute(c)
             }
         }
@@ -635,8 +631,8 @@ impl_comparisons!(i8x16[v8x16]);
 impl_comparisons!(i16x8[v16x8]);
 impl_comparisons!(i32x4[v32x4]);
 impl_comparisons!(i64x2[v64x2]);
-impl_comparisons!(f32x4[f32x4]);
-impl_comparisons!(f64x2[f64x2]);
+impl_comparisons!(f32x4[f32x4=>v32x4]);
+impl_comparisons!(f64x2[f64x2=>v64x2]);
 
 // Load and store
 impl v128 {
@@ -696,10 +692,7 @@ macro_rules! impl_floating_point_ops {
             // #[target_feature(enable = "simd128")]
             // FIXME: #[cfg_attr(test, assert_instr($id.min))]
             pub unsafe fn min(a: v128, b: v128) -> v128 {
-                use coresimd::simd_llvm::simd_fmin;
-                let a: sealed::$id = ::mem::transmute(a);
-                let b: sealed::$id = ::mem::transmute(b);
-                ::mem::transmute(simd_fmin(a, b))
+                v128::bitselect(a, b, $id::lt(a, b))
             }
 
             /// NaN-propagating maximum
@@ -709,10 +702,7 @@ macro_rules! impl_floating_point_ops {
             // #[target_feature(enable = "simd128")]
             // FIXME: #[cfg_attr(test, assert_instr($id.max))]
             pub unsafe fn max(a: v128, b: v128) -> v128 {
-                use coresimd::simd_llvm::simd_fmax;
-                let a: sealed::$id = ::mem::transmute(a);
-                let b: sealed::$id = ::mem::transmute(b);
-                ::mem::transmute(simd_fmax(a, b))
+                v128::bitselect(a, b, $id::gt(a, b))
             }
 
             /// Square-root
@@ -794,9 +784,9 @@ macro_rules! impl_conversion {
 
 // Integer to floating point
 impl_conversion!(convert_s_i32x4["f32x4.convert_s/i32x4"]: v32x4 => f32x4 | f32x4);
-impl_conversion!(convert_u_i32x4["f32x4.convert_u/i32x4"]: v32x4 => f32x4 | f32x4);
+impl_conversion!(convert_u_i32x4["f32x4.convert_u/i32x4"]: u32x4 => f32x4 | f32x4);
 impl_conversion!(convert_s_i64x2["f64x2.convert_s/i64x2"]: v64x2 => f64x2 | f64x2);
-impl_conversion!(convert_u_i64x2["f64x2.convert_u/i64x2"]: v64x2 => f64x2 | f64x2);
+impl_conversion!(convert_u_i64x2["f64x2.convert_u/i64x2"]: u64x2 => f64x2 | f64x2);
 
 // Floating point to integer with saturation
 impl_conversion!(trunc_s_f32x4_sat["i32x4.trunc_s/f32x4:sat"]: f32x4 => v32x4 | i32x4);
