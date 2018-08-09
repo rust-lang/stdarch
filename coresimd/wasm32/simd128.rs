@@ -641,7 +641,7 @@ impl v128 {
     /// from `v1` when `1` and `v2` when `0`.
     #[inline]
     // #[target_feature(enable = "simd128")]
-    // FIXME: #[cfg_attr(test, assert_instr($id.bitselectnot))]
+    // FIXME: #[cfg_attr(test, assert_instr($id.bitselect))]
     pub unsafe fn bitselect(v1: v128, v2: v128, c: v128) -> v128 {
         // FIXME: use llvm.select instead - we need to add a `simd_bitselect`
         // intrinsic to rustc that converts a v128 vector into a i1x128. The
