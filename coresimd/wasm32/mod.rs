@@ -1,7 +1,10 @@
 //! WASM32 intrinsics
 
 #[macro_use]
+#[cfg(not(test))]
 mod simd128;
+#[cfg(test)]
+pub mod simd128;
 pub use self::simd128::*;
 
 extern "C" {

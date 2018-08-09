@@ -39,6 +39,10 @@ case ${TARGET} in
     *android*)
         export STDSIMD_DISABLE_ASSERT_INSTR=1
         ;;
+    wasm32*)
+        # export RUSTFLAGS="${RUSTFLAGS} -C target-feature=+simd128"
+        ;;
+
     *)
         ;;
 esac
