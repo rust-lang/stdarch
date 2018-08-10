@@ -131,7 +131,7 @@ pub fn assert_instr(
 
             ::stdsimd_test::assert(#shim_name as usize,
                                    stringify!(#shim_name),
-                                   stringify!(#instr));
+                                   #instr);
         }
     }.into();
     // why? necessary now to get tests to work?
