@@ -119,7 +119,7 @@ pub fn assert_instr(
     // If instruction tests are disabled avoid emitting this shim at all, just
     // return the original item without our attribute.
     if !cfg!(optimized) || disable_assert_instr {
-        return (quote! { #item }).into()
+        return (quote! { #item }).into();
     }
 
     let tts: TokenStream = quote! {

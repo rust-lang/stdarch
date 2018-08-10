@@ -259,20 +259,20 @@ fn parse_dumpbin(output: &str) -> HashMap<String, Vec<Function>> {
 }
 
 #[wasm_bindgen(module = "child_process", version = "*")]
-extern {
+extern "C" {
     #[wasm_bindgen(js_name = execSync)]
     fn exec_sync(cmd: &str) -> Buffer;
 }
 
 #[wasm_bindgen(module = "buffer", version = "*")]
-extern {
+extern "C" {
     type Buffer;
     #[wasm_bindgen(method, js_name = toString)]
     fn to_string(this: &Buffer) -> String;
 }
 
 #[wasm_bindgen]
-extern {
+extern "C" {
     #[wasm_bindgen(js_namespace = require)]
     fn resolve(module: &str) -> String;
     #[wasm_bindgen(js_namespace = console, js_name = log)]
@@ -292,19 +292,18 @@ fn parse_wasm2wat() -> HashMap<String, Vec<Function>> {
     // file. Ask node where that JS file is, and then we use that with a wasm
     // extension to find the wasm file itself.
     let js_shim = resolve("wasm-bindgen-test_bg");
-    let js_shim = Path::new(&js_shim)
-        .with_extension("wasm");
+    let js_shim = Path::new(&js_shim).with_extension("wasm");
 
     // Execute `wasm2wat` synchronously, waiting for and capturing all of its
     // output.
-    let output = exec_sync(&format!("wasm2wat {}", js_shim.display()))
-        .to_string();
+    let output =
+        exec_sync(&format!("wasm2wat {}", js_shim.display())).to_string();
 
     let mut ret: HashMap<String, Vec<Function>> = HashMap::new();
     let mut lines = output.lines().map(|s| s.trim());
     while let Some(line) = lines.next() {
-        // If we found the table of function pointers, fill in the known address
-        // for all our `Function` instances
+        // If we found the table of function pointers, fill in the known
+        // address for all our `Function` instances
         if line.starts_with("(elem") {
             for (i, name) in line.split_whitespace().skip(3).enumerate() {
                 let name = name.trim_right_matches(")");
@@ -312,12 +311,12 @@ fn parse_wasm2wat() -> HashMap<String, Vec<Function>> {
                     f.addr = Some(i + 1);
                 }
             }
-            continue
+            continue;
         }
 
         // If this isn't a function, we don't care about it.
         if !line.starts_with("(func ") {
-            continue
+            continue;
         }
 
         let mut function = Function {
@@ -332,21 +331,24 @@ fn parse_wasm2wat() -> HashMap<String, Vec<Function>> {
         if !line.ends_with("))") {
             while let Some(line) = lines.next() {
                 function.instrs.push(Instruction {
-                    parts: line.split_whitespace().map(|s| s.to_string()).collect(),
+                    parts: line
+                        .split_whitespace()
+                        .map(|s| s.to_string())
+                        .collect(),
                 });
                 if !line.starts_with("(") && line.ends_with(")") {
-                    break
+                    break;
                 }
             }
         }
 
-        // The second element here split on whitespace should be the name of the
-        // function, skipping the type/params/results
+        // The second element here split on whitespace should be the name of
+        // the function, skipping the type/params/results
         ret.entry(line.split_whitespace().nth(1).unwrap().to_string())
             .or_insert(Vec::new())
             .push(function);
     }
-    return ret
+    return ret;
 }
 
 fn normalize(symbol: &str) -> String {
@@ -364,9 +366,12 @@ fn normalize(symbol: &str) -> String {
 pub fn assert(fnptr: usize, fnname: &str, expected: &str) {
     // The string in expected is surrounded by '"', strip these:
     let expected = {
-        assert!(expected.len() > 2 && expected.starts_with('"')
-                && expected.ends_with('"'));
-        expected.get(1..expected.len()-1).unwrap()
+        assert!(
+            expected.len() > 2
+                && expected.starts_with('"')
+                && expected.ends_with('"')
+        );
+        expected.get(1..expected.len() - 1).unwrap()
     };
     let mut fnname = fnname.to_string();
     let functions = get_functions(fnptr, &mut fnname);
@@ -452,10 +457,7 @@ pub fn assert(fnptr: usize, fnname: &str, expected: &str) {
 
     // Help debug by printing out the found disassembly, and then panic as we
     // didn't find the instruction.
-    println!(
-        "disassembly for {}: ",
-        fnname,
-    );
+    println!("disassembly for {}: ", fnname,);
     for (i, instr) in instrs.iter().enumerate() {
         let mut s = format!("\t{:2}: ", i);
         for part in &instr.parts {
@@ -496,16 +498,16 @@ fn get_functions(fnptr: usize, fnname: &mut String) -> &'static [Function] {
     if let Some(sym) = &sym {
         if let Some(s) = DISASSEMBLY.get(sym) {
             *fnname = sym.to_string();
-            return s
+            return s;
         }
     }
 
-    let exact_match = DISASSEMBLY.iter().find(|(_, list)| {
-        list.iter().any(|f| f.addr == Some(fnptr))
-    });
+    let exact_match = DISASSEMBLY
+        .iter()
+        .find(|(_, list)| list.iter().any(|f| f.addr == Some(fnptr)));
     if let Some((name, list)) = exact_match {
         *fnname = name.to_string();
-        return list
+        return list;
     }
 
     if let Some(sym) = sym {
@@ -517,7 +519,6 @@ fn get_functions(fnptr: usize, fnname: &mut String) -> &'static [Function] {
     }
     panic!("failed to find disassembly of {:#x} ({})", fnptr, fnname);
 }
-
 
 pub fn assert_skip_test_ok(name: &str) {
     if env::var("STDSIMD_TEST_EVERYTHING").is_err() {
