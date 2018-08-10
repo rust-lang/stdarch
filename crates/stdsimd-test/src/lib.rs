@@ -258,13 +258,20 @@ fn parse_dumpbin(output: &str) -> HashMap<String, Vec<Function>> {
     ret
 }
 
-#[wasm_bindgen(module = "child_process", version = "*")]
+
+#[cfg_attr(feature = "git_wasm_bindgen",
+           wasm_bindgen(module = "child_process"))]
+#[cfg_attr(not(feature = "git_wasm_bindgen"),
+           wasm_bindgen(module = "child_process", version = "*"))]
 extern "C" {
     #[wasm_bindgen(js_name = execSync)]
     fn exec_sync(cmd: &str) -> Buffer;
 }
 
-#[wasm_bindgen(module = "buffer", version = "*")]
+#[cfg_attr(feature = "git_wasm_bindgen",
+           wasm_bindgen(module = "buffer"))]
+#[cfg_attr(not(feature = "git_wasm_bindgen"),
+           wasm_bindgen(module = "buffer", version = "*"))]
 extern "C" {
     type Buffer;
     #[wasm_bindgen(method, js_name = toString)]
@@ -307,7 +314,7 @@ fn parse_wasm2wat() -> HashMap<String, Vec<Function>> {
         if line.starts_with("(elem") {
             for (i, name) in line.split_whitespace().skip(3).enumerate() {
                 let name = name.trim_right_matches(")");
-                for f in ret.get_mut(name).unwrap() {
+                for f in ret.get_mut(name).expect("ret.get_mut(name) failed") {
                     f.addr = Some(i + 1);
                 }
             }
@@ -371,7 +378,8 @@ pub fn assert(fnptr: usize, fnname: &str, expected: &str) {
                 && expected.starts_with('"')
                 && expected.ends_with('"')
         );
-        expected.get(1..expected.len() - 1).unwrap()
+        expected.get(1..expected.len() - 1)
+            .expect("expected must be a '\"' delimited string, e.g., \"nop\"")
     };
     let mut fnname = fnname.to_string();
     let functions = get_functions(fnptr, &mut fnname);

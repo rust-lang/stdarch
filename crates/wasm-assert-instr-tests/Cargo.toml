@@ -1,0 +1,16 @@
+[package]
+name = "wasm-assert-instr-tests"
+version = "0.1.0"
+authors = ["gnzlbg <gonzalobg88@gmail.com>"]
+
+[dependencies]
+coresimd = { path = "../coresimd" }
+[dev-dependencies]
+stdsimd-test = { path = "../stdsimd-test", features = ["git_wasm_bindgen"] }
+
+[target.wasm32-unknown-unknown.dev-dependencies]
+wasm-bindgen-test = { git = 'https://github.com/rustwasm/wasm-bindgen' }
+
+[patch.crates-io]
+wasm-bindgen = { git = 'https://github.com/rustwasm/wasm-bindgen' }
+wasm-bindgen-test = { git = 'https://github.com/rustwasm/wasm-bindgen' }
