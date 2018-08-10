@@ -7,6 +7,11 @@ mod simd128;
 pub mod simd128;
 pub use self::simd128::*;
 
+#[cfg(test)]
+use stdsimd_test::assert_instr;
+#[cfg(test)]
+use wasm_bindgen_test::wasm_bindgen_test;
+
 extern "C" {
     #[link_name = "llvm.wasm.grow.memory.i32"]
     fn llvm_grow_memory(pages: i32) -> i32;
@@ -21,6 +26,7 @@ extern "C" {
 ///
 /// [instr]: https://github.com/WebAssembly/design/blob/master/Semantics.md#resizing
 #[inline]
+#[cfg_attr(test, assert_instr("memory.size"))]
 pub unsafe fn current_memory() -> i32 {
     llvm_current_memory()
 }
@@ -34,6 +40,7 @@ pub unsafe fn current_memory() -> i32 {
 ///
 /// [instr]: https://github.com/WebAssembly/design/blob/master/Semantics.md#resizing
 #[inline]
+#[cfg_attr(test, assert_instr("memory.grow"))]
 pub unsafe fn grow_memory(delta: i32) -> i32 {
     llvm_grow_memory(delta)
 }

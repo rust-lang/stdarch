@@ -259,19 +259,13 @@ fn parse_dumpbin(output: &str) -> HashMap<String, Vec<Function>> {
 }
 
 
-#[cfg_attr(feature = "git_wasm_bindgen",
-           wasm_bindgen(module = "child_process"))]
-#[cfg_attr(not(feature = "git_wasm_bindgen"),
-           wasm_bindgen(module = "child_process", version = "*"))]
+#[wasm_bindgen(module = "child_process")]
 extern "C" {
     #[wasm_bindgen(js_name = execSync)]
     fn exec_sync(cmd: &str) -> Buffer;
 }
 
-#[cfg_attr(feature = "git_wasm_bindgen",
-           wasm_bindgen(module = "buffer"))]
-#[cfg_attr(not(feature = "git_wasm_bindgen"),
-           wasm_bindgen(module = "buffer", version = "*"))]
+#[wasm_bindgen(module = "buffer")]
 extern "C" {
     type Buffer;
     #[wasm_bindgen(method, js_name = toString)]
