@@ -362,6 +362,12 @@ fn normalize(symbol: &str) -> String {
 /// This asserts that the function at `fnptr` contains the instruction
 /// `expected` provided.
 pub fn assert(fnptr: usize, fnname: &str, expected: &str) {
+    // The string in expected is surrounded by '"', strip these:
+    let expected = {
+        assert!(expected.len() > 2 && expected.starts_with('"')
+                && expected.ends_with('"'));
+        expected.get(1..expected.len()-1).unwrap()
+    };
     let mut fnname = fnname.to_string();
     let functions = get_functions(fnptr, &mut fnname);
     assert_eq!(functions.len(), 1);
