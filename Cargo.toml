@@ -14,7 +14,3 @@ opt-level = 3
 [profile.bench]
 debug = 1
 opt-level = 3
-
-[patch.crates-io]
-wasm-bindgen = { git = 'https://github.com/rustwasm/wasm-bindgen' }
-wasm-bindgen-test = { git = 'https://github.com/rustwasm/wasm-bindgen' }

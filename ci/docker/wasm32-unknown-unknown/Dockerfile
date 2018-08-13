@@ -17,17 +17,9 @@ RUN make -C wabt -j$(nproc)
 ENV PATH=$PATH:/wabt/bin
 
 # Install `wasm-bindgen-test-runner`
-# RUN curl -L https://github.com/rustwasm/wasm-bindgen/releases/download/0.2.15/wasm-bindgen-0.2.15-x86_64-unknown-linux-musl.tar.gz \
-#   | tar xzf -
-# ENV PATH=$PATH:/wasm-bindgen-0.2.15-x86_64-unknown-linux-musl
-# TODO: remove these lines once we can use published releases
-ENV CARGO_HOME=/cargo RUSTUP_HOME=/rustup
-ENV PATH=$PATH:/cargo/bin
-RUN curl https://sh.rustup.rs | sh -s -- -y
-ENV LIBZ_SYS_STATIC=1
-RUN cargo install --git https://github.com/rustwasm/wasm-bindgen \
-  wasm-bindgen-cli --features vendored-openssl
-
+RUN curl -L https://github.com/rustwasm/wasm-bindgen/releases/download/0.2.16/wasm-bindgen-0.2.16-x86_64-unknown-linux-musl.tar.gz \
+  | tar xzf -
+ENV PATH=$PATH:/wasm-bindgen-0.2.16-x86_64-unknown-linux-musl
 ENV CARGO_TARGET_WASM32_UNKNOWN_UNKNOWN_RUNNER=wasm-bindgen-test-runner
 
 # Install `node`
