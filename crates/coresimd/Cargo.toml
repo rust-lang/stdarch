@@ -31,3 +31,5 @@ strict = []
 # Internal-usage only: enables only those intrinsics supported by Intel's
 # Software Development Environment (SDE).
 intel_sde = []
+# Enables wasm simd128 intrinsics
+wasm_simd128 = []

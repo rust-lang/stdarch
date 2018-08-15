@@ -1,11 +1,12 @@
 //! WASM32 intrinsics
 
 #[macro_use]
-#[cfg(not(test))]
+#[cfg(all(not(test), feature = "wasm_simd128"))]
 mod simd128;
-#[cfg(test)]
+
+#[cfg(all(test, feature = "wasm_simd128"))]
 pub mod simd128;
-pub use self::simd128::*;
+#[cfg(all(test, feature = "wasm_simd128"))]
 
 #[cfg(test)]
 use stdsimd_test::assert_instr;
