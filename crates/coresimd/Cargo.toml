@@ -1,6 +1,6 @@
 [package]
 name = "coresimd"
-version = "0.0.3"
+version = "0.1.0"
 authors = ["Andrew Gallant <jamslam@gmail.com>"]
 description = "SIMD support in Rust's core library."
 documentation = "https://docs.rs/stdsimd"
@@ -18,12 +18,12 @@ is-it-maintained-issue-resolution = { repository = "rust-lang-nursery/stdsimd" }
 is-it-maintained-open-issues = { repository = "rust-lang-nursery/stdsimd" }
 maintenance = { status = "experimental" }
 
-[dev-dependencies]
-stdsimd-test = { version = "0.*", path = "../stdsimd-test" }
-stdsimd = { version = "0.0.3", path = "../stdsimd" }
+#[dev-dependencies]
+#stdsimd-test = { version = "0.*", path = "../stdsimd-test" }
+#stdsimd = { version = "0.0.3", path = "../stdsimd" }
 
-[target.wasm32-unknown-unknown.dev-dependencies]
-wasm-bindgen-test = "0.2.16"
+#[target.wasm32-unknown-unknown.dev-dependencies]
+#wasm-bindgen-test = "0.2.16"
 
 [features]
 # Internal-usage only: denies all warnings.

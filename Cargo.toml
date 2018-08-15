@@ -1,10 +1,10 @@
 [workspace]
 members = [
-  "crates/stdsimd-verify",
+  "crates/coresimd",
   "crates/stdsimd",
 ]
 exclude = [
-  "crates/wasm-assert-instr-tests"
+  "crates/wasm-assert-instr-tests",
 ]
 
 [profile.release]
