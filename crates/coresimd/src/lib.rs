@@ -82,7 +82,7 @@ extern crate test;
 #[cfg(all(test, target_arch = "wasm32"))]
 extern crate wasm_bindgen_test;
 
-#[path = "../../../coresimd/mod.rs"]
+#[path = "coresimd/mod.rs"]
 mod coresimd;
 
 pub use coresimd::arch;
