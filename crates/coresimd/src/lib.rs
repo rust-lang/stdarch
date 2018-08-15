@@ -11,6 +11,7 @@
 #![allow(unused_features)]
 #![feature(
     const_fn,
+    const_fn_union,
     link_llvm_intrinsics,
     platform_intrinsics,
     repr_simd,
@@ -34,7 +35,7 @@
     arm_target_feature,
     aarch64_target_feature,
     mips_target_feature,
-    powerpc_target_feature
+    powerpc_target_feature,
 )]
 #![cfg_attr(
     test,
