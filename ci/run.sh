@@ -68,7 +68,7 @@ case ${TARGET} in
         ;;
     wasm32-unknown-unknown*)
         # export RUSTFLAGS="${RUSTFLAGS} -C target-feature=+simd128"
-        cargo_test "--release --features=wasm32_simd128"
+        cargo_test "--release --features=wasm_simd128"
         ;;
     *)
         ;;
