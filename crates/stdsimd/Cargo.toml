@@ -19,7 +19,7 @@ is-it-maintained-open-issues = { repository = "rust-lang-nursery/stdsimd" }
 maintenance = { status = "experimental" }
 
 [dependencies]
-coresimd = { version = "0.1.0", path = "../coresimd" }
+coresimd = { version = "0.1.0" }
 libc = "0.2"
 cfg-if = "0.1"
 
