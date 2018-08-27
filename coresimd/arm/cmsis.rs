@@ -328,3 +328,14 @@ pub unsafe fn __DSB() {
 pub unsafe fn __DMB() {
     asm!("dmb 0xF" : : : "memory" : "volatile");
 }
+
+/// Breakpoint
+///
+/// Causes the processor to enter Debug state. Debug tools can use this to investigate system state
+/// when the instruction at a particular address is reached.
+#[inline]
+#[target_feature(enable = "mclass")]
+#[cfg_attr(test, assert_instr(bkpt))]
+pub unsafe fn __BKPT(value: u8) {
+    asm!("bkpt $0" : : "i"(value) : : "volatile")
+}
