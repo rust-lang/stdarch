@@ -114,13 +114,13 @@ mod sealed {
 // Macros implementing the spec APIs:
 
 macro_rules! impl_splat {
-    ($id:ident[$ivec_ty:ident : $elem_ty:ident] <= $x_ty:ident | $($lane_id:ident),*) => {
+    ($id:ident[$ivec_ty:ident : $elem_ty:ident => $instr:tt] <= $x_ty:ident | $($lane_id:ident),*) => {
         /// Create vector with identical lanes
         ///
         /// Construct a vector with `x` replicated to all lanes.
         #[inline]
-        // #[target_feature(enable = "simd128")]
-        // FIXME: #[cfg_attr(test, assert_instr($ident.splat))]
+        #[target_feature(enable = "simd128")]
+        #[cfg_attr(test, assert_instr($instr))]
         pub const unsafe fn splat(x: $x_ty) -> v128 {
             union U {
                 vec: self::sealed::$ivec_ty,
@@ -735,7 +735,7 @@ macro_rules! v8x16_shuffle {
 pub mod i8x16 {
     use super::*;
     impl_splat!(
-        i8x16[v8x16: i8] <= i32 | x0,
+        i8x16[v8x16: i8 => "i8x16.splat"] <= i32 | x0,
         x1,
         x2,
         x3,
@@ -765,7 +765,7 @@ pub mod i8x16 {
 /// WASM-specific v16x8 instructions with modulo-arithmetic semantics
 pub mod i16x8 {
     use super::*;
-    impl_splat!(i16x8[v16x8: i16] <= i32 | x0, x1, x2, x3, x4, x5, x6, x7);
+    impl_splat!(i16x8[v16x8: i16 => "i16x8.splat"] <= i32 | x0, x1, x2, x3, x4, x5, x6, x7);
     impl_extract_lane!(i16x8[v16x8:i16|u16](LaneIdx8) => i32);
     impl_replace_lane!(i16x8[v16x8: i16](LaneIdx8) <= i32);
     impl_wrapping_add_sub_neg!(i16x8[v16x8]);
@@ -779,7 +779,7 @@ pub mod i16x8 {
 /// WASM-specific v32x4 instructions with modulo-arithmetic semantics
 pub mod i32x4 {
     use super::*;
-    impl_splat!(i32x4[v32x4: i32] <= i32 | x0, x1, x2, x3);
+    impl_splat!(i32x4[v32x4: i32 => "i32x4.splat"] <= i32 | x0, x1, x2, x3);
     impl_extract_lane!(i32x4[v32x4](LaneIdx4) => i32);
     impl_replace_lane!(i32x4[v32x4: i32](LaneIdx4) <= i32);
     impl_wrapping_add_sub_neg!(i32x4[v32x4]);
@@ -795,7 +795,7 @@ pub mod i32x4 {
 /// WASM-specific v64x2 instructions with modulo-arithmetic semantics
 pub mod i64x2 {
     use super::*;
-    impl_splat!(i64x2[v64x2: i64] <= i64 | x0, x1);
+    impl_splat!(i64x2[v64x2: i64 => "i64x2.splat"] <= i64 | x0, x1);
     impl_extract_lane!(i64x2[v64x2](LaneIdx2) => i64);
     impl_replace_lane!(i64x2[v64x2: i64](LaneIdx2) <= i64);
     impl_wrapping_add_sub_neg!(i64x2[v64x2]);
@@ -811,7 +811,7 @@ pub mod i64x2 {
 /// WASM-specific v32x4 floating-point instructions
 pub mod f32x4 {
     use super::*;
-    impl_splat!(f32x4[f32x4: f32] <= f32 | x0, x1, x2, x3);
+    impl_splat!(f32x4[f32x4: f32 => "f32x4.splat"] <= f32 | x0, x1, x2, x3);
     impl_extract_lane!(f32x4[f32x4](LaneIdx4) => f32);
     impl_replace_lane!(f32x4[f32x4: f32](LaneIdx4) <= f32);
     impl_comparisons!(f32x4[f32x4=>v32x4]);
@@ -824,7 +824,7 @@ pub mod f32x4 {
 /// WASM-specific v64x2 floating-point instructions
 pub mod f64x2 {
     use super::*;
-    impl_splat!(f64x2[f64x2: f64] <= f64 | x0, x1);
+    impl_splat!(f64x2[f64x2: f64 => "f64x2.splat"] <= f64 | x0, x1);
     impl_extract_lane!(f64x2[f64x2](LaneIdx2) => f64);
     impl_replace_lane!(f64x2[f64x2: f64](LaneIdx2) <= f64);
     impl_comparisons!(f64x2[f64x2=>v64x2]);

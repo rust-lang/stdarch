@@ -35,6 +35,7 @@
     aarch64_target_feature,
     mips_target_feature,
     powerpc_target_feature,
+    wasm_target_feature
 )]
 #![cfg_attr(
     test,
