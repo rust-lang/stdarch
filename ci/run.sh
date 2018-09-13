@@ -50,10 +50,13 @@ echo "STDSIMD_DISABLE_ASSERT_INSTR=${STDSIMD_DISABLE_ASSERT_INSTR}"
 echo "STDSIMD_TEST_EVERYTHING=${STDSIMD_TEST_EVERYTHING}"
 
 cargo_test() {
-    cmd="cargo test --target=$TARGET $1"
-    cmd="$cmd -p coresimd -p stdsimd"
-    cmd="$cmd -- $2"
+    cmd="cargo test --target=$TARGET $1 -- $2"
+    cd crates/coresimd
     $cmd
+    cd -
+    cd crates/stdsimd
+    $cmd
+    cd -
 }
 
 cargo_test
