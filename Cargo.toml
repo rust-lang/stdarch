@@ -1,6 +1,7 @@
 [workspace]
 members = [
-  "crates/stdsimd-verify",
+  #"crates/stdsimd-verify",
+  "crates/coresimd",
   "crates/stdsimd",
 ]
 exclude = [
