@@ -1,6 +1,6 @@
 [package]
 name = "stdsimd"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Andrew Gallant <jamslam@gmail.com>"]
 description = "SIMD support in Rust's standard library."
 documentation = "https://docs.rs/stdsimd"
@@ -19,7 +19,7 @@ is-it-maintained-open-issues = { repository = "rust-lang-nursery/stdsimd" }
 maintenance = { status = "experimental" }
 
 [dependencies]
-coresimd = { version = "0.1.0" }
+coresimd = { version = "0.1.1" }
 libc = "0.2"
 cfg-if = "0.1"
 
