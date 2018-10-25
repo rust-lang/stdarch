@@ -20,7 +20,7 @@ maintenance = { status = "experimental" }
 
 [dependencies]
 #coresimd = { version = "0.0.3", path = "../coresimd" }
-coresimd = "0.1.1"
+coresimd = "0.1.2"
 libc = "0.2"
 cfg-if = "0.1"
 

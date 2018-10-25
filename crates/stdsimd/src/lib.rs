@@ -21,7 +21,7 @@ extern crate std as __do_not_use_this_import;
 #[macro_use(println, print)]
 extern crate std;
 
-#[path = "../../../stdsimd/mod.rs"]
+// #[path = "../../../stdsimd/mod.rs"]
 mod stdsimd;
 
 pub use stdsimd::*;
