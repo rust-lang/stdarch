@@ -142,7 +142,11 @@ fn verify_all_signatures() {
             // verified.
             "__readeflags" | "__writeeflags" | "__cpuid_count" | "__cpuid"
             | "__get_cpuid_max" => continue,
-
+            // Intel requires the mask argument for _mm_shuffle_ps to be an
+            // unsigned integer, but all other _mm_shuffle_.. intrinsics
+            // take a signed-integer. This breaks `_MM_SHUFFLE` for
+            // `_mm_shuffle_ps`:
+            "_mm_shuffle_ps" => continue,
             _ => {}
         }
 

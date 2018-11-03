@@ -981,8 +981,8 @@ pub unsafe fn _mm_setzero_ps() -> __m128 {
 #[inline]
 #[allow(non_snake_case)]
 #[unstable(feature = "stdsimd", issue = "27731")]
-pub const fn _MM_SHUFFLE(z: u32, y: u32, x: u32, w: u32) -> u32 {
-    (z << 6) | (y << 4) | (x << 2) | w
+pub const fn _MM_SHUFFLE(z: u32, y: u32, x: u32, w: u32) -> i32 {
+    ((z << 6) | (y << 4) | (x << 2) | w) as i32
 }
 
 /// Shuffle packed single-precision (32-bit) floating-point elements in `a` and
@@ -997,7 +997,7 @@ pub const fn _MM_SHUFFLE(z: u32, y: u32, x: u32, w: u32) -> u32 {
 #[cfg_attr(test, assert_instr(shufps, mask = 3))]
 #[rustc_args_required_const(2)]
 #[stable(feature = "simd_x86", since = "1.27.0")]
-pub unsafe fn _mm_shuffle_ps(a: __m128, b: __m128, mask: u32) -> __m128 {
+pub unsafe fn _mm_shuffle_ps(a: __m128, b: __m128, mask: i32) -> __m128 {
     let mask = (mask & 0xFF) as u8;
 
     macro_rules! shuffle_done {
