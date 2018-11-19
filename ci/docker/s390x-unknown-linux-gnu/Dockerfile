@@ -6,7 +6,17 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         gcc-s390x-linux-gnu libc6-dev-s390x-cross \
         qemu-user \
         make \
-        file
+        file \
+        g++ \
+        g++-s390x-linux-gnu \
+        git \
+        python \
+        curl \
+        bzip2 \
+        perl \
+        wget \
+        autoconf \
+        gettext
 
 ENV CARGO_TARGET_S390X_UNKNOWN_LINUX_GNU_LINKER=s390x-linux-gnu-gcc \
     CARGO_TARGET_S390X_UNKNOWN_LINUX_GNU_RUNNER="qemu-s390x -L /usr/s390x-linux-gnu" \

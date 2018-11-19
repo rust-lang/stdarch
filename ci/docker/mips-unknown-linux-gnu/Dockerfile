@@ -6,7 +6,18 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         qemu-system-mips \
         qemu-user \
         make \
-        file
+        file \
+        g++ \
+        g++-mips-linux-gnu \
+        git \     
+        python \  
+        curl \
+        bzip2 \
+        perl \
+        wget \
+        autoconf \
+        gettext
+
 
 ENV CARGO_TARGET_MIPS_UNKNOWN_LINUX_GNU_LINKER=mips-linux-gnu-gcc \
     CARGO_TARGET_MIPS_UNKNOWN_LINUX_GNU_RUNNER="qemu-mips -L /usr/mips-linux-gnu" \

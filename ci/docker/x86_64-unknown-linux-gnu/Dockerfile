@@ -4,4 +4,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   libc6-dev \
   file \
   make \
-  ca-certificates
+  ca-certificates \
+  g++ \
+  git \
+  python \
+  curl \
+  bzip2 \
+  perl \
+  wget \
+  autoconf \
+  gettext

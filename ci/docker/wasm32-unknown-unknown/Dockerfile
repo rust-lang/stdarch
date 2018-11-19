@@ -9,7 +9,16 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends \
   libc6-dev \
   make \
   python \
-  xz-utils
+  xz-utils \
+  g++ \
+  git \
+  python \
+  curl \
+  bzip2 \
+  perl \
+  wget \
+  autoconf \
+  gettext
 
 # Install `wasm2wat`
 RUN git clone --recursive https://github.com/WebAssembly/wabt

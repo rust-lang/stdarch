@@ -9,6 +9,7 @@ run() {
     echo "Building docker container for TARGET=${1}"
     docker build -t stdsimd -f "ci/docker/${1}/Dockerfile" ci/
     mkdir -p target
+    mkdir -p ../rustc
     target=$(echo "${1}" | sed 's/-emulated//')
     echo "Running docker"
     # shellcheck disable=SC2016
@@ -25,10 +26,12 @@ run() {
       --env STDSIMD_DISABLE_ASSERT_INSTR \
       --env NOSTD \
       --env NORUN \
+      --env NOLIBSTDBUILD \
       --env RUSTFLAGS \
       --env STDSIMD_TEST_NORUN \
       --volume "$(pwd)":/checkout:ro \
       --volume "$(pwd)"/target:/checkout/target \
+      --volume "$(pwd)"/../rustc:/rustc \
       --workdir /checkout \
       --privileged \
       stdsimd \
