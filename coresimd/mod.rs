@@ -5,6 +5,8 @@ mod macros;
 
 mod simd;
 
+mod fooooooo;
+
 /// Platform dependent vendor intrinsics.
 ///
 /// This documentation is for the version of this module in the `coresimd`
