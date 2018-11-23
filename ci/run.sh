@@ -88,7 +88,13 @@ else
     git submodule sync
     ./x.py clean
 
-    cp -r "${stdsimd}"/* src/stdsimd/
+    cp -rv "${stdsimd}"/* src/stdsimd/
+
+    (
+        cd src/stdsimd
+        git add -u -v
+        git commit -m "modifications"
+    )
 
     ./x.py check src/libcore --stage 1 --target "${TARGET}"
     ./x.py check src/libstd --stage 1 --target "${TARGET}"
