@@ -70,7 +70,7 @@ if [ "${NOLIBSTDBUILD}" = "1" ]; then
 else
     echo "Testing that libcore and libstd build with this stdsimd..."
     stdsimd="$(pwd)"
-    stdsimd_hash="$(git rev-parse HEAD)"
+    #stdsimd_hash="$(git rev-parse HEAD)"
 
     case ${TARGET} in
         *apple*)
@@ -93,7 +93,7 @@ else
         cd src/stdsimd
         git remote add CI "${stdsimd}"
         git fetch CI
-        git checkout "${stdsimd_hash}"
+        git checkout CI master
     )
 
     ./x.py check src/libcore --stage 1 --target "${TARGET}"
