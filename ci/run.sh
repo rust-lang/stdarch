@@ -92,6 +92,8 @@ else
 
     (
         cd src/stdsimd
+        git config --global user.email "travis@travis.com"
+        git config --global user.name "Travis CI"
         git add -u -v
         git commit -m "modifications"
     )
