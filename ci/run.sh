@@ -88,7 +88,7 @@ else
     cd "${RUSTC_DIR}"
 
     git submodule init
-    git config -v -f .gitmodules submodule.stdsimd.url "${stdsimd}"
+    git config -f .gitmodules submodule.stdsimd.url "${stdsimd}"
     git add -u
     git -c user.name='Travis CI' -c user.email='travis@ci.org' commit -m 'Update stdsimd submodule'
 
