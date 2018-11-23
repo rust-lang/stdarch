@@ -96,6 +96,9 @@ else
         git checkout CI master
     )
 
+    git add src/stdsimd
+    git -c user.name='Travis CI' -c user.email='travis@ci.org' commit -m 'update stdsimd'
+
     ./x.py check src/libcore --stage 1 --target "${TARGET}"
     ./x.py check src/libstd --stage 1 --target "${TARGET}"
 fi
