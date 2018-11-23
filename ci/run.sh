@@ -87,7 +87,8 @@ else
     git clone --depth 1 https://github.com/rust-lang/rust.git "${RUSTC_DIR}"
     cd "${RUSTC_DIR}"
 
-    git config submodule.stdsimd.url "${stdsimd}"
+    git submodule init
+    git config -v -f .gitmodules submodule.stdsimd.url "${stdsimd}"
     git add -u
     git -c user.name='Travis CI' -c user.email='travis@ci.org' commit -m 'Update stdsimd submodule'
 
