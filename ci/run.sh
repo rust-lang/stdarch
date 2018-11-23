@@ -86,19 +86,21 @@ else
 
     git clone --depth 1 https://github.com/rust-lang/rust.git "${RUSTC_DIR}"
     cd "${RUSTC_DIR}"
+
+    git config submodule.stdsimd.url "${stdsimd}"
+    git add -u
+    git -c user.name='Travis CI' -c user.email='travis@ci.org' commit -m 'Update stdsimd submodule'
+
     git submodule sync
     ./x.py clean
 
     (
         cd src/stdsimd
-        git remote add CI "${stdsimd}"
-        git fetch CI
         git checkout "${stdsimd_hash}"
     )
 
     git add src/stdsimd
     git -c user.name='Travis CI' -c user.email='travis@ci.org' commit -m 'Update stdsimd'
-
 
     ./x.py check src/libcore --stage 1 --target "${TARGET}"
     ./x.py check src/libstd --stage 1 --target "${TARGET}"
