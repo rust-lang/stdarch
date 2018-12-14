@@ -33,6 +33,7 @@
     sse4a_target_feature,
     arm_target_feature,
     aarch64_target_feature,
+    cmpxchg16b_target_feature,
     avx512_target_feature,
     mips_target_feature,
     powerpc_target_feature,
@@ -67,6 +68,8 @@
     test(attr(allow(dead_code, deprecated, unused_variables, unused_mut)))
 )]
 
+#[macro_use]
+#[allow(unused_imports)]
 extern crate core as _core;
 #[cfg(test)]
 #[macro_use]
@@ -121,6 +124,8 @@ use _core::ptr;
 use _core::result;
 #[allow(unused_imports)]
 use _core::slice;
+#[allow(unused_imports)]
+use _core::sync;
 #[allow(unused_imports)]
 use _core::u128;
 #[allow(unused_imports)]
