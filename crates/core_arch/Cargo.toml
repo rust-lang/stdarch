@@ -22,9 +22,9 @@ is-it-maintained-issue-resolution = { repository = "rust-lang-nursery/stdsimd" }
 is-it-maintained-open-issues = { repository = "rust-lang-nursery/stdsimd" }
 maintenance = { status = "experimental" }
 
-[dev-dependencies]
-stdsimd-test = { version = "0.*", path = "../stdsimd-test" }
-std_detect = { version = "0.*", path = "../std_detect" }
+#[dev-dependencies]
+#stdsimd-test = { version = "0.*", path = "../stdsimd-test" }
+#std_detect = { version = "0.*", path = "../std_detect" }
 
 [target.wasm32-unknown-unknown.dev-dependencies]
 wasm-bindgen-test = "=0.2.19"
