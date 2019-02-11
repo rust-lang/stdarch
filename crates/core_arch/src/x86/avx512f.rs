@@ -1,7 +1,7 @@
 use core_arch::simd::*;
 use core_arch::simd_llvm::*;
 use core_arch::x86::*;
-use mem::{self, MaybeUninit};
+use mem;
 
 #[cfg(test)]
 use stdsimd_test::assert_instr;
