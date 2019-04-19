@@ -83,6 +83,7 @@ pub unsafe fn __cpuid(leaf: u32) -> CpuidResult {
 
 /// Does the host support the `cpuid` instruction?
 #[inline]
+#[stable(feature = "simd_x86_has_cpuid", since = "1.35.0")]
 pub fn has_cpuid() -> bool {
     #[cfg(target_env = "sgx")]
     {
