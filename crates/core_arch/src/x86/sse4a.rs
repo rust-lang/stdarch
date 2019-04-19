@@ -37,7 +37,7 @@ extern "C" {
 #[inline]
 #[target_feature(enable = "sse4a")]
 #[cfg_attr(test, assert_instr(extrq))]
-#[stable(feature = "simd_x86", since = "1.27.0")]
+#[unstable(feature = "simd_x86_sse4a", issue = "60108")]
 pub unsafe fn _mm_extract_si64(x: __m128i, y: __m128i) -> __m128i {
     transmute(extrq(x.as_i64x2(), y.as_i8x16()))
 }
@@ -54,7 +54,7 @@ pub unsafe fn _mm_extract_si64(x: __m128i, y: __m128i) -> __m128i {
 #[inline]
 #[target_feature(enable = "sse4a")]
 #[cfg_attr(test, assert_instr(insertq))]
-#[stable(feature = "simd_x86", since = "1.27.0")]
+#[unstable(feature = "simd_x86_sse4a", issue = "60108")]
 pub unsafe fn _mm_insert_si64(x: __m128i, y: __m128i) -> __m128i {
     transmute(insertq(x.as_i64x2(), y.as_i64x2()))
 }
@@ -63,7 +63,7 @@ pub unsafe fn _mm_insert_si64(x: __m128i, y: __m128i) -> __m128i {
 #[inline]
 #[target_feature(enable = "sse4a")]
 #[cfg_attr(test, assert_instr(movntsd))]
-#[stable(feature = "simd_x86", since = "1.27.0")]
+#[unstable(feature = "simd_x86_sse4a", issue = "60108")]
 pub unsafe fn _mm_stream_sd(p: *mut f64, a: __m128d) {
     movntsd(p, a);
 }
@@ -72,7 +72,7 @@ pub unsafe fn _mm_stream_sd(p: *mut f64, a: __m128d) {
 #[inline]
 #[target_feature(enable = "sse4a")]
 #[cfg_attr(test, assert_instr(movntss))]
-#[stable(feature = "simd_x86", since = "1.27.0")]
+#[unstable(feature = "simd_x86_sse4a", issue = "60108")]
 pub unsafe fn _mm_stream_ss(p: *mut f32, a: __m128) {
     movntss(p, a);
 }
