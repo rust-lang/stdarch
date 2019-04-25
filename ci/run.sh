@@ -11,7 +11,7 @@ set -ex
 #export RUST_TEST_THREADS=1
 
 RUSTFLAGS="$RUSTFLAGS -D warnings "
-
+export CARGO="$CARGO_HOME/bin/cargo"
 case ${TARGET} in
     # On 32-bit use a static relocation model which avoids some extra
     # instructions when dealing with static data, notably allowing some
@@ -28,6 +28,10 @@ case ${TARGET} in
     mips-* | mipsel-*)
 	export RUSTFLAGS="${RUSTFLAGS} -C llvm-args=-fast-isel=false"
 	;;
+    mipsisa*)
+        export STDSIMD_DISABLE_ASSERT_INSTR=1
+        export CARGO="$CARGO_HOME/bin/xargo"
+	;;
 esac
 
 echo "RUSTFLAGS=${RUSTFLAGS}"
@@ -37,7 +41,7 @@ echo "STDARCH_DISABLE_ASSERT_INSTR=${STDARCH_DISABLE_ASSERT_INSTR}"
 echo "STDARCH_TEST_EVERYTHING=${STDARCH_TEST_EVERYTHING}"
 
 cargo_test() {
-    cmd="cargo"
+    cmd="$CARGO"
     subcmd="test"
     if [ "$NORUN" = "1" ]; then
         export subcmd="build"
@@ -87,12 +91,11 @@ case ${TARGET} in
         #export RUSTFLAGS="${RUSTFLAGS} -C target-feature=+simd128,+unimplemented-simd128"
         #cargo_test "--release --no-run"
         ;;
-    # FIXME: don't build anymore
-    #mips-*gnu* | mipsel-*gnu*)
-    #    export RUSTFLAGS="${RUSTFLAGS} -C target-feature=+msa,+fp64,+mips32r5"
-    #    cargo_test "--release"
-	  #    ;;
-    mips64*)
+    mips-*gnu* | mipsel-*gnu*)
+        export RUSTFLAGS="${RUSTFLAGS} -C target-feature=+msa,+fp64,+mips32r5"
+        cargo_test "--release"
+	      ;;
+    mips64* | mipsisa*)
         export RUSTFLAGS="${RUSTFLAGS} -C target-feature=+msa"
         cargo_test "--release"
 	      ;;
@@ -111,7 +114,8 @@ case ${TARGET} in
 
 esac
 
-if [ "$NORUN" != "1" ] && [ "$NOSTD" != 1 ] && [ "$TARGET" != "wasm32-unknown-unknown" ]; then
+if [ "$NORUN" != "1" ] && [ "$NOSTD" != 1 ] && [ "$TARGET" != "wasm32-unknown-unknown" ] && \
+   [ "$TARGET" != "mipsisa64r6el-unknown-linux-gnuabi64" ] && [ "$TARGET" != "mipsisa64r6-unknown-linux-gnuabi64" ]; then
     # Test examples
     (
         cd examples
