@@ -2851,7 +2851,7 @@ pub unsafe fn __msa_ceqi_w(a: v4i32, imm_s5: i32) -> v4i32 {
 ///
 #[inline]
 #[target_feature(enable = "msa")]
-#[cfg_attr(test, assert_instr(ceqi.d, imm_s5 = 0b11111))]
+#[cfg_attr(test, assert_instr(ceqi.d, imm_s5 = 0b1111))]
 #[rustc_args_required_const(1)]
 pub unsafe fn __msa_ceqi_d(a: v2i64, imm_s5: i32) -> v2i64 {
     macro_rules! call {
@@ -3577,7 +3577,7 @@ pub unsafe fn __msa_copy_u_d(a: v2i64, imm1: i32) -> u64 {
 ///
 #[inline]
 #[target_feature(enable = "msa")]
-#[cfg_attr(test, assert_instr(ctcmsa, imm1 = 0b1))]
+#[cfg_attr(test, assert_instr(ctcmsa, imm5 = 0b1111))]
 #[rustc_args_required_const(0)]
 pub unsafe fn __msa_ctcmsa(imm5: i32, a: i32) -> () {
     macro_rules! call {
@@ -6377,7 +6377,7 @@ pub unsafe fn __msa_max_u_d(a: v2u64, b: v2u64) -> v2u64 {
 ///
 #[inline]
 #[target_feature(enable = "msa")]
-#[cfg_attr(test, assert_instr(maxi_s.b, imm5 = 0b11111))]
+#[cfg_attr(test, assert_instr(maxi_s.b, imm_s5 = 0b11111))]
 #[rustc_args_required_const(1)]
 pub unsafe fn __msa_maxi_s_b(a: v16i8, imm_s5: i32) -> v16i8 {
     macro_rules! call {
@@ -7312,7 +7312,7 @@ pub unsafe fn __msa_nor_v(a: v16u8, b: v16u8) -> v16u8 {
 ///
 #[inline]
 #[target_feature(enable = "msa")]
-#[cfg_attr(test, assert_instr(nori.b, imm8 = 0b11111111))]
+#[cfg_attr(test, assert_instr(nori.b, imm8 = 0b1111111))]
 #[rustc_args_required_const(1)]
 pub unsafe fn __msa_nori_b(a: v16u8, imm8: i32) -> v16u8 {
     macro_rules! call {
@@ -7517,7 +7517,7 @@ pub unsafe fn __msa_pcnt_d(a: v2i64) -> v2i64 {
 ///
 #[inline]
 #[target_feature(enable = "msa")]
-#[cfg_attr(test, assert_instr(sat_s.b, imm4 = 0b111))]
+#[cfg_attr(test, assert_instr(sat_s.b, imm3 = 0b111))]
 #[rustc_args_required_const(1)]
 pub unsafe fn __msa_sat_s_b(a: v16i8, imm3: i32) -> v16i8 {
     macro_rules! call {
@@ -7536,7 +7536,7 @@ pub unsafe fn __msa_sat_s_b(a: v16i8, imm3: i32) -> v16i8 {
 ///
 #[inline]
 #[target_feature(enable = "msa")]
-#[cfg_attr(test, assert_instr(sat_s.h, imm3 = 0b1111))]
+#[cfg_attr(test, assert_instr(sat_s.h, imm4 = 0b1111))]
 #[rustc_args_required_const(1)]
 pub unsafe fn __msa_sat_s_h(a: v8i16, imm4: i32) -> v8i16 {
     macro_rules! call {
@@ -7555,7 +7555,7 @@ pub unsafe fn __msa_sat_s_h(a: v8i16, imm4: i32) -> v8i16 {
 ///
 #[inline]
 #[target_feature(enable = "msa")]
-#[cfg_attr(test, assert_instr(sat_s.w, imm2 = 0b11111))]
+#[cfg_attr(test, assert_instr(sat_s.w, imm5 = 0b11111))]
 #[rustc_args_required_const(1)]
 pub unsafe fn __msa_sat_s_w(a: v4i32, imm5: i32) -> v4i32 {
     macro_rules! call {
@@ -7574,7 +7574,7 @@ pub unsafe fn __msa_sat_s_w(a: v4i32, imm5: i32) -> v4i32 {
 ///
 #[inline]
 #[target_feature(enable = "msa")]
-#[cfg_attr(test, assert_instr(sat_s.d, imm1 = 0b111111))]
+#[cfg_attr(test, assert_instr(sat_s.d, imm6 = 0b111111))]
 #[rustc_args_required_const(1)]
 pub unsafe fn __msa_sat_s_d(a: v2i64, imm6: i32) -> v2i64 {
     macro_rules! call {
@@ -7593,7 +7593,7 @@ pub unsafe fn __msa_sat_s_d(a: v2i64, imm6: i32) -> v2i64 {
 ///
 #[inline]
 #[target_feature(enable = "msa")]
-#[cfg_attr(test, assert_instr(sat_u.b, imm4 = 0b111))]
+#[cfg_attr(test, assert_instr(sat_u.b, imm3 = 0b111))]
 #[rustc_args_required_const(1)]
 pub unsafe fn __msa_sat_u_b(a: v16u8, imm3: i32) -> v16u8 {
     macro_rules! call {
@@ -7612,7 +7612,7 @@ pub unsafe fn __msa_sat_u_b(a: v16u8, imm3: i32) -> v16u8 {
 ///
 #[inline]
 #[target_feature(enable = "msa")]
-#[cfg_attr(test, assert_instr(sat_u.h, imm3 = 0b1111))]
+#[cfg_attr(test, assert_instr(sat_u.h, imm4 = 0b1111))]
 #[rustc_args_required_const(1)]
 pub unsafe fn __msa_sat_u_h(a: v8u16, imm4: i32) -> v8u16 {
     macro_rules! call {
@@ -7631,7 +7631,7 @@ pub unsafe fn __msa_sat_u_h(a: v8u16, imm4: i32) -> v8u16 {
 ///
 #[inline]
 #[target_feature(enable = "msa")]
-#[cfg_attr(test, assert_instr(sat_u.w, imm2 = 0b11111))]
+#[cfg_attr(test, assert_instr(sat_u.w, imm5 = 0b11111))]
 #[rustc_args_required_const(1)]
 pub unsafe fn __msa_sat_u_w(a: v4u32, imm5: i32) -> v4u32 {
     macro_rules! call {
@@ -7650,7 +7650,7 @@ pub unsafe fn __msa_sat_u_w(a: v4u32, imm5: i32) -> v4u32 {
 ///
 #[inline]
 #[target_feature(enable = "msa")]
-#[cfg_attr(test, assert_instr(sat_u.d, imm1 = 0b111111))]
+#[cfg_attr(test, assert_instr(sat_u.d, imm6 = 0b111111))]
 #[rustc_args_required_const(1)]
 pub unsafe fn __msa_sat_u_d(a: v2u64, imm6: i32) -> v2u64 {
     macro_rules! call {

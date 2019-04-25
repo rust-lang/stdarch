@@ -157,7 +157,7 @@ fn parse(output: &str) -> HashSet<Function> {
                 //
                 //      $rel_offset: ab cd ef 00    $instruction...
                 let expected_len
-                    = if cfg!(target_arch = "arm") || cfg!(target_arch = "aarch64") {
+                    = if cfg!(target_arch = "arm") || cfg!(target_arch = "aarch64") || cfg!(target_arch = "mips") || cfg!(target_arch = "mips64") {
                         8
                     } else {
                         2
