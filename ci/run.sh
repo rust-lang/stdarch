@@ -11,7 +11,7 @@ set -ex
 #export RUST_TEST_THREADS=1
 
 RUSTFLAGS="$RUSTFLAGS -D warnings "
-export CARGO="$CARGO_HOME/bin/cargo"
+export CARGO="cargo"
 case ${TARGET} in
     # On 32-bit use a static relocation model which avoids some extra
     # instructions when dealing with static data, notably allowing some
