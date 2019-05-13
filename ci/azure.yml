@@ -16,6 +16,8 @@ jobs:
       vmImage: ubuntu-16.04
     steps:
       - template: azure-install-rust.yml
+      - script: cargo install xargo
+      - script: rustup component add rust-src
       - bash: |
           if [ "${NO_DOCKER}" = "1" ]; then
               ci/run.sh $TARGET
@@ -49,6 +51,10 @@ jobs:
         mips64el-unknown-linux-gnuabi64:
           TARGET: mips64el-unknown-linux-gnuabi64
           NORUN: 1
+        mipsisa64r6el-unknown-linux-gnuabi64:
+          TARGET: mipsisa64el-unknown-linux-gnuabi64
+        mipsisa64r6-unknown-linux-gnuabi64:
+          TARGET: mipsisa64-unknown-linux-gnuabi64
         powerpc64le-unknown-linux-gnu:
           TARGET: powerpc64le-unknown-linux-gnu
           STDARCH_DISABLE_ASSERT_INSTR: 1
