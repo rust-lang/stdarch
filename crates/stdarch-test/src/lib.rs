@@ -131,7 +131,9 @@ pub fn assert(_fnptr: usize, fnname: &str, expected: &str) {
                 // Original limit was 20 instructions, but ARM DSP Intrinsics
                 // are exactly 20 instructions long. So, bump the limit to 22
                 // instead of adding here a long list of exceptions.
-                _ => 22,
+		// Some MIPS MSA Intrinsics are 22 instructions long,
+		// so, previous limit of 22 is increased to 23.
+                _ => 23,
             },
             |v| v.parse().unwrap(),
         );

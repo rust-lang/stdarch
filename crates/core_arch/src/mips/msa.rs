@@ -161,13 +161,13 @@ extern "C" {
     fn msa_aver_s_w(a: v4i32, b: v4i32) -> v4i32;
     #[link_name = "llvm.mips.aver.s.d"]
     fn msa_aver_s_d(a: v2i64, b: v2i64) -> v2i64;
-    #[link_name = "llvm.mips.aver.s.b"]
+    #[link_name = "llvm.mips.aver.u.b"]
     fn msa_aver_u_b(a: v16u8, b: v16u8) -> v16u8;
-    #[link_name = "llvm.mips.aver.s.h"]
+    #[link_name = "llvm.mips.aver.u.h"]
     fn msa_aver_u_h(a: v8u16, b: v8u16) -> v8u16;
-    #[link_name = "llvm.mips.aver.s.w"]
+    #[link_name = "llvm.mips.aver.u.w"]
     fn msa_aver_u_w(a: v4u32, b: v4u32) -> v4u32;
-    #[link_name = "llvm.mips.aver.s.d"]
+    #[link_name = "llvm.mips.aver.u.d"]
     fn msa_aver_u_d(a: v2u64, b: v2u64) -> v2u64;
     #[link_name = "llvm.mips.bclr.b"]
     fn msa_bclr_b(a: v16u8, b: v16u8) -> v16u8;
@@ -415,7 +415,7 @@ extern "C" {
     fn msa_dpadd_s_w(a: v4i32, b: v8i16, c: v8i16) -> v4i32;
     #[link_name = "llvm.mips.dpadd.s.d"]
     fn msa_dpadd_s_d(a: v2i64, b: v4i32, c: v4i32) -> v2i64;
-    #[link_name = "llvm.mips.dpadd.s.h"]
+    #[link_name = "llvm.mips.dpadd.u.h"]
     fn msa_dpadd_u_h(a: v8u16, b: v16u8, c: v16u8) -> v8u16;
     #[link_name = "llvm.mips.dpadd.u.w"]
     fn msa_dpadd_u_w(a: v4u32, b: v8u16, c: v8u16) -> v4u32;
@@ -1914,7 +1914,8 @@ pub unsafe fn __msa_bclr_w(a: v4u32, b: v4u32) -> v4u32 {
 ///
 #[inline]
 #[target_feature(enable = "msa")]
-#[cfg_attr(test, assert_instr(bclr.d))]
+// llvm fails to match bclr.d instruction and instead generates shift, xor, and sequence.
+//#[cfg_attr(test, assert_instr(bclr.d))]
 pub unsafe fn __msa_bclr_d(a: v2u64, b: v2u64) -> v2u64 {
     msa_bclr_d(a, mem::transmute(b))
 }
@@ -1927,7 +1928,8 @@ pub unsafe fn __msa_bclr_d(a: v2u64, b: v2u64) -> v2u64 {
 ///
 #[inline]
 #[target_feature(enable = "msa")]
-#[cfg_attr(test, assert_instr(bclri.b, imm3 = 0b111))]
+// transformed to andi.b 0x7F
+//#[cfg_attr(test, assert_instr(bclri.b, imm3 = 0b111))]
 #[rustc_args_required_const(1)]
 pub unsafe fn __msa_bclri_b(a: v16u8, imm3: i32) -> v16u8 {
     macro_rules! call {
@@ -2059,7 +2061,8 @@ pub unsafe fn __msa_binsl_d(a: v2u64, b: v2u64, c: v2u64) -> v2u64 {
 ///
 #[inline]
 #[target_feature(enable = "msa")]
-#[cfg_attr(test, assert_instr(binsli.b, imm3 = 0b111))]
+// binsli.b element size gets optimized out.
+//#[cfg_attr(test, assert_instr(binsli.b, imm3 = 0b111))]
 #[rustc_args_required_const(2)]
 pub unsafe fn __msa_binsli_b(a: v16u8, b: v16u8, imm3: i32) -> v16u8 {
     macro_rules! call {
@@ -2078,7 +2081,8 @@ pub unsafe fn __msa_binsli_b(a: v16u8, b: v16u8, imm3: i32) -> v16u8 {
 ///
 #[inline]
 #[target_feature(enable = "msa")]
-#[cfg_attr(test, assert_instr(binsli.h, imm4 = 0b1111))]
+// binsli.h element size gets optimized out.
+//#[cfg_attr(test, assert_instr(binsli.h, imm4 = 0b1111))]
 #[rustc_args_required_const(2)]
 pub unsafe fn __msa_binsli_h(a: v8u16, b: v8u16, imm4: i32) -> v8u16 {
     macro_rules! call {
@@ -2097,7 +2101,8 @@ pub unsafe fn __msa_binsli_h(a: v8u16, b: v8u16, imm4: i32) -> v8u16 {
 ///
 #[inline]
 #[target_feature(enable = "msa")]
-#[cfg_attr(test, assert_instr(binsli.w, imm5 = 0b11111))]
+// binsli.w element size gets optimized out.
+//#[cfg_attr(test, assert_instr(binsli.w, imm5 = 0b11111))]
 #[rustc_args_required_const(2)]
 pub unsafe fn __msa_binsli_w(a: v4u32, b: v4u32, imm5: i32) -> v4u32 {
     macro_rules! call {
@@ -2116,7 +2121,8 @@ pub unsafe fn __msa_binsli_w(a: v4u32, b: v4u32, imm5: i32) -> v4u32 {
 ///
 #[inline]
 #[target_feature(enable = "msa")]
-#[cfg_attr(test, assert_instr(binsli.d, imm6 = 0b111111))]
+// binsli.d element size gets optimized out.
+//#[cfg_attr(test, assert_instr(binsli.d, imm6 = 0b111111))]
 #[rustc_args_required_const(2)]
 pub unsafe fn __msa_binsli_d(a: v2u64, b: v2u64, imm6: i32) -> v2u64 {
     macro_rules! call {
@@ -2191,7 +2197,8 @@ pub unsafe fn __msa_binsr_d(a: v2u64, b: v2u64, c: v2u64) -> v2u64 {
 ///
 #[inline]
 #[target_feature(enable = "msa")]
-#[cfg_attr(test, assert_instr(binsri.b, imm3 = 0b111))]
+// binsri.b element size gets optimized out.
+//#[cfg_attr(test, assert_instr(binsri.b, imm3 = 0b111))]
 #[rustc_args_required_const(2)]
 pub unsafe fn __msa_binsri_b(a: v16u8, b: v16u8, imm3: i32) -> v16u8 {
     macro_rules! call {
@@ -2210,7 +2217,8 @@ pub unsafe fn __msa_binsri_b(a: v16u8, b: v16u8, imm3: i32) -> v16u8 {
 ///
 #[inline]
 #[target_feature(enable = "msa")]
-#[cfg_attr(test, assert_instr(binsri.h, imm4 = 0b1111))]
+// binsri.h element size gets optimized out.
+//#[cfg_attr(test, assert_instr(binsri.h, imm4 = 0b1111))]
 #[rustc_args_required_const(2)]
 pub unsafe fn __msa_binsri_h(a: v8u16, b: v8u16, imm4: i32) -> v8u16 {
     macro_rules! call {
@@ -2229,7 +2237,8 @@ pub unsafe fn __msa_binsri_h(a: v8u16, b: v8u16, imm4: i32) -> v8u16 {
 ///
 #[inline]
 #[target_feature(enable = "msa")]
-#[cfg_attr(test, assert_instr(binsri.w, imm5 = 0b11111))]
+//binsri.w element size gets optimized out.
+//#[cfg_attr(test, assert_instr(binsri.w, imm5 = 0b11111))]
 #[rustc_args_required_const(2)]
 pub unsafe fn __msa_binsri_w(a: v4u32, b: v4u32, imm5: i32) -> v4u32 {
     macro_rules! call {
@@ -2248,7 +2257,8 @@ pub unsafe fn __msa_binsri_w(a: v4u32, b: v4u32, imm5: i32) -> v4u32 {
 ///
 #[inline]
 #[target_feature(enable = "msa")]
-#[cfg_attr(test, assert_instr(binsri.d, imm6 = 0b111111))]
+//binsri.d element size gets optimized out.
+//#[cfg_attr(test, assert_instr(binsri.d, imm6 = 0b11111))]
 #[rustc_args_required_const(2)]
 pub unsafe fn __msa_binsri_d(a: v2u64, b: v2u64, imm6: i32) -> v2u64 {
     macro_rules! call {
@@ -2281,7 +2291,8 @@ pub unsafe fn __msa_bmnz_v(a: v16u8, b: v16u8, c: v16u8) -> v16u8 {
 ///
 #[inline]
 #[target_feature(enable = "msa")]
-#[cfg_attr(test, assert_instr(bmnzi.b, imm8 = 0b11111111))]
+// optimized to copy
+//#[cfg_attr(test, assert_instr(bmnzi.b, imm8 = 0b11111111))]
 #[rustc_args_required_const(2)]
 pub unsafe fn __msa_bmnzi_b(a: v16u8, b: v16u8, imm8: i32) -> v16u8 {
     macro_rules! call {
@@ -2301,7 +2312,8 @@ pub unsafe fn __msa_bmnzi_b(a: v16u8, b: v16u8, imm8: i32) -> v16u8 {
 ///
 #[inline]
 #[target_feature(enable = "msa")]
-#[cfg_attr(test, assert_instr(bmz.v))]
+// Documented in https://github.com/Microsoft/llvm/blob/master/lib/Target/Mips/MSA.txt#L63
+//#[cfg_attr(test, assert_instr(bmz.v))]
 pub unsafe fn __msa_bmz_v(a: v16u8, b: v16u8, c: v16u8) -> v16u8 {
     msa_bmz_v(a, mem::transmute(b), c)
 }
@@ -2314,7 +2326,8 @@ pub unsafe fn __msa_bmz_v(a: v16u8, b: v16u8, c: v16u8) -> v16u8 {
 ///
 #[inline]
 #[target_feature(enable = "msa")]
-#[cfg_attr(test, assert_instr(bmzi.b, imm8 = 0b11111111))]
+// optimized to copy
+//#[cfg_attr(test, assert_instr(bmzi.b, imm8 = 0b11111111))]
 #[rustc_args_required_const(2)]
 pub unsafe fn __msa_bmzi_b(a: v16u8, b: v16u8, imm8: i32) -> v16u8 {
     macro_rules! call {
@@ -2376,7 +2389,8 @@ pub unsafe fn __msa_bneg_w(a: v4u32, b: v4u32) -> v4u32 {
 ///
 #[inline]
 #[target_feature(enable = "msa")]
-#[cfg_attr(test, assert_instr(bneg.d))]
+// llvm fails to match bneg.d instruction and instead generates shift, or sequence.
+//#[cfg_attr(test, assert_instr(bneg.d))]
 pub unsafe fn __msa_bneg_d(a: v2u64, b: v2u64) -> v2u64 {
     msa_bneg_d(a, mem::transmute(b))
 }
@@ -2522,7 +2536,8 @@ pub unsafe fn __msa_bnz_v(a: v16u8) -> i32 {
 ///
 #[inline]
 #[target_feature(enable = "msa")]
-#[cfg_attr(test, assert_instr(bsel.v))]
+// Documented in https://github.com/Microsoft/llvm/blob/master/lib/Target/Mips/MSA.txt#L63
+//#[cfg_attr(test, assert_instr(bsel.v))]
 pub unsafe fn __msa_bsel_v(a: v16u8, b: v16u8, c: v16u8) -> v16u8 {
     msa_bsel_v(a, mem::transmute(b), c)
 }
@@ -2597,7 +2612,8 @@ pub unsafe fn __msa_bset_w(a: v4u32, b: v4u32) -> v4u32 {
 ///
 #[inline]
 #[target_feature(enable = "msa")]
-#[cfg_attr(test, assert_instr(bset.d))]
+// llvm fails to match bset.d instruction and instead generates shift, or sequence.
+//#[cfg_attr(test, assert_instr(bset.d))]
 pub unsafe fn __msa_bset_d(a: v2u64, b: v2u64) -> v2u64 {
     msa_bset_d(a, mem::transmute(b))
 }
@@ -2869,7 +2885,8 @@ pub unsafe fn __msa_ceqi_d(a: v2i64, imm_s5: i32) -> v2i64 {
 /// Can not be tested in user mode
 #[inline]
 #[target_feature(enable = "msa")]
-#[cfg_attr(test, assert_instr(cfcmsa, imm5 = 0b11111))]
+// Can not be tested in user mode
+//#[cfg_attr(test, assert_instr(cfcmsa, imm5 = 0b11111))]
 #[rustc_args_required_const(0)]
 pub unsafe fn __msa_cfcmsa(imm5: i32) -> i32 {
     macro_rules! call {
@@ -3061,7 +3078,8 @@ pub unsafe fn __msa_clei_s_w(a: v4i32, imm_s5: i32) -> v4i32 {
 ///
 #[inline]
 #[target_feature(enable = "msa")]
-#[cfg_attr(test, assert_instr(clei_s.d, imm_s5 = 0b11111))]
+//Assertion fails due to llvm bug: https://reviews.llvm.org/D59884
+//#[cfg_attr(test, assert_instr(clei_s.d, imm_s5 = 0b11111))]
 #[rustc_args_required_const(1)]
 pub unsafe fn __msa_clei_s_d(a: v2i64, imm_s5: i32) -> v2i64 {
     macro_rules! call {
@@ -3333,7 +3351,8 @@ pub unsafe fn __msa_clti_s_w(a: v4i32, imm_s5: i32) -> v4i32 {
 ///
 #[inline]
 #[target_feature(enable = "msa")]
-#[cfg_attr(test, assert_instr(clti_s.d, imm_s5 = 0b11111))]
+//Assertion fails due to llvm bug: https://reviews.llvm.org/D59884
+//#[cfg_attr(test, assert_instr(clti_s.d, imm_s5 = 0b11111))]
 #[rustc_args_required_const(1)]
 pub unsafe fn __msa_clti_s_d(a: v2i64, imm_s5: i32) -> v2i64 {
     macro_rules! call {
@@ -3557,7 +3576,8 @@ pub unsafe fn __msa_copy_u_w(a: v4i32, imm2: i32) -> u32 {
 ///
 #[inline]
 #[target_feature(enable = "msa")]
-#[cfg_attr(test, assert_instr(copy_u.d, imm1 = 0b1))]
+// semantically equivalent to copy_s_d
+//#[cfg_attr(test, assert_instr(copy_u.d, imm1 = 0b1))]
 #[rustc_args_required_const(1)]
 pub unsafe fn __msa_copy_u_d(a: v2i64, imm1: i32) -> u64 {
     macro_rules! call {
@@ -3577,7 +3597,8 @@ pub unsafe fn __msa_copy_u_d(a: v2i64, imm1: i32) -> u64 {
 ///
 #[inline]
 #[target_feature(enable = "msa")]
-#[cfg_attr(test, assert_instr(ctcmsa, imm5 = 0b1111))]
+// Can not be tested in user mode
+//#[cfg_attr(test, assert_instr(ctcmsa, imm5 = 0b1111))]
 #[rustc_args_required_const(0)]
 pub unsafe fn __msa_ctcmsa(imm5: i32, a: i32) -> () {
     macro_rules! call {
@@ -5949,7 +5970,8 @@ pub unsafe fn __msa_insve_d(a: v2i64, imm1: i32, c: v2i64) -> v2i64 {
 ///
 #[inline]
 #[target_feature(enable = "msa")]
-#[cfg_attr(test, assert_instr(ld.b, imm_s10 = 0b1111111111))]
+// ld.b llvm chooses ld.d over ld.b possible because of calling convention.
+//#[cfg_attr(test, assert_instr(ld.b, imm_s10 = 0b1111111111))]
 #[rustc_args_required_const(1)]
 pub unsafe fn __msa_ld_b(mem_addr: *mut u8, imm_s10: i32) -> v16i8 {
     macro_rules! call {
@@ -5968,7 +5990,8 @@ pub unsafe fn __msa_ld_b(mem_addr: *mut u8, imm_s10: i32) -> v16i8 {
 ///
 #[inline]
 #[target_feature(enable = "msa")]
-#[cfg_attr(test, assert_instr(ld.h, imm_s11 = 0b11111111111))]
+// ld.h llvm chooses ld.d over ld.h possible because of calling convention.
+//#[cfg_attr(test, assert_instr(ld.h, imm_s11 = 0b11111111111))]
 #[rustc_args_required_const(1)]
 pub unsafe fn __msa_ld_h(mem_addr: *mut u8, imm_s11: i32) -> v8i16 {
     macro_rules! call {
@@ -5987,7 +6010,8 @@ pub unsafe fn __msa_ld_h(mem_addr: *mut u8, imm_s11: i32) -> v8i16 {
 ///
 #[inline]
 #[target_feature(enable = "msa")]
-#[cfg_attr(test, assert_instr(ld.w, imm_s12 = 0b111111111111))]
+// ld.w llvm chooses ld.d over ld.w possible because of calling convention.
+//#[cfg_attr(test, assert_instr(ld.w, imm_s12 = 0b111111111111))]
 #[rustc_args_required_const(1)]
 pub unsafe fn __msa_ld_w(mem_addr: *mut u8, imm_s12: i32) -> v4i32 {
     macro_rules! call {
@@ -6044,7 +6068,8 @@ pub unsafe fn __msa_ldi_b(imm_s10: i32) -> v16i8 {
 ///
 #[inline]
 #[target_feature(enable = "msa")]
-#[cfg_attr(test, assert_instr(ldi.h, imm_s10 = 0b1111111111))]
+//ldi.h -1 gets transformed to ldi.b -1
+//#[cfg_attr(test, assert_instr(ldi.h, imm_s10 = 0b1111111111))]
 #[rustc_args_required_const(0)]
 pub unsafe fn __msa_ldi_h(imm_s10: i32) -> v8i16 {
     macro_rules! call {
@@ -6063,7 +6088,8 @@ pub unsafe fn __msa_ldi_h(imm_s10: i32) -> v8i16 {
 ///
 #[inline]
 #[target_feature(enable = "msa")]
-#[cfg_attr(test, assert_instr(ldi.w, imm_s10 = 0b1111111111))]
+//ldi.w -1 gets transformed to ldi.b -1
+//#[cfg_attr(test, assert_instr(ldi.w, imm_s10 = 0b1111111111))]
 #[rustc_args_required_const(0)]
 pub unsafe fn __msa_ldi_w(imm_s10: i32) -> v4i32 {
     macro_rules! call {
@@ -6082,7 +6108,8 @@ pub unsafe fn __msa_ldi_w(imm_s10: i32) -> v4i32 {
 ///
 #[inline]
 #[target_feature(enable = "msa")]
-#[cfg_attr(test, assert_instr(ldi.d, imm_s10 = 0b1111111111))]
+//ldi.d -1 gets transformed to ldi.b -1
+//#[cfg_attr(test, assert_instr(ldi.d, imm_s10 = 0b1111111111))]
 #[rustc_args_required_const(0)]
 pub unsafe fn __msa_ldi_d(imm_s10: i32) -> v2i64 {
     macro_rules! call {
@@ -6434,7 +6461,8 @@ pub unsafe fn __msa_maxi_s_w(a: v4i32, imm_s5: i32) -> v4i32 {
 ///
 #[inline]
 #[target_feature(enable = "msa")]
-#[cfg_attr(test, assert_instr(maxi_s.d, imm_s5 = 0b11111))]
+//Assertion fails due to llvm bug: https://reviews.llvm.org/D59884
+//#[cfg_attr(test, assert_instr(maxi_s.d, imm_s5 = 0b11111))]
 #[rustc_args_required_const(1)]
 pub unsafe fn __msa_maxi_s_d(a: v2i64, imm_s5: i32) -> v2i64 {
     macro_rules! call {
@@ -6694,7 +6722,8 @@ pub unsafe fn __msa_mini_s_w(a: v4i32, imm_s5: i32) -> v4i32 {
 ///
 #[inline]
 #[target_feature(enable = "msa")]
-#[cfg_attr(test, assert_instr(mini_s.d, imm_s5 = 0b11111))]
+//Assertion fails due to llvm bug: https://reviews.llvm.org/D59884
+//#[cfg_attr(test, assert_instr(mini_s.d, imm_s5 = 0b11111))]
 #[rustc_args_required_const(1)]
 pub unsafe fn __msa_mini_s_d(a: v2i64, imm_s5: i32) -> v2i64 {
     macro_rules! call {
@@ -7346,7 +7375,8 @@ pub unsafe fn __msa_or_v(a: v16u8, b: v16u8) -> v16u8 {
 ///
 #[inline]
 #[target_feature(enable = "msa")]
-#[cfg_attr(test, assert_instr(ori.b, imm8 = 0b11111111))]
+//ori.b 0xFF gets optimized out
+//#[cfg_attr(test, assert_instr(ori.b, imm8 = 0b11111111))]
 #[rustc_args_required_const(1)]
 pub unsafe fn __msa_ori_b(a: v16u8, imm8: i32) -> v16u8 {
     macro_rules! call {
@@ -7961,7 +7991,8 @@ pub unsafe fn __msa_sll_d(a: v2i64, b: v2i64) -> v2i64 {
 ///
 #[inline]
 #[target_feature(enable = "msa")]
-#[cfg_attr(test, assert_instr(slli.b, imm4 = 0b1111))]
+// slli.b 0xF gets optimized out
+//#[cfg_attr(test, assert_instr(slli.b, imm4 = 0b1111))]
 #[rustc_args_required_const(1)]
 pub unsafe fn __msa_slli_b(a: v16i8, imm4: i32) -> v16i8 {
     macro_rules! call {
@@ -8493,7 +8524,8 @@ pub unsafe fn __msa_srl_d(a: v2i64, b: v2i64) -> v2i64 {
 ///
 #[inline]
 #[target_feature(enable = "msa")]
-#[cfg_attr(test, assert_instr(srli.b, imm4 = 0b1111))]
+// srli.b 0xF gets optimized out
+//#[cfg_attr(test, assert_instr(srli.b, imm4 = 0b1111))]
 #[rustc_args_required_const(1)]
 pub unsafe fn __msa_srli_b(a: v16i8, imm4: i32) -> v16i8 {
     macro_rules! call {
@@ -8709,7 +8741,8 @@ pub unsafe fn __msa_srlri_d(a: v2i64, imm6: i32) -> v2i64 {
 ///
 #[inline]
 #[target_feature(enable = "msa")]
-#[cfg_attr(test, assert_instr(st.b, imm_s10 = 0b1111111111))]
+// st.b llvm chosses st.d over st.b possible because of calling convention.
+//#[cfg_attr(test, assert_instr(st.b, imm_s10 = 0b1111111111))]
 #[rustc_args_required_const(2)]
 pub unsafe fn __msa_st_b(a: v16i8, mem_addr: *mut u8, imm_s10: i32) -> () {
     macro_rules! call {
@@ -8728,7 +8761,8 @@ pub unsafe fn __msa_st_b(a: v16i8, mem_addr: *mut u8, imm_s10: i32) -> () {
 ///
 #[inline]
 #[target_feature(enable = "msa")]
-#[cfg_attr(test, assert_instr(st.h, imm_s11 = 0b11111111111))]
+// st.h llvm chosses st.d over st.h possible because of calling convention.
+//#[cfg_attr(test, assert_instr(st.h, imm_s11 = 0b11111111111))]
 #[rustc_args_required_const(2)]
 pub unsafe fn __msa_st_h(a: v8i16, mem_addr: *mut u8, imm_s11: i32) -> () {
     macro_rules! call {
@@ -8747,7 +8781,8 @@ pub unsafe fn __msa_st_h(a: v8i16, mem_addr: *mut u8, imm_s11: i32) -> () {
 ///
 #[inline]
 #[target_feature(enable = "msa")]
-#[cfg_attr(test, assert_instr(st.w, imm_s12 = 0b111111111111))]
+// st.w llvm chosses st.d over st.w possible because of calling convention.
+//#[cfg_attr(test, assert_instr(st.w, imm_s12 = 0b111111111111))]
 #[rustc_args_required_const(2)]
 pub unsafe fn __msa_st_w(a: v4i32, mem_addr: *mut u8, imm_s12: i32) -> () {
     macro_rules! call {
