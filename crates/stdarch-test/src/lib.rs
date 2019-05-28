@@ -128,12 +128,14 @@ pub fn assert(_fnptr: usize, fnname: &str, expected: &str) {
                 "usad8" => 27,
                 "qadd8" | "qsub8" | "sadd8" | "sel" | "shadd8" | "shsub8" | "usub8" | "ssub8" => 29,
 
+                // Some MIPS MSA Intrinsics are 30 instructions long,
+                // so, the limit needs to be increased to 31.
+                _ if fnname.contains("msa") => 31,
+
                 // Original limit was 20 instructions, but ARM DSP Intrinsics
                 // are exactly 20 instructions long. So, bump the limit to 22
                 // instead of adding here a long list of exceptions.
-		// Some MIPS MSA Intrinsics are 22 instructions long,
-		// so, previous limit of 22 is increased to 23.
-                _ => 23,
+                _ => 22,
             },
             |v| v.parse().unwrap(),
         );
