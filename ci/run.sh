@@ -29,7 +29,6 @@ case ${TARGET} in
 	export RUSTFLAGS="${RUSTFLAGS} -C llvm-args=-fast-isel=false"
 	;;
     mipsisa*)
-        export STDSIMD_DISABLE_ASSERT_INSTR=1
         export CARGO="$CARGO_HOME/bin/xargo"
 	;;
 esac
