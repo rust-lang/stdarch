@@ -8,6 +8,11 @@ set -ex
 run() {
     target=$(echo "${1}" | sed 's/-emulated//')
     echo "Building docker container for TARGET=${1}"
+    case ${target} in
+         mipsisa*)
+            export MOUNT_XARGO="--volume ${HOME}/.xargo:/root/.xargo"
+            ;;
+    esac
     docker build -t stdarch -f "ci/docker/${1}/Dockerfile" ci/
     mkdir -p target
     echo "Running docker"
@@ -15,6 +20,7 @@ run() {
     docker run \
       --rm \
       --user "$(id -u)":"$(id -g)" \
+      ${MOUNT_XARGO} \
       --env CARGO_HOME=/cargo \
       --env CARGO_TARGET_DIR=/checkout/target \
       --env TARGET="${target}" \
