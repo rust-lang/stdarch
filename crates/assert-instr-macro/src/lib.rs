@@ -117,8 +117,6 @@ pub fn assert_instr(
         }
     };
 
-    eprintln!("fn: \"{}\", tn: \"{}\", sn: \"{}\"", name, assert_name, shim_name);
-
     // If instruction tests are disabled avoid emitting this shim at all, just
     // return the original item without our attribute.
     if !cfg!(optimized) || disable_assert_instr {

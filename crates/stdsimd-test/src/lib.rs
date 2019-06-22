@@ -206,7 +206,15 @@ fn get_functions(fnptr: usize, fnname: &mut String) -> &'static [Function] {
 
     if let Some(sym) = &sym {
         if let Some(s) = DISASSEMBLY.get(sym) {
-            *fnname = sym.to_string();
+            let name = sym.to_string();
+
+            // on macosx the symbol names don't have leading `_`:
+            while fnname.starts_with('_') {
+                *fnname = fnname[1..].to_string();
+            }
+
+            assert_eq!(*fnname, name);
+            *fnname = name;
             return s;
         }
     }
