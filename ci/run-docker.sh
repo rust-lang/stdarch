@@ -10,7 +10,8 @@ run() {
     echo "Building docker container for TARGET=${1}"
     case ${target} in
          mipsisa*)
-            export MOUNT_XARGO="--volume ${HOME}/.xargo:/root/.xargo"
+            export MOUNT_XARGO="--volume ${HOME}/.xargo:/xargo-h"
+            export ENV_XARGO="--env XARGO_HOME=/xargo-h"
             ;;
     esac
     docker build -t stdarch -f "ci/docker/${1}/Dockerfile" ci/
@@ -21,6 +22,7 @@ run() {
       --rm \
       --user "$(id -u)":"$(id -g)" \
       ${MOUNT_XARGO} \
+      ${ENV_XARGO} \
       --env CARGO_HOME=/cargo \
       --env CARGO_TARGET_DIR=/checkout/target \
       --env TARGET="${target}" \
