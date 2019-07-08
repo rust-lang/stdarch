@@ -5,6 +5,7 @@
 #![feature(
     const_fn,
     const_fn_union,
+    custom_inner_attributes,
     link_llvm_intrinsics,
     platform_intrinsics,
     repr_simd,

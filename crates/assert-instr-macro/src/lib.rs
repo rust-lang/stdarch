@@ -100,6 +100,7 @@ pub fn assert_instr(
     let to_test = quote! {
         #attrs
         #[no_mangle]
+        #[inline(never)]
         unsafe extern #abi fn #shim_name(#(#inputs),*) #ret {
             // The compiler in optimized mode by default runs a pass called
             // "mergefunc" where it'll merge functions that look identical.
@@ -113,6 +114,8 @@ pub fn assert_instr(
             // codegen but is otherwise unique to prevent code from being
             // folded.
             ::stdsimd_test::_DONT_DEDUP = #shim_name_str;
+            asm!("" : : "r"(_DONT_DEDUP as usize) : : "clobber" : "volatile");
+
             #name(#(#input_vals),*)
         }
     };
@@ -129,6 +132,8 @@ pub fn assert_instr(
         #[allow(non_snake_case)]
         fn #assert_name() {
             #to_test
+            // leak the function address:
+            asm!("" : : "r"(#to_test as usize) : : "clobber" : "volatile");
 
             ::stdsimd_test::assert(#shim_name as usize,
                                    stringify!(#shim_name),
