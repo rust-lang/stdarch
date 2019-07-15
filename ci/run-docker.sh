@@ -18,6 +18,7 @@ run() {
     mkdir -p target
     echo "Running docker"
     # shellcheck disable=SC2016
+    # shellcheck disable=SC2086
     docker run \
       --rm \
       --user "$(id -u)":"$(id -g)" \
