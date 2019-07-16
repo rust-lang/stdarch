@@ -52,9 +52,9 @@ jobs:
           TARGET: mips64el-unknown-linux-gnuabi64
           NORUN: 1
         mipsisa64r6el-unknown-linux-gnuabi64:
-          TARGET: mipsisa64el-unknown-linux-gnuabi64
+          TARGET: mipsisa64r6el-unknown-linux-gnuabi64
         mipsisa64r6-unknown-linux-gnuabi64:
-          TARGET: mipsisa64-unknown-linux-gnuabi64
+          TARGET: mipsisa64r6-unknown-linux-gnuabi64
         powerpc64le-unknown-linux-gnu:
           TARGET: powerpc64le-unknown-linux-gnu
           STDARCH_DISABLE_ASSERT_INSTR: 1
