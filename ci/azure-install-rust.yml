@@ -23,7 +23,7 @@ steps:
     condition: eq( variables['Agent.OS'], 'Windows_NT' )
   - script: |
       set -ex
-      if [ -n "${TARGET}" ] && [ "${TARGET}" != "x86_64-unknown-linux-gnu-emulated" ]; then
+      if [ -n "${TARGET}" ] && [ "${TARGET}" != "x86_64-unknown-linux-gnu-emulated" ] && [ "${TARGET}" != "mipsisa64r6el-unknown-linux-gnuabi64" ] && [ "${TARGET}" != "mipsisa64r6-unknown-linux-gnuabi64" ]; then
         rustup target add $TARGET
       fi
     condition: ne( variables['Agent.OS'], 'Windows_NT' )
