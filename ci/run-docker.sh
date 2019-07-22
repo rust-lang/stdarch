@@ -36,7 +36,7 @@ run() {
       --env STDARCH_TEST_NORUN \
       --volume "$(dirname "$(dirname "$(command -v cargo)")")":/cargo \
       --volume "$(rustc --print sysroot)":/rust:ro \
-      --volume "$(pwd)":/checkout:ro \
+      --volume "$(pwd)":/checkout \
       --volume "$(pwd)"/target:/checkout/target \
       --init \
       --workdir /checkout \
