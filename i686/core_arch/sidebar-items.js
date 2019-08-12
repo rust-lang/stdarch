@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["x86","Platform-specific intrinsics for the `x86` platform."]]});

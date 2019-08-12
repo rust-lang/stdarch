@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["powerpc","Platform-specific intrinsics for the `PowerPC` platform."]]});
