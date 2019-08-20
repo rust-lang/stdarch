@@ -1,0 +1,22 @@
+// uint64_t vget_lane_u64 (uint64x1_t v, const int lane)
+arm_vget_lane!(vget_lane_u64, uint64x1_t, u64, 0);
+
+#[simd_test(enable = "neon")]
+unsafe fn test_vget_lane_u64() {
+    let v = i64x1::new(1);
+    let lane = 0;
+    let r = vget_lane_u64(transmute(v), lane);
+    assert_eq!(r, 1);
+}
+
+
+// uint32_t vgetq_lane_u32 (uint32x4_t v, const int lane)
+arm_vget_lane!(vgetq_lane_u32, uint32x4_t, u32, 3);
+
+#[simd_test(enable = "neon")]
+unsafe fn test_vgetq_lane_u32() {
+    let v = i32x4::new(1, 2, 3, 4);
+    let lane = 1;
+    let r = vgetq_lane_u32(transmute(v), lane);
+    assert_eq!(r, 2);
+}

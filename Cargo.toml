@@ -1,6 +1,7 @@
 [workspace]
 members = [
   "crates/stdarch-verify",
+  "crates/stdarch-gen",
   "crates/core_arch",
   "crates/std_detect",
   "examples/"
