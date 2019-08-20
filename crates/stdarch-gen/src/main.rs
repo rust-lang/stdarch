@@ -1,6 +1,7 @@
 use std::fs::File;
 use std::io::prelude::*;
 use std::io::{self, BufReader};
+use std::process::Command;
 
 const IN: &str = "neon.spec";
 const ARM_OUT: &str = "arm.rs";
@@ -462,6 +463,11 @@ pub unsafe fn {}(a: {}, b: {}) -> {} {{
     let mut file_aarch = File::create(AARCH64_OUT)?;
     file_aarch.write_all(out_aarch64.as_bytes())?;
     file_aarch.write_all(tests_aarch64.as_bytes())?;
+    Command::new("sh")
+            .arg("-c")
+            .arg(format!("rustfmt {} {}", ARM_OUT, AARCH64_OUT))
+            .output()
+            .expect("failed to execute process");
     Ok(())
 }
 
