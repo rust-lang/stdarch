@@ -169,6 +169,36 @@ fn type_to_ext(t: &str) -> &str {
     }
 }
 
+fn values(t: &str, vs: &[String]) -> String {
+    if vs.len() == 1 && !t.contains("x") {
+        format!(": {} = {}", t, vs[0])
+    } else {
+        format!(
+            ": {} = {}::new({})",
+            t,
+            t,
+            vs.iter()
+                .map(|v| map_val(t, v))
+                .collect::<Vec<&str>>()
+                .join(", ")
+        )
+    }
+}
+
+fn map_val<'v>(t: &str, v: &'v str) -> &'v str {
+    match v {
+        "FALSE" => "0",
+        "TRUE" => match &t[..3] {
+            "u8x" => "0xFF",
+            "u16" => "0xFF_FF",
+            "u32" => "0xFF_FF_FF_FF",
+            "u64" => "0xFF_FF_FF_FF_FF_FF_FF_FF",
+            _ => panic!("No TRUE for type {}", t),
+        },
+        o => o,
+    }
+}
+
 fn main() -> io::Result<()> {
     let f = File::open(IN).expect("Failed to open neon.spec");
     let f = BufReader::new(f);
@@ -183,9 +213,9 @@ fn main() -> io::Result<()> {
     let mut a: Vec<String> = Vec::new();
     let mut b: Vec<String> = Vec::new();
     let mut e: Vec<String> = Vec::new();
-//
-// THIS FILE IS GENERATED FORM neon.spec DO NOT CHANGE IT MANUALLY
-//
+    //
+    // THIS FILE IS GENERATED FORM neon.spec DO NOT CHANGE IT MANUALLY
+    //
     let mut out_arm = String::from(
         r#"
 use super::*;
@@ -203,9 +233,9 @@ mod test {
     use stdarch_test::simd_test;
 "#,
     );
-//
-// THIS FILE IS GENERATED FORM neon.spec DO NOT CHANGE IT MANUALLY
-//
+    //
+    // THIS FILE IS GENERATED FORM neon.spec DO NOT CHANGE IT MANUALLY
+    //
     let mut out_aarch64 = String::from(
         r#"
 use super::*;
@@ -463,40 +493,10 @@ pub unsafe fn {}(a: {}, b: {}) -> {} {{
     let mut file_aarch = File::create(AARCH64_OUT)?;
     file_aarch.write_all(out_aarch64.as_bytes())?;
     file_aarch.write_all(tests_aarch64.as_bytes())?;
-    Command::new("sh")
-            .arg("-c")
-            .arg(format!("rustfmt {} {}", ARM_OUT, AARCH64_OUT))
-            .output()
-            .expect("failed to execute process");
+    Command::new("rustfmt")
+        .arg(ARM_OUT)
+        .arg(AARCH64_OUT)
+        .status()
+        .expect("failed to execute process");
     Ok(())
-}
-
-fn values(t: &str, vs: &[String]) -> String {
-    if vs.len() == 1 && !t.contains("x") {
-        format!(": {} = {}", t, vs[0])
-    } else {
-        format!(
-            ": {} = {}::new({})",
-            t,
-            t,
-            vs.iter()
-                .map(|v| map_val(t, v))
-                .collect::<Vec<&str>>()
-                .join(", ")
-        )
-    }
-}
-
-fn map_val<'v>(t: &str, v: &'v str) -> &'v str {
-    match v {
-        "FALSE" => "0",
-        "TRUE" => match &t[..3] {
-            "u8x" => "0xFF",
-            "u16" => "0xFF_FF",
-            "u32" => "0xFF_FF_FF_FF",
-            "u64" => "0xFF_FF_FF_FF_FF_FF_FF_FF",
-            _ => panic!("No TRUE for type {}", t),
-        },
-        o => o,
-    }
 }

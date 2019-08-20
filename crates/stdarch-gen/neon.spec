@@ -381,8 +381,8 @@ generate int*_t, uint*_t, int64x*_t, uint64x*_t
 name = vmul
 fn = simd_mul
 a = 1.0, 2.0, 1.0, 2.0
-b = 1.0, 2.0, 3.0, 4.0
-e = 1.0, 4.0, 3.0, 8.0
+b = 2.0, 3.0, 4.0, 5.0
+e = 2.0, 6.0, 4.0, 10.0
 
 aarch64 = mul
 generate float64x*_t
