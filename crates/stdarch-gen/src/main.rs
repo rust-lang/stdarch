@@ -5,9 +5,24 @@ use std::process::Command;
 
 const IN: &str = "neon.spec";
 const ARM_OUT: &str = "out/arm.rs";
-const ARM_DST: &str = "../core_arch/src/arm/neon/generated.rs";
 const AARCH64_OUT: &str = "out/aarch64.rs";
-const AARCH64_DST: &str = "../core_arch/src/aarch64/neon/generated.rs";
+
+const FILE_HEADER: &[u8] = br#"//
+// THIS FILE IS GENERATED FORM neon.spec DO NOT CHANGE IT MANUALLY
+//
+use super::*;
+#[cfg(test)]
+use stdarch_test::assert_instr;
+"#;
+
+const TEST_HEADER: &[u8] = br#"
+#[cfg(test)]
+mod test {
+    use super::*;
+    use crate::core_arch::simd::*;
+    use std::mem::transmute;
+    use stdarch_test::simd_test;
+"#;
 
 const UINT_TYPES: [&'static str; 6] = [
     "uint8x8_t",
@@ -215,46 +230,10 @@ fn main() -> io::Result<()> {
     let mut a: Vec<String> = Vec::new();
     let mut b: Vec<String> = Vec::new();
     let mut e: Vec<String> = Vec::new();
-    //
-    // THIS FILE IS GENERATED FORM neon.spec DO NOT CHANGE IT MANUALLY
-    //
-    let mut out_arm = String::from(
-        r#"
-use super::*;
-#[cfg(test)]
-use stdarch_test::assert_instr;
-"#,
-    );
-    let mut tests_arm = String::from(
-        r#"
-#[cfg(test)]
-mod test {
-    use super::*;
-    use crate::core_arch::simd::*;
-    use std::mem::transmute;
-    use stdarch_test::simd_test;
-"#,
-    );
-    //
-    // THIS FILE IS GENERATED FORM neon.spec DO NOT CHANGE IT MANUALLY
-    //
-    let mut out_aarch64 = String::from(
-        r#"
-use super::*;
-#[cfg(test)]
-use stdarch_test::assert_instr;
-"#,
-    );
-    let mut tests_aarch64 = String::from(
-        r#"
-#[cfg(test)]
-mod test {
-    use super::*;
-    use crate::core_arch::simd::*;
-    use std::mem::transmute;
-    use stdarch_test::simd_test;
-"#,
-    );
+    let mut out_arm = String::new();
+    let mut tests_arm = String::new();
+    let mut out_aarch64 = String::new();
+    let mut tests_aarch64 = String::new();
 
     for line in f.lines() {
         let line = line.unwrap();
@@ -483,18 +462,31 @@ pub unsafe fn {}(a: {}, b: {}) -> {} {{
             }
         }
     }
-    tests_arm.push('}');
-    tests_arm.push('\n');
-    tests_aarch64.push('}');
-    tests_aarch64.push('\n');
 
-    let mut file_arm = File::create(ARM_OUT)?;
-    file_arm.write_all(out_arm.as_bytes())?;
-    file_arm.write_all(tests_arm.as_bytes())?;
+    let mut file = File::create(ARM_OUT)?;
+    // Write the file header (imports and generated warning)
+    file.write_all(FILE_HEADER)?;
+    // Write the generated functions
+    file.write_all(out_arm.as_bytes())?;
+    // Write the start of the test sections
+    file.write_all(TEST_HEADER)?;
+    // Write the tests themselfs
+    file.write_all(tests_arm.as_bytes())?;
+    // Close the test section
+    file.write_all(b"}\n")?;
 
-    let mut file_aarch = File::create(AARCH64_OUT)?;
-    file_aarch.write_all(out_aarch64.as_bytes())?;
-    file_aarch.write_all(tests_aarch64.as_bytes())?;
+    let mut file = File::create(AARCH64_OUT)?;
+    // Write the file header (imports and generated warning)
+    file.write_all(FILE_HEADER)?;
+    // Write the generated functions
+    file.write_all(out_arm.as_bytes())?;
+    // Write the start of the test sections
+    file.write_all(TEST_HEADER)?;
+    // Write the tests themselfs
+    file.write_all(tests_arm.as_bytes())?;
+    // Close the test section
+    file.write_all(b"}\n")?;
+
     Command::new("rustfmt")
         .arg(ARM_OUT)
         .arg(AARCH64_OUT)
@@ -506,17 +498,20 @@ pub unsafe fn {}(a: {}, b: {}) -> {} {{
 #[cfg(test)]
 mod test {
     use super::*;
+    const ARM_DST: &str = "../core_arch/src/arm/neon/generated.rs";
+    const AARCH64_DST: &str = "../core_arch/src/aarch64/neon/generated.rs";
 
     fn cmp_files(expected: &str, current: &str) -> bool {
         let mut contents_expected = String::new();
         let mut contents_current = String::new();
         let mut file = File::open(current).expect(&format!("Generated file {} not found", current));
         file.read_to_string(&mut contents_current).unwrap();
-        let mut file = File::open(expected).expect(&format!("Destination file {} not found", expected));
+        let mut file =
+            File::open(expected).expect(&format!("Destination file {} not found", expected));
         file.read_to_string(&mut contents_expected).unwrap();
         let r = contents_expected == contents_current;
-	println!("The files {} and {} differ, please update the target file with the newly generated one", expected, current);
-	r
+        println!("The files {} and {} differ, please update the target file with the newly generated one", expected, current);
+        r
     }
 
     #[test]
