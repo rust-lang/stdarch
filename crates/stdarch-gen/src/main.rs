@@ -4,8 +4,10 @@ use std::io::{self, BufReader};
 use std::process::Command;
 
 const IN: &str = "neon.spec";
-const ARM_OUT: &str = "arm.rs";
-const AARCH64_OUT: &str = "aarch64.rs";
+const ARM_OUT: &str = "out/arm.rs";
+const ARM_DST: &str = "../core_arch/src/arm/neon/generated.rs";
+const AARCH64_OUT: &str = "out/aarch64.rs";
+const AARCH64_DST: &str = "../core_arch/src/aarch64/neon/generated.rs";
 
 const UINT_TYPES: [&'static str; 6] = [
     "uint8x8_t",
@@ -499,4 +501,31 @@ pub unsafe fn {}(a: {}, b: {}) -> {} {{
         .status()
         .expect("failed to execute process");
     Ok(())
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    fn cmp_files(expected: &str, current: &str) -> bool {
+        let mut contents_expected = String::new();
+        let mut contents_current = String::new();
+        let mut file = File::open(current).expect(&format!("Generated file {} not found", current));
+        file.read_to_string(&mut contents_current).unwrap();
+        let mut file = File::open(expected).expect(&format!("Destination file {} not found", expected));
+        file.read_to_string(&mut contents_expected).unwrap();
+        let r = contents_expected == contents_current;
+	println!("The files {} and {} differ, please update the target file with the newly generated one", expected, current);
+	r
+    }
+
+    #[test]
+    fn arm_intriniscs_up_to_date() {
+        assert!(cmp_files(ARM_OUT, ARM_DST))
+    }
+
+    #[test]
+    fn aarch64_intriniscs_up_to_date() {
+        assert!(cmp_files(AARCH64_OUT, AARCH64_DST))
+    }
 }
