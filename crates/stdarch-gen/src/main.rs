@@ -519,11 +519,13 @@ mod test {
         r
     }
 
+    #[ignore]
     #[test]
     fn arm_intriniscs_up_to_date() {
         assert!(cmp_files(ARM_OUT, ARM_DST))
     }
 
+    #[ignore]
     #[test]
     fn aarch64_intriniscs_up_to_date() {
         assert!(cmp_files(AARCH64_OUT, AARCH64_DST))
