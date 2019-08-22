@@ -24,7 +24,7 @@ mod test {
     use stdarch_test::simd_test;
 "#;
 
-const UINT_TYPES: [&'static str; 6] = [
+const UINT_TYPES: [&str; 6] = [
     "uint8x8_t",
     "uint8x16_t",
     "uint16x4_t",
@@ -33,9 +33,9 @@ const UINT_TYPES: [&'static str; 6] = [
     "uint32x4_t",
 ];
 
-const UINT_TYPES_64: [&'static str; 2] = ["uint64x1_t", "uint64x2_t"];
+const UINT_TYPES_64: [&str; 2] = ["uint64x1_t", "uint64x2_t"];
 
-const INT_TYPES: [&'static str; 6] = [
+const INT_TYPES: [&str; 6] = [
     "int8x8_t",
     "int8x16_t",
     "int16x4_t",
@@ -44,9 +44,9 @@ const INT_TYPES: [&'static str; 6] = [
     "int32x4_t",
 ];
 
-const INT_TYPES_64: [&'static str; 2] = ["int64x1_t", "int64x2_t"];
+const INT_TYPES_64: [&str; 2] = ["int64x1_t", "int64x2_t"];
 
-const FLOAT_TYPES: [&'static str; 2] = [
+const FLOAT_TYPES: [&str; 2] = [
     //"float8x8_t", not supported by rust
     //"float8x16_t", not supported by rust
     //"float16x4_t", not supported by rust
@@ -55,7 +55,7 @@ const FLOAT_TYPES: [&'static str; 2] = [
     "float32x4_t",
 ];
 
-const FLOAT_TYPES_64: [&'static str; 2] = [
+const FLOAT_TYPES_64: [&str; 2] = [
     //"float8x8_t", not supported by rust
     //"float8x16_t", not supported by rust
     //"float16x4_t", not supported by rust
@@ -325,7 +325,7 @@ fn main() -> io::Result<()> {
                         format!("{}_", name)
                     };
 
-                    let link = if let (Some(link_arm), Some(link_aarch64)) =
+                    let ext_c = if let (Some(link_arm), Some(link_aarch64)) =
                         (link_arm.clone(), link_aarch64.clone())
                     {
                         let ext = type_to_ext(in_t);
@@ -368,7 +368,7 @@ pub unsafe fn {}(a: {}, b: {}) -> {} {{
                         in_t,
                         in_t,
                         out_t,
-                        link,
+                        ext_c,
                         current_fn,
                     );
                     let test = format!(
@@ -389,7 +389,6 @@ pub unsafe fn {}(a: {}, b: {}) -> {} {{
                         globla_ret_t,
                         name
                     );
-                    //out_arm.push_str(&link);
                     out_arm.push_str(&function);
                     tests_arm.push_str(&test);
                 } else {
@@ -405,7 +404,7 @@ pub unsafe fn {}(a: {}, b: {}) -> {} {{
                         format!("{}_", name)
                     };
                     let current_aarch64 = current_aarch64.clone().unwrap();
-                    let link = if let Some(link_aarch64) = link_aarch64.clone() {
+                    let ext_c = if let Some(link_aarch64) = link_aarch64.clone() {
                         let ext = type_to_ext(in_t);
 
                         format!(
@@ -435,7 +434,14 @@ pub unsafe fn {}(a: {}, b: {}) -> {} {{
     {}{}(a, b)
 }}
 "#,
-                        current_comment, current_aarch64, name, in_t, in_t, out_t, link, current_fn,
+                        current_comment,
+                        current_aarch64,
+                        name,
+                        in_t,
+                        in_t,
+                        out_t,
+                        ext_c,
+                        current_fn,
                     );
                     let test = format!(
                         r#"
@@ -455,7 +461,6 @@ pub unsafe fn {}(a: {}, b: {}) -> {} {{
                         globla_ret_t,
                         name
                     );
-                    // out_aarch64.push_str(&link);
                     out_aarch64.push_str(&function);
                     tests_aarch64.push_str(&test);
                 }
