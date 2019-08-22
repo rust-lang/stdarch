@@ -186,8 +186,184 @@ fn type_to_ext(t: &str) -> &str {
     }
 }
 
+#[allow(clippy::too_many_arguments)]
+fn gen_aarch64(
+    current_comment: &str,
+    current_fn: &Option<String>,
+    name: &str,
+    current_aarch64: &Option<String>,
+    link_aarch64: &Option<String>,
+    in_t: &str,
+    out_t: &str,
+    globla_t: &str,
+    globla_ret_t: &str,
+    a: &[String],
+    b: &[String],
+    e: &[String],
+) -> (String, String) {
+    let current_fn = if let Some(current_fn) = current_fn.clone() {
+        if link_aarch64.is_some() {
+            panic!("[{}] Can't specify link and fn at the same time.", name)
+        }
+        current_fn
+    } else {
+        if link_aarch64.is_none() {
+            panic!("[{}] Either fn or link-aarch have to be specified.", name)
+        }
+        format!("{}_", name)
+    };
+    let current_aarch64 = current_aarch64.clone().unwrap();
+    let ext_c = if let Some(link_aarch64) = link_aarch64.clone() {
+        let ext = type_to_ext(in_t);
+
+        format!(
+            r#"
+    #[allow(improper_ctypes)]
+    extern "C" {{
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.{}")]
+        fn {}(a: {}, a: {}) -> {};
+    }}
+"#,
+            link_aarch64.replace("_EXT_", ext),
+            current_fn,
+            in_t,
+            in_t,
+            out_t
+        )
+    } else {
+        String::new()
+    };
+    let function = format!(
+        r#"
+{}
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr({}))]
+pub unsafe fn {}(a: {}, b: {}) -> {} {{
+    {}{}(a, b)
+}}
+"#,
+        current_comment, current_aarch64, name, in_t, in_t, out_t, ext_c, current_fn,
+    );
+    let test = format!(
+        r#"
+    #[simd_test(enable = "neon")]
+    unsafe fn test_{}() {{
+        let a{};
+        let b{};
+        let e{};
+        let r: {} = transmute({}(transmute(a), transmute(b)));
+        assert_eq!(r, e);
+    }}
+"#,
+        name,
+        values(globla_t, &a),
+        values(globla_t, &b),
+        values(globla_ret_t, &e),
+        globla_ret_t,
+        name
+    );
+    (function, test)
+}
+
+#[allow(clippy::too_many_arguments)]
+fn gen_arm(
+    current_comment: &str,
+    current_fn: &Option<String>,
+    name: &str,
+    current_arm: &str,
+    link_arm: &Option<String>,
+    current_aarch64: &Option<String>,
+    link_aarch64: &Option<String>,
+    in_t: &str,
+    out_t: &str,
+    globla_t: &str,
+    globla_ret_t: &str,
+    a: &[String],
+    b: &[String],
+    e: &[String],
+) -> (String, String) {
+    let current_aarch64 = current_aarch64
+        .clone()
+        .unwrap_or_else(|| current_arm.to_string());
+
+    let current_fn = if let Some(current_fn) = current_fn.clone() {
+        if link_aarch64.is_some() || link_arm.is_some() {
+            panic!(
+                "[{}] Can't specify link and function at the same time. {} / {:?} / {:?}",
+                name, current_fn, link_aarch64, link_arm
+            )
+        }
+        current_fn
+    } else {
+        if link_aarch64.is_none() || link_arm.is_none() {
+            panic!(
+                "[{}] Either fn or link-arm and link-aarch have to be specified.",
+                name
+            )
+        }
+        format!("{}_", name)
+    };
+
+    let ext_c =
+        if let (Some(link_arm), Some(link_aarch64)) = (link_arm.clone(), link_aarch64.clone()) {
+            let ext = type_to_ext(in_t);
+
+            format!(
+                r#"#[allow(improper_ctypes)]
+    extern "C" {{
+        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.{}")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.{}")]
+        fn {}(a: {}, b: {}) -> {};
+    }}
+"#,
+                link_arm.replace("_EXT_", ext),
+                link_aarch64.replace("_EXT_", ext),
+                current_fn,
+                in_t,
+                in_t,
+                out_t
+            )
+        } else {
+            String::new()
+        };
+
+    let function = format!(
+        r#"
+{}
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr({}))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr({}))]
+pub unsafe fn {}(a: {}, b: {}) -> {} {{
+    {}{}(a, b)
+}}
+"#,
+        current_comment, current_arm, current_aarch64, name, in_t, in_t, out_t, ext_c, current_fn,
+    );
+    let test = format!(
+        r#"
+    #[simd_test(enable = "neon")]
+    unsafe fn test_{}() {{
+        let a{};
+        let b{};
+        let e{};
+        let r: {} = transmute({}(transmute(a), transmute(b)));
+        assert_eq!(r, e);
+    }}
+"#,
+        name,
+        values(globla_t, &a),
+        values(globla_t, &b),
+        values(globla_ret_t, &e),
+        globla_ret_t,
+        name
+    );
+    (function, test)
+}
 fn values(t: &str, vs: &[String]) -> String {
-    if vs.len() == 1 && !t.contains("x") {
+    if vs.len() == 1 && !t.contains('x') {
         format!(": {} = {}", t, vs[0])
     } else {
         format!(
@@ -270,7 +446,7 @@ fn main() -> io::Result<()> {
         } else if line.starts_with("generate ") {
             let line = &line[9..];
             let types: Vec<String> = line
-                .split(",")
+                .split(',')
                 .map(|v| v.trim().to_string())
                 .flat_map(|v| match v.as_str() {
                     "uint*_t" => UINT_TYPES.iter().map(|v| v.to_string()).collect(),
@@ -305,161 +481,38 @@ fn main() -> io::Result<()> {
                 let globla_ret_t = type_to_global_type(out_t);
 
                 if let Some(current_arm) = current_arm.clone() {
-                    let current_aarch64 = current_aarch64.clone().unwrap_or(current_arm.clone());
-
-                    let current_fn = if let Some(current_fn) = current_fn.clone() {
-                        if link_aarch64.is_some() || link_arm.is_some() {
-                            panic!(
-                                "[{}] Can't specify link and function at the same time. {} / {:?} / {:?}",
-                                name, current_fn, link_aarch64, link_arm
-                            )
-                        }
-                        current_fn
-                    } else {
-                        if link_aarch64.is_none() || link_arm.is_none() {
-                            panic!(
-                                "[{}] Either fn or link-arm and link-aarch have to be specified.",
-                                name
-                            )
-                        }
-                        format!("{}_", name)
-                    };
-
-                    let ext_c = if let (Some(link_arm), Some(link_aarch64)) =
-                        (link_arm.clone(), link_aarch64.clone())
-                    {
-                        let ext = type_to_ext(in_t);
-
-                        format!(
-                            r#"#[allow(improper_ctypes)]
-    extern "C" {{
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.{}")]
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.{}")]
-        fn {}(a: {}, b: {}) -> {};
-    }}
-"#,
-                            link_arm.replace("_EXT_", ext),
-                            link_aarch64.replace("_EXT_", ext),
-                            current_fn,
-                            in_t,
-                            in_t,
-                            out_t
-                        )
-                    } else {
-                        String::new()
-                    };
-
-                    let function = format!(
-                        r#"
-{}
-#[inline]
-#[target_feature(enable = "neon")]
-#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr({}))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr({}))]
-pub unsafe fn {}(a: {}, b: {}) -> {} {{
-    {}{}(a, b)
-}}
-"#,
-                        current_comment,
-                        current_arm,
-                        current_aarch64,
-                        name,
-                        in_t,
-                        in_t,
-                        out_t,
-                        ext_c,
-                        current_fn,
-                    );
-                    let test = format!(
-                        r#"
-    #[simd_test(enable = "neon")]
-    unsafe fn test_{}() {{
-        let a{};
-        let b{};
-        let e{};
-        let r: {} = transmute({}(transmute(a), transmute(b)));
-        assert_eq!(r, e);
-    }}
-"#,
-                        name,
-                        values(globla_t, &a),
-                        values(globla_t, &b),
-                        values(globla_ret_t, &e),
-                        globla_ret_t,
-                        name
+                    let (function, test) = gen_arm(
+                        &current_comment,
+                        &current_fn,
+                        &name,
+                        &current_arm,
+                        &link_arm,
+                        &current_aarch64,
+                        &link_aarch64,
+                        &in_t,
+                        &out_t,
+                        &globla_t,
+                        &globla_ret_t,
+                        &a,
+                        &b,
+                        &e,
                     );
                     out_arm.push_str(&function);
                     tests_arm.push_str(&test);
                 } else {
-                    let current_fn = if let Some(current_fn) = current_fn.clone() {
-                        if link_aarch64.is_some() {
-                            panic!("[{}] Can't specify link and fn at the same time.", name)
-                        }
-                        current_fn
-                    } else {
-                        if link_aarch64.is_none() {
-                            panic!("[{}] Either fn or link-aarch have to be specified.", name)
-                        }
-                        format!("{}_", name)
-                    };
-                    let current_aarch64 = current_aarch64.clone().unwrap();
-                    let ext_c = if let Some(link_aarch64) = link_aarch64.clone() {
-                        let ext = type_to_ext(in_t);
-
-                        format!(
-                            r#"
-    #[allow(improper_ctypes)]
-    extern "C" {{
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.{}")]
-        fn {}(a: {}, a: {}) -> {};
-    }}
-"#,
-                            link_aarch64.replace("_EXT_", ext),
-                            current_fn,
-                            in_t,
-                            in_t,
-                            out_t
-                        )
-                    } else {
-                        String::new()
-                    };
-                    let function = format!(
-                        r#"
-{}
-#[inline]
-#[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr({}))]
-pub unsafe fn {}(a: {}, b: {}) -> {} {{
-    {}{}(a, b)
-}}
-"#,
-                        current_comment,
-                        current_aarch64,
-                        name,
-                        in_t,
-                        in_t,
-                        out_t,
-                        ext_c,
-                        current_fn,
-                    );
-                    let test = format!(
-                        r#"
-    #[simd_test(enable = "neon")]
-    unsafe fn test_{}() {{
-        let a{};
-        let b{};
-        let e{};
-        let r: {} = transmute({}(transmute(a), transmute(b)));
-        assert_eq!(r, e);
-    }}
-"#,
-                        name,
-                        values(globla_t, &a),
-                        values(globla_t, &b),
-                        values(globla_ret_t, &e),
-                        globla_ret_t,
-                        name
+                    let (function, test) = gen_aarch64(
+                        &current_comment,
+                        &current_fn,
+                        &name,
+                        &current_aarch64,
+                        &link_aarch64,
+                        &in_t,
+                        &out_t,
+                        &globla_t,
+                        &globla_ret_t,
+                        &a,
+                        &b,
+                        &e,
                     );
                     out_aarch64.push_str(&function);
                     tests_aarch64.push_str(&test);
