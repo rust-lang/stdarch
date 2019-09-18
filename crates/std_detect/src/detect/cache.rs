@@ -29,9 +29,6 @@ const fn unset_bit(x: u64, bit: u32) -> u64 {
     x & !(1 << bit)
 }
 
-/// Maximum number of features that can be cached.
-const CACHE_CAPACITY: u32 = 63;
-
 /// This type is used to initialize the cache
 #[derive(Copy, Clone)]
 pub(crate) struct Initializer(u64);
@@ -91,29 +88,41 @@ static CACHE: Cache = Cache::uninitialized();
 struct Cache(AtomicU64);
 
 #[cfg(target_pointer_width = "64")]
+const UNINITIALIZED_VALUE: u64 = u64::max_value();
+
+#[cfg(target_pointer_width = "64")]
+const UNINITIALIZED_BIT: u32 = 63;
+
+/// Maximum number of features that can be cached.
+/// We reserve a single bit to check if the cache is initialized
+#[cfg(target_pointer_width = "64")]
+const CACHE_CAPACITY: u32 = 63;
+
+#[cfg(target_pointer_width = "64")]
 #[allow(clippy::use_self)]
 impl Cache {
     /// Creates an uninitialized cache.
     #[allow(clippy::declare_interior_mutable_const)]
     const fn uninitialized() -> Self {
-        Cache(AtomicU64::new(u64::max_value()))
-    }
-    /// Is the cache uninitialized?
-    #[inline]
-    pub(crate) fn is_uninitialized(&self) -> bool {
-        self.0.load(Ordering::Relaxed) == u64::max_value()
+        Cache(AtomicU64::new(UNINITIALIZED_VALUE))
     }
 
     /// Is the `bit` in the cache set?
     #[inline]
-    pub(crate) fn test(&self, bit: u32) -> bool {
-        test_bit(CACHE.0.load(Ordering::Relaxed), bit)
+    fn test(&self, bit: u32) -> bool {
+        let cache_value = CACHE.0.load(Ordering::Relaxed);
+        if !test_bit(cache_value, UNINITIALIZED_BIT) {
+            test_bit(cache_value, bit)
+        } else {
+            initialize(bit)
+        }
     }
 
     /// Initializes the cache.
     #[inline]
-    pub(crate) fn initialize(&self, value: Initializer) {
-        self.0.store(value.0, Ordering::Relaxed);
+    fn initialize(&self, value: Initializer) {
+        let value = unset_bit(value.0, UNINITIALIZED_BIT);
+        self.0.store(value, Ordering::Relaxed);
     }
 }
 
@@ -125,35 +134,52 @@ impl Cache {
 struct Cache(AtomicU32, AtomicU32);
 
 #[cfg(target_pointer_width = "32")]
+const UNINITIALIZED_VALUE: u32 = u32::max_value();
+
+#[cfg(target_pointer_width = "32")]
+const UNINITIALIZED_BIT: u32 = 31;
+
+/// Maximum number of features that can be cached.
+/// We reserve a single bit in each of the two atomic values
+/// to check if the cache is initialized
+#[cfg(target_pointer_width = "32")]
+const CACHE_CAPACITY: u32 = 62;
+
+#[cfg(target_pointer_width = "32")]
 impl Cache {
     /// Creates an uninitialized cache.
     const fn uninitialized() -> Self {
         Cache(
-            AtomicU32::new(u32::max_value()),
-            AtomicU32::new(u32::max_value()),
+            AtomicU32::new(UNINITIALIZED_VALUE),
+            AtomicU32::new(UNINITIALIZED_VALUE),
         )
-    }
-    /// Is the cache uninitialized?
-    #[inline]
-    pub(crate) fn is_uninitialized(&self) -> bool {
-        self.1.load(Ordering::Relaxed) == u32::max_value()
     }
 
     /// Is the `bit` in the cache set?
     #[inline]
-    pub(crate) fn test(&self, bit: u32) -> bool {
-        if bit < 32 {
-            test_bit(CACHE.0.load(Ordering::Relaxed) as u64, bit)
+    fn test(&self, bit: u32) -> bool {
+        if bit < 31 {
+            let cache_value = CACHE.0.load(Ordering::Relaxed);
+            if !test_bit(cache_value, UNINITIALIZED_BIT) {
+                test_bit(cache_value, bit)
+            } else {
+                initializer(bit)
+            }
         } else {
-            test_bit(CACHE.1.load(Ordering::Relaxed) as u64, bit - 32)
+            let cache_value = CACHE.1.load(Ordering::Relaxed);
+            if !test_bit(cache_value, UNINITIALIZED_BIT) {
+                test_bit(cache_value, bit - 31)
+            } else {
+                initializer(bit)
+            }
         }
     }
 
     /// Initializes the cache.
     #[inline]
-    pub(crate) fn initialize(&self, value: Initializer) {
-        let lo: u32 = value.0 as u32;
-        let hi: u32 = (value.0 >> 32) as u32;
+    fn initialize(&self, value: Initializer) {
+        let lo: u32 = unset_bit(value.0, UNINITIALIZED_BIT) as u32;
+        let hi: u32 = unset_bit(value.0 >> 31, UNINITIALIZED_BIT) as u32;
         self.0.store(lo, Ordering::Relaxed);
         self.1.store(hi, Ordering::Relaxed);
     }
@@ -161,18 +187,22 @@ impl Cache {
 cfg_if! {
     if #[cfg(feature = "std_detect_env_override")] {
         #[inline(never)]
-        fn initialize(mut value: Initializer) {
+        fn initialize(bit: u32) -> bool {
+            let mut value = crate::detect::os::detect_features();
             if let Ok(disable) = crate::env::var("RUST_STD_DETECT_UNSTABLE") {
                 for v in disable.split(" ") {
                     let _ = super::Feature::from_str(v).map(|v| value.unset(v as u32));
                 }
             }
             CACHE.initialize(value);
+            test_bit(value.0, bit)
         }
     } else {
         #[inline]
-        fn initialize(value: Initializer) {
+        fn initialize(bit: u32) -> bool {
+            let value = crate::detect::os::detect_features();
             CACHE.initialize(value);
+            test_bit(value.0, bit)
         }
     }
 }
@@ -191,8 +221,5 @@ cfg_if! {
 /// Features that would had been otherwise detected.
 #[inline]
 pub(crate) fn test(bit: u32) -> bool {
-    if CACHE.is_uninitialized() {
-        initialize(crate::detect::os::detect_features());
-    }
     CACHE.test(bit)
 }
