@@ -113,7 +113,7 @@ cfg_if! {
 /// Performs run-time feature detection.
 #[inline]
 fn check_for(x: Feature) -> bool {
-    cache::test(x as u32, self::os::detect_features)
+    cache::test(x as u32)
 }
 
 /// Returns an `Iterator<Item=(&'static str, bool)>` where

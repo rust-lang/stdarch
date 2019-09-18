@@ -178,7 +178,7 @@ cfg_if! {
 }
 
 /// Tests the `bit` of the storage. If the storage has not been initialized,
-/// initializes it with the result of `f()`.
+/// initializes it with the result of `os::detect_features()`.
 ///
 /// On its first invocation, it detects the CPU features and caches them in the
 /// `CACHE` global variable as an `AtomicU64`.
@@ -190,12 +190,9 @@ cfg_if! {
 /// variable `RUST_STD_DETECT_UNSTABLE` and uses its its content to disable
 /// Features that would had been otherwise detected.
 #[inline]
-pub(crate) fn test<F>(bit: u32, f: F) -> bool
-where
-    F: FnOnce() -> Initializer,
-{
+pub(crate) fn test(bit: u32) -> bool {
     if CACHE.is_uninitialized() {
-        initialize(f());
+        initialize(crate::detect::os::detect_features());
     }
     CACHE.test(bit)
 }
