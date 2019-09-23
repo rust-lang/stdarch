@@ -63,7 +63,6 @@ jobs:
     name: Test
     runs-on: ${{ matrix.os }}
     strategy:
-      max-parallel: 10
       matrix:
         target:
         # Dockers that are run through docker on linux
