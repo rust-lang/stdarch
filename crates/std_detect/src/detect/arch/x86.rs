@@ -82,6 +82,7 @@
 #[macro_export]
 #[stable(feature = "simd_x86", since = "1.27.0")]
 #[allow_internal_unstable(stdsimd_internal,stdsimd)]
+#[cfg(not(miri))]
 macro_rules! is_x86_feature_detected {
     ("aes") => {
         cfg!(target_feature = "aes") || $crate::detect::check_for(
@@ -251,6 +252,19 @@ macro_rules! is_x86_feature_detected {
         compile_error!(concat!("unknown target feature: ", $t))
     };
 }
+
+/// The Miri stub for this macro. Miri does not support
+/// platform-specific intrinsics, so this should cause
+/// any crates using X86 intrinsics to use a fallback
+/// implementation of their code
+#[macro_export]
+#[stable(feature = "simd_x86", since = "1.27.0")]
+#[allow_internal_unstable(stdsimd_internal,stdsimd)]
+#[cfg(miri)]
+macro_rules! is_x86_feature_detected {
+    ($t:tt) => { false }
+}
+
 
 /// X86 CPU Feature enum. Each variant denotes a position in a bitset for a
 /// particular feature.
