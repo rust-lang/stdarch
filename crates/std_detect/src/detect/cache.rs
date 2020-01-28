@@ -77,11 +77,7 @@ impl Initializer {
 }
 
 /// This global variable is a cache of the features supported by the CPU.
-#[cfg(target_pointer_width = "64")]
-static CACHE: [Cache; 1] = [Cache::uninitialized()];
-
-/// This global variable is a cache of the features supported by the CPU.
-#[cfg(target_pointer_width = "32")]
+// Note: on x64, we only use the first slot
 static CACHE: [Cache; 2] = [Cache::uninitialized(), Cache::uninitialized()];
 
 /// Feature cache with capacity for `usize::max_value() - 1` features.
@@ -145,10 +141,7 @@ cfg_if::cfg_if! {
 #[inline]
 fn do_initialize(value: Initializer) {
     CACHE[0].initialize((value.0) as usize & Cache::MASK);
-    #[cfg(target_pointer_width = "32")]
-    {
-        CACHE[1].initialize((value.0 >> Cache::CAPACITY) as usize & Cache::MASK);
-    }
+    CACHE[1].initialize((value.0 >> Cache::CAPACITY) as usize & Cache::MASK);
 }
 
 /// Tests the `bit` of the storage. If the storage has not been initialized,
@@ -168,18 +161,14 @@ pub(crate) fn test<F>(bit: u32, f: F) -> bool
 where
     F: FnOnce() -> Initializer,
 {
-    #[cfg(target_pointer_width = "32")]
-    {
-        if bit >= Cache::CAPACITY {
-            if CACHE[1].is_uninitialized() {
-                initialize(f())
-            }
-            return CACHE[1].test(bit - Cache::CAPACITY);
-        }
-    }
+    let (bit, idx) = if bit < Cache::CAPACITY {
+        (bit, 0)
+    } else {
+        (bit - Cache::CAPACITY, 1)
+    };
 
-    if CACHE[0].is_uninitialized() {
+    if CACHE[idx].is_uninitialized() {
         initialize(f())
     }
-    CACHE[0].test(bit)
+    CACHE[idx].test(bit)
 }
