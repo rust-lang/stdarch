@@ -89,9 +89,10 @@ static CACHE: [Cache; 2] = [Cache::uninitialized(), Cache::uninitialized()];
 /// Note: the last feature bit is used to represent an
 /// uninitialized cache.
 ///
-/// Note: we use `Relaxed` atomic operations, because we are only interested
+/// Note: we can use `Relaxed` atomic operations, because we are only interested
 /// in the effects of operations on a single memory location. That is, we only
-/// need "modification order", and not the full-blown "happens before".
+/// need "modification order", and not the full-blown "happens before". However,
+/// we use `SeqCst` just to be on the safe side.
 struct Cache(AtomicUsize);
 
 impl Cache {
@@ -106,19 +107,19 @@ impl Cache {
     /// Is the cache uninitialized?
     #[inline]
     pub(crate) fn is_uninitialized(&self) -> bool {
-        self.0.load(Ordering::Relaxed) == usize::max_value()
+        self.0.load(Ordering::SeqCst) == usize::max_value()
     }
 
     /// Is the `bit` in the cache set?
     #[inline]
     pub(crate) fn test(&self, bit: u32) -> bool {
-        test_bit(self.0.load(Ordering::Relaxed) as u64, bit)
+        test_bit(self.0.load(Ordering::SeqCst) as u64, bit)
     }
 
     /// Initializes the cache.
     #[inline]
     fn initialize(&self, value: usize) {
-        self.0.store(value, Ordering::Relaxed);
+        self.0.store(value, Ordering::SeqCst);
     }
 }
 
