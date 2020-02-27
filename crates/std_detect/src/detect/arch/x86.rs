@@ -114,6 +114,10 @@ features! {
     /// AVX (Advanced Vector Extensions)
     @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] avx2: "avx2";
     /// AVX2 (Advanced Vector Extensions 2)
+    // Detection for the AVX-512 features below was accidentally stabilized in
+    // Rust 1.27.0, even though the corresponding intrinsics are still unstable
+    // or unimplemeted. There are stable callers who rely on detection support,
+    // e.g. to call AVX-512 C code via FFI.
     @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] avx512f: "avx512f" ;
     /// AVX-512 F (Foundation)
     @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] avx512cd: "avx512cd" ;
