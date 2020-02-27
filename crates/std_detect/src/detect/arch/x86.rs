@@ -114,25 +114,25 @@ features! {
     /// AVX (Advanced Vector Extensions)
     @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] avx2: "avx2";
     /// AVX2 (Advanced Vector Extensions 2)
-    @FEATURE: #[unstable(feature = "stdsimd", issue = "27731")] avx512f: "avx512f" ;
+    @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] avx512f: "avx512f" ;
     /// AVX-512 F (Foundation)
-    @FEATURE: #[unstable(feature = "stdsimd", issue = "27731")] avx512cd: "avx512cd" ;
+    @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] avx512cd: "avx512cd" ;
     /// AVX-512 CD (Conflict Detection Instructions)
-    @FEATURE: #[unstable(feature = "stdsimd", issue = "27731")] avx512er: "avx512er";
+    @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] avx512er: "avx512er";
     /// AVX-512 ER (Expo nential and Reciprocal Instructions)
-    @FEATURE: #[unstable(feature = "stdsimd", issue = "27731")] avx512pf: "avx512pf";
+    @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] avx512pf: "avx512pf";
     /// AVX-512 PF (Prefetch Instructions)
-    @FEATURE: #[unstable(feature = "stdsimd", issue = "27731")] avx512bw: "avx512bw";
+    @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] avx512bw: "avx512bw";
     /// AVX-512 BW (Byte and Word Instructions)
-    @FEATURE: #[unstable(feature = "stdsimd", issue = "27731")] avx512dq: "avx512dq";
+    @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] avx512dq: "avx512dq";
     /// AVX-512 DQ (Doubleword and Quadword)
-    @FEATURE: #[unstable(feature = "stdsimd", issue = "27731")] avx512vl: "avx512vl";
+    @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] avx512vl: "avx512vl";
     /// AVX-512 VL (Vector Length Extensions)
-    @FEATURE: #[unstable(feature = "stdsimd", issue = "27731")] avx512ifma: "avx512ifma";
+    @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] avx512ifma: "avx512ifma";
     /// AVX-512 IFMA (Integer Fused Multiply Add)
-    @FEATURE: #[unstable(feature = "stdsimd", issue = "27731")] avx512vbmi: "avx512vbmi";
+    @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] avx512vbmi: "avx512vbmi";
     /// AVX-512 VBMI (Vector Byte Manipulation Instructions)
-    @FEATURE: #[unstable(feature = "stdsimd", issue = "27731")] avx512vpopcntdq: "avx512vpopcntdq";
+    @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] avx512vpopcntdq: "avx512vpopcntdq";
     /// AVX-512 VPOPCNTDQ (Vector Population Count Doubleword and
     /// Quadword)
     @FEATURE: #[unstable(feature = "stdsimd", issue = "27731")] avx512vbmi2: "avx512vbmi2";
