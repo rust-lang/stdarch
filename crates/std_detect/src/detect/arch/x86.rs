@@ -92,7 +92,7 @@ features! {
     /// RDSEED
     @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] tsc: "tsc";
     /// TSC (Time Stamp Counter)
-    @FEATURE: #[unstable(feature = "stdsimd", issue = "27731")] mmx: "mmx";
+    @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] mmx: "mmx";
     /// MMX (MultiMedia eXtensions)
     @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] sse: "sse";
     /// SSE (Streaming SIMD Extensions)
@@ -106,7 +106,7 @@ features! {
     /// SSE4.1 (Streaming SIMD Extensions 4.1)
     @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] sse4_2: "sse4.2";
     /// SSE4.2 (Streaming SIMD Extensions 4.2)
-    @FEATURE: #[unstable(feature = "stdsimd", issue = "27731")] sse4a: "sse4a";
+    @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] sse4a: "sse4a";
     /// SSE4a (Streaming SIMD Extensions 4a)
     @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] sha: "sha";
     /// SHA
@@ -132,11 +132,11 @@ features! {
     /// AVX-512 DQ (Doubleword and Quadword)
     @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] avx512vl: "avx512vl";
     /// AVX-512 VL (Vector Length Extensions)
-    @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] avx512ifma: "avx512ifma";
+    @FEATURE: #[unstable(feature = "stdsimd", issue = "27731")] avx512ifma: "avx512ifma";
     /// AVX-512 IFMA (Integer Fused Multiply Add)
-    @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] avx512vbmi: "avx512vbmi";
+    @FEATURE: #[unstable(feature = "stdsimd", issue = "27731")] avx512vbmi: "avx512vbmi";
     /// AVX-512 VBMI (Vector Byte Manipulation Instructions)
-    @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] avx512vpopcntdq: "avx512vpopcntdq";
+    @FEATURE: #[unstable(feature = "stdsimd", issue = "27731")] avx512vpopcntdq: "avx512vpopcntdq";
     /// AVX-512 VPOPCNTDQ (Vector Population Count Doubleword and
     /// Quadword)
     @FEATURE: #[unstable(feature = "stdsimd", issue = "27731")] avx512vbmi2: "avx512vbmi2";
@@ -165,7 +165,7 @@ features! {
     /// BMI2 (Bit Manipulation Instructions 2)
     @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] lzcnt: "lzcnt";
     /// ABM (Advanced Bit Manipulation) / LZCNT (Leading Zero Count)
-    @FEATURE: #[unstable(feature = "stdsimd", issue = "27731")] tbm: "tbm";
+    @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] tbm: "tbm";
     /// TBM (Trailing Bit Manipulation)
     @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] popcnt: "popcnt";
     /// POPCNT (Population Count)
