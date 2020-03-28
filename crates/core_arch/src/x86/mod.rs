@@ -92,6 +92,7 @@ types! {
     /// # }
     /// ```
     #[stable(feature = "simd_x86", since = "1.27.0")]
+    #[repr(simd)]
     pub struct __m128i(i64, i64);
 
     /// 128-bit wide set of four `f32` types, x86-specific
@@ -129,6 +130,7 @@ types! {
     /// # }
     /// ```
     #[stable(feature = "simd_x86", since = "1.27.0")]
+    #[repr(simd)]
     pub struct __m128(f32, f32, f32, f32);
 
     /// 128-bit wide set of two `f64` types, x86-specific
@@ -166,6 +168,7 @@ types! {
     /// # }
     /// ```
     #[stable(feature = "simd_x86", since = "1.27.0")]
+    #[repr(simd)]
     pub struct __m128d(f64, f64);
 
     /// 256-bit wide integer vector type, x86-specific
@@ -207,6 +210,7 @@ types! {
     /// # }
     /// ```
     #[stable(feature = "simd_x86", since = "1.27.0")]
+    #[repr(simd)]
     pub struct __m256i(i64, i64, i64, i64);
 
     /// 256-bit wide set of eight `f32` types, x86-specific
@@ -244,6 +248,7 @@ types! {
     /// # }
     /// ```
     #[stable(feature = "simd_x86", since = "1.27.0")]
+    #[repr(simd)]
     pub struct __m256(f32, f32, f32, f32, f32, f32, f32, f32);
 
     /// 256-bit wide set of four `f64` types, x86-specific
@@ -281,6 +286,7 @@ types! {
     /// # }
     /// ```
     #[stable(feature = "simd_x86", since = "1.27.0")]
+    #[repr(simd)]
     pub struct __m256d(f64, f64, f64, f64);
 
     /// 512-bit wide integer vector type, x86-specific
@@ -302,6 +308,7 @@ types! {
     ///
     /// Note that this means that an instance of `__m512i` typically just means
     /// a "bag of bits" which is left up to interpretation at the point of use.
+    #[repr(simd)]
     pub struct __m512i(i64, i64, i64, i64, i64, i64, i64, i64);
 
     /// 512-bit wide set of sixteen `f32` types, x86-specific
@@ -319,6 +326,7 @@ types! {
     /// Most intrinsics using `__m512` are prefixed with `_mm512_` and are
     /// suffixed with "ps" (or otherwise contain "ps"). Not to be confused with
     /// "pd" which is used for `__m512d`.
+    #[repr(simd)]
     pub struct __m512(
         f32, f32, f32, f32, f32, f32, f32, f32,
         f32, f32, f32, f32, f32, f32, f32, f32,
@@ -339,6 +347,7 @@ types! {
     /// Most intrinsics using `__m512d` are prefixed with `_mm512_` and are
     /// suffixed with "pd" (or otherwise contain "pd"). Not to be confused with
     /// "ps" which is used for `__m512`.
+    #[repr(simd)]
     pub struct __m512d(f64, f64, f64, f64, f64, f64, f64, f64);
 }
 
