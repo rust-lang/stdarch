@@ -1840,7 +1840,7 @@ pub const _MM_HINT_NTA: i32 = 0;
 #[cfg_attr(test, assert_instr(prefetchnta, strategy = _MM_HINT_NTA))]
 #[rustc_args_required_const(1)]
 #[stable(feature = "simd_x86", since = "1.27.0")]
-pub unsafe fn _mm_prefetch(p: *const i8, strategy: i32) {
+pub fn _mm_prefetch(p: *const i8, strategy: i32) {
     // The `strategy` must be a compile-time constant, so we use a short form
     // of `constify_imm8!` for now.
     // We use the `llvm.prefetch` instrinsic with `rw` = 0 (read), and
