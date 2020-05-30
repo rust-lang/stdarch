@@ -234,4 +234,18 @@ mod tests {
         let r = _mm512_set_epi64(0, 1, 2, 3, 4, 5, 6, 7);
         assert_eq_m512i(r, _mm512_setr_epi64(7, 6, 5, 4, 3, 2, 1, 0))
     }
+
+    // _mm512_i32gather_epi64(offsets: __m256i, slice: *const i64, scale: i32)
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_i32gather_epi64() {
+        let mut arr = [0i64; 128];
+        for i in 0..128i64 {
+            arr[i as usize] = i;
+        }
+        // A multiplier of 8 is word-addressing
+        #[rustfmt::skip]
+        let index = _mm256_setr_epi32(0, 16, 32, 48, 64, 80, 96, 112);
+        let r = _mm512_i32gather_epi64(index, arr.as_ptr(), 8);
+        assert_eq_m512i(r, _mm512_setr_epi64(0, 16, 32, 48, 64, 80, 96, 112));
+    }
 }
