@@ -237,7 +237,7 @@ mod tests {
 
     // _mm512_i32gather_epi64(offsets: __m256i, slice: *const i64, scale: i32)
     #[simd_test(enable = "avx512f")]
-    unsafe fn test_mm512_mask_i32gather_epi64() {
+    unsafe fn test_mm512_i32gather_epi64() {
         let mut arr = [0i64; 128];
         for i in 0..128i64 {
             arr[i as usize] = i;
@@ -245,7 +245,7 @@ mod tests {
         // A multiplier of 8 is word-addressing
         #[rustfmt::skip]
         let index = _mm256_setr_epi32(0, 16, 32, 48, 64, 80, 96, 112);
-        let r = _mm512_i32gather_epi64(index, arr.as_ptr(), 8);
+        let r = _mm512_i32gather_epi64(index, arr.as_ptr() as *const u8, 8);
         assert_eq_m512i(r, _mm512_setr_epi64(0, 16, 32, 48, 64, 80, 96, 112));
     }
 }

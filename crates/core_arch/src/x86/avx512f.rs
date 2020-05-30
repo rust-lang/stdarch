@@ -93,9 +93,10 @@ pub unsafe fn _mm512_setr_epi32(
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpgatherdq))]
-pub unsafe fn _mm512_i32gather_epi64(offsets: __m256i, slice: *const i8, scale: i32) -> __m512i {
+pub unsafe fn _mm512_i32gather_epi64(offsets: __m256i, slice: *const u8, scale: i32) -> __m512i {
     let zero = _mm512_setzero_si512().as_i64x8();
     let neg_one = -1;
+    let slice = slice as *const i8;
     let offsets = offsets.as_i32x8();
     macro_rules! call {
         ($imm8:expr) => {
