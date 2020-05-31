@@ -532,6 +532,24 @@ impl m512iExt for __m512i {
     }
 }
 
+#[allow(non_camel_case_types)]
+#[unstable(feature = "stdimd_internal", issue = "none")]
+pub(crate) trait m512dExt: Sized {
+    fn as_m512d(self) -> __m512d;
+
+    #[inline]
+    fn as_f64x8(self) -> crate::core_arch::simd::f64x8 {
+        unsafe { transmute(self.as_m512d()) }
+    }
+}
+
+impl m512dExt for __m512d {
+    #[inline]
+    fn as_m512d(self) -> Self {
+        self
+    }
+}
+
 mod eflags;
 pub use self::eflags::*;
 

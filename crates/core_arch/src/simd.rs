@@ -205,3 +205,7 @@ simd_ty!(i64x8[i64]:
 simd_ty!(u64x8[u64]:
          u64, u64, u64, u64, u64, u64, u64, u64
          | x0, x1, x2, x3, x4, x5, x6, x7);
+
+simd_ty!(f64x8[f64]:
+         f64, f64, f64, f64, f64, f64, f64, f64
+         | x0, x1, x2, x3, x4, x5, x6, x7);

@@ -48,6 +48,17 @@ pub unsafe fn _mm512_maskz_abs_epi32(k: __mmask16, a: __m512i) -> __m512i {
     transmute(simd_select_bitmask(k, abs, zero))
 }
 
+/// Returns vector of type `__m512d` with all elements set to zero.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#avx512techs=AVX512F&expand=33,34,4990&text=_mm512_setzero_pd)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vxorps))]
+pub unsafe fn _mm512_setzero_pd() -> __m512d {
+    // All-0 is a properly initialized __m512d
+    mem::zeroed()
+}
+
 /// Returns vector of type `__m512i` with all elements set to zero.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#avx512techs=AVX512F&expand=33,34,4990&text=_mm512_setzero_si512)
@@ -84,6 +95,51 @@ pub unsafe fn _mm512_setr_epi32(
     let r = i32x16(
         e15, e14, e13, e12, e11, e10, e9, e8, e7, e6, e5, e4, e3, e2, e1, e0,
     );
+    transmute(r)
+}
+
+/// Gather double-precision (64-bit) floating-point elements from memory using 32-bit indices.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_i32gather_pd)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vgatherdpd, scale = 1))]
+pub unsafe fn _mm512_i32gather_pd(offsets: __m256i, slice: *const u8, scale: i32) -> __m512d {
+    let zero = _mm512_setzero_pd().as_f64x8();
+    let neg_one = -1;
+    let slice = slice as *const i8;
+    let offsets = offsets.as_i32x8();
+    macro_rules! call {
+        ($imm8:expr) => {
+            vgatherdpd(zero, slice, offsets, neg_one, $imm8)
+        };
+    }
+    let r = constify_imm8!(scale, call);
+    transmute(r)
+}
+
+/// Gather double-precision (64-bit) floating-point elements from memory using 32-bit indices.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_i32gather_pd)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vgatherdpd, scale = 1))]
+pub unsafe fn _mm512_mask_i32gather_pd(
+    src: __m512d,
+    mask: __mmask8,
+    offsets: __m256i,
+    slice: *const u8,
+    scale: i32,
+) -> __m512d {
+    let src = src.as_f64x8();
+    let slice = slice as *const i8;
+    let offsets = offsets.as_i32x8();
+    macro_rules! call {
+        ($imm8:expr) => {
+            vgatherdpd(src, slice, offsets, mask as i8, $imm8)
+        };
+    }
+    let r = constify_imm8!(scale, call);
     transmute(r)
 }
 
@@ -135,8 +191,17 @@ pub unsafe fn _mm512_mask_i32gather_epi64(
 
 #[allow(improper_ctypes)]
 extern "C" {
+    #[link_name = "llvm.x86.avx512.gather.dpd.512"]
+    fn vgatherdpd(src: f64x8, slice: *const i8, offsets: i32x8, mask: i8, scale: i32) -> f64x8;
     #[link_name = "llvm.x86.avx512.gather.dpq.512"]
     fn vpgatherdq(src: i64x8, slice: *const i8, offsets: i32x8, mask: i8, scale: i32) -> i64x8;
+}
+
+/// Broadcast 64-bit float `a` to all elements of `dst`.
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_set1_pd(a: f64) -> __m512d {
+    transmute(f64x8::splat(a))
 }
 
 /// Broadcast 64-bit integer `a` to all elements of `dst`.

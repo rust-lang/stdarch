@@ -74,6 +74,7 @@ features! {
     /// * `"avx512bitalg"`
     /// * `"avx512bf16"`
     /// * `"avx512vp2intersect"`
+    /// * `"knc"`
     /// * `"f16c"`
     /// * `"fma"`
     /// * `"bmi1"`
