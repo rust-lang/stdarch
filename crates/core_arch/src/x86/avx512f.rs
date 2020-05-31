@@ -143,6 +143,51 @@ pub unsafe fn _mm512_mask_i32gather_pd(
     transmute(r)
 }
 
+/// Gather double-precision (64-bit) floating-point elements from memory using 64-bit indices.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_i64gather_pd)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vgatherqpd, scale = 1))]
+pub unsafe fn _mm512_i64gather_pd(offsets: __m512i, slice: *const u8, scale: i32) -> __m512d {
+    let zero = _mm512_setzero_pd().as_f64x8();
+    let neg_one = -1;
+    let slice = slice as *const i8;
+    let offsets = offsets.as_i64x8();
+    macro_rules! call {
+        ($imm8:expr) => {
+            vgatherqpd(zero, slice, offsets, neg_one, $imm8)
+        };
+    }
+    let r = constify_imm8!(scale, call);
+    transmute(r)
+}
+
+/// Gather double-precision (64-bit) floating-point elements from memory using 64-bit indices.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_i64gather_pd)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vgatherqpd, scale = 1))]
+pub unsafe fn _mm512_mask_i64gather_pd(
+    src: __m512d,
+    mask: __mmask8,
+    offsets: __m512i,
+    slice: *const u8,
+    scale: i32,
+) -> __m512d {
+    let src = src.as_f64x8();
+    let slice = slice as *const i8;
+    let offsets = offsets.as_i64x8();
+    macro_rules! call {
+        ($imm8:expr) => {
+            vgatherqpd(src, slice, offsets, mask as i8, $imm8)
+        };
+    }
+    let r = constify_imm8!(scale, call);
+    transmute(r)
+}
+
 /// Gather 64-bit integers from memory using 32-bit indices.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_i32gather_epi64)
@@ -189,12 +234,62 @@ pub unsafe fn _mm512_mask_i32gather_epi64(
     transmute(r)
 }
 
+/// Gather 64-bit integers from memory using 64-bit indices.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_i64gather_epi64)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vpgatherqq, scale = 1))]
+pub unsafe fn _mm512_i64gather_epi64(offsets: __m512i, slice: *const u8, scale: i32) -> __m512i {
+    let zero = _mm512_setzero_si512().as_i64x8();
+    let neg_one = -1;
+    let slice = slice as *const i8;
+    let offsets = offsets.as_i64x8();
+    macro_rules! call {
+        ($imm8:expr) => {
+            vpgatherqq(zero, slice, offsets, neg_one, $imm8)
+        };
+    }
+    let r = constify_imm8!(scale, call);
+    transmute(r)
+}
+
+/// Gather 64-bit integers from memory using 64-bit indices.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_i64gather_epi64)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vpgatherqq, scale = 1))]
+pub unsafe fn _mm512_mask_i64gather_epi64(
+    src: __m512i,
+    mask: __mmask8,
+    offsets: __m512i,
+    slice: *const u8,
+    scale: i32,
+) -> __m512i {
+    let src = src.as_i64x8();
+    let mask = mask as i8;
+    let slice = slice as *const i8;
+    let offsets = offsets.as_i64x8();
+    macro_rules! call {
+        ($imm8:expr) => {
+            vpgatherqq(src, slice, offsets, mask, $imm8)
+        };
+    }
+    let r = constify_imm8!(scale, call);
+    transmute(r)
+}
+
 #[allow(improper_ctypes)]
 extern "C" {
     #[link_name = "llvm.x86.avx512.gather.dpd.512"]
     fn vgatherdpd(src: f64x8, slice: *const i8, offsets: i32x8, mask: i8, scale: i32) -> f64x8;
+    #[link_name = "llvm.x86.avx512.gather.qpd.512"]
+    fn vgatherqpd(src: f64x8, slice: *const i8, offsets: i64x8, mask: i8, scale: i32) -> f64x8;
     #[link_name = "llvm.x86.avx512.gather.dpq.512"]
     fn vpgatherdq(src: i64x8, slice: *const i8, offsets: i32x8, mask: i8, scale: i32) -> i64x8;
+    #[link_name = "llvm.x86.avx512.gather.qpq.512"]
+    fn vpgatherqq(src: i64x8, slice: *const i8, offsets: i64x8, mask: i8, scale: i32) -> i64x8;
 }
 
 /// Broadcast 64-bit float `a` to all elements of `dst`.
