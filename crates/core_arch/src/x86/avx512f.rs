@@ -92,7 +92,7 @@ pub unsafe fn _mm512_setr_epi32(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_i32gather_epi64)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpgatherdq))]
+#[cfg_attr(test, assert_instr(vpgatherdq, scale = 1))]
 pub unsafe fn _mm512_i32gather_epi64(offsets: __m256i, slice: *const u8, scale: i32) -> __m512i {
     let zero = _mm512_setzero_si512().as_i64x8();
     let neg_one = -1;
