@@ -327,7 +327,7 @@ pub unsafe fn _mm512_mask_i64gather_epi64(
 
 /// Gather 32-bit integers from memory using 64-bit indices.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_i64gather_epi64)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_i64gather_epi32)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpgatherqd, scale = 1))]
@@ -347,7 +347,7 @@ pub unsafe fn _mm512_i64gather_epi32(offsets: __m512i, slice: *const u8, scale: 
 
 /// Gather 32-bit integers from memory using 64-bit indices.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_i64gather_epi64)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_i64gather_epi32)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpgatherqd, scale = 1))]
