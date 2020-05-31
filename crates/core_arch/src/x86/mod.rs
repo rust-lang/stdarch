@@ -506,6 +506,24 @@ impl m256iExt for __m256i {
 
 #[allow(non_camel_case_types)]
 #[unstable(feature = "stdimd_internal", issue = "none")]
+pub(crate) trait m256Ext: Sized {
+    fn as_m256(self) -> __m256;
+
+    #[inline]
+    fn as_f32x8(self) -> crate::core_arch::simd::f32x8 {
+        unsafe { transmute(self.as_m256()) }
+    }
+}
+
+impl m256Ext for __m256 {
+    #[inline]
+    fn as_m256(self) -> Self {
+        self
+    }
+}
+
+#[allow(non_camel_case_types)]
+#[unstable(feature = "stdimd_internal", issue = "none")]
 pub(crate) trait m512iExt: Sized {
     fn as_m512i(self) -> __m512i;
 

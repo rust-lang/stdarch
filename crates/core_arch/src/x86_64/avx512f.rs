@@ -353,6 +353,34 @@ mod tests {
     }
 
     #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_i64gather_ps() {
+        let mut arr = [0f32; 128];
+        for i in 0..128 {
+            arr[i] = i as f32;
+        }
+        // A multiplier of 4 is word-addressing
+        #[rustfmt::skip]
+        let index = _mm512_setr_epi64(0, 16, 32, 48, 64, 80, 96, 112);
+        let r = _mm512_i64gather_ps(index, arr.as_ptr() as *const u8, 4);
+        assert_eq_m256(r, _mm256_setr_ps(0., 16., 32., 48., 64., 80., 96., 112.));
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_i64gather_ps() {
+        let mut arr = [0f32; 128];
+        for i in 0..128 {
+            arr[i] = i as f32;
+        }
+        let src = _mm256_set1_ps(2.);
+        let mask = 0b10101010;
+        #[rustfmt::skip]
+        let index = _mm512_setr_epi64(0, 16, 32, 48, 64, 80, 96, 112);
+        // A multiplier of 4 is word-addressing
+        let r = _mm512_mask_i64gather_ps(src, mask, index, arr.as_ptr() as *const u8, 4);
+        assert_eq_m256(r, _mm256_setr_ps(2., 16., 2., 48., 2., 80., 2., 112.));
+    }
+
+    #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_i32gather_epi64() {
         let mut arr = [0i64; 128];
         for i in 0..128i64 {
@@ -406,5 +434,33 @@ mod tests {
         // A multiplier of 8 is word-addressing
         let r = _mm512_mask_i64gather_epi64(src, mask, index, arr.as_ptr() as *const u8, 8);
         assert_eq_m512i(r, _mm512_setr_epi64(2, 16, 2, 48, 2, 80, 2, 112));
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_i64gather_epi32() {
+        let mut arr = [0i64; 128];
+        for i in 0..128i64 {
+            arr[i as usize] = i;
+        }
+        // A multiplier of 8 is word-addressing
+        #[rustfmt::skip]
+        let index = _mm512_setr_epi64(0, 16, 32, 48, 64, 80, 96, 112);
+        let r = _mm512_i64gather_epi32(index, arr.as_ptr() as *const u8, 8);
+        assert_eq_m256i(r, _mm256_setr_epi32(0, 16, 32, 48, 64, 80, 96, 112));
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_i64gather_epi32() {
+        let mut arr = [0i64; 128];
+        for i in 0..128i64 {
+            arr[i as usize] = i;
+        }
+        let src = _mm256_set1_epi32(2);
+        let mask = 0b10101010;
+        #[rustfmt::skip]
+        let index = _mm512_setr_epi64(0, 16, 32, 48, 64, 80, 96, 112);
+        // A multiplier of 8 is word-addressing
+        let r = _mm512_mask_i64gather_epi32(src, mask, index, arr.as_ptr() as *const u8, 8);
+        assert_eq_m256i(r, _mm256_setr_epi32(2, 16, 2, 48, 2, 80, 2, 112));
     }
 }
