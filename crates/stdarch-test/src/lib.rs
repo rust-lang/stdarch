@@ -3,7 +3,6 @@
 //! This basically just disassembles the current executable and then parses the
 //! output once globally and then provides the `assert` function which makes
 //! assertions about the disassembly of a function.
-#![feature(const_transmute)]
 #![feature(vec_leak)]
 #![allow(clippy::missing_docs_in_private_items, clippy::print_stdout)]
 
@@ -20,19 +19,8 @@ pub use assert_instr_macro::*;
 pub use simd_test_macro::*;
 use std::{cmp, collections::HashSet, env, hash, str, sync::atomic::AtomicPtr};
 
-// `println!` doesn't work on wasm32 right now, so shadow the compiler's `println!`
-// macro with our own shim that redirects to `console.log`.
-#[allow(unused)]
-#[cfg(target_arch = "wasm32")]
-#[macro_export]
-macro_rules! println {
-    ($($args:tt)*) => (crate::wasm::js_console_log(&format!($($args)*)))
-}
-
 cfg_if! {
     if #[cfg(target_arch = "wasm32")] {
-        extern crate wasm_bindgen;
-        extern crate console_error_panic_hook;
         pub mod wasm;
         use wasm::disassemble_myself;
     } else {

@@ -2,8 +2,6 @@
 
 #[cfg(test)]
 use stdarch_test::assert_instr;
-#[cfg(test)]
-use wasm_bindgen_test::wasm_bindgen_test;
 
 #[cfg(any(target_feature = "atomics", dox))]
 mod atomic;

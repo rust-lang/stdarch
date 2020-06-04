@@ -131,8 +131,7 @@ pub fn assert_instr(
     };
 
     let tokens: TokenStream = quote! {
-        #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
-        #[cfg_attr(not(target_arch = "wasm32"), test)]
+        #[test]
         #[allow(non_snake_case)]
         fn #assert_name() {
             #to_test
@@ -146,11 +145,6 @@ pub fn assert_instr(
                                    #instr);
         }
     };
-    // why? necessary now to get tests to work?
-    let tokens: TokenStream = tokens
-        .to_string()
-        .parse()
-        .expect("cannot parse tokenstream");
 
     let tokens: TokenStream = quote! {
         #item

@@ -32,7 +32,9 @@
     adx_target_feature,
     rtm_target_feature,
     f16c_target_feature,
-    external_doc
+    external_doc,
+    allow_internal_unstable,
+    decl_macro
 )]
 #![cfg_attr(test, feature(test, abi_vectorcall, untagged_unions))]
 #![deny(clippy::missing_inline_in_public_items)]
@@ -66,13 +68,10 @@ extern crate std_detect;
 #[cfg(test)]
 extern crate stdarch_test;
 
-#[cfg(all(test, target_arch = "wasm32"))]
-extern crate wasm_bindgen_test;
-
 #[path = "mod.rs"]
 mod core_arch;
 
-pub use self::core_arch::arch::*;
+pub use self::core_arch::arch;
 
 #[allow(unused_imports)]
 use core::{ffi, hint, intrinsics, marker, mem, ops, ptr, sync};
