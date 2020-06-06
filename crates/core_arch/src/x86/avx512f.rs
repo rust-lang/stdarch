@@ -209,10 +209,10 @@ pub unsafe fn _mm512_cmpneq_epu64_mask(a: __m512i, b: __m512i) -> __mmask8 {
     simd_bitmask::<__m512i, _>(simd_ne(a.as_u64x8(), b.as_u64x8()))
 }
 
-///Compare packed unsigned 64-bit integers in a and b for inequality, and store the results in a mask vector k
+/// Compare packed unsigned 64-bit integers in a and b for inequality, and store the results in a mask vector k
 /// using zeromask m (elements are zeroed out when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#expand=727,1063,4909,1062,1062,1063&text=_mm512_mask_cmpneq_epu64)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#expand=727,1063,4909,1062,1062,1063&text=_mm512_mask_cmpneq_epu64_mask)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpcmp))]
@@ -222,7 +222,7 @@ pub unsafe fn _mm512_mask_cmpneq_epu64_mask(m: __mmask8, a: __m512i, b: __m512i)
 
 /// Compare packed unsigned 64-bit integers in a and b based on the comparison operand specified by op.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#expand=727,1063,4909,1062,1062,1063&text=_mm512_mask_cmp_epu64)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#expand=727,1063,4909,1062,1062,1063&text=_mm512_mask_cmp_epu64_mask)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[rustc_args_required_const(2)]
@@ -241,7 +241,7 @@ pub unsafe fn _mm512_cmp_epu64_mask(a: __m512i, b: __m512i, op: _MM_CMPINT_ENUM)
 /// Compare packed unsigned 64-bit integers in a and b based on the comparison operand specified by op,
 ///  using zeromask m (elements are zeroed out when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#expand=727,1063,4909,1062,1062,1063&text=_mm512_mask_cmp_epu64)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#expand=727,1063,4909,1062,1062,1063&text=_mm512_mask_cmp_epu64_mask)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[rustc_args_required_const(3)]
@@ -389,7 +389,7 @@ pub unsafe fn _mm512_mask_cmpneq_epi64_mask(m: __mmask8, a: __m512i, b: __m512i)
 
 /// Compare packed signed 64-bit integers in a and b based on the comparison operand specified by op.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#expand=727,1063,4909,1062,1062,1063&text=_mm512_mask_cmp_epi64)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#expand=727,1063,4909,1062,1062,1063&text=_mm512_mask_cmp_epi64_mask)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[rustc_args_required_const(2)]
@@ -408,7 +408,7 @@ pub unsafe fn _mm512_cmp_epi64_mask(a: __m512i, b: __m512i, op: _MM_CMPINT_ENUM)
 /// Compare packed signed 64-bit integers in a and b based on the comparison operand specified by op,
 ///  using zeromask m (elements are zeroed out when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#expand=727,1063,4909,1062,1062,1063&text=_mm512_mask_cmp_epi64)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#expand=727,1063,4909,1062,1062,1063&text=_mm512_mask_cmp_epi64_mask)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[rustc_args_required_const(3)]
