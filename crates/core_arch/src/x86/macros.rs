@@ -92,7 +92,7 @@ macro_rules! constify_imm2 {
     };
 }
 
-// For gather intsructions, the only valid values for scale are 1, 2, 4 and 8.
+// For gather instructions, the only valid values for scale are 1, 2, 4 and 8.
 // This macro enforces that.
 #[allow(unused)]
 macro_rules! constify_imm8_gather {
