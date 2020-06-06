@@ -104,6 +104,7 @@ pub unsafe fn _mm512_setr_epi32(
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vgatherdpd, scale = 1))]
+#[rustc_args_required_const(2)]
 pub unsafe fn _mm512_i32gather_pd(offsets: __m256i, slice: *const u8, scale: i32) -> __m512d {
     let zero = _mm512_setzero_pd().as_f64x8();
     let neg_one = -1;
@@ -114,7 +115,7 @@ pub unsafe fn _mm512_i32gather_pd(offsets: __m256i, slice: *const u8, scale: i32
             vgatherdpd(zero, slice, offsets, neg_one, $imm8)
         };
     }
-    let r = constify_imm8!(scale, call);
+    let r = constify_imm8_gather!(scale, call);
     transmute(r)
 }
 
@@ -124,6 +125,7 @@ pub unsafe fn _mm512_i32gather_pd(offsets: __m256i, slice: *const u8, scale: i32
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vgatherdpd, scale = 1))]
+#[rustc_args_required_const(4)]
 pub unsafe fn _mm512_mask_i32gather_pd(
     src: __m512d,
     mask: __mmask8,
@@ -139,7 +141,7 @@ pub unsafe fn _mm512_mask_i32gather_pd(
             vgatherdpd(src, slice, offsets, mask as i8, $imm8)
         };
     }
-    let r = constify_imm8!(scale, call);
+    let r = constify_imm8_gather!(scale, call);
     transmute(r)
 }
 
@@ -149,6 +151,7 @@ pub unsafe fn _mm512_mask_i32gather_pd(
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vgatherqpd, scale = 1))]
+#[rustc_args_required_const(2)]
 pub unsafe fn _mm512_i64gather_pd(offsets: __m512i, slice: *const u8, scale: i32) -> __m512d {
     let zero = _mm512_setzero_pd().as_f64x8();
     let neg_one = -1;
@@ -159,7 +162,7 @@ pub unsafe fn _mm512_i64gather_pd(offsets: __m512i, slice: *const u8, scale: i32
             vgatherqpd(zero, slice, offsets, neg_one, $imm8)
         };
     }
-    let r = constify_imm8!(scale, call);
+    let r = constify_imm8_gather!(scale, call);
     transmute(r)
 }
 
@@ -169,6 +172,7 @@ pub unsafe fn _mm512_i64gather_pd(offsets: __m512i, slice: *const u8, scale: i32
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vgatherqpd, scale = 1))]
+#[rustc_args_required_const(4)]
 pub unsafe fn _mm512_mask_i64gather_pd(
     src: __m512d,
     mask: __mmask8,
@@ -184,7 +188,7 @@ pub unsafe fn _mm512_mask_i64gather_pd(
             vgatherqpd(src, slice, offsets, mask as i8, $imm8)
         };
     }
-    let r = constify_imm8!(scale, call);
+    let r = constify_imm8_gather!(scale, call);
     transmute(r)
 }
 
@@ -194,6 +198,7 @@ pub unsafe fn _mm512_mask_i64gather_pd(
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vgatherqps, scale = 1))]
+#[rustc_args_required_const(2)]
 pub unsafe fn _mm512_i64gather_ps(offsets: __m512i, slice: *const u8, scale: i32) -> __m256 {
     let zero = _mm256_setzero_ps().as_f32x8();
     let neg_one = -1;
@@ -204,7 +209,7 @@ pub unsafe fn _mm512_i64gather_ps(offsets: __m512i, slice: *const u8, scale: i32
             vgatherqps(zero, slice, offsets, neg_one, $imm8)
         };
     }
-    let r = constify_imm8!(scale, call);
+    let r = constify_imm8_gather!(scale, call);
     transmute(r)
 }
 
@@ -214,6 +219,7 @@ pub unsafe fn _mm512_i64gather_ps(offsets: __m512i, slice: *const u8, scale: i32
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vgatherqps, scale = 1))]
+#[rustc_args_required_const(4)]
 pub unsafe fn _mm512_mask_i64gather_ps(
     src: __m256,
     mask: __mmask8,
@@ -229,7 +235,7 @@ pub unsafe fn _mm512_mask_i64gather_ps(
             vgatherqps(src, slice, offsets, mask as i8, $imm8)
         };
     }
-    let r = constify_imm8!(scale, call);
+    let r = constify_imm8_gather!(scale, call);
     transmute(r)
 }
 
@@ -239,6 +245,7 @@ pub unsafe fn _mm512_mask_i64gather_ps(
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpgatherdq, scale = 1))]
+#[rustc_args_required_const(2)]
 pub unsafe fn _mm512_i32gather_epi64(offsets: __m256i, slice: *const u8, scale: i32) -> __m512i {
     let zero = _mm512_setzero_si512().as_i64x8();
     let neg_one = -1;
@@ -249,7 +256,7 @@ pub unsafe fn _mm512_i32gather_epi64(offsets: __m256i, slice: *const u8, scale: 
             vpgatherdq(zero, slice, offsets, neg_one, $imm8)
         };
     }
-    let r = constify_imm8!(scale, call);
+    let r = constify_imm8_gather!(scale, call);
     transmute(r)
 }
 
@@ -259,6 +266,7 @@ pub unsafe fn _mm512_i32gather_epi64(offsets: __m256i, slice: *const u8, scale: 
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpgatherdq, scale = 1))]
+#[rustc_args_required_const(4)]
 pub unsafe fn _mm512_mask_i32gather_epi64(
     src: __m512i,
     mask: __mmask8,
@@ -275,7 +283,7 @@ pub unsafe fn _mm512_mask_i32gather_epi64(
             vpgatherdq(src, slice, offsets, mask, $imm8)
         };
     }
-    let r = constify_imm8!(scale, call);
+    let r = constify_imm8_gather!(scale, call);
     transmute(r)
 }
 
@@ -285,6 +293,7 @@ pub unsafe fn _mm512_mask_i32gather_epi64(
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpgatherqq, scale = 1))]
+#[rustc_args_required_const(2)]
 pub unsafe fn _mm512_i64gather_epi64(offsets: __m512i, slice: *const u8, scale: i32) -> __m512i {
     let zero = _mm512_setzero_si512().as_i64x8();
     let neg_one = -1;
@@ -295,7 +304,7 @@ pub unsafe fn _mm512_i64gather_epi64(offsets: __m512i, slice: *const u8, scale: 
             vpgatherqq(zero, slice, offsets, neg_one, $imm8)
         };
     }
-    let r = constify_imm8!(scale, call);
+    let r = constify_imm8_gather!(scale, call);
     transmute(r)
 }
 
@@ -305,6 +314,7 @@ pub unsafe fn _mm512_i64gather_epi64(offsets: __m512i, slice: *const u8, scale: 
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpgatherqq, scale = 1))]
+#[rustc_args_required_const(4)]
 pub unsafe fn _mm512_mask_i64gather_epi64(
     src: __m512i,
     mask: __mmask8,
@@ -321,7 +331,7 @@ pub unsafe fn _mm512_mask_i64gather_epi64(
             vpgatherqq(src, slice, offsets, mask, $imm8)
         };
     }
-    let r = constify_imm8!(scale, call);
+    let r = constify_imm8_gather!(scale, call);
     transmute(r)
 }
 
@@ -331,6 +341,7 @@ pub unsafe fn _mm512_mask_i64gather_epi64(
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpgatherqd, scale = 1))]
+#[rustc_args_required_const(2)]
 pub unsafe fn _mm512_i64gather_epi32(offsets: __m512i, slice: *const u8, scale: i32) -> __m256i {
     let zeros = _mm256_setzero_si256().as_i32x8();
     let neg_one = -1;
@@ -341,7 +352,7 @@ pub unsafe fn _mm512_i64gather_epi32(offsets: __m512i, slice: *const u8, scale: 
             vpgatherqd(zeros, slice, offsets, neg_one, $imm8)
         };
     }
-    let r = constify_imm8!(scale, call);
+    let r = constify_imm8_gather!(scale, call);
     transmute(r)
 }
 
@@ -351,6 +362,7 @@ pub unsafe fn _mm512_i64gather_epi32(offsets: __m512i, slice: *const u8, scale: 
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpgatherqd, scale = 1))]
+#[rustc_args_required_const(4)]
 pub unsafe fn _mm512_mask_i64gather_epi32(
     src: __m256i,
     mask: __mmask8,
@@ -367,7 +379,7 @@ pub unsafe fn _mm512_mask_i64gather_epi32(
             vpgatherqd(src, slice, offsets, mask, $imm8)
         };
     }
-    let r = constify_imm8!(scale, call);
+    let r = constify_imm8_gather!(scale, call);
     transmute(r)
 }
 
