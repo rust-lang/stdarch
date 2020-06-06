@@ -351,6 +351,7 @@ pub type __mmask16 = u16;
 pub type __mmask8 = u8;
 
 /// The `_MM_CMPINT_ENUM` type used to specify comparison operations in AVX-512 intrinsics.
+#[allow(non_camel_case_types)]
 pub type _MM_CMPINT_ENUM = i32;
 
 #[cfg(test)]
