@@ -55,6 +55,7 @@ static M512I: Type = Type::M512I;
 static M512D: Type = Type::M512D;
 static MMASK8: Type = Type::MMASK8;
 static MMASK16: Type = Type::MMASK16;
+static MM_CMPINT_ENUM: Type = Type::MM_CMPINT_ENUM;
 
 static TUPLE: Type = Type::Tuple;
 static CPUID: Type = Type::CpuidResult;
@@ -79,6 +80,7 @@ enum Type {
     M512I,
     MMASK8,
     MMASK16,
+    MM_CMPINT_ENUM,
     Tuple,
     CpuidResult,
     Never,
@@ -657,6 +659,7 @@ fn equate(t: &Type, intel: &str, intrinsic: &str, is_const: bool) -> Result<(), 
 
         (&Type::MMASK8, "__mmask8") => {}
         (&Type::MMASK16, "__mmask16") => {}
+        (&Type::MM_CMPINT_ENUM, "const _MM_CMPINT_ENUM") => require_const()?,
 
         // This is a macro (?) in C which seems to mutate its arguments, but
         // that means that we're taking pointers to arguments in rust
