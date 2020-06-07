@@ -302,4 +302,10 @@ mod tests {
         let r = _mm512_set_epi64(0, 1, 2, 3, 4, 5, 6, 7);
         assert_eq_m512i(r, _mm512_setr_epi64(7, 6, 5, 4, 3, 2, 1, 0))
     }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_set1_epi64() {
+        let r = _mm512_set_epi64(2, 2, 2, 2, 2, 2, 2, 2);
+        assert_eq_m512i(r, _mm512_set1_epi64(2));
+    }
 }
