@@ -383,6 +383,279 @@ pub unsafe fn _mm512_mask_i64gather_epi32(
     transmute(r)
 }
 
+/// Scatter double-precision (64-bit) floating-point elements from memory using 32-bit indices.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_i32scatter_pd)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vscatterdpd, scale = 1))]
+#[rustc_args_required_const(3)]
+pub unsafe fn _mm512_i32scatter_pd(slice: *mut u8, offsets: __m256i, src: __m512d, scale: i32) {
+    let src = src.as_f64x8();
+    let neg_one = -1;
+    let slice = slice as *mut i8;
+    let offsets = offsets.as_i32x8();
+    macro_rules! call {
+        ($imm8:expr) => {
+            vscatterdpd(slice, neg_one, offsets, src, $imm8)
+        };
+    }
+    constify_imm8_gather!(scale, call);
+}
+
+/// Scatter double-precision (64-bit) floating-point elements from src into memory using 32-bit indices.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_i32scatter_pd)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vscatterdpd, scale = 1))]
+#[rustc_args_required_const(4)]
+pub unsafe fn _mm512_mask_i32scatter_pd(
+    slice: *mut u8,
+    mask: __mmask8,
+    offsets: __m256i,
+    src: __m512d,
+    scale: i32,
+) {
+    let src = src.as_f64x8();
+    let slice = slice as *mut i8;
+    let offsets = offsets.as_i32x8();
+    macro_rules! call {
+        ($imm8:expr) => {
+            vscatterdpd(slice, mask as i8, offsets, src, $imm8)
+        };
+    }
+    constify_imm8_gather!(scale, call);
+}
+
+/// Scatter double-precision (64-bit) floating-point elements from src into memory using 64-bit indices.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_i64scatter_pd)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vscatterqpd, scale = 1))]
+#[rustc_args_required_const(3)]
+pub unsafe fn _mm512_i64scatter_pd(slice: *mut u8, offsets: __m512i, src: __m512d, scale: i32) {
+    let src = src.as_f64x8();
+    let neg_one = -1;
+    let slice = slice as *mut i8;
+    let offsets = offsets.as_i64x8();
+    macro_rules! call {
+        ($imm8:expr) => {
+            vscatterqpd(slice, neg_one, offsets, src, $imm8)
+        };
+    }
+    constify_imm8_gather!(scale, call);
+}
+
+/// Scatter double-precision (64-bit) floating-point elements from src into memory using 64-bit indices.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_i64scatter_pd)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vscatterqpd, scale = 1))]
+#[rustc_args_required_const(4)]
+pub unsafe fn _mm512_mask_i64scatter_pd(
+    slice: *mut u8,
+    mask: __mmask8,
+    offsets: __m512i,
+    src: __m512d,
+    scale: i32,
+) {
+    let src = src.as_f64x8();
+    let slice = slice as *mut i8;
+    let offsets = offsets.as_i64x8();
+    macro_rules! call {
+        ($imm8:expr) => {
+            vscatterqpd(slice, mask as i8, offsets, src, $imm8)
+        };
+    }
+    constify_imm8_gather!(scale, call);
+}
+
+/// Scatter single-precision (32-bit) floating-point elements from src into memory using 64-bit indices.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_i64scatter_ps)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vscatterqps, scale = 1))]
+#[rustc_args_required_const(3)]
+pub unsafe fn _mm512_i64scatter_ps(slice: *mut u8, offsets: __m512i, src: __m256, scale: i32) {
+    let src = src.as_f32x8();
+    let neg_one = -1;
+    let slice = slice as *mut i8;
+    let offsets = offsets.as_i64x8();
+    macro_rules! call {
+        ($imm8:expr) => {
+            vscatterqps(slice, neg_one, offsets, src, $imm8)
+        };
+    }
+    constify_imm8_gather!(scale, call);
+}
+
+/// Scatter single-precision (32-bit) floating-point elements from src into memory using 64-bit indices.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_i64scatter_ps)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vscatterqps, scale = 1))]
+#[rustc_args_required_const(4)]
+pub unsafe fn _mm512_mask_i64scatter_ps(
+    slice: *mut u8,
+    mask: __mmask8,
+    offsets: __m512i,
+    src: __m256,
+    scale: i32,
+) {
+    let src = src.as_f32x8();
+    let slice = slice as *mut i8;
+    let offsets = offsets.as_i64x8();
+    macro_rules! call {
+        ($imm8:expr) => {
+            vscatterqps(slice, mask as i8, offsets, src, $imm8)
+        };
+    }
+    constify_imm8_gather!(scale, call);
+}
+
+/// Scatter 64-bit integers from src into memory using 32-bit indices.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_i32scatter_epi64)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vpscatterdq, scale = 1))]
+#[rustc_args_required_const(3)]
+pub unsafe fn _mm512_i32scatter_epi64(slice: *mut u8, offsets: __m256i, src: __m512i, scale: i32) {
+    let src = src.as_i64x8();
+    let neg_one = -1;
+    let slice = slice as *mut i8;
+    let offsets = offsets.as_i32x8();
+    macro_rules! call {
+        ($imm8:expr) => {
+            vpscatterdq(slice, neg_one, offsets, src, $imm8)
+        };
+    }
+    constify_imm8_gather!(scale, call);
+}
+
+/// Scatter 64-bit integers from src into memory using 32-bit indices.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_i32scatter_epi64)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vpscatterdq, scale = 1))]
+#[rustc_args_required_const(4)]
+pub unsafe fn _mm512_mask_i32scatter_epi64(
+    slice: *mut u8,
+    mask: __mmask8,
+    offsets: __m256i,
+    src: __m512i,
+    scale: i32,
+) {
+    let src = src.as_i64x8();
+    let mask = mask as i8;
+    let slice = slice as *mut i8;
+    let offsets = offsets.as_i32x8();
+    macro_rules! call {
+        ($imm8:expr) => {
+            vpscatterdq(slice, mask, offsets, src, $imm8)
+        };
+    }
+    constify_imm8_gather!(scale, call);
+}
+
+/// Scatter 64-bit integers from src into memory using 64-bit indices.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_i64scatter_epi64)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vpscatterqq, scale = 1))]
+#[rustc_args_required_const(3)]
+pub unsafe fn _mm512_i64scatter_epi64(slice: *mut u8, offsets: __m512i, src: __m512i, scale: i32) {
+    let src = src.as_i64x8();
+    let neg_one = -1;
+    let slice = slice as *mut i8;
+    let offsets = offsets.as_i64x8();
+    macro_rules! call {
+        ($imm8:expr) => {
+            vpscatterqq(slice, neg_one, offsets, src, $imm8)
+        };
+    }
+    constify_imm8_gather!(scale, call);
+}
+
+/// Scatter 64-bit integers from src into memory using 64-bit indices.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_i64scatter_epi64)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vpscatterqq, scale = 1))]
+#[rustc_args_required_const(4)]
+pub unsafe fn _mm512_mask_i64scatter_epi64(
+    slice: *mut u8,
+    mask: __mmask8,
+    offsets: __m512i,
+    src: __m512i,
+    scale: i32,
+) {
+    let src = src.as_i64x8();
+    let mask = mask as i8;
+    let slice = slice as *mut i8;
+    let offsets = offsets.as_i64x8();
+    macro_rules! call {
+        ($imm8:expr) => {
+            vpscatterqq(slice, mask, offsets, src, $imm8)
+        };
+    }
+    constify_imm8_gather!(scale, call);
+}
+
+/// Scatter 32-bit integers from src into memory using 64-bit indices.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_i64scatter_epi32)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vpscatterqd, scale = 1))]
+#[rustc_args_required_const(3)]
+pub unsafe fn _mm512_i64scatter_epi32(slice: *mut u8, offsets: __m512i, src: __m256i, scale: i32) {
+    let src = src.as_i32x8();
+    let neg_one = -1;
+    let slice = slice as *mut i8;
+    let offsets = offsets.as_i64x8();
+    macro_rules! call {
+        ($imm8:expr) => {
+            vpscatterqd(slice, neg_one, offsets, src, $imm8)
+        };
+    }
+    constify_imm8_gather!(scale, call);
+}
+
+/// Scatter 32-bit integers from src into memory using 64-bit indices.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_i64scatter_epi32)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vpscatterqd, scale = 1))]
+#[rustc_args_required_const(4)]
+pub unsafe fn _mm512_mask_i64scatter_epi32(
+    slice: *mut u8,
+    mask: __mmask8,
+    offsets: __m512i,
+    src: __m256i,
+    scale: i32,
+) {
+    let src = src.as_i32x8();
+    let mask = mask as i8;
+    let slice = slice as *mut i8;
+    let offsets = offsets.as_i64x8();
+    macro_rules! call {
+        ($imm8:expr) => {
+            vpscatterqd(slice, mask, offsets, src, $imm8)
+        };
+    }
+    constify_imm8_gather!(scale, call);
+}
+
 #[allow(improper_ctypes)]
 extern "C" {
     #[link_name = "llvm.x86.avx512.gather.dpd.512"]
@@ -397,6 +670,20 @@ extern "C" {
     fn vpgatherqq(src: i64x8, slice: *const i8, offsets: i64x8, mask: i8, scale: i32) -> i64x8;
     #[link_name = "llvm.x86.avx512.gather.qpi.512"]
     fn vpgatherqd(src: i32x8, slice: *const i8, offsets: i64x8, mask: i8, scale: i32) -> i32x8;
+
+    #[link_name = "llvm.x86.avx512.scatter.dpd.512"]
+    fn vscatterdpd(slice: *mut i8, mask: i8, offsets: i32x8, src: f64x8, scale: i32);
+    #[link_name = "llvm.x86.avx512.scatter.qpd.512"]
+    fn vscatterqpd(slice: *mut i8, mask: i8, offsets: i64x8, src: f64x8, scale: i32);
+    #[link_name = "llvm.x86.avx512.scatter.qps.512"]
+    fn vscatterqps(slice: *mut i8, mask: i8, offsets: i64x8, src: f32x8, scale: i32);
+    #[link_name = "llvm.x86.avx512.scatter.dpq.512"]
+    fn vpscatterdq(slice: *mut i8, mask: i8, offsets: i32x8, src: i64x8, scale: i32);
+    #[link_name = "llvm.x86.avx512.scatter.qpq.512"]
+    fn vpscatterqq(slice: *mut i8, mask: i8, offsets: i64x8, src: i64x8, scale: i32);
+    #[link_name = "llvm.x86.avx512.scatter.qpi.512"]
+    fn vpscatterqd(slice: *mut i8, mask: i8, offsets: i64x8, src: i32x8, scale: i32);
+
 }
 
 /// Broadcast 64-bit float `a` to all elements of `dst`.
