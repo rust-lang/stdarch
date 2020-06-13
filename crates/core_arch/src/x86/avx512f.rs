@@ -762,35 +762,6 @@ pub unsafe fn _mm512_mask_i64scatter_epi32(
     constify_imm8_gather!(scale, call);
 }
 
-#[allow(improper_ctypes)]
-extern "C" {
-    #[link_name = "llvm.x86.avx512.gather.dpd.512"]
-    fn vgatherdpd(src: f64x8, slice: *const i8, offsets: i32x8, mask: i8, scale: i32) -> f64x8;
-    #[link_name = "llvm.x86.avx512.gather.qpd.512"]
-    fn vgatherqpd(src: f64x8, slice: *const i8, offsets: i64x8, mask: i8, scale: i32) -> f64x8;
-    #[link_name = "llvm.x86.avx512.gather.qps.512"]
-    fn vgatherqps(src: f32x8, slice: *const i8, offsets: i64x8, mask: i8, scale: i32) -> f32x8;
-    #[link_name = "llvm.x86.avx512.gather.dpq.512"]
-    fn vpgatherdq(src: i64x8, slice: *const i8, offsets: i32x8, mask: i8, scale: i32) -> i64x8;
-    #[link_name = "llvm.x86.avx512.gather.qpq.512"]
-    fn vpgatherqq(src: i64x8, slice: *const i8, offsets: i64x8, mask: i8, scale: i32) -> i64x8;
-    #[link_name = "llvm.x86.avx512.gather.qpi.512"]
-    fn vpgatherqd(src: i32x8, slice: *const i8, offsets: i64x8, mask: i8, scale: i32) -> i32x8;
-
-    #[link_name = "llvm.x86.avx512.scatter.dpd.512"]
-    fn vscatterdpd(slice: *mut i8, mask: i8, offsets: i32x8, src: f64x8, scale: i32);
-    #[link_name = "llvm.x86.avx512.scatter.qpd.512"]
-    fn vscatterqpd(slice: *mut i8, mask: i8, offsets: i64x8, src: f64x8, scale: i32);
-    #[link_name = "llvm.x86.avx512.scatter.qps.512"]
-    fn vscatterqps(slice: *mut i8, mask: i8, offsets: i64x8, src: f32x8, scale: i32);
-    #[link_name = "llvm.x86.avx512.scatter.dpq.512"]
-    fn vpscatterdq(slice: *mut i8, mask: i8, offsets: i32x8, src: i64x8, scale: i32);
-    #[link_name = "llvm.x86.avx512.scatter.qpq.512"]
-    fn vpscatterqq(slice: *mut i8, mask: i8, offsets: i64x8, src: i64x8, scale: i32);
-    #[link_name = "llvm.x86.avx512.scatter.qpi.512"]
-    fn vpscatterqd(slice: *mut i8, mask: i8, offsets: i64x8, src: i32x8, scale: i32);
-}
-
 /// Sets packed 32-bit integers in `dst` with the supplied values.
 ///
 /// [Intel's documentation]( https://software.intel.com/sites/landingpage/IntrinsicsGuide/#expand=727,1063,4909,1062,1062,4909&text=_mm512_set_ps)
@@ -847,7 +818,6 @@ pub unsafe fn _mm512_setr_ps(
         e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15,
     );
     transmute(r)
->>>>>>> avx-512-cmp
 }
 
 /// Broadcast 64-bit float `a` to all elements of `dst`.
@@ -1607,6 +1577,21 @@ extern "C" {
     fn vpgatherqq(src: i64x8, slice: *const i8, offsets: i64x8, mask: i8, scale: i32) -> i64x8;
     #[link_name = "llvm.x86.avx512.gather.qpi.512"]
     fn vpgatherqd(src: i32x8, slice: *const i8, offsets: i64x8, mask: i8, scale: i32) -> i32x8;
+
+    #[link_name = "llvm.x86.avx512.scatter.dpd.512"]
+    fn vscatterdpd(slice: *mut i8, mask: i8, offsets: i32x8, src: f64x8, scale: i32);
+    #[link_name = "llvm.x86.avx512.scatter.qpd.512"]
+    fn vscatterqpd(slice: *mut i8, mask: i8, offsets: i64x8, src: f64x8, scale: i32);
+    #[link_name = "llvm.x86.avx512.scatter.qps.512"]
+    fn vscatterqps(slice: *mut i8, mask: i8, offsets: i64x8, src: f32x8, scale: i32);
+    #[link_name = "llvm.x86.avx512.scatter.dpq.512"]
+    fn vpscatterdq(slice: *mut i8, mask: i8, offsets: i32x8, src: i64x8, scale: i32);
+    #[link_name = "llvm.x86.avx512.scatter.dpi.512"]
+    fn vpscatterdd(slice: *mut i8, mask: i16, offsets: i32x16, src: i32x16, scale: i32);
+    #[link_name = "llvm.x86.avx512.scatter.qpq.512"]
+    fn vpscatterqq(slice: *mut i8, mask: i8, offsets: i64x8, src: i64x8, scale: i32);
+    #[link_name = "llvm.x86.avx512.scatter.qpi.512"]
+    fn vpscatterqd(slice: *mut i8, mask: i8, offsets: i64x8, src: i32x8, scale: i32);
 
     #[link_name = "llvm.x86.avx512.mask.ucmp.q.512"]
     fn vpcmpuq(a: i64x8, b: i64x8, op: i32, m: i8) -> i8;
