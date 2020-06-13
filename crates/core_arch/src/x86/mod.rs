@@ -350,6 +350,10 @@ pub type __mmask16 = u16;
 #[allow(non_camel_case_types)]
 pub type __mmask8 = u8;
 
+/// The `_MM_CMPINT_ENUM` type used to specify comparison operations in AVX-512 intrinsics.
+#[allow(non_camel_case_types)]
+pub type _MM_CMPINT_ENUM = i32;
+
 #[cfg(test)]
 mod test;
 #[cfg(test)]
@@ -528,6 +532,11 @@ pub(crate) trait m512iExt: Sized {
     fn as_m512i(self) -> __m512i;
 
     #[inline]
+    fn as_u32x16(self) -> crate::core_arch::simd::u32x16 {
+        unsafe { transmute(self.as_m512i()) }
+    }
+
+    #[inline]
     fn as_i32x16(self) -> crate::core_arch::simd::i32x16 {
         unsafe { transmute(self.as_m512i()) }
     }
@@ -546,6 +555,24 @@ pub(crate) trait m512iExt: Sized {
 impl m512iExt for __m512i {
     #[inline]
     fn as_m512i(self) -> Self {
+        self
+    }
+}
+
+#[allow(non_camel_case_types)]
+#[unstable(feature = "stdimd_internal", issue = "none")]
+pub(crate) trait m512Ext: Sized {
+    fn as_m512(self) -> __m512;
+
+    #[inline]
+    fn as_f32x16(self) -> crate::core_arch::simd::f32x16 {
+        unsafe { transmute(self.as_m512()) }
+    }
+}
+
+impl m512Ext for __m512 {
+    #[inline]
+    fn as_m512(self) -> Self {
         self
     }
 }
