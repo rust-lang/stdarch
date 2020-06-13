@@ -579,6 +579,51 @@ pub unsafe fn _mm512_mask_i64scatter_pd(
     constify_imm8_gather!(scale, call);
 }
 
+/// Scatter single-precision (32-bit) floating-point elements from memory using 32-bit indices.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_i32scatter_ps)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vscatterdps, scale = 1))]
+#[rustc_args_required_const(3)]
+pub unsafe fn _mm512_i32scatter_ps(slice: *mut u8, offsets: __m512i, src: __m512, scale: i32) {
+    let src = src.as_f32x16();
+    let neg_one = -1;
+    let slice = slice as *mut i8;
+    let offsets = offsets.as_i32x16();
+    macro_rules! call {
+        ($imm8:expr) => {
+            vscatterdps(slice, neg_one, offsets, src, $imm8)
+        };
+    }
+    constify_imm8_gather!(scale, call);
+}
+
+/// Scatter single-precision (32-bit) floating-point elements from src into memory using 32-bit indices.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_i32scatter_ps)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vscatterdps, scale = 1))]
+#[rustc_args_required_const(4)]
+pub unsafe fn _mm512_mask_i32scatter_ps(
+    slice: *mut u8,
+    mask: __mmask16,
+    offsets: __m512i,
+    src: __m512,
+    scale: i32,
+) {
+    let src = src.as_f32x16();
+    let slice = slice as *mut i8;
+    let offsets = offsets.as_i32x16();
+    macro_rules! call {
+        ($imm8:expr) => {
+            vscatterdps(slice, mask as i16, offsets, src, $imm8)
+        };
+    }
+    constify_imm8_gather!(scale, call);
+}
+
 /// Scatter single-precision (32-bit) floating-point elements from src into memory using 64-bit indices.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_i64scatter_ps)
@@ -711,6 +756,52 @@ pub unsafe fn _mm512_mask_i64scatter_epi64(
     macro_rules! call {
         ($imm8:expr) => {
             vpscatterqq(slice, mask, offsets, src, $imm8)
+        };
+    }
+    constify_imm8_gather!(scale, call);
+}
+
+/// Scatter 32-bit integers from src into memory using 32-bit indices.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_i64scatter_epi32)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vpscatterdd, scale = 1))]
+#[rustc_args_required_const(3)]
+pub unsafe fn _mm512_i32scatter_epi32(slice: *mut u8, offsets: __m512i, src: __m512i, scale: i32) {
+    let src = src.as_i32x16();
+    let neg_one = -1;
+    let slice = slice as *mut i8;
+    let offsets = offsets.as_i32x16();
+    macro_rules! call {
+        ($imm8:expr) => {
+            vpscatterdd(slice, neg_one, offsets, src, $imm8)
+        };
+    }
+    constify_imm8_gather!(scale, call);
+}
+
+/// Scatter 32-bit integers from src into memory using 32-bit indices.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_i32scatter_epi32)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vpscatterdd, scale = 1))]
+#[rustc_args_required_const(4)]
+pub unsafe fn _mm512_mask_i32scatter_epi32(
+    slice: *mut u8,
+    mask: __mmask16,
+    offsets: __m512i,
+    src: __m512i,
+    scale: i32,
+) {
+    let src = src.as_i32x16();
+    let mask = mask as i16;
+    let slice = slice as *mut i8;
+    let offsets = offsets.as_i32x16();
+    macro_rules! call {
+        ($imm8:expr) => {
+            vpscatterdd(slice, mask, offsets, src, $imm8)
         };
     }
     constify_imm8_gather!(scale, call);
@@ -1580,6 +1671,8 @@ extern "C" {
 
     #[link_name = "llvm.x86.avx512.scatter.dpd.512"]
     fn vscatterdpd(slice: *mut i8, mask: i8, offsets: i32x8, src: f64x8, scale: i32);
+    #[link_name = "llvm.x86.avx512.scatter.dps.512"]
+    fn vscatterdps(slice: *mut i8, mask: i16, offsets: i32x16, src: f32x16, scale: i32);
     #[link_name = "llvm.x86.avx512.scatter.qpd.512"]
     fn vscatterqpd(slice: *mut i8, mask: i8, offsets: i64x8, src: f64x8, scale: i32);
     #[link_name = "llvm.x86.avx512.scatter.qps.512"]
@@ -1767,12 +1860,83 @@ mod tests {
         let mask = 0b10101010_10101010;
         #[rustfmt::skip]
         let index = _mm512_setr_epi32(0, 16, 32, 48, 64, 80, 96, 112,
-                                      120, 128, 136, 144, 152, 160, 168, 176);
+                                      128, 144, 160, 176, 192, 208, 224, 240);
         // A multiplier of 4 is word-addressing
         let r = _mm512_mask_i32gather_epi32(src, mask, index, arr.as_ptr() as *const u8, 4);
         #[rustfmt::skip]
         assert_eq_m512i(r, _mm512_setr_epi32(2, 16, 2, 48, 2, 80, 2, 112,
-                                             2, 128, 2, 144, 2, 160, 2, 176));
+                                             2, 144, 2, 176, 2, 208, 2, 240));
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_i32scatter_ps() {
+        let mut arr = [0f32; 256];
+        #[rustfmt::skip]
+        let index = _mm512_setr_epi32(0, 16, 32, 48, 64, 80, 96, 112,
+                                      128, 144, 160, 176, 192, 208, 224, 240);
+        let src = _mm512_setr_ps(
+            1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15., 16.,
+        );
+        // A multiplier of 4 is word-addressing
+        _mm512_i32scatter_ps(arr.as_mut_ptr() as *mut u8, index, src, 4);
+        let mut expected = [0f32; 256];
+        for i in 0..16 {
+            expected[i * 16] = (i + 1) as f32;
+        }
+        assert_eq!(&arr[..], &expected[..],);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_i32scatter_ps() {
+        let mut arr = [0f32; 256];
+        let mask = 0b10101010_10101010;
+        #[rustfmt::skip]
+        let index = _mm512_setr_epi32(0, 16, 32, 48, 64, 80, 96, 112,
+                                      128, 144, 160, 176, 192, 208, 224, 240);
+        let src = _mm512_setr_ps(
+            1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15., 16.,
+        );
+        // A multiplier of 4 is word-addressing
+        _mm512_mask_i32scatter_ps(arr.as_mut_ptr() as *mut u8, mask, index, src, 4);
+        let mut expected = [0f32; 256];
+        for i in 0..8 {
+            expected[i * 32 + 16] = 2. * (i + 1) as f32;
+        }
+        assert_eq!(&arr[..], &expected[..],);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_i32scatter_epi32() {
+        let mut arr = [0i32; 256];
+        #[rustfmt::skip]
+
+        let index = _mm512_setr_epi32(0, 16, 32, 48, 64, 80, 96, 112,
+                                      128, 144, 160, 176, 192, 208, 224, 240);
+        let src = _mm512_setr_epi32(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
+        // A multiplier of 4 is word-addressing
+        _mm512_i32scatter_epi32(arr.as_mut_ptr() as *mut u8, index, src, 4);
+        let mut expected = [0i32; 256];
+        for i in 0..16 {
+            expected[i * 16] = (i + 1) as i32;
+        }
+        assert_eq!(&arr[..], &expected[..],);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_i32scatter_epi32() {
+        let mut arr = [0i32; 256];
+        let mask = 0b10101010_10101010;
+        #[rustfmt::skip]
+        let index = _mm512_setr_epi32(0, 16, 32, 48, 64, 80, 96, 112,
+                                      128, 144, 160, 176, 192, 208, 224, 240);
+        let src = _mm512_setr_epi32(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
+        // A multiplier of 4 is word-addressing
+        _mm512_mask_i32scatter_epi32(arr.as_mut_ptr() as *mut u8, mask, index, src, 4);
+        let mut expected = [0i32; 256];
+        for i in 0..8 {
+            expected[i * 32 + 16] = 2 * (i + 1) as i32;
+        }
+        assert_eq!(&arr[..], &expected[..],);
     }
 
     #[simd_test(enable = "avx512f")]
