@@ -452,6 +452,10 @@ fn matches(rust: &Function, intel: &Intrinsic) -> Result<(), String> {
             // The XML file names IFMA as "avx512ifma52", while Rust calls
             // it "avx512ifma".
             "avx512ifma52" => String::from("avx512ifma"),
+            // Some AVX512f intrinsics are also supported by Knight's Corner.
+            // The XML lists them as avx512f/kncni, but we are solely gating
+            // them behind avx512f since we don't have a KNC feature yet.
+            "avx512f/kncni" => String::from("avx512f"),
             // See: https://github.com/rust-lang/stdarch/issues/738
             // The intrinsics guide calls `f16c` `fp16c` in disagreement with
             // Intel's architecture manuals.
