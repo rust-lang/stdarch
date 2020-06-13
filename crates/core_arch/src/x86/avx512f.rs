@@ -59,6 +59,17 @@ pub unsafe fn _mm512_setzero_pd() -> __m512d {
     mem::zeroed()
 }
 
+/// Returns vector of type `__m512d` with all elements set to zero.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#avx512techs=AVX512F&expand=33,34,4990&text=_mm512_setzero_pd)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vxorps))]
+pub unsafe fn _mm512_setzero_ps() -> __m512 {
+    // All-0 is a properly initialized __m512
+    mem::zeroed()
+}
+
 /// Returns vector of type `__m512i` with all elements set to zero.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#avx512techs=AVX512F&expand=33,34,4990&text=_mm512_setzero_si512)
@@ -239,6 +250,101 @@ pub unsafe fn _mm512_mask_i64gather_ps(
     transmute(r)
 }
 
+/// Gather single-precision (32-bit) floating-point elements from memory using 32-bit indices.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_i32gather_ps)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vgatherdps, scale = 1))]
+#[rustc_args_required_const(2)]
+pub unsafe fn _mm512_i32gather_ps(offsets: __m512i, slice: *const u8, scale: i32) -> __m512 {
+    let zero = _mm512_setzero_ps().as_f32x16();
+    let neg_one = -1;
+    let slice = slice as *const i8;
+    let offsets = offsets.as_i32x16();
+    macro_rules! call {
+        ($imm8:expr) => {
+            vgatherdps(zero, slice, offsets, neg_one, $imm8)
+        };
+    }
+    let r = constify_imm8_gather!(scale, call);
+    transmute(r)
+}
+
+/// Gather single-precision (32-bit) floating-point elements from memory using 32-bit indices.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_i32gather_ps)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vgatherdps, scale = 1))]
+#[rustc_args_required_const(4)]
+pub unsafe fn _mm512_mask_i32gather_ps(
+    src: __m512,
+    mask: __mmask16,
+    offsets: __m512i,
+    slice: *const u8,
+    scale: i32,
+) -> __m512 {
+    let src = src.as_f32x16();
+    let slice = slice as *const i8;
+    let offsets = offsets.as_i32x16();
+    macro_rules! call {
+        ($imm8:expr) => {
+            vgatherdps(src, slice, offsets, mask as i16, $imm8)
+        };
+    }
+    let r = constify_imm8_gather!(scale, call);
+    transmute(r)
+}
+
+/// Gather 32-bit integers from memory using 32-bit indices.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_i32gather_epi32)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vpgatherdd, scale = 1))]
+#[rustc_args_required_const(2)]
+pub unsafe fn _mm512_i32gather_epi32(offsets: __m512i, slice: *const u8, scale: i32) -> __m512i {
+    let zero = _mm512_setzero_si512().as_i32x16();
+    let neg_one = -1;
+    let slice = slice as *const i8;
+    let offsets = offsets.as_i32x16();
+    macro_rules! call {
+        ($imm8:expr) => {
+            vpgatherdd(zero, slice, offsets, neg_one, $imm8)
+        };
+    }
+    let r = constify_imm8_gather!(scale, call);
+    transmute(r)
+}
+
+/// Gather 32-bit integers from memory using 32-bit indices.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_i32gather_epi32)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vpgatherdd, scale = 1))]
+#[rustc_args_required_const(4)]
+pub unsafe fn _mm512_mask_i32gather_epi32(
+    src: __m512i,
+    mask: __mmask16,
+    offsets: __m512i,
+    slice: *const u8,
+    scale: i32,
+) -> __m512i {
+    let src = src.as_i32x16();
+    let mask = mask as i16;
+    let slice = slice as *const i8;
+    let offsets = offsets.as_i32x16();
+    macro_rules! call {
+        ($imm8:expr) => {
+            vpgatherdd(src, slice, offsets, mask, $imm8)
+        };
+    }
+    let r = constify_imm8!(scale, call);
+    transmute(r)
+}
+
 /// Gather 64-bit integers from memory using 32-bit indices.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_i32gather_epi64)
@@ -383,11 +489,76 @@ pub unsafe fn _mm512_mask_i64gather_epi32(
     transmute(r)
 }
 
+/// Sets packed 32-bit integers in `dst` with the supplied values.
+///
+/// [Intel's documentation]( https://software.intel.com/sites/landingpage/IntrinsicsGuide/#expand=727,1063,4909,1062,1062,4909&text=_mm512_set_ps)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_set_ps(
+    e0: f32,
+    e1: f32,
+    e2: f32,
+    e3: f32,
+    e4: f32,
+    e5: f32,
+    e6: f32,
+    e7: f32,
+    e8: f32,
+    e9: f32,
+    e10: f32,
+    e11: f32,
+    e12: f32,
+    e13: f32,
+    e14: f32,
+    e15: f32,
+) -> __m512 {
+    _mm512_setr_ps(
+        e15, e14, e13, e12, e11, e10, e9, e8, e7, e6, e5, e4, e3, e2, e1, e0,
+    )
+}
+
+/// Sets packed 32-bit integers in `dst` with the supplied values in
+/// reverse order.
+///
+/// [Intel's documentation]( https://software.intel.com/sites/landingpage/IntrinsicsGuide/#expand=727,1063,4909,1062,1062,4909&text=_mm512_set_ps)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_setr_ps(
+    e0: f32,
+    e1: f32,
+    e2: f32,
+    e3: f32,
+    e4: f32,
+    e5: f32,
+    e6: f32,
+    e7: f32,
+    e8: f32,
+    e9: f32,
+    e10: f32,
+    e11: f32,
+    e12: f32,
+    e13: f32,
+    e14: f32,
+    e15: f32,
+) -> __m512 {
+    let r = f32x16::new(
+        e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15,
+    );
+    transmute(r)
+}
+
 /// Broadcast 64-bit float `a` to all elements of `dst`.
 #[inline]
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_set1_pd(a: f64) -> __m512d {
     transmute(f64x8::splat(a))
+}
+
+/// Broadcast 32-bit float `a` to all elements of `dst`.
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_set1_ps(a: f32) -> __m512 {
+    transmute(f32x16::splat(a))
 }
 
 /// Sets packed 32-bit integers in `dst` with the supplied values.
@@ -1119,12 +1290,16 @@ pub const _MM_CMPINT_TRUE: _MM_CMPINT_ENUM = 0x07;
 extern "C" {
     #[link_name = "llvm.x86.avx512.gather.dpd.512"]
     fn vgatherdpd(src: f64x8, slice: *const i8, offsets: i32x8, mask: i8, scale: i32) -> f64x8;
+    #[link_name = "llvm.x86.avx512.gather.dps.512"]
+    fn vgatherdps(src: f32x16, slice: *const i8, offsets: i32x16, mask: i16, scale: i32) -> f32x16;
     #[link_name = "llvm.x86.avx512.gather.qpd.512"]
     fn vgatherqpd(src: f64x8, slice: *const i8, offsets: i64x8, mask: i8, scale: i32) -> f64x8;
     #[link_name = "llvm.x86.avx512.gather.qps.512"]
     fn vgatherqps(src: f32x8, slice: *const i8, offsets: i64x8, mask: i8, scale: i32) -> f32x8;
     #[link_name = "llvm.x86.avx512.gather.dpq.512"]
     fn vpgatherdq(src: i64x8, slice: *const i8, offsets: i32x8, mask: i8, scale: i32) -> i64x8;
+    #[link_name = "llvm.x86.avx512.gather.dpi.512"]
+    fn vpgatherdd(src: i32x16, slice: *const i8, offsets: i32x16, mask: i16, scale: i32) -> i32x16;
     #[link_name = "llvm.x86.avx512.gather.qpq.512"]
     fn vpgatherqq(src: i64x8, slice: *const i8, offsets: i64x8, mask: i8, scale: i32) -> i64x8;
     #[link_name = "llvm.x86.avx512.gather.qpi.512"]
@@ -1242,6 +1417,74 @@ mod tests {
             0,
         );
         assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_i32gather_ps() {
+        let mut arr = [0f32; 256];
+        for i in 0..256 {
+            arr[i] = i as f32;
+        }
+        // A multiplier of 4 is word-addressing
+        #[rustfmt::skip]
+        let index = _mm512_setr_epi32(0, 16, 32, 48, 64, 80, 96, 112,
+                                      120, 128, 136, 144, 152, 160, 168, 176);
+        let r = _mm512_i32gather_ps(index, arr.as_ptr() as *const u8, 4);
+        #[rustfmt::skip]
+        assert_eq_m512(r, _mm512_setr_ps(0., 16., 32., 48., 64., 80., 96., 112.,
+                                         120., 128., 136., 144., 152., 160., 168., 176.));
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_i32gather_ps() {
+        let mut arr = [0f32; 256];
+        for i in 0..256 {
+            arr[i] = i as f32;
+        }
+        let src = _mm512_set1_ps(2.);
+        let mask = 0b10101010_10101010;
+        #[rustfmt::skip]
+        let index = _mm512_setr_epi32(0, 16, 32, 48, 64, 80, 96, 112,
+                                      120, 128, 136, 144, 152, 160, 168, 176);
+        // A multiplier of 4 is word-addressing
+        let r = _mm512_mask_i32gather_ps(src, mask, index, arr.as_ptr() as *const u8, 4);
+        #[rustfmt::skip]
+        assert_eq_m512(r, _mm512_setr_ps(2., 16., 2., 48., 2., 80., 2., 112.,
+                                         2., 128., 2., 144., 2., 160., 2., 176.));
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_i32gather_epi32() {
+        let mut arr = [0i32; 256];
+        for i in 0..256 {
+            arr[i] = i as i32;
+        }
+        // A multiplier of 4 is word-addressing
+        #[rustfmt::skip]
+        let index = _mm512_setr_epi32(0, 16, 32, 48, 64, 80, 96, 112,
+                                      120, 128, 136, 144, 152, 160, 168, 176);
+        let r = _mm512_i32gather_epi32(index, arr.as_ptr() as *const u8, 4);
+        #[rustfmt::skip]
+        assert_eq_m512i(r, _mm512_setr_epi32(0, 16, 32, 48, 64, 80, 96, 112,
+                                             120, 128, 136, 144, 152, 160, 168, 176));
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_i32gather_epi32() {
+        let mut arr = [0i32; 256];
+        for i in 0..256 {
+            arr[i] = i as i32;
+        }
+        let src = _mm512_set1_epi32(2);
+        let mask = 0b10101010_10101010;
+        #[rustfmt::skip]
+        let index = _mm512_setr_epi32(0, 16, 32, 48, 64, 80, 96, 112,
+                                      120, 128, 136, 144, 152, 160, 168, 176);
+        // A multiplier of 4 is word-addressing
+        let r = _mm512_mask_i32gather_epi32(src, mask, index, arr.as_ptr() as *const u8, 4);
+        #[rustfmt::skip]
+        assert_eq_m512i(r, _mm512_setr_epi32(2, 16, 2, 48, 2, 80, 2, 112,
+                                             2, 128, 2, 144, 2, 160, 2, 176));
     }
 
     #[simd_test(enable = "avx512f")]
@@ -1585,5 +1828,44 @@ mod tests {
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_setzero_si512() {
         assert_eq_m512i(_mm512_set1_epi32(0), _mm512_setzero_si512());
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_set_ps() {
+        let r = _mm512_setr_ps(
+            0., 1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15.,
+        );
+        assert_eq_m512(
+            r,
+            _mm512_set_ps(
+                15., 14., 13., 12., 11., 10., 9., 8., 7., 6., 5., 4., 3., 2., 1., 0.,
+            ),
+        )
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_setr_ps() {
+        let r = _mm512_set_ps(
+            0., 1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15.,
+        );
+        assert_eq_m512(
+            r,
+            _mm512_setr_ps(
+                15., 14., 13., 12., 11., 10., 9., 8., 7., 6., 5., 4., 3., 2., 1., 0.,
+            ),
+        )
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_set1_ps() {
+        #[rustfmt::skip]
+        let expected = _mm512_set_ps(2., 2., 2., 2., 2., 2., 2., 2.,
+                                     2., 2., 2., 2., 2., 2., 2., 2.);
+        assert_eq_m512(expected, _mm512_set1_ps(2.));
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_setzero_ps() {
+        assert_eq_m512(_mm512_setzero_ps(), _mm512_set1_ps(0.));
     }
 }

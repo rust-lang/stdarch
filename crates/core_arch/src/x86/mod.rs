@@ -561,6 +561,24 @@ impl m512iExt for __m512i {
 
 #[allow(non_camel_case_types)]
 #[unstable(feature = "stdimd_internal", issue = "none")]
+pub(crate) trait m512Ext: Sized {
+    fn as_m512(self) -> __m512;
+
+    #[inline]
+    fn as_f32x16(self) -> crate::core_arch::simd::f32x16 {
+        unsafe { transmute(self.as_m512()) }
+    }
+}
+
+impl m512Ext for __m512 {
+    #[inline]
+    fn as_m512(self) -> Self {
+        self
+    }
+}
+
+#[allow(non_camel_case_types)]
+#[unstable(feature = "stdimd_internal", issue = "none")]
 pub(crate) trait m512dExt: Sized {
     fn as_m512d(self) -> __m512d;
 
