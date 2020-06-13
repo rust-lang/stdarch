@@ -667,7 +667,7 @@ fn equate(t: &Type, intel: &str, intrinsic: &str, is_const: bool) -> Result<(), 
 
         (&Type::MMASK8, "__mmask8") => {}
         (&Type::MMASK16, "__mmask16") => {}
-        (&Type::MM_CMPINT_ENUM, "const _MM_CMPINT_ENUM") => require_const()?,
+        (&Type::MM_CMPINT_ENUM, "_MM_CMPINT_ENUM") => {}
 
         // This is a macro (?) in C which seems to mutate its arguments, but
         // that means that we're taking pointers to arguments in rust
