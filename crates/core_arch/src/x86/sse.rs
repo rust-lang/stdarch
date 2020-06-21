@@ -1251,6 +1251,25 @@ pub unsafe fn _mm_loadr_ps(p: *const f32) -> __m128 {
     simd_shuffle4(a, a, [3, 2, 1, 0])
 }
 
+/// Loads unaligned 64-bits of integer data from memory into new vector.
+///
+/// `mem_addr` does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_loadu_si64)
+#[inline]
+#[target_feature(enable = "sse")]
+#[cfg_attr(test, assert_instr(movups))]
+#[stable(feature = "simd_x86", since = "1.46.0")]
+pub unsafe fn _mm_loadu_si64(mem_addr: *const u8) -> __m128i {
+    let mut dst = _mm_setzero_si128();
+    ptr::copy_nonoverlapping(
+        mem_addr,
+        &mut dst as *mut __m128i as *mut u8,
+        8, // == 64 bits == mem::size_of::<__m128i>() / 2
+    );
+    dst
+}
+
 /// Stores the upper half of `a` (64 bits) into memory.
 ///
 /// This intrinsic corresponds to the `MOVHPS` instruction. The compiler may
@@ -3656,6 +3675,13 @@ mod tests {
         let r = _mm_loadr_ps(p);
         let e = _mm_add_ps(_mm_setr_ps(4.0, 3.0, 2.0, 1.0), _mm_set1_ps(fixup));
         assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "sse2")]
+    unsafe fn test_mm_loadu_si64() {
+        let a = _mm_set_epi64x(5, 0);
+        let r = _mm_loadu_si64(&a as *const _ as *const _);
+        assert_eq_m128i(a, r);
     }
 
     #[simd_test(enable = "sse")]
