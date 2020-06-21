@@ -1259,15 +1259,9 @@ pub unsafe fn _mm_loadr_ps(p: *const f32) -> __m128 {
 #[inline]
 #[target_feature(enable = "sse")]
 #[cfg_attr(test, assert_instr(movups))]
-#[stable(feature = "simd_x86", since = "1.46.0")]
+#[stable(feature = "simd_x86_mm_loadu_si64", since = "1.46.0")]
 pub unsafe fn _mm_loadu_si64(mem_addr: *const u8) -> __m128i {
-    let mut dst = _mm_setzero_si128();
-    ptr::copy_nonoverlapping(
-        mem_addr,
-        &mut dst as *mut __m128i as *mut u8,
-        8, // == 64 bits == mem::size_of::<__m128i>() / 2
-    );
-    dst
+    _mm_set_epi64x(ptr::read_unaligned(mem_addr as *const i64), 0)
 }
 
 /// Stores the upper half of `a` (64 bits) into memory.
