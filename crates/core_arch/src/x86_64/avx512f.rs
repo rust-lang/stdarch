@@ -237,6 +237,25 @@ mod tests {
     }
 
     #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_cmp_round_pd_mask() {
+        #[rustfmt::skip]
+        let a = _mm512_set_pd(0., 1., -1., 13., f64::MAX, f64::MIN, 100., -100.);
+        let b = _mm512_set1_pd(-1.);
+        let m = _mm512_cmp_round_pd_mask(a, b, _CMP_LT_OQ, _MM_FROUND_CUR_DIRECTION);
+        assert_eq!(m, 0b00000101);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_cmp_round_pd_mask() {
+        #[rustfmt::skip]
+        let a = _mm512_set_pd(0., 1., -1., 13., f64::MAX, f64::MIN, 100., -100.);
+        let b = _mm512_set1_pd(-1.);
+        let mask = 0b01100110;
+        let r = _mm512_mask_cmp_round_pd_mask(mask, a, b, _CMP_LT_OQ, _MM_FROUND_CUR_DIRECTION);
+        assert_eq!(r, 0b00000100);
+    }
+
+    #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_cmplt_epu64_mask() {
         let a = _mm512_set_epi64(0, 1, -1, u64::MAX as i64, i64::MAX, i64::MIN, 100, -100);
         let b = _mm512_set1_epi64(-1);
