@@ -1101,17 +1101,11 @@ pub unsafe fn _mm512_mask_cmpneq_ps_mask(m: __mmask16, a: __m512, b: __m512) -> 
 pub unsafe fn _mm512_cmp_ps_mask(a: __m512, b: __m512, op: _MM_CMPINT_ENUM) -> __mmask16 {
     let neg_one = -1;
     macro_rules! call {
-        ($imm5:expr) => {
-            vcmpps(
-                a.as_f32x16(),
-                b.as_f32x16(),
-                $imm5,
-                neg_one,
-                _MM_FROUND_NINT,
-            )
+        ($imm5:expr, $imm4:expr) => {
+            vcmpps(a.as_f32x16(), b.as_f32x16(), $imm5, neg_one, $imm4)
         };
     }
-    let r = constify_imm5!(op, call);
+    let r = constify_imm5_imm4!(op, _MM_FROUND_NO_EXC, call);
     transmute(r)
 }
 
@@ -1130,18 +1124,12 @@ pub unsafe fn _mm512_mask_cmp_ps_mask(
     op: _MM_CMPINT_ENUM,
 ) -> __mmask16 {
     macro_rules! call {
-        ($imm5:expr) => {
-            vcmpps(
-                a.as_f32x16(),
-                b.as_f32x16(),
-                $imm5,
-                m as i16,
-                _MM_FROUND_NINT,
-            )
+        ($imm5:expr, $imm4:expr) => {
+            vcmpps(a.as_f32x16(), b.as_f32x16(), $imm5, m as i16, $imm4)
         };
     }
-    let r = constify_imm5!(op, call);
-    transmute::<_, __mmask16>(r) & m
+    let r = constify_imm5_imm4!(op, _MM_FROUND_NO_EXC, call);
+    transmute(r)
 }
 
 /// Compare packed unsigned 32-bit integers in a and b for less-than, and store the results in a mask vector.
