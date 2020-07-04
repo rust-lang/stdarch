@@ -1169,6 +1169,46 @@ pub unsafe fn _mm512_mask_cmp_round_ps_mask(
     transmute(r)
 }
 
+/// Compare packed single-precision (32-bit) floating-point elements in a and b to see if neither is NaN, and store the results in a mask vector.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#expand=727,1063,4909,1062,1062,1063&text=_mm512_mask_cmpord_ps_mask)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vcmp, op = 0))]
+pub unsafe fn _mm512_cmpord_ps_mask(a: __m512, b: __m512) -> __mmask16 {
+    _mm512_cmp_ps_mask(a, b, _CMP_ORD_Q)
+}
+
+/// Compare packed single-precision (32-bit) floating-point elements in a and b to see if neither is NaN, and store the results in a mask vector.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#expand=727,1063,4909,1062,1062,1063&text=_mm512_mask_cmpord_ps_mask)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vcmp, op = 0))]
+pub unsafe fn _mm512_mask_cmpord_ps_mask(m: __mmask16, a: __m512, b: __m512) -> __mmask16 {
+    _mm512_mask_cmp_ps_mask(m, a, b, _CMP_ORD_Q)
+}
+
+/// Compare packed single-precision (32-bit) floating-point elements in a and b to see if either is NaN, and store the results in a mask vector.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#expand=727,1063,4909,1062,1062,1063&text=_mm512_mask_cmpunord_ps_mask)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vcmp, op = 0))]
+pub unsafe fn _mm512_cmpunord_ps_mask(a: __m512, b: __m512) -> __mmask16 {
+    _mm512_cmp_ps_mask(a, b, _CMP_UNORD_Q)
+}
+
+/// Compare packed single-precision (32-bit) floating-point elements in a and b to see if either is NaN, and store the results in a mask vector.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#expand=727,1063,4909,1062,1062,1063&text=_mm512_mask_cmpunord_ps_mask)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vcmp, op = 0))]
+pub unsafe fn _mm512_mask_cmpunord_ps_mask(m: __mmask16, a: __m512, b: __m512) -> __mmask16 {
+    _mm512_mask_cmp_ps_mask(m, a, b, _CMP_UNORD_Q)
+}
+
 /// Compare packed double-precision (64-bit) floating-point elements in a and b for less-than, and store the results in a mask vector.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#expand=727,1063,4909,1062,1062&text=_mm512_cmplt_pd)
@@ -1371,6 +1411,46 @@ pub unsafe fn _mm512_mask_cmp_round_pd_mask(
     }
     let r = constify_imm5_imm4!(op, sae, call);
     transmute(r)
+}
+
+/// Compare packed double-precision (64-bit) floating-point elements in a and b to see if neither is NaN, and store the results in a mask vector.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#expand=727,1063,4909,1062,1062,1063&text=_mm512_mask_cmpord_pd_mask)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vcmp, op = 0))]
+pub unsafe fn _mm512_cmpord_pd_mask(a: __m512d, b: __m512d) -> __mmask8 {
+    _mm512_cmp_pd_mask(a, b, _CMP_ORD_Q)
+}
+
+/// Compare packed double-precision (64-bit) floating-point elements in a and b to see if neither is NaN, and store the results in a mask vector.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#expand=727,1063,4909,1062,1062,1063&text=_mm512_mask_cmpord_pd_mask)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vcmp, op = 0))]
+pub unsafe fn _mm512_mask_cmpord_pd_mask(m: __mmask8, a: __m512d, b: __m512d) -> __mmask8 {
+    _mm512_mask_cmp_pd_mask(m, a, b, _CMP_ORD_Q)
+}
+
+/// Compare packed double-precision (64-bit) floating-point elements in a and b to see if either is NaN, and store the results in a mask vector.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#expand=727,1063,4909,1062,1062,1063&text=_mm512_mask_cmpunord_pd_mask)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vcmp, op = 0))]
+pub unsafe fn _mm512_cmpunord_pd_mask(a: __m512d, b: __m512d) -> __mmask8 {
+    _mm512_cmp_pd_mask(a, b, _CMP_UNORD_Q)
+}
+
+/// Compare packed double-precision (64-bit) floating-point elements in a and b to see if either is NaN, and store the results in a mask vector.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#expand=727,1063,4909,1062,1062,1063&text=_mm512_mask_cmpunord_pd_mask)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vcmp, op = 0))]
+pub unsafe fn _mm512_mask_cmpunord_pd_mask(m: __mmask8, a: __m512d, b: __m512d) -> __mmask8 {
+    _mm512_mask_cmp_pd_mask(m, a, b, _CMP_UNORD_Q)
 }
 
 /// Compare packed unsigned 32-bit integers in a and b for less-than, and store the results in a mask vector.
@@ -2521,6 +2601,57 @@ mod tests {
         let mask = 0b01100110_01100110;
         let r = _mm512_mask_cmp_round_ps_mask(mask, a, b, _CMP_LT_OQ, _MM_FROUND_CUR_DIRECTION);
         assert_eq!(r, 0b00000100_00000100);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_cmpord_ps_mask() {
+        #[rustfmt::skip]
+        let a = _mm512_set_ps(f32::NAN, f32::MAX, f32::NAN, f32::MIN, f32::NAN, -1., f32::NAN, 0.,
+                              f32::NAN, f32::MAX, f32::NAN, f32::MIN, f32::NAN, 1., f32::NAN, 2.);
+        #[rustfmt::skip]
+        let b = _mm512_set_ps(f32::NAN, f32::NAN, f32::NAN, f32::NAN, f32::MIN, f32::MAX, -1., 0.,
+                              f32::NAN, f32::NAN, f32::NAN, f32::NAN, f32::MIN, f32::MAX, -1., 2.);
+        let m = _mm512_cmpord_ps_mask(a, b);
+        assert_eq!(m, 0b00000101_00000101);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_cmpord_ps_mask() {
+        #[rustfmt::skip]
+        let a = _mm512_set_ps(f32::NAN, f32::MAX, f32::NAN, f32::MIN, f32::NAN, -1., f32::NAN, 0.,
+                              f32::NAN, f32::MAX, f32::NAN, f32::MIN, f32::NAN, 1., f32::NAN, 2.);
+        #[rustfmt::skip]
+        let b = _mm512_set_ps(f32::NAN, f32::NAN, f32::NAN, f32::NAN, f32::MIN, f32::MAX, -1., 0.,
+                              f32::NAN, f32::NAN, f32::NAN, f32::NAN, f32::MIN, f32::MAX, -1., 2.);
+        let mask = 0b11000011_11000011;
+        let m = _mm512_mask_cmpord_ps_mask(mask, a, b);
+        assert_eq!(m, 0b00000001_00000001);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_cmpunord_ps_mask() {
+        #[rustfmt::skip]
+        let a = _mm512_set_ps(f32::NAN, f32::MAX, f32::NAN, f32::MIN, f32::NAN, -1., f32::NAN, 0.,
+                              f32::NAN, f32::MAX, f32::NAN, f32::MIN, f32::NAN, 1., f32::NAN, 2.);
+        #[rustfmt::skip]
+        let b = _mm512_set_ps(f32::NAN, f32::NAN, f32::NAN, f32::NAN, f32::MIN, f32::MAX, -1., 0.,
+                              f32::NAN, f32::NAN, f32::NAN, f32::NAN, f32::MIN, f32::MAX, -1., 2.);
+        let m = _mm512_cmpunord_ps_mask(a, b);
+
+        assert_eq!(m, 0b11111010_11111010);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_cmpunord_ps_mask() {
+        #[rustfmt::skip]
+        let a = _mm512_set_ps(f32::NAN, f32::MAX, f32::NAN, f32::MIN, f32::NAN, -1., f32::NAN, 0.,
+                              f32::NAN, f32::MAX, f32::NAN, f32::MIN, f32::NAN, 1., f32::NAN, 2.);
+        #[rustfmt::skip]
+        let b = _mm512_set_ps(f32::NAN, f32::NAN, f32::NAN, f32::NAN, f32::MIN, f32::MAX, -1., 0.,
+                              f32::NAN, f32::NAN, f32::NAN, f32::NAN, f32::MIN, f32::MAX, -1., 2.);
+        let mask = 0b00001111_00001111;
+        let m = _mm512_mask_cmpunord_ps_mask(mask, a, b);
+        assert_eq!(m, 0b000001010_00001010);
     }
 
     #[simd_test(enable = "avx512f")]

@@ -256,6 +256,49 @@ mod tests {
     }
 
     #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_cmpord_pd_mask() {
+        #[rustfmt::skip]
+        let a = _mm512_set_pd(f64::NAN, f64::MAX, f64::NAN, f64::MIN, f64::NAN, -1., f64::NAN, 0.);
+        #[rustfmt::skip]
+        let b = _mm512_set_pd(f64::NAN, f64::NAN, f64::NAN, f64::NAN, f64::MIN, f64::MAX, -1., 0.);
+        let m = _mm512_cmpord_pd_mask(a, b);
+        assert_eq!(m, 0b00000101);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_cmpord_pd_mask() {
+        #[rustfmt::skip]
+        let a = _mm512_set_pd(f64::NAN, f64::MAX, f64::NAN, f64::MIN, f64::NAN, -1., f64::NAN, 0.);
+        #[rustfmt::skip]
+        let b = _mm512_set_pd(f64::NAN, f64::NAN, f64::NAN, f64::NAN, f64::MIN, f64::MAX, -1., 0.);
+        let mask = 0b11000011;
+        let m = _mm512_mask_cmpord_pd_mask(mask, a, b);
+        assert_eq!(m, 0b00000001);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_cmpunord_pd_mask() {
+        #[rustfmt::skip]
+        let a = _mm512_set_pd(f64::NAN, f64::MAX, f64::NAN, f64::MIN, f64::NAN, -1., f64::NAN, 0.);
+        #[rustfmt::skip]
+        let b = _mm512_set_pd(f64::NAN, f64::NAN, f64::NAN, f64::NAN, f64::MIN, f64::MAX, -1., 0.);
+        let m = _mm512_cmpunord_pd_mask(a, b);
+
+        assert_eq!(m, 0b11111010);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_cmpunord_pd_mask() {
+        #[rustfmt::skip]
+        let a = _mm512_set_pd(f64::NAN, f64::MAX, f64::NAN, f64::MIN, f64::NAN, -1., f64::NAN, 0.);
+        #[rustfmt::skip]
+        let b = _mm512_set_pd(f64::NAN, f64::NAN, f64::NAN, f64::NAN, f64::MIN, f64::MAX, -1., 0.);
+        let mask = 0b00001111;
+        let m = _mm512_mask_cmpunord_pd_mask(mask, a, b);
+        assert_eq!(m, 0b000001010);
+    }
+
+    #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_cmplt_epu64_mask() {
         let a = _mm512_set_epi64(0, 1, -1, u64::MAX as i64, i64::MAX, i64::MIN, 100, -100);
         let b = _mm512_set1_epi64(-1);
