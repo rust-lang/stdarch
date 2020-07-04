@@ -2196,8 +2196,8 @@ mod tests {
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_mask_cmplt_ps_mask() {
         #[rustfmt::skip]
-        let a = _mm512_set_ps(0., 1., -1., f32::MAX, f32::MAX, f32::MIN, 100., -100.,
-                              0., 1., -1., f32::MAX, f32::MAX, f32::MIN, 100., -100.);
+        let a = _mm512_set_ps(0., 1., -1., f32::MAX, f32::NAN, f32::MIN, 100., -100.,
+                              0., 1., -1., f32::MAX, f32::NAN, f32::MIN, 100., -100.);
         let b = _mm512_set1_ps(-1.);
         let mask = 0b01100110_01100110;
         let r = _mm512_mask_cmplt_ps_mask(mask, a, b);
@@ -2207,8 +2207,8 @@ mod tests {
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_cmple_ps_mask() {
         #[rustfmt::skip]
-        let a = _mm512_set_ps(0., 1., -1., f32::MAX, f32::MAX, f32::MIN, 100., -100.,
-                              0., 1., -1., f32::MAX, f32::MAX, f32::MIN, 100., -100.);
+        let a = _mm512_set_ps(0., 1., -1., f32::MAX, f32::NAN, f32::MIN, 100., -100.,
+                              0., 1., -1., f32::MAX, f32::NAN, f32::MIN, 100., -100.);
         let b = _mm512_set1_ps(-1.);
         assert_eq!(_mm512_cmple_ps_mask(a, b), 0b00100101_00100101);
     }
@@ -2216,8 +2216,8 @@ mod tests {
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_mask_cmple_ps_mask() {
         #[rustfmt::skip]
-        let a = _mm512_set_ps(0., 1., -1., f32::MAX, f32::MAX, f32::MIN, 100., -100.,
-                              0., 1., -1., f32::MAX, f32::MAX, f32::MIN, 100., -100.);
+        let a = _mm512_set_ps(0., 1., -1., f32::MAX, f32::NAN, f32::MIN, 100., -100.,
+                              0., 1., -1., f32::MAX, f32::NAN, f32::MIN, 100., -100.);
         let b = _mm512_set1_ps(-1.);
         let mask = 0b01111010_01111010;
         assert_eq!(_mm512_mask_cmple_ps_mask(mask, a, b), 0b00100000_00100000);
@@ -2226,51 +2226,51 @@ mod tests {
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_cmpeq_ps_mask() {
         #[rustfmt::skip]
-        let a = _mm512_set_ps(0., 1., -1., 13., f32::MAX, f32::MIN, 100., -100.,
-                              0., 1., -1., 13., f32::MAX, f32::MIN, 100., -100.);
+        let a = _mm512_set_ps(0., 1., -1., 13., f32::MAX, f32::MIN, f32::NAN, -100.,
+                              0., 1., -1., 13., f32::MAX, f32::MIN, f32::NAN, -100.);
         #[rustfmt::skip]
-        let b = _mm512_set_ps(0., 1., 13., 42., f32::MAX, f32::MIN, 100., -100.,
-                              0., 1., 13., 42., f32::MAX, f32::MIN, 100., -100.);
+        let b = _mm512_set_ps(0., 1., 13., 42., f32::MAX, f32::MIN, f32::NAN, -100.,
+                              0., 1., 13., 42., f32::MAX, f32::MIN, f32::NAN, -100.);
         let m = _mm512_cmpeq_ps_mask(b, a);
-        assert_eq!(m, 0b11001111_11001111);
+        assert_eq!(m, 0b11001101_11001101);
     }
 
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_mask_cmpeq_ps_mask() {
         #[rustfmt::skip]
-        let a = _mm512_set_ps(0., 1., -1., 13., f32::MAX, f32::MIN, 100., -100.,
-                              0., 1., -1., 13., f32::MAX, f32::MIN, 100., -100.);
+        let a = _mm512_set_ps(0., 1., -1., 13., f32::MAX, f32::MIN, f32::NAN, -100.,
+                              0., 1., -1., 13., f32::MAX, f32::MIN, f32::NAN, -100.);
         #[rustfmt::skip]
-        let b = _mm512_set_ps(0., 1., 13., 42., f32::MAX, f32::MIN, 100., -100.,
-                              0., 1., 13., 42., f32::MAX, f32::MIN, 100., -100.);
+        let b = _mm512_set_ps(0., 1., 13., 42., f32::MAX, f32::MIN, f32::NAN, -100.,
+                              0., 1., 13., 42., f32::MAX, f32::MIN, f32::NAN, -100.);
         let mask = 0b01111010_01111010;
         let r = _mm512_mask_cmpeq_ps_mask(mask, b, a);
-        assert_eq!(r, 0b01001010_01001010);
+        assert_eq!(r, 0b01001000_01001000);
     }
 
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_cmpneq_ps_mask() {
         #[rustfmt::skip]
-        let a = _mm512_set_ps(0., 1., -1., 13., f32::MAX, f32::MIN, 100., -100.,
-                              0., 1., -1., 13., f32::MAX, f32::MIN, 100., -100.);
+        let a = _mm512_set_ps(0., 1., -1., 13., f32::MAX, f32::MIN, f32::NAN, -100.,
+                              0., 1., -1., 13., f32::MAX, f32::MIN, f32::NAN, -100.);
         #[rustfmt::skip]
-        let b = _mm512_set_ps(0., 1., 13., 42., f32::MAX, f32::MIN, 100., -100.,
-                              0., 1., 13., 42., f32::MAX, f32::MIN, 100., -100.);
+        let b = _mm512_set_ps(0., 1., 13., 42., f32::MAX, f32::MIN, f32::NAN, -100.,
+                              0., 1., 13., 42., f32::MAX, f32::MIN, f32::NAN, -100.);
         let m = _mm512_cmpneq_ps_mask(b, a);
-        assert_eq!(m, !_mm512_cmpeq_ps_mask(b, a));
+        assert_eq!(m, 0b00110000_00110000);
     }
 
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_mask_cmpneq_ps_mask() {
         #[rustfmt::skip]
-        let a = _mm512_set_ps(0., 1., -1., 13., f32::MAX, f32::MIN, -100., 100.,
-                              0., 1., -1., 13., f32::MAX, f32::MIN, -100., 100.);
+        let a = _mm512_set_ps(0., 1., -1., 13., f32::MAX, f32::MIN, f32::NAN, -100.,
+                              0., 1., -1., 13., f32::MAX, f32::MIN, f32::NAN, -100.);
         #[rustfmt::skip]
-        let b = _mm512_set_ps(0., 1., 13., 42., f32::MAX, f32::MIN, 100., -100.,
-                              0., 1., 13., 42., f32::MAX, f32::MIN, 100., -100.);
+        let b = _mm512_set_ps(0., 1., 13., 42., f32::MAX, f32::MIN, f32::NAN, -100.,
+                              0., 1., 13., 42., f32::MAX, f32::MIN, f32::NAN, -100.);
         let mask = 0b01111010_01111010;
         let r = _mm512_mask_cmpneq_ps_mask(mask, b, a);
-        assert_eq!(r, 0b00110010_00110010)
+        assert_eq!(r, 0b00110000_00110000)
     }
 
     #[simd_test(enable = "avx512f")]
