@@ -1453,6 +1453,158 @@ pub unsafe fn _mm512_mask_cmpunord_pd_mask(m: __mmask8, a: __m512d, b: __m512d) 
     _mm512_mask_cmp_pd_mask(m, a, b, _CMP_UNORD_Q)
 }
 
+/// Compare the lower single-precision (32-bit) floating-point element in a and b based on the comparison operand specified by imm8, and store the result in a mask vector.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_cmp_ss_mask&expand=5236,755,757)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[rustc_args_required_const(2)]
+#[cfg_attr(test, assert_instr(vcmp, op = 0, sae = 4))]
+pub unsafe fn _mm_cmp_ss_mask(a: __m128, b: __m128, op: i32) -> __mmask8 {
+    let neg_one = -1;
+    macro_rules! call {
+        ($imm5:expr, $imm4:expr) => {
+            vcmpss(a, b, $imm5, neg_one, $imm4)
+        };
+    }
+    let r = constify_imm5_imm4!(op, _MM_FROUND_CUR_DIRECTION, call);
+    transmute(r)
+}
+
+/// Compare the lower single-precision (32-bit) floating-point element in a and b based on the comparison operand specified by imm8, and store the result in a mask vector using zeromask m (the element is zeroed out when mask bit 0 is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_cmp_ss_mask&expand=5236,755,757)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[rustc_args_required_const(3)]
+#[cfg_attr(test, assert_instr(vcmp, op = 0, sae = 4))]
+pub unsafe fn _mm_mask_cmp_ss_mask(m: __mmask8, a: __m128, b: __m128, op: i32) -> __mmask8 {
+    macro_rules! call {
+        ($imm5:expr, $imm4:expr) => {
+            vcmpss(a, b, $imm5, m as i8, $imm4)
+        };
+    }
+    let r = constify_imm5_imm4!(op, _MM_FROUND_CUR_DIRECTION, call);
+    transmute(r)
+}
+
+/// Compare the lower single-precision (32-bit) floating-point element in a and b based on the comparison operand specified by imm8, and store the result in a mask vector.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_cmp_round_ss_mask&expand=5236,755,757)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[rustc_args_required_const(2, 3)]
+#[cfg_attr(test, assert_instr(vcmp, op = 0, sae = 4))]
+pub unsafe fn _mm_cmp_round_ss_mask(a: __m128, b: __m128, op: i32, sae: i32) -> __mmask8 {
+    let neg_one = -1;
+    macro_rules! call {
+        ($imm5:expr, $imm4:expr) => {
+            vcmpss(a, b, $imm5, neg_one, $imm4)
+        };
+    }
+    let r = constify_imm5_imm4!(op, sae, call);
+    transmute(r)
+}
+
+/// Compare the lower single-precision (32-bit) floating-point element in a and b based on the comparison operand specified by imm8, and store the result in a mask vector using zeromask m (the element is zeroed out when mask bit 0 is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_cmp_round_ss_mask&expand=5236,755,757)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[rustc_args_required_const(3, 4)]
+#[cfg_attr(test, assert_instr(vcmp, op = 0, sae = 4))]
+pub unsafe fn _mm_mask_cmp_round_ss_mask(
+    m: __mmask8,
+    a: __m128,
+    b: __m128,
+    op: i32,
+    sae: i32,
+) -> __mmask8 {
+    macro_rules! call {
+        ($imm5:expr, $imm4:expr) => {
+            vcmpss(a, b, $imm5, m as i8, $imm4)
+        };
+    }
+    let r = constify_imm5_imm4!(op, sae, call);
+    transmute(r)
+}
+
+/// Compare the lower single-precision (32-bit) floating-point element in a and b based on the comparison operand specified by imm8, and store the result in a mask vector.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_cmp_sd_mask&expand=5236,755,757)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[rustc_args_required_const(2)]
+#[cfg_attr(test, assert_instr(vcmp, op = 0, sae = 4))]
+pub unsafe fn _mm_cmp_sd_mask(a: __m128d, b: __m128d, op: i32) -> __mmask8 {
+    let neg_one = -1;
+    macro_rules! call {
+        ($imm5:expr, $imm4:expr) => {
+            vcmpsd(a, b, $imm5, neg_one, $imm4)
+        };
+    }
+    let r = constify_imm5_imm4!(op, _MM_FROUND_CUR_DIRECTION, call);
+    transmute(r)
+}
+
+/// Compare the lower single-precision (32-bit) floating-point element in a and b based on the comparison operand specified by imm8, and store the result in a mask vector using zeromask m (the element is zeroed out when mask bit 0 is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_cmp_sd_mask&expand=5236,755,757)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[rustc_args_required_const(3)]
+#[cfg_attr(test, assert_instr(vcmp, op = 0, sae = 4))]
+pub unsafe fn _mm_mask_cmp_sd_mask(m: __mmask8, a: __m128d, b: __m128d, op: i32) -> __mmask8 {
+    macro_rules! call {
+        ($imm5:expr, $imm4:expr) => {
+            vcmpsd(a, b, $imm5, m as i8, $imm4)
+        };
+    }
+    let r = constify_imm5_imm4!(op, _MM_FROUND_CUR_DIRECTION, call);
+    transmute(r)
+}
+
+/// Compare the lower single-precision (32-bit) floating-point element in a and b based on the comparison operand specified by imm8, and store the result in a mask vector.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_cmp_round_sd_mask&expand=5236,755,757)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[rustc_args_required_const(2, 3)]
+#[cfg_attr(test, assert_instr(vcmp, op = 0, sae = 4))]
+pub unsafe fn _mm_cmp_round_sd_mask(a: __m128d, b: __m128d, op: i32, sae: i32) -> __mmask8 {
+    let neg_one = -1;
+    macro_rules! call {
+        ($imm5:expr, $imm4:expr) => {
+            vcmpsd(a, b, $imm5, neg_one, $imm4)
+        };
+    }
+    let r = constify_imm5_imm4!(op, sae, call);
+    transmute(r)
+}
+
+/// Compare the lower single-precision (32-bit) floating-point element in a and b based on the comparison operand specified by imm8, and store the result in a mask vector using zeromask m (the element is zeroed out when mask bit 0 is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_cmp_round_sd_mask&expand=5236,755,757)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[rustc_args_required_const(3, 4)]
+#[cfg_attr(test, assert_instr(vcmp, op = 0, sae = 4))]
+pub unsafe fn _mm_mask_cmp_round_sd_mask(
+    m: __mmask8,
+    a: __m128d,
+    b: __m128d,
+    op: i32,
+    sae: i32,
+) -> __mmask8 {
+    macro_rules! call {
+        ($imm5:expr, $imm4:expr) => {
+            vcmpsd(a, b, $imm5, m as i8, $imm4)
+        };
+    }
+    let r = constify_imm5_imm4!(op, sae, call);
+    transmute(r)
+}
+
 /// Compare packed unsigned 32-bit integers in a and b for less-than, and store the results in a mask vector.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#expand=727,1063,4909,1062,1062&text=_mm512_cmplt_epu32)
@@ -2174,6 +2326,10 @@ extern "C" {
     #[link_name = "llvm.x86.avx512.scatter.qpi.512"]
     fn vpscatterqd(slice: *mut i8, mask: i8, offsets: i64x8, src: i32x8, scale: i32);
 
+    #[link_name = "llvm.x86.avx512.mask.cmp.ss"]
+    fn vcmpss(a: __m128, b: __m128, op: i32, m: i8, sae: i32) -> i8;
+    #[link_name = "llvm.x86.avx512.mask.cmp.sd"]
+    fn vcmpsd(a: __m128d, b: __m128d, op: i32, m: i8, sae: i32) -> i8;
     #[link_name = "llvm.x86.avx512.mask.cmp.ps.512"]
     fn vcmpps(a: f32x16, b: f32x16, op: i32, m: i16, sae: i32) -> i16;
     #[link_name = "llvm.x86.avx512.mask.cmp.pd.512"]
@@ -2652,6 +2808,78 @@ mod tests {
         let mask = 0b00001111_00001111;
         let m = _mm512_mask_cmpunord_ps_mask(mask, a, b);
         assert_eq!(m, 0b000001010_00001010);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_cmp_ss_mask() {
+        let a = _mm_setr_ps(2., 1., 1., 1.);
+        let b = _mm_setr_ps(1., 2., 2., 2.);
+        let m = _mm_cmp_ss_mask(a, b, _CMP_GE_OS);
+        assert_eq!(m, 1);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_mask_cmp_ss_mask() {
+        let a = _mm_setr_ps(2., 1., 1., 1.);
+        let b = _mm_setr_ps(1., 2., 2., 2.);
+        let m = _mm_mask_cmp_ss_mask(0b10, a, b, _CMP_GE_OS);
+        assert_eq!(m, 0);
+        let m = _mm_mask_cmp_ss_mask(0b1, a, b, _CMP_GE_OS);
+        assert_eq!(m, 1);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_cmp_round_ss_mask() {
+        let a = _mm_setr_ps(2., 1., 1., 1.);
+        let b = _mm_setr_ps(1., 2., 2., 2.);
+        let m = _mm_cmp_round_ss_mask(a, b, _CMP_GE_OS, _MM_FROUND_CUR_DIRECTION);
+        assert_eq!(m, 1);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_mask_cmp_round_ss_mask() {
+        let a = _mm_setr_ps(2., 1., 1., 1.);
+        let b = _mm_setr_ps(1., 2., 2., 2.);
+        let m = _mm_mask_cmp_round_ss_mask(0b10, a, b, _CMP_GE_OS, _MM_FROUND_CUR_DIRECTION);
+        assert_eq!(m, 0);
+        let m = _mm_mask_cmp_round_ss_mask(0b1, a, b, _CMP_GE_OS, _MM_FROUND_CUR_DIRECTION);
+        assert_eq!(m, 1);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_cmp_sd_mask() {
+        let a = _mm_setr_pd(2., 1.);
+        let b = _mm_setr_pd(1., 2.);
+        let m = _mm_cmp_sd_mask(a, b, _CMP_GE_OS);
+        assert_eq!(m, 1);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_mask_cmp_sd_mask() {
+        let a = _mm_setr_pd(2., 1.);
+        let b = _mm_setr_pd(1., 2.);
+        let m = _mm_mask_cmp_sd_mask(0b10, a, b, _CMP_GE_OS);
+        assert_eq!(m, 0);
+        let m = _mm_mask_cmp_sd_mask(0b1, a, b, _CMP_GE_OS);
+        assert_eq!(m, 1);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_cmp_round_sd_mask() {
+        let a = _mm_setr_pd(2., 1.);
+        let b = _mm_setr_pd(1., 2.);
+        let m = _mm_cmp_round_sd_mask(a, b, _CMP_GE_OS, _MM_FROUND_CUR_DIRECTION);
+        assert_eq!(m, 1);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_mask_cmp_round_sd_mask() {
+        let a = _mm_setr_pd(2., 1.);
+        let b = _mm_setr_pd(1., 2.);
+        let m = _mm_mask_cmp_round_sd_mask(0b10, a, b, _CMP_GE_OS, _MM_FROUND_CUR_DIRECTION);
+        assert_eq!(m, 0);
+        let m = _mm_mask_cmp_round_sd_mask(0b1, a, b, _CMP_GE_OS, _MM_FROUND_CUR_DIRECTION);
+        assert_eq!(m, 1);
     }
 
     #[simd_test(enable = "avx512f")]
