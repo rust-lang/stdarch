@@ -1,6 +1,7 @@
 use crate::{
     core_arch::{simd::*, simd_llvm::*, x86::*},
     mem::{self, transmute},
+    ptr,
 };
 
 #[cfg(test)]
@@ -1633,6 +1634,97 @@ pub unsafe fn _mm512_mask_cmp_epi64_mask(
     transmute(r)
 }
 
+/// Returns vector of type `__m512d` with undefined elements.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_undefined_pd)
+#[inline]
+#[target_feature(enable = "avx512f")]
+// This intrinsic has no corresponding instruction.
+pub unsafe fn _mm512_undefined_pd() -> __m512d {
+    // FIXME: this function should return MaybeUninit<__m512d>
+    mem::MaybeUninit::<__m512d>::uninit().assume_init()
+}
+
+/// Returns vector of type `__m512` with undefined elements.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_undefined_ps)
+#[inline]
+#[target_feature(enable = "avx512f")]
+// This intrinsic has no corresponding instruction.
+pub unsafe fn _mm512_undefined_ps() -> __m512 {
+    // FIXME: this function should return MaybeUninit<__m512>
+    mem::MaybeUninit::<__m512>::uninit().assume_init()
+}
+
+/// Loads 512-bits (composed of 8 packed double-precision (64-bit)
+/// floating-point elements) from memory into result.
+/// `mem_addr` does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_loadu_pd)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vmovupd))]
+pub unsafe fn _mm512_loadu_pd(mem_addr: *const f64) -> __m512d {
+    let mut dst = _mm512_undefined_pd();
+    ptr::copy_nonoverlapping(
+        mem_addr as *const u8,
+        &mut dst as *mut __m512d as *mut u8,
+        mem::size_of::<__m512d>(),
+    );
+    dst
+}
+
+/// Stores 512-bits (composed of 8 packed double-precision (64-bit)
+/// floating-point elements) from `a` into memory.
+/// `mem_addr` does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_storeu_pd)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vmovupd))]
+pub unsafe fn _mm512_storeu_pd(mem_addr: *mut f64, a: __m512d) {
+    ptr::copy_nonoverlapping(
+        &a as *const __m512d as *const u8,
+        mem_addr as *mut u8,
+        mem::size_of::<__m512d>(),
+    );
+}
+
+/// Loads 512-bits (composed of 16 packed single-precision (32-bit)
+/// floating-point elements) from memory into result.
+/// `mem_addr` does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_loadu_ps)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vmovups))]
+pub unsafe fn _mm512_loadu_ps(mem_addr: *const f32) -> __m512 {
+    let mut dst = _mm512_undefined_ps();
+    ptr::copy_nonoverlapping(
+        mem_addr as *const u8,
+        &mut dst as *mut __m512 as *mut u8,
+        mem::size_of::<__m512>(),
+    );
+    dst
+}
+
+/// Stores 512-bits (composed of 16 packed single-precision (32-bit)
+/// floating-point elements) from `a` into memory.
+/// `mem_addr` does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_storeu_ps)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vmovups))]
+#[stable(feature = "simd_x86", since = "1.27.0")]
+pub unsafe fn _mm512_storeu_ps(mem_addr: *mut f32, a: __m512) {
+    ptr::copy_nonoverlapping(
+        &a as *const __m512 as *const u8,
+        mem_addr as *mut u8,
+        mem::size_of::<__m512>(),
+    );
+}
+
 /// Equal
 pub const _MM_CMPINT_EQ: _MM_CMPINT_ENUM = 0x00;
 /// Less-than
@@ -1702,6 +1794,8 @@ mod tests {
     use stdarch_test::simd_test;
 
     use crate::core_arch::x86::*;
+    use crate::core_arch::x86_64::_mm512_setr_pd;
+    use crate::hint::black_box;
 
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_abs_epi32() {
@@ -2325,5 +2419,43 @@ mod tests {
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_setzero_ps() {
         assert_eq_m512(_mm512_setzero_ps(), _mm512_set1_ps(0.));
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_loadu_pd() {
+        let a = &[4., 3., 2., 5., 8., 9., 64., 50.];
+        let p = a.as_ptr();
+        let r = _mm512_loadu_pd(black_box(p));
+        let e = _mm512_setr_pd(4., 3., 2., 5., 8., 9., 64., 50.);
+        assert_eq_m512d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_storeu_pd() {
+        let a = _mm512_set1_pd(9.);
+        let mut r = _mm512_undefined_pd();
+        _mm512_storeu_pd(&mut r as *mut _ as *mut f64, a);
+        assert_eq_m512d(r, a);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_loadu_ps() {
+        let a = &[
+            4., 3., 2., 5., 8., 9., 64., 50., -4., -3., -2., -5., -8., -9., -64., -50.,
+        ];
+        let p = a.as_ptr();
+        let r = _mm512_loadu_ps(black_box(p));
+        let e = _mm512_setr_ps(
+            4., 3., 2., 5., 8., 9., 64., 50., -4., -3., -2., -5., -8., -9., -64., -50.,
+        );
+        assert_eq_m512(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_storeu_ps() {
+        let a = _mm512_set1_ps(9.);
+        let mut r = _mm512_undefined_ps();
+        _mm512_storeu_ps(&mut r as *mut _ as *mut f32, a);
+        assert_eq_m512(r, a);
     }
 }
