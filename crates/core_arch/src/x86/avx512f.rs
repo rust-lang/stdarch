@@ -1661,7 +1661,7 @@ pub unsafe fn _mm512_undefined_ps() -> __m512 {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_loadu_pd)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vmovupd))]
+#[cfg_attr(test, assert_instr(vmovups))]
 pub unsafe fn _mm512_loadu_pd(mem_addr: *const f64) -> __m512d {
     ptr::read_unaligned(mem_addr as *const __m512d)
 }
@@ -1673,7 +1673,7 @@ pub unsafe fn _mm512_loadu_pd(mem_addr: *const f64) -> __m512d {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_storeu_pd)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vmovupd))]
+#[cfg_attr(test, assert_instr(vmovups))]
 pub unsafe fn _mm512_storeu_pd(mem_addr: *mut f64, a: __m512d) {
     ptr::write_unaligned(mem_addr as *mut __m512d, a);
 }
