@@ -1675,11 +1675,7 @@ pub unsafe fn _mm512_loadu_pd(mem_addr: *const f64) -> __m512d {
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vmovupd))]
 pub unsafe fn _mm512_storeu_pd(mem_addr: *mut f64, a: __m512d) {
-    ptr::copy_nonoverlapping(
-        &a as *const __m512d as *const u8,
-        mem_addr as *mut u8,
-        mem::size_of::<__m512d>(),
-    );
+    ptr::write_unaligned(mem_addr as *mut __m512d, a);
 }
 
 /// Loads 512-bits (composed of 16 packed single-precision (32-bit)
@@ -1704,11 +1700,7 @@ pub unsafe fn _mm512_loadu_ps(mem_addr: *const f32) -> __m512 {
 #[cfg_attr(test, assert_instr(vmovups))]
 #[stable(feature = "simd_x86", since = "1.27.0")]
 pub unsafe fn _mm512_storeu_ps(mem_addr: *mut f32, a: __m512) {
-    ptr::copy_nonoverlapping(
-        &a as *const __m512 as *const u8,
-        mem_addr as *mut u8,
-        mem::size_of::<__m512>(),
-    );
+    ptr::write_unaligned(mem_addr as *mut __m512, a);
 }
 
 /// Equal
