@@ -1641,8 +1641,7 @@ pub unsafe fn _mm512_mask_cmp_epi64_mask(
 #[target_feature(enable = "avx512f")]
 // This intrinsic has no corresponding instruction.
 pub unsafe fn _mm512_undefined_pd() -> __m512d {
-    // FIXME: this function should return MaybeUninit<__m512d>
-    mem::MaybeUninit::<__m512d>::uninit().assume_init()
+    _mm512_set1_pd(0.0)
 }
 
 /// Returns vector of type `__m512` with undefined elements.
@@ -1652,8 +1651,7 @@ pub unsafe fn _mm512_undefined_pd() -> __m512d {
 #[target_feature(enable = "avx512f")]
 // This intrinsic has no corresponding instruction.
 pub unsafe fn _mm512_undefined_ps() -> __m512 {
-    // FIXME: this function should return MaybeUninit<__m512>
-    mem::MaybeUninit::<__m512>::uninit().assume_init()
+    _mm512_set1_ps(0.0)
 }
 
 /// Loads 512-bits (composed of 8 packed double-precision (64-bit)
@@ -1665,13 +1663,7 @@ pub unsafe fn _mm512_undefined_ps() -> __m512 {
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vmovupd))]
 pub unsafe fn _mm512_loadu_pd(mem_addr: *const f64) -> __m512d {
-    let mut dst = _mm512_undefined_pd();
-    ptr::copy_nonoverlapping(
-        mem_addr as *const u8,
-        &mut dst as *mut __m512d as *mut u8,
-        mem::size_of::<__m512d>(),
-    );
-    dst
+    ptr::read_unaligned(mem_addr as *const __m512d)
 }
 
 /// Stores 512-bits (composed of 8 packed double-precision (64-bit)
@@ -1699,13 +1691,7 @@ pub unsafe fn _mm512_storeu_pd(mem_addr: *mut f64, a: __m512d) {
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vmovups))]
 pub unsafe fn _mm512_loadu_ps(mem_addr: *const f32) -> __m512 {
-    let mut dst = _mm512_undefined_ps();
-    ptr::copy_nonoverlapping(
-        mem_addr as *const u8,
-        &mut dst as *mut __m512 as *mut u8,
-        mem::size_of::<__m512>(),
-    );
-    dst
+    ptr::read_unaligned(mem_addr as *const __m512)
 }
 
 /// Stores 512-bits (composed of 16 packed single-precision (32-bit)
