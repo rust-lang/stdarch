@@ -3673,9 +3673,9 @@ mod tests {
 
     #[simd_test(enable = "sse2")]
     unsafe fn test_mm_loadu_si64() {
-        let a = _mm_set_epi64x(5, 0);
+        let a = _mm_setr_epi64x(5, 6);
         let r = _mm_loadu_si64(&a as *const _ as *const _);
-        assert_eq_m128i(a, r);
+        assert_eq_m128i(r, _mm_set_epi64x(5, 0));
     }
 
     #[simd_test(enable = "sse")]
