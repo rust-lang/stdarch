@@ -1105,7 +1105,7 @@ pub unsafe fn _mm512_cmp_ps_mask(a: __m512, b: __m512, op: i32) -> __mmask16 {
             vcmpps(a.as_f32x16(), b.as_f32x16(), $imm5, neg_one, $imm4)
         };
     }
-    let r = constify_imm5_imm4!(op, _MM_FROUND_CUR_DIRECTION, call);
+    let r = constify_imm5_sae!(op, _MM_FROUND_CUR_DIRECTION, call);
     transmute(r)
 }
 
@@ -1123,7 +1123,7 @@ pub unsafe fn _mm512_mask_cmp_ps_mask(m: __mmask16, a: __m512, b: __m512, op: i3
             vcmpps(a.as_f32x16(), b.as_f32x16(), $imm5, m as i16, $imm4)
         };
     }
-    let r = constify_imm5_imm4!(op, _MM_FROUND_CUR_DIRECTION, call);
+    let r = constify_imm5_sae!(op, _MM_FROUND_CUR_DIRECTION, call);
     transmute(r)
 }
 
@@ -1141,7 +1141,7 @@ pub unsafe fn _mm512_cmp_round_ps_mask(a: __m512, b: __m512, op: i32, sae: i32) 
             vcmpps(a.as_f32x16(), b.as_f32x16(), $imm5, neg_one, $imm4)
         };
     }
-    let r = constify_imm5_imm4!(op, sae, call);
+    let r = constify_imm5_sae!(op, sae, call);
     transmute(r)
 }
 
@@ -1165,7 +1165,7 @@ pub unsafe fn _mm512_mask_cmp_round_ps_mask(
             vcmpps(a.as_f32x16(), b.as_f32x16(), $imm5, m as i16, $imm4)
         };
     }
-    let r = constify_imm5_imm4!(op, sae, call);
+    let r = constify_imm5_sae!(op, sae, call);
     transmute(r)
 }
 
@@ -1349,7 +1349,7 @@ pub unsafe fn _mm512_cmp_pd_mask(a: __m512d, b: __m512d, op: i32) -> __mmask8 {
             vcmppd(a.as_f64x8(), b.as_f64x8(), $imm5, neg_one, $imm4)
         };
     }
-    let r = constify_imm5_imm4!(op, _MM_FROUND_CUR_DIRECTION, call);
+    let r = constify_imm5_sae!(op, _MM_FROUND_CUR_DIRECTION, call);
     transmute(r)
 }
 
@@ -1367,7 +1367,7 @@ pub unsafe fn _mm512_mask_cmp_pd_mask(m: __mmask8, a: __m512d, b: __m512d, op: i
             vcmppd(a.as_f64x8(), b.as_f64x8(), $imm5, m as i8, $imm4)
         };
     }
-    let r = constify_imm5_imm4!(op, _MM_FROUND_CUR_DIRECTION, call);
+    let r = constify_imm5_sae!(op, _MM_FROUND_CUR_DIRECTION, call);
     transmute(r)
 }
 
@@ -1385,7 +1385,7 @@ pub unsafe fn _mm512_cmp_round_pd_mask(a: __m512d, b: __m512d, op: i32, sae: i32
             vcmppd(a.as_f64x8(), b.as_f64x8(), $imm5, neg_one, $imm4)
         };
     }
-    let r = constify_imm5_imm4!(op, sae, call);
+    let r = constify_imm5_sae!(op, sae, call);
     transmute(r)
 }
 
@@ -1409,7 +1409,7 @@ pub unsafe fn _mm512_mask_cmp_round_pd_mask(
             vcmppd(a.as_f64x8(), b.as_f64x8(), $imm5, m as i8, $imm4)
         };
     }
-    let r = constify_imm5_imm4!(op, sae, call);
+    let r = constify_imm5_sae!(op, sae, call);
     transmute(r)
 }
 
@@ -1467,7 +1467,7 @@ pub unsafe fn _mm_cmp_ss_mask(a: __m128, b: __m128, op: i32) -> __mmask8 {
             vcmpss(a, b, $imm5, neg_one, $imm4)
         };
     }
-    let r = constify_imm5_imm4!(op, _MM_FROUND_CUR_DIRECTION, call);
+    let r = constify_imm5_sae!(op, _MM_FROUND_CUR_DIRECTION, call);
     transmute(r)
 }
 
@@ -1484,7 +1484,7 @@ pub unsafe fn _mm_mask_cmp_ss_mask(m: __mmask8, a: __m128, b: __m128, op: i32) -
             vcmpss(a, b, $imm5, m as i8, $imm4)
         };
     }
-    let r = constify_imm5_imm4!(op, _MM_FROUND_CUR_DIRECTION, call);
+    let r = constify_imm5_sae!(op, _MM_FROUND_CUR_DIRECTION, call);
     transmute(r)
 }
 
@@ -1502,7 +1502,7 @@ pub unsafe fn _mm_cmp_round_ss_mask(a: __m128, b: __m128, op: i32, sae: i32) -> 
             vcmpss(a, b, $imm5, neg_one, $imm4)
         };
     }
-    let r = constify_imm5_imm4!(op, sae, call);
+    let r = constify_imm5_sae!(op, sae, call);
     transmute(r)
 }
 
@@ -1525,7 +1525,7 @@ pub unsafe fn _mm_mask_cmp_round_ss_mask(
             vcmpss(a, b, $imm5, m as i8, $imm4)
         };
     }
-    let r = constify_imm5_imm4!(op, sae, call);
+    let r = constify_imm5_sae!(op, sae, call);
     transmute(r)
 }
 
@@ -1543,7 +1543,7 @@ pub unsafe fn _mm_cmp_sd_mask(a: __m128d, b: __m128d, op: i32) -> __mmask8 {
             vcmpsd(a, b, $imm5, neg_one, $imm4)
         };
     }
-    let r = constify_imm5_imm4!(op, _MM_FROUND_CUR_DIRECTION, call);
+    let r = constify_imm5_sae!(op, _MM_FROUND_CUR_DIRECTION, call);
     transmute(r)
 }
 
@@ -1560,7 +1560,7 @@ pub unsafe fn _mm_mask_cmp_sd_mask(m: __mmask8, a: __m128d, b: __m128d, op: i32)
             vcmpsd(a, b, $imm5, m as i8, $imm4)
         };
     }
-    let r = constify_imm5_imm4!(op, _MM_FROUND_CUR_DIRECTION, call);
+    let r = constify_imm5_sae!(op, _MM_FROUND_CUR_DIRECTION, call);
     transmute(r)
 }
 
@@ -1578,7 +1578,7 @@ pub unsafe fn _mm_cmp_round_sd_mask(a: __m128d, b: __m128d, op: i32, sae: i32) -
             vcmpsd(a, b, $imm5, neg_one, $imm4)
         };
     }
-    let r = constify_imm5_imm4!(op, sae, call);
+    let r = constify_imm5_sae!(op, sae, call);
     transmute(r)
 }
 
@@ -1601,7 +1601,7 @@ pub unsafe fn _mm_mask_cmp_round_sd_mask(
             vcmpsd(a, b, $imm5, m as i8, $imm4)
         };
     }
-    let r = constify_imm5_imm4!(op, sae, call);
+    let r = constify_imm5_sae!(op, sae, call);
     transmute(r)
 }
 
