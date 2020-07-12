@@ -1261,7 +1261,7 @@ pub unsafe fn _mm_loadr_ps(p: *const f32) -> __m128 {
 #[cfg_attr(test, assert_instr(movq))]
 #[stable(feature = "simd_x86_mm_loadu_si64", since = "1.46.0")]
 pub unsafe fn _mm_loadu_si64(mem_addr: *const u8) -> __m128i {
-    _mm_set_epi64x(ptr::read_unaligned(mem_addr as *const i64), 0)
+    transmute(i64x2(0, ptr::read_unaligned(mem_addr as *const i64)))
 }
 
 /// Stores the upper half of `a` (64 bits) into memory.
