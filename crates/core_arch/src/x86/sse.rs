@@ -1258,7 +1258,7 @@ pub unsafe fn _mm_loadr_ps(p: *const f32) -> __m128 {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_loadu_si64)
 #[inline]
 #[target_feature(enable = "sse")]
-#[cfg_attr(test, assert_instr(movq))]
+#[cfg_attr(all(test, not(target = "x86")), assert_instr(movq))]
 #[stable(feature = "simd_x86_mm_loadu_si64", since = "1.46.0")]
 pub unsafe fn _mm_loadu_si64(mem_addr: *const u8) -> __m128i {
     transmute(i64x2(0, ptr::read_unaligned(mem_addr as *const i64)))
