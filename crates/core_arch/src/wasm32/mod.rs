@@ -8,9 +8,7 @@ mod atomic;
 #[cfg(any(target_feature = "atomics", dox))]
 pub use self::atomic::*;
 
-#[cfg(any(target_feature = "simd128", dox))]
 mod simd128;
-#[cfg(any(target_feature = "simd128", dox))]
 pub use self::simd128::*;
 
 mod memory;

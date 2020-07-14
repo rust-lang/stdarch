@@ -12,7 +12,7 @@
 //!
 //! and you should see `746573740a` get printed out.
 
-#![feature(stdsimd)]
+#![feature(stdsimd, wasm_target_feature)]
 #![cfg_attr(test, feature(test))]
 #![allow(
     clippy::result_unwrap_used,
@@ -58,7 +58,7 @@ fn hex_encode<'a>(src: &[u8], dst: &'a mut [u8]) -> Result<&'a str, usize> {
             return unsafe { hex_encode_sse41(src, dst) };
         }
     }
-    #[cfg(all(target_arch = "wasm32", target_feature = "simd128"))]
+    #[cfg(target_arch = "wasm32")]
     {
         if true {
             return unsafe { hex_encode_simd128(src, dst) };
@@ -153,7 +153,8 @@ unsafe fn hex_encode_sse41<'a>(mut src: &[u8], dst: &'a mut [u8]) -> Result<&'a 
     Ok(str::from_utf8_unchecked(&dst[..src.len() * 2 + i * 2]))
 }
 
-#[cfg(all(target_arch = "wasm32", target_feature = "simd128"))]
+#[cfg(target_arch = "wasm32")]
+#[target_feature(enable = "simd128")]
 unsafe fn hex_encode_simd128<'a>(mut src: &[u8], dst: &'a mut [u8]) -> Result<&'a str, usize> {
     use core_arch::arch::wasm32::*;
 
