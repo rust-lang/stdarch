@@ -1101,11 +1101,17 @@ pub unsafe fn _mm512_mask_cmpneq_ps_mask(m: __mmask16, a: __m512, b: __m512) -> 
 pub unsafe fn _mm512_cmp_ps_mask(a: __m512, b: __m512, op: i32) -> __mmask16 {
     let neg_one = -1;
     macro_rules! call {
-        ($imm5:expr, $imm4:expr) => {
-            vcmpps(a.as_f32x16(), b.as_f32x16(), $imm5, neg_one, $imm4)
+        ($imm5:expr) => {
+            vcmpps(
+                a.as_f32x16(),
+                b.as_f32x16(),
+                $imm5,
+                neg_one,
+                _MM_FROUND_CUR_DIRECTION,
+            )
         };
     }
-    let r = constify_imm5_sae!(op, _MM_FROUND_CUR_DIRECTION, call);
+    let r = constify_imm5!(op, call);
     transmute(r)
 }
 
@@ -1119,11 +1125,17 @@ pub unsafe fn _mm512_cmp_ps_mask(a: __m512, b: __m512, op: i32) -> __mmask16 {
 #[cfg_attr(test, assert_instr(vcmp, op = 0))]
 pub unsafe fn _mm512_mask_cmp_ps_mask(m: __mmask16, a: __m512, b: __m512, op: i32) -> __mmask16 {
     macro_rules! call {
-        ($imm5:expr, $imm4:expr) => {
-            vcmpps(a.as_f32x16(), b.as_f32x16(), $imm5, m as i16, $imm4)
+        ($imm5:expr) => {
+            vcmpps(
+                a.as_f32x16(),
+                b.as_f32x16(),
+                $imm5,
+                m as i16,
+                _MM_FROUND_CUR_DIRECTION,
+            )
         };
     }
-    let r = constify_imm5_sae!(op, _MM_FROUND_CUR_DIRECTION, call);
+    let r = constify_imm5!(op, call);
     transmute(r)
 }
 
@@ -1345,11 +1357,17 @@ pub unsafe fn _mm512_mask_cmpneq_pd_mask(m: __mmask8, a: __m512d, b: __m512d) ->
 pub unsafe fn _mm512_cmp_pd_mask(a: __m512d, b: __m512d, op: i32) -> __mmask8 {
     let neg_one = -1;
     macro_rules! call {
-        ($imm5:expr, $imm4:expr) => {
-            vcmppd(a.as_f64x8(), b.as_f64x8(), $imm5, neg_one, $imm4)
+        ($imm5:expr) => {
+            vcmppd(
+                a.as_f64x8(),
+                b.as_f64x8(),
+                $imm5,
+                neg_one,
+                _MM_FROUND_CUR_DIRECTION,
+            )
         };
     }
-    let r = constify_imm5_sae!(op, _MM_FROUND_CUR_DIRECTION, call);
+    let r = constify_imm5!(op, call);
     transmute(r)
 }
 
@@ -1363,11 +1381,17 @@ pub unsafe fn _mm512_cmp_pd_mask(a: __m512d, b: __m512d, op: i32) -> __mmask8 {
 #[cfg_attr(test, assert_instr(vcmp, op = 0))]
 pub unsafe fn _mm512_mask_cmp_pd_mask(m: __mmask8, a: __m512d, b: __m512d, op: i32) -> __mmask8 {
     macro_rules! call {
-        ($imm5:expr, $imm4:expr) => {
-            vcmppd(a.as_f64x8(), b.as_f64x8(), $imm5, m as i8, $imm4)
+        ($imm5:expr) => {
+            vcmppd(
+                a.as_f64x8(),
+                b.as_f64x8(),
+                $imm5,
+                m as i8,
+                _MM_FROUND_CUR_DIRECTION,
+            )
         };
     }
-    let r = constify_imm5_sae!(op, _MM_FROUND_CUR_DIRECTION, call);
+    let r = constify_imm5!(op, call);
     transmute(r)
 }
 
@@ -1463,11 +1487,11 @@ pub unsafe fn _mm512_mask_cmpunord_pd_mask(m: __mmask8, a: __m512d, b: __m512d) 
 pub unsafe fn _mm_cmp_ss_mask(a: __m128, b: __m128, op: i32) -> __mmask8 {
     let neg_one = -1;
     macro_rules! call {
-        ($imm5:expr, $imm4:expr) => {
-            vcmpss(a, b, $imm5, neg_one, $imm4)
+        ($imm5:expr) => {
+            vcmpss(a, b, $imm5, neg_one, _MM_FROUND_CUR_DIRECTION)
         };
     }
-    let r = constify_imm5_sae!(op, _MM_FROUND_CUR_DIRECTION, call);
+    let r = constify_imm5!(op, call);
     transmute(r)
 }
 
@@ -1480,11 +1504,11 @@ pub unsafe fn _mm_cmp_ss_mask(a: __m128, b: __m128, op: i32) -> __mmask8 {
 #[cfg_attr(test, assert_instr(vcmp, op = 0, sae = 4))]
 pub unsafe fn _mm_mask_cmp_ss_mask(m: __mmask8, a: __m128, b: __m128, op: i32) -> __mmask8 {
     macro_rules! call {
-        ($imm5:expr, $imm4:expr) => {
-            vcmpss(a, b, $imm5, m as i8, $imm4)
+        ($imm5:expr) => {
+            vcmpss(a, b, $imm5, m as i8, _MM_FROUND_CUR_DIRECTION)
         };
     }
-    let r = constify_imm5_sae!(op, _MM_FROUND_CUR_DIRECTION, call);
+    let r = constify_imm5!(op, call);
     transmute(r)
 }
 
@@ -1539,11 +1563,11 @@ pub unsafe fn _mm_mask_cmp_round_ss_mask(
 pub unsafe fn _mm_cmp_sd_mask(a: __m128d, b: __m128d, op: i32) -> __mmask8 {
     let neg_one = -1;
     macro_rules! call {
-        ($imm5:expr, $imm4:expr) => {
-            vcmpsd(a, b, $imm5, neg_one, $imm4)
+        ($imm5:expr) => {
+            vcmpsd(a, b, $imm5, neg_one, _MM_FROUND_CUR_DIRECTION)
         };
     }
-    let r = constify_imm5_sae!(op, _MM_FROUND_CUR_DIRECTION, call);
+    let r = constify_imm5!(op, call);
     transmute(r)
 }
 
@@ -1556,11 +1580,11 @@ pub unsafe fn _mm_cmp_sd_mask(a: __m128d, b: __m128d, op: i32) -> __mmask8 {
 #[cfg_attr(test, assert_instr(vcmp, op = 0, sae = 4))]
 pub unsafe fn _mm_mask_cmp_sd_mask(m: __mmask8, a: __m128d, b: __m128d, op: i32) -> __mmask8 {
     macro_rules! call {
-        ($imm5:expr, $imm4:expr) => {
-            vcmpsd(a, b, $imm5, m as i8, $imm4)
+        ($imm5:expr) => {
+            vcmpsd(a, b, $imm5, m as i8, _MM_FROUND_CUR_DIRECTION)
         };
     }
-    let r = constify_imm5_sae!(op, _MM_FROUND_CUR_DIRECTION, call);
+    let r = constify_imm5!(op, call);
     transmute(r)
 }
 
