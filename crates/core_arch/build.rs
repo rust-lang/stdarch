@@ -11,6 +11,6 @@ fn main() {
         .unwrap_or_default()
         .contains("unimplemented-simd128")
     {
-        println!("cargo:rust-cfg:all_simd");
+        println!("cargo:rust-cfg=all_simd");
     }
 }
