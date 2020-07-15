@@ -1,4 +1,5 @@
-#![feature(stdsimd, wasm_simd)]
+#![feature(stdsimd)]
+#![cfg_attr(target_arch = "wasm32", feature(wasm_simd))]
 
 #[test]
 #[cfg(target_arch = "wasm32")]

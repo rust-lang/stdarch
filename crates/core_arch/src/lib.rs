@@ -38,6 +38,7 @@
     decl_macro
 )]
 #![cfg_attr(test, feature(test, abi_vectorcall, untagged_unions))]
+#![cfg_attr(all(test, target_arch = "wasm32"), feature(wasm_simd))]
 #![deny(clippy::missing_inline_in_public_items)]
 #![allow(
     clippy::inline_always,
