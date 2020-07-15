@@ -3,6 +3,7 @@
 //! [WebAssembly `SIMD128` ISA]:
 //! https://github.com/WebAssembly/simd/blob/master/proposals/simd/SIMD.md
 
+#![unstable(feature = "wasm_simd", issue = "74372")]
 #![allow(non_camel_case_types)]
 #![allow(unused_imports)]
 
@@ -362,7 +363,7 @@ pub const unsafe fn v128_const(
 ///
 /// All indexes `$i*` must have the type `u32`.
 #[allow_internal_unstable(platform_intrinsics, rustc_attrs)]
-#[unstable(feature = "stdsimd", issue = "27731")]
+#[unstable(feature = "wasm_simd", issue = "74372")]
 pub macro v8x16_shuffle(
     $a:expr, $b:expr,
     $i0:expr,
@@ -2193,7 +2194,7 @@ pub unsafe fn i32x4_trunc_sat_f32x4_s(a: v128) -> v128 {
 #[inline]
 #[cfg_attr(test, assert_instr("i32x4.trunc_sat_f32x4_u"))]
 #[target_feature(enable = "simd128")]
-pub unsafe fn i32x4_trunc_sat_f32x4_su(a: v128) -> v128 {
+pub unsafe fn i32x4_trunc_sat_f32x4_u(a: v128) -> v128 {
     transmute(simd_cast::<_, u32x4>(a.as_f32x4()))
 }
 
