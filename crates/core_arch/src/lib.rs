@@ -1,4 +1,5 @@
 #![doc(include = "core_arch_docs.md")]
+#![allow(improper_ctypes_definitions)]
 #![allow(dead_code)]
 #![allow(unused_features)]
 #![feature(

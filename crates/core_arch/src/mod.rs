@@ -1,7 +1,5 @@
 //! `core_arch`
 
-#![allow(improper_ctypes_definitions)]
-
 #[macro_use]
 mod macros;
 

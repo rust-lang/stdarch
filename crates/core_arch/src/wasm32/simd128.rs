@@ -362,6 +362,7 @@ pub const unsafe fn v128_const(
 ///
 /// All indexes `$i*` must have the type `u32`.
 #[allow_internal_unstable(platform_intrinsics, rustc_attrs)]
+#[unstable(feature = "stdsimd", issue = "27731")]
 pub macro v8x16_shuffle(
     $a:expr, $b:expr,
     $i0:expr,
