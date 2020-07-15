@@ -410,11 +410,13 @@ pub macro v8x16_shuffle(
 
 // internal implementation detail of the `v8x16_shuffle`, done so there's a name
 // that always works for the macro to import.
+#[doc(hidden)]
 pub use crate::mem::transmute as __v8x16_shuffle_transmute;
 
 // internal to this module and only generated here as an implementation detail
 // of the `v8x16_shuffle` macro.
 #[repr(simd)]
+#[doc(hidden)]
 pub struct __v8x16_shuffle_u8x16(
     u8,
     u8,

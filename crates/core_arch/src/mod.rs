@@ -88,7 +88,7 @@ pub mod arch {
     ///
     /// ## SIMD
     ///
-    /// The [simd proposa][simd] for WebAssembly adds a new `v128` type for a
+    /// The [simd proposal][simd] for WebAssembly adds a new `v128` type for a
     /// 128-bit SIMD register. It also adds a large array of instructions to
     /// operate on the `v128` type to perform data processing. The SIMD proposal
     /// has been in progress for quite some time and many instructions have come
