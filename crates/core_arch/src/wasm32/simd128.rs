@@ -1580,38 +1580,37 @@ pub unsafe fn i16x8_narrow_i32x4_u(a: v128, b: v128) -> v128 {
     transmute(llvm_narrow_i16x8_u(transmute(a), transmute(b)))
 }
 
-// FIXME waiting on a runtime implementation to test
-// /// Converts low half of the smaller lane vector to a larger lane
-// /// vector, sign extended.
-// #[inline]
-// #[cfg_attr(test, assert_instr(i16x8.widen_low_i8x16_s))]
-// pub unsafe fn i16x8_widen_low_i8x16_s(a: v128) -> v128 {
-//     transmute(llvm_widen_low_i16x8_s(transmute(a)))
-// }
+/// Converts low half of the smaller lane vector to a larger lane
+/// vector, sign extended.
+#[inline]
+#[cfg_attr(test, assert_instr(i16x8.widen_low_i8x16_s))]
+pub unsafe fn i16x8_widen_low_i8x16_s(a: v128) -> v128 {
+    transmute(llvm_widen_low_i16x8_s(transmute(a)))
+}
 
-// /// Converts high half of the smaller lane vector to a larger lane
-// /// vector, sign extended.
-// #[inline]
-// #[cfg_attr(test, assert_instr(i16x8.widen_high_i8x16_s))]
-// pub unsafe fn i16x8_widen_high_i8x16_s(a: v128) -> v128 {
-//     transmute(llvm_widen_high_i16x8_s(transmute(a)))
-// }
+/// Converts high half of the smaller lane vector to a larger lane
+/// vector, sign extended.
+#[inline]
+#[cfg_attr(test, assert_instr(i16x8.widen_high_i8x16_s))]
+pub unsafe fn i16x8_widen_high_i8x16_s(a: v128) -> v128 {
+    transmute(llvm_widen_high_i16x8_s(transmute(a)))
+}
 
-// /// Converts low half of the smaller lane vector to a larger lane
-// /// vector, zero extended.
-// #[inline]
-// #[cfg_attr(test, assert_instr(i16x8.widen_low_i8x16_u))]
-// pub unsafe fn i16x8_widen_low_i8x16_u(a: v128) -> v128 {
-//     transmute(llvm_widen_low_i16x8_u(transmute(a)))
-// }
+/// Converts low half of the smaller lane vector to a larger lane
+/// vector, zero extended.
+#[inline]
+#[cfg_attr(test, assert_instr(i16x8.widen_low_i8x16_u))]
+pub unsafe fn i16x8_widen_low_i8x16_u(a: v128) -> v128 {
+    transmute(llvm_widen_low_i16x8_u(transmute(a)))
+}
 
-// /// Converts high half of the smaller lane vector to a larger lane
-// /// vector, zero extended.
-// #[inline]
-// #[cfg_attr(test, assert_instr(i16x8.widen_high_i8x16_u))]
-// pub unsafe fn i16x8_widen_high_i8x16_u(a: v128) -> v128 {
-//     transmute(llvm_widen_high_i16x8_u(transmute(a)))
-// }
+/// Converts high half of the smaller lane vector to a larger lane
+/// vector, zero extended.
+#[inline]
+#[cfg_attr(test, assert_instr(i16x8.widen_high_i8x16_u))]
+pub unsafe fn i16x8_widen_high_i8x16_u(a: v128) -> v128 {
+    transmute(llvm_widen_high_i16x8_u(transmute(a)))
+}
 
 /// Shifts each lane to the left by the specified number of bits.
 ///
@@ -1808,38 +1807,37 @@ pub unsafe fn i32x4_all_true(a: v128) -> i32 {
 //     llvm_bitmask_i32x4(transmute(a))
 // }
 
-// FIXME waiting on a runtime implementation to test
-// /// Converts low half of the smaller lane vector to a larger lane
-// /// vector, sign extended.
-// #[inline]
-// #[cfg_attr(test, assert_instr(i32x4.widen_low_i16x8_s))]
-// pub unsafe fn i32x4_widen_low_i16x8_s(a: v128) -> v128 {
-//     transmute(llvm_widen_low_i32x4_s(transmute(a)))
-// }
+/// Converts low half of the smaller lane vector to a larger lane
+/// vector, sign extended.
+#[inline]
+#[cfg_attr(test, assert_instr(i32x4.widen_low_i16x8_s))]
+pub unsafe fn i32x4_widen_low_i16x8_s(a: v128) -> v128 {
+    transmute(llvm_widen_low_i32x4_s(transmute(a)))
+}
 
-// /// Converts high half of the smaller lane vector to a larger lane
-// /// vector, sign extended.
-// #[inline]
-// #[cfg_attr(test, assert_instr(i32x4.widen_high_i16x8_s))]
-// pub unsafe fn i32x4_widen_high_i16x8_s(a: v128) -> v128 {
-//     transmute(llvm_widen_high_i32x4_s(transmute(a)))
-// }
+/// Converts high half of the smaller lane vector to a larger lane
+/// vector, sign extended.
+#[inline]
+#[cfg_attr(test, assert_instr(i32x4.widen_high_i16x8_s))]
+pub unsafe fn i32x4_widen_high_i16x8_s(a: v128) -> v128 {
+    transmute(llvm_widen_high_i32x4_s(transmute(a)))
+}
 
-// /// Converts low half of the smaller lane vector to a larger lane
-// /// vector, zero extended.
-// #[inline]
-// #[cfg_attr(test, assert_instr(i32x4.widen_low_i16x8_u))]
-// pub unsafe fn i32x4_widen_low_i16x8_u(a: v128) -> v128 {
-//     transmute(llvm_widen_low_i32x4_u(transmute(a)))
-// }
+/// Converts low half of the smaller lane vector to a larger lane
+/// vector, zero extended.
+#[inline]
+#[cfg_attr(test, assert_instr(i32x4.widen_low_i16x8_u))]
+pub unsafe fn i32x4_widen_low_i16x8_u(a: v128) -> v128 {
+    transmute(llvm_widen_low_i32x4_u(transmute(a)))
+}
 
-// /// Converts high half of the smaller lane vector to a larger lane
-// /// vector, zero extended.
-// #[inline]
-// #[cfg_attr(test, assert_instr(i32x4.widen_high_i16x8_u))]
-// pub unsafe fn i32x4_widen_high_i16x8_u(a: v128) -> v128 {
-//     transmute(llvm_widen_high_i32x4_u(transmute(a)))
-// }
+/// Converts high half of the smaller lane vector to a larger lane
+/// vector, zero extended.
+#[inline]
+#[cfg_attr(test, assert_instr(i32x4.widen_high_i16x8_u))]
+pub unsafe fn i32x4_widen_high_i16x8_u(a: v128) -> v128 {
+    transmute(llvm_widen_high_i32x4_u(transmute(a)))
+}
 
 /// Shifts each lane to the left by the specified number of bits.
 ///
