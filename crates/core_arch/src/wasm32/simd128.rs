@@ -295,57 +295,169 @@ pub unsafe fn v128_store(m: *mut v128, a: v128) {
 /// Materializes a constant SIMD value from the immediate operands.
 ///
 /// The `v128.const` instruction is encoded with 16 immediate bytes
-/// `imm` which provide the bits of the vector directly.
+/// which provide the bits of the vector directly.
 #[inline]
-#[rustc_args_required_const(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15)]
-#[cfg_attr(all(test, all_simd), assert_instr(
-    v128.const,
-    a0 = 0,
-    a1 = 1,
-    a2 = 2,
-    a3 = 3,
-    a4 = 4,
-    a5 = 5,
-    a6 = 6,
-    a7 = 7,
-    a8 = 8,
-    a9 = 9,
-    a10 = 10,
-    a11 = 11,
-    a12 = 12,
-    a13 = 13,
-    a14 = 14,
-    a15 = 15,
-))]
 #[target_feature(enable = "simd128")]
-pub const unsafe fn v128_const(
-    a0: u8,
-    a1: u8,
-    a2: u8,
-    a3: u8,
-    a4: u8,
-    a5: u8,
-    a6: u8,
-    a7: u8,
-    a8: u8,
-    a9: u8,
-    a10: u8,
-    a11: u8,
-    a12: u8,
-    a13: u8,
-    a14: u8,
-    a15: u8,
-) -> v128 {
-    union U {
-        imm: [u8; 16],
-        vec: v128,
-    }
-    U {
-        imm: [
-            a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15,
-        ],
-    }
-    .vec
+pub const unsafe fn v128_const<
+    const A0: u8,
+    const A1: u8,
+    const A2: u8,
+    const A3: u8,
+    const A4: u8,
+    const A5: u8,
+    const A6: u8,
+    const A7: u8,
+    const A8: u8,
+    const A9: u8,
+    const A10: u8,
+    const A11: u8,
+    const A12: u8,
+    const A13: u8,
+    const A14: u8,
+    const A15: u8,
+>() -> v128 {
+    transmute(u8x16(
+        A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15,
+    ))
+}
+
+#[cfg(all(test, all_simd))]
+#[assert_instr(v128.const)]
+#[target_feature(enable = "simd128")]
+unsafe fn test_v128_const() -> v128 {
+    v128_const::<0, 0, 0, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0>()
+}
+
+/// Materializes a constant SIMD value from the immediate operands.
+///
+/// This function generates a `v128.const` instruction as if the generated
+/// vector was interpreted as sixteen 8-bit integers.
+#[inline]
+#[target_feature(enable = "simd128")]
+pub const unsafe fn i8x16_const<
+    const A0: i8,
+    const A1: i8,
+    const A2: i8,
+    const A3: i8,
+    const A4: i8,
+    const A5: i8,
+    const A6: i8,
+    const A7: i8,
+    const A8: i8,
+    const A9: i8,
+    const A10: i8,
+    const A11: i8,
+    const A12: i8,
+    const A13: i8,
+    const A14: i8,
+    const A15: i8,
+>() -> v128 {
+    transmute(i8x16(
+        A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15,
+    ))
+}
+
+#[cfg(all(test, all_simd))]
+#[assert_instr(v128.const)]
+#[target_feature(enable = "simd128")]
+unsafe fn test_i8x16_const() -> v128 {
+    i8x16_const::<0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0>()
+}
+
+/// Materializes a constant SIMD value from the immediate operands.
+///
+/// This function generates a `v128.const` instruction as if the generated
+/// vector was interpreted as eight 16-bit integers.
+#[inline]
+#[target_feature(enable = "simd128")]
+pub const unsafe fn i16x8_const<
+    const A0: i16,
+    const A1: i16,
+    const A2: i16,
+    const A3: i16,
+    const A4: i16,
+    const A5: i16,
+    const A6: i16,
+    const A7: i16,
+>() -> v128 {
+    transmute(i16x8(A0, A1, A2, A3, A4, A5, A6, A7))
+}
+
+#[cfg(all(test, all_simd))]
+#[assert_instr(v128.const)]
+#[target_feature(enable = "simd128")]
+unsafe fn test_i16x8_const() -> v128 {
+    i16x8_const::<0, 0, 0, 0, 1, 0, 0, 0>()
+}
+
+/// Materializes a constant SIMD value from the immediate operands.
+///
+/// This function generates a `v128.const` instruction as if the generated
+/// vector was interpreted as four 32-bit integers.
+#[inline]
+#[target_feature(enable = "simd128")]
+pub const unsafe fn i32x4_const<const A0: i32, const A1: i32, const A2: i32, const A3: i32>() -> v128
+{
+    transmute(i32x4(A0, A1, A2, A3))
+}
+
+#[cfg(all(test, all_simd))]
+#[assert_instr(v128.const)]
+#[target_feature(enable = "simd128")]
+unsafe fn test_i32x4_const() -> v128 {
+    i32x4_const::<0, 0, 0, 1>()
+}
+
+/// Materializes a constant SIMD value from the immediate operands.
+///
+/// This function generates a `v128.const` instruction as if the generated
+/// vector was interpreted as two 64-bit integers.
+#[inline]
+#[target_feature(enable = "simd128")]
+pub const unsafe fn i64x2_const<const A0: i64, const A1: i64>() -> v128 {
+    transmute(i64x2(A0, A1))
+}
+
+#[cfg(all(test, all_simd))]
+#[assert_instr(v128.const)]
+#[target_feature(enable = "simd128")]
+unsafe fn test_i64x2_const() -> v128 {
+    i64x2_const::<0, 2>()
+}
+
+/// Materializes a constant SIMD value from the immediate operands.
+///
+/// This function generates a `v128.const` instruction as if the generated
+/// vector was interpreted as four 32-bit floats.
+#[inline]
+#[target_feature(enable = "simd128")]
+pub const unsafe fn f32x4_const<const A0: f32, const A1: f32, const A2: f32, const A3: f32>() -> v128
+{
+    transmute(f32x4(A0, A1, A2, A3))
+}
+
+#[cfg(all(test, all_simd))]
+#[assert_instr(v128.const)]
+#[target_feature(enable = "simd128")]
+unsafe fn test_f32x4_const() -> v128 {
+    f32x4_const::<0.0, 1.0, 0.0, 0.0>()
+}
+
+/// Materializes a constant SIMD value from the immediate operands.
+///
+/// This function generates a `v128.const` instruction as if the generated
+/// vector was interpreted as two 64-bit floats.
+#[inline]
+#[target_feature(enable = "simd128")]
+pub const unsafe fn f64x2_const<const A0: f64, const A1: f64>() -> v128 {
+    transmute(f64x2(A0, A1))
+}
+
+#[cfg(all(test, all_simd))]
+#[assert_instr(v128.const)]
+#[target_feature(enable = "simd128")]
+unsafe fn test_f64x2_const() -> v128 {
+    f64x2_const::<0.0, 1.0>()
 }
 
 /// Returns a new vector with lanes selected from the lanes of the two input
@@ -362,80 +474,124 @@ pub const unsafe fn v128_const(
 /// generated if any of the expressions are not constant.
 ///
 /// All indexes `$i*` must have the type `u32`.
-#[allow_internal_unstable(platform_intrinsics, rustc_attrs)]
-#[unstable(feature = "wasm_simd", issue = "74372")]
-pub macro v8x16_shuffle(
-    $a:expr, $b:expr,
-    $i0:expr,
-    $i1:expr,
-    $i2:expr,
-    $i3:expr,
-    $i4:expr,
-    $i5:expr,
-    $i6:expr,
-    $i7:expr,
-    $i8:expr,
-    $i9:expr,
-    $i10:expr,
-    $i11:expr,
-    $i12:expr,
-    $i13:expr,
-    $i14:expr,
-    $i15:expr $(,)?
-) {{
-    extern "platform-intrinsic" {
-        #[rustc_args_required_const(2)]
-        pub fn simd_shuffle16<T, U>(x: T, y: T, idx: [u32; 16]) -> U;
-    }
-    let shuf = simd_shuffle16::<
-        $crate::arch::wasm32::__v8x16_shuffle_u8x16,
-        $crate::arch::wasm32::__v8x16_shuffle_u8x16,
-    >(
-        $crate::arch::wasm32::__v8x16_shuffle_transmute::<
-            $crate::arch::wasm32::v128,
-            $crate::arch::wasm32::__v8x16_shuffle_u8x16,
-        >($a),
-        $crate::arch::wasm32::__v8x16_shuffle_transmute::<
-            $crate::arch::wasm32::v128,
-            $crate::arch::wasm32::__v8x16_shuffle_u8x16,
-        >($b),
+#[inline]
+#[target_feature(enable = "simd128")]
+pub unsafe fn v8x16_shuffle<
+    const I0: u32,
+    const I1: u32,
+    const I2: u32,
+    const I3: u32,
+    const I4: u32,
+    const I5: u32,
+    const I6: u32,
+    const I7: u32,
+    const I8: u32,
+    const I9: u32,
+    const I10: u32,
+    const I11: u32,
+    const I12: u32,
+    const I13: u32,
+    const I14: u32,
+    const I15: u32,
+>(
+    a: v128,
+    b: v128,
+) -> v128 {
+    let shuf = simd_shuffle16::<u8x16, u8x16>(
+        a.as_u8x16(),
+        b.as_u8x16(),
         [
-            $i0, $i1, $i2, $i3, $i4, $i5, $i6, $i7, $i8, $i9, $i10, $i11, $i12, $i13, $i14, $i15,
+            I0, I1, I2, I3, I4, I5, I6, I7, I8, I9, I10, I11, I12, I13, I14, I15,
         ],
     );
-    $crate::arch::wasm32::__v8x16_shuffle_transmute::<
-        $crate::arch::wasm32::__v8x16_shuffle_u8x16,
-        $crate::arch::wasm32::v128,
-    >(shuf)
-}}
+    transmute(shuf)
+}
 
-// internal implementation detail of the `v8x16_shuffle`, done so there's a name
-// that always works for the macro to import.
-#[doc(hidden)]
-pub use crate::mem::transmute as __v8x16_shuffle_transmute;
+#[cfg(test)]
+#[assert_instr(v8x16.shuffle)]
+#[target_feature(enable = "simd128")]
+unsafe fn v8x16_shuffle_test(a: v128, b: v128) -> v128 {
+    v8x16_shuffle::<0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30>(a, b)
+}
 
-// internal to this module and only generated here as an implementation detail
-// of the `v8x16_shuffle` macro.
-#[repr(simd)]
-#[doc(hidden)]
-pub struct __v8x16_shuffle_u8x16(
-    u8,
-    u8,
-    u8,
-    u8,
-    u8,
-    u8,
-    u8,
-    u8,
-    u8,
-    u8,
-    u8,
-    u8,
-    u8,
-    u8,
-    u8,
-    u8,
-);
+/// Same as [`v8x16_shuffle`], except operates as if the inputs were eight
+/// 16-bit integers, only taking 8 indices to shuffle.
+///
+/// Indices in the range [0, 7] select from `a` while [8, 15] select from `b`.
+/// Note that this will generate the `v8x16.shuffle` instruction, since there
+/// is no native `v16x8.shuffle` instruction (there is no need for one since
+/// `v8x16.shuffle` suffices).
+#[inline]
+#[target_feature(enable = "simd128")]
+pub unsafe fn v16x8_shuffle<
+    const I0: u32,
+    const I1: u32,
+    const I2: u32,
+    const I3: u32,
+    const I4: u32,
+    const I5: u32,
+    const I6: u32,
+    const I7: u32,
+>(
+    a: v128,
+    b: v128,
+) -> v128 {
+    let shuf =
+        simd_shuffle8::<u16x8, u16x8>(a.as_u16x8(), b.as_u16x8(), [I0, I1, I2, I3, I4, I5, I6, I7]);
+    transmute(shuf)
+}
+
+#[cfg(test)]
+#[assert_instr(v8x16.shuffle)]
+#[target_feature(enable = "simd128")]
+unsafe fn v16x8_shuffle_test(a: v128, b: v128) -> v128 {
+    v16x8_shuffle::<0, 2, 4, 6, 8, 10, 12, 14>(a, b)
+}
+
+/// Same as [`v8x16_shuffle`], except operates as if the inputs were four
+/// 32-bit integers, only taking 4 indices to shuffle.
+///
+/// Indices in the range [0, 3] select from `a` while [4, 7] select from `b`.
+/// Note that this will generate the `v8x16.shuffle` instruction, since there
+/// is no native `v32x4.shuffle` instruction (there is no need for one since
+/// `v8x16.shuffle` suffices).
+#[inline]
+#[target_feature(enable = "simd128")]
+pub unsafe fn v32x4_shuffle<const I0: u32, const I1: u32, const I2: u32, const I3: u32>(
+    a: v128,
+    b: v128,
+) -> v128 {
+    let shuf = simd_shuffle4::<u32x4, u32x4>(a.as_u32x4(), b.as_u32x4(), [I0, I1, I2, I3]);
+    transmute(shuf)
+}
+
+#[cfg(test)]
+#[assert_instr(v8x16.shuffle)]
+#[target_feature(enable = "simd128")]
+unsafe fn v32x4_shuffle_test(a: v128, b: v128) -> v128 {
+    v32x4_shuffle::<0, 2, 4, 6>(a, b)
+}
+
+/// Same as [`v8x16_shuffle`], except operates as if the inputs were two
+/// 64-bit integers, only taking 2 indices to shuffle.
+///
+/// Indices in the range [0, 1] select from `a` while [2, 3] select from `b`.
+/// Note that this will generate the `v8x16.shuffle` instruction, since there
+/// is no native `v64x2.shuffle` instruction (there is no need for one since
+/// `v8x16.shuffle` suffices).
+#[inline]
+#[target_feature(enable = "simd128")]
+pub unsafe fn v64x2_shuffle<const I0: u32, const I1: u32>(a: v128, b: v128) -> v128 {
+    let shuf = simd_shuffle2::<u64x2, u64x2>(a.as_u64x2(), b.as_u64x2(), [I0, I1]);
+    transmute(shuf)
+}
+
+#[cfg(test)]
+#[assert_instr(v8x16.shuffle)]
+#[target_feature(enable = "simd128")]
+unsafe fn v64x2_shuffle_test(a: v128, b: v128) -> v128 {
+    v64x2_shuffle::<0, 2>(a, b)
+}
 
 /// Returns a new vector with lanes selected from the lanes of the first input
 /// vector `a` specified in the second input vector `s`.
@@ -512,231 +668,219 @@ pub unsafe fn f64x2_splat(a: f64) -> v128 {
 /// Extracts a lane from a 128-bit vector interpreted as 16 packed i8 numbers.
 ///
 /// Extracts the scalar value of lane specified in the immediate mode operand
-/// `imm` from `a`.
-///
-/// # Unsafety
-///
-/// This function has undefined behavior if `imm` is greater than or equal to
-/// 16.
+/// `N` from `a`. If `N` is out of bounds then it is a compile time error.
 #[inline]
-#[rustc_args_required_const(1)]
 #[target_feature(enable = "simd128")]
-pub unsafe fn i8x16_extract_lane(a: v128, imm: usize) -> i8 {
-    simd_extract(a.as_i8x16(), imm as u32)
+pub unsafe fn i8x16_extract_lane<const N: u32>(a: v128) -> i8 {
+    simd_extract(a.as_i8x16(), N)
 }
 
 #[cfg(test)]
 #[assert_instr(i8x16.extract_lane_s)]
 #[target_feature(enable = "simd128")]
 unsafe fn i8x16_extract_lane_s(a: v128) -> i32 {
-    i8x16_extract_lane(a, 0) as i32
+    i8x16_extract_lane::<0>(a) as i32
 }
 
 #[cfg(test)]
 #[assert_instr(i8x16.extract_lane_u)]
 #[target_feature(enable = "simd128")]
 unsafe fn i8x16_extract_lane_u(a: v128) -> u32 {
-    i8x16_extract_lane(a, 0) as u8 as u32
+    i8x16_extract_lane::<0>(a) as u8 as u32
 }
 
 /// Replaces a lane from a 128-bit vector interpreted as 16 packed i8 numbers.
 ///
 /// Replaces the scalar value of lane specified in the immediate mode operand
-/// `imm` with `a`.
-///
-/// # Unsafety
-///
-/// This function has undefined behavior if `imm` is greater than or equal to
-/// 16.
+/// `N` from `a`. If `N` is out of bounds then it is a compile time error.
 #[inline]
-#[cfg_attr(test, assert_instr(i8x16.replace_lane, imm = 0))]
-#[rustc_args_required_const(1)]
 #[target_feature(enable = "simd128")]
-pub unsafe fn i8x16_replace_lane(a: v128, imm: usize, val: i8) -> v128 {
-    transmute(simd_insert(a.as_i8x16(), imm as u32, val))
+pub unsafe fn i8x16_replace_lane<const N: u32>(a: v128, val: i8) -> v128 {
+    transmute(simd_insert(a.as_i8x16(), N, val))
+}
+
+#[cfg(test)]
+#[assert_instr(i8x16.replace_lane)]
+#[target_feature(enable = "simd128")]
+unsafe fn i8x16_replace_lane_test(a: v128, val: i8) -> v128 {
+    i8x16_replace_lane::<0>(a, val)
 }
 
 /// Extracts a lane from a 128-bit vector interpreted as 8 packed i16 numbers.
 ///
 /// Extracts a the scalar value of lane specified in the immediate mode operand
-/// `imm` from `a`.
-///
-/// # Unsafety
-///
-/// This function has undefined behavior if `imm` is greater than or equal to
-/// 8.
+/// `N` from `a`. If `N` is out of bounds then it is a compile time error.
 #[inline]
-#[rustc_args_required_const(1)]
 #[target_feature(enable = "simd128")]
-pub unsafe fn i16x8_extract_lane(a: v128, imm: usize) -> i16 {
-    simd_extract(a.as_i16x8(), imm as u32)
+pub unsafe fn i16x8_extract_lane<const N: u32>(a: v128) -> i16 {
+    simd_extract(a.as_i16x8(), N)
 }
 
 #[cfg(test)]
 #[assert_instr(i16x8.extract_lane_s)]
 #[target_feature(enable = "simd128")]
 unsafe fn i16x8_extract_lane_s(a: v128) -> i32 {
-    i16x8_extract_lane(a, 0) as i32
+    i16x8_extract_lane::<0>(a) as i32
 }
 
 #[cfg(test)]
 #[assert_instr(i16x8.extract_lane_u)]
 #[target_feature(enable = "simd128")]
 unsafe fn i16x8_extract_lane_u(a: v128) -> u32 {
-    i16x8_extract_lane(a, 0) as u16 as u32
+    i16x8_extract_lane::<0>(a) as u16 as u32
 }
 
 /// Replaces a lane from a 128-bit vector interpreted as 8 packed i16 numbers.
 ///
 /// Replaces the scalar value of lane specified in the immediate mode operand
-/// `imm` with `a`.
-///
-/// # Unsafety
-///
-/// This function has undefined behavior if `imm` is greater than or equal to
-/// 8.
+/// `N` from `a`. If `N` is out of bounds then it is a compile time error.
 #[inline]
-#[cfg_attr(test, assert_instr(i16x8.replace_lane, imm = 0))]
-#[rustc_args_required_const(1)]
 #[target_feature(enable = "simd128")]
-pub unsafe fn i16x8_replace_lane(a: v128, imm: usize, val: i16) -> v128 {
-    transmute(simd_insert(a.as_i16x8(), imm as u32, val))
+pub unsafe fn i16x8_replace_lane<const N: u32>(a: v128, val: i16) -> v128 {
+    transmute(simd_insert(a.as_i16x8(), N, val))
+}
+
+#[cfg(test)]
+#[assert_instr(i16x8.replace_lane)]
+#[target_feature(enable = "simd128")]
+unsafe fn i16x8_replace_lane_test(a: v128, val: i16) -> v128 {
+    i16x8_replace_lane::<0>(a, val)
 }
 
 /// Extracts a lane from a 128-bit vector interpreted as 4 packed i32 numbers.
 ///
 /// Extracts the scalar value of lane specified in the immediate mode operand
-/// `imm` from `a`.
-///
-/// # Unsafety
-///
-/// This function has undefined behavior if `imm` is greater than or equal to
-/// 4.
+/// `N` from `a`. If `N` is out of bounds then it is a compile time error.
 #[inline]
-#[cfg_attr(test, assert_instr(i32x4.extract_lane, imm = 0))]
-#[rustc_args_required_const(1)]
 #[target_feature(enable = "simd128")]
-pub unsafe fn i32x4_extract_lane(a: v128, imm: usize) -> i32 {
-    simd_extract(a.as_i32x4(), imm as u32)
+pub unsafe fn i32x4_extract_lane<const N: u32>(a: v128) -> i32 {
+    simd_extract(a.as_i32x4(), N)
+}
+
+#[cfg(test)]
+#[assert_instr(i32x4.extract_lane)]
+#[target_feature(enable = "simd128")]
+unsafe fn i32x4_extract_lane_test(a: v128) -> i32 {
+    i32x4_extract_lane::<0>(a)
 }
 
 /// Replaces a lane from a 128-bit vector interpreted as 4 packed i32 numbers.
 ///
 /// Replaces the scalar value of lane specified in the immediate mode operand
-/// `imm` with `a`.
-///
-/// # Unsafety
-///
-/// This function has undefined behavior if `imm` is greater than or equal to
-/// 4.
+/// `N` from `a`. If `N` is out of bounds then it is a compile time error.
 #[inline]
-#[cfg_attr(test, assert_instr(i32x4.replace_lane, imm = 0))]
-#[rustc_args_required_const(1)]
 #[target_feature(enable = "simd128")]
-pub unsafe fn i32x4_replace_lane(a: v128, imm: usize, val: i32) -> v128 {
-    transmute(simd_insert(a.as_i32x4(), imm as u32, val))
+pub unsafe fn i32x4_replace_lane<const N: u32>(a: v128, val: i32) -> v128 {
+    transmute(simd_insert(a.as_i32x4(), N, val))
+}
+
+#[cfg(test)]
+#[assert_instr(i32x4.replace_lane)]
+#[target_feature(enable = "simd128")]
+unsafe fn i32x4_replace_lane_test(a: v128, val: i32) -> v128 {
+    i32x4_replace_lane::<0>(a, val)
 }
 
 /// Extracts a lane from a 128-bit vector interpreted as 2 packed i64 numbers.
 ///
 /// Extracts the scalar value of lane specified in the immediate mode operand
-/// `imm` from `a`.
-///
-/// # Unsafety
-///
-/// This function has undefined behavior if `imm` is greater than or equal to
-/// 2.
+/// `N` from `a`. If `N` is out of bounds then it is a compile time error.
 #[inline]
-#[cfg_attr(test, assert_instr(i64x2.extract_lane, imm = 0))]
-#[rustc_args_required_const(1)]
 #[target_feature(enable = "simd128")]
-pub unsafe fn i64x2_extract_lane(a: v128, imm: usize) -> i64 {
-    simd_extract(a.as_i64x2(), imm as u32)
+pub unsafe fn i64x2_extract_lane<const N: u32>(a: v128) -> i64 {
+    simd_extract(a.as_i64x2(), N)
+}
+
+#[cfg(test)]
+#[assert_instr(i64x2.extract_lane)]
+#[target_feature(enable = "simd128")]
+unsafe fn i64x2_extract_lane_test(a: v128) -> i64 {
+    i64x2_extract_lane::<0>(a)
 }
 
 /// Replaces a lane from a 128-bit vector interpreted as 2 packed i64 numbers.
 ///
 /// Replaces the scalar value of lane specified in the immediate mode operand
-/// `imm` with `a`.
-///
-/// # Unsafety
-///
-/// This function has undefined behavior if `imm` is greater than or equal to
-/// 2.
+/// `N` from `a`. If `N` is out of bounds then it is a compile time error.
 #[inline]
-#[cfg_attr(test, assert_instr(i64x2.replace_lane, imm = 0))]
-#[rustc_args_required_const(1)]
 #[target_feature(enable = "simd128")]
-pub unsafe fn i64x2_replace_lane(a: v128, imm: usize, val: i64) -> v128 {
-    transmute(simd_insert(a.as_i64x2(), imm as u32, val))
+pub unsafe fn i64x2_replace_lane<const N: u32>(a: v128, val: i64) -> v128 {
+    transmute(simd_insert(a.as_i64x2(), N, val))
+}
+
+#[cfg(test)]
+#[assert_instr(i64x2.replace_lane)]
+#[target_feature(enable = "simd128")]
+unsafe fn i64x2_replace_lane_test(a: v128, val: i64) -> v128 {
+    i64x2_replace_lane::<0>(a, val)
 }
 
 /// Extracts a lane from a 128-bit vector interpreted as 4 packed f32 numbers.
 ///
-/// Extracts the scalar value of lane specified in the immediate mode operand
-/// `imm` from `a`.
-///
-/// # Unsafety
-///
-/// This function has undefined behavior if `imm` is greater than or equal to
-/// 4.
+/// Extracts the scalar value of lane specified fn the immediate mode operand
+/// `N` from `a`. If `N` is out of bounds then it is a compile time error.
 #[inline]
-#[cfg_attr(test, assert_instr(f32x4.extract_lane, imm = 0))]
-#[rustc_args_required_const(1)]
 #[target_feature(enable = "simd128")]
-pub unsafe fn f32x4_extract_lane(a: v128, imm: usize) -> f32 {
-    simd_extract(a.as_f32x4(), imm as u32)
+pub unsafe fn f32x4_extract_lane<const N: u32>(a: v128) -> f32 {
+    simd_extract(a.as_f32x4(), N)
+}
+
+#[cfg(test)]
+#[assert_instr(f32x4.extract_lane)]
+#[target_feature(enable = "simd128")]
+unsafe fn f32x4_extract_lane_test(a: v128) -> f32 {
+    f32x4_extract_lane::<0>(a)
 }
 
 /// Replaces a lane from a 128-bit vector interpreted as 4 packed f32 numbers.
 ///
-/// Replaces the scalar value of lane specified in the immediate mode operand
-/// `imm` with `a`.
-///
-/// # Unsafety
-///
-/// This function has undefined behavior if `imm` is greater than or equal to
-/// 4.
+/// Replaces the scalar value of lane specified fn the immediate mode operand
+/// `N` from `a`. If `N` is out of bounds then it is a compile time error.
 #[inline]
-#[cfg_attr(test, assert_instr(f32x4.replace_lane, imm = 0))]
-#[rustc_args_required_const(1)]
 #[target_feature(enable = "simd128")]
-pub unsafe fn f32x4_replace_lane(a: v128, imm: usize, val: f32) -> v128 {
-    transmute(simd_insert(a.as_f32x4(), imm as u32, val))
+pub unsafe fn f32x4_replace_lane<const N: u32>(a: v128, val: f32) -> v128 {
+    transmute(simd_insert(a.as_f32x4(), N, val))
 }
 
-/// Extracts lane from a 128-bit vector interpreted as 2 packed f64 numbers.
-///
-/// Extracts the scalar value of lane specified in the immediate mode operand
-/// `imm` from `a`.
-///
-/// # Unsafety
-///
-/// This function has undefined behavior if `imm` is greater than or equal to
-/// 2.
-#[inline]
-#[cfg_attr(test, assert_instr(f64x2.extract_lane, imm = 0))]
-#[rustc_args_required_const(1)]
+#[cfg(test)]
+#[assert_instr(f32x4.replace_lane)]
 #[target_feature(enable = "simd128")]
-pub unsafe fn f64x2_extract_lane(a: v128, imm: usize) -> f64 {
-    simd_extract(a.as_f64x2(), imm as u32)
+unsafe fn f32x4_replace_lane_test(a: v128, val: f32) -> v128 {
+    f32x4_replace_lane::<0>(a, val)
+}
+
+/// Extracts a lane from a 128-bit vector interpreted as 2 packed f64 numbers.
+///
+/// Extracts the scalar value of lane specified fn the immediate mode operand
+/// `N` from `a`. If `N` fs out of bounds then it is a compile time error.
+#[inline]
+#[target_feature(enable = "simd128")]
+pub unsafe fn f64x2_extract_lane<const N: u32>(a: v128) -> f64 {
+    simd_extract(a.as_f64x2(), N)
+}
+
+#[cfg(test)]
+#[assert_instr(f64x2.extract_lane)]
+#[target_feature(enable = "simd128")]
+unsafe fn f64x2_extract_lane_test(a: v128) -> f64 {
+    f64x2_extract_lane::<0>(a)
 }
 
 /// Replaces a lane from a 128-bit vector interpreted as 2 packed f64 numbers.
 ///
 /// Replaces the scalar value of lane specified in the immediate mode operand
-/// `imm` with `a`.
-///
-/// # Unsafety
-///
-/// This function has undefined behavior if `imm` is greater than or equal to
-/// 2.
+/// `N` from `a`. If `N` is out of bounds then it is a compile time error.
 #[inline]
-#[cfg_attr(test, assert_instr(f64x2.replace_lane, imm = 0))]
-#[rustc_args_required_const(1)]
 #[target_feature(enable = "simd128")]
-pub unsafe fn f64x2_replace_lane(a: v128, imm: usize, val: f64) -> v128 {
-    transmute(simd_insert(a.as_f64x2(), imm as u32, val))
+pub unsafe fn f64x2_replace_lane<const N: u32>(a: v128, val: f64) -> v128 {
+    transmute(simd_insert(a.as_f64x2(), N, val))
+}
+
+#[cfg(test)]
+#[assert_instr(f64x2.replace_lane)]
+#[target_feature(enable = "simd128")]
+unsafe fn f64x2_replace_lane_test(a: v128, val: f64) -> v128 {
+    f64x2_replace_lane::<0>(a, val)
 }
 
 /// Compares two 128-bit vectors as if they were two vectors of 16 eight-bit
@@ -2231,7 +2375,7 @@ pub mod tests {
     #[test]
     fn test_v128_const() {
         const A: v128 =
-            unsafe { super::v128_const(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15) };
+            unsafe { super::v128_const::<0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15>() };
         compare_bytes(A, A);
     }
 
@@ -2271,7 +2415,7 @@ pub mod tests {
                     let arr: [$elem; $count] = [123 as $elem; $count];
                     let vec: v128 = transmute(arr);
                     $(
-                        assert_eq!($extract(vec, $idx), 123 as $elem);
+                        assert_eq!($extract::<$idx>(vec), 123 as $elem);
                     )*
 
                     // create a vector from array and check that the indices contain
@@ -2279,10 +2423,10 @@ pub mod tests {
                     let arr: [$elem; $count] = [$($idx as $elem),*];
                     let vec: v128 = transmute(arr);
                     $(
-                        assert_eq!($extract(vec, $idx), $idx as $elem);
+                        assert_eq!($extract::<$idx>(vec), $idx as $elem);
 
-                        let tmp = $replace(vec, $idx, 124 as $elem);
-                        assert_eq!($extract(tmp, $idx), 124 as $elem);
+                        let tmp = $replace::<$idx>(vec, 124 as $elem);
+                        assert_eq!($extract::<$idx>(tmp), 124 as $elem);
                     )*
                 }
             }
@@ -2503,7 +2647,7 @@ pub mod tests {
     }
 
     #[test]
-    fn v8x16_shuffle() {
+    fn test_v8x16_shuffle() {
         unsafe {
             let a = [0_u8, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
             let b = [
@@ -2513,8 +2657,8 @@ pub mod tests {
             let vec_a: v128 = transmute(a);
             let vec_b: v128 = transmute(b);
 
-            let vec_r = v8x16_shuffle!(
-                vec_a, vec_b, 0, 16, 2, 18, 4, 20, 6, 22, 8, 24, 10, 26, 12, 28, 14, 30,
+            let vec_r = v8x16_shuffle::<0, 16, 2, 18, 4, 20, 6, 22, 8, 24, 10, 26, 12, 28, 14, 30>(
+                vec_a, vec_b,
             );
 
             let e = [0_u8, 16, 2, 18, 4, 20, 6, 22, 8, 24, 10, 26, 12, 28, 14, 30];

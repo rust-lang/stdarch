@@ -2,9 +2,11 @@
 #![allow(improper_ctypes_definitions)]
 #![allow(dead_code)]
 #![allow(unused_features)]
+#![allow(incomplete_features)]
 #![feature(
     const_fn,
     const_fn_union,
+    const_generics,
     custom_inner_attributes,
     link_llvm_intrinsics,
     platform_intrinsics,
