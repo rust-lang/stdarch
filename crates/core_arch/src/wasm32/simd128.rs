@@ -477,22 +477,22 @@ unsafe fn test_f64x2_const() -> v128 {
 #[inline]
 #[target_feature(enable = "simd128")]
 pub unsafe fn v8x16_shuffle<
-    const I0: u32,
-    const I1: u32,
-    const I2: u32,
-    const I3: u32,
-    const I4: u32,
-    const I5: u32,
-    const I6: u32,
-    const I7: u32,
-    const I8: u32,
-    const I9: u32,
-    const I10: u32,
-    const I11: u32,
-    const I12: u32,
-    const I13: u32,
-    const I14: u32,
-    const I15: u32,
+    const I0: usize,
+    const I1: usize,
+    const I2: usize,
+    const I3: usize,
+    const I4: usize,
+    const I5: usize,
+    const I6: usize,
+    const I7: usize,
+    const I8: usize,
+    const I9: usize,
+    const I10: usize,
+    const I11: usize,
+    const I12: usize,
+    const I13: usize,
+    const I14: usize,
+    const I15: usize,
 >(
     a: v128,
     b: v128,
@@ -501,7 +501,9 @@ pub unsafe fn v8x16_shuffle<
         a.as_u8x16(),
         b.as_u8x16(),
         [
-            I0, I1, I2, I3, I4, I5, I6, I7, I8, I9, I10, I11, I12, I13, I14, I15,
+            I0 as u32, I1 as u32, I2 as u32, I3 as u32, I4 as u32, I5 as u32, I6 as u32, I7 as u32,
+            I8 as u32, I9 as u32, I10 as u32, I11 as u32, I12 as u32, I13 as u32, I14 as u32,
+            I15 as u32,
         ],
     );
     transmute(shuf)
@@ -524,20 +526,25 @@ unsafe fn v8x16_shuffle_test(a: v128, b: v128) -> v128 {
 #[inline]
 #[target_feature(enable = "simd128")]
 pub unsafe fn v16x8_shuffle<
-    const I0: u32,
-    const I1: u32,
-    const I2: u32,
-    const I3: u32,
-    const I4: u32,
-    const I5: u32,
-    const I6: u32,
-    const I7: u32,
+    const I0: usize,
+    const I1: usize,
+    const I2: usize,
+    const I3: usize,
+    const I4: usize,
+    const I5: usize,
+    const I6: usize,
+    const I7: usize,
 >(
     a: v128,
     b: v128,
 ) -> v128 {
-    let shuf =
-        simd_shuffle8::<u16x8, u16x8>(a.as_u16x8(), b.as_u16x8(), [I0, I1, I2, I3, I4, I5, I6, I7]);
+    let shuf = simd_shuffle8::<u16x8, u16x8>(
+        a.as_u16x8(),
+        b.as_u16x8(),
+        [
+            I0 as u32, I1 as u32, I2 as u32, I3 as u32, I4 as u32, I5 as u32, I6 as u32, I7 as u32,
+        ],
+    );
     transmute(shuf)
 }
 
@@ -557,11 +564,15 @@ unsafe fn v16x8_shuffle_test(a: v128, b: v128) -> v128 {
 /// `v8x16.shuffle` suffices).
 #[inline]
 #[target_feature(enable = "simd128")]
-pub unsafe fn v32x4_shuffle<const I0: u32, const I1: u32, const I2: u32, const I3: u32>(
+pub unsafe fn v32x4_shuffle<const I0: usize, const I1: usize, const I2: usize, const I3: usize>(
     a: v128,
     b: v128,
 ) -> v128 {
-    let shuf = simd_shuffle4::<u32x4, u32x4>(a.as_u32x4(), b.as_u32x4(), [I0, I1, I2, I3]);
+    let shuf = simd_shuffle4::<u32x4, u32x4>(
+        a.as_u32x4(),
+        b.as_u32x4(),
+        [I0 as u32, I1 as u32, I2 as u32, I3 as u32],
+    );
     transmute(shuf)
 }
 
@@ -581,8 +592,8 @@ unsafe fn v32x4_shuffle_test(a: v128, b: v128) -> v128 {
 /// `v8x16.shuffle` suffices).
 #[inline]
 #[target_feature(enable = "simd128")]
-pub unsafe fn v64x2_shuffle<const I0: u32, const I1: u32>(a: v128, b: v128) -> v128 {
-    let shuf = simd_shuffle2::<u64x2, u64x2>(a.as_u64x2(), b.as_u64x2(), [I0, I1]);
+pub unsafe fn v64x2_shuffle<const I0: usize, const I1: usize>(a: v128, b: v128) -> v128 {
+    let shuf = simd_shuffle2::<u64x2, u64x2>(a.as_u64x2(), b.as_u64x2(), [I0 as u32, I1 as u32]);
     transmute(shuf)
 }
 
@@ -671,8 +682,8 @@ pub unsafe fn f64x2_splat(a: f64) -> v128 {
 /// `N` from `a`. If `N` is out of bounds then it is a compile time error.
 #[inline]
 #[target_feature(enable = "simd128")]
-pub unsafe fn i8x16_extract_lane<const N: u32>(a: v128) -> i8 {
-    simd_extract(a.as_i8x16(), N)
+pub unsafe fn i8x16_extract_lane<const N: usize>(a: v128) -> i8 {
+    simd_extract(a.as_i8x16(), N as u32)
 }
 
 #[cfg(test)]
@@ -695,8 +706,8 @@ unsafe fn i8x16_extract_lane_u(a: v128) -> u32 {
 /// `N` from `a`. If `N` is out of bounds then it is a compile time error.
 #[inline]
 #[target_feature(enable = "simd128")]
-pub unsafe fn i8x16_replace_lane<const N: u32>(a: v128, val: i8) -> v128 {
-    transmute(simd_insert(a.as_i8x16(), N, val))
+pub unsafe fn i8x16_replace_lane<const N: usize>(a: v128, val: i8) -> v128 {
+    transmute(simd_insert(a.as_i8x16(), N as u32, val))
 }
 
 #[cfg(test)]
@@ -712,8 +723,8 @@ unsafe fn i8x16_replace_lane_test(a: v128, val: i8) -> v128 {
 /// `N` from `a`. If `N` is out of bounds then it is a compile time error.
 #[inline]
 #[target_feature(enable = "simd128")]
-pub unsafe fn i16x8_extract_lane<const N: u32>(a: v128) -> i16 {
-    simd_extract(a.as_i16x8(), N)
+pub unsafe fn i16x8_extract_lane<const N: usize>(a: v128) -> i16 {
+    simd_extract(a.as_i16x8(), N as u32)
 }
 
 #[cfg(test)]
@@ -736,8 +747,8 @@ unsafe fn i16x8_extract_lane_u(a: v128) -> u32 {
 /// `N` from `a`. If `N` is out of bounds then it is a compile time error.
 #[inline]
 #[target_feature(enable = "simd128")]
-pub unsafe fn i16x8_replace_lane<const N: u32>(a: v128, val: i16) -> v128 {
-    transmute(simd_insert(a.as_i16x8(), N, val))
+pub unsafe fn i16x8_replace_lane<const N: usize>(a: v128, val: i16) -> v128 {
+    transmute(simd_insert(a.as_i16x8(), N as u32, val))
 }
 
 #[cfg(test)]
@@ -753,8 +764,8 @@ unsafe fn i16x8_replace_lane_test(a: v128, val: i16) -> v128 {
 /// `N` from `a`. If `N` is out of bounds then it is a compile time error.
 #[inline]
 #[target_feature(enable = "simd128")]
-pub unsafe fn i32x4_extract_lane<const N: u32>(a: v128) -> i32 {
-    simd_extract(a.as_i32x4(), N)
+pub unsafe fn i32x4_extract_lane<const N: usize>(a: v128) -> i32 {
+    simd_extract(a.as_i32x4(), N as u32)
 }
 
 #[cfg(test)]
@@ -770,8 +781,8 @@ unsafe fn i32x4_extract_lane_test(a: v128) -> i32 {
 /// `N` from `a`. If `N` is out of bounds then it is a compile time error.
 #[inline]
 #[target_feature(enable = "simd128")]
-pub unsafe fn i32x4_replace_lane<const N: u32>(a: v128, val: i32) -> v128 {
-    transmute(simd_insert(a.as_i32x4(), N, val))
+pub unsafe fn i32x4_replace_lane<const N: usize>(a: v128, val: i32) -> v128 {
+    transmute(simd_insert(a.as_i32x4(), N as u32, val))
 }
 
 #[cfg(test)]
@@ -787,8 +798,8 @@ unsafe fn i32x4_replace_lane_test(a: v128, val: i32) -> v128 {
 /// `N` from `a`. If `N` is out of bounds then it is a compile time error.
 #[inline]
 #[target_feature(enable = "simd128")]
-pub unsafe fn i64x2_extract_lane<const N: u32>(a: v128) -> i64 {
-    simd_extract(a.as_i64x2(), N)
+pub unsafe fn i64x2_extract_lane<const N: usize>(a: v128) -> i64 {
+    simd_extract(a.as_i64x2(), N as u32)
 }
 
 #[cfg(test)]
@@ -804,8 +815,8 @@ unsafe fn i64x2_extract_lane_test(a: v128) -> i64 {
 /// `N` from `a`. If `N` is out of bounds then it is a compile time error.
 #[inline]
 #[target_feature(enable = "simd128")]
-pub unsafe fn i64x2_replace_lane<const N: u32>(a: v128, val: i64) -> v128 {
-    transmute(simd_insert(a.as_i64x2(), N, val))
+pub unsafe fn i64x2_replace_lane<const N: usize>(a: v128, val: i64) -> v128 {
+    transmute(simd_insert(a.as_i64x2(), N as u32, val))
 }
 
 #[cfg(test)]
@@ -821,8 +832,8 @@ unsafe fn i64x2_replace_lane_test(a: v128, val: i64) -> v128 {
 /// `N` from `a`. If `N` is out of bounds then it is a compile time error.
 #[inline]
 #[target_feature(enable = "simd128")]
-pub unsafe fn f32x4_extract_lane<const N: u32>(a: v128) -> f32 {
-    simd_extract(a.as_f32x4(), N)
+pub unsafe fn f32x4_extract_lane<const N: usize>(a: v128) -> f32 {
+    simd_extract(a.as_f32x4(), N as u32)
 }
 
 #[cfg(test)]
@@ -838,8 +849,8 @@ unsafe fn f32x4_extract_lane_test(a: v128) -> f32 {
 /// `N` from `a`. If `N` is out of bounds then it is a compile time error.
 #[inline]
 #[target_feature(enable = "simd128")]
-pub unsafe fn f32x4_replace_lane<const N: u32>(a: v128, val: f32) -> v128 {
-    transmute(simd_insert(a.as_f32x4(), N, val))
+pub unsafe fn f32x4_replace_lane<const N: usize>(a: v128, val: f32) -> v128 {
+    transmute(simd_insert(a.as_f32x4(), N as u32, val))
 }
 
 #[cfg(test)]
@@ -855,8 +866,8 @@ unsafe fn f32x4_replace_lane_test(a: v128, val: f32) -> v128 {
 /// `N` from `a`. If `N` fs out of bounds then it is a compile time error.
 #[inline]
 #[target_feature(enable = "simd128")]
-pub unsafe fn f64x2_extract_lane<const N: u32>(a: v128) -> f64 {
-    simd_extract(a.as_f64x2(), N)
+pub unsafe fn f64x2_extract_lane<const N: usize>(a: v128) -> f64 {
+    simd_extract(a.as_f64x2(), N as u32)
 }
 
 #[cfg(test)]
@@ -872,8 +883,8 @@ unsafe fn f64x2_extract_lane_test(a: v128) -> f64 {
 /// `N` from `a`. If `N` is out of bounds then it is a compile time error.
 #[inline]
 #[target_feature(enable = "simd128")]
-pub unsafe fn f64x2_replace_lane<const N: u32>(a: v128, val: f64) -> v128 {
-    transmute(simd_insert(a.as_f64x2(), N, val))
+pub unsafe fn f64x2_replace_lane<const N: usize>(a: v128, val: f64) -> v128 {
+    transmute(simd_insert(a.as_f64x2(), N as u32, val))
 }
 
 #[cfg(test)]
