@@ -294,42 +294,6 @@ pub unsafe fn v128_store(m: *mut v128, a: v128) {
 
 /// Materializes a constant SIMD value from the immediate operands.
 ///
-/// The `v128.const` instruction is encoded with 16 immediate bytes
-/// which provide the bits of the vector directly.
-#[inline]
-#[target_feature(enable = "simd128")]
-pub const unsafe fn v128_const<
-    const A0: u8,
-    const A1: u8,
-    const A2: u8,
-    const A3: u8,
-    const A4: u8,
-    const A5: u8,
-    const A6: u8,
-    const A7: u8,
-    const A8: u8,
-    const A9: u8,
-    const A10: u8,
-    const A11: u8,
-    const A12: u8,
-    const A13: u8,
-    const A14: u8,
-    const A15: u8,
->() -> v128 {
-    transmute(u8x16(
-        A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15,
-    ))
-}
-
-#[cfg(all(test, all_simd))]
-#[assert_instr(v128.const)]
-#[target_feature(enable = "simd128")]
-unsafe fn test_v128_const() -> v128 {
-    v128_const::<0, 0, 0, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0>()
-}
-
-/// Materializes a constant SIMD value from the immediate operands.
-///
 /// This function generates a `v128.const` instruction as if the generated
 /// vector was interpreted as sixteen 8-bit integers.
 #[inline]
@@ -2382,7 +2346,7 @@ pub mod tests {
     #[test]
     fn test_v128_const() {
         const A: v128 =
-            unsafe { super::v128_const::<0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15>() };
+            unsafe { super::i8x16_const(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15) };
         compare_bytes(A, A);
     }
 
