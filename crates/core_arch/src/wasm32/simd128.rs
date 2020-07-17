@@ -334,34 +334,49 @@ unsafe fn test_v128_const() -> v128 {
 /// vector was interpreted as sixteen 8-bit integers.
 #[inline]
 #[target_feature(enable = "simd128")]
-pub const unsafe fn i8x16_const<
-    const A0: i8,
-    const A1: i8,
-    const A2: i8,
-    const A3: i8,
-    const A4: i8,
-    const A5: i8,
-    const A6: i8,
-    const A7: i8,
-    const A8: i8,
-    const A9: i8,
-    const A10: i8,
-    const A11: i8,
-    const A12: i8,
-    const A13: i8,
-    const A14: i8,
-    const A15: i8,
->() -> v128 {
+#[cfg_attr(
+    all(test, all_simd),
+    assert_instr(
+        v128.const,
+        a0 = 0,
+        a1 = 1,
+        a2 = 2,
+        a3 = 3,
+        a4 = 4,
+        a5 = 5,
+        a6 = 6,
+        a7 = 7,
+        a8 = 8,
+        a9 = 9,
+        a10 = 10,
+        a11 = 11,
+        a12 = 12,
+        a13 = 13,
+        a14 = 14,
+        a15 = 15,
+    )
+)]
+pub const unsafe fn i8x16_const(
+    a0: i8,
+    a1: i8,
+    a2: i8,
+    a3: i8,
+    a4: i8,
+    a5: i8,
+    a6: i8,
+    a7: i8,
+    a8: i8,
+    a9: i8,
+    a10: i8,
+    a11: i8,
+    a12: i8,
+    a13: i8,
+    a14: i8,
+    a15: i8,
+) -> v128 {
     transmute(i8x16(
-        A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15,
+        a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15,
     ))
-}
-
-#[cfg(all(test, all_simd))]
-#[assert_instr(v128.const)]
-#[target_feature(enable = "simd128")]
-unsafe fn test_i8x16_const() -> v128 {
-    i8x16_const::<0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0>()
 }
 
 /// Materializes a constant SIMD value from the immediate operands.
@@ -370,24 +385,31 @@ unsafe fn test_i8x16_const() -> v128 {
 /// vector was interpreted as eight 16-bit integers.
 #[inline]
 #[target_feature(enable = "simd128")]
-pub const unsafe fn i16x8_const<
-    const A0: i16,
-    const A1: i16,
-    const A2: i16,
-    const A3: i16,
-    const A4: i16,
-    const A5: i16,
-    const A6: i16,
-    const A7: i16,
->() -> v128 {
-    transmute(i16x8(A0, A1, A2, A3, A4, A5, A6, A7))
-}
-
-#[cfg(all(test, all_simd))]
-#[assert_instr(v128.const)]
-#[target_feature(enable = "simd128")]
-unsafe fn test_i16x8_const() -> v128 {
-    i16x8_const::<0, 0, 0, 0, 1, 0, 0, 0>()
+#[cfg_attr(
+    all(test, all_simd),
+    assert_instr(
+        v128.const,
+        a0 = 0,
+        a1 = 1,
+        a2 = 2,
+        a3 = 3,
+        a4 = 4,
+        a5 = 5,
+        a6 = 6,
+        a7 = 7,
+    )
+)]
+pub const unsafe fn i16x8_const(
+    a0: i16,
+    a1: i16,
+    a2: i16,
+    a3: i16,
+    a4: i16,
+    a5: i16,
+    a6: i16,
+    a7: i16,
+) -> v128 {
+    transmute(i16x8(a0, a1, a2, a3, a4, a5, a6, a7))
 }
 
 /// Materializes a constant SIMD value from the immediate operands.
@@ -396,16 +418,9 @@ unsafe fn test_i16x8_const() -> v128 {
 /// vector was interpreted as four 32-bit integers.
 #[inline]
 #[target_feature(enable = "simd128")]
-pub const unsafe fn i32x4_const<const A0: i32, const A1: i32, const A2: i32, const A3: i32>() -> v128
-{
-    transmute(i32x4(A0, A1, A2, A3))
-}
-
-#[cfg(all(test, all_simd))]
-#[assert_instr(v128.const)]
-#[target_feature(enable = "simd128")]
-unsafe fn test_i32x4_const() -> v128 {
-    i32x4_const::<0, 0, 0, 1>()
+#[cfg_attr(all(test, all_simd), assert_instr(v128.const, a0 = 0, a1 = 1, a2 = 2, a3 = 3))]
+pub const unsafe fn i32x4_const(a0: i32, a1: i32, a2: i32, a3: i32) -> v128 {
+    transmute(i32x4(a0, a1, a2, a3))
 }
 
 /// Materializes a constant SIMD value from the immediate operands.
@@ -414,15 +429,9 @@ unsafe fn test_i32x4_const() -> v128 {
 /// vector was interpreted as two 64-bit integers.
 #[inline]
 #[target_feature(enable = "simd128")]
-pub const unsafe fn i64x2_const<const A0: i64, const A1: i64>() -> v128 {
-    transmute(i64x2(A0, A1))
-}
-
-#[cfg(all(test, all_simd))]
-#[assert_instr(v128.const)]
-#[target_feature(enable = "simd128")]
-unsafe fn test_i64x2_const() -> v128 {
-    i64x2_const::<0, 2>()
+#[cfg_attr(all(test, all_simd), assert_instr(v128.const, a0 = 0, a1 = 1))]
+pub const unsafe fn i64x2_const(a0: i64, a1: i64) -> v128 {
+    transmute(i64x2(a0, a1))
 }
 
 /// Materializes a constant SIMD value from the immediate operands.
@@ -431,16 +440,9 @@ unsafe fn test_i64x2_const() -> v128 {
 /// vector was interpreted as four 32-bit floats.
 #[inline]
 #[target_feature(enable = "simd128")]
-pub const unsafe fn f32x4_const<const A0: f32, const A1: f32, const A2: f32, const A3: f32>() -> v128
-{
-    transmute(f32x4(A0, A1, A2, A3))
-}
-
-#[cfg(all(test, all_simd))]
-#[assert_instr(v128.const)]
-#[target_feature(enable = "simd128")]
-unsafe fn test_f32x4_const() -> v128 {
-    f32x4_const::<0.0, 1.0, 0.0, 0.0>()
+#[cfg_attr(all(test, all_simd), assert_instr(v128.const, a0 = 0.0, a1 = 1.0, a2 = 2.0, a3 = 3.0))]
+pub const unsafe fn f32x4_const(a0: f32, a1: f32, a2: f32, a3: f32) -> v128 {
+    transmute(f32x4(a0, a1, a2, a3))
 }
 
 /// Materializes a constant SIMD value from the immediate operands.
@@ -449,15 +451,9 @@ unsafe fn test_f32x4_const() -> v128 {
 /// vector was interpreted as two 64-bit floats.
 #[inline]
 #[target_feature(enable = "simd128")]
-pub const unsafe fn f64x2_const<const A0: f64, const A1: f64>() -> v128 {
-    transmute(f64x2(A0, A1))
-}
-
-#[cfg(all(test, all_simd))]
-#[assert_instr(v128.const)]
-#[target_feature(enable = "simd128")]
-unsafe fn test_f64x2_const() -> v128 {
-    f64x2_const::<0.0, 1.0>()
+#[cfg_attr(all(test, all_simd), assert_instr(v128.const, a0 = 0.0, a1 = 1.0))]
+pub const unsafe fn f64x2_const(a0: f64, a1: f64) -> v128 {
+    transmute(f64x2(a0, a1))
 }
 
 /// Returns a new vector with lanes selected from the lanes of the two input
