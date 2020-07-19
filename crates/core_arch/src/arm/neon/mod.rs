@@ -118,7 +118,7 @@ extern "C" {
     fn vabsq_s8_(a: int8x16_t) -> int8x16_t;
     #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vabs.v8i16")]
     #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.abs.v8i16")]
-    fn vabsq_s16_(a: int16x4_t) -> int16x4_t;
+    fn vabsq_s16_(a: int16x8_t) -> int16x8_t;
     #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vabs.v4i32")]
     #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.abs.v4i32")]
     fn vabsq_s32_(a: int32x4_t) -> int32x4_t;
