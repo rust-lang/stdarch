@@ -105,23 +105,23 @@ extern "C" {
     // absolute value (64-bit)
     #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vabs.v8i8")]
     #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.abs.v8i8")]
-    fn vabs_s8_(a: int16x4_t) -> int16x4_t;
+    fn vabs_s8_(a: int8x8_t) -> int8x8_t;
     #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vabs.v4i16")]
     #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.abs.v4i16")]
     fn vabs_s16_(a: int16x4_t) -> int16x4_t;
     #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vabs.v2i32")]
     #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.abs.v2i32")]
-    fn vabs_s32_(a: int16x4_t) -> int16x4_t;
+    fn vabs_s32_(a: int32x2_t) -> int32x2_t;
     // absolute value (128-bit)
     #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vabs.v16i8")]
     #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.abs.v16i8")]
-    fn vabsq_s8_(a: int16x4_t) -> int16x4_t;
+    fn vabsq_s8_(a: int8x16_t) -> int8x16_t;
     #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vabs.v8i16")]
     #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.abs.v8i16")]
     fn vabsq_s16_(a: int16x4_t) -> int16x4_t;
     #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vabs.v4i32")]
     #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.abs.v4i32")]
-    fn vabsq_s32_(a: int16x4_t) -> int16x4_t;
+    fn vabsq_s32_(a: int32x4_t) -> int32x4_t;
 
     #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vrsqrte.v2f32")]
     #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.frsqrte.v2f32")]
