@@ -2544,16 +2544,20 @@ mod tests {
     }
     #[simd_test(enable = "neon")]
     unsafe fn test_vabs_s64() {
-        let a = i64x2::new(i64::MIN, i64::MIN + 1);
-        let r: i64x2 = transmute(vabs_s64(transmute(a)));
-        let e = i64x2::new(i64::MIN, i64::MAX);
+        let a = i64x1::new(i64::MIN);
+        let r: i64x1 = transmute(vabs_s64(transmute(a)));
+        let e = i64x1::new(i64::MIN);
+        assert_eq!(r, e);
+        let a = i64x1::new(i64::MIN + 1);
+        let r: i64x1 = transmute(vabs_s64(transmute(a)));
+        let e = i64x1::new(i64::MAX);
         assert_eq!(r, e);
     }
     #[simd_test(enable = "neon")]
     unsafe fn test_vabsq_s64() {
-        let a = i64x4::new(i64::MIN, i64::MIN + 1, 0, -1);
-        let r: i64x4 = transmute(vabsq_s64(transmute(a)));
-        let e = i64x4::new(i64::MIN, i64::MAX, 0, 1);
+        let a = i64x2::new(i64::MIN, i64::MIN + 1);
+        let r: i64x2 = transmute(vabsq_s64(transmute(a)));
+        let e = i64x2::new(i64::MIN, i64::MAX);
         assert_eq!(r, e);
     }
 }
