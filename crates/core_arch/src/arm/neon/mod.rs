@@ -231,7 +231,7 @@ pub unsafe fn vabs_s16(a: int16x4_t) -> int16x4_t {
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(vabs))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(abs))]
 pub unsafe fn vabs_s32(a: int32x2_t) -> int32x2_t {
-    vabs_s32(a)
+    vabs_s32_(a)
 }
 /// Absolute value (wrapping).
 #[inline]
@@ -258,7 +258,7 @@ pub unsafe fn vabsq_s16(a: int16x8_t) -> int16x8_t {
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(vabs))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(abs))]
 pub unsafe fn vabsq_s32(a: int32x4_t) -> int32x4_t {
-    vabsq_s32(a)
+    vabsq_s32_(a)
 }
 
 /// Unsigned saturating extract narrow.
