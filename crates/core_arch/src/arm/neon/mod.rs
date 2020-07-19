@@ -4039,14 +4039,14 @@ mod tests {
     unsafe fn test_vabs_s16() {
         let a = i16x4::new(-1, 0, i16::MIN, i16::MAX);
         let r: i16x4 = transmute(vabs_s16(transmute(a)));
-        let e = i16x4::new(-1, 0, i16::MIN, i16::MAX);
+        let e = i16x4::new(1, 0, i16::MIN, i16::MAX);
         assert_eq!(r, e);
     }
     #[simd_test(enable = "neon")]
     unsafe fn test_vabsq_s16() {
         let a = i16x8::new(-1, 0, i16::MIN, i16::MAX, -1, 0, i16::MIN, i16::MAX);
         let r: i16x8 = transmute(vabsq_s16(transmute(a)));
-        let e = i16x8::new(-1, 0, i16::MIN, i16::MAX, -1, 0, i16::MIN, i16::MAX);
+        let e = i16x8::new(1, 0, i16::MIN, i16::MAX, -1, 0, i16::MIN, i16::MAX);
         assert_eq!(r, e);
     }
     #[simd_test(enable = "neon")]
