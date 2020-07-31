@@ -997,7 +997,7 @@ pub const fn _MM_SHUFFLE(z: u32, y: u32, x: u32, w: u32) -> i32 {
 /// `_mm_shuffle_ps` is supposed to take an `i32` instead of an `u32`
 /// as is the case for [other shuffle intrinsics](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_shuffle_).
 /// Performing an implicit type conversion between an unsigned integer and a signed integer
-/// does not cause a problem in C, however Rust's commitment to safety does not allow this.
+/// does not cause a problem in C, however Rust's commitment to strong typing does not allow this.
 #[inline]
 #[target_feature(enable = "sse")]
 #[cfg_attr(test, assert_instr(shufps, mask = 3))]
