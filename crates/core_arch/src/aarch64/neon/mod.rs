@@ -1844,7 +1844,7 @@ mod tests {
     }
     #[simd_test(enable = "neon")]
     unsafe fn test_vpaddq_u32() {
-        let a = u32x4::new(0, 1, 2, 3, 4);
+        let a = u32x4::new(0, 1, 2, 3);
         let b = u32x4::new(17, 18, 19, 20);
         let r: u32x4 = transmute(vpaddq_u32(transmute(a), transmute(b)));
         let e = u32x4::new(1, 5, 35, 39);
@@ -1927,7 +1927,7 @@ mod tests {
     unsafe fn test_vadd_s64() {
         let a = 1_i64;
         let b = 8_i64;
-        let e = 9_i64;
+        let e: int64x1_t = transmute(9_i64);
         let r: int64x1_t = transmute(vadd_s64(transmute(a), transmute(b)));
         assert_eq!(r, e);
     }
@@ -1936,7 +1936,7 @@ mod tests {
     unsafe fn test_vadd_u64() {
         let a = 1_u64;
         let b = 8_u64;
-        let e = 9_u64;
+        let e: uint64x1_t = transmute(9_u64);
         let r: uint64x1_t = transmute(vadd_u64(transmute(a), transmute(b)));
         assert_eq!(r, e);
     }
@@ -2850,84 +2850,84 @@ mod tests {
     #[simd_test(enable = "neon")]
     unsafe fn test_vaddv_s32() {
         let a = i32x2::new(1, -2);
-        let r: i32 = transmute(vaddv_s16(transmute(a)));
+        let r: i32 = transmute(vaddv_s32(transmute(a)));
         let e = -1_i32;
         assert_eq!(r, e);
     }
     #[simd_test(enable = "neon")]
     unsafe fn test_vaddv_u32() {
         let a = u32x2::new(1, 2);
-        let r: u32 = transmute(vaddv_u16(transmute(a)));
+        let r: u32 = transmute(vaddv_u32(transmute(a)));
         let e = 3_u32;
         assert_eq!(r, e);
     }
     #[simd_test(enable = "neon")]
     unsafe fn test_vaddv_s8() {
         let a = i8x8::new(1, 2, 3, 4, 5, 6, 7, -8);
-        let r: i8 = transmute(vaddv_s16(transmute(a)));
+        let r: i8 = transmute(vaddv_s8(transmute(a)));
         let e = 20_i8;
         assert_eq!(r, e);
     }
     #[simd_test(enable = "neon")]
     unsafe fn test_vaddv_u8() {
         let a = u8x8::new(1, 2, 3, 4, 5, 6, 7, 8);
-        let r: u8 = transmute(vaddv_u16(transmute(a)));
+        let r: u8 = transmute(vaddv_u8(transmute(a)));
         let e = 36_u8;
         assert_eq!(r, e);
     }
     #[simd_test(enable = "neon")]
     unsafe fn test_vaddvq_s16() {
         let a = i16x8::new(1, 2, 3, 4, 5, 6, 7, -8);
-        let r: i16 = transmute(vaddv_s16(transmute(a)));
+        let r: i16 = transmute(vaddvq_s16(transmute(a)));
         let e = 20_i16;
         assert_eq!(r, e);
     }
     #[simd_test(enable = "neon")]
     unsafe fn test_vaddvq_u16() {
         let a = u16x8::new(1, 2, 3, 4, 5, 6, 7, 8);
-        let r: u16 = transmute(vaddv_u16(transmute(a)));
+        let r: u16 = transmute(vaddvq_u16(transmute(a)));
         let e = 36_u16;
         assert_eq!(r, e);
     }
     #[simd_test(enable = "neon")]
     unsafe fn test_vaddvq_s32() {
         let a = i32x4::new(1, 2, 3, -4);
-        let r: i32 = transmute(vaddv_s16(transmute(a)));
+        let r: i32 = transmute(vaddvq_s32(transmute(a)));
         let e = -2_i32;
         assert_eq!(r, e);
     }
     #[simd_test(enable = "neon")]
     unsafe fn test_vaddvq_u32() {
         let a = u32x4::new(1, 2, 3, 4);
-        let r: u32 = transmute(vaddv_u16(transmute(a)));
+        let r: u32 = transmute(vaddvq_u32(transmute(a)));
         let e = 10_u32;
         assert_eq!(r, e);
     }
     #[simd_test(enable = "neon")]
     unsafe fn test_vaddvq_s8() {
         let a = i8x16::new(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, -16);
-        let r: i8 = transmute(vaddv_s16(transmute(a)));
+        let r: i8 = transmute(vaddvq_s8(transmute(a)));
         let e = 104_i8;
         assert_eq!(r, e);
     }
     #[simd_test(enable = "neon")]
     unsafe fn test_vaddvq_u8() {
         let a = u8x16::new(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
-        let r: u8 = transmute(vaddv_u16(transmute(a)));
+        let r: u8 = transmute(vaddvq_u8(transmute(a)));
         let e = 136_u8;
         assert_eq!(r, e);
     }
     #[simd_test(enable = "neon")]
     unsafe fn test_vaddvq_s64() {
         let a = i64x2::new(1, -2);
-        let r: i64 = transmute(vaddv_s16(transmute(a)));
+        let r: i64 = transmute(vaddvq_s64(transmute(a)));
         let e = -1_i64;
         assert_eq!(r, e);
     }
     #[simd_test(enable = "neon")]
     unsafe fn test_vaddvq_u64() {
-        let a = u32x4::new(1, 2);
-        let r: u32 = transmute(vaddv_u16(transmute(a)));
+        let a = u64x2::new(1, 2);
+        let r: u64 = transmute(vaddvq_u64(transmute(a)));
         let e = 3_u64;
         assert_eq!(r, e);
     }
