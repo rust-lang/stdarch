@@ -88,9 +88,6 @@ extern "C" {
     fn vpaddq_s32_(a: int32x4_t, b: int32x4_t) -> int32x4_t;
     #[link_name = "llvm.aarch64.neon.addp.v16i8"]
     fn vpaddq_s8_(a: int8x16_t, b: int8x16_t) -> int8x16_t;
-    #[link_name = "llvm.aarch64.neon.uaddv.i64.v2i64"]
-    fn vpaddd_s64_(a: int64x2_t) -> i64;
-    
     
     #[link_name = "llvm.aarch64.neon.saddv.i32.v4i16"]
     fn vaddv_s16_(a: int16x4_t) -> i16;
@@ -359,14 +356,14 @@ pub unsafe fn vpaddq_u8(a: uint8x16_t, b: uint8x16_t) -> uint8x16_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(addp))]
 pub unsafe fn vpaddd_s64(a: int64x2_t) -> i64 {
-    vpaddd_s64_(a)
+    transmute(vaddvq_u64_(transmute(a)))
 }
 /// Add pairwise
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(addp))]
 pub unsafe fn vpaddd_u64(a: uint64x2_t) -> u64 {
-    transmute(vpaddd_s64_(transmute(a)))
+    transmute(vaddvq_u64_(transmute(a)))
 }
 
 /// Add across vector
@@ -1927,8 +1924,8 @@ mod tests {
     unsafe fn test_vadd_s64() {
         let a = 1_i64;
         let b = 8_i64;
-        let e: int64x1_t = transmute(9_i64);
-        let r: int64x1_t = transmute(vadd_s64(transmute(a), transmute(b)));
+        let e = 9_i64;
+        let r: i64 = transmute(vadd_s64(transmute(a), transmute(b)));
         assert_eq!(r, e);
     }
 
@@ -1936,8 +1933,8 @@ mod tests {
     unsafe fn test_vadd_u64() {
         let a = 1_u64;
         let b = 8_u64;
-        let e: uint64x1_t = transmute(9_u64);
-        let r: uint64x1_t = transmute(vadd_u64(transmute(a), transmute(b)));
+        let e = 9_u64;
+        let r: u64 = transmute(vadd_u64(transmute(a), transmute(b)));
         assert_eq!(r, e);
     }
 
