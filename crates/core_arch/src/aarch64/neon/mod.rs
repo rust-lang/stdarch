@@ -82,9 +82,9 @@ extern "C" {
     #[link_name = "llvm.aarch64.neon.pmull64"]
     fn vmull_p64_(a: i64, b: i64) -> int8x16_t;
 
-    #[link_name = "llvm.aarch64.neon.addp.v8i16")]
+    #[link_name = "llvm.aarch64.neon.addp.v8i16"]
     fn vpaddq_s16_(a: int16x8_t, b: int16x8_t) -> int16x8_t;
-    #[link_name = "llvm.aarch64.neon.addp.v4i32")]
+    #[link_name = "llvm.aarch64.neon.addp.v4i32"]
     fn vpaddq_s32_(a: int32x4_t, b: int32x4_t) -> int32x4_t;
     #[link_name = "llvm.aarch64.neon.addp.v16i8"]
     fn vpaddq_s8_(a: int8x16_t, b: int8x16_t) -> int8x16_t;
