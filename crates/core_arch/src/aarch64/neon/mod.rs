@@ -365,7 +365,7 @@ pub unsafe fn vpaddd_s64(a: int64x2_t) -> i64 {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(addp))]
-pub unsafe fn vpaddd_u64(a: int64x2_t) -> i64 {
+pub unsafe fn vpaddd_u64(a: uint64x2_t) -> u64 {
     transmute(vpaddd_s64_(transmute(a)))
 }
 
