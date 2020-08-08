@@ -116,9 +116,9 @@ extern "C" {
     fn vaddvq_u32_(a: uint32x4_t) -> u32;
     #[link_name = "llvm.aarch64.neon.uaddv.i32.v16i8"]
     fn vaddvq_u8_(a: uint8x16_t) -> u8;
-    #[link_name = "llvm.aarch64.neon.saddv.i32.v2i64"]
+    #[link_name = "llvm.aarch64.neon.saddv.i64.v2i64"]
     fn vaddvq_s64_(a: int64x2_t) -> i64;
-    #[link_name = "llvm.aarch64.neon.uaddv.i32.v2i64"]
+    #[link_name = "llvm.aarch64.neon.uaddv.i64.v2i64"]
     fn vaddvq_u64_(a: uint64x2_t) -> u64;
 
     #[link_name = "llvm.aarch64.neon.smaxv.i8.v8i8"]
