@@ -376,7 +376,7 @@ pub unsafe fn vaddv_s16(a: int16x4_t) -> i16 {
 /// Add across vector
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(addv))]
+#[cfg_attr(test, assert_instr(addp))]
 pub unsafe fn vaddv_s32(a: int32x2_t) -> i32 {
     vaddv_s32_(a)
 }
@@ -397,7 +397,7 @@ pub unsafe fn vaddv_u16(a: uint16x4_t) -> u16 {
 /// Add across vector
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(addv))]
+#[cfg_attr(test, assert_instr(addp))]
 pub unsafe fn vaddv_u32(a: uint32x2_t) -> u32 {
     vaddv_u32_(a)
 }
@@ -453,14 +453,14 @@ pub unsafe fn vaddvq_u8(a: uint8x16_t) -> u8 {
 /// Add across vector
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(addv))]
+#[cfg_attr(test, assert_instr(addp))]
 pub unsafe fn vaddvq_s64(a: int64x2_t) -> i64 {
     vaddvq_s64_(a)
 }
 /// Add across vector
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(addv))]
+#[cfg_attr(test, assert_instr(addp))]
 pub unsafe fn vaddvq_u64(a: uint64x2_t) -> u64 {
     vaddvq_u64_(a)
 }
@@ -1828,7 +1828,7 @@ mod tests {
         let a = i8x16::new(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
         let b = i8x16::new(0, -1, -2, -3, -4, -5, -6, -7, -8, -8, -10, -11, -12, -13, -14, -15);
         let r: i8x16 = transmute(vpaddq_s8(transmute(a), transmute(b)));
-        let e = i8x16::new(3, 7, 11, 15, 19, 23, 27, 31, -1, -5, -9, -13, -17, -21, -25, -29);
+        let e = i8x16::new(3, 7, 11, 15, 19, 23, 27, 31, -1, -5, -9, -13, -16, -21, -25, -29);
         assert_eq!(r, e);
     }
     #[simd_test(enable = "neon")]
@@ -2890,7 +2890,7 @@ mod tests {
     unsafe fn test_vaddvq_s32() {
         let a = i32x4::new(1, 2, 3, -4);
         let r: i32 = transmute(vaddvq_s32(transmute(a)));
-        let e = -2_i32;
+        let e = 2_i32;
         assert_eq!(r, e);
     }
     #[simd_test(enable = "neon")]
