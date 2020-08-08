@@ -99,11 +99,11 @@ extern "C" {
     #[link_name = "llvm.aarch64.neon.saddv.i32.v8i8"]
     fn vaddv_s8_(a: int8x8_t) -> i8;
     #[link_name = "llvm.aarch64.neon.uaddv.i32.v4i16"]
-    fn vaddv_u16_(a: int16x4_t) -> u16;
+    fn vaddv_u16_(a: uint16x4_t) -> u16;
     #[link_name = "llvm.aarch64.neon.uaddv.i32.v2i32"]
-    fn vaddv_u32_(a: int32x2_t) -> u32;
+    fn vaddv_u32_(a: uint32x2_t) -> u32;
     #[link_name = "llvm.aarch64.neon.uaddv.i32.v8i8"]
-    fn vaddv_u8_(a: int8x8_t) -> u8;
+    fn vaddv_u8_(a: uint8x8_t) -> u8;
     #[link_name = "llvm.aarch64.neon.saddv.i32.v8i16"]
     fn vaddvq_s16_(a: int16x8_t) -> i16;
     #[link_name = "llvm.aarch64.neon.saddv.i32.v4i32"]
@@ -111,15 +111,15 @@ extern "C" {
     #[link_name = "llvm.aarch64.neon.saddv.i32.v16i8"]
     fn vaddvq_s8_(a: int8x16_t) -> i8;
     #[link_name = "llvm.aarch64.neon.uaddv.i32.v8i16"]
-    fn vaddvq_u16_(a: int16x8_t) -> u16;
+    fn vaddvq_u16_(a: uint16x8_t) -> u16;
     #[link_name = "llvm.aarch64.neon.uaddv.i32.v3i32"]
-    fn vaddv_u32_(a: int32x4_t) -> u32;
+    fn vaddvq_u32_(a: uint32x4_t) -> u32;
     #[link_name = "llvm.aarch64.neon.uaddv.i32.v16i8"]
-    fn vaddvq_u8_(a: int8x16_t) -> u8;
+    fn vaddvq_u8_(a: uint8x16_t) -> u8;
     #[link_name = "llvm.aarch64.neon.saddv.i32.v2i64"]
     fn vaddvq_s64_(a: int64x2_t) -> i64;
     #[link_name = "llvm.aarch64.neon.uaddv.i32.v2i64"]
-    fn vaddvq_u64_(a: int64x2_t) -> u64;
+    fn vaddvq_u64_(a: uint64x2_t) -> u64;
 
     #[link_name = "llvm.aarch64.neon.smaxv.i8.v8i8"]
     fn vmaxv_s8_(a: int8x8_t) -> i8;
@@ -316,29 +316,29 @@ pub unsafe fn vabsq_s64(a: int64x2_t) -> int64x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(addp))]
-pub unsafe fn vpaddq_s16(a: int8x16_t, b: int8x16_t) -> int8x16_t {
+pub unsafe fn vpaddq_s16(a: int16x8_t, b: int16x8_t) -> int16x8_t {
     vpaddq_s16_(a, b)
 }
 /// Add pairwise
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(addp))]
-pub unsafe fn vpaddq_u16(a: uint8x16_t, b: uint8x16_t) -> uint8x16_t {
-    transmute(vpaddq_s16_(transmute(a), transmute(b))
+pub unsafe fn vpaddq_u16(a: uint16x8_t, b: uint16x8_t) -> uint16x8_t {
+    transmute(vpaddq_s16_(transmute(a), transmute(b)))
 }
 /// Add pairwise
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(addp))]
-pub unsafe fn vpaddq_s32(a: int8x16_t, b: int8x16_t) -> int8x16_t {
+pub unsafe fn vpaddq_s32(a: int32x4_t, b: int32x4_t) -> int32x4_t {
     vpaddq_s32_(a, b)
 }
 /// Add pairwise
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(addp))]
-pub unsafe fn vpaddq_u32(a: uint8x16_t, b: uint8x16_t) -> uint8x16_t {
-    transmute(vpaddq_s32_(transmute(a), transmute(b))
+pub unsafe fn vpaddq_u32(a: uint32x4_t, b: uint32x4_t) -> uint32x4_t {
+    transmute(vpaddq_s32_(transmute(a), transmute(b)))
 }
 /// Add pairwise
 #[inline]
@@ -352,7 +352,7 @@ pub unsafe fn vpaddq_s8(a: int8x16_t, b: int8x16_t) -> int8x16_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(addp))]
 pub unsafe fn vpaddq_u8(a: uint8x16_t, b: uint8x16_t) -> uint8x16_t {
-    transmute(vpaddq_s8_(transmute(a), transmute(b))
+    transmute(vpaddq_s8_(transmute(a), transmute(b)))
 }
 /// Add pairwise
 #[inline]
