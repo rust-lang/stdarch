@@ -109,7 +109,7 @@ extern "C" {
     fn vaddvq_s8_(a: int8x16_t) -> i8;
     #[link_name = "llvm.aarch64.neon.uaddv.i32.v8i16"]
     fn vaddvq_u16_(a: uint16x8_t) -> u16;
-    #[link_name = "llvm.aarch64.neon.uaddv.i32.v3i32"]
+    #[link_name = "llvm.aarch64.neon.uaddv.i32.v4i32"]
     fn vaddvq_u32_(a: uint32x4_t) -> u32;
     #[link_name = "llvm.aarch64.neon.uaddv.i32.v16i8"]
     fn vaddvq_u8_(a: uint8x16_t) -> u8;
