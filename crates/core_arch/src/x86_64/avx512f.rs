@@ -52,6 +52,72 @@ mod tests {
     use crate::core_arch::x86_64::*;
 
     #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_abs_epi64() {
+        let a = _mm512_setr_epi64(
+            0, 1, -1, i64::MAX,
+            i64::MIN, 100, -100, -32
+        );
+        let r = _mm512_abs_epi64(a);
+        let e = _mm512_setr_epi64(
+            0,
+            1,
+            1,
+            i64::MAX,
+            i64::MAX.wrapping_add(1),
+            100,
+            100,
+            32
+        );
+        assert_eq_m512i(r, e);
+    } 
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_abs_epi64() {
+        #[rustfmt::skip]
+        let a = _mm512_setr_epi64(
+            0, 1, -1, i64::MAX,
+            i64::MIN, 100, -100, -32
+        );
+        let r = _mm512_mask_abs_epi64(a, 0, a);
+        assert_eq_m512i(r, a);
+        let r = _mm512_mask_abs_epi64(a, 0b11111111, a);
+        let e = _mm512_setr_epi64(
+            0,
+            1,
+            1,
+            i64::MAX,
+            i64::MAX.wrapping_add(1),
+            100,
+            100,
+            32
+        );
+        assert_eq_m512i(r, e);
+    }
+
+        #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_maskz_abs_epi64() {
+        #[rustfmt::skip]
+        let a = _mm512_setr_epi64(
+            0, 1, -1, i64::MAX,
+            i64::MIN, 100, -100, -32
+        );
+        let r = _mm512_maskz_abs_epi64(0, a);
+        assert_eq_m512i(r, _mm512_setzero_si512());
+        let r = _mm512_maskz_abs_epi64(0b01111111, a);
+        let e = _mm512_setr_epi64(
+            0,
+            1,
+            1,
+            i64::MAX,
+            i64::MAX.wrapping_add(1),
+            100,
+            100,
+            0
+        );
+        assert_eq_m512i(r, e);
+    }
+    
+    #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_setzero_pd() {
         assert_eq_m512d(_mm512_setzero_pd(), _mm512_set1_pd(0.));
     }
