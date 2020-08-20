@@ -1053,7 +1053,7 @@ pub unsafe fn _mm512_maskz_ror_epi64(k: __mmask8, a: __m512i, imm8: i32) -> __m5
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_slli_epi32&expand=5310)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpsllid, imm8 = 1))]
+#[cfg_attr(test, assert_instr(vpslld, imm8 = 1))]
 #[rustc_args_required_const(1)]
 pub unsafe fn _mm512_slli_epi32(a: __m512i, imm8: u32) -> __m512i {
     assert!(imm8 <= 255);
@@ -1065,7 +1065,7 @@ pub unsafe fn _mm512_slli_epi32(a: __m512i, imm8: u32) -> __m512i {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_slli_epi32&expand=5308)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpsllid, imm8 = 1))]
+#[cfg_attr(test, assert_instr(vpslld, imm8 = 1))]
 #[rustc_args_required_const(3)]
 pub unsafe fn _mm512_mask_slli_epi32(src: __m512i, k: __mmask16, a: __m512i, imm8: u32) -> __m512i {
     assert!(imm8 <= 255);
@@ -1078,7 +1078,7 @@ pub unsafe fn _mm512_mask_slli_epi32(src: __m512i, k: __mmask16, a: __m512i, imm
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_slli_epi32&expand=5309)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpsllid, imm8 = 1))]
+#[cfg_attr(test, assert_instr(vpslld, imm8 = 1))]
 #[rustc_args_required_const(2)]
 pub unsafe fn _mm512_maskz_slli_epi32(k: __mmask16, a: __m512i, imm8: u32) -> __m512i {
     assert!(imm8 <= 255);
@@ -1092,7 +1092,7 @@ pub unsafe fn _mm512_maskz_slli_epi32(k: __mmask16, a: __m512i, imm8: u32) -> __
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_srli_epi32&expand=5522)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpsrlid, imm8 = 1))]
+#[cfg_attr(test, assert_instr(vpsrld, imm8 = 1))]
 #[rustc_args_required_const(1)]
 pub unsafe fn _mm512_srli_epi32(a: __m512i, imm8: u32) -> __m512i {
     assert!(imm8 <= 255);
@@ -1104,7 +1104,7 @@ pub unsafe fn _mm512_srli_epi32(a: __m512i, imm8: u32) -> __m512i {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_srli_epi32&expand=5520)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpsrlid, imm8 = 1))]
+#[cfg_attr(test, assert_instr(vpsrld, imm8 = 1))]
 #[rustc_args_required_const(3)]
 pub unsafe fn _mm512_mask_srli_epi32(src: __m512i, k: __mmask16, a: __m512i, imm8: u32) -> __m512i {
     assert!(imm8 <= 255);
@@ -1117,7 +1117,7 @@ pub unsafe fn _mm512_mask_srli_epi32(src: __m512i, k: __mmask16, a: __m512i, imm
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_srli_epi32&expand=5521)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpsrlid, imm8 = 1))]
+#[cfg_attr(test, assert_instr(vpsrld, imm8 = 1))]
 #[rustc_args_required_const(2)]
 pub unsafe fn _mm512_maskz_srli_epi32(k: __mmask16, a: __m512i, imm8: u32) -> __m512i {
     assert!(imm8 <= 255);
@@ -1131,7 +1131,7 @@ pub unsafe fn _mm512_maskz_srli_epi32(k: __mmask16, a: __m512i, imm8: u32) -> __
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_slli_epi64&expand=5319)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpslliq, imm8 = 1))]
+#[cfg_attr(test, assert_instr(vpsllq, imm8 = 1))]
 #[rustc_args_required_const(1)]
 pub unsafe fn _mm512_slli_epi64(a: __m512i, imm8: u32) -> __m512i {
     assert!(imm8 <= 255);
@@ -1143,7 +1143,7 @@ pub unsafe fn _mm512_slli_epi64(a: __m512i, imm8: u32) -> __m512i {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_slli_epi64&expand=5317)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpslliq, imm8 = 1))]
+#[cfg_attr(test, assert_instr(vpsllq, imm8 = 1))]
 #[rustc_args_required_const(3)]
 pub unsafe fn _mm512_mask_slli_epi64(src: __m512i, k: __mmask8, a: __m512i, imm8: u32) -> __m512i {
     assert!(imm8 <= 255);
@@ -1156,7 +1156,7 @@ pub unsafe fn _mm512_mask_slli_epi64(src: __m512i, k: __mmask8, a: __m512i, imm8
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_slli_epi64&expand=5318)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpslliq, imm8 = 1))]
+#[cfg_attr(test, assert_instr(vpsllq, imm8 = 1))]
 #[rustc_args_required_const(2)]
 pub unsafe fn _mm512_maskz_slli_epi64(k: __mmask8, a: __m512i, imm8: u32) -> __m512i {
     assert!(imm8 <= 255);
@@ -1170,7 +1170,7 @@ pub unsafe fn _mm512_maskz_slli_epi64(k: __mmask8, a: __m512i, imm8: u32) -> __m
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_srli_epi64&expand=5531)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpsrliq, imm8 = 1))]
+#[cfg_attr(test, assert_instr(vpsrlq, imm8 = 1))]
 #[rustc_args_required_const(1)]
 pub unsafe fn _mm512_srli_epi64(a: __m512i, imm8: u32) -> __m512i {
     assert!(imm8 <= 255);
@@ -1182,7 +1182,7 @@ pub unsafe fn _mm512_srli_epi64(a: __m512i, imm8: u32) -> __m512i {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_srli_epi64&expand=5529)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpsrliq, imm8 = 1))]
+#[cfg_attr(test, assert_instr(vpsrlq, imm8 = 1))]
 #[rustc_args_required_const(3)]
 pub unsafe fn _mm512_mask_srli_epi64(src: __m512i, k: __mmask8, a: __m512i, imm8: u32) -> __m512i {
     assert!(imm8 <= 255);
@@ -1195,7 +1195,7 @@ pub unsafe fn _mm512_mask_srli_epi64(src: __m512i, k: __mmask8, a: __m512i, imm8
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_srli_epi64&expand=5530)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpsrliq, imm8 = 1))]
+#[cfg_attr(test, assert_instr(vpsrlq, imm8 = 1))]
 #[rustc_args_required_const(2)]
 pub unsafe fn _mm512_maskz_srli_epi64(k: __mmask8, a: __m512i, imm8: u32) -> __m512i {
     assert!(imm8 <= 255);
@@ -1437,7 +1437,7 @@ pub unsafe fn _mm512_maskz_sra_epi64(k: __mmask8, a: __m512i, count: __m128i) ->
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_srai_epi32&expand=5436)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpsraid, imm8 = 1))]
+#[cfg_attr(test, assert_instr(vpsrad, imm8 = 1))]
 #[rustc_args_required_const(1)]
 pub unsafe fn _mm512_srai_epi32(a: __m512i, imm8: u32) -> __m512i {
     assert!(imm8 <= 255);
@@ -1449,7 +1449,7 @@ pub unsafe fn _mm512_srai_epi32(a: __m512i, imm8: u32) -> __m512i {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_srai_epi32&expand=5434)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpsraid, imm8 = 1))]
+#[cfg_attr(test, assert_instr(vpsrad, imm8 = 1))]
 #[rustc_args_required_const(3)]
 pub unsafe fn _mm512_mask_srai_epi32(src: __m512i, k: __mmask16, a: __m512i, imm8: u32) -> __m512i {
     assert!(imm8 <= 255);
@@ -1462,7 +1462,7 @@ pub unsafe fn _mm512_mask_srai_epi32(src: __m512i, k: __mmask16, a: __m512i, imm
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_srai_epi32&expand=5435)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpsraid, imm8 = 1))]
+#[cfg_attr(test, assert_instr(vpsrad, imm8 = 1))]
 #[rustc_args_required_const(2)]
 pub unsafe fn _mm512_maskz_srai_epi32(k: __mmask16, a: __m512i, imm8: u32) -> __m512i {
     assert!(imm8 <= 255);
@@ -1476,7 +1476,7 @@ pub unsafe fn _mm512_maskz_srai_epi32(k: __mmask16, a: __m512i, imm8: u32) -> __
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_srai_epi64&expand=5445)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpsraiq, imm8 = 1))]
+#[cfg_attr(test, assert_instr(vpsraq, imm8 = 1))]
 #[rustc_args_required_const(1)]
 pub unsafe fn _mm512_srai_epi64(a: __m512i, imm8: u32) -> __m512i {
     assert!(imm8 <= 255);
@@ -1488,7 +1488,7 @@ pub unsafe fn _mm512_srai_epi64(a: __m512i, imm8: u32) -> __m512i {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_srai_epi64&expand=5443)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpsraiq, imm8 = 1))]
+#[cfg_attr(test, assert_instr(vpsraq, imm8 = 1))]
 #[rustc_args_required_const(3)]
 pub unsafe fn _mm512_mask_srai_epi64(src: __m512i, k: __mmask8, a: __m512i, imm8: u32) -> __m512i {
     assert!(imm8 <= 255);
@@ -1501,7 +1501,7 @@ pub unsafe fn _mm512_mask_srai_epi64(src: __m512i, k: __mmask8, a: __m512i, imm8
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_srai_epi64&expand=5444)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpsraiq, imm8 = 1))]
+#[cfg_attr(test, assert_instr(vpsraq, imm8 = 1))]
 #[rustc_args_required_const(2)]
 pub unsafe fn _mm512_maskz_srai_epi64(k: __mmask8, a: __m512i, imm8: u32) -> __m512i {
     assert!(imm8 <= 255);
