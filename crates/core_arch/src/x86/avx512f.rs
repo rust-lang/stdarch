@@ -3791,7 +3791,7 @@ extern "C" {
 
     #[link_name = "llvm.x86.avx512.mask.prol.d.512"]
     fn vprold(a: i32x16, i8: i32) -> i32x16;
-    #[link_name = "llvm.x86.avx512.mask.pror.d.512"]
+    #[link_name = "llvm.x86.avx512.pror.d.512"]
     fn vprord(a: i32x16, i8: i32) -> i32x16;
     #[link_name = "llvm.x86.avx512.mask.prol.q.512"]
     fn vprolq(a: i64x8, i8: i32) -> i64x8;
