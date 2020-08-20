@@ -1437,7 +1437,7 @@ pub unsafe fn _mm512_maskz_sra_epi64(k: __mmask8, a: __m512i, count: __m128i) ->
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_srai_epi32&expand=5436)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpsraid))]
+#[cfg_attr(test, assert_instr(vpsraid, imm8 = 1))]
 #[rustc_args_required_const(1)]
 pub unsafe fn _mm512_srai_epi32(a: __m512i, imm8: u32) -> __m512i {
     assert!(imm8 <= 255);
@@ -1454,7 +1454,6 @@ pub unsafe fn _mm512_srai_epi32(a: __m512i, imm8: u32) -> __m512i {
 pub unsafe fn _mm512_mask_srai_epi32(src: __m512i, k: __mmask16, a: __m512i, imm8: u32) -> __m512i {
     assert!(imm8 <= 255);
     let shf = vpsraid(a.as_i32x16(), imm8);
-    //let shf = _mm512_srai_epi32(a, imm8).as_i32x16();
     transmute(simd_select_bitmask(k, shf, src.as_i32x16()))
 }
 
@@ -1468,7 +1467,6 @@ pub unsafe fn _mm512_mask_srai_epi32(src: __m512i, k: __mmask16, a: __m512i, imm
 pub unsafe fn _mm512_maskz_srai_epi32(k: __mmask16, a: __m512i, imm8: u32) -> __m512i {
     assert!(imm8 <= 255);
     let shf = vpsraid(a.as_i32x16(), imm8);
-    //let shf = _mm512_srai_epi32(a, imm8).as_i32x16();
     let zero = _mm512_setzero_si512().as_i32x16();
     transmute(simd_select_bitmask(k, shf, zero))
 }
@@ -1495,7 +1493,6 @@ pub unsafe fn _mm512_srai_epi64(a: __m512i, imm8: u32) -> __m512i {
 pub unsafe fn _mm512_mask_srai_epi64(src: __m512i, k: __mmask8, a: __m512i, imm8: u32) -> __m512i {
     assert!(imm8 <= 255);
     let shf = vpsraiq(a.as_i64x8(), imm8);
-    //let shf = _mm512_srai_epi64(a, imm8).as_i64x8();
     transmute(simd_select_bitmask(k, shf, src.as_i64x8()))
 }
 
@@ -1509,7 +1506,6 @@ pub unsafe fn _mm512_mask_srai_epi64(src: __m512i, k: __mmask8, a: __m512i, imm8
 pub unsafe fn _mm512_maskz_srai_epi64(k: __mmask8, a: __m512i, imm8: u32) -> __m512i {
     assert!(imm8 <= 255);
     let shf = vpsraiq(a.as_i64x8(), imm8);
-    //let shf = _mm512_srai_epi64(a, imm8).as_i64x8();
     let zero = _mm512_setzero_si512().as_i64x8();
     transmute(simd_select_bitmask(k, shf, zero))
 }
