@@ -1304,7 +1304,7 @@ pub unsafe fn _mm_store_si128(mem_addr: *mut __m128i, a: __m128i) {
 #[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(movd))]
-#[unstable(feature = "simd_x86", issue = "none", reason = "needs verification")]
+#[stable(feature = "simd_x86", since = "1.27.0")]
 pub unsafe fn _mm_storeu_si32(mem_addr: *mut u8, a: __m128i) {
     ptr::copy_nonoverlapping(&a as *const _ as *const u8, mem_addr, 4);
 }

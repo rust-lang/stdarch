@@ -1460,7 +1460,7 @@ pub unsafe fn _mm_storer_ps(p: *mut f32, a: __m128) {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_storeu_si16)
 #[inline]
 #[target_feature(enable = "sse")]
-#[unstable(feature = "simd_x86", issue = "none", reason = "needs verification")]
+#[stable(feature = "simd_x86", since = "1.27.0")]
 pub unsafe fn _mm_storeu_si16(mem_addr: *mut u8, a: __m128i) {
     ptr::copy_nonoverlapping(&a as *const _ as *const u8, mem_addr, 2);
 }
@@ -1473,7 +1473,7 @@ pub unsafe fn _mm_storeu_si16(mem_addr: *mut u8, a: __m128i) {
 #[inline]
 #[target_feature(enable = "sse")]
 #[cfg_attr(test, assert_instr(movq))]
-#[unstable(feature = "simd_x86", issue = "none", reason = "needs verification")]
+#[stable(feature = "simd_x86", since = "1.27.0")]
 pub unsafe fn _mm_storeu_si64(mem_addr: *mut u8, a: __m128i) {
     ptr::copy_nonoverlapping(&a as *const _ as *const u8, mem_addr, 8);
 }
