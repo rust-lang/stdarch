@@ -936,7 +936,7 @@ pub unsafe fn _mm512_maskz_rol_epi32(k: __mmask16, a: __m512i, imm8: i32) -> __m
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_ror_epi32&expand=4721)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vprord, imm8 = 1))]
+#[cfg_attr(test, assert_instr(vprold, imm8 = 233))]
 #[rustc_args_required_const(1)]
 pub unsafe fn _mm512_ror_epi32(a: __m512i, imm8: i32) -> __m512i {
     assert!(imm8 >= 0 && imm8 <= 255);
@@ -948,7 +948,7 @@ pub unsafe fn _mm512_ror_epi32(a: __m512i, imm8: i32) -> __m512i {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_ror_epi32&expand=4719)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vprord, imm8 = 1))]
+#[cfg_attr(test, assert_instr(vprold, imm8 = 123))]
 #[rustc_args_required_const(3)]
 pub unsafe fn _mm512_mask_ror_epi32(src: __m512i, k: __mmask16, a: __m512i, imm8: i32) -> __m512i {
     assert!(imm8 >= 0 && imm8 <= 255);
@@ -961,7 +961,7 @@ pub unsafe fn _mm512_mask_ror_epi32(src: __m512i, k: __mmask16, a: __m512i, imm8
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_ror_epi32&expand=4720)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vprord, imm8 = 1))]
+#[cfg_attr(test, assert_instr(vprold, imm8 = 123))]
 #[rustc_args_required_const(2)]
 pub unsafe fn _mm512_maskz_ror_epi32(k: __mmask16, a: __m512i, imm8: i32) -> __m512i {
     assert!(imm8 >= 0 && imm8 <= 255);
@@ -1014,7 +1014,7 @@ pub unsafe fn _mm512_maskz_rol_epi64(k: __mmask8, a: __m512i, imm8: i32) -> __m5
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_ror_epi64&expand=4730)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vprorq, imm8 = 1))]
+#[cfg_attr(test, assert_instr(vprolq, imm8 = 15))]
 #[rustc_args_required_const(1)]
 pub unsafe fn _mm512_ror_epi64(a: __m512i, imm8: i32) -> __m512i {
     assert!(imm8 >= 0 && imm8 <= 255);
@@ -1026,7 +1026,7 @@ pub unsafe fn _mm512_ror_epi64(a: __m512i, imm8: i32) -> __m512i {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_ror_epi64&expand=4728)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vprorq, imm8 = 1))]
+#[cfg_attr(test, assert_instr(vprolq, imm8 = 15))]
 #[rustc_args_required_const(3)]
 pub unsafe fn _mm512_mask_ror_epi64(src: __m512i, k: __mmask8, a: __m512i, imm8: i32) -> __m512i {
     assert!(imm8 >= 0 && imm8 <= 255);
@@ -1039,7 +1039,7 @@ pub unsafe fn _mm512_mask_ror_epi64(src: __m512i, k: __mmask8, a: __m512i, imm8:
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_ror_epi64&expand=4729)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vprorq, imm8 = 1))]
+#[cfg_attr(test, assert_instr(vprolq, imm8 = 15))]
 #[rustc_args_required_const(2)]
 pub unsafe fn _mm512_maskz_ror_epi64(k: __mmask8, a: __m512i, imm8: i32) -> __m512i {
     assert!(imm8 >= 0 && imm8 <= 255);
@@ -1053,7 +1053,7 @@ pub unsafe fn _mm512_maskz_ror_epi64(k: __mmask8, a: __m512i, imm8: i32) -> __m5
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_slli_epi32&expand=5310)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpslld, imm8 = 1))]
+#[cfg_attr(test, assert_instr(vpslld, imm8 = 5))]
 #[rustc_args_required_const(1)]
 pub unsafe fn _mm512_slli_epi32(a: __m512i, imm8: u32) -> __m512i {
     assert!(imm8 <= 255);
@@ -1065,7 +1065,7 @@ pub unsafe fn _mm512_slli_epi32(a: __m512i, imm8: u32) -> __m512i {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_slli_epi32&expand=5308)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpslld, imm8 = 1))]
+#[cfg_attr(test, assert_instr(vpslld, imm8 = 5))]
 #[rustc_args_required_const(3)]
 pub unsafe fn _mm512_mask_slli_epi32(src: __m512i, k: __mmask16, a: __m512i, imm8: u32) -> __m512i {
     assert!(imm8 <= 255);
@@ -1078,7 +1078,7 @@ pub unsafe fn _mm512_mask_slli_epi32(src: __m512i, k: __mmask16, a: __m512i, imm
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_slli_epi32&expand=5309)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpslld, imm8 = 1))]
+#[cfg_attr(test, assert_instr(vpslld, imm8 = 5))]
 #[rustc_args_required_const(2)]
 pub unsafe fn _mm512_maskz_slli_epi32(k: __mmask16, a: __m512i, imm8: u32) -> __m512i {
     assert!(imm8 <= 255);
@@ -1131,7 +1131,7 @@ pub unsafe fn _mm512_maskz_srli_epi32(k: __mmask16, a: __m512i, imm8: u32) -> __
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_slli_epi64&expand=5319)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpsllq, imm8 = 1))]
+#[cfg_attr(test, assert_instr(vpsllq, imm8 = 5))]
 #[rustc_args_required_const(1)]
 pub unsafe fn _mm512_slli_epi64(a: __m512i, imm8: u32) -> __m512i {
     assert!(imm8 <= 255);
@@ -1143,7 +1143,7 @@ pub unsafe fn _mm512_slli_epi64(a: __m512i, imm8: u32) -> __m512i {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_slli_epi64&expand=5317)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpsllq, imm8 = 1))]
+#[cfg_attr(test, assert_instr(vpsllq, imm8 = 5))]
 #[rustc_args_required_const(3)]
 pub unsafe fn _mm512_mask_slli_epi64(src: __m512i, k: __mmask8, a: __m512i, imm8: u32) -> __m512i {
     assert!(imm8 <= 255);
@@ -1156,7 +1156,7 @@ pub unsafe fn _mm512_mask_slli_epi64(src: __m512i, k: __mmask8, a: __m512i, imm8
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_slli_epi64&expand=5318)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpsllq, imm8 = 1))]
+#[cfg_attr(test, assert_instr(vpsllq, imm8 = 5))]
 #[rustc_args_required_const(2)]
 pub unsafe fn _mm512_maskz_slli_epi64(k: __mmask8, a: __m512i, imm8: u32) -> __m512i {
     assert!(imm8 <= 255);
@@ -1885,7 +1885,7 @@ pub unsafe fn _mm512_maskz_srlv_epi64(k: __mmask8, a: __m512i, count: __m512i) -
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_and_epi32&expand=272)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpandd))]
+#[cfg_attr(test, assert_instr(vpandq))]
 pub unsafe fn _mm512_and_epi32(a: __m512i, b: __m512i) -> __m512i {
     transmute(simd_and(a.as_i32x16(), b.as_i32x16()))
 }
@@ -1951,7 +1951,7 @@ pub unsafe fn _mm512_maskz_and_epi64(k: __mmask8, a: __m512i, b: __m512i) -> __m
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_and_si512&expand=302)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpandd))]
+#[cfg_attr(test, assert_instr(vpandq))]
 pub unsafe fn _mm512_and_si512(a: __m512i, b: __m512i) -> __m512i {
     transmute(simd_and(a.as_i32x16(), b.as_i32x16()))
 }
@@ -1961,7 +1961,7 @@ pub unsafe fn _mm512_and_si512(a: __m512i, b: __m512i) -> __m512i {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_or_epi32&expand=4042)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpord))]
+#[cfg_attr(test, assert_instr(vporq))]
 pub unsafe fn _mm512_or_epi32(a: __m512i, b: __m512i) -> __m512i {
     transmute(simd_or(a.as_i32x16(), b.as_i32x16()))
 }
@@ -2027,7 +2027,7 @@ pub unsafe fn _mm512_maskz_or_epi64(k: __mmask8, a: __m512i, b: __m512i) -> __m5
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_or_si512&expand=4072)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpord))]
+#[cfg_attr(test, assert_instr(vporq))]
 pub unsafe fn _mm512_or_si512(a: __m512i, b: __m512i) -> __m512i {
     transmute(simd_or(a.as_i32x16(), b.as_i32x16()))
 }
@@ -2037,7 +2037,7 @@ pub unsafe fn _mm512_or_si512(a: __m512i, b: __m512i) -> __m512i {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_xor_epi32&expand=6142)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpxord))]
+#[cfg_attr(test, assert_instr(vpxorq))]
 pub unsafe fn _mm512_xor_epi32(a: __m512i, b: __m512i) -> __m512i {
     transmute(simd_xor(a.as_i32x16(), b.as_i32x16()))
 }
@@ -2103,7 +2103,7 @@ pub unsafe fn _mm512_maskz_xor_epi64(k: __mmask8, a: __m512i, b: __m512i) -> __m
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_xor_si512&expand=6172)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpxord))]
+#[cfg_attr(test, assert_instr(vpxorq))]
 pub unsafe fn _mm512_xor_si512(a: __m512i, b: __m512i) -> __m512i {
     transmute(simd_xor(a.as_i32x16(), b.as_i32x16()))
 }
@@ -2113,9 +2113,9 @@ pub unsafe fn _mm512_xor_si512(a: __m512i, b: __m512i) -> __m512i {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=kand_mask16&expand=3212)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(kandw))]
+#[cfg_attr(test, assert_instr(and))] // generate normal and code instead of kandw
 pub unsafe fn _kand_mask16(a: __mmask16, b: __mmask16) -> __mmask16 {
-    kandw(a, b)
+    transmute(kandw(a, b))
 }
 
 /// Compute the bitwise AND of 16-bit masks a and b, and store the result in k.
@@ -2123,9 +2123,9 @@ pub unsafe fn _kand_mask16(a: __mmask16, b: __mmask16) -> __mmask16 {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_kand&expand=3210)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(kandw))]
+#[cfg_attr(test, assert_instr(and))] // generate normal and code instead of kandw
 pub unsafe fn _mm512_kand(a: __mmask16, b: __mmask16) -> __mmask16 {
-    kandw(a, b)
+    transmute(kandw(a, b))
 }
 
 /// Compute the bitwise OR of 16-bit masks a and b, and store the result in k.
@@ -2133,9 +2133,9 @@ pub unsafe fn _mm512_kand(a: __mmask16, b: __mmask16) -> __mmask16 {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=kor_mask16&expand=3239)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(korw))]
+#[cfg_attr(test, assert_instr(or))] // generate normal or code instead of korw
 pub unsafe fn _kor_mask16(a: __mmask16, b: __mmask16) -> __mmask16 {
-    korw(a, b)
+    transmute(korw(a, b))
 }
 
 /// Compute the bitwise OR of 16-bit masks a and b, and store the result in k.
@@ -2143,9 +2143,9 @@ pub unsafe fn _kor_mask16(a: __mmask16, b: __mmask16) -> __mmask16 {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_kor&expand=3237)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(korw))]
+#[cfg_attr(test, assert_instr(or))] // generate normal or code instead of korw
 pub unsafe fn _mm512_kor(a: __mmask16, b: __mmask16) -> __mmask16 {
-    korw(a, b)
+    transmute(korw(a, b))
 }
 
 /// Compute the bitwise XOR of 16-bit masks a and b, and store the result in k.
@@ -2153,9 +2153,9 @@ pub unsafe fn _mm512_kor(a: __mmask16, b: __mmask16) -> __mmask16 {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=kxor_mask16&expand=3291)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(kxorw))]
+#[cfg_attr(test, assert_instr(xor))] // generate normal xor code instead of kxorw
 pub unsafe fn _kxor_mask16(a: __mmask16, b: __mmask16) -> __mmask16 {
-    kxorw(a, b)
+    transmute(kxorw(a, b))
 }
 
 /// Compute the bitwise XOR of 16-bit masks a and b, and store the result in k.
@@ -2163,9 +2163,9 @@ pub unsafe fn _kxor_mask16(a: __mmask16, b: __mmask16) -> __mmask16 {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_kxor&expand=3289)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(kxorw))]
+#[cfg_attr(test, assert_instr(xor))] // generate normal xor code instead of kxorw
 pub unsafe fn _mm512_kxor(a: __mmask16, b: __mmask16) -> __mmask16 {
-    kxorw(a, b)
+    transmute(kxorw(a, b))
 }
 
 /// Sets packed 32-bit integers in `dst` with the supplied values.
@@ -3791,7 +3791,7 @@ extern "C" {
 
     #[link_name = "llvm.x86.avx512.mask.prol.d.512"]
     fn vprold(a: i32x16, i8: i32) -> i32x16;
-    #[link_name = "llvm.x86.avx512.pror.d.512"]
+    #[link_name = "llvm.x86.avx512.mask.pror.d.512"]
     fn vprord(a: i32x16, i8: i32) -> i32x16;
     #[link_name = "llvm.x86.avx512.mask.prol.q.512"]
     fn vprolq(a: i64x8, i8: i32) -> i64x8;
