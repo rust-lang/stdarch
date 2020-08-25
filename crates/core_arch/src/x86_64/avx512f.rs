@@ -86,6 +86,24 @@ mod tests {
     }
 
     #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_abs_pd() {
+        let a = _mm512_setr_pd(0., 1., -1., f64::MAX, f64::MIN, 100., -100., -32.);
+        let r = _mm512_abs_pd(a);
+        let e = _mm512_setr_pd(0., 1., 1., f64::MAX, f64::MAX, 100., 100., 32.);
+        assert_eq_m512d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_abs_pd() {
+        let a = _mm512_setr_pd(0., 1., -1., f64::MAX, f64::MIN, 100., -100., -32.);
+        let r = _mm512_mask_abs_pd(a, 0, a);
+        assert_eq_m512d(r, a);
+        let r = _mm512_mask_abs_pd(a, 0b11111111, a);
+        let e = _mm512_setr_pd(0., 1., 1., f64::MAX, f64::MAX, 100., 100., 32.);
+        assert_eq_m512d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_setzero_pd() {
         assert_eq_m512d(_mm512_setzero_pd(), _mm512_set1_pd(0.));
     }

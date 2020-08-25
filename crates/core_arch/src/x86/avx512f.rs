@@ -87,6 +87,54 @@ pub unsafe fn _mm512_maskz_abs_epi64(k: __mmask8, a: __m512i) -> __m512i {
     transmute(simd_select_bitmask(k, abs, zero))
 }
 
+/// Finds the absolute value of each packed double-precision (64-bit) floating-point element in v2, storing the results in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_abs_pd&expand=60)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vpandq))]
+pub unsafe fn _mm512_abs_pd(v2: __m512d) -> __m512d {
+    let a = _mm512_set1_epi64(0x7FFFFFFFFFFFFFFF); // from LLVM code
+    let b = transmute::<f64x8,__m512i>(v2.as_f64x8());
+    let abs = _mm512_and_epi64(a, b);
+    transmute(abs)
+}
+
+/// Finds the absolute value of each packed double-precision (64-bit) floating-point element in v2, storing the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_abs_pd&expand=61)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vpandq))]
+pub unsafe fn _mm512_mask_abs_pd(src: __m512d, k: __mmask8, v2: __m512d) -> __m512d {
+    let abs = _mm512_abs_pd(v2).as_f64x8();
+    transmute(simd_select_bitmask(k, abs, src.as_f64x8()))
+}
+
+/// Finds the absolute value of each packed single-precision (32-bit) floating-point element in v2, storing the results in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_abs_ps&expand=65)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vpandq))]
+pub unsafe fn _mm512_abs_ps(v2: __m512) -> __m512 {
+    let a = _mm512_set1_epi32(0x7FFFFFFF); // from LLVM code
+    let b = transmute::<f32x16,__m512i>(v2.as_f32x16());
+    let abs = _mm512_and_epi32(a, b);
+    transmute(abs)
+}
+
+/// Finds the absolute value of each packed single-precision (32-bit) floating-point element in v2, storing the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_abs_ps&expand=66)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vpandd))]
+pub unsafe fn _mm512_mask_abs_ps(src: __m512, k: __mmask16, v2: __m512) -> __m512 {
+    let abs = _mm512_abs_ps(v2).as_f32x16();
+    transmute(simd_select_bitmask(k, abs, src.as_f32x16()))
+}
+
 /// Returns vector of type `__m512d` with all elements set to zero.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#avx512techs=AVX512F&expand=33,34,4990&text=_mm512_setzero_pd)
@@ -3960,6 +4008,70 @@ mod tests {
             0,
         );
         assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_abs_ps() {
+        #[rustfmt::skip]
+        let a = _mm512_setr_ps(
+            0., 1., -1., f32::MAX,
+            f32::MIN, 100., -100., -32.,
+            0., 1., -1., f32::MAX,
+            f32::MIN, 100., -100., -32.,
+        );
+        let r = _mm512_abs_ps(a);
+        let e = _mm512_setr_ps(
+            0.,
+            1.,
+            1.,
+            f32::MAX,
+            f32::MAX,
+            100.,
+            100.,
+            32.,
+            0.,
+            1.,
+            1.,
+            f32::MAX,
+            f32::MAX,
+            100.,
+            100.,
+            32.,
+        );
+        assert_eq_m512(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_abs_ps() {
+        #[rustfmt::skip]
+        let a = _mm512_setr_ps(
+            0., 1., -1., f32::MAX,
+            f32::MIN, 100., -100., -32.,
+            0., 1., -1., f32::MAX,
+            f32::MIN, 100., -100., -32.,
+        );
+        let r = _mm512_mask_abs_ps(a, 0, a);
+        assert_eq_m512(r, a);
+        let r = _mm512_mask_abs_ps(a, 0b11111111, a);
+        let e = _mm512_setr_ps(
+            0.,
+            1.,
+            1.,
+            f32::MAX,
+            f32::MAX,
+            100.,
+            100.,
+            32.,
+            0.,
+            1.,
+            -1.,
+            f32::MAX,
+            f32::MIN,
+            100.,
+            -100.,
+            -32.,
+        );
+        assert_eq_m512(r, e);
     }
 
     #[simd_test(enable = "avx512f")]
