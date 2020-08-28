@@ -523,7 +523,7 @@
   * [ ] [`_mm512_mask_loadu_epi64`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_loadu_epi64&expand=5236)
   * [ ] [`_mm512_mask_loadu_pd`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_loadu_pd&expand=5236)
   * [ ] [`_mm512_mask_loadu_ps`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_loadu_ps&expand=5236)
-  * [ ] [`_mm512_mask_max_epi32`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_max_epi32&expand=5236)
+  * [x] [`_mm512_mask_max_epi32`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_max_epi32&expand=5236)
   * [ ] [`_mm512_mask_max_epi64`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_max_epi64&expand=5236)
   * [ ] [`_mm512_mask_max_epu32`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_max_epu32&expand=5236)
   * [ ] [`_mm512_mask_max_epu64`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_max_epu64&expand=5236)
