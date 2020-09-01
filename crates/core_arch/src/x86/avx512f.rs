@@ -1672,6 +1672,28 @@ pub unsafe fn _mm512_mask3_fnmsub_pd(a: __m512d, b: __m512d, c: __m512d, k: __mm
     transmute(simd_select_bitmask(k, fnmsub, c.as_f64x8()))
 }
 
+/// Add packed single-precision (32-bit) floating-point elements in a and b, and store the results in dst.
+/// Rounding is done according to the rounding[3:0] parameter, which can be one of:
+///    (_MM_FROUND_TO_NEAREST_INT |_MM_FROUND_NO_EXC) // round to nearest, and suppress exceptions
+///    (_MM_FROUND_TO_NEG_INF |_MM_FROUND_NO_EXC)     // round down, and suppress exceptions
+///    (_MM_FROUND_TO_POS_INF |_MM_FROUND_NO_EXC)     // round up, and suppress exceptions
+///    (_MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC)        // truncate, and suppress exceptions
+///    _MM_FROUND_CUR_DIRECTION // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_add_round_ps&expand=145)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vaddps))]
+pub unsafe fn _mm512_add_round_ps(a: __m512, b: __m512, rounding: i32) -> __m512 {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vaddps(a.as_f32x16(), b.as_f32x16(), $imm4)
+        };
+    }
+    let r = constify_imm4_sae!(rounding, call);
+    transmute(r)
+}
+
 /// Returns vector of type `__m512d` with all elements set to zero.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#avx512techs=AVX512F&expand=33,34,4990&text=_mm512_setzero_pd)
@@ -5360,10 +5382,9 @@ extern "C" {
     fn vfmaddsub213ps(a: f32x16, b: f32x16, c: f32x16, d: i32) -> f32x16; //from clang
     #[link_name = "llvm.x86.avx512.vfmaddsub.pd.512"]
     fn vfmaddsub213pd(a: f64x8, b: f64x8, c: f64x8, d: i32) -> f64x8; //from clang
-    //#[link_name = "llvm.x86.avx512.vfsubadd.ps.512"]
-    //fn vfmsubadd213ps(a: f32x16, b: f32x16, c: f32x16, d: i32) -> f32x16; //from clang
-    //#[link_name = "llvm.x86.avx512.vfmsubadd.pd.512"]
-    //fn vfmsubadd213pd(a: f64x8, b: f64x8, c: f64x8, d: i32) -> f64x8; //from clang
+
+    #[link_name = "llvm.x86.avx512.add.ps.512"]
+    fn vaddps(a: f32x16, b: f32x16, rounding: i32) -> f32x16;
 
     #[link_name = "llvm.x86.avx512.gather.dpd.512"]
     fn vgatherdpd(src: f64x8, slice: *const i8, offsets: i32x8, mask: i8, scale: i32) -> f64x8;
@@ -7229,6 +7250,15 @@ mod tests {
         let e = _mm512_setr_ps(
             -1., -2., -3., -4., -5., -6., -7., -8., 2., 2., 2., 2., 2., 2., 2., 2.
         );
+        assert_eq_m512(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_add_round_ps() {
+        let a = _mm512_setr_ps(0., 1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15.);
+        let b = _mm512_set1_ps(1.);
+        let r = _mm512_add_round_ps(a, b, _MM_FROUND_TO_NEAREST_INT);
+        let e = _mm512_setr_ps(1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15., 16.);
         assert_eq_m512(r, e);
     }
 
