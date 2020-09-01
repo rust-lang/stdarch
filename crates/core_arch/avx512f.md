@@ -98,7 +98,7 @@
   * [ ] [`_mm512_cvt_roundpd_epu32`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_cvt_roundpd_epu32&expand=5236)
   * [ ] [`_mm512_cvt_roundpd_ps`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_cvt_roundpd_ps&expand=5236)
   * [ ] [`_mm512_cvt_roundph_ps`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_cvt_roundph_ps&expand=5236)
-  * [ ] [`_mm512_cvt_roundps_epi32`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_cvt_roundps_epi32&expand=5236)
+  * [x] [`_mm512_cvt_roundps_epi32`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_cvt_roundps_epi32&expand=5236)
   * [ ] [`_mm512_cvt_roundps_epu32`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_cvt_roundps_epu32&expand=5236)
   * [ ] [`_mm512_cvt_roundps_pd`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_cvt_roundps_pd&expand=5236)
   * [ ] [`_mm512_cvt_roundps_ph`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_cvt_roundps_ph&expand=5236)

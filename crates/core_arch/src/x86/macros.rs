@@ -235,7 +235,7 @@ macro_rules! assert_approx_eq {
 macro_rules! constify_imm4_sae {
     ($imm8:expr, $expand:ident) => {
         #[allow(overflowing_literals)]
-        match ($imm8) & 0b1111 {
+        match ($imm8) {
             4 => $expand!(4),
             8 => $expand!(8),
             9 => $expand!(9),
