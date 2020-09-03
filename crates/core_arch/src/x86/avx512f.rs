@@ -1745,6 +1745,79 @@ pub unsafe fn _mm512_maskz_add_round_ps(k: __mmask16, a: __m512, b: __m512, roun
     transmute(simd_select_bitmask(k, addround, zero))
 }
 
+/// Add packed double-precision (64-bit) floating-point elements in a and b, and store the results in dst.
+///
+/// Rounding is done according to the rounding[3:0] parameter, which can be one of:
+///    (_MM_FROUND_TO_NEAREST_INT |_MM_FROUND_NO_EXC) // round to nearest, and suppress exceptions
+///    (_MM_FROUND_TO_NEG_INF |_MM_FROUND_NO_EXC)     // round down, and suppress exceptions
+///    (_MM_FROUND_TO_POS_INF |_MM_FROUND_NO_EXC)     // round up, and suppress exceptions
+///    (_MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC)        // truncate, and suppress exceptions
+///    _MM_FROUND_CUR_DIRECTION // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_add_round_pd&expand=142)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vaddpd, rounding = 8))]
+#[rustc_args_required_const(2)]
+pub unsafe fn _mm512_add_round_pd(a: __m512d, b: __m512d, rounding: i32) -> __m512d {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vaddpd(a.as_f64x8(), b.as_f64x8(), $imm4)
+        };
+    }
+    let r = constify_imm4!(rounding, call);
+    transmute(r)
+}
+
+/// Add packed double-precision (64-bit) floating-point elements in a and b, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// Rounding is done according to the rounding[3:0] parameter, which can be one of:
+///    (_MM_FROUND_TO_NEAREST_INT |_MM_FROUND_NO_EXC) // round to nearest, and suppress exceptions
+///    (_MM_FROUND_TO_NEG_INF |_MM_FROUND_NO_EXC)     // round down, and suppress exceptions
+///    (_MM_FROUND_TO_POS_INF |_MM_FROUND_NO_EXC)     // round up, and suppress exceptions
+///    (_MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC)        // truncate, and suppress exceptions
+///    _MM_FROUND_CUR_DIRECTION // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_add_round_pd&expand=143)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vaddpd, rounding = 8))]
+#[rustc_args_required_const(4)]
+pub unsafe fn _mm512_mask_add_round_pd(src: __m512d, k: __mmask8, a: __m512d, b: __m512d, rounding: i32) -> __m512d {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vaddpd(a.as_f64x8(), b.as_f64x8(), $imm4)
+        };
+    }
+    let addround = constify_imm4!(rounding, call);
+    transmute(simd_select_bitmask(k, addround, src.as_f64x8()))
+}
+
+/// Add packed double-precision (64-bit) floating-point elements in a and b, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// Rounding is done according to the rounding[3:0] parameter, which can be one of:
+///    (_MM_FROUND_TO_NEAREST_INT |_MM_FROUND_NO_EXC) // round to nearest, and suppress exceptions
+///    (_MM_FROUND_TO_NEG_INF |_MM_FROUND_NO_EXC)     // round down, and suppress exceptions
+///    (_MM_FROUND_TO_POS_INF |_MM_FROUND_NO_EXC)     // round up, and suppress exceptions
+///    (_MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC)        // truncate, and suppress exceptions
+///    _MM_FROUND_CUR_DIRECTION // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_add_round_pd&expand=144)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vaddpd, rounding = 8))]
+#[rustc_args_required_const(3)]
+pub unsafe fn _mm512_maskz_add_round_pd(k: __mmask8, a: __m512d, b: __m512d, rounding: i32) -> __m512d {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vaddpd(a.as_f64x8(), b.as_f64x8(), $imm4)
+        };
+    }
+    let addround = constify_imm4!(rounding, call);
+    let zero = _mm512_setzero_pd().as_f64x8();
+    transmute(simd_select_bitmask(k, addround, zero))
+}
+
 /// Convert packed single-precision (32-bit) floating-point elements in a to packed 32-bit integers, and store the results in dst.
 ///
 /// Rounding is done according to the rounding[3:0] parameter, which can be one of:
@@ -5586,6 +5659,8 @@ extern "C" {
 
     #[link_name = "llvm.x86.avx512.add.ps.512"]
     fn vaddps(a: f32x16, b: f32x16, rounding: i32) -> f32x16;
+    #[link_name = "llvm.x86.avx512.add.pd.512"]
+    fn vaddpd(a: f64x8, b: f64x8, rounding: i32) -> f64x8;
 
     #[link_name = "llvm.x86.avx512.mask.cvtps2dq.512"]
     fn vcvtps2dq(a: f32x16, src: i32x16, mask: u16, rounding: i32) -> i32x16;
