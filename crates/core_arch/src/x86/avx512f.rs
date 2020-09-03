@@ -1784,7 +1784,7 @@ pub unsafe fn _mm512_maskz_cvt_roundps_epi32(k: __mmask16, a: __m512, rounding: 
 pub unsafe fn _mm512_cvt_roundps_epu32(a: __m512, rounding: i32) -> __m512i {
     macro_rules! call {
         ($imm4:expr) => {
-            vcvtps2udq(a.as_f32x16(), _mm512_setzero_si512().as_i32x16(), 0b11111111_11111111, $imm4)
+            vcvtps2udq(a.as_f32x16(), _mm512_setzero_si512().as_u32x16(), 0b11111111_11111111, $imm4)
         };
     }
     let r = constify_imm4!(rounding, call);
@@ -1808,7 +1808,7 @@ pub unsafe fn _mm512_cvt_roundps_epu32(a: __m512, rounding: i32) -> __m512i {
 pub unsafe fn _mm512_mask_cvt_roundps_epu32(src: __m512i, k: __mmask16, a: __m512, rounding: i32) -> __m512i {
     macro_rules! call {
         ($imm4:expr) => {
-            vcvtps2udq(a.as_f32x16(), src.as_i32x16(), k, $imm4)
+            vcvtps2udq(a.as_f32x16(), src.as_u32x16(), k, $imm4)
         };
     }
     let r = constify_imm4!(rounding, call);
@@ -1832,7 +1832,7 @@ pub unsafe fn _mm512_mask_cvt_roundps_epu32(src: __m512i, k: __mmask16, a: __m51
 pub unsafe fn _mm512_maskz_cvt_roundps_epu32(k: __mmask16, a: __m512, rounding: i32) -> __m512i {
     macro_rules! call {
         ($imm4:expr) => {
-            vcvtps2udq(a.as_f32x16(), _mm512_setzero_si512().as_i32x16(), k, $imm4)
+            vcvtps2udq(a.as_f32x16(), _mm512_setzero_si512().as_u32x16(), k, $imm4)
         };
     }
     let r = constify_imm4!(rounding, call);
@@ -5539,8 +5539,8 @@ extern "C" {
 
     #[link_name = "llvm.x86.avx512.mask.cvtps2dq.512"]
     fn vcvtps2dq(a: f32x16, src: i32x16, mask: u16, rounding: i32) -> i32x16;
-    #[link_name = "llvm.x86.avx512.mask.cvtps2qq.512"]
-    fn vcvtps2udq(a: f32x16, src: i32x16, mask: u16, rounding: i32) -> i32x16;
+    #[link_name = "llvm.x86.avx512.mask.cvtps2udq.512"]
+    fn vcvtps2udq(a: f32x16, src: u32x16, mask: u16, rounding: i32) -> u32x16;
 
     #[link_name = "llvm.x86.avx512.gather.dpd.512"]
     fn vgatherdpd(src: f64x8, slice: *const i8, offsets: i32x8, mask: i8, scale: i32) -> f64x8;
@@ -7454,10 +7454,10 @@ mod tests {
     unsafe fn test_mm512_cvt_roundps_epu32() {
         let a = _mm512_setr_ps(0., -1.5, 2., -3.5, 4., -5.5, 6., -7.5, 8., 9.5, 10., 11.5, 12., 13.5, 14., 15.5);
         let r = _mm512_cvt_roundps_epu32(a, _MM_FROUND_TO_NEAREST_INT |_MM_FROUND_NO_EXC);
-        let e = _mm512_setr_epi32(0, 0, 2, 0, 4, 0, 6, 0, 8, 10, 10, 12, 12, 14, 14, 16);
+        let e = _mm512_setr_epi32(0, -1, 2, -1, 4, -1, 6, -1, 8, 10, 10, 12, 12, 14, 14, 16);
         assert_eq_m512i(r, e);
         let r = _mm512_cvt_roundps_epu32(a, _MM_FROUND_TO_NEG_INF |_MM_FROUND_NO_EXC);
-        let e = _mm512_setr_epi32(0, 0, 2, 0, 4, 0, 6, 0, 8, 9, 10, 11, 12, 13, 14, 15);
+        let e = _mm512_setr_epi32(0, -1, 2, -1, 4, -1, 6, -1, 8, 9, 10, 11, 12, 13, 14, 15);
         assert_eq_m512i(r, e);
     }
 
@@ -7468,7 +7468,7 @@ mod tests {
         let r = _mm512_mask_cvt_roundps_epu32(src, 0, a, _MM_FROUND_TO_NEAREST_INT |_MM_FROUND_NO_EXC);
         assert_eq_m512i(r, src);
         let r = _mm512_mask_cvt_roundps_epu32(src, 0b00000000_11111111, a, _MM_FROUND_TO_NEAREST_INT |_MM_FROUND_NO_EXC);
-        let e = _mm512_setr_epi32(0, 0, 2, 0, 4, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+        let e = _mm512_setr_epi32(0, -1, 2, -1, 4, -1, 6, -1, 0, 0, 0, 0, 0, 0, 0, 0);
         assert_eq_m512i(r, e);
     }
 
@@ -7478,7 +7478,7 @@ mod tests {
         let r = _mm512_maskz_cvt_roundps_epu32(0, a, _MM_FROUND_TO_NEAREST_INT |_MM_FROUND_NO_EXC);
         assert_eq_m512i(r, _mm512_setzero_si512());
         let r = _mm512_maskz_cvt_roundps_epu32(0b00000000_11111111, a, _MM_FROUND_TO_NEAREST_INT |_MM_FROUND_NO_EXC);
-        let e = _mm512_setr_epi32(0, 0, 2, 0, 4, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+        let e = _mm512_setr_epi32(0, -1, 2, -1, 4, -1, 6, -1, 0, 0, 0, 0, 0, 0, 0, 0);
         assert_eq_m512i(r, e);
     }
 
