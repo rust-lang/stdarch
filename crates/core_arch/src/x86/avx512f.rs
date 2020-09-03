@@ -2110,6 +2110,152 @@ pub unsafe fn _mm512_maskz_mul_round_pd(k: __mmask8, a: __m512d, b: __m512d, rou
     transmute(simd_select_bitmask(k, mulround, zero))
 }
 
+/// Divide packed single-precision (32-bit) floating-point elements in a by packed elements in b, and store the results in dst.
+///
+/// Rounding is done according to the rounding[3:0] parameter, which can be one of:
+///    (_MM_FROUND_TO_NEAREST_INT |_MM_FROUND_NO_EXC) // round to nearest, and suppress exceptions
+///    (_MM_FROUND_TO_NEG_INF |_MM_FROUND_NO_EXC)     // round down, and suppress exceptions
+///    (_MM_FROUND_TO_POS_INF |_MM_FROUND_NO_EXC)     // round up, and suppress exceptions
+///    (_MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC)        // truncate, and suppress exceptions
+///    _MM_FROUND_CUR_DIRECTION // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_div_round_ps&expand=2168)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vdivps, rounding = 8))]
+#[rustc_args_required_const(2)]
+pub unsafe fn _mm512_div_round_ps(a: __m512, b: __m512, rounding: i32) -> __m512 {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vdivps(a.as_f32x16(), b.as_f32x16(), $imm4)
+        };
+    }
+    let r = constify_imm4!(rounding, call);
+    transmute(r)
+}
+
+/// Divide packed single-precision (32-bit) floating-point elements in a by packed elements in b, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// Rounding is done according to the rounding[3:0] parameter, which can be one of:
+///    (_MM_FROUND_TO_NEAREST_INT |_MM_FROUND_NO_EXC) // round to nearest, and suppress exceptions
+///    (_MM_FROUND_TO_NEG_INF |_MM_FROUND_NO_EXC)     // round down, and suppress exceptions
+///    (_MM_FROUND_TO_POS_INF |_MM_FROUND_NO_EXC)     // round up, and suppress exceptions
+///    (_MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC)        // truncate, and suppress exceptions
+///    _MM_FROUND_CUR_DIRECTION // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_div_round_ps&expand=2169)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vdivps, rounding = 8))]
+#[rustc_args_required_const(4)]
+pub unsafe fn _mm512_mask_div_round_ps(src: __m512, k: __mmask16, a: __m512, b: __m512, rounding: i32) -> __m512 {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vdivps(a.as_f32x16(), b.as_f32x16(), $imm4)
+        };
+    }
+    let divround = constify_imm4!(rounding, call);
+    transmute(simd_select_bitmask(k, divround, src.as_f32x16()))
+}
+
+/// Divide packed single-precision (32-bit) floating-point elements in a by packed elements in b, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// Rounding is done according to the rounding[3:0] parameter, which can be one of:
+///    (_MM_FROUND_TO_NEAREST_INT |_MM_FROUND_NO_EXC) // round to nearest, and suppress exceptions
+///    (_MM_FROUND_TO_NEG_INF |_MM_FROUND_NO_EXC)     // round down, and suppress exceptions
+///    (_MM_FROUND_TO_POS_INF |_MM_FROUND_NO_EXC)     // round up, and suppress exceptions
+///    (_MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC)        // truncate, and suppress exceptions
+///    _MM_FROUND_CUR_DIRECTION // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_div_round_ps&expand=2170)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vdivps, rounding = 8))]
+#[rustc_args_required_const(3)]
+pub unsafe fn _mm512_maskz_div_round_ps(k: __mmask16, a: __m512, b: __m512, rounding: i32) -> __m512 {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vdivps(a.as_f32x16(), b.as_f32x16(), $imm4)
+        };
+    }
+    let divround = constify_imm4!(rounding, call);
+    let zero = _mm512_setzero_ps().as_f32x16();
+    transmute(simd_select_bitmask(k, divround, zero))
+}
+
+/// Divide packed double-precision (64-bit) floating-point elements in a by packed elements in b, =and store the results in dst.
+///
+/// Rounding is done according to the rounding[3:0] parameter, which can be one of:
+///    (_MM_FROUND_TO_NEAREST_INT |_MM_FROUND_NO_EXC) // round to nearest, and suppress exceptions
+///    (_MM_FROUND_TO_NEG_INF |_MM_FROUND_NO_EXC)     // round down, and suppress exceptions
+///    (_MM_FROUND_TO_POS_INF |_MM_FROUND_NO_EXC)     // round up, and suppress exceptions
+///    (_MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC)        // truncate, and suppress exceptions
+///    _MM_FROUND_CUR_DIRECTION // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_div_round_pd&expand=2165)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vdivpd, rounding = 8))]
+#[rustc_args_required_const(2)]
+pub unsafe fn _mm512_div_round_pd(a: __m512d, b: __m512d, rounding: i32) -> __m512d {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vdivpd(a.as_f64x8(), b.as_f64x8(), $imm4)
+        };
+    }
+    let r = constify_imm4!(rounding, call);
+    transmute(r)
+}
+
+/// Divide packed double-precision (64-bit) floating-point elements in a by packed elements in b, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// Rounding is done according to the rounding[3:0] parameter, which can be one of:
+///    (_MM_FROUND_TO_NEAREST_INT |_MM_FROUND_NO_EXC) // round to nearest, and suppress exceptions
+///    (_MM_FROUND_TO_NEG_INF |_MM_FROUND_NO_EXC)     // round down, and suppress exceptions
+///    (_MM_FROUND_TO_POS_INF |_MM_FROUND_NO_EXC)     // round up, and suppress exceptions
+///    (_MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC)        // truncate, and suppress exceptions
+///    _MM_FROUND_CUR_DIRECTION // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_div_round_pd&expand=2166)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vdivpd, rounding = 8))]
+#[rustc_args_required_const(4)]
+pub unsafe fn _mm512_mask_div_round_pd(src: __m512d, k: __mmask8, a: __m512d, b: __m512d, rounding: i32) -> __m512d {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vdivpd(a.as_f64x8(), b.as_f64x8(), $imm4)
+        };
+    }
+    let divround = constify_imm4!(rounding, call);
+    transmute(simd_select_bitmask(k, divround, src.as_f64x8()))
+}
+
+/// Divide packed double-precision (64-bit) floating-point elements in a by packed elements in b, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// Rounding is done according to the rounding[3:0] parameter, which can be one of:
+///    (_MM_FROUND_TO_NEAREST_INT |_MM_FROUND_NO_EXC) // round to nearest, and suppress exceptions
+///    (_MM_FROUND_TO_NEG_INF |_MM_FROUND_NO_EXC)     // round down, and suppress exceptions
+///    (_MM_FROUND_TO_POS_INF |_MM_FROUND_NO_EXC)     // round up, and suppress exceptions
+///    (_MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC)        // truncate, and suppress exceptions
+///    _MM_FROUND_CUR_DIRECTION // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_div_round_pd&expand=2167)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vdivpd, rounding = 8))]
+#[rustc_args_required_const(3)]
+pub unsafe fn _mm512_maskz_div_round_pd(k: __mmask8, a: __m512d, b: __m512d, rounding: i32) -> __m512d {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vdivpd(a.as_f64x8(), b.as_f64x8(), $imm4)
+        };
+    }
+    let divround = constify_imm4!(rounding, call);
+    let zero = _mm512_setzero_pd().as_f64x8();
+    transmute(simd_select_bitmask(k, divround, zero))
+}
+
 /// Convert packed single-precision (32-bit) floating-point elements in a to packed 32-bit integers, and store the results in dst.
 ///
 /// Rounding is done according to the rounding[3:0] parameter, which can be one of:
@@ -5961,6 +6107,10 @@ extern "C" {
     fn vmulps(a: f32x16, b: f32x16, rounding: i32) -> f32x16;
     #[link_name = "llvm.x86.avx512.mul.pd.512"]
     fn vmulpd(a: f64x8, b: f64x8, rounding: i32) -> f64x8;
+    #[link_name = "llvm.x86.avx512.div.ps.512"]
+    fn vdivps(a: f32x16, b: f32x16, rounding: i32) -> f32x16;
+    #[link_name = "llvm.x86.avx512.div.pd.512"]
+    fn vdivpd(a: f64x8, b: f64x8, rounding: i32) -> f64x8;
 
     #[link_name = "llvm.x86.avx512.mask.cvtps2dq.512"]
     fn vcvtps2dq(a: f32x16, src: i32x16, mask: u16, rounding: i32) -> i32x16;
@@ -7933,6 +8083,40 @@ mod tests {
         assert_eq_m512(r, _mm512_setzero_ps());
         let r = _mm512_maskz_mul_round_ps(0b11111111_00000000, a, b, _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC);
         let e = _mm512_setr_ps(0., 0., 0., 0., 0., 0., 0., 0., 0.8, 0.95, 1.0, 1.15, 1.2, 1.35, 1.4, 0.000000000000000000000007000001);
+        assert_eq_m512(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_div_round_ps() {
+        let a = _mm512_set1_ps(1.);
+        let b = _mm512_set1_ps(3.);
+        let r = _mm512_div_round_ps(a, b, _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC);
+        let e = _mm512_set1_ps(0.33333334);
+        assert_eq_m512(r, e);
+        let r = _mm512_div_round_ps(a, b, _MM_FROUND_TO_ZERO | _MM_FROUND_NO_EXC);
+        let e = _mm512_set1_ps(0.3333333);
+        assert_eq_m512(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_div_round_ps() {
+        let a = _mm512_set1_ps(1.);
+        let b = _mm512_set1_ps(3.);
+        let r = _mm512_mask_div_round_ps(a, 0, a, b, _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC);
+        assert_eq_m512(r, a);
+        let r = _mm512_mask_div_round_ps(a, 0b11111111_00000000, a, b, _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC);
+        let e = _mm512_setr_ps(1., 1., 1., 1., 1., 1., 1., 1., 0.33333334, 0.33333334, 0.33333334, 0.33333334, 0.33333334, 0.33333334, 0.33333334, 0.33333334);
+        assert_eq_m512(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_maskz_div_round_ps() {
+        let a = _mm512_set1_ps(1.);
+        let b = _mm512_set1_ps(3.);
+        let r = _mm512_maskz_div_round_ps(0, a, b, _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC);
+        assert_eq_m512(r, _mm512_setzero_ps());
+        let r = _mm512_maskz_div_round_ps(0b11111111_00000000, a, b, _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC);
+        let e = _mm512_setr_ps(0., 0., 0., 0., 0., 0., 0., 0., 0.33333334, 0.33333334, 0.33333334, 0.33333334, 0.33333334, 0.33333334, 0.33333334, 0.33333334);
         assert_eq_m512(r, e);
     }
 
