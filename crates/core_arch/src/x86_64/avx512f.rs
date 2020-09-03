@@ -1173,6 +1173,40 @@ mod tests {
     }
 
     #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mul_round_pd() {
+        let a = _mm512_setr_pd(8., 9.5, 10., 11.5, 12., 13.5, 14., 0.);
+        let b = _mm512_set1_pd(0.1);
+        let r = _mm512_mul_round_pd(a, b, _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC);
+        let e = _mm512_setr_pd(0.8, 0.9500000000000001, 1., 1.1500000000000001, 1.2000000000000002, 1.35, 1.4000000000000001, 0.);
+        assert_eq_m512d(r, e);
+        let r = _mm512_sub_round_pd(a, b, _MM_FROUND_TO_ZERO | _MM_FROUND_NO_EXC);
+        let e = _mm512_setr_pd(7.8999999999999995, 9.399999999999999, 9.899999999999999, 11.399999999999999, 11.899999999999999, 13.399999999999999, 13.899999999999999, -0.1);
+        assert_eq_m512d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_mul_round_pd() {
+        let a = _mm512_setr_pd(8., 9.5, 10., 11.5, 12., 13.5, 14., 0.);
+        let b = _mm512_set1_pd(0.1);
+        let r = _mm512_mask_mul_round_pd(a, 0, a, b, _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC);
+        assert_eq_m512d(r, a);
+        let r = _mm512_mask_mul_round_pd(a, 0b11110000, a, b, _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC);
+        let e = _mm512_setr_pd(8., 9.5, 10., 11.5, 1.2000000000000002, 1.35, 1.4000000000000001, 0.);
+        assert_eq_m512d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_maskz_mul_round_pd() {
+        let a = _mm512_setr_pd(8., 9.5, 10., 11.5, 12., 13.5, 14., 0.);
+        let b = _mm512_set1_pd(0.1);
+        let r = _mm512_maskz_mul_round_pd(0, a, b, _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC);
+        assert_eq_m512d(r, _mm512_setzero_pd());
+        let r = _mm512_maskz_mul_round_pd(0b11110000, a, b, _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC);
+        let e = _mm512_setr_pd(0., 0., 0., 0., 1.2000000000000002, 1.35, 1.4000000000000001, 0.);
+        assert_eq_m512d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_setzero_pd() {
         assert_eq_m512d(_mm512_setzero_pd(), _mm512_set1_pd(0.));
     }
