@@ -1241,6 +1241,37 @@ mod tests {
     }
 
     #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_sqrt_round_pd() {
+        let a = _mm512_set1_pd(3.);
+        let r = _mm512_sqrt_round_pd(a, _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC);
+        let e = _mm512_set1_pd(1.7320508075688772);
+        assert_eq_m512d(r, e);
+        let r = _mm512_sqrt_round_pd(a, _MM_FROUND_TO_POS_INF | _MM_FROUND_NO_EXC);
+        let e = _mm512_set1_pd(1.7320508075688774);
+        assert_eq_m512d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_sqrt_round_pd() {
+        let a = _mm512_set1_pd(3.);
+        let r = _mm512_mask_sqrt_round_pd(a, 0, a, _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC);
+        assert_eq_m512d(r, a);
+        let r = _mm512_mask_sqrt_round_pd(a, 0b11110000, a, _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC);
+        let e = _mm512_setr_pd(3., 3., 3., 3., 1.7320508075688772, 1.7320508075688772, 1.7320508075688772, 1.7320508075688772);
+        assert_eq_m512d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_maskz_sqrt_round_pd() {
+        let a = _mm512_set1_pd(3.);
+        let r = _mm512_maskz_sqrt_round_pd(0, a, _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC);
+        assert_eq_m512d(r, _mm512_setzero_pd());
+        let r = _mm512_maskz_sqrt_round_pd(0b11110000, a, _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC);
+        let e = _mm512_setr_pd(0., 0., 0., 0., 1.7320508075688772, 1.7320508075688772, 1.7320508075688772, 1.7320508075688772);
+        assert_eq_m512d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_setzero_pd() {
         assert_eq_m512d(_mm512_setzero_pd(), _mm512_set1_pd(0.));
     }
