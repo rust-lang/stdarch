@@ -1732,6 +1732,66 @@ pub unsafe fn _mm512_maskz_rcp14_pd(k: __mmask8, a: __m512d) -> __m512d {
     transmute(vrcp14pd(a.as_f64x8(), _mm512_setzero_pd().as_f64x8(), k))
 }
 
+/// Compute the approximate reciprocal square root of packed single-precision (32-bit) floating-point elements in a, and store the results in dst. The maximum relative error for this approximation is less than 2^-14.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_rsqrt14_ps&expand=4819)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vrsqrt14ps))]
+pub unsafe fn _mm512_rsqrt14_ps(a: __m512) -> __m512 {
+    transmute(vrsqrt14ps(a.as_f32x16(), _mm512_setzero_ps().as_f32x16(), 0b11111111_11111111))
+}
+
+/// Compute the approximate reciprocal square root of packed single-precision (32-bit) floating-point elements in a, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set). The maximum relative error for this approximation is less than 2^-14.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_rsqrt14_ps&expand=4817)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vrsqrt14ps))]
+pub unsafe fn _mm512_mask_rsqrt14_ps(src: __m512, k: __mmask16, a: __m512) -> __m512 {
+    transmute(vrsqrt14ps(a.as_f32x16(), src.as_f32x16(), k))
+}
+
+/// Compute the approximate reciprocal square root of packed single-precision (32-bit) floating-point elements in a, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set). The maximum relative error for this approximation is less than 2^-14.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_rsqrt14_ps&expand=4818)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vrsqrt14ps))]
+pub unsafe fn _mm512_maskz_rsqrt14_ps(k: __mmask16, a: __m512) -> __m512 {
+    transmute(vrsqrt14ps(a.as_f32x16(), _mm512_setzero_ps().as_f32x16(), k))
+}
+
+/// Compute the approximate reciprocal square root of packed double-precision (64-bit) floating-point elements in a, and store the results in dst. The maximum relative error for this approximation is less than 2^-14.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_rsqrt14_pd&expand=4812)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vrsqrt14pd))]
+pub unsafe fn _mm512_rsqrt14_pd(a: __m512d) -> __m512d {
+    transmute(vrsqrt14pd(a.as_f64x8(), _mm512_setzero_pd().as_f64x8(), 0b11111111))
+}
+
+/// Compute the approximate reciprocal square root of packed double-precision (64-bit) floating-point elements in a, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set). The maximum relative error for this approximation is less than 2^-14.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_rsqrt14_pd&expand=4810)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vrsqrt14pd))]
+pub unsafe fn _mm512_mask_rsqrt14_pd(src: __m512d, k: __mmask8, a: __m512d) -> __m512d {
+    transmute(vrsqrt14pd(a.as_f64x8(), src.as_f64x8(), k))
+}
+
+/// Compute the approximate reciprocal square root of packed double-precision (64-bit) floating-point elements in a, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set). The maximum relative error for this approximation is less than 2^-14.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_rsqrt14_pd&expand=4811)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vrsqrt14pd))]
+pub unsafe fn _mm512_maskz_rsqrt14_pd(k: __mmask8, a: __m512d) -> __m512d {
+    transmute(vrsqrt14pd(a.as_f64x8(), _mm512_setzero_pd().as_f64x8(), k))
+}
+
 /// Add packed single-precision (32-bit) floating-point elements in a and b, and store the results in dst.
 ///
 /// Rounding is done according to the rounding[3:0] parameter, which can be one of:
@@ -7550,6 +7610,10 @@ extern "C" {
     fn vrcp14ps(a: f32x16, src: f32x16, m: u16) -> f32x16;
     #[link_name = "llvm.x86.avx512.rcp14.pd.512"]
     fn vrcp14pd(a: f64x8, src: f64x8, m: u8) -> f64x8;
+    #[link_name = "llvm.x86.avx512.rsqrt14.ps.512"]
+    fn vrsqrt14ps(a: f32x16, src: f32x16, m: u16) -> f32x16;
+    #[link_name = "llvm.x86.avx512.rsqrt14.pd.512"]
+    fn vrsqrt14pd(a: f64x8, src: f64x8, m: u8) -> f64x8;
 
     #[link_name = "llvm.x86.avx512.mask.cvtps2dq.512"]
     fn vcvtps2dq(a: f32x16, src: i32x16, mask: u16, rounding: i32) -> i32x16;
@@ -9448,6 +9512,34 @@ mod tests {
         assert_eq_m512(r, _mm512_setzero_ps());
         let r = _mm512_maskz_rcp14_ps(0b11111111_00000000, a);
         let e = _mm512_setr_ps(0., 0., 0., 0., 0., 0., 0., 0., 0.33333206, 0.33333206, 0.33333206, 0.33333206, 0.33333206, 0.33333206, 0.33333206, 0.33333206);
+        assert_eq_m512(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_rsqrt14_ps() {
+        let a = _mm512_set1_ps(3.);
+        let r = _mm512_rsqrt14_ps(a);
+        let e = _mm512_set1_ps(0.5773392);
+        assert_eq_m512(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_rsqrt14_ps() {
+        let a = _mm512_set1_ps(3.);
+        let r = _mm512_mask_rsqrt14_ps(a, 0, a);
+        assert_eq_m512(r, a);
+        let r = _mm512_mask_rsqrt14_ps(a, 0b11111111_00000000, a);
+        let e = _mm512_setr_ps(3., 3., 3., 3., 3., 3., 3., 3., 0.5773392, 0.5773392, 0.5773392, 0.5773392, 0.5773392, 0.5773392, 0.5773392, 0.5773392);
+        assert_eq_m512(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_maskz_rsqrt14_ps() {
+        let a = _mm512_set1_ps(3.);
+        let r = _mm512_maskz_rsqrt14_ps(0, a);
+        assert_eq_m512(r, _mm512_setzero_ps());
+        let r = _mm512_maskz_rsqrt14_ps(0b11111111_00000000, a);
+        let e = _mm512_setr_ps(0., 0., 0., 0., 0., 0., 0., 0., 0.5773392, 0.5773392, 0.5773392, 0.5773392, 0.5773392, 0.5773392, 0.5773392, 0.5773392);
         assert_eq_m512(r, e);
     }
 
