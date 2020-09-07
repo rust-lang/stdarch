@@ -1812,7 +1812,7 @@ pub unsafe fn _mm512_add_round_ps(a: __m512, b: __m512, rounding: i32) -> __m512
             vaddps(a.as_f32x16(), b.as_f32x16(), $imm4)
         };
     }
-    let r = constify_imm4_sae!(rounding, call);
+    let r = constify_imm4_round!(rounding, call);
     transmute(r)
 }
 
@@ -1836,7 +1836,7 @@ pub unsafe fn _mm512_mask_add_round_ps(src: __m512, k: __mmask16, a: __m512, b: 
             vaddps(a.as_f32x16(), b.as_f32x16(), $imm4)
         };
     }
-    let addround = constify_imm4_sae!(rounding, call);
+    let addround = constify_imm4_round!(rounding, call);
     transmute(simd_select_bitmask(k, addround, src.as_f32x16()))
 }
 
@@ -1860,7 +1860,7 @@ pub unsafe fn _mm512_maskz_add_round_ps(k: __mmask16, a: __m512, b: __m512, roun
             vaddps(a.as_f32x16(), b.as_f32x16(), $imm4)
         };
     }
-    let addround = constify_imm4_sae!(rounding, call);
+    let addround = constify_imm4_round!(rounding, call);
     let zero = _mm512_setzero_ps().as_f32x16();
     transmute(simd_select_bitmask(k, addround, zero))
 }
@@ -1885,7 +1885,7 @@ pub unsafe fn _mm512_add_round_pd(a: __m512d, b: __m512d, rounding: i32) -> __m5
             vaddpd(a.as_f64x8(), b.as_f64x8(), $imm4)
         };
     }
-    let r = constify_imm4_sae!(rounding, call);
+    let r = constify_imm4_round!(rounding, call);
     transmute(r)
 }
 
@@ -1909,7 +1909,7 @@ pub unsafe fn _mm512_mask_add_round_pd(src: __m512d, k: __mmask8, a: __m512d, b:
             vaddpd(a.as_f64x8(), b.as_f64x8(), $imm4)
         };
     }
-    let addround = constify_imm4_sae!(rounding, call);
+    let addround = constify_imm4_round!(rounding, call);
     transmute(simd_select_bitmask(k, addround, src.as_f64x8()))
 }
 
@@ -1933,7 +1933,7 @@ pub unsafe fn _mm512_maskz_add_round_pd(k: __mmask8, a: __m512d, b: __m512d, rou
             vaddpd(a.as_f64x8(), b.as_f64x8(), $imm4)
         };
     }
-    let addround = constify_imm4_sae!(rounding, call);
+    let addround = constify_imm4_round!(rounding, call);
     let zero = _mm512_setzero_pd().as_f64x8();
     transmute(simd_select_bitmask(k, addround, zero))
 }
@@ -1958,7 +1958,7 @@ pub unsafe fn _mm512_sub_round_ps(a: __m512, b: __m512, rounding: i32) -> __m512
             vsubps(a.as_f32x16(), b.as_f32x16(), $imm4)
         };
     }
-    let r = constify_imm4_sae!(rounding, call);
+    let r = constify_imm4_round!(rounding, call);
     transmute(r)
 }
 
@@ -1982,7 +1982,7 @@ pub unsafe fn _mm512_mask_sub_round_ps(src: __m512, k: __mmask16, a: __m512, b: 
             vsubps(a.as_f32x16(), b.as_f32x16(), $imm4)
         };
     }
-    let subround = constify_imm4_sae!(rounding, call);
+    let subround = constify_imm4_round!(rounding, call);
     transmute(simd_select_bitmask(k, subround, src.as_f32x16()))
 }
 
@@ -2006,7 +2006,7 @@ pub unsafe fn _mm512_maskz_sub_round_ps(k: __mmask16, a: __m512, b: __m512, roun
             vsubps(a.as_f32x16(), b.as_f32x16(), $imm4)
         };
     }
-    let subround = constify_imm4_sae!(rounding, call);
+    let subround = constify_imm4_round!(rounding, call);
     let zero = _mm512_setzero_ps().as_f32x16();
     transmute(simd_select_bitmask(k, subround, zero))
 }
@@ -2031,7 +2031,7 @@ pub unsafe fn _mm512_sub_round_pd(a: __m512d, b: __m512d, rounding: i32) -> __m5
             vsubpd(a.as_f64x8(), b.as_f64x8(), $imm4)
         };
     }
-    let r = constify_imm4_sae!(rounding, call);
+    let r = constify_imm4_round!(rounding, call);
     transmute(r)
 }
 
@@ -2055,7 +2055,7 @@ pub unsafe fn _mm512_mask_sub_round_pd(src: __m512d, k: __mmask8, a: __m512d, b:
             vsubpd(a.as_f64x8(), b.as_f64x8(), $imm4)
         };
     }
-    let subround = constify_imm4_sae!(rounding, call);
+    let subround = constify_imm4_round!(rounding, call);
     transmute(simd_select_bitmask(k, subround, src.as_f64x8()))
 }
 
@@ -2079,7 +2079,7 @@ pub unsafe fn _mm512_maskz_sub_round_pd(k: __mmask8, a: __m512d, b: __m512d, rou
             vsubpd(a.as_f64x8(), b.as_f64x8(), $imm4)
         };
     }
-    let subround = constify_imm4_sae!(rounding, call);
+    let subround = constify_imm4_round!(rounding, call);
     let zero = _mm512_setzero_pd().as_f64x8();
     transmute(simd_select_bitmask(k, subround, zero))
 }
@@ -2104,7 +2104,7 @@ pub unsafe fn _mm512_mul_round_ps(a: __m512, b: __m512, rounding: i32) -> __m512
             vmulps(a.as_f32x16(), b.as_f32x16(), $imm4)
         };
     }
-    let r = constify_imm4_sae!(rounding, call);
+    let r = constify_imm4_round!(rounding, call);
     transmute(r)
 }
 
@@ -2128,7 +2128,7 @@ pub unsafe fn _mm512_mask_mul_round_ps(src: __m512, k: __mmask16, a: __m512, b: 
             vmulps(a.as_f32x16(), b.as_f32x16(), $imm4)
         };
     }
-    let mulround = constify_imm4_sae!(rounding, call);
+    let mulround = constify_imm4_round!(rounding, call);
     transmute(simd_select_bitmask(k, mulround, src.as_f32x16()))
 }
 
@@ -2152,7 +2152,7 @@ pub unsafe fn _mm512_maskz_mul_round_ps(k: __mmask16, a: __m512, b: __m512, roun
             vmulps(a.as_f32x16(), b.as_f32x16(), $imm4)
         };
     }
-    let mulround = constify_imm4_sae!(rounding, call);
+    let mulround = constify_imm4_round!(rounding, call);
     let zero = _mm512_setzero_ps().as_f32x16();
     transmute(simd_select_bitmask(k, mulround, zero))
 }
@@ -2177,7 +2177,7 @@ pub unsafe fn _mm512_mul_round_pd(a: __m512d, b: __m512d, rounding: i32) -> __m5
             vmulpd(a.as_f64x8(), b.as_f64x8(), $imm4)
         };
     }
-    let r = constify_imm4_sae!(rounding, call);
+    let r = constify_imm4_round!(rounding, call);
     transmute(r)
 }
 
@@ -2201,7 +2201,7 @@ pub unsafe fn _mm512_mask_mul_round_pd(src: __m512d, k: __mmask8, a: __m512d, b:
             vmulpd(a.as_f64x8(), b.as_f64x8(), $imm4)
         };
     }
-    let mulround = constify_imm4_sae!(rounding, call);
+    let mulround = constify_imm4_round!(rounding, call);
     transmute(simd_select_bitmask(k, mulround, src.as_f64x8()))
 }
 
@@ -2225,7 +2225,7 @@ pub unsafe fn _mm512_maskz_mul_round_pd(k: __mmask8, a: __m512d, b: __m512d, rou
             vmulpd(a.as_f64x8(), b.as_f64x8(), $imm4)
         };
     }
-    let mulround = constify_imm4_sae!(rounding, call);
+    let mulround = constify_imm4_round!(rounding, call);
     let zero = _mm512_setzero_pd().as_f64x8();
     transmute(simd_select_bitmask(k, mulround, zero))
 }
@@ -2250,7 +2250,7 @@ pub unsafe fn _mm512_div_round_ps(a: __m512, b: __m512, rounding: i32) -> __m512
             vdivps(a.as_f32x16(), b.as_f32x16(), $imm4)
         };
     }
-    let r = constify_imm4_sae!(rounding, call);
+    let r = constify_imm4_round!(rounding, call);
     transmute(r)
 }
 
@@ -2274,7 +2274,7 @@ pub unsafe fn _mm512_mask_div_round_ps(src: __m512, k: __mmask16, a: __m512, b: 
             vdivps(a.as_f32x16(), b.as_f32x16(), $imm4)
         };
     }
-    let divround = constify_imm4_sae!(rounding, call);
+    let divround = constify_imm4_round!(rounding, call);
     transmute(simd_select_bitmask(k, divround, src.as_f32x16()))
 }
 
@@ -2298,7 +2298,7 @@ pub unsafe fn _mm512_maskz_div_round_ps(k: __mmask16, a: __m512, b: __m512, roun
             vdivps(a.as_f32x16(), b.as_f32x16(), $imm4)
         };
     }
-    let divround = constify_imm4_sae!(rounding, call);
+    let divround = constify_imm4_round!(rounding, call);
     let zero = _mm512_setzero_ps().as_f32x16();
     transmute(simd_select_bitmask(k, divround, zero))
 }
@@ -2323,7 +2323,7 @@ pub unsafe fn _mm512_div_round_pd(a: __m512d, b: __m512d, rounding: i32) -> __m5
             vdivpd(a.as_f64x8(), b.as_f64x8(), $imm4)
         };
     }
-    let r = constify_imm4_sae!(rounding, call);
+    let r = constify_imm4_round!(rounding, call);
     transmute(r)
 }
 
@@ -2347,7 +2347,7 @@ pub unsafe fn _mm512_mask_div_round_pd(src: __m512d, k: __mmask8, a: __m512d, b:
             vdivpd(a.as_f64x8(), b.as_f64x8(), $imm4)
         };
     }
-    let divround = constify_imm4_sae!(rounding, call);
+    let divround = constify_imm4_round!(rounding, call);
     transmute(simd_select_bitmask(k, divround, src.as_f64x8()))
 }
 
@@ -2371,7 +2371,7 @@ pub unsafe fn _mm512_maskz_div_round_pd(k: __mmask8, a: __m512d, b: __m512d, rou
             vdivpd(a.as_f64x8(), b.as_f64x8(), $imm4)
         };
     }
-    let divround = constify_imm4_sae!(rounding, call);
+    let divround = constify_imm4_round!(rounding, call);
     let zero = _mm512_setzero_pd().as_f64x8();
     transmute(simd_select_bitmask(k, divround, zero))
 }
@@ -2396,7 +2396,7 @@ pub unsafe fn _mm512_sqrt_round_ps(a: __m512, rounding: i32) -> __m512 {
             vsqrtps(a.as_f32x16(), $imm4)
         };
     }
-    let r = constify_imm4_sae!(rounding, call);
+    let r = constify_imm4_round!(rounding, call);
     transmute(r)
 }
 
@@ -2420,7 +2420,7 @@ pub unsafe fn _mm512_mask_sqrt_round_ps(src: __m512, k: __mmask16, a: __m512, ro
             vsqrtps(a.as_f32x16(), $imm4)
         };
     }
-    let sqrtround = constify_imm4_sae!(rounding, call);
+    let sqrtround = constify_imm4_round!(rounding, call);
     transmute(simd_select_bitmask(k, sqrtround, src.as_f32x16()))
 }
 
@@ -2444,7 +2444,7 @@ pub unsafe fn _mm512_maskz_sqrt_round_ps(k: __mmask16, a: __m512, rounding: i32)
             vsqrtps(a.as_f32x16(), $imm4)
         };
     }
-    let sqrtround = constify_imm4_sae!(rounding, call);
+    let sqrtround = constify_imm4_round!(rounding, call);
     let zero = _mm512_setzero_ps().as_f32x16();
     transmute(simd_select_bitmask(k, sqrtround, zero))
 }
@@ -2469,7 +2469,7 @@ pub unsafe fn _mm512_sqrt_round_pd(a: __m512d, rounding: i32) -> __m512d {
             vsqrtpd(a.as_f64x8(), $imm4)
         };
     }
-    let r = constify_imm4_sae!(rounding, call);
+    let r = constify_imm4_round!(rounding, call);
     transmute(r)
 }
 
@@ -2493,7 +2493,7 @@ pub unsafe fn _mm512_mask_sqrt_round_pd(src: __m512d, k: __mmask8, a: __m512d, r
             vsqrtpd(a.as_f64x8(), $imm4)
         };
     }
-    let sqrtround = constify_imm4_sae!(rounding, call);
+    let sqrtround = constify_imm4_round!(rounding, call);
     transmute(simd_select_bitmask(k, sqrtround, src.as_f64x8()))
 }
 
@@ -2517,7 +2517,7 @@ pub unsafe fn _mm512_maskz_sqrt_round_pd(k: __mmask8, a: __m512d, rounding: i32)
             vsqrtpd(a.as_f64x8(), $imm4)
         };
     }
-    let sqrtround = constify_imm4_sae!(rounding, call);
+    let sqrtround = constify_imm4_round!(rounding, call);
     let zero = _mm512_setzero_pd().as_f64x8();
     transmute(simd_select_bitmask(k, sqrtround, zero))
 }
@@ -2542,7 +2542,7 @@ pub unsafe fn _mm512_fmadd_round_ps(a: __m512, b: __m512, c: __m512, rounding: i
             vfmadd132ps(a.as_f32x16(), b.as_f32x16(), c.as_f32x16(), $imm4)
         };
     }
-    let r = constify_imm4_sae!(rounding, call);
+    let r = constify_imm4_round!(rounding, call);
     transmute(r)
 }
 
@@ -2566,7 +2566,7 @@ pub unsafe fn _mm512_mask_fmadd_round_ps(a: __m512, k: __mmask16, b: __m512, c: 
             vfmadd132ps(a.as_f32x16(), b.as_f32x16(), c.as_f32x16(), $imm4)
         };
     }
-    let fmadd = constify_imm4_sae!(rounding, call);
+    let fmadd = constify_imm4_round!(rounding, call);
     transmute(simd_select_bitmask(k, fmadd, a.as_f32x16()))
 }
 
@@ -2590,7 +2590,7 @@ pub unsafe fn _mm512_maskz_fmadd_round_ps(k: __mmask16, a: __m512, b: __m512, c:
             vfmadd132ps(a.as_f32x16(), b.as_f32x16(), c.as_f32x16(), $imm4)
         };
     }
-    let fmadd = constify_imm4_sae!(rounding, call);
+    let fmadd = constify_imm4_round!(rounding, call);
     let zero = _mm512_setzero_ps().as_f32x16();
     transmute(simd_select_bitmask(k, fmadd, zero))
 }
@@ -2615,7 +2615,7 @@ pub unsafe fn _mm512_mask3_fmadd_round_ps(a: __m512, b: __m512, c: __m512, k: __
             vfmadd132ps(a.as_f32x16(), b.as_f32x16(), c.as_f32x16(), $imm4)
         };
     }
-    let fmadd = constify_imm4_sae!(rounding, call);
+    let fmadd = constify_imm4_round!(rounding, call);
     transmute(simd_select_bitmask(k, fmadd, c.as_f32x16()))
 }
 
@@ -2639,7 +2639,7 @@ pub unsafe fn _mm512_fmadd_round_pd(a: __m512d, b: __m512d, c: __m512d, rounding
             vfmadd132pd(a.as_f64x8(), b.as_f64x8(), c.as_f64x8(), $imm4)
         };
     }
-    let r = constify_imm4_sae!(rounding, call);
+    let r = constify_imm4_round!(rounding, call);
     transmute(r)
 }
 
@@ -2663,7 +2663,7 @@ pub unsafe fn _mm512_mask_fmadd_round_pd(a: __m512d, k: __mmask8, b: __m512d, c:
             vfmadd132pd(a.as_f64x8(), b.as_f64x8(), c.as_f64x8(), $imm4)
         };
     }
-    let fmadd = constify_imm4_sae!(rounding, call);
+    let fmadd = constify_imm4_round!(rounding, call);
     transmute(simd_select_bitmask(k, fmadd, a.as_f64x8()))
 }
 
@@ -2687,7 +2687,7 @@ pub unsafe fn _mm512_maskz_fmadd_round_pd(k: __mmask8, a: __m512d, b: __m512d, c
             vfmadd132pd(a.as_f64x8(), b.as_f64x8(), c.as_f64x8(), $imm4)
         };
     }
-    let fmadd = constify_imm4_sae!(rounding, call);
+    let fmadd = constify_imm4_round!(rounding, call);
     let zero = _mm512_setzero_pd().as_f64x8();
     transmute(simd_select_bitmask(k, fmadd, zero))
 }
@@ -2712,7 +2712,7 @@ pub unsafe fn _mm512_mask3_fmadd_round_pd(a: __m512d, b: __m512d, c: __m512d, k:
             vfmadd132pd(a.as_f64x8(), b.as_f64x8(), c.as_f64x8(), $imm4)
         };
     }
-    let fmadd = constify_imm4_sae!(rounding, call);
+    let fmadd = constify_imm4_round!(rounding, call);
     transmute(simd_select_bitmask(k, fmadd, c.as_f64x8()))
 }
 
@@ -2738,7 +2738,7 @@ pub unsafe fn _mm512_fmsub_round_ps(a: __m512, b: __m512, c: __m512, rounding: i
             vfmadd132ps(a.as_f32x16(), b.as_f32x16(), sub, $imm4)
         };
     }
-    let r = constify_imm4_sae!(rounding, call);
+    let r = constify_imm4_round!(rounding, call);
     transmute(r)
 }
 
@@ -2764,7 +2764,7 @@ pub unsafe fn _mm512_mask_fmsub_round_ps(a: __m512, k: __mmask16, b: __m512, c: 
             vfmadd132ps(a.as_f32x16(), b.as_f32x16(), sub, $imm4)
         };
     }
-    let fmsub = constify_imm4_sae!(rounding, call);
+    let fmsub = constify_imm4_round!(rounding, call);
     transmute(simd_select_bitmask(k, fmsub, a.as_f32x16()))
 }
 
@@ -2790,7 +2790,7 @@ pub unsafe fn _mm512_maskz_fmsub_round_ps(k: __mmask16, a: __m512, b: __m512, c:
             vfmadd132ps(a.as_f32x16(), b.as_f32x16(), sub, $imm4)
         };
     }
-    let fmsub = constify_imm4_sae!(rounding, call);
+    let fmsub = constify_imm4_round!(rounding, call);
     transmute(simd_select_bitmask(k, fmsub, zero))
 }
 
@@ -2816,7 +2816,7 @@ pub unsafe fn _mm512_mask3_fmsub_round_ps(a: __m512, b: __m512, c: __m512, k: __
             vfmadd132ps(a.as_f32x16(), b.as_f32x16(), sub, $imm4)
         };
     }
-    let fmsub = constify_imm4_sae!(rounding, call);
+    let fmsub = constify_imm4_round!(rounding, call);
     transmute(simd_select_bitmask(k, fmsub, c.as_f32x16()))
 }
 
@@ -2842,7 +2842,7 @@ pub unsafe fn _mm512_fmsub_round_pd(a: __m512d, b: __m512d, c: __m512d, rounding
             vfmadd132pd(a.as_f64x8(), b.as_f64x8(), sub, $imm4)
         };
     }
-    let r = constify_imm4_sae!(rounding, call);
+    let r = constify_imm4_round!(rounding, call);
     transmute(r)
 }
 
@@ -2868,7 +2868,7 @@ pub unsafe fn _mm512_mask_fmsub_round_pd(a: __m512d, k: __mmask8, b: __m512d, c:
             vfmadd132pd(a.as_f64x8(), b.as_f64x8(), sub, $imm4)
         };
     }
-    let fmsub = constify_imm4_sae!(rounding, call);
+    let fmsub = constify_imm4_round!(rounding, call);
     transmute(simd_select_bitmask(k, fmsub, a.as_f64x8()))
 }
 
@@ -2894,7 +2894,7 @@ pub unsafe fn _mm512_maskz_fmsub_round_pd(k: __mmask8, a: __m512d, b: __m512d, c
             vfmadd132pd(a.as_f64x8(), b.as_f64x8(), sub, $imm4)
         };
     }
-    let fmsub = constify_imm4_sae!(rounding, call);
+    let fmsub = constify_imm4_round!(rounding, call);
     transmute(simd_select_bitmask(k, fmsub, zero))
 }
 
@@ -2920,7 +2920,7 @@ pub unsafe fn _mm512_mask3_fmsub_round_pd(a: __m512d, b: __m512d, c: __m512d, k:
             vfmadd132pd(a.as_f64x8(), b.as_f64x8(), sub, $imm4)
         };
     }
-    let fmsub = constify_imm4_sae!(rounding, call);
+    let fmsub = constify_imm4_round!(rounding, call);
     transmute(simd_select_bitmask(k, fmsub, c.as_f64x8()))
 }
 
@@ -2944,7 +2944,7 @@ pub unsafe fn _mm512_fmaddsub_round_ps(a: __m512, b: __m512, c: __m512, rounding
             vfmaddsub213ps(a.as_f32x16(), b.as_f32x16(), c.as_f32x16(), $imm4)
         };
     }
-    let r = constify_imm4_sae!(rounding, call);
+    let r = constify_imm4_round!(rounding, call);
     transmute(r)
 }
 
@@ -2968,7 +2968,7 @@ pub unsafe fn _mm512_mask_fmaddsub_round_ps(a: __m512, k: __mmask16, b: __m512, 
             vfmaddsub213ps(a.as_f32x16(), b.as_f32x16(), c.as_f32x16(), $imm4)
         };
     }
-    let fmaddsub = constify_imm4_sae!(rounding, call);
+    let fmaddsub = constify_imm4_round!(rounding, call);
     transmute(simd_select_bitmask(k, fmaddsub, a.as_f32x16()))
 }
 
@@ -2992,7 +2992,7 @@ pub unsafe fn _mm512_maskz_fmaddsub_round_ps(k: __mmask16, a: __m512, b: __m512,
             vfmaddsub213ps(a.as_f32x16(), b.as_f32x16(), c.as_f32x16(), $imm4)
         };
     }
-    let fmaddsub = constify_imm4_sae!(rounding, call);
+    let fmaddsub = constify_imm4_round!(rounding, call);
     let zero = _mm512_setzero_ps().as_f32x16();
     transmute(simd_select_bitmask(k, fmaddsub, zero))
 }
@@ -3017,7 +3017,7 @@ pub unsafe fn _mm512_mask3_fmaddsub_round_ps(a: __m512, b: __m512, c: __m512, k:
             vfmaddsub213ps(a.as_f32x16(), b.as_f32x16(), c.as_f32x16(), $imm4)
         };
     }
-    let fmaddsub = constify_imm4_sae!(rounding, call);
+    let fmaddsub = constify_imm4_round!(rounding, call);
     transmute(simd_select_bitmask(k, fmaddsub, c.as_f32x16()))
 }
 
@@ -3041,7 +3041,7 @@ pub unsafe fn _mm512_fmaddsub_round_pd(a: __m512d, b: __m512d, c: __m512d, round
             vfmaddsub213pd(a.as_f64x8(), b.as_f64x8(), c.as_f64x8(), $imm4)
         };
     }
-    let r = constify_imm4_sae!(rounding, call);
+    let r = constify_imm4_round!(rounding, call);
     transmute(r)
 }
 
@@ -3065,7 +3065,7 @@ pub unsafe fn _mm512_mask_fmaddsub_round_pd(a: __m512d, k: __mmask8, b: __m512d,
             vfmaddsub213pd(a.as_f64x8(), b.as_f64x8(), c.as_f64x8(), $imm4)
         };
     }
-    let fmaddsub = constify_imm4_sae!(rounding, call);
+    let fmaddsub = constify_imm4_round!(rounding, call);
     transmute(simd_select_bitmask(k, fmaddsub, a.as_f64x8()))
 }
 
@@ -3089,7 +3089,7 @@ pub unsafe fn _mm512_maskz_fmaddsub_round_pd(k: __mmask8, a: __m512d, b: __m512d
             vfmaddsub213pd(a.as_f64x8(), b.as_f64x8(), c.as_f64x8(), $imm4)
         };
     }
-    let fmaddsub = constify_imm4_sae!(rounding, call);
+    let fmaddsub = constify_imm4_round!(rounding, call);
     let zero = _mm512_setzero_pd().as_f64x8();
     transmute(simd_select_bitmask(k, fmaddsub, zero))
 }
@@ -3114,7 +3114,7 @@ pub unsafe fn _mm512_mask3_fmaddsub_round_pd(a: __m512d, b: __m512d, c: __m512d,
             vfmaddsub213pd(a.as_f64x8(), b.as_f64x8(), c.as_f64x8(), $imm4)
         };
     }
-    let fmaddsub = constify_imm4_sae!(rounding, call);
+    let fmaddsub = constify_imm4_round!(rounding, call);
     transmute(simd_select_bitmask(k, fmaddsub, c.as_f64x8()))
 }
 
@@ -3140,7 +3140,7 @@ pub unsafe fn _mm512_fmsubadd_round_ps(a: __m512, b: __m512, c: __m512, rounding
             vfmaddsub213ps(a.as_f32x16(), b.as_f32x16(), sub, $imm4)
         };
     }
-    let r = constify_imm4_sae!(rounding, call);
+    let r = constify_imm4_round!(rounding, call);
     transmute(r)
 }
 
@@ -3166,7 +3166,7 @@ pub unsafe fn _mm512_mask_fmsubadd_round_ps(a: __m512, k: __mmask16, b: __m512, 
             vfmaddsub213ps(a.as_f32x16(), b.as_f32x16(), sub, $imm4)
         };
     }
-    let fmsubadd = constify_imm4_sae!(rounding, call);
+    let fmsubadd = constify_imm4_round!(rounding, call);
     transmute(simd_select_bitmask(k, fmsubadd, a.as_f32x16()))
 }
 
@@ -3192,7 +3192,7 @@ pub unsafe fn _mm512_maskz_fmsubadd_round_ps(k: __mmask16, a: __m512, b: __m512,
             vfmaddsub213ps(a.as_f32x16(), b.as_f32x16(), sub, $imm4)
         };
     }
-    let fmsubadd = constify_imm4_sae!(rounding, call);
+    let fmsubadd = constify_imm4_round!(rounding, call);
     transmute(simd_select_bitmask(k, fmsubadd, zero))
 }
 
@@ -3218,7 +3218,7 @@ pub unsafe fn _mm512_mask3_fmsubadd_round_ps(a: __m512, b: __m512, c: __m512, k:
             vfmaddsub213ps(a.as_f32x16(), b.as_f32x16(), sub, $imm4)
         };
     }
-    let fmsubadd = constify_imm4_sae!(rounding, call);
+    let fmsubadd = constify_imm4_round!(rounding, call);
     transmute(simd_select_bitmask(k, fmsubadd, c.as_f32x16()))
 }
 
@@ -3244,7 +3244,7 @@ pub unsafe fn _mm512_fmsubadd_round_pd(a: __m512d, b: __m512d, c: __m512d, round
             vfmaddsub213pd(a.as_f64x8(), b.as_f64x8(), sub, $imm4)
         };
     }
-    let r = constify_imm4_sae!(rounding, call);
+    let r = constify_imm4_round!(rounding, call);
     transmute(r)
 }
 
@@ -3270,7 +3270,7 @@ pub unsafe fn _mm512_mask_fmsubadd_round_pd(a: __m512d, k: __mmask8, b: __m512d,
             vfmaddsub213pd(a.as_f64x8(), b.as_f64x8(), sub, $imm4)
         };
     }
-    let fmsubadd = constify_imm4_sae!(rounding, call);
+    let fmsubadd = constify_imm4_round!(rounding, call);
     transmute(simd_select_bitmask(k, fmsubadd, a.as_f64x8()))
 }
 
@@ -3296,7 +3296,7 @@ pub unsafe fn _mm512_maskz_fmsubadd_round_pd(k: __mmask8, a: __m512d, b: __m512d
             vfmaddsub213pd(a.as_f64x8(), b.as_f64x8(), sub, $imm4)
         };
     }
-    let fmsubadd = constify_imm4_sae!(rounding, call);
+    let fmsubadd = constify_imm4_round!(rounding, call);
     transmute(simd_select_bitmask(k, fmsubadd, zero))
 }
 
@@ -3322,7 +3322,7 @@ pub unsafe fn _mm512_mask3_fmsubadd_round_pd(a: __m512d, b: __m512d, c: __m512d,
             vfmaddsub213pd(a.as_f64x8(), b.as_f64x8(), sub, $imm4)
         };
     }
-    let fmsubadd = constify_imm4_sae!(rounding, call);
+    let fmsubadd = constify_imm4_round!(rounding, call);
     transmute(simd_select_bitmask(k, fmsubadd, c.as_f64x8()))
 }
 
@@ -3348,7 +3348,7 @@ pub unsafe fn _mm512_fnmadd_round_ps(a: __m512, b: __m512, c: __m512, rounding: 
             vfmadd132ps(sub, b.as_f32x16(), c.as_f32x16(), $imm4)
         };
     }
-    let r = constify_imm4_sae!(rounding, call);
+    let r = constify_imm4_round!(rounding, call);
     transmute(r)
 }
 
@@ -3374,7 +3374,7 @@ pub unsafe fn _mm512_mask_fnmadd_round_ps(a: __m512, k: __mmask16, b: __m512, c:
             vfmadd132ps(sub, b.as_f32x16(), c.as_f32x16(), $imm4)
         };
     }
-    let fnmadd = constify_imm4_sae!(rounding, call);
+    let fnmadd = constify_imm4_round!(rounding, call);
     transmute(simd_select_bitmask(k, fnmadd, a.as_f32x16()))
 }
 
@@ -3400,7 +3400,7 @@ pub unsafe fn _mm512_maskz_fnmadd_round_ps(k: __mmask16, a: __m512, b: __m512, c
             vfmadd132ps(sub, b.as_f32x16(), c.as_f32x16(), $imm4)
         };
     }
-    let fnmadd = constify_imm4_sae!(rounding, call);
+    let fnmadd = constify_imm4_round!(rounding, call);
     transmute(simd_select_bitmask(k, fnmadd, zero))
 }
 
@@ -3426,7 +3426,7 @@ pub unsafe fn _mm512_mask3_fnmadd_round_ps(a: __m512, b: __m512, c: __m512, k: _
             vfmadd132ps(sub, b.as_f32x16(), c.as_f32x16(), $imm4)
         };
     }
-    let fnmadd = constify_imm4_sae!(rounding, call);
+    let fnmadd = constify_imm4_round!(rounding, call);
     transmute(simd_select_bitmask(k, fnmadd, c.as_f32x16()))
 }
 
@@ -3452,7 +3452,7 @@ pub unsafe fn _mm512_fnmadd_round_pd(a: __m512d, b: __m512d, c: __m512d, roundin
             vfmadd132pd(sub, b.as_f64x8(), c.as_f64x8(), $imm4)
         };
     }
-    let r = constify_imm4_sae!(rounding, call);
+    let r = constify_imm4_round!(rounding, call);
     transmute(r)
 }
 
@@ -3478,7 +3478,7 @@ pub unsafe fn _mm512_mask_fnmadd_round_pd(a: __m512d, k: __mmask8, b: __m512d, c
             vfmadd132pd(sub, b.as_f64x8(), c.as_f64x8(), $imm4)
         };
     }
-    let fnmadd = constify_imm4_sae!(rounding, call);
+    let fnmadd = constify_imm4_round!(rounding, call);
     transmute(simd_select_bitmask(k, fnmadd, a.as_f64x8()))
 }
 
@@ -3504,7 +3504,7 @@ pub unsafe fn _mm512_maskz_fnmadd_round_pd(k: __mmask8, a: __m512d, b: __m512d, 
             vfmadd132pd(sub, b.as_f64x8(), c.as_f64x8(), $imm4)
         };
     }
-    let fnmadd = constify_imm4_sae!(rounding, call);
+    let fnmadd = constify_imm4_round!(rounding, call);
     transmute(simd_select_bitmask(k, fnmadd, zero))
 }
 
@@ -3530,7 +3530,7 @@ pub unsafe fn _mm512_mask3_fnmadd_round_pd(a: __m512d, b: __m512d, c: __m512d, k
             vfmadd132pd(sub, b.as_f64x8(), c.as_f64x8(), $imm4)
         };
     }
-    let fnmadd = constify_imm4_sae!(rounding, call);
+    let fnmadd = constify_imm4_round!(rounding, call);
     transmute(simd_select_bitmask(k, fnmadd, c.as_f64x8()))
 }
 
@@ -3557,7 +3557,7 @@ pub unsafe fn _mm512_fnmsub_round_ps(a: __m512, b: __m512, c: __m512, rounding: 
             vfmadd132ps(suba, b.as_f32x16(), subc, $imm4)
         };
     }
-    let r = constify_imm4_sae!(rounding, call);
+    let r = constify_imm4_round!(rounding, call);
     transmute(r)
 }
 
@@ -3584,7 +3584,7 @@ pub unsafe fn _mm512_mask_fnmsub_round_ps(a: __m512, k: __mmask16, b: __m512, c:
             vfmadd132ps(suba, b.as_f32x16(), subc, $imm4)
         };
     }
-    let fnmsub = constify_imm4_sae!(rounding, call);
+    let fnmsub = constify_imm4_round!(rounding, call);
     transmute(simd_select_bitmask(k, fnmsub, a.as_f32x16()))
 }
 
@@ -3611,7 +3611,7 @@ pub unsafe fn _mm512_maskz_fnmsub_round_ps(k: __mmask16, a: __m512, b: __m512, c
             vfmadd132ps(suba, b.as_f32x16(), subc, $imm4)
         };
     }
-    let fnmsub = constify_imm4_sae!(rounding, call);
+    let fnmsub = constify_imm4_round!(rounding, call);
     transmute(simd_select_bitmask(k, fnmsub, zero))
 }
 
@@ -3638,7 +3638,7 @@ pub unsafe fn _mm512_mask3_fnmsub_round_ps(a: __m512, b: __m512, c: __m512, k: _
             vfmadd132ps(suba, b.as_f32x16(), subc, $imm4)
         };
     }
-    let fnmsub = constify_imm4_sae!(rounding, call);
+    let fnmsub = constify_imm4_round!(rounding, call);
     transmute(simd_select_bitmask(k, fnmsub, c.as_f32x16()))
 }
 
@@ -3665,7 +3665,7 @@ pub unsafe fn _mm512_fnmsub_round_pd(a: __m512d, b: __m512d, c: __m512d, roundin
             vfmadd132pd(suba, b.as_f64x8(), subc, $imm4)
         };
     }
-    let r = constify_imm4_sae!(rounding, call);
+    let r = constify_imm4_round!(rounding, call);
     transmute(r)
 }
 
@@ -3692,7 +3692,7 @@ pub unsafe fn _mm512_mask_fnmsub_round_pd(a: __m512d, k: __mmask8, b: __m512d, c
             vfmadd132pd(suba, b.as_f64x8(), subc, $imm4)
         };
     }
-    let fnmsub = constify_imm4_sae!(rounding, call);
+    let fnmsub = constify_imm4_round!(rounding, call);
     transmute(simd_select_bitmask(k, fnmsub, a.as_f64x8()))
 }
 
@@ -3719,7 +3719,7 @@ pub unsafe fn _mm512_maskz_fnmsub_round_pd(k: __mmask8, a: __m512d, b: __m512d, 
             vfmadd132pd(suba, b.as_f64x8(), subc, $imm4)
         };
     }
-    let fnmsub = constify_imm4_sae!(rounding, call);
+    let fnmsub = constify_imm4_round!(rounding, call);
     transmute(simd_select_bitmask(k, fnmsub, zero))
 }
 
@@ -3746,8 +3746,26 @@ pub unsafe fn _mm512_mask3_fnmsub_round_pd(a: __m512d, b: __m512d, c: __m512d, k
             vfmadd132pd(suba, b.as_f64x8(), subc, $imm4)
         };
     }
-    let fnmsub = constify_imm4_sae!(rounding, call);
+    let fnmsub = constify_imm4_round!(rounding, call);
     transmute(simd_select_bitmask(k, fnmsub, c.as_f64x8()))
+}
+
+/// Compare packed single-precision (32-bit) floating-point elements in a and b, and store packed maximum values in dst.
+/// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=max_round_ps&expand=3662)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vmaxps, sae = 8))]
+#[rustc_args_required_const(2)]
+pub unsafe fn _mm512_max_round_ps(a: __m512, b: __m512, sae: i32) -> __m512 {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vmaxps(a.as_f32x16(), b.as_f32x16(), $imm4)
+        };
+    }
+    let r = constify_imm4_sae!(sae, call);
+    transmute(r)
 }
 
 /// Convert packed single-precision (32-bit) floating-point elements in a to packed 32-bit integers, and store the results in dst.
@@ -3830,7 +3848,7 @@ pub unsafe fn _mm512_cvt_roundps_epi32(a: __m512, rounding: i32) -> __m512i {
             vcvtps2dq(a.as_f32x16(), _mm512_setzero_si512().as_i32x16(), 0b11111111_11111111, $imm4)
         };
     }
-    let r = constify_imm4_sae!(rounding, call);
+    let r = constify_imm4_round!(rounding, call);
     transmute(r)
 }
 
@@ -3854,7 +3872,7 @@ pub unsafe fn _mm512_mask_cvt_roundps_epi32(src: __m512i, k: __mmask16, a: __m51
             vcvtps2dq(a.as_f32x16(), src.as_i32x16(), k, $imm4)
         };
     }
-    let r = constify_imm4_sae!(rounding, call);
+    let r = constify_imm4_round!(rounding, call);
     transmute(r)
 }
 
@@ -3878,7 +3896,7 @@ pub unsafe fn _mm512_maskz_cvt_roundps_epi32(k: __mmask16, a: __m512, rounding: 
             vcvtps2dq(a.as_f32x16(), _mm512_setzero_si512().as_i32x16(), k, $imm4)
         };
     }
-    let r = constify_imm4_sae!(rounding, call);
+    let r = constify_imm4_round!(rounding, call);
     transmute(r)
 }
 
@@ -3902,7 +3920,7 @@ pub unsafe fn _mm512_cvt_roundps_epu32(a: __m512, rounding: i32) -> __m512i {
             vcvtps2udq(a.as_f32x16(), _mm512_setzero_si512().as_u32x16(), 0b11111111_11111111, $imm4)
         };
     }
-    let r = constify_imm4_sae!(rounding, call);
+    let r = constify_imm4_round!(rounding, call);
     transmute(r)
 }
 
@@ -3926,7 +3944,7 @@ pub unsafe fn _mm512_mask_cvt_roundps_epu32(src: __m512i, k: __mmask16, a: __m51
             vcvtps2udq(a.as_f32x16(), src.as_u32x16(), k, $imm4)
         };
     }
-    let r = constify_imm4_sae!(rounding, call);
+    let r = constify_imm4_round!(rounding, call);
     transmute(r)
 }
 
@@ -3950,7 +3968,7 @@ pub unsafe fn _mm512_maskz_cvt_roundps_epu32(k: __mmask16, a: __m512, rounding: 
             vcvtps2udq(a.as_f32x16(), _mm512_setzero_si512().as_u32x16(), k, $imm4)
         };
     }
-    let r = constify_imm4_sae!(rounding, call);
+    let r = constify_imm4_round!(rounding, call);
     transmute(r)
 }
 
@@ -7666,6 +7684,9 @@ extern "C" {
     #[link_name = "llvm.x86.avx512.div.pd.512"]
     fn vdivpd(a: f64x8, b: f64x8, rounding: i32) -> f64x8;
 
+    #[link_name = "llvm.x86.avx512.max.ps.512"]
+    fn vmaxps(a: f32x16, b: f32x16, sae: i32) -> f32x16;
+
     #[link_name = "llvm.x86.avx512.rcp14.ps.512"]
     fn vrcp14ps(a: f32x16, src: f32x16, m: u16) -> f32x16;
     #[link_name = "llvm.x86.avx512.rcp14.pd.512"]
@@ -10096,6 +10117,21 @@ mod tests {
         let r = _mm512_mask3_fnmsub_round_ps(a, b, c, 0b00000000_11111111, _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC);
         let e = _mm512_setr_ps(
             0.99999994, 0.99999994, 0.99999994, 0.99999994, 0.99999994, 0.99999994, 0.99999994, 0.99999994, -1., -1., -1., -1., -1., -1., -1., -1.
+        );
+        assert_eq_m512(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_max_round_ps() {
+        let a = _mm512_setr_ps(
+            0., 1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15.,
+        );
+        let b = _mm512_setr_ps(
+            15., 14., 13., 12., 11., 10., 9., 8., 7., 6., 5., 4., 3., 2., 1., 0.,
+        );
+        let r = _mm512_max_round_ps(a, b, _MM_FROUND_NO_EXC);
+        let e = _mm512_setr_ps(
+            15., 14., 13., 12., 11., 10., 9., 8., 8., 9., 10., 11., 12., 13., 14., 15.,
         );
         assert_eq_m512(r, e);
     }
