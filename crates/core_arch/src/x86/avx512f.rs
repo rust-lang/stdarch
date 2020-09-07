@@ -736,7 +736,7 @@ pub unsafe fn _mm512_maskz_max_epi64(k: __mmask8, a: __m512i, b: __m512i) -> __m
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vmaxps))]
 pub unsafe fn _mm512_max_ps(a: __m512, b: __m512) -> __m512 {
-    transmute(simd_fmax(a.as_f32x16(), b.as_f32x16()))
+    transmute(vmaxps(a.as_f32x16(), b.as_f32x16(), _MM_FROUND_CUR_DIRECTION))
 }
 
 /// Compare packed single-precision (32-bit) floating-point elements in a and b, and store packed maximum values in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
@@ -769,7 +769,7 @@ pub unsafe fn _mm512_maskz_max_ps(k: __mmask16, a: __m512, b: __m512) -> __m512 
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vmaxpd))]
 pub unsafe fn _mm512_max_pd(a: __m512d, b: __m512d) -> __m512d {
-    transmute(simd_fmax(a.as_f64x8(), b.as_f64x8()))
+    transmute(vmaxpd(a.as_f64x8(), b.as_f64x8(), _MM_FROUND_CUR_DIRECTION))
 }
 
 /// Compare packed double-precision (64-bit) floating-point elements in a and b, and store packed maximum values in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
@@ -3766,6 +3766,98 @@ pub unsafe fn _mm512_max_round_ps(a: __m512, b: __m512, sae: i32) -> __m512 {
     }
     let r = constify_imm4_sae!(sae, call);
     transmute(r)
+}
+
+/// Compare packed single-precision (32-bit) floating-point elements in a and b, and store packed maximum values in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+/// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_max_round_ps&expand=3660)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vmaxps, sae = 8))]
+#[rustc_args_required_const(4)]
+pub unsafe fn _mm512_mask_max_round_ps(src: __m512, k: __mmask16, a: __m512, b: __m512, sae: i32) -> __m512 {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vmaxps(a.as_f32x16(), b.as_f32x16(), $imm4)
+        };
+    }
+    let max = constify_imm4_sae!(sae, call);
+    transmute(simd_select_bitmask(k, max, src.as_f32x16()))
+}
+
+/// Compare packed single-precision (32-bit) floating-point elements in a and b, and store packed maximum values in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+/// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_max_round_ps&expand=3661)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vmaxps, sae = 8))]
+#[rustc_args_required_const(3)]
+pub unsafe fn _mm512_maskz_max_round_ps(k: __mmask16, a: __m512, b: __m512, sae: i32) -> __m512 {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vmaxps(a.as_f32x16(), b.as_f32x16(), $imm4)
+        };
+    }
+    let max = constify_imm4_sae!(sae, call);
+    let zero = _mm512_setzero_ps().as_f32x16();
+    transmute(simd_select_bitmask(k, max, zero))
+}
+
+/// Compare packed double-precision (64-bit) floating-point elements in a and b, and store packed maximum values in dst.
+/// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_max_round_pd&expand=3659)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vmaxpd, sae = 8))]
+#[rustc_args_required_const(2)]
+pub unsafe fn _mm512_max_round_pd(a: __m512d, b: __m512d, sae: i32) -> __m512d {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vmaxpd(a.as_f64x8(), b.as_f64x8(), $imm4)
+        };
+    }
+    let r = constify_imm4_sae!(sae, call);
+    transmute(r)
+}
+
+/// Compare packed double-precision (64-bit) floating-point elements in a and b, and store packed maximum values in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+/// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_max_round_pd&expand=3657)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vmaxpd, sae = 8))]
+#[rustc_args_required_const(4)]
+pub unsafe fn _mm512_mask_max_round_pd(src: __m512d, k: __mmask8, a: __m512d, b: __m512d, sae: i32) -> __m512d {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vmaxpd(a.as_f64x8(), b.as_f64x8(), $imm4)
+        };
+    }
+    let max = constify_imm4_sae!(sae, call);
+    transmute(simd_select_bitmask(k, max, src.as_f64x8()))
+}
+
+/// Compare packed double-precision (64-bit) floating-point elements in a and b, and store packed maximum values in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+/// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_max_round_pd&expand=3658)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vmaxpd, sae = 8))]
+#[rustc_args_required_const(3)]
+pub unsafe fn _mm512_maskz_max_round_pd(k: __mmask8, a: __m512d, b: __m512d, sae: i32) -> __m512d {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vmaxpd(a.as_f64x8(), b.as_f64x8(), $imm4)
+        };
+    }
+    let max = constify_imm4_sae!(sae, call);
+    let zero = _mm512_setzero_pd().as_f64x8();
+    transmute(simd_select_bitmask(k, max, zero))
 }
 
 /// Convert packed single-precision (32-bit) floating-point elements in a to packed 32-bit integers, and store the results in dst.
@@ -7686,6 +7778,8 @@ extern "C" {
 
     #[link_name = "llvm.x86.avx512.max.ps.512"]
     fn vmaxps(a: f32x16, b: f32x16, sae: i32) -> f32x16;
+    #[link_name = "llvm.x86.avx512.max.pd.512"]
+    fn vmaxpd(a: f64x8, b: f64x8, sae: i32) -> f64x8;
 
     #[link_name = "llvm.x86.avx512.rcp14.ps.512"]
     fn vrcp14ps(a: f32x16, src: f32x16, m: u16) -> f32x16;
@@ -10129,9 +10223,43 @@ mod tests {
         let b = _mm512_setr_ps(
             15., 14., 13., 12., 11., 10., 9., 8., 7., 6., 5., 4., 3., 2., 1., 0.,
         );
-        let r = _mm512_max_round_ps(a, b, _MM_FROUND_NO_EXC);
+        let r = _mm512_max_round_ps(a, b, _MM_FROUND_CUR_DIRECTION);
         let e = _mm512_setr_ps(
             15., 14., 13., 12., 11., 10., 9., 8., 8., 9., 10., 11., 12., 13., 14., 15.,
+        );
+        assert_eq_m512(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_max_round_ps() {
+        let a = _mm512_setr_ps(
+            0., 1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15.,
+        );
+        let b = _mm512_setr_ps(
+            15., 14., 13., 12., 11., 10., 9., 8., 7., 6., 5., 4., 3., 2., 1., 0.,
+        );
+        let r = _mm512_mask_max_round_ps(a, 0, a, b, _MM_FROUND_CUR_DIRECTION);
+        assert_eq_m512(r, a);
+        let r = _mm512_mask_max_round_ps(a, 0b00000000_11111111, a, b, _MM_FROUND_CUR_DIRECTION);
+        let e = _mm512_setr_ps(
+            15., 14., 13., 12., 11., 10., 9., 8., 8., 9., 10., 11., 12., 13., 14., 15.,
+        );
+        assert_eq_m512(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_maskz_max_round_ps() {
+        let a = _mm512_setr_ps(
+            0., 1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15.,
+        );
+        let b = _mm512_setr_ps(
+            15., 14., 13., 12., 11., 10., 9., 8., 7., 6., 5., 4., 3., 2., 1., 0.,
+        );
+        let r = _mm512_maskz_max_round_ps(0, a, b, _MM_FROUND_CUR_DIRECTION);
+        assert_eq_m512(r, _mm512_setzero_ps());
+        let r = _mm512_maskz_max_round_ps(0b00000000_11111111, a, b, _MM_FROUND_CUR_DIRECTION);
+        let e = _mm512_setr_ps(
+            15., 14., 13., 12., 11., 10., 9., 8., 0., 0., 0., 0., 0., 0., 0., 0.,
         );
         assert_eq_m512(r, e);
     }
