@@ -3970,6 +3970,114 @@ pub unsafe fn _mm512_maskz_min_round_pd(k: __mmask8, a: __m512d, b: __m512d, sae
     transmute(simd_select_bitmask(k, max, zero))
 }
 
+/// Convert the exponent of each packed single-precision (32-bit) floating-point element in a to a single-precision (32-bit) floating-point number representing the integer exponent, and store the results in dst. This intrinsic essentially calculates floor(log2(x)) for each element.
+/// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_getexp_round_ps&expand=2850)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vgetexpps, sae = 8))]
+#[rustc_args_required_const(1)]
+pub unsafe fn _mm512_getexp_round_ps(a: __m512, sae: i32) -> __m512 {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vgetexpps(a.as_f32x16(), _mm512_setzero_ps().as_f32x16(), 0b11111111_11111111, $imm4)
+        };
+    }
+    let r = constify_imm4_sae!(sae, call);
+    transmute(r)
+}
+
+/// Convert the exponent of each packed single-precision (32-bit) floating-point element in a to a single-precision (32-bit) floating-point number representing the integer exponent, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set). This intrinsic essentially calculates floor(log2(x)) for each element.
+/// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_getexp_round_ps&expand=2851)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vgetexpps, sae = 8))]
+#[rustc_args_required_const(3)]
+pub unsafe fn _mm512_mask_getexp_round_ps(src: __m512, k: __mmask16, a: __m512, sae: i32) -> __m512 {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vgetexpps(a.as_f32x16(), src.as_f32x16(), k, $imm4)
+        };
+    }
+    let r = constify_imm4_sae!(sae, call);
+    transmute(r)
+}
+
+/// Convert the exponent of each packed single-precision (32-bit) floating-point element in a to a single-precision (32-bit) floating-point number representing the integer exponent, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set). This intrinsic essentially calculates floor(log2(x)) for each element.
+/// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_getexp_round_ps&expand=2852)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vgetexpps, sae = 8))]
+#[rustc_args_required_const(2)]
+pub unsafe fn _mm512_maskz_getexp_round_ps(k: __mmask16, a: __m512, sae: i32) -> __m512 {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vgetexpps(a.as_f32x16(), _mm512_setzero_ps().as_f32x16(), k, $imm4)
+        };
+    }
+    let r = constify_imm4_sae!(sae, call);
+    transmute(r)
+}
+
+/// Convert the exponent of each packed double-precision (64-bit) floating-point element in a to a double-precision (64-bit) floating-point number representing the integer exponent, and store the results in dst. This intrinsic essentially calculates floor(log2(x)) for each element.
+/// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_getexp_round_pd&expand=2847)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vgetexppd, sae = 8))]
+#[rustc_args_required_const(1)]
+pub unsafe fn _mm512_getexp_round_pd(a: __m512d, sae: i32) -> __m512d {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vgetexppd(a.as_f64x8(), _mm512_setzero_pd().as_f64x8(), 0b11111111, $imm4)
+        };
+    }
+    let r = constify_imm4_sae!(sae, call);
+    transmute(r)
+}
+
+/// Convert the exponent of each packed double-precision (64-bit) floating-point element in a to a double-precision (64-bit) floating-point number representing the integer exponent, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set). This intrinsic essentially calculates floor(log2(x)) for each element.
+/// Compare packed double-precision (64-bit) floating-point elements in a and b, and store packed maximum values in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_getexp_round_pd&expand=2848)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vgetexppd, sae = 8))]
+#[rustc_args_required_const(3)]
+pub unsafe fn _mm512_mask_getexp_round_pd(src: __m512d, k: __mmask8, a: __m512d, sae: i32) -> __m512d {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vgetexppd(a.as_f64x8(), src.as_f64x8(), k, $imm4)
+        };
+    }
+    let r = constify_imm4_sae!(sae, call);
+    transmute(r)
+}
+
+/// Convert the exponent of each packed double-precision (64-bit) floating-point element in a to a double-precision (64-bit) floating-point number representing the integer exponent, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set). This intrinsic essentially calculates floor(log2(x)) for each element.
+/// Compare packed double-precision (64-bit) floating-point elements in a and b, and store packed maximum values in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_getexp_round_pd&expand=2849)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vgetexppd, sae = 8))]
+#[rustc_args_required_const(2)]
+pub unsafe fn _mm512_maskz_getexp_round_pd(k: __mmask8, a: __m512d, sae: i32) -> __m512d {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vgetexppd(a.as_f64x8(), _mm512_setzero_pd().as_f64x8(), k, $imm4)
+        };
+    }
+    let r = constify_imm4_sae!(sae, call);
+    transmute(r)
+}
+
 /// Convert packed single-precision (32-bit) floating-point elements in a to packed 32-bit integers, and store the results in dst.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=cvtps_epi32&expand=1737)   
@@ -7895,6 +8003,11 @@ extern "C" {
     #[link_name = "llvm.x86.avx512.min.pd.512"]
     fn vminpd(a: f64x8, b: f64x8, sae: i32) -> f64x8;
 
+    #[link_name = "llvm.x86.avx512.mask.getexp.ps.512"]
+    fn vgetexpps(a: f32x16, src: f32x16, m: u16, sae: i32) -> f32x16;
+    #[link_name = "llvm.x86.avx512.mask.getexp.pd.512"]
+    fn vgetexppd(a: f64x8, src: f64x8, m: u8, sae: i32) -> f64x8;
+
     #[link_name = "llvm.x86.avx512.rcp14.ps.512"]
     fn vrcp14ps(a: f32x16, src: f32x16, m: u16) -> f32x16;
     #[link_name = "llvm.x86.avx512.rcp14.pd.512"]
@@ -10424,6 +10537,39 @@ mod tests {
         let e = _mm512_setr_ps(
             0., 1., 2., 3., 4., 5., 6., 7., 0., 0., 0., 0., 0., 0., 0., 0.,
         );
+        assert_eq_m512(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_getexp_round_ps() {
+        let a = _mm512_set1_ps(3.);
+        let r = _mm512_getexp_round_ps(a, _MM_FROUND_CUR_DIRECTION);
+        let e = _mm512_set1_ps(1.);
+        assert_eq_m512(r, e);
+        let r = _mm512_getexp_round_ps(a, _MM_FROUND_NO_EXC);
+        let e = _mm512_set1_ps(1.);
+        assert_eq_m512(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_getexp_round_ps() {
+        let a = _mm512_set1_ps(3.);
+        let r = _mm512_mask_getexp_round_ps(a, 0, a, _MM_FROUND_CUR_DIRECTION);
+        assert_eq_m512(r, a);
+        let r = _mm512_mask_getexp_round_ps(a, 0b11111111_00000000, a, _MM_FROUND_CUR_DIRECTION);
+        let e = _mm512_setr_ps(
+            3., 3., 3., 3., 3., 3., 3., 3., 1., 1., 1., 1., 1., 1., 1., 1.
+        );
+        assert_eq_m512(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_maskz_getexp_round_ps() {
+        let a = _mm512_set1_ps(3.);
+        let r = _mm512_maskz_getexp_round_ps(0, a, _MM_FROUND_CUR_DIRECTION);
+        assert_eq_m512(r, _mm512_setzero_ps());
+        let r = _mm512_maskz_getexp_round_ps(0b11111111_00000000, a, _MM_FROUND_CUR_DIRECTION);
+        let e = _mm512_setr_ps(0., 0., 0., 0., 0., 0., 0., 0., 1., 1., 1., 1., 1., 1., 1., 1.);
         assert_eq_m512(r, e);
     }
 
