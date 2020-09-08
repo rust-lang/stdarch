@@ -4713,6 +4713,52 @@ pub unsafe fn _mm512_maskz_cvtps_epu32(k: __mmask16, a: __m512) -> __m512i {
     ))
 }
 
+/*
+/// Convert packed single-precision (32-bit) floating-point elements in a to packed double-precision (64-bit) floating-point elements, and store the results in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_cvtps_pd&expand=1769) 
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vcvtps2pd))]
+pub unsafe fn _mm512_cvtps_pd(a: __m256) -> __m512d {
+    transmute(vcvtps2pd(
+        a.as_f32x16(),
+        _mm512_setzero_si512().as_i32x16(),
+        0b11111111_11111111,
+        _MM_FROUND_CUR_DIRECTION,
+    ))
+}
+
+/// Convert packed single-precision (32-bit) floating-point elements in a to packed double-precision (64-bit) floating-point elements, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_cvtps_pd&expand=1770)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vcvtps2pd))]
+pub unsafe fn _mm512_mask_cvtps_pd(src: __m512d, k: __mmask8, a: __m256) -> __m512d {
+    transmute(vcvtps2pd(
+        a.as_f32x16(),
+        src.as_i32x16(),
+        k,
+        _MM_FROUND_CUR_DIRECTION,
+    ))
+}
+
+/// Convert packed single-precision (32-bit) floating-point elements in a to packed double-precision (64-bit) floating-point elements, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_cvtps_pd&expand=1771)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vcvtps2pd))]
+pub unsafe fn _mm512_maskz_cvtps_pd(k: __mmask8, a: __m256) -> __m512d {
+    transmute(vcvtps2pd(
+        a.as_f32x16(),
+        _mm512_setzero_si512().as_i32x16(),
+        k,
+        _MM_FROUND_CUR_DIRECTION,
+    ))
+}
+*/
 /// Convert packed single-precision (32-bit) floating-point elements in a to packed 32-bit integers, and store the results in dst.
 ///
 /// Rounding is done according to the rounding[3:0] parameter, which can be one of:
@@ -4874,6 +4920,70 @@ pub unsafe fn _mm512_maskz_cvt_roundps_epu32(k: __mmask16, a: __m512, rounding: 
         };
     }
     let r = constify_imm4_round!(rounding, call);
+    transmute(r)
+}
+
+/// Convert packed single-precision (32-bit) floating-point elements in a to packed double-precision (64-bit) floating-point elements, and store the results in dst.
+/// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+///    
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=cvt_roundps_pd&expand=1347)   
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vcvtps2pd, sae = 8))]
+#[rustc_args_required_const(1)]
+pub unsafe fn _mm512_cvt_roundps_pd(a: __m256, sae: i32) -> __m512d {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vcvtps2pd(
+                a.as_f32x8(),
+                _mm512_setzero_pd().as_f64x8(),
+                0b11111111,
+                $imm4,
+            )
+        };
+    }
+    let r = constify_imm4_sae!(sae, call);
+    transmute(r)
+}
+
+/// Convert packed single-precision (32-bit) floating-point elements in a to packed double-precision (64-bit) floating-point elements, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set). 
+/// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_cvt_roundps_epi32&expand=1336)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vcvtps2pd, sae = 8))]
+#[rustc_args_required_const(3)]
+pub unsafe fn _mm512_mask_cvt_roundps_pd(
+    src: __m512d,
+    k: __mmask8,
+    a: __m256,
+    sae: i32,
+) -> __m512d {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vcvtps2pd(a.as_f32x8(), src.as_f64x8(), k, $imm4)
+        };
+    }
+    let r = constify_imm4_sae!(sae, call);
+    transmute(r)
+}
+
+/// Convert packed single-precision (32-bit) floating-point elements in a to packed double-precision (64-bit) floating-point elements, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+/// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_cvt_roundps_epi32&expand=1337)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vcvtps2pd, sae = 8))]
+#[rustc_args_required_const(2)]
+pub unsafe fn _mm512_maskz_cvt_roundps_pd(k: __mmask8, a: __m256, sae: i32) -> __m512d {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vcvtps2pd(a.as_f32x8(), _mm512_setzero_pd().as_f64x8(), k, $imm4)
+        };
+    }
+    let r = constify_imm4_round!(sae, call);
     transmute(r)
 }
 
@@ -8616,6 +8726,8 @@ extern "C" {
     fn vcvtps2dq(a: f32x16, src: i32x16, mask: u16, rounding: i32) -> i32x16;
     #[link_name = "llvm.x86.avx512.mask.cvtps2udq.512"]
     fn vcvtps2udq(a: f32x16, src: u32x16, mask: u16, rounding: i32) -> u32x16;
+    #[link_name = "llvm.x86.avx512.mask.cvtps2pd.512"]
+    fn vcvtps2pd(a: f32x8, src: f64x8, mask: u8, rounding: i32) -> f64x8;
 
     #[link_name = "llvm.x86.avx512.gather.dpd.512"]
     fn vgatherdpd(src: f64x8, slice: *const i8, offsets: i32x8, mask: i8, scale: i32) -> f64x8;
