@@ -4713,7 +4713,6 @@ pub unsafe fn _mm512_maskz_cvtps_epu32(k: __mmask16, a: __m512) -> __m512i {
     ))
 }
 
-/*
 /// Convert packed single-precision (32-bit) floating-point elements in a to packed double-precision (64-bit) floating-point elements, and store the results in dst.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_cvtps_pd&expand=1769) 
@@ -4722,9 +4721,9 @@ pub unsafe fn _mm512_maskz_cvtps_epu32(k: __mmask16, a: __m512) -> __m512i {
 #[cfg_attr(test, assert_instr(vcvtps2pd))]
 pub unsafe fn _mm512_cvtps_pd(a: __m256) -> __m512d {
     transmute(vcvtps2pd(
-        a.as_f32x16(),
-        _mm512_setzero_si512().as_i32x16(),
-        0b11111111_11111111,
+        a.as_f32x8(),
+        _mm512_setzero_pd().as_f64x8(),
+        0b11111111,
         _MM_FROUND_CUR_DIRECTION,
     ))
 }
@@ -4737,8 +4736,8 @@ pub unsafe fn _mm512_cvtps_pd(a: __m256) -> __m512d {
 #[cfg_attr(test, assert_instr(vcvtps2pd))]
 pub unsafe fn _mm512_mask_cvtps_pd(src: __m512d, k: __mmask8, a: __m256) -> __m512d {
     transmute(vcvtps2pd(
-        a.as_f32x16(),
-        src.as_i32x16(),
+        a.as_f32x8(),
+        src.as_f64x8(),
         k,
         _MM_FROUND_CUR_DIRECTION,
     ))
@@ -4752,13 +4751,13 @@ pub unsafe fn _mm512_mask_cvtps_pd(src: __m512d, k: __mmask8, a: __m256) -> __m5
 #[cfg_attr(test, assert_instr(vcvtps2pd))]
 pub unsafe fn _mm512_maskz_cvtps_pd(k: __mmask8, a: __m256) -> __m512d {
     transmute(vcvtps2pd(
-        a.as_f32x16(),
-        _mm512_setzero_si512().as_i32x16(),
+        a.as_f32x8(),
+        _mm512_setzero_pd().as_f64x8(),
         k,
         _MM_FROUND_CUR_DIRECTION,
     ))
 }
-*/
+
 /// Convert packed single-precision (32-bit) floating-point elements in a to packed 32-bit integers, and store the results in dst.
 ///
 /// Rounding is done according to the rounding[3:0] parameter, which can be one of:
