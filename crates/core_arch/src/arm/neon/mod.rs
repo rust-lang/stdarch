@@ -217,6 +217,8 @@ extern "C" {
         d: int8x8_t,
         e: int8x8_t,
     ) -> int8x8_t;
+    #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vld1.v4f32.p0i8")]
+    fn vld1q_v4f32(addr: *const u8, align: u32) -> float32x4_t;
 }
 
 /// Absolute value (wrapping).
@@ -1767,6 +1769,28 @@ pub unsafe fn vld1q_u8(addr: *const u8) -> uint8x16_t {
     ptr::read(addr as *const uint8x16_t)
 }
 
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[cfg(target_arch = "arm")]
+#[target_feature(enable = "neon")]
+#[target_feature(enable = "v7")]
+#[cfg_attr(test, assert_instr("vld1.32"))]
+pub unsafe fn vld1q_f32(addr: *const f32) -> float32x4_t {
+    vld1q_v4f32(addr as *const u8, 4)
+}
+
+/// Load one single-element structure and Replicate to all lanes (of one register).
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vld1.32"))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1r))]
+pub unsafe fn vld1q_dup_f32(addr: *const f32) -> float32x4_t {
+    use crate::core_arch::simd::f32x4;
+    let v = *addr;
+    transmute(f32x4::new(v, v, v, v))
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -1788,6 +1812,25 @@ mod tests {
         let a = u8x16::new(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
         let e = a;
         let r: u8x16 = transmute(vld1q_u8(transmute(&a)));
+        assert_eq!(r, e);
+    }
+
+    #[cfg(target_arch = "arm")]
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1q_f32() {
+        let e = f32x4::new(1., 2., 3., 4.);
+        let f = [0., 1., 2., 3., 4.];
+        // do a load that has 4 byte alignment to make sure we're not
+        // over aligning it
+        let r: f32x4 = transmute(vld1q_f32(f[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1q_dup_f32() {
+        let e = f32x4::new(1., 1., 1., 1.);
+        let f = [1., 2., 3., 4.];
+        let r: f32x4 = transmute(vld1q_dup_f32(f.as_ptr()));
         assert_eq!(r, e);
     }
 
