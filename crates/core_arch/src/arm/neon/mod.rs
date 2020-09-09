@@ -1373,6 +1373,21 @@ pub unsafe fn vgetq_lane_u32(v: uint32x4_t, imm5: i32) -> u32 {
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[rustc_args_required_const(1)]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vmov.32", imm5 = 2))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(mov, imm5 = 2))]
+pub unsafe fn vgetq_lane_s32(v: int32x4_t, imm5: i32) -> i32 {
+    if (imm5) < 0 || (imm5) > 3 {
+        unreachable_unchecked()
+    }
+    let imm5 = (imm5 & 0b11) as u32;
+    simd_extract(v, imm5)
+}
+
+/// Move vector element to general-purpose register
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[rustc_args_required_const(1)]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vmov.u8", imm5 = 2))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(umov, imm5 = 2))]
 pub unsafe fn vget_lane_u8(v: uint8x8_t, imm5: i32) -> u8 {
@@ -1889,6 +1904,13 @@ mod tests {
     unsafe fn test_vgetq_lane_u32() {
         let v = i32x4::new(1, 2, 3, 4);
         let r = vgetq_lane_u32(transmute(v), 1);
+        assert_eq!(r, 2);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vgetq_lane_s32() {
+        let v = i32x4::new(1, 2, 3, 4);
+        let r = vgetq_lane_s32(transmute(v), 1);
         assert_eq!(r, 2);
     }
 
