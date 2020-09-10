@@ -1902,16 +1902,36 @@ mod tests {
 
     #[simd_test(enable = "neon")]
     unsafe fn test_vcvtq_s32_f32() {
-        let e = i32x4::new(-1, 2, 3, 4);
         let f = f32x4::new(-1., 2., 3., 4.);
+        let e = i32x4::new(-1, 2, 3, 4);
         let r: i32x4 = transmute(vcvtq_s32_f32(transmute(f)));
+        assert_eq!(r, e);
+
+        let f = f32x4::new(10e37, 2., 3., 4.);
+        let e = i32x4::new(0x7fffffff, 2, 3, 4);
+        let r: i32x4 = transmute(vcvtq_u32_f32(transmute(f)));
+        assert_eq!(r, e);
+
+        let f = f32x4::new(-10e37, 2., 3., 4.);
+        let e = i32x4::new(-0x80000000, 2, 3, 4);
+        let r: i32x4 = transmute(vcvtq_u32_f32(transmute(f)));
         assert_eq!(r, e);
     }
 
     #[simd_test(enable = "neon")]
     unsafe fn test_vcvtq_u32_f32() {
-        let e = u32x4::new(1, 2, 3, 4);
         let f = f32x4::new(1., 2., 3., 4.);
+        let e = u32x4::new(1, 2, 3, 4);
+        let r: u32x4 = transmute(vcvtq_u32_f32(transmute(f)));
+        assert_eq!(r, e);
+
+        let f = f32x4::new(-1., 2., 3., 4.);
+        let e = u32x4::new(0, 2, 3, 4);
+        let r: u32x4 = transmute(vcvtq_u32_f32(transmute(f)));
+        assert_eq!(r, e);
+
+        let f = f32x4::new(10e37, 2., 3., 4.);
+        let e = u32x4::new(0xffffffff, 2, 3, 4);
         let r: u32x4 = transmute(vcvtq_u32_f32(transmute(f)));
         assert_eq!(r, e);
     }
