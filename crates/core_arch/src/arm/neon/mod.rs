@@ -217,6 +217,10 @@ extern "C" {
         d: int8x8_t,
         e: int8x8_t,
     ) -> int8x8_t;
+    #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vld1.v4f32.p0i8")]
+    fn vld1q_v4f32(addr: *const u8, align: u32) -> float32x4_t;
+    #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vld1.v4i32.p0i8")]
+    fn vld1q_v4i32(addr: *const u8, align: u32) -> int32x4_t;
 }
 
 /// Absolute value (wrapping).
@@ -1311,11 +1315,8 @@ pub unsafe fn vtbx4_p8(a: poly8x8_t, b: poly8x8x4_t, c: uint8x8_t) -> poly8x8_t 
 // `mov` seems to be an acceptable intrinsic to compile to
 // #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(vmov, imm5 = 1))]
 pub unsafe fn vgetq_lane_u64(v: uint64x2_t, imm5: i32) -> u64 {
-    if (imm5) < 0 || (imm5) > 1 {
-        unreachable_unchecked()
-    }
-    let imm5 = (imm5 & 0b1) as u32;
-    simd_extract(v, imm5)
+    assert!(imm5 >= 0 && imm5 <= 1);
+    simd_extract(v, imm5 as u32)
 }
 
 /// Move vector element to general-purpose register
@@ -1328,9 +1329,7 @@ pub unsafe fn vgetq_lane_u64(v: uint64x2_t, imm5: i32) -> u64 {
 // FIXME: no 32bit this seems to be turned into two vmov.32 instructions
 // validate correctness
 pub unsafe fn vget_lane_u64(v: uint64x1_t, imm5: i32) -> u64 {
-    if imm5 != 0 {
-        unreachable_unchecked()
-    }
+    assert!(imm5 == 0);
     simd_extract(v, 0)
 }
 
@@ -1342,11 +1341,8 @@ pub unsafe fn vget_lane_u64(v: uint64x1_t, imm5: i32) -> u64 {
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vmov.u16", imm5 = 2))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(umov, imm5 = 2))]
 pub unsafe fn vgetq_lane_u16(v: uint16x8_t, imm5: i32) -> u16 {
-    if (imm5) < 0 || (imm5) > 7 {
-        unreachable_unchecked()
-    }
-    let imm5 = (imm5 & 0b111) as u32;
-    simd_extract(v, imm5)
+    assert!(imm5 >= 0 && imm5 <= 7);
+    simd_extract(v, imm5 as u32)
 }
 
 /// Move vector element to general-purpose register
@@ -1357,11 +1353,20 @@ pub unsafe fn vgetq_lane_u16(v: uint16x8_t, imm5: i32) -> u16 {
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vmov.32", imm5 = 2))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(mov, imm5 = 2))]
 pub unsafe fn vgetq_lane_u32(v: uint32x4_t, imm5: i32) -> u32 {
-    if (imm5) < 0 || (imm5) > 3 {
-        unreachable_unchecked()
-    }
-    let imm5 = (imm5 & 0b11) as u32;
-    simd_extract(v, imm5)
+    assert!(imm5 >= 0 && imm5 <= 3);
+    simd_extract(v, imm5 as u32)
+}
+
+/// Move vector element to general-purpose register
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[rustc_args_required_const(1)]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vmov.32", imm5 = 2))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(mov, imm5 = 2))]
+pub unsafe fn vgetq_lane_s32(v: int32x4_t, imm5: i32) -> i32 {
+    assert!(imm5 >= 0 && imm5 <= 3);
+    simd_extract(v, imm5 as u32)
 }
 
 /// Move vector element to general-purpose register
@@ -1372,11 +1377,8 @@ pub unsafe fn vgetq_lane_u32(v: uint32x4_t, imm5: i32) -> u32 {
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vmov.u8", imm5 = 2))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(umov, imm5 = 2))]
 pub unsafe fn vget_lane_u8(v: uint8x8_t, imm5: i32) -> u8 {
-    if (imm5) < 0 || (imm5) > 7 {
-        unreachable_unchecked()
-    }
-    let imm5 = (imm5 & 7) as u32;
-    simd_extract(v, imm5)
+    assert!(imm5 >= 0 && imm5 <= 7);
+    simd_extract(v, imm5 as u32)
 }
 
 /// Duplicate vector element to vector or scalar
@@ -1767,6 +1769,48 @@ pub unsafe fn vld1q_u8(addr: *const u8) -> uint8x16_t {
     ptr::read(addr as *const uint8x16_t)
 }
 
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[cfg(target_arch = "arm")]
+#[target_feature(enable = "neon")]
+#[target_feature(enable = "v7")]
+#[cfg_attr(test, assert_instr("vld1.32"))]
+pub unsafe fn vld1q_s32(addr: *const i32) -> int32x4_t {
+    vld1q_v4i32(addr as *const u8, 4)
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[cfg(target_arch = "arm")]
+#[target_feature(enable = "neon")]
+#[target_feature(enable = "v7")]
+#[cfg_attr(test, assert_instr("vld1.32"))]
+pub unsafe fn vld1q_u32(addr: *const u32) -> uint32x4_t {
+    transmute(vld1q_v4i32(addr as *const u8, 4))
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[cfg(target_arch = "arm")]
+#[target_feature(enable = "neon")]
+#[target_feature(enable = "v7")]
+#[cfg_attr(test, assert_instr("vld1.32"))]
+pub unsafe fn vld1q_f32(addr: *const f32) -> float32x4_t {
+    vld1q_v4f32(addr as *const u8, 4)
+}
+
+/// Load one single-element structure and Replicate to all lanes (of one register).
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vld1.32"))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1r))]
+pub unsafe fn vld1q_dup_f32(addr: *const f32) -> float32x4_t {
+    use crate::core_arch::simd::f32x4;
+    let v = *addr;
+    transmute(f32x4::new(v, v, v, v))
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -1791,6 +1835,47 @@ mod tests {
         assert_eq!(r, e);
     }
 
+    #[cfg(target_arch = "arm")]
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1q_f32() {
+        let e = f32x4::new(1., 2., 3., 4.);
+        let f = [0., 1., 2., 3., 4.];
+        // do a load that has 4 byte alignment to make sure we're not
+        // over aligning it
+        let r: f32x4 = transmute(vld1q_f32(f[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[cfg(target_arch = "arm")]
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1q_s32() {
+        let e = i32x4::new(1, 2, 3, 4);
+        let f = [0, 1, 2, 3, 4];
+        // do a load that has 4 byte alignment to make sure we're not
+        // over aligning it
+        let r: i32x4 = transmute(vld1q_s32(f[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[cfg(target_arch = "arm")]
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1q_u32() {
+        let e = u32x4::new(1, 2, 3, 4);
+        let f = [0, 1, 2, 3, 4];
+        // do a load that has 4 byte alignment to make sure we're not
+        // over aligning it
+        let r: u32x4 = transmute(vld1q_u32(f[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1q_dup_f32() {
+        let e = f32x4::new(1., 1., 1., 1.);
+        let f = [1., 2., 3., 4.];
+        let r: f32x4 = transmute(vld1q_dup_f32(f.as_ptr()));
+        assert_eq!(r, e);
+    }
+
     #[simd_test(enable = "neon")]
     unsafe fn test_vget_lane_u8() {
         let v = i8x8::new(1, 2, 3, 4, 5, 6, 7, 8);
@@ -1802,6 +1887,13 @@ mod tests {
     unsafe fn test_vgetq_lane_u32() {
         let v = i32x4::new(1, 2, 3, 4);
         let r = vgetq_lane_u32(transmute(v), 1);
+        assert_eq!(r, 2);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vgetq_lane_s32() {
+        let v = i32x4::new(1, 2, 3, 4);
+        let r = vgetq_lane_s32(transmute(v), 1);
         assert_eq!(r, 2);
     }
 
