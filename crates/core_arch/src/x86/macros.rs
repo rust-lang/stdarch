@@ -465,6 +465,7 @@ macro_rules! constify_imm4_mantissas_sae {
 }
 
 // Constifies 8 bits along with an sae option without rounding control.
+// The only valid values are 0 to 255.
 // This macro enforces that.
 #[allow(unused)]
 macro_rules! constify_imm8_sae {
