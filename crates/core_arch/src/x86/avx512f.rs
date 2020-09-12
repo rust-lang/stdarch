@@ -7469,6 +7469,110 @@ pub unsafe fn _mm512_maskz_permute_pd(k: __mmask8, a: __m512d, imm8: i32) -> __m
     transmute(simd_select_bitmask(k, permute, zero))
 }
 
+/// Shuffle 64-bit integers in a within 256-bit lanes using the control in imm8, and store the results in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_permutex_epi64&expand=4208)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vperm, imm8 = 3))] //shoud be vpermq, but generate vpermpd. It generates vpermq with mask
+#[rustc_args_required_const(1)]
+pub unsafe fn _mm512_permutex_epi64(a: __m512i, imm8: i32) -> __m512i {
+    macro_rules! call {
+        ($imm8:expr) => {
+            vpermq(a.as_i64x8(), _mm512_set1_epi64($imm8).as_i64x8())
+        };
+    }
+    let r = constify_imm8_sae!(imm8, call);
+    transmute(r)
+}
+
+/// Shuffle 64-bit integers in a within 256-bit lanes using the control in imm8, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_permutex_epi64&expand=4206)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vpermq, imm8 = 3))]
+#[rustc_args_required_const(3)]
+pub unsafe fn _mm512_mask_permutex_epi64(src: __m512i, k: __mmask8, a: __m512i, imm8: i32) -> __m512i {
+    macro_rules! call {
+        ($imm8:expr) => {
+            vpermq(a.as_i64x8(), _mm512_set1_epi64($imm8).as_i64x8())
+        };
+    }
+    let permute = constify_imm8_sae!(imm8, call);
+    transmute(simd_select_bitmask(k, permute, src.as_i64x8()))
+}
+
+/// Shuffle 64-bit integers in a within 256-bit lanes using the control in imm8, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_permutex_epi64&expand=4207)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vpermq, imm8 = 3))]
+#[rustc_args_required_const(2)]
+pub unsafe fn _mm512_maskz_permutex_epi64(k: __mmask8, a: __m512i, imm8: i32) -> __m512i {
+    macro_rules! call {
+        ($imm8:expr) => {
+            vpermq(a.as_i64x8(), _mm512_set1_epi64($imm8).as_i64x8())
+        };
+    }
+    let permute = constify_imm8_sae!(imm8, call);
+    let zero = _mm512_setzero_si512().as_i64x8();
+    transmute(simd_select_bitmask(k, permute, zero))
+}
+
+/// Shuffle double-precision (64-bit) floating-point elements in a within 256-bit lanes using the control in imm8, and store the results in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_permutex_pd&expand=4214)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vpermpd, imm8 = 3))]
+#[rustc_args_required_const(1)]
+pub unsafe fn _mm512_permutex_pd(a: __m512d, imm8: i32) -> __m512d {
+    macro_rules! call {
+        ($imm8:expr) => {
+            vpermpd(a.as_f64x8(), _mm512_set1_epi64($imm8).as_i64x8())
+        };
+    }
+    let r = constify_imm8_sae!(imm8, call);
+    transmute(r)
+}
+
+/// Shuffle double-precision (64-bit) floating-point elements in a within 256-bit lanes using the control in imm8, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_permutex_pd&expand=4212)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vpermpd, imm8 = 3))]
+#[rustc_args_required_const(3)]
+pub unsafe fn _mm512_mask_permutex_pd(src: __m512d, k: __mmask8, a: __m512d, imm8: i32) -> __m512d {
+    macro_rules! call {
+        ($imm8:expr) => {
+            vpermpd(a.as_f64x8(), _mm512_set1_epi64($imm8).as_i64x8())
+        };
+    }
+    let permute = constify_imm8_sae!(imm8, call);
+    transmute(simd_select_bitmask(k, permute, src.as_f64x8()))
+}
+
+/// Shuffle double-precision (64-bit) floating-point elements in a within 256-bit lanes using the control in imm8, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_permutex_pd&expand=4213)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vpermpd, imm8 = 3))]
+#[rustc_args_required_const(2)]
+pub unsafe fn _mm512_maskz_permutex_pd(k: __mmask8, a: __m512d, imm8: i32) -> __m512d {
+    macro_rules! call {
+        ($imm8:expr) => {
+            vpermpd(a.as_f64x8(), _mm512_set1_epi64($imm8).as_i64x8())
+        };
+    }
+    let permute = constify_imm8_sae!(imm8, call);
+    let zero = _mm512_setzero_pd().as_f64x8();
+    transmute(simd_select_bitmask(k, permute, zero))
+}
+
 /// Shuffle 32-bit integers in a across lanes using the corresponding index in idx, and store the results in dst. Note that this intrinsic shuffles across 128-bit lanes, unlike past intrinsics that use the permutevar name. This intrinsic is identical to _mm512_permutexvar_epi32, and it is recommended that you use that intrinsic name.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_permutevar_epi32&expand=4182)
