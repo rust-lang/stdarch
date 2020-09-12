@@ -3970,6 +3970,52 @@ mod tests {
     }
 
     #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_permutex2var_pd() {
+        let a = _mm512_set_pd(0., 1., 2., 3., 4., 5., 6., 7.);
+        let idx = _mm512_set_epi64(1, 1<<3, 2, 1<<3, 3, 1<<3, 4, 1<<3);
+        let b = _mm512_set1_pd(100.);
+        let r = _mm512_permutex2var_pd(a, idx, b);
+        let e = _mm512_set_pd(6., 100., 5., 100., 4., 100., 3., 100.);
+        assert_eq_m512d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_permutex2var_pd() {
+        let a = _mm512_set_pd(0., 1., 2., 3., 4., 5., 6., 7.);
+        let idx = _mm512_set_epi64(1, 1<<3, 2, 1<<3, 3, 1<<3, 4, 1<<3);
+        let b = _mm512_set1_pd(100.);
+        let r = _mm512_mask_permutex2var_pd(a, 0, idx, b);
+        assert_eq_m512d(r, a);
+        let r = _mm512_mask_permutex2var_pd(a, 0b11111111, idx, b);
+        let e = _mm512_set_pd(6., 100., 5., 100., 4., 100., 3., 100.);
+        assert_eq_m512d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_maskz_permutex2var_pd() {
+        let a = _mm512_set_pd(0., 1., 2., 3., 4., 5., 6., 7.);
+        let idx = _mm512_set_epi64(1, 1<<3, 2, 1<<3, 3, 1<<3, 4, 1<<3);
+        let b = _mm512_set1_pd(100.);
+        let r = _mm512_maskz_permutex2var_pd(0, a, idx, b);
+        assert_eq_m512d(r, _mm512_setzero_pd());
+        let r = _mm512_maskz_permutex2var_pd(0b00001111, a, idx, b);
+        let e = _mm512_set_pd(0., 0., 0., 0., 4., 100., 3., 100.);
+        assert_eq_m512d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask2_permutex2var_pd() {
+        let a = _mm512_set_pd(0., 1., 2., 3., 4., 5., 6., 7.);
+        let idx = _mm512_set_epi64(1, 1<<3, 2, 1<<3, 3, 1<<3, 4, 1<<3);
+        let b = _mm512_set1_pd(100.);
+        let r = _mm512_mask2_permutex2var_pd(a, idx, 0, b);
+        assert_eq_m512d(r, _mm512_setzero_pd());
+        let r = _mm512_mask2_permutex2var_pd(a, idx, 0b00001111, b);
+        let e = _mm512_set_pd(0., 0., 0., 0., 4., 100., 3., 100.);
+        assert_eq_m512d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_and_epi64() {
         let a = _mm512_set_epi64(1 << 0 | 1 << 15, 0, 0, 0, 0, 0, 0, 1 << 1 | 1 << 2 | 1 << 3);
         let b = _mm512_set_epi64(1 << 13, 0, 0, 0, 0, 0, 0, 1 << 1 | 1 << 2 | 1 << 3);
