@@ -4016,6 +4016,37 @@ mod tests {
     }
 
     #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_shuffle_pd() {
+        let a = _mm512_setr_pd(1., 4., 5., 8., 1., 4., 5., 8.);
+        let b = _mm512_setr_pd(2., 3., 6., 7., 2., 3., 6., 7.);
+        let r = _mm512_shuffle_pd(a, b, 1<<0|1<<1|1<<2|1<<3|1<<4|1<<5|1<<6|1<<7);
+        let e = _mm512_setr_pd(4., 3., 8., 7., 4., 3., 8., 7.);
+        assert_eq_m512d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_shuffle_pd() {
+        let a = _mm512_setr_pd(1., 4., 5., 8., 1., 4., 5., 8.);
+        let b = _mm512_setr_pd(2., 3., 6., 7., 2., 3., 6., 7.);
+        let r = _mm512_mask_shuffle_pd(a, 0, a, b, 1<<0|1<<1|1<<2|1<<3|1<<4|1<<5|1<<6|1<<7);
+        assert_eq_m512d(r, a);
+        let r = _mm512_mask_shuffle_pd(a, 0b11111111, a, b, 1<<0|1<<1|1<<2|1<<3|1<<4|1<<5|1<<6|1<<7);
+        let e = _mm512_setr_pd(4., 3., 8., 7., 4., 3., 8., 7.);
+        assert_eq_m512d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_maskz_shuffle_pd() {
+        let a = _mm512_setr_pd(1., 4., 5., 8., 1., 4., 5., 8.);
+        let b = _mm512_setr_pd(2., 3., 6., 7., 2., 3., 6., 7.);
+        let r = _mm512_maskz_shuffle_pd(0, a, b, 1<<0|1<<1|1<<2|1<<3|1<<4|1<<5|1<<6|1<<7);
+        assert_eq_m512d(r, _mm512_setzero_pd());
+        let r = _mm512_maskz_shuffle_pd(0b00001111, a, b, 1<<0|1<<1|1<<2|1<<3|1<<4|1<<5|1<<6|1<<7);
+        let e = _mm512_setr_pd(4., 3., 8., 7., 0., 0., 0., 0.);
+        assert_eq_m512d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_and_epi64() {
         let a = _mm512_set_epi64(1 << 0 | 1 << 15, 0, 0, 0, 0, 0, 0, 1 << 1 | 1 << 2 | 1 << 3);
         let b = _mm512_set_epi64(1 << 13, 0, 0, 0, 0, 0, 0, 1 << 1 | 1 << 2 | 1 << 3);
