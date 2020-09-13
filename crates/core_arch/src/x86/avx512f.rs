@@ -7970,6 +7970,119 @@ pub unsafe fn _mm512_mask2_permutex2var_pd(a: __m512d, idx: __m512i, k: __mmask8
     transmute(simd_select_bitmask(k, permute, zero))
 }
 
+/// Shuffle single-precision (32-bit) floating-point elements in a within 128-bit lanes using the control in imm8, and store the results in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_shuffle_ps&expand=5203)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vshufps, imm8 = 0x0))]
+#[rustc_args_required_const(2)]
+pub unsafe fn _mm512_shuffle_ps(a: __m512, b: __m512, imm8: i32) -> __m512 {
+    //macro_rules! call {
+    //    ($imm8:expr) => {
+    //        vshufps(a.as_f32x16(), _mm512_set1_epi32($imm8).as_i32x16())
+    //    };
+    //}
+    //let r = constify_imm8_sae!(imm8, call);
+    //transmute(r)
+
+
+    let imm8 = (imm8 & 0xFF) as u8;
+    macro_rules! shuffle4 {
+        (
+            $a:expr,
+            $b:expr,
+            $c:expr,
+            $d:expr,
+            $e:expr,
+            $f:expr,
+            $g:expr,
+            $h:expr,
+            $i:expr,
+            $j:expr,
+            $k:expr,
+            $l:expr,
+            $m:expr,
+            $n:expr,
+            $o:expr,
+            $p:expr
+        ) => {
+            simd_shuffle16(a, b, [$a, $b, $c, $d, $e, $f, $g, $h, $i, $j, $k, $l, $m, $n, $o, $p]);
+        };
+    }
+    macro_rules! shuffle3 {
+        ($a:expr, $b:expr, $c:expr, $e:expr, $f:expr, $g:expr, $i:expr, $j:expr, $k:expr, $m:expr, $n:expr, $o:expr) => {
+            match (imm8 >> 6) & 0x3 {
+                0 => shuffle4!($a, $b, $c, 16, $e, $f, $g, 20, $i, $j, $k, 24, $m, $n, $o, 28),
+                1 => shuffle4!($a, $b, $c, 17, $e, $f, $g, 21, $i, $j, $k, 25, $m, $n, $o, 29),
+                2 => shuffle4!($a, $b, $c, 18, $e, $f, $g, 22, $i, $j, $k, 26, $m, $n, $o, 30),
+                _ => shuffle4!($a, $b, $c, 19, $e, $f, $g, 23, $i, $j, $k, 27, $m, $n, $o, 31),
+            }
+        };
+    }
+    macro_rules! shuffle2 {
+        ($a:expr, $b:expr, $e:expr, $f:expr, $i:expr, $j:expr, $m:expr, $n:expr) => {
+            match (imm8 >> 4) & 0x3 {
+                0 => shuffle3!($a, $b, 16, $e, $f, 20,  $i, $j, 24, $m, $n, 28),
+                1 => shuffle3!($a, $b, 17, $e, $f, 21,  $i, $j, 25, $m, $n, 29),
+                2 => shuffle3!($a, $b, 18, $e, $f, 22, $i, $j, 26, $m, $n, 30),
+                _ => shuffle3!($a, $b, 19, $e, $f, 23, $i, $j, 27, $m, $n, 31),
+            }
+        };
+    }
+    macro_rules! shuffle1 {
+        ($a:expr, $e:expr, $i: expr, $m: expr) => {
+            match (imm8 >> 2) & 0x3 {
+                0 => shuffle2!($a, 0, $e, 4, $i, 8,  $m, 12),
+                1 => shuffle2!($a, 1, $e, 5, $i, 9,  $m, 13),
+                2 => shuffle2!($a, 2, $e, 6, $i, 10, $m, 14),
+                _ => shuffle2!($a, 3, $e, 7, $i, 11, $m, 15),
+            }
+        };
+    }
+    match imm8 & 0x3 {
+        0 => shuffle1!(0, 4, 8,  12),
+        1 => shuffle1!(1, 5, 9,  13),
+        2 => shuffle1!(2, 6, 10, 14),
+        _ => shuffle1!(3, 7, 11, 15),
+    }
+}
+/*
+///
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_permute_ps&expand=4168)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vpermilps, imm8 = 1))]
+#[rustc_args_required_const(3)]
+pub unsafe fn _mm512_mask_permute_ps(src: __m512, k: __mmask16, a: __m512, imm8: i32) -> __m512 {
+    macro_rules! call {
+        ($imm8:expr) => {
+            vpermilps(a.as_f32x16(), _mm512_set1_epi32($imm8).as_i32x16())
+        };
+    }
+    let permute = constify_imm8_sae!(imm8, call);
+    transmute(simd_select_bitmask(k, permute, src.as_f32x16()))
+}
+
+///
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_permute_ps&expand=4169)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vpermilps, imm8 = 1))]
+#[rustc_args_required_const(2)]
+pub unsafe fn _mm512_maskz_permute_ps(k: __mmask16, a: __m512, imm8: i32) -> __m512 {
+    macro_rules! call {
+        ($imm8:expr) => {
+            vpermilps(a.as_f32x16(), _mm512_set1_epi32($imm8).as_i32x16())
+        };
+    }
+    let permute = constify_imm8_sae!(imm8, call);
+    let zero = _mm512_setzero_ps().as_f32x16();
+    transmute(simd_select_bitmask(k, permute, zero))
+}
+*/
 /// Compute the bitwise AND of packed 32-bit integers in a and b, and store the results in dst.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_and_epi32&expand=272)
@@ -15184,6 +15297,15 @@ mod tests {
         assert_eq_m512(r, _mm512_setzero_ps());
         let r = _mm512_mask2_permutex2var_ps(a, idx, 0b00000000_11111111, b);
         let e = _mm512_set_ps(0., 0., 0., 0., 0., 0., 0., 0., 10., 100., 9., 100., 8., 100., 7., 100.);
+        assert_eq_m512(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_shuffle_ps() {
+        let a = _mm512_setr_ps(1., 4., 5., 8., 9., 12., 13., 16., 1., 4., 5., 8., 9., 12., 13., 16.);
+        let b = _mm512_setr_ps(2., 3., 6., 7., 10., 11., 14., 15., 2., 3., 6., 7., 10., 11., 14., 15.);
+        let r = _mm512_shuffle_ps(a, b, 0x0F);
+        let e = _mm512_setr_ps(8., 8., 2., 2., 16., 16., 10., 10., 8., 8., 2., 2., 16., 16., 10., 10.);
         assert_eq_m512(r, e);
     }
 
