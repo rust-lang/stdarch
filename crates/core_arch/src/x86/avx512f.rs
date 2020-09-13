@@ -5570,6 +5570,134 @@ pub unsafe fn _mm512_maskz_cvtt_roundps_epu32(k: __mmask16, a: __m512, sae: i32)
     transmute(r)
 }
 
+/// Convert packed double-precision (64-bit) floating-point elements in a to packed 32-bit integers with truncation, and store the results in dst.
+/// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+///    
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_cvtt_roundpd_epi32&expand=1904)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vcvttpd2dq, sae = 8))]
+#[rustc_args_required_const(1)]
+pub unsafe fn _mm512_cvtt_roundpd_epi32(a: __m512d, sae: i32) -> __m256i {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vcvttpd2dq(
+                a.as_f64x8(),
+                _mm256_setzero_si256().as_i32x8(),
+                0b11111111_11111111,
+                $imm4,
+            )
+        };
+    }
+    let r = constify_imm4_sae!(sae, call);
+    transmute(r)
+}
+
+/// Convert packed double-precision (64-bit) floating-point elements in a to packed 32-bit integers with truncation, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+/// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_cvtt_roundpd_epi32&expand=1905)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vcvttpd2dq, sae = 8))]
+#[rustc_args_required_const(3)]
+pub unsafe fn _mm512_mask_cvtt_roundpd_epi32(
+    src: __m256i,
+    k: __mmask8,
+    a: __m512d,
+    sae: i32,
+) -> __m256i {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vcvttpd2dq(a.as_f64x8(), src.as_i32x8(), k, $imm4)
+        };
+    }
+    let r = constify_imm4_sae!(sae, call);
+    transmute(r)
+}
+
+/// Convert packed single-precision (32-bit) floating-point elements in a to packed 32-bit integers with truncation, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+/// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_cvtt_roundps_epi32&expand=1918)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vcvttpd2dq, sae = 8))]
+#[rustc_args_required_const(2)]
+pub unsafe fn _mm512_maskz_cvtt_roundpd_epi32(k: __mmask8, a: __m512d, sae: i32) -> __m256i {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vcvttpd2dq(a.as_f64x8(), _mm256_setzero_si256().as_i32x8(), k, $imm4)
+        };
+    }
+    let r = constify_imm4_sae!(sae, call);
+    transmute(r)
+}
+
+/// Convert packed double-precision (64-bit) floating-point elements in a to packed unsigned 32-bit integers with truncation, and store the results in dst.
+/// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+///    
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_cvtt_roundpd_epu32&expand=1910)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vcvttpd2udq, sae = 8))]
+#[rustc_args_required_const(1)]
+pub unsafe fn _mm512_cvtt_roundpd_epu32(a: __m512d, sae: i32) -> __m256i {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vcvttpd2udq(
+                a.as_f64x8(),
+                _mm256_setzero_si256().as_i32x8(),
+                0b11111111_11111111,
+                $imm4,
+            )
+        };
+    }
+    let r = constify_imm4_sae!(sae, call);
+    transmute(r)
+}
+
+/// Convert packed double-precision (64-bit) floating-point elements in a to packed unsigned 32-bit integers with truncation, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+/// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_cvtt_roundpd_epu32&expand=1911)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vcvttpd2udq, sae = 8))]
+#[rustc_args_required_const(3)]
+pub unsafe fn _mm512_mask_cvtt_roundpd_epu32(
+    src: __m256i,
+    k: __mmask8,
+    a: __m512d,
+    sae: i32,
+) -> __m256i {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vcvttpd2udq(a.as_f64x8(), src.as_i32x8(), k, $imm4)
+        };
+    }
+    let r = constify_imm4_sae!(sae, call);
+    transmute(r)
+}
+
+/// Convert packed double-precision (64-bit) floating-point elements in a to packed unsigned 32-bit integers with truncation, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+/// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_cvtt_roundpd_epu32&expand=1912)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vcvttpd2udq, sae = 8))]
+#[rustc_args_required_const(2)]
+pub unsafe fn _mm512_maskz_cvtt_roundpd_epu32(k: __mmask8, a: __m512d, sae: i32) -> __m256i {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vcvttpd2udq(a.as_f64x8(), _mm256_setzero_si256().as_i32x8(), k, $imm4)
+        };
+    }
+    let r = constify_imm4_sae!(sae, call);
+    transmute(r)
+}
+
 /// Returns vector of type `__m512d` with all elements set to zero.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#avx512techs=AVX512F&expand=33,34,4990&text=_mm512_setzero_pd)
@@ -10511,6 +10639,10 @@ extern "C" {
     fn vcvttps2dq(a: f32x16, src: i32x16, mask: u16, rounding: i32) -> i32x16;
     #[link_name = "llvm.x86.avx512.mask.cvttps2udq.512"]
     fn vcvttps2udq(a: f32x16, src: i32x16, mask: u16, rounding: i32) -> u32x16;
+    #[link_name = "llvm.x86.avx512.mask.cvttpd2dq.512"]
+    fn vcvttpd2dq(a: f64x8, src: i32x8, mask: u8, rounding: i32) -> i32x8;
+    #[link_name = "llvm.x86.avx512.mask.cvttpd2udq.512"]
+    fn vcvttpd2udq(a: f64x8, src: i32x8, mask: u8, rounding: i32) -> u32x8;
 
     #[link_name = "llvm.x86.avx512.gather.dpd.512"]
     fn vgatherdpd(src: f64x8, slice: *const i8, offsets: i32x8, mask: i8, scale: i32) -> f64x8;
