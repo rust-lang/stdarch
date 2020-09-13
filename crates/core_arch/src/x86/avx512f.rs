@@ -5680,6 +5680,74 @@ pub unsafe fn _mm512_mask_cvtt_roundpd_epu32(
     transmute(r)
 }
 
+/// Convert packed single-precision (32-bit) floating-point elements in a to packed 32-bit integers with truncation, and store the results in dst.    
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_cvttps_epi32&expand=1984)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vcvttps2dq))]
+pub unsafe fn _mm512_cvttps_epi32(a: __m512) -> __m512i {
+    transmute(vcvttps2dq(a.as_f32x16(), _mm512_setzero_si512().as_i32x16(), 0b11111111_11111111, _MM_FROUND_CUR_DIRECTION))
+}
+
+/// Convert packed single-precision (32-bit) floating-point elements in a to packed 32-bit integers with truncation, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_cvttps_epi32&expand=1985)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vcvttps2dq))]
+pub unsafe fn _mm512_mask_cvttps_epi32(
+    src: __m512i,
+    k: __mmask16,
+    a: __m512,
+) -> __m512i {
+    transmute(vcvttps2dq(a.as_f32x16(), src.as_i32x16(), k, _MM_FROUND_CUR_DIRECTION))
+}
+
+/// Convert packed single-precision (32-bit) floating-point elements in a to packed 32-bit integers with truncation, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_cvttps_epi32&expand=1986)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vcvttps2dq))]
+pub unsafe fn _mm512_maskz_cvttps_epi32(k: __mmask16, a: __m512) -> __m512i {
+    transmute(vcvttps2dq(a.as_f32x16(), _mm512_setzero_si512().as_i32x16(), k, _MM_FROUND_CUR_DIRECTION))
+}
+
+/// Convert packed single-precision (32-bit) floating-point elements in a to packed unsigned 32-bit integers with truncation, and store the results in dst.    
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_cvttps_epu32&expand=2002)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vcvttps2udq))]
+pub unsafe fn _mm512_cvttps_epu32(a: __m512) -> __m512i {
+    transmute(vcvttps2udq(a.as_f32x16(), _mm512_setzero_si512().as_i32x16(), 0b11111111_11111111, _MM_FROUND_CUR_DIRECTION))
+}
+
+/// Convert packed double-precision (32-bit) floating-point elements in a to packed unsigned 32-bit integers with truncation, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_cvttps_epu32&expand=2003)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vcvttps2udq))]
+pub unsafe fn _mm512_mask_cvttps_epu32(
+    src: __m512i,
+    k: __mmask16,
+    a: __m512,
+) -> __m512i {
+    transmute(vcvttps2udq(a.as_f32x16(), src.as_i32x16(), k, _MM_FROUND_CUR_DIRECTION))
+}
+
+/// Convert packed double-precision (32-bit) floating-point elements in a to packed unsigned 32-bit integers with truncation, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_cvttps_epu32&expand=2004)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vcvttps2udq))]
+pub unsafe fn _mm512_maskz_cvttps_epu32(k: __mmask16, a: __m512) -> __m512i {
+    transmute(vcvttps2udq(a.as_f32x16(), _mm512_setzero_si512().as_i32x16(), k, _MM_FROUND_CUR_DIRECTION))
+}
+
 /// Convert packed double-precision (64-bit) floating-point elements in a to packed unsigned 32-bit integers with truncation, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set). 
 /// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
 ///
@@ -14287,22 +14355,6 @@ mod tests {
     }
 
     #[simd_test(enable = "avx512f")]
-    unsafe fn test_mm512_i32gather_ps() {
-        let mut arr = [0f32; 256];
-        for i in 0..256 {
-            arr[i] = i as f32;
-        }
-        // A multiplier of 4 is word-addressing
-        #[rustfmt::skip]
-        let index = _mm512_setr_epi32(0, 16, 32, 48, 64, 80, 96, 112,
-                                      120, 128, 136, 144, 152, 160, 168, 176);
-        let r = _mm512_i32gather_ps(index, arr.as_ptr() as *const u8, 4);
-        #[rustfmt::skip]
-        assert_eq_m512(r, _mm512_setr_ps(0., 16., 32., 48., 64., 80., 96., 112.,
-                                         120., 128., 136., 144., 152., 160., 168., 176.));
-    }
-
-    #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_cvtt_roundps_epi32() {
         let a = _mm512_setr_ps(
             0., -1.5, 2., -3.5, 4., -5.5, 6., -7.5, 8., 9.5, 10., 11.5, 12., 13.5, 14., 15.5,
@@ -14390,6 +14442,108 @@ mod tests {
         );
         let e = _mm512_setr_epi32(0, -1, 2, -1, 4, -1, 6, -1, 0, 0, 0, 0, 0, 0, 0, 0);
         assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_cvttps_epi32() {
+        let a = _mm512_setr_ps(
+            0., -1.5, 2., -3.5, 4., -5.5, 6., -7.5, 8., 9.5, 10., 11.5, 12., 13.5, 14., 15.5,
+        );
+        let r = _mm512_cvttps_epi32(a);
+        let e = _mm512_setr_epi32(0, -1, 2, -3, 4, -5, 6, -7, 8, 9, 10, 11, 12, 13, 14, 15);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_cvttps_epi32() {
+        let a = _mm512_setr_ps(
+            0., -1.5, 2., -3.5, 4., -5.5, 6., -7.5, 8., 9.5, 10., 11.5, 12., 13.5, 14., 15.5,
+        );
+        let src = _mm512_set1_epi32(0);
+        let r =
+            _mm512_mask_cvttps_epi32(src, 0, a);
+        assert_eq_m512i(r, src);
+        let r = _mm512_mask_cvttps_epi32(
+            src,
+            0b00000000_11111111,
+            a,
+        );
+        let e = _mm512_setr_epi32(0, -1, 2, -3, 4, -5, 6, -7, 0, 0, 0, 0, 0, 0, 0, 0);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_maskz_cvttps_epi32() {
+        let a = _mm512_setr_ps(
+            0., -1.5, 2., -3.5, 4., -5.5, 6., -7.5, 8., 9.5, 10., 11.5, 12., 13.5, 14., 15.5,
+        );
+        let r = _mm512_maskz_cvttps_epi32(0, a);
+        assert_eq_m512i(r, _mm512_setzero_si512());
+        let r = _mm512_maskz_cvttps_epi32(
+            0b00000000_11111111,
+            a,
+        );
+        let e = _mm512_setr_epi32(0, -1, 2, -3, 4, -5, 6, -7, 0, 0, 0, 0, 0, 0, 0, 0);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_cvttps_epu32() {
+        let a = _mm512_setr_ps(
+            0., -1.5, 2., -3.5, 4., -5.5, 6., -7.5, 8., 9.5, 10., 11.5, 12., 13.5, 14., 15.5,
+        );
+        let r = _mm512_cvttps_epu32(a);
+        let e = _mm512_setr_epi32(0, -1, 2, -1, 4, -1, 6, -1, 8, 9, 10, 11, 12, 13, 14, 15);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_cvttps_epu32() {
+        let a = _mm512_setr_ps(
+            0., -1.5, 2., -3.5, 4., -5.5, 6., -7.5, 8., 9.5, 10., 11.5, 12., 13.5, 14., 15.5,
+        );
+        let src = _mm512_set1_epi32(0);
+        let r =
+            _mm512_mask_cvttps_epu32(src, 0, a);
+        assert_eq_m512i(r, src);
+        let r = _mm512_mask_cvttps_epu32(
+            src,
+            0b00000000_11111111,
+            a,
+        );
+        let e = _mm512_setr_epi32(0, -1, 2, -1, 4, -1, 6, -1, 0, 0, 0, 0, 0, 0, 0, 0);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_maskz_cvttps_epu32() {
+        let a = _mm512_setr_ps(
+            0., -1.5, 2., -3.5, 4., -5.5, 6., -7.5, 8., 9.5, 10., 11.5, 12., 13.5, 14., 15.5,
+        );
+        let r = _mm512_maskz_cvttps_epu32(0, a);
+        assert_eq_m512i(r, _mm512_setzero_si512());
+        let r = _mm512_maskz_cvttps_epu32(
+            0b00000000_11111111,
+            a,
+        );
+        let e = _mm512_setr_epi32(0, -1, 2, -1, 4, -1, 6, -1, 0, 0, 0, 0, 0, 0, 0, 0);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_i32gather_ps() {
+        let mut arr = [0f32; 256];
+        for i in 0..256 {
+            arr[i] = i as f32;
+        }
+        // A multiplier of 4 is word-addressing
+        #[rustfmt::skip]
+        let index = _mm512_setr_epi32(0, 16, 32, 48, 64, 80, 96, 112,
+                                      120, 128, 136, 144, 152, 160, 168, 176);
+        let r = _mm512_i32gather_ps(index, arr.as_ptr() as *const u8, 4);
+        #[rustfmt::skip]
+        assert_eq_m512(r, _mm512_setr_ps(0., 16., 32., 48., 64., 80., 96., 112.,
+                                         120., 128., 136., 144., 152., 160., 168., 176.));
     }
 
     #[simd_test(enable = "avx512f")]
