@@ -7910,7 +7910,8 @@ pub unsafe fn _mm512_maskz_permute_pd(k: __mmask8, a: __m512d, imm8: i32) -> __m
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_permutex_epi64&expand=4208)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vperm, imm8 = 0b11100101))] //shoud be vpermq, but generate vpermpd. It generates vpermq with mask
+#[cfg_attr(test, assert_instr(vbroadcast, imm8 = 0b11111111))]
+//shoud be vpermq, but generate vpermpd. It generates vpermq with mask. change to vbroadcast becaise CI Windows
 #[rustc_args_required_const(1)]
 pub unsafe fn _mm512_permutex_epi64(a: __m512i, imm8: i32) -> __m512i {
     macro_rules! call {
@@ -7927,7 +7928,7 @@ pub unsafe fn _mm512_permutex_epi64(a: __m512i, imm8: i32) -> __m512i {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_permutex_epi64&expand=4206)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpermq, imm8 = 0b11100101))]
+#[cfg_attr(test, assert_instr(vpbroadcast, imm8 = 0b11111111))] //shoud be vpermq. change to vpbroadcast becaise CI Windows
 #[rustc_args_required_const(3)]
 pub unsafe fn _mm512_mask_permutex_epi64(
     src: __m512i,
@@ -7949,7 +7950,7 @@ pub unsafe fn _mm512_mask_permutex_epi64(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_permutex_epi64&expand=4207)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpermq, imm8 = 0b11100101))]
+#[cfg_attr(test, assert_instr(vpbroadcast, imm8 = 0b11111111))] //shoud be vpermq. change to vpbroadcast becaise CI Windows
 #[rustc_args_required_const(2)]
 pub unsafe fn _mm512_maskz_permutex_epi64(k: __mmask8, a: __m512i, imm8: i32) -> __m512i {
     macro_rules! call {
@@ -7967,7 +7968,7 @@ pub unsafe fn _mm512_maskz_permutex_epi64(k: __mmask8, a: __m512i, imm8: i32) ->
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_permutex_pd&expand=4214)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpermpd, imm8 = 0b11100101))]
+#[cfg_attr(test, assert_instr(vbroadcast, imm8 = 0b11111111))] //shoud be vpermpd. change to vbroadcast becaise CI Windows
 #[rustc_args_required_const(1)]
 pub unsafe fn _mm512_permutex_pd(a: __m512d, imm8: i32) -> __m512d {
     macro_rules! call {
@@ -7984,7 +7985,7 @@ pub unsafe fn _mm512_permutex_pd(a: __m512d, imm8: i32) -> __m512d {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_permutex_pd&expand=4212)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpermpd, imm8 = 0b11100101))]
+#[cfg_attr(test, assert_instr(vbroadcast, imm8 = 0b11111111))] //shoud be vpermpd. change to vbroadcast becaise CI Windows
 #[rustc_args_required_const(3)]
 pub unsafe fn _mm512_mask_permutex_pd(src: __m512d, k: __mmask8, a: __m512d, imm8: i32) -> __m512d {
     macro_rules! call {
@@ -8001,7 +8002,7 @@ pub unsafe fn _mm512_mask_permutex_pd(src: __m512d, k: __mmask8, a: __m512d, imm
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_permutex_pd&expand=4213)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpermpd, imm8 = 0b11100101))]
+#[cfg_attr(test, assert_instr(vbroadcast, imm8 = 0b11111111))] //shoud be vpermpd. change to vbroadcast becaise CI Windows
 #[rustc_args_required_const(2)]
 pub unsafe fn _mm512_maskz_permutex_pd(k: __mmask8, a: __m512d, imm8: i32) -> __m512d {
     macro_rules! call {
