@@ -130,18 +130,20 @@ impl Cache {
 cfg_if::cfg_if! {
     if #[cfg(feature = "std_detect_env_override")] {
         #[inline]
-        fn initialize(mut value: Initializer) {
+        fn initialize(mut value: Initializer) -> Initializer {
             if let Ok(disable) = crate::env::var("RUST_STD_DETECT_UNSTABLE") {
                 for v in disable.split(" ") {
                     let _ = super::Feature::from_str(v).map(|v| value.unset(v as u32));
                 }
             }
             do_initialize(value);
+            value
         }
     } else {
         #[inline]
-        fn initialize(value: Initializer) {
+        fn initialize(value: Initializer) -> Initializer {
             do_initialize(value);
+            value
         }
     }
 }
@@ -163,9 +165,7 @@ fn do_initialize(value: Initializer) {
 // cache again.
 #[cold]
 fn detect_and_initialize() -> Initializer {
-    let result = super::os::detect_features();
-    initialize(result);
-    result
+    initialize(super::os::detect_features())
 }
 
 /// Tests the `bit` of the storage. If the storage has not been initialized,
