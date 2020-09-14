@@ -5687,7 +5687,12 @@ pub unsafe fn _mm512_mask_cvtt_roundpd_epu32(
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vcvttps2dq))]
 pub unsafe fn _mm512_cvttps_epi32(a: __m512) -> __m512i {
-    transmute(vcvttps2dq(a.as_f32x16(), _mm512_setzero_si512().as_i32x16(), 0b11111111_11111111, _MM_FROUND_CUR_DIRECTION))
+    transmute(vcvttps2dq(
+        a.as_f32x16(),
+        _mm512_setzero_si512().as_i32x16(),
+        0b11111111_11111111,
+        _MM_FROUND_CUR_DIRECTION,
+    ))
 }
 
 /// Convert packed single-precision (32-bit) floating-point elements in a to packed 32-bit integers with truncation, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
@@ -5696,12 +5701,13 @@ pub unsafe fn _mm512_cvttps_epi32(a: __m512) -> __m512i {
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vcvttps2dq))]
-pub unsafe fn _mm512_mask_cvttps_epi32(
-    src: __m512i,
-    k: __mmask16,
-    a: __m512,
-) -> __m512i {
-    transmute(vcvttps2dq(a.as_f32x16(), src.as_i32x16(), k, _MM_FROUND_CUR_DIRECTION))
+pub unsafe fn _mm512_mask_cvttps_epi32(src: __m512i, k: __mmask16, a: __m512) -> __m512i {
+    transmute(vcvttps2dq(
+        a.as_f32x16(),
+        src.as_i32x16(),
+        k,
+        _MM_FROUND_CUR_DIRECTION,
+    ))
 }
 
 /// Convert packed single-precision (32-bit) floating-point elements in a to packed 32-bit integers with truncation, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
@@ -5711,7 +5717,12 @@ pub unsafe fn _mm512_mask_cvttps_epi32(
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vcvttps2dq))]
 pub unsafe fn _mm512_maskz_cvttps_epi32(k: __mmask16, a: __m512) -> __m512i {
-    transmute(vcvttps2dq(a.as_f32x16(), _mm512_setzero_si512().as_i32x16(), k, _MM_FROUND_CUR_DIRECTION))
+    transmute(vcvttps2dq(
+        a.as_f32x16(),
+        _mm512_setzero_si512().as_i32x16(),
+        k,
+        _MM_FROUND_CUR_DIRECTION,
+    ))
 }
 
 /// Convert packed single-precision (32-bit) floating-point elements in a to packed unsigned 32-bit integers with truncation, and store the results in dst.    
@@ -5721,7 +5732,12 @@ pub unsafe fn _mm512_maskz_cvttps_epi32(k: __mmask16, a: __m512) -> __m512i {
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vcvttps2udq))]
 pub unsafe fn _mm512_cvttps_epu32(a: __m512) -> __m512i {
-    transmute(vcvttps2udq(a.as_f32x16(), _mm512_setzero_si512().as_i32x16(), 0b11111111_11111111, _MM_FROUND_CUR_DIRECTION))
+    transmute(vcvttps2udq(
+        a.as_f32x16(),
+        _mm512_setzero_si512().as_i32x16(),
+        0b11111111_11111111,
+        _MM_FROUND_CUR_DIRECTION,
+    ))
 }
 
 /// Convert packed double-precision (32-bit) floating-point elements in a to packed unsigned 32-bit integers with truncation, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
@@ -5730,12 +5746,13 @@ pub unsafe fn _mm512_cvttps_epu32(a: __m512) -> __m512i {
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vcvttps2udq))]
-pub unsafe fn _mm512_mask_cvttps_epu32(
-    src: __m512i,
-    k: __mmask16,
-    a: __m512,
-) -> __m512i {
-    transmute(vcvttps2udq(a.as_f32x16(), src.as_i32x16(), k, _MM_FROUND_CUR_DIRECTION))
+pub unsafe fn _mm512_mask_cvttps_epu32(src: __m512i, k: __mmask16, a: __m512) -> __m512i {
+    transmute(vcvttps2udq(
+        a.as_f32x16(),
+        src.as_i32x16(),
+        k,
+        _MM_FROUND_CUR_DIRECTION,
+    ))
 }
 
 /// Convert packed double-precision (32-bit) floating-point elements in a to packed unsigned 32-bit integers with truncation, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
@@ -5745,10 +5762,15 @@ pub unsafe fn _mm512_mask_cvttps_epu32(
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vcvttps2udq))]
 pub unsafe fn _mm512_maskz_cvttps_epu32(k: __mmask16, a: __m512) -> __m512i {
-    transmute(vcvttps2udq(a.as_f32x16(), _mm512_setzero_si512().as_i32x16(), k, _MM_FROUND_CUR_DIRECTION))
+    transmute(vcvttps2udq(
+        a.as_f32x16(),
+        _mm512_setzero_si512().as_i32x16(),
+        k,
+        _MM_FROUND_CUR_DIRECTION,
+    ))
 }
 
-/// Convert packed double-precision (64-bit) floating-point elements in a to packed unsigned 32-bit integers with truncation, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set). 
+/// Convert packed double-precision (64-bit) floating-point elements in a to packed unsigned 32-bit integers with truncation, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
 /// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_cvtt_roundpd_epu32&expand=1912)
@@ -5773,7 +5795,12 @@ pub unsafe fn _mm512_maskz_cvtt_roundpd_epu32(k: __mmask8, a: __m512d, sae: i32)
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vcvttpd2dq))]
 pub unsafe fn _mm512_cvttpd_epi32(a: __m512d) -> __m256i {
-    transmute(vcvttpd2dq(a.as_f64x8(), _mm256_setzero_si256().as_i32x8(), 0b11111111, _MM_FROUND_CUR_DIRECTION))
+    transmute(vcvttpd2dq(
+        a.as_f64x8(),
+        _mm256_setzero_si256().as_i32x8(),
+        0b11111111,
+        _MM_FROUND_CUR_DIRECTION,
+    ))
 }
 
 /// Convert packed double-precision (64-bit) floating-point elements in a to packed 32-bit integers with truncation, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
@@ -5782,12 +5809,13 @@ pub unsafe fn _mm512_cvttpd_epi32(a: __m512d) -> __m256i {
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vcvttpd2dq))]
-pub unsafe fn _mm512_mask_cvttpd_epi32(
-    src: __m256i,
-    k: __mmask8,
-    a: __m512d,
-) -> __m256i {
-    transmute(vcvttpd2dq(a.as_f64x8(), src.as_i32x8(), k, _MM_FROUND_CUR_DIRECTION))
+pub unsafe fn _mm512_mask_cvttpd_epi32(src: __m256i, k: __mmask8, a: __m512d) -> __m256i {
+    transmute(vcvttpd2dq(
+        a.as_f64x8(),
+        src.as_i32x8(),
+        k,
+        _MM_FROUND_CUR_DIRECTION,
+    ))
 }
 
 /// Convert packed double-precision (64-bit) floating-point elements in a to packed 32-bit integers with truncation, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
@@ -5797,7 +5825,12 @@ pub unsafe fn _mm512_mask_cvttpd_epi32(
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vcvttpd2dq))]
 pub unsafe fn _mm512_maskz_cvttpd_epi32(k: __mmask8, a: __m512d) -> __m256i {
-    transmute(vcvttpd2dq(a.as_f64x8(), _mm256_setzero_si256().as_i32x8(), k, _MM_FROUND_CUR_DIRECTION))
+    transmute(vcvttpd2dq(
+        a.as_f64x8(),
+        _mm256_setzero_si256().as_i32x8(),
+        k,
+        _MM_FROUND_CUR_DIRECTION,
+    ))
 }
 
 /// Convert packed double-precision (64-bit) floating-point elements in a to packed unsigned 32-bit integers with truncation, and store the results in dst.    
@@ -5807,7 +5840,12 @@ pub unsafe fn _mm512_maskz_cvttpd_epi32(k: __mmask8, a: __m512d) -> __m256i {
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vcvttpd2udq))]
 pub unsafe fn _mm512_cvttpd_epu32(a: __m512d) -> __m256i {
-    transmute(vcvttpd2udq(a.as_f64x8(), _mm256_setzero_si256().as_i32x8(), 0b11111111, _MM_FROUND_CUR_DIRECTION))
+    transmute(vcvttpd2udq(
+        a.as_f64x8(),
+        _mm256_setzero_si256().as_i32x8(),
+        0b11111111,
+        _MM_FROUND_CUR_DIRECTION,
+    ))
 }
 
 /// Convert packed double-precision (64-bit) floating-point elements in a to packed unsigned 32-bit integers with truncation, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
@@ -5816,12 +5854,13 @@ pub unsafe fn _mm512_cvttpd_epu32(a: __m512d) -> __m256i {
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vcvttpd2udq))]
-pub unsafe fn _mm512_mask_cvttpd_epu32(
-    src: __m256i,
-    k: __mmask8,
-    a: __m512d,
-) -> __m256i {
-    transmute(vcvttpd2udq(a.as_f64x8(), src.as_i32x8(), k, _MM_FROUND_CUR_DIRECTION))
+pub unsafe fn _mm512_mask_cvttpd_epu32(src: __m256i, k: __mmask8, a: __m512d) -> __m256i {
+    transmute(vcvttpd2udq(
+        a.as_f64x8(),
+        src.as_i32x8(),
+        k,
+        _MM_FROUND_CUR_DIRECTION,
+    ))
 }
 
 /// Convert packed double-precision (64-bit) floating-point elements in a to packed unsigned 32-bit integers with truncation, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
@@ -5831,7 +5870,12 @@ pub unsafe fn _mm512_mask_cvttpd_epu32(
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vcvttpd2udq))]
 pub unsafe fn _mm512_maskz_cvttpd_epu32(k: __mmask8, a: __m512d) -> __m256i {
-    transmute(vcvttpd2udq(a.as_f64x8(), _mm256_setzero_si256().as_i32x8(), k, _MM_FROUND_CUR_DIRECTION))
+    transmute(vcvttpd2udq(
+        a.as_f64x8(),
+        _mm256_setzero_si256().as_i32x8(),
+        k,
+        _MM_FROUND_CUR_DIRECTION,
+    ))
 }
 
 /// Returns vector of type `__m512d` with all elements set to zero.
@@ -7885,7 +7929,12 @@ pub unsafe fn _mm512_permutex_epi64(a: __m512i, imm8: i32) -> __m512i {
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpermq, imm8 = 3))]
 #[rustc_args_required_const(3)]
-pub unsafe fn _mm512_mask_permutex_epi64(src: __m512i, k: __mmask8, a: __m512i, imm8: i32) -> __m512i {
+pub unsafe fn _mm512_mask_permutex_epi64(
+    src: __m512i,
+    k: __mmask8,
+    a: __m512i,
+    imm8: i32,
+) -> __m512i {
     macro_rules! call {
         ($imm8:expr) => {
             vpermq(a.as_i64x8(), _mm512_set1_epi64($imm8).as_i64x8())
@@ -7981,7 +8030,12 @@ pub unsafe fn _mm512_permutevar_epi32(idx: __m512i, a: __m512i) -> __m512i {
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpermd))]
-pub unsafe fn _mm512_mask_permutevar_epi32(src: __m512i, k: __mmask16, idx: __m512i, a: __m512i) -> __m512i {
+pub unsafe fn _mm512_mask_permutevar_epi32(
+    src: __m512i,
+    k: __mmask16,
+    idx: __m512i,
+    a: __m512i,
+) -> __m512i {
     let permute = _mm512_permutevar_epi32(idx, a).as_i32x16();
     transmute(simd_select_bitmask(k, permute, src.as_i32x16()))
 }
@@ -8002,7 +8056,12 @@ pub unsafe fn _mm512_permutevar_ps(a: __m512, b: __m512i) -> __m512 {
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpermilps))]
-pub unsafe fn _mm512_mask_permutevar_ps(src: __m512, k: __mmask16, a: __m512, b: __m512i) -> __m512 {
+pub unsafe fn _mm512_mask_permutevar_ps(
+    src: __m512,
+    k: __mmask16,
+    a: __m512,
+    b: __m512i,
+) -> __m512 {
     let permute = _mm512_permutevar_ps(a, b).as_f32x16();
     transmute(simd_select_bitmask(k, permute, src.as_f32x16()))
 }
@@ -8035,7 +8094,12 @@ pub unsafe fn _mm512_permutevar_pd(a: __m512d, b: __m512i) -> __m512d {
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpermilpd))]
-pub unsafe fn _mm512_mask_permutevar_pd(src: __m512d, k: __mmask8, a: __m512d, b: __m512i) -> __m512d {
+pub unsafe fn _mm512_mask_permutevar_pd(
+    src: __m512d,
+    k: __mmask8,
+    a: __m512d,
+    b: __m512i,
+) -> __m512d {
     let permute = _mm512_permutevar_pd(a, b).as_f64x8();
     transmute(simd_select_bitmask(k, permute, src.as_f64x8()))
 }
@@ -8068,7 +8132,12 @@ pub unsafe fn _mm512_permutexvar_epi32(idx: __m512i, a: __m512i) -> __m512i {
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpermd))]
-pub unsafe fn _mm512_mask_permutexvar_epi32(src: __m512i, k: __mmask16, idx: __m512i, a: __m512i) -> __m512i {
+pub unsafe fn _mm512_mask_permutexvar_epi32(
+    src: __m512i,
+    k: __mmask16,
+    idx: __m512i,
+    a: __m512i,
+) -> __m512i {
     let permute = _mm512_permutexvar_epi32(idx, a).as_i32x16();
     transmute(simd_select_bitmask(k, permute, src.as_i32x16()))
 }
@@ -8101,7 +8170,12 @@ pub unsafe fn _mm512_permutexvar_epi64(idx: __m512i, a: __m512i) -> __m512i {
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpermq))]
-pub unsafe fn _mm512_mask_permutexvar_epi64(src: __m512i, k: __mmask8, idx: __m512i, a: __m512i) -> __m512i {
+pub unsafe fn _mm512_mask_permutexvar_epi64(
+    src: __m512i,
+    k: __mmask8,
+    idx: __m512i,
+    a: __m512i,
+) -> __m512i {
     let permute = _mm512_permutexvar_epi64(idx, a).as_i64x8();
     transmute(simd_select_bitmask(k, permute, src.as_i64x8()))
 }
@@ -8134,7 +8208,12 @@ pub unsafe fn _mm512_permutexvar_ps(idx: __m512i, a: __m512) -> __m512 {
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpermps))]
-pub unsafe fn _mm512_mask_permutexvar_ps(src: __m512, k: __mmask16, idx: __m512i, a: __m512) -> __m512 {
+pub unsafe fn _mm512_mask_permutexvar_ps(
+    src: __m512,
+    k: __mmask16,
+    idx: __m512i,
+    a: __m512,
+) -> __m512 {
     let permute = _mm512_permutexvar_ps(idx, a).as_f32x16();
     transmute(simd_select_bitmask(k, permute, src.as_f32x16()))
 }
@@ -8167,7 +8246,12 @@ pub unsafe fn _mm512_permutexvar_pd(idx: __m512i, a: __m512d) -> __m512d {
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpermpd))]
-pub unsafe fn _mm512_mask_permutexvar_pd(src: __m512d, k: __mmask8, idx: __m512i, a: __m512d) -> __m512d {
+pub unsafe fn _mm512_mask_permutexvar_pd(
+    src: __m512d,
+    k: __mmask8,
+    idx: __m512i,
+    a: __m512d,
+) -> __m512d {
     let permute = _mm512_permutexvar_pd(idx, a).as_f64x8();
     transmute(simd_select_bitmask(k, permute, src.as_f64x8()))
 }
@@ -8200,7 +8284,12 @@ pub unsafe fn _mm512_permutex2var_epi32(a: __m512i, idx: __m512i, b: __m512i) ->
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpermt2d))]
-pub unsafe fn _mm512_mask_permutex2var_epi32(a: __m512i, k: __mmask16, idx: __m512i, b: __m512i) -> __m512i {
+pub unsafe fn _mm512_mask_permutex2var_epi32(
+    a: __m512i,
+    k: __mmask16,
+    idx: __m512i,
+    b: __m512i,
+) -> __m512i {
     let permute = _mm512_permutex2var_epi32(a, idx, b).as_i32x16();
     transmute(simd_select_bitmask(k, permute, a.as_i32x16()))
 }
@@ -8211,7 +8300,12 @@ pub unsafe fn _mm512_mask_permutex2var_epi32(a: __m512i, k: __mmask16, idx: __m5
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vperm))] //vpermi2d or vpermt2d
-pub unsafe fn _mm512_maskz_permutex2var_epi32(k: __mmask16, a: __m512i, idx: __m512i, b: __m512i) -> __m512i {
+pub unsafe fn _mm512_maskz_permutex2var_epi32(
+    k: __mmask16,
+    a: __m512i,
+    idx: __m512i,
+    b: __m512i,
+) -> __m512i {
     let permute = _mm512_permutex2var_epi32(a, idx, b).as_i32x16();
     let zero = _mm512_setzero_si512().as_i32x16();
     transmute(simd_select_bitmask(k, permute, zero))
@@ -8223,7 +8317,12 @@ pub unsafe fn _mm512_maskz_permutex2var_epi32(k: __mmask16, a: __m512i, idx: __m
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpermi2d))]
-pub unsafe fn _mm512_mask2_permutex2var_epi32(a: __m512i, idx: __m512i, k: __mmask16, b: __m512i) -> __m512i {
+pub unsafe fn _mm512_mask2_permutex2var_epi32(
+    a: __m512i,
+    idx: __m512i,
+    k: __mmask16,
+    b: __m512i,
+) -> __m512i {
     let permute = _mm512_permutex2var_epi32(a, idx, b).as_i32x16();
     transmute(simd_select_bitmask(k, permute, idx.as_i32x16()))
 }
@@ -8244,7 +8343,12 @@ pub unsafe fn _mm512_permutex2var_epi64(a: __m512i, idx: __m512i, b: __m512i) ->
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpermt2q))]
-pub unsafe fn _mm512_mask_permutex2var_epi64(a: __m512i, k: __mmask8, idx: __m512i, b: __m512i) -> __m512i {
+pub unsafe fn _mm512_mask_permutex2var_epi64(
+    a: __m512i,
+    k: __mmask8,
+    idx: __m512i,
+    b: __m512i,
+) -> __m512i {
     let permute = _mm512_permutex2var_epi64(a, idx, b).as_i64x8();
     transmute(simd_select_bitmask(k, permute, a.as_i64x8()))
 }
@@ -8255,7 +8359,12 @@ pub unsafe fn _mm512_mask_permutex2var_epi64(a: __m512i, k: __mmask8, idx: __m51
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vperm))] //vpermi2q or vpermt2q
-pub unsafe fn _mm512_maskz_permutex2var_epi64(k: __mmask8, a: __m512i, idx: __m512i, b: __m512i) -> __m512i {
+pub unsafe fn _mm512_maskz_permutex2var_epi64(
+    k: __mmask8,
+    a: __m512i,
+    idx: __m512i,
+    b: __m512i,
+) -> __m512i {
     let permute = _mm512_permutex2var_epi64(a, idx, b).as_i64x8();
     let zero = _mm512_setzero_si512().as_i64x8();
     transmute(simd_select_bitmask(k, permute, zero))
@@ -8267,12 +8376,17 @@ pub unsafe fn _mm512_maskz_permutex2var_epi64(k: __mmask8, a: __m512i, idx: __m5
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpermi2q))]
-pub unsafe fn _mm512_mask2_permutex2var_epi64(a: __m512i, idx: __m512i, k: __mmask8, b: __m512i) -> __m512i {
+pub unsafe fn _mm512_mask2_permutex2var_epi64(
+    a: __m512i,
+    idx: __m512i,
+    k: __mmask8,
+    b: __m512i,
+) -> __m512i {
     let permute = _mm512_permutex2var_epi64(a, idx, b).as_i64x8();
     transmute(simd_select_bitmask(k, permute, idx.as_i64x8()))
 }
 
-/// Shuffle single-precision (32-bit) floating-point elements in a and b across lanes using the corresponding selector and index in idx, and store the results in dst. 
+/// Shuffle single-precision (32-bit) floating-point elements in a and b across lanes using the corresponding selector and index in idx, and store the results in dst.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_permutex2var_ps&expand=4286)
 #[inline]
@@ -8288,7 +8402,12 @@ pub unsafe fn _mm512_permutex2var_ps(a: __m512, idx: __m512i, b: __m512) -> __m5
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpermt2ps))]
-pub unsafe fn _mm512_mask_permutex2var_ps(a: __m512, k: __mmask16, idx: __m512i, b: __m512) -> __m512 {
+pub unsafe fn _mm512_mask_permutex2var_ps(
+    a: __m512,
+    k: __mmask16,
+    idx: __m512i,
+    b: __m512,
+) -> __m512 {
     let permute = _mm512_permutex2var_ps(a, idx, b).as_f32x16();
     transmute(simd_select_bitmask(k, permute, a.as_f32x16()))
 }
@@ -8299,7 +8418,12 @@ pub unsafe fn _mm512_mask_permutex2var_ps(a: __m512, k: __mmask16, idx: __m512i,
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vperm))] //vpermi2ps or vpermt2ps
-pub unsafe fn _mm512_maskz_permutex2var_ps(k: __mmask16, a: __m512, idx: __m512i, b: __m512) -> __m512 {
+pub unsafe fn _mm512_maskz_permutex2var_ps(
+    k: __mmask16,
+    a: __m512,
+    idx: __m512i,
+    b: __m512,
+) -> __m512 {
     let permute = _mm512_permutex2var_ps(a, idx, b).as_f32x16();
     let zero = _mm512_setzero_ps().as_f32x16();
     transmute(simd_select_bitmask(k, permute, zero))
@@ -8311,7 +8435,12 @@ pub unsafe fn _mm512_maskz_permutex2var_ps(k: __mmask16, a: __m512, idx: __m512i
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vperm))] //should be vpermi2ps, but it shows vpermt2ps
-pub unsafe fn _mm512_mask2_permutex2var_ps(a: __m512, idx: __m512i, k: __mmask16, b: __m512) -> __m512 {
+pub unsafe fn _mm512_mask2_permutex2var_ps(
+    a: __m512,
+    idx: __m512i,
+    k: __mmask16,
+    b: __m512,
+) -> __m512 {
     let permute = _mm512_permutex2var_ps(a, idx, b).as_f32x16();
     let zero = _mm512_setzero_ps().as_f32x16();
     transmute(simd_select_bitmask(k, permute, zero))
@@ -8333,7 +8462,12 @@ pub unsafe fn _mm512_permutex2var_pd(a: __m512d, idx: __m512i, b: __m512d) -> __
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpermt2pd))]
-pub unsafe fn _mm512_mask_permutex2var_pd(a: __m512d, k: __mmask8, idx: __m512i, b: __m512d) -> __m512d {
+pub unsafe fn _mm512_mask_permutex2var_pd(
+    a: __m512d,
+    k: __mmask8,
+    idx: __m512i,
+    b: __m512d,
+) -> __m512d {
     let permute = _mm512_permutex2var_pd(a, idx, b).as_f64x8();
     transmute(simd_select_bitmask(k, permute, a.as_f64x8()))
 }
@@ -8344,7 +8478,12 @@ pub unsafe fn _mm512_mask_permutex2var_pd(a: __m512d, k: __mmask8, idx: __m512i,
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vperm))] //vpermi2pd or vpermt2pd
-pub unsafe fn _mm512_maskz_permutex2var_pd(k: __mmask8, a: __m512d, idx: __m512i, b: __m512d) -> __m512d {
+pub unsafe fn _mm512_maskz_permutex2var_pd(
+    k: __mmask8,
+    a: __m512d,
+    idx: __m512i,
+    b: __m512d,
+) -> __m512d {
     let permute = _mm512_permutex2var_pd(a, idx, b).as_f64x8();
     let zero = _mm512_setzero_pd().as_f64x8();
     transmute(simd_select_bitmask(k, permute, zero))
@@ -8356,7 +8495,12 @@ pub unsafe fn _mm512_maskz_permutex2var_pd(k: __mmask8, a: __m512d, idx: __m512i
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vperm))] //should be vpermi2pd, but it shows vpermt2pd
-pub unsafe fn _mm512_mask2_permutex2var_pd(a: __m512d, idx: __m512i, k: __mmask8, b: __m512d) -> __m512d {
+pub unsafe fn _mm512_mask2_permutex2var_pd(
+    a: __m512d,
+    idx: __m512i,
+    k: __mmask8,
+    b: __m512d,
+) -> __m512d {
     let permute = _mm512_permutex2var_pd(a, idx, b).as_f64x8();
     let zero = _mm512_setzero_pd().as_f64x8();
     transmute(simd_select_bitmask(k, permute, zero))
@@ -8390,7 +8534,13 @@ pub unsafe fn _mm512_shuffle_ps(a: __m512, b: __m512, imm8: i32) -> __m512 {
             $o:expr,
             $p:expr
         ) => {
-            simd_shuffle16(a, b, [$a, $b, $c, $d, $e, $f, $g, $h, $i, $j, $k, $l, $m, $n, $o, $p]);
+            simd_shuffle16(
+                a,
+                b,
+                [
+                    $a, $b, $c, $d, $e, $f, $g, $h, $i, $j, $k, $l, $m, $n, $o, $p,
+                ],
+            );
         };
     }
     macro_rules! shuffle3 {
@@ -8406,8 +8556,8 @@ pub unsafe fn _mm512_shuffle_ps(a: __m512, b: __m512, imm8: i32) -> __m512 {
     macro_rules! shuffle2 {
         ($a:expr, $b:expr, $e:expr, $f:expr, $i:expr, $j:expr, $m:expr, $n:expr) => {
             match (imm8 >> 4) & 0x3 {
-                0 => shuffle3!($a, $b, 16, $e, $f, 20,  $i, $j, 24, $m, $n, 28),
-                1 => shuffle3!($a, $b, 17, $e, $f, 21,  $i, $j, 25, $m, $n, 29),
+                0 => shuffle3!($a, $b, 16, $e, $f, 20, $i, $j, 24, $m, $n, 28),
+                1 => shuffle3!($a, $b, 17, $e, $f, 21, $i, $j, 25, $m, $n, 29),
                 2 => shuffle3!($a, $b, 18, $e, $f, 22, $i, $j, 26, $m, $n, 30),
                 _ => shuffle3!($a, $b, 19, $e, $f, 23, $i, $j, 27, $m, $n, 31),
             }
@@ -8416,16 +8566,16 @@ pub unsafe fn _mm512_shuffle_ps(a: __m512, b: __m512, imm8: i32) -> __m512 {
     macro_rules! shuffle1 {
         ($a:expr, $e:expr, $i: expr, $m: expr) => {
             match (imm8 >> 2) & 0x3 {
-                0 => shuffle2!($a, 0, $e, 4, $i, 8,  $m, 12),
-                1 => shuffle2!($a, 1, $e, 5, $i, 9,  $m, 13),
+                0 => shuffle2!($a, 0, $e, 4, $i, 8, $m, 12),
+                1 => shuffle2!($a, 1, $e, 5, $i, 9, $m, 13),
                 2 => shuffle2!($a, 2, $e, 6, $i, 10, $m, 14),
                 _ => shuffle2!($a, 3, $e, 7, $i, 11, $m, 15),
             }
         };
     }
     match imm8 & 0x3 {
-        0 => shuffle1!(0, 4, 8,  12),
-        1 => shuffle1!(1, 5, 9,  13),
+        0 => shuffle1!(0, 4, 8, 12),
+        1 => shuffle1!(1, 5, 9, 13),
         2 => shuffle1!(2, 6, 10, 14),
         _ => shuffle1!(3, 7, 11, 15),
     }
@@ -8438,7 +8588,13 @@ pub unsafe fn _mm512_shuffle_ps(a: __m512, b: __m512, imm8: i32) -> __m512 {
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vshufps, imm8 = 0))]
 #[rustc_args_required_const(4)]
-pub unsafe fn _mm512_mask_shuffle_ps(src: __m512, k: __mmask16, a: __m512, b: __m512, imm8: i32) -> __m512 {
+pub unsafe fn _mm512_mask_shuffle_ps(
+    src: __m512,
+    k: __mmask16,
+    a: __m512,
+    b: __m512,
+    imm8: i32,
+) -> __m512 {
     let imm8 = (imm8 & 0xFF) as u8;
     macro_rules! shuffle4 {
         (
@@ -8459,7 +8615,13 @@ pub unsafe fn _mm512_mask_shuffle_ps(src: __m512, k: __mmask16, a: __m512, b: __
             $o:expr,
             $p:expr
         ) => {
-            simd_shuffle16(a, b, [$a, $b, $c, $d, $e, $f, $g, $h, $i, $j, $k, $l, $m, $n, $o, $p]);
+            simd_shuffle16(
+                a,
+                b,
+                [
+                    $a, $b, $c, $d, $e, $f, $g, $h, $i, $j, $k, $l, $m, $n, $o, $p,
+                ],
+            );
         };
     }
     macro_rules! shuffle3 {
@@ -8475,8 +8637,8 @@ pub unsafe fn _mm512_mask_shuffle_ps(src: __m512, k: __mmask16, a: __m512, b: __
     macro_rules! shuffle2 {
         ($a:expr, $b:expr, $e:expr, $f:expr, $i:expr, $j:expr, $m:expr, $n:expr) => {
             match (imm8 >> 4) & 0x3 {
-                0 => shuffle3!($a, $b, 16, $e, $f, 20,  $i, $j, 24, $m, $n, 28),
-                1 => shuffle3!($a, $b, 17, $e, $f, 21,  $i, $j, 25, $m, $n, 29),
+                0 => shuffle3!($a, $b, 16, $e, $f, 20, $i, $j, 24, $m, $n, 28),
+                1 => shuffle3!($a, $b, 17, $e, $f, 21, $i, $j, 25, $m, $n, 29),
                 2 => shuffle3!($a, $b, 18, $e, $f, 22, $i, $j, 26, $m, $n, 30),
                 _ => shuffle3!($a, $b, 19, $e, $f, 23, $i, $j, 27, $m, $n, 31),
             }
@@ -8485,16 +8647,16 @@ pub unsafe fn _mm512_mask_shuffle_ps(src: __m512, k: __mmask16, a: __m512, b: __
     macro_rules! shuffle1 {
         ($a:expr, $e:expr, $i: expr, $m: expr) => {
             match (imm8 >> 2) & 0x3 {
-                0 => shuffle2!($a, 0, $e, 4, $i, 8,  $m, 12),
-                1 => shuffle2!($a, 1, $e, 5, $i, 9,  $m, 13),
+                0 => shuffle2!($a, 0, $e, 4, $i, 8, $m, 12),
+                1 => shuffle2!($a, 1, $e, 5, $i, 9, $m, 13),
                 2 => shuffle2!($a, 2, $e, 6, $i, 10, $m, 14),
                 _ => shuffle2!($a, 3, $e, 7, $i, 11, $m, 15),
             }
         };
     }
     let shuffle = match imm8 & 0x3 {
-        0 => shuffle1!(0, 4, 8,  12),
-        1 => shuffle1!(1, 5, 9,  13),
+        0 => shuffle1!(0, 4, 8, 12),
+        1 => shuffle1!(1, 5, 9, 13),
         2 => shuffle1!(2, 6, 10, 14),
         _ => shuffle1!(3, 7, 11, 15),
     };
@@ -8530,7 +8692,13 @@ pub unsafe fn _mm512_maskz_shuffle_ps(k: __mmask16, a: __m512, b: __m512, imm8: 
             $o:expr,
             $p:expr
         ) => {
-            simd_shuffle16(a, b, [$a, $b, $c, $d, $e, $f, $g, $h, $i, $j, $k, $l, $m, $n, $o, $p]);
+            simd_shuffle16(
+                a,
+                b,
+                [
+                    $a, $b, $c, $d, $e, $f, $g, $h, $i, $j, $k, $l, $m, $n, $o, $p,
+                ],
+            );
         };
     }
     macro_rules! shuffle3 {
@@ -8546,8 +8714,8 @@ pub unsafe fn _mm512_maskz_shuffle_ps(k: __mmask16, a: __m512, b: __m512, imm8: 
     macro_rules! shuffle2 {
         ($a:expr, $b:expr, $e:expr, $f:expr, $i:expr, $j:expr, $m:expr, $n:expr) => {
             match (imm8 >> 4) & 0x3 {
-                0 => shuffle3!($a, $b, 16, $e, $f, 20,  $i, $j, 24, $m, $n, 28),
-                1 => shuffle3!($a, $b, 17, $e, $f, 21,  $i, $j, 25, $m, $n, 29),
+                0 => shuffle3!($a, $b, 16, $e, $f, 20, $i, $j, 24, $m, $n, 28),
+                1 => shuffle3!($a, $b, 17, $e, $f, 21, $i, $j, 25, $m, $n, 29),
                 2 => shuffle3!($a, $b, 18, $e, $f, 22, $i, $j, 26, $m, $n, 30),
                 _ => shuffle3!($a, $b, 19, $e, $f, 23, $i, $j, 27, $m, $n, 31),
             }
@@ -8556,16 +8724,16 @@ pub unsafe fn _mm512_maskz_shuffle_ps(k: __mmask16, a: __m512, b: __m512, imm8: 
     macro_rules! shuffle1 {
         ($a:expr, $e:expr, $i: expr, $m: expr) => {
             match (imm8 >> 2) & 0x3 {
-                0 => shuffle2!($a, 0, $e, 4, $i, 8,  $m, 12),
-                1 => shuffle2!($a, 1, $e, 5, $i, 9,  $m, 13),
+                0 => shuffle2!($a, 0, $e, 4, $i, 8, $m, 12),
+                1 => shuffle2!($a, 1, $e, 5, $i, 9, $m, 13),
                 2 => shuffle2!($a, 2, $e, 6, $i, 10, $m, 14),
                 _ => shuffle2!($a, 3, $e, 7, $i, 11, $m, 15),
             }
         };
     }
     let shuffle = match imm8 & 0x3 {
-        0 => shuffle1!(0, 4, 8,  12),
-        1 => shuffle1!(1, 5, 9,  13),
+        0 => shuffle1!(0, 4, 8, 12),
+        1 => shuffle1!(1, 5, 9, 13),
         2 => shuffle1!(2, 6, 10, 14),
         _ => shuffle1!(3, 7, 11, 15),
     };
@@ -8657,7 +8825,13 @@ pub unsafe fn _mm512_shuffle_pd(a: __m512d, b: __m512d, imm8: i32) -> __m512d {
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vshufpd, imm8 = 3))]
 #[rustc_args_required_const(4)]
-pub unsafe fn _mm512_mask_shuffle_pd(src: __m512d, k: __mmask8, a: __m512d, b: __m512d, imm8: i32) -> __m512d {
+pub unsafe fn _mm512_mask_shuffle_pd(
+    src: __m512d,
+    k: __mmask8,
+    a: __m512d,
+    b: __m512d,
+    imm8: i32,
+) -> __m512d {
     let imm8 = (imm8 & 0xFF) as u8;
     macro_rules! shuffle8 {
         ($a:expr, $b:expr, $c:expr, $d:expr, $e:expr, $f:expr, $g:expr, $h:expr) => {
@@ -14370,15 +14544,9 @@ mod tests {
             0., -1.5, 2., -3.5, 4., -5.5, 6., -7.5, 8., 9.5, 10., 11.5, 12., 13.5, 14., 15.5,
         );
         let src = _mm512_set1_epi32(0);
-        let r =
-            _mm512_mask_cvtt_roundps_epi32(src, 0, a, _MM_FROUND_NO_EXC);
+        let r = _mm512_mask_cvtt_roundps_epi32(src, 0, a, _MM_FROUND_NO_EXC);
         assert_eq_m512i(r, src);
-        let r = _mm512_mask_cvtt_roundps_epi32(
-            src,
-            0b00000000_11111111,
-            a,
-            _MM_FROUND_NO_EXC,
-        );
+        let r = _mm512_mask_cvtt_roundps_epi32(src, 0b00000000_11111111, a, _MM_FROUND_NO_EXC);
         let e = _mm512_setr_epi32(0, -1, 2, -3, 4, -5, 6, -7, 0, 0, 0, 0, 0, 0, 0, 0);
         assert_eq_m512i(r, e);
     }
@@ -14390,11 +14558,7 @@ mod tests {
         );
         let r = _mm512_maskz_cvtt_roundps_epi32(0, a, _MM_FROUND_NO_EXC);
         assert_eq_m512i(r, _mm512_setzero_si512());
-        let r = _mm512_maskz_cvtt_roundps_epi32(
-            0b00000000_11111111,
-            a,
-            _MM_FROUND_NO_EXC,
-        );
+        let r = _mm512_maskz_cvtt_roundps_epi32(0b00000000_11111111, a, _MM_FROUND_NO_EXC);
         let e = _mm512_setr_epi32(0, -1, 2, -3, 4, -5, 6, -7, 0, 0, 0, 0, 0, 0, 0, 0);
         assert_eq_m512i(r, e);
     }
@@ -14415,15 +14579,9 @@ mod tests {
             0., -1.5, 2., -3.5, 4., -5.5, 6., -7.5, 8., 9.5, 10., 11.5, 12., 13.5, 14., 15.5,
         );
         let src = _mm512_set1_epi32(0);
-        let r =
-            _mm512_mask_cvtt_roundps_epu32(src, 0, a, _MM_FROUND_NO_EXC);
+        let r = _mm512_mask_cvtt_roundps_epu32(src, 0, a, _MM_FROUND_NO_EXC);
         assert_eq_m512i(r, src);
-        let r = _mm512_mask_cvtt_roundps_epu32(
-            src,
-            0b00000000_11111111,
-            a,
-            _MM_FROUND_NO_EXC,
-        );
+        let r = _mm512_mask_cvtt_roundps_epu32(src, 0b00000000_11111111, a, _MM_FROUND_NO_EXC);
         let e = _mm512_setr_epi32(0, -1, 2, -1, 4, -1, 6, -1, 0, 0, 0, 0, 0, 0, 0, 0);
         assert_eq_m512i(r, e);
     }
@@ -14435,11 +14593,7 @@ mod tests {
         );
         let r = _mm512_maskz_cvtt_roundps_epu32(0, a, _MM_FROUND_NO_EXC);
         assert_eq_m512i(r, _mm512_setzero_si512());
-        let r = _mm512_maskz_cvtt_roundps_epu32(
-            0b00000000_11111111,
-            a,
-            _MM_FROUND_NO_EXC,
-        );
+        let r = _mm512_maskz_cvtt_roundps_epu32(0b00000000_11111111, a, _MM_FROUND_NO_EXC);
         let e = _mm512_setr_epi32(0, -1, 2, -1, 4, -1, 6, -1, 0, 0, 0, 0, 0, 0, 0, 0);
         assert_eq_m512i(r, e);
     }
@@ -14460,14 +14614,9 @@ mod tests {
             0., -1.5, 2., -3.5, 4., -5.5, 6., -7.5, 8., 9.5, 10., 11.5, 12., 13.5, 14., 15.5,
         );
         let src = _mm512_set1_epi32(0);
-        let r =
-            _mm512_mask_cvttps_epi32(src, 0, a);
+        let r = _mm512_mask_cvttps_epi32(src, 0, a);
         assert_eq_m512i(r, src);
-        let r = _mm512_mask_cvttps_epi32(
-            src,
-            0b00000000_11111111,
-            a,
-        );
+        let r = _mm512_mask_cvttps_epi32(src, 0b00000000_11111111, a);
         let e = _mm512_setr_epi32(0, -1, 2, -3, 4, -5, 6, -7, 0, 0, 0, 0, 0, 0, 0, 0);
         assert_eq_m512i(r, e);
     }
@@ -14479,10 +14628,7 @@ mod tests {
         );
         let r = _mm512_maskz_cvttps_epi32(0, a);
         assert_eq_m512i(r, _mm512_setzero_si512());
-        let r = _mm512_maskz_cvttps_epi32(
-            0b00000000_11111111,
-            a,
-        );
+        let r = _mm512_maskz_cvttps_epi32(0b00000000_11111111, a);
         let e = _mm512_setr_epi32(0, -1, 2, -3, 4, -5, 6, -7, 0, 0, 0, 0, 0, 0, 0, 0);
         assert_eq_m512i(r, e);
     }
@@ -14503,14 +14649,9 @@ mod tests {
             0., -1.5, 2., -3.5, 4., -5.5, 6., -7.5, 8., 9.5, 10., 11.5, 12., 13.5, 14., 15.5,
         );
         let src = _mm512_set1_epi32(0);
-        let r =
-            _mm512_mask_cvttps_epu32(src, 0, a);
+        let r = _mm512_mask_cvttps_epu32(src, 0, a);
         assert_eq_m512i(r, src);
-        let r = _mm512_mask_cvttps_epu32(
-            src,
-            0b00000000_11111111,
-            a,
-        );
+        let r = _mm512_mask_cvttps_epu32(src, 0b00000000_11111111, a);
         let e = _mm512_setr_epi32(0, -1, 2, -1, 4, -1, 6, -1, 0, 0, 0, 0, 0, 0, 0, 0);
         assert_eq_m512i(r, e);
     }
@@ -14522,10 +14663,7 @@ mod tests {
         );
         let r = _mm512_maskz_cvttps_epu32(0, a);
         assert_eq_m512i(r, _mm512_setzero_si512());
-        let r = _mm512_maskz_cvttps_epu32(
-            0b00000000_11111111,
-            a,
-        );
+        let r = _mm512_maskz_cvttps_epu32(0b00000000_11111111, a);
         let e = _mm512_setr_epi32(0, -1, 2, -1, 4, -1, 6, -1, 0, 0, 0, 0, 0, 0, 0, 0);
         assert_eq_m512i(r, e);
     }
@@ -15978,29 +16116,41 @@ mod tests {
 
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_permute_ps() {
-        let a = _mm512_set_ps(0., 1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15.);
+        let a = _mm512_set_ps(
+            0., 1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15.,
+        );
         let r = _mm512_permute_ps(a, 1);
-        let e = _mm512_set_ps(2., 2., 2., 2., 6., 6., 6., 6., 10., 10., 10., 10., 14., 14., 14., 14.);
+        let e = _mm512_set_ps(
+            2., 2., 2., 2., 6., 6., 6., 6., 10., 10., 10., 10., 14., 14., 14., 14.,
+        );
         assert_eq_m512(r, e);
     }
 
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_mask_permute_ps() {
-        let a = _mm512_set_ps(0., 1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15.);
+        let a = _mm512_set_ps(
+            0., 1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15.,
+        );
         let r = _mm512_mask_permute_ps(a, 0b00000000_00000000, a, 1);
         assert_eq_m512(r, a);
         let r = _mm512_mask_permute_ps(a, 0b11111111_11111111, a, 1);
-        let e = _mm512_set_ps(2., 2., 2., 2., 6., 6., 6., 6., 10., 10., 10., 10., 14., 14., 14., 14.);
+        let e = _mm512_set_ps(
+            2., 2., 2., 2., 6., 6., 6., 6., 10., 10., 10., 10., 14., 14., 14., 14.,
+        );
         assert_eq_m512(r, e);
     }
 
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_maskz_permute_ps() {
-        let a = _mm512_set_ps(0., 1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15.);
+        let a = _mm512_set_ps(
+            0., 1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15.,
+        );
         let r = _mm512_maskz_permute_ps(0, a, 1);
         assert_eq_m512(r, _mm512_setzero_ps());
         let r = _mm512_maskz_permute_ps(0b00000000_11111111, a, 1);
-        let e = _mm512_set_ps(0., 0., 0., 0., 0., 0., 0., 0., 10., 10., 10., 10., 14., 14., 14., 14.);
+        let e = _mm512_set_ps(
+            0., 0., 0., 0., 0., 0., 0., 0., 10., 10., 10., 10., 14., 14., 14., 14.,
+        );
         assert_eq_m512(r, e);
     }
 
@@ -16026,32 +16176,44 @@ mod tests {
 
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_permutevar_ps() {
-        let a = _mm512_set_ps(0., 1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15.);
+        let a = _mm512_set_ps(
+            0., 1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15.,
+        );
         let b = _mm512_set1_epi32(1);
         let r = _mm512_permutevar_ps(a, b);
-        let e = _mm512_set_ps(2., 2., 2., 2., 6., 6., 6., 6., 10., 10., 10., 10., 14., 14., 14., 14.);
+        let e = _mm512_set_ps(
+            2., 2., 2., 2., 6., 6., 6., 6., 10., 10., 10., 10., 14., 14., 14., 14.,
+        );
         assert_eq_m512(r, e);
     }
 
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_mask_permutevar_ps() {
-        let a = _mm512_set_ps(0., 1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15.);
+        let a = _mm512_set_ps(
+            0., 1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15.,
+        );
         let b = _mm512_set1_epi32(1);
         let r = _mm512_mask_permutevar_ps(a, 0, a, b);
         assert_eq_m512(r, a);
         let r = _mm512_mask_permutevar_ps(a, 0b11111111_11111111, a, b);
-        let e = _mm512_set_ps(2., 2., 2., 2., 6., 6., 6., 6., 10., 10., 10., 10., 14., 14., 14., 14.);
+        let e = _mm512_set_ps(
+            2., 2., 2., 2., 6., 6., 6., 6., 10., 10., 10., 10., 14., 14., 14., 14.,
+        );
         assert_eq_m512(r, e);
     }
 
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_maskz_permutevar_ps() {
-        let a = _mm512_set_ps(0., 1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15.);
+        let a = _mm512_set_ps(
+            0., 1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15.,
+        );
         let b = _mm512_set1_epi32(1);
         let r = _mm512_maskz_permutevar_ps(0, a, b);
         assert_eq_m512(r, _mm512_setzero_ps());
         let r = _mm512_maskz_permutevar_ps(0b00000000_11111111, a, b);
-        let e = _mm512_set_ps(0., 0., 0., 0., 0., 0., 0., 0., 10., 10., 10., 10., 14., 14., 14., 14.);
+        let e = _mm512_set_ps(
+            0., 0., 0., 0., 0., 0., 0., 0., 10., 10., 10., 10., 14., 14., 14., 14.,
+        );
         assert_eq_m512(r, e);
     }
 
@@ -16089,7 +16251,9 @@ mod tests {
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_permutexvar_ps() {
         let idx = _mm512_set1_epi32(1);
-        let a = _mm512_set_ps(0., 1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15.);
+        let a = _mm512_set_ps(
+            0., 1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15.,
+        );
         let r = _mm512_permutexvar_ps(idx, a);
         let e = _mm512_set1_ps(14.);
         assert_eq_m512(r, e);
@@ -16098,7 +16262,9 @@ mod tests {
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_mask_permutexvar_ps() {
         let idx = _mm512_set1_epi32(1);
-        let a = _mm512_set_ps(0., 1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15.);
+        let a = _mm512_set_ps(
+            0., 1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15.,
+        );
         let r = _mm512_mask_permutexvar_ps(a, 0, idx, a);
         assert_eq_m512(r, a);
         let r = _mm512_mask_permutexvar_ps(a, 0b11111111_11111111, idx, a);
@@ -16109,40 +16275,99 @@ mod tests {
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_maskz_permutexvar_ps() {
         let idx = _mm512_set1_epi32(1);
-        let a = _mm512_set_ps(0., 1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15.);
+        let a = _mm512_set_ps(
+            0., 1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15.,
+        );
         let r = _mm512_maskz_permutexvar_ps(0, idx, a);
         assert_eq_m512(r, _mm512_setzero_ps());
         let r = _mm512_maskz_permutexvar_ps(0b00000000_11111111, idx, a);
-        let e = _mm512_set_ps(0., 0., 0., 0., 0., 0., 0., 0., 14., 14., 14., 14., 14., 14., 14., 14.);
+        let e = _mm512_set_ps(
+            0., 0., 0., 0., 0., 0., 0., 0., 14., 14., 14., 14., 14., 14., 14., 14.,
+        );
         assert_eq_m512(r, e);
     }
 
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_permutex2var_epi32() {
         let a = _mm512_set_epi32(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
-        let idx = _mm512_set_epi32(1, 1<<4, 2, 1<<4, 3, 1<<4, 4, 1<<4, 5, 1<< 4, 6, 1<<4, 7, 1<<4, 8, 1<<4);
+        let idx = _mm512_set_epi32(
+            1,
+            1 << 4,
+            2,
+            1 << 4,
+            3,
+            1 << 4,
+            4,
+            1 << 4,
+            5,
+            1 << 4,
+            6,
+            1 << 4,
+            7,
+            1 << 4,
+            8,
+            1 << 4,
+        );
         let b = _mm512_set1_epi32(100);
         let r = _mm512_permutex2var_epi32(a, idx, b);
-        let e = _mm512_set_epi32(14, 100, 13, 100, 12, 100, 11, 100, 10, 100, 9, 100, 8, 100, 7, 100);
+        let e = _mm512_set_epi32(
+            14, 100, 13, 100, 12, 100, 11, 100, 10, 100, 9, 100, 8, 100, 7, 100,
+        );
         assert_eq_m512i(r, e);
     }
 
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_mask_permutex2var_epi32() {
         let a = _mm512_set_epi32(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
-        let idx = _mm512_set_epi32(1, 1<<4, 2, 1<<4, 3, 1<<4, 4, 1<<4, 5, 1<< 4, 6, 1<<4, 7, 1<<4, 8, 1<<4);
+        let idx = _mm512_set_epi32(
+            1,
+            1 << 4,
+            2,
+            1 << 4,
+            3,
+            1 << 4,
+            4,
+            1 << 4,
+            5,
+            1 << 4,
+            6,
+            1 << 4,
+            7,
+            1 << 4,
+            8,
+            1 << 4,
+        );
         let b = _mm512_set1_epi32(100);
         let r = _mm512_mask_permutex2var_epi32(a, 0, idx, b);
         assert_eq_m512i(r, a);
         let r = _mm512_mask_permutex2var_epi32(a, 0b11111111_11111111, idx, b);
-        let e = _mm512_set_epi32(14, 100, 13, 100, 12, 100, 11, 100, 10, 100, 9, 100, 8, 100, 7, 100);
+        let e = _mm512_set_epi32(
+            14, 100, 13, 100, 12, 100, 11, 100, 10, 100, 9, 100, 8, 100, 7, 100,
+        );
         assert_eq_m512i(r, e);
     }
 
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_maskz_permutex2var_epi32() {
         let a = _mm512_set_epi32(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
-        let idx = _mm512_set_epi32(1, 1<<4, 2, 1<<4, 3, 1<<4, 4, 1<<4, 5, 1<< 4, 6, 1<<4, 7, 1<<4, 8, 1<<4);
+        let idx = _mm512_set_epi32(
+            1,
+            1 << 4,
+            2,
+            1 << 4,
+            3,
+            1 << 4,
+            4,
+            1 << 4,
+            5,
+            1 << 4,
+            6,
+            1 << 4,
+            7,
+            1 << 4,
+            8,
+            1 << 4,
+        );
         let b = _mm512_set1_epi32(100);
         let r = _mm512_maskz_permutex2var_epi32(0, a, idx, b);
         assert_eq_m512i(r, _mm512_setzero_si512());
@@ -16154,89 +16379,225 @@ mod tests {
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_mask2_permutex2var_epi32() {
         let a = _mm512_set_epi32(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
-        let idx = _mm512_set_epi32(1000, 1<<4, 2000, 1<<4, 3000, 1<<4, 4000, 1<<4, 5, 1<< 4, 6, 1<<4, 7, 1<<4, 8, 1<<4);
+        let idx = _mm512_set_epi32(
+            1000,
+            1 << 4,
+            2000,
+            1 << 4,
+            3000,
+            1 << 4,
+            4000,
+            1 << 4,
+            5,
+            1 << 4,
+            6,
+            1 << 4,
+            7,
+            1 << 4,
+            8,
+            1 << 4,
+        );
         let b = _mm512_set1_epi32(100);
         let r = _mm512_mask2_permutex2var_epi32(a, idx, 0, b);
         assert_eq_m512i(r, idx);
         let r = _mm512_mask2_permutex2var_epi32(a, idx, 0b00000000_11111111, b);
-        let e = _mm512_set_epi32(1000, 1<<4, 2000, 1<<4, 3000, 1<<4, 4000, 1<<4, 10, 100, 9, 100, 8, 100, 7, 100);
+        let e = _mm512_set_epi32(
+            1000,
+            1 << 4,
+            2000,
+            1 << 4,
+            3000,
+            1 << 4,
+            4000,
+            1 << 4,
+            10,
+            100,
+            9,
+            100,
+            8,
+            100,
+            7,
+            100,
+        );
         assert_eq_m512i(r, e);
     }
 
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_permutex2var_ps() {
-        let a = _mm512_set_ps(0., 1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15.);
-        let idx = _mm512_set_epi32(1, 1<<4, 2, 1<<4, 3, 1<<4, 4, 1<<4, 5, 1<< 4, 6, 1<<4, 7, 1<<4, 8, 1<<4);
+        let a = _mm512_set_ps(
+            0., 1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15.,
+        );
+        let idx = _mm512_set_epi32(
+            1,
+            1 << 4,
+            2,
+            1 << 4,
+            3,
+            1 << 4,
+            4,
+            1 << 4,
+            5,
+            1 << 4,
+            6,
+            1 << 4,
+            7,
+            1 << 4,
+            8,
+            1 << 4,
+        );
         let b = _mm512_set1_ps(100.);
         let r = _mm512_permutex2var_ps(a, idx, b);
-        let e = _mm512_set_ps(14., 100., 13., 100., 12., 100., 11., 100., 10., 100., 9., 100., 8., 100., 7., 100.);
+        let e = _mm512_set_ps(
+            14., 100., 13., 100., 12., 100., 11., 100., 10., 100., 9., 100., 8., 100., 7., 100.,
+        );
         assert_eq_m512(r, e);
     }
 
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_mask_permutex2var_ps() {
-        let a = _mm512_set_ps(0., 1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15.);
-        let idx = _mm512_set_epi32(1, 1<<4, 2, 1<<4, 3, 1<<4, 4, 1<<4, 5, 1<< 4, 6, 1<<4, 7, 1<<4, 8, 1<<4);
+        let a = _mm512_set_ps(
+            0., 1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15.,
+        );
+        let idx = _mm512_set_epi32(
+            1,
+            1 << 4,
+            2,
+            1 << 4,
+            3,
+            1 << 4,
+            4,
+            1 << 4,
+            5,
+            1 << 4,
+            6,
+            1 << 4,
+            7,
+            1 << 4,
+            8,
+            1 << 4,
+        );
         let b = _mm512_set1_ps(100.);
         let r = _mm512_mask_permutex2var_ps(a, 0, idx, b);
         assert_eq_m512(r, a);
         let r = _mm512_mask_permutex2var_ps(a, 0b11111111_11111111, idx, b);
-        let e = _mm512_set_ps(14., 100., 13., 100., 12., 100., 11., 100., 10., 100., 9., 100., 8., 100., 7., 100.);
+        let e = _mm512_set_ps(
+            14., 100., 13., 100., 12., 100., 11., 100., 10., 100., 9., 100., 8., 100., 7., 100.,
+        );
         assert_eq_m512(r, e);
     }
 
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_maskz_permutex2var_ps() {
-        let a = _mm512_set_ps(0., 1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15.);
-        let idx = _mm512_set_epi32(1, 1<<4, 2, 1<<4, 3, 1<<4, 4, 1<<4, 5, 1<< 4, 6, 1<<4, 7, 1<<4, 8, 1<<4);
+        let a = _mm512_set_ps(
+            0., 1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15.,
+        );
+        let idx = _mm512_set_epi32(
+            1,
+            1 << 4,
+            2,
+            1 << 4,
+            3,
+            1 << 4,
+            4,
+            1 << 4,
+            5,
+            1 << 4,
+            6,
+            1 << 4,
+            7,
+            1 << 4,
+            8,
+            1 << 4,
+        );
         let b = _mm512_set1_ps(100.);
         let r = _mm512_maskz_permutex2var_ps(0, a, idx, b);
         assert_eq_m512(r, _mm512_setzero_ps());
         let r = _mm512_maskz_permutex2var_ps(0b00000000_11111111, a, idx, b);
-        let e = _mm512_set_ps(0., 0., 0., 0., 0., 0., 0., 0., 10., 100., 9., 100., 8., 100., 7., 100.);
+        let e = _mm512_set_ps(
+            0., 0., 0., 0., 0., 0., 0., 0., 10., 100., 9., 100., 8., 100., 7., 100.,
+        );
         assert_eq_m512(r, e);
     }
 
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_mask2_permutex2var_ps() {
-        let a = _mm512_set_ps(0., 1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15.);
-        let idx = _mm512_set_epi32(1, 1<<4, 2, 1<<4, 3, 1<<4, 4, 1<<4, 5, 1<< 4, 6, 1<<4, 7, 1<<4, 8, 1<<4);
+        let a = _mm512_set_ps(
+            0., 1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15.,
+        );
+        let idx = _mm512_set_epi32(
+            1,
+            1 << 4,
+            2,
+            1 << 4,
+            3,
+            1 << 4,
+            4,
+            1 << 4,
+            5,
+            1 << 4,
+            6,
+            1 << 4,
+            7,
+            1 << 4,
+            8,
+            1 << 4,
+        );
         let b = _mm512_set1_ps(100.);
         let r = _mm512_mask2_permutex2var_ps(a, idx, 0, b);
         assert_eq_m512(r, _mm512_setzero_ps());
         let r = _mm512_mask2_permutex2var_ps(a, idx, 0b00000000_11111111, b);
-        let e = _mm512_set_ps(0., 0., 0., 0., 0., 0., 0., 0., 10., 100., 9., 100., 8., 100., 7., 100.);
+        let e = _mm512_set_ps(
+            0., 0., 0., 0., 0., 0., 0., 0., 10., 100., 9., 100., 8., 100., 7., 100.,
+        );
         assert_eq_m512(r, e);
     }
 
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_shuffle_ps() {
-        let a = _mm512_setr_ps(1., 4., 5., 8., 9., 12., 13., 16., 1., 4., 5., 8., 9., 12., 13., 16.);
-        let b = _mm512_setr_ps(2., 3., 6., 7., 10., 11., 14., 15., 2., 3., 6., 7., 10., 11., 14., 15.);
+        let a = _mm512_setr_ps(
+            1., 4., 5., 8., 9., 12., 13., 16., 1., 4., 5., 8., 9., 12., 13., 16.,
+        );
+        let b = _mm512_setr_ps(
+            2., 3., 6., 7., 10., 11., 14., 15., 2., 3., 6., 7., 10., 11., 14., 15.,
+        );
         let r = _mm512_shuffle_ps(a, b, 0x0F);
-        let e = _mm512_setr_ps(8., 8., 2., 2., 16., 16., 10., 10., 8., 8., 2., 2., 16., 16., 10., 10.);
+        let e = _mm512_setr_ps(
+            8., 8., 2., 2., 16., 16., 10., 10., 8., 8., 2., 2., 16., 16., 10., 10.,
+        );
         assert_eq_m512(r, e);
     }
 
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_mask_shuffle_ps() {
-        let a = _mm512_setr_ps(1., 4., 5., 8., 9., 12., 13., 16., 1., 4., 5., 8., 9., 12., 13., 16.);
-        let b = _mm512_setr_ps(2., 3., 6., 7., 10., 11., 14., 15., 2., 3., 6., 7., 10., 11., 14., 15.);
+        let a = _mm512_setr_ps(
+            1., 4., 5., 8., 9., 12., 13., 16., 1., 4., 5., 8., 9., 12., 13., 16.,
+        );
+        let b = _mm512_setr_ps(
+            2., 3., 6., 7., 10., 11., 14., 15., 2., 3., 6., 7., 10., 11., 14., 15.,
+        );
         let r = _mm512_mask_shuffle_ps(a, 0, a, b, 0x0F);
         assert_eq_m512(r, a);
         let r = _mm512_mask_shuffle_ps(a, 0b11111111_11111111, a, b, 0x0F);
-        let e = _mm512_setr_ps(8., 8., 2., 2., 16., 16., 10., 10., 8., 8., 2., 2., 16., 16., 10., 10.);
+        let e = _mm512_setr_ps(
+            8., 8., 2., 2., 16., 16., 10., 10., 8., 8., 2., 2., 16., 16., 10., 10.,
+        );
         assert_eq_m512(r, e);
     }
 
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_maskz_shuffle_ps() {
-        let a = _mm512_setr_ps(1., 4., 5., 8., 9., 12., 13., 16., 1., 4., 5., 8., 9., 12., 13., 16.);
-        let b = _mm512_setr_ps(2., 3., 6., 7., 10., 11., 14., 15., 2., 3., 6., 7., 10., 11., 14., 15.);
+        let a = _mm512_setr_ps(
+            1., 4., 5., 8., 9., 12., 13., 16., 1., 4., 5., 8., 9., 12., 13., 16.,
+        );
+        let b = _mm512_setr_ps(
+            2., 3., 6., 7., 10., 11., 14., 15., 2., 3., 6., 7., 10., 11., 14., 15.,
+        );
         let r = _mm512_maskz_shuffle_ps(0, a, b, 0x0F);
         assert_eq_m512(r, _mm512_setzero_ps());
         let r = _mm512_maskz_shuffle_ps(0b00000000_11111111, a, b, 0x0F);
-        let e = _mm512_setr_ps(8., 8., 2., 2., 16., 16., 10., 10., 0., 0., 0., 0., 0., 0., 0., 0.);
+        let e = _mm512_setr_ps(
+            8., 8., 2., 2., 16., 16., 10., 10., 0., 0., 0., 0., 0., 0., 0., 0.,
+        );
         assert_eq_m512(r, e);
     }
 
