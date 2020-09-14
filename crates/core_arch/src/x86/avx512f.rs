@@ -7949,12 +7949,12 @@ pub unsafe fn _mm512_mask_permutex_epi64(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_permutex_epi64&expand=4207)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpermq, imm8 = 0b1011))]
+#[cfg_attr(test, assert_instr(vpermq, imm8 = 0b10001101))]
 #[rustc_args_required_const(2)]
 pub unsafe fn _mm512_maskz_permutex_epi64(k: __mmask8, a: __m512i, imm8: i32) -> __m512i {
     macro_rules! call {
         ($imm8:expr) => {
-            vpermq(a.as_i64x8(), _mm512_set1_epi64($imm8 & 0xFF).as_i64x8())
+            vpermq(a.as_i64x8(), _mm512_set1_epi64($imm8).as_i64x8())
         };
     }
     let permute = constify_imm8_sae!(imm8, call);
@@ -7967,12 +7967,12 @@ pub unsafe fn _mm512_maskz_permutex_epi64(k: __mmask8, a: __m512i, imm8: i32) ->
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_permutex_pd&expand=4214)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpermpd, imm8 = 0b0001))]
+#[cfg_attr(test, assert_instr(vpermpd, imm8 = 0b10001101))]
 #[rustc_args_required_const(1)]
 pub unsafe fn _mm512_permutex_pd(a: __m512d, imm8: i32) -> __m512d {
     macro_rules! call {
         ($imm8:expr) => {
-            vpermpd(a.as_f64x8(), _mm512_set1_epi64($imm8 & 0xFF).as_i64x8())
+            vpermpd(a.as_f64x8(), _mm512_set1_epi64($imm8).as_i64x8())
         };
     }
     let r = constify_imm8_sae!(imm8, call);
@@ -7984,12 +7984,12 @@ pub unsafe fn _mm512_permutex_pd(a: __m512d, imm8: i32) -> __m512d {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_permutex_pd&expand=4212)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpermpd, imm8 = 0b0001))]
+#[cfg_attr(test, assert_instr(vpermpd, imm8 = 0b10001101))]
 #[rustc_args_required_const(3)]
 pub unsafe fn _mm512_mask_permutex_pd(src: __m512d, k: __mmask8, a: __m512d, imm8: i32) -> __m512d {
     macro_rules! call {
         ($imm8:expr) => {
-            vpermpd(a.as_f64x8(), _mm512_set1_epi64($imm8 & 0xFF).as_i64x8())
+            vpermpd(a.as_f64x8(), _mm512_set1_epi64($imm8).as_i64x8())
         };
     }
     let permute = constify_imm8_sae!(imm8, call);
@@ -8001,12 +8001,12 @@ pub unsafe fn _mm512_mask_permutex_pd(src: __m512d, k: __mmask8, a: __m512d, imm
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_permutex_pd&expand=4213)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpermpd, imm8 = 0b0101))]
+#[cfg_attr(test, assert_instr(vpermpd, imm8 = 0b10001101))]
 #[rustc_args_required_const(2)]
 pub unsafe fn _mm512_maskz_permutex_pd(k: __mmask8, a: __m512d, imm8: i32) -> __m512d {
     macro_rules! call {
         ($imm8:expr) => {
-            vpermpd(a.as_f64x8(), _mm512_set1_epi64($imm8 & 0xFF).as_i64x8())
+            vpermpd(a.as_f64x8(), _mm512_set1_epi64($imm8).as_i64x8())
         };
     }
     let permute = constify_imm8_sae!(imm8, call);
