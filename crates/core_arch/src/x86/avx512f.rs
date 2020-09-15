@@ -9270,6 +9270,77 @@ pub unsafe fn _mm512_kxor(a: __mmask16, b: __mmask16) -> __mmask16 {
     transmute(kxorw(a, b))
 }
 
+/// Compute the bitwise NOT of 16-bit mask a, and store the result in k.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=knot_mask16&expand=3233)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(not))] // generate normal not code instead of knotw
+pub unsafe fn _knot_mask16(a: __mmask16) -> __mmask16 {
+    transmute(kxorw(a, 0b11111111_11111111))
+}
+
+/// Compute the bitwise NOT of 16-bit mask a, and store the result in k.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_knot&expand=3231)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(not))] // generate normal not code instead of knotw
+pub unsafe fn _mm512_knot(a: __mmask16) -> __mmask16 {
+    transmute(kxorw(a, 0b11111111_11111111))
+}
+
+/// Compute the bitwise NOT of 16-bit masks a and then AND with b, and store the result in k.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=kandn_mask16&expand=3218)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(not))] // generate normal and, not code instead of kandnw
+pub unsafe fn _kandn_mask16(a: __mmask16, b: __mmask16) -> __mmask16 {
+    _mm512_kand(_mm512_knot(a), b)
+}
+
+/// Compute the bitwise NOT of 16-bit masks a and then AND with b, and store the result in k.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_kandn&expand=3216)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(not))] // generate normal and code instead of kandw
+pub unsafe fn _mm512_kandn(a: __mmask16, b: __mmask16) -> __mmask16 {
+    _mm512_kand(_mm512_knot(a), b)
+}
+
+/// Compute the bitwise XNOR of 16-bit masks a and b, and store the result in k.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=kxnor_mask16&expand=3285)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(not))] // generate normal xor, not code instead of kxnorw
+pub unsafe fn _kxnor_mask16(a: __mmask16, b: __mmask16) -> __mmask16 {
+    _mm512_knot(_mm512_kxor(a, b))
+}
+
+/// Compute the bitwise XNOR of 16-bit masks a and b, and store the result in k.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_kxnor&expand=3283)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(not))] // generate normal and code instead of kandw
+pub unsafe fn _mm512_kxnor(a: __mmask16, b: __mmask16) -> __mmask16 {
+    _mm512_knot(_mm512_kxor(a, b))
+}
+
+/// Copy 16-bit mask a to k.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm512_kmov&expand=3228)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(mov))] // generate normal and code instead of kmovw
+pub unsafe fn _mm512_kmov(a: __mmask16) -> __mmask16 {
+    let r: u16 = a;
+    transmute(r)
+}
+
 /// Sets packed 32-bit integers in `dst` with the supplied values.
 ///
 /// [Intel's documentation]( https://software.intel.com/sites/landingpage/IntrinsicsGuide/#expand=727,1063,4909,1062,1062,4909&text=_mm512_set_ps)
@@ -17323,6 +17394,66 @@ mod tests {
         let b: u16 = 0b00101110_00001011;
         let r = _kxor_mask16(a, b);
         let e: u16 = 0b11100010_00111000;
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_knot() {
+        let a: u16 = 0b11001100_00110011;
+        let r = _mm512_knot(a);
+        let e: u16 = 0b00110011_11001100;
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_knot_mask16() {
+        let a: u16 = 0b11001100_00110011;
+        let r = _knot_mask16(a);
+        let e: u16 = 0b00110011_11001100;
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_kandn() {
+        let a: u16 = 0b11001100_00110011;
+        let b: u16 = 0b00101110_00001011;
+        let r = _mm512_kandn(a, b);
+        let e: u16 = 0b00100010_00001000;
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_kandn_mask16() {
+        let a: u16 = 0b11001100_00110011;
+        let b: u16 = 0b00101110_00001011;
+        let r = _kandn_mask16(a, b);
+        let e: u16 = 0b00100010_00001000;
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_kxnor() {
+        let a: u16 = 0b11001100_00110011;
+        let b: u16 = 0b00101110_00001011;
+        let r = _mm512_kxnor(a, b);
+        let e: u16 = 0b00011101_11000111;
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_kxnor_mask16() {
+        let a: u16 = 0b11001100_00110011;
+        let b: u16 = 0b00101110_00001011;
+        let r = _kxnor_mask16(a, b);
+        let e: u16 = 0b00011101_11000111;
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_kmov() {
+        let a: u16 = 0b11001100_00110011;
+        let r = _mm512_kmov(a);
+        let e: u16 = 0b11001100_00110011;
         assert_eq!(r, e);
     }
 }
