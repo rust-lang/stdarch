@@ -8509,6 +8509,84 @@ pub unsafe fn _mm512_mask2_permutex2var_pd(
 
 /// Shuffle single-precision (32-bit) floating-point elements in a within 128-bit lanes using the control in imm8, and store the results in dst.
 ///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_shuffle_epi32&expand=5150)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vpermilps, imm8 = 9))] //should be vpshufd, but generate vpermilps
+#[rustc_args_required_const(1)]
+pub unsafe fn _mm512_shuffle_epi32(a: __m512i, imm8: _MM_PERM_ENUM) -> __m512i {
+    let imm8 = (imm8 & 0xFF) as u8;
+
+    let a = a.as_i32x16();
+    macro_rules! shuffle4 {
+        (
+            $a:expr,
+            $b:expr,
+            $c:expr,
+            $d:expr,
+            $e:expr,
+            $f:expr,
+            $g:expr,
+            $h:expr,
+            $i:expr,
+            $j:expr,
+            $k:expr,
+            $l:expr,
+            $m:expr,
+            $n:expr,
+            $o:expr,
+            $p:expr
+        ) => {
+            simd_shuffle16(
+                a,
+                a,
+                [
+                    $a, $b, $c, $d, $e, $f, $g, $h, $i, $j, $k, $l, $m, $n, $o, $p,
+                ],
+            );
+        };
+    }
+    macro_rules! shuffle3 {
+        ($a:expr, $b:expr, $c:expr, $e:expr, $f:expr, $g:expr, $i:expr, $j:expr, $k:expr, $m:expr, $n:expr, $o:expr) => {
+            match (imm8 >> 6) & 0x3 {
+                0 => shuffle4!($a, $b, $c, 16, $e, $f, $g, 20, $i, $j, $k, 24, $m, $n, $o, 28),
+                1 => shuffle4!($a, $b, $c, 17, $e, $f, $g, 21, $i, $j, $k, 25, $m, $n, $o, 29),
+                2 => shuffle4!($a, $b, $c, 18, $e, $f, $g, 22, $i, $j, $k, 26, $m, $n, $o, 30),
+                _ => shuffle4!($a, $b, $c, 19, $e, $f, $g, 23, $i, $j, $k, 27, $m, $n, $o, 31),
+            }
+        };
+    }
+    macro_rules! shuffle2 {
+        ($a:expr, $b:expr, $e:expr, $f:expr, $i:expr, $j:expr, $m:expr, $n:expr) => {
+            match (imm8 >> 4) & 0x3 {
+                0 => shuffle3!($a, $b, 16, $e, $f, 20, $i, $j, 24, $m, $n, 28),
+                1 => shuffle3!($a, $b, 17, $e, $f, 21, $i, $j, 25, $m, $n, 29),
+                2 => shuffle3!($a, $b, 18, $e, $f, 22, $i, $j, 26, $m, $n, 30),
+                _ => shuffle3!($a, $b, 19, $e, $f, 23, $i, $j, 27, $m, $n, 31),
+            }
+        };
+    }
+    macro_rules! shuffle1 {
+        ($a:expr, $e:expr, $i: expr, $m: expr) => {
+            match (imm8 >> 2) & 0x3 {
+                0 => shuffle2!($a, 0, $e, 4, $i, 8, $m, 12),
+                1 => shuffle2!($a, 1, $e, 5, $i, 9, $m, 13),
+                2 => shuffle2!($a, 2, $e, 6, $i, 10, $m, 14),
+                _ => shuffle2!($a, 3, $e, 7, $i, 11, $m, 15),
+            }
+        };
+    }
+    let r: i32x16 = match imm8 & 0x3 {
+        0 => shuffle1!(0, 4, 8, 12),
+        1 => shuffle1!(1, 5, 9, 13),
+        2 => shuffle1!(2, 6, 10, 14),
+        _ => shuffle1!(3, 7, 11, 15),
+    };
+    transmute(r)
+}
+
+/// Shuffle single-precision (32-bit) floating-point elements in a within 128-bit lanes using the control in imm8, and store the results in dst.
+///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_shuffle_ps&expand=5203)
 #[inline]
 #[target_feature(enable = "avx512f")]
@@ -10924,6 +11002,264 @@ pub const _MM_MANT_SIGN_SRC: _MM_MANTISSA_SIGN_ENUM = 0x00;
 pub const _MM_MANT_SIGN_ZERO: _MM_MANTISSA_SIGN_ENUM = 0x01;
 /// DEST = NaN if sign(SRC) = 1
 pub const _MM_MANT_SIGN_NAN: _MM_MANTISSA_SIGN_ENUM = 0x02;
+
+
+pub const _MM_PERM_AAAA: _MM_PERM_ENUM = 0x00;
+pub const _MM_PERM_AAAB: _MM_PERM_ENUM = 0x01;
+pub const _MM_PERM_AAAC: _MM_PERM_ENUM = 0x02;
+pub const _MM_PERM_AAAD: _MM_PERM_ENUM = 0x03;
+pub const _MM_PERM_AABA: _MM_PERM_ENUM = 0x04;
+pub const _MM_PERM_AABB: _MM_PERM_ENUM = 0x05;
+pub const _MM_PERM_AABC: _MM_PERM_ENUM = 0x06;
+pub const _MM_PERM_AABD: _MM_PERM_ENUM = 0x07;
+pub const _MM_PERM_AACA: _MM_PERM_ENUM = 0x08;
+pub const _MM_PERM_AACB: _MM_PERM_ENUM = 0x09;
+pub const _MM_PERM_AACC: _MM_PERM_ENUM = 0x0A;
+pub const _MM_PERM_AACD: _MM_PERM_ENUM = 0x0B;
+pub const _MM_PERM_AADA: _MM_PERM_ENUM = 0x0C;
+pub const _MM_PERM_AADB: _MM_PERM_ENUM = 0x0D;
+pub const _MM_PERM_AADC: _MM_PERM_ENUM = 0x0E;
+pub const _MM_PERM_AADD: _MM_PERM_ENUM = 0x0F;
+pub const _MM_PERM_ABAA: _MM_PERM_ENUM = 0x10;
+pub const _MM_PERM_ABAB: _MM_PERM_ENUM = 0x11;
+pub const _MM_PERM_ABAC: _MM_PERM_ENUM = 0x12;
+pub const _MM_PERM_ABAD: _MM_PERM_ENUM = 0x13;
+pub const _MM_PERM_ABBA: _MM_PERM_ENUM = 0x14;
+pub const _MM_PERM_ABBB: _MM_PERM_ENUM = 0x15;
+pub const _MM_PERM_ABBC: _MM_PERM_ENUM = 0x16;
+pub const _MM_PERM_ABBD: _MM_PERM_ENUM = 0x17;
+pub const _MM_PERM_ABCA: _MM_PERM_ENUM = 0x18;
+pub const _MM_PERM_ABCB: _MM_PERM_ENUM = 0x19;
+pub const _MM_PERM_ABCC: _MM_PERM_ENUM = 0x1A;
+pub const _MM_PERM_ABCD: _MM_PERM_ENUM = 0x1B;
+pub const _MM_PERM_ABDA: _MM_PERM_ENUM = 0x1C;
+pub const _MM_PERM_ABDB: _MM_PERM_ENUM = 0x1D;
+pub const _MM_PERM_ABDC: _MM_PERM_ENUM = 0x1E;
+pub const _MM_PERM_ABDD: _MM_PERM_ENUM = 0x1F;
+pub const _MM_PERM_ACAA: _MM_PERM_ENUM = 0x20;
+pub const _MM_PERM_ACAB: _MM_PERM_ENUM = 0x21;
+pub const _MM_PERM_ACAC: _MM_PERM_ENUM = 0x22;
+pub const _MM_PERM_ACAD: _MM_PERM_ENUM = 0x23;
+pub const _MM_PERM_ACBA: _MM_PERM_ENUM = 0x24;
+pub const _MM_PERM_ACBB: _MM_PERM_ENUM = 0x25;
+pub const _MM_PERM_ACBC: _MM_PERM_ENUM = 0x26;
+pub const _MM_PERM_ACBD: _MM_PERM_ENUM = 0x27;
+pub const _MM_PERM_ACCA: _MM_PERM_ENUM = 0x28;
+pub const _MM_PERM_ACCB: _MM_PERM_ENUM = 0x29;
+pub const _MM_PERM_ACCC: _MM_PERM_ENUM = 0x2A;
+pub const _MM_PERM_ACCD: _MM_PERM_ENUM = 0x2B;
+pub const _MM_PERM_ACDA: _MM_PERM_ENUM = 0x2C;
+pub const _MM_PERM_ACDB: _MM_PERM_ENUM = 0x2D;
+pub const _MM_PERM_ACDC: _MM_PERM_ENUM = 0x2E;
+pub const _MM_PERM_ACDD: _MM_PERM_ENUM = 0x2F;
+pub const _MM_PERM_ADAA: _MM_PERM_ENUM = 0x30;
+pub const _MM_PERM_ADAB: _MM_PERM_ENUM = 0x31;
+pub const _MM_PERM_ADAC: _MM_PERM_ENUM = 0x32;
+pub const _MM_PERM_ADAD: _MM_PERM_ENUM = 0x33;
+pub const _MM_PERM_ADBA: _MM_PERM_ENUM = 0x34;
+pub const _MM_PERM_ADBB: _MM_PERM_ENUM = 0x35;
+pub const _MM_PERM_ADBC: _MM_PERM_ENUM = 0x36;
+pub const _MM_PERM_ADBD: _MM_PERM_ENUM = 0x37;
+pub const _MM_PERM_ADCA: _MM_PERM_ENUM = 0x38;
+pub const _MM_PERM_ADCB: _MM_PERM_ENUM = 0x39;
+pub const _MM_PERM_ADCC: _MM_PERM_ENUM = 0x3A;
+pub const _MM_PERM_ADCD: _MM_PERM_ENUM = 0x3B;
+pub const _MM_PERM_ADDA: _MM_PERM_ENUM = 0x3C;
+pub const _MM_PERM_ADDB: _MM_PERM_ENUM = 0x3D;
+pub const _MM_PERM_ADDC: _MM_PERM_ENUM = 0x3E;
+pub const _MM_PERM_ADDD: _MM_PERM_ENUM = 0x3F;
+pub const _MM_PERM_BAAA: _MM_PERM_ENUM = 0x40;
+pub const _MM_PERM_BAAB: _MM_PERM_ENUM = 0x41;
+pub const _MM_PERM_BAAC: _MM_PERM_ENUM = 0x42;
+pub const _MM_PERM_BAAD: _MM_PERM_ENUM = 0x43;
+pub const _MM_PERM_BABA: _MM_PERM_ENUM = 0x44;
+pub const _MM_PERM_BABB: _MM_PERM_ENUM = 0x45;
+pub const _MM_PERM_BABC: _MM_PERM_ENUM = 0x46;
+pub const _MM_PERM_BABD: _MM_PERM_ENUM = 0x47;
+pub const _MM_PERM_BACA: _MM_PERM_ENUM = 0x48;
+pub const _MM_PERM_BACB: _MM_PERM_ENUM = 0x49;
+pub const _MM_PERM_BACC: _MM_PERM_ENUM = 0x4A;
+pub const _MM_PERM_BACD: _MM_PERM_ENUM = 0x4B;
+pub const _MM_PERM_BADA: _MM_PERM_ENUM = 0x4C;
+pub const _MM_PERM_BADB: _MM_PERM_ENUM = 0x4D;
+pub const _MM_PERM_BADC: _MM_PERM_ENUM = 0x4E;
+pub const _MM_PERM_BADD: _MM_PERM_ENUM = 0x4F;
+pub const _MM_PERM_BBAA: _MM_PERM_ENUM = 0x50;
+pub const _MM_PERM_BBAB: _MM_PERM_ENUM = 0x51;
+pub const _MM_PERM_BBAC: _MM_PERM_ENUM = 0x52;
+pub const _MM_PERM_BBAD: _MM_PERM_ENUM = 0x53;
+pub const _MM_PERM_BBBA: _MM_PERM_ENUM = 0x54;
+pub const _MM_PERM_BBBB: _MM_PERM_ENUM = 0x55;
+pub const _MM_PERM_BBBC: _MM_PERM_ENUM = 0x56;
+pub const _MM_PERM_BBBD: _MM_PERM_ENUM = 0x57;
+pub const _MM_PERM_BBCA: _MM_PERM_ENUM = 0x58;
+pub const _MM_PERM_BBCB: _MM_PERM_ENUM = 0x59;
+pub const _MM_PERM_BBCC: _MM_PERM_ENUM = 0x5A;
+pub const _MM_PERM_BBCD: _MM_PERM_ENUM = 0x5B;
+pub const _MM_PERM_BBDA: _MM_PERM_ENUM = 0x5C;
+pub const _MM_PERM_BBDB: _MM_PERM_ENUM = 0x5D;
+pub const _MM_PERM_BBDC: _MM_PERM_ENUM = 0x5E;
+pub const _MM_PERM_BBDD: _MM_PERM_ENUM = 0x5F;
+pub const _MM_PERM_BCAA: _MM_PERM_ENUM = 0x60;
+pub const _MM_PERM_BCAB: _MM_PERM_ENUM = 0x61;
+pub const _MM_PERM_BCAC: _MM_PERM_ENUM = 0x62;
+pub const _MM_PERM_BCAD: _MM_PERM_ENUM = 0x63;
+pub const _MM_PERM_BCBA: _MM_PERM_ENUM = 0x64;
+pub const _MM_PERM_BCBB: _MM_PERM_ENUM = 0x65;
+pub const _MM_PERM_BCBC: _MM_PERM_ENUM = 0x66;
+pub const _MM_PERM_BCBD: _MM_PERM_ENUM = 0x67;
+pub const _MM_PERM_BCCA: _MM_PERM_ENUM = 0x68;
+pub const _MM_PERM_BCCB: _MM_PERM_ENUM = 0x69;
+pub const _MM_PERM_BCCC: _MM_PERM_ENUM = 0x6A;
+pub const _MM_PERM_BCCD: _MM_PERM_ENUM = 0x6B;
+pub const _MM_PERM_BCDA: _MM_PERM_ENUM = 0x6C;
+pub const _MM_PERM_BCDB: _MM_PERM_ENUM = 0x6D;
+pub const _MM_PERM_BCDC: _MM_PERM_ENUM = 0x6E;
+pub const _MM_PERM_BCDD: _MM_PERM_ENUM = 0x6F;
+pub const _MM_PERM_BDAA: _MM_PERM_ENUM = 0x70;
+pub const _MM_PERM_BDAB: _MM_PERM_ENUM = 0x71;
+pub const _MM_PERM_BDAC: _MM_PERM_ENUM = 0x72;
+pub const _MM_PERM_BDAD: _MM_PERM_ENUM = 0x73;
+pub const _MM_PERM_BDBA: _MM_PERM_ENUM = 0x74;
+pub const _MM_PERM_BDBB: _MM_PERM_ENUM = 0x75;
+pub const _MM_PERM_BDBC: _MM_PERM_ENUM = 0x76;
+pub const _MM_PERM_BDBD: _MM_PERM_ENUM = 0x77;
+pub const _MM_PERM_BDCA: _MM_PERM_ENUM = 0x78;
+pub const _MM_PERM_BDCB: _MM_PERM_ENUM = 0x79;
+pub const _MM_PERM_BDCC: _MM_PERM_ENUM = 0x7A;
+pub const _MM_PERM_BDCD: _MM_PERM_ENUM = 0x7B;
+pub const _MM_PERM_BDDA: _MM_PERM_ENUM = 0x7C;
+pub const _MM_PERM_BDDB: _MM_PERM_ENUM = 0x7D;
+pub const _MM_PERM_BDDC: _MM_PERM_ENUM = 0x7E;
+pub const _MM_PERM_BDDD: _MM_PERM_ENUM = 0x7F;
+pub const _MM_PERM_CAAA: _MM_PERM_ENUM = 0x80;
+pub const _MM_PERM_CAAB: _MM_PERM_ENUM = 0x81;
+pub const _MM_PERM_CAAC: _MM_PERM_ENUM = 0x82;
+pub const _MM_PERM_CAAD: _MM_PERM_ENUM = 0x83;
+pub const _MM_PERM_CABA: _MM_PERM_ENUM = 0x84;
+pub const _MM_PERM_CABB: _MM_PERM_ENUM = 0x85;
+pub const _MM_PERM_CABC: _MM_PERM_ENUM = 0x86;
+pub const _MM_PERM_CABD: _MM_PERM_ENUM = 0x87;
+pub const _MM_PERM_CACA: _MM_PERM_ENUM = 0x88;
+pub const _MM_PERM_CACB: _MM_PERM_ENUM = 0x89;
+pub const _MM_PERM_CACC: _MM_PERM_ENUM = 0x8A;
+pub const _MM_PERM_CACD: _MM_PERM_ENUM = 0x8B;
+pub const _MM_PERM_CADA: _MM_PERM_ENUM = 0x8C;
+pub const _MM_PERM_CADB: _MM_PERM_ENUM = 0x8D;
+pub const _MM_PERM_CADC: _MM_PERM_ENUM = 0x8E;
+pub const _MM_PERM_CADD: _MM_PERM_ENUM = 0x8F;
+pub const _MM_PERM_CBAA: _MM_PERM_ENUM = 0x90;
+pub const _MM_PERM_CBAB: _MM_PERM_ENUM = 0x91;
+pub const _MM_PERM_CBAC: _MM_PERM_ENUM = 0x92;
+pub const _MM_PERM_CBAD: _MM_PERM_ENUM = 0x93;
+pub const _MM_PERM_CBBA: _MM_PERM_ENUM = 0x94;
+pub const _MM_PERM_CBBB: _MM_PERM_ENUM = 0x95;
+pub const _MM_PERM_CBBC: _MM_PERM_ENUM = 0x96;
+pub const _MM_PERM_CBBD: _MM_PERM_ENUM = 0x97;
+pub const _MM_PERM_CBCA: _MM_PERM_ENUM = 0x98;
+pub const _MM_PERM_CBCB: _MM_PERM_ENUM = 0x99;
+pub const _MM_PERM_CBCC: _MM_PERM_ENUM = 0x9A;
+pub const _MM_PERM_CBCD: _MM_PERM_ENUM = 0x9B;
+pub const _MM_PERM_CBDA: _MM_PERM_ENUM = 0x9C;
+pub const _MM_PERM_CBDB: _MM_PERM_ENUM = 0x9D;
+pub const _MM_PERM_CBDC: _MM_PERM_ENUM = 0x9E;
+pub const _MM_PERM_CBDD: _MM_PERM_ENUM = 0x9F;
+pub const _MM_PERM_CCAA: _MM_PERM_ENUM = 0xA0;
+pub const _MM_PERM_CCAB: _MM_PERM_ENUM = 0xA1;
+pub const _MM_PERM_CCAC: _MM_PERM_ENUM = 0xA2;
+pub const _MM_PERM_CCAD: _MM_PERM_ENUM = 0xA3;
+pub const _MM_PERM_CCBA: _MM_PERM_ENUM = 0xA4;
+pub const _MM_PERM_CCBB: _MM_PERM_ENUM = 0xA5;
+pub const _MM_PERM_CCBC: _MM_PERM_ENUM = 0xA6;
+pub const _MM_PERM_CCBD: _MM_PERM_ENUM = 0xA7;
+pub const _MM_PERM_CCCA: _MM_PERM_ENUM = 0xA8;
+pub const _MM_PERM_CCCB: _MM_PERM_ENUM = 0xA9;
+pub const _MM_PERM_CCCC: _MM_PERM_ENUM = 0xAA;
+pub const _MM_PERM_CCCD: _MM_PERM_ENUM = 0xAB;
+pub const _MM_PERM_CCDA: _MM_PERM_ENUM = 0xAC;
+pub const _MM_PERM_CCDB: _MM_PERM_ENUM = 0xAD;
+pub const _MM_PERM_CCDC: _MM_PERM_ENUM = 0xAE;
+pub const _MM_PERM_CCDD: _MM_PERM_ENUM = 0xAF;
+pub const _MM_PERM_CDAA: _MM_PERM_ENUM = 0xB0;
+pub const _MM_PERM_CDAB: _MM_PERM_ENUM = 0xB1;
+pub const _MM_PERM_CDAC: _MM_PERM_ENUM = 0xB2;
+pub const _MM_PERM_CDAD: _MM_PERM_ENUM = 0xB3;
+pub const _MM_PERM_CDBA: _MM_PERM_ENUM = 0xB4;
+pub const _MM_PERM_CDBB: _MM_PERM_ENUM = 0xB5;
+pub const _MM_PERM_CDBC: _MM_PERM_ENUM = 0xB6;
+pub const _MM_PERM_CDBD: _MM_PERM_ENUM = 0xB7;
+pub const _MM_PERM_CDCA: _MM_PERM_ENUM = 0xB8;
+pub const _MM_PERM_CDCB: _MM_PERM_ENUM = 0xB9;
+pub const _MM_PERM_CDCC: _MM_PERM_ENUM = 0xBA;
+pub const _MM_PERM_CDCD: _MM_PERM_ENUM = 0xBB;
+pub const _MM_PERM_CDDA: _MM_PERM_ENUM = 0xBC;
+pub const _MM_PERM_CDDB: _MM_PERM_ENUM = 0xBD;
+pub const _MM_PERM_CDDC: _MM_PERM_ENUM = 0xBE;
+pub const _MM_PERM_CDDD: _MM_PERM_ENUM = 0xBF;
+pub const _MM_PERM_DAAA: _MM_PERM_ENUM = 0xC0;
+pub const _MM_PERM_DAAB: _MM_PERM_ENUM = 0xC1;
+pub const _MM_PERM_DAAC: _MM_PERM_ENUM = 0xC2;
+pub const _MM_PERM_DAAD: _MM_PERM_ENUM = 0xC3;
+pub const _MM_PERM_DABA: _MM_PERM_ENUM = 0xC4;
+pub const _MM_PERM_DABB: _MM_PERM_ENUM = 0xC5;
+pub const _MM_PERM_DABC: _MM_PERM_ENUM = 0xC6;
+pub const _MM_PERM_DABD: _MM_PERM_ENUM = 0xC7;
+pub const _MM_PERM_DACA: _MM_PERM_ENUM = 0xC8;
+pub const _MM_PERM_DACB: _MM_PERM_ENUM = 0xC9;
+pub const _MM_PERM_DACC: _MM_PERM_ENUM = 0xCA;
+pub const _MM_PERM_DACD: _MM_PERM_ENUM = 0xCB;
+pub const _MM_PERM_DADA: _MM_PERM_ENUM = 0xCC;
+pub const _MM_PERM_DADB: _MM_PERM_ENUM = 0xCD;
+pub const _MM_PERM_DADC: _MM_PERM_ENUM = 0xCE;
+pub const _MM_PERM_DADD: _MM_PERM_ENUM = 0xCF;
+pub const _MM_PERM_DBAA: _MM_PERM_ENUM = 0xD0;
+pub const _MM_PERM_DBAB: _MM_PERM_ENUM = 0xD1;
+pub const _MM_PERM_DBAC: _MM_PERM_ENUM = 0xD2;
+pub const _MM_PERM_DBAD: _MM_PERM_ENUM = 0xD3;
+pub const _MM_PERM_DBBA: _MM_PERM_ENUM = 0xD4;
+pub const _MM_PERM_DBBB: _MM_PERM_ENUM = 0xD5;
+pub const _MM_PERM_DBBC: _MM_PERM_ENUM = 0xD6;
+pub const _MM_PERM_DBBD: _MM_PERM_ENUM = 0xD7;
+pub const _MM_PERM_DBCA: _MM_PERM_ENUM = 0xD8;
+pub const _MM_PERM_DBCB: _MM_PERM_ENUM = 0xD9;
+pub const _MM_PERM_DBCC: _MM_PERM_ENUM = 0xDA;
+pub const _MM_PERM_DBCD: _MM_PERM_ENUM = 0xDB;
+pub const _MM_PERM_DBDA: _MM_PERM_ENUM = 0xDC;
+pub const _MM_PERM_DBDB: _MM_PERM_ENUM = 0xDD;
+pub const _MM_PERM_DBDC: _MM_PERM_ENUM = 0xDE;
+pub const _MM_PERM_DBDD: _MM_PERM_ENUM = 0xDF;
+pub const _MM_PERM_DCAA: _MM_PERM_ENUM = 0xE0;
+pub const _MM_PERM_DCAB: _MM_PERM_ENUM = 0xE1;
+pub const _MM_PERM_DCAC: _MM_PERM_ENUM = 0xE2;
+pub const _MM_PERM_DCAD: _MM_PERM_ENUM = 0xE3;
+pub const _MM_PERM_DCBA: _MM_PERM_ENUM = 0xE4;
+pub const _MM_PERM_DCBB: _MM_PERM_ENUM = 0xE5;
+pub const _MM_PERM_DCBC: _MM_PERM_ENUM = 0xE6;
+pub const _MM_PERM_DCBD: _MM_PERM_ENUM = 0xE7;
+pub const _MM_PERM_DCCA: _MM_PERM_ENUM = 0xE8;
+pub const _MM_PERM_DCCB: _MM_PERM_ENUM = 0xE9;
+pub const _MM_PERM_DCCC: _MM_PERM_ENUM = 0xEA;
+pub const _MM_PERM_DCCD: _MM_PERM_ENUM = 0xEB;
+pub const _MM_PERM_DCDA: _MM_PERM_ENUM = 0xEC;
+pub const _MM_PERM_DCDB: _MM_PERM_ENUM = 0xED;
+pub const _MM_PERM_DCDC: _MM_PERM_ENUM = 0xEE;
+pub const _MM_PERM_DCDD: _MM_PERM_ENUM = 0xEF;
+pub const _MM_PERM_DDAA: _MM_PERM_ENUM = 0xF0;
+pub const _MM_PERM_DDAB: _MM_PERM_ENUM = 0xF1;
+pub const _MM_PERM_DDAC: _MM_PERM_ENUM = 0xF2;
+pub const _MM_PERM_DDAD: _MM_PERM_ENUM = 0xF3;
+pub const _MM_PERM_DDBA: _MM_PERM_ENUM = 0xF4;
+pub const _MM_PERM_DDBB: _MM_PERM_ENUM = 0xF5;
+pub const _MM_PERM_DDBC: _MM_PERM_ENUM = 0xF6;
+pub const _MM_PERM_DDBD: _MM_PERM_ENUM = 0xF7;
+pub const _MM_PERM_DDCA: _MM_PERM_ENUM = 0xF8;
+pub const _MM_PERM_DDCB: _MM_PERM_ENUM = 0xF9;
+pub const _MM_PERM_DDCC: _MM_PERM_ENUM = 0xFA;
+pub const _MM_PERM_DDCD: _MM_PERM_ENUM = 0xFB;
+pub const _MM_PERM_DDDA: _MM_PERM_ENUM = 0xFC;
+pub const _MM_PERM_DDDB: _MM_PERM_ENUM = 0xFD;
+pub const _MM_PERM_DDDC: _MM_PERM_ENUM = 0xFE;
+pub const _MM_PERM_DDDD: _MM_PERM_ENUM = 0xFF;
 
 #[allow(improper_ctypes)]
 extern "C" {
@@ -16622,6 +16958,18 @@ mod tests {
             0., 0., 0., 0., 0., 0., 0., 0., 10., 100., 9., 100., 8., 100., 7., 100.,
         );
         assert_eq_m512(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_shuffle_epi32() {
+        let a = _mm512_setr_epi32(
+            1, 4, 5, 8, 9, 12, 13, 16, 1, 4, 5, 8, 9, 12, 13, 16,
+        );
+        let r = _mm512_shuffle_epi32(a, 0x0F);
+        let e = _mm512_setr_epi32(
+            8, 8, 1, 1, 16, 16, 9, 9, 8, 8, 1, 1, 16, 16, 9, 9,
+        );
+        assert_eq_m512i(r, e);
     }
 
     #[simd_test(enable = "avx512f")]
