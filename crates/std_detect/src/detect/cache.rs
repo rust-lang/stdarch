@@ -79,10 +79,10 @@ impl Initializer {
 // Note: on x64, we only use the first slot
 static CACHE: [Cache; 2] = [Cache::uninitialized(), Cache::uninitialized()];
 
-/// Feature cache with capacity for `usize::MAX - 1` features.
+/// Feature cache with capacity for `size_of::<usize::MAX>() * 8 - 1` features.
 ///
-/// Note: the last feature bit is used to represent an
-/// uninitialized cache.
+/// Note: 0 is used to represent an uninitialized cache, and (at least) the most
+/// significant bit is set on any cache which has been initialized.
 ///
 /// Note: we use `Relaxed` atomic operations, because we are only interested in
 /// the effects of operations on a single memory location. That is, we only need
@@ -92,18 +92,19 @@ struct Cache(AtomicUsize);
 impl Cache {
     const CAPACITY: u32 = (core::mem::size_of::<usize>() * 8 - 1) as u32;
     const MASK: usize = (1 << Cache::CAPACITY) - 1;
+    const INITIALIZED_BIT: usize = 1usize << Cache::CAPACITY;
 
     /// Creates an uninitialized cache.
     #[allow(clippy::declare_interior_mutable_const)]
     const fn uninitialized() -> Self {
-        Cache(AtomicUsize::new(usize::MAX))
+        Cache(AtomicUsize::new(0))
     }
 
     /// Is the `bit` in the cache set? Returns `None` if the cache has not been initialized.
     #[inline]
     pub(crate) fn test(&self, bit: u32) -> Option<bool> {
         let cached = self.0.load(Ordering::Relaxed);
-        if cached == usize::MAX {
+        if cached == 0 {
             None
         } else {
             Some(test_bit(cached as u64, bit))
@@ -113,16 +114,8 @@ impl Cache {
     /// Initializes the cache.
     #[inline]
     fn initialize(&self, value: usize) -> usize {
-        // Use `SeqCst` store to ensure a thread which sees one entry in `CACHE`
-        // initialized will definitely see the other. While it likely never can
-        // happen, this avoids something like:
-        //
-        // ```
-        // is_foo_feature_detected!("bar") && is_foo_feature_detected!("baz")
-        // ```
-        //
-        // needing to initialize the cache twice.
-        self.0.store(value, Ordering::SeqCst);
+        debug_assert_eq!((value & !Cache::MASK), 0);
+        self.0.store(value | Cache::INITIALIZED_BIT, Ordering::Relaxed);
         value
     }
 }
