@@ -115,7 +115,8 @@ impl Cache {
     #[inline]
     fn initialize(&self, value: usize) -> usize {
         debug_assert_eq!((value & !Cache::MASK), 0);
-        self.0.store(value | Cache::INITIALIZED_BIT, Ordering::Relaxed);
+        self.0
+            .store(value | Cache::INITIALIZED_BIT, Ordering::Relaxed);
         value
     }
 }
