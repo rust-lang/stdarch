@@ -155,7 +155,7 @@
   * [x] [`_mm512_div_ps`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_div_ps&expand=5236)
   * [x] [`_mm512_div_round_pd`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_div_round_pd&expand=5236)
   * [x] [`_mm512_div_round_ps`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_div_round_ps&expand=5236)
-  * [ ] [`_mm512_extractf32x4_ps`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_extractf32x4_ps&expand=5236)
+  * [x] [`_mm512_extractf32x4_ps`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_extractf32x4_ps&expand=5236)
   * [ ] [`_mm512_extractf64x4_pd`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_extractf64x4_pd&expand=5236)
   * [ ] [`_mm512_extracti32x4_epi32`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_extracti32x4_epi32&expand=5236)
   * [ ] [`_mm512_extracti64x4_epi64`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_extracti64x4_epi64&expand=5236)
