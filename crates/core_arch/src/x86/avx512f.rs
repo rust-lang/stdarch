@@ -9217,6 +9217,453 @@ pub unsafe fn _mm512_maskz_shuffle_pd(k: __mmask8, a: __m512d, b: __m512d, imm8:
     transmute(simd_select_bitmask(k, shuffle, zero))
 }
 
+/// Shuffle 128-bits (composed of 4 32-bit integers) selected by imm8 from a and b, and store the results in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_shuffle_i32&expand=5177)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vshufi64x2, imm8 = 0b10111111))] //should be vshufi32x4, but generate vshufi64x2
+#[rustc_args_required_const(2)]
+pub unsafe fn _mm512_shuffle_i32x4(a: __m512i, b: __m512i, imm8: i32) -> __m512i {
+    let imm8 = (imm8 & 0xFF) as u8;
+
+    let a = a.as_i32x16();
+    let b = b.as_i32x16();
+    macro_rules! shuffle4 {
+        (
+            $a:expr,
+            $b:expr,
+            $c:expr,
+            $d:expr,
+            $e:expr,
+            $f:expr,
+            $g:expr,
+            $h:expr,
+            $i:expr,
+            $j:expr,
+            $k:expr,
+            $l:expr,
+            $m:expr,
+            $n:expr,
+            $o:expr,
+            $p:expr
+        ) => {
+            simd_shuffle16(
+                a,
+                b,
+                [
+                    $a, $b, $c, $d, $e, $f, $g, $h, $i, $j, $k, $l, $m, $n, $o, $p,
+                ],
+            );
+        };
+    }
+    macro_rules! shuffle3 {
+        ($a:expr, $b:expr, $c:expr, $e:expr, $f:expr, $g:expr, $i:expr, $j:expr, $k:expr, $m:expr, $n:expr, $o:expr) => {
+            match (imm8 >> 6) & 0x3 {
+                0 => shuffle4!($a, $b, $c, $e, $f, $g, $i, $j, $k, $m, $n, $o, 16, 17, 18, 19),
+                1 => shuffle4!($a, $b, $c, $e, $f, $g, $i, $j, $k, $m, $n, $o, 20, 21, 22, 23),
+                2 => shuffle4!($a, $b, $c, $e, $f, $g, $i, $j, $k, $m, $n, $o, 24, 25, 26, 27),
+                _ => shuffle4!($a, $b, $c, $e, $f, $g, $i, $j, $k, $m, $n, $o, 28, 29, 30, 31),
+            }
+        };
+    }
+    macro_rules! shuffle2 {
+        ($a:expr, $b:expr, $e:expr, $f:expr, $i:expr, $j:expr, $m:expr, $n:expr) => {
+            match (imm8 >> 4) & 0x3 {
+                0 => shuffle3!($a, $b, $e, $f, $i, $j, $m, $n, 16, 17, 18, 19),
+                1 => shuffle3!($a, $b, $e, $f, $i, $j, $m, $n, 20, 21, 22, 23),
+                2 => shuffle3!($a, $b, $e, $f, $i, $j, $m, $n, 24, 25, 26, 27),
+                _ => shuffle3!($a, $b, $e, $f, $i, $j, $m, $n, 28, 29, 30, 31),
+            }
+        };
+    }
+    macro_rules! shuffle1 {
+        ($a:expr, $e:expr, $i: expr, $m: expr) => {
+            match (imm8 >> 2) & 0x3 {
+                0 => shuffle2!($a, $e, $i, $m, 0, 1, 2, 3),
+                1 => shuffle2!($a, $e, $i, $m, 4, 5, 6, 7),
+                2 => shuffle2!($a, $e, $i, $m, 8, 9, 10, 11),
+                _ => shuffle2!($a, $e, $i, $m, 12, 13, 14, 15),
+            }
+        };
+    }
+    let r: i32x16 = match imm8 & 0x3 {
+        0 => shuffle1!(0, 1, 2, 3),
+        1 => shuffle1!(4, 5, 6, 7),
+        2 => shuffle1!(8, 9, 10, 11),
+        _ => shuffle1!(12, 13, 14, 15),
+    };
+
+    transmute(r)
+}
+
+/// Shuffle 128-bits (composed of 4 32-bit integers) selected by imm8 from a and b, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_shuffle_i32x&expand=5175)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vshufi32x4, imm8 = 0b10111111))]
+#[rustc_args_required_const(4)]
+pub unsafe fn _mm512_mask_shuffle_i32x4(src: __m512i, k: __mmask16, a: __m512i, b: __m512i, imm8: i32) -> __m512i {
+    let imm8 = (imm8 & 0xFF) as u8;
+
+    let a = a.as_i32x16();
+    let b = b.as_i32x16();
+    macro_rules! shuffle4 {
+        (
+            $a:expr,
+            $b:expr,
+            $c:expr,
+            $d:expr,
+            $e:expr,
+            $f:expr,
+            $g:expr,
+            $h:expr,
+            $i:expr,
+            $j:expr,
+            $k:expr,
+            $l:expr,
+            $m:expr,
+            $n:expr,
+            $o:expr,
+            $p:expr
+        ) => {
+            simd_shuffle16(
+                a,
+                b,
+                [
+                    $a, $b, $c, $d, $e, $f, $g, $h, $i, $j, $k, $l, $m, $n, $o, $p,
+                ],
+            );
+        };
+    }
+    macro_rules! shuffle3 {
+        ($a:expr, $b:expr, $c:expr, $e:expr, $f:expr, $g:expr, $i:expr, $j:expr, $k:expr, $m:expr, $n:expr, $o:expr) => {
+            match (imm8 >> 6) & 0x3 {
+                0 => shuffle4!($a, $b, $c, $e, $f, $g, $i, $j, $k, $m, $n, $o, 16, 17, 18, 19),
+                1 => shuffle4!($a, $b, $c, $e, $f, $g, $i, $j, $k, $m, $n, $o, 20, 21, 22, 23),
+                2 => shuffle4!($a, $b, $c, $e, $f, $g, $i, $j, $k, $m, $n, $o, 24, 25, 26, 27),
+                _ => shuffle4!($a, $b, $c, $e, $f, $g, $i, $j, $k, $m, $n, $o, 28, 29, 30, 31),
+            }
+        };
+    }
+    macro_rules! shuffle2 {
+        ($a:expr, $b:expr, $e:expr, $f:expr, $i:expr, $j:expr, $m:expr, $n:expr) => {
+            match (imm8 >> 4) & 0x3 {
+                0 => shuffle3!($a, $b, $e, $f, $i, $j, $m, $n, 16, 17, 18, 19),
+                1 => shuffle3!($a, $b, $e, $f, $i, $j, $m, $n, 20, 21, 22, 23),
+                2 => shuffle3!($a, $b, $e, $f, $i, $j, $m, $n, 24, 25, 26, 27),
+                _ => shuffle3!($a, $b, $e, $f, $i, $j, $m, $n, 28, 29, 30, 31),
+            }
+        };
+    }
+    macro_rules! shuffle1 {
+        ($a:expr, $e:expr, $i: expr, $m: expr) => {
+            match (imm8 >> 2) & 0x3 {
+                0 => shuffle2!($a, $e, $i, $m, 0, 1, 2, 3),
+                1 => shuffle2!($a, $e, $i, $m, 4, 5, 6, 7),
+                2 => shuffle2!($a, $e, $i, $m, 8, 9, 10, 11),
+                _ => shuffle2!($a, $e, $i, $m, 12, 13, 14, 15),
+            }
+        };
+    }
+    let shuffle = match imm8 & 0x3 {
+        0 => shuffle1!(0, 1, 2, 3),
+        1 => shuffle1!(4, 5, 6, 7),
+        2 => shuffle1!(8, 9, 10, 11),
+        _ => shuffle1!(12, 13, 14, 15),
+    };
+
+    transmute(simd_select_bitmask(k, shuffle, src.as_i32x16()))
+}
+
+/// Shuffle 128-bits (composed of 4 32-bit integers) selected by imm8 from a and b, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_shuffle_i32&expand=5176)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vshufi32x4, imm8 = 0b10111111))] 
+#[rustc_args_required_const(3)]
+pub unsafe fn _mm512_maskz_shuffle_i32x4(k: __mmask16, a: __m512i, b: __m512i, imm8: i32) -> __m512i {
+    let imm8 = (imm8 & 0xFF) as u8;
+
+    let a = a.as_i32x16();
+    let b = b.as_i32x16();
+    macro_rules! shuffle4 {
+        (
+            $a:expr,
+            $b:expr,
+            $c:expr,
+            $d:expr,
+            $e:expr,
+            $f:expr,
+            $g:expr,
+            $h:expr,
+            $i:expr,
+            $j:expr,
+            $k:expr,
+            $l:expr,
+            $m:expr,
+            $n:expr,
+            $o:expr,
+            $p:expr
+        ) => {
+            simd_shuffle16(
+                a,
+                b,
+                [
+                    $a, $b, $c, $d, $e, $f, $g, $h, $i, $j, $k, $l, $m, $n, $o, $p,
+                ],
+            );
+        };
+    }
+    macro_rules! shuffle3 {
+        ($a:expr, $b:expr, $c:expr, $e:expr, $f:expr, $g:expr, $i:expr, $j:expr, $k:expr, $m:expr, $n:expr, $o:expr) => {
+            match (imm8 >> 6) & 0x3 {
+                0 => shuffle4!($a, $b, $c, $e, $f, $g, $i, $j, $k, $m, $n, $o, 16, 17, 18, 19),
+                1 => shuffle4!($a, $b, $c, $e, $f, $g, $i, $j, $k, $m, $n, $o, 20, 21, 22, 23),
+                2 => shuffle4!($a, $b, $c, $e, $f, $g, $i, $j, $k, $m, $n, $o, 24, 25, 26, 27),
+                _ => shuffle4!($a, $b, $c, $e, $f, $g, $i, $j, $k, $m, $n, $o, 28, 29, 30, 31),
+            }
+        };
+    }
+    macro_rules! shuffle2 {
+        ($a:expr, $b:expr, $e:expr, $f:expr, $i:expr, $j:expr, $m:expr, $n:expr) => {
+            match (imm8 >> 4) & 0x3 {
+                0 => shuffle3!($a, $b, $e, $f, $i, $j, $m, $n, 16, 17, 18, 19),
+                1 => shuffle3!($a, $b, $e, $f, $i, $j, $m, $n, 20, 21, 22, 23),
+                2 => shuffle3!($a, $b, $e, $f, $i, $j, $m, $n, 24, 25, 26, 27),
+                _ => shuffle3!($a, $b, $e, $f, $i, $j, $m, $n, 28, 29, 30, 31),
+            }
+        };
+    }
+    macro_rules! shuffle1 {
+        ($a:expr, $e:expr, $i: expr, $m: expr) => {
+            match (imm8 >> 2) & 0x3 {
+                0 => shuffle2!($a, $e, $i, $m, 0, 1, 2, 3),
+                1 => shuffle2!($a, $e, $i, $m, 4, 5, 6, 7),
+                2 => shuffle2!($a, $e, $i, $m, 8, 9, 10, 11),
+                _ => shuffle2!($a, $e, $i, $m, 12, 13, 14, 15),
+            }
+        };
+    }
+    let shuffle = match imm8 & 0x3 {
+        0 => shuffle1!(0, 1, 2, 3),
+        1 => shuffle1!(4, 5, 6, 7),
+        2 => shuffle1!(8, 9, 10, 11),
+        _ => shuffle1!(12, 13, 14, 15),
+    };
+
+    let zero = _mm512_setzero_si512().as_i32x16();
+    transmute(simd_select_bitmask(k, shuffle, zero))
+}
+
+/// Shuffle 128-bits (composed of 2 64-bit integers) selected by imm8 from a and b, and store the results in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_shuffle_i64x2&expand=5183)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vshufi64x2, imm8 = 0b10111111))] 
+#[rustc_args_required_const(2)]
+pub unsafe fn _mm512_shuffle_i64x2(a: __m512i, b: __m512i, imm8: i32) -> __m512i {
+    let imm8 = (imm8 & 0xFF) as u8;
+    macro_rules! shuffle4 {
+        (
+            $a:expr,
+            $b:expr,
+            $c:expr,
+            $d:expr,
+            $e:expr,
+            $f:expr,
+            $g:expr,
+            $h:expr
+        ) => {
+            simd_shuffle8(
+                a,
+                b,
+                [
+                    $a, $b, $c, $d, $e, $f, $g, $h
+                ],
+            );
+        };
+    }
+    macro_rules! shuffle3 {
+        ($a:expr, $b:expr, $c:expr, $e:expr, $f:expr, $g:expr) => {
+            match (imm8 >> 6) & 0x3 {
+                0 => shuffle4!($a, $b, $c, $e, $f, $g, 8, 9),
+                1 => shuffle4!($a, $b, $c, $e, $f, $g, 10, 11),
+                2 => shuffle4!($a, $b, $c, $e, $f, $g, 12, 13),
+                _ => shuffle4!($a, $b, $c, $e, $f, $g, 14, 15),
+            }
+        };
+    }
+    macro_rules! shuffle2 {
+        ($a:expr, $b:expr, $e:expr, $f:expr) => {
+            match (imm8 >> 4) & 0x3 {
+                0 => shuffle3!($a, $b, $e, $f, 8, 9),
+                1 => shuffle3!($a, $b, $e, $f, 10, 11),
+                2 => shuffle3!($a, $b, $e, $f, 12, 13),
+                _ => shuffle3!($a, $b, $e, $f, 14, 15),
+            }
+        };
+    }
+    macro_rules! shuffle1 {
+        ($a:expr, $e:expr) => {
+            match (imm8 >> 2) & 0x3 {
+                0 => shuffle2!($a, $e, 0, 1),
+                1 => shuffle2!($a, $e, 2, 3),
+                2 => shuffle2!($a, $e, 4, 5),
+                _ => shuffle2!($a, $e, 6, 7),
+            }
+        };
+    }
+    match imm8 & 0x3 {
+        0 => shuffle1!(0, 1),
+        1 => shuffle1!(2, 3),
+        2 => shuffle1!(4, 5),
+        _ => shuffle1!(6, 7),
+    }
+}
+
+/// Shuffle 128-bits (composed of 2 64-bit integers) selected by imm8 from a and b, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_shuffle_i64x&expand=5181)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vshufi64x2, imm8 = 0b10111111))]
+#[rustc_args_required_const(4)]
+pub unsafe fn _mm512_mask_shuffle_i64x2(src: __m512i, k: __mmask8, a: __m512i, b: __m512i, imm8: i32) -> __m512i {
+    let imm8 = (imm8 & 0xFF) as u8;
+    macro_rules! shuffle4 {
+        (
+            $a:expr,
+            $b:expr,
+            $c:expr,
+            $d:expr,
+            $e:expr,
+            $f:expr,
+            $g:expr,
+            $h:expr
+        ) => {
+            simd_shuffle8(
+                a,
+                b,
+                [
+                    $a, $b, $c, $d, $e, $f, $g, $h
+                ],
+            );
+        };
+    }
+    macro_rules! shuffle3 {
+        ($a:expr, $b:expr, $c:expr, $e:expr, $f:expr, $g:expr) => {
+            match (imm8 >> 6) & 0x3 {
+                0 => shuffle4!($a, $b, $c, $e, $f, $g, 8, 9),
+                1 => shuffle4!($a, $b, $c, $e, $f, $g, 10, 11),
+                2 => shuffle4!($a, $b, $c, $e, $f, $g, 12, 13),
+                _ => shuffle4!($a, $b, $c, $e, $f, $g, 14, 15),
+            }
+        };
+    }
+    macro_rules! shuffle2 {
+        ($a:expr, $b:expr, $e:expr, $f:expr) => {
+            match (imm8 >> 4) & 0x3 {
+                0 => shuffle3!($a, $b, $e, $f, 8, 9),
+                1 => shuffle3!($a, $b, $e, $f, 10, 11),
+                2 => shuffle3!($a, $b, $e, $f, 12, 13),
+                _ => shuffle3!($a, $b, $e, $f, 14, 15),
+            }
+        };
+    }
+    macro_rules! shuffle1 {
+        ($a:expr, $e:expr) => {
+            match (imm8 >> 2) & 0x3 {
+                0 => shuffle2!($a, $e, 0, 1),
+                1 => shuffle2!($a, $e, 2, 3),
+                2 => shuffle2!($a, $e, 4, 5),
+                _ => shuffle2!($a, $e, 6, 7),
+            }
+        };
+    }
+    let shuffle = match imm8 & 0x3 {
+        0 => shuffle1!(0, 1),
+        1 => shuffle1!(2, 3),
+        2 => shuffle1!(4, 5),
+        _ => shuffle1!(6, 7),
+    };
+
+    transmute(simd_select_bitmask(k, shuffle, src.as_i64x8()))
+}
+
+/// Shuffle 128-bits (composed of 2 64-bit integers) selected by imm8 from a and b, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_shuffle_i64&expand=5182)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vshufi64x2, imm8 = 0b10111111))] 
+#[rustc_args_required_const(3)]
+pub unsafe fn _mm512_maskz_shuffle_i64x2(k: __mmask8, a: __m512i, b: __m512i, imm8: i32) -> __m512i {
+    let imm8 = (imm8 & 0xFF) as u8;
+    macro_rules! shuffle4 {
+        (
+            $a:expr,
+            $b:expr,
+            $c:expr,
+            $d:expr,
+            $e:expr,
+            $f:expr,
+            $g:expr,
+            $h:expr
+        ) => {
+            simd_shuffle8(
+                a,
+                b,
+                [
+                    $a, $b, $c, $d, $e, $f, $g, $h
+                ],
+            );
+        };
+    }
+    macro_rules! shuffle3 {
+        ($a:expr, $b:expr, $c:expr, $e:expr, $f:expr, $g:expr) => {
+            match (imm8 >> 6) & 0x3 {
+                0 => shuffle4!($a, $b, $c, $e, $f, $g, 8, 9),
+                1 => shuffle4!($a, $b, $c, $e, $f, $g, 10, 11),
+                2 => shuffle4!($a, $b, $c, $e, $f, $g, 12, 13),
+                _ => shuffle4!($a, $b, $c, $e, $f, $g, 14, 15),
+            }
+        };
+    }
+    macro_rules! shuffle2 {
+        ($a:expr, $b:expr, $e:expr, $f:expr) => {
+            match (imm8 >> 4) & 0x3 {
+                0 => shuffle3!($a, $b, $e, $f, 8, 9),
+                1 => shuffle3!($a, $b, $e, $f, 10, 11),
+                2 => shuffle3!($a, $b, $e, $f, 12, 13),
+                _ => shuffle3!($a, $b, $e, $f, 14, 15),
+            }
+        };
+    }
+    macro_rules! shuffle1 {
+        ($a:expr, $e:expr) => {
+            match (imm8 >> 2) & 0x3 {
+                0 => shuffle2!($a, $e, 0, 1),
+                1 => shuffle2!($a, $e, 2, 3),
+                2 => shuffle2!($a, $e, 4, 5),
+                _ => shuffle2!($a, $e, 6, 7),
+            }
+        };
+    }
+    let shuffle = match imm8 & 0x3 {
+        0 => shuffle1!(0, 1),
+        1 => shuffle1!(2, 3),
+        2 => shuffle1!(4, 5),
+        _ => shuffle1!(6, 7),
+    };
+
+    let zero = _mm512_setzero_si512().as_i64x8();
+    transmute(simd_select_bitmask(k, shuffle, zero))
+}
+
 /// Shuffle 128-bits (composed of 4 single-precision (32-bit) floating-point elements) selected by imm8 from a and b, and store the results in dst.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_shuffle_f32x4&expand=5165)
@@ -9297,7 +9744,7 @@ pub unsafe fn _mm512_shuffle_f32x4(a: __m512, b: __m512, imm8: i32) -> __m512 {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_shuffle_f32&expand=5163)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vshuff32x4, imm8 = 0b10111111))] //should be vshuff32x4, but generate vshuff64x2
+#[cfg_attr(test, assert_instr(vshuff32x4, imm8 = 0b10111111))]
 #[rustc_args_required_const(4)]
 pub unsafe fn _mm512_mask_shuffle_f32x4(src: __m512, k: __mmask16, a: __m512, b: __m512, imm8: i32) -> __m512 {
     let imm8 = (imm8 & 0xFF) as u8;
@@ -17656,6 +18103,55 @@ mod tests {
             8., 8., 2., 2., 16., 16., 10., 10., 0., 0., 0., 0., 0., 0., 0., 0.,
         );
         assert_eq_m512(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_shuffle_i32x4() {
+        let a = _mm512_setr_epi32(
+            1, 4, 5, 8, 9, 12, 13, 16, 1, 4, 5, 8, 9, 12, 13, 16,
+        );
+        let b = _mm512_setr_epi32(
+            2, 3, 6, 7, 10, 11, 14, 15, 2, 3, 6, 7, 10, 11, 14, 15,
+        );
+        let r = _mm512_shuffle_i32x4(a, b, 0b00000000);
+        let e = _mm512_setr_epi32(
+            1, 4, 5, 8, 1, 4, 5, 8, 2, 3, 6, 7, 2, 3, 6, 7,
+        );
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_shuffle_i32x4() {
+        let a = _mm512_setr_epi32(
+            1, 4, 5, 8, 9, 12, 13, 16, 1, 4, 5, 8, 9, 12, 13, 16,
+        );
+        let b = _mm512_setr_epi32(
+            2, 3, 6, 7, 10, 11, 14, 15, 2, 3, 6, 7, 10, 11, 14, 15,
+        );
+        let r = _mm512_mask_shuffle_i32x4(a, 0, a, b, 0b00000000);
+        assert_eq_m512i(r, a);
+        let r = _mm512_mask_shuffle_i32x4(a, 0b11111111_11111111, a, b, 0b00000000);
+        let e = _mm512_setr_epi32(
+            1, 4, 5, 8, 1, 4, 5, 8, 2, 3, 6, 7, 2, 3, 6, 7,
+        );
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_maskz_shuffle_i32x4() {
+        let a = _mm512_setr_epi32(
+            1, 4, 5, 8, 9, 12, 13, 16, 1, 4, 5, 8, 9, 12, 13, 16,
+        );
+        let b = _mm512_setr_epi32(
+            2, 3, 6, 7, 10, 11, 14, 15, 2, 3, 6, 7, 10, 11, 14, 15,
+        );
+        let r = _mm512_maskz_shuffle_i32x4(0, a, b, 0b00000000);
+        assert_eq_m512i(r, _mm512_setzero_si512());
+        let r = _mm512_maskz_shuffle_i32x4(0b00000000_11111111, a, b, 0b00000000);
+        let e = _mm512_setr_epi32(
+            1, 4, 5, 8, 1, 4, 5, 8, 0, 0, 0, 0, 0, 0, 0, 0,
+        );
+        assert_eq_m512i(r, e);
     }
 
     #[simd_test(enable = "avx512f")]
