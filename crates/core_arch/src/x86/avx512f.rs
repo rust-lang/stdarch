@@ -10207,6 +10207,40 @@ pub unsafe fn _mm512_maskz_moveldup_ps(k: __mmask16, a: __m512) -> __m512 {
     transmute(simd_select_bitmask(k, mov, zero))
 }
 
+/// Duplicate odd-indexed single-precision (32-bit) floating-point elements from a, and store the results in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_movehdup_ps&expand=3852)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vmovshdup))]
+pub unsafe fn _mm512_movehdup_ps(a: __m512) -> __m512 {
+    let r: f32x16 = simd_shuffle16(a,a,[1, 1, 3, 3, 5, 5, 7, 7, 9, 9, 11, 11, 13, 13, 15, 15]);
+    transmute(r)
+}
+
+/// Duplicate odd-indexed single-precision (32-bit) floating-point elements from a, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_movehdup&expand=3850)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vmovshdup))]
+pub unsafe fn _mm512_mask_movehdup_ps(src: __m512, k: __mmask16, a: __m512) -> __m512 {
+    let mov: f32x16 = simd_shuffle16(a,a,[1, 1, 3, 3, 5, 5, 7, 7, 9, 9, 11, 11, 13, 13, 15, 15]);
+    transmute(simd_select_bitmask(k, mov, src.as_f32x16()))
+}
+
+/// Duplicate odd-indexed single-precision (32-bit) floating-point elements from a, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_moveh&expand=3851)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vmovshdup))]
+pub unsafe fn _mm512_maskz_movehdup_ps(k: __mmask16, a: __m512) -> __m512 {
+    let mov: f32x16 = simd_shuffle16(a,a,[1, 1, 3, 3, 5, 5, 7, 7, 9, 9, 11, 11, 13, 13, 15, 15]);
+    let zero = _mm512_setzero_ps().as_f32x16();
+    transmute(simd_select_bitmask(k, mov, zero))
+}
+
 /// Shuffle 32-bit integers in a within 128-bit lanes using the control in imm8, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
 ///
 /// Compute the bitwise AND of packed 32-bit integers in a and b, and store the results in dst.
@@ -18375,6 +18409,46 @@ mod tests {
         let r = _mm512_maskz_moveldup_ps(0b00000000_11111111, a);
         let e = _mm512_setr_ps(
             1., 1., 3., 3., 5., 5., 7., 7., 0., 0., 0., 0., 0., 0., 0., 0.,
+        );
+        assert_eq_m512(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_movehdup_ps() {
+        let a = _mm512_setr_ps(
+            1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15., 16.,
+        );
+        let r = _mm512_movehdup_ps(a);
+        let e = _mm512_setr_ps(
+            2., 2., 4., 4., 6., 6., 8., 8., 10., 10., 12., 12., 14., 14., 16., 16.,
+        );
+        assert_eq_m512(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_movehdup_ps() {
+        let a = _mm512_setr_ps(
+            1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15., 16.,
+        );
+        let r = _mm512_mask_movehdup_ps(a, 0, a);
+        assert_eq_m512(r, a);
+        let r = _mm512_mask_movehdup_ps(a, 0b11111111_11111111, a);
+        let e = _mm512_setr_ps(
+            2., 2., 4., 4., 6., 6., 8., 8., 10., 10., 12., 12., 14., 14., 16., 16.,
+        );
+        assert_eq_m512(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_maskz_movehdup_ps() {
+        let a = _mm512_setr_ps(
+            1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15., 16.,
+        );
+        let r = _mm512_maskz_movehdup_ps(0, a);
+        assert_eq_m512(r, _mm512_setzero_ps());
+        let r = _mm512_maskz_movehdup_ps(0b00000000_11111111, a);
+        let e = _mm512_setr_ps(
+            2., 2., 4., 4., 6., 6., 8., 8., 0., 0., 0., 0., 0., 0., 0., 0.,
         );
         assert_eq_m512(r, e);
     }
