@@ -10521,7 +10521,7 @@ pub unsafe fn _mm512_kxor(a: __mmask16, b: __mmask16) -> __mmask16 {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=knot_mask16&expand=3233)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(not))] // generate normal not code instead of knotw
+#[cfg_attr(test, assert_instr(xor))] // generate normal not code instead of knotw
 pub unsafe fn _knot_mask16(a: __mmask16) -> __mmask16 {
     transmute(kxorw(a, 0b11111111_11111111))
 }
@@ -10531,7 +10531,7 @@ pub unsafe fn _knot_mask16(a: __mmask16) -> __mmask16 {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_knot&expand=3231)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(not))] // generate normal not code instead of knotw
+#[cfg_attr(test, assert_instr(xor))] // generate normal not code instead of knotw
 pub unsafe fn _mm512_knot(a: __mmask16) -> __mmask16 {
     transmute(kxorw(a, 0b11111111_11111111))
 }
@@ -10561,7 +10561,7 @@ pub unsafe fn _mm512_kandn(a: __mmask16, b: __mmask16) -> __mmask16 {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=kxnor_mask16&expand=3285)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(not))] // generate normal xor, not code instead of kxnorw
+#[cfg_attr(test, assert_instr(xor))] // generate normal xor, not code instead of kxnorw
 pub unsafe fn _kxnor_mask16(a: __mmask16, b: __mmask16) -> __mmask16 {
     _mm512_knot(_mm512_kxor(a, b))
 }
@@ -10571,7 +10571,7 @@ pub unsafe fn _kxnor_mask16(a: __mmask16, b: __mmask16) -> __mmask16 {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_kxnor&expand=3283)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(not))] // generate normal and code instead of kandw
+#[cfg_attr(test, assert_instr(xor))] // generate normal and code instead of kandw
 pub unsafe fn _mm512_kxnor(a: __mmask16, b: __mmask16) -> __mmask16 {
     _mm512_knot(_mm512_kxor(a, b))
 }
