@@ -10113,7 +10113,10 @@ pub unsafe fn _mm512_maskz_shuffle_f64x2(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_extractf32x4_ps&expand=2442)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vextractf32x4, imm8 = 3))]
+#[cfg_attr(
+    all(test, not(target_os = "windows")),
+    assert_instr(vextractf32x4, imm8 = 3)
+)]
 #[rustc_args_required_const(1)]
 pub unsafe fn _mm512_extractf32x4_ps(a: __m512, imm8: i32) -> __m128 {
     match imm8 & 0x3 {
