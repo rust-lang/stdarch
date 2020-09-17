@@ -10113,7 +10113,7 @@ pub unsafe fn _mm512_maskz_shuffle_f64x2(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_extractf32x4_ps&expand=2442)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vextractf32x4, imm8 = 2))]
+#[cfg_attr(test, assert_instr(vextractf32x4, imm8 = 3))]
 #[rustc_args_required_const(1)]
 pub unsafe fn _mm512_extractf32x4_ps(a: __m512, imm8: i32) -> __m128 {
     match imm8 & 0x3 {
@@ -10521,7 +10521,7 @@ pub unsafe fn _mm512_kxor(a: __mmask16, b: __mmask16) -> __mmask16 {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=knot_mask16&expand=3233)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(not))] // generate normal not code instead of knotw
+#[cfg_attr(all(test, not(target_os = "osx")), assert_instr(not))] // generate normal not code instead of knotw
 pub unsafe fn _knot_mask16(a: __mmask16) -> __mmask16 {
     transmute(_mm512_kxor(a, 0b11111111_11111111))
 }
@@ -10531,7 +10531,7 @@ pub unsafe fn _knot_mask16(a: __mmask16) -> __mmask16 {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_knot&expand=3231)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(not))] // generate normal not code instead of knotw
+#[cfg_attr(all(test, not(target_os = "osx")), assert_instr(not))] // generate normal not code instead of knotw
 pub unsafe fn _mm512_knot(a: __mmask16) -> __mmask16 {
     transmute(_mm512_kxor(a, 0b11111111_11111111))
 }
