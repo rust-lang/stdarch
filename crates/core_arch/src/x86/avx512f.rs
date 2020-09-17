@@ -10241,6 +10241,40 @@ pub unsafe fn _mm512_maskz_movehdup_ps(k: __mmask16, a: __m512) -> __m512 {
     transmute(simd_select_bitmask(k, mov, zero))
 }
 
+/// Duplicate even-indexed double-precision (64-bit) floating-point elements from a, and store the results in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_movedup_pd&expand=3843)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vmovddup))]
+pub unsafe fn _mm512_movedup_pd(a: __m512d) -> __m512d {
+    let r: f64x8 = simd_shuffle8(a,a,[0, 0, 2, 2, 4, 4, 6, 6]);
+    transmute(r)
+}
+
+/// Duplicate even-indexed double-precision (64-bit) floating-point elements from a, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_movedup_pd&expand=3841)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vmovddup))]
+pub unsafe fn _mm512_mask_movedup_pd(src: __m512d, k: __mmask8, a: __m512d) -> __m512d {
+    let mov: f64x8 = simd_shuffle8(a,a,[0, 0, 2, 2, 4, 4, 6, 6]);
+    transmute(simd_select_bitmask(k, mov, src.as_f64x8()))
+}
+
+/// Duplicate even-indexed double-precision (64-bit) floating-point elements from a, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_movedup_pd&expand=3842)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vmovddup))]
+pub unsafe fn _mm512_maskz_movedup_pd(k: __mmask8, a: __m512d) -> __m512d {
+    let mov: f64x8 = simd_shuffle8(a,a,[0, 0, 2, 2, 4, 4, 6, 6]);
+    let zero = _mm512_setzero_pd().as_f64x8();
+    transmute(simd_select_bitmask(k, mov, zero))
+}
+
 /// Shuffle 32-bit integers in a within 128-bit lanes using the control in imm8, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
 ///
 /// Compute the bitwise AND of packed 32-bit integers in a and b, and store the results in dst.
