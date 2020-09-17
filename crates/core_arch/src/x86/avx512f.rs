@@ -10115,7 +10115,100 @@ pub unsafe fn _mm512_extractf32x4_ps(a: __m512, imm8: i32) -> __m128 {
         _ => simd_shuffle4(a, _mm512_undefined_ps(), [12, 13, 14, 15]),
     }
 }
+/*
+/// Extract 128 bits (composed of 4 packed single-precision (32-bit) floating-point elements) from a, selected with imm8, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_Extract&expand=2443)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vextractf32x4, imm8 = 2))]
+#[rustc_args_required_const(3)]
+pub unsafe fn _mm512_mask_extractf32x4_ps(src: __m128, k: __mmask8, a: __m512, imm8: i32) -> __m128 {
+    let extract = match imm8 & 0x3 {
+        0 => simd_shuffle4(a, _mm512_undefined_ps(), [0, 1, 2, 3]),
+        1 => simd_shuffle4(a, _mm512_undefined_ps(), [4, 5, 6, 7]),
+        2 => simd_shuffle4(a, _mm512_undefined_ps(), [8, 9, 10, 11]),
+        _ => simd_shuffle4(a, _mm512_undefined_ps(), [12, 13, 14, 15]),
+    };
 
+    let mask = match k & 0b00001111 {
+        0 => 0b0000,
+        1 => 0b0001,
+        2 => 0b0010,
+        3 => 0b0011,
+        4 => 0b0100,
+        5 => 0b0101,
+        6 => 0b0110,
+        7 => 0b0111,
+        8 => 0b1000,
+        9 => 0b1001,
+        10 => 0b1010,
+        11 => 0b1011,
+        12 => 0b1100,
+        13 => 0b1101,
+        14 => 0b1110,
+        15 => 0b1111,
+        _ => panic!("out of range"),
+    };
+
+    transmute(simd_select_bitmask(mask, extract, src))
+}
+
+/// Extract 128 bits (composed of 4 packed single-precision (32-bit) floating-point elements) from a, selected with imm8, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_extractf32x4_ps&expand=2444)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vextractf32x4, imm8 = 2))]
+#[rustc_args_required_const(2)]
+pub unsafe fn _mm512_maskz_extractf32x4_ps(k: __mmask8, a: __m512, imm8: i32) -> __m128 {
+    let extract = match imm8 & 0x3 {
+        0 => simd_shuffle4(a, _mm512_undefined_ps(), [0, 1, 2, 3]),
+        1 => simd_shuffle4(a, _mm512_undefined_ps(), [4, 5, 6, 7]),
+        2 => simd_shuffle4(a, _mm512_undefined_ps(), [8, 9, 10, 11]),
+        _ => simd_shuffle4(a, _mm512_undefined_ps(), [12, 13, 14, 15]),
+    };
+
+    let zero = _mm_setzero_ps();
+    transmute(simd_select_bitmask(k, extract, zero))
+}
+*/
+/// Duplicate even-indexed single-precision (32-bit) floating-point elements from a, and store the results in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_moveldup_ps&expand=3862)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vmovsldup))]
+pub unsafe fn _mm512_moveldup_ps(a: __m512) -> __m512 {
+    let r: f32x16 = simd_shuffle16(a,a,[0, 0, 2, 2, 4, 4, 6, 6, 8, 8, 10, 10, 12, 12, 14, 14]);
+    transmute(r)
+}
+
+/// Duplicate even-indexed single-precision (32-bit) floating-point elements from a, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_moveldup_ps&expand=3860)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vmovsldup))]
+pub unsafe fn _mm512_mask_moveldup_ps(src: __m512, k: __mmask16, a: __m512) -> __m512 {
+    let mov: f32x16 = simd_shuffle16(a,a,[0, 0, 2, 2, 4, 4, 6, 6, 8, 8, 10, 10, 12, 12, 14, 14]);
+    transmute(simd_select_bitmask(k, mov, src.as_f32x16()))
+}
+
+/// Duplicate even-indexed single-precision (32-bit) floating-point elements from a, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set). 
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_moveldup_ps&expand=3861)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vmovsldup))]
+pub unsafe fn _mm512_maskz_moveldup_ps(k: __mmask16, a: __m512) -> __m512 {
+    let mov: f32x16 = simd_shuffle16(a,a,[0, 0, 2, 2, 4, 4, 6, 6, 8, 8, 10, 10, 12, 12, 14, 14]);
+    let zero = _mm512_setzero_ps().as_f32x16();
+    transmute(simd_select_bitmask(k, mov, zero))
+}
+
+/// Shuffle 32-bit integers in a within 128-bit lanes using the control in imm8, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
 /// Compute the bitwise AND of packed 32-bit integers in a and b, and store the results in dst.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_and_epi32&expand=272)
@@ -18213,6 +18306,77 @@ mod tests {
             5., 6., 7., 8.
         );
         assert_eq_m128(r, e);
+    }
+/*
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_extractf32x4_ps() {
+        let src = _mm_setr_ps(
+            5., 6., 7., 8.,
+        );
+        let a = _mm512_setr_ps(
+            1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15., 16.,
+        );
+        let r = _mm512_mask_extractf32x4_ps(src, 0, a, 0b11110000);
+        assert_eq_m128(r, src);
+        let r = _mm512_mask_extractf32x4_ps(src, 0b00001111, a, 0b00000000);
+        let e = _mm_setr_ps(
+            5., 6., 7., 8.
+        );
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_maskz_extractf32x4_ps() {
+        let a = _mm512_setr_ps(
+            1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15., 16.,
+        );
+        let r = _mm512_maskz_extractf32x4_ps(0, a, 0b00000000);
+        assert_eq_m128(r, _mm_setzero_ps());
+        let r = _mm512_maskz_extractf32x4_ps(0b00001100, a, 0b00000000);
+        let e = _mm_setr_ps(
+            0., 0., 7., 8.
+        );
+        assert_eq_m128(r, e);
+    }
+*/
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_moveldup_ps() {
+        let a = _mm512_setr_ps(
+            1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15., 16.,
+        );
+        let r = _mm512_moveldup_ps(a);
+        let e = _mm512_setr_ps(
+            1., 1., 3., 3., 5., 5., 7., 7., 9., 9., 11., 11., 13., 13., 15., 15.,
+        );
+        assert_eq_m512(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_moveldup_ps() {
+        let a = _mm512_setr_ps(
+            1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15., 16.,
+        );
+        let r = _mm512_mask_moveldup_ps(a, 0, a);
+        assert_eq_m512(r, a);
+        let r = _mm512_mask_moveldup_ps(a, 0b11111111_11111111, a);
+        let e = _mm512_setr_ps(
+            1., 1., 3., 3., 5., 5., 7., 7., 9., 9., 11., 11., 13., 13., 15., 15.,
+        );
+        assert_eq_m512(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_maskz_moveldup_ps() {
+        let a = _mm512_setr_ps(
+            1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15., 16.,
+        );
+        let r = _mm512_maskz_moveldup_ps(0, a);
+        assert_eq_m512(r, _mm512_setzero_ps());
+        let r = _mm512_maskz_moveldup_ps(0b00000000_11111111, a);
+        let e = _mm512_setr_ps(
+            1., 1., 3., 3., 5., 5., 7., 7., 0., 0., 0., 0., 0., 0., 0., 0.,
+        );
+        assert_eq_m512(r, e);
     }
 
     #[simd_test(enable = "avx512f")]
