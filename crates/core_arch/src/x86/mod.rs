@@ -318,13 +318,17 @@ pub type _MM_MANTISSA_NORM_ENUM = i32;
 #[allow(non_camel_case_types)]
 pub type _MM_MANTISSA_SIGN_ENUM = i32;
 
+/// The `MM_PERM_ENUM` type used to specify shuffle operations in AVX-512 intrinsics.
+#[allow(non_camel_case_types)]
+pub type _MM_PERM_ENUM = i32;
+
 #[cfg(test)]
 mod test;
 #[cfg(test)]
 pub use self::test::*;
 
 #[allow(non_camel_case_types)]
-#[unstable(feature = "stdimd_internal", issue = "none")]
+#[unstable(feature = "stdsimd_internal", issue = "none")]
 pub(crate) trait m128iExt: Sized {
     fn as_m128i(self) -> __m128i;
 
@@ -377,7 +381,7 @@ impl m128iExt for __m128i {
 }
 
 #[allow(non_camel_case_types)]
-#[unstable(feature = "stdimd_internal", issue = "none")]
+#[unstable(feature = "stdsimd_internal", issue = "none")]
 pub(crate) trait m256iExt: Sized {
     fn as_m256i(self) -> __m256i;
 
@@ -430,7 +434,7 @@ impl m256iExt for __m256i {
 }
 
 #[allow(non_camel_case_types)]
-#[unstable(feature = "stdimd_internal", issue = "none")]
+#[unstable(feature = "stdsimd_internal", issue = "none")]
 pub(crate) trait m256Ext: Sized {
     fn as_m256(self) -> __m256;
 
@@ -448,7 +452,7 @@ impl m256Ext for __m256 {
 }
 
 #[allow(non_camel_case_types)]
-#[unstable(feature = "stdimd_internal", issue = "none")]
+#[unstable(feature = "stdsimd_internal", issue = "none")]
 pub(crate) trait m512iExt: Sized {
     fn as_m512i(self) -> __m512i;
 
@@ -481,7 +485,7 @@ impl m512iExt for __m512i {
 }
 
 #[allow(non_camel_case_types)]
-#[unstable(feature = "stdimd_internal", issue = "none")]
+#[unstable(feature = "stdsimd_internal", issue = "none")]
 pub(crate) trait m512Ext: Sized {
     fn as_m512(self) -> __m512;
 
@@ -499,7 +503,7 @@ impl m512Ext for __m512 {
 }
 
 #[allow(non_camel_case_types)]
-#[unstable(feature = "stdimd_internal", issue = "none")]
+#[unstable(feature = "stdsimd_internal", issue = "none")]
 pub(crate) trait m512dExt: Sized {
     fn as_m512d(self) -> __m512d;
 
