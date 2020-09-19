@@ -10524,9 +10524,9 @@ pub unsafe fn _mm512_kxor(a: __mmask16, b: __mmask16) -> __mmask16 {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=knot_mask16&expand=3233)
 #[inline]
 #[target_feature(enable = "avx512f")]
-//#[cfg_attr(test, assert_instr(xor))] // generate normal not code instead of knotw
+#[cfg_attr(test, assert_instr(not))] // generate normal not code instead of knotw
 pub unsafe fn _knot_mask16(a: __mmask16) -> __mmask16 {
-    transmute(_mm512_kxor(a, 0b11111111_11111111))
+    transmute(a ^ 0b11111111_11111111)
 }
 
 /// Compute the bitwise NOT of 16-bit mask a, and store the result in k.
@@ -10534,9 +10534,9 @@ pub unsafe fn _knot_mask16(a: __mmask16) -> __mmask16 {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_knot&expand=3231)
 #[inline]
 #[target_feature(enable = "avx512f")]
-//#[cfg_attr(test, assert_instr(xor))] // generate normal not code instead of knotw
+#[cfg_attr(test, assert_instr(not))] // generate normal not code instead of knotw
 pub unsafe fn _mm512_knot(a: __mmask16) -> __mmask16 {
-    transmute(_mm512_kxor(a, 0b11111111_11111111))
+    transmute(a ^ 0b11111111_11111111)
 }
 
 /// Compute the bitwise NOT of 16-bit masks a and then AND with b, and store the result in k.
@@ -12665,13 +12665,6 @@ extern "C" {
     fn vpermi2ps(a: f32x16, idx: i32x16, b: f32x16) -> f32x16;
     #[link_name = "llvm.x86.avx512.vpermi2var.pd.512"]
     fn vpermi2pd(a: f64x8, idx: i64x8, b: f64x8) -> f64x8;
-
-    #[link_name = "llvm.x86.avx512.kand.w"]
-    fn kandw(ma: u16, mb: u16) -> u16;
-    #[link_name = "llvm.x86.avx512.kor.w"]
-    fn korw(ma: u16, mb: u16) -> u16;
-    #[link_name = "llvm.x86.avx512.kxor.w"]
-    fn kxorw(ma: u16, mb: u16) -> u16;
 }
 
 #[cfg(test)]
