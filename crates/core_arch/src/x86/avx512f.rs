@@ -10228,6 +10228,32 @@ pub unsafe fn _mm512_maskz_movedup_pd(k: __mmask8, a: __m512d) -> __m512d {
     let zero = _mm512_setzero_pd().as_f64x8();
     transmute(simd_select_bitmask(k, mov, zero))
 }
+/*
+/// Copy a to dst, then insert 128 bits (composed of 4 packed single-precision (32-bit) floating-point elements) from b into dst at the location specified by imm8.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_insertf32x4&expand=3155)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vinsertf32x4))]
+pub unsafe fn _mm512_insertf32x4(a: __m512, b: __m128, imm8: i32) -> __m512 {
+    let a = a.as_f32x16();
+    let b = b.as_f32x4();
+    match imm8 & 3 {
+        0 => transmute(simd_insert(a, 0, b)),
+        1 => transmute(simd_insert(a, 1, b)),
+        2 => transmute(simd_insert(a, 2, b)),
+        _ => transmute(simd_insert(a, 3, b)),
+    }
+}
+*/
+/// Cast vector of type __m128 to type __m512; the upper 384 bits of the result are undefined. This intrinsic is only used for compilation and does not generate any instructions, thus it has zero latency.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_castps128_ps512&expand=621)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_castps128_ps512(a: __m128) -> __m512 {
+    simd_shuffle16(a, _mm_set1_ps(-1.), [0, 1, 2, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4])
+}
 
 /// Shuffle 32-bit integers in a within 128-bit lanes using the control in imm8, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
 ///
@@ -18364,6 +18390,33 @@ mod tests {
         let r = _mm512_maskz_movehdup_ps(0b00000000_11111111, a);
         let e = _mm512_setr_ps(
             2., 2., 4., 4., 6., 6., 8., 8., 0., 0., 0., 0., 0., 0., 0., 0.,
+        );
+        assert_eq_m512(r, e);
+    }
+/*
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_insertf32x4() {
+        let a = _mm512_setr_ps(
+            1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15., 16.,
+        );
+        let b = _mm_setr_ps(
+            17., 18., 19., 20.,
+        );
+        let r = _mm512_insertf32x4(a, b, 0);
+        let e = _mm512_setr_ps(
+            17., 18., 19., 20., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15., 16.,
+        );
+        assert_eq_m512(r, e);
+    }
+*/ 
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_castps128_ps512() {
+        let a = _mm_setr_ps(
+            17., 18., 19., 20.,
+        );
+        let r = _mm512_castps128_ps512(a);
+        let e = _mm512_setr_ps(
+            17., 18., 19., 20., -1., -1., -1., -1., -1., -1., -1., -1., -1., -1., -1., -1.,
         );
         assert_eq_m512(r, e);
     }

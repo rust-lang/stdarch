@@ -32,7 +32,7 @@
   * [ ] [`_mm512_castpd512_pd256`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_castpd512_pd256&expand=5236)
   * [ ] [`_mm512_castpd_ps`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_castpd_ps&expand=5236)
   * [ ] [`_mm512_castpd_si512`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_castpd_si512&expand=5236)
-  * [ ] [`_mm512_castps128_ps512`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_castps128_ps512&expand=5236)
+  * [x] [`_mm512_castps128_ps512`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_castps128_ps512&expand=5236)
   * [ ] [`_mm512_castps256_ps512`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_castps256_ps512&expand=5236)
   * [ ] [`_mm512_castps512_ps128`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_castps512_ps128&expand=5236)
   * [ ] [`_mm512_castps512_ps256`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_castps512_ps256&expand=5236)
