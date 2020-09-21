@@ -10255,6 +10255,51 @@ pub unsafe fn _mm512_castps128_ps512(a: __m128) -> __m512 {
     simd_shuffle16(a, _mm_set1_ps(-1.), [0, 1, 2, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4])
 }
 
+/// Cast vector of type __m256 to type __m512; the upper 256 bits of the result are undefined. This intrinsic is only used for compilation and does not generate any instructions, thus it has zero latency.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_castps256_ps512&expand=623)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_castps256_ps512(a: __m256) -> __m512 {
+    simd_shuffle16(a, _mm256_set1_ps(-1.), [0, 1, 2, 3, 4, 5, 6, 7, 8, 8, 8, 8, 8, 8, 8, 8])
+}
+
+/// Cast vector of type __m512 to type __m128. This intrinsic is only used for compilation and does not generate any instructions, thus it has zero latency.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_castps512_ps128&expand=624)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_castps512_ps128(a: __m512) -> __m128 {
+    simd_shuffle4(a, a, [0, 1, 2, 3])
+}
+
+/// Cast vector of type __m512 to type __m256. This intrinsic is only used for compilation and does not generate any instructions, thus it has zero latency.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_castps512_ps256&expand=625)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_castps512_ps256(a: __m512) -> __m256 {
+    simd_shuffle8(a, a, [0, 1, 2, 3, 4, 5, 6, 7])
+}
+
+/// Cast vector of type __m512 to type __m512d. This intrinsic is only used for compilation and does not generate any instructions, thus it has zero latency.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_castps_pd&expand=616)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_castps_pd(a: __m512) -> __m512d {
+    transmute(a.as_m512())
+}
+
+/// Cast vector of type __m512 to type __m512i. This intrinsic is only used for compilation and does not generate any instructions, thus it has zero latency.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_castps_si512&expand=619)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_castps_si512(a: __m512) -> __m512i {
+    transmute(a.as_m512())
+}
+
 /// Shuffle 32-bit integers in a within 128-bit lanes using the control in imm8, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
 ///
 /// Compute the bitwise AND of packed 32-bit integers in a and b, and store the results in dst.
@@ -18419,6 +18464,58 @@ mod tests {
             17., 18., 19., 20., -1., -1., -1., -1., -1., -1., -1., -1., -1., -1., -1., -1.,
         );
         assert_eq_m512(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_castps256_ps512() {
+        let a = _mm256_setr_ps(
+            17., 18., 19., 20., 21., 22., 23., 24.,
+        );
+        let r = _mm512_castps256_ps512(a);
+        let e = _mm512_setr_ps(
+            17., 18., 19., 20., 21., 22., 23., 24., -1., -1., -1., -1., -1., -1., -1., -1.,
+        );
+        assert_eq_m512(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_castps512_ps128() {
+        let a = _mm512_setr_ps(
+            17., 18., 19., 20., -1., -1., -1., -1., -1., -1., -1., -1., -1., -1., -1., -1.,
+        );
+        let r = _mm512_castps512_ps128(a);
+        let e = _mm_setr_ps(
+            17., 18., 19., 20.,
+        );
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_castps512_ps256() {
+        let a = _mm512_setr_ps(
+            17., 18., 19., 20., 21., 22., 23., 24., -1., -1., -1., -1., -1., -1., -1., -1.,
+        );
+        let r = _mm512_castps512_ps256(a);
+        let e = _mm256_setr_ps(
+            17., 18., 19., 20., 21., 22., 23., 24.,
+        );
+        assert_eq_m256(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_castps_pd() {
+        let a = _mm512_set1_ps(1.);
+        let r = _mm512_castps_pd(a);
+        let e = _mm512_set1_pd(0.007812501848093234);
+        assert_eq_m512d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_castps_si512() {
+        let a = _mm512_set1_ps(1.);
+        let r = _mm512_castps_si512(a);
+        let e = _mm512_set1_epi32(1065353216);
+        assert_eq_m512i(r, e);
     }
 
     #[simd_test(enable = "avx512f")]
