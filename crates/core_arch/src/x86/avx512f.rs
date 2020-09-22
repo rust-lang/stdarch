@@ -10408,8 +10408,26 @@ pub unsafe fn _mm512_castsi512_pd(a: __m512i) -> __m512d {
     transmute(a)
 }
 
-/// Shuffle 32-bit integers in a within 128-bit lanes using the control in imm8, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+/// Broadcast the low double-precision (64-bit) floating-point element from a to all elements of dst.
 ///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_broadcastsd_pd&expand=567)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vbroadcastsd))]
+pub unsafe fn _mm512_broadcastsd_pd(a: __m128d) -> __m512d {
+    simd_shuffle8(a, a, [1, 1, 1, 1, 1, 1, 1, 1])
+}
+
+/// Broadcast the low single-precision (32-bit) floating-point element from a to all elements of dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_broadcastss_ps&expand=578)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vbroadcastss))]
+pub unsafe fn _mm512_broadcastss_ps(a: __m128) -> __m512 {
+    simd_shuffle16(a, a, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+}
+
 /// Compute the bitwise AND of packed 32-bit integers in a and b, and store the results in dst.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_and_epi32&expand=272)
@@ -18624,6 +18642,16 @@ mod tests {
         let r = _mm512_castps_si512(a);
         let e = _mm512_set1_epi32(1065353216);
         assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_broadcastss_ps() {
+        let a = _mm_set_ps(
+            17., 18., 19., 20.,
+        );
+        let r = _mm512_broadcastss_ps(a);
+        let e = _mm512_set1_ps(20.);
+        assert_eq_m512(r, e);
     }
 
     #[simd_test(enable = "avx512f")]
