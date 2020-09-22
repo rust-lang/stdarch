@@ -10542,6 +10542,140 @@ pub unsafe fn _mm512_maskz_broadcastsd_pd(k: __mmask8, a: __m128d) -> __m512d {
     transmute(simd_select_bitmask(k, broadcast, zero))
 }
 
+/// Broadcast the 4 packed 32-bit integers from a to all elements of dst. 
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_broadcast_i32x4&expand=510)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vinsert))] //should be vpbroadcasti32x4
+pub unsafe fn _mm512_broadcast_i32x4(a: __m128i) -> __m512i {
+    let a = _mm512_castsi128_si512(a).as_i32x16();
+    let ret = simd_shuffle16(a, a, [0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3]);
+    transmute::<i32x16, _>(ret)
+}
+
+/// Broadcast the 4 packed 32-bit integers from a to all elements of dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_broadcast_i32x4&expand=511)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vshufi32x4))] //should be vbroadcasti32x4
+pub unsafe fn _mm512_mask_broadcast_i32x4(src: __m512i, k: __mmask16, a: __m128i) -> __m512i {
+    let broadcast = _mm512_broadcast_i32x4(a).as_i32x16();
+    transmute(simd_select_bitmask(k, broadcast, src.as_i32x16()))
+}
+
+/// Broadcast the 4 packed 32-bit integers from a to all elements of dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_broadcast_i32x4&expand=512)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vshufi32x4))] //should be vbroadcasti32x4
+pub unsafe fn _mm512_maskz_broadcast_i32x4(k: __mmask16, a: __m128i) -> __m512i {
+    let broadcast = _mm512_broadcast_i32x4(a).as_i32x16();
+    let zero = _mm512_setzero_si512().as_i32x16();
+    transmute(simd_select_bitmask(k, broadcast, zero))
+}
+
+/// Broadcast the 4 packed 64-bit integers from a to all elements of dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_broadcast_i64x4&expand=522)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vinsertf64x4))] //should be vbroadcasti64x4
+pub unsafe fn _mm512_broadcast_i64x4(a: __m256i) -> __m512i {
+    simd_shuffle8(a, a, [0, 1, 2, 3, 0, 1, 2, 3])
+}
+
+/// Broadcast the 4 packed 64-bit integers from a to all elements of dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_broadcast_i64x4&expand=523)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vinserti64x4))] //should be vbroadcasti64x4
+pub unsafe fn _mm512_mask_broadcast_i64x4(src: __m512i, k: __mmask8, a: __m256i) -> __m512i {
+    let broadcast = _mm512_broadcast_i64x4(a).as_i64x8();
+    transmute(simd_select_bitmask(k, broadcast, src.as_i64x8()))
+}
+
+/// Broadcast the 4 packed 64-bit integers from a to all elements of dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_broadcast_i64x4&expand=524)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vinserti64x4))] //should be vbroadcasti64x4
+pub unsafe fn _mm512_maskz_broadcast_i64x4(k: __mmask8, a: __m256i) -> __m512i {
+    let broadcast = _mm512_broadcast_i64x4(a).as_i64x8();
+    let zero = _mm512_setzero_si512().as_i64x8();
+    transmute(simd_select_bitmask(k, broadcast, zero))
+}
+
+/// Broadcast the 4 packed single-precision (32-bit) floating-point elements from a to all elements of dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_broadcast_f32x4&expand=483)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vinsertf128))] //should be vbroadcastf32x4
+pub unsafe fn _mm512_broadcast_f32x4(a: __m128) -> __m512 {
+    simd_shuffle16(a, a, [0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3])
+}
+
+/// Broadcast the 4 packed single-precision (32-bit) floating-point elements from a to all elements of dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_broadcast_f32x4&expand=484)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vinsertf128))] //should be vbroadcastf32x4
+pub unsafe fn _mm512_mask_broadcast_f32x4(src: __m512, k: __mmask16, a: __m128) -> __m512 {
+    let broadcast = _mm512_broadcast_f32x4(a).as_f32x16();
+    transmute(simd_select_bitmask(k, broadcast, src.as_f32x16()))
+}
+
+/// Broadcast the 4 packed single-precision (32-bit) floating-point elements from a to all elements of dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_broadcast_f32x4&expand=485)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vinsertf128))] //should be vbroadcastf32x4
+pub unsafe fn _mm512_maskz_broadcast_f32x4(k: __mmask16, a: __m128) -> __m512 {
+    let broadcast = _mm512_broadcast_f32x4(a).as_f32x16();
+    let zero = _mm512_setzero_ps().as_f32x16();
+    transmute(simd_select_bitmask(k, broadcast, zero))
+}
+
+/// Broadcast the 4 packed double-precision (64-bit) floating-point elements from a to all elements of dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_broadcast_f64x4&expand=495)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vinsertf64x4))] //should be vbroadcastf64x4
+pub unsafe fn _mm512_broadcast_f64x4(a: __m256d) -> __m512d {
+    simd_shuffle8(a, a, [0, 1, 2, 3, 0, 1, 2, 3])
+}
+
+/// Broadcast the 4 packed double-precision (64-bit) floating-point elements from a to all elements of dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_broadcast_f64x4&expand=496)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vinsertf64x4))] //should be vbroadcastf64x4
+pub unsafe fn _mm512_mask_broadcast_f64x4(src: __m512d, k: __mmask8, a: __m256d) -> __m512d {
+    let broadcast = _mm512_broadcast_f64x4(a).as_f64x8();
+    transmute(simd_select_bitmask(k, broadcast, src.as_f64x8()))
+}
+
+/// Broadcast the 4 packed double-precision (64-bit) floating-point elements from a to all elements of dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_broadcast_f64x4&expand=497)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vinsertf64x4))] //should be vbroadcastf64x4
+pub unsafe fn _mm512_maskz_broadcast_f64x4(k: __mmask8, a: __m256d) -> __m512d {
+    let broadcast = _mm512_broadcast_f64x4(a).as_f64x8();
+    let zero = _mm512_setzero_pd().as_f64x8();
+    transmute(simd_select_bitmask(k, broadcast, zero))
+}
+
 /// Compute the bitwise AND of packed 32-bit integers in a and b, and store the results in dst.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_and_epi32&expand=272)
@@ -18829,6 +18963,76 @@ mod tests {
         let e = _mm512_setr_ps(
             20., 20., 20., 20., 20., 20., 20., 20., 0., 0., 0., 0., 0., 0., 0., 0.,
         );
+        assert_eq_m512(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_broadcast_i32x4() {
+        let a = _mm_set_epi32(
+            17, 18, 19, 20,
+        );
+        let r = _mm512_broadcast_i32x4(a);
+        let e = _mm512_set_epi32(17, 18, 19, 20, 17, 18, 19, 20, 17, 18, 19, 20, 17, 18, 19, 20);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_broadcast_i32x4() {
+        let src = _mm512_set1_epi32(20);
+        let a = _mm_set_epi32(
+            17, 18, 19, 20,
+        );
+        let r = _mm512_mask_broadcast_i32x4(src, 0, a);
+        assert_eq_m512i(r, src);
+        let r = _mm512_mask_broadcast_i32x4(src, 0b11111111_11111111, a);
+        let e = _mm512_set_epi32(17, 18, 19, 20, 17, 18, 19, 20, 17, 18, 19, 20, 17, 18, 19, 20);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_maskz_broadcast_i32x4() {
+        let a = _mm_set_epi32(
+            17, 18, 19, 20,
+        );
+        let r = _mm512_maskz_broadcast_i32x4(0, a);
+        assert_eq_m512i(r, _mm512_setzero_si512());
+        let r = _mm512_maskz_broadcast_i32x4(0b00000000_11111111, a);
+        let e = _mm512_set_epi32(0, 0, 0, 0, 0, 0, 0, 0, 17, 18, 19, 20, 17, 18, 19, 20);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_broadcast_f32x4() {
+        let a = _mm_set_ps(
+            17., 18., 19., 20.,
+        );
+        let r = _mm512_broadcast_f32x4(a);
+        let e = _mm512_set_ps(17., 18., 19., 20., 17., 18., 19., 20., 17., 18., 19., 20., 17., 18., 19., 20.);
+        assert_eq_m512(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_broadcast_f32x4() {
+        let src = _mm512_set1_ps(20.);
+        let a = _mm_set_ps(
+            17., 18., 19., 20.,
+        );
+        let r = _mm512_mask_broadcast_f32x4(src, 0, a);
+        assert_eq_m512(r, src);
+        let r = _mm512_mask_broadcast_f32x4(src, 0b11111111_11111111, a);
+        let e = _mm512_set_ps(17., 18., 19., 20., 17., 18., 19., 20., 17., 18., 19., 20., 17., 18., 19., 20.);
+        assert_eq_m512(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_maskz_broadcast_f32x4() {
+        let a = _mm_set_ps(
+            17., 18., 19., 20.,
+        );
+        let r = _mm512_maskz_broadcast_f32x4(0, a);
+        assert_eq_m512(r, _mm512_setzero_ps());
+        let r = _mm512_maskz_broadcast_f32x4(0b00000000_11111111, a);
+        let e = _mm512_set_ps(0., 0., 0., 0., 0., 0., 0., 0., 17., 18., 19., 20., 17., 18., 19., 20.);
         assert_eq_m512(r, e);
     }
 
