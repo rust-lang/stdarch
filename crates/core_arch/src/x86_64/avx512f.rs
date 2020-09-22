@@ -4407,12 +4407,72 @@ mod tests {
     }
 
     #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_broadcastq_epi64() {
+        let a = _mm_setr_epi64x(
+            17, 18,
+        );
+        let r = _mm512_broadcastq_epi64(a);
+        let e = _mm512_set1_epi64(18);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_broadcastq_epi64() {
+        let src = _mm512_set1_epi64(18);
+        let a = _mm_setr_epi64x(
+            17, 18,
+        );
+        let r = _mm512_mask_broadcastq_epi64(src, 0, a);
+        assert_eq_m512i(r, src);
+        let r = _mm512_mask_broadcastq_epi64(src, 0b01111111, a);
+        let e = _mm512_set1_epi64(18);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_maskz_broadcastq_epi64() {
+        let a = _mm_setr_epi64x(
+            17, 18,
+        );
+        let r = _mm512_maskz_broadcastq_epi64(0, a);
+        assert_eq_m512i(r, _mm512_setzero_si512());
+        let r = _mm512_maskz_broadcastq_epi64(0b00001111, a);
+        let e = _mm512_set_epi64(0, 0, 0, 0, 18, 18, 18, 18);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_broadcastsd_pd() {
         let a = _mm_setr_pd(
             17., 18.,
         );
         let r = _mm512_broadcastsd_pd(a);
         let e = _mm512_set1_pd(18.);
+        assert_eq_m512d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_broadcastsd_pd() {
+        let src = _mm512_set1_pd(18.);
+        let a = _mm_setr_pd(
+            17., 18.,
+        );
+        let r = _mm512_mask_broadcastsd_pd(src, 0, a);
+        assert_eq_m512d(r, src);
+        let r = _mm512_mask_broadcastsd_pd(src, 0b01111111, a);
+        let e = _mm512_set1_pd(18.);
+        assert_eq_m512d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_maskz_broadcastsd_pd() {
+        let a = _mm_setr_pd(
+            17., 18.,
+        );
+        let r = _mm512_maskz_broadcastsd_pd(0, a);
+        assert_eq_m512d(r, _mm512_setzero_pd());
+        let r = _mm512_maskz_broadcastsd_pd(0b00001111, a);
+        let e = _mm512_set_pd(0., 0., 0., 0., 18., 18., 18., 18.);
         assert_eq_m512d(r, e);
     }
 
