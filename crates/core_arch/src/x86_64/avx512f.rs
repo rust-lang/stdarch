@@ -4343,6 +4343,70 @@ mod tests {
     }
 
     #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_castsi128_si512() {
+        let a = _mm_setr_epi64x(
+            17, 18,
+        );
+        let r = _mm512_castsi128_si512(a);
+        let e = _mm512_setr_epi64(
+            17, 18, -1, -1, -1, -1, -1, -1,
+        );
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_castsi256_si512() {
+        let a = _mm256_setr_epi64x(
+            17, 18, 19, 20,
+        );
+        let r = _mm512_castsi256_si512(a);
+        let e = _mm512_setr_epi64(
+            17, 18, 19, 20, -1, -1, -1, -1,
+        );
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_castsi512_si128() {
+        let a = _mm512_setr_epi64(
+            17, 18, -1, -1, -1, -1, -1, -1,
+        );
+        let r = _mm512_castsi512_si128(a);
+        let e = _mm_setr_epi64x(
+            17, 18,
+        );
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_castsi512_si256() {
+        let a = _mm512_setr_epi64(
+            17, 18, 19, 20, -1, -1, -1, -1,
+        );
+        let r = _mm512_castsi512_si256(a);
+        let e = _mm256_setr_epi64x(
+            17, 18, 19, 20,
+        );
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_castsi512_ps() {
+        let a = _mm512_set1_epi64(1<<62);
+        let r = _mm512_castsi512_ps(a);
+        let e = _mm512_set_ps(2., 0., 2., 0., 2., 0., 2., 0., 2., 0., 2., 0., 2., 0., 2., 0.);
+        assert_eq_m512(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_castsi512_pd() {
+        let a = _mm512_set1_epi64(1<<62);
+        let r = _mm512_castsi512_pd(a);
+        let e = _mm512_set_pd(2., 2., 2., 2., 2., 2., 2., 2.);
+        assert_eq_m512d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_and_epi64() {
         let a = _mm512_set_epi64(1 << 0 | 1 << 15, 0, 0, 0, 0, 0, 0, 1 << 1 | 1 << 2 | 1 << 3);
         let b = _mm512_set_epi64(1 << 13, 0, 0, 0, 0, 0, 0, 1 << 1 | 1 << 2 | 1 << 3);
