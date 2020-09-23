@@ -10229,6 +10229,112 @@ pub unsafe fn _mm512_maskz_movedup_pd(k: __mmask8, a: __m512d) -> __m512d {
     transmute(simd_select_bitmask(k, mov, zero))
 }
 
+/// Copy a to dst, then insert 128 bits (composed of 4 packed 32-bit integers) from b into dst at the location specified by imm8.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_inserti32x4&expand=3174)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vinsertf32x4, imm8 = 2))] //should be vinserti32x4
+#[rustc_args_required_const(2)]
+pub unsafe fn _mm512_inserti32x4(a: __m512i, b: __m128i, imm8: i32) -> __m512i {
+    let a = a.as_i32x16();
+    let b = _mm512_castsi128_si512(b).as_i32x16();
+    let ret: i32x16 = match imm8 & 0b11 {
+        0 => simd_shuffle16(a, b, [16, 17, 18, 19, 4, 5, 6, 7,     8, 9, 10, 11,   12, 13, 14, 15]),
+        1 => simd_shuffle16(a, b, [0, 1, 2, 3,     16, 17, 18, 19, 8, 9, 10, 11,   12, 13, 14, 15]),
+        2 => simd_shuffle16(a, b, [0, 1, 2, 3,     4, 5, 6, 7,     16, 17, 18, 19, 12, 13, 14, 15]),
+        _ => simd_shuffle16(a, b, [0, 1, 2, 3,     4, 5, 6, 7,     8, 9, 10, 11,   16, 17, 18, 19]), 
+    };
+    transmute(ret)
+}
+
+/// Copy a to tmp, then insert 128 bits (composed of 4 packed 32-bit integers) from b into tmp at the location specified by imm8. Store tmp to dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_inserti32x4&expand=3175)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vinserti32x4, imm8 = 2))]
+#[rustc_args_required_const(4)]
+pub unsafe fn _mm512_mask_inserti32x4(src: __m512i, k: __mmask16, a: __m512i, b: __m128i, imm8: i32) -> __m512i {
+    let a = a.as_i32x16();
+    let b = _mm512_castsi128_si512(b).as_i32x16();
+    let insert: i32x16 = match imm8 & 0b11 {
+        0 => simd_shuffle16(a, b, [16, 17, 18, 19, 4, 5, 6, 7,     8, 9, 10, 11,   12, 13, 14, 15]),
+        1 => simd_shuffle16(a, b, [0, 1, 2, 3,     16, 17, 18, 19, 8, 9, 10, 11,   12, 13, 14, 15]),
+        2 => simd_shuffle16(a, b, [0, 1, 2, 3,     4, 5, 6, 7,     16, 17, 18, 19, 12, 13, 14, 15]),
+        _ => simd_shuffle16(a, b, [0, 1, 2, 3,     4, 5, 6, 7,     8, 9, 10, 11,   16, 17, 18, 19]), 
+    };
+    transmute(simd_select_bitmask(k, insert, src.as_i32x16()))
+}
+
+/// Copy a to tmp, then insert 128 bits (composed of 4 packed 32-bit integers) from b into tmp at the location specified by imm8. Store tmp to dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_inserti32x4&expand=3176)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vinserti32x4, imm8 = 2))]
+#[rustc_args_required_const(3)]
+pub unsafe fn _mm512_maskz_inserti32x4(k: __mmask16, a: __m512i, b: __m128i, imm8: i32) -> __m512i {
+    let a = a.as_i32x16();
+    let b = _mm512_castsi128_si512(b).as_i32x16();
+    let insert = match imm8 & 0b11 {
+        0 => simd_shuffle16(a, b, [16, 17, 18, 19, 4, 5, 6, 7,     8, 9, 10, 11,   12, 13, 14, 15]),
+        1 => simd_shuffle16(a, b, [0, 1, 2, 3,     16, 17, 18, 19, 8, 9, 10, 11,   12, 13, 14, 15]),
+        2 => simd_shuffle16(a, b, [0, 1, 2, 3,     4, 5, 6, 7,     16, 17, 18, 19, 12, 13, 14, 15]),
+        _ => simd_shuffle16(a, b, [0, 1, 2, 3,     4, 5, 6, 7,     8, 9, 10, 11,   16, 17, 18, 19]), 
+    };
+    let zero = _mm512_setzero_si512().as_i32x16();
+    transmute(simd_select_bitmask(k, insert, zero))
+}
+
+/// Copy a to dst, then insert 256 bits (composed of 4 packed 64-bit integers) from b into dst at the location specified by imm8.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_inserti64x4&expand=3186)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vinsertf64x4, imm8 = 1))] //should be vinserti64x4
+#[rustc_args_required_const(2)]
+pub unsafe fn _mm512_inserti64x4(a: __m512i, b: __m256i, imm8: i32) -> __m512i {
+    let b = _mm512_castsi256_si512(b);
+    match imm8 & 0b1 {
+        0 => simd_shuffle8(a, b, [8, 9, 10, 11, 4, 5, 6, 7  ]),
+        _ => simd_shuffle8(a, b, [0, 1, 2, 3,   8, 9, 10, 11]),
+    }
+}
+
+/// Copy a to tmp, then insert 256 bits (composed of 4 packed 64-bit integers) from b into tmp at the location specified by imm8. Store tmp to dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_inserti64x4&expand=3187)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vinserti64x4, imm8 = 1))]
+#[rustc_args_required_const(4)]
+pub unsafe fn _mm512_mask_inserti64x4(src: __m512i, k: __mmask8, a: __m512i, b: __m256i, imm8: i32) -> __m512i {
+    let b = _mm512_castsi256_si512(b);
+    let insert = match imm8 & 0b1 {
+        0 => simd_shuffle8(a, b, [8, 9, 10, 11, 4, 5, 6, 7  ]),
+        _ => simd_shuffle8(a, b, [0, 1, 2, 3,   8, 9, 10, 11]),
+    };
+    transmute(simd_select_bitmask(k, insert, src.as_i64x8()))
+}
+
+/// Copy a to tmp, then insert 256 bits (composed of 4 packed 64-bit integers) from b into tmp at the location specified by imm8. Store tmp to dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_inserti64x4&expand=3188)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vinserti64x4, imm8 = 1))]
+#[rustc_args_required_const(3)]
+pub unsafe fn _mm512_maskz_inserti64x4(k: __mmask8, a: __m512i, b: __m256i, imm8: i32) -> __m512i {
+    let b = _mm512_castsi256_si512(b);
+    let insert = match imm8 & 0b1 {
+        0 => simd_shuffle8(a, b, [8, 9, 10, 11, 4, 5, 6, 7  ]),
+        _ => simd_shuffle8(a, b, [0, 1, 2, 3,   8, 9, 10, 11]),
+    };
+    let zero = _mm512_setzero_si512().as_i64x8();
+    transmute(simd_select_bitmask(k, insert, zero))
+}
+
 /// Copy a to dst, then insert 128 bits (composed of 4 packed single-precision (32-bit) floating-point elements) from b into dst at the location specified by imm8.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_insertf32x4&expand=3155)
@@ -10501,8 +10607,8 @@ pub unsafe fn _mm512_castsi512_pd(a: __m512i) -> __m512d {
 #[cfg_attr(test, assert_instr(vbroadcast))] //should be vpbroadcastd
 pub unsafe fn _mm512_broadcastd_epi32(a: __m128i) -> __m512i {
     let a = _mm512_castsi128_si512(a).as_i32x16();
-    let ret = simd_shuffle16(a, a, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
-    transmute::<i32x16, _>(ret)
+    let ret: i32x16 = simd_shuffle16(a, a, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+    transmute(ret)
 }
 
 /// Broadcast the low packed 32-bit integer from a to all elements of dst using writemask k (elements are copied from src when the corresponding mask bit is not set). 
@@ -10635,8 +10741,8 @@ pub unsafe fn _mm512_maskz_broadcastsd_pd(k: __mmask8, a: __m128d) -> __m512d {
 #[cfg_attr(test, assert_instr(vinsert))] //should be vpbroadcasti32x4
 pub unsafe fn _mm512_broadcast_i32x4(a: __m128i) -> __m512i {
     let a = _mm512_castsi128_si512(a).as_i32x16();
-    let ret = simd_shuffle16(a, a, [0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3]);
-    transmute::<i32x16, _>(ret)
+    let ret: i32x16 = simd_shuffle16(a, a, [0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3]);
+    transmute(ret)
 }
 
 /// Broadcast the 4 packed 32-bit integers from a to all elements of dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
@@ -18972,6 +19078,55 @@ mod tests {
             2., 2., 4., 4., 6., 6., 8., 8., 0., 0., 0., 0., 0., 0., 0., 0.,
         );
         assert_eq_m512(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_inserti32x4() {
+        let a = _mm512_setr_epi32(
+            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
+        );
+        let b = _mm_setr_epi32(
+            17, 18, 19, 20,
+        );
+        let r = _mm512_inserti32x4(a, b, 0);
+        let e = _mm512_setr_epi32(
+            17, 18, 19, 20, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
+        );
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_inserti32x4() {
+        let a = _mm512_setr_epi32(
+            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
+        );
+        let b = _mm_setr_epi32(
+            17, 18, 19, 20,
+        );
+        let r = _mm512_mask_inserti32x4(a, 0, a, b, 0);
+        assert_eq_m512i(r, a);
+        let r = _mm512_mask_inserti32x4(a, 0b11111111_11111111, a, b, 0);
+        let e = _mm512_setr_epi32(
+            17, 18, 19, 20, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
+        );
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_maskz_inserti32x4() {
+        let a = _mm512_setr_epi32(
+            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
+        );
+        let b = _mm_setr_epi32(
+            17, 18, 19, 20,
+        );
+        let r = _mm512_maskz_inserti32x4(0, a, b, 0);
+        assert_eq_m512i(r, _mm512_setzero_si512());
+        let r = _mm512_maskz_inserti32x4(0b00000000_11111111, a, b, 0);
+        let e = _mm512_setr_epi32(
+            17, 18, 19, 20, 5, 6, 7, 8, 0, 0, 0, 0, 0, 0, 0, 0,
+        );
+        assert_eq_m512i(r, e);
     }
 
     #[simd_test(enable = "avx512f")]
