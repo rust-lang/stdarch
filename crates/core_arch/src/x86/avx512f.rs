@@ -10601,7 +10601,7 @@ pub unsafe fn _mm512_maskz_unpackhi_epi32(k: __mmask16, a: __m512i, b: __m512i) 
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_unpackhi_epi64&expand=6030)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpermt2q))] //should be vpunpckhqdq
+#[cfg_attr(test, assert_instr(vperm))] //should be vpunpckhqdq
 pub unsafe fn _mm512_unpackhi_epi64(a: __m512i, b: __m512i) -> __m512i {
     simd_shuffle8(a, b, [2, 10, 3, 11, 2 + 4, 10 + 4, 3 + 4, 11 + 4])
 }
@@ -10611,7 +10611,7 @@ pub unsafe fn _mm512_unpackhi_epi64(a: __m512i, b: __m512i) -> __m512i {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_unpackhi_epi64&expand=6028)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpermi2q))] //should be vpunpckhqdq
+#[cfg_attr(test, assert_instr(vperm))] //should be vpunpckhqdq
 pub unsafe fn _mm512_mask_unpackhi_epi64(
     src: __m512i,
     k: __mmask8,
@@ -10627,7 +10627,7 @@ pub unsafe fn _mm512_mask_unpackhi_epi64(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_unpackhi_epi64&expand=6029)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpermt2q))] //should be vpunpckhqdq
+#[cfg_attr(test, assert_instr(vperm))] //should be vpunpckhqdq
 pub unsafe fn _mm512_maskz_unpackhi_epi64(k: __mmask8, a: __m512i, b: __m512i) -> __m512i {
     let unpackhi = _mm512_unpackhi_epi64(a, b).as_i64x8();
     let zero = _mm512_setzero_si512().as_i64x8();
@@ -10693,7 +10693,7 @@ pub unsafe fn _mm512_maskz_unpackhi_ps(k: __mmask16, a: __m512, b: __m512) -> __
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_unpackhi_pd&expand=6048)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpermt2pd))] //should be vunpackhpd
+#[cfg_attr(test, assert_instr(vperm))] //should be vunpackhpd
 pub unsafe fn _mm512_unpackhi_pd(a: __m512d, b: __m512d) -> __m512d {
     simd_shuffle8(a, b, [2, 10, 3, 11, 2 + 4, 10 + 4, 3 + 4, 11 + 4])
 }
@@ -10703,7 +10703,7 @@ pub unsafe fn _mm512_unpackhi_pd(a: __m512d, b: __m512d) -> __m512d {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_unpackhi_pd&expand=6046)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpermi2pd))] //should be vunpackhpd
+#[cfg_attr(test, assert_instr(vperm))] //should be vunpackhpd
 pub unsafe fn _mm512_mask_unpackhi_pd(
     src: __m512d,
     k: __mmask8,
@@ -10719,7 +10719,7 @@ pub unsafe fn _mm512_mask_unpackhi_pd(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_unpackhi_pd&expand=6047)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpermt2pd))] //should be vunpackhpd
+#[cfg_attr(test, assert_instr(vperm))] //should be vunpackhpd
 pub unsafe fn _mm512_maskz_unpackhi_pd(k: __mmask8, a: __m512d, b: __m512d) -> __m512d {
     let unpackhi = _mm512_unpackhi_pd(a, b).as_f64x8();
     let zero = _mm512_setzero_pd().as_f64x8();
