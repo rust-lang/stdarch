@@ -4448,7 +4448,7 @@ mod tests {
     unsafe fn test_mm512_broadcastq_epi64() {
         let a = _mm_setr_epi64x(17, 18);
         let r = _mm512_broadcastq_epi64(a);
-        let e = _mm512_set1_epi64(18);
+        let e = _mm512_set1_epi64(17);
         assert_eq_m512i(r, e);
     }
 
@@ -4458,8 +4458,8 @@ mod tests {
         let a = _mm_setr_epi64x(17, 18);
         let r = _mm512_mask_broadcastq_epi64(src, 0, a);
         assert_eq_m512i(r, src);
-        let r = _mm512_mask_broadcastq_epi64(src, 0b01111111, a);
-        let e = _mm512_set1_epi64(18);
+        let r = _mm512_mask_broadcastq_epi64(src, 0b11111111, a);
+        let e = _mm512_set1_epi64(17);
         assert_eq_m512i(r, e);
     }
 
@@ -4469,7 +4469,7 @@ mod tests {
         let r = _mm512_maskz_broadcastq_epi64(0, a);
         assert_eq_m512i(r, _mm512_setzero_si512());
         let r = _mm512_maskz_broadcastq_epi64(0b00001111, a);
-        let e = _mm512_set_epi64(0, 0, 0, 0, 18, 18, 18, 18);
+        let e = _mm512_set_epi64(0, 0, 0, 0, 17, 17, 17, 17);
         assert_eq_m512i(r, e);
     }
 
@@ -4583,7 +4583,7 @@ mod tests {
         let a = _mm512_set_epi64(1, 2, 3, 4, 5, 6, 7, 8);
         let b = _mm512_set_epi64(17, 18, 19, 20, 21, 22, 23, 24);
         let r = _mm512_unpackhi_epi64(a, b);
-        let e = _mm512_set_epi64(17, 1, 18, 2, 21, 5, 22, 6);
+        let e = _mm512_set_epi64(17, 1, 19, 3, 21, 5, 23, 7);
         assert_eq_m512i(r, e);
     }
 
@@ -4594,7 +4594,7 @@ mod tests {
         let r = _mm512_mask_unpackhi_epi64(a, 0, a, b);
         assert_eq_m512i(r, a);
         let r = _mm512_mask_unpackhi_epi64(a, 0b11111111, a, b);
-        let e = _mm512_set_epi64(17, 1, 18, 2, 21, 5, 22, 6);
+        let e = _mm512_set_epi64(17, 1, 19, 3, 21, 5, 23, 7);
         assert_eq_m512i(r, e);
     }
 
@@ -4605,7 +4605,7 @@ mod tests {
         let r = _mm512_maskz_unpackhi_epi64(0, a, b);
         assert_eq_m512i(r, _mm512_setzero_si512());
         let r = _mm512_maskz_unpackhi_epi64(0b00001111, a, b);
-        let e = _mm512_set_epi64(0, 0, 0, 0, 21, 5, 22, 6);
+        let e = _mm512_set_epi64(0, 0, 0, 0, 21, 5, 23, 7);
         assert_eq_m512i(r, e);
     }
 
@@ -4614,7 +4614,7 @@ mod tests {
         let a = _mm512_set_pd(1., 2., 3., 4., 5., 6., 7., 8.);
         let b = _mm512_set_pd(17., 18., 19., 20., 21., 22., 23., 24.);
         let r = _mm512_unpackhi_pd(a, b);
-        let e = _mm512_set_pd(17., 1., 18., 2., 21., 5., 22., 6.);
+        let e = _mm512_set_pd(17., 1., 19., 3., 21., 5., 23., 7.);
         assert_eq_m512d(r, e);
     }
 
@@ -4625,7 +4625,7 @@ mod tests {
         let r = _mm512_mask_unpackhi_pd(a, 0, a, b);
         assert_eq_m512d(r, a);
         let r = _mm512_mask_unpackhi_pd(a, 0b11111111, a, b);
-        let e = _mm512_set_pd(17., 1., 18., 2., 21., 5., 22., 6.);
+        let e = _mm512_set_pd(17., 1., 19., 3., 21., 5., 23., 7.);
         assert_eq_m512d(r, e);
     }
 
@@ -4636,7 +4636,7 @@ mod tests {
         let r = _mm512_maskz_unpackhi_pd(0, a, b);
         assert_eq_m512d(r, _mm512_setzero_pd());
         let r = _mm512_maskz_unpackhi_pd(0b00001111, a, b);
-        let e = _mm512_set_pd(0., 0., 0., 0., 21., 5., 22., 6.);
+        let e = _mm512_set_pd(0., 0., 0., 0., 21., 5., 23., 7.);
         assert_eq_m512d(r, e);
     }
 
