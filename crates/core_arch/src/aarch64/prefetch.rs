@@ -63,8 +63,24 @@ pub const _PREFETCH_LOCALITY3: i32 = 3;
 #[cfg_attr(test, assert_instr("prfm pstl3keep", rw = _PREFETCH_WRITE, locality = _PREFETCH_LOCALITY1))]
 #[cfg_attr(test, assert_instr("prfm pstl2keep", rw = _PREFETCH_WRITE, locality = _PREFETCH_LOCALITY2))]
 #[cfg_attr(test, assert_instr("prfm pstl1keep", rw = _PREFETCH_WRITE, locality = _PREFETCH_LOCALITY3))]
+#[rustc_args_required_const(1, 2)]
 pub unsafe fn _prefetch(p: *const i8, rw: i32, locality: i32) {
     // We use the `llvm.prefetch` instrinsic with `cache type` = 1 (data cache).
     // `rw` and `strategy` are based on the function parameters.
-    prefetch(p, rw, locality, 1);
+    macro_rules! pref {
+        ($rdwr:expr, $local:expr) => {
+            match ($rdwr, $local) {
+                (0, 0) => prefetch(p, 0, 0, 1),
+                (0, 1) => prefetch(p, 0, 1, 1),
+                (0, 2) => prefetch(p, 0, 2, 1),
+                (0, 3) => prefetch(p, 0, 3, 1),
+                (1, 0) => prefetch(p, 1, 0, 1),
+                (1, 1) => prefetch(p, 1, 1, 1),
+                (1, 2) => prefetch(p, 1, 2, 1),
+                (1, 3) => prefetch(p, 1, 3, 1),
+                (_, _) => panic!("Illegal (rw, locality) pair in prefetch, value ({}, {}).", $rdwr, $local),
+            }
+        };
+    }
+    pref!(rw, locality);
 }
