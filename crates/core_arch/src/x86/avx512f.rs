@@ -8755,6 +8755,7 @@ pub unsafe fn _mm512_maskz_shuffle_epi32(k: __mmask16, a: __m512i, imm8: _MM_PER
 #[cfg_attr(test, assert_instr(vshufps, imm8 = 0))]
 #[rustc_args_required_const(2)]
 pub unsafe fn _mm512_shuffle_ps(a: __m512, b: __m512, imm8: i32) -> __m512 {
+    assert!(imm8 >= 0 && imm8 <= 255);
     let imm8 = (imm8 & 0xFF) as u8;
     macro_rules! shuffle4 {
         (
@@ -8836,6 +8837,7 @@ pub unsafe fn _mm512_mask_shuffle_ps(
     b: __m512,
     imm8: i32,
 ) -> __m512 {
+    assert!(imm8 >= 0 && imm8 <= 255);
     let imm8 = (imm8 & 0xFF) as u8;
     macro_rules! shuffle4 {
         (
@@ -8913,6 +8915,7 @@ pub unsafe fn _mm512_mask_shuffle_ps(
 #[cfg_attr(test, assert_instr(vshufps, imm8 = 0))]
 #[rustc_args_required_const(3)]
 pub unsafe fn _mm512_maskz_shuffle_ps(k: __mmask16, a: __m512, b: __m512, imm8: i32) -> __m512 {
+    assert!(imm8 >= 0 && imm8 <= 255);
     let imm8 = (imm8 & 0xFF) as u8;
     macro_rules! shuffle4 {
         (
@@ -8991,6 +8994,7 @@ pub unsafe fn _mm512_maskz_shuffle_ps(k: __mmask16, a: __m512, b: __m512, imm8: 
 #[cfg_attr(test, assert_instr(vshufpd, imm8 = 3))]
 #[rustc_args_required_const(2)]
 pub unsafe fn _mm512_shuffle_pd(a: __m512d, b: __m512d, imm8: i32) -> __m512d {
+    assert!(imm8 >= 0 && imm8 <= 255);
     let imm8 = (imm8 & 0xFF) as u8;
     macro_rules! shuffle8 {
         ($a:expr, $b:expr, $c:expr, $d:expr, $e:expr, $f:expr, $g:expr, $h:expr) => {
@@ -9073,6 +9077,7 @@ pub unsafe fn _mm512_mask_shuffle_pd(
     b: __m512d,
     imm8: i32,
 ) -> __m512d {
+    assert!(imm8 >= 0 && imm8 <= 255);
     let imm8 = (imm8 & 0xFF) as u8;
     macro_rules! shuffle8 {
         ($a:expr, $b:expr, $c:expr, $d:expr, $e:expr, $f:expr, $g:expr, $h:expr) => {
@@ -9151,6 +9156,7 @@ pub unsafe fn _mm512_mask_shuffle_pd(
 #[cfg_attr(test, assert_instr(vshufpd, imm8 = 3))]
 #[rustc_args_required_const(3)]
 pub unsafe fn _mm512_maskz_shuffle_pd(k: __mmask8, a: __m512d, b: __m512d, imm8: i32) -> __m512d {
+    assert!(imm8 >= 0 && imm8 <= 255);
     let imm8 = (imm8 & 0xFF) as u8;
     macro_rules! shuffle8 {
         ($a:expr, $b:expr, $c:expr, $d:expr, $e:expr, $f:expr, $g:expr, $h:expr) => {
@@ -9230,8 +9236,8 @@ pub unsafe fn _mm512_maskz_shuffle_pd(k: __mmask8, a: __m512d, b: __m512d, imm8:
 #[cfg_attr(test, assert_instr(vshufi64x2, imm8 = 0b10111111))] //should be vshufi32x4, but generate vshufi64x2
 #[rustc_args_required_const(2)]
 pub unsafe fn _mm512_shuffle_i32x4(a: __m512i, b: __m512i, imm8: i32) -> __m512i {
+    assert!(imm8 >= 0 && imm8 <= 255);
     let imm8 = (imm8 & 0xFF) as u8;
-
     let a = a.as_i32x16();
     let b = b.as_i32x16();
     macro_rules! shuffle4 {
@@ -9316,8 +9322,8 @@ pub unsafe fn _mm512_mask_shuffle_i32x4(
     b: __m512i,
     imm8: i32,
 ) -> __m512i {
+    assert!(imm8 >= 0 && imm8 <= 255);
     let imm8 = (imm8 & 0xFF) as u8;
-
     let a = a.as_i32x16();
     let b = b.as_i32x16();
     macro_rules! shuffle4 {
@@ -9401,8 +9407,8 @@ pub unsafe fn _mm512_maskz_shuffle_i32x4(
     b: __m512i,
     imm8: i32,
 ) -> __m512i {
+    assert!(imm8 >= 0 && imm8 <= 255);
     let imm8 = (imm8 & 0xFF) as u8;
-
     let a = a.as_i32x16();
     let b = b.as_i32x16();
     macro_rules! shuffle4 {
@@ -9482,6 +9488,7 @@ pub unsafe fn _mm512_maskz_shuffle_i32x4(
 #[cfg_attr(test, assert_instr(vshufi64x2, imm8 = 0b10111111))]
 #[rustc_args_required_const(2)]
 pub unsafe fn _mm512_shuffle_i64x2(a: __m512i, b: __m512i, imm8: i32) -> __m512i {
+    assert!(imm8 >= 0 && imm8 <= 255);
     let imm8 = (imm8 & 0xFF) as u8;
     macro_rules! shuffle4 {
         (
@@ -9549,6 +9556,7 @@ pub unsafe fn _mm512_mask_shuffle_i64x2(
     b: __m512i,
     imm8: i32,
 ) -> __m512i {
+    assert!(imm8 >= 0 && imm8 <= 255);
     let imm8 = (imm8 & 0xFF) as u8;
     macro_rules! shuffle4 {
         (
@@ -9617,6 +9625,7 @@ pub unsafe fn _mm512_maskz_shuffle_i64x2(
     b: __m512i,
     imm8: i32,
 ) -> __m512i {
+    assert!(imm8 >= 0 && imm8 <= 255);
     let imm8 = (imm8 & 0xFF) as u8;
     macro_rules! shuffle4 {
         (
@@ -9681,6 +9690,7 @@ pub unsafe fn _mm512_maskz_shuffle_i64x2(
 #[cfg_attr(test, assert_instr(vshuff64x2, imm8 = 0b10111111))] //should be vshuff32x4, but generate vshuff64x2
 #[rustc_args_required_const(2)]
 pub unsafe fn _mm512_shuffle_f32x4(a: __m512, b: __m512, imm8: i32) -> __m512 {
+    assert!(imm8 >= 0 && imm8 <= 255);
     let imm8 = (imm8 & 0xFF) as u8;
     macro_rules! shuffle4 {
         (
@@ -9762,6 +9772,7 @@ pub unsafe fn _mm512_mask_shuffle_f32x4(
     b: __m512,
     imm8: i32,
 ) -> __m512 {
+    assert!(imm8 >= 0 && imm8 <= 255);
     let imm8 = (imm8 & 0xFF) as u8;
     macro_rules! shuffle4 {
         (
@@ -9839,6 +9850,7 @@ pub unsafe fn _mm512_mask_shuffle_f32x4(
 #[cfg_attr(test, assert_instr(vshuff32x4, imm8 = 0b10111111))]
 #[rustc_args_required_const(3)]
 pub unsafe fn _mm512_maskz_shuffle_f32x4(k: __mmask16, a: __m512, b: __m512, imm8: i32) -> __m512 {
+    assert!(imm8 >= 0 && imm8 <= 255);
     let imm8 = (imm8 & 0xFF) as u8;
     macro_rules! shuffle4 {
         (
@@ -9917,6 +9929,7 @@ pub unsafe fn _mm512_maskz_shuffle_f32x4(k: __mmask16, a: __m512, b: __m512, imm
 #[cfg_attr(test, assert_instr(vshuff64x2, imm8 = 0b10111111))]
 #[rustc_args_required_const(2)]
 pub unsafe fn _mm512_shuffle_f64x2(a: __m512d, b: __m512d, imm8: i32) -> __m512d {
+    assert!(imm8 >= 0 && imm8 <= 255);
     let imm8 = (imm8 & 0xFF) as u8;
     macro_rules! shuffle4 {
         (
@@ -9984,6 +9997,7 @@ pub unsafe fn _mm512_mask_shuffle_f64x2(
     b: __m512d,
     imm8: i32,
 ) -> __m512d {
+    assert!(imm8 >= 0 && imm8 <= 255);
     let imm8 = (imm8 & 0xFF) as u8;
     macro_rules! shuffle4 {
         (
@@ -10052,6 +10066,7 @@ pub unsafe fn _mm512_maskz_shuffle_f64x2(
     b: __m512d,
     imm8: i32,
 ) -> __m512d {
+    assert!(imm8 >= 0 && imm8 <= 255);
     let imm8 = (imm8 & 0xFF) as u8;
     macro_rules! shuffle4 {
         (
@@ -10119,6 +10134,7 @@ pub unsafe fn _mm512_maskz_shuffle_f64x2(
 )]
 #[rustc_args_required_const(1)]
 pub unsafe fn _mm512_extractf32x4_ps(a: __m512, imm8: i32) -> __m128 {
+    assert!(imm8 >= 0 && imm8 <= 3);
     match imm8 & 0x3 {
         0 => simd_shuffle4(a, _mm512_undefined_ps(), [0, 1, 2, 3]),
         1 => simd_shuffle4(a, _mm512_undefined_ps(), [4, 5, 6, 7]),
@@ -10237,6 +10253,7 @@ pub unsafe fn _mm512_maskz_movedup_pd(k: __mmask8, a: __m512d) -> __m512d {
 #[cfg_attr(test, assert_instr(vinsertf32x4, imm8 = 2))] //should be vinserti32x4
 #[rustc_args_required_const(2)]
 pub unsafe fn _mm512_inserti32x4(a: __m512i, b: __m128i, imm8: i32) -> __m512i {
+    assert!(imm8 >= 0 && imm8 <= 3);
     let a = a.as_i32x16();
     let b = _mm512_castsi128_si512(b).as_i32x16();
     let ret: i32x16 = match imm8 & 0b11 {
@@ -10274,6 +10291,7 @@ pub unsafe fn _mm512_mask_inserti32x4(
     b: __m128i,
     imm8: i32,
 ) -> __m512i {
+    assert!(imm8 >= 0 && imm8 <= 3);
     let a = a.as_i32x16();
     let b = _mm512_castsi128_si512(b).as_i32x16();
     let insert: i32x16 = match imm8 & 0b11 {
@@ -10305,6 +10323,7 @@ pub unsafe fn _mm512_mask_inserti32x4(
 #[cfg_attr(test, assert_instr(vinserti32x4, imm8 = 2))]
 #[rustc_args_required_const(3)]
 pub unsafe fn _mm512_maskz_inserti32x4(k: __mmask16, a: __m512i, b: __m128i, imm8: i32) -> __m512i {
+    assert!(imm8 >= 0 && imm8 <= 3);
     let a = a.as_i32x16();
     let b = _mm512_castsi128_si512(b).as_i32x16();
     let insert = match imm8 & 0b11 {
@@ -10337,6 +10356,7 @@ pub unsafe fn _mm512_maskz_inserti32x4(k: __mmask16, a: __m512i, b: __m128i, imm
 #[cfg_attr(test, assert_instr(vinsertf64x4, imm8 = 1))] //should be vinserti64x4
 #[rustc_args_required_const(2)]
 pub unsafe fn _mm512_inserti64x4(a: __m512i, b: __m256i, imm8: i32) -> __m512i {
+    assert!(imm8 >= 0 && imm8 <= 1);
     let b = _mm512_castsi256_si512(b);
     match imm8 & 0b1 {
         0 => simd_shuffle8(a, b, [8, 9, 10, 11, 4, 5, 6, 7]),
@@ -10358,6 +10378,7 @@ pub unsafe fn _mm512_mask_inserti64x4(
     b: __m256i,
     imm8: i32,
 ) -> __m512i {
+    assert!(imm8 >= 0 && imm8 <= 1);
     let b = _mm512_castsi256_si512(b);
     let insert = match imm8 & 0b1 {
         0 => simd_shuffle8(a, b, [8, 9, 10, 11, 4, 5, 6, 7]),
@@ -10374,6 +10395,7 @@ pub unsafe fn _mm512_mask_inserti64x4(
 #[cfg_attr(test, assert_instr(vinserti64x4, imm8 = 1))]
 #[rustc_args_required_const(3)]
 pub unsafe fn _mm512_maskz_inserti64x4(k: __mmask8, a: __m512i, b: __m256i, imm8: i32) -> __m512i {
+    assert!(imm8 >= 0 && imm8 <= 1);
     let b = _mm512_castsi256_si512(b);
     let insert = match imm8 & 0b1 {
         0 => simd_shuffle8(a, b, [8, 9, 10, 11, 4, 5, 6, 7]),
@@ -10391,6 +10413,7 @@ pub unsafe fn _mm512_maskz_inserti64x4(k: __mmask8, a: __m512i, b: __m256i, imm8
 #[cfg_attr(test, assert_instr(vinsertf32x4, imm8 = 2))]
 #[rustc_args_required_const(2)]
 pub unsafe fn _mm512_insertf32x4(a: __m512, b: __m128, imm8: i32) -> __m512 {
+    assert!(imm8 >= 0 && imm8 <= 3);
     let b = _mm512_castps128_ps512(b);
     match imm8 & 0b11 {
         0 => simd_shuffle16(
@@ -10426,6 +10449,7 @@ pub unsafe fn _mm512_mask_insertf32x4(
     b: __m128,
     imm8: i32,
 ) -> __m512 {
+    assert!(imm8 >= 0 && imm8 <= 3);
     let b = _mm512_castps128_ps512(b);
     let insert = match imm8 & 0b11 {
         0 => simd_shuffle16(
@@ -10456,6 +10480,7 @@ pub unsafe fn _mm512_mask_insertf32x4(
 #[cfg_attr(test, assert_instr(vinsertf32x4, imm8 = 2))]
 #[rustc_args_required_const(3)]
 pub unsafe fn _mm512_maskz_insertf32x4(k: __mmask16, a: __m512, b: __m128, imm8: i32) -> __m512 {
+    assert!(imm8 >= 0 && imm8 <= 3);
     let b = _mm512_castps128_ps512(b);
     let insert = match imm8 & 0b11 {
         0 => simd_shuffle16(
@@ -10487,6 +10512,7 @@ pub unsafe fn _mm512_maskz_insertf32x4(k: __mmask16, a: __m512, b: __m128, imm8:
 #[cfg_attr(test, assert_instr(vinsertf64x4, imm8 = 1))]
 #[rustc_args_required_const(2)]
 pub unsafe fn _mm512_insertf64x4(a: __m512d, b: __m256d, imm8: i32) -> __m512d {
+    assert!(imm8 >= 0 && imm8 <= 1);
     let b = _mm512_castpd256_pd512(b);
     match imm8 & 0b1 {
         0 => simd_shuffle8(a, b, [8, 9, 10, 11, 4, 5, 6, 7]),
@@ -10508,6 +10534,7 @@ pub unsafe fn _mm512_mask_insertf64x4(
     b: __m256d,
     imm8: i32,
 ) -> __m512d {
+    assert!(imm8 >= 0 && imm8 <= 1);
     let b = _mm512_castpd256_pd512(b);
     let insert = match imm8 & 0b1 {
         0 => simd_shuffle8(a, b, [8, 9, 10, 11, 4, 5, 6, 7]),
@@ -10524,6 +10551,7 @@ pub unsafe fn _mm512_mask_insertf64x4(
 #[cfg_attr(test, assert_instr(vinsertf64x4, imm8 = 1))]
 #[rustc_args_required_const(3)]
 pub unsafe fn _mm512_maskz_insertf64x4(k: __mmask8, a: __m512d, b: __m256d, imm8: i32) -> __m512d {
+    assert!(imm8 >= 0 && imm8 <= 1);
     let b = _mm512_castpd256_pd512(b);
     let insert = match imm8 & 0b1 {
         0 => simd_shuffle8(a, b, [8, 9, 10, 11, 4, 5, 6, 7]),
