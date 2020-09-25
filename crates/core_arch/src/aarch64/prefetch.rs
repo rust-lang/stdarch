@@ -78,7 +78,9 @@ pub unsafe fn _prefetch(p: *const i8, rw: i32, locality: i32) {
                 (1, 1) => prefetch(p, 1, 1, 1),
                 (1, 2) => prefetch(p, 1, 2, 1),
                 (1, 3) => prefetch(p, 1, 3, 1),
-                (_, _) => panic!("Illegal (rw, locality) pair in prefetch, value ({}, {}).", $rdwr, $local),
+                (_, _) => panic!(
+                    "Illegal (rw, locality) pair in prefetch, value ({}, {}).",
+                    $rdwr, $local),
             }
         };
     }
