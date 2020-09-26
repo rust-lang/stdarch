@@ -41,6 +41,24 @@ pub unsafe fn _mm512_setr_epi64(
     transmute(r)
 }
 
+/// Set packed 64-bit integers in dst with the repeated 4 element sequence.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_set4_epi64&expand=4983)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_set4_epi64(d: i64, c: i64, b: i64, a: i64) -> __m512i {
+    _mm512_set_epi64(d, c, b, a, d, c, b, a)
+}
+
+/// Set packed 64-bit integers in dst with the repeated 4 element sequence in reverse order.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_setr4_epi64&expand=5010)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_setr4_epi64(d: i64, c: i64, b: i64, a: i64) -> __m512i {
+    _mm512_set_epi64(a, b, c, d, a, b, c, d)
+}
+
 #[cfg(test)]
 mod tests {
     use std;
@@ -2193,15 +2211,37 @@ mod tests {
         assert_eq_m512d(_mm512_setzero_pd(), _mm512_set1_pd(0.));
     }
 
+    unsafe fn test_mm512_set1_epi64() {
+        let r = _mm512_set_epi64(2, 2, 2, 2, 2, 2, 2, 2);
+        assert_eq_m512i(r, _mm512_set1_epi64(2));
+    }
+
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_set1_pd() {
         let expected = _mm512_set_pd(2., 2., 2., 2., 2., 2., 2., 2.);
         assert_eq_m512d(expected, _mm512_set1_pd(2.));
     }
 
-    unsafe fn test_mm512_set1_epi64() {
-        let r = _mm512_set_epi64(2, 2, 2, 2, 2, 2, 2, 2);
-        assert_eq_m512i(r, _mm512_set1_epi64(2));
+    unsafe fn test_mm512_set4_epi64() {
+        let r = _mm512_set_epi64(4, 3, 2, 1, 4, 3, 2, 1);
+        assert_eq_m512i(r, _mm512_set4_epi64(4, 3, 2, 1));
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_set4_pd() {
+        let r = _mm512_set_pd(4., 3., 2., 1., 4., 3., 2., 1.);
+        assert_eq_m512d(r, _mm512_set4_pd(4., 3., 2., 1.));
+    }
+
+    unsafe fn test_mm512_setr4_epi64() {
+        let r = _mm512_set_epi64(4, 3, 2, 1, 4, 3, 2, 1);
+        assert_eq_m512i(r, _mm512_setr4_epi64(1, 2, 3, 4));
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_setr4_pd() {
+        let r = _mm512_set_pd(4., 3., 2., 1., 4., 3., 2., 1.);
+        assert_eq_m512d(r, _mm512_setr4_pd(1., 2., 3., 4.));
     }
 
     #[simd_test(enable = "avx512f")]

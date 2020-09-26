@@ -6087,6 +6087,60 @@ pub unsafe fn _mm512_set_epi16(
     transmute(r)
 }
 
+/// Set packed 32-bit integers in dst with the repeated 4 element sequence.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_set4_epi32&expand=4982)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_set4_epi32(d: i32, c: i32, b: i32, a: i32) -> __m512i {
+    _mm512_set_epi32(d, c, b, a, d, c, b, a, d, c, b, a, d, c, b, a)
+}
+
+/// Set packed single-precision (32-bit) floating-point elements in dst with the repeated 4 element sequence.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_set4_ps&expand=4985)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_set4_ps(d: f32, c: f32, b: f32, a: f32) -> __m512 {
+    _mm512_set_ps(d, c, b, a, d, c, b, a, d, c, b, a, d, c, b, a)
+}
+
+/// Set packed double-precision (64-bit) floating-point elements in dst with the repeated 4 element sequence.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_set4_pd&expand=4984)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_set4_pd(d: f64, c: f64, b: f64, a: f64) -> __m512d {
+    _mm512_set_pd(d, c, b, a, d, c, b, a)
+}
+
+/// Set packed 32-bit integers in dst with the repeated 4 element sequence in reverse order.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_setr4_epi32&expand=5009)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_setr4_epi32(d: i32, c: i32, b: i32, a: i32) -> __m512i {
+    _mm512_set_epi32(a, b, c, d, a, b, c, d, a, b, c, d, a, b, c, d)
+}
+
+/// Set packed single-precision (32-bit) floating-point elements in dst with the repeated 4 element sequence in reverse order.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_setr4_ps&expand=5012)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_setr4_ps(d: f32, c: f32, b: f32, a: f32) -> __m512 {
+    _mm512_set_ps(a, b, c, d, a, b, c, d, a, b, c, d, a, b, c, d)
+}
+
+/// Set packed double-precision (64-bit) floating-point elements in dst with the repeated 4 element sequence in reverse order.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_setr4_pd&expand=5011)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_setr4_pd(d: f64, c: f64, b: f64, a: f64) -> __m512d {
+    _mm512_set_pd(a, b, c, d, a, b, c, d)
+}
+
 /// Gather double-precision (64-bit) floating-point elements from memory using 32-bit indices.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_i32gather_pd)
@@ -18780,6 +18834,30 @@ mod tests {
         let expected = _mm512_set_ps(2., 2., 2., 2., 2., 2., 2., 2.,
                                      2., 2., 2., 2., 2., 2., 2., 2.);
         assert_eq_m512(expected, _mm512_set1_ps(2.));
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_set4_epi32() {
+        let r = _mm512_set_epi32(4, 3, 2, 1, 4, 3, 2, 1, 4, 3, 2, 1, 4, 3, 2, 1);
+        assert_eq_m512i(r, _mm512_set4_epi32(4, 3, 2, 1));
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_set4_ps() {
+        let r = _mm512_set_ps(4., 3., 2., 1., 4., 3., 2., 1., 4., 3., 2., 1., 4., 3., 2., 1.);
+        assert_eq_m512(r, _mm512_set4_ps(4., 3., 2., 1.));
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_setr4_epi32() {
+        let r = _mm512_set_epi32(4, 3, 2, 1, 4, 3, 2, 1, 4, 3, 2, 1, 4, 3, 2, 1);
+        assert_eq_m512i(r, _mm512_setr4_epi32(1, 2, 3, 4));
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_setr4_ps() {
+        let r = _mm512_set_ps(4., 3., 2., 1., 4., 3., 2., 1., 4., 3., 2., 1., 4., 3., 2., 1.);
+        assert_eq_m512(r, _mm512_setr4_ps(1., 2., 3., 4.));
     }
 
     #[simd_test(enable = "avx512f")]
