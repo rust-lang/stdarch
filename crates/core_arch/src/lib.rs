@@ -38,7 +38,6 @@
     external_doc,
     allow_internal_unstable,
     decl_macro,
-    const_fn_transmute
 )]
 #![cfg_attr(test, feature(test, abi_vectorcall, untagged_unions))]
 #![cfg_attr(all(test, target_arch = "wasm32"), feature(wasm_simd))]
