@@ -11512,6 +11512,76 @@ pub unsafe fn _mm512_maskz_alignr_epi32(k: __mmask16, a: __m512i, b: __m512i, im
     transmute(simd_select_bitmask(k, r, zero))
 }
 
+/// Concatenate a and b into a 128-byte immediate result, shift the result right by imm8 64-bit elements, and store the low 64 bytes (8 elements) in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_alignr_epi64&expand=254)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(valignq, imm8 = 1))]
+#[rustc_args_required_const(2)]
+pub unsafe fn _mm512_alignr_epi64(a: __m512i, b: __m512i, imm8: i32) -> __m512i {
+    assert!(imm8 >= 0 && imm8 <= 255);
+    let imm8: i32 = imm8 % 8;
+    let r: i64x8 = match imm8 {
+        0 =>  simd_shuffle8(a, b, [8,  9,  10, 11, 12, 13, 14, 15]),
+        1 =>  simd_shuffle8(a, b, [9,  10, 11, 12, 13, 14, 15,  0]),
+        2 =>  simd_shuffle8(a, b, [10, 11, 12, 13, 14, 15,  0,  1]),
+        3 =>  simd_shuffle8(a, b, [11, 12, 13, 14, 15,  0,  1,  2]),
+        4 =>  simd_shuffle8(a, b, [12, 13, 14, 15,  0,  1,  2,  3]),
+        5 =>  simd_shuffle8(a, b, [13, 14, 15,  0,  1,  2,  3,  4]),
+        6 =>  simd_shuffle8(a, b, [14, 15,  0,  1,  2,  3,  4,  5]),
+        _ =>  simd_shuffle8(a, b, [15,  0,  1,  2,  3,  4,  5,  6]),
+    };
+    transmute(r)
+}
+
+/// Concatenate a and b into a 128-byte immediate result, shift the result right by imm8 64-bit elements, and store the low 64 bytes (8 elements) in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_alignr_epi64&expand=255)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(valignq, imm8 = 1))]
+#[rustc_args_required_const(4)]
+pub unsafe fn _mm512_mask_alignr_epi64(src: __m512i, k: __mmask8, a: __m512i, b: __m512i, imm8: i32) -> __m512i {
+    assert!(imm8 >= 0 && imm8 <= 255);
+    let imm8: i32 = imm8 % 8;
+    let r: i64x8 = match imm8 {
+        0 =>  simd_shuffle8(a, b, [8,  9,  10, 11, 12, 13, 14, 15]),
+        1 =>  simd_shuffle8(a, b, [9,  10, 11, 12, 13, 14, 15,  0]),
+        2 =>  simd_shuffle8(a, b, [10, 11, 12, 13, 14, 15,  0,  1]),
+        3 =>  simd_shuffle8(a, b, [11, 12, 13, 14, 15,  0,  1,  2]),
+        4 =>  simd_shuffle8(a, b, [12, 13, 14, 15,  0,  1,  2,  3]),
+        5 =>  simd_shuffle8(a, b, [13, 14, 15,  0,  1,  2,  3,  4]),
+        6 =>  simd_shuffle8(a, b, [14, 15,  0,  1,  2,  3,  4,  5]),
+        _ =>  simd_shuffle8(a, b, [15,  0,  1,  2,  3,  4,  5,  6]),
+    };
+    transmute(simd_select_bitmask(k, r, src.as_i64x8()))
+}
+
+/// Concatenate a and b into a 128-byte immediate result, shift the result right by imm8 64-bit elements, and stores the low 64 bytes (8 elements) in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_alignr_epi64&expand=256)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(valignq, imm8 = 1))]
+#[rustc_args_required_const(3)]
+pub unsafe fn _mm512_maskz_alignr_epi64(k: __mmask8, a: __m512i, b: __m512i, imm8: i32) -> __m512i {
+    assert!(imm8 >= 0 && imm8 <= 255);
+    let imm8: i32 = imm8 % 8;
+    let r: i64x8 = match imm8 {
+        0 =>  simd_shuffle8(a, b, [8,  9,  10, 11, 12, 13, 14, 15]),
+        1 =>  simd_shuffle8(a, b, [9,  10, 11, 12, 13, 14, 15,  0]),
+        2 =>  simd_shuffle8(a, b, [10, 11, 12, 13, 14, 15,  0,  1]),
+        3 =>  simd_shuffle8(a, b, [11, 12, 13, 14, 15,  0,  1,  2]),
+        4 =>  simd_shuffle8(a, b, [12, 13, 14, 15,  0,  1,  2,  3]),
+        5 =>  simd_shuffle8(a, b, [13, 14, 15,  0,  1,  2,  3,  4]),
+        6 =>  simd_shuffle8(a, b, [14, 15,  0,  1,  2,  3,  4,  5]),
+        _ =>  simd_shuffle8(a, b, [15,  0,  1,  2,  3,  4,  5,  6]),
+    };
+    let zero = _mm512_setzero_si512().as_i64x8();
+    transmute(simd_select_bitmask(k, r, zero))
+}
+
 /// Compute the bitwise AND of packed 32-bit integers in a and b, and store the results in dst.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_and_epi32&expand=272)
