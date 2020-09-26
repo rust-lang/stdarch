@@ -10972,6 +10972,32 @@ pub unsafe fn _mm512_castps256_ps512(a: __m256) -> __m512 {
     )
 }
 
+/// Cast vector of type __m128 to type __m512; the upper 384 bits of the result are zeroed. This intrinsic is only used for compilation and does not generate any instructions, thus it has zero latency.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_zextps128_ps512&expand=6196)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_zextps128_ps512(a: __m128) -> __m512 {
+    simd_shuffle16(
+        a,
+        _mm_set1_ps(0.),
+        [0, 1, 2, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
+    )
+}
+
+/// Cast vector of type __m256 to type __m512; the upper 256 bits of the result are zeroed. This intrinsic is only used for compilation and does not generate any instructions, thus it has zero latency.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_zextps256_ps512&expand=6197)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_zextps256_ps512(a: __m256) -> __m512 {
+    simd_shuffle16(
+        a,
+        _mm256_set1_ps(0.),
+        [0, 1, 2, 3, 4, 5, 6, 7, 8, 8, 8, 8, 8, 8, 8, 8],
+    )
+}
+
 /// Cast vector of type __m512 to type __m128. This intrinsic is only used for compilation and does not generate any instructions, thus it has zero latency.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_castps512_ps128&expand=624)
@@ -11026,6 +11052,24 @@ pub unsafe fn _mm512_castpd256_pd512(a: __m256d) -> __m512d {
     simd_shuffle8(a, _mm256_set1_pd(-1.), [0, 1, 2, 3, 4, 4, 4, 4])
 }
 
+/// Cast vector of type __m128d to type __m512d; the upper 384 bits of the result are zeroed. This intrinsic is only used for compilation and does not generate any instructions, thus it has zero latency.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_zextpd128_pd512&expand=6193)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_zextpd128_pd512(a: __m128d) -> __m512d {
+    simd_shuffle8(a, _mm_set1_pd(0.), [0, 1, 2, 2, 2, 2, 2, 2])
+}
+
+/// Cast vector of type __m256d to type __m512d; the upper 256 bits of the result are zeroed. This intrinsic is only used for compilation and does not generate any instructions, thus it has zero latency.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_zextpd256_pd512&expand=6194)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_zextpd256_pd512(a: __m256d) -> __m512d {
+    simd_shuffle8(a, _mm256_set1_pd(0.), [0, 1, 2, 3, 4, 4, 4, 4])
+}
+
 /// Cast vector of type __m512d to type __m128d. This intrinsic is only used for compilation and does not generate any instructions, thus it has zero latency.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_castpd512_pd128&expand=612)
@@ -11078,6 +11122,24 @@ pub unsafe fn _mm512_castsi128_si512(a: __m128i) -> __m512i {
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_castsi256_si512(a: __m256i) -> __m512i {
     simd_shuffle8(a, _mm256_set1_epi64x(-1), [0, 1, 2, 3, 4, 4, 4, 4])
+}
+
+/// Cast vector of type __m128i to type __m512i; the upper 384 bits of the result are zeroed. This intrinsic is only used for compilation and does not generate any instructions, thus it has zero latency.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_zextsi128_si512&expand=6199)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_zextsi128_si512(a: __m128i) -> __m512i {
+    simd_shuffle8(a, _mm_set1_epi64x(0), [0, 1, 2, 2, 2, 2, 2, 2])
+}
+
+/// Cast vector of type __m256i to type __m512i; the upper 256 bits of the result are zeroed. This intrinsic is only used for compilation and does not generate any instructions, thus it has zero latency.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_zextsi256_si512&expand=6200)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_zextsi256_si512(a: __m256i) -> __m512i {
+    simd_shuffle8(a, _mm256_set1_epi64x(0), [0, 1, 2, 3, 4, 4, 4, 4])
 }
 
 /// Cast vector of type __m512i to type __m128i. This intrinsic is only used for compilation and does not generate any instructions, thus it has zero latency.
@@ -19895,6 +19957,26 @@ mod tests {
         let r = _mm512_castps256_ps512(a);
         let e = _mm512_setr_ps(
             17., 18., 19., 20., 21., 22., 23., 24., -1., -1., -1., -1., -1., -1., -1., -1.,
+        );
+        assert_eq_m512(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_zextps128_ps512() {
+        let a = _mm_setr_ps(17., 18., 19., 20.);
+        let r = _mm512_zextps128_ps512(a);
+        let e = _mm512_setr_ps(
+            17., 18., 19., 20., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,
+        );
+        assert_eq_m512(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_zextps256_ps512() {
+        let a = _mm256_setr_ps(17., 18., 19., 20., 21., 22., 23., 24.);
+        let r = _mm512_zextps256_ps512(a);
+        let e = _mm512_setr_ps(
+            17., 18., 19., 20., 21., 22., 23., 24., 0., 0., 0., 0., 0., 0., 0., 0.,
         );
         assert_eq_m512(r, e);
     }
