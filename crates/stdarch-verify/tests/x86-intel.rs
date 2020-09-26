@@ -290,6 +290,8 @@ fn verify_all_signatures() {
                 "_fxrstor64",
                 "_mm512_undefined_ps",
                 "_mm512_undefined_pd",
+                "_mm512_undefined_epi32",
+                "_mm512_undefined",
             ];
             if !skip.contains(&rust.name) {
                 println!(

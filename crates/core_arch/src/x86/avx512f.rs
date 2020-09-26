@@ -5900,6 +5900,17 @@ pub unsafe fn _mm512_setzero_ps() -> __m512 {
     mem::zeroed()
 }
 
+/// Return vector of type __m512 with all elements set to zero.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_setzero&expand=5014)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vxorps))]
+pub unsafe fn _mm512_setzero() -> __m512 {
+    // All-0 is a properly initialized __m512
+    mem::zeroed()
+}
+
 /// Returns vector of type `__m512i` with all elements set to zero.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#avx512techs=AVX512F&expand=33,34,4990&text=_mm512_setzero_si512)
@@ -5907,6 +5918,17 @@ pub unsafe fn _mm512_setzero_ps() -> __m512 {
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vxorps))]
 pub unsafe fn _mm512_setzero_si512() -> __m512i {
+    // All-0 is a properly initialized __m512i
+    mem::zeroed()
+}
+
+/// Return vector of type __m512i with all elements set to zero.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_setzero_epi32&expand=5015)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vxorps))]
+pub unsafe fn _mm512_setzero_epi32() -> __m512i {
     // All-0 is a properly initialized __m512i
     mem::zeroed()
 }
@@ -13538,7 +13560,7 @@ pub unsafe fn _mm512_mask_cmp_epi64_mask(
 #[target_feature(enable = "avx512f")]
 // This intrinsic has no corresponding instruction.
 pub unsafe fn _mm512_undefined_pd() -> __m512d {
-    _mm512_set1_pd(0.0)
+    _mm512_set1_pd(-1.0) //org is 0.0, but I think -1.0 is better
 }
 
 /// Returns vector of type `__m512` with undefined elements.
@@ -13548,7 +13570,27 @@ pub unsafe fn _mm512_undefined_pd() -> __m512d {
 #[target_feature(enable = "avx512f")]
 // This intrinsic has no corresponding instruction.
 pub unsafe fn _mm512_undefined_ps() -> __m512 {
-    _mm512_set1_ps(0.0)
+    _mm512_set1_ps(-1.0) //org is 0.0, but I think -1.0 is better
+}
+
+/// Return vector of type __m512i with undefined elements.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_undefined_epi32&expand=5995)
+#[inline]
+#[target_feature(enable = "avx512f")]
+// This intrinsic has no corresponding instruction.
+pub unsafe fn _mm512_undefined_epi32() -> __m512i {
+    _mm512_set1_epi32(-1)
+}
+
+/// Return vector of type __m512 with undefined elements.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_undefined&expand=5994)
+#[inline]
+#[target_feature(enable = "avx512f")]
+// This intrinsic has no corresponding instruction.
+pub unsafe fn _mm512_undefined() -> __m512 {
+    _mm512_set1_ps(-1.0)
 }
 
 /// Loads 512-bits (composed of 8 packed double-precision (64-bit)
@@ -18520,6 +18562,11 @@ mod tests {
     }
 
     #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_setzero_epi32() {
+        assert_eq_m512i(_mm512_set1_epi32(0), _mm512_setzero_epi32());
+    }
+
+    #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_set_ps() {
         let r = _mm512_setr_ps(
             0., 1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15.,
@@ -18556,6 +18603,11 @@ mod tests {
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_setzero_ps() {
         assert_eq_m512(_mm512_setzero_ps(), _mm512_set1_ps(0.));
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_setzero() {
+        assert_eq_m512(_mm512_setzero(), _mm512_set1_ps(0.));
     }
 
     #[simd_test(enable = "avx512f")]
