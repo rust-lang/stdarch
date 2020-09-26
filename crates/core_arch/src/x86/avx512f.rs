@@ -5961,6 +5961,132 @@ pub unsafe fn _mm512_setr_epi32(
     transmute(r)
 }
 
+/// Set packed 8-bit integers in dst with the supplied values.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_set_epi8&expand=4915)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_set_epi8(
+    e63: i8,
+    e62: i8,
+    e61: i8,
+    e60: i8,
+    e59: i8,
+    e58: i8,
+    e57: i8,
+    e56: i8,
+    e55: i8,
+    e54: i8,
+    e53: i8,
+    e52: i8,
+    e51: i8,
+    e50: i8,
+    e49: i8,
+    e48: i8,
+    e47: i8,
+    e46: i8,
+    e45: i8,
+    e44: i8,
+    e43: i8,
+    e42: i8,
+    e41: i8,
+    e40: i8,
+    e39: i8,
+    e38: i8,
+    e37: i8,
+    e36: i8,
+    e35: i8,
+    e34: i8,
+    e33: i8,
+    e32: i8,
+    e31: i8,
+    e30: i8,
+    e29: i8,
+    e28: i8,
+    e27: i8,
+    e26: i8,
+    e25: i8,
+    e24: i8,
+    e23: i8,
+    e22: i8,
+    e21: i8,
+    e20: i8,
+    e19: i8,
+    e18: i8,
+    e17: i8,
+    e16: i8,
+    e15: i8,
+    e14: i8,
+    e13: i8,
+    e12: i8,
+    e11: i8,
+    e10: i8,
+    e9: i8,
+    e8: i8,
+    e7: i8,
+    e6: i8,
+    e5: i8,
+    e4: i8,
+    e3: i8,
+    e2: i8,
+    e1: i8,
+    e0: i8,
+) -> __m512i {
+    let r = i8x64(
+        e63, e62, e61, e60, e59, e58, e57, e56, e55, e54, e53, e52, e51, e50, e49, e48,
+        e47, e46, e45, e44, e43, e42, e41, e40, e39, e38, e37, e36, e35, e34, e33, e32,
+        e31, e30, e29, e28, e27, e26, e25, e24, e23, e22, e21, e20, e19, e18, e17, e16,
+        e15, e14, e13, e12, e11, e10, e9, e8, e7, e6, e5, e4, e3, e2, e1, e0,
+    );
+    transmute(r)
+}
+
+/// Set packed 16-bit integers in dst with the supplied values.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_set_epi16&expand=4905)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_set_epi16(
+    e31: i16,
+    e30: i16,
+    e29: i16,
+    e28: i16,
+    e27: i16,
+    e26: i16,
+    e25: i16,
+    e24: i16,
+    e23: i16,
+    e22: i16,
+    e21: i16,
+    e20: i16,
+    e19: i16,
+    e18: i16,
+    e17: i16,
+    e16: i16,
+    e15: i16,
+    e14: i16,
+    e13: i16,
+    e12: i16,
+    e11: i16,
+    e10: i16,
+    e9: i16,
+    e8: i16,
+    e7: i16,
+    e6: i16,
+    e5: i16,
+    e4: i16,
+    e3: i16,
+    e2: i16,
+    e1: i16,
+    e0: i16,
+) -> __m512i {
+    let r = i16x32(
+        e31, e30, e29, e28, e27, e26, e25, e24, e23, e22, e21, e20, e19, e18, e17, e16,
+        e15, e14, e13, e12, e11, e10, e9, e8, e7, e6, e5, e4, e3, e2, e1, e0,
+    );
+    transmute(r)
+}
+
 /// Gather double-precision (64-bit) floating-point elements from memory using 32-bit indices.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_i32gather_pd)
@@ -12205,6 +12331,24 @@ pub unsafe fn _mm512_set_epi32(
     _mm512_setr_epi32(
         e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15,
     )
+}
+
+/// Broadcast 8-bit integer a to all elements of dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_set1_epi8&expand=4972)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_set1_epi8(a: i8) -> __m512i {
+    transmute(i8x64::splat(a))
+}
+
+/// Broadcast the low packed 16-bit integer from a to all all elements of dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_set1_epi16&expand=4944)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_set1_epi16(a: i16) -> __m512i {
+    transmute(i16x32::splat(a))
 }
 
 /// Broadcast 32-bit integer `a` to all elements of `dst`.
@@ -18533,6 +18677,28 @@ mod tests {
     }
 
     #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_set_epi8() {
+        let r = _mm512_set1_epi8(2);
+        assert_eq_m512i(
+            r,
+            _mm512_set_epi8(2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+                            2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+                            2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+                            2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2),
+        )
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_set_epi16() {
+        let r = _mm512_set1_epi16(2);
+        assert_eq_m512i(
+            r,
+            _mm512_set_epi16(2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+                             2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2),
+        )
+    }
+
+    #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_set_epi32() {
         let r = _mm512_setr_epi32(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
         assert_eq_m512i(
@@ -18548,6 +18714,22 @@ mod tests {
             r,
             _mm512_setr_epi32(15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0),
         )
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_set1_epi8() {
+        let r = _mm512_set_epi8(2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+                                2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+                                2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+                                2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2);
+        assert_eq_m512i(r, _mm512_set1_epi8(2));
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_set1_epi16() {
+        let r = _mm512_set_epi16(2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+                                 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2);
+        assert_eq_m512i(r, _mm512_set1_epi16(2));
     }
 
     #[simd_test(enable = "avx512f")]
