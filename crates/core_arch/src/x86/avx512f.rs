@@ -5964,6 +5964,96 @@ pub unsafe fn _mm512_maskz_cvtsepi32_epi8(k: __mmask16, a: __m512i) -> __m128i {
     transmute(vpmovsdb(a.as_i32x16(), _mm_setzero_si128().as_i8x16(), k))
 }
 
+/// Convert packed signed 64-bit integers in a to packed 32-bit integers with signed saturation, and store the results in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_cvtsepi64_epi32&expand=1852)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vpmovsqd))]
+pub unsafe fn _mm512_cvtsepi64_epi32(a: __m512i) -> __m256i {
+    transmute(vpmovsqd(a.as_i64x8(), _mm256_setzero_si256().as_i32x8(), 0b11111111))
+}
+
+/// Convert packed signed 64-bit integers in a to packed 32-bit integers with signed saturation, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_cvtsepi64_epi32&expand=1853)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vpmovsqd))]
+pub unsafe fn _mm512_mask_cvtsepi64_epi32(src: __m256i, k: __mmask8, a: __m512i) -> __m256i {
+    transmute(vpmovsqd(a.as_i64x8(), src.as_i32x8(), k))
+}
+
+/// Convert packed signed 64-bit integers in a to packed 32-bit integers with signed saturation, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_cvtsepi64_epi32&expand=1854)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vpmovsqd))]
+pub unsafe fn _mm512_maskz_cvtsepi64_epi32(k: __mmask8, a: __m512i) -> __m256i {
+    transmute(vpmovsqd(a.as_i64x8(), _mm256_setzero_si256().as_i32x8(), k))
+}
+
+/// Convert packed signed 64-bit integers in a to packed 16-bit integers with signed saturation, and store the results in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_cvtsepi64_epi16&expand=1843)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vpmovsqw))]
+pub unsafe fn _mm512_cvtsepi64_epi16(a: __m512i) -> __m128i {
+    transmute(vpmovsqw(a.as_i64x8(), _mm_setzero_si128().as_i16x8(), 0b11111111))
+}
+
+/// Convert packed signed 64-bit integers in a to packed 16-bit integers with signed saturation, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_cvtsepi64_epi16&expand=1844)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vpmovsqw))]
+pub unsafe fn _mm512_mask_cvtsepi64_epi16(src: __m128i, k: __mmask8, a: __m512i) -> __m128i {
+    transmute(vpmovsqw(a.as_i64x8(), src.as_i16x8(), k))
+}
+
+/// Convert packed signed 64-bit integers in a to packed 16-bit integers with signed saturation, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_cvtsepi64_epi16&expand=1845)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vpmovsqw))]
+pub unsafe fn _mm512_maskz_cvtsepi64_epi16(k: __mmask8, a: __m512i) -> __m128i {
+    transmute(vpmovsqw(a.as_i64x8(), _mm_setzero_si128().as_i16x8(), k))
+}
+
+/// Convert packed signed 64-bit integers in a to packed 8-bit integers with signed saturation, and store the results in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_cvtsepi64_epi8&expand=1861)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vpmovsqb))]
+pub unsafe fn _mm512_cvtsepi64_epi8(a: __m512i) -> __m128i {
+    transmute(vpmovsqb(a.as_i64x8(), _mm_setzero_si128().as_i8x16(), 0b11111111))
+}
+
+/// Convert packed signed 64-bit integers in a to packed 8-bit integers with signed saturation, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_cvtsepi64_epi8&expand=1862)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vpmovsqb))]
+pub unsafe fn _mm512_mask_cvtsepi64_epi8(src: __m128i, k: __mmask8, a: __m512i) -> __m128i {
+    transmute(vpmovsqb(a.as_i64x8(), src.as_i8x16(), k))
+}
+
+/// Convert packed signed 64-bit integers in a to packed 8-bit integers with signed saturation, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_cvtsepi64_epi8&expand=1863)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vpmovsqb))]
+pub unsafe fn _mm512_maskz_cvtsepi64_epi8(k: __mmask8, a: __m512i) -> __m128i {
+    transmute(vpmovsqb(a.as_i64x8(), _mm_setzero_si128().as_i8x16(), k))
+}
+
 /// Convert packed single-precision (32-bit) floating-point elements in a to packed 32-bit integers, and store the results in dst.
 ///
 /// Rounding is done according to the rounding\[3:0\] parameter, which can be one of:
@@ -15025,6 +15115,12 @@ extern "C" {
     fn vpmovsdw(a: i32x16, src: i16x16, mask: u16) -> i16x16;
     #[link_name = "llvm.x86.avx512.mask.pmovs.db.512"]
     fn vpmovsdb(a: i32x16, src: i8x16, mask: u16) -> i8x16;
+    #[link_name = "llvm.x86.avx512.mask.pmovs.qd.512"]
+    fn vpmovsqd(a: i64x8, src: i32x8, mask: u8) -> i32x8;
+    #[link_name = "llvm.x86.avx512.mask.pmovs.qw.512"]
+    fn vpmovsqw(a: i64x8, src: i16x8, mask: u8) -> i16x8;
+    #[link_name = "llvm.x86.avx512.mask.pmovs.qb.512"]
+    fn vpmovsqb(a: i64x8, src: i8x16, mask: u8) -> i8x16;
 
     #[link_name = "llvm.x86.avx512.gather.dpd.512"]
     fn vgatherdpd(src: f64x8, slice: *const i8, offsets: i32x8, mask: i8, scale: i32) -> f64x8;
