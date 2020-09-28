@@ -1434,6 +1434,111 @@ mod tests {
     }
 
     #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_cvtepi64_epi32() {
+        let a = _mm512_set_epi64(
+            8, 9, 10, 11, 12, 13, 14, 15,
+        );
+        let r = _mm512_cvtepi64_epi32(a);
+        let e = _mm256_set_epi32(8, 9, 10, 11, 12, 13, 14, 15);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_cvtepi64_epi32() {
+        let a = _mm512_set_epi64(
+            8, 9, 10, 11, 12, 13, 14, 15,
+        );
+        let src = _mm256_set1_epi32(-1);
+        let r = _mm512_mask_cvtepi64_epi32(src, 0, a);
+        assert_eq_m256i(r, src);
+        let r = _mm512_mask_cvtepi64_epi32(src, 0b00001111, a);
+        let e = _mm256_set_epi32(-1, -1, -1, -1, 12, 13, 14, 15);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_maskz_cvtepi64_epi32() {
+        let a = _mm512_set_epi64(
+            8, 9, 10, 11, 12, 13, 14, 15,
+        );
+        let r = _mm512_maskz_cvtepi64_epi32(0, a);
+        assert_eq_m256i(r, _mm256_setzero_si256());
+        let r = _mm512_maskz_cvtepi64_epi32(0b00001111, a);
+        let e = _mm256_set_epi32(0, 0, 0, 0, 12, 13, 14, 15);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_cvtepi64_epi16() {
+        let a = _mm512_set_epi64(
+            8, 9, 10, 11, 12, 13, 14, 15,
+        );
+        let r = _mm512_cvtepi64_epi16(a);
+        let e = _mm_set_epi16(8, 9, 10, 11, 12, 13, 14, 15);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_cvtepi64_epi16() {
+        let a = _mm512_set_epi64(
+            8, 9, 10, 11, 12, 13, 14, 15,
+        );
+        let src = _mm_set1_epi16(-1);
+        let r = _mm512_mask_cvtepi64_epi16(src, 0, a);
+        assert_eq_m128i(r, src);
+        let r = _mm512_mask_cvtepi64_epi16(src, 0b00001111, a);
+        let e = _mm_set_epi16(-1, -1, -1, -1, 12, 13, 14, 15);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_maskz_cvtepi64_epi16() {
+        let a = _mm512_set_epi64(
+            8, 9, 10, 11, 12, 13, 14, 15,
+        );
+        let r = _mm512_maskz_cvtepi64_epi16(0, a);
+        assert_eq_m128i(r, _mm_setzero_si128());
+        let r = _mm512_maskz_cvtepi64_epi16(0b00001111, a);
+        let e = _mm_set_epi16(0, 0, 0, 0, 12, 13, 14, 15);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_cvtepi64_epi8() {
+        let a = _mm512_set_epi64(
+            8, 9, 10, 11, 12, 13, 14, 15,
+        );
+        let r = _mm512_cvtepi64_epi8(a);
+        let e = _mm_set_epi8(0, 0, 0, 0, 0, 0, 0, 0, 8, 9, 10, 11, 12, 13, 14, 15);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_cvtepi64_epi8() {
+        let a = _mm512_set_epi64(
+            8, 9, 10, 11, 12, 13, 14, 15,
+        );
+        let src = _mm_set_epi8(0, 0, 0, 0, 0, 0, 0, 0, -1, -1, -1, -1, -1, -1, -1, -1);
+        let r = _mm512_mask_cvtepi64_epi8(src, 0, a);
+        assert_eq_m128i(r, src);
+        let r = _mm512_mask_cvtepi64_epi8(src, 0b00001111, a);
+        let e = _mm_set_epi8(0, 0, 0, 0, 0, 0, 0, 0, -1, -1, -1, -1, 12, 13, 14, 15);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_maskz_cvtepi64_epi8() {
+        let a = _mm512_set_epi64(
+            8, 9, 10, 11, 12, 13, 14, 15,
+        );
+        let r = _mm512_maskz_cvtepi64_epi8(0, a);
+        assert_eq_m128i(r, _mm_setzero_si128());
+        let r = _mm512_maskz_cvtepi64_epi8(0b00001111, a);
+        let e = _mm_set_epi8(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, 13, 14, 15);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_cvtt_roundpd_epi32() {
         let a = _mm512_setr_pd(0., -1.5, 2., -3.5, 4., -5.5, 6., -7.5);
         let r = _mm512_cvtt_roundpd_epi32(a, _MM_FROUND_NO_EXC);
