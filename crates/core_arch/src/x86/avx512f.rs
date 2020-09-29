@@ -5214,6 +5214,36 @@ pub unsafe fn _mm512_maskz_cvtps_pd(k: __mmask8, a: __m256) -> __m512d {
     ))
 }
 
+/// Performs element-by-element conversion of the lower half of packed single-precision (32-bit) floating-point elements in v2 to packed double-precision (64-bit) floating-point elements, storing the results in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_cvtpslo_pd&expand=1784)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vcvtps2pd))]
+pub unsafe fn _mm512_cvtpslo_pd(v2: __m512) -> __m512d {
+    transmute(vcvtps2pd(
+        _mm512_castps512_ps256(v2).as_f32x8(),
+        _mm512_setzero_pd().as_f64x8(),
+        0b11111111,
+        _MM_FROUND_CUR_DIRECTION,
+    ))
+}
+
+/// Performs element-by-element conversion of the lower half of packed single-precision (32-bit) floating-point elements in v2 to packed double-precision (64-bit) floating-point elements, storing the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_cvtpslo_pd&expand=1785)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vcvtps2pd))]
+pub unsafe fn _mm512_mask_cvtpslo_pd(src: __m512d, k: __mmask8, v2: __m512) -> __m512d {
+    transmute(vcvtps2pd(
+        _mm512_castps512_ps256(v2).as_f32x8(),
+        src.as_f64x8(),
+        k,
+        _MM_FROUND_CUR_DIRECTION,
+    ))
+}
+
 /// Convert packed double-precision (64-bit) floating-point elements in a to packed single-precision (32-bit) floating-point elements, and store the results in dst.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_cvtpd_ps&expand=1712)
@@ -5257,6 +5287,38 @@ pub unsafe fn _mm512_maskz_cvtpd_ps(k: __mmask8, a: __m512d) -> __m256 {
         k,
         _MM_FROUND_CUR_DIRECTION,
     ))
+}
+
+/// Performs an element-by-element conversion of packed double-precision (64-bit) floating-point elements in v2 to single-precision (32-bit) floating-point elements and stores them in dst. The elements are stored in the lower half of the results vector, while the remaining upper half locations are set to 0.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_cvtpd_pslo&expand=1715)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vcvtpd2ps))]
+pub unsafe fn _mm512_cvtpd_pslo(v2: __m512d) -> __m512 {
+    let r: f32x8 = vcvtpd2ps(
+        v2.as_f64x8(),
+        _mm256_setzero_ps().as_f32x8(),
+        0b11111111,
+        _MM_FROUND_CUR_DIRECTION,
+    );
+    simd_shuffle16(r, _mm256_setzero_ps().as_f32x8(), [0, 1, 2, 3, 4, 5, 6, 7, 8, 8, 8, 8, 8, 8, 8, 8])
+}
+
+/// Performs an element-by-element conversion of packed double-precision (64-bit) floating-point elements in v2 to single-precision (32-bit) floating-point elements and stores them in dst using writemask k (elements are copied from src when the corresponding mask bit is not set). The elements are stored in the lower half of the results vector, while the remaining upper half locations are set to 0.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_cvtpd_pslo&expand=1716)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vcvtpd2ps))]
+pub unsafe fn _mm512_mask_cvtpd_pslo(src: __m512, k: __mmask8, v2: __m512d) -> __m512 {
+    let r: f32x8 = vcvtpd2ps(
+        v2.as_f64x8(),
+        _mm512_castps512_ps256(src).as_f32x8(),
+        k,
+        _MM_FROUND_CUR_DIRECTION,
+    );
+    simd_shuffle16(r, _mm256_setzero_ps().as_f32x8(), [0, 1, 2, 3, 4, 5, 6, 7, 8, 8, 8, 8, 8, 8, 8, 8])
 }
 
 /// Sign extend packed 8-bit integers in a to packed 32-bit integers, and store the results in dst.
