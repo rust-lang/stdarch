@@ -15477,6 +15477,25 @@ pub unsafe fn _mm512_mask_cmp_epi64_mask(
     transmute(r)
 }
 
+/// Reduce the packed 32-bit integers in a by addition. Returns the sum of all elements in a.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_reduce_add_epi32&expand=4556)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_reduce_add_epi32(a: __m512i) -> i32 {
+    simd_reduce_add_unordered(a.as_i32x16())
+}
+
+/// Reduce the packed 64-bit integers in a by addition. Returns the sum of all elements in a.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_reduce_add_epi64&expand=4558)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_reduce_add_epi64(a: __m512i) -> i64 { 
+    simd_reduce_add_unordered(a.as_i64x8())
+}
+
+
 /// Returns vector of type `__m512d` with undefined elements.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_undefined_pd)
@@ -23938,5 +23957,12 @@ mod tests {
         let r = _mm512_kmov(a);
         let e: u16 = 0b11001100_00110011;
         assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_reduce_add_epi32() {
+        let a = _mm512_set1_epi32(1);
+        let e: i32 = _mm512_reduce_add_epi32(a);
+        assert_eq!(16, e);
     }
 }
