@@ -15486,15 +15486,176 @@ pub unsafe fn _mm512_reduce_add_epi32(a: __m512i) -> i32 {
     simd_reduce_add_unordered(a.as_i32x16())
 }
 
-/// Reduce the packed 64-bit integers in a by addition. Returns the sum of all elements in a.
+/// Reduce the packed 32-bit integers in a by addition using mask k. Returns the sum of all active elements in a.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_reduce_add_epi64&expand=4558)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_reduce_add_epi32&expand=4555)
 #[inline]
 #[target_feature(enable = "avx512f")]
-pub unsafe fn _mm512_reduce_add_epi64(a: __m512i) -> i64 { 
-    simd_reduce_add_unordered(a.as_i64x8())
+pub unsafe fn _mm512_mask_reduce_add_epi32(k: __mmask16, a: __m512i) -> i32 {
+    simd_reduce_add_unordered(simd_select_bitmask(k, a.as_i32x16(), _mm512_setzero_si512().as_i32x16()))
 }
 
+/// Reduce the packed single-precision (32-bit) floating-point elements in a by addition. Returns the sum of all elements in a.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_reduce_add_ps&expand=4562)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_reduce_add_ps(a: __m512) -> f32 { 
+    simd_reduce_add_unordered(a.as_f32x16())
+}
+
+/// Reduce the packed single-precision (32-bit) floating-point elements in a by addition using mask k. Returns the sum of all active elements in a.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_reduce_add_ps&expand=4561)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_mask_reduce_add_ps(k: __mmask16, a: __m512) -> f32 {
+    simd_reduce_add_unordered(simd_select_bitmask(k, a.as_f32x16(), _mm512_setzero_ps().as_f32x16()))
+}
+
+/// Reduce the packed double-precision (64-bit) floating-point elements in a by addition. Returns the sum of all elements in a.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_reduce_add_pd&expand=4560)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_reduce_add_pd(a: __m512d) -> f64 { 
+    simd_reduce_add_unordered(a.as_f64x8())
+}
+
+/// Reduce the packed double-precision (64-bit) floating-point elements in a by addition using mask k. Returns the sum of all active elements in a.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_reduce_add_pd&expand=4559)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_mask_reduce_add_pd(k: __mmask8, a: __m512d) -> f64 {
+    simd_reduce_add_unordered(simd_select_bitmask(k, a.as_f64x8(), _mm512_setzero_pd().as_f64x8()))
+}
+
+/// Reduce the packed 32-bit integers in a by multiplication. Returns the product of all elements in a.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_reduce_mul_epi32&expand=4600)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_reduce_mul_epi32(a: __m512i) -> i32 {
+    simd_reduce_mul_unordered(a.as_i32x16())
+}
+
+/// Reduce the packed 32-bit integers in a by multiplication using mask k. Returns the product of all active elements in a.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_reduce_mul_epi32&expand=4599)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_mask_reduce_mul_epi32(k: __mmask16, a: __m512i) -> i32 {
+    simd_reduce_mul_unordered(simd_select_bitmask(k, a.as_i32x16(), _mm512_set1_epi32(1).as_i32x16()))
+}
+
+/// Reduce the packed single-precision (32-bit) floating-point elements in a by multiplication. Returns the product of all elements in a.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_reduce_mul_ps&expand=4606)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_reduce_mul_ps(a: __m512) -> f32 { 
+    simd_reduce_mul_unordered(a.as_f32x16())
+}
+
+/// Reduce the packed single-precision (32-bit) floating-point elements in a by multiplication using mask k. Returns the product of all active elements in a.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_reduce_mul_ps&expand=4605)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_mask_reduce_mul_ps(k: __mmask16, a: __m512) -> f32 {
+    simd_reduce_mul_unordered(simd_select_bitmask(k, a.as_f32x16(), _mm512_set1_ps(1.).as_f32x16()))
+}
+
+/// Reduce the packed double-precision (64-bit) floating-point elements in a by multiplication. Returns the product of all elements in a.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_reduce_mul_pd&expand=4604)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_reduce_mul_pd(a: __m512d) -> f64 { 
+    simd_reduce_mul_unordered(a.as_f64x8())
+}
+
+/// Reduce the packed double-precision (64-bit) floating-point elements in a by multiplication using mask k. Returns the product of all active elements in a.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_reduce_mul_pd&expand=4603)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_mask_reduce_mul_pd(k: __mmask8, a: __m512d) -> f64 {
+    simd_reduce_mul_unordered(simd_select_bitmask(k, a.as_f64x8(), _mm512_set1_pd(1.).as_f64x8()))
+}
+
+/// Reduce the packed signed 32-bit integers in a by maximum. Returns the maximum of all elements in a.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_reduce_max_epi32&expand=4576)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_reduce_max_epi32(a: __m512i) -> i32 {
+    simd_reduce_max(a.as_i32x16())
+}
+
+/// Reduce the packed signed 32-bit integers in a by maximum using mask k. Returns the maximum of all active elements in a.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_reduce_max_epi32&expand=4575)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_mask_reduce_max_epi32(k: __mmask16, a: __m512i) -> i32 {
+    simd_reduce_max(simd_select_bitmask(k, a.as_i32x16(), _mm512_set1_epi32(1).as_i32x16()))
+}
+
+/// Reduce the packed unsigned 32-bit integers in a by maximum. Returns the maximum of all elements in a.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_reduce_max_epu32&expand=4580)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_reduce_max_epu32(a: __m512i) -> u32 {
+    simd_reduce_max(a.as_u32x16())
+}
+
+/// Reduce the packed unsigned 32-bit integers in a by maximum using mask k. Returns the maximum of all active elements in a.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_reduce_max_epu32&expand=4579)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_mask_reduce_max_epu32(k: __mmask16, a: __m512i) -> u32 {
+    simd_reduce_max(simd_select_bitmask(k, a.as_u32x16(), _mm512_set1_epi32(1).as_u32x16()))
+}
+
+/// Reduce the packed single-precision (32-bit) floating-point elements in a by maximum. Returns the maximum of all elements in a.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_reduce_max_ps&expand=4586)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_reduce_max_ps(a: __m512) -> f32 { 
+    simd_reduce_max(a.as_f32x16())
+}
+
+/// Reduce the packed single-precision (32-bit) floating-point elements in a by maximum using mask k. Returns the maximum of all active elements in a.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_reduce_max_ps&expand=4585)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_mask_reduce_max_ps(k: __mmask16, a: __m512) -> f32 {
+    simd_reduce_max(simd_select_bitmask(k, a.as_f32x16(), _mm512_set1_ps(1.).as_f32x16()))
+}
+
+/// Reduce the packed double-precision (64-bit) floating-point elements in a by maximum. Returns the maximum of all elements in a.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_reduce_max_pd&expand=4584)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_reduce_max_pd(a: __m512d) -> f64 { 
+    simd_reduce_max(a.as_f64x8())
+}
+
+/// Reduce the packed double-precision (64-bit) floating-point elements in a by maximum using mask k. Returns the maximum of all active elements in a.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_reduce_max_pd&expand=4583)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_mask_reduce_max_pd(k: __mmask8, a: __m512d) -> f64 {
+    simd_reduce_max(simd_select_bitmask(k, a.as_f64x8(), _mm512_set1_pd(1.).as_f64x8()))
+}
 
 /// Returns vector of type `__m512d` with undefined elements.
 ///
@@ -23964,5 +24125,96 @@ mod tests {
         let a = _mm512_set1_epi32(1);
         let e: i32 = _mm512_reduce_add_epi32(a);
         assert_eq!(16, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_reduce_add_epi32() {
+        let a = _mm512_set1_epi32(1);
+        let e: i32 = _mm512_mask_reduce_add_epi32(0b11111111_00000000, a);
+        assert_eq!(8, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_reduce_add_ps() {
+        let a = _mm512_set1_ps(1.);
+        let e: f32 = _mm512_reduce_add_ps(a);
+        assert_eq!(16., e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_reduce_add_ps() {
+        let a = _mm512_set1_ps(1.);
+        let e: f32 = _mm512_mask_reduce_add_ps(0b11111111_00000000, a);
+        assert_eq!(8., e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_reduce_mul_epi32() {
+        let a = _mm512_set1_epi32(2);
+        let e: i32 = _mm512_reduce_mul_epi32(a);
+        assert_eq!(65536, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_reduce_mul_epi32() {
+        let a = _mm512_set1_epi32(2);
+        let e: i32 = _mm512_mask_reduce_mul_epi32(0b11111111_00000000, a);
+        assert_eq!(256, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_reduce_mul_ps() {
+        let a = _mm512_set1_ps(2.);
+        let e: f32 = _mm512_reduce_mul_ps(a);
+        assert_eq!(65536., e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_reduce_mul_ps() {
+        let a = _mm512_set1_ps(2.);
+        let e: f32 = _mm512_mask_reduce_mul_ps(0b11111111_00000000, a);
+        assert_eq!(256., e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_reduce_max_epi32() {
+        let a = _mm512_set_epi32(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
+        let e: i32 = _mm512_reduce_max_epi32(a);
+        assert_eq!(15, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_reduce_max_epi32() {
+        let a = _mm512_set_epi32(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
+        let e: i32 = _mm512_mask_reduce_max_epi32(0b11111111_00000000, a);
+        assert_eq!(7, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_reduce_max_epu32() {
+        let a = _mm512_set_epi32(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
+        let e: u32 = _mm512_reduce_max_epu32(a);
+        assert_eq!(15, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_reduce_max_epu32() {
+        let a = _mm512_set_epi32(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
+        let e: u32 = _mm512_mask_reduce_max_epu32(0b11111111_00000000, a);
+        assert_eq!(7, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_reduce_max_ps() {
+        let a = _mm512_set_ps(0., 1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15.);
+        let e: f32 = _mm512_reduce_max_ps(a);
+        assert_eq!(15., e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_reduce_max_ps() {
+        let a = _mm512_set_ps(0., 1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15.);
+        let e: f32 = _mm512_mask_reduce_max_ps(0b11111111_00000000, a);
+        assert_eq!(7., e);
     }
 }

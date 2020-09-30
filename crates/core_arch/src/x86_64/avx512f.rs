@@ -5815,9 +5815,44 @@ mod tests {
     }
 
     #[simd_test(enable = "avx512f")]
-    unsafe fn test_mm512_reduce_add_epi64() {
-        let a = _mm512_set1_epi64(1);
-        let e: i64 = _mm512_reduce_add_epi64(a);
-        assert_eq!(8, e);
+    unsafe fn test_mm512_reduce_add_pd() {
+        let a = _mm512_set1_pd(1.);
+        let e: f64 = _mm512_reduce_add_pd(a);
+        assert_eq!(8., e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_reduce_add_pd() {
+        let a = _mm512_set1_pd(1.);
+        let e: f64 = _mm512_mask_reduce_add_pd(0b11110000, a);
+        assert_eq!(4., e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_reduce_mul_pd() {
+        let a = _mm512_set1_pd(2.);
+        let e: f64 = _mm512_reduce_mul_pd(a);
+        assert_eq!(256., e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_reduce_mul_pd() {
+        let a = _mm512_set1_pd(2.);
+        let e: f64 = _mm512_mask_reduce_mul_pd(0b11110000, a);
+        assert_eq!(16., e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_reduce_max_pd() {
+        let a = _mm512_set_pd(0., 1., 2., 3., 4., 5., 6., 7.);
+        let e: f64 = _mm512_reduce_max_pd(a);
+        assert_eq!(7., e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_reduce_max_pd() {
+        let a = _mm512_set_pd(0., 1., 2., 3., 4., 5., 6., 7.);
+        let e: f64 = _mm512_mask_reduce_max_pd(0b11110000, a);
+        assert_eq!(3., e);
     }
 }
