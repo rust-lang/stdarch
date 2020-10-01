@@ -12140,6 +12140,35 @@ pub unsafe fn _mm512_extractf32x4_ps(a: __m512, imm8: i32) -> __m128 {
     }
 }
 
+/// Extract 128 bits (composed of 4 packed single-precision (32-bit) floating-point elements) from a, selected with imm8, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_extractf32x4_ps&expand=2443)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vextractf32x4, imm8 = 3))]
+#[rustc_args_required_const(3)]
+pub unsafe fn _mm512_mask_extractf32x4_ps(
+    src: __m128,
+    k: __mmask8,
+    a: __m512,
+    imm8: i32,
+) -> __m128 {
+    assert!(imm8 >= 0 && imm8 <= 3);
+    let extract: __m128 = match imm8 & 0x3 {
+        0 => simd_shuffle4(a, _mm512_undefined_ps(), [0, 1, 2, 3]),
+        1 => simd_shuffle4(a, _mm512_undefined_ps(), [4, 5, 6, 7]),
+        2 => simd_shuffle4(a, _mm512_undefined_ps(), [8, 9, 10, 11]),
+        _ => simd_shuffle4(a, _mm512_undefined_ps(), [12, 13, 14, 15]),
+    };
+
+    let ret = simd_select_bitmask(
+        k,
+        _mm512_castps512_ps256(_mm512_castps128_ps512(extract)),
+        _mm512_castps512_ps256(_mm512_castps128_ps512(src)),
+    );
+    transmute(_mm512_castps512_ps128(_mm512_castps256_ps512(ret)))
+}
+
 /// Duplicate even-indexed single-precision (32-bit) floating-point elements from a, and store the results in dst.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_moveldup_ps&expand=3862)
@@ -23422,6 +23451,19 @@ mod tests {
             1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15., 16.,
         );
         let r = _mm512_extractf32x4_ps(a, 0x1);
+        let e = _mm_setr_ps(5., 6., 7., 8.);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_extractf32x4_ps() {
+        let a = _mm512_setr_ps(
+            1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15., 16.,
+        );
+        let src = _mm_set1_ps(100.);
+        let r = _mm512_mask_extractf32x4_ps(src, 0, a, 0x1);
+        assert_eq_m128(r, src);
+        let r = _mm512_mask_extractf32x4_ps(src, 0b11111111, a, 0x1);
         let e = _mm_setr_ps(5., 6., 7., 8.);
         assert_eq_m128(r, e);
     }
