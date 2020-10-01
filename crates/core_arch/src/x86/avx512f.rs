@@ -12145,7 +12145,10 @@ pub unsafe fn _mm512_extractf32x4_ps(a: __m512, imm8: i32) -> __m128 {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_extractf32x4_ps&expand=2443)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vextractf32x4, imm8 = 3))]
+#[cfg_attr(
+    all(test, not(target_os = "windows")),
+    assert_instr(vextractf32x4, imm8 = 3)
+)]
 #[rustc_args_required_const(3)]
 pub unsafe fn _mm512_mask_extractf32x4_ps(
     src: __m128,
