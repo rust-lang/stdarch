@@ -1,7 +1,10 @@
 use crate::{
-    core_arch::{simd::*, x86::*},
+    core_arch::{simd::*, simd_llvm::*, x86::*},
     mem::transmute,
 };
+
+#[cfg(test)]
+use stdarch_test::assert_instr;
 
 /// Sets packed 64-bit integers in `dst` with the supplied values.
 ///
@@ -57,6 +60,75 @@ pub unsafe fn _mm512_set4_epi64(d: i64, c: i64, b: i64, a: i64) -> __m512i {
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_setr4_epi64(d: i64, c: i64, b: i64, a: i64) -> __m512i {
     _mm512_set_epi64(a, b, c, d, a, b, c, d)
+}
+
+/// Extract 256 bits (composed of 4 packed 64-bit integers) from a, selected with imm8, and store the result in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_extracti64x4_epi64&expand=2473)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(
+    all(test, not(target_os = "windows")),
+    assert_instr(vextractf64x4, imm8 = 1) //should be vextracti64x4
+)]
+#[rustc_args_required_const(1)]
+pub unsafe fn _mm512_extracti64x4_epi64(a: __m512i, imm8: i32) -> __m256i {
+    assert!(imm8 >= 0 && imm8 <= 1);
+    match imm8 & 0x1 {
+        0 => simd_shuffle4(a, _mm512_set1_epi64(0), [0, 1, 2, 3]),
+        _ => simd_shuffle4(a, _mm512_set1_epi64(0), [4, 5, 6, 7]),
+    }
+}
+
+/// Extract 256 bits (composed of 4 packed 64-bit integers) from a, selected with imm8, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_extracti64x4_epi64&expand=2474)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(
+    all(test, not(target_os = "windows")),
+    assert_instr(vextracti64x4, imm8 = 1)
+)]
+#[rustc_args_required_const(3)]
+pub unsafe fn _mm512_mask_extracti64x4_epi64(
+    src: __m256i,
+    k: __mmask8,
+    a: __m512i,
+    imm8: i32,
+) -> __m256i {
+    assert!(imm8 >= 0 && imm8 <= 1);
+    let extract = match imm8 & 0x1 {
+        0 => simd_shuffle4(a, _mm512_set1_epi64(0), [0, 1, 2, 3]),
+        _ => simd_shuffle4(a, _mm512_set1_epi64(0), [4, 5, 6, 7]),
+    };
+
+    let ret = simd_select_bitmask(
+        k,
+        _mm512_castsi256_si512(extract),
+        _mm512_castsi256_si512(src),
+    );
+    transmute(_mm512_castsi512_si256(ret))
+}
+
+/// Extract 256 bits (composed of 4 packed 64-bit integers) from a, selected with imm8, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_extracti64x4_epi64&expand=2475)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(
+    all(test, not(target_os = "windows")),
+    assert_instr(vextracti64x4, imm8 = 1)
+)]
+#[rustc_args_required_const(2)]
+pub unsafe fn _mm512_maskz_extracti64x4_epi64(k: __mmask8, a: __m512i, imm8: i32) -> __m256i {
+    assert!(imm8 >= 0 && imm8 <= 1);
+    let extract = match imm8 & 0x1 {
+        0 => simd_shuffle4(a, _mm512_set1_epi64(0), [0, 1, 2, 3]),
+        _ => simd_shuffle4(a, _mm512_set1_epi64(0), [4, 5, 6, 7]),
+    };
+
+    let ret = simd_select_bitmask(k, _mm512_castsi256_si512(extract), _mm512_setzero_si512());
+    transmute(_mm512_castsi512_si256(ret))
 }
 
 #[cfg(test)]
@@ -5783,5 +5855,63 @@ mod tests {
         let a = _mm512_set_pd(0., 1., 2., 3., 4., 5., 6., 7.);
         let e: f64 = _mm512_mask_reduce_min_pd(0b11110000, a);
         assert_eq!(0., e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_extractf64x4_pd() {
+        let a = _mm512_setr_pd(1., 2., 3., 4., 5., 6., 7., 8.);
+        let r = _mm512_extractf64x4_pd(a, 0x1);
+        let e = _mm256_setr_pd(5., 6., 7., 8.);
+        assert_eq_m256d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_extractf64x4_pd() {
+        let a = _mm512_setr_pd(1., 2., 3., 4., 5., 6., 7., 8.);
+        let src = _mm256_set1_pd(100.);
+        let r = _mm512_mask_extractf64x4_pd(src, 0, a, 0x1);
+        assert_eq_m256d(r, src);
+        let r = _mm512_mask_extractf64x4_pd(src, 0b11111111, a, 0x1);
+        let e = _mm256_setr_pd(5., 6., 7., 8.);
+        assert_eq_m256d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_maskz_extractf64x4_pd() {
+        let a = _mm512_setr_pd(1., 2., 3., 4., 5., 6., 7., 8.);
+        let r = _mm512_maskz_extractf64x4_pd(0, a, 0x1);
+        assert_eq_m256d(r, _mm256_setzero_pd());
+        let r = _mm512_maskz_extractf64x4_pd(0b00000001, a, 0x1);
+        let e = _mm256_setr_pd(5., 0., 0., 0.);
+        assert_eq_m256d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_extracti64x4_epi64() {
+        let a = _mm512_setr_epi64(1, 2, 3, 4, 5, 6, 7, 8);
+        let r = _mm512_extracti64x4_epi64(a, 0x1);
+        let e = _mm256_setr_epi64x(5, 6, 7, 8);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_extracti64x4_epi64() {
+        let a = _mm512_setr_epi64(1, 2, 3, 4, 5, 6, 7, 8);
+        let src = _mm256_set1_epi64x(100);
+        let r = _mm512_mask_extracti64x4_epi64(src, 0, a, 0x1);
+        assert_eq_m256i(r, src);
+        let r = _mm512_mask_extracti64x4_epi64(src, 0b11111111, a, 0x1);
+        let e = _mm256_setr_epi64x(5, 6, 7, 8);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_maskz_extracti64x4_epi64() {
+        let a = _mm512_setr_epi64(1, 2, 3, 4, 5, 6, 7, 8);
+        let r = _mm512_maskz_extracti64x4_epi64(0, a, 0x1);
+        assert_eq_m256i(r, _mm256_setzero_si256());
+        let r = _mm512_maskz_extracti64x4_epi64(0b00000001, a, 0x1);
+        let e = _mm256_setr_epi64x(5, 0, 0, 0);
+        assert_eq_m256i(r, e);
     }
 }
