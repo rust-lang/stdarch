@@ -244,7 +244,9 @@
   * [ ] [`_mm512_load_si512`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_load_si512&expand=5236)
   * [x] [`_mm512_loadu_pd`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_loadu_pd&expand=5236)
   * [x] [`_mm512_loadu_ps`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_loadu_ps&expand=5236)
-  * [ ] [`_mm512_loadu_si512`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_loadu_si512&expand=5236)
+  * [x] [`_mm512_loadu_epi32`]
+  * [x] [`_mm512_loadu_epi64`]
+  * [x] [`_mm512_loadu_si512`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_loadu_si512&expand=5236)
   * [x] [`_mm512_mask2_permutex2var_epi32`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask2_permutex2var_epi32&expand=5236)
   * [x] [`_mm512_mask2_permutex2var_epi64`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask2_permutex2var_epi64&expand=5236)
   * [x] [`_mm512_mask2_permutex2var_pd`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask2_permutex2var_pd&expand=5236)
@@ -1090,7 +1092,9 @@
   * [ ] [`_mm512_store_si512`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_store_si512&expand=5236)
   * [x] [`_mm512_storeu_pd`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_storeu_pd&expand=5236)
   * [x] [`_mm512_storeu_ps`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_storeu_ps&expand=5236)
-  * [ ] [`_mm512_storeu_si512`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_storeu_si512&expand=5236)
+  * [x] [`_mm512_storeu_epi32`]
+  * [x] [`_mm512_storeu_epi64`]
+  * [x] [`_mm512_storeu_si512`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_storeu_si512&expand=5236)
   * [ ] [`_mm512_stream_load_si512`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_stream_load_si512&expand=5236)
   * [ ] [`_mm512_stream_pd`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_stream_pd&expand=5236)
   * [ ] [`_mm512_stream_ps`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_stream_ps&expand=5236)

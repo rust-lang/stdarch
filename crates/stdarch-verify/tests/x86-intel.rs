@@ -637,8 +637,10 @@ fn equate(t: &Type, intel: &str, intrinsic: &str, is_const: bool) -> Result<(), 
         (&Type::MutPtr(&Type::PrimFloat(64)), "double*") => {}
         (&Type::MutPtr(&Type::PrimFloat(32)), "void*") => {}
         (&Type::MutPtr(&Type::PrimFloat(64)), "void*") => {}
+        (&Type::MutPtr(&Type::PrimSigned(32)), "void*") => {}
         (&Type::MutPtr(&Type::PrimSigned(32)), "int*") => {}
         (&Type::MutPtr(&Type::PrimSigned(32)), "__int32*") => {}
+        (&Type::MutPtr(&Type::PrimSigned(64)), "void*") => {}
         (&Type::MutPtr(&Type::PrimSigned(64)), "__int64*") => {}
         (&Type::MutPtr(&Type::PrimSigned(8)), "char*") => {}
         (&Type::MutPtr(&Type::PrimUnsigned(16)), "unsigned short*") => {}
@@ -662,7 +664,9 @@ fn equate(t: &Type, intel: &str, intrinsic: &str, is_const: bool) -> Result<(), 
         (&Type::ConstPtr(&Type::PrimFloat(64)), "void const*") => {}
         (&Type::ConstPtr(&Type::PrimSigned(32)), "int const*") => {}
         (&Type::ConstPtr(&Type::PrimSigned(32)), "__int32 const*") => {}
+        (&Type::ConstPtr(&Type::PrimSigned(32)), "void const*") => {}
         (&Type::ConstPtr(&Type::PrimSigned(64)), "__int64 const*") => {}
+        (&Type::ConstPtr(&Type::PrimSigned(64)), "void const*") => {}
         (&Type::ConstPtr(&Type::PrimSigned(8)), "char const*") => {}
         (&Type::ConstPtr(&Type::PrimUnsigned(16)), "unsigned short const*") => {}
         (&Type::ConstPtr(&Type::PrimUnsigned(32)), "unsigned int const*") => {}

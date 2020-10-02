@@ -16504,6 +16504,66 @@ pub unsafe fn _mm512_undefined() -> __m512 {
     _mm512_set1_ps(0.0)
 }
 
+/// Load 512-bits (composed of 16 packed 32-bit integers) from memory into dst. mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_loadu_epi32&expand=3377)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vmovups))] //should be vmovdqu32
+pub unsafe fn _mm512_loadu_epi32(mem_addr: *const i32) -> __m512i {
+    ptr::read_unaligned(mem_addr as *const __m512i)
+}
+
+/// Store 512-bits (composed of 16 packed 32-bit integers) from a into memory. mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_storeu_epi32&expand=5628)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vmovups))] //should be vmovdqu32
+pub unsafe fn _mm512_storeu_epi32(mem_addr: *mut i32, a: __m512i) {
+    ptr::write_unaligned(mem_addr as *mut __m512i, a);
+}
+
+/// Load 512-bits (composed of 8 packed 64-bit integers) from memory into dst. mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_loadu_epi64&expand=3386)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vmovups))] //should be vmovdqu64
+pub unsafe fn _mm512_loadu_epi64(mem_addr: *const i64) -> __m512i {
+    ptr::read_unaligned(mem_addr as *const __m512i)
+}
+
+/// Store 512-bits (composed of 8 packed 64-bit integers) from a into memory. mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_storeu_epi64&expand=5634)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vmovups))] //should be vmovdqu64
+pub unsafe fn _mm512_storeu_epi64(mem_addr: *mut i64, a: __m512i) {
+    ptr::write_unaligned(mem_addr as *mut __m512i, a);
+}
+
+/// Load 512-bits of integer data from memory into dst. mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_loadu_si512&expand=3420)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vmovups))] //should be vmovdqu32
+pub unsafe fn _mm512_loadu_si512(mem_addr: *const i32) -> __m512i {
+    ptr::read_unaligned(mem_addr as *const __m512i)
+}
+
+/// Store 512-bits of integer data from a into memory. mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_storeu_si512&expand=5657)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vmovups))] //should be vmovdqu32
+pub unsafe fn _mm512_storeu_si512(mem_addr: *mut i32, a: __m512i) {
+    ptr::write_unaligned(mem_addr as *mut __m512i, a);
+}
+
 /// Loads 512-bits (composed of 8 packed double-precision (64-bit)
 /// floating-point elements) from memory into result.
 /// `mem_addr` does not need to be aligned on any particular boundary.
@@ -25587,5 +25647,39 @@ mod tests {
             0., 8., 0., 9., 0., 10., 0., 11., 0., 12., 0., 13., 0., 14., 0., 15.,
         );
         assert_eq_m512(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_loadu_epi32() {
+        let a = &[4, 3, 2, 5, 8, 9, 64, 50, -4, -3, -2, -5, -8, -9, -64, -50];
+        let p = a.as_ptr();
+        let r = _mm512_loadu_epi32(black_box(p));
+        let e = _mm512_setr_epi32(4, 3, 2, 5, 8, 9, 64, 50, -4, -3, -2, -5, -8, -9, -64, -50);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_storeu_epi32() {
+        let a = _mm512_set1_epi32(9);
+        let mut r = _mm512_undefined_epi32();
+        _mm512_storeu_epi32(&mut r as *mut _ as *mut i32, a);
+        assert_eq_m512i(r, a);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_loadu_si512() {
+        let a = &[4, 3, 2, 5, 8, 9, 64, 50, -4, -3, -2, -5, -8, -9, -64, -50];
+        let p = a.as_ptr();
+        let r = _mm512_loadu_si512(black_box(p));
+        let e = _mm512_setr_epi32(4, 3, 2, 5, 8, 9, 64, 50, -4, -3, -2, -5, -8, -9, -64, -50);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_storeu_si512() {
+        let a = _mm512_set1_epi32(9);
+        let mut r = _mm512_undefined_epi32();
+        _mm512_storeu_si512(&mut r as *mut _ as *mut i32, a);
+        assert_eq_m512i(r, a);
     }
 }

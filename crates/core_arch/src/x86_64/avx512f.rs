@@ -138,6 +138,7 @@ mod tests {
 
     use crate::core_arch::x86::*;
     use crate::core_arch::x86_64::*;
+    use crate::hint::black_box;
 
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_abs_epi64() {
@@ -5981,5 +5982,22 @@ mod tests {
         let r = _mm512_maskz_expand_pd(0b01010101, a);
         let e = _mm512_set_pd(0., 4., 0., 5., 0., 6., 0., 7.);
         assert_eq_m512d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_loadu_epi64() {
+        let a = &[4, 3, 2, 5, -8, -9, -64, -50];
+        let p = a.as_ptr();
+        let r = _mm512_loadu_epi64(black_box(p));
+        let e = _mm512_setr_epi64(4, 3, 2, 5, -8, -9, -64, -50);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_storeu_epi64() {
+        let a = _mm512_set1_epi64(9);
+        let mut r = _mm512_set1_epi64(0);
+        _mm512_storeu_epi64(&mut r as *mut _ as *mut i64, a);
+        assert_eq_m512i(r, a);
     }
 }
