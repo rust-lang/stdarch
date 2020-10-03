@@ -5934,6 +5934,15 @@ mod tests {
     }
 
     #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_compressstoreu_epi64() {
+        let a = _mm512_set_epi64(0, 1, 2, 3, 4, 5, 6, 7);
+        let mut store = _mm512_set1_epi64(0);
+        _mm512_mask_compressstoreu_epi64(&mut store as *mut _ as *mut i64, 0b01010101, a);
+        let e = _mm512_set_epi64(0, 0, 0, 0, 1, 3, 5, 7);
+        assert_eq_m512i(store, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_mask_compress_pd() {
         let src = _mm512_set1_pd(200.);
         let a = _mm512_set_pd(0., 1., 2., 3., 4., 5., 6., 7.);
@@ -5957,6 +5966,15 @@ mod tests {
         let r = _mm512_mask_expand_epi64(src, 0b01010101, a);
         let e = _mm512_set_epi64(200, 4, 200, 5, 200, 6, 200, 7);
         assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_compressstoreu_pd() {
+        let a = _mm512_set_pd(0., 1., 2., 3., 4., 5., 6., 7.);
+        let mut store = _mm512_undefined_pd();
+        _mm512_mask_compressstoreu_pd(&mut store as *mut _ as *mut f64, 0b01010101, a);
+        let e = _mm512_set_pd(0., 0., 0., 0., 1., 3., 5., 7.);
+        assert_eq_m512d(store, e);
     }
 
     #[simd_test(enable = "avx512f")]
