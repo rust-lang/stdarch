@@ -8852,6 +8852,36 @@ pub unsafe fn _mm512_maskz_expand_epi32(k: __mmask16, a: __m512i) -> __m512i {
     ))
 }
 
+/// Load contiguous active 32-bit integers from unaligned memory at mem_addr (those with their respective bit set in mask k), and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_expandloadu_epi32&expand=2352)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vpexpandd))]
+pub unsafe fn _mm512_mask_expandloadu_epi32(
+    src: __m512i,
+    k: __mmask16,
+    mem_addr: *const i32,
+) -> __m512i {
+    let load = ptr::read_unaligned(mem_addr as *const __m512i);
+    transmute(vpexpandd(load.as_i32x16(), src.as_i32x16(), k))
+}
+
+/// Load contiguous active 32-bit integers from unaligned memory at mem_addr (those with their respective bit set in mask k), and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_expandloadu_epi32&expand=2353)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vpexpandd))]
+pub unsafe fn _mm512_maskz_expandloadu_epi32(k: __mmask16, mem_addr: *const i32) -> __m512i {
+    let load = ptr::read_unaligned(mem_addr as *const __m512i);
+    transmute(vpexpandd(
+        load.as_i32x16(),
+        _mm512_setzero_si512().as_i32x16(),
+        k,
+    ))
+}
+
 /// Load contiguous active 64-bit integers from a (those with their respective bit set in mask k), and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_expand_epi64&expand=2322)
@@ -8871,6 +8901,36 @@ pub unsafe fn _mm512_mask_expand_epi64(src: __m512i, k: __mmask8, a: __m512i) ->
 pub unsafe fn _mm512_maskz_expand_epi64(k: __mmask8, a: __m512i) -> __m512i {
     transmute(vpexpandq(
         a.as_i64x8(),
+        _mm512_setzero_si512().as_i64x8(),
+        k,
+    ))
+}
+
+/// Load contiguous active 64-bit integers from unaligned memory at mem_addr (those with their respective bit set in mask k), and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_expandloadu_epi64&expand=2358)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vpexpandq))]
+pub unsafe fn _mm512_mask_expandloadu_epi64(
+    src: __m512i,
+    k: __mmask8,
+    mem_addr: *const i64,
+) -> __m512i {
+    let load = ptr::read_unaligned(mem_addr as *const __m512i);
+    transmute(vpexpandq(load.as_i64x8(), src.as_i64x8(), k))
+}
+
+/// Load contiguous active 64-bit integers from unaligned memory at mem_addr (those with their respective bit set in mask k), and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_expandloadu_epi64&expand=2359)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vpexpandq))]
+pub unsafe fn _mm512_maskz_expandloadu_epi64(k: __mmask8, mem_addr: *const i64) -> __m512i {
+    let load = ptr::read_unaligned(mem_addr as *const __m512i);
+    transmute(vpexpandq(
+        load.as_i64x8(),
         _mm512_setzero_si512().as_i64x8(),
         k,
     ))
@@ -8896,6 +8956,36 @@ pub unsafe fn _mm512_maskz_expand_ps(k: __mmask16, a: __m512) -> __m512 {
     transmute(vexpandps(a.as_f32x16(), _mm512_setzero_ps().as_f32x16(), k))
 }
 
+/// Load contiguous active single-precision (32-bit) floating-point elements from unaligned memory at mem_addr (those with their respective bit set in mask k), and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_expandloadu_ps&expand=2376)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vexpandps))]
+pub unsafe fn _mm512_mask_expandloadu_ps(
+    src: __m512,
+    k: __mmask16,
+    mem_addr: *const f32,
+) -> __m512 {
+    let load = ptr::read_unaligned(mem_addr as *const __m512);
+    transmute(vexpandps(load.as_f32x16(), src.as_f32x16(), k))
+}
+
+/// Load contiguous active single-precision (32-bit) floating-point elements from unaligned memory at mem_addr (those with their respective bit set in mask k), and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_expandloadu_ps&expand=2377)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vexpandps))]
+pub unsafe fn _mm512_maskz_expandloadu_ps(k: __mmask16, mem_addr: *const f32) -> __m512 {
+    let load = ptr::read_unaligned(mem_addr as *const __m512);
+    transmute(vexpandps(
+        load.as_f32x16(),
+        _mm512_setzero_ps().as_f32x16(),
+        k,
+    ))
+}
+
 /// Load contiguous active double-precision (64-bit) floating-point elements from a (those with their respective bit set in mask k), and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_expand_pd&expand=2334)
@@ -8914,6 +9004,36 @@ pub unsafe fn _mm512_mask_expand_pd(src: __m512d, k: __mmask8, a: __m512d) -> __
 #[cfg_attr(test, assert_instr(vexpandpd))]
 pub unsafe fn _mm512_maskz_expand_pd(k: __mmask8, a: __m512d) -> __m512d {
     transmute(vexpandpd(a.as_f64x8(), _mm512_setzero_pd().as_f64x8(), k))
+}
+
+/// Load contiguous active double-precision (64-bit) floating-point elements from unaligned memory at mem_addr (those with their respective bit set in mask k), and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_expandloadu_pd&expand=2370)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vexpandpd))]
+pub unsafe fn _mm512_mask_expandloadu_pd(
+    src: __m512d,
+    k: __mmask8,
+    mem_addr: *const f64,
+) -> __m512d {
+    let load = ptr::read_unaligned(mem_addr as *const __m512d);
+    transmute(vexpandpd(load.as_f64x8(), src.as_f64x8(), k))
+}
+
+/// Load contiguous active double-precision (64-bit) floating-point elements from unaligned memory at mem_addr (those with their respective bit set in mask k), and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_expandloadu_pd&expand=2371)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vexpandpd))]
+pub unsafe fn _mm512_maskz_expandloadu_pd(k: __mmask8, mem_addr: *const f64) -> __m512d {
+    let load = ptr::read_unaligned(mem_addr as *const __m512d);
+    transmute(vexpandpd(
+        load.as_f64x8(),
+        _mm512_setzero_pd().as_f64x8(),
+        k,
+    ))
 }
 
 /// Rotate the bits in each packed 32-bit integer in a to the left by the number of bits specified in imm8, and store the results in dst.
@@ -25804,6 +25924,27 @@ mod tests {
     }
 
     #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_expandloadu_epi32() {
+        let a = &[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+
+        let src = _mm512_set1_epi32(200);
+        let r = _mm512_mask_expandloadu_epi32(src, 0b01010101_01010101, a.as_ptr());
+        let e = _mm512_set_epi32(
+            200, 7, 200, 6, 200, 5, 200, 4, 200, 3, 200, 2, 200, 1, 200, 0,
+        );
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_maskz_expandloadu_epi32() {
+        let a = &[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+
+        let r = _mm512_maskz_expandloadu_epi32(0b01010101_01010101, a.as_ptr());
+        let e = _mm512_set_epi32(0, 7, 0, 6, 0, 5, 0, 4, 0, 3, 0, 2, 0, 1, 0, 0);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_mask_expand_ps() {
         let src = _mm512_set1_ps(200.);
         let a = _mm512_set_ps(
@@ -25824,6 +25965,33 @@ mod tests {
         let r = _mm512_maskz_expand_ps(0b01010101_01010101, a);
         let e = _mm512_set_ps(
             0., 8., 0., 9., 0., 10., 0., 11., 0., 12., 0., 13., 0., 14., 0., 15.,
+        );
+        assert_eq_m512(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_expandloadu_ps() {
+        let a = &[
+            0., 1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15.,
+        ];
+
+        let src = _mm512_set1_ps(200.);
+        let r = _mm512_mask_expandloadu_ps(src, 0b01010101_01010101, a.as_ptr());
+        let e = _mm512_set_ps(
+            200., 7., 200., 6., 200., 5., 200., 4., 200., 3., 200., 2., 200., 1., 200., 0.,
+        );
+        assert_eq_m512(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_maskz_expandloadu_ps() {
+        let a = &[
+            0., 1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15.,
+        ];
+
+        let r = _mm512_maskz_expandloadu_ps(0b01010101_01010101, a.as_ptr());
+        let e = _mm512_set_ps(
+            0., 7., 0., 6., 0., 5., 0., 4., 0., 3., 0., 2., 0., 1., 0., 0.,
         );
         assert_eq_m512(r, e);
     }
