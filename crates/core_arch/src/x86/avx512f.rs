@@ -8704,21 +8704,6 @@ pub unsafe fn _mm512_maskz_compress_epi32(k: __mmask16, a: __m512i) -> __m512i {
     ))
 }
 
-/// Contiguously store the active 32-bit integers in a (those with their respective bit set in writemask k) to unaligned memory at base_addr.
-///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_compressstoreu_epi32&expand=1229)
-#[inline]
-#[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpcompressd))]
-pub unsafe fn _mm512_mask_compressstoreu_epi32(mem_addr: *mut i32, k: __mmask16, a: __m512i) {
-    let r = transmute(vpcompressd(
-        a.as_i32x16(),
-        _mm512_setzero_si512().as_i32x16(),
-        k,
-    ));
-    ptr::write_unaligned(mem_addr as *mut __m512i, r);
-}
-
 /// Contiguously store the active 64-bit integers in a (those with their respective bit set in writemask k) to dst, and pass through the remaining elements from src.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_compress_epi64&expand=1204)
@@ -8741,21 +8726,6 @@ pub unsafe fn _mm512_maskz_compress_epi64(k: __mmask8, a: __m512i) -> __m512i {
         _mm512_setzero_si512().as_i64x8(),
         k,
     ))
-}
-
-/// Contiguously store the active 64-bit integers in a (those with their respective bit set in writemask k) to unaligned memory at base_addr.
-///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_compressstoreu_epi64&expand=1232)
-#[inline]
-#[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpcompressq))]
-pub unsafe fn _mm512_mask_compressstoreu_epi64(mem_addr: *mut i64, k: __mmask8, a: __m512i) {
-    let r = transmute(vpcompressq(
-        a.as_i64x8(),
-        _mm512_setzero_si512().as_i64x8(),
-        k,
-    ));
-    ptr::write_unaligned(mem_addr as *mut __m512i, r);
 }
 
 /// Contiguously store the active single-precision (32-bit) floating-point elements in a (those with their respective bit set in writemask k) to dst, and pass through the remaining elements from src.
@@ -8782,21 +8752,6 @@ pub unsafe fn _mm512_maskz_compress_ps(k: __mmask16, a: __m512) -> __m512 {
     ))
 }
 
-/// Contiguously store the active single-precision (32-bit) floating-point elements in a (those with their respective bit set in writemask k) to unaligned memory at base_addr.
-///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_compressstoreu_ps&expand=1241)
-#[inline]
-#[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vcompressps))]
-pub unsafe fn _mm512_mask_compressstoreu_ps(mem_addr: *mut f32, k: __mmask16, a: __m512) {
-    let r = transmute(vcompressps(
-        a.as_f32x16(),
-        _mm512_setzero_ps().as_f32x16(),
-        k,
-    ));
-    ptr::write_unaligned(mem_addr as *mut __m512, r);
-}
-
 /// Contiguously store the active double-precision (64-bit) floating-point elements in a (those with their respective bit set in writemask k) to dst, and pass through the remaining elements from src.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_compress_pd&expand=1216)
@@ -8815,17 +8770,6 @@ pub unsafe fn _mm512_mask_compress_pd(src: __m512d, k: __mmask8, a: __m512d) -> 
 #[cfg_attr(test, assert_instr(vcompresspd))]
 pub unsafe fn _mm512_maskz_compress_pd(k: __mmask8, a: __m512d) -> __m512d {
     transmute(vcompresspd(a.as_f64x8(), _mm512_setzero_pd().as_f64x8(), k))
-}
-
-/// Contiguously store the active double-precision (64-bit) floating-point elements in a (those with their respective bit set in writemask k) to unaligned memory at base_addr.
-///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_compressstoreu_pd&expand=1238)
-#[inline]
-#[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vcompresspd))]
-pub unsafe fn _mm512_mask_compressstoreu_pd(mem_addr: *mut f64, k: __mmask8, a: __m512d) {
-    let r = transmute(vcompresspd(a.as_f64x8(), _mm512_setzero_pd().as_f64x8(), k));
-    ptr::write_unaligned(mem_addr as *mut __m512d, r);
 }
 
 /// Load contiguous active 32-bit integers from a (those with their respective bit set in mask k), and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
@@ -14936,6 +14880,26 @@ pub unsafe fn _mm512_set1_epi32(a: i32) -> __m512i {
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_set1_epi64(a: i64) -> __m512i {
     transmute(i64x8::splat(a))
+}
+
+/// Set packed 64-bit integers in dst with the repeated 4 element sequence.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_set4_epi64&expand=4983)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_set4_epi64(d: i64, c: i64, b: i64, a: i64) -> __m512i {
+    let r = i64x8::new(d, c, b, a, d, c, b, a);
+    transmute(r)
+}
+
+/// Set packed 64-bit integers in dst with the repeated 4 element sequence in reverse order.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_setr4_epi64&expand=5010)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_setr4_epi64(d: i64, c: i64, b: i64, a: i64) -> __m512i {
+    let r = i64x8::new(a, b, c, d, a, b, c, d);
+    transmute(r)
 }
 
 /// Compare packed single-precision (32-bit) floating-point elements in a and b for less-than, and store the results in a mask vector.
@@ -25858,15 +25822,6 @@ mod tests {
     }
 
     #[simd_test(enable = "avx512f")]
-    unsafe fn test_mm512_mask_compressstoreu_epi32() {
-        let a = _mm512_set_epi32(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
-        let mut store = _mm512_undefined_epi32();
-        _mm512_mask_compressstoreu_epi32(&mut store as *mut _ as *mut i32, 0b01010101_01010101, a);
-        let e = _mm512_set_epi32(0, 0, 0, 0, 0, 0, 0, 0, 1, 3, 5, 7, 9, 11, 13, 15);
-        assert_eq_m512i(store, e);
-    }
-
-    #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_mask_compress_ps() {
         let src = _mm512_set1_ps(200.);
         let a = _mm512_set_ps(
@@ -25889,19 +25844,6 @@ mod tests {
             0., 0., 0., 0., 0., 0., 0., 0., 1., 3., 5., 7., 9., 11., 13., 15.,
         );
         assert_eq_m512(r, e);
-    }
-
-    #[simd_test(enable = "avx512f")]
-    unsafe fn test_mm512_mask_compressstoreu_ps() {
-        let a = _mm512_set_ps(
-            0., 1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15.,
-        );
-        let mut store = _mm512_undefined_ps();
-        _mm512_mask_compressstoreu_ps(&mut store as *mut _ as *mut f32, 0b01010101_01010101, a);
-        let e = _mm512_set_ps(
-            0., 0., 0., 0., 0., 0., 0., 0., 1., 3., 5., 7., 9., 11., 13., 15.,
-        );
-        assert_eq_m512(store, e);
     }
 
     #[simd_test(enable = "avx512f")]
