@@ -1,117 +1,7 @@
-use crate::{
-    core_arch::{simd::*, simd_llvm::*, x86::*},
-    mem::transmute,
-};
-
-#[cfg(test)]
-use stdarch_test::assert_instr;
-
-/// Sets packed 64-bit integers in `dst` with the supplied values.
-///
-/// [Intel's documentation]( https://software.intel.com/sites/landingpage/IntrinsicsGuide/#expand=727,1063,4909,1062,1062,4909&text=_mm512_set_epi64)
-#[inline]
-#[target_feature(enable = "avx512f")]
-pub unsafe fn _mm512_set_epi64(
-    e0: i64,
-    e1: i64,
-    e2: i64,
-    e3: i64,
-    e4: i64,
-    e5: i64,
-    e6: i64,
-    e7: i64,
-) -> __m512i {
-    _mm512_setr_epi64(e7, e6, e5, e4, e3, e2, e1, e0)
-}
-
-/// Sets packed 64-bit integers in `dst` with the supplied values in
-/// reverse order.
-///
-/// [Intel's documentation]( https://software.intel.com/sites/landingpage/IntrinsicsGuide/#expand=727,1063,4909,1062,1062,4909&text=_mm512_set_epi64)
-#[inline]
-#[target_feature(enable = "avx512f")]
-pub unsafe fn _mm512_setr_epi64(
-    e0: i64,
-    e1: i64,
-    e2: i64,
-    e3: i64,
-    e4: i64,
-    e5: i64,
-    e6: i64,
-    e7: i64,
-) -> __m512i {
-    let r = i64x8::new(e0, e1, e2, e3, e4, e5, e6, e7);
-    transmute(r)
-}
-
-/// Extract 256 bits (composed of 4 packed 64-bit integers) from a, selected with imm8, and store the result in dst.
-///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_extracti64x4_epi64&expand=2473)
-#[inline]
-#[target_feature(enable = "avx512f")]
-#[cfg_attr(
-    all(test, not(target_os = "windows")),
-    assert_instr(vextractf64x4, imm8 = 1) //should be vextracti64x4
-)]
-#[rustc_args_required_const(1)]
-pub unsafe fn _mm512_extracti64x4_epi64(a: __m512i, imm8: i32) -> __m256i {
-    assert!(imm8 >= 0 && imm8 <= 1);
-    match imm8 & 0x1 {
-        0 => simd_shuffle4(a, _mm512_set1_epi64(0), [0, 1, 2, 3]),
-        _ => simd_shuffle4(a, _mm512_set1_epi64(0), [4, 5, 6, 7]),
-    }
-}
-
-/// Extract 256 bits (composed of 4 packed 64-bit integers) from a, selected with imm8, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
-///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_extracti64x4_epi64&expand=2474)
-#[inline]
-#[target_feature(enable = "avx512f")]
-#[cfg_attr(
-    all(test, not(target_os = "windows")),
-    assert_instr(vextracti64x4, imm8 = 1)
-)]
-#[rustc_args_required_const(3)]
-pub unsafe fn _mm512_mask_extracti64x4_epi64(
-    src: __m256i,
-    k: __mmask8,
-    a: __m512i,
-    imm8: i32,
-) -> __m256i {
-    assert!(imm8 >= 0 && imm8 <= 1);
-    let extract = match imm8 & 0x1 {
-        0 => simd_shuffle4(a, _mm512_set1_epi64(0), [0, 1, 2, 3]),
-        _ => simd_shuffle4(a, _mm512_set1_epi64(0), [4, 5, 6, 7]),
-    };
-
-    let ret = simd_select_bitmask(
-        k,
-        _mm512_castsi256_si512(extract),
-        _mm512_castsi256_si512(src),
-    );
-    transmute(_mm512_castsi512_si256(ret))
-}
-
-/// Extract 256 bits (composed of 4 packed 64-bit integers) from a, selected with imm8, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
-///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_extracti64x4_epi64&expand=2475)
-#[inline]
-#[target_feature(enable = "avx512f")]
-#[cfg_attr(
-    all(test, not(target_os = "windows")),
-    assert_instr(vextracti64x4, imm8 = 1)
-)]
-#[rustc_args_required_const(2)]
-pub unsafe fn _mm512_maskz_extracti64x4_epi64(k: __mmask8, a: __m512i, imm8: i32) -> __m256i {
-    assert!(imm8 >= 0 && imm8 <= 1);
-    let extract = match imm8 & 0x1 {
-        0 => simd_shuffle4(a, _mm512_set1_epi64(0), [0, 1, 2, 3]),
-        _ => simd_shuffle4(a, _mm512_set1_epi64(0), [4, 5, 6, 7]),
-    };
-
-    let ret = simd_select_bitmask(k, _mm512_castsi256_si512(extract), _mm512_setzero_si512());
-    transmute(_mm512_castsi512_si256(ret))
-}
+//use crate::{
+//    core_arch::{simd::*, simd_llvm::*, x86::*},
+//    mem::transmute,
+//};
 
 #[cfg(test)]
 mod tests {
@@ -5782,6 +5672,13 @@ mod tests {
         let r = _mm512_andnot_si512(a, b);
         let e = _mm512_set1_epi64(1 << 3 | 1 << 4);
         assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_reduce_add_epi64() {
+        let a = _mm512_set1_epi64(1);
+        let e: i64 = _mm512_reduce_add_epi64(a);
+        assert_eq!(8, e);
     }
 
     #[simd_test(enable = "avx512f")]
