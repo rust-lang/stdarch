@@ -12401,13 +12401,8 @@ pub unsafe fn _mm512_maskz_extractf32x4_ps(k: __mmask8, a: __m512, imm8: i32) ->
         2 => simd_shuffle4(a, _mm512_undefined_ps(), [8, 9, 10, 11]),
         _ => simd_shuffle4(a, _mm512_undefined_ps(), [12, 13, 14, 15]),
     };
-
-    let ret = simd_select_bitmask(
-        k,
-        _mm512_castps512_ps256(_mm512_castps128_ps512(extract)),
-        _mm256_setzero_ps(),
-    );
-    transmute(_mm512_castps512_ps128(_mm512_castps256_ps512(ret)))
+    let zero = _mm_setzero_ps().as_f32x4();
+    transmute(simd_select_bitmask(k, extract.as_f32x4(), zero))
 }
 
 /// Extract 256 bits (composed of 4 packed 64-bit integers) from a, selected with imm8, and store the result in dst.
@@ -12449,13 +12444,7 @@ pub unsafe fn _mm512_mask_extracti64x4_epi64(
         0 => simd_shuffle4(a, _mm512_set1_epi64(0), [0, 1, 2, 3]),
         _ => simd_shuffle4(a, _mm512_set1_epi64(0), [4, 5, 6, 7]),
     };
-
-    let ret = simd_select_bitmask(
-        k,
-        _mm512_castsi256_si512(extract),
-        _mm512_castsi256_si512(src),
-    );
-    transmute(_mm512_castsi512_si256(ret))
+    transmute(simd_select_bitmask(k, extract, src.as_i64x4()))
 }
 
 /// Extract 256 bits (composed of 4 packed 64-bit integers) from a, selected with imm8, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
@@ -12470,13 +12459,12 @@ pub unsafe fn _mm512_mask_extracti64x4_epi64(
 #[rustc_args_required_const(2)]
 pub unsafe fn _mm512_maskz_extracti64x4_epi64(k: __mmask8, a: __m512i, imm8: i32) -> __m256i {
     assert!(imm8 >= 0 && imm8 <= 1);
-    let extract = match imm8 & 0x1 {
+    let extract: __m256i = match imm8 & 0x1 {
         0 => simd_shuffle4(a, _mm512_set1_epi64(0), [0, 1, 2, 3]),
         _ => simd_shuffle4(a, _mm512_set1_epi64(0), [4, 5, 6, 7]),
     };
-
-    let ret = simd_select_bitmask(k, _mm512_castsi256_si512(extract), _mm512_setzero_si512());
-    transmute(_mm512_castsi512_si256(ret))
+    let zero = _mm256_setzero_si256().as_i64x4();
+    transmute(simd_select_bitmask(k, extract.as_i64x4(), zero))
 }
 
 /// Extract 256 bits (composed of 4 packed double-precision (64-bit) floating-point elements) from a, selected with imm8, and store the result in dst.
@@ -12518,13 +12506,7 @@ pub unsafe fn _mm512_mask_extractf64x4_pd(
         0 => simd_shuffle4(a, _mm512_undefined_pd(), [0, 1, 2, 3]),
         _ => simd_shuffle4(a, _mm512_undefined_pd(), [4, 5, 6, 7]),
     };
-
-    let ret = simd_select_bitmask(
-        k,
-        _mm512_castpd256_pd512(extract),
-        _mm512_castpd256_pd512(src),
-    );
-    transmute(_mm512_castpd512_pd256(ret))
+    transmute(simd_select_bitmask(k, extract, src))
 }
 
 /// Extract 256 bits (composed of 4 packed double-precision (64-bit) floating-point elements) from a, selected with imm8, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
@@ -12543,9 +12525,8 @@ pub unsafe fn _mm512_maskz_extractf64x4_pd(k: __mmask8, a: __m512d, imm8: i32) -
         0 => simd_shuffle4(a, _mm512_undefined_pd(), [0, 1, 2, 3]),
         _ => simd_shuffle4(a, _mm512_undefined_pd(), [4, 5, 6, 7]),
     };
-
-    let ret = simd_select_bitmask(k, _mm512_castpd256_pd512(extract), _mm512_setzero_pd());
-    transmute(_mm512_castpd512_pd256(ret))
+    let zero = _mm256_setzero_pd();
+    transmute(simd_select_bitmask(k, extract, zero))
 }
 
 /// Extract 128 bits (composed of 4 packed 32-bit integers) from a, selected with imm8, and store the result in dst.
@@ -12568,7 +12549,6 @@ pub unsafe fn _mm512_extracti32x4_epi32(a: __m512i, imm8: i32) -> __m128i {
         2 => simd_shuffle4(a, undefined, [8, 9, 10, 11]),
         _ => simd_shuffle4(a, undefined, [12, 13, 14, 15]),
     };
-
     transmute(extract)
 }
 
@@ -12597,15 +12577,7 @@ pub unsafe fn _mm512_mask_extracti32x4_epi32(
         2 => simd_shuffle4(a, undefined, [8, 9, 10, 11]),
         _ => simd_shuffle4(a, undefined, [12, 13, 14, 15]),
     };
-    let extract: __m128i = transmute(extract);
-
-    let ret = simd_select_bitmask(
-        k,
-        _mm512_castsi512_si256(_mm512_castsi128_si512(extract)).as_i32x8(),
-        _mm512_castsi512_si256(_mm512_castsi128_si512(src)).as_i32x8(),
-    );
-    let ret: __m256i = transmute(ret);
-    transmute(_mm512_castsi512_si128(_mm512_castsi256_si512(ret)))
+    transmute(simd_select_bitmask(k, extract, src.as_i32x4()))
 }
 
 /// Extract 128 bits (composed of 4 packed 32-bit integers) from a, selected with imm8, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
@@ -12628,15 +12600,8 @@ pub unsafe fn _mm512_maskz_extracti32x4_epi32(k: __mmask8, a: __m512i, imm8: i32
         2 => simd_shuffle4(a, undefined, [8, 9, 10, 11]),
         _ => simd_shuffle4(a, undefined, [12, 13, 14, 15]),
     };
-    let extract: __m128i = transmute(extract);
-
-    let ret = simd_select_bitmask(
-        k,
-        _mm512_castsi512_si256(_mm512_castsi128_si512(extract)).as_i32x8(),
-        _mm256_setzero_si256().as_i32x8(),
-    );
-    let ret: __m256i = transmute(ret);
-    transmute(_mm512_castsi512_si128(_mm512_castsi256_si512(ret)))
+    let zero = _mm_setzero_si128().as_i32x4();
+    transmute(simd_select_bitmask(k, extract, zero))
 }
 
 /// Duplicate even-indexed single-precision (32-bit) floating-point elements from a, and store the results in dst.
