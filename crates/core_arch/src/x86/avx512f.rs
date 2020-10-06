@@ -12380,13 +12380,7 @@ pub unsafe fn _mm512_mask_extractf32x4_ps(
         2 => simd_shuffle4(a, _mm512_undefined_ps(), [8, 9, 10, 11]),
         _ => simd_shuffle4(a, _mm512_undefined_ps(), [12, 13, 14, 15]),
     };
-
-    let ret = simd_select_bitmask(
-        k,
-        _mm512_castps512_ps256(_mm512_castps128_ps512(extract)),
-        _mm512_castps512_ps256(_mm512_castps128_ps512(src)),
-    );
-    transmute(_mm512_castps512_ps128(_mm512_castps256_ps512(ret)))
+    transmute(simd_select_bitmask(k, extract.as_f32x4(), src.as_f32x4()))
 }
 
 /// Extract 128 bits (composed of 4 packed single-precision (32-bit) floating-point elements) from a, selected with imm8, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
