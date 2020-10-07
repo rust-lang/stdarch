@@ -51,6 +51,7 @@ extern "C" {
 /// [instr]: https://webassembly.github.io/threads/syntax/instructions.html#syntax-instr-atomic-memory
 #[inline]
 #[cfg_attr(test, assert_instr("i32.atomic.wait"))]
+#[stable(feature = "wasm_atomics", since = "1.50.0")]
 pub unsafe fn memory_atomic_wait32(ptr: *mut i32, expression: i32, timeout_ns: i64) -> i32 {
     llvm_atomic_wait_i32(ptr, expression, timeout_ns)
 }
@@ -86,6 +87,7 @@ pub unsafe fn memory_atomic_wait32(ptr: *mut i32, expression: i32, timeout_ns: i
 /// [instr]: https://webassembly.github.io/threads/syntax/instructions.html#syntax-instr-atomic-memory
 #[inline]
 #[cfg_attr(test, assert_instr("i64.atomic.wait"))]
+#[stable(feature = "wasm_atomics", since = "1.50.0")]
 pub unsafe fn memory_atomic_wait64(ptr: *mut i64, expression: i64, timeout_ns: i64) -> i32 {
     llvm_atomic_wait_i64(ptr, expression, timeout_ns)
 }
@@ -113,6 +115,7 @@ pub unsafe fn memory_atomic_wait64(ptr: *mut i64, expression: i64, timeout_ns: i
 /// [instr]: https://webassembly.github.io/threads/syntax/instructions.html#syntax-instr-atomic-memory
 #[inline]
 #[cfg_attr(test, assert_instr("atomic.wake"))]
+#[stable(feature = "wasm_atomics", since = "1.50.0")]
 pub unsafe fn memory_atomic_notify(ptr: *mut i32, waiters: u32) -> u32 {
     llvm_atomic_notify(ptr, waiters as i32) as u32
 }
