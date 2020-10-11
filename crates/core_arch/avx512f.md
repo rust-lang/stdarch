@@ -778,7 +778,7 @@
   * [ ] [`_mm512_maskz_fixupimm_pd`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_fixupimm_pd&expand=5236)
   * [ ] [`_mm512_maskz_fixupimm_ps`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_fixupimm_ps&expand=5236)
   * [ ] [`_mm512_maskz_fixupimm_round_pd`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_fixupimm_round_pd&expand=5236)
-  * [ ] [`_mm512_maskz_fixupimm_round_ps`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_fixupimm_round_ps&expand=5236)
+  * [x] [`_mm512_maskz_fixupimm_round_ps`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_fixupimm_round_ps&expand=5236)
   * [x] [`_mm512_maskz_fmadd_pd`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_fmadd_pd&expand=5236)
   * [x] [`_mm512_maskz_fmadd_ps`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_fmadd_ps&expand=5236)
   * [x] [`_mm512_maskz_fmadd_round_pd`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_fmadd_round_pd&expand=5236)

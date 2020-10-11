@@ -5574,19 +5574,92 @@ pub unsafe fn _mm512_maskz_fixupimm_round_ps(
 ) -> __m512 {
     macro_rules! call {
         ($imm8:expr, $imm4:expr) => {
-            vfixupimmps(
-                a.as_f32x16(),
-                b.as_f32x16(),
-                c.as_i32x16(),
+            vfixupimmpsz(a.as_f32x16(), b.as_f32x16(), c.as_i32x16(), $imm8, k, $imm4)
+        };
+    }
+    let r = constify_imm8_roundscale!(imm8, sae, call);
+    transmute(r)
+}
+
+/// Fix up packed double-precision (64-bit) floating-point elements in a and b using packed 64-bit integers in c, and store the results in dst. imm8 is used to set the required flags reporting.
+///
+/// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_fixupimm_round_pd&expand=2502)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vfixupimmpd, imm8 = 0, sae = 8))]
+#[rustc_args_required_const(3, 4)]
+pub unsafe fn _mm512_fixupimm_round_pd(
+    a: __m512d,
+    b: __m512d,
+    c: __m512i,
+    imm8: i32,
+    sae: i32,
+) -> __m512d {
+    macro_rules! call {
+        ($imm8:expr, $imm4:expr) => {
+            vfixupimmpd(
+                a.as_f64x8(),
+                b.as_f64x8(),
+                c.as_i64x8(),
                 $imm8,
-                0b11111111_11111111,
+                0b11111111,
                 $imm4,
             )
         };
     }
-    let r: f32x16 = constify_imm8_roundscale!(imm8, sae, call);
-    let zero = _mm512_setzero_ps().as_f32x16();
-    transmute(simd_select_bitmask(k, r, zero))
+    let r = constify_imm8_roundscale!(imm8, sae, call);
+    transmute(r)
+}
+
+/// Fix up packed double-precision (64-bit) floating-point elements in a and b using packed 64-bit integers in c, and store the results in dst using writemask k (elements are copied from a when the corresponding mask bit is not set). imm8 is used to set the required flags reporting.
+///
+/// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_fixupimm_round_pd&expand=2503)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vfixupimmpd, imm8 = 0, sae = 8))]
+#[rustc_args_required_const(4, 5)]
+pub unsafe fn _mm512_mask_fixupimm_round_pd(
+    a: __m512d,
+    k: __mmask8,
+    b: __m512d,
+    c: __m512i,
+    imm8: i32,
+    sae: i32,
+) -> __m512d {
+    macro_rules! call {
+        ($imm8:expr, $imm4:expr) => {
+            vfixupimmpd(a.as_f64x8(), b.as_f64x8(), c.as_i64x8(), $imm8, k, $imm4)
+        };
+    }
+    let r = constify_imm8_roundscale!(imm8, sae, call);
+    transmute(r)
+}
+
+/// Fix up packed double-precision (64-bit) floating-point elements in a and b using packed 64-bit integers in c, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set). imm8 is used to set the required flags reporting.
+///
+/// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_fixupimm_round_pd&expand=2504)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vfixupimmpd, imm8 = 0, sae = 8))]
+#[rustc_args_required_const(4, 5)]
+pub unsafe fn _mm512_maskz_fixupimm_round_pd(
+    k: __mmask8,
+    a: __m512d,
+    b: __m512d,
+    c: __m512i,
+    imm8: i32,
+    sae: i32,
+) -> __m512d {
+    macro_rules! call {
+        ($imm8:expr, $imm4:expr) => {
+            vfixupimmpdz(a.as_f64x8(), b.as_f64x8(), c.as_i64x8(), $imm8, k, $imm4)
+        };
+    }
+    let r = constify_imm8_roundscale!(imm8, sae, call);
+    transmute(r)
 }
 
 /// Normalize the mantissas of packed single-precision (32-bit) floating-point elements in a, and store the results in dst. This intrinsic essentially calculates ±(2^k)*|x.significand|, where k depends on the interval range defined by interv and the sign depends on sc and the source sign.
@@ -18131,6 +18204,10 @@ extern "C" {
     fn vfixupimmps(a: f32x16, b: f32x16, c: i32x16, imm8: i32, mask: u16, sae: i32) -> f32x16;
     #[link_name = "llvm.x86.avx512.mask.fixupimm.pd.512"]
     fn vfixupimmpd(a: f64x8, b: f64x8, c: i64x8, imm8: i32, mask: u8, sae: i32) -> f64x8;
+    #[link_name = "llvm.x86.avx512.maskz.fixupimm.ps.512"]
+    fn vfixupimmpsz(a: f32x16, b: f32x16, c: i32x16, imm8: i32, mask: u16, sae: i32) -> f32x16;
+    #[link_name = "llvm.x86.avx512.maskz.fixupimm.pd.512"]
+    fn vfixupimmpdz(a: f64x8, b: f64x8, c: i64x8, imm8: i32, mask: u8, sae: i32) -> f64x8;
 
     #[link_name = "llvm.x86.avx512.mask.getmant.ps.512"]
     fn vgetmantps(a: f32x16, mantissas: i32, src: f32x16, m: u16, sae: i32) -> f32x16;
