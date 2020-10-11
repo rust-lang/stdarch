@@ -2412,6 +2412,70 @@ pub unsafe fn _mm512_maskz_fixupimm_pd(
     transmute(r)
 }
 
+/// Bitwise ternary logic that provides the capability to implement any three-operand binary function; the specific binary function is specified by value in imm8. For each bit in each packed 32-bit integer, the corresponding bit from a, b, and c are used to form a 3 bit index into imm8, and the value at that bit in imm8 is written to the corresponding bit in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_ternarylogic_epi32&expand=5867)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vpternlogd, imm8 = 114))]
+#[rustc_args_required_const(3)]
+pub unsafe fn _mm512_ternarylogic_epi32(a: __m512i, b: __m512i, c: __m512i, imm8: i32) -> __m512i {
+    macro_rules! call {
+        ($imm8:expr) => {
+            vpternlogd(a.as_i32x16(), b.as_i32x16(), c.as_i32x16(), $imm8)
+        };
+    }
+    let r = constify_imm8_sae!(imm8, call);
+    transmute(r)
+}
+
+/// Bitwise ternary logic that provides the capability to implement any three-operand binary function; the specific binary function is specified by value in imm8. For each bit in each packed 32-bit integer, the corresponding bit from src, a, and b are used to form a 3 bit index into imm8, and the value at that bit in imm8 is written to the corresponding bit in dst using writemask k at 32-bit granularity (32-bit elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_ternarylogic_epi32&expand=5865)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vpternlogd, imm8 = 114))]
+#[rustc_args_required_const(4)]
+pub unsafe fn _mm512_mask_ternarylogic_epi32(
+    src: __m512i,
+    k: __mmask16,
+    a: __m512i,
+    b: __m512i,
+    imm8: i32,
+) -> __m512i {
+    macro_rules! call {
+        ($imm8:expr) => {
+            vpternlogd(src.as_i32x16(), a.as_i32x16(), b.as_i32x16(), $imm8)
+        };
+    }
+    let ternarylogic = constify_imm8_sae!(imm8, call);
+    transmute(simd_select_bitmask(k, ternarylogic, src.as_i32x16()))
+}
+
+/// Bitwise ternary logic that provides the capability to implement any three-operand binary function; the specific binary function is specified by value in imm8. For each bit in each packed 32-bit integer, the corresponding bit from a, b, and c are used to form a 3 bit index into imm8, and the value at that bit in imm8 is written to the corresponding bit in dst using zeromask k at 32-bit granularity (32-bit elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_ternarylogic_epi32&expand=5866)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vpternlogd, imm8 = 114))]
+#[rustc_args_required_const(4)]
+pub unsafe fn _mm512_maskz_ternarylogic_epi32(
+    k: __mmask16,
+    a: __m512i,
+    b: __m512i,
+    c: __m512i,
+    imm8: i32,
+) -> __m512i {
+    macro_rules! call {
+        ($imm8:expr) => {
+            vpternlogd(a.as_i32x16(), b.as_i32x16(), c.as_i32x16(), $imm8)
+        };
+    }
+    let ternarylogic = constify_imm8_sae!(imm8, call);
+    let zero = _mm512_setzero_si512().as_i32x16();
+    transmute(simd_select_bitmask(k, ternarylogic, zero))
+}
+
 /// Normalize the mantissas of packed single-precision (32-bit) floating-point elements in a, and store the results in dst. This intrinsic essentially calculates ±(2^k)*|x.significand|, where k depends on the interval range defined by interv and the sign depends on sc and the source sign.
 /// The mantissa is normalized to the interval specified by interv, which can take the following values:
 ///    _MM_MANT_NORM_1_2     // interval [1, 2)
@@ -18377,6 +18441,11 @@ extern "C" {
     #[link_name = "llvm.x86.avx512.maskz.fixupimm.pd.512"]
     fn vfixupimmpdz(a: f64x8, b: f64x8, c: i64x8, imm8: i32, mask: u8, sae: i32) -> f64x8;
 
+    #[link_name = "llvm.x86.avx512.pternlog.d.512"]
+    fn vpternlogd(a: i32x16, b: i32x16, c: i32x16, sae: i32) -> i32x16;
+    #[link_name = "llvm.x86.avx512.pternlog.q.512"]
+    fn vpternlogq(a: i64x8, b: i64x8, c: i64x8, sae: i32) -> i64x8;
+
     #[link_name = "llvm.x86.avx512.mask.getmant.ps.512"]
     fn vgetmantps(a: f32x16, mantissas: i32, src: f32x16, m: u16, sae: i32) -> f32x16;
     #[link_name = "llvm.x86.avx512.mask.getmant.pd.512"]
@@ -20576,6 +20645,40 @@ mod tests {
             0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,
         );
         assert_eq_m512(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_ternarylogic_epi32() {
+        let a = _mm512_set1_epi32(1 << 2);
+        let b = _mm512_set1_epi32(1 << 1);
+        let c = _mm512_set1_epi32(1 << 0);
+        let r = _mm512_ternarylogic_epi32(a, b, c, 8);
+        let e = _mm512_set1_epi32(0);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_ternarylogic_epi32() {
+        let src = _mm512_set1_epi32(1 << 2);
+        let a = _mm512_set1_epi32(1 << 1);
+        let b = _mm512_set1_epi32(1 << 0);
+        let r = _mm512_mask_ternarylogic_epi32(src, 0, a, b, 8);
+        assert_eq_m512i(r, src);
+        let r = _mm512_mask_ternarylogic_epi32(src, 0b11111111_11111111, a, b, 8);
+        let e = _mm512_set1_epi32(0);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_maskz_ternarylogic_epi32() {
+        let a = _mm512_set1_epi32(1 << 2);
+        let b = _mm512_set1_epi32(1 << 1);
+        let c = _mm512_set1_epi32(1 << 0);
+        let r = _mm512_maskz_ternarylogic_epi32(0, a, b, c, 9);
+        assert_eq_m512i(r, _mm512_setzero_si512());
+        let r = _mm512_maskz_ternarylogic_epi32(0b11111111_11111111, a, b, c, 8);
+        let e = _mm512_set1_epi32(0);
+        assert_eq_m512i(r, e);
     }
 
     #[simd_test(enable = "avx512f")]
