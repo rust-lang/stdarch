@@ -16843,15 +16843,6 @@ pub unsafe fn _mm512_reduce_add_epi32(a: __m512i) -> i32 {
     simd_reduce_add_unordered(a.as_i32x16())
 }
 
-/// Reduce the packed 64-bit integers in a by addition. Returns the sum of all elements in a.
-///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_reduce_add_epi64&expand=4558)
-#[inline]
-#[target_feature(enable = "avx512f")]
-pub unsafe fn _mm512_reduce_add_epi64(a: __m512i) -> i64 {
-    simd_reduce_add_unordered(a.as_i64x8())
-}
-
 /// Reduce the packed 32-bit integers in a by addition using mask k. Returns the sum of all active elements in a.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_reduce_add_epi32&expand=4555)
@@ -16862,6 +16853,28 @@ pub unsafe fn _mm512_mask_reduce_add_epi32(k: __mmask16, a: __m512i) -> i32 {
         k,
         a.as_i32x16(),
         _mm512_setzero_si512().as_i32x16(),
+    ))
+}
+
+/// Reduce the packed 64-bit integers in a by addition. Returns the sum of all elements in a.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_reduce_add_epi64&expand=4558)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_reduce_add_epi64(a: __m512i) -> i64 {
+    simd_reduce_add_unordered(a.as_i64x8())
+}
+
+/// Reduce the packed 64-bit integers in a by addition using mask k. Returns the sum of all active elements in a.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_reduce_add_epi64&expand=4557)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_mask_reduce_add_epi64(k: __mmask8, a: __m512i) -> i64 {
+    simd_reduce_add_unordered(simd_select_bitmask(
+        k,
+        a.as_i64x8(),
+        _mm512_setzero_si512().as_i64x8(),
     ))
 }
 
@@ -16931,6 +16944,28 @@ pub unsafe fn _mm512_mask_reduce_mul_epi32(k: __mmask16, a: __m512i) -> i32 {
     ))
 }
 
+/// Reduce the packed 64-bit integers in a by multiplication. Returns the product of all elements in a.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_reduce_mul_epi64&expand=4602)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_reduce_mul_epi64(a: __m512i) -> i64 {
+    simd_reduce_mul_unordered(a.as_i64x8())
+}
+
+/// Reduce the packed 64-bit integers in a by multiplication using mask k. Returns the product of all active elements in a.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_reduce_mul_epi64&expand=4601)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_mask_reduce_mul_epi64(k: __mmask8, a: __m512i) -> i64 {
+    simd_reduce_mul_unordered(simd_select_bitmask(
+        k,
+        a.as_i64x8(),
+        _mm512_set1_epi64(1).as_i64x8(),
+    ))
+}
+
 /// Reduce the packed single-precision (32-bit) floating-point elements in a by multiplication. Returns the product of all elements in a.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_reduce_mul_ps&expand=4606)
@@ -16997,6 +17032,28 @@ pub unsafe fn _mm512_mask_reduce_max_epi32(k: __mmask16, a: __m512i) -> i32 {
     ))
 }
 
+/// Reduce the packed signed 64-bit integers in a by maximum. Returns the maximum of all elements in a.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_reduce_max_epi64&expand=4578)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_reduce_max_epi64(a: __m512i) -> i64 {
+    simd_reduce_max(a.as_i64x8())
+}
+
+/// Reduce the packed signed 64-bit integers in a by maximum using mask k. Returns the maximum of all active elements in a.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_reduce_max_epi64&expand=4577)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_mask_reduce_max_epi64(k: __mmask8, a: __m512i) -> i64 {
+    simd_reduce_max(simd_select_bitmask(
+        k,
+        a.as_i64x8(),
+        _mm512_set1_epi64(0).as_i64x8(),
+    ))
+}
+
 /// Reduce the packed unsigned 32-bit integers in a by maximum. Returns the maximum of all elements in a.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_reduce_max_epu32&expand=4580)
@@ -17016,6 +17073,28 @@ pub unsafe fn _mm512_mask_reduce_max_epu32(k: __mmask16, a: __m512i) -> u32 {
         k,
         a.as_u32x16(),
         _mm512_undefined_epi32().as_u32x16(),
+    ))
+}
+
+/// Reduce the packed unsigned 64-bit integers in a by maximum. Returns the maximum of all elements in a.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_reduce_max_epu64&expand=4582)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_reduce_max_epu64(a: __m512i) -> u64 {
+    simd_reduce_max(a.as_u64x8())
+}
+
+/// Reduce the packed unsigned 64-bit integers in a by maximum using mask k. Returns the maximum of all active elements in a.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_reduce_max_epu64&expand=4581)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_mask_reduce_max_epu64(k: __mmask8, a: __m512i) -> u64 {
+    simd_reduce_max(simd_select_bitmask(
+        k,
+        a.as_u64x8(),
+        _mm512_set1_epi64(0).as_u64x8(),
     ))
 }
 
@@ -17085,6 +17164,28 @@ pub unsafe fn _mm512_mask_reduce_min_epi32(k: __mmask16, a: __m512i) -> i32 {
     ))
 }
 
+/// Reduce the packed signed 64-bit integers in a by minimum. Returns the minimum of all elements in a.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_reduce_min_epi64&expand=4590)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_reduce_min_epi64(a: __m512i) -> i64 {
+    simd_reduce_min(a.as_i64x8())
+}
+
+/// Reduce the packed signed 64-bit integers in a by maximum using mask k. Returns the minimum of all active elements in a.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_reduce_min_epi64&expand=4589)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_mask_reduce_min_epi64(k: __mmask8, a: __m512i) -> i64 {
+    simd_reduce_min(simd_select_bitmask(
+        k,
+        a.as_i64x8(),
+        _mm512_set1_epi64(0).as_i64x8(),
+    ))
+}
+
 /// Reduce the packed unsigned 32-bit integers in a by minimum. Returns the minimum of all elements in a.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_reduce_min_epu32&expand=4592)
@@ -17104,6 +17205,28 @@ pub unsafe fn _mm512_mask_reduce_min_epu32(k: __mmask16, a: __m512i) -> u32 {
         k,
         a.as_u32x16(),
         _mm512_undefined_epi32().as_u32x16(),
+    ))
+}
+
+/// Reduce the packed unsigned 64-bit integers in a by minimum. Returns the minimum of all elements in a.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_reduce_min_epu64&expand=4594)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_reduce_min_epu64(a: __m512i) -> u64 {
+    simd_reduce_min(a.as_u64x8())
+}
+
+/// Reduce the packed signed 64-bit integers in a by maximum using mask k. Returns the minimum of all active elements in a.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_reduce_min_epi64&expand=4589)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_mask_reduce_min_epu64(k: __mmask8, a: __m512i) -> u64 {
+    simd_reduce_min(simd_select_bitmask(
+        k,
+        a.as_u64x8(),
+        _mm512_set1_epi64(0).as_u64x8(),
     ))
 }
 
@@ -17191,6 +17314,29 @@ pub unsafe fn _mm512_mask_reduce_and_epi32(k: __mmask16, a: __m512i) -> i32 {
     ))
 }
 
+/// Reduce the packed 64-bit integers in a by bitwise AND. Returns the bitwise AND of all elements in a.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_reduce_and_epi64&expand=4566)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_reduce_and_epi64(a: __m512i) -> i64 {
+    simd_reduce_and(a.as_i64x8())
+}
+
+/// Reduce the packed 64-bit integers in a by addition using mask k. Returns the sum of all active elements in a.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_reduce_add_epi64&expand=4557)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_mask_reduce_and_epi64(k: __mmask8, a: __m512i) -> i64 {
+    simd_reduce_and(simd_select_bitmask(
+        k,
+        a.as_i64x8(),
+        _mm512_set1_epi64(1 << 0 | 1 << 1 | 1 << 2 | 1 << 3 | 1 << 4 | 1 << 5 | 1 << 6 | 1 << 7)
+            .as_i64x8(),
+    ))
+}
+
 /// Reduce the packed 32-bit integers in a by bitwise OR. Returns the bitwise OR of all elements in a.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_reduce_or_epi32&expand=4608)
@@ -17210,6 +17356,28 @@ pub unsafe fn _mm512_mask_reduce_or_epi32(k: __mmask16, a: __m512i) -> i32 {
         k,
         a.as_i32x16(),
         _mm512_setzero_si512().as_i32x16(),
+    ))
+}
+
+/// Reduce the packed 64-bit integers in a by bitwise OR. Returns the bitwise OR of all elements in a.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_reduce_or_epi64&expand=4610)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_reduce_or_epi64(a: __m512i) -> i64 {
+    simd_reduce_or(a.as_i64x8())
+}
+
+/// Reduce the packed 64-bit integers in a by bitwise OR using mask k. Returns the bitwise OR of all active elements in a.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_reduce_or_epi64&expand=4609)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_mask_reduce_or_epi64(k: __mmask8, a: __m512i) -> i64 {
+    simd_reduce_or(simd_select_bitmask(
+        k,
+        a.as_i64x8(),
+        _mm512_setzero_si512().as_i64x8(),
     ))
 }
 
