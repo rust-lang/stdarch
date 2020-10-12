@@ -135,6 +135,98 @@ pub unsafe fn _mm512_mask_abs_pd(src: __m512d, k: __mmask8, v2: __m512d) -> __m5
     transmute(simd_select_bitmask(k, abs, src.as_f64x8()))
 }
 
+/// Move packed 32-bit integers from a to dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_mov_epi32&expand=3801)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vmovdqa32))]
+pub unsafe fn _mm512_mask_mov_epi32(src: __m512i, k: __mmask16, a: __m512i) -> __m512i {
+    let mov = a.as_i32x16();
+    transmute(simd_select_bitmask(k, mov, src.as_i32x16()))
+}
+
+/// Move packed 32-bit integers from a into dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_mov_epi32&expand=3802)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vmovdqa32))]
+pub unsafe fn _mm512_maskz_mov_epi32(k: __mmask16, a: __m512i) -> __m512i {
+    let mov = a.as_i32x16();
+    let zero = _mm512_setzero_si512().as_i32x16();
+    transmute(simd_select_bitmask(k, mov, zero))
+}
+
+/// Move packed 64-bit integers from a to dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_mov_epi64&expand=3807)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vmovdqa64))]
+pub unsafe fn _mm512_mask_mov_epi64(src: __m512i, k: __mmask8, a: __m512i) -> __m512i {
+    let mov = a.as_i64x8();
+    transmute(simd_select_bitmask(k, mov, src.as_i64x8()))
+}
+
+/// Move packed 64-bit integers from a into dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_mov_epi64&expand=3808)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vmovdqa64))]
+pub unsafe fn _mm512_maskz_mov_epi64(k: __mmask8, a: __m512i) -> __m512i {
+    let mov = a.as_i64x8();
+    let zero = _mm512_setzero_si512().as_i64x8();
+    transmute(simd_select_bitmask(k, mov, zero))
+}
+
+/// Move packed single-precision (32-bit) floating-point elements from a to dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_mov_ps&expand=3825)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vmovaps))]
+pub unsafe fn _mm512_mask_mov_ps(src: __m512, k: __mmask16, a: __m512) -> __m512 {
+    let mov = a.as_f32x16();
+    transmute(simd_select_bitmask(k, mov, src.as_f32x16()))
+}
+
+/// Move packed single-precision (32-bit) floating-point elements from a into dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_mov_ps&expand=3826)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vmovaps))]
+pub unsafe fn _mm512_maskz_mov_ps(k: __mmask16, a: __m512) -> __m512 {
+    let mov = a.as_f32x16();
+    let zero = _mm512_setzero_ps().as_f32x16();
+    transmute(simd_select_bitmask(k, mov, zero))
+}
+
+/// Move packed double-precision (64-bit) floating-point elements from a to dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_mov_pd&expand=3819)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vmovapd))]
+pub unsafe fn _mm512_mask_mov_pd(src: __m512d, k: __mmask8, a: __m512d) -> __m512d {
+    let mov = a.as_f64x8();
+    transmute(simd_select_bitmask(k, mov, src.as_f64x8()))
+}
+
+/// Move packed double-precision (64-bit) floating-point elements from a into dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_mov_pd&expand=3820)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vmovapd))]
+pub unsafe fn _mm512_maskz_mov_pd(k: __mmask8, a: __m512d) -> __m512d {
+    let mov = a.as_f64x8();
+    let zero = _mm512_setzero_pd().as_f64x8();
+    transmute(simd_select_bitmask(k, mov, zero))
+}
+
 /// Add packed 32-bit integers in a and b, and store the results in dst.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_add_epi32&expand=100)
@@ -19108,6 +19200,44 @@ mod tests {
             -32.,
         );
         assert_eq_m512(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_mov_epi32() {
+        let src = _mm512_set1_epi32(1);
+        let a = _mm512_set1_epi32(2);
+        let r = _mm512_mask_mov_epi32(src, 0, a);
+        assert_eq_m512i(r, src);
+        let r = _mm512_mask_mov_epi32(src, 0b11111111_11111111, a);
+        assert_eq_m512i(r, a);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_maskz_mov_epi32() {
+        let a = _mm512_set1_epi32(2);
+        let r = _mm512_maskz_mov_epi32(0, a);
+        assert_eq_m512i(r, _mm512_setzero_si512());
+        let r = _mm512_maskz_mov_epi32(0b11111111_11111111, a);
+        assert_eq_m512i(r, a);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_mov_ps() {
+        let src = _mm512_set1_ps(1.);
+        let a = _mm512_set1_ps(2.);
+        let r = _mm512_mask_mov_ps(src, 0, a);
+        assert_eq_m512(r, src);
+        let r = _mm512_mask_mov_ps(src, 0b11111111_11111111, a);
+        assert_eq_m512(r, a);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_maskz_mov_ps() {
+        let a = _mm512_set1_ps(2.);
+        let r = _mm512_maskz_mov_ps(0, a);
+        assert_eq_m512(r, _mm512_setzero_ps());
+        let r = _mm512_maskz_mov_ps(0b11111111_11111111, a);
+        assert_eq_m512(r, a);
     }
 
     #[simd_test(enable = "avx512f")]
