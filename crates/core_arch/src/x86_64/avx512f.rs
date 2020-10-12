@@ -6259,6 +6259,46 @@ mod tests {
     }
 
     #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_test_epi64_mask() {
+        let a = _mm512_set1_epi64(1 << 0);
+        let b = _mm512_set1_epi64(1 << 0 | 1 << 1);
+        let r = _mm512_test_epi64_mask(a, b);
+        let e: __mmask8 = 0b11111111;
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_test_epi64_mask() {
+        let a = _mm512_set1_epi64(1 << 0);
+        let b = _mm512_set1_epi64(1 << 0 | 1 << 1);
+        let r = _mm512_mask_test_epi64_mask(0, a, b);
+        assert_eq!(r, 0);
+        let r = _mm512_mask_test_epi64_mask(0b11111111, a, b);
+        let e: __mmask8 = 0b11111111;
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_testn_epi64_mask() {
+        let a = _mm512_set1_epi64(1 << 0);
+        let b = _mm512_set1_epi64(1 << 0 | 1 << 1);
+        let r = _mm512_testn_epi64_mask(a, b);
+        let e: __mmask8 = 0b00000000;
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_testn_epi64_mask() {
+        let a = _mm512_set1_epi64(1 << 0);
+        let b = _mm512_set1_epi64(1 << 1);
+        let r = _mm512_mask_testn_epi64_mask(0, a, b);
+        assert_eq!(r, 0);
+        let r = _mm512_mask_testn_epi64_mask(0b11111111, a, b);
+        let e: __mmask8 = 0b11111111;
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_stream_pd() {
         #[repr(align(64))]
         struct Memory {
