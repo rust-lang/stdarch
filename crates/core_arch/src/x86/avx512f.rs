@@ -2476,6 +2476,72 @@ pub unsafe fn _mm512_maskz_ternarylogic_epi32(
     transmute(simd_select_bitmask(k, ternarylogic, zero))
 }
 
+/// Bitwise ternary logic that provides the capability to implement any three-operand binary function; the specific binary function is specified by value in imm8. For each bit in each packed 64-bit integer, the corresponding bit from a, b, and c are used to form a 3 bit index into imm8, and the value at that bit in imm8 is written to the corresponding bit in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_ternarylogic_epi64&expand=5876)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vpternlogq, imm8 = 114))]
+#[rustc_args_required_const(3)]
+pub unsafe fn _mm512_ternarylogic_epi64(a: __m512i, b: __m512i, c: __m512i, imm8: i32) -> __m512i {
+    macro_rules! call {
+        ($imm8:expr) => {
+            vpternlogq(a.as_i64x8(), b.as_i64x8(), c.as_i64x8(), $imm8)
+        };
+    }
+    let r = constify_imm8_sae!(imm8, call);
+    transmute(r)
+}
+
+/// Bitwise ternary logic that provides the capability to implement any three-operand binary function; the specific binary function is specified by value in imm8. For each bit in each packed 64-bit integer, the corresponding bit from src, a, and b are used to form a 3 bit index into imm8, and the value at that bit in imm8 is written to the corresponding bit in dst using writemask k at 64-bit granularity (64-bit elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_ternarylogic_epi64&expand=5874)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vpternlogq, imm8 = 114))]
+#[rustc_args_required_const(4)]
+pub unsafe fn _mm512_mask_ternarylogic_epi64(
+    src: __m512i,
+    k: __mmask8,
+    a: __m512i,
+    b: __m512i,
+    imm8: i32,
+) -> __m512i {
+    macro_rules! call {
+        ($imm8:expr) => {
+            vpternlogq(src.as_i64x8(), a.as_i64x8(), b.as_i64x8(), $imm8)
+        };
+    }
+    let ternarylogic = constify_imm8_sae!(imm8, call);
+    transmute(simd_select_bitmask(k, ternarylogic, src.as_i64x8()))
+}
+
+/// Bitwise ternary logic that provides the capability to implement any three-operand binary function; the specific binary function is specified by value in imm8. For each bit in each packed 64-bit integer, the corresponding bit from a, b, and c are used to form a 3 bit index into imm8, and the value at that bit in imm8 is written to the corresponding bit in dst using zeromask k at 64-bit granularity (64-bit elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_ternarylogic_epi64&expand=5875)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vpternlogq, imm8 = 114))]
+#[rustc_args_required_const(4)]
+pub unsafe fn _mm512_maskz_ternarylogic_epi64(
+    k: __mmask8,
+    a: __m512i,
+    b: __m512i,
+    c: __m512i,
+    imm8: i32,
+) -> __m512i {
+    macro_rules! call {
+        ($imm8:expr) => {
+            vpternlogq(a.as_i64x8(), b.as_i64x8(), c.as_i64x8(), $imm8)
+        };
+    }
+    let ternarylogic = constify_imm8_sae!(imm8, call);
+    let zero = _mm512_setzero_si512().as_i64x8();
+    transmute(simd_select_bitmask(k, ternarylogic, zero))
+}
+
+/// Normalize the mantissas of packed single-precision (32-bit) floating-point elements in a, and store the results in dst. This intrinsic essentially calculates ±(2^k)*|x.significand|, where k depends on the interval range defined by interv and the sign depends on sc and the source sign.
+
 /// Normalize the mantissas of packed single-precision (32-bit) floating-point elements in a, and store the results in dst. This intrinsic essentially calculates ±(2^k)*|x.significand|, where k depends on the interval range defined by interv and the sign depends on sc and the source sign.
 /// The mantissa is normalized to the interval specified by interv, which can take the following values:
 ///    _MM_MANT_NORM_1_2     // interval [1, 2)
