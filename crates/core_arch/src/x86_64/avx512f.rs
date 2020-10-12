@@ -6287,4 +6287,25 @@ mod tests {
             assert_eq!(mem.data[i], get_m512i(a, i));
         }
     }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_set1_epi64() {
+        let src = _mm512_set1_epi64(2);
+        let a: i64 = 11;
+        let r = _mm512_mask_set1_epi64(src, 0, a);
+        assert_eq_m512i(r, src);
+        let r = _mm512_mask_set1_epi64(src, 0b11111111, a);
+        let e = _mm512_set1_epi64(11);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_maskz_set1_epi64() {
+        let a: i64 = 11;
+        let r = _mm512_maskz_set1_epi64(0, a);
+        assert_eq_m512i(r, _mm512_setzero_si512());
+        let r = _mm512_maskz_set1_epi64(0b11111111, a);
+        let e = _mm512_set1_epi64(11);
+        assert_eq_m512i(r, e);
+    }
 }

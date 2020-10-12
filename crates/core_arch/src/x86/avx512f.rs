@@ -15990,11 +15990,57 @@ pub unsafe fn _mm512_set1_epi32(a: i32) -> __m512i {
     transmute(i32x16::splat(a))
 }
 
+/// Broadcast 32-bit integer a to all elements of dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_set1_epi32&expand=4951)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vpbroadcastd))]
+pub unsafe fn _mm512_mask_set1_epi32(src: __m512i, k: __mmask16, a: i32) -> __m512i {
+    let r = _mm512_set1_epi32(a).as_i32x16();
+    transmute(simd_select_bitmask(k, r, src.as_i32x16()))
+}
+
+/// Broadcast 32-bit integer a to all elements of dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_set1_epi32&expand=4952)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vpbroadcastd))]
+pub unsafe fn _mm512_maskz_set1_epi32(k: __mmask16, a: i32) -> __m512i {
+    let r = _mm512_set1_epi32(a).as_i32x16();
+    let zero = _mm512_setzero_si512().as_i32x16();
+    transmute(simd_select_bitmask(k, r, zero))
+}
+
 /// Broadcast 64-bit integer `a` to all elements of `dst`.
 #[inline]
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_set1_epi64(a: i64) -> __m512i {
     transmute(i64x8::splat(a))
+}
+
+/// Broadcast 64-bit integer a to all elements of dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_set1_epi64&expand=4959)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vpbroadcastq))]
+pub unsafe fn _mm512_mask_set1_epi64(src: __m512i, k: __mmask8, a: i64) -> __m512i {
+    let r = _mm512_set1_epi64(a).as_i64x8();
+    transmute(simd_select_bitmask(k, r, src.as_i64x8()))
+}
+
+/// Broadcast 64-bit integer a to all elements of dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_set1_epi64&expand=4960)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vpbroadcastq))]
+pub unsafe fn _mm512_maskz_set1_epi64(k: __mmask8, a: i64) -> __m512i {
+    let r = _mm512_set1_epi64(a).as_i64x8();
+    let zero = _mm512_setzero_si512().as_i64x8();
+    transmute(simd_select_bitmask(k, r, zero))
 }
 
 /// Set packed 64-bit integers in dst with the repeated 4 element sequence.
@@ -27668,5 +27714,26 @@ mod tests {
         let mut r = _mm512_undefined_ps();
         _mm512_store_ps(&mut r as *mut _ as *mut f32, a);
         assert_eq_m512(r, a);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_set1_epi32() {
+        let src = _mm512_set1_epi32(2);
+        let a: i32 = 11;
+        let r = _mm512_mask_set1_epi32(src, 0, a);
+        assert_eq_m512i(r, src);
+        let r = _mm512_mask_set1_epi32(src, 0b11111111_11111111, a);
+        let e = _mm512_set1_epi32(11);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_maskz_set1_epi32() {
+        let a: i32 = 11;
+        let r = _mm512_maskz_set1_epi32(0, a);
+        assert_eq_m512i(r, _mm512_setzero_si512());
+        let r = _mm512_maskz_set1_epi32(0b11111111_11111111, a);
+        let e = _mm512_set1_epi32(11);
+        assert_eq_m512i(r, e);
     }
 }
