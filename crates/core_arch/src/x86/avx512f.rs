@@ -15812,6 +15812,61 @@ pub unsafe fn _mm512_kmov(a: __mmask16) -> __mmask16 {
     transmute(r)
 }
 
+/// Converts integer mask into bitmask, storing the result in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_int2mask&expand=3189)
+#[inline]
+#[target_feature(enable = "avx512f")] // generate normal and code instead of kmovw
+pub unsafe fn _mm512_int2mask(mask: i32) -> __mmask16 {
+    assert!(mask >= 0);
+    let r: u16 = mask as u16;
+    transmute(r)
+}
+
+/// Converts bit mask k1 into an integer value, storing the results in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask2int&expand=3544)
+#[inline]
+#[target_feature(enable = "avx512f")] // generate normal and code instead of kmovw
+#[cfg_attr(test, assert_instr(mov))] // generate normal and code instead of kmovw
+pub unsafe fn _mm512_mask2int(k1: __mmask16) -> i32 {
+    let r: i32 = k1 as i32;
+    transmute(r)
+}
+
+/// Store 512-bits (composed of 16 packed single-precision (32-bit) floating-point elements) from a into memory using a non-temporal memory hint. mem_addr must be aligned on a 64-byte boundary or a general-protection exception may be generated.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_stream_ps&expand=5671)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vmovntps))]
+#[allow(clippy::cast_ptr_alignment)]
+pub unsafe fn _mm512_stream_ps(mem_addr: *mut f32, a: __m512) {
+    intrinsics::nontemporal_store(mem_addr as *mut __m512, a);
+}
+
+/// Store 512-bits (composed of 8 packed double-precision (64-bit) floating-point elements) from a into memory using a non-temporal memory hint. mem_addr must be aligned on a 64-byte boundary or a general-protection exception may be generated.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_stream_pd&expand=5667)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vmovntps))] //should be vmovntpd
+#[allow(clippy::cast_ptr_alignment)]
+pub unsafe fn _mm512_stream_pd(mem_addr: *mut f64, a: __m512d) {
+    intrinsics::nontemporal_store(mem_addr as *mut __m512d, a);
+}
+
+/// Store 512-bits of integer data from a into memory using a non-temporal memory hint. mem_addr must be aligned on a 64-byte boundary or a general-protection exception may be generated.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_stream_si512&expand=5675)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vmovntps))] //should be vmovntdq
+#[allow(clippy::cast_ptr_alignment)]
+pub unsafe fn _mm512_stream_si512(mem_addr: *mut i64, a: __m512i) {
+    intrinsics::nontemporal_store(mem_addr as *mut __m512i, a);
+}
+
 /// Sets packed 32-bit integers in `dst` with the supplied values.
 ///
 /// [Intel's documentation]( https://software.intel.com/sites/landingpage/IntrinsicsGuide/#expand=727,1063,4909,1062,1062,4909&text=_mm512_set_ps)
@@ -27211,6 +27266,37 @@ mod tests {
         let r = _mm512_kmov(a);
         let e: u16 = 0b11001100_00110011;
         assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_int2mask() {
+        let a: i32 = 0b11001100_00110011;
+        let r = _mm512_int2mask(a);
+        let e: u16 = 0b11001100_00110011;
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask2int() {
+        let k1: __mmask16 = 0b11001100_00110011;
+        let r = _mm512_mask2int(k1);
+        let e: i32 = 0b11001100_00110011;
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_stream_ps() {
+        #[repr(align(32))]
+        struct Memory {
+            pub data: [f32; 16],
+        }
+        let a = _mm512_set1_ps(7.0);
+        let mut mem = Memory { data: [-1.0; 16] };
+
+        _mm512_stream_ps(&mut mem.data[0] as *mut f32, a);
+        for i in 0..16 {
+            assert_eq!(mem.data[i], get_m512(a, i));
+        }
     }
 
     #[simd_test(enable = "avx512f")]

@@ -6257,4 +6257,34 @@ mod tests {
         _mm512_store_pd(&mut r as *mut _ as *mut f64, a);
         assert_eq_m512d(r, a);
     }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_stream_pd() {
+        #[repr(align(64))]
+        struct Memory {
+            pub data: [f64; 8],
+        }
+        let a = _mm512_set1_pd(7.0);
+        let mut mem = Memory { data: [-1.0; 8] };
+
+        _mm512_stream_pd(&mut mem.data[0] as *mut f64, a);
+        for i in 0..8 {
+            assert_eq!(mem.data[i], get_m512d(a, i));
+        }
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_stream_si512() {
+        #[repr(align(64))]
+        struct Memory {
+            pub data: [i64; 8],
+        }
+        let a = _mm512_set1_epi64(7);
+        let mut mem = Memory { data: [-1; 8] };
+
+        _mm512_stream_si512(&mut mem.data[0] as *mut i64, a);
+        for i in 0..8 {
+            assert_eq!(mem.data[i], get_m512i(a, i));
+        }
+    }
 }
