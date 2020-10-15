@@ -19049,6 +19049,342 @@ pub unsafe fn _mm_maskz_rcp14_sd(k: __mmask8, a: __m128d, b: __m128d) -> __m128d
     ))
 }
 
+/// Convert the exponent of the lower single-precision (32-bit) floating-point element in b to a single-precision (32-bit) floating-point number representing the integer exponent, store the result in the lower element of dst, and copy the upper 3 packed elements from a to the upper elements of dst. This intrinsic essentially calculates floor(log2(x)) for the lower element.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_getexp_ss&expand=2862)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vgetexpss))]
+pub unsafe fn _mm_getexp_ss(a: __m128, b: __m128) -> __m128 {
+    transmute(vgetexpss(
+        a.as_f32x4(),
+        b.as_f32x4(),
+        _mm_setzero_ps().as_f32x4(),
+        0b1,
+        _MM_FROUND_NO_EXC,
+    ))
+}
+
+/// Convert the exponent of the lower single-precision (32-bit) floating-point element in b to a single-precision (32-bit) floating-point number representing the integer exponent, store the result in the lower element of dst using writemask k (the element is copied from src when mask bit 0 is not set), and copy the upper 3 packed elements from a to the upper elements of dst. This intrinsic essentially calculates floor(log2(x)) for the lower element.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask_getexp_ss&expand=2863)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vgetexpss))]
+pub unsafe fn _mm_mask_getexp_ss(src: __m128, k: __mmask8, a: __m128, b: __m128) -> __m128 {
+    transmute(vgetexpss(
+        a.as_f32x4(),
+        b.as_f32x4(),
+        src.as_f32x4(),
+        k,
+        _MM_FROUND_NO_EXC,
+    ))
+}
+
+/// Convert the exponent of the lower single-precision (32-bit) floating-point element in b to a single-precision (32-bit) floating-point number representing the integer exponent, store the result in the lower element of dst using zeromask k (the element is zeroed out when mask bit 0 is not set), and copy the upper 3 packed elements from a to the upper elements of dst. This intrinsic essentially calculates floor(log2(x)) for the lower element.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_maskz_getexp_ss&expand=2864)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vgetexpss))]
+pub unsafe fn _mm_maskz_getexp_ss(k: __mmask8, a: __m128, b: __m128) -> __m128 {
+    transmute(vgetexpss(
+        a.as_f32x4(),
+        b.as_f32x4(),
+        _mm_setzero_ps().as_f32x4(),
+        k,
+        _MM_FROUND_NO_EXC,
+    ))
+}
+
+/// Convert the exponent of the lower double-precision (64-bit) floating-point element in b to a double-precision (64-bit) floating-point number representing the integer exponent, store the result in the lower element of dst, and copy the upper element from a to the upper element of dst. This intrinsic essentially calculates floor(log2(x)) for the lower element.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_getexp_sd&expand=2859)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vgetexpsd))]
+pub unsafe fn _mm_getexp_sd(a: __m128d, b: __m128d) -> __m128d {
+    transmute(vgetexpsd(
+        a.as_f64x2(),
+        b.as_f64x2(),
+        _mm_setzero_pd().as_f64x2(),
+        0b1,
+        _MM_FROUND_NO_EXC,
+    ))
+}
+
+/// Convert the exponent of the lower double-precision (64-bit) floating-point element in b to a double-precision (64-bit) floating-point number representing the integer exponent, store the result in the lower element of dst using writemask k (the element is copied from src when mask bit 0 is not set), and copy the upper element from a to the upper element of dst. This intrinsic essentially calculates floor(log2(x)) for the lower element.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask_getexp_sd&expand=2860)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vgetexpsd))]
+pub unsafe fn _mm_mask_getexp_sd(src: __m128d, k: __mmask8, a: __m128d, b: __m128d) -> __m128d {
+    transmute(vgetexpsd(
+        a.as_f64x2(),
+        b.as_f64x2(),
+        src.as_f64x2(),
+        k,
+        _MM_FROUND_NO_EXC,
+    ))
+}
+
+/// Convert the exponent of the lower double-precision (64-bit) floating-point element in b to a double-precision (64-bit) floating-point number representing the integer exponent, store the result in the lower element of dst using zeromask k (the element is zeroed out when mask bit 0 is not set), and copy the upper element from a to the upper element of dst. This intrinsic essentially calculates floor(log2(x)) for the lower element.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_maskz_getexp_sd&expand=2861)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vgetexpsd))]
+pub unsafe fn _mm_maskz_getexp_sd(k: __mmask8, a: __m128d, b: __m128d) -> __m128d {
+    transmute(vgetexpsd(
+        a.as_f64x2(),
+        b.as_f64x2(),
+        _mm_setzero_pd().as_f64x2(),
+        k,
+        _MM_FROUND_NO_EXC,
+    ))
+}
+
+/// Normalize the mantissas of the lower single-precision (32-bit) floating-point element in b, store the result in the lower element of dst, and copy the upper 3 packed elements from a to the upper elements of dst. This intrinsic essentially calculates ±(2^k)*|x.significand|, where k depends on the interval range defined by interv and the sign depends on sc and the source sign.
+/// The mantissa is normalized to the interval specified by interv, which can take the following values:
+///    _MM_MANT_NORM_1_2     // interval [1, 2)
+///    _MM_MANT_NORM_p5_2    // interval [0.5, 2)
+///    _MM_MANT_NORM_p5_1    // interval [0.5, 1)
+///    _MM_MANT_NORM_p75_1p5 // interval [0.75, 1.5)
+/// The sign is determined by sc which can take the following values:
+///    _MM_MANT_SIGN_src     // sign = sign(src)
+///    _MM_MANT_SIGN_zero    // sign = 0
+///    _MM_MANT_SIGN_nan     // dst = NaN if sign(src) = 1
+/// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_getmant_ss&expand=2898)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vgetmantss, norm = 0, sign = 0))]
+#[rustc_args_required_const(2, 3)]
+pub unsafe fn _mm_getmant_ss(
+    a: __m128,
+    b: __m128,
+    norm: _MM_MANTISSA_NORM_ENUM,
+    sign: _MM_MANTISSA_SIGN_ENUM,
+) -> __m128 {
+    macro_rules! call {
+        ($imm4_1:expr, $imm2:expr) => {
+            vgetmantss(
+                a.as_f32x4(),
+                b.as_f32x4(),
+                $imm2 << 2 | $imm4_1,
+                _mm_setzero_ps().as_f32x4(),
+                0b1,
+                _MM_FROUND_CUR_DIRECTION,
+            )
+        };
+    }
+    let r = constify_imm4_mantissas!(norm, sign, call);
+    transmute(r)
+}
+
+/// Normalize the mantissas of the lower single-precision (32-bit) floating-point element in b, store the result in the lower element of dst using writemask k (the element is copied from src when mask bit 0 is not set), and copy the upper 3 packed elements from a to the upper elements of dst. This intrinsic essentially calculates ±(2^k)*|x.significand|, where k depends on the interval range defined by interv and the sign depends on sc and the source sign.
+/// The mantissa is normalized to the interval specified by interv, which can take the following values:
+///    _MM_MANT_NORM_1_2     // interval [1, 2)
+///    _MM_MANT_NORM_p5_2    // interval [0.5, 2)
+///    _MM_MANT_NORM_p5_1    // interval [0.5, 1)
+///    _MM_MANT_NORM_p75_1p5 // interval [0.75, 1.5)
+/// The sign is determined by sc which can take the following values:
+///    _MM_MANT_SIGN_src     // sign = sign(src)
+///    _MM_MANT_SIGN_zero    // sign = 0
+///    _MM_MANT_SIGN_nan     // dst = NaN if sign(src) = 1
+/// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask_getmant_ss&expand=2899)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vgetmantss, norm = 0, sign = 0))]
+#[rustc_args_required_const(4, 5)]
+pub unsafe fn _mm_mask_getmant_ss(
+    src: __m128,
+    k: __mmask8,
+    a: __m128,
+    b: __m128,
+    norm: _MM_MANTISSA_NORM_ENUM,
+    sign: _MM_MANTISSA_SIGN_ENUM,
+) -> __m128 {
+    macro_rules! call {
+        ($imm4_1:expr, $imm2:expr) => {
+            vgetmantss(
+                a.as_f32x4(),
+                b.as_f32x4(),
+                $imm2 << 2 | $imm4_1,
+                src.as_f32x4(),
+                k,
+                _MM_FROUND_CUR_DIRECTION,
+            )
+        };
+    }
+    let r = constify_imm4_mantissas!(norm, sign, call);
+    transmute(r)
+}
+
+/// Normalize the mantissas of the lower single-precision (32-bit) floating-point element in b, store the result in the lower element of dst using zeromask k (the element is zeroed out when mask bit 0 is not set), and copy the upper 3 packed elements from a to the upper elements of dst. This intrinsic essentially calculates ±(2^k)*|x.significand|, where k depends on the interval range defined by interv and the sign depends on sc and the source sign.
+/// The mantissa is normalized to the interval specified by interv, which can take the following values:
+///    _MM_MANT_NORM_1_2     // interval [1, 2)
+///    _MM_MANT_NORM_p5_2    // interval [0.5, 2)
+///    _MM_MANT_NORM_p5_1    // interval [0.5, 1)
+///    _MM_MANT_NORM_p75_1p5 // interval [0.75, 1.5)
+/// The sign is determined by sc which can take the following values:
+///    _MM_MANT_SIGN_src     // sign = sign(src)
+///    _MM_MANT_SIGN_zero    // sign = 0
+///    _MM_MANT_SIGN_nan     // dst = NaN if sign(src) = 1
+/// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_maskz_getmant_ss&expand=2900)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vgetmantss, norm = 0, sign = 0))]
+#[rustc_args_required_const(3, 4)]
+pub unsafe fn _mm_maskz_getmant_ss(
+    k: __mmask8,
+    a: __m128,
+    b: __m128,
+    norm: _MM_MANTISSA_NORM_ENUM,
+    sign: _MM_MANTISSA_SIGN_ENUM,
+) -> __m128 {
+    macro_rules! call {
+        ($imm4_1:expr, $imm2:expr) => {
+            vgetmantss(
+                a.as_f32x4(),
+                b.as_f32x4(),
+                $imm2 << 2 | $imm4_1,
+                _mm_setzero_ps().as_f32x4(),
+                k,
+                _MM_FROUND_CUR_DIRECTION,
+            )
+        };
+    }
+    let r = constify_imm4_mantissas!(norm, sign, call);
+    transmute(r)
+}
+
+/// Normalize the mantissas of the lower double-precision (64-bit) floating-point element in b, store the result in the lower element of dst, and copy the upper element from a to the upper element of dst. This intrinsic essentially calculates ±(2^k)*|x.significand|, where k depends on the interval range defined by interv and the sign depends on sc and the source sign.
+/// The mantissa is normalized to the interval specified by interv, which can take the following values:
+///    _MM_MANT_NORM_1_2     // interval [1, 2)
+///    _MM_MANT_NORM_p5_2    // interval [0.5, 2)
+///    _MM_MANT_NORM_p5_1    // interval [0.5, 1)
+///    _MM_MANT_NORM_p75_1p5 // interval [0.75, 1.5)
+/// The sign is determined by sc which can take the following values:
+///    _MM_MANT_SIGN_src     // sign = sign(src)
+///    _MM_MANT_SIGN_zero    // sign = 0
+///    _MM_MANT_SIGN_nan     // dst = NaN if sign(src) = 1
+/// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_getmant_sd&expand=2895)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vgetmantsd, norm = 0, sign = 0))]
+#[rustc_args_required_const(2, 3)]
+pub unsafe fn _mm_getmant_sd(
+    a: __m128d,
+    b: __m128d,
+    norm: _MM_MANTISSA_NORM_ENUM,
+    sign: _MM_MANTISSA_SIGN_ENUM,
+) -> __m128d {
+    macro_rules! call {
+        ($imm4_1:expr, $imm2:expr) => {
+            vgetmantsd(
+                a.as_f64x2(),
+                b.as_f64x2(),
+                $imm2 << 2 | $imm4_1,
+                _mm_setzero_pd().as_f64x2(),
+                0b1,
+                _MM_FROUND_CUR_DIRECTION,
+            )
+        };
+    }
+    let r = constify_imm4_mantissas!(norm, sign, call);
+    transmute(r)
+}
+
+/// Normalize the mantissas of the lower double-precision (64-bit) floating-point element in b, store the result in the lower element of dst using writemask k (the element is copied from src when mask bit 0 is not set), and copy the upper element from a to the upper element of dst. This intrinsic essentially calculates ±(2^k)*|x.significand|, where k depends on the interval range defined by interv and the sign depends on sc and the source sign.
+/// The mantissa is normalized to the interval specified by interv, which can take the following values:
+///    _MM_MANT_NORM_1_2     // interval [1, 2)
+///    _MM_MANT_NORM_p5_2    // interval [0.5, 2)
+///    _MM_MANT_NORM_p5_1    // interval [0.5, 1)
+///    _MM_MANT_NORM_p75_1p5 // interval [0.75, 1.5)
+/// The sign is determined by sc which can take the following values:
+///    _MM_MANT_SIGN_src     // sign = sign(src)
+///    _MM_MANT_SIGN_zero    // sign = 0
+///    _MM_MANT_SIGN_nan     // dst = NaN if sign(src) = 1
+/// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask_getmant_sd&expand=2896)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vgetmantsd, norm = 0, sign = 0))]
+#[rustc_args_required_const(4, 5)]
+pub unsafe fn _mm_mask_getmant_sd(
+    src: __m128d,
+    k: __mmask8,
+    a: __m128d,
+    b: __m128d,
+    norm: _MM_MANTISSA_NORM_ENUM,
+    sign: _MM_MANTISSA_SIGN_ENUM,
+) -> __m128d {
+    macro_rules! call {
+        ($imm4_1:expr, $imm2:expr) => {
+            vgetmantsd(
+                a.as_f64x2(),
+                b.as_f64x2(),
+                $imm2 << 2 | $imm4_1,
+                src.as_f64x2(),
+                k,
+                _MM_FROUND_CUR_DIRECTION,
+            )
+        };
+    }
+    let r = constify_imm4_mantissas!(norm, sign, call);
+    transmute(r)
+}
+
+/// Normalize the mantissas of the lower double-precision (64-bit) floating-point element in b, store the result in the lower element of dst using zeromask k (the element is zeroed out when mask bit 0 is not set), and copy the upper element from a to the upper element of dst. This intrinsic essentially calculates ±(2^k)*|x.significand|, where k depends on the interval range defined by interv and the sign depends on sc and the source sign.
+/// The mantissa is normalized to the interval specified by interv, which can take the following values:
+///    _MM_MANT_NORM_1_2     // interval [1, 2)
+///    _MM_MANT_NORM_p5_2    // interval [0.5, 2)
+///    _MM_MANT_NORM_p5_1    // interval [0.5, 1)
+///    _MM_MANT_NORM_p75_1p5 // interval [0.75, 1.5)
+/// The sign is determined by sc which can take the following values:
+///    _MM_MANT_SIGN_src     // sign = sign(src)
+///    _MM_MANT_SIGN_zero    // sign = 0
+///    _MM_MANT_SIGN_nan     // dst = NaN if sign(src) = 1
+/// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_maskz_getmant_sd&expand=2897)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vgetmantsd, norm = 0, sign = 0))]
+#[rustc_args_required_const(3, 4)]
+pub unsafe fn _mm_maskz_getmant_sd(
+    k: __mmask8,
+    a: __m128d,
+    b: __m128d,
+    norm: _MM_MANTISSA_NORM_ENUM,
+    sign: _MM_MANTISSA_SIGN_ENUM,
+) -> __m128d {
+    macro_rules! call {
+        ($imm4_1:expr, $imm2:expr) => {
+            vgetmantsd(
+                a.as_f64x2(),
+                b.as_f64x2(),
+                $imm2 << 2 | $imm4_1,
+                _mm_setzero_pd().as_f64x2(),
+                k,
+                _MM_FROUND_CUR_DIRECTION,
+            )
+        };
+    }
+    let r = constify_imm4_mantissas!(norm, sign, call);
+    transmute(r)
+}
+
 /// Add the lower single-precision (32-bit) floating-point element in a and b, store the result in the lower element of dst, and copy the upper 3 packed elements from a to the upper elements of dst.
 ///
 /// Rounding is done according to the rounding\[3:0\] parameter, which can be one of:
@@ -20220,6 +20556,396 @@ pub unsafe fn _mm_maskz_sqrt_round_sd(
     transmute(constify_imm4_round!(rounding, call))
 }
 
+/// Convert the exponent of the lower single-precision (32-bit) floating-point element in b to a single-precision (32-bit) floating-point number representing the integer exponent, store the result in the lower element of dst, and copy the upper 3 packed elements from a to the upper elements of dst. This intrinsic essentially calculates floor(log2(x)) for the lower element.
+/// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_getexp_round_ss&expand=2856)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vgetexpss, sae = 8))]
+#[rustc_args_required_const(2)]
+pub unsafe fn _mm_getexp_round_ss(a: __m128, b: __m128, sae: i32) -> __m128 {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vgetexpss(
+                a.as_f32x4(),
+                b.as_f32x4(),
+                _mm_setzero_ps().as_f32x4(),
+                0b1,
+                $imm4,
+            )
+        };
+    }
+    let r = constify_imm4_sae!(sae, call);
+    transmute(r)
+}
+
+/// Convert the exponent of the lower single-precision (32-bit) floating-point element in b to a single-precision (32-bit) floating-point number representing the integer exponent, store the result in the lower element of dst using writemask k (the element is copied from src when mask bit 0 is not set), and copy the upper 3 packed elements from a to the upper elements of dst. This intrinsic essentially calculates floor(log2(x)) for the lower element.
+/// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask_getexp_round_ss&expand=2857)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vgetexpss, sae = 8))]
+#[rustc_args_required_const(4)]
+pub unsafe fn _mm_mask_getexp_round_ss(
+    src: __m128,
+    k: __mmask8,
+    a: __m128,
+    b: __m128,
+    sae: i32,
+) -> __m128 {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vgetexpss(a.as_f32x4(), b.as_f32x4(), src.as_f32x4(), k, $imm4)
+        };
+    }
+    let r = constify_imm4_sae!(sae, call);
+    transmute(r)
+}
+
+/// Convert the exponent of the lower single-precision (32-bit) floating-point element in b to a single-precision (32-bit) floating-point number representing the integer exponent, store the result in the lower element of dst using zeromask k (the element is zeroed out when mask bit 0 is not set), and copy the upper 3 packed elements from a to the upper elements of dst. This intrinsic essentially calculates floor(log2(x)) for the lower element.
+/// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_maskz_getexp_round_ss&expand=2858)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vgetexpss, sae = 8))]
+#[rustc_args_required_const(3)]
+pub unsafe fn _mm_maskz_getexp_round_ss(k: __mmask8, a: __m128, b: __m128, sae: i32) -> __m128 {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vgetexpss(
+                a.as_f32x4(),
+                b.as_f32x4(),
+                _mm_setzero_ps().as_f32x4(),
+                k,
+                $imm4,
+            )
+        };
+    }
+    let r = constify_imm4_sae!(sae, call);
+    transmute(r)
+}
+
+/// Convert the exponent of the lower double-precision (64-bit) floating-point element in b to a double-precision (64-bit) floating-point number representing the integer exponent, store the result in the lower element of dst, and copy the upper element from a to the upper element of dst. This intrinsic essentially calculates floor(log2(x)) for the lower element.
+/// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_getexp_round_sd&expand=2853)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vgetexpsd, sae = 8))]
+#[rustc_args_required_const(2)]
+pub unsafe fn _mm_getexp_round_sd(a: __m128d, b: __m128d, sae: i32) -> __m128d {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vgetexpsd(
+                a.as_f64x2(),
+                b.as_f64x2(),
+                _mm_setzero_pd().as_f64x2(),
+                0b1,
+                $imm4,
+            )
+        };
+    }
+    let r = constify_imm4_sae!(sae, call);
+    transmute(r)
+}
+
+/// Convert the exponent of the lower double-precision (64-bit) floating-point element in b to a double-precision (64-bit) floating-point number representing the integer exponent, store the result in the lower element of dst using writemask k (the element is copied from src when mask bit 0 is not set), and copy the upper element from a to the upper element of dst. This intrinsic essentially calculates floor(log2(x)) for the lower element.
+/// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask_getexp_round_sd&expand=2854)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vgetexpsd, sae = 8))]
+#[rustc_args_required_const(4)]
+pub unsafe fn _mm_mask_getexp_round_sd(
+    src: __m128d,
+    k: __mmask8,
+    a: __m128d,
+    b: __m128d,
+    sae: i32,
+) -> __m128d {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vgetexpsd(a.as_f64x2(), b.as_f64x2(), src.as_f64x2(), k, $imm4)
+        };
+    }
+    let r = constify_imm4_sae!(sae, call);
+    transmute(r)
+}
+
+/// Convert the exponent of the lower double-precision (64-bit) floating-point element in b to a double-precision (64-bit) floating-point number representing the integer exponent, store the result in the lower element of dst using zeromask k (the element is zeroed out when mask bit 0 is not set), and copy the upper element from a to the upper element of dst. This intrinsic essentially calculates floor(log2(x)) for the lower element.
+/// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_maskz_getexp_round_sd&expand=2855)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vgetexpsd, sae = 8))]
+#[rustc_args_required_const(3)]
+pub unsafe fn _mm_maskz_getexp_round_sd(k: __mmask8, a: __m128d, b: __m128d, sae: i32) -> __m128d {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vgetexpsd(
+                a.as_f64x2(),
+                b.as_f64x2(),
+                _mm_setzero_pd().as_f64x2(),
+                k,
+                $imm4,
+            )
+        };
+    }
+    let r = constify_imm4_sae!(sae, call);
+    transmute(r)
+}
+
+/// Normalize the mantissas of the lower single-precision (32-bit) floating-point element in b, store the result in the lower element of dst, and copy the upper 3 packed elements from a to the upper elements of dst. This intrinsic essentially calculates ±(2^k)*|x.significand|, where k depends on the interval range defined by interv and the sign depends on sc and the source sign.
+/// The mantissa is normalized to the interval specified by interv, which can take the following values:
+///    _MM_MANT_NORM_1_2     // interval [1, 2)
+///    _MM_MANT_NORM_p5_2    // interval [0.5, 2)
+///    _MM_MANT_NORM_p5_1    // interval [0.5, 1)
+///    _MM_MANT_NORM_p75_1p5 // interval [0.75, 1.5)
+/// The sign is determined by sc which can take the following values:
+///    _MM_MANT_SIGN_src     // sign = sign(src)
+///    _MM_MANT_SIGN_zero    // sign = 0
+///    _MM_MANT_SIGN_nan     // dst = NaN if sign(src) = 1
+/// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_getmant_round_ss&expand=2892)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vgetmantss, norm = 0, sign = 0, sae = 4))]
+#[rustc_args_required_const(2, 3, 4)]
+pub unsafe fn _mm_getmant_round_ss(
+    a: __m128,
+    b: __m128,
+    norm: _MM_MANTISSA_NORM_ENUM,
+    sign: _MM_MANTISSA_SIGN_ENUM,
+    sae: i32,
+) -> __m128 {
+    macro_rules! call {
+        ($imm4_1:expr, $imm2:expr, $imm4_2:expr) => {
+            vgetmantss(
+                a.as_f32x4(),
+                b.as_f32x4(),
+                $imm2 << 2 | $imm4_1,
+                _mm_setzero_ps().as_f32x4(),
+                0b1,
+                $imm4_2,
+            )
+        };
+    }
+    let r = constify_imm4_mantissas_sae!(norm, sign, sae, call);
+    transmute(r)
+}
+
+/// Normalize the mantissas of the lower single-precision (32-bit) floating-point element in b, store the result in the lower element of dst using writemask k (the element is copied from src when mask bit 0 is not set), and copy the upper 3 packed elements from a to the upper elements of dst. This intrinsic essentially calculates ±(2^k)*|x.significand|, where k depends on the interval range defined by interv and the sign depends on sc and the source sign.
+/// The mantissa is normalized to the interval specified by interv, which can take the following values:
+///    _MM_MANT_NORM_1_2     // interval [1, 2)
+///    _MM_MANT_NORM_p5_2    // interval [0.5, 2)
+///    _MM_MANT_NORM_p5_1    // interval [0.5, 1)
+///    _MM_MANT_NORM_p75_1p5 // interval [0.75, 1.5)
+/// The sign is determined by sc which can take the following values:
+///    _MM_MANT_SIGN_src     // sign = sign(src)
+///    _MM_MANT_SIGN_zero    // sign = 0
+///    _MM_MANT_SIGN_nan     // dst = NaN if sign(src) = 1
+/// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask_getmant_round_ss&expand=2893)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vgetmantss, norm = 0, sign = 0, sae = 4))]
+#[rustc_args_required_const(4, 5, 6)]
+pub unsafe fn _mm_mask_getmant_round_ss(
+    src: __m128,
+    k: __mmask8,
+    a: __m128,
+    b: __m128,
+    norm: _MM_MANTISSA_NORM_ENUM,
+    sign: _MM_MANTISSA_SIGN_ENUM,
+    sae: i32,
+) -> __m128 {
+    macro_rules! call {
+        ($imm4_1:expr, $imm2:expr, $imm4_2:expr) => {
+            vgetmantss(
+                a.as_f32x4(),
+                b.as_f32x4(),
+                $imm2 << 2 | $imm4_1,
+                src.as_f32x4(),
+                k,
+                $imm4_2,
+            )
+        };
+    }
+    let r = constify_imm4_mantissas_sae!(norm, sign, sae, call);
+    transmute(r)
+}
+
+/// Normalize the mantissas of the lower single-precision (32-bit) floating-point element in b, store the result in the lower element of dst using zeromask k (the element is zeroed out when mask bit 0 is not set), and copy the upper 3 packed elements from a to the upper elements of dst. This intrinsic essentially calculates ±(2^k)*|x.significand|, where k depends on the interval range defined by interv and the sign depends on sc and the source sign.
+/// The mantissa is normalized to the interval specified by interv, which can take the following values:
+///    _MM_MANT_NORM_1_2     // interval [1, 2)
+///    _MM_MANT_NORM_p5_2    // interval [0.5, 2)
+///    _MM_MANT_NORM_p5_1    // interval [0.5, 1)
+///    _MM_MANT_NORM_p75_1p5 // interval [0.75, 1.5)
+/// The sign is determined by sc which can take the following values:
+///    _MM_MANT_SIGN_src     // sign = sign(src)
+///    _MM_MANT_SIGN_zero    // sign = 0
+///    _MM_MANT_SIGN_nan     // dst = NaN if sign(src) = 1
+/// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_maskz_getmant_round_ss&expand=2894)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vgetmantss, norm = 0, sign = 0, sae = 4))]
+#[rustc_args_required_const(3, 4, 5)]
+pub unsafe fn _mm_maskz_getmant_round_ss(
+    k: __mmask8,
+    a: __m128,
+    b: __m128,
+    norm: _MM_MANTISSA_NORM_ENUM,
+    sign: _MM_MANTISSA_SIGN_ENUM,
+    sae: i32,
+) -> __m128 {
+    macro_rules! call {
+        ($imm4_1:expr, $imm2:expr, $imm4_2:expr) => {
+            vgetmantss(
+                a.as_f32x4(),
+                b.as_f32x4(),
+                $imm2 << 2 | $imm4_1,
+                _mm_setzero_ps().as_f32x4(),
+                k,
+                $imm4_2,
+            )
+        };
+    }
+    let r = constify_imm4_mantissas_sae!(norm, sign, sae, call);
+    transmute(r)
+}
+
+/// Normalize the mantissas of the lower double-precision (64-bit) floating-point element in b, store the result in the lower element of dst, and copy the upper element from a to the upper element of dst. This intrinsic essentially calculates ±(2^k)*|x.significand|, where k depends on the interval range defined by interv and the sign depends on sc and the source sign.
+/// The mantissa is normalized to the interval specified by interv, which can take the following values:
+///    _MM_MANT_NORM_1_2     // interval [1, 2)
+///    _MM_MANT_NORM_p5_2    // interval [0.5, 2)
+///    _MM_MANT_NORM_p5_1    // interval [0.5, 1)
+///    _MM_MANT_NORM_p75_1p5 // interval [0.75, 1.5)
+/// The sign is determined by sc which can take the following values:
+///    _MM_MANT_SIGN_src     // sign = sign(src)
+///    _MM_MANT_SIGN_zero    // sign = 0
+///    _MM_MANT_SIGN_nan     // dst = NaN if sign(src) = 1
+/// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_getmant_round_sd&expand=2889)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vgetmantsd, norm = 0, sign = 0, sae = 4))]
+#[rustc_args_required_const(2, 3, 4)]
+pub unsafe fn _mm_getmant_round_sd(
+    a: __m128d,
+    b: __m128d,
+    norm: _MM_MANTISSA_NORM_ENUM,
+    sign: _MM_MANTISSA_SIGN_ENUM,
+    sae: i32,
+) -> __m128d {
+    macro_rules! call {
+        ($imm4_1:expr, $imm2:expr, $imm4_2:expr) => {
+            vgetmantsd(
+                a.as_f64x2(),
+                b.as_f64x2(),
+                $imm2 << 2 | $imm4_1,
+                _mm_setzero_pd().as_f64x2(),
+                0b1,
+                $imm4_2,
+            )
+        };
+    }
+    let r = constify_imm4_mantissas_sae!(norm, sign, sae, call);
+    transmute(r)
+}
+
+/// Normalize the mantissas of the lower double-precision (64-bit) floating-point element in b, store the result in the lower element of dst using writemask k (the element is copied from src when mask bit 0 is not set), and copy the upper element from a to the upper element of dst. This intrinsic essentially calculates ±(2^k)*|x.significand|, where k depends on the interval range defined by interv and the sign depends on sc and the source sign.
+/// The mantissa is normalized to the interval specified by interv, which can take the following values:
+///    _MM_MANT_NORM_1_2     // interval [1, 2)
+///    _MM_MANT_NORM_p5_2    // interval [0.5, 2)
+///    _MM_MANT_NORM_p5_1    // interval [0.5, 1)
+///    _MM_MANT_NORM_p75_1p5 // interval [0.75, 1.5)
+/// The sign is determined by sc which can take the following values:
+///    _MM_MANT_SIGN_src     // sign = sign(src)
+///    _MM_MANT_SIGN_zero    // sign = 0
+///    _MM_MANT_SIGN_nan     // dst = NaN if sign(src) = 1
+/// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask_getmant_round_sd&expand=2890)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vgetmantsd, norm = 0, sign = 0, sae = 4))]
+#[rustc_args_required_const(4, 5, 6)]
+pub unsafe fn _mm_mask_getmant_round_sd(
+    src: __m128d,
+    k: __mmask8,
+    a: __m128d,
+    b: __m128d,
+    norm: _MM_MANTISSA_NORM_ENUM,
+    sign: _MM_MANTISSA_SIGN_ENUM,
+    sae: i32,
+) -> __m128d {
+    macro_rules! call {
+        ($imm4_1:expr, $imm2:expr, $imm4_2:expr) => {
+            vgetmantsd(
+                a.as_f64x2(),
+                b.as_f64x2(),
+                $imm2 << 2 | $imm4_1,
+                src.as_f64x2(),
+                k,
+                $imm4_2,
+            )
+        };
+    }
+    let r = constify_imm4_mantissas_sae!(norm, sign, sae, call);
+    transmute(r)
+}
+
+/// Normalize the mantissas of the lower double-precision (64-bit) floating-point element in b, store the result in the lower element of dst using zeromask k (the element is zeroed out when mask bit 0 is not set), and copy the upper element from a to the upper element of dst. This intrinsic essentially calculates ±(2^k)*|x.significand|, where k depends on the interval range defined by interv and the sign depends on sc and the source sign.
+/// The mantissa is normalized to the interval specified by interv, which can take the following values:
+///    _MM_MANT_NORM_1_2     // interval [1, 2)
+///    _MM_MANT_NORM_p5_2    // interval [0.5, 2)
+///    _MM_MANT_NORM_p5_1    // interval [0.5, 1)
+///    _MM_MANT_NORM_p75_1p5 // interval [0.75, 1.5)
+/// The sign is determined by sc which can take the following values:
+///    _MM_MANT_SIGN_src     // sign = sign(src)
+///    _MM_MANT_SIGN_zero    // sign = 0
+///    _MM_MANT_SIGN_nan     // dst = NaN if sign(src) = 1
+/// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_maskz_getmant_round_sd&expand=2891)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vgetmantsd, norm = 0, sign = 0, sae = 4))]
+#[rustc_args_required_const(3, 4, 5)]
+pub unsafe fn _mm_maskz_getmant_round_sd(
+    k: __mmask8,
+    a: __m128d,
+    b: __m128d,
+    norm: _MM_MANTISSA_NORM_ENUM,
+    sign: _MM_MANTISSA_SIGN_ENUM,
+    sae: i32,
+) -> __m128d {
+    macro_rules! call {
+        ($imm4_1:expr, $imm2:expr, $imm4_2:expr) => {
+            vgetmantsd(
+                a.as_f64x2(),
+                b.as_f64x2(),
+                $imm2 << 2 | $imm4_1,
+                _mm_setzero_pd().as_f64x2(),
+                k,
+                $imm4_2,
+            )
+        };
+    }
+    let r = constify_imm4_mantissas_sae!(norm, sign, sae, call);
+    transmute(r)
+}
+
 /// Equal
 pub const _MM_CMPINT_EQ: _MM_CMPINT_ENUM = 0x00;
 /// Less-than
@@ -20851,6 +21577,14 @@ extern "C" {
     fn vsqrtss(a: f32x4, b: f32x4, src: f32x4, mask: u8, rounding: i32) -> f32x4;
     #[link_name = "llvm.x86.avx512.mask.sqrt.sd"]
     fn vsqrtsd(a: f64x2, b: f64x2, src: f64x2, mask: u8, rounding: i32) -> f64x2;
+    #[link_name = "llvm.x86.avx512.mask.getexp.ss"]
+    fn vgetexpss(a: f32x4, b: f32x4, src: f32x4, mask: u8, sae: i32) -> f32x4;
+    #[link_name = "llvm.x86.avx512.mask.getexp.sd"]
+    fn vgetexpsd(a: f64x2, b: f64x2, src: f64x2, mask: u8, sae: i32) -> f64x2;
+    #[link_name = "llvm.x86.avx512.mask.getmant.ss"]
+    fn vgetmantss(a: f32x4, b: f32x4, mantissas: i32, src: f32x4, m: u8, sae: i32) -> f32x4;
+    #[link_name = "llvm.x86.avx512.mask.getmant.sd"]
+    fn vgetmantsd(a: f64x2, b: f64x2, mantissas: i32, src: f64x2, m: u8, sae: i32) -> f64x2;
 
     #[link_name = "llvm.x86.avx512.rsqrt14.ss"]
     fn vrsqrt14ss(a: f32x4, b: f32x4, src: f32x4, mask: u8) -> f32x4;
@@ -30327,6 +31061,138 @@ mod tests {
     }
 
     #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_getexp_ss() {
+        let a = _mm_set1_ps(2.);
+        let b = _mm_set1_ps(3.);
+        let r = _mm_getexp_ss(a, b);
+        let e = _mm_set_ps(2., 2., 2., 1.);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_mask_getexp_ss() {
+        let a = _mm_set1_ps(2.);
+        let b = _mm_set1_ps(3.);
+        let r = _mm_mask_getexp_ss(a, 0, a, b);
+        let e = _mm_set_ps(2., 2., 2., 2.);
+        assert_eq_m128(r, e);
+        let r = _mm_mask_getexp_ss(a, 0b11111111, a, b);
+        let e = _mm_set_ps(2., 2., 2., 1.);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_maskz_getexp_ss() {
+        let a = _mm_set1_ps(2.);
+        let b = _mm_set1_ps(3.);
+        let r = _mm_maskz_getexp_ss(0, a, b);
+        let e = _mm_set_ps(2., 2., 2., 0.);
+        assert_eq_m128(r, e);
+        let r = _mm_maskz_getexp_ss(0b11111111, a, b);
+        let e = _mm_set_ps(2., 2., 2., 1.);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_getexp_sd() {
+        let a = _mm_set1_pd(2.);
+        let b = _mm_set1_pd(3.);
+        let r = _mm_getexp_sd(a, b);
+        let e = _mm_set_pd(2., 1.);
+        assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_mask_getexp_sd() {
+        let a = _mm_set1_pd(2.);
+        let b = _mm_set1_pd(3.);
+        let r = _mm_mask_getexp_sd(a, 0, a, b);
+        let e = _mm_set_pd(2., 2.);
+        assert_eq_m128d(r, e);
+        let r = _mm_mask_getexp_sd(a, 0b11111111, a, b);
+        let e = _mm_set_pd(2., 1.);
+        assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_maskz_getexp_sd() {
+        let a = _mm_set1_pd(2.);
+        let b = _mm_set1_pd(3.);
+        let r = _mm_maskz_getexp_sd(0, a, b);
+        let e = _mm_set_pd(2., 0.);
+        assert_eq_m128d(r, e);
+        let r = _mm_maskz_getexp_sd(0b11111111, a, b);
+        let e = _mm_set_pd(2., 1.);
+        assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_getmant_ss() {
+        let a = _mm_set1_ps(20.);
+        let b = _mm_set1_ps(10.);
+        let r = _mm_getmant_ss(a, b, _MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC);
+        let e = _mm_set_ps(20., 20., 20., 1.25);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_mask_getmant_ss() {
+        let a = _mm_set1_ps(20.);
+        let b = _mm_set1_ps(10.);
+        let r = _mm_mask_getmant_ss(a, 0, a, b, _MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC);
+        let e = _mm_set_ps(20., 20., 20., 20.);
+        assert_eq_m128(r, e);
+        let r = _mm_mask_getmant_ss(a, 0b11111111, a, b, _MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC);
+        let e = _mm_set_ps(20., 20., 20., 1.25);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_maskz_getmant_ss() {
+        let a = _mm_set1_ps(20.);
+        let b = _mm_set1_ps(10.);
+        let r = _mm_maskz_getmant_ss(0, a, b, _MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC);
+        let e = _mm_set_ps(20., 20., 20., 0.);
+        assert_eq_m128(r, e);
+        let r = _mm_maskz_getmant_ss(0b11111111, a, b, _MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC);
+        let e = _mm_set_ps(20., 20., 20., 1.25);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_getmant_sd() {
+        let a = _mm_set1_pd(20.);
+        let b = _mm_set1_pd(10.);
+        let r = _mm_getmant_sd(a, b, _MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC);
+        let e = _mm_set_pd(20., 1.25);
+        assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_mask_getmant_sd() {
+        let a = _mm_set1_pd(20.);
+        let b = _mm_set1_pd(10.);
+        let r = _mm_mask_getmant_sd(a, 0, a, b, _MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC);
+        let e = _mm_set_pd(20., 20.);
+        assert_eq_m128d(r, e);
+        let r = _mm_mask_getmant_sd(a, 0b11111111, a, b, _MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC);
+        let e = _mm_set_pd(20., 1.25);
+        assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_maskz_getmant_sd() {
+        let a = _mm_set1_pd(20.);
+        let b = _mm_set1_pd(10.);
+        let r = _mm_maskz_getmant_sd(0, a, b, _MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC);
+        let e = _mm_set_pd(20., 0.);
+        assert_eq_m128d(r, e);
+        let r = _mm_maskz_getmant_sd(0b11111111, a, b, _MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC);
+        let e = _mm_set_pd(20., 1.25);
+        assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
     unsafe fn test_mm_add_round_ss() {
         let a = _mm_set_ps(1., 2., 10., 20.);
         let b = _mm_set_ps(3., 4., 30., 40.);
@@ -30855,6 +31721,210 @@ mod tests {
         assert_eq_m128d(r, e);
         let r = _mm_maskz_sqrt_round_sd(0b11111111, a, b, _MM_FROUND_TO_ZERO | _MM_FROUND_NO_EXC);
         let e = _mm_set_pd(1., 2.);
+        assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_getexp_round_ss() {
+        let a = _mm_set1_ps(2.);
+        let b = _mm_set1_ps(3.);
+        let r = _mm_getexp_round_ss(a, b, _MM_FROUND_CUR_DIRECTION);
+        let e = _mm_set_ps(2., 2., 2., 1.);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_mask_getexp_round_ss() {
+        let a = _mm_set1_ps(2.);
+        let b = _mm_set1_ps(3.);
+        let r = _mm_mask_getexp_round_ss(a, 0, a, b, _MM_FROUND_CUR_DIRECTION);
+        let e = _mm_set_ps(2., 2., 2., 2.);
+        assert_eq_m128(r, e);
+        let r = _mm_mask_getexp_round_ss(a, 0b11111111, a, b, _MM_FROUND_CUR_DIRECTION);
+        let e = _mm_set_ps(2., 2., 2., 1.);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_maskz_getexp_round_ss() {
+        let a = _mm_set1_ps(2.);
+        let b = _mm_set1_ps(3.);
+        let r = _mm_maskz_getexp_round_ss(0, a, b, _MM_FROUND_CUR_DIRECTION);
+        let e = _mm_set_ps(2., 2., 2., 0.);
+        assert_eq_m128(r, e);
+        let r = _mm_maskz_getexp_round_ss(0b11111111, a, b, _MM_FROUND_CUR_DIRECTION);
+        let e = _mm_set_ps(2., 2., 2., 1.);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_getexp_round_sd() {
+        let a = _mm_set1_pd(2.);
+        let b = _mm_set1_pd(3.);
+        let r = _mm_getexp_round_sd(a, b, _MM_FROUND_CUR_DIRECTION);
+        let e = _mm_set_pd(2., 1.);
+        assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_mask_getexp_round_sd() {
+        let a = _mm_set1_pd(2.);
+        let b = _mm_set1_pd(3.);
+        let r = _mm_mask_getexp_round_sd(a, 0, a, b, _MM_FROUND_CUR_DIRECTION);
+        let e = _mm_set_pd(2., 2.);
+        assert_eq_m128d(r, e);
+        let r = _mm_mask_getexp_round_sd(a, 0b11111111, a, b, _MM_FROUND_CUR_DIRECTION);
+        let e = _mm_set_pd(2., 1.);
+        assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_maskz_getexp_round_sd() {
+        let a = _mm_set1_pd(2.);
+        let b = _mm_set1_pd(3.);
+        let r = _mm_maskz_getexp_round_sd(0, a, b, _MM_FROUND_CUR_DIRECTION);
+        let e = _mm_set_pd(2., 0.);
+        assert_eq_m128d(r, e);
+        let r = _mm_maskz_getexp_round_sd(0b11111111, a, b, _MM_FROUND_CUR_DIRECTION);
+        let e = _mm_set_pd(2., 1.);
+        assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_getmant_round_ss() {
+        let a = _mm_set1_ps(20.);
+        let b = _mm_set1_ps(10.);
+        let r = _mm_getmant_round_ss(
+            a,
+            b,
+            _MM_MANT_NORM_1_2,
+            _MM_MANT_SIGN_SRC,
+            _MM_FROUND_CUR_DIRECTION,
+        );
+        let e = _mm_set_ps(20., 20., 20., 1.25);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_mask_getmant_round_ss() {
+        let a = _mm_set1_ps(20.);
+        let b = _mm_set1_ps(10.);
+        let r = _mm_mask_getmant_round_ss(
+            a,
+            0,
+            a,
+            b,
+            _MM_MANT_NORM_1_2,
+            _MM_MANT_SIGN_SRC,
+            _MM_FROUND_CUR_DIRECTION,
+        );
+        let e = _mm_set_ps(20., 20., 20., 20.);
+        assert_eq_m128(r, e);
+        let r = _mm_mask_getmant_round_ss(
+            a,
+            0b11111111,
+            a,
+            b,
+            _MM_MANT_NORM_1_2,
+            _MM_MANT_SIGN_SRC,
+            _MM_FROUND_CUR_DIRECTION,
+        );
+        let e = _mm_set_ps(20., 20., 20., 1.25);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_maskz_getmant_round_ss() {
+        let a = _mm_set1_ps(20.);
+        let b = _mm_set1_ps(10.);
+        let r = _mm_maskz_getmant_round_ss(
+            0,
+            a,
+            b,
+            _MM_MANT_NORM_1_2,
+            _MM_MANT_SIGN_SRC,
+            _MM_FROUND_CUR_DIRECTION,
+        );
+        let e = _mm_set_ps(20., 20., 20., 0.);
+        assert_eq_m128(r, e);
+        let r = _mm_maskz_getmant_round_ss(
+            0b11111111,
+            a,
+            b,
+            _MM_MANT_NORM_1_2,
+            _MM_MANT_SIGN_SRC,
+            _MM_FROUND_CUR_DIRECTION,
+        );
+        let e = _mm_set_ps(20., 20., 20., 1.25);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_getmant_round_sd() {
+        let a = _mm_set1_pd(20.);
+        let b = _mm_set1_pd(10.);
+        let r = _mm_getmant_round_sd(
+            a,
+            b,
+            _MM_MANT_NORM_1_2,
+            _MM_MANT_SIGN_SRC,
+            _MM_FROUND_CUR_DIRECTION,
+        );
+        let e = _mm_set_pd(20., 1.25);
+        assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_mask_getmant_round_sd() {
+        let a = _mm_set1_pd(20.);
+        let b = _mm_set1_pd(10.);
+        let r = _mm_mask_getmant_round_sd(
+            a,
+            0,
+            a,
+            b,
+            _MM_MANT_NORM_1_2,
+            _MM_MANT_SIGN_SRC,
+            _MM_FROUND_CUR_DIRECTION,
+        );
+        let e = _mm_set_pd(20., 20.);
+        assert_eq_m128d(r, e);
+        let r = _mm_mask_getmant_round_sd(
+            a,
+            0b11111111,
+            a,
+            b,
+            _MM_MANT_NORM_1_2,
+            _MM_MANT_SIGN_SRC,
+            _MM_FROUND_CUR_DIRECTION,
+        );
+        let e = _mm_set_pd(20., 1.25);
+        assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_maskz_getmant_round_sd() {
+        let a = _mm_set1_pd(20.);
+        let b = _mm_set1_pd(10.);
+        let r = _mm_maskz_getmant_round_sd(
+            0,
+            a,
+            b,
+            _MM_MANT_NORM_1_2,
+            _MM_MANT_SIGN_SRC,
+            _MM_FROUND_CUR_DIRECTION,
+        );
+        let e = _mm_set_pd(20., 0.);
+        assert_eq_m128d(r, e);
+        let r = _mm_maskz_getmant_round_sd(
+            0b11111111,
+            a,
+            b,
+            _MM_MANT_NORM_1_2,
+            _MM_MANT_SIGN_SRC,
+            _MM_FROUND_CUR_DIRECTION,
+        );
+        let e = _mm_set_pd(20., 1.25);
         assert_eq_m128d(r, e);
     }
 }
