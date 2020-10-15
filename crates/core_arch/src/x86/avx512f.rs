@@ -18697,6 +18697,70 @@ pub unsafe fn _mm_maskz_div_sd(k: __mmask8, a: __m128d, b: __m128d) -> __m128d {
     transmute(r)
 }
 
+/// Compute the square root of the lower single-precision (32-bit) floating-point element in b, store the result in the lower element of dst using writemask k (the element is copied from src when mask bit 0 is not set), and copy the upper 3 packed elements from a to the upper elements of dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask_sqrt_ss&expand=5387)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vsqrtss))]
+pub unsafe fn _mm_mask_sqrt_ss(src: __m128, k: __mmask8, a: __m128, b: __m128) -> __m128 {
+    transmute(vsqrtss(
+        a.as_f32x4(),
+        b.as_f32x4(),
+        src.as_f32x4(),
+        k,
+        _MM_FROUND_TO_ZERO | _MM_FROUND_NO_EXC,
+    ))
+}
+
+/// Compute the square root of the lower single-precision (32-bit) floating-point element in b, store the result in the lower element of dst using zeromask k (the element is zeroed out when mask bit 0 is not set), and copy the upper 3 packed elements from a to the upper elements of dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_maskz_sqrt_ss&expand=5388)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vsqrtss))]
+pub unsafe fn _mm_maskz_sqrt_ss(k: __mmask8, a: __m128, b: __m128) -> __m128 {
+    transmute(vsqrtss(
+        a.as_f32x4(),
+        b.as_f32x4(),
+        _mm_setzero_ps().as_f32x4(),
+        k,
+        _MM_FROUND_TO_ZERO | _MM_FROUND_NO_EXC,
+    ))
+}
+
+/// Compute the square root of the lower double-precision (64-bit) floating-point element in b, store the result in the lower element of dst using writemask k (the element is copied from src when mask bit 0 is not set), and copy the upper element from a to the upper element of dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask_sqrt_sd&expand=5384)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vsqrtsd))]
+pub unsafe fn _mm_mask_sqrt_sd(src: __m128d, k: __mmask8, a: __m128d, b: __m128d) -> __m128d {
+    transmute(vsqrtsd(
+        a.as_f64x2(),
+        b.as_f64x2(),
+        src.as_f64x2(),
+        k,
+        _MM_FROUND_TO_ZERO | _MM_FROUND_NO_EXC,
+    ))
+}
+
+/// Compute the square root of the lower double-precision (64-bit) floating-point element in b, store the result in the lower element of dst using zeromask k (the element is zeroed out when mask bit 0 is not set), and copy the upper element from a to the upper element of dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_maskz_sqrt_sd&expand=5385)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vsqrtsd))]
+pub unsafe fn _mm_maskz_sqrt_sd(k: __mmask8, a: __m128d, b: __m128d) -> __m128d {
+    transmute(vsqrtsd(
+        a.as_f64x2(),
+        b.as_f64x2(),
+        _mm_setzero_pd().as_f64x2(),
+        k,
+        _MM_FROUND_TO_ZERO | _MM_FROUND_NO_EXC,
+    ))
+}
+
 /// Add the lower single-precision (32-bit) floating-point element in a and b, store the result in the lower element of dst, and copy the upper 3 packed elements from a to the upper elements of dst.
 ///
 /// Rounding is done according to the rounding\[3:0\] parameter, which can be one of:
@@ -19413,6 +19477,185 @@ pub unsafe fn _mm_maskz_div_round_sd(
     transmute(constify_imm4_round!(rounding, call))
 }
 
+/// Compute the square root of the lower single-precision (32-bit) floating-point element in b, store the result in the lower element of dst, and copy the upper 3 packed elements from a to the upper elements of dst.
+///
+/// Rounding is done according to the rounding\[3:0\] parameter, which can be one of:
+///    (_MM_FROUND_TO_NEAREST_INT |_MM_FROUND_NO_EXC) // round to nearest, and suppress exceptions
+///    (_MM_FROUND_TO_NEG_INF |_MM_FROUND_NO_EXC)     // round down, and suppress exceptions
+///    (_MM_FROUND_TO_POS_INF |_MM_FROUND_NO_EXC)     // round up, and suppress exceptions
+///    (_MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC)        // truncate, and suppress exceptions
+///    _MM_FROUND_CUR_DIRECTION // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_sqrt_round_ss&expand=5383)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vsqrtss, rounding = 8))]
+#[rustc_args_required_const(2)]
+pub unsafe fn _mm_sqrt_round_ss(a: __m128, b: __m128, rounding: i32) -> __m128 {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vsqrtss(
+                a.as_f32x4(),
+                b.as_f32x4(),
+                _mm_setzero_ps().as_f32x4(),
+                0b1,
+                $imm4,
+            )
+        };
+    }
+    transmute(constify_imm4_round!(rounding, call))
+}
+
+/// Compute the square root of the lower single-precision (32-bit) floating-point element in b, store the result in the lower element of dst using writemask k (the element is copied from src when mask bit 0 is not set), and copy the upper 3 packed elements from a to the upper elements of dst.
+///
+/// Rounding is done according to the rounding\[3:0\] parameter, which can be one of:
+///    (_MM_FROUND_TO_NEAREST_INT |_MM_FROUND_NO_EXC) // round to nearest, and suppress exceptions
+///    (_MM_FROUND_TO_NEG_INF |_MM_FROUND_NO_EXC)     // round down, and suppress exceptions
+///    (_MM_FROUND_TO_POS_INF |_MM_FROUND_NO_EXC)     // round up, and suppress exceptions
+///    (_MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC)        // truncate, and suppress exceptions
+///    _MM_FROUND_CUR_DIRECTION // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask_sqrt_round_ss&expand=5381)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vsqrtss, rounding = 8))]
+#[rustc_args_required_const(4)]
+pub unsafe fn _mm_mask_sqrt_round_ss(
+    src: __m128,
+    k: __mmask8,
+    a: __m128,
+    b: __m128,
+    rounding: i32,
+) -> __m128 {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vsqrtss(a.as_f32x4(), b.as_f32x4(), src.as_f32x4(), k, $imm4)
+        };
+    }
+    transmute(constify_imm4_round!(rounding, call))
+}
+
+/// Compute the square root of the lower single-precision (32-bit) floating-point element in b, store the result in the lower element of dst using zeromask k (the element is zeroed out when mask bit 0 is not set), and copy the upper 3 packed elements from a to the upper elements of dst.
+///
+/// Rounding is done according to the rounding\[3:0\] parameter, which can be one of:
+///    (_MM_FROUND_TO_NEAREST_INT |_MM_FROUND_NO_EXC) // round to nearest, and suppress exceptions
+///    (_MM_FROUND_TO_NEG_INF |_MM_FROUND_NO_EXC)     // round down, and suppress exceptions
+///    (_MM_FROUND_TO_POS_INF |_MM_FROUND_NO_EXC)     // round up, and suppress exceptions
+///    (_MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC)        // truncate, and suppress exceptions
+///    _MM_FROUND_CUR_DIRECTION // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_maskz_sqrt_round_ss&expand=5382)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vsqrtss, rounding = 8))]
+#[rustc_args_required_const(3)]
+pub unsafe fn _mm_maskz_sqrt_round_ss(k: __mmask8, a: __m128, b: __m128, rounding: i32) -> __m128 {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vsqrtss(
+                a.as_f32x4(),
+                b.as_f32x4(),
+                _mm_setzero_ps().as_f32x4(),
+                k,
+                $imm4,
+            )
+        };
+    }
+    transmute(constify_imm4_round!(rounding, call))
+}
+
+/// Compute the square root of the lower double-precision (64-bit) floating-point element in b, store the result in the lower element of dst, and copy the upper element from a to the upper element of dst.
+///
+/// Rounding is done according to the rounding\[3:0\] parameter, which can be one of:
+///    (_MM_FROUND_TO_NEAREST_INT |_MM_FROUND_NO_EXC) // round to nearest, and suppress exceptions
+///    (_MM_FROUND_TO_NEG_INF |_MM_FROUND_NO_EXC)     // round down, and suppress exceptions
+///    (_MM_FROUND_TO_POS_INF |_MM_FROUND_NO_EXC)     // round up, and suppress exceptions
+///    (_MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC)        // truncate, and suppress exceptions
+///    _MM_FROUND_CUR_DIRECTION // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_sqrt_round_sd&expand=5380)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vsqrtsd, rounding = 8))]
+#[rustc_args_required_const(2)]
+pub unsafe fn _mm_sqrt_round_sd(a: __m128d, b: __m128d, rounding: i32) -> __m128d {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vsqrtsd(
+                a.as_f64x2(),
+                b.as_f64x2(),
+                _mm_setzero_pd().as_f64x2(),
+                0b1,
+                $imm4,
+            )
+        };
+    }
+    transmute(constify_imm4_round!(rounding, call))
+}
+
+/// Compute the square root of the lower double-precision (64-bit) floating-point element in b, store the result in the lower element of dst using writemask k (the element is copied from src when mask bit 0 is not set), and copy the upper element from a to the upper element of dst.
+///
+/// Rounding is done according to the rounding\[3:0\] parameter, which can be one of:
+///    (_MM_FROUND_TO_NEAREST_INT |_MM_FROUND_NO_EXC) // round to nearest, and suppress exceptions
+///    (_MM_FROUND_TO_NEG_INF |_MM_FROUND_NO_EXC)     // round down, and suppress exceptions
+///    (_MM_FROUND_TO_POS_INF |_MM_FROUND_NO_EXC)     // round up, and suppress exceptions
+///    (_MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC)        // truncate, and suppress exceptions
+///    _MM_FROUND_CUR_DIRECTION // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask_sqrt_round_sd&expand=5378)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vsqrtsd, rounding = 8))]
+#[rustc_args_required_const(4)]
+pub unsafe fn _mm_mask_sqrt_round_sd(
+    src: __m128d,
+    k: __mmask8,
+    a: __m128d,
+    b: __m128d,
+    rounding: i32,
+) -> __m128d {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vsqrtsd(a.as_f64x2(), b.as_f64x2(), src.as_f64x2(), k, $imm4)
+        };
+    }
+    transmute(constify_imm4_round!(rounding, call))
+}
+
+/// Compute the square root of the lower double-precision (64-bit) floating-point element in b, store the result in the lower element of dst using zeromask k (the element is zeroed out when mask bit 0 is not set), and copy the upper element from a to the upper element of dst.
+///
+/// Rounding is done according to the rounding\[3:0\] parameter, which can be one of:
+///    (_MM_FROUND_TO_NEAREST_INT |_MM_FROUND_NO_EXC) // round to nearest, and suppress exceptions
+///    (_MM_FROUND_TO_NEG_INF |_MM_FROUND_NO_EXC)     // round down, and suppress exceptions
+///    (_MM_FROUND_TO_POS_INF |_MM_FROUND_NO_EXC)     // round up, and suppress exceptions
+///    (_MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC)        // truncate, and suppress exceptions
+///    _MM_FROUND_CUR_DIRECTION // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_maskz_sqrt_round_sd&expand=5379)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vsqrtsd, rounding = 8))]
+#[rustc_args_required_const(3)]
+pub unsafe fn _mm_maskz_sqrt_round_sd(
+    k: __mmask8,
+    a: __m128d,
+    b: __m128d,
+    rounding: i32,
+) -> __m128d {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vsqrtsd(
+                a.as_f64x2(),
+                b.as_f64x2(),
+                _mm_setzero_pd().as_f64x2(),
+                k,
+                $imm4,
+            )
+        };
+    }
+    transmute(constify_imm4_round!(rounding, call))
+}
+
 /// Equal
 pub const _MM_CMPINT_EQ: _MM_CMPINT_ENUM = 0x00;
 /// Less-than
@@ -20032,6 +20275,10 @@ extern "C" {
     fn vdivss(a: f32x4, b: f32x4, src: f32x4, mask: u8, rounding: i32) -> f32x4;
     #[link_name = "llvm.x86.avx512.mask.div.sd.round"]
     fn vdivsd(a: f64x2, b: f64x2, src: f64x2, mask: u8, rounding: i32) -> f64x2;
+    #[link_name = "llvm.x86.avx512.mask.sqrt.ss"]
+    fn vsqrtss(a: f32x4, b: f32x4, src: f32x4, mask: u8, rounding: i32) -> f32x4;
+    #[link_name = "llvm.x86.avx512.mask.sqrt.sd"]
+    fn vsqrtsd(a: f64x2, b: f64x2, src: f64x2, mask: u8, rounding: i32) -> f64x2;
 }
 
 #[cfg(test)]
@@ -29217,6 +29464,56 @@ mod tests {
     }
 
     #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_mask_sqrt_ss() {
+        let src = _mm_set_ps(10., 11., 100., 110.);
+        let a = _mm_set_ps(1., 2., 10., 20.);
+        let b = _mm_set_ps(3., 4., 30., 4.);
+        let r = _mm_mask_sqrt_ss(src, 0, a, b);
+        let e = _mm_set_ps(1., 2., 10., 110.);
+        assert_eq_m128(r, e);
+        let r = _mm_mask_sqrt_ss(src, 0b11111111, a, b);
+        let e = _mm_set_ps(1., 2., 10., 2.);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_maskz_sqrt_ss() {
+        let a = _mm_set_ps(1., 2., 10., 20.);
+        let b = _mm_set_ps(3., 4., 30., 4.);
+        let r = _mm_maskz_sqrt_ss(0, a, b);
+        let e = _mm_set_ps(1., 2., 10., 0.);
+        assert_eq_m128(r, e);
+        let r = _mm_maskz_sqrt_ss(0b11111111, a, b);
+        let e = _mm_set_ps(1., 2., 10., 2.);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_mask_sqrt_sd() {
+        let src = _mm_set_pd(10., 11.);
+        let a = _mm_set_pd(1., 2.);
+        let b = _mm_set_pd(3., 4.);
+        let r = _mm_mask_sqrt_sd(src, 0, a, b);
+        let e = _mm_set_pd(1., 11.);
+        assert_eq_m128d(r, e);
+        let r = _mm_mask_sqrt_sd(src, 0b11111111, a, b);
+        let e = _mm_set_pd(1., 2.);
+        assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_maskz_sqrt_sd() {
+        let a = _mm_set_pd(1., 2.);
+        let b = _mm_set_pd(3., 4.);
+        let r = _mm_maskz_sqrt_sd(0, a, b);
+        let e = _mm_set_pd(1., 0.);
+        assert_eq_m128d(r, e);
+        let r = _mm_maskz_sqrt_sd(0b11111111, a, b);
+        let e = _mm_set_pd(1., 2.);
+        assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
     unsafe fn test_mm_add_round_ss() {
         let a = _mm_set_ps(1., 2., 10., 20.);
         let b = _mm_set_ps(3., 4., 30., 40.);
@@ -29533,6 +29830,86 @@ mod tests {
         assert_eq_m128d(r, e);
         let r = _mm_maskz_div_round_sd(0b11111111, a, b, _MM_FROUND_TO_ZERO | _MM_FROUND_NO_EXC);
         let e = _mm_set_pd(1., 0.5);
+        assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_sqrt_round_ss() {
+        let a = _mm_set_ps(1., 2., 10., 20.);
+        let b = _mm_set_ps(3., 4., 30., 4.);
+        let r = _mm_sqrt_round_ss(a, b, _MM_FROUND_TO_ZERO | _MM_FROUND_NO_EXC);
+        let e = _mm_set_ps(1., 2., 10., 2.);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_mask_sqrt_round_ss() {
+        let src = _mm_set_ps(10., 11., 100., 110.);
+        let a = _mm_set_ps(1., 2., 10., 20.);
+        let b = _mm_set_ps(3., 4., 30., 4.);
+        let r = _mm_mask_sqrt_round_ss(src, 0, a, b, _MM_FROUND_TO_ZERO | _MM_FROUND_NO_EXC);
+        let e = _mm_set_ps(1., 2., 10., 110.);
+        assert_eq_m128(r, e);
+        let r = _mm_mask_sqrt_round_ss(
+            src,
+            0b11111111,
+            a,
+            b,
+            _MM_FROUND_TO_ZERO | _MM_FROUND_NO_EXC,
+        );
+        let e = _mm_set_ps(1., 2., 10., 2.);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_maskz_sqrt_round_ss() {
+        let a = _mm_set_ps(1., 2., 10., 20.);
+        let b = _mm_set_ps(3., 4., 30., 4.);
+        let r = _mm_maskz_sqrt_round_ss(0, a, b, _MM_FROUND_TO_ZERO | _MM_FROUND_NO_EXC);
+        let e = _mm_set_ps(1., 2., 10., 0.);
+        assert_eq_m128(r, e);
+        let r = _mm_maskz_sqrt_round_ss(0b11111111, a, b, _MM_FROUND_TO_ZERO | _MM_FROUND_NO_EXC);
+        let e = _mm_set_ps(1., 2., 10., 2.);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_sqrt_round_sd() {
+        let a = _mm_set_pd(1., 2.);
+        let b = _mm_set_pd(3., 4.);
+        let r = _mm_sqrt_round_sd(a, b, _MM_FROUND_TO_ZERO | _MM_FROUND_NO_EXC);
+        let e = _mm_set_pd(1., 2.);
+        assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_mask_sqrt_round_sd() {
+        let src = _mm_set_pd(10., 11.);
+        let a = _mm_set_pd(1., 2.);
+        let b = _mm_set_pd(3., 4.);
+        let r = _mm_mask_sqrt_round_sd(src, 0, a, b, _MM_FROUND_TO_ZERO | _MM_FROUND_NO_EXC);
+        let e = _mm_set_pd(1., 11.);
+        assert_eq_m128d(r, e);
+        let r = _mm_mask_sqrt_round_sd(
+            src,
+            0b11111111,
+            a,
+            b,
+            _MM_FROUND_TO_ZERO | _MM_FROUND_NO_EXC,
+        );
+        let e = _mm_set_pd(1., 2.);
+        assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_maskz_sqrt_round_sd() {
+        let a = _mm_set_pd(1., 2.);
+        let b = _mm_set_pd(3., 4.);
+        let r = _mm_maskz_sqrt_round_sd(0, a, b, _MM_FROUND_TO_ZERO | _MM_FROUND_NO_EXC);
+        let e = _mm_set_pd(1., 0.);
+        assert_eq_m128d(r, e);
+        let r = _mm_maskz_sqrt_round_sd(0b11111111, a, b, _MM_FROUND_TO_ZERO | _MM_FROUND_NO_EXC);
+        let e = _mm_set_pd(1., 2.);
         assert_eq_m128d(r, e);
     }
 }
