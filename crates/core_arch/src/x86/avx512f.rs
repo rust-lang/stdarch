@@ -19385,6 +19385,294 @@ pub unsafe fn _mm_maskz_getmant_sd(
     transmute(r)
 }
 
+/// Round the lower single-precision (32-bit) floating-point element in b to the number of fraction bits specified by imm8, store the result in the lower element of dst, and copy the upper 3 packed elements from a to the upper elements of dst.
+/// Rounding is done according to the imm8[2:0] parameter, which can be one of:
+///    _MM_FROUND_TO_NEAREST_INT // round to nearest
+///    _MM_FROUND_TO_NEG_INF     // round down
+///    _MM_FROUND_TO_POS_INF     // round up
+///    _MM_FROUND_TO_ZERO        // truncate
+///    _MM_FROUND_CUR_DIRECTION  // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_roundscale_ss&expand=4802)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vrndscaless, imm8 = 255))]
+#[rustc_args_required_const(2)]
+pub unsafe fn _mm_roundscale_ss(a: __m128, b: __m128, imm8: i32) -> __m128 {
+    macro_rules! call {
+        ($imm8:expr) => {
+            vrndscaless(
+                a.as_f32x4(),
+                b.as_f32x4(),
+                _mm_setzero_ps().as_f32x4(),
+                0b11111111,
+                $imm8,
+                _MM_FROUND_CUR_DIRECTION,
+            )
+        };
+    }
+    let r = constify_imm8_sae!(imm8, call);
+    transmute(r)
+}
+
+/// Round the lower single-precision (32-bit) floating-point element in b to the number of fraction bits specified by imm8, store the result in the lower element of dst using writemask k (the element is copied from src when mask bit 0 is not set), and copy the upper 3 packed elements from a to the upper elements of dst.
+/// Rounding is done according to the imm8[2:0] parameter, which can be one of:
+///    _MM_FROUND_TO_NEAREST_INT // round to nearest
+///    _MM_FROUND_TO_NEG_INF     // round down
+///    _MM_FROUND_TO_POS_INF     // round up
+///    _MM_FROUND_TO_ZERO        // truncate
+///    _MM_FROUND_CUR_DIRECTION  // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask_roundscale_ss&expand=4800)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vrndscaless, imm8 = 0))]
+#[rustc_args_required_const(4)]
+pub unsafe fn _mm_mask_roundscale_ss(
+    src: __m128,
+    k: __mmask8,
+    a: __m128,
+    b: __m128,
+    imm8: i32,
+) -> __m128 {
+    macro_rules! call {
+        ($imm8:expr) => {
+            vrndscaless(
+                a.as_f32x4(),
+                b.as_f32x4(),
+                src.as_f32x4(),
+                k,
+                $imm8,
+                _MM_FROUND_CUR_DIRECTION,
+            )
+        };
+    }
+    let r = constify_imm8_sae!(imm8, call);
+    transmute(r)
+}
+
+/// Round the lower single-precision (32-bit) floating-point element in b to the number of fraction bits specified by imm8, store the result in the lower element of dst using zeromask k (the element is zeroed out when mask bit 0 is not set), and copy the upper 3 packed elements from a to the upper elements of dst.
+/// Rounding is done according to the imm8[2:0] parameter, which can be one of:
+///    _MM_FROUND_TO_NEAREST_INT // round to nearest
+///    _MM_FROUND_TO_NEG_INF     // round down
+///    _MM_FROUND_TO_POS_INF     // round up
+///    _MM_FROUND_TO_ZERO        // truncate
+///    _MM_FROUND_CUR_DIRECTION  // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_maskz_roundscale_ss&expand=4801)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vrndscaless, imm8 = 0))]
+#[rustc_args_required_const(3)]
+pub unsafe fn _mm_maskz_roundscale_ss(k: __mmask8, a: __m128, b: __m128, imm8: i32) -> __m128 {
+    macro_rules! call {
+        ($imm8:expr) => {
+            vrndscaless(
+                a.as_f32x4(),
+                b.as_f32x4(),
+                _mm_setzero_ps().as_f32x4(),
+                k,
+                $imm8,
+                _MM_FROUND_CUR_DIRECTION,
+            )
+        };
+    }
+    let r = constify_imm8_sae!(imm8, call);
+    transmute(r)
+}
+
+/// Round the lower double-precision (64-bit) floating-point element in b to the number of fraction bits specified by imm8, store the result in the lower element of dst, and copy the upper element from a to the upper element of dst.
+/// Rounding is done according to the imm8[2:0] parameter, which can be one of:
+///    _MM_FROUND_TO_NEAREST_INT // round to nearest
+///    _MM_FROUND_TO_NEG_INF     // round down
+///    _MM_FROUND_TO_POS_INF     // round up
+///    _MM_FROUND_TO_ZERO        // truncate
+///    _MM_FROUND_CUR_DIRECTION  // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_roundscale_sd&expand=4799)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vrndscalesd, imm8 = 255))]
+#[rustc_args_required_const(2)]
+pub unsafe fn _mm_roundscale_sd(a: __m128d, b: __m128d, imm8: i32) -> __m128d {
+    macro_rules! call {
+        ($imm8:expr) => {
+            vrndscalesd(
+                a.as_f64x2(),
+                b.as_f64x2(),
+                _mm_setzero_pd().as_f64x2(),
+                0b11111111,
+                $imm8,
+                _MM_FROUND_CUR_DIRECTION,
+            )
+        };
+    }
+    let r = constify_imm8_sae!(imm8, call);
+    transmute(r)
+}
+
+/// Round the lower double-precision (64-bit) floating-point element in b to the number of fraction bits specified by imm8, store the result in the lower element of dst using writemask k (the element is copied from src when mask bit 0 is not set), and copy the upper element from a to the upper element of dst.
+/// Rounding is done according to the imm8[2:0] parameter, which can be one of:
+///    _MM_FROUND_TO_NEAREST_INT // round to nearest
+///    _MM_FROUND_TO_NEG_INF     // round down
+///    _MM_FROUND_TO_POS_INF     // round up
+///    _MM_FROUND_TO_ZERO        // truncate
+///    _MM_FROUND_CUR_DIRECTION  // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask_roundscale_sd&expand=4797)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vrndscalesd, imm8 = 0))]
+#[rustc_args_required_const(4)]
+pub unsafe fn _mm_mask_roundscale_sd(
+    src: __m128d,
+    k: __mmask8,
+    a: __m128d,
+    b: __m128d,
+    imm8: i32,
+) -> __m128d {
+    macro_rules! call {
+        ($imm8:expr) => {
+            vrndscalesd(
+                a.as_f64x2(),
+                b.as_f64x2(),
+                src.as_f64x2(),
+                k,
+                $imm8,
+                _MM_FROUND_CUR_DIRECTION,
+            )
+        };
+    }
+    let r = constify_imm8_sae!(imm8, call);
+    transmute(r)
+}
+
+/// Round the lower double-precision (64-bit) floating-point element in b to the number of fraction bits specified by imm8, store the result in the lower element of dst using zeromask k (the element is zeroed out when mask bit 0 is not set), and copy the upper element from a to the upper element of dst.
+/// Rounding is done according to the imm8[2:0] parameter, which can be one of:
+///    _MM_FROUND_TO_NEAREST_INT // round to nearest
+///    _MM_FROUND_TO_NEG_INF     // round down
+///    _MM_FROUND_TO_POS_INF     // round up
+///    _MM_FROUND_TO_ZERO        // truncate
+///    _MM_FROUND_CUR_DIRECTION  // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_maskz_roundscale_sd&expand=4798)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vrndscalesd, imm8 = 0))]
+#[rustc_args_required_const(3)]
+pub unsafe fn _mm_maskz_roundscale_sd(k: __mmask8, a: __m128d, b: __m128d, imm8: i32) -> __m128d {
+    macro_rules! call {
+        ($imm8:expr) => {
+            vrndscalesd(
+                a.as_f64x2(),
+                b.as_f64x2(),
+                _mm_setzero_pd().as_f64x2(),
+                k,
+                $imm8,
+                _MM_FROUND_CUR_DIRECTION,
+            )
+        };
+    }
+    let r = constify_imm8_sae!(imm8, call);
+    transmute(r)
+}
+
+/// Scale the packed single-precision (32-bit) floating-point elements in a using values from b, store the result in the lower element of dst, and copy the upper 3 packed elements from a to the upper elements of dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_scalef_ss&expand=4901)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vscalefss))]
+pub unsafe fn _mm_scalef_ss(a: __m128, b: __m128) -> __m128 {
+    transmute(vscalefss(
+        a.as_f32x4(),
+        b.as_f32x4(),
+        _mm_setzero_ps().as_f32x4(),
+        0b11111111,
+        _MM_FROUND_CUR_DIRECTION,
+    ))
+}
+
+/// Scale the packed single-precision (32-bit) floating-point elements in a using values from b, store the result in the lower element of dst using writemask k (the element is copied from src when mask bit 0 is not set), and copy the upper 3 packed elements from a to the upper elements of dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask_scalef_ss&expand=4899)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vscalefss))]
+pub unsafe fn _mm_mask_scalef_ss(src: __m128, k: __mmask8, a: __m128, b: __m128) -> __m128 {
+    transmute(vscalefss(
+        a.as_f32x4(),
+        b.as_f32x4(),
+        src.as_f32x4(),
+        k,
+        _MM_FROUND_CUR_DIRECTION,
+    ))
+}
+
+/// Scale the packed single-precision (32-bit) floating-point elements in a using values from b, store the result in the lower element of dst using zeromask k (the element is zeroed out when mask bit 0 is not set), and copy the upper 3 packed elements from a to the upper elements of dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_maskz_scalef_ss&expand=4900)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vscalefss))]
+pub unsafe fn _mm_maskz_scalef_ss(k: __mmask8, a: __m128, b: __m128) -> __m128 {
+    transmute(vscalefss(
+        a.as_f32x4(),
+        b.as_f32x4(),
+        _mm_setzero_ps().as_f32x4(),
+        k,
+        _MM_FROUND_CUR_DIRECTION,
+    ))
+}
+
+/// Scale the packed double-precision (64-bit) floating-point elements in a using values from b, store the result in the lower element of dst, and copy the upper element from a to the upper element of dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_scalef_sd&expand=4898)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vscalefsd))]
+pub unsafe fn _mm_scalef_sd(a: __m128d, b: __m128d) -> __m128d {
+    transmute(vscalefsd(
+        a.as_f64x2(),
+        b.as_f64x2(),
+        _mm_setzero_pd().as_f64x2(),
+        0b11111111,
+        _MM_FROUND_CUR_DIRECTION,
+    ))
+}
+
+/// Scale the packed double-precision (64-bit) floating-point elements in a using values from b, store the result in the lower element of dst using writemask k (the element is copied from src when mask bit 0 is not set), and copy the upper element from a to the upper element of dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask_scalef_sd&expand=4896)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vscalefsd))]
+pub unsafe fn _mm_mask_scalef_sd(src: __m128d, k: __mmask8, a: __m128d, b: __m128d) -> __m128d {
+    transmute(vscalefsd(
+        a.as_f64x2(),
+        b.as_f64x2(),
+        src.as_f64x2(),
+        k,
+        _MM_FROUND_CUR_DIRECTION,
+    ))
+}
+
+/// Scale the packed double-precision (64-bit) floating-point elements in a using values from b, store the result in the lower element of dst using zeromask k (the element is zeroed out when mask bit 0 is not set), and copy the upper element from a to the upper element of dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_maskz_scalef_sd&expand=4897)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vscalefsd))]
+pub unsafe fn _mm_maskz_scalef_sd(k: __mmask8, a: __m128d, b: __m128d) -> __m128d {
+    transmute(vscalefsd(
+        a.as_f64x2(),
+        b.as_f64x2(),
+        _mm_setzero_pd().as_f64x2(),
+        k,
+        _MM_FROUND_CUR_DIRECTION,
+    ))
+}
+
 /// Add the lower single-precision (32-bit) floating-point element in a and b, store the result in the lower element of dst, and copy the upper 3 packed elements from a to the upper elements of dst.
 ///
 /// Rounding is done according to the rounding\[3:0\] parameter, which can be one of:
@@ -20946,6 +21234,396 @@ pub unsafe fn _mm_maskz_getmant_round_sd(
     transmute(r)
 }
 
+/// Round the lower single-precision (32-bit) floating-point element in b to the number of fraction bits specified by imm8, store the result in the lower element of dst, and copy the upper 3 packed elements from a to the upper elements of dst.
+
+/// Round the lower single-precision (32-bit) floating-point element in b to the number of fraction bits specified by imm8, store the result in the lower element of dst, and copy the upper 3 packed elements from a to the upper elements of dst.
+/// Rounding is done according to the imm8[2:0] parameter, which can be one of:
+///    _MM_FROUND_TO_NEAREST_INT // round to nearest
+///    _MM_FROUND_TO_NEG_INF     // round down
+///    _MM_FROUND_TO_POS_INF     // round up
+///    _MM_FROUND_TO_ZERO        // truncate
+///    _MM_FROUND_CUR_DIRECTION  // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
+///
+/// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_roundscale_round_ss&expand=4796)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vrndscaless, imm8 = 0, sae = 8))]
+#[rustc_args_required_const(2, 3)]
+pub unsafe fn _mm_roundscale_round_ss(a: __m128, b: __m128, imm8: i32, sae: i32) -> __m128 {
+    macro_rules! call {
+        ($imm8:expr, $imm4:expr) => {
+            vrndscaless(
+                a.as_f32x4(),
+                b.as_f32x4(),
+                _mm_setzero_ps().as_f32x4(),
+                0b11111111,
+                $imm8,
+                $imm4,
+            )
+        };
+    }
+    let r = constify_imm8_roundscale!(imm8, sae, call);
+    transmute(r)
+}
+
+/// Round the lower single-precision (32-bit) floating-point element in b to the number of fraction bits specified by imm8, store the result in the lower element of dst using writemask k (the element is copied from src when mask bit 0 is not set), and copy the upper 3 packed elements from a to the upper elements of dst.
+/// Rounding is done according to the imm8[2:0] parameter, which can be one of:
+///    _MM_FROUND_TO_NEAREST_INT // round to nearest
+///    _MM_FROUND_TO_NEG_INF     // round down
+///    _MM_FROUND_TO_POS_INF     // round up
+///    _MM_FROUND_TO_ZERO        // truncate
+///    _MM_FROUND_CUR_DIRECTION  // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
+///
+/// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask_roundscale_round_ss&expand=4794)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vrndscaless, imm8 = 0, sae = 8))]
+#[rustc_args_required_const(4, 5)]
+pub unsafe fn _mm_mask_roundscale_round_ss(
+    src: __m128,
+    k: __mmask8,
+    a: __m128,
+    b: __m128,
+    imm8: i32,
+    sae: i32,
+) -> __m128 {
+    macro_rules! call {
+        ($imm8:expr, $imm4:expr) => {
+            vrndscaless(a.as_f32x4(), b.as_f32x4(), src.as_f32x4(), k, $imm8, $imm4)
+        };
+    }
+    let r = constify_imm8_roundscale!(imm8, sae, call);
+    transmute(r)
+}
+
+/// Round the lower single-precision (32-bit) floating-point element in b to the number of fraction bits specified by imm8, store the result in the lower element of dst using zeromask k (the element is zeroed out when mask bit 0 is not set), and copy the upper 3 packed elements from a to the upper elements of dst.
+/// Rounding is done according to the imm8[2:0] parameter, which can be one of:
+///    _MM_FROUND_TO_NEAREST_INT // round to nearest
+///    _MM_FROUND_TO_NEG_INF     // round down
+///    _MM_FROUND_TO_POS_INF     // round up
+///    _MM_FROUND_TO_ZERO        // truncate
+///    _MM_FROUND_CUR_DIRECTION  // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
+///
+/// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_maskz_roundscale_round_ss&expand=4795)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vrndscaless, imm8 = 0, sae = 8))]
+#[rustc_args_required_const(3, 4)]
+pub unsafe fn _mm_maskz_roundscale_round_ss(
+    k: __mmask8,
+    a: __m128,
+    b: __m128,
+    imm8: i32,
+    sae: i32,
+) -> __m128 {
+    macro_rules! call {
+        ($imm8:expr, $imm4:expr) => {
+            vrndscaless(
+                a.as_f32x4(),
+                b.as_f32x4(),
+                _mm_setzero_ps().as_f32x4(),
+                k,
+                $imm8,
+                $imm4,
+            )
+        };
+    }
+    let r = constify_imm8_roundscale!(imm8, sae, call);
+    transmute(r)
+}
+
+/// Round the lower double-precision (64-bit) floating-point element in b to the number of fraction bits specified by imm8, store the result in the lower element of dst, and copy the upper element from a to the upper element of dst.
+/// Rounding is done according to the imm8[2:0] parameter, which can be one of:
+///    _MM_FROUND_TO_NEAREST_INT // round to nearest
+///    _MM_FROUND_TO_NEG_INF     // round down
+///    _MM_FROUND_TO_POS_INF     // round up
+///    _MM_FROUND_TO_ZERO        // truncate
+///    _MM_FROUND_CUR_DIRECTION  // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
+///
+/// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_roundscale_round_sd&expand=4793)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vrndscalesd, imm8 = 0, sae = 8))]
+#[rustc_args_required_const(2, 3)]
+pub unsafe fn _mm_roundscale_round_sd(a: __m128d, b: __m128d, imm8: i32, sae: i32) -> __m128d {
+    macro_rules! call {
+        ($imm8:expr, $imm4:expr) => {
+            vrndscalesd(
+                a.as_f64x2(),
+                b.as_f64x2(),
+                _mm_setzero_pd().as_f64x2(),
+                0b11111111,
+                $imm8,
+                $imm4,
+            )
+        };
+    }
+    let r = constify_imm8_roundscale!(imm8, sae, call);
+    transmute(r)
+}
+
+/// Round the lower double-precision (64-bit) floating-point element in b to the number of fraction bits specified by imm8, store the result in the lower element of dst using writemask k (the element is copied from src when mask bit 0 is not set), and copy the upper element from a to the upper element of dst.
+/// Rounding is done according to the imm8[2:0] parameter, which can be one of:
+///    _MM_FROUND_TO_NEAREST_INT // round to nearest
+///    _MM_FROUND_TO_NEG_INF     // round down
+///    _MM_FROUND_TO_POS_INF     // round up
+///    _MM_FROUND_TO_ZERO        // truncate
+///    _MM_FROUND_CUR_DIRECTION  // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
+///
+/// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask_roundscale_round_sd&expand=4791)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vrndscalesd, imm8 = 0, sae = 8))]
+#[rustc_args_required_const(4, 5)]
+pub unsafe fn _mm_mask_roundscale_round_sd(
+    src: __m128d,
+    k: __mmask8,
+    a: __m128d,
+    b: __m128d,
+    imm8: i32,
+    sae: i32,
+) -> __m128d {
+    macro_rules! call {
+        ($imm8:expr, $imm4:expr) => {
+            vrndscalesd(a.as_f64x2(), b.as_f64x2(), src.as_f64x2(), k, $imm8, $imm4)
+        };
+    }
+    let r = constify_imm8_roundscale!(imm8, sae, call);
+    transmute(r)
+}
+
+/// Round the lower double-precision (64-bit) floating-point element in b to the number of fraction bits specified by imm8, store the result in the lower element of dst using zeromask k (the element is zeroed out when mask bit 0 is not set), and copy the upper element from a to the upper element of dst.
+/// Rounding is done according to the imm8[2:0] parameter, which can be one of:
+///    _MM_FROUND_TO_NEAREST_INT // round to nearest
+///    _MM_FROUND_TO_NEG_INF     // round down
+///    _MM_FROUND_TO_POS_INF     // round up
+///    _MM_FROUND_TO_ZERO        // truncate
+///    _MM_FROUND_CUR_DIRECTION  // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
+///
+/// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_maskz_roundscale_round_sd&expand=4792)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vrndscalesd, imm8 = 0, sae = 8))]
+#[rustc_args_required_const(3, 4)]
+pub unsafe fn _mm_maskz_roundscale_round_sd(
+    k: __mmask8,
+    a: __m128d,
+    b: __m128d,
+    imm8: i32,
+    sae: i32,
+) -> __m128d {
+    macro_rules! call {
+        ($imm8:expr, $imm4:expr) => {
+            vrndscalesd(
+                a.as_f64x2(),
+                b.as_f64x2(),
+                _mm_setzero_pd().as_f64x2(),
+                k,
+                $imm8,
+                $imm4,
+            )
+        };
+    }
+    let r = constify_imm8_roundscale!(imm8, sae, call);
+    transmute(r)
+}
+
+/// Scale the packed single-precision (32-bit) floating-point elements in a using values from b, store the result in the lower element of dst, and copy the upper 3 packed elements from a to the upper elements of dst.
+///
+/// Rounding is done according to the rounding\[3:0\] parameter, which can be one of:
+///    (_MM_FROUND_TO_NEAREST_INT |_MM_FROUND_NO_EXC) // round to nearest, and suppress exceptions
+///    (_MM_FROUND_TO_NEG_INF |_MM_FROUND_NO_EXC)     // round down, and suppress exceptions
+///    (_MM_FROUND_TO_POS_INF |_MM_FROUND_NO_EXC)     // round up, and suppress exceptions
+///    (_MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC)        // truncate, and suppress exceptions
+///    _MM_FROUND_CUR_DIRECTION // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_scalef_round_ss&expand=4895)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vscalefss, rounding = 8))]
+#[rustc_args_required_const(2)]
+pub unsafe fn _mm_scalef_round_ss(a: __m128, b: __m128, rounding: i32) -> __m128 {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vscalefss(
+                a.as_f32x4(),
+                b.as_f32x4(),
+                _mm_setzero_ps().as_f32x4(),
+                0b11111111,
+                $imm4,
+            )
+        };
+    }
+    let r = constify_imm4_round!(rounding, call);
+    transmute(r)
+}
+
+/// Scale the packed single-precision (32-bit) floating-point elements in a using values from b, store the result in the lower element of dst using writemask k (the element is copied from src when mask bit 0 is not set), and copy the upper 3 packed elements from a to the upper elements of dst.
+///
+/// Rounding is done according to the rounding\[3:0\] parameter, which can be one of:
+///    (_MM_FROUND_TO_NEAREST_INT |_MM_FROUND_NO_EXC) // round to nearest, and suppress exceptions
+///    (_MM_FROUND_TO_NEG_INF |_MM_FROUND_NO_EXC)     // round down, and suppress exceptions
+///    (_MM_FROUND_TO_POS_INF |_MM_FROUND_NO_EXC)     // round up, and suppress exceptions
+///    (_MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC)        // truncate, and suppress exceptions
+///    _MM_FROUND_CUR_DIRECTION // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask_scalef_round_ss&expand=4893)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vscalefss, rounding = 8))]
+#[rustc_args_required_const(4)]
+pub unsafe fn _mm_mask_scalef_round_ss(
+    src: __m128,
+    k: __mmask8,
+    a: __m128,
+    b: __m128,
+    rounding: i32,
+) -> __m128 {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vscalefss(a.as_f32x4(), b.as_f32x4(), src.as_f32x4(), k, $imm4)
+        };
+    }
+    let r = constify_imm4_round!(rounding, call);
+    transmute(r)
+}
+
+/// Scale the packed single-precision (32-bit) floating-point elements in a using values from b, store the result in the lower element of dst using zeromask k (the element is zeroed out when mask bit 0 is not set), and copy the upper 3 packed elements from a to the upper elements of dst.
+///
+/// Rounding is done according to the rounding\[3:0\] parameter, which can be one of:
+///    (_MM_FROUND_TO_NEAREST_INT |_MM_FROUND_NO_EXC) // round to nearest, and suppress exceptions
+///    (_MM_FROUND_TO_NEG_INF |_MM_FROUND_NO_EXC)     // round down, and suppress exceptions
+///    (_MM_FROUND_TO_POS_INF |_MM_FROUND_NO_EXC)     // round up, and suppress exceptions
+///    (_MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC)        // truncate, and suppress exceptions
+///    _MM_FROUND_CUR_DIRECTION // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_maskz_scalef_round_ss&expand=4894)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vscalefss, rounding = 8))]
+#[rustc_args_required_const(3)]
+pub unsafe fn _mm_maskz_scalef_round_ss(
+    k: __mmask8,
+    a: __m128,
+    b: __m128,
+    rounding: i32,
+) -> __m128 {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vscalefss(
+                a.as_f32x4(),
+                b.as_f32x4(),
+                _mm_setzero_ps().as_f32x4(),
+                k,
+                $imm4,
+            )
+        };
+    }
+    let r = constify_imm4_round!(rounding, call);
+    transmute(r)
+}
+
+/// Scale the packed double-precision (64-bit) floating-point elements in a using values from b, store the result in the lower element of dst, and copy the upper element from a to the upper element of dst.
+///
+/// Rounding is done according to the rounding\[3:0\] parameter, which can be one of:
+///    (_MM_FROUND_TO_NEAREST_INT |_MM_FROUND_NO_EXC) // round to nearest, and suppress exceptions
+///    (_MM_FROUND_TO_NEG_INF |_MM_FROUND_NO_EXC)     // round down, and suppress exceptions
+///    (_MM_FROUND_TO_POS_INF |_MM_FROUND_NO_EXC)     // round up, and suppress exceptions
+///    (_MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC)        // truncate, and suppress exceptions
+///    _MM_FROUND_CUR_DIRECTION // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_scalef_round_sd&expand=4892)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vscalefsd, rounding = 8))]
+#[rustc_args_required_const(2)]
+pub unsafe fn _mm_scalef_round_sd(a: __m128d, b: __m128d, rounding: i32) -> __m128d {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vscalefsd(
+                a.as_f64x2(),
+                b.as_f64x2(),
+                _mm_setzero_pd().as_f64x2(),
+                0b11111111,
+                $imm4,
+            )
+        };
+    }
+    let r = constify_imm4_round!(rounding, call);
+    transmute(r)
+}
+
+/// Scale the packed double-precision (64-bit) floating-point elements in a using values from b, store the result in the lower element of dst using writemask k (the element is copied from src when mask bit 0 is not set), and copy the upper element from a to the upper element of dst.
+///
+/// Rounding is done according to the rounding\[3:0\] parameter, which can be one of:
+///    (_MM_FROUND_TO_NEAREST_INT |_MM_FROUND_NO_EXC) // round to nearest, and suppress exceptions
+///    (_MM_FROUND_TO_NEG_INF |_MM_FROUND_NO_EXC)     // round down, and suppress exceptions
+///    (_MM_FROUND_TO_POS_INF |_MM_FROUND_NO_EXC)     // round up, and suppress exceptions
+///    (_MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC)        // truncate, and suppress exceptions
+///    _MM_FROUND_CUR_DIRECTION // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask_scalef_round_sd&expand=4890)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vscalefsd, rounding = 8))]
+#[rustc_args_required_const(4)]
+pub unsafe fn _mm_mask_scalef_round_sd(
+    src: __m128d,
+    k: __mmask8,
+    a: __m128d,
+    b: __m128d,
+    rounding: i32,
+) -> __m128d {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vscalefsd(a.as_f64x2(), b.as_f64x2(), src.as_f64x2(), k, $imm4)
+        };
+    }
+    let r = constify_imm4_round!(rounding, call);
+    transmute(r)
+}
+
+/// Scale the packed double-precision (64-bit) floating-point elements in a using values from b, store the result in the lower element of dst using zeromask k (the element is zeroed out when mask bit 0 is not set), and copy the upper element from a to the upper element of dst.
+///
+/// Rounding is done according to the rounding\[3:0\] parameter, which can be one of:
+///    (_MM_FROUND_TO_NEAREST_INT |_MM_FROUND_NO_EXC) // round to nearest, and suppress exceptions
+///    (_MM_FROUND_TO_NEG_INF |_MM_FROUND_NO_EXC)     // round down, and suppress exceptions
+///    (_MM_FROUND_TO_POS_INF |_MM_FROUND_NO_EXC)     // round up, and suppress exceptions
+///    (_MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC)        // truncate, and suppress exceptions
+///    _MM_FROUND_CUR_DIRECTION // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_maskz_scalef_round_sd&expand=4891)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vscalefsd, rounding = 8))]
+#[rustc_args_required_const(3)]
+pub unsafe fn _mm_maskz_scalef_round_sd(
+    k: __mmask8,
+    a: __m128d,
+    b: __m128d,
+    rounding: i32,
+) -> __m128d {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vscalefsd(
+                a.as_f64x2(),
+                b.as_f64x2(),
+                _mm_setzero_pd().as_f64x2(),
+                k,
+                $imm4,
+            )
+        };
+    }
+    let r = constify_imm4_round!(rounding, call);
+    transmute(r)
+}
+
 /// Equal
 pub const _MM_CMPINT_EQ: _MM_CMPINT_ENUM = 0x00;
 /// Less-than
@@ -21594,6 +22272,15 @@ extern "C" {
     fn vrcp14ss(a: f32x4, b: f32x4, src: f32x4, mask: u8) -> f32x4;
     #[link_name = "llvm.x86.avx512.rcp14.sd"]
     fn vrcp14sd(a: f64x2, b: f64x2, src: f64x2, mask: u8) -> f64x2;
+
+    #[link_name = "llvm.x86.avx512.mask.rndscale.ss"]
+    fn vrndscaless(a: f32x4, b: f32x4, src: f32x4, mask: u8, imm8: i32, sae: i32) -> f32x4;
+    #[link_name = "llvm.x86.avx512.mask.rndscale.sd"]
+    fn vrndscalesd(a: f64x2, b: f64x2, src: f64x2, mask: u8, imm8: i32, sae: i32) -> f64x2;
+    #[link_name = "llvm.x86.avx512.mask.scalef.ss"]
+    fn vscalefss(a: f32x4, b: f32x4, src: f32x4, mask: u8, rounding: i32) -> f32x4;
+    #[link_name = "llvm.x86.avx512.mask.scalef.sd"]
+    fn vscalefsd(a: f64x2, b: f64x2, src: f64x2, mask: u8, rounding: i32) -> f64x2;
 }
 
 #[cfg(test)]
@@ -31193,6 +31880,138 @@ mod tests {
     }
 
     #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_roundscale_ss() {
+        let a = _mm_set1_ps(2.2);
+        let b = _mm_set1_ps(1.1);
+        let r = _mm_roundscale_ss(a, b, 0);
+        let e = _mm_set_ps(2.2, 2.2, 2.2, 1.0);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_mask_roundscale_ss() {
+        let a = _mm_set1_ps(2.2);
+        let b = _mm_set1_ps(1.1);
+        let r = _mm_mask_roundscale_ss(a, 0, a, b, 0);
+        let e = _mm_set_ps(2.2, 2.2, 2.2, 2.2);
+        assert_eq_m128(r, e);
+        let r = _mm_mask_roundscale_ss(a, 0b11111111, a, b, 0);
+        let e = _mm_set_ps(2.2, 2.2, 2.2, 1.0);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_maskz_roundscale_ss() {
+        let a = _mm_set1_ps(2.2);
+        let b = _mm_set1_ps(1.1);
+        let r = _mm_maskz_roundscale_ss(0, a, b, 0);
+        let e = _mm_set_ps(2.2, 2.2, 2.2, 0.0);
+        assert_eq_m128(r, e);
+        let r = _mm_maskz_roundscale_ss(0b11111111, a, b, 0);
+        let e = _mm_set_ps(2.2, 2.2, 2.2, 1.0);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_roundscale_sd() {
+        let a = _mm_set1_pd(2.2);
+        let b = _mm_set1_pd(1.1);
+        let r = _mm_roundscale_sd(a, b, 0);
+        let e = _mm_set_pd(2.2, 1.0);
+        assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_mask_roundscale_sd() {
+        let a = _mm_set1_pd(2.2);
+        let b = _mm_set1_pd(1.1);
+        let r = _mm_mask_roundscale_sd(a, 0, a, b, 0);
+        let e = _mm_set_pd(2.2, 2.2);
+        assert_eq_m128d(r, e);
+        let r = _mm_mask_roundscale_sd(a, 0b11111111, a, b, 0);
+        let e = _mm_set_pd(2.2, 1.0);
+        assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_maskz_roundscale_sd() {
+        let a = _mm_set1_pd(2.2);
+        let b = _mm_set1_pd(1.1);
+        let r = _mm_maskz_roundscale_sd(0, a, b, 0);
+        let e = _mm_set_pd(2.2, 0.0);
+        assert_eq_m128d(r, e);
+        let r = _mm_maskz_roundscale_sd(0b11111111, a, b, 0);
+        let e = _mm_set_pd(2.2, 1.0);
+        assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_scalef_ss() {
+        let a = _mm_set1_ps(1.);
+        let b = _mm_set1_ps(3.);
+        let r = _mm_scalef_ss(a, b);
+        let e = _mm_set_ps(1., 1., 1., 8.);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_mask_scalef_ss() {
+        let a = _mm_set1_ps(1.);
+        let b = _mm_set1_ps(3.);
+        let r = _mm_mask_scalef_ss(a, 0, a, b);
+        let e = _mm_set_ps(1., 1., 1., 1.);
+        assert_eq_m128(r, e);
+        let r = _mm_mask_scalef_ss(a, 0b11111111, a, b);
+        let e = _mm_set_ps(1., 1., 1., 8.);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_maskz_scalef_ss() {
+        let a = _mm_set1_ps(1.);
+        let b = _mm_set1_ps(3.);
+        let r = _mm_maskz_scalef_ss(0, a, b);
+        let e = _mm_set_ps(1., 1., 1., 0.);
+        assert_eq_m128(r, e);
+        let r = _mm_maskz_scalef_ss(0b11111111, a, b);
+        let e = _mm_set_ps(1., 1., 1., 8.);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_scalef_sd() {
+        let a = _mm_set1_pd(1.);
+        let b = _mm_set1_pd(3.);
+        let r = _mm_scalef_sd(a, b);
+        let e = _mm_set_pd(1., 8.);
+        assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_mask_scalef_sd() {
+        let a = _mm_set1_pd(1.);
+        let b = _mm_set1_pd(3.);
+        let r = _mm_mask_scalef_sd(a, 0, a, b);
+        let e = _mm_set_pd(1., 1.);
+        assert_eq_m128d(r, e);
+        let r = _mm_mask_scalef_sd(a, 0b11111111, a, b);
+        let e = _mm_set_pd(1., 8.);
+        assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_maskz_scalef_sd() {
+        let a = _mm_set1_pd(1.);
+        let b = _mm_set1_pd(3.);
+        let r = _mm_maskz_scalef_sd(0, a, b);
+        let e = _mm_set_pd(1., 0.);
+        assert_eq_m128d(r, e);
+        let r = _mm_maskz_scalef_sd(0b11111111, a, b);
+        let e = _mm_set_pd(1., 8.);
+        assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
     unsafe fn test_mm_add_round_ss() {
         let a = _mm_set_ps(1., 2., 10., 20.);
         let b = _mm_set_ps(3., 4., 30., 40.);
@@ -31925,6 +32744,160 @@ mod tests {
             _MM_FROUND_CUR_DIRECTION,
         );
         let e = _mm_set_pd(20., 1.25);
+        assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_roundscale_round_ss() {
+        let a = _mm_set1_ps(2.2);
+        let b = _mm_set1_ps(1.1);
+        let r = _mm_roundscale_round_ss(a, b, 0, _MM_FROUND_CUR_DIRECTION);
+        let e = _mm_set_ps(2.2, 2.2, 2.2, 1.0);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_mask_roundscale_round_ss() {
+        let a = _mm_set1_ps(2.2);
+        let b = _mm_set1_ps(1.1);
+        let r = _mm_mask_roundscale_round_ss(a, 0, a, b, 0, _MM_FROUND_CUR_DIRECTION);
+        let e = _mm_set_ps(2.2, 2.2, 2.2, 2.2);
+        assert_eq_m128(r, e);
+        let r = _mm_mask_roundscale_round_ss(a, 0b11111111, a, b, 0, _MM_FROUND_CUR_DIRECTION);
+        let e = _mm_set_ps(2.2, 2.2, 2.2, 1.0);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_maskz_roundscale_round_ss() {
+        let a = _mm_set1_ps(2.2);
+        let b = _mm_set1_ps(1.1);
+        let r = _mm_maskz_roundscale_round_ss(0, a, b, 0, _MM_FROUND_CUR_DIRECTION);
+        let e = _mm_set_ps(2.2, 2.2, 2.2, 0.0);
+        assert_eq_m128(r, e);
+        let r = _mm_maskz_roundscale_round_ss(0b11111111, a, b, 0, _MM_FROUND_CUR_DIRECTION);
+        let e = _mm_set_ps(2.2, 2.2, 2.2, 1.0);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_roundscale_round_sd() {
+        let a = _mm_set1_pd(2.2);
+        let b = _mm_set1_pd(1.1);
+        let r = _mm_roundscale_round_sd(a, b, 0, _MM_FROUND_CUR_DIRECTION);
+        let e = _mm_set_pd(2.2, 1.0);
+        assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_mask_roundscale_round_sd() {
+        let a = _mm_set1_pd(2.2);
+        let b = _mm_set1_pd(1.1);
+        let r = _mm_mask_roundscale_round_sd(a, 0, a, b, 0, _MM_FROUND_CUR_DIRECTION);
+        let e = _mm_set_pd(2.2, 2.2);
+        assert_eq_m128d(r, e);
+        let r = _mm_mask_roundscale_round_sd(a, 0b11111111, a, b, 0, _MM_FROUND_CUR_DIRECTION);
+        let e = _mm_set_pd(2.2, 1.0);
+        assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_maskz_roundscale_round_sd() {
+        let a = _mm_set1_pd(2.2);
+        let b = _mm_set1_pd(1.1);
+        let r = _mm_maskz_roundscale_round_sd(0, a, b, 0, _MM_FROUND_CUR_DIRECTION);
+        let e = _mm_set_pd(2.2, 0.0);
+        assert_eq_m128d(r, e);
+        let r = _mm_maskz_roundscale_round_sd(0b11111111, a, b, 0, _MM_FROUND_CUR_DIRECTION);
+        let e = _mm_set_pd(2.2, 1.0);
+        assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_scalef_round_ss() {
+        let a = _mm_set1_ps(1.);
+        let b = _mm_set1_ps(3.);
+        let r = _mm_scalef_round_ss(a, b, _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC);
+        let e = _mm_set_ps(1., 1., 1., 8.);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_mask_scalef_round_ss() {
+        let a = _mm_set1_ps(1.);
+        let b = _mm_set1_ps(3.);
+        let r = _mm_mask_scalef_round_ss(a, 0, a, b, _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC);
+        let e = _mm_set_ps(1., 1., 1., 1.);
+        assert_eq_m128(r, e);
+        let r = _mm_mask_scalef_round_ss(
+            a,
+            0b11111111,
+            a,
+            b,
+            _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC,
+        );
+        let e = _mm_set_ps(1., 1., 1., 8.);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_maskz_scalef_round_ss() {
+        let a = _mm_set1_ps(1.);
+        let b = _mm_set1_ps(3.);
+        let r = _mm_maskz_scalef_round_ss(0, a, b, _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC);
+        let e = _mm_set_ps(1., 1., 1., 0.);
+        assert_eq_m128(r, e);
+        let r = _mm_maskz_scalef_round_ss(
+            0b11111111,
+            a,
+            b,
+            _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC,
+        );
+        let e = _mm_set_ps(1., 1., 1., 8.);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_scalef_round_sd() {
+        let a = _mm_set1_pd(1.);
+        let b = _mm_set1_pd(3.);
+        let r = _mm_scalef_round_sd(a, b, _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC);
+        let e = _mm_set_pd(1., 8.);
+        assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_mask_scalef_round_sd() {
+        let a = _mm_set1_pd(1.);
+        let b = _mm_set1_pd(3.);
+        let r = _mm_mask_scalef_round_sd(a, 0, a, b, _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC);
+        let e = _mm_set_pd(1., 1.);
+        assert_eq_m128d(r, e);
+        let r = _mm_mask_scalef_round_sd(
+            a,
+            0b11111111,
+            a,
+            b,
+            _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC,
+        );
+        let e = _mm_set_pd(1., 8.);
+        assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_maskz_scalef_round_sd() {
+        let a = _mm_set1_pd(1.);
+        let b = _mm_set1_pd(3.);
+        let r = _mm_maskz_scalef_round_sd(0, a, b, _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC);
+        let e = _mm_set_pd(1., 0.);
+        assert_eq_m128d(r, e);
+        let r = _mm_maskz_scalef_round_sd(
+            0b11111111,
+            a,
+            b,
+            _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC,
+        );
+        let e = _mm_set_pd(1., 8.);
         assert_eq_m128d(r, e);
     }
 }
