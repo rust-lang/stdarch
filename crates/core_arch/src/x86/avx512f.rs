@@ -18417,6 +18417,68 @@ pub unsafe fn _mm512_set_pd(
     _mm512_setr_pd(e7, e6, e5, e4, e3, e2, e1, e0)
 }
 
+/// Move the lower single-precision (32-bit) floating-point element from b to the lower element of dst using writemask k (the element is copied from src when mask bit 0 is not set), and copy the upper 3 packed elements from a to the upper elements of dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask_move_ss&expand=3832)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vmovss))]
+pub unsafe fn _mm_mask_move_ss(src: __m128, k: __mmask8, a: __m128, b: __m128) -> __m128 {
+    let extractsrc: f32 = simd_extract(src, 0);
+    let mut mov: f32 = extractsrc;
+    if (k & 0b00000001) != 0 {
+        mov = simd_extract(b, 0);
+    }
+    let r = simd_insert(a, 0, mov);
+    transmute(r)
+}
+
+/// Move the lower single-precision (32-bit) floating-point element from b to the lower element of dst using zeromask k (the element is zeroed out when mask bit 0 is not set), and copy the upper 3 packed elements from a to the upper elements of dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_maskz_move_ss&expand=3833)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vmovss))]
+pub unsafe fn _mm_maskz_move_ss(k: __mmask8, a: __m128, b: __m128) -> __m128 {
+    let mut mov: f32 = 0.;
+    if (k & 0b00000001) != 0 {
+        mov = simd_extract(b, 0);
+    }
+    let r = simd_insert(a, 0, mov);
+    transmute(r)
+}
+
+/// Move the lower double-precision (64-bit) floating-point element from b to the lower element of dst using writemask k (the element is copied from src when mask bit 0 is not set), and copy the upper element from a to the upper element of dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask_move_sd&expand=3829)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vmovsd))]
+pub unsafe fn _mm_mask_move_sd(src: __m128d, k: __mmask8, a: __m128d, b: __m128d) -> __m128d {
+    let extractsrc: f64 = simd_extract(src, 0);
+    let mut mov: f64 = extractsrc;
+    if (k & 0b00000001) != 0 {
+        mov = simd_extract(b, 0);
+    }
+    let r = simd_insert(a, 0, mov);
+    transmute(r)
+}
+
+/// Move the lower double-precision (64-bit) floating-point element from b to the lower element of dst using zeromask k (the element is zeroed out when mask bit 0 is not set), and copy the upper element from a to the upper element of dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_maskz_move_sd&expand=3830)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vmovsd))]
+pub unsafe fn _mm_maskz_move_sd(k: __mmask8, a: __m128d, b: __m128d) -> __m128d {
+    let mut mov: f64 = 0.;
+    if (k & 0b00000001) != 0 {
+        mov = simd_extract(b, 0);
+    }
+    let r = simd_insert(a, 0, mov);
+    transmute(r)
+}
+
 /// Add the lower single-precision (32-bit) floating-point element in a and b, store the result in the lower element of dst using writemask k (the element is copied from src when mask bit 0 is not set), and copy the upper 3 packed elements from a to the upper elements of dst.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask_add_ss&expand=159)
@@ -31263,6 +31325,56 @@ mod tests {
         let r = _mm512_maskz_set1_epi32(0b11111111_11111111, a);
         let e = _mm512_set1_epi32(11);
         assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_mask_move_ss() {
+        let src = _mm_set_ps(10., 11., 100., 110.);
+        let a = _mm_set_ps(1., 2., 10., 20.);
+        let b = _mm_set_ps(3., 4., 30., 40.);
+        let r = _mm_mask_move_ss(src, 0, a, b);
+        let e = _mm_set_ps(1., 2., 10., 110.);
+        assert_eq_m128(r, e);
+        let r = _mm_mask_move_ss(src, 0b11111111, a, b);
+        let e = _mm_set_ps(1., 2., 10., 40.);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_maskz_move_ss() {
+        let a = _mm_set_ps(1., 2., 10., 20.);
+        let b = _mm_set_ps(3., 4., 30., 40.);
+        let r = _mm_maskz_move_ss(0, a, b);
+        let e = _mm_set_ps(1., 2., 10., 0.);
+        assert_eq_m128(r, e);
+        let r = _mm_maskz_move_ss(0b11111111, a, b);
+        let e = _mm_set_ps(1., 2., 10., 40.);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_mask_move_sd() {
+        let src = _mm_set_pd(10., 11.);
+        let a = _mm_set_pd(1., 2.);
+        let b = _mm_set_pd(3., 4.);
+        let r = _mm_mask_move_sd(src, 0, a, b);
+        let e = _mm_set_pd(1., 11.);
+        assert_eq_m128d(r, e);
+        let r = _mm_mask_move_sd(src, 0b11111111, a, b);
+        let e = _mm_set_pd(1., 4.);
+        assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_maskz_move_sd() {
+        let a = _mm_set_pd(1., 2.);
+        let b = _mm_set_pd(3., 4.);
+        let r = _mm_maskz_move_sd(0, a, b);
+        let e = _mm_set_pd(1., 0.);
+        assert_eq_m128d(r, e);
+        let r = _mm_maskz_move_sd(0b11111111, a, b);
+        let e = _mm_set_pd(1., 4.);
+        assert_eq_m128d(r, e);
     }
 
     #[simd_test(enable = "avx512f")]
