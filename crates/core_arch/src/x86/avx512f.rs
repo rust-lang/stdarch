@@ -18697,6 +18697,134 @@ pub unsafe fn _mm_maskz_div_sd(k: __mmask8, a: __m128d, b: __m128d) -> __m128d {
     transmute(r)
 }
 
+/// Compare the lower single-precision (32-bit) floating-point elements in a and b, store the maximum value in the lower element of dst using writemask k (the element is copied from src when mask bit 0 is not set), and copy the upper 3 packed elements from a to the upper elements of dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask_max_ss&expand=3672)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vmaxss))]
+pub unsafe fn _mm_mask_max_ss(src: __m128, k: __mmask8, a: __m128, b: __m128) -> __m128 {
+    transmute(vmaxss(
+        a.as_f32x4(),
+        b.as_f32x4(),
+        src.as_f32x4(),
+        k,
+        _MM_FROUND_CUR_DIRECTION,
+    ))
+}
+
+/// Compare the lower single-precision (32-bit) floating-point elements in a and b, store the maximum value in the lower element of dst using zeromask k (the element is zeroed out when mask bit 0 is not set), and copy the upper 3 packed elements from a to the upper elements of dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_maskz_max_ss&expand=3673)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vmaxss))]
+pub unsafe fn _mm_maskz_max_ss(k: __mmask8, a: __m128, b: __m128) -> __m128 {
+    transmute(vmaxss(
+        a.as_f32x4(),
+        b.as_f32x4(),
+        _mm_setzero_ps().as_f32x4(),
+        k,
+        _MM_FROUND_CUR_DIRECTION,
+    ))
+}
+
+/// Compare the lower double-precision (64-bit) floating-point elements in a and b, store the maximum value in the lower element of dst using writemask k (the element is copied from src when mask bit 0 is not set), and copy the upper element from a to the upper element of dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask_max_sd&expand=3669)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vmaxsd))]
+pub unsafe fn _mm_mask_max_sd(src: __m128d, k: __mmask8, a: __m128d, b: __m128d) -> __m128d {
+    transmute(vmaxsd(
+        a.as_f64x2(),
+        b.as_f64x2(),
+        src.as_f64x2(),
+        k,
+        _MM_FROUND_CUR_DIRECTION,
+    ))
+}
+
+/// Compare the lower double-precision (64-bit) floating-point elements in a and b, store the maximum value in the lower element of dst using zeromask k (the element is zeroed out when mask bit 0 is not set), and copy the upper element from a to the upper element of dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_maskz_max_sd&expand=3670)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vmaxsd))]
+pub unsafe fn _mm_maskz_max_sd(k: __mmask8, a: __m128d, b: __m128d) -> __m128d {
+    transmute(vmaxsd(
+        a.as_f64x2(),
+        b.as_f64x2(),
+        _mm_setzero_pd().as_f64x2(),
+        k,
+        _MM_FROUND_CUR_DIRECTION,
+    ))
+}
+
+/// Compare the lower single-precision (32-bit) floating-point elements in a and b, store the minimum value in the lower element of dst using writemask k (the element is copied from src when mask bit 0 is not set), and copy the upper 3 packed elements from a to the upper elements of dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask_min_ss&expand=3786)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vminss))]
+pub unsafe fn _mm_mask_min_ss(src: __m128, k: __mmask8, a: __m128, b: __m128) -> __m128 {
+    transmute(vminss(
+        a.as_f32x4(),
+        b.as_f32x4(),
+        src.as_f32x4(),
+        k,
+        _MM_FROUND_CUR_DIRECTION,
+    ))
+}
+
+/// Compare the lower single-precision (32-bit) floating-point elements in a and b, store the minimum value in the lower element of dst using zeromask k (the element is zeroed out when mask bit 0 is not set), and copy the upper 3 packed elements from a to the upper elements of dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_maskz_min_ss&expand=3787)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vminss))]
+pub unsafe fn _mm_maskz_min_ss(k: __mmask8, a: __m128, b: __m128) -> __m128 {
+    transmute(vminss(
+        a.as_f32x4(),
+        b.as_f32x4(),
+        _mm_setzero_ps().as_f32x4(),
+        k,
+        _MM_FROUND_CUR_DIRECTION,
+    ))
+}
+
+/// Compare the lower double-precision (64-bit) floating-point elements in a and b, store the minimum value in the lower element of dst using writemask k (the element is copied from src when mask bit 0 is not set), and copy the upper element from a to the upper element of dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask_min_sd&expand=3783)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vminsd))]
+pub unsafe fn _mm_mask_min_sd(src: __m128d, k: __mmask8, a: __m128d, b: __m128d) -> __m128d {
+    transmute(vminsd(
+        a.as_f64x2(),
+        b.as_f64x2(),
+        src.as_f64x2(),
+        k,
+        _MM_FROUND_CUR_DIRECTION,
+    ))
+}
+
+/// Compare the lower double-precision (64-bit) floating-point elements in a and b, store the minimum value in the lower element of dst using zeromask k (the element is zeroed out when mask bit 0 is not set), and copy the upper element from a to the upper element of dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_maskz_min_sd&expand=3784)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vminsd))]
+pub unsafe fn _mm_maskz_min_sd(k: __mmask8, a: __m128d, b: __m128d) -> __m128d {
+    transmute(vminsd(
+        a.as_f64x2(),
+        b.as_f64x2(),
+        _mm_setzero_pd().as_f64x2(),
+        k,
+        _MM_FROUND_CUR_DIRECTION,
+    ))
+}
+
 /// Compute the square root of the lower single-precision (32-bit) floating-point element in b, store the result in the lower element of dst using writemask k (the element is copied from src when mask bit 0 is not set), and copy the upper 3 packed elements from a to the upper elements of dst.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask_sqrt_ss&expand=5387)
@@ -19475,6 +19603,282 @@ pub unsafe fn _mm_maskz_div_round_sd(
         };
     }
     transmute(constify_imm4_round!(rounding, call))
+}
+
+/// Compare the lower single-precision (32-bit) floating-point elements in a and b, store the maximum value in the lower element of dst, and copy the upper 3 packed elements from a to the upper elements of dst.
+/// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_max_round_ss&expand=3668)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vmaxss, sae = 8))]
+#[rustc_args_required_const(2)]
+pub unsafe fn _mm_max_round_ss(a: __m128, b: __m128, sae: i32) -> __m128 {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vmaxss(
+                a.as_f32x4(),
+                b.as_f32x4(),
+                _mm_setzero_ps().as_f32x4(),
+                0b1,
+                $imm4,
+            )
+        };
+    }
+    transmute(constify_imm4_sae!(sae, call))
+}
+
+/// Compare the lower single-precision (32-bit) floating-point elements in a and b, store the maximum value in the lower element of dst using writemask k (the element is copied from src when mask bit 0 is not set), and copy the upper 3 packed elements from a to the upper elements of dst.
+/// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask_max_ss&expand=3672)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vmaxss, sae = 8))]
+#[rustc_args_required_const(4)]
+pub unsafe fn _mm_mask_max_round_ss(
+    src: __m128,
+    k: __mmask8,
+    a: __m128,
+    b: __m128,
+    sae: i32,
+) -> __m128 {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vmaxss(a.as_f32x4(), b.as_f32x4(), src.as_f32x4(), k, $imm4)
+        };
+    }
+    transmute(constify_imm4_sae!(sae, call))
+}
+
+/// Compare the lower single-precision (32-bit) floating-point elements in a and b, store the maximum value in the lower element of dst using zeromask k (the element is zeroed out when mask bit 0 is not set), and copy the upper 3 packed elements from a to the upper elements of dst.
+/// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_maskz_max_round_ss&expand=3667)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vmaxss, sae = 8))]
+#[rustc_args_required_const(3)]
+pub unsafe fn _mm_maskz_max_round_ss(k: __mmask8, a: __m128, b: __m128, sae: i32) -> __m128 {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vmaxss(
+                a.as_f32x4(),
+                b.as_f32x4(),
+                _mm_setzero_ps().as_f32x4(),
+                k,
+                $imm4,
+            )
+        };
+    }
+    transmute(constify_imm4_sae!(sae, call))
+}
+
+/// Compare the lower double-precision (64-bit) floating-point elements in a and b, store the maximum value in the lower element of dst, and copy the upper element from a to the upper element of dst.
+/// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_max_round_sd&expand=3665)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vmaxsd, sae = 8))]
+#[rustc_args_required_const(2)]
+pub unsafe fn _mm_max_round_sd(a: __m128d, b: __m128d, sae: i32) -> __m128d {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vmaxsd(
+                a.as_f64x2(),
+                b.as_f64x2(),
+                _mm_setzero_pd().as_f64x2(),
+                0b1,
+                $imm4,
+            )
+        };
+    }
+    transmute(constify_imm4_sae!(sae, call))
+}
+
+/// Compare the lower double-precision (64-bit) floating-point elements in a and b, store the maximum value in the lower element of dst using writemask k (the element is copied from src when mask bit 0 is not set), and copy the upper element from a to the upper element of dst.
+/// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask_max_round_sd&expand=3663)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vmaxsd, sae = 8))]
+#[rustc_args_required_const(4)]
+pub unsafe fn _mm_mask_max_round_sd(
+    src: __m128d,
+    k: __mmask8,
+    a: __m128d,
+    b: __m128d,
+    sae: i32,
+) -> __m128d {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vmaxsd(a.as_f64x2(), b.as_f64x2(), src.as_f64x2(), k, $imm4)
+        };
+    }
+    transmute(constify_imm4_sae!(sae, call))
+}
+
+/// Compare the lower double-precision (64-bit) floating-point elements in a and b, store the maximum value in the lower element of dst using zeromask k (the element is zeroed out when mask bit 0 is not set), and copy the upper element from a to the upper element of dst.
+/// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_maskz_max_sd&expand=3670)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vmaxsd, sae = 8))]
+#[rustc_args_required_const(3)]
+pub unsafe fn _mm_maskz_max_round_sd(k: __mmask8, a: __m128d, b: __m128d, sae: i32) -> __m128d {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vmaxsd(
+                a.as_f64x2(),
+                b.as_f64x2(),
+                _mm_setzero_pd().as_f64x2(),
+                k,
+                $imm4,
+            )
+        };
+    }
+    transmute(constify_imm4_sae!(sae, call))
+}
+
+/// Compare the lower single-precision (32-bit) floating-point elements in a and b, store the minimum value in the lower element of dst, and copy the upper 3 packed elements from a to the upper elements of dst.
+/// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_min_round_ss&expand=3782)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vminss, sae = 8))]
+#[rustc_args_required_const(2)]
+pub unsafe fn _mm_min_round_ss(a: __m128, b: __m128, sae: i32) -> __m128 {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vminss(
+                a.as_f32x4(),
+                b.as_f32x4(),
+                _mm_setzero_ps().as_f32x4(),
+                0b1,
+                $imm4,
+            )
+        };
+    }
+    transmute(constify_imm4_sae!(sae, call))
+}
+
+/// Compare the lower single-precision (32-bit) floating-point elements in a and b, store the minimum value in the lower element of dst using writemask k (the element is copied from src when mask bit 0 is not set), and copy the upper 3 packed elements from a to the upper elements of dst.
+/// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask_min_round_Ss&expand=3780)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vminss, sae = 8))]
+#[rustc_args_required_const(4)]
+pub unsafe fn _mm_mask_min_round_ss(
+    src: __m128,
+    k: __mmask8,
+    a: __m128,
+    b: __m128,
+    sae: i32,
+) -> __m128 {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vminss(a.as_f32x4(), b.as_f32x4(), src.as_f32x4(), k, $imm4)
+        };
+    }
+    transmute(constify_imm4_sae!(sae, call))
+}
+
+/// Compare the lower single-precision (32-bit) floating-point elements in a and b, store the minimum value in the lower element of dst using zeromask k (the element is zeroed out when mask bit 0 is not set), and copy the upper 3 packed elements from a to the upper elements of dst.
+/// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_maskz_min_round_ss&expand=3781)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vminss, sae = 8))]
+#[rustc_args_required_const(3)]
+pub unsafe fn _mm_maskz_min_round_ss(k: __mmask8, a: __m128, b: __m128, sae: i32) -> __m128 {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vminss(
+                a.as_f32x4(),
+                b.as_f32x4(),
+                _mm_setzero_ps().as_f32x4(),
+                k,
+                $imm4,
+            )
+        };
+    }
+    transmute(constify_imm4_sae!(sae, call))
+}
+
+/// Compare the lower double-precision (64-bit) floating-point elements in a and b, store the minimum value in the lower element of dst , and copy the upper element from a to the upper element of dst.
+/// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_min_round_sd&expand=3779)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vminsd, sae = 8))]
+#[rustc_args_required_const(2)]
+pub unsafe fn _mm_min_round_sd(a: __m128d, b: __m128d, sae: i32) -> __m128d {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vminsd(
+                a.as_f64x2(),
+                b.as_f64x2(),
+                _mm_setzero_pd().as_f64x2(),
+                0b1,
+                $imm4,
+            )
+        };
+    }
+    transmute(constify_imm4_sae!(sae, call))
+}
+
+/// Compare the lower double-precision (64-bit) floating-point elements in a and b, store the minimum value in the lower element of dst using writemask k (the element is copied from src when mask bit 0 is not set), and copy the upper element from a to the upper element of dst.
+/// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask_min_round_sd&expand=3777)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vminsd, sae = 8))]
+#[rustc_args_required_const(4)]
+pub unsafe fn _mm_mask_min_round_sd(
+    src: __m128d,
+    k: __mmask8,
+    a: __m128d,
+    b: __m128d,
+    sae: i32,
+) -> __m128d {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vminsd(a.as_f64x2(), b.as_f64x2(), src.as_f64x2(), k, $imm4)
+        };
+    }
+    transmute(constify_imm4_sae!(sae, call))
+}
+
+/// Compare the lower double-precision (64-bit) floating-point elements in a and b, store the minimum value in the lower element of dst using zeromask k (the element is zeroed out when mask bit 0 is not set), and copy the upper element from a to the upper element of dst.
+/// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_maskz_min_round_Sd&expand=3778)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vminsd, sae = 8))]
+#[rustc_args_required_const(3)]
+pub unsafe fn _mm_maskz_min_round_sd(k: __mmask8, a: __m128d, b: __m128d, sae: i32) -> __m128d {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vminsd(
+                a.as_f64x2(),
+                b.as_f64x2(),
+                _mm_setzero_pd().as_f64x2(),
+                k,
+                $imm4,
+            )
+        };
+    }
+    transmute(constify_imm4_sae!(sae, call))
 }
 
 /// Compute the square root of the lower single-precision (32-bit) floating-point element in b, store the result in the lower element of dst, and copy the upper 3 packed elements from a to the upper elements of dst.
@@ -20275,6 +20679,14 @@ extern "C" {
     fn vdivss(a: f32x4, b: f32x4, src: f32x4, mask: u8, rounding: i32) -> f32x4;
     #[link_name = "llvm.x86.avx512.mask.div.sd.round"]
     fn vdivsd(a: f64x2, b: f64x2, src: f64x2, mask: u8, rounding: i32) -> f64x2;
+    #[link_name = "llvm.x86.avx512.mask.max.ss.round"]
+    fn vmaxss(a: f32x4, b: f32x4, src: f32x4, mask: u8, sae: i32) -> f32x4;
+    #[link_name = "llvm.x86.avx512.mask.max.sd.round"]
+    fn vmaxsd(a: f64x2, b: f64x2, src: f64x2, mask: u8, sae: i32) -> f64x2;
+    #[link_name = "llvm.x86.avx512.mask.min.ss.round"]
+    fn vminss(a: f32x4, b: f32x4, src: f32x4, mask: u8, sae: i32) -> f32x4;
+    #[link_name = "llvm.x86.avx512.mask.min.sd.round"]
+    fn vminsd(a: f64x2, b: f64x2, src: f64x2, mask: u8, sae: i32) -> f64x2;
     #[link_name = "llvm.x86.avx512.mask.sqrt.ss"]
     fn vsqrtss(a: f32x4, b: f32x4, src: f32x4, mask: u8, rounding: i32) -> f32x4;
     #[link_name = "llvm.x86.avx512.mask.sqrt.sd"]
@@ -29464,6 +29876,102 @@ mod tests {
     }
 
     #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_mask_max_ss() {
+        let a = _mm_set_ps(0., 1., 2., 3.);
+        let b = _mm_set_ps(4., 5., 6., 7.);
+        let r = _mm_mask_max_ss(a, 0, a, b);
+        let e = _mm_set_ps(0., 1., 2., 3.);
+        assert_eq_m128(r, e);
+        let r = _mm_mask_max_ss(a, 0b11111111, a, b);
+        let e = _mm_set_ps(0., 1., 2., 7.);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_maskz_max_ss() {
+        let a = _mm_set_ps(0., 1., 2., 3.);
+        let b = _mm_set_ps(4., 5., 6., 7.);
+        let r = _mm_maskz_max_ss(0, a, b);
+        let e = _mm_set_ps(0., 1., 2., 0.);
+        assert_eq_m128(r, e);
+        let r = _mm_maskz_max_ss(0b11111111, a, b);
+        let e = _mm_set_ps(0., 1., 2., 7.);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_mask_max_sd() {
+        let a = _mm_set_pd(0., 1.);
+        let b = _mm_set_pd(2., 3.);
+        let r = _mm_mask_max_sd(a, 0, a, b);
+        let e = _mm_set_pd(0., 1.);
+        assert_eq_m128d(r, e);
+        let r = _mm_mask_max_sd(a, 0b11111111, a, b);
+        let e = _mm_set_pd(0., 3.);
+        assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_maskz_max_sd() {
+        let a = _mm_set_pd(0., 1.);
+        let b = _mm_set_pd(2., 3.);
+        let r = _mm_maskz_max_sd(0, a, b);
+        let e = _mm_set_pd(0., 0.);
+        assert_eq_m128d(r, e);
+        let r = _mm_maskz_max_sd(0b11111111, a, b);
+        let e = _mm_set_pd(0., 3.);
+        assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_mask_min_ss() {
+        let a = _mm_set_ps(0., 1., 2., 3.);
+        let b = _mm_set_ps(4., 5., 6., 7.);
+        let r = _mm_mask_min_ss(a, 0, a, b);
+        let e = _mm_set_ps(0., 1., 2., 3.);
+        assert_eq_m128(r, e);
+        let r = _mm_mask_min_ss(a, 0b11111111, a, b);
+        let e = _mm_set_ps(0., 1., 2., 3.);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_maskz_min_ss() {
+        let a = _mm_set_ps(0., 1., 2., 3.);
+        let b = _mm_set_ps(4., 5., 6., 7.);
+        let r = _mm_maskz_min_ss(0, a, b);
+        let e = _mm_set_ps(0., 1., 2., 0.);
+        assert_eq_m128(r, e);
+        let r = _mm_maskz_min_ss(0b11111111, a, b);
+        let e = _mm_set_ps(0., 1., 2., 3.);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_mask_min_sd() {
+        let a = _mm_set_pd(0., 1.);
+        let b = _mm_set_pd(2., 3.);
+        let r = _mm_mask_min_sd(a, 0, a, b);
+        let e = _mm_set_pd(0., 1.);
+        assert_eq_m128d(r, e);
+        let r = _mm_mask_min_sd(a, 0b11111111, a, b);
+        let e = _mm_set_pd(0., 1.);
+        assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_maskz_min_sd() {
+        let a = _mm_set_pd(0., 1.);
+        let b = _mm_set_pd(2., 3.);
+        let r = _mm_maskz_min_sd(0, a, b);
+        let e = _mm_set_pd(0., 0.);
+        assert_eq_m128d(r, e);
+        let r = _mm_maskz_min_sd(0b11111111, a, b);
+        let e = _mm_set_pd(0., 1.);
+        assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
     unsafe fn test_mm_mask_sqrt_ss() {
         let src = _mm_set_ps(10., 11., 100., 110.);
         let a = _mm_set_ps(1., 2., 10., 20.);
@@ -29830,6 +30338,138 @@ mod tests {
         assert_eq_m128d(r, e);
         let r = _mm_maskz_div_round_sd(0b11111111, a, b, _MM_FROUND_TO_ZERO | _MM_FROUND_NO_EXC);
         let e = _mm_set_pd(1., 0.5);
+        assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_max_round_ss() {
+        let a = _mm_set_ps(0., 1., 2., 3.);
+        let b = _mm_set_ps(4., 5., 6., 7.);
+        let r = _mm_max_round_ss(a, b, _MM_FROUND_CUR_DIRECTION);
+        let e = _mm_set_ps(0., 1., 2., 7.);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_mask_max_round_ss() {
+        let a = _mm_set_ps(0., 1., 2., 3.);
+        let b = _mm_set_ps(4., 5., 6., 7.);
+        let r = _mm_mask_max_round_ss(a, 0, a, b, _MM_FROUND_CUR_DIRECTION);
+        let e = _mm_set_ps(0., 1., 2., 3.);
+        assert_eq_m128(r, e);
+        let r = _mm_mask_max_round_ss(a, 0b11111111, a, b, _MM_FROUND_CUR_DIRECTION);
+        let e = _mm_set_ps(0., 1., 2., 7.);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_maskz_max_round_ss() {
+        let a = _mm_set_ps(0., 1., 2., 3.);
+        let b = _mm_set_ps(4., 5., 6., 7.);
+        let r = _mm_maskz_max_round_ss(0, a, b, _MM_FROUND_CUR_DIRECTION);
+        let e = _mm_set_ps(0., 1., 2., 0.);
+        assert_eq_m128(r, e);
+        let r = _mm_maskz_max_round_ss(0b11111111, a, b, _MM_FROUND_CUR_DIRECTION);
+        let e = _mm_set_ps(0., 1., 2., 7.);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_max_round_sd() {
+        let a = _mm_set_pd(0., 1.);
+        let b = _mm_set_pd(2., 3.);
+        let r = _mm_max_round_sd(a, b, _MM_FROUND_CUR_DIRECTION);
+        let e = _mm_set_pd(0., 3.);
+        assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_mask_max_round_sd() {
+        let a = _mm_set_pd(0., 1.);
+        let b = _mm_set_pd(2., 3.);
+        let r = _mm_mask_max_round_sd(a, 0, a, b, _MM_FROUND_CUR_DIRECTION);
+        let e = _mm_set_pd(0., 1.);
+        assert_eq_m128d(r, e);
+        let r = _mm_mask_max_round_sd(a, 0b11111111, a, b, _MM_FROUND_CUR_DIRECTION);
+        let e = _mm_set_pd(0., 3.);
+        assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_maskz_max_round_sd() {
+        let a = _mm_set_pd(0., 1.);
+        let b = _mm_set_pd(2., 3.);
+        let r = _mm_maskz_max_round_sd(0, a, b, _MM_FROUND_CUR_DIRECTION);
+        let e = _mm_set_pd(0., 0.);
+        assert_eq_m128d(r, e);
+        let r = _mm_maskz_max_round_sd(0b11111111, a, b, _MM_FROUND_CUR_DIRECTION);
+        let e = _mm_set_pd(0., 3.);
+        assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_min_round_ss() {
+        let a = _mm_set_ps(0., 1., 2., 3.);
+        let b = _mm_set_ps(4., 5., 6., 7.);
+        let r = _mm_min_round_ss(a, b, _MM_FROUND_CUR_DIRECTION);
+        let e = _mm_set_ps(0., 1., 2., 3.);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_mask_min_round_ss() {
+        let a = _mm_set_ps(0., 1., 2., 3.);
+        let b = _mm_set_ps(4., 5., 6., 7.);
+        let r = _mm_mask_min_round_ss(a, 0, a, b, _MM_FROUND_CUR_DIRECTION);
+        let e = _mm_set_ps(0., 1., 2., 3.);
+        assert_eq_m128(r, e);
+        let r = _mm_mask_min_round_ss(a, 0b11111111, a, b, _MM_FROUND_CUR_DIRECTION);
+        let e = _mm_set_ps(0., 1., 2., 3.);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_maskz_min_round_ss() {
+        let a = _mm_set_ps(0., 1., 2., 3.);
+        let b = _mm_set_ps(4., 5., 6., 7.);
+        let r = _mm_maskz_min_round_ss(0, a, b, _MM_FROUND_CUR_DIRECTION);
+        let e = _mm_set_ps(0., 1., 2., 0.);
+        assert_eq_m128(r, e);
+        let r = _mm_maskz_min_round_ss(0b11111111, a, b, _MM_FROUND_CUR_DIRECTION);
+        let e = _mm_set_ps(0., 1., 2., 3.);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_min_round_sd() {
+        let a = _mm_set_pd(0., 1.);
+        let b = _mm_set_pd(2., 3.);
+        let r = _mm_min_round_sd(a, b, _MM_FROUND_CUR_DIRECTION);
+        let e = _mm_set_pd(0., 1.);
+        assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_mask_min_round_sd() {
+        let a = _mm_set_pd(0., 1.);
+        let b = _mm_set_pd(2., 3.);
+        let r = _mm_mask_min_round_sd(a, 0, a, b, _MM_FROUND_CUR_DIRECTION);
+        let e = _mm_set_pd(0., 1.);
+        assert_eq_m128d(r, e);
+        let r = _mm_mask_min_round_sd(a, 0b11111111, a, b, _MM_FROUND_CUR_DIRECTION);
+        let e = _mm_set_pd(0., 1.);
+        assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_maskz_min_round_sd() {
+        let a = _mm_set_pd(0., 1.);
+        let b = _mm_set_pd(2., 3.);
+        let r = _mm_maskz_min_round_sd(0, a, b, _MM_FROUND_CUR_DIRECTION);
+        let e = _mm_set_pd(0., 0.);
+        assert_eq_m128d(r, e);
+        let r = _mm_maskz_min_round_sd(0b11111111, a, b, _MM_FROUND_CUR_DIRECTION);
+        let e = _mm_set_pd(0., 1.);
         assert_eq_m128d(r, e);
     }
 
