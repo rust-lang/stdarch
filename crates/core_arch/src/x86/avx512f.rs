@@ -18889,6 +18889,166 @@ pub unsafe fn _mm_maskz_sqrt_sd(k: __mmask8, a: __m128d, b: __m128d) -> __m128d 
     ))
 }
 
+/// Compute the approximate reciprocal square root of the lower single-precision (32-bit) floating-point element in b, store the result in the lower element of dst, and copy the upper 3 packed elements from a to the upper elements of dst. The maximum relative error for this approximation is less than 2^-14.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_rsqrt14_ss&expand=4825)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vrsqrt14ss))]
+pub unsafe fn _mm_rsqrt14_ss(a: __m128, b: __m128) -> __m128 {
+    transmute(vrsqrt14ss(
+        a.as_f32x4(),
+        b.as_f32x4(),
+        _mm_setzero_ps().as_f32x4(),
+        0b1,
+    ))
+}
+
+/// Compute the approximate reciprocal square root of the lower single-precision (32-bit) floating-point element in b, store the result in the lower element of dst using writemask k (the element is copied from src when mask bit 0 is not set), and copy the upper 3 packed elements from a to the upper elements of dst. The maximum relative error for this approximation is less than 2^-14.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask_rsqrt14_ss&expand=4823)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vrsqrt14ss))]
+pub unsafe fn _mm_mask_rsqrt14_ss(src: __m128, k: __mmask8, a: __m128, b: __m128) -> __m128 {
+    transmute(vrsqrt14ss(a.as_f32x4(), b.as_f32x4(), src.as_f32x4(), k))
+}
+
+/// Compute the approximate reciprocal square root of the lower single-precision (32-bit) floating-point element in b, store the result in the lower element of dst using zeromask k (the element is zeroed out when mask bit 0 is not set), and copy the upper 3 packed elements from a to the upper elements of dst. The maximum relative error for this approximation is less than 2^-14.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_maskz_rsqrt14_ss&expand=4824)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vrsqrt14ss))]
+pub unsafe fn _mm_maskz_rsqrt14_ss(k: __mmask8, a: __m128, b: __m128) -> __m128 {
+    transmute(vrsqrt14ss(
+        a.as_f32x4(),
+        b.as_f32x4(),
+        _mm_setzero_ps().as_f32x4(),
+        k,
+    ))
+}
+
+/// Compute the approximate reciprocal square root of the lower double-precision (64-bit) floating-point element in b, store the result in the lower element of dst, and copy the upper element from a to the upper element of dst. The maximum relative error for this approximation is less than 2^-14.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_rsqrt14_sd&expand=4822)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vrsqrt14sd))]
+pub unsafe fn _mm_rsqrt14_sd(a: __m128d, b: __m128d) -> __m128d {
+    transmute(vrsqrt14sd(
+        a.as_f64x2(),
+        b.as_f64x2(),
+        _mm_setzero_pd().as_f64x2(),
+        0b1,
+    ))
+}
+
+/// Compute the approximate reciprocal square root of the lower double-precision (64-bit) floating-point element in b, store the result in the lower element of dst using writemask k (the element is copied from src when mask bit 0 is not set), and copy the upper element from a to the upper element of dst. The maximum relative error for this approximation is less than 2^-14.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask_rsqrt14_sd&expand=4820)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vrsqrt14sd))]
+pub unsafe fn _mm_mask_rsqrt14_sd(src: __m128d, k: __mmask8, a: __m128d, b: __m128d) -> __m128d {
+    transmute(vrsqrt14sd(a.as_f64x2(), b.as_f64x2(), src.as_f64x2(), k))
+}
+
+/// Compute the approximate reciprocal square root of the lower double-precision (64-bit) floating-point element in b, store the result in the lower element of dst using zeromask k (the element is zeroed out when mask bit 0 is not set), and copy the upper element from a to the upper element of dst. The maximum relative error for this approximation is less than 2^-14.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_maskz_rsqrt14_sd&expand=4821)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vrsqrt14sd))]
+pub unsafe fn _mm_maskz_rsqrt14_sd(k: __mmask8, a: __m128d, b: __m128d) -> __m128d {
+    transmute(vrsqrt14sd(
+        a.as_f64x2(),
+        b.as_f64x2(),
+        _mm_setzero_pd().as_f64x2(),
+        k,
+    ))
+}
+
+/// Compute the approximate reciprocal of the lower single-precision (32-bit) floating-point element in b, store the result in the lower element of dst, and copy the upper 3 packed elements from a to the upper elements of dst. The maximum relative error for this approximation is less than 2^-14.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_rcp14_ss&expand=4508)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vrcp14ss))]
+pub unsafe fn _mm_rcp14_ss(a: __m128, b: __m128) -> __m128 {
+    transmute(vrcp14ss(
+        a.as_f32x4(),
+        b.as_f32x4(),
+        _mm_setzero_ps().as_f32x4(),
+        0b1,
+    ))
+}
+
+/// Compute the approximate reciprocal of the lower single-precision (32-bit) floating-point element in b, store the result in the lower element of dst using writemask k (the element is copied from src when mask bit 0 is not set), and copy the upper 3 packed elements from a to the upper elements of dst. The maximum relative error for this approximation is less than 2^-14.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask_rcp14_ss&expand=4506)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vrcp14ss))]
+pub unsafe fn _mm_mask_rcp14_ss(src: __m128, k: __mmask8, a: __m128, b: __m128) -> __m128 {
+    transmute(vrcp14ss(a.as_f32x4(), b.as_f32x4(), src.as_f32x4(), k))
+}
+
+/// Compute the approximate reciprocal of the lower single-precision (32-bit) floating-point element in b, store the result in the lower element of dst using zeromask k (the element is zeroed out when mask bit 0 is not set), and copy the upper 3 packed elements from a to the upper elements of dst. The maximum relative error for this approximation is less than 2^-14.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_maskz_rcp14_ss&expand=4507)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vrcp14ss))]
+pub unsafe fn _mm_maskz_rcp14_ss(k: __mmask8, a: __m128, b: __m128) -> __m128 {
+    transmute(vrcp14ss(
+        a.as_f32x4(),
+        b.as_f32x4(),
+        _mm_setzero_ps().as_f32x4(),
+        k,
+    ))
+}
+
+/// Compute the approximate reciprocal of the lower double-precision (64-bit) floating-point element in b, store the result in the lower element of dst, and copy the upper element from a to the upper element of dst. The maximum relative error for this approximation is less than 2^-14.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_rcp14_sd&expand=4505)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vrcp14sd))]
+pub unsafe fn _mm_rcp14_sd(a: __m128d, b: __m128d) -> __m128d {
+    transmute(vrcp14sd(
+        a.as_f64x2(),
+        b.as_f64x2(),
+        _mm_setzero_pd().as_f64x2(),
+        0b1,
+    ))
+}
+
+/// Compute the approximate reciprocal of the lower double-precision (64-bit) floating-point element in b, store the result in the lower element of dst using writemask k (the element is copied from src when mask bit 0 is not set), and copy the upper element from a to the upper element of dst. The maximum relative error for this approximation is less than 2^-14.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask_rcp14_sd&expand=4503)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vrcp14sd))]
+pub unsafe fn _mm_mask_rcp14_sd(src: __m128d, k: __mmask8, a: __m128d, b: __m128d) -> __m128d {
+    transmute(vrcp14sd(a.as_f64x2(), b.as_f64x2(), src.as_f64x2(), k))
+}
+
+/// Compute the approximate reciprocal of the lower double-precision (64-bit) floating-point element in b, store the result in the lower element of dst using zeromask k (the element is zeroed out when mask bit 0 is not set), and copy the upper element from a to the upper element of dst. The maximum relative error for this approximation is less than 2^-14.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_maskz_rcp14_sd&expand=4504)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vrcp14sd))]
+pub unsafe fn _mm_maskz_rcp14_sd(k: __mmask8, a: __m128d, b: __m128d) -> __m128d {
+    transmute(vrcp14sd(
+        a.as_f64x2(),
+        b.as_f64x2(),
+        _mm_setzero_pd().as_f64x2(),
+        k,
+    ))
+}
+
 /// Add the lower single-precision (32-bit) floating-point element in a and b, store the result in the lower element of dst, and copy the upper 3 packed elements from a to the upper elements of dst.
 ///
 /// Rounding is done according to the rounding\[3:0\] parameter, which can be one of:
@@ -20691,6 +20851,15 @@ extern "C" {
     fn vsqrtss(a: f32x4, b: f32x4, src: f32x4, mask: u8, rounding: i32) -> f32x4;
     #[link_name = "llvm.x86.avx512.mask.sqrt.sd"]
     fn vsqrtsd(a: f64x2, b: f64x2, src: f64x2, mask: u8, rounding: i32) -> f64x2;
+
+    #[link_name = "llvm.x86.avx512.rsqrt14.ss"]
+    fn vrsqrt14ss(a: f32x4, b: f32x4, src: f32x4, mask: u8) -> f32x4;
+    #[link_name = "llvm.x86.avx512.rsqrt14.sd"]
+    fn vrsqrt14sd(a: f64x2, b: f64x2, src: f64x2, mask: u8) -> f64x2;
+    #[link_name = "llvm.x86.avx512.rcp14.ss"]
+    fn vrcp14ss(a: f32x4, b: f32x4, src: f32x4, mask: u8) -> f32x4;
+    #[link_name = "llvm.x86.avx512.rcp14.sd"]
+    fn vrcp14sd(a: f64x2, b: f64x2, src: f64x2, mask: u8) -> f64x2;
 }
 
 #[cfg(test)]
@@ -30018,6 +30187,142 @@ mod tests {
         assert_eq_m128d(r, e);
         let r = _mm_maskz_sqrt_sd(0b11111111, a, b);
         let e = _mm_set_pd(1., 2.);
+        assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_rsqrt14_ss() {
+        let a = _mm_set_ps(1., 2., 10., 20.);
+        let b = _mm_set_ps(3., 4., 30., 4.);
+        let r = _mm_rsqrt14_ss(a, b);
+        let e = _mm_set_ps(1., 2., 10., 0.5);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_mask_rsqrt14_ss() {
+        let src = _mm_set_ps(10., 11., 100., 110.);
+        let a = _mm_set_ps(1., 2., 10., 20.);
+        let b = _mm_set_ps(3., 4., 30., 4.);
+        let r = _mm_mask_rsqrt14_ss(src, 0, a, b);
+        let e = _mm_set_ps(1., 2., 10., 110.);
+        assert_eq_m128(r, e);
+        let r = _mm_mask_rsqrt14_ss(src, 0b11111111, a, b);
+        let e = _mm_set_ps(1., 2., 10., 0.5);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_maskz_rsqrt14_ss() {
+        let a = _mm_set_ps(1., 2., 10., 20.);
+        let b = _mm_set_ps(3., 4., 30., 4.);
+        let r = _mm_maskz_rsqrt14_ss(0, a, b);
+        let e = _mm_set_ps(1., 2., 10., 0.);
+        assert_eq_m128(r, e);
+        let r = _mm_maskz_rsqrt14_ss(0b11111111, a, b);
+        let e = _mm_set_ps(1., 2., 10., 0.5);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_rsqrt14_sd() {
+        let a = _mm_set_pd(1., 2.);
+        let b = _mm_set_pd(3., 4.);
+        let r = _mm_rsqrt14_sd(a, b);
+        let e = _mm_set_pd(1., 0.5);
+        assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_mask_rsqrt14_sd() {
+        let src = _mm_set_pd(10., 11.);
+        let a = _mm_set_pd(1., 2.);
+        let b = _mm_set_pd(3., 4.);
+        let r = _mm_mask_rsqrt14_sd(src, 0, a, b);
+        let e = _mm_set_pd(1., 11.);
+        assert_eq_m128d(r, e);
+        let r = _mm_mask_rsqrt14_sd(src, 0b11111111, a, b);
+        let e = _mm_set_pd(1., 0.5);
+        assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_maskz_rsqrt14_sd() {
+        let a = _mm_set_pd(1., 2.);
+        let b = _mm_set_pd(3., 4.);
+        let r = _mm_maskz_rsqrt14_sd(0, a, b);
+        let e = _mm_set_pd(1., 0.);
+        assert_eq_m128d(r, e);
+        let r = _mm_maskz_rsqrt14_sd(0b11111111, a, b);
+        let e = _mm_set_pd(1., 0.5);
+        assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_rcp14_ss() {
+        let a = _mm_set_ps(1., 2., 10., 20.);
+        let b = _mm_set_ps(3., 4., 30., 4.);
+        let r = _mm_rcp14_ss(a, b);
+        let e = _mm_set_ps(1., 2., 10., 0.25);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_mask_rcp14_ss() {
+        let src = _mm_set_ps(10., 11., 100., 110.);
+        let a = _mm_set_ps(1., 2., 10., 20.);
+        let b = _mm_set_ps(3., 4., 30., 4.);
+        let r = _mm_mask_rcp14_ss(src, 0, a, b);
+        let e = _mm_set_ps(1., 2., 10., 110.);
+        assert_eq_m128(r, e);
+        let r = _mm_mask_rcp14_ss(src, 0b11111111, a, b);
+        let e = _mm_set_ps(1., 2., 10., 0.25);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_maskz_rcp14_ss() {
+        let a = _mm_set_ps(1., 2., 10., 20.);
+        let b = _mm_set_ps(3., 4., 30., 4.);
+        let r = _mm_maskz_rcp14_ss(0, a, b);
+        let e = _mm_set_ps(1., 2., 10., 0.);
+        assert_eq_m128(r, e);
+        let r = _mm_maskz_rcp14_ss(0b11111111, a, b);
+        let e = _mm_set_ps(1., 2., 10., 0.25);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_rcp14_sd() {
+        let a = _mm_set_pd(1., 2.);
+        let b = _mm_set_pd(3., 4.);
+        let r = _mm_rcp14_sd(a, b);
+        let e = _mm_set_pd(1., 0.25);
+        assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_mask_rcp14_sd() {
+        let src = _mm_set_pd(10., 11.);
+        let a = _mm_set_pd(1., 2.);
+        let b = _mm_set_pd(3., 4.);
+        let r = _mm_mask_rcp14_sd(src, 0, a, b);
+        let e = _mm_set_pd(1., 11.);
+        assert_eq_m128d(r, e);
+        let r = _mm_mask_rcp14_sd(src, 0b11111111, a, b);
+        let e = _mm_set_pd(1., 0.25);
+        assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_maskz_rcp14_sd() {
+        let a = _mm_set_pd(1., 2.);
+        let b = _mm_set_pd(3., 4.);
+        let r = _mm_maskz_rcp14_sd(0, a, b);
+        let e = _mm_set_pd(1., 0.);
+        assert_eq_m128d(r, e);
+        let r = _mm_maskz_rcp14_sd(0b11111111, a, b);
+        let e = _mm_set_pd(1., 0.25);
         assert_eq_m128d(r, e);
     }
 
