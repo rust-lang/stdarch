@@ -2633,8 +2633,6 @@ pub unsafe fn _mm512_maskz_ternarylogic_epi64(
 }
 
 /// Normalize the mantissas of packed single-precision (32-bit) floating-point elements in a, and store the results in dst. This intrinsic essentially calculates ±(2^k)*|x.significand|, where k depends on the interval range defined by interv and the sign depends on sc and the source sign.
-
-/// Normalize the mantissas of packed single-precision (32-bit) floating-point elements in a, and store the results in dst. This intrinsic essentially calculates ±(2^k)*|x.significand|, where k depends on the interval range defined by interv and the sign depends on sc and the source sign.
 /// The mantissa is normalized to the interval specified by interv, which can take the following values:
 ///    _MM_MANT_NORM_1_2     // interval [1, 2)
 ///    _MM_MANT_NORM_p5_2    // interval [0.5, 2)
@@ -15910,7 +15908,6 @@ pub unsafe fn _mm512_kmov(a: __mmask16) -> __mmask16 {
 #[inline]
 #[target_feature(enable = "avx512f")] // generate normal and code instead of kmovw
 pub unsafe fn _mm512_int2mask(mask: i32) -> __mmask16 {
-    assert!(mask >= 0);
     let r: u16 = mask as u16;
     transmute(r)
 }
