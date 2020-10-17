@@ -12,11 +12,18 @@ $ cargo +nightly test
 To run codegen tests, run in release mode:
 
 ```
-$ cargo +nightly test --release -p coresimd
+$ cargo +nightly test --release -p core_arch
 ```
 
-Remember that this repository requires the nightly channel of Rust! If any of
-the above steps don't work, [please let us know][new]!
+If these don't work out of the box, try running
+them with the environment variables `TARGET=<your-target-triple>`
+and `RUSTFLAGS=-C -target-feature=+<target-feature>` or `RUSTFLAGS=-C -target-cpu=native`
+if you're targeting a host CPU feature. An example for these may look like `TARGET=x86_64-unknown-linux-gnu`
+and `RUSTFLAGS=-C -target-features=+avx2`, if you're unsure of your target triple, simply run `rustup show`
+to find out which you have installed for nightly.
+Also remember that this repository requires the nightly channel of Rust!
+
+If any of the above steps don't work, [please let us know][new]!
 
 Next up you can [find an issue][issues] to help out on, we've selected a few
 with the [`help wanted`][help] and [`impl-period`][impl] tags which could
