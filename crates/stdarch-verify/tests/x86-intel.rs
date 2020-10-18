@@ -594,7 +594,12 @@ fn matches(rust: &Function, intel: &Intrinsic) -> Result<(), String> {
         | "_mm512_reduce_or_epi64"
         | "_mm512_mask_reduce_or_epi64"
         | "_mm512_mask_set1_epi64"
-        | "_mm512_maskz_set1_epi64" => true,
+        | "_mm512_maskz_set1_epi64"
+        | "_mm_cvt_roundss_si64"
+        | "_mm_cvt_roundss_i64"
+        | "_mm_cvt_roundss_u64"
+        | "_mm_cvtss_i64"
+        | "_mm_cvtss_u64" => true,
 
         // These return a 64-bit argument but they're assembled from other
         // 32-bit registers, so these work on 32-bit just fine. See #308 for
