@@ -23605,6 +23605,237 @@ pub unsafe fn _mm_maskz_fixupimm_round_sd(
     transmute(r)
 }
 
+/// Convert the lower single-precision (32-bit) floating-point element in b to a double-precision (64-bit) floating-point element, store the result in the lower element of dst using writemask k (the element is copied from src when mask bit 0 is not set), and copy the upper element from a to the upper element of dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask_cvtss_sd&expand=1896)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vcvtss2sd))]
+pub unsafe fn _mm_mask_cvtss_sd(src: __m128d, k: __mmask8, a: __m128d, b: __m128) -> __m128d {
+    transmute(vcvtss2sd(
+        a.as_f64x2(),
+        b.as_f32x4(),
+        src.as_f64x2(),
+        k,
+        _MM_FROUND_CUR_DIRECTION,
+    ))
+}
+
+/// Convert the lower single-precision (32-bit) floating-point element in b to a double-precision (64-bit) floating-point element, store the result in the lower element of dst using zeromask k (the element is zeroed out when mask bit 0 is not set), and copy the upper element from a to the upper element of dst.    
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_maskz_cvtss_sd&expand=1897)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vcvtss2sd))]
+pub unsafe fn _mm_maskz_cvtss_sd(k: __mmask8, a: __m128d, b: __m128) -> __m128d {
+    transmute(vcvtss2sd(
+        a.as_f64x2(),
+        b.as_f32x4(),
+        _mm_setzero_pd().as_f64x2(),
+        k,
+        _MM_FROUND_CUR_DIRECTION,
+    ))
+}
+
+/// Convert the lower double-precision (64-bit) floating-point element in b to a single-precision (32-bit) floating-point element, store the result in the lower element of dst using writemask k (the element is copied from src when mask bit 0 is not set), and copy the upper 3 packed elements from a to the upper elements of dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask_cvtsd_ss&expand=1797)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vcvtsd2ss))]
+pub unsafe fn _mm_mask_cvtsd_ss(src: __m128, k: __mmask8, a: __m128, b: __m128d) -> __m128 {
+    transmute(vcvtsd2ss(
+        a.as_f32x4(),
+        b.as_f64x2(),
+        src.as_f32x4(),
+        k,
+        _MM_FROUND_TO_ZERO | _MM_FROUND_NO_EXC,
+    ))
+}
+
+/// Convert the lower double-precision (64-bit) floating-point element in b to a single-precision (32-bit) floating-point element, store the result in the lower element of dst using zeromask k (the element is zeroed out when mask bit 0 is not set), and copy the upper 3 packed elements from a to the upper elements of dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_maskz_cvtsd_ss&expand=1798)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vcvtsd2ss))]
+pub unsafe fn _mm_maskz_cvtsd_ss(k: __mmask8, a: __m128, b: __m128d) -> __m128 {
+    transmute(vcvtsd2ss(
+        a.as_f32x4(),
+        b.as_f64x2(),
+        _mm_setzero_ps().as_f32x4(),
+        k,
+        _MM_FROUND_TO_ZERO | _MM_FROUND_NO_EXC,
+    ))
+}
+
+/// Convert the lower single-precision (32-bit) floating-point element in b to a double-precision (64-bit) floating-point element, store the result in the lower element of dst, and copy the upper element from a to the upper element of dst.
+/// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+///    
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_cvt_roundss_sd&expand=1371)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vcvtss2sd, sae = 8))]
+#[rustc_args_required_const(2)]
+pub unsafe fn _mm_cvt_roundss_sd(a: __m128d, b: __m128, sae: i32) -> __m128d {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vcvtss2sd(
+                a.as_f64x2(),
+                b.as_f32x4(),
+                _mm_setzero_pd().as_f64x2(),
+                0b11111111,
+                $imm4,
+            )
+        };
+    }
+    let r = constify_imm4_sae!(sae, call);
+    transmute(r)
+}
+
+/// Convert the lower single-precision (32-bit) floating-point element in b to a double-precision (64-bit) floating-point element, store the result in the lower element of dst using writemask k (the element is copied from src when mask bit 0 is not set), and copy the upper element from a to the upper element of dst.
+/// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+///    
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask_cvt_roundss_sd&expand=1372)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vcvtss2sd, sae = 8))]
+#[rustc_args_required_const(4)]
+pub unsafe fn _mm_mask_cvt_roundss_sd(
+    src: __m128d,
+    k: __mmask8,
+    a: __m128d,
+    b: __m128,
+    sae: i32,
+) -> __m128d {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vcvtss2sd(a.as_f64x2(), b.as_f32x4(), src.as_f64x2(), k, $imm4)
+        };
+    }
+    let r = constify_imm4_sae!(sae, call);
+    transmute(r)
+}
+
+/// Convert the lower single-precision (32-bit) floating-point element in b to a double-precision (64-bit) floating-point element, store the result in the lower element of dst using zeromask k (the element is zeroed out when mask bit 0 is not set), and copy the upper element from a to the upper element of dst.
+/// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+///    
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_maskz_cvt_roundss_sd&expand=1373)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vcvtss2sd, sae = 8))]
+#[rustc_args_required_const(3)]
+pub unsafe fn _mm_maskz_cvt_roundss_sd(k: __mmask8, a: __m128d, b: __m128, sae: i32) -> __m128d {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vcvtss2sd(
+                a.as_f64x2(),
+                b.as_f32x4(),
+                _mm_setzero_pd().as_f64x2(),
+                k,
+                $imm4,
+            )
+        };
+    }
+    let r = constify_imm4_sae!(sae, call);
+    transmute(r)
+}
+
+/// Convert the lower double-precision (64-bit) floating-point element in b to a single-precision (32-bit) floating-point element, store the result in the lower element of dst, and copy the upper 3 packed elements from a to the upper elements of dst.
+///
+/// Rounding is done according to the rounding\[3:0\] parameter, which can be one of:
+///    (_MM_FROUND_TO_NEAREST_INT |_MM_FROUND_NO_EXC) // round to nearest, and suppress exceptions
+///    (_MM_FROUND_TO_NEG_INF |_MM_FROUND_NO_EXC)     // round down, and suppress exceptions
+///    (_MM_FROUND_TO_POS_INF |_MM_FROUND_NO_EXC)     // round up, and suppress exceptions
+///    (_MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC)        // truncate, and suppress exceptions
+///    _MM_FROUND_CUR_DIRECTION // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_cvt_roundsd_ss&expand=1361)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vcvtsd2ss, rounding = 8))]
+#[rustc_args_required_const(2)]
+pub unsafe fn _mm_cvt_roundsd_ss(a: __m128, b: __m128d, rounding: i32) -> __m128 {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vcvtsd2ss(
+                a.as_f32x4(),
+                b.as_f64x2(),
+                _mm_setzero_ps().as_f32x4(),
+                0b11111111,
+                $imm4,
+            )
+        };
+    }
+    let r = constify_imm4_round!(rounding, call);
+    transmute(r)
+}
+
+/// Convert the lower double-precision (64-bit) floating-point element in b to a single-precision (32-bit) floating-point element, store the result in the lower element of dst using writemask k (the element is copied from src when mask bit 0 is not set), and copy the upper 3 packed elements from a to the upper elements of dst.
+///
+/// Rounding is done according to the rounding\[3:0\] parameter, which can be one of:
+///    (_MM_FROUND_TO_NEAREST_INT |_MM_FROUND_NO_EXC) // round to nearest, and suppress exceptions
+///    (_MM_FROUND_TO_NEG_INF |_MM_FROUND_NO_EXC)     // round down, and suppress exceptions
+///    (_MM_FROUND_TO_POS_INF |_MM_FROUND_NO_EXC)     // round up, and suppress exceptions
+///    (_MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC)        // truncate, and suppress exceptions
+///    _MM_FROUND_CUR_DIRECTION // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask_cvt_roundsd_ss&expand=1362)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vcvtsd2ss, rounding = 8))]
+#[rustc_args_required_const(4)]
+pub unsafe fn _mm_mask_cvt_roundsd_ss(
+    src: __m128,
+    k: __mmask8,
+    a: __m128,
+    b: __m128d,
+    rounding: i32,
+) -> __m128 {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vcvtsd2ss(a.as_f32x4(), b.as_f64x2(), src.as_f32x4(), k, $imm4)
+        };
+    }
+    let r = constify_imm4_round!(rounding, call);
+    transmute(r)
+}
+
+/// Convert the lower double-precision (64-bit) floating-point element in b to a single-precision (32-bit) floating-point element, store the result in the lower element of dst using zeromask k (the element is zeroed out when mask bit 0 is not set), and copy the upper 3 packed elements from a to the upper elements of dst.
+///
+/// Rounding is done according to the rounding\[3:0\] parameter, which can be one of:
+///    (_MM_FROUND_TO_NEAREST_INT |_MM_FROUND_NO_EXC) // round to nearest, and suppress exceptions
+///    (_MM_FROUND_TO_NEG_INF |_MM_FROUND_NO_EXC)     // round down, and suppress exceptions
+///    (_MM_FROUND_TO_POS_INF |_MM_FROUND_NO_EXC)     // round up, and suppress exceptions
+///    (_MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC)        // truncate, and suppress exceptions
+///    _MM_FROUND_CUR_DIRECTION // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_maskz_cvt_roundsd_ss&expand=1363)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vcvtsd2ss, rounding = 8))]
+#[rustc_args_required_const(3)]
+pub unsafe fn _mm_maskz_cvt_roundsd_ss(
+    k: __mmask8,
+    a: __m128,
+    b: __m128d,
+    rounding: i32,
+) -> __m128 {
+    macro_rules! call {
+        ($imm4:expr) => {
+            vcvtsd2ss(
+                a.as_f32x4(),
+                b.as_f64x2(),
+                _mm_setzero_ps().as_f32x4(),
+                k,
+                $imm4,
+            )
+        };
+    }
+    let r = constify_imm4_round!(rounding, call);
+    transmute(r)
+}
+
 /// Equal
 pub const _MM_CMPINT_EQ: _MM_CMPINT_ENUM = 0x00;
 /// Less-than
@@ -24276,6 +24507,11 @@ extern "C" {
     fn vfixupimmssz(a: f32x4, b: f32x4, c: i32x4, imm8: i32, mask: u8, sae: i32) -> f32x4;
     #[link_name = "llvm.x86.avx512.maskz.fixupimm.sd"]
     fn vfixupimmsdz(a: f64x2, b: f64x2, c: i64x2, imm8: i32, mask: u8, sae: i32) -> f64x2;
+
+    #[link_name = "llvm.x86.avx512.mask.cvtss2sd.round"]
+    fn vcvtss2sd(a: f64x2, a: f32x4, src: f64x2, mask: u8, sae: i32) -> f64x2;
+    #[link_name = "llvm.x86.avx512.mask.cvtsd2ss.round"]
+    fn vcvtsd2ss(a: f32x4, a: f64x2, src: f32x4, mask: u8, rounding: i32) -> f32x4;
 }
 
 #[cfg(test)]
@@ -35900,5 +36136,116 @@ mod tests {
         let r = _mm_maskz_fixupimm_round_sd(0b11111111, a, b, c, 5, _MM_FROUND_CUR_DIRECTION);
         let e = _mm_set_pd(0., -0.0);
         assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_mask_cvtss_sd() {
+        let a = _mm_set_pd(6., -7.5);
+        let b = _mm_set_ps(0., -0.5, 1., -1.5);
+        let r = _mm_mask_cvtss_sd(a, 0, a, b);
+        assert_eq_m128d(r, a);
+        let r = _mm_mask_cvtss_sd(a, 0b11111111, a, b);
+        let e = _mm_set_pd(6., -1.5);
+        assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_maskz_cvtss_sd() {
+        let a = _mm_set_pd(6., -7.5);
+        let b = _mm_set_ps(0., -0.5, 1., -1.5);
+        let r = _mm_maskz_cvtss_sd(0, a, b);
+        let e = _mm_set_pd(6., 0.);
+        assert_eq_m128d(r, e);
+        let r = _mm_maskz_cvtss_sd(0b11111111, a, b);
+        let e = _mm_set_pd(6., -1.5);
+        assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_mask_cvtsd_ss() {
+        let a = _mm_set_ps(0., -0.5, 1., -1.5);
+        let b = _mm_set_pd(6., -7.5);
+        let r = _mm_mask_cvtsd_ss(a, 0, a, b);
+        assert_eq_m128(r, a);
+        let r = _mm_mask_cvtsd_ss(a, 0b11111111, a, b);
+        let e = _mm_set_ps(0., -0.5, 1., -7.5);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_maskz_cvtsd_ss() {
+        let a = _mm_set_ps(0., -0.5, 1., -1.5);
+        let b = _mm_set_pd(6., -7.5);
+        let r = _mm_maskz_cvtsd_ss(0, a, b);
+        let e = _mm_set_ps(0., -0.5, 1., 0.);
+        assert_eq_m128(r, e);
+        let r = _mm_maskz_cvtsd_ss(0b11111111, a, b);
+        let e = _mm_set_ps(0., -0.5, 1., -7.5);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_cvt_roundss_sd() {
+        let a = _mm_set_pd(6., -7.5);
+        let b = _mm_set_ps(0., -0.5, 1., -1.5);
+        let r = _mm_cvt_roundss_sd(a, b, _MM_FROUND_CUR_DIRECTION);
+        let e = _mm_set_pd(6., -1.5);
+        assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_mask_cvt_roundss_sd() {
+        let a = _mm_set_pd(6., -7.5);
+        let b = _mm_set_ps(0., -0.5, 1., -1.5);
+        let r = _mm_mask_cvt_roundss_sd(a, 0, a, b, _MM_FROUND_CUR_DIRECTION);
+        assert_eq_m128d(r, a);
+        let r = _mm_mask_cvt_roundss_sd(a, 0b11111111, a, b, _MM_FROUND_CUR_DIRECTION);
+        let e = _mm_set_pd(6., -1.5);
+        assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_maskz_cvt_roundss_sd() {
+        let a = _mm_set_pd(6., -7.5);
+        let b = _mm_set_ps(0., -0.5, 1., -1.5);
+        let r = _mm_maskz_cvt_roundss_sd(0, a, b, _MM_FROUND_CUR_DIRECTION);
+        let e = _mm_set_pd(6., 0.);
+        assert_eq_m128d(r, e);
+        let r = _mm_maskz_cvt_roundss_sd(0b11111111, a, b, _MM_FROUND_CUR_DIRECTION);
+        let e = _mm_set_pd(6., -1.5);
+        assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_cvt_roundsd_ss() {
+        let a = _mm_set_ps(0., -0.5, 1., -1.5);
+        let b = _mm_set_pd(6., -7.5);
+        let r = _mm_cvt_roundsd_ss(a, b, _MM_FROUND_TO_ZERO | _MM_FROUND_NO_EXC);
+        let e = _mm_set_ps(0., -0.5, 1., -7.5);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_mask_cvt_roundsd_ss() {
+        let a = _mm_set_ps(0., -0.5, 1., -1.5);
+        let b = _mm_set_pd(6., -7.5);
+        let r = _mm_mask_cvt_roundsd_ss(a, 0, a, b, _MM_FROUND_TO_ZERO | _MM_FROUND_NO_EXC);
+        assert_eq_m128(r, a);
+        let r =
+            _mm_mask_cvt_roundsd_ss(a, 0b11111111, a, b, _MM_FROUND_TO_ZERO | _MM_FROUND_NO_EXC);
+        let e = _mm_set_ps(0., -0.5, 1., -7.5);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_maskz_cvt_roundsd_ss() {
+        let a = _mm_set_ps(0., -0.5, 1., -1.5);
+        let b = _mm_set_pd(6., -7.5);
+        let r = _mm_maskz_cvt_roundsd_ss(0, a, b, _MM_FROUND_TO_ZERO | _MM_FROUND_NO_EXC);
+        let e = _mm_set_ps(0., -0.5, 1., 0.);
+        assert_eq_m128(r, e);
+        let r = _mm_maskz_cvt_roundsd_ss(0b11111111, a, b, _MM_FROUND_TO_ZERO | _MM_FROUND_NO_EXC);
+        let e = _mm_set_ps(0., -0.5, 1., -7.5);
+        assert_eq_m128(r, e);
     }
 }
