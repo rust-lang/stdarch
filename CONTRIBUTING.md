@@ -17,9 +17,9 @@ $ cargo +nightly test --release -p core_arch
 
 If these don't work out of the box, try running
 them with the environment variables `TARGET=<your-target-triple>`
-and `RUSTFLAGS=-C -target-feature=+<target-feature>` or `RUSTFLAGS=-C -target-cpu=native`
+and `RUSTCFLAGS="-C -target-feature=+<target-feature>"` or `RUSTCFLAGS="-C -target-cpu=native"`
 if you're targeting a host CPU feature. An example for these may look like `TARGET=x86_64-unknown-linux-gnu`
-and `RUSTFLAGS=-C -target-features=+avx2`, if you're unsure of your target triple, simply run `rustup show`
+and `RUSTCFLAGS="-C -target-features=+avx2"`, if you're unsure of your target triple, simply run `rustup show`
 to find out which you have installed for nightly.
 Also remember that this repository requires the nightly channel of Rust!
 
