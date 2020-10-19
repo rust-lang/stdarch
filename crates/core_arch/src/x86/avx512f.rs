@@ -24420,6 +24420,54 @@ pub unsafe fn _mm_cvt_roundu64_sd(a: __m128d, b: u64, rounding: i32) -> __m128d 
     transmute(r)
 }
 
+/// Convert the signed 32-bit integer b to a single-precision (32-bit) floating-point element, store the result in the lower element of dst, and copy the upper 3 packed elements from a to the upper elements of dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_cvti32_ss&expand=1643)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vcvtsi2ss))]
+pub unsafe fn _mm_cvti32_ss(a: __m128, b: i32) -> __m128 {
+    let b = b as f32;
+    let r = simd_insert(a, 0, b);
+    transmute(r)
+}
+
+/// Convert the signed 32-bit integer b to a double-precision (64-bit) floating-point element, store the result in the lower element of dst, and copy the upper element from a to the upper element of dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_cvti32_sd&expand=1642)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vcvtsi2sd))]
+pub unsafe fn _mm_cvti32_sd(a: __m128d, b: i32) -> __m128d {
+    let b = b as f64;
+    let r = simd_insert(a, 0, b);
+    transmute(r)
+}
+
+/// Convert the signed 64-bit integer b to a single-precision (32-bit) floating-point element, store the result in the lower element of dst, and copy the upper 3 packed elements from a to the upper elements of dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_cvti64_ss&expand=1645)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vcvtsi2ss))]
+pub unsafe fn _mm_cvti64_ss(a: __m128, b: i64) -> __m128 {
+    let b = b as f32;
+    let r = simd_insert(a, 0, b);
+    transmute(r)
+}
+
+/// Convert the signed 64-bit integer b to a double-precision (64-bit) floating-point element, store the result in the lower element of dst, and copy the upper element from a to the upper element of dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_cvti64_sd&expand=1644)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vcvtsi2sd))]
+pub unsafe fn _mm_cvti64_sd(a: __m128d, b: i64) -> __m128d {
+    let b = b as f64;
+    let r = simd_insert(a, 0, b);
+    transmute(r)
+}
+
 /// Equal
 pub const _MM_CMPINT_EQ: _MM_CMPINT_ENUM = 0x00;
 /// Less-than
@@ -37100,6 +37148,42 @@ mod tests {
         let a = _mm_set_pd(1., -1.5);
         let b: u64 = 9;
         let r = _mm_cvt_roundu64_sd(a, b, _MM_FROUND_TO_ZERO | _MM_FROUND_NO_EXC);
+        let e = _mm_set_pd(1., 9.);
+        assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_cvti32_ss() {
+        let a = _mm_set_ps(0., -0.5, 1., -1.5);
+        let b: i32 = 9;
+        let r = _mm_cvti32_ss(a, b);
+        let e = _mm_set_ps(0., -0.5, 1., 9.);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_cvti32_sd() {
+        let a = _mm_set_pd(1., -1.5);
+        let b: i32 = 9;
+        let r = _mm_cvti32_sd(a, b);
+        let e = _mm_set_pd(1., 9.);
+        assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_cvti64_ss() {
+        let a = _mm_set_ps(0., -0.5, 1., -1.5);
+        let b: i64 = 9;
+        let r = _mm_cvti64_ss(a, b);
+        let e = _mm_set_ps(0., -0.5, 1., 9.);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_cvti64_sd() {
+        let a = _mm_set_pd(1., -1.5);
+        let b: i64 = 9;
+        let r = _mm_cvti64_sd(a, b);
         let e = _mm_set_pd(1., 9.);
         assert_eq_m128d(r, e);
     }

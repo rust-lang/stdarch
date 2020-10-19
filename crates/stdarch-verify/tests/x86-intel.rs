@@ -610,7 +610,9 @@ fn matches(rust: &Function, intel: &Intrinsic) -> Result<(), String> {
         | "_mm_cvt_roundsi64_ss"
         | "_mm_cvt_roundsi64_sd"
         | "_mm_cvt_roundu64_ss"
-        | "_mm_cvt_roundu64_sd" => true,
+        | "_mm_cvt_roundu64_sd"
+        | "_mm_cvti64_ss"
+        | "_mm_cvti64_sd" => true,
 
         // These return a 64-bit argument but they're assembled from other
         // 32-bit registers, so these work on 32-bit just fine. See #308 for
