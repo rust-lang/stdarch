@@ -234,7 +234,7 @@
   * [x] [`_mm512_kor`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_kor&expand=5236)
   * [ ] [`_mm512_kortestc`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_kortestc&expand=5236)
   * [ ] [`_mm512_kortestz`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_kortestz&expand=5236)
-  * [ ] [`_mm512_kunpackb`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_kunpackb&expand=5236)
+  * [x] [`_mm512_kunpackb`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_kunpackb&expand=5236)
   * [x] [`_mm512_kxnor`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_kxnor&expand=5236)
   * [x] [`_mm512_kxor`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_kxor&expand=5236)
   * [x] [`_mm512_load_epi32`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_load_epi32&expand=5236)

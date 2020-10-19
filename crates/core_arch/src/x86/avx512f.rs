@@ -15923,6 +15923,18 @@ pub unsafe fn _mm512_mask2int(k1: __mmask16) -> i32 {
     transmute(r)
 }
 
+/// Unpack and interleave 8 bits from masks a and b, and store the 16-bit result in k.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_kunpackb&expand=3280)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(mov))] // generate normal and code instead of kunpckbw
+pub unsafe fn _mm512_kunpackb(a: __mmask16, b: __mmask16) -> __mmask16 {
+    let a = a & 0b00000000_11111111;
+    let b = b & 0b11111111_00000000;
+    transmute(a | b)
+}
+
 /// Compute the bitwise AND of packed 32-bit integers in a and b, producing intermediate 32-bit values, and set the corresponding bit in result mask k if the intermediate value is non-zero.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_test_epi32_mask&expand=5890)
@@ -34091,6 +34103,15 @@ mod tests {
         let k1: __mmask16 = 0b11001100_00110011;
         let r = _mm512_mask2int(k1);
         let e: i32 = 0b11001100_00110011;
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_kunpackb() {
+        let a: u16 = 0b11001100_00110011;
+        let b: u16 = 0b00101110_00001011;
+        let r = _mm512_kunpackb(a, b);
+        let e: u16 = 0b00101110_00110011;
         assert_eq!(r, e);
     }
 
