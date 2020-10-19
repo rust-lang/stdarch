@@ -21734,8 +21734,6 @@ pub unsafe fn _mm_maskz_getmant_round_sd(
 }
 
 /// Round the lower single-precision (32-bit) floating-point element in b to the number of fraction bits specified by imm8, store the result in the lower element of dst, and copy the upper 3 packed elements from a to the upper elements of dst.
-
-/// Round the lower single-precision (32-bit) floating-point element in b to the number of fraction bits specified by imm8, store the result in the lower element of dst, and copy the upper 3 packed elements from a to the upper elements of dst.
 /// Rounding is done according to the imm8[2:0] parameter, which can be one of:
 ///    _MM_FROUND_TO_NEAREST_INT // round to nearest
 ///    _MM_FROUND_TO_NEG_INF     // round down
@@ -24812,6 +24810,42 @@ pub unsafe fn _mm_cvtu64_sd(a: __m128d, b: u64) -> __m128d {
     transmute(r)
 }
 
+/// Compare the lower single-precision (32-bit) floating-point element in a and b based on the comparison operand specified by imm8, and return the boolean result (0 or 1).
+/// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_comi_round_ss&expand=1175)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vcmp, imm8 = 5, sae = 4))] //should be vcomiss
+#[rustc_args_required_const(2, 3)]
+pub unsafe fn _mm_comi_round_ss(a: __m128, b: __m128, imm8: i32, sae: i32) -> i32 {
+    macro_rules! call {
+        ($imm8:expr, $imm4:expr) => {
+            vcomiss(a.as_f32x4(), b.as_f32x4(), $imm8, $imm4)
+        };
+    }
+    let r = constify_imm5_sae!(imm8, sae, call);
+    transmute(r)
+}
+
+/// Compare the lower double-precision (64-bit) floating-point element in a and b based on the comparison operand specified by imm8, and return the boolean result (0 or 1).
+/// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_comi_round_sd&expand=1174)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vcmp, imm8 = 5, sae = 4))] //should be vcomisd
+#[rustc_args_required_const(2, 3)]
+pub unsafe fn _mm_comi_round_sd(a: __m128d, b: __m128d, imm8: i32, sae: i32) -> i32 {
+    macro_rules! call {
+        ($imm8:expr, $imm4:expr) => {
+            vcomisd(a.as_f64x2(), b.as_f64x2(), $imm8, $imm4)
+        };
+    }
+    let r = constify_imm5_sae!(imm8, sae, call);
+    transmute(r)
+}
+
 /// Equal
 pub const _MM_CMPINT_EQ: _MM_CMPINT_ENUM = 0x00;
 /// Less-than
@@ -25518,6 +25552,11 @@ extern "C" {
     fn vcvtusi2ss64(a: f32x4, b: u64, rounding: i32) -> f32x4;
     #[link_name = "llvm.x86.avx512.cvtusi642sd"]
     fn vcvtusi2sd(a: f64x2, b: u64, rounding: i32) -> f64x2;
+
+    #[link_name = "llvm.x86.avx512.vcomi.ss"]
+    fn vcomiss(a: f32x4, b: f32x4, imm8: i32, sae: i32) -> i32;
+    #[link_name = "llvm.x86.avx512.vcomi.sd"]
+    fn vcomisd(a: f64x2, b: f64x2, imm8: i32, sae: i32) -> i32;
 }
 
 #[cfg(test)]
@@ -37726,5 +37765,23 @@ mod tests {
         let r = _mm_cvtu64_sd(a, b);
         let e = _mm_set_pd(1., 9.);
         assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_comi_round_ss() {
+        let a = _mm_set1_ps(2.2);
+        let b = _mm_set1_ps(1.1);
+        let r = _mm_comi_round_ss(a, b, 0, _MM_FROUND_CUR_DIRECTION);
+        let e: i32 = 0;
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_comi_round_sd() {
+        let a = _mm_set1_pd(2.2);
+        let b = _mm_set1_pd(1.1);
+        let r = _mm_comi_round_sd(a, b, 0, _MM_FROUND_CUR_DIRECTION);
+        let e: i32 = 0;
+        assert_eq!(r, e);
     }
 }
