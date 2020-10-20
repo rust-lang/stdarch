@@ -15935,6 +15935,21 @@ pub unsafe fn _mm512_kunpackb(a: __mmask16, b: __mmask16) -> __mmask16 {
     transmute(a | b)
 }
 
+/// Performs bitwise OR between k1 and k2, storing the result in dst. CF flag is set if dst consists of all 1's.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_kortestc&expand=3247)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(cmp))] // generate normal and code instead of kortestw
+pub unsafe fn _mm512_kortestc(a: __mmask16, b: __mmask16) -> i32 {
+    let r = a | b;
+    if r == 0b11111111_11111111 {
+        1
+    } else {
+        0
+    }
+}
+
 /// Compute the bitwise AND of packed 32-bit integers in a and b, producing intermediate 32-bit values, and set the corresponding bit in result mask k if the intermediate value is non-zero.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_test_epi32_mask&expand=5890)
@@ -34113,6 +34128,17 @@ mod tests {
         let r = _mm512_kunpackb(a, b);
         let e: u16 = 0b00101110_00110011;
         assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_kortestc() {
+        let a: u16 = 0b11001100_00110011;
+        let b: u16 = 0b00101110_00001011;
+        let r = _mm512_kortestc(a, b);
+        assert_eq!(r, 0);
+        let b: u16 = 0b11111111_11111111;
+        let r = _mm512_kortestc(a, b);
+        assert_eq!(r, 1);
     }
 
     #[simd_test(enable = "avx512f")]
