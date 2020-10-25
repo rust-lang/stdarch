@@ -6,22 +6,12 @@ probably want to check out the repository and make sure that tests pass for you:
 ```
 $ git clone https://github.com/rust-lang/stdarch
 $ cd stdarch
-$ cargo +nightly test
+$ TARGET="<your-target-arch>" ci/run.sh
 ```
 
-To run codegen tests, run in release mode:
-
-```
-$ cargo +nightly test --release -p core_arch
-```
-
-If these don't work out of the box, try running
-them with the environment variables `TARGET=<your-target-triple>`
-and `RUSTCFLAGS="-C -target-feature=+<target-feature>"` or `RUSTCFLAGS="-C -target-cpu=native"`
-if you're targeting a host CPU feature. An example for these may look like `TARGET=x86_64-unknown-linux-gnu`
-and `RUSTCFLAGS="-C -target-features=+avx2"`, if you're unsure of your target triple, simply run `rustup show`
-to find out which you have installed for nightly.
+Where `<your-target-arch>` is the target triple as used by `rustup`, e.g. `x86_x64-unknown-linux-gnu` (without any preceding `nightly-` or similar).
 Also remember that this repository requires the nightly channel of Rust!
+The above tests do in fact require nightly rust to be the default on your system, to set that use `rustup default nightly` (and `rustup default stable` to revert).
 
 If any of the above steps don't work, [please let us know][new]!
 
@@ -77,6 +67,21 @@ If some of the above syntax does not look familiar, the [Documentation as tests]
 of the [Rust Book] describes the `rustdoc` syntax quite well. As always, feel free
 to [join us on gitter][gitter] and ask us if you hit any snags, and thank you for helping
 to improve the documentation of `stdarch`!
+
+# Alternative Testing Instructions
+
+It is generally recommended that you use `ci/run.sh` to run the tests.
+However this might not work for you, e.g. if you are on Windows.
+
+In that case you can fall back to running `cargo +nightly test` and `cargo +nightly test --release -p core_arch`.
+Note that these require the nightly toolchain to be installed and for `rustc` to know about your target triple and its CPU.
+In particular you need to set the `TARGET` environment variable as you would for `ci/run.sh`.
+In addition you need to set `RUSTCFLAGS` (need the `C`) to indicate target features, e.g. `RUSTCFLAGS="-C -target-features=+avx2"`.
+You can also set `-C -target-cpu=native` if you're "just" developing against your current CPU.
+
+Be warned that when you use these alternative instructions, things may go less smoothly than they would with `ci/run.sh`, e.g. instruction generation tests may fail because the disassembler named them differently, e.g. it may generate `vaesenc` instead of `aesenc` instructions despite them behaving the same.
+Also these instructions execute less tests than would normally be done, so don't be surprised that when you eventually pull-request some errors may show up for tests not covered here.
+
 
 [new]: https://github.com/rust-lang/stdarch/issues/new
 [issues]: https://github.com/rust-lang/stdarch/issues
