@@ -228,6 +228,23 @@ extern "C" {
     fn vld1q_v4f32(addr: *const u8, align: u32) -> float32x4_t;
     #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vld1.v4i32.p0i8")]
     fn vld1q_v4i32(addr: *const u8, align: u32) -> int32x4_t;
+
+    #[link_name = "llvm.arm.neon.vshiftins.v8i8"]
+    fn vshiftins_v8i8(a: int8x8_t, b: int8x8_t, shift: int8x8_t) -> int8x8_t;
+    #[link_name = "llvm.arm.neon.vshiftins.v16i8"]
+    fn vshiftins_v16i8(a: int8x16_t, b: int8x16_t, shift: int8x16_t) -> int8x16_t;
+    #[link_name = "llvm.arm.neon.vshiftins.v4i16"]
+    fn vshiftins_v4i16(a: int16x4_t, b: int16x4_t, shift: int16x4_t) -> int16x4_t;
+    #[link_name = "llvm.arm.neon.vshiftins.v8i16"]
+    fn vshiftins_v8i16(a: int16x8_t, b: int16x8_t, shift: int16x8_t) -> int16x8_t;
+    #[link_name = "llvm.arm.neon.vshiftins.v2i32"]
+    fn vshiftins_v2i32(a: int32x2_t, b: int32x2_t, shift: int32x2_t) -> int32x2_t;
+    #[link_name = "llvm.arm.neon.vshiftins.v4i32"]
+    fn vshiftins_v4i32(a: int32x4_t, b: int32x4_t, shift: int32x4_t) -> int32x4_t;
+    #[link_name = "llvm.arm.neon.vshiftins.v1i64"]
+    fn vshiftins_v1i64(a: int64x1_t, b: int64x1_t, shift: int64x1_t) -> int64x1_t;
+    #[link_name = "llvm.arm.neon.vshiftins.v2i64"]
+    fn vshiftins_v2i64(a: int64x2_t, b: int64x2_t, shift: int64x2_t) -> int64x2_t;
 }
 
 /// Absolute value (wrapping).
@@ -1861,6 +1878,652 @@ pub unsafe fn vminq_f32(a: float32x4_t, b: float32x4_t) -> float32x4_t {
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(fmax))]
 pub unsafe fn vmaxq_f32(a: float32x4_t, b: float32x4_t) -> float32x4_t {
     vmaxq_f32_(a, b)
+}
+
+/// Shift Left and Insert (immediate)
+#[inline]
+#[cfg(target_arch = "arm")]
+#[target_feature(enable = "neon,v7")]
+#[cfg_attr(test, assert_instr("vsli.8", n = 1))]
+#[rustc_args_required_const(2)]
+pub unsafe fn vsli_n_s8(a: int8x8_t, b: int8x8_t, n: i32) -> int8x8_t {
+    if n < 0 || n > 7 {
+        unreachable_unchecked();
+    } else {
+        let n = n as i8;
+        vshiftins_v8i8(a, b, int8x8_t(n, n, n, n, n, n, n, n))
+    }
+}
+/// Shift Left and Insert (immediate)
+#[inline]
+#[cfg(target_arch = "arm")]
+#[target_feature(enable = "neon,v7")]
+#[cfg_attr(test, assert_instr("vsli.8", n = 1))]
+#[rustc_args_required_const(2)]
+pub unsafe fn vsliq_n_s8(a: int8x16_t, b: int8x16_t, n: i32) -> int8x16_t {
+    if n < 0 || n > 7 {
+        unreachable_unchecked();
+    } else {
+        let n = n as i8;
+        vshiftins_v16i8(
+            a,
+            b,
+            int8x16_t(n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n),
+        )
+    }
+}
+/// Shift Left and Insert (immediate)
+#[inline]
+#[cfg(target_arch = "arm")]
+#[target_feature(enable = "neon,v7")]
+#[cfg_attr(test, assert_instr("vsli.16", n = 1))]
+#[rustc_args_required_const(2)]
+pub unsafe fn vsli_n_s16(a: int16x4_t, b: int16x4_t, n: i32) -> int16x4_t {
+    if n < 0 || n > 15 {
+        unreachable_unchecked();
+    } else {
+        let n = n as i16;
+        vshiftins_v4i16(a, b, int16x4_t(n, n, n, n))
+    }
+}
+/// Shift Left and Insert (immediate)
+#[inline]
+#[cfg(target_arch = "arm")]
+#[target_feature(enable = "neon,v7")]
+#[cfg_attr(test, assert_instr("vsli.16", n = 1))]
+#[rustc_args_required_const(2)]
+pub unsafe fn vsliq_n_s16(a: int16x8_t, b: int16x8_t, n: i32) -> int16x8_t {
+    if n < 0 || n > 15 {
+        unreachable_unchecked();
+    } else {
+        let n = n as i16;
+        vshiftins_v8i16(a, b, int16x8_t(n, n, n, n, n, n, n, n))
+    }
+}
+/// Shift Left and Insert (immediate)
+#[inline]
+#[cfg(target_arch = "arm")]
+#[target_feature(enable = "neon,v7")]
+#[cfg_attr(test, assert_instr("vsli.32", n = 1))]
+#[rustc_args_required_const(2)]
+pub unsafe fn vsli_n_s32(a: int32x2_t, b: int32x2_t, n: i32) -> int32x2_t {
+    if n < 0 || n > 31 {
+        unreachable_unchecked();
+    } else {
+        vshiftins_v2i32(a, b, int32x2_t(n, n))
+    }
+}
+/// Shift Left and Insert (immediate)
+#[inline]
+#[cfg(target_arch = "arm")]
+#[target_feature(enable = "neon,v7")]
+#[cfg_attr(test, assert_instr("vsli.32", n = 1))]
+#[rustc_args_required_const(2)]
+pub unsafe fn vsliq_n_s32(a: int32x4_t, b: int32x4_t, n: i32) -> int32x4_t {
+    if n < 0 || n > 31 {
+        unreachable_unchecked();
+    } else {
+        vshiftins_v4i32(a, b, int32x4_t(n, n, n, n))
+    }
+}
+/// Shift Left and Insert (immediate)
+#[inline]
+#[cfg(target_arch = "arm")]
+#[target_feature(enable = "neon,v7")]
+#[cfg_attr(test, assert_instr("vsli.64", n = 1))]
+#[rustc_args_required_const(2)]
+pub unsafe fn vsli_n_s64(a: int64x1_t, b: int64x1_t, n: i32) -> int64x1_t {
+    if n < 0 || n > 63 {
+        unreachable_unchecked();
+    } else {
+        vshiftins_v1i64(a, b, int64x1_t(n as i64))
+    }
+}
+/// Shift Left and Insert (immediate)
+#[inline]
+#[cfg(target_arch = "arm")]
+#[target_feature(enable = "neon,v7")]
+#[cfg_attr(test, assert_instr("vsli.64", n = 1))]
+#[rustc_args_required_const(2)]
+pub unsafe fn vsliq_n_s64(a: int64x2_t, b: int64x2_t, n: i32) -> int64x2_t {
+    if n < 0 || n > 63 {
+        unreachable_unchecked();
+    } else {
+        vshiftins_v2i64(a, b, int64x2_t(n as i64, n as i64))
+    }
+}
+/// Shift Left and Insert (immediate)
+#[inline]
+#[cfg(target_arch = "arm")]
+#[target_feature(enable = "neon,v7")]
+#[cfg_attr(test, assert_instr("vsli.8", n = 1))]
+#[rustc_args_required_const(2)]
+pub unsafe fn vsli_n_u8(a: uint8x8_t, b: uint8x8_t, n: i32) -> uint8x8_t {
+    if n < 0 || n > 7 {
+        unreachable_unchecked();
+    } else {
+        let n = n as i8;
+        transmute(vshiftins_v8i8(
+            transmute(a),
+            transmute(b),
+            int8x8_t(n, n, n, n, n, n, n, n),
+        ))
+    }
+}
+/// Shift Left and Insert (immediate)
+#[inline]
+#[cfg(target_arch = "arm")]
+#[target_feature(enable = "neon,v7")]
+#[cfg_attr(test, assert_instr("vsli.8", n = 1))]
+#[rustc_args_required_const(2)]
+pub unsafe fn vsliq_n_u8(a: uint8x16_t, b: uint8x16_t, n: i32) -> uint8x16_t {
+    if n < 0 || n > 7 {
+        unreachable_unchecked();
+    } else {
+        let n = n as i8;
+        transmute(vshiftins_v16i8(
+            transmute(a),
+            transmute(b),
+            int8x16_t(n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n),
+        ))
+    }
+}
+/// Shift Left and Insert (immediate)
+#[inline]
+#[cfg(target_arch = "arm")]
+#[target_feature(enable = "neon,v7")]
+#[cfg_attr(test, assert_instr("vsli.16", n = 1))]
+#[rustc_args_required_const(2)]
+pub unsafe fn vsli_n_u16(a: uint16x4_t, b: uint16x4_t, n: i32) -> uint16x4_t {
+    if n < 0 || n > 15 {
+        unreachable_unchecked();
+    } else {
+        let n = n as i16;
+        transmute(vshiftins_v4i16(
+            transmute(a),
+            transmute(b),
+            int16x4_t(n, n, n, n),
+        ))
+    }
+}
+/// Shift Left and Insert (immediate)
+#[inline]
+#[cfg(target_arch = "arm")]
+#[target_feature(enable = "neon,v7")]
+#[cfg_attr(test, assert_instr("vsli.16", n = 1))]
+#[rustc_args_required_const(2)]
+pub unsafe fn vsliq_n_u16(a: uint16x8_t, b: uint16x8_t, n: i32) -> uint16x8_t {
+    if n < 0 || n > 15 {
+        unreachable_unchecked();
+    } else {
+        let n = n as i16;
+        transmute(vshiftins_v8i16(
+            transmute(a),
+            transmute(b),
+            int16x8_t(n, n, n, n, n, n, n, n),
+        ))
+    }
+}
+/// Shift Left and Insert (immediate)
+#[inline]
+#[cfg(target_arch = "arm")]
+#[target_feature(enable = "neon,v7")]
+#[cfg_attr(test, assert_instr("vsli.32", n = 1))]
+#[rustc_args_required_const(2)]
+pub unsafe fn vsli_n_u32(a: uint32x2_t, b: uint32x2_t, n: i32) -> uint32x2_t {
+    if n < 0 || n > 31 {
+        unreachable_unchecked();
+    } else {
+        transmute(vshiftins_v2i32(transmute(a), transmute(b), int32x2_t(n, n)))
+    }
+}
+/// Shift Left and Insert (immediate)
+#[inline]
+#[cfg(target_arch = "arm")]
+#[target_feature(enable = "neon,v7")]
+#[cfg_attr(test, assert_instr("vsli.32", n = 1))]
+#[rustc_args_required_const(2)]
+pub unsafe fn vsliq_n_u32(a: uint32x4_t, b: uint32x4_t, n: i32) -> uint32x4_t {
+    if n < 0 || n > 31 {
+        unreachable_unchecked();
+    } else {
+        transmute(vshiftins_v4i32(
+            transmute(a),
+            transmute(b),
+            int32x4_t(n, n, n, n),
+        ))
+    }
+}
+/// Shift Left and Insert (immediate)
+#[inline]
+#[cfg(target_arch = "arm")]
+#[target_feature(enable = "neon,v7")]
+#[cfg_attr(test, assert_instr("vsli.64", n = 1))]
+#[rustc_args_required_const(2)]
+pub unsafe fn vsli_n_u64(a: uint64x1_t, b: uint64x1_t, n: i32) -> uint64x1_t {
+    if n < 0 || n > 63 {
+        unreachable_unchecked();
+    } else {
+        transmute(vshiftins_v1i64(
+            transmute(a),
+            transmute(b),
+            int64x1_t(n as i64),
+        ))
+    }
+}
+/// Shift Left and Insert (immediate)
+#[inline]
+#[cfg(target_arch = "arm")]
+#[target_feature(enable = "neon,v7")]
+#[cfg_attr(test, assert_instr("vsli.64", n = 1))]
+#[rustc_args_required_const(2)]
+pub unsafe fn vsliq_n_u64(a: uint64x2_t, b: uint64x2_t, n: i32) -> uint64x2_t {
+    if n < 0 || n > 63 {
+        unreachable_unchecked();
+    } else {
+        transmute(vshiftins_v2i64(
+            transmute(a),
+            transmute(b),
+            int64x2_t(n as i64, n as i64),
+        ))
+    }
+}
+/// Shift Left and Insert (immediate)
+#[inline]
+#[cfg(target_arch = "arm")]
+#[target_feature(enable = "neon,v7")]
+#[cfg_attr(test, assert_instr("vsli.8", n = 1))]
+#[rustc_args_required_const(2)]
+pub unsafe fn vsli_n_p8(a: poly8x8_t, b: poly8x8_t, n: i32) -> poly8x8_t {
+    if n < 0 || n > 7 {
+        unreachable_unchecked();
+    } else {
+        let n = n as i8;
+        transmute(vshiftins_v8i8(
+            transmute(a),
+            transmute(b),
+            int8x8_t(n, n, n, n, n, n, n, n),
+        ))
+    }
+}
+/// Shift Left and Insert (immediate)
+#[inline]
+#[cfg(target_arch = "arm")]
+#[target_feature(enable = "neon,v7")]
+#[cfg_attr(test, assert_instr("vsli.8", n = 1))]
+#[rustc_args_required_const(2)]
+pub unsafe fn vsliq_n_p8(a: poly8x16_t, b: poly8x16_t, n: i32) -> poly8x16_t {
+    if n < 0 || n > 7 {
+        unreachable_unchecked();
+    } else {
+        let n = n as i8;
+        transmute(vshiftins_v16i8(
+            transmute(a),
+            transmute(b),
+            int8x16_t(n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n),
+        ))
+    }
+}
+/// Shift Left and Insert (immediate)
+#[inline]
+#[cfg(target_arch = "arm")]
+#[target_feature(enable = "neon,v7")]
+#[cfg_attr(test, assert_instr("vsli.16", n = 1))]
+#[rustc_args_required_const(2)]
+pub unsafe fn vsli_n_p16(a: poly16x4_t, b: poly16x4_t, n: i32) -> poly16x4_t {
+    if n < 0 || n > 15 {
+        unreachable_unchecked();
+    } else {
+        let n = n as i16;
+        transmute(vshiftins_v4i16(
+            transmute(a),
+            transmute(b),
+            int16x4_t(n, n, n, n),
+        ))
+    }
+}
+/// Shift Left and Insert (immediate)
+#[inline]
+#[cfg(target_arch = "arm")]
+#[target_feature(enable = "neon,v7")]
+#[cfg_attr(test, assert_instr("vsli.16", n = 1))]
+#[rustc_args_required_const(2)]
+pub unsafe fn vsliq_n_p16(a: poly16x8_t, b: poly16x8_t, n: i32) -> poly16x8_t {
+    if n < 0 || n > 15 {
+        unreachable_unchecked();
+    } else {
+        let n = n as i16;
+        transmute(vshiftins_v8i16(
+            transmute(a),
+            transmute(b),
+            int16x8_t(n, n, n, n, n, n, n, n),
+        ))
+    }
+}
+
+/// Shift Right and Insert (immediate)
+#[inline]
+#[cfg(target_arch = "arm")]
+#[target_feature(enable = "neon,v7")]
+#[cfg_attr(test, assert_instr("vsri.8", n = 1))]
+#[rustc_args_required_const(2)]
+pub unsafe fn vsri_n_s8(a: int8x8_t, b: int8x8_t, n: i32) -> int8x8_t {
+    if n < 1 || n > 8 {
+        unreachable_unchecked();
+    } else {
+        let n = -n as i8;
+        vshiftins_v8i8(a, b, int8x8_t(n, n, n, n, n, n, n, n))
+    }
+}
+/// Shift Right and Insert (immediate)
+#[inline]
+#[cfg(target_arch = "arm")]
+#[target_feature(enable = "neon,v7")]
+#[cfg_attr(test, assert_instr("vsri.8", n = 1))]
+#[rustc_args_required_const(2)]
+pub unsafe fn vsriq_n_s8(a: int8x16_t, b: int8x16_t, n: i32) -> int8x16_t {
+    if n < 1 || n > 8 {
+        unreachable_unchecked();
+    } else {
+        let n = -n as i8;
+        vshiftins_v16i8(
+            a,
+            b,
+            int8x16_t(n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n),
+        )
+    }
+}
+/// Shift Right and Insert (immediate)
+#[inline]
+#[cfg(target_arch = "arm")]
+#[target_feature(enable = "neon,v7")]
+#[cfg_attr(test, assert_instr("vsri.16", n = 1))]
+#[rustc_args_required_const(2)]
+pub unsafe fn vsri_n_s16(a: int16x4_t, b: int16x4_t, n: i32) -> int16x4_t {
+    if n < 1 || n > 16 {
+        unreachable_unchecked();
+    } else {
+        let n = -n as i16;
+        vshiftins_v4i16(a, b, int16x4_t(n, n, n, n))
+    }
+}
+/// Shift Right and Insert (immediate)
+#[inline]
+#[cfg(target_arch = "arm")]
+#[target_feature(enable = "neon,v7")]
+#[cfg_attr(test, assert_instr("vsri.16", n = 1))]
+#[rustc_args_required_const(2)]
+pub unsafe fn vsriq_n_s16(a: int16x8_t, b: int16x8_t, n: i32) -> int16x8_t {
+    if n < 1 || n > 16 {
+        unreachable_unchecked();
+    } else {
+        let n = -n as i16;
+        vshiftins_v8i16(a, b, int16x8_t(n, n, n, n, n, n, n, n))
+    }
+}
+/// Shift Right and Insert (immediate)
+#[inline]
+#[cfg(target_arch = "arm")]
+#[target_feature(enable = "neon,v7")]
+#[cfg_attr(test, assert_instr("vsri.32", n = 1))]
+#[rustc_args_required_const(2)]
+pub unsafe fn vsri_n_s32(a: int32x2_t, b: int32x2_t, n: i32) -> int32x2_t {
+    if n < 1 || n > 32 {
+        unreachable_unchecked();
+    } else {
+        vshiftins_v2i32(a, b, int32x2_t(-n, -n))
+    }
+}
+/// Shift Right and Insert (immediate)
+#[inline]
+#[cfg(target_arch = "arm")]
+#[target_feature(enable = "neon,v7")]
+#[cfg_attr(test, assert_instr("vsri.32", n = 1))]
+#[rustc_args_required_const(2)]
+pub unsafe fn vsriq_n_s32(a: int32x4_t, b: int32x4_t, n: i32) -> int32x4_t {
+    if n < 1 || n > 32 {
+        unreachable_unchecked();
+    } else {
+        vshiftins_v4i32(a, b, int32x4_t(-n, -n, -n, -n))
+    }
+}
+/// Shift Right and Insert (immediate)
+#[inline]
+#[cfg(target_arch = "arm")]
+#[target_feature(enable = "neon,v7")]
+#[cfg_attr(test, assert_instr("vsri.64", n = 1))]
+#[rustc_args_required_const(2)]
+pub unsafe fn vsri_n_s64(a: int64x1_t, b: int64x1_t, n: i32) -> int64x1_t {
+    if n < 1 || n > 64 {
+        unreachable_unchecked();
+    } else {
+        vshiftins_v1i64(a, b, int64x1_t(-n as i64))
+    }
+}
+/// Shift Right and Insert (immediate)
+#[inline]
+#[cfg(target_arch = "arm")]
+#[target_feature(enable = "neon,v7")]
+#[cfg_attr(test, assert_instr("vsri.64", n = 1))]
+#[rustc_args_required_const(2)]
+pub unsafe fn vsriq_n_s64(a: int64x2_t, b: int64x2_t, n: i32) -> int64x2_t {
+    if n < 1 || n > 64 {
+        unreachable_unchecked();
+    } else {
+        vshiftins_v2i64(a, b, int64x2_t(-n as i64, -n as i64))
+    }
+}
+/// Shift Right and Insert (immediate)
+#[inline]
+#[cfg(target_arch = "arm")]
+#[target_feature(enable = "neon,v7")]
+#[cfg_attr(test, assert_instr("vsri.8", n = 1))]
+#[rustc_args_required_const(2)]
+pub unsafe fn vsri_n_u8(a: uint8x8_t, b: uint8x8_t, n: i32) -> uint8x8_t {
+    if n < 1 || n > 8 {
+        unreachable_unchecked();
+    } else {
+        let n = -n as i8;
+        transmute(vshiftins_v8i8(
+            transmute(a),
+            transmute(b),
+            int8x8_t(n, n, n, n, n, n, n, n),
+        ))
+    }
+}
+/// Shift Right and Insert (immediate)
+#[inline]
+#[cfg(target_arch = "arm")]
+#[target_feature(enable = "neon,v7")]
+#[cfg_attr(test, assert_instr("vsri.8", n = 1))]
+#[rustc_args_required_const(2)]
+pub unsafe fn vsriq_n_u8(a: uint8x16_t, b: uint8x16_t, n: i32) -> uint8x16_t {
+    if n < 1 || n > 8 {
+        unreachable_unchecked();
+    } else {
+        let n = -n as i8;
+        transmute(vshiftins_v16i8(
+            transmute(a),
+            transmute(b),
+            int8x16_t(n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n),
+        ))
+    }
+}
+/// Shift Right and Insert (immediate)
+#[inline]
+#[cfg(target_arch = "arm")]
+#[target_feature(enable = "neon,v7")]
+#[cfg_attr(test, assert_instr("vsri.16", n = 1))]
+#[rustc_args_required_const(2)]
+pub unsafe fn vsri_n_u16(a: uint16x4_t, b: uint16x4_t, n: i32) -> uint16x4_t {
+    if n < 1 || n > 16 {
+        unreachable_unchecked();
+    } else {
+        let n = -n as i16;
+        transmute(vshiftins_v4i16(
+            transmute(a),
+            transmute(b),
+            int16x4_t(n, n, n, n),
+        ))
+    }
+}
+/// Shift Right and Insert (immediate)
+#[inline]
+#[cfg(target_arch = "arm")]
+#[target_feature(enable = "neon,v7")]
+#[cfg_attr(test, assert_instr("vsri.16", n = 1))]
+#[rustc_args_required_const(2)]
+pub unsafe fn vsriq_n_u16(a: uint16x8_t, b: uint16x8_t, n: i32) -> uint16x8_t {
+    if n < 1 || n > 16 {
+        unreachable_unchecked();
+    } else {
+        let n = -n as i16;
+        transmute(vshiftins_v8i16(
+            transmute(a),
+            transmute(b),
+            int16x8_t(n, n, n, n, n, n, n, n),
+        ))
+    }
+}
+/// Shift Right and Insert (immediate)
+#[inline]
+#[cfg(target_arch = "arm")]
+#[target_feature(enable = "neon,v7")]
+#[cfg_attr(test, assert_instr("vsri.32", n = 1))]
+#[rustc_args_required_const(2)]
+pub unsafe fn vsri_n_u32(a: uint32x2_t, b: uint32x2_t, n: i32) -> uint32x2_t {
+    if n < 1 || n > 32 {
+        unreachable_unchecked();
+    } else {
+        transmute(vshiftins_v2i32(
+            transmute(a),
+            transmute(b),
+            int32x2_t(-n, -n),
+        ))
+    }
+}
+/// Shift Right and Insert (immediate)
+#[inline]
+#[cfg(target_arch = "arm")]
+#[target_feature(enable = "neon,v7")]
+#[cfg_attr(test, assert_instr("vsri.32", n = 1))]
+#[rustc_args_required_const(2)]
+pub unsafe fn vsriq_n_u32(a: uint32x4_t, b: uint32x4_t, n: i32) -> uint32x4_t {
+    if n < 1 || n > 32 {
+        unreachable_unchecked();
+    } else {
+        transmute(vshiftins_v4i32(
+            transmute(a),
+            transmute(b),
+            int32x4_t(-n, -n, -n, -n),
+        ))
+    }
+}
+/// Shift Right and Insert (immediate)
+#[inline]
+#[cfg(target_arch = "arm")]
+#[target_feature(enable = "neon,v7")]
+#[cfg_attr(test, assert_instr("vsri.64", n = 1))]
+#[rustc_args_required_const(2)]
+pub unsafe fn vsri_n_u64(a: uint64x1_t, b: uint64x1_t, n: i32) -> uint64x1_t {
+    if n < 1 || n > 64 {
+        unreachable_unchecked();
+    } else {
+        transmute(vshiftins_v1i64(
+            transmute(a),
+            transmute(b),
+            int64x1_t(-n as i64),
+        ))
+    }
+}
+/// Shift Right and Insert (immediate)
+#[inline]
+#[cfg(target_arch = "arm")]
+#[target_feature(enable = "neon,v7")]
+#[cfg_attr(test, assert_instr("vsri.64", n = 1))]
+#[rustc_args_required_const(2)]
+pub unsafe fn vsriq_n_u64(a: uint64x2_t, b: uint64x2_t, n: i32) -> uint64x2_t {
+    if n < 1 || n > 64 {
+        unreachable_unchecked();
+    } else {
+        transmute(vshiftins_v2i64(
+            transmute(a),
+            transmute(b),
+            int64x2_t(-n as i64, -n as i64),
+        ))
+    }
+}
+/// Shift Right and Insert (immediate)
+#[inline]
+#[cfg(target_arch = "arm")]
+#[target_feature(enable = "neon,v7")]
+#[cfg_attr(test, assert_instr("vsri.8", n = 1))]
+#[rustc_args_required_const(2)]
+pub unsafe fn vsri_n_p8(a: poly8x8_t, b: poly8x8_t, n: i32) -> poly8x8_t {
+    if n < 1 || n > 8 {
+        unreachable_unchecked();
+    } else {
+        let n = -n as i8;
+        transmute(vshiftins_v8i8(
+            transmute(a),
+            transmute(b),
+            int8x8_t(n, n, n, n, n, n, n, n),
+        ))
+    }
+}
+/// Shift Right and Insert (immediate)
+#[inline]
+#[cfg(target_arch = "arm")]
+#[target_feature(enable = "neon,v7")]
+#[cfg_attr(test, assert_instr("vsri.8", n = 1))]
+#[rustc_args_required_const(2)]
+pub unsafe fn vsriq_n_p8(a: poly8x16_t, b: poly8x16_t, n: i32) -> poly8x16_t {
+    if n < 1 || n > 8 {
+        unreachable_unchecked();
+    } else {
+        let n = -n as i8;
+        transmute(vshiftins_v16i8(
+            transmute(a),
+            transmute(b),
+            int8x16_t(n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n),
+        ))
+    }
+}
+/// Shift Right and Insert (immediate)
+#[inline]
+#[cfg(target_arch = "arm")]
+#[target_feature(enable = "neon,v7")]
+#[cfg_attr(test, assert_instr("vsri.16", n = 1))]
+#[rustc_args_required_const(2)]
+pub unsafe fn vsri_n_p16(a: poly16x4_t, b: poly16x4_t, n: i32) -> poly16x4_t {
+    if n < 1 || n > 16 {
+        unreachable_unchecked();
+    } else {
+        let n = -n as i16;
+        transmute(vshiftins_v4i16(
+            transmute(a),
+            transmute(b),
+            int16x4_t(n, n, n, n),
+        ))
+    }
+}
+/// Shift Right and Insert (immediate)
+#[inline]
+#[cfg(target_arch = "arm")]
+#[target_feature(enable = "neon,v7")]
+#[cfg_attr(test, assert_instr("vsri.16", n = 1))]
+#[rustc_args_required_const(2)]
+pub unsafe fn vsriq_n_p16(a: poly16x8_t, b: poly16x8_t, n: i32) -> poly16x8_t {
+    if n < 1 || n > 16 {
+        unreachable_unchecked();
+    } else {
+        let n = -n as i16;
+        transmute(vshiftins_v8i16(
+            transmute(a),
+            transmute(b),
+            int16x8_t(n, n, n, n, n, n, n, n),
+        ))
+    }
 }
 
 #[cfg(test)]
@@ -4359,6 +5022,8 @@ mod tests {
     }
 }
 
-#[cfg(test)]
-#[cfg(target_endian = "little")]
+#[cfg(all(test, target_arch = "arm", target_endian = "little"))]
 mod table_lookup_tests;
+
+#[cfg(all(test, target_arch = "arm"))]
+mod shift_and_insert_tests;
