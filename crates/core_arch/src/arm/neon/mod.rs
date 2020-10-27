@@ -510,7 +510,7 @@ pub unsafe fn vaddq_f32(a: float32x4_t, b: float32x4_t) -> float32x4_t {
     simd_add(a, b)
 }
 
-/// Vector long add.
+/// Signed Add Long (vector).
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
@@ -522,7 +522,7 @@ pub unsafe fn vaddl_s8(a: int8x8_t, b: int8x8_t) -> int16x8_t {
     simd_add(a, b)
 }
 
-/// Vector long add.
+/// Signed Add Long (vector).
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
@@ -534,7 +534,7 @@ pub unsafe fn vaddl_s16(a: int16x4_t, b: int16x4_t) -> int32x4_t {
     simd_add(a, b)
 }
 
-/// Vector long add.
+/// Signed Add Long (vector).
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
@@ -546,7 +546,7 @@ pub unsafe fn vaddl_s32(a: int32x2_t, b: int32x2_t) -> int64x2_t {
     simd_add(a, b)
 }
 
-/// Vector long add.
+/// Unsigned Add Long (vector).
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
@@ -558,7 +558,7 @@ pub unsafe fn vaddl_u8(a: uint8x8_t, b: uint8x8_t) -> uint16x8_t {
     simd_add(a, b)
 }
 
-/// Vector long add.
+/// Unsigned Add Long (vector).
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
@@ -570,13 +570,97 @@ pub unsafe fn vaddl_u16(a: uint16x4_t, b: uint16x4_t) -> uint32x4_t {
     simd_add(a, b)
 }
 
-/// Vector long add.
+/// Unsigned Add Long (vector).
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(vaddl))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(uaddl))]
 pub unsafe fn vaddl_u32(a: uint32x2_t, b: uint32x2_t) -> uint64x2_t {
+    let a: uint64x2_t = simd_cast(a);
+    let b: uint64x2_t = simd_cast(b);
+    simd_add(a, b)
+}
+
+/// Signed Add Long (vector, high half).
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vaddl))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(saddl2))]
+pub unsafe fn vaddl_high_s8(a: int8x16_t, b: int8x16_t) -> int16x8_t {
+    let a: int8x8_t = simd_shuffle8(a, a, [8, 9, 10, 11, 12, 13, 14, 15]);
+    let b: int8x8_t = simd_shuffle8(b, b, [8, 9, 10, 11, 12, 13, 14, 15]);
+    let a: int16x8_t = simd_cast(a);
+    let b: int16x8_t = simd_cast(b);
+    simd_add(a, b)
+}
+
+/// Signed Add Long (vector, high half).
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vaddl))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(saddl2))]
+pub unsafe fn vaddl_high_s16(a: int16x8_t, b: int16x8_t) -> int32x4_t {
+    let a: int16x4_t = simd_shuffle4(a, a, [4, 5, 6, 7]);
+    let b: int16x4_t = simd_shuffle4(b, b, [4, 5, 6, 7]);
+    let a: int32x4_t = simd_cast(a);
+    let b: int32x4_t = simd_cast(b);
+    simd_add(a, b)
+}
+
+/// Signed Add Long (vector, high half).
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vaddl))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(saddl2))]
+pub unsafe fn vaddl_high_s32(a: int32x4_t, b: int32x4_t) -> int64x2_t {
+    let a: int32x2_t = simd_shuffle2(a, a, [2, 3]);
+    let b: int32x2_t = simd_shuffle2(b, b, [2, 3]);
+    let a: int64x2_t = simd_cast(a);
+    let b: int64x2_t = simd_cast(b);
+    simd_add(a, b)
+}
+
+/// Unsigned Add Long (vector, high half).
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vaddl))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(uaddl2))]
+pub unsafe fn vaddl_high_u8(a: uint8x16_t, b: uint8x16_t) -> uint16x8_t {
+    let a: uint8x8_t = simd_shuffle8(a, a, [8, 9, 10, 11, 12, 13, 14, 15]);
+    let b: uint8x8_t = simd_shuffle8(b, b, [8, 9, 10, 11, 12, 13, 14, 15]);
+    let a: uint16x8_t = simd_cast(a);
+    let b: uint16x8_t = simd_cast(b);
+    simd_add(a, b)
+}
+
+/// Unsigned Add Long (vector, high half).
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vaddl))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(uaddl2))]
+pub unsafe fn vaddl_high_u16(a: uint16x8_t, b: uint16x8_t) -> uint32x4_t {
+    let a: uint16x4_t = simd_shuffle4(a, a, [4, 5, 6, 7]);
+    let b: uint16x4_t = simd_shuffle4(b, b, [4, 5, 6, 7]);
+    let a: uint32x4_t = simd_cast(a);
+    let b: uint32x4_t = simd_cast(b);
+    simd_add(a, b)
+}
+
+/// Unsigned Add Long (vector, high half).
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vaddl))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(uaddl2))]
+pub unsafe fn vaddl_high_u32(a: uint32x4_t, b: uint32x4_t) -> uint64x2_t {
+    let a: uint32x2_t = simd_shuffle2(a, a, [2, 3]);
+    let b: uint32x2_t = simd_shuffle2(b, b, [2, 3]);
     let a: uint64x2_t = simd_cast(a);
     let b: uint64x2_t = simd_cast(b);
     simd_add(a, b)
@@ -2226,6 +2310,72 @@ mod tests {
         let v = 2 * (v as u64);
         let e = u64x2::new(v, v);
         let r: u64x2 = transmute(vaddl_u32(transmute(a), transmute(a)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vaddl_high_s8() {
+        let a = i8x16::new(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
+        let x = i8::MAX;
+        let b = i8x16::new(x, x, x, x, x, x, x, x, x, x, x, x, x, x, x, x);
+        let x = x as i16;
+        let e = i16x8::new(x + 8, x + 9, x + 10, x + 11, x + 12, x + 13, x + 14, x + 15);
+        let r: i16x8 = transmute(vaddl_high_s8(transmute(a), transmute(b)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vaddl_high_s16() {
+        let a = i16x8::new(0, 1, 2, 3, 4, 5, 6, 7);
+        let x = i16::MAX;
+        let b = i16x8::new(x, x, x, x, x, x, x, x);
+        let x = x as i32;
+        let e = i32x4::new(x + 4, x + 5, x + 6, x + 7);
+        let r: i32x4 = transmute(vaddl_high_s16(transmute(a), transmute(b)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vaddl_high_s32() {
+        let a = i32x4::new(0, 1, 2, 3);
+        let x = i32::MAX;
+        let b = i32x4::new(x, x, x, x);
+        let x = x as i64;
+        let e = i64x2::new(x + 2, x + 3);
+        let r: i64x2 = transmute(vaddl_high_s32(transmute(a), transmute(b)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vaddl_high_u8() {
+        let a = u8x16::new(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
+        let x = u8::MAX;
+        let b = u8x16::new(x, x, x, x, x, x, x, x, x, x, x, x, x, x, x, x);
+        let x = x as u16;
+        let e = u16x8::new(x + 8, x + 9, x + 10, x + 11, x + 12, x + 13, x + 14, x + 15);
+        let r: u16x8 = transmute(vaddl_high_u8(transmute(a), transmute(b)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vaddl_high_u16() {
+        let a = u16x8::new(0, 1, 2, 3, 4, 5, 6, 7);
+        let x = u16::MAX;
+        let b = u16x8::new(x, x, x, x, x, x, x, x);
+        let x = x as u32;
+        let e = u32x4::new(x + 4, x + 5, x + 6, x + 7);
+        let r: u32x4 = transmute(vaddl_high_u16(transmute(a), transmute(b)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vaddl_high_u32() {
+        let a = u32x4::new(0, 1, 2, 3);
+        let x = u32::MAX;
+        let b = u32x4::new(x, x, x, x);
+        let x = x as u64;
+        let e = u64x2::new(x + 2, x + 3);
+        let r: u64x2 = transmute(vaddl_high_u32(transmute(a), transmute(b)));
         assert_eq!(r, e);
     }
 
