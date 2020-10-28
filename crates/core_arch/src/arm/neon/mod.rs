@@ -284,6 +284,19 @@ extern "C" {
 #[cfg(target_arch = "arm")]
 #[allow(improper_ctypes)]
 extern "C" {
+    #[link_name = "llvm.arm.neon.vpadals.v4i16.v8i8"]
+    fn vpadal_s8_(a: int16x4_t, b: int8x8_t) -> int16x4_t;
+    #[link_name = "llvm.arm.neon.vpadals.v2i32.v4i16"]
+    fn vpadal_s16_(a: int32x2_t, b: int16x4_t) -> int32x2_t;
+    #[link_name = "llvm.arm.neon.vpadals.v1i64.v2i32"]
+    fn vpadal_s32_(a: int64x1_t, b: int32x2_t) -> int64x1_t;
+    #[link_name = "llvm.arm.neon.vpadals.v8i16.v16i8"]
+    fn vpadalq_s8_(a: int16x8_t, b: int8x16_t) -> int16x8_t;
+    #[link_name = "llvm.arm.neon.vpadals.v4i32.v8i16"]
+    fn vpadalq_s16_(a: int32x4_t, b: int16x8_t) -> int32x4_t;
+    #[link_name = "llvm.arm.neon.vpadals.v2i64.v4i32"]
+    fn vpadalq_s32_(a: int64x2_t, b: int32x4_t) -> int64x2_t;
+
     #[link_name = "llvm.arm.neon.vtbl1"]
     fn vtbl1(a: int8x8_t, b: int8x8_t) -> int8x8_t;
     #[link_name = "llvm.arm.neon.vtbl2"]
@@ -1140,7 +1153,7 @@ pub unsafe fn vraddhn_high_u64(r: uint32x2_t, a: uint64x2_t, b: uint64x2_t) -> u
     simd_shuffle4(r, x, [0, 1, 2, 3])
 }
 
-/// Signed Add Long Pairwise
+/// Signed Add Long Pairwise.
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
@@ -1150,7 +1163,7 @@ pub unsafe fn vpaddl_s8(a: int8x8_t) -> int16x4_t {
     vpaddl_s8_(a)
 }
 
-/// Signed Add Long Pairwise
+/// Signed Add Long Pairwise.
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
@@ -1160,7 +1173,7 @@ pub unsafe fn vpaddl_s16(a: int16x4_t) -> int32x2_t {
     vpaddl_s16_(a)
 }
 
-/// Signed Add Long Pairwise
+/// Signed Add Long Pairwise.
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
@@ -1170,7 +1183,7 @@ pub unsafe fn vpaddl_s32(a: int32x2_t) -> int64x1_t {
     vpaddl_s32_(a)
 }
 
-/// Signed Add Long Pairwise
+/// Signed Add Long Pairwise.
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
@@ -1180,7 +1193,7 @@ pub unsafe fn vpaddlq_s8(a: int8x16_t) -> int16x8_t {
     vpaddlq_s8_(a)
 }
 
-/// Signed Add Long Pairwise
+/// Signed Add Long Pairwise.
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
@@ -1190,7 +1203,7 @@ pub unsafe fn vpaddlq_s16(a: int16x8_t) -> int32x4_t {
     vpaddlq_s16_(a)
 }
 
-/// Signed Add Long Pairwise
+/// Signed Add Long Pairwise.
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
@@ -1200,7 +1213,7 @@ pub unsafe fn vpaddlq_s32(a: int32x4_t) -> int64x2_t {
     vpaddlq_s32_(a)
 }
 
-/// Unsigned Add Long Pairwise
+/// Unsigned Add Long Pairwise.
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
@@ -1210,7 +1223,7 @@ pub unsafe fn vpaddl_u8(a: uint8x8_t) -> uint16x4_t {
     vpaddl_u8_(a)
 }
 
-/// Unsigned Add Long Pairwise
+/// Unsigned Add Long Pairwise.
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
@@ -1220,7 +1233,7 @@ pub unsafe fn vpaddl_u16(a: uint16x4_t) -> uint32x2_t {
     vpaddl_u16_(a)
 }
 
-/// Unsigned Add Long Pairwise
+/// Unsigned Add Long Pairwise.
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
@@ -1230,7 +1243,7 @@ pub unsafe fn vpaddl_u32(a: uint32x2_t) -> uint64x1_t {
     vpaddl_u32_(a)
 }
 
-/// Unsigned Add Long Pairwise
+/// Unsigned Add Long Pairwise.
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
@@ -1240,7 +1253,7 @@ pub unsafe fn vpaddlq_u8(a: uint8x16_t) -> uint16x8_t {
     vpaddlq_u8_(a)
 }
 
-/// Unsigned Add Long Pairwise
+/// Unsigned Add Long Pairwise.
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
@@ -1250,7 +1263,7 @@ pub unsafe fn vpaddlq_u16(a: uint16x8_t) -> uint32x4_t {
     vpaddlq_u16_(a)
 }
 
-/// Unsigned Add Long Pairwise
+/// Unsigned Add Long Pairwise.
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
@@ -1258,6 +1271,108 @@ pub unsafe fn vpaddlq_u16(a: uint16x8_t) -> uint32x4_t {
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(uaddlp))]
 pub unsafe fn vpaddlq_u32(a: uint32x4_t) -> uint64x2_t {
     vpaddlq_u32_(a)
+}
+
+/// Signed Add and Accumulate Long Pairwise.
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vpadal.s8))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(sadalp))]
+pub unsafe fn vpadal_s8(a: int16x4_t, b: int8x8_t) -> int16x4_t {
+    #[cfg(target_arch = "arm")]
+    {
+        vpadal_s8_(a, b)
+    }
+    #[cfg(target_arch = "aarch64")]
+    {
+        simd_add(vpaddl_s8_(b), a)
+    }
+}
+
+/// Signed Add and Accumulate Long Pairwise.
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vpadal.s16))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(sadalp))]
+pub unsafe fn vpadal_s16(a: int32x2_t, b: int16x4_t) -> int32x2_t {
+    #[cfg(target_arch = "arm")]
+    {
+        vpadal_s16_(a, b)
+    }
+    #[cfg(target_arch = "aarch64")]
+    {
+        simd_add(vpaddl_s16_(b), a)
+    }
+}
+
+/// Signed Add and Accumulate Long Pairwise.
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vpadal.s32))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(sadalp))]
+pub unsafe fn vpadal_s32(a: int64x1_t, b: int32x2_t) -> int64x1_t {
+    #[cfg(target_arch = "arm")]
+    {
+        vpadal_s32_(a, b)
+    }
+    #[cfg(target_arch = "aarch64")]
+    {
+        simd_add(vpaddl_s32_(b), a)
+    }
+}
+
+/// Signed Add and Accumulate Long Pairwise.
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vpadal.s8))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(sadalp))]
+pub unsafe fn vpadalq_s8(a: int16x8_t, b: int8x16_t) -> int16x8_t {
+    #[cfg(target_arch = "arm")]
+    {
+        vpadalq_s8_(a, b)
+    }
+    #[cfg(target_arch = "aarch64")]
+    {
+        simd_add(vpaddlq_s8_(b), a)
+    }
+}
+
+/// Signed Add and Accumulate Long Pairwise.
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vpadal.s16))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(sadalp))]
+pub unsafe fn vpadalq_s16(a: int32x4_t, b: int16x8_t) -> int32x4_t {
+    #[cfg(target_arch = "arm")]
+    {
+        vpadalq_s16_(a, b)
+    }
+    #[cfg(target_arch = "aarch64")]
+    {
+        simd_add(vpaddlq_s16_(b), a)
+    }
+}
+
+/// Signed Add and Accumulate Long Pairwise.
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vpadal.s32))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(sadalp))]
+pub unsafe fn vpadalq_s32(a: int64x2_t, b: int32x4_t) -> int64x2_t {
+    #[cfg(target_arch = "arm")]
+    {
+        vpadalq_s32_(a, b)
+    }
+    #[cfg(target_arch = "aarch64")]
+    {
+        simd_add(vpaddlq_s32_(b), a)
+    }
 }
 
 /// Vector narrow integer.
@@ -3566,6 +3681,60 @@ mod tests {
         let a = u32x4::new(0, 1, 2, u32::MAX);
         let r: u64x2 = transmute(vpaddlq_u32(transmute(a)));
         let e = u64x2::new(1, u32::MAX as u64 + 2);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vpadal_s8() {
+        let a = i16x4::new(42, 42, 42, 42);
+        let b = i8x8::new(-4, -3, -2, -1, 0, 1, 2, 3);
+        let r: i16x4 = transmute(vpadal_s8(transmute(a), transmute(b)));
+        let e = i16x4::new(35, 39, 43, 47);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vpadal_s16() {
+        let a = i32x2::new(42, 42);
+        let b = i16x4::new(-2, -1, 0, 1);
+        let r: i32x2 = transmute(vpadal_s16(transmute(a), transmute(b)));
+        let e = i32x2::new(39, 43);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vpadal_s32() {
+        let a = i64x1::new(42);
+        let b = i32x2::new(-1, 0);
+        let r: i64x1 = transmute(vpadal_s32(transmute(a), transmute(b)));
+        let e = i64x1::new(41);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vpadalq_s8() {
+        let a = i16x8::new(42, 42, 42, 42, 42, 42, 42, 42);
+        let b = i8x16::new(-8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7);
+        let r: i16x8 = transmute(vpadalq_s8(transmute(a), transmute(b)));
+        let e = i16x8::new(27, 31, 35, 39, 43, 47, 51, 55);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vpadalq_s16() {
+        let a = i32x4::new(42, 42, 42, 42);
+        let b = i16x8::new(-4, -3, -2, -1, 0, 1, 2, 3);
+        let r: i32x4 = transmute(vpadalq_s16(transmute(a), transmute(b)));
+        let e = i32x4::new(35, 39, 43, 47);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vpadalq_s32() {
+        let a = i64x2::new(42, 42);
+        let b = i32x4::new(-2, -1, 0, 1);
+        let r: i64x2 = transmute(vpadalq_s32(transmute(a), transmute(b)));
+        let e = i64x2::new(39, 43);
         assert_eq!(r, e);
     }
 
