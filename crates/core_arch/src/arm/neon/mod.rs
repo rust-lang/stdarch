@@ -199,6 +199,43 @@ extern "C" {
     #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.addp.v16i8")]
     fn vpaddq_s8_(a: int8x16_t, b: int8x16_t) -> int8x16_t;
 
+    #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vpaddls.v4i16.v8i8")]
+    #[cfg_attr(
+        target_arch = "aarch64",
+        link_name = "llvm.aarch64.neon.saddlp.v4i16.v8i8"
+    )]
+    fn vpaddl_s8_(a: int8x8_t) -> int16x4_t;
+    #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vpaddls.v2i32.v4i16")]
+    #[cfg_attr(
+        target_arch = "aarch64",
+        link_name = "llvm.aarch64.neon.saddlp.v2i32.v4i16"
+    )]
+    fn vpaddl_s16_(a: int16x4_t) -> int32x2_t;
+    #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vpaddls.v1i64.v2i32")]
+    #[cfg_attr(
+        target_arch = "aarch64",
+        link_name = "llvm.aarch64.neon.saddlp.v1i64.v2i32"
+    )]
+    fn vpaddl_s32_(a: int32x2_t) -> int64x1_t;
+    #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vpaddls.v8i16.v16i8")]
+    #[cfg_attr(
+        target_arch = "aarch64",
+        link_name = "llvm.aarch64.neon.saddlp.v8i16.v16i8"
+    )]
+    fn vpaddlq_s8_(a: int8x16_t) -> int16x8_t;
+    #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vpaddls.v4i32.v8i16")]
+    #[cfg_attr(
+        target_arch = "aarch64",
+        link_name = "llvm.aarch64.neon.saddlp.v4i32.v8i16"
+    )]
+    fn vpaddlq_s16_(a: int16x8_t) -> int32x4_t;
+    #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vpaddls.v2i64.v4i32")]
+    #[cfg_attr(
+        target_arch = "aarch64",
+        link_name = "llvm.aarch64.neon.saddlp.v2i64.v4i32"
+    )]
+    fn vpaddlq_s32_(a: int32x4_t) -> int64x2_t;
+
     #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vmaxs.v4f32")]
     #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.fmax.v4f32")]
     fn vmaxq_f32_(a: float32x4_t, b: float32x4_t) -> float32x4_t;
@@ -1053,6 +1090,66 @@ pub unsafe fn vraddhn_high_u16(r: uint8x8_t, a: uint16x8_t, b: uint16x8_t) -> ui
 pub unsafe fn vraddhn_high_u32(r: uint16x4_t, a: uint32x4_t, b: uint32x4_t) -> uint16x8_t {
     let x: uint16x4_t = transmute(vraddhn_s32_(transmute(a), transmute(b)));
     simd_shuffle8(r, x, [0, 1, 2, 3, 4, 5, 6, 7])
+}
+
+/// Signed Add Long Pairwise
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vpaddl.s8))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(saddlp))]
+pub unsafe fn vpaddl_s8(a: int8x8_t) -> int16x4_t {
+    vpaddl_s8_(a)
+}
+
+/// Signed Add Long Pairwise
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vpaddl.s16))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(saddlp))]
+pub unsafe fn vpaddl_s16(a: int16x4_t) -> int32x2_t {
+    vpaddl_s16_(a)
+}
+
+/// Signed Add Long Pairwise
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vpaddl.s32))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(saddlp))]
+pub unsafe fn vpaddl_s32(a: int32x2_t) -> int64x1_t {
+    vpaddl_s32_(a)
+}
+
+/// Signed Add Long Pairwise
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vpaddl.s8))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(saddlp))]
+pub unsafe fn vpaddlq_s8(a: int8x16_t) -> int16x8_t {
+    vpaddlq_s8_(a)
+}
+
+/// Signed Add Long Pairwise
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vpaddl.s16))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(saddlp))]
+pub unsafe fn vpaddlq_s16(a: int16x8_t) -> int32x4_t {
+    vpaddlq_s16_(a)
+}
+
+/// Signed Add Long Pairwise
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vpaddl.s32))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(saddlp))]
+pub unsafe fn vpaddlq_s32(a: int32x4_t) -> int64x2_t {
+    vpaddlq_s32_(a)
 }
 
 /// Rounding Add returning High Narrow (high half).
@@ -3276,6 +3373,54 @@ mod tests {
         let b = u64x2::new(0 << 32, (1 << 32) + round_constant);
         let e = u32x4::new(42, 42, 0, 3);
         let r: u32x4 = transmute(vraddhn_high_s64(transmute(r), transmute(a), transmute(b)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vpaddl_s8() {
+        let a = i8x8::new(-4, -3, -2, -1, 0, 1, 2, 3);
+        let r: i16x4 = transmute(vpaddl_s8(transmute(a)));
+        let e = i16x4::new(-7, -3, 1, 5);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vpaddl_s16() {
+        let a = i16x4::new(-2, -1, 0, 1);
+        let r: i32x2 = transmute(vpaddl_s16(transmute(a)));
+        let e = i32x2::new(-3, 1);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vpaddl_s32() {
+        let a = i32x2::new(-1, 0);
+        let r: i64x1 = transmute(vpaddl_s32(transmute(a)));
+        let e = i64x1::new(-1);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vpaddlq_s8() {
+        let a = i8x16::new(-8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7);
+        let r: i16x8 = transmute(vpaddlq_s8(transmute(a)));
+        let e = i16x8::new(-15, -11, -7, -3, 1, 5, 9, 13);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vpaddlq_s16() {
+        let a = i16x8::new(-4, -3, -2, -1, 0, 1, 2, 3);
+        let r: i32x4 = transmute(vpaddlq_s16(transmute(a)));
+        let e = i32x4::new(-7, -3, 1, 5);
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vpaddlq_s32() {
+        let a = i32x4::new(-2, -1, 0, 1);
+        let r: i64x2 = transmute(vpaddlq_s32(transmute(a)));
+        let e = i64x2::new(-3, 1);
         assert_eq!(r, e);
     }
 
