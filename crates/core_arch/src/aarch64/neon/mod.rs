@@ -14,15 +14,18 @@ use crate::{
 #[cfg(test)]
 use stdarch_test::assert_instr;
 
+pub type p64 = u64;
+pub type p128 = u128;
+
 types! {
     /// ARM-specific 64-bit wide vector of one packed `p64`.
-    pub struct poly64x1_t(i64); // FIXME: check this!
+    pub struct poly64x1_t(p64); // FIXME: check this!
     /// ARM-specific 64-bit wide vector of one packed `p64`.
-    pub struct poly64_t(i64); // FIXME: check this!
+    pub struct poly64_t(p64); // FIXME: check this!
     /// ARM-specific 64-bit wide vector of two packed `p64`.
-    pub struct poly64x2_t(i64, i64); // FIXME: check this!
-    /// ARM-specific 128-bit wide vector of one packed `p64`.
-    pub struct poly128_t(i128); // FIXME: check this!
+    pub struct poly64x2_t(p64, p64); // FIXME: check this!
+    /// ARM-specific 128-bit wide vector of one packed `p128`.
+    pub struct poly128_t(p128); // FIXME: check this!
 }
 
 /// ARM-specific type containing two `int8x16_t` vectors.
