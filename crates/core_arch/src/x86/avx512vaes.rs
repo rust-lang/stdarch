@@ -161,12 +161,30 @@ mod tests {
         assert_eq_m128i(_mm256_extracti128_si256(r,1),e_decomp[1]);
     }
 
+    #[target_feature(enable = "sse2")]
+    unsafe fn setup_state_key<T>(broadcast : unsafe fn(__m128i)->T) -> (T,T) {
+        // Constants taken from https://msdn.microsoft.com/en-us/library/cc664949.aspx.
+        let a = _mm_set_epi64x(0x0123456789abcdef, 0x8899aabbccddeeff);
+        let k = _mm_set_epi64x(0x1133557799bbddff, 0x0022446688aaccee);
+        (broadcast(a),broadcast(k))
+    }
+
+    #[target_feature(enable = "avx2")]
+    unsafe fn setup_state_key_256() -> (__m256i,__m256i) {
+        setup_state_key(_mm256_broadcastsi128_si256)
+    }
+
+    #[target_feature(enable = "avx512f")]
+    unsafe fn setup_state_key_512() -> (__m512i,__m512i) {
+        setup_state_key(_mm512_broadcast_i32x4)
+    }
+
     #[simd_test(enable = "avx512vaes,avx512vl")]
     unsafe fn test_mm256_aesdec_epi128() {
         // Constants taken from https://msdn.microsoft.com/en-us/library/cc664949.aspx.
-        let a = _mm256_set_epi64x(0x0123456789abcdef, 0x8899aabbccddeeff,0x0123456789abcdef, 0x8899aabbccddeeff);
-        let k = _mm256_set_epi64x(0x1133557799bbddff, 0x0022446688aaccee,0x1133557799bbddff, 0x0022446688aaccee);
-        let e = _mm256_set_epi64x(0x044e4f5176fec48f, 0xb57ecfa381da39ee,0x044e4f5176fec48f, 0xb57ecfa381da39ee);
+        let (a,k) = setup_state_key_256();
+        let e = _mm_set_epi64x(0x044e4f5176fec48f, 0xb57ecfa381da39ee);
+        let e = _mm256_broadcastsi128_si256(e);
         let r = _mm256_aesdec_epi128(a, k);
         assert_eq_m256i(r, e);
 
@@ -176,9 +194,9 @@ mod tests {
     #[simd_test(enable = "avx512vaes,avx512vl")]
     unsafe fn test_mm256_aesdeclast_epi128() {
         // Constants taken from https://msdn.microsoft.com/en-us/library/cc714178.aspx.
-        let a = _mm256_set_epi64x(0x0123456789abcdef, 0x8899aabbccddeeff,0x0123456789abcdef, 0x8899aabbccddeeff);
-        let k = _mm256_set_epi64x(0x1133557799bbddff, 0x0022446688aaccee,0x1133557799bbddff, 0x0022446688aaccee);
-        let e = _mm256_set_epi64x(0x36cad57d9072bf9e, 0xf210dd981fa4a493,0x36cad57d9072bf9e, 0xf210dd981fa4a493);
+        let (a,k) = setup_state_key_256();
+        let e = _mm_set_epi64x(0x36cad57d9072bf9e, 0xf210dd981fa4a493);
+        let e = _mm256_broadcastsi128_si256(e);
         let r = _mm256_aesdeclast_epi128(a, k);
         assert_eq_m256i(r, e);
 
@@ -189,9 +207,9 @@ mod tests {
     unsafe fn test_mm256_aesenc_epi128() {
         // Constants taken from https://msdn.microsoft.com/en-us/library/cc664810.aspx.
         // they are repeated appropriately
-        let a = _mm256_set_epi64x(0x0123456789abcdef, 0x8899aabbccddeeff, 0x0123456789abcdef, 0x8899aabbccddeeff);
-        let k = _mm256_set_epi64x(0x1133557799bbddff, 0x0022446688aaccee, 0x1133557799bbddff, 0x0022446688aaccee);
-        let e = _mm256_set_epi64x(0x16ab0e57dfc442ed, 0x28e4ee1884504333, 0x16ab0e57dfc442ed, 0x28e4ee1884504333);
+        let (a,k) = setup_state_key_256();
+        let e = _mm_set_epi64x(0x16ab0e57dfc442ed, 0x28e4ee1884504333);
+        let e = _mm256_broadcastsi128_si256(e);
         let r = _mm256_aesenc_epi128(a, k);
         assert_eq_m256i(r, e);
 
@@ -201,9 +219,9 @@ mod tests {
     #[simd_test(enable = "avx512vaes,avx512vl")]
     unsafe fn test_mm256_aesenclast_epi128() {
         // Constants taken from https://msdn.microsoft.com/en-us/library/cc714136.aspx.
-        let a = _mm256_set_epi64x(0x0123456789abcdef, 0x8899aabbccddeeff,0x0123456789abcdef, 0x8899aabbccddeeff);
-        let k = _mm256_set_epi64x(0x1133557799bbddff, 0x0022446688aaccee,0x1133557799bbddff, 0x0022446688aaccee);
-        let e = _mm256_set_epi64x(0xb6dd7df25d7ab320, 0x4b04f98cf4c860f8,0xb6dd7df25d7ab320, 0x4b04f98cf4c860f8);
+        let (a,k) = setup_state_key_256();
+        let e = _mm_set_epi64x(0xb6dd7df25d7ab320, 0x4b04f98cf4c860f8);
+        let e = _mm256_broadcastsi128_si256(e);
         let r = _mm256_aesenclast_epi128(a, k);
         assert_eq_m256i(r, e);
 
@@ -244,18 +262,9 @@ mod tests {
     #[simd_test(enable = "avx512vaes,avx512f")]
     unsafe fn test_mm512_aesdec_epi128() {
         // Constants taken from https://msdn.microsoft.com/en-us/library/cc664949.aspx.
-        let a = _mm512_set_epi64(
-            0x0123456789abcdef, 0x8899aabbccddeeff,0x0123456789abcdef, 0x8899aabbccddeeff,
-            0x0123456789abcdef, 0x8899aabbccddeeff,0x0123456789abcdef, 0x8899aabbccddeeff
-        );
-        let k = _mm512_set_epi64(
-            0x1133557799bbddff, 0x0022446688aaccee,0x1133557799bbddff, 0x0022446688aaccee,
-            0x1133557799bbddff, 0x0022446688aaccee,0x1133557799bbddff, 0x0022446688aaccee
-        );
-        let e = _mm512_set_epi64(
-            0x044e4f5176fec48f, 0xb57ecfa381da39ee,0x044e4f5176fec48f, 0xb57ecfa381da39ee,
-            0x044e4f5176fec48f, 0xb57ecfa381da39ee,0x044e4f5176fec48f, 0xb57ecfa381da39ee
-        );
+        let (a,k) = setup_state_key_512();
+        let e = _mm_set_epi64x(0x044e4f5176fec48f, 0xb57ecfa381da39ee);
+        let e = _mm512_broadcast_i32x4(e);
         let r = _mm512_aesdec_epi128(a, k);
         assert_eq_m512i(r, e);
 
@@ -265,18 +274,9 @@ mod tests {
     #[simd_test(enable = "avx512vaes,avx512f")]
     unsafe fn test_mm512_aesdeclast_epi128() {
         // Constants taken from https://msdn.microsoft.com/en-us/library/cc714178.aspx.
-        let a = _mm512_set_epi64(
-            0x0123456789abcdef, 0x8899aabbccddeeff,0x0123456789abcdef, 0x8899aabbccddeeff,
-            0x0123456789abcdef, 0x8899aabbccddeeff,0x0123456789abcdef, 0x8899aabbccddeeff
-        );
-        let k = _mm512_set_epi64(
-            0x1133557799bbddff, 0x0022446688aaccee,0x1133557799bbddff, 0x0022446688aaccee,
-            0x1133557799bbddff, 0x0022446688aaccee,0x1133557799bbddff, 0x0022446688aaccee
-        );
-        let e = _mm512_set_epi64(
-            0x36cad57d9072bf9e, 0xf210dd981fa4a493,0x36cad57d9072bf9e, 0xf210dd981fa4a493,
-            0x36cad57d9072bf9e, 0xf210dd981fa4a493,0x36cad57d9072bf9e, 0xf210dd981fa4a493
-        );
+        let (a,k) = setup_state_key_512();
+        let e = _mm_set_epi64x(0x36cad57d9072bf9e, 0xf210dd981fa4a493);
+        let e = _mm512_broadcast_i32x4(e);
         let r = _mm512_aesdeclast_epi128(a, k);
         assert_eq_m512i(r, e);
 
@@ -286,19 +286,9 @@ mod tests {
     #[simd_test(enable = "avx512vaes,avx512f")]
     unsafe fn test_mm512_aesenc_epi128() {
         // Constants taken from https://msdn.microsoft.com/en-us/library/cc664810.aspx.
-        // they are repeated appropriately
-        let a = _mm512_set_epi64(
-            0x0123456789abcdef, 0x8899aabbccddeeff, 0x0123456789abcdef, 0x8899aabbccddeeff,
-            0x0123456789abcdef, 0x8899aabbccddeeff, 0x0123456789abcdef, 0x8899aabbccddeeff
-        );
-        let k = _mm512_set_epi64(
-            0x1133557799bbddff, 0x0022446688aaccee, 0x1133557799bbddff, 0x0022446688aaccee,
-            0x1133557799bbddff, 0x0022446688aaccee, 0x1133557799bbddff, 0x0022446688aaccee,
-        );
-        let e = _mm512_set_epi64(
-            0x16ab0e57dfc442ed, 0x28e4ee1884504333, 0x16ab0e57dfc442ed, 0x28e4ee1884504333,
-            0x16ab0e57dfc442ed, 0x28e4ee1884504333, 0x16ab0e57dfc442ed, 0x28e4ee1884504333
-        );
+        let (a,k) = setup_state_key_512();
+        let e = _mm_set_epi64x(0x16ab0e57dfc442ed, 0x28e4ee1884504333);
+        let e = _mm512_broadcast_i32x4(e);
         let r = _mm512_aesenc_epi128(a, k);
         assert_eq_m512i(r, e);
 
@@ -308,18 +298,9 @@ mod tests {
     #[simd_test(enable = "avx512vaes,avx512f")]
     unsafe fn test_mm512_aesenclast_epi128() {
         // Constants taken from https://msdn.microsoft.com/en-us/library/cc714136.aspx.
-        let a = _mm512_set_epi64(
-            0x0123456789abcdef, 0x8899aabbccddeeff,0x0123456789abcdef, 0x8899aabbccddeeff,
-            0x0123456789abcdef, 0x8899aabbccddeeff,0x0123456789abcdef, 0x8899aabbccddeeff,
-        );
-        let k = _mm512_set_epi64(
-            0x1133557799bbddff, 0x0022446688aaccee,0x1133557799bbddff, 0x0022446688aaccee,
-            0x1133557799bbddff, 0x0022446688aaccee,0x1133557799bbddff, 0x0022446688aaccee
-        );
-        let e = _mm512_set_epi64(
-            0xb6dd7df25d7ab320, 0x4b04f98cf4c860f8,0xb6dd7df25d7ab320, 0x4b04f98cf4c860f8,
-            0xb6dd7df25d7ab320, 0x4b04f98cf4c860f8,0xb6dd7df25d7ab320, 0x4b04f98cf4c860f8
-        );
+        let (a,k) = setup_state_key_512();
+        let e = _mm_set_epi64x(0xb6dd7df25d7ab320, 0x4b04f98cf4c860f8);
+        let e = _mm512_broadcast_i32x4(e);
         let r = _mm512_aesenclast_epi128(a, k);
         assert_eq_m512i(r, e);
 
