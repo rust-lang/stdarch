@@ -124,6 +124,10 @@ pub fn assert(shim_addr: usize, fnname: &str, expected: &str) {
                 "usad8" => 27,
                 "qadd8" | "qsub8" | "sadd8" | "sel" | "shadd8" | "shsub8" | "usub8" | "ssub8" => 29,
 
+                // core_arch/src/arm/neon
+                "vtbl" => 24,
+                "vtbx" => 26,
+
                 // Original limit was 20 instructions, but ARM DSP Intrinsics
                 // are exactly 20 instructions long. So, bump the limit to 22
                 // instead of adding here a long list of exceptions.
