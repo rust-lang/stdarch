@@ -19831,13 +19831,13 @@ pub unsafe fn _mm_mask3_fmadd_sd(a: __m128d, b: __m128d, c: __m128d, k: __mmask8
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask_fmsub_ss&expand=2668)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vfmadd213ss))] //should be vfmsub213ss
+#[cfg_attr(test, assert_instr(vfmsub213ss))]
 pub unsafe fn _mm_mask_fmsub_ss(a: __m128, k: __mmask8, b: __m128, c: __m128) -> __m128 {
     let mut fmsub: f32 = simd_extract(a, 0);
     if (k & 0b00000001) != 0 {
         let extractb: f32 = simd_extract(b, 0);
         let extractc: f32 = simd_extract(c, 0);
-        let extractc = 0. - extractc;
+        let extractc = -extractc;
         fmsub = vfmadd132ss(fmsub, extractb, extractc, _MM_FROUND_CUR_DIRECTION);
     }
     let r = simd_insert(a, 0, fmsub);
@@ -19849,14 +19849,14 @@ pub unsafe fn _mm_mask_fmsub_ss(a: __m128, k: __mmask8, b: __m128, c: __m128) ->
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_maskz_fmsub_ss&expand=2670)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vfmadd213ss))] //should be vfmsub213ss
+#[cfg_attr(test, assert_instr(vfmsub213ss))]
 pub unsafe fn _mm_maskz_fmsub_ss(k: __mmask8, a: __m128, b: __m128, c: __m128) -> __m128 {
     let mut fmsub: f32 = 0.;
     if (k & 0b00000001) != 0 {
         let extracta: f32 = simd_extract(a, 0);
         let extractb: f32 = simd_extract(b, 0);
         let extractc: f32 = simd_extract(c, 0);
-        let extractc = 0. - extractc;
+        let extractc = -extractc;
         fmsub = vfmadd132ss(extracta, extractb, extractc, _MM_FROUND_CUR_DIRECTION);
     }
     let r = simd_insert(a, 0, fmsub);
@@ -19868,13 +19868,13 @@ pub unsafe fn _mm_maskz_fmsub_ss(k: __mmask8, a: __m128, b: __m128, c: __m128) -
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask3_fmsub_ss&expand=2669)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vfmadd213ss))] //should be vfmsub213ss
+#[cfg_attr(test, assert_instr(vfmsub213ss))]
 pub unsafe fn _mm_mask3_fmsub_ss(a: __m128, b: __m128, c: __m128, k: __mmask8) -> __m128 {
     let mut fmsub: f32 = simd_extract(c, 0);
     if (k & 0b00000001) != 0 {
         let extracta: f32 = simd_extract(a, 0);
         let extractb: f32 = simd_extract(b, 0);
-        let extractc = 0. - fmsub;
+        let extractc = -fmsub;
         fmsub = vfmadd132ss(extracta, extractb, extractc, _MM_FROUND_CUR_DIRECTION);
     }
     let r = simd_insert(c, 0, fmsub);
@@ -19886,13 +19886,13 @@ pub unsafe fn _mm_mask3_fmsub_ss(a: __m128, b: __m128, c: __m128, k: __mmask8) -
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask_fmsub_sd&expand=2664)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vfmadd213sd))] //should be vfmsub213sd
+#[cfg_attr(test, assert_instr(vfmsub213sd))]
 pub unsafe fn _mm_mask_fmsub_sd(a: __m128d, k: __mmask8, b: __m128d, c: __m128d) -> __m128d {
     let mut fmsub: f64 = simd_extract(a, 0);
     if (k & 0b00000001) != 0 {
         let extractb: f64 = simd_extract(b, 0);
         let extractc: f64 = simd_extract(c, 0);
-        let extractc = 0. - extractc;
+        let extractc = -extractc;
         fmsub = vfmadd132sd(fmsub, extractb, extractc, _MM_FROUND_CUR_DIRECTION);
     }
     let r = simd_insert(a, 0, fmsub);
@@ -19904,14 +19904,14 @@ pub unsafe fn _mm_mask_fmsub_sd(a: __m128d, k: __mmask8, b: __m128d, c: __m128d)
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_maskz_fmsub_sd&expand=2666)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vfmadd213sd))] //should be vfmsub213sd
+#[cfg_attr(test, assert_instr(vfmsub213sd))]
 pub unsafe fn _mm_maskz_fmsub_sd(k: __mmask8, a: __m128d, b: __m128d, c: __m128d) -> __m128d {
     let mut fmsub: f64 = 0.;
     if (k & 0b00000001) != 0 {
         let extracta: f64 = simd_extract(a, 0);
         let extractb: f64 = simd_extract(b, 0);
         let extractc: f64 = simd_extract(c, 0);
-        let extractc = 0. - extractc;
+        let extractc = -extractc;
         fmsub = vfmadd132sd(extracta, extractb, extractc, _MM_FROUND_CUR_DIRECTION);
     }
     let r = simd_insert(a, 0, fmsub);
@@ -19923,13 +19923,13 @@ pub unsafe fn _mm_maskz_fmsub_sd(k: __mmask8, a: __m128d, b: __m128d, c: __m128d
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask3_fmsub_sd&expand=2665)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vfmadd213sd))] //should be vfmsub213sd
+#[cfg_attr(test, assert_instr(vfmsub213sd))]
 pub unsafe fn _mm_mask3_fmsub_sd(a: __m128d, b: __m128d, c: __m128d, k: __mmask8) -> __m128d {
     let mut fmsub: f64 = simd_extract(c, 0);
     if (k & 0b00000001) != 0 {
         let extracta: f64 = simd_extract(a, 0);
         let extractb: f64 = simd_extract(b, 0);
-        let extractc = 0. - fmsub;
+        let extractc = -fmsub;
         fmsub = vfmadd132sd(extracta, extractb, extractc, _MM_FROUND_CUR_DIRECTION);
     }
     let r = simd_insert(c, 0, fmsub);
@@ -19941,11 +19941,11 @@ pub unsafe fn _mm_mask3_fmsub_sd(a: __m128d, b: __m128d, c: __m128d, k: __mmask8
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask_fnmadd_ss&expand=2748)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vfmadd213ss))] // should be vfnmadd213ss
+#[cfg_attr(test, assert_instr(vfnmadd213ss))]
 pub unsafe fn _mm_mask_fnmadd_ss(a: __m128, k: __mmask8, b: __m128, c: __m128) -> __m128 {
     let mut fnmadd: f32 = simd_extract(a, 0);
     if (k & 0b00000001) != 0 {
-        let extracta = 0. - fnmadd;
+        let extracta = -fnmadd;
         let extractb: f32 = simd_extract(b, 0);
         let extractc: f32 = simd_extract(c, 0);
         fnmadd = vfmadd132ss(extracta, extractb, extractc, _MM_FROUND_CUR_DIRECTION);
@@ -19959,12 +19959,12 @@ pub unsafe fn _mm_mask_fnmadd_ss(a: __m128, k: __mmask8, b: __m128, c: __m128) -
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_maskz_fnmadd_ss&expand=2750)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vfmadd213ss))] // should be vfnmadd213ss
+#[cfg_attr(test, assert_instr(vfnmadd213ss))]
 pub unsafe fn _mm_maskz_fnmadd_ss(k: __mmask8, a: __m128, b: __m128, c: __m128) -> __m128 {
     let mut fnmadd: f32 = 0.;
     if (k & 0b00000001) != 0 {
         let extracta: f32 = simd_extract(a, 0);
-        let extracta = 0. - extracta;
+        let extracta = -extracta;
         let extractb: f32 = simd_extract(b, 0);
         let extractc: f32 = simd_extract(c, 0);
         fnmadd = vfmadd132ss(extracta, extractb, extractc, _MM_FROUND_CUR_DIRECTION);
@@ -19978,12 +19978,12 @@ pub unsafe fn _mm_maskz_fnmadd_ss(k: __mmask8, a: __m128, b: __m128, c: __m128) 
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask3_fnmadd_ss&expand=2749)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vfmadd213ss))] // should be vfnmadd213ss
+#[cfg_attr(test, assert_instr(vfnmadd213ss))]
 pub unsafe fn _mm_mask3_fnmadd_ss(a: __m128, b: __m128, c: __m128, k: __mmask8) -> __m128 {
     let mut fnmadd: f32 = simd_extract(c, 0);
     if (k & 0b00000001) != 0 {
         let extracta: f32 = simd_extract(a, 0);
-        let extracta = 0. - extracta;
+        let extracta = -extracta;
         let extractb: f32 = simd_extract(b, 0);
         fnmadd = vfmadd132ss(extracta, extractb, fnmadd, _MM_FROUND_CUR_DIRECTION);
     }
@@ -19996,11 +19996,11 @@ pub unsafe fn _mm_mask3_fnmadd_ss(a: __m128, b: __m128, c: __m128, k: __mmask8) 
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask_fnmadd_sd&expand=2744)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vfmadd213sd))] // should be vfnmadd213sd
+#[cfg_attr(test, assert_instr(vfnmadd213sd))]
 pub unsafe fn _mm_mask_fnmadd_sd(a: __m128d, k: __mmask8, b: __m128d, c: __m128d) -> __m128d {
     let mut fnmadd: f64 = simd_extract(a, 0);
     if (k & 0b00000001) != 0 {
-        let extracta = 0. - fnmadd;
+        let extracta = -fnmadd;
         let extractb: f64 = simd_extract(b, 0);
         let extractc: f64 = simd_extract(c, 0);
         fnmadd = vfmadd132sd(extracta, extractb, extractc, _MM_FROUND_CUR_DIRECTION);
@@ -20014,12 +20014,12 @@ pub unsafe fn _mm_mask_fnmadd_sd(a: __m128d, k: __mmask8, b: __m128d, c: __m128d
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_maskz_fnmadd_sd&expand=2746)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vfmadd213sd))] // should be vfnmadd213sd
+#[cfg_attr(test, assert_instr(vfnmadd213sd))]
 pub unsafe fn _mm_maskz_fnmadd_sd(k: __mmask8, a: __m128d, b: __m128d, c: __m128d) -> __m128d {
     let mut fnmadd: f64 = 0.;
     if (k & 0b00000001) != 0 {
         let extracta: f64 = simd_extract(a, 0);
-        let extracta = 0. - extracta;
+        let extracta = -extracta;
         let extractb: f64 = simd_extract(b, 0);
         let extractc: f64 = simd_extract(c, 0);
         fnmadd = vfmadd132sd(extracta, extractb, extractc, _MM_FROUND_CUR_DIRECTION);
@@ -20033,12 +20033,12 @@ pub unsafe fn _mm_maskz_fnmadd_sd(k: __mmask8, a: __m128d, b: __m128d, c: __m128
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask3_fnmadd_sd&expand=2745)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vfmadd213sd))] // should be vfnmadd213sd
+#[cfg_attr(test, assert_instr(vfnmadd213sd))]
 pub unsafe fn _mm_mask3_fnmadd_sd(a: __m128d, b: __m128d, c: __m128d, k: __mmask8) -> __m128d {
     let mut fnmadd: f64 = simd_extract(c, 0);
     if (k & 0b00000001) != 0 {
         let extracta: f64 = simd_extract(a, 0);
-        let extracta = 0. - extracta;
+        let extracta = -extracta;
         let extractb: f64 = simd_extract(b, 0);
         fnmadd = vfmadd132sd(extracta, extractb, fnmadd, _MM_FROUND_CUR_DIRECTION);
     }
@@ -20051,14 +20051,14 @@ pub unsafe fn _mm_mask3_fnmadd_sd(a: __m128d, b: __m128d, c: __m128d, k: __mmask
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask_fnmsub_ss&expand=2796)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vfmadd213ss))] //should be vfnmsub213ss
+#[cfg_attr(test, assert_instr(vfnmsub213ss))]
 pub unsafe fn _mm_mask_fnmsub_ss(a: __m128, k: __mmask8, b: __m128, c: __m128) -> __m128 {
     let mut fnmsub: f32 = simd_extract(a, 0);
     if (k & 0b00000001) != 0 {
-        let extracta = 0. - fnmsub;
+        let extracta = -fnmsub;
         let extractb: f32 = simd_extract(b, 0);
         let extractc: f32 = simd_extract(c, 0);
-        let extractc = 0. - extractc;
+        let extractc = -extractc;
         fnmsub = vfmadd132ss(extracta, extractb, extractc, _MM_FROUND_CUR_DIRECTION);
     }
     let r = simd_insert(a, 0, fnmsub);
@@ -20070,15 +20070,15 @@ pub unsafe fn _mm_mask_fnmsub_ss(a: __m128, k: __mmask8, b: __m128, c: __m128) -
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_maskz_fnmsub_ss&expand=2798)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vfmadd213ss))] //should be vfnmsub213ss
+#[cfg_attr(test, assert_instr(vfnmsub213ss))]
 pub unsafe fn _mm_maskz_fnmsub_ss(k: __mmask8, a: __m128, b: __m128, c: __m128) -> __m128 {
     let mut fnmsub: f32 = 0.;
     if (k & 0b00000001) != 0 {
         let extracta: f32 = simd_extract(a, 0);
-        let extracta = 0. - extracta;
+        let extracta = -extracta;
         let extractb: f32 = simd_extract(b, 0);
         let extractc: f32 = simd_extract(c, 0);
-        let extractc = 0. - extractc;
+        let extractc = -extractc;
         fnmsub = vfmadd132ss(extracta, extractb, extractc, _MM_FROUND_CUR_DIRECTION);
     }
     let r = simd_insert(a, 0, fnmsub);
@@ -20090,14 +20090,14 @@ pub unsafe fn _mm_maskz_fnmsub_ss(k: __mmask8, a: __m128, b: __m128, c: __m128) 
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask3_fnmsub_ss&expand=2797)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vfmadd213ss))] //should be vfnmsub213ss
+#[cfg_attr(test, assert_instr(vfnmsub213ss))]
 pub unsafe fn _mm_mask3_fnmsub_ss(a: __m128, b: __m128, c: __m128, k: __mmask8) -> __m128 {
     let mut fnmsub: f32 = simd_extract(c, 0);
     if (k & 0b00000001) != 0 {
         let extracta: f32 = simd_extract(a, 0);
-        let extracta = 0. - extracta;
+        let extracta = -extracta;
         let extractb: f32 = simd_extract(b, 0);
-        let extractc = 0. - fnmsub;
+        let extractc = -fnmsub;
         fnmsub = vfmadd132ss(extracta, extractb, extractc, _MM_FROUND_CUR_DIRECTION);
     }
     let r = simd_insert(c, 0, fnmsub);
@@ -20109,14 +20109,14 @@ pub unsafe fn _mm_mask3_fnmsub_ss(a: __m128, b: __m128, c: __m128, k: __mmask8) 
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask_fnmsub_sd&expand=2792)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vfmadd213sd))] //should be vfnmsub213sd
+#[cfg_attr(test, assert_instr(vfnmsub213sd))]
 pub unsafe fn _mm_mask_fnmsub_sd(a: __m128d, k: __mmask8, b: __m128d, c: __m128d) -> __m128d {
     let mut fnmsub: f64 = simd_extract(a, 0);
     if (k & 0b00000001) != 0 {
-        let extracta = 0. - fnmsub;
+        let extracta = -fnmsub;
         let extractb: f64 = simd_extract(b, 0);
         let extractc: f64 = simd_extract(c, 0);
-        let extractc = 0. - extractc;
+        let extractc = -extractc;
         fnmsub = vfmadd132sd(extracta, extractb, extractc, _MM_FROUND_CUR_DIRECTION);
     }
     let r = simd_insert(a, 0, fnmsub);
@@ -20128,15 +20128,15 @@ pub unsafe fn _mm_mask_fnmsub_sd(a: __m128d, k: __mmask8, b: __m128d, c: __m128d
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_maskz_fnmsub_sd&expand=2794)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vfmadd213sd))] //should be vnfmsub213sd
+#[cfg_attr(test, assert_instr(vfnmsub213sd))]
 pub unsafe fn _mm_maskz_fnmsub_sd(k: __mmask8, a: __m128d, b: __m128d, c: __m128d) -> __m128d {
     let mut fnmsub: f64 = 0.;
     if (k & 0b00000001) != 0 {
         let extracta: f64 = simd_extract(a, 0);
-        let extracta = 0. - extracta;
+        let extracta = -extracta;
         let extractb: f64 = simd_extract(b, 0);
         let extractc: f64 = simd_extract(c, 0);
-        let extractc = 0. - extractc;
+        let extractc = -extractc;
         fnmsub = vfmadd132sd(extracta, extractb, extractc, _MM_FROUND_CUR_DIRECTION);
     }
     let r = simd_insert(a, 0, fnmsub);
@@ -20148,14 +20148,14 @@ pub unsafe fn _mm_maskz_fnmsub_sd(k: __mmask8, a: __m128d, b: __m128d, c: __m128
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask3_fnmsub_sd&expand=2793)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vfmadd213sd))] //should be vfnmsub213sd
+#[cfg_attr(test, assert_instr(vfnmsub213sd))]
 pub unsafe fn _mm_mask3_fnmsub_sd(a: __m128d, b: __m128d, c: __m128d, k: __mmask8) -> __m128d {
     let mut fnmsub: f64 = simd_extract(c, 0);
     if (k & 0b00000001) != 0 {
         let extracta: f64 = simd_extract(a, 0);
-        let extracta = 0. - extracta;
+        let extracta = -extracta;
         let extractb: f64 = simd_extract(b, 0);
-        let extractc = 0. - fnmsub;
+        let extractc = -fnmsub;
         fnmsub = vfmadd132sd(extracta, extractb, extractc, _MM_FROUND_CUR_DIRECTION);
     }
     let r = simd_insert(c, 0, fnmsub);
@@ -22397,13 +22397,13 @@ pub unsafe fn _mm_mask3_fmadd_round_sd(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_fmsub_round_ss&expand=2659)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vfmadd213ss, rounding = 8))] //should be vfmsub213ss
+#[cfg_attr(test, assert_instr(vfmsub213ss, rounding = 8))]
 #[rustc_args_required_const(3)]
 pub unsafe fn _mm_fmsub_round_ss(a: __m128, b: __m128, c: __m128, rounding: i32) -> __m128 {
     let extracta: f32 = simd_extract(a, 0);
     let extractb: f32 = simd_extract(b, 0);
     let extractc: f32 = simd_extract(c, 0);
-    let extractc = 0. - extractc;
+    let extractc = -extractc;
     macro_rules! call {
         ($imm4:expr) => {
             vfmadd132ss(extracta, extractb, extractc, $imm4)
@@ -22426,7 +22426,7 @@ pub unsafe fn _mm_fmsub_round_ss(a: __m128, b: __m128, c: __m128, rounding: i32)
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask_fmsub_round_ss&expand=2660)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vfmadd213ss, rounding = 8))] //should be vfmsub213ss
+#[cfg_attr(test, assert_instr(vfmsub213ss, rounding = 8))]
 #[rustc_args_required_const(4)]
 pub unsafe fn _mm_mask_fmsub_round_ss(
     a: __m128,
@@ -22439,7 +22439,7 @@ pub unsafe fn _mm_mask_fmsub_round_ss(
     if (k & 0b00000001) != 0 {
         let extractb: f32 = simd_extract(b, 0);
         let extractc: f32 = simd_extract(c, 0);
-        let extractc = 0. - extractc;
+        let extractc = -extractc;
         macro_rules! call {
             ($imm4:expr) => {
                 vfmadd132ss(fmsub, extractb, extractc, $imm4)
@@ -22463,7 +22463,7 @@ pub unsafe fn _mm_mask_fmsub_round_ss(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_maskz_fmsub_round_ss&expand=2662)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vfmadd213ss, rounding = 8))] //should be vfmsub213ss
+#[cfg_attr(test, assert_instr(vfmsub213ss, rounding = 8))]
 #[rustc_args_required_const(4)]
 pub unsafe fn _mm_maskz_fmsub_round_ss(
     k: __mmask8,
@@ -22477,7 +22477,7 @@ pub unsafe fn _mm_maskz_fmsub_round_ss(
         let extracta: f32 = simd_extract(a, 0);
         let extractb: f32 = simd_extract(b, 0);
         let extractc: f32 = simd_extract(c, 0);
-        let extractc = 0. - extractc;
+        let extractc = -extractc;
         macro_rules! call {
             ($imm4:expr) => {
                 vfmadd132ss(extracta, extractb, extractc, $imm4)
@@ -22501,7 +22501,7 @@ pub unsafe fn _mm_maskz_fmsub_round_ss(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask3_fmsub_round_ss&expand=2661)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vfmadd213ss, rounding = 8))] //should be vfmsub213ss
+#[cfg_attr(test, assert_instr(vfmsub213ss, rounding = 8))]
 #[rustc_args_required_const(4)]
 pub unsafe fn _mm_mask3_fmsub_round_ss(
     a: __m128,
@@ -22514,7 +22514,7 @@ pub unsafe fn _mm_mask3_fmsub_round_ss(
     if (k & 0b00000001) != 0 {
         let extracta: f32 = simd_extract(a, 0);
         let extractb: f32 = simd_extract(b, 0);
-        let extractc = 0. - fmsub;
+        let extractc = -fmsub;
         macro_rules! call {
             ($imm4:expr) => {
                 vfmadd132ss(extracta, extractb, extractc, $imm4)
@@ -22538,13 +22538,13 @@ pub unsafe fn _mm_mask3_fmsub_round_ss(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_fmsub_round_sd&expand=2655)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vfmadd213sd, rounding = 8))] //should be vfmsub213sd
+#[cfg_attr(test, assert_instr(vfmsub213sd, rounding = 8))]
 #[rustc_args_required_const(3)]
 pub unsafe fn _mm_fmsub_round_sd(a: __m128d, b: __m128d, c: __m128d, rounding: i32) -> __m128d {
     let extracta: f64 = simd_extract(a, 0);
     let extractb: f64 = simd_extract(b, 0);
     let extractc: f64 = simd_extract(c, 0);
-    let extractc = 0. - extractc;
+    let extractc = -extractc;
     macro_rules! call {
         ($imm4:expr) => {
             vfmadd132sd(extracta, extractb, extractc, $imm4)
@@ -22567,7 +22567,7 @@ pub unsafe fn _mm_fmsub_round_sd(a: __m128d, b: __m128d, c: __m128d, rounding: i
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask_fmsub_round_sd&expand=2656)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vfmadd213sd, rounding = 8))] //should be vfmsub213sd
+#[cfg_attr(test, assert_instr(vfmsub213sd, rounding = 8))]
 #[rustc_args_required_const(4)]
 pub unsafe fn _mm_mask_fmsub_round_sd(
     a: __m128d,
@@ -22580,7 +22580,7 @@ pub unsafe fn _mm_mask_fmsub_round_sd(
     if (k & 0b00000001) != 0 {
         let extractb: f64 = simd_extract(b, 0);
         let extractc: f64 = simd_extract(c, 0);
-        let extractc = 0. - extractc;
+        let extractc = -extractc;
         macro_rules! call {
             ($imm4:expr) => {
                 vfmadd132sd(fmsub, extractb, extractc, $imm4)
@@ -22604,7 +22604,7 @@ pub unsafe fn _mm_mask_fmsub_round_sd(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_maskz_fmsub_round_sd&expand=2658)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vfmadd213sd, rounding = 8))] //should be vfmsub213sd
+#[cfg_attr(test, assert_instr(vfmsub213sd, rounding = 8))]
 #[rustc_args_required_const(4)]
 pub unsafe fn _mm_maskz_fmsub_round_sd(
     k: __mmask8,
@@ -22618,7 +22618,7 @@ pub unsafe fn _mm_maskz_fmsub_round_sd(
         let extracta: f64 = simd_extract(a, 0);
         let extractb: f64 = simd_extract(b, 0);
         let extractc: f64 = simd_extract(c, 0);
-        let extractc = 0. - extractc;
+        let extractc = -extractc;
         macro_rules! call {
             ($imm4:expr) => {
                 vfmadd132sd(extracta, extractb, extractc, $imm4)
@@ -22642,7 +22642,7 @@ pub unsafe fn _mm_maskz_fmsub_round_sd(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask3_fmsub_round_sd&expand=2657)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vfmadd213sd, rounding = 8))] //should be vfmsub213sd
+#[cfg_attr(test, assert_instr(vfmsub213sd, rounding = 8))]
 #[rustc_args_required_const(4)]
 pub unsafe fn _mm_mask3_fmsub_round_sd(
     a: __m128d,
@@ -22655,7 +22655,7 @@ pub unsafe fn _mm_mask3_fmsub_round_sd(
     if (k & 0b00000001) != 0 {
         let extracta: f64 = simd_extract(a, 0);
         let extractb: f64 = simd_extract(b, 0);
-        let extractc = 0. - fmsub;
+        let extractc = -fmsub;
         macro_rules! call {
             ($imm4:expr) => {
                 vfmadd132sd(extracta, extractb, extractc, $imm4)
@@ -22679,11 +22679,11 @@ pub unsafe fn _mm_mask3_fmsub_round_sd(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_fnmadd_round_ss&expand=2739)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vfmadd213ss, rounding = 8))] //should be vfnmadd213ss
+#[cfg_attr(test, assert_instr(vfnmadd213ss, rounding = 8))]
 #[rustc_args_required_const(3)]
 pub unsafe fn _mm_fnmadd_round_ss(a: __m128, b: __m128, c: __m128, rounding: i32) -> __m128 {
     let extracta: f32 = simd_extract(a, 0);
-    let extracta = 0. - extracta;
+    let extracta = -extracta;
     let extractb: f32 = simd_extract(b, 0);
     let extractc: f32 = simd_extract(c, 0);
     macro_rules! call {
@@ -22708,7 +22708,7 @@ pub unsafe fn _mm_fnmadd_round_ss(a: __m128, b: __m128, c: __m128, rounding: i32
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask_fnmadd_round_ss&expand=2740)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vfmadd213ss, rounding = 8))] //should be vfnmadd213ss
+#[cfg_attr(test, assert_instr(vfnmadd213ss, rounding = 8))]
 #[rustc_args_required_const(4)]
 pub unsafe fn _mm_mask_fnmadd_round_ss(
     a: __m128,
@@ -22719,7 +22719,7 @@ pub unsafe fn _mm_mask_fnmadd_round_ss(
 ) -> __m128 {
     let mut fnmadd: f32 = simd_extract(a, 0);
     if (k & 0b00000001) != 0 {
-        let extracta = 0. - fnmadd;
+        let extracta = -fnmadd;
         let extractb: f32 = simd_extract(b, 0);
         let extractc: f32 = simd_extract(c, 0);
         macro_rules! call {
@@ -22745,7 +22745,7 @@ pub unsafe fn _mm_mask_fnmadd_round_ss(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_maskz_fnmadd_round_ss&expand=2742)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vfmadd213ss, rounding = 8))] //should be vfnmadd213ss
+#[cfg_attr(test, assert_instr(vfnmadd213ss, rounding = 8))]
 #[rustc_args_required_const(4)]
 pub unsafe fn _mm_maskz_fnmadd_round_ss(
     k: __mmask8,
@@ -22757,7 +22757,7 @@ pub unsafe fn _mm_maskz_fnmadd_round_ss(
     let mut fnmadd: f32 = 0.;
     if (k & 0b00000001) != 0 {
         let extracta: f32 = simd_extract(a, 0);
-        let extracta = 0. - extracta;
+        let extracta = -extracta;
         let extractb: f32 = simd_extract(b, 0);
         let extractc: f32 = simd_extract(c, 0);
         macro_rules! call {
@@ -22783,7 +22783,7 @@ pub unsafe fn _mm_maskz_fnmadd_round_ss(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask3_fnmadd_round_ss&expand=2741)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vfmadd213ss, rounding = 8))] //should be vfnmadd213ss
+#[cfg_attr(test, assert_instr(vfnmadd213ss, rounding = 8))]
 #[rustc_args_required_const(4)]
 pub unsafe fn _mm_mask3_fnmadd_round_ss(
     a: __m128,
@@ -22795,7 +22795,7 @@ pub unsafe fn _mm_mask3_fnmadd_round_ss(
     let mut fnmadd: f32 = simd_extract(c, 0);
     if (k & 0b00000001) != 0 {
         let extracta: f32 = simd_extract(a, 0);
-        let extracta = 0. - extracta;
+        let extracta = -extracta;
         let extractb: f32 = simd_extract(b, 0);
         macro_rules! call {
             ($imm4:expr) => {
@@ -22820,11 +22820,11 @@ pub unsafe fn _mm_mask3_fnmadd_round_ss(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_fnmadd_round_sd&expand=2735)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vfmadd213sd, rounding = 8))] //should be vfnmadd213sd
+#[cfg_attr(test, assert_instr(vfnmadd213sd, rounding = 8))]
 #[rustc_args_required_const(3)]
 pub unsafe fn _mm_fnmadd_round_sd(a: __m128d, b: __m128d, c: __m128d, rounding: i32) -> __m128d {
     let extracta: f64 = simd_extract(a, 0);
-    let extracta = 0. - extracta;
+    let extracta = -extracta;
     let extractb: f64 = simd_extract(b, 0);
     let extractc: f64 = simd_extract(c, 0);
     macro_rules! call {
@@ -22849,7 +22849,7 @@ pub unsafe fn _mm_fnmadd_round_sd(a: __m128d, b: __m128d, c: __m128d, rounding: 
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask_fnmadd_round_sd&expand=2736)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vfmadd213sd, rounding = 8))] //should be vfnmadd213sd
+#[cfg_attr(test, assert_instr(vfnmadd213sd, rounding = 8))]
 #[rustc_args_required_const(4)]
 pub unsafe fn _mm_mask_fnmadd_round_sd(
     a: __m128d,
@@ -22860,7 +22860,7 @@ pub unsafe fn _mm_mask_fnmadd_round_sd(
 ) -> __m128d {
     let mut fnmadd: f64 = simd_extract(a, 0);
     if (k & 0b00000001) != 0 {
-        let extracta = 0. - fnmadd;
+        let extracta = -fnmadd;
         let extractb: f64 = simd_extract(b, 0);
         let extractc: f64 = simd_extract(c, 0);
         macro_rules! call {
@@ -22886,7 +22886,7 @@ pub unsafe fn _mm_mask_fnmadd_round_sd(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_maskz_fnmadd_round_sd&expand=2738)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vfmadd213sd, rounding = 8))] //should be vfnmadd213sd
+#[cfg_attr(test, assert_instr(vfnmadd213sd, rounding = 8))]
 #[rustc_args_required_const(4)]
 pub unsafe fn _mm_maskz_fnmadd_round_sd(
     k: __mmask8,
@@ -22898,7 +22898,7 @@ pub unsafe fn _mm_maskz_fnmadd_round_sd(
     let mut fnmadd: f64 = 0.;
     if (k & 0b00000001) != 0 {
         let extracta: f64 = simd_extract(a, 0);
-        let extracta = 0. - extracta;
+        let extracta = -extracta;
         let extractb: f64 = simd_extract(b, 0);
         let extractc: f64 = simd_extract(c, 0);
         macro_rules! call {
@@ -22924,7 +22924,7 @@ pub unsafe fn _mm_maskz_fnmadd_round_sd(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask3_fnmadd_round_Sd&expand=2737)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vfmadd213sd, rounding = 8))] //should be vfnmadd213sd
+#[cfg_attr(test, assert_instr(vfnmadd213sd, rounding = 8))]
 #[rustc_args_required_const(4)]
 pub unsafe fn _mm_mask3_fnmadd_round_sd(
     a: __m128d,
@@ -22936,7 +22936,7 @@ pub unsafe fn _mm_mask3_fnmadd_round_sd(
     let mut fnmadd: f64 = simd_extract(c, 0);
     if (k & 0b00000001) != 0 {
         let extracta: f64 = simd_extract(a, 0);
-        let extracta = 0. - extracta;
+        let extracta = -extracta;
         let extractb: f64 = simd_extract(b, 0);
         macro_rules! call {
             ($imm4:expr) => {
@@ -22961,14 +22961,14 @@ pub unsafe fn _mm_mask3_fnmadd_round_sd(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_fnmsub_round_ss&expand=2787)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vfmadd213ss, rounding = 8))] //should be vfnmsub213ss
+#[cfg_attr(test, assert_instr(vfnmsub213ss, rounding = 8))]
 #[rustc_args_required_const(3)]
 pub unsafe fn _mm_fnmsub_round_ss(a: __m128, b: __m128, c: __m128, rounding: i32) -> __m128 {
     let extracta: f32 = simd_extract(a, 0);
-    let extracta = 0. - extracta;
+    let extracta = -extracta;
     let extractb: f32 = simd_extract(b, 0);
     let extractc: f32 = simd_extract(c, 0);
-    let extractc = 0. - extractc;
+    let extractc = -extractc;
     macro_rules! call {
         ($imm4:expr) => {
             vfmadd132ss(extracta, extractb, extractc, $imm4)
@@ -22991,7 +22991,7 @@ pub unsafe fn _mm_fnmsub_round_ss(a: __m128, b: __m128, c: __m128, rounding: i32
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask_fnmsub_round_ss&expand=2788)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vfmadd213ss, rounding = 8))] //should be vfnmsub213ss
+#[cfg_attr(test, assert_instr(vfnmsub213ss, rounding = 8))]
 #[rustc_args_required_const(4)]
 pub unsafe fn _mm_mask_fnmsub_round_ss(
     a: __m128,
@@ -23002,10 +23002,10 @@ pub unsafe fn _mm_mask_fnmsub_round_ss(
 ) -> __m128 {
     let mut fnmsub: f32 = simd_extract(a, 0);
     if (k & 0b00000001) != 0 {
-        let extracta = 0. - fnmsub;
+        let extracta = -fnmsub;
         let extractb: f32 = simd_extract(b, 0);
         let extractc: f32 = simd_extract(c, 0);
-        let extractc = 0. - extractc;
+        let extractc = -extractc;
         macro_rules! call {
             ($imm4:expr) => {
                 vfmadd132ss(extracta, extractb, extractc, $imm4)
@@ -23029,7 +23029,7 @@ pub unsafe fn _mm_mask_fnmsub_round_ss(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_maskz_fnmsub_round_ss&expand=2790)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vfmadd213ss, rounding = 8))] //should be vfnmsub213ss
+#[cfg_attr(test, assert_instr(vfnmsub213ss, rounding = 8))]
 #[rustc_args_required_const(4)]
 pub unsafe fn _mm_maskz_fnmsub_round_ss(
     k: __mmask8,
@@ -23041,10 +23041,10 @@ pub unsafe fn _mm_maskz_fnmsub_round_ss(
     let mut fnmsub: f32 = 0.;
     if (k & 0b00000001) != 0 {
         let extracta: f32 = simd_extract(a, 0);
-        let extracta = 0. - extracta;
+        let extracta = -extracta;
         let extractb: f32 = simd_extract(b, 0);
         let extractc: f32 = simd_extract(c, 0);
-        let extractc = 0. - extractc;
+        let extractc = -extractc;
         macro_rules! call {
             ($imm4:expr) => {
                 vfmadd132ss(extracta, extractb, extractc, $imm4)
@@ -23068,7 +23068,7 @@ pub unsafe fn _mm_maskz_fnmsub_round_ss(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask3_fnmsub_round_ss&expand=2789)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vfmadd213ss, rounding = 8))] //should be vfnmsub213ss
+#[cfg_attr(test, assert_instr(vfnmsub213ss, rounding = 8))]
 #[rustc_args_required_const(4)]
 pub unsafe fn _mm_mask3_fnmsub_round_ss(
     a: __m128,
@@ -23080,9 +23080,9 @@ pub unsafe fn _mm_mask3_fnmsub_round_ss(
     let mut fnmsub: f32 = simd_extract(c, 0);
     if (k & 0b00000001) != 0 {
         let extracta: f32 = simd_extract(a, 0);
-        let extracta = 0. - extracta;
+        let extracta = -extracta;
         let extractb: f32 = simd_extract(b, 0);
-        let extractc = 0. - fnmsub;
+        let extractc = -fnmsub;
         macro_rules! call {
             ($imm4:expr) => {
                 vfmadd132ss(extracta, extractb, extractc, $imm4)
@@ -23106,14 +23106,14 @@ pub unsafe fn _mm_mask3_fnmsub_round_ss(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_fnmsub_round_sd&expand=2783)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vfmadd213sd, rounding = 8))] //should be vfnmsub213sd
+#[cfg_attr(test, assert_instr(vfnmsub213sd, rounding = 8))]
 #[rustc_args_required_const(3)]
 pub unsafe fn _mm_fnmsub_round_sd(a: __m128d, b: __m128d, c: __m128d, rounding: i32) -> __m128d {
     let extracta: f64 = simd_extract(a, 0);
-    let extracta = 0. - extracta;
+    let extracta = -extracta;
     let extractb: f64 = simd_extract(b, 0);
     let extractc: f64 = simd_extract(c, 0);
-    let extractc = 0. - extractc;
+    let extractc = -extractc;
     macro_rules! call {
         ($imm4:expr) => {
             vfmadd132sd(extracta, extractb, extractc, $imm4)
@@ -23136,7 +23136,7 @@ pub unsafe fn _mm_fnmsub_round_sd(a: __m128d, b: __m128d, c: __m128d, rounding: 
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask_fnmsub_round_sd&expand=2784)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vfmadd213sd, rounding = 8))] //should be vfnmsub213sd
+#[cfg_attr(test, assert_instr(vfnmsub213sd, rounding = 8))]
 #[rustc_args_required_const(4)]
 pub unsafe fn _mm_mask_fnmsub_round_sd(
     a: __m128d,
@@ -23147,10 +23147,10 @@ pub unsafe fn _mm_mask_fnmsub_round_sd(
 ) -> __m128d {
     let mut fnmsub: f64 = simd_extract(a, 0);
     if (k & 0b00000001) != 0 {
-        let extracta = 0. - fnmsub;
+        let extracta = -fnmsub;
         let extractb: f64 = simd_extract(b, 0);
         let extractc: f64 = simd_extract(c, 0);
-        let extractc = 0. - extractc;
+        let extractc = -extractc;
         macro_rules! call {
             ($imm4:expr) => {
                 vfmadd132sd(extracta, extractb, extractc, $imm4)
@@ -23174,7 +23174,7 @@ pub unsafe fn _mm_mask_fnmsub_round_sd(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_maskz_fnmsub_round_sd&expand=2786)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vfmadd213sd, rounding = 8))] //should be vfnmsub213sd
+#[cfg_attr(test, assert_instr(vfnmsub213sd, rounding = 8))]
 #[rustc_args_required_const(4)]
 pub unsafe fn _mm_maskz_fnmsub_round_sd(
     k: __mmask8,
@@ -23186,10 +23186,10 @@ pub unsafe fn _mm_maskz_fnmsub_round_sd(
     let mut fnmsub: f64 = 0.;
     if (k & 0b00000001) != 0 {
         let extracta: f64 = simd_extract(a, 0);
-        let extracta = 0. - extracta;
+        let extracta = -extracta;
         let extractb: f64 = simd_extract(b, 0);
         let extractc: f64 = simd_extract(c, 0);
-        let extractc = 0. - extractc;
+        let extractc = -extractc;
         macro_rules! call {
             ($imm4:expr) => {
                 vfmadd132sd(extracta, extractb, extractc, $imm4)
@@ -23213,7 +23213,7 @@ pub unsafe fn _mm_maskz_fnmsub_round_sd(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask3_fnmsub_round_sd&expand=2785)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vfmadd213sd, rounding = 8))] //should be vfnmsub213sd
+#[cfg_attr(test, assert_instr(vfnmsub213sd, rounding = 8))]
 #[rustc_args_required_const(4)]
 pub unsafe fn _mm_mask3_fnmsub_round_sd(
     a: __m128d,
@@ -23225,9 +23225,9 @@ pub unsafe fn _mm_mask3_fnmsub_round_sd(
     let mut fnmsub: f64 = simd_extract(c, 0);
     if (k & 0b00000001) != 0 {
         let extracta: f64 = simd_extract(a, 0);
-        let extracta = 0. - extracta;
+        let extracta = -extracta;
         let extractb: f64 = simd_extract(b, 0);
-        let extractc = 0. - fnmsub;
+        let extractc = -fnmsub;
         macro_rules! call {
             ($imm4:expr) => {
                 vfmadd132sd(extracta, extractb, extractc, $imm4)
