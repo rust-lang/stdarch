@@ -15,15 +15,51 @@ use crate::{
 use stdarch_test::assert_instr;
 
 types! {
-    /// ARM-specific 64-bit wide vector of one packed `p64`.
-    pub struct poly64x1_t(i64); // FIXME: check this!
-    /// ARM-specific 64-bit wide vector of one packed `p64`.
-    pub struct poly64_t(i64); // FIXME: check this!
-    /// ARM-specific 64-bit wide vector of two packed `p64`.
-    pub struct poly64x2_t(i64, i64); // FIXME: check this!
-    /// ARM-specific 128-bit wide vector of one packed `p64`.
-    pub struct poly128_t(i128); // FIXME: check this!
+    /// ARM-specific 64-bit wide vector of one packed `f64`.
+    pub struct float64x1_t(f64); // FIXME: check this!
+    /// ARM-specific 128-bit wide vector of two packed `f64`.
+    pub struct float64x2_t(f64, f64);
 }
+
+/// ARM-specific type containing two `int8x16_t` vectors.
+#[derive(Copy, Clone)]
+pub struct int8x16x2_t(pub int8x16_t, pub int8x16_t);
+/// ARM-specific type containing three `int8x16_t` vectors.
+#[derive(Copy, Clone)]
+pub struct int8x16x3_t(pub int8x16_t, pub int8x16_t, pub int8x16_t);
+/// ARM-specific type containing four `int8x16_t` vectors.
+#[derive(Copy, Clone)]
+pub struct int8x16x4_t(pub int8x16_t, pub int8x16_t, pub int8x16_t, pub int8x16_t);
+
+/// ARM-specific type containing two `uint8x16_t` vectors.
+#[derive(Copy, Clone)]
+pub struct uint8x16x2_t(pub uint8x16_t, pub uint8x16_t);
+/// ARM-specific type containing three `uint8x16_t` vectors.
+#[derive(Copy, Clone)]
+pub struct uint8x16x3_t(pub uint8x16_t, pub uint8x16_t, pub uint8x16_t);
+/// ARM-specific type containing four `uint8x16_t` vectors.
+#[derive(Copy, Clone)]
+pub struct uint8x16x4_t(
+    pub uint8x16_t,
+    pub uint8x16_t,
+    pub uint8x16_t,
+    pub uint8x16_t,
+);
+
+/// ARM-specific type containing two `poly8x16_t` vectors.
+#[derive(Copy, Clone)]
+pub struct poly8x16x2_t(pub poly8x16_t, pub poly8x16_t);
+/// ARM-specific type containing three `poly8x16_t` vectors.
+#[derive(Copy, Clone)]
+pub struct poly8x16x3_t(pub poly8x16_t, pub poly8x16_t, pub poly8x16_t);
+/// ARM-specific type containing four `poly8x16_t` vectors.
+#[derive(Copy, Clone)]
+pub struct poly8x16x4_t(
+    pub poly8x16_t,
+    pub poly8x16_t,
+    pub poly8x16_t,
+    pub poly8x16_t,
+);
 
 #[allow(improper_ctypes)]
 extern "C" {
@@ -393,10 +429,7 @@ pub unsafe fn vld1q_s16(ptr: *const i16) -> int16x8_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1_s32(ptr: *const i32) -> int32x2_t {
-    transmute(i32x2::new(
-        *ptr,
-        *ptr.offset(1),
-    ))
+    transmute(i32x2::new(*ptr, *ptr.offset(1)))
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -417,9 +450,7 @@ pub unsafe fn vld1q_s32(ptr: *const i32) -> int32x4_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1_s64(ptr: *const i64) -> int64x1_t {
-    transmute(i64x1::new(
-        *ptr,
-    ))
+    transmute(i64x1::new(*ptr))
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -427,10 +458,7 @@ pub unsafe fn vld1_s64(ptr: *const i64) -> int64x1_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1q_s64(ptr: *const i64) -> int64x2_t {
-    transmute(i64x2::new(
-        *ptr,
-        *ptr.offset(1),
-    ))
+    transmute(i64x2::new(*ptr, *ptr.offset(1)))
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -510,10 +538,7 @@ pub unsafe fn vld1q_u16(ptr: *const u16) -> uint16x8_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1_u32(ptr: *const u32) -> uint32x2_t {
-    transmute(u32x2::new(
-        *ptr,
-        *ptr.offset(1),
-    ))
+    transmute(u32x2::new(*ptr, *ptr.offset(1)))
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -534,9 +559,7 @@ pub unsafe fn vld1q_u32(ptr: *const u32) -> uint32x4_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1_u64(ptr: *const u64) -> uint64x1_t {
-    transmute(u64x1::new(
-        *ptr,
-    ))
+    transmute(u64x1::new(*ptr))
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -544,10 +567,7 @@ pub unsafe fn vld1_u64(ptr: *const u64) -> uint64x1_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1q_u64(ptr: *const u64) -> uint64x2_t {
-    transmute(u64x2::new(
-        *ptr,
-        *ptr.offset(1),
-    ))
+    transmute(u64x2::new(*ptr, *ptr.offset(1)))
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -627,10 +647,7 @@ pub unsafe fn vld1q_p16(ptr: *const p16) -> poly16x8_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1_f32(ptr: *const f32) -> float32x2_t {
-    transmute(f32x2::new(
-        *ptr,
-        *ptr.offset(1),
-    ))
+    transmute(f32x2::new(*ptr, *ptr.offset(1)))
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -651,9 +668,7 @@ pub unsafe fn vld1q_f32(ptr: *const f32) -> float32x4_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1_f64(ptr: *const f64) -> float64x1_t {
-    transmute(f64x1::new(
-        *ptr,
-    ))
+    transmute(f64x1::new(*ptr))
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -661,10 +676,7 @@ pub unsafe fn vld1_f64(ptr: *const f64) -> float64x1_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1q_f64(ptr: *const f64) -> float64x2_t {
-    transmute(f64x2::new(
-        *ptr,
-        *ptr.offset(1),
-    ))
+    transmute(f64x2::new(*ptr, *ptr.offset(1)))
 }
 
 /// Absolute Value (wrapping).
@@ -963,7 +975,7 @@ pub unsafe fn vaddvq_u64(a: uint64x2_t) -> u64 {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(pmull))]
-pub unsafe fn vmull_p64(a: poly64_t, b: poly64_t) -> poly128_t {
+pub unsafe fn vmull_p64(a: p64, b: p64) -> p128 {
     transmute(vmull_p64_(transmute(a), transmute(b)))
 }
 

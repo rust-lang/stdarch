@@ -13,8 +13,10 @@ use crate::{
 #[cfg(test)]
 use stdarch_test::assert_instr;
 
-pub type p8 = u8;
-pub type p16 = u16;
+pub(crate) type p8 = u8;
+pub(crate) type p16 = u16;
+pub(crate) type p64 = u64;
+pub(crate) type p128 = u128;
 
 types! {
     /// ARM-specific 64-bit wide vector of eight packed `i8`.
@@ -41,8 +43,8 @@ types! {
     pub struct int64x1_t(i64);
     /// ARM-specific 64-bit wide vector of one packed `u64`.
     pub struct uint64x1_t(u64);
-    /// ARM-specific 64-bit wide vector of one packed `f64`.
-    pub struct float64x1_t(f64);
+    /// ARM-specific 64-bit wide vector of one packed `p64`.
+    pub struct poly64x1_t(p64);
 
     /// ARM-specific 128-bit wide vector of sixteen packed `i8`.
     pub struct int8x16_t(
@@ -77,8 +79,8 @@ types! {
     pub struct int64x2_t(i64, i64);
     /// ARM-specific 128-bit wide vector of two packed `u64`.
     pub struct uint64x2_t(u64, u64);
-    /// ARM-specific 128-bit wide vector of two packed `f64`.
-    pub struct float64x2_t(f64, f64);
+    /// ARM-specific 128-bit wide vector of two packed `p64`.
+    pub struct poly64x2_t(p64, p64);
 }
 
 /// ARM-specific type containing two `int8x8_t` vectors.
@@ -90,69 +92,6 @@ pub struct int8x8x3_t(pub int8x8_t, pub int8x8_t, pub int8x8_t);
 /// ARM-specific type containing four `int8x8_t` vectors.
 #[derive(Copy, Clone)]
 pub struct int8x8x4_t(pub int8x8_t, pub int8x8_t, pub int8x8_t, pub int8x8_t);
-/// ARM-specific type containing two `int8x16_t` vectors.
-#[derive(Copy, Clone)]
-pub struct int8x16x2_t(pub int8x16_t, pub int8x16_t);
-/// ARM-specific type containing three `int8x16_t` vectors.
-#[derive(Copy, Clone)]
-pub struct int8x16x3_t(pub int8x16_t, pub int8x16_t, pub int8x16_t);
-/// ARM-specific type containing four `int8x16_t` vectors.
-#[derive(Copy, Clone)]
-pub struct int8x16x4_t(pub int8x16_t, pub int8x16_t, pub int8x16_t, pub int8x16_t);
-/// ARM-specific type containing two `int16x4_t` vectors.
-#[derive(Copy, Clone)]
-pub struct int16x4x2_t(pub int16x4_t, pub int16x4_t);
-/// ARM-specific type containing three `int16x4_t` vectors.
-#[derive(Copy, Clone)]
-pub struct int16x4x3_t(pub int16x4_t, pub int16x4_t, pub int16x4_t);
-/// ARM-specific type containing four `int16x4_t` vectors.
-#[derive(Copy, Clone)]
-pub struct int16x4x4_t(pub int16x4_t, pub int16x4_t, pub int16x4_t, pub int16x4_t);
-/// ARM-specific type containing two `int16x8_t` vectors.
-#[derive(Copy, Clone)]
-pub struct int16x8x2_t(pub int16x8_t, pub int16x8_t);
-/// ARM-specific type containing three `int16x8_t` vectors.
-#[derive(Copy, Clone)]
-pub struct int16x8x3_t(pub int16x8_t, pub int16x8_t, pub int16x8_t);
-/// ARM-specific type containing four `int16x8_t` vectors.
-#[derive(Copy, Clone)]
-pub struct int16x8x4_t(pub int16x8_t, pub int16x8_t, pub int16x8_t, pub int16x8_t);
-/// ARM-specific type containing two `int32x2_t` vectors.
-#[derive(Copy, Clone)]
-pub struct int32x2x2_t(pub int32x2_t, pub int32x2_t);
-/// ARM-specific type containing three `int32x2_t` vectors.
-#[derive(Copy, Clone)]
-pub struct int32x2x3_t(pub int32x2_t, pub int32x2_t, pub int32x2_t);
-/// ARM-specific type containing four `int32x2_t` vectors.
-#[derive(Copy, Clone)]
-pub struct int32x2x4_t(pub int32x2_t, pub int32x2_t, pub int32x2_t, pub int32x2_t);
-/// ARM-specific type containing two `int32x4_t` vectors.
-#[derive(Copy, Clone)]
-pub struct int32x4x2_t(pub int32x4_t, pub int32x4_t);
-/// ARM-specific type containing three `int32x4_t` vectors.
-#[derive(Copy, Clone)]
-pub struct int32x4x3_t(pub int32x4_t, pub int32x4_t, pub int32x4_t);
-/// ARM-specific type containing four `int32x4_t` vectors.
-#[derive(Copy, Clone)]
-pub struct int32x4x4_t(pub int32x4_t, pub int32x4_t, pub int32x4_t, pub int32x4_t);
-/// ARM-specific type containing two `int64x1_t` vectors.
-#[derive(Copy, Clone)]
-pub struct int64x1x2_t(pub int64x1_t, pub int64x1_t);
-/// ARM-specific type containing three `int64x1_t` vectors.
-#[derive(Copy, Clone)]
-pub struct int64x1x3_t(pub int64x1_t, pub int64x1_t, pub int64x1_t);
-/// ARM-specific type containing four `int64x1_t` vectors.
-#[derive(Copy, Clone)]
-pub struct int64x1x4_t(pub int64x1_t, pub int64x1_t, pub int64x1_t, pub int64x1_t);
-/// ARM-specific type containing two `int64x2_t` vectors.
-#[derive(Copy, Clone)]
-pub struct int64x2x2_t(pub int64x2_t, pub int64x2_t);
-/// ARM-specific type containing three `int64x2_t` vectors.
-#[derive(Copy, Clone)]
-pub struct int64x2x3_t(pub int64x2_t, pub int64x2_t, pub int64x2_t);
-/// ARM-specific type containing four `int64x2_t` vectors.
-#[derive(Copy, Clone)]
-pub struct int64x2x4_t(pub int64x2_t, pub int64x2_t, pub int64x2_t, pub int64x2_t);
 
 /// ARM-specific type containing two `uint8x8_t` vectors.
 #[derive(Copy, Clone)]
@@ -163,104 +102,6 @@ pub struct uint8x8x3_t(pub uint8x8_t, pub uint8x8_t, pub uint8x8_t);
 /// ARM-specific type containing four `uint8x8_t` vectors.
 #[derive(Copy, Clone)]
 pub struct uint8x8x4_t(pub uint8x8_t, pub uint8x8_t, pub uint8x8_t, pub uint8x8_t);
-/// ARM-specific type containing two `uint8x16_t` vectors.
-#[derive(Copy, Clone)]
-pub struct uint8x16x2_t(pub uint8x16_t, pub uint8x16_t);
-/// ARM-specific type containing three `uint8x16_t` vectors.
-#[derive(Copy, Clone)]
-pub struct uint8x16x3_t(pub uint8x16_t, pub uint8x16_t, pub uint8x16_t);
-/// ARM-specific type containing four `uint8x16_t` vectors.
-#[derive(Copy, Clone)]
-pub struct uint8x16x4_t(
-    pub uint8x16_t,
-    pub uint8x16_t,
-    pub uint8x16_t,
-    pub uint8x16_t,
-);
-/// ARM-specific type containing two `uint16x4_t` vectors.
-#[derive(Copy, Clone)]
-pub struct uint16x4x2_t(pub uint16x4_t, pub uint16x4_t);
-/// ARM-specific type containing three `uint16x4_t` vectors.
-#[derive(Copy, Clone)]
-pub struct uint16x4x3_t(pub uint16x4_t, pub uint16x4_t, pub uint16x4_t);
-/// ARM-specific type containing four `uint16x4_t` vectors.
-#[derive(Copy, Clone)]
-pub struct uint16x4x4_t(
-    pub uint16x4_t,
-    pub uint16x4_t,
-    pub uint16x4_t,
-    pub uint16x4_t,
-);
-/// ARM-specific type containing two `uint16x8_t` vectors.
-#[derive(Copy, Clone)]
-pub struct uint16x8x2_t(pub uint16x8_t, pub uint16x8_t);
-/// ARM-specific type containing three `uint16x8_t` vectors.
-#[derive(Copy, Clone)]
-pub struct uint16x8x3_t(pub uint16x8_t, pub uint16x8_t, pub uint16x8_t);
-/// ARM-specific type containing four `uint16x8_t` vectors.
-#[derive(Copy, Clone)]
-pub struct uint16x8x4_t(
-    pub uint16x8_t,
-    pub uint16x8_t,
-    pub uint16x8_t,
-    pub uint16x8_t,
-);
-/// ARM-specific type containing two `uint32x2_t` vectors.
-#[derive(Copy, Clone)]
-pub struct uint32x2x2_t(pub uint32x2_t, pub uint32x2_t);
-/// ARM-specific type containing three `uint32x2_t` vectors.
-#[derive(Copy, Clone)]
-pub struct uint32x2x3_t(pub uint32x2_t, pub uint32x2_t, pub uint32x2_t);
-/// ARM-specific type containing four `uint32x2_t` vectors.
-#[derive(Copy, Clone)]
-pub struct uint32x2x4_t(
-    pub uint32x2_t,
-    pub uint32x2_t,
-    pub uint32x2_t,
-    pub uint32x2_t,
-);
-/// ARM-specific type containing two `uint32x4_t` vectors.
-#[derive(Copy, Clone)]
-pub struct uint32x4x2_t(pub uint32x4_t, pub uint32x4_t);
-/// ARM-specific type containing three `uint32x4_t` vectors.
-#[derive(Copy, Clone)]
-pub struct uint32x4x3_t(pub uint32x4_t, pub uint32x4_t, pub uint32x4_t);
-/// ARM-specific type containing four `uint32x4_t` vectors.
-#[derive(Copy, Clone)]
-pub struct uint32x4x4_t(
-    pub uint32x4_t,
-    pub uint32x4_t,
-    pub uint32x4_t,
-    pub uint32x4_t,
-);
-/// ARM-specific type containing two `uint64x1_t` vectors.
-#[derive(Copy, Clone)]
-pub struct uint64x1x2_t(pub uint64x1_t, pub uint64x1_t);
-/// ARM-specific type containing three `uint64x1_t` vectors.
-#[derive(Copy, Clone)]
-pub struct uint64x1x3_t(pub uint64x1_t, pub uint64x1_t, pub uint64x1_t);
-/// ARM-specific type containing four `uint64x1_t` vectors.
-#[derive(Copy, Clone)]
-pub struct uint64x1x4_t(
-    pub uint64x1_t,
-    pub uint64x1_t,
-    pub uint64x1_t,
-    pub uint64x1_t,
-);
-/// ARM-specific type containing two `uint64x2_t` vectors.
-#[derive(Copy, Clone)]
-pub struct uint64x2x2_t(pub uint64x2_t, pub uint64x2_t);
-/// ARM-specific type containing three `uint64x2_t` vectors.
-#[derive(Copy, Clone)]
-pub struct uint64x2x3_t(pub uint64x2_t, pub uint64x2_t, pub uint64x2_t);
-/// ARM-specific type containing four `uint64x2_t` vectors.
-#[derive(Copy, Clone)]
-pub struct uint64x2x4_t(
-    pub uint64x2_t,
-    pub uint64x2_t,
-    pub uint64x2_t,
-    pub uint64x2_t,
-);
 
 /// ARM-specific type containing two `poly8x8_t` vectors.
 #[derive(Copy, Clone)]
@@ -271,105 +112,6 @@ pub struct poly8x8x3_t(pub poly8x8_t, pub poly8x8_t, pub poly8x8_t);
 /// ARM-specific type containing four `poly8x8_t` vectors.
 #[derive(Copy, Clone)]
 pub struct poly8x8x4_t(pub poly8x8_t, pub poly8x8_t, pub poly8x8_t, pub poly8x8_t);
-/// ARM-specific type containing two `poly8x16_t` vectors.
-#[derive(Copy, Clone)]
-pub struct poly8x16x2_t(pub poly8x16_t, pub poly8x16_t);
-/// ARM-specific type containing three `poly8x16_t` vectors.
-#[derive(Copy, Clone)]
-pub struct poly8x16x3_t(pub poly8x16_t, pub poly8x16_t, pub poly8x16_t);
-/// ARM-specific type containing four `poly8x16_t` vectors.
-#[derive(Copy, Clone)]
-pub struct poly8x16x4_t(
-    pub poly8x16_t,
-    pub poly8x16_t,
-    pub poly8x16_t,
-    pub poly8x16_t,
-);
-/// ARM-specific type containing two `poly16x4_t` vectors.
-#[derive(Copy, Clone)]
-pub struct poly16x4x2_t(pub poly16x4_t, pub poly16x4_t);
-/// ARM-specific type containing three `poly16x4_t` vectors.
-#[derive(Copy, Clone)]
-pub struct poly16x4x3_t(pub poly16x4_t, pub poly16x4_t, pub poly16x4_t);
-/// ARM-specific type containing four `poly16x4_t` vectors.
-#[derive(Copy, Clone)]
-pub struct poly16x4x4_t(
-    pub poly16x4_t,
-    pub poly16x4_t,
-    pub poly16x4_t,
-    pub poly16x4_t,
-);
-/// ARM-specific type containing two `poly16x8_t` vectors.
-#[derive(Copy, Clone)]
-pub struct poly16x8x2_t(pub poly16x8_t, pub poly16x8_t);
-/// ARM-specific type containing three `poly16x8_t` vectors.
-#[derive(Copy, Clone)]
-pub struct poly16x8x3_t(pub poly16x8_t, pub poly16x8_t, pub poly16x8_t);
-/// ARM-specific type containing four `poly16x8_t` vectors.
-#[derive(Copy, Clone)]
-pub struct poly16x8x4_t(
-    pub poly16x8_t,
-    pub poly16x8_t,
-    pub poly16x8_t,
-    pub poly16x8_t,
-);
-
-/// ARM-specific type containing two `float32x2_t` vectors.
-#[derive(Copy, Clone)]
-pub struct float32x2x2_t(pub float32x2_t, pub float32x2_t);
-/// ARM-specific type containing three `float32x2_t` vectors.
-#[derive(Copy, Clone)]
-pub struct float32x2x3_t(pub float32x2_t, pub float32x2_t, pub float32x2_t);
-/// ARM-specific type containing four `float32x2_t` vectors.
-#[derive(Copy, Clone)]
-pub struct float32x2x4_t(
-    pub float32x2_t,
-    pub float32x2_t,
-    pub float32x2_t,
-    pub float32x2_t,
-);
-/// ARM-specific type containing two `float32x4_t` vectors.
-#[derive(Copy, Clone)]
-pub struct float32x4x2_t(pub float32x4_t, pub float32x4_t);
-/// ARM-specific type containing three `float32x4_t` vectors.
-#[derive(Copy, Clone)]
-pub struct float32x4x3_t(pub float32x4_t, pub float32x4_t, pub float32x4_t);
-/// ARM-specific type containing four `float32x4_t` vectors.
-#[derive(Copy, Clone)]
-pub struct float32x4x4_t(
-    pub float32x4_t,
-    pub float32x4_t,
-    pub float32x4_t,
-    pub float32x4_t,
-);
-/// ARM-specific type containing two `float64x1_t` vectors.
-#[derive(Copy, Clone)]
-pub struct float64x1x2_t(pub float64x1_t, pub float64x1_t);
-/// ARM-specific type containing three `float64x1_t` vectors.
-#[derive(Copy, Clone)]
-pub struct float64x1x3_t(pub float64x1_t, pub float64x1_t, pub float64x1_t);
-/// ARM-specific type containing four `float64x1_t` vectors.
-#[derive(Copy, Clone)]
-pub struct float64x1x4_t(
-    pub float64x1_t,
-    pub float64x1_t,
-    pub float64x1_t,
-    pub float64x1_t,
-);
-/// ARM-specific type containing two `float64x2_t` vectors.
-#[derive(Copy, Clone)]
-pub struct float64x2x2_t(pub float64x2_t, pub float64x2_t);
-/// ARM-specific type containing three `float64x2_t` vectors.
-#[derive(Copy, Clone)]
-pub struct float64x2x3_t(pub float64x2_t, pub float64x2_t, pub float64x2_t);
-/// ARM-specific type containing four `float64x2_t` vectors.
-#[derive(Copy, Clone)]
-pub struct float64x2x4_t(
-    pub float64x2_t,
-    pub float64x2_t,
-    pub float64x2_t,
-    pub float64x2_t,
-);
 
 #[allow(improper_ctypes)]
 extern "C" {
@@ -858,7 +600,11 @@ pub unsafe fn vld1q_f32(ptr: *const f32) -> float32x4_t {
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vld1.8", lane = 7))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1, lane = 7))]
 pub unsafe fn vld1_lane_s8(ptr: *const i8, src: int8x8_t, lane: i32) -> int8x8_t {
-    assert!(0 <= lane && lane <= 7, "must have 0 ≤ lane ≤ 7, but lane = {}", lane);
+    assert!(
+        0 <= lane && lane <= 7,
+        "must have 0 ≤ lane ≤ 7, but lane = {}",
+        lane
+    );
     simd_insert(src, lane as u32, *ptr)
 }
 
@@ -870,7 +616,11 @@ pub unsafe fn vld1_lane_s8(ptr: *const i8, src: int8x8_t, lane: i32) -> int8x8_t
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vld1.8", lane = 15))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1, lane = 15))]
 pub unsafe fn vld1q_lane_s8(ptr: *const i8, src: int8x16_t, lane: i32) -> int8x16_t {
-    assert!(0 <= lane && lane <= 15, "must have 0 ≤ lane ≤ 15, but lane = {}", lane);
+    assert!(
+        0 <= lane && lane <= 15,
+        "must have 0 ≤ lane ≤ 15, but lane = {}",
+        lane
+    );
     simd_insert(src, lane as u32, *ptr)
 }
 
@@ -882,7 +632,11 @@ pub unsafe fn vld1q_lane_s8(ptr: *const i8, src: int8x16_t, lane: i32) -> int8x1
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vld1.16", lane = 3))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1, lane = 3))]
 pub unsafe fn vld1_lane_s16(ptr: *const i16, src: int16x4_t, lane: i32) -> int16x4_t {
-    assert!(0 <= lane && lane <= 3, "must have 0 ≤ lane ≤ 3, but lane = {}", lane);
+    assert!(
+        0 <= lane && lane <= 3,
+        "must have 0 ≤ lane ≤ 3, but lane = {}",
+        lane
+    );
     simd_insert(src, lane as u32, *ptr)
 }
 
@@ -894,7 +648,11 @@ pub unsafe fn vld1_lane_s16(ptr: *const i16, src: int16x4_t, lane: i32) -> int16
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vld1.16", lane = 7))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1, lane = 7))]
 pub unsafe fn vld1q_lane_s16(ptr: *const i16, src: int16x8_t, lane: i32) -> int16x8_t {
-    assert!(0 <= lane && lane <= 7, "must have 0 ≤ lane ≤ 7, but lane = {}", lane);
+    assert!(
+        0 <= lane && lane <= 7,
+        "must have 0 ≤ lane ≤ 7, but lane = {}",
+        lane
+    );
     simd_insert(src, lane as u32, *ptr)
 }
 
@@ -906,7 +664,11 @@ pub unsafe fn vld1q_lane_s16(ptr: *const i16, src: int16x8_t, lane: i32) -> int1
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vld1.32", lane = 1))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1, lane = 1))]
 pub unsafe fn vld1_lane_s32(ptr: *const i32, src: int32x2_t, lane: i32) -> int32x2_t {
-    assert!(0 <= lane && lane <= 1, "must have 0 ≤ lane ≤ 1, but lane = {}", lane);
+    assert!(
+        0 <= lane && lane <= 1,
+        "must have 0 ≤ lane ≤ 1, but lane = {}",
+        lane
+    );
     simd_insert(src, lane as u32, *ptr)
 }
 
@@ -918,7 +680,11 @@ pub unsafe fn vld1_lane_s32(ptr: *const i32, src: int32x2_t, lane: i32) -> int32
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vld1.32", lane = 3))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1, lane = 3))]
 pub unsafe fn vld1q_lane_s32(ptr: *const i32, src: int32x4_t, lane: i32) -> int32x4_t {
-    assert!(0 <= lane && lane <= 3, "must have 0 ≤ lane ≤ 3, but lane = {}", lane);
+    assert!(
+        0 <= lane && lane <= 3,
+        "must have 0 ≤ lane ≤ 3, but lane = {}",
+        lane
+    );
     simd_insert(src, lane as u32, *ptr)
 }
 
@@ -930,7 +696,11 @@ pub unsafe fn vld1q_lane_s32(ptr: *const i32, src: int32x4_t, lane: i32) -> int3
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vldr", lane = 0))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ldr, lane = 0))]
 pub unsafe fn vld1_lane_s64(ptr: *const i64, src: int64x1_t, lane: i32) -> int64x1_t {
-    assert!(0 <= lane && lane <= 0, "must have 0 ≤ lane ≤ 0, but lane = {}", lane);
+    assert!(
+        0 <= lane && lane <= 0,
+        "must have 0 ≤ lane ≤ 0, but lane = {}",
+        lane
+    );
     simd_insert(src, lane as u32, *ptr)
 }
 
@@ -942,7 +712,11 @@ pub unsafe fn vld1_lane_s64(ptr: *const i64, src: int64x1_t, lane: i32) -> int64
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vldr", lane = 1))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1, lane = 1))]
 pub unsafe fn vld1q_lane_s64(ptr: *const i64, src: int64x2_t, lane: i32) -> int64x2_t {
-    assert!(0 <= lane && lane <= 1, "must have 0 ≤ lane ≤ 1, but lane = {}", lane);
+    assert!(
+        0 <= lane && lane <= 1,
+        "must have 0 ≤ lane ≤ 1, but lane = {}",
+        lane
+    );
     simd_insert(src, lane as u32, *ptr)
 }
 
@@ -954,7 +728,11 @@ pub unsafe fn vld1q_lane_s64(ptr: *const i64, src: int64x2_t, lane: i32) -> int6
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vld1.8", lane = 7))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1, lane = 7))]
 pub unsafe fn vld1_lane_u8(ptr: *const u8, src: uint8x8_t, lane: i32) -> uint8x8_t {
-    assert!(0 <= lane && lane <= 7, "must have 0 ≤ lane ≤ 7, but lane = {}", lane);
+    assert!(
+        0 <= lane && lane <= 7,
+        "must have 0 ≤ lane ≤ 7, but lane = {}",
+        lane
+    );
     simd_insert(src, lane as u32, *ptr)
 }
 
@@ -966,7 +744,11 @@ pub unsafe fn vld1_lane_u8(ptr: *const u8, src: uint8x8_t, lane: i32) -> uint8x8
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vld1.8", lane = 15))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1, lane = 15))]
 pub unsafe fn vld1q_lane_u8(ptr: *const u8, src: uint8x16_t, lane: i32) -> uint8x16_t {
-    assert!(0 <= lane && lane <= 15, "must have 0 ≤ lane ≤ 15, but lane = {}", lane);
+    assert!(
+        0 <= lane && lane <= 15,
+        "must have 0 ≤ lane ≤ 15, but lane = {}",
+        lane
+    );
     simd_insert(src, lane as u32, *ptr)
 }
 
@@ -978,7 +760,11 @@ pub unsafe fn vld1q_lane_u8(ptr: *const u8, src: uint8x16_t, lane: i32) -> uint8
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vld1.16", lane = 3))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1, lane = 3))]
 pub unsafe fn vld1_lane_u16(ptr: *const u16, src: uint16x4_t, lane: i32) -> uint16x4_t {
-    assert!(0 <= lane && lane <= 3, "must have 0 ≤ lane ≤ 3, but lane = {}", lane);
+    assert!(
+        0 <= lane && lane <= 3,
+        "must have 0 ≤ lane ≤ 3, but lane = {}",
+        lane
+    );
     simd_insert(src, lane as u32, *ptr)
 }
 
@@ -990,7 +776,11 @@ pub unsafe fn vld1_lane_u16(ptr: *const u16, src: uint16x4_t, lane: i32) -> uint
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vld1.16", lane = 7))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1, lane = 7))]
 pub unsafe fn vld1q_lane_u16(ptr: *const u16, src: uint16x8_t, lane: i32) -> uint16x8_t {
-    assert!(0 <= lane && lane <= 7, "must have 0 ≤ lane ≤ 7, but lane = {}", lane);
+    assert!(
+        0 <= lane && lane <= 7,
+        "must have 0 ≤ lane ≤ 7, but lane = {}",
+        lane
+    );
     simd_insert(src, lane as u32, *ptr)
 }
 
@@ -1002,7 +792,11 @@ pub unsafe fn vld1q_lane_u16(ptr: *const u16, src: uint16x8_t, lane: i32) -> uin
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vld1.32", lane = 1))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1, lane = 1))]
 pub unsafe fn vld1_lane_u32(ptr: *const u32, src: uint32x2_t, lane: i32) -> uint32x2_t {
-    assert!(0 <= lane && lane <= 1, "must have 0 ≤ lane ≤ 1, but lane = {}", lane);
+    assert!(
+        0 <= lane && lane <= 1,
+        "must have 0 ≤ lane ≤ 1, but lane = {}",
+        lane
+    );
     simd_insert(src, lane as u32, *ptr)
 }
 
@@ -1014,7 +808,11 @@ pub unsafe fn vld1_lane_u32(ptr: *const u32, src: uint32x2_t, lane: i32) -> uint
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vld1.32", lane = 3))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1, lane = 3))]
 pub unsafe fn vld1q_lane_u32(ptr: *const u32, src: uint32x4_t, lane: i32) -> uint32x4_t {
-    assert!(0 <= lane && lane <= 3, "must have 0 ≤ lane ≤ 3, but lane = {}", lane);
+    assert!(
+        0 <= lane && lane <= 3,
+        "must have 0 ≤ lane ≤ 3, but lane = {}",
+        lane
+    );
     simd_insert(src, lane as u32, *ptr)
 }
 
@@ -1026,7 +824,11 @@ pub unsafe fn vld1q_lane_u32(ptr: *const u32, src: uint32x4_t, lane: i32) -> uin
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vldr", lane = 0))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ldr, lane = 0))]
 pub unsafe fn vld1_lane_u64(ptr: *const u64, src: uint64x1_t, lane: i32) -> uint64x1_t {
-    assert!(0 <= lane && lane <= 0, "must have 0 ≤ lane ≤ 0, but lane = {}", lane);
+    assert!(
+        0 <= lane && lane <= 0,
+        "must have 0 ≤ lane ≤ 0, but lane = {}",
+        lane
+    );
     simd_insert(src, lane as u32, *ptr)
 }
 
@@ -1038,7 +840,11 @@ pub unsafe fn vld1_lane_u64(ptr: *const u64, src: uint64x1_t, lane: i32) -> uint
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vldr", lane = 1))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1, lane = 1))]
 pub unsafe fn vld1q_lane_u64(ptr: *const u64, src: uint64x2_t, lane: i32) -> uint64x2_t {
-    assert!(0 <= lane && lane <= 1, "must have 0 ≤ lane ≤ 1, but lane = {}", lane);
+    assert!(
+        0 <= lane && lane <= 1,
+        "must have 0 ≤ lane ≤ 1, but lane = {}",
+        lane
+    );
     simd_insert(src, lane as u32, *ptr)
 }
 
@@ -1050,7 +856,11 @@ pub unsafe fn vld1q_lane_u64(ptr: *const u64, src: uint64x2_t, lane: i32) -> uin
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vld1.8", lane = 7))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1, lane = 7))]
 pub unsafe fn vld1_lane_p8(ptr: *const p8, src: poly8x8_t, lane: i32) -> poly8x8_t {
-    assert!(0 <= lane && lane <= 7, "must have 0 ≤ lane ≤ 7, but lane = {}", lane);
+    assert!(
+        0 <= lane && lane <= 7,
+        "must have 0 ≤ lane ≤ 7, but lane = {}",
+        lane
+    );
     simd_insert(src, lane as u32, *ptr)
 }
 
@@ -1062,7 +872,11 @@ pub unsafe fn vld1_lane_p8(ptr: *const p8, src: poly8x8_t, lane: i32) -> poly8x8
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vld1.8", lane = 15))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1, lane = 15))]
 pub unsafe fn vld1q_lane_p8(ptr: *const p8, src: poly8x16_t, lane: i32) -> poly8x16_t {
-    assert!(0 <= lane && lane <= 15, "must have 0 ≤ lane ≤ 15, but lane = {}", lane);
+    assert!(
+        0 <= lane && lane <= 15,
+        "must have 0 ≤ lane ≤ 15, but lane = {}",
+        lane
+    );
     simd_insert(src, lane as u32, *ptr)
 }
 
@@ -1074,7 +888,11 @@ pub unsafe fn vld1q_lane_p8(ptr: *const p8, src: poly8x16_t, lane: i32) -> poly8
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vld1.16", lane = 3))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1, lane = 3))]
 pub unsafe fn vld1_lane_p16(ptr: *const p16, src: poly16x4_t, lane: i32) -> poly16x4_t {
-    assert!(0 <= lane && lane <= 3, "must have 0 ≤ lane ≤ 3, but lane = {}", lane);
+    assert!(
+        0 <= lane && lane <= 3,
+        "must have 0 ≤ lane ≤ 3, but lane = {}",
+        lane
+    );
     simd_insert(src, lane as u32, *ptr)
 }
 
@@ -1086,7 +904,11 @@ pub unsafe fn vld1_lane_p16(ptr: *const p16, src: poly16x4_t, lane: i32) -> poly
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vld1.16", lane = 7))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1, lane = 7))]
 pub unsafe fn vld1q_lane_p16(ptr: *const p16, src: poly16x8_t, lane: i32) -> poly16x8_t {
-    assert!(0 <= lane && lane <= 7, "must have 0 ≤ lane ≤ 7, but lane = {}", lane);
+    assert!(
+        0 <= lane && lane <= 7,
+        "must have 0 ≤ lane ≤ 7, but lane = {}",
+        lane
+    );
     simd_insert(src, lane as u32, *ptr)
 }
 
@@ -1098,7 +920,11 @@ pub unsafe fn vld1q_lane_p16(ptr: *const p16, src: poly16x8_t, lane: i32) -> pol
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vld1.32", lane = 1))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1, lane = 1))]
 pub unsafe fn vld1_lane_f32(ptr: *const f32, src: float32x2_t, lane: i32) -> float32x2_t {
-    assert!(0 <= lane && lane <= 1, "must have 0 ≤ lane ≤ 1, but lane = {}", lane);
+    assert!(
+        0 <= lane && lane <= 1,
+        "must have 0 ≤ lane ≤ 1, but lane = {}",
+        lane
+    );
     simd_insert(src, lane as u32, *ptr)
 }
 
@@ -1110,7 +936,11 @@ pub unsafe fn vld1_lane_f32(ptr: *const f32, src: float32x2_t, lane: i32) -> flo
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vld1.32", lane = 3))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1, lane = 3))]
 pub unsafe fn vld1q_lane_f32(ptr: *const f32, src: float32x4_t, lane: i32) -> float32x4_t {
-    assert!(0 <= lane && lane <= 3, "must have 0 ≤ lane ≤ 3, but lane = {}", lane);
+    assert!(
+        0 <= lane && lane <= 3,
+        "must have 0 ≤ lane ≤ 3, but lane = {}",
+        lane
+    );
     simd_insert(src, lane as u32, *ptr)
 }
 
@@ -4312,7 +4142,7 @@ mod tests {
     use std::{i16, i32, i8, mem::transmute, u16, u32, u8, vec::Vec};
     use stdarch_test::simd_test;
 
-        #[simd_test(enable = "neon")]
+    #[simd_test(enable = "neon")]
     unsafe fn test_vld1_lane_s8() {
         let a = i8x8::new(0, 1, 2, 3, 4, 5, 6, 7);
         let elem: i8 = 42;
@@ -4521,7 +4351,9 @@ mod tests {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1q_dup_s8() {
         let elem: i8 = 42;
-        let e = i8x16::new(42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42);
+        let e = i8x16::new(
+            42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42,
+        );
         let r: i8x16 = transmute(vld1q_dup_s8(&elem));
         assert_eq!(r, e)
     }
@@ -4585,7 +4417,9 @@ mod tests {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1q_dup_u8() {
         let elem: u8 = 42;
-        let e = u8x16::new(42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42);
+        let e = u8x16::new(
+            42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42,
+        );
         let r: u8x16 = transmute(vld1q_dup_u8(&elem));
         assert_eq!(r, e)
     }
@@ -4649,7 +4483,9 @@ mod tests {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1q_dup_p8() {
         let elem: p8 = 42;
-        let e = u8x16::new(42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42);
+        let e = u8x16::new(
+            42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42,
+        );
         let r: u8x16 = transmute(vld1q_dup_p8(&elem));
         assert_eq!(r, e)
     }
@@ -4686,7 +4522,7 @@ mod tests {
         assert_eq!(r, e)
     }
 
-#[cfg(target_arch = "arm")]
+    #[cfg(target_arch = "arm")]
     #[simd_test(enable = "neon")]
     unsafe fn test_vcvtq_s32_f32() {
         let f = f32x4::new(-1., 2., 3., 4.);
