@@ -483,7 +483,7 @@ fn matches(rust: &Function, intel: &Intrinsic) -> Result<(), String> {
 
         let rust_feature = rust
             .target_feature
-            .expect(&format!("no target feature listed for {}", rust.name));
+            .unwrap_or_else(|| panic!("no target feature listed for {}", rust.name));
 
         if rust_feature.contains(&fixed_cpuid) {
             continue;
@@ -554,10 +554,7 @@ fn matches(rust: &Function, intel: &Intrinsic) -> Result<(), String> {
         .iter()
         .cloned()
         .chain(rust.ret)
-        .any(|arg| match *arg {
-            Type::PrimSigned(64) | Type::PrimUnsigned(64) => true,
-            _ => false,
-        });
+        .any(|arg| matches!(*arg, Type::PrimSigned(64) | Type::PrimUnsigned(64)));
     let any_i64_exempt = match rust.name {
         // These intrinsics have all been manually verified against Clang's
         // headers to be available on x86, and the u64 arguments seem
@@ -594,7 +591,37 @@ fn matches(rust: &Function, intel: &Intrinsic) -> Result<(), String> {
         | "_mm512_reduce_or_epi64"
         | "_mm512_mask_reduce_or_epi64"
         | "_mm512_mask_set1_epi64"
-        | "_mm512_maskz_set1_epi64" => true,
+        | "_mm512_maskz_set1_epi64"
+        | "_mm_cvt_roundss_si64"
+        | "_mm_cvt_roundss_i64"
+        | "_mm_cvt_roundss_u64"
+        | "_mm_cvtss_i64"
+        | "_mm_cvtss_u64"
+        | "_mm_cvt_roundsd_si64"
+        | "_mm_cvt_roundsd_i64"
+        | "_mm_cvt_roundsd_u64"
+        | "_mm_cvtsd_i64"
+        | "_mm_cvtsd_u64"
+        | "_mm_cvt_roundi64_ss"
+        | "_mm_cvt_roundi64_sd"
+        | "_mm_cvt_roundsi64_ss"
+        | "_mm_cvt_roundsi64_sd"
+        | "_mm_cvt_roundu64_ss"
+        | "_mm_cvt_roundu64_sd"
+        | "_mm_cvti64_ss"
+        | "_mm_cvti64_sd"
+        | "_mm_cvtt_roundss_si64"
+        | "_mm_cvtt_roundss_i64"
+        | "_mm_cvtt_roundss_u64"
+        | "_mm_cvttss_i64"
+        | "_mm_cvttss_u64"
+        | "_mm_cvtt_roundsd_si64"
+        | "_mm_cvtt_roundsd_i64"
+        | "_mm_cvtt_roundsd_u64"
+        | "_mm_cvttsd_i64"
+        | "_mm_cvttsd_u64"
+        | "_mm_cvtu64_ss"
+        | "_mm_cvtu64_sd" => true,
 
         // These return a 64-bit argument but they're assembled from other
         // 32-bit registers, so these work on 32-bit just fine. See #308 for
@@ -621,7 +648,7 @@ fn equate(t: &Type, intel: &str, intrinsic: &str, is_const: bool) -> Result<(), 
     intel = intel.replace("const *", "const*");
     // Normalize mutability modifier to after the type:
     // const float* foo => float const*
-    if intel.starts_with("const") && intel.ends_with("*") {
+    if intel.starts_with("const") && intel.ends_with('*') {
         intel = intel.replace("const ", "");
         intel = intel.replace("*", " const*");
     }
