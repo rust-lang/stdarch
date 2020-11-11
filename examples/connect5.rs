@@ -421,6 +421,7 @@ fn pos_is_draw(pos: &Pos) -> bool {
 }
 
 #[target_feature(enable = "avx512f")]
+#[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
 unsafe fn pos_is_draw_avx512f(pos: &Pos) -> bool {
     let empty = Color::Empty as usize;
 
@@ -872,6 +873,7 @@ fn check_patternlive3(pos: &Pos, sd: Side) -> i32 {
 }
 
 #[target_feature(enable = "avx512f")]
+#[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
 unsafe fn pos_is_winner_avx512(pos: &Pos) -> bool {
     let current_side = side_opp(pos.p_turn);
     let coloridx = current_side as usize;
@@ -946,6 +948,7 @@ unsafe fn pos_is_winner_avx512(pos: &Pos) -> bool {
 }
 
 #[target_feature(enable = "avx512f")]
+#[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
 unsafe fn check_patternlive4_avx512(pos: &Pos, sd: Side) -> bool {
     let coloridx = sd as usize;
     let emptyidx = Color::Empty as usize;
@@ -1042,6 +1045,7 @@ unsafe fn check_patternlive4_avx512(pos: &Pos, sd: Side) -> bool {
 }
 
 #[target_feature(enable = "avx512f")]
+#[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
 unsafe fn check_patterndead4_avx512(pos: &Pos, sd: Side) -> i32 {
     let coloridx = sd as usize;
     let emptyidx = Color::Empty as usize;
@@ -1151,6 +1155,7 @@ unsafe fn check_patterndead4_avx512(pos: &Pos, sd: Side) -> i32 {
 }
 
 #[target_feature(enable = "avx512f")]
+#[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
 unsafe fn check_patternlive3_avx512(pos: &Pos, sd: Side) -> i32 {
     let coloridx = sd as usize;
     let emptyidx = Color::Empty as usize;
