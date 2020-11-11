@@ -8,6 +8,7 @@ authors = [
 ]
 description = "Examples of the stdarch crate."
 edition = "2018"
+default-run = "hex"
 
 [dependencies]
 core_arch = { path = "../crates/core_arch" }

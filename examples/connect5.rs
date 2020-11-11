@@ -484,33 +484,23 @@ fn search(pos: &Pos, alpha: i32, beta: i32, depth: i32, _ply: i32) -> i32 {
     assert!(-EVAL_INF <= alpha && alpha < beta && beta <= EVAL_INF);
     // leaf?
 
-    #[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
-    {
-        if is_x86_feature_detected!("avx512f") {
-            unsafe {
-                if pos_is_winner_avx512(&pos) {
-                    return -EVAL_INF + _ply;
-                }
-            }
-        } else {
-            if pos_is_winner(&pos) {
+    if is_x86_feature_detected!("avx512f") {
+        unsafe {
+            if pos_is_winner_avx512(&pos) {
                 return -EVAL_INF + _ply;
             }
-        }
-    }
 
-    #[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
-    {
-        if is_x86_feature_detected!("avx512f") {
-            unsafe {
-                if pos_is_draw_avx512f(&pos) {
-                    return 0;
-                }
-            }
-        } else {
-            if pos_is_draw(&pos) {
+            if pos_is_draw_avx512f(&pos) {
                 return 0;
             }
+        }
+    } else {
+        if pos_is_winner(&pos) {
+            return -EVAL_INF + _ply;
+        }
+
+        if pos_is_draw(&pos) {
+            return 0;
         }
     }
 
@@ -574,82 +564,48 @@ fn eval(pos: &Pos, _ply: i32) -> i32 {
     let def: Side = side_opp(atk);
 
     // check if opp has live4 which will win playing next move
-    #[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
-    {
-        if is_x86_feature_detected!("avx512f") {
-            unsafe {
-                if check_patternlive4_avx512(&pos, def) {
-                    return -4096;
-                }
-            }
-        } else {
-            if check_patternlive4(&pos, def) {
+    if is_x86_feature_detected!("avx512f") {
+        unsafe {
+            if check_patternlive4_avx512(&pos, def) {
                 return -4096;
             }
+        }
+    } else {
+        if check_patternlive4(&pos, def) {
+            return -4096;
         }
     }
 
     // check if self has live4 which will win playing next move
-    #[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
-    {
-        if is_x86_feature_detected!("avx512f") {
-            unsafe {
-                if check_patternlive4_avx512(&pos, atk) {
-                    return 2560;
-                }
-            }
-        } else {
-            if check_patternlive4(&pos, atk) {
+    if is_x86_feature_detected!("avx512f") {
+        unsafe {
+            if check_patternlive4_avx512(&pos, atk) {
                 return 2560;
             }
+        }
+    } else {
+        if check_patternlive4(&pos, atk) {
+            return 2560;
         }
     }
 
     // check if self has dead4 which will win playing next move
-    #[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
-    {
-        if is_x86_feature_detected!("avx512f") {
-            unsafe {
-                if check_patterndead4_avx512(&pos, atk) > 0 {
-                    return 2560;
-                }
-            }
-        } else {
-            if check_patterndead4(&pos, atk) > 0 {
+    if is_x86_feature_detected!("avx512f") {
+        unsafe {
+            if check_patterndead4_avx512(&pos, atk) > 0 {
                 return 2560;
             }
         }
+    } else {
+        if check_patterndead4(&pos, atk) > 0 {
+            return 2560;
+        }
     }
 
-    #[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
-    {
-        if is_x86_feature_detected!("avx512f") {
-            unsafe {
-                let n_c4: i32 = check_patterndead4_avx512(&pos, def);
-                let n_c3: i32 = check_patternlive3_avx512(&pos, def);
-
-                // check if opp has 2 dead4 which will win playing next move
-                if n_c4 > 1 {
-                    return -2048;
-                }
-
-                // check if opp has a dead 4 and live 3 which will win playing the next two move
-                if n_c4 == 1 && n_c3 > 0 {
-                    return -2048;
-                }
-
-                if check_patternlive3_avx512(&pos, atk) > 1 {
-                    return 2560;
-                }
-
-                // check if opp has 2 live3 which will win playing the next two move
-                if n_c3 > 1 {
-                    return -2048;
-                }
-            }
-        } else {
-            let n_c4: i32 = check_patterndead4(&pos, def);
-            let n_c3: i32 = check_patternlive3(&pos, def);
+    if is_x86_feature_detected!("avx512f") {
+        unsafe {
+            let n_c4: i32 = check_patterndead4_avx512(&pos, def);
+            let n_c3: i32 = check_patternlive3_avx512(&pos, def);
 
             // check if opp has 2 dead4 which will win playing next move
             if n_c4 > 1 {
@@ -661,8 +617,7 @@ fn eval(pos: &Pos, _ply: i32) -> i32 {
                 return -2048;
             }
 
-            // check if self has 2 live3 which will win playing the next two move
-            if check_patternlive3(&pos, atk) > 1 {
+            if check_patternlive3_avx512(&pos, atk) > 1 {
                 return 2560;
             }
 
@@ -670,6 +625,29 @@ fn eval(pos: &Pos, _ply: i32) -> i32 {
             if n_c3 > 1 {
                 return -2048;
             }
+        }
+    } else {
+        let n_c4: i32 = check_patterndead4(&pos, def);
+        let n_c3: i32 = check_patternlive3(&pos, def);
+
+        // check if opp has 2 dead4 which will win playing next move
+        if n_c4 > 1 {
+            return -2048;
+        }
+
+        // check if opp has a dead 4 and live 3 which will win playing the next two move
+        if n_c4 == 1 && n_c3 > 0 {
+            return -2048;
+        }
+
+        // check if self has 2 live3 which will win playing the next two move
+        if check_patternlive3(&pos, atk) > 1 {
+            return 2560;
+        }
+
+        // check if opp has 2 live3 which will win playing the next two move
+        if n_c3 > 1 {
+            return -2048;
         }
     }
 
@@ -1278,13 +1256,11 @@ unsafe fn check_patternlive3_avx512(pos: &Pos, sd: Side) -> i32 {
 }
 
 fn main() {
-    #[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
-    {
-        if is_x86_feature_detected!("avx512f") {
-            println!("\n\nThe program is running with avx512f intrinsics\n\n");
-        } else {
-            println!("\n\nThe program is running with NO intrinsics.\n\n");
-        }
+
+    if is_x86_feature_detected!("avx512f") {
+        println!("\n\nThe program is running with avx512f intrinsics\n\n");
+    } else {
+        println!("\n\nThe program is running with NO intrinsics.\n\n");
     }
 
     loop {
