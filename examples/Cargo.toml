@@ -19,6 +19,10 @@ rand = "0.7"
 name = "hex"
 path = "hex.rs"
 
+[[bin]]
+name = "connect5"
+path = "connect5.rs"
+
 [[example]]
 name = "wasm"
 crate-type = ["cdylib"]
