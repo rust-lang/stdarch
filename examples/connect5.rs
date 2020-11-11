@@ -1256,7 +1256,6 @@ unsafe fn check_patternlive3_avx512(pos: &Pos, sd: Side) -> i32 {
 }
 
 fn main() {
-
     if is_x86_feature_detected!("avx512f") {
         println!("\n\nThe program is running with avx512f intrinsics\n\n");
     } else {
