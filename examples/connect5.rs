@@ -1376,7 +1376,7 @@ fn main() {
             } // search depth = 4
 
             test1.do_move(next_move);
-            //pos_disp(&test1);
+            pos_disp(&test1);
 
             if pos_is_end(&test1) {
                 println!("Game over!!!!!! at Move {}", i);
