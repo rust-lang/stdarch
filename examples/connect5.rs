@@ -6,7 +6,8 @@
 //! This program provides an AI playing with Minimax search with alpha-beta pruning.\
 //! The avx512f intrinsic version can do 16 pattern matching at one time.\
 //!
-//! On Intel i7-7800x using singe core with fixed AVX-512 clock at 4.0GHz, the avx512f version is speed up about 3.5x.\
+//! On Intel i7-7800x using singe core with fixed AVX-512 clock at 4.0GHz, the avx512f version is speed up about 4.3x.\
+//! The average time for each move in the avx512f version is around 31.17s.
 //! In the future, avx512bw can do 64 pattern matching at one time. It might speed up more.\
 //!
 //! //! You can test out this program via:
@@ -1375,7 +1376,7 @@ fn main() {
             } // search depth = 4
 
             test1.do_move(next_move);
-            pos_disp(&test1);
+            //pos_disp(&test1);
 
             if pos_is_end(&test1) {
                 println!("Game over!!!!!! at Move {}", i);
