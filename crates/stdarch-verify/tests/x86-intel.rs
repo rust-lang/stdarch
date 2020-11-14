@@ -55,6 +55,8 @@ static M512I: Type = Type::M512I;
 static M512D: Type = Type::M512D;
 static MMASK8: Type = Type::MMASK8;
 static MMASK16: Type = Type::MMASK16;
+static MMASK32: Type = Type::MMASK32;
+static MMASK64: Type = Type::MMASK64;
 static MM_CMPINT_ENUM: Type = Type::MM_CMPINT_ENUM;
 static MM_MANTISSA_NORM_ENUM: Type = Type::MM_MANTISSA_NORM_ENUM;
 static MM_MANTISSA_SIGN_ENUM: Type = Type::MM_MANTISSA_SIGN_ENUM;
@@ -83,6 +85,8 @@ enum Type {
     M512I,
     MMASK8,
     MMASK16,
+    MMASK32,
+    MMASK64,
     MM_CMPINT_ENUM,
     MM_MANTISSA_NORM_ENUM,
     MM_MANTISSA_SIGN_ENUM,
@@ -738,6 +742,8 @@ fn equate(t: &Type, intel: &str, intrinsic: &str, is_const: bool) -> Result<(), 
 
         (&Type::MMASK8, "__mmask8") => {}
         (&Type::MMASK16, "__mmask16") => {}
+        (&Type::MMASK32, "__mmask32") => {}
+        (&Type::MMASK64, "__mmask64") => {}
         (&Type::MM_CMPINT_ENUM, "_MM_CMPINT_ENUM") => {}
         (&Type::MM_MANTISSA_NORM_ENUM, "_MM_MANTISSA_NORM_ENUM") => {}
         (&Type::MM_MANTISSA_SIGN_ENUM, "_MM_MANTISSA_SIGN_ENUM") => {}
