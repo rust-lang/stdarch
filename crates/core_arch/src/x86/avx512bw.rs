@@ -2497,7 +2497,7 @@ pub unsafe fn _mm512_cmplt_epi16_mask(a: __m512i, b: __m512i) -> __mmask32 {
 
 /// Compare packed signed 16-bit integers in a and b for less-than, and store the results in mask vector k using zeromask k1 (elements are zeroed out when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_cmplt_epi16_mask&expand=1023)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_cmplt_epi16_mask&expand=1023)
 #[inline]
 #[target_feature(enable = "avx512bw")]
 #[cfg_attr(test, assert_instr(vpcmp))]
@@ -2507,7 +2507,7 @@ pub unsafe fn _mm512_mask_cmplt_epi16_mask(k1: __mmask32, a: __m512i, b: __m512i
 
 /// Compare packed signed 8-bit integers in a and b for less-than, and store the results in mask vector k.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_cmplt_epi8_mask&expand=1044)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_cmplt_epi8_mask&expand=1044)
 #[inline]
 #[target_feature(enable = "avx512bw")]
 #[cfg_attr(test, assert_instr(vpcmp))]
@@ -2517,7 +2517,7 @@ pub unsafe fn _mm512_cmplt_epi8_mask(a: __m512i, b: __m512i) -> __mmask64 {
 
 /// Compare packed signed 8-bit integers in a and b for less-than, and store the results in mask vector k using zeromask k1 (elements are zeroed out when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_cmplt_epi8_mask&expand=1045)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_cmplt_epi8_mask&expand=1045)
 #[inline]
 #[target_feature(enable = "avx512bw")]
 #[cfg_attr(test, assert_instr(vpcmp))]
@@ -2527,7 +2527,7 @@ pub unsafe fn _mm512_mask_cmplt_epi8_mask(k1: __mmask64, a: __m512i, b: __m512i)
 
 /// Compare packed unsigned 16-bit integers in a and b for greater-than, and store the results in mask vector k.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_cmpgt_epu16_mask&expand=927)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_cmpgt_epu16_mask&expand=927)
 #[inline]
 #[target_feature(enable = "avx512bw")]
 #[cfg_attr(test, assert_instr(vpcmp))]
@@ -2537,7 +2537,7 @@ pub unsafe fn _mm512_cmpgt_epu16_mask(a: __m512i, b: __m512i) -> __mmask32 {
 
 /// Compare packed unsigned 16-bit integers in a and b for greater-than, and store the results in mask vector k using zeromask k1 (elements are zeroed out when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_cmpgt_epu16_mask&expand=928)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_cmpgt_epu16_mask&expand=928)
 #[inline]
 #[target_feature(enable = "avx512bw")]
 #[cfg_attr(test, assert_instr(vpcmp))]
@@ -2547,7 +2547,7 @@ pub unsafe fn _mm512_mask_cmpgt_epu16_mask(k1: __mmask32, a: __m512i, b: __m512i
 
 /// Compare packed unsigned 8-bit integers in a and b for greater-than, and store the results in mask vector k.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_cmpgt_epu8_mask&expand=945)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_cmpgt_epu8_mask&expand=945)
 #[inline]
 #[target_feature(enable = "avx512bw")]
 #[cfg_attr(test, assert_instr(vpcmp))]
@@ -2557,7 +2557,7 @@ pub unsafe fn _mm512_cmpgt_epu8_mask(a: __m512i, b: __m512i) -> __mmask64 {
 
 /// Compare packed unsigned 8-bit integers in a and b for greater-than, and store the results in mask vector k using zeromask k1 (elements are zeroed out when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_cmpgt_epu8_mask&expand=946)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_cmpgt_epu8_mask&expand=946)
 #[inline]
 #[target_feature(enable = "avx512bw")]
 #[cfg_attr(test, assert_instr(vpcmp))]
@@ -2567,7 +2567,7 @@ pub unsafe fn _mm512_mask_cmpgt_epu8_mask(k1: __mmask64, a: __m512i, b: __m512i)
 
 /// Compare packed signed 16-bit integers in a and b for greater-than, and store the results in mask vector k.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_cmpgt_epi16_mask&expand=897)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_cmpgt_epi16_mask&expand=897)
 #[inline]
 #[target_feature(enable = "avx512bw")]
 #[cfg_attr(test, assert_instr(vpcmp))]
@@ -2577,7 +2577,7 @@ pub unsafe fn _mm512_cmpgt_epi16_mask(a: __m512i, b: __m512i) -> __mmask32 {
 
 /// Compare packed signed 16-bit integers in a and b for greater-than, and store the results in mask vector k using zeromask k1 (elements are zeroed out when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_cmpgt_epi16_mask&expand=898)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_cmpgt_epi16_mask&expand=898)
 #[inline]
 #[target_feature(enable = "avx512bw")]
 #[cfg_attr(test, assert_instr(vpcmp))]
@@ -2587,7 +2587,7 @@ pub unsafe fn _mm512_mask_cmpgt_epi16_mask(k1: __mmask32, a: __m512i, b: __m512i
 
 /// Compare packed signed 8-bit integers in a and b for greater-than, and store the results in mask vector k.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_cmpgt_epi8_mask&expand=921)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_cmpgt_epi8_mask&expand=921)
 #[inline]
 #[target_feature(enable = "avx512bw")]
 #[cfg_attr(test, assert_instr(vpcmp))]
@@ -2597,7 +2597,7 @@ pub unsafe fn _mm512_cmpgt_epi8_mask(a: __m512i, b: __m512i) -> __mmask64 {
 
 /// Compare packed signed 8-bit integers in a and b for greater-than, and store the results in mask vector k using zeromask k1 (elements are zeroed out when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_cmpgt_epi8_mask&expand=922)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_cmpgt_epi8_mask&expand=922)
 #[inline]
 #[target_feature(enable = "avx512bw")]
 #[cfg_attr(test, assert_instr(vpcmp))]
@@ -2607,7 +2607,7 @@ pub unsafe fn _mm512_mask_cmpgt_epi8_mask(k1: __mmask64, a: __m512i, b: __m512i)
 
 /// Compare packed unsigned 16-bit integers in a and b for less-than-or-equal, and store the results in mask vector k.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_cmple_epu16_mask&expand=989)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_cmple_epu16_mask&expand=989)
 #[inline]
 #[target_feature(enable = "avx512bw")]
 #[cfg_attr(test, assert_instr(vpcmp))]
@@ -2617,7 +2617,7 @@ pub unsafe fn _mm512_cmple_epu16_mask(a: __m512i, b: __m512i) -> __mmask32 {
 
 /// Compare packed unsigned 16-bit integers in a and b for less-than-or-equal, and store the results in mask vector k using zeromask k1 (elements are zeroed out when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_cmple_epu16_mask&expand=990)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_cmple_epu16_mask&expand=990)
 #[inline]
 #[target_feature(enable = "avx512bw")]
 #[cfg_attr(test, assert_instr(vpcmp))]
@@ -2627,7 +2627,7 @@ pub unsafe fn _mm512_mask_cmple_epu16_mask(k1: __mmask32, a: __m512i, b: __m512i
 
 /// Compare packed unsigned 8-bit integers in a and b for less-than-or-equal, and store the results in mask vector k.   
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_cmple_epu8_mask&expand=1007)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_cmple_epu8_mask&expand=1007)
 #[inline]
 #[target_feature(enable = "avx512bw")]
 #[cfg_attr(test, assert_instr(vpcmp))]
@@ -2637,7 +2637,7 @@ pub unsafe fn _mm512_cmple_epu8_mask(a: __m512i, b: __m512i) -> __mmask64 {
 
 /// Compare packed unsigned 8-bit integers in a and b for less-than-or-equal, and store the results in mask vector k using zeromask k1 (elements are zeroed out when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_cmple_epu8_mask&expand=1008)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_cmple_epu8_mask&expand=1008)
 #[inline]
 #[target_feature(enable = "avx512bw")]
 #[cfg_attr(test, assert_instr(vpcmp))]
@@ -2647,7 +2647,7 @@ pub unsafe fn _mm512_mask_cmple_epu8_mask(k1: __mmask64, a: __m512i, b: __m512i)
 
 /// Compare packed signed 16-bit integers in a and b for less-than-or-equal, and store the results in mask vector k.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_cmple_epi16_mask&expand=965)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_cmple_epi16_mask&expand=965)
 #[inline]
 #[target_feature(enable = "avx512bw")]
 #[cfg_attr(test, assert_instr(vpcmp))]
@@ -2657,7 +2657,7 @@ pub unsafe fn _mm512_cmple_epi16_mask(a: __m512i, b: __m512i) -> __mmask32 {
 
 /// Compare packed signed 16-bit integers in a and b for less-than-or-equal, and store the results in mask vector k using zeromask k1 (elements are zeroed out when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_cmple_epi16_mask&expand=966)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_cmple_epi16_mask&expand=966)
 #[inline]
 #[target_feature(enable = "avx512bw")]
 #[cfg_attr(test, assert_instr(vpcmp))]
@@ -2667,7 +2667,7 @@ pub unsafe fn _mm512_mask_cmple_epi16_mask(k1: __mmask32, a: __m512i, b: __m512i
 
 /// Compare packed signed 8-bit integers in a and b for less-than-or-equal, and store the results in mask vector k.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_cmple_epi8_mask&expand=983)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_cmple_epi8_mask&expand=983)
 #[inline]
 #[target_feature(enable = "avx512bw")]
 #[cfg_attr(test, assert_instr(vpcmp))]
@@ -2677,7 +2677,7 @@ pub unsafe fn _mm512_cmple_epi8_mask(a: __m512i, b: __m512i) -> __mmask64 {
 
 /// Compare packed signed 8-bit integers in a and b for less-than-or-equal, and store the results in mask vector k using zeromask k1 (elements are zeroed out when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_cmple_epi8_mask&expand=984)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_cmple_epi8_mask&expand=984)
 #[inline]
 #[target_feature(enable = "avx512bw")]
 #[cfg_attr(test, assert_instr(vpcmp))]
@@ -2687,7 +2687,7 @@ pub unsafe fn _mm512_mask_cmple_epi8_mask(k1: __mmask64, a: __m512i, b: __m512i)
 
 /// Compare packed unsigned 16-bit integers in a and b for greater-than-or-equal, and store the results in mask vector k.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_cmpge_epu16_mask&expand=867)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_cmpge_epu16_mask&expand=867)
 #[inline]
 #[target_feature(enable = "avx512bw")]
 #[cfg_attr(test, assert_instr(vpcmp))]
@@ -2697,7 +2697,7 @@ pub unsafe fn _mm512_cmpge_epu16_mask(a: __m512i, b: __m512i) -> __mmask32 {
 
 /// Compare packed unsigned 16-bit integers in a and b for greater-than-or-equal, and store the results in mask vector k using zeromask k1 (elements are zeroed out when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_cmpge_epu16_mask&expand=868)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_cmpge_epu16_mask&expand=868)
 #[inline]
 #[target_feature(enable = "avx512bw")]
 #[cfg_attr(test, assert_instr(vpcmp))]
@@ -2707,7 +2707,7 @@ pub unsafe fn _mm512_mask_cmpge_epu16_mask(k1: __mmask32, a: __m512i, b: __m512i
 
 /// Compare packed unsigned 8-bit integers in a and b for greater-than-or-equal, and store the results in mask vector k.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_cmpge_epu8_mask&expand=885)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_cmpge_epu8_mask&expand=885)
 #[inline]
 #[target_feature(enable = "avx512bw")]
 #[cfg_attr(test, assert_instr(vpcmp))]
@@ -2717,7 +2717,7 @@ pub unsafe fn _mm512_cmpge_epu8_mask(a: __m512i, b: __m512i) -> __mmask64 {
 
 /// Compare packed unsigned 8-bit integers in a and b for greater-than-or-equal, and store the results in mask vector k using zeromask k1 (elements are zeroed out when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_cmpge_epu8_mask&expand=886)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_cmpge_epu8_mask&expand=886)
 #[inline]
 #[target_feature(enable = "avx512bw")]
 #[cfg_attr(test, assert_instr(vpcmp))]
@@ -2727,7 +2727,7 @@ pub unsafe fn _mm512_mask_cmpge_epu8_mask(k1: __mmask64, a: __m512i, b: __m512i)
 
 /// Compare packed signed 16-bit integers in a and b for greater-than-or-equal, and store the results in mask vector k.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_cmpge_epi16_mask&expand=843)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_cmpge_epi16_mask&expand=843)
 #[inline]
 #[target_feature(enable = "avx512bw")]
 #[cfg_attr(test, assert_instr(vpcmp))]
@@ -2737,7 +2737,7 @@ pub unsafe fn _mm512_cmpge_epi16_mask(a: __m512i, b: __m512i) -> __mmask32 {
 
 /// Compare packed signed 16-bit integers in a and b for greater-than-or-equal, and store the results in mask vector k using zeromask k1 (elements are zeroed out when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_cmpge_epi16_mask&expand=844)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_cmpge_epi16_mask&expand=844)
 #[inline]
 #[target_feature(enable = "avx512bw")]
 #[cfg_attr(test, assert_instr(vpcmp))]
@@ -2747,7 +2747,7 @@ pub unsafe fn _mm512_mask_cmpge_epi16_mask(k1: __mmask32, a: __m512i, b: __m512i
 
 /// Compare packed signed 8-bit integers in a and b for greater-than-or-equal, and store the results in mask vector k.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_cmpge_epi8_mask&expand=861)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_cmpge_epi8_mask&expand=861)
 #[inline]
 #[target_feature(enable = "avx512bw")]
 #[cfg_attr(test, assert_instr(vpcmp))]
@@ -2757,7 +2757,7 @@ pub unsafe fn _mm512_cmpge_epi8_mask(a: __m512i, b: __m512i) -> __mmask64 {
 
 /// Compare packed signed 8-bit integers in a and b for greater-than-or-equal, and store the results in mask vector k using zeromask k1 (elements are zeroed out when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_cmpge_epi8_mask&expand=862)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_cmpge_epi8_mask&expand=862)
 #[inline]
 #[target_feature(enable = "avx512bw")]
 #[cfg_attr(test, assert_instr(vpcmp))]
@@ -2765,67 +2765,167 @@ pub unsafe fn _mm512_mask_cmpge_epi8_mask(k1: __mmask64, a: __m512i, b: __m512i)
     _mm512_cmpge_epi8_mask(a, b) & k1
 }
 
+/// Compare packed unsigned 16-bit integers in a and b for equality, and store the results in mask vector k.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_cmpeq_epu16_mask&expand=801)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(vpcmp))]
+pub unsafe fn _mm512_cmpeq_epu16_mask(a: __m512i, b: __m512i) -> __mmask32 {
+    simd_bitmask::<u16x32, _>(simd_eq(a.as_u16x32(), b.as_u16x32()))
+}
+
+/// Compare packed unsigned 16-bit integers in a and b for equality, and store the results in mask vector k using zeromask k1 (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_cmpeq_epu16_mask&expand=802)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(vpcmp))]
+pub unsafe fn _mm512_mask_cmpeq_epu16_mask(k1: __mmask32, a: __m512i, b: __m512i) -> __mmask32 {
+    _mm512_cmpeq_epu16_mask(a, b) & k1
+}
+
+/// Compare packed unsigned 8-bit integers in a and b for equality, and store the results in mask vector k.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_cmpeq_epu8_mask&expand=819)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(vpcmp))]
+pub unsafe fn _mm512_cmpeq_epu8_mask(a: __m512i, b: __m512i) -> __mmask64 {
+    simd_bitmask::<u8x64, _>(simd_eq(a.as_u8x64(), b.as_u8x64()))
+}
+
+/// Compare packed unsigned 8-bit integers in a and b for equality, and store the results in mask vector k using zeromask k1 (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_cmpeq_epu8_mask&expand=820)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(vpcmp))]
+pub unsafe fn _mm512_mask_cmpeq_epu8_mask(k1: __mmask64, a: __m512i, b: __m512i) -> __mmask64 {
+    _mm512_cmpeq_epu8_mask(a, b) & k1
+}
+
+/// Compare packed signed 16-bit integers in a and b for equality, and store the results in mask vector k.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_cmpeq_epi16_mask&expand=771)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(vpcmp))]
+pub unsafe fn _mm512_cmpeq_epi16_mask(a: __m512i, b: __m512i) -> __mmask32 {
+    simd_bitmask::<i16x32, _>(simd_eq(a.as_i16x32(), b.as_i16x32()))
+}
+
+/// Compare packed signed 16-bit integers in a and b for equality, and store the results in mask vector k using zeromask k1 (elements are zeroed out when the corresponding mask bit is not set). 
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_cmpeq_epi16_mask&expand=772)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(vpcmp))]
+pub unsafe fn _mm512_mask_cmpeq_epi16_mask(k1: __mmask32, a: __m512i, b: __m512i) -> __mmask32 {
+    _mm512_cmpeq_epi16_mask(a, b) & k1
+}
+
+/// Compare packed signed 8-bit integers in a and b for equality, and store the results in mask vector k.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_cmpeq_epi8_mask&expand=795)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(vpcmp))]
+pub unsafe fn _mm512_cmpeq_epi8_mask(a: __m512i, b: __m512i) -> __mmask64 {
+    simd_bitmask::<i8x64, _>(simd_eq(a.as_i8x64(), b.as_i8x64()))
+}
+
+/// Compare packed signed 8-bit integers in a and b for equality, and store the results in mask vector k using zeromask k1 (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_cmpeq_epi8_mask&expand=796)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(vpcmp))]
+pub unsafe fn _mm512_mask_cmpeq_epi8_mask(k1: __mmask64, a: __m512i, b: __m512i) -> __mmask64 {
+    _mm512_cmpeq_epi8_mask(a, b) & k1
+}
+
+/// Compare packed unsigned 16-bit integers in a and b for not-equal, and store the results in mask vector k.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_cmpneq_epu16_mask&expand=1106)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(vpcmp))]
+pub unsafe fn _mm512_cmpneq_epu16_mask(a: __m512i, b: __m512i) -> __mmask32 {
+    simd_bitmask::<u16x32, _>(simd_ne(a.as_u16x32(), b.as_u16x32()))
+}
+
+/// Compare packed unsigned 16-bit integers in a and b for not-equal, and store the results in mask vector k using zeromask k1 (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_cmpneq_epu16_mask&expand=1107)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(vpcmp))]
+pub unsafe fn _mm512_mask_cmpneq_epu16_mask(k1: __mmask32, a: __m512i, b: __m512i) -> __mmask32 {
+    _mm512_cmpneq_epu16_mask(a, b) & k1
+}
+
+/// Compare packed unsigned 8-bit integers in a and b for not-equal, and store the results in mask vector k.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_cmpneq_epu8_mask&expand=1124)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(vpcmp))]
+pub unsafe fn _mm512_cmpneq_epu8_mask(a: __m512i, b: __m512i) -> __mmask64 {
+    simd_bitmask::<u8x64, _>(simd_ne(a.as_u8x64(), b.as_u8x64()))
+}
+
+/// Compare packed unsigned 8-bit integers in a and b for not-equal, and store the results in mask vector k using zeromask k1 (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_cmpneq_epu8_mask&expand=1125)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(vpcmp))]
+pub unsafe fn _mm512_mask_cmpneq_epu8_mask(k1: __mmask64, a: __m512i, b: __m512i) -> __mmask64 {
+    _mm512_cmpneq_epu8_mask(a, b) & k1
+}
+
+/// Compare packed signed 16-bit integers in a and b for not-equal, and store the results in mask vector k.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_cmpneq_epi16_mask&expand=1082)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(vpcmp))]
+pub unsafe fn _mm512_cmpneq_epi16_mask(a: __m512i, b: __m512i) -> __mmask32 {
+    simd_bitmask::<i16x32, _>(simd_ne(a.as_i16x32(), b.as_i16x32()))
+}
+
+/// Compare packed signed 16-bit integers in a and b for not-equal, and store the results in mask vector k using zeromask k1 (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_cmpneq_epi16_mask&expand=1083)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(vpcmp))]
+pub unsafe fn _mm512_mask_cmpneq_epi16_mask(k1: __mmask32, a: __m512i, b: __m512i) -> __mmask32 {
+    _mm512_cmpneq_epi16_mask(a, b) & k1
+}
+
+/// Compare packed signed 8-bit integers in a and b for not-equal, and store the results in mask vector k.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_cmpneq_epi8_mask&expand=1100)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(vpcmp))]
+pub unsafe fn _mm512_cmpneq_epi8_mask(a: __m512i, b: __m512i) -> __mmask64 {
+    simd_bitmask::<i8x64, _>(simd_ne(a.as_i8x64(), b.as_i8x64()))
+}
+
+/// Compare packed signed 8-bit integers in a and b for not-equal, and store the results in mask vector k using zeromask k1 (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_cmpneq_epi8_mask&expand=1101)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(vpcmp))]
+pub unsafe fn _mm512_mask_cmpneq_epi8_mask(k1: __mmask64, a: __m512i, b: __m512i) -> __mmask64 {
+    _mm512_cmpneq_epi8_mask(a, b) & k1
+}
+
 /*
-/// Compare packed unsigned 32-bit integers in a and b for less-than-or-equal, and store the results in mask vector k.
-///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_cmple_epu32_mask&expand=995)
-#[inline]
-#[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpcmp))]
-pub unsafe fn _mm512_cmple_epu32_mask(a: __m512i, b: __m512i) -> __mmask16 {
-    simd_bitmask::<u32x16, _>(simd_le(a.as_u32x16(), b.as_u32x16()))
-}
-
-/// Compare packed unsigned 32-bit integers in a and b for less-than, and store the results in mask vector k using zeromask k1 (elements are zeroed out when the corresponding mask bit is not set).
-///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_cmple_epu32_mask&expand=996)
-#[inline]
-#[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpcmp))]
-pub unsafe fn _mm512_mask_cmple_epu32_mask(k1: __mmask16, a: __m512i, b: __m512i) -> __mmask16 {
-    _mm512_cmple_epu32_mask(a, b) & k1
-}
-
-/// Compare packed unsigned 32-bit integers in a and b for greater-than-or-equal, and store the results in mask vector k.
-///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_cmpge_epu32_mask&expand=873)
-#[inline]
-#[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpcmp))]
-pub unsafe fn _mm512_cmpge_epu32_mask(a: __m512i, b: __m512i) -> __mmask16 {
-    simd_bitmask::<u32x16, _>(simd_ge(a.as_u32x16(), b.as_u32x16()))
-}
-
-/// Compare packed unsigned 32-bit integers in a and b for greater-than-or-equal, and store the results in mask vector k using zeromask k1 (elements are zeroed out when the corresponding mask bit is not set).
-///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_cmpge_epu32_mask&expand=874)
-#[inline]
-#[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpcmp))]
-pub unsafe fn _mm512_mask_cmpge_epu32_mask(k1: __mmask16, a: __m512i, b: __m512i) -> __mmask16 {
-    _mm512_cmpge_epu32_mask(a, b) & k1
-}
-
-/// Compare packed unsigned 32-bit integers in a and b for equality, and store the results in mask vector k.
-///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_cmpeq_epu32_mask&expand=807)
-#[inline]
-#[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpcmp))]
-pub unsafe fn _mm512_cmpeq_epu32_mask(a: __m512i, b: __m512i) -> __mmask16 {
-    simd_bitmask::<u32x16, _>(simd_eq(a.as_u32x16(), b.as_u32x16()))
-}
-
-/// Compare packed unsigned 32-bit integers in a and b for equality, and store the results in mask vector k using zeromask k1 (elements are zeroed out when the corresponding mask bit is not set).
-///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_cmpeq_epu32_mask&expand=808)
-#[inline]
-#[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpcmp))]
-pub unsafe fn _mm512_mask_cmpeq_epu32_mask(k1: __mmask16, a: __m512i, b: __m512i) -> __mmask16 {
-    _mm512_cmpeq_epu32_mask(a, b) & k1
-}
-
 /// Compare packed unsigned 32-bit integers in a and b for not-equal, and store the results in mask vector k.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_cmpneq_epu32_mask&expand=1112)
@@ -2884,26 +2984,6 @@ pub unsafe fn _mm512_mask_cmp_epu32_mask(
     }
     let r = constify_imm3!(imm8, call);
     transmute(r)
-}
-
-/// Compare packed 32-bit integers in a and b for equality, and store the results in mask vector k.
-///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_cmpeq_epi32_mask&expand=779)
-#[inline]
-#[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpcmp))]
-pub unsafe fn _mm512_cmpeq_epi32_mask(a: __m512i, b: __m512i) -> __mmask16 {
-    simd_bitmask::<i32x16, _>(simd_eq(a.as_i32x16(), b.as_i32x16()))
-}
-
-/// Compare packed 32-bit integers in a and b for equality, and store the results in mask vector k using zeromask k1 (elements are zeroed out when the corresponding mask bit is not set).
-///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_cmpeq_epi32_mask&expand=780)
-#[inline]
-#[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpcmp))]
-pub unsafe fn _mm512_mask_cmpeq_epi32_mask(k1: __mmask16, a: __m512i, b: __m512i) -> __mmask16 {
-    _mm512_cmpeq_epi32_mask(a, b) & k1
 }
 
 /// Compare packed 32-bit integers in a and b for not-equal, and store the results in mask vector k.
@@ -3026,26 +3106,6 @@ pub unsafe fn _mm512_mask_cmpge_epu64_mask(k1: __mmask8, a: __m512i, b: __m512i)
     _mm512_cmpge_epu64_mask(b, a) & k1
 }
 
-/// Compare packed unsigned 64-bit integers in a and b for equality, and store the results in mask vector k.
-///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_cmpeq_epu64_mask&expand=813)
-#[inline]
-#[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpcmp))]
-pub unsafe fn _mm512_cmpeq_epu64_mask(a: __m512i, b: __m512i) -> __mmask8 {
-    simd_bitmask::<__m512i, _>(simd_eq(a.as_u64x8(), b.as_u64x8()))
-}
-
-/// Compare packed unsigned 64-bit integers in a and b for equality, and store the results in mask vector k using zeromask k1 (elements are zeroed out when the corresponding mask bit is not set).
-///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_cmpeq_epu64_mask&expand=814)
-#[inline]
-#[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpcmp))]
-pub unsafe fn _mm512_mask_cmpeq_epu64_mask(k1: __mmask8, a: __m512i, b: __m512i) -> __mmask8 {
-    _mm512_cmpeq_epu64_mask(a, b) & k1
-}
-
 /// Compare packed unsigned 64-bit integers in a and b for not-equal, and store the results in mask vector k.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_cmpneq_epu64_mask&expand=1118)
@@ -3164,26 +3224,6 @@ pub unsafe fn _mm512_cmpge_epi64_mask(a: __m512i, b: __m512i) -> __mmask8 {
 #[cfg_attr(test, assert_instr(vpcmp))]
 pub unsafe fn _mm512_mask_cmpge_epi64_mask(k1: __mmask8, a: __m512i, b: __m512i) -> __mmask8 {
     _mm512_cmpge_epi64_mask(b, a) & k1
-}
-
-/// Compare packed 64-bit integers in a and b for equality, and store the results in mask vector k.
-///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_cmpeq_epi64_mask&expand=787)
-#[inline]
-#[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpcmp))]
-pub unsafe fn _mm512_cmpeq_epi64_mask(a: __m512i, b: __m512i) -> __mmask8 {
-    simd_bitmask::<__m512i, _>(simd_eq(a.as_i64x8(), b.as_i64x8()))
-}
-
-/// Compare packed 64-bit integers in a and b for equality, and store the results in mask vector k using zeromask k1 (elements are zeroed out when the corresponding mask bit is not set).
-///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_cmpeq_epi64_mask&expand=788)
-#[inline]
-#[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpcmp))]
-pub unsafe fn _mm512_mask_cmpeq_epi64_mask(k1: __mmask8, a: __m512i, b: __m512i) -> __mmask8 {
-    _mm512_cmpeq_epi64_mask(a, b) & k1
 }
 
 /// Compare packed signed 64-bit integers in a and b for not-equal, and store the results in mask vector k.
@@ -4517,58 +4557,143 @@ mod tests {
         let r = _mm512_mask_cmpge_epi8_mask(mask, a, b);
         assert_eq!(r, 0b01010101_01010101_01010101_01010101_01010101_01010101_01010101_01010101);
     }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_mm512_cmpeq_epu16_mask() {
+        let a = _mm512_set1_epi16(1);
+        let b = _mm512_set1_epi16(1);
+        let m = _mm512_cmpeq_epu16_mask(a, b);
+        assert_eq!(m, 0b11111111_11111111_11111111_11111111);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_mm512_mask_cmpeq_epu16_mask() {
+        let a = _mm512_set1_epi16(1);
+        let b = _mm512_set1_epi16(1);
+        let mask = 0b01010101_01010101_01010101_01010101;
+        let r = _mm512_mask_cmpeq_epu16_mask(mask, a, b);
+        assert_eq!(r, 0b01010101_01010101_01010101_01010101);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_mm512_cmpeq_epu8_mask() {
+        let a = _mm512_set1_epi8(1);
+        let b = _mm512_set1_epi8(1);
+        let m = _mm512_cmpeq_epu8_mask(a, b);
+        assert_eq!(m, 0b11111111_11111111_11111111_11111111_11111111_11111111_11111111_11111111);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_mm512_mask_cmpeq_epu8_mask() {
+        let a = _mm512_set1_epi8(1);
+        let b = _mm512_set1_epi8(1);
+        let mask = 0b01010101_01010101_01010101_01010101_01010101_01010101_01010101_01010101;
+        let r = _mm512_mask_cmpeq_epu8_mask(mask, a, b);
+        assert_eq!(r, 0b01010101_01010101_01010101_01010101_01010101_01010101_01010101_01010101);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_mm512_cmpeq_epi16_mask() {
+        let a = _mm512_set1_epi16(-1);
+        let b = _mm512_set1_epi16(-1);
+        let m = _mm512_cmpeq_epi16_mask(a, b);
+        assert_eq!(m, 0b11111111_11111111_11111111_11111111);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_mm512_mask_cmpeq_epi16_mask() {
+        let a = _mm512_set1_epi16(-1);
+        let b = _mm512_set1_epi16(-1);
+        let mask = 0b01010101_01010101_01010101_01010101;
+        let r = _mm512_mask_cmpeq_epi16_mask(mask, a, b);
+        assert_eq!(r, 0b01010101_01010101_01010101_01010101);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_mm512_cmpeq_epi8_mask() {
+        let a = _mm512_set1_epi8(-1);
+        let b = _mm512_set1_epi8(-1);
+        let m = _mm512_cmpeq_epi8_mask(a, b);
+        assert_eq!(m, 0b11111111_11111111_11111111_11111111_11111111_11111111_11111111_11111111);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_mm512_mask_cmpeq_epi8_mask() {
+        let a = _mm512_set1_epi8(-1);
+        let b = _mm512_set1_epi8(-1);
+        let mask = 0b01010101_01010101_01010101_01010101_01010101_01010101_01010101_01010101;
+        let r = _mm512_mask_cmpeq_epi8_mask(mask, a, b);
+        assert_eq!(r, 0b01010101_01010101_01010101_01010101_01010101_01010101_01010101_01010101);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_mm512_cmpneq_epu16_mask() {
+        let a = _mm512_set1_epi16(2);
+        let b = _mm512_set1_epi16(1);
+        let m = _mm512_cmpneq_epu16_mask(a, b);
+        assert_eq!(m, 0b11111111_11111111_11111111_11111111);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_mm512_mask_cmpneq_epu16_mask() {
+        let a = _mm512_set1_epi16(2);
+        let b = _mm512_set1_epi16(1);
+        let mask = 0b01010101_01010101_01010101_01010101;
+        let r = _mm512_mask_cmpneq_epu16_mask(mask, a, b);
+        assert_eq!(r, 0b01010101_01010101_01010101_01010101);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_mm512_cmpneq_epu8_mask() {
+        let a = _mm512_set1_epi8(2);
+        let b = _mm512_set1_epi8(1);
+        let m = _mm512_cmpneq_epu8_mask(a, b);
+        assert_eq!(m, 0b11111111_11111111_11111111_11111111_11111111_11111111_11111111_11111111);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_mm512_mask_cmpneq_epu8_mask() {
+        let a = _mm512_set1_epi8(2);
+        let b = _mm512_set1_epi8(1);
+        let mask = 0b01010101_01010101_01010101_01010101_01010101_01010101_01010101_01010101;
+        let r = _mm512_mask_cmpneq_epu8_mask(mask, a, b);
+        assert_eq!(r, 0b01010101_01010101_01010101_01010101_01010101_01010101_01010101_01010101);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_mm512_cmpneq_epi16_mask() {
+        let a = _mm512_set1_epi16(1);
+        let b = _mm512_set1_epi16(-1);
+        let m = _mm512_cmpneq_epi16_mask(a, b);
+        assert_eq!(m, 0b11111111_11111111_11111111_11111111);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_mm512_mask_cmpneq_epi16_mask() {
+        let a = _mm512_set1_epi16(1);
+        let b = _mm512_set1_epi16(-1);
+        let mask = 0b01010101_01010101_01010101_01010101;
+        let r = _mm512_mask_cmpneq_epi16_mask(mask, a, b);
+        assert_eq!(r, 0b01010101_01010101_01010101_01010101);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_mm512_cmpneq_epi8_mask() {
+        let a = _mm512_set1_epi8(1);
+        let b = _mm512_set1_epi8(-1);
+        let m = _mm512_cmpneq_epi8_mask(a, b);
+        assert_eq!(m, 0b11111111_11111111_11111111_11111111_11111111_11111111_11111111_11111111);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_mm512_mask_cmpneq_epi8_mask() {
+        let a = _mm512_set1_epi8(1);
+        let b = _mm512_set1_epi8(-1);
+        let mask = 0b01010101_01010101_01010101_01010101_01010101_01010101_01010101_01010101;
+        let r = _mm512_mask_cmpneq_epi8_mask(mask, a, b);
+        assert_eq!(r, 0b01010101_01010101_01010101_01010101_01010101_01010101_01010101_01010101);
+    }
 /*
-
-    #[simd_test(enable = "avx512f")]
-    unsafe fn test_mm512_cmpeq_epu32_mask() {
-        #[rustfmt::skip]
-        let a = _mm512_set_epi32(0, 1, -1, u32::MAX as i32, i32::MAX, i32::MIN, 100, -100,
-                                 0, 1, -1, u32::MAX as i32, i32::MAX, i32::MIN, 100, -100);
-        #[rustfmt::skip]
-        let b = _mm512_set_epi32(0, 1, 13, 42, i32::MAX, i32::MIN, 100, -100,
-                                 0, 1, 13, 42, i32::MAX, i32::MIN, 100, -100);
-        let m = _mm512_cmpeq_epu32_mask(b, a);
-        assert_eq!(m, 0b11001111_11001111);
-    }
-
-    #[simd_test(enable = "avx512f")]
-    unsafe fn test_mm512_mask_cmpeq_epu32_mask() {
-        #[rustfmt::skip]
-        let a = _mm512_set_epi32(0, 1, -1, u32::MAX as i32, i32::MAX, i32::MIN, 100, -100,
-                                 0, 1, -1, u32::MAX as i32, i32::MAX, i32::MIN, 100, -100);
-        #[rustfmt::skip]
-        let b = _mm512_set_epi32(0, 1, 13, 42, i32::MAX, i32::MIN, 100, -100,
-                                 0, 1, 13, 42, i32::MAX, i32::MIN, 100, -100);
-        let mask = 0b01111010_01111010;
-        let r = _mm512_mask_cmpeq_epu32_mask(mask, b, a);
-        assert_eq!(r, 0b01001010_01001010);
-    }
-
-    #[simd_test(enable = "avx512f")]
-    unsafe fn test_mm512_cmpneq_epu32_mask() {
-        #[rustfmt::skip]
-        let a = _mm512_set_epi32(0, 1, -1, u32::MAX as i32, i32::MAX, i32::MIN, 100, -100,
-                                 0, 1, -1, u32::MAX as i32, i32::MAX, i32::MIN, 100, -100);
-        #[rustfmt::skip]
-        let b = _mm512_set_epi32(0, 1, 13, 42, i32::MAX, i32::MIN, 100, -100,
-                                 0, 1, 13, 42, i32::MAX, i32::MIN, 100, -100);
-        let m = _mm512_cmpneq_epu32_mask(b, a);
-        assert_eq!(m, !_mm512_cmpeq_epu32_mask(b, a));
-    }
-
-    #[simd_test(enable = "avx512f")]
-    unsafe fn test_mm512_mask_cmpneq_epu32_mask() {
-        #[rustfmt::skip]
-        let a = _mm512_set_epi32(0, 1, -1, u32::MAX as i32, i32::MAX, i32::MIN, -100, 100,
-                                 0, 1, -1, u32::MAX as i32, i32::MAX, i32::MIN, -100, 100);
-        #[rustfmt::skip]
-        let b = _mm512_set_epi32(0, 1, 13, 42, i32::MAX, i32::MIN, 100, -100,
-                                 0, 1, 13, 42, i32::MAX, i32::MIN, 100, -100);
-        let mask = 0b01111010_01111010;
-        let r = _mm512_mask_cmpneq_epu32_mask(mask, b, a);
-        assert_eq!(r, 0b00110010_00110010);
-    }
-
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_cmp_epu32_mask() {
         #[rustfmt::skip]
@@ -4588,56 +4713,6 @@ mod tests {
         let mask = 0b01111010_01111010;
         let r = _mm512_mask_cmp_epu32_mask(mask, a, b, _MM_CMPINT_LT);
         assert_eq!(r, 0b01001010_01001010);
-    }
-
-    #[simd_test(enable = "avx512f")]
-    unsafe fn test_mm512_cmpeq_epi32_mask() {
-        #[rustfmt::skip]
-        let a = _mm512_set_epi32(0, 1, -1, 13, i32::MAX, i32::MIN, 100, -100,
-                                 0, 1, -1, 13, i32::MAX, i32::MIN, 100, -100);
-        #[rustfmt::skip]
-        let b = _mm512_set_epi32(0, 1, 13, 42, i32::MAX, i32::MIN, 100, -100,
-                                 0, 1, 13, 42, i32::MAX, i32::MIN, 100, -100);
-        let m = _mm512_cmpeq_epi32_mask(b, a);
-        assert_eq!(m, 0b11001111_11001111);
-    }
-
-    #[simd_test(enable = "avx512f")]
-    unsafe fn test_mm512_mask_cmpeq_epi32_mask() {
-        #[rustfmt::skip]
-        let a = _mm512_set_epi32(0, 1, -1, 13, i32::MAX, i32::MIN, 100, -100,
-                                 0, 1, -1, 13, i32::MAX, i32::MIN, 100, -100);
-        #[rustfmt::skip]
-        let b = _mm512_set_epi32(0, 1, 13, 42, i32::MAX, i32::MIN, 100, -100,
-                                 0, 1, 13, 42, i32::MAX, i32::MIN, 100, -100);
-        let mask = 0b01111010_01111010;
-        let r = _mm512_mask_cmpeq_epi32_mask(mask, b, a);
-        assert_eq!(r, 0b01001010_01001010);
-    }
-
-    #[simd_test(enable = "avx512f")]
-    unsafe fn test_mm512_cmpneq_epi32_mask() {
-        #[rustfmt::skip]
-        let a = _mm512_set_epi32(0, 1, -1, 13, i32::MAX, i32::MIN, 100, -100,
-                                 0, 1, -1, 13, i32::MAX, i32::MIN, 100, -100);
-        #[rustfmt::skip]
-        let b = _mm512_set_epi32(0, 1, 13, 42, i32::MAX, i32::MIN, 100, -100,
-                                 0, 1, 13, 42, i32::MAX, i32::MIN, 100, -100);
-        let m = _mm512_cmpneq_epi32_mask(b, a);
-        assert_eq!(m, !_mm512_cmpeq_epi32_mask(b, a));
-    }
-
-    #[simd_test(enable = "avx512f")]
-    unsafe fn test_mm512_mask_cmpneq_epi32_mask() {
-        #[rustfmt::skip]
-        let a = _mm512_set_epi32(0, 1, -1, 13, i32::MAX, i32::MIN, -100, 100,
-                                 0, 1, -1, 13, i32::MAX, i32::MIN, -100, 100);
-        #[rustfmt::skip]
-        let b = _mm512_set_epi32(0, 1, 13, 42, i32::MAX, i32::MIN, 100, -100,
-                                 0, 1, 13, 42, i32::MAX, i32::MIN, 100, -100);
-        let mask = 0b01111010_01111010;
-        let r = _mm512_mask_cmpneq_epi32_mask(mask, b, a);
-        assert_eq!(r, 0b00110010_00110010)
     }
 
     #[simd_test(enable = "avx512f")]
