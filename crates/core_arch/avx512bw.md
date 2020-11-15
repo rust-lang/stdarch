@@ -1,8 +1,8 @@
 <summary>["AVX512BW"]</summary><p>
 
-  * [_] [`_mm512_abs_epi16`]
-  * [_] [`_mm512_mask_abs_epi16`]
-  * [_] [`_mm512_maskz_abs_epi16`]
+  * [x] [`_mm512_abs_epi16`]
+  * [x] [`_mm512_mask_abs_epi16`]
+  * [x] [`_mm512_maskz_abs_epi16`]
   * [_] [`_mm512_abs_epi8`]
   * [_] [`_mm512_mask_abs_epi8`]
   * [_] [`_mm512_maskz_abs_epi8`]
