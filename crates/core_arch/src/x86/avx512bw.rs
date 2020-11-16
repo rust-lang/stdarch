@@ -502,40 +502,73 @@ pub unsafe fn _mm512_maskz_subs_epi8(k: __mmask64, a: __m512i, b: __m512i) -> __
     transmute(vpsubsb(a.as_i8x64(), b.as_i8x64(), _mm512_setzero_si512().as_i8x64(), k))
 }
 
-/*
-/// Multiply the low signed 32-bit integers from each packed 64-bit element in a and b, and store the signed 64-bit results in dst.
+/// Multiply the packed unsigned 16-bit integers in a and b, producing intermediate 32-bit integers, and store the high 16 bits of the intermediate integers in dst.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mul_epi32&expand=3907)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mulhi_epu16&expand=3973)
 #[inline]
-#[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpmuldq))]
-pub unsafe fn _mm512_mul_epi32(a: __m512i, b: __m512i) -> __m512i {
-    transmute(vpmuldq(a.as_i32x16(), b.as_i32x16()))
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(vpmulhuw))]
+pub unsafe fn _mm512_mulhi_epu16(a: __m512i, b: __m512i) -> __m512i {
+    transmute(vpmulhuw(a.as_u16x32(), b.as_u16x32()))
 }
 
-/// Multiply the low signed 32-bit integers from each packed 64-bit element in a and b, and store the signed 64-bit results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+/// Multiply the packed unsigned 16-bit integers in a and b, producing intermediate 32-bit integers, and store the high 16 bits of the intermediate integers in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_mul_epi32&expand=3905)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_mulhi_epu16&expand=3971)
 #[inline]
-#[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpmuldq))]
-pub unsafe fn _mm512_mask_mul_epi32(src: __m512i, k: __mmask8, a: __m512i, b: __m512i) -> __m512i {
-    let mul = _mm512_mul_epi32(a, b).as_i64x8();
-    transmute(simd_select_bitmask(k, mul, src.as_i64x8()))
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(vpmulhuw))]
+pub unsafe fn _mm512_mask_mulhi_epu16(src: __m512i, k: __mmask32, a: __m512i, b: __m512i) -> __m512i {
+    let mul = _mm512_mulhi_epu16(a, b).as_u16x32();
+    transmute(simd_select_bitmask(k, mul, src.as_u16x32()))
 }
 
-/// Multiply the low signed 32-bit integers from each packed 64-bit element in a and b, and store the signed 64-bit results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+/// Multiply the packed unsigned 16-bit integers in a and b, producing intermediate 32-bit integers, and store the high 16 bits of the intermediate integers in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_mul_epi32&expand=3906)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_mulhi_epu16&expand=3972)
 #[inline]
-#[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpmuldq))]
-pub unsafe fn _mm512_maskz_mul_epi32(k: __mmask8, a: __m512i, b: __m512i) -> __m512i {
-    let mul = _mm512_mul_epi32(a, b).as_i64x8();
-    let zero = _mm512_setzero_si512().as_i64x8();
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(vpmulhuw))]
+pub unsafe fn _mm512_maskz_mulhi_epu16(k: __mmask32, a: __m512i, b: __m512i) -> __m512i {
+    let mul = _mm512_mulhi_epu16(a, b).as_u16x32();
+    let zero = _mm512_setzero_si512().as_u16x32();
     transmute(simd_select_bitmask(k, mul, zero))
 }
 
+/// Multiply the packed signed 16-bit integers in a and b, producing intermediate 32-bit integers, and store the high 16 bits of the intermediate integers in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mulhi_epi16&expand=3962)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(vpmulhw))]
+pub unsafe fn _mm512_mulhi_epi16(a: __m512i, b: __m512i) -> __m512i {
+    transmute(vpmulhw(a.as_i16x32(), b.as_i16x32()))
+}
+
+/// Multiply the packed signed 16-bit integers in a and b, producing intermediate 32-bit integers, and store the high 16 bits of the intermediate integers in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_mulhi_epi16&expand=3960)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(vpmulhw))]
+pub unsafe fn _mm512_mask_mulhi_epi16(src: __m512i, k: __mmask32, a: __m512i, b: __m512i) -> __m512i {
+    let mul = _mm512_mulhi_epi16(a, b).as_i16x32();
+    transmute(simd_select_bitmask(k, mul, src.as_i16x32()))
+}
+
+/// Multiply the packed signed 16-bit integers in a and b, producing intermediate 32-bit integers, and store the high 16 bits of the intermediate integers in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_mulhi_epi16&expand=3961)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(vpmulhw))]
+pub unsafe fn _mm512_maskz_mulhi_epi16(k: __mmask32, a: __m512i, b: __m512i) -> __m512i {
+    let mul = _mm512_mulhi_epi16(a, b).as_i16x32();
+    let zero = _mm512_setzero_si512().as_i16x32();
+    transmute(simd_select_bitmask(k, mul, zero))
+}
+
+/*
 /// Multiply the packed 32-bit integers in a and b, producing intermediate 64-bit integers, and store the low 32 bits of the intermediate integers in dst.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mullo_epi&expand=4005)
@@ -3380,6 +3413,11 @@ extern "C" {
     #[link_name = "llvm.x86.avx512.mask.psubs.b.512"]
     fn vpsubsb(a: i8x64, b: i8x64, src: i8x64, mask: u64) -> i8x64;
 
+    #[link_name = "llvm.x86.avx512.pmulhu.w.512"]
+    fn vpmulhuw(a: u16x32, b: u16x32) -> u16x32;
+    #[link_name = "llvm.x86.avx512.pmulh.w.512"]
+    fn vpmulhw(a: i16x32, b: i16x32) -> i16x32;
+
     #[link_name = "llvm.x86.avx512.mask.ucmp.w.512"]
     fn vpcmpuw(a: u16x32, b: u16x32, op: i32, mask: u32) -> u32;
     #[link_name = "llvm.x86.avx512.mask.ucmp.b.512"]
@@ -3391,14 +3429,6 @@ extern "C" {
 
 
 
-
-
-
-
-    #[link_name = "llvm.x86.avx512.pmul.dq.512"]
-    fn vpmuldq(a: i32x16, b: i32x16) -> i64x8;
-    #[link_name = "llvm.x86.avx512.pmulu.dq.512"]
-    fn vpmuludq(a: u32x16, b: u32x16) -> u64x8;
 
     #[link_name = "llvm.x86.avx512.mask.pmaxs.d.512"]
     fn vpmaxsd(a: i32x16, b: i32x16) -> i32x16;
@@ -4003,6 +4033,72 @@ mod tests {
                                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, i8::MIN, i8::MIN, i8::MIN, i8::MIN);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_mm512_mulhi_epu16() {
+        let a = _mm512_set1_epi16(1);
+        let b = _mm512_set1_epi16(1);
+        let r = _mm512_mulhi_epu16(a, b);
+        let e = _mm512_set1_epi16(0);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_mm512_mask_mulhi_epu16() {
+        let a = _mm512_set1_epi16(1);
+        let b = _mm512_set1_epi16(1);
+        let r = _mm512_mask_mulhi_epu16(a, 0, a, b);
+        assert_eq_m512i(r, a);
+        let r = _mm512_mask_mulhi_epu16(a, 0b00000000_00000000_00000000_00001111, a, b);
+        let e = _mm512_set_epi16(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+                                 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_mm512_maskz_mulhi_epu16() {
+        let a = _mm512_set1_epi16(1);
+        let b = _mm512_set1_epi16(1);
+        let r = _mm512_maskz_mulhi_epu16(0, a, b);
+        assert_eq_m512i(r, _mm512_setzero_si512());
+        let r = _mm512_maskz_mulhi_epu16(0b00000000_00000000_00000000_00001111, a, b);
+        let e = _mm512_set_epi16(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_mm512_mulhi_epi16() {
+        let a = _mm512_set1_epi16(1);
+        let b = _mm512_set1_epi16(1);
+        let r = _mm512_mulhi_epi16(a, b);
+        let e = _mm512_set1_epi16(0);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_mm512_mask_mulhi_epi16() {
+        let a = _mm512_set1_epi16(1);
+        let b = _mm512_set1_epi16(1);
+        let r = _mm512_mask_mulhi_epi16(a, 0, a, b);
+        assert_eq_m512i(r, a);
+        let r = _mm512_mask_mulhi_epi16(a, 0b00000000_00000000_00000000_00001111, a, b);
+        let e = _mm512_set_epi16(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+                                 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_mm512_maskz_mulhi_epi16() {
+        let a = _mm512_set1_epi16(1);
+        let b = _mm512_set1_epi16(1);
+        let r = _mm512_maskz_mulhi_epi16(0, a, b);
+        assert_eq_m512i(r, _mm512_setzero_si512());
+        let r = _mm512_maskz_mulhi_epi16(0b00000000_00000000_00000000_00001111, a, b);
+        let e = _mm512_set_epi16(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
         assert_eq_m512i(r, e);
     }
 /*
