@@ -1669,7 +1669,6 @@ pub unsafe fn _mm512_storeu_epi8(mem_addr: *mut i8, a: __m512i) {
 
 #[allow(improper_ctypes)]
 extern "C" {
-
     #[link_name = "llvm.x86.avx512.mask.paddus.w.512"]
     fn vpaddusw(a: u16x32, b: u16x32, src: u16x32, mask: u32) -> u16x32;
     #[link_name = "llvm.x86.avx512.mask.paddus.b.512"]
