@@ -1,7 +1,6 @@
 //! LLVM's SIMD platform intrinsics
 
 extern "platform-intrinsic" {
-    //pub fn simd_select_bitmask
     pub fn simd_eq<T, U>(x: T, y: T) -> U;
     pub fn simd_ne<T, U>(x: T, y: T) -> U;
     pub fn simd_lt<T, U>(x: T, y: T) -> U;

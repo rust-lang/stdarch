@@ -115,7 +115,6 @@ pub struct poly8x8x4_t(pub poly8x8_t, pub poly8x8_t, pub poly8x8_t, pub poly8x8_
 
 #[allow(improper_ctypes)]
 extern "C" {
-    // absolute value (64-bit)
     #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vabs.v8i8")]
     #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.abs.v8i8")]
     fn vabs_s8_(a: int8x8_t) -> int8x8_t;

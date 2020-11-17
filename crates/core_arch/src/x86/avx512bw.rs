@@ -1667,6 +1667,82 @@ pub unsafe fn _mm512_storeu_epi8(mem_addr: *mut i8, a: __m512i) {
     ptr::write_unaligned(mem_addr as *mut __m512i, a);
 }
 
+/// Multiply packed signed 16-bit integers in a and b, producing intermediate signed 32-bit integers. Horizontally add adjacent pairs of intermediate 32-bit integers, and pack the results in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_madd_epi16&expand=3511)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(vpmaddwd))]
+pub unsafe fn _mm512_madd_epi16(a: __m512i, b: __m512i) -> __m512i {
+    transmute(vpmaddwd(a.as_i16x32(), b.as_i16x32()))
+}
+
+/// Multiply packed signed 16-bit integers in a and b, producing intermediate signed 32-bit integers. Horizontally add adjacent pairs of intermediate 32-bit integers, and pack the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_madd_epi16&expand=3512)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(vpmaddwd))]
+pub unsafe fn _mm512_mask_madd_epi16(
+    src: __m512i,
+    k: __mmask16,
+    a: __m512i,
+    b: __m512i,
+) -> __m512i {
+    let add = _mm512_madd_epi16(a, b).as_i32x16();
+    transmute(simd_select_bitmask(k, add, src.as_i32x16()))
+}
+
+/// Multiply packed signed 16-bit integers in a and b, producing intermediate signed 32-bit integers. Horizontally add adjacent pairs of intermediate 32-bit integers, and pack the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_madd_epi16&expand=3513)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(vpmaddwd))]
+pub unsafe fn _mm512_maskz_madd_epi16(k: __mmask16, a: __m512i, b: __m512i) -> __m512i {
+    let add = _mm512_madd_epi16(a, b).as_i32x16();
+    let zero = _mm512_setzero_si512().as_i32x16();
+    transmute(simd_select_bitmask(k, add, zero))
+}
+
+/// Vertically multiply each unsigned 8-bit integer from a with the corresponding signed 8-bit integer from b, producing intermediate signed 16-bit integers. Horizontally add adjacent pairs of intermediate signed 16-bit integers, and pack the saturated results in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maddubs_epi16&expand=3539)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(vpmaddubsw))]
+pub unsafe fn _mm512_maddubs_epi16(a: __m512i, b: __m512i) -> __m512i {
+    transmute(vpmaddubsw(a.as_i8x64(), b.as_i8x64()))
+}
+
+/// Multiply packed unsigned 8-bit integers in a by packed signed 8-bit integers in b, producing intermediate signed 16-bit integers. Horizontally add adjacent pairs of intermediate signed 16-bit integers, and pack the saturated results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_maddubs_epi16&expand=3540)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(vpmaddubsw))]
+pub unsafe fn _mm512_mask_maddubs_epi16(
+    src: __m512i,
+    k: __mmask32,
+    a: __m512i,
+    b: __m512i,
+) -> __m512i {
+    let add = _mm512_maddubs_epi16(a, b).as_i16x32();
+    transmute(simd_select_bitmask(k, add, src.as_i16x32()))
+}
+
+/// Multiply packed unsigned 8-bit integers in a by packed signed 8-bit integers in b, producing intermediate signed 16-bit integers. Horizontally add adjacent pairs of intermediate signed 16-bit integers, and pack the saturated results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_maddubs_epi16&expand=3541)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(vpmaddubsw))]
+pub unsafe fn _mm512_maskz_maddubs_epi16(k: __mmask32, a: __m512i, b: __m512i) -> __m512i {
+    let add = _mm512_maddubs_epi16(a, b).as_i16x32();
+    let zero = _mm512_setzero_si512().as_i16x32();
+    transmute(simd_select_bitmask(k, add, zero))
+}
+
 #[allow(improper_ctypes)]
 extern "C" {
     #[link_name = "llvm.x86.avx512.mask.paddus.w.512"]
@@ -1720,6 +1796,11 @@ extern "C" {
     fn vpminsw(a: i16x32, b: i16x32) -> i16x32;
     #[link_name = "llvm.x86.avx512.mask.pmins.b.512"]
     fn vpminsb(a: i8x64, b: i8x64) -> i8x64;
+
+    #[link_name = "llvm.x86.avx512.pmaddw.d.512"]
+    fn vpmaddwd(a: i16x32, b: i16x32) -> i32x16;
+    #[link_name = "llvm.x86.avx512.pmaddubs.w.512"]
+    fn vpmaddubsw(a: i8x64, b: i8x64) -> i16x32;
 }
 
 #[cfg(test)]
@@ -3540,5 +3621,89 @@ mod tests {
         let mut r = _mm512_undefined_epi32();
         _mm512_storeu_epi8(&mut r as *mut _ as *mut i8, a);
         assert_eq_m512i(r, a);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_mm512_madd_epi16() {
+        let a = _mm512_set1_epi16(1);
+        let b = _mm512_set1_epi16(1);
+        let r = _mm512_madd_epi16(a, b);
+        let e = _mm512_set1_epi32(2);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_mm512_mask_madd_epi16() {
+        let a = _mm512_set1_epi16(1);
+        let b = _mm512_set1_epi16(1);
+        let r = _mm512_mask_madd_epi16(a, 0, a, b);
+        assert_eq_m512i(r, a);
+        let r = _mm512_mask_madd_epi16(a, 0b00000000_00001111, a, b);
+        let e = _mm512_set_epi32(
+            1 << 16 | 1,
+            1 << 16 | 1,
+            1 << 16 | 1,
+            1 << 16 | 1,
+            1 << 16 | 1,
+            1 << 16 | 1,
+            1 << 16 | 1,
+            1 << 16 | 1,
+            1 << 16 | 1,
+            1 << 16 | 1,
+            1 << 16 | 1,
+            1 << 16 | 1,
+            2,
+            2,
+            2,
+            2,
+        );
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_mm512_maskz_madd_epi16() {
+        let a = _mm512_set1_epi16(1);
+        let b = _mm512_set1_epi16(1);
+        let r = _mm512_maskz_madd_epi16(0, a, b);
+        assert_eq_m512i(r, _mm512_setzero_si512());
+        let r = _mm512_maskz_madd_epi16(0b00000000_00001111, a, b);
+        let e = _mm512_set_epi32(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_mm512_maddubs_epi16() {
+        let a = _mm512_set1_epi8(1);
+        let b = _mm512_set1_epi8(1);
+        let r = _mm512_maddubs_epi16(a, b);
+        let e = _mm512_set1_epi16(2);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_mm512_mask_maddubs_epi16() {
+        let a = _mm512_set1_epi8(1);
+        let b = _mm512_set1_epi8(1);
+        let src = _mm512_set1_epi16(1);
+        let r = _mm512_mask_maddubs_epi16(src, 0, a, b);
+        assert_eq_m512i(r, src);
+        let r = _mm512_mask_add_epi16(src, 0b00000000_00000000_00000000_00000001, a, b);
+        #[rustfmt::skip]
+        let e = _mm512_set_epi16(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+                                 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1<<9|2);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_mm512_maskz_maddubs_epi16() {
+        let a = _mm512_set1_epi8(1);
+        let b = _mm512_set1_epi8(1);
+        let r = _mm512_maskz_maddubs_epi16(0, a, b);
+        assert_eq_m512i(r, _mm512_setzero_si512());
+        let r = _mm512_maskz_maddubs_epi16(0b00000000_11111111_00000000_11111111, a, b);
+        #[rustfmt::skip]
+        let e = _mm512_set_epi16(0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2,
+                                 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2);
+        assert_eq_m512i(r, e);
     }
 }

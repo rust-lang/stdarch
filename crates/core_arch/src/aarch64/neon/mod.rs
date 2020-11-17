@@ -63,7 +63,6 @@ pub struct poly8x16x4_t(
 
 #[allow(improper_ctypes)]
 extern "C" {
-    // absolute value
     #[link_name = "llvm.aarch64.neon.abs.i64"]
     fn vabsd_s64_(a: i64) -> i64;
     #[link_name = "llvm.aarch64.neon.abs.v1i64"]
