@@ -1961,7 +1961,134 @@ pub unsafe fn _mm512_maskz_avg_epu8(k: __mmask64, a: __m512i, b: __m512i) -> __m
     transmute(simd_select_bitmask(k, avg, zero))
 }
 
-#[allow(improper_ctypes)]
+/// Shift packed 16-bit integers in a left by count while shifting in zeros, and store the results in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_sll_epi16&expand=5271)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(vpsllw))]
+pub unsafe fn _mm512_sll_epi16(a: __m512i, count: __m128i) -> __m512i {
+    transmute(vpsllw(a.as_i16x32(), count.as_i16x8()))
+}
+
+/// Shift packed 16-bit integers in a left by count while shifting in zeros, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_sll_epi16&expand=5269)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(vpsllw))]
+pub unsafe fn _mm512_mask_sll_epi16(
+    src: __m512i,
+    k: __mmask32,
+    a: __m512i,
+    count: __m128i,
+) -> __m512i {
+    let shf = _mm512_sll_epi16(a, count).as_i16x32();
+    transmute(simd_select_bitmask(k, shf, src.as_i16x32()))
+}
+
+/// Shift packed 16-bit integers in a left by count while shifting in zeros, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_sll_epi16&expand=5270)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(vpsllw))]
+pub unsafe fn _mm512_maskz_sll_epi16(k: __mmask32, a: __m512i, count: __m128i) -> __m512i {
+    let shf = _mm512_sll_epi16(a, count).as_i16x32();
+    let zero = _mm512_setzero_si512().as_i16x32();
+    transmute(simd_select_bitmask(k, shf, zero))
+}
+
+/// Shift packed 16-bit integers in a left by imm8 while shifting in zeros, and store the results in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_slli_epi16&expand=5301)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(vpsllw, imm8 = 5))]
+#[rustc_args_required_const(1)]
+pub unsafe fn _mm512_slli_epi16(a: __m512i, imm8: u32) -> __m512i {
+    macro_rules! call {
+        ($imm8:expr) => {
+            vpslliw(a.as_i16x32(), $imm8)
+        };
+    }
+    let r = constify_imm8_sae!(imm8, call);
+    transmute(r)
+}
+
+/// Shift packed 16-bit integers in a left by imm8 while shifting in zeros, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_slli_epi16&expand=5299)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(vpsllw, imm8 = 5))]
+#[rustc_args_required_const(3)]
+pub unsafe fn _mm512_mask_slli_epi16(src: __m512i, k: __mmask32, a: __m512i, imm8: u32) -> __m512i {
+    macro_rules! call {
+        ($imm8:expr) => {
+            vpslliw(a.as_i16x32(), $imm8)
+        };
+    }
+    let shf = constify_imm8_sae!(imm8, call);
+    transmute(simd_select_bitmask(k, shf, src.as_i16x32()))
+}
+
+/// Shift packed 16-bit integers in a left by imm8 while shifting in zeros, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_slli_epi16&expand=5300)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(vpsllw, imm8 = 5))]
+#[rustc_args_required_const(2)]
+pub unsafe fn _mm512_maskz_slli_epi16(k: __mmask32, a: __m512i, imm8: u32) -> __m512i {
+    macro_rules! call {
+        ($imm8:expr) => {
+            vpslliw(a.as_i16x32(), $imm8)
+        };
+    }
+    let shf = constify_imm8_sae!(imm8, call);
+    let zero = _mm512_setzero_si512().as_i16x32();
+    transmute(simd_select_bitmask(k, shf, zero))
+}
+
+/// Shift packed 16-bit integers in a left by the amount specified by the corresponding element in count while shifting in zeros, and store the results in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_sllv_epi16&expand=5333)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(vpsllvw))]
+pub unsafe fn _mm512_sllv_epi16(a: __m512i, count: __m512i) -> __m512i {
+    transmute(vpsllvw(a.as_i16x32(), count.as_i16x32()))
+}
+
+/// Shift packed 16-bit integers in a left by the amount specified by the corresponding element in count while shifting in zeros, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_sllv_epi16&expand=5331)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(vpsllvw))]
+pub unsafe fn _mm512_mask_sllv_epi16(
+    src: __m512i,
+    k: __mmask32,
+    a: __m512i,
+    count: __m512i,
+) -> __m512i {
+    let shf = _mm512_sllv_epi16(a, count).as_i16x32();
+    transmute(simd_select_bitmask(k, shf, src.as_i16x32()))
+}
+
+/// Shift packed 16-bit integers in a left by the amount specified by the corresponding element in count while shifting in zeros, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_sllv_epi16&expand=5332)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(vpsllvw))]
+pub unsafe fn _mm512_maskz_sllv_epi16(k: __mmask32, a: __m512i, count: __m512i) -> __m512i {
+    let shf = _mm512_sllv_epi16(a, count).as_i16x32();
+    let zero = _mm512_setzero_si512().as_i16x32();
+    transmute(simd_select_bitmask(k, shf, zero))
+}
+
 #[allow(improper_ctypes)]
 extern "C" {
     #[link_name = "llvm.x86.avx512.mask.paddus.w.512"]
@@ -2034,6 +2161,13 @@ extern "C" {
     fn vpavgw(a: u16x32, b: u16x32) -> u16x32;
     #[link_name = "llvm.x86.avx512.pavg.b.512"]
     fn vpavgb(a: u8x64, b: u8x64) -> u8x64;
+
+    #[link_name = "llvm.x86.avx512.psll.w.512"]
+    fn vpsllw(a: i16x32, count: i16x8) -> i16x32;
+    #[link_name = "llvm.x86.avx512.pslli.w.512"]
+    fn vpslliw(a: i16x32, imm8: u32) -> i16x32;
+    #[link_name = "llvm.x86.avx512.psllv.w.512"]
+    fn vpsllvw(a: i16x32, b: i16x32) -> i16x32;
 }
 
 #[cfg(test)]
@@ -4198,6 +4332,96 @@ mod tests {
                                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_mm512_sll_epi16() {
+        let a = _mm512_set1_epi16(1 << 15);
+        let count = _mm_set1_epi16(2);
+        let r = _mm512_sll_epi16(a, count);
+        let e = _mm512_set1_epi16(0);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_mm512_mask_sll_epi16() {
+        let a = _mm512_set1_epi16(1 << 15);
+        let count = _mm_set1_epi16(2);
+        let r = _mm512_mask_sll_epi16(a, 0, a, count);
+        assert_eq_m512i(r, a);
+        let r = _mm512_mask_sll_epi16(a, 0b11111111_11111111_11111111_11111111, a, count);
+        let e = _mm512_set1_epi16(0);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_mm512_maskz_sll_epi16() {
+        let a = _mm512_set1_epi16(1 << 15);
+        let count = _mm_set1_epi16(2);
+        let r = _mm512_maskz_sll_epi16(0, a, count);
+        assert_eq_m512i(r, _mm512_setzero_si512());
+        let r = _mm512_maskz_sll_epi16(0b11111111_11111111_11111111_11111111, a, count);
+        let e = _mm512_set1_epi16(0);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_mm512_slli_epi16() {
+        let a = _mm512_set1_epi16(1 << 15);
+        let r = _mm512_slli_epi16(a, 1);
+        let e = _mm512_set1_epi16(0);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_mm512_mask_slli_epi16() {
+        let a = _mm512_set1_epi16(1 << 15);
+        let r = _mm512_mask_slli_epi16(a, 0, a, 1);
+        assert_eq_m512i(r, a);
+        let r = _mm512_mask_slli_epi16(a, 0b11111111_11111111_11111111_11111111, a, 1);
+        let e = _mm512_set1_epi16(0);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_mm512_maskz_slli_epi16() {
+        let a = _mm512_set1_epi16(1 << 15);
+        let r = _mm512_maskz_slli_epi16(0, a, 1);
+        assert_eq_m512i(r, _mm512_setzero_si512());
+        let r = _mm512_maskz_slli_epi16(0b11111111_11111111_11111111_11111111, a, 1);
+        let e = _mm512_set1_epi16(0);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_mm512_sllv_epi16() {
+        let a = _mm512_set1_epi16(1 << 15);
+        let count = _mm512_set1_epi16(2);
+        let r = _mm512_sllv_epi16(a, count);
+        let e = _mm512_set1_epi16(0);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_mm512_mask_sllv_epi16() {
+        let a = _mm512_set1_epi16(1 << 15);
+        let count = _mm512_set1_epi16(2);
+        let r = _mm512_mask_sllv_epi16(a, 0, a, count);
+        assert_eq_m512i(r, a);
+        let r = _mm512_mask_sllv_epi16(a, 0b11111111_11111111_11111111_11111111, a, count);
+        let e = _mm512_set1_epi16(0);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_mm512_maskz_sllv_epi16() {
+        let a = _mm512_set1_epi16(1 << 15);
+        let count = _mm512_set1_epi16(2);
+        let r = _mm512_maskz_sllv_epi16(0, a, count);
+        assert_eq_m512i(r, _mm512_setzero_si512());
+        let r = _mm512_maskz_sllv_epi16(0b11111111_11111111_11111111_11111111, a, count);
+        let e = _mm512_set1_epi16(0);
         assert_eq_m512i(r, e);
     }
 }
