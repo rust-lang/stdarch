@@ -2443,6 +2443,68 @@ pub unsafe fn _mm512_maskz_permutexvar_epi16(k: __mmask32, idx: __m512i, a: __m5
     transmute(simd_select_bitmask(k, permute, zero))
 }
 
+/// Blend packed 16-bit integers from a and b using control mask k, and store the results in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_blend_epi16&expand=430)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(vmovdqu16))] //should be vpblendmw
+pub unsafe fn _mm512_mask_blend_epi16(k: __mmask32, a: __m512i, b: __m512i) -> __m512i {
+    transmute(simd_select_bitmask(k, b.as_i16x32(), a.as_i16x32()))
+}
+
+/// Blend packed 8-bit integers from a and b using control mask k, and store the results in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_blend_epi8&expand=441)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(vmovdqu8))] //should be vpblendmb
+pub unsafe fn _mm512_mask_blend_epi8(k: __mmask64, a: __m512i, b: __m512i) -> __m512i {
+    transmute(simd_select_bitmask(k, b.as_i8x64(), a.as_i8x64()))
+}
+
+/// Broadcast the low packed 16-bit integer from a to all elements of dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_broadcastw_epi16&expand=587)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(vpbroadcastw))]
+pub unsafe fn _mm512_broadcastw_epi16(a: __m128i) -> __m512i {
+    let a = _mm512_castsi128_si512(a).as_i16x32();
+    let ret: i16x32 = simd_shuffle32(
+        a,
+        a,
+        [
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0,
+        ],
+    );
+    transmute(ret)
+}
+
+/// Broadcast the low packed 16-bit integer from a to all elements of dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_broadcastw_epi16&expand=588)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(vpbroadcastw))]
+pub unsafe fn _mm512_mask_broadcastw_epi16(src: __m512i, k: __mmask32, a: __m128i) -> __m512i {
+    let broadcast = _mm512_broadcastw_epi16(a).as_i16x32();
+    transmute(simd_select_bitmask(k, broadcast, src.as_i16x32()))
+}
+
+/// Broadcast the low packed 16-bit integer from a to all elements of dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_broadcastw_epi16&expand=589)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(vpbroadcastw))]
+pub unsafe fn _mm512_maskz_broadcastw_epi16(k: __mmask32, a: __m128i) -> __m512i {
+    let broadcast = _mm512_broadcastw_epi16(a).as_i16x32();
+    let zero = _mm512_setzero_si512().as_i16x32();
+    transmute(simd_select_bitmask(k, broadcast, zero))
+}
+
 #[allow(improper_ctypes)]
 extern "C" {
     #[link_name = "llvm.x86.avx512.mask.paddus.w.512"]
@@ -4977,7 +5039,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512f")]
+    #[simd_test(enable = "avx512bw")]
     unsafe fn test_mm512_permutex2var_epi16() {
         #[rustfmt::skip]
         let a = _mm512_set_epi16(0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15,
@@ -4995,7 +5057,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512f")]
+    #[simd_test(enable = "avx512bw")]
     unsafe fn test_mm512_mask_permutex2var_epi16() {
         #[rustfmt::skip]
         let a = _mm512_set_epi16(0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15,
@@ -5015,7 +5077,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512f")]
+    #[simd_test(enable = "avx512bw")]
     unsafe fn test_mm512_maskz_permutex2var_epi16() {
         #[rustfmt::skip]
         let a = _mm512_set_epi16(0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15,
@@ -5035,7 +5097,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512f")]
+    #[simd_test(enable = "avx512bw")]
     unsafe fn test_mm512_mask2_permutex2var_epi16() {
         #[rustfmt::skip]
         let a = _mm512_set_epi16(0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15,
@@ -5055,7 +5117,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512f")]
+    #[simd_test(enable = "avx512bw")]
     unsafe fn test_mm512_permutexvar_epi16() {
         let idx = _mm512_set1_epi16(1);
         #[rustfmt::skip]
@@ -5066,7 +5128,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512f")]
+    #[simd_test(enable = "avx512bw")]
     unsafe fn test_mm512_mask_permutexvar_epi16() {
         let idx = _mm512_set1_epi16(1);
         #[rustfmt::skip]
@@ -5079,7 +5141,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512f")]
+    #[simd_test(enable = "avx512bw")]
     unsafe fn test_mm512_maskz_permutexvar_epi16() {
         let idx = _mm512_set1_epi16(1);
         #[rustfmt::skip]
@@ -5089,6 +5151,63 @@ mod tests {
         assert_eq_m512i(r, _mm512_setzero_si512());
         let r = _mm512_maskz_permutexvar_epi16(0b11111111_11111111_11111111_11111111, idx, a);
         let e = _mm512_set1_epi16(30);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_mm512_mask_blend_epi16() {
+        let a = _mm512_set1_epi16(1);
+        let b = _mm512_set1_epi16(2);
+        let r = _mm512_mask_blend_epi16(0b11111111_00000000_11111111_00000000, a, b);
+        #[rustfmt::skip]
+        let e = _mm512_set_epi16(2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1,
+                                 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_mm512_mask_blend_epi8() {
+        let a = _mm512_set1_epi8(1);
+        let b = _mm512_set1_epi8(2);
+        let r = _mm512_mask_blend_epi8(
+            0b11111111_00000000_11111111_00000000_11111111_00000000_11111111_00000000,
+            a,
+            b,
+        );
+        #[rustfmt::skip]
+        let e = _mm512_set_epi8(2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1,
+                                2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1,
+                                2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1,
+                                2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_mm512_broadcastw_epi16() {
+        let a = _mm_set_epi16(17, 18, 19, 20, 21, 22, 23, 24);
+        let r = _mm512_broadcastw_epi16(a);
+        let e = _mm512_set1_epi16(24);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_mm512_mask_broadcastw_epi16() {
+        let src = _mm512_set1_epi16(1);
+        let a = _mm_set_epi16(17, 18, 19, 20, 21, 22, 23, 24);
+        let r = _mm512_mask_broadcastw_epi16(src, 0, a);
+        assert_eq_m512i(r, src);
+        let r = _mm512_mask_broadcastw_epi16(src, 0b11111111_11111111_11111111_11111111, a);
+        let e = _mm512_set1_epi16(24);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_mm512_maskz_broadcastw_epi16() {
+        let a = _mm_set_epi16(17, 18, 19, 20, 21, 22, 23, 24);
+        let r = _mm512_maskz_broadcastw_epi16(0, a);
+        assert_eq_m512i(r, _mm512_setzero_si512());
+        let r = _mm512_maskz_broadcastw_epi16(0b11111111_11111111_11111111_11111111, a);
+        let e = _mm512_set1_epi16(24);
         assert_eq_m512i(r, e);
     }
 }
