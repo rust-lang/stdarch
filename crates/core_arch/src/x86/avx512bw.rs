@@ -2351,7 +2351,7 @@ pub unsafe fn _mm512_maskz_srav_epi16(k: __mmask32, a: __m512i, count: __m512i) 
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_permutex2var_epi16&expand=4226)
 #[inline]
 #[target_feature(enable = "avx512bw")]
-#[cfg_attr(test, assert_instr(vpermt2w))] //vpermi2w or vpermt2w
+#[cfg_attr(test, assert_instr(vperm))] //vpermi2w or vpermt2w
 pub unsafe fn _mm512_permutex2var_epi16(a: __m512i, idx: __m512i, b: __m512i) -> __m512i {
     transmute(vpermi2w(a.as_i16x32(), idx.as_i16x32(), b.as_i16x32()))
 }
