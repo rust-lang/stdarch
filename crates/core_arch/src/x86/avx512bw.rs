@@ -2557,42 +2557,19 @@ pub unsafe fn _mm512_maskz_broadcastb_epi8(k: __mmask64, a: __m128i) -> __m512i 
 pub unsafe fn _mm512_unpackhi_epi16(a: __m512i, b: __m512i) -> __m512i {
     let a = a.as_i16x32();
     let b = b.as_i16x32();
+    #[rustfmt::skip]
     let r: i16x32 = simd_shuffle32(
         a,
         b,
         [
-            4,
-            32 + 4,
-            5,
-            32 + 5,
-            6,
-            32 + 6,
-            7,
-            32 + 7,
-            12,
-            32 + 12,
-            13,
-            32 + 13,
-            14,
-            32 + 14,
-            15,
-            32 + 15,
-            20,
-            32 + 20,
-            21,
-            32 + 21,
-            22,
-            32 + 22,
-            23,
-            32 + 23,
-            28,
-            32 + 28,
-            29,
-            32 + 29,
-            30,
-            32 + 30,
-            31,
-            32 + 31,
+            4, 32 + 4, 5, 32 + 5,
+            6, 32 + 6, 7, 32 + 7,
+            12, 32 + 12, 13, 32 + 13,
+            14, 32 + 14, 15, 32 + 15,
+            20, 32 + 20, 21, 32 + 21,
+            22, 32 + 22, 23, 32 + 23,
+            28, 32 + 28, 29, 32 + 29,
+            30, 32 + 30, 31, 32 + 31,
         ],
     );
     transmute(r)
@@ -2624,6 +2601,187 @@ pub unsafe fn _mm512_maskz_unpackhi_epi16(k: __mmask32, a: __m512i, b: __m512i) 
     let unpackhi = _mm512_unpackhi_epi16(a, b).as_i16x32();
     let zero = _mm512_setzero_si512().as_i16x32();
     transmute(simd_select_bitmask(k, unpackhi, zero))
+}
+
+/// Unpack and interleave 8-bit integers from the high half of each 128-bit lane in a and b, and store the results in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_unpackhi_epi8&expand=6039)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(vpunpckhbw))]
+pub unsafe fn _mm512_unpackhi_epi8(a: __m512i, b: __m512i) -> __m512i {
+    let a = a.as_i8x64();
+    let b = b.as_i8x64();
+    #[rustfmt::skip]
+    let r: i8x64 = simd_shuffle64(
+        a,
+        b,
+        [
+            8,  64+8,   9, 64+9,
+            10, 64+10, 11, 64+11,
+            12, 64+12, 13, 64+13,
+            14, 64+14, 15, 64+15,
+            24, 64+24, 25, 64+25,
+            26, 64+26, 27, 64+27,
+            28, 64+28, 29, 64+29,
+            30, 64+30, 31, 64+31,
+            40, 64+40, 41, 64+41,
+            42, 64+42, 43, 64+43,
+            44, 64+44, 45, 64+45,
+            46, 64+46, 47, 64+47,
+            56, 64+56, 57, 64+57,
+            58, 64+58, 59, 64+59,
+            60, 64+60, 61, 64+61,
+            62, 64+62, 63, 64+63,
+        ],
+    );
+    transmute(r)
+}
+
+/// Unpack and interleave 8-bit integers from the high half of each 128-bit lane in a and b, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_unpackhi_epi8&expand=6037)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(vpunpckhbw))]
+pub unsafe fn _mm512_mask_unpackhi_epi8(
+    src: __m512i,
+    k: __mmask64,
+    a: __m512i,
+    b: __m512i,
+) -> __m512i {
+    let unpackhi = _mm512_unpackhi_epi8(a, b).as_i8x64();
+    transmute(simd_select_bitmask(k, unpackhi, src.as_i8x64()))
+}
+
+/// Unpack and interleave 8-bit integers from the high half of each 128-bit lane in a and b, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_unpackhi_epi8&expand=6038)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(vpunpckhbw))]
+pub unsafe fn _mm512_maskz_unpackhi_epi8(k: __mmask64, a: __m512i, b: __m512i) -> __m512i {
+    let unpackhi = _mm512_unpackhi_epi8(a, b).as_i8x64();
+    let zero = _mm512_setzero_si512().as_i8x64();
+    transmute(simd_select_bitmask(k, unpackhi, zero))
+}
+
+/// Unpack and interleave 16-bit integers from the low half of each 128-bit lane in a and b, and store the results in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_unpacklo_epi16&expand=6069)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(vpunpcklwd))]
+pub unsafe fn _mm512_unpacklo_epi16(a: __m512i, b: __m512i) -> __m512i {
+    let a = a.as_i16x32();
+    let b = b.as_i16x32();
+    #[rustfmt::skip]
+    let r: i16x32 = simd_shuffle32(
+        a,
+        b,
+        [
+            0,  32+0,   1, 32+1,
+            2,  32+2,   3, 32+3,
+            8,  32+8,   9, 32+9,
+            10, 32+10, 11, 32+11,
+            16, 32+16, 17, 32+17,
+            18, 32+18, 19, 32+19,
+            24, 32+24, 25, 32+25,
+            26, 32+26, 27, 32+27
+        ],
+    );
+    transmute(r)
+}
+
+/// Unpack and interleave 16-bit integers from the low half of each 128-bit lane in a and b, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_unpacklo_epi16&expand=6067)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(vpunpcklwd))]
+pub unsafe fn _mm512_mask_unpacklo_epi16(
+    src: __m512i,
+    k: __mmask32,
+    a: __m512i,
+    b: __m512i,
+) -> __m512i {
+    let unpacklo = _mm512_unpacklo_epi16(a, b).as_i16x32();
+    transmute(simd_select_bitmask(k, unpacklo, src.as_i16x32()))
+}
+
+/// Unpack and interleave 16-bit integers from the low half of each 128-bit lane in a and b, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_unpacklo_epi16&expand=6068)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(vpunpcklwd))]
+pub unsafe fn _mm512_maskz_unpacklo_epi16(k: __mmask32, a: __m512i, b: __m512i) -> __m512i {
+    let unpacklo = _mm512_unpacklo_epi16(a, b).as_i16x32();
+    let zero = _mm512_setzero_si512().as_i16x32();
+    transmute(simd_select_bitmask(k, unpacklo, zero))
+}
+
+/// Unpack and interleave 8-bit integers from the low half of each 128-bit lane in a and b, and store the results in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_unpacklo_epi8&expand=6096)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(vpunpcklbw))]
+pub unsafe fn _mm512_unpacklo_epi8(a: __m512i, b: __m512i) -> __m512i {
+    let a = a.as_i8x64();
+    let b = b.as_i8x64();
+    #[rustfmt::skip]
+    let r: i8x64 = simd_shuffle64(
+        a,
+        b,
+        [
+            0,  64+0,   1, 64+1,
+            2,  64+2,   3, 64+3,
+            4,  64+4,   5, 64+5,
+            6,  64+6,   7, 64+7,
+            16, 64+16, 17, 64+17,
+            18, 64+18, 19, 64+19,
+            20, 64+20, 21, 64+21,
+            22, 64+22, 23, 64+23,
+            32, 64+32, 33, 64+33,
+            34, 64+34, 35, 64+35,
+            36, 64+36, 37, 64+37,
+            38, 64+38, 39, 64+39,
+            48, 64+48, 49, 64+49,
+            50, 64+50, 51, 64+51,
+            52, 64+52, 53, 64+53,
+            54, 64+54, 55, 64+55,
+        ],
+    );
+    transmute(r)
+}
+
+/// Unpack and interleave 8-bit integers from the low half of each 128-bit lane in a and b, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_unpacklo_epi8&expand=6094)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(vpunpcklbw))]
+pub unsafe fn _mm512_mask_unpacklo_epi8(
+    src: __m512i,
+    k: __mmask64,
+    a: __m512i,
+    b: __m512i,
+) -> __m512i {
+    let unpacklo = _mm512_unpacklo_epi8(a, b).as_i8x64();
+    transmute(simd_select_bitmask(k, unpacklo, src.as_i8x64()))
+}
+
+/// Unpack and interleave 8-bit integers from the low half of each 128-bit lane in a and b, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_unpacklo_epi8&expand=6095)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(vpunpcklbw))]
+pub unsafe fn _mm512_maskz_unpacklo_epi8(k: __mmask64, a: __m512i, b: __m512i) -> __m512i {
+    let unpacklo = _mm512_unpacklo_epi8(a, b).as_i8x64();
+    let zero = _mm512_setzero_si512().as_i8x64();
+    transmute(simd_select_bitmask(k, unpacklo, zero))
 }
 
 #[allow(improper_ctypes)]
@@ -5420,6 +5578,207 @@ mod tests {
         #[rustfmt::skip]
         let e = _mm512_set_epi16(33, 1,  34, 2,  35, 3,  36, 4,  41, 9,  42, 10, 43, 11, 44, 12,
                                  49, 17, 50, 18, 51, 19, 52, 20, 57, 25, 58, 26, 59, 27, 60, 28);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_mm512_unpackhi_epi8() {
+        #[rustfmt::skip]
+        let a = _mm512_set_epi8(1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15, 16,
+                                17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32,
+                                33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48,
+                                49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64);
+        #[rustfmt::skip]
+        let b = _mm512_set_epi8(65,  66,  67,  68,  69,  70,  71,  72,  73,  74,  75,  76,  77,  78,  79,  80,
+                                81,  82,  83,  84,  85,  86,  87,  88,  89,  90,  91,  92,  93,  94,  95,  96,
+                                97,  98,  99,  100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112,
+                                113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 0);
+        let r = _mm512_unpackhi_epi8(a, b);
+        #[rustfmt::skip]
+        let e = _mm512_set_epi8(65, 1,  66, 2,  67, 3,  68, 4,  69, 5,  70, 6,  71, 7,  72, 8,
+                                81, 17, 82, 18, 83, 19, 84, 20, 85, 21, 86, 22, 87, 23, 88, 24,
+                                97, 33, 98, 34, 99, 35, 100, 36, 101, 37, 102, 38, 103, 39, 104, 40,
+                                113, 49, 114, 50, 115, 51, 116, 52, 117, 53, 118, 54, 119, 55, 120, 56);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_mm512_mask_unpackhi_epi8() {
+        #[rustfmt::skip]
+        let a = _mm512_set_epi8(1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15, 16,
+                                17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32,
+                                33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48,
+                                49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64);
+        #[rustfmt::skip]
+        let b = _mm512_set_epi8(65,  66,  67,  68,  69,  70,  71,  72,  73,  74,  75,  76,  77,  78,  79,  80,
+                                81,  82,  83,  84,  85,  86,  87,  88,  89,  90,  91,  92,  93,  94,  95,  96,
+                                97,  98,  99,  100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112,
+                                113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 0);
+        let r = _mm512_mask_unpackhi_epi8(a, 0, a, b);
+        assert_eq_m512i(r, a);
+        let r = _mm512_mask_unpackhi_epi8(
+            a,
+            0b_11111111_11111111_11111111_11111111_11111111_11111111_11111111_11111111,
+            a,
+            b,
+        );
+        #[rustfmt::skip]
+        let e = _mm512_set_epi8(65, 1,  66, 2,  67, 3,  68, 4,  69, 5,  70, 6,  71, 7,  72, 8,
+                                81, 17, 82, 18, 83, 19, 84, 20, 85, 21, 86, 22, 87, 23, 88, 24,
+                                97, 33, 98, 34, 99, 35, 100, 36, 101, 37, 102, 38, 103, 39, 104, 40,
+                                113, 49, 114, 50, 115, 51, 116, 52, 117, 53, 118, 54, 119, 55, 120, 56);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_mm512_maskz_unpackhi_epi8() {
+        #[rustfmt::skip]
+        let a = _mm512_set_epi8(1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15, 16,
+                                17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32,
+                                33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48,
+                                49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64);
+        #[rustfmt::skip]
+        let b = _mm512_set_epi8(65,  66,  67,  68,  69,  70,  71,  72,  73,  74,  75,  76,  77,  78,  79,  80,
+                                81,  82,  83,  84,  85,  86,  87,  88,  89,  90,  91,  92,  93,  94,  95,  96,
+                                97,  98,  99,  100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112,
+                                113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 0);
+        let r = _mm512_maskz_unpackhi_epi8(0, a, b);
+        assert_eq_m512i(r, _mm512_setzero_si512());
+        let r = _mm512_maskz_unpackhi_epi8(
+            0b_11111111_11111111_11111111_11111111_11111111_11111111_11111111_11111111,
+            a,
+            b,
+        );
+        #[rustfmt::skip]
+        let e = _mm512_set_epi8(65, 1,  66, 2,  67, 3,  68, 4,  69, 5,  70, 6,  71, 7,  72, 8,
+                                81, 17, 82, 18, 83, 19, 84, 20, 85, 21, 86, 22, 87, 23, 88, 24,
+                                97, 33, 98, 34, 99, 35, 100, 36, 101, 37, 102, 38, 103, 39, 104, 40,
+                                113, 49, 114, 50, 115, 51, 116, 52, 117, 53, 118, 54, 119, 55, 120, 56);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_mm512_unpacklo_epi16() {
+        #[rustfmt::skip]
+        let a = _mm512_set_epi16(1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15, 16,
+                                 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32);
+        #[rustfmt::skip]
+        let b = _mm512_set_epi16(33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48,
+                                 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64);
+        let r = _mm512_unpacklo_epi16(a, b);
+        #[rustfmt::skip]
+        let e = _mm512_set_epi16(37, 5,  38, 6,  39, 7,  40, 8,  45, 13, 46, 14, 47, 15, 48, 16,
+                                 53, 21, 54, 22, 55, 23, 56, 24, 61, 29, 62, 30, 63, 31, 64, 32);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_mm512_mask_unpacklo_epi16() {
+        #[rustfmt::skip]
+        let a = _mm512_set_epi16(1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15, 16,
+                                 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32);
+        #[rustfmt::skip]
+        let b = _mm512_set_epi16(33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48,
+                                 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64);
+        let r = _mm512_mask_unpacklo_epi16(a, 0, a, b);
+        assert_eq_m512i(r, a);
+        let r = _mm512_mask_unpacklo_epi16(a, 0b11111111_11111111_11111111_11111111, a, b);
+        #[rustfmt::skip]
+        let e = _mm512_set_epi16(37, 5,  38, 6,  39, 7,  40, 8,  45, 13, 46, 14, 47, 15, 48, 16,
+                                 53, 21, 54, 22, 55, 23, 56, 24, 61, 29, 62, 30, 63, 31, 64, 32);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_mm512_maskz_unpacklo_epi16() {
+        #[rustfmt::skip]
+        let a = _mm512_set_epi16(1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15, 16,
+                                 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32);
+        #[rustfmt::skip]
+        let b = _mm512_set_epi16(33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48,
+                                 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64);
+        let r = _mm512_maskz_unpacklo_epi16(0, a, b);
+        assert_eq_m512i(r, _mm512_setzero_si512());
+        let r = _mm512_maskz_unpacklo_epi16(0b11111111_11111111_11111111_11111111, a, b);
+        #[rustfmt::skip]
+        let e = _mm512_set_epi16(37, 5,  38, 6,  39, 7,  40, 8,  45, 13, 46, 14, 47, 15, 48, 16,
+                                 53, 21, 54, 22, 55, 23, 56, 24, 61, 29, 62, 30, 63, 31, 64, 32);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_mm512_unpacklo_epi8() {
+        #[rustfmt::skip]
+        let a = _mm512_set_epi8(1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15, 16,
+                                17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32,
+                                33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48,
+                                49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64);
+        #[rustfmt::skip]
+        let b = _mm512_set_epi8(65,  66,  67,  68,  69,  70,  71,  72,  73,  74,  75,  76,  77,  78,  79,  80,
+                                81,  82,  83,  84,  85,  86,  87,  88,  89,  90,  91,  92,  93,  94,  95,  96,
+                                97,  98,  99,  100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112,
+                                113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 0);
+        let r = _mm512_unpacklo_epi8(a, b);
+        #[rustfmt::skip]
+        let e = _mm512_set_epi8(73,  9,  74,  10, 75,  11, 76,  12, 77,  13, 78,  14, 79,  15, 80,  16,
+                                89,  25, 90,  26, 91,  27, 92,  28, 93,  29, 94,  30, 95,  31, 96,  32,
+                                105, 41, 106, 42, 107, 43, 108, 44, 109, 45, 110, 46, 111, 47, 112, 48,
+                                121, 57, 122, 58, 123, 59, 124, 60, 125, 61, 126, 62, 127, 63, 0,   64);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_mm512_mask_unpacklo_epi8() {
+        #[rustfmt::skip]
+        let a = _mm512_set_epi8(1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15, 16,
+                                17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32,
+                                33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48,
+                                49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64);
+        #[rustfmt::skip]
+        let b = _mm512_set_epi8(65,  66,  67,  68,  69,  70,  71,  72,  73,  74,  75,  76,  77,  78,  79,  80,
+                                81,  82,  83,  84,  85,  86,  87,  88,  89,  90,  91,  92,  93,  94,  95,  96,
+                                97,  98,  99,  100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112,
+                                113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 0);
+        let r = _mm512_mask_unpacklo_epi8(a, 0, a, b);
+        assert_eq_m512i(r, a);
+        let r = _mm512_mask_unpacklo_epi8(
+            a,
+            0b_11111111_11111111_11111111_11111111_11111111_11111111_11111111_11111111,
+            a,
+            b,
+        );
+        #[rustfmt::skip]
+        let e = _mm512_set_epi8(73,  9,  74,  10, 75,  11, 76,  12, 77,  13, 78,  14, 79,  15, 80,  16,
+                                89,  25, 90,  26, 91,  27, 92,  28, 93,  29, 94,  30, 95,  31, 96,  32,
+                                105, 41, 106, 42, 107, 43, 108, 44, 109, 45, 110, 46, 111, 47, 112, 48,
+                                121, 57, 122, 58, 123, 59, 124, 60, 125, 61, 126, 62, 127, 63, 0,   64);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_mm512_maskz_unpacklo_epi8() {
+        #[rustfmt::skip]
+        let a = _mm512_set_epi8(1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15, 16,
+                                17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32,
+                                33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48,
+                                49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64);
+        #[rustfmt::skip]
+        let b = _mm512_set_epi8(65,  66,  67,  68,  69,  70,  71,  72,  73,  74,  75,  76,  77,  78,  79,  80,
+                                81,  82,  83,  84,  85,  86,  87,  88,  89,  90,  91,  92,  93,  94,  95,  96,
+                                97,  98,  99,  100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112,
+                                113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 0);
+        let r = _mm512_maskz_unpacklo_epi8(0, a, b);
+        assert_eq_m512i(r, _mm512_setzero_si512());
+        let r = _mm512_maskz_unpacklo_epi8(
+            0b_11111111_11111111_11111111_11111111_11111111_11111111_11111111_11111111,
+            a,
+            b,
+        );
+        #[rustfmt::skip]
+        let e = _mm512_set_epi8(73,  9,  74,  10, 75,  11, 76,  12, 77,  13, 78,  14, 79,  15, 80,  16,
+                                89,  25, 90,  26, 91,  27, 92,  28, 93,  29, 94,  30, 95,  31, 96,  32,
+                                105, 41, 106, 42, 107, 43, 108, 44, 109, 45, 110, 46, 111, 47, 112, 48,
+                                121, 57, 122, 58, 123, 59, 124, 60, 125, 61, 126, 62, 127, 63, 0,   64);
         assert_eq_m512i(r, e);
     }
 }
