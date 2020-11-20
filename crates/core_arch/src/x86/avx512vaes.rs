@@ -138,7 +138,7 @@ mod tests {
     // and "more random" than the standard test vectors
     // ideally we'd be using quickcheck here instead
 
-    #[target_feature(enable = "avx512vaes,avx512vl")]
+    #[target_feature(enable = "avx2")]
     unsafe fn helper_for_256_avx512vaes(linear : unsafe fn(__m128i,__m128i)->__m128i, vectorized : unsafe fn(__m256i,__m256i)->__m256i) {
         let a = _mm256_set_epi64x(
             0xDCB4DB3657BF0B7D, 0x18DB0601068EDD9F, 0xB76B908233200DC5, 0xE478235FA8E22D5E
@@ -228,7 +228,7 @@ mod tests {
         helper_for_256_avx512vaes(_mm_aesenclast_si128,_mm256_aesenclast_epi128);
     }
   
-    #[target_feature(enable = "avx512vaes,avx512f")]
+    #[target_feature(enable = "avx512f")]
     unsafe fn helper_for_512_avx512vaes(linear : unsafe fn(__m128i,__m128i)->__m128i, vectorized : unsafe fn(__m512i,__m512i)->__m512i) {
         let a = _mm512_set_epi64(
             0xDCB4DB3657BF0B7D, 0x18DB0601068EDD9F, 0xB76B908233200DC5, 0xE478235FA8E22D5E,
