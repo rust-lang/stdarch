@@ -3339,6 +3339,9 @@ extern "C" {
     fn vpermi2w(a: i16x32, idx: i16x32, b: i16x32) -> i16x32;
     #[link_name = "llvm.x86.avx512.permvar.hi.512"]
     fn vpermw(a: i16x32, idx: i16x32) -> i16x32;
+
+    #[link_name = "llvm.x86.avx512.pshuf.b.512"]
+    fn vpshufb(a: i8x64, b: i8x64) -> i8x64;
 }
 
 #[cfg(test)]
