@@ -3396,6 +3396,16 @@ pub unsafe fn _store_mask32(mem_addr: *mut u32, a: __mmask32) {
     ptr::write(mem_addr as *mut __mmask32, a);
 }
 
+/// Compute the absolute differences of packed unsigned 8-bit integers in a and b, then horizontally sum each consecutive 8 differences to produce eight unsigned 16-bit integers, and pack these unsigned 16-bit integers in the low 16 bits of 64-bit elements in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_sad_epu8&expand=4855)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(vpsadbw))]
+pub unsafe fn _mm512_sad_epu8(a: __m512i, b: __m512i) -> __m512i {
+    transmute(vpsadbw(a.as_u8x64(), b.as_u8x64()))
+}
+
 #[allow(improper_ctypes)]
 extern "C" {
     #[link_name = "llvm.x86.avx512.mask.paddus.w.512"]
@@ -3496,6 +3506,9 @@ extern "C" {
 
     #[link_name = "llvm.x86.avx512.pshuf.b.512"]
     fn vpshufb(a: i8x64, b: i8x64) -> i8x64;
+
+    #[link_name = "llvm.x86.avx512.psad.bw.512"]
+    fn vpsadbw(a: u8x64, b: u8x64) -> u64x8;
 }
 
 #[cfg(test)]
@@ -6770,5 +6783,14 @@ mod tests {
         let mut r = 0;
         _store_mask32(&mut r as *mut _ as *mut u32, a);
         assert_eq!(r, a);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_mm512_sad_epu8() {
+        let a = _mm512_set1_epi8(2);
+        let b = _mm512_set1_epi8(4);
+        let r = _mm512_sad_epu8(a, b);
+        let e = _mm512_set1_epi64(16);
+        assert_eq_m512i(r, e);
     }
 }

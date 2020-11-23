@@ -233,7 +233,7 @@
   * [x] [`_mm512_mask_permutexvar_epi16`]
   * [x] [`_mm512_maskz_permutexvar_epi16`]
   * [x] [`_mm512_permutexvar_epi16`]
-  * [_] [`_mm512_sad_epu8`]
+  * [x] [`_mm512_sad_epu8`]
   * [x] [`_mm512_mask_set1_epi16`]
   * [x] [`_mm512_maskz_set1_epi16`]
   * [x] [`_mm512_mask_set1_epi8`]
