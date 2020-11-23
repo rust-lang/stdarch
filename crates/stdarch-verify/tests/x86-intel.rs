@@ -706,6 +706,8 @@ fn equate(t: &Type, intel: &str, intrinsic: &str, is_const: bool) -> Result<(), 
         (&Type::MutPtr(&Type::PrimUnsigned(32)), "unsigned int*") => {}
         (&Type::MutPtr(&Type::PrimUnsigned(64)), "unsigned __int64*") => {}
         (&Type::MutPtr(&Type::PrimUnsigned(8)), "void*") => {}
+        (&Type::MutPtr(&Type::PrimUnsigned(32)), "__mmask32*") => {}
+        (&Type::MutPtr(&Type::PrimUnsigned(64)), "__mmask64*") => {}
         (&Type::MutPtr(&Type::M64), "__m64*") => {}
         (&Type::MutPtr(&Type::M128), "__m128*") => {}
         (&Type::MutPtr(&Type::M128I), "__m128i*") => {}

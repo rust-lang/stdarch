@@ -3376,6 +3376,26 @@ pub unsafe fn _mm512_mask_testn_epi8_mask(k: __mmask64, a: __m512i, b: __m512i) 
     _mm512_mask_cmpeq_epi8_mask(k, and, zero)
 }
 
+/// Store 64-bit mask from a into memory.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_store_mask64&expand=5578)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(mov))] //should be kmovq
+pub unsafe fn _store_mask64(mem_addr: *mut u64, a: __mmask64) {
+    ptr::write(mem_addr as *mut __mmask64, a);
+}
+
+/// Store 32-bit mask from a into memory.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_store_mask32&expand=5577)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(mov))] //should be kmovd
+pub unsafe fn _store_mask32(mem_addr: *mut u32, a: __mmask32) {
+    ptr::write(mem_addr as *mut __mmask32, a);
+}
+
 #[allow(improper_ctypes)]
 extern "C" {
     #[link_name = "llvm.x86.avx512.mask.paddus.w.512"]
@@ -6733,5 +6753,22 @@ mod tests {
         let e: __mmask64 =
             0b00000000_00000000_00000000_00000000_00000000_00000000_00000000_00000000;
         assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_store_mask64() {
+        let a: __mmask64 =
+            0b11111111_00000000_11111111_00000000_11111111_00000000_11111111_00000000;
+        let mut r = 0;
+        _store_mask64(&mut r as *mut _ as *mut u64, a);
+        assert_eq!(r, a);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_store_mask32() {
+        let a: __mmask32 = 0b11111111_00000000_11111111_00000000;
+        let mut r = 0;
+        _store_mask32(&mut r as *mut _ as *mut u32, a);
+        assert_eq!(r, a);
     }
 }
