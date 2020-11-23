@@ -3406,6 +3406,74 @@ pub unsafe fn _mm512_sad_epu8(a: __m512i, b: __m512i) -> __m512i {
     transmute(vpsadbw(a.as_u8x64(), b.as_u8x64()))
 }
 
+/// Set each bit of mask register k based on the most significant bit of the corresponding packed 16-bit integer in a.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_movepi16_mask&expand=3873)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(vpmovw2m))]
+pub unsafe fn _mm512_movepi16_mask(a: __m512i) -> __mmask32 {
+    let filter = _mm512_set1_epi16(1 << 15);
+    let a = _mm512_and_si512(a, filter);
+    _mm512_cmpeq_epi16_mask(a, filter)
+}
+
+/// Set each bit of mask register k based on the most significant bit of the corresponding packed 8-bit integer in a.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_movepi8_mask&expand=3883)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(vpmovb2m))]
+pub unsafe fn _mm512_movepi8_mask(a: __m512i) -> __mmask64 {
+    let filter = _mm512_set1_epi8(1 << 7);
+    let a = _mm512_and_si512(a, filter);
+    _mm512_cmpeq_epi8_mask(a, filter)
+}
+
+/// Set each packed 16-bit integer in dst to all ones or all zeros based on the value of the corresponding bit in k.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_movm_epi16&expand=3886)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(vpmovm2w))]
+pub unsafe fn _mm512_movm_epi16(k: __mmask32) -> __m512i {
+    let one = _mm512_set1_epi16(
+        1 << 15
+            | 1 << 14
+            | 1 << 13
+            | 1 << 12
+            | 1 << 11
+            | 1 << 10
+            | 1 << 9
+            | 1 << 8
+            | 1 << 7
+            | 1 << 6
+            | 1 << 5
+            | 1 << 4
+            | 1 << 3
+            | 1 << 2
+            | 1 << 1
+            | 1 << 0,
+    )
+    .as_i16x32();
+    let zero = _mm512_setzero_si512().as_i16x32();
+    transmute(simd_select_bitmask(k, one, zero))
+}
+
+/// Set each packed 8-bit integer in dst to all ones or all zeros based on the value of the corresponding bit in k.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_movm_epi8&expand=3895)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(vpmovm2b))]
+pub unsafe fn _mm512_movm_epi8(k: __mmask64) -> __m512i {
+    let one =
+        _mm512_set1_epi8(1 << 7 | 1 << 6 | 1 << 5 | 1 << 4 | 1 << 3 | 1 << 2 | 1 << 1 | 1 << 0)
+            .as_i8x64();
+    let zero = _mm512_setzero_si512().as_i8x64();
+    transmute(simd_select_bitmask(k, one, zero))
+}
+
 #[allow(improper_ctypes)]
 extern "C" {
     #[link_name = "llvm.x86.avx512.mask.paddus.w.512"]
@@ -6791,6 +6859,58 @@ mod tests {
         let b = _mm512_set1_epi8(4);
         let r = _mm512_sad_epu8(a, b);
         let e = _mm512_set1_epi64(16);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_mm512_movepi16_mask() {
+        let a = _mm512_set1_epi16(1 << 15);
+        let r = _mm512_movepi16_mask(a);
+        let e: __mmask32 = 0b11111111_11111111_11111111_11111111;
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_mm512_movepi8_mask() {
+        let a = _mm512_set1_epi8(1 << 7);
+        let r = _mm512_movepi8_mask(a);
+        let e: __mmask64 =
+            0b11111111_11111111_11111111_11111111_11111111_11111111_11111111_11111111;
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_mm512_movm_epi16() {
+        let a: __mmask32 = 0b11111111_11111111_11111111_11111111;
+        let r = _mm512_movm_epi16(a);
+        let e = _mm512_set1_epi16(
+            1 << 15
+                | 1 << 14
+                | 1 << 13
+                | 1 << 12
+                | 1 << 11
+                | 1 << 10
+                | 1 << 9
+                | 1 << 8
+                | 1 << 7
+                | 1 << 6
+                | 1 << 5
+                | 1 << 4
+                | 1 << 3
+                | 1 << 2
+                | 1 << 1
+                | 1 << 0,
+        );
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_mm512_movm_epi8() {
+        let a: __mmask64 =
+            0b11111111_11111111_11111111_11111111_11111111_11111111_11111111_11111111;
+        let r = _mm512_movm_epi8(a);
+        let e =
+            _mm512_set1_epi8(1 << 7 | 1 << 6 | 1 << 5 | 1 << 4 | 1 << 3 | 1 << 2 | 1 << 1 | 1 << 0);
         assert_eq_m512i(r, e);
     }
 }
