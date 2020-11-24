@@ -3494,6 +3494,64 @@ pub unsafe fn _mm512_movm_epi8(k: __mmask64) -> __m512i {
     transmute(simd_select_bitmask(k, one, zero))
 }
 
+/// Add 32-bit masks in a and b, and store the result in k.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_kadd_mask32&expand=3207)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(mov))] // generate normal and code instead of kaddd
+pub unsafe fn _kadd_mask32(a: __mmask32, b: __mmask32) -> __mmask32 {
+    transmute(a + b)
+}
+
+/// Add 64-bit masks in a and b, and store the result in k.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_kadd_mask64&expand=3208)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(mov))] // generate normal and code instead of kaddq
+pub unsafe fn _kadd_mask64(a: __mmask64, b: __mmask64) -> __mmask64 {
+    transmute(a + b)
+}
+
+/// Compute the bitwise AND of 32-bit masks a and b, and store the result in k.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_kand_mask32&expand=3213)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(and))] // generate normal and code instead of kandd
+pub unsafe fn _kand_mask32(a: __mmask32, b: __mmask32) -> __mmask32 {
+    transmute(a & b)
+}
+
+/// Compute the bitwise AND of 64-bit masks a and b, and store the result in k.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_kand_mask64&expand=3214)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(and))] // generate normal and code instead of kandq
+pub unsafe fn _kand_mask64(a: __mmask64, b: __mmask64) -> __mmask64 {
+    transmute(a & b)
+}
+
+/// Compute the bitwise NOT of 32-bit mask a, and store the result in k.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_knot_mask32&expand=3234)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+pub unsafe fn _knot_mask32(a: __mmask32) -> __mmask32 {
+    transmute(a ^ 0b11111111_11111111_11111111_11111111)
+}
+
+/// Compute the bitwise NOT of 64-bit mask a, and store the result in k.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_knot_mask64&expand=3235)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+pub unsafe fn _knot_mask64(a: __mmask64) -> __mmask64 {
+    transmute(a ^ 0b11111111_11111111_11111111_11111111_11111111_11111111_11111111_11111111)
+}
+
 #[allow(improper_ctypes)]
 extern "C" {
     #[link_name = "llvm.x86.avx512.mask.paddus.w.512"]
@@ -6875,17 +6933,19 @@ mod tests {
 
     #[simd_test(enable = "avx512bw")]
     unsafe fn test_load_mask64() {
-        let p: __mmask64 = 0b11111111_00000000_11111111_00000000_11111111_00000000_11111111_00000000; 
+        let p: __mmask64 =
+            0b11111111_00000000_11111111_00000000_11111111_00000000_11111111_00000000;
         let r = _load_mask64(&p);
-        let e: __mmask64 = 0b11111111_00000000_11111111_00000000_11111111_00000000_11111111_00000000; 
+        let e: __mmask64 =
+            0b11111111_00000000_11111111_00000000_11111111_00000000_11111111_00000000;
         assert_eq!(r, e);
     }
 
     #[simd_test(enable = "avx512bw")]
     unsafe fn test_load_mask32() {
-        let p: __mmask32 = 0b11111111_00000000_11111111_00000000; 
+        let p: __mmask32 = 0b11111111_00000000_11111111_00000000;
         let r = _load_mask32(&p);
-        let e: __mmask32 = 0b11111111_00000000_11111111_00000000; 
+        let e: __mmask32 = 0b11111111_00000000_11111111_00000000;
         assert_eq!(r, e);
     }
 
@@ -6948,5 +7008,62 @@ mod tests {
         let e =
             _mm512_set1_epi8(1 << 7 | 1 << 6 | 1 << 5 | 1 << 4 | 1 << 3 | 1 << 2 | 1 << 1 | 1 << 0);
         assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_kadd_mask32() {
+        let a: __mmask32 = 11;
+        let b: __mmask32 = 22;
+        let r = _kadd_mask32(a, b);
+        let e: __mmask32 = 33;
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_kadd_mask64() {
+        let a: __mmask64 = 11;
+        let b: __mmask64 = 22;
+        let r = _kadd_mask64(a, b);
+        let e: __mmask64 = 33;
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_kand_mask32() {
+        let a: __mmask32 = 0b11001100_00110011_11001100_00110011;
+        let b: __mmask32 = 0b11001100_00110011_11001100_00110011;
+        let r = _kand_mask32(a, b);
+        let e: __mmask32 = 0b11001100_00110011_11001100_00110011;
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_kand_mask64() {
+        let a: __mmask64 =
+            0b11001100_00110011_11001100_00110011_11001100_00110011_11001100_00110011;
+        let b: __mmask64 =
+            0b11001100_00110011_11001100_00110011_11001100_00110011_11001100_00110011;
+        let r = _kand_mask64(a, b);
+        let e: __mmask64 =
+            0b11001100_00110011_11001100_00110011_11001100_00110011_11001100_00110011;
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_knot_mask32() {
+        let a: __mmask32 = 0b11001100_00110011_11001100_00110011;
+        let r = _knot_mask32(a);
+        let e: __mmask32 = 0b00110011_11001100_00110011_11001100;
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_knot_mask64() {
+        let a: __mmask64 =
+            0b11001100_00110011_11001100_00110011_11001100_00110011_11001100_00110011;
+        let r = _knot_mask64(a);
+        let e: __mmask64 =
+            0b00110011_11001100_00110011_11001100_00110011_11001100_00110011_11001100;
+        assert_eq!(r, e);
     }
 }
