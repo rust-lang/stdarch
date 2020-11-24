@@ -3396,6 +3396,26 @@ pub unsafe fn _store_mask32(mem_addr: *mut u32, a: __mmask32) {
     ptr::write(mem_addr as *mut __mmask32, a);
 }
 
+/// Load 64-bit mask from memory into k.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_load_mask64&expand=3318)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(mov))] //should be kmovq
+pub unsafe fn _load_mask64(mem_addr: *const u64) -> __mmask64 {
+    ptr::read(mem_addr as *const __mmask64)
+}
+
+/// Load 32-bit mask from memory into k.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_load_mask32&expand=3317)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(mov))] //should be kmovd
+pub unsafe fn _load_mask32(mem_addr: *const u32) -> __mmask32 {
+    ptr::read(mem_addr as *const __mmask32)
+}
+
 /// Compute the absolute differences of packed unsigned 8-bit integers in a and b, then horizontally sum each consecutive 8 differences to produce eight unsigned 16-bit integers, and pack these unsigned 16-bit integers in the low 16 bits of 64-bit elements in dst.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_sad_epu8&expand=4855)
@@ -6851,6 +6871,22 @@ mod tests {
         let mut r = 0;
         _store_mask32(&mut r as *mut _ as *mut u32, a);
         assert_eq!(r, a);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_load_mask64() {
+        let p: __mmask64 = 0b11111111_00000000_11111111_00000000_11111111_00000000_11111111_00000000; 
+        let r = _load_mask64(&p);
+        let e: __mmask64 = 0b11111111_00000000_11111111_00000000_11111111_00000000_11111111_00000000; 
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_load_mask32() {
+        let p: __mmask32 = 0b11111111_00000000_11111111_00000000; 
+        let r = _load_mask32(&p);
+        let e: __mmask32 = 0b11111111_00000000_11111111_00000000; 
+        assert_eq!(r, e);
     }
 
     #[simd_test(enable = "avx512bw")]
