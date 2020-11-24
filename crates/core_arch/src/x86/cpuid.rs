@@ -57,24 +57,27 @@ pub unsafe fn __cpuid_count(leaf: u32, sub_leaf: u32) -> CpuidResult {
     let edx;
     #[cfg(target_arch = "x86")]
     {
-        llvm_asm!("cpuid"
-                  : "={eax}"(eax), "={ebx}"(ebx), "={ecx}"(ecx), "={edx}"(edx)
-                  : "{eax}"(leaf), "{ecx}"(sub_leaf)
-                  : :);
+        asm!("cpuid",
+                inlateout("eax") leaf => eax,
+                lateout("ebx") ebx,
+                inlateout("ecx") sub_leaf => ecx,
+                lateout("edx") edx,
+                options(nostack, nomem, att_syntax, preserves_flags, pure));
     }
     #[cfg(target_arch = "x86_64")]
     {
         // x86-64 uses %rbx as the base register, so preserve it.
         // This works around a bug in LLVM with ASAN enabled:
         // https://bugs.llvm.org/show_bug.cgi?id=17907
-        llvm_asm!(r#"
-                  mov %rbx, %rsi
-                  cpuid
-                  xchg %rbx, %rsi
-                  "#
-                  : "={eax}"(eax), "={esi}"(ebx), "={ecx}"(ecx), "={edx}"(edx)
-                  : "{eax}"(leaf), "{ecx}"(sub_leaf)
-                  : :);
+        asm!(
+            "mov %rbx, %rsi",
+            "cpuid",
+            "xchg %rbx, %rsi",
+            inlateout("eax") leaf => eax,
+            lateout("esi") ebx,
+            inlateout("ecx") sub_leaf => ecx,
+            lateout("edx") edx,
+            options(nostack, nomem, att_syntax, preserves_flags, pure));
     }
     CpuidResult { eax, ebx, ecx, edx }
 }
@@ -119,29 +122,31 @@ pub fn has_cpuid() -> bool {
             // If it is, then `cpuid` is available.
             let result: u32;
             let _temp: u32;
-            llvm_asm!(r#"
-                      # Read eflags into $0 and copy it into $1:
-                      pushfd
-                      pop     $0
-                      mov     $1, $0
-                      # Flip 21st bit of $0.
-                      xor     $0, 0x200000
-                      # Set eflags to the value of $0
-                      #
-                      # Bit 21st can only be modified if cpuid is available
-                      push    $0
-                      popfd          # A
-                      # Read eflags into $0:
-                      pushfd         # B
-                      pop     $0
-                      # xor with the original eflags sets the bits that
-                      # have been modified:
-                      xor     $0, $1
-                      "#
-                      : "=r"(result), "=r"(_temp)
-                      :
-                      : "cc", "memory"
-                      : "intel");
+            asm!(r#"
+                 # Read eflags into res and copy it into tmp:
+                 pushfl
+                 popl    {res}
+                 movl    {res}, {tmp}
+                 # Flip 21st bit of res.
+                 xorl    {mask}, {res}
+                 # Set eflags to the value of res
+                 #
+                 # Bit 21st can only be modified if cpuid is available
+                 pushl   {res}
+                 popfl          # A
+                 # Read eflags into res:
+                 pushfl         # B
+                 popl    {res}
+                 # xor with the original eflags sets the bits that
+                 # have been modified:
+                 xorl    {tmp}, {res}
+                 "#,
+                 res = out(reg) result,
+                 tmp = out(reg) _,
+                 mask = const 0x200000,
+                 // we're not overwriting any of the status flags, so we can
+                 // enable the preserves_flags option
+                 options(nomem, att_syntax));
             // There is a race between popfd (A) and pushfd (B)
             // where other bits beyond 21st may have been modified due to
             // interrupts, a debugger stepping through the asm, etc.

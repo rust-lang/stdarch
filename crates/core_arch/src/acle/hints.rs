@@ -85,8 +85,11 @@ pub unsafe fn __yield() {
 pub unsafe fn __dbg(imm4: u32) {
     macro_rules! call {
         ($imm4:expr) => {
-            llvm_asm!(concat!("DBG ", stringify!($imm4)) : : : : "volatile")
-        }
+            asm!(
+                concat!("DBG ", stringify!($imm4)),
+                options(nostack, nomem, preserves_flags)
+            );
+        };
     }
 
     match imm4 & 0b1111 {
@@ -117,7 +120,7 @@ pub unsafe fn __dbg(imm4: u32) {
 /// will increase execution time.
 #[inline(always)]
 pub unsafe fn __nop() {
-    llvm_asm!("NOP" : : : : "volatile")
+    asm!("NOP", options(nostack, nomem, preserves_flags));
 }
 
 extern "C" {

@@ -7,10 +7,11 @@ use stdarch_test::assert_instr;
 #[unstable(feature = "simd_x86_bittest", issue = "59414")]
 pub unsafe fn _bittest(p: *const i32, b: i32) -> u8 {
     let r: u8;
-    llvm_asm!("btl $2, $1\n\tsetc ${0:b}"
-              : "=r"(r)
-              : "*m"(p), "r"(b)
-              : "cc", "memory");
+    asm!("btl {b:e}, ({p}); setc {r}",
+        b = in(reg) b,
+        p = in(reg) p,
+        r = lateout(reg_byte) r,
+        options(att_syntax, nostack, readonly));
     r
 }
 
@@ -20,10 +21,11 @@ pub unsafe fn _bittest(p: *const i32, b: i32) -> u8 {
 #[unstable(feature = "simd_x86_bittest", issue = "59414")]
 pub unsafe fn _bittestandset(p: *mut i32, b: i32) -> u8 {
     let r: u8;
-    llvm_asm!("btsl $2, $1\n\tsetc ${0:b}"
-              : "=r"(r), "+*m"(p)
-              : "r"(b)
-              : "cc", "memory");
+    asm!("btsl {b:e}, ({p}); setc {r}",
+        b = in(reg) b,
+        p = in(reg) p,
+        r = lateout(reg_byte) r,
+        options(att_syntax, nostack));
     r
 }
 
@@ -33,10 +35,11 @@ pub unsafe fn _bittestandset(p: *mut i32, b: i32) -> u8 {
 #[unstable(feature = "simd_x86_bittest", issue = "59414")]
 pub unsafe fn _bittestandreset(p: *mut i32, b: i32) -> u8 {
     let r: u8;
-    llvm_asm!("btrl $2, $1\n\tsetc ${0:b}"
-              : "=r"(r), "+*m"(p)
-              : "r"(b)
-              : "cc", "memory");
+    asm!("btrl {b:e}, ({p}); setc {r}",
+        b = in(reg) b,
+        p = in(reg) p,
+        r = lateout(reg_byte) r,
+        options(att_syntax, nostack));
     r
 }
 
@@ -46,10 +49,11 @@ pub unsafe fn _bittestandreset(p: *mut i32, b: i32) -> u8 {
 #[unstable(feature = "simd_x86_bittest", issue = "59414")]
 pub unsafe fn _bittestandcomplement(p: *mut i32, b: i32) -> u8 {
     let r: u8;
-    llvm_asm!("btcl $2, $1\n\tsetc ${0:b}"
-              : "=r"(r), "+*m"(p)
-              : "r"(b)
-              : "cc", "memory");
+    asm!("btcl {b:e}, ({p}); setc {r}",
+        b = in(reg) b,
+        p = in(reg) p,
+        r = lateout(reg_byte) r,
+        options(att_syntax, nostack));
     r
 }
 

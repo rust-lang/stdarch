@@ -7,10 +7,11 @@ use stdarch_test::assert_instr;
 #[unstable(feature = "simd_x86_bittest", issue = "59414")]
 pub unsafe fn _bittest64(p: *const i64, b: i64) -> u8 {
     let r: u8;
-    llvm_asm!("btq $2, $1\n\tsetc ${0:b}"
-              : "=r"(r)
-              : "*m"(p), "r"(b)
-              : "cc", "memory");
+    asm!("btq {b}, ({p}); setc {r}",
+        p = in(reg) p,
+        b = in(reg) b,
+        r = lateout(reg_byte) r,
+        options(att_syntax, nostack, readonly));
     r
 }
 
@@ -20,10 +21,11 @@ pub unsafe fn _bittest64(p: *const i64, b: i64) -> u8 {
 #[unstable(feature = "simd_x86_bittest", issue = "59414")]
 pub unsafe fn _bittestandset64(p: *mut i64, b: i64) -> u8 {
     let r: u8;
-    llvm_asm!("btsq $2, $1\n\tsetc ${0:b}"
-              : "=r"(r), "+*m"(p)
-              : "r"(b)
-              : "cc", "memory");
+    asm!("btsq {b}, ({p}); setc {r}",
+        b = in(reg) b,
+        p = in(reg) p,
+        r = lateout(reg_byte) r,
+        options(att_syntax, nostack));
     r
 }
 
@@ -33,10 +35,11 @@ pub unsafe fn _bittestandset64(p: *mut i64, b: i64) -> u8 {
 #[unstable(feature = "simd_x86_bittest", issue = "59414")]
 pub unsafe fn _bittestandreset64(p: *mut i64, b: i64) -> u8 {
     let r: u8;
-    llvm_asm!("btrq $2, $1\n\tsetc ${0:b}"
-              : "=r"(r), "+*m"(p)
-              : "r"(b)
-              : "cc", "memory");
+    asm!("btrq {b}, ({p}); setc {r}",
+        b = in(reg) b,
+        p = in(reg) p,
+        r = lateout(reg_byte) r,
+        options(att_syntax, nostack));
     r
 }
 
@@ -46,10 +49,11 @@ pub unsafe fn _bittestandreset64(p: *mut i64, b: i64) -> u8 {
 #[unstable(feature = "simd_x86_bittest", issue = "59414")]
 pub unsafe fn _bittestandcomplement64(p: *mut i64, b: i64) -> u8 {
     let r: u8;
-    llvm_asm!("btcq $2, $1\n\tsetc ${0:b}"
-              : "=r"(r), "+*m"(p)
-              : "r"(b)
-              : "cc", "memory");
+    asm!("btcq {b}, ({p}); setc {r}",
+        b = in(reg) b,
+        p = in(reg) p,
+        r = lateout(reg_byte) r,
+        options(att_syntax, nostack));
     r
 }
 

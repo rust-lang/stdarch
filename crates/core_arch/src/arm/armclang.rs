@@ -51,15 +51,21 @@ pub unsafe fn __breakpoint(val: i32) {
     #[cfg(target_arch = "arm")]
     macro_rules! call {
         ($imm8:expr) => {
-            llvm_asm!(concat!("BKPT ", stringify!($imm8)) : : : : "volatile")
-        }
+            asm!(
+                concat!("BKPT ", stringify!($imm8)),
+                options(nostack, nomem, preserves_flags)
+            );
+        };
     }
 
     #[cfg(target_arch = "aarch64")]
     macro_rules! call {
         ($imm8:expr) => {
-            llvm_asm!(concat!("BRK ", stringify!($imm8)) : : : : "volatile")
-        }
+            asm!(
+                concat!("BRK ", stringify!($imm8)),
+                options(nostack, nomem, preserves_flags)
+            );
+        };
     }
 
     // We can't `panic!` inside this intrinsic, so we can't really validate the

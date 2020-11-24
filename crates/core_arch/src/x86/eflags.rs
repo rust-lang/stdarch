@@ -13,7 +13,7 @@
 #[doc(hidden)]
 pub unsafe fn __readeflags() -> u32 {
     let eflags: u32;
-    llvm_asm!("pushfd; popl $0" : "=r"(eflags) : : : "volatile");
+    asm!("pushfd; popl {}", out(reg) eflags, options(att_syntax, preserves_flags, nomem, pure));
     eflags
 }
 
@@ -30,7 +30,7 @@ pub unsafe fn __readeflags() -> u32 {
 #[doc(hidden)]
 pub unsafe fn __readeflags() -> u64 {
     let eflags: u64;
-    llvm_asm!("pushfq; popq $0" : "=r"(eflags) : : : "volatile");
+    asm!("pushfq; popq {}", out(reg) eflags, options(att_syntax, preserves_flags, nomem, pure));
     eflags
 }
 
@@ -46,7 +46,7 @@ pub unsafe fn __readeflags() -> u64 {
 )]
 #[doc(hidden)]
 pub unsafe fn __writeeflags(eflags: u32) {
-    llvm_asm!("pushl $0; popfd" : : "r"(eflags) : "cc", "flags" : "volatile");
+    asm!("pushl {}; popfd", in(reg) eflags, options(att_syntax, nomem));
 }
 
 /// Write EFLAGS.
@@ -61,7 +61,7 @@ pub unsafe fn __writeeflags(eflags: u32) {
 )]
 #[doc(hidden)]
 pub unsafe fn __writeeflags(eflags: u64) {
-    llvm_asm!("pushq $0; popfq" : : "r"(eflags) : "cc", "flags" : "volatile");
+    asm!("pushq {}; popfq", in(reg) eflags, options(att_syntax, nomem));
 }
 
 #[cfg(test)]
