@@ -44,12 +44,7 @@ pub unsafe fn _mm512_andnot_pd(a: __m512d, b: __m512d) -> __m512d {
 #[inline]
 #[target_feature(enable = "avx512dq")]
 #[cfg_attr(test, assert_instr(vandnpd))]
-pub unsafe fn _mm512_mask_andnot_pd(
-    src: __m512d,
-    k: __mmask8,
-    a: __m512d,
-    b: __m512d,
-) -> __m512d {
+pub unsafe fn _mm512_mask_andnot_pd(src: __m512d, k: __mmask8, a: __m512d, b: __m512d) -> __m512d {
     let andnot = _mm512_andnot_pd(a, b).as_f64x8();
     transmute(simd_select_bitmask(k, andnot, src.as_f64x8()))
 }
@@ -104,12 +99,7 @@ pub unsafe fn _mm512_andnot_ps(a: __m512, b: __m512) -> __m512 {
 #[inline]
 #[target_feature(enable = "avx512dq")]
 #[cfg_attr(test, assert_instr(vandnps))]
-pub unsafe fn _mm512_mask_andnot_ps(
-    src: __m512,
-    k: __mmask16,
-    a: __m512,
-    b: __m512,
-) -> __m512 {
+pub unsafe fn _mm512_mask_andnot_ps(src: __m512, k: __mmask16, a: __m512, b: __m512) -> __m512 {
     let andnot = _mm512_andnot_ps(a, b).as_f32x16();
     transmute(simd_select_bitmask(k, andnot, src.as_f32x16()))
 }
@@ -199,7 +189,7 @@ pub unsafe fn _mm512_mask_broadcast_f32x2(src: __m512, k: __mmask16, a: __m128) 
     transmute(simd_select_bitmask(k, broadcast, src.as_f32x16()))
 }
 
-/// Broadcast the lower 2 packed single-precision (32-bit) floating-point elements from a to all elements of dst 
+/// Broadcast the lower 2 packed single-precision (32-bit) floating-point elements from a to all elements of dst
 /// using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_broadcast_f32x2&expand=100,479)
@@ -219,10 +209,17 @@ pub unsafe fn _mm512_maskz_broadcast_f32x2(k: __mmask16, a: __m128) -> __m512 {
 #[target_feature(enable = "avx512dq")]
 #[cfg_attr(test, assert_instr(vbroadcastf32x8))] // sequence generation
 pub unsafe fn _mm512_broadcast_f32x8(a: __m256) -> __m512 {
-    simd_shuffle32(a, a, [0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3])
+    simd_shuffle32(
+        a,
+        a,
+        [
+            0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0,
+            1, 2, 3,
+        ],
+    )
 }
 
-/// Broadcast the 8 packed single-precision (32-bit) floating-point elements from a to all elements of dst 
+/// Broadcast the 8 packed single-precision (32-bit) floating-point elements from a to all elements of dst
 /// using writemask k (elements are copied from src when the corresponding mask bit is not set).
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_broadcast_f32x8&expand=100,487)
