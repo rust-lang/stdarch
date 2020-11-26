@@ -3880,6 +3880,108 @@ pub unsafe fn _mm512_maskz_cvtepu8_epi16(k: __mmask32, a: __m256i) -> __m512i {
     ))
 }
 
+/// Shift 128-bit lanes in a left by imm8 bytes while shifting in zeros, and store the results in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_bslli_epi128&expand=591)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+#[rustc_args_required_const(1)]
+#[cfg_attr(test, assert_instr(vpslldq, imm8 = 3))]
+pub unsafe fn _mm512_bslli_epi128(a: __m512i, imm8: i32) -> __m512i {
+    let a = a.as_i8x64();
+    let zero = _mm512_setzero_si512().as_i8x64();
+    #[rustfmt::skip]
+    macro_rules! call {
+        ($imm8:expr) => {
+            simd_shuffle64 (
+                zero,
+                a,
+                [
+                    64 - $imm8, 65 - $imm8, 66 - $imm8, 67 - $imm8, 68 - $imm8, 69 - $imm8, 70 - $imm8, 71 - $imm8,
+                    72 - $imm8, 73 - $imm8, 74 - $imm8, 75 - $imm8, 76 - $imm8, 77 - $imm8, 78 - $imm8, 79 - $imm8,
+                    80 - ($imm8+16), 81 - ($imm8+16), 82 - ($imm8+16), 83 - ($imm8+16), 84 - ($imm8+16), 85 - ($imm8+16), 86 - ($imm8+16), 87 - ($imm8+16),
+                    88 - ($imm8+16), 89 - ($imm8+16), 90 - ($imm8+16), 91 - ($imm8+16), 92 - ($imm8+16), 93 - ($imm8+16), 94 - ($imm8+16), 95 - ($imm8+16),
+                    96 - ($imm8+32), 97 - ($imm8+32), 98 - ($imm8+32), 99 - ($imm8+32), 100 - ($imm8+32), 101 - ($imm8+32), 102 - ($imm8+32), 103 - ($imm8+32),
+                    104 - ($imm8+32), 105 - ($imm8+32), 106 - ($imm8+32), 107 - ($imm8+32), 108 - ($imm8+32), 109 - ($imm8+32), 110 - ($imm8+32), 111 - ($imm8+32),
+                    112 - ($imm8+48), 113 - ($imm8+48), 114 - ($imm8+48), 115 - ($imm8+48), 116 - ($imm8+48), 117 - ($imm8+48), 118 - ($imm8+48), 119 - ($imm8+48),
+                    120 - ($imm8+48), 121 - ($imm8+48), 122 - ($imm8+48), 123 - ($imm8+48), 124 - ($imm8+48), 125 - ($imm8+48), 126 - ($imm8+48), 127 - ($imm8+48),
+                ],
+            )
+        };
+    }
+    let r: i8x64 = match imm8 {
+        0 => call!(0),
+        1 => call!(1),
+        2 => call!(2),
+        3 => call!(3),
+        4 => call!(4),
+        5 => call!(5),
+        6 => call!(6),
+        7 => call!(7),
+        8 => call!(8),
+        9 => call!(9),
+        10 => call!(10),
+        11 => call!(11),
+        12 => call!(12),
+        13 => call!(13),
+        14 => call!(14),
+        15 => call!(15),
+        _ => call!(16),
+    };
+    transmute(r)
+}
+
+/// Shift 128-bit lanes in a right by imm8 bytes while shifting in zeros, and store the results in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_bsrli_epi128&expand=594)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+#[rustc_args_required_const(1)]
+#[cfg_attr(test, assert_instr(vpsrldq, imm8 = 3))]
+pub unsafe fn _mm512_bsrli_epi128(a: __m512i, imm8: i32) -> __m512i {
+    let a = a.as_i8x64();
+    let zero = _mm512_setzero_si512().as_i8x64();
+    #[rustfmt::skip]
+    macro_rules! call {
+        ($imm8:expr) => {
+            simd_shuffle64 (
+                a,
+                zero,
+                [
+                    0 + ($imm8+48), 1 + ($imm8+48), 2 + ($imm8+48), 3 + ($imm8+48), 4 + ($imm8+48), 5 + ($imm8+48), 6 + ($imm8+48), 7 + ($imm8+48),
+                    8 + ($imm8+48), 9 + ($imm8+48), 10 + ($imm8+48), 11 + ($imm8+48), 12 + ($imm8+48), 13 + ($imm8+48), 14 + ($imm8+48), 15 + ($imm8+48),
+                    16 + ($imm8+32), 17 + ($imm8+32), 18 + ($imm8+32), 19 + ($imm8+32), 20 + ($imm8+32), 21 + ($imm8+32), 22 + ($imm8+32), 23 + ($imm8+32),
+                    24 + ($imm8+32), 25 + ($imm8+32), 26 + ($imm8+32), 27 + ($imm8+32), 28 + ($imm8+32), 29 + ($imm8+32), 30 + ($imm8+32), 31 + ($imm8+32),
+                    32 + ($imm8+16), 33 + ($imm8+16), 34 + ($imm8+16), 35 + ($imm8+16), 36 + ($imm8+16), 37 + ($imm8+16), 38 + ($imm8+16), 39 + ($imm8+16),
+                    40 + ($imm8+16), 41 + ($imm8+16), 42 + ($imm8+16), 43 + ($imm8+16), 44 + ($imm8+16), 45 + ($imm8+16), 46 + ($imm8+16), 47 + ($imm8+16),
+                    48 + $imm8, 49 + $imm8, 50 + $imm8, 51 + $imm8, 52 + $imm8, 53 + $imm8, 54 + $imm8, 55 + $imm8,
+                    56 + $imm8, 57 + $imm8, 58 + $imm8, 59 + $imm8, 60 + $imm8, 61 + $imm8, 62 + $imm8, 63 + $imm8,
+                ],
+            )
+        };
+    }
+    let r: i8x64 = match imm8 {
+        0 => call!(0),
+        1 => call!(1),
+        2 => call!(2),
+        3 => call!(3),
+        4 => call!(4),
+        5 => call!(5),
+        6 => call!(6),
+        7 => call!(7),
+        8 => call!(8),
+        9 => call!(9),
+        10 => call!(10),
+        11 => call!(11),
+        12 => call!(12),
+        13 => call!(13),
+        14 => call!(14),
+        15 => call!(15),
+        _ => call!(16),
+    };
+    transmute(r)
+}
+
 #[allow(improper_ctypes)]
 extern "C" {
     #[link_name = "llvm.x86.avx512.mask.paddus.w.512"]
@@ -7660,6 +7762,46 @@ mod tests {
         assert_eq_m512i(r, _mm512_setzero_si512());
         let r = _mm512_maskz_cvtepu8_epi16(0b11111111_11111111_11111111_11111111, a);
         let e = _mm512_set1_epi16(2);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_mm512_bslli_epi128() {
+        #[rustfmt::skip]
+        let a = _mm512_set_epi8(
+            1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0,
+            1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0,
+            1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0,
+            1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0,
+        );
+        let r = _mm512_bslli_epi128(a, 9);
+        #[rustfmt::skip]
+        let e = _mm512_set_epi8(
+            0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        );
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_mm512_bsrli_epi128() {
+        #[rustfmt::skip]
+        let a = _mm512_set_epi8(
+            1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0,
+            1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0,
+            1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0,
+            1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0,
+        );
+        let r = _mm512_bsrli_epi128(a, 9);
+        #[rustfmt::skip]
+        let e = _mm512_set_epi8(
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0,
+        );
         assert_eq_m512i(r, e);
     }
 }
