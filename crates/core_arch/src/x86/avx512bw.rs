@@ -3982,6 +3982,201 @@ pub unsafe fn _mm512_bsrli_epi128(a: __m512i, imm8: i32) -> __m512i {
     transmute(r)
 }
 
+/// Concatenate pairs of 16-byte blocks in a and b into a 32-byte temporary result, shift the result right by imm8 bytes, and store the low 16 bytes in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_alignr_epi8&expand=263)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(vpalignr, imm8 = 1))]
+#[rustc_args_required_const(2)]
+pub unsafe fn _mm512_alignr_epi8(a: __m512i, b: __m512i, imm8: i32) -> __m512i {
+    // If palignr is shifting the pair of vectors more than the size of two
+    // lanes, emit zero.
+    if imm8 > 32 {
+        return _mm512_set1_epi8(0);
+    }
+    // If palignr is shifting the pair of input vectors more than one lane,
+    // but less than two lanes, convert to shifting in zeroes.
+    let (a, b, imm8) = if imm8 > 16 {
+        (_mm512_set1_epi8(0), a, imm8 - 16)
+    } else {
+        (a, b, imm8)
+    };
+    let a = a.as_i8x64();
+    let b = b.as_i8x64();
+    #[rustfmt::skip]
+    macro_rules! shuffle {
+        ($imm8:expr) => {
+            simd_shuffle64(
+                b,
+                a,
+                [
+                    0 + ($imm8+48), 1 + ($imm8+48), 2 + ($imm8+48), 3 + ($imm8+48), 4 + ($imm8+48), 5 + ($imm8+48), 6 + ($imm8+48), 7 + ($imm8+48),
+                    8 + ($imm8+48), 9 + ($imm8+48), 10 + ($imm8+48), 11 + ($imm8+48), 12 + ($imm8+48), 13 + ($imm8+48), 14 + ($imm8+48), 15 + ($imm8+48),
+                    16 + ($imm8+32), 17 + ($imm8+32), 18 + ($imm8+32), 19 + ($imm8+32), 20 + ($imm8+32), 21 + ($imm8+32), 22 + ($imm8+32), 23 + ($imm8+32),
+                    24 + ($imm8+32), 25 + ($imm8+32), 26 + ($imm8+32), 27 + ($imm8+32), 28 + ($imm8+32), 29 + ($imm8+32), 30 + ($imm8+32), 31 + ($imm8+32),
+                    32 + ($imm8+16), 33 + ($imm8+16), 34 + ($imm8+16), 35 + ($imm8+16), 36 + ($imm8+16), 37 + ($imm8+16), 38 + ($imm8+16), 39 + ($imm8+16),
+                    40 + ($imm8+16), 41 + ($imm8+16), 42 + ($imm8+16), 43 + ($imm8+16), 44 + ($imm8+16), 45 + ($imm8+16), 46 + ($imm8+16), 47 + ($imm8+16),
+                    48 + $imm8, 49 + $imm8, 50 + $imm8, 51 + $imm8, 52 + $imm8, 53 + $imm8, 54 + $imm8, 55 + $imm8,
+                    56 + $imm8, 57 + $imm8, 58 + $imm8, 59 + $imm8, 60 + $imm8, 61 + $imm8, 62 + $imm8, 63 + $imm8,
+                ],
+            )
+        };
+    }
+    let r: i8x64 = match imm8 {
+        0 => shuffle!(0),
+        1 => shuffle!(1),
+        2 => shuffle!(2),
+        3 => shuffle!(3),
+        4 => shuffle!(4),
+        5 => shuffle!(5),
+        6 => shuffle!(6),
+        7 => shuffle!(7),
+        8 => shuffle!(8),
+        9 => shuffle!(9),
+        10 => shuffle!(10),
+        11 => shuffle!(11),
+        12 => shuffle!(12),
+        13 => shuffle!(13),
+        14 => shuffle!(14),
+        15 => shuffle!(15),
+        _ => shuffle!(16),
+    };
+    transmute(r)
+}
+
+/// Concatenate pairs of 16-byte blocks in a and b into a 32-byte temporary result, shift the result right by imm8 bytes, and store the low 16 bytes in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_alignr_epi8&expand=264)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(vpalignr, imm8 = 1))]
+#[rustc_args_required_const(4)]
+pub unsafe fn _mm512_mask_alignr_epi8(
+    src: __m512i,
+    k: __mmask64,
+    a: __m512i,
+    b: __m512i,
+    imm8: i32,
+) -> __m512i {
+    // If palignr is shifting the pair of vectors more than the size of two
+    // lanes, emit zero.
+    if imm8 > 32 {
+        return _mm512_set1_epi8(0);
+    }
+    // If palignr is shifting the pair of input vectors more than one lane,
+    // but less than two lanes, convert to shifting in zeroes.
+    let (a, b, imm8) = if imm8 > 16 {
+        (_mm512_set1_epi8(0), a, imm8 - 16)
+    } else {
+        (a, b, imm8)
+    };
+    let a = a.as_i8x64();
+    let b = b.as_i8x64();
+    #[rustfmt::skip]
+    macro_rules! shuffle {
+        ($imm8:expr) => {
+            simd_shuffle64(
+                b,
+                a,
+                [
+                    0 + ($imm8+48), 1 + ($imm8+48), 2 + ($imm8+48), 3 + ($imm8+48), 4 + ($imm8+48), 5 + ($imm8+48), 6 + ($imm8+48), 7 + ($imm8+48),
+                    8 + ($imm8+48), 9 + ($imm8+48), 10 + ($imm8+48), 11 + ($imm8+48), 12 + ($imm8+48), 13 + ($imm8+48), 14 + ($imm8+48), 15 + ($imm8+48),
+                    16 + ($imm8+32), 17 + ($imm8+32), 18 + ($imm8+32), 19 + ($imm8+32), 20 + ($imm8+32), 21 + ($imm8+32), 22 + ($imm8+32), 23 + ($imm8+32),
+                    24 + ($imm8+32), 25 + ($imm8+32), 26 + ($imm8+32), 27 + ($imm8+32), 28 + ($imm8+32), 29 + ($imm8+32), 30 + ($imm8+32), 31 + ($imm8+32),
+                    32 + ($imm8+16), 33 + ($imm8+16), 34 + ($imm8+16), 35 + ($imm8+16), 36 + ($imm8+16), 37 + ($imm8+16), 38 + ($imm8+16), 39 + ($imm8+16),
+                    40 + ($imm8+16), 41 + ($imm8+16), 42 + ($imm8+16), 43 + ($imm8+16), 44 + ($imm8+16), 45 + ($imm8+16), 46 + ($imm8+16), 47 + ($imm8+16),
+                    48 + $imm8, 49 + $imm8, 50 + $imm8, 51 + $imm8, 52 + $imm8, 53 + $imm8, 54 + $imm8, 55 + $imm8,
+                    56 + $imm8, 57 + $imm8, 58 + $imm8, 59 + $imm8, 60 + $imm8, 61 + $imm8, 62 + $imm8, 63 + $imm8,
+                ],
+            )
+        };
+    }
+    let r: i8x64 = match imm8 {
+        0 => shuffle!(0),
+        1 => shuffle!(1),
+        2 => shuffle!(2),
+        3 => shuffle!(3),
+        4 => shuffle!(4),
+        5 => shuffle!(5),
+        6 => shuffle!(6),
+        7 => shuffle!(7),
+        8 => shuffle!(8),
+        9 => shuffle!(9),
+        10 => shuffle!(10),
+        11 => shuffle!(11),
+        12 => shuffle!(12),
+        13 => shuffle!(13),
+        14 => shuffle!(14),
+        15 => shuffle!(15),
+        _ => shuffle!(16),
+    };
+    transmute(simd_select_bitmask(k, r, src.as_i8x64()))
+}
+
+/// Concatenate pairs of 16-byte blocks in a and b into a 32-byte temporary result, shift the result right by imm8 bytes, and store the low 16 bytes in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_alignr_epi8&expand=265)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+#[cfg_attr(test, assert_instr(vpalignr, imm8 = 1))]
+#[rustc_args_required_const(3)]
+pub unsafe fn _mm512_maskz_alignr_epi8(k: __mmask64, a: __m512i, b: __m512i, imm8: i32) -> __m512i {
+    // If palignr is shifting the pair of vectors more than the size of two
+    // lanes, emit zero.
+    if imm8 > 32 {
+        return _mm512_set1_epi8(0);
+    }
+    // If palignr is shifting the pair of input vectors more than one lane,
+    // but less than two lanes, convert to shifting in zeroes.
+    let (a, b, imm8) = if imm8 > 16 {
+        (_mm512_set1_epi8(0), a, imm8 - 16)
+    } else {
+        (a, b, imm8)
+    };
+    let a = a.as_i8x64();
+    let b = b.as_i8x64();
+    #[rustfmt::skip]
+    macro_rules! shuffle {
+        ($imm8:expr) => {
+            simd_shuffle64(
+                b,
+                a,
+                [
+                    0 + ($imm8+48), 1 + ($imm8+48), 2 + ($imm8+48), 3 + ($imm8+48), 4 + ($imm8+48), 5 + ($imm8+48), 6 + ($imm8+48), 7 + ($imm8+48),
+                    8 + ($imm8+48), 9 + ($imm8+48), 10 + ($imm8+48), 11 + ($imm8+48), 12 + ($imm8+48), 13 + ($imm8+48), 14 + ($imm8+48), 15 + ($imm8+48),
+                    16 + ($imm8+32), 17 + ($imm8+32), 18 + ($imm8+32), 19 + ($imm8+32), 20 + ($imm8+32), 21 + ($imm8+32), 22 + ($imm8+32), 23 + ($imm8+32),
+                    24 + ($imm8+32), 25 + ($imm8+32), 26 + ($imm8+32), 27 + ($imm8+32), 28 + ($imm8+32), 29 + ($imm8+32), 30 + ($imm8+32), 31 + ($imm8+32),
+                    32 + ($imm8+16), 33 + ($imm8+16), 34 + ($imm8+16), 35 + ($imm8+16), 36 + ($imm8+16), 37 + ($imm8+16), 38 + ($imm8+16), 39 + ($imm8+16),
+                    40 + ($imm8+16), 41 + ($imm8+16), 42 + ($imm8+16), 43 + ($imm8+16), 44 + ($imm8+16), 45 + ($imm8+16), 46 + ($imm8+16), 47 + ($imm8+16),
+                    48 + $imm8, 49 + $imm8, 50 + $imm8, 51 + $imm8, 52 + $imm8, 53 + $imm8, 54 + $imm8, 55 + $imm8,
+                    56 + $imm8, 57 + $imm8, 58 + $imm8, 59 + $imm8, 60 + $imm8, 61 + $imm8, 62 + $imm8, 63 + $imm8,
+                ],
+            )
+        };
+    }
+    let r: i8x64 = match imm8 {
+        0 => shuffle!(0),
+        1 => shuffle!(1),
+        2 => shuffle!(2),
+        3 => shuffle!(3),
+        4 => shuffle!(4),
+        5 => shuffle!(5),
+        6 => shuffle!(6),
+        7 => shuffle!(7),
+        8 => shuffle!(8),
+        9 => shuffle!(9),
+        10 => shuffle!(10),
+        11 => shuffle!(11),
+        12 => shuffle!(12),
+        13 => shuffle!(13),
+        14 => shuffle!(14),
+        15 => shuffle!(15),
+        _ => shuffle!(16),
+    };
+    transmute(simd_select_bitmask(k, r, _mm512_setzero_si512().as_i8x64()))
+}
+
 #[allow(improper_ctypes)]
 extern "C" {
     #[link_name = "llvm.x86.avx512.mask.paddus.w.512"]
@@ -7801,6 +7996,71 @@ mod tests {
             0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0,
+        );
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_mm512_alignr_epi8() {
+        #[rustfmt::skip]
+        let a = _mm512_set_epi8(
+            1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0,
+            1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0,
+            1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0,
+            1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0,
+        );
+        let b = _mm512_set1_epi8(1);
+        let r = _mm512_alignr_epi8(a, b, 14);
+        #[rustfmt::skip]
+        let e = _mm512_set_epi8(
+            0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1,
+            0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1,
+            0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1,
+            0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1,
+        );
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_mm512_mask_alignr_epi8() {
+        #[rustfmt::skip]
+        let a = _mm512_set_epi8(
+            1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0,
+            1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0,
+            1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0,
+            1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0,
+        );
+        let b = _mm512_set1_epi8(1);
+        let r = _mm512_mask_alignr_epi8(a, 0, a, b, 14);
+        assert_eq_m512i(r, a);
+        #[rustfmt::skip]
+        let r = _mm512_mask_alignr_epi8(a, 0b11111111_11111111_11111111_11111111_11111111_11111111_11111111_11111111, a, b, 14);
+        let e = _mm512_set_epi8(
+            0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0,
+            0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0,
+            1, 0, 0, 0, 1, 1,
+        );
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_mm512_maskz_alignr_epi8() {
+        #[rustfmt::skip]
+        let a = _mm512_set_epi8(
+            1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0,
+            1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0,
+            1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0,
+            1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0,
+        );
+        let b = _mm512_set1_epi8(1);
+        let r = _mm512_maskz_alignr_epi8(0, a, b, 14);
+        assert_eq_m512i(r, _mm512_setzero_si512());
+        #[rustfmt::skip]
+        let r = _mm512_maskz_alignr_epi8(0b11111111_11111111_11111111_11111111_11111111_11111111_11111111_11111111, a, b, 14);
+        let e = _mm512_set_epi8(
+            0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0,
+            0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0,
+            1, 0, 0, 0, 1, 1,
         );
         assert_eq_m512i(r, e);
     }
