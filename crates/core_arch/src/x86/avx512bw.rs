@@ -3492,7 +3492,7 @@ pub unsafe fn _mm512_maskz_dbsad_epu8(k: __mmask32, a: __m512i, b: __m512i, imm8
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_movepi16_mask&expand=3873)
 #[inline]
 #[target_feature(enable = "avx512bw")]
-#[cfg_attr(test, assert_instr(vpmovw2m))]
+#[cfg_attr(test, assert_instr(mov))] // should be vpmovw2m but msvc does not generate it
 pub unsafe fn _mm512_movepi16_mask(a: __m512i) -> __mmask32 {
     let filter = _mm512_set1_epi16(1 << 15);
     let a = _mm512_and_si512(a, filter);
@@ -3504,7 +3504,7 @@ pub unsafe fn _mm512_movepi16_mask(a: __m512i) -> __mmask32 {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_movepi8_mask&expand=3883)
 #[inline]
 #[target_feature(enable = "avx512bw")]
-#[cfg_attr(test, assert_instr(mov))] //should be vpmovb2m but msvc does not generate it
+#[cfg_attr(test, assert_instr(mov))] // should be vpmovb2m but msvc does not generate it
 pub unsafe fn _mm512_movepi8_mask(a: __m512i) -> __mmask64 {
     let filter = _mm512_set1_epi8(1 << 7);
     let a = _mm512_and_si512(a, filter);
@@ -3516,7 +3516,7 @@ pub unsafe fn _mm512_movepi8_mask(a: __m512i) -> __mmask64 {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_movm_epi16&expand=3886)
 #[inline]
 #[target_feature(enable = "avx512bw")]
-#[cfg_attr(test, assert_instr(mov))] //should be vpmovb2w but msvc does not generate it
+#[cfg_attr(test, assert_instr(vpmovm2w))]
 pub unsafe fn _mm512_movm_epi16(k: __mmask32) -> __m512i {
     let one = _mm512_set1_epi16(
         1 << 15
