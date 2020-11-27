@@ -3516,7 +3516,7 @@ pub unsafe fn _mm512_movepi8_mask(a: __m512i) -> __mmask64 {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_movm_epi16&expand=3886)
 #[inline]
 #[target_feature(enable = "avx512bw")]
-#[cfg_attr(test, assert_instr(vpmovm2w))]
+#[cfg_attr(test, assert_instr(mov))] //should be vpmovb2w but msvc does not generate it
 pub unsafe fn _mm512_movm_epi16(k: __mmask32) -> __m512i {
     let one = _mm512_set1_epi16(
         1 << 15
