@@ -1409,13 +1409,14 @@ mod tests {
         for i in 0..NUM_TEST_WORDS_256 {
             let matrix = load_m256i_word(&matrices, i);
             let vector = load_m256i_word(&vectors, i);
-            let result_zero = _mm256_maskz_gf2p8affineinv_epi64_epi8(0, vector, matrix, CONSTANT_BYTE);
+            let result_zero =
+                _mm256_maskz_gf2p8affineinv_epi64_epi8(0, vector, matrix, CONSTANT_BYTE);
             assert_eq_m256i(result_zero, _mm256_setzero_si256());
             let mask_bytes: __mmask32 = 0xFF_0F_F0_00;
             const MASK_WORDS: i32 = 0b11_01_10_00;
             let expected_result = _mm256_gf2p8affineinv_epi64_epi8(vector, matrix, CONSTANT_BYTE);
             let result_masked =
-            _mm256_maskz_gf2p8affineinv_epi64_epi8(mask_bytes, vector, matrix, CONSTANT_BYTE);
+                _mm256_maskz_gf2p8affineinv_epi64_epi8(mask_bytes, vector, matrix, CONSTANT_BYTE);
             let expected_masked =
                 _mm256_blend_epi32(_mm256_setzero_si256(), expected_result, MASK_WORDS);
             assert_eq_m256i(result_masked, expected_masked);
@@ -1515,7 +1516,8 @@ mod tests {
         for i in 0..NUM_TEST_WORDS_128 {
             let left = load_m128i_word(&vectors, i);
             let right = load_m128i_word(&matrices, i);
-            let result_left = _mm_mask_gf2p8affineinv_epi64_epi8(left, 0, left, right, CONSTANT_BYTE);
+            let result_left =
+                _mm_mask_gf2p8affineinv_epi64_epi8(left, 0, left, right, CONSTANT_BYTE);
             assert_eq_m128i(result_left, left);
             let mask_bytes: __mmask16 = 0x0F_F0;
             const MASK_WORDS: i32 = 0b01_10;
