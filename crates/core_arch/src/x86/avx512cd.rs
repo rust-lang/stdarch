@@ -91,7 +91,7 @@ pub unsafe fn _mm512_maskz_conflict_epi64(k: __mmask8, a: __m512i) -> __m512i {
     let zero = _mm512_setzero_si512().as_i64x8();
     transmute(simd_select_bitmask(k, conflict, zero))
 }
-/*
+
 /// Counts the number of leading zero bits in each packed 32-bit integer in a, and store the results in dst.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_lzcnt_epi32&expand=3491)
@@ -99,14 +99,75 @@ pub unsafe fn _mm512_maskz_conflict_epi64(k: __mmask8, a: __m512i) -> __m512i {
 #[target_feature(enable = "avx512cd")]
 #[cfg_attr(test, assert_instr(vplzcntd))]
 pub unsafe fn _mm512_lzcnt_epi32(a: __m512i) -> __m512i {
+    transmute(vplzcntd(a.as_i32x16(), false))
 }
-*/
+
+/// Counts the number of leading zero bits in each packed 32-bit integer in a, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_lzcnt_epi32&expand=3492)
+#[inline]
+#[target_feature(enable = "avx512cd")]
+#[cfg_attr(test, assert_instr(vplzcntd))]
+pub unsafe fn _mm512_mask_lzcnt_epi32(src: __m512i, k: __mmask16, a: __m512i) -> __m512i {
+    let zerocount = _mm512_lzcnt_epi32(a).as_i32x16();
+    transmute(simd_select_bitmask(k, zerocount, src.as_i32x16()))
+}
+
+/// Counts the number of leading zero bits in each packed 32-bit integer in a, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_lzcnt_epi32&expand=3493)
+#[inline]
+#[target_feature(enable = "avx512cd")]
+#[cfg_attr(test, assert_instr(vplzcntd))]
+pub unsafe fn _mm512_maskz_lzcnt_epi32(k: __mmask16, a: __m512i) -> __m512i {
+    let zerocount = _mm512_lzcnt_epi32(a).as_i32x16();
+    let zero = _mm512_setzero_si512().as_i32x16();
+    transmute(simd_select_bitmask(k, zerocount, zero))
+}
+
+/// Counts the number of leading zero bits in each packed 64-bit integer in a, and store the results in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_lzcnt_epi64&expand=3500)
+#[inline]
+#[target_feature(enable = "avx512cd")]
+#[cfg_attr(test, assert_instr(vplzcntq))]
+pub unsafe fn _mm512_lzcnt_epi64(a: __m512i) -> __m512i {
+    transmute(vplzcntq(a.as_i64x8(), false))
+}
+
+/// Counts the number of leading zero bits in each packed 64-bit integer in a, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_lzcnt_epi64&expand=3501)
+#[inline]
+#[target_feature(enable = "avx512cd")]
+#[cfg_attr(test, assert_instr(vplzcntq))]
+pub unsafe fn _mm512_mask_lzcnt_epi64(src: __m512i, k: __mmask8, a: __m512i) -> __m512i {
+    let zerocount = _mm512_lzcnt_epi64(a).as_i64x8();
+    transmute(simd_select_bitmask(k, zerocount, src.as_i64x8()))
+}
+
+/// Counts the number of leading zero bits in each packed 64-bit integer in a, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_lzcnt_epi64&expand=3502)
+#[inline]
+#[target_feature(enable = "avx512cd")]
+#[cfg_attr(test, assert_instr(vplzcntq))]
+pub unsafe fn _mm512_maskz_lzcnt_epi64(k: __mmask8, a: __m512i) -> __m512i {
+    let zerocount = _mm512_lzcnt_epi64(a).as_i64x8();
+    let zero = _mm512_setzero_si512().as_i64x8();
+    transmute(simd_select_bitmask(k, zerocount, zero))
+}
+
 #[allow(improper_ctypes)]
 extern "C" {
     #[link_name = "llvm.x86.avx512.conflict.d.512"]
     fn vpconflictd(a: i32x16) -> i32x16;
     #[link_name = "llvm.x86.avx512.conflict.q.512"]
     fn vpconflictq(a: i64x8) -> i64x8;
+    #[link_name = "llvm.ctlz.v16i32"]
+    fn vplzcntd(a: i32x16, nonzero: bool) -> i32x16;
+    #[link_name = "llvm.ctlz.v8i64"]
+    fn vplzcntq(a: i64x8, nonzero: bool) -> i64x8;
 }
 
 #[cfg(test)]
@@ -442,6 +503,62 @@ mod tests {
             1 << 0,
             0,
         );
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512cd")]
+    unsafe fn test_mm512_lzcnt_epi32() {
+        let a = _mm512_set1_epi32(1);
+        let r = _mm512_lzcnt_epi32(a);
+        let e = _mm512_set1_epi32(31);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512cd")]
+    unsafe fn test_mm512_mask_lzcnt_epi32() {
+        let a = _mm512_set1_epi32(1);
+        let r = _mm512_mask_lzcnt_epi32(a, 0, a);
+        assert_eq_m512i(r, a);
+        let r = _mm512_mask_lzcnt_epi32(a, 0b11111111_11111111, a);
+        let e = _mm512_set1_epi32(31);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512cd")]
+    unsafe fn test_mm512_maskz_lzcnt_epi32() {
+        let a = _mm512_set1_epi32(2);
+        let r = _mm512_maskz_lzcnt_epi32(0, a);
+        assert_eq_m512i(r, _mm512_setzero_si512());
+        let r = _mm512_maskz_lzcnt_epi32(0b11111111_11111111, a);
+        let e = _mm512_set1_epi32(30);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512cd")]
+    unsafe fn test_mm512_lzcnt_epi64() {
+        let a = _mm512_set1_epi64(1);
+        let r = _mm512_lzcnt_epi64(a);
+        let e = _mm512_set1_epi64(63);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512cd")]
+    unsafe fn test_mm512_mask_lzcnt_epi64() {
+        let a = _mm512_set1_epi64(1);
+        let r = _mm512_mask_lzcnt_epi64(a, 0, a);
+        assert_eq_m512i(r, a);
+        let r = _mm512_mask_lzcnt_epi64(a, 0b11111111, a);
+        let e = _mm512_set1_epi64(63);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512cd")]
+    unsafe fn test_mm512_maskz_lzcnt_epi64() {
+        let a = _mm512_set1_epi64(2);
+        let r = _mm512_maskz_lzcnt_epi64(0, a);
+        assert_eq_m512i(r, _mm512_setzero_si512());
+        let r = _mm512_maskz_lzcnt_epi64(0b11111111, a);
+        let e = _mm512_set1_epi64(62);
         assert_eq_m512i(r, e);
     }
 }
