@@ -18,5 +18,17 @@
   * [x] [`_mm256_broadcastmb_epi64`]
   * [x] [`_mm_broadcastmw_epi32`]
   * [x] [`_mm256_broadcastmw_epi32`]
+  * [x] [`_mm_conflict_epi32`]
+  * [x] [`_mm_mask_conflict_epi32`]
+  * [x] [`_mm_maskz_conflict_epi32`]
+  * [x] [`_mm256_conflict_epi32`]
+  * [x] [`_mm256_mask_conflict_epi32`]
+  * [x] [`_mm256_maskz_conflict_epi32`]
+  * [x] [`_mm_conflict_epi64`]
+  * [x] [`_mm_mask_conflict_epi64`]
+  * [x] [`_mm_maskz_conflict_epi64`]
+  * [x] [`_mm256_conflict_epi64`]
+  * [x] [`_mm256_mask_conflict_epi64`]
+  * [x] [`_mm256_maskz_conflict_epi64`]
 
 </p>

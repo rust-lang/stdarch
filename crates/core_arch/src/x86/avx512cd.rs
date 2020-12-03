@@ -99,6 +99,72 @@ pub unsafe fn _mm512_maskz_conflict_epi32(k: __mmask16, a: __m512i) -> __m512i {
     transmute(simd_select_bitmask(k, conflict, zero))
 }
 
+/// Test each 32-bit element of a for equality with all other elements in a closer to the least significant bit. Each element's comparison forms a zero extended bit vector in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_conflict_epi32&expand=1245)
+#[inline]
+#[target_feature(enable = "avx512cd,avx512vl")]
+#[cfg_attr(test, assert_instr(vpconflictd))]
+pub unsafe fn _mm256_conflict_epi32(a: __m256i) -> __m256i {
+    transmute(vpconflictd256(a.as_i32x8()))
+}
+
+/// Test each 32-bit element of a for equality with all other elements in a closer to the least significant bit using writemask k (elements are copied from src when the corresponding mask bit is not set). Each element's comparison forms a zero extended bit vector in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_conflict_epi32&expand=1246)
+#[inline]
+#[target_feature(enable = "avx512cd,avx512vl")]
+#[cfg_attr(test, assert_instr(vpconflictd))]
+pub unsafe fn _mm256_mask_conflict_epi32(src: __m256i, k: __mmask8, a: __m256i) -> __m256i {
+    let conflict = _mm256_conflict_epi32(a).as_i32x8();
+    transmute(simd_select_bitmask(k, conflict, src.as_i32x8()))
+}
+
+/// Test each 32-bit element of a for equality with all other elements in a closer to the least significant bit using zeromask k (elements are zeroed out when the corresponding mask bit is not set). Each element's comparison forms a zero extended bit vector in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_conflict_epi32&expand=1247)
+#[inline]
+#[target_feature(enable = "avx512cd,avx512vl")]
+#[cfg_attr(test, assert_instr(vpconflictd))]
+pub unsafe fn _mm256_maskz_conflict_epi32(k: __mmask8, a: __m256i) -> __m256i {
+    let conflict = _mm256_conflict_epi32(a).as_i32x8();
+    let zero = _mm256_setzero_si256().as_i32x8();
+    transmute(simd_select_bitmask(k, conflict, zero))
+}
+
+/// Test each 32-bit element of a for equality with all other elements in a closer to the least significant bit. Each element's comparison forms a zero extended bit vector in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_conflict_epi32&expand=1242)
+#[inline]
+#[target_feature(enable = "avx512cd,avx512vl")]
+#[cfg_attr(test, assert_instr(vpconflictd))]
+pub unsafe fn _mm_conflict_epi32(a: __m128i) -> __m128i {
+    transmute(vpconflictd128(a.as_i32x4()))
+}
+
+/// Test each 32-bit element of a for equality with all other elements in a closer to the least significant bit using writemask k (elements are copied from src when the corresponding mask bit is not set). Each element's comparison forms a zero extended bit vector in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_conflict_epi32&expand=1243)
+#[inline]
+#[target_feature(enable = "avx512cd,avx512vl")]
+#[cfg_attr(test, assert_instr(vpconflictd))]
+pub unsafe fn _mm_mask_conflict_epi32(src: __m128i, k: __mmask8, a: __m128i) -> __m128i {
+    let conflict = _mm_conflict_epi32(a).as_i32x4();
+    transmute(simd_select_bitmask(k, conflict, src.as_i32x4()))
+}
+
+/// Test each 32-bit element of a for equality with all other elements in a closer to the least significant bit using zeromask k (elements are zeroed out when the corresponding mask bit is not set). Each element's comparison forms a zero extended bit vector in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_conflict_epi32&expand=1244)
+#[inline]
+#[target_feature(enable = "avx512cd,avx512vl")]
+#[cfg_attr(test, assert_instr(vpconflictd))]
+pub unsafe fn _mm_maskz_conflict_epi32(k: __mmask8, a: __m128i) -> __m128i {
+    let conflict = _mm_conflict_epi32(a).as_i32x4();
+    let zero = _mm_setzero_si128().as_i32x4();
+    transmute(simd_select_bitmask(k, conflict, zero))
+}
+
 /// Test each 64-bit element of a for equality with all other elements in a closer to the least significant bit. Each element's comparison forms a zero extended bit vector in dst.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_conflict_epi64&expand=1257)
@@ -129,6 +195,72 @@ pub unsafe fn _mm512_mask_conflict_epi64(src: __m512i, k: __mmask8, a: __m512i) 
 pub unsafe fn _mm512_maskz_conflict_epi64(k: __mmask8, a: __m512i) -> __m512i {
     let conflict = _mm512_conflict_epi64(a).as_i64x8();
     let zero = _mm512_setzero_si512().as_i64x8();
+    transmute(simd_select_bitmask(k, conflict, zero))
+}
+
+/// Test each 64-bit element of a for equality with all other elements in a closer to the least significant bit. Each element's comparison forms a zero extended bit vector in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_conflict_epi64&expand=1254)
+#[inline]
+#[target_feature(enable = "avx512cd,avx512vl")]
+#[cfg_attr(test, assert_instr(vpconflictq))]
+pub unsafe fn _mm256_conflict_epi64(a: __m256i) -> __m256i {
+    transmute(vpconflictq256(a.as_i64x4()))
+}
+
+/// Test each 64-bit element of a for equality with all other elements in a closer to the least significant bit using writemask k (elements are copied from src when the corresponding mask bit is not set). Each element's comparison forms a zero extended bit vector in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_conflict_epi64&expand=1255)
+#[inline]
+#[target_feature(enable = "avx512cd,avx512vl")]
+#[cfg_attr(test, assert_instr(vpconflictq))]
+pub unsafe fn _mm256_mask_conflict_epi64(src: __m256i, k: __mmask8, a: __m256i) -> __m256i {
+    let conflict = _mm256_conflict_epi64(a).as_i64x4();
+    transmute(simd_select_bitmask(k, conflict, src.as_i64x4()))
+}
+
+/// Test each 64-bit element of a for equality with all other elements in a closer to the least significant bit using zeromask k (elements are zeroed out when the corresponding mask bit is not set). Each element's comparison forms a zero extended bit vector in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_conflict_epi64&expand=1256)
+#[inline]
+#[target_feature(enable = "avx512cd,avx512vl")]
+#[cfg_attr(test, assert_instr(vpconflictq))]
+pub unsafe fn _mm256_maskz_conflict_epi64(k: __mmask8, a: __m256i) -> __m256i {
+    let conflict = _mm256_conflict_epi64(a).as_i64x4();
+    let zero = _mm256_setzero_si256().as_i64x4();
+    transmute(simd_select_bitmask(k, conflict, zero))
+}
+
+/// Test each 64-bit element of a for equality with all other elements in a closer to the least significant bit. Each element's comparison forms a zero extended bit vector in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_conflict_epi64&expand=1251)
+#[inline]
+#[target_feature(enable = "avx512cd,avx512vl")]
+#[cfg_attr(test, assert_instr(vpconflictq))]
+pub unsafe fn _mm_conflict_epi64(a: __m128i) -> __m128i {
+    transmute(vpconflictq128(a.as_i64x2()))
+}
+
+/// Test each 64-bit element of a for equality with all other elements in a closer to the least significant bit using writemask k (elements are copied from src when the corresponding mask bit is not set). Each element's comparison forms a zero extended bit vector in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_conflict_epi64&expand=1252)
+#[inline]
+#[target_feature(enable = "avx512cd,avx512vl")]
+#[cfg_attr(test, assert_instr(vpconflictq))]
+pub unsafe fn _mm_mask_conflict_epi64(src: __m128i, k: __mmask8, a: __m128i) -> __m128i {
+    let conflict = _mm_conflict_epi64(a).as_i64x2();
+    transmute(simd_select_bitmask(k, conflict, src.as_i64x2()))
+}
+
+/// Test each 64-bit element of a for equality with all other elements in a closer to the least significant bit using zeromask k (elements are zeroed out when the corresponding mask bit is not set). Each element's comparison forms a zero extended bit vector in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_conflict_epi64&expand=1253)
+#[inline]
+#[target_feature(enable = "avx512cd,avx512vl")]
+#[cfg_attr(test, assert_instr(vpconflictq))]
+pub unsafe fn _mm_maskz_conflict_epi64(k: __mmask8, a: __m128i) -> __m128i {
+    let conflict = _mm_conflict_epi64(a).as_i64x2();
+    let zero = _mm_setzero_si128().as_i64x2();
     transmute(simd_select_bitmask(k, conflict, zero))
 }
 
@@ -202,8 +334,18 @@ pub unsafe fn _mm512_maskz_lzcnt_epi64(k: __mmask8, a: __m512i) -> __m512i {
 extern "C" {
     #[link_name = "llvm.x86.avx512.conflict.d.512"]
     fn vpconflictd(a: i32x16) -> i32x16;
+    #[link_name = "llvm.x86.avx512.conflict.d.256"]
+    fn vpconflictd256(a: i32x8) -> i32x8;
+    #[link_name = "llvm.x86.avx512.conflict.d.128"]
+    fn vpconflictd128(a: i32x4) -> i32x4;
+
     #[link_name = "llvm.x86.avx512.conflict.q.512"]
     fn vpconflictq(a: i64x8) -> i64x8;
+    #[link_name = "llvm.x86.avx512.conflict.q.256"]
+    fn vpconflictq256(a: i64x4) -> i64x4;
+    #[link_name = "llvm.x86.avx512.conflict.q.128"]
+    fn vpconflictq128(a: i64x2) -> i64x2;
+
     #[link_name = "llvm.ctlz.v16i32"]
     fn vplzcntd(a: i32x16, nonzero: bool) -> i32x16;
     #[link_name = "llvm.ctlz.v8i64"]
@@ -523,6 +665,89 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
+    #[simd_test(enable = "avx512cd,avx512vl")]
+    unsafe fn test_mm256_conflict_epi32() {
+        let a = _mm256_set1_epi32(1);
+        let r = _mm256_conflict_epi32(a);
+        let e = _mm256_set_epi32(
+            1 << 6 | 1 << 5 | 1 << 4 | 1 << 3 | 1 << 2 | 1 << 1 | 1 << 0,
+            1 << 5 | 1 << 4 | 1 << 3 | 1 << 2 | 1 << 1 | 1 << 0,
+            1 << 4 | 1 << 3 | 1 << 2 | 1 << 1 | 1 << 0,
+            1 << 3 | 1 << 2 | 1 << 1 | 1 << 0,
+            1 << 2 | 1 << 1 | 1 << 0,
+            1 << 1 | 1 << 0,
+            1 << 0,
+            0,
+        );
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512cd,avx512vl")]
+    unsafe fn test_mm256_mask_conflict_epi32() {
+        let a = _mm256_set1_epi32(1);
+        let r = _mm256_mask_conflict_epi32(a, 0, a);
+        assert_eq_m256i(r, a);
+        let r = _mm256_mask_conflict_epi32(a, 0b11111111, a);
+        let e = _mm256_set_epi32(
+            1 << 6 | 1 << 5 | 1 << 4 | 1 << 3 | 1 << 2 | 1 << 1 | 1 << 0,
+            1 << 5 | 1 << 4 | 1 << 3 | 1 << 2 | 1 << 1 | 1 << 0,
+            1 << 4 | 1 << 3 | 1 << 2 | 1 << 1 | 1 << 0,
+            1 << 3 | 1 << 2 | 1 << 1 | 1 << 0,
+            1 << 2 | 1 << 1 | 1 << 0,
+            1 << 1 | 1 << 0,
+            1 << 0,
+            0,
+        );
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512cd,avx512vl")]
+    unsafe fn test_mm256_maskz_conflict_epi32() {
+        let a = _mm256_set1_epi32(1);
+        let r = _mm256_maskz_conflict_epi32(0, a);
+        assert_eq_m256i(r, _mm256_setzero_si256());
+        let r = _mm256_maskz_conflict_epi32(0b11111111, a);
+        let e = _mm256_set_epi32(
+            1 << 6 | 1 << 5 | 1 << 4 | 1 << 3 | 1 << 2 | 1 << 1 | 1 << 0,
+            1 << 5 | 1 << 4 | 1 << 3 | 1 << 2 | 1 << 1 | 1 << 0,
+            1 << 4 | 1 << 3 | 1 << 2 | 1 << 1 | 1 << 0,
+            1 << 3 | 1 << 2 | 1 << 1 | 1 << 0,
+            1 << 2 | 1 << 1 | 1 << 0,
+            1 << 1 | 1 << 0,
+            1 << 0,
+            0,
+        );
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512cd,avx512vl")]
+    unsafe fn test_mm_conflict_epi32() {
+        let a = _mm_set1_epi32(1);
+        let r = _mm_conflict_epi32(a);
+        let e = _mm_set_epi32(1 << 2 | 1 << 1 | 1 << 0, 1 << 1 | 1 << 0, 1 << 0, 0);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512cd,avx512vl")]
+    unsafe fn test_mm_mask_conflict_epi32() {
+        let a = _mm_set1_epi32(1);
+        let r = _mm_mask_conflict_epi32(a, 0, a);
+        assert_eq_m128i(r, a);
+        let r = _mm_mask_conflict_epi32(a, 0b00001111, a);
+        let e = _mm_set_epi32(1 << 2 | 1 << 1 | 1 << 0, 1 << 1 | 1 << 0, 1 << 0, 0);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512cd,avx512vl")]
+    unsafe fn test_mm_maskz_conflict_epi32() {
+        let a = _mm_set1_epi32(1);
+        let r = _mm_maskz_conflict_epi32(0, a);
+        assert_eq_m128i(r, _mm_setzero_si128());
+        let r = _mm_maskz_conflict_epi32(0b00001111, a);
+        let e = _mm_set_epi32(1 << 2 | 1 << 1 | 1 << 0, 1 << 1 | 1 << 0, 1 << 0, 0);
+        assert_eq_m128i(r, e);
+    }
+
     #[simd_test(enable = "avx512cd")]
     unsafe fn test_mm512_conflict_epi64() {
         let a = _mm512_set1_epi64(1);
@@ -576,6 +801,62 @@ mod tests {
             0,
         );
         assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512cd,avx512vl")]
+    unsafe fn test_mm256_conflict_epi64() {
+        let a = _mm256_set1_epi64x(1);
+        let r = _mm256_conflict_epi64(a);
+        let e = _mm256_set_epi64x(1 << 2 | 1 << 1 | 1 << 0, 1 << 1 | 1 << 0, 1 << 0, 0);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512cd,avx512vl")]
+    unsafe fn test_mm256_mask_conflict_epi64() {
+        let a = _mm256_set1_epi64x(1);
+        let r = _mm256_mask_conflict_epi64(a, 0, a);
+        assert_eq_m256i(r, a);
+        let r = _mm256_mask_conflict_epi64(a, 0b00001111, a);
+        let e = _mm256_set_epi64x(1 << 2 | 1 << 1 | 1 << 0, 1 << 1 | 1 << 0, 1 << 0, 0);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512cd,avx512vl")]
+    unsafe fn test_mm256_maskz_conflict_epi64() {
+        let a = _mm256_set1_epi64x(1);
+        let r = _mm256_maskz_conflict_epi64(0, a);
+        assert_eq_m256i(r, _mm256_setzero_si256());
+        let r = _mm256_maskz_conflict_epi64(0b00001111, a);
+        let e = _mm256_set_epi64x(1 << 2 | 1 << 1 | 1 << 0, 1 << 1 | 1 << 0, 1 << 0, 0);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512cd,avx512vl")]
+    unsafe fn test_mm_conflict_epi64() {
+        let a = _mm_set1_epi64x(1);
+        let r = _mm_conflict_epi64(a);
+        let e = _mm_set_epi64x(1 << 0, 0);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512cd,avx512vl")]
+    unsafe fn test_mm_mask_conflict_epi64() {
+        let a = _mm_set1_epi64x(1);
+        let r = _mm_mask_conflict_epi64(a, 0, a);
+        assert_eq_m128i(r, a);
+        let r = _mm_mask_conflict_epi64(a, 0b00000011, a);
+        let e = _mm_set_epi64x(1 << 0, 0);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512cd,avx512vl")]
+    unsafe fn test_mm_maskz_conflict_epi64() {
+        let a = _mm_set1_epi64x(1);
+        let r = _mm_maskz_conflict_epi64(0, a);
+        assert_eq_m128i(r, _mm_setzero_si128());
+        let r = _mm_maskz_conflict_epi64(0b00000011, a);
+        let e = _mm_set_epi64x(1 << 0, 0);
+        assert_eq_m128i(r, e);
     }
 
     #[simd_test(enable = "avx512cd")]
