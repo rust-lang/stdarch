@@ -16,6 +16,26 @@ pub unsafe fn _mm512_broadcastmw_epi32(k: __mmask16) -> __m512i {
     _mm512_set1_epi32(k as i32)
 }
 
+/// Broadcast the low 16-bits from input mask k to all 32-bit elements of dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_broadcastmw_epi32&expand=552)
+#[inline]
+#[target_feature(enable = "avx512cd,avx512vl")]
+#[cfg_attr(test, assert_instr(vpbroadcast))] // should be vpbroadcastmw2d
+pub unsafe fn _mm256_broadcastmw_epi32(k: __mmask16) -> __m256i {
+    _mm256_set1_epi32(k as i32)
+}
+
+/// Broadcast the low 16-bits from input mask k to all 32-bit elements of dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_broadcastmw_epi32&expand=551)
+#[inline]
+#[target_feature(enable = "avx512cd,avx512vl")]
+#[cfg_attr(test, assert_instr(vpbroadcast))] // should be vpbroadcastmw2d
+pub unsafe fn _mm_broadcastmw_epi32(k: __mmask16) -> __m128i {
+    _mm_set1_epi32(k as i32)
+}
+
 /// Broadcast the low 8-bits from input mask k to all 64-bit elements of dst.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_broadcastmb_epi64&expand=550)
@@ -24,6 +44,26 @@ pub unsafe fn _mm512_broadcastmw_epi32(k: __mmask16) -> __m512i {
 #[cfg_attr(test, assert_instr(vpbroadcast))] // should be vpbroadcastmb2q
 pub unsafe fn _mm512_broadcastmb_epi64(k: __mmask8) -> __m512i {
     _mm512_set1_epi64(k as i64)
+}
+
+/// Broadcast the low 8-bits from input mask k to all 64-bit elements of dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_broadcastmb_epi64&expand=549)
+#[inline]
+#[target_feature(enable = "avx512cd,avx512vl")]
+#[cfg_attr(test, assert_instr(vpbroadcast))] // should be vpbroadcastmb2q
+pub unsafe fn _mm256_broadcastmb_epi64(k: __mmask8) -> __m256i {
+    _mm256_set1_epi64x(k as i64)
+}
+
+/// Broadcast the low 8-bits from input mask k to all 64-bit elements of dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_broadcastmb_epi64&expand=548)
+#[inline]
+#[target_feature(enable = "avx512cd,avx512vl")]
+#[cfg_attr(test, assert_instr(vpbroadcast))] // should be vpbroadcastmb2q
+pub unsafe fn _mm_broadcastmb_epi64(k: __mmask8) -> __m128i {
+    _mm_set1_epi64x(k as i64)
 }
 
 /// Test each 32-bit element of a for equality with all other elements in a closer to the least significant bit. Each element's comparison forms a zero extended bit vector in dst.
@@ -184,12 +224,44 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
+    #[simd_test(enable = "avx512cd,avx512vl")]
+    unsafe fn test_mm256_broadcastmw_epi32() {
+        let a: __mmask16 = 2;
+        let r = _mm256_broadcastmw_epi32(a);
+        let e = _mm256_set1_epi32(2);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512cd,avx512vl")]
+    unsafe fn test_mm_broadcastmw_epi32() {
+        let a: __mmask16 = 2;
+        let r = _mm_broadcastmw_epi32(a);
+        let e = _mm_set1_epi32(2);
+        assert_eq_m128i(r, e);
+    }
+
     #[simd_test(enable = "avx512cd")]
     unsafe fn test_mm512_broadcastmb_epi64() {
         let a: __mmask8 = 2;
         let r = _mm512_broadcastmb_epi64(a);
         let e = _mm512_set1_epi64(2);
         assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512cd,avx512vl")]
+    unsafe fn test_mm256_broadcastmb_epi64() {
+        let a: __mmask8 = 2;
+        let r = _mm256_broadcastmb_epi64(a);
+        let e = _mm256_set1_epi64x(2);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512cd,avx512vl")]
+    unsafe fn test_mm_broadcastmb_epi64() {
+        let a: __mmask8 = 2;
+        let r = _mm_broadcastmb_epi64(a);
+        let e = _mm_set1_epi64x(2);
+        assert_eq_m128i(r, e);
     }
 
     #[simd_test(enable = "avx512cd")]
