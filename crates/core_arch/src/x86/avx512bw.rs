@@ -52,12 +52,6 @@ pub unsafe fn _mm512_maskz_abs_epi16(k: __mmask32, a: __m512i) -> __m512i {
 #[target_feature(enable = "avx512bw,avx512vl")]
 #[cfg_attr(test, assert_instr(vpabsw))]
 pub unsafe fn _mm256_mask_abs_epi16(src: __m256i, k: __mmask16, a: __m256i) -> __m256i {
-    //let a = a.as_i16x16();
-    // all-0 is a properly initialized i16x16
-    //let zero: i16x16 = mem::zeroed();
-    //let sub = simd_sub(zero, a);
-    //let cmp: i16x16 = simd_gt(a, zero);
-    //let abs = simd_select(cmp, a, sub);
     let abs = _mm256_abs_epi16(a).as_i16x16();
     transmute(simd_select_bitmask(k, abs, src.as_i16x16()))
 }
@@ -69,17 +63,9 @@ pub unsafe fn _mm256_mask_abs_epi16(src: __m256i, k: __mmask16, a: __m256i) -> _
 #[target_feature(enable = "avx512bw,avx512vl")]
 #[cfg_attr(test, assert_instr(vpabsw))]
 pub unsafe fn _mm256_maskz_abs_epi16(k: __mmask16, a: __m256i) -> __m256i {
-    let a = a.as_i16x16();
-    // all-0 is a properly initialized i16x16
-    let zero: i16x16 = mem::zeroed();
-    let sub = simd_sub(zero, a);
-    let cmp: i16x16 = simd_gt(a, zero);
-    let abs = simd_select(cmp, a, sub);
-    transmute(simd_select_bitmask(
-        k,
-        abs,
-        _mm256_setzero_si256().as_i16x16(),
-    ))
+    let abs = _mm256_abs_epi16(a).as_i16x16();
+    let zero = _mm256_setzero_si256().as_i16x16();
+    transmute(simd_select_bitmask(k, abs, zero))
 }
 
 /// Compute the absolute value of packed signed 16-bit integers in a, and store the unsigned results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
@@ -89,12 +75,7 @@ pub unsafe fn _mm256_maskz_abs_epi16(k: __mmask16, a: __m256i) -> __m256i {
 #[target_feature(enable = "avx512bw,avx512vl")]
 #[cfg_attr(test, assert_instr(vpabsw))]
 pub unsafe fn _mm_mask_abs_epi16(src: __m128i, k: __mmask8, a: __m128i) -> __m128i {
-    let a = a.as_i16x8();
-    // all-0 is a properly initialized i16x8
-    let zero: i16x8 = mem::zeroed();
-    let sub = simd_sub(zero, a);
-    let cmp: i16x8 = simd_gt(a, zero);
-    let abs = simd_select(cmp, a, sub);
+    let abs = _mm_abs_epi16(a).as_i16x8();
     transmute(simd_select_bitmask(k, abs, src.as_i16x8()))
 }
 
@@ -105,13 +86,9 @@ pub unsafe fn _mm_mask_abs_epi16(src: __m128i, k: __mmask8, a: __m128i) -> __m12
 #[target_feature(enable = "avx512bw,avx512vl")]
 #[cfg_attr(test, assert_instr(vpabsw))]
 pub unsafe fn _mm_maskz_abs_epi16(k: __mmask8, a: __m128i) -> __m128i {
-    let a = a.as_i16x8();
-    // all-0 is a properly initialized i16x8
-    let zero: i16x8 = mem::zeroed();
-    let sub = simd_sub(zero, a);
-    let cmp: i16x8 = simd_gt(a, zero);
-    let abs = simd_select(cmp, a, sub);
-    transmute(simd_select_bitmask(k, abs, _mm_setzero_si128().as_i16x8()))
+    let abs = _mm_abs_epi16(a).as_i16x8();
+    let zero = _mm_setzero_si128().as_i16x8();
+    transmute(simd_select_bitmask(k, abs, zero))
 }
 
 /// Compute the absolute value of packed signed 8-bit integers in a, and store the unsigned results in dst.
@@ -159,12 +136,7 @@ pub unsafe fn _mm512_maskz_abs_epi8(k: __mmask64, a: __m512i) -> __m512i {
 #[target_feature(enable = "avx512bw,avx512vl")]
 #[cfg_attr(test, assert_instr(vpabsb))]
 pub unsafe fn _mm256_mask_abs_epi8(src: __m256i, k: __mmask32, a: __m256i) -> __m256i {
-    let a = a.as_i8x32();
-    // all-0 is a properly initialized i8x32
-    let zero: i8x32 = mem::zeroed();
-    let sub = simd_sub(zero, a);
-    let cmp: i8x32 = simd_gt(a, zero);
-    let abs = simd_select(cmp, a, sub);
+    let abs = _mm256_abs_epi8(a).as_i8x32();
     transmute(simd_select_bitmask(k, abs, src.as_i8x32()))
 }
 
@@ -175,17 +147,9 @@ pub unsafe fn _mm256_mask_abs_epi8(src: __m256i, k: __mmask32, a: __m256i) -> __
 #[target_feature(enable = "avx512bw,avx512vl")]
 #[cfg_attr(test, assert_instr(vpabsb))]
 pub unsafe fn _mm256_maskz_abs_epi8(k: __mmask32, a: __m256i) -> __m256i {
-    let a = a.as_i8x32();
-    // all-0 is a properly initialized i8x32
-    let zero: i8x32 = mem::zeroed();
-    let sub = simd_sub(zero, a);
-    let cmp: i8x32 = simd_gt(a, zero);
-    let abs = simd_select(cmp, a, sub);
-    transmute(simd_select_bitmask(
-        k,
-        abs,
-        _mm256_setzero_si256().as_i8x32(),
-    ))
+    let abs = _mm256_abs_epi8(a).as_i8x32();
+    let zero = _mm256_setzero_si256().as_i8x32();
+    transmute(simd_select_bitmask(k, abs, zero))
 }
 
 /// Compute the absolute value of packed signed 8-bit integers in a, and store the unsigned results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set)
@@ -195,12 +159,7 @@ pub unsafe fn _mm256_maskz_abs_epi8(k: __mmask32, a: __m256i) -> __m256i {
 #[target_feature(enable = "avx512bw,avx512vl")]
 #[cfg_attr(test, assert_instr(vpabsb))]
 pub unsafe fn _mm_mask_abs_epi8(src: __m128i, k: __mmask16, a: __m128i) -> __m128i {
-    let a = a.as_i8x16();
-    // all-0 is a properly initialized i8x16
-    let zero: i8x16 = mem::zeroed();
-    let sub = simd_sub(zero, a);
-    let cmp: i8x16 = simd_gt(a, zero);
-    let abs = simd_select(cmp, a, sub);
+    let abs = _mm_abs_epi8(a).as_i8x16();
     transmute(simd_select_bitmask(k, abs, src.as_i8x16()))
 }
 
@@ -211,13 +170,9 @@ pub unsafe fn _mm_mask_abs_epi8(src: __m128i, k: __mmask16, a: __m128i) -> __m12
 #[target_feature(enable = "avx512bw,avx512vl")]
 #[cfg_attr(test, assert_instr(vpabsb))]
 pub unsafe fn _mm_maskz_abs_epi8(k: __mmask16, a: __m128i) -> __m128i {
-    let a = a.as_i8x16();
-    // all-0 is a properly initialized i8x16
-    let zero: i8x16 = mem::zeroed();
-    let sub = simd_sub(zero, a);
-    let cmp: i8x16 = simd_gt(a, zero);
-    let abs = simd_select(cmp, a, sub);
-    transmute(simd_select_bitmask(k, abs, _mm_setzero_si128().as_i8x16()))
+    let abs = _mm_abs_epi8(a).as_i8x16();
+    let zero = _mm_setzero_si128().as_i8x16();
+    transmute(simd_select_bitmask(k, abs, zero))
 }
 
 /// Add packed 16-bit integers in a and b, and store the results in dst.

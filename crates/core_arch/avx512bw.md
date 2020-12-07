@@ -320,7 +320,11 @@
   * [x] [`_mm256_mask_sub_epi16`]
   * [x] [`_mm256_maskz_sub_epi16`]
   * [x] [`_mm512_mask_sub_epi8`]
-  * [x] [`_mm512_maskz_sub_epi8`
+  * [x] [`_mm512_maskz_sub_epi8`]
+  * [x] [`_mm_mask_sub_epi8`]
+  * [x] [`_mm_maskz_sub_epi8`]
+  * [x] [`_mm256_mask_sub_epi8`]
+  * [x] [`_mm256_maskz_sub_epi8`]
   * [x] [`_mm512_sub_epi8`]
   * [x] [`_mm512_mask_subs_epi16`]
   * [x] [`_mm512_maskz_subs_epi16`]
