@@ -921,6 +921,66 @@ pub unsafe fn _mm512_maskz_subs_epu16(k: __mmask32, a: __m512i, b: __m512i) -> _
     ))
 }
 
+/// Subtract packed unsigned 16-bit integers in b from packed unsigned 16-bit integers in a using saturation, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_subs_epu16&expand=5788)
+#[inline]
+#[target_feature(enable = "avx512bw,avx512vl")]
+#[cfg_attr(test, assert_instr(vpsubusw))]
+pub unsafe fn _mm256_mask_subs_epu16(
+    src: __m256i,
+    k: __mmask16,
+    a: __m256i,
+    b: __m256i,
+) -> __m256i {
+    transmute(vpsubusw256(a.as_u16x16(), b.as_u16x16(), src.as_u16x16(), k))
+}
+
+/// Subtract packed unsigned 16-bit integers in b from packed unsigned 16-bit integers in a using saturation, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_subs_epu16&expand=5789)
+#[inline]
+#[target_feature(enable = "avx512bw,avx512vl")]
+#[cfg_attr(test, assert_instr(vpsubusw))]
+pub unsafe fn _mm256_maskz_subs_epu16(k: __mmask16, a: __m256i, b: __m256i) -> __m256i {
+    transmute(vpsubusw256(
+        a.as_u16x16(),
+        b.as_u16x16(),
+        _mm256_setzero_si256().as_u16x16(),
+        k,
+    ))
+}
+
+/// Subtract packed unsigned 16-bit integers in b from packed unsigned 16-bit integers in a using saturation, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_subs_epu16&expand=5785)
+#[inline]
+#[target_feature(enable = "avx512bw,avx512vl")]
+#[cfg_attr(test, assert_instr(vpsubusw))]
+pub unsafe fn _mm_mask_subs_epu16(
+    src: __m128i,
+    k: __mmask8,
+    a: __m128i,
+    b: __m128i,
+) -> __m128i {
+    transmute(vpsubusw128(a.as_u16x8(), b.as_u16x8(), src.as_u16x8(), k))
+}
+
+/// Subtract packed unsigned 16-bit integers in b from packed unsigned 16-bit integers in a using saturation, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_subs_epu16&expand=5786)
+#[inline]
+#[target_feature(enable = "avx512bw,avx512vl")]
+#[cfg_attr(test, assert_instr(vpsubusw))]
+pub unsafe fn _mm_maskz_subs_epu16(k: __mmask8, a: __m128i, b: __m128i) -> __m128i {
+    transmute(vpsubusw128(
+        a.as_u16x8(),
+        b.as_u16x8(),
+        _mm_setzero_si128().as_u16x8(),
+        k,
+    ))
+}
+
 /// Subtract packed unsigned 8-bit integers in b from packed unsigned 8-bit integers in a using saturation, and store the results in dst.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_subs_epu8&expand=5802)
@@ -957,6 +1017,56 @@ pub unsafe fn _mm512_maskz_subs_epu8(k: __mmask64, a: __m512i, b: __m512i) -> __
         a.as_u8x64(),
         b.as_u8x64(),
         _mm512_setzero_si512().as_u8x64(),
+        k,
+    ))
+}
+
+/// Subtract packed unsigned 8-bit integers in b from packed unsigned 8-bit integers in a using saturation, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_subs_epu8&expand=5797)
+#[inline]
+#[target_feature(enable = "avx512bw,avx512vl")]
+#[cfg_attr(test, assert_instr(vpsubusb))]
+pub unsafe fn _mm256_mask_subs_epu8(src: __m256i, k: __mmask32, a: __m256i, b: __m256i) -> __m256i {
+    transmute(vpsubusb256(a.as_u8x32(), b.as_u8x32(), src.as_u8x32(), k))
+}
+
+/// Subtract packed unsigned 8-bit integers in b from packed unsigned 8-bit integers in a using saturation, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_subs_epu8&expand=5798)
+#[inline]
+#[target_feature(enable = "avx512bw,avx512vl")]
+#[cfg_attr(test, assert_instr(vpsubusb))]
+pub unsafe fn _mm256_maskz_subs_epu8(k: __mmask32, a: __m256i, b: __m256i) -> __m256i {
+    transmute(vpsubusb256(
+        a.as_u8x32(),
+        b.as_u8x32(),
+        _mm256_setzero_si256().as_u8x32(),
+        k,
+    ))
+}
+
+/// Subtract packed unsigned 8-bit integers in b from packed unsigned 8-bit integers in a using saturation, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_subs_epu8&expand=5794)
+#[inline]
+#[target_feature(enable = "avx512bw,avx512vl")]
+#[cfg_attr(test, assert_instr(vpsubusb))]
+pub unsafe fn _mm_mask_subs_epu8(src: __m128i, k: __mmask16, a: __m128i, b: __m128i) -> __m128i {
+    transmute(vpsubusb128(a.as_u8x16(), b.as_u8x16(), src.as_u8x16(), k))
+}
+
+/// Subtract packed unsigned 8-bit integers in b from packed unsigned 8-bit integers in a using saturation, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_subs_epu8&expand=5795)
+#[inline]
+#[target_feature(enable = "avx512bw,avx512vl")]
+#[cfg_attr(test, assert_instr(vpsubusb))]
+pub unsafe fn _mm_maskz_subs_epu8(k: __mmask16, a: __m128i, b: __m128i) -> __m128i {
+    transmute(vpsubusb128(
+        a.as_u8x16(),
+        b.as_u8x16(),
+        _mm_setzero_si128().as_u8x16(),
         k,
     ))
 }
@@ -4700,12 +4810,31 @@ extern "C" {
 
     #[link_name = "llvm.x86.avx512.mask.psubus.w.512"]
     fn vpsubusw(a: u16x32, b: u16x32, src: u16x32, mask: u32) -> u16x32;
+    #[link_name = "llvm.x86.avx512.mask.psubus.w.256"]
+    fn vpsubusw256(a: u16x16, b: u16x16, src: u16x16, mask: u16) -> u16x16;
+    #[link_name = "llvm.x86.avx512.mask.psubus.w.128"]
+    fn vpsubusw128(a: u16x8, b: u16x8, src: u16x8, mask: u8) -> u16x8;
+
     #[link_name = "llvm.x86.avx512.mask.psubus.b.512"]
     fn vpsubusb(a: u8x64, b: u8x64, src: u8x64, mask: u64) -> u8x64;
+    #[link_name = "llvm.x86.avx512.mask.psubus.b.256"]
+    fn vpsubusb256(a: u8x32, b: u8x32, src: u8x32, mask: u32) -> u8x32;
+    #[link_name = "llvm.x86.avx512.mask.psubus.b.128"]
+    fn vpsubusb128(a: u8x16, b: u8x16, src: u8x16, mask: u16) -> u8x16;
+
     #[link_name = "llvm.x86.avx512.mask.psubs.w.512"]
     fn vpsubsw(a: i16x32, b: i16x32, src: i16x32, mask: u32) -> i16x32;
+    #[link_name = "llvm.x86.avx512.mask.psubs.w.256"]
+    fn vpsubsw256(a: i16x16, b: i16x16, src: i16x16, mask: u16) -> i16x16;
+    #[link_name = "llvm.x86.avx512.mask.psubs.w.128"]
+    fn vpsubsw128(a: i16x8, b: i16x8, src: i16x8, mask: u8) -> i16x8;
+
     #[link_name = "llvm.x86.avx512.mask.psubs.b.512"]
     fn vpsubsb(a: i8x64, b: i8x64, src: i8x64, mask: u64) -> i8x64;
+    #[link_name = "llvm.x86.avx512.mask.psubs.b.256"]
+    fn vpsubsb256(a: i8x32, b: i8x32, src: i8x32, mask: u32) -> i8x32;
+    #[link_name = "llvm.x86.avx512.mask.psubs.b.128"]
+    fn vpsubsb128(a: i8x16, b: i8x16, src: i8x16, mask: u16) -> i8x16;
 
     #[link_name = "llvm.x86.avx512.pmulhu.w.512"]
     fn vpmulhuw(a: u16x32, b: u16x32) -> u16x32;
@@ -5749,6 +5878,50 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
+    #[simd_test(enable = "avx512bw,avx512vl")]
+    unsafe fn test_mm256_mask_subs_epu16() {
+        let a = _mm256_set1_epi16(1);
+        let b = _mm256_set1_epi16(u16::MAX as i16);
+        let r = _mm256_mask_subs_epu16(a, 0, a, b);
+        assert_eq_m256i(r, a);
+        let r = _mm256_mask_subs_epu16(a, 0b00000000_00001111, a, b);
+        let e = _mm256_set_epi16(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw,avx512vl")]
+    unsafe fn test_mm256_maskz_subs_epu16() {
+        let a = _mm256_set1_epi16(1);
+        let b = _mm256_set1_epi16(u16::MAX as i16);
+        let r = _mm256_maskz_subs_epu16(0, a, b);
+        assert_eq_m256i(r, _mm256_setzero_si256());
+        let r = _mm256_maskz_subs_epu16(0b00000000_00001111, a, b);
+        let e = _mm256_set_epi16(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw,avx512vl")]
+    unsafe fn test_mm_mask_subs_epu16() {
+        let a = _mm_set1_epi16(1);
+        let b = _mm_set1_epi16(u16::MAX as i16);
+        let r = _mm_mask_subs_epu16(a, 0, a, b);
+        assert_eq_m128i(r, a);
+        let r = _mm_mask_subs_epu16(a, 0b00001111, a, b);
+        let e = _mm_set_epi16(1, 1, 1, 1, 0, 0, 0, 0);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw,avx512vl")]
+    unsafe fn test_mm_maskz_subs_epu16() {
+        let a = _mm_set1_epi16(1);
+        let b = _mm_set1_epi16(u16::MAX as i16);
+        let r = _mm_maskz_subs_epu16(0, a, b);
+        assert_eq_m128i(r, _mm_setzero_si128());
+        let r = _mm_maskz_subs_epu16(0b00001111, a, b);
+        let e = _mm_set_epi16(0, 0, 0, 0, 0, 0, 0, 0);
+        assert_eq_m128i(r, e);
+    }
+
     #[simd_test(enable = "avx512bw")]
     unsafe fn test_mm512_subs_epu8() {
         let a = _mm512_set1_epi8(1);
@@ -5795,6 +5968,72 @@ mod tests {
                                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
         assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw,avx512vl")]
+    unsafe fn test_mm256_mask_subs_epu8() {
+        let a = _mm256_set1_epi8(1);
+        let b = _mm256_set1_epi8(u8::MAX as i8);
+        let r = _mm256_mask_subs_epu8(a, 0, a, b);
+        assert_eq_m256i(r, a);
+        let r = _mm256_mask_subs_epu8(
+            a,
+            0b00000000_00000000_00000000_00001111,
+            a,
+            b,
+        );
+        #[rustfmt::skip]
+        let e = _mm256_set_epi8(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+                                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw,avx512vl")]
+    unsafe fn test_mm256_maskz_subs_epu8() {
+        let a = _mm256_set1_epi8(1);
+        let b = _mm256_set1_epi8(u8::MAX as i8);
+        let r = _mm256_maskz_subs_epu8(0, a, b);
+        assert_eq_m256i(r, _mm256_setzero_si256());
+        let r = _mm256_maskz_subs_epu8(
+            0b00000000_00000000_00000000_00001111,
+            a,
+            b,
+        );
+        #[rustfmt::skip]
+        let e = _mm256_set_epi8(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw,avx512vl")]
+    unsafe fn test_mm_mask_subs_epu8() {
+        let a = _mm_set1_epi8(1);
+        let b = _mm_set1_epi8(u8::MAX as i8);
+        let r = _mm_mask_subs_epu8(a, 0, a, b);
+        assert_eq_m128i(r, a);
+        let r = _mm_mask_subs_epu8(
+            a,
+            0b00000000_00001111,
+            a,
+            b,
+        );
+        let e = _mm_set_epi8(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw,avx512vl")]
+    unsafe fn test_mm_maskz_subs_epu8() {
+        let a = _mm_set1_epi8(1);
+        let b = _mm_set1_epi8(u8::MAX as i8);
+        let r = _mm_maskz_subs_epu8(0, a, b);
+        assert_eq_m128i(r, _mm_setzero_si128());
+        let r = _mm_maskz_subs_epu8(
+            0b00000000_00001111,
+            a,
+            b,
+        );
+        let e = _mm_set_epi8(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+        assert_eq_m128i(r, e);
     }
 
     #[simd_test(enable = "avx512bw")]
