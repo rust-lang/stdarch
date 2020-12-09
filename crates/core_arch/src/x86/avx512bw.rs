@@ -3334,6 +3334,57 @@ pub unsafe fn _mm512_maskz_packus_epi32(k: __mmask32, a: __m512i, b: __m512i) ->
     transmute(simd_select_bitmask(k, pack, zero))
 }
 
+/// Convert packed signed 32-bit integers from a and b to packed 16-bit integers using unsigned saturation, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_packus_epi32&expand=4125)
+#[inline]
+#[target_feature(enable = "avx512bw,avx512vl")]
+#[cfg_attr(test, assert_instr(vpackusdw))]
+pub unsafe fn _mm256_mask_packus_epi32(
+    src: __m256i,
+    k: __mmask16,
+    a: __m256i,
+    b: __m256i,
+) -> __m256i {
+    let pack = _mm256_packus_epi32(a, b).as_i16x16();
+    transmute(simd_select_bitmask(k, pack, src.as_i16x16()))
+}
+
+/// Convert packed signed 32-bit integers from a and b to packed 16-bit integers using unsigned saturation, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_packus_epi32&expand=4126)
+#[inline]
+#[target_feature(enable = "avx512bw,avx512vl")]
+#[cfg_attr(test, assert_instr(vpackusdw))]
+pub unsafe fn _mm256_maskz_packus_epi32(k: __mmask16, a: __m256i, b: __m256i) -> __m256i {
+    let pack = _mm256_packus_epi32(a, b).as_i16x16();
+    let zero = _mm256_setzero_si256().as_i16x16();
+    transmute(simd_select_bitmask(k, pack, zero))
+}
+
+/// Convert packed signed 32-bit integers from a and b to packed 16-bit integers using unsigned saturation, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_packus_epi32&expand=4122)
+#[inline]
+#[target_feature(enable = "avx512bw,avx512vl")]
+#[cfg_attr(test, assert_instr(vpackusdw))]
+pub unsafe fn _mm_mask_packus_epi32(src: __m128i, k: __mmask8, a: __m128i, b: __m128i) -> __m128i {
+    let pack = _mm_packus_epi32(a, b).as_i16x8();
+    transmute(simd_select_bitmask(k, pack, src.as_i16x8()))
+}
+
+/// Convert packed signed 32-bit integers from a and b to packed 16-bit integers using unsigned saturation, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_packus_epi32&expand=4123)
+#[inline]
+#[target_feature(enable = "avx512bw,avx512vl")]
+#[cfg_attr(test, assert_instr(vpackusdw))]
+pub unsafe fn _mm_maskz_packus_epi32(k: __mmask8, a: __m128i, b: __m128i) -> __m128i {
+    let pack = _mm_packus_epi32(a, b).as_i16x8();
+    let zero = _mm_setzero_si128().as_i16x8();
+    transmute(simd_select_bitmask(k, pack, zero))
+}
+
 /// Convert packed signed 16-bit integers from a and b to packed 8-bit integers using unsigned saturation, and store the results in dst.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_packus_epi16&expand=4121)
@@ -3369,6 +3420,57 @@ pub unsafe fn _mm512_mask_packus_epi16(
 pub unsafe fn _mm512_maskz_packus_epi16(k: __mmask64, a: __m512i, b: __m512i) -> __m512i {
     let pack = _mm512_packus_epi16(a, b).as_i8x64();
     let zero = _mm512_setzero_si512().as_i8x64();
+    transmute(simd_select_bitmask(k, pack, zero))
+}
+
+/// Convert packed signed 16-bit integers from a and b to packed 8-bit integers using unsigned saturation, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_packus_epi16&expand=4116)
+#[inline]
+#[target_feature(enable = "avx512bw,avx512vl")]
+#[cfg_attr(test, assert_instr(vpackuswb))]
+pub unsafe fn _mm256_mask_packus_epi16(
+    src: __m256i,
+    k: __mmask32,
+    a: __m256i,
+    b: __m256i,
+) -> __m256i {
+    let pack = _mm256_packus_epi16(a, b).as_i8x32();
+    transmute(simd_select_bitmask(k, pack, src.as_i8x32()))
+}
+
+/// Convert packed signed 16-bit integers from a and b to packed 8-bit integers using unsigned saturation, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_packus_epi16&expand=4117)
+#[inline]
+#[target_feature(enable = "avx512bw,avx512vl")]
+#[cfg_attr(test, assert_instr(vpackuswb))]
+pub unsafe fn _mm256_maskz_packus_epi16(k: __mmask32, a: __m256i, b: __m256i) -> __m256i {
+    let pack = _mm256_packus_epi16(a, b).as_i8x32();
+    let zero = _mm256_setzero_si256().as_i8x32();
+    transmute(simd_select_bitmask(k, pack, zero))
+}
+
+/// Convert packed signed 16-bit integers from a and b to packed 8-bit integers using unsigned saturation, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_packus_epi16&expand=4113)
+#[inline]
+#[target_feature(enable = "avx512bw,avx512vl")]
+#[cfg_attr(test, assert_instr(vpackuswb))]
+pub unsafe fn _mm_mask_packus_epi16(src: __m128i, k: __mmask16, a: __m128i, b: __m128i) -> __m128i {
+    let pack = _mm_packus_epi16(a, b).as_i8x16();
+    transmute(simd_select_bitmask(k, pack, src.as_i8x16()))
+}
+
+/// Convert packed signed 16-bit integers from a and b to packed 8-bit integers using unsigned saturation, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_packus_epi16&expand=4114)
+#[inline]
+#[target_feature(enable = "avx512bw,avx512vl")]
+#[cfg_attr(test, assert_instr(vpackuswb))]
+pub unsafe fn _mm_maskz_packus_epi16(k: __mmask16, a: __m128i, b: __m128i) -> __m128i {
+    let pack = _mm_packus_epi16(a, b).as_i8x16();
+    let zero = _mm_setzero_si128().as_i8x16();
     transmute(simd_select_bitmask(k, pack, zero))
 }
 
@@ -9256,6 +9358,50 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
+    #[simd_test(enable = "avx512bw,avx512vl")]
+    unsafe fn test_mm256_mask_packus_epi32() {
+        let a = _mm256_set1_epi32(-1);
+        let b = _mm256_set1_epi32(1 << 16 | 1);
+        let r = _mm256_mask_packus_epi32(a, 0, a, b);
+        assert_eq_m256i(r, a);
+        let r = _mm256_mask_packus_epi32(b, 0b00000000_00001111, a, b);
+        let e = _mm256_set_epi16(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw,avx512vl")]
+    unsafe fn test_mm256_maskz_packus_epi32() {
+        let a = _mm256_set1_epi32(-1);
+        let b = _mm256_set1_epi32(1);
+        let r = _mm256_maskz_packus_epi32(0, a, b);
+        assert_eq_m256i(r, _mm256_setzero_si256());
+        let r = _mm256_maskz_packus_epi32(0b00000000_00001111, a, b);
+        let e = _mm256_set_epi16(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw,avx512vl")]
+    unsafe fn test_mm_mask_packus_epi32() {
+        let a = _mm_set1_epi32(-1);
+        let b = _mm_set1_epi32(1 << 16 | 1);
+        let r = _mm_mask_packus_epi32(a, 0, a, b);
+        assert_eq_m128i(r, a);
+        let r = _mm_mask_packus_epi32(b, 0b00001111, a, b);
+        let e = _mm_set_epi16(1, 1, 1, 1, 0, 0, 0, 0);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw,avx512vl")]
+    unsafe fn test_mm_maskz_packus_epi32() {
+        let a = _mm_set1_epi32(-1);
+        let b = _mm_set1_epi32(1);
+        let r = _mm_maskz_packus_epi32(0, a, b);
+        assert_eq_m128i(r, _mm_setzero_si128());
+        let r = _mm_maskz_packus_epi32(0b00001111, a, b);
+        let e = _mm_set_epi16(0, 0, 0, 0, 0, 0, 0, 0);
+        assert_eq_m128i(r, e);
+    }
+
     #[simd_test(enable = "avx512bw")]
     unsafe fn test_mm512_packus_epi16() {
         let a = _mm512_set1_epi16(-1);
@@ -9306,6 +9452,54 @@ mod tests {
                                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
         assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw,avx512vl")]
+    unsafe fn test_mm256_mask_packus_epi16() {
+        let a = _mm256_set1_epi16(-1);
+        let b = _mm256_set1_epi16(1 << 8 | 1);
+        let r = _mm256_mask_packus_epi16(a, 0, a, b);
+        assert_eq_m256i(r, a);
+        let r = _mm256_mask_packus_epi16(b, 0b00000000_00000000_00000000_00001111, a, b);
+        #[rustfmt::skip]
+        let e = _mm256_set_epi8(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+                                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw,avx512vl")]
+    unsafe fn test_mm256_maskz_packus_epi16() {
+        let a = _mm256_set1_epi16(-1);
+        let b = _mm256_set1_epi16(1);
+        let r = _mm256_maskz_packus_epi16(0, a, b);
+        assert_eq_m256i(r, _mm256_setzero_si256());
+        let r = _mm256_maskz_packus_epi16(0b00000000_00000000_00000000_00001111, a, b);
+        #[rustfmt::skip]
+        let e = _mm256_set_epi8(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw,avx512vl")]
+    unsafe fn test_mm_mask_packus_epi16() {
+        let a = _mm_set1_epi16(-1);
+        let b = _mm_set1_epi16(1 << 8 | 1);
+        let r = _mm_mask_packus_epi16(a, 0, a, b);
+        assert_eq_m128i(r, a);
+        let r = _mm_mask_packus_epi16(b, 0b00000000_00001111, a, b);
+        let e = _mm_set_epi8(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw,avx512vl")]
+    unsafe fn test_mm_maskz_packus_epi16() {
+        let a = _mm_set1_epi16(-1);
+        let b = _mm_set1_epi16(1);
+        let r = _mm_maskz_packus_epi16(0, a, b);
+        assert_eq_m128i(r, _mm_setzero_si128());
+        let r = _mm_maskz_packus_epi16(0b00000000_00001111, a, b);
+        let e = _mm_set_epi8(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+        assert_eq_m128i(r, e);
     }
 
     #[simd_test(enable = "avx512bw")]
