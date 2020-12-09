@@ -3507,6 +3507,52 @@ pub unsafe fn _mm512_maskz_avg_epu16(k: __mmask32, a: __m512i, b: __m512i) -> __
     transmute(simd_select_bitmask(k, avg, zero))
 }
 
+/// Average packed unsigned 16-bit integers in a and b, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_avg_epu16&expand=386)
+#[inline]
+#[target_feature(enable = "avx512bw,avx512vl")]
+#[cfg_attr(test, assert_instr(vpavgw))]
+pub unsafe fn _mm256_mask_avg_epu16(src: __m256i, k: __mmask16, a: __m256i, b: __m256i) -> __m256i {
+    let avg = _mm256_avg_epu16(a, b).as_u16x16();
+    transmute(simd_select_bitmask(k, avg, src.as_u16x16()))
+}
+
+/// Average packed unsigned 16-bit integers in a and b, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_avg_epu16&expand=387)
+#[inline]
+#[target_feature(enable = "avx512bw,avx512vl")]
+#[cfg_attr(test, assert_instr(vpavgw))]
+pub unsafe fn _mm256_maskz_avg_epu16(k: __mmask16, a: __m256i, b: __m256i) -> __m256i {
+    let avg = _mm256_avg_epu16(a, b).as_u16x16();
+    let zero = _mm256_setzero_si256().as_u16x16();
+    transmute(simd_select_bitmask(k, avg, zero))
+}
+
+/// Average packed unsigned 16-bit integers in a and b, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_avg_epu16&expand=383)
+#[inline]
+#[target_feature(enable = "avx512bw,avx512vl")]
+#[cfg_attr(test, assert_instr(vpavgw))]
+pub unsafe fn _mm_mask_avg_epu16(src: __m128i, k: __mmask8, a: __m128i, b: __m128i) -> __m128i {
+    let avg = _mm_avg_epu16(a, b).as_u16x8();
+    transmute(simd_select_bitmask(k, avg, src.as_u16x8()))
+}
+
+/// Average packed unsigned 16-bit integers in a and b, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_avg_epu16&expand=384)
+#[inline]
+#[target_feature(enable = "avx512bw,avx512vl")]
+#[cfg_attr(test, assert_instr(vpavgw))]
+pub unsafe fn _mm_maskz_avg_epu16(k: __mmask8, a: __m128i, b: __m128i) -> __m128i {
+    let avg = _mm_avg_epu16(a, b).as_u16x8();
+    let zero = _mm_setzero_si128().as_u16x8();
+    transmute(simd_select_bitmask(k, avg, zero))
+}
+
 /// Average packed unsigned 8-bit integers in a and b, and store the results in dst.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_avg_epu8&expand=397)
@@ -3537,6 +3583,52 @@ pub unsafe fn _mm512_mask_avg_epu8(src: __m512i, k: __mmask64, a: __m512i, b: __
 pub unsafe fn _mm512_maskz_avg_epu8(k: __mmask64, a: __m512i, b: __m512i) -> __m512i {
     let avg = _mm512_avg_epu8(a, b).as_u8x64();
     let zero = _mm512_setzero_si512().as_u8x64();
+    transmute(simd_select_bitmask(k, avg, zero))
+}
+
+/// Average packed unsigned 8-bit integers in a and b, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_avg_epu8&expand=395)
+#[inline]
+#[target_feature(enable = "avx512bw,avx512vl")]
+#[cfg_attr(test, assert_instr(vpavgb))]
+pub unsafe fn _mm256_mask_avg_epu8(src: __m256i, k: __mmask32, a: __m256i, b: __m256i) -> __m256i {
+    let avg = _mm256_avg_epu8(a, b).as_u8x32();
+    transmute(simd_select_bitmask(k, avg, src.as_u8x32()))
+}
+
+/// Average packed unsigned 8-bit integers in a and b, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_avg_epu8&expand=396)
+#[inline]
+#[target_feature(enable = "avx512bw,avx512vl")]
+#[cfg_attr(test, assert_instr(vpavgb))]
+pub unsafe fn _mm256_maskz_avg_epu8(k: __mmask32, a: __m256i, b: __m256i) -> __m256i {
+    let avg = _mm256_avg_epu8(a, b).as_u8x32();
+    let zero = _mm256_setzero_si256().as_u8x32();
+    transmute(simd_select_bitmask(k, avg, zero))
+}
+
+/// Average packed unsigned 8-bit integers in a and b, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_avg_epu8&expand=392)
+#[inline]
+#[target_feature(enable = "avx512bw,avx512vl")]
+#[cfg_attr(test, assert_instr(vpavgb))]
+pub unsafe fn _mm_mask_avg_epu8(src: __m128i, k: __mmask16, a: __m128i, b: __m128i) -> __m128i {
+    let avg = _mm_avg_epu8(a, b).as_u8x16();
+    transmute(simd_select_bitmask(k, avg, src.as_u8x16()))
+}
+
+/// Average packed unsigned 8-bit integers in a and b, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_avg_epu8&expand=393)
+#[inline]
+#[target_feature(enable = "avx512bw,avx512vl")]
+#[cfg_attr(test, assert_instr(vpavgb))]
+pub unsafe fn _mm_maskz_avg_epu8(k: __mmask16, a: __m128i, b: __m128i) -> __m128i {
+    let avg = _mm_avg_epu8(a, b).as_u8x16();
+    let zero = _mm_setzero_si128().as_u8x16();
     transmute(simd_select_bitmask(k, avg, zero))
 }
 
@@ -9537,6 +9629,50 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
+    #[simd_test(enable = "avx512bw,avx512vl")]
+    unsafe fn test_mm256_mask_avg_epu16() {
+        let a = _mm256_set1_epi16(1);
+        let b = _mm256_set1_epi16(1);
+        let r = _mm256_mask_avg_epu16(a, 0, a, b);
+        assert_eq_m256i(r, a);
+        let r = _mm256_mask_avg_epu16(a, 0b00000000_00001111, a, b);
+        let e = _mm256_set_epi16(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw,avx512vl")]
+    unsafe fn test_mm256_maskz_avg_epu16() {
+        let a = _mm256_set1_epi16(1);
+        let b = _mm256_set1_epi16(1);
+        let r = _mm256_maskz_avg_epu16(0, a, b);
+        assert_eq_m256i(r, _mm256_setzero_si256());
+        let r = _mm256_maskz_avg_epu16(0b00000000_00001111, a, b);
+        let e = _mm256_set_epi16(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw,avx512vl")]
+    unsafe fn test_mm_mask_avg_epu16() {
+        let a = _mm_set1_epi16(1);
+        let b = _mm_set1_epi16(1);
+        let r = _mm_mask_avg_epu16(a, 0, a, b);
+        assert_eq_m128i(r, a);
+        let r = _mm_mask_avg_epu16(a, 0b00001111, a, b);
+        let e = _mm_set_epi16(1, 1, 1, 1, 1, 1, 1, 1);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw,avx512vl")]
+    unsafe fn test_mm_maskz_avg_epu16() {
+        let a = _mm_set1_epi16(1);
+        let b = _mm_set1_epi16(1);
+        let r = _mm_maskz_avg_epu16(0, a, b);
+        assert_eq_m128i(r, _mm_setzero_si128());
+        let r = _mm_maskz_avg_epu16(0b00001111, a, b);
+        let e = _mm_set_epi16(0, 0, 0, 0, 1, 1, 1, 1);
+        assert_eq_m128i(r, e);
+    }
+
     #[simd_test(enable = "avx512bw")]
     unsafe fn test_mm512_avg_epu8() {
         let a = _mm512_set1_epi8(1);
@@ -9583,6 +9719,54 @@ mod tests {
                                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1);
         assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw,avx512vl")]
+    unsafe fn test_mm256_mask_avg_epu8() {
+        let a = _mm256_set1_epi8(1);
+        let b = _mm256_set1_epi8(1);
+        let r = _mm256_mask_avg_epu8(a, 0, a, b);
+        assert_eq_m256i(r, a);
+        let r = _mm256_mask_avg_epu8(a, 0b00000000_00000000_00000000_00001111, a, b);
+        #[rustfmt::skip]
+        let e = _mm256_set_epi8(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+                                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw,avx512vl")]
+    unsafe fn test_mm256_maskz_avg_epu8() {
+        let a = _mm256_set1_epi8(1);
+        let b = _mm256_set1_epi8(1);
+        let r = _mm256_maskz_avg_epu8(0, a, b);
+        assert_eq_m256i(r, _mm256_setzero_si256());
+        let r = _mm256_maskz_avg_epu8(0b00000000_0000000_00000000_00001111, a, b);
+        #[rustfmt::skip]
+        let e = _mm256_set_epi8(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw,avx512vl")]
+    unsafe fn test_mm_mask_avg_epu8() {
+        let a = _mm_set1_epi8(1);
+        let b = _mm_set1_epi8(1);
+        let r = _mm_mask_avg_epu8(a, 0, a, b);
+        assert_eq_m128i(r, a);
+        let r = _mm_mask_avg_epu8(a, 0b00000000_00001111, a, b);
+        let e = _mm_set_epi8(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw,avx512vl")]
+    unsafe fn test_mm_maskz_avg_epu8() {
+        let a = _mm_set1_epi8(1);
+        let b = _mm_set1_epi8(1);
+        let r = _mm_maskz_avg_epu8(0, a, b);
+        assert_eq_m128i(r, _mm_setzero_si128());
+        let r = _mm_maskz_avg_epu8(0b00000000_00001111, a, b);
+        let e = _mm_set_epi8(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1);
+        assert_eq_m128i(r, e);
     }
 
     #[simd_test(enable = "avx512bw")]
