@@ -362,12 +362,26 @@
   * [x] [`_mm512_mask_sll_epi16`]
   * [x] [`_mm512_maskz_sll_epi16`]
   * [x] [`_mm512_sll_epi16`]
+  * [x] [`_mm_mask_sll_epi16`]
+  * [x] [`_mm_maskz_sll_epi16`]
+  * [x] [`_mm256_mask_sll_epi16`]
+  * [x] [`_mm256_maskz_sll_epi16`]
   * [x] [`_mm512_mask_slli_epi16`]
   * [x] [`_mm512_maskz_slli_epi16`]
   * [x] [`_mm512_slli_epi16`]
+  * [x] [`_mm_mask_slli_epi16
+  * [x] [`_mm_maskz_slli_epi16
+  * [x] [`_mm256_mask_slli_epi16
+  * [x] [`_mm256_maskz_slli_epi16
   * [x] [`_mm512_mask_sllv_epi16`]
   * [x] [`_mm512_maskz_sllv_epi16`]
   * [x] [`_mm512_sllv_epi16`]
+  * [x] [`_mm_mask_sllv_epi16`]
+  * [x] [`_mm_maskz_sllv_epi16`]
+  * [x] [`_mm_sllv_epi16`]
+  * [x] [`_mm256_mask_sllv_epi16`]
+  * [x] [`_mm256_maskz_sllv_epi16`]
+  * [x] [`_mm256_sllv_epi16`]
   * [x] [`_mm512_mask_sra_epi16`]
   * [x] [`_mm512_maskz_sra_epi16`]
   * [x] [`_mm512_sra_epi16`]
