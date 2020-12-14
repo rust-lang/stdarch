@@ -6055,6 +6055,86 @@ pub unsafe fn _mm512_maskz_shufflelo_epi16(k: __mmask32, a: __m512i, imm8: i32) 
     ))
 }
 
+/// Shuffle 16-bit integers in the low 64 bits of 128-bit lanes of a using the control in imm8. Store the results in the low 64 bits of 128-bit lanes of dst, with the high 64 bits of 128-bit lanes being copied from from a to dst, using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_shufflelo_epi16&expand=5216)
+#[inline]
+#[target_feature(enable = "avx512bw,avx512vl")]
+#[cfg_attr(test, assert_instr(vpshuflw, imm8 = 5))]
+#[rustc_args_required_const(3)]
+pub unsafe fn _mm256_mask_shufflelo_epi16(
+    src: __m256i,
+    k: __mmask16,
+    a: __m256i,
+    imm8: i32,
+) -> __m256i {
+    macro_rules! call {
+        ($imm8:expr) => {
+            _mm256_shufflelo_epi16(a, $imm8).as_i16x16()
+        };
+    }
+    let shuffle = constify_imm8_sae!(imm8, call);
+    transmute(simd_select_bitmask(k, shuffle, src.as_i16x16()))
+}
+
+/// Shuffle 16-bit integers in the low 64 bits of 128-bit lanes of a using the control in imm8. Store the results in the low 64 bits of 128-bit lanes of dst, with the high 64 bits of 128-bit lanes being copied from from a to dst, using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_shufflelo_epi16&expand=5217)
+#[inline]
+#[target_feature(enable = "avx512bw,avx512vl")]
+#[cfg_attr(test, assert_instr(vpshuflw, imm8 = 5))]
+#[rustc_args_required_const(2)]
+pub unsafe fn _mm256_maskz_shufflelo_epi16(k: __mmask16, a: __m256i, imm8: i32) -> __m256i {
+    macro_rules! call {
+        ($imm8:expr) => {
+            _mm256_shufflelo_epi16(a, $imm8).as_i16x16()
+        };
+    }
+    let shuffle = constify_imm8_sae!(imm8, call);
+    let zero = _mm256_setzero_si256().as_i16x16();
+    transmute(simd_select_bitmask(k, shuffle, zero))
+}
+
+/// Shuffle 16-bit integers in the low 64 bits of 128-bit lanes of a using the control in imm8. Store the results in the low 64 bits of 128-bit lanes of dst, with the high 64 bits of 128-bit lanes being copied from from a to dst, using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_shufflelo_epi16&expand=5213)
+#[inline]
+#[target_feature(enable = "avx512bw,avx512vl")]
+#[cfg_attr(test, assert_instr(vpshuflw, imm8 = 5))]
+#[rustc_args_required_const(3)]
+pub unsafe fn _mm_mask_shufflelo_epi16(
+    src: __m128i,
+    k: __mmask8,
+    a: __m128i,
+    imm8: i32,
+) -> __m128i {
+    macro_rules! call {
+        ($imm8:expr) => {
+            _mm_shufflelo_epi16(a, $imm8).as_i16x8()
+        };
+    }
+    let shuffle = constify_imm8_sae!(imm8, call);
+    transmute(simd_select_bitmask(k, shuffle, src.as_i16x8()))
+}
+
+/// Shuffle 16-bit integers in the low 64 bits of 128-bit lanes of a using the control in imm8. Store the results in the low 64 bits of 128-bit lanes of dst, with the high 64 bits of 128-bit lanes being copied from from a to dst, using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_shufflelo_epi16&expand=5214)
+#[inline]
+#[target_feature(enable = "avx512bw,avx512vl")]
+#[cfg_attr(test, assert_instr(vpshuflw, imm8 = 5))]
+#[rustc_args_required_const(2)]
+pub unsafe fn _mm_maskz_shufflelo_epi16(k: __mmask8, a: __m128i, imm8: i32) -> __m128i {
+    macro_rules! call {
+        ($imm8:expr) => {
+            _mm_shufflelo_epi16(a, $imm8).as_i16x8()
+        };
+    }
+    let shuffle = constify_imm8_sae!(imm8, call);
+    let zero = _mm_setzero_si128().as_i16x8();
+    transmute(simd_select_bitmask(k, shuffle, zero))
+}
+
 /// Shuffle 16-bit integers in the high 64 bits of 128-bit lanes of a using the control in imm8. Store the results in the high 64 bits of 128-bit lanes of dst, with the low 64 bits of 128-bit lanes being copied from from a to dst.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_shufflehi_epi16&expand=5212)
@@ -13114,6 +13194,46 @@ mod tests {
             16, 17, 18, 19, 23, 22, 22, 20, 24, 25, 26, 27, 31, 30, 30, 28,
         );
         assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw,avx512vl")]
+    unsafe fn test_mm256_mask_shufflelo_epi16() {
+        let a = _mm256_set_epi16(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
+        let r = _mm256_mask_shufflelo_epi16(a, 0, a, 0b00_01_01_11);
+        assert_eq_m256i(r, a);
+        let r = _mm256_mask_shufflelo_epi16(a, 0b11111111_11111111, a, 0b00_01_01_11);
+        let e = _mm256_set_epi16(0, 1, 2, 3, 7, 6, 6, 4, 8, 9, 10, 11, 15, 14, 14, 12);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw,avx512vl")]
+    unsafe fn test_mm256_maskz_shufflelo_epi16() {
+        let a = _mm256_set_epi16(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
+        let r = _mm256_maskz_shufflelo_epi16(0, a, 0b00_01_01_11);
+        assert_eq_m256i(r, _mm256_setzero_si256());
+        let r = _mm256_maskz_shufflelo_epi16(0b11111111_11111111, a, 0b00_01_01_11);
+        let e = _mm256_set_epi16(0, 1, 2, 3, 7, 6, 6, 4, 8, 9, 10, 11, 15, 14, 14, 12);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw,avx512vl")]
+    unsafe fn test_mm_mask_shufflelo_epi16() {
+        let a = _mm_set_epi16(0, 1, 2, 3, 4, 5, 6, 7);
+        let r = _mm_mask_shufflelo_epi16(a, 0, a, 0b00_01_01_11);
+        assert_eq_m128i(r, a);
+        let r = _mm_mask_shufflelo_epi16(a, 0b11111111, a, 0b00_01_01_11);
+        let e = _mm_set_epi16(0, 1, 2, 3, 7, 6, 6, 4);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw,avx512vl")]
+    unsafe fn test_mm_maskz_shufflelo_epi16() {
+        let a = _mm_set_epi16(0, 1, 2, 3, 4, 5, 6, 7);
+        let r = _mm_maskz_shufflelo_epi16(0, a, 0b00_01_01_11);
+        assert_eq_m128i(r, _mm_setzero_si128());
+        let r = _mm_maskz_shufflelo_epi16(0b11111111, a, 0b00_01_01_11);
+        let e = _mm_set_epi16(0, 1, 2, 3, 7, 6, 6, 4);
+        assert_eq_m128i(r, e);
     }
 
     #[simd_test(enable = "avx512bw")]
