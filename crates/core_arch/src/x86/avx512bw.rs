@@ -7862,7 +7862,7 @@ pub unsafe fn _mm512_mask_test_epi16_mask(k: __mmask32, a: __m512i, b: __m512i) 
     let zero = _mm512_setzero_si512();
     _mm512_mask_cmpneq_epi16_mask(k, and, zero)
 }
-/*
+
 /// Compute the bitwise AND of packed 16-bit integers in a and b, producing intermediate 16-bit values, and set the corresponding bit in result mask k if the intermediate value is non-zero.
 ///
 // [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_test_epi16_mask&expand=5882)
@@ -7910,7 +7910,7 @@ pub unsafe fn _mm_mask_test_epi16_mask(k: __mmask8, a: __m128i, b: __m128i) -> _
     let zero = _mm_setzero_si128();
     _mm_mask_cmpneq_epi16_mask(k, and, zero)
 }
-*/
+
 /// Compute the bitwise AND of packed 8-bit integers in a and b, producing intermediate 8-bit values, and set the corresponding bit in result mask k if the intermediate value is non-zero.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_test_epi8_mask&expand=5902)
@@ -7933,6 +7933,54 @@ pub unsafe fn _mm512_mask_test_epi8_mask(k: __mmask64, a: __m512i, b: __m512i) -
     let and = _mm512_and_si512(a, b);
     let zero = _mm512_setzero_si512();
     _mm512_mask_cmpneq_epi8_mask(k, and, zero)
+}
+
+/// Compute the bitwise AND of packed 8-bit integers in a and b, producing intermediate 8-bit values, and set the corresponding bit in result mask k if the intermediate value is non-zero.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_test_epi8_mask&expand=5900)
+#[inline]
+#[target_feature(enable = "avx512bw,avx512vl")]
+#[cfg_attr(test, assert_instr(vptestmb))]
+pub unsafe fn _mm256_test_epi8_mask(a: __m256i, b: __m256i) -> __mmask32 {
+    let and = _mm256_and_si256(a, b);
+    let zero = _mm256_setzero_si256();
+    _mm256_cmpneq_epi8_mask(and, zero)
+}
+
+/// Compute the bitwise AND of packed 8-bit integers in a and b, producing intermediate 8-bit values, and set the corresponding bit in result mask k (subject to writemask k) if the intermediate value is non-zero.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_test_epi8_mask&expand=5899)
+#[inline]
+#[target_feature(enable = "avx512bw,avx512vl")]
+#[cfg_attr(test, assert_instr(vptestmb))]
+pub unsafe fn _mm256_mask_test_epi8_mask(k: __mmask32, a: __m256i, b: __m256i) -> __mmask32 {
+    let and = _mm256_and_si256(a, b);
+    let zero = _mm256_setzero_si256();
+    _mm256_mask_cmpneq_epi8_mask(k, and, zero)
+}
+
+/// Compute the bitwise AND of packed 8-bit integers in a and b, producing intermediate 8-bit values, and set the corresponding bit in result mask k if the intermediate value is non-zero.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_test_epi8_mask&expand=5898)
+#[inline]
+#[target_feature(enable = "avx512bw,avx512vl")]
+#[cfg_attr(test, assert_instr(vptestmb))]
+pub unsafe fn _mm_test_epi8_mask(a: __m128i, b: __m128i) -> __mmask16 {
+    let and = _mm_and_si128(a, b);
+    let zero = _mm_setzero_si128();
+    _mm_cmpneq_epi8_mask(and, zero)
+}
+
+/// Compute the bitwise AND of packed 8-bit integers in a and b, producing intermediate 8-bit values, and set the corresponding bit in result mask k (subject to writemask k) if the intermediate value is non-zero.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_test_epi8_mask&expand=5897)
+#[inline]
+#[target_feature(enable = "avx512bw,avx512vl")]
+#[cfg_attr(test, assert_instr(vptestmb))]
+pub unsafe fn _mm_mask_test_epi8_mask(k: __mmask16, a: __m128i, b: __m128i) -> __mmask16 {
+    let and = _mm_and_si128(a, b);
+    let zero = _mm_setzero_si128();
+    _mm_mask_cmpneq_epi8_mask(k, and, zero)
 }
 
 /// Compute the bitwise NAND of packed 16-bit integers in a and b, producing intermediate 16-bit values, and set the corresponding bit in result mask k if the intermediate value is zero.
@@ -7959,6 +8007,54 @@ pub unsafe fn _mm512_mask_testn_epi16_mask(k: __mmask32, a: __m512i, b: __m512i)
     _mm512_mask_cmpeq_epi16_mask(k, and, zero)
 }
 
+/// Compute the bitwise NAND of packed 16-bit integers in a and b, producing intermediate 16-bit values, and set the corresponding bit in result mask k if the intermediate value is zero.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_testn_epi16_mask&expand=5913)
+#[inline]
+#[target_feature(enable = "avx512bw,avx512vl")]
+#[cfg_attr(test, assert_instr(vptestnmw))]
+pub unsafe fn _mm256_testn_epi16_mask(a: __m256i, b: __m256i) -> __mmask16 {
+    let and = _mm256_and_si256(a, b);
+    let zero = _mm256_setzero_si256();
+    _mm256_cmpeq_epi16_mask(and, zero)
+}
+
+/// Compute the bitwise NAND of packed 16-bit integers in a and b, producing intermediate 16-bit values, and set the corresponding bit in result mask k (subject to writemask k) if the intermediate value is zero.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_testn_epi16_mask&expand=5912)
+#[inline]
+#[target_feature(enable = "avx512bw,avx512vl")]
+#[cfg_attr(test, assert_instr(vptestnmw))]
+pub unsafe fn _mm256_mask_testn_epi16_mask(k: __mmask16, a: __m256i, b: __m256i) -> __mmask16 {
+    let and = _mm256_and_si256(a, b);
+    let zero = _mm256_setzero_si256();
+    _mm256_mask_cmpeq_epi16_mask(k, and, zero)
+}
+
+/// Compute the bitwise NAND of packed 16-bit integers in a and b, producing intermediate 16-bit values, and set the corresponding bit in result mask k if the intermediate value is zero.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_testn_epi16_mask&expand=5911)
+#[inline]
+#[target_feature(enable = "avx512bw,avx512vl")]
+#[cfg_attr(test, assert_instr(vptestnmw))]
+pub unsafe fn _mm_testn_epi16_mask(a: __m128i, b: __m128i) -> __mmask8 {
+    let and = _mm_and_si128(a, b);
+    let zero = _mm_setzero_si128();
+    _mm_cmpeq_epi16_mask(and, zero)
+}
+
+/// Compute the bitwise NAND of packed 16-bit integers in a and b, producing intermediate 16-bit values, and set the corresponding bit in result mask k (subject to writemask k) if the intermediate value is zero.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_testn_epi16_mask&expand=5910)
+#[inline]
+#[target_feature(enable = "avx512bw,avx512vl")]
+#[cfg_attr(test, assert_instr(vptestnmw))]
+pub unsafe fn _mm_mask_testn_epi16_mask(k: __mmask8, a: __m128i, b: __m128i) -> __mmask8 {
+    let and = _mm_and_si128(a, b);
+    let zero = _mm_setzero_si128();
+    _mm_mask_cmpeq_epi16_mask(k, and, zero)
+}
+
 /// Compute the bitwise NAND of packed 8-bit integers in a and b, producing intermediate 8-bit values, and set the corresponding bit in result mask k if the intermediate value is zero.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_testn_epi8_mask&expand=5933)
@@ -7981,6 +8077,54 @@ pub unsafe fn _mm512_mask_testn_epi8_mask(k: __mmask64, a: __m512i, b: __m512i) 
     let and = _mm512_and_si512(a, b);
     let zero = _mm512_setzero_si512();
     _mm512_mask_cmpeq_epi8_mask(k, and, zero)
+}
+
+/// Compute the bitwise NAND of packed 8-bit integers in a and b, producing intermediate 8-bit values, and set the corresponding bit in result mask k if the intermediate value is zero.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_testn_epi8_mask&expand=5931)
+#[inline]
+#[target_feature(enable = "avx512bw,avx512vl")]
+#[cfg_attr(test, assert_instr(vptestnmb))]
+pub unsafe fn _mm256_testn_epi8_mask(a: __m256i, b: __m256i) -> __mmask32 {
+    let and = _mm256_and_si256(a, b);
+    let zero = _mm256_setzero_si256();
+    _mm256_cmpeq_epi8_mask(and, zero)
+}
+
+/// Compute the bitwise NAND of packed 8-bit integers in a and b, producing intermediate 8-bit values, and set the corresponding bit in result mask k (subject to writemask k) if the intermediate value is zero.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_testn_epi8_mask&expand=5930)
+#[inline]
+#[target_feature(enable = "avx512bw,avx512vl")]
+#[cfg_attr(test, assert_instr(vptestnmb))]
+pub unsafe fn _mm256_mask_testn_epi8_mask(k: __mmask32, a: __m256i, b: __m256i) -> __mmask32 {
+    let and = _mm256_and_si256(a, b);
+    let zero = _mm256_setzero_si256();
+    _mm256_mask_cmpeq_epi8_mask(k, and, zero)
+}
+
+/// Compute the bitwise NAND of packed 8-bit integers in a and b, producing intermediate 8-bit values, and set the corresponding bit in result mask k if the intermediate value is zero.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_testn_epi8_mask&expand=5929)
+#[inline]
+#[target_feature(enable = "avx512bw,avx512vl")]
+#[cfg_attr(test, assert_instr(vptestnmb))]
+pub unsafe fn _mm_testn_epi8_mask(a: __m128i, b: __m128i) -> __mmask16 {
+    let and = _mm_and_si128(a, b);
+    let zero = _mm_setzero_si128();
+    _mm_cmpeq_epi8_mask(and, zero)
+}
+
+/// Compute the bitwise NAND of packed 8-bit integers in a and b, producing intermediate 8-bit values, and set the corresponding bit in result mask k (subject to writemask k) if the intermediate value is zero.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_testn_epi8_mask&expand=5928)
+#[inline]
+#[target_feature(enable = "avx512bw,avx512vl")]
+#[cfg_attr(test, assert_instr(vptestnmb))]
+pub unsafe fn _mm_mask_testn_epi8_mask(k: __mmask16, a: __m128i, b: __m128i) -> __mmask16 {
+    let and = _mm_and_si128(a, b);
+    let zero = _mm_setzero_si128();
+    _mm_mask_cmpeq_epi8_mask(k, and, zero)
 }
 
 /// Store 64-bit mask from a into memory.
@@ -16038,27 +16182,47 @@ mod tests {
         let e: __mmask32 = 0b11111111_11111111_11111111_11111111;
         assert_eq!(r, e);
     }
-    /*
-        #[simd_test(enable = "avx512bw,avx512vl")]
-        unsafe fn test_mm256_test_epi16_mask() {
-            let a = _mm256_set1_epi16(1 << 0);
-            let b = _mm256_set1_epi16(1 << 0 | 1 << 1);
-            let r = _mm256_test_epi16_mask(a, b);
-            let e: __mmask16 = 0b11111111_11111111;
-            assert_eq!(r, e);
-        }
 
-        #[simd_test(enable = "avx512bw,avx512vl")]
-        unsafe fn test_mm256_mask_test_epi16_mask() {
-            let a = _mm256_set1_epi16(1 << 0);
-            let b = _mm256_set1_epi16(1 << 0 | 1 << 1);
-            let r = _mm256_mask_test_epi16_mask(0, a, b);
-            assert_eq!(r, 0);
-            let r = _mm256_mask_test_epi16_mask(0b11111111_11111111, a, b);
-            let e: __mmask16 = 0b11111111_11111111;
-            assert_eq!(r, e);
-        }
-    */
+    #[simd_test(enable = "avx512bw,avx512vl")]
+    unsafe fn test_mm256_test_epi16_mask() {
+        let a = _mm256_set1_epi16(1 << 0);
+        let b = _mm256_set1_epi16(1 << 0 | 1 << 1);
+        let r = _mm256_test_epi16_mask(a, b);
+        let e: __mmask16 = 0b11111111_11111111;
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw,avx512vl")]
+    unsafe fn test_mm256_mask_test_epi16_mask() {
+        let a = _mm256_set1_epi16(1 << 0);
+        let b = _mm256_set1_epi16(1 << 0 | 1 << 1);
+        let r = _mm256_mask_test_epi16_mask(0, a, b);
+        assert_eq!(r, 0);
+        let r = _mm256_mask_test_epi16_mask(0b11111111_11111111, a, b);
+        let e: __mmask16 = 0b11111111_11111111;
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw,avx512vl")]
+    unsafe fn test_mm_test_epi16_mask() {
+        let a = _mm_set1_epi16(1 << 0);
+        let b = _mm_set1_epi16(1 << 0 | 1 << 1);
+        let r = _mm_test_epi16_mask(a, b);
+        let e: __mmask8 = 0b11111111;
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw,avx512vl")]
+    unsafe fn test_mm_mask_test_epi16_mask() {
+        let a = _mm_set1_epi16(1 << 0);
+        let b = _mm_set1_epi16(1 << 0 | 1 << 1);
+        let r = _mm_mask_test_epi16_mask(0, a, b);
+        assert_eq!(r, 0);
+        let r = _mm_mask_test_epi16_mask(0b11111111, a, b);
+        let e: __mmask8 = 0b11111111;
+        assert_eq!(r, e);
+    }
+
     #[simd_test(enable = "avx512bw")]
     unsafe fn test_mm512_test_epi8_mask() {
         let a = _mm512_set1_epi8(1 << 0);
@@ -16085,6 +16249,46 @@ mod tests {
         assert_eq!(r, e);
     }
 
+    #[simd_test(enable = "avx512bw,avx512vl")]
+    unsafe fn test_mm256_test_epi8_mask() {
+        let a = _mm256_set1_epi8(1 << 0);
+        let b = _mm256_set1_epi8(1 << 0 | 1 << 1);
+        let r = _mm256_test_epi8_mask(a, b);
+        let e: __mmask32 = 0b11111111_11111111_11111111_11111111;
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw,avx512vl")]
+    unsafe fn test_mm256_mask_test_epi8_mask() {
+        let a = _mm256_set1_epi8(1 << 0);
+        let b = _mm256_set1_epi8(1 << 0 | 1 << 1);
+        let r = _mm256_mask_test_epi8_mask(0, a, b);
+        assert_eq!(r, 0);
+        let r = _mm256_mask_test_epi8_mask(0b11111111_11111111_11111111_11111111, a, b);
+        let e: __mmask32 = 0b11111111_11111111_11111111_11111111;
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw,avx512vl")]
+    unsafe fn test_mm_test_epi8_mask() {
+        let a = _mm_set1_epi8(1 << 0);
+        let b = _mm_set1_epi8(1 << 0 | 1 << 1);
+        let r = _mm_test_epi8_mask(a, b);
+        let e: __mmask16 = 0b11111111_11111111;
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw,avx512vl")]
+    unsafe fn test_mm_mask_test_epi8_mask() {
+        let a = _mm_set1_epi8(1 << 0);
+        let b = _mm_set1_epi8(1 << 0 | 1 << 1);
+        let r = _mm_mask_test_epi8_mask(0, a, b);
+        assert_eq!(r, 0);
+        let r = _mm_mask_test_epi8_mask(0b11111111_11111111, a, b);
+        let e: __mmask16 = 0b11111111_11111111;
+        assert_eq!(r, e);
+    }
+
     #[simd_test(enable = "avx512bw")]
     unsafe fn test_mm512_testn_epi16_mask() {
         let a = _mm512_set1_epi16(1 << 0);
@@ -16102,6 +16306,46 @@ mod tests {
         assert_eq!(r, 0);
         let r = _mm512_mask_testn_epi16_mask(0b11111111_11111111_11111111_11111111, a, b);
         let e: __mmask32 = 0b00000000_00000000_00000000_00000000;
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw,avx512vl")]
+    unsafe fn test_mm256_testn_epi16_mask() {
+        let a = _mm256_set1_epi16(1 << 0);
+        let b = _mm256_set1_epi16(1 << 0 | 1 << 1);
+        let r = _mm256_testn_epi16_mask(a, b);
+        let e: __mmask16 = 0b00000000_00000000;
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw,avx512vl")]
+    unsafe fn test_mm256_mask_testn_epi16_mask() {
+        let a = _mm256_set1_epi16(1 << 0);
+        let b = _mm256_set1_epi16(1 << 0 | 1 << 1);
+        let r = _mm256_mask_testn_epi16_mask(0, a, b);
+        assert_eq!(r, 0);
+        let r = _mm256_mask_testn_epi16_mask(0b11111111_11111111, a, b);
+        let e: __mmask16 = 0b00000000_00000000;
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw,avx512vl")]
+    unsafe fn test_mm_testn_epi16_mask() {
+        let a = _mm_set1_epi16(1 << 0);
+        let b = _mm_set1_epi16(1 << 0 | 1 << 1);
+        let r = _mm_testn_epi16_mask(a, b);
+        let e: __mmask8 = 0b00000000;
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw,avx512vl")]
+    unsafe fn test_mm_mask_testn_epi16_mask() {
+        let a = _mm_set1_epi16(1 << 0);
+        let b = _mm_set1_epi16(1 << 0 | 1 << 1);
+        let r = _mm_mask_testn_epi16_mask(0, a, b);
+        assert_eq!(r, 0);
+        let r = _mm_mask_testn_epi16_mask(0b11111111, a, b);
+        let e: __mmask8 = 0b00000000;
         assert_eq!(r, e);
     }
 
@@ -16128,6 +16372,46 @@ mod tests {
         );
         let e: __mmask64 =
             0b00000000_00000000_00000000_00000000_00000000_00000000_00000000_00000000;
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw,avx512vl")]
+    unsafe fn test_mm256_testn_epi8_mask() {
+        let a = _mm256_set1_epi8(1 << 0);
+        let b = _mm256_set1_epi8(1 << 0 | 1 << 1);
+        let r = _mm256_testn_epi8_mask(a, b);
+        let e: __mmask32 = 0b00000000_00000000_00000000_00000000;
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw,avx512vl")]
+    unsafe fn test_mm256_mask_testn_epi8_mask() {
+        let a = _mm256_set1_epi8(1 << 0);
+        let b = _mm256_set1_epi8(1 << 0 | 1 << 1);
+        let r = _mm256_mask_testn_epi8_mask(0, a, b);
+        assert_eq!(r, 0);
+        let r = _mm256_mask_testn_epi8_mask(0b11111111_11111111_11111111_11111111, a, b);
+        let e: __mmask32 = 0b00000000_00000000_00000000_00000000;
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw,avx512vl")]
+    unsafe fn test_mm_testn_epi8_mask() {
+        let a = _mm_set1_epi8(1 << 0);
+        let b = _mm_set1_epi8(1 << 0 | 1 << 1);
+        let r = _mm_testn_epi8_mask(a, b);
+        let e: __mmask16 = 0b00000000_00000000;
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw,avx512vl")]
+    unsafe fn test_mm_mask_testn_epi8_mask() {
+        let a = _mm_set1_epi8(1 << 0);
+        let b = _mm_set1_epi8(1 << 0 | 1 << 1);
+        let r = _mm_mask_testn_epi8_mask(0, a, b);
+        assert_eq!(r, 0);
+        let r = _mm_mask_testn_epi8_mask(0b11111111_11111111, a, b);
+        let e: __mmask16 = 0b00000000_00000000;
         assert_eq!(r, e);
     }
 
