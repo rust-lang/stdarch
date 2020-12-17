@@ -8238,6 +8238,124 @@ pub unsafe fn _mm512_maskz_dbsad_epu8(k: __mmask32, a: __m512i, b: __m512i, imm8
     ))
 }
 
+/// Compute the sum of absolute differences (SADs) of quadruplets of unsigned 8-bit integers in a compared to those in b, and store the 16-bit results in dst. Four SADs are performed on four 8-bit quadruplets for each 64-bit lane. The first two SADs use the lower 8-bit quadruplet of the lane from a, and the last two SADs use the uppper 8-bit quadruplet of the lane from a. Quadruplets from b are selected from within 128-bit lanes according to the control in imm8, and each SAD in each 64-bit lane uses the selected quadruplet at 8-bit offsets.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_dbsad_epu8&expand=2111)
+#[inline]
+#[target_feature(enable = "avx512bw,avx512vl")]
+#[rustc_args_required_const(2)]
+#[cfg_attr(test, assert_instr(vdbpsadbw, imm8 = 0))]
+pub unsafe fn _mm256_dbsad_epu8(a: __m256i, b: __m256i, imm8: i32) -> __m256i {
+    macro_rules! call {
+        ($imm8:expr) => {
+            vdbpsadbw256(a.as_u8x32(), b.as_u8x32(), $imm8)
+        };
+    }
+    let r = constify_imm8_sae!(imm8, call);
+    transmute(r)
+}
+
+/// Compute the sum of absolute differences (SADs) of quadruplets of unsigned 8-bit integers in a compared to those in b, and store the 16-bit results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set). Four SADs are performed on four 8-bit quadruplets for each 64-bit lane. The first two SADs use the lower 8-bit quadruplet of the lane from a, and the last two SADs use the uppper 8-bit quadruplet of the lane from a. Quadruplets from b are selected from within 128-bit lanes according to the control in imm8, and each SAD in each 64-bit lane uses the selected quadruplet at 8-bit offsets.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_dbsad_epu8&expand=2112)
+#[inline]
+#[target_feature(enable = "avx512bw,avx512vl")]
+#[rustc_args_required_const(4)]
+#[cfg_attr(test, assert_instr(vdbpsadbw, imm8 = 0))]
+pub unsafe fn _mm256_mask_dbsad_epu8(
+    src: __m256i,
+    k: __mmask16,
+    a: __m256i,
+    b: __m256i,
+    imm8: i32,
+) -> __m256i {
+    macro_rules! call {
+        ($imm8:expr) => {
+            vdbpsadbw256(a.as_u8x32(), b.as_u8x32(), $imm8)
+        };
+    }
+    let r = constify_imm8_sae!(imm8, call);
+    transmute(simd_select_bitmask(k, r, src.as_u16x16()))
+}
+
+/// Compute the sum of absolute differences (SADs) of quadruplets of unsigned 8-bit integers in a compared to those in b, and store the 16-bit results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set). Four SADs are performed on four 8-bit quadruplets for each 64-bit lane. The first two SADs use the lower 8-bit quadruplet of the lane from a, and the last two SADs use the uppper 8-bit quadruplet of the lane from a. Quadruplets from b are selected from within 128-bit lanes according to the control in imm8, and each SAD in each 64-bit lane uses the selected quadruplet at 8-bit offsets.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_dbsad_epu8&expand=2113)
+#[inline]
+#[target_feature(enable = "avx512bw,avx512vl")]
+#[rustc_args_required_const(3)]
+#[cfg_attr(test, assert_instr(vdbpsadbw, imm8 = 0))]
+pub unsafe fn _mm256_maskz_dbsad_epu8(k: __mmask16, a: __m256i, b: __m256i, imm8: i32) -> __m256i {
+    macro_rules! call {
+        ($imm8:expr) => {
+            vdbpsadbw256(a.as_u8x32(), b.as_u8x32(), $imm8)
+        };
+    }
+    let r = constify_imm8_sae!(imm8, call);
+    transmute(simd_select_bitmask(
+        k,
+        r,
+        _mm256_setzero_si256().as_u16x16(),
+    ))
+}
+
+/// Compute the sum of absolute differences (SADs) of quadruplets of unsigned 8-bit integers in a compared to those in b, and store the 16-bit results in dst. Four SADs are performed on four 8-bit quadruplets for each 64-bit lane. The first two SADs use the lower 8-bit quadruplet of the lane from a, and the last two SADs use the uppper 8-bit quadruplet of the lane from a. Quadruplets from b are selected from within 128-bit lanes according to the control in imm8, and each SAD in each 64-bit lane uses the selected quadruplet at 8-bit offsets.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_dbsad_epu8&expand=2108)
+#[inline]
+#[target_feature(enable = "avx512bw,avx512vl")]
+#[rustc_args_required_const(2)]
+#[cfg_attr(test, assert_instr(vdbpsadbw, imm8 = 0))]
+pub unsafe fn _mm_dbsad_epu8(a: __m128i, b: __m128i, imm8: i32) -> __m128i {
+    macro_rules! call {
+        ($imm8:expr) => {
+            vdbpsadbw128(a.as_u8x16(), b.as_u8x16(), $imm8)
+        };
+    }
+    let r = constify_imm8_sae!(imm8, call);
+    transmute(r)
+}
+
+/// Compute the sum of absolute differences (SADs) of quadruplets of unsigned 8-bit integers in a compared to those in b, and store the 16-bit results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set). Four SADs are performed on four 8-bit quadruplets for each 64-bit lane. The first two SADs use the lower 8-bit quadruplet of the lane from a, and the last two SADs use the uppper 8-bit quadruplet of the lane from a. Quadruplets from b are selected from within 128-bit lanes according to the control in imm8, and each SAD in each 64-bit lane uses the selected quadruplet at 8-bit offsets.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_dbsad_epu8&expand=2109)
+#[inline]
+#[target_feature(enable = "avx512bw,avx512vl")]
+#[rustc_args_required_const(4)]
+#[cfg_attr(test, assert_instr(vdbpsadbw, imm8 = 0))]
+pub unsafe fn _mm_mask_dbsad_epu8(
+    src: __m128i,
+    k: __mmask8,
+    a: __m128i,
+    b: __m128i,
+    imm8: i32,
+) -> __m128i {
+    macro_rules! call {
+        ($imm8:expr) => {
+            vdbpsadbw128(a.as_u8x16(), b.as_u8x16(), $imm8)
+        };
+    }
+    let r = constify_imm8_sae!(imm8, call);
+    transmute(simd_select_bitmask(k, r, src.as_u16x8()))
+}
+
+/// Compute the sum of absolute differences (SADs) of quadruplets of unsigned 8-bit integers in a compared to those in b, and store the 16-bit results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set). Four SADs are performed on four 8-bit quadruplets for each 64-bit lane. The first two SADs use the lower 8-bit quadruplet of the lane from a, and the last two SADs use the uppper 8-bit quadruplet of the lane from a. Quadruplets from b are selected from within 128-bit lanes according to the control in imm8, and each SAD in each 64-bit lane uses the selected quadruplet at 8-bit offsets.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_dbsad_epu8&expand=2110)
+#[inline]
+#[target_feature(enable = "avx512bw,avx512vl")]
+#[rustc_args_required_const(3)]
+#[cfg_attr(test, assert_instr(vdbpsadbw, imm8 = 0))]
+pub unsafe fn _mm_maskz_dbsad_epu8(k: __mmask8, a: __m128i, b: __m128i, imm8: i32) -> __m128i {
+    macro_rules! call {
+        ($imm8:expr) => {
+            vdbpsadbw128(a.as_u8x16(), b.as_u8x16(), $imm8)
+        };
+    }
+    let r = constify_imm8_sae!(imm8, call);
+    transmute(simd_select_bitmask(k, r, _mm_setzero_si128().as_u16x8()))
+}
+
 /// Set each bit of mask register k based on the most significant bit of the corresponding packed 16-bit integer in a.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_movepi16_mask&expand=3873)
@@ -9113,8 +9231,13 @@ extern "C" {
 
     #[link_name = "llvm.x86.avx512.psad.bw.512"]
     fn vpsadbw(a: u8x64, b: u8x64) -> u64x8;
+
     #[link_name = "llvm.x86.avx512.dbpsadbw.512"]
     fn vdbpsadbw(a: u8x64, b: u8x64, imm8: i32) -> u16x32;
+    #[link_name = "llvm.x86.avx512.dbpsadbw.256"]
+    fn vdbpsadbw256(a: u8x32, b: u8x32, imm8: i32) -> u16x16;
+    #[link_name = "llvm.x86.avx512.dbpsadbw.128"]
+    fn vdbpsadbw128(a: u8x16, b: u8x16, imm8: i32) -> u16x8;
 
     #[link_name = "llvm.x86.avx512.mask.pmovs.wb.512"]
     fn vpmovswb(a: i16x32, src: i8x32, mask: u32) -> i8x32;
@@ -16489,6 +16612,70 @@ mod tests {
         let r = _mm512_maskz_dbsad_epu8(0b11111111_11111111_11111111_11111111, a, b, 0);
         let e = _mm512_set1_epi16(8);
         assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw,avx512vl")]
+    unsafe fn test_mm256_dbsad_epu8() {
+        let a = _mm256_set1_epi8(2);
+        let b = _mm256_set1_epi8(4);
+        let r = _mm256_dbsad_epu8(a, b, 0);
+        let e = _mm256_set1_epi16(8);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw,avx512vl")]
+    unsafe fn test_mm256_mask_dbsad_epu8() {
+        let src = _mm256_set1_epi16(1);
+        let a = _mm256_set1_epi8(2);
+        let b = _mm256_set1_epi8(4);
+        let r = _mm256_mask_dbsad_epu8(src, 0, a, b, 0);
+        assert_eq_m256i(r, src);
+        let r = _mm256_mask_dbsad_epu8(src, 0b11111111_11111111, a, b, 0);
+        let e = _mm256_set1_epi16(8);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw,avx512vl")]
+    unsafe fn test_mm256_maskz_dbsad_epu8() {
+        let a = _mm256_set1_epi8(2);
+        let b = _mm256_set1_epi8(4);
+        let r = _mm256_maskz_dbsad_epu8(0, a, b, 0);
+        assert_eq_m256i(r, _mm256_setzero_si256());
+        let r = _mm256_maskz_dbsad_epu8(0b11111111_11111111, a, b, 0);
+        let e = _mm256_set1_epi16(8);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw,avx512vl")]
+    unsafe fn test_mm_dbsad_epu8() {
+        let a = _mm_set1_epi8(2);
+        let b = _mm_set1_epi8(4);
+        let r = _mm_dbsad_epu8(a, b, 0);
+        let e = _mm_set1_epi16(8);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw,avx512vl")]
+    unsafe fn test_mm_mask_dbsad_epu8() {
+        let src = _mm_set1_epi16(1);
+        let a = _mm_set1_epi8(2);
+        let b = _mm_set1_epi8(4);
+        let r = _mm_mask_dbsad_epu8(src, 0, a, b, 0);
+        assert_eq_m128i(r, src);
+        let r = _mm_mask_dbsad_epu8(src, 0b11111111, a, b, 0);
+        let e = _mm_set1_epi16(8);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw,avx512vl")]
+    unsafe fn test_mm_maskz_dbsad_epu8() {
+        let a = _mm_set1_epi8(2);
+        let b = _mm_set1_epi8(4);
+        let r = _mm_maskz_dbsad_epu8(0, a, b, 0);
+        assert_eq_m128i(r, _mm_setzero_si128());
+        let r = _mm_maskz_dbsad_epu8(0b11111111, a, b, 0);
+        let e = _mm_set1_epi16(8);
+        assert_eq_m128i(r, e);
     }
 
     #[simd_test(enable = "avx512bw")]
