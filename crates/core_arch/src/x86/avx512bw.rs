@@ -4187,6 +4187,26 @@ pub unsafe fn _mm512_loadu_epi16(mem_addr: *const i16) -> __m512i {
     ptr::read_unaligned(mem_addr as *const __m512i)
 }
 
+/// Load 256-bits (composed of 16 packed 16-bit integers) from memory into dst. mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_loadu_epi16&expand=3365)
+#[inline]
+#[target_feature(enable = "avx512bw,avx512vl")]
+#[cfg_attr(test, assert_instr(vmovups))] //should be vmovdqu16
+pub unsafe fn _mm256_loadu_epi16(mem_addr: *const i16) -> __m256i {
+    ptr::read_unaligned(mem_addr as *const __m256i)
+}
+
+/// Load 128-bits (composed of 8 packed 16-bit integers) from memory into dst. mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_loadu_epi16&expand=3362)
+#[inline]
+#[target_feature(enable = "avx512bw,avx512vl")]
+#[cfg_attr(test, assert_instr(vmovups))] //should be vmovdqu16
+pub unsafe fn _mm_loadu_epi16(mem_addr: *const i16) -> __m128i {
+    ptr::read_unaligned(mem_addr as *const __m128i)
+}
+
 /// Load 512-bits (composed of 64 packed 8-bit integers) from memory into dst. mem_addr does not need to be aligned on any particular boundary.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_loadu_epi8&expand=3395)
@@ -4197,14 +4217,54 @@ pub unsafe fn _mm512_loadu_epi8(mem_addr: *const i8) -> __m512i {
     ptr::read_unaligned(mem_addr as *const __m512i)
 }
 
+/// Load 256-bits (composed of 32 packed 8-bit integers) from memory into dst. mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_loadu_epi8&expand=3392)
+#[inline]
+#[target_feature(enable = "avx512bw,avx512vl")]
+#[cfg_attr(test, assert_instr(vmovups))] //should be vmovdqu8
+pub unsafe fn _mm256_loadu_epi8(mem_addr: *const i8) -> __m256i {
+    ptr::read_unaligned(mem_addr as *const __m256i)
+}
+
+/// Load 128-bits (composed of 16 packed 8-bit integers) from memory into dst. mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_loadu_epi8&expand=3389)
+#[inline]
+#[target_feature(enable = "avx512bw,avx512vl")]
+#[cfg_attr(test, assert_instr(vmovups))] //should be vmovdqu8
+pub unsafe fn _mm_loadu_epi8(mem_addr: *const i8) -> __m128i {
+    ptr::read_unaligned(mem_addr as *const __m128i)
+}
+
 /// Store 512-bits (composed of 32 packed 16-bit integers) from a into memory. mem_addr does not need to be aligned on any particular boundary.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_storeu_epi16&expand=5622)
 #[inline]
 #[target_feature(enable = "avx512bw")]
-#[cfg_attr(test, assert_instr(vmovups))] //should be vmovdqu32
+#[cfg_attr(test, assert_instr(vmovups))] //should be vmovdqu16
 pub unsafe fn _mm512_storeu_epi16(mem_addr: *mut i16, a: __m512i) {
     ptr::write_unaligned(mem_addr as *mut __m512i, a);
+}
+
+/// Store 256-bits (composed of 16 packed 16-bit integers) from a into memory. mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_storeu_epi16&expand=5620)
+#[inline]
+#[target_feature(enable = "avx512bw,avx512vl")]
+#[cfg_attr(test, assert_instr(vmovups))] //should be vmovdqu16
+pub unsafe fn _mm256_storeu_epi16(mem_addr: *mut i16, a: __m256i) {
+    ptr::write_unaligned(mem_addr as *mut __m256i, a);
+}
+
+/// Store 128-bits (composed of 8 packed 16-bit integers) from a into memory. mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_storeu_epi16&expand=5618)
+#[inline]
+#[target_feature(enable = "avx512bw,avx512vl")]
+#[cfg_attr(test, assert_instr(vmovups))] //should be vmovdqu16
+pub unsafe fn _mm_storeu_epi16(mem_addr: *mut i16, a: __m128i) {
+    ptr::write_unaligned(mem_addr as *mut __m128i, a);
 }
 
 /// Store 512-bits (composed of 64 packed 8-bit integers) from a into memory. mem_addr does not need to be aligned on any particular boundary.
@@ -4215,6 +4275,26 @@ pub unsafe fn _mm512_storeu_epi16(mem_addr: *mut i16, a: __m512i) {
 #[cfg_attr(test, assert_instr(vmovups))] //should be vmovdqu8
 pub unsafe fn _mm512_storeu_epi8(mem_addr: *mut i8, a: __m512i) {
     ptr::write_unaligned(mem_addr as *mut __m512i, a);
+}
+
+/// Store 256-bits (composed of 32 packed 8-bit integers) from a into memory. mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_storeu_epi8&expand=5638)
+#[inline]
+#[target_feature(enable = "avx512bw,avx512vl")]
+#[cfg_attr(test, assert_instr(vmovups))] //should be vmovdqu8
+pub unsafe fn _mm256_storeu_epi8(mem_addr: *mut i8, a: __m256i) {
+    ptr::write_unaligned(mem_addr as *mut __m256i, a);
+}
+
+/// Store 128-bits (composed of 16 packed 8-bit integers) from a into memory. mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_storeu_epi8&expand=5636)
+#[inline]
+#[target_feature(enable = "avx512bw,avx512vl")]
+#[cfg_attr(test, assert_instr(vmovups))] //should be vmovdqu8
+pub unsafe fn _mm_storeu_epi8(mem_addr: *mut i8, a: __m128i) {
+    ptr::write_unaligned(mem_addr as *mut __m128i, a);
 }
 
 /// Multiply packed signed 16-bit integers in a and b, producing intermediate signed 32-bit integers. Horizontally add adjacent pairs of intermediate 32-bit integers, and pack the results in dst.
@@ -12869,6 +12949,22 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
+    #[simd_test(enable = "avx512bw,avx512vl")]
+    unsafe fn test_mm256_loadu_epi16() {
+        let a: [i16; 16] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+        let r = _mm256_loadu_epi16(&a[0]);
+        let e = _mm256_set_epi16(16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw,avx512vl")]
+    unsafe fn test_mm_loadu_epi16() {
+        let a: [i16; 8] = [1, 2, 3, 4, 5, 6, 7, 8];
+        let r = _mm_loadu_epi16(&a[0]);
+        let e = _mm_set_epi16(8, 7, 6, 5, 4, 3, 2, 1);
+        assert_eq_m128i(r, e);
+    }
+
     #[simd_test(enable = "avx512bw")]
     unsafe fn test_mm512_loadu_epi8() {
         #[rustfmt::skip]
@@ -12881,6 +12977,24 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
+    #[simd_test(enable = "avx512bw,avx512vl")]
+    unsafe fn test_mm256_loadu_epi8() {
+        #[rustfmt::skip]
+        let a: [i8; 32] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
+        let r = _mm256_loadu_epi8(&a[0]);
+        #[rustfmt::skip]
+        let e = _mm256_set_epi8(32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw,avx512vl")]
+    unsafe fn test_mm_loadu_epi8() {
+        let a: [i8; 16] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+        let r = _mm_loadu_epi8(&a[0]);
+        let e = _mm_set_epi8(16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1);
+        assert_eq_m128i(r, e);
+    }
+
     #[simd_test(enable = "avx512bw")]
     unsafe fn test_mm512_storeu_epi16() {
         let a = _mm512_set1_epi16(9);
@@ -12889,12 +13003,44 @@ mod tests {
         assert_eq_m512i(r, a);
     }
 
+    #[simd_test(enable = "avx512bw,avx512vl")]
+    unsafe fn test_mm256_storeu_epi16() {
+        let a = _mm256_set1_epi16(9);
+        let mut r = _mm256_set1_epi32(0);
+        _mm256_storeu_epi16(&mut r as *mut _ as *mut i16, a);
+        assert_eq_m256i(r, a);
+    }
+
+    #[simd_test(enable = "avx512bw,avx512vl")]
+    unsafe fn test_mm_storeu_epi16() {
+        let a = _mm_set1_epi16(9);
+        let mut r = _mm_set1_epi32(0);
+        _mm_storeu_epi16(&mut r as *mut _ as *mut i16, a);
+        assert_eq_m128i(r, a);
+    }
+
     #[simd_test(enable = "avx512bw")]
     unsafe fn test_mm512_storeu_epi8() {
         let a = _mm512_set1_epi8(9);
         let mut r = _mm512_undefined_epi32();
         _mm512_storeu_epi8(&mut r as *mut _ as *mut i8, a);
         assert_eq_m512i(r, a);
+    }
+
+    #[simd_test(enable = "avx512bw,avx512vl")]
+    unsafe fn test_mm256_storeu_epi8() {
+        let a = _mm256_set1_epi8(9);
+        let mut r = _mm256_set1_epi32(0);
+        _mm256_storeu_epi8(&mut r as *mut _ as *mut i8, a);
+        assert_eq_m256i(r, a);
+    }
+
+    #[simd_test(enable = "avx512bw,avx512vl")]
+    unsafe fn test_mm_storeu_epi8() {
+        let a = _mm_set1_epi8(9);
+        let mut r = _mm_set1_epi32(0);
+        _mm_storeu_epi8(&mut r as *mut _ as *mut i8, a);
+        assert_eq_m128i(r, a);
     }
 
     #[simd_test(enable = "avx512bw")]
