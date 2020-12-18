@@ -437,6 +437,8 @@
   * [x] [`_mm256_mask_mov_epi8`]
   * [x] [`_mm256_maskz_mov_epi8`]
   * [x] [`_mm512_movepi16_mask`]
+  * [x] [`_mm_movepi16_mask`]
+  * [x] [`_mm256_movepi16_mask`]
   * [x] [`_mm512_movepi8_mask`]
   * [x] [`_mm512_movm_epi16`]
   * [x] [`_mm512_movm_epi8`]
