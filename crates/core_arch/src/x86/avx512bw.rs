@@ -9508,6 +9508,86 @@ pub unsafe fn _mm512_maskz_alignr_epi8(k: __mmask64, a: __m512i, b: __m512i, imm
     transmute(simd_select_bitmask(k, r, _mm512_setzero_si512().as_i8x64()))
 }
 
+/// Concatenate pairs of 16-byte blocks in a and b into a 32-byte temporary result, shift the result right by imm8 bytes, and store the low 16 bytes in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_alignr_epi8&expand=261)
+#[inline]
+#[target_feature(enable = "avx512bw,avx512vl")]
+#[rustc_args_required_const(4)]
+#[cfg_attr(test, assert_instr(vpalignr, imm8 = 5))]
+pub unsafe fn _mm256_mask_alignr_epi8(
+    src: __m256i,
+    k: __mmask32,
+    a: __m256i,
+    b: __m256i,
+    imm8: i32,
+) -> __m256i {
+    macro_rules! call {
+        ($imm8:expr) => {
+            _mm256_alignr_epi8(a, b, $imm8).as_i8x32()
+        };
+    }
+    let r = constify_imm8_sae!(imm8, call);
+    transmute(simd_select_bitmask(k, r, src.as_i8x32()))
+}
+
+/// Concatenate pairs of 16-byte blocks in a and b into a 32-byte temporary result, shift the result right by imm8 bytes, and store the low 16 bytes in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_alignr_epi8&expand=262)
+#[inline]
+#[target_feature(enable = "avx512bw,avx512vl")]
+#[rustc_args_required_const(3)]
+#[cfg_attr(test, assert_instr(vpalignr, imm8 = 5))]
+pub unsafe fn _mm256_maskz_alignr_epi8(k: __mmask32, a: __m256i, b: __m256i, imm8: i32) -> __m256i {
+    macro_rules! call {
+        ($imm8:expr) => {
+            _mm256_alignr_epi8(a, b, $imm8).as_i8x32()
+        };
+    }
+    let r = constify_imm8_sae!(imm8, call);
+    transmute(simd_select_bitmask(k, r, _mm256_setzero_si256().as_i8x32()))
+}
+
+/// Concatenate pairs of 16-byte blocks in a and b into a 32-byte temporary result, shift the result right by imm8 bytes, and store the low 16 bytes in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_alignr_epi8&expand=258)
+#[inline]
+#[target_feature(enable = "avx512bw,avx512vl")]
+#[rustc_args_required_const(4)]
+#[cfg_attr(test, assert_instr(vpalignr, imm8 = 5))]
+pub unsafe fn _mm_mask_alignr_epi8(
+    src: __m128i,
+    k: __mmask16,
+    a: __m128i,
+    b: __m128i,
+    imm8: i32,
+) -> __m128i {
+    macro_rules! call {
+        ($imm8:expr) => {
+            _mm_alignr_epi8(a, b, $imm8).as_i8x16()
+        };
+    }
+    let r = constify_imm8_sae!(imm8, call);
+    transmute(simd_select_bitmask(k, r, src.as_i8x16()))
+}
+
+/// Concatenate pairs of 16-byte blocks in a and b into a 32-byte temporary result, shift the result right by imm8 bytes, and store the low 16 bytes in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_alignr_epi8&expand=259)
+#[inline]
+#[target_feature(enable = "avx512bw,avx512vl")]
+#[rustc_args_required_const(3)]
+#[cfg_attr(test, assert_instr(vpalignr, imm8 = 5))]
+pub unsafe fn _mm_maskz_alignr_epi8(k: __mmask16, a: __m128i, b: __m128i, imm8: i32) -> __m128i {
+    macro_rules! call {
+        ($imm8:expr) => {
+            _mm_alignr_epi8(a, b, $imm8).as_i8x16()
+        };
+    }
+    let r = constify_imm8_sae!(imm8, call);
+    transmute(simd_select_bitmask(k, r, _mm_setzero_si128().as_i8x16()))
+}
+
 #[allow(improper_ctypes)]
 extern "C" {
     #[link_name = "llvm.x86.avx512.mask.paddus.w.512"]
@@ -17964,5 +18044,65 @@ mod tests {
             0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1,
         );
         assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw,avx512vl")]
+    unsafe fn test_mm256_mask_alignr_epi8() {
+        #[rustfmt::skip]
+        let a = _mm256_set_epi8(
+            1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0,
+            1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0,
+        );
+        let b = _mm256_set1_epi8(1);
+        let r = _mm256_mask_alignr_epi8(a, 0, a, b, 14);
+        assert_eq_m256i(r, a);
+        let r = _mm256_mask_alignr_epi8(a, 0b11111111_11111111_11111111_11111111, a, b, 14);
+        #[rustfmt::skip]
+        let e = _mm256_set_epi8(
+            0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1,
+            0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1,
+        );
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw,avx512vl")]
+    unsafe fn test_mm256_maskz_alignr_epi8() {
+        #[rustfmt::skip]
+        let a = _mm256_set_epi8(
+            1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0,
+            1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0,
+        );
+        let b = _mm256_set1_epi8(1);
+        let r = _mm256_maskz_alignr_epi8(0, a, b, 14);
+        assert_eq_m256i(r, _mm256_setzero_si256());
+        let r = _mm256_maskz_alignr_epi8(0b11111111_11111111_11111111_11111111, a, b, 14);
+        #[rustfmt::skip]
+        let e = _mm256_set_epi8(
+            0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1,
+            0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1,
+        );
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw,avx512vl")]
+    unsafe fn test_mm_mask_alignr_epi8() {
+        let a = _mm_set_epi8(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0);
+        let b = _mm_set1_epi8(1);
+        let r = _mm_mask_alignr_epi8(a, 0, a, b, 14);
+        assert_eq_m128i(r, a);
+        let r = _mm_mask_alignr_epi8(a, 0b11111111_11111111, a, b, 14);
+        let e = _mm_set_epi8(0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw,avx512vl")]
+    unsafe fn test_mm_maskz_alignr_epi8() {
+        let a = _mm_set_epi8(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0);
+        let b = _mm_set1_epi8(1);
+        let r = _mm_maskz_alignr_epi8(0, a, b, 14);
+        assert_eq_m128i(r, _mm_setzero_si128());
+        let r = _mm_maskz_alignr_epi8(0b11111111_11111111, a, b, 14);
+        let e = _mm_set_epi8(0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1);
+        assert_eq_m128i(r, e);
     }
 }
