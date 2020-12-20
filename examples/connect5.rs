@@ -3,18 +3,28 @@
 //! Two players take turns placing a move on an empty intersection in this board.\
 //! The winner is the first player to form an unbroken chain of five moves horizontally, vertically, or diagonally.\
 //! Unlike Gomoku, the first move is required to be placed at the two outer rows or columns of this board.\
-//! This program provides an AI playing with Minimax search with alpha-beta pruning.\
-//! The avx512f intrinsic version can do 16 pattern matching at one time.\
+//! This program provides an AI playing with Minimax search with alpha-beta pruning which uses
+//! patterns on evaluation.\
+//! The avx512 intrinsic can do 32 pattern matching at one time.\
+//! This avx512 is tested with non-avx512 code to verify its correctness.\
 //!
-//! On Intel i7-7800x using singe core with fixed AVX-512 clock at 4.0GHz, the avx512f version is speed up about 4.3x.\
-//! The average time for each move in the avx512f version is around 31.17s.
-//! In the future, avx512bw can do 64 pattern matching at one time. It might speed up more.\
+//! On Intel i7-7800x using single thread with fixed AVX-512 clock at 4.0GHz, the avx512 is speed up about 9x.\
+//! The average time for each move in the avx512 is around 14.00s <span>&#177;</span> 1.31s and in the non-avx512
+//! is 129.02s <span>&#177;</span> 4.96s.\
+//!
+//! <b>Pattern Matching</b>\
+//! Use 512-bit to present the board state. The location 0 is top left.\
+//! 0   1   2   3   4   5   6   7   8   9   10  11  12  13  14  <b>15</b>\
+//! 16  17  18  19  20  21  22  23  24  25  26  27  28  29  30  <b>31</b>\
+//! ... \
+//! Pattern "OOOOO" is matching through "0 1 2 3 4", "1 2 3 4 5", ...\
+//! Using avx512, "0 1 2 3 4", "16 17 18 19 20", ... can be matched simultaneously.\
 //!
 //! //! You can test out this program via:
 //!
 //!     cargo +nightly run --release --bin connect5
 //!
-//! and you should see a game self-playing. In the end of the game, it shows the average time for
+//! You should see a game self-playing. In the end of the game, it shows the average time for
 //! each move.
 
 #![feature(stdsimd, avx512_target_feature)]
@@ -421,9 +431,9 @@ fn pos_is_draw(pos: &Pos) -> bool {
     out
 }
 
-#[target_feature(enable = "avx512f")]
+#[target_feature(enable = "avx512f,avx512bw")]
 #[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
-unsafe fn pos_is_draw_avx512f(pos: &Pos) -> bool {
+unsafe fn pos_is_draw_avx512(pos: &Pos) -> bool {
     let empty = Color::Empty as usize;
 
     let board0org = _mm512_loadu_epi32(&pos.bitboard[empty][0][0]);
@@ -431,10 +441,13 @@ unsafe fn pos_is_draw_avx512f(pos: &Pos) -> bool {
     let answer = _mm512_set1_epi32(0);
 
     // if all empty is 0, all board is filled.
-    let temp_mask = _mm512_mask_cmp_epi32_mask(0b11111111_11111111, answer, board0org, 0);
+    let temp_mask = _mm512_mask_cmpneq_epi32_mask(0b11111111_11111111, answer, board0org);
 
-    #[rustfmt::skip]
-    if temp_mask == 1<<15|1<<14|1<<13|1<<12|1<<11|1<<10|1<<9|1<<8|1<<7|1<<6|1<<5|1<<4|1<<3|1<<2|1<<1|1<<0 && !pos_is_winner_avx512(pos) { return true } else { return false }
+    if _popcnt32(temp_mask as i32) == 0 && !pos_is_winner_avx512(pos) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 fn pos_is_end(pos: &Pos) -> bool {
@@ -488,13 +501,13 @@ fn search(pos: &Pos, alpha: i32, beta: i32, depth: i32, _ply: i32) -> i32 {
 
     #[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
     {
-        if is_x86_feature_detected!("avx512f") {
+        if is_x86_feature_detected!("avx512bw") {
             unsafe {
                 if pos_is_winner_avx512(&pos) {
                     return -EVAL_INF + _ply;
                 }
 
-                if pos_is_draw_avx512f(&pos) {
+                if pos_is_draw_avx512(&pos) {
                     return 0;
                 }
             }
@@ -582,7 +595,7 @@ fn eval(pos: &Pos, _ply: i32) -> i32 {
     // check if opp has live4 which will win playing next move
     #[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
     {
-        if is_x86_feature_detected!("avx512f") {
+        if is_x86_feature_detected!("avx512bw") {
             unsafe {
                 if check_patternlive4_avx512(&pos, def) {
                     return -4096;
@@ -605,7 +618,7 @@ fn eval(pos: &Pos, _ply: i32) -> i32 {
     // check if self has live4 which will win playing next move
     #[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
     {
-        if is_x86_feature_detected!("avx512f") {
+        if is_x86_feature_detected!("avx512bw") {
             unsafe {
                 if check_patternlive4_avx512(&pos, atk) {
                     return 2560;
@@ -628,7 +641,7 @@ fn eval(pos: &Pos, _ply: i32) -> i32 {
     // check if self has dead4 which will win playing next move
     #[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
     {
-        if is_x86_feature_detected!("avx512f") {
+        if is_x86_feature_detected!("avx512bw") {
             unsafe {
                 if check_patterndead4_avx512(&pos, atk) > 0 {
                     return 2560;
@@ -650,7 +663,7 @@ fn eval(pos: &Pos, _ply: i32) -> i32 {
 
     #[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
     {
-        if is_x86_feature_detected!("avx512f") {
+        if is_x86_feature_detected!("avx512bw") {
             unsafe {
                 let n_c4: i32 = check_patterndead4_avx512(&pos, def);
                 let n_c3: i32 = check_patternlive3_avx512(&pos, def);
@@ -873,7 +886,7 @@ fn check_patternlive3(pos: &Pos, sd: Side) -> i32 {
     n
 }
 
-#[target_feature(enable = "avx512f")]
+#[target_feature(enable = "avx512f,avx512bw")]
 #[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
 unsafe fn pos_is_winner_avx512(pos: &Pos) -> bool {
     let current_side = side_opp(pos.p_turn);
@@ -885,94 +898,96 @@ unsafe fn pos_is_winner_avx512(pos: &Pos) -> bool {
     ]; // load states from bitboard
 
     #[rustfmt::skip]
-    let answer = _mm512_set1_epi32( (1<<31)|(1<<30)|(1<<29)|(1<<28)|(1<<27) ); // an unbroken chain of five moves
+    let answer = _mm512_set1_epi16((1<<15)|(1<<14)|(1<<13)|(1<<12)|(1<<11)); // an unbroken chain of five moves
+
+    // use Mask to filter out which data is not processed.
+    //    1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32
+    // 1  x x x x _ _ _ _ _ _  _  _  _  _  _  0  x  o  x  o  x  0  0  0  0  0  0  0  0  0  0  0
+    // 2  x _ _ _ _ o _ x o _  _  _  _  _  _  0  x  o  _  _  _  _  _| x  x  o  o  o  x  x  _  _
+    // .  ...
+    // .  ...
+    // .  ...
+    // 16 0 0 0 0 0 0 0 0 0 0  0  0  0  0  0  0  x  o  x  o  o  o  o  o  o  o  0  0  0  0  0  0
+    //
+    // answer_mask[0]: 01_11..............: "0" is in row 16 and column 1-16.
+    // There is no data to match (x = black, o = white, _ = empty, 0 = no data).
+    //
+    //
+    // Then, shift one space left.
+    //    1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32
+    // 1  x x x _ _ _ _ _ _ _  _  _  _  _  0  x  o  x  o  x  0  0  0  0  0  0  0  0  0  0  0  0
+    // .  ...
+    // .  ...
+    // .  ...
+    // 16 0 0 0 0 0 0 0 0 0 0  0  0  0  0  0  x  o  x  o  o  o  o  o  o  o  0  0  0  0  0  0  0
+    // answer_mask[1]: ................_10: "0" is in row 1 and column 17-32;
+    // There is no enough data to match (o x o x but we want to match o o o o o).
+    //
+    // answer_mask[2]: mix 2 data together (column 17-23 and column 24-32). Using Mask to make it match correctly.
+    // For example, column 23,24,25,26,27 is not a pattern and 24,25,26,27,28 is a pattern.
+    // That is why some mask bits are set to 0 from answer_mask[2] to answer_mask[10].
 
     #[rustfmt::skip]
-    let answer_mask: [__mmask16; 11] = [0b11111111_11111111,
-                                          0b11111111_11111111,
-                                          0b11111111_11111101, // use mask 0 to pass the overlapping
-                                          0b11111111_11111001,
-                                          0b11111111_11110001,
-                                          0b11111111_11100001,
-                                          0b11111111_11000011, // row 16 starts here
-                                          0b11111111_10000111,
-                                          0b11111111_10001111,
-                                          0b11111111_10011111,
-                                          0b11111111_10111111,];
-
-    let mut temp_mask: [[__mmask16; (11 + 11)]; 2] = [[0; (11 + 11)]; 2]; // total possible patterns
+    let answer_mask: [__mmask32; 11] = [0b01_11_11_11_11_11_11_11_11_11_11_11_11_11_11_11,
+                                        0b01_11_11_11_11_11_11_11_11_11_11_11_11_11_11_10,
+                                        0b01_11_11_11_11_11_11_11_11_11_11_11_11_11_10_10,
+                                        0b01_11_11_11_11_11_11_11_11_11_11_11_11_10_10_10,
+                                        0b01_11_11_11_11_11_11_11_11_11_11_11_10_10_10_10,
+                                        0b01_11_11_11_11_11_11_11_11_11_11_10_10_10_10_10,
+                                        0b00_11_11_11_11_11_11_11_11_11_10_10_10_10_11_10,
+                                        0b00_10_11_11_11_11_11_11_11_10_10_10_10_11_11_10,
+                                        0b00_10_10_11_11_11_11_11_10_10_10_10_11_11_11_10,
+                                        0b00_10_10_10_11_11_11_10_10_10_10_11_11_11_11_10,
+                                        0b00_10_10_10_10_11_10_10_10_10_11_11_11_11_11_10];
+    let mut count_match: i32 = 0;
 
     for dir in 0..2 {
         // direction 0 and 1
         let mut board0 = board0org[dir];
-        let boardf = _mm512_and_epi32(answer, board0);
-        temp_mask[dir][0] = _mm512_mask_cmp_epi32_mask(0b01111111_11111111, answer, boardf, 0); // match OOOOO
+        let boardf = _mm512_and_si512(answer, board0);
+        let temp_mask = _mm512_mask_cmpeq_epi16_mask(answer_mask[0], answer, boardf);
+        count_match += _popcnt64(temp_mask as i64);
 
         for i in 1..11 {
             // OOOOOOOOOOO----, the last 4 "-" cannot make an unbroken chain of five.
-            board0 = _mm512_rol_epi32(board0, 1); // rotate one space left
-            let boardf = _mm512_and_epi32(answer, board0); // filter out except the pattern
-            temp_mask[dir][i as usize] =
-                _mm512_mask_cmp_epi32_mask(0b01111111_11111111, answer, boardf, 0);
-            // see if it matches the pattern
-        }
-
-        board0 = _mm512_rol_epi32(board0, 6); // whatever 11,12,13,14 are occupied, it cannot match an unbroken chain of five moves. Therefore, shift from direction 0 to 2.
-
-        // direction 2 and 3
-        let boardf = _mm512_and_epi32(answer, board0);
-        temp_mask[dir][11] = _mm512_mask_cmp_epi32_mask(answer_mask[0], answer, boardf, 0);
-
-        for i in 12..22 {
-            let idx: i32 = i - 11;
-            board0 = _mm512_rol_epi32(board0, 1);
-            let boardf = _mm512_and_epi32(answer, board0);
-            temp_mask[dir][i as usize] =
-                _mm512_mask_cmp_epi32_mask(answer_mask[idx as usize], answer, boardf, 0);
+            board0 = _mm512_slli_epi32(board0, 1); // shift one space left
+            let boardf = _mm512_and_si512(answer, board0); // focus on the pattern
+            let temp_mask = _mm512_mask_cmpeq_epi16_mask(answer_mask[i], answer, boardf); // see if it matches the pattern
+            count_match += _popcnt64(temp_mask as i64);
         }
     }
 
-    let mut n: i32 = 0;
-
-    // calculate how many patterns matched
-    for i in 0..2 {
-        for j in 0..(11 + 11) {
-            n += _popcnt32(temp_mask[i][j] as i32);
-        }
-    }
-
-    if n > 0 {
+    if count_match > 0 {
         return true;
     } else {
         return false;
     }
 }
 
-#[target_feature(enable = "avx512f")]
+#[target_feature(enable = "avx512f,avx512bw")]
 #[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
 unsafe fn check_patternlive4_avx512(pos: &Pos, sd: Side) -> bool {
     let coloridx = sd as usize;
     let emptyidx = Color::Empty as usize;
 
     #[rustfmt::skip]
-    let answer_color = _mm512_set1_epi32(         (1<<30)|(1<<29)|(1<<28)|(1<<27)         );
+    let answer_color = _mm512_set1_epi16(         (1<<14)|(1<<13)|(1<<12)|(1<<11)         );
     #[rustfmt::skip]
-    let answer_empty = _mm512_set1_epi32( (1<<31)|                                (1<<26) );
+    let answer_empty = _mm512_set1_epi16( (1<<15)|                                (1<<10) );
     #[rustfmt::skip]
-    let answer       = _mm512_set1_epi32( (1<<31)|(1<<30)|(1<<29)|(1<<28)|(1<<27)|(1<<26) );
+    let answer       = _mm512_set1_epi16( (1<<15)|(1<<14)|(1<<13)|(1<<12)|(1<<11)|(1<<10) );
 
     #[rustfmt::skip]
-    let answer_mask: [__mmask16; 10] = [0b11111111_11111110, 
-                                        0b11111111_11111100,
-                                        0b11111111_11111000,
-                                        0b11111111_11110000,
-                                        0b11111111_11100000,
-                                        0b01111111_11000000,
-                                        0b00111111_10000010,
-                                        0b00011111_00000110,
-                                        0b00001110_00001110,
-                                        0b00000100_00011110,];
-
+    let answer_mask: [__mmask32; 10] = [0b01_11_11_11_11_11_11_11_11_11_11_11_11_11_11_10,
+                                        0b01_11_11_11_11_11_11_11_11_11_11_11_11_11_10_10,
+                                        0b01_11_11_11_11_11_11_11_11_11_11_11_11_10_10_10,
+                                        0b01_11_11_11_11_11_11_11_11_11_11_11_10_10_10_10,
+                                        0b01_11_11_11_11_11_11_11_11_11_11_10_10_10_10_10,
+                                        0b00_11_11_11_11_11_11_11_11_11_10_10_10_10_10_10,
+                                        0b00_10_11_11_11_11_11_11_11_10_10_10_10_10_11_10,
+                                        0b00_10_10_11_11_11_11_11_10_10_10_10_10_11_11_10,
+                                        0b00_10_10_10_11_11_11_10_10_10_10_10_11_11_11_10,
+                                        0b00_10_10_10_10_11_10_10_10_10_10_11_11_11_11_10];
     let board0org: [__m512i; 2] = [
         _mm512_loadu_epi32(&pos.bitboard[coloridx][0][0]),
         _mm512_loadu_epi32(&pos.bitboard[coloridx][1][0]),
@@ -982,105 +997,72 @@ unsafe fn check_patternlive4_avx512(pos: &Pos, sd: Side) -> bool {
         _mm512_loadu_epi32(&pos.bitboard[emptyidx][1][0]),
     ];
 
-    let mut temp_mask: [[__mmask16; 10 + 10]; 2] = [[0; 10 + 10]; 2];
+    let mut count_match: i32 = 0;
 
     for dir in 0..2 {
         let mut board0 = board0org[dir];
         let mut board1 = board1org[dir];
 
-        let boardf1 = _mm512_and_epi32(answer_color, board0);
-        let boardf2 = _mm512_and_epi32(answer_empty, board1);
-        let boardf = _mm512_or_epi32(boardf1, boardf2);
+        let boardf1 = _mm512_and_si512(answer_color, board0);
+        let boardf2 = _mm512_and_si512(answer_empty, board1);
+        let boardf = _mm512_or_si512(boardf1, boardf2);
 
-        temp_mask[dir][0] = _mm512_mask_cmp_epi32_mask(0b01111111_11111111, answer, boardf, 0);
+        let temp_mask = _mm512_mask_cmpeq_epi16_mask(answer_mask[0], answer, boardf);
+        count_match += _popcnt64(temp_mask as i64);
 
         for i in 1..10 {
-            board0 = _mm512_rol_epi32(board0, 1);
-            board1 = _mm512_rol_epi32(board1, 1);
+            board0 = _mm512_slli_epi32(board0, 1);
+            board1 = _mm512_slli_epi32(board1, 1);
 
-            let boardf1 = _mm512_and_epi32(answer_color, board0);
-            let boardf2 = _mm512_and_epi32(answer_empty, board1);
-            let boardf = _mm512_or_epi32(boardf1, boardf2);
+            let boardf1 = _mm512_and_si512(answer_color, board0);
+            let boardf2 = _mm512_and_si512(answer_empty, board1);
+            let boardf = _mm512_or_si512(boardf1, boardf2);
 
-            temp_mask[dir][i as usize] =
-                _mm512_mask_cmp_epi32_mask(0b01111111_11111111, answer, boardf, 0);
-        }
-
-        board0 = _mm512_rol_epi32(board0, 7);
-        board1 = _mm512_rol_epi32(board1, 7);
-
-        let boardf1 = _mm512_and_epi32(answer_color, board0);
-        let boardf2 = _mm512_and_epi32(answer_empty, board1);
-        let boardf = _mm512_or_epi32(boardf1, boardf2);
-
-        temp_mask[dir][10] = _mm512_mask_cmp_epi32_mask(answer_mask[0], answer, boardf, 0);
-
-        for i in 11..20 {
-            let idx: i32 = i - 10;
-
-            board0 = _mm512_rol_epi32(board0, 1);
-            board1 = _mm512_rol_epi32(board1, 1);
-
-            let boardf1 = _mm512_and_epi32(answer_color, board0);
-            let boardf2 = _mm512_and_epi32(answer_empty, board1);
-            let boardf = _mm512_or_epi32(boardf1, boardf2);
-
-            temp_mask[dir][i as usize] =
-                _mm512_mask_cmp_epi32_mask(answer_mask[idx as usize], answer, boardf, 0);
+            let temp_mask = _mm512_mask_cmpeq_epi16_mask(answer_mask[i], answer, boardf);
+            count_match += _popcnt64(temp_mask as i64);
         }
     }
 
-    let mut n: i32 = 0;
-
-    for i in 0..2 {
-        for j in 0..20 {
-            n += _popcnt32(temp_mask[i][j] as i32);
-        }
-    }
-
-    if n > 0 {
+    if count_match > 0 {
         return true;
     } else {
         return false;
     }
 }
 
-#[target_feature(enable = "avx512f")]
+#[target_feature(enable = "avx512f,avx512bw")]
 #[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
 unsafe fn check_patterndead4_avx512(pos: &Pos, sd: Side) -> i32 {
     let coloridx = sd as usize;
     let emptyidx = Color::Empty as usize;
 
     #[rustfmt::skip]
-    let answer_color: [__m512i; 5] = [_mm512_set1_epi32(         (1<<30)|(1<<29)|(1<<28)|(1<<27) ),
-                                      _mm512_set1_epi32( (1<<31)|        (1<<29)|(1<<28)|(1<<27) ),
-                                      _mm512_set1_epi32( (1<<31)|(1<<30)        |(1<<28)|(1<<27) ),
-                                      _mm512_set1_epi32( (1<<31)|(1<<30)|(1<<29)        |(1<<27) ),
-                                      _mm512_set1_epi32( (1<<31)|(1<<30)|(1<<29)|(1<<28)         )];
+    let answer_color: [__m512i; 5] = [_mm512_set1_epi16(         (1<<14)|(1<<13)|(1<<12)|(1<<11) ),
+                                      _mm512_set1_epi16( (1<<15)|        (1<<13)|(1<<12)|(1<<11) ),
+                                      _mm512_set1_epi16( (1<<15)|(1<<14)        |(1<<12)|(1<<11) ),
+                                      _mm512_set1_epi16( (1<<15)|(1<<14)|(1<<13)        |(1<<11) ),
+                                      _mm512_set1_epi16( (1<<15)|(1<<14)|(1<<13)|(1<<12)         )];
+    #[rustfmt::skip]
+    let answer_empty: [__m512i; 5]= [_mm512_set1_epi16( 1<<15 ),
+                                     _mm512_set1_epi16(          1<<14 ),
+                                     _mm512_set1_epi16(                  1<<13 ),
+                                     _mm512_set1_epi16(                          1<<12 ),
+                                     _mm512_set1_epi16(                                   1<<11)];
+    #[rustfmt::skip]
+    let answer       = _mm512_set1_epi16( (1<<15)|(1<<14)|(1<<13)|(1<<12)|(1<<11));
 
     #[rustfmt::skip]
-    let answer_empty: [__m512i; 5]= [_mm512_set1_epi32( 1<<31 ),
-                                     _mm512_set1_epi32(          1<<30 ),
-                                     _mm512_set1_epi32(                  1<<29 ),
-                                     _mm512_set1_epi32(                          1<<28 ),
-                                     _mm512_set1_epi32(                                  1<<27)];
-
-    #[rustfmt::skip]
-    let answer       = _mm512_set1_epi32( (1<<31)|(1<<30)|(1<<29)|(1<<28)|(1<<27));
-
-    #[rustfmt::skip]
-    let answer_mask: [__mmask16; 11] = [0b11111111_11111111,
-                                        0b11111111_11111111,
-                                        0b11111111_11111101,
-                                        0b11111111_11111001,
-                                        0b11111111_11110001,
-                                        0b11111111_11100001,
-                                        0b11111111_11000011,
-                                        0b11111111_11000111,
-                                        0b11111111_11001111,
-                                        0b11111111_11011111,
-                                        0b11111111_11111111,];
-
+    let answer_mask: [__mmask32; 11] = [0b01_11_11_11_11_11_11_11_11_11_11_11_11_11_11_11,
+                                        0b01_11_11_11_11_11_11_11_11_11_11_11_11_11_11_10,
+                                        0b01_11_11_11_11_11_11_11_11_11_11_11_11_11_10_10,
+                                        0b01_11_11_11_11_11_11_11_11_11_11_11_11_10_10_10,
+                                        0b01_11_11_11_11_11_11_11_11_11_11_11_10_10_10_10,
+                                        0b01_11_11_11_11_11_11_11_11_11_11_10_10_10_10_10,
+                                        0b00_11_11_11_11_11_11_11_11_11_10_10_10_10_11_10,
+                                        0b00_10_11_11_11_11_11_11_11_10_10_10_10_11_11_10,
+                                        0b00_10_10_11_11_11_11_11_10_10_10_10_11_11_11_10,
+                                        0b00_10_10_10_11_11_11_10_10_10_10_11_11_11_11_10,
+                                        0b00_10_10_10_10_11_10_10_10_10_11_11_11_11_11_10];
     let board0org: [__m512i; 2] = [
         _mm512_loadu_epi32(&pos.bitboard[coloridx][0][0]),
         _mm512_loadu_epi32(&pos.bitboard[coloridx][1][0]),
@@ -1090,72 +1072,38 @@ unsafe fn check_patterndead4_avx512(pos: &Pos, sd: Side) -> i32 {
         _mm512_loadu_epi32(&pos.bitboard[emptyidx][1][0]),
     ];
 
-    let mut temp_mask: [[[__mmask16; 11 + 11]; 2]; 5] = [[[0; 11 + 11]; 2]; 5];
+    let mut count_match: i32 = 0;
 
     for pattern in 0..5 {
         for dir in 0..2 {
             let mut board0 = board0org[dir];
             let mut board1 = board1org[dir];
 
-            let boardf1 = _mm512_and_epi32(answer_color[pattern], board0);
-            let boardf2 = _mm512_and_epi32(answer_empty[pattern], board1);
-            let boardf = _mm512_or_epi32(boardf1, boardf2);
+            let boardf1 = _mm512_and_si512(answer_color[pattern], board0);
+            let boardf2 = _mm512_and_si512(answer_empty[pattern], board1);
+            let boardf = _mm512_or_si512(boardf1, boardf2);
 
-            temp_mask[pattern][dir][0] =
-                _mm512_mask_cmp_epi32_mask(0b01111111_11111111, answer, boardf, 0);
+            let temp_mask = _mm512_mask_cmpeq_epi16_mask(answer_mask[0], answer, boardf);
+            count_match += _popcnt64(temp_mask as i64);
 
             for i in 1..11 {
-                board0 = _mm512_rol_epi32(board0, 1);
-                board1 = _mm512_rol_epi32(board1, 1);
+                board0 = _mm512_slli_epi32(board0, 1);
+                board1 = _mm512_slli_epi32(board1, 1);
 
-                let boardf1 = _mm512_and_epi32(answer_color[pattern], board0);
-                let boardf2 = _mm512_and_epi32(answer_empty[pattern], board1);
-                let boardf = _mm512_or_epi32(boardf1, boardf2);
+                let boardf1 = _mm512_and_si512(answer_color[pattern], board0);
+                let boardf2 = _mm512_and_si512(answer_empty[pattern], board1);
+                let boardf = _mm512_or_si512(boardf1, boardf2);
 
-                temp_mask[pattern][dir][i as usize] =
-                    _mm512_mask_cmp_epi32_mask(0b01111111_11111111, answer, boardf, 0);
-            }
-
-            board0 = _mm512_rol_epi32(board0, 6);
-            board1 = _mm512_rol_epi32(board1, 6);
-
-            let boardf1 = _mm512_and_epi32(answer_color[pattern], board0);
-            let boardf2 = _mm512_and_epi32(answer_empty[pattern], board1);
-            let boardf = _mm512_or_epi32(boardf1, boardf2);
-
-            temp_mask[pattern][dir][11] =
-                _mm512_mask_cmp_epi32_mask(answer_mask[0], answer, boardf, 0);
-
-            for i in 12..22 {
-                let idx: i32 = i - 11;
-
-                board0 = _mm512_rol_epi32(board0, 1);
-                board1 = _mm512_rol_epi32(board1, 1);
-
-                let boardf1 = _mm512_and_epi32(answer_color[pattern], board0);
-                let boardf2 = _mm512_and_epi32(answer_empty[pattern], board1);
-                let boardf = _mm512_or_epi32(boardf1, boardf2);
-
-                temp_mask[pattern][dir][i as usize] =
-                    _mm512_mask_cmp_epi32_mask(answer_mask[idx as usize], answer, boardf, 0);
+                let temp_mask = _mm512_mask_cmpeq_epi16_mask(answer_mask[i], answer, boardf);
+                count_match += _popcnt64(temp_mask as i64);
             }
         }
     }
 
-    let mut count: i32 = 0;
-
-    for i in 0..5 {
-        for j in 0..2 {
-            for k in 0..22 {
-                count += _popcnt32(temp_mask[i][j][k] as i32);
-            }
-        }
-    }
-
-    count
+    count_match
 }
 
-#[target_feature(enable = "avx512f")]
+#[target_feature(enable = "avx512f,avx512bw")]
 #[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
 unsafe fn check_patternlive3_avx512(pos: &Pos, sd: Side) -> i32 {
     let coloridx = sd as usize;
@@ -1167,178 +1115,106 @@ unsafe fn check_patternlive3_avx512(pos: &Pos, sd: Side) -> i32 {
     let board1org: [__m512i; 2]  = [_mm512_loadu_epi32(&pos.bitboard[emptyidx][0][0]), _mm512_loadu_epi32(&pos.bitboard[emptyidx][1][0])];
 
     #[rustfmt::skip]
-    let answer_color: [__m512i; 1] = [_mm512_set1_epi32(         (1<<30)|(1<<29)|(1<<28)         )];
+    let answer_color: [__m512i; 1] = [_mm512_set1_epi16(         (1<<14)|(1<<13)|(1<<12)         )];
     #[rustfmt::skip]
-    let answer_empty: [__m512i; 1] = [_mm512_set1_epi32( (1<<31)|                        (1<<27) )];
+    let answer_empty: [__m512i; 1] = [_mm512_set1_epi16( (1<<15)|                        (1<<11) )];
     #[rustfmt::skip]
-    let answer: __m512i = _mm512_set1_epi32( (1<<31)|(1<<30)|(1<<29)|(1<<28)|(1<<27) );
+    let answer: __m512i = _mm512_set1_epi16( (1<<15)|(1<<14)|(1<<13)|(1<<12)|(1<<11) );
+
+    let mut count_match: i32 = 0;
 
     #[rustfmt::skip]
-    let answer_mask: [__mmask16; 11] = [0b11111111_11111111,
-                                        0b11111111_11111111,
-                                        0b11111111_11111101,
-                                        0b11111111_11111001,
-                                        0b11111111_11110001,
-                                        0b11111111_11100001,
-                                        0b11111111_11000011,
-                                        0b11111111_11000111,
-                                        0b11111111_11001111,
-                                        0b11111111_11011111,
-                                        0b11111111_11111111,];
-
-    let mut temp_mask: [[[__mmask16; 11 + 11]; 2]; 1] = [[[0; 11 + 11]; 2]; 1];
-
+    let answer_mask: [__mmask32; 11] = [0b01_11_11_11_11_11_11_11_11_11_11_11_11_11_11_11,
+                                        0b01_11_11_11_11_11_11_11_11_11_11_11_11_11_11_10,
+                                        0b01_11_11_11_11_11_11_11_11_11_11_11_11_11_10_10,
+                                        0b01_11_11_11_11_11_11_11_11_11_11_11_11_10_10_10,
+                                        0b01_11_11_11_11_11_11_11_11_11_11_11_10_10_10_10,
+                                        0b01_11_11_11_11_11_11_11_11_11_11_10_10_10_10_10,
+                                        0b00_11_11_11_11_11_11_11_11_11_10_10_10_10_11_10,
+                                        0b00_10_11_11_11_11_11_11_11_10_10_10_10_11_11_10,
+                                        0b00_10_10_11_11_11_11_11_10_10_10_10_11_11_11_10,
+                                        0b00_10_10_10_11_11_11_10_10_10_10_11_11_11_11_10,
+                                        0b00_10_10_10_10_11_10_10_10_10_11_11_11_11_11_10];
     for pattern in 0..1 {
         for dir in 0..2 {
             let mut board0 = board0org[dir];
             let mut board1 = board1org[dir];
 
-            let boardf1 = _mm512_and_epi32(answer_color[pattern], board0);
-            let boardf2 = _mm512_and_epi32(answer_empty[pattern], board1);
-            let boardf = _mm512_or_epi32(boardf1, boardf2);
+            let boardf1 = _mm512_and_si512(answer_color[pattern], board0);
+            let boardf2 = _mm512_and_si512(answer_empty[pattern], board1);
+            let boardf = _mm512_or_si512(boardf1, boardf2);
 
-            temp_mask[pattern][dir][0] =
-                _mm512_mask_cmp_epi32_mask(0b01111111_11111111, answer, boardf, 0);
+            let temp_mask = _mm512_mask_cmpeq_epi16_mask(answer_mask[0], answer, boardf);
+            count_match += _popcnt64(temp_mask as i64);
 
             for i in 1..11 {
-                board0 = _mm512_rol_epi32(board0, 1);
-                board1 = _mm512_rol_epi32(board1, 1);
+                board0 = _mm512_slli_epi32(board0, 1);
+                board1 = _mm512_slli_epi32(board1, 1);
 
-                let boardf1 = _mm512_and_epi32(answer_color[pattern], board0);
-                let boardf2 = _mm512_and_epi32(answer_empty[pattern], board1);
-                let boardf = _mm512_or_epi32(boardf1, boardf2);
+                let boardf1 = _mm512_and_si512(answer_color[pattern], board0);
+                let boardf2 = _mm512_and_si512(answer_empty[pattern], board1);
+                let boardf = _mm512_or_si512(boardf1, boardf2);
 
-                temp_mask[pattern][dir][i as usize] =
-                    _mm512_mask_cmp_epi32_mask(0b01111111_11111111, answer, boardf, 0);
-            }
-
-            board0 = _mm512_rol_epi32(board0, 6);
-            board1 = _mm512_rol_epi32(board1, 6);
-
-            let boardf1 = _mm512_and_epi32(answer_color[pattern], board0);
-            let boardf2 = _mm512_and_epi32(answer_empty[pattern], board1);
-            let boardf = _mm512_or_epi32(boardf1, boardf2);
-
-            temp_mask[pattern][dir][11] =
-                _mm512_mask_cmp_epi32_mask(answer_mask[0], answer, boardf, 0);
-
-            for i in 12..22 {
-                let idx: i32 = i - 11;
-
-                board0 = _mm512_rol_epi32(board0, 1);
-                board1 = _mm512_rol_epi32(board1, 1);
-
-                let boardf1 = _mm512_and_epi32(answer_color[pattern], board0);
-                let boardf2 = _mm512_and_epi32(answer_empty[pattern], board1);
-                let boardf = _mm512_or_epi32(boardf1, boardf2);
-
-                temp_mask[pattern][dir][i as usize] =
-                    _mm512_mask_cmp_epi32_mask(answer_mask[idx as usize], answer, boardf, 0);
-            }
-        }
-    }
-
-    let mut count: i32 = 0;
-
-    for i in 0..1 {
-        for j in 0..2 {
-            for k in 0..22 {
-                count += _popcnt32(temp_mask[i][j][k] as i32);
+                let temp_mask = _mm512_mask_cmpeq_epi16_mask(answer_mask[i], answer, boardf);
+                count_match += _popcnt64(temp_mask as i64);
             }
         }
     }
 
     #[rustfmt::skip]
-    let answer_color: [__m512i; 2] = [_mm512_set1_epi32(          (1<<30)|        (1<<28)|(1<<27) ),
-                                      _mm512_set1_epi32(          (1<<30)|(1<<29)        |(1<<27) )];
+    let answer_color: [__m512i; 2] = [_mm512_set1_epi16(          (1<<14)|        (1<<12)|(1<<11) ),
+                                      _mm512_set1_epi16(          (1<<14)|(1<<13)        |(1<<11) )];
+    #[rustfmt::skip]
+    let answer_empty: [__m512i; 2] = [_mm512_set1_epi16( (1<<15)|         (1<<13)|                (1<<10) ),
+                                      _mm512_set1_epi16( (1<<15)|                 (1<<12)|        (1<<10) )];
+    #[rustfmt::skip]
+    let answer: __m512i = _mm512_set1_epi16( (1<<15)|(1<<14)|(1<<13)|(1<<12)|(1<<11)|(1<<10) );
 
     #[rustfmt::skip]
-    let answer_empty: [__m512i; 2] = [_mm512_set1_epi32( (1<<31)|         (1<<29)|                (1<<26) ),
-                                      _mm512_set1_epi32( (1<<31)|                 (1<<28)|        (1<<26) )];
-
-    #[rustfmt::skip]
-    let answer: __m512i = _mm512_set1_epi32( (1<<31)|(1<<30)|(1<<29)|(1<<28)|(1<<27)|(1<<26) );
-
-    #[rustfmt::skip]
-    let answer_mask: [__mmask16; 10] = [0b11111111_11111111,
-                                        0b11111111_11111101,
-                                        0b11111111_11111001,
-                                        0b11111111_11110001,
-                                        0b11111111_11100001,
-                                        0b11111111_11000001,
-                                        0b11111111_11000011,
-                                        0b11111111_11000111,
-                                        0b11111111_11001111,
-                                        0b11111111_11011111,];
-
-    let mut temp_mask: [[[__mmask16; 10 + 10]; 2]; 2] = [[[0; 10 + 10]; 2]; 2];
-
+    let answer_mask: [__mmask32; 10] = [0b01_11_11_11_11_11_11_11_11_11_11_11_11_11_11_10,
+                                        0b01_11_11_11_11_11_11_11_11_11_11_11_11_11_10_10,
+                                        0b01_11_11_11_11_11_11_11_11_11_11_11_11_10_10_10,
+                                        0b01_11_11_11_11_11_11_11_11_11_11_11_10_10_10_10,
+                                        0b01_11_11_11_11_11_11_11_11_11_11_10_10_10_10_10,
+                                        0b00_11_11_11_11_11_11_11_11_11_10_10_10_10_10_10,
+                                        0b00_10_11_11_11_11_11_11_11_10_10_10_10_10_11_10,
+                                        0b00_10_10_11_11_11_11_11_10_10_10_10_10_11_11_10,
+                                        0b00_10_10_10_11_11_11_10_10_10_10_10_11_11_11_10,
+                                        0b00_10_10_10_10_11_10_10_10_10_10_11_11_11_11_10];
     for pattern in 0..2 {
         for dir in 0..2 {
             let mut board0 = board0org[dir];
             let mut board1 = board1org[dir];
 
-            let boardf1 = _mm512_and_epi32(answer_color[pattern], board0);
-            let boardf2 = _mm512_and_epi32(answer_empty[pattern], board1);
-            let boardf = _mm512_or_epi32(boardf1, boardf2);
+            let boardf1 = _mm512_and_si512(answer_color[pattern], board0);
+            let boardf2 = _mm512_and_si512(answer_empty[pattern], board1);
+            let boardf = _mm512_or_si512(boardf1, boardf2);
 
-            temp_mask[pattern][dir][0] =
-                _mm512_mask_cmp_epi32_mask(0b01111111_11111111, answer, boardf, 0);
+            let temp_mask = _mm512_mask_cmpeq_epi16_mask(answer_mask[0], answer, boardf);
+            count_match += _popcnt64(temp_mask as i64);
 
             for i in 1..10 {
-                board0 = _mm512_rol_epi32(board0, 1);
-                board1 = _mm512_rol_epi32(board1, 1);
+                board0 = _mm512_slli_epi32(board0, 1);
+                board1 = _mm512_slli_epi32(board1, 1);
 
-                let boardf1 = _mm512_and_epi32(answer_color[pattern], board0);
-                let boardf2 = _mm512_and_epi32(answer_empty[pattern], board1);
-                let boardf = _mm512_or_epi32(boardf1, boardf2);
+                let boardf1 = _mm512_and_si512(answer_color[pattern], board0);
+                let boardf2 = _mm512_and_si512(answer_empty[pattern], board1);
+                let boardf = _mm512_or_si512(boardf1, boardf2);
 
-                temp_mask[pattern][dir][i as usize] =
-                    _mm512_mask_cmp_epi32_mask(0b01111111_11111111, answer, boardf, 0);
-            }
-
-            board0 = _mm512_rol_epi32(board0, 7);
-            board1 = _mm512_rol_epi32(board1, 7);
-
-            let boardf1 = _mm512_and_epi32(answer_color[pattern], board0);
-            let boardf2 = _mm512_and_epi32(answer_empty[pattern], board1);
-            let boardf = _mm512_or_epi32(boardf1, boardf2);
-
-            temp_mask[pattern][dir][10] =
-                _mm512_mask_cmp_epi32_mask(answer_mask[0], answer, boardf, 0);
-
-            for i in 11..20 {
-                let idx: i32 = i - 10;
-
-                board0 = _mm512_rol_epi32(board0, 1);
-                board1 = _mm512_rol_epi32(board1, 1);
-
-                let boardf1 = _mm512_and_epi32(answer_color[pattern], board0);
-                let boardf2 = _mm512_and_epi32(answer_empty[pattern], board1);
-                let boardf = _mm512_or_epi32(boardf1, boardf2);
-
-                temp_mask[pattern][dir][i as usize] =
-                    _mm512_mask_cmp_epi32_mask(answer_mask[idx as usize], answer, boardf, 0);
+                let temp_mask = _mm512_mask_cmpeq_epi16_mask(answer_mask[i], answer, boardf);
+                count_match += _popcnt64(temp_mask as i64);
             }
         }
     }
 
-    for i in 0..2 {
-        for j in 0..2 {
-            for k in 0..20 {
-                count += _popcnt32(temp_mask[i][j][k] as i32);
-            }
-        }
-    }
-
-    count
+    count_match
 }
 
 fn main() {
     #[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
     {
-        if is_x86_feature_detected!("avx512f") {
-            println!("\n\nThe program is running with avx512f intrinsics\n\n");
+        if is_x86_feature_detected!("avx512bw") {
+            println!("\n\nThe program is running with avx512f and avx512bw intrinsics\n\n");
         } else {
             println!("\n\nThe program is running with NO intrinsics.\n\n");
         }
