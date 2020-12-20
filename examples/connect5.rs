@@ -946,14 +946,14 @@ unsafe fn pos_is_winner_avx512(pos: &Pos) -> bool {
         let mut board0 = board0org[dir];
         let boardf = _mm512_and_si512(answer, board0);
         let temp_mask = _mm512_mask_cmpeq_epi16_mask(answer_mask[0], answer, boardf);
-        count_match += _popcnt64(temp_mask as i64);
+        count_match += _popcnt32(temp_mask as i32);
 
         for i in 1..11 {
             // OOOOOOOOOOO----, the last 4 "-" cannot make an unbroken chain of five.
             board0 = _mm512_slli_epi32(board0, 1); // shift one space left
             let boardf = _mm512_and_si512(answer, board0); // focus on the pattern
             let temp_mask = _mm512_mask_cmpeq_epi16_mask(answer_mask[i], answer, boardf); // see if it matches the pattern
-            count_match += _popcnt64(temp_mask as i64);
+            count_match += _popcnt32(temp_mask as i32);
         }
     }
 
@@ -1008,7 +1008,7 @@ unsafe fn check_patternlive4_avx512(pos: &Pos, sd: Side) -> bool {
         let boardf = _mm512_or_si512(boardf1, boardf2);
 
         let temp_mask = _mm512_mask_cmpeq_epi16_mask(answer_mask[0], answer, boardf);
-        count_match += _popcnt64(temp_mask as i64);
+        count_match += _popcnt32(temp_mask as i32);
 
         for i in 1..10 {
             board0 = _mm512_slli_epi32(board0, 1);
@@ -1019,7 +1019,7 @@ unsafe fn check_patternlive4_avx512(pos: &Pos, sd: Side) -> bool {
             let boardf = _mm512_or_si512(boardf1, boardf2);
 
             let temp_mask = _mm512_mask_cmpeq_epi16_mask(answer_mask[i], answer, boardf);
-            count_match += _popcnt64(temp_mask as i64);
+            count_match += _popcnt32(temp_mask as i32);
         }
     }
 
@@ -1084,7 +1084,7 @@ unsafe fn check_patterndead4_avx512(pos: &Pos, sd: Side) -> i32 {
             let boardf = _mm512_or_si512(boardf1, boardf2);
 
             let temp_mask = _mm512_mask_cmpeq_epi16_mask(answer_mask[0], answer, boardf);
-            count_match += _popcnt64(temp_mask as i64);
+            count_match += _popcnt32(temp_mask as i32);
 
             for i in 1..11 {
                 board0 = _mm512_slli_epi32(board0, 1);
@@ -1095,7 +1095,7 @@ unsafe fn check_patterndead4_avx512(pos: &Pos, sd: Side) -> i32 {
                 let boardf = _mm512_or_si512(boardf1, boardf2);
 
                 let temp_mask = _mm512_mask_cmpeq_epi16_mask(answer_mask[i], answer, boardf);
-                count_match += _popcnt64(temp_mask as i64);
+                count_match += _popcnt32(temp_mask as i32);
             }
         }
     }
@@ -1145,7 +1145,7 @@ unsafe fn check_patternlive3_avx512(pos: &Pos, sd: Side) -> i32 {
             let boardf = _mm512_or_si512(boardf1, boardf2);
 
             let temp_mask = _mm512_mask_cmpeq_epi16_mask(answer_mask[0], answer, boardf);
-            count_match += _popcnt64(temp_mask as i64);
+            count_match += _popcnt32(temp_mask as i32);
 
             for i in 1..11 {
                 board0 = _mm512_slli_epi32(board0, 1);
@@ -1156,7 +1156,7 @@ unsafe fn check_patternlive3_avx512(pos: &Pos, sd: Side) -> i32 {
                 let boardf = _mm512_or_si512(boardf1, boardf2);
 
                 let temp_mask = _mm512_mask_cmpeq_epi16_mask(answer_mask[i], answer, boardf);
-                count_match += _popcnt64(temp_mask as i64);
+                count_match += _popcnt32(temp_mask as i32);
             }
         }
     }
@@ -1191,7 +1191,7 @@ unsafe fn check_patternlive3_avx512(pos: &Pos, sd: Side) -> i32 {
             let boardf = _mm512_or_si512(boardf1, boardf2);
 
             let temp_mask = _mm512_mask_cmpeq_epi16_mask(answer_mask[0], answer, boardf);
-            count_match += _popcnt64(temp_mask as i64);
+            count_match += _popcnt32(temp_mask as i32);
 
             for i in 1..10 {
                 board0 = _mm512_slli_epi32(board0, 1);
@@ -1202,7 +1202,7 @@ unsafe fn check_patternlive3_avx512(pos: &Pos, sd: Side) -> i32 {
                 let boardf = _mm512_or_si512(boardf1, boardf2);
 
                 let temp_mask = _mm512_mask_cmpeq_epi16_mask(answer_mask[i], answer, boardf);
-                count_match += _popcnt64(temp_mask as i64);
+                count_match += _popcnt32(temp_mask as i32);
             }
         }
     }
