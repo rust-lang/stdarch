@@ -5186,7 +5186,7 @@ pub unsafe fn _mm256_maskz_slli_epi16(k: __mmask16, a: __m256i, imm8: u32) -> __
             _mm256_slli_epi16(a, $imm8)
         };
     }
-    let shf = constify_imm8_sae!(imm8, call);
+    let shf = constify_imm8_sae!(imm8, call).as_i16x16();
     let zero = _mm256_setzero_si256().as_i16x16();
     transmute(simd_select_bitmask(k, shf.as_i16x16(), zero))
 }
@@ -5221,7 +5221,7 @@ pub unsafe fn _mm_maskz_slli_epi16(k: __mmask8, a: __m128i, imm8: u32) -> __m128
             _mm_slli_epi16(a, $imm8)
         };
     }
-    let shf = constify_imm8_sae!(imm8, call);
+    let shf = constify_imm8_sae!(imm8, call).as_i16x8();
     let zero = _mm_setzero_si128().as_i16x8();
     transmute(simd_select_bitmask(k, shf.as_i16x8(), zero))
 }
@@ -5499,7 +5499,7 @@ pub unsafe fn _mm256_mask_srli_epi16(src: __m256i, k: __mmask16, a: __m256i, imm
         };
     }
     let shf = constify_imm8_sae!(imm8, call);
-    transmute(simd_select_bitmask(k, shf.as_i16x16(), src.as_i16x16()))
+    transmute(simd_select_bitmask(k, shf.as_i16x16(), src.as_i16x16())
 }
 
 /// Shift packed 16-bit integers in a right by imm8 while shifting in zeros, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
@@ -5515,7 +5515,7 @@ pub unsafe fn _mm256_maskz_srli_epi16(k: __mmask16, a: __m256i, imm8: i32) -> __
             _mm256_srli_epi16(a, $imm8)
         };
     }
-    let shf = constify_imm8_sae!(imm8, call);
+    let shf = constify_imm8_sae!(imm8, call).as_i16x16();
     let zero = _mm256_setzero_si256().as_i16x16();
     transmute(simd_select_bitmask(k, shf.as_i16x16(), zero))
 }
@@ -5550,7 +5550,7 @@ pub unsafe fn _mm_maskz_srli_epi16(k: __mmask8, a: __m128i, imm8: i32) -> __m128
             _mm_srli_epi16(a, $imm8)
         };
     }
-    let shf = constify_imm8_sae!(imm8, call);
+    let shf = constify_imm8_sae!(imm8, call).as_i16x8();
     let zero = _mm_setzero_si128().as_i16x8();
     transmute(simd_select_bitmask(k, shf.as_i16x8(), zero))
 }
@@ -5843,7 +5843,7 @@ pub unsafe fn _mm256_maskz_srai_epi16(k: __mmask16, a: __m256i, imm8: u32) -> __
             _mm256_srai_epi16(a, $imm8)
         };
     }
-    let shf = constify_imm8_sae!(imm8, call);
+    let shf = constify_imm8_sae!(imm8, call).as_i16x16();
     let zero = _mm256_setzero_si256().as_i16x16();
     transmute(simd_select_bitmask(k, shf.as_i16x16(), zero))
 }
@@ -5878,7 +5878,7 @@ pub unsafe fn _mm_maskz_srai_epi16(k: __mmask8, a: __m128i, imm8: u32) -> __m128
             _mm_srai_epi16(a, $imm8)
         };
     }
-    let shf = constify_imm8_sae!(imm8, call);
+    let shf = constify_imm8_sae!(imm8, call).as_i16x8();
     let zero = _mm_setzero_si128().as_i16x8();
     transmute(simd_select_bitmask(k, shf.as_i16x8(), zero))
 }
