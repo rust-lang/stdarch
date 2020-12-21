@@ -2110,13 +2110,7 @@ pub unsafe fn _mm512_mask_roundscale_ps(src: __m512, k: __mmask16, a: __m512, im
     let src = src.as_f32x16();
     macro_rules! call {
         ($imm8:expr) => {
-            vrndscaleps(
-                a,
-                $imm8,
-                src,
-                k,
-                _MM_FROUND_CUR_DIRECTION,
-            )
+            vrndscaleps(a, $imm8, src, k, _MM_FROUND_CUR_DIRECTION)
         };
     }
     let r = constify_imm8_sae!(imm8, call);
@@ -2141,13 +2135,7 @@ pub unsafe fn _mm512_maskz_roundscale_ps(k: __mmask16, a: __m512, imm8: i32) -> 
     let zero = _mm512_setzero_ps().as_f32x16();
     macro_rules! call {
         ($imm8:expr) => {
-            vrndscaleps(
-                a,
-                $imm8,
-                zero,
-                k,
-                _MM_FROUND_CUR_DIRECTION,
-            )
+            vrndscaleps(a, $imm8, zero, k, _MM_FROUND_CUR_DIRECTION)
         };
     }
     let r = constify_imm8_sae!(imm8, call);
@@ -2172,13 +2160,7 @@ pub unsafe fn _mm512_roundscale_pd(a: __m512d, imm8: i32) -> __m512d {
     let zero = _mm512_setzero_pd().as_f64x8();
     macro_rules! call {
         ($imm8:expr) => {
-            vrndscalepd(
-                a,
-                $imm8,
-                zero,
-                0b11111111,
-                _MM_FROUND_CUR_DIRECTION,
-            )
+            vrndscalepd(a, $imm8, zero, 0b11111111, _MM_FROUND_CUR_DIRECTION)
         };
     }
     let r = constify_imm8_sae!(imm8, call);
@@ -2208,13 +2190,7 @@ pub unsafe fn _mm512_mask_roundscale_pd(
     let src = src.as_f64x8();
     macro_rules! call {
         ($imm8:expr) => {
-            vrndscalepd(
-                a,
-                $imm8,
-                src,
-                k,
-                _MM_FROUND_CUR_DIRECTION,
-            )
+            vrndscalepd(a, $imm8, src, k, _MM_FROUND_CUR_DIRECTION)
         };
     }
     let r = constify_imm8_sae!(imm8, call);
@@ -2239,13 +2215,7 @@ pub unsafe fn _mm512_maskz_roundscale_pd(k: __mmask8, a: __m512d, imm8: i32) -> 
     let zero = _mm512_setzero_pd().as_f64x8();
     macro_rules! call {
         ($imm8:expr) => {
-            vrndscalepd(
-                a,
-                $imm8,
-                zero,
-                k,
-                _MM_FROUND_CUR_DIRECTION,
-            )
+            vrndscalepd(a, $imm8, zero, k, _MM_FROUND_CUR_DIRECTION)
         };
     }
     let r = constify_imm8_sae!(imm8, call);
@@ -2394,14 +2364,7 @@ pub unsafe fn _mm512_mask_fixupimm_ps(
     let c = c.as_i32x16();
     macro_rules! call {
         ($imm8:expr) => {
-            vfixupimmps(
-                a,
-                b,
-                c,
-                $imm8,
-                k,
-                _MM_FROUND_CUR_DIRECTION,
-            )
+            vfixupimmps(a, b, c, $imm8, k, _MM_FROUND_CUR_DIRECTION)
         };
     }
     let r = constify_imm8_sae!(imm8, call);
@@ -2427,14 +2390,7 @@ pub unsafe fn _mm512_maskz_fixupimm_ps(
     let c = c.as_i32x16();
     macro_rules! call {
         ($imm8:expr) => {
-            vfixupimmpsz(
-                a,
-                b,
-                c,
-                $imm8,
-                k,
-                _MM_FROUND_CUR_DIRECTION,
-            )
+            vfixupimmpsz(a, b, c, $imm8, k, _MM_FROUND_CUR_DIRECTION)
         };
     }
     let r = constify_imm8_sae!(imm8, call);
@@ -2454,14 +2410,7 @@ pub unsafe fn _mm512_fixupimm_pd(a: __m512d, b: __m512d, c: __m512i, imm8: i32) 
     let c = c.as_i64x8();
     macro_rules! call {
         ($imm8:expr) => {
-            vfixupimmpd(
-                a,
-                b,
-                c,
-                $imm8,
-                0b11111111,
-                _MM_FROUND_CUR_DIRECTION,
-            )
+            vfixupimmpd(a, b, c, $imm8, 0b11111111, _MM_FROUND_CUR_DIRECTION)
         };
     }
     let r = constify_imm8_sae!(imm8, call);
@@ -2487,14 +2436,7 @@ pub unsafe fn _mm512_mask_fixupimm_pd(
     let c = c.as_i64x8();
     macro_rules! call {
         ($imm8:expr) => {
-            vfixupimmpd(
-                a,
-                b,
-                c,
-                $imm8,
-                k,
-                _MM_FROUND_CUR_DIRECTION,
-            )
+            vfixupimmpd(a, b, c, $imm8, k, _MM_FROUND_CUR_DIRECTION)
         };
     }
     let r = constify_imm8_sae!(imm8, call);
@@ -2520,14 +2462,7 @@ pub unsafe fn _mm512_maskz_fixupimm_pd(
     let c = c.as_i64x8();
     macro_rules! call {
         ($imm8:expr) => {
-            vfixupimmpdz(
-                a,
-                b,
-                c,
-                $imm8,
-                k,
-                _MM_FROUND_CUR_DIRECTION,
-            )
+            vfixupimmpdz(a, b, c, $imm8, k, _MM_FROUND_CUR_DIRECTION)
         };
     }
     let r = constify_imm8_sae!(imm8, call);
@@ -5627,13 +5562,7 @@ pub unsafe fn _mm512_roundscale_round_ps(a: __m512, imm8: i32, sae: i32) -> __m5
     let zero = _mm512_setzero_ps().as_f32x16();
     macro_rules! call {
         ($imm8:expr, $imm4:expr) => {
-            vrndscaleps(
-                a,
-                $imm8,
-                zero,
-                0b11111111_11111111,
-                $imm4,
-            )
+            vrndscaleps(a, $imm8, zero, 0b11111111_11111111, $imm4)
         };
     }
     let r = constify_imm8_roundscale!(imm8, sae, call);
@@ -5696,13 +5625,7 @@ pub unsafe fn _mm512_maskz_roundscale_round_ps(
     let zero = _mm512_setzero_ps().as_f32x16();
     macro_rules! call {
         ($imm8:expr, $imm4:expr) => {
-            vrndscaleps(
-                a,
-                $imm8,
-                zero,
-                k,
-                $imm4,
-            )
+            vrndscaleps(a, $imm8, zero, k, $imm4)
         };
     }
     let r = constify_imm8_roundscale!(imm8, sae, call);
@@ -5728,13 +5651,7 @@ pub unsafe fn _mm512_roundscale_round_pd(a: __m512d, imm8: i32, sae: i32) -> __m
     let zero = _mm512_setzero_pd().as_f64x8();
     macro_rules! call {
         ($imm8:expr, $imm4:expr) => {
-            vrndscalepd(
-                a,
-                $imm8,
-                zero,
-                0b11111111,
-                $imm4,
-            )
+            vrndscalepd(a, $imm8, zero, 0b11111111, $imm4)
         };
     }
     let r = constify_imm8_roundscale!(imm8, sae, call);
@@ -5797,13 +5714,7 @@ pub unsafe fn _mm512_maskz_roundscale_round_pd(
     let zero = _mm512_setzero_pd().as_f64x8();
     macro_rules! call {
         ($imm8:expr, $imm4:expr) => {
-            vrndscalepd(
-                a,
-                $imm8,
-                zero,
-                k,
-                $imm4,
-            )
+            vrndscalepd(a, $imm8, zero, k, $imm4)
         };
     }
     let r = constify_imm8_roundscale!(imm8, sae, call);
@@ -6020,14 +5931,7 @@ pub unsafe fn _mm512_fixupimm_round_ps(
     let c = c.as_i32x16();
     macro_rules! call {
         ($imm8:expr, $imm4:expr) => {
-            vfixupimmps(
-                a,
-                b,
-                c,
-                $imm8,
-                0b11111111_11111111,
-                $imm4,
-            )
+            vfixupimmps(a, b, c, $imm8, 0b11111111_11111111, $imm4)
         };
     }
     let r = constify_imm8_roundscale!(imm8, sae, call);
@@ -6110,14 +6014,7 @@ pub unsafe fn _mm512_fixupimm_round_pd(
     let c = c.as_i64x8();
     macro_rules! call {
         ($imm8:expr, $imm4:expr) => {
-            vfixupimmpd(
-                a,
-                b,
-                c,
-                $imm8,
-                0b11111111,
-                $imm4,
-            )
+            vfixupimmpd(a, b, c, $imm8, 0b11111111, $imm4)
         };
     }
     let r = constify_imm8_roundscale!(imm8, sae, call);
@@ -19625,14 +19522,7 @@ pub unsafe fn _mm_roundscale_ss(a: __m128, b: __m128, imm8: i32) -> __m128 {
     let zero = _mm_setzero_ps().as_f32x4();
     macro_rules! call {
         ($imm8:expr) => {
-            vrndscaless(
-                a,
-                b,
-                zero,
-                0b11111111,
-                $imm8,
-                _MM_FROUND_CUR_DIRECTION,
-            )
+            vrndscaless(a, b, zero, 0b11111111, $imm8, _MM_FROUND_CUR_DIRECTION)
         };
     }
     let r = constify_imm8_sae!(imm8, call);
@@ -19664,14 +19554,7 @@ pub unsafe fn _mm_mask_roundscale_ss(
     let src = src.as_f32x4();
     macro_rules! call {
         ($imm8:expr) => {
-            vrndscaless(
-                a,
-                b,
-                src,
-                k,
-                $imm8,
-                _MM_FROUND_CUR_DIRECTION,
-            )
+            vrndscaless(a, b, src, k, $imm8, _MM_FROUND_CUR_DIRECTION)
         };
     }
     let r = constify_imm8_sae!(imm8, call);
@@ -19697,14 +19580,7 @@ pub unsafe fn _mm_maskz_roundscale_ss(k: __mmask8, a: __m128, b: __m128, imm8: i
     let zero = _mm_setzero_ps().as_f32x4();
     macro_rules! call {
         ($imm8:expr) => {
-            vrndscaless(
-                a,
-                b,
-                zero,
-                k,
-                $imm8,
-                _MM_FROUND_CUR_DIRECTION,
-            )
+            vrndscaless(a, b, zero, k, $imm8, _MM_FROUND_CUR_DIRECTION)
         };
     }
     let r = constify_imm8_sae!(imm8, call);
@@ -19730,14 +19606,7 @@ pub unsafe fn _mm_roundscale_sd(a: __m128d, b: __m128d, imm8: i32) -> __m128d {
     let zero = _mm_setzero_pd().as_f64x2();
     macro_rules! call {
         ($imm8:expr) => {
-            vrndscalesd(
-                a,
-                b,
-                zero,
-                0b11111111,
-                $imm8,
-                _MM_FROUND_CUR_DIRECTION,
-            )
+            vrndscalesd(a, b, zero, 0b11111111, $imm8, _MM_FROUND_CUR_DIRECTION)
         };
     }
     let r = constify_imm8_sae!(imm8, call);
@@ -19769,14 +19638,7 @@ pub unsafe fn _mm_mask_roundscale_sd(
     let src = src.as_f64x2();
     macro_rules! call {
         ($imm8:expr) => {
-            vrndscalesd(
-                a,
-                b,
-                src,
-                k,
-                $imm8,
-                _MM_FROUND_CUR_DIRECTION,
-            )
+            vrndscalesd(a, b, src, k, $imm8, _MM_FROUND_CUR_DIRECTION)
         };
     }
     let r = constify_imm8_sae!(imm8, call);
@@ -19799,17 +19661,10 @@ pub unsafe fn _mm_mask_roundscale_sd(
 pub unsafe fn _mm_maskz_roundscale_sd(k: __mmask8, a: __m128d, b: __m128d, imm8: i32) -> __m128d {
     let a = a.as_f64x2();
     let b = b.as_f64x2();
-    let zero =  _mm_setzero_pd().as_f64x2();
+    let zero = _mm_setzero_pd().as_f64x2();
     macro_rules! call {
         ($imm8:expr) => {
-            vrndscalesd(
-                a,
-                b,
-                zero,
-                k,
-                $imm8,
-                _MM_FROUND_CUR_DIRECTION,
-            )
+            vrndscalesd(a, b, zero, k, $imm8, _MM_FROUND_CUR_DIRECTION)
         };
     }
     let r = constify_imm8_sae!(imm8, call);
@@ -21933,14 +21788,7 @@ pub unsafe fn _mm_roundscale_round_ss(a: __m128, b: __m128, imm8: i32, sae: i32)
     let zero = _mm_setzero_ps().as_f32x4();
     macro_rules! call {
         ($imm8:expr, $imm4:expr) => {
-            vrndscaless(
-                a,
-                b,
-                zero,
-                0b11111111,
-                $imm8,
-                $imm4,
-            )
+            vrndscaless(a, b, zero, 0b11111111, $imm8, $imm4)
         };
     }
     let r = constify_imm8_roundscale!(imm8, sae, call);
@@ -22007,14 +21855,7 @@ pub unsafe fn _mm_maskz_roundscale_round_ss(
     let zero = _mm_setzero_ps().as_f32x4();
     macro_rules! call {
         ($imm8:expr, $imm4:expr) => {
-            vrndscaless(
-                a,
-                b,
-                zero,
-                k,
-                $imm8,
-                $imm4,
-            )
+            vrndscaless(a, b, zero, k, $imm8, $imm4)
         };
     }
     let r = constify_imm8_roundscale!(imm8, sae, call);
@@ -22041,14 +21882,7 @@ pub unsafe fn _mm_roundscale_round_sd(a: __m128d, b: __m128d, imm8: i32, sae: i3
     let zero = _mm_setzero_pd().as_f64x2();
     macro_rules! call {
         ($imm8:expr, $imm4:expr) => {
-            vrndscalesd(
-                a,
-                b,
-                zero,
-                0b11111111,
-                $imm8,
-                $imm4,
-            )
+            vrndscalesd(a, b, zero, 0b11111111, $imm8, $imm4)
         };
     }
     let r = constify_imm8_roundscale!(imm8, sae, call);
@@ -22115,14 +21949,7 @@ pub unsafe fn _mm_maskz_roundscale_round_sd(
     let zero = _mm_setzero_pd().as_f64x2();
     macro_rules! call {
         ($imm8:expr, $imm4:expr) => {
-            vrndscalesd(
-                a,
-                b,
-                zero,
-                k,
-                $imm8,
-                $imm4,
-            )
+            vrndscalesd(a, b, zero, k, $imm8, $imm4)
         };
     }
     let r = constify_imm8_roundscale!(imm8, sae, call);
@@ -22149,13 +21976,7 @@ pub unsafe fn _mm_scalef_round_ss(a: __m128, b: __m128, rounding: i32) -> __m128
     let zero = _mm_setzero_ps().as_f32x4();
     macro_rules! call {
         ($imm4:expr) => {
-            vscalefss(
-                a,
-                b,
-                zero,
-                0b11111111,
-                $imm4,
-            )
+            vscalefss(a, b, zero, 0b11111111, $imm4)
         };
     }
     let r = constify_imm4_round!(rounding, call);
@@ -23463,14 +23284,7 @@ pub unsafe fn _mm_fixupimm_ss(a: __m128, b: __m128, c: __m128i, imm8: i32) -> __
     let c = c.as_i32x4();
     macro_rules! call {
         ($imm8:expr) => {
-            vfixupimmss(
-                a,
-                b,
-                c,
-                $imm8,
-                0b11111111,
-                _MM_FROUND_CUR_DIRECTION,
-            )
+            vfixupimmss(a, b, c, $imm8, 0b11111111, _MM_FROUND_CUR_DIRECTION)
         };
     }
     let fixupimm = constify_imm8_sae!(imm8, call);
@@ -23498,14 +23312,7 @@ pub unsafe fn _mm_mask_fixupimm_ss(
     let c = c.as_i32x4();
     macro_rules! call {
         ($imm8:expr) => {
-            vfixupimmss(
-                a,
-                b,
-                c,
-                $imm8,
-                k,
-                _MM_FROUND_CUR_DIRECTION,
-            )
+            vfixupimmss(a, b, c, $imm8, k, _MM_FROUND_CUR_DIRECTION)
         };
     }
     let fixupimm = constify_imm8_sae!(imm8, call);
@@ -23533,14 +23340,7 @@ pub unsafe fn _mm_maskz_fixupimm_ss(
     let c = c.as_i32x4();
     macro_rules! call {
         ($imm8:expr) => {
-            vfixupimmssz(
-                a,
-                b,
-                c,
-                $imm8,
-                k,
-                _MM_FROUND_CUR_DIRECTION,
-            )
+            vfixupimmssz(a, b, c, $imm8, k, _MM_FROUND_CUR_DIRECTION)
         };
     }
     let fixupimm = constify_imm8_sae!(imm8, call);
@@ -23562,14 +23362,7 @@ pub unsafe fn _mm_fixupimm_sd(a: __m128d, b: __m128d, c: __m128i, imm8: i32) -> 
     let c = c.as_i64x2();
     macro_rules! call {
         ($imm8:expr) => {
-            vfixupimmsd(
-                a,
-                b,
-                c,
-                $imm8,
-                0b11111111,
-                _MM_FROUND_CUR_DIRECTION,
-            )
+            vfixupimmsd(a, b, c, $imm8, 0b11111111, _MM_FROUND_CUR_DIRECTION)
         };
     }
     let fixupimm = constify_imm8_sae!(imm8, call);
@@ -23597,14 +23390,7 @@ pub unsafe fn _mm_mask_fixupimm_sd(
     let c = c.as_i64x2();
     macro_rules! call {
         ($imm8:expr) => {
-            vfixupimmsd(
-                a,
-                b,
-                c,
-                $imm8,
-                k,
-                _MM_FROUND_CUR_DIRECTION,
-            )
+            vfixupimmsd(a, b, c, $imm8, k, _MM_FROUND_CUR_DIRECTION)
         };
     }
     let fixupimm = constify_imm8_sae!(imm8, call);
@@ -23632,14 +23418,7 @@ pub unsafe fn _mm_maskz_fixupimm_sd(
     let c = c.as_i64x2();
     macro_rules! call {
         ($imm8:expr) => {
-            vfixupimmsdz(
-                a,
-                b,
-                c,
-                $imm8,
-                k,
-                _MM_FROUND_CUR_DIRECTION,
-            )
+            vfixupimmsdz(a, b, c, $imm8, k, _MM_FROUND_CUR_DIRECTION)
         };
     }
     let fixupimm = constify_imm8_sae!(imm8, call);
@@ -23668,14 +23447,7 @@ pub unsafe fn _mm_fixupimm_round_ss(
     let c = c.as_i32x4();
     macro_rules! call {
         ($imm8:expr, $imm4:expr) => {
-            vfixupimmss(
-                a,
-                b,
-                c,
-                $imm8,
-                0b11111111,
-                $imm4,
-            )
+            vfixupimmss(a, b, c, $imm8, 0b11111111, $imm4)
         };
     }
     let fixupimm = constify_imm8_roundscale!(imm8, sae, call);
@@ -23764,14 +23536,7 @@ pub unsafe fn _mm_fixupimm_round_sd(
     let c = c.as_i64x2();
     macro_rules! call {
         ($imm8:expr, $imm4:expr) => {
-            vfixupimmsd(
-                a,
-                b,
-                c,
-                $imm8,
-                0b11111111,
-                $imm4,
-            )
+            vfixupimmsd(a, b, c, $imm8, 0b11111111, $imm4)
         };
     }
     let fixupimm = constify_imm8_roundscale!(imm8, sae, call);

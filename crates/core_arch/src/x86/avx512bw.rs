@@ -2741,12 +2741,7 @@ pub unsafe fn _mm512_cmp_epu16_mask(a: __m512i, b: __m512i, imm8: i32) -> __mmas
     let b = b.as_u16x32();
     macro_rules! call {
         ($imm3:expr) => {
-            vpcmpuw(
-                a,
-                b,
-                $imm3,
-                0b11111111_11111111_11111111_11111111,
-            )
+            vpcmpuw(a, b, $imm3, 0b11111111_11111111_11111111_11111111)
         };
     }
     let r = constify_imm3!(imm8, call);
@@ -2837,12 +2832,7 @@ pub unsafe fn _mm512_cmp_epi16_mask(a: __m512i, b: __m512i, imm8: i32) -> __mmas
     let b = b.as_i16x32();
     macro_rules! call {
         ($imm3:expr) => {
-            vpcmpw(
-                a,
-                b,
-                $imm3,
-                0b11111111_11111111_11111111_11111111,
-            )
+            vpcmpw(a, b, $imm3, 0b11111111_11111111_11111111_11111111)
         };
     }
     let r = constify_imm3!(imm8, call);
