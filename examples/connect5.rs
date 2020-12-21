@@ -16,7 +16,7 @@
 //! Use 512-bit to present the board state. The location 0 is top left.\
 //! 0   1   2   3   4   5   6   7   8   9   10  11  12  13  14  <b>15</b>\
 //! 16  17  18  19  20  21  22  23  24  25  26  27  28  29  30  <b>31</b>\
-//! ... \
+//! ...\
 //! Pattern "OOOOO" is matching through "0 1 2 3 4", "1 2 3 4 5", ...\
 //! Using avx512, "0 1 2 3 4", "16 17 18 19 20", ... can be matched simultaneously.\
 //!
