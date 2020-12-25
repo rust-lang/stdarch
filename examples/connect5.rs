@@ -22,7 +22,7 @@
 //!
 //! //! You can test out this program via:
 //!
-//!     cargo +nightly run --release --bin connect5
+//!      cargo +nightly run --release --bin connect5
 //!
 //! You should see a game self-playing. In the end of the game, it shows the average time for
 //! each move.
