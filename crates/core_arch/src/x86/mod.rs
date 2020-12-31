@@ -675,6 +675,9 @@ pub use self::avx512cd::*;
 mod avx512ifma;
 pub use self::avx512ifma::*;
 
+mod avx512vbmi;
+pub use self::avx512vbmi::*;
+
 #[cfg(not(bootstrap))]
 mod avx512bitalg;
 #[cfg(not(bootstrap))]
