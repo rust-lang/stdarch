@@ -294,6 +294,120 @@ pub unsafe fn _mm_maskz_permutexvar_epi8(k: __mmask16, idx: __m128i, a: __m128i)
     transmute(simd_select_bitmask(k, permute, zero))
 }
 
+/// For each 64-bit element in b, select 8 unaligned bytes using a byte-granular shift control within the corresponding 64-bit element of a, and store the 8 assembled bytes to the corresponding 64-bit element of dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_multishift_epi64_epi8&expand=4026)
+#[inline]
+#[target_feature(enable = "avx512vbmi")]
+#[cfg_attr(test, assert_instr(vpmultishiftqb))]
+pub unsafe fn _mm512_multishift_epi64_epi8(a: __m512i, b: __m512i) -> __m512i {
+    transmute(vpmultishiftqb(a.as_i8x64(), b.as_i8x64()))
+}
+
+/// For each 64-bit element in b, select 8 unaligned bytes using a byte-granular shift control within the corresponding 64-bit element of a, and store the 8 assembled bytes to the corresponding 64-bit element of dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_multishift_epi64_epi8&expand=4024)
+#[inline]
+#[target_feature(enable = "avx512vbmi")]
+#[cfg_attr(test, assert_instr(vpmultishiftqb))]
+pub unsafe fn _mm512_mask_multishift_epi64_epi8(
+    src: __m512i,
+    k: __mmask64,
+    a: __m512i,
+    b: __m512i,
+) -> __m512i {
+    let multishift = _mm512_multishift_epi64_epi8(a, b).as_i8x64();
+    transmute(simd_select_bitmask(k, multishift, src.as_i8x64()))
+}
+
+/// For each 64-bit element in b, select 8 unaligned bytes using a byte-granular shift control within the corresponding 64-bit element of a, and store the 8 assembled bytes to the corresponding 64-bit element of dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_multishift_epi64_epi8&expand=4025)
+#[inline]
+#[target_feature(enable = "avx512vbmi")]
+#[cfg_attr(test, assert_instr(vpmultishiftqb))]
+pub unsafe fn _mm512_maskz_multishift_epi64_epi8(k: __mmask64, a: __m512i, b: __m512i) -> __m512i {
+    let multishift = _mm512_multishift_epi64_epi8(a, b).as_i8x64();
+    let zero = _mm512_setzero_si512().as_i8x64();
+    transmute(simd_select_bitmask(k, multishift, zero))
+}
+
+/// For each 64-bit element in b, select 8 unaligned bytes using a byte-granular shift control within the corresponding 64-bit element of a, and store the 8 assembled bytes to the corresponding 64-bit element of dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_multishift_epi64_epi8&expand=4023)
+#[inline]
+#[target_feature(enable = "avx512vbmi,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmultishiftqb))]
+pub unsafe fn _mm256_multishift_epi64_epi8(a: __m256i, b: __m256i) -> __m256i {
+    transmute(vpmultishiftqb256(a.as_i8x32(), b.as_i8x32()))
+}
+
+/// For each 64-bit element in b, select 8 unaligned bytes using a byte-granular shift control within the corresponding 64-bit element of a, and store the 8 assembled bytes to the corresponding 64-bit element of dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_multishift_epi64_epi8&expand=4021)
+#[inline]
+#[target_feature(enable = "avx512vbmi,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmultishiftqb))]
+pub unsafe fn _mm256_mask_multishift_epi64_epi8(
+    src: __m256i,
+    k: __mmask32,
+    a: __m256i,
+    b: __m256i,
+) -> __m256i {
+    let multishift = _mm256_multishift_epi64_epi8(a, b).as_i8x32();
+    transmute(simd_select_bitmask(k, multishift, src.as_i8x32()))
+}
+
+/// For each 64-bit element in b, select 8 unaligned bytes using a byte-granular shift control within the corresponding 64-bit element of a, and store the 8 assembled bytes to the corresponding 64-bit element of dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_multishift_epi64_epi8&expand=4022)
+#[inline]
+#[target_feature(enable = "avx512vbmi,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmultishiftqb))]
+pub unsafe fn _mm256_maskz_multishift_epi64_epi8(k: __mmask32, a: __m256i, b: __m256i) -> __m256i {
+    let multishift = _mm256_multishift_epi64_epi8(a, b).as_i8x32();
+    let zero = _mm256_setzero_si256().as_i8x32();
+    transmute(simd_select_bitmask(k, multishift, zero))
+}
+
+/// For each 64-bit element in b, select 8 unaligned bytes using a byte-granular shift control within the corresponding 64-bit element of a, and store the 8 assembled bytes to the corresponding 64-bit element of dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/IntrinsicsGuide/#text=_mm_multishift_epi64_epi8&expand=4020)
+#[inline]
+#[target_feature(enable = "avx512vbmi,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmultishiftqb))]
+pub unsafe fn _mm_multishift_epi64_epi8(a: __m128i, b: __m128i) -> __m128i {
+    transmute(vpmultishiftqb128(a.as_i8x16(), b.as_i8x16()))
+}
+
+/// For each 64-bit element in b, select 8 unaligned bytes using a byte-granular shift control within the corresponding 64-bit element of a, and store the 8 assembled bytes to the corresponding 64-bit element of dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_multishift_epi64_epi8&expand=4018)
+#[inline]
+#[target_feature(enable = "avx512vbmi,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmultishiftqb))]
+pub unsafe fn _mm_mask_multishift_epi64_epi8(
+    src: __m128i,
+    k: __mmask16,
+    a: __m128i,
+    b: __m128i,
+) -> __m128i {
+    let multishift = _mm_multishift_epi64_epi8(a, b).as_i8x16();
+    transmute(simd_select_bitmask(k, multishift, src.as_i8x16()))
+}
+
+/// For each 64-bit element in b, select 8 unaligned bytes using a byte-granular shift control within the corresponding 64-bit element of a, and store the 8 assembled bytes to the corresponding 64-bit element of dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_multishift_epi64_epi8&expand=4019)
+#[inline]
+#[target_feature(enable = "avx512vbmi,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmultishiftqb))]
+pub unsafe fn _mm_maskz_multishift_epi64_epi8(k: __mmask16, a: __m128i, b: __m128i) -> __m128i {
+    let multishift = _mm_multishift_epi64_epi8(a, b).as_i8x16();
+    let zero = _mm_setzero_si128().as_i8x16();
+    transmute(simd_select_bitmask(k, multishift, zero))
+}
+
 #[allow(improper_ctypes)]
 extern "C" {
     #[link_name = "llvm.x86.avx512.vpermi2var.qi.512"]
@@ -309,6 +423,13 @@ extern "C" {
     fn vpermb256(a: i8x32, idx: i8x32) -> i8x32;
     #[link_name = "llvm.x86.avx512.permvar.qi.128"]
     fn vpermb128(a: i8x16, idx: i8x16) -> i8x16;
+
+    #[link_name = "llvm.x86.avx512.pmultishift.qb.512"]
+    fn vpmultishiftqb(a: i8x64, b: i8x64) -> i8x64;
+    #[link_name = "llvm.x86.avx512.pmultishift.qb.256"]
+    fn vpmultishiftqb256(a: i8x32, b: i8x32) -> i8x32;
+    #[link_name = "llvm.x86.avx512.pmultishift.qb.128"]
+    fn vpmultishiftqb128(a: i8x16, b: i8x16) -> i8x16;
 }
 
 #[cfg(test)]
@@ -690,6 +811,108 @@ mod tests {
         assert_eq_m128i(r, _mm_setzero_si128());
         let r = _mm_maskz_permutexvar_epi8(0b11111111_11111111, idx, a);
         let e = _mm_set1_epi8(14);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512vbmi")]
+    unsafe fn test_mm512_multishift_epi64_epi8() {
+        let a = _mm512_set1_epi8(1);
+        let b = _mm512_set1_epi8(1);
+        let r = _mm512_multishift_epi64_epi8(a, b);
+        let e = _mm512_set1_epi8(1 << 7);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512vbmi")]
+    unsafe fn test_mm512_mask_multishift_epi64_epi8() {
+        let a = _mm512_set1_epi8(1);
+        let b = _mm512_set1_epi8(1);
+        let r = _mm512_mask_multishift_epi64_epi8(a, 0, a, b);
+        assert_eq_m512i(r, a);
+        let r = _mm512_mask_multishift_epi64_epi8(
+            a,
+            0b11111111_11111111_11111111_11111111_11111111_11111111_11111111_11111111,
+            a,
+            b,
+        );
+        let e = _mm512_set1_epi8(1 << 7);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512vbmi")]
+    unsafe fn test_mm512_maskz_multishift_epi64_epi8() {
+        let a = _mm512_set1_epi8(1);
+        let b = _mm512_set1_epi8(1);
+        let r = _mm512_maskz_multishift_epi64_epi8(0, a, b);
+        assert_eq_m512i(r, _mm512_setzero_si512());
+        let r = _mm512_maskz_multishift_epi64_epi8(
+            0b11111111_11111111_11111111_11111111_11111111_11111111_11111111_11111111,
+            a,
+            b,
+        );
+        let e = _mm512_set1_epi8(1 << 7);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512vbmi,avx512vl")]
+    unsafe fn test_mm256_multishift_epi64_epi8() {
+        let a = _mm256_set1_epi8(1);
+        let b = _mm256_set1_epi8(1);
+        let r = _mm256_multishift_epi64_epi8(a, b);
+        let e = _mm256_set1_epi8(1 << 7);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512vbmi,avx512vl")]
+    unsafe fn test_mm256_mask_multishift_epi64_epi8() {
+        let a = _mm256_set1_epi8(1);
+        let b = _mm256_set1_epi8(1);
+        let r = _mm256_mask_multishift_epi64_epi8(a, 0, a, b);
+        assert_eq_m256i(r, a);
+        let r = _mm256_mask_multishift_epi64_epi8(a, 0b11111111_11111111_11111111_11111111, a, b);
+        let e = _mm256_set1_epi8(1 << 7);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512vbmi,avx512vl")]
+    unsafe fn test_mm256_maskz_multishift_epi64_epi8() {
+        let a = _mm256_set1_epi8(1);
+        let b = _mm256_set1_epi8(1);
+        let r = _mm256_maskz_multishift_epi64_epi8(0, a, b);
+        assert_eq_m256i(r, _mm256_setzero_si256());
+        let r = _mm256_maskz_multishift_epi64_epi8(0b11111111_11111111_11111111_11111111, a, b);
+        let e = _mm256_set1_epi8(1 << 7);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512vbmi,avx512vl")]
+    unsafe fn test_mm_multishift_epi64_epi8() {
+        let a = _mm_set1_epi8(1);
+        let b = _mm_set1_epi8(1);
+        let r = _mm_multishift_epi64_epi8(a, b);
+        let e = _mm_set1_epi8(1 << 7);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512vbmi,avx512vl")]
+    unsafe fn test_mm_mask_multishift_epi64_epi8() {
+        let a = _mm_set1_epi8(1);
+        let b = _mm_set1_epi8(1);
+        let r = _mm_mask_multishift_epi64_epi8(a, 0, a, b);
+        assert_eq_m128i(r, a);
+        let r = _mm_mask_multishift_epi64_epi8(a, 0b11111111_11111111, a, b);
+        let e = _mm_set1_epi8(1 << 7);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512vbmi,avx512vl")]
+    unsafe fn test_mm_maskz_multishift_epi64_epi8() {
+        let a = _mm_set1_epi8(1);
+        let b = _mm_set1_epi8(1);
+        let r = _mm_maskz_multishift_epi64_epi8(0, a, b);
+        assert_eq_m128i(r, _mm_setzero_si128());
+        let r = _mm_maskz_multishift_epi64_epi8(0b11111111_11111111, a, b);
+        let e = _mm_set1_epi8(1 << 7);
         assert_eq_m128i(r, e);
     }
 }
