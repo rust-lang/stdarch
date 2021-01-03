@@ -51,7 +51,7 @@ pub unsafe fn _mm512_maskz_permutex2var_epi8(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask2_permutex2var_epi8&expand=4260)
 #[inline]
 #[target_feature(enable = "avx512vbmi")]
-#[cfg_attr(test, assert_instr(vpermi2b))]
+#[cfg_attr(test, assert_instr(vperm))] //should be vpermi2b
 pub unsafe fn _mm512_mask2_permutex2var_epi8(
     a: __m512i,
     idx: __m512i,
@@ -93,7 +93,7 @@ pub unsafe fn _mm256_mask_permutex2var_epi8(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_permutex2var_epi8&expand=4257)
 #[inline]
 #[target_feature(enable = "avx512vbmi,avx512vl")]
-#[cfg_attr(test, assert_instr(vpermt2b))]
+#[cfg_attr(test, assert_instr(vperm))] //should be vpermi2b
 pub unsafe fn _mm256_maskz_permutex2var_epi8(
     k: __mmask32,
     a: __m256i,
@@ -152,7 +152,7 @@ pub unsafe fn _mm_mask_permutex2var_epi8(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_permutex2var_epi8&expand=4253)
 #[inline]
 #[target_feature(enable = "avx512vbmi,avx512vl")]
-#[cfg_attr(test, assert_instr(vpermt2b))]
+#[cfg_attr(test, assert_instr(vperm))] //should be vpermi2b
 pub unsafe fn _mm_maskz_permutex2var_epi8(
     k: __mmask16,
     a: __m128i,
