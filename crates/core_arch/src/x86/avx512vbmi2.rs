@@ -1,4 +1,4 @@
-use crate::core_arch::{simd::*, /*simd_llvm::*,*/ x86::*};
+use crate::core_arch::{simd::*, simd_llvm::*, x86::*};
 
 #[cfg(test)]
 use stdarch_test::assert_instr;
@@ -291,6 +291,690 @@ pub unsafe fn _mm_maskz_expand_epi8(k: __mmask16, a: __m128i) -> __m128i {
     ))
 }
 
+/// Concatenate packed 64-bit integers in a and b producing an intermediate 128-bit result. Shift the result left by the amount specified in the corresponding element of c, and store the upper 64-bits in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_shldv_epi64&expand=5087)
+#[inline]
+#[target_feature(enable = "avx512vbmi2")]
+#[cfg_attr(test, assert_instr(vpshldvq))]
+pub unsafe fn _mm512_shldv_epi64(a: __m512i, b: __m512i, c: __m512i) -> __m512i {
+    transmute(vpshldvq(a.as_i64x8(), b.as_i64x8(), c.as_i64x8()))
+}
+
+/// Concatenate packed 64-bit integers in a and b producing an intermediate 128-bit result. Shift the result left by the amount specified in the corresponding element of c, and store the upper 64-bits in dst using writemask k (elements are copied from a when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_shldv_epi64&expand=5085)
+#[inline]
+#[target_feature(enable = "avx512vbmi2")]
+#[cfg_attr(test, assert_instr(vpshldvq))]
+pub unsafe fn _mm512_mask_shldv_epi64(
+    a: __m512i,
+    k: __mmask8,
+    b: __m512i,
+    c: __m512i,
+) -> __m512i {
+    let shf = _mm512_shldv_epi64(a, b, c).as_i64x8();
+    transmute(simd_select_bitmask(k, shf, a.as_i64x8()))
+}
+
+/// Concatenate packed 64-bit integers in a and b producing an intermediate 128-bit result. Shift the result left by the amount specified in the corresponding element of c, and store the upper 64-bits in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_shldv_epi64&expand=5086)
+#[inline]
+#[target_feature(enable = "avx512vbmi2")]
+#[cfg_attr(test, assert_instr(vpshldvq))]
+pub unsafe fn _mm512_maskz_shldv_epi64(k: __mmask8, a: __m512i, b: __m512i, c: __m512i) -> __m512i {
+    let shf = _mm512_shldv_epi64(a, b, c).as_i64x8();
+    let zero = _mm512_setzero_si512().as_i64x8();
+    transmute(simd_select_bitmask(k, shf, zero))
+}
+
+/// Concatenate packed 64-bit integers in a and b producing an intermediate 128-bit result. Shift the result left by the amount specified in the corresponding element of c, and store the upper 64-bits in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_shldv_epi64&expand=5084)
+#[inline]
+#[target_feature(enable = "avx512vbmi2,avx512vl")]
+#[cfg_attr(test, assert_instr(vpshldvq))]
+pub unsafe fn _mm256_shldv_epi64(a: __m256i, b: __m256i, c: __m256i) -> __m256i {
+    transmute(vpshldvq256(a.as_i64x4(), b.as_i64x4(), c.as_i64x4()))
+}
+
+/// Concatenate packed 64-bit integers in a and b producing an intermediate 128-bit result. Shift the result left by the amount specified in the corresponding element of c, and store the upper 64-bits in dst using writemask k (elements are copied from a when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_shldv_epi64&expand=5082)
+#[inline]
+#[target_feature(enable = "avx512vbmi2,avx512vl")]
+#[cfg_attr(test, assert_instr(vpshldvq))]
+pub unsafe fn _mm256_mask_shldv_epi64(
+    a: __m256i,
+    k: __mmask8,
+    b: __m256i,
+    c: __m256i,
+) -> __m256i {
+    let shf = _mm256_shldv_epi64(a, b, c).as_i64x4();
+    transmute(simd_select_bitmask(k, shf, a.as_i64x4()))
+}
+
+/// Concatenate packed 64-bit integers in a and b producing an intermediate 128-bit result. Shift the result left by the amount specified in the corresponding element of c, and store the upper 64-bits in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_shldv_epi64&expand=5083)
+#[inline]
+#[target_feature(enable = "avx512vbmi2,avx512vl")]
+#[cfg_attr(test, assert_instr(vpshldvq))]
+pub unsafe fn _mm256_maskz_shldv_epi64(k: __mmask8, a: __m256i, b: __m256i, c: __m256i) -> __m256i {
+    let shf = _mm256_shldv_epi64(a, b, c).as_i64x4();
+    let zero = _mm256_setzero_si256().as_i64x4();
+    transmute(simd_select_bitmask(k, shf, zero))
+}
+
+/// Concatenate packed 64-bit integers in a and b producing an intermediate 128-bit result. Shift the result left by the amount specified in the corresponding element of c, and store the upper 64-bits in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_shldv_epi64&expand=5081)
+#[inline]
+#[target_feature(enable = "avx512vbmi2,avx512vl")]
+#[cfg_attr(test, assert_instr(vpshldvq))]
+pub unsafe fn _mm_shldv_epi64(a: __m128i, b: __m128i, c: __m128i) -> __m128i {
+    transmute(vpshldvq128(a.as_i64x2(), b.as_i64x2(), c.as_i64x2()))
+}
+
+/// Concatenate packed 64-bit integers in a and b producing an intermediate 128-bit result. Shift the result left by the amount specified in the corresponding element of c, and store the upper 64-bits in dst using writemask k (elements are copied from a when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_shldv_epi64&expand=5079)
+#[inline]
+#[target_feature(enable = "avx512vbmi2,avx512vl")]
+#[cfg_attr(test, assert_instr(vpshldvq))]
+pub unsafe fn _mm_mask_shldv_epi64(
+    a: __m128i,
+    k: __mmask8,
+    b: __m128i,
+    c: __m128i,
+) -> __m128i {
+    let shf = _mm_shldv_epi64(a, b, c).as_i64x2();
+    transmute(simd_select_bitmask(k, shf, a.as_i64x2()))
+}
+
+/// Concatenate packed 64-bit integers in a and b producing an intermediate 128-bit result. Shift the result left by the amount specified in the corresponding element of c, and store the upper 64-bits in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_shldv_epi64&expand=5080)
+#[inline]
+#[target_feature(enable = "avx512vbmi2,avx512vl")]
+#[cfg_attr(test, assert_instr(vpshldvq))]
+pub unsafe fn _mm_maskz_shldv_epi64(k: __mmask8, a: __m128i, b: __m128i, c: __m128i) -> __m128i {
+    let shf = _mm_shldv_epi64(a, b, c).as_i64x2();
+    let zero = _mm_setzero_si128().as_i64x2();
+    transmute(simd_select_bitmask(k, shf, zero))
+}
+
+/// Concatenate packed 32-bit integers in a and b producing an intermediate 64-bit result. Shift the result left by the amount specified in the corresponding element of c, and store the upper 32-bits in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_shldv_epi32&expand=5078)
+#[inline]
+#[target_feature(enable = "avx512vbmi2")]
+#[cfg_attr(test, assert_instr(vpshldvd))]
+pub unsafe fn _mm512_shldv_epi32(a: __m512i, b: __m512i, c: __m512i) -> __m512i {
+    transmute(vpshldvd(a.as_i32x16(), b.as_i32x16(), c.as_i32x16()))
+}
+
+/// Concatenate packed 32-bit integers in a and b producing an intermediate 64-bit result. Shift the result left by the amount specified in the corresponding element of c, and store the upper 32-bits in dst using writemask k (elements are copied from a when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_shldv_epi32&expand=5076)
+#[inline]
+#[target_feature(enable = "avx512vbmi2")]
+#[cfg_attr(test, assert_instr(vpshldvd))]
+pub unsafe fn _mm512_mask_shldv_epi32(
+    a: __m512i,
+    k: __mmask16,
+    b: __m512i,
+    c: __m512i,
+) -> __m512i {
+    let shf = _mm512_shldv_epi32(a, b, c).as_i32x16();
+    transmute(simd_select_bitmask(k, shf, a.as_i32x16()))
+}
+
+/// Concatenate packed 32-bit integers in a and b producing an intermediate 64-bit result. Shift the result left by the amount specified in the corresponding element of c, and store the upper 32-bits in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_shldv_epi32&expand=5077)
+#[inline]
+#[target_feature(enable = "avx512vbmi2")]
+#[cfg_attr(test, assert_instr(vpshldvd))]
+pub unsafe fn _mm512_maskz_shldv_epi32(k: __mmask16, a: __m512i, b: __m512i, c: __m512i) -> __m512i {
+    let shf = _mm512_shldv_epi32(a, b, c).as_i32x16();
+    let zero = _mm512_setzero_si512().as_i32x16();
+    transmute(simd_select_bitmask(k, shf, zero))
+}
+
+/// Concatenate packed 32-bit integers in a and b producing an intermediate 64-bit result. Shift the result left by the amount specified in the corresponding element of c, and store the upper 32-bits in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_shldv_epi32&expand=5075)
+#[inline]
+#[target_feature(enable = "avx512vbmi2,avx512vl")]
+#[cfg_attr(test, assert_instr(vpshldvd))]
+pub unsafe fn _mm256_shldv_epi32(a: __m256i, b: __m256i, c: __m256i) -> __m256i {
+    transmute(vpshldvd256(a.as_i32x8(), b.as_i32x8(), c.as_i32x8()))
+}
+
+/// Concatenate packed 32-bit integers in a and b producing an intermediate 64-bit result. Shift the result left by the amount specified in the corresponding element of c, and store the upper 32-bits in dst using writemask k (elements are copied from a when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_shldv_epi32&expand=5073)
+#[inline]
+#[target_feature(enable = "avx512vbmi2,avx512vl")]
+#[cfg_attr(test, assert_instr(vpshldvd))]
+pub unsafe fn _mm256_mask_shldv_epi32(
+    a: __m256i,
+    k: __mmask8,
+    b: __m256i,
+    c: __m256i,
+) -> __m256i {
+    let shf = _mm256_shldv_epi32(a, b, c).as_i32x8();
+    transmute(simd_select_bitmask(k, shf, a.as_i32x8()))
+}
+
+/// Concatenate packed 32-bit integers in a and b producing an intermediate 64-bit result. Shift the result left by the amount specified in the corresponding element of c, and store the upper 32-bits in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_shldv_epi32&expand=5074)
+#[inline]
+#[target_feature(enable = "avx512vbmi2,avx512vl")]
+#[cfg_attr(test, assert_instr(vpshldvd))]
+pub unsafe fn _mm256_maskz_shldv_epi32(k: __mmask8, a: __m256i, b: __m256i, c: __m256i) -> __m256i {
+    let shf = _mm256_shldv_epi32(a, b, c).as_i32x8();
+    let zero = _mm256_setzero_si256().as_i32x8();
+    transmute(simd_select_bitmask(k, shf, zero))
+}
+
+/// Concatenate packed 32-bit integers in a and b producing an intermediate 64-bit result. Shift the result left by the amount specified in the corresponding element of c, and store the upper 32-bits in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_shldv_epi32&expand=5072)
+#[inline]
+#[target_feature(enable = "avx512vbmi2,avx512vl")]
+#[cfg_attr(test, assert_instr(vpshldvd))]
+pub unsafe fn _mm_shldv_epi32(a: __m128i, b: __m128i, c: __m128i) -> __m128i {
+    transmute(vpshldvd128(a.as_i32x4(), b.as_i32x4(), c.as_i32x4()))
+}
+
+/// Concatenate packed 32-bit integers in a and b producing an intermediate 64-bit result. Shift the result left by the amount specified in the corresponding element of c, and store the upper 32-bits in dst using writemask k (elements are copied from a when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_shldv_epi32&expand=5070)
+#[inline]
+#[target_feature(enable = "avx512vbmi2,avx512vl")]
+#[cfg_attr(test, assert_instr(vpshldvd))]
+pub unsafe fn _mm_mask_shldv_epi32(
+    a: __m128i,
+    k: __mmask8,
+    b: __m128i,
+    c: __m128i,
+) -> __m128i {
+    let shf = _mm_shldv_epi32(a, b, c).as_i32x4();
+    transmute(simd_select_bitmask(k, shf, a.as_i32x4()))
+}
+
+/// Concatenate packed 32-bit integers in a and b producing an intermediate 64-bit result. Shift the result left by the amount specified in the corresponding element of c, and store the upper 32-bits in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_shldv_epi32&expand=5071)
+#[inline]
+#[target_feature(enable = "avx512vbmi2,avx512vl")]
+#[cfg_attr(test, assert_instr(vpshldvd))]
+pub unsafe fn _mm_maskz_shldv_epi32(k: __mmask8, a: __m128i, b: __m128i, c: __m128i) -> __m128i {
+    let shf = _mm_shldv_epi32(a, b, c).as_i32x4();
+    let zero = _mm_setzero_si128().as_i32x4();
+    transmute(simd_select_bitmask(k, shf, zero))
+}
+
+/// Concatenate packed 16-bit integers in a and b producing an intermediate 32-bit result. Shift the result left by the amount specified in the corresponding element of c, and store the upper 16-bits in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_shldv_epi16&expand=5069)
+#[inline]
+#[target_feature(enable = "avx512vbmi2")]
+#[cfg_attr(test, assert_instr(vpshldvw))]
+pub unsafe fn _mm512_shldv_epi16(a: __m512i, b: __m512i, c: __m512i) -> __m512i {
+    transmute(vpshldvw(a.as_i16x32(), b.as_i16x32(), c.as_i16x32()))
+}
+
+/// Concatenate packed 16-bit integers in a and b producing an intermediate 32-bit result. Shift the result left by the amount specified in the corresponding element of c, and store the upper 16-bits in dst using writemask k (elements are copied from a when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_shldv_epi16&expand=5067)
+#[inline]
+#[target_feature(enable = "avx512vbmi2")]
+#[cfg_attr(test, assert_instr(vpshldvw))]
+pub unsafe fn _mm512_mask_shldv_epi16(
+    a: __m512i,
+    k: __mmask32,
+    b: __m512i,
+    c: __m512i,
+) -> __m512i {
+    let shf = _mm512_shldv_epi16(a, b, c).as_i16x32();
+    transmute(simd_select_bitmask(k, shf, a.as_i16x32()))
+}
+
+/// Concatenate packed 16-bit integers in a and b producing an intermediate 32-bit result. Shift the result left by the amount specified in the corresponding element of c, and store the upper 16-bits in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_shldv_epi16&expand=5068)
+#[inline]
+#[target_feature(enable = "avx512vbmi2")]
+#[cfg_attr(test, assert_instr(vpshldvw))]
+pub unsafe fn _mm512_maskz_shldv_epi16(k: __mmask32, a: __m512i, b: __m512i, c: __m512i) -> __m512i {
+    let shf = _mm512_shldv_epi16(a, b, c).as_i16x32();
+    let zero = _mm512_setzero_si512().as_i16x32();
+    transmute(simd_select_bitmask(k, shf, zero))
+}
+
+/// Concatenate packed 16-bit integers in a and b producing an intermediate 32-bit result. Shift the result left by the amount specified in the corresponding element of c, and store the upper 16-bits in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_shldv_epi16&expand=5066)
+#[inline]
+#[target_feature(enable = "avx512vbmi2,avx512vl")]
+#[cfg_attr(test, assert_instr(vpshldvw))]
+pub unsafe fn _mm256_shldv_epi16(a: __m256i, b: __m256i, c: __m256i) -> __m256i {
+    transmute(vpshldvw256(a.as_i16x16(), b.as_i16x16(), c.as_i16x16()))
+}
+
+/// Concatenate packed 16-bit integers in a and b producing an intermediate 32-bit result. Shift the result left by the amount specified in the corresponding element of c, and store the upper 16-bits in dst using writemask k (elements are copied from a when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_shldv_epi16&expand=5064)
+#[inline]
+#[target_feature(enable = "avx512vbmi2,avx512vl")]
+#[cfg_attr(test, assert_instr(vpshldvw))]
+pub unsafe fn _mm256_mask_shldv_epi16(
+    a: __m256i,
+    k: __mmask16,
+    b: __m256i,
+    c: __m256i,
+) -> __m256i {
+    let shf = _mm256_shldv_epi16(a, b, c).as_i16x16();
+    transmute(simd_select_bitmask(k, shf, a.as_i16x16()))
+}
+
+/// Concatenate packed 16-bit integers in a and b producing an intermediate 32-bit result. Shift the result left by the amount specified in the corresponding element of c, and store the upper 16-bits in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_shldv_epi16&expand=5065)
+#[inline]
+#[target_feature(enable = "avx512vbmi2,avx512vl")]
+#[cfg_attr(test, assert_instr(vpshldvw))]
+pub unsafe fn _mm256_maskz_shldv_epi16(k: __mmask16, a: __m256i, b: __m256i, c: __m256i) -> __m256i {
+    let shf = _mm256_shldv_epi16(a, b, c).as_i16x16();
+    let zero = _mm256_setzero_si256().as_i16x16();
+    transmute(simd_select_bitmask(k, shf, zero))
+}
+
+/// Concatenate packed 16-bit integers in a and b producing an intermediate 32-bit result. Shift the result left by the amount specified in the corresponding element of c, and store the upper 16-bits in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_shldv_epi16&expand=5063)
+#[inline]
+#[target_feature(enable = "avx512vbmi2,avx512vl")]
+#[cfg_attr(test, assert_instr(vpshldvw))]
+pub unsafe fn _mm_shldv_epi16(a: __m128i, b: __m128i, c: __m128i) -> __m128i {
+    transmute(vpshldvw128(a.as_i16x8(), b.as_i16x8(), c.as_i16x8()))
+}
+
+/// Concatenate packed 16-bit integers in a and b producing an intermediate 32-bit result. Shift the result left by the amount specified in the corresponding element of c, and store the upper 16-bits in dst using writemask k (elements are copied from a when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_shldv_epi16&expand=5061)
+#[inline]
+#[target_feature(enable = "avx512vbmi2,avx512vl")]
+#[cfg_attr(test, assert_instr(vpshldvw))]
+pub unsafe fn _mm_mask_shldv_epi16(
+    a: __m128i,
+    k: __mmask8,
+    b: __m128i,
+    c: __m128i,
+) -> __m128i {
+    let shf = _mm_shldv_epi16(a, b, c).as_i16x8();
+    transmute(simd_select_bitmask(k, shf, a.as_i16x8()))
+}
+
+/// Concatenate packed 16-bit integers in a and b producing an intermediate 32-bit result. Shift the result left by the amount specified in the corresponding element of c, and store the upper 16-bits in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_shldv_epi16&expand=5062)
+#[inline]
+#[target_feature(enable = "avx512vbmi2,avx512vl")]
+#[cfg_attr(test, assert_instr(vpshldvw))]
+pub unsafe fn _mm_maskz_shldv_epi16(k: __mmask8, a: __m128i, b: __m128i, c: __m128i) -> __m128i {
+    let shf = _mm_shldv_epi16(a, b, c).as_i16x8();
+    let zero = _mm_setzero_si128().as_i16x8();
+    transmute(simd_select_bitmask(k, shf, zero))
+}
+
+/// Concatenate packed 64-bit integers in b and a producing an intermediate 128-bit result. Shift the result right by the amount specified in the corresponding element of c, and store the lower 64-bits in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_shrdv_epi64&expand=5141)
+#[inline]
+#[target_feature(enable = "avx512vbmi2")]
+#[cfg_attr(test, assert_instr(vpshrdvq))]
+pub unsafe fn _mm512_shrdv_epi64(a: __m512i, b: __m512i, c: __m512i) -> __m512i {
+    transmute(vpshrdvq(a.as_i64x8(), b.as_i64x8(), c.as_i64x8()))
+}
+
+/// Concatenate packed 64-bit integers in b and a producing an intermediate 128-bit result. Shift the result right by the amount specified in the corresponding element of c, and store the lower 64-bits in dst using writemask k (elements are copied from a when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_shrdv_epi64&expand=5139)
+#[inline]
+#[target_feature(enable = "avx512vbmi2")]
+#[cfg_attr(test, assert_instr(vpshrdvq))]
+pub unsafe fn _mm512_mask_shrdv_epi64(
+    a: __m512i,
+    k: __mmask8,
+    b: __m512i,
+    c: __m512i,
+) -> __m512i {
+    let shf = _mm512_shrdv_epi64(a, b, c).as_i64x8();
+    transmute(simd_select_bitmask(k, shf, a.as_i64x8()))
+}
+
+/// Concatenate packed 64-bit integers in b and a producing an intermediate 128-bit result. Shift the result right by the amount specified in the corresponding element of c, and store the lower 64-bits in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_shrdv_epi64&expand=5140)
+#[inline]
+#[target_feature(enable = "avx512vbmi2")]
+#[cfg_attr(test, assert_instr(vpshrdvq))]
+pub unsafe fn _mm512_maskz_shrdv_epi64(k: __mmask8, a: __m512i, b: __m512i, c: __m512i) -> __m512i {
+    let shf = _mm512_shrdv_epi64(a, b, c).as_i64x8();
+    let zero = _mm512_setzero_si512().as_i64x8();
+    transmute(simd_select_bitmask(k, shf, zero))
+}
+
+/// Concatenate packed 64-bit integers in b and a producing an intermediate 128-bit result. Shift the result right by the amount specified in the corresponding element of c, and store the lower 64-bits in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_shrdv_epi64&expand=5138)
+#[inline]
+#[target_feature(enable = "avx512vbmi2,avx512vl")]
+#[cfg_attr(test, assert_instr(vpshrdvq))]
+pub unsafe fn _mm256_shrdv_epi64(a: __m256i, b: __m256i, c: __m256i) -> __m256i {
+    transmute(vpshrdvq256(a.as_i64x4(), b.as_i64x4(), c.as_i64x4()))
+}
+
+/// Concatenate packed 64-bit integers in b and a producing an intermediate 128-bit result. Shift the result right by the amount specified in the corresponding element of c, and store the lower 64-bits in dst using writemask k (elements are copied from a when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_shrdv_epi64&expand=5136)
+#[inline]
+#[target_feature(enable = "avx512vbmi2,avx512vl")]
+#[cfg_attr(test, assert_instr(vpshrdvq))]
+pub unsafe fn _mm256_mask_shrdv_epi64(
+    a: __m256i,
+    k: __mmask8,
+    b: __m256i,
+    c: __m256i,
+) -> __m256i {
+    let shf = _mm256_shrdv_epi64(a, b, c).as_i64x4();
+    transmute(simd_select_bitmask(k, shf, a.as_i64x4()))
+}
+
+/// Concatenate packed 64-bit integers in b and a producing an intermediate 128-bit result. Shift the result right by the amount specified in the corresponding element of c, and store the lower 64-bits in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_shrdv_epi64&expand=5137)
+#[inline]
+#[target_feature(enable = "avx512vbmi2,avx512vl")]
+#[cfg_attr(test, assert_instr(vpshrdvq))]
+pub unsafe fn _mm256_maskz_shrdv_epi64(k: __mmask8, a: __m256i, b: __m256i, c: __m256i) -> __m256i {
+    let shf = _mm256_shrdv_epi64(a, b, c).as_i64x4();
+    let zero = _mm256_setzero_si256().as_i64x4();
+    transmute(simd_select_bitmask(k, shf, zero))
+}
+
+/// Concatenate packed 64-bit integers in b and a producing an intermediate 128-bit result. Shift the result right by the amount specified in the corresponding element of c, and store the lower 64-bits in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_shrdv_epi64&expand=5135)
+#[inline]
+#[target_feature(enable = "avx512vbmi2,avx512vl")]
+#[cfg_attr(test, assert_instr(vpshrdvq))]
+pub unsafe fn _mm_shrdv_epi64(a: __m128i, b: __m128i, c: __m128i) -> __m128i {
+    transmute(vpshrdvq128(a.as_i64x2(), b.as_i64x2(), c.as_i64x2()))
+}
+
+/// Concatenate packed 64-bit integers in b and a producing an intermediate 128-bit result. Shift the result right by the amount specified in the corresponding element of c, and store the lower 64-bits in dst using writemask k (elements are copied from a when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_shrdv_epi64&expand=5133)
+#[inline]
+#[target_feature(enable = "avx512vbmi2,avx512vl")]
+#[cfg_attr(test, assert_instr(vpshrdvq))]
+pub unsafe fn _mm_mask_shrdv_epi64(
+    a: __m128i,
+    k: __mmask8,
+    b: __m128i,
+    c: __m128i,
+) -> __m128i {
+    let shf = _mm_shrdv_epi64(a, b, c).as_i64x2();
+    transmute(simd_select_bitmask(k, shf, a.as_i64x2()))
+}
+
+/// Concatenate packed 64-bit integers in b and a producing an intermediate 128-bit result. Shift the result right by the amount specified in the corresponding element of c, and store the lower 64-bits in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_shrdv_epi64&expand=5134)
+#[inline]
+#[target_feature(enable = "avx512vbmi2,avx512vl")]
+#[cfg_attr(test, assert_instr(vpshrdvq))]
+pub unsafe fn _mm_maskz_shrdv_epi64(k: __mmask8, a: __m128i, b: __m128i, c: __m128i) -> __m128i {
+    let shf = _mm_shrdv_epi64(a, b, c).as_i64x2();
+    let zero = _mm_setzero_si128().as_i64x2();
+    transmute(simd_select_bitmask(k, shf, zero))
+}
+
+/// Concatenate packed 32-bit integers in b and a producing an intermediate 64-bit result. Shift the result right by the amount specified in the corresponding element of c, and store the lower 32-bits in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_shrdv_epi32&expand=5132)
+#[inline]
+#[target_feature(enable = "avx512vbmi2")]
+#[cfg_attr(test, assert_instr(vpshrdvd))]
+pub unsafe fn _mm512_shrdv_epi32(a: __m512i, b: __m512i, c: __m512i) -> __m512i {
+    transmute(vpshrdvd(a.as_i32x16(), b.as_i32x16(), c.as_i32x16()))
+}
+
+/// Concatenate packed 32-bit integers in b and a producing an intermediate 64-bit result. Shift the result right by the amount specified in the corresponding element of c, and store the lower 32-bits in dst using writemask k (elements are copied from a when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_shrdv_epi32&expand=5130)
+#[inline]
+#[target_feature(enable = "avx512vbmi2")]
+#[cfg_attr(test, assert_instr(vpshrdvd))]
+pub unsafe fn _mm512_mask_shrdv_epi32(
+    a: __m512i,
+    k: __mmask16,
+    b: __m512i,
+    c: __m512i,
+) -> __m512i {
+    let shf = _mm512_shrdv_epi32(a, b, c).as_i32x16();
+    transmute(simd_select_bitmask(k, shf, a.as_i32x16()))
+}
+
+/// Concatenate packed 32-bit integers in b and a producing an intermediate 64-bit result. Shift the result right by the amount specified in the corresponding element of c, and store the lower 32-bits in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_shrdv_epi32&expand=5131)
+#[inline]
+#[target_feature(enable = "avx512vbmi2")]
+#[cfg_attr(test, assert_instr(vpshrdvd))]
+pub unsafe fn _mm512_maskz_shrdv_epi32(k: __mmask16, a: __m512i, b: __m512i, c: __m512i) -> __m512i {
+    let shf = _mm512_shrdv_epi32(a, b, c).as_i32x16();
+    let zero = _mm512_setzero_si512().as_i32x16();
+    transmute(simd_select_bitmask(k, shf, zero))
+}
+
+/// Concatenate packed 32-bit integers in b and a producing an intermediate 64-bit result. Shift the result right by the amount specified in the corresponding element of c, and store the lower 32-bits in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_shrdv_epi32&expand=5129)
+#[inline]
+#[target_feature(enable = "avx512vbmi2,avx512vl")]
+#[cfg_attr(test, assert_instr(vpshrdvd))]
+pub unsafe fn _mm256_shrdv_epi32(a: __m256i, b: __m256i, c: __m256i) -> __m256i {
+    transmute(vpshrdvd256(a.as_i32x8(), b.as_i32x8(), c.as_i32x8()))
+}
+
+/// Concatenate packed 32-bit integers in b and a producing an intermediate 64-bit result. Shift the result right by the amount specified in the corresponding element of c, and store the lower 32-bits in dst using writemask k (elements are copied from a when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_shrdv_epi32&expand=5127)
+#[inline]
+#[target_feature(enable = "avx512vbmi2,avx512vl")]
+#[cfg_attr(test, assert_instr(vpshrdvd))]
+pub unsafe fn _mm256_mask_shrdv_epi32(
+    a: __m256i,
+    k: __mmask8,
+    b: __m256i,
+    c: __m256i,
+) -> __m256i {
+    let shf = _mm256_shrdv_epi32(a, b, c).as_i32x8();
+    transmute(simd_select_bitmask(k, shf, a.as_i32x8()))
+}
+
+/// Concatenate packed 32-bit integers in b and a producing an intermediate 64-bit result. Shift the result right by the amount specified in the corresponding element of c, and store the lower 32-bits in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_shrdv_epi32&expand=5128)
+#[inline]
+#[target_feature(enable = "avx512vbmi2,avx512vl")]
+#[cfg_attr(test, assert_instr(vpshrdvd))]
+pub unsafe fn _mm256_maskz_shrdv_epi32(k: __mmask8, a: __m256i, b: __m256i, c: __m256i) -> __m256i {
+    let shf = _mm256_shrdv_epi32(a, b, c).as_i32x8();
+    let zero = _mm256_setzero_si256().as_i32x8();
+    transmute(simd_select_bitmask(k, shf, zero))
+}
+
+/// Concatenate packed 32-bit integers in b and a producing an intermediate 64-bit result. Shift the result right by the amount specified in the corresponding element of c, and store the lower 32-bits in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_shrdv_epi32&expand=5126)
+#[inline]
+#[target_feature(enable = "avx512vbmi2,avx512vl")]
+#[cfg_attr(test, assert_instr(vpshrdvd))]
+pub unsafe fn _mm_shrdv_epi32(a: __m128i, b: __m128i, c: __m128i) -> __m128i {
+    transmute(vpshrdvd128(a.as_i32x4(), b.as_i32x4(), c.as_i32x4()))
+}
+
+/// Concatenate packed 32-bit integers in b and a producing an intermediate 64-bit result. Shift the result right by the amount specified in the corresponding element of c, and store the lower 32-bits in dst using writemask k (elements are copied from a when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_shrdv_epi32&expand=5124)
+#[inline]
+#[target_feature(enable = "avx512vbmi2,avx512vl")]
+#[cfg_attr(test, assert_instr(vpshrdvd))]
+pub unsafe fn _mm_mask_shrdv_epi32(
+    a: __m128i,
+    k: __mmask8,
+    b: __m128i,
+    c: __m128i,
+) -> __m128i {
+    let shf = _mm_shrdv_epi32(a, b, c).as_i32x4();
+    transmute(simd_select_bitmask(k, shf, a.as_i32x4()))
+}
+
+/// Concatenate packed 32-bit integers in b and a producing an intermediate 64-bit result. Shift the result right by the amount specified in the corresponding element of c, and store the lower 32-bits in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_shrdv_epi32&expand=5125)
+#[inline]
+#[target_feature(enable = "avx512vbmi2,avx512vl")]
+#[cfg_attr(test, assert_instr(vpshrdvd))]
+pub unsafe fn _mm_maskz_shrdv_epi32(k: __mmask8, a: __m128i, b: __m128i, c: __m128i) -> __m128i {
+    let shf = _mm_shrdv_epi32(a, b, c).as_i32x4();
+    let zero = _mm_setzero_si128().as_i32x4();
+    transmute(simd_select_bitmask(k, shf, zero))
+}
+
+/// Concatenate packed 16-bit integers in b and a producing an intermediate 32-bit result. Shift the result right by the amount specified in the corresponding element of c, and store the lower 16-bits in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_shrdv_epi16&expand=5123)
+#[inline]
+#[target_feature(enable = "avx512vbmi2")]
+#[cfg_attr(test, assert_instr(vpshrdvw))]
+pub unsafe fn _mm512_shrdv_epi16(a: __m512i, b: __m512i, c: __m512i) -> __m512i {
+    transmute(vpshrdvw(a.as_i16x32(), b.as_i16x32(), c.as_i16x32()))
+}
+
+/// Concatenate packed 16-bit integers in b and a producing an intermediate 32-bit result. Shift the result right by the amount specified in the corresponding element of c, and store the lower 16-bits in dst using writemask k (elements are copied from a when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_shrdv_epi16&expand=5121)
+#[inline]
+#[target_feature(enable = "avx512vbmi2")]
+#[cfg_attr(test, assert_instr(vpshrdvw))]
+pub unsafe fn _mm512_mask_shrdv_epi16(
+    a: __m512i,
+    k: __mmask32,
+    b: __m512i,
+    c: __m512i,
+) -> __m512i {
+    let shf = _mm512_shrdv_epi16(a, b, c).as_i16x32();
+    transmute(simd_select_bitmask(k, shf, a.as_i16x32()))
+}
+
+/// Concatenate packed 16-bit integers in b and a producing an intermediate 32-bit result. Shift the result right by the amount specified in the corresponding element of c, and store the lower 16-bits in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_shrdv_epi16&expand=5122)
+#[inline]
+#[target_feature(enable = "avx512vbmi2")]
+#[cfg_attr(test, assert_instr(vpshrdvw))]
+pub unsafe fn _mm512_maskz_shrdv_epi16(k: __mmask32, a: __m512i, b: __m512i, c: __m512i) -> __m512i {
+    let shf = _mm512_shrdv_epi16(a, b, c).as_i16x32();
+    let zero = _mm512_setzero_si512().as_i16x32();
+    transmute(simd_select_bitmask(k, shf, zero))
+}
+
+/// Concatenate packed 16-bit integers in b and a producing an intermediate 32-bit result. Shift the result right by the amount specified in the corresponding element of c, and store the lower 16-bits in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_shrdv_epi16&expand=5120)
+#[inline]
+#[target_feature(enable = "avx512vbmi2,avx512vl")]
+#[cfg_attr(test, assert_instr(vpshrdvw))]
+pub unsafe fn _mm256_shrdv_epi16(a: __m256i, b: __m256i, c: __m256i) -> __m256i {
+    transmute(vpshrdvw256(a.as_i16x16(), b.as_i16x16(), c.as_i16x16()))
+}
+
+/// Concatenate packed 16-bit integers in b and a producing an intermediate 32-bit result. Shift the result right by the amount specified in the corresponding element of c, and store the lower 16-bits in dst using writemask k (elements are copied from a when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_shrdv_epi16&expand=5118)
+#[inline]
+#[target_feature(enable = "avx512vbmi2,avx512vl")]
+#[cfg_attr(test, assert_instr(vpshrdvw))]
+pub unsafe fn _mm256_mask_shrdv_epi16(
+    a: __m256i,
+    k: __mmask16,
+    b: __m256i,
+    c: __m256i,
+) -> __m256i {
+    let shf = _mm256_shrdv_epi16(a, b, c).as_i16x16();
+    transmute(simd_select_bitmask(k, shf, a.as_i16x16()))
+}
+
+/// Concatenate packed 16-bit integers in b and a producing an intermediate 32-bit result. Shift the result right by the amount specified in the corresponding element of c, and store the lower 16-bits in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_shrdv_epi16&expand=5119)
+#[inline]
+#[target_feature(enable = "avx512vbmi2,avx512vl")]
+#[cfg_attr(test, assert_instr(vpshrdvw))]
+pub unsafe fn _mm256_maskz_shrdv_epi16(k: __mmask16, a: __m256i, b: __m256i, c: __m256i) -> __m256i {
+    let shf = _mm256_shrdv_epi16(a, b, c).as_i16x16();
+    let zero = _mm256_setzero_si256().as_i16x16();
+    transmute(simd_select_bitmask(k, shf, zero))
+}
+
+/// Concatenate packed 16-bit integers in b and a producing an intermediate 32-bit result. Shift the result right by the amount specified in the corresponding element of c, and store the lower 16-bits in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_shrdv_epi16&expand=5117)
+#[inline]
+#[target_feature(enable = "avx512vbmi2,avx512vl")]
+#[cfg_attr(test, assert_instr(vpshrdvw))]
+pub unsafe fn _mm_shrdv_epi16(a: __m128i, b: __m128i, c: __m128i) -> __m128i {
+    transmute(vpshrdvw128(a.as_i16x8(), b.as_i16x8(), c.as_i16x8()))
+}
+
+/// Concatenate packed 16-bit integers in b and a producing an intermediate 32-bit result. Shift the result right by the amount specified in the corresponding element of c, and store the lower 16-bits in dst using writemask k (elements are copied from a when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_shrdv_epi16&expand=5115)
+#[inline]
+#[target_feature(enable = "avx512vbmi2,avx512vl")]
+#[cfg_attr(test, assert_instr(vpshrdvw))]
+pub unsafe fn _mm_mask_shrdv_epi16(
+    a: __m128i,
+    k: __mmask8,
+    b: __m128i,
+    c: __m128i,
+) -> __m128i {
+    let shf = _mm_shrdv_epi16(a, b, c).as_i16x8();
+    transmute(simd_select_bitmask(k, shf, a.as_i16x8()))
+}
+
+/// Concatenate packed 16-bit integers in b and a producing an intermediate 32-bit result. Shift the result right by the amount specified in the corresponding element of c, and store the lower 16-bits in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_shrdv_epi16&expand=5116)
+#[inline]
+#[target_feature(enable = "avx512vbmi2,avx512vl")]
+#[cfg_attr(test, assert_instr(vpshrdvw))]
+pub unsafe fn _mm_maskz_shrdv_epi16(k: __mmask8, a: __m128i, b: __m128i, c: __m128i) -> __m128i {
+    let shf = _mm_shrdv_epi16(a, b, c).as_i16x8();
+    let zero = _mm_setzero_si128().as_i16x8();
+    transmute(simd_select_bitmask(k, shf, zero))
+}
+
 #[allow(improper_ctypes)]
 extern "C" {
     #[link_name = "llvm.x86.avx512.mask.compress.w.512"]
@@ -320,6 +1004,44 @@ extern "C" {
     fn vpexpandb256(a: i8x32, src: i8x32, mask: u32) -> i8x32;
     #[link_name = "llvm.x86.avx512.mask.expand.b.128"]
     fn vpexpandb128(a: i8x16, src: i8x16, mask: u16) -> i8x16;
+
+    #[link_name = "llvm.fshl.v8i64"]
+    fn vpshldvq(a: i64x8, b: i64x8, c: i64x8) -> i64x8;
+    #[link_name = "llvm.fshl.v4i64"]
+    fn vpshldvq256(a: i64x4, b: i64x4, c: i64x4) -> i64x4;
+    #[link_name = "llvm.fshl.v2i64"]
+    fn vpshldvq128(a: i64x2, b: i64x2, c: i64x2) -> i64x2;
+    #[link_name = "llvm.fshl.v16i32"]
+    fn vpshldvd(a: i32x16, b: i32x16, c: i32x16) -> i32x16;
+    #[link_name = "llvm.fshl.v8i32"]
+    fn vpshldvd256(a: i32x8, b: i32x8, c: i32x8) -> i32x8;
+    #[link_name = "llvm.fshl.v4i32"]
+    fn vpshldvd128(a: i32x4, b: i32x4, c: i32x4) -> i32x4;
+    #[link_name = "llvm.fshl.v32i16"]
+    fn vpshldvw(a: i16x32, b: i16x32, c: i16x32) -> i16x32;
+    #[link_name = "llvm.fshl.v16i16"]
+    fn vpshldvw256(a: i16x16, b: i16x16, c: i16x16) -> i16x16;
+    #[link_name = "llvm.fshl.v8i16"]
+    fn vpshldvw128(a: i16x8, b: i16x8, c: i16x8) -> i16x8;
+
+    #[link_name = "llvm.fshr.v8i64"]
+    fn vpshrdvq(a: i64x8, b: i64x8, c: i64x8) -> i64x8;
+    #[link_name = "llvm.fshr.v4i64"]
+    fn vpshrdvq256(a: i64x4, b: i64x4, c: i64x4) -> i64x4;
+    #[link_name = "llvm.fshr.v2i64"]
+    fn vpshrdvq128(a: i64x2, b: i64x2, c: i64x2) -> i64x2;
+    #[link_name = "llvm.fshr.v16i32"]
+    fn vpshrdvd(a: i32x16, b: i32x16, c: i32x16) -> i32x16;
+    #[link_name = "llvm.fshr.v8i32"]
+    fn vpshrdvd256(a: i32x8, b: i32x8, c: i32x8) -> i32x8;
+    #[link_name = "llvm.fshr.v4i32"]
+    fn vpshrdvd128(a: i32x4, b: i32x4, c: i32x4) -> i32x4;
+    #[link_name = "llvm.fshr.v32i16"]
+    fn vpshrdvw(a: i16x32, b: i16x32, c: i16x32) -> i16x32;
+    #[link_name = "llvm.fshr.v16i16"]
+    fn vpshrdvw256(a: i16x16, b: i16x16, c: i16x16) -> i16x16;
+    #[link_name = "llvm.fshr.v8i16"]
+    fn vpshrdvw128(a: i16x8, b: i16x8, c: i16x8) -> i16x8;
 }
 
 #[cfg(test)]
@@ -638,6 +1360,312 @@ mod tests {
         let a = _mm_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
         let r = _mm_maskz_expand_epi8(0b01010101_01010101, a);
         let e = _mm_set_epi8(0, 8, 0, 9, 0, 10, 0, 11, 0, 12, 0, 13, 0, 14, 0, 15);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512vbmi2")]
+    unsafe fn test_mm512_shldv_epi64() {
+        let a = _mm512_set1_epi64(1);
+        let b = _mm512_set1_epi64(1<<63);
+        let c = _mm512_set1_epi64(2);
+        let r = _mm512_shldv_epi64(a, b, c);
+        let e = _mm512_set1_epi64(6);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512vbmi2")]
+    unsafe fn test_mm512_mask_shldv_epi64() {
+        let a = _mm512_set1_epi64(1);
+        let b = _mm512_set1_epi64(1<<63);
+        let c = _mm512_set1_epi64(2);
+        let r = _mm512_mask_shldv_epi64(a, 0, b, c);
+        assert_eq_m512i(r, a);
+        let r = _mm512_mask_shldv_epi64(a, 0b11111111, b, c);
+        let e = _mm512_set1_epi64(6);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512vbmi2")]
+    unsafe fn test_mm512_maskz_shldv_epi64() {
+        let a = _mm512_set1_epi64(1);
+        let b = _mm512_set1_epi64(1<<63);
+        let c = _mm512_set1_epi64(2);
+        let r = _mm512_maskz_shldv_epi64(0, a, b, c);
+        assert_eq_m512i(r, _mm512_setzero_si512());
+        let r = _mm512_maskz_shldv_epi64(0b11111111, a, b, c);
+        let e = _mm512_set1_epi64(6);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512vbmi2,avx512vl")]
+    unsafe fn test_mm256_shldv_epi64() {
+        let a = _mm256_set1_epi64x(1);
+        let b = _mm256_set1_epi64x(1<<63);
+        let c = _mm256_set1_epi64x(2);
+        let r = _mm256_shldv_epi64(a, b, c);
+        let e = _mm256_set1_epi64x(6);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512vbmi2,avx512vl")]
+    unsafe fn test_mm256_mask_shldv_epi64() {
+        let a = _mm256_set1_epi64x(1);
+        let b = _mm256_set1_epi64x(1<<63);
+        let c = _mm256_set1_epi64x(2);
+        let r = _mm256_mask_shldv_epi64(a, 0, b, c);
+        assert_eq_m256i(r, a);
+        let r = _mm256_mask_shldv_epi64(a, 0b00001111, b, c);
+        let e = _mm256_set1_epi64x(6);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512vbmi2,avx512vl")]
+    unsafe fn test_mm256_maskz_shldv_epi64() {
+        let a = _mm256_set1_epi64x(1);
+        let b = _mm256_set1_epi64x(1<<63);
+        let c = _mm256_set1_epi64x(2);
+        let r = _mm256_maskz_shldv_epi64(0, a, b, c);
+        assert_eq_m256i(r, _mm256_setzero_si256());
+        let r = _mm256_maskz_shldv_epi64(0b00001111, a, b, c);
+        let e = _mm256_set1_epi64x(6);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512vbmi2,avx512vl")]
+    unsafe fn test_mm_shldv_epi64() {
+        let a = _mm_set1_epi64x(1);
+        let b = _mm_set1_epi64x(1<<63);
+        let c = _mm_set1_epi64x(2);
+        let r = _mm_shldv_epi64(a, b, c);
+        let e = _mm_set1_epi64x(6);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512vbmi2,avx512vl")]
+    unsafe fn test_mm_mask_shldv_epi64() {
+        let a = _mm_set1_epi64x(1);
+        let b = _mm_set1_epi64x(1<<63);
+        let c = _mm_set1_epi64x(2);
+        let r = _mm_mask_shldv_epi64(a, 0, b, c);
+        assert_eq_m128i(r, a);
+        let r = _mm_mask_shldv_epi64(a, 0b00000011, b, c);
+        let e = _mm_set1_epi64x(6);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512vbmi2,avx512vl")]
+    unsafe fn test_mm_maskz_shldv_epi64() {
+        let a = _mm_set1_epi64x(1);
+        let b = _mm_set1_epi64x(1<<63);
+        let c = _mm_set1_epi64x(2);
+        let r = _mm_maskz_shldv_epi64(0, a, b, c);
+        assert_eq_m128i(r, _mm_setzero_si128());
+        let r = _mm_maskz_shldv_epi64(0b00000011, a, b, c);
+        let e = _mm_set1_epi64x(6);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512vbmi2")]
+    unsafe fn test_mm512_shldv_epi32() {
+        let a = _mm512_set1_epi32(1);
+        let b = _mm512_set1_epi32(1<<31);
+        let c = _mm512_set1_epi32(2);
+        let r = _mm512_shldv_epi32(a, b, c);
+        let e = _mm512_set1_epi32(6);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512vbmi2")]
+    unsafe fn test_mm512_mask_shldv_epi32() {
+        let a = _mm512_set1_epi32(1);
+        let b = _mm512_set1_epi32(1<<31);
+        let c = _mm512_set1_epi32(2);
+        let r = _mm512_mask_shldv_epi32(a, 0, b, c);
+        assert_eq_m512i(r, a);
+        let r = _mm512_mask_shldv_epi32(a, 0b11111111_11111111, b, c);
+        let e = _mm512_set1_epi32(6);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512vbmi2")]
+    unsafe fn test_mm512_maskz_shldv_epi32() {
+        let a = _mm512_set1_epi32(1);
+        let b = _mm512_set1_epi32(1<<31);
+        let c = _mm512_set1_epi32(2);
+        let r = _mm512_maskz_shldv_epi32(0, a, b, c);
+        assert_eq_m512i(r, _mm512_setzero_si512());
+        let r = _mm512_maskz_shldv_epi32(0b11111111_11111111, a, b, c);
+        let e = _mm512_set1_epi32(6);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512vbmi2,avx512vl")]
+    unsafe fn test_mm256_shldv_epi32() {
+        let a = _mm256_set1_epi32(1);
+        let b = _mm256_set1_epi32(1<<31);
+        let c = _mm256_set1_epi32(2);
+        let r = _mm256_shldv_epi32(a, b, c);
+        let e = _mm256_set1_epi32(6);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512vbmi2,avx512vl")]
+    unsafe fn test_mm256_mask_shldv_epi32() {
+        let a = _mm256_set1_epi32(1);
+        let b = _mm256_set1_epi32(1<<31);
+        let c = _mm256_set1_epi32(2);
+        let r = _mm256_mask_shldv_epi32(a, 0, b, c);
+        assert_eq_m256i(r, a);
+        let r = _mm256_mask_shldv_epi32(a, 0b11111111, b, c);
+        let e = _mm256_set1_epi32(6);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512vbmi2,avx512vl")]
+    unsafe fn test_mm256_maskz_shldv_epi32() {
+        let a = _mm256_set1_epi32(1);
+        let b = _mm256_set1_epi32(1<<31);
+        let c = _mm256_set1_epi32(2);
+        let r = _mm256_maskz_shldv_epi32(0, a, b, c);
+        assert_eq_m256i(r, _mm256_setzero_si256());
+        let r = _mm256_maskz_shldv_epi32(0b11111111, a, b, c);
+        let e = _mm256_set1_epi32(6);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512vbmi2,avx512vl")]
+    unsafe fn test_mm_shldv_epi32() {
+        let a = _mm_set1_epi32(1);
+        let b = _mm_set1_epi32(1<<31);
+        let c = _mm_set1_epi32(2);
+        let r = _mm_shldv_epi32(a, b, c);
+        let e = _mm_set1_epi32(6);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512vbmi2,avx512vl")]
+    unsafe fn test_mm_mask_shldv_epi32() {
+        let a = _mm_set1_epi32(1);
+        let b = _mm_set1_epi32(1<<31);
+        let c = _mm_set1_epi32(2);
+        let r = _mm_mask_shldv_epi32(a, 0, b, c);
+        assert_eq_m128i(r, a);
+        let r = _mm_mask_shldv_epi32(a, 0b00001111, b, c);
+        let e = _mm_set1_epi32(6);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512vbmi2,avx512vl")]
+    unsafe fn test_mm_maskz_shldv_epi32() {
+        let a = _mm_set1_epi32(1);
+        let b = _mm_set1_epi32(1<<31);
+        let c = _mm_set1_epi32(2);
+        let r = _mm_maskz_shldv_epi32(0, a, b, c);
+        assert_eq_m128i(r, _mm_setzero_si128());
+        let r = _mm_maskz_shldv_epi32(0b00001111, a, b, c);
+        let e = _mm_set1_epi32(6);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512vbmi2")]
+    unsafe fn test_mm512_shldv_epi16() {
+        let a = _mm512_set1_epi16(1);
+        let b = _mm512_set1_epi16(1<<15);
+        let c = _mm512_set1_epi16(2);
+        let r = _mm512_shldv_epi16(a, b, c);
+        let e = _mm512_set1_epi16(6);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512vbmi2")]
+    unsafe fn test_mm512_mask_shldv_epi16() {
+        let a = _mm512_set1_epi16(1);
+        let b = _mm512_set1_epi16(1<<15);
+        let c = _mm512_set1_epi16(2);
+        let r = _mm512_mask_shldv_epi16(a, 0, b, c);
+        assert_eq_m512i(r, a);
+        let r = _mm512_mask_shldv_epi16(a, 0b11111111_11111111_11111111_11111111, b, c);
+        let e = _mm512_set1_epi16(6);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512vbmi2")]
+    unsafe fn test_mm512_maskz_shldv_epi16() {
+        let a = _mm512_set1_epi16(1);
+        let b = _mm512_set1_epi16(1<<15);
+        let c = _mm512_set1_epi16(2);
+        let r = _mm512_maskz_shldv_epi16(0, a, b, c);
+        assert_eq_m512i(r, _mm512_setzero_si512());
+        let r = _mm512_maskz_shldv_epi16(0b11111111_11111111_11111111_11111111, a, b, c);
+        let e = _mm512_set1_epi16(6);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512vbmi2,avx512vl")]
+    unsafe fn test_mm256_shldv_epi16() {
+        let a = _mm256_set1_epi16(1);
+        let b = _mm256_set1_epi16(1<<15);
+        let c = _mm256_set1_epi16(2);
+        let r = _mm256_shldv_epi16(a, b, c);
+        let e = _mm256_set1_epi16(6);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512vbmi2,avx512vl")]
+    unsafe fn test_mm256_mask_shldv_epi16() {
+        let a = _mm256_set1_epi16(1);
+        let b = _mm256_set1_epi16(1<<15);
+        let c = _mm256_set1_epi16(2);
+        let r = _mm256_mask_shldv_epi16(a, 0, b, c);
+        assert_eq_m256i(r, a);
+        let r = _mm256_mask_shldv_epi16(a, 0b11111111_11111111, b, c);
+        let e = _mm256_set1_epi16(6);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512vbmi2,avx512vl")]
+    unsafe fn test_mm256_maskz_shldv_epi16() {
+        let a = _mm256_set1_epi16(1);
+        let b = _mm256_set1_epi16(1<<15);
+        let c = _mm256_set1_epi16(2);
+        let r = _mm256_maskz_shldv_epi16(0, a, b, c);
+        assert_eq_m256i(r, _mm256_setzero_si256());
+        let r = _mm256_maskz_shldv_epi16(0b11111111_11111111, a, b, c);
+        let e = _mm256_set1_epi16(6);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512vbmi2,avx512vl")]
+    unsafe fn test_mm_shldv_epi16() {
+        let a = _mm_set1_epi16(1);
+        let b = _mm_set1_epi16(1<<15);
+        let c = _mm_set1_epi16(2);
+        let r = _mm_shldv_epi16(a, b, c);
+        let e = _mm_set1_epi16(6);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512vbmi2,avx512vl")]
+    unsafe fn test_mm_mask_shldv_epi16() {
+        let a = _mm_set1_epi16(1);
+        let b = _mm_set1_epi16(1<<15);
+        let c = _mm_set1_epi16(2);
+        let r = _mm_mask_shldv_epi16(a, 0, b, c);
+        assert_eq_m128i(r, a);
+        let r = _mm_mask_shldv_epi16(a, 0b11111111, b, c);
+        let e = _mm_set1_epi16(6);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512vbmi2,avx512vl")]
+    unsafe fn test_mm_maskz_shldv_epi16() {
+        let a = _mm_set1_epi16(1);
+        let b = _mm_set1_epi16(1<<15);
+        let c = _mm_set1_epi16(2);
+        let r = _mm_maskz_shldv_epi16(0, a, b, c);
+        assert_eq_m128i(r, _mm_setzero_si128());
+        let r = _mm_maskz_shldv_epi16(0b11111111, a, b, c);
+        let e = _mm_set1_epi16(6);
         assert_eq_m128i(r, e);
     }
 }
