@@ -150,5 +150,4 @@
   * [x] [`_mm512_mask_shrdv_epi64`]
   * [x] [`_mm512_maskz_shrdv_epi64`]
   * [x] [`_mm512_shrdv_epi64`]
-
 </p>
