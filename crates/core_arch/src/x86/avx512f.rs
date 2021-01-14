@@ -344,6 +344,52 @@ pub unsafe fn _mm512_maskz_add_epi32(k: __mmask16, a: __m512i, b: __m512i) -> __
     transmute(simd_select_bitmask(k, add, zero))
 }
 
+/// Add packed 32-bit integers in a and b, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_add_epi32&expand=98)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpaddd))]
+pub unsafe fn _mm256_mask_add_epi32(src: __m256i, k: __mmask8, a: __m256i, b: __m256i) -> __m256i {
+    let add = _mm256_add_epi32(a, b).as_i32x8();
+    transmute(simd_select_bitmask(k, add, src.as_i32x8()))
+}
+
+/// Add packed 32-bit integers in a and b, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_add_epi32&expand=99)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpaddd))]
+pub unsafe fn _mm256_maskz_add_epi32(k: __mmask8, a: __m256i, b: __m256i) -> __m256i {
+    let add = _mm256_add_epi32(a, b).as_i32x8();
+    let zero = _mm256_setzero_si256().as_i32x8();
+    transmute(simd_select_bitmask(k, add, zero))
+}
+
+/// Add packed 32-bit integers in a and b, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_add_epi32&expand=95)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpaddd))]
+pub unsafe fn _mm_mask_add_epi32(src: __m128i, k: __mmask8, a: __m128i, b: __m128i) -> __m128i {
+    let add = _mm_add_epi32(a, b).as_i32x4();
+    transmute(simd_select_bitmask(k, add, src.as_i32x4()))
+}
+
+/// Add packed 32-bit integers in a and b, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_add_epi32&expand=96)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpaddd))]
+pub unsafe fn _mm_maskz_add_epi32(k: __mmask8, a: __m128i, b: __m128i) -> __m128i {
+    let add = _mm_add_epi32(a, b).as_i32x4();
+    let zero = _mm_setzero_si128().as_i32x4();
+    transmute(simd_select_bitmask(k, add, zero))
+}
+
 /// Add packed 64-bit integers in a and b, and store the results in dst.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_add_epi64&expand=109)
@@ -25389,43 +25435,21 @@ mod tests {
 
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_add_epi32() {
+        #[rustfmt::skip]
         let a = _mm512_setr_epi32(
-            0,
-            1,
-            -1,
-            i32::MAX,
-            i32::MIN,
-            100,
-            -100,
-            -32,
-            0,
-            1,
-            -1,
-            i32::MAX,
-            i32::MIN,
-            100,
-            -100,
-            -32,
+            0, 1, -1, i32::MAX,
+            i32::MIN, 100, -100, -32,
+            0, 1, -1, i32::MAX,
+            i32::MIN, 100, -100, -32,
         );
         let b = _mm512_set1_epi32(1);
         let r = _mm512_add_epi32(a, b);
+        #[rustfmt::skip]
         let e = _mm512_setr_epi32(
-            1,
-            2,
-            0,
-            i32::MIN,
-            i32::MIN + 1,
-            101,
-            -99,
-            -31,
-            1,
-            2,
-            0,
-            i32::MIN,
-            i32::MIN + 1,
-            101,
-            -99,
-            -31,
+            1, 2, 0, i32::MIN,
+            i32::MIN + 1, 101, -99, -31,
+            1, 2, 0, i32::MIN,
+            i32::MIN + 1, 101, -99, -31,
         );
         assert_eq_m512i(r, e);
     }
@@ -25443,23 +25467,12 @@ mod tests {
         let r = _mm512_mask_add_epi32(a, 0, a, b);
         assert_eq_m512i(r, a);
         let r = _mm512_mask_add_epi32(a, 0b00000000_11111111, a, b);
+        #[rustfmt::skip]
         let e = _mm512_setr_epi32(
-            1,
-            2,
-            0,
-            i32::MIN,
-            i32::MIN + 1,
-            101,
-            -99,
-            -31,
-            0,
-            1,
-            -1,
-            i32::MAX,
-            i32::MIN,
-            100,
-            -100,
-            -32,
+            1, 2, 0, i32::MIN,
+            i32::MIN + 1, 101, -99, -31,
+            0, 1, -1, i32::MAX,
+            i32::MIN, 100, -100, -32,
         );
         assert_eq_m512i(r, e);
     }
@@ -25477,25 +25490,58 @@ mod tests {
         let r = _mm512_maskz_add_epi32(0, a, b);
         assert_eq_m512i(r, _mm512_setzero_si512());
         let r = _mm512_maskz_add_epi32(0b00000000_11111111, a, b);
+        #[rustfmt::skip]
         let e = _mm512_setr_epi32(
-            1,
-            2,
-            0,
-            i32::MIN,
-            i32::MIN + 1,
-            101,
-            -99,
-            -31,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
+            1, 2, 0, i32::MIN,
+            i32::MIN + 1, 101, -99, -31,
+            0, 0, 0, 0,
+            0, 0, 0, 0,
         );
         assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_mask_add_epi32() {
+        let a = _mm256_set_epi32(0, 1, -1, i32::MAX, i32::MIN, 100, -100, -32);
+        let b = _mm256_set1_epi32(1);
+        let r = _mm256_mask_add_epi32(a, 0, a, b);
+        assert_eq_m256i(r, a);
+        let r = _mm256_mask_add_epi32(a, 0b11111111, a, b);
+        let e = _mm256_set_epi32(1, 2, 0, i32::MIN, i32::MIN + 1, 101, -99, -31);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_maskz_add_epi32() {
+        let a = _mm256_setr_epi32(0, 1, -1, i32::MAX, i32::MIN, 100, -100, -32);
+        let b = _mm256_set1_epi32(1);
+        let r = _mm256_maskz_add_epi32(0, a, b);
+        assert_eq_m256i(r, _mm256_setzero_si256());
+        let r = _mm256_maskz_add_epi32(0b11111111, a, b);
+        let e = _mm256_setr_epi32(1, 2, 0, i32::MIN, i32::MIN + 1, 101, -99, -31);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_mask_add_epi32() {
+        let a = _mm_set_epi32(1, -1, i32::MAX, i32::MIN);
+        let b = _mm_set1_epi32(1);
+        let r = _mm_mask_add_epi32(a, 0, a, b);
+        assert_eq_m128i(r, a);
+        let r = _mm_mask_add_epi32(a, 0b00001111, a, b);
+        let e = _mm_set_epi32(2, 0, i32::MIN, i32::MIN + 1);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_maskz_add_epi32() {
+        let a = _mm_setr_epi32(1, -1, i32::MAX, i32::MIN);
+        let b = _mm_set1_epi32(1);
+        let r = _mm_maskz_add_epi32(0, a, b);
+        assert_eq_m128i(r, _mm_setzero_si128());
+        let r = _mm_maskz_add_epi32(0b00001111, a, b);
+        let e = _mm_setr_epi32(2, 0, i32::MIN, i32::MIN + 1);
+        assert_eq_m128i(r, e);
     }
 
     #[simd_test(enable = "avx512f")]
