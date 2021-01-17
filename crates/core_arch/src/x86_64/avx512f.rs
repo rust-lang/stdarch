@@ -427,7 +427,7 @@ mod tests {
 
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_mul_epi32() {
-        let a = _mm512_setr_epi32(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+        let a = _mm512_set1_epi32(1);
         let b = _mm512_setr_epi32(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
         let r = _mm512_mul_epi32(a, b);
         let e = _mm512_set_epi64(15, 13, 11, 9, 7, 5, 3, 1);
@@ -436,27 +436,22 @@ mod tests {
 
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_mask_mul_epi32() {
-        let a = _mm512_setr_epi32(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+        let a = _mm512_set1_epi32(1);
         let b = _mm512_setr_epi32(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
         let r = _mm512_mask_mul_epi32(a, 0, a, b);
         assert_eq_m512i(r, a);
         let r = _mm512_mask_mul_epi32(a, 0b00001111, a, b);
+        #[rustfmt::skip]
         let e = _mm512_set_epi64(
-            1 | 1 << 32,
-            1 | 1 << 32,
-            1 | 1 << 32,
-            1 | 1 << 32,
-            7,
-            5,
-            3,
-            1,
+            1 | 1 << 32, 1 | 1 << 32, 1 | 1 << 32, 1 | 1 << 32,
+            7, 5, 3, 1,
         );
         assert_eq_m512i(r, e);
     }
 
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_maskz_mul_epi32() {
-        let a = _mm512_setr_epi32(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+        let a = _mm512_set1_epi32(1);
         let b = _mm512_setr_epi32(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
         let r = _mm512_maskz_mul_epi32(0, a, b);
         assert_eq_m512i(r, _mm512_setzero_si512());
@@ -465,9 +460,53 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_mask_mul_epi32() {
+        let a = _mm256_set1_epi32(1);
+        let b = _mm256_set_epi32(1, 2, 3, 4, 5, 6, 7, 8);
+        let r = _mm256_mask_mul_epi32(a, 0, a, b);
+        assert_eq_m256i(r, a);
+        let r = _mm256_mask_mul_epi32(a, 0b00001111, a, b);
+        let e = _mm256_set_epi64x(2, 4, 6, 8);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_maskz_mul_epi32() {
+        let a = _mm256_set1_epi32(1);
+        let b = _mm256_set_epi32(1, 2, 3, 4, 5, 6, 7, 8);
+        let r = _mm256_maskz_mul_epi32(0, a, b);
+        assert_eq_m256i(r, _mm256_setzero_si256());
+        let r = _mm256_maskz_mul_epi32(0b00001111, a, b);
+        let e = _mm256_set_epi64x(2, 4, 6, 8);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_mask_mul_epi32() {
+        let a = _mm_set1_epi32(1);
+        let b = _mm_set_epi32(1, 2, 3, 4);
+        let r = _mm_mask_mul_epi32(a, 0, a, b);
+        assert_eq_m128i(r, a);
+        let r = _mm_mask_mul_epi32(a, 0b00000011, a, b);
+        let e = _mm_set_epi64x(2, 4);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_maskz_mul_epi32() {
+        let a = _mm_set1_epi32(1);
+        let b = _mm_set_epi32(1, 2, 3, 4);
+        let r = _mm_maskz_mul_epi32(0, a, b);
+        assert_eq_m128i(r, _mm_setzero_si128());
+        let r = _mm_maskz_mul_epi32(0b00000011, a, b);
+        let e = _mm_set_epi64x(2, 4);
+        assert_eq_m128i(r, e);
+    }
+
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_mul_epu32() {
-        let a = _mm512_setr_epi32(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+        let a = _mm512_set1_epi32(1);
         let b = _mm512_setr_epi32(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
         let r = _mm512_mul_epu32(a, b);
         let e = _mm512_set_epi64(15, 13, 11, 9, 7, 5, 3, 1);
@@ -476,33 +515,72 @@ mod tests {
 
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_mask_mul_epu32() {
-        let a = _mm512_setr_epi32(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+        let a = _mm512_set1_epi32(1);
         let b = _mm512_setr_epi32(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
         let r = _mm512_mask_mul_epu32(a, 0, a, b);
         assert_eq_m512i(r, a);
         let r = _mm512_mask_mul_epu32(a, 0b00001111, a, b);
+        #[rustfmt::skip]
         let e = _mm512_set_epi64(
-            1 | 1 << 32,
-            1 | 1 << 32,
-            1 | 1 << 32,
-            1 | 1 << 32,
-            7,
-            5,
-            3,
-            1,
+            1 | 1 << 32, 1 | 1 << 32, 1 | 1 << 32, 1 | 1 << 32,
+            7, 5, 3, 1,
         );
         assert_eq_m512i(r, e);
     }
 
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_maskz_mul_epu32() {
-        let a = _mm512_setr_epi32(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+        let a = _mm512_set1_epi32(1);
         let b = _mm512_setr_epi32(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
         let r = _mm512_maskz_mul_epu32(0, a, b);
         assert_eq_m512i(r, _mm512_setzero_si512());
         let r = _mm512_maskz_mul_epu32(0b00001111, a, b);
         let e = _mm512_set_epi64(0, 0, 0, 0, 7, 5, 3, 1);
         assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_mask_mul_epu32() {
+        let a = _mm256_set1_epi32(1);
+        let b = _mm256_set_epi32(1, 2, 3, 4, 5, 6, 7, 8);
+        let r = _mm256_mask_mul_epu32(a, 0, a, b);
+        assert_eq_m256i(r, a);
+        let r = _mm256_mask_mul_epu32(a, 0b00001111, a, b);
+        let e = _mm256_set_epi64x(2, 4, 6, 8);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_maskz_mul_epu32() {
+        let a = _mm256_set1_epi32(1);
+        let b = _mm256_set_epi32(1, 2, 3, 4, 5, 6, 7, 8);
+        let r = _mm256_maskz_mul_epu32(0, a, b);
+        assert_eq_m256i(r, _mm256_setzero_si256());
+        let r = _mm256_maskz_mul_epu32(0b00001111, a, b);
+        let e = _mm256_set_epi64x(2, 4, 6, 8);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_mask_mul_epu32() {
+        let a = _mm_set1_epi32(1);
+        let b = _mm_set_epi32(1, 2, 3, 4);
+        let r = _mm_mask_mul_epu32(a, 0, a, b);
+        assert_eq_m128i(r, a);
+        let r = _mm_mask_mul_epu32(a, 0b00000011, a, b);
+        let e = _mm_set_epi64x(2, 4);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_maskz_mul_epu32() {
+        let a = _mm_set1_epi32(1);
+        let b = _mm_set_epi32(1, 2, 3, 4);
+        let r = _mm_maskz_mul_epu32(0, a, b);
+        assert_eq_m128i(r, _mm_setzero_si128());
+        let r = _mm_maskz_mul_epu32(0b00000011, a, b);
+        let e = _mm_set_epi64x(2, 4);
+        assert_eq_m128i(r, e);
     }
 
     #[simd_test(enable = "avx512f")]
