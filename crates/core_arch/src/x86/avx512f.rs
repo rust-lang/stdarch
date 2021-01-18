@@ -1378,7 +1378,7 @@ pub unsafe fn _mm_maskz_mul_pd(k: __mmask8, a: __m128d, b: __m128d) -> __m128d {
 
 /// Divide packed single-precision (32-bit) floating-point elements in a by packed elements in b, and store the results in dst.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_div_ps&expand=2162)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_div_ps&expand=2162)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vdivps))]
@@ -1388,7 +1388,7 @@ pub unsafe fn _mm512_div_ps(a: __m512, b: __m512) -> __m512 {
 
 /// Divide packed single-precision (32-bit) floating-point elements in a by packed elements in b, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_div_ps&expand=2163)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_div_ps&expand=2163)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vdivps))]
@@ -1399,13 +1399,59 @@ pub unsafe fn _mm512_mask_div_ps(src: __m512, k: __mmask16, a: __m512, b: __m512
 
 /// Divide packed single-precision (32-bit) floating-point elements in a by packed elements in b, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_div_ps&expand=2164)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_div_ps&expand=2164)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vdivps))]
 pub unsafe fn _mm512_maskz_div_ps(k: __mmask16, a: __m512, b: __m512) -> __m512 {
     let div = _mm512_div_ps(a, b).as_f32x16();
     let zero = _mm512_setzero_ps().as_f32x16();
+    transmute(simd_select_bitmask(k, div, zero))
+}
+
+/// Divide packed single-precision (32-bit) floating-point elements in a by packed elements in b, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_div_ps&expand=2160)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vdivps))]
+pub unsafe fn _mm256_mask_div_ps(src: __m256, k: __mmask8, a: __m256, b: __m256) -> __m256 {
+    let div = _mm256_div_ps(a, b).as_f32x8();
+    transmute(simd_select_bitmask(k, div, src.as_f32x8()))
+}
+
+/// Divide packed single-precision (32-bit) floating-point elements in a by packed elements in b, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_div_ps&expand=2161)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vdivps))]
+pub unsafe fn _mm256_maskz_div_ps(k: __mmask8, a: __m256, b: __m256) -> __m256 {
+    let div = _mm256_div_ps(a, b).as_f32x8();
+    let zero = _mm256_setzero_ps().as_f32x8();
+    transmute(simd_select_bitmask(k, div, zero))
+}
+
+/// Divide packed single-precision (32-bit) floating-point elements in a by packed elements in b, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_div_ps&expand=2157)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vdivps))]
+pub unsafe fn _mm_mask_div_ps(src: __m128, k: __mmask8, a: __m128, b: __m128) -> __m128 {
+    let div = _mm_div_ps(a, b).as_f32x4();
+    transmute(simd_select_bitmask(k, div, src.as_f32x4()))
+}
+
+/// Divide packed single-precision (32-bit) floating-point elements in a by packed elements in b, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_div_ps&expand=2158)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vdivps))]
+pub unsafe fn _mm_maskz_div_ps(k: __mmask8, a: __m128, b: __m128) -> __m128 {
+    let div = _mm_div_ps(a, b).as_f32x4();
+    let zero = _mm_setzero_ps().as_f32x4();
     transmute(simd_select_bitmask(k, div, zero))
 }
 
@@ -1421,7 +1467,7 @@ pub unsafe fn _mm512_div_pd(a: __m512d, b: __m512d) -> __m512d {
 
 /// Divide packed double-precision (64-bit) floating-point elements in a by packed elements in b, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_div_pd&expand=2154)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_div_pd&expand=2154)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vdivpd))]
@@ -1432,13 +1478,59 @@ pub unsafe fn _mm512_mask_div_pd(src: __m512d, k: __mmask8, a: __m512d, b: __m51
 
 /// Divide packed double-precision (64-bit) floating-point elements in a by packed elements in b, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_div_pd&expand=2155)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_div_pd&expand=2155)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vdivpd))]
 pub unsafe fn _mm512_maskz_div_pd(k: __mmask8, a: __m512d, b: __m512d) -> __m512d {
     let div = _mm512_div_pd(a, b).as_f64x8();
     let zero = _mm512_setzero_pd().as_f64x8();
+    transmute(simd_select_bitmask(k, div, zero))
+}
+
+/// Divide packed double-precision (64-bit) floating-point elements in a by packed elements in b, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_div_pd&expand=2151)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vdivpd))]
+pub unsafe fn _mm256_mask_div_pd(src: __m256d, k: __mmask8, a: __m256d, b: __m256d) -> __m256d {
+    let div = _mm256_div_pd(a, b).as_f64x4();
+    transmute(simd_select_bitmask(k, div, src.as_f64x4()))
+}
+
+/// Divide packed double-precision (64-bit) floating-point elements in a by packed elements in b, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_div_pd&expand=2152)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vdivpd))]
+pub unsafe fn _mm256_maskz_div_pd(k: __mmask8, a: __m256d, b: __m256d) -> __m256d {
+    let div = _mm256_div_pd(a, b).as_f64x4();
+    let zero = _mm256_setzero_pd().as_f64x4();
+    transmute(simd_select_bitmask(k, div, zero))
+}
+
+/// Divide packed double-precision (64-bit) floating-point elements in a by packed elements in b, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_div_pd&expand=2148)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vdivpd))]
+pub unsafe fn _mm_mask_div_pd(src: __m128d, k: __mmask8, a: __m128d, b: __m128d) -> __m128d {
+    let div = _mm_div_pd(a, b).as_f64x2();
+    transmute(simd_select_bitmask(k, div, src.as_f64x2()))
+}
+
+/// Divide packed double-precision (64-bit) floating-point elements in a by packed elements in b, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_div_pd&expand=2149)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vdivpd))]
+pub unsafe fn _mm_maskz_div_pd(k: __mmask8, a: __m128d, b: __m128d) -> __m128d {
+    let div = _mm_div_pd(a, b).as_f64x2();
+    let zero = _mm_setzero_pd().as_f64x2();
     transmute(simd_select_bitmask(k, div, zero))
 }
 
@@ -26610,15 +26702,10 @@ mod tests {
         let r = _mm256_mask_mul_ps(a, 0, a, b);
         assert_eq_m256(r, a);
         let r = _mm256_mask_mul_ps(a, 0b11111111, a, b);
+        #[rustfmt::skip]
         let e = _mm256_set_ps(
-            0.,
-            2.,
-            -2.,
-            f32::INFINITY,
-            f32::NEG_INFINITY,
-            200.,
-            -200.,
-            -64.,
+            0., 2., -2., f32::INFINITY,
+            f32::NEG_INFINITY, 200., -200., -64.,
         );
         assert_eq_m256(r, e);
     }
@@ -26630,15 +26717,10 @@ mod tests {
         let r = _mm256_maskz_mul_ps(0, a, b);
         assert_eq_m256(r, _mm256_setzero_ps());
         let r = _mm256_maskz_mul_ps(0b11111111, a, b);
+        #[rustfmt::skip]
         let e = _mm256_set_ps(
-            0.,
-            2.,
-            -2.,
-            f32::INFINITY,
-            f32::NEG_INFINITY,
-            200.,
-            -200.,
-            -64.,
+            0., 2., -2., f32::INFINITY,
+            f32::NEG_INFINITY, 200., -200., -64.,
         );
         assert_eq_m256(r, e);
     }
@@ -26674,23 +26756,12 @@ mod tests {
             2., 2., 2., 2., 2., 0., 2., 2., 2., 2., 2., 2., 0., 2., 2., 2.,
         );
         let r = _mm512_div_ps(a, b);
+        #[rustfmt::skip]
         let e = _mm512_setr_ps(
-            0.,
-            0.5,
-            -0.5,
-            -1.,
-            50.,
-            f32::INFINITY,
-            -50.,
-            -16.,
-            0.,
-            0.5,
-            -0.5,
-            500.,
-            f32::NEG_INFINITY,
-            50.,
-            -50.,
-            -16.,
+            0., 0.5, -0.5, -1.,
+            50., f32::INFINITY, -50., -16.,
+            0., 0.5, -0.5, 500.,
+            f32::NEG_INFINITY, 50., -50., -16.,
         );
         assert_eq_m512(r, e); // 0/0 = NAN
     }
@@ -26706,23 +26777,12 @@ mod tests {
         let r = _mm512_mask_div_ps(a, 0, a, b);
         assert_eq_m512(r, a);
         let r = _mm512_mask_div_ps(a, 0b00000000_11111111, a, b);
+        #[rustfmt::skip]
         let e = _mm512_setr_ps(
-            0.,
-            0.5,
-            -0.5,
-            -1.,
-            50.,
-            f32::INFINITY,
-            -50.,
-            -16.,
-            0.,
-            1.,
-            -1.,
-            1000.,
-            -131.,
-            100.,
-            -100.,
-            -32.,
+            0., 0.5, -0.5, -1.,
+            50., f32::INFINITY, -50., -16.,
+            0., 1., -1., 1000.,
+            -131., 100., -100., -32.,
         );
         assert_eq_m512(r, e);
     }
@@ -26738,25 +26798,58 @@ mod tests {
         let r = _mm512_maskz_div_ps(0, a, b);
         assert_eq_m512(r, _mm512_setzero_ps());
         let r = _mm512_maskz_div_ps(0b00000000_11111111, a, b);
+        #[rustfmt::skip]
         let e = _mm512_setr_ps(
-            0.,
-            0.5,
-            -0.5,
-            -1.,
-            50.,
-            f32::INFINITY,
-            -50.,
-            -16.,
-            0.,
-            0.,
-            0.,
-            0.,
-            0.,
-            0.,
-            0.,
-            0.,
+            0., 0.5, -0.5, -1.,
+            50., f32::INFINITY, -50., -16.,
+            0., 0., 0., 0.,
+            0., 0., 0., 0.,
         );
         assert_eq_m512(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_mask_div_ps() {
+        let a = _mm256_set_ps(0., 1., -1., -2., 100., 100., -100., -32.);
+        let b = _mm256_set_ps(2., 2., 2., 2., 2., 0., 2., 2.);
+        let r = _mm256_mask_div_ps(a, 0, a, b);
+        assert_eq_m256(r, a);
+        let r = _mm256_mask_div_ps(a, 0b11111111, a, b);
+        let e = _mm256_set_ps(0., 0.5, -0.5, -1., 50., f32::INFINITY, -50., -16.);
+        assert_eq_m256(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_maskz_div_ps() {
+        let a = _mm256_set_ps(0., 1., -1., -2., 100., 100., -100., -32.);
+        let b = _mm256_set_ps(2., 2., 2., 2., 2., 0., 2., 2.);
+        let r = _mm256_maskz_div_ps(0, a, b);
+        assert_eq_m256(r, _mm256_setzero_ps());
+        let r = _mm256_maskz_div_ps(0b11111111, a, b);
+        let e = _mm256_set_ps(0., 0.5, -0.5, -1., 50., f32::INFINITY, -50., -16.);
+        assert_eq_m256(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_mask_div_ps() {
+        let a = _mm_set_ps(100., 100., -100., -32.);
+        let b = _mm_set_ps(2., 0., 2., 2.);
+        let r = _mm_mask_div_ps(a, 0, a, b);
+        assert_eq_m128(r, a);
+        let r = _mm_mask_div_ps(a, 0b00001111, a, b);
+        let e = _mm_set_ps(50., f32::INFINITY, -50., -16.);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_maskz_div_ps() {
+        let a = _mm_set_ps(100., 100., -100., -32.);
+        let b = _mm_set_ps(2., 0., 2., 2.);
+        let r = _mm_maskz_div_ps(0, a, b);
+        assert_eq_m128(r, _mm_setzero_ps());
+        let r = _mm_maskz_div_ps(0b00001111, a, b);
+        let e = _mm_set_ps(50., f32::INFINITY, -50., -16.);
+        assert_eq_m128(r, e);
     }
 
     #[simd_test(enable = "avx512f")]
