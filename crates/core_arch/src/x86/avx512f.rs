@@ -1536,7 +1536,7 @@ pub unsafe fn _mm_maskz_div_pd(k: __mmask8, a: __m128d, b: __m128d) -> __m128d {
 
 /// Compare packed signed 32-bit integers in a and b, and store packed maximum values in dst.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_max_epi32&expand=3582)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_max_epi32&expand=3582)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpmaxsd))]
@@ -1546,7 +1546,7 @@ pub unsafe fn _mm512_max_epi32(a: __m512i, b: __m512i) -> __m512i {
 
 /// Compare packed signed 32-bit integers in a and b, and store packed maximum values in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_max_epi32&expand=3580)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_max_epi32&expand=3580)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpmaxsd))]
@@ -1557,7 +1557,7 @@ pub unsafe fn _mm512_mask_max_epi32(src: __m512i, k: __mmask16, a: __m512i, b: _
 
 /// Compare packed signed 32-bit integers in a and b, and store packed maximum values in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_max_epi32&expand=3581)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_max_epi32&expand=3581)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpmaxsd))]
@@ -1567,9 +1567,55 @@ pub unsafe fn _mm512_maskz_max_epi32(k: __mmask16, a: __m512i, b: __m512i) -> __
     transmute(simd_select_bitmask(k, max, zero))
 }
 
+/// Compare packed signed 32-bit integers in a and b, and store packed maximum values in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_max_epi32&expand=3577)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmaxsd))]
+pub unsafe fn _mm256_mask_max_epi32(src: __m256i, k: __mmask8, a: __m256i, b: __m256i) -> __m256i {
+    let max = _mm256_max_epi32(a, b).as_i32x8();
+    transmute(simd_select_bitmask(k, max, src.as_i32x8()))
+}
+
+/// Compare packed signed 32-bit integers in a and b, and store packed maximum values in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_max_epi32&expand=3578)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmaxsd))]
+pub unsafe fn _mm256_maskz_max_epi32(k: __mmask8, a: __m256i, b: __m256i) -> __m256i {
+    let max = _mm256_max_epi32(a, b).as_i32x8();
+    let zero = _mm256_setzero_si256().as_i32x8();
+    transmute(simd_select_bitmask(k, max, zero))
+}
+
+/// Compare packed signed 32-bit integers in a and b, and store packed maximum values in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_max_epi32&expand=3574)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmaxsd))]
+pub unsafe fn _mm_mask_max_epi32(src: __m128i, k: __mmask8, a: __m128i, b: __m128i) -> __m128i {
+    let max = _mm_max_epi32(a, b).as_i32x4();
+    transmute(simd_select_bitmask(k, max, src.as_i32x4()))
+}
+
+/// Compare packed signed 32-bit integers in a and b, and store packed maximum values in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_max_epi32&expand=3575)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmaxsd))]
+pub unsafe fn _mm_maskz_max_epi32(k: __mmask8, a: __m128i, b: __m128i) -> __m128i {
+    let max = _mm_max_epi32(a, b).as_i32x4();
+    let zero = _mm_setzero_si128().as_i32x4();
+    transmute(simd_select_bitmask(k, max, zero))
+}
+
 /// Compare packed signed 64-bit integers in a and b, and store packed maximum values in dst.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_max_epi64&expand=3591)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_max_epi64&expand=3591)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpmaxsq))]
@@ -1579,7 +1625,7 @@ pub unsafe fn _mm512_max_epi64(a: __m512i, b: __m512i) -> __m512i {
 
 /// Compare packed signed 64-bit integers in a and b, and store packed maximum values in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_max_epi64&expand=3589)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_max_epi64&expand=3589)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpmaxsq))]
@@ -1590,7 +1636,7 @@ pub unsafe fn _mm512_mask_max_epi64(src: __m512i, k: __mmask8, a: __m512i, b: __
 
 /// Compare packed signed 64-bit integers in a and b, and store packed maximum values in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_max_epi64&expand=3590)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_max_epi64&expand=3590)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpmaxsq))]
@@ -1600,9 +1646,75 @@ pub unsafe fn _mm512_maskz_max_epi64(k: __mmask8, a: __m512i, b: __m512i) -> __m
     transmute(simd_select_bitmask(k, max, zero))
 }
 
+/// Compare packed signed 64-bit integers in a and b, and store packed maximum values in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_max_epi64&expand=3588)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmaxsq))]
+pub unsafe fn _mm256_max_epi64(a: __m256i, b: __m256i) -> __m256i {
+    transmute(vpmaxsq256(a.as_i64x4(), b.as_i64x4()))
+}
+
+/// Compare packed signed 64-bit integers in a and b, and store packed maximum values in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_max_epi64&expand=3586)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmaxsq))]
+pub unsafe fn _mm256_mask_max_epi64(src: __m256i, k: __mmask8, a: __m256i, b: __m256i) -> __m256i {
+    let max = _mm256_max_epi64(a, b).as_i64x4();
+    transmute(simd_select_bitmask(k, max, src.as_i64x4()))
+}
+
+/// Compare packed signed 64-bit integers in a and b, and store packed maximum values in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_max_epi64&expand=3587)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmaxsq))]
+pub unsafe fn _mm256_maskz_max_epi64(k: __mmask8, a: __m256i, b: __m256i) -> __m256i {
+    let max = _mm256_max_epi64(a, b).as_i64x4();
+    let zero = _mm256_setzero_si256().as_i64x4();
+    transmute(simd_select_bitmask(k, max, zero))
+}
+
+/// Compare packed signed 64-bit integers in a and b, and store packed maximum values in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_max_epi64&expand=3585)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmaxsq))]
+pub unsafe fn _mm_max_epi64(a: __m128i, b: __m128i) -> __m128i {
+    transmute(vpmaxsq128(a.as_i64x2(), b.as_i64x2()))
+}
+
+/// Compare packed signed 64-bit integers in a and b, and store packed maximum values in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_max_epi64&expand=3583)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmaxsq))]
+pub unsafe fn _mm_mask_max_epi64(src: __m128i, k: __mmask8, a: __m128i, b: __m128i) -> __m128i {
+    let max = _mm_max_epi64(a, b).as_i64x2();
+    transmute(simd_select_bitmask(k, max, src.as_i64x2()))
+}
+
+/// Compare packed signed 64-bit integers in a and b, and store packed maximum values in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_max_epi64&expand=3584)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmaxsq))]
+pub unsafe fn _mm_maskz_max_epi64(k: __mmask8, a: __m128i, b: __m128i) -> __m128i {
+    let max = _mm_max_epi64(a, b).as_i64x2();
+    let zero = _mm_setzero_si128().as_i64x2();
+    transmute(simd_select_bitmask(k, max, zero))
+}
+
 /// Compare packed single-precision (32-bit) floating-point elements in a and b, and store packed maximum values in dst.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_max_ps&expand=3655)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_max_ps&expand=3655)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vmaxps))]
@@ -1616,7 +1728,7 @@ pub unsafe fn _mm512_max_ps(a: __m512, b: __m512) -> __m512 {
 
 /// Compare packed single-precision (32-bit) floating-point elements in a and b, and store packed maximum values in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_max_ps&expand=3653)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_max_ps&expand=3653)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vmaxps))]
@@ -1627,7 +1739,7 @@ pub unsafe fn _mm512_mask_max_ps(src: __m512, k: __mmask16, a: __m512, b: __m512
 
 /// Compare packed single-precision (32-bit) floating-point elements in a and b, and store packed maximum values in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_max_ps&expand=3654)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_max_ps&expand=3654)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vmaxps))]
@@ -1637,9 +1749,55 @@ pub unsafe fn _mm512_maskz_max_ps(k: __mmask16, a: __m512, b: __m512) -> __m512 
     transmute(simd_select_bitmask(k, max, zero))
 }
 
+/// Compare packed single-precision (32-bit) floating-point elements in a and b, and store packed maximum values in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_max_ps&expand=3650)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vmaxps))]
+pub unsafe fn _mm256_mask_max_ps(src: __m256, k: __mmask8, a: __m256, b: __m256) -> __m256 {
+    let max = _mm256_max_ps(a, b).as_f32x8();
+    transmute(simd_select_bitmask(k, max, src.as_f32x8()))
+}
+
+/// Compare packed single-precision (32-bit) floating-point elements in a and b, and store packed maximum values in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_max_ps&expand=3651)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vmaxps))]
+pub unsafe fn _mm256_maskz_max_ps(k: __mmask8, a: __m256, b: __m256) -> __m256 {
+    let max = _mm256_max_ps(a, b).as_f32x8();
+    let zero = _mm256_setzero_ps().as_f32x8();
+    transmute(simd_select_bitmask(k, max, zero))
+}
+
+/// Compare packed single-precision (32-bit) floating-point elements in a and b, and store packed maximum values in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_max_ps&expand=3647)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vmaxps))]
+pub unsafe fn _mm_mask_max_ps(src: __m128, k: __mmask8, a: __m128, b: __m128) -> __m128 {
+    let max = _mm_max_ps(a, b).as_f32x4();
+    transmute(simd_select_bitmask(k, max, src.as_f32x4()))
+}
+
+/// Compare packed single-precision (32-bit) floating-point elements in a and b, and store packed maximum values in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_max_ps&expand=3648)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vmaxps))]
+pub unsafe fn _mm_maskz_max_ps(k: __mmask8, a: __m128, b: __m128) -> __m128 {
+    let max = _mm_max_ps(a, b).as_f32x4();
+    let zero = _mm_setzero_ps().as_f32x4();
+    transmute(simd_select_bitmask(k, max, zero))
+}
+
 /// Compare packed double-precision (64-bit) floating-point elements in a and b, and store packed maximum values in dst.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_max_pd&expand=3645)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_max_pd&expand=3645)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vmaxpd))]
@@ -1649,7 +1807,7 @@ pub unsafe fn _mm512_max_pd(a: __m512d, b: __m512d) -> __m512d {
 
 /// Compare packed double-precision (64-bit) floating-point elements in a and b, and store packed maximum values in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_max_pd&expand=3643)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_max_pd&expand=3643)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vmaxpd))]
@@ -1660,7 +1818,7 @@ pub unsafe fn _mm512_mask_max_pd(src: __m512d, k: __mmask8, a: __m512d, b: __m51
 
 /// Compare packed double-precision (64-bit) floating-point elements in a and b, and store packed maximum values in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_max_pd&expand=3644)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_max_pd&expand=3644)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vmaxpd))]
@@ -1670,9 +1828,55 @@ pub unsafe fn _mm512_maskz_max_pd(k: __mmask8, a: __m512d, b: __m512d) -> __m512
     transmute(simd_select_bitmask(k, max, zero))
 }
 
+/// Compare packed double-precision (64-bit) floating-point elements in a and b, and store packed maximum values in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_max_pd&expand=3640)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vmaxpd))]
+pub unsafe fn _mm256_mask_max_pd(src: __m256d, k: __mmask8, a: __m256d, b: __m256d) -> __m256d {
+    let max = _mm256_max_pd(a, b).as_f64x4();
+    transmute(simd_select_bitmask(k, max, src.as_f64x4()))
+}
+
+/// Compare packed double-precision (64-bit) floating-point elements in a and b, and store packed maximum values in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_max_pd&expand=3641)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vmaxpd))]
+pub unsafe fn _mm256_maskz_max_pd(k: __mmask8, a: __m256d, b: __m256d) -> __m256d {
+    let max = _mm256_max_pd(a, b).as_f64x4();
+    let zero = _mm256_setzero_pd().as_f64x4();
+    transmute(simd_select_bitmask(k, max, zero))
+}
+
+/// Compare packed double-precision (64-bit) floating-point elements in a and b, and store packed maximum values in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_max_pd&expand=3637)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vmaxpd))]
+pub unsafe fn _mm_mask_max_pd(src: __m128d, k: __mmask8, a: __m128d, b: __m128d) -> __m128d {
+    let max = _mm_max_pd(a, b).as_f64x2();
+    transmute(simd_select_bitmask(k, max, src.as_f64x2()))
+}
+
+/// Compare packed double-precision (64-bit) floating-point elements in a and b, and store packed maximum values in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_max_pd&expand=3638)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vmaxpd))]
+pub unsafe fn _mm_maskz_max_pd(k: __mmask8, a: __m128d, b: __m128d) -> __m128d {
+    let max = _mm_max_pd(a, b).as_f64x2();
+    let zero = _mm_setzero_pd().as_f64x2();
+    transmute(simd_select_bitmask(k, max, zero))
+}
+
 /// Compare packed unsigned 32-bit integers in a and b, and store packed maximum values in dst.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_max_epu32&expand=3618)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_max_epu32&expand=3618)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpmaxud))]
@@ -1682,7 +1886,7 @@ pub unsafe fn _mm512_max_epu32(a: __m512i, b: __m512i) -> __m512i {
 
 /// Compare packed unsigned 32-bit integers in a and b, and store packed maximum values in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_max_epu32&expand=3616)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_max_epu32&expand=3616)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpmaxud))]
@@ -1693,7 +1897,7 @@ pub unsafe fn _mm512_mask_max_epu32(src: __m512i, k: __mmask16, a: __m512i, b: _
 
 /// Compare packed unsigned 32-bit integers in a and b, and store packed maximum values in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_max_epu32&expand=3617)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_max_epu32&expand=3617)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpmaxud))]
@@ -1703,9 +1907,55 @@ pub unsafe fn _mm512_maskz_max_epu32(k: __mmask16, a: __m512i, b: __m512i) -> __
     transmute(simd_select_bitmask(k, max, zero))
 }
 
+/// Compare packed unsigned 32-bit integers in a and b, and store packed maximum values in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_max_epu32&expand=3613)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmaxud))]
+pub unsafe fn _mm256_mask_max_epu32(src: __m256i, k: __mmask8, a: __m256i, b: __m256i) -> __m256i {
+    let max = _mm256_max_epu32(a, b).as_u32x8();
+    transmute(simd_select_bitmask(k, max, src.as_u32x8()))
+}
+
+/// Compare packed unsigned 32-bit integers in a and b, and store packed maximum values in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_max_epu32&expand=3614)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmaxud))]
+pub unsafe fn _mm256_maskz_max_epu32(k: __mmask8, a: __m256i, b: __m256i) -> __m256i {
+    let max = _mm256_max_epu32(a, b).as_u32x8();
+    let zero = _mm256_setzero_si256().as_u32x8();
+    transmute(simd_select_bitmask(k, max, zero))
+}
+
+/// Compare packed unsigned 32-bit integers in a and b, and store packed maximum values in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_max_epu32&expand=3610)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmaxud))]
+pub unsafe fn _mm_mask_max_epu32(src: __m128i, k: __mmask8, a: __m128i, b: __m128i) -> __m128i {
+    let max = _mm_max_epu32(a, b).as_u32x4();
+    transmute(simd_select_bitmask(k, max, src.as_u32x4()))
+}
+
+/// Compare packed unsigned 32-bit integers in a and b, and store packed maximum values in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_max_epu32&expand=3611)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmaxud))]
+pub unsafe fn _mm_maskz_max_epu32(k: __mmask8, a: __m128i, b: __m128i) -> __m128i {
+    let max = _mm_max_epu32(a, b).as_u32x4();
+    let zero = _mm_setzero_si128().as_u32x4();
+    transmute(simd_select_bitmask(k, max, zero))
+}
+
 /// Compare packed unsigned 64-bit integers in a and b, and store packed maximum values in dst.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=max_epu64&expand=3627)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_max_epu64&expand=3627)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpmaxuq))]
@@ -1715,7 +1965,7 @@ pub unsafe fn _mm512_max_epu64(a: __m512i, b: __m512i) -> __m512i {
 
 /// Compare packed unsigned 64-bit integers in a and b, and store packed maximum values in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_max_epu64&expand=3625)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_max_epu64&expand=3625)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpmaxuq))]
@@ -1726,13 +1976,79 @@ pub unsafe fn _mm512_mask_max_epu64(src: __m512i, k: __mmask8, a: __m512i, b: __
 
 /// Compare packed unsigned 64-bit integers in a and b, and store packed maximum values in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_max_epu&expand=3626)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_max_epu&expand=3626)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpmaxuq))]
 pub unsafe fn _mm512_maskz_max_epu64(k: __mmask8, a: __m512i, b: __m512i) -> __m512i {
     let max = _mm512_max_epu64(a, b).as_u64x8();
     let zero = _mm512_setzero_si512().as_u64x8();
+    transmute(simd_select_bitmask(k, max, zero))
+}
+
+/// Compare packed unsigned 64-bit integers in a and b, and store packed maximum values in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_max_epu64&expand=3624)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmaxuq))]
+pub unsafe fn _mm256_max_epu64(a: __m256i, b: __m256i) -> __m256i {
+    transmute(vpmaxuq256(a.as_u64x4(), b.as_u64x4()))
+}
+
+/// Compare packed unsigned 64-bit integers in a and b, and store packed maximum values in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_max_epu64&expand=3622)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmaxuq))]
+pub unsafe fn _mm256_mask_max_epu64(src: __m256i, k: __mmask8, a: __m256i, b: __m256i) -> __m256i {
+    let max = _mm256_max_epu64(a, b).as_u64x4();
+    transmute(simd_select_bitmask(k, max, src.as_u64x4()))
+}
+
+/// Compare packed unsigned 64-bit integers in a and b, and store packed maximum values in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_max_epu64&expand=3623)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmaxuq))]
+pub unsafe fn _mm256_maskz_max_epu64(k: __mmask8, a: __m256i, b: __m256i) -> __m256i {
+    let max = _mm256_max_epu64(a, b).as_u64x4();
+    let zero = _mm256_setzero_si256().as_u64x4();
+    transmute(simd_select_bitmask(k, max, zero))
+}
+
+/// Compare packed unsigned 64-bit integers in a and b, and store packed maximum values in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_max_epu64&expand=3621)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmaxuq))]
+pub unsafe fn _mm_max_epu64(a: __m128i, b: __m128i) -> __m128i {
+    transmute(vpmaxuq128(a.as_u64x2(), b.as_u64x2()))
+}
+
+/// Compare packed unsigned 64-bit integers in a and b, and store packed maximum values in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_max_epu64&expand=3619)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmaxuq))]
+pub unsafe fn _mm_mask_max_epu64(src: __m128i, k: __mmask8, a: __m128i, b: __m128i) -> __m128i {
+    let max = _mm_max_epu64(a, b).as_u64x2();
+    transmute(simd_select_bitmask(k, max, src.as_u64x2()))
+}
+
+/// Compare packed unsigned 64-bit integers in a and b, and store packed maximum values in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_max_epu64&expand=3620)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmaxuq))]
+pub unsafe fn _mm_maskz_max_epu64(k: __mmask8, a: __m128i, b: __m128i) -> __m128i {
+    let max = _mm_max_epu64(a, b).as_u64x2();
+    let zero = _mm_setzero_si128().as_u64x2();
     transmute(simd_select_bitmask(k, max, zero))
 }
 
@@ -25426,8 +25742,14 @@ extern "C" {
 
     #[link_name = "llvm.x86.avx512.mask.pmaxs.d.512"]
     fn vpmaxsd(a: i32x16, b: i32x16) -> i32x16;
+
     #[link_name = "llvm.x86.avx512.mask.pmaxs.q.512"]
     fn vpmaxsq(a: i64x8, b: i64x8) -> i64x8;
+    #[link_name = "llvm.x86.avx512.mask.pmaxs.q.256"]
+    fn vpmaxsq256(a: i64x4, b: i64x4) -> i64x4;
+    #[link_name = "llvm.x86.avx512.mask.pmaxs.q.128"]
+    fn vpmaxsq128(a: i64x2, b: i64x2) -> i64x2;
+
     #[link_name = "llvm.x86.avx512.mask.pmins.d.512"]
     fn vpminsd(a: i32x16, b: i32x16) -> i32x16;
     #[link_name = "llvm.x86.avx512.mask.pmins.q.512"]
@@ -25435,8 +25757,14 @@ extern "C" {
 
     #[link_name = "llvm.x86.avx512.mask.pmaxu.d.512"]
     fn vpmaxud(a: u32x16, b: u32x16) -> u32x16;
+
     #[link_name = "llvm.x86.avx512.mask.pmaxu.q.512"]
-    fn vpmaxuq(a: u64x8, b: u64x8) -> i64x8;
+    fn vpmaxuq(a: u64x8, b: u64x8) -> u64x8;
+    #[link_name = "llvm.x86.avx512.mask.pmaxu.q.256"]
+    fn vpmaxuq256(a: u64x4, b: u64x4) -> u64x4;
+    #[link_name = "llvm.x86.avx512.mask.pmaxu.q.128"]
+    fn vpmaxuq128(a: u64x2, b: u64x2) -> u64x2;
+
     #[link_name = "llvm.x86.avx512.mask.pminu.d.512"]
     fn vpminud(a: u32x16, b: u32x16) -> u32x16;
     #[link_name = "llvm.x86.avx512.mask.pminu.q.512"]
@@ -26883,6 +27211,50 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_mask_max_epi32() {
+        let a = _mm256_set_epi32(0, 1, 2, 3, 4, 5, 6, 7);
+        let b = _mm256_set_epi32(7, 6, 5, 4, 3, 2, 1, 0);
+        let r = _mm256_mask_max_epi32(a, 0, a, b);
+        assert_eq_m256i(r, a);
+        let r = _mm256_mask_max_epi32(a, 0b11111111, a, b);
+        let e = _mm256_set_epi32(7, 6, 5, 4, 4, 5, 6, 7);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_maskz_max_epi32() {
+        let a = _mm256_set_epi32(0, 1, 2, 3, 4, 5, 6, 7);
+        let b = _mm256_set_epi32(7, 6, 5, 4, 3, 2, 1, 0);
+        let r = _mm256_maskz_max_epi32(0, a, b);
+        assert_eq_m256i(r, _mm256_setzero_si256());
+        let r = _mm256_maskz_max_epi32(0b11111111, a, b);
+        let e = _mm256_set_epi32(7, 6, 5, 4, 4, 5, 6, 7);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_mask_max_epi32() {
+        let a = _mm_set_epi32(0, 1, 2, 3);
+        let b = _mm_set_epi32(3, 2, 1, 0);
+        let r = _mm_mask_max_epi32(a, 0, a, b);
+        assert_eq_m128i(r, a);
+        let r = _mm_mask_max_epi32(a, 0b00001111, a, b);
+        let e = _mm_set_epi32(3, 2, 2, 3);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_maskz_max_epi32() {
+        let a = _mm_set_epi32(0, 1, 2, 3);
+        let b = _mm_set_epi32(3, 2, 1, 0);
+        let r = _mm_maskz_max_epi32(0, a, b);
+        assert_eq_m128i(r, _mm_setzero_si128());
+        let r = _mm_maskz_max_epi32(0b00001111, a, b);
+        let e = _mm_set_epi32(3, 2, 2, 3);
+        assert_eq_m128i(r, e);
+    }
+
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_max_ps() {
         let a = _mm512_setr_ps(
@@ -26932,6 +27304,50 @@ mod tests {
         assert_eq_m512(r, e);
     }
 
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_mask_max_ps() {
+        let a = _mm256_set_ps(0., 1., 2., 3., 4., 5., 6., 7.);
+        let b = _mm256_set_ps(7., 6., 5., 4., 3., 2., 1., 0.);
+        let r = _mm256_mask_max_ps(a, 0, a, b);
+        assert_eq_m256(r, a);
+        let r = _mm256_mask_max_ps(a, 0b11111111, a, b);
+        let e = _mm256_set_ps(7., 6., 5., 4., 4., 5., 6., 7.);
+        assert_eq_m256(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_maskz_max_ps() {
+        let a = _mm256_set_ps(0., 1., 2., 3., 4., 5., 6., 7.);
+        let b = _mm256_set_ps(7., 6., 5., 4., 3., 2., 1., 0.);
+        let r = _mm256_maskz_max_ps(0, a, b);
+        assert_eq_m256(r, _mm256_setzero_ps());
+        let r = _mm256_maskz_max_ps(0b11111111, a, b);
+        let e = _mm256_set_ps(7., 6., 5., 4., 4., 5., 6., 7.);
+        assert_eq_m256(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_mask_max_ps() {
+        let a = _mm_set_ps(0., 1., 2., 3.);
+        let b = _mm_set_ps(3., 2., 1., 0.);
+        let r = _mm_mask_max_ps(a, 0, a, b);
+        assert_eq_m128(r, a);
+        let r = _mm_mask_max_ps(a, 0b00001111, a, b);
+        let e = _mm_set_ps(3., 2., 2., 3.);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_maskz_max_ps() {
+        let a = _mm_set_ps(0., 1., 2., 3.);
+        let b = _mm_set_ps(3., 2., 1., 0.);
+        let r = _mm_maskz_max_ps(0, a, b);
+        assert_eq_m128(r, _mm_setzero_ps());
+        let r = _mm_mask_max_ps(a, 0b00001111, a, b);
+        let e = _mm_set_ps(3., 2., 2., 3.);
+        assert_eq_m128(r, e);
+    }
+
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_max_epu32() {
         let a = _mm512_setr_epi32(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
@@ -26961,6 +27377,50 @@ mod tests {
         let r = _mm512_maskz_max_epu32(0b00000000_11111111, a, b);
         let e = _mm512_setr_epi32(15, 14, 13, 12, 11, 10, 9, 8, 0, 0, 0, 0, 0, 0, 0, 0);
         assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_mask_max_epu32() {
+        let a = _mm256_set_epi32(0, 1, 2, 3, 4, 5, 6, 7);
+        let b = _mm256_set_epi32(7, 6, 5, 4, 3, 2, 1, 0);
+        let r = _mm256_mask_max_epu32(a, 0, a, b);
+        assert_eq_m256i(r, a);
+        let r = _mm256_mask_max_epu32(a, 0b11111111, a, b);
+        let e = _mm256_set_epi32(7, 6, 5, 4, 4, 5, 6, 7);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_maskz_max_epu32() {
+        let a = _mm256_set_epi32(0, 1, 2, 3, 4, 5, 6, 7);
+        let b = _mm256_set_epi32(7, 6, 5, 4, 3, 2, 1, 0);
+        let r = _mm256_maskz_max_epu32(0, a, b);
+        assert_eq_m256i(r, _mm256_setzero_si256());
+        let r = _mm256_maskz_max_epu32(0b11111111, a, b);
+        let e = _mm256_set_epi32(7, 6, 5, 4, 4, 5, 6, 7);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_mask_max_epu32() {
+        let a = _mm_set_epi32(0, 1, 2, 3);
+        let b = _mm_set_epi32(3, 2, 1, 0);
+        let r = _mm_mask_max_epu32(a, 0, a, b);
+        assert_eq_m128i(r, a);
+        let r = _mm_mask_max_epu32(a, 0b00001111, a, b);
+        let e = _mm_set_epi32(3, 2, 2, 3);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_maskz_max_epu32() {
+        let a = _mm_set_epi32(0, 1, 2, 3);
+        let b = _mm_set_epi32(3, 2, 1, 0);
+        let r = _mm_maskz_max_epu32(0, a, b);
+        assert_eq_m128i(r, _mm_setzero_si128());
+        let r = _mm_maskz_max_epu32(0b00001111, a, b);
+        let e = _mm_set_epi32(3, 2, 2, 3);
+        assert_eq_m128i(r, e);
     }
 
     #[simd_test(enable = "avx512f")]

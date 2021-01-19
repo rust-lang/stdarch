@@ -800,6 +800,68 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_max_epi64() {
+        let a = _mm256_set_epi64x(0, 1, 2, 3);
+        let b = _mm256_set_epi64x(3, 2, 1, 0);
+        let r = _mm256_max_epi64(a, b);
+        let e = _mm256_set_epi64x(3, 2, 2, 3);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_mask_max_epi64() {
+        let a = _mm256_set_epi64x(0, 1, 2, 3);
+        let b = _mm256_set_epi64x(3, 2, 1, 0);
+        let r = _mm256_mask_max_epi64(a, 0, a, b);
+        assert_eq_m256i(r, a);
+        let r = _mm256_mask_max_epi64(a, 0b00001111, a, b);
+        let e = _mm256_set_epi64x(3, 2, 2, 3);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_maskz_max_epi64() {
+        let a = _mm256_set_epi64x(0, 1, 2, 3);
+        let b = _mm256_set_epi64x(3, 2, 1, 0);
+        let r = _mm256_maskz_max_epi64(0, a, b);
+        assert_eq_m256i(r, _mm256_setzero_si256());
+        let r = _mm256_maskz_max_epi64(0b00001111, a, b);
+        let e = _mm256_set_epi64x(3, 2, 2, 3);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_max_epi64() {
+        let a = _mm_set_epi64x(2, 3);
+        let b = _mm_set_epi64x(3, 2);
+        let r = _mm_max_epi64(a, b);
+        let e = _mm_set_epi64x(3, 3);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_mask_max_epi64() {
+        let a = _mm_set_epi64x(2, 3);
+        let b = _mm_set_epi64x(3, 2);
+        let r = _mm_mask_max_epi64(a, 0, a, b);
+        assert_eq_m128i(r, a);
+        let r = _mm_mask_max_epi64(a, 0b00000011, a, b);
+        let e = _mm_set_epi64x(3, 3);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_maskz_max_epi64() {
+        let a = _mm_set_epi64x(2, 3);
+        let b = _mm_set_epi64x(3, 2);
+        let r = _mm_maskz_max_epi64(0, a, b);
+        assert_eq_m128i(r, _mm_setzero_si128());
+        let r = _mm_maskz_max_epi64(0b00000011, a, b);
+        let e = _mm_set_epi64x(3, 3);
+        assert_eq_m128i(r, e);
+    }
+
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_max_pd() {
         let a = _mm512_setr_pd(0., 1., 2., 3., 4., 5., 6., 7.);
@@ -831,6 +893,50 @@ mod tests {
         assert_eq_m512d(r, e);
     }
 
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_mask_max_pd() {
+        let a = _mm256_set_pd(0., 1., 2., 3.);
+        let b = _mm256_set_pd(3., 2., 1., 0.);
+        let r = _mm256_mask_max_pd(a, 0, a, b);
+        assert_eq_m256d(r, a);
+        let r = _mm256_mask_max_pd(a, 0b00001111, a, b);
+        let e = _mm256_set_pd(3., 2., 2., 3.);
+        assert_eq_m256d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_maskz_max_pd() {
+        let a = _mm256_set_pd(0., 1., 2., 3.);
+        let b = _mm256_set_pd(3., 2., 1., 0.);
+        let r = _mm256_maskz_max_pd(0, a, b);
+        assert_eq_m256d(r, _mm256_setzero_pd());
+        let r = _mm256_maskz_max_pd(0b00001111, a, b);
+        let e = _mm256_set_pd(3., 2., 2., 3.);
+        assert_eq_m256d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_mask_max_pd() {
+        let a = _mm_set_pd(2., 3.);
+        let b = _mm_set_pd(3., 2.);
+        let r = _mm_mask_max_pd(a, 0, a, b);
+        assert_eq_m128d(r, a);
+        let r = _mm_mask_max_pd(a, 0b00000011, a, b);
+        let e = _mm_set_pd(3., 3.);
+        assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_maskz_max_pd() {
+        let a = _mm_set_pd(2., 3.);
+        let b = _mm_set_pd(3., 2.);
+        let r = _mm_maskz_max_pd(0, a, b);
+        assert_eq_m128d(r, _mm_setzero_pd());
+        let r = _mm_maskz_max_pd(0b00000011, a, b);
+        let e = _mm_set_pd(3., 3.);
+        assert_eq_m128d(r, e);
+    }
+
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_max_epu64() {
         let a = _mm512_setr_epi64(0, 1, 2, 3, 4, 5, 6, 7);
@@ -860,6 +966,68 @@ mod tests {
         let r = _mm512_maskz_max_epu64(0b00001111, a, b);
         let e = _mm512_setr_epi64(7, 6, 5, 4, 0, 0, 0, 0);
         assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_max_epu64() {
+        let a = _mm256_set_epi64x(0, 1, 2, 3);
+        let b = _mm256_set_epi64x(3, 2, 1, 0);
+        let r = _mm256_max_epu64(a, b);
+        let e = _mm256_set_epi64x(3, 2, 2, 3);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_mask_max_epu64() {
+        let a = _mm256_set_epi64x(0, 1, 2, 3);
+        let b = _mm256_set_epi64x(3, 2, 1, 0);
+        let r = _mm256_mask_max_epu64(a, 0, a, b);
+        assert_eq_m256i(r, a);
+        let r = _mm256_mask_max_epu64(a, 0b00001111, a, b);
+        let e = _mm256_set_epi64x(3, 2, 2, 3);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_maskz_max_epu64() {
+        let a = _mm256_set_epi64x(0, 1, 2, 3);
+        let b = _mm256_set_epi64x(3, 2, 1, 0);
+        let r = _mm256_maskz_max_epu64(0, a, b);
+        assert_eq_m256i(r, _mm256_setzero_si256());
+        let r = _mm256_maskz_max_epu64(0b00001111, a, b);
+        let e = _mm256_set_epi64x(3, 2, 2, 3);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_max_epu64() {
+        let a = _mm_set_epi64x(2, 3);
+        let b = _mm_set_epi64x(3, 2);
+        let r = _mm_max_epu64(a, b);
+        let e = _mm_set_epi64x(3, 3);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_mask_max_epu64() {
+        let a = _mm_set_epi64x(2, 3);
+        let b = _mm_set_epi64x(3, 2);
+        let r = _mm_mask_max_epu64(a, 0, a, b);
+        assert_eq_m128i(r, a);
+        let r = _mm_mask_max_epu64(a, 0b00000011, a, b);
+        let e = _mm_set_epi64x(3, 3);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_maskz_max_epu64() {
+        let a = _mm_set_epi64x(2, 3);
+        let b = _mm_set_epi64x(3, 2);
+        let r = _mm_maskz_max_epu64(0, a, b);
+        assert_eq_m128i(r, _mm_setzero_si128());
+        let r = _mm_maskz_max_epu64(0b00000011, a, b);
+        let e = _mm_set_epi64x(3, 3);
+        assert_eq_m128i(r, e);
     }
 
     #[simd_test(enable = "avx512f")]
