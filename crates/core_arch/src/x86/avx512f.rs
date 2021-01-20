@@ -2054,7 +2054,7 @@ pub unsafe fn _mm_maskz_max_epu64(k: __mmask8, a: __m128i, b: __m128i) -> __m128
 
 /// Compare packed signed 32-bit integers in a and b, and store packed minimum values in dst.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_min_epi32&expand=3696)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_min_epi32&expand=3696)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpminsd))]
@@ -2064,30 +2064,76 @@ pub unsafe fn _mm512_min_epi32(a: __m512i, b: __m512i) -> __m512i {
 
 /// Compare packed signed 32-bit integers in a and b, and store packed minimum values in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_min_epi32&expand=3694)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_min_epi32&expand=3694)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpminsd))]
 pub unsafe fn _mm512_mask_min_epi32(src: __m512i, k: __mmask16, a: __m512i, b: __m512i) -> __m512i {
-    let max = _mm512_min_epi32(a, b).as_i32x16();
-    transmute(simd_select_bitmask(k, max, src.as_i32x16()))
+    let min = _mm512_min_epi32(a, b).as_i32x16();
+    transmute(simd_select_bitmask(k, min, src.as_i32x16()))
 }
 
 /// Compare packed signed 32-bit integers in a and b, and store packed minimum values in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_min_epi32&expand=3695)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_min_epi32&expand=3695)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpminsd))]
 pub unsafe fn _mm512_maskz_min_epi32(k: __mmask16, a: __m512i, b: __m512i) -> __m512i {
-    let max = _mm512_min_epi32(a, b).as_i32x16();
+    let min = _mm512_min_epi32(a, b).as_i32x16();
     let zero = _mm512_setzero_si512().as_i32x16();
-    transmute(simd_select_bitmask(k, max, zero))
+    transmute(simd_select_bitmask(k, min, zero))
+}
+
+/// Compare packed signed 32-bit integers in a and b, and store packed minimum values in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_min_epi32&expand=3691)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpminsd))]
+pub unsafe fn _mm256_mask_min_epi32(src: __m256i, k: __mmask8, a: __m256i, b: __m256i) -> __m256i {
+    let min = _mm256_min_epi32(a, b).as_i32x8();
+    transmute(simd_select_bitmask(k, min, src.as_i32x8()))
+}
+
+/// Compare packed signed 32-bit integers in a and b, and store packed minimum values in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_min_epi32&expand=3692)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpminsd))]
+pub unsafe fn _mm256_maskz_min_epi32(k: __mmask8, a: __m256i, b: __m256i) -> __m256i {
+    let min = _mm256_min_epi32(a, b).as_i32x8();
+    let zero = _mm256_setzero_si256().as_i32x8();
+    transmute(simd_select_bitmask(k, min, zero))
+}
+
+/// Compare packed signed 32-bit integers in a and b, and store packed minimum values in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_min_epi32&expand=3688)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpminsd))]
+pub unsafe fn _mm_mask_min_epi32(src: __m128i, k: __mmask8, a: __m128i, b: __m128i) -> __m128i {
+    let min = _mm_min_epi32(a, b).as_i32x4();
+    transmute(simd_select_bitmask(k, min, src.as_i32x4()))
+}
+
+/// Compare packed signed 32-bit integers in a and b, and store packed minimum values in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_min_epi32&expand=3689)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpminsd))]
+pub unsafe fn _mm_maskz_min_epi32(k: __mmask8, a: __m128i, b: __m128i) -> __m128i {
+    let min = _mm_min_epi32(a, b).as_i32x4();
+    let zero = _mm_setzero_si128().as_i32x4();
+    transmute(simd_select_bitmask(k, min, zero))
 }
 
 /// Compare packed signed 64-bit integers in a and b, and store packed minimum values in dst.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_min_epi64&expand=3705)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_min_epi64&expand=3705)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpminsq))]
@@ -2097,13 +2143,13 @@ pub unsafe fn _mm512_min_epi64(a: __m512i, b: __m512i) -> __m512i {
 
 /// Compare packed signed 64-bit integers in a and b, and store packed minimum values in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_min_epi64&expand=3703)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_min_epi64&expand=3703)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpminsq))]
 pub unsafe fn _mm512_mask_min_epi64(src: __m512i, k: __mmask8, a: __m512i, b: __m512i) -> __m512i {
-    let max = _mm512_min_epi64(a, b).as_i64x8();
-    transmute(simd_select_bitmask(k, max, src.as_i64x8()))
+    let min = _mm512_min_epi64(a, b).as_i64x8();
+    transmute(simd_select_bitmask(k, min, src.as_i64x8()))
 }
 
 /// Compare packed signed 64-bit integers in a and b, and store packed minimum values in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
@@ -2113,14 +2159,47 @@ pub unsafe fn _mm512_mask_min_epi64(src: __m512i, k: __mmask8, a: __m512i, b: __
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpminsq))]
 pub unsafe fn _mm512_maskz_min_epi64(k: __mmask8, a: __m512i, b: __m512i) -> __m512i {
-    let max = _mm512_min_epi64(a, b).as_i64x8();
+    let min = _mm512_min_epi64(a, b).as_i64x8();
     let zero = _mm512_setzero_si512().as_i64x8();
-    transmute(simd_select_bitmask(k, max, zero))
+    transmute(simd_select_bitmask(k, min, zero))
+}
+
+/// Compare packed signed 64-bit integers in a and b, and store packed minimum values in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_min_epi64&expand=3702)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpminsq))]
+pub unsafe fn _mm256_min_epi64(a: __m256i, b: __m256i) -> __m256i {
+    transmute(vpminsq256(a.as_i64x4(), b.as_i64x4()))
+}
+
+/// Compare packed signed 64-bit integers in a and b, and store packed minimum values in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_min_epi64&expand=3700)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpminsq))]
+pub unsafe fn _mm256_mask_min_epi64(src: __m256i, k: __mmask8, a: __m256i, b: __m256i) -> __m256i {
+    let min = _mm256_min_epi64(a, b).as_i64x4();
+    transmute(simd_select_bitmask(k, min, src.as_i64x4()))
+}
+
+/// Compare packed signed 64-bit integers in a and b, and store packed minimum values in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_min_epi64&expand=3701)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpminsq))]
+pub unsafe fn _mm256_maskz_min_epi64(k: __mmask8, a: __m256i, b: __m256i) -> __m256i {
+    let min = _mm256_min_epi64(a, b).as_i64x4();
+    let zero = _mm256_setzero_si256().as_i64x4();
+    transmute(simd_select_bitmask(k, min, zero))
 }
 
 /// Compare packed single-precision (32-bit) floating-point elements in a and b, and store packed minimum values in dst.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_min_ps&expand=3769)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_min_ps&expand=3769)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vminps))]
@@ -2134,26 +2213,74 @@ pub unsafe fn _mm512_min_ps(a: __m512, b: __m512) -> __m512 {
 
 /// Compare packed single-precision (32-bit) floating-point elements in a and b, and store packed minimum values in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_min_ps&expand=3767)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_min_ps&expand=3767)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vminps))]
 pub unsafe fn _mm512_mask_min_ps(src: __m512, k: __mmask16, a: __m512, b: __m512) -> __m512 {
-    let max = _mm512_min_ps(a, b).as_f32x16();
-    transmute(simd_select_bitmask(k, max, src.as_f32x16()))
+    let min = _mm512_min_ps(a, b).as_f32x16();
+    transmute(simd_select_bitmask(k, min, src.as_f32x16()))
 }
 
 /// Compare packed single-precision (32-bit) floating-point elements in a and b, and store packed minimum values in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_min_ps&expand=3768)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_min_ps&expand=3768)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vminps))]
 pub unsafe fn _mm512_maskz_min_ps(k: __mmask16, a: __m512, b: __m512) -> __m512 {
-    let max = _mm512_min_ps(a, b).as_f32x16();
+    let min = _mm512_min_ps(a, b).as_f32x16();
     let zero = _mm512_setzero_ps().as_f32x16();
-    transmute(simd_select_bitmask(k, max, zero))
+    transmute(simd_select_bitmask(k, min, zero))
 }
+
+/// Compare packed single-precision (32-bit) floating-point elements in a and b, and store packed minimum values in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_min_ps&expand=3764)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vminps))]
+pub unsafe fn _mm256_mask_min_ps(src: __m256, k: __mmask8, a: __m256, b: __m256) -> __m256 {
+    let min = _mm256_min_ps(a, b).as_f32x8();
+    transmute(simd_select_bitmask(k, min, src.as_f32x8()))
+}
+
+/// Compare packed single-precision (32-bit) floating-point elements in a and b, and store packed minimum values in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_min_ps&expand=3765)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vminps))]
+pub unsafe fn _mm256_maskz_min_ps(k: __mmask8, a: __m256, b: __m256) -> __m256 {
+    let min = _mm256_min_ps(a, b).as_f32x8();
+    let zero = _mm256_setzero_ps().as_f32x8();
+    transmute(simd_select_bitmask(k, min, zero))
+}
+
+/// Compare packed single-precision (32-bit) floating-point elements in a and b, and store packed minimum values in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_min_ps&expand=3761)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vminps))]
+pub unsafe fn _mm_mask_min_ps(src: __m128, k: __mmask8, a: __m128, b: __m128) -> __m128 {
+    let min = _mm_min_ps(a, b).as_f32x4();
+    transmute(simd_select_bitmask(k, min, src.as_f32x4()))
+}
+
+/// Compare packed single-precision (32-bit) floating-point elements in a and b, and store packed minimum values in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_min_ps&expand=3762)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vminps))]
+pub unsafe fn _mm_maskz_min_ps(k: __mmask8, a: __m128, b: __m128) -> __m128 {
+    let min = _mm_min_ps(a, b).as_f32x4();
+    let zero = _mm_setzero_ps().as_f32x4();
+    transmute(simd_select_bitmask(k, min, zero))
+}
+
+/// Compare packed double-precision (64-bit) floating-point elements in a and b, and store packed minimum values in dst.
 
 /// Compare packed double-precision (64-bit) floating-point elements in a and b, and store packed minimum values in dst.
 ///
@@ -2172,8 +2299,8 @@ pub unsafe fn _mm512_min_pd(a: __m512d, b: __m512d) -> __m512d {
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vminpd))]
 pub unsafe fn _mm512_mask_min_pd(src: __m512d, k: __mmask8, a: __m512d, b: __m512d) -> __m512d {
-    let max = _mm512_min_pd(a, b).as_f64x8();
-    transmute(simd_select_bitmask(k, max, src.as_f64x8()))
+    let min = _mm512_min_pd(a, b).as_f64x8();
+    transmute(simd_select_bitmask(k, min, src.as_f64x8()))
 }
 
 /// Compare packed double-precision (64-bit) floating-point elements in a and b, and store packed minimum values in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
@@ -2183,14 +2310,60 @@ pub unsafe fn _mm512_mask_min_pd(src: __m512d, k: __mmask8, a: __m512d, b: __m51
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vminpd))]
 pub unsafe fn _mm512_maskz_min_pd(k: __mmask8, a: __m512d, b: __m512d) -> __m512d {
-    let max = _mm512_min_pd(a, b).as_f64x8();
+    let min = _mm512_min_pd(a, b).as_f64x8();
     let zero = _mm512_setzero_pd().as_f64x8();
-    transmute(simd_select_bitmask(k, max, zero))
+    transmute(simd_select_bitmask(k, min, zero))
+}
+
+/// Compare packed double-precision (64-bit) floating-point elements in a and b, and store packed minimum values in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_min_pd&expand=3754)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vminpd))]
+pub unsafe fn _mm256_mask_min_pd(src: __m256d, k: __mmask8, a: __m256d, b: __m256d) -> __m256d {
+    let min = _mm256_min_pd(a, b).as_f64x4();
+    transmute(simd_select_bitmask(k, min, src.as_f64x4()))
+}
+
+/// Compare packed double-precision (64-bit) floating-point elements in a and b, and store packed minimum values in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_min_pd&expand=3755)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vminpd))]
+pub unsafe fn _mm256_maskz_min_pd(k: __mmask8, a: __m256d, b: __m256d) -> __m256d {
+    let min = _mm256_min_pd(a, b).as_f64x4();
+    let zero = _mm256_setzero_pd().as_f64x4();
+    transmute(simd_select_bitmask(k, min, zero))
+}
+
+/// Compare packed double-precision (64-bit) floating-point elements in a and b, and store packed minimum values in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_min_pd&expand=3751)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vminpd))]
+pub unsafe fn _mm_mask_min_pd(src: __m128d, k: __mmask8, a: __m128d, b: __m128d) -> __m128d {
+    let min = _mm_min_pd(a, b).as_f64x2();
+    transmute(simd_select_bitmask(k, min, src.as_f64x2()))
+}
+
+/// Compare packed double-precision (64-bit) floating-point elements in a and b, and store packed minimum values in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_min_pd&expand=3752)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vminpd))]
+pub unsafe fn _mm_maskz_min_pd(k: __mmask8, a: __m128d, b: __m128d) -> __m128d {
+    let min = _mm_min_pd(a, b).as_f64x2();
+    let zero = _mm_setzero_pd().as_f64x2();
+    transmute(simd_select_bitmask(k, min, zero))
 }
 
 /// Compare packed unsigned 32-bit integers in a and b, and store packed minimum values in dst.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_min_epu32&expand=3732)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_min_epu32&expand=3732)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpminud))]
@@ -2200,30 +2373,76 @@ pub unsafe fn _mm512_min_epu32(a: __m512i, b: __m512i) -> __m512i {
 
 /// Compare packed unsigned 32-bit integers in a and b, and store packed minimum values in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_min_epu32&expand=3730)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_min_epu32&expand=3730)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpminud))]
 pub unsafe fn _mm512_mask_min_epu32(src: __m512i, k: __mmask16, a: __m512i, b: __m512i) -> __m512i {
-    let max = _mm512_min_epu32(a, b).as_u32x16();
-    transmute(simd_select_bitmask(k, max, src.as_u32x16()))
+    let min = _mm512_min_epu32(a, b).as_u32x16();
+    transmute(simd_select_bitmask(k, min, src.as_u32x16()))
 }
 
 /// Compare packed unsigned 32-bit integers in a and b, and store packed minimum values in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_min_epu32&expand=3731)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_min_epu32&expand=3731)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpminud))]
 pub unsafe fn _mm512_maskz_min_epu32(k: __mmask16, a: __m512i, b: __m512i) -> __m512i {
-    let max = _mm512_min_epu32(a, b).as_u32x16();
+    let min = _mm512_min_epu32(a, b).as_u32x16();
     let zero = _mm512_setzero_si512().as_u32x16();
-    transmute(simd_select_bitmask(k, max, zero))
+    transmute(simd_select_bitmask(k, min, zero))
+}
+
+/// Compare packed unsigned 32-bit integers in a and b, and store packed minimum values in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_min_epu32&expand=3727)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpminud))]
+pub unsafe fn _mm256_mask_min_epu32(src: __m256i, k: __mmask8, a: __m256i, b: __m256i) -> __m256i {
+    let min = _mm256_min_epu32(a, b).as_u32x8();
+    transmute(simd_select_bitmask(k, min, src.as_u32x8()))
+}
+
+/// Compare packed unsigned 32-bit integers in a and b, and store packed minimum values in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_min_epu32&expand=3728)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpminud))]
+pub unsafe fn _mm256_maskz_min_epu32(k: __mmask8, a: __m256i, b: __m256i) -> __m256i {
+    let min = _mm256_min_epu32(a, b).as_u32x8();
+    let zero = _mm256_setzero_si256().as_u32x8();
+    transmute(simd_select_bitmask(k, min, zero))
+}
+
+/// Compare packed unsigned 32-bit integers in a and b, and store packed minimum values in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_min_epu32&expand=3724)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpminud))]
+pub unsafe fn _mm_mask_min_epu32(src: __m128i, k: __mmask8, a: __m128i, b: __m128i) -> __m128i {
+    let min = _mm_min_epu32(a, b).as_u32x4();
+    transmute(simd_select_bitmask(k, min, src.as_u32x4()))
+}
+
+/// Compare packed unsigned 32-bit integers in a and b, and store packed minimum values in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_min_epu32&expand=3725)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpminud))]
+pub unsafe fn _mm_maskz_min_epu32(k: __mmask8, a: __m128i, b: __m128i) -> __m128i {
+    let min = _mm_min_epu32(a, b).as_u32x4();
+    let zero = _mm_setzero_si128().as_u32x4();
+    transmute(simd_select_bitmask(k, min, zero))
 }
 
 /// Compare packed unsigned 64-bit integers in a and b, and store packed minimum values in dst.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_min_epu64&expand=3741)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_min_epu64&expand=3741)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpminuq))]
@@ -2233,25 +2452,91 @@ pub unsafe fn _mm512_min_epu64(a: __m512i, b: __m512i) -> __m512i {
 
 /// Compare packed unsigned 64-bit integers in a and b, and store packed minimum values in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_min_epu64&expand=3739)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_min_epu64&expand=3739)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpminuq))]
 pub unsafe fn _mm512_mask_min_epu64(src: __m512i, k: __mmask8, a: __m512i, b: __m512i) -> __m512i {
-    let max = _mm512_min_epu64(a, b).as_u64x8();
-    transmute(simd_select_bitmask(k, max, src.as_u64x8()))
+    let min = _mm512_min_epu64(a, b).as_u64x8();
+    transmute(simd_select_bitmask(k, min, src.as_u64x8()))
 }
 
 /// Compare packed unsigned 64-bit integers in a and b, and store packed minimum values in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_min_epu64&expand=3740)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_min_epu64&expand=3740)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpminuq))]
 pub unsafe fn _mm512_maskz_min_epu64(k: __mmask8, a: __m512i, b: __m512i) -> __m512i {
-    let max = _mm512_min_epu64(a, b).as_u64x8();
+    let min = _mm512_min_epu64(a, b).as_u64x8();
     let zero = _mm512_setzero_si512().as_u64x8();
-    transmute(simd_select_bitmask(k, max, zero))
+    transmute(simd_select_bitmask(k, min, zero))
+}
+
+/// Compare packed unsigned 64-bit integers in a and b, and store packed minimum values in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_min_epu64&expand=3738)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpminuq))]
+pub unsafe fn _mm256_min_epu64(a: __m256i, b: __m256i) -> __m256i {
+    transmute(vpminuq256(a.as_u64x4(), b.as_u64x4()))
+}
+
+/// Compare packed unsigned 64-bit integers in a and b, and store packed minimum values in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_min_epu64&expand=3736)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpminuq))]
+pub unsafe fn _mm256_mask_min_epu64(src: __m256i, k: __mmask8, a: __m256i, b: __m256i) -> __m256i {
+    let min = _mm256_min_epu64(a, b).as_u64x4();
+    transmute(simd_select_bitmask(k, min, src.as_u64x4()))
+}
+
+/// Compare packed unsigned 64-bit integers in a and b, and store packed minimum values in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_min_epu64&expand=3737)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpminuq))]
+pub unsafe fn _mm256_maskz_min_epu64(k: __mmask8, a: __m256i, b: __m256i) -> __m256i {
+    let min = _mm256_min_epu64(a, b).as_u64x4();
+    let zero = _mm256_setzero_si256().as_u64x4();
+    transmute(simd_select_bitmask(k, min, zero))
+}
+
+/// Compare packed unsigned 64-bit integers in a and b, and store packed minimum values in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_min_epu64&expand=3735)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpminuq))]
+pub unsafe fn _mm_min_epu64(a: __m128i, b: __m128i) -> __m128i {
+    transmute(vpminuq128(a.as_u64x2(), b.as_u64x2()))
+}
+
+/// Compare packed unsigned 64-bit integers in a and b, and store packed minimum values in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_min_epu64&expand=3733)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpminuq))]
+pub unsafe fn _mm_mask_min_epu64(src: __m128i, k: __mmask8, a: __m128i, b: __m128i) -> __m128i {
+    let min = _mm_min_epu64(a, b).as_u64x2();
+    transmute(simd_select_bitmask(k, min, src.as_u64x2()))
+}
+
+/// Compare packed unsigned 64-bit integers in a and b, and store packed minimum values in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_min_epu64&expand=3734)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpminuq))]
+pub unsafe fn _mm_maskz_min_epu64(k: __mmask8, a: __m128i, b: __m128i) -> __m128i {
+    let min = _mm_min_epu64(a, b).as_u64x2();
+    let zero = _mm_setzero_si128().as_u64x2();
+    transmute(simd_select_bitmask(k, min, zero))
 }
 
 /// Compute the square root of packed single-precision (32-bit) floating-point elements in a, and store the results in dst.
@@ -25752,8 +26037,13 @@ extern "C" {
 
     #[link_name = "llvm.x86.avx512.mask.pmins.d.512"]
     fn vpminsd(a: i32x16, b: i32x16) -> i32x16;
+
     #[link_name = "llvm.x86.avx512.mask.pmins.q.512"]
     fn vpminsq(a: i64x8, b: i64x8) -> i64x8;
+    #[link_name = "llvm.x86.avx512.mask.pmins.q.256"]
+    fn vpminsq256(a: i64x4, b: i64x4) -> i64x4;
+    #[link_name = "llvm.x86.avx512.mask.pmins.q.128"]
+    fn vpminsq128(a: i64x2, b: i64x2) -> i64x2;
 
     #[link_name = "llvm.x86.avx512.mask.pmaxu.d.512"]
     fn vpmaxud(a: u32x16, b: u32x16) -> u32x16;
@@ -25767,8 +26057,13 @@ extern "C" {
 
     #[link_name = "llvm.x86.avx512.mask.pminu.d.512"]
     fn vpminud(a: u32x16, b: u32x16) -> u32x16;
+
     #[link_name = "llvm.x86.avx512.mask.pminu.q.512"]
-    fn vpminuq(a: u64x8, b: u64x8) -> i64x8;
+    fn vpminuq(a: u64x8, b: u64x8) -> u64x8;
+    #[link_name = "llvm.x86.avx512.mask.pminu.q.256"]
+    fn vpminuq256(a: u64x4, b: u64x4) -> u64x4;
+    #[link_name = "llvm.x86.avx512.mask.pminu.q.128"]
+    fn vpminuq128(a: u64x2, b: u64x2) -> u64x2;
 
     #[link_name = "llvm.x86.avx512.sqrt.ps.512"]
     fn vsqrtps(a: f32x16, rounding: i32) -> f32x16;
@@ -27454,6 +27749,50 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_mask_min_epi32() {
+        let a = _mm256_set_epi32(0, 1, 2, 3, 4, 5, 6, 7);
+        let b = _mm256_set_epi32(7, 6, 5, 4, 3, 2, 1, 0);
+        let r = _mm256_mask_min_epi32(a, 0, a, b);
+        assert_eq_m256i(r, a);
+        let r = _mm256_mask_min_epi32(a, 0b11111111, a, b);
+        let e = _mm256_set_epi32(0, 1, 2, 3, 3, 2, 1, 0);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_maskz_min_epi32() {
+        let a = _mm256_set_epi32(0, 1, 2, 3, 4, 5, 6, 7);
+        let b = _mm256_set_epi32(7, 6, 5, 4, 3, 2, 1, 0);
+        let r = _mm256_maskz_min_epi32(0, a, b);
+        assert_eq_m256i(r, _mm256_setzero_si256());
+        let r = _mm256_maskz_min_epi32(0b11111111, a, b);
+        let e = _mm256_set_epi32(0, 1, 2, 3, 3, 2, 1, 0);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_mask_min_epi32() {
+        let a = _mm_set_epi32(0, 1, 2, 3);
+        let b = _mm_set_epi32(3, 2, 1, 0);
+        let r = _mm_mask_min_epi32(a, 0, a, b);
+        assert_eq_m128i(r, a);
+        let r = _mm_mask_min_epi32(a, 0b00001111, a, b);
+        let e = _mm_set_epi32(0, 1, 1, 0);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_maskz_min_epi32() {
+        let a = _mm_set_epi32(0, 1, 2, 3);
+        let b = _mm_set_epi32(3, 2, 1, 0);
+        let r = _mm_maskz_min_epi32(0, a, b);
+        assert_eq_m128i(r, _mm_setzero_si128());
+        let r = _mm_maskz_min_epi32(0b00001111, a, b);
+        let e = _mm_set_epi32(0, 1, 1, 0);
+        assert_eq_m128i(r, e);
+    }
+
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_min_ps() {
         let a = _mm512_setr_ps(
@@ -27503,6 +27842,50 @@ mod tests {
         assert_eq_m512(r, e);
     }
 
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_mask_min_ps() {
+        let a = _mm256_set_ps(0., 1., 2., 3., 4., 5., 6., 7.);
+        let b = _mm256_set_ps(7., 6., 5., 4., 3., 2., 1., 0.);
+        let r = _mm256_mask_min_ps(a, 0, a, b);
+        assert_eq_m256(r, a);
+        let r = _mm256_mask_min_ps(a, 0b11111111, a, b);
+        let e = _mm256_set_ps(0., 1., 2., 3., 3., 2., 1., 0.);
+        assert_eq_m256(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_maskz_min_ps() {
+        let a = _mm256_set_ps(0., 1., 2., 3., 4., 5., 6., 7.);
+        let b = _mm256_set_ps(7., 6., 5., 4., 3., 2., 1., 0.);
+        let r = _mm256_maskz_min_ps(0, a, b);
+        assert_eq_m256(r, _mm256_setzero_ps());
+        let r = _mm256_maskz_min_ps(0b11111111, a, b);
+        let e = _mm256_set_ps(0., 1., 2., 3., 3., 2., 1., 0.);
+        assert_eq_m256(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_mask_min_ps() {
+        let a = _mm_set_ps(0., 1., 2., 3.);
+        let b = _mm_set_ps(3., 2., 1., 0.);
+        let r = _mm_mask_min_ps(a, 0, a, b);
+        assert_eq_m128(r, a);
+        let r = _mm_mask_min_ps(a, 0b00001111, a, b);
+        let e = _mm_set_ps(0., 1., 1., 0.);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_maskz_min_ps() {
+        let a = _mm_set_ps(0., 1., 2., 3.);
+        let b = _mm_set_ps(3., 2., 1., 0.);
+        let r = _mm_maskz_min_ps(0, a, b);
+        assert_eq_m128(r, _mm_setzero_ps());
+        let r = _mm_maskz_min_ps(0b00001111, a, b);
+        let e = _mm_set_ps(0., 1., 1., 0.);
+        assert_eq_m128(r, e);
+    }
+
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_min_epu32() {
         let a = _mm512_setr_epi32(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
@@ -27532,6 +27915,50 @@ mod tests {
         let r = _mm512_maskz_min_epu32(0b00000000_11111111, a, b);
         let e = _mm512_setr_epi32(0, 1, 2, 3, 4, 5, 6, 7, 0, 0, 0, 0, 0, 0, 0, 0);
         assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_mask_min_epu32() {
+        let a = _mm256_set_epi32(0, 1, 2, 3, 4, 5, 6, 7);
+        let b = _mm256_set_epi32(7, 6, 5, 4, 3, 2, 1, 0);
+        let r = _mm256_mask_min_epu32(a, 0, a, b);
+        assert_eq_m256i(r, a);
+        let r = _mm256_mask_min_epu32(a, 0b11111111, a, b);
+        let e = _mm256_set_epi32(0, 1, 2, 3, 3, 2, 1, 0);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_maskz_min_epu32() {
+        let a = _mm256_set_epi32(0, 1, 2, 3, 4, 5, 6, 7);
+        let b = _mm256_set_epi32(7, 6, 5, 4, 3, 2, 1, 0);
+        let r = _mm256_maskz_min_epu32(0, a, b);
+        assert_eq_m256i(r, _mm256_setzero_si256());
+        let r = _mm256_maskz_min_epu32(0b11111111, a, b);
+        let e = _mm256_set_epi32(0, 1, 2, 3, 3, 2, 1, 0);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_mask_min_epu32() {
+        let a = _mm_set_epi32(0, 1, 2, 3);
+        let b = _mm_set_epi32(3, 2, 1, 0);
+        let r = _mm_mask_min_epu32(a, 0, a, b);
+        assert_eq_m128i(r, a);
+        let r = _mm_mask_min_epu32(a, 0b00001111, a, b);
+        let e = _mm_set_epi32(0, 1, 1, 0);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_maskz_min_epu32() {
+        let a = _mm_set_epi32(0, 1, 2, 3);
+        let b = _mm_set_epi32(3, 2, 1, 0);
+        let r = _mm_maskz_min_epu32(0, a, b);
+        assert_eq_m128i(r, _mm_setzero_si128());
+        let r = _mm_maskz_min_epu32(0b00001111, a, b);
+        let e = _mm_set_epi32(0, 1, 1, 0);
+        assert_eq_m128i(r, e);
     }
 
     #[simd_test(enable = "avx512f")]
