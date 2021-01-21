@@ -3669,7 +3669,7 @@ pub unsafe fn _mm_maskz_rsqrt14_pd(k: __mmask8, a: __m128d) -> __m128d {
 
 /// Convert the exponent of each packed single-precision (32-bit) floating-point element in a to a single-precision (32-bit) floating-point number representing the integer exponent, and store the results in dst. This intrinsic essentially calculates floor(log2(x)) for each element.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_getexp_ps&expand=2844)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_getexp_ps&expand=2844)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vgetexpps))]
@@ -3684,7 +3684,7 @@ pub unsafe fn _mm512_getexp_ps(a: __m512) -> __m512 {
 
 /// Convert the exponent of each packed single-precision (32-bit) floating-point element in a to a single-precision (32-bit) floating-point number representing the integer exponent, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set). This intrinsic essentially calculates floor(log2(x)) for each element.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_getexp_ps&expand=2845)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_getexp_ps&expand=2845)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vgetexpps))]
@@ -3699,7 +3699,7 @@ pub unsafe fn _mm512_mask_getexp_ps(src: __m512, k: __mmask16, a: __m512) -> __m
 
 /// Convert the exponent of each packed single-precision (32-bit) floating-point element in a to a single-precision (32-bit) floating-point number representing the integer exponent, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set). This intrinsic essentially calculates floor(log2(x)) for each element.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_getexp_ps&expand=2846)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_getexp_ps&expand=2846)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vgetexpps))]
@@ -3712,9 +3712,81 @@ pub unsafe fn _mm512_maskz_getexp_ps(k: __mmask16, a: __m512) -> __m512 {
     ))
 }
 
+/// Convert the exponent of each packed single-precision (32-bit) floating-point element in a to a single-precision (32-bit) floating-point number representing the integer exponent, and store the results in dst. This intrinsic essentially calculates floor(log2(x)) for each element.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_getexp_ps&expand=2841)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vgetexpps))]
+pub unsafe fn _mm256_getexp_ps(a: __m256) -> __m256 {
+    transmute(vgetexpps256(
+        a.as_f32x8(),
+        _mm256_setzero_ps().as_f32x8(),
+        0b11111111,
+    ))
+}
+
+/// Convert the exponent of each packed single-precision (32-bit) floating-point element in a to a single-precision (32-bit) floating-point number representing the integer exponent, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set). This intrinsic essentially calculates floor(log2(x)) for each element.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_getexp_ps&expand=2842)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vgetexpps))]
+pub unsafe fn _mm256_mask_getexp_ps(src: __m256, k: __mmask8, a: __m256) -> __m256 {
+    transmute(vgetexpps256(a.as_f32x8(), src.as_f32x8(), k))
+}
+
+/// Convert the exponent of each packed single-precision (32-bit) floating-point element in a to a single-precision (32-bit) floating-point number representing the integer exponent, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set). This intrinsic essentially calculates floor(log2(x)) for each element.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_getexp_ps&expand=2843)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vgetexpps))]
+pub unsafe fn _mm256_maskz_getexp_ps(k: __mmask8, a: __m256) -> __m256 {
+    transmute(vgetexpps256(
+        a.as_f32x8(),
+        _mm256_setzero_ps().as_f32x8(),
+        k,
+    ))
+}
+
+/// Convert the exponent of each packed single-precision (32-bit) floating-point element in a to a single-precision (32-bit) floating-point number representing the integer exponent, and store the results in dst. This intrinsic essentially calculates floor(log2(x)) for each element.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_getexp_ps&expand=2838)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vgetexpps))]
+pub unsafe fn _mm_getexp_ps(a: __m128) -> __m128 {
+    transmute(vgetexpps128(
+        a.as_f32x4(),
+        _mm_setzero_ps().as_f32x4(),
+        0b00001111,
+    ))
+}
+
+/// Convert the exponent of each packed single-precision (32-bit) floating-point element in a to a single-precision (32-bit) floating-point number representing the integer exponent, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set). This intrinsic essentially calculates floor(log2(x)) for each element.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_getexp_ps&expand=2839)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vgetexpps))]
+pub unsafe fn _mm_mask_getexp_ps(src: __m128, k: __mmask8, a: __m128) -> __m128 {
+    transmute(vgetexpps128(a.as_f32x4(), src.as_f32x4(), k))
+}
+
+/// Convert the exponent of each packed single-precision (32-bit) floating-point element in a to a single-precision (32-bit) floating-point number representing the integer exponent, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set). This intrinsic essentially calculates floor(log2(x)) for each element.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_getexp_ps&expand=2840)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vgetexpps))]
+pub unsafe fn _mm_maskz_getexp_ps(k: __mmask8, a: __m128) -> __m128 {
+    transmute(vgetexpps128(a.as_f32x4(), _mm_setzero_ps().as_f32x4(), k))
+}
+
 /// Convert the exponent of each packed double-precision (64-bit) floating-point element in a to a double-precision (64-bit) floating-point number representing the integer exponent, and store the results in dst. This intrinsic essentially calculates floor(log2(x)) for each element.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_getexp_pd&expand=2835)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_getexp_pd&expand=2835)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vgetexppd))]
@@ -3729,7 +3801,7 @@ pub unsafe fn _mm512_getexp_pd(a: __m512d) -> __m512d {
 
 /// Convert the exponent of each packed double-precision (64-bit) floating-point element in a to a double-precision (64-bit) floating-point number representing the integer exponent, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set). This intrinsic essentially calculates floor(log2(x)) for each element.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_getexp_pd&expand=2836)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_getexp_pd&expand=2836)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vgetexppd))]
@@ -3744,7 +3816,7 @@ pub unsafe fn _mm512_mask_getexp_pd(src: __m512d, k: __mmask8, a: __m512d) -> __
 
 /// Convert the exponent of each packed double-precision (64-bit) floating-point element in a to a double-precision (64-bit) floating-point number representing the integer exponent, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set). This intrinsic essentially calculates floor(log2(x)) for each element.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_getexp_pd&expand=2837)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_getexp_pd&expand=2837)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vgetexppd))]
@@ -3755,6 +3827,78 @@ pub unsafe fn _mm512_maskz_getexp_pd(k: __mmask8, a: __m512d) -> __m512d {
         k,
         _MM_FROUND_CUR_DIRECTION,
     ))
+}
+
+/// Convert the exponent of each packed double-precision (64-bit) floating-point element in a to a double-precision (64-bit) floating-point number representing the integer exponent, and store the results in dst. This intrinsic essentially calculates floor(log2(x)) for each element.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_getexp_pd&expand=2832)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vgetexppd))]
+pub unsafe fn _mm256_getexp_pd(a: __m256d) -> __m256d {
+    transmute(vgetexppd256(
+        a.as_f64x4(),
+        _mm256_setzero_pd().as_f64x4(),
+        0b00001111,
+    ))
+}
+
+/// Convert the exponent of each packed double-precision (64-bit) floating-point element in a to a double-precision (64-bit) floating-point number representing the integer exponent, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set). This intrinsic essentially calculates floor(log2(x)) for each element.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_getexp_pd&expand=2833)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vgetexppd))]
+pub unsafe fn _mm256_mask_getexp_pd(src: __m256d, k: __mmask8, a: __m256d) -> __m256d {
+    transmute(vgetexppd256(a.as_f64x4(), src.as_f64x4(), k))
+}
+
+/// Convert the exponent of each packed double-precision (64-bit) floating-point element in a to a double-precision (64-bit) floating-point number representing the integer exponent, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set). This intrinsic essentially calculates floor(log2(x)) for each element.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_getexp_pd&expand=2834)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vgetexppd))]
+pub unsafe fn _mm256_maskz_getexp_pd(k: __mmask8, a: __m256d) -> __m256d {
+    transmute(vgetexppd256(
+        a.as_f64x4(),
+        _mm256_setzero_pd().as_f64x4(),
+        k,
+    ))
+}
+
+/// Convert the exponent of each packed double-precision (64-bit) floating-point element in a to a double-precision (64-bit) floating-point number representing the integer exponent, and store the results in dst. This intrinsic essentially calculates floor(log2(x)) for each element.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_getexp_pd&expand=2829)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vgetexppd))]
+pub unsafe fn _mm_getexp_pd(a: __m128d) -> __m128d {
+    transmute(vgetexppd128(
+        a.as_f64x2(),
+        _mm_setzero_pd().as_f64x2(),
+        0b00000011,
+    ))
+}
+
+/// Convert the exponent of each packed double-precision (64-bit) floating-point element in a to a double-precision (64-bit) floating-point number representing the integer exponent, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set). This intrinsic essentially calculates floor(log2(x)) for each element.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_getexp_pd&expand=2830)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vgetexppd))]
+pub unsafe fn _mm_mask_getexp_pd(src: __m128d, k: __mmask8, a: __m128d) -> __m128d {
+    transmute(vgetexppd128(a.as_f64x2(), src.as_f64x2(), k))
+}
+
+/// Convert the exponent of each packed double-precision (64-bit) floating-point element in a to a double-precision (64-bit) floating-point number representing the integer exponent, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set). This intrinsic essentially calculates floor(log2(x)) for each element.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_getexp_pd&expand=2831)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vgetexppd))]
+pub unsafe fn _mm_maskz_getexp_pd(k: __mmask8, a: __m128d) -> __m128d {
+    transmute(vgetexppd128(a.as_f64x2(), _mm_setzero_pd().as_f64x2(), k))
 }
 
 /// Round packed single-precision (32-bit) floating-point elements in a to the number of fraction bits specified by imm8, and store the results in dst.\
@@ -26424,8 +26568,18 @@ extern "C" {
 
     #[link_name = "llvm.x86.avx512.mask.getexp.ps.512"]
     fn vgetexpps(a: f32x16, src: f32x16, m: u16, sae: i32) -> f32x16;
+
+    #[link_name = "llvm.x86.avx512.mask.getexp.ps.256"]
+    fn vgetexpps256(a: f32x8, src: f32x8, m: u8) -> f32x8;
+    #[link_name = "llvm.x86.avx512.mask.getexp.ps.128"]
+    fn vgetexpps128(a: f32x4, src: f32x4, m: u8) -> f32x4;
+
     #[link_name = "llvm.x86.avx512.mask.getexp.pd.512"]
     fn vgetexppd(a: f64x8, src: f64x8, m: u8, sae: i32) -> f64x8;
+    #[link_name = "llvm.x86.avx512.mask.getexp.pd.256"]
+    fn vgetexppd256(a: f64x4, src: f64x4, m: u8) -> f64x4;
+    #[link_name = "llvm.x86.avx512.mask.getexp.pd.128"]
+    fn vgetexppd128(a: f64x2, src: f64x2, m: u8) -> f64x2;
 
     #[link_name = "llvm.x86.avx512.mask.rndscale.ps.512"]
     fn vrndscaleps(a: f32x16, imm8: i32, src: f32x16, mask: u16, sae: i32) -> f32x16;
@@ -29038,6 +29192,62 @@ mod tests {
             0., 0., 0., 0., 0., 0., 0., 0., 1., 1., 1., 1., 1., 1., 1., 1.,
         );
         assert_eq_m512(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_getexp_ps() {
+        let a = _mm256_set1_ps(3.);
+        let r = _mm256_getexp_ps(a);
+        let e = _mm256_set1_ps(1.);
+        assert_eq_m256(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_mask_getexp_ps() {
+        let a = _mm256_set1_ps(3.);
+        let r = _mm256_mask_getexp_ps(a, 0, a);
+        assert_eq_m256(r, a);
+        let r = _mm256_mask_getexp_ps(a, 0b11111111, a);
+        let e = _mm256_set1_ps(1.);
+        assert_eq_m256(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_maskz_getexp_ps() {
+        let a = _mm256_set1_ps(3.);
+        let r = _mm256_maskz_getexp_ps(0, a);
+        assert_eq_m256(r, _mm256_setzero_ps());
+        let r = _mm256_maskz_getexp_ps(0b11111111, a);
+        let e = _mm256_set1_ps(1.);
+        assert_eq_m256(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_getexp_ps() {
+        let a = _mm_set1_ps(3.);
+        let r = _mm_getexp_ps(a);
+        let e = _mm_set1_ps(1.);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_mask_getexp_ps() {
+        let a = _mm_set1_ps(3.);
+        let r = _mm_mask_getexp_ps(a, 0, a);
+        assert_eq_m128(r, a);
+        let r = _mm_mask_getexp_ps(a, 0b00001111, a);
+        let e = _mm_set1_ps(1.);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_maskz_getexp_ps() {
+        let a = _mm_set1_ps(3.);
+        let r = _mm_maskz_getexp_ps(0, a);
+        assert_eq_m128(r, _mm_setzero_ps());
+        let r = _mm_maskz_getexp_ps(0b00001111, a);
+        let e = _mm_set1_ps(1.);
+        assert_eq_m128(r, e);
     }
 
     #[simd_test(enable = "avx512f")]
