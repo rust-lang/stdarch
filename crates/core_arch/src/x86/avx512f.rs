@@ -3305,7 +3305,7 @@ pub unsafe fn _mm512_mask3_fnmsub_pd(a: __m512d, b: __m512d, c: __m512d, k: __mm
 
 /// Compute the approximate reciprocal of packed single-precision (32-bit) floating-point elements in a, and store the results in dst. The maximum relative error for this approximation is less than 2^-14.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_rcp14_ps&expand=4502)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_rcp14_ps&expand=4502)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vrcp14ps))]
@@ -3319,7 +3319,7 @@ pub unsafe fn _mm512_rcp14_ps(a: __m512) -> __m512 {
 
 /// Compute the approximate reciprocal of packed single-precision (32-bit) floating-point elements in a, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set). The maximum relative error for this approximation is less than 2^-14.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_rcp14_ps&expand=4500)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_rcp14_ps&expand=4500)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vrcp14ps))]
@@ -3329,7 +3329,7 @@ pub unsafe fn _mm512_mask_rcp14_ps(src: __m512, k: __mmask16, a: __m512) -> __m5
 
 /// Compute the approximate reciprocal of packed single-precision (32-bit) floating-point elements in a, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set). The maximum relative error for this approximation is less than 2^-14.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_rcp14_ps&expand=4501)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_rcp14_ps&expand=4501)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vrcp14ps))]
@@ -3337,9 +3337,77 @@ pub unsafe fn _mm512_maskz_rcp14_ps(k: __mmask16, a: __m512) -> __m512 {
     transmute(vrcp14ps(a.as_f32x16(), _mm512_setzero_ps().as_f32x16(), k))
 }
 
+/// Compute the approximate reciprocal of packed single-precision (32-bit) floating-point elements in a, and store the results in dst. The maximum relative error for this approximation is less than 2^-14.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_rcp14_ps&expand=4499)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vrcp14ps))]
+pub unsafe fn _mm256_rcp14_ps(a: __m256) -> __m256 {
+    transmute(vrcp14ps256(
+        a.as_f32x8(),
+        _mm256_setzero_ps().as_f32x8(),
+        0b11111111,
+    ))
+}
+
+/// Compute the approximate reciprocal of packed single-precision (32-bit) floating-point elements in a, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set). The maximum relative error for this approximation is less than 2^-14.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_rcp14_ps&expand=4497)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vrcp14ps))]
+pub unsafe fn _mm256_mask_rcp14_ps(src: __m256, k: __mmask8, a: __m256) -> __m256 {
+    transmute(vrcp14ps256(a.as_f32x8(), src.as_f32x8(), k))
+}
+
+/// Compute the approximate reciprocal of packed single-precision (32-bit) floating-point elements in a, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set). The maximum relative error for this approximation is less than 2^-14.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_rcp14_ps&expand=4498)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vrcp14ps))]
+pub unsafe fn _mm256_maskz_rcp14_ps(k: __mmask8, a: __m256) -> __m256 {
+    transmute(vrcp14ps256(a.as_f32x8(), _mm256_setzero_ps().as_f32x8(), k))
+}
+
+/// Compute the approximate reciprocal of packed single-precision (32-bit) floating-point elements in a, and store the results in dst. The maximum relative error for this approximation is less than 2^-14.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_rcp14_ps&expand=4496)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vrcp14ps))]
+pub unsafe fn _mm_rcp14_ps(a: __m128) -> __m128 {
+    transmute(vrcp14ps128(
+        a.as_f32x4(),
+        _mm_setzero_ps().as_f32x4(),
+        0b00001111,
+    ))
+}
+
+/// Compute the approximate reciprocal of packed single-precision (32-bit) floating-point elements in a, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set). The maximum relative error for this approximation is less than 2^-14.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_rcp14_ps&expand=4494)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vrcp14ps))]
+pub unsafe fn _mm_mask_rcp14_ps(src: __m128, k: __mmask8, a: __m128) -> __m128 {
+    transmute(vrcp14ps128(a.as_f32x4(), src.as_f32x4(), k))
+}
+
+/// Compute the approximate reciprocal of packed single-precision (32-bit) floating-point elements in a, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set). The maximum relative error for this approximation is less than 2^-14.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_rcp14_ps&expand=4495)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vrcp14ps))]
+pub unsafe fn _mm_maskz_rcp14_ps(k: __mmask8, a: __m128) -> __m128 {
+    transmute(vrcp14ps128(a.as_f32x4(), _mm_setzero_ps().as_f32x4(), k))
+}
+
 /// Compute the approximate reciprocal of packed double-precision (64-bit) floating-point elements in a, and store the results in dst. The maximum relative error for this approximation is less than 2^-14.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_rcp14_pd&expand=4493)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_rcp14_pd&expand=4493)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vrcp14pd))]
@@ -3353,7 +3421,7 @@ pub unsafe fn _mm512_rcp14_pd(a: __m512d) -> __m512d {
 
 /// Compute the approximate reciprocal of packed double-precision (64-bit) floating-point elements in a, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set). The maximum relative error for this approximation is less than 2^-14.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_rcp14_pd&expand=4491)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_rcp14_pd&expand=4491)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vrcp14pd))]
@@ -3363,7 +3431,7 @@ pub unsafe fn _mm512_mask_rcp14_pd(src: __m512d, k: __mmask8, a: __m512d) -> __m
 
 /// Compute the approximate reciprocal of packed double-precision (64-bit) floating-point elements in a, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set). The maximum relative error for this approximation is less than 2^-14.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_rcp14_pd&expand=4492)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_rcp14_pd&expand=4492)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vrcp14pd))]
@@ -3371,9 +3439,77 @@ pub unsafe fn _mm512_maskz_rcp14_pd(k: __mmask8, a: __m512d) -> __m512d {
     transmute(vrcp14pd(a.as_f64x8(), _mm512_setzero_pd().as_f64x8(), k))
 }
 
+/// Compute the approximate reciprocal of packed double-precision (64-bit) floating-point elements in a, and store the results in dst. The maximum relative error for this approximation is less than 2^-14.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_rcp14_pd&expand=4490)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vrcp14pd))]
+pub unsafe fn _mm256_rcp14_pd(a: __m256d) -> __m256d {
+    transmute(vrcp14pd256(
+        a.as_f64x4(),
+        _mm256_setzero_pd().as_f64x4(),
+        0b00001111,
+    ))
+}
+
+/// Compute the approximate reciprocal of packed double-precision (64-bit) floating-point elements in a, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set). The maximum relative error for this approximation is less than 2^-14.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_rcp14_pd&expand=4488)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vrcp14pd))]
+pub unsafe fn _mm256_mask_rcp14_pd(src: __m256d, k: __mmask8, a: __m256d) -> __m256d {
+    transmute(vrcp14pd256(a.as_f64x4(), src.as_f64x4(), k))
+}
+
+/// Compute the approximate reciprocal of packed double-precision (64-bit) floating-point elements in a, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set). The maximum relative error for this approximation is less than 2^-14.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_rcp14_pd&expand=4489)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vrcp14pd))]
+pub unsafe fn _mm256_maskz_rcp14_pd(k: __mmask8, a: __m256d) -> __m256d {
+    transmute(vrcp14pd256(a.as_f64x4(), _mm256_setzero_pd().as_f64x4(), k))
+}
+
+/// Compute the approximate reciprocal of packed double-precision (64-bit) floating-point elements in a, and store the results in dst. The maximum relative error for this approximation is less than 2^-14.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_rcp14_pd&expand=4487)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vrcp14pd))]
+pub unsafe fn _mm_rcp14_pd(a: __m128d) -> __m128d {
+    transmute(vrcp14pd128(
+        a.as_f64x2(),
+        _mm_setzero_pd().as_f64x2(),
+        0b00000011,
+    ))
+}
+
+/// Compute the approximate reciprocal of packed double-precision (64-bit) floating-point elements in a, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set). The maximum relative error for this approximation is less than 2^-14.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_rcp14_pd&expand=4485)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vrcp14pd))]
+pub unsafe fn _mm_mask_rcp14_pd(src: __m128d, k: __mmask8, a: __m128d) -> __m128d {
+    transmute(vrcp14pd128(a.as_f64x2(), src.as_f64x2(), k))
+}
+
+/// Compute the approximate reciprocal of packed double-precision (64-bit) floating-point elements in a, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set). The maximum relative error for this approximation is less than 2^-14.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_rcp14_pd&expand=4486)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vrcp14pd))]
+pub unsafe fn _mm_maskz_rcp14_pd(k: __mmask8, a: __m128d) -> __m128d {
+    transmute(vrcp14pd128(a.as_f64x2(), _mm_setzero_pd().as_f64x2(), k))
+}
+
 /// Compute the approximate reciprocal square root of packed single-precision (32-bit) floating-point elements in a, and store the results in dst. The maximum relative error for this approximation is less than 2^-14.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_rsqrt14_ps&expand=4819)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_rsqrt14_ps&expand=4819)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vrsqrt14ps))]
@@ -3387,7 +3523,7 @@ pub unsafe fn _mm512_rsqrt14_ps(a: __m512) -> __m512 {
 
 /// Compute the approximate reciprocal square root of packed single-precision (32-bit) floating-point elements in a, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set). The maximum relative error for this approximation is less than 2^-14.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_rsqrt14_ps&expand=4817)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_rsqrt14_ps&expand=4817)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vrsqrt14ps))]
@@ -3397,7 +3533,7 @@ pub unsafe fn _mm512_mask_rsqrt14_ps(src: __m512, k: __mmask16, a: __m512) -> __
 
 /// Compute the approximate reciprocal square root of packed single-precision (32-bit) floating-point elements in a, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set). The maximum relative error for this approximation is less than 2^-14.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_rsqrt14_ps&expand=4818)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_rsqrt14_ps&expand=4818)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vrsqrt14ps))]
@@ -3409,9 +3545,53 @@ pub unsafe fn _mm512_maskz_rsqrt14_ps(k: __mmask16, a: __m512) -> __m512 {
     ))
 }
 
+/// Compute the approximate reciprocal square root of packed single-precision (32-bit) floating-point elements in a, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set). The maximum relative error for this approximation is less than 2^-14.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_rsqrt14_ps&expand=4815)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vrsqrt14ps))]
+pub unsafe fn _mm256_mask_rsqrt14_ps(src: __m256, k: __mmask8, a: __m256) -> __m256 {
+    transmute(vrsqrt14ps256(a.as_f32x8(), src.as_f32x8(), k))
+}
+
+/// Compute the approximate reciprocal square root of packed single-precision (32-bit) floating-point elements in a, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set). The maximum relative error for this approximation is less than 2^-14.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_rsqrt14_ps&expand=4816)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vrsqrt14ps))]
+pub unsafe fn _mm256_maskz_rsqrt14_ps(k: __mmask8, a: __m256) -> __m256 {
+    transmute(vrsqrt14ps256(
+        a.as_f32x8(),
+        _mm256_setzero_ps().as_f32x8(),
+        k,
+    ))
+}
+
+/// Compute the approximate reciprocal square root of packed single-precision (32-bit) floating-point elements in a, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set). The maximum relative error for this approximation is less than 2^-14.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_rsqrt14_ps&expand=4813)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vrsqrt14ps))]
+pub unsafe fn _mm_mask_rsqrt14_ps(src: __m128, k: __mmask8, a: __m128) -> __m128 {
+    transmute(vrsqrt14ps128(a.as_f32x4(), src.as_f32x4(), k))
+}
+
+/// Compute the approximate reciprocal square root of packed single-precision (32-bit) floating-point elements in a, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set). The maximum relative error for this approximation is less than 2^-14.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_rsqrt14_ps&expand=4814)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vrsqrt14ps))]
+pub unsafe fn _mm_maskz_rsqrt14_ps(k: __mmask8, a: __m128) -> __m128 {
+    transmute(vrsqrt14ps128(a.as_f32x4(), _mm_setzero_ps().as_f32x4(), k))
+}
+
 /// Compute the approximate reciprocal square root of packed double-precision (64-bit) floating-point elements in a, and store the results in dst. The maximum relative error for this approximation is less than 2^-14.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_rsqrt14_pd&expand=4812)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_rsqrt14_pd&expand=4812)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vrsqrt14pd))]
@@ -3425,7 +3605,7 @@ pub unsafe fn _mm512_rsqrt14_pd(a: __m512d) -> __m512d {
 
 /// Compute the approximate reciprocal square root of packed double-precision (64-bit) floating-point elements in a, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set). The maximum relative error for this approximation is less than 2^-14.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_rsqrt14_pd&expand=4810)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_rsqrt14_pd&expand=4810)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vrsqrt14pd))]
@@ -3435,12 +3615,56 @@ pub unsafe fn _mm512_mask_rsqrt14_pd(src: __m512d, k: __mmask8, a: __m512d) -> _
 
 /// Compute the approximate reciprocal square root of packed double-precision (64-bit) floating-point elements in a, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set). The maximum relative error for this approximation is less than 2^-14.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_rsqrt14_pd&expand=4811)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_rsqrt14_pd&expand=4811)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vrsqrt14pd))]
 pub unsafe fn _mm512_maskz_rsqrt14_pd(k: __mmask8, a: __m512d) -> __m512d {
     transmute(vrsqrt14pd(a.as_f64x8(), _mm512_setzero_pd().as_f64x8(), k))
+}
+
+/// Compute the approximate reciprocal square root of packed double-precision (64-bit) floating-point elements in a, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set). The maximum relative error for this approximation is less than 2^-14.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_rsqrt14_pd&expand=4808)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vrsqrt14pd))]
+pub unsafe fn _mm256_mask_rsqrt14_pd(src: __m256d, k: __mmask8, a: __m256d) -> __m256d {
+    transmute(vrsqrt14pd256(a.as_f64x4(), src.as_f64x4(), k))
+}
+
+/// Compute the approximate reciprocal square root of packed double-precision (64-bit) floating-point elements in a, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set). The maximum relative error for this approximation is less than 2^-14.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_rsqrt14_pd&expand=4809)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vrsqrt14pd))]
+pub unsafe fn _mm256_maskz_rsqrt14_pd(k: __mmask8, a: __m256d) -> __m256d {
+    transmute(vrsqrt14pd256(
+        a.as_f64x4(),
+        _mm256_setzero_pd().as_f64x4(),
+        k,
+    ))
+}
+
+/// Compute the approximate reciprocal square root of packed double-precision (64-bit) floating-point elements in a, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set). The maximum relative error for this approximation is less than 2^-14.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_rsqrt14_pd&expand=4806)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vrsqrt14pd))]
+pub unsafe fn _mm_mask_rsqrt14_pd(src: __m128d, k: __mmask8, a: __m128d) -> __m128d {
+    transmute(vrsqrt14pd128(a.as_f64x2(), src.as_f64x2(), k))
+}
+
+/// Compute the approximate reciprocal square root of packed double-precision (64-bit) floating-point elements in a, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set). The maximum relative error for this approximation is less than 2^-14.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_rsqrt14_pd&expand=4807)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vrsqrt14pd))]
+pub unsafe fn _mm_maskz_rsqrt14_pd(k: __mmask8, a: __m128d) -> __m128d {
+    transmute(vrsqrt14pd128(a.as_f64x2(), _mm_setzero_pd().as_f64x2(), k))
 }
 
 /// Convert the exponent of each packed single-precision (32-bit) floating-point element in a to a single-precision (32-bit) floating-point number representing the integer exponent, and store the results in dst. This intrinsic essentially calculates floor(log2(x)) for each element.
@@ -26233,12 +26457,31 @@ extern "C" {
 
     #[link_name = "llvm.x86.avx512.rcp14.ps.512"]
     fn vrcp14ps(a: f32x16, src: f32x16, m: u16) -> f32x16;
+    #[link_name = "llvm.x86.avx512.rcp14.ps.256"]
+    fn vrcp14ps256(a: f32x8, src: f32x8, m: u8) -> f32x8;
+    #[link_name = "llvm.x86.avx512.rcp14.ps.128"]
+    fn vrcp14ps128(a: f32x4, src: f32x4, m: u8) -> f32x4;
+
     #[link_name = "llvm.x86.avx512.rcp14.pd.512"]
     fn vrcp14pd(a: f64x8, src: f64x8, m: u8) -> f64x8;
+    #[link_name = "llvm.x86.avx512.rcp14.pd.256"]
+    fn vrcp14pd256(a: f64x4, src: f64x4, m: u8) -> f64x4;
+    #[link_name = "llvm.x86.avx512.rcp14.pd.128"]
+    fn vrcp14pd128(a: f64x2, src: f64x2, m: u8) -> f64x2;
+
     #[link_name = "llvm.x86.avx512.rsqrt14.ps.512"]
     fn vrsqrt14ps(a: f32x16, src: f32x16, m: u16) -> f32x16;
+    #[link_name = "llvm.x86.avx512.rsqrt14.ps.256"]
+    fn vrsqrt14ps256(a: f32x8, src: f32x8, m: u8) -> f32x8;
+    #[link_name = "llvm.x86.avx512.rsqrt14.ps.128"]
+    fn vrsqrt14ps128(a: f32x4, src: f32x4, m: u8) -> f32x4;
+
     #[link_name = "llvm.x86.avx512.rsqrt14.pd.512"]
     fn vrsqrt14pd(a: f64x8, src: f64x8, m: u8) -> f64x8;
+    #[link_name = "llvm.x86.avx512.rsqrt14.pd.256"]
+    fn vrsqrt14pd256(a: f64x4, src: f64x4, m: u8) -> f64x4;
+    #[link_name = "llvm.x86.avx512.rsqrt14.pd.128"]
+    fn vrsqrt14pd128(a: f64x2, src: f64x2, m: u8) -> f64x2;
 
     #[link_name = "llvm.x86.avx512.mask.cvtps2dq.512"]
     fn vcvtps2dq(a: f32x16, src: i32x16, mask: u16, rounding: i32) -> i32x16;
@@ -28635,6 +28878,62 @@ mod tests {
         assert_eq_m512(r, e);
     }
 
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_rcp14_ps() {
+        let a = _mm256_set1_ps(3.);
+        let r = _mm256_rcp14_ps(a);
+        let e = _mm256_set1_ps(0.33333206);
+        assert_eq_m256(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_mask_rcp14_ps() {
+        let a = _mm256_set1_ps(3.);
+        let r = _mm256_mask_rcp14_ps(a, 0, a);
+        assert_eq_m256(r, a);
+        let r = _mm256_mask_rcp14_ps(a, 0b11111111, a);
+        let e = _mm256_set1_ps(0.33333206);
+        assert_eq_m256(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_maskz_rcp14_ps() {
+        let a = _mm256_set1_ps(3.);
+        let r = _mm256_maskz_rcp14_ps(0, a);
+        assert_eq_m256(r, _mm256_setzero_ps());
+        let r = _mm256_maskz_rcp14_ps(0b11111111, a);
+        let e = _mm256_set1_ps(0.33333206);
+        assert_eq_m256(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_rcp14_ps() {
+        let a = _mm_set1_ps(3.);
+        let r = _mm_rcp14_ps(a);
+        let e = _mm_set1_ps(0.33333206);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_mask_rcp14_ps() {
+        let a = _mm_set1_ps(3.);
+        let r = _mm_mask_rcp14_ps(a, 0, a);
+        assert_eq_m128(r, a);
+        let r = _mm_mask_rcp14_ps(a, 0b00001111, a);
+        let e = _mm_set1_ps(0.33333206);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_maskz_rcp14_ps() {
+        let a = _mm_set1_ps(3.);
+        let r = _mm_maskz_rcp14_ps(0, a);
+        assert_eq_m128(r, _mm_setzero_ps());
+        let r = _mm_maskz_rcp14_ps(0b00001111, a);
+        let e = _mm_set1_ps(0.33333206);
+        assert_eq_m128(r, e);
+    }
+
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_rsqrt14_ps() {
         let a = _mm512_set1_ps(3.);
@@ -28667,6 +28966,46 @@ mod tests {
             0.5773392, 0.5773392, 0.5773392,
         );
         assert_eq_m512(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_mask_rsqrt14_ps() {
+        let a = _mm256_set1_ps(3.);
+        let r = _mm256_mask_rsqrt14_ps(a, 0, a);
+        assert_eq_m256(r, a);
+        let r = _mm256_mask_rsqrt14_ps(a, 0b11111111, a);
+        let e = _mm256_set1_ps(0.5773392);
+        assert_eq_m256(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_maskz_rsqrt14_ps() {
+        let a = _mm256_set1_ps(3.);
+        let r = _mm256_maskz_rsqrt14_ps(0, a);
+        assert_eq_m256(r, _mm256_setzero_ps());
+        let r = _mm256_maskz_rsqrt14_ps(0b11111111, a);
+        let e = _mm256_set1_ps(0.5773392);
+        assert_eq_m256(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_mask_rsqrt14_ps() {
+        let a = _mm_set1_ps(3.);
+        let r = _mm_mask_rsqrt14_ps(a, 0, a);
+        assert_eq_m128(r, a);
+        let r = _mm_mask_rsqrt14_ps(a, 0b00001111, a);
+        let e = _mm_set1_ps(0.5773392);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_maskz_rsqrt14_ps() {
+        let a = _mm_set1_ps(3.);
+        let r = _mm_maskz_rsqrt14_ps(0, a);
+        assert_eq_m128(r, _mm_setzero_ps());
+        let r = _mm_maskz_rsqrt14_ps(0b00001111, a);
+        let e = _mm_set1_ps(0.5773392);
+        assert_eq_m128(r, e);
     }
 
     #[simd_test(enable = "avx512f")]
