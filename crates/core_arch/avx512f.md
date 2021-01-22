@@ -343,16 +343,56 @@
   * [x] [`_mm512_getmant_pd`]
   * [x] [`_mm512_mask_getmant_pd`]
   * [x] [`_mm512_maskz_getmant_pd`]
-
-
+  * [x] [`_mm_getmant_pd`]
+  * [x] [`_mm_mask_getmant_pd`]
+  * [x] [`_mm_maskz_getmant_pd`]
+  * [x] [`_mm256_getmant_pd`]
+  * [x] [`_mm256_mask_getmant_pd`]
+  * [x] [`_mm256_maskz_getmant_pd`]
   * [x] [`_mm512_getmant_round_ps`]
   * [x] [`_mm512_mask_getmant_round_ps`]
   * [x] [`_mm512_maskz_getmant_round_ps`]
-
   * [x] [`_mm512_getmant_round_pd`]
   * [x] [`_mm512_mask_getmant_round_pd`]
   * [x] [`_mm512_maskz_getmant_round_pd`]
+  * [x] [`_mm512_roundscale_ps`]
+  * [x] [`_mm512_mask_roundscale_ps`]
+  * [x] [`_mm512_maskz_roundscale_ps`]
+  * [x] [`_mm_mask_roundscale_ps`]
+  * [x] [`_mm_maskz_roundscale_ps`]
+  * [x] [`_mm_roundscale_ps`]
+  * [x] [`_mm256_mask_roundscale_ps`]
+  * [x] [`_mm256_maskz_roundscale_ps`]
+  * [x] [`_mm256_roundscale_ps`]
+  * [x] [`_mm512_roundscale_pd`]
+  * [x] [`_mm512_mask_roundscale_pd`]
+  * [x] [`_mm512_maskz_roundscale_pd`]
+  * [x] [`_mm_mask_roundscale_pd`]
+  * [x] [`_mm_maskz_roundscale_pd`]
+  * [x] [`_mm_roundscale_pd`]
+  * [x] [`_mm256_mask_roundscale_pd`]
+  * [x] [`_mm256_maskz_roundscale_pd`]
+  * [x] [`_mm256_roundscale_pd`]
+  * [x] [`_mm512_roundscale_round_ps`]
+  * [x] [`_mm512_mask_roundscale_round_ps`]
+  * [x] [`_mm512_maskz_roundscale_round_ps`]
+  * [x] [`_mm512_roundscale_round_pd`]
+  * [x] [`_mm512_mask_roundscale_round_pd`]
+  * [x] [`_mm512_maskz_roundscale_round_pd`]
+  * [x] [`_mm512_scalef_ps`]
+  * [x] [`_mm512_mask_scalef_ps`]
+  * [x] [`_mm512_maskz_scalef_ps`]
 
+  * [x] [`_mm512_scalef_pd`]
+  * [x] [`_mm512_mask_scalef_pd`]
+  * [x] [`_mm512_maskz_scalef_pd`]
+
+  * [x] [`_mm512_scalef_round_ps`]
+  * [x] [`_mm512_mask_scalef_round_ps`]
+  * [x] [`_mm512_maskz_scalef_round_ps`]
+  * [x] [`_mm512_scalef_round_pd`]
+  * [x] [`_mm512_mask_scalef_round_pd`]
+  * [x] [`_mm512_maskz_scalef_round_pd`]
 
   * [x] [`_mm512_alignr_epi32`]
   * [x] [`_mm512_alignr_epi64`]
@@ -527,7 +567,6 @@
   * [x] [`_mm512_fnmsub_ps`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_fnmsub_ps&expand=5236)
   * [x] [`_mm512_fnmsub_round_pd`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_fnmsub_round_pd&expand=5236)
   * [x] [`_mm512_fnmsub_round_ps`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_fnmsub_round_ps&expand=5236)
-:
   * [ ] [`_mm512_i32extgather_epi32`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_i32extgather_epi32&expand=5236)
   * [ ] [`_mm512_i32extgather_ps`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_i32extgather_ps&expand=5236)
   * [ ] [`_mm512_i32extscatter_epi32`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_i32extscatter_epi32&expand=5236)
@@ -797,7 +836,6 @@
   * [x] [`_mm512_mask_fnmsub_ps`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_fnmsub_ps&expand=5236)
   * [x] [`_mm512_mask_fnmsub_round_pd`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_fnmsub_round_pd&expand=5236)
   * [x] [`_mm512_mask_fnmsub_round_ps`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_fnmsub_round_ps&expand=5236)
-
   * [ ] [`_mm512_mask_i32extgather_epi32`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_i32extgather_epi32&expand=5236)
   * [ ] [`_mm512_mask_i32extgather_ps`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_i32extgather_ps&expand=5236)
   * [ ] [`_mm512_mask_i32extscatter_epi32`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_i32extscatter_epi32&expand=5236)
@@ -893,14 +931,6 @@
   * [x] [`_mm512_mask_ror_epi64`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_ror_epi64&expand=5236)
   * [x] [`_mm512_mask_rorv_epi32`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_rorv_epi32&expand=5236)
   * [x] [`_mm512_mask_rorv_epi64`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_rorv_epi64&expand=5236)
-  * [x] [`_mm512_mask_roundscale_pd`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_roundscale_pd&expand=5236)
-  * [x] [`_mm512_mask_roundscale_ps`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_roundscale_ps&expand=5236)
-  * [x] [`_mm512_mask_roundscale_round_pd`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_roundscale_round_pd&expand=5236)
-  * [x] [`_mm512_mask_roundscale_round_ps`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_roundscale_round_ps&expand=5236)
-  * [x] [`_mm512_mask_scalef_pd`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_scalef_pd&expand=5236)
-  * [x] [`_mm512_mask_scalef_ps`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_scalef_ps&expand=5236)
-  * [x] [`_mm512_mask_scalef_round_pd`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_scalef_round_pd&expand=5236)
-  * [x] [`_mm512_mask_scalef_round_ps`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_scalef_round_ps&expand=5236)
   * [x] [`_mm512_mask_set1_epi32`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_set1_epi32&expand=5236)
   * [x] [`_mm512_mask_set1_epi64`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_set1_epi64&expand=5236)
   * [x] [`_mm512_mask_shuffle_epi32`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_shuffle_epi32&expand=5236)
@@ -1065,7 +1095,6 @@
   * [x] [`_mm512_maskz_fnmsub_ps`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_fnmsub_ps&expand=5236)
   * [x] [`_mm512_maskz_fnmsub_round_pd`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_fnmsub_round_pd&expand=5236)
   * [x] [`_mm512_maskz_fnmsub_round_ps`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_fnmsub_round_ps&expand=5236)
-
   * [x] [`_mm512_maskz_insertf32x4`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_insertf32x4&expand=5236)
   * [x] [`_mm512_maskz_insertf64x4`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_insertf64x4&expand=5236)
   * [x] [`_mm512_maskz_inserti32x4`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_inserti32x4&expand=5236)
@@ -1109,14 +1138,6 @@
   * [x] [`_mm512_maskz_ror_epi64`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_ror_epi64&expand=5236)
   * [x] [`_mm512_maskz_rorv_epi32`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_rorv_epi32&expand=5236)
   * [x] [`_mm512_maskz_rorv_epi64`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_rorv_epi64&expand=5236)
-  * [x] [`_mm512_maskz_roundscale_pd`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_roundscale_pd&expand=5236)
-  * [x] [`_mm512_maskz_roundscale_ps`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_roundscale_ps&expand=5236)
-  * [x] [`_mm512_maskz_roundscale_round_pd`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_roundscale_round_pd&expand=5236)
-  * [x] [`_mm512_maskz_roundscale_round_ps`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_roundscale_round_ps&expand=5236)
-  * [x] [`_mm512_maskz_scalef_pd`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_scalef_pd&expand=5236)
-  * [x] [`_mm512_maskz_scalef_ps`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_scalef_ps&expand=5236)
-  * [x] [`_mm512_maskz_scalef_round_pd`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_scalef_round_pd&expand=5236)
-  * [x] [`_mm512_maskz_scalef_round_ps`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_scalef_round_ps&expand=5236)
   * [x] [`_mm512_maskz_set1_epi32`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_set1_epi32&expand=5236)
   * [x] [`_mm512_maskz_set1_epi64`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_set1_epi64&expand=5236)
   * [x] [`_mm512_maskz_shuffle_epi32`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_shuffle_epi32&expand=5236)
@@ -1209,14 +1230,6 @@
   * [x] [`_mm512_ror_epi64`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_ror_epi64&expand=5236)
   * [x] [`_mm512_rorv_epi32`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_rorv_epi32&expand=5236)
   * [x] [`_mm512_rorv_epi64`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_rorv_epi64&expand=5236)
-  * [x] [`_mm512_roundscale_pd`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_roundscale_pd&expand=5236)
-  * [x] [`_mm512_roundscale_ps`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_roundscale_ps&expand=5236)
-  * [x] [`_mm512_roundscale_round_pd`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_roundscale_round_pd&expand=5236)
-  * [x] [`_mm512_roundscale_round_ps`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_roundscale_round_ps&expand=5236)
-  * [x] [`_mm512_scalef_pd`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_scalef_pd&expand=5236)
-  * [x] [`_mm512_scalef_ps`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_scalef_ps&expand=5236)
-  * [x] [`_mm512_scalef_round_pd`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_scalef_round_pd&expand=5236)
-  * [x] [`_mm512_scalef_round_ps`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_scalef_round_ps&expand=5236)
   * [x] [`_mm512_set1_epi16`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_set1_epi16&expand=5236)
   * [x] [`_mm512_set1_epi32`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_set1_epi32&expand=5236)
   * [x] [`_mm512_set1_epi64`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_set1_epi64&expand=5236)
