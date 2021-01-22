@@ -4466,7 +4466,7 @@ pub unsafe fn _mm512_maskz_ternarylogic_epi64(
 ///    _MM_MANT_SIGN_zero    // sign = 0
 ///    _MM_MANT_SIGN_nan     // dst = NaN if sign(src) = 1
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_getmant_ps&expand=2880)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_getmant_ps&expand=2880)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vgetmantps, norm = 0, sign = 0))]
@@ -4476,12 +4476,14 @@ pub unsafe fn _mm512_getmant_ps(
     norm: _MM_MANTISSA_NORM_ENUM,
     sign: _MM_MANTISSA_SIGN_ENUM,
 ) -> __m512 {
+    let a = a.as_f32x16();
+    let zero = _mm512_setzero_ps().as_f32x16();
     macro_rules! call {
         ($imm4:expr, $imm2:expr) => {
             vgetmantps(
-                a.as_f32x16(),
+                a,
                 $imm2 << 2 | $imm4,
-                _mm512_setzero_ps().as_f32x16(),
+                zero,
                 0b11111111_11111111,
                 _MM_FROUND_CUR_DIRECTION,
             )
@@ -4502,7 +4504,7 @@ pub unsafe fn _mm512_getmant_ps(
 ///    _MM_MANT_SIGN_zero    // sign = 0\
 ///    _MM_MANT_SIGN_nan     // dst = NaN if sign(src) = 1
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_getmant_ps&expand=2881)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_getmant_ps&expand=2881)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vgetmantps, norm = 0, sign = 0))]
@@ -4514,15 +4516,11 @@ pub unsafe fn _mm512_mask_getmant_ps(
     norm: _MM_MANTISSA_NORM_ENUM,
     sign: _MM_MANTISSA_SIGN_ENUM,
 ) -> __m512 {
+    let a = a.as_f32x16();
+    let src = src.as_f32x16();
     macro_rules! call {
         ($imm4:expr, $imm2:expr) => {
-            vgetmantps(
-                a.as_f32x16(),
-                $imm2 << 2 | $imm4,
-                src.as_f32x16(),
-                k,
-                _MM_FROUND_CUR_DIRECTION,
-            )
+            vgetmantps(a, $imm2 << 2 | $imm4, src, k, _MM_FROUND_CUR_DIRECTION)
         };
     }
     let r = constify_imm4_mantissas!(norm, sign, call);
@@ -4540,7 +4538,7 @@ pub unsafe fn _mm512_mask_getmant_ps(
 ///    _MM_MANT_SIGN_zero    // sign = 0\
 ///    _MM_MANT_SIGN_nan     // dst = NaN if sign(src) = 1
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_getmant_ps&expand=2882)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_getmant_ps&expand=2882)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vgetmantps, norm = 0, sign = 0))]
@@ -4551,15 +4549,209 @@ pub unsafe fn _mm512_maskz_getmant_ps(
     norm: _MM_MANTISSA_NORM_ENUM,
     sign: _MM_MANTISSA_SIGN_ENUM,
 ) -> __m512 {
+    let a = a.as_f32x16();
+    let zero = _mm512_setzero_ps().as_f32x16();
     macro_rules! call {
         ($imm4:expr, $imm2:expr) => {
-            vgetmantps(
-                a.as_f32x16(),
-                $imm2 << 2 | $imm4,
-                _mm512_setzero_ps().as_f32x16(),
-                k,
-                _MM_FROUND_CUR_DIRECTION,
-            )
+            vgetmantps(a, $imm2 << 2 | $imm4, zero, k, _MM_FROUND_CUR_DIRECTION)
+        };
+    }
+    let r = constify_imm4_mantissas!(norm, sign, call);
+    transmute(r)
+}
+
+/// Normalize the mantissas of packed single-precision (32-bit) floating-point elements in a, and store the results in dst. This intrinsic essentially calculates ±(2^k)*|x.significand|, where k depends on the interval range defined by interv and the sign depends on sc and the source sign.
+/// The mantissa is normalized to the interval specified by interv, which can take the following values:
+///    _MM_MANT_NORM_1_2     // interval [1, 2)
+///    _MM_MANT_NORM_p5_2    // interval [0.5, 2)
+///    _MM_MANT_NORM_p5_1    // interval [0.5, 1)
+///    _MM_MANT_NORM_p75_1p5 // interval [0.75, 1.5)
+/// The sign is determined by sc which can take the following values:
+///    _MM_MANT_SIGN_src     // sign = sign(src)
+///    _MM_MANT_SIGN_zero    // sign = 0
+///    _MM_MANT_SIGN_nan     // dst = NaN if sign(src) = 1
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_getmant_ps&expand=2877)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vgetmantps, norm = 0, sign = 0))]
+#[rustc_args_required_const(1, 2)]
+pub unsafe fn _mm256_getmant_ps(
+    a: __m256,
+    norm: _MM_MANTISSA_NORM_ENUM,
+    sign: _MM_MANTISSA_SIGN_ENUM,
+) -> __m256 {
+    let a = a.as_f32x8();
+    let zero = _mm256_setzero_ps().as_f32x8();
+    macro_rules! call {
+        ($imm4:expr, $imm2:expr) => {
+            vgetmantps256(a, $imm2 << 2 | $imm4, zero, 0b11111111)
+        };
+    }
+    let r = constify_imm4_mantissas!(norm, sign, call);
+    transmute(r)
+}
+
+/// Normalize the mantissas of packed single-precision (32-bit) floating-point elements in a, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set). This intrinsic essentially calculates ±(2^k)*|x.significand|, where k depends on the interval range defined by interv and the sign depends on sc and the source sign.\
+/// The mantissa is normalized to the interval specified by interv, which can take the following values:\
+///    _MM_MANT_NORM_1_2     // interval [1, 2)\
+///    _MM_MANT_NORM_p5_2    // interval [0.5, 2)\
+///    _MM_MANT_NORM_p5_1    // interval [0.5, 1)\
+///    _MM_MANT_NORM_p75_1p5 // interval [0.75, 1.5)\
+/// The sign is determined by sc which can take the following values:\
+///    _MM_MANT_SIGN_src     // sign = sign(src)\
+///    _MM_MANT_SIGN_zero    // sign = 0\
+///    _MM_MANT_SIGN_nan     // dst = NaN if sign(src) = 1
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_getmant_ps&expand=2878)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vgetmantps, norm = 0, sign = 0))]
+#[rustc_args_required_const(3, 4)]
+pub unsafe fn _mm256_mask_getmant_ps(
+    src: __m256,
+    k: __mmask8,
+    a: __m256,
+    norm: _MM_MANTISSA_NORM_ENUM,
+    sign: _MM_MANTISSA_SIGN_ENUM,
+) -> __m256 {
+    let a = a.as_f32x8();
+    let src = src.as_f32x8();
+    macro_rules! call {
+        ($imm4:expr, $imm2:expr) => {
+            vgetmantps256(a, $imm2 << 2 | $imm4, src, k)
+        };
+    }
+    let r = constify_imm4_mantissas!(norm, sign, call);
+    transmute(r)
+}
+
+/// Normalize the mantissas of packed single-precision (32-bit) floating-point elements in a, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set). This intrinsic essentially calculates ±(2^k)*|x.significand|, where k depends on the interval range defined by interv and the sign depends on sc and the source sign.\
+/// The mantissa is normalized to the interval specified by interv, which can take the following values:\
+///    _MM_MANT_NORM_1_2     // interval [1, 2)\
+///    _MM_MANT_NORM_p5_2    // interval [0.5, 2)\
+///    _MM_MANT_NORM_p5_1    // interval [0.5, 1)\
+///    _MM_MANT_NORM_p75_1p5 // interval [0.75, 1.5)\
+/// The sign is determined by sc which can take the following values:\
+///    _MM_MANT_SIGN_src     // sign = sign(src)\
+///    _MM_MANT_SIGN_zero    // sign = 0\
+///    _MM_MANT_SIGN_nan     // dst = NaN if sign(src) = 1
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_getmant_ps&expand=2879)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vgetmantps, norm = 0, sign = 0))]
+#[rustc_args_required_const(2, 3)]
+pub unsafe fn _mm256_maskz_getmant_ps(
+    k: __mmask8,
+    a: __m256,
+    norm: _MM_MANTISSA_NORM_ENUM,
+    sign: _MM_MANTISSA_SIGN_ENUM,
+) -> __m256 {
+    let a = a.as_f32x8();
+    let zero = _mm256_setzero_ps().as_f32x8();
+    macro_rules! call {
+        ($imm4:expr, $imm2:expr) => {
+            vgetmantps256(a, $imm2 << 2 | $imm4, zero, k)
+        };
+    }
+    let r = constify_imm4_mantissas!(norm, sign, call);
+    transmute(r)
+}
+
+/// Normalize the mantissas of packed single-precision (32-bit) floating-point elements in a, and store the results in dst. This intrinsic essentially calculates ±(2^k)*|x.significand|, where k depends on the interval range defined by interv and the sign depends on sc and the source sign.
+/// The mantissa is normalized to the interval specified by interv, which can take the following values:
+///    _MM_MANT_NORM_1_2     // interval [1, 2)
+///    _MM_MANT_NORM_p5_2    // interval [0.5, 2)
+///    _MM_MANT_NORM_p5_1    // interval [0.5, 1)
+///    _MM_MANT_NORM_p75_1p5 // interval [0.75, 1.5)
+/// The sign is determined by sc which can take the following values:
+///    _MM_MANT_SIGN_src     // sign = sign(src)
+///    _MM_MANT_SIGN_zero    // sign = 0
+///    _MM_MANT_SIGN_nan     // dst = NaN if sign(src) = 1
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_getmant_ps&expand=2874)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vgetmantps, norm = 0, sign = 0))]
+#[rustc_args_required_const(1, 2)]
+pub unsafe fn _mm_getmant_ps(
+    a: __m128,
+    norm: _MM_MANTISSA_NORM_ENUM,
+    sign: _MM_MANTISSA_SIGN_ENUM,
+) -> __m128 {
+    let a = a.as_f32x4();
+    let zero = _mm_setzero_ps().as_f32x4();
+    macro_rules! call {
+        ($imm4:expr, $imm2:expr) => {
+            vgetmantps128(a, $imm2 << 2 | $imm4, zero, 0b00001111)
+        };
+    }
+    let r = constify_imm4_mantissas!(norm, sign, call);
+    transmute(r)
+}
+
+/// Normalize the mantissas of packed single-precision (32-bit) floating-point elements in a, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set). This intrinsic essentially calculates ±(2^k)*|x.significand|, where k depends on the interval range defined by interv and the sign depends on sc and the source sign.\
+/// The mantissa is normalized to the interval specified by interv, which can take the following values:\
+///    _MM_MANT_NORM_1_2     // interval [1, 2)\
+///    _MM_MANT_NORM_p5_2    // interval [0.5, 2)\
+///    _MM_MANT_NORM_p5_1    // interval [0.5, 1)\
+///    _MM_MANT_NORM_p75_1p5 // interval [0.75, 1.5)\
+/// The sign is determined by sc which can take the following values:\
+///    _MM_MANT_SIGN_src     // sign = sign(src)\
+///    _MM_MANT_SIGN_zero    // sign = 0\
+///    _MM_MANT_SIGN_nan     // dst = NaN if sign(src) = 1
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_getmant_ps&expand=2875)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vgetmantps, norm = 0, sign = 0))]
+#[rustc_args_required_const(3, 4)]
+pub unsafe fn _mm_mask_getmant_ps(
+    src: __m128,
+    k: __mmask8,
+    a: __m128,
+    norm: _MM_MANTISSA_NORM_ENUM,
+    sign: _MM_MANTISSA_SIGN_ENUM,
+) -> __m128 {
+    let a = a.as_f32x4();
+    let src = src.as_f32x4();
+    macro_rules! call {
+        ($imm4:expr, $imm2:expr) => {
+            vgetmantps128(a, $imm2 << 2 | $imm4, src, k)
+        };
+    }
+    let r = constify_imm4_mantissas!(norm, sign, call);
+    transmute(r)
+}
+
+/// Normalize the mantissas of packed single-precision (32-bit) floating-point elements in a, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set). This intrinsic essentially calculates ±(2^k)*|x.significand|, where k depends on the interval range defined by interv and the sign depends on sc and the source sign.\
+/// The mantissa is normalized to the interval specified by interv, which can take the following values:\
+///    _MM_MANT_NORM_1_2     // interval [1, 2)\
+///    _MM_MANT_NORM_p5_2    // interval [0.5, 2)\
+///    _MM_MANT_NORM_p5_1    // interval [0.5, 1)\
+///    _MM_MANT_NORM_p75_1p5 // interval [0.75, 1.5)\
+/// The sign is determined by sc which can take the following values:\
+///    _MM_MANT_SIGN_src     // sign = sign(src)\
+///    _MM_MANT_SIGN_zero    // sign = 0\
+///    _MM_MANT_SIGN_nan     // dst = NaN if sign(src) = 1
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_getmant_ps&expand=2876)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vgetmantps, norm = 0, sign = 0))]
+#[rustc_args_required_const(2, 3)]
+pub unsafe fn _mm_maskz_getmant_ps(
+    k: __mmask8,
+    a: __m128,
+    norm: _MM_MANTISSA_NORM_ENUM,
+    sign: _MM_MANTISSA_SIGN_ENUM,
+) -> __m128 {
+    let a = a.as_f32x4();
+    let zero = _mm_setzero_ps().as_f32x4();
+    macro_rules! call {
+        ($imm4:expr, $imm2:expr) => {
+            vgetmantps128(a, $imm2 << 2 | $imm4, zero, k)
         };
     }
     let r = constify_imm4_mantissas!(norm, sign, call);
@@ -4577,7 +4769,7 @@ pub unsafe fn _mm512_maskz_getmant_ps(
 ///    _MM_MANT_SIGN_zero    // sign = 0\
 ///    _MM_MANT_SIGN_nan     // dst = NaN if sign(src) = 1
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_getmant_pd&expand=2871)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_getmant_pd&expand=2871)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vgetmantpd, norm = 0, sign = 0))]
@@ -4587,12 +4779,14 @@ pub unsafe fn _mm512_getmant_pd(
     norm: _MM_MANTISSA_NORM_ENUM,
     sign: _MM_MANTISSA_SIGN_ENUM,
 ) -> __m512d {
+    let a = a.as_f64x8();
+    let zero = _mm512_setzero_pd().as_f64x8();
     macro_rules! call {
         ($imm4:expr, $imm2:expr) => {
             vgetmantpd(
-                a.as_f64x8(),
+                a,
                 $imm2 << 2 | $imm4,
-                _mm512_setzero_pd().as_f64x8(),
+                zero,
                 0b11111111,
                 _MM_FROUND_CUR_DIRECTION,
             )
@@ -4613,7 +4807,7 @@ pub unsafe fn _mm512_getmant_pd(
 ///    _MM_MANT_SIGN_zero    // sign = 0\
 ///    _MM_MANT_SIGN_nan     // dst = NaN if sign(src) = 1
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_getmant_pd&expand=2872)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_getmant_pd&expand=2872)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vgetmantpd, norm = 0, sign = 0))]
@@ -4625,15 +4819,11 @@ pub unsafe fn _mm512_mask_getmant_pd(
     norm: _MM_MANTISSA_NORM_ENUM,
     sign: _MM_MANTISSA_SIGN_ENUM,
 ) -> __m512d {
+    let a = a.as_f64x8();
+    let src = src.as_f64x8();
     macro_rules! call {
         ($imm4:expr, $imm2:expr) => {
-            vgetmantpd(
-                a.as_f64x8(),
-                $imm2 << 2 | $imm4,
-                src.as_f64x8(),
-                k,
-                _MM_FROUND_CUR_DIRECTION,
-            )
+            vgetmantpd(a, $imm2 << 2 | $imm4, src, k, _MM_FROUND_CUR_DIRECTION)
         };
     }
     let r = constify_imm4_mantissas!(norm, sign, call);
@@ -4651,7 +4841,7 @@ pub unsafe fn _mm512_mask_getmant_pd(
 ///    _MM_MANT_SIGN_zero    // sign = 0\
 ///    _MM_MANT_SIGN_nan     // dst = NaN if sign(src) = 1
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_getmant_pd&expand=2873)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_getmant_pd&expand=2873)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vgetmantpd, norm = 0, sign = 0))]
@@ -4662,15 +4852,209 @@ pub unsafe fn _mm512_maskz_getmant_pd(
     norm: _MM_MANTISSA_NORM_ENUM,
     sign: _MM_MANTISSA_SIGN_ENUM,
 ) -> __m512d {
+    let a = a.as_f64x8();
+    let zero = _mm512_setzero_pd().as_f64x8();
     macro_rules! call {
         ($imm4:expr, $imm2:expr) => {
-            vgetmantpd(
-                a.as_f64x8(),
-                $imm2 << 2 | $imm4,
-                _mm512_setzero_pd().as_f64x8(),
-                k,
-                _MM_FROUND_CUR_DIRECTION,
-            )
+            vgetmantpd(a, $imm2 << 2 | $imm4, zero, k, _MM_FROUND_CUR_DIRECTION)
+        };
+    }
+    let r = constify_imm4_mantissas!(norm, sign, call);
+    transmute(r)
+}
+
+/// Normalize the mantissas of packed double-precision (64-bit) floating-point elements in a, and store the results in dst. This intrinsic essentially calculates ±(2^k)*|x.significand|, where k depends on the interval range defined by interv and the sign depends on sc and the source sign.\
+/// The mantissa is normalized to the interval specified by interv, which can take the following values:\
+///    _MM_MANT_NORM_1_2     // interval [1, 2)\
+///    _MM_MANT_NORM_p5_2    // interval [0.5, 2)\
+///    _MM_MANT_NORM_p5_1    // interval [0.5, 1)\
+///    _MM_MANT_NORM_p75_1p5 // interval [0.75, 1.5)\
+/// The sign is determined by sc which can take the following values:\
+///    _MM_MANT_SIGN_src     // sign = sign(src)\
+///    _MM_MANT_SIGN_zero    // sign = 0\
+///    _MM_MANT_SIGN_nan     // dst = NaN if sign(src) = 1
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_getmant_pd&expand=2868)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vgetmantpd, norm = 0, sign = 0))]
+#[rustc_args_required_const(1, 2)]
+pub unsafe fn _mm256_getmant_pd(
+    a: __m256d,
+    norm: _MM_MANTISSA_NORM_ENUM,
+    sign: _MM_MANTISSA_SIGN_ENUM,
+) -> __m256d {
+    let a = a.as_f64x4();
+    let zero = _mm256_setzero_pd().as_f64x4();
+    macro_rules! call {
+        ($imm4:expr, $imm2:expr) => {
+            vgetmantpd256(a, $imm2 << 2 | $imm4, zero, 0b00001111)
+        };
+    }
+    let r = constify_imm4_mantissas!(norm, sign, call);
+    transmute(r)
+}
+
+/// Normalize the mantissas of packed double-precision (64-bit) floating-point elements in a, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set). This intrinsic essentially calculates ±(2^k)*|x.significand|, where k depends on the interval range defined by interv and the sign depends on sc and the source sign.\
+/// The mantissa is normalized to the interval specified by interv, which can take the following values:\
+///    _MM_MANT_NORM_1_2     // interval [1, 2)\
+///    _MM_MANT_NORM_p5_2    // interval [0.5, 2)\
+///    _MM_MANT_NORM_p5_1    // interval [0.5, 1)\
+///    _MM_MANT_NORM_p75_1p5 // interval [0.75, 1.5)\
+/// The sign is determined by sc which can take the following values:\
+///    _MM_MANT_SIGN_src     // sign = sign(src)\
+///    _MM_MANT_SIGN_zero    // sign = 0\
+///    _MM_MANT_SIGN_nan     // dst = NaN if sign(src) = 1
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_getmant_pd&expand=2869)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vgetmantpd, norm = 0, sign = 0))]
+#[rustc_args_required_const(3, 4)]
+pub unsafe fn _mm256_mask_getmant_pd(
+    src: __m256d,
+    k: __mmask8,
+    a: __m256d,
+    norm: _MM_MANTISSA_NORM_ENUM,
+    sign: _MM_MANTISSA_SIGN_ENUM,
+) -> __m256d {
+    let a = a.as_f64x4();
+    let src = src.as_f64x4();
+    macro_rules! call {
+        ($imm4:expr, $imm2:expr) => {
+            vgetmantpd256(a, $imm2 << 2 | $imm4, src, k)
+        };
+    }
+    let r = constify_imm4_mantissas!(norm, sign, call);
+    transmute(r)
+}
+
+/// Normalize the mantissas of packed double-precision (64-bit) floating-point elements in a, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set). This intrinsic essentially calculates ±(2^k)*|x.significand|, where k depends on the interval range defined by interv and the sign depends on sc and the source sign.\
+/// The mantissa is normalized to the interval specified by interv, which can take the following values:\
+///    _MM_MANT_NORM_1_2     // interval [1, 2)\
+///    _MM_MANT_NORM_p5_2    // interval [0.5, 2)\
+///    _MM_MANT_NORM_p5_1    // interval [0.5, 1)\
+///    _MM_MANT_NORM_p75_1p5 // interval [0.75, 1.5)\
+/// The sign is determined by sc which can take the following values:\
+///    _MM_MANT_SIGN_src     // sign = sign(src)\
+///    _MM_MANT_SIGN_zero    // sign = 0\
+///    _MM_MANT_SIGN_nan     // dst = NaN if sign(src) = 1
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_getmant_pd&expand=2870)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vgetmantpd, norm = 0, sign = 0))]
+#[rustc_args_required_const(2, 3)]
+pub unsafe fn _mm256_maskz_getmant_pd(
+    k: __mmask8,
+    a: __m256d,
+    norm: _MM_MANTISSA_NORM_ENUM,
+    sign: _MM_MANTISSA_SIGN_ENUM,
+) -> __m256d {
+    let a = a.as_f64x4();
+    let zero = _mm256_setzero_pd().as_f64x4();
+    macro_rules! call {
+        ($imm4:expr, $imm2:expr) => {
+            vgetmantpd256(a, $imm2 << 2 | $imm4, zero, k)
+        };
+    }
+    let r = constify_imm4_mantissas!(norm, sign, call);
+    transmute(r)
+}
+
+/// Normalize the mantissas of packed double-precision (64-bit) floating-point elements in a, and store the results in dst. This intrinsic essentially calculates ±(2^k)*|x.significand|, where k depends on the interval range defined by interv and the sign depends on sc and the source sign.\
+/// The mantissa is normalized to the interval specified by interv, which can take the following values:\
+///    _MM_MANT_NORM_1_2     // interval [1, 2)\
+///    _MM_MANT_NORM_p5_2    // interval [0.5, 2)\
+///    _MM_MANT_NORM_p5_1    // interval [0.5, 1)\
+///    _MM_MANT_NORM_p75_1p5 // interval [0.75, 1.5)\
+/// The sign is determined by sc which can take the following values:\
+///    _MM_MANT_SIGN_src     // sign = sign(src)\
+///    _MM_MANT_SIGN_zero    // sign = 0\
+///    _MM_MANT_SIGN_nan     // dst = NaN if sign(src) = 1
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_getmant_pd&expand=2865)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vgetmantpd, norm = 0, sign = 0))]
+#[rustc_args_required_const(1, 2)]
+pub unsafe fn _mm_getmant_pd(
+    a: __m128d,
+    norm: _MM_MANTISSA_NORM_ENUM,
+    sign: _MM_MANTISSA_SIGN_ENUM,
+) -> __m128d {
+    let a = a.as_f64x2();
+    let zero = _mm_setzero_pd().as_f64x2();
+    macro_rules! call {
+        ($imm4:expr, $imm2:expr) => {
+            vgetmantpd128(a, $imm2 << 2 | $imm4, zero, 0b00000011)
+        };
+    }
+    let r = constify_imm4_mantissas!(norm, sign, call);
+    transmute(r)
+}
+
+/// Normalize the mantissas of packed double-precision (64-bit) floating-point elements in a, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set). This intrinsic essentially calculates ±(2^k)*|x.significand|, where k depends on the interval range defined by interv and the sign depends on sc and the source sign.\
+/// The mantissa is normalized to the interval specified by interv, which can take the following values:\
+///    _MM_MANT_NORM_1_2     // interval [1, 2)\
+///    _MM_MANT_NORM_p5_2    // interval [0.5, 2)\
+///    _MM_MANT_NORM_p5_1    // interval [0.5, 1)\
+///    _MM_MANT_NORM_p75_1p5 // interval [0.75, 1.5)\
+/// The sign is determined by sc which can take the following values:\
+///    _MM_MANT_SIGN_src     // sign = sign(src)\
+///    _MM_MANT_SIGN_zero    // sign = 0\
+///    _MM_MANT_SIGN_nan     // dst = NaN if sign(src) = 1
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_getmant_pd&expand=2866)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vgetmantpd, norm = 0, sign = 0))]
+#[rustc_args_required_const(3, 4)]
+pub unsafe fn _mm_mask_getmant_pd(
+    src: __m128d,
+    k: __mmask8,
+    a: __m128d,
+    norm: _MM_MANTISSA_NORM_ENUM,
+    sign: _MM_MANTISSA_SIGN_ENUM,
+) -> __m128d {
+    let a = a.as_f64x2();
+    let src = src.as_f64x2();
+    macro_rules! call {
+        ($imm4:expr, $imm2:expr) => {
+            vgetmantpd128(a, $imm2 << 2 | $imm4, src, k)
+        };
+    }
+    let r = constify_imm4_mantissas!(norm, sign, call);
+    transmute(r)
+}
+
+/// Normalize the mantissas of packed double-precision (64-bit) floating-point elements in a, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set). This intrinsic essentially calculates ±(2^k)*|x.significand|, where k depends on the interval range defined by interv and the sign depends on sc and the source sign.\
+/// The mantissa is normalized to the interval specified by interv, which can take the following values:\
+///    _MM_MANT_NORM_1_2     // interval [1, 2)\
+///    _MM_MANT_NORM_p5_2    // interval [0.5, 2)\
+///    _MM_MANT_NORM_p5_1    // interval [0.5, 1)\
+///    _MM_MANT_NORM_p75_1p5 // interval [0.75, 1.5)\
+/// The sign is determined by sc which can take the following values:\
+///    _MM_MANT_SIGN_src     // sign = sign(src)\
+///    _MM_MANT_SIGN_zero    // sign = 0\
+///    _MM_MANT_SIGN_nan     // dst = NaN if sign(src) = 1
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_getmant_pd&expand=2867)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vgetmantpd, norm = 0, sign = 0))]
+#[rustc_args_required_const(2, 3)]
+pub unsafe fn _mm_maskz_getmant_pd(
+    k: __mmask8,
+    a: __m128d,
+    norm: _MM_MANTISSA_NORM_ENUM,
+    sign: _MM_MANTISSA_SIGN_ENUM,
+) -> __m128d {
+    let a = a.as_f64x2();
+    let zero = _mm_setzero_pd().as_f64x2();
+    macro_rules! call {
+        ($imm4:expr, $imm2:expr) => {
+            vgetmantpd128(a, $imm2 << 2 | $imm4, zero, k)
         };
     }
     let r = constify_imm4_mantissas!(norm, sign, call);
@@ -4686,7 +5070,7 @@ pub unsafe fn _mm512_maskz_getmant_pd(
 ///    (_MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC)        // truncate, and suppress exceptions\
 ///    _MM_FROUND_CUR_DIRECTION // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_add_round_ps&expand=145)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_add_round_ps&expand=145)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vaddps, rounding = 8))]
@@ -4712,7 +5096,7 @@ pub unsafe fn _mm512_add_round_ps(a: __m512, b: __m512, rounding: i32) -> __m512
 ///    (_MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC)        // truncate, and suppress exceptions\
 ///    _MM_FROUND_CUR_DIRECTION // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_add_round_ps&expand=146)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_add_round_ps&expand=146)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vaddps, rounding = 8))]
@@ -4744,7 +5128,7 @@ pub unsafe fn _mm512_mask_add_round_ps(
 ///    (_MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC)        // truncate, and suppress exceptions\
 ///    _MM_FROUND_CUR_DIRECTION // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_add_round_ps&expand=147)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_add_round_ps&expand=147)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vaddps, rounding = 8))]
@@ -4776,7 +5160,7 @@ pub unsafe fn _mm512_maskz_add_round_ps(
 ///    (_MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC)        // truncate, and suppress exceptions\
 ///    _MM_FROUND_CUR_DIRECTION // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_add_round_pd&expand=142)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_add_round_pd&expand=142)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vaddpd, rounding = 8))]
@@ -4802,7 +5186,7 @@ pub unsafe fn _mm512_add_round_pd(a: __m512d, b: __m512d, rounding: i32) -> __m5
 ///    (_MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC)        // truncate, and suppress exceptions\
 ///    _MM_FROUND_CUR_DIRECTION // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_add_round_pd&expand=143)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_add_round_pd&expand=143)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vaddpd, rounding = 8))]
@@ -4834,7 +5218,7 @@ pub unsafe fn _mm512_mask_add_round_pd(
 ///    (_MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC)        // truncate, and suppress exceptions\
 ///    _MM_FROUND_CUR_DIRECTION // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_add_round_pd&expand=144)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_add_round_pd&expand=144)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vaddpd, rounding = 8))]
@@ -4866,7 +5250,7 @@ pub unsafe fn _mm512_maskz_add_round_pd(
 ///    (_MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC)        // truncate, and suppress exceptions\
 ///    _MM_FROUND_CUR_DIRECTION // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_sub_round_ps&expand=5739)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_sub_round_ps&expand=5739)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vsubps, rounding = 8))]
@@ -4892,7 +5276,7 @@ pub unsafe fn _mm512_sub_round_ps(a: __m512, b: __m512, rounding: i32) -> __m512
 ///    (_MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC)        // truncate, and suppress exceptions\
 ///    _MM_FROUND_CUR_DIRECTION // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_sub_round_ps&expand=5737)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_sub_round_ps&expand=5737)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vsubps, rounding = 8))]
@@ -4924,7 +5308,7 @@ pub unsafe fn _mm512_mask_sub_round_ps(
 ///    (_MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC)        // truncate, and suppress exceptions\
 ///    _MM_FROUND_CUR_DIRECTION // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_sub_round_ps&expand=5738)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_sub_round_ps&expand=5738)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vsubps, rounding = 8))]
@@ -4956,7 +5340,7 @@ pub unsafe fn _mm512_maskz_sub_round_ps(
 ///    (_MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC)        // truncate, and suppress exceptions\
 ///    _MM_FROUND_CUR_DIRECTION // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_sub_round_pd&expand=5736)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_sub_round_pd&expand=5736)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vsubpd, rounding = 8))]
@@ -4982,7 +5366,7 @@ pub unsafe fn _mm512_sub_round_pd(a: __m512d, b: __m512d, rounding: i32) -> __m5
 ///    (_MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC)        // truncate, and suppress exceptions\
 ///    _MM_FROUND_CUR_DIRECTION // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_sub_round_pd&expand=5734)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_sub_round_pd&expand=5734)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vsubpd, rounding = 8))]
@@ -5014,7 +5398,7 @@ pub unsafe fn _mm512_mask_sub_round_pd(
 ///    (_MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC)        // truncate, and suppress exceptions\
 ///    _MM_FROUND_CUR_DIRECTION // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_sub_round_pd&expand=5735)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_sub_round_pd&expand=5735)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vsubpd, rounding = 8))]
@@ -5046,7 +5430,7 @@ pub unsafe fn _mm512_maskz_sub_round_pd(
 ///    (_MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC)        // truncate, and suppress exceptions\
 ///    _MM_FROUND_CUR_DIRECTION // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mul_round_ps&expand=3940)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mul_round_ps&expand=3940)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vmulps, rounding = 8))]
@@ -5072,7 +5456,7 @@ pub unsafe fn _mm512_mul_round_ps(a: __m512, b: __m512, rounding: i32) -> __m512
 ///    (_MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC)        // truncate, and suppress exceptions\
 ///    _MM_FROUND_CUR_DIRECTION // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_mul_round_ps&expand=3938)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_mul_round_ps&expand=3938)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vmulps, rounding = 8))]
@@ -5104,7 +5488,7 @@ pub unsafe fn _mm512_mask_mul_round_ps(
 ///    (_MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC)        // truncate, and suppress exceptions\
 ///    _MM_FROUND_CUR_DIRECTION // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_mul_round_ps&expand=3939)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_mul_round_ps&expand=3939)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vmulps, rounding = 8))]
@@ -5136,7 +5520,7 @@ pub unsafe fn _mm512_maskz_mul_round_ps(
 ///    (_MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC)        // truncate, and suppress exceptions\
 ///    _MM_FROUND_CUR_DIRECTION // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mul_round_pd&expand=3937)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mul_round_pd&expand=3937)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vmulpd, rounding = 8))]
@@ -5162,7 +5546,7 @@ pub unsafe fn _mm512_mul_round_pd(a: __m512d, b: __m512d, rounding: i32) -> __m5
 ///    (_MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC)        // truncate, and suppress exceptions\
 ///    _MM_FROUND_CUR_DIRECTION // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_mul_round_pd&expand=3935)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_mul_round_pd&expand=3935)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vmulpd, rounding = 8))]
@@ -5194,7 +5578,7 @@ pub unsafe fn _mm512_mask_mul_round_pd(
 ///    (_MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC)        // truncate, and suppress exceptions\
 ///    _MM_FROUND_CUR_DIRECTION // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_mul_round_ps&expand=3939)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_mul_round_ps&expand=3939)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vmulpd, rounding = 8))]
@@ -5226,7 +5610,7 @@ pub unsafe fn _mm512_maskz_mul_round_pd(
 ///    (_MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC)        // truncate, and suppress exceptions\
 ///    _MM_FROUND_CUR_DIRECTION // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_div_round_ps&expand=2168)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_div_round_ps&expand=2168)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vdivps, rounding = 8))]
@@ -5252,7 +5636,7 @@ pub unsafe fn _mm512_div_round_ps(a: __m512, b: __m512, rounding: i32) -> __m512
 ///    (_MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC)        // truncate, and suppress exceptions\
 ///    _MM_FROUND_CUR_DIRECTION // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_div_round_ps&expand=2169)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_div_round_ps&expand=2169)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vdivps, rounding = 8))]
@@ -5284,7 +5668,7 @@ pub unsafe fn _mm512_mask_div_round_ps(
 ///    (_MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC)        // truncate, and suppress exceptions\
 ///    _MM_FROUND_CUR_DIRECTION // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_div_round_ps&expand=2170)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_div_round_ps&expand=2170)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vdivps, rounding = 8))]
@@ -5316,7 +5700,7 @@ pub unsafe fn _mm512_maskz_div_round_ps(
 ///    (_MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC)        // truncate, and suppress exceptions\
 ///    _MM_FROUND_CUR_DIRECTION // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_div_round_pd&expand=2165)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_div_round_pd&expand=2165)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vdivpd, rounding = 8))]
@@ -5342,7 +5726,7 @@ pub unsafe fn _mm512_div_round_pd(a: __m512d, b: __m512d, rounding: i32) -> __m5
 ///    (_MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC)        // truncate, and suppress exceptions\
 ///    _MM_FROUND_CUR_DIRECTION // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_div_round_pd&expand=2166)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_div_round_pd&expand=2166)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vdivpd, rounding = 8))]
@@ -5374,7 +5758,7 @@ pub unsafe fn _mm512_mask_div_round_pd(
 ///    (_MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC)        // truncate, and suppress exceptions\
 ///    _MM_FROUND_CUR_DIRECTION // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_div_round_pd&expand=2167)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_div_round_pd&expand=2167)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vdivpd, rounding = 8))]
@@ -5406,7 +5790,7 @@ pub unsafe fn _mm512_maskz_div_round_pd(
 ///    (_MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC)        // truncate, and suppress exceptions\
 ///    _MM_FROUND_CUR_DIRECTION // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_sqrt_round_ps&expand=5377)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_sqrt_round_ps&expand=5377)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vsqrtps, rounding = 8))]
@@ -5431,7 +5815,7 @@ pub unsafe fn _mm512_sqrt_round_ps(a: __m512, rounding: i32) -> __m512 {
 ///    (_MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC)        // truncate, and suppress exceptions\
 ///    _MM_FROUND_CUR_DIRECTION // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_sqrt_round_ps&expand=5375)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_sqrt_round_ps&expand=5375)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vsqrtps, rounding = 8))]
@@ -5461,7 +5845,7 @@ pub unsafe fn _mm512_mask_sqrt_round_ps(
 ///    (_MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC)        // truncate, and suppress exceptions\
 ///    _MM_FROUND_CUR_DIRECTION // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_sqrt_round_ps&expand=5376)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_sqrt_round_ps&expand=5376)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vsqrtps, rounding = 8))]
@@ -5487,7 +5871,7 @@ pub unsafe fn _mm512_maskz_sqrt_round_ps(k: __mmask16, a: __m512, rounding: i32)
 ///    (_MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC)        // truncate, and suppress exceptions\
 ///    _MM_FROUND_CUR_DIRECTION // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_sqrt_round_pd&expand=5374)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_sqrt_round_pd&expand=5374)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vsqrtpd, rounding = 8))]
@@ -5512,7 +5896,7 @@ pub unsafe fn _mm512_sqrt_round_pd(a: __m512d, rounding: i32) -> __m512d {
 ///    (_MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC)        // truncate, and suppress exceptions\
 ///    _MM_FROUND_CUR_DIRECTION // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_sqrt_round_pd&expand=5372)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_sqrt_round_pd&expand=5372)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vsqrtpd, rounding = 8))]
@@ -5541,7 +5925,7 @@ pub unsafe fn _mm512_mask_sqrt_round_pd(
 ///    (_MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC)        // truncate, and suppress exceptions\
 ///    _MM_FROUND_CUR_DIRECTION // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_sqrt_round_pd&expand=5373)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_sqrt_round_pd&expand=5373)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vsqrtpd, rounding = 8))]
@@ -5566,7 +5950,7 @@ pub unsafe fn _mm512_maskz_sqrt_round_pd(k: __mmask8, a: __m512d, rounding: i32)
 ///    (_MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC)        // truncate, and suppress exceptions\
 ///    _MM_FROUND_CUR_DIRECTION // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_fmadd_round_ps&expand=2565)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_fmadd_round_ps&expand=2565)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vfmadd, rounding = 8))] //vfmadd132ps or vfmadd213ps or vfmadd231ps
@@ -26606,8 +26990,17 @@ extern "C" {
 
     #[link_name = "llvm.x86.avx512.mask.getmant.ps.512"]
     fn vgetmantps(a: f32x16, mantissas: i32, src: f32x16, m: u16, sae: i32) -> f32x16;
+    #[link_name = "llvm.x86.avx512.mask.getmant.ps.256"]
+    fn vgetmantps256(a: f32x8, mantissas: i32, src: f32x8, m: u8) -> f32x8;
+    #[link_name = "llvm.x86.avx512.mask.getmant.ps.128"]
+    fn vgetmantps128(a: f32x4, mantissas: i32, src: f32x4, m: u8) -> f32x4;
+
     #[link_name = "llvm.x86.avx512.mask.getmant.pd.512"]
     fn vgetmantpd(a: f64x8, mantissas: i32, src: f64x8, m: u8, sae: i32) -> f64x8;
+    #[link_name = "llvm.x86.avx512.mask.getmant.pd.256"]
+    fn vgetmantpd256(a: f64x4, mantissas: i32, src: f64x4, m: u8) -> f64x4;
+    #[link_name = "llvm.x86.avx512.mask.getmant.pd.128"]
+    fn vgetmantpd128(a: f64x2, mantissas: i32, src: f64x2, m: u8) -> f64x2;
 
     #[link_name = "llvm.x86.avx512.rcp14.ps.512"]
     fn vrcp14ps(a: f32x16, src: f32x16, m: u16) -> f32x16;
@@ -27091,67 +27484,34 @@ mod tests {
             f32::MIN, 100., -100., -32.,
         );
         let r = _mm512_abs_ps(a);
+        #[rustfmt::skip]
         let e = _mm512_setr_ps(
-            0.,
-            1.,
-            1.,
-            f32::MAX,
-            f32::MAX,
-            100.,
-            100.,
-            32.,
-            0.,
-            1.,
-            1.,
-            f32::MAX,
-            f32::MAX,
-            100.,
-            100.,
-            32.,
+            0., 1., 1., f32::MAX,
+            f32::MAX, 100., 100., 32.,
+            0., 1., 1., f32::MAX,
+            f32::MAX, 100., 100., 32.,
         );
         assert_eq_m512(r, e);
     }
 
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_mask_abs_ps() {
+        #[rustfmt::skip]
         let a = _mm512_setr_ps(
-            0.,
-            1.,
-            -1.,
-            f32::MAX,
-            f32::MIN,
-            100.,
-            -100.,
-            -32.,
-            0.,
-            1.,
-            -1.,
-            f32::MAX,
-            f32::MIN,
-            100.,
-            -100.,
-            -32.,
+            0., 1., -1., f32::MAX,
+            f32::MIN, 100., -100., -32.,
+            0., 1., -1., f32::MAX,
+            f32::MIN, 100., -100., -32.,
         );
         let r = _mm512_mask_abs_ps(a, 0, a);
         assert_eq_m512(r, a);
         let r = _mm512_mask_abs_ps(a, 0b00000000_11111111, a);
+        #[rustfmt::skip]
         let e = _mm512_setr_ps(
-            0.,
-            1.,
-            1.,
-            f32::MAX,
-            f32::MAX,
-            100.,
-            100.,
-            32.,
-            0.,
-            1.,
-            -1.,
-            f32::MAX,
-            f32::MIN,
-            100.,
-            -100.,
-            -32.,
+            0., 1., 1., f32::MAX,
+            f32::MAX, 100., 100., 32.,
+            0., 1., -1., f32::MAX,
+            f32::MIN, 100., -100., -32.,
         );
         assert_eq_m512(r, e);
     }
@@ -29326,6 +29686,7 @@ mod tests {
 
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_mask_fixupimm_ps() {
+        #[rustfmt::skip]
         let a = _mm512_set_ps(
             f32::NAN,
             f32::NAN,
@@ -29355,6 +29716,7 @@ mod tests {
 
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_maskz_fixupimm_ps() {
+        #[rustfmt::skip]
         let a = _mm512_set_ps(
             f32::NAN,
             f32::NAN,
@@ -29455,6 +29817,62 @@ mod tests {
         assert_eq_m512(r, e);
     }
 
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_getmant_ps() {
+        let a = _mm256_set1_ps(10.);
+        let r = _mm256_getmant_ps(a, _MM_MANT_NORM_P75_1P5, _MM_MANT_SIGN_NAN);
+        let e = _mm256_set1_ps(1.25);
+        assert_eq_m256(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_mask_getmant_ps() {
+        let a = _mm256_set1_ps(10.);
+        let r = _mm256_mask_getmant_ps(a, 0, a, _MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC);
+        assert_eq_m256(r, a);
+        let r = _mm256_mask_getmant_ps(a, 0b11111111, a, _MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC);
+        let e = _mm256_set1_ps(1.25);
+        assert_eq_m256(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_maskz_getmant_ps() {
+        let a = _mm256_set1_ps(10.);
+        let r = _mm256_maskz_getmant_ps(0, a, _MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC);
+        assert_eq_m256(r, _mm256_setzero_ps());
+        let r = _mm256_maskz_getmant_ps(0b11111111, a, _MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC);
+        let e = _mm256_set1_ps(1.25);
+        assert_eq_m256(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_getmant_ps() {
+        let a = _mm_set1_ps(10.);
+        let r = _mm_getmant_ps(a, _MM_MANT_NORM_P75_1P5, _MM_MANT_SIGN_NAN);
+        let e = _mm_set1_ps(1.25);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_mask_getmant_ps() {
+        let a = _mm_set1_ps(10.);
+        let r = _mm_mask_getmant_ps(a, 0, a, _MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC);
+        assert_eq_m128(r, a);
+        let r = _mm_mask_getmant_ps(a, 0b00001111, a, _MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC);
+        let e = _mm_set1_ps(1.25);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_maskz_getmant_ps() {
+        let a = _mm_set1_ps(10.);
+        let r = _mm_maskz_getmant_ps(0, a, _MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC);
+        assert_eq_m128(r, _mm_setzero_ps());
+        let r = _mm_maskz_getmant_ps(0b00001111, a, _MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC);
+        let e = _mm_set1_ps(1.25);
+        assert_eq_m128(r, e);
+    }
+
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_add_round_ps() {
         let a = _mm512_setr_ps(
@@ -29462,23 +29880,12 @@ mod tests {
         );
         let b = _mm512_set1_ps(-1.);
         let r = _mm512_add_round_ps(a, b, _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC);
+        #[rustfmt::skip]
         let e = _mm512_setr_ps(
-            -1.,
-            0.5,
-            1.,
-            2.5,
-            3.,
-            4.5,
-            5.,
-            6.5,
-            7.,
-            8.5,
-            9.,
-            10.5,
-            11.,
-            12.5,
-            13.,
-            -0.99999994,
+            -1., 0.5, 1., 2.5,
+            3., 4.5, 5., 6.5,
+            7., 8.5, 9., 10.5,
+            11., 12.5, 13., -0.99999994,
         );
         assert_eq_m512(r, e);
         let r = _mm512_add_round_ps(a, b, _MM_FROUND_TO_ZERO | _MM_FROUND_NO_EXC);
@@ -29503,23 +29910,12 @@ mod tests {
             b,
             _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC,
         );
+        #[rustfmt::skip]
         let e = _mm512_setr_ps(
-            0.,
-            1.5,
-            2.,
-            3.5,
-            4.,
-            5.5,
-            6.,
-            7.5,
-            7.,
-            8.5,
-            9.,
-            10.5,
-            11.,
-            12.5,
-            13.,
-            -0.99999994,
+            0., 1.5, 2., 3.5,
+            4., 5.5, 6., 7.5,
+            7., 8.5, 9., 10.5,
+            11., 12.5, 13., -0.99999994,
         );
         assert_eq_m512(r, e);
     }
@@ -29538,23 +29934,12 @@ mod tests {
             b,
             _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC,
         );
+        #[rustfmt::skip]
         let e = _mm512_setr_ps(
-            0.,
-            0.,
-            0.,
-            0.,
-            0.,
-            0.,
-            0.,
-            0.,
-            7.,
-            8.5,
-            9.,
-            10.5,
-            11.,
-            12.5,
-            13.,
-            -0.99999994,
+            0., 0., 0., 0.,
+            0., 0., 0., 0.,
+            7., 8.5, 9., 10.5,
+            11., 12.5, 13., -0.99999994,
         );
         assert_eq_m512(r, e);
     }
@@ -29566,23 +29951,12 @@ mod tests {
         );
         let b = _mm512_set1_ps(1.);
         let r = _mm512_sub_round_ps(a, b, _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC);
+        #[rustfmt::skip]
         let e = _mm512_setr_ps(
-            -1.,
-            0.5,
-            1.,
-            2.5,
-            3.,
-            4.5,
-            5.,
-            6.5,
-            7.,
-            8.5,
-            9.,
-            10.5,
-            11.,
-            12.5,
-            13.,
-            -0.99999994,
+            -1., 0.5, 1., 2.5,
+            3., 4.5, 5., 6.5,
+            7., 8.5, 9., 10.5,
+            11., 12.5, 13., -0.99999994,
         );
         assert_eq_m512(r, e);
         let r = _mm512_sub_round_ps(a, b, _MM_FROUND_TO_ZERO | _MM_FROUND_NO_EXC);
@@ -29607,23 +29981,12 @@ mod tests {
             b,
             _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC,
         );
+        #[rustfmt::skip]
         let e = _mm512_setr_ps(
-            0.,
-            1.5,
-            2.,
-            3.5,
-            4.,
-            5.5,
-            6.,
-            7.5,
-            7.,
-            8.5,
-            9.,
-            10.5,
-            11.,
-            12.5,
-            13.,
-            -0.99999994,
+            0., 1.5, 2., 3.5,
+            4., 5.5, 6., 7.5,
+            7., 8.5, 9., 10.5,
+            11., 12.5, 13., -0.99999994,
         );
         assert_eq_m512(r, e);
     }
@@ -29642,109 +30005,54 @@ mod tests {
             b,
             _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC,
         );
+        #[rustfmt::skip]
         let e = _mm512_setr_ps(
-            0.,
-            0.,
-            0.,
-            0.,
-            0.,
-            0.,
-            0.,
-            0.,
-            7.,
-            8.5,
-            9.,
-            10.5,
-            11.,
-            12.5,
-            13.,
-            -0.99999994,
+            0., 0., 0., 0.,
+            0., 0., 0., 0.,
+            7., 8.5, 9., 10.5,
+            11., 12.5, 13., -0.99999994,
         );
         assert_eq_m512(r, e);
     }
 
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_mul_round_ps() {
+        #[rustfmt::skip]
         let a = _mm512_setr_ps(
-            0.,
-            1.5,
-            2.,
-            3.5,
-            4.,
-            5.5,
-            6.,
-            7.5,
-            8.,
-            9.5,
-            10.,
-            11.5,
-            12.,
-            13.5,
-            14.,
-            0.00000000000000000000007,
+            0., 1.5, 2., 3.5,
+            4., 5.5, 6., 7.5,
+            8., 9.5, 10., 11.5,
+            12., 13.5, 14., 0.00000000000000000000007,
         );
         let b = _mm512_set1_ps(0.1);
         let r = _mm512_mul_round_ps(a, b, _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC);
+        #[rustfmt::skip]
         let e = _mm512_setr_ps(
-            0.,
-            0.15,
-            0.2,
-            0.35,
-            0.4,
-            0.55,
-            0.6,
-            0.75,
-            0.8,
-            0.95,
-            1.0,
-            1.15,
-            1.2,
-            1.35,
-            1.4,
-            0.000000000000000000000007000001,
+            0., 0.15, 0.2, 0.35,
+            0.4, 0.55, 0.6, 0.75,
+            0.8, 0.95, 1.0, 1.15,
+            1.2, 1.35, 1.4, 0.000000000000000000000007000001,
         );
         assert_eq_m512(r, e);
         let r = _mm512_mul_round_ps(a, b, _MM_FROUND_TO_ZERO | _MM_FROUND_NO_EXC);
+        #[rustfmt::skip]
         let e = _mm512_setr_ps(
-            0.,
-            0.14999999,
-            0.2,
-            0.35,
-            0.4,
-            0.54999995,
-            0.59999996,
-            0.75,
-            0.8,
-            0.95,
-            1.0,
-            1.15,
-            1.1999999,
-            1.3499999,
-            1.4,
-            0.000000000000000000000007,
+            0., 0.14999999, 0.2, 0.35,
+            0.4, 0.54999995, 0.59999996, 0.75,
+            0.8, 0.95, 1.0, 1.15,
+            1.1999999, 1.3499999, 1.4, 0.000000000000000000000007,
         );
         assert_eq_m512(r, e);
     }
 
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_mask_mul_round_ps() {
+        #[rustfmt::skip]
         let a = _mm512_setr_ps(
-            0.,
-            1.5,
-            2.,
-            3.5,
-            4.,
-            5.5,
-            6.,
-            7.5,
-            8.,
-            9.5,
-            10.,
-            11.5,
-            12.,
-            13.5,
-            14.,
-            0.00000000000000000000007,
+            0., 1.5, 2., 3.5,
+            4., 5.5, 6., 7.5,
+            8., 9.5, 10., 11.5,
+            12., 13.5, 14., 0.00000000000000000000007,
         );
         let b = _mm512_set1_ps(0.1);
         let r = _mm512_mask_mul_round_ps(a, 0, a, b, _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC);
@@ -29756,46 +30064,24 @@ mod tests {
             b,
             _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC,
         );
+        #[rustfmt::skip]
         let e = _mm512_setr_ps(
-            0.,
-            1.5,
-            2.,
-            3.5,
-            4.,
-            5.5,
-            6.,
-            7.5,
-            0.8,
-            0.95,
-            1.0,
-            1.15,
-            1.2,
-            1.35,
-            1.4,
-            0.000000000000000000000007000001,
+            0., 1.5, 2., 3.5,
+            4., 5.5, 6., 7.5,
+            0.8, 0.95, 1.0, 1.15,
+            1.2, 1.35, 1.4, 0.000000000000000000000007000001,
         );
         assert_eq_m512(r, e);
     }
 
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_maskz_mul_round_ps() {
+        #[rustfmt::skip]
         let a = _mm512_setr_ps(
-            0.,
-            1.5,
-            2.,
-            3.5,
-            4.,
-            5.5,
-            6.,
-            7.5,
-            8.,
-            9.5,
-            10.,
-            11.5,
-            12.,
-            13.5,
-            14.,
-            0.00000000000000000000007,
+            0., 1.5, 2., 3.5,
+            4., 5.5, 6., 7.5,
+            8., 9.5, 10., 11.5,
+            12., 13.5, 14., 0.00000000000000000000007,
         );
         let b = _mm512_set1_ps(0.1);
         let r = _mm512_maskz_mul_round_ps(0, a, b, _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC);
@@ -29806,23 +30092,12 @@ mod tests {
             b,
             _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC,
         );
+        #[rustfmt::skip]
         let e = _mm512_setr_ps(
-            0.,
-            0.,
-            0.,
-            0.,
-            0.,
-            0.,
-            0.,
-            0.,
-            0.8,
-            0.95,
-            1.0,
-            1.15,
-            1.2,
-            1.35,
-            1.4,
-            0.000000000000000000000007000001,
+            0., 0., 0., 0.,
+            0., 0., 0., 0.,
+            0.8, 0.95, 1.0, 1.15,
+            1.2, 1.35, 1.4, 0.000000000000000000000007000001,
         );
         assert_eq_m512(r, e);
     }
