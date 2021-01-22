@@ -4369,7 +4369,7 @@ pub unsafe fn _mm_maskz_roundscale_pd(k: __mmask8, a: __m128d, imm8: i32) -> __m
 
 /// Scale the packed single-precision (32-bit) floating-point elements in a using values from b, and store the results in dst.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_scalef_ps&expand=4883)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_scalef_ps&expand=4883)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vscalefps))]
@@ -4385,7 +4385,7 @@ pub unsafe fn _mm512_scalef_ps(a: __m512, b: __m512) -> __m512 {
 
 /// Scale the packed single-precision (32-bit) floating-point elements in a using values from b, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_scalef_ps&expand=4881)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_scalef_ps&expand=4881)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vscalefps))]
@@ -4401,7 +4401,7 @@ pub unsafe fn _mm512_mask_scalef_ps(src: __m512, k: __mmask16, a: __m512, b: __m
 
 /// Scale the packed single-precision (32-bit) floating-point elements in a using values from b, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_scalef_ps&expand=4882)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_scalef_ps&expand=4882)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vscalefps))]
@@ -4415,9 +4415,89 @@ pub unsafe fn _mm512_maskz_scalef_ps(k: __mmask16, a: __m512, b: __m512) -> __m5
     ))
 }
 
+/// Scale the packed single-precision (32-bit) floating-point elements in a using values from b, and store the results in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_scalef_ps&expand=4880)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vscalefps))]
+pub unsafe fn _mm256_scalef_ps(a: __m256, b: __m256) -> __m256 {
+    transmute(vscalefps256(
+        a.as_f32x8(),
+        b.as_f32x8(),
+        _mm256_setzero_ps().as_f32x8(),
+        0b11111111,
+    ))
+}
+
+/// Scale the packed single-precision (32-bit) floating-point elements in a using values from b, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_scalef_ps&expand=4878)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vscalefps))]
+pub unsafe fn _mm256_mask_scalef_ps(src: __m256, k: __mmask8, a: __m256, b: __m256) -> __m256 {
+    transmute(vscalefps256(a.as_f32x8(), b.as_f32x8(), src.as_f32x8(), k))
+}
+
+/// Scale the packed single-precision (32-bit) floating-point elements in a using values from b, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_scalef_ps&expand=4879)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vscalefps))]
+pub unsafe fn _mm256_maskz_scalef_ps(k: __mmask8, a: __m256, b: __m256) -> __m256 {
+    transmute(vscalefps256(
+        a.as_f32x8(),
+        b.as_f32x8(),
+        _mm256_setzero_ps().as_f32x8(),
+        k,
+    ))
+}
+
+/// Scale the packed single-precision (32-bit) floating-point elements in a using values from b, and store the results in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_scalef_ps&expand=4877)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vscalefps))]
+pub unsafe fn _mm_scalef_ps(a: __m128, b: __m128) -> __m128 {
+    transmute(vscalefps128(
+        a.as_f32x4(),
+        b.as_f32x4(),
+        _mm_setzero_ps().as_f32x4(),
+        0b00001111,
+    ))
+}
+
+/// Scale the packed single-precision (32-bit) floating-point elements in a using values from b, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_scalef_ps&expand=4875)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vscalefps))]
+pub unsafe fn _mm_mask_scalef_ps(src: __m128, k: __mmask8, a: __m128, b: __m128) -> __m128 {
+    transmute(vscalefps128(a.as_f32x4(), b.as_f32x4(), src.as_f32x4(), k))
+}
+
+/// Scale the packed single-precision (32-bit) floating-point elements in a using values from b, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_scalef_ps&expand=4876)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vscalefps))]
+pub unsafe fn _mm_maskz_scalef_ps(k: __mmask8, a: __m128, b: __m128) -> __m128 {
+    transmute(vscalefps128(
+        a.as_f32x4(),
+        b.as_f32x4(),
+        _mm_setzero_ps().as_f32x4(),
+        k,
+    ))
+}
+
 /// Scale the packed double-precision (64-bit) floating-point elements in a using values from b, and store the results in dst.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_scalef_pd&expand=4874)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_scalef_pd&expand=4874)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vscalefpd))]
@@ -4433,7 +4513,7 @@ pub unsafe fn _mm512_scalef_pd(a: __m512d, b: __m512d) -> __m512d {
 
 /// Scale the packed double-precision (64-bit) floating-point elements in a using values from b, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_scalef_pd&expand=4872)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_scalef_pd&expand=4872)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vscalefpd))]
@@ -4449,7 +4529,7 @@ pub unsafe fn _mm512_mask_scalef_pd(src: __m512d, k: __mmask8, a: __m512d, b: __
 
 /// Scale the packed double-precision (64-bit) floating-point elements in a using values from b, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_scalef_pd&expand=4873)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_scalef_pd&expand=4873)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vscalefpd))]
@@ -4460,6 +4540,86 @@ pub unsafe fn _mm512_maskz_scalef_pd(k: __mmask8, a: __m512d, b: __m512d) -> __m
         _mm512_setzero_pd().as_f64x8(),
         k,
         _MM_FROUND_CUR_DIRECTION,
+    ))
+}
+
+/// Scale the packed double-precision (64-bit) floating-point elements in a using values from b, and store the results in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_scalef_pd&expand=4871)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vscalefpd))]
+pub unsafe fn _mm256_scalef_pd(a: __m256d, b: __m256d) -> __m256d {
+    transmute(vscalefpd256(
+        a.as_f64x4(),
+        b.as_f64x4(),
+        _mm256_setzero_pd().as_f64x4(),
+        0b00001111,
+    ))
+}
+
+/// Scale the packed double-precision (64-bit) floating-point elements in a using values from b, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_scalef_pd&expand=4869)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vscalefpd))]
+pub unsafe fn _mm256_mask_scalef_pd(src: __m256d, k: __mmask8, a: __m256d, b: __m256d) -> __m256d {
+    transmute(vscalefpd256(a.as_f64x4(), b.as_f64x4(), src.as_f64x4(), k))
+}
+
+/// Scale the packed double-precision (64-bit) floating-point elements in a using values from b, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_scalef_pd&expand=4870)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vscalefpd))]
+pub unsafe fn _mm256_maskz_scalef_pd(k: __mmask8, a: __m256d, b: __m256d) -> __m256d {
+    transmute(vscalefpd256(
+        a.as_f64x4(),
+        b.as_f64x4(),
+        _mm256_setzero_pd().as_f64x4(),
+        k,
+    ))
+}
+
+/// Scale the packed double-precision (64-bit) floating-point elements in a using values from b, and store the results in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_scalef_pd&expand=4868)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vscalefpd))]
+pub unsafe fn _mm_scalef_pd(a: __m128d, b: __m128d) -> __m128d {
+    transmute(vscalefpd128(
+        a.as_f64x2(),
+        b.as_f64x2(),
+        _mm_setzero_pd().as_f64x2(),
+        0b00000011,
+    ))
+}
+
+/// Scale the packed double-precision (64-bit) floating-point elements in a using values from b, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_scalef_pd&expand=4866)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vscalefpd))]
+pub unsafe fn _mm_mask_scalef_pd(src: __m128d, k: __mmask8, a: __m128d, b: __m128d) -> __m128d {
+    transmute(vscalefpd128(a.as_f64x2(), b.as_f64x2(), src.as_f64x2(), k))
+}
+
+/// Scale the packed double-precision (64-bit) floating-point elements in a using values from b, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_scalef_pd&expand=4867)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vscalefpd))]
+pub unsafe fn _mm_maskz_scalef_pd(k: __mmask8, a: __m128d, b: __m128d) -> __m128d {
+    transmute(vscalefpd128(
+        a.as_f64x2(),
+        b.as_f64x2(),
+        _mm_setzero_pd().as_f64x2(),
+        k,
     ))
 }
 
@@ -27282,8 +27442,17 @@ extern "C" {
 
     #[link_name = "llvm.x86.avx512.mask.scalef.ps.512"]
     fn vscalefps(a: f32x16, b: f32x16, src: f32x16, mask: u16, rounding: i32) -> f32x16;
+    #[link_name = "llvm.x86.avx512.mask.scalef.ps.256"]
+    fn vscalefps256(a: f32x8, b: f32x8, src: f32x8, mask: u8) -> f32x8;
+    #[link_name = "llvm.x86.avx512.mask.scalef.ps.128"]
+    fn vscalefps128(a: f32x4, b: f32x4, src: f32x4, mask: u8) -> f32x4;
+
     #[link_name = "llvm.x86.avx512.mask.scalef.pd.512"]
     fn vscalefpd(a: f64x8, b: f64x8, src: f64x8, mask: u8, rounding: i32) -> f64x8;
+    #[link_name = "llvm.x86.avx512.mask.scalef.pd.256"]
+    fn vscalefpd256(a: f64x4, b: f64x4, src: f64x4, mask: u8) -> f64x4;
+    #[link_name = "llvm.x86.avx512.mask.scalef.pd.128"]
+    fn vscalefpd128(a: f64x2, b: f64x2, src: f64x2, mask: u8) -> f64x2;
 
     #[link_name = "llvm.x86.avx512.mask.fixupimm.ps.512"]
     fn vfixupimmps(a: f32x16, b: f32x16, c: i32x16, imm8: i32, mask: u16, sae: i32) -> f32x16;
@@ -30041,6 +30210,68 @@ mod tests {
             8., 8., 8., 8., 8., 8., 8., 8., 0., 0., 0., 0., 0., 0., 0., 0.,
         );
         assert_eq_m512(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_scalef_ps() {
+        let a = _mm256_set1_ps(1.);
+        let b = _mm256_set1_ps(3.);
+        let r = _mm256_scalef_ps(a, b);
+        let e = _mm256_set1_ps(8.);
+        assert_eq_m256(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_mask_scalef_ps() {
+        let a = _mm256_set1_ps(1.);
+        let b = _mm256_set1_ps(3.);
+        let r = _mm256_mask_scalef_ps(a, 0, a, b);
+        assert_eq_m256(r, a);
+        let r = _mm256_mask_scalef_ps(a, 0b11111111, a, b);
+        let e = _mm256_set1_ps(8.);
+        assert_eq_m256(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_maskz_scalef_ps() {
+        let a = _mm256_set1_ps(1.);
+        let b = _mm256_set1_ps(3.);
+        let r = _mm256_maskz_scalef_ps(0, a, b);
+        assert_eq_m256(r, _mm256_setzero_ps());
+        let r = _mm256_maskz_scalef_ps(0b11111111, a, b);
+        let e = _mm256_set1_ps(8.);
+        assert_eq_m256(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_scalef_ps() {
+        let a = _mm_set1_ps(1.);
+        let b = _mm_set1_ps(3.);
+        let r = _mm_scalef_ps(a, b);
+        let e = _mm_set1_ps(8.);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_mask_scalef_ps() {
+        let a = _mm_set1_ps(1.);
+        let b = _mm_set1_ps(3.);
+        let r = _mm_mask_scalef_ps(a, 0, a, b);
+        assert_eq_m128(r, a);
+        let r = _mm_mask_scalef_ps(a, 0b00001111, a, b);
+        let e = _mm_set1_ps(8.);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_maskz_scalef_ps() {
+        let a = _mm_set1_ps(1.);
+        let b = _mm_set1_ps(3.);
+        let r = _mm_maskz_scalef_ps(0, a, b);
+        assert_eq_m128(r, _mm_setzero_ps());
+        let r = _mm_maskz_scalef_ps(0b00001111, a, b);
+        let e = _mm_set1_ps(8.);
+        assert_eq_m128(r, e);
     }
 
     #[simd_test(enable = "avx512f")]
