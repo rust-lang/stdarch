@@ -4625,7 +4625,7 @@ pub unsafe fn _mm_maskz_scalef_pd(k: __mmask8, a: __m128d, b: __m128d) -> __m128
 
 /// Fix up packed single-precision (32-bit) floating-point elements in a and b using packed 32-bit integers in c, and store the results in dst. imm8 is used to set the required flags reporting.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_fixupimm_ps&expand=2499)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_fixupimm_ps&expand=2499)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vfixupimmps, imm8 = 0))]
@@ -4652,7 +4652,7 @@ pub unsafe fn _mm512_fixupimm_ps(a: __m512, b: __m512, c: __m512i, imm8: i32) ->
 
 /// Fix up packed single-precision (32-bit) floating-point elements in a and b using packed 32-bit integers in c, and store the results in dst using writemask k (elements are copied from a when the corresponding mask bit is not set). imm8 is used to set the required flags reporting.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_fixupimm_ps&expand=2500)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_fixupimm_ps&expand=2500)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vfixupimmps, imm8 = 0))]
@@ -4678,7 +4678,7 @@ pub unsafe fn _mm512_mask_fixupimm_ps(
 
 /// Fix up packed single-precision (32-bit) floating-point elements in a and b using packed 32-bit integers in c, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set). imm8 is used to set the required flags reporting.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_fixupimm_ps&expand=2501)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_fixupimm_ps&expand=2501)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vfixupimmps, imm8 = 0))]
@@ -4702,9 +4702,153 @@ pub unsafe fn _mm512_maskz_fixupimm_ps(
     transmute(r)
 }
 
+/// Fix up packed single-precision (32-bit) floating-point elements in a and b using packed 32-bit integers in c, and store the results in dst. imm8 is used to set the required flags reporting.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_fixupimm_ps&expand=2496)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vfixupimmps, imm8 = 0))]
+#[rustc_args_required_const(3)]
+pub unsafe fn _mm256_fixupimm_ps(a: __m256, b: __m256, c: __m256i, imm8: i32) -> __m256 {
+    let a = a.as_f32x8();
+    let b = b.as_f32x8();
+    let c = c.as_i32x8();
+    macro_rules! call {
+        ($imm8:expr) => {
+            vfixupimmps256(a, b, c, $imm8, 0b11111111)
+        };
+    }
+    let r = constify_imm8_sae!(imm8, call);
+    transmute(r)
+}
+
+/// Fix up packed single-precision (32-bit) floating-point elements in a and b using packed 32-bit integers in c, and store the results in dst using writemask k (elements are copied from a when the corresponding mask bit is not set). imm8 is used to set the required flags reporting.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_fixupimm_ps&expand=2497)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vfixupimmps, imm8 = 0))]
+#[rustc_args_required_const(4)]
+pub unsafe fn _mm256_mask_fixupimm_ps(
+    a: __m256,
+    k: __mmask8,
+    b: __m256,
+    c: __m256i,
+    imm8: i32,
+) -> __m256 {
+    let a = a.as_f32x8();
+    let b = b.as_f32x8();
+    let c = c.as_i32x8();
+    macro_rules! call {
+        ($imm8:expr) => {
+            vfixupimmps256(a, b, c, $imm8, k)
+        };
+    }
+    let r = constify_imm8_sae!(imm8, call);
+    transmute(r)
+}
+
+/// Fix up packed single-precision (32-bit) floating-point elements in a and b using packed 32-bit integers in c, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set). imm8 is used to set the required flags reporting.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_fixupimm_ps&expand=2498)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vfixupimmps, imm8 = 0))]
+#[rustc_args_required_const(4)]
+pub unsafe fn _mm256_maskz_fixupimm_ps(
+    k: __mmask8,
+    a: __m256,
+    b: __m256,
+    c: __m256i,
+    imm8: i32,
+) -> __m256 {
+    let a = a.as_f32x8();
+    let b = b.as_f32x8();
+    let c = c.as_i32x8();
+    macro_rules! call {
+        ($imm8:expr) => {
+            vfixupimmpsz256(a, b, c, $imm8, k)
+        };
+    }
+    let r = constify_imm8_sae!(imm8, call);
+    transmute(r)
+}
+
+/// Fix up packed single-precision (32-bit) floating-point elements in a and b using packed 32-bit integers in c, and store the results in dst. imm8 is used to set the required flags reporting.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_fixupimm_ps&expand=2493)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vfixupimmps, imm8 = 0))]
+#[rustc_args_required_const(3)]
+pub unsafe fn _mm_fixupimm_ps(a: __m128, b: __m128, c: __m128i, imm8: i32) -> __m128 {
+    let a = a.as_f32x4();
+    let b = b.as_f32x4();
+    let c = c.as_i32x4();
+    macro_rules! call {
+        ($imm8:expr) => {
+            vfixupimmps128(a, b, c, $imm8, 0b00001111)
+        };
+    }
+    let r = constify_imm8_sae!(imm8, call);
+    transmute(r)
+}
+
+/// Fix up packed single-precision (32-bit) floating-point elements in a and b using packed 32-bit integers in c, and store the results in dst using writemask k (elements are copied from a when the corresponding mask bit is not set). imm8 is used to set the required flags reporting.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_fixupimm_ps&expand=2494)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vfixupimmps, imm8 = 0))]
+#[rustc_args_required_const(4)]
+pub unsafe fn _mm_mask_fixupimm_ps(
+    a: __m128,
+    k: __mmask8,
+    b: __m128,
+    c: __m128i,
+    imm8: i32,
+) -> __m128 {
+    let a = a.as_f32x4();
+    let b = b.as_f32x4();
+    let c = c.as_i32x4();
+    macro_rules! call {
+        ($imm8:expr) => {
+            vfixupimmps128(a, b, c, $imm8, k)
+        };
+    }
+    let r = constify_imm8_sae!(imm8, call);
+    transmute(r)
+}
+
+/// Fix up packed single-precision (32-bit) floating-point elements in a and b using packed 32-bit integers in c, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set). imm8 is used to set the required flags reporting.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_fixupimm_ps&expand=2495)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vfixupimmps, imm8 = 0))]
+#[rustc_args_required_const(4)]
+pub unsafe fn _mm_maskz_fixupimm_ps(
+    k: __mmask8,
+    a: __m128,
+    b: __m128,
+    c: __m128i,
+    imm8: i32,
+) -> __m128 {
+    let a = a.as_f32x4();
+    let b = b.as_f32x4();
+    let c = c.as_i32x4();
+    macro_rules! call {
+        ($imm8:expr) => {
+            vfixupimmpsz128(a, b, c, $imm8, k)
+        };
+    }
+    let r = constify_imm8_sae!(imm8, call);
+    transmute(r)
+}
+
 /// Fix up packed double-precision (64-bit) floating-point elements in a and b using packed 64-bit integers in c, and store the results in dst. imm8 is used to set the required flags reporting.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_fixupimm_pd&expand=2490)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_fixupimm_pd&expand=2490)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vfixupimmpd, imm8 = 0))]
@@ -4724,7 +4868,7 @@ pub unsafe fn _mm512_fixupimm_pd(a: __m512d, b: __m512d, c: __m512i, imm8: i32) 
 
 /// Fix up packed double-precision (64-bit) floating-point elements in a and b using packed 64-bit integers in c, and store the results in dst using writemask k (elements are copied from a when the corresponding mask bit is not set). imm8 is used to set the required flags reporting.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_fixupimm_pd&expand=2491)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_fixupimm_pd&expand=2491)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vfixupimmpd, imm8 = 0))]
@@ -4750,7 +4894,7 @@ pub unsafe fn _mm512_mask_fixupimm_pd(
 
 /// Fix up packed double-precision (64-bit) floating-point elements in a and b using packed 64-bit integers in c, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set). imm8 is used to set the required flags reporting.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_fixupimm_pd&expand=2492)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_fixupimm_pd&expand=2492)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vfixupimmpd, imm8 = 0))]
@@ -4768,6 +4912,150 @@ pub unsafe fn _mm512_maskz_fixupimm_pd(
     macro_rules! call {
         ($imm8:expr) => {
             vfixupimmpdz(a, b, c, $imm8, k, _MM_FROUND_CUR_DIRECTION)
+        };
+    }
+    let r = constify_imm8_sae!(imm8, call);
+    transmute(r)
+}
+
+/// Fix up packed double-precision (64-bit) floating-point elements in a and b using packed 64-bit integers in c, and store the results in dst. imm8 is used to set the required flags reporting.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_fixupimm_pd&expand=2487)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vfixupimmpd, imm8 = 0))]
+#[rustc_args_required_const(3)]
+pub unsafe fn _mm256_fixupimm_pd(a: __m256d, b: __m256d, c: __m256i, imm8: i32) -> __m256d {
+    let a = a.as_f64x4();
+    let b = b.as_f64x4();
+    let c = c.as_i64x4();
+    macro_rules! call {
+        ($imm8:expr) => {
+            vfixupimmpd256(a, b, c, $imm8, 0b00001111)
+        };
+    }
+    let r = constify_imm8_sae!(imm8, call);
+    transmute(r)
+}
+
+/// Fix up packed double-precision (64-bit) floating-point elements in a and b using packed 64-bit integers in c, and store the results in dst using writemask k (elements are copied from a when the corresponding mask bit is not set). imm8 is used to set the required flags reporting.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_fixupimm_pd&expand=2488)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vfixupimmpd, imm8 = 0))]
+#[rustc_args_required_const(4)]
+pub unsafe fn _mm256_mask_fixupimm_pd(
+    a: __m256d,
+    k: __mmask8,
+    b: __m256d,
+    c: __m256i,
+    imm8: i32,
+) -> __m256d {
+    let a = a.as_f64x4();
+    let b = b.as_f64x4();
+    let c = c.as_i64x4();
+    macro_rules! call {
+        ($imm8:expr) => {
+            vfixupimmpd256(a, b, c, $imm8, k)
+        };
+    }
+    let r = constify_imm8_sae!(imm8, call);
+    transmute(r)
+}
+
+/// Fix up packed double-precision (64-bit) floating-point elements in a and b using packed 64-bit integers in c, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set). imm8 is used to set the required flags reporting.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_fixupimm_pd&expand=2489)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vfixupimmpd, imm8 = 0))]
+#[rustc_args_required_const(4)]
+pub unsafe fn _mm256_maskz_fixupimm_pd(
+    k: __mmask8,
+    a: __m256d,
+    b: __m256d,
+    c: __m256i,
+    imm8: i32,
+) -> __m256d {
+    let a = a.as_f64x4();
+    let b = b.as_f64x4();
+    let c = c.as_i64x4();
+    macro_rules! call {
+        ($imm8:expr) => {
+            vfixupimmpdz256(a, b, c, $imm8, k)
+        };
+    }
+    let r = constify_imm8_sae!(imm8, call);
+    transmute(r)
+}
+
+/// Fix up packed double-precision (64-bit) floating-point elements in a and b using packed 64-bit integers in c, and store the results in dst. imm8 is used to set the required flags reporting.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_fixupimm_pd&expand=2484)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vfixupimmpd, imm8 = 0))]
+#[rustc_args_required_const(3)]
+pub unsafe fn _mm_fixupimm_pd(a: __m128d, b: __m128d, c: __m128i, imm8: i32) -> __m128d {
+    let a = a.as_f64x2();
+    let b = b.as_f64x2();
+    let c = c.as_i64x2();
+    macro_rules! call {
+        ($imm8:expr) => {
+            vfixupimmpd128(a, b, c, $imm8, 0b00000011)
+        };
+    }
+    let r = constify_imm8_sae!(imm8, call);
+    transmute(r)
+}
+
+/// Fix up packed double-precision (64-bit) floating-point elements in a and b using packed 64-bit integers in c, and store the results in dst using writemask k (elements are copied from a when the corresponding mask bit is not set). imm8 is used to set the required flags reporting.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_fixupimm_pd&expand=2485)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vfixupimmpd, imm8 = 0))]
+#[rustc_args_required_const(4)]
+pub unsafe fn _mm_mask_fixupimm_pd(
+    a: __m128d,
+    k: __mmask8,
+    b: __m128d,
+    c: __m128i,
+    imm8: i32,
+) -> __m128d {
+    let a = a.as_f64x2();
+    let b = b.as_f64x2();
+    let c = c.as_i64x2();
+    macro_rules! call {
+        ($imm8:expr) => {
+            vfixupimmpd128(a, b, c, $imm8, k)
+        };
+    }
+    let r = constify_imm8_sae!(imm8, call);
+    transmute(r)
+}
+
+/// Fix up packed double-precision (64-bit) floating-point elements in a and b using packed 64-bit integers in c, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set). imm8 is used to set the required flags reporting.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_fixupimm_pd&expand=2486)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vfixupimmpd, imm8 = 0))]
+#[rustc_args_required_const(4)]
+pub unsafe fn _mm_maskz_fixupimm_pd(
+    k: __mmask8,
+    a: __m128d,
+    b: __m128d,
+    c: __m128i,
+    imm8: i32,
+) -> __m128d {
+    let a = a.as_f64x2();
+    let b = b.as_f64x2();
+    let c = c.as_i64x2();
+    macro_rules! call {
+        ($imm8:expr) => {
+            vfixupimmpdz128(a, b, c, $imm8, k)
         };
     }
     let r = constify_imm8_sae!(imm8, call);
@@ -27456,12 +27744,31 @@ extern "C" {
 
     #[link_name = "llvm.x86.avx512.mask.fixupimm.ps.512"]
     fn vfixupimmps(a: f32x16, b: f32x16, c: i32x16, imm8: i32, mask: u16, sae: i32) -> f32x16;
+    #[link_name = "llvm.x86.avx512.mask.fixupimm.ps.256"]
+    fn vfixupimmps256(a: f32x8, b: f32x8, c: i32x8, imm8: i32, mask: u8) -> f32x8;
+    #[link_name = "llvm.x86.avx512.mask.fixupimm.ps.128"]
+    fn vfixupimmps128(a: f32x4, b: f32x4, c: i32x4, imm8: i32, mask: u8) -> f32x4;
+
     #[link_name = "llvm.x86.avx512.mask.fixupimm.pd.512"]
     fn vfixupimmpd(a: f64x8, b: f64x8, c: i64x8, imm8: i32, mask: u8, sae: i32) -> f64x8;
+    #[link_name = "llvm.x86.avx512.mask.fixupimm.pd.256"]
+    fn vfixupimmpd256(a: f64x4, b: f64x4, c: i64x4, imm8: i32, mask: u8) -> f64x4;
+    #[link_name = "llvm.x86.avx512.mask.fixupimm.pd.128"]
+    fn vfixupimmpd128(a: f64x2, b: f64x2, c: i64x2, imm8: i32, mask: u8) -> f64x2;
+
     #[link_name = "llvm.x86.avx512.maskz.fixupimm.ps.512"]
     fn vfixupimmpsz(a: f32x16, b: f32x16, c: i32x16, imm8: i32, mask: u16, sae: i32) -> f32x16;
+    #[link_name = "llvm.x86.avx512.maskz.fixupimm.ps.256"]
+    fn vfixupimmpsz256(a: f32x8, b: f32x8, c: i32x8, imm8: i32, mask: u8) -> f32x8;
+    #[link_name = "llvm.x86.avx512.maskz.fixupimm.ps.128"]
+    fn vfixupimmpsz128(a: f32x4, b: f32x4, c: i32x4, imm8: i32, mask: u8) -> f32x4;
+
     #[link_name = "llvm.x86.avx512.maskz.fixupimm.pd.512"]
     fn vfixupimmpdz(a: f64x8, b: f64x8, c: i64x8, imm8: i32, mask: u8, sae: i32) -> f64x8;
+    #[link_name = "llvm.x86.avx512.maskz.fixupimm.pd.256"]
+    fn vfixupimmpdz256(a: f64x4, b: f64x4, c: i64x4, imm8: i32, mask: u8) -> f64x4;
+    #[link_name = "llvm.x86.avx512.maskz.fixupimm.pd.128"]
+    fn vfixupimmpdz128(a: f64x2, b: f64x2, c: i64x2, imm8: i32, mask: u8) -> f64x2;
 
     #[link_name = "llvm.x86.avx512.pternlog.d.512"]
     fn vpternlogd(a: i32x16, b: i32x16, c: i32x16, sae: i32) -> i32x16;
@@ -30288,22 +30595,10 @@ mod tests {
     unsafe fn test_mm512_mask_fixupimm_ps() {
         #[rustfmt::skip]
         let a = _mm512_set_ps(
-            f32::NAN,
-            f32::NAN,
-            f32::NAN,
-            f32::NAN,
-            f32::NAN,
-            f32::NAN,
-            f32::NAN,
-            f32::NAN,
-            1.,
-            1.,
-            1.,
-            1.,
-            1.,
-            1.,
-            1.,
-            1.,
+            f32::NAN, f32::NAN, f32::NAN, f32::NAN,
+            f32::NAN, f32::NAN, f32::NAN, f32::NAN,
+            1., 1., 1., 1.,
+            1., 1., 1., 1.,
         );
         let b = _mm512_set1_ps(f32::MAX);
         let c = _mm512_set1_epi32(i32::MAX);
@@ -30318,22 +30613,10 @@ mod tests {
     unsafe fn test_mm512_maskz_fixupimm_ps() {
         #[rustfmt::skip]
         let a = _mm512_set_ps(
-            f32::NAN,
-            f32::NAN,
-            f32::NAN,
-            f32::NAN,
-            f32::NAN,
-            f32::NAN,
-            f32::NAN,
-            f32::NAN,
-            1.,
-            1.,
-            1.,
-            1.,
-            1.,
-            1.,
-            1.,
-            1.,
+            f32::NAN, f32::NAN, f32::NAN, f32::NAN,
+            f32::NAN, f32::NAN, f32::NAN, f32::NAN,
+            1., 1., 1., 1.,
+            1., 1., 1., 1.,
         );
         let b = _mm512_set1_ps(f32::MAX);
         let c = _mm512_set1_epi32(i32::MAX);
@@ -30342,6 +30625,66 @@ mod tests {
             0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,
         );
         assert_eq_m512(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_fixupimm_ps() {
+        let a = _mm256_set1_ps(f32::NAN);
+        let b = _mm256_set1_ps(f32::MAX);
+        let c = _mm256_set1_epi32(i32::MAX);
+        let r = _mm256_fixupimm_ps(a, b, c, 5);
+        let e = _mm256_set1_ps(0.0);
+        assert_eq_m256(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_mask_fixupimm_ps() {
+        let a = _mm256_set1_ps(f32::NAN);
+        let b = _mm256_set1_ps(f32::MAX);
+        let c = _mm256_set1_epi32(i32::MAX);
+        let r = _mm256_mask_fixupimm_ps(a, 0b11111111, b, c, 5);
+        let e = _mm256_set1_ps(0.0);
+        assert_eq_m256(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_maskz_fixupimm_ps() {
+        let a = _mm256_set1_ps(f32::NAN);
+        let b = _mm256_set1_ps(f32::MAX);
+        let c = _mm256_set1_epi32(i32::MAX);
+        let r = _mm256_maskz_fixupimm_ps(0b11111111, a, b, c, 5);
+        let e = _mm256_set1_ps(0.0);
+        assert_eq_m256(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_fixupimm_ps() {
+        let a = _mm_set1_ps(f32::NAN);
+        let b = _mm_set1_ps(f32::MAX);
+        let c = _mm_set1_epi32(i32::MAX);
+        let r = _mm_fixupimm_ps(a, b, c, 5);
+        let e = _mm_set1_ps(0.0);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_mask_fixupimm_ps() {
+        let a = _mm_set1_ps(f32::NAN);
+        let b = _mm_set1_ps(f32::MAX);
+        let c = _mm_set1_epi32(i32::MAX);
+        let r = _mm_mask_fixupimm_ps(a, 0b00001111, b, c, 5);
+        let e = _mm_set1_ps(0.0);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_maskz_fixupimm_ps() {
+        let a = _mm_set1_ps(f32::NAN);
+        let b = _mm_set1_ps(f32::MAX);
+        let c = _mm_set1_epi32(i32::MAX);
+        let r = _mm_maskz_fixupimm_ps(0b00001111, a, b, c, 5);
+        let e = _mm_set1_ps(0.0);
+        assert_eq_m128(r, e);
     }
 
     #[simd_test(enable = "avx512f")]

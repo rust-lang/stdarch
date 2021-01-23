@@ -2066,6 +2066,66 @@ mod tests {
         assert_eq_m512d(r, e);
     }
 
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_fixupimm_pd() {
+        let a = _mm256_set1_pd(f64::NAN);
+        let b = _mm256_set1_pd(f64::MAX);
+        let c = _mm256_set1_epi64x(i32::MAX as i64);
+        let r = _mm256_fixupimm_pd(a, b, c, 5);
+        let e = _mm256_set1_pd(0.0);
+        assert_eq_m256d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_mask_fixupimm_pd() {
+        let a = _mm256_set1_pd(f64::NAN);
+        let b = _mm256_set1_pd(f64::MAX);
+        let c = _mm256_set1_epi64x(i32::MAX as i64);
+        let r = _mm256_mask_fixupimm_pd(a, 0b00001111, b, c, 5);
+        let e = _mm256_set1_pd(0.0);
+        assert_eq_m256d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_maskz_fixupimm_pd() {
+        let a = _mm256_set1_pd(f64::NAN);
+        let b = _mm256_set1_pd(f64::MAX);
+        let c = _mm256_set1_epi64x(i32::MAX as i64);
+        let r = _mm256_maskz_fixupimm_pd(0b00001111, a, b, c, 5);
+        let e = _mm256_set1_pd(0.0);
+        assert_eq_m256d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_fixupimm_pd() {
+        let a = _mm_set1_pd(f64::NAN);
+        let b = _mm_set1_pd(f64::MAX);
+        let c = _mm_set1_epi64x(i32::MAX as i64);
+        let r = _mm_fixupimm_pd(a, b, c, 5);
+        let e = _mm_set1_pd(0.0);
+        assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_mask_fixupimm_pd() {
+        let a = _mm_set1_pd(f64::NAN);
+        let b = _mm_set1_pd(f64::MAX);
+        let c = _mm_set1_epi64x(i32::MAX as i64);
+        let r = _mm_mask_fixupimm_pd(a, 0b00000011, b, c, 5);
+        let e = _mm_set1_pd(0.0);
+        assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_maskz_fixupimm_pd() {
+        let a = _mm_set1_pd(f64::NAN);
+        let b = _mm_set1_pd(f64::MAX);
+        let c = _mm_set1_epi64x(i32::MAX as i64);
+        let r = _mm_maskz_fixupimm_pd(0b00000011, a, b, c, 5);
+        let e = _mm_set1_pd(0.0);
+        assert_eq_m128d(r, e);
+    }
+
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_ternarylogic_epi64() {
         let a = _mm512_set1_epi64(1 << 2);
