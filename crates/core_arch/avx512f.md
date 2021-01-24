@@ -550,19 +550,27 @@
   * [x] [`_mm512_fnmsub_ps`]
   * [x] [`_mm512_mask_fnmsub_ps`]
   * [x] [`_mm512_maskz_fnmsub_ps`]
-
+  * [x] [`_mm_mask_fnmsub_ps`]
+  * [x] [`_mm_mask3_fnmsub_ps`]
+  * [x] [`_mm_maskz_fnmsub_ps`]
+  * [x] [`_mm256_mask_fnmsub_ps`]
+  * [x] [`_mm256_mask3_fnmsub_ps`]
+  * [x] [`_mm256_maskz_fnmsub_ps`]
   * [x] [`_mm512_fnmsub_pd`]
   * [x] [`_mm512_mask_fnmsub_pd`]
   * [x] [`_mm512_maskz_fnmsub_pd`]
-
+  * [x] [`_mm_mask_fnmsub_pd`]
+  * [x] [`_mm_mask3_fnmsub_pd`]
+  * [x] [`_mm_maskz_fnmsub_pd`]
+  * [x] [`_mm256_mask_fnmsub_pd`]
+  * [x] [`_mm256_mask3_fnmsub_pd`]
+  * [x] [`_mm256_maskz_fnmsub_pd`]
   * [x] [`_mm512_fnmsub_round_ps`]
   * [x] [`_mm512_mask_fnmsub_round_ps`]
   * [x] [`_mm512_maskz_fnmsub_round_ps`]
-
   * [x] [`_mm512_fnmsub_round_pd`]
   * [x] [`_mm512_mask_fnmsub_round_pd`]
   * [x] [`_mm512_maskz_fnmsub_round_pd`]
-
 
   * [x] [`_mm512_alignr_epi32`]
   * [x] [`_mm512_alignr_epi64`]
