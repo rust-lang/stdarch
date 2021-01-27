@@ -709,16 +709,28 @@
   * [x] [`_mm256_mask_cmpge_epu64_mask`]
   * [x] [`_mm512_cmpgt_epi32_mask`]
   * [x] [`_mm512_mask_cmpgt_epi32_mask`]
-
+  * [x] [`_mm_cmpgt_epi32_mask`]
+  * [x] [`_mm_mask_cmpgt_epi32_mask`]
+  * [x] [`_mm256_cmpgt_epi32_mask`]
+  * [x] [`_mm256_mask_cmpgt_epi32_mask`]
   * [x] [`_mm512_cmpgt_epi64_mask`]
   * [x] [`_mm512_mask_cmpgt_epi64_mask`]
-
+  * [x] [`_mm_cmpgt_epi64_mask`]
+  * [x] [`_mm_mask_cmpgt_epi64_mask`]
+  * [x] [`_mm256_cmpgt_epi64_mask`]
+  * [x] [`_mm256_mask_cmpgt_epi64_mask`]
   * [x] [`_mm512_cmpgt_epu32_mask`]
   * [x] [`_mm512_mask_cmpgt_epu32_mask`]
-
+  * [x] [`_mm_cmpgt_epu32_mask`]
+  * [x] [`_mm_mask_cmpgt_epu32_mask`]
+  * [x] [`_mm256_cmpgt_epu32_mask`]
+  * [x] [`_mm256_mask_cmpgt_epu32_mask`]
   * [x] [`_mm512_cmpgt_epu64_mask`]
   * [x] [`_mm512_mask_cmpgt_epu64_mask`]
-
+  * [x] [`_mm_cmpgt_epu64_mask`]
+  * [x] [`_mm_mask_cmpgt_epu64_mask`]
+  * [x] [`_mm256_cmpgt_epu64_mask`]
+  * [x] [`_mm256_mask_cmpgt_epu64_mask`]
   * [x] [`_mm512_cmple_epi32_mask`]
   * [x] [`_mm512_mask_cmple_epi32_mask`]
 
