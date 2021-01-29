@@ -178,11 +178,11 @@ jobs:
         echo "$HOME/.cargo/bin" >> $GITHUB_PATH
         #rustup update nightly --no-self-update
         #rustup default nightly
-        rustup update nightly-2021-01-21 --no-self-update
-        rustup default nightly-2021-01-21
+        rustup update nightly-2021-01-23 --no-self-update
+        rustup default nightly-2021-01-23
       if: matrix.os == 'macos-latest'
     - run: |
-        rustup default nightly
+        rustup default nightly-2021-01-23
         rustup target add ${{ matrix.target }}
       if: "!endsWith(matrix.target, 'emulated')"
     - run: cargo generate-lockfile
