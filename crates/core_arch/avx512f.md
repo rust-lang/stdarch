@@ -1078,14 +1078,14 @@
   * [x] [`_mm512_mask_extractf64x4_pd`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_extractf64x4_pd&expand=5236)
   * [x] [`_mm512_mask_extracti32x4_epi32`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_extracti32x4_epi32&expand=5236)
   * [x] [`_mm512_mask_extracti64x4_epi64`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_extracti64x4_epi64&expand=5236)
-  * [ ] [`_mm512_mask_i32extgather_epi32`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_i32extgather_epi32&expand=5236)
-  * [ ] [`_mm512_mask_i32extgather_ps`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_i32extgather_ps&expand=5236)
-  * [ ] [`_mm512_mask_i32extscatter_epi32`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_i32extscatter_epi32&expand=5236)
-  * [ ] [`_mm512_mask_i32extscatter_ps`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_i32extscatter_ps&expand=5236)
-  * [x] [`_mm512_mask_i32gather_epi32`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_i32gather_epi32&expand=5236)
-  * [x] [`_mm512_mask_i32gather_epi64`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_i32gather_epi64&expand=5236)
-  * [x] [`_mm512_mask_i32gather_pd`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_i32gather_pd&expand=5236)
-  * [x] [`_mm512_mask_i32gather_ps`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_i32gather_ps&expand=5236)
+  * [ ] [`_mm512_mask_i32extgather_epi32`]
+  * [ ] [`_mm512_mask_i32extgather_ps`]
+  * [ ] [`_mm512_mask_i32extscatter_epi32`]
+  * [ ] [`_mm512_mask_i32extscatter_ps`]
+  * [x] [`_mm512_mask_i32gather_epi32`]
+  * [x] [`_mm512_mask_i32gather_epi64`]
+  * [x] [`_mm512_mask_i32gather_pd`]
+  * [x] [`_mm512_mask_i32gather_ps`]
   * [ ] [`_mm512_mask_i32loextgather_epi64`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_i32loextgather_epi64&expand=5236)
   * [ ] [`_mm512_mask_i32loextgather_pd`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_i32loextgather_pd&expand=5236)
   * [ ] [`_mm512_mask_i32loextscatter_epi64`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_i32loextscatter_epi64&expand=5236)
