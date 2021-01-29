@@ -90,7 +90,7 @@ jobs:
         - thumbv7em-none-eabihf
 
         # macOS targets
-        - x86_64-apple-darwin
+        #- x86_64-apple-darwin
         # FIXME: gh-actions build environment doesn't have linker support
         # - i686-apple-darwin
 
@@ -176,13 +176,11 @@ jobs:
       run: |
         curl https://sh.rustup.rs | sh -s -- -y --default-toolchain nightly
         echo "$HOME/.cargo/bin" >> $GITHUB_PATH
-        #rustup update nightly --no-self-update
-        #rustup default nightly
-        rustup update nightly-2021-01-23 --no-self-update
-        rustup default nightly-2021-01-23
+        rustup update nightly --no-self-update
+        rustup default nightly
       if: matrix.os == 'macos-latest'
     - run: |
-        rustup default nightly-2021-01-23
+        rustup default nightly
         rustup target add ${{ matrix.target }}
       if: "!endsWith(matrix.target, 'emulated')"
     - run: cargo generate-lockfile
