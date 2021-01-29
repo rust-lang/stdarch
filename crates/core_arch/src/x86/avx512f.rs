@@ -13995,7 +13995,7 @@ pub unsafe fn _mm512_maskz_expand_pd(k: __mmask8, a: __m512d) -> __m512d {
 
 /// Rotate the bits in each packed 32-bit integer in a to the left by the number of bits specified in imm8, and store the results in dst.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_rol_epi32&expand=4685)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_rol_epi32&expand=4685)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vprold, imm8 = 1))]
@@ -14013,7 +14013,7 @@ pub unsafe fn _mm512_rol_epi32(a: __m512i, imm8: i32) -> __m512i {
 
 /// Rotate the bits in each packed 32-bit integer in a to the left by the number of bits specified in imm8, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_rol_epi32&expand=4683)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_rol_epi32&expand=4683)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vprold, imm8 = 1))]
@@ -14031,7 +14031,7 @@ pub unsafe fn _mm512_mask_rol_epi32(src: __m512i, k: __mmask16, a: __m512i, imm8
 
 /// Rotate the bits in each packed 32-bit integer in a to the left by the number of bits specified in imm8, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_rol_epi32&expand=4684)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_rol_epi32&expand=4684)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vprold, imm8 = 1))]
@@ -14045,6 +14045,116 @@ pub unsafe fn _mm512_maskz_rol_epi32(k: __mmask16, a: __m512i, imm8: i32) -> __m
     }
     let rol = constify_imm8_sae!(imm8, call);
     let zero = _mm512_setzero_si512().as_i32x16();
+    transmute(simd_select_bitmask(k, rol, zero))
+}
+
+/// Rotate the bits in each packed 32-bit integer in a to the left by the number of bits specified in imm8, and store the results in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_rol_epi32&expand=4682)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vprold, imm8 = 1))]
+#[rustc_args_required_const(1)]
+pub unsafe fn _mm256_rol_epi32(a: __m256i, imm8: i32) -> __m256i {
+    let a = a.as_i32x8();
+    macro_rules! call {
+        ($imm8:expr) => {
+            vprold256(a, $imm8)
+        };
+    }
+    let r = constify_imm8_sae!(imm8, call);
+    transmute(r)
+}
+
+/// Rotate the bits in each packed 32-bit integer in a to the left by the number of bits specified in imm8, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_rol_epi32&expand=4680)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vprold, imm8 = 1))]
+#[rustc_args_required_const(3)]
+pub unsafe fn _mm256_mask_rol_epi32(src: __m256i, k: __mmask8, a: __m256i, imm8: i32) -> __m256i {
+    let a = a.as_i32x8();
+    macro_rules! call {
+        ($imm8:expr) => {
+            vprold256(a, $imm8)
+        };
+    }
+    let rol = constify_imm8_sae!(imm8, call);
+    transmute(simd_select_bitmask(k, rol, src.as_i32x8()))
+}
+
+/// Rotate the bits in each packed 32-bit integer in a to the left by the number of bits specified in imm8, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_rol_epi32&expand=4681)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vprold, imm8 = 1))]
+#[rustc_args_required_const(2)]
+pub unsafe fn _mm256_maskz_rol_epi32(k: __mmask8, a: __m256i, imm8: i32) -> __m256i {
+    let a = a.as_i32x8();
+    macro_rules! call {
+        ($imm8:expr) => {
+            vprold256(a, $imm8)
+        };
+    }
+    let rol = constify_imm8_sae!(imm8, call);
+    let zero = _mm256_setzero_si256().as_i32x8();
+    transmute(simd_select_bitmask(k, rol, zero))
+}
+
+/// Rotate the bits in each packed 32-bit integer in a to the left by the number of bits specified in imm8, and store the results in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_rol_epi32&expand=4679)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vprold, imm8 = 1))]
+#[rustc_args_required_const(1)]
+pub unsafe fn _mm_rol_epi32(a: __m128i, imm8: i32) -> __m128i {
+    let a = a.as_i32x4();
+    macro_rules! call {
+        ($imm8:expr) => {
+            vprold128(a, $imm8)
+        };
+    }
+    let r = constify_imm8_sae!(imm8, call);
+    transmute(r)
+}
+
+/// Rotate the bits in each packed 32-bit integer in a to the left by the number of bits specified in imm8, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_rol_epi32&expand=4677)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vprold, imm8 = 1))]
+#[rustc_args_required_const(3)]
+pub unsafe fn _mm_mask_rol_epi32(src: __m128i, k: __mmask8, a: __m128i, imm8: i32) -> __m128i {
+    let a = a.as_i32x4();
+    macro_rules! call {
+        ($imm8:expr) => {
+            vprold128(a, $imm8)
+        };
+    }
+    let rol = constify_imm8_sae!(imm8, call);
+    transmute(simd_select_bitmask(k, rol, src.as_i32x4()))
+}
+
+/// Rotate the bits in each packed 32-bit integer in a to the left by the number of bits specified in imm8, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_rol_epi32&expand=4678)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vprold, imm8 = 1))]
+#[rustc_args_required_const(2)]
+pub unsafe fn _mm_maskz_rol_epi32(k: __mmask8, a: __m128i, imm8: i32) -> __m128i {
+    let a = a.as_i32x4();
+    macro_rules! call {
+        ($imm8:expr) => {
+            vprold128(a, $imm8)
+        };
+    }
+    let rol = constify_imm8_sae!(imm8, call);
+    let zero = _mm_setzero_si128().as_i32x4();
     transmute(simd_select_bitmask(k, rol, zero))
 }
 
@@ -14215,7 +14325,7 @@ pub unsafe fn _mm_maskz_ror_epi32(k: __mmask8, a: __m128i, imm8: i32) -> __m128i
 
 /// Rotate the bits in each packed 64-bit integer in a to the left by the number of bits specified in imm8, and store the results in dst.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_rol_epi64&expand=4694)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_rol_epi64&expand=4694)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vprolq, imm8 = 1))]
@@ -14233,7 +14343,7 @@ pub unsafe fn _mm512_rol_epi64(a: __m512i, imm8: i32) -> __m512i {
 
 /// Rotate the bits in each packed 64-bit integer in a to the left by the number of bits specified in imm8, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_rol_epi64&expand=4692)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_rol_epi64&expand=4692)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vprolq, imm8 = 1))]
@@ -14251,7 +14361,7 @@ pub unsafe fn _mm512_mask_rol_epi64(src: __m512i, k: __mmask8, a: __m512i, imm8:
 
 /// Rotate the bits in each packed 64-bit integer in a to the left by the number of bits specified in imm8, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_rol_epi64&expand=4693)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_rol_epi64&expand=4693)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vprolq, imm8 = 1))]
@@ -14265,6 +14375,116 @@ pub unsafe fn _mm512_maskz_rol_epi64(k: __mmask8, a: __m512i, imm8: i32) -> __m5
     }
     let rol = constify_imm8_sae!(imm8, call);
     let zero = _mm512_setzero_si512().as_i64x8();
+    transmute(simd_select_bitmask(k, rol, zero))
+}
+
+/// Rotate the bits in each packed 64-bit integer in a to the left by the number of bits specified in imm8, and store the results in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_rol_epi64&expand=4691)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vprolq, imm8 = 1))]
+#[rustc_args_required_const(1)]
+pub unsafe fn _mm256_rol_epi64(a: __m256i, imm8: i32) -> __m256i {
+    let a = a.as_i64x4();
+    macro_rules! call {
+        ($imm8:expr) => {
+            vprolq256(a, $imm8)
+        };
+    }
+    let r = constify_imm8_sae!(imm8, call);
+    transmute(r)
+}
+
+/// Rotate the bits in each packed 64-bit integer in a to the left by the number of bits specified in imm8, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_rol_epi64&expand=4689)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vprolq, imm8 = 1))]
+#[rustc_args_required_const(3)]
+pub unsafe fn _mm256_mask_rol_epi64(src: __m256i, k: __mmask8, a: __m256i, imm8: i32) -> __m256i {
+    let a = a.as_i64x4();
+    macro_rules! call {
+        ($imm8:expr) => {
+            vprolq256(a, $imm8)
+        };
+    }
+    let rol = constify_imm8_sae!(imm8, call);
+    transmute(simd_select_bitmask(k, rol, src.as_i64x4()))
+}
+
+/// Rotate the bits in each packed 64-bit integer in a to the left by the number of bits specified in imm8, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_rol_epi64&expand=4690)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vprolq, imm8 = 1))]
+#[rustc_args_required_const(2)]
+pub unsafe fn _mm256_maskz_rol_epi64(k: __mmask8, a: __m256i, imm8: i32) -> __m256i {
+    let a = a.as_i64x4();
+    macro_rules! call {
+        ($imm8:expr) => {
+            vprolq256(a, $imm8)
+        };
+    }
+    let rol = constify_imm8_sae!(imm8, call);
+    let zero = _mm256_setzero_si256().as_i64x4();
+    transmute(simd_select_bitmask(k, rol, zero))
+}
+
+/// Rotate the bits in each packed 64-bit integer in a to the left by the number of bits specified in imm8, and store the results in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_rol_epi64&expand=4688)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vprolq, imm8 = 1))]
+#[rustc_args_required_const(1)]
+pub unsafe fn _mm_rol_epi64(a: __m128i, imm8: i32) -> __m128i {
+    let a = a.as_i64x2();
+    macro_rules! call {
+        ($imm8:expr) => {
+            vprolq128(a, $imm8)
+        };
+    }
+    let r = constify_imm8_sae!(imm8, call);
+    transmute(r)
+}
+
+/// Rotate the bits in each packed 64-bit integer in a to the left by the number of bits specified in imm8, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_rol_epi64&expand=4686)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vprolq, imm8 = 1))]
+#[rustc_args_required_const(3)]
+pub unsafe fn _mm_mask_rol_epi64(src: __m128i, k: __mmask8, a: __m128i, imm8: i32) -> __m128i {
+    let a = a.as_i64x2();
+    macro_rules! call {
+        ($imm8:expr) => {
+            vprolq128(a, $imm8)
+        };
+    }
+    let rol = constify_imm8_sae!(imm8, call);
+    transmute(simd_select_bitmask(k, rol, src.as_i64x2()))
+}
+
+/// Rotate the bits in each packed 64-bit integer in a to the left by the number of bits specified in imm8, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_rol_epi64&expand=4687)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vprolq, imm8 = 1))]
+#[rustc_args_required_const(2)]
+pub unsafe fn _mm_maskz_rol_epi64(k: __mmask8, a: __m128i, imm8: i32) -> __m128i {
+    let a = a.as_i64x2();
+    macro_rules! call {
+        ($imm8:expr) => {
+            vprolq128(a, $imm8)
+        };
+    }
+    let rol = constify_imm8_sae!(imm8, call);
+    let zero = _mm_setzero_si128().as_i64x2();
     transmute(simd_select_bitmask(k, rol, zero))
 }
 
@@ -14288,7 +14508,7 @@ pub unsafe fn _mm512_ror_epi64(a: __m512i, imm8: i32) -> __m512i {
 
 /// Rotate the bits in each packed 64-bit integer in a to the right by the number of bits specified in imm8, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_ror_epi64&expand=4728)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_ror_epi64&expand=4728)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vprolq, imm8 = 15))]
@@ -14306,7 +14526,7 @@ pub unsafe fn _mm512_mask_ror_epi64(src: __m512i, k: __mmask8, a: __m512i, imm8:
 
 /// Rotate the bits in each packed 64-bit integer in a to the right by the number of bits specified in imm8, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_ror_epi64&expand=4729)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_ror_epi64&expand=4729)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vprolq, imm8 = 15))]
@@ -14320,6 +14540,116 @@ pub unsafe fn _mm512_maskz_ror_epi64(k: __mmask8, a: __m512i, imm8: i32) -> __m5
     }
     let ror = constify_imm8_sae!(imm8, call);
     let zero = _mm512_setzero_si512().as_i64x8();
+    transmute(simd_select_bitmask(k, ror, zero))
+}
+
+/// Rotate the bits in each packed 64-bit integer in a to the right by the number of bits specified in imm8, and store the results in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_ror_epi64&expand=4727)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vprolq, imm8 = 15))]
+#[rustc_args_required_const(1)]
+pub unsafe fn _mm256_ror_epi64(a: __m256i, imm8: i32) -> __m256i {
+    let a = a.as_i64x4();
+    macro_rules! call {
+        ($imm8:expr) => {
+            vprorq256(a, $imm8)
+        };
+    }
+    let r = constify_imm8_sae!(imm8, call);
+    transmute(r)
+}
+
+/// Rotate the bits in each packed 64-bit integer in a to the right by the number of bits specified in imm8, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_ror_epi64&expand=4725)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vprolq, imm8 = 15))]
+#[rustc_args_required_const(3)]
+pub unsafe fn _mm256_mask_ror_epi64(src: __m256i, k: __mmask8, a: __m256i, imm8: i32) -> __m256i {
+    let a = a.as_i64x4();
+    macro_rules! call {
+        ($imm8:expr) => {
+            vprorq256(a, $imm8)
+        };
+    }
+    let ror = constify_imm8_sae!(imm8, call);
+    transmute(simd_select_bitmask(k, ror, src.as_i64x4()))
+}
+
+/// Rotate the bits in each packed 64-bit integer in a to the right by the number of bits specified in imm8, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_ror_epi64&expand=4726)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vprolq, imm8 = 15))]
+#[rustc_args_required_const(2)]
+pub unsafe fn _mm256_maskz_ror_epi64(k: __mmask8, a: __m256i, imm8: i32) -> __m256i {
+    let a = a.as_i64x4();
+    macro_rules! call {
+        ($imm8:expr) => {
+            vprorq256(a, $imm8)
+        };
+    }
+    let ror = constify_imm8_sae!(imm8, call);
+    let zero = _mm256_setzero_si256().as_i64x4();
+    transmute(simd_select_bitmask(k, ror, zero))
+}
+
+/// Rotate the bits in each packed 64-bit integer in a to the right by the number of bits specified in imm8, and store the results in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_ror_epi64&expand=4724)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vprolq, imm8 = 15))]
+#[rustc_args_required_const(1)]
+pub unsafe fn _mm_ror_epi64(a: __m128i, imm8: i32) -> __m128i {
+    let a = a.as_i64x2();
+    macro_rules! call {
+        ($imm8:expr) => {
+            vprorq128(a, $imm8)
+        };
+    }
+    let r = constify_imm8_sae!(imm8, call);
+    transmute(r)
+}
+
+/// Rotate the bits in each packed 64-bit integer in a to the right by the number of bits specified in imm8, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_ror_epi64&expand=4722)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vprolq, imm8 = 15))]
+#[rustc_args_required_const(3)]
+pub unsafe fn _mm_mask_ror_epi64(src: __m128i, k: __mmask8, a: __m128i, imm8: i32) -> __m128i {
+    let a = a.as_i64x2();
+    macro_rules! call {
+        ($imm8:expr) => {
+            vprorq128(a, $imm8)
+        };
+    }
+    let ror = constify_imm8_sae!(imm8, call);
+    transmute(simd_select_bitmask(k, ror, src.as_i64x2()))
+}
+
+/// Rotate the bits in each packed 64-bit integer in a to the right by the number of bits specified in imm8, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_ror_epi64&expand=4723)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vprolq, imm8 = 15))]
+#[rustc_args_required_const(2)]
+pub unsafe fn _mm_maskz_ror_epi64(k: __mmask8, a: __m128i, imm8: i32) -> __m128i {
+    let a = a.as_i64x2();
+    macro_rules! call {
+        ($imm8:expr) => {
+            vprorq128(a, $imm8)
+        };
+    }
+    let ror = constify_imm8_sae!(imm8, call);
+    let zero = _mm_setzero_si128().as_i64x2();
     transmute(simd_select_bitmask(k, ror, zero))
 }
 
@@ -30436,6 +30766,10 @@ extern "C" {
 
     #[link_name = "llvm.x86.avx512.mask.prol.d.512"]
     fn vprold(a: i32x16, i8: i32) -> i32x16;
+    #[link_name = "llvm.x86.avx512.mask.prol.d.256"]
+    fn vprold256(a: i32x8, i8: i32) -> i32x8;
+    #[link_name = "llvm.x86.avx512.mask.prol.d.128"]
+    fn vprold128(a: i32x4, i8: i32) -> i32x4;
 
     #[link_name = "llvm.x86.avx512.mask.pror.d.512"]
     fn vprord(a: i32x16, i8: i32) -> i32x16;
@@ -30446,8 +30780,17 @@ extern "C" {
 
     #[link_name = "llvm.x86.avx512.mask.prol.q.512"]
     fn vprolq(a: i64x8, i8: i32) -> i64x8;
+    #[link_name = "llvm.x86.avx512.mask.prol.q.256"]
+    fn vprolq256(a: i64x4, i8: i32) -> i64x4;
+    #[link_name = "llvm.x86.avx512.mask.prol.q.128"]
+    fn vprolq128(a: i64x2, i8: i32) -> i64x2;
+
     #[link_name = "llvm.x86.avx512.mask.pror.q.512"]
     fn vprorq(a: i64x8, i8: i32) -> i64x8;
+    #[link_name = "llvm.x86.avx512.mask.pror.q.256"]
+    fn vprorq256(a: i64x4, i8: i32) -> i64x4;
+    #[link_name = "llvm.x86.avx512.mask.pror.q.128"]
+    fn vprorq128(a: i64x2, i8: i32) -> i64x2;
 
     #[link_name = "llvm.x86.avx512.mask.prolv.d.512"]
     fn vprolvd(a: i32x16, b: i32x16) -> i32x16;
@@ -37833,7 +38176,6 @@ mod tests {
         let a = _mm512_set_epi32(1 << 31, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
         let r = _mm512_mask_rol_epi32(a, 0, a, 1);
         assert_eq_m512i(r, a);
-
         let r = _mm512_mask_rol_epi32(a, 0b11111111_11111111, a, 1);
         let e = _mm512_set_epi32(1 << 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2);
         assert_eq_m512i(r, e);
@@ -37844,10 +38186,65 @@ mod tests {
         let a = _mm512_set_epi32(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 << 31);
         let r = _mm512_maskz_rol_epi32(0, a, 1);
         assert_eq_m512i(r, _mm512_setzero_si512());
-
         let r = _mm512_maskz_rol_epi32(0b00000000_11111111, a, 1);
         let e = _mm512_set_epi32(0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 1 << 0);
         assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_rol_epi32() {
+        let a = _mm256_set_epi32(1 << 31, 1, 1, 1, 1, 1, 1, 1);
+        let r = _mm256_rol_epi32(a, 1);
+        let e = _mm256_set_epi32(1 << 0, 2, 2, 2, 2, 2, 2, 2);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_mask_rol_epi32() {
+        let a = _mm256_set_epi32(1 << 31, 1, 1, 1, 1, 1, 1, 1);
+        let r = _mm256_mask_rol_epi32(a, 0, a, 1);
+        assert_eq_m256i(r, a);
+        let r = _mm256_mask_rol_epi32(a, 0b11111111, a, 1);
+        let e = _mm256_set_epi32(1 << 0, 2, 2, 2, 2, 2, 2, 2);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_maskz_rol_epi32() {
+        let a = _mm256_set_epi32(1 << 31, 1, 1, 1, 1, 1, 1, 1);
+        let r = _mm256_maskz_rol_epi32(0, a, 1);
+        assert_eq_m256i(r, _mm256_setzero_si256());
+        let r = _mm256_maskz_rol_epi32(0b11111111, a, 1);
+        let e = _mm256_set_epi32(1 << 0, 2, 2, 2, 2, 2, 2, 2);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_rol_epi32() {
+        let a = _mm_set_epi32(1 << 31, 1, 1, 1);
+        let r = _mm_rol_epi32(a, 1);
+        let e = _mm_set_epi32(1 << 0, 2, 2, 2);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_mask_rol_epi32() {
+        let a = _mm_set_epi32(1 << 31, 1, 1, 1);
+        let r = _mm_mask_rol_epi32(a, 0, a, 1);
+        assert_eq_m128i(r, a);
+        let r = _mm_mask_rol_epi32(a, 0b00001111, a, 1);
+        let e = _mm_set_epi32(1 << 0, 2, 2, 2);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_maskz_rol_epi32() {
+        let a = _mm_set_epi32(1 << 31, 1, 1, 1);
+        let r = _mm_maskz_rol_epi32(0, a, 1);
+        assert_eq_m128i(r, _mm_setzero_si128());
+        let r = _mm_maskz_rol_epi32(0b00001111, a, 1);
+        let e = _mm_set_epi32(1 << 0, 2, 2, 2);
+        assert_eq_m128i(r, e);
     }
 
     #[simd_test(enable = "avx512f")]
