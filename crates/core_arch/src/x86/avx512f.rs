@@ -15269,7 +15269,7 @@ pub unsafe fn _mm512_maskz_srl_epi64(k: __mmask8, a: __m512i, count: __m128i) ->
 
 /// Shift packed 32-bit integers in a right by count while shifting in sign bits, and store the results in dst.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_sra_epi32&expand=5407)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_sra_epi32&expand=5407)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpsrad))]
@@ -15279,7 +15279,7 @@ pub unsafe fn _mm512_sra_epi32(a: __m512i, count: __m128i) -> __m512i {
 
 /// Shift packed 32-bit integers in a right by count while shifting in sign bits, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_sra_epi32&expand=5405)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_sra_epi32&expand=5405)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpsrad))]
@@ -15295,7 +15295,7 @@ pub unsafe fn _mm512_mask_sra_epi32(
 
 /// Shift packed 32-bit integers in a right by count while shifting in sign bits, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_sra_epi32&expand=5406)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_sra_epi32&expand=5406)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpsrad))]
@@ -15305,9 +15305,60 @@ pub unsafe fn _mm512_maskz_sra_epi32(k: __mmask16, a: __m512i, count: __m128i) -
     transmute(simd_select_bitmask(k, shf, zero))
 }
 
+/// Shift packed 32-bit integers in a right by count while shifting in sign bits, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_sra_epi32&expand=5402)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpsrad))]
+pub unsafe fn _mm256_mask_sra_epi32(
+    src: __m256i,
+    k: __mmask8,
+    a: __m256i,
+    count: __m128i,
+) -> __m256i {
+    let shf = _mm256_sra_epi32(a, count).as_i32x8();
+    transmute(simd_select_bitmask(k, shf, src.as_i32x8()))
+}
+
+/// Shift packed 32-bit integers in a right by count while shifting in sign bits, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_sra_epi32&expand=5403)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpsrad))]
+pub unsafe fn _mm256_maskz_sra_epi32(k: __mmask8, a: __m256i, count: __m128i) -> __m256i {
+    let shf = _mm256_sra_epi32(a, count).as_i32x8();
+    let zero = _mm256_setzero_si256().as_i32x8();
+    transmute(simd_select_bitmask(k, shf, zero))
+}
+
+/// Shift packed 32-bit integers in a right by count while shifting in sign bits, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_sra_epi32&expand=5399)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpsrad))]
+pub unsafe fn _mm_mask_sra_epi32(src: __m128i, k: __mmask8, a: __m128i, count: __m128i) -> __m128i {
+    let shf = _mm_sra_epi32(a, count).as_i32x4();
+    transmute(simd_select_bitmask(k, shf, src.as_i32x4()))
+}
+
+/// Shift packed 32-bit integers in a right by count while shifting in sign bits, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_sra_epi32&expand=5400)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpsrad))]
+pub unsafe fn _mm_maskz_sra_epi32(k: __mmask8, a: __m128i, count: __m128i) -> __m128i {
+    let shf = _mm_sra_epi32(a, count).as_i32x4();
+    let zero = _mm_setzero_si128().as_i32x4();
+    transmute(simd_select_bitmask(k, shf, zero))
+}
+
 /// Shift packed 64-bit integers in a right by count while shifting in sign bits, and store the results in dst.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_sra_epi64&expand=5416)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_sra_epi64&expand=5416)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpsraq))]
@@ -15317,7 +15368,7 @@ pub unsafe fn _mm512_sra_epi64(a: __m512i, count: __m128i) -> __m512i {
 
 /// Shift packed 64-bit integers in a right by count while shifting in sign bits, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_sra_epi64&expand=5414)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_sra_epi64&expand=5414)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpsraq))]
@@ -15333,13 +15384,84 @@ pub unsafe fn _mm512_mask_sra_epi64(
 
 /// Shift packed 64-bit integers in a right by count while shifting in sign bits, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_sra_epi64&expand=5415)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_sra_epi64&expand=5415)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpsraq))]
 pub unsafe fn _mm512_maskz_sra_epi64(k: __mmask8, a: __m512i, count: __m128i) -> __m512i {
     let shf = _mm512_sra_epi64(a, count).as_i64x8();
     let zero = _mm512_setzero_si512().as_i64x8();
+    transmute(simd_select_bitmask(k, shf, zero))
+}
+
+/// Shift packed 64-bit integers in a right by count while shifting in sign bits, and store the results in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_sra_epi64&expand=5413)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpsraq))]
+pub unsafe fn _mm256_sra_epi64(a: __m256i, count: __m128i) -> __m256i {
+    transmute(vpsraq256(a.as_i64x4(), count.as_i64x2()))
+}
+
+/// Shift packed 64-bit integers in a right by count while shifting in sign bits, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_sra_epi64&expand=5411)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpsraq))]
+pub unsafe fn _mm256_mask_sra_epi64(
+    src: __m256i,
+    k: __mmask8,
+    a: __m256i,
+    count: __m128i,
+) -> __m256i {
+    let shf = _mm256_sra_epi64(a, count).as_i64x4();
+    transmute(simd_select_bitmask(k, shf, src.as_i64x4()))
+}
+
+/// Shift packed 64-bit integers in a right by count while shifting in sign bits, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_sra_epi64&expand=5412)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpsraq))]
+pub unsafe fn _mm256_maskz_sra_epi64(k: __mmask8, a: __m256i, count: __m128i) -> __m256i {
+    let shf = _mm256_sra_epi64(a, count).as_i64x4();
+    let zero = _mm256_setzero_si256().as_i64x4();
+    transmute(simd_select_bitmask(k, shf, zero))
+}
+
+/// Shift packed 64-bit integers in a right by count while shifting in sign bits, and store the results in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_sra_epi64&expand=5410)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpsraq))]
+pub unsafe fn _mm_sra_epi64(a: __m128i, count: __m128i) -> __m128i {
+    transmute(vpsraq128(a.as_i64x2(), count.as_i64x2()))
+}
+
+/// Shift packed 64-bit integers in a right by count while shifting in sign bits, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_sra_epi64&expand=5408)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpsraq))]
+pub unsafe fn _mm_mask_sra_epi64(src: __m128i, k: __mmask8, a: __m128i, count: __m128i) -> __m128i {
+    let shf = _mm_sra_epi64(a, count).as_i64x2();
+    transmute(simd_select_bitmask(k, shf, src.as_i64x2()))
+}
+
+/// Shift packed 64-bit integers in a right by count while shifting in sign bits, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_sra_epi64&expand=5409)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpsraq))]
+pub unsafe fn _mm_maskz_sra_epi64(k: __mmask8, a: __m128i, count: __m128i) -> __m128i {
+    let shf = _mm_sra_epi64(a, count).as_i64x2();
+    let zero = _mm_setzero_si128().as_i64x2();
     transmute(simd_select_bitmask(k, shf, zero))
 }
 
@@ -15937,7 +16059,7 @@ pub unsafe fn _mm_maskz_rorv_epi64(k: __mmask8, a: __m128i, b: __m128i) -> __m12
 
 /// Shift packed 32-bit integers in a left by the amount specified by the corresponding element in count while shifting in zeros, and store the results in dst.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_sllv_epi32&expand=5342)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_sllv_epi32&expand=5342)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpsllvd))]
@@ -15947,7 +16069,7 @@ pub unsafe fn _mm512_sllv_epi32(a: __m512i, count: __m512i) -> __m512i {
 
 /// Shift packed 32-bit integers in a left by the amount specified by the corresponding element in count while shifting in zeros, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_sllv_epi32&expand=5340)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_sllv_epi32&expand=5340)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpsllvd))]
@@ -15963,13 +16085,69 @@ pub unsafe fn _mm512_mask_sllv_epi32(
 
 /// Shift packed 32-bit integers in a left by the amount specified by the corresponding element in count while shifting in zeros, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_sllv_epi32&expand=5341)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_sllv_epi32&expand=5341)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpsllvd))]
 pub unsafe fn _mm512_maskz_sllv_epi32(k: __mmask16, a: __m512i, count: __m512i) -> __m512i {
     let shf = _mm512_sllv_epi32(a, count).as_i32x16();
     let zero = _mm512_setzero_si512().as_i32x16();
+    transmute(simd_select_bitmask(k, shf, zero))
+}
+
+/// Shift packed 32-bit integers in a left by the amount specified by the corresponding element in count while shifting in zeros, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_sllv_epi32&expand=5337)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpsllvd))]
+pub unsafe fn _mm256_mask_sllv_epi32(
+    src: __m256i,
+    k: __mmask8,
+    a: __m256i,
+    count: __m256i,
+) -> __m256i {
+    let shf = _mm256_sllv_epi32(a, count).as_i32x8();
+    transmute(simd_select_bitmask(k, shf, src.as_i32x8()))
+}
+
+/// Shift packed 32-bit integers in a left by the amount specified by the corresponding element in count while shifting in zeros, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_sllv_epi32&expand=5338)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpsllvd))]
+pub unsafe fn _mm256_maskz_sllv_epi32(k: __mmask8, a: __m256i, count: __m256i) -> __m256i {
+    let shf = _mm256_sllv_epi32(a, count).as_i32x8();
+    let zero = _mm256_setzero_si256().as_i32x8();
+    transmute(simd_select_bitmask(k, shf, zero))
+}
+
+/// Shift packed 32-bit integers in a left by the amount specified by the corresponding element in count while shifting in zeros, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_sllv_epi32&expand=5334)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpsllvd))]
+pub unsafe fn _mm_mask_sllv_epi32(
+    src: __m128i,
+    k: __mmask8,
+    a: __m128i,
+    count: __m128i,
+) -> __m128i {
+    let shf = _mm_sllv_epi32(a, count).as_i32x4();
+    transmute(simd_select_bitmask(k, shf, src.as_i32x4()))
+}
+
+/// Shift packed 32-bit integers in a left by the amount specified by the corresponding element in count while shifting in zeros, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_sllv_epi32&expand=5335)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpsllvd))]
+pub unsafe fn _mm_maskz_sllv_epi32(k: __mmask8, a: __m128i, count: __m128i) -> __m128i {
+    let shf = _mm_sllv_epi32(a, count).as_i32x4();
+    let zero = _mm_setzero_si128().as_i32x4();
     transmute(simd_select_bitmask(k, shf, zero))
 }
 
@@ -16013,7 +16191,7 @@ pub unsafe fn _mm512_maskz_srlv_epi32(k: __mmask16, a: __m512i, count: __m512i) 
 
 /// Shift packed 64-bit integers in a left by the amount specified by the corresponding element in count while shifting in zeros, and store the results in dst.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_sllv_epi64&expand=5351)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_sllv_epi64&expand=5351)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpsllvq))]
@@ -16023,7 +16201,7 @@ pub unsafe fn _mm512_sllv_epi64(a: __m512i, count: __m512i) -> __m512i {
 
 /// Shift packed 64-bit integers in a left by the amount specified by the corresponding element in count while shifting in zeros, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_sllv_epi64&expand=5349)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_sllv_epi64&expand=5349)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpsllvq))]
@@ -16039,13 +16217,69 @@ pub unsafe fn _mm512_mask_sllv_epi64(
 
 /// Shift packed 64-bit integers in a left by the amount specified by the corresponding element in count while shifting in zeros, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_sllv_epi64&expand=5350)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_sllv_epi64&expand=5350)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpsllvq))]
 pub unsafe fn _mm512_maskz_sllv_epi64(k: __mmask8, a: __m512i, count: __m512i) -> __m512i {
     let shf = _mm512_sllv_epi64(a, count).as_i64x8();
     let zero = _mm512_setzero_si512().as_i64x8();
+    transmute(simd_select_bitmask(k, shf, zero))
+}
+
+/// Shift packed 64-bit integers in a left by the amount specified by the corresponding element in count while shifting in zeros, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_sllv_epi64&expand=5346)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpsllvq))]
+pub unsafe fn _mm256_mask_sllv_epi64(
+    src: __m256i,
+    k: __mmask8,
+    a: __m256i,
+    count: __m256i,
+) -> __m256i {
+    let shf = _mm256_sllv_epi64(a, count).as_i64x4();
+    transmute(simd_select_bitmask(k, shf, src.as_i64x4()))
+}
+
+/// Shift packed 64-bit integers in a left by the amount specified by the corresponding element in count while shifting in zeros, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_sllv_epi64&expand=5347)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpsllvq))]
+pub unsafe fn _mm256_maskz_sllv_epi64(k: __mmask8, a: __m256i, count: __m256i) -> __m256i {
+    let shf = _mm256_sllv_epi64(a, count).as_i64x4();
+    let zero = _mm256_setzero_si256().as_i64x4();
+    transmute(simd_select_bitmask(k, shf, zero))
+}
+
+/// Shift packed 64-bit integers in a left by the amount specified by the corresponding element in count while shifting in zeros, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_sllv_epi64&expand=5343)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpsllvq))]
+pub unsafe fn _mm_mask_sllv_epi64(
+    src: __m128i,
+    k: __mmask8,
+    a: __m128i,
+    count: __m128i,
+) -> __m128i {
+    let shf = _mm_sllv_epi64(a, count).as_i64x2();
+    transmute(simd_select_bitmask(k, shf, src.as_i64x2()))
+}
+
+/// Shift packed 64-bit integers in a left by the amount specified by the corresponding element in count while shifting in zeros, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_sllv_epi64&expand=5344)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpsllvq))]
+pub unsafe fn _mm_maskz_sllv_epi64(k: __mmask8, a: __m128i, count: __m128i) -> __m128i {
+    let shf = _mm_sllv_epi64(a, count).as_i64x2();
+    let zero = _mm_setzero_si128().as_i64x2();
     transmute(simd_select_bitmask(k, shf, zero))
 }
 
@@ -31355,8 +31589,13 @@ extern "C" {
 
     #[link_name = "llvm.x86.avx512.psra.d.512"]
     fn vpsrad(a: i32x16, count: i32x4) -> i32x16;
+
     #[link_name = "llvm.x86.avx512.psra.q.512"]
     fn vpsraq(a: i64x8, count: i64x2) -> i64x8;
+    #[link_name = "llvm.x86.avx512.psra.q.256"]
+    fn vpsraq256(a: i64x4, count: i64x2) -> i64x4;
+    #[link_name = "llvm.x86.avx512.psra.q.128"]
+    fn vpsraq128(a: i64x2, count: i64x2) -> i64x2;
 
     #[link_name = "llvm.x86.avx512.psrai.d.512"]
     fn vpsraid(a: i32x16, imm8: u32) -> i32x16;
@@ -39143,10 +39382,8 @@ mod tests {
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_sllv_epi32() {
         let a = _mm512_set_epi32(1 << 31, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
-        let count = _mm512_set_epi32(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
-
+        let count = _mm512_set1_epi32(1);
         let r = _mm512_sllv_epi32(a, count);
-
         let e = _mm512_set_epi32(0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2);
         assert_eq_m512i(r, e);
     }
@@ -39154,13 +39391,10 @@ mod tests {
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_mask_sllv_epi32() {
         let a = _mm512_set_epi32(1 << 31, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
-        let count = _mm512_set_epi32(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
-
+        let count = _mm512_set1_epi32(1);
         let r = _mm512_mask_sllv_epi32(a, 0, a, count);
         assert_eq_m512i(r, a);
-
         let r = _mm512_mask_sllv_epi32(a, 0b11111111_11111111, a, count);
-
         let e = _mm512_set_epi32(0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2);
         assert_eq_m512i(r, e);
     }
@@ -39169,23 +39403,62 @@ mod tests {
     unsafe fn test_mm512_maskz_sllv_epi32() {
         let a = _mm512_set_epi32(1 << 31, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 << 31);
         let count = _mm512_set_epi32(0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
-
         let r = _mm512_maskz_sllv_epi32(0, a, count);
         assert_eq_m512i(r, _mm512_setzero_si512());
-
         let r = _mm512_maskz_sllv_epi32(0b00000000_11111111, a, count);
-
         let e = _mm512_set_epi32(0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 0);
         assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_mask_sllv_epi32() {
+        let a = _mm256_set_epi32(1 << 31, 1, 1, 1, 1, 1, 1, 1);
+        let count = _mm256_set1_epi32(1);
+        let r = _mm256_mask_sllv_epi32(a, 0, a, count);
+        assert_eq_m256i(r, a);
+        let r = _mm256_mask_sllv_epi32(a, 0b11111111, a, count);
+        let e = _mm256_set_epi32(0, 2, 2, 2, 2, 2, 2, 2);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_maskz_sllv_epi32() {
+        let a = _mm256_set_epi32(1 << 31, 1, 1, 1, 1, 1, 1, 1);
+        let count = _mm256_set1_epi32(1);
+        let r = _mm256_maskz_sllv_epi32(0, a, count);
+        assert_eq_m256i(r, _mm256_setzero_si256());
+        let r = _mm256_maskz_sllv_epi32(0b11111111, a, count);
+        let e = _mm256_set_epi32(0, 2, 2, 2, 2, 2, 2, 2);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_mask_sllv_epi32() {
+        let a = _mm_set_epi32(1 << 31, 1, 1, 1);
+        let count = _mm_set1_epi32(1);
+        let r = _mm_mask_sllv_epi32(a, 0, a, count);
+        assert_eq_m128i(r, a);
+        let r = _mm_mask_sllv_epi32(a, 0b00001111, a, count);
+        let e = _mm_set_epi32(0, 2, 2, 2);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_maskz_sllv_epi32() {
+        let a = _mm_set_epi32(1 << 31, 1, 1, 1);
+        let count = _mm_set1_epi32(1);
+        let r = _mm_maskz_sllv_epi32(0, a, count);
+        assert_eq_m128i(r, _mm_setzero_si128());
+        let r = _mm_maskz_sllv_epi32(0b00001111, a, count);
+        let e = _mm_set_epi32(0, 2, 2, 2);
+        assert_eq_m128i(r, e);
     }
 
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_srlv_epi32() {
         let a = _mm512_set_epi32(0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2);
         let count = _mm512_set_epi32(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
-
         let r = _mm512_srlv_epi32(a, count);
-
         let e = _mm512_set_epi32(0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
         assert_eq_m512i(r, e);
     }
@@ -39423,7 +39696,6 @@ mod tests {
         let count = _mm_set_epi32(0, 0, 0, 2);
         let r = _mm512_mask_sra_epi32(a, 0, a, count);
         assert_eq_m512i(r, a);
-
         let r = _mm512_mask_sra_epi32(a, 0b11111111_11111111, a, count);
         let e = _mm512_set_epi32(2, -2, 4, -4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4);
         assert_eq_m512i(r, e);
@@ -39435,10 +39707,53 @@ mod tests {
         let count = _mm_set_epi32(2, 0, 0, 2);
         let r = _mm512_maskz_sra_epi32(0, a, count);
         assert_eq_m512i(r, _mm512_setzero_si512());
-
         let r = _mm512_maskz_sra_epi32(0b00000000_11111111, a, count);
         let e = _mm512_set_epi32(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -4, -4);
         assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_mask_sra_epi32() {
+        let a = _mm256_set_epi32(1 << 5, 0, 0, 0, 0, 0, 0, 0);
+        let count = _mm_set_epi32(0, 0, 0, 1);
+        let r = _mm256_mask_sra_epi32(a, 0, a, count);
+        assert_eq_m256i(r, a);
+        let r = _mm256_mask_sra_epi32(a, 0b11111111, a, count);
+        let e = _mm256_set_epi32(1 << 4, 0, 0, 0, 0, 0, 0, 0);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_maskz_sra_epi32() {
+        let a = _mm256_set_epi32(1 << 5, 0, 0, 0, 0, 0, 0, 0);
+        let count = _mm_set_epi32(0, 0, 0, 1);
+        let r = _mm256_maskz_sra_epi32(0, a, count);
+        assert_eq_m256i(r, _mm256_setzero_si256());
+        let r = _mm256_maskz_sra_epi32(0b11111111, a, count);
+        let e = _mm256_set_epi32(1 << 4, 0, 0, 0, 0, 0, 0, 0);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_mask_sra_epi32() {
+        let a = _mm_set_epi32(1 << 5, 0, 0, 0);
+        let count = _mm_set_epi32(0, 0, 0, 1);
+        let r = _mm_mask_sra_epi32(a, 0, a, count);
+        assert_eq_m128i(r, a);
+        let r = _mm_mask_sra_epi32(a, 0b00001111, a, count);
+        let e = _mm_set_epi32(1 << 4, 0, 0, 0);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_maskz_sra_epi32() {
+        let a = _mm_set_epi32(1 << 5, 0, 0, 0);
+        let count = _mm_set_epi32(0, 0, 0, 1);
+        let r = _mm_maskz_sra_epi32(0, a, count);
+        assert_eq_m128i(r, _mm_setzero_si128());
+        let r = _mm_maskz_sra_epi32(0b00001111, a, count);
+        let e = _mm_set_epi32(1 << 4, 0, 0, 0);
+        assert_eq_m128i(r, e);
     }
 
     #[simd_test(enable = "avx512f")]
