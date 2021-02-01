@@ -1052,11 +1052,17 @@
   * [x] [`_mm512_srlv_epi32`]
   * [x] [`_mm512_mask_srlv_epi32`]
   * [x] [`_mm512_maskz_srlv_epi32`]
-
+  * [x] [`_mm_mask_srlv_epi32`]
+  * [x] [`_mm_maskz_srlv_epi32`]
+  * [x] [`_mm256_mask_srlv_epi32`]
+  * [x] [`_mm256_maskz_srlv_epi32`]
   * [x] [`_mm512_srlv_epi64`]
   * [x] [`_mm512_mask_srlv_epi64`]
   * [x] [`_mm512_maskz_srlv_epi64`]
-
+  * [x] [`_mm_mask_srlv_epi64`]
+  * [x] [`_mm_maskz_srlv_epi64`]
+  * [x] [`_mm256_mask_srlv_epi64`]
+  * [x] [`_mm256_maskz_srlv_epi64`]
 
   * [x] [`_mm512_alignr_epi32`]
   * [x] [`_mm512_alignr_epi64`]
