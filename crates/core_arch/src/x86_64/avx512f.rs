@@ -106,6 +106,44 @@ mod tests {
         assert_eq_m512i(r, a);
     }
 
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_mask_mov_epi64() {
+        let src = _mm256_set1_epi64x(1);
+        let a = _mm256_set1_epi64x(2);
+        let r = _mm256_mask_mov_epi64(src, 0, a);
+        assert_eq_m256i(r, src);
+        let r = _mm256_mask_mov_epi64(src, 0b00001111, a);
+        assert_eq_m256i(r, a);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_maskz_mov_epi64() {
+        let a = _mm256_set1_epi64x(2);
+        let r = _mm256_maskz_mov_epi64(0, a);
+        assert_eq_m256i(r, _mm256_setzero_si256());
+        let r = _mm256_maskz_mov_epi64(0b00001111, a);
+        assert_eq_m256i(r, a);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_mask_mov_epi64() {
+        let src = _mm_set1_epi64x(1);
+        let a = _mm_set1_epi64x(2);
+        let r = _mm_mask_mov_epi64(src, 0, a);
+        assert_eq_m128i(r, src);
+        let r = _mm_mask_mov_epi64(src, 0b00000011, a);
+        assert_eq_m128i(r, a);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_maskz_mov_epi64() {
+        let a = _mm_set1_epi64x(2);
+        let r = _mm_maskz_mov_epi64(0, a);
+        assert_eq_m128i(r, _mm_setzero_si128());
+        let r = _mm_maskz_mov_epi64(0b00000011, a);
+        assert_eq_m128i(r, a);
+    }
+
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_mask_mov_pd() {
         let src = _mm512_set1_pd(1.);
@@ -123,6 +161,44 @@ mod tests {
         assert_eq_m512d(r, _mm512_setzero_pd());
         let r = _mm512_maskz_mov_pd(0b11111111, a);
         assert_eq_m512d(r, a);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_mask_mov_pd() {
+        let src = _mm256_set1_pd(1.);
+        let a = _mm256_set1_pd(2.);
+        let r = _mm256_mask_mov_pd(src, 0, a);
+        assert_eq_m256d(r, src);
+        let r = _mm256_mask_mov_pd(src, 0b00001111, a);
+        assert_eq_m256d(r, a);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_maskz_mov_pd() {
+        let a = _mm256_set1_pd(2.);
+        let r = _mm256_maskz_mov_pd(0, a);
+        assert_eq_m256d(r, _mm256_setzero_pd());
+        let r = _mm256_maskz_mov_pd(0b00001111, a);
+        assert_eq_m256d(r, a);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_mask_mov_pd() {
+        let src = _mm_set1_pd(1.);
+        let a = _mm_set1_pd(2.);
+        let r = _mm_mask_mov_pd(src, 0, a);
+        assert_eq_m128d(r, src);
+        let r = _mm_mask_mov_pd(src, 0b00000011, a);
+        assert_eq_m128d(r, a);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_maskz_mov_pd() {
+        let a = _mm_set1_pd(2.);
+        let r = _mm_maskz_mov_pd(0, a);
+        assert_eq_m128d(r, _mm_setzero_pd());
+        let r = _mm_maskz_mov_pd(0b00000011, a);
+        assert_eq_m128d(r, a);
     }
 
     #[simd_test(enable = "avx512f")]
