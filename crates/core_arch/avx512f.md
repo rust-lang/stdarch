@@ -1164,11 +1164,17 @@
   * [x] [`_mm512_andnot_epi32`]
   * [x] [`_mm512_mask_andnot_epi32`]
   * [x] [`_mm512_maskz_andnot_epi32`]
-
+  * [x] [`_mm_mask_andnot_epi32`]
+  * [x] [`_mm_maskz_andnot_epi32`]
+  * [x] [`_mm256_mask_andnot_epi32`]
+  * [x] [`_mm256_maskz_andnot_epi32`]
   * [x] [`_mm512_andnot_epi64`]
   * [x] [`_mm512_mask_andnot_epi64`]
   * [x] [`_mm512_maskz_andnot_epi64`]
-
+  * [x] [`_mm_mask_andnot_epi64`]
+  * [x] [`_mm_maskz_andnot_epi64`]
+  * [x] [`_mm256_mask_andnot_epi64`]
+  * [x] [`_mm256_maskz_andnot_epi64`]
   * [x] [`_mm512_andnot_si512`]
 
   * [x] [`_mm512_alignr_epi32`]

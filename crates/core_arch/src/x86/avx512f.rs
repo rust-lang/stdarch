@@ -22146,7 +22146,7 @@ pub unsafe fn _mm512_xor_si512(a: __m512i, b: __m512i) -> __m512i {
 
 /// Compute the bitwise NOT of packed 32-bit integers in a and then AND with b, and store the results in dst.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_andnot_epi32&expand=310)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_andnot_epi32&expand=310)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpandnq))] //should be vpandnd
@@ -22156,7 +22156,7 @@ pub unsafe fn _mm512_andnot_epi32(a: __m512i, b: __m512i) -> __m512i {
 
 /// Compute the bitwise NOT of packed 32-bit integers in a and then AND with b, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_andnot_epi32&expand=311)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_andnot_epi32&expand=311)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpandnd))]
@@ -22172,7 +22172,7 @@ pub unsafe fn _mm512_mask_andnot_epi32(
 
 /// Compute the bitwise NOT of packed 32-bit integers in a and then AND with b, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_andnot_epi32&expand=312)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_andnot_epi32&expand=312)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpandnd))]
@@ -22182,9 +22182,64 @@ pub unsafe fn _mm512_maskz_andnot_epi32(k: __mmask16, a: __m512i, b: __m512i) ->
     transmute(simd_select_bitmask(k, andnot, zero))
 }
 
+/// Compute the bitwise NOT of packed 32-bit integers in a and then AND with b, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_andnot_epi32&expand=308)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpandnd))]
+pub unsafe fn _mm256_mask_andnot_epi32(
+    src: __m256i,
+    k: __mmask8,
+    a: __m256i,
+    b: __m256i,
+) -> __m256i {
+    let not = _mm256_xor_epi32(a, _mm256_set1_epi32(u32::MAX as i32));
+    let andnot = simd_and(not.as_i32x8(), b.as_i32x8());
+    transmute(simd_select_bitmask(k, andnot, src.as_i32x8()))
+}
+
+/// Compute the bitwise NOT of packed 32-bit integers in a and then AND with b, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_andnot_epi32&expand=309)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpandnd))]
+pub unsafe fn _mm256_maskz_andnot_epi32(k: __mmask8, a: __m256i, b: __m256i) -> __m256i {
+    let not = _mm256_xor_epi32(a, _mm256_set1_epi32(u32::MAX as i32));
+    let andnot = simd_and(not.as_i32x8(), b.as_i32x8());
+    let zero = _mm256_setzero_si256().as_i32x8();
+    transmute(simd_select_bitmask(k, andnot, zero))
+}
+
+/// Compute the bitwise NOT of packed 32-bit integers in a and then AND with b, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_andnot_epi32&expand=306)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpandnd))]
+pub unsafe fn _mm_mask_andnot_epi32(src: __m128i, k: __mmask8, a: __m128i, b: __m128i) -> __m128i {
+    let not = _mm_xor_epi32(a, _mm_set1_epi32(u32::MAX as i32));
+    let andnot = simd_and(not.as_i32x4(), b.as_i32x4());
+    transmute(simd_select_bitmask(k, andnot, src.as_i32x4()))
+}
+
+/// Compute the bitwise NOT of packed 32-bit integers in a and then AND with b, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_andnot_epi32&expand=307)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpandnd))]
+pub unsafe fn _mm_maskz_andnot_epi32(k: __mmask8, a: __m128i, b: __m128i) -> __m128i {
+    let not = _mm_xor_epi32(a, _mm_set1_epi32(u32::MAX as i32));
+    let andnot = simd_and(not.as_i32x4(), b.as_i32x4());
+    let zero = _mm_setzero_si128().as_i32x4();
+    transmute(simd_select_bitmask(k, andnot, zero))
+}
+
 /// Compute the bitwise NOT of 512 bits (composed of packed 64-bit integers) in a and then AND with b, and store the results in dst.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_andnot_epi64&expand=317)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_andnot_epi64&expand=317)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpandnq))] //should be vpandnd
@@ -22194,7 +22249,7 @@ pub unsafe fn _mm512_andnot_epi64(a: __m512i, b: __m512i) -> __m512i {
 
 /// Compute the bitwise NOT of packed 64-bit integers in a and then AND with b, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_andnot_epi64&expand=318)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_andnot_epi64&expand=318)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpandnq))]
@@ -22210,7 +22265,7 @@ pub unsafe fn _mm512_mask_andnot_epi64(
 
 /// Compute the bitwise NOT of packed 64-bit integers in a and then AND with b, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_andnot_epi64&expand=319)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_andnot_epi64&expand=319)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpandnq))]
@@ -22220,9 +22275,64 @@ pub unsafe fn _mm512_maskz_andnot_epi64(k: __mmask8, a: __m512i, b: __m512i) -> 
     transmute(simd_select_bitmask(k, andnot, zero))
 }
 
+/// Compute the bitwise NOT of packed 64-bit integers in a and then AND with b, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_andnot_epi64&expand=315)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpandnq))]
+pub unsafe fn _mm256_mask_andnot_epi64(
+    src: __m256i,
+    k: __mmask8,
+    a: __m256i,
+    b: __m256i,
+) -> __m256i {
+    let not = _mm256_xor_epi64(a, _mm256_set1_epi64x(u64::MAX as i64));
+    let andnot = simd_and(not.as_i64x4(), b.as_i64x4());
+    transmute(simd_select_bitmask(k, andnot, src.as_i64x4()))
+}
+
+/// Compute the bitwise NOT of packed 64-bit integers in a and then AND with b, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_andnot_epi64&expand=316)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpandnq))]
+pub unsafe fn _mm256_maskz_andnot_epi64(k: __mmask8, a: __m256i, b: __m256i) -> __m256i {
+    let not = _mm256_xor_epi64(a, _mm256_set1_epi64x(u64::MAX as i64));
+    let andnot = simd_and(not.as_i64x4(), b.as_i64x4());
+    let zero = _mm256_setzero_si256().as_i64x4();
+    transmute(simd_select_bitmask(k, andnot, zero))
+}
+
+/// Compute the bitwise NOT of packed 64-bit integers in a and then AND with b, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_andnot_epi64&expand=313)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpandnq))]
+pub unsafe fn _mm_mask_andnot_epi64(src: __m128i, k: __mmask8, a: __m128i, b: __m128i) -> __m128i {
+    let not = _mm_xor_epi64(a, _mm_set1_epi64x(u64::MAX as i64));
+    let andnot = simd_and(not.as_i64x2(), b.as_i64x2());
+    transmute(simd_select_bitmask(k, andnot, src.as_i64x2()))
+}
+
+/// Compute the bitwise NOT of packed 64-bit integers in a and then AND with b, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_andnot_epi64&expand=314)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpandnq))]
+pub unsafe fn _mm_maskz_andnot_epi64(k: __mmask8, a: __m128i, b: __m128i) -> __m128i {
+    let not = _mm_xor_epi64(a, _mm_set1_epi64x(u64::MAX as i64));
+    let andnot = simd_and(not.as_i64x2(), b.as_i64x2());
+    let zero = _mm_setzero_si128().as_i64x2();
+    transmute(simd_select_bitmask(k, andnot, zero))
+}
+
 /// Compute the bitwise NOT of 512 bits (representing integer data) in a and then AND with b, and store the result in dst.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_andnot_si512&expand=340)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_andnot_si512&expand=340)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpandnq))]
@@ -42897,7 +43007,7 @@ mod tests {
         #[rustfmt::skip]
         let b = _mm512_set_epi32(
             1 << 1, 0, 0, 0,
-            0, 0, 0, 0, 
+            0, 0, 0, 0,
             0, 0, 0, 0,
             0, 0, 0, 1 << 3 | 1 << 4,
         );
@@ -43262,6 +43372,50 @@ mod tests {
             1 << 3 | 1 << 4, 1 << 3 | 1 << 4, 1 << 3 | 1 << 4, 1 << 3 | 1 << 4,
         );
         assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_mask_andnot_epi32() {
+        let a = _mm256_set1_epi32(1 << 1 | 1 << 2);
+        let b = _mm256_set1_epi32(1 << 3 | 1 << 4);
+        let r = _mm256_mask_andnot_epi32(a, 0, a, b);
+        assert_eq_m256i(r, a);
+        let r = _mm256_mask_andnot_epi32(a, 0b11111111, a, b);
+        let e = _mm256_set1_epi32(1 << 3 | 1 << 4);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_maskz_andnot_epi32() {
+        let a = _mm256_set1_epi32(1 << 1 | 1 << 2);
+        let b = _mm256_set1_epi32(1 << 3 | 1 << 4);
+        let r = _mm256_maskz_andnot_epi32(0, a, b);
+        assert_eq_m256i(r, _mm256_setzero_si256());
+        let r = _mm256_maskz_andnot_epi32(0b11111111, a, b);
+        let e = _mm256_set1_epi32(1 << 3 | 1 << 4);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_mask_andnot_epi32() {
+        let a = _mm_set1_epi32(1 << 1 | 1 << 2);
+        let b = _mm_set1_epi32(1 << 3 | 1 << 4);
+        let r = _mm_mask_andnot_epi32(a, 0, a, b);
+        assert_eq_m128i(r, a);
+        let r = _mm_mask_andnot_epi32(a, 0b00001111, a, b);
+        let e = _mm_set1_epi32(1 << 3 | 1 << 4);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_maskz_andnot_epi32() {
+        let a = _mm_set1_epi32(1 << 1 | 1 << 2);
+        let b = _mm_set1_epi32(1 << 3 | 1 << 4);
+        let r = _mm_maskz_andnot_epi32(0, a, b);
+        assert_eq_m128i(r, _mm_setzero_si128());
+        let r = _mm_maskz_andnot_epi32(0b00001111, a, b);
+        let e = _mm_set1_epi32(1 << 3 | 1 << 4);
+        assert_eq_m128i(r, e);
     }
 
     #[simd_test(enable = "avx512f")]
