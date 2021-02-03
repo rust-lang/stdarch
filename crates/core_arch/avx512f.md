@@ -1117,15 +1117,58 @@
   * [x] [`_mm256_mask_or_epi32`]
   * [x] [`_mm256_maskz_or_epi32`]
   * [x] [`_mm256_or_epi32`]
-
-  * [x] [`_mm512_alignr_epi32`]
-  * [x] [`_mm512_alignr_epi64`]
+  * [x] [`_mm512_or_epi64`]
+  * [x] [`_mm512_mask_or_epi64`]
+  * [x] [`_mm512_maskz_or_epi64`]
+  * [x] [`_mm_mask_or_epi64`]
+  * [x] [`_mm_maskz_or_epi64`]
+  * [x] [`_mm_or_epi64`]
+  * [x] [`_mm256_mask_or_epi64`]
+  * [x] [`_mm256_maskz_or_epi64`]
+  * [x] [`_mm256_or_epi64`]
+  * [x] [`_mm512_or_si512`]
   * [x] [`_mm512_and_epi32`]
+  * [x] [`_mm512_mask_and_epi32`]
+  * [x] [`_mm512_maskz_and_epi32`]
+  * [x] [`_mm_mask_and_epi32`]
+  * [x] [`_mm_maskz_and_epi32`]
+  * [x] [`_mm256_mask_and_epi32`]
+  * [x] [`_mm256_maskz_and_epi32`]
   * [x] [`_mm512_and_epi64`]
+  * [x] [`_mm512_mask_and_epi64`]
+  * [x] [`_mm512_maskz_and_epi64`]
+  * [x] [`_mm_mask_and_epi64`]
+  * [x] [`_mm_maskz_and_epi64`]
+  * [x] [`_mm256_mask_and_epi64`]
+  * [x] [`_mm256_maskz_and_epi64`]
   * [x] [`_mm512_and_si512`]
   * [x] [`_mm512_andnot_epi32`]
+  * [x] [`_mm512_mask_andnot_epi32`]
+  * [x] [`_mm512_maskz_andnot_epi32`]
+
   * [x] [`_mm512_andnot_epi64`]
+  * [x] [`_mm512_mask_andnot_epi64`]
+  * [x] [`_mm512_maskz_andnot_epi64`]
+
   * [x] [`_mm512_andnot_si512`]
+
+  * [x] [`_mm512_xor_epi32`]
+  * [x] [`_mm512_mask_xor_epi32`]
+  * [x] [`_mm512_maskz_xor_epi32`]
+
+  * [x] [`_mm512_xor_epi64`]
+  * [x] [`_mm512_mask_xor_epi64`]
+  * [x] [`_mm512_maskz_xor_epi64`]
+
+  * [x] [`_mm512_xor_si512`]
+
+  * [x] [`_mm512_alignr_epi32`]
+  * [x] [`_mm512_mask_alignr_epi32`]
+  * [x] [`_mm512_maskz_alignr_epi32`]
+  * [x] [`_mm512_alignr_epi64`]
+  * [x] [`_mm512_mask_alignr_epi64`]
+  * [x] [`_mm512_maskz_alignr_epi64`]
+
   * [x] [`_mm512_broadcast_f32x4`]
   * [x] [`_mm512_broadcast_f64x4`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_broadcast_f64x4&expand=5236)
   * [x] [`_mm512_broadcast_i32x4`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_broadcast_i32x4&expand=5236)
@@ -1266,18 +1309,12 @@
   * [x] [`_mm512_loadu_ps`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_loadu_ps&expand=5236)
   * [x] [`_mm512_loadu_epi32`]
   * [x] [`_mm512_loadu_epi64`]
-  * [x] [`_mm512_loadu_si512`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_loadu_si512&expand=5236)
+  * [x] [`_mm512_loadu_si512`]
   * [x] [`_mm512_mask2_permutex2var_epi32`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask2_permutex2var_epi32&expand=5236)
   * [x] [`_mm512_mask2_permutex2var_epi64`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask2_permutex2var_epi64&expand=5236)
   * [x] [`_mm512_mask2_permutex2var_pd`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask2_permutex2var_pd&expand=5236)
   * [x] [`_mm512_mask2_permutex2var_ps`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask2_permutex2var_ps&expand=5236)
-  * [x] [`_mm512_mask2int`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask2int&expand=5236)
-  * [x] [`_mm512_mask_alignr_epi32`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_alignr_epi32&expand=5236)
-  * [x] [`_mm512_mask_alignr_epi64`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_alignr_epi64&expand=5236)
-  * [x] [`_mm512_mask_and_epi32`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_and_epi32&expand=5236)
-  * [x] [`_mm512_mask_and_epi64`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_and_epi64&expand=5236)
-  * [x] [`_mm512_mask_andnot_epi32`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_andnot_epi32&expand=5236)
-  * [x] [`_mm512_mask_andnot_epi64`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_andnot_epi64&expand=5236)
+  * [x] [`_mm512_mask2int`]
   * [x] [`_mm512_mask_blend_epi32`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_blend_epi32&expand=5236)
   * [x] [`_mm512_mask_blend_epi64`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_blend_epi64&expand=5236)
   * [x] [`_mm512_mask_blend_pd`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_blend_pd&expand=5236)
@@ -1423,7 +1460,6 @@
   * [ ] [`_mm512_mask_loadu_epi64`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_loadu_epi64&expand=5236)
   * [ ] [`_mm512_mask_loadu_pd`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_loadu_pd&expand=5236)
   * [ ] [`_mm512_mask_loadu_ps`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_loadu_ps&expand=5236)
-  * [x] [`_mm512_mask_or_epi64`]
   * [x] [`_mm512_mask_permute_pd`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_permute_pd&expand=5236)
   * [x] [`_mm512_mask_permute_ps`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_permute_ps&expand=5236)
   * [x] [`_mm512_mask_permutevar_epi32`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_permutevar_epi32&expand=5236)
@@ -1470,14 +1506,6 @@
   * [x] [`_mm512_mask_unpacklo_epi64`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_unpacklo_epi64&expand=5236)
   * [x] [`_mm512_mask_unpacklo_pd`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_unpacklo_pd&expand=5236)
   * [x] [`_mm512_mask_unpacklo_ps`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_unpacklo_ps&expand=5236)
-  * [x] [`_mm512_mask_xor_epi32`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_xor_epi32&expand=5236)
-  * [x] [`_mm512_mask_xor_epi64`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_xor_epi64&expand=5236)
-  * [x] [`_mm512_maskz_alignr_epi32`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_alignr_epi32&expand=5236)
-  * [x] [`_mm512_maskz_alignr_epi64`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_alignr_epi64&expand=5236)
-  * [x] [`_mm512_maskz_and_epi32`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_and_epi32&expand=5236)
-  * [x] [`_mm512_maskz_and_epi64`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_and_epi64&expand=5236)
-  * [x] [`_mm512_maskz_andnot_epi32`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_andnot_epi32&expand=5236)
-  * [x] [`_mm512_maskz_andnot_epi64`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_andnot_epi64&expand=5236)
   * [x] [`_mm512_maskz_broadcast_f32x4`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_broadcast_f32x4&expand=5236)
   * [x] [`_mm512_maskz_broadcast_f64x4`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_broadcast_f64x4&expand=5236)
   * [x] [`_mm512_maskz_broadcast_i32x4`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_broadcast_i32x4&expand=5236)
@@ -1569,7 +1597,6 @@
   * [ ] [`_mm512_maskz_loadu_epi64`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_loadu_epi64&expand=5236)
   * [ ] [`_mm512_maskz_loadu_pd`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_loadu_pd&expand=5236)
   * [ ] [`_mm512_maskz_loadu_ps`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_loadu_ps&expand=5236)
-  * [x] [`_mm512_maskz_or_epi64`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_or_epi64&expand=5236)
   * [x] [`_mm512_maskz_permute_pd`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_permute_pd&expand=5236)
   * [x] [`_mm512_maskz_permute_ps`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_permute_ps&expand=5236)
   * [x] [`_mm512_maskz_permutevar_pd`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_permutevar_pd&expand=5236)
@@ -1603,10 +1630,6 @@
   * [x] [`_mm512_maskz_unpacklo_epi64`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_unpacklo_epi64&expand=5236)
   * [x] [`_mm512_maskz_unpacklo_pd`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_unpacklo_pd&expand=5236)
   * [x] [`_mm512_maskz_unpacklo_ps`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_unpacklo_ps&expand=5236)
-  * [x] [`_mm512_maskz_xor_epi32`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_xor_epi32&expand=5236)
-  * [x] [`_mm512_maskz_xor_epi64`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_xor_epi64&expand=5236)
-  * [x] [`_mm512_or_epi64`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_or_epi64&expand=5236)
-  * [x] [`_mm512_or_si512`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_or_si512&expand=5236)
   * [x] [`_mm512_permute_pd`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_permute_pd&expand=5236)
   * [x] [`_mm512_permute_ps`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_permute_ps&expand=5236)
   * [x] [`_mm512_permutevar_epi32`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_permutevar_epi32&expand=5236)
@@ -1691,9 +1714,6 @@
   * [x] [`_mm512_unpacklo_epi64`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_unpacklo_epi64&expand=5236)
   * [x] [`_mm512_unpacklo_pd`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_unpacklo_pd&expand=5236)
   * [x] [`_mm512_unpacklo_ps`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_unpacklo_ps&expand=5236)
-  * [x] [`_mm512_xor_epi32`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_xor_epi32&expand=5236)
-  * [x] [`_mm512_xor_epi64`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_xor_epi64&expand=5236)
-  * [x] [`_mm512_xor_si512`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_xor_si512&expand=5236)
   * [x] [`_mm512_zextpd128_pd512`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_zextpd128_pd512&expand=5236)
   * [x] [`_mm512_zextpd256_pd512`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_zextpd256_pd512&expand=5236)
   * [x] [`_mm512_zextps128_ps512`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_zextps128_ps512&expand=5236)

@@ -8247,9 +8247,7 @@ mod tests {
         let a = _mm512_set_epi64(1 << 0 | 1 << 15, 0, 0, 0, 0, 0, 0, 1 << 1 | 1 << 2 | 1 << 3);
         let b = _mm512_set_epi64(1 << 13, 0, 0, 0, 0, 0, 0, 1 << 1 | 1 << 2 | 1 << 3);
         let r = _mm512_mask_and_epi64(a, 0, a, b);
-        let e = _mm512_set_epi64(1 << 0 | 1 << 15, 0, 0, 0, 0, 0, 0, 1 << 1 | 1 << 2 | 1 << 3);
-        assert_eq_m512i(r, e);
-
+        assert_eq_m512i(r, a);
         let r = _mm512_mask_and_epi64(a, 0b01111111, a, b);
         let e = _mm512_set_epi64(1 << 0 | 1 << 15, 0, 0, 0, 0, 0, 0, 1 << 1 | 1 << 2 | 1 << 3);
         assert_eq_m512i(r, e);
@@ -8260,12 +8258,54 @@ mod tests {
         let a = _mm512_set_epi64(1 << 0 | 1 << 15, 0, 0, 0, 0, 0, 0, 1 << 1 | 1 << 2 | 1 << 3);
         let b = _mm512_set_epi64(1 << 13, 0, 0, 0, 0, 0, 0, 1 << 1 | 1 << 2 | 1 << 3);
         let r = _mm512_maskz_and_epi64(0, a, b);
-        let e = _mm512_set_epi64(0, 0, 0, 0, 0, 0, 0, 0);
-        assert_eq_m512i(r, e);
-
+        assert_eq_m512i(r, _mm512_setzero_si512());
         let r = _mm512_maskz_and_epi64(0b00001111, a, b);
         let e = _mm512_set_epi64(0, 0, 0, 0, 0, 0, 0, 1 << 1 | 1 << 2 | 1 << 3);
         assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_mask_and_epi64() {
+        let a = _mm256_set1_epi64x(1 << 0 | 1 << 15);
+        let b = _mm256_set1_epi64x(1 << 0);
+        let r = _mm256_mask_and_epi64(a, 0, a, b);
+        assert_eq_m256i(r, a);
+        let r = _mm256_mask_and_epi64(a, 0b00001111, a, b);
+        let e = _mm256_set1_epi64x(1 << 0);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_maskz_and_epi64() {
+        let a = _mm256_set1_epi64x(1 << 0 | 1 << 15);
+        let b = _mm256_set1_epi64x(1 << 0);
+        let r = _mm256_maskz_and_epi64(0, a, b);
+        assert_eq_m256i(r, _mm256_setzero_si256());
+        let r = _mm256_maskz_and_epi64(0b00001111, a, b);
+        let e = _mm256_set1_epi64x(1 << 0);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_mask_and_epi64() {
+        let a = _mm_set1_epi64x(1 << 0 | 1 << 15);
+        let b = _mm_set1_epi64x(1 << 0);
+        let r = _mm_mask_and_epi64(a, 0, a, b);
+        assert_eq_m128i(r, a);
+        let r = _mm_mask_and_epi64(a, 0b00000011, a, b);
+        let e = _mm_set1_epi64x(1 << 0);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_maskz_and_epi64() {
+        let a = _mm_set1_epi64x(1 << 0 | 1 << 15);
+        let b = _mm_set1_epi64x(1 << 0);
+        let r = _mm_maskz_and_epi64(0, a, b);
+        assert_eq_m128i(r, _mm_setzero_si128());
+        let r = _mm_maskz_and_epi64(0b00000011, a, b);
+        let e = _mm_set1_epi64x(1 << 0);
+        assert_eq_m128i(r, e);
     }
 
     #[simd_test(enable = "avx512f")]
@@ -8282,15 +8322,10 @@ mod tests {
         let a = _mm512_set_epi64(1 << 0 | 1 << 15, 0, 0, 0, 0, 0, 0, 1 << 1 | 1 << 2 | 1 << 3);
         let b = _mm512_set_epi64(1 << 13, 0, 0, 0, 0, 0, 0, 1 << 1 | 1 << 2 | 1 << 3);
         let r = _mm512_or_epi64(a, b);
+        #[rustfmt::skip]
         let e = _mm512_set_epi64(
-            1 << 0 | 1 << 13 | 1 << 15,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            1 << 1 | 1 << 2 | 1 << 3,
+            1 << 0 | 1 << 13 | 1 << 15, 0, 0, 0,
+            0, 0, 0, 1 << 1 | 1 << 2 | 1 << 3,
         );
         assert_eq_m512i(r, e);
     }
@@ -8300,19 +8335,12 @@ mod tests {
         let a = _mm512_set_epi64(1 << 0 | 1 << 15, 0, 0, 0, 0, 0, 0, 1 << 1 | 1 << 2 | 1 << 3);
         let b = _mm512_set_epi64(1 << 13, 0, 0, 0, 0, 0, 0, 1 << 1 | 1 << 2 | 1 << 3);
         let r = _mm512_mask_or_epi64(a, 0, a, b);
-        let e = _mm512_set_epi64(1 << 0 | 1 << 15, 0, 0, 0, 0, 0, 0, 1 << 1 | 1 << 2 | 1 << 3);
-        assert_eq_m512i(r, e);
-
+        assert_eq_m512i(r, a);
         let r = _mm512_mask_or_epi64(a, 0b11111111, a, b);
+        #[rustfmt::skip]
         let e = _mm512_set_epi64(
-            1 << 0 | 1 << 13 | 1 << 15,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            1 << 1 | 1 << 2 | 1 << 3,
+            1 << 0 | 1 << 13 | 1 << 15, 0, 0, 0,
+            0, 0, 0, 1 << 1 | 1 << 2 | 1 << 3,
         );
         assert_eq_m512i(r, e);
     }
@@ -8322,12 +8350,72 @@ mod tests {
         let a = _mm512_set_epi64(1 << 0 | 1 << 15, 0, 0, 0, 0, 0, 0, 1 << 1 | 1 << 2 | 1 << 3);
         let b = _mm512_set_epi64(1 << 13, 0, 0, 0, 0, 0, 0, 1 << 1 | 1 << 2 | 1 << 3);
         let r = _mm512_maskz_or_epi64(0, a, b);
-        let e = _mm512_set_epi64(0, 0, 0, 0, 0, 0, 0, 0);
-        assert_eq_m512i(r, e);
-
+        assert_eq_m512i(r, _mm512_setzero_si512());
         let r = _mm512_maskz_or_epi64(0b00001111, a, b);
         let e = _mm512_set_epi64(0, 0, 0, 0, 0, 0, 0, 1 << 1 | 1 << 2 | 1 << 3);
         assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_or_epi64() {
+        let a = _mm256_set1_epi64x(1 << 0 | 1 << 15);
+        let b = _mm256_set1_epi64x(1 << 13);
+        let r = _mm256_or_epi64(a, b);
+        let e = _mm256_set1_epi64x(1 << 0 | 1 << 13 | 1 << 15);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_mask_or_epi64() {
+        let a = _mm256_set1_epi64x(1 << 0 | 1 << 15);
+        let b = _mm256_set1_epi64x(1 << 13);
+        let r = _mm256_mask_or_epi64(a, 0, a, b);
+        assert_eq_m256i(r, a);
+        let r = _mm256_mask_or_epi64(a, 0b00001111, a, b);
+        let e = _mm256_set1_epi64x(1 << 0 | 1 << 13 | 1 << 15);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_maskz_or_epi64() {
+        let a = _mm256_set1_epi64x(1 << 0 | 1 << 15);
+        let b = _mm256_set1_epi64x(1 << 13);
+        let r = _mm256_maskz_or_epi64(0, a, b);
+        assert_eq_m256i(r, _mm256_setzero_si256());
+        let r = _mm256_maskz_or_epi64(0b00001111, a, b);
+        let e = _mm256_set1_epi64x(1 << 0 | 1 << 13 | 1 << 15);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_or_epi64() {
+        let a = _mm_set1_epi64x(1 << 0 | 1 << 15);
+        let b = _mm_set1_epi64x(1 << 13);
+        let r = _mm_or_epi64(a, b);
+        let e = _mm_set1_epi64x(1 << 0 | 1 << 13 | 1 << 15);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_mask_or_epi64() {
+        let a = _mm_set1_epi64x(1 << 0 | 1 << 15);
+        let b = _mm_set1_epi64x(1 << 13);
+        let r = _mm_mask_or_epi64(a, 0, a, b);
+        assert_eq_m128i(r, a);
+        let r = _mm_mask_or_epi64(a, 0b00000011, a, b);
+        let e = _mm_set1_epi64x(1 << 0 | 1 << 13 | 1 << 15);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_maskz_or_epi64() {
+        let a = _mm_set1_epi64x(1 << 0 | 1 << 15);
+        let b = _mm_set1_epi64x(1 << 13);
+        let r = _mm_maskz_or_epi64(0, a, b);
+        assert_eq_m128i(r, _mm_setzero_si128());
+        let r = _mm_maskz_or_epi64(0b00000011, a, b);
+        let e = _mm_set1_epi64x(1 << 0 | 1 << 13 | 1 << 15);
+        assert_eq_m128i(r, e);
     }
 
     #[simd_test(enable = "avx512f")]
@@ -8335,15 +8423,10 @@ mod tests {
         let a = _mm512_set_epi64(1 << 0 | 1 << 15, 0, 0, 0, 0, 0, 0, 1 << 1 | 1 << 2 | 1 << 3);
         let b = _mm512_set_epi64(1 << 13, 0, 0, 0, 0, 0, 0, 1 << 1 | 1 << 2 | 1 << 3);
         let r = _mm512_or_epi64(a, b);
+        #[rustfmt::skip]
         let e = _mm512_set_epi64(
-            1 << 0 | 1 << 13 | 1 << 15,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            1 << 1 | 1 << 2 | 1 << 3,
+            1 << 0 | 1 << 13 | 1 << 15, 0, 0, 0,
+            0, 0, 0, 1 << 1 | 1 << 2 | 1 << 3,
         );
         assert_eq_m512i(r, e);
     }
