@@ -1178,18 +1178,28 @@
   * [x] [`_mm512_andnot_si512`]
   * [x] [`_mm512_mask_unpackhi_epi32`]
   * [x] [`_mm512_unpackhi_epi32`]
-
-
-
+  * [x] [`_mm_mask_unpackhi_epi32`]
+  * [x] [`_mm_maskz_unpackhi_epi32`]
+  * [x] [`_mm256_mask_unpackhi_epi32`]
+  * [x] [`_mm256_maskz_unpackhi_epi32`]
   * [x] [`_mm512_unpackhi_epi64`]
   * [x] [`_mm512_mask_unpackhi_epi64`]
-
+  * [x] [`_mm_mask_unpackhi_epi64`]
+  * [x] [`_mm_maskz_unpackhi_epi64`]
+  * [x] [`_mm256_mask_unpackhi_epi64`]
+  * [x] [`_mm256_maskz_unpackhi_epi64`]
   * [x] [`_mm512_unpackhi_ps`]
   * [x] [`_mm512_mask_unpackhi_ps`]
-
+  * [x] [`_mm_mask_unpackhi_ps`]
+  * [x] [`_mm_maskz_unpackhi_ps`]
+  * [x] [`_mm256_mask_unpackhi_ps`]
+  * [x] [`_mm256_maskz_unpackhi_ps`]
   * [x] [`_mm512_unpackhi_pd`]
   * [x] [`_mm512_mask_unpackhi_pd`]
-
+  * [x] [`_mm_mask_unpackhi_pd`]
+  * [x] [`_mm_maskz_unpackhi_pd`]
+  * [x] [`_mm256_mask_unpackhi_pd`]
+  * [x] [`_mm256_maskz_unpackhi_pd`]
   * [x] [`_mm512_mask_unpacklo_epi32`]
   * [x] [`_mm512_unpacklo_epi32`]
   * [x] [`_mm_mask_unpacklo_epi32`]
@@ -1214,13 +1224,6 @@
   * [x] [`_mm_maskz_unpacklo_pd`]
   * [x] [`_mm256_mask_unpacklo_pd`]
   * [x] [`_mm256_maskz_unpacklo_pd`]
-
-
-
-
-
-
-
 
   * [x] [`_mm512_alignr_epi32`]
   * [x] [`_mm512_mask_alignr_epi32`]
@@ -1557,7 +1560,6 @@
   * [x] [`_mm512_mask_test_epi64_mask`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_test_epi64_mask&expand=5236)
   * [x] [`_mm512_mask_testn_epi32_mask`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_testn_epi32_mask&expand=5236)
   * [x] [`_mm512_mask_testn_epi64_mask`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_testn_epi64_mask&expand=5236)
-
   * [x] [`_mm512_maskz_broadcast_f32x4`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_broadcast_f32x4&expand=5236)
   * [x] [`_mm512_maskz_broadcast_f64x4`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_broadcast_f64x4&expand=5236)
   * [x] [`_mm512_maskz_broadcast_i32x4`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_broadcast_i32x4&expand=5236)
@@ -1758,7 +1760,6 @@
   * [x] [`_mm512_undefined_pd`]
   * [x] [`_mm512_undefined_ps`]
   * [x] [`_mm512_undefined`]
-
   * [x] [`_mm512_zextpd128_pd512`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_zextpd128_pd512&expand=5236)
   * [x] [`_mm512_zextpd256_pd512`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_zextpd256_pd512&expand=5236)
   * [x] [`_mm512_zextps128_ps512`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_zextps128_ps512&expand=5236)
