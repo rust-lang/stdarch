@@ -17898,7 +17898,6 @@ pub unsafe fn _mm512_mask2_permutex2var_pd(
 #[rustc_args_required_const(1)]
 pub unsafe fn _mm512_shuffle_epi32(a: __m512i, imm8: _MM_PERM_ENUM) -> __m512i {
     let imm8 = (imm8 & 0xFF) as u8;
-
     let a = a.as_i32x16();
     macro_rules! shuffle4 {
         (
@@ -17969,10 +17968,10 @@ pub unsafe fn _mm512_shuffle_epi32(a: __m512i, imm8: _MM_PERM_ENUM) -> __m512i {
 
 /// Shuffle 32-bit integers in a within 128-bit lanes using the control in imm8, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_shuffle_epi32&expand=5148)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_shuffle_epi32&expand=5148)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpshufd, imm8 = 9))] //should be vpshufd, but generate vpermilps
+#[cfg_attr(test, assert_instr(vpshufd, imm8 = 9))]
 #[rustc_args_required_const(3)]
 pub unsafe fn _mm512_mask_shuffle_epi32(
     src: __m512i,
@@ -17981,7 +17980,6 @@ pub unsafe fn _mm512_mask_shuffle_epi32(
     imm8: _MM_PERM_ENUM,
 ) -> __m512i {
     let imm8 = (imm8 & 0xFF) as u8;
-
     let a = a.as_i32x16();
     macro_rules! shuffle4 {
         (
@@ -18052,14 +18050,13 @@ pub unsafe fn _mm512_mask_shuffle_epi32(
 
 /// Shuffle 32-bit integers in a within 128-bit lanes using the control in imm8, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_shuffle_epi32&expand=5149)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_shuffle_epi32&expand=5149)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpshufd, imm8 = 9))] //should be vpshufd, but generate vpermilps
+#[cfg_attr(test, assert_instr(vpshufd, imm8 = 9))]
 #[rustc_args_required_const(2)]
 pub unsafe fn _mm512_maskz_shuffle_epi32(k: __mmask16, a: __m512i, imm8: _MM_PERM_ENUM) -> __m512i {
     let imm8 = (imm8 & 0xFF) as u8;
-
     let a = a.as_i32x16();
     macro_rules! shuffle4 {
         (
@@ -18129,9 +18126,89 @@ pub unsafe fn _mm512_maskz_shuffle_epi32(k: __mmask16, a: __m512i, imm8: _MM_PER
     transmute(simd_select_bitmask(k, shuffle, zero))
 }
 
+/// Shuffle 32-bit integers in a within 128-bit lanes using the control in imm8, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_shuffle_epi32&expand=5145)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpshufd, imm8 = 9))]
+#[rustc_args_required_const(3)]
+pub unsafe fn _mm256_mask_shuffle_epi32(
+    src: __m256i,
+    k: __mmask8,
+    a: __m256i,
+    imm8: _MM_PERM_ENUM,
+) -> __m256i {
+    macro_rules! call {
+        ($imm8:expr) => {
+            _mm256_shuffle_epi32(a, $imm8)
+        };
+    }
+    let r = constify_imm8_sae!(imm8, call);
+    transmute(simd_select_bitmask(k, r.as_i32x8(), src.as_i32x8()))
+}
+
+/// Shuffle 32-bit integers in a within 128-bit lanes using the control in imm8, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_shuffle_epi32&expand=5146)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpshufd, imm8 = 9))]
+#[rustc_args_required_const(2)]
+pub unsafe fn _mm256_maskz_shuffle_epi32(k: __mmask8, a: __m256i, imm8: _MM_PERM_ENUM) -> __m256i {
+    macro_rules! call {
+        ($imm8:expr) => {
+            _mm256_shuffle_epi32(a, $imm8)
+        };
+    }
+    let r = constify_imm8_sae!(imm8, call);
+    let zero = _mm256_setzero_si256().as_i32x8();
+    transmute(simd_select_bitmask(k, r.as_i32x8(), zero))
+}
+
+/// Shuffle 32-bit integers in a within 128-bit lanes using the control in imm8, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_shuffle_epi32&expand=5142)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpshufd, imm8 = 9))]
+#[rustc_args_required_const(3)]
+pub unsafe fn _mm_mask_shuffle_epi32(
+    src: __m128i,
+    k: __mmask8,
+    a: __m128i,
+    imm8: _MM_PERM_ENUM,
+) -> __m128i {
+    macro_rules! call {
+        ($imm8:expr) => {
+            _mm_shuffle_epi32(a, $imm8)
+        };
+    }
+    let r = constify_imm8_sae!(imm8, call);
+    transmute(simd_select_bitmask(k, r.as_i32x4(), src.as_i32x4()))
+}
+
+/// Shuffle 32-bit integers in a within 128-bit lanes using the control in imm8, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_shuffle_epi32&expand=5143)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpshufd, imm8 = 9))]
+#[rustc_args_required_const(2)]
+pub unsafe fn _mm_maskz_shuffle_epi32(k: __mmask8, a: __m128i, imm8: _MM_PERM_ENUM) -> __m128i {
+    macro_rules! call {
+        ($imm8:expr) => {
+            _mm_shuffle_epi32(a, $imm8)
+        };
+    }
+    let r = constify_imm8_sae!(imm8, call);
+    let zero = _mm_setzero_si128().as_i32x4();
+    transmute(simd_select_bitmask(k, r.as_i32x4(), zero))
+}
+
 /// Shuffle single-precision (32-bit) floating-point elements in a within 128-bit lanes using the control in imm8, and store the results in dst.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_shuffle_ps&expand=5203)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_shuffle_ps&expand=5203)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vshufps, imm8 = 0))]
@@ -18207,7 +18284,7 @@ pub unsafe fn _mm512_shuffle_ps(a: __m512, b: __m512, imm8: i32) -> __m512 {
 
 /// Shuffle single-precision (32-bit) floating-point elements in a within 128-bit lanes using the control in imm8, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_shuffle_ps&expand=5201)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_shuffle_ps&expand=5201)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vshufps, imm8 = 0))]
@@ -18291,7 +18368,7 @@ pub unsafe fn _mm512_mask_shuffle_ps(
 
 /// Shuffle single-precision (32-bit) floating-point elements in a within 128-bit lanes using the control in imm8, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_shuffle_ps&expand=5202)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_shuffle_ps&expand=5202)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vshufps, imm8 = 0))]
@@ -18368,9 +18445,91 @@ pub unsafe fn _mm512_maskz_shuffle_ps(k: __mmask16, a: __m512, b: __m512, imm8: 
     transmute(simd_select_bitmask(k, shuffle, zero))
 }
 
+/// Shuffle single-precision (32-bit) floating-point elements in a within 128-bit lanes using the control in imm8, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_shuffle_ps&expand=5198)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vshufps, imm8 = 9))]
+#[rustc_args_required_const(4)]
+pub unsafe fn _mm256_mask_shuffle_ps(
+    src: __m256,
+    k: __mmask8,
+    a: __m256,
+    b: __m256,
+    imm8: i32,
+) -> __m256 {
+    macro_rules! call {
+        ($imm8:expr) => {
+            _mm256_shuffle_ps(a, b, $imm8)
+        };
+    }
+    let r = constify_imm8_sae!(imm8, call);
+    transmute(simd_select_bitmask(k, r.as_f32x8(), src.as_f32x8()))
+}
+
+/// Shuffle single-precision (32-bit) floating-point elements in a within 128-bit lanes using the control in imm8, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_shuffle_ps&expand=5199)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vshufps, imm8 = 9))]
+#[rustc_args_required_const(3)]
+pub unsafe fn _mm256_maskz_shuffle_ps(k: __mmask8, a: __m256, b: __m256, imm8: i32) -> __m256 {
+    macro_rules! call {
+        ($imm8:expr) => {
+            _mm256_shuffle_ps(a, b, $imm8)
+        };
+    }
+    let r = constify_imm8_sae!(imm8, call);
+    let zero = _mm256_setzero_ps().as_f32x8();
+    transmute(simd_select_bitmask(k, r.as_f32x8(), zero))
+}
+
+/// Shuffle single-precision (32-bit) floating-point elements in a using the control in imm8, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_shuffle_ps&expand=5195)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vshufps, imm8 = 9))]
+#[rustc_args_required_const(4)]
+pub unsafe fn _mm_mask_shuffle_ps(
+    src: __m128,
+    k: __mmask8,
+    a: __m128,
+    b: __m128,
+    imm8: i32,
+) -> __m128 {
+    macro_rules! call {
+        ($imm8:expr) => {
+            _mm_shuffle_ps(a, b, $imm8)
+        };
+    }
+    let r = constify_imm8_sae!(imm8, call);
+    transmute(simd_select_bitmask(k, r.as_f32x4(), src.as_f32x4()))
+}
+
+/// Shuffle single-precision (32-bit) floating-point elements in a using the control in imm8, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_shuffle_ps&expand=5196)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vshufps, imm8 = 9))]
+#[rustc_args_required_const(3)]
+pub unsafe fn _mm_maskz_shuffle_ps(k: __mmask8, a: __m128, b: __m128, imm8: i32) -> __m128 {
+    macro_rules! call {
+        ($imm8:expr) => {
+            _mm_shuffle_ps(a, b, $imm8)
+        };
+    }
+    let r = constify_imm8_sae!(imm8, call);
+    let zero = _mm_setzero_ps().as_f32x4();
+    transmute(simd_select_bitmask(k, r.as_f32x4(), zero))
+}
+
 /// Shuffle double-precision (64-bit) floating-point elements within 128-bit lanes using the control in imm8, and store the results in dst.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_shuffle_pd&expand=5192)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_shuffle_pd&expand=5192)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vshufpd, imm8 = 3))]
@@ -18447,7 +18606,7 @@ pub unsafe fn _mm512_shuffle_pd(a: __m512d, b: __m512d, imm8: i32) -> __m512d {
 
 /// Shuffle double-precision (64-bit) floating-point elements within 128-bit lanes using the control in imm8, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_shuffle_pd&expand=5190)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_shuffle_pd&expand=5190)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vshufpd, imm8 = 3))]
@@ -18532,7 +18691,7 @@ pub unsafe fn _mm512_mask_shuffle_pd(
 
 /// Shuffle double-precision (64-bit) floating-point elements within 128-bit lanes using the control in imm8, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_shuffle_pd&expand=5191)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_shuffle_pd&expand=5191)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vshufpd, imm8 = 3))]
@@ -18608,6 +18767,88 @@ pub unsafe fn _mm512_maskz_shuffle_pd(k: __mmask8, a: __m512d, b: __m512d, imm8:
 
     let zero = _mm512_setzero_pd().as_f64x8();
     transmute(simd_select_bitmask(k, shuffle, zero))
+}
+
+/// Shuffle double-precision (64-bit) floating-point elements within 128-bit lanes using the control in imm8, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_shuffle_pd&expand=5187)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vshufpd, imm8 = 9))]
+#[rustc_args_required_const(4)]
+pub unsafe fn _mm256_mask_shuffle_pd(
+    src: __m256d,
+    k: __mmask8,
+    a: __m256d,
+    b: __m256d,
+    imm8: i32,
+) -> __m256d {
+    macro_rules! call {
+        ($imm8:expr) => {
+            _mm256_shuffle_pd(a, b, $imm8)
+        };
+    }
+    let r = constify_imm8_sae!(imm8, call);
+    transmute(simd_select_bitmask(k, r.as_f64x4(), src.as_f64x4()))
+}
+
+/// Shuffle double-precision (64-bit) floating-point elements within 128-bit lanes using the control in imm8, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_shuffle_pd&expand=5188)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vshufpd, imm8 = 9))]
+#[rustc_args_required_const(3)]
+pub unsafe fn _mm256_maskz_shuffle_pd(k: __mmask8, a: __m256d, b: __m256d, imm8: i32) -> __m256d {
+    macro_rules! call {
+        ($imm8:expr) => {
+            _mm256_shuffle_pd(a, b, $imm8)
+        };
+    }
+    let r = constify_imm8_sae!(imm8, call);
+    let zero = _mm256_setzero_pd().as_f64x4();
+    transmute(simd_select_bitmask(k, r.as_f64x4(), zero))
+}
+
+/// Shuffle double-precision (64-bit) floating-point elements within 128-bit lanes using the control in imm8, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_shuffle_pd&expand=5184)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vshufpd, imm8 = 9))]
+#[rustc_args_required_const(4)]
+pub unsafe fn _mm_mask_shuffle_pd(
+    src: __m128d,
+    k: __mmask8,
+    a: __m128d,
+    b: __m128d,
+    imm8: i32,
+) -> __m128d {
+    macro_rules! call {
+        ($imm8:expr) => {
+            _mm_shuffle_pd(a, b, $imm8)
+        };
+    }
+    let r = constify_imm8_sae!(imm8, call);
+    transmute(simd_select_bitmask(k, r.as_f64x2(), src.as_f64x2()))
+}
+
+/// Shuffle double-precision (64-bit) floating-point elements within 128-bit lanes using the control in imm8, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_shuffle_pd&expand=5185)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vshufpd, imm8 = 9))]
+#[rustc_args_required_const(3)]
+pub unsafe fn _mm_maskz_shuffle_pd(k: __mmask8, a: __m128d, b: __m128d, imm8: i32) -> __m128d {
+    macro_rules! call {
+        ($imm8:expr) => {
+            _mm_shuffle_pd(a, b, $imm8)
+        };
+    }
+    let r = constify_imm8_sae!(imm8, call);
+    let zero = _mm_setzero_pd().as_f64x2();
+    transmute(simd_select_bitmask(k, r.as_f64x2(), zero))
 }
 
 /// Shuffle 128-bits (composed of 4 32-bit integers) selected by imm8 from a and b, and store the results in dst.
@@ -42652,6 +42893,46 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_mask_shuffle_epi32() {
+        let a = _mm256_set_epi32(1, 4, 5, 8, 9, 12, 13, 16);
+        let r = _mm256_mask_shuffle_epi32(a, 0, a, _MM_PERM_AADD);
+        assert_eq_m256i(r, a);
+        let r = _mm256_mask_shuffle_epi32(a, 0b11111111, a, _MM_PERM_AADD);
+        let e = _mm256_set_epi32(8, 8, 1, 1, 16, 16, 9, 9);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_maskz_shuffle_epi32() {
+        let a = _mm256_set_epi32(1, 4, 5, 8, 9, 12, 13, 16);
+        let r = _mm256_maskz_shuffle_epi32(0, a, _MM_PERM_AADD);
+        assert_eq_m256i(r, _mm256_setzero_si256());
+        let r = _mm256_maskz_shuffle_epi32(0b11111111, a, _MM_PERM_AADD);
+        let e = _mm256_set_epi32(8, 8, 1, 1, 16, 16, 9, 9);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_mask_shuffle_epi32() {
+        let a = _mm_set_epi32(1, 4, 5, 8);
+        let r = _mm_mask_shuffle_epi32(a, 0, a, _MM_PERM_AADD);
+        assert_eq_m128i(r, a);
+        let r = _mm_mask_shuffle_epi32(a, 0b00001111, a, _MM_PERM_AADD);
+        let e = _mm_set_epi32(8, 8, 1, 1);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_maskz_shuffle_epi32() {
+        let a = _mm_set_epi32(1, 4, 5, 8);
+        let r = _mm_maskz_shuffle_epi32(0, a, _MM_PERM_AADD);
+        assert_eq_m128i(r, _mm_setzero_si128());
+        let r = _mm_maskz_shuffle_epi32(0b00001111, a, _MM_PERM_AADD);
+        let e = _mm_set_epi32(8, 8, 1, 1);
+        assert_eq_m128i(r, e);
+    }
+
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_shuffle_ps() {
         let a = _mm512_setr_ps(
@@ -42699,6 +42980,50 @@ mod tests {
             8., 8., 2., 2., 16., 16., 10., 10., 0., 0., 0., 0., 0., 0., 0., 0.,
         );
         assert_eq_m512(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_mask_shuffle_ps() {
+        let a = _mm256_set_ps(1., 4., 5., 8., 9., 12., 13., 16.);
+        let b = _mm256_set_ps(2., 3., 6., 7., 10., 11., 14., 15.);
+        let r = _mm256_mask_shuffle_ps(a, 0, a, b, 0x0F);
+        assert_eq_m256(r, a);
+        let r = _mm256_mask_shuffle_ps(a, 0b11111111, a, b, 0x0F);
+        let e = _mm256_set_ps(7., 7., 1., 1., 15., 15., 9., 9.);
+        assert_eq_m256(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_maskz_shuffle_ps() {
+        let a = _mm256_set_ps(1., 4., 5., 8., 9., 12., 13., 16.);
+        let b = _mm256_set_ps(2., 3., 6., 7., 10., 11., 14., 15.);
+        let r = _mm256_maskz_shuffle_ps(0, a, b, 0x0F);
+        assert_eq_m256(r, _mm256_setzero_ps());
+        let r = _mm256_maskz_shuffle_ps(0b11111111, a, b, 0x0F);
+        let e = _mm256_set_ps(7., 7., 1., 1., 15., 15., 9., 9.);
+        assert_eq_m256(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_mask_shuffle_ps() {
+        let a = _mm_set_ps(1., 4., 5., 8.);
+        let b = _mm_set_ps(2., 3., 6., 7.);
+        let r = _mm_mask_shuffle_ps(a, 0, a, b, 0x0F);
+        assert_eq_m128(r, a);
+        let r = _mm_mask_shuffle_ps(a, 0b00001111, a, b, 0x0F);
+        let e = _mm_set_ps(7., 7., 1., 1.);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_maskz_shuffle_ps() {
+        let a = _mm_set_ps(1., 4., 5., 8.);
+        let b = _mm_set_ps(2., 3., 6., 7.);
+        let r = _mm_maskz_shuffle_ps(0, a, b, 0x0F);
+        assert_eq_m128(r, _mm_setzero_ps());
+        let r = _mm_maskz_shuffle_ps(0b00001111, a, b, 0x0F);
+        let e = _mm_set_ps(7., 7., 1., 1.);
+        assert_eq_m128(r, e);
     }
 
     #[simd_test(enable = "avx512f")]
