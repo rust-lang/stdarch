@@ -60,7 +60,7 @@ pub unsafe fn __cpuid_count(leaf: u32, sub_leaf: u32) -> CpuidResult {
         llvm_asm!("cpuid"
                   : "={eax}"(eax), "={ebx}"(ebx), "={ecx}"(ecx), "={edx}"(edx)
                   : "{eax}"(leaf), "{ecx}"(sub_leaf)
-                  : :);
+                  : : "volatile");
     }
     #[cfg(target_arch = "x86_64")]
     {
@@ -74,7 +74,7 @@ pub unsafe fn __cpuid_count(leaf: u32, sub_leaf: u32) -> CpuidResult {
                   "#
                   : "={eax}"(eax), "={esi}"(ebx), "={ecx}"(ecx), "={edx}"(edx)
                   : "{eax}"(leaf), "{ecx}"(sub_leaf)
-                  : :);
+                  : : "volatile");
     }
     CpuidResult { eax, ebx, ecx, edx }
 }
