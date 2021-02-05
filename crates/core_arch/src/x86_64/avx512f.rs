@@ -7687,6 +7687,37 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_shuffle_i64x2() {
+        let a = _mm256_set_epi64x(1, 4, 5, 8);
+        let b = _mm256_set_epi64x(2, 3, 6, 7);
+        let r = _mm256_shuffle_i64x2(a, b, 0b00);
+        let e = _mm256_set_epi64x(6, 7, 5, 8);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_mask_shuffle_i64x2() {
+        let a = _mm256_set_epi64x(1, 4, 5, 8);
+        let b = _mm256_set_epi64x(2, 3, 6, 7);
+        let r = _mm256_mask_shuffle_i64x2(a, 0, a, b, 0b00);
+        assert_eq_m256i(r, a);
+        let r = _mm256_mask_shuffle_i64x2(a, 0b00001111, a, b, 0b00);
+        let e = _mm256_set_epi64x(6, 7, 5, 8);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_maskz_shuffle_i64x2() {
+        let a = _mm256_set_epi64x(1, 4, 5, 8);
+        let b = _mm256_set_epi64x(2, 3, 6, 7);
+        let r = _mm256_maskz_shuffle_i64x2(0, a, b, 0b00);
+        assert_eq_m256i(r, _mm256_setzero_si256());
+        let r = _mm256_maskz_shuffle_i64x2(0b00001111, a, b, 0b00);
+        let e = _mm256_set_epi64x(6, 7, 5, 8);
+        assert_eq_m256i(r, e);
+    }
+
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_shuffle_f64x2() {
         let a = _mm512_setr_pd(1., 4., 5., 8., 9., 12., 13., 16.);
@@ -7716,6 +7747,37 @@ mod tests {
         let r = _mm512_maskz_shuffle_f64x2(0b00001111, a, b, 0b00000000);
         let e = _mm512_setr_pd(1., 4., 1., 4., 0., 0., 0., 0.);
         assert_eq_m512d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_shuffle_f64x2() {
+        let a = _mm256_set_pd(1., 4., 5., 8.);
+        let b = _mm256_set_pd(2., 3., 6., 7.);
+        let r = _mm256_shuffle_f64x2(a, b, 0b00);
+        let e = _mm256_set_pd(6., 7., 5., 8.);
+        assert_eq_m256d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_mask_shuffle_f64x2() {
+        let a = _mm256_set_pd(1., 4., 5., 8.);
+        let b = _mm256_set_pd(2., 3., 6., 7.);
+        let r = _mm256_mask_shuffle_f64x2(a, 0, a, b, 0b00);
+        assert_eq_m256d(r, a);
+        let r = _mm256_mask_shuffle_f64x2(a, 0b00001111, a, b, 0b00);
+        let e = _mm256_set_pd(6., 7., 5., 8.);
+        assert_eq_m256d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_maskz_shuffle_f64x2() {
+        let a = _mm256_set_pd(1., 4., 5., 8.);
+        let b = _mm256_set_pd(2., 3., 6., 7.);
+        let r = _mm256_maskz_shuffle_f64x2(0, a, b, 0b00);
+        assert_eq_m256d(r, _mm256_setzero_pd());
+        let r = _mm256_maskz_shuffle_f64x2(0b00001111, a, b, 0b00);
+        let e = _mm256_set_pd(6., 7., 5., 8.);
+        assert_eq_m256d(r, e);
     }
 
     #[simd_test(enable = "avx512f")]

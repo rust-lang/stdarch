@@ -1300,18 +1300,24 @@
   * [x] [`_mm256_maskz_shuffle_pd`]
   * [x] [`_mm512_shuffle_i32x4`]
   * [x] [`_mm512_mask_shuffle_i32x4`]
-
+  * [x] [`_mm256_mask_shuffle_i32x4`]
+  * [x] [`_mm256_maskz_shuffle_i32x4`]
+  * [x] [`_mm256_shuffle_i32x4`]
   * [x] [`_mm512_shuffle_i64x2`]
   * [x] [`_mm512_mask_shuffle_i64x2`]
-
+  * [x] [`_mm256_mask_shuffle_i64x2`]
+  * [x] [`_mm256_maskz_shuffle_i64x2`]
+  * [x] [`_mm256_shuffle_i64x2`]
   * [x] [`_mm512_shuffle_f32x4`]
   * [x] [`_mm512_mask_shuffle_f32x4`]
-
+  * [x] [`_mm256_mask_shuffle_f32x4`]
+  * [x] [`_mm256_maskz_shuffle_f32x4`]
+  * [x] [`_mm256_shuffle_f32x4`]
   * [x] [`_mm512_shuffle_f64x2`]
   * [x] [`_mm512_mask_shuffle_f64x2`]
-
-
-
+  * [x] [`_mm256_mask_shuffle_f64x2`]
+  * [x] [`_mm256_maskz_shuffle_f64x2`]
+  * [x] [`_mm256_shuffle_f64x2`]
 
   * [x] [`_mm512_alignr_epi32`]
   * [x] [`_mm512_mask_alignr_epi32`]
@@ -1607,7 +1613,6 @@
   * [x] [`_mm512_mask_permutexvar_ps`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_permutexvar_ps&expand=5236)
   * [x] [`_mm512_mask_set1_epi32`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_set1_epi32&expand=5236)
   * [x] [`_mm512_mask_set1_epi64`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_set1_epi64&expand=5236)
-
   * [ ] [`_mm512_mask_store_epi32`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_store_epi32&expand=5236)
   * [ ] [`_mm512_mask_store_epi64`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_store_epi64&expand=5236)
   * [ ] [`_mm512_mask_store_pd`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_store_pd&expand=5236)
@@ -1782,7 +1787,6 @@
   * [x] [`_mm512_setzero_ps`]
   * [x] [`_mm512_setzero_si512`]
   * [x] [`_mm512_setzero`]
-
   * [x] [`_mm512_store_epi32`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_store_epi32&expand=5236)
   * [x] [`_mm512_store_epi64`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_store_epi64&expand=5236)
   * [x] [`_mm512_store_pd`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_store_pd&expand=5236)
