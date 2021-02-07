@@ -27959,13 +27959,16 @@ pub unsafe fn _mm_getmant_ss(
     norm: _MM_MANTISSA_NORM_ENUM,
     sign: _MM_MANTISSA_SIGN_ENUM,
 ) -> __m128 {
+    let a = a.as_f32x4();
+    let b = b.as_f32x4();
+    let zero = _mm_setzero_ps().as_f32x4();
     macro_rules! call {
         ($imm4_1:expr, $imm2:expr) => {
             vgetmantss(
-                a.as_f32x4(),
-                b.as_f32x4(),
+                a,
+                b,
                 $imm2 << 2 | $imm4_1,
-                _mm_setzero_ps().as_f32x4(),
+                zero,
                 0b1,
                 _MM_FROUND_CUR_DIRECTION,
             )
@@ -28000,16 +28003,12 @@ pub unsafe fn _mm_mask_getmant_ss(
     norm: _MM_MANTISSA_NORM_ENUM,
     sign: _MM_MANTISSA_SIGN_ENUM,
 ) -> __m128 {
+    let a = a.as_f32x4();
+    let b = b.as_f32x4();
+    let src = src.as_f32x4();
     macro_rules! call {
         ($imm4_1:expr, $imm2:expr) => {
-            vgetmantss(
-                a.as_f32x4(),
-                b.as_f32x4(),
-                $imm2 << 2 | $imm4_1,
-                src.as_f32x4(),
-                k,
-                _MM_FROUND_CUR_DIRECTION,
-            )
+            vgetmantss(a, b, $imm2 << 2 | $imm4_1, src, k, _MM_FROUND_CUR_DIRECTION)
         };
     }
     let r = constify_imm4_mantissas!(norm, sign, call);
@@ -28040,13 +28039,16 @@ pub unsafe fn _mm_maskz_getmant_ss(
     norm: _MM_MANTISSA_NORM_ENUM,
     sign: _MM_MANTISSA_SIGN_ENUM,
 ) -> __m128 {
+    let a = a.as_f32x4();
+    let b = b.as_f32x4();
+    let zero = _mm_setzero_ps().as_f32x4();
     macro_rules! call {
         ($imm4_1:expr, $imm2:expr) => {
             vgetmantss(
-                a.as_f32x4(),
-                b.as_f32x4(),
+                a,
+                b,
                 $imm2 << 2 | $imm4_1,
-                _mm_setzero_ps().as_f32x4(),
+                zero,
                 k,
                 _MM_FROUND_CUR_DIRECTION,
             )
@@ -28079,13 +28081,16 @@ pub unsafe fn _mm_getmant_sd(
     norm: _MM_MANTISSA_NORM_ENUM,
     sign: _MM_MANTISSA_SIGN_ENUM,
 ) -> __m128d {
+    let a = a.as_f64x2();
+    let b = b.as_f64x2();
+    let zero = _mm_setzero_pd().as_f64x2();
     macro_rules! call {
         ($imm4_1:expr, $imm2:expr) => {
             vgetmantsd(
-                a.as_f64x2(),
-                b.as_f64x2(),
+                a,
+                b,
                 $imm2 << 2 | $imm4_1,
-                _mm_setzero_pd().as_f64x2(),
+                zero,
                 0b1,
                 _MM_FROUND_CUR_DIRECTION,
             )
@@ -28120,16 +28125,12 @@ pub unsafe fn _mm_mask_getmant_sd(
     norm: _MM_MANTISSA_NORM_ENUM,
     sign: _MM_MANTISSA_SIGN_ENUM,
 ) -> __m128d {
+    let a = a.as_f64x2();
+    let b = b.as_f64x2();
+    let src = src.as_f64x2();
     macro_rules! call {
         ($imm4_1:expr, $imm2:expr) => {
-            vgetmantsd(
-                a.as_f64x2(),
-                b.as_f64x2(),
-                $imm2 << 2 | $imm4_1,
-                src.as_f64x2(),
-                k,
-                _MM_FROUND_CUR_DIRECTION,
-            )
+            vgetmantsd(a, b, $imm2 << 2 | $imm4_1, src, k, _MM_FROUND_CUR_DIRECTION)
         };
     }
     let r = constify_imm4_mantissas!(norm, sign, call);
@@ -28160,13 +28161,16 @@ pub unsafe fn _mm_maskz_getmant_sd(
     norm: _MM_MANTISSA_NORM_ENUM,
     sign: _MM_MANTISSA_SIGN_ENUM,
 ) -> __m128d {
+    let a = a.as_f64x2();
+    let b = b.as_f64x2();
+    let zero = _mm_setzero_pd().as_f64x2();
     macro_rules! call {
         ($imm4_1:expr, $imm2:expr) => {
             vgetmantsd(
-                a.as_f64x2(),
-                b.as_f64x2(),
+                a,
+                b,
                 $imm2 << 2 | $imm4_1,
-                _mm_setzero_pd().as_f64x2(),
+                zero,
                 k,
                 _MM_FROUND_CUR_DIRECTION,
             )
@@ -28351,13 +28355,10 @@ pub unsafe fn _mm_maskz_roundscale_sd(k: __mmask8, a: __m128d, b: __m128d, imm8:
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vscalefss))]
 pub unsafe fn _mm_scalef_ss(a: __m128, b: __m128) -> __m128 {
-    transmute(vscalefss(
-        a.as_f32x4(),
-        b.as_f32x4(),
-        _mm_setzero_ps().as_f32x4(),
-        0b11111111,
-        _MM_FROUND_CUR_DIRECTION,
-    ))
+    let a = a.as_f32x4();
+    let b = b.as_f32x4();
+    let zero = _mm_setzero_ps().as_f32x4();
+    transmute(vscalefss(a, b, zero, 0b11111111, _MM_FROUND_CUR_DIRECTION))
 }
 
 /// Scale the packed single-precision (32-bit) floating-point elements in a using values from b, store the result in the lower element of dst using writemask k (the element is copied from src when mask bit 0 is not set), and copy the upper 3 packed elements from a to the upper elements of dst.
@@ -28367,13 +28368,10 @@ pub unsafe fn _mm_scalef_ss(a: __m128, b: __m128) -> __m128 {
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vscalefss))]
 pub unsafe fn _mm_mask_scalef_ss(src: __m128, k: __mmask8, a: __m128, b: __m128) -> __m128 {
-    transmute(vscalefss(
-        a.as_f32x4(),
-        b.as_f32x4(),
-        src.as_f32x4(),
-        k,
-        _MM_FROUND_CUR_DIRECTION,
-    ))
+    let a = a.as_f32x4();
+    let b = b.as_f32x4();
+    let src = src.as_f32x4();
+    transmute(vscalefss(a, b, src, k, _MM_FROUND_CUR_DIRECTION))
 }
 
 /// Scale the packed single-precision (32-bit) floating-point elements in a using values from b, store the result in the lower element of dst using zeromask k (the element is zeroed out when mask bit 0 is not set), and copy the upper 3 packed elements from a to the upper elements of dst.
@@ -28895,15 +28893,12 @@ pub unsafe fn _mm_mask3_fnmsub_sd(a: __m128d, b: __m128d, c: __m128d, k: __mmask
 #[cfg_attr(test, assert_instr(vaddss, rounding = 8))]
 #[rustc_args_required_const(2)]
 pub unsafe fn _mm_add_round_ss(a: __m128, b: __m128, rounding: i32) -> __m128 {
+    let a = a.as_f32x4();
+    let b = b.as_f32x4();
+    let zero = _mm_setzero_ps().as_f32x4();
     macro_rules! call {
         ($imm4:expr) => {
-            vaddss(
-                a.as_f32x4(),
-                b.as_f32x4(),
-                _mm_setzero_ps().as_f32x4(),
-                0b1,
-                $imm4,
-            )
+            vaddss(a, b, zero, 0b1, $imm4)
         };
     }
     transmute(constify_imm4_round!(rounding, call))
@@ -28930,9 +28925,12 @@ pub unsafe fn _mm_mask_add_round_ss(
     b: __m128,
     rounding: i32,
 ) -> __m128 {
+    let a = a.as_f32x4();
+    let b = b.as_f32x4();
+    let src = src.as_f32x4();
     macro_rules! call {
         ($imm4:expr) => {
-            vaddss(a.as_f32x4(), b.as_f32x4(), src.as_f32x4(), k, $imm4)
+            vaddss(a, b, src, k, $imm4)
         };
     }
     transmute(constify_imm4_round!(rounding, call))
@@ -28953,15 +28951,12 @@ pub unsafe fn _mm_mask_add_round_ss(
 #[cfg_attr(test, assert_instr(vaddss, rounding = 8))]
 #[rustc_args_required_const(3)]
 pub unsafe fn _mm_maskz_add_round_ss(k: __mmask8, a: __m128, b: __m128, rounding: i32) -> __m128 {
+    let a = a.as_f32x4();
+    let b = b.as_f32x4();
+    let zero = _mm_setzero_ps().as_f32x4();
     macro_rules! call {
         ($imm4:expr) => {
-            vaddss(
-                a.as_f32x4(),
-                b.as_f32x4(),
-                _mm_setzero_ps().as_f32x4(),
-                k,
-                $imm4,
-            )
+            vaddss(a, b, zero, k, $imm4)
         };
     }
     transmute(constify_imm4_round!(rounding, call))
@@ -28982,15 +28977,12 @@ pub unsafe fn _mm_maskz_add_round_ss(k: __mmask8, a: __m128, b: __m128, rounding
 #[cfg_attr(test, assert_instr(vaddsd, rounding = 8))]
 #[rustc_args_required_const(2)]
 pub unsafe fn _mm_add_round_sd(a: __m128d, b: __m128d, rounding: i32) -> __m128d {
+    let a = a.as_f64x2();
+    let b = b.as_f64x2();
+    let zero = _mm_setzero_pd().as_f64x2();
     macro_rules! call {
         ($imm4:expr) => {
-            vaddsd(
-                a.as_f64x2(),
-                b.as_f64x2(),
-                _mm_setzero_pd().as_f64x2(),
-                0b1,
-                $imm4,
-            )
+            vaddsd(a, b, zero, 0b1, $imm4)
         };
     }
     transmute(constify_imm4_round!(rounding, call))
@@ -29017,9 +29009,12 @@ pub unsafe fn _mm_mask_add_round_sd(
     b: __m128d,
     rounding: i32,
 ) -> __m128d {
+    let a = a.as_f64x2();
+    let b = b.as_f64x2();
+    let src = src.as_f64x2();
     macro_rules! call {
         ($imm4:expr) => {
-            vaddsd(a.as_f64x2(), b.as_f64x2(), src.as_f64x2(), k, $imm4)
+            vaddsd(a, b, src, k, $imm4)
         };
     }
     transmute(constify_imm4_round!(rounding, call))
@@ -29045,15 +29040,12 @@ pub unsafe fn _mm_maskz_add_round_sd(
     b: __m128d,
     rounding: i32,
 ) -> __m128d {
+    let a = a.as_f64x2();
+    let b = b.as_f64x2();
+    let zero = _mm_setzero_pd().as_f64x2();
     macro_rules! call {
         ($imm4:expr) => {
-            vaddsd(
-                a.as_f64x2(),
-                b.as_f64x2(),
-                _mm_setzero_pd().as_f64x2(),
-                k,
-                $imm4,
-            )
+            vaddsd(a, b, zero, k, $imm4)
         };
     }
     transmute(constify_imm4_round!(rounding, call))
@@ -29074,15 +29066,12 @@ pub unsafe fn _mm_maskz_add_round_sd(
 #[cfg_attr(test, assert_instr(vsubss, rounding = 8))]
 #[rustc_args_required_const(2)]
 pub unsafe fn _mm_sub_round_ss(a: __m128, b: __m128, rounding: i32) -> __m128 {
+    let a = a.as_f32x4();
+    let b = b.as_f32x4();
+    let zero = _mm_setzero_ps().as_f32x4();
     macro_rules! call {
         ($imm4:expr) => {
-            vsubss(
-                a.as_f32x4(),
-                b.as_f32x4(),
-                _mm_setzero_ps().as_f32x4(),
-                0b1,
-                $imm4,
-            )
+            vsubss(a, b, zero, 0b1, $imm4)
         };
     }
     transmute(constify_imm4_round!(rounding, call))
@@ -29109,9 +29098,12 @@ pub unsafe fn _mm_mask_sub_round_ss(
     b: __m128,
     rounding: i32,
 ) -> __m128 {
+    let a = a.as_f32x4();
+    let b = b.as_f32x4();
+    let src = src.as_f32x4();
     macro_rules! call {
         ($imm4:expr) => {
-            vsubss(a.as_f32x4(), b.as_f32x4(), src.as_f32x4(), k, $imm4)
+            vsubss(a, b, src, k, $imm4)
         };
     }
     transmute(constify_imm4_round!(rounding, call))
@@ -29132,15 +29124,12 @@ pub unsafe fn _mm_mask_sub_round_ss(
 #[cfg_attr(test, assert_instr(vsubss, rounding = 8))]
 #[rustc_args_required_const(3)]
 pub unsafe fn _mm_maskz_sub_round_ss(k: __mmask8, a: __m128, b: __m128, rounding: i32) -> __m128 {
+    let a = a.as_f32x4();
+    let b = b.as_f32x4();
+    let zero = _mm_setzero_ps().as_f32x4();
     macro_rules! call {
         ($imm4:expr) => {
-            vsubss(
-                a.as_f32x4(),
-                b.as_f32x4(),
-                _mm_setzero_ps().as_f32x4(),
-                k,
-                $imm4,
-            )
+            vsubss(a, b, zero, k, $imm4)
         };
     }
     transmute(constify_imm4_round!(rounding, call))
@@ -29161,15 +29150,12 @@ pub unsafe fn _mm_maskz_sub_round_ss(k: __mmask8, a: __m128, b: __m128, rounding
 #[cfg_attr(test, assert_instr(vsubsd, rounding = 8))]
 #[rustc_args_required_const(2)]
 pub unsafe fn _mm_sub_round_sd(a: __m128d, b: __m128d, rounding: i32) -> __m128d {
+    let a = a.as_f64x2();
+    let b = b.as_f64x2();
+    let zero = _mm_setzero_pd().as_f64x2();
     macro_rules! call {
         ($imm4:expr) => {
-            vsubsd(
-                a.as_f64x2(),
-                b.as_f64x2(),
-                _mm_setzero_pd().as_f64x2(),
-                0b1,
-                $imm4,
-            )
+            vsubsd(a, b, zero, 0b1, $imm4)
         };
     }
     transmute(constify_imm4_round!(rounding, call))
@@ -29196,9 +29182,12 @@ pub unsafe fn _mm_mask_sub_round_sd(
     b: __m128d,
     rounding: i32,
 ) -> __m128d {
+    let a = a.as_f64x2();
+    let b = b.as_f64x2();
+    let src = src.as_f64x2();
     macro_rules! call {
         ($imm4:expr) => {
-            vsubsd(a.as_f64x2(), b.as_f64x2(), src.as_f64x2(), k, $imm4)
+            vsubsd(a, b, src, k, $imm4)
         };
     }
     transmute(constify_imm4_round!(rounding, call))
@@ -29224,15 +29213,12 @@ pub unsafe fn _mm_maskz_sub_round_sd(
     b: __m128d,
     rounding: i32,
 ) -> __m128d {
+    let a = a.as_f64x2();
+    let b = b.as_f64x2();
+    let zero = _mm_setzero_pd().as_f64x2();
     macro_rules! call {
         ($imm4:expr) => {
-            vsubsd(
-                a.as_f64x2(),
-                b.as_f64x2(),
-                _mm_setzero_pd().as_f64x2(),
-                k,
-                $imm4,
-            )
+            vsubsd(a, b, zero, k, $imm4)
         };
     }
     transmute(constify_imm4_round!(rounding, call))
@@ -29253,15 +29239,12 @@ pub unsafe fn _mm_maskz_sub_round_sd(
 #[cfg_attr(test, assert_instr(vmulss, rounding = 8))]
 #[rustc_args_required_const(2)]
 pub unsafe fn _mm_mul_round_ss(a: __m128, b: __m128, rounding: i32) -> __m128 {
+    let a = a.as_f32x4();
+    let b = b.as_f32x4();
+    let zero = _mm_setzero_ps().as_f32x4();
     macro_rules! call {
         ($imm4:expr) => {
-            vmulss(
-                a.as_f32x4(),
-                b.as_f32x4(),
-                _mm_setzero_ps().as_f32x4(),
-                0b1,
-                $imm4,
-            )
+            vmulss(a, b, zero, 0b1, $imm4)
         };
     }
     transmute(constify_imm4_round!(rounding, call))
@@ -29288,9 +29271,12 @@ pub unsafe fn _mm_mask_mul_round_ss(
     b: __m128,
     rounding: i32,
 ) -> __m128 {
+    let a = a.as_f32x4();
+    let b = b.as_f32x4();
+    let src = src.as_f32x4();
     macro_rules! call {
         ($imm4:expr) => {
-            vmulss(a.as_f32x4(), b.as_f32x4(), src.as_f32x4(), k, $imm4)
+            vmulss(a, b, src, k, $imm4)
         };
     }
     transmute(constify_imm4_round!(rounding, call))
@@ -29311,15 +29297,12 @@ pub unsafe fn _mm_mask_mul_round_ss(
 #[cfg_attr(test, assert_instr(vmulss, rounding = 8))]
 #[rustc_args_required_const(3)]
 pub unsafe fn _mm_maskz_mul_round_ss(k: __mmask8, a: __m128, b: __m128, rounding: i32) -> __m128 {
+    let a = a.as_f32x4();
+    let b = b.as_f32x4();
+    let zero = _mm_setzero_ps().as_f32x4();
     macro_rules! call {
         ($imm4:expr) => {
-            vmulss(
-                a.as_f32x4(),
-                b.as_f32x4(),
-                _mm_setzero_ps().as_f32x4(),
-                k,
-                $imm4,
-            )
+            vmulss(a, b, zero, k, $imm4)
         };
     }
     transmute(constify_imm4_round!(rounding, call))
@@ -29340,15 +29323,12 @@ pub unsafe fn _mm_maskz_mul_round_ss(k: __mmask8, a: __m128, b: __m128, rounding
 #[cfg_attr(test, assert_instr(vmulsd, rounding = 8))]
 #[rustc_args_required_const(2)]
 pub unsafe fn _mm_mul_round_sd(a: __m128d, b: __m128d, rounding: i32) -> __m128d {
+    let a = a.as_f64x2();
+    let b = b.as_f64x2();
+    let zero = _mm_setzero_pd().as_f64x2();
     macro_rules! call {
         ($imm4:expr) => {
-            vmulsd(
-                a.as_f64x2(),
-                b.as_f64x2(),
-                _mm_setzero_pd().as_f64x2(),
-                0b1,
-                $imm4,
-            )
+            vmulsd(a, b, zero, 0b1, $imm4)
         };
     }
     transmute(constify_imm4_round!(rounding, call))
@@ -29375,9 +29355,12 @@ pub unsafe fn _mm_mask_mul_round_sd(
     b: __m128d,
     rounding: i32,
 ) -> __m128d {
+    let a = a.as_f64x2();
+    let b = b.as_f64x2();
+    let src = src.as_f64x2();
     macro_rules! call {
         ($imm4:expr) => {
-            vmulsd(a.as_f64x2(), b.as_f64x2(), src.as_f64x2(), k, $imm4)
+            vmulsd(a, b, src, k, $imm4)
         };
     }
     transmute(constify_imm4_round!(rounding, call))
@@ -29403,15 +29386,12 @@ pub unsafe fn _mm_maskz_mul_round_sd(
     b: __m128d,
     rounding: i32,
 ) -> __m128d {
+    let a = a.as_f64x2();
+    let b = b.as_f64x2();
+    let zero = _mm_setzero_pd().as_f64x2();
     macro_rules! call {
         ($imm4:expr) => {
-            vmulsd(
-                a.as_f64x2(),
-                b.as_f64x2(),
-                _mm_setzero_pd().as_f64x2(),
-                k,
-                $imm4,
-            )
+            vmulsd(a, b, zero, k, $imm4)
         };
     }
     transmute(constify_imm4_round!(rounding, call))
@@ -29432,15 +29412,12 @@ pub unsafe fn _mm_maskz_mul_round_sd(
 #[cfg_attr(test, assert_instr(vdivss, rounding = 8))]
 #[rustc_args_required_const(2)]
 pub unsafe fn _mm_div_round_ss(a: __m128, b: __m128, rounding: i32) -> __m128 {
+    let a = a.as_f32x4();
+    let b = b.as_f32x4();
+    let zero = _mm_setzero_ps().as_f32x4();
     macro_rules! call {
         ($imm4:expr) => {
-            vdivss(
-                a.as_f32x4(),
-                b.as_f32x4(),
-                _mm_setzero_ps().as_f32x4(),
-                0b1,
-                $imm4,
-            )
+            vdivss(a, b, zero, 0b1, $imm4)
         };
     }
     transmute(constify_imm4_round!(rounding, call))
@@ -29467,9 +29444,12 @@ pub unsafe fn _mm_mask_div_round_ss(
     b: __m128,
     rounding: i32,
 ) -> __m128 {
+    let a = a.as_f32x4();
+    let b = b.as_f32x4();
+    let src = src.as_f32x4();
     macro_rules! call {
         ($imm4:expr) => {
-            vdivss(a.as_f32x4(), b.as_f32x4(), src.as_f32x4(), k, $imm4)
+            vdivss(a, b, src, k, $imm4)
         };
     }
     transmute(constify_imm4_round!(rounding, call))
@@ -29490,15 +29470,12 @@ pub unsafe fn _mm_mask_div_round_ss(
 #[cfg_attr(test, assert_instr(vdivss, rounding = 8))]
 #[rustc_args_required_const(3)]
 pub unsafe fn _mm_maskz_div_round_ss(k: __mmask8, a: __m128, b: __m128, rounding: i32) -> __m128 {
+    let a = a.as_f32x4();
+    let b = b.as_f32x4();
+    let zero = _mm_setzero_ps().as_f32x4();
     macro_rules! call {
         ($imm4:expr) => {
-            vdivss(
-                a.as_f32x4(),
-                b.as_f32x4(),
-                _mm_setzero_ps().as_f32x4(),
-                k,
-                $imm4,
-            )
+            vdivss(a, b, zero, k, $imm4)
         };
     }
     transmute(constify_imm4_round!(rounding, call))
@@ -29519,15 +29496,12 @@ pub unsafe fn _mm_maskz_div_round_ss(k: __mmask8, a: __m128, b: __m128, rounding
 #[cfg_attr(test, assert_instr(vdivsd, rounding = 8))]
 #[rustc_args_required_const(2)]
 pub unsafe fn _mm_div_round_sd(a: __m128d, b: __m128d, rounding: i32) -> __m128d {
+    let a = a.as_f64x2();
+    let b = b.as_f64x2();
+    let zero = _mm_setzero_pd().as_f64x2();
     macro_rules! call {
         ($imm4:expr) => {
-            vdivsd(
-                a.as_f64x2(),
-                b.as_f64x2(),
-                _mm_setzero_pd().as_f64x2(),
-                0b1,
-                $imm4,
-            )
+            vdivsd(a, b, zero, 0b1, $imm4)
         };
     }
     transmute(constify_imm4_round!(rounding, call))
@@ -29554,9 +29528,12 @@ pub unsafe fn _mm_mask_div_round_sd(
     b: __m128d,
     rounding: i32,
 ) -> __m128d {
+    let a = a.as_f64x2();
+    let b = b.as_f64x2();
+    let src = src.as_f64x2();
     macro_rules! call {
         ($imm4:expr) => {
-            vdivsd(a.as_f64x2(), b.as_f64x2(), src.as_f64x2(), k, $imm4)
+            vdivsd(a, b, src, k, $imm4)
         };
     }
     transmute(constify_imm4_round!(rounding, call))
@@ -29582,15 +29559,12 @@ pub unsafe fn _mm_maskz_div_round_sd(
     b: __m128d,
     rounding: i32,
 ) -> __m128d {
+    let a = a.as_f64x2();
+    let b = b.as_f64x2();
+    let zero = _mm_setzero_pd().as_f64x2();
     macro_rules! call {
         ($imm4:expr) => {
-            vdivsd(
-                a.as_f64x2(),
-                b.as_f64x2(),
-                _mm_setzero_pd().as_f64x2(),
-                k,
-                $imm4,
-            )
+            vdivsd(a, b, zero, k, $imm4)
         };
     }
     transmute(constify_imm4_round!(rounding, call))
@@ -29605,15 +29579,12 @@ pub unsafe fn _mm_maskz_div_round_sd(
 #[cfg_attr(test, assert_instr(vmaxss, sae = 8))]
 #[rustc_args_required_const(2)]
 pub unsafe fn _mm_max_round_ss(a: __m128, b: __m128, sae: i32) -> __m128 {
+    let a = a.as_f32x4();
+    let b = b.as_f32x4();
+    let zero = _mm_setzero_ps().as_f32x4();
     macro_rules! call {
         ($imm4:expr) => {
-            vmaxss(
-                a.as_f32x4(),
-                b.as_f32x4(),
-                _mm_setzero_ps().as_f32x4(),
-                0b1,
-                $imm4,
-            )
+            vmaxss(a, b, zero, 0b1, $imm4)
         };
     }
     transmute(constify_imm4_sae!(sae, call))
@@ -29634,9 +29605,12 @@ pub unsafe fn _mm_mask_max_round_ss(
     b: __m128,
     sae: i32,
 ) -> __m128 {
+    let a = a.as_f32x4();
+    let b = b.as_f32x4();
+    let src = src.as_f32x4();
     macro_rules! call {
         ($imm4:expr) => {
-            vmaxss(a.as_f32x4(), b.as_f32x4(), src.as_f32x4(), k, $imm4)
+            vmaxss(a, b, src, k, $imm4)
         };
     }
     transmute(constify_imm4_sae!(sae, call))
@@ -29651,15 +29625,12 @@ pub unsafe fn _mm_mask_max_round_ss(
 #[cfg_attr(test, assert_instr(vmaxss, sae = 8))]
 #[rustc_args_required_const(3)]
 pub unsafe fn _mm_maskz_max_round_ss(k: __mmask8, a: __m128, b: __m128, sae: i32) -> __m128 {
+    let a = a.as_f32x4();
+    let b = b.as_f32x4();
+    let zero = _mm_setzero_ps().as_f32x4();
     macro_rules! call {
         ($imm4:expr) => {
-            vmaxss(
-                a.as_f32x4(),
-                b.as_f32x4(),
-                _mm_setzero_ps().as_f32x4(),
-                k,
-                $imm4,
-            )
+            vmaxss(a, b, zero, k, $imm4)
         };
     }
     transmute(constify_imm4_sae!(sae, call))
@@ -29674,15 +29645,12 @@ pub unsafe fn _mm_maskz_max_round_ss(k: __mmask8, a: __m128, b: __m128, sae: i32
 #[cfg_attr(test, assert_instr(vmaxsd, sae = 8))]
 #[rustc_args_required_const(2)]
 pub unsafe fn _mm_max_round_sd(a: __m128d, b: __m128d, sae: i32) -> __m128d {
+    let a = a.as_f64x2();
+    let b = b.as_f64x2();
+    let zero = _mm_setzero_pd().as_f64x2();
     macro_rules! call {
         ($imm4:expr) => {
-            vmaxsd(
-                a.as_f64x2(),
-                b.as_f64x2(),
-                _mm_setzero_pd().as_f64x2(),
-                0b1,
-                $imm4,
-            )
+            vmaxsd(a, b, zero, 0b1, $imm4)
         };
     }
     transmute(constify_imm4_sae!(sae, call))
@@ -29703,9 +29671,12 @@ pub unsafe fn _mm_mask_max_round_sd(
     b: __m128d,
     sae: i32,
 ) -> __m128d {
+    let a = a.as_f64x2();
+    let b = b.as_f64x2();
+    let src = src.as_f64x2();
     macro_rules! call {
         ($imm4:expr) => {
-            vmaxsd(a.as_f64x2(), b.as_f64x2(), src.as_f64x2(), k, $imm4)
+            vmaxsd(a, b, src, k, $imm4)
         };
     }
     transmute(constify_imm4_sae!(sae, call))
@@ -29720,15 +29691,12 @@ pub unsafe fn _mm_mask_max_round_sd(
 #[cfg_attr(test, assert_instr(vmaxsd, sae = 8))]
 #[rustc_args_required_const(3)]
 pub unsafe fn _mm_maskz_max_round_sd(k: __mmask8, a: __m128d, b: __m128d, sae: i32) -> __m128d {
+    let a = a.as_f64x2();
+    let b = b.as_f64x2();
+    let zero = _mm_setzero_pd().as_f64x2();
     macro_rules! call {
         ($imm4:expr) => {
-            vmaxsd(
-                a.as_f64x2(),
-                b.as_f64x2(),
-                _mm_setzero_pd().as_f64x2(),
-                k,
-                $imm4,
-            )
+            vmaxsd(a, b, zero, k, $imm4)
         };
     }
     transmute(constify_imm4_sae!(sae, call))
@@ -29743,15 +29711,12 @@ pub unsafe fn _mm_maskz_max_round_sd(k: __mmask8, a: __m128d, b: __m128d, sae: i
 #[cfg_attr(test, assert_instr(vminss, sae = 8))]
 #[rustc_args_required_const(2)]
 pub unsafe fn _mm_min_round_ss(a: __m128, b: __m128, sae: i32) -> __m128 {
+    let a = a.as_f32x4();
+    let b = b.as_f32x4();
+    let zero = _mm_setzero_ps().as_f32x4();
     macro_rules! call {
         ($imm4:expr) => {
-            vminss(
-                a.as_f32x4(),
-                b.as_f32x4(),
-                _mm_setzero_ps().as_f32x4(),
-                0b1,
-                $imm4,
-            )
+            vminss(a, b, zero, 0b1, $imm4)
         };
     }
     transmute(constify_imm4_sae!(sae, call))
@@ -29772,9 +29737,12 @@ pub unsafe fn _mm_mask_min_round_ss(
     b: __m128,
     sae: i32,
 ) -> __m128 {
+    let a = a.as_f32x4();
+    let b = b.as_f32x4();
+    let src = src.as_f32x4();
     macro_rules! call {
         ($imm4:expr) => {
-            vminss(a.as_f32x4(), b.as_f32x4(), src.as_f32x4(), k, $imm4)
+            vminss(a, b, src, k, $imm4)
         };
     }
     transmute(constify_imm4_sae!(sae, call))
@@ -29789,15 +29757,12 @@ pub unsafe fn _mm_mask_min_round_ss(
 #[cfg_attr(test, assert_instr(vminss, sae = 8))]
 #[rustc_args_required_const(3)]
 pub unsafe fn _mm_maskz_min_round_ss(k: __mmask8, a: __m128, b: __m128, sae: i32) -> __m128 {
+    let a = a.as_f32x4();
+    let b = b.as_f32x4();
+    let zero = _mm_setzero_ps().as_f32x4();
     macro_rules! call {
         ($imm4:expr) => {
-            vminss(
-                a.as_f32x4(),
-                b.as_f32x4(),
-                _mm_setzero_ps().as_f32x4(),
-                k,
-                $imm4,
-            )
+            vminss(a, b, zero, k, $imm4)
         };
     }
     transmute(constify_imm4_sae!(sae, call))
@@ -29812,15 +29777,12 @@ pub unsafe fn _mm_maskz_min_round_ss(k: __mmask8, a: __m128, b: __m128, sae: i32
 #[cfg_attr(test, assert_instr(vminsd, sae = 8))]
 #[rustc_args_required_const(2)]
 pub unsafe fn _mm_min_round_sd(a: __m128d, b: __m128d, sae: i32) -> __m128d {
+    let a = a.as_f64x2();
+    let b = b.as_f64x2();
+    let zero = _mm_setzero_pd().as_f64x2();
     macro_rules! call {
         ($imm4:expr) => {
-            vminsd(
-                a.as_f64x2(),
-                b.as_f64x2(),
-                _mm_setzero_pd().as_f64x2(),
-                0b1,
-                $imm4,
-            )
+            vminsd(a, b, zero, 0b1, $imm4)
         };
     }
     transmute(constify_imm4_sae!(sae, call))
@@ -29841,9 +29803,12 @@ pub unsafe fn _mm_mask_min_round_sd(
     b: __m128d,
     sae: i32,
 ) -> __m128d {
+    let a = a.as_f64x2();
+    let b = b.as_f64x2();
+    let src = src.as_f64x2();
     macro_rules! call {
         ($imm4:expr) => {
-            vminsd(a.as_f64x2(), b.as_f64x2(), src.as_f64x2(), k, $imm4)
+            vminsd(a, b, src, k, $imm4)
         };
     }
     transmute(constify_imm4_sae!(sae, call))
@@ -29858,15 +29823,12 @@ pub unsafe fn _mm_mask_min_round_sd(
 #[cfg_attr(test, assert_instr(vminsd, sae = 8))]
 #[rustc_args_required_const(3)]
 pub unsafe fn _mm_maskz_min_round_sd(k: __mmask8, a: __m128d, b: __m128d, sae: i32) -> __m128d {
+    let a = a.as_f64x2();
+    let b = b.as_f64x2();
+    let zero = _mm_setzero_pd().as_f64x2();
     macro_rules! call {
         ($imm4:expr) => {
-            vminsd(
-                a.as_f64x2(),
-                b.as_f64x2(),
-                _mm_setzero_pd().as_f64x2(),
-                k,
-                $imm4,
-            )
+            vminsd(a, b, zero, k, $imm4)
         };
     }
     transmute(constify_imm4_sae!(sae, call))
@@ -29887,15 +29849,12 @@ pub unsafe fn _mm_maskz_min_round_sd(k: __mmask8, a: __m128d, b: __m128d, sae: i
 #[cfg_attr(test, assert_instr(vsqrtss, rounding = 8))]
 #[rustc_args_required_const(2)]
 pub unsafe fn _mm_sqrt_round_ss(a: __m128, b: __m128, rounding: i32) -> __m128 {
+    let a = a.as_f32x4();
+    let b = b.as_f32x4();
+    let zero = _mm_setzero_ps().as_f32x4();
     macro_rules! call {
         ($imm4:expr) => {
-            vsqrtss(
-                a.as_f32x4(),
-                b.as_f32x4(),
-                _mm_setzero_ps().as_f32x4(),
-                0b1,
-                $imm4,
-            )
+            vsqrtss(a, b, zero, 0b1, $imm4)
         };
     }
     transmute(constify_imm4_round!(rounding, call))
@@ -29922,9 +29881,12 @@ pub unsafe fn _mm_mask_sqrt_round_ss(
     b: __m128,
     rounding: i32,
 ) -> __m128 {
+    let a = a.as_f32x4();
+    let b = b.as_f32x4();
+    let src = src.as_f32x4();
     macro_rules! call {
         ($imm4:expr) => {
-            vsqrtss(a.as_f32x4(), b.as_f32x4(), src.as_f32x4(), k, $imm4)
+            vsqrtss(a, b, src, k, $imm4)
         };
     }
     transmute(constify_imm4_round!(rounding, call))
@@ -29945,15 +29907,12 @@ pub unsafe fn _mm_mask_sqrt_round_ss(
 #[cfg_attr(test, assert_instr(vsqrtss, rounding = 8))]
 #[rustc_args_required_const(3)]
 pub unsafe fn _mm_maskz_sqrt_round_ss(k: __mmask8, a: __m128, b: __m128, rounding: i32) -> __m128 {
+    let a = a.as_f32x4();
+    let b = b.as_f32x4();
+    let zero = _mm_setzero_ps().as_f32x4();
     macro_rules! call {
         ($imm4:expr) => {
-            vsqrtss(
-                a.as_f32x4(),
-                b.as_f32x4(),
-                _mm_setzero_ps().as_f32x4(),
-                k,
-                $imm4,
-            )
+            vsqrtss(a, b, zero, k, $imm4)
         };
     }
     transmute(constify_imm4_round!(rounding, call))
@@ -29974,15 +29933,12 @@ pub unsafe fn _mm_maskz_sqrt_round_ss(k: __mmask8, a: __m128, b: __m128, roundin
 #[cfg_attr(test, assert_instr(vsqrtsd, rounding = 8))]
 #[rustc_args_required_const(2)]
 pub unsafe fn _mm_sqrt_round_sd(a: __m128d, b: __m128d, rounding: i32) -> __m128d {
+    let a = a.as_f64x2();
+    let b = b.as_f64x2();
+    let zero = _mm_setzero_pd().as_f64x2();
     macro_rules! call {
         ($imm4:expr) => {
-            vsqrtsd(
-                a.as_f64x2(),
-                b.as_f64x2(),
-                _mm_setzero_pd().as_f64x2(),
-                0b1,
-                $imm4,
-            )
+            vsqrtsd(a, b, zero, 0b1, $imm4)
         };
     }
     transmute(constify_imm4_round!(rounding, call))
@@ -30009,9 +29965,12 @@ pub unsafe fn _mm_mask_sqrt_round_sd(
     b: __m128d,
     rounding: i32,
 ) -> __m128d {
+    let a = a.as_f64x2();
+    let b = b.as_f64x2();
+    let src = src.as_f64x2();
     macro_rules! call {
         ($imm4:expr) => {
-            vsqrtsd(a.as_f64x2(), b.as_f64x2(), src.as_f64x2(), k, $imm4)
+            vsqrtsd(a, b, src, k, $imm4)
         };
     }
     transmute(constify_imm4_round!(rounding, call))
@@ -30037,15 +29996,12 @@ pub unsafe fn _mm_maskz_sqrt_round_sd(
     b: __m128d,
     rounding: i32,
 ) -> __m128d {
+    let a = a.as_f64x2();
+    let b = b.as_f64x2();
+    let zero = _mm_setzero_pd().as_f64x2();
     macro_rules! call {
         ($imm4:expr) => {
-            vsqrtsd(
-                a.as_f64x2(),
-                b.as_f64x2(),
-                _mm_setzero_pd().as_f64x2(),
-                k,
-                $imm4,
-            )
+            vsqrtsd(a, b, zero, k, $imm4)
         };
     }
     transmute(constify_imm4_round!(rounding, call))
@@ -30060,15 +30016,12 @@ pub unsafe fn _mm_maskz_sqrt_round_sd(
 #[cfg_attr(test, assert_instr(vgetexpss, sae = 8))]
 #[rustc_args_required_const(2)]
 pub unsafe fn _mm_getexp_round_ss(a: __m128, b: __m128, sae: i32) -> __m128 {
+    let a = a.as_f32x4();
+    let b = b.as_f32x4();
+    let zero = _mm_setzero_ps().as_f32x4();
     macro_rules! call {
         ($imm4:expr) => {
-            vgetexpss(
-                a.as_f32x4(),
-                b.as_f32x4(),
-                _mm_setzero_ps().as_f32x4(),
-                0b1,
-                $imm4,
-            )
+            vgetexpss(a, b, zero, 0b1, $imm4)
         };
     }
     let r = constify_imm4_sae!(sae, call);
@@ -30090,9 +30043,12 @@ pub unsafe fn _mm_mask_getexp_round_ss(
     b: __m128,
     sae: i32,
 ) -> __m128 {
+    let a = a.as_f32x4();
+    let b = b.as_f32x4();
+    let src = src.as_f32x4();
     macro_rules! call {
         ($imm4:expr) => {
-            vgetexpss(a.as_f32x4(), b.as_f32x4(), src.as_f32x4(), k, $imm4)
+            vgetexpss(a, b, src, k, $imm4)
         };
     }
     let r = constify_imm4_sae!(sae, call);
@@ -30108,15 +30064,12 @@ pub unsafe fn _mm_mask_getexp_round_ss(
 #[cfg_attr(test, assert_instr(vgetexpss, sae = 8))]
 #[rustc_args_required_const(3)]
 pub unsafe fn _mm_maskz_getexp_round_ss(k: __mmask8, a: __m128, b: __m128, sae: i32) -> __m128 {
+    let a = a.as_f32x4();
+    let b = b.as_f32x4();
+    let zero = _mm_setzero_ps().as_f32x4();
     macro_rules! call {
         ($imm4:expr) => {
-            vgetexpss(
-                a.as_f32x4(),
-                b.as_f32x4(),
-                _mm_setzero_ps().as_f32x4(),
-                k,
-                $imm4,
-            )
+            vgetexpss(a, b, zero, k, $imm4)
         };
     }
     let r = constify_imm4_sae!(sae, call);
@@ -30132,15 +30085,12 @@ pub unsafe fn _mm_maskz_getexp_round_ss(k: __mmask8, a: __m128, b: __m128, sae: 
 #[cfg_attr(test, assert_instr(vgetexpsd, sae = 8))]
 #[rustc_args_required_const(2)]
 pub unsafe fn _mm_getexp_round_sd(a: __m128d, b: __m128d, sae: i32) -> __m128d {
+    let a = a.as_f64x2();
+    let b = b.as_f64x2();
+    let zero = _mm_setzero_pd().as_f64x2();
     macro_rules! call {
         ($imm4:expr) => {
-            vgetexpsd(
-                a.as_f64x2(),
-                b.as_f64x2(),
-                _mm_setzero_pd().as_f64x2(),
-                0b1,
-                $imm4,
-            )
+            vgetexpsd(a, b, zero, 0b1, $imm4)
         };
     }
     let r = constify_imm4_sae!(sae, call);
@@ -30162,9 +30112,12 @@ pub unsafe fn _mm_mask_getexp_round_sd(
     b: __m128d,
     sae: i32,
 ) -> __m128d {
+    let a = a.as_f64x2();
+    let b = b.as_f64x2();
+    let src = src.as_f64x2();
     macro_rules! call {
         ($imm4:expr) => {
-            vgetexpsd(a.as_f64x2(), b.as_f64x2(), src.as_f64x2(), k, $imm4)
+            vgetexpsd(a, b, src, k, $imm4)
         };
     }
     let r = constify_imm4_sae!(sae, call);
@@ -30180,15 +30133,12 @@ pub unsafe fn _mm_mask_getexp_round_sd(
 #[cfg_attr(test, assert_instr(vgetexpsd, sae = 8))]
 #[rustc_args_required_const(3)]
 pub unsafe fn _mm_maskz_getexp_round_sd(k: __mmask8, a: __m128d, b: __m128d, sae: i32) -> __m128d {
+    let a = a.as_f64x2();
+    let b = b.as_f64x2();
+    let zero = _mm_setzero_pd().as_f64x2();
     macro_rules! call {
         ($imm4:expr) => {
-            vgetexpsd(
-                a.as_f64x2(),
-                b.as_f64x2(),
-                _mm_setzero_pd().as_f64x2(),
-                k,
-                $imm4,
-            )
+            vgetexpsd(a, b, zero, k, $imm4)
         };
     }
     let r = constify_imm4_sae!(sae, call);
@@ -30219,16 +30169,12 @@ pub unsafe fn _mm_getmant_round_ss(
     sign: _MM_MANTISSA_SIGN_ENUM,
     sae: i32,
 ) -> __m128 {
+    let a = a.as_f32x4();
+    let b = b.as_f32x4();
+    let zero = _mm_setzero_ps().as_f32x4();
     macro_rules! call {
         ($imm4_1:expr, $imm2:expr, $imm4_2:expr) => {
-            vgetmantss(
-                a.as_f32x4(),
-                b.as_f32x4(),
-                $imm2 << 2 | $imm4_1,
-                _mm_setzero_ps().as_f32x4(),
-                0b1,
-                $imm4_2,
-            )
+            vgetmantss(a, b, $imm2 << 2 | $imm4_1, zero, 0b1, $imm4_2)
         };
     }
     let r = constify_imm4_mantissas_sae!(norm, sign, sae, call);
@@ -30261,16 +30207,12 @@ pub unsafe fn _mm_mask_getmant_round_ss(
     sign: _MM_MANTISSA_SIGN_ENUM,
     sae: i32,
 ) -> __m128 {
+    let a = a.as_f32x4();
+    let b = b.as_f32x4();
+    let src = src.as_f32x4();
     macro_rules! call {
         ($imm4_1:expr, $imm2:expr, $imm4_2:expr) => {
-            vgetmantss(
-                a.as_f32x4(),
-                b.as_f32x4(),
-                $imm2 << 2 | $imm4_1,
-                src.as_f32x4(),
-                k,
-                $imm4_2,
-            )
+            vgetmantss(a, b, $imm2 << 2 | $imm4_1, src, k, $imm4_2)
         };
     }
     let r = constify_imm4_mantissas_sae!(norm, sign, sae, call);
@@ -30302,16 +30244,12 @@ pub unsafe fn _mm_maskz_getmant_round_ss(
     sign: _MM_MANTISSA_SIGN_ENUM,
     sae: i32,
 ) -> __m128 {
+    let a = a.as_f32x4();
+    let b = b.as_f32x4();
+    let zero = _mm_setzero_ps().as_f32x4();
     macro_rules! call {
         ($imm4_1:expr, $imm2:expr, $imm4_2:expr) => {
-            vgetmantss(
-                a.as_f32x4(),
-                b.as_f32x4(),
-                $imm2 << 2 | $imm4_1,
-                _mm_setzero_ps().as_f32x4(),
-                k,
-                $imm4_2,
-            )
+            vgetmantss(a, b, $imm2 << 2 | $imm4_1, zero, k, $imm4_2)
         };
     }
     let r = constify_imm4_mantissas_sae!(norm, sign, sae, call);
@@ -30342,16 +30280,12 @@ pub unsafe fn _mm_getmant_round_sd(
     sign: _MM_MANTISSA_SIGN_ENUM,
     sae: i32,
 ) -> __m128d {
+    let a = a.as_f64x2();
+    let b = b.as_f64x2();
+    let zero = _mm_setzero_pd().as_f64x2();
     macro_rules! call {
         ($imm4_1:expr, $imm2:expr, $imm4_2:expr) => {
-            vgetmantsd(
-                a.as_f64x2(),
-                b.as_f64x2(),
-                $imm2 << 2 | $imm4_1,
-                _mm_setzero_pd().as_f64x2(),
-                0b1,
-                $imm4_2,
-            )
+            vgetmantsd(a, b, $imm2 << 2 | $imm4_1, zero, 0b1, $imm4_2)
         };
     }
     let r = constify_imm4_mantissas_sae!(norm, sign, sae, call);
@@ -30384,16 +30318,12 @@ pub unsafe fn _mm_mask_getmant_round_sd(
     sign: _MM_MANTISSA_SIGN_ENUM,
     sae: i32,
 ) -> __m128d {
+    let a = a.as_f64x2();
+    let b = b.as_f64x2();
+    let src = src.as_f64x2();
     macro_rules! call {
         ($imm4_1:expr, $imm2:expr, $imm4_2:expr) => {
-            vgetmantsd(
-                a.as_f64x2(),
-                b.as_f64x2(),
-                $imm2 << 2 | $imm4_1,
-                src.as_f64x2(),
-                k,
-                $imm4_2,
-            )
+            vgetmantsd(a, b, $imm2 << 2 | $imm4_1, src, k, $imm4_2)
         };
     }
     let r = constify_imm4_mantissas_sae!(norm, sign, sae, call);
@@ -30425,16 +30355,12 @@ pub unsafe fn _mm_maskz_getmant_round_sd(
     sign: _MM_MANTISSA_SIGN_ENUM,
     sae: i32,
 ) -> __m128d {
+    let a = a.as_f64x2();
+    let b = b.as_f64x2();
+    let zero = _mm_setzero_pd().as_f64x2();
     macro_rules! call {
         ($imm4_1:expr, $imm2:expr, $imm4_2:expr) => {
-            vgetmantsd(
-                a.as_f64x2(),
-                b.as_f64x2(),
-                $imm2 << 2 | $imm4_1,
-                _mm_setzero_pd().as_f64x2(),
-                k,
-                $imm4_2,
-            )
+            vgetmantsd(a, b, $imm2 << 2 | $imm4_1, zero, k, $imm4_2)
         };
     }
     let r = constify_imm4_mantissas_sae!(norm, sign, sae, call);
@@ -30677,9 +30603,12 @@ pub unsafe fn _mm_mask_scalef_round_ss(
     b: __m128,
     rounding: i32,
 ) -> __m128 {
+    let a = a.as_f32x4();
+    let b = b.as_f32x4();
+    let src = src.as_f32x4();
     macro_rules! call {
         ($imm4:expr) => {
-            vscalefss(a.as_f32x4(), b.as_f32x4(), src.as_f32x4(), k, $imm4)
+            vscalefss(a, b, src, k, $imm4)
         };
     }
     let r = constify_imm4_round!(rounding, call);
@@ -30706,15 +30635,12 @@ pub unsafe fn _mm_maskz_scalef_round_ss(
     b: __m128,
     rounding: i32,
 ) -> __m128 {
+    let a = a.as_f32x4();
+    let b = b.as_f32x4();
+    let zero = _mm_setzero_ps().as_f32x4();
     macro_rules! call {
         ($imm4:expr) => {
-            vscalefss(
-                a.as_f32x4(),
-                b.as_f32x4(),
-                _mm_setzero_ps().as_f32x4(),
-                k,
-                $imm4,
-            )
+            vscalefss(a, b, zero, k, $imm4)
         };
     }
     let r = constify_imm4_round!(rounding, call);
@@ -30736,15 +30662,12 @@ pub unsafe fn _mm_maskz_scalef_round_ss(
 #[cfg_attr(test, assert_instr(vscalefsd, rounding = 8))]
 #[rustc_args_required_const(2)]
 pub unsafe fn _mm_scalef_round_sd(a: __m128d, b: __m128d, rounding: i32) -> __m128d {
+    let a = a.as_f64x2();
+    let b = b.as_f64x2();
+    let zero = _mm_setzero_pd().as_f64x2();
     macro_rules! call {
         ($imm4:expr) => {
-            vscalefsd(
-                a.as_f64x2(),
-                b.as_f64x2(),
-                _mm_setzero_pd().as_f64x2(),
-                0b11111111,
-                $imm4,
-            )
+            vscalefsd(a, b, zero, 0b11111111, $imm4)
         };
     }
     let r = constify_imm4_round!(rounding, call);
@@ -30772,9 +30695,12 @@ pub unsafe fn _mm_mask_scalef_round_sd(
     b: __m128d,
     rounding: i32,
 ) -> __m128d {
+    let a = a.as_f64x2();
+    let b = b.as_f64x2();
+    let src = src.as_f64x2();
     macro_rules! call {
         ($imm4:expr) => {
-            vscalefsd(a.as_f64x2(), b.as_f64x2(), src.as_f64x2(), k, $imm4)
+            vscalefsd(a, b, src, k, $imm4)
         };
     }
     let r = constify_imm4_round!(rounding, call);
@@ -30801,15 +30727,12 @@ pub unsafe fn _mm_maskz_scalef_round_sd(
     b: __m128d,
     rounding: i32,
 ) -> __m128d {
+    let a = a.as_f64x2();
+    let b = b.as_f64x2();
+    let zero = _mm_setzero_pd().as_f64x2();
     macro_rules! call {
         ($imm4:expr) => {
-            vscalefsd(
-                a.as_f64x2(),
-                b.as_f64x2(),
-                _mm_setzero_pd().as_f64x2(),
-                k,
-                $imm4,
-            )
+            vscalefsd(a, b, zero, k, $imm4)
         };
     }
     let r = constify_imm4_round!(rounding, call);
@@ -32381,9 +32304,12 @@ pub unsafe fn _mm_mask_cvt_roundss_sd(
     b: __m128,
     sae: i32,
 ) -> __m128d {
+    let a = a.as_f64x2();
+    let b = b.as_f32x4();
+    let src = src.as_f64x2();
     macro_rules! call {
         ($imm4:expr) => {
-            vcvtss2sd(a.as_f64x2(), b.as_f32x4(), src.as_f64x2(), k, $imm4)
+            vcvtss2sd(a, b, src, k, $imm4)
         };
     }
     let r = constify_imm4_sae!(sae, call);
@@ -32399,15 +32325,12 @@ pub unsafe fn _mm_mask_cvt_roundss_sd(
 #[cfg_attr(test, assert_instr(vcvtss2sd, sae = 8))]
 #[rustc_args_required_const(3)]
 pub unsafe fn _mm_maskz_cvt_roundss_sd(k: __mmask8, a: __m128d, b: __m128, sae: i32) -> __m128d {
+    let a = a.as_f64x2();
+    let b = b.as_f32x4();
+    let zero = _mm_setzero_pd().as_f64x2();
     macro_rules! call {
         ($imm4:expr) => {
-            vcvtss2sd(
-                a.as_f64x2(),
-                b.as_f32x4(),
-                _mm_setzero_pd().as_f64x2(),
-                k,
-                $imm4,
-            )
+            vcvtss2sd(a, b, zero, k, $imm4)
         };
     }
     let r = constify_imm4_sae!(sae, call);
@@ -32429,15 +32352,12 @@ pub unsafe fn _mm_maskz_cvt_roundss_sd(k: __mmask8, a: __m128d, b: __m128, sae: 
 #[cfg_attr(test, assert_instr(vcvtsd2ss, rounding = 8))]
 #[rustc_args_required_const(2)]
 pub unsafe fn _mm_cvt_roundsd_ss(a: __m128, b: __m128d, rounding: i32) -> __m128 {
+    let a = a.as_f32x4();
+    let b = b.as_f64x2();
+    let zero = _mm_setzero_ps().as_f32x4();
     macro_rules! call {
         ($imm4:expr) => {
-            vcvtsd2ss(
-                a.as_f32x4(),
-                b.as_f64x2(),
-                _mm_setzero_ps().as_f32x4(),
-                0b11111111,
-                $imm4,
-            )
+            vcvtsd2ss(a, b, zero, 0b11111111, $imm4)
         };
     }
     let r = constify_imm4_round!(rounding, call);
@@ -32465,9 +32385,12 @@ pub unsafe fn _mm_mask_cvt_roundsd_ss(
     b: __m128d,
     rounding: i32,
 ) -> __m128 {
+    let a = a.as_f32x4();
+    let b = b.as_f64x2();
+    let src = src.as_f32x4();
     macro_rules! call {
         ($imm4:expr) => {
-            vcvtsd2ss(a.as_f32x4(), b.as_f64x2(), src.as_f32x4(), k, $imm4)
+            vcvtsd2ss(a, b, src, k, $imm4)
         };
     }
     let r = constify_imm4_round!(rounding, call);
@@ -32494,15 +32417,12 @@ pub unsafe fn _mm_maskz_cvt_roundsd_ss(
     b: __m128d,
     rounding: i32,
 ) -> __m128 {
+    let a = a.as_f32x4();
+    let b = b.as_f64x2();
+    let zero = _mm_setzero_ps().as_f32x4();
     macro_rules! call {
         ($imm4:expr) => {
-            vcvtsd2ss(
-                a.as_f32x4(),
-                b.as_f64x2(),
-                _mm_setzero_ps().as_f32x4(),
-                k,
-                $imm4,
-            )
+            vcvtsd2ss(a, b, zero, k, $imm4)
         };
     }
     let r = constify_imm4_round!(rounding, call);
@@ -32524,9 +32444,10 @@ pub unsafe fn _mm_maskz_cvt_roundsd_ss(
 #[cfg_attr(test, assert_instr(vcvtss2si, rounding = 8))]
 #[rustc_args_required_const(1)]
 pub unsafe fn _mm_cvt_roundss_si32(a: __m128, rounding: i32) -> i32 {
+    let a = a.as_f32x4();
     macro_rules! call {
         ($imm4:expr) => {
-            vcvtss2si(a.as_f32x4(), $imm4)
+            vcvtss2si(a, $imm4)
         };
     }
     let r = constify_imm4_round!(rounding, call);
@@ -32548,9 +32469,10 @@ pub unsafe fn _mm_cvt_roundss_si32(a: __m128, rounding: i32) -> i32 {
 #[cfg_attr(test, assert_instr(vcvtss2si, rounding = 8))]
 #[rustc_args_required_const(1)]
 pub unsafe fn _mm_cvt_roundss_i32(a: __m128, rounding: i32) -> i32 {
+    let a = a.as_f32x4();
     macro_rules! call {
         ($imm4:expr) => {
-            vcvtss2si(a.as_f32x4(), $imm4)
+            vcvtss2si(a, $imm4)
         };
     }
     let r = constify_imm4_round!(rounding, call);
@@ -32572,9 +32494,10 @@ pub unsafe fn _mm_cvt_roundss_i32(a: __m128, rounding: i32) -> i32 {
 #[cfg_attr(test, assert_instr(vcvtss2usi, rounding = 8))]
 #[rustc_args_required_const(1)]
 pub unsafe fn _mm_cvt_roundss_u32(a: __m128, rounding: i32) -> u32 {
+    let a = a.as_f32x4();
     macro_rules! call {
         ($imm4:expr) => {
-            vcvtss2usi(a.as_f32x4(), $imm4)
+            vcvtss2usi(a, $imm4)
         };
     }
     let r = constify_imm4_round!(rounding, call);
@@ -32616,9 +32539,10 @@ pub unsafe fn _mm_cvtss_u32(a: __m128) -> u32 {
 #[cfg_attr(test, assert_instr(vcvtsd2si, rounding = 8))]
 #[rustc_args_required_const(1)]
 pub unsafe fn _mm_cvt_roundsd_si32(a: __m128d, rounding: i32) -> i32 {
+    let a = a.as_f64x2();
     macro_rules! call {
         ($imm4:expr) => {
-            vcvtsd2si(a.as_f64x2(), $imm4)
+            vcvtsd2si(a, $imm4)
         };
     }
     let r = constify_imm4_round!(rounding, call);
@@ -32640,9 +32564,10 @@ pub unsafe fn _mm_cvt_roundsd_si32(a: __m128d, rounding: i32) -> i32 {
 #[cfg_attr(test, assert_instr(vcvtsd2si, rounding = 8))]
 #[rustc_args_required_const(1)]
 pub unsafe fn _mm_cvt_roundsd_i32(a: __m128d, rounding: i32) -> i32 {
+    let a = a.as_f64x2();
     macro_rules! call {
         ($imm4:expr) => {
-            vcvtsd2si(a.as_f64x2(), $imm4)
+            vcvtsd2si(a, $imm4)
         };
     }
     let r = constify_imm4_round!(rounding, call);
@@ -32664,9 +32589,10 @@ pub unsafe fn _mm_cvt_roundsd_i32(a: __m128d, rounding: i32) -> i32 {
 #[cfg_attr(test, assert_instr(vcvtsd2usi, rounding = 8))]
 #[rustc_args_required_const(1)]
 pub unsafe fn _mm_cvt_roundsd_u32(a: __m128d, rounding: i32) -> u32 {
+    let a = a.as_f64x2();
     macro_rules! call {
         ($imm4:expr) => {
-            vcvtsd2usi(a.as_f64x2(), $imm4)
+            vcvtsd2usi(a, $imm4)
         };
     }
     let r = constify_imm4_round!(rounding, call);
@@ -32708,9 +32634,10 @@ pub unsafe fn _mm_cvtsd_u32(a: __m128d) -> u32 {
 #[cfg_attr(test, assert_instr(vcvtsi2ss, rounding = 8))]
 #[rustc_args_required_const(2)]
 pub unsafe fn _mm_cvt_roundi32_ss(a: __m128, b: i32, rounding: i32) -> __m128 {
+    let a = a.as_f32x4();
     macro_rules! call {
         ($imm4:expr) => {
-            vcvtsi2ss(a.as_f32x4(), b, $imm4)
+            vcvtsi2ss(a, b, $imm4)
         };
     }
     let r = constify_imm4_round!(rounding, call);
@@ -32732,9 +32659,10 @@ pub unsafe fn _mm_cvt_roundi32_ss(a: __m128, b: i32, rounding: i32) -> __m128 {
 #[cfg_attr(test, assert_instr(vcvtsi2ss, rounding = 8))]
 #[rustc_args_required_const(2)]
 pub unsafe fn _mm_cvt_roundsi32_ss(a: __m128, b: i32, rounding: i32) -> __m128 {
+    let a = a.as_f32x4();
     macro_rules! call {
         ($imm4:expr) => {
-            vcvtsi2ss(a.as_f32x4(), b, $imm4)
+            vcvtsi2ss(a, b, $imm4)
         };
     }
     let r = constify_imm4_round!(rounding, call);
@@ -32756,9 +32684,10 @@ pub unsafe fn _mm_cvt_roundsi32_ss(a: __m128, b: i32, rounding: i32) -> __m128 {
 #[cfg_attr(test, assert_instr(vcvtusi2ss, rounding = 8))]
 #[rustc_args_required_const(2)]
 pub unsafe fn _mm_cvt_roundu32_ss(a: __m128, b: u32, rounding: i32) -> __m128 {
+    let a = a.as_f32x4();
     macro_rules! call {
         ($imm4:expr) => {
-            vcvtusi2ss(a.as_f32x4(), b, $imm4)
+            vcvtusi2ss(a, b, $imm4)
         };
     }
     let r = constify_imm4_round!(rounding, call);
@@ -32798,9 +32727,10 @@ pub unsafe fn _mm_cvti32_sd(a: __m128d, b: i32) -> __m128d {
 #[cfg_attr(test, assert_instr(vcvtss2si, sae = 8))]
 #[rustc_args_required_const(1)]
 pub unsafe fn _mm_cvtt_roundss_si32(a: __m128, sae: i32) -> i32 {
+    let a = a.as_f32x4();
     macro_rules! call {
         ($imm4:expr) => {
-            vcvtss2si(a.as_f32x4(), $imm4)
+            vcvtss2si(a, $imm4)
         };
     }
     let r = constify_imm4_sae!(sae, call);
@@ -32816,9 +32746,10 @@ pub unsafe fn _mm_cvtt_roundss_si32(a: __m128, sae: i32) -> i32 {
 #[cfg_attr(test, assert_instr(vcvtss2si, sae = 8))]
 #[rustc_args_required_const(1)]
 pub unsafe fn _mm_cvtt_roundss_i32(a: __m128, sae: i32) -> i32 {
+    let a = a.as_f32x4();
     macro_rules! call {
         ($imm4:expr) => {
-            vcvtss2si(a.as_f32x4(), $imm4)
+            vcvtss2si(a, $imm4)
         };
     }
     let r = constify_imm4_sae!(sae, call);
@@ -32834,9 +32765,10 @@ pub unsafe fn _mm_cvtt_roundss_i32(a: __m128, sae: i32) -> i32 {
 #[cfg_attr(test, assert_instr(vcvtss2usi, sae = 8))]
 #[rustc_args_required_const(1)]
 pub unsafe fn _mm_cvtt_roundss_u32(a: __m128, sae: i32) -> u32 {
+    let a = a.as_f32x4();
     macro_rules! call {
         ($imm4:expr) => {
-            vcvtss2usi(a.as_f32x4(), $imm4)
+            vcvtss2usi(a, $imm4)
         };
     }
     let r = constify_imm4_sae!(sae, call);
@@ -32872,9 +32804,10 @@ pub unsafe fn _mm_cvttss_u32(a: __m128) -> u32 {
 #[cfg_attr(test, assert_instr(vcvtsd2si, sae = 8))]
 #[rustc_args_required_const(1)]
 pub unsafe fn _mm_cvtt_roundsd_si32(a: __m128d, sae: i32) -> i32 {
+    let a = a.as_f64x2();
     macro_rules! call {
         ($imm4:expr) => {
-            vcvtsd2si(a.as_f64x2(), $imm4)
+            vcvtsd2si(a, $imm4)
         };
     }
     let r = constify_imm4_sae!(sae, call);
@@ -32890,9 +32823,10 @@ pub unsafe fn _mm_cvtt_roundsd_si32(a: __m128d, sae: i32) -> i32 {
 #[cfg_attr(test, assert_instr(vcvtsd2si, sae = 8))]
 #[rustc_args_required_const(1)]
 pub unsafe fn _mm_cvtt_roundsd_i32(a: __m128d, sae: i32) -> i32 {
+    let a = a.as_f64x2();
     macro_rules! call {
         ($imm4:expr) => {
-            vcvtsd2si(a.as_f64x2(), $imm4)
+            vcvtsd2si(a, $imm4)
         };
     }
     let r = constify_imm4_sae!(sae, call);
@@ -32908,9 +32842,10 @@ pub unsafe fn _mm_cvtt_roundsd_i32(a: __m128d, sae: i32) -> i32 {
 #[cfg_attr(test, assert_instr(vcvtsd2usi, sae = 8))]
 #[rustc_args_required_const(1)]
 pub unsafe fn _mm_cvtt_roundsd_u32(a: __m128d, sae: i32) -> u32 {
+    let a = a.as_f64x2();
     macro_rules! call {
         ($imm4:expr) => {
-            vcvtsd2usi(a.as_f64x2(), $imm4)
+            vcvtsd2usi(a, $imm4)
         };
     }
     let r = constify_imm4_sae!(sae, call);
@@ -32994,9 +32929,11 @@ pub unsafe fn _mm_cvtu64_sd(a: __m128d, b: u64) -> __m128d {
 #[cfg_attr(test, assert_instr(vcmp, imm8 = 5, sae = 4))] //should be vcomiss
 #[rustc_args_required_const(2, 3)]
 pub unsafe fn _mm_comi_round_ss(a: __m128, b: __m128, imm8: i32, sae: i32) -> i32 {
+    let a = a.as_f32x4();
+    let b = b.as_f32x4();
     macro_rules! call {
         ($imm8:expr, $imm4:expr) => {
-            vcomiss(a.as_f32x4(), b.as_f32x4(), $imm8, $imm4)
+            vcomiss(a, b, $imm8, $imm4)
         };
     }
     let r = constify_imm5_sae!(imm8, sae, call);
@@ -33012,9 +32949,11 @@ pub unsafe fn _mm_comi_round_ss(a: __m128, b: __m128, imm8: i32, sae: i32) -> i3
 #[cfg_attr(test, assert_instr(vcmp, imm8 = 5, sae = 4))] //should be vcomisd
 #[rustc_args_required_const(2, 3)]
 pub unsafe fn _mm_comi_round_sd(a: __m128d, b: __m128d, imm8: i32, sae: i32) -> i32 {
+    let a = a.as_f64x2();
+    let b = b.as_f64x2();
     macro_rules! call {
         ($imm8:expr, $imm4:expr) => {
-            vcomisd(a.as_f64x2(), b.as_f64x2(), $imm8, $imm4)
+            vcomisd(a, b, $imm8, $imm4)
         };
     }
     let r = constify_imm5_sae!(imm8, sae, call);
