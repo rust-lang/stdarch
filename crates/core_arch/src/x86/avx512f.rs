@@ -17173,20 +17173,76 @@ pub unsafe fn _mm_maskz_srlv_epi64(k: __mmask8, a: __m128i, count: __m128i) -> _
 
 /// Shuffle single-precision (32-bit) floating-point elements in a within 128-bit lanes using the control in imm8, and store the results in dst.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_permute_ps&expand=4170)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_permute_ps&expand=4170)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpermilps, imm8 = 1))]
 #[rustc_args_required_const(1)]
 pub unsafe fn _mm512_permute_ps(a: __m512, imm8: i32) -> __m512 {
-    let a = a.as_f32x16();
-    macro_rules! call {
-        ($imm8:expr) => {
-            vpermilps(a, _mm512_set1_epi32($imm8).as_i32x16())
+    let imm8 = (imm8 & 0xFF) as u8;
+    let undefined = _mm512_undefined_ps();
+    macro_rules! shuffle4 {
+        ($a:expr, $b:expr, $c:expr, $d:expr) => {
+            simd_shuffle16(
+                a,
+                undefined,
+                [
+                    $a,
+                    $b,
+                    $c,
+                    $d,
+                    $a + 4,
+                    $b + 4,
+                    $c + 4,
+                    $d + 4,
+                    $a + 8,
+                    $b + 8,
+                    $c + 8,
+                    $d + 8,
+                    $a + 12,
+                    $b + 12,
+                    $c + 12,
+                    $d + 12,
+                ],
+            )
         };
     }
-    let r = constify_imm8_sae!(imm8, call);
-    transmute(r)
+    macro_rules! shuffle3 {
+        ($a:expr, $b:expr, $c:expr) => {
+            match (imm8 >> 6) & 0b11 {
+                0b00 => shuffle4!($a, $b, $c, 0),
+                0b01 => shuffle4!($a, $b, $c, 1),
+                0b10 => shuffle4!($a, $b, $c, 2),
+                _ => shuffle4!($a, $b, $c, 3),
+            }
+        };
+    }
+    macro_rules! shuffle2 {
+        ($a:expr, $b:expr) => {
+            match (imm8 >> 4) & 0b11 {
+                0b00 => shuffle3!($a, $b, 0),
+                0b01 => shuffle3!($a, $b, 1),
+                0b10 => shuffle3!($a, $b, 2),
+                _ => shuffle3!($a, $b, 3),
+            }
+        };
+    }
+    macro_rules! shuffle1 {
+        ($a:expr) => {
+            match (imm8 >> 2) & 0b11 {
+                0b00 => shuffle2!($a, 0),
+                0b01 => shuffle2!($a, 1),
+                0b10 => shuffle2!($a, 2),
+                _ => shuffle2!($a, 3),
+            }
+        };
+    }
+    match imm8 & 0b11 {
+        0b00 => shuffle1!(0),
+        0b01 => shuffle1!(1),
+        0b10 => shuffle1!(2),
+        _ => shuffle1!(3),
+    }
 }
 
 /// Shuffle single-precision (32-bit) floating-point elements in a within 128-bit lanes using the control in imm8, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
@@ -17197,14 +17253,13 @@ pub unsafe fn _mm512_permute_ps(a: __m512, imm8: i32) -> __m512 {
 #[cfg_attr(test, assert_instr(vpermilps, imm8 = 1))]
 #[rustc_args_required_const(3)]
 pub unsafe fn _mm512_mask_permute_ps(src: __m512, k: __mmask16, a: __m512, imm8: i32) -> __m512 {
-    let a = a.as_f32x16();
     macro_rules! call {
         ($imm8:expr) => {
-            vpermilps(a, _mm512_set1_epi32($imm8).as_i32x16())
+            _mm512_permute_ps(a, $imm8)
         };
     }
-    let permute = constify_imm8_sae!(imm8, call);
-    transmute(simd_select_bitmask(k, permute, src.as_f32x16()))
+    let r = constify_imm8_sae!(imm8, call);
+    transmute(simd_select_bitmask(k, r.as_f32x16(), src.as_f32x16()))
 }
 
 /// Shuffle single-precision (32-bit) floating-point elements in a within 128-bit lanes using the control in imm8, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
@@ -17215,15 +17270,49 @@ pub unsafe fn _mm512_mask_permute_ps(src: __m512, k: __mmask16, a: __m512, imm8:
 #[cfg_attr(test, assert_instr(vpermilps, imm8 = 1))]
 #[rustc_args_required_const(2)]
 pub unsafe fn _mm512_maskz_permute_ps(k: __mmask16, a: __m512, imm8: i32) -> __m512 {
-    let a = a.as_f32x16();
     macro_rules! call {
         ($imm8:expr) => {
-            vpermilps(a, _mm512_set1_epi32($imm8).as_i32x16())
+            _mm512_permute_ps(a, $imm8)
         };
     }
-    let permute = constify_imm8_sae!(imm8, call);
+    let r = constify_imm8_sae!(imm8, call);
     let zero = _mm512_setzero_ps().as_f32x16();
-    transmute(simd_select_bitmask(k, permute, zero))
+    transmute(simd_select_bitmask(k, r.as_f32x16(), zero))
+}
+
+/// Shuffle single-precision (32-bit) floating-point elements in a within 128-bit lanes using the control in imm8, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_permute_ps&expand=4165)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpermilps, imm8 = 1))]
+#[rustc_args_required_const(3)]
+pub unsafe fn _mm256_mask_permute_ps(src: __m256, k: __mmask8, a: __m256, imm8: i32) -> __m256 {
+    macro_rules! call {
+        ($imm8:expr) => {
+            _mm256_permute_ps(a, $imm8)
+        };
+    }
+    let r = constify_imm8_sae!(imm8, call);
+    transmute(simd_select_bitmask(k, r.as_f32x8(), src.as_f32x8()))
+}
+
+/// Shuffle single-precision (32-bit) floating-point elements in a within 128-bit lanes using the control in imm8, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_permute_ps&expand=4166)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpermilps, imm8 = 1))]
+#[rustc_args_required_const(2)]
+pub unsafe fn _mm256_maskz_permute_ps(k: __mmask8, a: __m256, imm8: i32) -> __m256 {
+    macro_rules! call {
+        ($imm8:expr) => {
+            _mm256_permute_ps(a, $imm8)
+        };
+    }
+    let r = constify_imm8_sae!(imm8, call);
+    let zero = _mm256_setzero_ps().as_f32x8();
+    transmute(simd_select_bitmask(k, r.as_f32x8(), zero))
 }
 
 /// Shuffle double-precision (64-bit) floating-point elements in a within 128-bit lanes using the control in imm8, and store the results in dst.
@@ -17234,14 +17323,45 @@ pub unsafe fn _mm512_maskz_permute_ps(k: __mmask16, a: __m512, imm8: i32) -> __m
 #[cfg_attr(test, assert_instr(vpermilpd, imm8 = 2))]
 #[rustc_args_required_const(1)]
 pub unsafe fn _mm512_permute_pd(a: __m512d, imm8: i32) -> __m512d {
-    let a = a.as_f64x8();
-    macro_rules! call {
-        ($imm8:expr) => {
-            vpermilpd(a, _mm512_set1_epi64($imm8).as_i64x8())
+    let imm8 = (imm8 & 0xFF) as u8;
+    let undefined = _mm512_undefined_pd();
+    macro_rules! shuffle4 {
+        ($a:expr, $b:expr, $c:expr, $d:expr) => {
+            simd_shuffle8(
+                a,
+                undefined,
+                [$a, $b, $c, $d, $a + 4, $b + 4, $c + 4, $d + 4],
+            )
         };
     }
-    let r = constify_imm8_sae!(imm8, call);
-    transmute(r)
+    macro_rules! shuffle3 {
+        ($a:expr, $b:expr, $c:expr) => {
+            match (imm8 >> 3) & 0x1 {
+                0 => shuffle4!($a, $b, $c, 2),
+                _ => shuffle4!($a, $b, $c, 3),
+            }
+        };
+    }
+    macro_rules! shuffle2 {
+        ($a:expr, $b:expr) => {
+            match (imm8 >> 2) & 0x1 {
+                0 => shuffle3!($a, $b, 2),
+                _ => shuffle3!($a, $b, 3),
+            }
+        };
+    }
+    macro_rules! shuffle1 {
+        ($a:expr) => {
+            match (imm8 >> 1) & 0x1 {
+                0 => shuffle2!($a, 0),
+                _ => shuffle2!($a, 1),
+            }
+        };
+    }
+    match imm8 & 0x1 {
+        0 => shuffle1!(0),
+        _ => shuffle1!(1),
+    }
 }
 
 /// Shuffle double-precision (64-bit) floating-point elements in a within 128-bit lanes using the control in imm8, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
@@ -17252,14 +17372,13 @@ pub unsafe fn _mm512_permute_pd(a: __m512d, imm8: i32) -> __m512d {
 #[cfg_attr(test, assert_instr(vpermilpd, imm8 = 2))]
 #[rustc_args_required_const(3)]
 pub unsafe fn _mm512_mask_permute_pd(src: __m512d, k: __mmask8, a: __m512d, imm8: i32) -> __m512d {
-    let a = a.as_f64x8();
     macro_rules! call {
         ($imm8:expr) => {
-            vpermilpd(a, _mm512_set1_epi64($imm8).as_i64x8())
+            _mm512_permute_pd(a, $imm8)
         };
     }
-    let permute = constify_imm8_sae!(imm8, call);
-    transmute(simd_select_bitmask(k, permute, src.as_f64x8()))
+    let r = constify_imm8_sae!(imm8, call);
+    transmute(simd_select_bitmask(k, r.as_f64x8(), src.as_f64x8()))
 }
 
 /// Shuffle double-precision (64-bit) floating-point elements in a within 128-bit lanes using the control in imm8, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
@@ -17270,15 +17389,14 @@ pub unsafe fn _mm512_mask_permute_pd(src: __m512d, k: __mmask8, a: __m512d, imm8
 #[cfg_attr(test, assert_instr(vpermilpd, imm8 = 2))]
 #[rustc_args_required_const(2)]
 pub unsafe fn _mm512_maskz_permute_pd(k: __mmask8, a: __m512d, imm8: i32) -> __m512d {
-    let a = a.as_f64x8();
     macro_rules! call {
         ($imm8:expr) => {
-            vpermilpd(a, _mm512_set1_epi64($imm8).as_i64x8())
+            _mm512_permute_pd(a, $imm8)
         };
     }
-    let permute = constify_imm8_sae!(imm8, call);
+    let r = constify_imm8_sae!(imm8, call);
     let zero = _mm512_setzero_pd().as_f64x8();
-    transmute(simd_select_bitmask(k, permute, zero))
+    transmute(simd_select_bitmask(k, r.as_f64x8(), zero))
 }
 
 /// Shuffle 64-bit integers in a within 256-bit lanes using the control in imm8, and store the results in dst.
@@ -17290,13 +17408,10 @@ pub unsafe fn _mm512_maskz_permute_pd(k: __mmask8, a: __m512d, imm8: i32) -> __m
 //shoud be vpermq, but generate vpermpd. It generates vpermq with mask. change to vbroadcast becaise CI Windows
 #[rustc_args_required_const(1)]
 pub unsafe fn _mm512_permutex_epi64(a: __m512i, imm8: i32) -> __m512i {
+    assert!(imm8 >= 0 && imm8 <= 255);
     let a = a.as_i64x8();
-    macro_rules! call {
-        ($imm8:expr) => {
-            vpermq(a, _mm512_set1_epi64($imm8).as_i64x8())
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+    let imm8 = _mm512_set1_epi64(imm8 as i64).as_i64x8();
+    let r = vpermq(a, imm8);
     transmute(r)
 }
 
@@ -17313,14 +17428,11 @@ pub unsafe fn _mm512_mask_permutex_epi64(
     a: __m512i,
     imm8: i32,
 ) -> __m512i {
+    assert!(imm8 >= 0 && imm8 <= 255);
     let a = a.as_i64x8();
-    macro_rules! call {
-        ($imm8:expr) => {
-            vpermq(a, _mm512_set1_epi64($imm8).as_i64x8())
-        };
-    }
-    let permute = constify_imm8_sae!(imm8, call);
-    transmute(simd_select_bitmask(k, permute, src.as_i64x8()))
+    let imm8 = _mm512_set1_epi64(imm8 as i64).as_i64x8();
+    let r = vpermq(a, imm8);
+    transmute(simd_select_bitmask(k, r, src.as_i64x8()))
 }
 
 /// Shuffle 64-bit integers in a within 256-bit lanes using the control in imm8, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
@@ -17331,15 +17443,12 @@ pub unsafe fn _mm512_mask_permutex_epi64(
 #[cfg_attr(test, assert_instr(vpbroadcast, imm8 = 0b11111111))] //shoud be vpermq. change to vpbroadcast becaise CI Windows
 #[rustc_args_required_const(2)]
 pub unsafe fn _mm512_maskz_permutex_epi64(k: __mmask8, a: __m512i, imm8: i32) -> __m512i {
+    assert!(imm8 >= 0 && imm8 <= 255);
     let a = a.as_i64x8();
-    macro_rules! call {
-        ($imm8:expr) => {
-            vpermq(a, _mm512_set1_epi64($imm8).as_i64x8())
-        };
-    }
-    let permute = constify_imm8_sae!(imm8, call);
+    let imm8 = _mm512_set1_epi64(imm8 as i64).as_i64x8();
+    let r = vpermq(a, imm8);
     let zero = _mm512_setzero_si512().as_i64x8();
-    transmute(simd_select_bitmask(k, permute, zero))
+    transmute(simd_select_bitmask(k, r, zero))
 }
 
 /// Shuffle double-precision (64-bit) floating-point elements in a within 256-bit lanes using the control in imm8, and store the results in dst.
@@ -17350,13 +17459,10 @@ pub unsafe fn _mm512_maskz_permutex_epi64(k: __mmask8, a: __m512i, imm8: i32) ->
 #[cfg_attr(test, assert_instr(vbroadcast, imm8 = 0b11111111))] //shoud be vpermpd. change to vbroadcast becaise CI Windows
 #[rustc_args_required_const(1)]
 pub unsafe fn _mm512_permutex_pd(a: __m512d, imm8: i32) -> __m512d {
+    assert!(imm8 >= 0 && imm8 <= 255);
     let a = a.as_f64x8();
-    macro_rules! call {
-        ($imm8:expr) => {
-            vpermpd(a, _mm512_set1_epi64($imm8).as_i64x8())
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+    let imm8 = _mm512_set1_epi64(imm8 as i64).as_i64x8();
+    let r = vpermpd(a, imm8);
     transmute(r)
 }
 
@@ -17368,14 +17474,11 @@ pub unsafe fn _mm512_permutex_pd(a: __m512d, imm8: i32) -> __m512d {
 #[cfg_attr(test, assert_instr(vbroadcast, imm8 = 0b11111111))] //shoud be vpermpd. change to vbroadcast becaise CI Windows
 #[rustc_args_required_const(3)]
 pub unsafe fn _mm512_mask_permutex_pd(src: __m512d, k: __mmask8, a: __m512d, imm8: i32) -> __m512d {
+    assert!(imm8 >= 0 && imm8 <= 255);
     let a = a.as_f64x8();
-    macro_rules! call {
-        ($imm8:expr) => {
-            vpermpd(a, _mm512_set1_epi64($imm8).as_i64x8())
-        };
-    }
-    let permute = constify_imm8_sae!(imm8, call);
-    transmute(simd_select_bitmask(k, permute, src.as_f64x8()))
+    let imm8 = _mm512_set1_epi64(imm8 as i64).as_i64x8();
+    let r = vpermpd(a, imm8);
+    transmute(simd_select_bitmask(k, r, src.as_f64x8()))
 }
 
 /// Shuffle double-precision (64-bit) floating-point elements in a within 256-bit lanes using the control in imm8, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
@@ -17386,15 +17489,12 @@ pub unsafe fn _mm512_mask_permutex_pd(src: __m512d, k: __mmask8, a: __m512d, imm
 #[cfg_attr(test, assert_instr(vbroadcast, imm8 = 0b11111111))] //shoud be vpermpd. change to vbroadcast becaise CI Windows
 #[rustc_args_required_const(2)]
 pub unsafe fn _mm512_maskz_permutex_pd(k: __mmask8, a: __m512d, imm8: i32) -> __m512d {
+    assert!(imm8 >= 0 && imm8 <= 255);
     let a = a.as_f64x8();
-    macro_rules! call {
-        ($imm8:expr) => {
-            vpermpd(a, _mm512_set1_epi64($imm8).as_i64x8())
-        };
-    }
-    let permute = constify_imm8_sae!(imm8, call);
+    let imm8 = _mm512_set1_epi64(imm8 as i64).as_i64x8();
+    let r = vpermpd(a, imm8);
     let zero = _mm512_setzero_pd().as_f64x8();
-    transmute(simd_select_bitmask(k, permute, zero))
+    transmute(simd_select_bitmask(k, r, zero))
 }
 
 /// Shuffle 32-bit integers in a across lanes using the corresponding index in idx, and store the results in dst. Note that this intrinsic shuffles across 128-bit lanes, unlike past intrinsics that use the permutevar name. This intrinsic is identical to _mm512_permutexvar_epi32, and it is recommended that you use that intrinsic name.
@@ -43264,42 +43364,62 @@ mod tests {
 
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_permute_ps() {
-        let a = _mm512_set_ps(
+        let a = _mm512_setr_ps(
             0., 1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15.,
         );
-        let r = _mm512_permute_ps(a, 1);
-        let e = _mm512_set_ps(
-            2., 2., 2., 2., 6., 6., 6., 6., 10., 10., 10., 10., 14., 14., 14., 14.,
+        let r = _mm512_permute_ps(a, 0b11111111);
+        let e = _mm512_setr_ps(
+            3., 3., 3., 3., 7., 7., 7., 7., 11., 11., 11., 11., 15., 15., 15., 15.,
         );
         assert_eq_m512(r, e);
     }
 
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_mask_permute_ps() {
-        let a = _mm512_set_ps(
+        let a = _mm512_setr_ps(
             0., 1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15.,
         );
-        let r = _mm512_mask_permute_ps(a, 0b00000000_00000000, a, 1);
+        let r = _mm512_mask_permute_ps(a, 0, a, 0b11111111);
         assert_eq_m512(r, a);
-        let r = _mm512_mask_permute_ps(a, 0b11111111_11111111, a, 1);
-        let e = _mm512_set_ps(
-            2., 2., 2., 2., 6., 6., 6., 6., 10., 10., 10., 10., 14., 14., 14., 14.,
+        let r = _mm512_mask_permute_ps(a, 0b11111111_11111111, a, 0b111111111);
+        let e = _mm512_setr_ps(
+            3., 3., 3., 3., 7., 7., 7., 7., 11., 11., 11., 11., 15., 15., 15., 15.,
         );
         assert_eq_m512(r, e);
     }
 
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_maskz_permute_ps() {
-        let a = _mm512_set_ps(
+        let a = _mm512_setr_ps(
             0., 1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15.,
         );
-        let r = _mm512_maskz_permute_ps(0, a, 1);
+        let r = _mm512_maskz_permute_ps(0, a, 0b11111111);
         assert_eq_m512(r, _mm512_setzero_ps());
-        let r = _mm512_maskz_permute_ps(0b00000000_11111111, a, 1);
-        let e = _mm512_set_ps(
-            0., 0., 0., 0., 0., 0., 0., 0., 10., 10., 10., 10., 14., 14., 14., 14.,
+        let r = _mm512_maskz_permute_ps(0b11111111_11111111, a, 0b11111111);
+        let e = _mm512_setr_ps(
+            3., 3., 3., 3., 7., 7., 7., 7., 11., 11., 11., 11., 15., 15., 15., 15.,
         );
         assert_eq_m512(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_mask_permute_ps() {
+        let a = _mm256_set_ps(0., 1., 2., 3., 4., 5., 6., 7.);
+        let r = _mm256_mask_permute_ps(a, 0, a, 0b11111111);
+        assert_eq_m256(r, a);
+        let r = _mm256_mask_permute_ps(a, 0b11111111, a, 0b11111111);
+        let e = _mm256_set_ps(0., 0., 0., 0., 4., 4., 4., 4.);
+        assert_eq_m256(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_maskz_permute_ps() {
+        let a = _mm256_set_ps(0., 1., 2., 3., 4., 5., 6., 7.);
+        let r = _mm256_maskz_permute_ps(0, a, 0b11111111);
+        assert_eq_m256(r, _mm256_setzero_ps());
+        let r = _mm256_maskz_permute_ps(0b11111111, a, 0b11111111);
+        let e = _mm256_set_ps(0., 0., 0., 0., 4., 4., 4., 4.);
+        assert_eq_m256(r, e);
     }
 
     #[simd_test(enable = "avx512f")]

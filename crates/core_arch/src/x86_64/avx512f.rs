@@ -7288,29 +7288,29 @@ mod tests {
 
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_permute_pd() {
-        let a = _mm512_set_pd(0., 1., 2., 3., 4., 5., 6., 7.);
-        let r = _mm512_permute_pd(a, 1);
-        let e = _mm512_set_pd(1., 1., 3., 3., 5., 5., 7., 7.);
+        let a = _mm512_setr_pd(0., 1., 2., 3., 4., 5., 6., 7.);
+        let r = _mm512_permute_pd(a, 0b1111);
+        let e = _mm512_setr_pd(1., 1., 3., 3., 5., 5., 7., 7.);
         assert_eq_m512d(r, e);
     }
 
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_mask_permute_pd() {
-        let a = _mm512_set_pd(0., 1., 2., 3., 4., 5., 6., 7.);
-        let r = _mm512_mask_permute_pd(a, 0, a, 1);
+        let a = _mm512_setr_pd(0., 1., 2., 3., 4., 5., 6., 7.);
+        let r = _mm512_mask_permute_pd(a, 0, a, 0b1111);
         assert_eq_m512d(r, a);
-        let r = _mm512_mask_permute_pd(a, 0b11111111, a, 1);
-        let e = _mm512_set_pd(1., 1., 3., 3., 5., 5., 7., 7.);
+        let r = _mm512_mask_permute_pd(a, 0b11111111, a, 0b1111);
+        let e = _mm512_setr_pd(1., 1., 3., 3., 5., 5., 7., 7.);
         assert_eq_m512d(r, e);
     }
 
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_maskz_permute_pd() {
-        let a = _mm512_set_pd(0., 1., 2., 3., 4., 5., 6., 7.);
-        let r = _mm512_maskz_permute_pd(0, a, 1);
+        let a = _mm512_setr_pd(0., 1., 2., 3., 4., 5., 6., 7.);
+        let r = _mm512_maskz_permute_pd(0, a, 0b1111);
         assert_eq_m512d(r, _mm512_setzero_pd());
-        let r = _mm512_maskz_permute_pd(0b00001111, a, 1);
-        let e = _mm512_set_pd(0., 0., 0., 0., 5., 5., 7., 7.);
+        let r = _mm512_maskz_permute_pd(0b11111111, a, 0b1111);
+        let e = _mm512_setr_pd(1., 1., 3., 3., 5., 5., 7., 7.);
         assert_eq_m512d(r, e);
     }
 
