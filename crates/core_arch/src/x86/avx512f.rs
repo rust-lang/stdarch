@@ -17454,11 +17454,6 @@ pub unsafe fn _mm512_permutex_epi64(a: __m512i, imm8: i32) -> __m512i {
         0b10 => shuffle1!(2),
         _ => shuffle1!(3),
     }
-    //assert!(imm8 >= 0 && imm8 <= 255);
-    //let a = a.as_i64x8();
-    //let imm8 = _mm512_set1_epi64(imm8 as i64).as_i64x8();
-    //let r = vpermq(a, imm8);
-    //transmute(r)
 }
 
 /// Shuffle 64-bit integers in a within 256-bit lanes using the control in imm8, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
@@ -17480,10 +17475,6 @@ pub unsafe fn _mm512_mask_permutex_epi64(
         };
     }
     let r = constify_imm8_sae!(imm8, call);
-    //assert!(imm8 >= 0 && imm8 <= 255);
-    //let a = a.as_i64x8();
-    //let imm8 = _mm512_set1_epi64(imm8 as i64).as_i64x8();
-    //let r = vpermq(a, imm8);
     transmute(simd_select_bitmask(k, r.as_i64x8(), src.as_i64x8()))
 }
 
@@ -17501,10 +17492,6 @@ pub unsafe fn _mm512_maskz_permutex_epi64(k: __mmask8, a: __m512i, imm8: i32) ->
         };
     }
     let r = constify_imm8_sae!(imm8, call);
-    //assert!(imm8 >= 0 && imm8 <= 255);
-    //let a = a.as_i64x8();
-    //let imm8 = _mm512_set1_epi64(imm8 as i64).as_i64x8();
-    //let r = vpermq(a, imm8);
     let zero = _mm512_setzero_si512().as_i64x8();
     transmute(simd_select_bitmask(k, r.as_i64x8(), zero))
 }
@@ -17564,11 +17551,6 @@ pub unsafe fn _mm512_permutex_pd(a: __m512d, imm8: i32) -> __m512d {
         0b10 => shuffle1!(2),
         _ => shuffle1!(3),
     }
-    //assert!(imm8 >= 0 && imm8 <= 255);
-    //let a = a.as_f64x8();
-    //let imm8 = _mm512_set1_epi64(imm8 as i64).as_i64x8();
-    //let r = vpermpd(a, imm8);
-    //transmute(r)
 }
 
 /// Shuffle double-precision (64-bit) floating-point elements in a within 256-bit lanes using the control in imm8, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
@@ -17585,10 +17567,6 @@ pub unsafe fn _mm512_mask_permutex_pd(src: __m512d, k: __mmask8, a: __m512d, imm
         };
     }
     let r = constify_imm8_sae!(imm8, call);
-    //assert!(imm8 >= 0 && imm8 <= 255);
-    //let a = a.as_f64x8();
-    //let imm8 = _mm512_set1_epi64(imm8 as i64).as_i64x8();
-    //let r = vpermpd(a, imm8);
     transmute(simd_select_bitmask(k, r.as_f64x8(), src.as_f64x8()))
 }
 
