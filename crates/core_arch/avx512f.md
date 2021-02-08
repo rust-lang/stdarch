@@ -1405,11 +1405,15 @@
   * [x] [`_mm512_permutex_epi64`]
   * [x] [`_mm512_mask_permutex_epi64`]
   * [x] [`_mm512_maskz_permutex_epi64`]
-
+  * [x] [`_mm256_mask_permutex_epi64`]
+  * [x] [`_mm256_maskz_permutex_epi64`]
+  * [x] [`_mm256_permutex_epi64`]
   * [x] [`_mm512_permutex_pd`]
   * [x] [`_mm512_mask_permutex_pd`]
   * [x] [`_mm512_maskz_permutex_pd`]
-
+  * [x] [`_mm256_mask_permutex_pd`]
+  * [x] [`_mm256_maskz_permutex_pd`]
+  * [x] [`_mm256_permutex_pd`]
   * [x] [`_mm512_permutexvar_epi32`]
   * [x] [`_mm512_mask_permutexvar_epi32`]
   * [x] [`_mm512_maskz_permutexvar_epi32`]
