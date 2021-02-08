@@ -7711,6 +7711,98 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_permutex2var_epi64() {
+        let a = _mm256_set_epi64x(0, 1, 2, 3);
+        let idx = _mm256_set_epi64x(1, 1 << 2, 2, 1 << 2);
+        let b = _mm256_set1_epi64x(100);
+        let r = _mm256_permutex2var_epi64(a, idx, b);
+        let e = _mm256_set_epi64x(2, 100, 1, 100);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_mask_permutex2var_epi64() {
+        let a = _mm256_set_epi64x(0, 1, 2, 3);
+        let idx = _mm256_set_epi64x(1, 1 << 2, 2, 1 << 2);
+        let b = _mm256_set1_epi64x(100);
+        let r = _mm256_mask_permutex2var_epi64(a, 0, idx, b);
+        assert_eq_m256i(r, a);
+        let r = _mm256_mask_permutex2var_epi64(a, 0b00001111, idx, b);
+        let e = _mm256_set_epi64x(2, 100, 1, 100);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_maskz_permutex2var_epi64() {
+        let a = _mm256_set_epi64x(0, 1, 2, 3);
+        let idx = _mm256_set_epi64x(1, 1 << 2, 2, 1 << 2);
+        let b = _mm256_set1_epi64x(100);
+        let r = _mm256_maskz_permutex2var_epi64(0, a, idx, b);
+        assert_eq_m256i(r, _mm256_setzero_si256());
+        let r = _mm256_maskz_permutex2var_epi64(0b00001111, a, idx, b);
+        let e = _mm256_set_epi64x(2, 100, 1, 100);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_mask2_permutex2var_epi64() {
+        let a = _mm256_set_epi64x(0, 1, 2, 3);
+        let idx = _mm256_set_epi64x(1, 1 << 2, 2, 1 << 2);
+        let b = _mm256_set1_epi64x(100);
+        let r = _mm256_mask2_permutex2var_epi64(a, idx, 0, b);
+        assert_eq_m256i(r, idx);
+        let r = _mm256_mask2_permutex2var_epi64(a, idx, 0b00001111, b);
+        let e = _mm256_set_epi64x(2, 100, 1, 100);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_permutex2var_epi64() {
+        let a = _mm_set_epi64x(0, 1);
+        let idx = _mm_set_epi64x(1, 1 << 1);
+        let b = _mm_set1_epi64x(100);
+        let r = _mm_permutex2var_epi64(a, idx, b);
+        let e = _mm_set_epi64x(0, 100);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_mask_permutex2var_epi64() {
+        let a = _mm_set_epi64x(0, 1);
+        let idx = _mm_set_epi64x(1, 1 << 1);
+        let b = _mm_set1_epi64x(100);
+        let r = _mm_mask_permutex2var_epi64(a, 0, idx, b);
+        assert_eq_m128i(r, a);
+        let r = _mm_mask_permutex2var_epi64(a, 0b00000011, idx, b);
+        let e = _mm_set_epi64x(0, 100);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_maskz_permutex2var_epi64() {
+        let a = _mm_set_epi64x(0, 1);
+        let idx = _mm_set_epi64x(1, 1 << 1);
+        let b = _mm_set1_epi64x(100);
+        let r = _mm_maskz_permutex2var_epi64(0, a, idx, b);
+        assert_eq_m128i(r, _mm_setzero_si128());
+        let r = _mm_maskz_permutex2var_epi64(0b00000011, a, idx, b);
+        let e = _mm_set_epi64x(0, 100);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_mask2_permutex2var_epi64() {
+        let a = _mm_set_epi64x(0, 1);
+        let idx = _mm_set_epi64x(1, 1 << 1);
+        let b = _mm_set1_epi64x(100);
+        let r = _mm_mask2_permutex2var_epi64(a, idx, 0, b);
+        assert_eq_m128i(r, idx);
+        let r = _mm_mask2_permutex2var_epi64(a, idx, 0b00000011, b);
+        let e = _mm_set_epi64x(0, 100);
+        assert_eq_m128i(r, e);
+    }
+
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_permutex2var_pd() {
         let a = _mm512_set_pd(0., 1., 2., 3., 4., 5., 6., 7.);
@@ -7751,10 +7843,102 @@ mod tests {
         let idx = _mm512_set_epi64(1, 1 << 3, 2, 1 << 3, 3, 1 << 3, 4, 1 << 3);
         let b = _mm512_set1_pd(100.);
         let r = _mm512_mask2_permutex2var_pd(a, idx, 0, b);
-        assert_eq_m512d(r, _mm512_setzero_pd());
-        let r = _mm512_mask2_permutex2var_pd(a, idx, 0b00001111, b);
-        let e = _mm512_set_pd(0., 0., 0., 0., 4., 100., 3., 100.);
+        assert_eq_m512d(r, _mm512_castsi512_pd(idx));
+        let r = _mm512_mask2_permutex2var_pd(a, idx, 0b11111111, b);
+        let e = _mm512_set_pd(6., 100., 5., 100., 4., 100., 3., 100.);
         assert_eq_m512d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_permutex2var_pd() {
+        let a = _mm256_set_pd(0., 1., 2., 3.);
+        let idx = _mm256_set_epi64x(1, 1 << 2, 2, 1 << 2);
+        let b = _mm256_set1_pd(100.);
+        let r = _mm256_permutex2var_pd(a, idx, b);
+        let e = _mm256_set_pd(2., 100., 1., 100.);
+        assert_eq_m256d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_mask_permutex2var_pd() {
+        let a = _mm256_set_pd(0., 1., 2., 3.);
+        let idx = _mm256_set_epi64x(1, 1 << 2, 2, 1 << 2);
+        let b = _mm256_set1_pd(100.);
+        let r = _mm256_mask_permutex2var_pd(a, 0, idx, b);
+        assert_eq_m256d(r, a);
+        let r = _mm256_mask_permutex2var_pd(a, 0b00001111, idx, b);
+        let e = _mm256_set_pd(2., 100., 1., 100.);
+        assert_eq_m256d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_maskz_permutex2var_pd() {
+        let a = _mm256_set_pd(0., 1., 2., 3.);
+        let idx = _mm256_set_epi64x(1, 1 << 2, 2, 1 << 2);
+        let b = _mm256_set1_pd(100.);
+        let r = _mm256_maskz_permutex2var_pd(0, a, idx, b);
+        assert_eq_m256d(r, _mm256_setzero_pd());
+        let r = _mm256_maskz_permutex2var_pd(0b00001111, a, idx, b);
+        let e = _mm256_set_pd(2., 100., 1., 100.);
+        assert_eq_m256d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_mask2_permutex2var_pd() {
+        let a = _mm256_set_pd(0., 1., 2., 3.);
+        let idx = _mm256_set_epi64x(1, 1 << 2, 2, 1 << 2);
+        let b = _mm256_set1_pd(100.);
+        let r = _mm256_mask2_permutex2var_pd(a, idx, 0, b);
+        assert_eq_m256d(r, _mm256_castsi256_pd(idx));
+        let r = _mm256_mask2_permutex2var_pd(a, idx, 0b00001111, b);
+        let e = _mm256_set_pd(2., 100., 1., 100.);
+        assert_eq_m256d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_permutex2var_pd() {
+        let a = _mm_set_pd(0., 1.);
+        let idx = _mm_set_epi64x(1, 1 << 1);
+        let b = _mm_set1_pd(100.);
+        let r = _mm_permutex2var_pd(a, idx, b);
+        let e = _mm_set_pd(0., 100.);
+        assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_mask_permutex2var_pd() {
+        let a = _mm_set_pd(0., 1.);
+        let idx = _mm_set_epi64x(1, 1 << 1);
+        let b = _mm_set1_pd(100.);
+        let r = _mm_mask_permutex2var_pd(a, 0, idx, b);
+        assert_eq_m128d(r, a);
+        let r = _mm_mask_permutex2var_pd(a, 0b00000011, idx, b);
+        let e = _mm_set_pd(0., 100.);
+        assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_maskz_permutex2var_pd() {
+        let a = _mm_set_pd(0., 1.);
+        let idx = _mm_set_epi64x(1, 1 << 1);
+        let b = _mm_set1_pd(100.);
+        let r = _mm_maskz_permutex2var_pd(0, a, idx, b);
+        assert_eq_m128d(r, _mm_setzero_pd());
+        let r = _mm_maskz_permutex2var_pd(0b00000011, a, idx, b);
+        let e = _mm_set_pd(0., 100.);
+        assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_mask2_permutex2var_pd() {
+        let a = _mm_set_pd(0., 1.);
+        let idx = _mm_set_epi64x(1, 1 << 1);
+        let b = _mm_set1_pd(100.);
+        let r = _mm_mask2_permutex2var_pd(a, idx, 0, b);
+        assert_eq_m128d(r, _mm_castsi128_pd(idx));
+        let r = _mm_mask2_permutex2var_pd(a, idx, 0b00000011, b);
+        let e = _mm_set_pd(0., 100.);
+        assert_eq_m128d(r, e);
     }
 
     #[simd_test(enable = "avx512f")]
