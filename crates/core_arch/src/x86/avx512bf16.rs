@@ -6,7 +6,6 @@ use crate::{
     core_arch::{simd::*, simd_llvm::*, x86::*},
     mem::transmute,
 };
-use cfg_if::cfg_if;
 
 #[cfg(test)]
 use stdarch_test::assert_instr;
@@ -150,20 +149,20 @@ pub unsafe fn _mm512_maskz_cvtne2ps_pbh (k: __mmask32, a: __m512, b: __m512) -> 
 #[target_feature(enable = "avx512bf16,avx512vl")]
 #[cfg_attr(test, assert_instr("vcvtneps2bf16"))]
 pub unsafe fn _mm_cvtneps_pbh (a: __m128) -> __m128bh {
-    cfg_if! {
-        if #[cfg(any(target_arch = "x86", target_arch = "x86_64"))] {
-            let mut result:__m128bh;
-            asm!(
-                    "vcvtneps2bf16 {0}, {1}",
-                    in(xmm_reg) a,
-                    lateout(xmm_reg) result,
-                    options(att_syntax)
-                );
-            result
-        }
-        else {
-            unreachable!()
-        }
+    #[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
+    {
+        let mut result:__m128bh;
+        asm!(
+                "vcvtneps2bf16 {0}, {1}",
+                in(xmm_reg) a,
+                lateout(xmm_reg) result,
+                options(att_syntax)
+            );
+        result
+    }
+    #[cfg(not(any(target_arch = "x86", target_arch = "x86_64")))]
+    {
+        unreachable!()
     }
 }
 
@@ -175,25 +174,24 @@ pub unsafe fn _mm_cvtneps_pbh (a: __m128) -> __m128bh {
 #[target_feature(enable = "avx512bf16,avx512vl")]
 #[cfg_attr(test, assert_instr("vcvtneps2bf16"))]
 pub unsafe fn _mm_mask_cvtneps_pbh (src: __m128bh, k:__mmask8, a: __m128) -> __m128bh {
-    cfg_if! {
-        if #[cfg(any(target_arch = "x86", target_arch = "x86_64"))] {
-            let mut result:__m128bh;
-            let mask: u32 = k as u32;
-            asm!(
-                    "kmovd %edi, %k1",
-                    "vcvtneps2bf16 {0}, {1} {{%k1}}",
-                    in(xmm_reg) a,
-                    inout(xmm_reg) src => result,
-                    in("edi") mask,
-                    options(att_syntax)
-                );
-            result
-        }
-        else{
-            unreachable!()
-        }
+    #[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
+    {
+        let mut result:__m128bh;
+        let mask: u32 = k as u32;
+        asm!(
+                "kmovd %edi, %k1",
+                "vcvtneps2bf16 {0}, {1} {{%k1}}",
+                in(xmm_reg) a,
+                inout(xmm_reg) src => result,
+                in("edi") mask,
+                options(att_syntax)
+            );
+        result
     }
-    
+    #[cfg(not(any(target_arch = "x86", target_arch = "x86_64")))]
+    {
+        unreachable!()
+    }
 }
 
 /// Convert packed single-precision (32-bit) floating-point elements in a to packed BF16 (16-bit) 

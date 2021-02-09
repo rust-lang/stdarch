@@ -72,7 +72,6 @@ extern crate std;
 extern crate std_detect;
 #[cfg(test)]
 extern crate stdarch_test;
-extern crate cfg_if;
 
 #[path = "mod.rs"]
 mod core_arch;
