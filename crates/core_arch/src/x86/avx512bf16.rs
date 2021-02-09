@@ -143,70 +143,6 @@ pub unsafe fn _mm512_maskz_cvtne2ps_pbh (k: __mmask32, a: __m512, b: __m512) -> 
 }
 
 /// Convert packed single-precision (32-bit) floating-point elements in a to packed BF16 (16-bit) 
-/// floating-point elements, and store the results in a 128-bit wide vector.
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#expand=1769,1651,1654,1657,1660&avx512techs=AVX512_BF16&text=_mm_cvtneps_pbh)
-#[inline]
-#[target_feature(enable = "avx512bf16,avx512vl")]
-#[cfg_attr(test, assert_instr("vcvtneps2bf16"))]
-pub unsafe fn _mm_cvtneps_pbh (a: __m128) -> __m128bh {
-    #[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
-    {
-        let mut result:__m128bh;
-        asm!(
-                "vcvtneps2bf16 {0}, {1}",
-                in(xmm_reg) a,
-                lateout(xmm_reg) result,
-                options(att_syntax)
-            );
-        result
-    }
-    #[cfg(not(any(target_arch = "x86", target_arch = "x86_64")))]
-    {
-        unreachable!()
-    }
-}
-
-/// Convert packed single-precision (32-bit) floating-point elements in a to packed BF16 (16-bit) 
-/// floating-point elements, and store the results in dst using writemask k 
-/// (elements are copied from src when the corresponding mask bit is not set). 
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#expand=1769,1651,1654,1657,1660&avx512techs=AVX512_BF16&text=_mm_mask_cvtneps_pbh)
-#[inline]
-#[target_feature(enable = "avx512bf16,avx512vl")]
-#[cfg_attr(test, assert_instr("vcvtneps2bf16"))]
-pub unsafe fn _mm_mask_cvtneps_pbh (src: __m128bh, k:__mmask8, a: __m128) -> __m128bh {
-    #[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
-    {
-        let mut result:__m128bh;
-        let mask: u32 = k as u32;
-        asm!(
-                "kmovd %edi, %k1",
-                "vcvtneps2bf16 {0}, {1} {{%k1}}",
-                in(xmm_reg) a,
-                inout(xmm_reg) src => result,
-                in("edi") mask,
-                options(att_syntax)
-            );
-        result
-    }
-    #[cfg(not(any(target_arch = "x86", target_arch = "x86_64")))]
-    {
-        unreachable!()
-    }
-}
-
-/// Convert packed single-precision (32-bit) floating-point elements in a to packed BF16 (16-bit) 
-/// floating-point elements, and store the results in dst using zeromask k 
-/// (elements are zeroed out when the corresponding mask bit is not set). 
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#expand=1769,1651,1654,1657,1660&avx512techs=AVX512_BF16&text=_mm_maskz_cvtneps_pbh)
-#[inline]
-#[target_feature(enable = "avx512bf16,avx512vl")]
-#[cfg_attr(test, assert_instr("vcvtneps2bf16"))]
-pub unsafe fn _mm_maskz_cvtneps_pbh (k: __mmask8, a: __m128) -> __m128bh {
-    let zero: __m128bh = transmute(_mm_setzero_si128().as_u16x8());
-    _mm_mask_cvtneps_pbh(zero, k, a)
-}
-
-/// Convert packed single-precision (32-bit) floating-point elements in a to packed BF16 (16-bit) 
 /// floating-point elements, and store the results in dst.
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#expand=1769,1651,1654,1657,1660&avx512techs=AVX512_BF16&text=_mm256_cvtneps_pbh)
 #[inline]
@@ -650,62 +586,6 @@ mod tests {
             0b0_10000011_0000100, 0, 0, 0b0_10001000_0010000,
             0, 0b0_10000010_0101000, 0, 0b0_10000100_1001001,
             0, 0, 0b0_10001000_1111010, 0b0_10001000_0010000];
-        assert_eq!(result, expected_result);
-    }
-
-    #[simd_test(enable = "avx512bf16,avx512vl")]
-    unsafe fn test_mm_cvtneps_pbh() {
-        let a_array = [178.125_f32, 10.5_f32, 3.75_f32, 50.25_f32];
-        let a: __m128 = transmute(a_array);
-        let b: __m128bh = _mm_cvtneps_pbh(a);
-        let result: [u16; 8] = transmute(b.as_u16x8());
-        let expected_result: [u16; 8] = [
-            0b0_10000110_0110010, 0b0_10000010_0101000,
-            0b0_10000000_1110000, 0b0_10000100_1001001, 0, 0, 0, 0];
-        assert_eq!(result, expected_result);
-    }
-
-    #[simd_test(enable = "avx512bf16,avx512vl")]
-    unsafe fn test_mm_mask_cvtneps_pbh() {
-        let a_array = [178.125_f32, 10.5_f32, 3.75_f32, 50.25_f32];
-        let src_array: [u16; 8] = [
-            0b1_10000110_0110010, 0b1_10000010_0101000, 0b1_10000000_1110000, 0b1_10000100_1001001,
-            0b1_10000011_0000100, 0b1_10000110_1111111, 0b1_10001000_1111010, 0b1_10001000_0010000];
-        let src: __m128bh = transmute(src_array);
-        let a: __m128 = transmute(a_array);
-        let k: __mmask8 = 0xff;
-        let b: __m128bh = _mm_mask_cvtneps_pbh (src, k, a);
-        let result: [u16; 8] = transmute(b.as_u16x8());
-        let expected_result: [u16; 8] = [
-            0b0_10000110_0110010, 0b0_10000010_0101000,
-            0b0_10000000_1110000, 0b0_10000100_1001001, 0, 0, 0, 0];
-        assert_eq!(result, expected_result);
-        let k: __mmask8 = 0x0;
-        let b: __m128bh = _mm_mask_cvtneps_pbh (src, k, a);
-        let result: [u16; 8] = transmute(b.as_u16x8());
-        let expected_result: [u16; 8] = [
-            0b1_10000110_0110010, 0b1_10000010_0101000, 
-            0b1_10000000_1110000, 0b1_10000100_1001001, 0, 0, 0, 0];
-        assert_eq!(result, expected_result);
-    }
-
-    #[simd_test(enable = "avx512bf16,avx512vl")]
-    unsafe fn test_mm_maskz_cvtneps_pbh() {
-        let a_array = [178.125_f32, 10.5_f32, 3.75_f32, 50.25_f32];
-        let a: __m128 = transmute(a_array);
-        let k: __mmask8 = 0xff;
-        let b: __m128bh = _mm_maskz_cvtneps_pbh (k, a);
-        let result: [u16; 8] = transmute(b.as_u16x8());
-        let expected_result: [u16; 8] = [
-            0b0_10000110_0110010, 0b0_10000010_0101000,
-            0b0_10000000_1110000, 0b0_10000100_1001001, 0, 0, 0, 0];
-        assert_eq!(result, expected_result);
-        let k: __mmask8 = 0x3;
-        let b: __m128bh = _mm_maskz_cvtneps_pbh (k, a);
-        let result: [u16; 8] = transmute(b.as_u16x8());
-        let expected_result: [u16; 8] = [
-            0b0_10000110_0110010, 0b0_10000010_0101000, 
-            0, 0, 0, 0, 0, 0];
         assert_eq!(result, expected_result);
     }
 
