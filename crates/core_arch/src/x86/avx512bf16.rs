@@ -151,11 +151,12 @@ pub unsafe fn _mm512_maskz_cvtne2ps_pbh (k: __mmask32, a: __m512, b: __m512) -> 
 pub unsafe fn _mm_cvtneps_pbh (a: __m128) -> __m128bh {
     let mut result:__m128bh;
     asm!(
-            "vcvtneps2bf16 {1}, {0}",
+            "vcvtneps2bf16 {0}, {1}",
             in(xmm_reg) a,
             lateout(xmm_reg) result,
+            options(att_syntax)
         );
-   result
+    result
 }
 
 /// Convert packed single-precision (32-bit) floating-point elements in a to packed BF16 (16-bit) 
@@ -169,13 +170,14 @@ pub unsafe fn _mm_mask_cvtneps_pbh (src: __m128bh, k:__mmask8, a: __m128) -> __m
     let mut result:__m128bh;
     let mask: u32 = k as u32;
     asm!(
-            "kmovd k1, edi",
-            "vcvtneps2bf16 {1} {{k1}}, {0}",
+            "kmovd %edi, %k1",
+            "vcvtneps2bf16 {0}, {1} {{%k1}}",
             in(xmm_reg) a,
             inout(xmm_reg) src => result,
             in("edi") mask,
+            options(att_syntax)
         );
-   result
+    result
 }
 
 /// Convert packed single-precision (32-bit) floating-point elements in a to packed BF16 (16-bit) 
