@@ -34926,6 +34926,7 @@ extern "C" {
     fn vscatterqps(slice: *mut i8, mask: i8, offsets: i64x8, src: f32x8, scale: i32);
     #[link_name = "llvm.x86.avx512.scatter.dpq.512"]
     fn vpscatterdq(slice: *mut i8, mask: i8, offsets: i32x8, src: i64x8, scale: i32);
+
     #[link_name = "llvm.x86.avx512.scatter.dpi.512"]
     fn vpscatterdd(slice: *mut i8, mask: i16, offsets: i32x16, src: i32x16, scale: i32);
     #[link_name = "llvm.x86.avx512.scatter.qpq.512"]
