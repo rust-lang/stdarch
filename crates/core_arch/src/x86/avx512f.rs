@@ -18047,7 +18047,7 @@ pub unsafe fn _mm256_permutex_epi64(a: __m256i, imm8: i32) -> __m256i {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_permutex_epi6&expand=4203)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vperm, imm8 = 0b11111111))] //should be vpermq
+#[cfg_attr(test, assert_instr(vperm, imm8 = 0b10011011))] //should be vpermq
 #[rustc_args_required_const(3)]
 pub unsafe fn _mm256_mask_permutex_epi64(
     src: __m256i,
@@ -18069,7 +18069,7 @@ pub unsafe fn _mm256_mask_permutex_epi64(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_permutex_epi64&expand=4204)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vperm, imm8 = 0b11111111))] //should be vpermq
+#[cfg_attr(test, assert_instr(vperm, imm8 = 0b10011011))] //should be vpermq
 #[rustc_args_required_const(2)]
 pub unsafe fn _mm256_maskz_permutex_epi64(k: __mmask8, a: __m256i, imm8: i32) -> __m256i {
     macro_rules! call {
