@@ -12,9 +12,10 @@ use stdarch_test::assert_instr;
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_and_pd&expand=100,288)
 #[inline]
 #[target_feature(enable = "avx512dq")]
-#[cfg_attr(test, assert_instr(vandpd))]
+#[cfg_attr(test, assert_instr(vandps))]
+// FIXME: should be `vandpd` instruction.
 pub unsafe fn _mm512_and_pd(a: __m512d, b: __m512d) -> __m512d {
-    transmute(simd_and(a.as_f64x8(), b.as_f64x8()))
+    transmute(simd_and(transmute::<_, u64x8>(a), transmute::<_, u64x8>(b)))
 }
 
 /// Compute the bitwise XOR of packed double-precision (64-bit) floating-point elements in a and b, and store the results in dst.
@@ -22,9 +23,10 @@ pub unsafe fn _mm512_and_pd(a: __m512d, b: __m512d) -> __m512d {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_xor_pd&expand=100,6160)
 #[inline]
 #[target_feature(enable = "avx512dq")]
-#[cfg_attr(test, assert_instr(vxorpd))]
+#[cfg_attr(test, assert_instr(vxorps))]
+// FIXME: should be `vxorpd` instruction.
 pub unsafe fn _mm512_xor_pd(a: __m512d, b: __m512d) -> __m512d {
-    transmute(simd_xor(a.as_f64x8(), b.as_f64x8()))
+    transmute(simd_xor(transmute::<_, u64x8>(a), transmute::<_, u64x8>(b)))
 }
 
 /// Compute the bitwise NOT of packed double-precision (64-bit) floating-point elements in a and then AND with b, and store the results in dst.
@@ -32,9 +34,13 @@ pub unsafe fn _mm512_xor_pd(a: __m512d, b: __m512d) -> __m512d {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_andnot_pd&expand=100,326)
 #[inline]
 #[target_feature(enable = "avx512dq")]
-#[cfg_attr(test, assert_instr(vandnpd))]
+#[cfg_attr(test, assert_instr(vandnps))]
+// FIXME: should be `vandpd` instruction.
 pub unsafe fn _mm512_andnot_pd(a: __m512d, b: __m512d) -> __m512d {
-    _mm512_and_pd(_mm512_xor_pd(a, _mm512_set1_pd(f64::MAX)), b)
+    _mm512_and_pd(
+        _mm512_xor_pd(a, transmute(_mm512_set1_epi64(u64::MAX as i64))),
+        b,
+    )
 }
 
 /// Compute the bitwise NOT of packed double-precision (64-bit) floating-point elements in a and then AND with b, and
@@ -289,4 +295,81 @@ pub unsafe fn _mm512_broadcast_i32x2(a: __m128i) -> __m512i {
     let a = _mm512_castsi128_si512(a).as_i32x16();
     let ret: i32x16 = simd_shuffle8(a, a, [0, 1, 2, 3, 0, 1, 2, 3]);
     transmute(ret)
+}
+
+/// Broadcast the lower 2 packed 32-bit integers from a to all elements of dst
+/// using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_broadcast_i32x2&expand=100,505)
+#[inline]
+#[target_feature(enable = "avx512dq")]
+#[cfg_attr(test, assert_instr(vbroadcasti32x2))]
+pub unsafe fn _mm512_mask_broadcast_i32x2(src: __m512i, k: __mmask16, a: __m128i) -> __m512i {
+    let broadcast = _mm512_broadcast_i32x2(a).as_i32x16();
+    transmute(simd_select_bitmask(k, broadcast, src.as_i32x16()))
+}
+
+/// Broadcast the lower 2 packed 32-bit integers from a to all elements of dst
+/// using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_broadcast_i32x2&expand=100,506)
+#[inline]
+#[target_feature(enable = "avx512dq")]
+#[cfg_attr(test, assert_instr(vbroadcasti32x2))]
+pub unsafe fn _mm512_maskz_broadcast_i32x2(k: __mmask16, a: __m128i) -> __m512i {
+    let broadcast = _mm512_broadcast_i32x2(a).as_i32x16();
+    let zero = _mm512_setzero_epi32().as_i32x16();
+    transmute(simd_select_bitmask(k, broadcast, zero))
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    use stdarch_test::simd_test;
+
+    use crate::core_arch::x86::*;
+    use crate::core_arch::x86_64::*;
+    use crate::hint::black_box;
+
+    #[simd_test(enable = "avx512dq")]
+    unsafe fn test_mm512_and_pd() {
+        let a = _mm512_set_pd(
+            2.34_f64, 2.34_f64, 2.34_f64, 2.34_f64, 0.0_f64, 0.0_f64, 0.0_f64, 8.94_f64,
+        );
+        let b = _mm512_set_pd(
+            0.0_f64, 2.34_f64, 0.0_f64, 0.0_f64, 8.94_f64, 8.94_f64, 8.94_f64, 8.94_f64,
+        );
+        let r = _mm512_and_pd(a, b);
+        let e = _mm512_set_pd(
+            0.0_f64, 2.34_f64, 0.0_f64, 0.0_f64, 0.0_f64, 0.0_f64, 0.0_f64, 8.94_f64,
+        );
+        assert_eq_m512d(r, e);
+    }
+
+    #[simd_test(enable = "avx512dq")]
+    unsafe fn test_mm512_xor_pd() {
+        let a = _mm512_set_pd(
+            2.34_f64, 2.34_f64, 2.34_f64, 2.34_f64, 0.0_f64, 0.0_f64, 0.0_f64, 8.94_f64,
+        );
+        let b = _mm512_set_pd(
+            0.0_f64, 2.34_f64, 0.0_f64, 0.0_f64, 8.94_f64, 8.94_f64, 8.94_f64, 8.94_f64,
+        );
+        let r = _mm512_xor_pd(a, b);
+        let e = _mm512_set_pd(
+            2.34_f64, 0.0_f64, 2.34_f64, 2.34_f64, 8.94_f64, 8.94_f64, 8.94_f64, 0.0_f64,
+        );
+        assert_eq_m512d(r, e);
+    }
+
+    #[simd_test(enable = "avx512dq")]
+    unsafe fn test_mm512_andnot_pd() {
+        let a = _mm512_set1_pd(f64::from_bits(
+            0b0000000000001111111111111111111111111111111111111111111111111111,
+        ));
+        let b = _mm512_set1_pd(0.123456_f64);
+        let r = _mm512_andnot_pd(a, b);
+        let e = _mm512_set1_pd(0.0625_f64);
+        assert_eq_m512d(r, e);
+    }
 }
