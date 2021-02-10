@@ -14276,14 +14276,6 @@ pub unsafe fn _mm_maskz_compress_pd(k: __mmask8, a: __m128d) -> __m128d {
 /// Load contiguous active 32-bit integers from a (those with their respective bit set in mask k), and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_expand_epi32&expand=2316)
-
-/// Load contiguous active 32-bit integers from a (those with their respective bit set in mask k), and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
-///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_expand_epi32&expand=2316)
-
-/// Load contiguous active 32-bit integers from a (those with their respective bit set in mask k), and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
-///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_expand_epi32&expand=2316)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpexpandd))]
@@ -14301,6 +14293,54 @@ pub unsafe fn _mm512_maskz_expand_epi32(k: __mmask16, a: __m512i) -> __m512i {
     transmute(vpexpandd(
         a.as_i32x16(),
         _mm512_setzero_si512().as_i32x16(),
+        k,
+    ))
+}
+
+/// Load contiguous active 32-bit integers from a (those with their respective bit set in mask k), and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_expand_epi32&expand=2314)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpexpandd))]
+pub unsafe fn _mm256_mask_expand_epi32(src: __m256i, k: __mmask8, a: __m256i) -> __m256i {
+    transmute(vpexpandd256(a.as_i32x8(), src.as_i32x8(), k))
+}
+
+/// Load contiguous active 32-bit integers from a (those with their respective bit set in mask k), and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_expand_epi32&expand=2315)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpexpandd))]
+pub unsafe fn _mm256_maskz_expand_epi32(k: __mmask8, a: __m256i) -> __m256i {
+    transmute(vpexpandd256(
+        a.as_i32x8(),
+        _mm256_setzero_si256().as_i32x8(),
+        k,
+    ))
+}
+
+/// Load contiguous active 32-bit integers from a (those with their respective bit set in mask k), and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_expand_epi32&expand=2312)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpexpandd))]
+pub unsafe fn _mm_mask_expand_epi32(src: __m128i, k: __mmask8, a: __m128i) -> __m128i {
+    transmute(vpexpandd128(a.as_i32x4(), src.as_i32x4(), k))
+}
+
+/// Load contiguous active 32-bit integers from a (those with their respective bit set in mask k), and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_expand_epi32&expand=2313)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpexpandd))]
+pub unsafe fn _mm_maskz_expand_epi32(k: __mmask8, a: __m128i) -> __m128i {
+    transmute(vpexpandd128(
+        a.as_i32x4(),
+        _mm_setzero_si128().as_i32x4(),
         k,
     ))
 }
@@ -14329,6 +14369,54 @@ pub unsafe fn _mm512_maskz_expand_epi64(k: __mmask8, a: __m512i) -> __m512i {
     ))
 }
 
+/// Load contiguous active 64-bit integers from a (those with their respective bit set in mask k), and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_expand_epi64&expand=2320)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpexpandq))]
+pub unsafe fn _mm256_mask_expand_epi64(src: __m256i, k: __mmask8, a: __m256i) -> __m256i {
+    transmute(vpexpandq256(a.as_i64x4(), src.as_i64x4(), k))
+}
+
+/// Load contiguous active 64-bit integers from a (those with their respective bit set in mask k), and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_expand_epi64&expand=2321)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpexpandq))]
+pub unsafe fn _mm256_maskz_expand_epi64(k: __mmask8, a: __m256i) -> __m256i {
+    transmute(vpexpandq256(
+        a.as_i64x4(),
+        _mm256_setzero_si256().as_i64x4(),
+        k,
+    ))
+}
+
+/// Load contiguous active 64-bit integers from a (those with their respective bit set in mask k), and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_expand_epi64&expand=2318)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpexpandq))]
+pub unsafe fn _mm_mask_expand_epi64(src: __m128i, k: __mmask8, a: __m128i) -> __m128i {
+    transmute(vpexpandq128(a.as_i64x2(), src.as_i64x2(), k))
+}
+
+/// Load contiguous active 64-bit integers from a (those with their respective bit set in mask k), and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_expand_epi64&expand=2319)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpexpandq))]
+pub unsafe fn _mm_maskz_expand_epi64(k: __mmask8, a: __m128i) -> __m128i {
+    transmute(vpexpandq128(
+        a.as_i64x2(),
+        _mm_setzero_si128().as_i64x2(),
+        k,
+    ))
+}
+
 /// Load contiguous active single-precision (32-bit) floating-point elements from a (those with their respective bit set in mask k), and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_expand_ps&expand=2340)
@@ -14349,6 +14437,50 @@ pub unsafe fn _mm512_maskz_expand_ps(k: __mmask16, a: __m512) -> __m512 {
     transmute(vexpandps(a.as_f32x16(), _mm512_setzero_ps().as_f32x16(), k))
 }
 
+/// Load contiguous active single-precision (32-bit) floating-point elements from a (those with their respective bit set in mask k), and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_expand_ps&expand=2338)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vexpandps))]
+pub unsafe fn _mm256_mask_expand_ps(src: __m256, k: __mmask8, a: __m256) -> __m256 {
+    transmute(vexpandps256(a.as_f32x8(), src.as_f32x8(), k))
+}
+
+/// Load contiguous active single-precision (32-bit) floating-point elements from a (those with their respective bit set in mask k), and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_expand_ps&expand=2339)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vexpandps))]
+pub unsafe fn _mm256_maskz_expand_ps(k: __mmask8, a: __m256) -> __m256 {
+    transmute(vexpandps256(
+        a.as_f32x8(),
+        _mm256_setzero_ps().as_f32x8(),
+        k,
+    ))
+}
+
+/// Load contiguous active single-precision (32-bit) floating-point elements from a (those with their respective bit set in mask k), and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_expand_ps&expand=2336)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vexpandps))]
+pub unsafe fn _mm_mask_expand_ps(src: __m128, k: __mmask8, a: __m128) -> __m128 {
+    transmute(vexpandps128(a.as_f32x4(), src.as_f32x4(), k))
+}
+
+/// Load contiguous active single-precision (32-bit) floating-point elements from a (those with their respective bit set in mask k), and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_expand_ps&expand=2337)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vexpandps))]
+pub unsafe fn _mm_maskz_expand_ps(k: __mmask8, a: __m128) -> __m128 {
+    transmute(vexpandps128(a.as_f32x4(), _mm_setzero_ps().as_f32x4(), k))
+}
+
 /// Load contiguous active double-precision (64-bit) floating-point elements from a (those with their respective bit set in mask k), and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_expand_pd&expand=2334)
@@ -14367,6 +14499,50 @@ pub unsafe fn _mm512_mask_expand_pd(src: __m512d, k: __mmask8, a: __m512d) -> __
 #[cfg_attr(test, assert_instr(vexpandpd))]
 pub unsafe fn _mm512_maskz_expand_pd(k: __mmask8, a: __m512d) -> __m512d {
     transmute(vexpandpd(a.as_f64x8(), _mm512_setzero_pd().as_f64x8(), k))
+}
+
+/// Load contiguous active double-precision (64-bit) floating-point elements from a (those with their respective bit set in mask k), and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_expand_pd&expand=2332)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vexpandpd))]
+pub unsafe fn _mm256_mask_expand_pd(src: __m256d, k: __mmask8, a: __m256d) -> __m256d {
+    transmute(vexpandpd256(a.as_f64x4(), src.as_f64x4(), k))
+}
+
+/// Load contiguous active double-precision (64-bit) floating-point elements from a (those with their respective bit set in mask k), and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_expand_pd&expand=2333)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vexpandpd))]
+pub unsafe fn _mm256_maskz_expand_pd(k: __mmask8, a: __m256d) -> __m256d {
+    transmute(vexpandpd256(
+        a.as_f64x4(),
+        _mm256_setzero_pd().as_f64x4(),
+        k,
+    ))
+}
+
+/// Load contiguous active double-precision (64-bit) floating-point elements from a (those with their respective bit set in mask k), and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_expand_pd&expand=2330)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vexpandpd))]
+pub unsafe fn _mm_mask_expand_pd(src: __m128d, k: __mmask8, a: __m128d) -> __m128d {
+    transmute(vexpandpd128(a.as_f64x2(), src.as_f64x2(), k))
+}
+
+/// Load contiguous active double-precision (64-bit) floating-point elements from a (those with their respective bit set in mask k), and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_expand_pd&expand=2331)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vexpandpd))]
+pub unsafe fn _mm_maskz_expand_pd(k: __mmask8, a: __m128d) -> __m128d {
+    transmute(vexpandpd128(a.as_f64x2(), _mm_setzero_pd().as_f64x2(), k))
 }
 
 /// Rotate the bits in each packed 32-bit integer in a to the left by the number of bits specified in imm8, and store the results in dst.
@@ -35224,12 +35400,31 @@ extern "C" {
 
     #[link_name = "llvm.x86.avx512.mask.expand.d.512"]
     fn vpexpandd(a: i32x16, src: i32x16, mask: u16) -> i32x16;
+    #[link_name = "llvm.x86.avx512.mask.expand.d.256"]
+    fn vpexpandd256(a: i32x8, src: i32x8, mask: u8) -> i32x8;
+    #[link_name = "llvm.x86.avx512.mask.expand.d.128"]
+    fn vpexpandd128(a: i32x4, src: i32x4, mask: u8) -> i32x4;
+
     #[link_name = "llvm.x86.avx512.mask.expand.q.512"]
     fn vpexpandq(a: i64x8, src: i64x8, mask: u8) -> i64x8;
+    #[link_name = "llvm.x86.avx512.mask.expand.q.256"]
+    fn vpexpandq256(a: i64x4, src: i64x4, mask: u8) -> i64x4;
+    #[link_name = "llvm.x86.avx512.mask.expand.q.128"]
+    fn vpexpandq128(a: i64x2, src: i64x2, mask: u8) -> i64x2;
+
     #[link_name = "llvm.x86.avx512.mask.expand.ps.512"]
     fn vexpandps(a: f32x16, src: f32x16, mask: u16) -> f32x16;
+    #[link_name = "llvm.x86.avx512.mask.expand.ps.256"]
+    fn vexpandps256(a: f32x8, src: f32x8, mask: u8) -> f32x8;
+    #[link_name = "llvm.x86.avx512.mask.expand.ps.128"]
+    fn vexpandps128(a: f32x4, src: f32x4, mask: u8) -> f32x4;
+
     #[link_name = "llvm.x86.avx512.mask.expand.pd.512"]
     fn vexpandpd(a: f64x8, src: f64x8, mask: u8) -> f64x8;
+    #[link_name = "llvm.x86.avx512.mask.expand.pd.256"]
+    fn vexpandpd256(a: f64x4, src: f64x4, mask: u8) -> f64x4;
+    #[link_name = "llvm.x86.avx512.mask.expand.pd.128"]
+    fn vexpandpd128(a: f64x2, src: f64x2, mask: u8) -> f64x2;
 
     #[link_name = "llvm.x86.avx512.mask.add.ss.round"]
     fn vaddss(a: f32x4, b: f32x4, src: f32x4, mask: u8, rounding: i32) -> f32x4;
@@ -46977,6 +47172,8 @@ mod tests {
     unsafe fn test_mm512_mask_expand_epi32() {
         let src = _mm512_set1_epi32(200);
         let a = _mm512_set_epi32(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
+        let r = _mm512_mask_expand_epi32(src, 0, a);
+        assert_eq_m512i(r, src);
         let r = _mm512_mask_expand_epi32(src, 0b01010101_01010101, a);
         let e = _mm512_set_epi32(
             200, 8, 200, 9, 200, 10, 200, 11, 200, 12, 200, 13, 200, 14, 200, 15,
@@ -46987,9 +47184,53 @@ mod tests {
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_maskz_expand_epi32() {
         let a = _mm512_set_epi32(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
+        let r = _mm512_maskz_expand_epi32(0, a);
+        assert_eq_m512i(r, _mm512_setzero_si512());
         let r = _mm512_maskz_expand_epi32(0b01010101_01010101, a);
         let e = _mm512_set_epi32(0, 8, 0, 9, 0, 10, 0, 11, 0, 12, 0, 13, 0, 14, 0, 15);
         assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_mask_expand_epi32() {
+        let src = _mm256_set1_epi32(200);
+        let a = _mm256_set_epi32(0, 1, 2, 3, 4, 5, 6, 7);
+        let r = _mm256_mask_expand_epi32(src, 0, a);
+        assert_eq_m256i(r, src);
+        let r = _mm256_mask_expand_epi32(src, 0b01010101, a);
+        let e = _mm256_set_epi32(200, 4, 200, 5, 200, 6, 200, 7);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_maskz_expand_epi32() {
+        let a = _mm256_set_epi32(0, 1, 2, 3, 4, 5, 6, 7);
+        let r = _mm256_maskz_expand_epi32(0, a);
+        assert_eq_m256i(r, _mm256_setzero_si256());
+        let r = _mm256_maskz_expand_epi32(0b01010101, a);
+        let e = _mm256_set_epi32(0, 4, 0, 5, 0, 6, 0, 7);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_mask_expand_epi32() {
+        let src = _mm_set1_epi32(200);
+        let a = _mm_set_epi32(0, 1, 2, 3);
+        let r = _mm_mask_expand_epi32(src, 0, a);
+        assert_eq_m128i(r, src);
+        let r = _mm_mask_expand_epi32(src, 0b00000101, a);
+        let e = _mm_set_epi32(200, 2, 200, 3);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_maskz_expand_epi32() {
+        let a = _mm_set_epi32(0, 1, 2, 3);
+        let r = _mm_maskz_expand_epi32(0, a);
+        assert_eq_m128i(r, _mm_setzero_si128());
+        let r = _mm_maskz_expand_epi32(0b00000101, a);
+        let e = _mm_set_epi32(0, 2, 0, 3);
+        assert_eq_m128i(r, e);
     }
 
     #[simd_test(enable = "avx512f")]
@@ -46998,6 +47239,8 @@ mod tests {
         let a = _mm512_set_ps(
             0., 1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15.,
         );
+        let r = _mm512_mask_expand_ps(src, 0, a);
+        assert_eq_m512(r, src);
         let r = _mm512_mask_expand_ps(src, 0b01010101_01010101, a);
         let e = _mm512_set_ps(
             200., 8., 200., 9., 200., 10., 200., 11., 200., 12., 200., 13., 200., 14., 200., 15.,
@@ -47010,11 +47253,55 @@ mod tests {
         let a = _mm512_set_ps(
             0., 1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15.,
         );
+        let r = _mm512_maskz_expand_ps(0, a);
+        assert_eq_m512(r, _mm512_setzero_ps());
         let r = _mm512_maskz_expand_ps(0b01010101_01010101, a);
         let e = _mm512_set_ps(
             0., 8., 0., 9., 0., 10., 0., 11., 0., 12., 0., 13., 0., 14., 0., 15.,
         );
         assert_eq_m512(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_mask_expand_ps() {
+        let src = _mm256_set1_ps(200.);
+        let a = _mm256_set_ps(0., 1., 2., 3., 4., 5., 6., 7.);
+        let r = _mm256_mask_expand_ps(src, 0, a);
+        assert_eq_m256(r, src);
+        let r = _mm256_mask_expand_ps(src, 0b01010101, a);
+        let e = _mm256_set_ps(200., 4., 200., 5., 200., 6., 200., 7.);
+        assert_eq_m256(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_maskz_expand_ps() {
+        let a = _mm256_set_ps(0., 1., 2., 3., 4., 5., 6., 7.);
+        let r = _mm256_maskz_expand_ps(0, a);
+        assert_eq_m256(r, _mm256_setzero_ps());
+        let r = _mm256_maskz_expand_ps(0b01010101, a);
+        let e = _mm256_set_ps(0., 4., 0., 5., 0., 6., 0., 7.);
+        assert_eq_m256(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_mask_expand_ps() {
+        let src = _mm_set1_ps(200.);
+        let a = _mm_set_ps(0., 1., 2., 3.);
+        let r = _mm_mask_expand_ps(src, 0, a);
+        assert_eq_m128(r, src);
+        let r = _mm_mask_expand_ps(src, 0b00000101, a);
+        let e = _mm_set_ps(200., 2., 200., 3.);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_maskz_expand_ps() {
+        let a = _mm_set_ps(0., 1., 2., 3.);
+        let r = _mm_maskz_expand_ps(0, a);
+        assert_eq_m128(r, _mm_setzero_ps());
+        let r = _mm_maskz_expand_ps(0b00000101, a);
+        let e = _mm_set_ps(0., 2., 0., 3.);
+        assert_eq_m128(r, e);
     }
 
     #[simd_test(enable = "avx512f")]
