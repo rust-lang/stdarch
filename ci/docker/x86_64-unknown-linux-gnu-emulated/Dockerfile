@@ -8,6 +8,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   wget \
   bzip2
 
-RUN wget https://github.com/gnzlbg/intel_sde/raw/master/sde-external-8.35.0-2019-03-11-lin.tar.bz2
-RUN tar -xjf sde-external-8.35.0-2019-03-11-lin.tar.bz2
-ENV CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_RUNNER="/sde-external-8.35.0-2019-03-11-lin/sde64 -rtm_mode full --"
+RUN wget https://software.intel.com/content/dam/develop/external/us/en/documents/downloads/sde-external-8.59.0-2020-10-05-lin.tar.bz2
+RUN tar -xjf sde-external-8.59.0-2020-10-05-lin.tar.bz2
+ENV CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_RUNNER="/sde-external-8.59.0-2020-10-05-lin/sde64 -cpx -iform -mix -dyn_mask_profile -- "
