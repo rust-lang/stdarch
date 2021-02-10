@@ -13300,54 +13300,6 @@ pub unsafe fn _mm512_mask_i32gather_pd(
     transmute(r)
 }
 
-/// Gather double-precision (64-bit) floating-point elements from memory using 32-bit indices. 64-bit elements are loaded from addresses starting at base_addr and offset by each 32-bit element in vindex (each index is scaled by the factor in scale). Gathered elements are merged into dst using writemask k (elements are copied from src when the corresponding mask bit is not set). scale should be 1, 2, 4 or 8.
-///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mmask_i32gather_pd&expand=3001)
-#[inline]
-#[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vgatherdpd, scale = 1))]
-#[rustc_args_required_const(4)]
-pub unsafe fn _mm256_mmask_i32gather_pd(
-    src: __m256d,
-    mask: __mmask8,
-    offsets: __m128i,
-    slice: *const u8,
-    scale: i32,
-) -> __m256d {
-    let slice = slice as *const f64;
-    macro_rules! call {
-        ($imm8:expr) => {
-            _mm256_i32gather_pd(slice, offsets, $imm8)
-        };
-    }
-    let r = constify_imm8_gather!(scale, call);
-    transmute(simd_select_bitmask(mask, r.as_f64x4(), src.as_f64x4()))
-}
-
-/// Gather double-precision (64-bit) floating-point elements from memory using 32-bit indices. 64-bit elements are loaded from addresses starting at base_addr and offset by each 32-bit element in vindex (each index is scaled by the factor in scale). Gathered elements are merged into dst using writemask k (elements are copied from src when the corresponding mask bit is not set). scale should be 1, 2, 4 or 8.
-///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mmask_i32gather_pd&expand=2998)
-#[inline]
-#[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vgatherdpd, scale = 1))]
-#[rustc_args_required_const(4)]
-pub unsafe fn _mm_mmask_i32gather_pd(
-    src: __m128d,
-    mask: __mmask8,
-    offsets: __m128i,
-    slice: *const u8,
-    scale: i32,
-) -> __m128d {
-    let slice = slice as *const f64;
-    macro_rules! call {
-        ($imm8:expr) => {
-            _mm_i32gather_pd(slice, offsets, $imm8)
-        };
-    }
-    let r = constify_imm8_gather!(scale, call);
-    transmute(simd_select_bitmask(mask, r.as_f64x2(), src.as_f64x2()))
-}
-
 /// Gather double-precision (64-bit) floating-point elements from memory using 64-bit indices. 64-bit elements are loaded from addresses starting at base_addr and offset by each 64-bit element in vindex (each index is scaled by the factor in scale). Gathered elements are merged into dst. scale should be 1, 2, 4 or 8.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_i64gather_pd&expand=3092)
@@ -13395,54 +13347,6 @@ pub unsafe fn _mm512_mask_i64gather_pd(
     transmute(r)
 }
 
-/// Gather double-precision (64-bit) floating-point elements from memory using 64-bit indices. 64-bit elements are loaded from addresses starting at base_addr and offset by each 64-bit element in vindex (each index is scaled by the factor in scale). Gathered elements are merged into dst using writemask k (elements are copied from src when the corresponding mask bit is not set). scale should be 1, 2, 4 or 8.
-///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mmask_i64gather_pd&expand=3091)
-#[inline]
-#[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vgatherqpd, scale = 1))]
-#[rustc_args_required_const(4)]
-pub unsafe fn _mm256_mmask_i64gather_pd(
-    src: __m256d,
-    mask: __mmask8,
-    offsets: __m256i,
-    slice: *const u8,
-    scale: i32,
-) -> __m256d {
-    let slice = slice as *const f64;
-    macro_rules! call {
-        ($imm8:expr) => {
-            _mm256_i64gather_pd(slice, offsets, $imm8)
-        };
-    }
-    let r = constify_imm8_gather!(scale, call);
-    transmute(simd_select_bitmask(mask, r.as_f64x4(), src.as_f64x4()))
-}
-
-/// Gather double-precision (64-bit) floating-point elements from memory using 64-bit indices. 64-bit elements are loaded from addresses starting at base_addr and offset by each 64-bit element in vindex (each index is scaled by the factor in scale). Gathered elements are merged into dst using writemask k (elements are copied from src when the corresponding mask bit is not set). scale should be 1, 2, 4 or 8.
-///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mmask_i64gather_pd&expand=3088)
-#[inline]
-#[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vgatherqpd, scale = 1))]
-#[rustc_args_required_const(4)]
-pub unsafe fn _mm_mmask_i64gather_pd(
-    src: __m128d,
-    mask: __mmask8,
-    offsets: __m128i,
-    slice: *const u8,
-    scale: i32,
-) -> __m128d {
-    let slice = slice as *const f64;
-    macro_rules! call {
-        ($imm8:expr) => {
-            _mm_i64gather_pd(slice, offsets, $imm8)
-        };
-    }
-    let r = constify_imm8_gather!(scale, call);
-    transmute(simd_select_bitmask(mask, r.as_f64x2(), src.as_f64x2()))
-}
-
 /// Gather single-precision (32-bit) floating-point elements from memory using 64-bit indices. 32-bit elements are loaded from addresses starting at base_addr and offset by each 64-bit element in vindex (each index is scaled by the factor in scale). Gathered elements are merged into dst. scale should be 1, 2, 4 or 8.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_i64gather_ps&expand=3100)
@@ -13487,56 +13391,6 @@ pub unsafe fn _mm512_mask_i64gather_ps(
         };
     }
     let r = constify_imm8_gather!(scale, call);
-    transmute(r)
-}
-
-/// Gather single-precision (32-bit) floating-point elements from memory using 64-bit indices. 32-bit elements are loaded from addresses starting at base_addr and offset by each 64-bit element in vindex (each index is scaled by the factor in scale). Gathered elements are merged into dst using writemask k (elements are copied from src when the corresponding mask bit is not set). scale should be 1, 2, 4 or 8.
-///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mmask_i64gather_ps&expand=3099)
-#[inline]
-#[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vgatherqps, scale = 1))]
-#[rustc_args_required_const(4)]
-pub unsafe fn _mm256_mmask_i64gather_ps(
-    src: __m128,
-    mask: __mmask8,
-    offsets: __m256i,
-    slice: *const u8,
-    scale: i32,
-) -> __m128 {
-    let slice = slice as *const f32;
-    macro_rules! call {
-        ($imm8:expr) => {
-            _mm256_i64gather_ps(slice, offsets, $imm8)
-        };
-    }
-    let r = constify_imm8_gather!(scale, call);
-    transmute(simd_select_bitmask(mask, r.as_f32x4(), src.as_f32x4()))
-}
-
-/// Gather single-precision (32-bit) floating-point elements from memory using 64-bit indices. 32-bit elements are loaded from addresses starting at base_addr and offset by each 64-bit element in vindex (each index is scaled by the factor in scale). Gathered elements are merged into dst using writemask k (elements are copied from src when the corresponding mask bit is not set). scale should be 1, 2, 4 or 8.
-///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mmask_i64gather_ps&expand=3096)
-#[inline]
-#[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vgatherqps, scale = 1))]
-#[rustc_args_required_const(4)]
-pub unsafe fn _mm_mmask_i64gather_ps(
-    src: __m128,
-    mask: __mmask8,
-    offsets: __m128i,
-    slice: *const u8,
-    scale: i32,
-) -> __m128 {
-    let slice = slice as *const f32;
-    macro_rules! call {
-        ($imm8:expr) => {
-            _mm_i64gather_ps(slice, offsets, $imm8)
-        };
-    }
-    let r = constify_imm8_gather!(scale, call);
-    let src = _mm_maskz_mov_ps(0b00000011, src);
-    let r = simd_select_bitmask(mask, r.as_f32x4(), src.as_f32x4());
     transmute(r)
 }
 
@@ -13587,54 +13441,6 @@ pub unsafe fn _mm512_mask_i32gather_ps(
     transmute(r)
 }
 
-/// Gather single-precision (32-bit) floating-point elements from memory using 32-bit indices. 32-bit elements are loaded from addresses starting at base_addr and offset by each 32-bit element in vindex (each index is scaled by the factor in scale). Gathered elements are merged into dst using writemask k (elements are copied from src when the corresponding mask bit is not set). scale should be 1, 2, 4 or 8.
-///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mmask_i32gather_ps&expand=3009)
-#[inline]
-#[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vgatherdps, scale = 1))]
-#[rustc_args_required_const(4)]
-pub unsafe fn _mm256_mmask_i32gather_ps(
-    src: __m256,
-    mask: __mmask8,
-    offsets: __m256i,
-    slice: *const u8,
-    scale: i32,
-) -> __m256 {
-    let slice = slice as *const f32;
-    macro_rules! call {
-        ($imm8:expr) => {
-            _mm256_i32gather_ps(slice, offsets, $imm8)
-        };
-    }
-    let r = constify_imm8_gather!(scale, call);
-    transmute(simd_select_bitmask(mask, r.as_f32x8(), src.as_f32x8()))
-}
-
-/// Gather single-precision (32-bit) floating-point elements from memory using 32-bit indices. 32-bit elements are loaded from addresses starting at base_addr and offset by each 32-bit element in vindex (each index is scaled by the factor in scale). Gathered elements are merged into dst using writemask k (elements are copied from src when the corresponding mask bit is not set). scale should be 1, 2, 4 or 8.
-///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mmask_i32gather_ps&expand=3006)
-#[inline]
-#[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vgatherdps, scale = 1))]
-#[rustc_args_required_const(4)]
-pub unsafe fn _mm_mmask_i32gather_ps(
-    src: __m128,
-    mask: __mmask8,
-    offsets: __m128i,
-    slice: *const u8,
-    scale: i32,
-) -> __m128 {
-    let slice = slice as *const f32;
-    macro_rules! call {
-        ($imm8:expr) => {
-            _mm_i32gather_ps(slice, offsets, $imm8)
-        };
-    }
-    let r = constify_imm8_gather!(scale, call);
-    transmute(simd_select_bitmask(mask, r.as_f32x4(), src.as_f32x4()))
-}
-
 /// Gather 32-bit integers from memory using 32-bit indices. 32-bit elements are loaded from addresses starting at base_addr and offset by each 32-bit element in vindex (each index is scaled by the factor in scale). Gathered elements are merged into dst. scale should be 1, 2, 4 or 8.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_i32gather_epi32&expand=2986)
@@ -13681,54 +13487,6 @@ pub unsafe fn _mm512_mask_i32gather_epi32(
     }
     let r = constify_imm8_gather!(scale, call);
     transmute(r)
-}
-
-/// Gather 32-bit integers from memory using 32-bit indices. 32-bit elements are loaded from addresses starting at base_addr and offset by each 32-bit element in vindex (each index is scaled by the factor in scale). Gathered elements are merged into dst using writemask k (elements are copied from src when the corresponding mask bit is not set). scale should be 1, 2, 4 or 8.
-///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mmask_i32gather_epi32&expand=2985)
-#[inline]
-#[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vpgatherdd, scale = 1))]
-#[rustc_args_required_const(4)]
-pub unsafe fn _mm256_mmask_i32gather_epi32(
-    src: __m256i,
-    mask: __mmask8,
-    offsets: __m256i,
-    slice: *const u8,
-    scale: i32,
-) -> __m256i {
-    let slice = slice as *const i32;
-    macro_rules! call {
-        ($imm8:expr) => {
-            _mm256_i32gather_epi32(slice, offsets, $imm8)
-        };
-    }
-    let r = constify_imm8_gather!(scale, call);
-    transmute(simd_select_bitmask(mask, r.as_i32x8(), src.as_i32x8()))
-}
-
-/// Gather 32-bit integers from memory using 32-bit indices. 32-bit elements are loaded from addresses starting at base_addr and offset by each 32-bit element in vindex (each index is scaled by the factor in scale). Gathered elements are merged into dst using writemask k (elements are copied from src when the corresponding mask bit is not set). scale should be 1, 2, 4 or 8.
-///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mmask_i32gather_epi32&expand=2982)
-#[inline]
-#[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vpgatherdd, scale = 1))]
-#[rustc_args_required_const(4)]
-pub unsafe fn _mm_mmask_i32gather_epi32(
-    src: __m128i,
-    mask: __mmask8,
-    offsets: __m128i,
-    slice: *const u8,
-    scale: i32,
-) -> __m128i {
-    let slice = slice as *const i32;
-    macro_rules! call {
-        ($imm8:expr) => {
-            _mm_i32gather_epi32(slice, offsets, $imm8)
-        };
-    }
-    let r = constify_imm8_gather!(scale, call);
-    transmute(simd_select_bitmask(mask, r.as_i32x4(), src.as_i32x4()))
 }
 
 /// Gather 64-bit integers from memory using 32-bit indices. 64-bit elements are loaded from addresses starting at base_addr and offset by each 32-bit element in vindex (each index is scaled by the factor in scale). Gathered elements are merged into dst. scale should be 1, 2, 4 or 8.
@@ -13779,54 +13537,6 @@ pub unsafe fn _mm512_mask_i32gather_epi64(
     transmute(r)
 }
 
-/// Gather 64-bit integers from memory using 32-bit indices. 64-bit elements are loaded from addresses starting at base_addr and offset by each 32-bit element in vindex (each index is scaled by the factor in scale). Gathered elements are merged into dst using writemask k (elements are copied from src when the corresponding mask bit is not set). scale should be 1, 2, 4 or 8.
-///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mmask_i32gather_epi64&expand=2993)
-#[inline]
-#[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vpgatherdq, scale = 1))]
-#[rustc_args_required_const(4)]
-pub unsafe fn _mm256_mmask_i32gather_epi64(
-    src: __m256i,
-    mask: __mmask8,
-    offsets: __m128i,
-    slice: *const u8,
-    scale: i32,
-) -> __m256i {
-    let slice = slice as *const i64;
-    macro_rules! call {
-        ($imm8:expr) => {
-            _mm256_i32gather_epi64(slice, offsets, $imm8)
-        };
-    }
-    let r = constify_imm8_gather!(scale, call);
-    transmute(simd_select_bitmask(mask, r.as_i64x4(), src.as_i64x4()))
-}
-
-/// Gather 64-bit integers from memory using 32-bit indices. 64-bit elements are loaded from addresses starting at base_addr and offset by each 32-bit element in vindex (each index is scaled by the factor in scale). Gathered elements are merged into dst using writemask k (elements are copied from src when the corresponding mask bit is not set). scale should be 1, 2, 4 or 8.
-///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mmask_i32gather_epi64&expand=2990)
-#[inline]
-#[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vpgatherdq, scale = 1))]
-#[rustc_args_required_const(4)]
-pub unsafe fn _mm_mmask_i32gather_epi64(
-    src: __m128i,
-    mask: __mmask8,
-    offsets: __m128i,
-    slice: *const u8,
-    scale: i32,
-) -> __m128i {
-    let slice = slice as *const i64;
-    macro_rules! call {
-        ($imm8:expr) => {
-            _mm_i32gather_epi64(slice, offsets, $imm8)
-        };
-    }
-    let r = constify_imm8_gather!(scale, call);
-    transmute(simd_select_bitmask(mask, r.as_i64x2(), src.as_i64x2()))
-}
-
 /// Gather 64-bit integers from memory using 64-bit indices. 64-bit elements are loaded from addresses starting at base_addr and offset by each 64-bit element in vindex (each index is scaled by the factor in scale). Gathered elements are merged into dst. scale should be 1, 2, 4 or 8.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_i64gather_epi64&expand=3084)
@@ -13875,54 +13585,6 @@ pub unsafe fn _mm512_mask_i64gather_epi64(
     transmute(r)
 }
 
-/// Gather 64-bit integers from memory using 64-bit indices. 64-bit elements are loaded from addresses starting at base_addr and offset by each 64-bit element in vindex (each index is scaled by the factor in scale). Gathered elements are merged into dst using writemask k (elements are copied from src when the corresponding mask bit is not set). scale should be 1, 2, 4 or 8.
-///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mmask_i64gather_epi64&expand=3083)
-#[inline]
-#[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vpgatherqq, scale = 1))]
-#[rustc_args_required_const(4)]
-pub unsafe fn _mm256_mmask_i64gather_epi64(
-    src: __m256i,
-    mask: __mmask8,
-    offsets: __m256i,
-    slice: *const u8,
-    scale: i32,
-) -> __m256i {
-    let slice = slice as *const i64;
-    macro_rules! call {
-        ($imm8:expr) => {
-            _mm256_i64gather_epi64(slice, offsets, $imm8)
-        };
-    }
-    let r = constify_imm8_gather!(scale, call);
-    transmute(simd_select_bitmask(mask, r.as_i64x4(), src.as_i64x4()))
-}
-
-/// Gather 64-bit integers from memory using 64-bit indices. 64-bit elements are loaded from addresses starting at base_addr and offset by each 64-bit element in vindex (each index is scaled by the factor in scale). Gathered elements are merged into dst using writemask k (elements are copied from src when the corresponding mask bit is not set). scale should be 1, 2, 4 or 8.
-///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mmask_i64gather_epi64&expand=3080)
-#[inline]
-#[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vpgatherqq, scale = 1))]
-#[rustc_args_required_const(4)]
-pub unsafe fn _mm_mmask_i64gather_epi64(
-    src: __m128i,
-    mask: __mmask8,
-    offsets: __m128i,
-    slice: *const u8,
-    scale: i32,
-) -> __m128i {
-    let slice = slice as *const i64;
-    macro_rules! call {
-        ($imm8:expr) => {
-            _mm_i64gather_epi64(slice, offsets, $imm8)
-        };
-    }
-    let r = constify_imm8_gather!(scale, call);
-    transmute(simd_select_bitmask(mask, r.as_i64x2(), src.as_i64x2()))
-}
-
 /// Gather 32-bit integers from memory using 64-bit indices. 32-bit elements are loaded from addresses starting at base_addr and offset by each 64-bit element in vindex (each index is scaled by the factor in scale). Gathered elements are merged into dst. scale should be 1, 2, 4 or 8.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_i64gather_epi32&expand=3074)
@@ -13968,56 +13630,6 @@ pub unsafe fn _mm512_mask_i64gather_epi32(
         };
     }
     let r = constify_imm8_gather!(scale, call);
-    transmute(r)
-}
-
-/// Gather 32-bit integers from memory using 64-bit indices. 32-bit elements are loaded from addresses starting at base_addr and offset by each 64-bit element in vindex (each index is scaled by the factor in scale). Gathered elements are merged into dst using writemask k (elements are copied from src when the corresponding mask bit is not set). scale should be 1, 2, 4 or 8.
-///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mmask_i64gather_epi32&expand=3073)
-#[inline]
-#[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vpgatherqd, scale = 1))]
-#[rustc_args_required_const(4)]
-pub unsafe fn _mm256_mmask_i64gather_epi32(
-    src: __m128i,
-    mask: __mmask8,
-    offsets: __m256i,
-    slice: *const u8,
-    scale: i32,
-) -> __m128i {
-    let slice = slice as *const i32;
-    macro_rules! call {
-        ($imm8:expr) => {
-            _mm256_i64gather_epi32(slice, offsets, $imm8)
-        };
-    }
-    let r = constify_imm8_gather!(scale, call);
-    transmute(simd_select_bitmask(mask, r.as_i32x4(), src.as_i32x4()))
-}
-
-/// Gather 32-bit integers from memory using 64-bit indices. 32-bit elements are loaded from addresses starting at base_addr and offset by each 64-bit element in vindex (each index is scaled by the factor in scale). Gathered elements are merged into dst using writemask k (elements are copied from src when the corresponding mask bit is not set). scale should be 1, 2, 4 or 8.
-///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mmask_i64gather_epi32&expand=3070)
-#[inline]
-#[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vpgatherqd, scale = 1))]
-#[rustc_args_required_const(4)]
-pub unsafe fn _mm_mmask_i64gather_epi32(
-    src: __m128i,
-    mask: __mmask8,
-    offsets: __m128i,
-    slice: *const u8,
-    scale: i32,
-) -> __m128i {
-    let slice = slice as *const i32;
-    macro_rules! call {
-        ($imm8:expr) => {
-            _mm_i64gather_epi32(slice, offsets, $imm8)
-        };
-    }
-    let r = constify_imm8_gather!(scale, call);
-    let src = _mm_maskz_mov_epi32(0b00000011, src);
-    let r = simd_select_bitmask(mask, r.as_i32x4(), src.as_i32x4());
     transmute(r)
 }
 
@@ -41086,34 +40698,6 @@ mod tests {
                                          2., 128., 2., 144., 2., 160., 2., 176.));
     }
 
-    #[simd_test(enable = "avx512f,avx512vl")]
-    unsafe fn test_mm256_mmask_i32gather_ps() {
-        let mut arr = [0f32; 128];
-        for i in 0..128 {
-            arr[i] = i as f32;
-        }
-        let src = _mm256_set1_ps(2.);
-        let mask = 0b10101010;
-        let index = _mm256_setr_epi32(0, 16, 32, 48, 64, 80, 96, 112);
-        // A multiplier of 4 is word-addressing
-        let r = _mm256_mmask_i32gather_ps(src, mask, index, arr.as_ptr() as *const u8, 4);
-        assert_eq_m256(r, _mm256_setr_ps(2., 16., 2., 48., 2., 80., 2., 112.));
-    }
-
-    #[simd_test(enable = "avx512f,avx512vl")]
-    unsafe fn test_mm_mmask_i32gather_ps() {
-        let mut arr = [0f32; 64];
-        for i in 0..64 {
-            arr[i] = i as f32;
-        }
-        let src = _mm_set1_ps(2.);
-        let mask = 0b00001010;
-        let index = _mm_setr_epi32(0, 16, 32, 48);
-        // A multiplier of 4 is word-addressing
-        let r = _mm_mmask_i32gather_ps(src, mask, index, arr.as_ptr() as *const u8, 4);
-        assert_eq_m128(r, _mm_setr_ps(2., 16., 2., 48.));
-    }
-
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_i32gather_epi32() {
         let mut arr = [0i32; 256];
@@ -41147,34 +40731,6 @@ mod tests {
             r,
             _mm512_setr_epi32(2, 16, 2, 48, 2, 80, 2, 112, 2, 144, 2, 176, 2, 208, 2, 240),
         );
-    }
-
-    #[simd_test(enable = "avx512f,avx512vl")]
-    unsafe fn test_mm256_mmask_i32gather_epi32() {
-        let mut arr = [0i32; 128];
-        for i in 0..128 {
-            arr[i] = i as i32;
-        }
-        let src = _mm256_set1_epi32(2);
-        let mask = 0b10101010;
-        let index = _mm256_setr_epi32(0, 16, 32, 48, 64, 80, 96, 112);
-        // A multiplier of 4 is word-addressing
-        let r = _mm256_mmask_i32gather_epi32(src, mask, index, arr.as_ptr() as *const u8, 4);
-        assert_eq_m256i(r, _mm256_setr_epi32(2, 16, 2, 48, 2, 80, 2, 112));
-    }
-
-    #[simd_test(enable = "avx512f,avx512vl")]
-    unsafe fn test_mm_mmask_i32gather_epi32() {
-        let mut arr = [0i32; 64];
-        for i in 0..64 {
-            arr[i] = i as i32;
-        }
-        let src = _mm_set1_epi32(2);
-        let mask = 0b00001010;
-        let index = _mm_setr_epi32(0, 16, 32, 48);
-        // A multiplier of 4 is word-addressing
-        let r = _mm_mmask_i32gather_epi32(src, mask, index, arr.as_ptr() as *const u8, 4);
-        assert_eq_m128i(r, _mm_setr_epi32(2, 16, 2, 48));
     }
 
     #[simd_test(enable = "avx512f")]

@@ -1467,36 +1467,36 @@
   * [x] [`_mm256_permutexvar_pd`]
   * [x] [`_mm512_i32gather_epi32`]
   * [x] [`_mm512_mask_i32gather_epi32`]
-  * [x] [`_mm_mmask_i32gather_epi32`]
-  * [x] [`_mm256_mmask_i32gather_epi32`]
+  * [_] [`_mm_mmask_i32gather_epi32`] //need i1
+  * [_] [`_mm256_mmask_i32gather_epi32`] //need i1
   * [x] [`_mm512_i32gather_epi64`]
   * [x] [`_mm512_mask_i32gather_epi64`]
-  * [x] [`_mm_mmask_i32gather_epi64`]
-  * [x] [`_mm256_mmask_i32gather_epi64`]
+  * [_] [`_mm_mmask_i32gather_epi64`] //need i1
+  * [_] [`_mm256_mmask_i32gather_epi64`] //need i1
   * [x] [`_mm512_i32gather_ps`]
   * [x] [`_mm512_mask_i32gather_ps`]
-  * [x] [`_mm_mmask_i32gather_ps`]
-  * [x] [`_mm256_mmask_i32gather_ps`]
+  * [_] [`_mm_mmask_i32gather_ps`] //need i1
+  * [_] [`_mm256_mmask_i32gather_ps`] //need i1
   * [x] [`_mm512_i32gather_pd`]
   * [x] [`_mm512_mask_i32gather_pd`]
-  * [x] [`_mm_mmask_i32gather_pd`]
-  * [x] [`_mm256_mmask_i32gather_pd`]
+  * [_] [`_mm_mmask_i32gather_pd`] //need i1
+  * [_] [`_mm256_mmask_i32gather_pd`] //need i1
   * [x] [`_mm512_i64gather_epi32`]
   * [x] [`_mm512_mask_i64gather_epi32`]
-  * [x] [`_mm_mmask_i64gather_epi32`]
-  * [x] [`_mm256_mmask_i64gather_epi32`]
+  * [_] [`_mm_mmask_i64gather_epi32`] //need i1
+  * [_] [`_mm256_mmask_i64gather_epi32`] //need i1
   * [x] [`_mm512_i64gather_epi64`]
   * [x] [`_mm512_mask_i64gather_epi64`]
-  * [x] [`_mm_mmask_i64gather_epi64`]
-  * [x] [`_mm256_mmask_i64gather_epi64`]
+  * [_] [`_mm_mmask_i64gather_epi64`] //need i1
+  * [_] [`_mm256_mmask_i64gather_epi64`] //need i1
   * [x] [`_mm512_i64gather_ps`]
   * [x] [`_mm512_mask_i64gather_ps`]
-  * [x] [`_mm_mmask_i64gather_ps`]
-  * [x] [`_mm256_mmask_i64gather_ps`]
+  * [_] [`_mm_mmask_i64gather_ps`] //need i1
+  * [_] [`_mm256_mmask_i64gather_ps`] //need i1
   * [x] [`_mm512_i64gather_pd`]
   * [x] [`_mm512_mask_i64gather_pd`]
-  * [x] [`_mm_mmask_i64gather_pd`]
-  * [x] [`_mm256_mmask_i64gather_pd`]
+  * [_] [`_mm_mmask_i64gather_pd`] //need i1
+  * [_] [`_mm256_mmask_i64gather_pd`] //need i1
   * [ ] [`_mm512_i32extgather_epi32`] //not in llvm
   * [ ] [`_mm512_mask_i32extgather_epi32`] //not in llvm
   * [ ] [`_mm512_i32extgather_ps`] // not in llvm
