@@ -29117,6 +29117,26 @@ pub unsafe fn _mm512_storeu_epi32(mem_addr: *mut i32, a: __m512i) {
     ptr::write_unaligned(mem_addr as *mut __m512i, a);
 }
 
+/// Store 256-bits (composed of 8 packed 32-bit integers) from a into memory. mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_storeu_epi32&expand=5626)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vmovups))] //should be vmovdqu32
+pub unsafe fn _mm256_storeu_epi32(mem_addr: *mut i32, a: __m256i) {
+    ptr::write_unaligned(mem_addr as *mut __m256i, a);
+}
+
+/// Store 128-bits (composed of 4 packed 32-bit integers) from a into memory. mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_storeu_epi32&expand=5624)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vmovups))] //should be vmovdqu32
+pub unsafe fn _mm_storeu_epi32(mem_addr: *mut i32, a: __m128i) {
+    ptr::write_unaligned(mem_addr as *mut __m128i, a);
+}
+
 /// Load 512-bits (composed of 8 packed 64-bit integers) from memory into dst. mem_addr does not need to be aligned on any particular boundary.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_loadu_epi64&expand=3386)
@@ -29149,7 +29169,7 @@ pub unsafe fn _mm_loadu_epi64(mem_addr: *const i64) -> __m128i {
 
 /// Store 512-bits (composed of 8 packed 64-bit integers) from a into memory. mem_addr does not need to be aligned on any particular boundary.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_storeu_epi64&expand=5634)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_storeu_epi64&expand=5634)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vmovups))] //should be vmovdqu64
@@ -29157,9 +29177,29 @@ pub unsafe fn _mm512_storeu_epi64(mem_addr: *mut i64, a: __m512i) {
     ptr::write_unaligned(mem_addr as *mut __m512i, a);
 }
 
+/// Store 256-bits (composed of 4 packed 64-bit integers) from a into memory. mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_storeu_epi64&expand=5632)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vmovups))] //should be vmovdqu64
+pub unsafe fn _mm256_storeu_epi64(mem_addr: *mut i64, a: __m256i) {
+    ptr::write_unaligned(mem_addr as *mut __m256i, a);
+}
+
+/// Store 128-bits (composed of 2 packed 64-bit integers) from a into memory. mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_storeu_epi64&expand=5630)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vmovups))] //should be vmovdqu64
+pub unsafe fn _mm_storeu_epi64(mem_addr: *mut i64, a: __m128i) {
+    ptr::write_unaligned(mem_addr as *mut __m128i, a);
+}
+
 /// Load 512-bits of integer data from memory into dst. mem_addr does not need to be aligned on any particular boundary.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_loadu_si512&expand=3420)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_loadu_si512&expand=3420)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vmovups))] //should be vmovdqu32
@@ -29169,7 +29209,7 @@ pub unsafe fn _mm512_loadu_si512(mem_addr: *const i32) -> __m512i {
 
 /// Store 512-bits of integer data from a into memory. mem_addr does not need to be aligned on any particular boundary.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_storeu_si512&expand=5657)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_storeu_si512&expand=5657)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vmovups))] //should be vmovdqu32
@@ -29286,6 +29326,26 @@ pub unsafe fn _mm512_store_epi32(mem_addr: *mut i32, a: __m512i) {
     ptr::write(mem_addr as *mut __m512i, a);
 }
 
+/// Store 256-bits (composed of 8 packed 32-bit integers) from a into memory. mem_addr must be aligned on a 32-byte boundary or a general-protection exception may be generated.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_store_epi32&expand=5567)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vmovaps))] //should be vmovdqa32
+pub unsafe fn _mm256_store_epi32(mem_addr: *mut i32, a: __m256i) {
+    ptr::write(mem_addr as *mut __m256i, a);
+}
+
+/// Store 128-bits (composed of 4 packed 32-bit integers) from a into memory. mem_addr must be aligned on a 16-byte boundary or a general-protection exception may be generated.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_store_epi32&expand=5565)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vmovaps))] //should be vmovdqa32
+pub unsafe fn _mm_store_epi32(mem_addr: *mut i32, a: __m128i) {
+    ptr::write(mem_addr as *mut __m128i, a);
+}
+
 /// Load 512-bits (composed of 8 packed 64-bit integers) from memory into dst. mem_addr must be aligned on a 64-byte boundary or a general-protection exception may be generated.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_load_epi64&expand=3313)
@@ -29318,7 +29378,7 @@ pub unsafe fn _mm_load_epi64(mem_addr: *const i64) -> __m128i {
 
 /// Store 512-bits (composed of 8 packed 64-bit integers) from a into memory. mem_addr must be aligned on a 64-byte boundary or a general-protection exception may be generated.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_store_epi64&expand=5575)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_store_epi64&expand=5575)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vmovaps))] //should be vmovdqa64
@@ -29326,9 +29386,29 @@ pub unsafe fn _mm512_store_epi64(mem_addr: *mut i64, a: __m512i) {
     ptr::write(mem_addr as *mut __m512i, a);
 }
 
+/// Store 256-bits (composed of 4 packed 64-bit integers) from a into memory. mem_addr must be aligned on a 32-byte boundary or a general-protection exception may be generated.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_store_epi64&expand=5573)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vmovaps))] //should be vmovdqa64
+pub unsafe fn _mm256_store_epi64(mem_addr: *mut i64, a: __m256i) {
+    ptr::write(mem_addr as *mut __m256i, a);
+}
+
+/// Store 128-bits (composed of 2 packed 64-bit integers) from a into memory. mem_addr must be aligned on a 16-byte boundary or a general-protection exception may be generated.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_store_epi64&expand=5571)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vmovaps))] //should be vmovdqa64
+pub unsafe fn _mm_store_epi64(mem_addr: *mut i64, a: __m128i) {
+    ptr::write(mem_addr as *mut __m128i, a);
+}
+
 /// Load 512-bits (composed of 16 packed single-precision (32-bit) floating-point elements) from memory into dst. mem_addr must be aligned on a 64-byte boundary or a general-protection exception may be generated.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_load_ps&expand=3336)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_load_ps&expand=3336)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vmovaps))]
@@ -29338,7 +29418,7 @@ pub unsafe fn _mm512_load_ps(mem_addr: *const f32) -> __m512 {
 
 /// Store 512-bits of integer data from a into memory. mem_addr must be aligned on a 64-byte boundary or a general-protection exception may be generated.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_store_ps&expand=5592)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_store_ps&expand=5592)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vmovaps))]
@@ -29348,7 +29428,7 @@ pub unsafe fn _mm512_store_ps(mem_addr: *mut f32, a: __m512) {
 
 /// Load 512-bits (composed of 8 packed double-precision (64-bit) floating-point elements) from memory into dst. mem_addr must be aligned on a 64-byte boundary or a general-protection exception may be generated.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_load_pd&expand=3326)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_load_pd&expand=3326)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vmovaps))] //should be vmovapd
@@ -29358,7 +29438,7 @@ pub unsafe fn _mm512_load_pd(mem_addr: *const f64) -> __m512d {
 
 /// Store 512-bits (composed of 8 packed double-precision (64-bit) floating-point elements) from a into memory. mem_addr must be aligned on a 64-byte boundary or a general-protection exception may be generated.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_store_pd&expand=5585)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_store_pd&expand=5585)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vmovaps))] //should be vmovapd
@@ -48142,6 +48222,22 @@ mod tests {
         assert_eq_m512i(r, a);
     }
 
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_storeu_epi32() {
+        let a = _mm256_set1_epi32(9);
+        let mut r = _mm256_undefined_si256();
+        _mm256_storeu_epi32(&mut r as *mut _ as *mut i32, a);
+        assert_eq_m256i(r, a);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_storeu_epi32() {
+        let a = _mm_set1_epi32(9);
+        let mut r = _mm_undefined_si128();
+        _mm_storeu_epi32(&mut r as *mut _ as *mut i32, a);
+        assert_eq_m128i(r, a);
+    }
+
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_loadu_si512() {
         let a = &[4, 3, 2, 5, 8, 9, 64, 50, -4, -3, -2, -5, -8, -9, -64, -50];
@@ -48231,6 +48327,22 @@ mod tests {
         let mut r = _mm512_undefined_epi32();
         _mm512_store_epi32(&mut r as *mut _ as *mut i32, a);
         assert_eq_m512i(r, a);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_store_epi32() {
+        let a = _mm256_set1_epi32(9);
+        let mut r = _mm256_undefined_si256();
+        _mm256_store_epi32(&mut r as *mut _ as *mut i32, a);
+        assert_eq_m256i(r, a);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_store_epi32() {
+        let a = _mm_set1_epi32(9);
+        let mut r = _mm_undefined_si128();
+        _mm_store_epi32(&mut r as *mut _ as *mut i32, a);
+        assert_eq_m128i(r, a);
     }
 
     #[simd_test(enable = "avx512f")]
