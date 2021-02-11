@@ -21839,7 +21839,10 @@ pub unsafe fn _mm512_maskz_inserti32x4(k: __mmask16, a: __m512i, b: __m128i, imm
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_inserti32x4&expand=3171)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vinsert, imm8 = 1))] //should be vinserti32x4
+#[cfg_attr(
+    all(test, not(target_os = "windows")),
+    assert_instr(vinsert, imm8 = 1) //should be vinserti32x4
+)]
 #[rustc_args_required_const(2)]
 pub unsafe fn _mm256_inserti32x4(a: __m256i, b: __m128i, imm8: i32) -> __m256i {
     assert!(imm8 >= 0 && imm8 <= 1);
@@ -21857,7 +21860,10 @@ pub unsafe fn _mm256_inserti32x4(a: __m256i, b: __m128i, imm8: i32) -> __m256i {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_inserti32x4&expand=3172)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vinserti32x4, imm8 = 1))]
+#[cfg_attr(
+    all(test, not(target_os = "windows")),
+    assert_instr(vinserti32x4, imm8 = 1)
+)]
 #[rustc_args_required_const(4)]
 pub unsafe fn _mm256_mask_inserti32x4(
     src: __m256i,
@@ -21880,7 +21886,10 @@ pub unsafe fn _mm256_mask_inserti32x4(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_inserti32x4&expand=3173)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vinserti32x4, imm8 = 1))]
+#[cfg_attr(
+    all(test, not(target_os = "windows")),
+    assert_instr(vinserti32x4, imm8 = 1)
+)]
 #[rustc_args_required_const(3)]
 pub unsafe fn _mm256_maskz_inserti32x4(k: __mmask8, a: __m256i, b: __m128i, imm8: i32) -> __m256i {
     macro_rules! call {
@@ -22026,7 +22035,10 @@ pub unsafe fn _mm512_maskz_insertf32x4(k: __mmask16, a: __m512, b: __m128, imm8:
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_insertf32x4&expand=3152)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vinsert, imm8 = 1))] //should be vinsertf32x4
+#[cfg_attr(
+    all(test, not(target_os = "windows")),
+    assert_instr(vinsert, imm8 = 1) //should be vinsertf32x4
+)]
 #[rustc_args_required_const(2)]
 pub unsafe fn _mm256_insertf32x4(a: __m256, b: __m128, imm8: i32) -> __m256 {
     assert!(imm8 >= 0 && imm8 <= 1);
@@ -22042,7 +22054,10 @@ pub unsafe fn _mm256_insertf32x4(a: __m256, b: __m128, imm8: i32) -> __m256 {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_insertf32x4&expand=3153)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vinsertf32x4, imm8 = 1))]
+#[cfg_attr(
+    all(test, not(target_os = "windows")),
+    assert_instr(vinsertf32x4, imm8 = 1)
+)]
 #[rustc_args_required_const(4)]
 pub unsafe fn _mm256_mask_insertf32x4(
     src: __m256,
@@ -22065,7 +22080,10 @@ pub unsafe fn _mm256_mask_insertf32x4(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_insertf32x4&expand=3154)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vinsertf32x4, imm8 = 1))]
+#[cfg_attr(
+    all(test, not(target_os = "windows")),
+    assert_instr(vinsertf32x4, imm8 = 1)
+)]
 #[rustc_args_required_const(3)]
 pub unsafe fn _mm256_maskz_insertf32x4(k: __mmask8, a: __m256, b: __m128, imm8: i32) -> __m256 {
     macro_rules! call {
