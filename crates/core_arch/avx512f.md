@@ -1760,7 +1760,6 @@
   * [x] [`_mm256_maskz_set1_epi64`]
   * [x] [`_mm512_set1_ps`]
   * [x] [`_mm512_set1_pd`]
-
   * [x] [`_mm512_set4_epi32`]
   * [x] [`_mm512_set4_epi64`]
   * [x] [`_mm512_set4_pd`]
@@ -1784,25 +1783,109 @@
   * [x] [`_mm512_setzero_ps`]
   * [x] [`_mm512_setzero_si512`]
   * [x] [`_mm512_setzero`]
+  * [x] [`_mm512_load_epi32`]
+  * [ ] [`_mm512_mask_load_epi32`] //need i1
+  * [ ] [`_mm512_maskz_load_epi32`] //need i1
+  * [x] [`_mm_load_epi32`]
+  * [_] [`_mm_mask_load_epi32`] //need i1
+  * [_] [`_mm_maskz_load_epi32`] //need i1
+  * [x] [`_mm256_load_epi32`]
+  * [_] [`_mm256_mask_load_epi32`] //need i1
+  * [_] [`_mm256_maskz_load_epi32`] //need i1
+  * [x] [`_mm512_load_epi64`]
+  * [ ] [`_mm512_mask_load_epi64`] //need i1
+  * [ ] [`_mm512_maskz_load_epi64`] //need i1
+  * [x] [`_mm_load_epi64`] //need i1
+  * [_] [`_mm_mask_load_epi64`] //need i1
+  * [_] [`_mm_maskz_load_epi64`] //need i1
+  * [x] [`_mm256_load_epi64`] //need i1
+  * [_] [`_mm256_mask_load_epi64`] //need i1
+  * [_] [`_mm256_maskz_load_epi64`] //need i1
+  * [x] [`_mm512_load_ps`]
+  * [ ] [`_mm512_mask_load_ps`] //need i1
+  * [ ] [`_mm512_maskz_load_ps`] //need i1
+  * [_] [`_mm_maskz_load_ps`] //need i
+  * [_] [`_mm_mask_load_ps`] //need i1
+  * [_] [`_mm_maskz_load_ps`] //need i1
+  * [_] [`_mm256_mask_load_ps`] //need i1
+  * [_] [`_mm256_maskz_load_ps`] //need i1
+  * [x] [`_mm512_load_pd`]
+  * [ ] [`_mm512_mask_load_pd`] //need i1
+  * [ ] [`_mm512_maskz_load_pd`] //need i1
+  * [_] [`_mm_mask_load_pd`] //need i1
+  * [_] [`_mm_maskz_load_pd`] //need i1
+  * [_] [`_mm256_mask_load_pd`] //need i1
+  * [_] [`_mm256_maskz_load_pd`] //need i1
+  * [x] [`_mm512_load_si512`]
+  * [x] [`_mm512_loadu_epi32`]
+  * [ ] [`_mm512_mask_loadu_epi32`] //need i1
+  * [x] [`_mm_loadu_epi32`]
+  * [_] [`_mm_mask_loadu_epi32`] //need i1
+  * [_] [`_mm_maskz_loadu_epi32`] //need i1
+  * [ ] [`_mm512_maskz_loadu_epi32`] //need i1
+  * [x] [`_mm256_loadu_epi32`]
+  * [_] [`_mm256_mask_loadu_epi32`] //need i1
+  * [_] [`_mm256_maskz_loadu_epi32`] //need i1
+  * [x] [`_mm512_loadu_epi64`]
+  * [ ] [`_mm512_mask_loadu_epi64`] //need i1
+  * [ ] [`_mm512_maskz_loadu_epi64`] //need i1
+  * [x] [`_mm_loadu_epi64`]
+  * [_] [`_mm_mask_loadu_epi64`] //need i1
+  * [_] [`_mm_maskz_loadu_epi64`] //need i1
+  * [x] [`_mm256_loadu_epi64`]
+  * [_] [`_mm256_mask_loadu_epi64`] //need i1
+  * [_] [`_mm256_maskz_loadu_epi64`] //need i1
+  * [x] [`_mm512_loadu_ps`]
+  * [ ] [`_mm512_mask_loadu_ps`] //need i1
+  * [ ] [`_mm512_maskz_loadu_ps`] //need i1
+  * [_] [`_mm_mask_loadu_ps`] //need i1
+  * [_] [`_mm_maskz_loadu_ps`] //need i1
+  * [_] [`_mm256_mask_loadu_ps`] //need i1
+  * [_] [`_mm256_maskz_loadu_ps`] //need i1
+  * [x] [`_mm512_loadu_pd`]
+  * [ ] [`_mm512_mask_loadu_pd`] //need i1
+  * [ ] [`_mm512_maskz_loadu_pd`] //need i1
+  * [_] [`_mm_mask_loadu_pd`] //need i1
+  * [_] [`_mm_maskz_loadu_pd`] //need i1
+  * [_] [`_mm256_mask_loadu_pd`] //need i1
+  * [_] [`_mm256_maskz_loadu_pd`] //need i1
+  * [x] [`_mm512_loadu_si512`]
+  * [x] [`_mm512_store_epi32`]
+  * [ ] [`_mm512_mask_store_epi32`] //need i1
+
+  * [x] [`_mm512_store_epi64`]
+  * [ ] [`_mm512_mask_store_epi64`] //need i1
+
+  * [x] [`_mm512_store_ps`]
+  * [ ] [`_mm512_mask_store_ps`] //need i1
+
+  * [x] [`_mm512_store_pd`]
+  * [ ] [`_mm512_mask_store_pd`] //need i1
+
+  * [x] [`_mm512_store_si512`]
+
+  * [x] [`_mm512_storeu_epi32`]
+  * [ ] [`_mm512_mask_storeu_epi32`] //need i1
+
+  * [x] [`_mm512_storeu_epi64`]
+  * [ ] [`_mm512_mask_storeu_epi64`] //need i1
+
+  * [x] [`_mm512_storeu_ps`]
+  * [ ] [`_mm512_mask_storeu_ps`] //need i1
+
+  * [x] [`_mm512_storeu_pd`]
+  * [ ] [`_mm512_mask_storeu_pd`] //need i1
 
 
-  * [ ] [`_mm512_mask_load_epi32`]
-  * [ ] [`_mm512_mask_load_epi64`]
-  * [ ] [`_mm512_mask_load_pd`]
-  * [ ] [`_mm512_mask_load_ps`]
-  * [ ] [`_mm512_mask_loadu_epi32`]
-  * [ ] [`_mm512_mask_loadu_epi64`]
-  * [ ] [`_mm512_mask_loadu_pd`]
-  * [ ] [`_mm512_mask_loadu_ps`]
+  * [x] [`_mm512_storeu_si512`]
 
-  * [ ] [`_mm512_mask_store_epi32`]
-  * [ ] [`_mm512_mask_store_epi64`]
-  * [ ] [`_mm512_mask_store_pd`]
-  * [ ] [`_mm512_mask_store_ps`]
-  * [ ] [`_mm512_mask_storeu_epi32`]
-  * [ ] [`_mm512_mask_storeu_epi64`]
-  * [ ] [`_mm512_mask_storeu_pd`]
-  * [ ] [`_mm512_mask_storeu_ps`]
+  * [ ] [`_mm512_stream_load_si512`]
+  * [x] [`_mm512_stream_pd`]
+  * [x] [`_mm512_stream_ps`]
+  * [x] [`_mm512_stream_si512`]
+
+
+
 
 
 
@@ -1825,12 +1908,6 @@
   * [x] [`_mm512_castsi512_ps`]
   * [x] [`_mm512_castsi512_si128`]
   * [x] [`_mm512_castsi512_si256`]
-
-
-
-
-
-
 
   * [x] [`_mm512_cvt_roundepi32_ps`]
   * [x] [`_mm512_cvt_roundepu32_ps`]
@@ -1903,17 +1980,6 @@
   * [x] [`_mm512_kunpackb`]
   * [x] [`_mm512_kxnor`]
   * [x] [`_mm512_kxor`]
-
-  * [x] [`_mm512_load_epi32`]
-  * [x] [`_mm512_load_epi64`]
-  * [x] [`_mm512_load_pd`]
-  * [x] [`_mm512_load_ps`]
-  * [x] [`_mm512_load_si512`]
-  * [x] [`_mm512_loadu_pd`]
-  * [x] [`_mm512_loadu_ps`]
-  * [x] [`_mm512_loadu_epi32`]
-  * [x] [`_mm512_loadu_epi64`]
-  * [x] [`_mm512_loadu_si512`]
   * [x] [`_mm512_mask2int`]
 
   * [x] [`_mm512_mask_cvt_roundepi32_ps`]
@@ -1990,9 +2056,6 @@
   * [ ] [`_mm512_mask_cvtusepi64_storeu_epi16`]
   * [ ] [`_mm512_mask_cvtusepi64_storeu_epi32`]
   * [ ] [`_mm512_mask_cvtusepi64_storeu_epi8`]
-
-
-
   * [x] [`_mm512_maskz_cvt_roundepi32_ps`]
   * [x] [`_mm512_maskz_cvt_roundepu32_ps`]
   * [x] [`_mm512_maskz_cvt_roundpd_epi32`]
@@ -2048,42 +2111,6 @@
   * [x] [`_mm512_maskz_cvtusepi64_epi16`]
   * [x] [`_mm512_maskz_cvtusepi64_epi32`]
   * [x] [`_mm512_maskz_cvtusepi64_epi8`]
-
-
-
-
-
-
-
-  * [ ] [`_mm512_maskz_load_epi32`]
-  * [ ] [`_mm512_maskz_load_epi64`]
-  * [ ] [`_mm512_maskz_load_pd`]
-  * [ ] [`_mm512_maskz_load_ps`]
-  * [ ] [`_mm512_maskz_loadu_epi32`]
-  * [ ] [`_mm512_maskz_loadu_epi64`]
-  * [ ] [`_mm512_maskz_loadu_pd`]
-  * [ ] [`_mm512_maskz_loadu_ps`]
-
-
-
-
-  * [x] [`_mm512_store_epi32`]
-  * [x] [`_mm512_store_epi64`]
-  * [x] [`_mm512_store_pd`]
-  * [x] [`_mm512_store_ps`]
-  * [x] [`_mm512_store_si512`]
-  * [x] [`_mm512_storeu_pd`]
-  * [x] [`_mm512_storeu_ps`]
-  * [x] [`_mm512_storeu_epi32`]
-  * [x] [`_mm512_storeu_epi64`]
-  * [x] [`_mm512_storeu_si512`]
-  * [ ] [`_mm512_stream_load_si512`]
-  * [x] [`_mm512_stream_pd`]
-  * [x] [`_mm512_stream_ps`]
-  * [x] [`_mm512_stream_si512`]
-
-
-
   * [x] [`_mm_add_round_sd`]
   * [x] [`_mm_add_round_ss`]
   * [x] [`_mm_cmp_round_sd_mask`]

@@ -28510,7 +28510,7 @@ pub unsafe fn _mm_mask_cmp_epi64_mask(
 
 /// Reduce the packed 32-bit integers in a by addition. Returns the sum of all elements in a.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_reduce_add_epi32&expand=4556)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_reduce_add_epi32&expand=4556)
 #[inline]
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_reduce_add_epi32(a: __m512i) -> i32 {
@@ -28519,7 +28519,7 @@ pub unsafe fn _mm512_reduce_add_epi32(a: __m512i) -> i32 {
 
 /// Reduce the packed 32-bit integers in a by addition using mask k. Returns the sum of all active elements in a.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_reduce_add_epi32&expand=4555)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_reduce_add_epi32&expand=4555)
 #[inline]
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_mask_reduce_add_epi32(k: __mmask16, a: __m512i) -> i32 {
@@ -28532,7 +28532,7 @@ pub unsafe fn _mm512_mask_reduce_add_epi32(k: __mmask16, a: __m512i) -> i32 {
 
 /// Reduce the packed 64-bit integers in a by addition. Returns the sum of all elements in a.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_reduce_add_epi64&expand=4558)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_reduce_add_epi64&expand=4558)
 #[inline]
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_reduce_add_epi64(a: __m512i) -> i64 {
@@ -28541,7 +28541,7 @@ pub unsafe fn _mm512_reduce_add_epi64(a: __m512i) -> i64 {
 
 /// Reduce the packed 64-bit integers in a by addition using mask k. Returns the sum of all active elements in a.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_reduce_add_epi64&expand=4557)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_reduce_add_epi64&expand=4557)
 #[inline]
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_mask_reduce_add_epi64(k: __mmask8, a: __m512i) -> i64 {
@@ -28554,7 +28554,7 @@ pub unsafe fn _mm512_mask_reduce_add_epi64(k: __mmask8, a: __m512i) -> i64 {
 
 /// Reduce the packed single-precision (32-bit) floating-point elements in a by addition. Returns the sum of all elements in a.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_reduce_add_ps&expand=4562)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_reduce_add_ps&expand=4562)
 #[inline]
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_reduce_add_ps(a: __m512) -> f32 {
@@ -28563,7 +28563,7 @@ pub unsafe fn _mm512_reduce_add_ps(a: __m512) -> f32 {
 
 /// Reduce the packed single-precision (32-bit) floating-point elements in a by addition using mask k. Returns the sum of all active elements in a.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_reduce_add_ps&expand=4561)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_reduce_add_ps&expand=4561)
 #[inline]
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_mask_reduce_add_ps(k: __mmask16, a: __m512) -> f32 {
@@ -28576,7 +28576,7 @@ pub unsafe fn _mm512_mask_reduce_add_ps(k: __mmask16, a: __m512) -> f32 {
 
 /// Reduce the packed double-precision (64-bit) floating-point elements in a by addition. Returns the sum of all elements in a.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_reduce_add_pd&expand=4560)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_reduce_add_pd&expand=4560)
 #[inline]
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_reduce_add_pd(a: __m512d) -> f64 {
@@ -28585,7 +28585,7 @@ pub unsafe fn _mm512_reduce_add_pd(a: __m512d) -> f64 {
 
 /// Reduce the packed double-precision (64-bit) floating-point elements in a by addition using mask k. Returns the sum of all active elements in a.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_reduce_add_pd&expand=4559)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_reduce_add_pd&expand=4559)
 #[inline]
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_mask_reduce_add_pd(k: __mmask8, a: __m512d) -> f64 {
@@ -28598,7 +28598,7 @@ pub unsafe fn _mm512_mask_reduce_add_pd(k: __mmask8, a: __m512d) -> f64 {
 
 /// Reduce the packed 32-bit integers in a by multiplication. Returns the product of all elements in a.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_reduce_mul_epi32&expand=4600)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_reduce_mul_epi32&expand=4600)
 #[inline]
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_reduce_mul_epi32(a: __m512i) -> i32 {
@@ -28607,7 +28607,7 @@ pub unsafe fn _mm512_reduce_mul_epi32(a: __m512i) -> i32 {
 
 /// Reduce the packed 32-bit integers in a by multiplication using mask k. Returns the product of all active elements in a.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_reduce_mul_epi32&expand=4599)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_reduce_mul_epi32&expand=4599)
 #[inline]
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_mask_reduce_mul_epi32(k: __mmask16, a: __m512i) -> i32 {
@@ -28620,7 +28620,7 @@ pub unsafe fn _mm512_mask_reduce_mul_epi32(k: __mmask16, a: __m512i) -> i32 {
 
 /// Reduce the packed 64-bit integers in a by multiplication. Returns the product of all elements in a.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_reduce_mul_epi64&expand=4602)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_reduce_mul_epi64&expand=4602)
 #[inline]
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_reduce_mul_epi64(a: __m512i) -> i64 {
@@ -28629,7 +28629,7 @@ pub unsafe fn _mm512_reduce_mul_epi64(a: __m512i) -> i64 {
 
 /// Reduce the packed 64-bit integers in a by multiplication using mask k. Returns the product of all active elements in a.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_reduce_mul_epi64&expand=4601)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_reduce_mul_epi64&expand=4601)
 #[inline]
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_mask_reduce_mul_epi64(k: __mmask8, a: __m512i) -> i64 {
@@ -28642,7 +28642,7 @@ pub unsafe fn _mm512_mask_reduce_mul_epi64(k: __mmask8, a: __m512i) -> i64 {
 
 /// Reduce the packed single-precision (32-bit) floating-point elements in a by multiplication. Returns the product of all elements in a.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_reduce_mul_ps&expand=4606)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_reduce_mul_ps&expand=4606)
 #[inline]
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_reduce_mul_ps(a: __m512) -> f32 {
@@ -28651,7 +28651,7 @@ pub unsafe fn _mm512_reduce_mul_ps(a: __m512) -> f32 {
 
 /// Reduce the packed single-precision (32-bit) floating-point elements in a by multiplication using mask k. Returns the product of all active elements in a.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_reduce_mul_ps&expand=4605)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_reduce_mul_ps&expand=4605)
 #[inline]
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_mask_reduce_mul_ps(k: __mmask16, a: __m512) -> f32 {
@@ -28664,7 +28664,7 @@ pub unsafe fn _mm512_mask_reduce_mul_ps(k: __mmask16, a: __m512) -> f32 {
 
 /// Reduce the packed double-precision (64-bit) floating-point elements in a by multiplication. Returns the product of all elements in a.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_reduce_mul_pd&expand=4604)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_reduce_mul_pd&expand=4604)
 #[inline]
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_reduce_mul_pd(a: __m512d) -> f64 {
@@ -28673,7 +28673,7 @@ pub unsafe fn _mm512_reduce_mul_pd(a: __m512d) -> f64 {
 
 /// Reduce the packed double-precision (64-bit) floating-point elements in a by multiplication using mask k. Returns the product of all active elements in a.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_reduce_mul_pd&expand=4603)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_reduce_mul_pd&expand=4603)
 #[inline]
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_mask_reduce_mul_pd(k: __mmask8, a: __m512d) -> f64 {
@@ -28686,7 +28686,7 @@ pub unsafe fn _mm512_mask_reduce_mul_pd(k: __mmask8, a: __m512d) -> f64 {
 
 /// Reduce the packed signed 32-bit integers in a by maximum. Returns the maximum of all elements in a.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_reduce_max_epi32&expand=4576)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_reduce_max_epi32&expand=4576)
 #[inline]
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_reduce_max_epi32(a: __m512i) -> i32 {
@@ -28695,7 +28695,7 @@ pub unsafe fn _mm512_reduce_max_epi32(a: __m512i) -> i32 {
 
 /// Reduce the packed signed 32-bit integers in a by maximum using mask k. Returns the maximum of all active elements in a.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_reduce_max_epi32&expand=4575)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_reduce_max_epi32&expand=4575)
 #[inline]
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_mask_reduce_max_epi32(k: __mmask16, a: __m512i) -> i32 {
@@ -28708,7 +28708,7 @@ pub unsafe fn _mm512_mask_reduce_max_epi32(k: __mmask16, a: __m512i) -> i32 {
 
 /// Reduce the packed signed 64-bit integers in a by maximum. Returns the maximum of all elements in a.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_reduce_max_epi64&expand=4578)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_reduce_max_epi64&expand=4578)
 #[inline]
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_reduce_max_epi64(a: __m512i) -> i64 {
@@ -28717,7 +28717,7 @@ pub unsafe fn _mm512_reduce_max_epi64(a: __m512i) -> i64 {
 
 /// Reduce the packed signed 64-bit integers in a by maximum using mask k. Returns the maximum of all active elements in a.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_reduce_max_epi64&expand=4577)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_reduce_max_epi64&expand=4577)
 #[inline]
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_mask_reduce_max_epi64(k: __mmask8, a: __m512i) -> i64 {
@@ -28730,7 +28730,7 @@ pub unsafe fn _mm512_mask_reduce_max_epi64(k: __mmask8, a: __m512i) -> i64 {
 
 /// Reduce the packed unsigned 32-bit integers in a by maximum. Returns the maximum of all elements in a.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_reduce_max_epu32&expand=4580)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_reduce_max_epu32&expand=4580)
 #[inline]
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_reduce_max_epu32(a: __m512i) -> u32 {
@@ -28739,7 +28739,7 @@ pub unsafe fn _mm512_reduce_max_epu32(a: __m512i) -> u32 {
 
 /// Reduce the packed unsigned 32-bit integers in a by maximum using mask k. Returns the maximum of all active elements in a.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_reduce_max_epu32&expand=4579)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_reduce_max_epu32&expand=4579)
 #[inline]
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_mask_reduce_max_epu32(k: __mmask16, a: __m512i) -> u32 {
@@ -28752,7 +28752,7 @@ pub unsafe fn _mm512_mask_reduce_max_epu32(k: __mmask16, a: __m512i) -> u32 {
 
 /// Reduce the packed unsigned 64-bit integers in a by maximum. Returns the maximum of all elements in a.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_reduce_max_epu64&expand=4582)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_reduce_max_epu64&expand=4582)
 #[inline]
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_reduce_max_epu64(a: __m512i) -> u64 {
@@ -28761,7 +28761,7 @@ pub unsafe fn _mm512_reduce_max_epu64(a: __m512i) -> u64 {
 
 /// Reduce the packed unsigned 64-bit integers in a by maximum using mask k. Returns the maximum of all active elements in a.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_reduce_max_epu64&expand=4581)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_reduce_max_epu64&expand=4581)
 #[inline]
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_mask_reduce_max_epu64(k: __mmask8, a: __m512i) -> u64 {
@@ -28774,7 +28774,7 @@ pub unsafe fn _mm512_mask_reduce_max_epu64(k: __mmask8, a: __m512i) -> u64 {
 
 /// Reduce the packed single-precision (32-bit) floating-point elements in a by maximum. Returns the maximum of all elements in a.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_reduce_max_ps&expand=4586)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_reduce_max_ps&expand=4586)
 #[inline]
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_reduce_max_ps(a: __m512) -> f32 {
@@ -28783,7 +28783,7 @@ pub unsafe fn _mm512_reduce_max_ps(a: __m512) -> f32 {
 
 /// Reduce the packed single-precision (32-bit) floating-point elements in a by maximum using mask k. Returns the maximum of all active elements in a.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_reduce_max_ps&expand=4585)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_reduce_max_ps&expand=4585)
 #[inline]
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_mask_reduce_max_ps(k: __mmask16, a: __m512) -> f32 {
@@ -28796,7 +28796,7 @@ pub unsafe fn _mm512_mask_reduce_max_ps(k: __mmask16, a: __m512) -> f32 {
 
 /// Reduce the packed double-precision (64-bit) floating-point elements in a by maximum. Returns the maximum of all elements in a.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_reduce_max_pd&expand=4584)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_reduce_max_pd&expand=4584)
 #[inline]
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_reduce_max_pd(a: __m512d) -> f64 {
@@ -28805,7 +28805,7 @@ pub unsafe fn _mm512_reduce_max_pd(a: __m512d) -> f64 {
 
 /// Reduce the packed double-precision (64-bit) floating-point elements in a by maximum using mask k. Returns the maximum of all active elements in a.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_reduce_max_pd&expand=4583)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_reduce_max_pd&expand=4583)
 #[inline]
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_mask_reduce_max_pd(k: __mmask8, a: __m512d) -> f64 {
@@ -28818,7 +28818,7 @@ pub unsafe fn _mm512_mask_reduce_max_pd(k: __mmask8, a: __m512d) -> f64 {
 
 /// Reduce the packed signed 32-bit integers in a by minimum. Returns the minimum of all elements in a.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_reduce_min_epi32&expand=4588)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_reduce_min_epi32&expand=4588)
 #[inline]
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_reduce_min_epi32(a: __m512i) -> i32 {
@@ -28827,7 +28827,7 @@ pub unsafe fn _mm512_reduce_min_epi32(a: __m512i) -> i32 {
 
 /// Reduce the packed signed 32-bit integers in a by maximum using mask k. Returns the minimum of all active elements in a.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_reduce_min_epi32&expand=4587)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_reduce_min_epi32&expand=4587)
 #[inline]
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_mask_reduce_min_epi32(k: __mmask16, a: __m512i) -> i32 {
@@ -28840,7 +28840,7 @@ pub unsafe fn _mm512_mask_reduce_min_epi32(k: __mmask16, a: __m512i) -> i32 {
 
 /// Reduce the packed signed 64-bit integers in a by minimum. Returns the minimum of all elements in a.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_reduce_min_epi64&expand=4590)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_reduce_min_epi64&expand=4590)
 #[inline]
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_reduce_min_epi64(a: __m512i) -> i64 {
@@ -28849,7 +28849,7 @@ pub unsafe fn _mm512_reduce_min_epi64(a: __m512i) -> i64 {
 
 /// Reduce the packed signed 64-bit integers in a by maximum using mask k. Returns the minimum of all active elements in a.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_reduce_min_epi64&expand=4589)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_reduce_min_epi64&expand=4589)
 #[inline]
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_mask_reduce_min_epi64(k: __mmask8, a: __m512i) -> i64 {
@@ -28862,7 +28862,7 @@ pub unsafe fn _mm512_mask_reduce_min_epi64(k: __mmask8, a: __m512i) -> i64 {
 
 /// Reduce the packed unsigned 32-bit integers in a by minimum. Returns the minimum of all elements in a.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_reduce_min_epu32&expand=4592)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_reduce_min_epu32&expand=4592)
 #[inline]
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_reduce_min_epu32(a: __m512i) -> u32 {
@@ -28871,7 +28871,7 @@ pub unsafe fn _mm512_reduce_min_epu32(a: __m512i) -> u32 {
 
 /// Reduce the packed unsigned 32-bit integers in a by maximum using mask k. Returns the minimum of all active elements in a.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_reduce_min_epu32&expand=4591)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_reduce_min_epu32&expand=4591)
 #[inline]
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_mask_reduce_min_epu32(k: __mmask16, a: __m512i) -> u32 {
@@ -28884,7 +28884,7 @@ pub unsafe fn _mm512_mask_reduce_min_epu32(k: __mmask16, a: __m512i) -> u32 {
 
 /// Reduce the packed unsigned 64-bit integers in a by minimum. Returns the minimum of all elements in a.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_reduce_min_epu64&expand=4594)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_reduce_min_epu64&expand=4594)
 #[inline]
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_reduce_min_epu64(a: __m512i) -> u64 {
@@ -28893,7 +28893,7 @@ pub unsafe fn _mm512_reduce_min_epu64(a: __m512i) -> u64 {
 
 /// Reduce the packed signed 64-bit integers in a by maximum using mask k. Returns the minimum of all active elements in a.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_reduce_min_epi64&expand=4589)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_reduce_min_epi64&expand=4589)
 #[inline]
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_mask_reduce_min_epu64(k: __mmask8, a: __m512i) -> u64 {
@@ -28906,7 +28906,7 @@ pub unsafe fn _mm512_mask_reduce_min_epu64(k: __mmask8, a: __m512i) -> u64 {
 
 /// Reduce the packed single-precision (32-bit) floating-point elements in a by minimum. Returns the minimum of all elements in a.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_reduce_min_ps&expand=4598)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_reduce_min_ps&expand=4598)
 #[inline]
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_reduce_min_ps(a: __m512) -> f32 {
@@ -28915,7 +28915,7 @@ pub unsafe fn _mm512_reduce_min_ps(a: __m512) -> f32 {
 
 /// Reduce the packed single-precision (32-bit) floating-point elements in a by maximum using mask k. Returns the minimum of all active elements in a.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_reduce_min_ps&expand=4597)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_reduce_min_ps&expand=4597)
 #[inline]
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_mask_reduce_min_ps(k: __mmask16, a: __m512) -> f32 {
@@ -28928,7 +28928,7 @@ pub unsafe fn _mm512_mask_reduce_min_ps(k: __mmask16, a: __m512) -> f32 {
 
 /// Reduce the packed double-precision (64-bit) floating-point elements in a by minimum. Returns the minimum of all elements in a.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_reduce_min_pd&expand=4596)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_reduce_min_pd&expand=4596)
 #[inline]
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_reduce_min_pd(a: __m512d) -> f64 {
@@ -28937,7 +28937,7 @@ pub unsafe fn _mm512_reduce_min_pd(a: __m512d) -> f64 {
 
 /// Reduce the packed double-precision (64-bit) floating-point elements in a by maximum using mask k. Returns the minimum of all active elements in a.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_reduce_min_pd&expand=4595)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_reduce_min_pd&expand=4595)
 #[inline]
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_mask_reduce_min_pd(k: __mmask8, a: __m512d) -> f64 {
@@ -28950,7 +28950,7 @@ pub unsafe fn _mm512_mask_reduce_min_pd(k: __mmask8, a: __m512d) -> f64 {
 
 /// Reduce the packed 32-bit integers in a by bitwise AND. Returns the bitwise AND of all elements in a.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_reduce_and_epi32&expand=4564)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_reduce_and_epi32&expand=4564)
 #[inline]
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_reduce_and_epi32(a: __m512i) -> i32 {
@@ -28959,38 +28959,20 @@ pub unsafe fn _mm512_reduce_and_epi32(a: __m512i) -> i32 {
 
 /// Reduce the packed 32-bit integers in a by bitwise AND using mask k. Returns the bitwise AND of all active elements in a.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_reduce_and_epi32&expand=4563)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_reduce_and_epi32&expand=4563)
 #[inline]
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_mask_reduce_and_epi32(k: __mmask16, a: __m512i) -> i32 {
     simd_reduce_and(simd_select_bitmask(
         k,
         a.as_i32x16(),
-        _mm512_set1_epi32(
-            1 << 0
-                | 1 << 1
-                | 1 << 2
-                | 1 << 3
-                | 1 << 4
-                | 1 << 5
-                | 1 << 6
-                | 1 << 7
-                | 1 << 8
-                | 1 << 9
-                | 1 << 10
-                | 1 << 11
-                | 1 << 12
-                | 1 << 13
-                | 1 << 14
-                | 1 << 15,
-        )
-        .as_i32x16(),
+        _mm512_set1_epi32(0xFF).as_i32x16(),
     ))
 }
 
 /// Reduce the packed 64-bit integers in a by bitwise AND. Returns the bitwise AND of all elements in a.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_reduce_and_epi64&expand=4566)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_reduce_and_epi64&expand=4566)
 #[inline]
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_reduce_and_epi64(a: __m512i) -> i64 {
@@ -28999,7 +28981,7 @@ pub unsafe fn _mm512_reduce_and_epi64(a: __m512i) -> i64 {
 
 /// Reduce the packed 64-bit integers in a by addition using mask k. Returns the sum of all active elements in a.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_reduce_add_epi64&expand=4557)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_reduce_add_epi64&expand=4557)
 #[inline]
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_mask_reduce_and_epi64(k: __mmask8, a: __m512i) -> i64 {
@@ -29013,7 +28995,7 @@ pub unsafe fn _mm512_mask_reduce_and_epi64(k: __mmask8, a: __m512i) -> i64 {
 
 /// Reduce the packed 32-bit integers in a by bitwise OR. Returns the bitwise OR of all elements in a.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_reduce_or_epi32&expand=4608)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_reduce_or_epi32&expand=4608)
 #[inline]
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_reduce_or_epi32(a: __m512i) -> i32 {
@@ -29022,7 +29004,7 @@ pub unsafe fn _mm512_reduce_or_epi32(a: __m512i) -> i32 {
 
 /// Reduce the packed 32-bit integers in a by bitwise OR using mask k. Returns the bitwise OR of all active elements in a.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_reduce_or_epi32&expand=4607)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_reduce_or_epi32&expand=4607)
 #[inline]
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_mask_reduce_or_epi32(k: __mmask16, a: __m512i) -> i32 {
@@ -29035,7 +29017,7 @@ pub unsafe fn _mm512_mask_reduce_or_epi32(k: __mmask16, a: __m512i) -> i32 {
 
 /// Reduce the packed 64-bit integers in a by bitwise OR. Returns the bitwise OR of all elements in a.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_reduce_or_epi64&expand=4610)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_reduce_or_epi64&expand=4610)
 #[inline]
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_reduce_or_epi64(a: __m512i) -> i64 {
@@ -29044,7 +29026,7 @@ pub unsafe fn _mm512_reduce_or_epi64(a: __m512i) -> i64 {
 
 /// Reduce the packed 64-bit integers in a by bitwise OR using mask k. Returns the bitwise OR of all active elements in a.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_reduce_or_epi64&expand=4609)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_reduce_or_epi64&expand=4609)
 #[inline]
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_mask_reduce_or_epi64(k: __mmask8, a: __m512i) -> i64 {
@@ -29077,7 +29059,7 @@ pub unsafe fn _mm512_undefined_ps() -> __m512 {
 
 /// Return vector of type __m512i with undefined elements.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_undefined_epi32&expand=5995)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_undefined_epi32&expand=5995)
 #[inline]
 #[target_feature(enable = "avx512f")]
 // This intrinsic has no corresponding instruction.
@@ -29087,7 +29069,7 @@ pub unsafe fn _mm512_undefined_epi32() -> __m512i {
 
 /// Return vector of type __m512 with undefined elements.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_undefined&expand=5994)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_undefined&expand=5994)
 #[inline]
 #[target_feature(enable = "avx512f")]
 // This intrinsic has no corresponding instruction.
@@ -29097,7 +29079,7 @@ pub unsafe fn _mm512_undefined() -> __m512 {
 
 /// Load 512-bits (composed of 16 packed 32-bit integers) from memory into dst. mem_addr does not need to be aligned on any particular boundary.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_loadu_epi32&expand=3377)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_loadu_epi32&expand=3377)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vmovups))] //should be vmovdqu32
@@ -29105,9 +29087,29 @@ pub unsafe fn _mm512_loadu_epi32(mem_addr: *const i32) -> __m512i {
     ptr::read_unaligned(mem_addr as *const __m512i)
 }
 
+/// Load 256-bits (composed of 8 packed 32-bit integers) from memory into dst. mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_loadu_epi32&expand=3374)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vmovups))] //should be vmovdqu32
+pub unsafe fn _mm256_loadu_epi32(mem_addr: *const i32) -> __m256i {
+    ptr::read_unaligned(mem_addr as *const __m256i)
+}
+
+/// Load 128-bits (composed of 4 packed 32-bit integers) from memory into dst. mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_loadu_epi32&expand=3371)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vmovups))] //should be vmovdqu32
+pub unsafe fn _mm_loadu_epi32(mem_addr: *const i32) -> __m128i {
+    ptr::read_unaligned(mem_addr as *const __m128i)
+}
+
 /// Store 512-bits (composed of 16 packed 32-bit integers) from a into memory. mem_addr does not need to be aligned on any particular boundary.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_storeu_epi32&expand=5628)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_storeu_epi32&expand=5628)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vmovups))] //should be vmovdqu32
@@ -29117,12 +29119,32 @@ pub unsafe fn _mm512_storeu_epi32(mem_addr: *mut i32, a: __m512i) {
 
 /// Load 512-bits (composed of 8 packed 64-bit integers) from memory into dst. mem_addr does not need to be aligned on any particular boundary.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_loadu_epi64&expand=3386)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_loadu_epi64&expand=3386)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vmovups))] //should be vmovdqu64
 pub unsafe fn _mm512_loadu_epi64(mem_addr: *const i64) -> __m512i {
     ptr::read_unaligned(mem_addr as *const __m512i)
+}
+
+/// Load 256-bits (composed of 4 packed 64-bit integers) from memory into dst. mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_loadu_epi64&expand=3383)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vmovups))] //should be vmovdqu64
+pub unsafe fn _mm256_loadu_epi64(mem_addr: *const i64) -> __m256i {
+    ptr::read_unaligned(mem_addr as *const __m256i)
+}
+
+/// Load 128-bits (composed of 2 packed 64-bit integers) from memory into dst. mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_loadu_epi64&expand=3380)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vmovups))] //should be vmovdqu64
+pub unsafe fn _mm_loadu_epi64(mem_addr: *const i64) -> __m128i {
+    ptr::read_unaligned(mem_addr as *const __m128i)
 }
 
 /// Store 512-bits (composed of 8 packed 64-bit integers) from a into memory. mem_addr does not need to be aligned on any particular boundary.
@@ -29226,12 +29248,32 @@ pub unsafe fn _mm512_store_si512(mem_addr: *mut i32, a: __m512i) {
 
 /// Load 512-bits (composed of 16 packed 32-bit integers) from memory into dst. mem_addr must be aligned on a 64-byte boundary or a general-protection exception may be generated.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_load_epi32&expand=3304)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_load_epi32&expand=3304)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vmovaps))] //should be vmovdqa32
 pub unsafe fn _mm512_load_epi32(mem_addr: *const i32) -> __m512i {
     ptr::read(mem_addr as *const __m512i)
+}
+
+/// Load 256-bits (composed of 8 packed 32-bit integers) from memory into dst. mem_addr must be aligned on a 32-byte boundary or a general-protection exception may be generated.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_load_epi32&expand=3301)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vmovaps))] //should be vmovdqa32
+pub unsafe fn _mm256_load_epi32(mem_addr: *const i32) -> __m256i {
+    ptr::read(mem_addr as *const __m256i)
+}
+
+/// Load 128-bits (composed of 4 packed 32-bit integers) from memory into dst. mem_addr must be aligned on a 16-byte boundary or a general-protection exception may be generated.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_load_epi32&expand=3298)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vmovaps))] //should be vmovdqa32
+pub unsafe fn _mm_load_epi32(mem_addr: *const i32) -> __m128i {
+    ptr::read(mem_addr as *const __m128i)
 }
 
 /// Store 512-bits (composed of 16 packed 32-bit integers) from a into memory. mem_addr must be aligned on a 64-byte boundary or a general-protection exception may be generated.
@@ -29246,12 +29288,32 @@ pub unsafe fn _mm512_store_epi32(mem_addr: *mut i32, a: __m512i) {
 
 /// Load 512-bits (composed of 8 packed 64-bit integers) from memory into dst. mem_addr must be aligned on a 64-byte boundary or a general-protection exception may be generated.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_load_epi64&expand=3313)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_load_epi64&expand=3313)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vmovaps))] //should be vmovdqa64
 pub unsafe fn _mm512_load_epi64(mem_addr: *const i64) -> __m512i {
     ptr::read(mem_addr as *const __m512i)
+}
+
+/// Load 256-bits (composed of 4 packed 64-bit integers) from memory into dst. mem_addr must be aligned on a 32-byte boundary or a general-protection exception may be generated.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_load_epi64&expand=3310)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vmovaps))] //should be vmovdqa64
+pub unsafe fn _mm256_load_epi64(mem_addr: *const i64) -> __m256i {
+    ptr::read(mem_addr as *const __m256i)
+}
+
+/// Load 128-bits (composed of 2 packed 64-bit integers) from memory into dst. mem_addr must be aligned on a 16-byte boundary or a general-protection exception may be generated.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_load_epi64&expand=3307)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vmovaps))] //should be vmovdqa64
+pub unsafe fn _mm_load_epi64(mem_addr: *const i64) -> __m128i {
+    ptr::read(mem_addr as *const __m128i)
 }
 
 /// Store 512-bits (composed of 8 packed 64-bit integers) from a into memory. mem_addr must be aligned on a 64-byte boundary or a general-protection exception may be generated.
@@ -48054,6 +48116,24 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_loadu_epi32() {
+        let a = &[4, 3, 2, 5, 8, 9, 64, 50];
+        let p = a.as_ptr();
+        let r = _mm256_loadu_epi32(black_box(p));
+        let e = _mm256_setr_epi32(4, 3, 2, 5, 8, 9, 64, 50);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_loadu_epi32() {
+        let a = &[4, 3, 2, 5];
+        let p = a.as_ptr();
+        let r = _mm_loadu_epi32(black_box(p));
+        let e = _mm_setr_epi32(4, 3, 2, 5);
+        assert_eq_m128i(r, e);
+    }
+
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_storeu_epi32() {
         let a = _mm512_set1_epi32(9);
@@ -48115,6 +48195,34 @@ mod tests {
         let r = _mm512_load_epi32(black_box(p));
         let e = _mm512_setr_epi32(4, 3, 2, 5, 8, 9, 64, 50, -4, -3, -2, -5, -8, -9, -64, -50);
         assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_load_epi32() {
+        #[repr(align(64))]
+        struct Align {
+            data: [i32; 8],
+        }
+        let a = Align {
+            data: [4, 3, 2, 5, 8, 9, 64, 50],
+        };
+        let p = (a.data).as_ptr();
+        let r = _mm256_load_epi32(black_box(p));
+        let e = _mm256_setr_epi32(4, 3, 2, 5, 8, 9, 64, 50);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_load_epi32() {
+        #[repr(align(64))]
+        struct Align {
+            data: [i32; 4],
+        }
+        let a = Align { data: [4, 3, 2, 5] };
+        let p = (a.data).as_ptr();
+        let r = _mm_load_epi32(black_box(p));
+        let e = _mm_setr_epi32(4, 3, 2, 5);
+        assert_eq_m128i(r, e);
     }
 
     #[simd_test(enable = "avx512f")]
