@@ -25121,7 +25121,7 @@ pub unsafe fn _mm512_kortestc(a: __mmask16, b: __mmask16) -> i32 {
 
 /// Compute the bitwise AND of packed 32-bit integers in a and b, producing intermediate 32-bit values, and set the corresponding bit in result mask k if the intermediate value is non-zero.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_test_epi32_mask&expand=5890)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_test_epi32_mask&expand=5890)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vptestmd))]
@@ -25133,7 +25133,7 @@ pub unsafe fn _mm512_test_epi32_mask(a: __m512i, b: __m512i) -> __mmask16 {
 
 /// Compute the bitwise AND of packed 32-bit integers in a and b, producing intermediate 32-bit values, and set the corresponding bit in result mask k (subject to writemask k) if the intermediate value is non-zero.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_test_epi32_mask&expand=5889)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_test_epi32_mask&expand=5889)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vptestmd))]
@@ -25143,9 +25143,57 @@ pub unsafe fn _mm512_mask_test_epi32_mask(k: __mmask16, a: __m512i, b: __m512i) 
     _mm512_mask_cmpneq_epi32_mask(k, and, zero)
 }
 
+/// Compute the bitwise AND of packed 32-bit integers in a and b, producing intermediate 32-bit values, and set the corresponding bit in result mask k if the intermediate value is non-zero.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_test_epi32_mask&expand=5888)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vptestmd))]
+pub unsafe fn _mm256_test_epi32_mask(a: __m256i, b: __m256i) -> __mmask8 {
+    let and = _mm256_and_si256(a, b);
+    let zero = _mm256_setzero_si256();
+    _mm256_cmpneq_epi32_mask(and, zero)
+}
+
+/// Compute the bitwise AND of packed 32-bit integers in a and b, producing intermediate 32-bit values, and set the corresponding bit in result mask k (subject to writemask k) if the intermediate value is non-zero.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_test_epi32_mask&expand=5887)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vptestmd))]
+pub unsafe fn _mm256_mask_test_epi32_mask(k: __mmask8, a: __m256i, b: __m256i) -> __mmask8 {
+    let and = _mm256_and_si256(a, b);
+    let zero = _mm256_setzero_si256();
+    _mm256_mask_cmpneq_epi32_mask(k, and, zero)
+}
+
+/// Compute the bitwise AND of packed 32-bit integers in a and b, producing intermediate 32-bit values, and set the corresponding bit in result mask k if the intermediate value is non-zero.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_test_epi32_mask&expand=5886)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vptestmd))]
+pub unsafe fn _mm_test_epi32_mask(a: __m128i, b: __m128i) -> __mmask8 {
+    let and = _mm_and_si128(a, b);
+    let zero = _mm_setzero_si128();
+    _mm_cmpneq_epi32_mask(and, zero)
+}
+
+/// Compute the bitwise AND of packed 32-bit integers in a and b, producing intermediate 32-bit values, and set the corresponding bit in result mask k (subject to writemask k) if the intermediate value is non-zero.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_test_epi32_mask&expand=5885)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vptestmd))]
+pub unsafe fn _mm_mask_test_epi32_mask(k: __mmask8, a: __m128i, b: __m128i) -> __mmask8 {
+    let and = _mm_and_si128(a, b);
+    let zero = _mm_setzero_si128();
+    _mm_mask_cmpneq_epi32_mask(k, and, zero)
+}
+
 /// Compute the bitwise AND of packed 64-bit integers in a and b, producing intermediate 64-bit values, and set the corresponding bit in result mask k if the intermediate value is non-zero.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_test_epi64_mask&expand=5896)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_test_epi64_mask&expand=5896)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vptestmq))]
@@ -25157,7 +25205,7 @@ pub unsafe fn _mm512_test_epi64_mask(a: __m512i, b: __m512i) -> __mmask8 {
 
 /// Compute the bitwise AND of packed 64-bit integers in a and b, producing intermediate 64-bit values, and set the corresponding bit in result mask k (subject to writemask k) if the intermediate value is non-zero.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_test_epi64_mask&expand=5895)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_test_epi64_mask&expand=5895)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vptestmq))]
@@ -25167,9 +25215,57 @@ pub unsafe fn _mm512_mask_test_epi64_mask(k: __mmask8, a: __m512i, b: __m512i) -
     _mm512_mask_cmpneq_epi64_mask(k, and, zero)
 }
 
+/// Compute the bitwise AND of packed 64-bit integers in a and b, producing intermediate 64-bit values, and set the corresponding bit in result mask k if the intermediate value is non-zero.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_test_epi64_mask&expand=5894)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vptestmq))]
+pub unsafe fn _mm256_test_epi64_mask(a: __m256i, b: __m256i) -> __mmask8 {
+    let and = _mm256_and_si256(a, b);
+    let zero = _mm256_setzero_si256();
+    _mm256_cmpneq_epi64_mask(and, zero)
+}
+
+/// Compute the bitwise AND of packed 64-bit integers in a and b, producing intermediate 64-bit values, and set the corresponding bit in result mask k (subject to writemask k) if the intermediate value is non-zero.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_test_epi64_mask&expand=5893)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vptestmq))]
+pub unsafe fn _mm256_mask_test_epi64_mask(k: __mmask8, a: __m256i, b: __m256i) -> __mmask8 {
+    let and = _mm256_and_si256(a, b);
+    let zero = _mm256_setzero_si256();
+    _mm256_mask_cmpneq_epi64_mask(k, and, zero)
+}
+
+/// Compute the bitwise AND of packed 64-bit integers in a and b, producing intermediate 64-bit values, and set the corresponding bit in result mask k if the intermediate value is non-zero.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_test_epi64_mask&expand=5892)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vptestmq))]
+pub unsafe fn _mm_test_epi64_mask(a: __m128i, b: __m128i) -> __mmask8 {
+    let and = _mm_and_si128(a, b);
+    let zero = _mm_setzero_si128();
+    _mm_cmpneq_epi64_mask(and, zero)
+}
+
+/// Compute the bitwise AND of packed 64-bit integers in a and b, producing intermediate 64-bit values, and set the corresponding bit in result mask k (subject to writemask k) if the intermediate value is non-zero.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_test_epi64_mask&expand=5891)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vptestmq))]
+pub unsafe fn _mm_mask_test_epi64_mask(k: __mmask8, a: __m128i, b: __m128i) -> __mmask8 {
+    let and = _mm_and_si128(a, b);
+    let zero = _mm_setzero_si128();
+    _mm_mask_cmpneq_epi64_mask(k, and, zero)
+}
+
 /// Compute the bitwise NAND of packed 32-bit integers in a and b, producing intermediate 32-bit values, and set the corresponding bit in result mask k if the intermediate value is zero.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_testn_epi32_mask&expand=5921)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_testn_epi32_mask&expand=5921)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vptestnmd))]
@@ -25181,7 +25277,7 @@ pub unsafe fn _mm512_testn_epi32_mask(a: __m512i, b: __m512i) -> __mmask16 {
 
 /// Compute the bitwise NAND of packed 32-bit integers in a and b, producing intermediate 32-bit values, and set the corresponding bit in result mask k (subject to writemask k) if the intermediate value is zero.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_testn_epi32_mask&expand=5920)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_testn_epi32_mask&expand=5920)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vptestnmd))]
@@ -25191,9 +25287,57 @@ pub unsafe fn _mm512_mask_testn_epi32_mask(k: __mmask16, a: __m512i, b: __m512i)
     _mm512_mask_cmpeq_epi32_mask(k, and, zero)
 }
 
+/// Compute the bitwise NAND of packed 32-bit integers in a and b, producing intermediate 32-bit values, and set the corresponding bit in result mask k if the intermediate value is zero.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_testn_epi32_mask&expand=5919)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vptestnmd))]
+pub unsafe fn _mm256_testn_epi32_mask(a: __m256i, b: __m256i) -> __mmask8 {
+    let and = _mm256_and_si256(a, b);
+    let zero = _mm256_setzero_si256();
+    _mm256_cmpeq_epi32_mask(and, zero)
+}
+
+/// Compute the bitwise NAND of packed 32-bit integers in a and b, producing intermediate 32-bit values, and set the corresponding bit in result mask k (subject to writemask k) if the intermediate value is zero.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_testn_epi32_mask&expand=5918)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vptestnmd))]
+pub unsafe fn _mm256_mask_testn_epi32_mask(k: __mmask8, a: __m256i, b: __m256i) -> __mmask8 {
+    let and = _mm256_and_si256(a, b);
+    let zero = _mm256_setzero_si256();
+    _mm256_mask_cmpeq_epi32_mask(k, and, zero)
+}
+
+/// Compute the bitwise NAND of packed 32-bit integers in a and b, producing intermediate 32-bit values, and set the corresponding bit in result mask k if the intermediate value is zero.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_testn_epi32_mask&expand=5917)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vptestnmd))]
+pub unsafe fn _mm_testn_epi32_mask(a: __m128i, b: __m128i) -> __mmask8 {
+    let and = _mm_and_si128(a, b);
+    let zero = _mm_setzero_si128();
+    _mm_cmpeq_epi32_mask(and, zero)
+}
+
+/// Compute the bitwise NAND of packed 32-bit integers in a and b, producing intermediate 32-bit values, and set the corresponding bit in result mask k (subject to writemask k) if the intermediate value is zero.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_testn_epi32_mask&expand=5916)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vptestnmd))]
+pub unsafe fn _mm_mask_testn_epi32_mask(k: __mmask8, a: __m128i, b: __m128i) -> __mmask8 {
+    let and = _mm_and_si128(a, b);
+    let zero = _mm_setzero_si128();
+    _mm_mask_cmpeq_epi32_mask(k, and, zero)
+}
+
 /// Compute the bitwise NAND of packed 64-bit integers in a and b, producing intermediate 64-bit values, and set the corresponding bit in result mask k if the intermediate value is zero.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_testn_epi64_mask&expand=5927)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_testn_epi64_mask&expand=5927)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vptestnmq))]
@@ -25205,7 +25349,7 @@ pub unsafe fn _mm512_testn_epi64_mask(a: __m512i, b: __m512i) -> __mmask8 {
 
 /// Compute the bitwise NAND of packed 64-bit integers in a and b, producing intermediate 64-bit values, and set the corresponding bit in result mask k (subject to writemask k) if the intermediate value is zero.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_testn_epi64_mask&expand=5926)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_testn_epi64_mask&expand=5926)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vptestnmq))]
@@ -25215,9 +25359,57 @@ pub unsafe fn _mm512_mask_testn_epi64_mask(k: __mmask8, a: __m512i, b: __m512i) 
     _mm512_mask_cmpeq_epi64_mask(k, and, zero)
 }
 
+/// Compute the bitwise NAND of packed 64-bit integers in a and b, producing intermediate 64-bit values, and set the corresponding bit in result mask k if the intermediate value is zero.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_testn_epi64_mask&expand=5925)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vptestnmq))]
+pub unsafe fn _mm256_testn_epi64_mask(a: __m256i, b: __m256i) -> __mmask8 {
+    let and = _mm256_and_si256(a, b);
+    let zero = _mm256_setzero_si256();
+    _mm256_cmpeq_epi64_mask(and, zero)
+}
+
+/// Compute the bitwise NAND of packed 64-bit integers in a and b, producing intermediate 64-bit values, and set the corresponding bit in result mask k (subject to writemask k) if the intermediate value is zero.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_testn_epi64_mask&expand=5924)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vptestnmq))]
+pub unsafe fn _mm256_mask_testn_epi64_mask(k: __mmask8, a: __m256i, b: __m256i) -> __mmask8 {
+    let and = _mm256_and_si256(a, b);
+    let zero = _mm256_setzero_si256();
+    _mm256_mask_cmpeq_epi64_mask(k, and, zero)
+}
+
+/// Compute the bitwise NAND of packed 64-bit integers in a and b, producing intermediate 64-bit values, and set the corresponding bit in result mask k if the intermediate value is zero.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_testn_epi64_mask&expand=5923)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vptestnmq))]
+pub unsafe fn _mm_testn_epi64_mask(a: __m128i, b: __m128i) -> __mmask8 {
+    let and = _mm_and_si128(a, b);
+    let zero = _mm_setzero_si128();
+    _mm_cmpeq_epi64_mask(and, zero)
+}
+
+/// Compute the bitwise NAND of packed 64-bit integers in a and b, producing intermediate 64-bit values, and set the corresponding bit in result mask k (subject to writemask k) if the intermediate value is zero.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_testn_epi64_mask&expand=5922)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vptestnmq))]
+pub unsafe fn _mm_mask_testn_epi64_mask(k: __mmask8, a: __m128i, b: __m128i) -> __mmask8 {
+    let and = _mm_and_si128(a, b);
+    let zero = _mm_setzero_si128();
+    _mm_mask_cmpeq_epi64_mask(k, and, zero)
+}
+
 /// Store 512-bits (composed of 16 packed single-precision (32-bit) floating-point elements) from a into memory using a non-temporal memory hint. mem_addr must be aligned on a 64-byte boundary or a general-protection exception may be generated.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_stream_ps&expand=5671)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_stream_ps&expand=5671)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vmovntps))]
@@ -25228,7 +25420,7 @@ pub unsafe fn _mm512_stream_ps(mem_addr: *mut f32, a: __m512) {
 
 /// Store 512-bits (composed of 8 packed double-precision (64-bit) floating-point elements) from a into memory using a non-temporal memory hint. mem_addr must be aligned on a 64-byte boundary or a general-protection exception may be generated.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_stream_pd&expand=5667)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_stream_pd&expand=5667)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vmovntps))] //should be vmovntpd
@@ -25239,7 +25431,7 @@ pub unsafe fn _mm512_stream_pd(mem_addr: *mut f64, a: __m512d) {
 
 /// Store 512-bits of integer data from a into memory using a non-temporal memory hint. mem_addr must be aligned on a 64-byte boundary or a general-protection exception may be generated.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_stream_si512&expand=5675)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_stream_si512&expand=5675)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vmovntps))] //should be vmovntdq
@@ -25250,7 +25442,7 @@ pub unsafe fn _mm512_stream_si512(mem_addr: *mut i64, a: __m512i) {
 
 /// Sets packed 32-bit integers in `dst` with the supplied values.
 ///
-/// [Intel's documentation]( https://software.intel.com/sites/landingpage/IntrinsicsGuide/#expand=727,1063,4909,1062,1062,4909&text=_mm512_set_ps)
+/// [Intel's documentation]( https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_set_ps&expand=4931)
 #[inline]
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_set_ps(
@@ -25279,7 +25471,7 @@ pub unsafe fn _mm512_set_ps(
 /// Sets packed 32-bit integers in `dst` with the supplied values in
 /// reverse order.
 ///
-/// [Intel's documentation]( https://software.intel.com/sites/landingpage/IntrinsicsGuide/#expand=727,1063,4909,1062,1062,4909&text=_mm512_set_ps)
+/// [Intel's documentation]( https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_setr_ps&expand=5008)
 #[inline]
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_setr_ps(
@@ -25307,6 +25499,8 @@ pub unsafe fn _mm512_setr_ps(
 }
 
 /// Broadcast 64-bit float `a` to all elements of `dst`.
+///
+/// [Intel's documentation]( https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_set1_pd&expand=4975)
 #[inline]
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_set1_pd(a: f64) -> __m512d {
@@ -25314,6 +25508,8 @@ pub unsafe fn _mm512_set1_pd(a: f64) -> __m512d {
 }
 
 /// Broadcast 32-bit float `a` to all elements of `dst`.
+///
+/// [Intel's documentation]( https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_set1_ps&expand=4981)
 #[inline]
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_set1_ps(a: f32) -> __m512 {
@@ -25321,6 +25517,8 @@ pub unsafe fn _mm512_set1_ps(a: f32) -> __m512 {
 }
 
 /// Sets packed 32-bit integers in `dst` with the supplied values.
+///
+/// [Intel's documentation]( https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_set_epi32&expand=4908)
 #[inline]
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_set_epi32(
@@ -25348,7 +25546,7 @@ pub unsafe fn _mm512_set_epi32(
 
 /// Broadcast 8-bit integer a to all elements of dst.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_set1_epi8&expand=4972)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_set1_epi8&expand=4972)
 #[inline]
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_set1_epi8(a: i8) -> __m512i {
@@ -25357,7 +25555,7 @@ pub unsafe fn _mm512_set1_epi8(a: i8) -> __m512i {
 
 /// Broadcast the low packed 16-bit integer from a to all all elements of dst.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_set1_epi16&expand=4944)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_set1_epi16&expand=4944)
 #[inline]
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_set1_epi16(a: i16) -> __m512i {
@@ -25373,7 +25571,7 @@ pub unsafe fn _mm512_set1_epi32(a: i32) -> __m512i {
 
 /// Broadcast 32-bit integer a to all elements of dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_set1_epi32&expand=4951)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_set1_epi32&expand=4951)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpbroadcastd))]
@@ -25384,7 +25582,7 @@ pub unsafe fn _mm512_mask_set1_epi32(src: __m512i, k: __mmask16, a: i32) -> __m5
 
 /// Broadcast 32-bit integer a to all elements of dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_set1_epi32&expand=4952)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_set1_epi32&expand=4952)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpbroadcastd))]
@@ -25395,6 +25593,8 @@ pub unsafe fn _mm512_maskz_set1_epi32(k: __mmask16, a: i32) -> __m512i {
 }
 
 /// Broadcast 64-bit integer `a` to all elements of `dst`.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_set1_epi64&expand=4961)
 #[inline]
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_set1_epi64(a: i64) -> __m512i {
@@ -25403,7 +25603,7 @@ pub unsafe fn _mm512_set1_epi64(a: i64) -> __m512i {
 
 /// Broadcast 64-bit integer a to all elements of dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_set1_epi64&expand=4959)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_set1_epi64&expand=4959)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpbroadcastq))]
@@ -25414,7 +25614,7 @@ pub unsafe fn _mm512_mask_set1_epi64(src: __m512i, k: __mmask8, a: i64) -> __m51
 
 /// Broadcast 64-bit integer a to all elements of dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_set1_epi64&expand=4960)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_set1_epi64&expand=4960)
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpbroadcastq))]
@@ -25426,7 +25626,7 @@ pub unsafe fn _mm512_maskz_set1_epi64(k: __mmask8, a: i64) -> __m512i {
 
 /// Set packed 64-bit integers in dst with the repeated 4 element sequence.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_set4_epi64&expand=4983)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_set4_epi64&expand=4983)
 #[inline]
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_set4_epi64(d: i64, c: i64, b: i64, a: i64) -> __m512i {
@@ -25436,7 +25636,7 @@ pub unsafe fn _mm512_set4_epi64(d: i64, c: i64, b: i64, a: i64) -> __m512i {
 
 /// Set packed 64-bit integers in dst with the repeated 4 element sequence in reverse order.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_setr4_epi64&expand=5010)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_setr4_epi64&expand=5010)
 #[inline]
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_setr4_epi64(d: i64, c: i64, b: i64, a: i64) -> __m512i {
@@ -47190,6 +47390,46 @@ mod tests {
         assert_eq!(r, e);
     }
 
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_test_epi32_mask() {
+        let a = _mm256_set1_epi32(1 << 0);
+        let b = _mm256_set1_epi32(1 << 0 | 1 << 1);
+        let r = _mm256_test_epi32_mask(a, b);
+        let e: __mmask8 = 0b11111111;
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_mask_test_epi32_mask() {
+        let a = _mm256_set1_epi32(1 << 0);
+        let b = _mm256_set1_epi32(1 << 0 | 1 << 1);
+        let r = _mm256_mask_test_epi32_mask(0, a, b);
+        assert_eq!(r, 0);
+        let r = _mm256_mask_test_epi32_mask(0b11111111, a, b);
+        let e: __mmask8 = 0b11111111;
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_test_epi32_mask() {
+        let a = _mm_set1_epi32(1 << 0);
+        let b = _mm_set1_epi32(1 << 0 | 1 << 1);
+        let r = _mm_test_epi32_mask(a, b);
+        let e: __mmask8 = 0b00001111;
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_mask_test_epi32_mask() {
+        let a = _mm_set1_epi32(1 << 0);
+        let b = _mm_set1_epi32(1 << 0 | 1 << 1);
+        let r = _mm_mask_test_epi32_mask(0, a, b);
+        assert_eq!(r, 0);
+        let r = _mm_mask_test_epi32_mask(0b11111111, a, b);
+        let e: __mmask8 = 0b00001111;
+        assert_eq!(r, e);
+    }
+
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_testn_epi32_mask() {
         let a = _mm512_set1_epi32(1 << 0);
@@ -47207,6 +47447,46 @@ mod tests {
         assert_eq!(r, 0);
         let r = _mm512_mask_testn_epi32_mask(0b11111111_11111111, a, b);
         let e: __mmask16 = 0b11111111_11111111;
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_testn_epi32_mask() {
+        let a = _mm256_set1_epi32(1 << 0);
+        let b = _mm256_set1_epi32(1 << 1);
+        let r = _mm256_testn_epi32_mask(a, b);
+        let e: __mmask8 = 0b11111111;
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_mask_testn_epi32_mask() {
+        let a = _mm256_set1_epi32(1 << 0);
+        let b = _mm256_set1_epi32(1 << 1);
+        let r = _mm256_mask_test_epi32_mask(0, a, b);
+        assert_eq!(r, 0);
+        let r = _mm256_mask_testn_epi32_mask(0b11111111, a, b);
+        let e: __mmask8 = 0b11111111;
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_testn_epi32_mask() {
+        let a = _mm_set1_epi32(1 << 0);
+        let b = _mm_set1_epi32(1 << 1);
+        let r = _mm_testn_epi32_mask(a, b);
+        let e: __mmask8 = 0b00001111;
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_mask_testn_epi32_mask() {
+        let a = _mm_set1_epi32(1 << 0);
+        let b = _mm_set1_epi32(1 << 1);
+        let r = _mm_mask_test_epi32_mask(0, a, b);
+        assert_eq!(r, 0);
+        let r = _mm_mask_testn_epi32_mask(0b11111111, a, b);
+        let e: __mmask8 = 0b00001111;
         assert_eq!(r, e);
     }
 
