@@ -2668,6 +2668,74 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_ternarylogic_epi64() {
+        let a = _mm256_set1_epi64x(1 << 2);
+        let b = _mm256_set1_epi64x(1 << 1);
+        let c = _mm256_set1_epi64x(1 << 0);
+        let r = _mm256_ternarylogic_epi64(a, b, c, 8);
+        let e = _mm256_set1_epi64x(0);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_mask_ternarylogic_epi64() {
+        let src = _mm256_set1_epi64x(1 << 2);
+        let a = _mm256_set1_epi64x(1 << 1);
+        let b = _mm256_set1_epi64x(1 << 0);
+        let r = _mm256_mask_ternarylogic_epi64(src, 0, a, b, 8);
+        assert_eq_m256i(r, src);
+        let r = _mm256_mask_ternarylogic_epi64(src, 0b00001111, a, b, 8);
+        let e = _mm256_set1_epi64x(0);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_maskz_ternarylogic_epi64() {
+        let a = _mm256_set1_epi64x(1 << 2);
+        let b = _mm256_set1_epi64x(1 << 1);
+        let c = _mm256_set1_epi64x(1 << 0);
+        let r = _mm256_maskz_ternarylogic_epi64(0, a, b, c, 9);
+        assert_eq_m256i(r, _mm256_setzero_si256());
+        let r = _mm256_maskz_ternarylogic_epi64(0b00001111, a, b, c, 8);
+        let e = _mm256_set1_epi64x(0);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_ternarylogic_epi64() {
+        let a = _mm_set1_epi64x(1 << 2);
+        let b = _mm_set1_epi64x(1 << 1);
+        let c = _mm_set1_epi64x(1 << 0);
+        let r = _mm_ternarylogic_epi64(a, b, c, 8);
+        let e = _mm_set1_epi64x(0);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_mask_ternarylogic_epi64() {
+        let src = _mm_set1_epi64x(1 << 2);
+        let a = _mm_set1_epi64x(1 << 1);
+        let b = _mm_set1_epi64x(1 << 0);
+        let r = _mm_mask_ternarylogic_epi64(src, 0, a, b, 8);
+        assert_eq_m128i(r, src);
+        let r = _mm_mask_ternarylogic_epi64(src, 0b00000011, a, b, 8);
+        let e = _mm_set1_epi64x(0);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_maskz_ternarylogic_epi64() {
+        let a = _mm_set1_epi64x(1 << 2);
+        let b = _mm_set1_epi64x(1 << 1);
+        let c = _mm_set1_epi64x(1 << 0);
+        let r = _mm_maskz_ternarylogic_epi64(0, a, b, c, 9);
+        assert_eq_m128i(r, _mm_setzero_si128());
+        let r = _mm_maskz_ternarylogic_epi64(0b00000011, a, b, c, 8);
+        let e = _mm_set1_epi64x(0);
+        assert_eq_m128i(r, e);
+    }
+
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_getmant_pd() {
         let a = _mm512_set1_pd(10.);
