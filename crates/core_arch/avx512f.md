@@ -1747,17 +1747,20 @@
   * [x] [`_mm512_set1_epi32`]
   * [x] [`_mm512_mask_set1_epi32`]
   * [x] [`_mm512_maskz_set1_epi32`]
-
+  * [x] [`_mm_mask_set1_epi32`]
+  * [x] [`_mm_maskz_set1_epi32`]
+  * [x] [`_mm256_mask_set1_epi32`]
+  * [x] [`_mm256_maskz_set1_epi32`]
   * [x] [`_mm512_set1_epi64`]
   * [x] [`_mm512_mask_set1_epi64`]
   * [x] [`_mm512_maskz_set1_epi64`]
-
-
-
-
-
-  * [x] [`_mm512_set1_pd`]
+  * [x] [`_mm_mask_set1_epi64`]
+  * [x] [`_mm_maskz_set1_epi64`]
+  * [x] [`_mm256_mask_set1_epi64`]
+  * [x] [`_mm256_maskz_set1_epi64`]
   * [x] [`_mm512_set1_ps`]
+  * [x] [`_mm512_set1_pd`]
+
   * [x] [`_mm512_set4_epi32`]
   * [x] [`_mm512_set4_epi64`]
   * [x] [`_mm512_set4_pd`]
