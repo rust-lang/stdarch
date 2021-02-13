@@ -2018,17 +2018,19 @@
   * [x] [`_mm512_mask_cvtepi64_storeu_epi32`]
   * [x] [`_mm_mask_cvtepi64_storeu_epi32`]
   * [x] [`_mm256_mask_cvtepi64_storeu_epi32`]
-
-
+  * [x] [`_mm512_cvtepi8_epi32`]
+  * [x] [`_mm512_mask_cvtepi8_epi32`]
+  * [x] [`_mm512_maskz_cvtepi8_epi32`]
+  * [x] [`_mm_mask_cvtepi8_epi32`]
+  * [x] [`_mm_maskz_cvtepi8_epi32`]
+  * [x] [`_mm256_mask_cvtepi8_epi32`]
+  * [x] [`_mm256_maskz_cvtepi8_epi32`]
 
   * [x] [`_mm512_mask_cvtsepi64_epi32`]
   * [x] [`_mm512_mask_cvtsepi64_epi8`]
   * [ ] [`_mm512_mask_cvtsepi64_storeu_epi16`]
   * [ ] [`_mm512_mask_cvtsepi64_storeu_epi32`]
   * [ ] [`_mm512_mask_cvtsepi64_storeu_epi8`]
-
-
-
   * [x] [`_mm512_cvt_roundepi32_ps`]
   * [x] [`_mm512_cvt_roundepu32_ps`]
   * [x] [`_mm512_cvt_roundpd_epi32`]
@@ -2040,8 +2042,6 @@
   * [x] [`_mm512_cvt_roundps_pd`]
 
   * [x] [`_mm512_mask_cvtsepi64_epi16`]
-
-  * [x] [`_mm512_cvtepi8_epi32`]
   * [x] [`_mm512_cvtepi8_epi64`]
   * [x] [`_mm512_cvtepu16_epi32`]
   * [x] [`_mm512_cvtepu16_epi64`]
@@ -2100,7 +2100,6 @@
   * [x] [`_mm512_mask_cvt_roundps_epi32`]
   * [x] [`_mm512_mask_cvt_roundps_epu32`]
   * [x] [`_mm512_mask_cvt_roundps_pd`]
-  * [x] [`_mm512_mask_cvtepi8_epi32`]
   * [x] [`_mm512_mask_cvtepi8_epi64`]
   * [x] [`_mm512_mask_cvtepu16_epi32`]
   * [x] [`_mm512_mask_cvtepu16_epi64`]
@@ -2151,7 +2150,6 @@
   * [x] [`_mm512_maskz_cvt_roundps_epi32`]
   * [x] [`_mm512_maskz_cvt_roundps_epu32`]
   * [x] [`_mm512_maskz_cvt_roundps_pd`]
-  * [x] [`_mm512_maskz_cvtepi8_epi32`]
   * [x] [`_mm512_maskz_cvtepi8_epi64`]
   * [x] [`_mm512_maskz_cvtepu16_epi32`]
   * [x] [`_mm512_maskz_cvtepu16_epi64`]
