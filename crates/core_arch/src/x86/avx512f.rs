@@ -11893,6 +11893,74 @@ pub unsafe fn _mm512_maskz_cvtepi64_epi32(k: __mmask8, a: __m512i) -> __m256i {
     transmute(simd_select_bitmask(k, convert, zero))
 }
 
+/// Convert packed 64-bit integers in a to packed 32-bit integers with truncation, and store the results in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_cvtepi64_epi32&expand=1478)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovqd))]
+pub unsafe fn _mm256_cvtepi64_epi32(a: __m256i) -> __m128i {
+    let a = a.as_i64x4();
+    transmute::<i32x4, _>(simd_cast(a))
+}
+
+/// Convert packed 64-bit integers in a to packed 32-bit integers with truncation, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_cvtepi64_epi32&expand=1479)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovqd))]
+pub unsafe fn _mm256_mask_cvtepi64_epi32(src: __m128i, k: __mmask8, a: __m256i) -> __m128i {
+    let convert = _mm256_cvtepi64_epi32(a).as_i32x4();
+    transmute(simd_select_bitmask(k, convert, src.as_i32x4()))
+}
+
+/// Convert packed 64-bit integers in a to packed 32-bit integers with truncation, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_cvtepi64_epi32&expand=1480)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovqd))]
+pub unsafe fn _mm256_maskz_cvtepi64_epi32(k: __mmask8, a: __m256i) -> __m128i {
+    let convert = _mm256_cvtepi64_epi32(a).as_i32x4();
+    let zero = _mm_setzero_si128().as_i32x4();
+    transmute(simd_select_bitmask(k, convert, zero))
+}
+
+/// Convert packed 64-bit integers in a to packed 32-bit integers with truncation, and store the results in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_cvtepi64_epi32&expand=1475)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovqd))]
+pub unsafe fn _mm_cvtepi64_epi32(a: __m128i) -> __m128i {
+    transmute(vpmovqd128(
+        a.as_i64x2(),
+        _mm_setzero_si128().as_i32x4(),
+        0b11111111,
+    ))
+}
+
+/// Convert packed 64-bit integers in a to packed 32-bit integers with truncation, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_cvtepi64_epi32&expand=1476)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovqd))]
+pub unsafe fn _mm_mask_cvtepi64_epi32(src: __m128i, k: __mmask8, a: __m128i) -> __m128i {
+    transmute(vpmovqd128(a.as_i64x2(), src.as_i32x4(), k))
+}
+
+/// Convert packed 64-bit integers in a to packed 32-bit integers with truncation, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_cvtepi64_epi32&expand=1477)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovqd))]
+pub unsafe fn _mm_maskz_cvtepi64_epi32(k: __mmask8, a: __m128i) -> __m128i {
+    transmute(vpmovqd128(a.as_i64x2(), _mm_setzero_si128().as_i32x4(), k))
+}
+
 /// Convert packed 64-bit integers in a to packed 16-bit integers with truncation, and store the results in dst.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_cvtepi64_epi16&expand=1472)
@@ -11927,6 +11995,74 @@ pub unsafe fn _mm512_maskz_cvtepi64_epi16(k: __mmask8, a: __m512i) -> __m128i {
     transmute(simd_select_bitmask(k, convert, zero))
 }
 
+/// Convert packed 64-bit integers in a to packed 16-bit integers with truncation, and store the results in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_cvtepi64_epi16&expand=1469)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovqw))]
+pub unsafe fn _mm256_cvtepi64_epi16(a: __m256i) -> __m128i {
+    transmute(vpmovqw256(
+        a.as_i64x4(),
+        _mm_setzero_si128().as_i16x8(),
+        0b11111111,
+    ))
+}
+
+/// Convert packed 64-bit integers in a to packed 16-bit integers with truncation, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_cvtepi64_epi16&expand=1470)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovqw))]
+pub unsafe fn _mm256_mask_cvtepi64_epi16(src: __m128i, k: __mmask8, a: __m256i) -> __m128i {
+    transmute(vpmovqw256(a.as_i64x4(), src.as_i16x8(), k))
+}
+
+/// Convert packed 64-bit integers in a to packed 16-bit integers with truncation, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_cvtepi64_epi16&expand=1471)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovqw))]
+pub unsafe fn _mm256_maskz_cvtepi64_epi16(k: __mmask8, a: __m256i) -> __m128i {
+    transmute(vpmovqw256(a.as_i64x4(), _mm_setzero_si128().as_i16x8(), k))
+}
+
+/// Convert packed 64-bit integers in a to packed 16-bit integers with truncation, and store the results in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_cvtepi64_epi16&expand=1466)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovqw))]
+pub unsafe fn _mm_cvtepi64_epi16(a: __m128i) -> __m128i {
+    transmute(vpmovqw128(
+        a.as_i64x2(),
+        _mm_setzero_si128().as_i16x8(),
+        0b11111111,
+    ))
+}
+
+/// Convert packed 64-bit integers in a to packed 16-bit integers with truncation, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_cvtepi64_epi16&expand=1467)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovqw))]
+pub unsafe fn _mm_mask_cvtepi64_epi16(src: __m128i, k: __mmask8, a: __m128i) -> __m128i {
+    transmute(vpmovqw128(a.as_i64x2(), src.as_i16x8(), k))
+}
+
+/// Convert packed 64-bit integers in a to packed 16-bit integers with truncation, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_cvtepi64_epi16&expand=1468)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovqw))]
+pub unsafe fn _mm_maskz_cvtepi64_epi16(k: __mmask8, a: __m128i) -> __m128i {
+    transmute(vpmovqw128(a.as_i64x2(), _mm_setzero_si128().as_i16x8(), k))
+}
+
 /// Convert packed 64-bit integers in a to packed 8-bit integers with truncation, and store the results in dst.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_cvtepi64_epi8&expand=1490)
@@ -11959,6 +12095,74 @@ pub unsafe fn _mm512_mask_cvtepi64_epi8(src: __m128i, k: __mmask8, a: __m512i) -
 #[cfg_attr(test, assert_instr(vpmovqb))]
 pub unsafe fn _mm512_maskz_cvtepi64_epi8(k: __mmask8, a: __m512i) -> __m128i {
     transmute(vpmovqb(a.as_i64x8(), _mm_setzero_si128().as_i8x16(), k))
+}
+
+/// Convert packed 64-bit integers in a to packed 8-bit integers with truncation, and store the results in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_cvtepi64_epi8&expand=1487)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovqb))]
+pub unsafe fn _mm256_cvtepi64_epi8(a: __m256i) -> __m128i {
+    transmute(vpmovqb256(
+        a.as_i64x4(),
+        _mm_setzero_si128().as_i8x16(),
+        0b11111111,
+    ))
+}
+
+/// Convert packed 64-bit integers in a to packed 8-bit integers with truncation, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_cvtepi64_epi8&expand=1488)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovqb))]
+pub unsafe fn _mm256_mask_cvtepi64_epi8(src: __m128i, k: __mmask8, a: __m256i) -> __m128i {
+    transmute(vpmovqb256(a.as_i64x4(), src.as_i8x16(), k))
+}
+
+/// Convert packed 64-bit integers in a to packed 8-bit integers with truncation, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_cvtepi64_epi8&expand=1489)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovqb))]
+pub unsafe fn _mm256_maskz_cvtepi64_epi8(k: __mmask8, a: __m256i) -> __m128i {
+    transmute(vpmovqb256(a.as_i64x4(), _mm_setzero_si128().as_i8x16(), k))
+}
+
+/// Convert packed 64-bit integers in a to packed 8-bit integers with truncation, and store the results in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_cvtepi64_epi8&expand=1484)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovqb))]
+pub unsafe fn _mm_cvtepi64_epi8(a: __m128i) -> __m128i {
+    transmute(vpmovqb128(
+        a.as_i64x2(),
+        _mm_setzero_si128().as_i8x16(),
+        0b11111111,
+    ))
+}
+
+/// Convert packed 64-bit integers in a to packed 8-bit integers with truncation, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_cvtepi64_epi8&expand=1485)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovqb))]
+pub unsafe fn _mm_mask_cvtepi64_epi8(src: __m128i, k: __mmask8, a: __m128i) -> __m128i {
+    transmute(vpmovqb128(a.as_i64x2(), src.as_i8x16(), k))
+}
+
+/// Convert packed 64-bit integers in a to packed 8-bit integers with truncation, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_cvtepi64_epi8&expand=1486)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovqb))]
+pub unsafe fn _mm_maskz_cvtepi64_epi8(k: __mmask8, a: __m128i) -> __m128i {
+    transmute(vpmovqb128(a.as_i64x2(), _mm_setzero_si128().as_i8x16(), k))
 }
 
 /// Convert packed signed 32-bit integers in a to packed 16-bit integers with signed saturation, and store the results in dst.
@@ -29681,6 +29885,96 @@ pub unsafe fn _mm_mask_cvtepi32_storeu_epi8(mem_addr: *mut i8, k: __mmask8, a: _
     vpmovdbmem128(mem_addr as *mut i8, a.as_i32x4(), k);
 }
 
+/// Convert packed 64-bit integers in a to packed 16-bit integers with truncation, and store the active results (those with their respective bit set in writemask k) to unaligned memory at base_addr.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_cvtepi64_storeu_epi16&expand=1513)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vpmovqw))]
+pub unsafe fn _mm512_mask_cvtepi64_storeu_epi16(mem_addr: *mut i8, k: __mmask8, a: __m512i) {
+    vpmovqwmem(mem_addr as *mut i8, a.as_i64x8(), k);
+}
+
+/// Convert packed 64-bit integers in a to packed 16-bit integers with truncation, and store the active results (those with their respective bit set in writemask k) to unaligned memory at base_addr.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_cvtepi64_storeu_epi16&expand=1512)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovqw))]
+pub unsafe fn _mm256_mask_cvtepi64_storeu_epi16(mem_addr: *mut i8, k: __mmask8, a: __m256i) {
+    vpmovqwmem256(mem_addr as *mut i8, a.as_i64x4(), k);
+}
+
+/// Convert packed 64-bit integers in a to packed 16-bit integers with truncation, and store the active results (those with their respective bit set in writemask k) to unaligned memory at base_addr.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_cvtepi64_storeu_epi16&expand=1511)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovqw))]
+pub unsafe fn _mm_mask_cvtepi64_storeu_epi16(mem_addr: *mut i8, k: __mmask8, a: __m128i) {
+    vpmovqwmem128(mem_addr as *mut i8, a.as_i64x2(), k);
+}
+
+/// Convert packed 64-bit integers in a to packed 8-bit integers with truncation, and store the active results (those with their respective bit set in writemask k) to unaligned memory at base_addr.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_cvtepi64_storeu_epi8&expand=1519)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vpmovqb))]
+pub unsafe fn _mm512_mask_cvtepi64_storeu_epi8(mem_addr: *mut i8, k: __mmask8, a: __m512i) {
+    vpmovqbmem(mem_addr as *mut i8, a.as_i64x8(), k);
+}
+
+/// Convert packed 64-bit integers in a to packed 8-bit integers with truncation, and store the active results (those with their respective bit set in writemask k) to unaligned memory at base_addr.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_cvtepi64_storeu_epi8&expand=1518)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovqb))]
+pub unsafe fn _mm256_mask_cvtepi64_storeu_epi8(mem_addr: *mut i8, k: __mmask8, a: __m256i) {
+    vpmovqbmem256(mem_addr as *mut i8, a.as_i64x4(), k);
+}
+
+/// Convert packed 64-bit integers in a to packed 8-bit integers with truncation, and store the active results (those with their respective bit set in writemask k) to unaligned memory at base_addr.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_cvtepi64_storeu_epi8&expand=1517)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovqb))]
+pub unsafe fn _mm_mask_cvtepi64_storeu_epi8(mem_addr: *mut i8, k: __mmask8, a: __m128i) {
+    vpmovqbmem128(mem_addr as *mut i8, a.as_i64x2(), k);
+}
+
+///Convert packed 64-bit integers in a to packed 32-bit integers with truncation, and store the active results (those with their respective bit set in writemask k) to unaligned memory at base_addr.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_cvtepi64_storeu_epi32&expand=1516)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vpmovqd))]
+pub unsafe fn _mm512_mask_cvtepi64_storeu_epi32(mem_addr: *mut i8, k: __mmask8, a: __m512i) {
+    vpmovqdmem(mem_addr as *mut i8, a.as_i64x8(), k);
+}
+
+///Convert packed 64-bit integers in a to packed 32-bit integers with truncation, and store the active results (those with their respective bit set in writemask k) to unaligned memory at base_addr.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_cvtepi64_storeu_epi32&expand=1515)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovqd))]
+pub unsafe fn _mm256_mask_cvtepi64_storeu_epi32(mem_addr: *mut i8, k: __mmask8, a: __m256i) {
+    vpmovqdmem256(mem_addr as *mut i8, a.as_i64x4(), k);
+}
+
+///Convert packed 64-bit integers in a to packed 32-bit integers with truncation, and store the active results (those with their respective bit set in writemask k) to unaligned memory at base_addr.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_cvtepi64_storeu_epi32&expand=1514)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovqd))]
+pub unsafe fn _mm_mask_cvtepi64_storeu_epi32(mem_addr: *mut i8, k: __mmask8, a: __m128i) {
+    vpmovqdmem128(mem_addr as *mut i8, a.as_i64x2(), k);
+}
+
 /// Store 512-bits (composed of 16 packed 32-bit integers) from a into memory. mem_addr does not need to be aligned on any particular boundary.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_storeu_epi32&expand=5628)
@@ -36424,6 +36718,17 @@ extern "C" {
     #[link_name = "llvm.x86.avx512.mask.pmov.db.128"]
     fn vpmovdb128(a: i32x4, src: i8x16, mask: u8) -> i8x16;
 
+    #[link_name = "llvm.x86.avx512.mask.pmov.qw.256"]
+    fn vpmovqw256(a: i64x4, src: i16x8, mask: u8) -> i16x8;
+    #[link_name = "llvm.x86.avx512.mask.pmov.qw.128"]
+    fn vpmovqw128(a: i64x2, src: i16x8, mask: u8) -> i16x8;
+    #[link_name = "llvm.x86.avx512.mask.pmov.qb.256"]
+    fn vpmovqb256(a: i64x4, src: i8x16, mask: u8) -> i8x16;
+    #[link_name = "llvm.x86.avx512.mask.pmov.qb.128"]
+    fn vpmovqb128(a: i64x2, src: i8x16, mask: u8) -> i8x16;
+    #[link_name = "llvm.x86.avx512.mask.pmov.qd.128"]
+    fn vpmovqd128(a: i64x2, src: i32x4, mask: u8) -> i32x4;
+
     #[link_name = "llvm.x86.avx512.mask.pmov.dw.mem.512"]
     fn vpmovdwmem(mem_addr: *mut i8, a: i32x16, mask: u16);
     #[link_name = "llvm.x86.avx512.mask.pmov.dw.mem.256"]
@@ -36438,8 +36743,28 @@ extern "C" {
     #[link_name = "llvm.x86.avx512.mask.pmov.db.mem.128"]
     fn vpmovdbmem128(mem_addr: *mut i8, a: i32x4, mask: u8);
 
+    #[link_name = "llvm.x86.avx512.mask.pmov.qw.mem.512"]
+    fn vpmovqwmem(mem_addr: *mut i8, a: i64x8, mask: u8);
+    #[link_name = "llvm.x86.avx512.mask.pmov.qw.mem.256"]
+    fn vpmovqwmem256(mem_addr: *mut i8, a: i64x4, mask: u8);
+    #[link_name = "llvm.x86.avx512.mask.pmov.qw.mem.128"]
+    fn vpmovqwmem128(mem_addr: *mut i8, a: i64x2, mask: u8);
+    #[link_name = "llvm.x86.avx512.mask.pmov.qb.mem.512"]
+    fn vpmovqbmem(mem_addr: *mut i8, a: i64x8, mask: u8);
+    #[link_name = "llvm.x86.avx512.mask.pmov.qb.mem.256"]
+    fn vpmovqbmem256(mem_addr: *mut i8, a: i64x4, mask: u8);
+    #[link_name = "llvm.x86.avx512.mask.pmov.qb.mem.128"]
+    fn vpmovqbmem128(mem_addr: *mut i8, a: i64x2, mask: u8);
+    #[link_name = "llvm.x86.avx512.mask.pmov.qd.mem.512"]
+    fn vpmovqdmem(mem_addr: *mut i8, a: i64x8, mask: u8);
+    #[link_name = "llvm.x86.avx512.mask.pmov.qd.mem.256"]
+    fn vpmovqdmem256(mem_addr: *mut i8, a: i64x4, mask: u8);
+    #[link_name = "llvm.x86.avx512.mask.pmov.qd.mem.128"]
+    fn vpmovqdmem128(mem_addr: *mut i8, a: i64x2, mask: u8);
+
     #[link_name = "llvm.x86.avx512.mask.pmov.qb.512"]
     fn vpmovqb(a: i64x8, src: i8x16, mask: u8) -> i8x16;
+
     #[link_name = "llvm.x86.avx512.mask.pmovs.dw.512"]
     fn vpmovsdw(a: i32x16, src: i16x16, mask: u16) -> i16x16;
     #[link_name = "llvm.x86.avx512.mask.pmovs.db.512"]
