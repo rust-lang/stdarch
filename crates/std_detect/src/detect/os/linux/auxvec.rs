@@ -1,6 +1,8 @@
 //! Parses ELF auxiliary vectors.
 #![cfg_attr(not(target_arch = "aarch64"), allow(dead_code))]
 
+pub(crate) const AT_NULL: usize = 0;
+
 /// Key to access the CPU Hardware capabilities bitfield.
 pub(crate) const AT_HWCAP: usize = 16;
 /// Key to access the CPU Hardware capabilities 2 bitfield.
@@ -170,6 +172,7 @@ fn auxv_from_buf(buf: &[usize; 64]) -> Result<AuxVec, ()> {
     {
         for el in buf.chunks(2) {
             match el[0] {
+                AT_NULL => break,
                 AT_HWCAP => return Ok(AuxVec { hwcap: el[1] }),
                 _ => (),
             }
@@ -186,6 +189,7 @@ fn auxv_from_buf(buf: &[usize; 64]) -> Result<AuxVec, ()> {
         let mut hwcap2 = None;
         for el in buf.chunks(2) {
             match el[0] {
+                AT_NULL => break,
                 AT_HWCAP => hwcap = Some(el[1]),
                 AT_HWCAP2 => hwcap2 = Some(el[1]),
                 _ => (),
