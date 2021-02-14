@@ -7,7 +7,11 @@ use crate::{fs::File, io::Read};
 /// Key to access the CPU Hardware capabilities bitfield.
 pub(crate) const AT_HWCAP: usize = 16;
 /// Key to access the CPU Hardware capabilities 2 bitfield.
-#[cfg(any(target_arch = "arm", target_arch = "powerpc64"))]
+#[cfg(any(
+    target_arch = "arm",
+    target_arch = "powerpc",
+    target_arch = "powerpc64"
+))]
 pub(crate) const AT_HWCAP2: usize = 26;
 
 /// Cache HWCAP bitfields of the ELF Auxiliary Vector.
@@ -17,7 +21,11 @@ pub(crate) const AT_HWCAP2: usize = 26;
 #[derive(Debug, Copy, Clone)]
 pub(crate) struct AuxVec {
     pub hwcap: usize,
-    #[cfg(any(target_arch = "arm", target_arch = "powerpc64"))]
+    #[cfg(any(
+        target_arch = "arm",
+        target_arch = "powerpc",
+        target_arch = "powerpc64"
+    ))]
     pub hwcap2: usize,
 }
 
@@ -64,7 +72,11 @@ pub(crate) fn auxv() -> Result<AuxVec, ()> {
             }
 
             // Targets with AT_HWCAP and AT_HWCAP2:
-            #[cfg(any(target_arch = "arm", target_arch = "powerpc64"))]
+            #[cfg(any(
+                target_arch = "arm",
+                target_arch = "powerpc",
+                target_arch = "powerpc64"
+            ))]
             {
                 if let Ok(hwcap2) = getauxval(AT_HWCAP2) {
                     if hwcap != 0 && hwcap2 != 0 {
@@ -74,21 +86,11 @@ pub(crate) fn auxv() -> Result<AuxVec, ()> {
             }
             drop(hwcap);
         }
-        #[cfg(feature = "std_detect_file_io")]
-        {
-            // If calling getauxval fails, try to read the auxiliary vector from
-            // its file:
-            auxv_from_file("/proc/self/auxv")
-        }
-        #[cfg(not(feature = "std_detect_file_io"))]
-        {
-            Err(())
-        }
     }
 
     #[cfg(not(feature = "std_detect_dlsym_getauxval"))]
     {
-        let hwcap = unsafe { ffi_getauxval(AT_HWCAP) };
+        let hwcap = unsafe { libc::getauxval(AT_HWCAP) };
 
         // Targets with only AT_HWCAP:
         #[cfg(any(target_arch = "aarch64", target_arch = "mips", target_arch = "mips64"))]
@@ -99,13 +101,28 @@ pub(crate) fn auxv() -> Result<AuxVec, ()> {
         }
 
         // Targets with AT_HWCAP and AT_HWCAP2:
-        #[cfg(any(target_arch = "arm", target_arch = "powerpc64"))]
+        #[cfg(any(
+            target_arch = "arm",
+            target_arch = "powerpc",
+            target_arch = "powerpc64"
+        ))]
         {
-            let hwcap2 = unsafe { ffi_getauxval(AT_HWCAP2) };
+            let hwcap2 = unsafe { libc::getauxval(AT_HWCAP2) };
             if hwcap != 0 && hwcap2 != 0 {
                 return Ok(AuxVec { hwcap, hwcap2 });
             }
         }
+    }
+
+    #[cfg(feature = "std_detect_file_io")]
+    {
+        // If calling getauxval fails, try to read the auxiliary vector from
+        // its file:
+        auxv_from_file("/proc/self/auxv")
+    }
+    #[cfg(not(feature = "std_detect_file_io"))]
+    {
+        Err(())
     }
 }
 
@@ -122,7 +139,7 @@ fn getauxval(key: usize) -> Result<usize, ()> {
             return Err(());
         }
 
-        let ffi_getauxval: F = mem::transmute(ptr);
+        let ffi_getauxval: F = crate::mem::transmute(ptr);
         Ok(ffi_getauxval(key))
     }
 }
@@ -140,7 +157,8 @@ fn auxv_from_file(file: &str) -> Result<AuxVec, ()> {
     // 2*32 `usize` elements is enough to read the whole vector.
     let mut buf = [0_usize; 64];
     {
-        let raw: &mut [u8; 64 * mem::size_of::<usize>()] = unsafe { mem::transmute(&mut buf) };
+        let raw: &mut [u8; 64 * crate::mem::size_of::<usize>()] =
+            unsafe { crate::mem::transmute(&mut buf) };
         file.read(raw).map_err(|_| ())?;
     }
     auxv_from_buf(&buf)
@@ -161,7 +179,11 @@ fn auxv_from_buf(buf: &[usize; 64]) -> Result<AuxVec, ()> {
         }
     }
     // Targets with AT_HWCAP and AT_HWCAP2:
-    #[cfg(any(target_arch = "arm", target_arch = "powerpc64"))]
+    #[cfg(any(
+        target_arch = "arm",
+        target_arch = "powerpc",
+        target_arch = "powerpc64"
+    ))]
     {
         let mut hwcap = None;
         let mut hwcap2 = None;
@@ -214,7 +236,12 @@ mod tests {
 
     // FIXME: on mips/mips64 getauxval returns 0, and /proc/self/auxv
     // does not always contain the AT_HWCAP key under qemu.
-    #[cfg(not(any(target_arch = "mips", target_arch = "mips64", target_arch = "powerpc")))]
+    #[cfg(any(
+        target_arch = "aarch64",
+        target_arch = "arm",
+        target_arch = "powerpc",
+        target_arch = "powerpc64"
+    ))]
     #[test]
     fn auxv_crate() {
         let v = auxv();
@@ -224,7 +251,11 @@ mod tests {
         }
 
         // Targets with AT_HWCAP and AT_HWCAP2:
-        #[cfg(any(target_arch = "arm", target_arch = "powerpc64"))]
+        #[cfg(any(
+            target_arch = "arm",
+            target_arch = "powerpc",
+            target_arch = "powerpc64"
+        ))]
         {
             if let Some(hwcap2) = auxv_crate_getauxval(AT_HWCAP2) {
                 let rt_hwcap2 = v.expect("failed to find hwcap2 key").hwcap2;
@@ -243,7 +274,7 @@ mod tests {
     }
 
     #[cfg(feature = "std_detect_file_io")]
-    cfg_if! {
+    cfg_if::cfg_if! {
         if #[cfg(target_arch = "arm")] {
             #[test]
             fn linux_rpi3() {
@@ -264,6 +295,7 @@ mod tests {
                 // want to fall back to /proc/cpuinfo in this case, so
                 // reading should fail. assert_eq!(v.hwcap, 126614527);
                 // assert_eq!(v.hwcap2, 0);
+                let _ = v;
             }
         } else if #[cfg(target_arch = "aarch64")] {
             #[test]
@@ -286,7 +318,14 @@ mod tests {
         }
     }
 
+    #[cfg(any(
+        target_arch = "aarch64",
+        target_arch = "arm",
+        target_arch = "powerpc",
+        target_arch = "powerpc64"
+    ))]
     #[test]
+    #[cfg(feature = "std_detect_file_io")]
     fn auxv_crate_procfs() {
         let v = auxv();
         if let Some(hwcap) = auxv_crate_getprocfs(AT_HWCAP) {
@@ -294,7 +333,11 @@ mod tests {
         }
 
         // Targets with AT_HWCAP and AT_HWCAP2:
-        #[cfg(any(target_arch = "arm", target_arch = "powerpc64"))]
+        #[cfg(any(
+            target_arch = "arm",
+            target_arch = "powerpc",
+            target_arch = "powerpc64"
+        ))]
         {
             if let Some(hwcap2) = auxv_crate_getprocfs(AT_HWCAP2) {
                 assert_eq!(v.unwrap().hwcap2, hwcap2);
