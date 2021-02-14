@@ -1452,14 +1452,14 @@ pub unsafe fn i8x16_all_true(a: v128) -> i32 {
     llvm_i8x16_all_true(a.as_i8x16())
 }
 
-// FIXME: not available in our LLVM yet
-// /// Extracts the high bit for each lane in `a` and produce a scalar mask with
-// /// all bits concatenated.
-// #[inline]
-// #[cfg_attr(test, assert_instr(i8x16.all_true))]
-// pub unsafe fn i8x16_bitmask(a: v128) -> i32 {
-//     llvm_bitmask_i8x16(transmute(a))
-// }
+/// Extracts the high bit for each lane in `a` and produce a scalar mask with
+/// all bits concatenated.
+#[inline]
+#[cfg_attr(test, assert_instr(i8x16.bitmask))]
+#[target_feature(enable = "simd128")]
+pub unsafe fn i8x16_bitmask(a: v128) -> i32 {
+    llvm_bitmask_i8x16(transmute(a))
+}
 
 /// Converts two input vectors into a smaller lane vector by narrowing each
 /// lane.
@@ -1662,14 +1662,14 @@ pub unsafe fn i16x8_all_true(a: v128) -> i32 {
     llvm_i16x8_all_true(a.as_i16x8())
 }
 
-// FIXME: not available in our LLVM yet
-// /// Extracts the high bit for each lane in `a` and produce a scalar mask with
-// /// all bits concatenated.
-// #[inline]
-// #[cfg_attr(test, assert_instr(i16x8.all_true))]
-// pub unsafe fn i16x8_bitmask(a: v128) -> i32 {
-//     llvm_bitmask_i16x8(transmute(a))
-// }
+/// Extracts the high bit for each lane in `a` and produce a scalar mask with
+/// all bits concatenated.
+#[inline]
+#[cfg_attr(test, assert_instr(i16x8.bitmask))]
+#[target_feature(enable = "simd128")]
+pub unsafe fn i16x8_bitmask(a: v128) -> i32 {
+    llvm_bitmask_i16x8(transmute(a))
+}
 
 /// Converts two input vectors into a smaller lane vector by narrowing each
 /// lane.
@@ -1913,14 +1913,14 @@ pub unsafe fn i32x4_all_true(a: v128) -> i32 {
     llvm_i32x4_all_true(a.as_i32x4())
 }
 
-// FIXME: not available in our LLVM yet
-// /// Extracts the high bit for each lane in `a` and produce a scalar mask with
-// /// all bits concatenated.
-// #[inline]
-// #[cfg_attr(test, assert_instr(i32x4.all_true))]
-// pub unsafe fn i32x4_bitmask(a: v128) -> i32 {
-//     llvm_bitmask_i32x4(transmute(a))
-// }
+/// Extracts the high bit for each lane in `a` and produce a scalar mask with
+/// all bits concatenated.
+#[inline]
+#[cfg_attr(test, assert_instr(i32x4.bitmask))]
+#[target_feature(enable = "simd128")]
+pub unsafe fn i32x4_bitmask(a: v128) -> i32 {
+    llvm_bitmask_i32x4(transmute(a))
+}
 
 /// Converts low half of the smaller lane vector to a larger lane
 /// vector, sign extended.
