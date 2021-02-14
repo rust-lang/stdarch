@@ -1,9 +1,6 @@
 //! Parses ELF auxiliary vectors.
 #![cfg_attr(not(target_arch = "aarch64"), allow(dead_code))]
 
-#[cfg(feature = "std_detect_file_io")]
-use crate::{fs::File, io::Read};
-
 /// Key to access the CPU Hardware capabilities bitfield.
 pub(crate) const AT_HWCAP: usize = 16;
 /// Key to access the CPU Hardware capabilities 2 bitfield.
@@ -139,7 +136,7 @@ fn getauxval(key: usize) -> Result<usize, ()> {
             return Err(());
         }
 
-        let ffi_getauxval: F = crate::mem::transmute(ptr);
+        let ffi_getauxval: F = core::mem::transmute(ptr);
         Ok(ffi_getauxval(key))
     }
 }
@@ -148,7 +145,7 @@ fn getauxval(key: usize) -> Result<usize, ()> {
 /// function returns `Err`.
 #[cfg(feature = "std_detect_file_io")]
 fn auxv_from_file(file: &str) -> Result<AuxVec, ()> {
-    let mut file = File::open(file).map_err(|_| ())?;
+    let file = super::read_file(file)?;
 
     // See <https://github.com/torvalds/linux/blob/v3.19/include/uapi/linux/auxvec.h>.
     //
@@ -156,11 +153,11 @@ fn auxv_from_file(file: &str) -> Result<AuxVec, ()> {
     // `AT_EXECFN = 31` to `AT_NULL = 0`. That is, a buffer of
     // 2*32 `usize` elements is enough to read the whole vector.
     let mut buf = [0_usize; 64];
-    {
-        let raw: &mut [u8; 64 * crate::mem::size_of::<usize>()] =
-            unsafe { crate::mem::transmute(&mut buf) };
-        file.read(raw).map_err(|_| ())?;
+    let len = core::mem::size_of_val(&buf).max(file.len());
+    unsafe {
+        core::ptr::copy_nonoverlapping(file.as_ptr(), buf.as_mut_ptr() as *mut u8, len);
     }
+
     auxv_from_buf(&buf)
 }
 

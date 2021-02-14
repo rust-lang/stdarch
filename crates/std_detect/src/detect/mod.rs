@@ -140,7 +140,7 @@ pub fn features() -> impl Iterator<Item = (&'static str, bool)> {
             target_arch = "mips64",
         ))] {
             (0_u8..Feature::_last as u8).map(|discriminant: u8| {
-                let f: Feature = unsafe { crate::mem::transmute(discriminant) };
+                let f: Feature = unsafe { core::mem::transmute(discriminant) };
                 let name: &'static str = f.to_str();
                 let enabled: bool = check_for(f);
                 (name, enabled)

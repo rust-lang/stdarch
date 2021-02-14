@@ -3,9 +3,9 @@
 
 #![allow(dead_code)] // not used on all platforms
 
-use crate::sync::atomic::Ordering;
+use core::sync::atomic::Ordering;
 
-use crate::sync::atomic::AtomicUsize;
+use core::sync::atomic::AtomicUsize;
 
 /// Sets the `bit` of `x`.
 #[inline]
