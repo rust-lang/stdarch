@@ -10861,6 +10861,51 @@ pub unsafe fn _mm512_maskz_cvtpd_ps(k: __mmask8, a: __m512d) -> __m256 {
     ))
 }
 
+/// Convert packed double-precision (64-bit) floating-point elements in a to packed 32-bit integers, and store the results in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_cvtpd_epi32&expand=1675)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vcvtpd2dq))]
+pub unsafe fn _mm512_cvtpd_epi32(a: __m512d) -> __m256i {
+    transmute(vcvtpd2dq(
+        a.as_f64x8(),
+        _mm256_setzero_si256().as_i32x8(),
+        0b11111111,
+        _MM_FROUND_CUR_DIRECTION,
+    ))
+}
+
+/// Convert packed double-precision (64-bit) floating-point elements in a to packed 32-bit integers, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_cvtpd_epi32&expand=1676)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vcvtpd2dq))]
+pub unsafe fn _mm512_mask_cvtpd_epi32(src: __m256i, k: __mmask8, a: __m512d) -> __m256i {
+    transmute(vcvtpd2dq(
+        a.as_f64x8(),
+        src.as_i32x8(),
+        k,
+        _MM_FROUND_CUR_DIRECTION,
+    ))
+}
+
+/// Convert packed double-precision (64-bit) floating-point elements in a to packed 32-bit integers, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_cvtpd_epi32&expand=1677)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vcvtpd2dq))]
+pub unsafe fn _mm512_maskz_cvtpd_epi32(k: __mmask8, a: __m512d) -> __m256i {
+    transmute(vcvtpd2dq(
+        a.as_f64x8(),
+        _mm256_setzero_si256().as_i32x8(),
+        k,
+        _MM_FROUND_CUR_DIRECTION,
+    ))
+}
+
 /// Performs an element-by-element conversion of packed double-precision (64-bit) floating-point elements in v2 to single-precision (32-bit) floating-point elements and stores them in dst. The elements are stored in the lower half of the results vector, while the remaining upper half locations are set to 0.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_cvtpd_pslo&expand=1715)
@@ -11016,6 +11061,52 @@ pub unsafe fn _mm512_maskz_cvtepi8_epi64(k: __mmask8, a: __m128i) -> __m512i {
     transmute(simd_select_bitmask(k, convert, zero))
 }
 
+/// Sign extend packed 8-bit integers in the low 4 bytes of a to packed 64-bit integers, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_cvtepi8_epi64&expand=1542)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovsxbq))]
+pub unsafe fn _mm256_mask_cvtepi8_epi64(src: __m256i, k: __mmask8, a: __m128i) -> __m256i {
+    let convert = _mm256_cvtepi8_epi64(a).as_i64x4();
+    transmute(simd_select_bitmask(k, convert, src.as_i64x4()))
+}
+
+/// Sign extend packed 8-bit integers in the low 4 bytes of a to packed 64-bit integers, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_cvtepi8_epi64&expand=1543)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovsxbq))]
+pub unsafe fn _mm256_maskz_cvtepi8_epi64(k: __mmask8, a: __m128i) -> __m256i {
+    let convert = _mm256_cvtepi8_epi64(a).as_i64x4();
+    let zero = _mm256_setzero_si256().as_i64x4();
+    transmute(simd_select_bitmask(k, convert, zero))
+}
+
+/// Sign extend packed 8-bit integers in the low 2 bytes of a to packed 64-bit integers, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_cvtepi8_epi64&expand=1539)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovsxbq))]
+pub unsafe fn _mm_mask_cvtepi8_epi64(src: __m128i, k: __mmask8, a: __m128i) -> __m128i {
+    let convert = _mm_cvtepi8_epi64(a).as_i64x2();
+    transmute(simd_select_bitmask(k, convert, src.as_i64x2()))
+}
+
+/// Sign extend packed 8-bit integers in the low 2 bytes of a to packed 64-bit integers, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_cvtepi8_epi64&expand=1540)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovsxbq))]
+pub unsafe fn _mm_maskz_cvtepi8_epi64(k: __mmask8, a: __m128i) -> __m128i {
+    let convert = _mm_cvtepi8_epi64(a).as_i64x2();
+    let zero = _mm_setzero_si128().as_i64x2();
+    transmute(simd_select_bitmask(k, convert, zero))
+}
+
 /// Zero extend packed unsigned 8-bit integers in a to packed 32-bit integers, and store the results in dst.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_cvtepu8_epi32&expand=1621)
@@ -11047,6 +11138,52 @@ pub unsafe fn _mm512_mask_cvtepu8_epi32(src: __m512i, k: __mmask16, a: __m128i) 
 pub unsafe fn _mm512_maskz_cvtepu8_epi32(k: __mmask16, a: __m128i) -> __m512i {
     let convert = _mm512_cvtepu8_epi32(a).as_i32x16();
     let zero = _mm512_setzero_si512().as_i32x16();
+    transmute(simd_select_bitmask(k, convert, zero))
+}
+
+/// Zero extend packed unsigned 8-bit integers in the low 8 bytes of a to packed 32-bit integers, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_cvtepu8_epi32&expand=1619)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovzxbd))]
+pub unsafe fn _mm256_mask_cvtepu8_epi32(src: __m256i, k: __mmask8, a: __m128i) -> __m256i {
+    let convert = _mm256_cvtepu8_epi32(a).as_i32x8();
+    transmute(simd_select_bitmask(k, convert, src.as_i32x8()))
+}
+
+/// Zero extend packed unsigned 8-bit integers in the low 8 bytes of a to packed 32-bit integers, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/IntrinsicsGuide/#text=_mm256_maskz_cvtepu8_epi32&expand=1620)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovzxbd))]
+pub unsafe fn _mm256_maskz_cvtepu8_epi32(k: __mmask8, a: __m128i) -> __m256i {
+    let convert = _mm256_cvtepu8_epi32(a).as_i32x8();
+    let zero = _mm256_setzero_si256().as_i32x8();
+    transmute(simd_select_bitmask(k, convert, zero))
+}
+
+/// Zero extend packed unsigned 8-bit integers in the low 4 bytes of a to packed 32-bit integers, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_cvtepu8_epi32&expand=1616)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovzxbd))]
+pub unsafe fn _mm_mask_cvtepu8_epi32(src: __m128i, k: __mmask8, a: __m128i) -> __m128i {
+    let convert = _mm_cvtepu8_epi32(a).as_i32x4();
+    transmute(simd_select_bitmask(k, convert, src.as_i32x4()))
+}
+
+/// Zero extend packed unsigned 8-bit integers in th elow 4 bytes of a to packed 32-bit integers, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/IntrinsicsGuide/#text=_mm_maskz_cvtepu8_epi32&expand=1617)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovzxbd))]
+pub unsafe fn _mm_maskz_cvtepu8_epi32(k: __mmask8, a: __m128i) -> __m128i {
+    let convert = _mm_cvtepu8_epi32(a).as_i32x4();
+    let zero = _mm_setzero_si128().as_i32x4();
     transmute(simd_select_bitmask(k, convert, zero))
 }
 
@@ -11082,6 +11219,52 @@ pub unsafe fn _mm512_mask_cvtepu8_epi64(src: __m512i, k: __mmask8, a: __m128i) -
 pub unsafe fn _mm512_maskz_cvtepu8_epi64(k: __mmask8, a: __m128i) -> __m512i {
     let convert = _mm512_cvtepu8_epi64(a).as_i64x8();
     let zero = _mm512_setzero_si512().as_i64x8();
+    transmute(simd_select_bitmask(k, convert, zero))
+}
+
+/// Zero extend packed unsigned 8-bit integers in the low 4 bytes of a to packed 64-bit integers, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_cvtepu8_epi64&expand=1628)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovzxbq))]
+pub unsafe fn _mm256_mask_cvtepu8_epi64(src: __m256i, k: __mmask8, a: __m128i) -> __m256i {
+    let convert = _mm256_cvtepu8_epi64(a).as_i64x4();
+    transmute(simd_select_bitmask(k, convert, src.as_i64x4()))
+}
+
+/// Zero extend packed unsigned 8-bit integers in the low 4 bytes of a to packed 64-bit integers, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_cvtepu8_epi64&expand=1629)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovzxbq))]
+pub unsafe fn _mm256_maskz_cvtepu8_epi64(k: __mmask8, a: __m128i) -> __m256i {
+    let convert = _mm256_cvtepu8_epi64(a).as_i64x4();
+    let zero = _mm256_setzero_si256().as_i64x4();
+    transmute(simd_select_bitmask(k, convert, zero))
+}
+
+/// Zero extend packed unsigned 8-bit integers in the low 2 bytes of a to packed 64-bit integers, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_cvtepu8_epi64&expand=1625)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovzxbq))]
+pub unsafe fn _mm_mask_cvtepu8_epi64(src: __m128i, k: __mmask8, a: __m128i) -> __m128i {
+    let convert = _mm_cvtepu8_epi64(a).as_i64x2();
+    transmute(simd_select_bitmask(k, convert, src.as_i64x2()))
+}
+
+/// Zero extend packed unsigned 8-bit integers in the low 2 bytes of a to packed 64-bit integers, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_cvtepu8_epi64&expand=1626)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovzxbq))]
+pub unsafe fn _mm_maskz_cvtepu8_epi64(k: __mmask8, a: __m128i) -> __m128i {
+    let convert = _mm_cvtepu8_epi64(a).as_i64x2();
+    let zero = _mm_setzero_si128().as_i64x2();
     transmute(simd_select_bitmask(k, convert, zero))
 }
 
@@ -11279,6 +11462,52 @@ pub unsafe fn _mm512_maskz_cvtepu16_epi32(k: __mmask16, a: __m256i) -> __m512i {
     transmute(simd_select_bitmask(k, convert, zero))
 }
 
+/// Zero extend packed unsigned 16-bit integers in a to packed 32-bit integers, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_cvtepu16_epi32&expand=1551)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovzxwd))]
+pub unsafe fn _mm256_mask_cvtepu16_epi32(src: __m256i, k: __mmask8, a: __m128i) -> __m256i {
+    let convert = _mm256_cvtepu16_epi32(a).as_i32x8();
+    transmute(simd_select_bitmask(k, convert, src.as_i32x8()))
+}
+
+/// Zero extend packed unsigned 16-bit integers in a to packed 32-bit integers, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_cvtepu16_epi32&expand=1552)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovzxwd))]
+pub unsafe fn _mm256_maskz_cvtepu16_epi32(k: __mmask8, a: __m128i) -> __m256i {
+    let convert = _mm256_cvtepu16_epi32(a).as_i32x8();
+    let zero = _mm256_setzero_si256().as_i32x8();
+    transmute(simd_select_bitmask(k, convert, zero))
+}
+
+/// Zero extend packed unsigned 16-bit integers in a to packed 32-bit integers, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_cvtepu16_epi32&expand=1548)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovzxwd))]
+pub unsafe fn _mm_mask_cvtepu16_epi32(src: __m128i, k: __mmask8, a: __m128i) -> __m128i {
+    let convert = _mm_cvtepu16_epi32(a).as_i32x4();
+    transmute(simd_select_bitmask(k, convert, src.as_i32x4()))
+}
+
+/// Zero extend packed unsigned 16-bit integers in a to packed 32-bit integers, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_cvtepu16_epi32&expand=1549)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovzxwd))]
+pub unsafe fn _mm_maskz_cvtepu16_epi32(k: __mmask8, a: __m128i) -> __m128i {
+    let convert = _mm_cvtepu16_epi32(a).as_i32x4();
+    let zero = _mm_setzero_si128().as_i32x4();
+    transmute(simd_select_bitmask(k, convert, zero))
+}
+
 /// Zero extend packed unsigned 16-bit integers in a to packed 64-bit integers, and store the results in dst.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_cvtepu16_epi64&expand=1562)
@@ -11310,6 +11539,52 @@ pub unsafe fn _mm512_mask_cvtepu16_epi64(src: __m512i, k: __mmask8, a: __m128i) 
 pub unsafe fn _mm512_maskz_cvtepu16_epi64(k: __mmask8, a: __m128i) -> __m512i {
     let convert = _mm512_cvtepu16_epi64(a).as_i64x8();
     let zero = _mm512_setzero_si512().as_i64x8();
+    transmute(simd_select_bitmask(k, convert, zero))
+}
+
+/// Zero extend packed unsigned 16-bit integers in the low 8 bytes of a to packed 64-bit integers, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_cvtepu16_epi64&expand=1560)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovzxwq))]
+pub unsafe fn _mm256_mask_cvtepu16_epi64(src: __m256i, k: __mmask8, a: __m128i) -> __m256i {
+    let convert = _mm256_cvtepu16_epi64(a).as_i64x4();
+    transmute(simd_select_bitmask(k, convert, src.as_i64x4()))
+}
+
+/// Zero extend packed unsigned 16-bit integers in the low 8 bytes of a to packed 64-bit integers, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_cvtepu16_epi64&expand=1561)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovzxwq))]
+pub unsafe fn _mm256_maskz_cvtepu16_epi64(k: __mmask8, a: __m128i) -> __m256i {
+    let convert = _mm256_cvtepu16_epi64(a).as_i64x4();
+    let zero = _mm256_setzero_si256().as_i64x4();
+    transmute(simd_select_bitmask(k, convert, zero))
+}
+
+/// Zero extend packed unsigned 16-bit integers in the low 4 bytes of a to packed 64-bit integers, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_cvtepu16_epi64&expand=1557)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovzxwq))]
+pub unsafe fn _mm_mask_cvtepu16_epi64(src: __m128i, k: __mmask8, a: __m128i) -> __m128i {
+    let convert = _mm_cvtepu16_epi64(a).as_i64x2();
+    transmute(simd_select_bitmask(k, convert, src.as_i64x2()))
+}
+
+/// Zero extend packed unsigned 16-bit integers in the low 4 bytes of a to packed 64-bit integers, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_cvtepu16_epi64&expand=1558)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovzxwq))]
+pub unsafe fn _mm_maskz_cvtepu16_epi64(k: __mmask8, a: __m128i) -> __m128i {
+    let convert = _mm_cvtepu16_epi64(a).as_i64x2();
+    let zero = _mm_setzero_si128().as_i64x2();
     transmute(simd_select_bitmask(k, convert, zero))
 }
 
@@ -11424,6 +11699,52 @@ pub unsafe fn _mm512_mask_cvtepu32_epi64(src: __m512i, k: __mmask8, a: __m256i) 
 pub unsafe fn _mm512_maskz_cvtepu32_epi64(k: __mmask8, a: __m256i) -> __m512i {
     let convert = _mm512_cvtepu32_epi64(a).as_i64x8();
     let zero = _mm512_setzero_si512().as_i64x8();
+    transmute(simd_select_bitmask(k, convert, zero))
+}
+
+/// Zero extend packed unsigned 32-bit integers in a to packed 64-bit integers, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_cvtepu32_epi64&expand=1569)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovzxdq))]
+pub unsafe fn _mm256_mask_cvtepu32_epi64(src: __m256i, k: __mmask8, a: __m128i) -> __m256i {
+    let convert = _mm256_cvtepu32_epi64(a).as_i64x4();
+    transmute(simd_select_bitmask(k, convert, src.as_i64x4()))
+}
+
+/// Zero extend packed unsigned 32-bit integers in a to packed 64-bit integers, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_cvtepu32_epi64&expand=1570)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovzxdq))]
+pub unsafe fn _mm256_maskz_cvtepu32_epi64(k: __mmask8, a: __m128i) -> __m256i {
+    let convert = _mm256_cvtepu32_epi64(a).as_i64x4();
+    let zero = _mm256_setzero_si256().as_i64x4();
+    transmute(simd_select_bitmask(k, convert, zero))
+}
+
+/// Zero extend packed unsigned 32-bit integers in a to packed 64-bit integers, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_cvtepu32_epi64&expand=1566)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovzxdq))]
+pub unsafe fn _mm_mask_cvtepu32_epi64(src: __m128i, k: __mmask8, a: __m128i) -> __m128i {
+    let convert = _mm_cvtepu32_epi64(a).as_i64x2();
+    transmute(simd_select_bitmask(k, convert, src.as_i64x2()))
+}
+
+/// Zero extend packed unsigned 32-bit integers in a to packed 64-bit integers, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_cvtepu32_epi64&expand=1567)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovzxdq))]
+pub unsafe fn _mm_maskz_cvtepu32_epi64(k: __mmask8, a: __m128i) -> __m128i {
+    let convert = _mm_cvtepu32_epi64(a).as_i64x2();
+    let zero = _mm_setzero_si128().as_i64x2();
     transmute(simd_select_bitmask(k, convert, zero))
 }
 
@@ -11652,6 +11973,75 @@ pub unsafe fn _mm512_mask_cvtepu32_pd(src: __m512d, k: __mmask8, a: __m256i) -> 
 pub unsafe fn _mm512_maskz_cvtepu32_pd(k: __mmask8, a: __m256i) -> __m512d {
     let convert = _mm512_cvtepu32_pd(a).as_f64x8();
     let zero = _mm512_setzero_pd().as_f64x8();
+    transmute(simd_select_bitmask(k, convert, zero))
+}
+
+/// Convert packed unsigned 32-bit integers in a to packed double-precision (64-bit) floating-point elements, and store the results in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_cvtepu32_pd&expand=1577)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vcvtudq2pd))]
+pub unsafe fn _mm256_cvtepu32_pd(a: __m128i) -> __m256d {
+    let a = a.as_u32x4();
+    transmute::<f64x4, _>(simd_cast(a))
+}
+
+/// Convert packed unsigned 32-bit integers in a to packed double-precision (64-bit) floating-point elements, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_cvtepu32_pd&expand=1578)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vcvtudq2pd))]
+pub unsafe fn _mm256_mask_cvtepu32_pd(src: __m256d, k: __mmask8, a: __m128i) -> __m256d {
+    let convert = _mm256_cvtepu32_pd(a).as_f64x4();
+    transmute(simd_select_bitmask(k, convert, src.as_f64x4()))
+}
+
+/// Convert packed unsigned 32-bit integers in a to packed double-precision (64-bit) floating-point elements, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_cvtepu32_pd&expand=1579)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vcvtudq2pd))]
+pub unsafe fn _mm256_maskz_cvtepu32_pd(k: __mmask8, a: __m128i) -> __m256d {
+    let convert = _mm256_cvtepu32_pd(a).as_f64x4();
+    let zero = _mm256_setzero_pd().as_f64x4();
+    transmute(simd_select_bitmask(k, convert, zero))
+}
+
+/// Convert packed unsigned 32-bit integers in a to packed double-precision (64-bit) floating-point elements, and store the results in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_cvtepu32_pd&expand=1574)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vcvtudq2pd))]
+pub unsafe fn _mm_cvtepu32_pd(a: __m128i) -> __m128d {
+    let a = a.as_u32x4();
+    let u64: u32x2 = simd_shuffle2(a, a, [0, 1]);
+    transmute::<f64x2, _>(simd_cast(u64))
+}
+
+/// Convert packed unsigned 32-bit integers in a to packed double-precision (64-bit) floating-point elements, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_cvtepu32_pd&expand=1575)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vcvtudq2pd))]
+pub unsafe fn _mm_mask_cvtepu32_pd(src: __m128d, k: __mmask8, a: __m128i) -> __m128d {
+    let convert = _mm_cvtepu32_pd(a).as_f64x2();
+    transmute(simd_select_bitmask(k, convert, src.as_f64x2()))
+}
+
+/// Convert packed unsigned 32-bit integers in a to packed double-precision (64-bit) floating-point elements, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_cvtepu32_pd&expand=1576)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vcvtudq2pd))]
+pub unsafe fn _mm_maskz_cvtepu32_pd(k: __mmask8, a: __m128i) -> __m128d {
+    let convert = _mm_cvtepu32_pd(a).as_f64x2();
+    let zero = _mm_setzero_pd().as_f64x2();
     transmute(simd_select_bitmask(k, convert, zero))
 }
 
@@ -41991,6 +42381,48 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_mask_cvtepu8_epi32() {
+        let a = _mm_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
+        let src = _mm256_set1_epi32(-1);
+        let r = _mm256_mask_cvtepu8_epi32(src, 0, a);
+        assert_eq_m256i(r, src);
+        let r = _mm256_mask_cvtepu8_epi32(src, 0b11111111, a);
+        let e = _mm256_set_epi32(8, 9, 10, 11, 12, 13, 14, 15);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_maskz_cvtepu8_epi32() {
+        let a = _mm_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
+        let r = _mm256_maskz_cvtepu8_epi32(0, a);
+        assert_eq_m256i(r, _mm256_setzero_si256());
+        let r = _mm256_maskz_cvtepu8_epi32(0b11111111, a);
+        let e = _mm256_set_epi32(8, 9, 10, 11, 12, 13, 14, 15);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_mask_cvtepu8_epi32() {
+        let a = _mm_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
+        let src = _mm_set1_epi32(-1);
+        let r = _mm_mask_cvtepu8_epi32(src, 0, a);
+        assert_eq_m128i(r, src);
+        let r = _mm_mask_cvtepu8_epi32(src, 0b00001111, a);
+        let e = _mm_set_epi32(12, 13, 14, 15);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_maskz_cvtepu8_epi32() {
+        let a = _mm_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
+        let r = _mm_maskz_cvtepu8_epi32(0, a);
+        assert_eq_m128i(r, _mm_setzero_si128());
+        let r = _mm_maskz_cvtepu8_epi32(0b00001111, a);
+        let e = _mm_set_epi32(12, 13, 14, 15);
+        assert_eq_m128i(r, e);
+    }
+
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_cvtepi16_epi32() {
         let a = _mm256_set_epi16(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
@@ -42089,6 +42521,48 @@ mod tests {
         let r = _mm512_maskz_cvtepu16_epi32(0b00000000_11111111, a);
         let e = _mm512_set_epi32(0, 0, 0, 0, 0, 0, 0, 0, 8, 9, 10, 11, 12, 13, 14, 15);
         assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_mask_cvtepu16_epi32() {
+        let a = _mm_set_epi16(8, 9, 10, 11, 12, 13, 14, 15);
+        let src = _mm256_set1_epi32(-1);
+        let r = _mm256_mask_cvtepu16_epi32(src, 0, a);
+        assert_eq_m256i(r, src);
+        let r = _mm256_mask_cvtepu16_epi32(src, 0b11111111, a);
+        let e = _mm256_set_epi32(8, 9, 10, 11, 12, 13, 14, 15);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_maskz_cvtepu16_epi32() {
+        let a = _mm_set_epi16(8, 9, 10, 11, 12, 13, 14, 15);
+        let r = _mm256_maskz_cvtepu16_epi32(0, a);
+        assert_eq_m256i(r, _mm256_setzero_si256());
+        let r = _mm256_maskz_cvtepu16_epi32(0b11111111, a);
+        let e = _mm256_set_epi32(8, 9, 10, 11, 12, 13, 14, 15);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_mask_cvtepu16_epi32() {
+        let a = _mm_set_epi16(8, 9, 10, 11, 12, 13, 14, 15);
+        let src = _mm_set1_epi32(-1);
+        let r = _mm_mask_cvtepu16_epi32(src, 0, a);
+        assert_eq_m128i(r, src);
+        let r = _mm_mask_cvtepu16_epi32(src, 0b00001111, a);
+        let e = _mm_set_epi32(12, 13, 14, 15);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_maskz_cvtepu16_epi32() {
+        let a = _mm_set_epi16(8, 9, 10, 11, 12, 13, 14, 15);
+        let r = _mm_maskz_cvtepu16_epi32(0, a);
+        assert_eq_m128i(r, _mm_setzero_si128());
+        let r = _mm_maskz_cvtepu16_epi32(0b00001111, a);
+        let e = _mm_set_epi32(12, 13, 14, 15);
+        assert_eq_m128i(r, e);
     }
 
     #[simd_test(enable = "avx512f")]
