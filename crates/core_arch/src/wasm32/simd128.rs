@@ -1419,7 +1419,7 @@ pub unsafe fn v128_bitselect(v1: v128, v2: v128, c: v128) -> v128 {
 
 /// Lane-wise wrapping absolute value.
 #[inline]
-// #[cfg_attr(test, assert_instr(i8x16.abs))] // FIXME support not in our LLVM yet
+#[cfg_attr(test, assert_instr(i8x16.abs))]
 #[target_feature(enable = "simd128")]
 pub unsafe fn i8x16_abs(a: v128) -> v128 {
     let a = transmute::<_, i8x16>(a);
@@ -1629,7 +1629,7 @@ pub unsafe fn i8x16_avgr_u(a: v128, b: v128) -> v128 {
 
 /// Lane-wise wrapping absolute value.
 #[inline]
-// #[cfg_attr(test, assert_instr(i16x8.abs))] // FIXME support not in our LLVM yet
+#[cfg_attr(test, assert_instr(i16x8.abs))]
 #[target_feature(enable = "simd128")]
 pub unsafe fn i16x8_abs(a: v128) -> v128 {
     let a = transmute::<_, i16x8>(a);
@@ -1880,7 +1880,7 @@ pub unsafe fn i16x8_avgr_u(a: v128, b: v128) -> v128 {
 
 /// Lane-wise wrapping absolute value.
 #[inline]
-// #[cfg_attr(test, assert_instr(i32x4.abs))] // FIXME support not in our LLVM yet
+#[cfg_attr(test, assert_instr(i32x4.abs))]
 #[target_feature(enable = "simd128")]
 pub unsafe fn i32x4_abs(a: v128) -> v128 {
     let a = transmute::<_, i32x4>(a);
@@ -2122,7 +2122,7 @@ pub unsafe fn i64x2_sub(a: v128, b: v128) -> v128 {
 
 /// Multiplies two 128-bit vectors as if they were two packed two 64-bit integers.
 #[inline]
-// #[cfg_attr(test, assert_instr(i64x2.mul))] // FIXME: not present in our LLVM
+#[cfg_attr(test, assert_instr(i64x2.mul))]
 #[target_feature(enable = "simd128")]
 pub unsafe fn i64x2_mul(a: v128, b: v128) -> v128 {
     transmute(simd_mul(a.as_i64x2(), b.as_i64x2()))
