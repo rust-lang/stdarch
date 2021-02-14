@@ -125,9 +125,16 @@ cfg_if::cfg_if! {
     if #[cfg(feature = "std_detect_env_override")] {
         #[inline]
         fn initialize(mut value: Initializer) -> Initializer {
-            if let Ok(disable) = crate::env::var("RUST_STD_DETECT_UNSTABLE") {
-                for v in disable.split(" ") {
-                    let _ = super::Feature::from_str(v).map(|v| value.unset(v as u32));
+            let env = unsafe {
+                libc::getenv(b"RUST_STD_DETECT_UNSTABLE\0".as_ptr() as *const libc::c_char)
+            };
+            if !env.is_null() {
+                let len = unsafe { libc::strlen(env) };
+                let env = unsafe { core::slice::from_raw_parts(env as *const u8, len) };
+                if let Ok(disable) = core::str::from_utf8(env) {
+                    for v in disable.split(" ") {
+                        let _ = super::Feature::from_str(v).map(|v| value.unset(v as u32));
+                    }
                 }
             }
             do_initialize(value);
