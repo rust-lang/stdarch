@@ -190,6 +190,9 @@ extern "C" {
     fn llvm_widen_low_i32x4_u(a: i16x8) -> i32x4;
     #[link_name = "llvm.wasm.widen.high.unsigned.v4i32.v8i16"]
     fn llvm_widen_high_i32x4_u(a: i16x8) -> i32x4;
+
+    #[link_name = "llvm.wasm.bitmask.v2i64"]
+    fn llvm_bitmask_i64x2(a: i64x2) -> i32;
 }
 
 /// Loads a `v128` vector from the given heap address.
