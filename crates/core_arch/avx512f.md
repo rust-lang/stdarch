@@ -2065,6 +2065,8 @@
   * [x] [`_mm256_cvtepu32_pd`]
   * [x] [`_mm256_mask_cvtepu32_pd`]
   * [x] [`_mm256_maskz_cvtepu32_pd`]
+  * [x] [`_mm512_cvtepu32lo_pd`]
+  * [x] [`_mm512_mask_cvtepu32lo_pd`]
   * [x] [`_mm512_cvtepu8_epi32`]
   * [x] [`_mm512_mask_cvtepu8_epi32`]
   * [x] [`_mm512_maskz_cvtepu8_epi32`]
@@ -2082,8 +2084,25 @@
   * [x] [`_mm512_cvtpd_epi32`]
   * [x] [`_mm512_mask_cvtpd_epi32`]
   * [x] [`_mm512_maskz_cvtpd_epi32`]
+  * [x] [`_mm_mask_cvtpd_epi32`]
+  * [x] [`_mm_maskz_cvtpd_epi32`]
+  * [x] [`_mm256_mask_cvtpd_epi32`]
+  * [x] [`_mm256_maskz_cvtpd_epi32`]
+  * [x] [`_mm512_cvtpd_epu32`]
+  * [x] [`_mm512_mask_cvtpd_epu32`]
+  * [x] [`_mm512_maskz_cvtpd_epu32`]
+  * [x] [`_mm_cvtpd_epu32`]
+  * [x] [`_mm_mask_cvtpd_epu32`]
+  * [x] [`_mm_maskz_cvtpd_epu32`]
+  * [x] [`_mm256_cvtpd_epu32`]
+  * [x] [`_mm256_mask_cvtpd_epu32`]
+  * [x] [`_mm256_maskz_cvtpd_epu32`]
+  * [x] [`_mm512_cvtpd_ps`]
+  * [x] [`_mm512_mask_cvtpd_ps`]
+  * [x] [`_mm512_maskz_cvtpd_ps`]
 
-  * [x] [`_mm512_mask_cvtepu32lo_pd`]
+
+
 
   * [x] [`_mm512_mask_cvtsepi64_epi32`]
   * [x] [`_mm512_mask_cvtsepi64_epi8`]
@@ -2104,11 +2123,11 @@
 
 
 
-  * [x] [`_mm512_cvtepu32lo_pd`]
 
 
-  * [x] [`_mm512_cvtpd_epu32`]
-  * [x] [`_mm512_cvtpd_ps`]
+
+
+
   * [x] [`_mm512_cvtpd_pslo`]
   * [x] [`_mm512_cvtph_ps`]
   * [x] [`_mm512_cvtps_epi32`]
@@ -2159,8 +2178,8 @@
 
 
 
-  * [x] [`_mm512_mask_cvtpd_epu32`]
-  * [x] [`_mm512_mask_cvtpd_ps`]
+
+
   * [x] [`_mm512_mask_cvtpd_pslo`]
   * [x] [`_mm512_mask_cvtph_ps`]
   * [x] [`_mm512_mask_cvtps_epi32`]
@@ -2203,8 +2222,8 @@
 
 
 
-  * [x] [`_mm512_maskz_cvtpd_epu32`]
-  * [x] [`_mm512_maskz_cvtpd_ps`]
+
+
   * [x] [`_mm512_maskz_cvtph_ps`]
   * [x] [`_mm512_maskz_cvtps_epi32`]
   * [x] [`_mm512_maskz_cvtps_epu32`]
