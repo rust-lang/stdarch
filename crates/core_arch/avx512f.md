@@ -2100,7 +2100,13 @@
   * [x] [`_mm512_cvtpd_ps`]
   * [x] [`_mm512_mask_cvtpd_ps`]
   * [x] [`_mm512_maskz_cvtpd_ps`]
-
+  * [x] [`_mm_mask_cvtpd_ps`]
+  * [x] [`_mm_maskz_cvtpd_ps`]
+  * [x] [`_mm256_mask_cvtpd_ps`]
+  * [x] [`_mm256_maskz_cvtpd_ps`]
+  * [x] [`_mm512_cvtpd_pslo`]
+  * [x] [`_mm512_mask_cvtpd_pslo`]
+  * [x] [`_mm512_cvtph_ps`]
 
 
 
@@ -2128,8 +2134,8 @@
 
 
 
-  * [x] [`_mm512_cvtpd_pslo`]
-  * [x] [`_mm512_cvtph_ps`]
+
+
   * [x] [`_mm512_cvtps_epi32`]
   * [x] [`_mm512_cvtps_epu32`]
   * [x] [`_mm512_cvtps_pd`]
@@ -2180,7 +2186,7 @@
 
 
 
-  * [x] [`_mm512_mask_cvtpd_pslo`]
+
   * [x] [`_mm512_mask_cvtph_ps`]
   * [x] [`_mm512_mask_cvtps_epi32`]
   * [x] [`_mm512_mask_cvtps_epu32`]

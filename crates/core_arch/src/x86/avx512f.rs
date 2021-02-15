@@ -10861,6 +10861,52 @@ pub unsafe fn _mm512_maskz_cvtpd_ps(k: __mmask8, a: __m512d) -> __m256 {
     ))
 }
 
+/// Convert packed double-precision (64-bit) floating-point elements in a to packed single-precision (32-bit) floating-point elements, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_cvtpd_ps&expand=1710)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vcvtpd2ps))]
+pub unsafe fn _mm256_mask_cvtpd_ps(src: __m128, k: __mmask8, a: __m256d) -> __m128 {
+    let convert = _mm256_cvtpd_ps(a);
+    transmute(simd_select_bitmask(k, convert.as_f32x4(), src.as_f32x4()))
+}
+
+/// Convert packed double-precision (64-bit) floating-point elements in a to packed single-precision (32-bit) floating-point elements, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_cvtpd_ps&expand=1711)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vcvtpd2ps))]
+pub unsafe fn _mm256_maskz_cvtpd_ps(k: __mmask8, a: __m256d) -> __m128 {
+    let convert = _mm256_cvtpd_ps(a);
+    let zero = _mm_setzero_ps().as_f32x4();
+    transmute(simd_select_bitmask(k, convert.as_f32x4(), zero))
+}
+
+/// Convert packed double-precision (64-bit) floating-point elements in a to packed single-precision (32-bit) floating-point elements, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_cvtpd_ps&expand=1707)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vcvtpd2ps))]
+pub unsafe fn _mm_mask_cvtpd_ps(src: __m128, k: __mmask8, a: __m128d) -> __m128 {
+    let convert = _mm_cvtpd_ps(a);
+    transmute(simd_select_bitmask(k, convert.as_f32x4(), src.as_f32x4()))
+}
+
+/// Convert packed double-precision (64-bit) floating-point elements in a to packed single-precision (32-bit) floating-point elements, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_cvtpd_ps&expand=1708)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vcvtpd2ps))]
+pub unsafe fn _mm_maskz_cvtpd_ps(k: __mmask8, a: __m128d) -> __m128 {
+    let convert = _mm_cvtpd_ps(a);
+    let zero = _mm_setzero_ps().as_f32x4();
+    transmute(simd_select_bitmask(k, convert.as_f32x4(), zero))
+}
+
 /// Convert packed double-precision (64-bit) floating-point elements in a to packed 32-bit integers, and store the results in dst.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_cvtpd_epi32&expand=1675)

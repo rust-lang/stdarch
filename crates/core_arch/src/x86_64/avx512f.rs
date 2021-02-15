@@ -2901,6 +2901,48 @@ mod tests {
         assert_eq_m256(r, e);
     }
 
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_mask_cvtpd_ps() {
+        let a = _mm256_set_pd(4., -5.5, 6., -7.5);
+        let src = _mm_set1_ps(0.);
+        let r = _mm256_mask_cvtpd_ps(src, 0, a);
+        assert_eq_m128(r, src);
+        let r = _mm256_mask_cvtpd_ps(src, 0b00001111, a);
+        let e = _mm_set_ps(4., -5.5, 6., -7.5);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_maskz_cvtpd_ps() {
+        let a = _mm256_set_pd(4., -5.5, 6., -7.5);
+        let r = _mm256_maskz_cvtpd_ps(0, a);
+        assert_eq_m128(r, _mm_setzero_ps());
+        let r = _mm256_maskz_cvtpd_ps(0b00001111, a);
+        let e = _mm_set_ps(4., -5.5, 6., -7.5);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_mask_cvtpd_ps() {
+        let a = _mm_set_pd(6., -7.5);
+        let src = _mm_set1_ps(0.);
+        let r = _mm_mask_cvtpd_ps(src, 0, a);
+        assert_eq_m128(r, src);
+        let r = _mm_mask_cvtpd_ps(src, 0b00000011, a);
+        let e = _mm_set_ps(0., 0., 6., -7.5);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_maskz_cvtpd_ps() {
+        let a = _mm_set_pd(6., -7.5);
+        let r = _mm_maskz_cvtpd_ps(0, a);
+        assert_eq_m128(r, _mm_setzero_ps());
+        let r = _mm_maskz_cvtpd_ps(0b00000011, a);
+        let e = _mm_set_ps(0., 0., 6., -7.5);
+        assert_eq_m128(r, e);
+    }
+
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_cvtpd_epi32() {
         let a = _mm512_setr_pd(0., -1.5, 2., -3.5, 4., -5.5, 6., -7.5);
