@@ -7,9 +7,11 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends \
   xz-utils \
   clang
 
+ENV WASMER_DIR="/.wasmer"
+
 RUN curl https://get.wasmer.io -sSfL | sh
 
-ENV PATH="$PATH:/root/.wasmer:/root/.wasmer/bin"
+ENV PATH="$PATH:/.wasmer:/.wasmer/bin"
 
 ENV CARGO_TARGET_WASM32_WASI_RUNNER="wasmer run \
   --llvm \
