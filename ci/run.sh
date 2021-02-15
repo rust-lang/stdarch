@@ -52,7 +52,7 @@ cargo_test() {
     # output.
     case ${TARGET} in
         wasm32*)
-            cmd="$cmd --nocapture"
+            cmd="$cmd -- --nocapture"
             ;;
     esac
 
