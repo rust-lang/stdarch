@@ -191,8 +191,8 @@ extern "C" {
     #[link_name = "llvm.wasm.widen.high.unsigned.v4i32.v8i16"]
     fn llvm_widen_high_i32x4_u(a: i16x8) -> i32x4;
 
-    #[link_name = "llvm.wasm.bitmask.v2i64"]
-    fn llvm_bitmask_i64x2(a: i64x2) -> i32;
+    //#[link_name = "llvm.wasm.bitmask.v2i64"]
+    //fn llvm_bitmask_i64x2(a: i64x2) -> i32;
 }
 
 /// Loads a `v128` vector from the given heap address.
@@ -2128,14 +2128,14 @@ pub unsafe fn i64x2_mul(a: v128, b: v128) -> v128 {
     transmute(simd_mul(a.as_i64x2(), b.as_i64x2()))
 }
 
-/// Extracts the high bit for each lane in `a` and produce a scalar mask with
+/*/// Extracts the high bit for each lane in `a` and produce a scalar mask with
 /// all bits concatenated.
 #[inline]
 #[cfg_attr(test, assert_instr(i64x2.bitmask))]
 #[target_feature(enable = "simd128")]
 pub unsafe fn i64x2_bitmask(a: v128) -> i32 {
     llvm_bitmask_i64x2(transmute(a))
-}
+}*/
 
 /// Calculates the absolute value of each lane of a 128-bit vector interpreted
 /// as four 32-bit floating point numbers.
@@ -2835,8 +2835,8 @@ pub mod tests {
             assert_eq!(r, 0b11001100);
             let r: i32 = i32x4_bitmask(vec_a);
             assert_eq!(r, 0b1010);
-            let r: i32 = i64x2_bitmask(vec_a);
-            assert_eq!(r, 0b11);
+            /*let r: i32 = i64x2_bitmask(vec_a);
+            assert_eq!(r, 0b11);*/
 
             let r: i32 = i8x16_bitmask(vec_b);
             assert_eq!(r, 0xFFFF);
@@ -2844,8 +2844,8 @@ pub mod tests {
             assert_eq!(r, 0xFF);
             let r: i32 = i32x4_bitmask(vec_b);
             assert_eq!(r, 0xF);
-            let r: i32 = i64x2_bitmask(vec_b);
-            assert_eq!(r, 0b11);
+            /*let r: i32 = i64x2_bitmask(vec_b);
+            assert_eq!(r, 0b11);*/
 
             let r: i32 = i8x16_bitmask(vec_c);
             assert_eq!(r, 0);
@@ -2853,8 +2853,8 @@ pub mod tests {
             assert_eq!(r, 0);
             let r: i32 = i32x4_bitmask(vec_c);
             assert_eq!(r, 0);
-            let r: i32 = i64x2_bitmask(vec_c);
-            assert_eq!(r, 0);
+            /*let r: i32 = i64x2_bitmask(vec_c);
+            assert_eq!(r, 0);*/
         }
     }
 
