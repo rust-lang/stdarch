@@ -13184,6 +13184,74 @@ pub unsafe fn _mm512_maskz_cvtsepi64_epi32(k: __mmask8, a: __m512i) -> __m256i {
     transmute(vpmovsqd(a.as_i64x8(), _mm256_setzero_si256().as_i32x8(), k))
 }
 
+/// Convert packed signed 64-bit integers in a to packed 32-bit integers with signed saturation, and store the results in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_cvtsepi64_epi32&expand=1849)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovsqd))]
+pub unsafe fn _mm256_cvtsepi64_epi32(a: __m256i) -> __m128i {
+    transmute(vpmovsqd256(
+        a.as_i64x4(),
+        _mm_setzero_si128().as_i32x4(),
+        0b11111111,
+    ))
+}
+
+/// Convert packed signed 64-bit integers in a to packed 32-bit integers with signed saturation, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_cvtsepi64_epi32&expand=1850)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovsqd))]
+pub unsafe fn _mm256_mask_cvtsepi64_epi32(src: __m128i, k: __mmask8, a: __m256i) -> __m128i {
+    transmute(vpmovsqd256(a.as_i64x4(), src.as_i32x4(), k))
+}
+
+/// Convert packed signed 64-bit integers in a to packed 32-bit integers with signed saturation, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_cvtsepi64_epi32&expand=1851)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovsqd))]
+pub unsafe fn _mm256_maskz_cvtsepi64_epi32(k: __mmask8, a: __m256i) -> __m128i {
+    transmute(vpmovsqd256(a.as_i64x4(), _mm_setzero_si128().as_i32x4(), k))
+}
+
+/// Convert packed signed 64-bit integers in a to packed 32-bit integers with signed saturation, and store the results in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_cvtsepi64_epi32&expand=1846)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovsqd))]
+pub unsafe fn _mm_cvtsepi64_epi32(a: __m128i) -> __m128i {
+    transmute(vpmovsqd128(
+        a.as_i64x2(),
+        _mm_setzero_si128().as_i32x4(),
+        0b11111111,
+    ))
+}
+
+/// Convert packed signed 64-bit integers in a to packed 32-bit integers with signed saturation, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_cvtsepi64_epi32&expand=1847)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovsqd))]
+pub unsafe fn _mm_mask_cvtsepi64_epi32(src: __m128i, k: __mmask8, a: __m128i) -> __m128i {
+    transmute(vpmovsqd128(a.as_i64x2(), src.as_i32x4(), k))
+}
+
+/// Convert packed signed 64-bit integers in a to packed 32-bit integers with signed saturation, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_cvtsepi64_epi32&expand=1848)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovsqd))]
+pub unsafe fn _mm_maskz_cvtsepi64_epi32(k: __mmask8, a: __m128i) -> __m128i {
+    transmute(vpmovsqd128(a.as_i64x2(), _mm_setzero_si128().as_i32x4(), k))
+}
+
 /// Convert packed signed 64-bit integers in a to packed 16-bit integers with signed saturation, and store the results in dst.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_cvtsepi64_epi16&expand=1843)
@@ -13216,6 +13284,74 @@ pub unsafe fn _mm512_mask_cvtsepi64_epi16(src: __m128i, k: __mmask8, a: __m512i)
 #[cfg_attr(test, assert_instr(vpmovsqw))]
 pub unsafe fn _mm512_maskz_cvtsepi64_epi16(k: __mmask8, a: __m512i) -> __m128i {
     transmute(vpmovsqw(a.as_i64x8(), _mm_setzero_si128().as_i16x8(), k))
+}
+
+/// Convert packed signed 64-bit integers in a to packed 16-bit integers with signed saturation, and store the results in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_cvtsepi64_epi16&expand=1840)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovsqw))]
+pub unsafe fn _mm256_cvtsepi64_epi16(a: __m256i) -> __m128i {
+    transmute(vpmovsqw256(
+        a.as_i64x4(),
+        _mm_setzero_si128().as_i16x8(),
+        0b11111111,
+    ))
+}
+
+/// Convert packed signed 64-bit integers in a to packed 16-bit integers with signed saturation, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_cvtsepi64_epi16&expand=1841)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovsqw))]
+pub unsafe fn _mm256_mask_cvtsepi64_epi16(src: __m128i, k: __mmask8, a: __m256i) -> __m128i {
+    transmute(vpmovsqw256(a.as_i64x4(), src.as_i16x8(), k))
+}
+
+/// Convert packed signed 64-bit integers in a to packed 16-bit integers with signed saturation, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_cvtsepi64_epi16&expand=1842)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovsqw))]
+pub unsafe fn _mm256_maskz_cvtsepi64_epi16(k: __mmask8, a: __m256i) -> __m128i {
+    transmute(vpmovsqw256(a.as_i64x4(), _mm_setzero_si128().as_i16x8(), k))
+}
+
+/// Convert packed signed 64-bit integers in a to packed 16-bit integers with signed saturation, and store the results in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_cvtsepi64_epi16&expand=1837)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovsqw))]
+pub unsafe fn _mm_cvtsepi64_epi16(a: __m128i) -> __m128i {
+    transmute(vpmovsqw128(
+        a.as_i64x2(),
+        _mm_setzero_si128().as_i16x8(),
+        0b11111111,
+    ))
+}
+
+/// Convert packed signed 64-bit integers in a to packed 16-bit integers with signed saturation, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_cvtsepi64_epi16&expand=1838)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovsqw))]
+pub unsafe fn _mm_mask_cvtsepi64_epi16(src: __m128i, k: __mmask8, a: __m128i) -> __m128i {
+    transmute(vpmovsqw128(a.as_i64x2(), src.as_i16x8(), k))
+}
+
+/// Convert packed signed 64-bit integers in a to packed 16-bit integers with signed saturation, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_cvtsepi64_epi16&expand=1839)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovsqw))]
+pub unsafe fn _mm_maskz_cvtsepi64_epi16(k: __mmask8, a: __m128i) -> __m128i {
+    transmute(vpmovsqw128(a.as_i64x2(), _mm_setzero_si128().as_i16x8(), k))
 }
 
 /// Convert packed signed 64-bit integers in a to packed 8-bit integers with signed saturation, and store the results in dst.
@@ -37923,8 +38059,18 @@ extern "C" {
 
     #[link_name = "llvm.x86.avx512.mask.pmovs.qd.512"]
     fn vpmovsqd(a: i64x8, src: i32x8, mask: u8) -> i32x8;
+    #[link_name = "llvm.x86.avx512.mask.pmovs.qd.256"]
+    fn vpmovsqd256(a: i64x4, src: i32x4, mask: u8) -> i32x4;
+    #[link_name = "llvm.x86.avx512.mask.pmovs.qd.128"]
+    fn vpmovsqd128(a: i64x2, src: i32x4, mask: u8) -> i32x4;
+
     #[link_name = "llvm.x86.avx512.mask.pmovs.qw.512"]
     fn vpmovsqw(a: i64x8, src: i16x8, mask: u8) -> i16x8;
+    #[link_name = "llvm.x86.avx512.mask.pmovs.qw.256"]
+    fn vpmovsqw256(a: i64x4, src: i16x8, mask: u8) -> i16x8;
+    #[link_name = "llvm.x86.avx512.mask.pmovs.qw.128"]
+    fn vpmovsqw128(a: i64x2, src: i16x8, mask: u8) -> i16x8;
+
     #[link_name = "llvm.x86.avx512.mask.pmovs.qb.512"]
     fn vpmovsqb(a: i64x8, src: i8x16, mask: u8) -> i8x16;
     #[link_name = "llvm.x86.avx512.mask.pmovus.dw.512"]
