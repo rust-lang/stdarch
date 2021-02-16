@@ -12980,6 +12980,74 @@ pub unsafe fn _mm512_maskz_cvtsepi32_epi16(k: __mmask16, a: __m512i) -> __m256i 
     ))
 }
 
+/// Convert packed signed 32-bit integers in a to packed 16-bit integers with signed saturation, and store the results in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_cvtsepi32_epi16&expand=1816)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovsdw))]
+pub unsafe fn _mm256_cvtsepi32_epi16(a: __m256i) -> __m128i {
+    transmute(vpmovsdw256(
+        a.as_i32x8(),
+        _mm_setzero_si128().as_i16x8(),
+        0b11111111,
+    ))
+}
+
+/// Convert packed signed 32-bit integers in a to packed 16-bit integers with signed saturation, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_cvtsepi32_epi16&expand=1817)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovsdw))]
+pub unsafe fn _mm256_mask_cvtsepi32_epi16(src: __m128i, k: __mmask8, a: __m256i) -> __m128i {
+    transmute(vpmovsdw256(a.as_i32x8(), src.as_i16x8(), k))
+}
+
+/// Convert packed signed 32-bit integers in a to packed 16-bit integers with signed saturation, and store the results in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_cvtsepi32_epi16&expand=1818)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovsdw))]
+pub unsafe fn _mm256_maskz_cvtsepi32_epi16(k: __mmask8, a: __m256i) -> __m128i {
+    transmute(vpmovsdw256(a.as_i32x8(), _mm_setzero_si128().as_i16x8(), k))
+}
+
+/// Convert packed signed 32-bit integers in a to packed 16-bit integers with signed saturation, and store the results in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_cvtsepi32_epi16&expand=1813)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovsdw))]
+pub unsafe fn _mm_cvtsepi32_epi16(a: __m128i) -> __m128i {
+    transmute(vpmovsdw128(
+        a.as_i32x4(),
+        _mm_setzero_si128().as_i16x8(),
+        0b11111111,
+    ))
+}
+
+/// Convert packed signed 32-bit integers in a to packed 16-bit integers with signed saturation, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_cvtsepi32_epi16&expand=1814)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovsdw))]
+pub unsafe fn _mm_mask_cvtsepi32_epi16(src: __m128i, k: __mmask8, a: __m128i) -> __m128i {
+    transmute(vpmovsdw128(a.as_i32x4(), src.as_i16x8(), k))
+}
+
+/// Convert packed signed 32-bit integers in a to packed 16-bit integers with signed saturation, and store the results in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_cvtsepi32_epi16&expand=1815)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovsdw))]
+pub unsafe fn _mm_maskz_cvtsepi32_epi16(k: __mmask8, a: __m128i) -> __m128i {
+    transmute(vpmovsdw128(a.as_i32x4(), _mm_setzero_si128().as_i16x8(), k))
+}
+
 /// Convert packed signed 32-bit integers in a to packed 8-bit integers with signed saturation, and store the results in dst.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_cvtsepi32_epi8&expand=1828)
@@ -13012,6 +13080,74 @@ pub unsafe fn _mm512_mask_cvtsepi32_epi8(src: __m128i, k: __mmask16, a: __m512i)
 #[cfg_attr(test, assert_instr(vpmovsdb))]
 pub unsafe fn _mm512_maskz_cvtsepi32_epi8(k: __mmask16, a: __m512i) -> __m128i {
     transmute(vpmovsdb(a.as_i32x16(), _mm_setzero_si128().as_i8x16(), k))
+}
+
+/// Convert packed signed 32-bit integers in a to packed 8-bit integers with signed saturation, and store the results in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_cvtsepi32_epi8&expand=1825)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovsdb))]
+pub unsafe fn _mm256_cvtsepi32_epi8(a: __m256i) -> __m128i {
+    transmute(vpmovsdb256(
+        a.as_i32x8(),
+        _mm_setzero_si128().as_i8x16(),
+        0b11111111,
+    ))
+}
+
+/// Convert packed signed 32-bit integers in a to packed 8-bit integers with signed saturation, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_cvtsepi32_epi8&expand=1826)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovsdb))]
+pub unsafe fn _mm256_mask_cvtsepi32_epi8(src: __m128i, k: __mmask8, a: __m256i) -> __m128i {
+    transmute(vpmovsdb256(a.as_i32x8(), src.as_i8x16(), k))
+}
+
+/// Convert packed signed 32-bit integers in a to packed 8-bit integers with signed saturation, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_cvtsepi32_epi8&expand=1827)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovsdb))]
+pub unsafe fn _mm256_maskz_cvtsepi32_epi8(k: __mmask8, a: __m256i) -> __m128i {
+    transmute(vpmovsdb256(a.as_i32x8(), _mm_setzero_si128().as_i8x16(), k))
+}
+
+/// Convert packed signed 32-bit integers in a to packed 8-bit integers with signed saturation, and store the results in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_cvtsepi32_epi8&expand=1822)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovsdb))]
+pub unsafe fn _mm_cvtsepi32_epi8(a: __m128i) -> __m128i {
+    transmute(vpmovsdb128(
+        a.as_i32x4(),
+        _mm_setzero_si128().as_i8x16(),
+        0b11111111,
+    ))
+}
+
+/// Convert packed signed 32-bit integers in a to packed 8-bit integers with signed saturation, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_cvtsepi32_epi8&expand=1823)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovsdb))]
+pub unsafe fn _mm_mask_cvtsepi32_epi8(src: __m128i, k: __mmask8, a: __m128i) -> __m128i {
+    transmute(vpmovsdb128(a.as_i32x4(), src.as_i8x16(), k))
+}
+
+/// Convert packed signed 32-bit integers in a to packed 8-bit integers with signed saturation, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_cvtsepi32_epi8&expand=1824)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovsdb))]
+pub unsafe fn _mm_maskz_cvtsepi32_epi8(k: __mmask8, a: __m128i) -> __m128i {
+    transmute(vpmovsdb128(a.as_i32x4(), _mm_setzero_si128().as_i8x16(), k))
 }
 
 /// Convert packed signed 64-bit integers in a to packed 32-bit integers with signed saturation, and store the results in dst.
@@ -37699,8 +37835,18 @@ extern "C" {
 
     #[link_name = "llvm.x86.avx512.mask.pmovs.dw.512"]
     fn vpmovsdw(a: i32x16, src: i16x16, mask: u16) -> i16x16;
+    #[link_name = "llvm.x86.avx512.mask.pmovs.dw.256"]
+    fn vpmovsdw256(a: i32x8, src: i16x8, mask: u8) -> i16x8;
+    #[link_name = "llvm.x86.avx512.mask.pmovs.dw.128"]
+    fn vpmovsdw128(a: i32x4, src: i16x8, mask: u8) -> i16x8;
+
     #[link_name = "llvm.x86.avx512.mask.pmovs.db.512"]
     fn vpmovsdb(a: i32x16, src: i8x16, mask: u16) -> i8x16;
+    #[link_name = "llvm.x86.avx512.mask.pmovs.db.256"]
+    fn vpmovsdb256(a: i32x8, src: i8x16, mask: u8) -> i8x16;
+    #[link_name = "llvm.x86.avx512.mask.pmovs.db.128"]
+    fn vpmovsdb128(a: i32x4, src: i8x16, mask: u8) -> i8x16;
+
     #[link_name = "llvm.x86.avx512.mask.pmovs.qd.512"]
     fn vpmovsqd(a: i64x8, src: i32x8, mask: u8) -> i32x8;
     #[link_name = "llvm.x86.avx512.mask.pmovs.qw.512"]
@@ -41664,23 +41810,12 @@ mod tests {
             c,
             _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC,
         );
+        #[rustfmt::skip]
         let e = _mm512_setr_ps(
-            -0.99999994,
-            -0.99999994,
-            -0.99999994,
-            -0.99999994,
-            -0.99999994,
-            -0.99999994,
-            -0.99999994,
-            -0.99999994,
-            0.00000007,
-            0.00000007,
-            0.00000007,
-            0.00000007,
-            0.00000007,
-            0.00000007,
-            0.00000007,
-            0.00000007,
+            -0.99999994, -0.99999994, -0.99999994, -0.99999994,
+            -0.99999994, -0.99999994, -0.99999994, -0.99999994,
+            0.00000007, 0.00000007, 0.00000007, 0.00000007,
+            0.00000007, 0.00000007, 0.00000007, 0.00000007,
         );
         assert_eq_m512(r, e);
     }
@@ -41693,6 +41828,7 @@ mod tests {
         let r =
             _mm512_maskz_fmadd_round_ps(0, a, b, c, _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC);
         assert_eq_m512(r, _mm512_setzero_ps());
+        #[rustfmt::skip]
         let r = _mm512_maskz_fmadd_round_ps(
             0b00000000_11111111,
             a,
@@ -41700,23 +41836,12 @@ mod tests {
             c,
             _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC,
         );
+        #[rustfmt::skip]
         let e = _mm512_setr_ps(
-            -0.99999994,
-            -0.99999994,
-            -0.99999994,
-            -0.99999994,
-            -0.99999994,
-            -0.99999994,
-            -0.99999994,
-            -0.99999994,
-            0.,
-            0.,
-            0.,
-            0.,
-            0.,
-            0.,
-            0.,
-            0.,
+            -0.99999994, -0.99999994, -0.99999994, -0.99999994,
+            -0.99999994, -0.99999994, -0.99999994, -0.99999994,
+            0., 0., 0., 0.,
+            0., 0., 0., 0.,
         );
         assert_eq_m512(r, e);
     }
@@ -41736,23 +41861,12 @@ mod tests {
             0b00000000_11111111,
             _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC,
         );
+        #[rustfmt::skip]
         let e = _mm512_setr_ps(
-            -0.99999994,
-            -0.99999994,
-            -0.99999994,
-            -0.99999994,
-            -0.99999994,
-            -0.99999994,
-            -0.99999994,
-            -0.99999994,
-            -1.,
-            -1.,
-            -1.,
-            -1.,
-            -1.,
-            -1.,
-            -1.,
-            -1.,
+            -0.99999994, -0.99999994, -0.99999994, -0.99999994,
+            -0.99999994, -0.99999994, -0.99999994, -0.99999994,
+            -1., -1., -1., -1.,
+            -1., -1., -1., -1.,
         );
         assert_eq_m512(r, e);
     }
@@ -41785,23 +41899,12 @@ mod tests {
             c,
             _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC,
         );
+        #[rustfmt::skip]
         let e = _mm512_setr_ps(
-            -0.99999994,
-            -0.99999994,
-            -0.99999994,
-            -0.99999994,
-            -0.99999994,
-            -0.99999994,
-            -0.99999994,
-            -0.99999994,
-            0.00000007,
-            0.00000007,
-            0.00000007,
-            0.00000007,
-            0.00000007,
-            0.00000007,
-            0.00000007,
-            0.00000007,
+            -0.99999994, -0.99999994, -0.99999994, -0.99999994,
+            -0.99999994, -0.99999994, -0.99999994, -0.99999994,
+            0.00000007, 0.00000007, 0.00000007, 0.00000007,
+            0.00000007, 0.00000007, 0.00000007, 0.00000007,
         );
         assert_eq_m512(r, e);
     }
@@ -41821,23 +41924,12 @@ mod tests {
             c,
             _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC,
         );
+        #[rustfmt::skip]
         let e = _mm512_setr_ps(
-            -0.99999994,
-            -0.99999994,
-            -0.99999994,
-            -0.99999994,
-            -0.99999994,
-            -0.99999994,
-            -0.99999994,
-            -0.99999994,
-            0.,
-            0.,
-            0.,
-            0.,
-            0.,
-            0.,
-            0.,
-            0.,
+            -0.99999994, -0.99999994, -0.99999994, -0.99999994,
+            -0.99999994, -0.99999994, -0.99999994, -0.99999994,
+            0., 0., 0., 0.,
+            0., 0., 0., 0.,
         );
         assert_eq_m512(r, e);
     }
@@ -41857,23 +41949,12 @@ mod tests {
             0b00000000_11111111,
             _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC,
         );
+        #[rustfmt::skip]
         let e = _mm512_setr_ps(
-            -0.99999994,
-            -0.99999994,
-            -0.99999994,
-            -0.99999994,
-            -0.99999994,
-            -0.99999994,
-            -0.99999994,
-            -0.99999994,
-            1.,
-            1.,
-            1.,
-            1.,
-            1.,
-            1.,
-            1.,
-            1.,
+            -0.99999994, -0.99999994, -0.99999994, -0.99999994,
+            -0.99999994, -0.99999994, -0.99999994, -0.99999994,
+            1., 1., 1., 1.,
+            1., 1., 1., 1.,
         );
         assert_eq_m512(r, e);
     }
@@ -41884,23 +41965,12 @@ mod tests {
         let b = _mm512_set1_ps(1.);
         let c = _mm512_set1_ps(-1.);
         let r = _mm512_fmaddsub_round_ps(a, b, c, _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC);
+        #[rustfmt::skip]
         let e = _mm512_setr_ps(
-            1.0000001,
-            -0.99999994,
-            1.0000001,
-            -0.99999994,
-            1.0000001,
-            -0.99999994,
-            1.0000001,
-            -0.99999994,
-            1.0000001,
-            -0.99999994,
-            1.0000001,
-            -0.99999994,
-            1.0000001,
-            -0.99999994,
-            1.0000001,
-            -0.99999994,
+            1.0000001, -0.99999994, 1.0000001, -0.99999994,
+            1.0000001, -0.99999994, 1.0000001, -0.99999994,
+            1.0000001, -0.99999994, 1.0000001, -0.99999994,
+            1.0000001, -0.99999994, 1.0000001, -0.99999994,
         );
         assert_eq_m512(r, e);
         let r = _mm512_fmaddsub_round_ps(a, b, c, _MM_FROUND_TO_ZERO | _MM_FROUND_NO_EXC);
@@ -41931,23 +42001,12 @@ mod tests {
             c,
             _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC,
         );
+        #[rustfmt::skip]
         let e = _mm512_setr_ps(
-            1.0000001,
-            -0.99999994,
-            1.0000001,
-            -0.99999994,
-            1.0000001,
-            -0.99999994,
-            1.0000001,
-            -0.99999994,
-            0.00000007,
-            0.00000007,
-            0.00000007,
-            0.00000007,
-            0.00000007,
-            0.00000007,
-            0.00000007,
-            0.00000007,
+            1.0000001, -0.99999994, 1.0000001, -0.99999994,
+            1.0000001, -0.99999994, 1.0000001, -0.99999994,
+            0.00000007, 0.00000007, 0.00000007, 0.00000007,
+            0.00000007, 0.00000007, 0.00000007, 0.00000007,
         );
         assert_eq_m512(r, e);
     }
@@ -41972,23 +42031,12 @@ mod tests {
             c,
             _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC,
         );
+        #[rustfmt::skip]
         let e = _mm512_setr_ps(
-            1.0000001,
-            -0.99999994,
-            1.0000001,
-            -0.99999994,
-            1.0000001,
-            -0.99999994,
-            1.0000001,
-            -0.99999994,
-            0.,
-            0.,
-            0.,
-            0.,
-            0.,
-            0.,
-            0.,
-            0.,
+            1.0000001, -0.99999994, 1.0000001, -0.99999994,
+            1.0000001, -0.99999994, 1.0000001, -0.99999994,
+            0., 0., 0., 0.,
+            0., 0., 0., 0.,
         );
         assert_eq_m512(r, e);
     }
@@ -42013,23 +42061,12 @@ mod tests {
             0b00000000_11111111,
             _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC,
         );
+        #[rustfmt::skip]
         let e = _mm512_setr_ps(
-            1.0000001,
-            -0.99999994,
-            1.0000001,
-            -0.99999994,
-            1.0000001,
-            -0.99999994,
-            1.0000001,
-            -0.99999994,
-            -1.,
-            -1.,
-            -1.,
-            -1.,
-            -1.,
-            -1.,
-            -1.,
-            -1.,
+            1.0000001, -0.99999994, 1.0000001, -0.99999994,
+            1.0000001, -0.99999994, 1.0000001, -0.99999994,
+            -1., -1., -1., -1.,
+            -1., -1., -1., -1.,
         );
         assert_eq_m512(r, e);
     }
@@ -42040,23 +42077,12 @@ mod tests {
         let b = _mm512_set1_ps(1.);
         let c = _mm512_set1_ps(-1.);
         let r = _mm512_fmsubadd_round_ps(a, b, c, _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC);
+        #[rustfmt::skip]
         let e = _mm512_setr_ps(
-            -0.99999994,
-            1.0000001,
-            -0.99999994,
-            1.0000001,
-            -0.99999994,
-            1.0000001,
-            -0.99999994,
-            1.0000001,
-            -0.99999994,
-            1.0000001,
-            -0.99999994,
-            1.0000001,
-            -0.99999994,
-            1.0000001,
-            -0.99999994,
-            1.0000001,
+            -0.99999994, 1.0000001, -0.99999994, 1.0000001,
+            -0.99999994, 1.0000001, -0.99999994, 1.0000001,
+            -0.99999994, 1.0000001, -0.99999994, 1.0000001,
+            -0.99999994, 1.0000001, -0.99999994, 1.0000001,
         );
         assert_eq_m512(r, e);
         let r = _mm512_fmsubadd_round_ps(a, b, c, _MM_FROUND_TO_ZERO | _MM_FROUND_NO_EXC);
@@ -42087,23 +42113,12 @@ mod tests {
             c,
             _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC,
         );
+        #[rustfmt::skip]
         let e = _mm512_setr_ps(
-            -0.99999994,
-            1.0000001,
-            -0.99999994,
-            1.0000001,
-            -0.99999994,
-            1.0000001,
-            -0.99999994,
-            1.0000001,
-            0.00000007,
-            0.00000007,
-            0.00000007,
-            0.00000007,
-            0.00000007,
-            0.00000007,
-            0.00000007,
-            0.00000007,
+            -0.99999994, 1.0000001, -0.99999994, 1.0000001,
+            -0.99999994, 1.0000001, -0.99999994, 1.0000001,
+            0.00000007, 0.00000007, 0.00000007, 0.00000007,
+            0.00000007, 0.00000007, 0.00000007, 0.00000007,
         );
         assert_eq_m512(r, e);
     }
@@ -42128,23 +42143,12 @@ mod tests {
             c,
             _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC,
         );
+        #[rustfmt::skip]
         let e = _mm512_setr_ps(
-            -0.99999994,
-            1.0000001,
-            -0.99999994,
-            1.0000001,
-            -0.99999994,
-            1.0000001,
-            -0.99999994,
-            1.0000001,
-            0.,
-            0.,
-            0.,
-            0.,
-            0.,
-            0.,
-            0.,
-            0.,
+            -0.99999994, 1.0000001, -0.99999994, 1.0000001,
+            -0.99999994, 1.0000001, -0.99999994, 1.0000001,
+            0., 0., 0., 0.,
+            0., 0., 0., 0.,
         );
         assert_eq_m512(r, e);
     }
@@ -42169,23 +42173,12 @@ mod tests {
             0b00000000_11111111,
             _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC,
         );
+        #[rustfmt::skip]
         let e = _mm512_setr_ps(
-            -0.99999994,
-            1.0000001,
-            -0.99999994,
-            1.0000001,
-            -0.99999994,
-            1.0000001,
-            -0.99999994,
-            1.0000001,
-            -1.,
-            -1.,
-            -1.,
-            -1.,
-            -1.,
-            -1.,
-            -1.,
-            -1.,
+            -0.99999994, 1.0000001, -0.99999994, 1.0000001,
+            -0.99999994, 1.0000001, -0.99999994, 1.0000001,
+            -1., -1., -1., -1.,
+            -1., -1., -1., -1.,
         );
         assert_eq_m512(r, e);
     }
@@ -42574,23 +42567,12 @@ mod tests {
 
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_mask_fixupimm_round_ps() {
+        #[rustfmt::skip]
         let a = _mm512_set_ps(
-            f32::NAN,
-            f32::NAN,
-            f32::NAN,
-            f32::NAN,
-            f32::NAN,
-            f32::NAN,
-            f32::NAN,
-            f32::NAN,
-            1.,
-            1.,
-            1.,
-            1.,
-            1.,
-            1.,
-            1.,
-            1.,
+            f32::NAN, f32::NAN, f32::NAN, f32::NAN,
+            f32::NAN, f32::NAN, f32::NAN, f32::NAN,
+            1., 1., 1., 1.,
+            1., 1., 1., 1.,
         );
         let b = _mm512_set1_ps(f32::MAX);
         let c = _mm512_set1_epi32(i32::MAX);
@@ -42610,23 +42592,12 @@ mod tests {
 
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_maskz_fixupimm_round_ps() {
+        #[rustfmt::skip]
         let a = _mm512_set_ps(
-            f32::NAN,
-            f32::NAN,
-            f32::NAN,
-            f32::NAN,
-            f32::NAN,
-            f32::NAN,
-            f32::NAN,
-            f32::NAN,
-            1.,
-            1.,
-            1.,
-            1.,
-            1.,
-            1.,
-            1.,
-            1.,
+            f32::NAN, f32::NAN, f32::NAN, f32::NAN,
+            f32::NAN, f32::NAN, f32::NAN, f32::NAN,
+            1., 1., 1., 1.,
+            1., 1., 1., 1.,
         );
         let b = _mm512_set1_ps(f32::MAX);
         let c = _mm512_set1_epi32(i32::MAX);
@@ -43449,285 +43420,294 @@ mod tests {
 
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_cvtsepi32_epi16() {
+        #[rustfmt::skip]
         let a = _mm512_set_epi32(
-            0,
-            1,
-            2,
-            3,
-            4,
-            5,
-            6,
-            7,
-            8,
-            9,
-            10,
-            11,
-            12,
-            13,
-            i32::MIN,
-            i32::MAX,
+            0, 1, 2, 3,
+            4, 5, 6, 7,
+            8, 9, 10, 11,
+            12, 13, i32::MIN, i32::MAX,
         );
         let r = _mm512_cvtsepi32_epi16(a);
+        #[rustfmt::skip]
         let e = _mm256_set_epi16(
-            0,
-            1,
-            2,
-            3,
-            4,
-            5,
-            6,
-            7,
-            8,
-            9,
-            10,
-            11,
-            12,
-            13,
-            i16::MIN,
-            i16::MAX,
+            0, 1, 2, 3,
+            4, 5, 6, 7,
+            8, 9, 10, 11,
+            12, 13, i16::MIN, i16::MAX,
         );
         assert_eq_m256i(r, e);
     }
 
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_mask_cvtsepi32_epi16() {
+        #[rustfmt::skip]
         let a = _mm512_set_epi32(
-            0,
-            1,
-            2,
-            3,
-            4,
-            5,
-            6,
-            7,
-            8,
-            9,
-            10,
-            11,
-            12,
-            13,
-            i32::MIN,
-            i32::MAX,
+            0, 1, 2, 3,
+            4, 5, 6, 7,
+            8, 9, 10, 11,
+            12, 13, i32::MIN, i32::MAX,
         );
         let src = _mm256_set1_epi16(-1);
         let r = _mm512_mask_cvtsepi32_epi16(src, 0, a);
         assert_eq_m256i(r, src);
         let r = _mm512_mask_cvtsepi32_epi16(src, 0b00000000_11111111, a);
+        #[rustfmt::skip]
         let e = _mm256_set_epi16(
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            8,
-            9,
-            10,
-            11,
-            12,
-            13,
-            i16::MIN,
-            i16::MAX,
+            -1, -1, -1, -1,
+            -1, -1, -1, -1,
+            8, 9, 10, 11,
+            12, 13, i16::MIN, i16::MAX,
         );
         assert_eq_m256i(r, e);
     }
 
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_maskz_cvtsepi32_epi16() {
+        #[rustfmt::skip]
         let a = _mm512_set_epi32(
-            0,
-            1,
-            2,
-            3,
-            4,
-            5,
-            6,
-            7,
-            8,
-            9,
-            10,
-            11,
-            12,
-            13,
-            i32::MIN,
-            i32::MAX,
+            0, 1, 2, 3,
+            4, 5, 6, 7,
+            8, 9, 10, 11,
+            12, 13, i32::MIN, i32::MAX,
         );
         let r = _mm512_maskz_cvtsepi32_epi16(0, a);
         assert_eq_m256i(r, _mm256_setzero_si256());
         let r = _mm512_maskz_cvtsepi32_epi16(0b00000000_11111111, a);
+        #[rustfmt::skip]
         let e = _mm256_set_epi16(
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            8,
-            9,
-            10,
-            11,
-            12,
-            13,
-            i16::MIN,
-            i16::MAX,
+            0, 0, 0, 0,
+            0, 0, 0, 0,
+            8, 9, 10, 11,
+            12, 13, i16::MIN, i16::MAX,
         );
         assert_eq_m256i(r, e);
     }
 
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_cvtsepi32_epi16() {
+        let a = _mm256_set_epi32(0, 1, 2, 3, 4, 5, 6, 7);
+        let r = _mm256_cvtsepi32_epi16(a);
+        let e = _mm_set_epi16(0, 1, 2, 3, 4, 5, 6, 7);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_mask_cvtsepi32_epi16() {
+        let a = _mm256_set_epi32(0, 1, 2, 3, 4, 5, 6, 7);
+        let src = _mm_set1_epi16(-1);
+        let r = _mm256_mask_cvtsepi32_epi16(src, 0, a);
+        assert_eq_m128i(r, src);
+        let r = _mm256_mask_cvtsepi32_epi16(src, 0b11111111, a);
+        let e = _mm_set_epi16(0, 1, 2, 3, 4, 5, 6, 7);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_maskz_cvtsepi32_epi16() {
+        let a = _mm256_set_epi32(0, 1, 2, 3, 4, 5, 6, 7);
+        let r = _mm256_maskz_cvtsepi32_epi16(0, a);
+        assert_eq_m128i(r, _mm_setzero_si128());
+        let r = _mm256_maskz_cvtsepi32_epi16(0b11111111, a);
+        let e = _mm_set_epi16(0, 1, 2, 3, 4, 5, 6, 7);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_cvtsepi32_epi16() {
+        let a = _mm_set_epi32(4, 5, 6, 7);
+        let r = _mm_cvtsepi32_epi16(a);
+        let e = _mm_set_epi16(0, 0, 0, 0, 4, 5, 6, 7);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_mask_cvtsepi32_epi16() {
+        let a = _mm_set_epi32(4, 5, 6, 7);
+        let src = _mm_set1_epi16(0);
+        let r = _mm_mask_cvtsepi32_epi16(src, 0, a);
+        assert_eq_m128i(r, src);
+        let r = _mm_mask_cvtsepi32_epi16(src, 0b11111111, a);
+        let e = _mm_set_epi16(0, 0, 0, 0, 4, 5, 6, 7);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_maskz_cvtsepi32_epi16() {
+        let a = _mm_set_epi32(4, 5, 6, 7);
+        let r = _mm_maskz_cvtsepi32_epi16(0, a);
+        assert_eq_m128i(r, _mm_setzero_si128());
+        let r = _mm_maskz_cvtsepi32_epi16(0b11111111, a);
+        let e = _mm_set_epi16(0, 0, 0, 0, 4, 5, 6, 7);
+        assert_eq_m128i(r, e);
+    }
+
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_cvtsepi32_epi8() {
+        #[rustfmt::skip]
         let a = _mm512_set_epi32(
-            0,
-            1,
-            2,
-            3,
-            4,
-            5,
-            6,
-            7,
-            8,
-            9,
-            10,
-            11,
-            12,
-            13,
-            i32::MIN,
-            i32::MAX,
+            0, 1, 2, 3,
+            4, 5, 6, 7,
+            8, 9, 10, 11,
+            12, 13, i32::MIN, i32::MAX,
         );
         let r = _mm512_cvtsepi32_epi8(a);
+        #[rustfmt::skip]
         let e = _mm_set_epi8(
-            0,
-            1,
-            2,
-            3,
-            4,
-            5,
-            6,
-            7,
-            8,
-            9,
-            10,
-            11,
-            12,
-            13,
-            i8::MIN,
-            i8::MAX,
+            0, 1, 2, 3,
+            4, 5, 6, 7,
+            8, 9, 10, 11,
+            12, 13, i8::MIN, i8::MAX,
         );
         assert_eq_m128i(r, e);
     }
 
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_mask_cvtsepi32_epi8() {
+        #[rustfmt::skip]
         let a = _mm512_set_epi32(
-            0,
-            1,
-            2,
-            3,
-            4,
-            5,
-            6,
-            7,
-            8,
-            9,
-            10,
-            11,
-            12,
-            13,
-            i32::MIN,
-            i32::MAX,
+            0, 1, 2, 3,
+            4, 5, 6, 7,
+            8, 9, 10, 11,
+            12, 13, i32::MIN, i32::MAX,
         );
         let src = _mm_set1_epi8(-1);
         let r = _mm512_mask_cvtsepi32_epi8(src, 0, a);
         assert_eq_m128i(r, src);
         let r = _mm512_mask_cvtsepi32_epi8(src, 0b00000000_11111111, a);
+        #[rustfmt::skip]
         let e = _mm_set_epi8(
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            8,
-            9,
-            10,
-            11,
-            12,
-            13,
-            i8::MIN,
-            i8::MAX,
+            -1, -1, -1, -1,
+            -1, -1, -1, -1,
+            8, 9, 10, 11,
+            12, 13, i8::MIN, i8::MAX,
         );
         assert_eq_m128i(r, e);
     }
 
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_maskz_cvtsepi32_epi8() {
+        #[rustfmt::skip]
         let a = _mm512_set_epi32(
-            0,
-            1,
-            2,
-            3,
-            4,
-            5,
-            6,
-            7,
-            8,
-            9,
-            10,
-            11,
-            12,
-            13,
-            i32::MIN,
-            i32::MAX,
+            0, 1, 2, 3,
+            4, 5, 6, 7,
+            8, 9, 10, 11,
+            12, 13, i32::MIN, i32::MAX,
         );
         let r = _mm512_maskz_cvtsepi32_epi8(0, a);
         assert_eq_m128i(r, _mm_setzero_si128());
         let r = _mm512_maskz_cvtsepi32_epi8(0b00000000_11111111, a);
+        #[rustfmt::skip]
         let e = _mm_set_epi8(
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            8,
-            9,
-            10,
-            11,
-            12,
-            13,
-            i8::MIN,
-            i8::MAX,
+            0, 0, 0, 0,
+            0, 0, 0, 0,
+            8, 9, 10, 11,
+            12, 13, i8::MIN, i8::MAX,
+        );
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_cvtsepi32_epi8() {
+        let a = _mm256_set_epi32(9, 10, 11, 12, 13, 14, 15, 16);
+        let r = _mm256_cvtsepi32_epi8(a);
+        #[rustfmt::skip]
+        let e = _mm_set_epi8(
+            0, 0, 0, 0,
+            0, 0, 0, 0,
+            9, 10, 11, 12,
+            13, 14, 15, 16,
+        );
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_mask_cvtsepi32_epi8() {
+        let a = _mm256_set_epi32(9, 10, 11, 12, 13, 14, 15, 16);
+        let src = _mm_set1_epi8(0);
+        let r = _mm256_mask_cvtsepi32_epi8(src, 0, a);
+        assert_eq_m128i(r, src);
+        let r = _mm256_mask_cvtsepi32_epi8(src, 0b11111111, a);
+        #[rustfmt::skip]
+        let e = _mm_set_epi8(
+            0, 0, 0, 0,
+            0, 0, 0, 0,
+            9, 10, 11, 12,
+            13, 14, 15, 16,
+        );
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_maskz_cvtsepi32_epi8() {
+        let a = _mm256_set_epi32(9, 10, 11, 12, 13, 14, 15, 16);
+        let r = _mm256_maskz_cvtsepi32_epi8(0, a);
+        assert_eq_m128i(r, _mm_setzero_si128());
+        let r = _mm256_maskz_cvtsepi32_epi8(0b11111111, a);
+        #[rustfmt::skip]
+        let e = _mm_set_epi8(
+            0, 0, 0, 0,
+            0, 0, 0, 0,
+            9, 10, 11, 12,
+            13, 14, 15, 16,
+        );
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_cvtsepi32_epi8() {
+        let a = _mm_set_epi32(13, 14, 15, 16);
+        let r = _mm_cvtsepi32_epi8(a);
+        #[rustfmt::skip]
+        let e = _mm_set_epi8(
+            0, 0, 0, 0,
+            0, 0, 0, 0,
+            0, 0, 0, 0,
+            13, 14, 15, 16,
+        );
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_mask_cvtsepi32_epi8() {
+        let a = _mm_set_epi32(13, 14, 15, 16);
+        let src = _mm_set1_epi8(0);
+        let r = _mm_mask_cvtsepi32_epi8(src, 0, a);
+        assert_eq_m128i(r, src);
+        let r = _mm_mask_cvtsepi32_epi8(src, 0b00001111, a);
+        #[rustfmt::skip]
+        let e = _mm_set_epi8(
+            0, 0, 0, 0,
+            0, 0, 0, 0,
+            0, 0, 0, 0,
+            13, 14, 15, 16,
+        );
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_maskz_cvtsepi32_epi8() {
+        let a = _mm_set_epi32(13, 14, 15, 16);
+        let r = _mm_maskz_cvtsepi32_epi8(0, a);
+        assert_eq_m128i(r, _mm_setzero_si128());
+        let r = _mm_maskz_cvtsepi32_epi8(0b00001111, a);
+        #[rustfmt::skip]
+        let e = _mm_set_epi8(
+            0, 0, 0, 0,
+            0, 0, 0, 0,
+            0, 0, 0, 0,
+            13, 14, 15, 16,
         );
         assert_eq_m128i(r, e);
     }
 
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_cvtusepi32_epi16() {
+        #[rustfmt::skip]
         let a = _mm512_set_epi32(
-            0,
-            1,
-            2,
-            3,
-            4,
-            5,
-            6,
-            7,
-            8,
-            9,
-            10,
-            11,
-            12,
-            13,
-            i32::MIN,
-            i32::MIN,
+            0, 1, 2, 3,
+            4, 5, 6, 7,
+            8, 9, 10, 11,
+            12, 13, i32::MIN, i32::MIN,
         );
         let r = _mm512_cvtusepi32_epi16(a);
         let e = _mm256_set_epi16(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, -1, -1);
@@ -43736,23 +43716,12 @@ mod tests {
 
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_mask_cvtusepi32_epi16() {
+        #[rustfmt::skip]
         let a = _mm512_set_epi32(
-            0,
-            1,
-            2,
-            3,
-            4,
-            5,
-            6,
-            7,
-            8,
-            9,
-            10,
-            11,
-            12,
-            13,
-            i32::MIN,
-            i32::MIN,
+            0, 1, 2, 3,
+            4, 5, 6, 7,
+            8, 9, 10, 11,
+            12, 13, i32::MIN, i32::MIN,
         );
         let src = _mm256_set1_epi16(-1);
         let r = _mm512_mask_cvtusepi32_epi16(src, 0, a);
@@ -43764,23 +43733,12 @@ mod tests {
 
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_maskz_cvtusepi32_epi16() {
+        #[rustfmt::skip]
         let a = _mm512_set_epi32(
-            0,
-            1,
-            2,
-            3,
-            4,
-            5,
-            6,
-            7,
-            8,
-            9,
-            10,
-            11,
-            12,
-            13,
-            i32::MIN,
-            i32::MIN,
+            0, 1, 2, 3,
+            4, 5, 6, 7,
+            8, 9, 10, 11,
+            12, 13, i32::MIN, i32::MIN,
         );
         let r = _mm512_maskz_cvtusepi32_epi16(0, a);
         assert_eq_m256i(r, _mm256_setzero_si256());
@@ -43791,23 +43749,12 @@ mod tests {
 
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_cvtusepi32_epi8() {
+        #[rustfmt::skip]
         let a = _mm512_set_epi32(
-            0,
-            1,
-            2,
-            3,
-            4,
-            5,
-            6,
-            7,
-            8,
-            9,
-            10,
-            11,
-            12,
-            13,
-            i32::MIN,
-            i32::MIN,
+            0, 1, 2, 3,
+            4, 5, 6, 7,
+            8, 9, 10, 11,
+            12, 13, i32::MIN, i32::MIN,
         );
         let r = _mm512_cvtusepi32_epi8(a);
         let e = _mm_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, -1, -1);
@@ -43816,23 +43763,12 @@ mod tests {
 
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_mask_cvtusepi32_epi8() {
+        #[rustfmt::skip]
         let a = _mm512_set_epi32(
-            0,
-            1,
-            2,
-            3,
-            4,
-            5,
-            6,
-            7,
-            8,
-            9,
-            10,
-            11,
-            12,
-            13,
-            i32::MIN,
-            i32::MIN,
+            0, 1, 2, 3,
+            4, 5, 6, 7,
+            8, 9, 10, 11,
+            12, 13, i32::MIN, i32::MIN,
         );
         let src = _mm_set1_epi8(-1);
         let r = _mm512_mask_cvtusepi32_epi8(src, 0, a);
@@ -43844,23 +43780,12 @@ mod tests {
 
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_maskz_cvtusepi32_epi8() {
+        #[rustfmt::skip]
         let a = _mm512_set_epi32(
-            0,
-            1,
-            2,
-            3,
-            4,
-            5,
-            6,
-            7,
-            8,
-            9,
-            10,
-            11,
-            12,
-            13,
-            i32::MIN,
-            i32::MIN,
+            0, 1, 2, 3,
+            4, 5, 6, 7,
+            8, 9, 10, 11,
+            12, 13, i32::MIN, i32::MIN,
         );
         let r = _mm512_maskz_cvtusepi32_epi8(0, a);
         assert_eq_m128i(r, _mm_setzero_si128());
@@ -44014,23 +43939,12 @@ mod tests {
     unsafe fn test_mm512_cvt_roundepu32_ps() {
         let a = _mm512_setr_epi32(0, -2, 2, -4, 4, -6, 6, -8, 8, 10, 10, 12, 12, 14, 14, 16);
         let r = _mm512_cvt_roundepu32_ps(a, _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC);
+        #[rustfmt::skip]
         let e = _mm512_setr_ps(
-            0.,
-            4294967300.,
-            2.,
-            4294967300.,
-            4.,
-            4294967300.,
-            6.,
-            4294967300.,
-            8.,
-            10.,
-            10.,
-            12.,
-            12.,
-            14.,
-            14.,
-            16.,
+            0., 4294967300., 2., 4294967300.,
+            4., 4294967300., 6., 4294967300.,
+            8., 10., 10., 12.,
+            12., 14., 14., 16.,
         );
         assert_eq_m512(r, e);
     }
@@ -44048,23 +43962,12 @@ mod tests {
             a,
             _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC,
         );
+        #[rustfmt::skip]
         let e = _mm512_setr_ps(
-            0.,
-            4294967300.,
-            2.,
-            4294967300.,
-            4.,
-            4294967300.,
-            6.,
-            4294967300.,
-            0.,
-            0.,
-            0.,
-            0.,
-            0.,
-            0.,
-            0.,
-            0.,
+            0., 4294967300., 2., 4294967300.,
+            4., 4294967300., 6., 4294967300.,
+            0., 0., 0., 0.,
+            0., 0., 0., 0.,
         );
         assert_eq_m512(r, e);
     }
@@ -44079,23 +43982,12 @@ mod tests {
             a,
             _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC,
         );
+        #[rustfmt::skip]
         let e = _mm512_setr_ps(
-            0.,
-            4294967300.,
-            2.,
-            4294967300.,
-            4.,
-            4294967300.,
-            6.,
-            4294967300.,
-            0.,
-            0.,
-            0.,
-            0.,
-            0.,
-            0.,
-            0.,
-            0.,
+            0., 4294967300., 2., 4294967300.,
+            4., 4294967300., 6., 4294967300.,
+            0., 0., 0., 0.,
+            0., 0., 0., 0.,
         );
         assert_eq_m512(r, e);
     }

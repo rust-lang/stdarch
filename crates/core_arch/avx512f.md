@@ -2141,6 +2141,29 @@
   * [x] [`_mm256_maskz_cvtps_ph`]
   * [x] [`_mm512_cvtpslo_pd`]
   * [x] [`_mm512_mask_cvtpslo_pd`]
+  * [x] [`_mm512_cvtsepi32_epi16`]
+  * [x] [`_mm512_mask_cvtsepi32_epi16`]
+  * [x] [`_mm512_maskz_cvtsepi32_epi16`]
+  * [x] [`_mm_cvtsepi32_epi16`]
+  * [x] [`_mm_mask_cvtsepi32_epi16`]
+  * [x] [`_mm_maskz_cvtsepi32_epi16`]
+  * [x] [`_mm256_cvtsepi32_epi16`]
+  * [x] [`_mm256_mask_cvtsepi32_epi16`]
+  * [x] [`_mm256_maskz_cvtsepi32_epi16`]
+  * [x] [`_mm512_cvtsepi32_epi8`]
+  * [x] [`_mm512_mask_cvtsepi32_epi8`]
+  * [x] [`_mm512_maskz_cvtsepi32_epi8`]
+  * [x] [`_mm_cvtsepi32_epi8`]
+  * [x] [`_mm_mask_cvtsepi32_epi8`]
+  * [x] [`_mm_maskz_cvtsepi32_epi8`]
+  * [x] [`_mm256_cvtsepi32_epi8`]
+  * [x] [`_mm256_mask_cvtsepi32_epi8`]
+  * [x] [`_mm256_maskz_cvtsepi32_epi8`]
+  * [ ] [`_mm512_mask_cvtsepi32_storeu_epi16`]
+  * [ ] [`_mm512_mask_cvtsepi32_storeu_epi8`]
+
+
+
 
   * [x] [`_mm512_mask_cvtsepi64_epi32`]
   * [x] [`_mm512_mask_cvtsepi64_epi8`]
@@ -2158,8 +2181,7 @@
   * [x] [`_mm512_cvt_roundps_pd`]
 
   * [x] [`_mm512_mask_cvtsepi64_epi16`]
-  * [x] [`_mm512_cvtsepi32_epi16`]
-  * [x] [`_mm512_cvtsepi32_epi8`]
+
   * [x] [`_mm512_cvtsepi64_epi16`]
   * [x] [`_mm512_cvtsepi64_epi32`]
   * [x] [`_mm512_cvtsepi64_epi8`]
@@ -2198,10 +2220,7 @@
   * [x] [`_mm512_mask_cvt_roundps_epu32`]
   * [x] [`_mm512_mask_cvt_roundps_pd`]
 
-  * [x] [`_mm512_mask_cvtsepi32_epi16`]
-  * [x] [`_mm512_mask_cvtsepi32_epi8`]
-  * [ ] [`_mm512_mask_cvtsepi32_storeu_epi16`]
-  * [ ] [`_mm512_mask_cvtsepi32_storeu_epi8`]
+
   * [x] [`_mm512_mask_cvtt_roundpd_epi32`]
   * [x] [`_mm512_mask_cvtt_roundpd_epu32`]
   * [x] [`_mm512_mask_cvtt_roundps_epi32`]
@@ -2230,8 +2249,7 @@
   * [x] [`_mm512_maskz_cvt_roundps_epu32`]
   * [x] [`_mm512_maskz_cvt_roundps_pd`]
 
-  * [x] [`_mm512_maskz_cvtsepi32_epi16`]
-  * [x] [`_mm512_maskz_cvtsepi32_epi8`]
+
   * [x] [`_mm512_maskz_cvtsepi64_epi16`]
   * [x] [`_mm512_maskz_cvtsepi64_epi32`]
   * [x] [`_mm512_maskz_cvtsepi64_epi8`]
