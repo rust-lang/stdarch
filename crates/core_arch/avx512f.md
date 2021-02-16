@@ -2159,9 +2159,12 @@
   * [x] [`_mm256_cvtsepi32_epi8`]
   * [x] [`_mm256_mask_cvtsepi32_epi8`]
   * [x] [`_mm256_maskz_cvtsepi32_epi8`]
-  * [ ] [`_mm512_mask_cvtsepi32_storeu_epi16`]
-  * [ ] [`_mm512_mask_cvtsepi32_storeu_epi8`]
-
+  * [x] [`_mm512_mask_cvtsepi32_storeu_epi16`]
+  * [x] [`_mm_mask_cvtsepi32_storeu_epi16`]
+  * [x] [`_mm256_mask_cvtsepi32_storeu_epi16`]
+  * [x] [`_mm512_mask_cvtsepi32_storeu_epi8`]
+  * [x] [`_mm_mask_cvtsepi32_storeu_epi8`]
+  * [x] [`_mm256_mask_cvtsepi32_storeu_epi8`]
 
 
 
