@@ -31296,6 +31296,36 @@ pub unsafe fn _mm_mask_cvtsepi32_storeu_epi16(mem_addr: *mut i8, k: __mmask8, a:
     vpmovsdwmem128(mem_addr as *mut i8, a.as_i32x4(), k);
 }
 
+/// Convert packed unsigned 32-bit integers in a to packed 16-bit integers with unsigned saturation, and store the active results (those with their respective bit set in writemask k) to unaligned memory at base_addr.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_cvtusepi32_storeu_epi16&expand=2068)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vpmovusdw))]
+pub unsafe fn _mm512_mask_cvtusepi32_storeu_epi16(mem_addr: *mut i8, k: __mmask16, a: __m512i) {
+    vpmovusdwmem(mem_addr as *mut i8, a.as_i32x16(), k);
+}
+
+/// Convert packed unsigned 32-bit integers in a to packed unsigned 16-bit integers with unsigned saturation, and store the active results (those with their respective bit set in writemask k) to unaligned memory at base_addr.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_cvtusepi32_storeu_epi16&expand=2067)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovusdw))]
+pub unsafe fn _mm256_mask_cvtusepi32_storeu_epi16(mem_addr: *mut i8, k: __mmask8, a: __m256i) {
+    vpmovusdwmem256(mem_addr as *mut i8, a.as_i32x8(), k);
+}
+
+/// Convert packed unsigned 32-bit integers in a to packed unsigned 16-bit integers with unsigned saturation, and store the active results (those with their respective bit set in writemask k) to unaligned memory at base_addr.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_cvtusepi32_storeu_epi16&expand=2066)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovusdw))]
+pub unsafe fn _mm_mask_cvtusepi32_storeu_epi16(mem_addr: *mut i8, k: __mmask8, a: __m128i) {
+    vpmovusdwmem128(mem_addr as *mut i8, a.as_i32x4(), k);
+}
+
 /// Convert packed 32-bit integers in a to packed 8-bit integers with truncation, and store the active results (those with their respective bit set in writemask k) to unaligned memory at base_addr.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_cvtepi32_storeu_epi8&expand=1463)
@@ -31354,6 +31384,36 @@ pub unsafe fn _mm256_mask_cvtsepi32_storeu_epi8(mem_addr: *mut i8, k: __mmask8, 
 #[cfg_attr(test, assert_instr(vpmovsdb))]
 pub unsafe fn _mm_mask_cvtsepi32_storeu_epi8(mem_addr: *mut i8, k: __mmask8, a: __m128i) {
     vpmovsdbmem128(mem_addr as *mut i8, a.as_i32x4(), k);
+}
+
+/// Convert packed unsigned 32-bit integers in a to packed 8-bit integers with unsigned saturation, and store the active results (those with their respective bit set in writemask k) to unaligned memory at base_addr.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_cvtusepi32_storeu_epi8&expand=2071)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vpmovusdb))]
+pub unsafe fn _mm512_mask_cvtusepi32_storeu_epi8(mem_addr: *mut i8, k: __mmask16, a: __m512i) {
+    vpmovusdbmem(mem_addr as *mut i8, a.as_i32x16(), k);
+}
+
+/// Convert packed unsigned 32-bit integers in a to packed 8-bit integers with unsigned saturation, and store the active results (those with their respective bit set in writemask k) to unaligned memory at base_addr.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_cvtusepi32_storeu_epi8&expand=2070)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovusdb))]
+pub unsafe fn _mm256_mask_cvtusepi32_storeu_epi8(mem_addr: *mut i8, k: __mmask8, a: __m256i) {
+    vpmovusdbmem256(mem_addr as *mut i8, a.as_i32x8(), k);
+}
+
+/// Convert packed unsigned 32-bit integers in a to packed 8-bit integers with unsigned saturation, and store the active results (those with their respective bit set in writemask k) to unaligned memory at base_addr.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_cvtusepi32_storeu_epi8&expand=2069)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovusdb))]
+pub unsafe fn _mm_mask_cvtusepi32_storeu_epi8(mem_addr: *mut i8, k: __mmask8, a: __m128i) {
+    vpmovusdbmem128(mem_addr as *mut i8, a.as_i32x4(), k);
 }
 
 /// Convert packed 64-bit integers in a to packed 16-bit integers with truncation, and store the active results (those with their respective bit set in writemask k) to unaligned memory at base_addr.
@@ -38317,6 +38377,13 @@ extern "C" {
     #[link_name = "llvm.x86.avx512.mask.pmovs.dw.mem.128"]
     fn vpmovsdwmem128(mem_addr: *mut i8, a: i32x4, mask: u8);
 
+    #[link_name = "llvm.x86.avx512.mask.pmovus.dw.mem.512"]
+    fn vpmovusdwmem(mem_addr: *mut i8, a: i32x16, mask: u16);
+    #[link_name = "llvm.x86.avx512.mask.pmovus.dw.mem.256"]
+    fn vpmovusdwmem256(mem_addr: *mut i8, a: i32x8, mask: u8);
+    #[link_name = "llvm.x86.avx512.mask.pmovus.dw.mem.128"]
+    fn vpmovusdwmem128(mem_addr: *mut i8, a: i32x4, mask: u8);
+
     #[link_name = "llvm.x86.avx512.mask.pmov.db.mem.512"]
     fn vpmovdbmem(mem_addr: *mut i8, a: i32x16, mask: u16);
     #[link_name = "llvm.x86.avx512.mask.pmov.db.mem.256"]
@@ -38330,6 +38397,13 @@ extern "C" {
     fn vpmovsdbmem256(mem_addr: *mut i8, a: i32x8, mask: u8);
     #[link_name = "llvm.x86.avx512.mask.pmovs.db.mem.128"]
     fn vpmovsdbmem128(mem_addr: *mut i8, a: i32x4, mask: u8);
+
+    #[link_name = "llvm.x86.avx512.mask.pmovus.db.mem.512"]
+    fn vpmovusdbmem(mem_addr: *mut i8, a: i32x16, mask: u16);
+    #[link_name = "llvm.x86.avx512.mask.pmovus.db.mem.256"]
+    fn vpmovusdbmem256(mem_addr: *mut i8, a: i32x8, mask: u8);
+    #[link_name = "llvm.x86.avx512.mask.pmovus.db.mem.128"]
+    fn vpmovusdbmem128(mem_addr: *mut i8, a: i32x4, mask: u8);
 
     #[link_name = "llvm.x86.avx512.mask.pmov.qw.mem.512"]
     fn vpmovqwmem(mem_addr: *mut i8, a: i64x8, mask: u8);
@@ -51254,6 +51328,42 @@ mod tests {
     }
 
     #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_cvtusepi32_storeu_epi16() {
+        let a = _mm512_set1_epi32(i32::MAX);
+        let mut r = _mm256_undefined_si256();
+        _mm512_mask_cvtusepi32_storeu_epi16(&mut r as *mut _ as *mut i8, 0b11111111_11111111, a);
+        let e = _mm256_set1_epi16(u16::MAX as i16);
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_mask_cvtusepi32_storeu_epi16() {
+        let a = _mm256_set1_epi32(i32::MAX);
+        let mut r = _mm_undefined_si128();
+        _mm256_mask_cvtusepi32_storeu_epi16(&mut r as *mut _ as *mut i8, 0b11111111, a);
+        let e = _mm_set1_epi16(u16::MAX as i16);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_mask_cvtusepi32_storeu_epi16() {
+        let a = _mm_set1_epi32(i32::MAX);
+        let mut r = _mm_set1_epi8(0);
+        _mm_mask_cvtusepi32_storeu_epi16(&mut r as *mut _ as *mut i8, 0b11111111, a);
+        let e = _mm_set_epi16(
+            0,
+            0,
+            0,
+            0,
+            u16::MAX as i16,
+            u16::MAX as i16,
+            u16::MAX as i16,
+            u16::MAX as i16,
+        );
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_mask_cvtepi32_storeu_epi8() {
         let a = _mm512_set1_epi32(9);
         let mut r = _mm_undefined_si128();
@@ -51294,23 +51404,12 @@ mod tests {
         let a = _mm256_set1_epi32(i32::MAX);
         let mut r = _mm_set1_epi8(0);
         _mm256_mask_cvtsepi32_storeu_epi8(&mut r as *mut _ as *mut i8, 0b11111111, a);
+        #[rustfmt::skip]
         let e = _mm_set_epi8(
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            i8::MAX,
-            i8::MAX,
-            i8::MAX,
-            i8::MAX,
-            i8::MAX,
-            i8::MAX,
-            i8::MAX,
-            i8::MAX,
+            0, 0, 0, 0,
+            0, 0, 0, 0,
+            i8::MAX, i8::MAX, i8::MAX, i8::MAX,
+            i8::MAX, i8::MAX, i8::MAX, i8::MAX,
         );
         assert_eq_m128i(r, e);
     }
@@ -51320,23 +51419,51 @@ mod tests {
         let a = _mm_set1_epi32(i32::MAX);
         let mut r = _mm_set1_epi8(0);
         _mm_mask_cvtsepi32_storeu_epi8(&mut r as *mut _ as *mut i8, 0b11111111, a);
+        #[rustfmt::skip]
         let e = _mm_set_epi8(
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            i8::MAX,
-            i8::MAX,
-            i8::MAX,
-            i8::MAX,
+            0, 0, 0, 0,
+            0, 0, 0, 0,
+            0, 0, 0, 0,
+            i8::MAX, i8::MAX, i8::MAX, i8::MAX,
+        );
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_cvtusepi32_storeu_epi8() {
+        let a = _mm512_set1_epi32(i32::MAX);
+        let mut r = _mm_undefined_si128();
+        _mm512_mask_cvtusepi32_storeu_epi8(&mut r as *mut _ as *mut i8, 0b11111111_11111111, a);
+        let e = _mm_set1_epi8(u8::MAX as i8);
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm256_mask_cvtusepi32_storeu_epi8() {
+        let a = _mm256_set1_epi32(i32::MAX);
+        let mut r = _mm_set1_epi8(0);
+        _mm256_mask_cvtusepi32_storeu_epi8(&mut r as *mut _ as *mut i8, 0b11111111, a);
+        #[rustfmt::skip]
+        let e = _mm_set_epi8(
+            0, 0, 0, 0,
+            0, 0, 0, 0,
+            u8::MAX as i8, u8::MAX as i8, u8::MAX as i8, u8::MAX as i8,
+            u8::MAX as i8, u8::MAX as i8, u8::MAX as i8, u8::MAX as i8,
+        );
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f,avx512vl")]
+    unsafe fn test_mm_mask_cvtusepi32_storeu_epi8() {
+        let a = _mm_set1_epi32(i32::MAX);
+        let mut r = _mm_set1_epi8(0);
+        _mm_mask_cvtusepi32_storeu_epi8(&mut r as *mut _ as *mut i8, 0b11111111, a);
+        #[rustfmt::skip]
+        let e = _mm_set_epi8(
+            0, 0, 0, 0,
+            0, 0, 0, 0,
+            0, 0, 0, 0,
+            u8::MAX as i8, u8::MAX as i8, u8::MAX as i8, u8::MAX as i8,
         );
         assert_eq_m128i(r, e);
     }
