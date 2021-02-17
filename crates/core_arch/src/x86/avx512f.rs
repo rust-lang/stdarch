@@ -31704,6 +31704,36 @@ pub unsafe fn _mm_mask_cvtsepi64_storeu_epi16(mem_addr: *mut i8, k: __mmask8, a:
     vpmovsqwmem128(mem_addr as *mut i8, a.as_i64x2(), k);
 }
 
+/// Convert packed unsigned 64-bit integers in a to packed 16-bit integers with unsigned saturation, and store the active results (those with their respective bit set in writemask k) to unaligned memory at base_addr.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_cvtusepi64_storeu_epi16&expand=2101)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vpmovusqw))]
+pub unsafe fn _mm512_mask_cvtusepi64_storeu_epi16(mem_addr: *mut i8, k: __mmask8, a: __m512i) {
+    vpmovusqwmem(mem_addr as *mut i8, a.as_i64x8(), k);
+}
+
+/// Convert packed unsigned 64-bit integers in a to packed 16-bit integers with unsigned saturation, and store the active results (those with their respective bit set in writemask k) to unaligned memory at base_addr.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_cvtusepi64_storeu_epi16&expand=2100)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovusqw))]
+pub unsafe fn _mm256_mask_cvtusepi64_storeu_epi16(mem_addr: *mut i8, k: __mmask8, a: __m256i) {
+    vpmovusqwmem256(mem_addr as *mut i8, a.as_i64x4(), k);
+}
+
+/// Convert packed unsigned 64-bit integers in a to packed 16-bit integers with unsigned saturation, and store the active results (those with their respective bit set in writemask k) to unaligned memory at base_addr.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_cvtusepi64_storeu_epi16&expand=2099)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovusqw))]
+pub unsafe fn _mm_mask_cvtusepi64_storeu_epi16(mem_addr: *mut i8, k: __mmask8, a: __m128i) {
+    vpmovusqwmem128(mem_addr as *mut i8, a.as_i64x2(), k);
+}
+
 /// Convert packed 64-bit integers in a to packed 8-bit integers with truncation, and store the active results (those with their respective bit set in writemask k) to unaligned memory at base_addr.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_cvtepi64_storeu_epi8&expand=1519)
@@ -31764,6 +31794,36 @@ pub unsafe fn _mm_mask_cvtsepi64_storeu_epi8(mem_addr: *mut i8, k: __mmask8, a: 
     vpmovsqbmem128(mem_addr as *mut i8, a.as_i64x2(), k);
 }
 
+/// Convert packed unsigned 64-bit integers in a to packed 8-bit integers with unsigned saturation, and store the active results (those with their respective bit set in writemask k) to unaligned memory at base_addr.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_cvtusepi64_storeu_epi8&expand=2107)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vpmovusqb))]
+pub unsafe fn _mm512_mask_cvtusepi64_storeu_epi8(mem_addr: *mut i8, k: __mmask8, a: __m512i) {
+    vpmovusqbmem(mem_addr as *mut i8, a.as_i64x8(), k);
+}
+
+/// Convert packed unsigned 64-bit integers in a to packed 8-bit integers with unsigned saturation, and store the active results (those with their respective bit set in writemask k) to unaligned memory at base_addr.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_cvtusepi64_storeu_epi8&expand=2106)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovusqb))]
+pub unsafe fn _mm256_mask_cvtusepi64_storeu_epi8(mem_addr: *mut i8, k: __mmask8, a: __m256i) {
+    vpmovusqbmem256(mem_addr as *mut i8, a.as_i64x4(), k);
+}
+
+/// Convert packed unsigned 64-bit integers in a to packed 8-bit integers with unsigned saturation, and store the active results (those with their respective bit set in writemask k) to unaligned memory at base_addr.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_cvtusepi64_storeu_epi8&expand=2105)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovusqb))]
+pub unsafe fn _mm_mask_cvtusepi64_storeu_epi8(mem_addr: *mut i8, k: __mmask8, a: __m128i) {
+    vpmovusqbmem128(mem_addr as *mut i8, a.as_i64x2(), k);
+}
+
 ///Convert packed 64-bit integers in a to packed 32-bit integers with truncation, and store the active results (those with their respective bit set in writemask k) to unaligned memory at base_addr.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_cvtepi64_storeu_epi32&expand=1516)
@@ -31822,6 +31882,36 @@ pub unsafe fn _mm256_mask_cvtsepi64_storeu_epi32(mem_addr: *mut i8, k: __mmask8,
 #[cfg_attr(test, assert_instr(vpmovsqd))]
 pub unsafe fn _mm_mask_cvtsepi64_storeu_epi32(mem_addr: *mut i8, k: __mmask8, a: __m128i) {
     vpmovsqdmem128(mem_addr as *mut i8, a.as_i64x2(), k);
+}
+
+/// Convert packed unsigned 64-bit integers in a to packed 32-bit integers with unsigned saturation, and store the active results (those with their respective bit set in writemask k) to unaligned memory at base_addr.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_cvtusepi64_storeu_epi32&expand=2104)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vpmovusqd))]
+pub unsafe fn _mm512_mask_cvtusepi64_storeu_epi32(mem_addr: *mut i8, k: __mmask8, a: __m512i) {
+    vpmovusqdmem(mem_addr as *mut i8, a.as_i64x8(), k);
+}
+
+/// Convert packed unsigned 64-bit integers in a to packed 32-bit integers with unsigned saturation, and store the active results (those with their respective bit set in writemask k) to unaligned memory at base_addr.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_cvtusepi64_storeu_epi32&expand=2103)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovusqd))]
+pub unsafe fn _mm256_mask_cvtusepi64_storeu_epi32(mem_addr: *mut i8, k: __mmask8, a: __m256i) {
+    vpmovusqdmem256(mem_addr as *mut i8, a.as_i64x4(), k);
+}
+
+/// Convert packed unsigned 64-bit integers in a to packed 32-bit integers with unsigned saturation, and store the active results (those with their respective bit set in writemask k) to unaligned memory at base_addr.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_cvtusepi64_storeu_epi32&expand=2102)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl")]
+#[cfg_attr(test, assert_instr(vpmovusqd))]
+pub unsafe fn _mm_mask_cvtusepi64_storeu_epi32(mem_addr: *mut i8, k: __mmask8, a: __m128i) {
+    vpmovusqdmem128(mem_addr as *mut i8, a.as_i64x2(), k);
 }
 
 /// Store 512-bits (composed of 16 packed 32-bit integers) from a into memory. mem_addr does not need to be aligned on any particular boundary.
@@ -38647,6 +38737,13 @@ extern "C" {
     #[link_name = "llvm.x86.avx512.mask.pmovs.qw.mem.128"]
     fn vpmovsqwmem128(mem_addr: *mut i8, a: i64x2, mask: u8);
 
+    #[link_name = "llvm.x86.avx512.mask.pmovus.qw.mem.512"]
+    fn vpmovusqwmem(mem_addr: *mut i8, a: i64x8, mask: u8);
+    #[link_name = "llvm.x86.avx512.mask.pmovus.qw.mem.256"]
+    fn vpmovusqwmem256(mem_addr: *mut i8, a: i64x4, mask: u8);
+    #[link_name = "llvm.x86.avx512.mask.pmovus.qw.mem.128"]
+    fn vpmovusqwmem128(mem_addr: *mut i8, a: i64x2, mask: u8);
+
     #[link_name = "llvm.x86.avx512.mask.pmov.qb.mem.512"]
     fn vpmovqbmem(mem_addr: *mut i8, a: i64x8, mask: u8);
     #[link_name = "llvm.x86.avx512.mask.pmov.qb.mem.256"]
@@ -38661,6 +38758,13 @@ extern "C" {
     #[link_name = "llvm.x86.avx512.mask.pmovs.qb.mem.128"]
     fn vpmovsqbmem128(mem_addr: *mut i8, a: i64x2, mask: u8);
 
+    #[link_name = "llvm.x86.avx512.mask.pmovus.qb.mem.512"]
+    fn vpmovusqbmem(mem_addr: *mut i8, a: i64x8, mask: u8);
+    #[link_name = "llvm.x86.avx512.mask.pmovus.qb.mem.256"]
+    fn vpmovusqbmem256(mem_addr: *mut i8, a: i64x4, mask: u8);
+    #[link_name = "llvm.x86.avx512.mask.pmovus.qb.mem.128"]
+    fn vpmovusqbmem128(mem_addr: *mut i8, a: i64x2, mask: u8);
+
     #[link_name = "llvm.x86.avx512.mask.pmov.qd.mem.512"]
     fn vpmovqdmem(mem_addr: *mut i8, a: i64x8, mask: u8);
     #[link_name = "llvm.x86.avx512.mask.pmov.qd.mem.256"]
@@ -38674,6 +38778,13 @@ extern "C" {
     fn vpmovsqdmem256(mem_addr: *mut i8, a: i64x4, mask: u8);
     #[link_name = "llvm.x86.avx512.mask.pmovs.qd.mem.128"]
     fn vpmovsqdmem128(mem_addr: *mut i8, a: i64x2, mask: u8);
+
+    #[link_name = "llvm.x86.avx512.mask.pmovus.qd.mem.512"]
+    fn vpmovusqdmem(mem_addr: *mut i8, a: i64x8, mask: u8);
+    #[link_name = "llvm.x86.avx512.mask.pmovus.qd.mem.256"]
+    fn vpmovusqdmem256(mem_addr: *mut i8, a: i64x4, mask: u8);
+    #[link_name = "llvm.x86.avx512.mask.pmovus.qd.mem.128"]
+    fn vpmovusqdmem128(mem_addr: *mut i8, a: i64x2, mask: u8);
 
     #[link_name = "llvm.x86.avx512.mask.pmov.qb.512"]
     fn vpmovqb(a: i64x8, src: i8x16, mask: u8) -> i8x16;
