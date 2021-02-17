@@ -25474,10 +25474,7 @@ pub unsafe fn _mm512_castsi512_pd(a: __m512i) -> __m512d {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_cvtsi512_si32&expand=1882)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(
-    all(test, not(target_os = "windows")),
-    assert_instr(vmovd)
-)]
+#[cfg_attr(all(test, not(target_os = "windows")), assert_instr(vmovd))]
 pub unsafe fn _mm512_cvtsi512_si32(a: __m512i) -> i32 {
     let extract: i32 = simd_extract(a.as_i32x16(), 0);
     transmute(extract)
