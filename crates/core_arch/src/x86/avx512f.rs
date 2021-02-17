@@ -25469,6 +25469,17 @@ pub unsafe fn _mm512_castsi512_pd(a: __m512i) -> __m512d {
     transmute(a)
 }
 
+/// Copy the lower 32-bit integer in a to dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_cvtsi512_si32&expand=1882)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vmovd))]
+pub unsafe fn _mm512_cvtsi512_si32(a: __m512i) -> i32 {
+    let extract: i32 = simd_extract(a.as_i32x16(), 0);
+    transmute(extract)
+}
+
 /// Broadcast the low packed 32-bit integer from a to all elements of dst.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_broadcastd_epi32&expand=545)
@@ -55051,6 +55062,14 @@ mod tests {
         let b = _mm_set1_pd(1.1);
         let r = _mm_comi_round_sd(a, b, 0, _MM_FROUND_CUR_DIRECTION);
         let e: i32 = 0;
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_cvtsi512_si32() {
+        let a = _mm512_setr_epi32(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
+        let r = _mm512_cvtsi512_si32(a);
+        let e: i32 = 1;
         assert_eq!(r, e);
     }
 }
