@@ -2281,11 +2281,19 @@
   * [x] [`_mm512_cvttps_epi32`]
   * [x] [`_mm512_mask_cvttps_epi32`]
   * [x] [`_mm512_maskz_cvttps_epi32`]
-
+  * [x] [`_mm_mask_cvttps_epi32`]
+  * [x] [`_mm_maskz_cvttps_epi32`]
+  * [x] [`_mm256_mask_cvttps_epi32`]
+  * [x] [`_mm256_maskz_cvttps_epi32`]
   * [x] [`_mm512_cvttps_epu32`]
   * [x] [`_mm512_mask_cvttps_epu32`]
   * [x] [`_mm512_maskz_cvttps_epu32`]
-
+  * [x] [`_mm_cvttps_epu32`]
+  * [x] [`_mm_mask_cvttps_epu32`]
+  * [x] [`_mm_maskz_cvttps_epu32`]
+  * [x] [`_mm256_cvttps_epu32`]
+  * [x] [`_mm256_mask_cvttps_epu32`]
+  * [x] [`_mm256_maskz_cvttps_epu32`]
   * [x] [`_mm512_cvt_roundepi32_ps`]
   * [x] [`_mm512_mask_cvt_roundepi32_ps`]
   * [x] [`_mm512_maskz_cvt_roundepi32_ps`]
@@ -2325,7 +2333,6 @@
   * [x] [`_mm512_cvtt_roundps_epu32`]
   * [x] [`_mm512_mask_cvtt_roundps_epu32`]
   * [x] [`_mm512_maskz_cvtt_roundps_epu32`]
-
   * [x] [`_mm_add_round_sd`]
   * [x] [`_mm_add_round_ss`]
   * [x] [`_mm_cmp_round_sd_mask`]
@@ -2611,7 +2618,6 @@
   * [x] [`_mm_sqrt_round_ss`]
   * [x] [`_mm_sub_round_sd`]
   * [x] [`_mm_sub_round_ss`]
-
   * [x] [`_mm512_int2mask`]
   * [x] [`_mm512_kand`]
   * [x] [`_mm512_kandn`]
