@@ -1,4 +1,5 @@
 <summary>["AVX512F"]</summary><p>
+
   * [x] [`_mm512_abs_epi32`]
   * [x] [`_mm512_mask_abs_epi32`]
   * [x] [`_mm512_maskz_abs_epi32`]
