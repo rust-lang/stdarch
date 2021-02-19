@@ -1,5 +1,5 @@
 use crate::{
-    core_arch::{simd::*, simd_llvm::*, x86::*},
+    core_arch::{simd::*, simd_llvm::*, x86::*, x86_64::*},
     mem::{self, transmute},
     ptr,
 };
@@ -37427,8 +37427,8 @@ pub unsafe fn _mm_maskz_fixupimm_sd(
 }
 
 /// Fix up the lower single-precision (32-bit) floating-point elements in a and b using the lower 32-bit integer in c, store the result in the lower element of dst, and copy the upper 3 packed elements from a to the upper elements of dst. imm8 is used to set the required flags reporting.\
-///
 /// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_fixupimm_round_ss&expand=2511)
 #[inline]
 #[target_feature(enable = "avx512f")]
@@ -37456,8 +37456,8 @@ pub unsafe fn _mm_fixupimm_round_ss(
 }
 
 /// Fix up the lower single-precision (32-bit) floating-point elements in a and b using the lower 32-bit integer in c, store the result in the lower element of dst using writemask k (the element is copied from a when mask bit 0 is not set), and copy the upper 3 packed elements from a to the upper elements of dst. imm8 is used to set the required flags reporting.\
-///
 /// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask_fixupimm_round_ss&expand=2512)
 #[inline]
 #[target_feature(enable = "avx512f")]
@@ -37486,8 +37486,8 @@ pub unsafe fn _mm_mask_fixupimm_round_ss(
 }
 
 /// Fix up the lower single-precision (32-bit) floating-point elements in a and b using the lower 32-bit integer in c, store the result in the lower element of dst using zeromask k (the element is zeroed out when mask bit 0 is not set), and copy the upper 3 packed elements from a to the upper elements of dst. imm8 is used to set the required flags reporting.\
-///
 /// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_maskz_fixupimm_round_ss&expand=2513)
 #[inline]
 #[target_feature(enable = "avx512f")]
@@ -37516,8 +37516,8 @@ pub unsafe fn _mm_maskz_fixupimm_round_ss(
 }
 
 /// Fix up the lower double-precision (64-bit) floating-point elements in a and b using the lower 64-bit integer in c, store the result in the lower element of dst, and copy the upper element from a to the upper element of dst. imm8 is used to set the required flags reporting.\
-///
 /// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_fixupimm_round_sd&expand=2508)
 #[inline]
 #[target_feature(enable = "avx512f")]
@@ -37545,8 +37545,8 @@ pub unsafe fn _mm_fixupimm_round_sd(
 }
 
 /// Fix up the lower double-precision (64-bit) floating-point elements in a and b using the lower 64-bit integer in c, store the result in the lower element of dst using writemask k (the element is copied from a when mask bit 0 is not set), and copy the upper element from a to the upper element of dst. imm8 is used to set the required flags reporting.\
-///
 /// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask_fixupimm_round_sd&expand=2509)
 #[inline]
 #[target_feature(enable = "avx512f")]
@@ -37575,8 +37575,8 @@ pub unsafe fn _mm_mask_fixupimm_round_sd(
 }
 
 /// Fix up the lower double-precision (64-bit) floating-point elements in a and b using the lower 64-bit integer in c, store the result in the lower element of dst using zeromask k (the element is zeroed out when mask bit 0 is not set), and copy the upper element from a to the upper element of dst. imm8 is used to set the required flags reporting.\
-///
 /// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
+///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_maskz_fixupimm_round_sd&expand=2510)
 #[inline]
 #[target_feature(enable = "avx512f")]
@@ -37740,13 +37740,12 @@ pub unsafe fn _mm_maskz_cvt_roundss_sd(k: __mmask8, a: __m128d, b: __m128, sae: 
     transmute(r)
 }
 
-/// Convert the lower double-precision (64-bit) floating-point element in b to a single-precision (32-bit) floating-point element, store the result in the lower element of dst, and copy the upper 3 packed elements from a to the upper elements of dst.
-///
-/// Rounding is done according to the rounding\[3:0\] parameter, which can be one of:
-///    (_MM_FROUND_TO_NEAREST_INT |_MM_FROUND_NO_EXC) // round to nearest, and suppress exceptions
-///    (_MM_FROUND_TO_NEG_INF |_MM_FROUND_NO_EXC)     // round down, and suppress exceptions
-///    (_MM_FROUND_TO_POS_INF |_MM_FROUND_NO_EXC)     // round up, and suppress exceptions
-///    (_MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC)        // truncate, and suppress exceptions
+/// Convert the lower double-precision (64-bit) floating-point element in b to a single-precision (32-bit) floating-point element, store the result in the lower element of dst, and copy the upper 3 packed elements from a to the upper elements of dst.\
+/// Rounding is done according to the rounding\[3:0\] parameter, which can be one of:\
+///    (_MM_FROUND_TO_NEAREST_INT |_MM_FROUND_NO_EXC) // round to nearest, and suppress exceptions\
+///    (_MM_FROUND_TO_NEG_INF |_MM_FROUND_NO_EXC)     // round down, and suppress exceptions\
+///    (_MM_FROUND_TO_POS_INF |_MM_FROUND_NO_EXC)     // round up, and suppress exceptions\
+///    (_MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC)        // truncate, and suppress exceptions\
 ///    _MM_FROUND_CUR_DIRECTION // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_cvt_roundsd_ss&expand=1361)
@@ -37767,13 +37766,12 @@ pub unsafe fn _mm_cvt_roundsd_ss(a: __m128, b: __m128d, rounding: i32) -> __m128
     transmute(r)
 }
 
-/// Convert the lower double-precision (64-bit) floating-point element in b to a single-precision (32-bit) floating-point element, store the result in the lower element of dst using writemask k (the element is copied from src when mask bit 0 is not set), and copy the upper 3 packed elements from a to the upper elements of dst.
-///
-/// Rounding is done according to the rounding\[3:0\] parameter, which can be one of:
-///    (_MM_FROUND_TO_NEAREST_INT |_MM_FROUND_NO_EXC) // round to nearest, and suppress exceptions
-///    (_MM_FROUND_TO_NEG_INF |_MM_FROUND_NO_EXC)     // round down, and suppress exceptions
-///    (_MM_FROUND_TO_POS_INF |_MM_FROUND_NO_EXC)     // round up, and suppress exceptions
-///    (_MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC)        // truncate, and suppress exceptions
+/// Convert the lower double-precision (64-bit) floating-point element in b to a single-precision (32-bit) floating-point element, store the result in the lower element of dst using writemask k (the element is copied from src when mask bit 0 is not set), and copy the upper 3 packed elements from a to the upper elements of dst.\
+/// Rounding is done according to the rounding\[3:0\] parameter, which can be one of:\
+///    (_MM_FROUND_TO_NEAREST_INT |_MM_FROUND_NO_EXC) // round to nearest, and suppress exceptions\
+///    (_MM_FROUND_TO_NEG_INF |_MM_FROUND_NO_EXC)     // round down, and suppress exceptions\
+///    (_MM_FROUND_TO_POS_INF |_MM_FROUND_NO_EXC)     // round up, and suppress exceptions\
+///    (_MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC)        // truncate, and suppress exceptions\
 ///    _MM_FROUND_CUR_DIRECTION // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask_cvt_roundsd_ss&expand=1362)
@@ -37801,7 +37799,6 @@ pub unsafe fn _mm_mask_cvt_roundsd_ss(
 }
 
 /// Convert the lower double-precision (64-bit) floating-point element in b to a single-precision (32-bit) floating-point element, store the result in the lower element of dst using zeromask k (the element is zeroed out when mask bit 0 is not set), and copy the upper 3 packed elements from a to the upper elements of dst.\
-///
 /// Rounding is done according to the rounding\[3:0\] parameter, which can be one of:\
 ///    (_MM_FROUND_TO_NEAREST_INT |_MM_FROUND_NO_EXC) // round to nearest, and suppress exceptions\
 ///    (_MM_FROUND_TO_NEG_INF |_MM_FROUND_NO_EXC)     // round down, and suppress exceptions\
@@ -37833,7 +37830,6 @@ pub unsafe fn _mm_maskz_cvt_roundsd_ss(
 }
 
 /// Convert the lower single-precision (32-bit) floating-point element in a to a 32-bit integer, and store the result in dst.\
-///
 /// Rounding is done according to the rounding\[3:0\] parameter, which can be one of:\
 ///    (_MM_FROUND_TO_NEAREST_INT |_MM_FROUND_NO_EXC) // round to nearest, and suppress exceptions\
 ///    (_MM_FROUND_TO_NEG_INF |_MM_FROUND_NO_EXC)     // round down, and suppress exceptions\
@@ -37997,6 +37993,16 @@ pub unsafe fn _mm_cvtss_u32(a: __m128) -> u32 {
     transmute(vcvtss2usi(a.as_f32x4(), _MM_FROUND_CUR_DIRECTION))
 }
 
+/// Convert the lower single-precision (32-bit) floating-point element in a to an unsigned 64-bit integer, and store the result in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_cvtss_u64&expand=1902)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vcvtss2usi))]
+pub unsafe fn _mm_cvtss_u64(a: __m128) -> u64 {
+    transmute(vcvtss2usi64(a.as_f32x4(), _MM_FROUND_CUR_DIRECTION))
+}
+
 /// Convert the lower double-precision (64-bit) floating-point element in a to a 32-bit integer, and store the result in dst.\
 /// Rounding is done according to the rounding\[3:0\] parameter, which can be one of:\
 ///    (_MM_FROUND_TO_NEAREST_INT |_MM_FROUND_NO_EXC) // round to nearest, and suppress exceptions\
@@ -38151,6 +38157,26 @@ pub unsafe fn _mm_cvtsd_i32(a: __m128d) -> i32 {
     transmute(vcvtsd2si(a.as_f64x2(), _MM_FROUND_CUR_DIRECTION))
 }
 
+/// Convert the lower double-precision (64-bit) floating-point element in a to a 64-bit integer, and store the result in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_cvtsd_i64&expand=1792)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vcvtsd2si))]
+pub unsafe fn _mm_cvtsd_i64(a: __m128d) -> i64 {
+    _mm_cvtsd_si64(a)
+}
+
+/// Convert the lower single-precision (32-bit) floating-point element in a to a 64-bit integer, and store the result in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_cvtss_i64&expand=1894)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vcvtss2si))]
+pub unsafe fn _mm_cvtss_i64(a: __m128) -> i64 {
+    _mm_cvtss_si64(a)
+}
+
 /// Convert the lower double-precision (64-bit) floating-point element in a to an unsigned 32-bit integer, and store the result in dst.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_cvtsd_u32&expand=1799)
@@ -38159,6 +38185,16 @@ pub unsafe fn _mm_cvtsd_i32(a: __m128d) -> i32 {
 #[cfg_attr(test, assert_instr(vcvtsd2usi))]
 pub unsafe fn _mm_cvtsd_u32(a: __m128d) -> u32 {
     transmute(vcvtsd2usi(a.as_f64x2(), _MM_FROUND_CUR_DIRECTION))
+}
+
+/// Convert the lower double-precision (64-bit) floating-point element in a to an unsigned 64-bit integer, and store the result in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_cvtsd_u64&expand=1800)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vcvtsd2usi))]
+pub unsafe fn _mm_cvtsd_u64(a: __m128d) -> u64 {
+    transmute(vcvtsd2usi64(a.as_f64x2(), _MM_FROUND_CUR_DIRECTION))
 }
 
 /// Convert the signed 32-bit integer b to a single-precision (32-bit) floating-point element, store the result in the lower element of dst, and copy the upper 3 packed elements from a to the upper elements of dst.\
@@ -38398,6 +38434,30 @@ pub unsafe fn _mm_cvti32_ss(a: __m128, b: i32) -> __m128 {
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vcvtsi2sd))]
 pub unsafe fn _mm_cvti32_sd(a: __m128d, b: i32) -> __m128d {
+    let b = b as f64;
+    let r = simd_insert(a, 0, b);
+    transmute(r)
+}
+
+/// Convert the signed 64-bit integer b to a single-precision (32-bit) floating-point element, store the result in the lower element of dst, and copy the upper 3 packed elements from a to the upper elements of dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_cvti32_ss&expand=1643)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vcvtsi2ss))]
+pub unsafe fn _mm_cvti64_ss(a: __m128, b: i64) -> __m128 {
+    let b = b as f32;
+    let r = simd_insert(a, 0, b);
+    transmute(r)
+}
+
+/// Convert the signed 64-bit integer b to a double-precision (64-bit) floating-point element, store the result in the lower element of dst, and copy the upper element from a to the upper element of dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_cvti64_sd&expand=1644)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vcvtsi2sd))]
+pub unsafe fn _mm_cvti64_sd(a: __m128d, b: i64) -> __m128d {
     let b = b as f64;
     let r = simd_insert(a, 0, b);
     transmute(r)
@@ -55516,10 +55576,26 @@ mod tests {
     }
 
     #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_cvtss_i64() {
+        let a = _mm_set_ps(0., -0.5, 1., -1.5);
+        let r = _mm_cvtss_i64(a);
+        let e: i64 = -2;
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
     unsafe fn test_mm_cvtss_u32() {
         let a = _mm_set_ps(0., -0.5, 1., -1.5);
         let r = _mm_cvtss_u32(a);
         let e: u32 = u32::MAX;
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_cvtss_u64() {
+        let a = _mm_set_ps(0., -0.5, 1., -1.5);
+        let r = _mm_cvtss_u64(a);
+        let e: u64 = u64::MAX;
         assert_eq!(r, e);
     }
 
@@ -55580,10 +55656,26 @@ mod tests {
     }
 
     #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_cvtsd_i64() {
+        let a = _mm_set_pd(1., -1.5);
+        let r = _mm_cvtsd_i64(a);
+        let e: i64 = -2;
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
     unsafe fn test_mm_cvtsd_u32() {
         let a = _mm_set_pd(1., -1.5);
         let r = _mm_cvtsd_u32(a);
         let e: u32 = u32::MAX;
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_cvtsd_u64() {
+        let a = _mm_set_pd(1., -1.5);
+        let r = _mm_cvtsd_u64(a);
+        let e: u64 = u64::MAX;
         assert_eq!(r, e);
     }
 
@@ -55682,6 +55774,24 @@ mod tests {
         let a = _mm_set_pd(1., -1.5);
         let b: i32 = 9;
         let r = _mm_cvti32_sd(a, b);
+        let e = _mm_set_pd(1., 9.);
+        assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_cvti64_ss() {
+        let a = _mm_set_ps(0., -0.5, 1., -1.5);
+        let b: i64 = 9;
+        let r = _mm_cvti64_ss(a, b);
+        let e = _mm_set_ps(0., -0.5, 1., 9.);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_cvti64_sd() {
+        let a = _mm_set_pd(1., -1.5);
+        let b: i64 = 9;
+        let r = _mm_cvti64_sd(a, b);
         let e = _mm_set_pd(1., 9.);
         assert_eq_m128d(r, e);
     }
