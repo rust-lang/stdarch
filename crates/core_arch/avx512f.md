@@ -2345,7 +2345,7 @@
   * [x] [`_mm_cvt_roundi64_sd`]
   * [x] [`_mm_cvt_roundi64_ss`]
   * [x] [`_mm_cvt_roundsd_i32`]
-  * [ ] [`_mm_cvt_roundsd_i64`]
+  * [x] [`_mm_cvt_roundsd_i64`]
   * [x] [`_mm_cvt_roundsd_si32`]
   * [ ] [`_mm_cvt_roundsd_si64`]
   * [x] [`_mm_cvt_roundsd_ss`]

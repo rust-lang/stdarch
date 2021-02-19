@@ -37977,6 +37977,31 @@ pub unsafe fn _mm_cvt_roundsd_i32(a: __m128d, rounding: i32) -> i32 {
     transmute(r)
 }
 
+/// Convert the lower double-precision (64-bit) floating-point element in a to a 64-bit integer, and store the result in dst.\
+///
+/// Rounding is done according to the rounding\[3:0\] parameter, which can be one of:\
+///    (_MM_FROUND_TO_NEAREST_INT |_MM_FROUND_NO_EXC) // round to nearest, and suppress exceptions\
+///    (_MM_FROUND_TO_NEG_INF |_MM_FROUND_NO_EXC)     // round down, and suppress exceptions\
+///    (_MM_FROUND_TO_POS_INF |_MM_FROUND_NO_EXC)     // round up, and suppress exceptions\
+///    (_MM_FROUND_TO_ZERO |_MM_FROUND_NO_EXC)        // truncate, and suppress exceptions\
+///    _MM_FROUND_CUR_DIRECTION // use MXCSR.RC; see _MM_SET_ROUNDING_MODE
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_cvt_roundsd_i64&expand=1358)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vcvtsd2si, rounding = 8))]
+#[rustc_args_required_const(1)]
+pub unsafe fn _mm_cvt_roundsd_i64(a: __m128d, rounding: i32) -> i64 {
+    let a = a.as_f64x2();
+    macro_rules! call {
+        ($imm4:expr) => {
+            vcvtsd2si64(a, $imm4)
+        };
+    }
+    let r = constify_imm4_round!(rounding, call);
+    transmute(r)
+}
+
 /// Convert the lower double-precision (64-bit) floating-point element in a to an unsigned 32-bit integer, and store the result in dst.\
 ///
 /// Rounding is done according to the rounding\[3:0\] parameter, which can be one of:\
@@ -39567,10 +39592,13 @@ extern "C" {
     fn vcvtss2usi(a: f32x4, rounding: i32) -> u32;
     #[link_name = "llvm.x86.avx512.vcvtss2usi64"]
     fn vcvtss2usi64(a: f32x4, rounding: i32) -> u64;
+
     #[link_name = "llvm.x86.avx512.vcvtsd2si32"]
     fn vcvtsd2si(a: f64x2, rounding: i32) -> i32;
+
     #[link_name = "llvm.x86.avx512.vcvtsd2si64"]
     fn vcvtsd2si64(a: f64x2, rounding: i32) -> i64;
+
     #[link_name = "llvm.x86.avx512.vcvtsd2usi32"]
     fn vcvtsd2usi(a: f64x2, rounding: i32) -> u32;
     #[link_name = "llvm.x86.avx512.vcvtsd2usi64"]
@@ -39582,8 +39610,10 @@ extern "C" {
     fn vcvtsi2ss64(a: f32x4, b: i64, rounding: i32) -> f32x4;
     #[link_name = "llvm.x86.avx512.cvtsi2sd64"]
     fn vcvtsi2sd(a: f64x2, b: i64, rounding: i32) -> f64x2;
+
     #[link_name = "llvm.x86.avx512.cvtusi2ss"]
     fn vcvtusi2ss(a: f32x4, b: u32, rounding: i32) -> f32x4;
+
     #[link_name = "llvm.x86.avx512.cvtusi642ss"]
     fn vcvtusi2ss64(a: f32x4, b: u64, rounding: i32) -> f32x4;
     #[link_name = "llvm.x86.avx512.cvtusi642sd"]
@@ -55274,6 +55304,14 @@ mod tests {
         let a = _mm_set_pd(1., -1.5);
         let r = _mm_cvt_roundsd_i32(a, _MM_FROUND_TO_ZERO | _MM_FROUND_NO_EXC);
         let e: i32 = -1;
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_cvt_roundsd_i64() {
+        let a = _mm_set_pd(1., -1.5);
+        let r = _mm_cvt_roundsd_i64(a, _MM_FROUND_TO_ZERO | _MM_FROUND_NO_EXC);
+        let e: i64 = -1;
         assert_eq!(r, e);
     }
 
