@@ -1,5 +1,6 @@
 use crate::{
-    core_arch::{simd::*, simd_llvm::*, x86::*, x86_64::*},
+    core_arch::x86_64::{_mm_cvtsd_si64, _mm_cvtss_si64},
+    core_arch::{simd::*, simd_llvm::*, x86::*},
     mem::{self, transmute},
     ptr,
 };
