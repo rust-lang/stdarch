@@ -2347,55 +2347,55 @@
   * [x] [`_mm_cvt_roundsd_i32`]
   * [x] [`_mm_cvt_roundsd_i64`]
   * [x] [`_mm_cvt_roundsd_si32`]
-  * [ ] [`_mm_cvt_roundsd_si64`]
+  * [x] [`_mm_cvt_roundsd_si64`] -
   * [x] [`_mm_cvt_roundsd_ss`]
   * [x] [`_mm_cvt_roundsd_u32`]
-  * [ ] [`_mm_cvt_roundsd_u64`]
+  * [x] [`_mm_cvt_roundsd_u64`] -
   * [x] [`_mm_cvt_roundsi32_ss`]
-  * [ ] [`_mm_cvt_roundsi64_sd`]
-  * [ ] [`_mm_cvt_roundsi64_ss`]
+  * [x] [`_mm_cvt_roundsi64_sd`] -
+  * [x] [`_mm_cvt_roundsi64_ss`] -
   * [x] [`_mm_cvt_roundss_i32`]
-  * [ ] [`_mm_cvt_roundss_i64`]
+  * [x] [`_mm_cvt_roundss_i64`] -
   * [x] [`_mm_cvt_roundss_sd`]
   * [x] [`_mm_cvt_roundss_si32`]
-  * [ ] [`_mm_cvt_roundss_si64`]
+  * [x] [`_mm_cvt_roundss_si64`] -
   * [x] [`_mm_cvt_roundss_u32`]
-  * [ ] [`_mm_cvt_roundss_u64`]
+  * [x] [`_mm_cvt_roundss_u64`] -
   * [x] [`_mm_cvt_roundu32_ss`]
-  * [ ] [`_mm_cvt_roundu64_sd`]
-  * [ ] [`_mm_cvt_roundu64_ss`]
+  * [x] [`_mm_cvt_roundu64_sd`] -
+  * [x] [`_mm_cvt_roundu64_ss`] -
   * [x] [`_mm_cvti32_sd`]
   * [x] [`_mm_cvti32_ss`]
-  * [ ] [`_mm_cvti64_sd`]
-  * [ ] [`_mm_cvti64_ss`]
+  * [ ] [`_mm_cvti64_sd`] -
+  * [ ] [`_mm_cvti64_ss`] -
   * [x] [`_mm_cvtsd_i32`]
-  * [ ] [`_mm_cvtsd_i64`]
+  * [ ] [`_mm_cvtsd_i64`] -
   * [x] [`_mm_cvtsd_u32`]
-  * [ ] [`_mm_cvtsd_u64`]
+  * [ ] [`_mm_cvtsd_u64`] -
   * [x] [`_mm_cvtss_i32`]
-  * [ ] [`_mm_cvtss_i64`]
+  * [ ] [`_mm_cvtss_i64`] -
   * [x] [`_mm_cvtss_u32`]
-  * [ ] [`_mm_cvtss_u64`]
+  * [ ] [`_mm_cvtss_u64`] -
   * [x] [`_mm_cvtt_roundsd_i32`]
   * [x] [`_mm_cvtt_roundsd_i64`]
   * [x] [`_mm_cvtt_roundsd_si32`]
-  * [ ] [`_mm_cvtt_roundsd_si64`]
+  * [ ] [`_mm_cvtt_roundsd_si64`] -
   * [x] [`_mm_cvtt_roundsd_u32`]
-  * [ ] [`_mm_cvtt_roundsd_u64`]
+  * [ ] [`_mm_cvtt_roundsd_u64`] -
   * [x] [`_mm_cvtt_roundss_i32`]
-  * [ ] [`_mm_cvtt_roundss_i64`]
+  * [ ] [`_mm_cvtt_roundss_i64`] -
   * [x] [`_mm_cvtt_roundss_si32`]
-  * [ ] [`_mm_cvtt_roundss_si64`]
+  * [ ] [`_mm_cvtt_roundss_si64`] -
   * [x] [`_mm_cvtt_roundss_u32`]
-  * [ ] [`_mm_cvtt_roundss_u64`]
+  * [ ] [`_mm_cvtt_roundss_u64`] -
   * [x] [`_mm_cvttsd_i32`]
-  * [ ] [`_mm_cvttsd_i64`]
+  * [ ] [`_mm_cvttsd_i64`] -
   * [x] [`_mm_cvttsd_u32`]
-  * [ ] [`_mm_cvttsd_u64`]
+  * [ ] [`_mm_cvttsd_u64`] -
   * [x] [`_mm_cvttss_i32`]
-  * [ ] [`_mm_cvttss_i64`]
+  * [ ] [`_mm_cvttss_i64`] -
   * [x] [`_mm_cvttss_u32`]
-  * [ ] [`_mm_cvttss_u64`]
+  * [ ] [`_mm_cvttss_u64`] -
   * [x] [`_mm_cvtu32_sd`]
   * [x] [`_mm_cvtu32_ss`]
   * [x] [`_mm_cvtu64_sd`]
