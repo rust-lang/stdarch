@@ -2366,16 +2366,16 @@
   * [x] [`_mm_cvt_roundu64_ss`]
   * [x] [`_mm_cvti32_sd`]
   * [x] [`_mm_cvti32_ss`]
-  * [x] [`_mm_cvti64_sd`] -
-  * [x] [`_mm_cvti64_ss`] -
+  * [x] [`_mm_cvti64_sd`]
+  * [x] [`_mm_cvti64_ss`]
   * [x] [`_mm_cvtsd_i32`]
-  * [x] [`_mm_cvtsd_i64`] -
+  * [x] [`_mm_cvtsd_i64`]
   * [x] [`_mm_cvtsd_u32`]
-  * [x] [`_mm_cvtsd_u64`] -
+  * [x] [`_mm_cvtsd_u64`]
   * [x] [`_mm_cvtss_i32`]
-  * [x] [`_mm_cvtss_i64`] -
+  * [x] [`_mm_cvtss_i64`]
   * [x] [`_mm_cvtss_u32`]
-  * [x] [`_mm_cvtss_u64`] -
+  * [x] [`_mm_cvtss_u64`]
   * [x] [`_mm_cvtt_roundsd_i32`]
   * [x] [`_mm_cvtt_roundsd_i64`]
   * [x] [`_mm_cvtt_roundsd_si32`]

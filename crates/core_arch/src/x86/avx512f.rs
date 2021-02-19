@@ -1,5 +1,5 @@
 use crate::{
-    core_arch::x86_64::{_mm_cvtsd_si64, _mm_cvtss_si64},
+    //core_arch::x86_64::{_mm_cvtsd_si64, _mm_cvtss_si64},
     core_arch::{simd::*, simd_llvm::*, x86::*},
     mem::{self, transmute},
     ptr,
@@ -38158,26 +38158,6 @@ pub unsafe fn _mm_cvtsd_i32(a: __m128d) -> i32 {
     transmute(vcvtsd2si(a.as_f64x2(), _MM_FROUND_CUR_DIRECTION))
 }
 
-/// Convert the lower double-precision (64-bit) floating-point element in a to a 64-bit integer, and store the result in dst.
-///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_cvtsd_i64&expand=1792)
-#[inline]
-#[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vcvtsd2si))]
-pub unsafe fn _mm_cvtsd_i64(a: __m128d) -> i64 {
-    _mm_cvtsd_si64(a)
-}
-
-/// Convert the lower single-precision (32-bit) floating-point element in a to a 64-bit integer, and store the result in dst.
-///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_cvtss_i64&expand=1894)
-#[inline]
-#[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vcvtss2si))]
-pub unsafe fn _mm_cvtss_i64(a: __m128) -> i64 {
-    _mm_cvtss_si64(a)
-}
-
 /// Convert the lower double-precision (64-bit) floating-point element in a to an unsigned 32-bit integer, and store the result in dst.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_cvtsd_u32&expand=1799)
@@ -55577,14 +55557,6 @@ mod tests {
     }
 
     #[simd_test(enable = "avx512f")]
-    unsafe fn test_mm_cvtss_i64() {
-        let a = _mm_set_ps(0., -0.5, 1., -1.5);
-        let r = _mm_cvtss_i64(a);
-        let e: i64 = -2;
-        assert_eq!(r, e);
-    }
-
-    #[simd_test(enable = "avx512f")]
     unsafe fn test_mm_cvtss_u32() {
         let a = _mm_set_ps(0., -0.5, 1., -1.5);
         let r = _mm_cvtss_u32(a);
@@ -55653,14 +55625,6 @@ mod tests {
         let a = _mm_set_pd(1., -1.5);
         let r = _mm_cvtsd_i32(a);
         let e: i32 = -2;
-        assert_eq!(r, e);
-    }
-
-    #[simd_test(enable = "avx512f")]
-    unsafe fn test_mm_cvtsd_i64() {
-        let a = _mm_set_pd(1., -1.5);
-        let r = _mm_cvtsd_i64(a);
-        let e: i64 = -2;
         assert_eq!(r, e);
     }
 

@@ -1,8 +1,28 @@
-//use crate::{
-//
-//    core_arch::{simd::*, simd_llvm::*, x86::*},
-//    mem::transmute,
-//};
+use crate::core_arch::x86::*;
+use crate::core_arch::x86_64::*;
+
+#[cfg(test)]
+use stdarch_test::assert_instr;
+
+/// Convert the lower double-precision (64-bit) floating-point element in a to a 64-bit integer, and store the result in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_cvtsd_i64&expand=1792)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vcvtsd2si))]
+pub unsafe fn _mm_cvtsd_i64(a: __m128d) -> i64 {
+    _mm_cvtsd_si64(a)
+}
+
+/// Convert the lower single-precision (32-bit) floating-point element in a to a 64-bit integer, and store the result in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_cvtss_i64&expand=1894)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vcvtss2si))]
+pub unsafe fn _mm_cvtss_i64(a: __m128) -> i64 {
+    _mm_cvtss_si64(a)
+}
 
 #[cfg(test)]
 mod tests {
@@ -11784,5 +11804,21 @@ mod tests {
         let r = _mm_maskz_set1_epi64(0b00000011, a);
         let e = _mm_set1_epi64x(11);
         assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_cvtsd_i64() {
+        let a = _mm_set_pd(1., -1.5);
+        let r = _mm_cvtsd_i64(a);
+        let e: i64 = -2;
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm_cvtss_i64() {
+        let a = _mm_set_ps(0., -0.5, 1., -1.5);
+        let r = _mm_cvtss_i64(a);
+        let e: i64 = -2;
+        assert_eq!(r, e);
     }
 }
