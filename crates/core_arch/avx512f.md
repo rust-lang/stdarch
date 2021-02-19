@@ -1,5 +1,4 @@
 <summary>["AVX512F"]</summary><p>
- 
   * [x] [`_mm512_abs_epi32`]
   * [x] [`_mm512_mask_abs_epi32`]
   * [x] [`_mm512_maskz_abs_epi32`]
@@ -2342,8 +2341,8 @@
   * [x] [`_mm_comi_round_sd`]
   * [x] [`_mm_comi_round_ss`]
   * [x] [`_mm_cvt_roundi32_ss`]
-  * [ ] [`_mm_cvt_roundi64_sd`]
-  * [ ] [`_mm_cvt_roundi64_ss`]
+  * [x] [`_mm_cvt_roundi64_sd`]
+  * [x] [`_mm_cvt_roundi64_ss`]
   * [x] [`_mm_cvt_roundsd_i32`]
   * [ ] [`_mm_cvt_roundsd_i64`]
   * [x] [`_mm_cvt_roundsd_si32`]
@@ -2482,8 +2481,8 @@
   * [x] [`_mm_mask_getmant_round_ss`]
   * [x] [`_mm_mask_getmant_sd`]
   * [x] [`_mm_mask_getmant_ss`]
-  * [ ] [`_mm_mask_load_sd`]
-  * [ ] [`_mm_mask_load_ss`]
+  * [ ] [`_mm_mask_load_sd`] //need i1
+  * [ ] [`_mm_mask_load_ss`] //need i1
   * [x] [`_mm_mask_max_round_sd`]
   * [x] [`_mm_mask_max_round_ss`]
   * [x] [`_mm_mask_max_sd`]
@@ -2514,8 +2513,8 @@
   * [x] [`_mm_mask_sqrt_round_ss`]
   * [x] [`_mm_mask_sqrt_sd`]
   * [x] [`_mm_mask_sqrt_ss`]
-  * [ ] [`_mm_mask_store_sd`]
-  * [ ] [`_mm_mask_store_ss`]
+  * [ ] [`_mm_mask_store_sd`] //need i1
+  * [ ] [`_mm_mask_store_ss`] //need i1
   * [x] [`_mm_mask_sub_round_sd`]
   * [x] [`_mm_mask_sub_round_ss`]
   * [x] [`_mm_mask_sub_sd`]
@@ -2560,8 +2559,8 @@
   * [x] [`_mm_maskz_getmant_round_ss`]
   * [x] [`_mm_maskz_getmant_sd`]
   * [x] [`_mm_maskz_getmant_ss`]
-  * [ ] [`_mm_maskz_load_sd`]
-  * [ ] [`_mm_maskz_load_ss`]
+  * [ ] [`_mm_maskz_load_sd`] //need i1
+  * [ ] [`_mm_maskz_load_ss`] //need i1
   * [x] [`_mm_maskz_max_round_sd`]
   * [x] [`_mm_maskz_max_round_ss`]
   * [x] [`_mm_maskz_max_sd`]
