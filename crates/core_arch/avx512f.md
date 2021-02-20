@@ -2389,13 +2389,13 @@
   * [x] [`_mm_cvtt_roundss_u32`]
   * [x] [`_mm_cvtt_roundss_u64`]
   * [x] [`_mm_cvttsd_i32`]
-  * [x] [`_mm_cvttsd_i64`] -
+  * [x] [`_mm_cvttsd_i64`]
   * [x] [`_mm_cvttsd_u32`]
-  * [x] [`_mm_cvttsd_u64`] -
+  * [x] [`_mm_cvttsd_u64`]
   * [x] [`_mm_cvttss_i32`]
-  * [x] [`_mm_cvttss_i64`] -
+  * [x] [`_mm_cvttss_i64`]
   * [x] [`_mm_cvttss_u32`]
-  * [x] [`_mm_cvttss_u64`] -
+  * [x] [`_mm_cvttss_u64`]
   * [x] [`_mm_cvtu32_sd`]
   * [x] [`_mm_cvtu32_ss`]
   * [x] [`_mm_cvtu64_sd`]
@@ -2625,7 +2625,7 @@
   * [x] [`_mm512_knot`]
   * [x] [`_mm512_kor`]
   * [x] [`_mm512_kortestc`]
-  * [ ] [`_mm512_kortestz`]
+  * [ ] [`_mm512_kortestz`] //not sure
   * [x] [`_mm512_kunpackb`]
   * [x] [`_mm512_kxnor`]
   * [x] [`_mm512_kxor`]
