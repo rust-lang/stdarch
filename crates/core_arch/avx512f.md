@@ -2379,15 +2379,15 @@
   * [x] [`_mm_cvtt_roundsd_i32`]
   * [x] [`_mm_cvtt_roundsd_i64`]
   * [x] [`_mm_cvtt_roundsd_si32`]
-  * [ ] [`_mm_cvtt_roundsd_si64`] -
+  * [x] [`_mm_cvtt_roundsd_si64`] -
   * [x] [`_mm_cvtt_roundsd_u32`]
-  * [ ] [`_mm_cvtt_roundsd_u64`] -
+  * [x] [`_mm_cvtt_roundsd_u64`] -
   * [x] [`_mm_cvtt_roundss_i32`]
-  * [ ] [`_mm_cvtt_roundss_i64`] -
+  * [x] [`_mm_cvtt_roundss_i64`] -
   * [x] [`_mm_cvtt_roundss_si32`]
-  * [ ] [`_mm_cvtt_roundss_si64`] -
+  * [x] [`_mm_cvtt_roundss_si64`] -
   * [x] [`_mm_cvtt_roundss_u32`]
-  * [ ] [`_mm_cvtt_roundss_u64`] -
+  * [x] [`_mm_cvtt_roundss_u64`] -
   * [x] [`_mm_cvttsd_i32`]
   * [ ] [`_mm_cvttsd_i64`] -
   * [x] [`_mm_cvttsd_u32`]
