@@ -551,16 +551,10 @@ pub unsafe fn _mm_sll_epi32(a: __m128i, count: __m128i) -> __m128i {
 #[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(psllq, imm8 = 7))]
-#[rustc_args_required_const(1)]
+#[rustc_legacy_const_generics(1)]
 #[stable(feature = "simd_x86", since = "1.27.0")]
-pub unsafe fn _mm_slli_epi64(a: __m128i, imm8: i32) -> __m128i {
-    let a = a.as_i64x2();
-    macro_rules! call {
-        ($imm8:expr) => {
-            transmute(pslliq(a, $imm8))
-        };
-    }
-    constify_imm8!(imm8, call)
+pub unsafe fn _mm_slli_epi64<const imm8: i32>(a: __m128i) -> __m128i {
+    transmute(pslliq(a.as_i64x2(), imm8))
 }
 
 /// Shifts packed 64-bit integers in `a` left by `count` while shifting in
@@ -3450,7 +3444,7 @@ mod tests {
 
     #[simd_test(enable = "sse2")]
     unsafe fn test_mm_slli_epi64() {
-        let r = _mm_slli_epi64(_mm_set1_epi64x(0xFFFFFFFF), 4);
+        let r = _mm_slli_epi64::<4>(_mm_set1_epi64x(0xFFFFFFFF));
         assert_eq_m128i(r, _mm_set1_epi64x(0xFFFFFFFF0));
     }
 

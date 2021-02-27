@@ -18434,7 +18434,7 @@ pub unsafe fn _mm256_maskz_slli_epi64(k: __mmask8, a: __m256i, imm8: u32) -> __m
 pub unsafe fn _mm_mask_slli_epi64(src: __m128i, k: __mmask8, a: __m128i, imm8: u32) -> __m128i {
     macro_rules! call {
         ($imm8:expr) => {
-            _mm_slli_epi64(a, $imm8)
+            _mm_slli_epi64::<$imm8>(a)
         };
     }
     let shf = constify_imm8_sae!(imm8, call);
@@ -18451,7 +18451,7 @@ pub unsafe fn _mm_mask_slli_epi64(src: __m128i, k: __mmask8, a: __m128i, imm8: u
 pub unsafe fn _mm_maskz_slli_epi64(k: __mmask8, a: __m128i, imm8: u32) -> __m128i {
     macro_rules! call {
         ($imm8:expr) => {
-            _mm_slli_epi64(a, $imm8)
+            _mm_slli_epi64::<$imm8>(a)
         };
     }
     let shf = constify_imm8_sae!(imm8, call);
