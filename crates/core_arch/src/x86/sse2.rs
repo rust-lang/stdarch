@@ -594,16 +594,10 @@ pub unsafe fn _mm_sll_epi64(a: __m128i, count: __m128i) -> __m128i {
 #[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(psraw, imm8 = 1))]
-#[rustc_args_required_const(1)]
+#[rustc_legacy_const_generics(1)]
 #[stable(feature = "simd_x86", since = "1.27.0")]
-pub unsafe fn _mm_srai_epi16(a: __m128i, imm8: i32) -> __m128i {
-    let a = a.as_i16x8();
-    macro_rules! call {
-        ($imm8:expr) => {
-            transmute(psraiw(a, $imm8))
-        };
-    }
-    constify_imm8!(imm8, call)
+pub unsafe fn _mm_srai_epi16<const imm8: i32>(a: __m128i) -> __m128i {
+    transmute(psraiw(a.as_i16x8(), imm8))
 }
 
 /// Shifts packed 16-bit integers in `a` right by `count` while shifting in sign
@@ -625,16 +619,10 @@ pub unsafe fn _mm_sra_epi16(a: __m128i, count: __m128i) -> __m128i {
 #[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(psrad, imm8 = 1))]
-#[rustc_args_required_const(1)]
+#[rustc_legacy_const_generics(1)]
 #[stable(feature = "simd_x86", since = "1.27.0")]
-pub unsafe fn _mm_srai_epi32(a: __m128i, imm8: i32) -> __m128i {
-    let a = a.as_i32x4();
-    macro_rules! call {
-        ($imm8:expr) => {
-            transmute(psraid(a, $imm8))
-        };
-    }
-    constify_imm8!(imm8, call)
+pub unsafe fn _mm_srai_epi32<const imm8: i32>(a: __m128i) -> __m128i {
+    transmute(psraid(a.as_i32x4(), imm8))
 }
 
 /// Shifts packed 32-bit integers in `a` right by `count` while shifting in sign
@@ -3498,7 +3486,7 @@ mod tests {
 
     #[simd_test(enable = "sse2")]
     unsafe fn test_mm_srai_epi16() {
-        let r = _mm_srai_epi16(_mm_set1_epi16(-1), 1);
+        let r = _mm_srai_epi16::<1>(_mm_set1_epi16(-1));
         assert_eq_m128i(r, _mm_set1_epi16(-1));
     }
 
@@ -3512,7 +3500,7 @@ mod tests {
 
     #[simd_test(enable = "sse2")]
     unsafe fn test_mm_srai_epi32() {
-        let r = _mm_srai_epi32(_mm_set1_epi32(-1), 1);
+        let r = _mm_srai_epi32::<1>(_mm_set1_epi32(-1));
         assert_eq_m128i(r, _mm_set1_epi32(-1));
     }
 
