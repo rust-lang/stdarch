@@ -22495,7 +22495,7 @@ pub unsafe fn _mm_mask_shuffle_epi32(
 ) -> __m128i {
     macro_rules! call {
         ($imm8:expr) => {
-            _mm_shuffle_epi32(a, $imm8)
+            _mm_shuffle_epi32::<$imm8>(a)
         };
     }
     let r = constify_imm8_sae!(imm8, call);
@@ -22512,7 +22512,7 @@ pub unsafe fn _mm_mask_shuffle_epi32(
 pub unsafe fn _mm_maskz_shuffle_epi32(k: __mmask8, a: __m128i, imm8: _MM_PERM_ENUM) -> __m128i {
     macro_rules! call {
         ($imm8:expr) => {
-            _mm_shuffle_epi32(a, $imm8)
+            _mm_shuffle_epi32::<$imm8>(a)
         };
     }
     let r = constify_imm8_sae!(imm8, call);

@@ -1461,60 +1461,21 @@ pub unsafe fn _mm_movemask_epi8(a: __m128i) -> i32 {
 #[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(pshufd, imm8 = 9))]
-#[rustc_args_required_const(1)]
+#[rustc_legacy_const_generics(1)]
 #[stable(feature = "simd_x86", since = "1.27.0")]
-pub unsafe fn _mm_shuffle_epi32(a: __m128i, imm8: i32) -> __m128i {
-    // simd_shuffleX requires that its selector parameter be made up of
-    // constant values, but we can't enforce that here. In spirit, we need
-    // to write a `match` on all possible values of a byte, and for each value,
-    // hard-code the correct `simd_shuffleX` call using only constants. We
-    // then hope for LLVM to do the rest.
-    //
-    // Of course, that's... awful. So we try to use macros to do it for us.
-    let imm8 = (imm8 & 0xFF) as u8;
+pub unsafe fn _mm_shuffle_epi32<const imm8: i32>(a: __m128i) -> __m128i {
+    static_assert!(imm8: i32 where imm8 >= 0 && imm8 <= 255);
     let a = a.as_i32x4();
-
-    macro_rules! shuffle_done {
-        ($x01:expr, $x23:expr, $x45:expr, $x67:expr) => {
-            simd_shuffle4(a, a, [$x01, $x23, $x45, $x67])
-        };
-    }
-    macro_rules! shuffle_x67 {
-        ($x01:expr, $x23:expr, $x45:expr) => {
-            match (imm8 >> 6) & 0b11 {
-                0b00 => shuffle_done!($x01, $x23, $x45, 0),
-                0b01 => shuffle_done!($x01, $x23, $x45, 1),
-                0b10 => shuffle_done!($x01, $x23, $x45, 2),
-                _ => shuffle_done!($x01, $x23, $x45, 3),
-            }
-        };
-    }
-    macro_rules! shuffle_x45 {
-        ($x01:expr, $x23:expr) => {
-            match (imm8 >> 4) & 0b11 {
-                0b00 => shuffle_x67!($x01, $x23, 0),
-                0b01 => shuffle_x67!($x01, $x23, 1),
-                0b10 => shuffle_x67!($x01, $x23, 2),
-                _ => shuffle_x67!($x01, $x23, 3),
-            }
-        };
-    }
-    macro_rules! shuffle_x23 {
-        ($x01:expr) => {
-            match (imm8 >> 2) & 0b11 {
-                0b00 => shuffle_x45!($x01, 0),
-                0b01 => shuffle_x45!($x01, 1),
-                0b10 => shuffle_x45!($x01, 2),
-                _ => shuffle_x45!($x01, 3),
-            }
-        };
-    }
-    let x: i32x4 = match imm8 & 0b11 {
-        0b00 => shuffle_x23!(0),
-        0b01 => shuffle_x23!(1),
-        0b10 => shuffle_x23!(2),
-        _ => shuffle_x23!(3),
-    };
+    let x: i32x4 = simd_shuffle4(
+        a,
+        a,
+        [
+            imm8 as u32 & 0b11,
+            (imm8 as u32 >> 2) & 0b11,
+            (imm8 as u32 >> 4) & 0b11,
+            (imm8 as u32 >> 6) & 0b11,
+        ],
+    );
     transmute(x)
 }
 
@@ -4107,7 +4068,7 @@ mod tests {
     #[simd_test(enable = "sse2")]
     unsafe fn test_mm_shuffle_epi32() {
         let a = _mm_setr_epi32(5, 10, 15, 20);
-        let r = _mm_shuffle_epi32(a, 0b00_01_01_11);
+        let r = _mm_shuffle_epi32::<0b00_01_01_11>(a);
         let e = _mm_setr_epi32(20, 10, 10, 5);
         assert_eq_m128i(r, e);
     }
