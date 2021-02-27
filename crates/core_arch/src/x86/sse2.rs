@@ -1521,54 +1521,25 @@ pub unsafe fn _mm_shufflehi_epi16<const imm8: i32>(a: __m128i) -> __m128i {
 #[inline]
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(pshuflw, imm8 = 9))]
-#[rustc_args_required_const(1)]
+#[rustc_legacy_const_generics(1)]
 #[stable(feature = "simd_x86", since = "1.27.0")]
-pub unsafe fn _mm_shufflelo_epi16(a: __m128i, imm8: i32) -> __m128i {
-    // See _mm_shuffle_epi32.
-    let imm8 = (imm8 & 0xFF) as u8;
+pub unsafe fn _mm_shufflelo_epi16<const imm8: i32>(a: __m128i) -> __m128i {
+    static_assert!(imm8: i32 where imm8 >= 0 && imm8 <= 255);
     let a = a.as_i16x8();
-
-    macro_rules! shuffle_done {
-        ($x01:expr, $x23:expr, $x45:expr, $x67:expr) => {
-            simd_shuffle8(a, a, [$x01, $x23, $x45, $x67, 4, 5, 6, 7])
-        };
-    }
-    macro_rules! shuffle_x67 {
-        ($x01:expr, $x23:expr, $x45:expr) => {
-            match (imm8 >> 6) & 0b11 {
-                0b00 => shuffle_done!($x01, $x23, $x45, 0),
-                0b01 => shuffle_done!($x01, $x23, $x45, 1),
-                0b10 => shuffle_done!($x01, $x23, $x45, 2),
-                _ => shuffle_done!($x01, $x23, $x45, 3),
-            }
-        };
-    }
-    macro_rules! shuffle_x45 {
-        ($x01:expr, $x23:expr) => {
-            match (imm8 >> 4) & 0b11 {
-                0b00 => shuffle_x67!($x01, $x23, 0),
-                0b01 => shuffle_x67!($x01, $x23, 1),
-                0b10 => shuffle_x67!($x01, $x23, 2),
-                _ => shuffle_x67!($x01, $x23, 3),
-            }
-        };
-    }
-    macro_rules! shuffle_x23 {
-        ($x01:expr) => {
-            match (imm8 >> 2) & 0b11 {
-                0b00 => shuffle_x45!($x01, 0),
-                0b01 => shuffle_x45!($x01, 1),
-                0b10 => shuffle_x45!($x01, 2),
-                _ => shuffle_x45!($x01, 3),
-            }
-        };
-    }
-    let x: i16x8 = match imm8 & 0b11 {
-        0b00 => shuffle_x23!(0),
-        0b01 => shuffle_x23!(1),
-        0b10 => shuffle_x23!(2),
-        _ => shuffle_x23!(3),
-    };
+    let x: i16x8 = simd_shuffle8(
+        a,
+        a,
+        [
+            imm8 as u32 & 0b11,
+            (imm8 as u32 >> 2) & 0b11,
+            (imm8 as u32 >> 4) & 0b11,
+            (imm8 as u32 >> 6) & 0b11,
+            4,
+            5,
+            6,
+            7,
+        ],
+    );
     transmute(x)
 }
 
@@ -4056,7 +4027,7 @@ mod tests {
     #[simd_test(enable = "sse2")]
     unsafe fn test_mm_shufflelo_epi16() {
         let a = _mm_setr_epi16(5, 10, 15, 20, 1, 2, 3, 4);
-        let r = _mm_shufflelo_epi16(a, 0b00_01_01_11);
+        let r = _mm_shufflelo_epi16::<0b00_01_01_11>(a);
         let e = _mm_setr_epi16(20, 10, 10, 5, 1, 2, 3, 4);
         assert_eq_m128i(r, e);
     }

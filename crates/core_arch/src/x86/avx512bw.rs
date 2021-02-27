@@ -7414,7 +7414,7 @@ pub unsafe fn _mm_mask_shufflelo_epi16(
 ) -> __m128i {
     macro_rules! call {
         ($imm8:expr) => {
-            _mm_shufflelo_epi16(a, $imm8)
+            _mm_shufflelo_epi16::<$imm8>(a)
         };
     }
     let shuffle = constify_imm8_sae!(imm8, call);
@@ -7431,7 +7431,7 @@ pub unsafe fn _mm_mask_shufflelo_epi16(
 pub unsafe fn _mm_maskz_shufflelo_epi16(k: __mmask8, a: __m128i, imm8: i32) -> __m128i {
     macro_rules! call {
         ($imm8:expr) => {
-            _mm_shufflelo_epi16(a, $imm8)
+            _mm_shufflelo_epi16::<$imm8>(a)
         };
     }
     let shuffle = constify_imm8_sae!(imm8, call);
