@@ -328,17 +328,11 @@ pub unsafe fn _mm_cmpistrc(a: __m128i, b: __m128i, imm8: i32) -> i32 {
 #[inline]
 #[target_feature(enable = "sse4.2")]
 #[cfg_attr(test, assert_instr(pcmpistri, imm8 = 0))]
-#[rustc_args_required_const(2)]
+#[rustc_legacy_const_generics(2)]
 #[stable(feature = "simd_x86", since = "1.27.0")]
-pub unsafe fn _mm_cmpistrs(a: __m128i, b: __m128i, imm8: i32) -> i32 {
-    let a = a.as_i8x16();
-    let b = b.as_i8x16();
-    macro_rules! call {
-        ($imm8:expr) => {
-            pcmpistris128(a, b, $imm8)
-        };
-    }
-    constify_imm8!(imm8, call)
+pub unsafe fn _mm_cmpistrs<const imm8: i32>(a: __m128i, b: __m128i) -> i32 {
+    static_assert_imm8!(imm8);
+    pcmpistris128(a.as_i8x16(), b.as_i8x16(), imm8 as i8)
 }
 
 /// Compares packed strings with implicit lengths in `a` and `b` using the
@@ -702,7 +696,7 @@ mod tests {
     unsafe fn test_mm_cmpistrs() {
         let a = str_to_m128i(b"Hello");
         let b = str_to_m128i(b"");
-        let i = _mm_cmpistrs(a, b, _SIDD_CMP_EQUAL_ORDERED);
+        let i = _mm_cmpistrs::<_SIDD_CMP_EQUAL_ORDERED>(a, b);
         assert_eq!(1, i);
     }
 
