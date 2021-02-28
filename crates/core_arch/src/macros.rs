@@ -9,28 +9,42 @@ impl<const imm: i32, const bits: i32> ValidateConstImm<imm, bits> {
     };
 }
 
-#[allow(unused)]
+macro_rules! static_assert_imm1 {
+    ($imm:ident) => {
+        let _ = $crate::core_arch::macros::ValidateConstImm::<$imm, 1>::VALID;
+    };
+}
+
 macro_rules! static_assert_imm2 {
     ($imm:ident) => {
         let _ = $crate::core_arch::macros::ValidateConstImm::<$imm, 2>::VALID;
     };
 }
 
-#[allow(unused)]
 macro_rules! static_assert_imm3 {
     ($imm:ident) => {
         let _ = $crate::core_arch::macros::ValidateConstImm::<$imm, 3>::VALID;
     };
 }
 
-#[allow(unused)]
 macro_rules! static_assert_imm4 {
     ($imm:ident) => {
         let _ = $crate::core_arch::macros::ValidateConstImm::<$imm, 4>::VALID;
     };
 }
 
-#[allow(unused)]
+macro_rules! static_assert_imm5 {
+    ($imm:ident) => {
+        let _ = $crate::core_arch::macros::ValidateConstImm::<$imm, 5>::VALID;
+    };
+}
+
+macro_rules! static_assert_imm6 {
+    ($imm:ident) => {
+        let _ = $crate::core_arch::macros::ValidateConstImm::<$imm, 6>::VALID;
+    };
+}
+
 macro_rules! static_assert_imm8 {
     ($imm:ident) => {
         let _ = $crate::core_arch::macros::ValidateConstImm::<$imm, 8>::VALID;
