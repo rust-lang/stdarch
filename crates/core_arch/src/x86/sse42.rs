@@ -71,17 +71,11 @@ pub const _SIDD_UNIT_MASK: i32 = 0b0100_0000;
 #[inline]
 #[target_feature(enable = "sse4.2")]
 #[cfg_attr(test, assert_instr(pcmpistrm, imm8 = 0))]
-#[rustc_args_required_const(2)]
+#[rustc_legacy_const_generics(2)]
 #[stable(feature = "simd_x86", since = "1.27.0")]
-pub unsafe fn _mm_cmpistrm(a: __m128i, b: __m128i, imm8: i32) -> __m128i {
-    let a = a.as_i8x16();
-    let b = b.as_i8x16();
-    macro_rules! call {
-        ($imm8:expr) => {
-            pcmpistrm128(a, b, $imm8)
-        };
-    }
-    transmute(constify_imm8!(imm8, call))
+pub unsafe fn _mm_cmpistrm<const imm8: i32>(a: __m128i, b: __m128i) -> __m128i {
+    static_assert_imm8!(imm8);
+    transmute(pcmpistrm128(a.as_i8x16(), b.as_i8x16(), imm8 as i8))
 }
 
 /// Compares packed strings with implicit lengths in `a` and `b` using the
@@ -641,7 +635,7 @@ mod tests {
     unsafe fn test_mm_cmpistrm() {
         let a = str_to_m128i(b"Hello! Good-Bye!");
         let b = str_to_m128i(b"hello! good-bye!");
-        let i = _mm_cmpistrm(a, b, _SIDD_UNIT_MASK);
+        let i = _mm_cmpistrm::<_SIDD_UNIT_MASK>(a, b);
         #[rustfmt::skip]
         let res = _mm_setr_epi8(
             0x00, !0, !0, !0, !0, !0, !0, 0x00,
