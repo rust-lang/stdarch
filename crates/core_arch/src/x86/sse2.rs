@@ -1454,7 +1454,7 @@ pub unsafe fn _mm_movemask_epi8(a: __m128i) -> i32 {
 #[rustc_legacy_const_generics(1)]
 #[stable(feature = "simd_x86", since = "1.27.0")]
 pub unsafe fn _mm_shuffle_epi32<const imm8: i32>(a: __m128i) -> __m128i {
-    static_assert!(imm8: i32 where imm8 >= 0 && imm8 <= 255);
+    static_assert_imm8!(imm8);
     let a = a.as_i32x4();
     let x: i32x4 = simd_shuffle4(
         a,
@@ -1482,7 +1482,7 @@ pub unsafe fn _mm_shuffle_epi32<const imm8: i32>(a: __m128i) -> __m128i {
 #[rustc_legacy_const_generics(1)]
 #[stable(feature = "simd_x86", since = "1.27.0")]
 pub unsafe fn _mm_shufflehi_epi16<const imm8: i32>(a: __m128i) -> __m128i {
-    static_assert!(imm8: i32 where imm8 >= 0 && imm8 <= 255);
+    static_assert_imm8!(imm8);
     let a = a.as_i16x8();
     let x: i16x8 = simd_shuffle8(
         a,
@@ -1514,7 +1514,7 @@ pub unsafe fn _mm_shufflehi_epi16<const imm8: i32>(a: __m128i) -> __m128i {
 #[rustc_legacy_const_generics(1)]
 #[stable(feature = "simd_x86", since = "1.27.0")]
 pub unsafe fn _mm_shufflelo_epi16<const imm8: i32>(a: __m128i) -> __m128i {
-    static_assert!(imm8: i32 where imm8 >= 0 && imm8 <= 255);
+    static_assert_imm8!(imm8);
     let a = a.as_i16x8();
     let x: i16x8 = simd_shuffle8(
         a,
