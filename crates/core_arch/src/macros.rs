@@ -9,45 +9,95 @@ impl<const imm: i32, const bits: i32> ValidateConstImm<imm, bits> {
     };
 }
 
+#[allow(non_camel_case_types)]
+pub(crate) struct ValidateConstImm_S<const imm_s5: i32, const min: i32, const max: i32>();
+impl<const imm: i32, const min: i32, const max: i32> ValidateConstImm_S<imm, min, max> {
+    pub(crate) const VALID: () = {
+        let _ = 1 / ((imm >= min && imm <= max) as usize);
+    };
+}
+
+#[allow(unused_macros)]
 macro_rules! static_assert_imm1 {
     ($imm:ident) => {
         let _ = $crate::core_arch::macros::ValidateConstImm::<$imm, 1>::VALID;
     };
 }
 
+#[allow(unused_macros)]
 macro_rules! static_assert_imm2 {
     ($imm:ident) => {
         let _ = $crate::core_arch::macros::ValidateConstImm::<$imm, 2>::VALID;
     };
 }
 
+#[allow(unused_macros)]
 macro_rules! static_assert_imm3 {
     ($imm:ident) => {
         let _ = $crate::core_arch::macros::ValidateConstImm::<$imm, 3>::VALID;
     };
 }
 
+#[allow(unused_macros)]
 macro_rules! static_assert_imm4 {
     ($imm:ident) => {
         let _ = $crate::core_arch::macros::ValidateConstImm::<$imm, 4>::VALID;
     };
 }
 
+#[allow(unused_macros)]
 macro_rules! static_assert_imm5 {
     ($imm:ident) => {
         let _ = $crate::core_arch::macros::ValidateConstImm::<$imm, 5>::VALID;
     };
 }
 
+#[allow(unused_macros)]
 macro_rules! static_assert_imm6 {
     ($imm:ident) => {
         let _ = $crate::core_arch::macros::ValidateConstImm::<$imm, 6>::VALID;
     };
 }
 
+#[allow(unused_macros)]
 macro_rules! static_assert_imm8 {
     ($imm:ident) => {
         let _ = $crate::core_arch::macros::ValidateConstImm::<$imm, 8>::VALID;
+    };
+}
+
+#[allow(unused_macros)]
+macro_rules! static_assert_imm_s5 {
+    ($imm:ident) => {
+        let _ = $crate::core_arch::macros::ValidateConstImm_S::<$imm, -16, 15>::VALID;
+    };
+}
+
+#[allow(unused_macros)]
+macro_rules! static_assert_imm_s10 {
+    ($imm:ident) => {
+        let _ = $crate::core_arch::macros::ValidateConstImm_S::<$imm, -512, 511>::VALID;
+    };
+}
+
+#[allow(unused_macros)]
+macro_rules! static_assert_imm_s11 {
+    ($imm:ident) => {
+        let _ = $crate::core_arch::macros::ValidateConstImm_S::<$imm, -1024, 1022>::VALID;
+    };
+}
+
+#[allow(unused_macros)]
+macro_rules! static_assert_imm_s12 {
+    ($imm:ident) => {
+        let _ = $crate::core_arch::macros::ValidateConstImm_S::<$imm, -2048, 2044>::VALID;
+    };
+}
+
+#[allow(unused_macros)]
+macro_rules! static_assert_imm_s13 {
+    ($imm:ident) => {
+        let _ = $crate::core_arch::macros::ValidateConstImm_S::<$imm, -4096, 4088>::VALID;
     };
 }
 
