@@ -1,5 +1,21 @@
 //! Utility macros.
 
+// Helper struct used to trigger const eval errors when a const generic immediate value is
+// out of range.
+pub(crate) struct ValidateConstImm8<const imm8: i32>();
+impl<const imm8: i32> ValidateConstImm8<imm8> {
+    pub(crate) const VALID: () = {
+        let _ = 1 / ((imm8 >= 0 && imm8 <= 255) as usize);
+    };
+}
+
+#[allow(unused)]
+macro_rules! static_assert_imm8 {
+    ($imm:ident) => {
+        let _ = $crate::core_arch::macros::ValidateConstImm8::<$imm>::VALID;
+    };
+}
+
 #[allow(unused)]
 macro_rules! static_assert {
     ($imm:ident : $ty:ty where $e:expr) => {
