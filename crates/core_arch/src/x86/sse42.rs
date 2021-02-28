@@ -590,17 +590,11 @@ pub unsafe fn _mm_cmpestro(a: __m128i, la: i32, b: __m128i, lb: i32, imm8: i32) 
 #[inline]
 #[target_feature(enable = "sse4.2")]
 #[cfg_attr(test, assert_instr(pcmpestri, imm8 = 0))]
-#[rustc_args_required_const(4)]
+#[rustc_legacy_const_generics(4)]
 #[stable(feature = "simd_x86", since = "1.27.0")]
-pub unsafe fn _mm_cmpestra(a: __m128i, la: i32, b: __m128i, lb: i32, imm8: i32) -> i32 {
-    let a = a.as_i8x16();
-    let b = b.as_i8x16();
-    macro_rules! call {
-        ($imm8:expr) => {
-            pcmpestria128(a, la, b, lb, $imm8)
-        };
-    }
-    constify_imm8!(imm8, call)
+pub unsafe fn _mm_cmpestra<const imm8: i32>(a: __m128i, la: i32, b: __m128i, lb: i32) -> i32 {
+    static_assert_imm8!(imm8);
+    pcmpestria128(a.as_i8x16(), la, b.as_i8x16(), lb, imm8 as i8)
 }
 
 /// Starting with the initial value in `crc`, return the accumulated
@@ -848,7 +842,7 @@ mod tests {
     unsafe fn test_mm_cmpestra() {
         let a = str_to_m128i(b"Cannot match a");
         let b = str_to_m128i(b"Null after 14");
-        let i = _mm_cmpestra(a, 14, b, 16, _SIDD_CMP_EQUAL_EACH | _SIDD_UNIT_MASK);
+        let i = _mm_cmpestra::<{ _SIDD_CMP_EQUAL_EACH | _SIDD_UNIT_MASK }>(a, 14, b, 16);
         assert_eq!(1, i);
     }
 
