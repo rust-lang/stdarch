@@ -506,6 +506,7 @@ pub unsafe fn _mm_bsrli_si128(a: __m128i, imm8: i32) -> __m128i {
 #[rustc_legacy_const_generics(1)]
 #[stable(feature = "simd_x86", since = "1.27.0")]
 pub unsafe fn _mm_slli_epi16<const imm8: i32>(a: __m128i) -> __m128i {
+    static_assert_imm8!(imm8);
     transmute(pslliw(a.as_i16x8(), imm8))
 }
 
@@ -530,6 +531,7 @@ pub unsafe fn _mm_sll_epi16(a: __m128i, count: __m128i) -> __m128i {
 #[rustc_legacy_const_generics(1)]
 #[stable(feature = "simd_x86", since = "1.27.0")]
 pub unsafe fn _mm_slli_epi32<const imm8: i32>(a: __m128i) -> __m128i {
+    static_assert_imm8!(imm8);
     transmute(psllid(a.as_i32x4(), imm8))
 }
 
@@ -554,6 +556,7 @@ pub unsafe fn _mm_sll_epi32(a: __m128i, count: __m128i) -> __m128i {
 #[rustc_legacy_const_generics(1)]
 #[stable(feature = "simd_x86", since = "1.27.0")]
 pub unsafe fn _mm_slli_epi64<const imm8: i32>(a: __m128i) -> __m128i {
+    static_assert_imm8!(imm8);
     transmute(pslliq(a.as_i64x2(), imm8))
 }
 
@@ -698,6 +701,7 @@ unsafe fn _mm_srli_si128_impl(a: __m128i, imm8: i32) -> __m128i {
 #[rustc_legacy_const_generics(1)]
 #[stable(feature = "simd_x86", since = "1.27.0")]
 pub unsafe fn _mm_srli_epi16<const imm8: i32>(a: __m128i) -> __m128i {
+    static_assert_imm8!(imm8);
     transmute(psrliw(a.as_i16x8(), imm8))
 }
 
@@ -723,6 +727,7 @@ pub unsafe fn _mm_srl_epi16(a: __m128i, count: __m128i) -> __m128i {
 #[rustc_legacy_const_generics(1)]
 #[stable(feature = "simd_x86", since = "1.27.0")]
 pub unsafe fn _mm_srli_epi32<const imm8: i32>(a: __m128i) -> __m128i {
+    static_assert_imm8!(imm8);
     transmute(psrlid(a.as_i32x4(), imm8))
 }
 
@@ -748,6 +753,7 @@ pub unsafe fn _mm_srl_epi32(a: __m128i, count: __m128i) -> __m128i {
 #[rustc_legacy_const_generics(1)]
 #[stable(feature = "simd_x86", since = "1.27.0")]
 pub unsafe fn _mm_srli_epi64<const imm8: i32>(a: __m128i) -> __m128i {
+    static_assert_imm8!(imm8);
     transmute(psrliq(a.as_i64x2(), imm8))
 }
 
