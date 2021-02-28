@@ -389,17 +389,11 @@ pub unsafe fn _mm_cmpistra(a: __m128i, b: __m128i, imm8: i32) -> i32 {
 #[inline]
 #[target_feature(enable = "sse4.2")]
 #[cfg_attr(test, assert_instr(pcmpestrm, imm8 = 0))]
-#[rustc_args_required_const(4)]
+#[rustc_legacy_const_generics(4)]
 #[stable(feature = "simd_x86", since = "1.27.0")]
-pub unsafe fn _mm_cmpestrm(a: __m128i, la: i32, b: __m128i, lb: i32, imm8: i32) -> __m128i {
-    let a = a.as_i8x16();
-    let b = b.as_i8x16();
-    macro_rules! call {
-        ($imm8:expr) => {
-            pcmpestrm128(a, la, b, lb, $imm8)
-        };
-    }
-    transmute(constify_imm8!(imm8, call))
+pub unsafe fn _mm_cmpestrm<const imm8: i32>(a: __m128i, la: i32, b: __m128i, lb: i32) -> __m128i {
+    static_assert_imm8!(imm8);
+    transmute(pcmpestrm128(a.as_i8x16(), la, b.as_i8x16(), lb, imm8 as i8))
 }
 
 /// Compares packed strings `a` and `b` with lengths `la` and `lb` using the
@@ -754,7 +748,7 @@ mod tests {
     unsafe fn test_mm_cmpestrm() {
         let a = str_to_m128i(b"Hello!");
         let b = str_to_m128i(b"Hello.");
-        let i = _mm_cmpestrm(a, 5, b, 5, _SIDD_UNIT_MASK);
+        let i = _mm_cmpestrm::<_SIDD_UNIT_MASK>(a, 5, b, 5);
         #[rustfmt::skip]
         let r = _mm_setr_epi8(
             !0, !0, !0, !0, !0, 0x00, 0x00, 0x00,
