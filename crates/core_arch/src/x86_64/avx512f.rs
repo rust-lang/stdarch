@@ -3191,7 +3191,7 @@ mod tests {
         let a = _mm512_set1_epi64(1 << 2);
         let b = _mm512_set1_epi64(1 << 1);
         let c = _mm512_set1_epi64(1 << 0);
-        let r = _mm512_ternarylogic_epi64(a, b, c, 8);
+        let r = _mm512_ternarylogic_epi64::<8>(a, b, c);
         let e = _mm512_set1_epi64(0);
         assert_eq_m512i(r, e);
     }
@@ -3201,9 +3201,9 @@ mod tests {
         let src = _mm512_set1_epi64(1 << 2);
         let a = _mm512_set1_epi64(1 << 1);
         let b = _mm512_set1_epi64(1 << 0);
-        let r = _mm512_mask_ternarylogic_epi64(src, 0, a, b, 8);
+        let r = _mm512_mask_ternarylogic_epi64::<8>(src, 0, a, b);
         assert_eq_m512i(r, src);
-        let r = _mm512_mask_ternarylogic_epi64(src, 0b11111111, a, b, 8);
+        let r = _mm512_mask_ternarylogic_epi64::<8>(src, 0b11111111, a, b);
         let e = _mm512_set1_epi64(0);
         assert_eq_m512i(r, e);
     }
@@ -3213,9 +3213,9 @@ mod tests {
         let a = _mm512_set1_epi64(1 << 2);
         let b = _mm512_set1_epi64(1 << 1);
         let c = _mm512_set1_epi64(1 << 0);
-        let r = _mm512_maskz_ternarylogic_epi64(0, a, b, c, 9);
+        let r = _mm512_maskz_ternarylogic_epi64::<8>(0, a, b, c);
         assert_eq_m512i(r, _mm512_setzero_si512());
-        let r = _mm512_maskz_ternarylogic_epi64(0b11111111, a, b, c, 8);
+        let r = _mm512_maskz_ternarylogic_epi64::<8>(0b11111111, a, b, c);
         let e = _mm512_set1_epi64(0);
         assert_eq_m512i(r, e);
     }
@@ -3225,7 +3225,7 @@ mod tests {
         let a = _mm256_set1_epi64x(1 << 2);
         let b = _mm256_set1_epi64x(1 << 1);
         let c = _mm256_set1_epi64x(1 << 0);
-        let r = _mm256_ternarylogic_epi64(a, b, c, 8);
+        let r = _mm256_ternarylogic_epi64::<8>(a, b, c);
         let e = _mm256_set1_epi64x(0);
         assert_eq_m256i(r, e);
     }
@@ -3235,9 +3235,9 @@ mod tests {
         let src = _mm256_set1_epi64x(1 << 2);
         let a = _mm256_set1_epi64x(1 << 1);
         let b = _mm256_set1_epi64x(1 << 0);
-        let r = _mm256_mask_ternarylogic_epi64(src, 0, a, b, 8);
+        let r = _mm256_mask_ternarylogic_epi64::<8>(src, 0, a, b);
         assert_eq_m256i(r, src);
-        let r = _mm256_mask_ternarylogic_epi64(src, 0b00001111, a, b, 8);
+        let r = _mm256_mask_ternarylogic_epi64::<8>(src, 0b00001111, a, b);
         let e = _mm256_set1_epi64x(0);
         assert_eq_m256i(r, e);
     }
@@ -3247,9 +3247,9 @@ mod tests {
         let a = _mm256_set1_epi64x(1 << 2);
         let b = _mm256_set1_epi64x(1 << 1);
         let c = _mm256_set1_epi64x(1 << 0);
-        let r = _mm256_maskz_ternarylogic_epi64(0, a, b, c, 9);
+        let r = _mm256_maskz_ternarylogic_epi64::<9>(0, a, b, c);
         assert_eq_m256i(r, _mm256_setzero_si256());
-        let r = _mm256_maskz_ternarylogic_epi64(0b00001111, a, b, c, 8);
+        let r = _mm256_maskz_ternarylogic_epi64::<8>(0b00001111, a, b, c);
         let e = _mm256_set1_epi64x(0);
         assert_eq_m256i(r, e);
     }
@@ -3259,7 +3259,7 @@ mod tests {
         let a = _mm_set1_epi64x(1 << 2);
         let b = _mm_set1_epi64x(1 << 1);
         let c = _mm_set1_epi64x(1 << 0);
-        let r = _mm_ternarylogic_epi64(a, b, c, 8);
+        let r = _mm_ternarylogic_epi64::<8>(a, b, c);
         let e = _mm_set1_epi64x(0);
         assert_eq_m128i(r, e);
     }
@@ -3269,9 +3269,9 @@ mod tests {
         let src = _mm_set1_epi64x(1 << 2);
         let a = _mm_set1_epi64x(1 << 1);
         let b = _mm_set1_epi64x(1 << 0);
-        let r = _mm_mask_ternarylogic_epi64(src, 0, a, b, 8);
+        let r = _mm_mask_ternarylogic_epi64::<8>(src, 0, a, b);
         assert_eq_m128i(r, src);
-        let r = _mm_mask_ternarylogic_epi64(src, 0b00000011, a, b, 8);
+        let r = _mm_mask_ternarylogic_epi64::<8>(src, 0b00000011, a, b);
         let e = _mm_set1_epi64x(0);
         assert_eq_m128i(r, e);
     }
@@ -3281,9 +3281,9 @@ mod tests {
         let a = _mm_set1_epi64x(1 << 2);
         let b = _mm_set1_epi64x(1 << 1);
         let c = _mm_set1_epi64x(1 << 0);
-        let r = _mm_maskz_ternarylogic_epi64(0, a, b, c, 9);
+        let r = _mm_maskz_ternarylogic_epi64::<9>(0, a, b, c);
         assert_eq_m128i(r, _mm_setzero_si128());
-        let r = _mm_maskz_ternarylogic_epi64(0b00000011, a, b, c, 8);
+        let r = _mm_maskz_ternarylogic_epi64::<8>(0b00000011, a, b, c);
         let e = _mm_set1_epi64x(0);
         assert_eq_m128i(r, e);
     }
