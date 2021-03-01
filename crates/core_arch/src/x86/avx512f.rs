@@ -4872,23 +4872,13 @@ pub unsafe fn _mm_maskz_getexp_pd(k: __mmask8, a: __m128d) -> __m128d {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_roundscale_ps&expand=4784)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vrndscaleps, imm8 = 0))]
-#[rustc_args_required_const(1)]
-pub unsafe fn _mm512_roundscale_ps(a: __m512, imm8: i32) -> __m512 {
+#[cfg_attr(test, assert_instr(vrndscaleps, IMM8 = 0))]
+#[rustc_legacy_const_generics(1)]
+pub unsafe fn _mm512_roundscale_ps<const IMM8: i32>(a: __m512) -> __m512 {
+    static_assert_imm8!(IMM8);
     let a = a.as_f32x16();
     let zero = _mm512_setzero_ps().as_f32x16();
-    macro_rules! call {
-        ($imm8:expr) => {
-            vrndscaleps(
-                a,
-                $imm8,
-                zero,
-                0b11111111_11111111,
-                _MM_FROUND_CUR_DIRECTION,
-            )
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+    let r = vrndscaleps(a, IMM8, zero, 0b11111111_11111111, _MM_FROUND_CUR_DIRECTION);
     transmute(r)
 }
 
@@ -4903,17 +4893,16 @@ pub unsafe fn _mm512_roundscale_ps(a: __m512, imm8: i32) -> __m512 {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_roundscale_ps&expand=4782)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vrndscaleps, imm8 = 0))]
-#[rustc_args_required_const(3)]
-pub unsafe fn _mm512_mask_roundscale_ps(src: __m512, k: __mmask16, a: __m512, imm8: i32) -> __m512 {
+#[cfg_attr(test, assert_instr(vrndscaleps, IMM8 = 0))]
+#[rustc_legacy_const_generics(3)]
+pub unsafe fn _mm512_mask_roundscale_ps<const IMM8: i32>(
+    src: __m512,
+    k: __mmask16,
+    a: __m512,
+) -> __m512 {
     let a = a.as_f32x16();
     let src = src.as_f32x16();
-    macro_rules! call {
-        ($imm8:expr) => {
-            vrndscaleps(a, $imm8, src, k, _MM_FROUND_CUR_DIRECTION)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+    let r = vrndscaleps(a, IMM8, src, k, _MM_FROUND_CUR_DIRECTION);
     transmute(r)
 }
 
@@ -4928,17 +4917,12 @@ pub unsafe fn _mm512_mask_roundscale_ps(src: __m512, k: __mmask16, a: __m512, im
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_roundscale_ps&expand=4783)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vrndscaleps, imm8 = 0))]
-#[rustc_args_required_const(2)]
-pub unsafe fn _mm512_maskz_roundscale_ps(k: __mmask16, a: __m512, imm8: i32) -> __m512 {
+#[cfg_attr(test, assert_instr(vrndscaleps, IMM8 = 0))]
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn _mm512_maskz_roundscale_ps<const IMM8: i32>(k: __mmask16, a: __m512) -> __m512 {
     let a = a.as_f32x16();
     let zero = _mm512_setzero_ps().as_f32x16();
-    macro_rules! call {
-        ($imm8:expr) => {
-            vrndscaleps(a, $imm8, zero, k, _MM_FROUND_CUR_DIRECTION)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+    let r = vrndscaleps(a, IMM8, zero, k, _MM_FROUND_CUR_DIRECTION);
     transmute(r)
 }
 
@@ -4953,17 +4937,12 @@ pub unsafe fn _mm512_maskz_roundscale_ps(k: __mmask16, a: __m512, imm8: i32) -> 
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_roundscale_ps&expand=4781)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vrndscaleps, imm8 = 250))]
-#[rustc_args_required_const(1)]
-pub unsafe fn _mm256_roundscale_ps(a: __m256, imm8: i32) -> __m256 {
+#[cfg_attr(test, assert_instr(vrndscaleps, IMM8 = 250))]
+#[rustc_legacy_const_generics(1)]
+pub unsafe fn _mm256_roundscale_ps<const IMM8: i32>(a: __m256) -> __m256 {
     let a = a.as_f32x8();
     let zero = _mm256_setzero_ps().as_f32x8();
-    macro_rules! call {
-        ($imm8:expr) => {
-            vrndscaleps256(a, $imm8, zero, 0b11111111)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+    let r = vrndscaleps256(a, IMM8, zero, 0b11111111);
     transmute(r)
 }
 
@@ -4978,17 +4957,16 @@ pub unsafe fn _mm256_roundscale_ps(a: __m256, imm8: i32) -> __m256 {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_roundscale_ps&expand=4779)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vrndscaleps, imm8 = 0))]
-#[rustc_args_required_const(3)]
-pub unsafe fn _mm256_mask_roundscale_ps(src: __m256, k: __mmask8, a: __m256, imm8: i32) -> __m256 {
+#[cfg_attr(test, assert_instr(vrndscaleps, IMM8 = 0))]
+#[rustc_legacy_const_generics(3)]
+pub unsafe fn _mm256_mask_roundscale_ps<const IMM8: i32>(
+    src: __m256,
+    k: __mmask8,
+    a: __m256,
+) -> __m256 {
     let a = a.as_f32x8();
     let src = src.as_f32x8();
-    macro_rules! call {
-        ($imm8:expr) => {
-            vrndscaleps256(a, $imm8, src, k)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+    let r = vrndscaleps256(a, IMM8, src, k);
     transmute(r)
 }
 
@@ -5003,17 +4981,12 @@ pub unsafe fn _mm256_mask_roundscale_ps(src: __m256, k: __mmask8, a: __m256, imm
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_roundscale_ps&expand=4780)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vrndscaleps, imm8 = 0))]
-#[rustc_args_required_const(2)]
-pub unsafe fn _mm256_maskz_roundscale_ps(k: __mmask8, a: __m256, imm8: i32) -> __m256 {
+#[cfg_attr(test, assert_instr(vrndscaleps, IMM8 = 0))]
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn _mm256_maskz_roundscale_ps<const IMM8: i32>(k: __mmask8, a: __m256) -> __m256 {
     let a = a.as_f32x8();
     let zero = _mm256_setzero_ps().as_f32x8();
-    macro_rules! call {
-        ($imm8:expr) => {
-            vrndscaleps256(a, $imm8, zero, k)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+    let r = vrndscaleps256(a, IMM8, zero, k);
     transmute(r)
 }
 
@@ -5028,17 +5001,12 @@ pub unsafe fn _mm256_maskz_roundscale_ps(k: __mmask8, a: __m256, imm8: i32) -> _
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_roundscale_ps&expand=4778)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vrndscaleps, imm8 = 250))]
-#[rustc_args_required_const(1)]
-pub unsafe fn _mm_roundscale_ps(a: __m128, imm8: i32) -> __m128 {
+#[cfg_attr(test, assert_instr(vrndscaleps, IMM8 = 250))]
+#[rustc_legacy_const_generics(1)]
+pub unsafe fn _mm_roundscale_ps<const IMM8: i32>(a: __m128) -> __m128 {
     let a = a.as_f32x4();
     let zero = _mm_setzero_ps().as_f32x4();
-    macro_rules! call {
-        ($imm8:expr) => {
-            vrndscaleps128(a, $imm8, zero, 0b00001111)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+    let r = vrndscaleps128(a, IMM8, zero, 0b00001111);
     transmute(r)
 }
 
@@ -5053,17 +5021,16 @@ pub unsafe fn _mm_roundscale_ps(a: __m128, imm8: i32) -> __m128 {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_roundscale_ps&expand=4776)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vrndscaleps, imm8 = 0))]
-#[rustc_args_required_const(3)]
-pub unsafe fn _mm_mask_roundscale_ps(src: __m128, k: __mmask8, a: __m128, imm8: i32) -> __m128 {
+#[cfg_attr(test, assert_instr(vrndscaleps, IMM8 = 0))]
+#[rustc_legacy_const_generics(3)]
+pub unsafe fn _mm_mask_roundscale_ps<const IMM8: i32>(
+    src: __m128,
+    k: __mmask8,
+    a: __m128,
+) -> __m128 {
     let a = a.as_f32x4();
     let src = src.as_f32x4();
-    macro_rules! call {
-        ($imm8:expr) => {
-            vrndscaleps128(a, $imm8, src, k)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+    let r = vrndscaleps128(a, IMM8, src, k);
     transmute(r)
 }
 
@@ -5078,17 +5045,12 @@ pub unsafe fn _mm_mask_roundscale_ps(src: __m128, k: __mmask8, a: __m128, imm8: 
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_roundscale_ps&expand=4777)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vrndscaleps, imm8 = 0))]
-#[rustc_args_required_const(2)]
-pub unsafe fn _mm_maskz_roundscale_ps(k: __mmask8, a: __m128, imm8: i32) -> __m128 {
+#[cfg_attr(test, assert_instr(vrndscaleps, IMM8 = 0))]
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn _mm_maskz_roundscale_ps<const IMM8: i32>(k: __mmask8, a: __m128) -> __m128 {
     let a = a.as_f32x4();
     let zero = _mm_setzero_ps().as_f32x4();
-    macro_rules! call {
-        ($imm8:expr) => {
-            vrndscaleps128(a, $imm8, zero, k)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+    let r = vrndscaleps128(a, IMM8, zero, k);
     transmute(r)
 }
 
@@ -42060,7 +42022,7 @@ mod tests {
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_roundscale_ps() {
         let a = _mm512_set1_ps(1.1);
-        let r = _mm512_roundscale_ps(a, 0);
+        let r = _mm512_roundscale_ps::<0b00_00_00_00>(a);
         let e = _mm512_set1_ps(1.0);
         assert_eq_m512(r, e);
     }
@@ -42068,10 +42030,10 @@ mod tests {
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_mask_roundscale_ps() {
         let a = _mm512_set1_ps(1.1);
-        let r = _mm512_mask_roundscale_ps(a, 0, a, 0);
+        let r = _mm512_mask_roundscale_ps::<0b00_00_00_00>(a, 0, a);
         let e = _mm512_set1_ps(1.1);
         assert_eq_m512(r, e);
-        let r = _mm512_mask_roundscale_ps(a, 0b11111111_11111111, a, 0);
+        let r = _mm512_mask_roundscale_ps::<0b00_00_00_00>(a, 0b11111111_11111111, a);
         let e = _mm512_set1_ps(1.0);
         assert_eq_m512(r, e);
     }
@@ -42079,9 +42041,9 @@ mod tests {
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_maskz_roundscale_ps() {
         let a = _mm512_set1_ps(1.1);
-        let r = _mm512_maskz_roundscale_ps(0, a, 0);
+        let r = _mm512_maskz_roundscale_ps::<0b00_00_00_00>(0, a);
         assert_eq_m512(r, _mm512_setzero_ps());
-        let r = _mm512_maskz_roundscale_ps(0b11111111_11111111, a, 0);
+        let r = _mm512_maskz_roundscale_ps::<0b00_00_00_00>(0b11111111_11111111, a);
         let e = _mm512_set1_ps(1.0);
         assert_eq_m512(r, e);
     }
@@ -42089,7 +42051,7 @@ mod tests {
     #[simd_test(enable = "avx512f,avx512vl")]
     unsafe fn test_mm256_roundscale_ps() {
         let a = _mm256_set1_ps(1.1);
-        let r = _mm256_roundscale_ps(a, 0);
+        let r = _mm256_roundscale_ps::<0b00_00_00_00>(a);
         let e = _mm256_set1_ps(1.0);
         assert_eq_m256(r, e);
     }
@@ -42097,10 +42059,10 @@ mod tests {
     #[simd_test(enable = "avx512f,avx512vl")]
     unsafe fn test_mm256_mask_roundscale_ps() {
         let a = _mm256_set1_ps(1.1);
-        let r = _mm256_mask_roundscale_ps(a, 0, a, 0);
+        let r = _mm256_mask_roundscale_ps::<0b00_00_00_00>(a, 0, a);
         let e = _mm256_set1_ps(1.1);
         assert_eq_m256(r, e);
-        let r = _mm256_mask_roundscale_ps(a, 0b11111111, a, 0);
+        let r = _mm256_mask_roundscale_ps::<0b00_00_00_00>(a, 0b11111111, a);
         let e = _mm256_set1_ps(1.0);
         assert_eq_m256(r, e);
     }
@@ -42108,9 +42070,9 @@ mod tests {
     #[simd_test(enable = "avx512f,avx512vl")]
     unsafe fn test_mm256_maskz_roundscale_ps() {
         let a = _mm256_set1_ps(1.1);
-        let r = _mm256_maskz_roundscale_ps(0, a, 0);
+        let r = _mm256_maskz_roundscale_ps::<0b00_00_00_00>(0, a);
         assert_eq_m256(r, _mm256_setzero_ps());
-        let r = _mm256_maskz_roundscale_ps(0b11111111, a, 0);
+        let r = _mm256_maskz_roundscale_ps::<0b00_00_00_00>(0b11111111, a);
         let e = _mm256_set1_ps(1.0);
         assert_eq_m256(r, e);
     }
@@ -42118,7 +42080,7 @@ mod tests {
     #[simd_test(enable = "avx512f,avx512vl")]
     unsafe fn test_mm_roundscale_ps() {
         let a = _mm_set1_ps(1.1);
-        let r = _mm_roundscale_ps(a, 0);
+        let r = _mm_roundscale_ps::<0b00_00_00_00>(a);
         let e = _mm_set1_ps(1.0);
         assert_eq_m128(r, e);
     }
@@ -42126,10 +42088,10 @@ mod tests {
     #[simd_test(enable = "avx512f,avx512vl")]
     unsafe fn test_mm_mask_roundscale_ps() {
         let a = _mm_set1_ps(1.1);
-        let r = _mm_mask_roundscale_ps(a, 0, a, 0);
+        let r = _mm_mask_roundscale_ps::<0b00_00_00_00>(a, 0, a);
         let e = _mm_set1_ps(1.1);
         assert_eq_m128(r, e);
-        let r = _mm_mask_roundscale_ps(a, 0b00001111, a, 0);
+        let r = _mm_mask_roundscale_ps::<0b00_00_00_00>(a, 0b00001111, a);
         let e = _mm_set1_ps(1.0);
         assert_eq_m128(r, e);
     }
@@ -42137,9 +42099,9 @@ mod tests {
     #[simd_test(enable = "avx512f,avx512vl")]
     unsafe fn test_mm_maskz_roundscale_ps() {
         let a = _mm_set1_ps(1.1);
-        let r = _mm_maskz_roundscale_ps(0, a, 0);
+        let r = _mm_maskz_roundscale_ps::<0b00_00_00_00>(0, a);
         assert_eq_m128(r, _mm_setzero_ps());
-        let r = _mm_maskz_roundscale_ps(0b00001111, a, 0);
+        let r = _mm_maskz_roundscale_ps::<0b00_00_00_00>(0b00001111, a);
         let e = _mm_set1_ps(1.0);
         assert_eq_m128(r, e);
     }
