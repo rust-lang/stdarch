@@ -4848,7 +4848,6 @@ mod tests {
         let a = _mm_setr_pd(1., 2.);
         let b = _mm_setr_pd(3., 4.);
         let expected = _mm_setr_pd(1., 3.);
-        //let r = _mm_shuffle_pd(a, b, 0);
         let r = _mm_shuffle_pd::<0b00_00_00_00>(a, b);
         assert_eq_m128d(r, expected);
     }

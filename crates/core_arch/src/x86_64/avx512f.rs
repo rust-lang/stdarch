@@ -5307,10 +5307,10 @@ mod tests {
     unsafe fn test_mm512_add_round_pd() {
         let a = _mm512_setr_pd(8., 9.5, 10., 11.5, 12., 13.5, 14., 0.000000000000000007);
         let b = _mm512_set1_pd(-1.);
-        let r = _mm512_add_round_pd(a, b, _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC);
+        let r = _mm512_add_round_pd::<{ _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC }>(a, b);
         let e = _mm512_setr_pd(7., 8.5, 9., 10.5, 11., 12.5, 13., -1.0);
         assert_eq_m512d(r, e);
-        let r = _mm512_add_round_pd(a, b, _MM_FROUND_TO_ZERO | _MM_FROUND_NO_EXC);
+        let r = _mm512_add_round_pd::<{ _MM_FROUND_TO_ZERO | _MM_FROUND_NO_EXC }>(a, b);
         let e = _mm512_setr_pd(7., 8.5, 9., 10.5, 11., 12.5, 13., -0.9999999999999999);
         assert_eq_m512d(r, e);
     }
@@ -5319,14 +5319,12 @@ mod tests {
     unsafe fn test_mm512_mask_add_round_pd() {
         let a = _mm512_setr_pd(8., 9.5, 10., 11.5, 12., 13.5, 14., 0.000000000000000007);
         let b = _mm512_set1_pd(-1.);
-        let r = _mm512_mask_add_round_pd(a, 0, a, b, _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC);
+        let r = _mm512_mask_add_round_pd::<{ _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC }>(
+            a, 0, a, b,
+        );
         assert_eq_m512d(r, a);
-        let r = _mm512_mask_add_round_pd(
-            a,
-            0b11110000,
-            a,
-            b,
-            _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC,
+        let r = _mm512_mask_add_round_pd::<{ _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC }>(
+            a, 0b11110000, a, b,
         );
         let e = _mm512_setr_pd(8., 9.5, 10., 11.5, 11., 12.5, 13., -1.0);
         assert_eq_m512d(r, e);
@@ -5336,13 +5334,11 @@ mod tests {
     unsafe fn test_mm512_maskz_add_round_pd() {
         let a = _mm512_setr_pd(8., 9.5, 10., 11.5, 12., 13.5, 14., 0.000000000000000007);
         let b = _mm512_set1_pd(-1.);
-        let r = _mm512_maskz_add_round_pd(0, a, b, _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC);
+        let r =
+            _mm512_maskz_add_round_pd::<{ _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC }>(0, a, b);
         assert_eq_m512d(r, _mm512_setzero_pd());
-        let r = _mm512_maskz_add_round_pd(
-            0b11110000,
-            a,
-            b,
-            _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC,
+        let r = _mm512_maskz_add_round_pd::<{ _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC }>(
+            0b11110000, a, b,
         );
         let e = _mm512_setr_pd(0., 0., 0., 0., 11., 12.5, 13., -1.0);
         assert_eq_m512d(r, e);
