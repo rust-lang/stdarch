@@ -641,7 +641,7 @@ pub unsafe fn vld1q_lane_s16<const LANE: i32>(ptr: *const i16, src: int16x8_t) -
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vld1.32", LANE = 1))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1, LANE = 1))]
 pub unsafe fn vld1_lane_s32<const LANE: i32>(ptr: *const i32, src: int32x2_t) -> int32x2_t {
-    static_assert!(LANE : i32 where 0 <= LANE && LANE <= 1);
+    static_assert_imm1!(LANE);
     simd_insert(src, LANE as u32, *ptr)
 }
 
@@ -665,7 +665,7 @@ pub unsafe fn vld1q_lane_s32<const LANE: i32>(ptr: *const i32, src: int32x4_t) -
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vldr", LANE = 0))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ldr, LANE = 0))]
 pub unsafe fn vld1_lane_s64<const LANE: i32>(ptr: *const i64, src: int64x1_t) -> int64x1_t {
-    static_assert!(LANE : i32 where 0 <= LANE && LANE <= 0);
+    static_assert!(LANE : i32 where LANE == 0);
     simd_insert(src, LANE as u32, *ptr)
 }
 
@@ -677,7 +677,7 @@ pub unsafe fn vld1_lane_s64<const LANE: i32>(ptr: *const i64, src: int64x1_t) ->
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vldr", LANE = 1))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1, LANE = 1))]
 pub unsafe fn vld1q_lane_s64<const LANE: i32>(ptr: *const i64, src: int64x2_t) -> int64x2_t {
-    static_assert!(LANE : i32 where 0 <= LANE && LANE <= 1);
+    static_assert_imm1!(LANE);
     simd_insert(src, LANE as u32, *ptr)
 }
 
@@ -737,7 +737,7 @@ pub unsafe fn vld1q_lane_u16<const LANE: i32>(ptr: *const u16, src: uint16x8_t) 
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vld1.32", LANE = 1))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1, LANE = 1))]
 pub unsafe fn vld1_lane_u32<const LANE: i32>(ptr: *const u32, src: uint32x2_t) -> uint32x2_t {
-    static_assert!(LANE : i32 where 0 <= LANE && LANE <= 1);
+    static_assert_imm1!(LANE);
     simd_insert(src, LANE as u32, *ptr)
 }
 
@@ -761,7 +761,7 @@ pub unsafe fn vld1q_lane_u32<const LANE: i32>(ptr: *const u32, src: uint32x4_t) 
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vldr", LANE = 0))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ldr, LANE = 0))]
 pub unsafe fn vld1_lane_u64<const LANE: i32>(ptr: *const u64, src: uint64x1_t) -> uint64x1_t {
-    static_assert!(LANE : i32 where 0 <= LANE && LANE <= 0);
+    static_assert!(LANE : i32 where LANE == 0);
     simd_insert(src, LANE as u32, *ptr)
 }
 
@@ -773,7 +773,7 @@ pub unsafe fn vld1_lane_u64<const LANE: i32>(ptr: *const u64, src: uint64x1_t) -
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vldr", LANE = 1))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1, LANE = 1))]
 pub unsafe fn vld1q_lane_u64<const LANE: i32>(ptr: *const u64, src: uint64x2_t) -> uint64x2_t {
-    static_assert!(LANE : i32 where 0 <= LANE && LANE <= 1);
+    static_assert_imm1!(LANE);
     simd_insert(src, LANE as u32, *ptr)
 }
 
@@ -833,7 +833,7 @@ pub unsafe fn vld1q_lane_p16<const LANE: i32>(ptr: *const p16, src: poly16x8_t) 
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vld1.32", LANE = 1))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1, LANE = 1))]
 pub unsafe fn vld1_lane_f32<const LANE: i32>(ptr: *const f32, src: float32x2_t) -> float32x2_t {
-    static_assert!(LANE : i32 where 0 <= LANE && LANE <= 1);
+    static_assert_imm1!(LANE);
     simd_insert(src, LANE as u32, *ptr)
 }
 
@@ -2983,7 +2983,7 @@ pub unsafe fn vtbx4_p8(a: poly8x8_t, b: poly8x8x4_t, c: uint8x8_t) -> poly8x8_t 
 // `mov` seems to be an acceptable intrinsic to compile to
 // #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(vmov, imm5 = 1))]
 pub unsafe fn vgetq_lane_u64<const imm5: i32>(v: uint64x2_t) -> u64 {
-    static_assert!(imm5 : i32 where imm5 >= 0 && imm5 <= 1);
+    static_assert_imm1!(imm5);
     simd_extract(v, imm5 as u32)
 }
 
