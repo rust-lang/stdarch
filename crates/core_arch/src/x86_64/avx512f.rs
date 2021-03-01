@@ -3101,7 +3101,7 @@ mod tests {
         let a = _mm512_set1_pd(f64::NAN);
         let b = _mm512_set1_pd(f64::MAX);
         let c = _mm512_set1_epi64(i32::MAX as i64);
-        let r = _mm512_fixupimm_pd(a, b, c, 5);
+        let r = _mm512_fixupimm_pd::<5>(a, b, c);
         let e = _mm512_set1_pd(0.0);
         assert_eq_m512d(r, e);
     }
@@ -3111,7 +3111,7 @@ mod tests {
         let a = _mm512_set_pd(f64::NAN, f64::NAN, f64::NAN, f64::NAN, 1., 1., 1., 1.);
         let b = _mm512_set1_pd(f64::MAX);
         let c = _mm512_set1_epi64(i32::MAX as i64);
-        let r = _mm512_mask_fixupimm_pd(a, 0b11110000, b, c, 5);
+        let r = _mm512_mask_fixupimm_pd::<5>(a, 0b11110000, b, c);
         let e = _mm512_set_pd(0., 0., 0., 0., 1., 1., 1., 1.);
         assert_eq_m512d(r, e);
     }
@@ -3121,7 +3121,7 @@ mod tests {
         let a = _mm512_set_pd(f64::NAN, f64::NAN, f64::NAN, f64::NAN, 1., 1., 1., 1.);
         let b = _mm512_set1_pd(f64::MAX);
         let c = _mm512_set1_epi64(i32::MAX as i64);
-        let r = _mm512_maskz_fixupimm_pd(0b11110000, a, b, c, 5);
+        let r = _mm512_maskz_fixupimm_pd::<5>(0b11110000, a, b, c);
         let e = _mm512_set_pd(0., 0., 0., 0., 0., 0., 0., 0.);
         assert_eq_m512d(r, e);
     }
@@ -3131,7 +3131,7 @@ mod tests {
         let a = _mm256_set1_pd(f64::NAN);
         let b = _mm256_set1_pd(f64::MAX);
         let c = _mm256_set1_epi64x(i32::MAX as i64);
-        let r = _mm256_fixupimm_pd(a, b, c, 5);
+        let r = _mm256_fixupimm_pd::<5>(a, b, c);
         let e = _mm256_set1_pd(0.0);
         assert_eq_m256d(r, e);
     }
@@ -3141,7 +3141,7 @@ mod tests {
         let a = _mm256_set1_pd(f64::NAN);
         let b = _mm256_set1_pd(f64::MAX);
         let c = _mm256_set1_epi64x(i32::MAX as i64);
-        let r = _mm256_mask_fixupimm_pd(a, 0b00001111, b, c, 5);
+        let r = _mm256_mask_fixupimm_pd::<5>(a, 0b00001111, b, c);
         let e = _mm256_set1_pd(0.0);
         assert_eq_m256d(r, e);
     }
@@ -3151,7 +3151,7 @@ mod tests {
         let a = _mm256_set1_pd(f64::NAN);
         let b = _mm256_set1_pd(f64::MAX);
         let c = _mm256_set1_epi64x(i32::MAX as i64);
-        let r = _mm256_maskz_fixupimm_pd(0b00001111, a, b, c, 5);
+        let r = _mm256_maskz_fixupimm_pd::<5>(0b00001111, a, b, c);
         let e = _mm256_set1_pd(0.0);
         assert_eq_m256d(r, e);
     }
@@ -3161,7 +3161,7 @@ mod tests {
         let a = _mm_set1_pd(f64::NAN);
         let b = _mm_set1_pd(f64::MAX);
         let c = _mm_set1_epi64x(i32::MAX as i64);
-        let r = _mm_fixupimm_pd(a, b, c, 5);
+        let r = _mm_fixupimm_pd::<5>(a, b, c);
         let e = _mm_set1_pd(0.0);
         assert_eq_m128d(r, e);
     }
@@ -3171,7 +3171,7 @@ mod tests {
         let a = _mm_set1_pd(f64::NAN);
         let b = _mm_set1_pd(f64::MAX);
         let c = _mm_set1_epi64x(i32::MAX as i64);
-        let r = _mm_mask_fixupimm_pd(a, 0b00000011, b, c, 5);
+        let r = _mm_mask_fixupimm_pd::<5>(a, 0b00000011, b, c);
         let e = _mm_set1_pd(0.0);
         assert_eq_m128d(r, e);
     }
@@ -3181,7 +3181,7 @@ mod tests {
         let a = _mm_set1_pd(f64::NAN);
         let b = _mm_set1_pd(f64::MAX);
         let c = _mm_set1_epi64x(i32::MAX as i64);
-        let r = _mm_maskz_fixupimm_pd(0b00000011, a, b, c, 5);
+        let r = _mm_maskz_fixupimm_pd::<5>(0b00000011, a, b, c);
         let e = _mm_set1_pd(0.0);
         assert_eq_m128d(r, e);
     }

@@ -4900,6 +4900,7 @@ pub unsafe fn _mm512_mask_roundscale_ps<const IMM8: i32>(
     k: __mmask16,
     a: __m512,
 ) -> __m512 {
+    static_assert_imm8!(IMM8);
     let a = a.as_f32x16();
     let src = src.as_f32x16();
     let r = vrndscaleps(a, IMM8, src, k, _MM_FROUND_CUR_DIRECTION);
@@ -4920,6 +4921,7 @@ pub unsafe fn _mm512_mask_roundscale_ps<const IMM8: i32>(
 #[cfg_attr(test, assert_instr(vrndscaleps, IMM8 = 0))]
 #[rustc_legacy_const_generics(2)]
 pub unsafe fn _mm512_maskz_roundscale_ps<const IMM8: i32>(k: __mmask16, a: __m512) -> __m512 {
+    static_assert_imm8!(IMM8);
     let a = a.as_f32x16();
     let zero = _mm512_setzero_ps().as_f32x16();
     let r = vrndscaleps(a, IMM8, zero, k, _MM_FROUND_CUR_DIRECTION);
@@ -4940,6 +4942,7 @@ pub unsafe fn _mm512_maskz_roundscale_ps<const IMM8: i32>(k: __mmask16, a: __m51
 #[cfg_attr(test, assert_instr(vrndscaleps, IMM8 = 250))]
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn _mm256_roundscale_ps<const IMM8: i32>(a: __m256) -> __m256 {
+    static_assert_imm8!(IMM8);
     let a = a.as_f32x8();
     let zero = _mm256_setzero_ps().as_f32x8();
     let r = vrndscaleps256(a, IMM8, zero, 0b11111111);
@@ -4964,6 +4967,7 @@ pub unsafe fn _mm256_mask_roundscale_ps<const IMM8: i32>(
     k: __mmask8,
     a: __m256,
 ) -> __m256 {
+    static_assert_imm8!(IMM8);
     let a = a.as_f32x8();
     let src = src.as_f32x8();
     let r = vrndscaleps256(a, IMM8, src, k);
@@ -4984,6 +4988,7 @@ pub unsafe fn _mm256_mask_roundscale_ps<const IMM8: i32>(
 #[cfg_attr(test, assert_instr(vrndscaleps, IMM8 = 0))]
 #[rustc_legacy_const_generics(2)]
 pub unsafe fn _mm256_maskz_roundscale_ps<const IMM8: i32>(k: __mmask8, a: __m256) -> __m256 {
+    static_assert_imm8!(IMM8);
     let a = a.as_f32x8();
     let zero = _mm256_setzero_ps().as_f32x8();
     let r = vrndscaleps256(a, IMM8, zero, k);
@@ -5004,6 +5009,7 @@ pub unsafe fn _mm256_maskz_roundscale_ps<const IMM8: i32>(k: __mmask8, a: __m256
 #[cfg_attr(test, assert_instr(vrndscaleps, IMM8 = 250))]
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn _mm_roundscale_ps<const IMM8: i32>(a: __m128) -> __m128 {
+    static_assert_imm8!(IMM8);
     let a = a.as_f32x4();
     let zero = _mm_setzero_ps().as_f32x4();
     let r = vrndscaleps128(a, IMM8, zero, 0b00001111);
@@ -5028,6 +5034,7 @@ pub unsafe fn _mm_mask_roundscale_ps<const IMM8: i32>(
     k: __mmask8,
     a: __m128,
 ) -> __m128 {
+    static_assert_imm8!(IMM8);
     let a = a.as_f32x4();
     let src = src.as_f32x4();
     let r = vrndscaleps128(a, IMM8, src, k);
@@ -5048,6 +5055,7 @@ pub unsafe fn _mm_mask_roundscale_ps<const IMM8: i32>(
 #[cfg_attr(test, assert_instr(vrndscaleps, IMM8 = 0))]
 #[rustc_legacy_const_generics(2)]
 pub unsafe fn _mm_maskz_roundscale_ps<const IMM8: i32>(k: __mmask8, a: __m128) -> __m128 {
+    static_assert_imm8!(IMM8);
     let a = a.as_f32x4();
     let zero = _mm_setzero_ps().as_f32x4();
     let r = vrndscaleps128(a, IMM8, zero, k);
@@ -5068,6 +5076,7 @@ pub unsafe fn _mm_maskz_roundscale_ps<const IMM8: i32>(k: __mmask8, a: __m128) -
 #[cfg_attr(test, assert_instr(vrndscalepd, IMM8 = 0))]
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn _mm512_roundscale_pd<const IMM8: i32>(a: __m512d) -> __m512d {
+    static_assert_imm8!(IMM8);
     let a = a.as_f64x8();
     let zero = _mm512_setzero_pd().as_f64x8();
     let r = vrndscalepd(a, IMM8, zero, 0b11111111, _MM_FROUND_CUR_DIRECTION);
@@ -5092,6 +5101,7 @@ pub unsafe fn _mm512_mask_roundscale_pd<const IMM8: i32>(
     k: __mmask8,
     a: __m512d,
 ) -> __m512d {
+    static_assert_imm8!(IMM8);
     let a = a.as_f64x8();
     let src = src.as_f64x8();
     let r = vrndscalepd(a, IMM8, src, k, _MM_FROUND_CUR_DIRECTION);
@@ -5112,6 +5122,7 @@ pub unsafe fn _mm512_mask_roundscale_pd<const IMM8: i32>(
 #[cfg_attr(test, assert_instr(vrndscalepd, IMM8 = 0))]
 #[rustc_legacy_const_generics(2)]
 pub unsafe fn _mm512_maskz_roundscale_pd<const IMM8: i32>(k: __mmask8, a: __m512d) -> __m512d {
+    static_assert_imm8!(IMM8);
     let a = a.as_f64x8();
     let zero = _mm512_setzero_pd().as_f64x8();
     let r = vrndscalepd(a, IMM8, zero, k, _MM_FROUND_CUR_DIRECTION);
@@ -5132,6 +5143,7 @@ pub unsafe fn _mm512_maskz_roundscale_pd<const IMM8: i32>(k: __mmask8, a: __m512
 #[cfg_attr(test, assert_instr(vrndscalepd, IMM8 = 0))]
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn _mm256_roundscale_pd<const IMM8: i32>(a: __m256d) -> __m256d {
+    static_assert_imm8!(IMM8);
     let a = a.as_f64x4();
     let zero = _mm256_setzero_pd().as_f64x4();
     let r = vrndscalepd256(a, IMM8, zero, 0b00001111);
@@ -5156,6 +5168,7 @@ pub unsafe fn _mm256_mask_roundscale_pd<const IMM8: i32>(
     k: __mmask8,
     a: __m256d,
 ) -> __m256d {
+    static_assert_imm8!(IMM8);
     let a = a.as_f64x4();
     let src = src.as_f64x4();
     let r = vrndscalepd256(a, IMM8, src, k);
@@ -5176,6 +5189,7 @@ pub unsafe fn _mm256_mask_roundscale_pd<const IMM8: i32>(
 #[cfg_attr(test, assert_instr(vrndscalepd, IMM8 = 0))]
 #[rustc_legacy_const_generics(2)]
 pub unsafe fn _mm256_maskz_roundscale_pd<const IMM8: i32>(k: __mmask8, a: __m256d) -> __m256d {
+    static_assert_imm8!(IMM8);
     let a = a.as_f64x4();
     let zero = _mm256_setzero_pd().as_f64x4();
     let r = vrndscalepd256(a, IMM8, zero, k);
@@ -5196,6 +5210,7 @@ pub unsafe fn _mm256_maskz_roundscale_pd<const IMM8: i32>(k: __mmask8, a: __m256
 #[cfg_attr(test, assert_instr(vrndscalepd, IMM8 = 0))]
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn _mm_roundscale_pd<const IMM8: i32>(a: __m128d) -> __m128d {
+    static_assert_imm8!(IMM8);
     let a = a.as_f64x2();
     let zero = _mm_setzero_pd().as_f64x2();
     let r = vrndscalepd128(a, IMM8, zero, 0b00000011);
@@ -5220,6 +5235,7 @@ pub unsafe fn _mm_mask_roundscale_pd<const IMM8: i32>(
     k: __mmask8,
     a: __m128d,
 ) -> __m128d {
+    static_assert_imm8!(IMM8);
     let a = a.as_f64x2();
     let src = src.as_f64x2();
     let r = vrndscalepd128(a, IMM8, src, k);
@@ -5240,6 +5256,7 @@ pub unsafe fn _mm_mask_roundscale_pd<const IMM8: i32>(
 #[cfg_attr(test, assert_instr(vrndscalepd, IMM8 = 0))]
 #[rustc_legacy_const_generics(2)]
 pub unsafe fn _mm_maskz_roundscale_pd<const IMM8: i32>(k: __mmask8, a: __m128d) -> __m128d {
+    static_assert_imm8!(IMM8);
     let a = a.as_f64x2();
     let zero = _mm_setzero_pd().as_f64x2();
     let r = vrndscalepd128(a, IMM8, zero, k);
@@ -5507,25 +5524,14 @@ pub unsafe fn _mm_maskz_scalef_pd(k: __mmask8, a: __m128d, b: __m128d) -> __m128
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_fixupimm_ps&expand=2499)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vfixupimmps, imm8 = 0))]
-#[rustc_args_required_const(3)]
-pub unsafe fn _mm512_fixupimm_ps(a: __m512, b: __m512, c: __m512i, imm8: i32) -> __m512 {
+#[cfg_attr(test, assert_instr(vfixupimmps, IMM8 = 0))]
+#[rustc_legacy_const_generics(3)]
+pub unsafe fn _mm512_fixupimm_ps<const IMM8: i32>(a: __m512, b: __m512, c: __m512i) -> __m512 {
+    static_assert_imm8!(IMM8);
     let a = a.as_f32x16();
     let b = b.as_f32x16();
     let c = c.as_i32x16();
-    macro_rules! call {
-        ($imm8:expr) => {
-            vfixupimmps(
-                a,
-                b,
-                c,
-                $imm8,
-                0b11111111_11111111,
-                _MM_FROUND_CUR_DIRECTION,
-            )
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+    let r = vfixupimmps(a, b, c, IMM8, 0b11111111_11111111, _MM_FROUND_CUR_DIRECTION);
     transmute(r)
 }
 
@@ -5534,24 +5540,19 @@ pub unsafe fn _mm512_fixupimm_ps(a: __m512, b: __m512, c: __m512i, imm8: i32) ->
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_fixupimm_ps&expand=2500)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vfixupimmps, imm8 = 0))]
-#[rustc_args_required_const(4)]
-pub unsafe fn _mm512_mask_fixupimm_ps(
+#[cfg_attr(test, assert_instr(vfixupimmps, IMM8 = 0))]
+#[rustc_legacy_const_generics(4)]
+pub unsafe fn _mm512_mask_fixupimm_ps<const IMM8: i32>(
     a: __m512,
     k: __mmask16,
     b: __m512,
     c: __m512i,
-    imm8: i32,
 ) -> __m512 {
+    static_assert_imm8!(IMM8);
     let a = a.as_f32x16();
     let b = b.as_f32x16();
     let c = c.as_i32x16();
-    macro_rules! call {
-        ($imm8:expr) => {
-            vfixupimmps(a, b, c, $imm8, k, _MM_FROUND_CUR_DIRECTION)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+    let r = vfixupimmps(a, b, c, IMM8, k, _MM_FROUND_CUR_DIRECTION);
     transmute(r)
 }
 
@@ -5560,24 +5561,19 @@ pub unsafe fn _mm512_mask_fixupimm_ps(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_fixupimm_ps&expand=2501)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vfixupimmps, imm8 = 0))]
-#[rustc_args_required_const(4)]
-pub unsafe fn _mm512_maskz_fixupimm_ps(
+#[cfg_attr(test, assert_instr(vfixupimmps, IMM8 = 0))]
+#[rustc_legacy_const_generics(4)]
+pub unsafe fn _mm512_maskz_fixupimm_ps<const IMM8: i32>(
     k: __mmask16,
     a: __m512,
     b: __m512,
     c: __m512i,
-    imm8: i32,
 ) -> __m512 {
+    static_assert_imm8!(IMM8);
     let a = a.as_f32x16();
     let b = b.as_f32x16();
     let c = c.as_i32x16();
-    macro_rules! call {
-        ($imm8:expr) => {
-            vfixupimmpsz(a, b, c, $imm8, k, _MM_FROUND_CUR_DIRECTION)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+    let r = vfixupimmpsz(a, b, c, IMM8, k, _MM_FROUND_CUR_DIRECTION);
     transmute(r)
 }
 
@@ -5586,18 +5582,14 @@ pub unsafe fn _mm512_maskz_fixupimm_ps(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_fixupimm_ps&expand=2496)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vfixupimmps, imm8 = 0))]
-#[rustc_args_required_const(3)]
-pub unsafe fn _mm256_fixupimm_ps(a: __m256, b: __m256, c: __m256i, imm8: i32) -> __m256 {
+#[cfg_attr(test, assert_instr(vfixupimmps, IMM8 = 0))]
+#[rustc_legacy_const_generics(3)]
+pub unsafe fn _mm256_fixupimm_ps<const IMM8: i32>(a: __m256, b: __m256, c: __m256i) -> __m256 {
+    static_assert_imm8!(IMM8);
     let a = a.as_f32x8();
     let b = b.as_f32x8();
     let c = c.as_i32x8();
-    macro_rules! call {
-        ($imm8:expr) => {
-            vfixupimmps256(a, b, c, $imm8, 0b11111111)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+    let r = vfixupimmps256(a, b, c, IMM8, 0b11111111);
     transmute(r)
 }
 
@@ -5606,24 +5598,19 @@ pub unsafe fn _mm256_fixupimm_ps(a: __m256, b: __m256, c: __m256i, imm8: i32) ->
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_fixupimm_ps&expand=2497)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vfixupimmps, imm8 = 0))]
-#[rustc_args_required_const(4)]
-pub unsafe fn _mm256_mask_fixupimm_ps(
+#[cfg_attr(test, assert_instr(vfixupimmps, IMM8 = 0))]
+#[rustc_legacy_const_generics(4)]
+pub unsafe fn _mm256_mask_fixupimm_ps<const IMM8: i32>(
     a: __m256,
     k: __mmask8,
     b: __m256,
     c: __m256i,
-    imm8: i32,
 ) -> __m256 {
+    static_assert_imm8!(IMM8);
     let a = a.as_f32x8();
     let b = b.as_f32x8();
     let c = c.as_i32x8();
-    macro_rules! call {
-        ($imm8:expr) => {
-            vfixupimmps256(a, b, c, $imm8, k)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+    let r = vfixupimmps256(a, b, c, IMM8, k);
     transmute(r)
 }
 
@@ -5632,24 +5619,19 @@ pub unsafe fn _mm256_mask_fixupimm_ps(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_fixupimm_ps&expand=2498)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vfixupimmps, imm8 = 0))]
-#[rustc_args_required_const(4)]
-pub unsafe fn _mm256_maskz_fixupimm_ps(
+#[cfg_attr(test, assert_instr(vfixupimmps, IMM8 = 0))]
+#[rustc_legacy_const_generics(4)]
+pub unsafe fn _mm256_maskz_fixupimm_ps<const IMM8: i32>(
     k: __mmask8,
     a: __m256,
     b: __m256,
     c: __m256i,
-    imm8: i32,
 ) -> __m256 {
+    static_assert_imm8!(IMM8);
     let a = a.as_f32x8();
     let b = b.as_f32x8();
     let c = c.as_i32x8();
-    macro_rules! call {
-        ($imm8:expr) => {
-            vfixupimmpsz256(a, b, c, $imm8, k)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+    let r = vfixupimmpsz256(a, b, c, IMM8, k);
     transmute(r)
 }
 
@@ -5658,18 +5640,14 @@ pub unsafe fn _mm256_maskz_fixupimm_ps(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_fixupimm_ps&expand=2493)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vfixupimmps, imm8 = 0))]
-#[rustc_args_required_const(3)]
-pub unsafe fn _mm_fixupimm_ps(a: __m128, b: __m128, c: __m128i, imm8: i32) -> __m128 {
+#[cfg_attr(test, assert_instr(vfixupimmps, IMM8 = 0))]
+#[rustc_legacy_const_generics(3)]
+pub unsafe fn _mm_fixupimm_ps<const IMM8: i32>(a: __m128, b: __m128, c: __m128i) -> __m128 {
+    static_assert_imm8!(IMM8);
     let a = a.as_f32x4();
     let b = b.as_f32x4();
     let c = c.as_i32x4();
-    macro_rules! call {
-        ($imm8:expr) => {
-            vfixupimmps128(a, b, c, $imm8, 0b00001111)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+    let r = vfixupimmps128(a, b, c, IMM8, 0b00001111);
     transmute(r)
 }
 
@@ -5678,24 +5656,19 @@ pub unsafe fn _mm_fixupimm_ps(a: __m128, b: __m128, c: __m128i, imm8: i32) -> __
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_fixupimm_ps&expand=2494)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vfixupimmps, imm8 = 0))]
-#[rustc_args_required_const(4)]
-pub unsafe fn _mm_mask_fixupimm_ps(
+#[cfg_attr(test, assert_instr(vfixupimmps, IMM8 = 0))]
+#[rustc_legacy_const_generics(4)]
+pub unsafe fn _mm_mask_fixupimm_ps<const IMM8: i32>(
     a: __m128,
     k: __mmask8,
     b: __m128,
     c: __m128i,
-    imm8: i32,
 ) -> __m128 {
+    static_assert_imm8!(IMM8);
     let a = a.as_f32x4();
     let b = b.as_f32x4();
     let c = c.as_i32x4();
-    macro_rules! call {
-        ($imm8:expr) => {
-            vfixupimmps128(a, b, c, $imm8, k)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+    let r = vfixupimmps128(a, b, c, IMM8, k);
     transmute(r)
 }
 
@@ -5704,24 +5677,19 @@ pub unsafe fn _mm_mask_fixupimm_ps(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_fixupimm_ps&expand=2495)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vfixupimmps, imm8 = 0))]
-#[rustc_args_required_const(4)]
-pub unsafe fn _mm_maskz_fixupimm_ps(
+#[cfg_attr(test, assert_instr(vfixupimmps, IMM8 = 0))]
+#[rustc_legacy_const_generics(4)]
+pub unsafe fn _mm_maskz_fixupimm_ps<const IMM8: i32>(
     k: __mmask8,
     a: __m128,
     b: __m128,
     c: __m128i,
-    imm8: i32,
 ) -> __m128 {
+    static_assert_imm8!(IMM8);
     let a = a.as_f32x4();
     let b = b.as_f32x4();
     let c = c.as_i32x4();
-    macro_rules! call {
-        ($imm8:expr) => {
-            vfixupimmpsz128(a, b, c, $imm8, k)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+    let r = vfixupimmpsz128(a, b, c, IMM8, k);
     transmute(r)
 }
 
@@ -5730,18 +5698,14 @@ pub unsafe fn _mm_maskz_fixupimm_ps(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_fixupimm_pd&expand=2490)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vfixupimmpd, imm8 = 0))]
-#[rustc_args_required_const(3)]
-pub unsafe fn _mm512_fixupimm_pd(a: __m512d, b: __m512d, c: __m512i, imm8: i32) -> __m512d {
+#[cfg_attr(test, assert_instr(vfixupimmpd, IMM8 = 0))]
+#[rustc_legacy_const_generics(3)]
+pub unsafe fn _mm512_fixupimm_pd<const IMM8: i32>(a: __m512d, b: __m512d, c: __m512i) -> __m512d {
+    static_assert_imm8!(IMM8);
     let a = a.as_f64x8();
     let b = b.as_f64x8();
     let c = c.as_i64x8();
-    macro_rules! call {
-        ($imm8:expr) => {
-            vfixupimmpd(a, b, c, $imm8, 0b11111111, _MM_FROUND_CUR_DIRECTION)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+    let r = vfixupimmpd(a, b, c, IMM8, 0b11111111, _MM_FROUND_CUR_DIRECTION);
     transmute(r)
 }
 
@@ -5750,24 +5714,19 @@ pub unsafe fn _mm512_fixupimm_pd(a: __m512d, b: __m512d, c: __m512i, imm8: i32) 
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_fixupimm_pd&expand=2491)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vfixupimmpd, imm8 = 0))]
-#[rustc_args_required_const(4)]
-pub unsafe fn _mm512_mask_fixupimm_pd(
+#[cfg_attr(test, assert_instr(vfixupimmpd, IMM8 = 0))]
+#[rustc_legacy_const_generics(4)]
+pub unsafe fn _mm512_mask_fixupimm_pd<const IMM8: i32>(
     a: __m512d,
     k: __mmask8,
     b: __m512d,
     c: __m512i,
-    imm8: i32,
 ) -> __m512d {
+    static_assert_imm8!(IMM8);
     let a = a.as_f64x8();
     let b = b.as_f64x8();
     let c = c.as_i64x8();
-    macro_rules! call {
-        ($imm8:expr) => {
-            vfixupimmpd(a, b, c, $imm8, k, _MM_FROUND_CUR_DIRECTION)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+    let r = vfixupimmpd(a, b, c, IMM8, k, _MM_FROUND_CUR_DIRECTION);
     transmute(r)
 }
 
@@ -5776,24 +5735,19 @@ pub unsafe fn _mm512_mask_fixupimm_pd(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_fixupimm_pd&expand=2492)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vfixupimmpd, imm8 = 0))]
-#[rustc_args_required_const(4)]
-pub unsafe fn _mm512_maskz_fixupimm_pd(
+#[cfg_attr(test, assert_instr(vfixupimmpd, IMM8 = 0))]
+#[rustc_legacy_const_generics(4)]
+pub unsafe fn _mm512_maskz_fixupimm_pd<const IMM8: i32>(
     k: __mmask8,
     a: __m512d,
     b: __m512d,
     c: __m512i,
-    imm8: i32,
 ) -> __m512d {
+    static_assert_imm8!(IMM8);
     let a = a.as_f64x8();
     let b = b.as_f64x8();
     let c = c.as_i64x8();
-    macro_rules! call {
-        ($imm8:expr) => {
-            vfixupimmpdz(a, b, c, $imm8, k, _MM_FROUND_CUR_DIRECTION)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+    let r = vfixupimmpdz(a, b, c, IMM8, k, _MM_FROUND_CUR_DIRECTION);
     transmute(r)
 }
 
@@ -5802,18 +5756,14 @@ pub unsafe fn _mm512_maskz_fixupimm_pd(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_fixupimm_pd&expand=2487)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vfixupimmpd, imm8 = 0))]
-#[rustc_args_required_const(3)]
-pub unsafe fn _mm256_fixupimm_pd(a: __m256d, b: __m256d, c: __m256i, imm8: i32) -> __m256d {
+#[cfg_attr(test, assert_instr(vfixupimmpd, IMM8 = 0))]
+#[rustc_legacy_const_generics(3)]
+pub unsafe fn _mm256_fixupimm_pd<const IMM8: i32>(a: __m256d, b: __m256d, c: __m256i) -> __m256d {
+    static_assert_imm8!(IMM8);
     let a = a.as_f64x4();
     let b = b.as_f64x4();
     let c = c.as_i64x4();
-    macro_rules! call {
-        ($imm8:expr) => {
-            vfixupimmpd256(a, b, c, $imm8, 0b00001111)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+    let r = vfixupimmpd256(a, b, c, IMM8, 0b00001111);
     transmute(r)
 }
 
@@ -5822,24 +5772,19 @@ pub unsafe fn _mm256_fixupimm_pd(a: __m256d, b: __m256d, c: __m256i, imm8: i32) 
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_fixupimm_pd&expand=2488)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vfixupimmpd, imm8 = 0))]
-#[rustc_args_required_const(4)]
-pub unsafe fn _mm256_mask_fixupimm_pd(
+#[cfg_attr(test, assert_instr(vfixupimmpd, IMM8 = 0))]
+#[rustc_legacy_const_generics(4)]
+pub unsafe fn _mm256_mask_fixupimm_pd<const IMM8: i32>(
     a: __m256d,
     k: __mmask8,
     b: __m256d,
     c: __m256i,
-    imm8: i32,
 ) -> __m256d {
+    static_assert_imm8!(IMM8);
     let a = a.as_f64x4();
     let b = b.as_f64x4();
     let c = c.as_i64x4();
-    macro_rules! call {
-        ($imm8:expr) => {
-            vfixupimmpd256(a, b, c, $imm8, k)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+    let r = vfixupimmpd256(a, b, c, IMM8, k);
     transmute(r)
 }
 
@@ -5848,24 +5793,19 @@ pub unsafe fn _mm256_mask_fixupimm_pd(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_fixupimm_pd&expand=2489)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vfixupimmpd, imm8 = 0))]
-#[rustc_args_required_const(4)]
-pub unsafe fn _mm256_maskz_fixupimm_pd(
+#[cfg_attr(test, assert_instr(vfixupimmpd, IMM8 = 0))]
+#[rustc_legacy_const_generics(4)]
+pub unsafe fn _mm256_maskz_fixupimm_pd<const IMM8: i32>(
     k: __mmask8,
     a: __m256d,
     b: __m256d,
     c: __m256i,
-    imm8: i32,
 ) -> __m256d {
+    static_assert_imm8!(IMM8);
     let a = a.as_f64x4();
     let b = b.as_f64x4();
     let c = c.as_i64x4();
-    macro_rules! call {
-        ($imm8:expr) => {
-            vfixupimmpdz256(a, b, c, $imm8, k)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+    let r = vfixupimmpdz256(a, b, c, IMM8, k);
     transmute(r)
 }
 
@@ -5874,18 +5814,14 @@ pub unsafe fn _mm256_maskz_fixupimm_pd(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_fixupimm_pd&expand=2484)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vfixupimmpd, imm8 = 0))]
-#[rustc_args_required_const(3)]
-pub unsafe fn _mm_fixupimm_pd(a: __m128d, b: __m128d, c: __m128i, imm8: i32) -> __m128d {
+#[cfg_attr(test, assert_instr(vfixupimmpd, IMM8 = 0))]
+#[rustc_legacy_const_generics(3)]
+pub unsafe fn _mm_fixupimm_pd<const IMM8: i32>(a: __m128d, b: __m128d, c: __m128i) -> __m128d {
+    static_assert_imm8!(IMM8);
     let a = a.as_f64x2();
     let b = b.as_f64x2();
     let c = c.as_i64x2();
-    macro_rules! call {
-        ($imm8:expr) => {
-            vfixupimmpd128(a, b, c, $imm8, 0b00000011)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+    let r = vfixupimmpd128(a, b, c, IMM8, 0b00000011);
     transmute(r)
 }
 
@@ -5894,24 +5830,19 @@ pub unsafe fn _mm_fixupimm_pd(a: __m128d, b: __m128d, c: __m128i, imm8: i32) -> 
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_fixupimm_pd&expand=2485)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vfixupimmpd, imm8 = 0))]
-#[rustc_args_required_const(4)]
-pub unsafe fn _mm_mask_fixupimm_pd(
+#[cfg_attr(test, assert_instr(vfixupimmpd, IMM8 = 0))]
+#[rustc_legacy_const_generics(4)]
+pub unsafe fn _mm_mask_fixupimm_pd<const IMM8: i32>(
     a: __m128d,
     k: __mmask8,
     b: __m128d,
     c: __m128i,
-    imm8: i32,
 ) -> __m128d {
+    static_assert_imm8!(IMM8);
     let a = a.as_f64x2();
     let b = b.as_f64x2();
     let c = c.as_i64x2();
-    macro_rules! call {
-        ($imm8:expr) => {
-            vfixupimmpd128(a, b, c, $imm8, k)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+    let r = vfixupimmpd128(a, b, c, IMM8, k);
     transmute(r)
 }
 
@@ -5920,24 +5851,19 @@ pub unsafe fn _mm_mask_fixupimm_pd(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_fixupimm_pd&expand=2486)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vfixupimmpd, imm8 = 0))]
-#[rustc_args_required_const(4)]
-pub unsafe fn _mm_maskz_fixupimm_pd(
+#[cfg_attr(test, assert_instr(vfixupimmpd, IMM8 = 0))]
+#[rustc_legacy_const_generics(4)]
+pub unsafe fn _mm_maskz_fixupimm_pd<const IMM8: i32>(
     k: __mmask8,
     a: __m128d,
     b: __m128d,
     c: __m128i,
-    imm8: i32,
 ) -> __m128d {
+    static_assert_imm8!(IMM8);
     let a = a.as_f64x2();
     let b = b.as_f64x2();
     let c = c.as_i64x2();
-    macro_rules! call {
-        ($imm8:expr) => {
-            vfixupimmpdz128(a, b, c, $imm8, k)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+    let r = vfixupimmpdz128(a, b, c, IMM8, k);
     transmute(r)
 }
 
@@ -42165,7 +42091,8 @@ mod tests {
         let a = _mm512_set1_ps(f32::NAN);
         let b = _mm512_set1_ps(f32::MAX);
         let c = _mm512_set1_epi32(i32::MAX);
-        let r = _mm512_fixupimm_ps(a, b, c, 5);
+        //let r = _mm512_fixupimm_ps(a, b, c, 5);
+        let r = _mm512_fixupimm_ps::<5>(a, b, c);
         let e = _mm512_set1_ps(0.0);
         assert_eq_m512(r, e);
     }
@@ -42181,7 +42108,7 @@ mod tests {
         );
         let b = _mm512_set1_ps(f32::MAX);
         let c = _mm512_set1_epi32(i32::MAX);
-        let r = _mm512_mask_fixupimm_ps(a, 0b11111111_00000000, b, c, 5);
+        let r = _mm512_mask_fixupimm_ps::<5>(a, 0b11111111_00000000, b, c);
         let e = _mm512_set_ps(
             0., 0., 0., 0., 0., 0., 0., 0., 1., 1., 1., 1., 1., 1., 1., 1.,
         );
@@ -42199,7 +42126,7 @@ mod tests {
         );
         let b = _mm512_set1_ps(f32::MAX);
         let c = _mm512_set1_epi32(i32::MAX);
-        let r = _mm512_maskz_fixupimm_ps(0b11111111_00000000, a, b, c, 5);
+        let r = _mm512_maskz_fixupimm_ps::<5>(0b11111111_00000000, a, b, c);
         let e = _mm512_set_ps(
             0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,
         );
@@ -42211,7 +42138,7 @@ mod tests {
         let a = _mm256_set1_ps(f32::NAN);
         let b = _mm256_set1_ps(f32::MAX);
         let c = _mm256_set1_epi32(i32::MAX);
-        let r = _mm256_fixupimm_ps(a, b, c, 5);
+        let r = _mm256_fixupimm_ps::<5>(a, b, c);
         let e = _mm256_set1_ps(0.0);
         assert_eq_m256(r, e);
     }
@@ -42221,7 +42148,7 @@ mod tests {
         let a = _mm256_set1_ps(f32::NAN);
         let b = _mm256_set1_ps(f32::MAX);
         let c = _mm256_set1_epi32(i32::MAX);
-        let r = _mm256_mask_fixupimm_ps(a, 0b11111111, b, c, 5);
+        let r = _mm256_mask_fixupimm_ps::<5>(a, 0b11111111, b, c);
         let e = _mm256_set1_ps(0.0);
         assert_eq_m256(r, e);
     }
@@ -42231,7 +42158,7 @@ mod tests {
         let a = _mm256_set1_ps(f32::NAN);
         let b = _mm256_set1_ps(f32::MAX);
         let c = _mm256_set1_epi32(i32::MAX);
-        let r = _mm256_maskz_fixupimm_ps(0b11111111, a, b, c, 5);
+        let r = _mm256_maskz_fixupimm_ps::<5>(0b11111111, a, b, c);
         let e = _mm256_set1_ps(0.0);
         assert_eq_m256(r, e);
     }
@@ -42241,7 +42168,7 @@ mod tests {
         let a = _mm_set1_ps(f32::NAN);
         let b = _mm_set1_ps(f32::MAX);
         let c = _mm_set1_epi32(i32::MAX);
-        let r = _mm_fixupimm_ps(a, b, c, 5);
+        let r = _mm_fixupimm_ps::<5>(a, b, c);
         let e = _mm_set1_ps(0.0);
         assert_eq_m128(r, e);
     }
@@ -42251,7 +42178,7 @@ mod tests {
         let a = _mm_set1_ps(f32::NAN);
         let b = _mm_set1_ps(f32::MAX);
         let c = _mm_set1_epi32(i32::MAX);
-        let r = _mm_mask_fixupimm_ps(a, 0b00001111, b, c, 5);
+        let r = _mm_mask_fixupimm_ps::<5>(a, 0b00001111, b, c);
         let e = _mm_set1_ps(0.0);
         assert_eq_m128(r, e);
     }
@@ -42261,7 +42188,7 @@ mod tests {
         let a = _mm_set1_ps(f32::NAN);
         let b = _mm_set1_ps(f32::MAX);
         let c = _mm_set1_epi32(i32::MAX);
-        let r = _mm_maskz_fixupimm_ps(0b00001111, a, b, c, 5);
+        let r = _mm_maskz_fixupimm_ps::<5>(0b00001111, a, b, c);
         let e = _mm_set1_ps(0.0);
         assert_eq_m128(r, e);
     }
