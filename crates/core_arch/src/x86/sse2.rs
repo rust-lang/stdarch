@@ -2657,7 +2657,7 @@ pub unsafe fn _mm_loadu_pd(mem_addr: *const f64) -> __m128d {
 )]
 #[cfg_attr(
     all(test, all(target_os = "windows", target_arch = "x86_64")),
-    cfg_attr(test, assert_instr(shufpd, MASK = 250)) // FIXME shufpd expected
+    cfg_attr(test, assert_instr(shufpd, MASK = 1))
 )]
 #[rustc_legacy_const_generics(2)]
 #[stable(feature = "simd_x86", since = "1.27.0")]
