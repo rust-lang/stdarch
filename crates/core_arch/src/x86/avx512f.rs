@@ -5065,17 +5065,12 @@ pub unsafe fn _mm_maskz_roundscale_ps<const IMM8: i32>(k: __mmask8, a: __m128) -
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_roundscale_pd&expand=4775)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vrndscalepd, imm8 = 0))]
-#[rustc_args_required_const(1)]
-pub unsafe fn _mm512_roundscale_pd(a: __m512d, imm8: i32) -> __m512d {
+#[cfg_attr(test, assert_instr(vrndscalepd, IMM8 = 0))]
+#[rustc_legacy_const_generics(1)]
+pub unsafe fn _mm512_roundscale_pd<const IMM8: i32>(a: __m512d) -> __m512d {
     let a = a.as_f64x8();
     let zero = _mm512_setzero_pd().as_f64x8();
-    macro_rules! call {
-        ($imm8:expr) => {
-            vrndscalepd(a, $imm8, zero, 0b11111111, _MM_FROUND_CUR_DIRECTION)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+    let r = vrndscalepd(a, IMM8, zero, 0b11111111, _MM_FROUND_CUR_DIRECTION);
     transmute(r)
 }
 
@@ -5090,22 +5085,16 @@ pub unsafe fn _mm512_roundscale_pd(a: __m512d, imm8: i32) -> __m512d {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_roundscale_pd&expand=4773)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vrndscalepd, imm8 = 0))]
-#[rustc_args_required_const(3)]
-pub unsafe fn _mm512_mask_roundscale_pd(
+#[cfg_attr(test, assert_instr(vrndscalepd, IMM8 = 0))]
+#[rustc_legacy_const_generics(3)]
+pub unsafe fn _mm512_mask_roundscale_pd<const IMM8: i32>(
     src: __m512d,
     k: __mmask8,
     a: __m512d,
-    imm8: i32,
 ) -> __m512d {
     let a = a.as_f64x8();
     let src = src.as_f64x8();
-    macro_rules! call {
-        ($imm8:expr) => {
-            vrndscalepd(a, $imm8, src, k, _MM_FROUND_CUR_DIRECTION)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+    let r = vrndscalepd(a, IMM8, src, k, _MM_FROUND_CUR_DIRECTION);
     transmute(r)
 }
 
@@ -5120,17 +5109,12 @@ pub unsafe fn _mm512_mask_roundscale_pd(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_roundscale_pd&expand=4774)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vrndscalepd, imm8 = 0))]
-#[rustc_args_required_const(2)]
-pub unsafe fn _mm512_maskz_roundscale_pd(k: __mmask8, a: __m512d, imm8: i32) -> __m512d {
+#[cfg_attr(test, assert_instr(vrndscalepd, IMM8 = 0))]
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn _mm512_maskz_roundscale_pd<const IMM8: i32>(k: __mmask8, a: __m512d) -> __m512d {
     let a = a.as_f64x8();
     let zero = _mm512_setzero_pd().as_f64x8();
-    macro_rules! call {
-        ($imm8:expr) => {
-            vrndscalepd(a, $imm8, zero, k, _MM_FROUND_CUR_DIRECTION)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+    let r = vrndscalepd(a, IMM8, zero, k, _MM_FROUND_CUR_DIRECTION);
     transmute(r)
 }
 
@@ -5145,17 +5129,12 @@ pub unsafe fn _mm512_maskz_roundscale_pd(k: __mmask8, a: __m512d, imm8: i32) -> 
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_roundscale_pd&expand=4772)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vrndscalepd, imm8 = 0))]
-#[rustc_args_required_const(1)]
-pub unsafe fn _mm256_roundscale_pd(a: __m256d, imm8: i32) -> __m256d {
+#[cfg_attr(test, assert_instr(vrndscalepd, IMM8 = 0))]
+#[rustc_legacy_const_generics(1)]
+pub unsafe fn _mm256_roundscale_pd<const IMM8: i32>(a: __m256d) -> __m256d {
     let a = a.as_f64x4();
     let zero = _mm256_setzero_pd().as_f64x4();
-    macro_rules! call {
-        ($imm8:expr) => {
-            vrndscalepd256(a, $imm8, zero, 0b00001111)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+    let r = vrndscalepd256(a, IMM8, zero, 0b00001111);
     transmute(r)
 }
 
@@ -5170,22 +5149,16 @@ pub unsafe fn _mm256_roundscale_pd(a: __m256d, imm8: i32) -> __m256d {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_roundscale_pd&expand=4770)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vrndscalepd, imm8 = 0))]
-#[rustc_args_required_const(3)]
-pub unsafe fn _mm256_mask_roundscale_pd(
+#[cfg_attr(test, assert_instr(vrndscalepd, IMM8 = 0))]
+#[rustc_legacy_const_generics(3)]
+pub unsafe fn _mm256_mask_roundscale_pd<const IMM8: i32>(
     src: __m256d,
     k: __mmask8,
     a: __m256d,
-    imm8: i32,
 ) -> __m256d {
     let a = a.as_f64x4();
     let src = src.as_f64x4();
-    macro_rules! call {
-        ($imm8:expr) => {
-            vrndscalepd256(a, $imm8, src, k)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+    let r = vrndscalepd256(a, IMM8, src, k);
     transmute(r)
 }
 
@@ -5200,17 +5173,12 @@ pub unsafe fn _mm256_mask_roundscale_pd(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_roundscale_pd&expand=4771)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vrndscalepd, imm8 = 0))]
-#[rustc_args_required_const(2)]
-pub unsafe fn _mm256_maskz_roundscale_pd(k: __mmask8, a: __m256d, imm8: i32) -> __m256d {
+#[cfg_attr(test, assert_instr(vrndscalepd, IMM8 = 0))]
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn _mm256_maskz_roundscale_pd<const IMM8: i32>(k: __mmask8, a: __m256d) -> __m256d {
     let a = a.as_f64x4();
     let zero = _mm256_setzero_pd().as_f64x4();
-    macro_rules! call {
-        ($imm8:expr) => {
-            vrndscalepd256(a, $imm8, zero, k)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+    let r = vrndscalepd256(a, IMM8, zero, k);
     transmute(r)
 }
 
@@ -5225,17 +5193,12 @@ pub unsafe fn _mm256_maskz_roundscale_pd(k: __mmask8, a: __m256d, imm8: i32) -> 
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_roundscale_pd&expand=4769)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vrndscalepd, imm8 = 0))]
-#[rustc_args_required_const(1)]
-pub unsafe fn _mm_roundscale_pd(a: __m128d, imm8: i32) -> __m128d {
+#[cfg_attr(test, assert_instr(vrndscalepd, IMM8 = 0))]
+#[rustc_legacy_const_generics(1)]
+pub unsafe fn _mm_roundscale_pd<const IMM8: i32>(a: __m128d) -> __m128d {
     let a = a.as_f64x2();
     let zero = _mm_setzero_pd().as_f64x2();
-    macro_rules! call {
-        ($imm8:expr) => {
-            vrndscalepd128(a, $imm8, zero, 0b00000011)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+    let r = vrndscalepd128(a, IMM8, zero, 0b00000011);
     transmute(r)
 }
 
@@ -5250,17 +5213,16 @@ pub unsafe fn _mm_roundscale_pd(a: __m128d, imm8: i32) -> __m128d {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_roundscale_pd&expand=4767)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vrndscalepd, imm8 = 0))]
-#[rustc_args_required_const(3)]
-pub unsafe fn _mm_mask_roundscale_pd(src: __m128d, k: __mmask8, a: __m128d, imm8: i32) -> __m128d {
+#[cfg_attr(test, assert_instr(vrndscalepd, IMM8 = 0))]
+#[rustc_legacy_const_generics(3)]
+pub unsafe fn _mm_mask_roundscale_pd<const IMM8: i32>(
+    src: __m128d,
+    k: __mmask8,
+    a: __m128d,
+) -> __m128d {
     let a = a.as_f64x2();
     let src = src.as_f64x2();
-    macro_rules! call {
-        ($imm8:expr) => {
-            vrndscalepd128(a, $imm8, src, k)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+    let r = vrndscalepd128(a, IMM8, src, k);
     transmute(r)
 }
 
@@ -5275,17 +5237,12 @@ pub unsafe fn _mm_mask_roundscale_pd(src: __m128d, k: __mmask8, a: __m128d, imm8
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_roundscale_pd&expand=4768)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vrndscalepd, imm8 = 0))]
-#[rustc_args_required_const(2)]
-pub unsafe fn _mm_maskz_roundscale_pd(k: __mmask8, a: __m128d, imm8: i32) -> __m128d {
+#[cfg_attr(test, assert_instr(vrndscalepd, IMM8 = 0))]
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn _mm_maskz_roundscale_pd<const IMM8: i32>(k: __mmask8, a: __m128d) -> __m128d {
     let a = a.as_f64x2();
     let zero = _mm_setzero_pd().as_f64x2();
-    macro_rules! call {
-        ($imm8:expr) => {
-            vrndscalepd128(a, $imm8, zero, k)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+    let r = vrndscalepd128(a, IMM8, zero, k);
     transmute(r)
 }
 

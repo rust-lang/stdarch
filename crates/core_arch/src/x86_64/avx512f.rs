@@ -2920,7 +2920,7 @@ mod tests {
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_roundscale_pd() {
         let a = _mm512_set1_pd(1.1);
-        let r = _mm512_roundscale_pd(a, 0);
+        let r = _mm512_roundscale_pd::<0b00_00_00_00>(a);
         let e = _mm512_set1_pd(1.0);
         assert_eq_m512d(r, e);
     }
@@ -2928,10 +2928,10 @@ mod tests {
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_mask_roundscale_pd() {
         let a = _mm512_set1_pd(1.1);
-        let r = _mm512_mask_roundscale_pd(a, 0, a, 0);
+        let r = _mm512_mask_roundscale_pd::<0b00_00_00_00>(a, 0, a);
         let e = _mm512_set1_pd(1.1);
         assert_eq_m512d(r, e);
-        let r = _mm512_mask_roundscale_pd(a, 0b11111111, a, 0);
+        let r = _mm512_mask_roundscale_pd::<0b00_00_00_00>(a, 0b11111111, a);
         let e = _mm512_set1_pd(1.0);
         assert_eq_m512d(r, e);
     }
@@ -2939,9 +2939,9 @@ mod tests {
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_maskz_roundscale_pd() {
         let a = _mm512_set1_pd(1.1);
-        let r = _mm512_maskz_roundscale_pd(0, a, 0);
+        let r = _mm512_maskz_roundscale_pd::<0b00_00_00_00>(0, a);
         assert_eq_m512d(r, _mm512_setzero_pd());
-        let r = _mm512_maskz_roundscale_pd(0b11111111, a, 0);
+        let r = _mm512_maskz_roundscale_pd::<0b00_00_00_00>(0b11111111, a);
         let e = _mm512_set1_pd(1.0);
         assert_eq_m512d(r, e);
     }
@@ -2949,7 +2949,7 @@ mod tests {
     #[simd_test(enable = "avx512f,avx512vl")]
     unsafe fn test_mm256_roundscale_pd() {
         let a = _mm256_set1_pd(1.1);
-        let r = _mm256_roundscale_pd(a, 0);
+        let r = _mm256_roundscale_pd::<0b00_00_00_00>(a);
         let e = _mm256_set1_pd(1.0);
         assert_eq_m256d(r, e);
     }
@@ -2957,10 +2957,9 @@ mod tests {
     #[simd_test(enable = "avx512f,avx512vl")]
     unsafe fn test_mm256_mask_roundscale_pd() {
         let a = _mm256_set1_pd(1.1);
-        let r = _mm256_mask_roundscale_pd(a, 0, a, 0);
-        let e = _mm256_set1_pd(1.1);
-        assert_eq_m256d(r, e);
-        let r = _mm256_mask_roundscale_pd(a, 0b00001111, a, 0);
+        let r = _mm256_mask_roundscale_pd::<0b00_00_00_00>(a, 0, a);
+        assert_eq_m256d(r, a);
+        let r = _mm256_mask_roundscale_pd::<0b00_00_00_00>(a, 0b00001111, a);
         let e = _mm256_set1_pd(1.0);
         assert_eq_m256d(r, e);
     }
@@ -2968,9 +2967,9 @@ mod tests {
     #[simd_test(enable = "avx512f,avx512vl")]
     unsafe fn test_mm256_maskz_roundscale_pd() {
         let a = _mm256_set1_pd(1.1);
-        let r = _mm256_maskz_roundscale_pd(0, a, 0);
+        let r = _mm256_maskz_roundscale_pd::<0b00_00_00_00>(0, a);
         assert_eq_m256d(r, _mm256_setzero_pd());
-        let r = _mm256_maskz_roundscale_pd(0b00001111, a, 0);
+        let r = _mm256_maskz_roundscale_pd::<0b00_00_00_00>(0b00001111, a);
         let e = _mm256_set1_pd(1.0);
         assert_eq_m256d(r, e);
     }
@@ -2978,7 +2977,7 @@ mod tests {
     #[simd_test(enable = "avx512f,avx512vl")]
     unsafe fn test_mm_roundscale_pd() {
         let a = _mm_set1_pd(1.1);
-        let r = _mm_roundscale_pd(a, 0);
+        let r = _mm_roundscale_pd::<0b00_00_00_00>(a);
         let e = _mm_set1_pd(1.0);
         assert_eq_m128d(r, e);
     }
@@ -2986,10 +2985,10 @@ mod tests {
     #[simd_test(enable = "avx512f,avx512vl")]
     unsafe fn test_mm_mask_roundscale_pd() {
         let a = _mm_set1_pd(1.1);
-        let r = _mm_mask_roundscale_pd(a, 0, a, 0);
+        let r = _mm_mask_roundscale_pd::<0b00_00_00_00>(a, 0, a);
         let e = _mm_set1_pd(1.1);
         assert_eq_m128d(r, e);
-        let r = _mm_mask_roundscale_pd(a, 0b00000011, a, 0);
+        let r = _mm_mask_roundscale_pd::<0b00_00_00_00>(a, 0b00000011, a);
         let e = _mm_set1_pd(1.0);
         assert_eq_m128d(r, e);
     }
@@ -2997,9 +2996,9 @@ mod tests {
     #[simd_test(enable = "avx512f,avx512vl")]
     unsafe fn test_mm_maskz_roundscale_pd() {
         let a = _mm_set1_pd(1.1);
-        let r = _mm_maskz_roundscale_pd(0, a, 0);
+        let r = _mm_maskz_roundscale_pd::<0b00_00_00_00>(0, a);
         assert_eq_m128d(r, _mm_setzero_pd());
-        let r = _mm_maskz_roundscale_pd(0b00000011, a, 0);
+        let r = _mm_maskz_roundscale_pd::<0b00_00_00_00>(0b00000011, a);
         let e = _mm_set1_pd(1.0);
         assert_eq_m128d(r, e);
     }
