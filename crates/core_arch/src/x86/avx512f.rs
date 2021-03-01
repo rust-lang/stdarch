@@ -22525,75 +22525,32 @@ pub unsafe fn _mm_maskz_shuffle_epi32(k: __mmask8, a: __m128i, imm8: _MM_PERM_EN
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_shuffle_ps&expand=5203)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vshufps, imm8 = 0))]
-#[rustc_args_required_const(2)]
-pub unsafe fn _mm512_shuffle_ps(a: __m512, b: __m512, imm8: i32) -> __m512 {
-    assert!(imm8 >= 0 && imm8 <= 255);
-    let imm8 = (imm8 & 0xFF) as u8;
-    macro_rules! shuffle4 {
-        (
-            $a:expr,
-            $b:expr,
-            $c:expr,
-            $d:expr,
-            $e:expr,
-            $f:expr,
-            $g:expr,
-            $h:expr,
-            $i:expr,
-            $j:expr,
-            $k:expr,
-            $l:expr,
-            $m:expr,
-            $n:expr,
-            $o:expr,
-            $p:expr
-        ) => {
-            simd_shuffle16(
-                a,
-                b,
-                [
-                    $a, $b, $c, $d, $e, $f, $g, $h, $i, $j, $k, $l, $m, $n, $o, $p,
-                ],
-            )
-        };
-    }
-    macro_rules! shuffle3 {
-        ($a:expr, $b:expr, $c:expr, $e:expr, $f:expr, $g:expr, $i:expr, $j:expr, $k:expr, $m:expr, $n:expr, $o:expr) => {
-            match (imm8 >> 6) & 0x3 {
-                0 => shuffle4!($a, $b, $c, 16, $e, $f, $g, 20, $i, $j, $k, 24, $m, $n, $o, 28),
-                1 => shuffle4!($a, $b, $c, 17, $e, $f, $g, 21, $i, $j, $k, 25, $m, $n, $o, 29),
-                2 => shuffle4!($a, $b, $c, 18, $e, $f, $g, 22, $i, $j, $k, 26, $m, $n, $o, 30),
-                _ => shuffle4!($a, $b, $c, 19, $e, $f, $g, 23, $i, $j, $k, 27, $m, $n, $o, 31),
-            }
-        };
-    }
-    macro_rules! shuffle2 {
-        ($a:expr, $b:expr, $e:expr, $f:expr, $i:expr, $j:expr, $m:expr, $n:expr) => {
-            match (imm8 >> 4) & 0x3 {
-                0 => shuffle3!($a, $b, 16, $e, $f, 20, $i, $j, 24, $m, $n, 28),
-                1 => shuffle3!($a, $b, 17, $e, $f, 21, $i, $j, 25, $m, $n, 29),
-                2 => shuffle3!($a, $b, 18, $e, $f, 22, $i, $j, 26, $m, $n, 30),
-                _ => shuffle3!($a, $b, 19, $e, $f, 23, $i, $j, 27, $m, $n, 31),
-            }
-        };
-    }
-    macro_rules! shuffle1 {
-        ($a:expr, $e:expr, $i: expr, $m: expr) => {
-            match (imm8 >> 2) & 0x3 {
-                0 => shuffle2!($a, 0, $e, 4, $i, 8, $m, 12),
-                1 => shuffle2!($a, 1, $e, 5, $i, 9, $m, 13),
-                2 => shuffle2!($a, 2, $e, 6, $i, 10, $m, 14),
-                _ => shuffle2!($a, 3, $e, 7, $i, 11, $m, 15),
-            }
-        };
-    }
-    match imm8 & 0x3 {
-        0 => shuffle1!(0, 4, 8, 12),
-        1 => shuffle1!(1, 5, 9, 13),
-        2 => shuffle1!(2, 6, 10, 14),
-        _ => shuffle1!(3, 7, 11, 15),
-    }
+#[cfg_attr(test, assert_instr(vshufps, MASK = 3))]
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn _mm512_shuffle_ps<const MASK: i32>(a: __m512, b: __m512) -> __m512 {
+    static_assert_imm8!(MASK);
+    simd_shuffle16(
+        a,
+        b,
+        [
+            MASK as u32 & 0b11,
+            (MASK as u32 >> 2) & 0b11,
+            ((MASK as u32 >> 4) & 0b11) + 16,
+            ((MASK as u32 >> 6) & 0b11) + 16,
+            (MASK as u32 & 0b11) + 4,
+            ((MASK as u32 >> 2) & 0b11) + 4,
+            ((MASK as u32 >> 4) & 0b11) + 20,
+            ((MASK as u32 >> 6) & 0b11) + 20,
+            (MASK as u32 & 0b11) + 8,
+            ((MASK as u32 >> 2) & 0b11) + 8,
+            ((MASK as u32 >> 4) & 0b11) + 24,
+            ((MASK as u32 >> 6) & 0b11) + 24,
+            (MASK as u32 & 0b11) + 12,
+            ((MASK as u32 >> 2) & 0b11) + 12,
+            ((MASK as u32 >> 4) & 0b11) + 28,
+            ((MASK as u32 >> 6) & 0b11) + 28,
+        ],
+    )
 }
 
 /// Shuffle single-precision (32-bit) floating-point elements in a within 128-bit lanes using the control in imm8, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
@@ -22601,21 +22558,15 @@ pub unsafe fn _mm512_shuffle_ps(a: __m512, b: __m512, imm8: i32) -> __m512 {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_shuffle_ps&expand=5201)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vshufps, imm8 = 0))]
-#[rustc_args_required_const(4)]
-pub unsafe fn _mm512_mask_shuffle_ps(
+#[cfg_attr(test, assert_instr(vshufps, MASK = 3))]
+#[rustc_legacy_const_generics(4)]
+pub unsafe fn _mm512_mask_shuffle_ps<const MASK: i32>(
     src: __m512,
     k: __mmask16,
     a: __m512,
     b: __m512,
-    imm8: i32,
 ) -> __m512 {
-    macro_rules! call {
-        ($imm8:expr) => {
-            _mm512_shuffle_ps(a, b, $imm8)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+    let r = _mm512_shuffle_ps::<MASK>(a, b);
     transmute(simd_select_bitmask(k, r.as_f32x16(), src.as_f32x16()))
 }
 
@@ -22624,15 +22575,14 @@ pub unsafe fn _mm512_mask_shuffle_ps(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_shuffle_ps&expand=5202)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vshufps, imm8 = 0))]
-#[rustc_args_required_const(3)]
-pub unsafe fn _mm512_maskz_shuffle_ps(k: __mmask16, a: __m512, b: __m512, imm8: i32) -> __m512 {
-    macro_rules! call {
-        ($imm8:expr) => {
-            _mm512_shuffle_ps(a, b, $imm8)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+#[cfg_attr(test, assert_instr(vshufps, MASK = 3))]
+#[rustc_legacy_const_generics(3)]
+pub unsafe fn _mm512_maskz_shuffle_ps<const MASK: i32>(
+    k: __mmask16,
+    a: __m512,
+    b: __m512,
+) -> __m512 {
+    let r = _mm512_shuffle_ps::<MASK>(a, b);
     let zero = _mm512_setzero_ps().as_f32x16();
     transmute(simd_select_bitmask(k, r.as_f32x16(), zero))
 }
@@ -22642,21 +22592,15 @@ pub unsafe fn _mm512_maskz_shuffle_ps(k: __mmask16, a: __m512, b: __m512, imm8: 
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_shuffle_ps&expand=5198)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vshufps, imm8 = 9))]
-#[rustc_args_required_const(4)]
-pub unsafe fn _mm256_mask_shuffle_ps(
+#[cfg_attr(test, assert_instr(vshufps, MASK = 3))]
+#[rustc_legacy_const_generics(4)]
+pub unsafe fn _mm256_mask_shuffle_ps<const MASK: i32>(
     src: __m256,
     k: __mmask8,
     a: __m256,
     b: __m256,
-    imm8: i32,
 ) -> __m256 {
-    macro_rules! call {
-        ($imm8:expr) => {
-            _mm256_shuffle_ps(a, b, $imm8)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+    let r = _mm256_shuffle_ps::<MASK>(a, b);
     transmute(simd_select_bitmask(k, r.as_f32x8(), src.as_f32x8()))
 }
 
@@ -22665,15 +22609,14 @@ pub unsafe fn _mm256_mask_shuffle_ps(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_shuffle_ps&expand=5199)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vshufps, imm8 = 9))]
-#[rustc_args_required_const(3)]
-pub unsafe fn _mm256_maskz_shuffle_ps(k: __mmask8, a: __m256, b: __m256, imm8: i32) -> __m256 {
-    macro_rules! call {
-        ($imm8:expr) => {
-            _mm256_shuffle_ps(a, b, $imm8)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+#[cfg_attr(test, assert_instr(vshufps, MASK = 3))]
+#[rustc_legacy_const_generics(3)]
+pub unsafe fn _mm256_maskz_shuffle_ps<const MASK: i32>(
+    k: __mmask8,
+    a: __m256,
+    b: __m256,
+) -> __m256 {
+    let r = _mm256_shuffle_ps::<MASK>(a, b);
     let zero = _mm256_setzero_ps().as_f32x8();
     transmute(simd_select_bitmask(k, r.as_f32x8(), zero))
 }
@@ -22683,21 +22626,15 @@ pub unsafe fn _mm256_maskz_shuffle_ps(k: __mmask8, a: __m256, b: __m256, imm8: i
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_shuffle_ps&expand=5195)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vshufps, imm8 = 9))]
-#[rustc_args_required_const(4)]
-pub unsafe fn _mm_mask_shuffle_ps(
+#[cfg_attr(test, assert_instr(vshufps, MASK = 3))]
+#[rustc_legacy_const_generics(4)]
+pub unsafe fn _mm_mask_shuffle_ps<const MASK: i32>(
     src: __m128,
     k: __mmask8,
     a: __m128,
     b: __m128,
-    imm8: i32,
 ) -> __m128 {
-    macro_rules! call {
-        ($imm8:expr) => {
-            _mm_shuffle_ps::<$imm8>(a, b)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+    let r = _mm_shuffle_ps::<MASK>(a, b);
     transmute(simd_select_bitmask(k, r.as_f32x4(), src.as_f32x4()))
 }
 
@@ -22706,15 +22643,10 @@ pub unsafe fn _mm_mask_shuffle_ps(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_shuffle_ps&expand=5196)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vshufps, imm8 = 9))]
-#[rustc_args_required_const(3)]
-pub unsafe fn _mm_maskz_shuffle_ps(k: __mmask8, a: __m128, b: __m128, imm8: i32) -> __m128 {
-    macro_rules! call {
-        ($imm8:expr) => {
-            _mm_shuffle_ps::<$imm8>(a, b)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+#[cfg_attr(test, assert_instr(vshufps, MASK = 3))]
+#[rustc_legacy_const_generics(3)]
+pub unsafe fn _mm_maskz_shuffle_ps<const MASK: i32>(k: __mmask8, a: __m128, b: __m128) -> __m128 {
+    let r = _mm_shuffle_ps::<MASK>(a, b);
     let zero = _mm_setzero_ps().as_f32x4();
     transmute(simd_select_bitmask(k, r.as_f32x4(), zero))
 }
@@ -22724,76 +22656,24 @@ pub unsafe fn _mm_maskz_shuffle_ps(k: __mmask8, a: __m128, b: __m128, imm8: i32)
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_shuffle_pd&expand=5192)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vshufpd, imm8 = 3))]
-#[rustc_args_required_const(2)]
-pub unsafe fn _mm512_shuffle_pd(a: __m512d, b: __m512d, imm8: i32) -> __m512d {
-    assert!(imm8 >= 0 && imm8 <= 255);
-    let imm8 = (imm8 & 0xFF) as u8;
-    macro_rules! shuffle8 {
-        ($a:expr, $b:expr, $c:expr, $d:expr, $e:expr, $f:expr, $g:expr, $h:expr) => {
-            simd_shuffle8(a, b, [$a, $b, $c, $d, $e, $f, $g, $h])
-        };
-    }
-    macro_rules! shuffle7 {
-        ($a:expr, $b:expr, $c:expr, $d:expr, $e:expr, $f:expr, $g:expr) => {
-            match (imm8 >> 7) & 0x1 {
-                0 => shuffle8!($a, $b, $c, $d, $e, $f, $g, 14),
-                _ => shuffle8!($a, $b, $c, $d, $e, $f, $g, 15),
-            }
-        };
-    }
-    macro_rules! shuffle6 {
-        ($a:expr, $b:expr, $c:expr, $d:expr, $e:expr, $f:expr) => {
-            match (imm8 >> 6) & 0x1 {
-                0 => shuffle7!($a, $b, $c, $d, $e, $f, 6),
-                _ => shuffle7!($a, $b, $c, $d, $e, $f, 7),
-            }
-        };
-    }
-    macro_rules! shuffle5 {
-        ($a:expr, $b:expr, $c:expr, $d:expr, $e:expr) => {
-            match (imm8 >> 5) & 0x1 {
-                0 => shuffle6!($a, $b, $c, $d, $e, 12),
-                _ => shuffle6!($a, $b, $c, $d, $e, 13),
-            }
-        };
-    }
-    macro_rules! shuffle4 {
-        ($a:expr, $b:expr, $c:expr, $d:expr) => {
-            match (imm8 >> 4) & 0x1 {
-                0 => shuffle5!($a, $b, $c, $d, 4),
-                _ => shuffle5!($a, $b, $c, $d, 5),
-            }
-        };
-    }
-    macro_rules! shuffle3 {
-        ($a:expr, $b:expr, $c:expr) => {
-            match (imm8 >> 3) & 0x1 {
-                0 => shuffle4!($a, $b, $c, 10),
-                _ => shuffle4!($a, $b, $c, 11),
-            }
-        };
-    }
-    macro_rules! shuffle2 {
-        ($a:expr, $b:expr) => {
-            match (imm8 >> 2) & 0x1 {
-                0 => shuffle3!($a, $b, 2),
-                _ => shuffle3!($a, $b, 3),
-            }
-        };
-    }
-    macro_rules! shuffle1 {
-        ($a:expr) => {
-            match (imm8 >> 1) & 0x1 {
-                0 => shuffle2!($a, 8),
-                _ => shuffle2!($a, 9),
-            }
-        };
-    }
-    match imm8 & 0x1 {
-        0 => shuffle1!(0),
-        _ => shuffle1!(1),
-    }
+#[cfg_attr(test, assert_instr(vshufpd, MASK = 3))]
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn _mm512_shuffle_pd<const MASK: i32>(a: __m512d, b: __m512d) -> __m512d {
+    static_assert_imm8!(MASK);
+    simd_shuffle8(
+        a,
+        b,
+        [
+            MASK as u32 & 0b1,
+            ((MASK as u32 >> 1) & 0b1) + 8,
+            ((MASK as u32 >> 2) & 0b1) + 2,
+            ((MASK as u32 >> 3) & 0b1) + 10,
+            ((MASK as u32 >> 4) & 0b1) + 4,
+            ((MASK as u32 >> 5) & 0b1) + 12,
+            ((MASK as u32 >> 6) & 0b1) + 6,
+            ((MASK as u32 >> 7) & 0b1) + 14,
+        ],
+    )
 }
 
 /// Shuffle double-precision (64-bit) floating-point elements within 128-bit lanes using the control in imm8, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
@@ -22801,21 +22681,15 @@ pub unsafe fn _mm512_shuffle_pd(a: __m512d, b: __m512d, imm8: i32) -> __m512d {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_shuffle_pd&expand=5190)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vshufpd, imm8 = 3))]
-#[rustc_args_required_const(4)]
-pub unsafe fn _mm512_mask_shuffle_pd(
+#[cfg_attr(test, assert_instr(vshufpd, MASK = 3))]
+#[rustc_legacy_const_generics(4)]
+pub unsafe fn _mm512_mask_shuffle_pd<const MASK: i32>(
     src: __m512d,
     k: __mmask8,
     a: __m512d,
     b: __m512d,
-    imm8: i32,
 ) -> __m512d {
-    macro_rules! call {
-        ($imm8:expr) => {
-            _mm512_shuffle_pd(a, b, $imm8)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+    let r = _mm512_shuffle_pd::<MASK>(a, b);
     transmute(simd_select_bitmask(k, r.as_f64x8(), src.as_f64x8()))
 }
 
@@ -22824,15 +22698,14 @@ pub unsafe fn _mm512_mask_shuffle_pd(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_shuffle_pd&expand=5191)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vshufpd, imm8 = 3))]
-#[rustc_args_required_const(3)]
-pub unsafe fn _mm512_maskz_shuffle_pd(k: __mmask8, a: __m512d, b: __m512d, imm8: i32) -> __m512d {
-    macro_rules! call {
-        ($imm8:expr) => {
-            _mm512_shuffle_pd(a, b, $imm8)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+#[cfg_attr(test, assert_instr(vshufpd, MASK = 3))]
+#[rustc_legacy_const_generics(3)]
+pub unsafe fn _mm512_maskz_shuffle_pd<const MASK: i32>(
+    k: __mmask8,
+    a: __m512d,
+    b: __m512d,
+) -> __m512d {
+    let r = _mm512_shuffle_pd::<MASK>(a, b);
     let zero = _mm512_setzero_pd().as_f64x8();
     transmute(simd_select_bitmask(k, r.as_f64x8(), zero))
 }
@@ -22842,21 +22715,15 @@ pub unsafe fn _mm512_maskz_shuffle_pd(k: __mmask8, a: __m512d, b: __m512d, imm8:
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_shuffle_pd&expand=5187)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vshufpd, imm8 = 9))]
-#[rustc_args_required_const(4)]
-pub unsafe fn _mm256_mask_shuffle_pd(
+#[cfg_attr(test, assert_instr(vshufpd, MASK = 3))]
+#[rustc_legacy_const_generics(4)]
+pub unsafe fn _mm256_mask_shuffle_pd<const MASK: i32>(
     src: __m256d,
     k: __mmask8,
     a: __m256d,
     b: __m256d,
-    imm8: i32,
 ) -> __m256d {
-    macro_rules! call {
-        ($imm8:expr) => {
-            _mm256_shuffle_pd(a, b, $imm8)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+    let r = _mm256_shuffle_pd::<MASK>(a, b);
     transmute(simd_select_bitmask(k, r.as_f64x4(), src.as_f64x4()))
 }
 
@@ -22865,15 +22732,14 @@ pub unsafe fn _mm256_mask_shuffle_pd(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_shuffle_pd&expand=5188)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vshufpd, imm8 = 9))]
-#[rustc_args_required_const(3)]
-pub unsafe fn _mm256_maskz_shuffle_pd(k: __mmask8, a: __m256d, b: __m256d, imm8: i32) -> __m256d {
-    macro_rules! call {
-        ($imm8:expr) => {
-            _mm256_shuffle_pd(a, b, $imm8)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+#[cfg_attr(test, assert_instr(vshufpd, MASK = 3))]
+#[rustc_legacy_const_generics(3)]
+pub unsafe fn _mm256_maskz_shuffle_pd<const MASK: i32>(
+    k: __mmask8,
+    a: __m256d,
+    b: __m256d,
+) -> __m256d {
+    let r = _mm256_shuffle_pd::<MASK>(a, b);
     let zero = _mm256_setzero_pd().as_f64x4();
     transmute(simd_select_bitmask(k, r.as_f64x4(), zero))
 }
@@ -22883,21 +22749,15 @@ pub unsafe fn _mm256_maskz_shuffle_pd(k: __mmask8, a: __m256d, b: __m256d, imm8:
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_shuffle_pd&expand=5184)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vshufpd, imm8 = 9))]
-#[rustc_args_required_const(4)]
-pub unsafe fn _mm_mask_shuffle_pd(
+#[cfg_attr(test, assert_instr(vshufpd, MASK = 1))]
+#[rustc_legacy_const_generics(4)]
+pub unsafe fn _mm_mask_shuffle_pd<const MASK: i32>(
     src: __m128d,
     k: __mmask8,
     a: __m128d,
     b: __m128d,
-    imm8: i32,
 ) -> __m128d {
-    macro_rules! call {
-        ($imm8:expr) => {
-            _mm_shuffle_pd(a, b, $imm8)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+    let r = _mm_shuffle_pd::<MASK>(a, b);
     transmute(simd_select_bitmask(k, r.as_f64x2(), src.as_f64x2()))
 }
 
@@ -22906,15 +22766,14 @@ pub unsafe fn _mm_mask_shuffle_pd(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_shuffle_pd&expand=5185)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vshufpd, imm8 = 9))]
-#[rustc_args_required_const(3)]
-pub unsafe fn _mm_maskz_shuffle_pd(k: __mmask8, a: __m128d, b: __m128d, imm8: i32) -> __m128d {
-    macro_rules! call {
-        ($imm8:expr) => {
-            _mm_shuffle_pd(a, b, $imm8)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+#[cfg_attr(test, assert_instr(vshufpd, MASK = 1))]
+#[rustc_legacy_const_generics(3)]
+pub unsafe fn _mm_maskz_shuffle_pd<const MASK: i32>(
+    k: __mmask8,
+    a: __m128d,
+    b: __m128d,
+) -> __m128d {
+    let r = _mm_shuffle_pd::<MASK>(a, b);
     let zero = _mm_setzero_pd().as_f64x2();
     transmute(simd_select_bitmask(k, r.as_f64x2(), zero))
 }
@@ -49133,7 +48992,7 @@ mod tests {
         let b = _mm512_setr_ps(
             2., 3., 6., 7., 10., 11., 14., 15., 2., 3., 6., 7., 10., 11., 14., 15.,
         );
-        let r = _mm512_shuffle_ps(a, b, 0x0F);
+        let r = _mm512_shuffle_ps::<0b00_00_11_11>(a, b);
         let e = _mm512_setr_ps(
             8., 8., 2., 2., 16., 16., 10., 10., 8., 8., 2., 2., 16., 16., 10., 10.,
         );
@@ -49148,9 +49007,9 @@ mod tests {
         let b = _mm512_setr_ps(
             2., 3., 6., 7., 10., 11., 14., 15., 2., 3., 6., 7., 10., 11., 14., 15.,
         );
-        let r = _mm512_mask_shuffle_ps(a, 0, a, b, 0x0F);
+        let r = _mm512_mask_shuffle_ps::<0b00_00_11_11>(a, 0, a, b);
         assert_eq_m512(r, a);
-        let r = _mm512_mask_shuffle_ps(a, 0b11111111_11111111, a, b, 0x0F);
+        let r = _mm512_mask_shuffle_ps::<0b00_00_11_11>(a, 0b11111111_11111111, a, b);
         let e = _mm512_setr_ps(
             8., 8., 2., 2., 16., 16., 10., 10., 8., 8., 2., 2., 16., 16., 10., 10.,
         );
@@ -49165,9 +49024,9 @@ mod tests {
         let b = _mm512_setr_ps(
             2., 3., 6., 7., 10., 11., 14., 15., 2., 3., 6., 7., 10., 11., 14., 15.,
         );
-        let r = _mm512_maskz_shuffle_ps(0, a, b, 0x0F);
+        let r = _mm512_maskz_shuffle_ps::<0b00_00_11_11>(0, a, b);
         assert_eq_m512(r, _mm512_setzero_ps());
-        let r = _mm512_maskz_shuffle_ps(0b00000000_11111111, a, b, 0x0F);
+        let r = _mm512_maskz_shuffle_ps::<0b00_00_11_11>(0b00000000_11111111, a, b);
         let e = _mm512_setr_ps(
             8., 8., 2., 2., 16., 16., 10., 10., 0., 0., 0., 0., 0., 0., 0., 0.,
         );
@@ -49178,9 +49037,9 @@ mod tests {
     unsafe fn test_mm256_mask_shuffle_ps() {
         let a = _mm256_set_ps(1., 4., 5., 8., 9., 12., 13., 16.);
         let b = _mm256_set_ps(2., 3., 6., 7., 10., 11., 14., 15.);
-        let r = _mm256_mask_shuffle_ps(a, 0, a, b, 0x0F);
+        let r = _mm256_mask_shuffle_ps::<0b11_11_11_11>(a, 0, a, b);
         assert_eq_m256(r, a);
-        let r = _mm256_mask_shuffle_ps(a, 0b11111111, a, b, 0x0F);
+        let r = _mm256_mask_shuffle_ps::<0b00_00_11_11>(a, 0b11111111, a, b);
         let e = _mm256_set_ps(7., 7., 1., 1., 15., 15., 9., 9.);
         assert_eq_m256(r, e);
     }
@@ -49189,9 +49048,9 @@ mod tests {
     unsafe fn test_mm256_maskz_shuffle_ps() {
         let a = _mm256_set_ps(1., 4., 5., 8., 9., 12., 13., 16.);
         let b = _mm256_set_ps(2., 3., 6., 7., 10., 11., 14., 15.);
-        let r = _mm256_maskz_shuffle_ps(0, a, b, 0x0F);
+        let r = _mm256_maskz_shuffle_ps::<0b11_11_11_11>(0, a, b);
         assert_eq_m256(r, _mm256_setzero_ps());
-        let r = _mm256_maskz_shuffle_ps(0b11111111, a, b, 0x0F);
+        let r = _mm256_maskz_shuffle_ps::<0b00_00_11_11>(0b11111111, a, b);
         let e = _mm256_set_ps(7., 7., 1., 1., 15., 15., 9., 9.);
         assert_eq_m256(r, e);
     }
@@ -49200,9 +49059,9 @@ mod tests {
     unsafe fn test_mm_mask_shuffle_ps() {
         let a = _mm_set_ps(1., 4., 5., 8.);
         let b = _mm_set_ps(2., 3., 6., 7.);
-        let r = _mm_mask_shuffle_ps(a, 0, a, b, 0x0F);
+        let r = _mm_mask_shuffle_ps::<0b11_11_11_11>(a, 0, a, b);
         assert_eq_m128(r, a);
-        let r = _mm_mask_shuffle_ps(a, 0b00001111, a, b, 0x0F);
+        let r = _mm_mask_shuffle_ps::<0b00_00_11_11>(a, 0b00001111, a, b);
         let e = _mm_set_ps(7., 7., 1., 1.);
         assert_eq_m128(r, e);
     }
@@ -49211,9 +49070,9 @@ mod tests {
     unsafe fn test_mm_maskz_shuffle_ps() {
         let a = _mm_set_ps(1., 4., 5., 8.);
         let b = _mm_set_ps(2., 3., 6., 7.);
-        let r = _mm_maskz_shuffle_ps(0, a, b, 0x0F);
+        let r = _mm_maskz_shuffle_ps::<0b11_11_11_11>(0, a, b);
         assert_eq_m128(r, _mm_setzero_ps());
-        let r = _mm_maskz_shuffle_ps(0b00001111, a, b, 0x0F);
+        let r = _mm_maskz_shuffle_ps::<0b00_00_11_11>(0b00001111, a, b);
         let e = _mm_set_ps(7., 7., 1., 1.);
         assert_eq_m128(r, e);
     }
@@ -55376,5 +55235,36 @@ mod tests {
         let r = _mm512_cvtsi512_si32(a);
         let e: i32 = 1;
         assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_shuffle_pd() {
+        let a = _mm512_setr_pd(1., 4., 5., 8., 1., 4., 5., 8.);
+        let b = _mm512_setr_pd(2., 3., 6., 7., 2., 3., 6., 7.);
+        let r = _mm512_shuffle_pd::<0b11_11_11_11>(a, b);
+        let e = _mm512_setr_pd(4., 3., 8., 7., 4., 3., 8., 7.);
+        assert_eq_m512d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_shuffle_pd() {
+        let a = _mm512_setr_pd(1., 4., 5., 8., 1., 4., 5., 8.);
+        let b = _mm512_setr_pd(2., 3., 6., 7., 2., 3., 6., 7.);
+        let r = _mm512_mask_shuffle_pd::<0b11_11_11_11>(a, 0, a, b);
+        assert_eq_m512d(r, a);
+        let r = _mm512_mask_shuffle_pd::<0b11_11_11_11>(a, 0b11111111, a, b);
+        let e = _mm512_setr_pd(4., 3., 8., 7., 4., 3., 8., 7.);
+        assert_eq_m512d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_maskz_shuffle_pd() {
+        let a = _mm512_setr_pd(1., 4., 5., 8., 1., 4., 5., 8.);
+        let b = _mm512_setr_pd(2., 3., 6., 7., 2., 3., 6., 7.);
+        let r = _mm512_maskz_shuffle_pd::<0b11_11_11_11>(0, a, b);
+        assert_eq_m512d(r, _mm512_setzero_pd());
+        let r = _mm512_maskz_shuffle_pd::<0b11_11_11_11>(0b00001111, a, b);
+        let e = _mm512_setr_pd(4., 3., 8., 7., 0., 0., 0., 0.);
+        assert_eq_m512d(r, e);
     }
 }
