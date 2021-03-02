@@ -9498,18 +9498,14 @@ pub unsafe fn _mm512_maskz_roundscale_round_pd(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_scalef_round_ps&expand=4889)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vscalefps, rounding = 8))]
-#[rustc_args_required_const(2)]
-pub unsafe fn _mm512_scalef_round_ps(a: __m512, b: __m512, rounding: i32) -> __m512 {
+#[cfg_attr(test, assert_instr(vscalefps, ROUNDING = 8))]
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn _mm512_scalef_round_ps<const ROUNDING: i32>(a: __m512, b: __m512) -> __m512 {
+    static_assert_rounding!(ROUNDING);
     let a = a.as_f32x16();
     let b = b.as_f32x16();
     let zero = _mm512_setzero_ps().as_f32x16();
-    macro_rules! call {
-        ($imm4:expr) => {
-            vscalefps(a, b, zero, 0b11111111_11111111, $imm4)
-        };
-    }
-    let r = constify_imm4_round!(rounding, call);
+    let r = vscalefps(a, b, zero, 0b11111111_11111111, ROUNDING);
     transmute(r)
 }
 
@@ -9525,24 +9521,19 @@ pub unsafe fn _mm512_scalef_round_ps(a: __m512, b: __m512, rounding: i32) -> __m
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_scalef_round_ps&expand=4887)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vscalefps, rounding = 8))]
-#[rustc_args_required_const(4)]
-pub unsafe fn _mm512_mask_scalef_round_ps(
+#[cfg_attr(test, assert_instr(vscalefps, ROUNDING = 8))]
+#[rustc_legacy_const_generics(4)]
+pub unsafe fn _mm512_mask_scalef_round_ps<const ROUNDING: i32>(
     src: __m512,
     k: __mmask16,
     a: __m512,
     b: __m512,
-    rounding: i32,
 ) -> __m512 {
+    static_assert_rounding!(ROUNDING);
     let a = a.as_f32x16();
     let b = b.as_f32x16();
     let src = src.as_f32x16();
-    macro_rules! call {
-        ($imm4:expr) => {
-            vscalefps(a, b, src, k, $imm4)
-        };
-    }
-    let r = constify_imm4_round!(rounding, call);
+    let r = vscalefps(a, b, src, k, ROUNDING);
     transmute(r)
 }
 
@@ -9558,23 +9549,18 @@ pub unsafe fn _mm512_mask_scalef_round_ps(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_scalef_round_ps&expand=4888)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vscalefps, rounding = 8))]
-#[rustc_args_required_const(3)]
-pub unsafe fn _mm512_maskz_scalef_round_ps(
+#[cfg_attr(test, assert_instr(vscalefps, ROUNDING = 8))]
+#[rustc_legacy_const_generics(3)]
+pub unsafe fn _mm512_maskz_scalef_round_ps<const ROUNDING: i32>(
     k: __mmask16,
     a: __m512,
     b: __m512,
-    rounding: i32,
 ) -> __m512 {
+    static_assert_rounding!(ROUNDING);
     let a = a.as_f32x16();
     let b = b.as_f32x16();
     let zero = _mm512_setzero_ps().as_f32x16();
-    macro_rules! call {
-        ($imm4:expr) => {
-            vscalefps(a, b, zero, k, $imm4)
-        };
-    }
-    let r = constify_imm4_round!(rounding, call);
+    let r = vscalefps(a, b, zero, k, ROUNDING);
     transmute(r)
 }
 
@@ -9590,18 +9576,14 @@ pub unsafe fn _mm512_maskz_scalef_round_ps(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_scalef_round_pd&expand=4886)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vscalefpd, rounding = 8))]
-#[rustc_args_required_const(2)]
-pub unsafe fn _mm512_scalef_round_pd(a: __m512d, b: __m512d, rounding: i32) -> __m512d {
+#[cfg_attr(test, assert_instr(vscalefpd, ROUNDING = 8))]
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn _mm512_scalef_round_pd<const ROUNDING: i32>(a: __m512d, b: __m512d) -> __m512d {
+    static_assert_rounding!(ROUNDING);
     let a = a.as_f64x8();
     let b = b.as_f64x8();
     let zero = _mm512_setzero_pd().as_f64x8();
-    macro_rules! call {
-        ($imm4:expr) => {
-            vscalefpd(a, b, zero, 0b11111111, $imm4)
-        };
-    }
-    let r = constify_imm4_round!(rounding, call);
+    let r = vscalefpd(a, b, zero, 0b11111111, ROUNDING);
     transmute(r)
 }
 
@@ -9617,24 +9599,19 @@ pub unsafe fn _mm512_scalef_round_pd(a: __m512d, b: __m512d, rounding: i32) -> _
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_scalef_round_pd&expand=4884)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vscalefpd, rounding = 8))]
-#[rustc_args_required_const(4)]
-pub unsafe fn _mm512_mask_scalef_round_pd(
+#[cfg_attr(test, assert_instr(vscalefpd, ROUNDING = 8))]
+#[rustc_legacy_const_generics(4)]
+pub unsafe fn _mm512_mask_scalef_round_pd<const ROUNDING: i32>(
     src: __m512d,
     k: __mmask8,
     a: __m512d,
     b: __m512d,
-    rounding: i32,
 ) -> __m512d {
+    static_assert_rounding!(ROUNDING);
     let a = a.as_f64x8();
     let b = b.as_f64x8();
     let src = src.as_f64x8();
-    macro_rules! call {
-        ($imm4:expr) => {
-            vscalefpd(a, b, src, k, $imm4)
-        };
-    }
-    let r = constify_imm4_round!(rounding, call);
+    let r = vscalefpd(a, b, src, k, ROUNDING);
     transmute(r)
 }
 
@@ -9650,23 +9627,18 @@ pub unsafe fn _mm512_mask_scalef_round_pd(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_scalef_round_pd&expand=4885)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vscalefpd, rounding = 8))]
-#[rustc_args_required_const(3)]
-pub unsafe fn _mm512_maskz_scalef_round_pd(
+#[cfg_attr(test, assert_instr(vscalefpd, ROUNDING = 8))]
+#[rustc_legacy_const_generics(3)]
+pub unsafe fn _mm512_maskz_scalef_round_pd<const ROUNDING: i32>(
     k: __mmask8,
     a: __m512d,
     b: __m512d,
-    rounding: i32,
 ) -> __m512d {
+    static_assert_rounding!(ROUNDING);
     let a = a.as_f64x8();
     let b = b.as_f64x8();
     let zero = _mm512_setzero_pd().as_f64x8();
-    macro_rules! call {
-        ($imm4:expr) => {
-            vscalefpd(a, b, zero, k, $imm4)
-        };
-    }
-    let r = constify_imm4_round!(rounding, call);
+    let r = vscalefpd(a, b, zero, k, ROUNDING);
     transmute(r)
 }
 
@@ -42967,7 +42939,7 @@ mod tests {
     unsafe fn test_mm512_scalef_round_ps() {
         let a = _mm512_set1_ps(1.);
         let b = _mm512_set1_ps(3.);
-        let r = _mm512_scalef_round_ps(a, b, _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC);
+        let r = _mm512_scalef_round_ps::<{ _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC }>(a, b);
         let e = _mm512_set1_ps(8.);
         assert_eq_m512(r, e);
     }
@@ -42976,15 +42948,15 @@ mod tests {
     unsafe fn test_mm512_mask_scalef_round_ps() {
         let a = _mm512_set1_ps(1.);
         let b = _mm512_set1_ps(3.);
-        let r =
-            _mm512_mask_scalef_round_ps(a, 0, a, b, _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC);
+        let r = _mm512_mask_scalef_round_ps::<{ _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC }>(
+            a, 0, a, b,
+        );
         assert_eq_m512(r, a);
-        let r = _mm512_mask_scalef_round_ps(
+        let r = _mm512_mask_scalef_round_ps::<{ _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC }>(
             a,
             0b11111111_00000000,
             a,
             b,
-            _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC,
         );
         let e = _mm512_set_ps(
             8., 8., 8., 8., 8., 8., 8., 8., 1., 1., 1., 1., 1., 1., 1., 1.,
@@ -42996,14 +42968,14 @@ mod tests {
     unsafe fn test_mm512_maskz_scalef_round_ps() {
         let a = _mm512_set1_ps(1.);
         let b = _mm512_set1_ps(3.);
-        let r =
-            _mm512_maskz_scalef_round_ps(0, a, b, _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC);
+        let r = _mm512_maskz_scalef_round_ps::<{ _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC }>(
+            0, a, b,
+        );
         assert_eq_m512(r, _mm512_setzero_ps());
-        let r = _mm512_maskz_scalef_round_ps(
+        let r = _mm512_maskz_scalef_round_ps::<{ _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC }>(
             0b11111111_00000000,
             a,
             b,
-            _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC,
         );
         let e = _mm512_set_ps(
             8., 8., 8., 8., 8., 8., 8., 8., 0., 0., 0., 0., 0., 0., 0., 0.,
