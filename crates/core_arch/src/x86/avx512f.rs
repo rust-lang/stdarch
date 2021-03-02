@@ -8981,6 +8981,7 @@ pub unsafe fn _mm512_mask3_fnmsub_round_pd<const ROUNDING: i32>(
 #[cfg_attr(test, assert_instr(vmaxps, SAE = 8))]
 #[rustc_legacy_const_generics(2)]
 pub unsafe fn _mm512_max_round_ps<const SAE: i32>(a: __m512, b: __m512) -> __m512 {
+    static_assert_sae!(SAE);
     let a = a.as_f32x16();
     let b = b.as_f32x16();
     let r = vmaxps(a, b, SAE);
@@ -9001,6 +9002,7 @@ pub unsafe fn _mm512_mask_max_round_ps<const SAE: i32>(
     a: __m512,
     b: __m512,
 ) -> __m512 {
+    static_assert_sae!(SAE);
     let a = a.as_f32x16();
     let b = b.as_f32x16();
     let r = vmaxps(a, b, SAE);
@@ -9020,6 +9022,7 @@ pub unsafe fn _mm512_maskz_max_round_ps<const SAE: i32>(
     a: __m512,
     b: __m512,
 ) -> __m512 {
+    static_assert_sae!(SAE);
     let a = a.as_f32x16();
     let b = b.as_f32x16();
     let r = vmaxps(a, b, SAE);
@@ -9036,6 +9039,7 @@ pub unsafe fn _mm512_maskz_max_round_ps<const SAE: i32>(
 #[cfg_attr(test, assert_instr(vmaxpd, SAE = 8))]
 #[rustc_legacy_const_generics(2)]
 pub unsafe fn _mm512_max_round_pd<const SAE: i32>(a: __m512d, b: __m512d) -> __m512d {
+    static_assert_sae!(SAE);
     let a = a.as_f64x8();
     let b = b.as_f64x8();
     let r = vmaxpd(a, b, SAE);
@@ -9056,6 +9060,7 @@ pub unsafe fn _mm512_mask_max_round_pd<const SAE: i32>(
     a: __m512d,
     b: __m512d,
 ) -> __m512d {
+    static_assert_sae!(SAE);
     let a = a.as_f64x8();
     let b = b.as_f64x8();
     let r = vmaxpd(a, b, SAE);
@@ -9075,6 +9080,7 @@ pub unsafe fn _mm512_maskz_max_round_pd<const SAE: i32>(
     a: __m512d,
     b: __m512d,
 ) -> __m512d {
+    static_assert_sae!(SAE);
     let a = a.as_f64x8();
     let b = b.as_f64x8();
     let r = vmaxpd(a, b, SAE);
@@ -9091,6 +9097,7 @@ pub unsafe fn _mm512_maskz_max_round_pd<const SAE: i32>(
 #[cfg_attr(test, assert_instr(vminps, SAE = 8))]
 #[rustc_legacy_const_generics(2)]
 pub unsafe fn _mm512_min_round_ps<const SAE: i32>(a: __m512, b: __m512) -> __m512 {
+    static_assert_sae!(SAE);
     let a = a.as_f32x16();
     let b = b.as_f32x16();
     let r = vminps(a, b, SAE);
@@ -9111,6 +9118,7 @@ pub unsafe fn _mm512_mask_min_round_ps<const SAE: i32>(
     a: __m512,
     b: __m512,
 ) -> __m512 {
+    static_assert_sae!(SAE);
     let a = a.as_f32x16();
     let b = b.as_f32x16();
     let r = vminps(a, b, SAE);
@@ -9130,6 +9138,7 @@ pub unsafe fn _mm512_maskz_min_round_ps<const SAE: i32>(
     a: __m512,
     b: __m512,
 ) -> __m512 {
+    static_assert_sae!(SAE);
     let a = a.as_f32x16();
     let b = b.as_f32x16();
     let r = vminps(a, b, SAE);
@@ -9146,6 +9155,7 @@ pub unsafe fn _mm512_maskz_min_round_ps<const SAE: i32>(
 #[cfg_attr(test, assert_instr(vminpd, SAE = 8))]
 #[rustc_legacy_const_generics(2)]
 pub unsafe fn _mm512_min_round_pd<const SAE: i32>(a: __m512d, b: __m512d) -> __m512d {
+    static_assert_sae!(SAE);
     let a = a.as_f64x8();
     let b = b.as_f64x8();
     let r = vminpd(a, b, SAE);
@@ -9166,6 +9176,7 @@ pub unsafe fn _mm512_mask_min_round_pd<const SAE: i32>(
     a: __m512d,
     b: __m512d,
 ) -> __m512d {
+    static_assert_sae!(SAE);
     let a = a.as_f64x8();
     let b = b.as_f64x8();
     let r = vminpd(a, b, SAE);
@@ -9185,6 +9196,7 @@ pub unsafe fn _mm512_maskz_min_round_pd<const SAE: i32>(
     a: __m512d,
     b: __m512d,
 ) -> __m512d {
+    static_assert_sae!(SAE);
     let a = a.as_f64x8();
     let b = b.as_f64x8();
     let r = vminpd(a, b, SAE);
@@ -9201,6 +9213,7 @@ pub unsafe fn _mm512_maskz_min_round_pd<const SAE: i32>(
 #[cfg_attr(test, assert_instr(vgetexpps, SAE = 8))]
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn _mm512_getexp_round_ps<const SAE: i32>(a: __m512) -> __m512 {
+    static_assert_sae!(SAE);
     let a = a.as_f32x16();
     let zero = _mm512_setzero_ps().as_f32x16();
     let r = vgetexpps(a, zero, 0b11111111_11111111, SAE);
@@ -9220,6 +9233,7 @@ pub unsafe fn _mm512_mask_getexp_round_ps<const SAE: i32>(
     k: __mmask16,
     a: __m512,
 ) -> __m512 {
+    static_assert_sae!(SAE);
     let a = a.as_f32x16();
     let src = src.as_f32x16();
     let r = vgetexpps(a, src, k, SAE);
@@ -9235,6 +9249,7 @@ pub unsafe fn _mm512_mask_getexp_round_ps<const SAE: i32>(
 #[cfg_attr(test, assert_instr(vgetexpps, SAE = 8))]
 #[rustc_legacy_const_generics(2)]
 pub unsafe fn _mm512_maskz_getexp_round_ps<const SAE: i32>(k: __mmask16, a: __m512) -> __m512 {
+    static_assert_sae!(SAE);
     let a = a.as_f32x16();
     let zero = _mm512_setzero_ps().as_f32x16();
     let r = vgetexpps(a, zero, k, SAE);
@@ -9250,6 +9265,7 @@ pub unsafe fn _mm512_maskz_getexp_round_ps<const SAE: i32>(k: __mmask16, a: __m5
 #[cfg_attr(test, assert_instr(vgetexppd, SAE = 8))]
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn _mm512_getexp_round_pd<const SAE: i32>(a: __m512d) -> __m512d {
+    static_assert_sae!(SAE);
     let a = a.as_f64x8();
     let zero = _mm512_setzero_pd().as_f64x8();
     let r = vgetexppd(a, zero, 0b11111111, SAE);
@@ -9269,6 +9285,7 @@ pub unsafe fn _mm512_mask_getexp_round_pd<const SAE: i32>(
     k: __mmask8,
     a: __m512d,
 ) -> __m512d {
+    static_assert_sae!(SAE);
     let a = a.as_f64x8();
     let src = src.as_f64x8();
     let r = vgetexppd(a, src, k, SAE);
@@ -9284,6 +9301,7 @@ pub unsafe fn _mm512_mask_getexp_round_pd<const SAE: i32>(
 #[cfg_attr(test, assert_instr(vgetexppd, SAE = 8))]
 #[rustc_legacy_const_generics(2)]
 pub unsafe fn _mm512_maskz_getexp_round_pd<const SAE: i32>(k: __mmask8, a: __m512d) -> __m512d {
+    static_assert_sae!(SAE);
     let a = a.as_f64x8();
     let zero = _mm512_setzero_pd().as_f64x8();
     let r = vgetexppd(a, zero, k, SAE);
