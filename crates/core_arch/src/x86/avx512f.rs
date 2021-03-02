@@ -8978,17 +8978,12 @@ pub unsafe fn _mm512_mask3_fnmsub_round_pd<const ROUNDING: i32>(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_max_round_ps&expand=3662)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vmaxps, sae = 8))]
-#[rustc_args_required_const(2)]
-pub unsafe fn _mm512_max_round_ps(a: __m512, b: __m512, sae: i32) -> __m512 {
+#[cfg_attr(test, assert_instr(vmaxps, SAE = 8))]
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn _mm512_max_round_ps<const SAE: i32>(a: __m512, b: __m512) -> __m512 {
     let a = a.as_f32x16();
     let b = b.as_f32x16();
-    macro_rules! call {
-        ($imm4:expr) => {
-            vmaxps(a, b, $imm4)
-        };
-    }
-    let r = constify_imm4_sae!(sae, call);
+    let r = vmaxps(a, b, SAE);
     transmute(r)
 }
 
@@ -8998,24 +8993,18 @@ pub unsafe fn _mm512_max_round_ps(a: __m512, b: __m512, sae: i32) -> __m512 {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_max_round_ps&expand=3660)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vmaxps, sae = 8))]
-#[rustc_args_required_const(4)]
-pub unsafe fn _mm512_mask_max_round_ps(
+#[cfg_attr(test, assert_instr(vmaxps, SAE = 8))]
+#[rustc_legacy_const_generics(4)]
+pub unsafe fn _mm512_mask_max_round_ps<const SAE: i32>(
     src: __m512,
     k: __mmask16,
     a: __m512,
     b: __m512,
-    sae: i32,
 ) -> __m512 {
     let a = a.as_f32x16();
     let b = b.as_f32x16();
-    macro_rules! call {
-        ($imm4:expr) => {
-            vmaxps(a, b, $imm4)
-        };
-    }
-    let max = constify_imm4_sae!(sae, call);
-    transmute(simd_select_bitmask(k, max, src.as_f32x16()))
+    let r = vmaxps(a, b, SAE);
+    transmute(simd_select_bitmask(k, r, src.as_f32x16()))
 }
 
 /// Compare packed single-precision (32-bit) floating-point elements in a and b, and store packed maximum values in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).\
@@ -9024,19 +9013,18 @@ pub unsafe fn _mm512_mask_max_round_ps(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_max_round_ps&expand=3661)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vmaxps, sae = 8))]
-#[rustc_args_required_const(3)]
-pub unsafe fn _mm512_maskz_max_round_ps(k: __mmask16, a: __m512, b: __m512, sae: i32) -> __m512 {
+#[cfg_attr(test, assert_instr(vmaxps, SAE = 8))]
+#[rustc_legacy_const_generics(3)]
+pub unsafe fn _mm512_maskz_max_round_ps<const SAE: i32>(
+    k: __mmask16,
+    a: __m512,
+    b: __m512,
+) -> __m512 {
     let a = a.as_f32x16();
     let b = b.as_f32x16();
-    macro_rules! call {
-        ($imm4:expr) => {
-            vmaxps(a, b, $imm4)
-        };
-    }
-    let max = constify_imm4_sae!(sae, call);
+    let r = vmaxps(a, b, SAE);
     let zero = _mm512_setzero_ps().as_f32x16();
-    transmute(simd_select_bitmask(k, max, zero))
+    transmute(simd_select_bitmask(k, r, zero))
 }
 
 /// Compare packed double-precision (64-bit) floating-point elements in a and b, and store packed maximum values in dst.\
@@ -9045,17 +9033,12 @@ pub unsafe fn _mm512_maskz_max_round_ps(k: __mmask16, a: __m512, b: __m512, sae:
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_max_round_pd&expand=3659)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vmaxpd, sae = 8))]
-#[rustc_args_required_const(2)]
-pub unsafe fn _mm512_max_round_pd(a: __m512d, b: __m512d, sae: i32) -> __m512d {
+#[cfg_attr(test, assert_instr(vmaxpd, SAE = 8))]
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn _mm512_max_round_pd<const SAE: i32>(a: __m512d, b: __m512d) -> __m512d {
     let a = a.as_f64x8();
     let b = b.as_f64x8();
-    macro_rules! call {
-        ($imm4:expr) => {
-            vmaxpd(a, b, $imm4)
-        };
-    }
-    let r = constify_imm4_sae!(sae, call);
+    let r = vmaxpd(a, b, SAE);
     transmute(r)
 }
 
@@ -9065,24 +9048,18 @@ pub unsafe fn _mm512_max_round_pd(a: __m512d, b: __m512d, sae: i32) -> __m512d {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_max_round_pd&expand=3657)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vmaxpd, sae = 8))]
-#[rustc_args_required_const(4)]
-pub unsafe fn _mm512_mask_max_round_pd(
+#[cfg_attr(test, assert_instr(vmaxpd, SAE = 8))]
+#[rustc_legacy_const_generics(4)]
+pub unsafe fn _mm512_mask_max_round_pd<const SAE: i32>(
     src: __m512d,
     k: __mmask8,
     a: __m512d,
     b: __m512d,
-    sae: i32,
 ) -> __m512d {
     let a = a.as_f64x8();
     let b = b.as_f64x8();
-    macro_rules! call {
-        ($imm4:expr) => {
-            vmaxpd(a, b, $imm4)
-        };
-    }
-    let max = constify_imm4_sae!(sae, call);
-    transmute(simd_select_bitmask(k, max, src.as_f64x8()))
+    let r = vmaxpd(a, b, SAE);
+    transmute(simd_select_bitmask(k, r, src.as_f64x8()))
 }
 
 /// Compare packed double-precision (64-bit) floating-point elements in a and b, and store packed maximum values in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).\
@@ -9091,19 +9068,18 @@ pub unsafe fn _mm512_mask_max_round_pd(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_max_round_pd&expand=3658)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vmaxpd, sae = 8))]
-#[rustc_args_required_const(3)]
-pub unsafe fn _mm512_maskz_max_round_pd(k: __mmask8, a: __m512d, b: __m512d, sae: i32) -> __m512d {
+#[cfg_attr(test, assert_instr(vmaxpd, SAE = 8))]
+#[rustc_legacy_const_generics(3)]
+pub unsafe fn _mm512_maskz_max_round_pd<const SAE: i32>(
+    k: __mmask8,
+    a: __m512d,
+    b: __m512d,
+) -> __m512d {
     let a = a.as_f64x8();
     let b = b.as_f64x8();
-    macro_rules! call {
-        ($imm4:expr) => {
-            vmaxpd(a, b, $imm4)
-        };
-    }
-    let max = constify_imm4_sae!(sae, call);
+    let r = vmaxpd(a, b, SAE);
     let zero = _mm512_setzero_pd().as_f64x8();
-    transmute(simd_select_bitmask(k, max, zero))
+    transmute(simd_select_bitmask(k, r, zero))
 }
 
 /// Compare packed single-precision (32-bit) floating-point elements in a and b, and store packed minimum values in dst.\
@@ -9112,17 +9088,12 @@ pub unsafe fn _mm512_maskz_max_round_pd(k: __mmask8, a: __m512d, b: __m512d, sae
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_min_round_ps&expand=3776)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vminps, sae = 8))]
-#[rustc_args_required_const(2)]
-pub unsafe fn _mm512_min_round_ps(a: __m512, b: __m512, sae: i32) -> __m512 {
+#[cfg_attr(test, assert_instr(vminps, SAE = 8))]
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn _mm512_min_round_ps<const SAE: i32>(a: __m512, b: __m512) -> __m512 {
     let a = a.as_f32x16();
     let b = b.as_f32x16();
-    macro_rules! call {
-        ($imm4:expr) => {
-            vminps(a, b, $imm4)
-        };
-    }
-    let r = constify_imm4_sae!(sae, call);
+    let r = vminps(a, b, SAE);
     transmute(r)
 }
 
@@ -9132,24 +9103,18 @@ pub unsafe fn _mm512_min_round_ps(a: __m512, b: __m512, sae: i32) -> __m512 {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_min_round_ps&expand=3774)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vminps, sae = 8))]
-#[rustc_args_required_const(4)]
-pub unsafe fn _mm512_mask_min_round_ps(
+#[cfg_attr(test, assert_instr(vminps, SAE = 8))]
+#[rustc_legacy_const_generics(4)]
+pub unsafe fn _mm512_mask_min_round_ps<const SAE: i32>(
     src: __m512,
     k: __mmask16,
     a: __m512,
     b: __m512,
-    sae: i32,
 ) -> __m512 {
     let a = a.as_f32x16();
     let b = b.as_f32x16();
-    macro_rules! call {
-        ($imm4:expr) => {
-            vminps(a, b, $imm4)
-        };
-    }
-    let max = constify_imm4_sae!(sae, call);
-    transmute(simd_select_bitmask(k, max, src.as_f32x16()))
+    let r = vminps(a, b, SAE);
+    transmute(simd_select_bitmask(k, r, src.as_f32x16()))
 }
 
 /// Compare packed single-precision (32-bit) floating-point elements in a and b, and store packed minimum values in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).\
@@ -9158,19 +9123,18 @@ pub unsafe fn _mm512_mask_min_round_ps(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_min_round_ps&expand=3775)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vminps, sae = 8))]
-#[rustc_args_required_const(3)]
-pub unsafe fn _mm512_maskz_min_round_ps(k: __mmask16, a: __m512, b: __m512, sae: i32) -> __m512 {
+#[cfg_attr(test, assert_instr(vminps, SAE = 8))]
+#[rustc_legacy_const_generics(3)]
+pub unsafe fn _mm512_maskz_min_round_ps<const SAE: i32>(
+    k: __mmask16,
+    a: __m512,
+    b: __m512,
+) -> __m512 {
     let a = a.as_f32x16();
     let b = b.as_f32x16();
-    macro_rules! call {
-        ($imm4:expr) => {
-            vminps(a, b, $imm4)
-        };
-    }
-    let max = constify_imm4_sae!(sae, call);
+    let r = vminps(a, b, SAE);
     let zero = _mm512_setzero_ps().as_f32x16();
-    transmute(simd_select_bitmask(k, max, zero))
+    transmute(simd_select_bitmask(k, r, zero))
 }
 
 /// Compare packed double-precision (64-bit) floating-point elements in a and b, and store packed minimum values in dst.\
@@ -9179,17 +9143,12 @@ pub unsafe fn _mm512_maskz_min_round_ps(k: __mmask16, a: __m512, b: __m512, sae:
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_min_round_pd&expand=3773)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vminpd, sae = 8))]
-#[rustc_args_required_const(2)]
-pub unsafe fn _mm512_min_round_pd(a: __m512d, b: __m512d, sae: i32) -> __m512d {
+#[cfg_attr(test, assert_instr(vminpd, SAE = 8))]
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn _mm512_min_round_pd<const SAE: i32>(a: __m512d, b: __m512d) -> __m512d {
     let a = a.as_f64x8();
     let b = b.as_f64x8();
-    macro_rules! call {
-        ($imm4:expr) => {
-            vminpd(a, b, $imm4)
-        };
-    }
-    let r = constify_imm4_sae!(sae, call);
+    let r = vminpd(a, b, SAE);
     transmute(r)
 }
 
@@ -9199,24 +9158,18 @@ pub unsafe fn _mm512_min_round_pd(a: __m512d, b: __m512d, sae: i32) -> __m512d {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_min_round_pd&expand=3771)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vminpd, sae = 8))]
-#[rustc_args_required_const(4)]
-pub unsafe fn _mm512_mask_min_round_pd(
+#[cfg_attr(test, assert_instr(vminpd, SAE = 8))]
+#[rustc_legacy_const_generics(4)]
+pub unsafe fn _mm512_mask_min_round_pd<const SAE: i32>(
     src: __m512d,
     k: __mmask8,
     a: __m512d,
     b: __m512d,
-    sae: i32,
 ) -> __m512d {
     let a = a.as_f64x8();
     let b = b.as_f64x8();
-    macro_rules! call {
-        ($imm4:expr) => {
-            vminpd(a, b, $imm4)
-        };
-    }
-    let max = constify_imm4_sae!(sae, call);
-    transmute(simd_select_bitmask(k, max, src.as_f64x8()))
+    let r = vminpd(a, b, SAE);
+    transmute(simd_select_bitmask(k, r, src.as_f64x8()))
 }
 
 /// Compare packed double-precision (64-bit) floating-point elements in a and b, and store packed minimum values in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).\
@@ -9225,19 +9178,18 @@ pub unsafe fn _mm512_mask_min_round_pd(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_min_round_pd&expand=3772)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vminpd, sae = 8))]
-#[rustc_args_required_const(3)]
-pub unsafe fn _mm512_maskz_min_round_pd(k: __mmask8, a: __m512d, b: __m512d, sae: i32) -> __m512d {
+#[cfg_attr(test, assert_instr(vminpd, SAE = 8))]
+#[rustc_legacy_const_generics(3)]
+pub unsafe fn _mm512_maskz_min_round_pd<const SAE: i32>(
+    k: __mmask8,
+    a: __m512d,
+    b: __m512d,
+) -> __m512d {
     let a = a.as_f64x8();
     let b = b.as_f64x8();
-    macro_rules! call {
-        ($imm4:expr) => {
-            vminpd(a, b, $imm4)
-        };
-    }
-    let max = constify_imm4_sae!(sae, call);
+    let r = vminpd(a, b, SAE);
     let zero = _mm512_setzero_pd().as_f64x8();
-    transmute(simd_select_bitmask(k, max, zero))
+    transmute(simd_select_bitmask(k, r, zero))
 }
 
 /// Convert the exponent of each packed single-precision (32-bit) floating-point element in a to a single-precision (32-bit) floating-point number representing the integer exponent, and store the results in dst. This intrinsic essentially calculates floor(log2(x)) for each element.\
@@ -9246,17 +9198,12 @@ pub unsafe fn _mm512_maskz_min_round_pd(k: __mmask8, a: __m512d, b: __m512d, sae
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_getexp_round_ps&expand=2850)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vgetexpps, sae = 8))]
-#[rustc_args_required_const(1)]
-pub unsafe fn _mm512_getexp_round_ps(a: __m512, sae: i32) -> __m512 {
+#[cfg_attr(test, assert_instr(vgetexpps, SAE = 8))]
+#[rustc_legacy_const_generics(1)]
+pub unsafe fn _mm512_getexp_round_ps<const SAE: i32>(a: __m512) -> __m512 {
     let a = a.as_f32x16();
     let zero = _mm512_setzero_ps().as_f32x16();
-    macro_rules! call {
-        ($imm4:expr) => {
-            vgetexpps(a, zero, 0b11111111_11111111, $imm4)
-        };
-    }
-    let r = constify_imm4_sae!(sae, call);
+    let r = vgetexpps(a, zero, 0b11111111_11111111, SAE);
     transmute(r)
 }
 
@@ -9266,22 +9213,16 @@ pub unsafe fn _mm512_getexp_round_ps(a: __m512, sae: i32) -> __m512 {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_getexp_round_ps&expand=2851)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vgetexpps, sae = 8))]
-#[rustc_args_required_const(3)]
-pub unsafe fn _mm512_mask_getexp_round_ps(
+#[cfg_attr(test, assert_instr(vgetexpps, SAE = 8))]
+#[rustc_legacy_const_generics(3)]
+pub unsafe fn _mm512_mask_getexp_round_ps<const SAE: i32>(
     src: __m512,
     k: __mmask16,
     a: __m512,
-    sae: i32,
 ) -> __m512 {
     let a = a.as_f32x16();
     let src = src.as_f32x16();
-    macro_rules! call {
-        ($imm4:expr) => {
-            vgetexpps(a, src, k, $imm4)
-        };
-    }
-    let r = constify_imm4_sae!(sae, call);
+    let r = vgetexpps(a, src, k, SAE);
     transmute(r)
 }
 
@@ -9291,17 +9232,12 @@ pub unsafe fn _mm512_mask_getexp_round_ps(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_getexp_round_ps&expand=2852)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vgetexpps, sae = 8))]
-#[rustc_args_required_const(2)]
-pub unsafe fn _mm512_maskz_getexp_round_ps(k: __mmask16, a: __m512, sae: i32) -> __m512 {
+#[cfg_attr(test, assert_instr(vgetexpps, SAE = 8))]
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn _mm512_maskz_getexp_round_ps<const SAE: i32>(k: __mmask16, a: __m512) -> __m512 {
     let a = a.as_f32x16();
     let zero = _mm512_setzero_ps().as_f32x16();
-    macro_rules! call {
-        ($imm4:expr) => {
-            vgetexpps(a, zero, k, $imm4)
-        };
-    }
-    let r = constify_imm4_sae!(sae, call);
+    let r = vgetexpps(a, zero, k, SAE);
     transmute(r)
 }
 
@@ -9311,17 +9247,12 @@ pub unsafe fn _mm512_maskz_getexp_round_ps(k: __mmask16, a: __m512, sae: i32) ->
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_getexp_round_pd&expand=2847)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vgetexppd, sae = 8))]
-#[rustc_args_required_const(1)]
-pub unsafe fn _mm512_getexp_round_pd(a: __m512d, sae: i32) -> __m512d {
+#[cfg_attr(test, assert_instr(vgetexppd, SAE = 8))]
+#[rustc_legacy_const_generics(1)]
+pub unsafe fn _mm512_getexp_round_pd<const SAE: i32>(a: __m512d) -> __m512d {
     let a = a.as_f64x8();
     let zero = _mm512_setzero_pd().as_f64x8();
-    macro_rules! call {
-        ($imm4:expr) => {
-            vgetexppd(a, zero, 0b11111111, $imm4)
-        };
-    }
-    let r = constify_imm4_sae!(sae, call);
+    let r = vgetexppd(a, zero, 0b11111111, SAE);
     transmute(r)
 }
 
@@ -9331,22 +9262,16 @@ pub unsafe fn _mm512_getexp_round_pd(a: __m512d, sae: i32) -> __m512d {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_getexp_round_pd&expand=2848)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vgetexppd, sae = 8))]
-#[rustc_args_required_const(3)]
-pub unsafe fn _mm512_mask_getexp_round_pd(
+#[cfg_attr(test, assert_instr(vgetexppd, SAE = 8))]
+#[rustc_legacy_const_generics(3)]
+pub unsafe fn _mm512_mask_getexp_round_pd<const SAE: i32>(
     src: __m512d,
     k: __mmask8,
     a: __m512d,
-    sae: i32,
 ) -> __m512d {
     let a = a.as_f64x8();
     let src = src.as_f64x8();
-    macro_rules! call {
-        ($imm4:expr) => {
-            vgetexppd(a, src, k, $imm4)
-        };
-    }
-    let r = constify_imm4_sae!(sae, call);
+    let r = vgetexppd(a, src, k, SAE);
     transmute(r)
 }
 
@@ -9356,17 +9281,12 @@ pub unsafe fn _mm512_mask_getexp_round_pd(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_getexp_round_pd&expand=2849)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vgetexppd, sae = 8))]
-#[rustc_args_required_const(2)]
-pub unsafe fn _mm512_maskz_getexp_round_pd(k: __mmask8, a: __m512d, sae: i32) -> __m512d {
+#[cfg_attr(test, assert_instr(vgetexppd, SAE = 8))]
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn _mm512_maskz_getexp_round_pd<const SAE: i32>(k: __mmask8, a: __m512d) -> __m512d {
     let a = a.as_f64x8();
     let zero = _mm512_setzero_pd().as_f64x8();
-    macro_rules! call {
-        ($imm4:expr) => {
-            vgetexppd(a, zero, k, $imm4)
-        };
-    }
-    let r = constify_imm4_sae!(sae, call);
+    let r = vgetexppd(a, zero, k, SAE);
     transmute(r)
 }
 
@@ -42872,7 +42792,7 @@ mod tests {
         let b = _mm512_setr_ps(
             15., 14., 13., 12., 11., 10., 9., 8., 7., 6., 5., 4., 3., 2., 1., 0.,
         );
-        let r = _mm512_max_round_ps(a, b, _MM_FROUND_CUR_DIRECTION);
+        let r = _mm512_max_round_ps::<_MM_FROUND_CUR_DIRECTION>(a, b);
         let e = _mm512_setr_ps(
             15., 14., 13., 12., 11., 10., 9., 8., 8., 9., 10., 11., 12., 13., 14., 15.,
         );
@@ -42887,9 +42807,9 @@ mod tests {
         let b = _mm512_setr_ps(
             15., 14., 13., 12., 11., 10., 9., 8., 7., 6., 5., 4., 3., 2., 1., 0.,
         );
-        let r = _mm512_mask_max_round_ps(a, 0, a, b, _MM_FROUND_CUR_DIRECTION);
+        let r = _mm512_mask_max_round_ps::<_MM_FROUND_CUR_DIRECTION>(a, 0, a, b);
         assert_eq_m512(r, a);
-        let r = _mm512_mask_max_round_ps(a, 0b00000000_11111111, a, b, _MM_FROUND_CUR_DIRECTION);
+        let r = _mm512_mask_max_round_ps::<_MM_FROUND_CUR_DIRECTION>(a, 0b00000000_11111111, a, b);
         let e = _mm512_setr_ps(
             15., 14., 13., 12., 11., 10., 9., 8., 8., 9., 10., 11., 12., 13., 14., 15.,
         );
@@ -42904,9 +42824,9 @@ mod tests {
         let b = _mm512_setr_ps(
             15., 14., 13., 12., 11., 10., 9., 8., 7., 6., 5., 4., 3., 2., 1., 0.,
         );
-        let r = _mm512_maskz_max_round_ps(0, a, b, _MM_FROUND_CUR_DIRECTION);
+        let r = _mm512_maskz_max_round_ps::<_MM_FROUND_CUR_DIRECTION>(0, a, b);
         assert_eq_m512(r, _mm512_setzero_ps());
-        let r = _mm512_maskz_max_round_ps(0b00000000_11111111, a, b, _MM_FROUND_CUR_DIRECTION);
+        let r = _mm512_maskz_max_round_ps::<_MM_FROUND_CUR_DIRECTION>(0b00000000_11111111, a, b);
         let e = _mm512_setr_ps(
             15., 14., 13., 12., 11., 10., 9., 8., 0., 0., 0., 0., 0., 0., 0., 0.,
         );
@@ -42921,7 +42841,7 @@ mod tests {
         let b = _mm512_setr_ps(
             15., 14., 13., 12., 11., 10., 9., 8., 7., 6., 5., 4., 3., 2., 1., 0.,
         );
-        let r = _mm512_min_round_ps(a, b, _MM_FROUND_CUR_DIRECTION);
+        let r = _mm512_min_round_ps::<_MM_FROUND_CUR_DIRECTION>(a, b);
         let e = _mm512_setr_ps(
             0., 1., 2., 3., 4., 5., 6., 7., 7., 6., 5., 4., 3., 2., 1., 0.,
         );
@@ -42936,9 +42856,9 @@ mod tests {
         let b = _mm512_setr_ps(
             15., 14., 13., 12., 11., 10., 9., 8., 7., 6., 5., 4., 3., 2., 1., 0.,
         );
-        let r = _mm512_mask_min_round_ps(a, 0, a, b, _MM_FROUND_CUR_DIRECTION);
+        let r = _mm512_mask_min_round_ps::<_MM_FROUND_CUR_DIRECTION>(a, 0, a, b);
         assert_eq_m512(r, a);
-        let r = _mm512_mask_min_round_ps(a, 0b00000000_11111111, a, b, _MM_FROUND_CUR_DIRECTION);
+        let r = _mm512_mask_min_round_ps::<_MM_FROUND_CUR_DIRECTION>(a, 0b00000000_11111111, a, b);
         let e = _mm512_setr_ps(
             0., 1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15.,
         );
@@ -42953,9 +42873,9 @@ mod tests {
         let b = _mm512_setr_ps(
             15., 14., 13., 12., 11., 10., 9., 8., 7., 6., 5., 4., 3., 2., 1., 0.,
         );
-        let r = _mm512_maskz_min_round_ps(0, a, b, _MM_FROUND_CUR_DIRECTION);
+        let r = _mm512_maskz_min_round_ps::<_MM_FROUND_CUR_DIRECTION>(0, a, b);
         assert_eq_m512(r, _mm512_setzero_ps());
-        let r = _mm512_maskz_min_round_ps(0b00000000_11111111, a, b, _MM_FROUND_CUR_DIRECTION);
+        let r = _mm512_maskz_min_round_ps::<_MM_FROUND_CUR_DIRECTION>(0b00000000_11111111, a, b);
         let e = _mm512_setr_ps(
             0., 1., 2., 3., 4., 5., 6., 7., 0., 0., 0., 0., 0., 0., 0., 0.,
         );
@@ -42965,10 +42885,7 @@ mod tests {
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_getexp_round_ps() {
         let a = _mm512_set1_ps(3.);
-        let r = _mm512_getexp_round_ps(a, _MM_FROUND_CUR_DIRECTION);
-        let e = _mm512_set1_ps(1.);
-        assert_eq_m512(r, e);
-        let r = _mm512_getexp_round_ps(a, _MM_FROUND_NO_EXC);
+        let r = _mm512_getexp_round_ps::<_MM_FROUND_CUR_DIRECTION>(a);
         let e = _mm512_set1_ps(1.);
         assert_eq_m512(r, e);
     }
@@ -42976,9 +42893,9 @@ mod tests {
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_mask_getexp_round_ps() {
         let a = _mm512_set1_ps(3.);
-        let r = _mm512_mask_getexp_round_ps(a, 0, a, _MM_FROUND_CUR_DIRECTION);
+        let r = _mm512_mask_getexp_round_ps::<_MM_FROUND_CUR_DIRECTION>(a, 0, a);
         assert_eq_m512(r, a);
-        let r = _mm512_mask_getexp_round_ps(a, 0b11111111_00000000, a, _MM_FROUND_CUR_DIRECTION);
+        let r = _mm512_mask_getexp_round_ps::<_MM_FROUND_CUR_DIRECTION>(a, 0b11111111_00000000, a);
         let e = _mm512_setr_ps(
             3., 3., 3., 3., 3., 3., 3., 3., 1., 1., 1., 1., 1., 1., 1., 1.,
         );
@@ -42988,9 +42905,9 @@ mod tests {
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_maskz_getexp_round_ps() {
         let a = _mm512_set1_ps(3.);
-        let r = _mm512_maskz_getexp_round_ps(0, a, _MM_FROUND_CUR_DIRECTION);
+        let r = _mm512_maskz_getexp_round_ps::<_MM_FROUND_CUR_DIRECTION>(0, a);
         assert_eq_m512(r, _mm512_setzero_ps());
-        let r = _mm512_maskz_getexp_round_ps(0b11111111_00000000, a, _MM_FROUND_CUR_DIRECTION);
+        let r = _mm512_maskz_getexp_round_ps::<_MM_FROUND_CUR_DIRECTION>(0b11111111_00000000, a);
         let e = _mm512_setr_ps(
             0., 0., 0., 0., 0., 0., 0., 0., 1., 1., 1., 1., 1., 1., 1., 1.,
         );
