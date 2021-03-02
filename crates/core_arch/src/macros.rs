@@ -45,6 +45,13 @@ macro_rules! static_assert_imm8 {
 }
 
 #[allow(unused)]
+macro_rules! static_assert_rounding {
+    ($imm:ident) => {
+        let _ = $imm == 4 || $imm == 8 || $imm == 9 || $imm == 10 || $imm == 11;
+    };
+}
+
+#[allow(unused)]
 macro_rules! static_assert {
     ($imm:ident : $ty:ty where $e:expr) => {
         struct Validate<const $imm: $ty>();

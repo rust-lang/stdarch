@@ -6863,13 +6863,13 @@ pub unsafe fn _mm_maskz_getmant_pd(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_add_round_ps&expand=145)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vaddps, IMM4 = 8))]
+#[cfg_attr(test, assert_instr(vaddps, ROUNDING = 8))]
 #[rustc_legacy_const_generics(2)]
-pub unsafe fn _mm512_add_round_ps<const IMM4: i32>(a: __m512, b: __m512) -> __m512 {
-    static_assert!(IMM4: i32 where IMM4 == 4 || IMM4 == 8 || IMM4 == 9 || IMM4 == 10 || IMM4 == 11);
+pub unsafe fn _mm512_add_round_ps<const ROUNDING: i32>(a: __m512, b: __m512) -> __m512 {
+    static_assert_rounding!(ROUNDING);
     let a = a.as_f32x16();
     let b = b.as_f32x16();
-    let r = vaddps(a, b, IMM4);
+    let r = vaddps(a, b, ROUNDING);
     transmute(r)
 }
 
@@ -6885,18 +6885,18 @@ pub unsafe fn _mm512_add_round_ps<const IMM4: i32>(a: __m512, b: __m512) -> __m5
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_add_round_ps&expand=146)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vaddps, IMM4 = 8))]
+#[cfg_attr(test, assert_instr(vaddps, ROUNDING = 8))]
 #[rustc_legacy_const_generics(4)]
-pub unsafe fn _mm512_mask_add_round_ps<const IMM4: i32>(
+pub unsafe fn _mm512_mask_add_round_ps<const ROUNDING: i32>(
     src: __m512,
     k: __mmask16,
     a: __m512,
     b: __m512,
 ) -> __m512 {
-    static_assert!(IMM4: i32 where IMM4 == 4 || IMM4 == 8 || IMM4 == 9 || IMM4 == 10 || IMM4 == 11);
+    static_assert_rounding!(ROUNDING);
     let a = a.as_f32x16();
     let b = b.as_f32x16();
-    let r = vaddps(a, b, IMM4);
+    let r = vaddps(a, b, ROUNDING);
     transmute(simd_select_bitmask(k, r, src.as_f32x16()))
 }
 
@@ -6912,17 +6912,17 @@ pub unsafe fn _mm512_mask_add_round_ps<const IMM4: i32>(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_add_round_ps&expand=147)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vaddps, IMM4 = 8))]
+#[cfg_attr(test, assert_instr(vaddps, ROUNDING = 8))]
 #[rustc_legacy_const_generics(3)]
-pub unsafe fn _mm512_maskz_add_round_ps<const IMM4: i32>(
+pub unsafe fn _mm512_maskz_add_round_ps<const ROUNDING: i32>(
     k: __mmask16,
     a: __m512,
     b: __m512,
 ) -> __m512 {
-    static_assert!(IMM4: i32 where IMM4 == 4 || IMM4 == 8 || IMM4 == 9 || IMM4 == 10 || IMM4 == 11);
+    static_assert_rounding!(ROUNDING);
     let a = a.as_f32x16();
     let b = b.as_f32x16();
-    let r = vaddps(a, b, IMM4);
+    let r = vaddps(a, b, ROUNDING);
     let zero = _mm512_setzero_ps().as_f32x16();
     transmute(simd_select_bitmask(k, r, zero))
 }
@@ -6939,13 +6939,13 @@ pub unsafe fn _mm512_maskz_add_round_ps<const IMM4: i32>(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_add_round_pd&expand=142)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vaddpd, IMM4 = 8))]
+#[cfg_attr(test, assert_instr(vaddpd, ROUNDING = 8))]
 #[rustc_legacy_const_generics(2)]
-pub unsafe fn _mm512_add_round_pd<const IMM4: i32>(a: __m512d, b: __m512d) -> __m512d {
-    static_assert!(IMM4: i32 where IMM4 == 4 || IMM4 == 8 || IMM4 == 9 || IMM4 == 10 || IMM4 == 11);
+pub unsafe fn _mm512_add_round_pd<const ROUNDING: i32>(a: __m512d, b: __m512d) -> __m512d {
+    static_assert_rounding!(ROUNDING);
     let a = a.as_f64x8();
     let b = b.as_f64x8();
-    let r = vaddpd(a, b, IMM4);
+    let r = vaddpd(a, b, ROUNDING);
     transmute(r)
 }
 
@@ -6961,17 +6961,18 @@ pub unsafe fn _mm512_add_round_pd<const IMM4: i32>(a: __m512d, b: __m512d) -> __
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_add_round_pd&expand=143)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vaddpd, IMM4 = 8))]
+#[cfg_attr(test, assert_instr(vaddpd, ROUNDING = 8))]
 #[rustc_legacy_const_generics(4)]
-pub unsafe fn _mm512_mask_add_round_pd<const IMM4: i32>(
+pub unsafe fn _mm512_mask_add_round_pd<const ROUNDING: i32>(
     src: __m512d,
     k: __mmask8,
     a: __m512d,
     b: __m512d,
 ) -> __m512d {
+    static_assert_rounding!(ROUNDING);
     let a = a.as_f64x8();
     let b = b.as_f64x8();
-    let r = vaddpd(a, b, IMM4);
+    let r = vaddpd(a, b, ROUNDING);
     transmute(simd_select_bitmask(k, r, src.as_f64x8()))
 }
 
@@ -6987,16 +6988,17 @@ pub unsafe fn _mm512_mask_add_round_pd<const IMM4: i32>(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_add_round_pd&expand=144)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vaddpd, IMM4 = 8))]
+#[cfg_attr(test, assert_instr(vaddpd, ROUNDING = 8))]
 #[rustc_legacy_const_generics(3)]
-pub unsafe fn _mm512_maskz_add_round_pd<const IMM4: i32>(
+pub unsafe fn _mm512_maskz_add_round_pd<const ROUNDING: i32>(
     k: __mmask8,
     a: __m512d,
     b: __m512d,
 ) -> __m512d {
+    static_assert_rounding!(ROUNDING);
     let a = a.as_f64x8();
     let b = b.as_f64x8();
-    let r = vaddpd(a, b, IMM4);
+    let r = vaddpd(a, b, ROUNDING);
     let zero = _mm512_setzero_pd().as_f64x8();
     transmute(simd_select_bitmask(k, r, zero))
 }
