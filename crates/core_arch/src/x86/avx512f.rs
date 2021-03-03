@@ -21523,75 +21523,32 @@ pub unsafe fn _mm_mask2_permutex2var_pd(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_shuffle_epi32&expand=5150)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpermilps, imm8 = 9))] //should be vpshufd, but generate vpermilps
-#[rustc_args_required_const(1)]
-pub unsafe fn _mm512_shuffle_epi32(a: __m512i, imm8: _MM_PERM_ENUM) -> __m512i {
-    let imm8 = (imm8 & 0xFF) as u8;
-    let a = a.as_i32x16();
-    macro_rules! shuffle4 {
-        (
-            $a:expr,
-            $b:expr,
-            $c:expr,
-            $d:expr,
-            $e:expr,
-            $f:expr,
-            $g:expr,
-            $h:expr,
-            $i:expr,
-            $j:expr,
-            $k:expr,
-            $l:expr,
-            $m:expr,
-            $n:expr,
-            $o:expr,
-            $p:expr
-        ) => {
-            simd_shuffle16(
-                a,
-                a,
-                [
-                    $a, $b, $c, $d, $e, $f, $g, $h, $i, $j, $k, $l, $m, $n, $o, $p,
-                ],
-            )
-        };
-    }
-    macro_rules! shuffle3 {
-        ($a:expr, $b:expr, $c:expr, $e:expr, $f:expr, $g:expr, $i:expr, $j:expr, $k:expr, $m:expr, $n:expr, $o:expr) => {
-            match (imm8 >> 6) & 0x3 {
-                0 => shuffle4!($a, $b, $c, 16, $e, $f, $g, 20, $i, $j, $k, 24, $m, $n, $o, 28),
-                1 => shuffle4!($a, $b, $c, 17, $e, $f, $g, 21, $i, $j, $k, 25, $m, $n, $o, 29),
-                2 => shuffle4!($a, $b, $c, 18, $e, $f, $g, 22, $i, $j, $k, 26, $m, $n, $o, 30),
-                _ => shuffle4!($a, $b, $c, 19, $e, $f, $g, 23, $i, $j, $k, 27, $m, $n, $o, 31),
-            }
-        };
-    }
-    macro_rules! shuffle2 {
-        ($a:expr, $b:expr, $e:expr, $f:expr, $i:expr, $j:expr, $m:expr, $n:expr) => {
-            match (imm8 >> 4) & 0x3 {
-                0 => shuffle3!($a, $b, 16, $e, $f, 20, $i, $j, 24, $m, $n, 28),
-                1 => shuffle3!($a, $b, 17, $e, $f, 21, $i, $j, 25, $m, $n, 29),
-                2 => shuffle3!($a, $b, 18, $e, $f, 22, $i, $j, 26, $m, $n, 30),
-                _ => shuffle3!($a, $b, 19, $e, $f, 23, $i, $j, 27, $m, $n, 31),
-            }
-        };
-    }
-    macro_rules! shuffle1 {
-        ($a:expr, $e:expr, $i: expr, $m: expr) => {
-            match (imm8 >> 2) & 0x3 {
-                0 => shuffle2!($a, 0, $e, 4, $i, 8, $m, 12),
-                1 => shuffle2!($a, 1, $e, 5, $i, 9, $m, 13),
-                2 => shuffle2!($a, 2, $e, 6, $i, 10, $m, 14),
-                _ => shuffle2!($a, 3, $e, 7, $i, 11, $m, 15),
-            }
-        };
-    }
-    let r: i32x16 = match imm8 & 0x3 {
-        0 => shuffle1!(0, 4, 8, 12),
-        1 => shuffle1!(1, 5, 9, 13),
-        2 => shuffle1!(2, 6, 10, 14),
-        _ => shuffle1!(3, 7, 11, 15),
-    };
+#[cfg_attr(test, assert_instr(vpermilps, MASK = 9))] //should be vpshufd
+#[rustc_legacy_const_generics(1)]
+pub unsafe fn _mm512_shuffle_epi32<const MASK: _MM_PERM_ENUM>(a: __m512i) -> __m512i {
+    static_assert_imm8!(MASK);
+    let r: i32x16 = simd_shuffle16(
+        a.as_i32x16(),
+        a.as_i32x16(),
+        [
+            MASK as u32 & 0b11,
+            (MASK as u32 >> 2) & 0b11,
+            (MASK as u32 >> 4) & 0b11,
+            (MASK as u32 >> 6) & 0b11,
+            (MASK as u32 & 0b11) + 4,
+            ((MASK as u32 >> 2) & 0b11) + 4,
+            ((MASK as u32 >> 4) & 0b11) + 4,
+            ((MASK as u32 >> 6) & 0b11) + 4,
+            (MASK as u32 & 0b11) + 8,
+            ((MASK as u32 >> 2) & 0b11) + 8,
+            ((MASK as u32 >> 4) & 0b11) + 8,
+            ((MASK as u32 >> 6) & 0b11) + 8,
+            (MASK as u32 & 0b11) + 12,
+            ((MASK as u32 >> 2) & 0b11) + 12,
+            ((MASK as u32 >> 4) & 0b11) + 12,
+            ((MASK as u32 >> 6) & 0b11) + 12,
+        ],
+    );
     transmute(r)
 }
 
@@ -21600,20 +21557,15 @@ pub unsafe fn _mm512_shuffle_epi32(a: __m512i, imm8: _MM_PERM_ENUM) -> __m512i {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_shuffle_epi32&expand=5148)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpshufd, imm8 = 9))]
-#[rustc_args_required_const(3)]
-pub unsafe fn _mm512_mask_shuffle_epi32(
+#[cfg_attr(test, assert_instr(vpshufd, MASK = 9))]
+#[rustc_legacy_const_generics(3)]
+pub unsafe fn _mm512_mask_shuffle_epi32<const MASK: _MM_PERM_ENUM>(
     src: __m512i,
     k: __mmask16,
     a: __m512i,
-    imm8: _MM_PERM_ENUM,
 ) -> __m512i {
-    macro_rules! call {
-        ($imm8:expr) => {
-            _mm512_shuffle_epi32(a, $imm8)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+    static_assert_imm8!(MASK);
+    let r = _mm512_shuffle_epi32::<MASK>(a);
     transmute(simd_select_bitmask(k, r.as_i32x16(), src.as_i32x16()))
 }
 
@@ -21622,15 +21574,14 @@ pub unsafe fn _mm512_mask_shuffle_epi32(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_shuffle_epi32&expand=5149)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vpshufd, imm8 = 9))]
-#[rustc_args_required_const(2)]
-pub unsafe fn _mm512_maskz_shuffle_epi32(k: __mmask16, a: __m512i, imm8: _MM_PERM_ENUM) -> __m512i {
-    macro_rules! call {
-        ($imm8:expr) => {
-            _mm512_shuffle_epi32(a, $imm8)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+#[cfg_attr(test, assert_instr(vpshufd, MASK = 9))]
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn _mm512_maskz_shuffle_epi32<const MASK: _MM_PERM_ENUM>(
+    k: __mmask16,
+    a: __m512i,
+) -> __m512i {
+    static_assert_imm8!(MASK);
+    let r = _mm512_shuffle_epi32::<MASK>(a);
     let zero = _mm512_setzero_si512().as_i32x16();
     transmute(simd_select_bitmask(k, r.as_i32x16(), zero))
 }
@@ -47705,7 +47656,7 @@ mod tests {
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_shuffle_epi32() {
         let a = _mm512_setr_epi32(1, 4, 5, 8, 9, 12, 13, 16, 1, 4, 5, 8, 9, 12, 13, 16);
-        let r = _mm512_shuffle_epi32(a, _MM_PERM_AADD);
+        let r = _mm512_shuffle_epi32::<_MM_PERM_AADD>(a);
         let e = _mm512_setr_epi32(8, 8, 1, 1, 16, 16, 9, 9, 8, 8, 1, 1, 16, 16, 9, 9);
         assert_eq_m512i(r, e);
     }
@@ -47713,9 +47664,9 @@ mod tests {
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_mask_shuffle_epi32() {
         let a = _mm512_setr_epi32(1, 4, 5, 8, 9, 12, 13, 16, 1, 4, 5, 8, 9, 12, 13, 16);
-        let r = _mm512_mask_shuffle_epi32(a, 0, a, _MM_PERM_AADD);
+        let r = _mm512_mask_shuffle_epi32::<_MM_PERM_AADD>(a, 0, a);
         assert_eq_m512i(r, a);
-        let r = _mm512_mask_shuffle_epi32(a, 0b11111111_11111111, a, _MM_PERM_AADD);
+        let r = _mm512_mask_shuffle_epi32::<_MM_PERM_AADD>(a, 0b11111111_11111111, a);
         let e = _mm512_setr_epi32(8, 8, 1, 1, 16, 16, 9, 9, 8, 8, 1, 1, 16, 16, 9, 9);
         assert_eq_m512i(r, e);
     }
@@ -47723,9 +47674,9 @@ mod tests {
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_maskz_shuffle_epi32() {
         let a = _mm512_setr_epi32(1, 4, 5, 8, 9, 12, 13, 16, 1, 4, 5, 8, 9, 12, 13, 16);
-        let r = _mm512_maskz_shuffle_epi32(0, a, _MM_PERM_AADD);
+        let r = _mm512_maskz_shuffle_epi32::<_MM_PERM_AADD>(0, a);
         assert_eq_m512i(r, _mm512_setzero_si512());
-        let r = _mm512_maskz_shuffle_epi32(0b00000000_11111111, a, _MM_PERM_AADD);
+        let r = _mm512_maskz_shuffle_epi32::<_MM_PERM_AADD>(0b00000000_11111111, a);
         let e = _mm512_setr_epi32(8, 8, 1, 1, 16, 16, 9, 9, 0, 0, 0, 0, 0, 0, 0, 0);
         assert_eq_m512i(r, e);
     }
