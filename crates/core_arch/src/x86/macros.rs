@@ -32,22 +32,6 @@ macro_rules! static_assert_sae {
     };
 }
 
-// Helper struct used to trigger const eval errors when the const generic immediate value `imm` is
-// out of `bits`-bit range.
-pub(crate) struct ValidateConstImmU<const IMM: u32, const BITS: i32>;
-impl<const IMM: u32, const BITS: i32> ValidateConstImmU<IMM, BITS> {
-    pub(crate) const VALID: () = {
-        let _ = 1 / ((IMM < (1 << BITS)) as usize);
-    };
-}
-
-#[allow(unused)]
-macro_rules! static_assert_imm8u {
-    ($imm:ident) => {
-        let _ = $crate::core_arch::x86::macros::ValidateConstImmU::<$imm, 8>::VALID;
-    };
-}
-
 macro_rules! constify_imm3 {
     ($imm8:expr, $expand:ident) => {
         #[allow(overflowing_literals)]
