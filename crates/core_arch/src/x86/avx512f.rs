@@ -21591,20 +21591,15 @@ pub unsafe fn _mm512_maskz_shuffle_epi32<const MASK: _MM_PERM_ENUM>(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_shuffle_epi32&expand=5145)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vpshufd, imm8 = 9))]
-#[rustc_args_required_const(3)]
-pub unsafe fn _mm256_mask_shuffle_epi32(
+#[cfg_attr(test, assert_instr(vpshufd, MASK = 9))]
+#[rustc_legacy_const_generics(3)]
+pub unsafe fn _mm256_mask_shuffle_epi32<const MASK: _MM_PERM_ENUM>(
     src: __m256i,
     k: __mmask8,
     a: __m256i,
-    imm8: _MM_PERM_ENUM,
 ) -> __m256i {
-    macro_rules! call {
-        ($imm8:expr) => {
-            _mm256_shuffle_epi32(a, $imm8)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+    static_assert_imm8!(MASK);
+    let r = _mm256_shuffle_epi32::<MASK>(a);
     transmute(simd_select_bitmask(k, r.as_i32x8(), src.as_i32x8()))
 }
 
@@ -21613,15 +21608,14 @@ pub unsafe fn _mm256_mask_shuffle_epi32(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_shuffle_epi32&expand=5146)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vpshufd, imm8 = 9))]
-#[rustc_args_required_const(2)]
-pub unsafe fn _mm256_maskz_shuffle_epi32(k: __mmask8, a: __m256i, imm8: _MM_PERM_ENUM) -> __m256i {
-    macro_rules! call {
-        ($imm8:expr) => {
-            _mm256_shuffle_epi32(a, $imm8)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+#[cfg_attr(test, assert_instr(vpshufd, MASK = 9))]
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn _mm256_maskz_shuffle_epi32<const MASK: _MM_PERM_ENUM>(
+    k: __mmask8,
+    a: __m256i,
+) -> __m256i {
+    static_assert_imm8!(MASK);
+    let r = _mm256_shuffle_epi32::<MASK>(a);
     let zero = _mm256_setzero_si256().as_i32x8();
     transmute(simd_select_bitmask(k, r.as_i32x8(), zero))
 }
@@ -47684,9 +47678,9 @@ mod tests {
     #[simd_test(enable = "avx512f,avx512vl")]
     unsafe fn test_mm256_mask_shuffle_epi32() {
         let a = _mm256_set_epi32(1, 4, 5, 8, 9, 12, 13, 16);
-        let r = _mm256_mask_shuffle_epi32(a, 0, a, _MM_PERM_AADD);
+        let r = _mm256_mask_shuffle_epi32::<_MM_PERM_AADD>(a, 0, a);
         assert_eq_m256i(r, a);
-        let r = _mm256_mask_shuffle_epi32(a, 0b11111111, a, _MM_PERM_AADD);
+        let r = _mm256_mask_shuffle_epi32::<_MM_PERM_AADD>(a, 0b11111111, a);
         let e = _mm256_set_epi32(8, 8, 1, 1, 16, 16, 9, 9);
         assert_eq_m256i(r, e);
     }
@@ -47694,9 +47688,9 @@ mod tests {
     #[simd_test(enable = "avx512f,avx512vl")]
     unsafe fn test_mm256_maskz_shuffle_epi32() {
         let a = _mm256_set_epi32(1, 4, 5, 8, 9, 12, 13, 16);
-        let r = _mm256_maskz_shuffle_epi32(0, a, _MM_PERM_AADD);
+        let r = _mm256_maskz_shuffle_epi32::<_MM_PERM_AADD>(0, a);
         assert_eq_m256i(r, _mm256_setzero_si256());
-        let r = _mm256_maskz_shuffle_epi32(0b11111111, a, _MM_PERM_AADD);
+        let r = _mm256_maskz_shuffle_epi32::<_MM_PERM_AADD>(0b11111111, a);
         let e = _mm256_set_epi32(8, 8, 1, 1, 16, 16, 9, 9);
         assert_eq_m256i(r, e);
     }
