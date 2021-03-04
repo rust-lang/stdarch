@@ -9720,7 +9720,7 @@ mod tests {
     unsafe fn test_mm512_shuffle_f64x2() {
         let a = _mm512_setr_pd(1., 4., 5., 8., 9., 12., 13., 16.);
         let b = _mm512_setr_pd(2., 3., 6., 7., 10., 11., 14., 15.);
-        let r = _mm512_shuffle_f64x2(a, b, 0b00000000);
+        let r = _mm512_shuffle_f64x2::<0b00_00_00_00>(a, b);
         let e = _mm512_setr_pd(1., 4., 1., 4., 2., 3., 2., 3.);
         assert_eq_m512d(r, e);
     }
@@ -9729,9 +9729,9 @@ mod tests {
     unsafe fn test_mm512_mask_shuffle_f64x2() {
         let a = _mm512_setr_pd(1., 4., 5., 8., 9., 12., 13., 16.);
         let b = _mm512_setr_pd(2., 3., 6., 7., 10., 11., 14., 15.);
-        let r = _mm512_mask_shuffle_f64x2(a, 0, a, b, 0b00000000);
+        let r = _mm512_mask_shuffle_f64x2::<0b00_00_00_00>(a, 0, a, b);
         assert_eq_m512d(r, a);
-        let r = _mm512_mask_shuffle_f64x2(a, 0b11111111, a, b, 0b00000000);
+        let r = _mm512_mask_shuffle_f64x2::<0b00_00_00_00>(a, 0b11111111, a, b);
         let e = _mm512_setr_pd(1., 4., 1., 4., 2., 3., 2., 3.);
         assert_eq_m512d(r, e);
     }
@@ -9740,9 +9740,9 @@ mod tests {
     unsafe fn test_mm512_maskz_shuffle_f64x2() {
         let a = _mm512_setr_pd(1., 4., 5., 8., 9., 12., 13., 16.);
         let b = _mm512_setr_pd(2., 3., 6., 7., 10., 11., 14., 15.);
-        let r = _mm512_maskz_shuffle_f64x2(0, a, b, 0b00000000);
+        let r = _mm512_maskz_shuffle_f64x2::<0b00_00_00_00>(0, a, b);
         assert_eq_m512d(r, _mm512_setzero_pd());
-        let r = _mm512_maskz_shuffle_f64x2(0b00001111, a, b, 0b00000000);
+        let r = _mm512_maskz_shuffle_f64x2::<0b00_00_00_00>(0b00001111, a, b);
         let e = _mm512_setr_pd(1., 4., 1., 4., 0., 0., 0., 0.);
         assert_eq_m512d(r, e);
     }
@@ -9751,7 +9751,7 @@ mod tests {
     unsafe fn test_mm256_shuffle_f64x2() {
         let a = _mm256_set_pd(1., 4., 5., 8.);
         let b = _mm256_set_pd(2., 3., 6., 7.);
-        let r = _mm256_shuffle_f64x2(a, b, 0b00);
+        let r = _mm256_shuffle_f64x2::<0b00>(a, b);
         let e = _mm256_set_pd(6., 7., 5., 8.);
         assert_eq_m256d(r, e);
     }
@@ -9760,9 +9760,9 @@ mod tests {
     unsafe fn test_mm256_mask_shuffle_f64x2() {
         let a = _mm256_set_pd(1., 4., 5., 8.);
         let b = _mm256_set_pd(2., 3., 6., 7.);
-        let r = _mm256_mask_shuffle_f64x2(a, 0, a, b, 0b00);
+        let r = _mm256_mask_shuffle_f64x2::<0b00>(a, 0, a, b);
         assert_eq_m256d(r, a);
-        let r = _mm256_mask_shuffle_f64x2(a, 0b00001111, a, b, 0b00);
+        let r = _mm256_mask_shuffle_f64x2::<0b00>(a, 0b00001111, a, b);
         let e = _mm256_set_pd(6., 7., 5., 8.);
         assert_eq_m256d(r, e);
     }
@@ -9771,9 +9771,9 @@ mod tests {
     unsafe fn test_mm256_maskz_shuffle_f64x2() {
         let a = _mm256_set_pd(1., 4., 5., 8.);
         let b = _mm256_set_pd(2., 3., 6., 7.);
-        let r = _mm256_maskz_shuffle_f64x2(0, a, b, 0b00);
+        let r = _mm256_maskz_shuffle_f64x2::<0b00>(0, a, b);
         assert_eq_m256d(r, _mm256_setzero_pd());
-        let r = _mm256_maskz_shuffle_f64x2(0b00001111, a, b, 0b00);
+        let r = _mm256_maskz_shuffle_f64x2::<0b00>(0b00001111, a, b);
         let e = _mm256_set_pd(6., 7., 5., 8.);
         assert_eq_m256d(r, e);
     }

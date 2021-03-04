@@ -21692,6 +21692,7 @@ pub unsafe fn _mm512_mask_shuffle_ps<const MASK: i32>(
     a: __m512,
     b: __m512,
 ) -> __m512 {
+    static_assert_imm8!(MASK);
     let r = _mm512_shuffle_ps::<MASK>(a, b);
     transmute(simd_select_bitmask(k, r.as_f32x16(), src.as_f32x16()))
 }
@@ -21708,6 +21709,7 @@ pub unsafe fn _mm512_maskz_shuffle_ps<const MASK: i32>(
     a: __m512,
     b: __m512,
 ) -> __m512 {
+    static_assert_imm8!(MASK);
     let r = _mm512_shuffle_ps::<MASK>(a, b);
     let zero = _mm512_setzero_ps().as_f32x16();
     transmute(simd_select_bitmask(k, r.as_f32x16(), zero))
@@ -21726,6 +21728,7 @@ pub unsafe fn _mm256_mask_shuffle_ps<const MASK: i32>(
     a: __m256,
     b: __m256,
 ) -> __m256 {
+    static_assert_imm8!(MASK);
     let r = _mm256_shuffle_ps::<MASK>(a, b);
     transmute(simd_select_bitmask(k, r.as_f32x8(), src.as_f32x8()))
 }
@@ -21742,6 +21745,7 @@ pub unsafe fn _mm256_maskz_shuffle_ps<const MASK: i32>(
     a: __m256,
     b: __m256,
 ) -> __m256 {
+    static_assert_imm8!(MASK);
     let r = _mm256_shuffle_ps::<MASK>(a, b);
     let zero = _mm256_setzero_ps().as_f32x8();
     transmute(simd_select_bitmask(k, r.as_f32x8(), zero))
@@ -21760,6 +21764,7 @@ pub unsafe fn _mm_mask_shuffle_ps<const MASK: i32>(
     a: __m128,
     b: __m128,
 ) -> __m128 {
+    static_assert_imm8!(MASK);
     let r = _mm_shuffle_ps::<MASK>(a, b);
     transmute(simd_select_bitmask(k, r.as_f32x4(), src.as_f32x4()))
 }
@@ -21772,6 +21777,7 @@ pub unsafe fn _mm_mask_shuffle_ps<const MASK: i32>(
 #[cfg_attr(test, assert_instr(vshufps, MASK = 3))]
 #[rustc_legacy_const_generics(3)]
 pub unsafe fn _mm_maskz_shuffle_ps<const MASK: i32>(k: __mmask8, a: __m128, b: __m128) -> __m128 {
+    static_assert_imm8!(MASK);
     let r = _mm_shuffle_ps::<MASK>(a, b);
     let zero = _mm_setzero_ps().as_f32x4();
     transmute(simd_select_bitmask(k, r.as_f32x4(), zero))
@@ -21815,6 +21821,7 @@ pub unsafe fn _mm512_mask_shuffle_pd<const MASK: i32>(
     a: __m512d,
     b: __m512d,
 ) -> __m512d {
+    static_assert_imm8!(MASK);
     let r = _mm512_shuffle_pd::<MASK>(a, b);
     transmute(simd_select_bitmask(k, r.as_f64x8(), src.as_f64x8()))
 }
@@ -21831,6 +21838,7 @@ pub unsafe fn _mm512_maskz_shuffle_pd<const MASK: i32>(
     a: __m512d,
     b: __m512d,
 ) -> __m512d {
+    static_assert_imm8!(MASK);
     let r = _mm512_shuffle_pd::<MASK>(a, b);
     let zero = _mm512_setzero_pd().as_f64x8();
     transmute(simd_select_bitmask(k, r.as_f64x8(), zero))
@@ -21849,6 +21857,7 @@ pub unsafe fn _mm256_mask_shuffle_pd<const MASK: i32>(
     a: __m256d,
     b: __m256d,
 ) -> __m256d {
+    static_assert_imm8!(MASK);
     let r = _mm256_shuffle_pd::<MASK>(a, b);
     transmute(simd_select_bitmask(k, r.as_f64x4(), src.as_f64x4()))
 }
@@ -21865,6 +21874,7 @@ pub unsafe fn _mm256_maskz_shuffle_pd<const MASK: i32>(
     a: __m256d,
     b: __m256d,
 ) -> __m256d {
+    static_assert_imm8!(MASK);
     let r = _mm256_shuffle_pd::<MASK>(a, b);
     let zero = _mm256_setzero_pd().as_f64x4();
     transmute(simd_select_bitmask(k, r.as_f64x4(), zero))
@@ -21883,6 +21893,7 @@ pub unsafe fn _mm_mask_shuffle_pd<const MASK: i32>(
     a: __m128d,
     b: __m128d,
 ) -> __m128d {
+    static_assert_imm8!(MASK);
     let r = _mm_shuffle_pd::<MASK>(a, b);
     transmute(simd_select_bitmask(k, r.as_f64x2(), src.as_f64x2()))
 }
@@ -21899,6 +21910,7 @@ pub unsafe fn _mm_maskz_shuffle_pd<const MASK: i32>(
     a: __m128d,
     b: __m128d,
 ) -> __m128d {
+    static_assert_imm8!(MASK);
     let r = _mm_shuffle_pd::<MASK>(a, b);
     let zero = _mm_setzero_pd().as_f64x2();
     transmute(simd_select_bitmask(k, r.as_f64x2(), zero))
@@ -21953,6 +21965,7 @@ pub unsafe fn _mm512_mask_shuffle_i32x4<const MASK: i32>(
     a: __m512i,
     b: __m512i,
 ) -> __m512i {
+    static_assert_imm8!(MASK);
     let r = _mm512_shuffle_i32x4::<MASK>(a, b);
     transmute(simd_select_bitmask(k, r.as_i32x16(), src.as_i32x16()))
 }
@@ -21969,6 +21982,7 @@ pub unsafe fn _mm512_maskz_shuffle_i32x4<const MASK: i32>(
     a: __m512i,
     b: __m512i,
 ) -> __m512i {
+    static_assert_imm8!(MASK);
     let r = _mm512_shuffle_i32x4::<MASK>(a, b);
     let zero = _mm512_setzero_si512().as_i32x16();
     transmute(simd_select_bitmask(k, r.as_i32x16(), zero))
@@ -22079,6 +22093,7 @@ pub unsafe fn _mm512_mask_shuffle_i64x2<const MASK: i32>(
     a: __m512i,
     b: __m512i,
 ) -> __m512i {
+    static_assert_imm8!(MASK);
     let r = _mm512_shuffle_i64x2::<MASK>(a, b);
     transmute(simd_select_bitmask(k, r.as_i64x8(), src.as_i64x8()))
 }
@@ -22095,6 +22110,7 @@ pub unsafe fn _mm512_maskz_shuffle_i64x2<const MASK: i32>(
     a: __m512i,
     b: __m512i,
 ) -> __m512i {
+    static_assert_imm8!(MASK);
     let r = _mm512_shuffle_i64x2::<MASK>(a, b);
     let zero = _mm512_setzero_si512().as_i64x8();
     transmute(simd_select_bitmask(k, r.as_i64x8(), zero))
@@ -22137,6 +22153,7 @@ pub unsafe fn _mm256_mask_shuffle_i64x2<const MASK: i32>(
     a: __m256i,
     b: __m256i,
 ) -> __m256i {
+    static_assert_imm8!(MASK);
     let r = _mm256_shuffle_i64x2::<MASK>(a, b);
     transmute(simd_select_bitmask(k, r.as_i64x4(), src.as_i64x4()))
 }
@@ -22153,6 +22170,7 @@ pub unsafe fn _mm256_maskz_shuffle_i64x2<const MASK: i32>(
     a: __m256i,
     b: __m256i,
 ) -> __m256i {
+    static_assert_imm8!(MASK);
     let r = _mm256_shuffle_i64x2::<MASK>(a, b);
     let zero = _mm256_setzero_si256().as_i64x4();
     transmute(simd_select_bitmask(k, r.as_i64x4(), zero))
@@ -22271,6 +22289,7 @@ pub unsafe fn _mm256_mask_shuffle_f32x4<const MASK: i32>(
     a: __m256,
     b: __m256,
 ) -> __m256 {
+    static_assert_imm8!(MASK);
     let r = _mm256_shuffle_f32x4::<MASK>(a, b);
     transmute(simd_select_bitmask(k, r.as_f32x8(), src.as_f32x8()))
 }
@@ -22287,6 +22306,7 @@ pub unsafe fn _mm256_maskz_shuffle_f32x4<const MASK: i32>(
     a: __m256,
     b: __m256,
 ) -> __m256 {
+    static_assert_imm8!(MASK);
     let r = _mm256_shuffle_f32x4::<MASK>(a, b);
     let zero = _mm256_setzero_ps().as_f32x8();
     transmute(simd_select_bitmask(k, r.as_f32x8(), zero))
@@ -22297,61 +22317,27 @@ pub unsafe fn _mm256_maskz_shuffle_f32x4<const MASK: i32>(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_shuffle_f64x2&expand=5171)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vshuff64x2, imm8 = 0b10111111))]
-#[rustc_args_required_const(2)]
-pub unsafe fn _mm512_shuffle_f64x2(a: __m512d, b: __m512d, imm8: i32) -> __m512d {
-    assert!(imm8 >= 0 && imm8 <= 255);
-    let imm8 = (imm8 & 0xFF) as u8;
-    macro_rules! shuffle4 {
-        (
-            $a:expr,
-            $b:expr,
-            $c:expr,
-            $d:expr,
-            $e:expr,
-            $f:expr,
-            $g:expr,
-            $h:expr
-        ) => {
-            simd_shuffle8(a, b, [$a, $b, $c, $d, $e, $f, $g, $h])
-        };
-    }
-    macro_rules! shuffle3 {
-        ($a:expr, $b:expr, $c:expr, $e:expr, $f:expr, $g:expr) => {
-            match (imm8 >> 6) & 0x3 {
-                0 => shuffle4!($a, $b, $c, $e, $f, $g, 8, 9),
-                1 => shuffle4!($a, $b, $c, $e, $f, $g, 10, 11),
-                2 => shuffle4!($a, $b, $c, $e, $f, $g, 12, 13),
-                _ => shuffle4!($a, $b, $c, $e, $f, $g, 14, 15),
-            }
-        };
-    }
-    macro_rules! shuffle2 {
-        ($a:expr, $b:expr, $e:expr, $f:expr) => {
-            match (imm8 >> 4) & 0x3 {
-                0 => shuffle3!($a, $b, $e, $f, 8, 9),
-                1 => shuffle3!($a, $b, $e, $f, 10, 11),
-                2 => shuffle3!($a, $b, $e, $f, 12, 13),
-                _ => shuffle3!($a, $b, $e, $f, 14, 15),
-            }
-        };
-    }
-    macro_rules! shuffle1 {
-        ($a:expr, $e:expr) => {
-            match (imm8 >> 2) & 0x3 {
-                0 => shuffle2!($a, $e, 0, 1),
-                1 => shuffle2!($a, $e, 2, 3),
-                2 => shuffle2!($a, $e, 4, 5),
-                _ => shuffle2!($a, $e, 6, 7),
-            }
-        };
-    }
-    match imm8 & 0x3 {
-        0 => shuffle1!(0, 1),
-        1 => shuffle1!(2, 3),
-        2 => shuffle1!(4, 5),
-        _ => shuffle1!(6, 7),
-    }
+#[cfg_attr(test, assert_instr(vshuff64x2, MASK = 0b10_11_11_11))]
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn _mm512_shuffle_f64x2<const MASK: i32>(a: __m512d, b: __m512d) -> __m512d {
+    static_assert_imm8!(MASK);
+    let a = a.as_f64x8();
+    let b = b.as_f64x8();
+    let r: f64x8 = simd_shuffle8(
+        a,
+        b,
+        [
+            (MASK as u32 & 0b11) * 2 + 0,
+            (MASK as u32 & 0b11) * 2 + 1,
+            ((MASK as u32 >> 2) & 0b11) * 2 + 0,
+            ((MASK as u32 >> 2) & 0b11) * 2 + 1,
+            ((MASK as u32 >> 4) & 0b11) * 2 + 0 + 8,
+            ((MASK as u32 >> 4) & 0b11) * 2 + 1 + 8,
+            ((MASK as u32 >> 6) & 0b11) * 2 + 0 + 8,
+            ((MASK as u32 >> 6) & 0b11) * 2 + 1 + 8,
+        ],
+    );
+    transmute(r)
 }
 
 /// Shuffle 128-bits (composed of 2 double-precision (64-bit) floating-point elements) selected by imm8 from a and b, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
@@ -22359,21 +22345,16 @@ pub unsafe fn _mm512_shuffle_f64x2(a: __m512d, b: __m512d, imm8: i32) -> __m512d
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_shuffle_f64x2&expand=5169)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vshuff64x2, imm8 = 0b10111111))]
-#[rustc_args_required_const(4)]
-pub unsafe fn _mm512_mask_shuffle_f64x2(
+#[cfg_attr(test, assert_instr(vshuff64x2, MASK = 0b10_11_11_11))]
+#[rustc_legacy_const_generics(4)]
+pub unsafe fn _mm512_mask_shuffle_f64x2<const MASK: i32>(
     src: __m512d,
     k: __mmask8,
     a: __m512d,
     b: __m512d,
-    imm8: i32,
 ) -> __m512d {
-    macro_rules! call {
-        ($imm8:expr) => {
-            _mm512_shuffle_f64x2(a, b, $imm8)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+    static_assert_imm8!(MASK);
+    let r = _mm512_shuffle_f64x2::<MASK>(a, b);
     transmute(simd_select_bitmask(k, r.as_f64x8(), src.as_f64x8()))
 }
 
@@ -22382,20 +22363,15 @@ pub unsafe fn _mm512_mask_shuffle_f64x2(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_shuffle_f64x2&expand=5170)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vshuff64x2, imm8 = 0b10111111))]
-#[rustc_args_required_const(3)]
-pub unsafe fn _mm512_maskz_shuffle_f64x2(
+#[cfg_attr(test, assert_instr(vshuff64x2, MASK = 0b10_11_11_11))]
+#[rustc_legacy_const_generics(3)]
+pub unsafe fn _mm512_maskz_shuffle_f64x2<const MASK: i32>(
     k: __mmask8,
     a: __m512d,
     b: __m512d,
-    imm8: i32,
 ) -> __m512d {
-    macro_rules! call {
-        ($imm8:expr) => {
-            _mm512_shuffle_f64x2(a, b, $imm8)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+    static_assert_imm8!(MASK);
+    let r = _mm512_shuffle_f64x2::<MASK>(a, b);
     let zero = _mm512_setzero_pd().as_f64x8();
     transmute(simd_select_bitmask(k, r.as_f64x8(), zero))
 }
@@ -22405,35 +22381,22 @@ pub unsafe fn _mm512_maskz_shuffle_f64x2(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_shuffle_f64x2&expand=5168)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vperm, imm8 = 0b01))] //should be vshuff64x2
-#[rustc_args_required_const(2)]
-pub unsafe fn _mm256_shuffle_f64x2(a: __m256d, b: __m256d, imm8: i32) -> __m256d {
-    assert!(imm8 >= 0 && imm8 <= 255);
-    let imm8 = (imm8 & 0xFF) as u8;
+#[cfg_attr(test, assert_instr(vperm, MASK = 0b01))] //should be vshuff64x2
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn _mm256_shuffle_f64x2<const MASK: i32>(a: __m256d, b: __m256d) -> __m256d {
+    static_assert_imm8!(MASK);
     let a = a.as_f64x4();
     let b = b.as_f64x4();
-    macro_rules! shuffle2 {
-        (
-            $a:expr,
-            $b:expr,
-            $c:expr,
-            $d:expr
-        ) => {
-            simd_shuffle4(a, b, [$a, $b, $c, $d])
-        };
-    }
-    macro_rules! shuffle1 {
-        ($a:expr, $b:expr) => {
-            match (imm8 >> 1) & 0x1 {
-                0 => shuffle2!($a, $b, 4, 5),
-                _ => shuffle2!($a, $b, 6, 7),
-            }
-        };
-    }
-    let r: f64x4 = match imm8 & 0x1 {
-        0 => shuffle1!(0, 1),
-        _ => shuffle1!(2, 3),
-    };
+    let r: f64x4 = simd_shuffle4(
+        a,
+        b,
+        [
+            (MASK as u32 & 0b1) * 2 + 0,
+            (MASK as u32 & 0b1) * 2 + 1,
+            ((MASK as u32 >> 1) & 0b1) * 2 + 0 + 4,
+            ((MASK as u32 >> 1) & 0b1) * 2 + 1 + 4,
+        ],
+    );
     transmute(r)
 }
 
@@ -22442,21 +22405,16 @@ pub unsafe fn _mm256_shuffle_f64x2(a: __m256d, b: __m256d, imm8: i32) -> __m256d
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_shuffle_f64x2&expand=5166)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vshuff64x2, imm8 = 0b11))]
-#[rustc_args_required_const(4)]
-pub unsafe fn _mm256_mask_shuffle_f64x2(
+#[cfg_attr(test, assert_instr(vshuff64x2, MASK = 0b11))]
+#[rustc_legacy_const_generics(4)]
+pub unsafe fn _mm256_mask_shuffle_f64x2<const MASK: i32>(
     src: __m256d,
     k: __mmask8,
     a: __m256d,
     b: __m256d,
-    imm8: i32,
 ) -> __m256d {
-    macro_rules! call {
-        ($imm8:expr) => {
-            _mm256_shuffle_f64x2(a, b, $imm8)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+    static_assert_imm8!(MASK);
+    let r = _mm256_shuffle_f64x2::<MASK>(a, b);
     transmute(simd_select_bitmask(k, r.as_f64x4(), src.as_f64x4()))
 }
 
@@ -22465,20 +22423,15 @@ pub unsafe fn _mm256_mask_shuffle_f64x2(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_shuffle_f64x2&expand=5167)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vshuff64x2, imm8 = 0b11))]
-#[rustc_args_required_const(3)]
-pub unsafe fn _mm256_maskz_shuffle_f64x2(
+#[cfg_attr(test, assert_instr(vshuff64x2, MASK = 0b11))]
+#[rustc_legacy_const_generics(3)]
+pub unsafe fn _mm256_maskz_shuffle_f64x2<const MASK: i32>(
     k: __mmask8,
     a: __m256d,
     b: __m256d,
-    imm8: i32,
 ) -> __m256d {
-    macro_rules! call {
-        ($imm8:expr) => {
-            _mm256_shuffle_f64x2(a, b, $imm8)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+    static_assert_imm8!(MASK);
+    let r = _mm256_shuffle_f64x2::<MASK>(a, b);
     let zero = _mm256_setzero_pd().as_f64x4();
     transmute(simd_select_bitmask(k, r.as_f64x4(), zero))
 }
