@@ -145,16 +145,11 @@ pub unsafe fn _mm_cvttss_u64(a: __m128) -> u64 {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_cvt_roundi64_sd&expand=1313)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vcvtsi2sd, rounding = 8))]
-#[rustc_args_required_const(2)]
-pub unsafe fn _mm_cvt_roundi64_sd(a: __m128d, b: i64, rounding: i32) -> __m128d {
+#[cfg_attr(test, assert_instr(vcvtsi2sd, ROUNDING = 8))]
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn _mm_cvt_roundi64_sd<const ROUNDING: i32>(a: __m128d, b: i64) -> __m128d {
     let a = a.as_f64x2();
-    macro_rules! call {
-        ($imm4:expr) => {
-            vcvtsi2sd64(a, b, $imm4)
-        };
-    }
-    let r = constify_imm4_round!(rounding, call);
+    let r = vcvtsi2sd64(a, b, ROUNDING);
     transmute(r)
 }
 
@@ -169,16 +164,11 @@ pub unsafe fn _mm_cvt_roundi64_sd(a: __m128d, b: i64, rounding: i32) -> __m128d 
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_cvt_roundsi64_sd&expand=1367)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vcvtsi2sd, rounding = 8))]
-#[rustc_args_required_const(2)]
-pub unsafe fn _mm_cvt_roundsi64_sd(a: __m128d, b: i64, rounding: i32) -> __m128d {
+#[cfg_attr(test, assert_instr(vcvtsi2sd, ROUNDING = 8))]
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn _mm_cvt_roundsi64_sd<const ROUNDING: i32>(a: __m128d, b: i64) -> __m128d {
     let a = a.as_f64x2();
-    macro_rules! call {
-        ($imm4:expr) => {
-            vcvtsi2sd64(a, b, $imm4)
-        };
-    }
-    let r = constify_imm4_round!(rounding, call);
+    let r = vcvtsi2sd64(a, b, ROUNDING);
     transmute(r)
 }
 
@@ -193,16 +183,11 @@ pub unsafe fn _mm_cvt_roundsi64_sd(a: __m128d, b: i64, rounding: i32) -> __m128d
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_cvt_roundi64_ss&expand=1314)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vcvtsi2ss, rounding = 8))]
-#[rustc_args_required_const(2)]
-pub unsafe fn _mm_cvt_roundi64_ss(a: __m128, b: i64, rounding: i32) -> __m128 {
+#[cfg_attr(test, assert_instr(vcvtsi2ss, ROUNDING = 8))]
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn _mm_cvt_roundi64_ss<const ROUNDING: i32>(a: __m128, b: i64) -> __m128 {
     let a = a.as_f32x4();
-    macro_rules! call {
-        ($imm4:expr) => {
-            vcvtsi2ss64(a, b, $imm4)
-        };
-    }
-    let r = constify_imm4_round!(rounding, call);
+    let r = vcvtsi2ss64(a, b, ROUNDING);
     transmute(r)
 }
 
@@ -217,16 +202,11 @@ pub unsafe fn _mm_cvt_roundi64_ss(a: __m128, b: i64, rounding: i32) -> __m128 {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_cvt_roundu64_sd&expand=1379)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vcvtusi2sd, rounding = 8))]
-#[rustc_args_required_const(2)]
-pub unsafe fn _mm_cvt_roundu64_sd(a: __m128d, b: u64, rounding: i32) -> __m128d {
+#[cfg_attr(test, assert_instr(vcvtusi2sd, ROUNDING = 8))]
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn _mm_cvt_roundu64_sd<const ROUNDING: i32>(a: __m128d, b: u64) -> __m128d {
     let a = a.as_f64x2();
-    macro_rules! call {
-        ($imm4:expr) => {
-            vcvtusi2sd64(a, b, $imm4)
-        };
-    }
-    let r = constify_imm4_round!(rounding, call);
+    let r = vcvtusi2sd64(a, b, ROUNDING);
     transmute(r)
 }
 
@@ -241,16 +221,11 @@ pub unsafe fn _mm_cvt_roundu64_sd(a: __m128d, b: u64, rounding: i32) -> __m128d 
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_cvt_roundsi64_ss&expand=1368)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vcvtsi2ss, rounding = 8))]
-#[rustc_args_required_const(2)]
-pub unsafe fn _mm_cvt_roundsi64_ss(a: __m128, b: i64, rounding: i32) -> __m128 {
+#[cfg_attr(test, assert_instr(vcvtsi2ss, ROUNDING = 8))]
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn _mm_cvt_roundsi64_ss<const ROUNDING: i32>(a: __m128, b: i64) -> __m128 {
     let a = a.as_f32x4();
-    macro_rules! call {
-        ($imm4:expr) => {
-            vcvtsi2ss64(a, b, $imm4)
-        };
-    }
-    let r = constify_imm4_round!(rounding, call);
+    let r = vcvtsi2ss64(a, b, ROUNDING);
     transmute(r)
 }
 
@@ -265,16 +240,11 @@ pub unsafe fn _mm_cvt_roundsi64_ss(a: __m128, b: i64, rounding: i32) -> __m128 {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_cvt_roundu64_ss&expand=1380)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vcvtusi2ss, rounding = 8))]
-#[rustc_args_required_const(2)]
-pub unsafe fn _mm_cvt_roundu64_ss(a: __m128, b: u64, rounding: i32) -> __m128 {
+#[cfg_attr(test, assert_instr(vcvtusi2ss, ROUNDING = 8))]
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn _mm_cvt_roundu64_ss<const ROUNDING: i32>(a: __m128, b: u64) -> __m128 {
     let a = a.as_f32x4();
-    macro_rules! call {
-        ($imm4:expr) => {
-            vcvtusi2ss64(a, b, $imm4)
-        };
-    }
-    let r = constify_imm4_round!(rounding, call);
+    let r = vcvtusi2ss64(a, b, ROUNDING);
     transmute(r)
 }
 
@@ -289,16 +259,11 @@ pub unsafe fn _mm_cvt_roundu64_ss(a: __m128, b: u64, rounding: i32) -> __m128 {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_cvt_roundsd_si64&expand=1360)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vcvtsd2si, rounding = 8))]
-#[rustc_args_required_const(1)]
-pub unsafe fn _mm_cvt_roundsd_si64(a: __m128d, rounding: i32) -> i64 {
+#[cfg_attr(test, assert_instr(vcvtsd2si, ROUNDING = 8))]
+#[rustc_legacy_const_generics(1)]
+pub unsafe fn _mm_cvt_roundsd_si64<const ROUNDING: i32>(a: __m128d) -> i64 {
     let a = a.as_f64x2();
-    macro_rules! call {
-        ($imm4:expr) => {
-            vcvtsd2si64(a, $imm4)
-        };
-    }
-    let r = constify_imm4_round!(rounding, call);
+    let r = vcvtsd2si64(a, ROUNDING);
     transmute(r)
 }
 
@@ -313,16 +278,11 @@ pub unsafe fn _mm_cvt_roundsd_si64(a: __m128d, rounding: i32) -> i64 {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_cvt_roundsd_i64&expand=1358)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vcvtsd2si, rounding = 8))]
-#[rustc_args_required_const(1)]
-pub unsafe fn _mm_cvt_roundsd_i64(a: __m128d, rounding: i32) -> i64 {
+#[cfg_attr(test, assert_instr(vcvtsd2si, ROUNDING = 8))]
+#[rustc_legacy_const_generics(1)]
+pub unsafe fn _mm_cvt_roundsd_i64<const ROUNDING: i32>(a: __m128d) -> i64 {
     let a = a.as_f64x2();
-    macro_rules! call {
-        ($imm4:expr) => {
-            vcvtsd2si64(a, $imm4)
-        };
-    }
-    let r = constify_imm4_round!(rounding, call);
+    let r = vcvtsd2si64(a, ROUNDING);
     transmute(r)
 }
 
@@ -337,16 +297,11 @@ pub unsafe fn _mm_cvt_roundsd_i64(a: __m128d, rounding: i32) -> i64 {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_cvt_roundsd_u64&expand=1365)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vcvtsd2usi, rounding = 8))]
-#[rustc_args_required_const(1)]
-pub unsafe fn _mm_cvt_roundsd_u64(a: __m128d, rounding: i32) -> u64 {
+#[cfg_attr(test, assert_instr(vcvtsd2usi, ROUNDING = 8))]
+#[rustc_legacy_const_generics(1)]
+pub unsafe fn _mm_cvt_roundsd_u64<const ROUNDING: i32>(a: __m128d) -> u64 {
     let a = a.as_f64x2();
-    macro_rules! call {
-        ($imm4:expr) => {
-            vcvtsd2usi64(a, $imm4)
-        };
-    }
-    let r = constify_imm4_round!(rounding, call);
+    let r = vcvtsd2usi64(a, ROUNDING);
     transmute(r)
 }
 
@@ -361,16 +316,11 @@ pub unsafe fn _mm_cvt_roundsd_u64(a: __m128d, rounding: i32) -> u64 {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_cvt_roundss_si64&expand=1375)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vcvtss2si, rounding = 8))]
-#[rustc_args_required_const(1)]
-pub unsafe fn _mm_cvt_roundss_si64(a: __m128, rounding: i32) -> i64 {
+#[cfg_attr(test, assert_instr(vcvtss2si, ROUNDING = 8))]
+#[rustc_legacy_const_generics(1)]
+pub unsafe fn _mm_cvt_roundss_si64<const ROUNDING: i32>(a: __m128) -> i64 {
     let a = a.as_f32x4();
-    macro_rules! call {
-        ($imm4:expr) => {
-            vcvtss2si64(a, $imm4)
-        };
-    }
-    let r = constify_imm4_round!(rounding, call);
+    let r = vcvtss2si64(a, ROUNDING);
     transmute(r)
 }
 
@@ -385,16 +335,11 @@ pub unsafe fn _mm_cvt_roundss_si64(a: __m128, rounding: i32) -> i64 {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_cvt_roundss_i64&expand=1370)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vcvtss2si, rounding = 8))]
-#[rustc_args_required_const(1)]
-pub unsafe fn _mm_cvt_roundss_i64(a: __m128, rounding: i32) -> i64 {
+#[cfg_attr(test, assert_instr(vcvtss2si, ROUNDING = 8))]
+#[rustc_legacy_const_generics(1)]
+pub unsafe fn _mm_cvt_roundss_i64<const ROUNDING: i32>(a: __m128) -> i64 {
     let a = a.as_f32x4();
-    macro_rules! call {
-        ($imm4:expr) => {
-            vcvtss2si64(a, $imm4)
-        };
-    }
-    let r = constify_imm4_round!(rounding, call);
+    let r = vcvtss2si64(a, ROUNDING);
     transmute(r)
 }
 
@@ -409,16 +354,11 @@ pub unsafe fn _mm_cvt_roundss_i64(a: __m128, rounding: i32) -> i64 {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_cvt_roundss_u64&expand=1377)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vcvtss2usi, rounding = 8))]
-#[rustc_args_required_const(1)]
-pub unsafe fn _mm_cvt_roundss_u64(a: __m128, rounding: i32) -> u64 {
+#[cfg_attr(test, assert_instr(vcvtss2usi, ROUNDING = 8))]
+#[rustc_legacy_const_generics(1)]
+pub unsafe fn _mm_cvt_roundss_u64<const ROUNDING: i32>(a: __m128) -> u64 {
     let a = a.as_f32x4();
-    macro_rules! call {
-        ($imm4:expr) => {
-            vcvtss2usi64(a, $imm4)
-        };
-    }
-    let r = constify_imm4_round!(rounding, call);
+    let r = vcvtss2usi64(a, ROUNDING);
     transmute(r)
 }
 
@@ -428,16 +368,11 @@ pub unsafe fn _mm_cvt_roundss_u64(a: __m128, rounding: i32) -> u64 {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_cvtt_roundsd_si64&expand=1931)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vcvtsd2si, sae = 8))]
-#[rustc_args_required_const(1)]
-pub unsafe fn _mm_cvtt_roundsd_si64(a: __m128d, sae: i32) -> i64 {
+#[cfg_attr(test, assert_instr(vcvtsd2si, SAE = 8))]
+#[rustc_legacy_const_generics(1)]
+pub unsafe fn _mm_cvtt_roundsd_si64<const SAE: i32>(a: __m128d) -> i64 {
     let a = a.as_f64x2();
-    macro_rules! call {
-        ($imm4:expr) => {
-            vcvtsd2si64(a, $imm4)
-        };
-    }
-    let r = constify_imm4_sae!(sae, call);
+    let r = vcvtsd2si64(a, SAE);
     transmute(r)
 }
 
@@ -447,16 +382,11 @@ pub unsafe fn _mm_cvtt_roundsd_si64(a: __m128d, sae: i32) -> i64 {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_cvtt_roundsd_i64&expand=1929)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vcvtsd2si, sae = 8))]
-#[rustc_args_required_const(1)]
-pub unsafe fn _mm_cvtt_roundsd_i64(a: __m128d, sae: i32) -> i64 {
+#[cfg_attr(test, assert_instr(vcvtsd2si, SAE = 8))]
+#[rustc_legacy_const_generics(1)]
+pub unsafe fn _mm_cvtt_roundsd_i64<const SAE: i32>(a: __m128d) -> i64 {
     let a = a.as_f64x2();
-    macro_rules! call {
-        ($imm4:expr) => {
-            vcvtsd2si64(a, $imm4)
-        };
-    }
-    let r = constify_imm4_sae!(sae, call);
+    let r = vcvtsd2si64(a, SAE);
     transmute(r)
 }
 
@@ -466,16 +396,11 @@ pub unsafe fn _mm_cvtt_roundsd_i64(a: __m128d, sae: i32) -> i64 {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_cvtt_roundsd_u64&expand=1933)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vcvtsd2usi, sae = 8))]
-#[rustc_args_required_const(1)]
-pub unsafe fn _mm_cvtt_roundsd_u64(a: __m128d, sae: i32) -> u64 {
+#[cfg_attr(test, assert_instr(vcvtsd2usi, SAE = 8))]
+#[rustc_legacy_const_generics(1)]
+pub unsafe fn _mm_cvtt_roundsd_u64<const SAE: i32>(a: __m128d) -> u64 {
     let a = a.as_f64x2();
-    macro_rules! call {
-        ($imm4:expr) => {
-            vcvtsd2usi64(a, $imm4)
-        };
-    }
-    let r = constify_imm4_sae!(sae, call);
+    let r = vcvtsd2usi64(a, SAE);
     transmute(r)
 }
 
@@ -485,16 +410,11 @@ pub unsafe fn _mm_cvtt_roundsd_u64(a: __m128d, sae: i32) -> u64 {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_cvtt_roundss_i64&expand=1935)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vcvtss2si, sae = 8))]
-#[rustc_args_required_const(1)]
-pub unsafe fn _mm_cvtt_roundss_i64(a: __m128, sae: i32) -> i64 {
+#[cfg_attr(test, assert_instr(vcvtss2si, SAE = 8))]
+#[rustc_legacy_const_generics(1)]
+pub unsafe fn _mm_cvtt_roundss_i64<const SAE: i32>(a: __m128) -> i64 {
     let a = a.as_f32x4();
-    macro_rules! call {
-        ($imm4:expr) => {
-            vcvtss2si64(a, $imm4)
-        };
-    }
-    let r = constify_imm4_sae!(sae, call);
+    let r = vcvtss2si64(a, SAE);
     transmute(r)
 }
 
@@ -504,16 +424,11 @@ pub unsafe fn _mm_cvtt_roundss_i64(a: __m128, sae: i32) -> i64 {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_cvtt_roundss_si64&expand=1937)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vcvtss2si, sae = 8))]
-#[rustc_args_required_const(1)]
-pub unsafe fn _mm_cvtt_roundss_si64(a: __m128, sae: i32) -> i64 {
+#[cfg_attr(test, assert_instr(vcvtss2si, SAE = 8))]
+#[rustc_legacy_const_generics(1)]
+pub unsafe fn _mm_cvtt_roundss_si64<const SAE: i32>(a: __m128) -> i64 {
     let a = a.as_f32x4();
-    macro_rules! call {
-        ($imm4:expr) => {
-            vcvtss2si64(a, $imm4)
-        };
-    }
-    let r = constify_imm4_sae!(sae, call);
+    let r = vcvtss2si64(a, SAE);
     transmute(r)
 }
 
@@ -523,16 +438,11 @@ pub unsafe fn _mm_cvtt_roundss_si64(a: __m128, sae: i32) -> i64 {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_cvtt_roundss_u64&expand=1939)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vcvtss2usi, sae = 8))]
-#[rustc_args_required_const(1)]
-pub unsafe fn _mm_cvtt_roundss_u64(a: __m128, sae: i32) -> u64 {
+#[cfg_attr(test, assert_instr(vcvtss2usi, SAE = 8))]
+#[rustc_legacy_const_generics(1)]
+pub unsafe fn _mm_cvtt_roundss_u64<const SAE: i32>(a: __m128) -> u64 {
     let a = a.as_f32x4();
-    macro_rules! call {
-        ($imm4:expr) => {
-            vcvtss2usi64(a, $imm4)
-        };
-    }
-    let r = constify_imm4_sae!(sae, call);
+    let r = vcvtss2usi64(a, SAE);
     transmute(r)
 }
 
@@ -12197,7 +12107,7 @@ mod tests {
     unsafe fn test_mm_cvt_roundi64_ss() {
         let a = _mm_set_ps(0., -0.5, 1., -1.5);
         let b: i64 = 9;
-        let r = _mm_cvt_roundi64_ss(a, b, _MM_FROUND_TO_ZERO | _MM_FROUND_NO_EXC);
+        let r = _mm_cvt_roundi64_ss::<{ _MM_FROUND_TO_ZERO | _MM_FROUND_NO_EXC }>(a, b);
         let e = _mm_set_ps(0., -0.5, 1., 9.);
         assert_eq_m128(r, e);
     }
@@ -12206,7 +12116,7 @@ mod tests {
     unsafe fn test_mm_cvt_roundsi64_ss() {
         let a = _mm_set_ps(0., -0.5, 1., -1.5);
         let b: i64 = 9;
-        let r = _mm_cvt_roundsi64_ss(a, b, _MM_FROUND_TO_ZERO | _MM_FROUND_NO_EXC);
+        let r = _mm_cvt_roundsi64_ss::<{ _MM_FROUND_TO_ZERO | _MM_FROUND_NO_EXC }>(a, b);
         let e = _mm_set_ps(0., -0.5, 1., 9.);
         assert_eq_m128(r, e);
     }
@@ -12232,7 +12142,7 @@ mod tests {
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm_cvt_roundsd_si64() {
         let a = _mm_set_pd(1., -1.5);
-        let r = _mm_cvt_roundsd_si64(a, _MM_FROUND_TO_ZERO | _MM_FROUND_NO_EXC);
+        let r = _mm_cvt_roundsd_si64::<{ _MM_FROUND_TO_ZERO | _MM_FROUND_NO_EXC }>(a);
         let e: i64 = -1;
         assert_eq!(r, e);
     }
@@ -12240,7 +12150,7 @@ mod tests {
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm_cvt_roundsd_i64() {
         let a = _mm_set_pd(1., -1.5);
-        let r = _mm_cvt_roundsd_i64(a, _MM_FROUND_TO_ZERO | _MM_FROUND_NO_EXC);
+        let r = _mm_cvt_roundsd_i64::<{ _MM_FROUND_TO_ZERO | _MM_FROUND_NO_EXC }>(a);
         let e: i64 = -1;
         assert_eq!(r, e);
     }
@@ -12248,7 +12158,7 @@ mod tests {
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm_cvt_roundsd_u64() {
         let a = _mm_set_pd(1., f64::MAX);
-        let r = _mm_cvt_roundsd_u64(a, _MM_FROUND_TO_ZERO | _MM_FROUND_NO_EXC);
+        let r = _mm_cvt_roundsd_u64::<{ _MM_FROUND_TO_ZERO | _MM_FROUND_NO_EXC }>(a);
         let e: u64 = u64::MAX;
         assert_eq!(r, e);
     }
@@ -12264,7 +12174,7 @@ mod tests {
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm_cvt_roundss_i64() {
         let a = _mm_set_ps(0., -0.5, 1., -1.5);
-        let r = _mm_cvt_roundss_i64(a, _MM_FROUND_TO_ZERO | _MM_FROUND_NO_EXC);
+        let r = _mm_cvt_roundss_i64::<{ _MM_FROUND_TO_ZERO | _MM_FROUND_NO_EXC }>(a);
         let e: i64 = -1;
         assert_eq!(r, e);
     }
@@ -12272,7 +12182,7 @@ mod tests {
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm_cvt_roundss_si64() {
         let a = _mm_set_ps(0., -0.5, 1., -1.5);
-        let r = _mm_cvt_roundss_si64(a, _MM_FROUND_TO_ZERO | _MM_FROUND_NO_EXC);
+        let r = _mm_cvt_roundss_si64::<{ _MM_FROUND_TO_ZERO | _MM_FROUND_NO_EXC }>(a);
         let e: i64 = -1;
         assert_eq!(r, e);
     }
@@ -12280,7 +12190,7 @@ mod tests {
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm_cvt_roundss_u64() {
         let a = _mm_set_ps(0., -0.5, 1., -1.5);
-        let r = _mm_cvt_roundss_u64(a, _MM_FROUND_TO_ZERO | _MM_FROUND_NO_EXC);
+        let r = _mm_cvt_roundss_u64::<{ _MM_FROUND_TO_ZERO | _MM_FROUND_NO_EXC }>(a);
         let e: u64 = u64::MAX;
         assert_eq!(r, e);
     }
@@ -12304,7 +12214,7 @@ mod tests {
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm_cvtt_roundsd_i64() {
         let a = _mm_set_pd(1., -1.5);
-        let r = _mm_cvtt_roundsd_i64(a, _MM_FROUND_CUR_DIRECTION);
+        let r = _mm_cvtt_roundsd_i64::<_MM_FROUND_CUR_DIRECTION>(a);
         let e: i64 = -2;
         assert_eq!(r, e);
     }
@@ -12312,7 +12222,7 @@ mod tests {
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm_cvtt_roundsd_si64() {
         let a = _mm_set_pd(1., -1.5);
-        let r = _mm_cvtt_roundsd_si64(a, _MM_FROUND_CUR_DIRECTION);
+        let r = _mm_cvtt_roundsd_si64::<_MM_FROUND_CUR_DIRECTION>(a);
         let e: i64 = -2;
         assert_eq!(r, e);
     }
@@ -12320,7 +12230,7 @@ mod tests {
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm_cvtt_roundsd_u64() {
         let a = _mm_set_pd(1., -1.5);
-        let r = _mm_cvtt_roundsd_u64(a, _MM_FROUND_CUR_DIRECTION);
+        let r = _mm_cvtt_roundsd_u64::<_MM_FROUND_CUR_DIRECTION>(a);
         let e: u64 = u64::MAX;
         assert_eq!(r, e);
     }
@@ -12344,7 +12254,7 @@ mod tests {
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm_cvtt_roundss_i64() {
         let a = _mm_set_ps(0., -0.5, 1., -1.5);
-        let r = _mm_cvtt_roundss_i64(a, _MM_FROUND_CUR_DIRECTION);
+        let r = _mm_cvtt_roundss_i64::<_MM_FROUND_CUR_DIRECTION>(a);
         let e: i64 = -2;
         assert_eq!(r, e);
     }
@@ -12352,7 +12262,7 @@ mod tests {
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm_cvtt_roundss_si64() {
         let a = _mm_set_ps(0., -0.5, 1., -1.5);
-        let r = _mm_cvtt_roundss_si64(a, _MM_FROUND_CUR_DIRECTION);
+        let r = _mm_cvtt_roundss_si64::<_MM_FROUND_CUR_DIRECTION>(a);
         let e: i64 = -2;
         assert_eq!(r, e);
     }
@@ -12360,7 +12270,7 @@ mod tests {
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm_cvtt_roundss_u64() {
         let a = _mm_set_ps(0., -0.5, 1., -1.5);
-        let r = _mm_cvtt_roundss_u64(a, _MM_FROUND_CUR_DIRECTION);
+        let r = _mm_cvtt_roundss_u64::<_MM_FROUND_CUR_DIRECTION>(a);
         let e: u64 = u64::MAX;
         assert_eq!(r, e);
     }
@@ -12395,7 +12305,7 @@ mod tests {
     unsafe fn test_mm_cvt_roundu64_ss() {
         let a = _mm_set_ps(0., -0.5, 1., -1.5);
         let b: u64 = 9;
-        let r = _mm_cvt_roundu64_ss(a, b, _MM_FROUND_TO_ZERO | _MM_FROUND_NO_EXC);
+        let r = _mm_cvt_roundu64_ss::<{ _MM_FROUND_TO_ZERO | _MM_FROUND_NO_EXC }>(a, b);
         let e = _mm_set_ps(0., -0.5, 1., 9.);
         assert_eq_m128(r, e);
     }
@@ -12404,7 +12314,7 @@ mod tests {
     unsafe fn test_mm_cvt_roundu64_sd() {
         let a = _mm_set_pd(1., -1.5);
         let b: u64 = 9;
-        let r = _mm_cvt_roundu64_sd(a, b, _MM_FROUND_TO_ZERO | _MM_FROUND_NO_EXC);
+        let r = _mm_cvt_roundu64_sd::<{ _MM_FROUND_TO_ZERO | _MM_FROUND_NO_EXC }>(a, b);
         let e = _mm_set_pd(1., 9.);
         assert_eq_m128d(r, e);
     }
@@ -12413,7 +12323,7 @@ mod tests {
     unsafe fn test_mm_cvt_roundi64_sd() {
         let a = _mm_set_pd(1., -1.5);
         let b: i64 = 9;
-        let r = _mm_cvt_roundi64_sd(a, b, _MM_FROUND_TO_ZERO | _MM_FROUND_NO_EXC);
+        let r = _mm_cvt_roundi64_sd::<{ _MM_FROUND_TO_ZERO | _MM_FROUND_NO_EXC }>(a, b);
         let e = _mm_set_pd(1., 9.);
         assert_eq_m128d(r, e);
     }
@@ -12422,7 +12332,7 @@ mod tests {
     unsafe fn test_mm_cvt_roundsi64_sd() {
         let a = _mm_set_pd(1., -1.5);
         let b: i64 = 9;
-        let r = _mm_cvt_roundsi64_sd(a, b, _MM_FROUND_TO_ZERO | _MM_FROUND_NO_EXC);
+        let r = _mm_cvt_roundsi64_sd::<{ _MM_FROUND_TO_ZERO | _MM_FROUND_NO_EXC }>(a, b);
         let e = _mm_set_pd(1., 9.);
         assert_eq_m128d(r, e);
     }
