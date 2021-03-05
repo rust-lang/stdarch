@@ -24946,13 +24946,13 @@ pub unsafe fn _mm_mask_blend_pd(k: __mmask8, a: __m128d, b: __m128d) -> __m128d 
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_alignr_epi32&expand=245)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(valignd, imm8 = 1))]
-#[rustc_args_required_const(2)]
-pub unsafe fn _mm512_alignr_epi32(a: __m512i, b: __m512i, imm8: i32) -> __m512i {
-    assert!(imm8 >= 0 && imm8 <= 255);
+#[cfg_attr(test, assert_instr(valignd, IMM8 = 1))]
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn _mm512_alignr_epi32<const IMM8: i32>(a: __m512i, b: __m512i) -> __m512i {
+    static_assert_imm8!(IMM8);
     let a = a.as_i32x16();
     let b = b.as_i32x16();
-    let imm8: i32 = imm8 % 16;
+    let imm8: i32 = IMM8 % 16;
     let r: i32x16 = match imm8 {
         0 => simd_shuffle16(
             a,
@@ -25023,21 +25023,16 @@ pub unsafe fn _mm512_alignr_epi32(a: __m512i, b: __m512i, imm8: i32) -> __m512i 
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_alignr_epi32&expand=246)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(valignd, imm8 = 1))]
-#[rustc_args_required_const(4)]
-pub unsafe fn _mm512_mask_alignr_epi32(
+#[cfg_attr(test, assert_instr(valignd, IMM8 = 1))]
+#[rustc_legacy_const_generics(4)]
+pub unsafe fn _mm512_mask_alignr_epi32<const IMM8: i32>(
     src: __m512i,
     k: __mmask16,
     a: __m512i,
     b: __m512i,
-    imm8: i32,
 ) -> __m512i {
-    macro_rules! call {
-        ($imm8:expr) => {
-            _mm512_alignr_epi32(a, b, $imm8)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+    static_assert_imm8!(IMM8);
+    let r = _mm512_alignr_epi32::<IMM8>(a, b);
     transmute(simd_select_bitmask(k, r.as_i32x16(), src.as_i32x16()))
 }
 
@@ -25046,20 +25041,15 @@ pub unsafe fn _mm512_mask_alignr_epi32(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_alignr_epi32&expand=247)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(valignd, imm8 = 1))]
-#[rustc_args_required_const(3)]
-pub unsafe fn _mm512_maskz_alignr_epi32(
+#[cfg_attr(test, assert_instr(valignd, IMM8 = 1))]
+#[rustc_legacy_const_generics(3)]
+pub unsafe fn _mm512_maskz_alignr_epi32<const IMM8: i32>(
     k: __mmask16,
     a: __m512i,
     b: __m512i,
-    imm8: i32,
 ) -> __m512i {
-    macro_rules! call {
-        ($imm8:expr) => {
-            _mm512_alignr_epi32(a, b, $imm8)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+    static_assert_imm8!(IMM8);
+    let r = _mm512_alignr_epi32::<IMM8>(a, b);
     let zero = _mm512_setzero_si512().as_i32x16();
     transmute(simd_select_bitmask(k, r.as_i32x16(), zero))
 }
@@ -25069,13 +25059,13 @@ pub unsafe fn _mm512_maskz_alignr_epi32(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_alignr_epi32&expand=242)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(valignd, imm8 = 1))]
-#[rustc_args_required_const(2)]
-pub unsafe fn _mm256_alignr_epi32(a: __m256i, b: __m256i, imm8: i32) -> __m256i {
-    assert!(imm8 >= 0 && imm8 <= 255);
+#[cfg_attr(test, assert_instr(valignd, IMM8 = 1))]
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn _mm256_alignr_epi32<const IMM8: i32>(a: __m256i, b: __m256i) -> __m256i {
+    static_assert_imm8!(IMM8);
     let a = a.as_i32x8();
     let b = b.as_i32x8();
-    let imm8: i32 = imm8 % 16;
+    let imm8: i32 = IMM8 % 16;
     let r: i32x8 = match imm8 {
         0 => simd_shuffle8(a, b, [8, 9, 10, 11, 12, 13, 14, 15]),
         1 => simd_shuffle8(a, b, [9, 10, 11, 12, 13, 14, 15, 0]),
@@ -25102,21 +25092,16 @@ pub unsafe fn _mm256_alignr_epi32(a: __m256i, b: __m256i, imm8: i32) -> __m256i 
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_alignr_epi32&expand=243)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(valignd, imm8 = 1))]
-#[rustc_args_required_const(4)]
-pub unsafe fn _mm256_mask_alignr_epi32(
+#[cfg_attr(test, assert_instr(valignd, IMM8 = 1))]
+#[rustc_legacy_const_generics(4)]
+pub unsafe fn _mm256_mask_alignr_epi32<const IMM8: i32>(
     src: __m256i,
     k: __mmask8,
     a: __m256i,
     b: __m256i,
-    imm8: i32,
 ) -> __m256i {
-    macro_rules! call {
-        ($imm8:expr) => {
-            _mm256_alignr_epi32(a, b, $imm8)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+    static_assert_imm8!(IMM8);
+    let r = _mm256_alignr_epi32::<IMM8>(a, b);
     transmute(simd_select_bitmask(k, r.as_i32x8(), src.as_i32x8()))
 }
 
@@ -25125,15 +25110,15 @@ pub unsafe fn _mm256_mask_alignr_epi32(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_alignr_epi32&expand=244)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(valignd, imm8 = 1))]
-#[rustc_args_required_const(3)]
-pub unsafe fn _mm256_maskz_alignr_epi32(k: __mmask8, a: __m256i, b: __m256i, imm8: i32) -> __m256i {
-    macro_rules! call {
-        ($imm8:expr) => {
-            _mm256_alignr_epi32(a, b, $imm8)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+#[cfg_attr(test, assert_instr(valignd, IMM8 = 1))]
+#[rustc_legacy_const_generics(3)]
+pub unsafe fn _mm256_maskz_alignr_epi32<const IMM8: i32>(
+    k: __mmask8,
+    a: __m256i,
+    b: __m256i,
+) -> __m256i {
+    static_assert_imm8!(IMM8);
+    let r = _mm256_alignr_epi32::<IMM8>(a, b);
     let zero = _mm256_setzero_si256().as_i32x8();
     transmute(simd_select_bitmask(k, r.as_i32x8(), zero))
 }
@@ -25143,13 +25128,13 @@ pub unsafe fn _mm256_maskz_alignr_epi32(k: __mmask8, a: __m256i, b: __m256i, imm
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_alignr_epi32&expand=239)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vpalignr, imm8 = 1))] //should be valignd
-#[rustc_args_required_const(2)]
-pub unsafe fn _mm_alignr_epi32(a: __m128i, b: __m128i, imm8: i32) -> __m128i {
-    assert!(imm8 >= 0 && imm8 <= 255);
+#[cfg_attr(test, assert_instr(vpalignr, IMM8 = 1))] //should be valignd
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn _mm_alignr_epi32<const IMM8: i32>(a: __m128i, b: __m128i) -> __m128i {
+    static_assert_imm8!(IMM8);
     let a = a.as_i32x4();
     let b = b.as_i32x4();
-    let imm8: i32 = imm8 % 8;
+    let imm8: i32 = IMM8 % 8;
     let r: i32x4 = match imm8 {
         0 => simd_shuffle4(a, b, [4, 5, 6, 7]),
         1 => simd_shuffle4(a, b, [5, 6, 7, 0]),
@@ -25168,21 +25153,16 @@ pub unsafe fn _mm_alignr_epi32(a: __m128i, b: __m128i, imm8: i32) -> __m128i {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_alignr_epi32&expand=240)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(valignd, imm8 = 1))]
-#[rustc_args_required_const(4)]
-pub unsafe fn _mm_mask_alignr_epi32(
+#[cfg_attr(test, assert_instr(valignd, IMM8 = 1))]
+#[rustc_legacy_const_generics(4)]
+pub unsafe fn _mm_mask_alignr_epi32<const IMM8: i32>(
     src: __m128i,
     k: __mmask8,
     a: __m128i,
     b: __m128i,
-    imm8: i32,
 ) -> __m128i {
-    macro_rules! call {
-        ($imm8:expr) => {
-            _mm_alignr_epi32(a, b, $imm8)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+    static_assert_imm8!(IMM8);
+    let r = _mm_alignr_epi32::<IMM8>(a, b);
     transmute(simd_select_bitmask(k, r.as_i32x4(), src.as_i32x4()))
 }
 
@@ -25191,15 +25171,15 @@ pub unsafe fn _mm_mask_alignr_epi32(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_alignr_epi32&expand=241)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(valignd, imm8 = 1))]
-#[rustc_args_required_const(3)]
-pub unsafe fn _mm_maskz_alignr_epi32(k: __mmask8, a: __m128i, b: __m128i, imm8: i32) -> __m128i {
-    macro_rules! call {
-        ($imm8:expr) => {
-            _mm_alignr_epi32(a, b, $imm8)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+#[cfg_attr(test, assert_instr(valignd, IMM8 = 1))]
+#[rustc_legacy_const_generics(3)]
+pub unsafe fn _mm_maskz_alignr_epi32<const IMM8: i32>(
+    k: __mmask8,
+    a: __m128i,
+    b: __m128i,
+) -> __m128i {
+    static_assert_imm8!(IMM8);
+    let r = _mm_alignr_epi32::<IMM8>(a, b);
     let zero = _mm_setzero_si128().as_i32x4();
     transmute(simd_select_bitmask(k, r.as_i32x4(), zero))
 }
@@ -25209,11 +25189,11 @@ pub unsafe fn _mm_maskz_alignr_epi32(k: __mmask8, a: __m128i, b: __m128i, imm8: 
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_alignr_epi64&expand=254)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(valignq, imm8 = 1))]
-#[rustc_args_required_const(2)]
-pub unsafe fn _mm512_alignr_epi64(a: __m512i, b: __m512i, imm8: i32) -> __m512i {
-    assert!(imm8 >= 0 && imm8 <= 255);
-    let imm8: i32 = imm8 % 8;
+#[cfg_attr(test, assert_instr(valignq, IMM8 = 1))]
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn _mm512_alignr_epi64<const IMM8: i32>(a: __m512i, b: __m512i) -> __m512i {
+    static_assert_imm8!(IMM8);
+    let imm8: i32 = IMM8 % 8;
     let r: i64x8 = match imm8 {
         0 => simd_shuffle8(a, b, [8, 9, 10, 11, 12, 13, 14, 15]),
         1 => simd_shuffle8(a, b, [9, 10, 11, 12, 13, 14, 15, 0]),
@@ -25232,21 +25212,16 @@ pub unsafe fn _mm512_alignr_epi64(a: __m512i, b: __m512i, imm8: i32) -> __m512i 
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask_alignr_epi64&expand=255)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(valignq, imm8 = 1))]
-#[rustc_args_required_const(4)]
-pub unsafe fn _mm512_mask_alignr_epi64(
+#[cfg_attr(test, assert_instr(valignq, IMM8 = 1))]
+#[rustc_legacy_const_generics(4)]
+pub unsafe fn _mm512_mask_alignr_epi64<const IMM8: i32>(
     src: __m512i,
     k: __mmask8,
     a: __m512i,
     b: __m512i,
-    imm8: i32,
 ) -> __m512i {
-    macro_rules! call {
-        ($imm8:expr) => {
-            _mm512_alignr_epi64(a, b, $imm8)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+    static_assert_imm8!(IMM8);
+    let r = _mm512_alignr_epi64::<IMM8>(a, b);
     transmute(simd_select_bitmask(k, r.as_i64x8(), src.as_i64x8()))
 }
 
@@ -25255,15 +25230,15 @@ pub unsafe fn _mm512_mask_alignr_epi64(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_maskz_alignr_epi64&expand=256)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(valignq, imm8 = 1))]
-#[rustc_args_required_const(3)]
-pub unsafe fn _mm512_maskz_alignr_epi64(k: __mmask8, a: __m512i, b: __m512i, imm8: i32) -> __m512i {
-    macro_rules! call {
-        ($imm8:expr) => {
-            _mm512_alignr_epi64(a, b, $imm8)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+#[cfg_attr(test, assert_instr(valignq, IMM8 = 1))]
+#[rustc_legacy_const_generics(3)]
+pub unsafe fn _mm512_maskz_alignr_epi64<const IMM8: i32>(
+    k: __mmask8,
+    a: __m512i,
+    b: __m512i,
+) -> __m512i {
+    static_assert_imm8!(IMM8);
+    let r = _mm512_alignr_epi64::<IMM8>(a, b);
     let zero = _mm512_setzero_si512().as_i64x8();
     transmute(simd_select_bitmask(k, r.as_i64x8(), zero))
 }
@@ -25273,11 +25248,11 @@ pub unsafe fn _mm512_maskz_alignr_epi64(k: __mmask8, a: __m512i, b: __m512i, imm
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_alignr_epi64&expand=251)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(valignq, imm8 = 1))]
-#[rustc_args_required_const(2)]
-pub unsafe fn _mm256_alignr_epi64(a: __m256i, b: __m256i, imm8: i32) -> __m256i {
-    assert!(imm8 >= 0 && imm8 <= 255);
-    let imm8: i32 = imm8 % 8;
+#[cfg_attr(test, assert_instr(valignq, IMM8 = 1))]
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn _mm256_alignr_epi64<const IMM8: i32>(a: __m256i, b: __m256i) -> __m256i {
+    static_assert_imm8!(IMM8);
+    let imm8: i32 = IMM8 % 8;
     let r: i64x4 = match imm8 {
         0 => simd_shuffle4(a, b, [4, 5, 6, 7]),
         1 => simd_shuffle4(a, b, [5, 6, 7, 0]),
@@ -25296,21 +25271,16 @@ pub unsafe fn _mm256_alignr_epi64(a: __m256i, b: __m256i, imm8: i32) -> __m256i 
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_alignr_epi64&expand=252)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(valignq, imm8 = 1))]
-#[rustc_args_required_const(4)]
-pub unsafe fn _mm256_mask_alignr_epi64(
+#[cfg_attr(test, assert_instr(valignq, IMM8 = 1))]
+#[rustc_legacy_const_generics(4)]
+pub unsafe fn _mm256_mask_alignr_epi64<const IMM8: i32>(
     src: __m256i,
     k: __mmask8,
     a: __m256i,
     b: __m256i,
-    imm8: i32,
 ) -> __m256i {
-    macro_rules! call {
-        ($imm8:expr) => {
-            _mm256_alignr_epi64(a, b, $imm8)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+    static_assert_imm8!(IMM8);
+    let r = _mm256_alignr_epi64::<IMM8>(a, b);
     transmute(simd_select_bitmask(k, r.as_i64x4(), src.as_i64x4()))
 }
 
@@ -25319,15 +25289,15 @@ pub unsafe fn _mm256_mask_alignr_epi64(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_alignr_epi64&expand=253)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(valignq, imm8 = 1))]
-#[rustc_args_required_const(3)]
-pub unsafe fn _mm256_maskz_alignr_epi64(k: __mmask8, a: __m256i, b: __m256i, imm8: i32) -> __m256i {
-    macro_rules! call {
-        ($imm8:expr) => {
-            _mm256_alignr_epi64(a, b, $imm8)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+#[cfg_attr(test, assert_instr(valignq, IMM8 = 1))]
+#[rustc_legacy_const_generics(3)]
+pub unsafe fn _mm256_maskz_alignr_epi64<const IMM8: i32>(
+    k: __mmask8,
+    a: __m256i,
+    b: __m256i,
+) -> __m256i {
+    static_assert_imm8!(IMM8);
+    let r = _mm256_alignr_epi64::<IMM8>(a, b);
     let zero = _mm256_setzero_si256().as_i64x4();
     transmute(simd_select_bitmask(k, r.as_i64x4(), zero))
 }
@@ -25337,11 +25307,11 @@ pub unsafe fn _mm256_maskz_alignr_epi64(k: __mmask8, a: __m256i, b: __m256i, imm
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_alignr_epi64&expand=248)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vpalignr, imm8 = 1))] //should be valignq
-#[rustc_args_required_const(2)]
-pub unsafe fn _mm_alignr_epi64(a: __m128i, b: __m128i, imm8: i32) -> __m128i {
-    assert!(imm8 >= 0 && imm8 <= 255);
-    let imm8: i32 = imm8 % 4;
+#[cfg_attr(test, assert_instr(vpalignr, IMM8 = 1))] //should be valignq
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn _mm_alignr_epi64<const IMM8: i32>(a: __m128i, b: __m128i) -> __m128i {
+    static_assert_imm8!(IMM8);
+    let imm8: i32 = IMM8 % 4;
     let r: i64x2 = match imm8 {
         0 => simd_shuffle2(a, b, [2, 3]),
         1 => simd_shuffle2(a, b, [3, 0]),
@@ -25356,21 +25326,16 @@ pub unsafe fn _mm_alignr_epi64(a: __m128i, b: __m128i, imm8: i32) -> __m128i {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_alignr_epi64&expand=249)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(valignq, imm8 = 1))]
-#[rustc_args_required_const(4)]
-pub unsafe fn _mm_mask_alignr_epi64(
+#[cfg_attr(test, assert_instr(valignq, IMM8 = 1))]
+#[rustc_legacy_const_generics(4)]
+pub unsafe fn _mm_mask_alignr_epi64<const IMM8: i32>(
     src: __m128i,
     k: __mmask8,
     a: __m128i,
     b: __m128i,
-    imm8: i32,
 ) -> __m128i {
-    macro_rules! call {
-        ($imm8:expr) => {
-            _mm_alignr_epi64(a, b, $imm8)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+    static_assert_imm8!(IMM8);
+    let r = _mm_alignr_epi64::<IMM8>(a, b);
     transmute(simd_select_bitmask(k, r.as_i64x2(), src.as_i64x2()))
 }
 
@@ -25379,15 +25344,15 @@ pub unsafe fn _mm_mask_alignr_epi64(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_alignr_epi64&expand=250)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(valignq, imm8 = 1))]
-#[rustc_args_required_const(3)]
-pub unsafe fn _mm_maskz_alignr_epi64(k: __mmask8, a: __m128i, b: __m128i, imm8: i32) -> __m128i {
-    macro_rules! call {
-        ($imm8:expr) => {
-            _mm_alignr_epi64(a, b, $imm8)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+#[cfg_attr(test, assert_instr(valignq, IMM8 = 1))]
+#[rustc_legacy_const_generics(3)]
+pub unsafe fn _mm_maskz_alignr_epi64<const IMM8: i32>(
+    k: __mmask8,
+    a: __m128i,
+    b: __m128i,
+) -> __m128i {
+    static_assert_imm8!(IMM8);
+    let r = _mm_alignr_epi64::<IMM8>(a, b);
     let zero = _mm_setzero_si128().as_i64x2();
     transmute(simd_select_bitmask(k, r.as_i64x2(), zero))
 }
@@ -48743,11 +48708,11 @@ mod tests {
         let b = _mm512_set_epi32(
             32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17,
         );
-        let r = _mm512_alignr_epi32(a, b, 0);
+        let r = _mm512_alignr_epi32::<0>(a, b);
         assert_eq_m512i(r, b);
-        let r = _mm512_alignr_epi32(a, b, 16);
+        let r = _mm512_alignr_epi32::<16>(a, b);
         assert_eq_m512i(r, b);
-        let r = _mm512_alignr_epi32(a, b, 1);
+        let r = _mm512_alignr_epi32::<1>(a, b);
         let e = _mm512_set_epi32(
             1, 32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18,
         );
@@ -48760,9 +48725,9 @@ mod tests {
         let b = _mm512_set_epi32(
             32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17,
         );
-        let r = _mm512_mask_alignr_epi32(a, 0, a, b, 1);
+        let r = _mm512_mask_alignr_epi32::<1>(a, 0, a, b);
         assert_eq_m512i(r, a);
-        let r = _mm512_mask_alignr_epi32(a, 0b11111111_11111111, a, b, 1);
+        let r = _mm512_mask_alignr_epi32::<1>(a, 0b11111111_11111111, a, b);
         let e = _mm512_set_epi32(
             1, 32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18,
         );
@@ -48775,9 +48740,9 @@ mod tests {
         let b = _mm512_set_epi32(
             32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17,
         );
-        let r = _mm512_maskz_alignr_epi32(0, a, b, 1);
+        let r = _mm512_maskz_alignr_epi32::<1>(0, a, b);
         assert_eq_m512i(r, _mm512_setzero_si512());
-        let r = _mm512_maskz_alignr_epi32(0b00000000_11111111, a, b, 1);
+        let r = _mm512_maskz_alignr_epi32::<1>(0b00000000_11111111, a, b);
         let e = _mm512_set_epi32(0, 0, 0, 0, 0, 0, 0, 0, 25, 24, 23, 22, 21, 20, 19, 18);
         assert_eq_m512i(r, e);
     }
@@ -48786,9 +48751,9 @@ mod tests {
     unsafe fn test_mm256_alignr_epi32() {
         let a = _mm256_set_epi32(8, 7, 6, 5, 4, 3, 2, 1);
         let b = _mm256_set_epi32(16, 15, 14, 13, 12, 11, 10, 9);
-        let r = _mm256_alignr_epi32(a, b, 0);
+        let r = _mm256_alignr_epi32::<0>(a, b);
         assert_eq_m256i(r, b);
-        let r = _mm256_alignr_epi32(a, b, 1);
+        let r = _mm256_alignr_epi32::<1>(a, b);
         let e = _mm256_set_epi32(1, 16, 15, 14, 13, 12, 11, 10);
         assert_eq_m256i(r, e);
     }
@@ -48797,9 +48762,9 @@ mod tests {
     unsafe fn test_mm256_mask_alignr_epi32() {
         let a = _mm256_set_epi32(8, 7, 6, 5, 4, 3, 2, 1);
         let b = _mm256_set_epi32(16, 15, 14, 13, 12, 11, 10, 9);
-        let r = _mm256_mask_alignr_epi32(a, 0, a, b, 1);
+        let r = _mm256_mask_alignr_epi32::<1>(a, 0, a, b);
         assert_eq_m256i(r, a);
-        let r = _mm256_mask_alignr_epi32(a, 0b11111111, a, b, 1);
+        let r = _mm256_mask_alignr_epi32::<1>(a, 0b11111111, a, b);
         let e = _mm256_set_epi32(1, 16, 15, 14, 13, 12, 11, 10);
         assert_eq_m256i(r, e);
     }
@@ -48808,9 +48773,9 @@ mod tests {
     unsafe fn test_mm256_maskz_alignr_epi32() {
         let a = _mm256_set_epi32(8, 7, 6, 5, 4, 3, 2, 1);
         let b = _mm256_set_epi32(16, 15, 14, 13, 12, 11, 10, 9);
-        let r = _mm256_maskz_alignr_epi32(0, a, b, 1);
+        let r = _mm256_maskz_alignr_epi32::<1>(0, a, b);
         assert_eq_m256i(r, _mm256_setzero_si256());
-        let r = _mm256_maskz_alignr_epi32(0b11111111, a, b, 1);
+        let r = _mm256_maskz_alignr_epi32::<1>(0b11111111, a, b);
         let e = _mm256_set_epi32(1, 16, 15, 14, 13, 12, 11, 10);
         assert_eq_m256i(r, e);
     }
@@ -48819,9 +48784,9 @@ mod tests {
     unsafe fn test_mm_alignr_epi32() {
         let a = _mm_set_epi32(4, 3, 2, 1);
         let b = _mm_set_epi32(8, 7, 6, 5);
-        let r = _mm_alignr_epi32(a, b, 0);
+        let r = _mm_alignr_epi32::<0>(a, b);
         assert_eq_m128i(r, b);
-        let r = _mm_alignr_epi32(a, b, 1);
+        let r = _mm_alignr_epi32::<1>(a, b);
         let e = _mm_set_epi32(1, 8, 7, 6);
         assert_eq_m128i(r, e);
     }
@@ -48830,9 +48795,9 @@ mod tests {
     unsafe fn test_mm_mask_alignr_epi32() {
         let a = _mm_set_epi32(4, 3, 2, 1);
         let b = _mm_set_epi32(8, 7, 6, 5);
-        let r = _mm_mask_alignr_epi32(a, 0, a, b, 1);
+        let r = _mm_mask_alignr_epi32::<1>(a, 0, a, b);
         assert_eq_m128i(r, a);
-        let r = _mm_mask_alignr_epi32(a, 0b00001111, a, b, 1);
+        let r = _mm_mask_alignr_epi32::<1>(a, 0b00001111, a, b);
         let e = _mm_set_epi32(1, 8, 7, 6);
         assert_eq_m128i(r, e);
     }
@@ -48841,9 +48806,9 @@ mod tests {
     unsafe fn test_mm_maskz_alignr_epi32() {
         let a = _mm_set_epi32(4, 3, 2, 1);
         let b = _mm_set_epi32(8, 7, 6, 5);
-        let r = _mm_maskz_alignr_epi32(0, a, b, 1);
+        let r = _mm_maskz_alignr_epi32::<1>(0, a, b);
         assert_eq_m128i(r, _mm_setzero_si128());
-        let r = _mm_maskz_alignr_epi32(0b00001111, a, b, 1);
+        let r = _mm_maskz_alignr_epi32::<1>(0b00001111, a, b);
         let e = _mm_set_epi32(1, 8, 7, 6);
         assert_eq_m128i(r, e);
     }

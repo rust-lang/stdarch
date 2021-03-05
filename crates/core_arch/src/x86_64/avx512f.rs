@@ -10509,11 +10509,11 @@ mod tests {
     unsafe fn test_mm512_alignr_epi64() {
         let a = _mm512_set_epi64(8, 7, 6, 5, 4, 3, 2, 1);
         let b = _mm512_set_epi64(16, 15, 14, 13, 12, 11, 10, 9);
-        let r = _mm512_alignr_epi64(a, b, 0);
+        let r = _mm512_alignr_epi64::<0>(a, b);
         assert_eq_m512i(r, b);
-        let r = _mm512_alignr_epi64(a, b, 8);
+        let r = _mm512_alignr_epi64::<8>(a, b);
         assert_eq_m512i(r, b);
-        let r = _mm512_alignr_epi64(a, b, 1);
+        let r = _mm512_alignr_epi64::<1>(a, b);
         let e = _mm512_set_epi64(1, 16, 15, 14, 13, 12, 11, 10);
         assert_eq_m512i(r, e);
     }
@@ -10522,9 +10522,9 @@ mod tests {
     unsafe fn test_mm512_mask_alignr_epi64() {
         let a = _mm512_set_epi64(8, 7, 6, 5, 4, 3, 2, 1);
         let b = _mm512_set_epi64(16, 15, 14, 13, 12, 11, 10, 9);
-        let r = _mm512_mask_alignr_epi64(a, 0, a, b, 1);
+        let r = _mm512_mask_alignr_epi64::<1>(a, 0, a, b);
         assert_eq_m512i(r, a);
-        let r = _mm512_mask_alignr_epi64(a, 0b11111111, a, b, 1);
+        let r = _mm512_mask_alignr_epi64::<1>(a, 0b11111111, a, b);
         let e = _mm512_set_epi64(1, 16, 15, 14, 13, 12, 11, 10);
         assert_eq_m512i(r, e);
     }
@@ -10533,9 +10533,9 @@ mod tests {
     unsafe fn test_mm512_maskz_alignr_epi64() {
         let a = _mm512_set_epi64(8, 7, 6, 5, 4, 3, 2, 1);
         let b = _mm512_set_epi64(16, 15, 14, 13, 12, 11, 10, 9);
-        let r = _mm512_maskz_alignr_epi64(0, a, b, 1);
+        let r = _mm512_maskz_alignr_epi64::<1>(0, a, b);
         assert_eq_m512i(r, _mm512_setzero_si512());
-        let r = _mm512_maskz_alignr_epi64(0b00001111, a, b, 1);
+        let r = _mm512_maskz_alignr_epi64::<1>(0b00001111, a, b);
         let e = _mm512_set_epi64(0, 0, 0, 0, 13, 12, 11, 10);
         assert_eq_m512i(r, e);
     }
@@ -10544,10 +10544,10 @@ mod tests {
     unsafe fn test_mm256_alignr_epi64() {
         let a = _mm256_set_epi64x(4, 3, 2, 1);
         let b = _mm256_set_epi64x(8, 7, 6, 5);
-        let r = _mm256_alignr_epi64(a, b, 0);
+        let r = _mm256_alignr_epi64::<0>(a, b);
         let e = _mm256_set_epi64x(8, 7, 6, 5);
         assert_eq_m256i(r, e);
-        let r = _mm256_alignr_epi64(a, b, 6);
+        let r = _mm256_alignr_epi64::<6>(a, b);
         let e = _mm256_set_epi64x(6, 5, 4, 3);
         assert_eq_m256i(r, e);
     }
@@ -10556,9 +10556,9 @@ mod tests {
     unsafe fn test_mm256_mask_alignr_epi64() {
         let a = _mm256_set_epi64x(4, 3, 2, 1);
         let b = _mm256_set_epi64x(8, 7, 6, 5);
-        let r = _mm256_mask_alignr_epi64(a, 0, a, b, 1);
+        let r = _mm256_mask_alignr_epi64::<1>(a, 0, a, b);
         assert_eq_m256i(r, a);
-        let r = _mm256_mask_alignr_epi64(a, 0b00001111, a, b, 0);
+        let r = _mm256_mask_alignr_epi64::<0>(a, 0b00001111, a, b);
         let e = _mm256_set_epi64x(8, 7, 6, 5);
         assert_eq_m256i(r, e);
     }
@@ -10567,9 +10567,9 @@ mod tests {
     unsafe fn test_mm256_maskz_alignr_epi64() {
         let a = _mm256_set_epi64x(4, 3, 2, 1);
         let b = _mm256_set_epi64x(8, 7, 6, 5);
-        let r = _mm256_maskz_alignr_epi64(0, a, b, 1);
+        let r = _mm256_maskz_alignr_epi64::<1>(0, a, b);
         assert_eq_m256i(r, _mm256_setzero_si256());
-        let r = _mm256_maskz_alignr_epi64(0b00001111, a, b, 0);
+        let r = _mm256_maskz_alignr_epi64::<0>(0b00001111, a, b);
         let e = _mm256_set_epi64x(8, 7, 6, 5);
         assert_eq_m256i(r, e);
     }
@@ -10578,7 +10578,7 @@ mod tests {
     unsafe fn test_mm_alignr_epi64() {
         let a = _mm_set_epi64x(2, 1);
         let b = _mm_set_epi64x(4, 3);
-        let r = _mm_alignr_epi64(a, b, 0);
+        let r = _mm_alignr_epi64::<0>(a, b);
         let e = _mm_set_epi64x(4, 3);
         assert_eq_m128i(r, e);
     }
@@ -10587,9 +10587,9 @@ mod tests {
     unsafe fn test_mm_mask_alignr_epi64() {
         let a = _mm_set_epi64x(2, 1);
         let b = _mm_set_epi64x(4, 3);
-        let r = _mm_mask_alignr_epi64(a, 0, a, b, 1);
+        let r = _mm_mask_alignr_epi64::<1>(a, 0, a, b);
         assert_eq_m128i(r, a);
-        let r = _mm_mask_alignr_epi64(a, 0b00000011, a, b, 0);
+        let r = _mm_mask_alignr_epi64::<0>(a, 0b00000011, a, b);
         let e = _mm_set_epi64x(4, 3);
         assert_eq_m128i(r, e);
     }
@@ -10598,9 +10598,9 @@ mod tests {
     unsafe fn test_mm_maskz_alignr_epi64() {
         let a = _mm_set_epi64x(2, 1);
         let b = _mm_set_epi64x(4, 3);
-        let r = _mm_maskz_alignr_epi64(0, a, b, 1);
+        let r = _mm_maskz_alignr_epi64::<1>(0, a, b);
         assert_eq_m128i(r, _mm_setzero_si128());
-        let r = _mm_maskz_alignr_epi64(0b00000011, a, b, 0);
+        let r = _mm_maskz_alignr_epi64::<0>(0b00000011, a, b);
         let e = _mm_set_epi64x(4, 3);
         assert_eq_m128i(r, e);
     }
