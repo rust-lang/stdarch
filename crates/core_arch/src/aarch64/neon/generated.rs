@@ -73,6 +73,204 @@ pub unsafe fn vceqq_f64(a: float64x2_t, b: float64x2_t) -> uint64x2_t {
     simd_eq(a, b)
 }
 
+/// Signed compare bitwise equal to zero
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(cmeq))]
+pub unsafe fn vceqz_s8(a: int8x8_t) -> uint8x8_t {
+    let b: i8x8 = i8x8::new(0, 0, 0, 0, 0, 0, 0, 0);
+    simd_eq(a, transmute(b))
+}
+
+/// Signed compare bitwise equal to zero
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(cmeq))]
+pub unsafe fn vceqzq_s8(a: int8x16_t) -> uint8x16_t {
+    let b: i8x16 = i8x16::new(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    simd_eq(a, transmute(b))
+}
+
+/// Signed compare bitwise equal to zero
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(cmeq))]
+pub unsafe fn vceqz_s16(a: int16x4_t) -> uint16x4_t {
+    let b: i16x4 = i16x4::new(0, 0, 0, 0);
+    simd_eq(a, transmute(b))
+}
+
+/// Signed compare bitwise equal to zero
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(cmeq))]
+pub unsafe fn vceqzq_s16(a: int16x8_t) -> uint16x8_t {
+    let b: i16x8 = i16x8::new(0, 0, 0, 0, 0, 0, 0, 0);
+    simd_eq(a, transmute(b))
+}
+
+/// Signed compare bitwise equal to zero
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(cmeq))]
+pub unsafe fn vceqz_s32(a: int32x2_t) -> uint32x2_t {
+    let b: i32x2 = i32x2::new(0, 0);
+    simd_eq(a, transmute(b))
+}
+
+/// Signed compare bitwise equal to zero
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(cmeq))]
+pub unsafe fn vceqzq_s32(a: int32x4_t) -> uint32x4_t {
+    let b: i32x4 = i32x4::new(0, 0, 0, 0);
+    simd_eq(a, transmute(b))
+}
+
+/// Signed compare bitwise equal to zero
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(cmeq))]
+pub unsafe fn vceqz_s64(a: int64x1_t) -> uint64x1_t {
+    let b: i64x1 = i64x1::new(0);
+    simd_eq(a, transmute(b))
+}
+
+/// Signed compare bitwise equal to zero
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(cmeq))]
+pub unsafe fn vceqzq_s64(a: int64x2_t) -> uint64x2_t {
+    let b: i64x2 = i64x2::new(0, 0);
+    simd_eq(a, transmute(b))
+}
+
+/// Signed compare bitwise equal to zero
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(cmeq))]
+pub unsafe fn vceqz_p64(a: poly64x1_t) -> uint64x1_t {
+    let b: i64x1 = i64x1::new(0);
+    simd_eq(a, transmute(b))
+}
+
+/// Signed compare bitwise equal to zero
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(cmeq))]
+pub unsafe fn vceqzq_p64(a: poly64x2_t) -> uint64x2_t {
+    let b: i64x2 = i64x2::new(0, 0);
+    simd_eq(a, transmute(b))
+}
+
+/// Unsigned compare bitwise equal to zero
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(cmeq))]
+pub unsafe fn vceqz_u8(a: uint8x8_t) -> uint8x8_t {
+    let b: u8x8 = u8x8::new(0, 0, 0, 0, 0, 0, 0, 0);
+    simd_eq(a, transmute(b))
+}
+
+/// Unsigned compare bitwise equal to zero
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(cmeq))]
+pub unsafe fn vceqzq_u8(a: uint8x16_t) -> uint8x16_t {
+    let b: u8x16 = u8x16::new(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    simd_eq(a, transmute(b))
+}
+
+/// Unsigned compare bitwise equal to zero
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(cmeq))]
+pub unsafe fn vceqz_u16(a: uint16x4_t) -> uint16x4_t {
+    let b: u16x4 = u16x4::new(0, 0, 0, 0);
+    simd_eq(a, transmute(b))
+}
+
+/// Unsigned compare bitwise equal to zero
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(cmeq))]
+pub unsafe fn vceqzq_u16(a: uint16x8_t) -> uint16x8_t {
+    let b: u16x8 = u16x8::new(0, 0, 0, 0, 0, 0, 0, 0);
+    simd_eq(a, transmute(b))
+}
+
+/// Unsigned compare bitwise equal to zero
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(cmeq))]
+pub unsafe fn vceqz_u32(a: uint32x2_t) -> uint32x2_t {
+    let b: u32x2 = u32x2::new(0, 0);
+    simd_eq(a, transmute(b))
+}
+
+/// Unsigned compare bitwise equal to zero
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(cmeq))]
+pub unsafe fn vceqzq_u32(a: uint32x4_t) -> uint32x4_t {
+    let b: u32x4 = u32x4::new(0, 0, 0, 0);
+    simd_eq(a, transmute(b))
+}
+
+/// Unsigned compare bitwise equal to zero
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(cmeq))]
+pub unsafe fn vceqz_u64(a: uint64x1_t) -> uint64x1_t {
+    let b: u64x1 = u64x1::new(0);
+    simd_eq(a, transmute(b))
+}
+
+/// Unsigned compare bitwise equal to zero
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(cmeq))]
+pub unsafe fn vceqzq_u64(a: uint64x2_t) -> uint64x2_t {
+    let b: u64x2 = u64x2::new(0, 0);
+    simd_eq(a, transmute(b))
+}
+
+/// Floating-point compare bitwise equal to zero
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(fcmeq))]
+pub unsafe fn vceqz_f32(a: float32x2_t) -> uint32x2_t {
+    let b: f32x2 = f32x2::new(0.0, 0.0);
+    simd_eq(a, transmute(b))
+}
+
+/// Floating-point compare bitwise equal to zero
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(fcmeq))]
+pub unsafe fn vceqzq_f32(a: float32x4_t) -> uint32x4_t {
+    let b: f32x4 = f32x4::new(0.0, 0.0, 0.0, 0.0);
+    simd_eq(a, transmute(b))
+}
+
+/// Floating-point compare bitwise equal to zero
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(fcmeq))]
+pub unsafe fn vceqz_f64(a: float64x1_t) -> uint64x1_t {
+    let b: f64 = 0.0;
+    simd_eq(a, transmute(b))
+}
+
+/// Floating-point compare bitwise equal to zero
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(fcmeq))]
+pub unsafe fn vceqzq_f64(a: float64x2_t) -> uint64x2_t {
+    let b: f64x2 = f64x2::new(0.0, 0.0);
+    simd_eq(a, transmute(b))
+}
+
 /// Compare signed greater than
 #[inline]
 #[target_feature(enable = "neon")]
@@ -358,14 +556,14 @@ mod test {
 
     #[simd_test(enable = "neon")]
     unsafe fn test_vceq_u64() {
-        let a: u64x1 = u64x1::new(0xFF_FF_FF_FF_FF_FF_FF_FF);
-        let b: u64x1 = u64x1::new(0xFF_FF_FF_FF_FF_FF_FF_FF);
+        let a: u64x1 = u64x1::new(0);
+        let b: u64x1 = u64x1::new(0);
         let e: u64x1 = u64x1::new(0xFF_FF_FF_FF_FF_FF_FF_FF);
         let r: u64x1 = transmute(vceq_u64(transmute(a), transmute(b)));
         assert_eq!(r, e);
 
-        let a: u64x1 = u64x1::new(0xFF_FF_FF_FF_FF_FF_FF_FF);
-        let b: u64x1 = u64x1::new(0xFF_FF_FF_FF_FF_FF_FF_FF);
+        let a: u64x1 = u64x1::new(0);
+        let b: u64x1 = u64x1::new(0);
         let e: u64x1 = u64x1::new(0xFF_FF_FF_FF_FF_FF_FF_FF);
         let r: u64x1 = transmute(vceq_u64(transmute(a), transmute(b)));
         assert_eq!(r, e);
@@ -373,14 +571,14 @@ mod test {
 
     #[simd_test(enable = "neon")]
     unsafe fn test_vceqq_u64() {
-        let a: u64x2 = u64x2::new(0xFF_FF_FF_FF_FF_FF_FF_FF, 0x01);
-        let b: u64x2 = u64x2::new(0xFF_FF_FF_FF_FF_FF_FF_FF, 0x01);
+        let a: u64x2 = u64x2::new(0, 0x01);
+        let b: u64x2 = u64x2::new(0, 0x01);
         let e: u64x2 = u64x2::new(0xFF_FF_FF_FF_FF_FF_FF_FF, 0xFF_FF_FF_FF_FF_FF_FF_FF);
         let r: u64x2 = transmute(vceqq_u64(transmute(a), transmute(b)));
         assert_eq!(r, e);
 
-        let a: u64x2 = u64x2::new(0xFF_FF_FF_FF_FF_FF_FF_FF, 0xFF_FF_FF_FF_FF_FF_FF_FF);
-        let b: u64x2 = u64x2::new(0xFF_FF_FF_FF_FF_FF_FF_FF, 0);
+        let a: u64x2 = u64x2::new(0, 0);
+        let b: u64x2 = u64x2::new(0, 0xFF_FF_FF_FF_FF_FF_FF_FF);
         let e: u64x2 = u64x2::new(0xFF_FF_FF_FF_FF_FF_FF_FF, 0);
         let r: u64x2 = transmute(vceqq_u64(transmute(a), transmute(b)));
         assert_eq!(r, e);
@@ -388,14 +586,14 @@ mod test {
 
     #[simd_test(enable = "neon")]
     unsafe fn test_vceq_s64() {
-        let a: i64x1 = i64x1::new(0x7F_FF_FF_FF_FF_FF_FF_FF);
-        let b: i64x1 = i64x1::new(0x7F_FF_FF_FF_FF_FF_FF_FF);
+        let a: i64x1 = i64x1::new(-9223372036854775808);
+        let b: i64x1 = i64x1::new(-9223372036854775808);
         let e: u64x1 = u64x1::new(0xFF_FF_FF_FF_FF_FF_FF_FF);
         let r: u64x1 = transmute(vceq_s64(transmute(a), transmute(b)));
         assert_eq!(r, e);
 
-        let a: i64x1 = i64x1::new(0x7F_FF_FF_FF_FF_FF_FF_FF);
-        let b: i64x1 = i64x1::new(0x7F_FF_FF_FF_FF_FF_FF_FF);
+        let a: i64x1 = i64x1::new(-9223372036854775808);
+        let b: i64x1 = i64x1::new(-9223372036854775808);
         let e: u64x1 = u64x1::new(0xFF_FF_FF_FF_FF_FF_FF_FF);
         let r: u64x1 = transmute(vceq_s64(transmute(a), transmute(b)));
         assert_eq!(r, e);
@@ -403,14 +601,14 @@ mod test {
 
     #[simd_test(enable = "neon")]
     unsafe fn test_vceqq_s64() {
-        let a: i64x2 = i64x2::new(0x7F_FF_FF_FF_FF_FF_FF_FF, 0x01);
-        let b: i64x2 = i64x2::new(0x7F_FF_FF_FF_FF_FF_FF_FF, 0x01);
+        let a: i64x2 = i64x2::new(-9223372036854775808, 0x01);
+        let b: i64x2 = i64x2::new(-9223372036854775808, 0x01);
         let e: u64x2 = u64x2::new(0xFF_FF_FF_FF_FF_FF_FF_FF, 0xFF_FF_FF_FF_FF_FF_FF_FF);
         let r: u64x2 = transmute(vceqq_s64(transmute(a), transmute(b)));
         assert_eq!(r, e);
 
-        let a: i64x2 = i64x2::new(0x7F_FF_FF_FF_FF_FF_FF_FF, 0x7F_FF_FF_FF_FF_FF_FF_FF);
-        let b: i64x2 = i64x2::new(0x7F_FF_FF_FF_FF_FF_FF_FF, -9223372036854775808);
+        let a: i64x2 = i64x2::new(-9223372036854775808, -9223372036854775808);
+        let b: i64x2 = i64x2::new(-9223372036854775808, 0x7F_FF_FF_FF_FF_FF_FF_FF);
         let e: u64x2 = u64x2::new(0xFF_FF_FF_FF_FF_FF_FF_FF, 0);
         let r: u64x2 = transmute(vceqq_s64(transmute(a), transmute(b)));
         assert_eq!(r, e);
@@ -418,14 +616,14 @@ mod test {
 
     #[simd_test(enable = "neon")]
     unsafe fn test_vceq_p64() {
-        let a: i64x1 = i64x1::new(0x7F_FF_FF_FF_FF_FF_FF_FF);
-        let b: i64x1 = i64x1::new(0x7F_FF_FF_FF_FF_FF_FF_FF);
+        let a: i64x1 = i64x1::new(-9223372036854775808);
+        let b: i64x1 = i64x1::new(-9223372036854775808);
         let e: u64x1 = u64x1::new(0xFF_FF_FF_FF_FF_FF_FF_FF);
         let r: u64x1 = transmute(vceq_p64(transmute(a), transmute(b)));
         assert_eq!(r, e);
 
-        let a: i64x1 = i64x1::new(0x7F_FF_FF_FF_FF_FF_FF_FF);
-        let b: i64x1 = i64x1::new(0x7F_FF_FF_FF_FF_FF_FF_FF);
+        let a: i64x1 = i64x1::new(-9223372036854775808);
+        let b: i64x1 = i64x1::new(-9223372036854775808);
         let e: u64x1 = u64x1::new(0xFF_FF_FF_FF_FF_FF_FF_FF);
         let r: u64x1 = transmute(vceq_p64(transmute(a), transmute(b)));
         assert_eq!(r, e);
@@ -433,14 +631,14 @@ mod test {
 
     #[simd_test(enable = "neon")]
     unsafe fn test_vceqq_p64() {
-        let a: i64x2 = i64x2::new(0x7F_FF_FF_FF_FF_FF_FF_FF, 0x01);
-        let b: i64x2 = i64x2::new(0x7F_FF_FF_FF_FF_FF_FF_FF, 0x01);
+        let a: i64x2 = i64x2::new(-9223372036854775808, 0x01);
+        let b: i64x2 = i64x2::new(-9223372036854775808, 0x01);
         let e: u64x2 = u64x2::new(0xFF_FF_FF_FF_FF_FF_FF_FF, 0xFF_FF_FF_FF_FF_FF_FF_FF);
         let r: u64x2 = transmute(vceqq_p64(transmute(a), transmute(b)));
         assert_eq!(r, e);
 
-        let a: i64x2 = i64x2::new(0x7F_FF_FF_FF_FF_FF_FF_FF, 0x7F_FF_FF_FF_FF_FF_FF_FF);
-        let b: i64x2 = i64x2::new(0x7F_FF_FF_FF_FF_FF_FF_FF, -9223372036854775808);
+        let a: i64x2 = i64x2::new(-9223372036854775808, -9223372036854775808);
+        let b: i64x2 = i64x2::new(-9223372036854775808, 0x7F_FF_FF_FF_FF_FF_FF_FF);
         let e: u64x2 = u64x2::new(0xFF_FF_FF_FF_FF_FF_FF_FF, 0);
         let r: u64x2 = transmute(vceqq_p64(transmute(a), transmute(b)));
         assert_eq!(r, e);
@@ -461,6 +659,182 @@ mod test {
         let b: f64x2 = f64x2::new(1.2, 3.4);
         let e: u64x2 = u64x2::new(0xFF_FF_FF_FF_FF_FF_FF_FF, 0xFF_FF_FF_FF_FF_FF_FF_FF);
         let r: u64x2 = transmute(vceqq_f64(transmute(a), transmute(b)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vceqz_s8() {
+        let a: i8x8 = i8x8::new(-128, 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06);
+        let e: u8x8 = u8x8::new(0, 0xFF, 0, 0, 0, 0, 0, 0);
+        let r: u8x8 = transmute(vceqz_s8(transmute(a)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vceqzq_s8() {
+        let a: i8x16 = i8x16::new(-128, 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x7F);
+        let e: u8x16 = u8x16::new(0, 0xFF, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+        let r: u8x16 = transmute(vceqzq_s8(transmute(a)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vceqz_s16() {
+        let a: i16x4 = i16x4::new(-32768, 0x00, 0x01, 0x02);
+        let e: u16x4 = u16x4::new(0, 0xFF_FF, 0, 0);
+        let r: u16x4 = transmute(vceqz_s16(transmute(a)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vceqzq_s16() {
+        let a: i16x8 = i16x8::new(-32768, 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06);
+        let e: u16x8 = u16x8::new(0, 0xFF_FF, 0, 0, 0, 0, 0, 0);
+        let r: u16x8 = transmute(vceqzq_s16(transmute(a)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vceqz_s32() {
+        let a: i32x2 = i32x2::new(-2147483648, 0x00);
+        let e: u32x2 = u32x2::new(0, 0xFF_FF_FF_FF);
+        let r: u32x2 = transmute(vceqz_s32(transmute(a)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vceqzq_s32() {
+        let a: i32x4 = i32x4::new(-2147483648, 0x00, 0x01, 0x02);
+        let e: u32x4 = u32x4::new(0, 0xFF_FF_FF_FF, 0, 0);
+        let r: u32x4 = transmute(vceqzq_s32(transmute(a)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vceqz_s64() {
+        let a: i64x1 = i64x1::new(-9223372036854775808);
+        let e: u64x1 = u64x1::new(0);
+        let r: u64x1 = transmute(vceqz_s64(transmute(a)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vceqzq_s64() {
+        let a: i64x2 = i64x2::new(-9223372036854775808, 0x00);
+        let e: u64x2 = u64x2::new(0, 0xFF_FF_FF_FF_FF_FF_FF_FF);
+        let r: u64x2 = transmute(vceqzq_s64(transmute(a)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vceqz_p64() {
+        let a: i64x1 = i64x1::new(-9223372036854775808);
+        let e: u64x1 = u64x1::new(0);
+        let r: u64x1 = transmute(vceqz_p64(transmute(a)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vceqzq_p64() {
+        let a: i64x2 = i64x2::new(-9223372036854775808, 0x00);
+        let e: u64x2 = u64x2::new(0, 0xFF_FF_FF_FF_FF_FF_FF_FF);
+        let r: u64x2 = transmute(vceqzq_p64(transmute(a)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vceqz_u8() {
+        let a: u8x8 = u8x8::new(0, 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06);
+        let e: u8x8 = u8x8::new(0xFF, 0xFF, 0, 0, 0, 0, 0, 0);
+        let r: u8x8 = transmute(vceqz_u8(transmute(a)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vceqzq_u8() {
+        let a: u8x16 = u8x16::new(0, 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0xFF);
+        let e: u8x16 = u8x16::new(0xFF, 0xFF, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+        let r: u8x16 = transmute(vceqzq_u8(transmute(a)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vceqz_u16() {
+        let a: u16x4 = u16x4::new(0, 0x00, 0x01, 0x02);
+        let e: u16x4 = u16x4::new(0xFF_FF, 0xFF_FF, 0, 0);
+        let r: u16x4 = transmute(vceqz_u16(transmute(a)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vceqzq_u16() {
+        let a: u16x8 = u16x8::new(0, 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06);
+        let e: u16x8 = u16x8::new(0xFF_FF, 0xFF_FF, 0, 0, 0, 0, 0, 0);
+        let r: u16x8 = transmute(vceqzq_u16(transmute(a)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vceqz_u32() {
+        let a: u32x2 = u32x2::new(0, 0x00);
+        let e: u32x2 = u32x2::new(0xFF_FF_FF_FF, 0xFF_FF_FF_FF);
+        let r: u32x2 = transmute(vceqz_u32(transmute(a)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vceqzq_u32() {
+        let a: u32x4 = u32x4::new(0, 0x00, 0x01, 0x02);
+        let e: u32x4 = u32x4::new(0xFF_FF_FF_FF, 0xFF_FF_FF_FF, 0, 0);
+        let r: u32x4 = transmute(vceqzq_u32(transmute(a)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vceqz_u64() {
+        let a: u64x1 = u64x1::new(0);
+        let e: u64x1 = u64x1::new(0xFF_FF_FF_FF_FF_FF_FF_FF);
+        let r: u64x1 = transmute(vceqz_u64(transmute(a)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vceqzq_u64() {
+        let a: u64x2 = u64x2::new(0, 0x00);
+        let e: u64x2 = u64x2::new(0xFF_FF_FF_FF_FF_FF_FF_FF, 0xFF_FF_FF_FF_FF_FF_FF_FF);
+        let r: u64x2 = transmute(vceqzq_u64(transmute(a)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vceqz_f32() {
+        let a: f32x2 = f32x2::new(0.0, 1.2);
+        let e: u32x2 = u32x2::new(0xFF_FF_FF_FF, 0);
+        let r: u32x2 = transmute(vceqz_f32(transmute(a)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vceqzq_f32() {
+        let a: f32x4 = f32x4::new(0.0, 1.2, 3.4, 5.6);
+        let e: u32x4 = u32x4::new(0xFF_FF_FF_FF, 0, 0, 0);
+        let r: u32x4 = transmute(vceqzq_f32(transmute(a)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vceqz_f64() {
+        let a: f64 = 0.0;
+        let e: u64x1 = u64x1::new(0xFF_FF_FF_FF_FF_FF_FF_FF);
+        let r: u64x1 = transmute(vceqz_f64(transmute(a)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vceqzq_f64() {
+        let a: f64x2 = f64x2::new(0.0, 1.2);
+        let e: u64x2 = u64x2::new(0xFF_FF_FF_FF_FF_FF_FF_FF, 0);
+        let r: u64x2 = transmute(vceqzq_f64(transmute(a)));
         assert_eq!(r, e);
     }
 

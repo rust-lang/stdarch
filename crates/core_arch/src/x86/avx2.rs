@@ -4484,7 +4484,7 @@ mod tests {
         let a = _mm256_setr_epi64x(0, 1, 2, 3);
         let b = _mm256_setr_epi64x(3, 2, 2, 0);
         let r = _mm256_cmpeq_epi64(a, b);
-        assert_eq_m256i(r, _mm256_insert_epi64(_mm256_set1_epi64x(0), !0, 2));
+        assert_eq_m256i(r, _mm256_insert_epi64::<2>(_mm256_set1_epi64x(0), !0));
     }
 
     #[simd_test(enable = "avx2")]
@@ -4513,10 +4513,10 @@ mod tests {
 
     #[simd_test(enable = "avx2")]
     unsafe fn test_mm256_cmpgt_epi64() {
-        let a = _mm256_insert_epi64(_mm256_set1_epi64x(0), 5, 0);
+        let a = _mm256_insert_epi64::<0>(_mm256_set1_epi64x(0), 5);
         let b = _mm256_set1_epi64x(0);
         let r = _mm256_cmpgt_epi64(a, b);
-        assert_eq_m256i(r, _mm256_insert_epi64(_mm256_set1_epi64x(0), !0, 0));
+        assert_eq_m256i(r, _mm256_insert_epi64::<0>(_mm256_set1_epi64x(0), !0));
     }
 
     #[simd_test(enable = "avx2")]
@@ -5135,7 +5135,7 @@ mod tests {
     #[simd_test(enable = "avx2")]
     unsafe fn test_mm256_sll_epi64() {
         let a = _mm256_set1_epi64x(0xFFFFFFFF);
-        let b = _mm_insert_epi64(_mm_set1_epi64x(0), 4, 0);
+        let b = _mm_insert_epi64::<0>(_mm_set1_epi64x(0), 4);
         let r = _mm256_sll_epi64(a, b);
         assert_eq_m256i(r, _mm256_set1_epi64x(0xFFFFFFFF0));
     }
