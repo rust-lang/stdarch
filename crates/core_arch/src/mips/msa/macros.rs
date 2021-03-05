@@ -14,19 +14,19 @@ macro_rules! static_assert_imm_s10 {
 
 macro_rules! static_assert_imm_s11 {
     ($imm:ident) => {
-        let _ = $crate::core_arch::macros::ValidateConstImm::<$imm, -1024, 1022>::VALID;
+        let _ = $crate::core_arch::macros::ValidateConstImm::<$imm, -1024, 1023>::VALID;
     };
 }
 
 macro_rules! static_assert_imm_s12 {
     ($imm:ident) => {
-        let _ = $crate::core_arch::macros::ValidateConstImm::<$imm, -2048, 2044>::VALID;
+        let _ = $crate::core_arch::macros::ValidateConstImm::<$imm, -2048, 2047>::VALID;
     };
 }
 
 macro_rules! static_assert_imm_s13 {
     ($imm:ident) => {
-        let _ = $crate::core_arch::macros::ValidateConstImm::<$imm, -4096, 4088>::VALID;
+        let _ = $crate::core_arch::macros::ValidateConstImm::<$imm, -4096, 4095>::VALID;
     };
 }
 
