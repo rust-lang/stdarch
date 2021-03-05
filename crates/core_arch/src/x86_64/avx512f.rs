@@ -3219,7 +3219,7 @@ mod tests {
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_getmant_pd() {
         let a = _mm512_set1_pd(10.);
-        let r = _mm512_getmant_pd(a, _MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC);
+        let r = _mm512_getmant_pd::<_MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC>(a);
         let e = _mm512_set1_pd(1.25);
         assert_eq_m512d(r, e);
     }
@@ -3227,9 +3227,9 @@ mod tests {
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_mask_getmant_pd() {
         let a = _mm512_set1_pd(10.);
-        let r = _mm512_mask_getmant_pd(a, 0, a, _MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC);
+        let r = _mm512_mask_getmant_pd::<_MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC>(a, 0, a);
         assert_eq_m512d(r, a);
-        let r = _mm512_mask_getmant_pd(a, 0b11110000, a, _MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC);
+        let r = _mm512_mask_getmant_pd::<_MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC>(a, 0b11110000, a);
         let e = _mm512_setr_pd(10., 10., 10., 10., 1.25, 1.25, 1.25, 1.25);
         assert_eq_m512d(r, e);
     }
@@ -3237,9 +3237,9 @@ mod tests {
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_maskz_getmant_pd() {
         let a = _mm512_set1_pd(10.);
-        let r = _mm512_maskz_getmant_pd(0, a, _MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC);
+        let r = _mm512_maskz_getmant_pd::<_MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC>(0, a);
         assert_eq_m512d(r, _mm512_setzero_pd());
-        let r = _mm512_maskz_getmant_pd(0b11110000, a, _MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC);
+        let r = _mm512_maskz_getmant_pd::<_MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC>(0b11110000, a);
         let e = _mm512_setr_pd(0., 0., 0., 0., 1.25, 1.25, 1.25, 1.25);
         assert_eq_m512d(r, e);
     }
@@ -3247,7 +3247,7 @@ mod tests {
     #[simd_test(enable = "avx512f,avx512vl")]
     unsafe fn test_mm256_getmant_pd() {
         let a = _mm256_set1_pd(10.);
-        let r = _mm256_getmant_pd(a, _MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC);
+        let r = _mm256_getmant_pd::<_MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC>(a);
         let e = _mm256_set1_pd(1.25);
         assert_eq_m256d(r, e);
     }
@@ -3255,9 +3255,9 @@ mod tests {
     #[simd_test(enable = "avx512f,avx512vl")]
     unsafe fn test_mm256_mask_getmant_pd() {
         let a = _mm256_set1_pd(10.);
-        let r = _mm256_mask_getmant_pd(a, 0, a, _MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC);
+        let r = _mm256_mask_getmant_pd::<_MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC>(a, 0, a);
         assert_eq_m256d(r, a);
-        let r = _mm256_mask_getmant_pd(a, 0b00001111, a, _MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC);
+        let r = _mm256_mask_getmant_pd::<_MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC>(a, 0b00001111, a);
         let e = _mm256_set1_pd(1.25);
         assert_eq_m256d(r, e);
     }
@@ -3265,9 +3265,9 @@ mod tests {
     #[simd_test(enable = "avx512f,avx512vl")]
     unsafe fn test_mm256_maskz_getmant_pd() {
         let a = _mm256_set1_pd(10.);
-        let r = _mm256_maskz_getmant_pd(0, a, _MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC);
+        let r = _mm256_maskz_getmant_pd::<_MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC>(0, a);
         assert_eq_m256d(r, _mm256_setzero_pd());
-        let r = _mm256_maskz_getmant_pd(0b00001111, a, _MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC);
+        let r = _mm256_maskz_getmant_pd::<_MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC>(0b00001111, a);
         let e = _mm256_set1_pd(1.25);
         assert_eq_m256d(r, e);
     }
@@ -3275,7 +3275,7 @@ mod tests {
     #[simd_test(enable = "avx512f,avx512vl")]
     unsafe fn test_mm_getmant_pd() {
         let a = _mm_set1_pd(10.);
-        let r = _mm_getmant_pd(a, _MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC);
+        let r = _mm_getmant_pd::<_MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC>(a);
         let e = _mm_set1_pd(1.25);
         assert_eq_m128d(r, e);
     }
@@ -3283,9 +3283,9 @@ mod tests {
     #[simd_test(enable = "avx512f,avx512vl")]
     unsafe fn test_mm_mask_getmant_pd() {
         let a = _mm_set1_pd(10.);
-        let r = _mm_mask_getmant_pd(a, 0, a, _MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC);
+        let r = _mm_mask_getmant_pd::<_MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC>(a, 0, a);
         assert_eq_m128d(r, a);
-        let r = _mm_mask_getmant_pd(a, 0b00000011, a, _MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC);
+        let r = _mm_mask_getmant_pd::<_MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC>(a, 0b00000011, a);
         let e = _mm_set1_pd(1.25);
         assert_eq_m128d(r, e);
     }
@@ -3293,9 +3293,9 @@ mod tests {
     #[simd_test(enable = "avx512f,avx512vl")]
     unsafe fn test_mm_maskz_getmant_pd() {
         let a = _mm_set1_pd(10.);
-        let r = _mm_maskz_getmant_pd(0, a, _MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC);
+        let r = _mm_maskz_getmant_pd::<_MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC>(0, a);
         assert_eq_m128d(r, _mm_setzero_pd());
-        let r = _mm_maskz_getmant_pd(0b00000011, a, _MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC);
+        let r = _mm_maskz_getmant_pd::<_MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC>(0b00000011, a);
         let e = _mm_set1_pd(1.25);
         assert_eq_m128d(r, e);
     }
