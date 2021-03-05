@@ -4,6 +4,7 @@
 // out of `[MIN-MAX]` range.
 pub(crate) struct ValidateConstImm<const IMM: i32, const MIN: i32, const MAX: i32>;
 impl<const IMM: i32, const MIN: i32, const MAX: i32> ValidateConstImm<IMM, MIN, MAX> {
+    #[allow(const_err)]
     pub(crate) const VALID: () = {
         let _ = 1 / ((IMM >= MIN && IMM <= MAX) as usize);
     };
@@ -63,6 +64,7 @@ macro_rules! static_assert {
     ($imm:ident : $ty:ty where $e:expr) => {
         struct Validate<const $imm: $ty>();
         impl<const $imm: $ty> Validate<$imm> {
+            #[allow(const_err)]
             const VALID: () = {
                 let _ = 1 / ($e as usize);
             };
