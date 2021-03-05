@@ -18245,7 +18245,7 @@ pub unsafe fn _mm_maskz_sra_epi64(k: __mmask8, a: __m128i, count: __m128i) -> __
 #[cfg_attr(test, assert_instr(vpsrad, IMM8 = 1))]
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn _mm512_srai_epi32<const IMM8: u32>(a: __m512i) -> __m512i {
-    static_assert_imm8u!(IMM8);
+    static_assert_imm_u8!(IMM8);
     let a = a.as_i32x16();
     let r = vpsraid512(a, IMM8);
     transmute(r)
@@ -18263,7 +18263,7 @@ pub unsafe fn _mm512_mask_srai_epi32<const IMM8: u32>(
     k: __mmask16,
     a: __m512i,
 ) -> __m512i {
-    static_assert_imm8u!(IMM8);
+    static_assert_imm_u8!(IMM8);
     let a = a.as_i32x16();
     let r = vpsraid512(a, IMM8);
     transmute(simd_select_bitmask(k, r, src.as_i32x16()))
@@ -18277,7 +18277,7 @@ pub unsafe fn _mm512_mask_srai_epi32<const IMM8: u32>(
 #[cfg_attr(test, assert_instr(vpsrad, IMM8 = 1))]
 #[rustc_legacy_const_generics(2)]
 pub unsafe fn _mm512_maskz_srai_epi32<const IMM8: u32>(k: __mmask16, a: __m512i) -> __m512i {
-    static_assert_imm8u!(IMM8);
+    static_assert_imm_u8!(IMM8);
     let a = a.as_i32x16();
     let r = vpsraid512(a, IMM8);
     let zero = _mm512_setzero_si512().as_i32x16();
