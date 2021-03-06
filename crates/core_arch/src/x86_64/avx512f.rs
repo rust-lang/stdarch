@@ -6489,7 +6489,7 @@ mod tests {
         #[rustfmt::skip]
         let a = _mm512_set_pd(0., 1., -1., 13., f64::MAX, f64::MIN, 100., -100.);
         let b = _mm512_set1_pd(-1.);
-        let m = _mm512_cmp_round_pd_mask(a, b, _CMP_LT_OQ, _MM_FROUND_CUR_DIRECTION);
+        let m = _mm512_cmp_round_pd_mask::<_CMP_LT_OQ, _MM_FROUND_CUR_DIRECTION>(a, b);
         assert_eq!(m, 0b00000101);
     }
 
@@ -6499,7 +6499,7 @@ mod tests {
         let a = _mm512_set_pd(0., 1., -1., 13., f64::MAX, f64::MIN, 100., -100.);
         let b = _mm512_set1_pd(-1.);
         let mask = 0b01100110;
-        let r = _mm512_mask_cmp_round_pd_mask(mask, a, b, _CMP_LT_OQ, _MM_FROUND_CUR_DIRECTION);
+        let r = _mm512_mask_cmp_round_pd_mask::<_CMP_LT_OQ, _MM_FROUND_CUR_DIRECTION>(mask, a, b);
         assert_eq!(r, 0b00000100);
     }
 
