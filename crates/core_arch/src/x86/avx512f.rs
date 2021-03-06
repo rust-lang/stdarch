@@ -31798,30 +31798,21 @@ pub unsafe fn _mm_maskz_getexp_sd(k: __mmask8, a: __m128d, b: __m128d) -> __m128
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_getmant_ss&expand=2898)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vgetmantss, norm = 0, sign = 0))]
-#[rustc_args_required_const(2, 3)]
-pub unsafe fn _mm_getmant_ss(
+#[cfg_attr(test, assert_instr(vgetmantss, NORM = 0, SIGN = 0))]
+#[rustc_legacy_const_generics(2, 3)]
+pub unsafe fn _mm_getmant_ss<
+    const NORM: _MM_MANTISSA_NORM_ENUM,
+    const SIGN: _MM_MANTISSA_SIGN_ENUM,
+>(
     a: __m128,
     b: __m128,
-    norm: _MM_MANTISSA_NORM_ENUM,
-    sign: _MM_MANTISSA_SIGN_ENUM,
 ) -> __m128 {
+    static_assert_imm4!(NORM);
+    static_assert_imm2!(SIGN);
     let a = a.as_f32x4();
     let b = b.as_f32x4();
     let zero = _mm_setzero_ps().as_f32x4();
-    macro_rules! call {
-        ($imm4_1:expr, $imm2:expr) => {
-            vgetmantss(
-                a,
-                b,
-                $imm2 << 2 | $imm4_1,
-                zero,
-                0b1,
-                _MM_FROUND_CUR_DIRECTION,
-            )
-        };
-    }
-    let r = constify_imm4_mantissas!(norm, sign, call);
+    let r = vgetmantss(a, b, SIGN << 2 | NORM, zero, 0b1, _MM_FROUND_CUR_DIRECTION);
     transmute(r)
 }
 
@@ -31840,25 +31831,23 @@ pub unsafe fn _mm_getmant_ss(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask_getmant_ss&expand=2899)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vgetmantss, norm = 0, sign = 0))]
-#[rustc_args_required_const(4, 5)]
-pub unsafe fn _mm_mask_getmant_ss(
+#[cfg_attr(test, assert_instr(vgetmantss, NORM = 0, SIGN = 0))]
+#[rustc_legacy_const_generics(4, 5)]
+pub unsafe fn _mm_mask_getmant_ss<
+    const NORM: _MM_MANTISSA_NORM_ENUM,
+    const SIGN: _MM_MANTISSA_SIGN_ENUM,
+>(
     src: __m128,
     k: __mmask8,
     a: __m128,
     b: __m128,
-    norm: _MM_MANTISSA_NORM_ENUM,
-    sign: _MM_MANTISSA_SIGN_ENUM,
 ) -> __m128 {
+    static_assert_imm4!(NORM);
+    static_assert_imm2!(SIGN);
     let a = a.as_f32x4();
     let b = b.as_f32x4();
     let src = src.as_f32x4();
-    macro_rules! call {
-        ($imm4_1:expr, $imm2:expr) => {
-            vgetmantss(a, b, $imm2 << 2 | $imm4_1, src, k, _MM_FROUND_CUR_DIRECTION)
-        };
-    }
-    let r = constify_imm4_mantissas!(norm, sign, call);
+    let r = vgetmantss(a, b, SIGN << 2 | NORM, src, k, _MM_FROUND_CUR_DIRECTION);
     transmute(r)
 }
 
@@ -31877,31 +31866,22 @@ pub unsafe fn _mm_mask_getmant_ss(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_maskz_getmant_ss&expand=2900)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vgetmantss, norm = 0, sign = 0))]
-#[rustc_args_required_const(3, 4)]
-pub unsafe fn _mm_maskz_getmant_ss(
+#[cfg_attr(test, assert_instr(vgetmantss, NORM = 0, SIGN = 0))]
+#[rustc_legacy_const_generics(3, 4)]
+pub unsafe fn _mm_maskz_getmant_ss<
+    const NORM: _MM_MANTISSA_NORM_ENUM,
+    const SIGN: _MM_MANTISSA_SIGN_ENUM,
+>(
     k: __mmask8,
     a: __m128,
     b: __m128,
-    norm: _MM_MANTISSA_NORM_ENUM,
-    sign: _MM_MANTISSA_SIGN_ENUM,
 ) -> __m128 {
+    static_assert_imm4!(NORM);
+    static_assert_imm2!(SIGN);
     let a = a.as_f32x4();
     let b = b.as_f32x4();
     let zero = _mm_setzero_ps().as_f32x4();
-    macro_rules! call {
-        ($imm4_1:expr, $imm2:expr) => {
-            vgetmantss(
-                a,
-                b,
-                $imm2 << 2 | $imm4_1,
-                zero,
-                k,
-                _MM_FROUND_CUR_DIRECTION,
-            )
-        };
-    }
-    let r = constify_imm4_mantissas!(norm, sign, call);
+    let r = vgetmantss(a, b, SIGN << 2 | NORM, zero, k, _MM_FROUND_CUR_DIRECTION);
     transmute(r)
 }
 
@@ -31920,30 +31900,21 @@ pub unsafe fn _mm_maskz_getmant_ss(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_getmant_sd&expand=2895)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vgetmantsd, norm = 0, sign = 0))]
-#[rustc_args_required_const(2, 3)]
-pub unsafe fn _mm_getmant_sd(
+#[cfg_attr(test, assert_instr(vgetmantsd, NORM = 0, SIGN = 0))]
+#[rustc_legacy_const_generics(2, 3)]
+pub unsafe fn _mm_getmant_sd<
+    const NORM: _MM_MANTISSA_NORM_ENUM,
+    const SIGN: _MM_MANTISSA_SIGN_ENUM,
+>(
     a: __m128d,
     b: __m128d,
-    norm: _MM_MANTISSA_NORM_ENUM,
-    sign: _MM_MANTISSA_SIGN_ENUM,
 ) -> __m128d {
+    static_assert_imm4!(NORM);
+    static_assert_imm2!(SIGN);
     let a = a.as_f64x2();
     let b = b.as_f64x2();
     let zero = _mm_setzero_pd().as_f64x2();
-    macro_rules! call {
-        ($imm4_1:expr, $imm2:expr) => {
-            vgetmantsd(
-                a,
-                b,
-                $imm2 << 2 | $imm4_1,
-                zero,
-                0b1,
-                _MM_FROUND_CUR_DIRECTION,
-            )
-        };
-    }
-    let r = constify_imm4_mantissas!(norm, sign, call);
+    let r = vgetmantsd(a, b, SIGN << 2 | NORM, zero, 0b1, _MM_FROUND_CUR_DIRECTION);
     transmute(r)
 }
 
@@ -31962,25 +31933,23 @@ pub unsafe fn _mm_getmant_sd(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_mask_getmant_sd&expand=2896)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vgetmantsd, norm = 0, sign = 0))]
-#[rustc_args_required_const(4, 5)]
-pub unsafe fn _mm_mask_getmant_sd(
+#[cfg_attr(test, assert_instr(vgetmantsd, NORM = 0, SIGN = 0))]
+#[rustc_legacy_const_generics(4, 5)]
+pub unsafe fn _mm_mask_getmant_sd<
+    const NORM: _MM_MANTISSA_NORM_ENUM,
+    const SIGN: _MM_MANTISSA_SIGN_ENUM,
+>(
     src: __m128d,
     k: __mmask8,
     a: __m128d,
     b: __m128d,
-    norm: _MM_MANTISSA_NORM_ENUM,
-    sign: _MM_MANTISSA_SIGN_ENUM,
 ) -> __m128d {
+    static_assert_imm4!(NORM);
+    static_assert_imm2!(SIGN);
     let a = a.as_f64x2();
     let b = b.as_f64x2();
     let src = src.as_f64x2();
-    macro_rules! call {
-        ($imm4_1:expr, $imm2:expr) => {
-            vgetmantsd(a, b, $imm2 << 2 | $imm4_1, src, k, _MM_FROUND_CUR_DIRECTION)
-        };
-    }
-    let r = constify_imm4_mantissas!(norm, sign, call);
+    let r = vgetmantsd(a, b, SIGN << 2 | NORM, src, k, _MM_FROUND_CUR_DIRECTION);
     transmute(r)
 }
 
@@ -31999,31 +31968,22 @@ pub unsafe fn _mm_mask_getmant_sd(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_maskz_getmant_sd&expand=2897)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vgetmantsd, norm = 0, sign = 0))]
-#[rustc_args_required_const(3, 4)]
-pub unsafe fn _mm_maskz_getmant_sd(
+#[cfg_attr(test, assert_instr(vgetmantsd, NORM = 0, SIGN = 0))]
+#[rustc_legacy_const_generics(3, 4)]
+pub unsafe fn _mm_maskz_getmant_sd<
+    const NORM: _MM_MANTISSA_NORM_ENUM,
+    const SIGN: _MM_MANTISSA_SIGN_ENUM,
+>(
     k: __mmask8,
     a: __m128d,
     b: __m128d,
-    norm: _MM_MANTISSA_NORM_ENUM,
-    sign: _MM_MANTISSA_SIGN_ENUM,
 ) -> __m128d {
+    static_assert_imm4!(NORM);
+    static_assert_imm2!(SIGN);
     let a = a.as_f64x2();
     let b = b.as_f64x2();
     let zero = _mm_setzero_pd().as_f64x2();
-    macro_rules! call {
-        ($imm4_1:expr, $imm2:expr) => {
-            vgetmantsd(
-                a,
-                b,
-                $imm2 << 2 | $imm4_1,
-                zero,
-                k,
-                _MM_FROUND_CUR_DIRECTION,
-            )
-        };
-    }
-    let r = constify_imm4_mantissas!(norm, sign, call);
+    let r = vgetmantsd(a, b, SIGN << 2 | NORM, zero, k, _MM_FROUND_CUR_DIRECTION);
     transmute(r)
 }
 
@@ -51004,7 +50964,7 @@ mod tests {
     unsafe fn test_mm_getmant_ss() {
         let a = _mm_set1_ps(20.);
         let b = _mm_set1_ps(10.);
-        let r = _mm_getmant_ss(a, b, _MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC);
+        let r = _mm_getmant_ss::<_MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC>(a, b);
         let e = _mm_set_ps(20., 20., 20., 1.25);
         assert_eq_m128(r, e);
     }
@@ -51013,10 +50973,10 @@ mod tests {
     unsafe fn test_mm_mask_getmant_ss() {
         let a = _mm_set1_ps(20.);
         let b = _mm_set1_ps(10.);
-        let r = _mm_mask_getmant_ss(a, 0, a, b, _MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC);
+        let r = _mm_mask_getmant_ss::<_MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC>(a, 0, a, b);
         let e = _mm_set_ps(20., 20., 20., 20.);
         assert_eq_m128(r, e);
-        let r = _mm_mask_getmant_ss(a, 0b11111111, a, b, _MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC);
+        let r = _mm_mask_getmant_ss::<_MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC>(a, 0b11111111, a, b);
         let e = _mm_set_ps(20., 20., 20., 1.25);
         assert_eq_m128(r, e);
     }
@@ -51025,10 +50985,10 @@ mod tests {
     unsafe fn test_mm_maskz_getmant_ss() {
         let a = _mm_set1_ps(20.);
         let b = _mm_set1_ps(10.);
-        let r = _mm_maskz_getmant_ss(0, a, b, _MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC);
+        let r = _mm_maskz_getmant_ss::<_MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC>(0, a, b);
         let e = _mm_set_ps(20., 20., 20., 0.);
         assert_eq_m128(r, e);
-        let r = _mm_maskz_getmant_ss(0b11111111, a, b, _MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC);
+        let r = _mm_maskz_getmant_ss::<_MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC>(0b11111111, a, b);
         let e = _mm_set_ps(20., 20., 20., 1.25);
         assert_eq_m128(r, e);
     }
@@ -51037,7 +50997,7 @@ mod tests {
     unsafe fn test_mm_getmant_sd() {
         let a = _mm_set1_pd(20.);
         let b = _mm_set1_pd(10.);
-        let r = _mm_getmant_sd(a, b, _MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC);
+        let r = _mm_getmant_sd::<_MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC>(a, b);
         let e = _mm_set_pd(20., 1.25);
         assert_eq_m128d(r, e);
     }
@@ -51046,10 +51006,10 @@ mod tests {
     unsafe fn test_mm_mask_getmant_sd() {
         let a = _mm_set1_pd(20.);
         let b = _mm_set1_pd(10.);
-        let r = _mm_mask_getmant_sd(a, 0, a, b, _MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC);
+        let r = _mm_mask_getmant_sd::<_MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC>(a, 0, a, b);
         let e = _mm_set_pd(20., 20.);
         assert_eq_m128d(r, e);
-        let r = _mm_mask_getmant_sd(a, 0b11111111, a, b, _MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC);
+        let r = _mm_mask_getmant_sd::<_MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC>(a, 0b11111111, a, b);
         let e = _mm_set_pd(20., 1.25);
         assert_eq_m128d(r, e);
     }
@@ -51058,10 +51018,10 @@ mod tests {
     unsafe fn test_mm_maskz_getmant_sd() {
         let a = _mm_set1_pd(20.);
         let b = _mm_set1_pd(10.);
-        let r = _mm_maskz_getmant_sd(0, a, b, _MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC);
+        let r = _mm_maskz_getmant_sd::<_MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC>(0, a, b);
         let e = _mm_set_pd(20., 0.);
         assert_eq_m128d(r, e);
-        let r = _mm_maskz_getmant_sd(0b11111111, a, b, _MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC);
+        let r = _mm_maskz_getmant_sd::<_MM_MANT_NORM_1_2, _MM_MANT_SIGN_SRC>(0b11111111, a, b);
         let e = _mm_set_pd(20., 1.25);
         assert_eq_m128d(r, e);
     }
