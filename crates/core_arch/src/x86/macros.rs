@@ -65,6 +65,23 @@ macro_rules! static_assert_imm8_scale {
     };
 }
 
+// Helper struct used to trigger const eval errors when the const generic immediate value `SAE` is
+// not a valid SAE exception control const for the roundscale operations: the only valid values are
+// 4, 8, and 12.
+pub(crate) struct ValidateConstSaeRoundscale<const IMM: i32>;
+impl<const IMM: i32> ValidateConstSaeRoundscale<IMM> {
+    pub(crate) const VALID: () = {
+        let _ = 1 / ((IMM == 4 || IMM == 8 || IMM == 12) as usize);
+    };
+}
+
+#[allow(unused)]
+macro_rules! static_assert_sae_roundscale {
+    ($imm:ident) => {
+        let _ = $crate::core_arch::x86::macros::ValidateConstSaeRoundscale::<$imm>::VALID;
+    };
+}
+
 macro_rules! constify_imm3 {
     ($imm8:expr, $expand:ident) => {
         #[allow(overflowing_literals)]
