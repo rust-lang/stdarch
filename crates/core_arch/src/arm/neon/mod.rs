@@ -1097,7 +1097,7 @@ pub unsafe fn vld1q_dup_f32(ptr: *const f32) -> float32x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vabas"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vaba.s8"))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr("saba"))]
 pub unsafe fn vaba_s8(a: int8x8_t, b: int8x8_t, c: int8x8_t) -> int8x8_t {
     simd_add(a, vabd_s8(b, c))
@@ -1105,7 +1105,7 @@ pub unsafe fn vaba_s8(a: int8x8_t, b: int8x8_t, c: int8x8_t) -> int8x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vabas"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vaba.s16"))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr("saba"))]
 pub unsafe fn vaba_s16(a: int16x4_t, b: int16x4_t, c: int16x4_t) -> int16x4_t {
     simd_add(a, vabd_s16(b, c))
@@ -1113,7 +1113,7 @@ pub unsafe fn vaba_s16(a: int16x4_t, b: int16x4_t, c: int16x4_t) -> int16x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vabas"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vaba.s32"))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr("saba"))]
 pub unsafe fn vaba_s32(a: int32x2_t, b: int32x2_t, c: int32x2_t) -> int32x2_t {
     simd_add(a, vabd_s32(b, c))
@@ -1121,7 +1121,7 @@ pub unsafe fn vaba_s32(a: int32x2_t, b: int32x2_t, c: int32x2_t) -> int32x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vabau"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vaba.u8"))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr("uaba"))]
 pub unsafe fn vaba_u8(a: uint8x8_t, b: uint8x8_t, c: uint8x8_t) -> uint8x8_t {
     simd_add(a, vabd_u8(b, c))
@@ -1129,7 +1129,7 @@ pub unsafe fn vaba_u8(a: uint8x8_t, b: uint8x8_t, c: uint8x8_t) -> uint8x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vabau"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vaba.u16"))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr("uaba"))]
 pub unsafe fn vaba_u16(a: uint16x4_t, b: uint16x4_t, c: uint16x4_t) -> uint16x4_t {
     simd_add(a, vabd_u16(b, c))
@@ -1137,7 +1137,7 @@ pub unsafe fn vaba_u16(a: uint16x4_t, b: uint16x4_t, c: uint16x4_t) -> uint16x4_
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vabau"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vaba.u32"))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr("uaba"))]
 pub unsafe fn vaba_u32(a: uint32x2_t, b: uint32x2_t, c: uint32x2_t) -> uint32x2_t {
     simd_add(a, vabd_u32(b, c))
@@ -1146,7 +1146,7 @@ pub unsafe fn vaba_u32(a: uint32x2_t, b: uint32x2_t, c: uint32x2_t) -> uint32x2_
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vabas"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vaba.s8"))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr("saba"))]
 pub unsafe fn vabaq_s8(a: int8x16_t, b: int8x16_t, c: int8x16_t) -> int8x16_t {
     simd_add(a, vabdq_s8(b, c))
@@ -1154,7 +1154,7 @@ pub unsafe fn vabaq_s8(a: int8x16_t, b: int8x16_t, c: int8x16_t) -> int8x16_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vabas"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vaba.s16"))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr("saba"))]
 pub unsafe fn vabaq_s16(a: int16x8_t, b: int16x8_t, c: int16x8_t) -> int16x8_t {
     simd_add(a, vabdq_s16(b, c))
@@ -1162,7 +1162,7 @@ pub unsafe fn vabaq_s16(a: int16x8_t, b: int16x8_t, c: int16x8_t) -> int16x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vabas"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vaba.s32"))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr("saba"))]
 pub unsafe fn vabaq_s32(a: int32x4_t, b: int32x4_t, c: int32x4_t) -> int32x4_t {
     simd_add(a, vabdq_s32(b, c))
@@ -1170,7 +1170,7 @@ pub unsafe fn vabaq_s32(a: int32x4_t, b: int32x4_t, c: int32x4_t) -> int32x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vabau"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vaba.u8"))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr("uaba"))]
 pub unsafe fn vabaq_u8(a: uint8x16_t, b: uint8x16_t, c: uint8x16_t) -> uint8x16_t {
     simd_add(a, vabdq_u8(b, c))
@@ -1178,7 +1178,7 @@ pub unsafe fn vabaq_u8(a: uint8x16_t, b: uint8x16_t, c: uint8x16_t) -> uint8x16_
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vabau"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vaba.u16"))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr("uaba"))]
 pub unsafe fn vabaq_u16(a: uint16x8_t, b: uint16x8_t, c: uint16x8_t) -> uint16x8_t {
     simd_add(a, vabdq_u16(b, c))
@@ -1186,7 +1186,7 @@ pub unsafe fn vabaq_u16(a: uint16x8_t, b: uint16x8_t, c: uint16x8_t) -> uint16x8
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vabau"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vaba.u32"))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr("uaba"))]
 pub unsafe fn vabaq_u32(a: uint32x4_t, b: uint32x4_t, c: uint32x4_t) -> uint32x4_t {
     simd_add(a, vabdq_u32(b, c))
