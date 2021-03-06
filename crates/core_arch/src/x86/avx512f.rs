@@ -35670,24 +35670,19 @@ pub unsafe fn _mm_maskz_fixupimm_sd(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_fixupimm_round_ss&expand=2511)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vfixupimmss, imm8 = 0, sae = 8))]
-#[rustc_args_required_const(3, 4)]
-pub unsafe fn _mm_fixupimm_round_ss(
+#[cfg_attr(test, assert_instr(vfixupimmss, IMM8 = 0, SAE = 8))]
+#[rustc_legacy_const_generics(3, 4)]
+pub unsafe fn _mm_fixupimm_round_ss<const IMM8: i32, const SAE: i32>(
     a: __m128,
     b: __m128,
     c: __m128i,
-    imm8: i32,
-    sae: i32,
 ) -> __m128 {
+    static_assert_imm8!(IMM8);
+    static_assert_sae_roundscale!(SAE);
     let a = a.as_f32x4();
     let b = b.as_f32x4();
     let c = c.as_i32x4();
-    macro_rules! call {
-        ($imm8:expr, $imm4:expr) => {
-            vfixupimmss(a, b, c, $imm8, 0b11111111, $imm4)
-        };
-    }
-    let fixupimm = constify_imm8_roundscale!(imm8, sae, call);
+    let fixupimm = vfixupimmss(a, b, c, IMM8, 0b11111111, SAE);
     let fixupimm: f32 = simd_extract(fixupimm, 0);
     let r = simd_insert(a, 0, fixupimm);
     transmute(r)
@@ -52990,7 +52985,7 @@ mod tests {
         let a = _mm_set_ps(0., 0., 0., f32::NAN);
         let b = _mm_set1_ps(f32::MAX);
         let c = _mm_set1_epi32(i32::MAX);
-        let r = _mm_fixupimm_round_ss(a, b, c, 5, _MM_FROUND_CUR_DIRECTION);
+        let r = _mm_fixupimm_round_ss::<5, _MM_FROUND_CUR_DIRECTION>(a, b, c);
         let e = _mm_set_ps(0., 0., 0., -0.0);
         assert_eq_m128(r, e);
     }
