@@ -34289,18 +34289,18 @@ pub unsafe fn _mm_maskz_roundscale_round_ss<const IMM8: i32, const SAE: i32>(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_roundscale_round_sd&expand=4793)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vrndscalesd, imm8 = 0, sae = 8))]
-#[rustc_args_required_const(2, 3)]
-pub unsafe fn _mm_roundscale_round_sd(a: __m128d, b: __m128d, imm8: i32, sae: i32) -> __m128d {
+#[cfg_attr(test, assert_instr(vrndscalesd, IMM8 = 0, SAE = 8))]
+#[rustc_legacy_const_generics(2, 3)]
+pub unsafe fn _mm_roundscale_round_sd<const IMM8: i32, const SAE: i32>(
+    a: __m128d,
+    b: __m128d,
+) -> __m128d {
+    static_assert_imm8!(IMM8);
+    static_assert_sae_roundscale!(SAE);
     let a = a.as_f64x2();
     let b = b.as_f64x2();
     let zero = _mm_setzero_pd().as_f64x2();
-    macro_rules! call {
-        ($imm8:expr, $imm4:expr) => {
-            vrndscalesd(a, b, zero, 0b11111111, $imm8, $imm4)
-        };
-    }
-    let r = constify_imm8_roundscale!(imm8, sae, call);
+    let r = vrndscalesd(a, b, zero, 0b11111111, IMM8, SAE);
     transmute(r)
 }
 
@@ -52353,7 +52353,7 @@ mod tests {
     unsafe fn test_mm_roundscale_round_sd() {
         let a = _mm_set1_pd(2.2);
         let b = _mm_set1_pd(1.1);
-        let r = _mm_roundscale_round_sd(a, b, 0, _MM_FROUND_CUR_DIRECTION);
+        let r = _mm_roundscale_round_sd::<0, _MM_FROUND_CUR_DIRECTION>(a, b);
         let e = _mm_set_pd(2.2, 1.0);
         assert_eq_m128d(r, e);
     }
