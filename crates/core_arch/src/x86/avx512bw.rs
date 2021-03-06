@@ -8979,9 +8979,11 @@ pub unsafe fn _mm512_bsrli_epi128(a: __m512i, imm8: i32) -> __m512i {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_alignr_epi8&expand=263)
 #[inline]
 #[target_feature(enable = "avx512bw")]
-#[cfg_attr(test, assert_instr(vpalignr, imm8 = 1))]
-#[rustc_args_required_const(2)]
-pub unsafe fn _mm512_alignr_epi8(a: __m512i, b: __m512i, imm8: i32) -> __m512i {
+#[cfg_attr(test, assert_instr(vpalignr, IMM8 = 1))]
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn _mm512_alignr_epi8<const IMM8: i32>(a: __m512i, b: __m512i) -> __m512i {
+    static_assert_imm8!(IMM8);
+    let imm8 = IMM8 as i32;
     // If palignr is shifting the pair of vectors more than the size of two
     // lanes, emit zero.
     if imm8 > 32 {
@@ -9051,7 +9053,7 @@ pub unsafe fn _mm512_mask_alignr_epi8<const IMM8: i32>(
     b: __m512i,
 ) -> __m512i {
     static_assert_imm8!(IMM8);
-    let r = _mm512_alignr_epi8(a, b, IMM8);
+    let r = _mm512_alignr_epi8::<IMM8>(a, b);
     transmute(simd_select_bitmask(k, r.as_i8x64(), src.as_i8x64()))
 }
 
@@ -9068,7 +9070,7 @@ pub unsafe fn _mm512_maskz_alignr_epi8<const IMM8: i32>(
     b: __m512i,
 ) -> __m512i {
     static_assert_imm8!(IMM8);
-    let r = _mm512_alignr_epi8(a, b, IMM8);
+    let r = _mm512_alignr_epi8::<IMM8>(a, b);
     let zero = _mm512_setzero_si512().as_i8x64();
     transmute(simd_select_bitmask(k, r.as_i8x64(), zero))
 }
@@ -17655,7 +17657,7 @@ mod tests {
             1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0,
         );
         let b = _mm512_set1_epi8(1);
-        let r = _mm512_alignr_epi8(a, b, 14);
+        let r = _mm512_alignr_epi8::<14>(a, b);
         #[rustfmt::skip]
         let e = _mm512_set_epi8(
             0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1,
