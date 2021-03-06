@@ -7136,56 +7136,49 @@ pub unsafe fn _mm_maskz_set1_epi8(k: __mmask16, a: i8) -> __m128i {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_shufflelo_epi16&expand=5221)
 #[inline]
 #[target_feature(enable = "avx512bw")]
-#[cfg_attr(test, assert_instr(vpshuflw, imm8 = 0))]
-#[rustc_args_required_const(1)]
-pub unsafe fn _mm512_shufflelo_epi16(a: __m512i, imm8: i32) -> __m512i {
-    let imm8 = (imm8 & 0xFF) as u8;
+#[cfg_attr(test, assert_instr(vpshuflw, IMM8 = 0))]
+#[rustc_legacy_const_generics(1)]
+pub unsafe fn _mm512_shufflelo_epi16<const IMM8: i32>(a: __m512i) -> __m512i {
+    static_assert_imm8!(IMM8);
     let a = a.as_i16x32();
-    macro_rules! shuffle_done {
-        ($x01: expr, $x23: expr, $x45: expr, $x67: expr) => {
-            #[rustfmt::skip]
-                        simd_shuffle32(a, a, [
-                            0+$x01, 0+$x23, 0+$x45, 0+$x67, 4, 5, 6, 7, 8+$x01, 8+$x23, 8+$x45, 8+$x67, 12, 13, 14, 15,
-                            16+$x01, 16+$x23, 16+$x45, 16+$x67, 20, 21, 22, 23, 24+$x01, 24+$x23, 24+$x45, 24+$x67, 28, 29, 30, 31,
-                        ])
-        };
-    }
-    macro_rules! shuffle_x67 {
-        ($x01:expr, $x23:expr, $x45:expr) => {
-            match (imm8 >> 6) & 0b11 {
-                0b00 => shuffle_done!($x01, $x23, $x45, 0),
-                0b01 => shuffle_done!($x01, $x23, $x45, 1),
-                0b10 => shuffle_done!($x01, $x23, $x45, 2),
-                _ => shuffle_done!($x01, $x23, $x45, 3),
-            }
-        };
-    }
-    macro_rules! shuffle_x45 {
-        ($x01:expr, $x23:expr) => {
-            match (imm8 >> 4) & 0b11 {
-                0b00 => shuffle_x67!($x01, $x23, 0),
-                0b01 => shuffle_x67!($x01, $x23, 1),
-                0b10 => shuffle_x67!($x01, $x23, 2),
-                _ => shuffle_x67!($x01, $x23, 3),
-            }
-        };
-    }
-    macro_rules! shuffle_x23 {
-        ($x01:expr) => {
-            match (imm8 >> 2) & 0b11 {
-                0b00 => shuffle_x45!($x01, 0),
-                0b01 => shuffle_x45!($x01, 1),
-                0b10 => shuffle_x45!($x01, 2),
-                _ => shuffle_x45!($x01, 3),
-            }
-        };
-    }
-    let r: i16x32 = match imm8 & 0b11 {
-        0b00 => shuffle_x23!(0),
-        0b01 => shuffle_x23!(1),
-        0b10 => shuffle_x23!(2),
-        _ => shuffle_x23!(3),
-    };
+    let r: i16x32 = simd_shuffle32(
+        a,
+        a,
+        [
+            IMM8 as u32 & 0b11,
+            (IMM8 as u32 >> 2) & 0b11,
+            (IMM8 as u32 >> 4) & 0b11,
+            (IMM8 as u32 >> 6) & 0b11,
+            4,
+            5,
+            6,
+            7,
+            (IMM8 as u32 & 0b11) + 8,
+            ((IMM8 as u32 >> 2) & 0b11) + 8,
+            ((IMM8 as u32 >> 4) & 0b11) + 8,
+            ((IMM8 as u32 >> 6) & 0b11) + 8,
+            12,
+            13,
+            14,
+            15,
+            (IMM8 as u32 & 0b11) + 16,
+            ((IMM8 as u32 >> 2) & 0b11) + 16,
+            ((IMM8 as u32 >> 4) & 0b11) + 16,
+            ((IMM8 as u32 >> 6) & 0b11) + 16,
+            20,
+            21,
+            22,
+            23,
+            (IMM8 as u32 & 0b11) + 24,
+            ((IMM8 as u32 >> 2) & 0b11) + 24,
+            ((IMM8 as u32 >> 4) & 0b11) + 24,
+            ((IMM8 as u32 >> 6) & 0b11) + 24,
+            28,
+            29,
+            30,
+            31,
+        ],
+    );
     transmute(r)
 }
 
@@ -7202,7 +7195,7 @@ pub unsafe fn _mm512_mask_shufflelo_epi16<const IMM8: i32>(
     a: __m512i,
 ) -> __m512i {
     static_assert_imm8!(IMM8);
-    let r = _mm512_shufflelo_epi16(a, IMM8);
+    let r = _mm512_shufflelo_epi16::<IMM8>(a);
     transmute(simd_select_bitmask(k, r.as_i16x32(), src.as_i16x32()))
 }
 
@@ -7215,7 +7208,7 @@ pub unsafe fn _mm512_mask_shufflelo_epi16<const IMM8: i32>(
 #[rustc_legacy_const_generics(2)]
 pub unsafe fn _mm512_maskz_shufflelo_epi16<const IMM8: i32>(k: __mmask32, a: __m512i) -> __m512i {
     static_assert_imm8!(IMM8);
-    let r = _mm512_shufflelo_epi16(a, IMM8);
+    let r = _mm512_shufflelo_epi16::<IMM8>(a);
     let zero = _mm512_setzero_si512().as_i16x32();
     transmute(simd_select_bitmask(k, r.as_i16x32(), zero))
 }
@@ -7287,56 +7280,49 @@ pub unsafe fn _mm_maskz_shufflelo_epi16<const IMM8: i32>(k: __mmask8, a: __m128i
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_shufflehi_epi16&expand=5212)
 #[inline]
 #[target_feature(enable = "avx512bw")]
-#[cfg_attr(test, assert_instr(vpshufhw, imm8 = 0))]
-#[rustc_args_required_const(1)]
-pub unsafe fn _mm512_shufflehi_epi16(a: __m512i, imm8: i32) -> __m512i {
-    let imm8 = (imm8 & 0xFF) as u8;
+#[cfg_attr(test, assert_instr(vpshufhw, IMM8 = 0))]
+#[rustc_legacy_const_generics(1)]
+pub unsafe fn _mm512_shufflehi_epi16<const IMM8: i32>(a: __m512i) -> __m512i {
+    static_assert_imm8!(IMM8);
     let a = a.as_i16x32();
-    macro_rules! shuffle_done {
-        ($x01: expr, $x23: expr, $x45: expr, $x67: expr) => {
-            #[rustfmt::skip]
-                        simd_shuffle32(a, a, [
-                            0, 1, 2, 3, 4+$x01, 4+$x23, 4+$x45, 4+$x67, 8, 9, 10, 11, 12+$x01, 12+$x23, 12+$x45, 12+$x67,
-                            16, 17, 18, 19, 20+$x01, 20+$x23, 20+$x45, 20+$x67, 24, 25, 26, 27, 28+$x01, 28+$x23, 28+$x45, 28+$x67,
-                        ])
-        };
-    }
-    macro_rules! shuffle_x67 {
-        ($x01:expr, $x23:expr, $x45:expr) => {
-            match (imm8 >> 6) & 0b11 {
-                0b00 => shuffle_done!($x01, $x23, $x45, 0),
-                0b01 => shuffle_done!($x01, $x23, $x45, 1),
-                0b10 => shuffle_done!($x01, $x23, $x45, 2),
-                _ => shuffle_done!($x01, $x23, $x45, 3),
-            }
-        };
-    }
-    macro_rules! shuffle_x45 {
-        ($x01:expr, $x23:expr) => {
-            match (imm8 >> 4) & 0b11 {
-                0b00 => shuffle_x67!($x01, $x23, 0),
-                0b01 => shuffle_x67!($x01, $x23, 1),
-                0b10 => shuffle_x67!($x01, $x23, 2),
-                _ => shuffle_x67!($x01, $x23, 3),
-            }
-        };
-    }
-    macro_rules! shuffle_x23 {
-        ($x01:expr) => {
-            match (imm8 >> 2) & 0b11 {
-                0b00 => shuffle_x45!($x01, 0),
-                0b01 => shuffle_x45!($x01, 1),
-                0b10 => shuffle_x45!($x01, 2),
-                _ => shuffle_x45!($x01, 3),
-            }
-        };
-    }
-    let r: i16x32 = match imm8 & 0b11 {
-        0b00 => shuffle_x23!(0),
-        0b01 => shuffle_x23!(1),
-        0b10 => shuffle_x23!(2),
-        _ => shuffle_x23!(3),
-    };
+    let r: i16x32 = simd_shuffle32(
+        a,
+        a,
+        [
+            0,
+            1,
+            2,
+            3,
+            (IMM8 as u32 & 0b11) + 4,
+            ((IMM8 as u32 >> 2) & 0b11) + 4,
+            ((IMM8 as u32 >> 4) & 0b11) + 4,
+            ((IMM8 as u32 >> 6) & 0b11) + 4,
+            8,
+            9,
+            10,
+            11,
+            (IMM8 as u32 & 0b11) + 12,
+            ((IMM8 as u32 >> 2) & 0b11) + 12,
+            ((IMM8 as u32 >> 4) & 0b11) + 12,
+            ((IMM8 as u32 >> 6) & 0b11) + 12,
+            16,
+            17,
+            18,
+            19,
+            (IMM8 as u32 & 0b11) + 20,
+            ((IMM8 as u32 >> 2) & 0b11) + 20,
+            ((IMM8 as u32 >> 4) & 0b11) + 20,
+            ((IMM8 as u32 >> 6) & 0b11) + 20,
+            24,
+            25,
+            26,
+            27,
+            (IMM8 as u32 & 0b11) + 28,
+            ((IMM8 as u32 >> 2) & 0b11) + 28,
+            ((IMM8 as u32 >> 4) & 0b11) + 28,
+            ((IMM8 as u32 >> 6) & 0b11) + 28,
+        ],
+    );
     transmute(r)
 }
 
@@ -7353,7 +7339,7 @@ pub unsafe fn _mm512_mask_shufflehi_epi16<const IMM8: i32>(
     a: __m512i,
 ) -> __m512i {
     static_assert_imm8!(IMM8);
-    let r = _mm512_shufflehi_epi16(a, IMM8);
+    let r = _mm512_shufflehi_epi16::<IMM8>(a);
     transmute(simd_select_bitmask(k, r.as_i16x32(), src.as_i16x32()))
 }
 
@@ -7366,7 +7352,7 @@ pub unsafe fn _mm512_mask_shufflehi_epi16<const IMM8: i32>(
 #[rustc_legacy_const_generics(2)]
 pub unsafe fn _mm512_maskz_shufflehi_epi16<const IMM8: i32>(k: __mmask32, a: __m512i) -> __m512i {
     static_assert_imm8!(IMM8);
-    let r = _mm512_shufflehi_epi16(a, IMM8);
+    let r = _mm512_shufflehi_epi16::<IMM8>(a);
     let zero = _mm512_setzero_si512().as_i16x32();
     transmute(simd_select_bitmask(k, r.as_i16x32(), zero))
 }
@@ -16225,7 +16211,7 @@ mod tests {
             0, 1, 2, 3, 7, 6, 6, 4, 8, 9, 10, 11, 15, 14, 14, 12,
             16, 17, 18, 19, 23, 22, 22, 20, 24, 25, 26, 27, 31, 30, 30, 28,
         );
-        let r = _mm512_shufflelo_epi16(a, 0b00_01_01_11);
+        let r = _mm512_shufflelo_epi16::<0b00_01_01_11>(a);
         assert_eq_m512i(r, e);
     }
 
@@ -16322,7 +16308,7 @@ mod tests {
             3, 2, 2, 0, 4, 5, 6, 7, 11, 10, 10, 8, 12, 13, 14, 15,
             19, 18, 18, 16, 20, 21, 22, 23, 27, 26, 26, 24, 28, 29, 30, 31,
         );
-        let r = _mm512_shufflehi_epi16(a, 0b00_01_01_11);
+        let r = _mm512_shufflehi_epi16::<0b00_01_01_11>(a);
         assert_eq_m512i(r, e);
     }
 
