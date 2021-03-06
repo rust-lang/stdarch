@@ -1099,7 +1099,7 @@ pub unsafe fn vld1q_dup_f32(ptr: *const f32) -> float32x4_t {
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vabas"))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr("saba"))]
-pub unsafe fn vaba_s8_(a: int8x8_t, b: int8x8_t, c: int8x8_t) -> int8x8_t {
+pub unsafe fn vaba_s8(a: int8x8_t, b: int8x8_t, c: int8x8_t) -> int8x8_t {
     simd_add(a, vabd_s8(b, c))
 }
 #[inline]
@@ -1107,7 +1107,7 @@ pub unsafe fn vaba_s8_(a: int8x8_t, b: int8x8_t, c: int8x8_t) -> int8x8_t {
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vabas"))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr("saba"))]
-pub unsafe fn vaba_s16_(a: int16x4_t, b: int16x4_t, c: int16x4_t) -> int16x4_t {
+pub unsafe fn vaba_s16(a: int16x4_t, b: int16x4_t, c: int16x4_t) -> int16x4_t {
     simd_add(a, vabd_s16(b, c))
 }
 #[inline]
@@ -1115,7 +1115,7 @@ pub unsafe fn vaba_s16_(a: int16x4_t, b: int16x4_t, c: int16x4_t) -> int16x4_t {
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vabas"))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr("saba"))]
-pub unsafe fn vaba_s32_(a: int32x2_t, b: int32x2_t, c: int32x2_t) -> int32x2_t {
+pub unsafe fn vaba_s32(a: int32x2_t, b: int32x2_t, c: int32x2_t) -> int32x2_t {
     simd_add(a, vabd_s32(b, c))
 }
 #[inline]
@@ -1123,7 +1123,7 @@ pub unsafe fn vaba_s32_(a: int32x2_t, b: int32x2_t, c: int32x2_t) -> int32x2_t {
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vabau"))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr("uaba"))]
-pub unsafe fn vaba_u8_(a: uint8x8_t, b: uint8x8_t, c: uint8x8_t) -> uint8x8_t {
+pub unsafe fn vaba_u8(a: uint8x8_t, b: uint8x8_t, c: uint8x8_t) -> uint8x8_t {
     simd_add(a, vabd_u8(b, c))
 }
 #[inline]
@@ -1131,7 +1131,7 @@ pub unsafe fn vaba_u8_(a: uint8x8_t, b: uint8x8_t, c: uint8x8_t) -> uint8x8_t {
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vabau"))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr("uaba"))]
-pub unsafe fn vaba_u16_(a: uint16x4_t, b: uint16x4_t, c: uint16x4_t) -> uint16x4_t {
+pub unsafe fn vaba_u16(a: uint16x4_t, b: uint16x4_t, c: uint16x4_t) -> uint16x4_t {
     simd_add(a, vabd_u16(b, c))
 }
 #[inline]
@@ -1139,7 +1139,7 @@ pub unsafe fn vaba_u16_(a: uint16x4_t, b: uint16x4_t, c: uint16x4_t) -> uint16x4
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vabau"))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr("uaba"))]
-pub unsafe fn vaba_u32_(a: uint32x2_t, b: uint32x2_t, c: uint32x2_t) -> uint32x2_t {
+pub unsafe fn vaba_u32(a: uint32x2_t, b: uint32x2_t, c: uint32x2_t) -> uint32x2_t {
     simd_add(a, vabd_u32(b, c))
 }
 // signed absolute difference and accumulate (128-bit)
@@ -1148,7 +1148,7 @@ pub unsafe fn vaba_u32_(a: uint32x2_t, b: uint32x2_t, c: uint32x2_t) -> uint32x2
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vabas"))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr("saba"))]
-pub unsafe fn vabaq_s8_(a: int8x16_t, b: int8x16_t, c: int8x16_t) -> int8x16_t {
+pub unsafe fn vabaq_s8(a: int8x16_t, b: int8x16_t, c: int8x16_t) -> int8x16_t {
     simd_add(a, vabdq_s8(b, c))
 }
 #[inline]
@@ -1156,7 +1156,7 @@ pub unsafe fn vabaq_s8_(a: int8x16_t, b: int8x16_t, c: int8x16_t) -> int8x16_t {
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vabas"))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr("saba"))]
-pub unsafe fn vabaq_s16_(a: int16x8_t, b: int16x8_t, c: int16x8_t) -> int16x8_t {
+pub unsafe fn vabaq_s16(a: int16x8_t, b: int16x8_t, c: int16x8_t) -> int16x8_t {
     simd_add(a, vabdq_s16(b, c))
 }
 #[inline]
@@ -1164,7 +1164,7 @@ pub unsafe fn vabaq_s16_(a: int16x8_t, b: int16x8_t, c: int16x8_t) -> int16x8_t 
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vabas"))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr("saba"))]
-pub unsafe fn vabaq_s32_(a: int32x4_t, b: int32x4_t, c: int32x4_t) -> int32x4_t {
+pub unsafe fn vabaq_s32(a: int32x4_t, b: int32x4_t, c: int32x4_t) -> int32x4_t {
     simd_add(a, vabdq_s32(b, c))
 }
 #[inline]
@@ -1172,7 +1172,7 @@ pub unsafe fn vabaq_s32_(a: int32x4_t, b: int32x4_t, c: int32x4_t) -> int32x4_t 
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vabau"))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr("uaba"))]
-pub unsafe fn vabaq_u8_(a: uint8x16_t, b: uint8x16_t, c: uint8x16_t) -> uint8x16_t {
+pub unsafe fn vabaq_u8(a: uint8x16_t, b: uint8x16_t, c: uint8x16_t) -> uint8x16_t {
     simd_add(a, vabdq_u8(b, c))
 }
 #[inline]
@@ -1180,7 +1180,7 @@ pub unsafe fn vabaq_u8_(a: uint8x16_t, b: uint8x16_t, c: uint8x16_t) -> uint8x16
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vabau"))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr("uaba"))]
-pub unsafe fn vabaq_u16_(a: uint16x8_t, b: uint16x8_t, c: uint16x8_t) -> uint16x8_t {
+pub unsafe fn vabaq_u16(a: uint16x8_t, b: uint16x8_t, c: uint16x8_t) -> uint16x8_t {
     simd_add(a, vabdq_u16(b, c))
 }
 #[inline]
@@ -1188,7 +1188,7 @@ pub unsafe fn vabaq_u16_(a: uint16x8_t, b: uint16x8_t, c: uint16x8_t) -> uint16x
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vabau"))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr("uaba"))]
-pub unsafe fn vabaq_u32_(a: uint32x4_t, b: uint32x4_t, c: uint32x4_t) -> uint32x4_t {
+pub unsafe fn vabaq_u32(a: uint32x4_t, b: uint32x4_t, c: uint32x4_t) -> uint32x4_t {
     simd_add(a, vabdq_u32(b, c))
 }
 
@@ -8669,7 +8669,7 @@ mod tests {
         let a = i8x8::new(1, 2, 3, 4, 5, 6, 7, 8);
         let b = i8x8::new(1, 1, 1, 1, 1, 1, 1, 1);
         let c = i8x8::new(10, 9, 8, 7, 6, 5, 4, 3);
-        let r: i8x8 = transmute(vaba_s8_(transmute(a), transmute(b), transmute(c)));
+        let r: i8x8 = transmute(vaba_s8(transmute(a), transmute(b), transmute(c)));
         let e = i8x8::new(10, 10, 10, 10, 10, 10, 10, 10);
         assert_eq!(r, e);
     }
@@ -8678,7 +8678,7 @@ mod tests {
         let a = i16x4::new(1, 2, 3, 4);
         let b = i16x4::new(1, 1, 1, 1);
         let c = i16x4::new(10, 9, 8, 7);
-        let r: i16x4 = transmute(vaba_s16_(transmute(a), transmute(b), transmute(c)));
+        let r: i16x4 = transmute(vaba_s16(transmute(a), transmute(b), transmute(c)));
         let e = i16x4::new(10, 10, 10, 10);
         assert_eq!(r, e);
     }
@@ -8687,7 +8687,7 @@ mod tests {
         let a = i32x2::new(1, 2);
         let b = i32x2::new(1, 1);
         let c = i32x2::new(10, 9);
-        let r: i32x2 = transmute(vaba_s32_(transmute(a), transmute(b), transmute(c)));
+        let r: i32x2 = transmute(vaba_s32(transmute(a), transmute(b), transmute(c)));
         let e = i32x2::new(10, 10);
         assert_eq!(r, e);
     }
@@ -8696,7 +8696,7 @@ mod tests {
         let a = u8x8::new(1, 2, 3, 4, 5, 6, 7, 8);
         let b = u8x8::new(1, 1, 1, 1, 1, 1, 1, 1);
         let c = u8x8::new(10, 9, 8, 7, 6, 5, 4, 3);
-        let r: u8x8 = transmute(vaba_u8_(transmute(a), transmute(b), transmute(c)));
+        let r: u8x8 = transmute(vaba_u8(transmute(a), transmute(b), transmute(c)));
         let e = u8x8::new(10, 10, 10, 10, 10, 10, 10, 10);
         assert_eq!(r, e);
     }
@@ -8705,7 +8705,7 @@ mod tests {
         let a = u16x4::new(1, 2, 3, 4);
         let b = u16x4::new(1, 1, 1, 1);
         let c = u16x4::new(10, 9, 8, 7);
-        let r: u16x4 = transmute(vaba_u16_(transmute(a), transmute(b), transmute(c)));
+        let r: u16x4 = transmute(vaba_u16(transmute(a), transmute(b), transmute(c)));
         let e = u16x4::new(10, 10, 10, 10);
         assert_eq!(r, e);
     }
@@ -8714,7 +8714,7 @@ mod tests {
         let a = u32x2::new(1, 2);
         let b = u32x2::new(1, 1);
         let c = u32x2::new(10, 9);
-        let r: u32x2 = transmute(vaba_u32_(transmute(a), transmute(b), transmute(c)));
+        let r: u32x2 = transmute(vaba_u32(transmute(a), transmute(b), transmute(c)));
         let e = u32x2::new(10, 10);
         assert_eq!(r, e);
     }
@@ -8723,7 +8723,7 @@ mod tests {
         let a = i8x16::new(1, 2, 3, 4, 5, 6, 7, 8, 9, 8, 7, 6, 5, 4, 3, 2);
         let b = i8x16::new(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
         let c = i8x16::new(10, 9, 8, 7, 6, 5, 4, 3, 12, 13, 14, 15, 16, 17, 18, 19);
-        let r: i8x16 = transmute(vabaq_s8_(transmute(a), transmute(b), transmute(c)));
+        let r: i8x16 = transmute(vabaq_s8(transmute(a), transmute(b), transmute(c)));
         let e = i8x16::new(
             10, 10, 10, 10, 10, 10, 10, 10, 20, 20, 20, 20, 20, 20, 20, 20,
         );
@@ -8734,7 +8734,7 @@ mod tests {
         let a = i16x8::new(1, 2, 3, 4, 5, 6, 7, 8);
         let b = i16x8::new(1, 1, 1, 1, 1, 1, 1, 1);
         let c = i16x8::new(10, 9, 8, 7, 6, 5, 4, 3);
-        let r: i16x8 = transmute(vabaq_s16_(transmute(a), transmute(b), transmute(c)));
+        let r: i16x8 = transmute(vabaq_s16(transmute(a), transmute(b), transmute(c)));
         let e = i16x8::new(10, 10, 10, 10, 10, 10, 10, 10);
         assert_eq!(r, e);
     }
@@ -8743,7 +8743,7 @@ mod tests {
         let a = i32x4::new(1, 2, 3, 4);
         let b = i32x4::new(1, 1, 1, 1);
         let c = i32x4::new(10, 9, 8, 7);
-        let r: i32x4 = transmute(vabaq_s32_(transmute(a), transmute(b), transmute(c)));
+        let r: i32x4 = transmute(vabaq_s32(transmute(a), transmute(b), transmute(c)));
         let e = i32x4::new(10, 10, 10, 10);
         assert_eq!(r, e);
     }
@@ -8752,7 +8752,7 @@ mod tests {
         let a = u8x16::new(1, 2, 3, 4, 5, 6, 7, 8, 9, 8, 7, 6, 5, 4, 3, 2);
         let b = u8x16::new(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
         let c = u8x16::new(10, 9, 8, 7, 6, 5, 4, 3, 12, 13, 14, 15, 16, 17, 18, 19);
-        let r: u8x16 = transmute(vabaq_u8_(transmute(a), transmute(b), transmute(c)));
+        let r: u8x16 = transmute(vabaq_u8(transmute(a), transmute(b), transmute(c)));
         let e = u8x16::new(
             10, 10, 10, 10, 10, 10, 10, 10, 20, 20, 20, 20, 20, 20, 20, 20,
         );
@@ -8763,7 +8763,7 @@ mod tests {
         let a = u16x8::new(1, 2, 3, 4, 5, 6, 7, 8);
         let b = u16x8::new(1, 1, 1, 1, 1, 1, 1, 1);
         let c = u16x8::new(10, 9, 8, 7, 6, 5, 4, 3);
-        let r: u16x8 = transmute(vabaq_u16_(transmute(a), transmute(b), transmute(c)));
+        let r: u16x8 = transmute(vabaq_u16(transmute(a), transmute(b), transmute(c)));
         let e = u16x8::new(10, 10, 10, 10, 10, 10, 10, 10);
         assert_eq!(r, e);
     }
@@ -8772,7 +8772,7 @@ mod tests {
         let a = u32x4::new(1, 2, 3, 4);
         let b = u32x4::new(1, 1, 1, 1);
         let c = u32x4::new(10, 9, 8, 7);
-        let r: u32x4 = transmute(vabaq_u32_(transmute(a), transmute(b), transmute(c)));
+        let r: u32x4 = transmute(vabaq_u32(transmute(a), transmute(b), transmute(c)));
         let e = u32x4::new(10, 10, 10, 10);
         assert_eq!(r, e);
     }
