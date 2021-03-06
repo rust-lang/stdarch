@@ -34205,18 +34205,18 @@ pub unsafe fn _mm_maskz_getmant_round_sd(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm_roundscale_round_ss&expand=4796)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vrndscaless, imm8 = 0, sae = 8))]
-#[rustc_args_required_const(2, 3)]
-pub unsafe fn _mm_roundscale_round_ss(a: __m128, b: __m128, imm8: i32, sae: i32) -> __m128 {
+#[cfg_attr(test, assert_instr(vrndscaless, IMM8 = 0, SAE = 8))]
+#[rustc_legacy_const_generics(2, 3)]
+pub unsafe fn _mm_roundscale_round_ss<const IMM8: i32, const SAE: i32>(
+    a: __m128,
+    b: __m128,
+) -> __m128 {
+    static_assert_imm8!(IMM8);
+    static_assert_sae_roundscale!(SAE);
     let a = a.as_f32x4();
     let b = b.as_f32x4();
     let zero = _mm_setzero_ps().as_f32x4();
-    macro_rules! call {
-        ($imm8:expr, $imm4:expr) => {
-            vrndscaless(a, b, zero, 0b11111111, $imm8, $imm4)
-        };
-    }
-    let r = constify_imm8_roundscale!(imm8, sae, call);
+    let r = vrndscaless(a, b, zero, 0b11111111, IMM8, SAE);
     transmute(r)
 }
 
@@ -52330,7 +52330,7 @@ mod tests {
     unsafe fn test_mm_roundscale_round_ss() {
         let a = _mm_set1_ps(2.2);
         let b = _mm_set1_ps(1.1);
-        let r = _mm_roundscale_round_ss(a, b, 0, _MM_FROUND_CUR_DIRECTION);
+        let r = _mm_roundscale_round_ss::<0, _MM_FROUND_CUR_DIRECTION>(a, b);
         let e = _mm_set_ps(2.2, 2.2, 2.2, 1.0);
         assert_eq_m128(r, e);
     }
