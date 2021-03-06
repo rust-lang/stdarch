@@ -8877,9 +8877,11 @@ pub unsafe fn _mm_maskz_cvtepu8_epi16(k: __mmask8, a: __m128i) -> __m128i {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_bslli_epi128&expand=591)
 #[inline]
 #[target_feature(enable = "avx512bw")]
-#[rustc_args_required_const(1)]
-#[cfg_attr(test, assert_instr(vpslldq, imm8 = 3))]
-pub unsafe fn _mm512_bslli_epi128(a: __m512i, imm8: i32) -> __m512i {
+#[cfg_attr(test, assert_instr(vpslldq, IMM8 = 3))]
+#[rustc_legacy_const_generics(1)]
+pub unsafe fn _mm512_bslli_epi128<const IMM8: i32>(a: __m512i) -> __m512i {
+    static_assert_imm8!(IMM8);
+    let imm8 = IMM8 as i32;
     let a = a.as_i8x64();
     let zero = _mm512_setzero_si512().as_i8x64();
     #[rustfmt::skip]
@@ -8928,9 +8930,11 @@ pub unsafe fn _mm512_bslli_epi128(a: __m512i, imm8: i32) -> __m512i {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_bsrli_epi128&expand=594)
 #[inline]
 #[target_feature(enable = "avx512bw")]
-#[rustc_args_required_const(1)]
-#[cfg_attr(test, assert_instr(vpsrldq, imm8 = 3))]
-pub unsafe fn _mm512_bsrli_epi128(a: __m512i, imm8: i32) -> __m512i {
+#[cfg_attr(test, assert_instr(vpsrldq, IMM8 = 3))]
+#[rustc_legacy_const_generics(1)]
+pub unsafe fn _mm512_bsrli_epi128<const IMM8: i32>(a: __m512i) -> __m512i {
+    static_assert_imm8!(IMM8);
+    let imm8 = IMM8 as i32;
     let a = a.as_i8x64();
     let zero = _mm512_setzero_si512().as_i8x64();
     #[rustfmt::skip]
@@ -17616,7 +17620,7 @@ mod tests {
             1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0,
             1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0,
         );
-        let r = _mm512_bslli_epi128(a, 9);
+        let r = _mm512_bslli_epi128::<9>(a);
         #[rustfmt::skip]
         let e = _mm512_set_epi8(
             0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -17636,7 +17640,7 @@ mod tests {
             1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0,
             1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0,
         );
-        let r = _mm512_bsrli_epi128(a, 9);
+        let r = _mm512_bsrli_epi128::<9>(a);
         #[rustfmt::skip]
         let e = _mm512_set_epi8(
             0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0,
