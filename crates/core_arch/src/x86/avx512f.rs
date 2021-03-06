@@ -19644,56 +19644,24 @@ pub unsafe fn _mm_maskz_permute_pd<const IMM2: i32>(k: __mmask8, a: __m128d) -> 
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_permutex_epi64&expand=4208)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vperm, imm8 = 0b10011011))] //shoud be vpermq
-#[rustc_args_required_const(1)]
-pub unsafe fn _mm512_permutex_epi64(a: __m512i, imm8: i32) -> __m512i {
-    let imm8 = (imm8 & 0xFF) as u8;
-    let undefined = _mm512_set1_epi64(0);
-    macro_rules! shuffle4 {
-        ($a:expr, $b:expr, $c:expr, $d:expr) => {
-            simd_shuffle8(
-                a,
-                undefined,
-                [$a, $b, $c, $d, $a + 4, $b + 4, $c + 4, $d + 4],
-            )
-        };
-    }
-    macro_rules! shuffle3 {
-        ($a:expr, $b:expr, $c:expr) => {
-            match (imm8 >> 6) & 0b11 {
-                0b00 => shuffle4!($a, $b, $c, 0),
-                0b01 => shuffle4!($a, $b, $c, 1),
-                0b10 => shuffle4!($a, $b, $c, 2),
-                _ => shuffle4!($a, $b, $c, 3),
-            }
-        };
-    }
-    macro_rules! shuffle2 {
-        ($a:expr, $b:expr) => {
-            match (imm8 >> 4) & 0b11 {
-                0b00 => shuffle3!($a, $b, 0),
-                0b01 => shuffle3!($a, $b, 1),
-                0b10 => shuffle3!($a, $b, 2),
-                _ => shuffle3!($a, $b, 3),
-            }
-        };
-    }
-    macro_rules! shuffle1 {
-        ($a:expr) => {
-            match (imm8 >> 2) & 0b11 {
-                0b00 => shuffle2!($a, 0),
-                0b01 => shuffle2!($a, 1),
-                0b10 => shuffle2!($a, 2),
-                _ => shuffle2!($a, 3),
-            }
-        };
-    }
-    match imm8 & 0b11 {
-        0b00 => shuffle1!(0),
-        0b01 => shuffle1!(1),
-        0b10 => shuffle1!(2),
-        _ => shuffle1!(3),
-    }
+#[cfg_attr(test, assert_instr(vperm, MASK = 0b10_01_10_11))] //shoud be vpermq
+#[rustc_legacy_const_generics(1)]
+pub unsafe fn _mm512_permutex_epi64<const MASK: i32>(a: __m512i) -> __m512i {
+    static_assert_imm8!(MASK);
+    simd_shuffle8(
+        a,
+        a,
+        [
+            MASK as u32 & 0b11,
+            (MASK as u32 >> 2) & 0b11,
+            ((MASK as u32 >> 4) & 0b11),
+            ((MASK as u32 >> 6) & 0b11),
+            (MASK as u32 & 0b11) + 4,
+            ((MASK as u32 >> 2) & 0b11) + 4,
+            ((MASK as u32 >> 4) & 0b11) + 4,
+            ((MASK as u32 >> 6) & 0b11) + 4,
+        ],
+    )
 }
 
 /// Shuffle 64-bit integers in a within 256-bit lanes using the control in imm8, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
@@ -19701,20 +19669,15 @@ pub unsafe fn _mm512_permutex_epi64(a: __m512i, imm8: i32) -> __m512i {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_permutex_epi64&expand=4206)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vperm, imm8 = 0b11111111))] //should be vpermq
-#[rustc_args_required_const(3)]
-pub unsafe fn _mm512_mask_permutex_epi64(
+#[cfg_attr(test, assert_instr(vperm, MASK = 0b10_01_10_11))] //should be vpermq
+#[rustc_legacy_const_generics(3)]
+pub unsafe fn _mm512_mask_permutex_epi64<const MASK: i32>(
     src: __m512i,
     k: __mmask8,
     a: __m512i,
-    imm8: i32,
 ) -> __m512i {
-    macro_rules! call {
-        ($imm8:expr) => {
-            _mm512_permutex_epi64(a, $imm8)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+    static_assert_imm8!(MASK);
+    let r = _mm512_permutex_epi64::<MASK>(a);
     transmute(simd_select_bitmask(k, r.as_i64x8(), src.as_i64x8()))
 }
 
@@ -19723,15 +19686,11 @@ pub unsafe fn _mm512_mask_permutex_epi64(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_permutex_epi64&expand=4207)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vperm, imm8 = 0b11111111))] //should be vpermq
-#[rustc_args_required_const(2)]
-pub unsafe fn _mm512_maskz_permutex_epi64(k: __mmask8, a: __m512i, imm8: i32) -> __m512i {
-    macro_rules! call {
-        ($imm8:expr) => {
-            _mm512_permutex_epi64(a, $imm8)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+#[cfg_attr(test, assert_instr(vperm, MASK = 0b10_01_10_11))] //should be vpermq
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn _mm512_maskz_permutex_epi64<const MASK: i32>(k: __mmask8, a: __m512i) -> __m512i {
+    static_assert_imm8!(MASK);
+    let r = _mm512_permutex_epi64::<MASK>(a);
     let zero = _mm512_setzero_si512().as_i64x8();
     transmute(simd_select_bitmask(k, r.as_i64x8(), zero))
 }
@@ -19741,52 +19700,20 @@ pub unsafe fn _mm512_maskz_permutex_epi64(k: __mmask8, a: __m512i, imm8: i32) ->
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_permutex_epi64&expand=4205)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vperm, imm8 = 0b10011011))] //shoud be vpermq
-#[rustc_args_required_const(1)]
-pub unsafe fn _mm256_permutex_epi64(a: __m256i, imm8: i32) -> __m256i {
-    let imm8 = (imm8 & 0xFF) as u8;
-    let undefined = _mm256_set1_epi64x(0);
-    macro_rules! shuffle4 {
-        ($a:expr, $b:expr, $c:expr, $d:expr) => {
-            simd_shuffle4(a, undefined, [$a, $b, $c, $d])
-        };
-    }
-    macro_rules! shuffle3 {
-        ($a:expr, $b:expr, $c:expr) => {
-            match (imm8 >> 6) & 0b11 {
-                0b00 => shuffle4!($a, $b, $c, 0),
-                0b01 => shuffle4!($a, $b, $c, 1),
-                0b10 => shuffle4!($a, $b, $c, 2),
-                _ => shuffle4!($a, $b, $c, 3),
-            }
-        };
-    }
-    macro_rules! shuffle2 {
-        ($a:expr, $b:expr) => {
-            match (imm8 >> 4) & 0b11 {
-                0b00 => shuffle3!($a, $b, 0),
-                0b01 => shuffle3!($a, $b, 1),
-                0b10 => shuffle3!($a, $b, 2),
-                _ => shuffle3!($a, $b, 3),
-            }
-        };
-    }
-    macro_rules! shuffle1 {
-        ($a:expr) => {
-            match (imm8 >> 2) & 0b11 {
-                0b00 => shuffle2!($a, 0),
-                0b01 => shuffle2!($a, 1),
-                0b10 => shuffle2!($a, 2),
-                _ => shuffle2!($a, 3),
-            }
-        };
-    }
-    match imm8 & 0b11 {
-        0b00 => shuffle1!(0),
-        0b01 => shuffle1!(1),
-        0b10 => shuffle1!(2),
-        _ => shuffle1!(3),
-    }
+#[cfg_attr(test, assert_instr(vperm, MASK = 0b10_01_10_11))] //shoud be vpermq
+#[rustc_legacy_const_generics(1)]
+pub unsafe fn _mm256_permutex_epi64<const MASK: i32>(a: __m256i) -> __m256i {
+    static_assert_imm8!(MASK);
+    simd_shuffle4(
+        a,
+        a,
+        [
+            MASK as u32 & 0b11,
+            (MASK as u32 >> 2) & 0b11,
+            ((MASK as u32 >> 4) & 0b11),
+            ((MASK as u32 >> 6) & 0b11),
+        ],
+    )
 }
 
 /// Shuffle 64-bit integers in a within 256-bit lanes using the control in imm8, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
@@ -19794,20 +19721,15 @@ pub unsafe fn _mm256_permutex_epi64(a: __m256i, imm8: i32) -> __m256i {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_permutex_epi6&expand=4203)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vperm, imm8 = 0b10011011))] //should be vpermq
-#[rustc_args_required_const(3)]
-pub unsafe fn _mm256_mask_permutex_epi64(
+#[cfg_attr(test, assert_instr(vperm, MASK = 0b10_01_10_11))] //should be vpermq
+#[rustc_legacy_const_generics(3)]
+pub unsafe fn _mm256_mask_permutex_epi64<const MASK: i32>(
     src: __m256i,
     k: __mmask8,
     a: __m256i,
-    imm8: i32,
 ) -> __m256i {
-    macro_rules! call {
-        ($imm8:expr) => {
-            _mm256_permutex_epi64(a, $imm8)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+    static_assert_imm8!(MASK);
+    let r = _mm256_permutex_epi64::<MASK>(a);
     transmute(simd_select_bitmask(k, r.as_i64x4(), src.as_i64x4()))
 }
 
@@ -19816,15 +19738,11 @@ pub unsafe fn _mm256_mask_permutex_epi64(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_permutex_epi64&expand=4204)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vperm, imm8 = 0b10011011))] //should be vpermq
-#[rustc_args_required_const(2)]
-pub unsafe fn _mm256_maskz_permutex_epi64(k: __mmask8, a: __m256i, imm8: i32) -> __m256i {
-    macro_rules! call {
-        ($imm8:expr) => {
-            _mm256_permutex_epi64(a, $imm8)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+#[cfg_attr(test, assert_instr(vperm, MASK = 0b10_01_10_11))] //should be vpermq
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn _mm256_maskz_permutex_epi64<const MASK: i32>(k: __mmask8, a: __m256i) -> __m256i {
+    static_assert_imm8!(MASK);
+    let r = _mm256_permutex_epi64::<MASK>(a);
     let zero = _mm256_setzero_si256().as_i64x4();
     transmute(simd_select_bitmask(k, r.as_i64x4(), zero))
 }
@@ -19834,56 +19752,24 @@ pub unsafe fn _mm256_maskz_permutex_epi64(k: __mmask8, a: __m256i, imm8: i32) ->
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_permutex_pd&expand=4214)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vperm, imm8 = 0b11111111))] //shoud be vpermpd
-#[rustc_args_required_const(1)]
-pub unsafe fn _mm512_permutex_pd(a: __m512d, imm8: i32) -> __m512d {
-    let imm8 = (imm8 & 0xFF) as u8;
-    let undefined = _mm512_undefined_pd();
-    macro_rules! shuffle4 {
-        ($a:expr, $b:expr, $c:expr, $d:expr) => {
-            simd_shuffle8(
-                a,
-                undefined,
-                [$a, $b, $c, $d, $a + 4, $b + 4, $c + 4, $d + 4],
-            )
-        };
-    }
-    macro_rules! shuffle3 {
-        ($a:expr, $b:expr, $c:expr) => {
-            match (imm8 >> 6) & 0b11 {
-                0b00 => shuffle4!($a, $b, $c, 0),
-                0b01 => shuffle4!($a, $b, $c, 1),
-                0b10 => shuffle4!($a, $b, $c, 2),
-                _ => shuffle4!($a, $b, $c, 3),
-            }
-        };
-    }
-    macro_rules! shuffle2 {
-        ($a:expr, $b:expr) => {
-            match (imm8 >> 4) & 0b11 {
-                0b00 => shuffle3!($a, $b, 0),
-                0b01 => shuffle3!($a, $b, 1),
-                0b10 => shuffle3!($a, $b, 2),
-                _ => shuffle3!($a, $b, 3),
-            }
-        };
-    }
-    macro_rules! shuffle1 {
-        ($a:expr) => {
-            match (imm8 >> 2) & 0b11 {
-                0b00 => shuffle2!($a, 0),
-                0b01 => shuffle2!($a, 1),
-                0b10 => shuffle2!($a, 2),
-                _ => shuffle2!($a, 3),
-            }
-        };
-    }
-    match imm8 & 0b11 {
-        0b00 => shuffle1!(0),
-        0b01 => shuffle1!(1),
-        0b10 => shuffle1!(2),
-        _ => shuffle1!(3),
-    }
+#[cfg_attr(test, assert_instr(vperm, MASK = 0b10_01_10_11))] //shoud be vpermpd
+#[rustc_legacy_const_generics(1)]
+pub unsafe fn _mm512_permutex_pd<const MASK: i32>(a: __m512d) -> __m512d {
+    static_assert_imm8!(MASK);
+    simd_shuffle8(
+        a,
+        a,
+        [
+            MASK as u32 & 0b11,
+            (MASK as u32 >> 2) & 0b11,
+            ((MASK as u32 >> 4) & 0b11),
+            ((MASK as u32 >> 6) & 0b11),
+            (MASK as u32 & 0b11) + 4,
+            ((MASK as u32 >> 2) & 0b11) + 4,
+            ((MASK as u32 >> 4) & 0b11) + 4,
+            ((MASK as u32 >> 6) & 0b11) + 4,
+        ],
+    )
 }
 
 /// Shuffle double-precision (64-bit) floating-point elements in a within 256-bit lanes using the control in imm8, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
@@ -19891,15 +19777,14 @@ pub unsafe fn _mm512_permutex_pd(a: __m512d, imm8: i32) -> __m512d {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_permutex_pd&expand=4212)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vperm, imm8 = 0b11111111))] //shoud be vpermpd
-#[rustc_args_required_const(3)]
-pub unsafe fn _mm512_mask_permutex_pd(src: __m512d, k: __mmask8, a: __m512d, imm8: i32) -> __m512d {
-    macro_rules! call {
-        ($imm8:expr) => {
-            _mm512_permutex_pd(a, $imm8)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+#[cfg_attr(test, assert_instr(vperm, MASK = 0b10_01_10_11))] //shoud be vpermpd
+#[rustc_legacy_const_generics(3)]
+pub unsafe fn _mm512_mask_permutex_pd<const MASK: i32>(
+    src: __m512d,
+    k: __mmask8,
+    a: __m512d,
+) -> __m512d {
+    let r = _mm512_permutex_pd::<MASK>(a);
     transmute(simd_select_bitmask(k, r.as_f64x8(), src.as_f64x8()))
 }
 
@@ -19908,15 +19793,10 @@ pub unsafe fn _mm512_mask_permutex_pd(src: __m512d, k: __mmask8, a: __m512d, imm
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_permutex_pd&expand=4213)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vperm, imm8 = 0b11111111))] //shoud be vpermpd
-#[rustc_args_required_const(2)]
-pub unsafe fn _mm512_maskz_permutex_pd(k: __mmask8, a: __m512d, imm8: i32) -> __m512d {
-    macro_rules! call {
-        ($imm8:expr) => {
-            _mm512_permutex_pd(a, $imm8)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+#[cfg_attr(test, assert_instr(vperm, MASK = 0b10_01_10_11))] //shoud be vpermpd
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn _mm512_maskz_permutex_pd<const MASK: i32>(k: __mmask8, a: __m512d) -> __m512d {
+    let r = _mm512_permutex_pd::<MASK>(a);
     let zero = _mm512_setzero_pd().as_f64x8();
     transmute(simd_select_bitmask(k, r.as_f64x8(), zero))
 }
@@ -19926,52 +19806,20 @@ pub unsafe fn _mm512_maskz_permutex_pd(k: __mmask8, a: __m512d, imm8: i32) -> __
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_permutex_pd&expand=4211)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vperm, imm8 = 0b10011011))] //shoud be vpermpd
-#[rustc_args_required_const(1)]
-pub unsafe fn _mm256_permutex_pd(a: __m256d, imm8: i32) -> __m256d {
-    let imm8 = (imm8 & 0xFF) as u8;
-    let undefined = _mm256_undefined_pd();
-    macro_rules! shuffle4 {
-        ($a:expr, $b:expr, $c:expr, $d:expr) => {
-            simd_shuffle4(a, undefined, [$a, $b, $c, $d])
-        };
-    }
-    macro_rules! shuffle3 {
-        ($a:expr, $b:expr, $c:expr) => {
-            match (imm8 >> 6) & 0b11 {
-                0b00 => shuffle4!($a, $b, $c, 0),
-                0b01 => shuffle4!($a, $b, $c, 1),
-                0b10 => shuffle4!($a, $b, $c, 2),
-                _ => shuffle4!($a, $b, $c, 3),
-            }
-        };
-    }
-    macro_rules! shuffle2 {
-        ($a:expr, $b:expr) => {
-            match (imm8 >> 4) & 0b11 {
-                0b00 => shuffle3!($a, $b, 0),
-                0b01 => shuffle3!($a, $b, 1),
-                0b10 => shuffle3!($a, $b, 2),
-                _ => shuffle3!($a, $b, 3),
-            }
-        };
-    }
-    macro_rules! shuffle1 {
-        ($a:expr) => {
-            match (imm8 >> 2) & 0b11 {
-                0b00 => shuffle2!($a, 0),
-                0b01 => shuffle2!($a, 1),
-                0b10 => shuffle2!($a, 2),
-                _ => shuffle2!($a, 3),
-            }
-        };
-    }
-    match imm8 & 0b11 {
-        0b00 => shuffle1!(0),
-        0b01 => shuffle1!(1),
-        0b10 => shuffle1!(2),
-        _ => shuffle1!(3),
-    }
+#[cfg_attr(test, assert_instr(vperm, MASK = 0b10_01_10_11))] //shoud be vpermpd
+#[rustc_legacy_const_generics(1)]
+pub unsafe fn _mm256_permutex_pd<const MASK: i32>(a: __m256d) -> __m256d {
+    static_assert_imm8!(MASK);
+    simd_shuffle4(
+        a,
+        a,
+        [
+            MASK as u32 & 0b11,
+            (MASK as u32 >> 2) & 0b11,
+            ((MASK as u32 >> 4) & 0b11),
+            ((MASK as u32 >> 6) & 0b11),
+        ],
+    )
 }
 
 /// Shuffle double-precision (64-bit) floating-point elements in a within 256-bit lanes using the control in imm8, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
@@ -19979,15 +19827,15 @@ pub unsafe fn _mm256_permutex_pd(a: __m256d, imm8: i32) -> __m256d {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_permutex_pd&expand=4209)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vperm, imm8 = 0b10011011))] //shoud be vpermpd
-#[rustc_args_required_const(3)]
-pub unsafe fn _mm256_mask_permutex_pd(src: __m256d, k: __mmask8, a: __m256d, imm8: i32) -> __m256d {
-    macro_rules! call {
-        ($imm8:expr) => {
-            _mm256_permutex_pd(a, $imm8)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+#[cfg_attr(test, assert_instr(vperm, MASK = 0b10_01_10_11))] //shoud be vpermpd
+#[rustc_legacy_const_generics(3)]
+pub unsafe fn _mm256_mask_permutex_pd<const MASK: i32>(
+    src: __m256d,
+    k: __mmask8,
+    a: __m256d,
+) -> __m256d {
+    static_assert_imm8!(MASK);
+    let r = _mm256_permutex_pd::<MASK>(a);
     transmute(simd_select_bitmask(k, r.as_f64x4(), src.as_f64x4()))
 }
 
@@ -19996,15 +19844,11 @@ pub unsafe fn _mm256_mask_permutex_pd(src: __m256d, k: __mmask8, a: __m256d, imm
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_permutex_pd&expand=4210)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vperm, imm8 = 0b10011011))] //shoud be vpermpd
-#[rustc_args_required_const(2)]
-pub unsafe fn _mm256_maskz_permutex_pd(k: __mmask8, a: __m256d, imm8: i32) -> __m256d {
-    macro_rules! call {
-        ($imm8:expr) => {
-            _mm256_permutex_pd(a, $imm8)
-        };
-    }
-    let r = constify_imm8_sae!(imm8, call);
+#[cfg_attr(test, assert_instr(vperm, MASK = 0b10_01_10_11))] //shoud be vpermpd
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn _mm256_maskz_permutex_pd<const MASK: i32>(k: __mmask8, a: __m256d) -> __m256d {
+    static_assert_imm8!(MASK);
+    let r = _mm256_permutex_pd::<MASK>(a);
     let zero = _mm256_setzero_pd().as_f64x4();
     transmute(simd_select_bitmask(k, r.as_f64x4(), zero))
 }
