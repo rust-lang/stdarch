@@ -112,13 +112,13 @@ a = 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
 b = 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1
 validate 15, 13, 11, 9, 7, 5, 3, 1, 1, 3, 5, 7, 9, 11, 13, 15
 
-arm = vabds
+arm = vabd.s
 aarch64 = sabd
 link-arm = vabds._EXT_
 link-aarch64 = sabd._EXT_
 generate int*_t
 
-arm = vabdu
+arm = vabd.s
 aarch64 = uabd
 link-arm = vabdu._EXT_
 link-aarch64 = uabd._EXT_
@@ -134,7 +134,7 @@ aarch64 = fabd
 link-aarch64 = fabd._EXT_
 generate float64x*_t
 
-arm = vabds
+arm = vabd.s
 aarch64 = fabd
 link-arm = vabds._EXT_
 link-aarch64 = fabd._EXT_

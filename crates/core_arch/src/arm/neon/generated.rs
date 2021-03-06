@@ -493,7 +493,7 @@ pub unsafe fn veorq_u64(a: uint64x2_t, b: uint64x2_t) -> uint64x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vabds))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vabd.s8"))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(sabd))]
 pub unsafe fn vabd_s8(a: int8x8_t, b: int8x8_t) -> int8x8_t {
     #[allow(improper_ctypes)]
@@ -509,7 +509,7 @@ vabd_s8_(a, b)
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vabds))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vabd.s8"))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(sabd))]
 pub unsafe fn vabdq_s8(a: int8x16_t, b: int8x16_t) -> int8x16_t {
     #[allow(improper_ctypes)]
@@ -525,7 +525,7 @@ vabdq_s8_(a, b)
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vabds))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vabd.s16"))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(sabd))]
 pub unsafe fn vabd_s16(a: int16x4_t, b: int16x4_t) -> int16x4_t {
     #[allow(improper_ctypes)]
@@ -541,7 +541,7 @@ vabd_s16_(a, b)
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vabds))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vabd.s16"))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(sabd))]
 pub unsafe fn vabdq_s16(a: int16x8_t, b: int16x8_t) -> int16x8_t {
     #[allow(improper_ctypes)]
@@ -557,7 +557,7 @@ vabdq_s16_(a, b)
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vabds))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vabd.s32"))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(sabd))]
 pub unsafe fn vabd_s32(a: int32x2_t, b: int32x2_t) -> int32x2_t {
     #[allow(improper_ctypes)]
@@ -573,7 +573,7 @@ vabd_s32_(a, b)
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vabds))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vabd.s32"))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(sabd))]
 pub unsafe fn vabdq_s32(a: int32x4_t, b: int32x4_t) -> int32x4_t {
     #[allow(improper_ctypes)]
@@ -589,7 +589,7 @@ vabdq_s32_(a, b)
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vabdu))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vabd.u8"))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(uabd))]
 pub unsafe fn vabd_u8(a: uint8x8_t, b: uint8x8_t) -> uint8x8_t {
     #[allow(improper_ctypes)]
@@ -605,7 +605,7 @@ vabd_u8_(a, b)
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vabdu))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vabd.u8"))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(uabd))]
 pub unsafe fn vabdq_u8(a: uint8x16_t, b: uint8x16_t) -> uint8x16_t {
     #[allow(improper_ctypes)]
@@ -621,7 +621,7 @@ vabdq_u8_(a, b)
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vabdu))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vabd.u16"))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(uabd))]
 pub unsafe fn vabd_u16(a: uint16x4_t, b: uint16x4_t) -> uint16x4_t {
     #[allow(improper_ctypes)]
@@ -637,7 +637,7 @@ vabd_u16_(a, b)
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vabdu))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vabd.u16"))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(uabd))]
 pub unsafe fn vabdq_u16(a: uint16x8_t, b: uint16x8_t) -> uint16x8_t {
     #[allow(improper_ctypes)]
@@ -653,7 +653,7 @@ vabdq_u16_(a, b)
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vabdu))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vabd.u32"))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(uabd))]
 pub unsafe fn vabd_u32(a: uint32x2_t, b: uint32x2_t) -> uint32x2_t {
     #[allow(improper_ctypes)]
@@ -669,7 +669,7 @@ vabd_u32_(a, b)
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vabdu))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vabd.u32"))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(uabd))]
 pub unsafe fn vabdq_u32(a: uint32x4_t, b: uint32x4_t) -> uint32x4_t {
     #[allow(improper_ctypes)]
@@ -685,7 +685,7 @@ vabdq_u32_(a, b)
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vabds))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vabd.f32"))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(fabd))]
 pub unsafe fn vabd_f32(a: float32x2_t, b: float32x2_t) -> float32x2_t {
     #[allow(improper_ctypes)]
@@ -701,7 +701,7 @@ vabd_f32_(a, b)
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vabds))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vabd.f32"))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(fabd))]
 pub unsafe fn vabdq_f32(a: float32x4_t, b: float32x4_t) -> float32x4_t {
     #[allow(improper_ctypes)]
