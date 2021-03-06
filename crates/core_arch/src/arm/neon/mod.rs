@@ -8753,7 +8753,9 @@ mod tests {
         let b = u8x16::new(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
         let c = u8x16::new(10, 9, 8, 7, 6, 5, 4, 3, 12, 13, 14, 15, 16, 17, 18, 19);
         let r: u8x16 = transmute(vabaq_u8_(transmute(a), transmute(b), transmute(c)));
-        let e = u8x16::new(10, 10, 10, 10, 10, 10, 10, 10, 20, 20, 20, 20, 20, 20, 20, 20);
+        let e = u8x16::new(
+            10, 10, 10, 10, 10, 10, 10, 10, 20, 20, 20, 20, 20, 20, 20, 20,
+        );
         assert_eq!(r, e);
     }
     #[simd_test(enable = "neon")]
