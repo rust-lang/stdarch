@@ -9735,25 +9735,20 @@ pub unsafe fn _mm512_mask_fixupimm_round_pd<const IMM8: i32, const SAE: i32>(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_fixupimm_round_pd&expand=2504)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vfixupimmpd, imm8 = 0, sae = 8))]
-#[rustc_args_required_const(4, 5)]
-pub unsafe fn _mm512_maskz_fixupimm_round_pd(
+#[cfg_attr(test, assert_instr(vfixupimmpd, IMM8 = 0, SAE = 8))]
+#[rustc_legacy_const_generics(4, 5)]
+pub unsafe fn _mm512_maskz_fixupimm_round_pd<const IMM8: i32, const SAE: i32>(
     k: __mmask8,
     a: __m512d,
     b: __m512d,
     c: __m512i,
-    imm8: i32,
-    sae: i32,
 ) -> __m512d {
+    static_assert_imm8!(IMM8);
+    static_assert_sae_roundscale!(SAE);
     let a = a.as_f64x8();
     let b = b.as_f64x8();
     let c = c.as_i64x8();
-    macro_rules! call {
-        ($imm8:expr, $imm4:expr) => {
-            vfixupimmpdz(a, b, c, $imm8, k, $imm4)
-        };
-    }
-    let r = constify_imm8_roundscale!(imm8, sae, call);
+    let r = vfixupimmpdz(a, b, c, IMM8, k, SAE);
     transmute(r)
 }
 

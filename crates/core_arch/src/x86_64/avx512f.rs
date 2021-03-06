@@ -6120,7 +6120,7 @@ mod tests {
         let a = _mm512_set_pd(f64::NAN, f64::NAN, f64::NAN, f64::NAN, 1., 1., 1., 1.);
         let b = _mm512_set1_pd(f64::MAX);
         let c = _mm512_set1_epi64(i32::MAX as i64);
-        let r = _mm512_maskz_fixupimm_round_pd(0b11110000, a, b, c, 5, _MM_FROUND_CUR_DIRECTION);
+        let r = _mm512_maskz_fixupimm_round_pd::<5, _MM_FROUND_CUR_DIRECTION>(0b11110000, a, b, c);
         let e = _mm512_set_pd(0., 0., 0., 0., 0., 0., 0., 0.);
         assert_eq_m512d(r, e);
     }
