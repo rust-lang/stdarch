@@ -9667,25 +9667,20 @@ pub unsafe fn _mm512_mask_fixupimm_round_ps<const IMM8: i32, const SAE: i32>(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_fixupimm_round_ps&expand=2507)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vfixupimmps, imm8 = 0, sae = 8))]
-#[rustc_args_required_const(4, 5)]
-pub unsafe fn _mm512_maskz_fixupimm_round_ps(
+#[cfg_attr(test, assert_instr(vfixupimmps, IMM8 = 0, SAE = 8))]
+#[rustc_legacy_const_generics(4, 5)]
+pub unsafe fn _mm512_maskz_fixupimm_round_ps<const IMM8: i32, const SAE: i32>(
     k: __mmask16,
     a: __m512,
     b: __m512,
     c: __m512i,
-    imm8: i32,
-    sae: i32,
 ) -> __m512 {
+    static_assert_imm8!(IMM8);
+    static_assert_sae_roundscale!(SAE);
     let a = a.as_f32x16();
     let b = b.as_f32x16();
     let c = c.as_i32x16();
-    macro_rules! call {
-        ($imm8:expr, $imm4:expr) => {
-            vfixupimmpsz(a, b, c, $imm8, k, $imm4)
-        };
-    }
-    let r = constify_imm8_roundscale!(imm8, sae, call);
+    let r = vfixupimmpsz(a, b, c, IMM8, k, SAE);
     transmute(r)
 }
 
@@ -42000,13 +41995,11 @@ mod tests {
         );
         let b = _mm512_set1_ps(f32::MAX);
         let c = _mm512_set1_epi32(i32::MAX);
-        let r = _mm512_maskz_fixupimm_round_ps(
+        let r = _mm512_maskz_fixupimm_round_ps::<5, _MM_FROUND_CUR_DIRECTION>(
             0b11111111_00000000,
             a,
             b,
             c,
-            5,
-            _MM_FROUND_CUR_DIRECTION,
         );
         let e = _mm512_set_ps(
             0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,
