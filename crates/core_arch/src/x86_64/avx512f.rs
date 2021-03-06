@@ -6049,9 +6049,9 @@ mod tests {
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_maskz_roundscale_round_pd() {
         let a = _mm512_set1_pd(1.1);
-        let r = _mm512_maskz_roundscale_round_pd(0, a, 0, _MM_FROUND_CUR_DIRECTION);
+        let r = _mm512_maskz_roundscale_round_pd::<0, _MM_FROUND_CUR_DIRECTION>(0, a);
         assert_eq_m512d(r, _mm512_setzero_pd());
-        let r = _mm512_maskz_roundscale_round_pd(0b11111111, a, 0, _MM_FROUND_CUR_DIRECTION);
+        let r = _mm512_maskz_roundscale_round_pd::<0, _MM_FROUND_CUR_DIRECTION>(0b11111111, a);
         let e = _mm512_set1_pd(1.0);
         assert_eq_m512d(r, e);
     }
