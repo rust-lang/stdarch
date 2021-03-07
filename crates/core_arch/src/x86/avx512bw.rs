@@ -5684,16 +5684,17 @@ pub unsafe fn _mm512_maskz_srai_epi16<const IMM8: u32>(k: __mmask32, a: __m512i)
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_srai_epi16&expand=5422)
 #[inline]
 #[target_feature(enable = "avx512bw,avx512vl")]
-#[cfg_attr(test, assert_instr(vpsraw, imm8 = 1))]
-#[rustc_args_required_const(3)]
-pub unsafe fn _mm256_mask_srai_epi16(src: __m256i, k: __mmask16, a: __m256i, imm8: u32) -> __m256i {
-    macro_rules! call {
-        ($imm8:expr) => {
-            _mm256_srai_epi16::<$imm8>(a)
-        };
-    }
-    let shf = constify_imm8_sae!(imm8, call);
-    transmute(simd_select_bitmask(k, shf.as_i16x16(), src.as_i16x16()))
+#[cfg_attr(test, assert_instr(vpsraw, IMM8 = 1))]
+#[rustc_legacy_const_generics(3)]
+pub unsafe fn _mm256_mask_srai_epi16<const IMM8: u32>(
+    src: __m256i,
+    k: __mmask16,
+    a: __m256i,
+) -> __m256i {
+    static_assert_imm_u8!(IMM8);
+    let imm8 = IMM8 as i32;
+    let r = psraiw256(a.as_i16x16(), imm8);
+    transmute(simd_select_bitmask(k, r, src.as_i16x16()))
 }
 
 /// Shift packed 16-bit integers in a right by imm8 while shifting in sign bits, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
@@ -5701,17 +5702,14 @@ pub unsafe fn _mm256_mask_srai_epi16(src: __m256i, k: __mmask16, a: __m256i, imm
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_srai_epi16&expand=5423)
 #[inline]
 #[target_feature(enable = "avx512bw,avx512vl")]
-#[cfg_attr(test, assert_instr(vpsraw, imm8 = 1))]
-#[rustc_args_required_const(2)]
-pub unsafe fn _mm256_maskz_srai_epi16(k: __mmask16, a: __m256i, imm8: u32) -> __m256i {
-    macro_rules! call {
-        ($imm8:expr) => {
-            _mm256_srai_epi16::<$imm8>(a)
-        };
-    }
-    let shf = constify_imm8_sae!(imm8, call);
+#[cfg_attr(test, assert_instr(vpsraw, IMM8 = 1))]
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn _mm256_maskz_srai_epi16<const IMM8: u32>(k: __mmask16, a: __m256i) -> __m256i {
+    static_assert_imm_u8!(IMM8);
+    let imm8 = IMM8 as i32;
+    let r = psraiw256(a.as_i16x16(), imm8);
     let zero = _mm256_setzero_si256().as_i16x16();
-    transmute(simd_select_bitmask(k, shf.as_i16x16(), zero))
+    transmute(simd_select_bitmask(k, r, zero))
 }
 
 /// Shift packed 16-bit integers in a right by imm8 while shifting in sign bits, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
@@ -5719,16 +5717,17 @@ pub unsafe fn _mm256_maskz_srai_epi16(k: __mmask16, a: __m256i, imm8: u32) -> __
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_srai_epi16&expand=5419)
 #[inline]
 #[target_feature(enable = "avx512bw,avx512vl")]
-#[cfg_attr(test, assert_instr(vpsraw, imm8 = 1))]
-#[rustc_args_required_const(3)]
-pub unsafe fn _mm_mask_srai_epi16(src: __m128i, k: __mmask8, a: __m128i, imm8: u32) -> __m128i {
-    macro_rules! call {
-        ($imm8:expr) => {
-            _mm_srai_epi16::<$imm8>(a)
-        };
-    }
-    let shf = constify_imm8_sae!(imm8, call);
-    transmute(simd_select_bitmask(k, shf.as_i16x8(), src.as_i16x8()))
+#[cfg_attr(test, assert_instr(vpsraw, IMM8 = 1))]
+#[rustc_legacy_const_generics(3)]
+pub unsafe fn _mm_mask_srai_epi16<const IMM8: u32>(
+    src: __m128i,
+    k: __mmask8,
+    a: __m128i,
+) -> __m128i {
+    static_assert_imm_u8!(IMM8);
+    let imm8 = IMM8 as i32;
+    let r = psraiw128(a.as_i16x8(), imm8);
+    transmute(simd_select_bitmask(k, r, src.as_i16x8()))
 }
 
 /// Shift packed 16-bit integers in a right by imm8 while shifting in sign bits, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
@@ -5736,17 +5735,14 @@ pub unsafe fn _mm_mask_srai_epi16(src: __m128i, k: __mmask8, a: __m128i, imm8: u
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_srai_epi16&expand=5420)
 #[inline]
 #[target_feature(enable = "avx512bw,avx512vl")]
-#[cfg_attr(test, assert_instr(vpsraw, imm8 = 1))]
-#[rustc_args_required_const(2)]
-pub unsafe fn _mm_maskz_srai_epi16(k: __mmask8, a: __m128i, imm8: u32) -> __m128i {
-    macro_rules! call {
-        ($imm8:expr) => {
-            _mm_srai_epi16::<$imm8>(a)
-        };
-    }
-    let shf = constify_imm8_sae!(imm8, call);
+#[cfg_attr(test, assert_instr(vpsraw, IMM8 = 1))]
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn _mm_maskz_srai_epi16<const IMM8: u32>(k: __mmask8, a: __m128i) -> __m128i {
+    static_assert_imm_u8!(IMM8);
+    let imm8 = IMM8 as i32;
+    let r = psraiw128(a.as_i16x8(), imm8);
     let zero = _mm_setzero_si128().as_i16x8();
-    transmute(simd_select_bitmask(k, shf.as_i16x8(), zero))
+    transmute(simd_select_bitmask(k, r, zero))
 }
 
 /// Shift packed 16-bit integers in a right by the amount specified by the corresponding element in count while shifting in sign bits, and store the results in dst.
@@ -9403,6 +9399,11 @@ extern "C" {
     fn vpsraw(a: i16x32, count: i16x8) -> i16x32;
     #[link_name = "llvm.x86.avx512.psrai.w.512"]
     fn vpsraiw(a: i16x32, imm8: u32) -> i16x32;
+
+    #[link_name = "llvm.x86.avx2.psrai.w"]
+    fn psraiw256(a: i16x16, imm8: i32) -> i16x16;
+    #[link_name = "llvm.x86.sse2.psrai.w"]
+    fn psraiw128(a: i16x8, imm8: i32) -> i16x8;
 
     #[link_name = "llvm.x86.avx512.psrav.w.512"]
     fn vpsravw(a: i16x32, count: i16x32) -> i16x32;
@@ -14841,9 +14842,9 @@ mod tests {
     #[simd_test(enable = "avx512bw,avx512vl")]
     unsafe fn test_mm256_mask_srai_epi16() {
         let a = _mm256_set1_epi16(8);
-        let r = _mm256_mask_srai_epi16(a, 0, a, 2);
+        let r = _mm256_mask_srai_epi16::<2>(a, 0, a);
         assert_eq_m256i(r, a);
-        let r = _mm256_mask_srai_epi16(a, 0b11111111_11111111, a, 2);
+        let r = _mm256_mask_srai_epi16::<2>(a, 0b11111111_11111111, a);
         let e = _mm256_set1_epi16(2);
         assert_eq_m256i(r, e);
     }
@@ -14851,9 +14852,9 @@ mod tests {
     #[simd_test(enable = "avx512bw,avx512vl")]
     unsafe fn test_mm256_maskz_srai_epi16() {
         let a = _mm256_set1_epi16(8);
-        let r = _mm256_maskz_srai_epi16(0, a, 2);
+        let r = _mm256_maskz_srai_epi16::<2>(0, a);
         assert_eq_m256i(r, _mm256_setzero_si256());
-        let r = _mm256_maskz_srai_epi16(0b11111111_11111111, a, 2);
+        let r = _mm256_maskz_srai_epi16::<2>(0b11111111_11111111, a);
         let e = _mm256_set1_epi16(2);
         assert_eq_m256i(r, e);
     }
@@ -14861,9 +14862,9 @@ mod tests {
     #[simd_test(enable = "avx512bw,avx512vl")]
     unsafe fn test_mm_mask_srai_epi16() {
         let a = _mm_set1_epi16(8);
-        let r = _mm_mask_srai_epi16(a, 0, a, 2);
+        let r = _mm_mask_srai_epi16::<2>(a, 0, a);
         assert_eq_m128i(r, a);
-        let r = _mm_mask_srai_epi16(a, 0b11111111, a, 2);
+        let r = _mm_mask_srai_epi16::<2>(a, 0b11111111, a);
         let e = _mm_set1_epi16(2);
         assert_eq_m128i(r, e);
     }
@@ -14871,9 +14872,9 @@ mod tests {
     #[simd_test(enable = "avx512bw,avx512vl")]
     unsafe fn test_mm_maskz_srai_epi16() {
         let a = _mm_set1_epi16(8);
-        let r = _mm_maskz_srai_epi16(0, a, 2);
+        let r = _mm_maskz_srai_epi16::<2>(0, a);
         assert_eq_m128i(r, _mm_setzero_si128());
-        let r = _mm_maskz_srai_epi16(0b11111111, a, 2);
+        let r = _mm_maskz_srai_epi16::<2>(0b11111111, a);
         let e = _mm_set1_epi16(2);
         assert_eq_m128i(r, e);
     }
