@@ -2825,7 +2825,7 @@ pub unsafe fn vbicq_u64(a: uint64x2_t, b: uint64x2_t) -> uint64x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vbsl.s8))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vbsl))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(bsl))]
 pub unsafe fn vbsl_s8(a: uint8x8_t, b: int8x8_t, c: int8x8_t) -> int8x8_t {
     simd_select(transmute::<_, int8x8_t>(a), b, c)
@@ -2835,7 +2835,7 @@ pub unsafe fn vbsl_s8(a: uint8x8_t, b: int8x8_t, c: int8x8_t) -> int8x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vbsl.s16))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vbsl))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(bsl))]
 pub unsafe fn vbsl_s16(a: uint16x4_t, b: int16x4_t, c: int16x4_t) -> int16x4_t {
     simd_select(transmute::<_, int16x4_t>(a), b, c)
@@ -2845,7 +2845,7 @@ pub unsafe fn vbsl_s16(a: uint16x4_t, b: int16x4_t, c: int16x4_t) -> int16x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vpadal.s32))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vbsl))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(bsl))]
 pub unsafe fn vbsl_s32(a: uint32x2_t, b: int32x2_t, c: int32x2_t) -> int32x2_t {
     simd_select(transmute::<_, int32x2_t>(a), b, c)
@@ -2855,7 +2855,7 @@ pub unsafe fn vbsl_s32(a: uint32x2_t, b: int32x2_t, c: int32x2_t) -> int32x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vbsl.s64))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vbsl))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(bsl))]
 pub unsafe fn vbsl_s64(a: uint64x1_t, b: int64x1_t, c: int64x1_t) -> int64x1_t {
     simd_select(transmute::<_, int64x1_t>(a), b, c)
@@ -2865,7 +2865,7 @@ pub unsafe fn vbsl_s64(a: uint64x1_t, b: int64x1_t, c: int64x1_t) -> int64x1_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vbsl.u8))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vbsl))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(bsl))]
 pub unsafe fn vbsl_u8(a: uint8x8_t, b: uint8x8_t, c: uint8x8_t) -> uint8x8_t {
     simd_select(transmute::<_, int8x8_t>(a), b, c)
@@ -2875,7 +2875,7 @@ pub unsafe fn vbsl_u8(a: uint8x8_t, b: uint8x8_t, c: uint8x8_t) -> uint8x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vbsl.u16))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vbsl))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(bsl))]
 pub unsafe fn vbsl_u16(a: uint16x4_t, b: uint16x4_t, c: uint16x4_t) -> uint16x4_t {
     simd_select(transmute::<_, int16x4_t>(a), b, c)
@@ -2885,7 +2885,7 @@ pub unsafe fn vbsl_u16(a: uint16x4_t, b: uint16x4_t, c: uint16x4_t) -> uint16x4_
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vbsl.u32))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vbsl))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(bsl))]
 pub unsafe fn vbsl_u32(a: uint32x2_t, b: uint32x2_t, c: uint32x2_t) -> uint32x2_t {
     simd_select(transmute::<_, int32x2_t>(a), b, c)
@@ -2895,7 +2895,7 @@ pub unsafe fn vbsl_u32(a: uint32x2_t, b: uint32x2_t, c: uint32x2_t) -> uint32x2_
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vbsl.u64))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vbsl))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(bsl))]
 pub unsafe fn vbsl_u64(a: uint64x1_t, b: uint64x1_t, c: uint64x1_t) -> uint64x1_t {
     simd_select(transmute::<_, int64x1_t>(a), b, c)
@@ -2905,7 +2905,7 @@ pub unsafe fn vbsl_u64(a: uint64x1_t, b: uint64x1_t, c: uint64x1_t) -> uint64x1_
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vbsl.f32))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vbsl))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(bsl))]
 pub unsafe fn vbsl_f32(a: uint32x2_t, b: float32x2_t, c: float32x2_t) -> float32x2_t {
     simd_select(transmute::<_, int32x2_t>(a), b, c)
@@ -2915,7 +2915,7 @@ pub unsafe fn vbsl_f32(a: uint32x2_t, b: float32x2_t, c: float32x2_t) -> float32
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vbsl.u8))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vbsl))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(bsl))]
 pub unsafe fn vbsl_p8(a: uint8x8_t, b: poly8x8_t, c: poly8x8_t) -> poly8x8_t {
     simd_select(transmute::<_, int8x8_t>(a), b, c)
@@ -2925,7 +2925,7 @@ pub unsafe fn vbsl_p8(a: uint8x8_t, b: poly8x8_t, c: poly8x8_t) -> poly8x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vbsl.u16))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vbsl))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(bsl))]
 pub unsafe fn vbsl_p16(a: uint16x4_t, b: poly16x4_t, c: poly16x4_t) -> poly16x4_t {
     simd_select(transmute::<_, int16x4_t>(a), b, c)
