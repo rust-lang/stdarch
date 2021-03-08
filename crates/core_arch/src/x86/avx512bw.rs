@@ -8891,49 +8891,82 @@ pub unsafe fn _mm_maskz_cvtepu8_epi16(k: __mmask8, a: __m128i) -> __m128i {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_bslli_epi128&expand=591)
 #[inline]
 #[target_feature(enable = "avx512bw")]
-#[rustc_args_required_const(1)]
-#[cfg_attr(test, assert_instr(vpslldq, imm8 = 3))]
-pub unsafe fn _mm512_bslli_epi128(a: __m512i, imm8: i32) -> __m512i {
+#[cfg_attr(test, assert_instr(vpslldq, IMM8 = 3))]
+#[rustc_legacy_const_generics(1)]
+pub unsafe fn _mm512_bslli_epi128<const IMM8: i32>(a: __m512i) -> __m512i {
+    static_assert_imm8!(IMM8);
     let a = a.as_i8x64();
     let zero = _mm512_setzero_si512().as_i8x64();
-    #[rustfmt::skip]
-    macro_rules! call {
-        ($imm8:expr) => {
-            simd_shuffle64 (
-                zero,
-                a,
-                [
-                    64 - $imm8, 65 - $imm8, 66 - $imm8, 67 - $imm8, 68 - $imm8, 69 - $imm8, 70 - $imm8, 71 - $imm8,
-                    72 - $imm8, 73 - $imm8, 74 - $imm8, 75 - $imm8, 76 - $imm8, 77 - $imm8, 78 - $imm8, 79 - $imm8,
-                    80 - ($imm8+16), 81 - ($imm8+16), 82 - ($imm8+16), 83 - ($imm8+16), 84 - ($imm8+16), 85 - ($imm8+16), 86 - ($imm8+16), 87 - ($imm8+16),
-                    88 - ($imm8+16), 89 - ($imm8+16), 90 - ($imm8+16), 91 - ($imm8+16), 92 - ($imm8+16), 93 - ($imm8+16), 94 - ($imm8+16), 95 - ($imm8+16),
-                    96 - ($imm8+32), 97 - ($imm8+32), 98 - ($imm8+32), 99 - ($imm8+32), 100 - ($imm8+32), 101 - ($imm8+32), 102 - ($imm8+32), 103 - ($imm8+32),
-                    104 - ($imm8+32), 105 - ($imm8+32), 106 - ($imm8+32), 107 - ($imm8+32), 108 - ($imm8+32), 109 - ($imm8+32), 110 - ($imm8+32), 111 - ($imm8+32),
-                    112 - ($imm8+48), 113 - ($imm8+48), 114 - ($imm8+48), 115 - ($imm8+48), 116 - ($imm8+48), 117 - ($imm8+48), 118 - ($imm8+48), 119 - ($imm8+48),
-                    120 - ($imm8+48), 121 - ($imm8+48), 122 - ($imm8+48), 123 - ($imm8+48), 124 - ($imm8+48), 125 - ($imm8+48), 126 - ($imm8+48), 127 - ($imm8+48),
-                ],
-            )
-        };
-    }
-    let r: i8x64 = match imm8 {
-        0 => call!(0),
-        1 => call!(1),
-        2 => call!(2),
-        3 => call!(3),
-        4 => call!(4),
-        5 => call!(5),
-        6 => call!(6),
-        7 => call!(7),
-        8 => call!(8),
-        9 => call!(9),
-        10 => call!(10),
-        11 => call!(11),
-        12 => call!(12),
-        13 => call!(13),
-        14 => call!(14),
-        15 => call!(15),
-        _ => call!(16),
-    };
+    let r: i8x64 = simd_shuffle64(
+        zero,
+        a,
+        [
+            64 - (IMM8 as u32 & 0xff),
+            65 - (IMM8 as u32 & 0xff),
+            66 - (IMM8 as u32 & 0xff),
+            67 - (IMM8 as u32 & 0xff),
+            68 - (IMM8 as u32 & 0xff),
+            69 - (IMM8 as u32 & 0xff),
+            70 - (IMM8 as u32 & 0xff),
+            71 - (IMM8 as u32 & 0xff),
+            72 - (IMM8 as u32 & 0xff),
+            73 - (IMM8 as u32 & 0xff),
+            74 - (IMM8 as u32 & 0xff),
+            75 - (IMM8 as u32 & 0xff),
+            76 - (IMM8 as u32 & 0xff),
+            77 - (IMM8 as u32 & 0xff),
+            78 - (IMM8 as u32 & 0xff),
+            79 - (IMM8 as u32 & 0xff),
+            80 - (IMM8 as u32 & 0xff) - 16,
+            81 - (IMM8 as u32 & 0xff) - 16,
+            82 - (IMM8 as u32 & 0xff) - 16,
+            83 - (IMM8 as u32 & 0xff) - 16,
+            84 - (IMM8 as u32 & 0xff) - 16,
+            85 - (IMM8 as u32 & 0xff) - 16,
+            86 - (IMM8 as u32 & 0xff) - 16,
+            87 - (IMM8 as u32 & 0xff) - 16,
+            88 - (IMM8 as u32 & 0xff) - 16,
+            89 - (IMM8 as u32 & 0xff) - 16,
+            90 - (IMM8 as u32 & 0xff) - 16,
+            91 - (IMM8 as u32 & 0xff) - 16,
+            92 - (IMM8 as u32 & 0xff) - 16,
+            93 - (IMM8 as u32 & 0xff) - 16,
+            94 - (IMM8 as u32 & 0xff) - 16,
+            95 - (IMM8 as u32 & 0xff) - 16,
+            96 - (IMM8 as u32 & 0xff) - 32,
+            97 - (IMM8 as u32 & 0xff) - 32,
+            98 - (IMM8 as u32 & 0xff) - 32,
+            99 - (IMM8 as u32 & 0xff) - 32,
+            100 - (IMM8 as u32 & 0xff) - 32,
+            101 - (IMM8 as u32 & 0xff) - 32,
+            102 - (IMM8 as u32 & 0xff) - 32,
+            103 - (IMM8 as u32 & 0xff) - 32,
+            104 - (IMM8 as u32 & 0xff) - 32,
+            105 - (IMM8 as u32 & 0xff) - 32,
+            106 - (IMM8 as u32 & 0xff) - 32,
+            107 - (IMM8 as u32 & 0xff) - 32,
+            108 - (IMM8 as u32 & 0xff) - 32,
+            109 - (IMM8 as u32 & 0xff) - 32,
+            110 - (IMM8 as u32 & 0xff) - 32,
+            111 - (IMM8 as u32 & 0xff) - 32,
+            112 - (IMM8 as u32 & 0xff) - 48,
+            113 - (IMM8 as u32 & 0xff) - 48,
+            114 - (IMM8 as u32 & 0xff) - 48,
+            115 - (IMM8 as u32 & 0xff) - 48,
+            116 - (IMM8 as u32 & 0xff) - 48,
+            117 - (IMM8 as u32 & 0xff) - 48,
+            118 - (IMM8 as u32 & 0xff) - 48,
+            119 - (IMM8 as u32 & 0xff) - 48,
+            120 - (IMM8 as u32 & 0xff) - 48,
+            121 - (IMM8 as u32 & 0xff) - 48,
+            122 - (IMM8 as u32 & 0xff) - 48,
+            123 - (IMM8 as u32 & 0xff) - 48,
+            124 - (IMM8 as u32 & 0xff) - 48,
+            125 - (IMM8 as u32 & 0xff) - 48,
+            126 - (IMM8 as u32 & 0xff) - 48,
+            127 - (IMM8 as u32 & 0xff) - 48,
+        ],
+    );
     transmute(r)
 }
 
@@ -8942,49 +8975,82 @@ pub unsafe fn _mm512_bslli_epi128(a: __m512i, imm8: i32) -> __m512i {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_bsrli_epi128&expand=594)
 #[inline]
 #[target_feature(enable = "avx512bw")]
-#[rustc_args_required_const(1)]
-#[cfg_attr(test, assert_instr(vpsrldq, imm8 = 3))]
-pub unsafe fn _mm512_bsrli_epi128(a: __m512i, imm8: i32) -> __m512i {
+#[cfg_attr(test, assert_instr(vpsrldq, IMM8 = 3))]
+#[rustc_legacy_const_generics(1)]
+pub unsafe fn _mm512_bsrli_epi128<const IMM8: i32>(a: __m512i) -> __m512i {
+    static_assert_imm8!(IMM8);
     let a = a.as_i8x64();
     let zero = _mm512_setzero_si512().as_i8x64();
-    #[rustfmt::skip]
-    macro_rules! call {
-        ($imm8:expr) => {
-            simd_shuffle64 (
-                a,
-                zero,
-                [
-                    0 + ($imm8+48), 1 + ($imm8+48), 2 + ($imm8+48), 3 + ($imm8+48), 4 + ($imm8+48), 5 + ($imm8+48), 6 + ($imm8+48), 7 + ($imm8+48),
-                    8 + ($imm8+48), 9 + ($imm8+48), 10 + ($imm8+48), 11 + ($imm8+48), 12 + ($imm8+48), 13 + ($imm8+48), 14 + ($imm8+48), 15 + ($imm8+48),
-                    16 + ($imm8+32), 17 + ($imm8+32), 18 + ($imm8+32), 19 + ($imm8+32), 20 + ($imm8+32), 21 + ($imm8+32), 22 + ($imm8+32), 23 + ($imm8+32),
-                    24 + ($imm8+32), 25 + ($imm8+32), 26 + ($imm8+32), 27 + ($imm8+32), 28 + ($imm8+32), 29 + ($imm8+32), 30 + ($imm8+32), 31 + ($imm8+32),
-                    32 + ($imm8+16), 33 + ($imm8+16), 34 + ($imm8+16), 35 + ($imm8+16), 36 + ($imm8+16), 37 + ($imm8+16), 38 + ($imm8+16), 39 + ($imm8+16),
-                    40 + ($imm8+16), 41 + ($imm8+16), 42 + ($imm8+16), 43 + ($imm8+16), 44 + ($imm8+16), 45 + ($imm8+16), 46 + ($imm8+16), 47 + ($imm8+16),
-                    48 + $imm8, 49 + $imm8, 50 + $imm8, 51 + $imm8, 52 + $imm8, 53 + $imm8, 54 + $imm8, 55 + $imm8,
-                    56 + $imm8, 57 + $imm8, 58 + $imm8, 59 + $imm8, 60 + $imm8, 61 + $imm8, 62 + $imm8, 63 + $imm8,
-                ],
-            )
-        };
-    }
-    let r: i8x64 = match imm8 {
-        0 => call!(0),
-        1 => call!(1),
-        2 => call!(2),
-        3 => call!(3),
-        4 => call!(4),
-        5 => call!(5),
-        6 => call!(6),
-        7 => call!(7),
-        8 => call!(8),
-        9 => call!(9),
-        10 => call!(10),
-        11 => call!(11),
-        12 => call!(12),
-        13 => call!(13),
-        14 => call!(14),
-        15 => call!(15),
-        _ => call!(16),
-    };
+    let r: i8x64 = simd_shuffle64(
+        a,
+        zero,
+        [
+            0 + (IMM8 as u32 & 0xff) + 48,
+            1 + (IMM8 as u32 & 0xff) + 48,
+            2 + (IMM8 as u32 & 0xff) + 48,
+            3 + (IMM8 as u32 & 0xff) + 48,
+            4 + (IMM8 as u32 & 0xff) + 48,
+            5 + (IMM8 as u32 & 0xff) + 48,
+            6 + (IMM8 as u32 & 0xff) + 48,
+            7 + (IMM8 as u32 & 0xff) + 48,
+            8 + (IMM8 as u32 & 0xff) + 48,
+            9 + (IMM8 as u32 & 0xff) + 48,
+            10 + (IMM8 as u32 & 0xff) + 48,
+            11 + (IMM8 as u32 & 0xff) + 48,
+            12 + (IMM8 as u32 & 0xff) + 48,
+            13 + (IMM8 as u32 & 0xff) + 48,
+            14 + (IMM8 as u32 & 0xff) + 48,
+            15 + (IMM8 as u32 & 0xff) + 48,
+            16 + (IMM8 as u32 & 0xff) + 32,
+            17 + (IMM8 as u32 & 0xff) + 32,
+            18 + (IMM8 as u32 & 0xff) + 32,
+            19 + (IMM8 as u32 & 0xff) + 32,
+            20 + (IMM8 as u32 & 0xff) + 32,
+            21 + (IMM8 as u32 & 0xff) + 32,
+            22 + (IMM8 as u32 & 0xff) + 32,
+            23 + (IMM8 as u32 & 0xff) + 32,
+            24 + (IMM8 as u32 & 0xff) + 32,
+            25 + (IMM8 as u32 & 0xff) + 32,
+            26 + (IMM8 as u32 & 0xff) + 32,
+            27 + (IMM8 as u32 & 0xff) + 32,
+            28 + (IMM8 as u32 & 0xff) + 32,
+            29 + (IMM8 as u32 & 0xff) + 32,
+            30 + (IMM8 as u32 & 0xff) + 32,
+            31 + (IMM8 as u32 & 0xff) + 32,
+            32 + (IMM8 as u32 & 0xff) + 16,
+            33 + (IMM8 as u32 & 0xff) + 16,
+            34 + (IMM8 as u32 & 0xff) + 16,
+            35 + (IMM8 as u32 & 0xff) + 16,
+            36 + (IMM8 as u32 & 0xff) + 16,
+            37 + (IMM8 as u32 & 0xff) + 16,
+            38 + (IMM8 as u32 & 0xff) + 16,
+            39 + (IMM8 as u32 & 0xff) + 16,
+            40 + (IMM8 as u32 & 0xff) + 16,
+            41 + (IMM8 as u32 & 0xff) + 16,
+            42 + (IMM8 as u32 & 0xff) + 16,
+            43 + (IMM8 as u32 & 0xff) + 16,
+            44 + (IMM8 as u32 & 0xff) + 16,
+            45 + (IMM8 as u32 & 0xff) + 16,
+            46 + (IMM8 as u32 & 0xff) + 16,
+            47 + (IMM8 as u32 & 0xff) + 16,
+            48 + (IMM8 as u32 & 0xff),
+            49 + (IMM8 as u32 & 0xff),
+            50 + (IMM8 as u32 & 0xff),
+            51 + (IMM8 as u32 & 0xff),
+            52 + (IMM8 as u32 & 0xff),
+            53 + (IMM8 as u32 & 0xff),
+            54 + (IMM8 as u32 & 0xff),
+            55 + (IMM8 as u32 & 0xff),
+            56 + (IMM8 as u32 & 0xff),
+            57 + (IMM8 as u32 & 0xff),
+            58 + (IMM8 as u32 & 0xff),
+            59 + (IMM8 as u32 & 0xff),
+            60 + (IMM8 as u32 & 0xff),
+            61 + (IMM8 as u32 & 0xff),
+            62 + (IMM8 as u32 & 0xff),
+            63 + (IMM8 as u32 & 0xff),
+        ],
+    );
     transmute(r)
 }
 
@@ -17751,7 +17817,7 @@ mod tests {
             1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0,
             1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0,
         );
-        let r = _mm512_bslli_epi128(a, 9);
+        let r = _mm512_bslli_epi128::<9>(a);
         #[rustfmt::skip]
         let e = _mm512_set_epi8(
             0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -17771,7 +17837,7 @@ mod tests {
             1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0,
             1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0,
         );
-        let r = _mm512_bsrli_epi128(a, 9);
+        let r = _mm512_bsrli_epi128::<9>(a);
         #[rustfmt::skip]
         let e = _mm512_set_epi8(
             0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0,
