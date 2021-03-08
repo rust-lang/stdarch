@@ -22369,13 +22369,13 @@ pub unsafe fn _mm_maskz_movedup_pd(k: __mmask8, a: __m128d) -> __m128d {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_inserti32x4&expand=3174)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vinsertf32x4, imm8 = 2))] //should be vinserti32x4
-#[rustc_args_required_const(2)]
-pub unsafe fn _mm512_inserti32x4(a: __m512i, b: __m128i, imm8: i32) -> __m512i {
-    assert!(imm8 >= 0 && imm8 <= 3);
+#[cfg_attr(test, assert_instr(vinsertf32x4, IMM8 = 2))] //should be vinserti32x4
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn _mm512_inserti32x4<const IMM8: i32>(a: __m512i, b: __m128i) -> __m512i {
+    static_assert_imm8!(IMM8);
     let a = a.as_i32x16();
     let b = _mm512_castsi128_si512(b).as_i32x16();
-    let ret: i32x16 = match imm8 & 0b11 {
+    let ret: i32x16 = match IMM8 & 0b11 {
         0 => simd_shuffle16(
             a,
             b,
@@ -22410,7 +22410,7 @@ pub unsafe fn _mm512_mask_inserti32x4<const IMM8: i32>(
     b: __m128i,
 ) -> __m512i {
     static_assert_imm8!(IMM8);
-    let r = _mm512_inserti32x4(a, b, IMM8);
+    let r = _mm512_inserti32x4::<IMM8>(a, b);
     transmute(simd_select_bitmask(k, r.as_i32x16(), src.as_i32x16()))
 }
 
@@ -22427,7 +22427,7 @@ pub unsafe fn _mm512_maskz_inserti32x4<const IMM8: i32>(
     b: __m128i,
 ) -> __m512i {
     static_assert_imm8!(IMM8);
-    let r = _mm512_inserti32x4(a, b, IMM8);
+    let r = _mm512_inserti32x4::<IMM8>(a, b);
     let zero = _mm512_setzero_si512().as_i32x16();
     transmute(simd_select_bitmask(k, r.as_i32x16(), zero))
 }
@@ -22439,14 +22439,14 @@ pub unsafe fn _mm512_maskz_inserti32x4<const IMM8: i32>(
 #[target_feature(enable = "avx512f,avx512vl")]
 #[cfg_attr(
     all(test, not(target_os = "windows")),
-    assert_instr(vinsert, imm8 = 1) //should be vinserti32x4
+    assert_instr(vinsert, IMM8 = 1) //should be vinserti32x4
 )]
-#[rustc_args_required_const(2)]
-pub unsafe fn _mm256_inserti32x4(a: __m256i, b: __m128i, imm8: i32) -> __m256i {
-    assert!(imm8 >= 0 && imm8 <= 1);
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn _mm256_inserti32x4<const IMM8: i32>(a: __m256i, b: __m128i) -> __m256i {
+    static_assert_imm8!(IMM8);
     let a = a.as_i32x8();
     let b = _mm256_castsi128_si256(b).as_i32x8();
-    let ret: i32x8 = match imm8 & 0b1 {
+    let ret: i32x8 = match IMM8 & 0b1 {
         0 => simd_shuffle8(a, b, [8, 9, 10, 11, 4, 5, 6, 7]),
         _ => simd_shuffle8(a, b, [0, 1, 2, 3, 8, 9, 10, 11]),
     };
@@ -22470,7 +22470,7 @@ pub unsafe fn _mm256_mask_inserti32x4<const IMM8: i32>(
     b: __m128i,
 ) -> __m256i {
     static_assert_imm8!(IMM8);
-    let r = _mm256_inserti32x4(a, b, IMM8);
+    let r = _mm256_inserti32x4::<IMM8>(a, b);
     transmute(simd_select_bitmask(k, r.as_i32x8(), src.as_i32x8()))
 }
 
@@ -22490,7 +22490,7 @@ pub unsafe fn _mm256_maskz_inserti32x4<const IMM8: i32>(
     b: __m128i,
 ) -> __m256i {
     static_assert_imm8!(IMM8);
-    let r = _mm256_inserti32x4(a, b, IMM8);
+    let r = _mm256_inserti32x4::<IMM8>(a, b);
     let zero = _mm256_setzero_si256().as_i32x8();
     transmute(simd_select_bitmask(k, r.as_i32x8(), zero))
 }
@@ -22500,12 +22500,12 @@ pub unsafe fn _mm256_maskz_inserti32x4<const IMM8: i32>(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_inserti64x4&expand=3186)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vinsertf64x4, imm8 = 1))] //should be vinserti64x4
-#[rustc_args_required_const(2)]
-pub unsafe fn _mm512_inserti64x4(a: __m512i, b: __m256i, imm8: i32) -> __m512i {
-    assert!(imm8 >= 0 && imm8 <= 1);
+#[cfg_attr(test, assert_instr(vinsertf64x4, IMM8 = 1))] //should be vinserti64x4
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn _mm512_inserti64x4<const IMM8: i32>(a: __m512i, b: __m256i) -> __m512i {
+    static_assert_imm8!(IMM8);
     let b = _mm512_castsi256_si512(b);
-    match imm8 & 0b1 {
+    match IMM8 & 0b1 {
         0 => simd_shuffle8(a, b, [8, 9, 10, 11, 4, 5, 6, 7]),
         _ => simd_shuffle8(a, b, [0, 1, 2, 3, 8, 9, 10, 11]),
     }
@@ -22525,7 +22525,7 @@ pub unsafe fn _mm512_mask_inserti64x4<const IMM8: i32>(
     b: __m256i,
 ) -> __m512i {
     static_assert_imm8!(IMM8);
-    let r = _mm512_inserti64x4(a, b, IMM8);
+    let r = _mm512_inserti64x4::<IMM8>(a, b);
     transmute(simd_select_bitmask(k, r.as_i64x8(), src.as_i64x8()))
 }
 
@@ -22542,7 +22542,7 @@ pub unsafe fn _mm512_maskz_inserti64x4<const IMM8: i32>(
     b: __m256i,
 ) -> __m512i {
     static_assert_imm8!(IMM8);
-    let r = _mm512_inserti64x4(a, b, IMM8);
+    let r = _mm512_inserti64x4::<IMM8>(a, b);
     let zero = _mm512_setzero_si512().as_i64x8();
     transmute(simd_select_bitmask(k, r.as_i64x8(), zero))
 }
@@ -22552,12 +22552,12 @@ pub unsafe fn _mm512_maskz_inserti64x4<const IMM8: i32>(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_insertf32x4&expand=3155)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vinsertf32x4, imm8 = 2))]
-#[rustc_args_required_const(2)]
-pub unsafe fn _mm512_insertf32x4(a: __m512, b: __m128, imm8: i32) -> __m512 {
-    assert!(imm8 >= 0 && imm8 <= 3);
+#[cfg_attr(test, assert_instr(vinsertf32x4, IMM8 = 2))]
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn _mm512_insertf32x4<const IMM8: i32>(a: __m512, b: __m128) -> __m512 {
+    static_assert_imm8!(IMM8);
     let b = _mm512_castps128_ps512(b);
-    match imm8 & 0b11 {
+    match IMM8 & 0b11 {
         0 => simd_shuffle16(
             a,
             b,
@@ -22591,7 +22591,7 @@ pub unsafe fn _mm512_mask_insertf32x4<const IMM8: i32>(
     b: __m128,
 ) -> __m512 {
     static_assert_imm8!(IMM8);
-    let r = _mm512_insertf32x4(a, b, IMM8);
+    let r = _mm512_insertf32x4::<IMM8>(a, b);
     transmute(simd_select_bitmask(k, r.as_f32x16(), src.as_f32x16()))
 }
 
@@ -22608,7 +22608,7 @@ pub unsafe fn _mm512_maskz_insertf32x4<const IMM8: i32>(
     b: __m128,
 ) -> __m512 {
     static_assert_imm8!(IMM8);
-    let r = _mm512_insertf32x4(a, b, IMM8);
+    let r = _mm512_insertf32x4::<IMM8>(a, b);
     let zero = _mm512_setzero_ps().as_f32x16();
     transmute(simd_select_bitmask(k, r.as_f32x16(), zero))
 }
@@ -22620,13 +22620,13 @@ pub unsafe fn _mm512_maskz_insertf32x4<const IMM8: i32>(
 #[target_feature(enable = "avx512f,avx512vl")]
 #[cfg_attr(
     all(test, not(target_os = "windows")),
-    assert_instr(vinsert, imm8 = 1) //should be vinsertf32x4
+    assert_instr(vinsert, IMM8 = 1) //should be vinsertf32x4
 )]
-#[rustc_args_required_const(2)]
-pub unsafe fn _mm256_insertf32x4(a: __m256, b: __m128, imm8: i32) -> __m256 {
-    assert!(imm8 >= 0 && imm8 <= 1);
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn _mm256_insertf32x4<const IMM8: i32>(a: __m256, b: __m128) -> __m256 {
+    static_assert_imm8!(IMM8);
     let b = _mm256_castps128_ps256(b);
-    match imm8 & 0b1 {
+    match IMM8 & 0b1 {
         0 => simd_shuffle8(a, b, [8, 9, 10, 11, 4, 5, 6, 7]),
         _ => simd_shuffle8(a, b, [0, 1, 2, 3, 8, 9, 10, 11]),
     }
@@ -22649,7 +22649,7 @@ pub unsafe fn _mm256_mask_insertf32x4<const IMM8: i32>(
     b: __m128,
 ) -> __m256 {
     static_assert_imm8!(IMM8);
-    let r = _mm256_insertf32x4(a, b, IMM8);
+    let r = _mm256_insertf32x4::<IMM8>(a, b);
     transmute(simd_select_bitmask(k, r.as_f32x8(), src.as_f32x8()))
 }
 
@@ -22669,7 +22669,7 @@ pub unsafe fn _mm256_maskz_insertf32x4<const IMM8: i32>(
     b: __m128,
 ) -> __m256 {
     static_assert_imm8!(IMM8);
-    let r = _mm256_insertf32x4(a, b, IMM8);
+    let r = _mm256_insertf32x4::<IMM8>(a, b);
     let zero = _mm256_setzero_ps().as_f32x8();
     transmute(simd_select_bitmask(k, r.as_f32x8(), zero))
 }
@@ -22679,12 +22679,12 @@ pub unsafe fn _mm256_maskz_insertf32x4<const IMM8: i32>(
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_insertf64x4&expand=3167)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(vinsertf64x4, imm8 = 1))]
-#[rustc_args_required_const(2)]
-pub unsafe fn _mm512_insertf64x4(a: __m512d, b: __m256d, imm8: i32) -> __m512d {
-    assert!(imm8 >= 0 && imm8 <= 1);
+#[cfg_attr(test, assert_instr(vinsertf64x4, IMM8 = 1))]
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn _mm512_insertf64x4<const IMM8: i32>(a: __m512d, b: __m256d) -> __m512d {
+    static_assert_imm8!(IMM8);
     let b = _mm512_castpd256_pd512(b);
-    match imm8 & 0b1 {
+    match IMM8 & 0b1 {
         0 => simd_shuffle8(a, b, [8, 9, 10, 11, 4, 5, 6, 7]),
         _ => simd_shuffle8(a, b, [0, 1, 2, 3, 8, 9, 10, 11]),
     }
@@ -22704,7 +22704,7 @@ pub unsafe fn _mm512_mask_insertf64x4<const IMM8: i32>(
     b: __m256d,
 ) -> __m512d {
     static_assert_imm8!(IMM8);
-    let r = _mm512_insertf64x4(a, b, IMM8);
+    let r = _mm512_insertf64x4::<IMM8>(a, b);
     transmute(simd_select_bitmask(k, r.as_f64x8(), src.as_f64x8()))
 }
 
@@ -22721,7 +22721,7 @@ pub unsafe fn _mm512_maskz_insertf64x4<const IMM8: i32>(
     b: __m256d,
 ) -> __m512d {
     static_assert_imm8!(IMM8);
-    let r = _mm512_insertf64x4(a, b, IMM8);
+    let r = _mm512_insertf64x4::<IMM8>(a, b);
     let zero = _mm512_setzero_pd().as_f64x8();
     transmute(simd_select_bitmask(k, r.as_f64x8(), zero))
 }
@@ -46917,7 +46917,7 @@ mod tests {
     unsafe fn test_mm512_inserti32x4() {
         let a = _mm512_setr_epi32(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
         let b = _mm_setr_epi32(17, 18, 19, 20);
-        let r = _mm512_inserti32x4(a, b, 0);
+        let r = _mm512_inserti32x4::<0>(a, b);
         let e = _mm512_setr_epi32(17, 18, 19, 20, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
         assert_eq_m512i(r, e);
     }
@@ -46948,7 +46948,7 @@ mod tests {
     unsafe fn test_mm256_inserti32x4() {
         let a = _mm256_set_epi32(1, 2, 3, 4, 5, 6, 7, 8);
         let b = _mm_set_epi32(17, 18, 19, 20);
-        let r = _mm256_inserti32x4(a, b, 1);
+        let r = _mm256_inserti32x4::<1>(a, b);
         let e = _mm256_set_epi32(17, 18, 19, 20, 5, 6, 7, 8);
         assert_eq_m256i(r, e);
     }
@@ -46981,7 +46981,7 @@ mod tests {
             1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15., 16.,
         );
         let b = _mm_setr_ps(17., 18., 19., 20.);
-        let r = _mm512_insertf32x4(a, b, 0);
+        let r = _mm512_insertf32x4::<0>(a, b);
         let e = _mm512_setr_ps(
             17., 18., 19., 20., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15., 16.,
         );
@@ -47022,7 +47022,7 @@ mod tests {
     unsafe fn test_mm256_insertf32x4() {
         let a = _mm256_set_ps(1., 2., 3., 4., 5., 6., 7., 8.);
         let b = _mm_set_ps(17., 18., 19., 20.);
-        let r = _mm256_insertf32x4(a, b, 1);
+        let r = _mm256_insertf32x4::<1>(a, b);
         let e = _mm256_set_ps(17., 18., 19., 20., 5., 6., 7., 8.);
         assert_eq_m256(r, e);
     }

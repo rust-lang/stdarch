@@ -9767,7 +9767,7 @@ mod tests {
     unsafe fn test_mm512_inserti64x4() {
         let a = _mm512_setr_epi64(1, 2, 3, 4, 5, 6, 7, 8);
         let b = _mm256_setr_epi64x(17, 18, 19, 20);
-        let r = _mm512_inserti64x4(a, b, 1);
+        let r = _mm512_inserti64x4::<1>(a, b);
         let e = _mm512_setr_epi64(1, 2, 3, 4, 17, 18, 19, 20);
         assert_eq_m512i(r, e);
     }
@@ -9798,7 +9798,7 @@ mod tests {
     unsafe fn test_mm512_insertf64x4() {
         let a = _mm512_setr_pd(1., 2., 3., 4., 5., 6., 7., 8.);
         let b = _mm256_setr_pd(17., 18., 19., 20.);
-        let r = _mm512_insertf64x4(a, b, 1);
+        let r = _mm512_insertf64x4::<1>(a, b);
         let e = _mm512_setr_pd(1., 2., 3., 4., 17., 18., 19., 20.);
         assert_eq_m512d(r, e);
     }
