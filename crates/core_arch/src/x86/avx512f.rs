@@ -21791,12 +21791,12 @@ pub unsafe fn _mm256_maskz_shuffle_f64x2<const MASK: i32>(
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(
     all(test, not(target_os = "windows")),
-    assert_instr(vextractf32x4, imm8 = 3)
+    assert_instr(vextractf32x4, IMM8 = 3)
 )]
-#[rustc_args_required_const(1)]
-pub unsafe fn _mm512_extractf32x4_ps(a: __m512, imm8: i32) -> __m128 {
-    assert!(imm8 >= 0 && imm8 <= 3);
-    match imm8 & 0x3 {
+#[rustc_legacy_const_generics(1)]
+pub unsafe fn _mm512_extractf32x4_ps<const IMM8: i32>(a: __m512) -> __m128 {
+    static_assert_imm8!(IMM8);
+    match IMM8 & 0x3 {
         0 => simd_shuffle4(a, _mm512_undefined_ps(), [0, 1, 2, 3]),
         1 => simd_shuffle4(a, _mm512_undefined_ps(), [4, 5, 6, 7]),
         2 => simd_shuffle4(a, _mm512_undefined_ps(), [8, 9, 10, 11]),
@@ -21820,7 +21820,7 @@ pub unsafe fn _mm512_mask_extractf32x4_ps<const IMM8: i32>(
     a: __m512,
 ) -> __m128 {
     static_assert_imm8!(IMM8);
-    let r = _mm512_extractf32x4_ps(a, IMM8);
+    let r = _mm512_extractf32x4_ps::<IMM8>(a);
     transmute(simd_select_bitmask(k, r.as_f32x4(), src.as_f32x4()))
 }
 
@@ -21836,7 +21836,7 @@ pub unsafe fn _mm512_mask_extractf32x4_ps<const IMM8: i32>(
 #[rustc_legacy_const_generics(2)]
 pub unsafe fn _mm512_maskz_extractf32x4_ps<const IMM8: i32>(k: __mmask8, a: __m512) -> __m128 {
     static_assert_imm8!(IMM8);
-    let r = _mm512_extractf32x4_ps(a, IMM8);
+    let r = _mm512_extractf32x4_ps::<IMM8>(a);
     let zero = _mm_setzero_ps().as_f32x4();
     transmute(simd_select_bitmask(k, r.as_f32x4(), zero))
 }
@@ -21848,12 +21848,12 @@ pub unsafe fn _mm512_maskz_extractf32x4_ps<const IMM8: i32>(k: __mmask8, a: __m5
 #[target_feature(enable = "avx512f,avx512vl")]
 #[cfg_attr(
     all(test, not(target_os = "windows")),
-    assert_instr(vextract, imm8 = 1) //should be vextractf32x4
+    assert_instr(vextract, IMM8 = 1) //should be vextractf32x4
 )]
-#[rustc_args_required_const(1)]
-pub unsafe fn _mm256_extractf32x4_ps(a: __m256, imm8: i32) -> __m128 {
-    assert!(imm8 >= 0 && imm8 <= 1);
-    match imm8 & 0x1 {
+#[rustc_legacy_const_generics(1)]
+pub unsafe fn _mm256_extractf32x4_ps<const IMM8: i32>(a: __m256) -> __m128 {
+    static_assert_imm8!(IMM8);
+    match IMM8 & 0x1 {
         0 => simd_shuffle4(a, _mm256_undefined_ps(), [0, 1, 2, 3]),
         _ => simd_shuffle4(a, _mm256_undefined_ps(), [4, 5, 6, 7]),
     }
@@ -21875,7 +21875,7 @@ pub unsafe fn _mm256_mask_extractf32x4_ps<const IMM8: i32>(
     a: __m256,
 ) -> __m128 {
     static_assert_imm8!(IMM8);
-    let r = _mm256_extractf32x4_ps(a, IMM8);
+    let r = _mm256_extractf32x4_ps::<IMM8>(a);
     transmute(simd_select_bitmask(k, r.as_f32x4(), src.as_f32x4()))
 }
 
@@ -21891,7 +21891,7 @@ pub unsafe fn _mm256_mask_extractf32x4_ps<const IMM8: i32>(
 #[rustc_legacy_const_generics(2)]
 pub unsafe fn _mm256_maskz_extractf32x4_ps<const IMM8: i32>(k: __mmask8, a: __m256) -> __m128 {
     static_assert_imm8!(IMM8);
-    let r = _mm256_extractf32x4_ps(a, IMM8);
+    let r = _mm256_extractf32x4_ps::<IMM8>(a);
     let zero = _mm_setzero_ps().as_f32x4();
     transmute(simd_select_bitmask(k, r.as_f32x4(), zero))
 }
@@ -21958,12 +21958,12 @@ pub unsafe fn _mm512_maskz_extracti64x4_epi64<const IMM8: i32>(k: __mmask8, a: _
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(
     all(test, not(target_os = "windows")),
-    assert_instr(vextractf64x4, imm8 = 1)
+    assert_instr(vextractf64x4, IMM8 = 1)
 )]
-#[rustc_args_required_const(1)]
-pub unsafe fn _mm512_extractf64x4_pd(a: __m512d, imm8: i32) -> __m256d {
-    assert!(imm8 >= 0 && imm8 <= 1);
-    match imm8 & 0x1 {
+#[rustc_legacy_const_generics(1)]
+pub unsafe fn _mm512_extractf64x4_pd<const IMM8: i32>(a: __m512d) -> __m256d {
+    static_assert_imm8!(IMM8);
+    match IMM8 & 0x1 {
         0 => simd_shuffle4(a, _mm512_undefined_pd(), [0, 1, 2, 3]),
         _ => simd_shuffle4(a, _mm512_undefined_pd(), [4, 5, 6, 7]),
     }
@@ -21985,7 +21985,7 @@ pub unsafe fn _mm512_mask_extractf64x4_pd<const IMM8: i32>(
     a: __m512d,
 ) -> __m256d {
     static_assert_imm8!(IMM8);
-    let r = _mm512_extractf64x4_pd(a, IMM8);
+    let r = _mm512_extractf64x4_pd::<IMM8>(a);
     transmute(simd_select_bitmask(k, r.as_f64x4(), src.as_f64x4()))
 }
 
@@ -22001,7 +22001,7 @@ pub unsafe fn _mm512_mask_extractf64x4_pd<const IMM8: i32>(
 #[rustc_legacy_const_generics(2)]
 pub unsafe fn _mm512_maskz_extractf64x4_pd<const IMM8: i32>(k: __mmask8, a: __m512d) -> __m256d {
     static_assert_imm8!(IMM8);
-    let r = _mm512_extractf64x4_pd(a, IMM8);
+    let r = _mm512_extractf64x4_pd::<IMM8>(a);
     let zero = _mm256_setzero_pd().as_f64x4();
     transmute(simd_select_bitmask(k, r.as_f64x4(), zero))
 }
@@ -46636,7 +46636,7 @@ mod tests {
         let a = _mm512_setr_ps(
             1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15., 16.,
         );
-        let r = _mm512_extractf32x4_ps(a, 0b1);
+        let r = _mm512_extractf32x4_ps::<1>(a);
         let e = _mm_setr_ps(5., 6., 7., 8.);
         assert_eq_m128(r, e);
     }
@@ -46669,7 +46669,7 @@ mod tests {
     #[simd_test(enable = "avx512f,avx512vl")]
     unsafe fn test_mm256_extractf32x4_ps() {
         let a = _mm256_set_ps(1., 2., 3., 4., 5., 6., 7., 8.);
-        let r = _mm256_extractf32x4_ps(a, 0b1);
+        let r = _mm256_extractf32x4_ps::<1>(a);
         let e = _mm_set_ps(1., 2., 3., 4.);
         assert_eq_m128(r, e);
     }
