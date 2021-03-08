@@ -9101,7 +9101,7 @@ pub unsafe fn _mm256_mask_alignr_epi8<const IMM8: i32>(
     b: __m256i,
 ) -> __m256i {
     static_assert_imm8!(IMM8);
-    let r = _mm256_alignr_epi8(a, b, IMM8);
+    let r = _mm256_alignr_epi8::<IMM8>(a, b);
     transmute(simd_select_bitmask(k, r.as_i8x32(), src.as_i8x32()))
 }
 
@@ -9118,7 +9118,7 @@ pub unsafe fn _mm256_maskz_alignr_epi8<const IMM8: i32>(
     b: __m256i,
 ) -> __m256i {
     static_assert_imm8!(IMM8);
-    let r = _mm256_alignr_epi8(a, b, IMM8);
+    let r = _mm256_alignr_epi8::<IMM8>(a, b);
     transmute(simd_select_bitmask(
         k,
         r.as_i8x32(),
