@@ -7956,9 +7956,9 @@ mod tests {
     #[simd_test(enable = "avx512f,avx512vl")]
     unsafe fn test_mm256_mask_srli_epi64() {
         let a = _mm256_set_epi64x(1 << 5, 0, 0, 0);
-        let r = _mm256_mask_srli_epi64(a, 0, a, 1);
+        let r = _mm256_mask_srli_epi64::<1>(a, 0, a);
         assert_eq_m256i(r, a);
-        let r = _mm256_mask_srli_epi64(a, 0b00001111, a, 1);
+        let r = _mm256_mask_srli_epi64::<1>(a, 0b00001111, a);
         let e = _mm256_set_epi64x(1 << 4, 0, 0, 0);
         assert_eq_m256i(r, e);
     }
@@ -7966,9 +7966,9 @@ mod tests {
     #[simd_test(enable = "avx512f,avx512vl")]
     unsafe fn test_mm256_maskz_srli_epi64() {
         let a = _mm256_set_epi64x(1 << 5, 0, 0, 0);
-        let r = _mm256_maskz_srli_epi64(0, a, 1);
+        let r = _mm256_maskz_srli_epi64::<1>(0, a);
         assert_eq_m256i(r, _mm256_setzero_si256());
-        let r = _mm256_maskz_srli_epi64(0b00001111, a, 1);
+        let r = _mm256_maskz_srli_epi64::<1>(0b00001111, a);
         let e = _mm256_set_epi64x(1 << 4, 0, 0, 0);
         assert_eq_m256i(r, e);
     }
@@ -7976,9 +7976,9 @@ mod tests {
     #[simd_test(enable = "avx512f,avx512vl")]
     unsafe fn test_mm_mask_srli_epi64() {
         let a = _mm_set_epi64x(1 << 5, 0);
-        let r = _mm_mask_srli_epi64(a, 0, a, 1);
+        let r = _mm_mask_srli_epi64::<1>(a, 0, a);
         assert_eq_m128i(r, a);
-        let r = _mm_mask_srli_epi64(a, 0b00000011, a, 1);
+        let r = _mm_mask_srli_epi64::<1>(a, 0b00000011, a);
         let e = _mm_set_epi64x(1 << 4, 0);
         assert_eq_m128i(r, e);
     }
@@ -7986,9 +7986,9 @@ mod tests {
     #[simd_test(enable = "avx512f,avx512vl")]
     unsafe fn test_mm_maskz_srli_epi64() {
         let a = _mm_set_epi64x(1 << 5, 0);
-        let r = _mm_maskz_srli_epi64(0, a, 1);
+        let r = _mm_maskz_srli_epi64::<1>(0, a);
         assert_eq_m128i(r, _mm_setzero_si128());
-        let r = _mm_maskz_srli_epi64(0b00000011, a, 1);
+        let r = _mm_maskz_srli_epi64::<1>(0b00000011, a);
         let e = _mm_set_epi64x(1 << 4, 0);
         assert_eq_m128i(r, e);
     }

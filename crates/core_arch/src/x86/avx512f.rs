@@ -17351,16 +17351,17 @@ pub unsafe fn _mm512_maskz_srli_epi64<const IMM8: u32>(k: __mmask8, a: __m512i) 
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_srli_epi64&expand=5526)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vpsrlq, imm8 = 1))]
-#[rustc_args_required_const(3)]
-pub unsafe fn _mm256_mask_srli_epi64(src: __m256i, k: __mmask8, a: __m256i, imm8: u32) -> __m256i {
-    macro_rules! call {
-        ($imm8:expr) => {
-            _mm256_srli_epi64::<$imm8>(a)
-        };
-    }
-    let shf = constify_imm8_sae!(imm8, call);
-    transmute(simd_select_bitmask(k, shf.as_i64x4(), src.as_i64x4()))
+#[cfg_attr(test, assert_instr(vpsrlq, IMM8 = 1))]
+#[rustc_legacy_const_generics(3)]
+pub unsafe fn _mm256_mask_srli_epi64<const IMM8: u32>(
+    src: __m256i,
+    k: __mmask8,
+    a: __m256i,
+) -> __m256i {
+    static_assert_imm_u8!(IMM8);
+    let imm8 = IMM8 as i32;
+    let r = psrliq256(a.as_i64x4(), imm8);
+    transmute(simd_select_bitmask(k, r, src.as_i64x4()))
 }
 
 /// Shift packed 64-bit integers in a right by imm8 while shifting in zeros, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
@@ -17368,17 +17369,14 @@ pub unsafe fn _mm256_mask_srli_epi64(src: __m256i, k: __mmask8, a: __m256i, imm8
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_srli_epi64&expand=5527)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vpsrlq, imm8 = 1))]
-#[rustc_args_required_const(2)]
-pub unsafe fn _mm256_maskz_srli_epi64(k: __mmask8, a: __m256i, imm8: u32) -> __m256i {
-    macro_rules! call {
-        ($imm8:expr) => {
-            _mm256_srli_epi64::<$imm8>(a)
-        };
-    }
-    let shf = constify_imm8_sae!(imm8, call);
+#[cfg_attr(test, assert_instr(vpsrlq, IMM8 = 1))]
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn _mm256_maskz_srli_epi64<const IMM8: u32>(k: __mmask8, a: __m256i) -> __m256i {
+    static_assert_imm_u8!(IMM8);
+    let imm8 = IMM8 as i32;
+    let r = psrliq256(a.as_i64x4(), imm8);
     let zero = _mm256_setzero_si256().as_i64x4();
-    transmute(simd_select_bitmask(k, shf.as_i64x4(), zero))
+    transmute(simd_select_bitmask(k, r, zero))
 }
 
 /// Shift packed 64-bit integers in a right by imm8 while shifting in zeros, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
@@ -17386,16 +17384,17 @@ pub unsafe fn _mm256_maskz_srli_epi64(k: __mmask8, a: __m256i, imm8: u32) -> __m
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_srli_epi64&expand=5523)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vpsrlq, imm8 = 1))]
-#[rustc_args_required_const(3)]
-pub unsafe fn _mm_mask_srli_epi64(src: __m128i, k: __mmask8, a: __m128i, imm8: u32) -> __m128i {
-    macro_rules! call {
-        ($imm8:expr) => {
-            _mm_srli_epi64::<$imm8>(a)
-        };
-    }
-    let shf = constify_imm8_sae!(imm8, call);
-    transmute(simd_select_bitmask(k, shf.as_i64x2(), src.as_i64x2()))
+#[cfg_attr(test, assert_instr(vpsrlq, IMM8 = 1))]
+#[rustc_legacy_const_generics(3)]
+pub unsafe fn _mm_mask_srli_epi64<const IMM8: u32>(
+    src: __m128i,
+    k: __mmask8,
+    a: __m128i,
+) -> __m128i {
+    static_assert_imm_u8!(IMM8);
+    let imm8 = IMM8 as i32;
+    let r = psrliq128(a.as_i64x2(), imm8);
+    transmute(simd_select_bitmask(k, r, src.as_i64x2()))
 }
 
 /// Shift packed 64-bit integers in a right by imm8 while shifting in zeros, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
@@ -17403,17 +17402,14 @@ pub unsafe fn _mm_mask_srli_epi64(src: __m128i, k: __mmask8, a: __m128i, imm8: u
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_srli_epi64&expand=5524)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
-#[cfg_attr(test, assert_instr(vpsrlq, imm8 = 1))]
-#[rustc_args_required_const(2)]
-pub unsafe fn _mm_maskz_srli_epi64(k: __mmask8, a: __m128i, imm8: u32) -> __m128i {
-    macro_rules! call {
-        ($imm8:expr) => {
-            _mm_srli_epi64::<$imm8>(a)
-        };
-    }
-    let shf = constify_imm8_sae!(imm8, call);
+#[cfg_attr(test, assert_instr(vpsrlq, IMM8 = 1))]
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn _mm_maskz_srli_epi64<const IMM8: u32>(k: __mmask8, a: __m128i) -> __m128i {
+    static_assert_imm_u8!(IMM8);
+    let imm8 = IMM8 as i32;
+    let r = psrliq128(a.as_i64x2(), imm8);
     let zero = _mm_setzero_si128().as_i64x2();
-    transmute(simd_select_bitmask(k, shf.as_i64x2(), zero))
+    transmute(simd_select_bitmask(k, r, zero))
 }
 
 /// Shift packed 32-bit integers in a left by count while shifting in zeros, and store the results in dst.
@@ -36561,6 +36557,11 @@ extern "C" {
 
     #[link_name = "llvm.x86.avx512.psrli.q.512"]
     fn vpsrliq(a: i64x8, imm8: u32) -> i64x8;
+
+    #[link_name = "llvm.x86.avx2.psrli.q"]
+    fn psrliq256(a: i64x4, imm8: i32) -> i64x4;
+    #[link_name = "llvm.x86.sse2.psrli.q"]
+    fn psrliq128(a: i64x2, imm8: i32) -> i64x2;
 
     #[link_name = "llvm.x86.avx512.psll.d.512"]
     fn vpslld(a: i32x16, count: i32x4) -> i32x16;
