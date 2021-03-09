@@ -22066,60 +22066,60 @@ pub unsafe fn _mm512_maskz_extracti32x4_epi32<const IMM2: i32>(k: __mmask8, a: _
     transmute(simd_select_bitmask(k, r.as_i32x4(), zero))
 }
 
-/// Extract 128 bits (composed of 4 packed 32-bit integers) from a, selected with imm8, and store the result in dst.
+/// Extract 128 bits (composed of 4 packed 32-bit integers) from a, selected with IMM1, and store the result in dst.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_extracti32x4_epi32&expand=2458)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
 #[cfg_attr(
     all(test, not(target_os = "windows")),
-    assert_instr(vextract, imm8 = 1) //should be vextracti32x4
+    assert_instr(vextract, IMM1 = 1) //should be vextracti32x4
 )]
-#[rustc_args_required_const(1)]
-pub unsafe fn _mm256_extracti32x4_epi32(a: __m256i, imm8: i32) -> __m128i {
-    assert!(imm8 >= 0 && imm8 <= 1);
+#[rustc_legacy_const_generics(1)]
+pub unsafe fn _mm256_extracti32x4_epi32<const IMM1: i32>(a: __m256i) -> __m128i {
+    static_assert_imm1!(IMM1);
     let a = a.as_i32x8();
     let undefined = _mm256_undefined_si256().as_i32x8();
-    let extract: i32x4 = match imm8 & 0x1 {
+    let extract: i32x4 = match IMM1 {
         0 => simd_shuffle4(a, undefined, [0, 1, 2, 3]),
         _ => simd_shuffle4(a, undefined, [4, 5, 6, 7]),
     };
     transmute(extract)
 }
 
-/// Extract 128 bits (composed of 4 packed 32-bit integers) from a, selected with imm8, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+/// Extract 128 bits (composed of 4 packed 32-bit integers) from a, selected with IMM1, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_extracti32x4_epi32&expand=2459)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
 #[cfg_attr(
     all(test, not(target_os = "windows")),
-    assert_instr(vextracti32x4, IMM8 = 1)
+    assert_instr(vextracti32x4, IMM1 = 1)
 )]
 #[rustc_legacy_const_generics(3)]
-pub unsafe fn _mm256_mask_extracti32x4_epi32<const IMM8: i32>(
+pub unsafe fn _mm256_mask_extracti32x4_epi32<const IMM1: i32>(
     src: __m128i,
     k: __mmask8,
     a: __m256i,
 ) -> __m128i {
-    static_assert_imm1!(IMM8);
-    let r = _mm256_extracti32x4_epi32(a, IMM8);
+    static_assert_imm1!(IMM1);
+    let r = _mm256_extracti32x4_epi32::<IMM1>(a);
     transmute(simd_select_bitmask(k, r.as_i32x4(), src.as_i32x4()))
 }
 
-/// Extract 128 bits (composed of 4 packed 32-bit integers) from a, selected with imm8, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
+/// Extract 128 bits (composed of 4 packed 32-bit integers) from a, selected with IMM1, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_extracti32x4_epi32&expand=2460)
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
 #[cfg_attr(
     all(test, not(target_os = "windows")),
-    assert_instr(vextracti32x4, IMM8 = 1)
+    assert_instr(vextracti32x4, IMM1 = 1)
 )]
 #[rustc_legacy_const_generics(2)]
-pub unsafe fn _mm256_maskz_extracti32x4_epi32<const IMM8: i32>(k: __mmask8, a: __m256i) -> __m128i {
-    static_assert_imm1!(IMM8);
-    let r = _mm256_extracti32x4_epi32(a, IMM8);
+pub unsafe fn _mm256_maskz_extracti32x4_epi32<const IMM1: i32>(k: __mmask8, a: __m256i) -> __m128i {
+    static_assert_imm1!(IMM1);
+    let r = _mm256_extracti32x4_epi32::<IMM1>(a);
     let zero = _mm_setzero_si128().as_i32x4();
     transmute(simd_select_bitmask(k, r.as_i32x4(), zero))
 }
@@ -46727,7 +46727,7 @@ mod tests {
     #[simd_test(enable = "avx512f,avx512vl")]
     unsafe fn test_mm256_extracti32x4_epi32() {
         let a = _mm256_set_epi32(1, 2, 3, 4, 5, 6, 7, 8);
-        let r = _mm256_extracti32x4_epi32(a, 0b1);
+        let r = _mm256_extracti32x4_epi32::<1>(a);
         let e = _mm_set_epi32(1, 2, 3, 4);
         assert_eq_m128i(r, e);
     }
