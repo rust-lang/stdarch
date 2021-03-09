@@ -278,6 +278,39 @@ fn ff_val(t: &str) -> &'static str {
 fn false_val(_t: &str) -> &'static str {
     "0"
 }
+
+fn bits(t: &str) -> &'static str {
+    match &t[..3] {
+        "u8x" => "8",
+        "u16" => "16",
+        "u32" => "32",
+        "u64" => "64",
+        "i8x" => "8",
+        "i16" => "16",
+        "i32" => "32",
+        "i64" => "64",
+        "f32" => "32",
+        "f64" => "64",
+        _ => panic!("Unknown bits for type {}", t),
+    }
+}
+
+fn bits_minus_one(t: &str) -> &'static str {
+    match &t[..3] {
+        "u8x" => "7",
+        "u16" => "15",
+        "u32" => "31",
+        "u64" => "63",
+        "i8x" => "7",
+        "i16" => "15",
+        "i32" => "31",
+        "i64" => "63",
+        "f32" => "31",
+        "f64" => "63",
+        _ => panic!("Unknown bits for type {}", t),
+    }
+}
+
 fn map_val<'v>(t: &str, v: &'v str) -> &'v str {
     match v {
         "FALSE" => false_val(t),
@@ -285,6 +318,8 @@ fn map_val<'v>(t: &str, v: &'v str) -> &'v str {
         "MAX" => max_val(t),
         "MIN" => min_val(t),
         "FF" => ff_val(t),
+        "BITS" => bits(t),
+        "BITS_M1" => bits_minus_one(t),
         o => o,
     }
 }
@@ -301,6 +336,7 @@ fn gen_aarch64(
     current_tests: &[(Vec<String>, Vec<String>, Vec<String>)],
     para_num: i32,
     fixed: &Vec<String>,
+    fixed_2: &Vec<String>,
     multi_fn: &Vec<String>,
 ) -> (String, String) {
     let _global_t = type_to_global_type(in_t);
@@ -356,7 +392,7 @@ fn gen_aarch64(
             if i > 0 {
                 calls.push_str("\n    ");
             }
-            calls.push_str(&get_call(&multi_fn[i], in_t, out_t, fixed));
+            calls.push_str(&get_call(&multi_fn[i], in_t, out_t, fixed, fixed_2));
         }
         calls
     } else {
@@ -390,6 +426,12 @@ fn gen_aarch64(
                 current_fn,
             )
         }
+        (_, 1, _) => format!(
+            r#"pub unsafe fn {}(a: {}) -> {} {{
+    {}{}
+}}"#,
+            name, in_t, out_t, ext_c, multi_calls,
+        ),
         (_, 2, _) => format!(
             r#"pub unsafe fn {}(a: {}, b: {}) -> {} {{
     {}{}
@@ -489,6 +531,7 @@ fn gen_arm(
     current_tests: &[(Vec<String>, Vec<String>, Vec<String>)],
     para_num: i32,
     fixed: &Vec<String>,
+    fixed_2: &Vec<String>,
     multi_fn: &Vec<String>,
 ) -> (String, String) {
     let _global_t = type_to_global_type(in_t);
@@ -550,7 +593,7 @@ fn gen_arm(
             if i > 0 {
                 calls.push_str("\n    ");
             }
-            calls.push_str(&get_call(&multi_fn[i], in_t, out_t, fixed));
+            calls.push_str(&get_call(&multi_fn[i], in_t, out_t, fixed, fixed_2));
         }
         calls
     } else {
@@ -584,6 +627,12 @@ fn gen_arm(
                 current_fn,
             )
         }
+        (_, 1, _) => format!(
+            r#"pub unsafe fn {}(a: {}, b: {}) -> {} {{
+    {}{}
+}}"#,
+            name, in_t, in_t, out_t, ext_c, multi_calls,
+        ),
         (_, 2, _) => format!(
             r#"pub unsafe fn {}(a: {}, b: {}) -> {} {{
     {}{}
@@ -680,7 +729,13 @@ fn expand_intrinsic(intr: &str, t: &str) -> String {
     }
 }
 
-fn get_call(in_str: &str, in_t: &str, out_t: &str, fixed: &Vec<String>) -> String {
+fn get_call(
+    in_str: &str,
+    in_t: &str,
+    out_t: &str,
+    fixed: &Vec<String>,
+    fixed_2: &Vec<String>,
+) -> String {
     let params: Vec<_> = in_str.split(',').map(|v| v.trim().to_string()).collect();
     assert!(params.len() > 0);
     let fn_name = &params[0];
@@ -693,7 +748,9 @@ fn get_call(in_str: &str, in_t: &str, out_t: &str, fixed: &Vec<String>) -> Strin
             if re_params.len() == 1 {
                 re = Some((re_params[0].clone(), in_t.to_string()));
             } else if re_params.len() == 2 {
-                if re_params[1] == "in_t" {
+                if re_params[1] == "" {
+                    re = Some((re_params[0].clone(), in_t.to_string()));
+                } else if re_params[1] == "in_t" {
                     re = Some((re_params[0].clone(), in_t.to_string()));
                 } else if re_params[1] == "out_t" {
                     re = Some((re_params[0].clone(), out_t.to_string()));
@@ -710,6 +767,11 @@ fn get_call(in_str: &str, in_t: &str, out_t: &str, fixed: &Vec<String>) -> Strin
         let (re_name, re_type) = re.unwrap();
         let fixed: Vec<String> = fixed.iter().take(type_len(in_t)).cloned().collect();
         return format!(r#"let {}{};"#, re_name, values(&re_type, &fixed));
+    }
+    if fn_name == "fixed_2" {
+        let (re_name, re_type) = re.unwrap();
+        let fixed_2: Vec<String> = fixed_2.iter().take(type_len(in_t)).cloned().collect();
+        return format!(r#"let {}{};"#, re_name, values(&re_type, &fixed_2));
     }
     if param_str.is_empty() {
         param_str.push_str("a, b");
@@ -743,6 +805,7 @@ fn main() -> io::Result<()> {
     let mut a: Vec<String> = Vec::new();
     let mut b: Vec<String> = Vec::new();
     let mut fixed: Vec<String> = Vec::new();
+    let mut fixed_2: Vec<String> = Vec::new();
     let mut current_tests: Vec<(Vec<String>, Vec<String>, Vec<String>)> = Vec::new();
     let mut multi_fn: Vec<String> = Vec::new();
 
@@ -836,6 +899,11 @@ mod test {
             b = line[4..].split(',').map(|v| v.trim().to_string()).collect();
         } else if line.starts_with("fixed = ") {
             fixed = line[8..].split(',').map(|v| v.trim().to_string()).collect();
+        } else if line.starts_with("fixed_2 = ") {
+            fixed_2 = line[10..]
+                .split(',')
+                .map(|v| v.trim().to_string())
+                .collect();
         } else if line.starts_with("validate ") {
             let e = line[9..].split(',').map(|v| v.trim().to_string()).collect();
             current_tests.push((a.clone(), b.clone(), e));
@@ -891,6 +959,7 @@ mod test {
                         &current_tests,
                         para_num,
                         &fixed,
+                        &fixed_2,
                         &multi_fn,
                     );
                     out_arm.push_str(&function);
@@ -907,6 +976,7 @@ mod test {
                         &current_tests,
                         para_num,
                         &fixed,
+                        &fixed_2,
                         &multi_fn,
                     );
                     out_aarch64.push_str(&function);
@@ -929,7 +999,6 @@ mod test {
     let mut file_arm = File::create(arm_out_path.join(ARM_OUT))?;
     file_arm.write_all(out_arm.as_bytes())?;
     file_arm.write_all(tests_arm.as_bytes())?;
-
     let aarch64_out_path: PathBuf = PathBuf::from(env::var("OUT_DIR").unwrap())
         .join("src")
         .join("aarch64")
