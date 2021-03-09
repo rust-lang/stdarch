@@ -2585,8 +2585,46 @@ pub unsafe fn _mm256_slli_si256<const IMM8: i32>(a: __m256i) -> __m256i {
 #[stable(feature = "simd_x86", since = "1.27.0")]
 pub unsafe fn _mm256_bslli_epi128<const IMM8: i32>(a: __m256i) -> __m256i {
     static_assert_imm8!(IMM8);
-    let a = a.as_i64x4();
-    let r = vpslldq(a, IMM8 * 8);
+    let a = a.as_i8x32();
+    let zero = _mm256_setzero_si256().as_i8x32();
+    let r: i8x32 = simd_shuffle32(
+        zero,
+        a,
+        [
+            32 - (IMM8 as u32 & 0xff),
+            33 - (IMM8 as u32 & 0xff),
+            34 - (IMM8 as u32 & 0xff),
+            35 - (IMM8 as u32 & 0xff),
+            36 - (IMM8 as u32 & 0xff),
+            37 - (IMM8 as u32 & 0xff),
+            38 - (IMM8 as u32 & 0xff),
+            39 - (IMM8 as u32 & 0xff),
+            40 - (IMM8 as u32 & 0xff),
+            41 - (IMM8 as u32 & 0xff),
+            42 - (IMM8 as u32 & 0xff),
+            43 - (IMM8 as u32 & 0xff),
+            44 - (IMM8 as u32 & 0xff),
+            45 - (IMM8 as u32 & 0xff),
+            46 - (IMM8 as u32 & 0xff),
+            47 - (IMM8 as u32 & 0xff),
+            48 - (IMM8 as u32 & 0xff) - 16,
+            49 - (IMM8 as u32 & 0xff) - 16,
+            50 - (IMM8 as u32 & 0xff) - 16,
+            51 - (IMM8 as u32 & 0xff) - 16,
+            52 - (IMM8 as u32 & 0xff) - 16,
+            53 - (IMM8 as u32 & 0xff) - 16,
+            54 - (IMM8 as u32 & 0xff) - 16,
+            55 - (IMM8 as u32 & 0xff) - 16,
+            56 - (IMM8 as u32 & 0xff) - 16,
+            57 - (IMM8 as u32 & 0xff) - 16,
+            58 - (IMM8 as u32 & 0xff) - 16,
+            59 - (IMM8 as u32 & 0xff) - 16,
+            60 - (IMM8 as u32 & 0xff) - 16,
+            61 - (IMM8 as u32 & 0xff) - 16,
+            62 - (IMM8 as u32 & 0xff) - 16,
+            63 - (IMM8 as u32 & 0xff) - 16,
+        ],
+    );
     transmute(r)
 }
 
@@ -2741,8 +2779,47 @@ pub unsafe fn _mm256_srli_si256<const IMM8: i32>(a: __m256i) -> __m256i {
 #[rustc_legacy_const_generics(1)]
 #[stable(feature = "simd_x86", since = "1.27.0")]
 pub unsafe fn _mm256_bsrli_epi128<const IMM8: i32>(a: __m256i) -> __m256i {
-    let a = a.as_i64x4();
-    let r = vpsrldq(a, IMM8 * 8);
+    static_assert_imm8!(IMM8);
+    let a = a.as_i8x32();
+    let zero = _mm256_setzero_si256().as_i8x32();
+    let r: i8x32 = simd_shuffle32(
+        a,
+        zero,
+        [
+            0 + (IMM8 as u32 & 0xff) + 16,
+            1 + (IMM8 as u32 & 0xff) + 16,
+            2 + (IMM8 as u32 & 0xff) + 16,
+            3 + (IMM8 as u32 & 0xff) + 16,
+            4 + (IMM8 as u32 & 0xff) + 16,
+            5 + (IMM8 as u32 & 0xff) + 16,
+            6 + (IMM8 as u32 & 0xff) + 16,
+            7 + (IMM8 as u32 & 0xff) + 16,
+            8 + (IMM8 as u32 & 0xff) + 16,
+            9 + (IMM8 as u32 & 0xff) + 16,
+            10 + (IMM8 as u32 & 0xff) + 16,
+            11 + (IMM8 as u32 & 0xff) + 16,
+            12 + (IMM8 as u32 & 0xff) + 16,
+            13 + (IMM8 as u32 & 0xff) + 16,
+            14 + (IMM8 as u32 & 0xff) + 16,
+            15 + (IMM8 as u32 & 0xff) + 16,
+            16 + (IMM8 as u32 & 0xff),
+            17 + (IMM8 as u32 & 0xff),
+            18 + (IMM8 as u32 & 0xff),
+            19 + (IMM8 as u32 & 0xff),
+            20 + (IMM8 as u32 & 0xff),
+            21 + (IMM8 as u32 & 0xff),
+            22 + (IMM8 as u32 & 0xff),
+            23 + (IMM8 as u32 & 0xff),
+            24 + (IMM8 as u32 & 0xff),
+            25 + (IMM8 as u32 & 0xff),
+            26 + (IMM8 as u32 & 0xff),
+            27 + (IMM8 as u32 & 0xff),
+            28 + (IMM8 as u32 & 0xff),
+            29 + (IMM8 as u32 & 0xff),
+            30 + (IMM8 as u32 & 0xff),
+            31 + (IMM8 as u32 & 0xff),
+        ],
+    );
     transmute(r)
 }
 
