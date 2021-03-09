@@ -34,15 +34,11 @@ extern "C" {
 #[inline]
 #[target_feature(enable = "avx512vpclmulqdq,avx512f")]
 // technically according to Intel's documentation we don't need avx512f here, however LLVM gets confused otherwise
-#[cfg_attr(test, assert_instr(vpclmul, imm8 = 0))]
-#[rustc_args_required_const(2)]
-pub unsafe fn _mm512_clmulepi64_epi128(a: __m512i, b: __m512i, imm8: i32) -> __m512i {
-    macro_rules! call {
-        ($imm8:expr) => {
-            pclmulqdq_512(a, b, $imm8)
-        };
-    }
-    constify_imm8!(imm8, call)
+#[cfg_attr(test, assert_instr(vpclmul, IMM8 = 0))]
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn _mm512_clmulepi64_epi128<const IMM8: i32>(a: __m512i, b: __m512i) -> __m512i {
+    static_assert_imm8!(IMM8);
+    pclmulqdq_512(a, b, IMM8 as u8)
 }
 
 /// Performs a carry-less multiplication of two 64-bit polynomials over the
@@ -55,15 +51,11 @@ pub unsafe fn _mm512_clmulepi64_epi128(a: __m512i, b: __m512i, imm8: i32) -> __m
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_clmulepi64_epi128)
 #[inline]
 #[target_feature(enable = "avx512vpclmulqdq,avx512vl")]
-#[cfg_attr(test, assert_instr(vpclmul, imm8 = 0))]
-#[rustc_args_required_const(2)]
-pub unsafe fn _mm256_clmulepi64_epi128(a: __m256i, b: __m256i, imm8: i32) -> __m256i {
-    macro_rules! call {
-        ($imm8:expr) => {
-            pclmulqdq_256(a, b, $imm8)
-        };
-    }
-    constify_imm8!(imm8, call)
+#[cfg_attr(test, assert_instr(vpclmul, IMM8 = 0))]
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn _mm256_clmulepi64_epi128<const IMM8: i32>(a: __m256i, b: __m256i) -> __m256i {
+    static_assert_imm8!(IMM8);
+    pclmulqdq_256(a, b, IMM8 as u8)
 }
 
 #[cfg(test)]
@@ -93,16 +85,16 @@ mod tests {
          let r11 = _mm_set_epi64x(0x1d1e1f2c592e7c45, 0xd66ee03e410fd4ed);
          let r11 = $broadcast(r11);
 
-         $assert($clmul(a, b, 0x00), r00);
-         $assert($clmul(a, b, 0x10), r01);
-         $assert($clmul(a, b, 0x01), r10);
-         $assert($clmul(a, b, 0x11), r11);
+         $assert($clmul::<0x00>(a, b), r00);
+         $assert($clmul::<0x10>(a, b), r01);
+         $assert($clmul::<0x01>(a, b), r10);
+         $assert($clmul::<0x11>(a, b), r11);
 
          let a0 = _mm_set_epi64x(0x0000000000000000, 0x8000000000000000);
          let a0 = $broadcast(a0);
          let r = _mm_set_epi64x(0x4000000000000000, 0x0000000000000000);
          let r = $broadcast(r);
-         $assert($clmul(a0, a0, 0x00), r);
+         $assert($clmul::<0x00>(a0, a0), r);
         }
     }
 
@@ -222,19 +214,19 @@ mod tests {
 
         verify_512_helper(
             |a, b| _mm_clmulepi64_si128::<0x00>(a, b),
-            |a, b| _mm512_clmulepi64_epi128(a, b, 0x00),
+            |a, b| _mm512_clmulepi64_epi128::<0x00>(a, b),
         );
         verify_512_helper(
             |a, b| _mm_clmulepi64_si128::<0x01>(a, b),
-            |a, b| _mm512_clmulepi64_epi128(a, b, 0x01),
+            |a, b| _mm512_clmulepi64_epi128::<0x01>(a, b),
         );
         verify_512_helper(
             |a, b| _mm_clmulepi64_si128::<0x10>(a, b),
-            |a, b| _mm512_clmulepi64_epi128(a, b, 0x10),
+            |a, b| _mm512_clmulepi64_epi128::<0x10>(a, b),
         );
         verify_512_helper(
             |a, b| _mm_clmulepi64_si128::<0x11>(a, b),
-            |a, b| _mm512_clmulepi64_epi128(a, b, 0x11),
+            |a, b| _mm512_clmulepi64_epi128::<0x11>(a, b),
         );
     }
 
@@ -248,19 +240,19 @@ mod tests {
 
         verify_256_helper(
             |a, b| _mm_clmulepi64_si128::<0x00>(a, b),
-            |a, b| _mm256_clmulepi64_epi128(a, b, 0x00),
+            |a, b| _mm256_clmulepi64_epi128::<0x00>(a, b),
         );
         verify_256_helper(
             |a, b| _mm_clmulepi64_si128::<0x01>(a, b),
-            |a, b| _mm256_clmulepi64_epi128(a, b, 0x01),
+            |a, b| _mm256_clmulepi64_epi128::<0x01>(a, b),
         );
         verify_256_helper(
             |a, b| _mm_clmulepi64_si128::<0x10>(a, b),
-            |a, b| _mm256_clmulepi64_epi128(a, b, 0x10),
+            |a, b| _mm256_clmulepi64_epi128::<0x10>(a, b),
         );
         verify_256_helper(
             |a, b| _mm_clmulepi64_si128::<0x11>(a, b),
-            |a, b| _mm256_clmulepi64_epi128(a, b, 0x11),
+            |a, b| _mm256_clmulepi64_epi128::<0x11>(a, b),
         );
     }
 }
