@@ -7084,7 +7084,7 @@ mod tests {
     }
     #[simd_test(enable = "neon")]
     unsafe fn test_vbslq_s32() {
-        let a = u32x4::new(u32::MAX, u32::MIN, u32::MAX, u32::MIN);
+        let a = u32x4::new(u32::MAX, 0, u32::MAX, 0);
         let b = i32x4::new(i32::MAX, i32::MAX, i32::MAX, i32::MAX);
         let c = i32x4::new(i32::MIN, i32::MIN, i32::MIN, i32::MIN);
         let e = i32x4::new(i32::MAX, i32::MIN, i32::MAX, i32::MIN);
