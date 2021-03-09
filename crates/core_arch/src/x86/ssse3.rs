@@ -113,16 +113,6 @@ pub unsafe fn _mm_alignr_epi8<const IMM8: i32>(a: __m128i, b: __m128i) -> __m128
             shift + i
         }
     }
-    const fn mask2(shift: u32, i: u32) -> u32 {
-        if shift > 64 {
-            // Unused, but needs to be a valid index.
-            i
-        } else if shift > 32 {
-            shift - 32 + i
-        } else {
-            shift + i
-        }
-    }
     let r: i8x16 = simd_shuffle16(
         b.as_i8x16(),
         a.as_i8x16(),
