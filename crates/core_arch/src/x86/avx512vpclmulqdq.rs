@@ -107,23 +107,19 @@ mod tests {
     }
 
     macro_rules! unroll {
-        ($target:ident[4] = $op:ident($source:ident,4);) => {
-            $target[3] = $op($source, 3);
-            $target[2] = $op($source, 2);
-            unroll! {$target[2] = $op($source,2);}
+        ($target:ident[4] = $op:ident::<4>($source:ident);) => {
+            $target[3] = $op::<3>($source);
+            $target[2] = $op::<2>($source);
+            unroll! {$target[2] = $op::<2>($source);}
         };
-        ($target:ident[2] = $op:ident($source:ident,2);) => {
-            $target[1] = $op($source, 1);
-            $target[0] = $op($source, 0);
+        ($target:ident[2] = $op:ident::<2>($source:ident);) => {
+            $target[1] = $op::<1>($source);
+            $target[0] = $op::<0>($source);
         };
-        (assert_eq_m128i($op:ident($vec_res:ident,4),$lin_res:ident[4]);) => {
-            assert_eq_m128i($op($vec_res, 3), $lin_res[3]);
-            assert_eq_m128i($op($vec_res, 2), $lin_res[2]);
-            unroll! {assert_eq_m128i($op($vec_res,2),$lin_res[2]);}
-        };
-        (assert_eq_m128i($op:ident($vec_res:ident,2),$lin_res:ident[2]);) => {
-            assert_eq_m128i($op($vec_res, 1), $lin_res[1]);
-            assert_eq_m128i($op($vec_res, 0), $lin_res[0]);
+        (assert_eq_m128i($op:ident::<4>($vec_res:ident),$lin_res:ident[4]);) => {
+            assert_eq_m128i($op::<3>($vec_res), $lin_res[3]);
+            assert_eq_m128i($op::<2>($vec_res), $lin_res[2]);
+            unroll! {assert_eq_m128i($op::<2>($vec_res),$lin_res[2]);}
         };
         (assert_eq_m128i($op:ident::<2>($vec_res:ident),$lin_res:ident[2]);) => {
             assert_eq_m128i($op::<1>($vec_res), $lin_res[1]);
@@ -160,16 +156,16 @@ mod tests {
         );
 
         let mut a_decomp = [_mm_setzero_si128(); 4];
-        unroll! {a_decomp[4] = _mm512_extracti32x4_epi32(a,4);}
+        unroll! {a_decomp[4] = _mm512_extracti32x4_epi32::<4>(a);}
         let mut b_decomp = [_mm_setzero_si128(); 4];
-        unroll! {b_decomp[4] = _mm512_extracti32x4_epi32(b,4);}
+        unroll! {b_decomp[4] = _mm512_extracti32x4_epi32::<4>(b);}
 
         let r = vectorized(a, b);
         let mut e_decomp = [_mm_setzero_si128(); 4];
         for i in 0..4 {
             e_decomp[i] = linear(a_decomp[i], b_decomp[i]);
         }
-        unroll! {assert_eq_m128i(_mm512_extracti32x4_epi32(r,4),e_decomp[4]);}
+        unroll! {assert_eq_m128i(_mm512_extracti32x4_epi32::<4>(r),e_decomp[4]);}
     }
 
     // this function tests one of the possible 4 instances
@@ -201,13 +197,13 @@ mod tests {
         );
 
         let mut a_decomp = [_mm_setzero_si128(); 2];
-        unroll! {a_decomp[2] = _mm512_extracti32x4_epi32(a,2);}
+        unroll! {a_decomp[2] = _mm512_extracti32x4_epi32::<2>(a);}
         let mut b_decomp = [_mm_setzero_si128(); 2];
-        unroll! {b_decomp[2] = _mm512_extracti32x4_epi32(b,2);}
+        unroll! {b_decomp[2] = _mm512_extracti32x4_epi32::<2>(b);}
 
         let r = vectorized(
-            _mm512_extracti64x4_epi64(a, 0),
-            _mm512_extracti64x4_epi64(b, 0),
+            _mm512_extracti64x4_epi64::<0>(a),
+            _mm512_extracti64x4_epi64::<0>(b),
         );
         let mut e_decomp = [_mm_setzero_si128(); 2];
         for i in 0..2 {
