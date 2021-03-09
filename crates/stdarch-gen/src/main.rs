@@ -999,6 +999,7 @@ mod test {
     let mut file_arm = File::create(arm_out_path.join(ARM_OUT))?;
     file_arm.write_all(out_arm.as_bytes())?;
     file_arm.write_all(tests_arm.as_bytes())?;
+
     let aarch64_out_path: PathBuf = PathBuf::from(env::var("OUT_DIR").unwrap())
         .join("src")
         .join("aarch64")
