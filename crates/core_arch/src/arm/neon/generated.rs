@@ -837,7 +837,7 @@ pub unsafe fn vceqq_s32(a: int32x4_t, b: int32x4_t) -> uint32x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vceq.i8x8"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vceq.i8"))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(cmeq))]
 pub unsafe fn vceq_p8(a: poly8x8_t, b: poly8x8_t) -> uint8x8_t {
     simd_eq(a, b)
@@ -847,7 +847,7 @@ pub unsafe fn vceq_p8(a: poly8x8_t, b: poly8x8_t) -> uint8x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vceq.i8x16"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vceq.i8"))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(cmeq))]
 pub unsafe fn vceqq_p8(a: poly8x16_t, b: poly8x16_t) -> uint8x16_t {
     simd_eq(a, b)

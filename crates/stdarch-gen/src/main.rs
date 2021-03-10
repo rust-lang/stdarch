@@ -656,8 +656,8 @@ fn expand_intrinsic(intr: &str, t: &str) -> String {
             "float32x4_t" => "f32",
             "float64x1_t" => "f64",
             "float64x2_t" => "f64",
-            "poly8x8_t" => "i8x8",
-            "poly8x16_t" => "i8x16",
+            "poly8x8_t" => "i8",
+            "poly8x16_t" => "i8",
             /*
             "poly64x1_t" => "i64x1",
             "poly64x2_t" => "i64x2",
