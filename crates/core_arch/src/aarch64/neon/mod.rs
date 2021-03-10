@@ -690,7 +690,7 @@ pub unsafe fn vld1q_f64(ptr: *const f64) -> float64x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(dup))]
-pub unsafe fn vdup_n_p64(value: u64) -> poly64x1_t {
+pub unsafe fn vdup_n_p64(value: p64) -> poly64x1_t {
     transmute(u64x1(value))
 }
 
@@ -706,7 +706,7 @@ pub unsafe fn vdup_n_f64(value: f64) -> float64x1_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(dup))]
-pub unsafe fn vdupq_n_p64(value: u64) -> poly64x2_t {
+pub unsafe fn vdupq_n_p64(value: p64) -> poly64x2_t {
     transmute(u64x2(value, value))
 }
 
@@ -3983,7 +3983,7 @@ mod tests {
 
     #[simd_test(enable = "neon")]
     unsafe fn test_vdup_n_p64() {
-        let v: u64 = 64;
+        let v: p64 = 64;
         let e = u64x1::new(64);
         let r: u64x1 = transmute(vdup_n_p64(v));
         assert_eq!(r, e);
@@ -3997,7 +3997,7 @@ mod tests {
     }
     #[simd_test(enable = "neon")]
     unsafe fn test_vdupq_n_p64() {
-        let v: u64 = 64;
+        let v: p64 = 64;
         let e = u64x2::new(64, 64);
         let r: u64x2 = transmute(vdupq_n_p64(v));
         assert_eq!(r, e);

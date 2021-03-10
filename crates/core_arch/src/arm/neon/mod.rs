@@ -3833,7 +3833,7 @@ pub unsafe fn vdupq_n_u64(value: u64) -> uint64x2_t {
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vdup.8"))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(dup))]
-pub unsafe fn vdupq_n_p8(value: u8) -> poly8x16_t {
+pub unsafe fn vdupq_n_p8(value: p8) -> poly8x16_t {
     poly8x16_t(
         value, value, value, value, value, value, value, value, value, value, value, value, value,
         value, value, value,
@@ -3846,7 +3846,7 @@ pub unsafe fn vdupq_n_p8(value: u8) -> poly8x16_t {
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vdup.16"))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(dup))]
-pub unsafe fn vdupq_n_p16(value: u16) -> poly16x8_t {
+pub unsafe fn vdupq_n_p16(value: p16) -> poly16x8_t {
     poly16x8_t(value, value, value, value, value, value, value, value)
 }
 
@@ -3951,7 +3951,7 @@ pub unsafe fn vdup_n_u64(value: u64) -> uint64x1_t {
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vdup.8"))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(dup))]
-pub unsafe fn vdup_n_p8(value: u8) -> poly8x8_t {
+pub unsafe fn vdup_n_p8(value: p8) -> poly8x8_t {
     poly8x8_t(value, value, value, value, value, value, value, value)
 }
 
@@ -3961,7 +3961,7 @@ pub unsafe fn vdup_n_p8(value: u8) -> poly8x8_t {
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vdup.16"))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(dup))]
-pub unsafe fn vdup_n_p16(value: u16) -> poly16x4_t {
+pub unsafe fn vdup_n_p16(value: p16) -> poly16x4_t {
     poly16x4_t(value, value, value, value)
 }
 
@@ -5806,19 +5806,19 @@ mod tests {
 
     #[simd_test(enable = "neon")]
     unsafe fn test_vdupq_n_p8() {
-        let v: u8 = 64;
+        let v: p8 = 64;
         let e = u8x16::new(
             64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
         );
-        let r: u8x16 = transmute(vdupq_n_u8(v));
+        let r: u8x16 = transmute(vdupq_n_p8(v));
         assert_eq!(r, e);
     }
 
     #[simd_test(enable = "neon")]
     unsafe fn test_vdupq_n_p16() {
-        let v: u16 = 64;
+        let v: p16 = 64;
         let e = u16x8::new(64, 64, 64, 64, 64, 64, 64, 64);
-        let r: u16x8 = transmute(vdupq_n_u16(v));
+        let r: u16x8 = transmute(vdupq_n_p16(v));
         assert_eq!(r, e);
     }
 
@@ -5896,17 +5896,17 @@ mod tests {
 
     #[simd_test(enable = "neon")]
     unsafe fn test_vdup_n_p8() {
-        let v: u8 = 64;
+        let v: p8 = 64;
         let e = u8x8::new(64, 64, 64, 64, 64, 64, 64, 64);
-        let r: u8x8 = transmute(vdup_n_u8(v));
+        let r: u8x8 = transmute(vdup_n_p8(v));
         assert_eq!(r, e);
     }
 
     #[simd_test(enable = "neon")]
     unsafe fn test_vdup_n_p16() {
-        let v: u16 = 64;
+        let v: p16 = 64;
         let e = u16x4::new(64, 64, 64, 64);
-        let r: u16x4 = transmute(vdup_n_u16(v));
+        let r: u16x4 = transmute(vdup_n_p16(v));
         assert_eq!(r, e);
     }
 
