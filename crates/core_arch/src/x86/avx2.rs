@@ -2570,9 +2570,7 @@ pub unsafe fn _mm256_slli_epi64<const IMM8: i32>(a: __m256i) -> __m256i {
 #[stable(feature = "simd_x86", since = "1.27.0")]
 pub unsafe fn _mm256_slli_si256<const IMM8: i32>(a: __m256i) -> __m256i {
     static_assert_imm8!(IMM8);
-    let a = a.as_i64x4();
-    let r = vpslldq(a, IMM8 * 8);
-    transmute(r)
+    _mm256_bslli_epi128::<IMM8>(a)
 }
 
 /// Shifts 128-bit lanes in `a` left by `imm8` bytes while shifting in zeros.
@@ -2761,13 +2759,12 @@ pub unsafe fn _mm256_srav_epi32(a: __m256i, count: __m256i) -> __m256i {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_srli_si256)
 #[inline]
 #[target_feature(enable = "avx2")]
-#[cfg_attr(test, assert_instr(vpsrldq, IMM8 = 3))]
+#[cfg_attr(test, assert_instr(vpsrldq, IMM8 = 1))]
 #[rustc_legacy_const_generics(1)]
 #[stable(feature = "simd_x86", since = "1.27.0")]
 pub unsafe fn _mm256_srli_si256<const IMM8: i32>(a: __m256i) -> __m256i {
-    let a = a.as_i64x4();
-    let r = vpsrldq(a, IMM8 * 8);
-    transmute(r)
+    static_assert_imm8!(IMM8);
+    _mm256_bsrli_epi128::<IMM8>(a)
 }
 
 /// Shifts 128-bit lanes in `a` right by `imm8` bytes while shifting in zeros.
@@ -2775,51 +2772,144 @@ pub unsafe fn _mm256_srli_si256<const IMM8: i32>(a: __m256i) -> __m256i {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_bsrli_epi128)
 #[inline]
 #[target_feature(enable = "avx2")]
-#[cfg_attr(test, assert_instr(vpsrldq, IMM8 = 3))]
+#[cfg_attr(test, assert_instr(vpsrldq, IMM8 = 1))]
 #[rustc_legacy_const_generics(1)]
 #[stable(feature = "simd_x86", since = "1.27.0")]
 pub unsafe fn _mm256_bsrli_epi128<const IMM8: i32>(a: __m256i) -> __m256i {
     static_assert_imm8!(IMM8);
     let a = a.as_i8x32();
     let zero = _mm256_setzero_si256().as_i8x32();
-    let r: i8x32 = simd_shuffle32(
-        a,
-        zero,
-        [
-            0 + (IMM8 as u32 & 0xff) + 16,
-            1 + (IMM8 as u32 & 0xff) + 16,
-            2 + (IMM8 as u32 & 0xff) + 16,
-            3 + (IMM8 as u32 & 0xff) + 16,
-            4 + (IMM8 as u32 & 0xff) + 16,
-            5 + (IMM8 as u32 & 0xff) + 16,
-            6 + (IMM8 as u32 & 0xff) + 16,
-            7 + (IMM8 as u32 & 0xff) + 16,
-            8 + (IMM8 as u32 & 0xff) + 16,
-            9 + (IMM8 as u32 & 0xff) + 16,
-            10 + (IMM8 as u32 & 0xff) + 16,
-            11 + (IMM8 as u32 & 0xff) + 16,
-            12 + (IMM8 as u32 & 0xff) + 16,
-            13 + (IMM8 as u32 & 0xff) + 16,
-            14 + (IMM8 as u32 & 0xff) + 16,
-            15 + (IMM8 as u32 & 0xff) + 16,
-            16 + (IMM8 as u32 & 0xff),
-            17 + (IMM8 as u32 & 0xff),
-            18 + (IMM8 as u32 & 0xff),
-            19 + (IMM8 as u32 & 0xff),
-            20 + (IMM8 as u32 & 0xff),
-            21 + (IMM8 as u32 & 0xff),
-            22 + (IMM8 as u32 & 0xff),
-            23 + (IMM8 as u32 & 0xff),
-            24 + (IMM8 as u32 & 0xff),
-            25 + (IMM8 as u32 & 0xff),
-            26 + (IMM8 as u32 & 0xff),
-            27 + (IMM8 as u32 & 0xff),
-            28 + (IMM8 as u32 & 0xff),
-            29 + (IMM8 as u32 & 0xff),
-            30 + (IMM8 as u32 & 0xff),
-            31 + (IMM8 as u32 & 0xff),
-        ],
-    );
+    let r: i8x32 = match IMM8 % 16 {
+        0 => simd_shuffle32(
+            a,
+            zero,
+            [
+                0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22,
+                23, 24, 25, 26, 27, 28, 29, 30, 31,
+            ],
+        ),
+        1 => simd_shuffle32(
+            a,
+            zero,
+            [
+                1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 32, 17, 18, 19, 20, 21, 22, 23,
+                24, 25, 26, 27, 28, 29, 30, 31, 32,
+            ],
+        ),
+        2 => simd_shuffle32(
+            a,
+            zero,
+            [
+                2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 32, 32, 18, 19, 20, 21, 22, 23, 24,
+                25, 26, 27, 28, 29, 30, 31, 32, 32,
+            ],
+        ),
+        3 => simd_shuffle32(
+            a,
+            zero,
+            [
+                3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 32, 32, 32, 19, 20, 21, 22, 23, 24,
+                25, 26, 27, 28, 29, 30, 31, 32, 32, 32,
+            ],
+        ),
+        4 => simd_shuffle32(
+            a,
+            zero,
+            [
+                4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 32, 32, 32, 32, 20, 21, 22, 23, 24, 25,
+                26, 27, 28, 29, 30, 31, 32, 32, 32, 32,
+            ],
+        ),
+        5 => simd_shuffle32(
+            a,
+            zero,
+            [
+                5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 32, 32, 32, 32, 32, 21, 22, 23, 24, 25, 26,
+                27, 28, 29, 30, 31, 32, 32, 32, 32, 32,
+            ],
+        ),
+        6 => simd_shuffle32(
+            a,
+            zero,
+            [
+                6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 32, 32, 32, 32, 32, 32, 22, 23, 24, 25, 26, 27,
+                28, 29, 30, 31, 32, 32, 32, 32, 32, 32,
+            ],
+        ),
+        7 => simd_shuffle32(
+            a,
+            zero,
+            [
+                7, 8, 9, 10, 11, 12, 13, 14, 15, 32, 32, 32, 32, 32, 32, 32, 23, 24, 25, 26, 27,
+                28, 29, 30, 31, 32, 32, 32, 32, 32, 32, 32,
+            ],
+        ),
+        8 => simd_shuffle32(
+            a,
+            zero,
+            [
+                8, 9, 10, 11, 12, 13, 14, 15, 32, 32, 32, 32, 32, 32, 32, 32, 24, 25, 26, 27, 28,
+                29, 30, 31, 32, 32, 32, 32, 32, 32, 32, 32,
+            ],
+        ),
+        9 => simd_shuffle32(
+            a,
+            zero,
+            [
+                9, 10, 11, 12, 13, 14, 15, 32, 32, 32, 32, 32, 32, 32, 32, 32, 25, 26, 27, 28, 29,
+                30, 31, 32, 32, 32, 32, 32, 32, 32, 32, 32,
+            ],
+        ),
+        10 => simd_shuffle32(
+            a,
+            zero,
+            [
+                10, 11, 12, 13, 14, 15, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 26, 27, 28, 29, 30,
+                31, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32,
+            ],
+        ),
+        11 => simd_shuffle32(
+            a,
+            zero,
+            [
+                11, 12, 13, 14, 15, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 27, 28, 29, 30, 31,
+                32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32,
+            ],
+        ),
+        12 => simd_shuffle32(
+            a,
+            zero,
+            [
+                12, 13, 14, 15, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 28, 29, 30, 31, 32,
+                32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32,
+            ],
+        ),
+        13 => simd_shuffle32(
+            a,
+            zero,
+            [
+                13, 14, 15, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 29, 30, 31, 32, 32,
+                32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32,
+            ],
+        ),
+        14 => simd_shuffle32(
+            a,
+            zero,
+            [
+                14, 15, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 30, 31, 32, 32, 32,
+                32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32,
+            ],
+        ),
+        15 => simd_shuffle32(
+            a,
+            zero,
+            [
+                14, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 31, 32, 32, 32, 32,
+                32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32,
+            ],
+        ),
+        _ => zero,
+    };
     transmute(r)
 }
 
