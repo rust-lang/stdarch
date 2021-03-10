@@ -570,10 +570,8 @@ pub unsafe fn vcgeq_f64(a: float64x2_t, b: float64x2_t) -> uint64x2_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(cmge))]
 pub unsafe fn vcgez_s8(a: int8x8_t) -> uint8x8_t {
-    let c: i8x8 = i8x8::new(7, 7, 7, 7, 7, 7, 7, 7);
-    let d: i8x8 = i8x8::new(-1, -1, -1, -1, -1, -1, -1, -1);
-    let e: int8x8_t = simd_shr(a, transmute(c));
-    simd_xor(transmute(e), transmute(d))
+    let b: i8x8 = i8x8::new(0, 0, 0, 0, 0, 0, 0, 0);
+    simd_ge(a, transmute(b))
 }
 
 /// Compare signed greater than or equal to zero
@@ -581,10 +579,8 @@ pub unsafe fn vcgez_s8(a: int8x8_t) -> uint8x8_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(cmge))]
 pub unsafe fn vcgezq_s8(a: int8x16_t) -> uint8x16_t {
-    let c: i8x16 = i8x16::new(7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7);
-    let d: i8x16 = i8x16::new(-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1);
-    let e: int8x16_t = simd_shr(a, transmute(c));
-    simd_xor(transmute(e), transmute(d))
+    let b: i8x16 = i8x16::new(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    simd_ge(a, transmute(b))
 }
 
 /// Compare signed greater than or equal to zero
@@ -592,10 +588,8 @@ pub unsafe fn vcgezq_s8(a: int8x16_t) -> uint8x16_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(cmge))]
 pub unsafe fn vcgez_s16(a: int16x4_t) -> uint16x4_t {
-    let c: i16x4 = i16x4::new(15, 15, 15, 15);
-    let d: i16x4 = i16x4::new(-1, -1, -1, -1);
-    let e: int16x4_t = simd_shr(a, transmute(c));
-    simd_xor(transmute(e), transmute(d))
+    let b: i16x4 = i16x4::new(0, 0, 0, 0);
+    simd_ge(a, transmute(b))
 }
 
 /// Compare signed greater than or equal to zero
@@ -603,10 +597,8 @@ pub unsafe fn vcgez_s16(a: int16x4_t) -> uint16x4_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(cmge))]
 pub unsafe fn vcgezq_s16(a: int16x8_t) -> uint16x8_t {
-    let c: i16x8 = i16x8::new(15, 15, 15, 15, 15, 15, 15, 15);
-    let d: i16x8 = i16x8::new(-1, -1, -1, -1, -1, -1, -1, -1);
-    let e: int16x8_t = simd_shr(a, transmute(c));
-    simd_xor(transmute(e), transmute(d))
+    let b: i16x8 = i16x8::new(0, 0, 0, 0, 0, 0, 0, 0);
+    simd_ge(a, transmute(b))
 }
 
 /// Compare signed greater than or equal to zero
@@ -614,10 +606,8 @@ pub unsafe fn vcgezq_s16(a: int16x8_t) -> uint16x8_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(cmge))]
 pub unsafe fn vcgez_s32(a: int32x2_t) -> uint32x2_t {
-    let c: i32x2 = i32x2::new(31, 31);
-    let d: i32x2 = i32x2::new(-1, -1);
-    let e: int32x2_t = simd_shr(a, transmute(c));
-    simd_xor(transmute(e), transmute(d))
+    let b: i32x2 = i32x2::new(0, 0);
+    simd_ge(a, transmute(b))
 }
 
 /// Compare signed greater than or equal to zero
@@ -625,10 +615,8 @@ pub unsafe fn vcgez_s32(a: int32x2_t) -> uint32x2_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(cmge))]
 pub unsafe fn vcgezq_s32(a: int32x4_t) -> uint32x4_t {
-    let c: i32x4 = i32x4::new(31, 31, 31, 31);
-    let d: i32x4 = i32x4::new(-1, -1, -1, -1);
-    let e: int32x4_t = simd_shr(a, transmute(c));
-    simd_xor(transmute(e), transmute(d))
+    let b: i32x4 = i32x4::new(0, 0, 0, 0);
+    simd_ge(a, transmute(b))
 }
 
 /// Compare signed greater than or equal to zero
@@ -636,10 +624,8 @@ pub unsafe fn vcgezq_s32(a: int32x4_t) -> uint32x4_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(cmge))]
 pub unsafe fn vcgez_s64(a: int64x1_t) -> uint64x1_t {
-    let c: i64x1 = i64x1::new(63);
-    let d: i64x1 = i64x1::new(-1);
-    let e: int64x1_t = simd_shr(a, transmute(c));
-    simd_xor(transmute(e), transmute(d))
+    let b: i64x1 = i64x1::new(0);
+    simd_ge(a, transmute(b))
 }
 
 /// Compare signed greater than or equal to zero
@@ -647,10 +633,8 @@ pub unsafe fn vcgez_s64(a: int64x1_t) -> uint64x1_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(cmge))]
 pub unsafe fn vcgezq_s64(a: int64x2_t) -> uint64x2_t {
-    let c: i64x2 = i64x2::new(63, 63);
-    let d: i64x2 = i64x2::new(-1, -1);
-    let e: int64x2_t = simd_shr(a, transmute(c));
-    simd_xor(transmute(e), transmute(d))
+    let b: i64x2 = i64x2::new(0, 0);
+    simd_ge(a, transmute(b))
 }
 
 /// Floating-point compare greater than or equal to zero
@@ -908,81 +892,73 @@ pub unsafe fn vclezq_f64(a: float64x2_t) -> uint64x2_t {
 /// Compare signed less than zero
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(sshr))]
+#[cfg_attr(test, assert_instr(cmge))]
 pub unsafe fn vcltz_s8(a: int8x8_t) -> uint8x8_t {
-    let b: i8x8 = i8x8::new(7, 7, 7, 7, 7, 7, 7, 7);
-    let c: int8x8_t = simd_shr(a, transmute(b));
-    transmute(c)
+    let b: i8x8 = i8x8::new(0, 0, 0, 0, 0, 0, 0, 0);
+    simd_lt(a, transmute(b))
 }
 
 /// Compare signed less than zero
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(sshr))]
+#[cfg_attr(test, assert_instr(cmge))]
 pub unsafe fn vcltzq_s8(a: int8x16_t) -> uint8x16_t {
-    let b: i8x16 = i8x16::new(7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7);
-    let c: int8x16_t = simd_shr(a, transmute(b));
-    transmute(c)
+    let b: i8x16 = i8x16::new(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    simd_lt(a, transmute(b))
 }
 
 /// Compare signed less than zero
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(sshr))]
+#[cfg_attr(test, assert_instr(cmge))]
 pub unsafe fn vcltz_s16(a: int16x4_t) -> uint16x4_t {
-    let b: i16x4 = i16x4::new(15, 15, 15, 15);
-    let c: int16x4_t = simd_shr(a, transmute(b));
-    transmute(c)
+    let b: i16x4 = i16x4::new(0, 0, 0, 0);
+    simd_lt(a, transmute(b))
 }
 
 /// Compare signed less than zero
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(sshr))]
+#[cfg_attr(test, assert_instr(cmge))]
 pub unsafe fn vcltzq_s16(a: int16x8_t) -> uint16x8_t {
-    let b: i16x8 = i16x8::new(15, 15, 15, 15, 15, 15, 15, 15);
-    let c: int16x8_t = simd_shr(a, transmute(b));
-    transmute(c)
+    let b: i16x8 = i16x8::new(0, 0, 0, 0, 0, 0, 0, 0);
+    simd_lt(a, transmute(b))
 }
 
 /// Compare signed less than zero
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(sshr))]
+#[cfg_attr(test, assert_instr(cmge))]
 pub unsafe fn vcltz_s32(a: int32x2_t) -> uint32x2_t {
-    let b: i32x2 = i32x2::new(31, 31);
-    let c: int32x2_t = simd_shr(a, transmute(b));
-    transmute(c)
+    let b: i32x2 = i32x2::new(0, 0);
+    simd_lt(a, transmute(b))
 }
 
 /// Compare signed less than zero
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(sshr))]
+#[cfg_attr(test, assert_instr(cmge))]
 pub unsafe fn vcltzq_s32(a: int32x4_t) -> uint32x4_t {
-    let b: i32x4 = i32x4::new(31, 31, 31, 31);
-    let c: int32x4_t = simd_shr(a, transmute(b));
-    transmute(c)
+    let b: i32x4 = i32x4::new(0, 0, 0, 0);
+    simd_lt(a, transmute(b))
 }
 
 /// Compare signed less than zero
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(sshr))]
+#[cfg_attr(test, assert_instr(cmge))]
 pub unsafe fn vcltz_s64(a: int64x1_t) -> uint64x1_t {
-    let b: i64x1 = i64x1::new(63);
-    let c: int64x1_t = simd_shr(a, transmute(b));
-    transmute(c)
+    let b: i64x1 = i64x1::new(0);
+    simd_lt(a, transmute(b))
 }
 
 /// Compare signed less than zero
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(sshr))]
+#[cfg_attr(test, assert_instr(cmge))]
 pub unsafe fn vcltzq_s64(a: int64x2_t) -> uint64x2_t {
-    let b: i64x2 = i64x2::new(63, 63);
-    let c: int64x2_t = simd_shr(a, transmute(b));
-    transmute(c)
+    let b: i64x2 = i64x2::new(0, 0);
+    simd_lt(a, transmute(b))
 }
 
 /// Floating-point compare less than zero
