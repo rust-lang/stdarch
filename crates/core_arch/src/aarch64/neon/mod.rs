@@ -681,43 +681,6 @@ pub unsafe fn vld1q_f64(ptr: *const f64) -> float64x2_t {
     transmute(f64x2::new(*ptr, *ptr.offset(1)))
 }
 
-/// Duplicate vector element to vector or scalar.
-/// This instruction duplicates the vector element at the specified element index
-/// in the source SIMD&FP register into a scalar or each element in a vector,
-/// and writes the result to the destination SIMD&FP register.
-
-/// Duplicate vector element to vector or scalar
-#[inline]
-#[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(dup))]
-pub unsafe fn vdup_n_p64(value: p64) -> poly64x1_t {
-    transmute(u64x1(value))
-}
-
-/// Duplicate vector element to vector or scalar
-#[inline]
-#[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(dup))]
-pub unsafe fn vdup_n_f64(value: f64) -> float64x1_t {
-    float64x1_t(value)
-}
-
-/// Duplicate vector element to vector or scalar
-#[inline]
-#[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(dup))]
-pub unsafe fn vdupq_n_p64(value: p64) -> poly64x2_t {
-    transmute(u64x2(value, value))
-}
-
-/// Duplicate vector element to vector or scalar
-#[inline]
-#[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(dup))]
-pub unsafe fn vdupq_n_f64(value: f64) -> float64x2_t {
-    float64x2_t(value, value)
-}
-
 /// Absolute Value (wrapping).
 #[inline]
 #[target_feature(enable = "neon")]
@@ -3978,35 +3941,6 @@ mod tests {
         let a = i64x2::new(i64::MIN, i64::MIN + 1);
         let r: i64x2 = transmute(vabsq_s64(transmute(a)));
         let e = i64x2::new(i64::MIN, i64::MAX);
-        assert_eq!(r, e);
-    }
-
-    #[simd_test(enable = "neon")]
-    unsafe fn test_vdup_n_p64() {
-        let v: p64 = 64;
-        let e = u64x1::new(64);
-        let r: u64x1 = transmute(vdup_n_p64(v));
-        assert_eq!(r, e);
-    }
-    #[simd_test(enable = "neon")]
-    unsafe fn test_vdup_n_f64() {
-        let v: f64 = 64.0;
-        let e = f64x1::new(64.0);
-        let r: f64x1 = transmute(vdup_n_f64(v));
-        assert_eq!(r, e);
-    }
-    #[simd_test(enable = "neon")]
-    unsafe fn test_vdupq_n_p64() {
-        let v: p64 = 64;
-        let e = u64x2::new(64, 64);
-        let r: u64x2 = transmute(vdupq_n_p64(v));
-        assert_eq!(r, e);
-    }
-    #[simd_test(enable = "neon")]
-    unsafe fn test_vdupq_n_f64() {
-        let v: f64 = 64.0;
-        let e = f64x2::new(64.0, 64.0);
-        let r: f64x2 = transmute(vdupq_n_f64(v));
         assert_eq!(r, e);
     }
 

@@ -3778,16 +3778,6 @@ pub unsafe fn vdupq_n_s32(value: i32) -> int32x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vdup.32"))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(dup))]
-pub unsafe fn vdupq_n_s64(value: i64) -> int64x2_t {
-    int64x2_t(value, value)
-}
-
-/// Duplicate vector element to vector or scalar
-#[inline]
-#[target_feature(enable = "neon")]
-#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vdup.8"))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(dup))]
 pub unsafe fn vdupq_n_u8(value: u8) -> uint8x16_t {
@@ -3815,16 +3805,6 @@ pub unsafe fn vdupq_n_u16(value: u16) -> uint16x8_t {
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(dup))]
 pub unsafe fn vdupq_n_u32(value: u32) -> uint32x4_t {
     uint32x4_t(value, value, value, value)
-}
-
-/// Duplicate vector element to vector or scalar
-#[inline]
-#[target_feature(enable = "neon")]
-#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vdup.32"))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(dup))]
-pub unsafe fn vdupq_n_u64(value: u64) -> uint64x2_t {
-    uint64x2_t(value, value)
 }
 
 /// Duplicate vector element to vector or scalar
@@ -3899,16 +3879,6 @@ pub unsafe fn vdup_n_s32(value: i32) -> int32x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vdup.32"))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(dup))]
-pub unsafe fn vdup_n_s64(value: i64) -> int64x1_t {
-    int64x1_t(value)
-}
-
-/// Duplicate vector element to vector or scalar
-#[inline]
-#[target_feature(enable = "neon")]
-#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vdup.8"))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(dup))]
 pub unsafe fn vdup_n_u8(value: u8) -> uint8x8_t {
@@ -3933,16 +3903,6 @@ pub unsafe fn vdup_n_u16(value: u16) -> uint16x4_t {
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(dup))]
 pub unsafe fn vdup_n_u32(value: u32) -> uint32x2_t {
     uint32x2_t(value, value)
-}
-
-/// Duplicate vector element to vector or scalar
-#[inline]
-#[target_feature(enable = "neon")]
-#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vdup.32"))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(dup))]
-pub unsafe fn vdup_n_u64(value: u64) -> uint64x1_t {
-    uint64x1_t(value)
 }
 
 /// Duplicate vector element to vector or scalar
@@ -5763,14 +5723,6 @@ mod tests {
     }
 
     #[simd_test(enable = "neon")]
-    unsafe fn test_vdupq_n_s64() {
-        let v: i64 = 64;
-        let e = i64x2::new(64, 64);
-        let r: i64x2 = transmute(vdupq_n_s64(v));
-        assert_eq!(r, e);
-    }
-
-    #[simd_test(enable = "neon")]
     unsafe fn test_vdupq_n_u8() {
         let v: u8 = 42;
         let e = u8x16::new(
@@ -5793,14 +5745,6 @@ mod tests {
         let v: u32 = 64;
         let e = u32x4::new(64, 64, 64, 64);
         let r: u32x4 = transmute(vdupq_n_u32(v));
-        assert_eq!(r, e);
-    }
-
-    #[simd_test(enable = "neon")]
-    unsafe fn test_vdupq_n_u64() {
-        let v: u64 = 64;
-        let e = u64x2::new(64, 64);
-        let r: u64x2 = transmute(vdupq_n_u64(v));
         assert_eq!(r, e);
     }
 
@@ -5855,14 +5799,6 @@ mod tests {
     }
 
     #[simd_test(enable = "neon")]
-    unsafe fn test_vdup_n_s64() {
-        let v: i64 = 64;
-        let e = i64x1::new(64);
-        let r: i64x1 = transmute(vdup_n_s64(v));
-        assert_eq!(r, e);
-    }
-
-    #[simd_test(enable = "neon")]
     unsafe fn test_vdup_n_u8() {
         let v: u8 = 42;
         let e = u8x8::new(42, 42, 42, 42, 42, 42, 42, 42);
@@ -5883,14 +5819,6 @@ mod tests {
         let v: u32 = 64;
         let e = u32x2::new(64, 64);
         let r: u32x2 = transmute(vdup_n_u32(v));
-        assert_eq!(r, e);
-    }
-
-    #[simd_test(enable = "neon")]
-    unsafe fn test_vdup_n_u64() {
-        let v: u64 = 64;
-        let e = u64x1::new(64);
-        let r: u64x1 = transmute(vdup_n_u64(v));
         assert_eq!(r, e);
     }
 
