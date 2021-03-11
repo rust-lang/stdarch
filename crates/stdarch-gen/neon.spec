@@ -504,6 +504,17 @@ validate TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE
 aarch64 = fcmlt
 generate float32x2_t:uint32x2_t, float32x4_t:uint32x4_t, float64x1_t:uint64x1_t, float64x2_t:uint64x2_t
 
+/// Count leading sign bits
+name = vcls
+a = MIN, -1, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, MAX
+validate 0, BITS_M1, BITS_M1, BITS_M1, BITS_M1, BITS_M1, BITS_M1, BITS_M1, BITS_M1, BITS_M1, BITS_M1, BITS_M1, BITS_M1, BITS_M1, BITS_M1, 0
+
+arm = vcls.s
+aarch64 = cls
+link-arm = vcls._EXT_
+link-aarch64 = cls._EXT_
+generate int*_t
+
 /// Saturating subtract
 name = vqsub
 a = 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42

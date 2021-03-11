@@ -285,6 +285,40 @@ fn false_val(_t: &str) -> &'static str {
     "0"
 }
 
+fn bits(t: &str) -> &'static str {
+    match &t[..3] {
+        "u8x" => "8",
+        "u16" => "16",
+        "u32" => "32",
+        "u64" => "64",
+        "i8x" => "8",
+        "i16" => "16",
+        "i32" => "32",
+        "i64" => "64",
+        "p8x" => "8",
+        "p16" => "16",
+        "p64" => "64",
+        _ => panic!("Unknown bits for type {}", t),
+    }
+}
+
+fn bits_minus_one(t: &str) -> &'static str {
+    match &t[..3] {
+        "u8x" => "7",
+        "u16" => "15",
+        "u32" => "31",
+        "u64" => "63",
+        "i8x" => "7",
+        "i16" => "15",
+        "i32" => "31",
+        "i64" => "63",
+        "p8x" => "7",
+        "p16" => "15",
+        "p64" => "63",
+        _ => panic!("Unknown bits for type {}", t),
+    }
+}
+
 fn map_val<'v>(t: &str, v: &'v str) -> &'v str {
     match v {
         "FALSE" => false_val(t),
@@ -292,6 +326,8 @@ fn map_val<'v>(t: &str, v: &'v str) -> &'v str {
         "MAX" => max_val(t),
         "MIN" => min_val(t),
         "FF" => ff_val(t),
+        "BITS" => bits(t),
+        "BITS_M1" => bits_minus_one(t),
         o => o,
     }
 }
@@ -545,18 +581,15 @@ fn gen_arm(
     let ext_c =
         if let (Some(link_arm), Some(link_aarch64)) = (link_arm.clone(), link_aarch64.clone()) {
             let ext = type_to_ext(in_t);
-
-            format!(
-                r#"#[allow(improper_ctypes)]
+            if para_num == 2 {
+                format!(
+                    r#"#[allow(improper_ctypes)]
     extern "C" {{
         #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.{}")]
         #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.{}")]
         fn {}({}) -> {};
     }}
 "#,
-                link_arm.replace("_EXT_", ext),
-                link_aarch64.replace("_EXT_", ext),
-                current_fn,
                 match para_num {
                     1 => {
                         format!("a: {}", in_t)
@@ -568,6 +601,16 @@ fn gen_arm(
                 },
                 out_t
             )
+
+
+
+
+
+
+
+
+
+
         } else {
             String::new()
         };
