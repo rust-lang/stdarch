@@ -3736,11 +3736,6 @@ pub unsafe fn vget_lane_u8<const IMM5: i32>(v: uint8x8_t) -> u8 {
     simd_extract(v, IMM5 as u32)
 }
 
-/// Duplicate vector element to vector or scalar.
-/// This instruction duplicates the vector element at the specified element index
-/// in the source SIMD&FP register into a scalar or each element in a vector,
-/// and writes the result to the destination SIMD&FP register.
-
 /// Duplicate vector element to vector or scalar
 #[inline]
 #[target_feature(enable = "neon")]
