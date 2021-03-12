@@ -112,6 +112,54 @@ fn type_to_suffix(t: &str) -> &str {
     }
 }
 
+fn type_to_signed_suffix(t: &str) -> &str {
+    match t {
+        "int8x8_t" | "uint8x8_t" => "_s8",
+        "int8x16_t" | "uint8x16_t" => "q_s8",
+        "int16x4_t" | "uint16x4_t" => "_s16",
+        "int16x8_t" | "uint16x8_t" => "q_s16",
+        "int32x2_t" | "uint32x2_t" => "_s32",
+        "int32x4_t" | "uint32x4_t" => "q_s32",
+        "int64x1_t" | "uint64x1_t" => "_s64",
+        "int64x2_t" | "uint64x2_t" => "q_s64",
+        /*
+        "float16x4_t" => "_f16",
+        "float16x8_t" => "q_f16",
+        "float32x2_t" => "_f32",
+        "float32x4_t" => "q_f32",
+        "float64x1_t" => "_f64",
+        "float64x2_t" => "q_f64",
+        "poly64x1_t" => "_p64",
+        "poly64x2_t" => "q_p64",
+         */
+        _ => panic!("unknown type: {}", t),
+    }
+}
+
+fn type_to_unsigned_suffix(t: &str) -> &str {
+    match t {
+        "int8x8_t" | "uint8x8_t" => "_u8",
+        "int8x16_t" | "uint8x16_t" => "q_u8",
+        "int16x4_t" | "uint16x4_t" => "_u16",
+        "int16x8_t" | "uint16x8_t" => "q_u16",
+        "int32x2_t" | "uint32x2_t" => "_u32",
+        "int32x4_t" | "uint32x4_t" => "q_u32",
+        "int64x1_t" | "uint64x1_t" => "_u64",
+        "int64x2_t" | "uint64x2_t" => "q_u64",
+        /*
+        "float16x4_t" => "_f16",
+        "float16x8_t" => "q_f16",
+        "float32x2_t" => "_f32",
+        "float32x4_t" => "q_f32",
+        "float64x1_t" => "_f64",
+        "float64x2_t" => "q_f64",
+        "poly64x1_t" => "_p64",
+        "poly64x2_t" => "q_p64",
+         */
+        _ => panic!("unknown type: {}", t),
+    }
+}
+
 fn type_to_global_type(t: &str) -> &str {
     match t {
         "int8x8_t" => "i8x8",
@@ -336,7 +384,7 @@ fn map_val<'v>(t: &str, v: &'v str) -> &'v str {
 fn gen_aarch64(
     current_comment: &str,
     current_fn: &Option<String>,
-    name: &str,
+    current_name: &str,
     current_aarch64: &Option<String>,
     link_aarch64: &Option<String>,
     in_t: &str,
@@ -348,6 +396,7 @@ fn gen_aarch64(
 ) -> (String, String) {
     let _global_t = type_to_global_type(in_t);
     let _global_ret_t = type_to_global_type(out_t);
+    let name = format!("{}{}", current_name, type_to_suffix(in_t));
     let current_fn = if let Some(current_fn) = current_fn.clone() {
         if link_aarch64.is_some() {
             panic!(
@@ -406,7 +455,7 @@ fn gen_aarch64(
             if i > 0 {
                 calls.push_str("\n    ");
             }
-            calls.push_str(&get_call(&multi_fn[i], in_t, out_t, fixed));
+            calls.push_str(&get_call(&multi_fn[i], current_name, in_t, out_t, fixed));
         }
         calls
     } else {
@@ -465,7 +514,14 @@ fn gen_aarch64(
         current_comment, current_aarch64, call
     );
 
-    let test = gen_test(name, &in_t, &out_t, current_tests, type_len(in_t), para_num);
+    let test = gen_test(
+        &name,
+        &in_t,
+        &out_t,
+        current_tests,
+        type_len(in_t),
+        para_num,
+    );
     (function, test)
 }
 
@@ -535,7 +591,7 @@ fn gen_test(
 fn gen_arm(
     current_comment: &str,
     current_fn: &Option<String>,
-    name: &str,
+    current_name: &str,
     current_arm: &str,
     link_arm: &Option<String>,
     current_aarch64: &Option<String>,
@@ -549,6 +605,7 @@ fn gen_arm(
 ) -> (String, String) {
     let _global_t = type_to_global_type(in_t);
     let _global_ret_t = type_to_global_type(out_t);
+    let name = format!("{}{}", current_name, type_to_suffix(in_t));
     let current_aarch64 = current_aarch64
         .clone()
         .unwrap_or_else(|| current_arm.to_string());
@@ -620,7 +677,7 @@ fn gen_arm(
             if i > 0 {
                 calls.push_str("\n    ");
             }
-            calls.push_str(&get_call(&multi_fn[i], in_t, out_t, fixed));
+            calls.push_str(&get_call(&multi_fn[i], current_name, in_t, out_t, fixed));
         }
         calls
     } else {
@@ -655,10 +712,10 @@ fn gen_arm(
             )
         }
         (_, 1, _) => format!(
-            r#"pub unsafe fn {}(a: {}, b: {}) -> {} {{
+            r#"pub unsafe fn {}(a: {}) -> {} {{
     {}{}
 }}"#,
-            name, in_t, in_t, out_t, ext_c, multi_calls,
+            name, in_t, out_t, ext_c, multi_calls,
         ),
         (_, 2, _) => format!(
             r#"pub unsafe fn {}(a: {}, b: {}) -> {} {{
@@ -683,7 +740,14 @@ fn gen_arm(
         expand_intrinsic(&current_aarch64, in_t),
         call,
     );
-    let test = gen_test(name, &in_t, &out_t, current_tests, type_len(in_t), para_num);
+    let test = gen_test(
+        &name,
+        &in_t,
+        &out_t,
+        current_tests,
+        type_len(in_t),
+        para_num,
+    );
 
     (function, test)
 }
@@ -758,15 +822,52 @@ fn expand_intrinsic(intr: &str, t: &str) -> String {
     }
 }
 
-fn get_call(in_str: &str, in_t: &str, out_t: &str, fixed: &Vec<String>) -> String {
+fn get_call(
+    in_str: &str,
+    current_name: &str,
+    in_t: &str,
+    out_t: &str,
+    fixed: &Vec<String>,
+) -> String {
     let params: Vec<_> = in_str.split(',').map(|v| v.trim().to_string()).collect();
     assert!(params.len() > 0);
-    let fn_name = &params[0];
+    let mut fn_name = params[0].clone();
     let mut re: Option<(String, String)> = None;
     let mut param_str = String::new();
-    for i in 1..params.len() {
+    let mut i = 1;
+    while i < params.len() {
         let s = &params[i];
-        if s.contains(':') {
+        if s.starts_with('[') {
+            let mut sub_fn = String::new();
+            let mut brackets = 1;
+            while i < params.len() {
+                if !sub_fn.is_empty() {
+                    sub_fn.push_str(", ");
+                }
+                sub_fn.push_str(&params[i]);
+                if params[i].starts_with('[') {
+                    brackets += 1;
+                }
+                if params[i].ends_with("]") {
+                    brackets -= 1;
+                    if brackets == 0 {
+                        break;
+                    }
+                }
+                i += 1;
+            }
+            let sub_call = get_call(
+                &sub_fn[1..sub_fn.len() - 1],
+                current_name,
+                in_t,
+                out_t,
+                fixed,
+            );
+            if !param_str.is_empty() {
+                param_str.push_str(", ");
+            }
+            param_str.push_str(&sub_call);
+        } else if s.contains(':') {
             let re_params: Vec<_> = s.split(':').map(|v| v.to_string()).collect();
             if re_params[1] == "" {
                 re = Some((re_params[0].clone(), in_t.to_string()));
@@ -781,11 +882,27 @@ fn get_call(in_str: &str, in_t: &str, out_t: &str, fixed: &Vec<String>) -> Strin
             }
             param_str.push_str(s);
         }
+        i += 1;
     }
     if fn_name == "fixed" {
         let (re_name, re_type) = re.unwrap();
         let fixed: Vec<String> = fixed.iter().take(type_len(in_t)).cloned().collect();
         return format!(r#"let {}{};"#, re_name, values(&re_type, &fixed));
+    }
+    if fn_name.starts_with("self") {
+        let fn_format: Vec<_> = fn_name.split('-').map(|v| v.to_string()).collect();
+        assert_eq!(fn_format.len(), 3);
+        let mut current_name = if fn_format[1] == "signed" {
+            format!("{}{}", current_name, type_to_signed_suffix(in_t))
+        } else if fn_format[1] == "unsigned" {
+            format!("{}{}", current_name, type_to_unsigned_suffix(in_t))
+        } else {
+            format!("{}{}", current_name, fn_format[1])
+        };
+        if fn_format[2] == "ext" {
+            current_name.push_str("_");
+        }
+        fn_name = current_name;
     }
     if param_str.is_empty() {
         param_str.push_str("a, b");
@@ -952,12 +1069,11 @@ mod test {
                     para_num = 1;
                 }
                 let current_name = current_name.clone().unwrap();
-                let name = format!("{}{}", current_name, type_to_suffix(in_t),);
                 if let Some(current_arm) = current_arm.clone() {
                     let (function, test) = gen_arm(
                         &current_comment,
                         &current_fn,
-                        &name,
+                        &current_name,
                         &current_arm,
                         &link_arm,
                         &current_aarch64,
@@ -975,7 +1091,7 @@ mod test {
                     let (function, test) = gen_aarch64(
                         &current_comment,
                         &current_fn,
-                        &name,
+                        &current_name,
                         &current_aarch64,
                         &link_aarch64,
                         &in_t,

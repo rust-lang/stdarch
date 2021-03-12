@@ -515,6 +515,26 @@ link-arm = vcls._EXT_
 link-aarch64 = cls._EXT_
 generate int*_t
 
+/// Signed count leading sign bits
+name = vclz
+multi_fn = self-signed-ext, a
+a = MIN, -1, 0x00, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, MAX
+validate 0, 0, BITS, BITS_M1, BITS_M1, BITS_M1, BITS_M1, BITS_M1, BITS_M1, BITS_M1, BITS_M1, BITS_M1, BITS_M1, BITS_M1, BITS_M1, 1
+
+arm = vclz.
+aarch64 = clz
+generate int*_t
+
+/// Unsigned count leading sign bits
+name = vclz
+multi_fn = transmute, [self-signed-ext, transmute(a)]
+a = MIN, 0x00, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, MAX
+validate BITS, BITS, BITS_M1, BITS_M1, BITS_M1, BITS_M1, BITS_M1, BITS_M1, BITS_M1, BITS_M1, BITS_M1, BITS_M1, BITS_M1, BITS_M1, BITS_M1, 0
+
+arm = vclz.
+aarch64 = clz
+generate uint*_t
+
 /// Saturating subtract
 name = vqsub
 a = 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42
