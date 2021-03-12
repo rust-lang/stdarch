@@ -425,6 +425,7 @@ fn gen_aarch64(
     let current_aarch64 = current_aarch64.clone().unwrap();
     let ext_c = if let Some(link_aarch64) = link_aarch64.clone() {
         let ext = type_to_ext(in_t);
+        let ext2 = type_to_ext(out_t);
 
         format!(
             r#"#[allow(improper_ctypes)]
@@ -433,7 +434,7 @@ fn gen_aarch64(
         fn {}({}) -> {};
     }}
     "#,
-            link_aarch64.replace("_EXT_", ext),
+            link_aarch64.replace("_EXT_", ext).replace("_EXT2_", ext2),
             current_fn,
             match para_num {
                 1 => {
@@ -637,8 +638,7 @@ fn gen_arm(
     };
     let ext_c =
         if let (Some(link_arm), Some(link_aarch64)) = (link_arm.clone(), link_aarch64.clone()) {
-            let ext = type_to_ext(in_t);
-            if para_num == 2 {
+            let fn_declare = if para_num == 2 {
                 format!(
                     r#"#[allow(improper_ctypes)]
     extern "C" {{
@@ -658,7 +658,6 @@ fn gen_arm(
                 },
                 out_t
             )
-
 
 
 
@@ -889,20 +888,26 @@ fn get_call(
         let fixed: Vec<String> = fixed.iter().take(type_len(in_t)).cloned().collect();
         return format!(r#"let {}{};"#, re_name, values(&re_type, &fixed));
     }
-    if fn_name.starts_with("self") {
+    if fn_name.contains('-') {
         let fn_format: Vec<_> = fn_name.split('-').map(|v| v.to_string()).collect();
         assert_eq!(fn_format.len(), 3);
-        let mut current_name = if fn_format[1] == "signed" {
-            format!("{}{}", current_name, type_to_signed_suffix(in_t))
-        } else if fn_format[1] == "unsigned" {
-            format!("{}{}", current_name, type_to_unsigned_suffix(in_t))
+        fn_name = if fn_format[0] == "self" {
+            current_name.to_string()
         } else {
-            format!("{}{}", current_name, fn_format[1])
+            fn_format[0].clone()
+        };
+        if fn_format[1] == "self" {
+            fn_name.push_str(type_to_suffix(in_t));
+        } else if fn_format[1] == "signed" {
+            fn_name.push_str(type_to_signed_suffix(in_t));
+        } else if fn_format[1] == "unsigned" {
+            fn_name.push_str(type_to_unsigned_suffix(in_t));
+        } else {
+            fn_name.push_str(&fn_format[1]);
         };
         if fn_format[2] == "ext" {
-            current_name.push_str("_");
+            fn_name.push_str("_");
         }
-        fn_name = current_name;
     }
     if param_str.is_empty() {
         param_str.push_str("a, b");

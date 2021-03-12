@@ -1837,6 +1837,110 @@ pub unsafe fn vclzq_u32(a: uint32x4_t) -> uint32x4_t {
     transmute(vclzq_s32_(transmute(a)))
 }
 
+/// Floating-point absolute compare greater than
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vacgt.f32"))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(facgt))]
+pub unsafe fn vcagt_f32(a: float32x2_t, b: float32x2_t) -> uint32x2_t {
+    #[allow(improper_ctypes)]
+    extern "C" {
+        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vacgt.v2i32.v2f32")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.facgt.v2i32.v2f32")]
+        fn vcagt_f32_(a: float32x2_t, b: float32x2_t) -> uint32x2_t;
+    }
+vcagt_f32_(a, b)
+}
+
+/// Floating-point absolute compare greater than
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vacgt.f32"))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(facgt))]
+pub unsafe fn vcagtq_f32(a: float32x4_t, b: float32x4_t) -> uint32x4_t {
+    #[allow(improper_ctypes)]
+    extern "C" {
+        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vacgt.v4i32.v4f32")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.facgt.v4i32.v4f32")]
+        fn vcagtq_f32_(a: float32x4_t, b: float32x4_t) -> uint32x4_t;
+    }
+vcagtq_f32_(a, b)
+}
+
+/// Floating-point absolute compare greater than or equal
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vacge.f32"))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(facge))]
+pub unsafe fn vcage_f32(a: float32x2_t, b: float32x2_t) -> uint32x2_t {
+    #[allow(improper_ctypes)]
+    extern "C" {
+        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vacge.v2i32.v2f32")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.facge.v2i32.v2f32")]
+        fn vcage_f32_(a: float32x2_t, b: float32x2_t) -> uint32x2_t;
+    }
+vcage_f32_(a, b)
+}
+
+/// Floating-point absolute compare greater than or equal
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vacge.f32"))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(facge))]
+pub unsafe fn vcageq_f32(a: float32x4_t, b: float32x4_t) -> uint32x4_t {
+    #[allow(improper_ctypes)]
+    extern "C" {
+        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vacge.v4i32.v4f32")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.facge.v4i32.v4f32")]
+        fn vcageq_f32_(a: float32x4_t, b: float32x4_t) -> uint32x4_t;
+    }
+vcageq_f32_(a, b)
+}
+
+/// Floating-point absolute compare less than
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vacgt.f32"))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(facgt))]
+pub unsafe fn vcalt_f32(a: float32x2_t, b: float32x2_t) -> uint32x2_t {
+    vcagt_f32(b, a)
+}
+
+/// Floating-point absolute compare less than
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vacgt.f32"))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(facgt))]
+pub unsafe fn vcaltq_f32(a: float32x4_t, b: float32x4_t) -> uint32x4_t {
+    vcagtq_f32(b, a)
+}
+
+/// Floating-point absolute compare less than or equal
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vacge.f32"))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(facge))]
+pub unsafe fn vcale_f32(a: float32x2_t, b: float32x2_t) -> uint32x2_t {
+    vcage_f32(b, a)
+}
+
+/// Floating-point absolute compare less than or equal
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vacge.f32"))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(facge))]
+pub unsafe fn vcaleq_f32(a: float32x4_t, b: float32x4_t) -> uint32x4_t {
+    vcageq_f32(b, a)
+}
+
 /// Saturating subtract
 #[inline]
 #[target_feature(enable = "neon")]
@@ -5274,6 +5378,78 @@ mod test {
         let a: u32x4 = u32x4::new(0, 0x00, 0x01, 0x01);
         let e: u32x4 = u32x4::new(32, 32, 31, 31);
         let r: u32x4 = transmute(vclzq_u32(transmute(a)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vcagt_f32() {
+        let a: f32x2 = f32x2::new(-1.2, 0.0);
+        let b: f32x2 = f32x2::new(-1.1, 0.0);
+        let e: u32x2 = u32x2::new(0xFF_FF_FF_FF, 0);
+        let r: u32x2 = transmute(vcagt_f32(transmute(a), transmute(b)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vcagtq_f32() {
+        let a: f32x4 = f32x4::new(-1.2, 0.0, 1.2, 2.3);
+        let b: f32x4 = f32x4::new(-1.1, 0.0, 1.1, 2.4);
+        let e: u32x4 = u32x4::new(0xFF_FF_FF_FF, 0, 0xFF_FF_FF_FF, 0);
+        let r: u32x4 = transmute(vcagtq_f32(transmute(a), transmute(b)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vcage_f32() {
+        let a: f32x2 = f32x2::new(-1.2, 0.0);
+        let b: f32x2 = f32x2::new(-1.1, 0.0);
+        let e: u32x2 = u32x2::new(0xFF_FF_FF_FF, 0xFF_FF_FF_FF);
+        let r: u32x2 = transmute(vcage_f32(transmute(a), transmute(b)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vcageq_f32() {
+        let a: f32x4 = f32x4::new(-1.2, 0.0, 1.2, 2.3);
+        let b: f32x4 = f32x4::new(-1.1, 0.0, 1.1, 2.4);
+        let e: u32x4 = u32x4::new(0xFF_FF_FF_FF, 0xFF_FF_FF_FF, 0xFF_FF_FF_FF, 0);
+        let r: u32x4 = transmute(vcageq_f32(transmute(a), transmute(b)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vcalt_f32() {
+        let a: f32x2 = f32x2::new(-1.2, 0.0);
+        let b: f32x2 = f32x2::new(-1.1, 0.0);
+        let e: u32x2 = u32x2::new(0, 0);
+        let r: u32x2 = transmute(vcalt_f32(transmute(a), transmute(b)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vcaltq_f32() {
+        let a: f32x4 = f32x4::new(-1.2, 0.0, 1.2, 2.3);
+        let b: f32x4 = f32x4::new(-1.1, 0.0, 1.1, 2.4);
+        let e: u32x4 = u32x4::new(0, 0, 0, 0xFF_FF_FF_FF);
+        let r: u32x4 = transmute(vcaltq_f32(transmute(a), transmute(b)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vcale_f32() {
+        let a: f32x2 = f32x2::new(-1.2, 0.0);
+        let b: f32x2 = f32x2::new(-1.1, 0.0);
+        let e: u32x2 = u32x2::new(0, 0xFF_FF_FF_FF);
+        let r: u32x2 = transmute(vcale_f32(transmute(a), transmute(b)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vcaleq_f32() {
+        let a: f32x4 = f32x4::new(-1.2, 0.0, 1.2, 2.3);
+        let b: f32x4 = f32x4::new(-1.1, 0.0, 1.1, 2.4);
+        let e: u32x4 = u32x4::new(0, 0xFF_FF_FF_FF, 0, 0xFF_FF_FF_FF);
+        let r: u32x4 = transmute(vcaleq_f32(transmute(a), transmute(b)));
         assert_eq!(r, e);
     }
 

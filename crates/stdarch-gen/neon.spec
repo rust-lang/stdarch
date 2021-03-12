@@ -535,6 +535,60 @@ arm = vclz.
 aarch64 = clz
 generate uint*_t
 
+/// Floating-point absolute compare greater than
+name = vcagt
+a = -1.2, 0.0, 1.2, 2.3, 3.4, 4.5, 5.6, 6.7
+b = -1.1, 0.0, 1.1, 2.4, 3.3, 4.6, 5.5, 6.8
+validate TRUE, FALSE, TRUE, FALSE, TRUE, FALSE, TRUE, FALSE
+
+aarch64 = facgt
+link-aarch64 = facgt._EXT2_._EXT_
+generate float64x1_t:uint64x1_t, float64x2_t:uint64x2_t
+
+arm = vacgt.s
+link-arm = vacgt._EXT2_._EXT_
+generate float32x2_t:uint32x2_t, float32x4_t:uint32x4_t
+
+/// Floating-point absolute compare greater than or equal
+name = vcage
+a = -1.2, 0.0, 1.2, 2.3, 3.4, 4.5, 5.6, 6.7
+b = -1.1, 0.0, 1.1, 2.4, 3.3, 4.6, 5.5, 6.8
+validate TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, TRUE, FALSE
+
+aarch64 = facge
+link-aarch64 = facge._EXT2_._EXT_
+generate float64x1_t:uint64x1_t, float64x2_t:uint64x2_t
+
+arm = vacge.s
+link-arm = vacge._EXT2_._EXT_
+generate float32x2_t:uint32x2_t, float32x4_t:uint32x4_t
+
+/// Floating-point absolute compare less than
+name = vcalt
+multi_fn = vcagt-self-noext, b, a
+a = -1.2, 0.0, 1.2, 2.3, 3.4, 4.5, 5.6, 6.7
+b = -1.1, 0.0, 1.1, 2.4, 3.3, 4.6, 5.5, 6.8
+validate FALSE, FALSE, FALSE, TRUE, FALSE, TRUE, FALSE, TRUE
+
+aarch64 = facgt
+generate float64x1_t:uint64x1_t, float64x2_t:uint64x2_t
+
+arm = vacgt.s
+generate float32x2_t:uint32x2_t, float32x4_t:uint32x4_t
+
+/// Floating-point absolute compare less than or equal
+name = vcale
+multi_fn = vcage-self-noext , b, a
+a = -1.2, 0.0, 1.2, 2.3, 3.4, 4.5, 5.6, 6.7
+b = -1.1, 0.0, 1.1, 2.4, 3.3, 4.6, 5.5, 6.8
+validate FALSE, TRUE, FALSE, TRUE, FALSE, TRUE, FALSE, TRUE
+
+aarch64 = facge
+generate float64x1_t:uint64x1_t, float64x2_t:uint64x2_t
+
+arm = vacge.s
+generate float32x2_t:uint32x2_t, float32x4_t:uint32x4_t
+
 /// Saturating subtract
 name = vqsub
 a = 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42
