@@ -3741,7 +3741,7 @@ pub unsafe fn vget_lane_u8<const IMM5: i32>(v: uint8x8_t) -> u8 {
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vmov"))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(mov))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ext))]
 pub unsafe fn vget_high_s8(a: int8x16_t) -> int8x8_t {
     simd_shuffle8(a, a, [8, 9, 10, 11, 12, 13, 14, 15])
 }
@@ -3751,7 +3751,7 @@ pub unsafe fn vget_high_s8(a: int8x16_t) -> int8x8_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vmov"))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(mov))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ext))]
 pub unsafe fn vget_high_s16(a: int16x8_t) -> int16x4_t {
     simd_shuffle4(a, a, [4, 5, 6, 7])
 }
@@ -3761,7 +3761,7 @@ pub unsafe fn vget_high_s16(a: int16x8_t) -> int16x4_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vmov"))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(mov))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ext))]
 pub unsafe fn vget_high_s32(a: int32x4_t) -> int32x2_t {
     simd_shuffle2(a, a, [2, 3])
 }
@@ -3771,7 +3771,7 @@ pub unsafe fn vget_high_s32(a: int32x4_t) -> int32x2_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vmov"))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(mov))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ext))]
 pub unsafe fn vget_high_s64(a: int64x2_t) -> int64x1_t {
     int64x1_t(simd_extract(a, 1))
 }
@@ -3781,7 +3781,7 @@ pub unsafe fn vget_high_s64(a: int64x2_t) -> int64x1_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vmov"))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(mov))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ext))]
 pub unsafe fn vget_high_u8(a: uint8x16_t) -> uint8x8_t {
     simd_shuffle8(a, a, [8, 9, 10, 11, 12, 13, 14, 15])
 }
@@ -3791,7 +3791,7 @@ pub unsafe fn vget_high_u8(a: uint8x16_t) -> uint8x8_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vmov"))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(mov))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ext))]
 pub unsafe fn vget_high_u16(a: uint16x8_t) -> uint16x4_t {
     simd_shuffle4(a, a, [4, 5, 6, 7])
 }
@@ -3801,7 +3801,7 @@ pub unsafe fn vget_high_u16(a: uint16x8_t) -> uint16x4_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vmov"))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(mov))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ext))]
 pub unsafe fn vget_high_u32(a: uint32x4_t) -> uint32x2_t {
     simd_shuffle2(a, a, [2, 3])
 }
@@ -3811,7 +3811,7 @@ pub unsafe fn vget_high_u32(a: uint32x4_t) -> uint32x2_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vmov"))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(mov))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ext))]
 pub unsafe fn vget_high_u64(a: uint64x2_t) -> uint64x1_t {
     uint64x1_t(simd_extract(a, 1))
 }
@@ -3821,7 +3821,7 @@ pub unsafe fn vget_high_u64(a: uint64x2_t) -> uint64x1_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vmov"))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(mov))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ext))]
 pub unsafe fn vget_high_p8(a: poly8x16_t) -> poly8x8_t {
     simd_shuffle8(a, a, [8, 9, 10, 11, 12, 13, 14, 15])
 }
@@ -3831,7 +3831,7 @@ pub unsafe fn vget_high_p8(a: poly8x16_t) -> poly8x8_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vmov"))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(mov))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ext))]
 pub unsafe fn vget_high_p16(a: poly16x8_t) -> poly16x4_t {
     simd_shuffle4(a, a, [4, 5, 6, 7])
 }
@@ -3841,7 +3841,7 @@ pub unsafe fn vget_high_p16(a: poly16x8_t) -> poly16x4_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vmov"))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(mov))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ext))]
 pub unsafe fn vget_high_f32(a: float32x4_t) -> float32x2_t {
     simd_shuffle2(a, a, [2, 3])
 }
