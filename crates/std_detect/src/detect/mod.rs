@@ -29,35 +29,35 @@ cfg_if! {
     if #[cfg(any(target_arch = "x86", target_arch = "x86_64"))] {
         #[path = "arch/x86.rs"]
         #[macro_use]
-        mod arch;
+        pub(crate) mod arch;
     } else if #[cfg(target_arch = "arm")] {
         #[path = "arch/arm.rs"]
         #[macro_use]
-        mod arch;
+        pub(crate) mod arch;
     } else if #[cfg(target_arch = "aarch64")] {
         #[path = "arch/aarch64.rs"]
         #[macro_use]
-        mod arch;
+        pub(crate) mod arch;
     } else if #[cfg(target_arch = "powerpc")] {
         #[path = "arch/powerpc.rs"]
         #[macro_use]
-        mod arch;
+        pub(crate) mod arch;
     } else if #[cfg(target_arch = "powerpc64")] {
         #[path = "arch/powerpc64.rs"]
         #[macro_use]
-        mod arch;
+        pub(crate) mod arch;
     } else if #[cfg(target_arch = "mips")] {
         #[path = "arch/mips.rs"]
         #[macro_use]
-        mod arch;
+        pub(crate) mod arch;
     } else if #[cfg(target_arch = "mips64")] {
         #[path = "arch/mips64.rs"]
         #[macro_use]
-        mod arch;
+        pub(crate) mod arch;
     } else {
         // Unimplemented architecture:
         #[allow(dead_code)]
-        mod arch {
+        pub(crate) mod arch {
             #[doc(hidden)]
             pub(crate) enum Feature {
                 Null

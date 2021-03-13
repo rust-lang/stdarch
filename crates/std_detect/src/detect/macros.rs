@@ -43,6 +43,9 @@ macro_rules! features {
             };
         }
 
+        #[cfg(not(test))]
+        pub use $macro_name;
+
         /// Each variant denotes a position in a bitset for a particular feature.
         ///
         /// PLEASE: do not use this, it is an implementation detail subject
