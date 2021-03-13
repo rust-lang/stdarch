@@ -426,7 +426,6 @@ fn gen_aarch64(
     let ext_c = if let Some(link_aarch64) = link_aarch64.clone() {
         let ext = type_to_ext(in_t);
         let ext2 = type_to_ext(out_t);
-
         format!(
             r#"#[allow(improper_ctypes)]
     extern "C" {{
@@ -638,15 +637,19 @@ fn gen_arm(
     };
     let ext_c =
         if let (Some(link_arm), Some(link_aarch64)) = (link_arm.clone(), link_aarch64.clone()) {
-            let fn_declare = if para_num == 2 {
-                format!(
-                    r#"#[allow(improper_ctypes)]
+            let ext = type_to_ext(in_t);
+            let ext2 = type_to_ext(out_t);
+            format!(
+                r#"#[allow(improper_ctypes)]
     extern "C" {{
         #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.{}")]
         #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.{}")]
         fn {}({}) -> {};
     }}
 "#,
+                link_arm.replace("_EXT_", ext).replace("_EXT2_", ext2),
+                link_aarch64.replace("_EXT_", ext).replace("_EXT2_", ext2),
+                current_fn,
                 match para_num {
                     1 => {
                         format!("a: {}", in_t)
@@ -658,15 +661,6 @@ fn gen_arm(
                 },
                 out_t
             )
-
-
-
-
-
-
-
-
-
         } else {
             String::new()
         };

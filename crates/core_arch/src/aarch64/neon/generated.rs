@@ -1023,7 +1023,7 @@ pub unsafe fn vcagt_f64(a: float64x1_t, b: float64x1_t) -> uint64x1_t {
     #[allow(improper_ctypes)]
     extern "C" {
         #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.facgt.v1i64.v1f64")]
-        fn vcagt_f64_(a: float64x1_t, a: float64x1_t) -> uint64x1_t;
+        fn vcagt_f64_(a: float64x1_t, b: float64x1_t) -> uint64x1_t;
     }
     vcagt_f64_(a, b)
 }
@@ -1036,7 +1036,7 @@ pub unsafe fn vcagtq_f64(a: float64x2_t, b: float64x2_t) -> uint64x2_t {
     #[allow(improper_ctypes)]
     extern "C" {
         #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.facgt.v2i64.v2f64")]
-        fn vcagtq_f64_(a: float64x2_t, a: float64x2_t) -> uint64x2_t;
+        fn vcagtq_f64_(a: float64x2_t, b: float64x2_t) -> uint64x2_t;
     }
     vcagtq_f64_(a, b)
 }
@@ -1049,7 +1049,7 @@ pub unsafe fn vcage_f64(a: float64x1_t, b: float64x1_t) -> uint64x1_t {
     #[allow(improper_ctypes)]
     extern "C" {
         #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.facge.v1i64.v1f64")]
-        fn vcage_f64_(a: float64x1_t, a: float64x1_t) -> uint64x1_t;
+        fn vcage_f64_(a: float64x1_t, b: float64x1_t) -> uint64x1_t;
     }
     vcage_f64_(a, b)
 }
@@ -1062,7 +1062,7 @@ pub unsafe fn vcageq_f64(a: float64x2_t, b: float64x2_t) -> uint64x2_t {
     #[allow(improper_ctypes)]
     extern "C" {
         #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.facge.v2i64.v2f64")]
-        fn vcageq_f64_(a: float64x2_t, a: float64x2_t) -> uint64x2_t;
+        fn vcageq_f64_(a: float64x2_t, b: float64x2_t) -> uint64x2_t;
     }
     vcageq_f64_(a, b)
 }
