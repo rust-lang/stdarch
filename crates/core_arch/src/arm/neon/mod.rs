@@ -3841,7 +3841,7 @@ pub unsafe fn vget_high_p16(a: poly16x8_t) -> poly16x4_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vmov"))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(mov))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ext))]
 pub unsafe fn vget_high_p64(a: poly64x2_t) -> poly64x1_t {
     poly64x1_t(simd_extract(a, 1))
 }
