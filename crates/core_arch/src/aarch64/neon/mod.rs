@@ -1515,7 +1515,7 @@ pub unsafe fn vcombine_p64(low: poly64x1_t, high: poly64x1_t) -> poly64x2_t {
 /// Duplicate vector element to vector or scalar
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(ext))]
+#[cfg_attr(test, assert_instr(mov))]
 pub unsafe fn vget_high_f64(a: float64x2_t) -> float64x1_t {
     float64x1_t(simd_extract(a, 1))
 }
