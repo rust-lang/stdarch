@@ -3842,6 +3842,16 @@ pub unsafe fn vget_high_p16(a: poly16x8_t) -> poly16x4_t {
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vmov"))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ext))]
+pub unsafe fn vget_high_p64(a: poly64x2_t) -> poly64x1_t {
+    poly64x1_t(simd_extract(a, 1))
+}
+
+/// Duplicate vector element to vector or scalar
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vmov"))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ext))]
 pub unsafe fn vget_high_f32(a: float32x4_t) -> float32x2_t {
     simd_shuffle2(a, a, [2, 3])
 }
@@ -5878,6 +5888,14 @@ mod tests {
         let a = u16x8::new(1, 2, 3, 4, 5, 6, 7, 8);
         let e = u16x4::new(5, 6, 7, 8);
         let r: u16x4 = transmute(vget_high_p16(transmute(a)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vget_high_p64() {
+        let a = u64x2::new(1, 2);
+        let e = u64x1::new(2);
+        let r: u64x1 = transmute(vget_high_p64(transmute(a)));
         assert_eq!(r, e);
     }
 
