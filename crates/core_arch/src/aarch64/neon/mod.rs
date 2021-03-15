@@ -1523,7 +1523,7 @@ pub unsafe fn vget_high_f64(a: float64x2_t) -> float64x1_t {
 /// Duplicate vector element to vector or scalar
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(mov))]
+#[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vget_high_p64(a: poly64x2_t) -> poly64x1_t {
     transmute(u64x1::new(simd_extract(a, 1)))
 }
@@ -1531,7 +1531,7 @@ pub unsafe fn vget_high_p64(a: poly64x2_t) -> poly64x1_t {
 /// Duplicate vector element to vector or scalar
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(mov))]
+#[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vget_low_f64(a: float64x2_t) -> float64x1_t {
     float64x1_t(simd_extract(a, 0))
 }
@@ -1539,7 +1539,7 @@ pub unsafe fn vget_low_f64(a: float64x2_t) -> float64x1_t {
 /// Duplicate vector element to vector or scalar
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(mov))]
+#[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vget_low_p64(a: poly64x2_t) -> poly64x1_t {
     transmute(u64x1::new(simd_extract(a, 0)))
 }
