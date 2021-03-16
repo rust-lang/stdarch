@@ -656,8 +656,8 @@ generate float32x2_t:float64x2_t:float32x4_t
 name = vcvt
 double-suffixes
 fn = simd_cast
-a = -1.0, 2.0, -3.0, 4.0
-validate -1, 2, -3, 4
+a = -1.1, 2.1, -2.9, 3.9
+validate -1, 2, -2, 3
 
 arm = vcvt
 generate float32x2_t:int32x2_t, float32x4_t:int32x4_t
@@ -666,8 +666,8 @@ generate float32x2_t:int32x2_t, float32x4_t:int32x4_t
 name = vcvt
 double-suffixes
 fn = simd_cast
-a = 1.0, 2.0, 3.0, 4.0
-validate 1, 2, 3, 4
+a = 1.1, 2.1, 2.9, 3.9
+validate 1, 2, 2, 3
 
 arm = vcvt
 generate float32x2_t:uint32x2_t, float32x4_t:uint32x4_t
@@ -675,8 +675,8 @@ generate float32x2_t:uint32x2_t, float32x4_t:uint32x4_t
 /// Floating-point convert to signed fixed-point, rounding toward zero
 name = vcvt
 double-suffixes
-a = -1.0, 2.0, -3.0, 4.0
-validate -1, 2, -3, 4
+a = -1.1, 2.1, -2.9, 3.9
+validate -1, 2, -2, 3
 
 aarch64 = fcvtzs
 link-aarch64 = fcvtzs._EXT2_._EXT_
@@ -685,7 +685,7 @@ generate float32x2_t:int32x2_t, float32x4_t:int32x4_t, float64x1_t:int64x1_t, fl
 /// Floating-point convert to signed integer, rounding to nearest with ties to away
 name = vcvta
 double-suffixes
-a = -1.0, 2.0, -3.0, 4.0
+a = -1.1, 2.1, -2.9, 3.9
 validate -1, 2, -3, 4
 
 aarch64 = fcvtas
@@ -695,8 +695,8 @@ generate float32x2_t:int32x2_t, float32x4_t:int32x4_t, float64x1_t:int64x1_t, fl
 /// Floating-point convert to signed integer, rounding to nearest with ties to even
 name = vcvtn
 double-suffixes
-a = -1.0, 2.0, -3.0, 4.0
-validate -1, 2, -3, 4
+a = -1.5, 2.1, -2.9, 3.9
+validate -2, 2, -3, 4
 
 aarch64 = fcvtns
 link-aarch64 = fcvtns._EXT2_._EXT_
@@ -705,8 +705,8 @@ generate float32x2_t:int32x2_t, float32x4_t:int32x4_t, float64x1_t:int64x1_t, fl
 /// Floating-point convert to signed integer, rounding toward minus infinity
 name = vcvtm
 double-suffixes
-a = -1.0, 2.0, -3.0, 4.0
-validate -1, 2, -3, 4
+a = -1.1, 2.1, -2.9, 3.9
+validate -2, 2, -3, 3
 
 aarch64 = fcvtms
 link-aarch64 = fcvtms._EXT2_._EXT_
@@ -715,8 +715,8 @@ generate float32x2_t:int32x2_t, float32x4_t:int32x4_t, float64x1_t:int64x1_t, fl
 /// Floating-point convert to signed integer, rounding toward plus infinity
 name = vcvtp
 double-suffixes
-a = -1.0, 2.0, -3.0, 4.0
-validate -1, 2, -3, 4
+a = -1.1, 2.1, -2.9, 3.9
+validate -1, 3, -2, 4
 
 aarch64 = fcvtps
 link-aarch64 = fcvtps._EXT2_._EXT_
@@ -725,8 +725,8 @@ generate float32x2_t:int32x2_t, float32x4_t:int32x4_t, float64x1_t:int64x1_t, fl
 /// Floating-point convert to unsigned fixed-point, rounding toward zero
 name = vcvt
 double-suffixes
-a = 1.0, 2.0, 3.0, 4.0
-validate 1, 2, 3, 4
+a = 1.1, 2.1, 2.9, 3.9
+validate 1, 2, 2, 3
 
 aarch64 = fcvtzu
 link-aarch64 = fcvtzu._EXT2_._EXT_
@@ -735,7 +735,7 @@ generate float32x2_t:uint32x2_t, float32x4_t:uint32x4_t, float64x1_t:uint64x1_t,
 /// Floating-point convert to unsigned integer, rounding to nearest with ties to away
 name = vcvta
 double-suffixes
-a = 1.0, 2.0, 3.0, 4.0
+a = 1.1, 2.1, 2.9, 3.9
 validate 1, 2, 3, 4
 
 aarch64 = fcvtau
@@ -745,8 +745,8 @@ generate float32x2_t:uint32x2_t, float32x4_t:uint32x4_t, float64x1_t:uint64x1_t,
 /// Floating-point convert to unsigned integer, rounding to nearest with ties to even
 name = vcvtn
 double-suffixes
-a = 1.0, 2.0, 3.0, 4.0
-validate 1, 2, 3, 4
+a = 1.5, 2.1, 2.9, 3.9
+validate 2, 2, 3, 4
 
 aarch64 = fcvtnu
 link-aarch64 = fcvtnu._EXT2_._EXT_
@@ -755,8 +755,8 @@ generate float32x2_t:uint32x2_t, float32x4_t:uint32x4_t, float64x1_t:uint64x1_t,
 /// Floating-point convert to unsigned integer, rounding toward minus infinity
 name = vcvtm
 double-suffixes
-a = 1.0, 2.0, 3.0, 4.0
-validate 1, 2, 3, 4
+a = 1.1, 2.1, 2.9, 3.9
+validate 1, 2, 2, 3
 
 aarch64 = fcvtmu
 link-aarch64 = fcvtmu._EXT2_._EXT_
@@ -765,8 +765,8 @@ generate float32x2_t:uint32x2_t, float32x4_t:uint32x4_t, float64x1_t:uint64x1_t,
 /// Floating-point convert to unsigned integer, rounding toward plus infinity
 name = vcvtp
 double-suffixes
-a = 1.0, 2.0, 3.0, 4.0
-validate 1, 2, 3, 4
+a = 1.1, 2.1, 2.9, 3.9
+validate 2, 3, 3, 4
 
 aarch64 = fcvtpu
 link-aarch64 = fcvtpu._EXT2_._EXT_

@@ -2992,7 +2992,7 @@ mod test {
 
     #[simd_test(enable = "neon")]
     unsafe fn test_vcvt_s32_f32() {
-        let a: f32x2 = f32x2::new(-1.0, 2.0);
+        let a: f32x2 = f32x2::new(-1.1, 2.1);
         let e: i32x2 = i32x2::new(-1, 2);
         let r: i32x2 = transmute(vcvt_s32_f32(transmute(a)));
         assert_eq!(r, e);
@@ -3000,15 +3000,15 @@ mod test {
 
     #[simd_test(enable = "neon")]
     unsafe fn test_vcvtq_s32_f32() {
-        let a: f32x4 = f32x4::new(-1.0, 2.0, -3.0, 4.0);
-        let e: i32x4 = i32x4::new(-1, 2, -3, 4);
+        let a: f32x4 = f32x4::new(-1.1, 2.1, -2.9, 3.9);
+        let e: i32x4 = i32x4::new(-1, 2, -2, 3);
         let r: i32x4 = transmute(vcvtq_s32_f32(transmute(a)));
         assert_eq!(r, e);
     }
 
     #[simd_test(enable = "neon")]
     unsafe fn test_vcvt_s64_f64() {
-        let a: f64 = -1.0;
+        let a: f64 = -1.1;
         let e: i64x1 = i64x1::new(-1);
         let r: i64x1 = transmute(vcvt_s64_f64(transmute(a)));
         assert_eq!(r, e);
@@ -3016,7 +3016,7 @@ mod test {
 
     #[simd_test(enable = "neon")]
     unsafe fn test_vcvtq_s64_f64() {
-        let a: f64x2 = f64x2::new(-1.0, 2.0);
+        let a: f64x2 = f64x2::new(-1.1, 2.1);
         let e: i64x2 = i64x2::new(-1, 2);
         let r: i64x2 = transmute(vcvtq_s64_f64(transmute(a)));
         assert_eq!(r, e);
@@ -3024,7 +3024,7 @@ mod test {
 
     #[simd_test(enable = "neon")]
     unsafe fn test_vcvta_s32_f32() {
-        let a: f32x2 = f32x2::new(-1.0, 2.0);
+        let a: f32x2 = f32x2::new(-1.1, 2.1);
         let e: i32x2 = i32x2::new(-1, 2);
         let r: i32x2 = transmute(vcvta_s32_f32(transmute(a)));
         assert_eq!(r, e);
@@ -3032,7 +3032,7 @@ mod test {
 
     #[simd_test(enable = "neon")]
     unsafe fn test_vcvtaq_s32_f32() {
-        let a: f32x4 = f32x4::new(-1.0, 2.0, -3.0, 4.0);
+        let a: f32x4 = f32x4::new(-1.1, 2.1, -2.9, 3.9);
         let e: i32x4 = i32x4::new(-1, 2, -3, 4);
         let r: i32x4 = transmute(vcvtaq_s32_f32(transmute(a)));
         assert_eq!(r, e);
@@ -3040,7 +3040,7 @@ mod test {
 
     #[simd_test(enable = "neon")]
     unsafe fn test_vcvta_s64_f64() {
-        let a: f64 = -1.0;
+        let a: f64 = -1.1;
         let e: i64x1 = i64x1::new(-1);
         let r: i64x1 = transmute(vcvta_s64_f64(transmute(a)));
         assert_eq!(r, e);
@@ -3048,7 +3048,7 @@ mod test {
 
     #[simd_test(enable = "neon")]
     unsafe fn test_vcvtaq_s64_f64() {
-        let a: f64x2 = f64x2::new(-1.0, 2.0);
+        let a: f64x2 = f64x2::new(-1.1, 2.1);
         let e: i64x2 = i64x2::new(-1, 2);
         let r: i64x2 = transmute(vcvtaq_s64_f64(transmute(a)));
         assert_eq!(r, e);
@@ -3056,87 +3056,87 @@ mod test {
 
     #[simd_test(enable = "neon")]
     unsafe fn test_vcvtn_s32_f32() {
-        let a: f32x2 = f32x2::new(-1.0, 2.0);
-        let e: i32x2 = i32x2::new(-1, 2);
+        let a: f32x2 = f32x2::new(-1.5, 2.1);
+        let e: i32x2 = i32x2::new(-2, 2);
         let r: i32x2 = transmute(vcvtn_s32_f32(transmute(a)));
         assert_eq!(r, e);
     }
 
     #[simd_test(enable = "neon")]
     unsafe fn test_vcvtnq_s32_f32() {
-        let a: f32x4 = f32x4::new(-1.0, 2.0, -3.0, 4.0);
-        let e: i32x4 = i32x4::new(-1, 2, -3, 4);
+        let a: f32x4 = f32x4::new(-1.5, 2.1, -2.9, 3.9);
+        let e: i32x4 = i32x4::new(-2, 2, -3, 4);
         let r: i32x4 = transmute(vcvtnq_s32_f32(transmute(a)));
         assert_eq!(r, e);
     }
 
     #[simd_test(enable = "neon")]
     unsafe fn test_vcvtn_s64_f64() {
-        let a: f64 = -1.0;
-        let e: i64x1 = i64x1::new(-1);
+        let a: f64 = -1.5;
+        let e: i64x1 = i64x1::new(-2);
         let r: i64x1 = transmute(vcvtn_s64_f64(transmute(a)));
         assert_eq!(r, e);
     }
 
     #[simd_test(enable = "neon")]
     unsafe fn test_vcvtnq_s64_f64() {
-        let a: f64x2 = f64x2::new(-1.0, 2.0);
-        let e: i64x2 = i64x2::new(-1, 2);
+        let a: f64x2 = f64x2::new(-1.5, 2.1);
+        let e: i64x2 = i64x2::new(-2, 2);
         let r: i64x2 = transmute(vcvtnq_s64_f64(transmute(a)));
         assert_eq!(r, e);
     }
 
     #[simd_test(enable = "neon")]
     unsafe fn test_vcvtm_s32_f32() {
-        let a: f32x2 = f32x2::new(-1.0, 2.0);
-        let e: i32x2 = i32x2::new(-1, 2);
+        let a: f32x2 = f32x2::new(-1.1, 2.1);
+        let e: i32x2 = i32x2::new(-2, 2);
         let r: i32x2 = transmute(vcvtm_s32_f32(transmute(a)));
         assert_eq!(r, e);
     }
 
     #[simd_test(enable = "neon")]
     unsafe fn test_vcvtmq_s32_f32() {
-        let a: f32x4 = f32x4::new(-1.0, 2.0, -3.0, 4.0);
-        let e: i32x4 = i32x4::new(-1, 2, -3, 4);
+        let a: f32x4 = f32x4::new(-1.1, 2.1, -2.9, 3.9);
+        let e: i32x4 = i32x4::new(-2, 2, -3, 3);
         let r: i32x4 = transmute(vcvtmq_s32_f32(transmute(a)));
         assert_eq!(r, e);
     }
 
     #[simd_test(enable = "neon")]
     unsafe fn test_vcvtm_s64_f64() {
-        let a: f64 = -1.0;
-        let e: i64x1 = i64x1::new(-1);
+        let a: f64 = -1.1;
+        let e: i64x1 = i64x1::new(-2);
         let r: i64x1 = transmute(vcvtm_s64_f64(transmute(a)));
         assert_eq!(r, e);
     }
 
     #[simd_test(enable = "neon")]
     unsafe fn test_vcvtmq_s64_f64() {
-        let a: f64x2 = f64x2::new(-1.0, 2.0);
-        let e: i64x2 = i64x2::new(-1, 2);
+        let a: f64x2 = f64x2::new(-1.1, 2.1);
+        let e: i64x2 = i64x2::new(-2, 2);
         let r: i64x2 = transmute(vcvtmq_s64_f64(transmute(a)));
         assert_eq!(r, e);
     }
 
     #[simd_test(enable = "neon")]
     unsafe fn test_vcvtp_s32_f32() {
-        let a: f32x2 = f32x2::new(-1.0, 2.0);
-        let e: i32x2 = i32x2::new(-1, 2);
+        let a: f32x2 = f32x2::new(-1.1, 2.1);
+        let e: i32x2 = i32x2::new(-1, 3);
         let r: i32x2 = transmute(vcvtp_s32_f32(transmute(a)));
         assert_eq!(r, e);
     }
 
     #[simd_test(enable = "neon")]
     unsafe fn test_vcvtpq_s32_f32() {
-        let a: f32x4 = f32x4::new(-1.0, 2.0, -3.0, 4.0);
-        let e: i32x4 = i32x4::new(-1, 2, -3, 4);
+        let a: f32x4 = f32x4::new(-1.1, 2.1, -2.9, 3.9);
+        let e: i32x4 = i32x4::new(-1, 3, -2, 4);
         let r: i32x4 = transmute(vcvtpq_s32_f32(transmute(a)));
         assert_eq!(r, e);
     }
 
     #[simd_test(enable = "neon")]
     unsafe fn test_vcvtp_s64_f64() {
-        let a: f64 = -1.0;
+        let a: f64 = -1.1;
         let e: i64x1 = i64x1::new(-1);
         let r: i64x1 = transmute(vcvtp_s64_f64(transmute(a)));
         assert_eq!(r, e);
@@ -3144,15 +3144,15 @@ mod test {
 
     #[simd_test(enable = "neon")]
     unsafe fn test_vcvtpq_s64_f64() {
-        let a: f64x2 = f64x2::new(-1.0, 2.0);
-        let e: i64x2 = i64x2::new(-1, 2);
+        let a: f64x2 = f64x2::new(-1.1, 2.1);
+        let e: i64x2 = i64x2::new(-1, 3);
         let r: i64x2 = transmute(vcvtpq_s64_f64(transmute(a)));
         assert_eq!(r, e);
     }
 
     #[simd_test(enable = "neon")]
     unsafe fn test_vcvt_u32_f32() {
-        let a: f32x2 = f32x2::new(1.0, 2.0);
+        let a: f32x2 = f32x2::new(1.1, 2.1);
         let e: u32x2 = u32x2::new(1, 2);
         let r: u32x2 = transmute(vcvt_u32_f32(transmute(a)));
         assert_eq!(r, e);
@@ -3160,15 +3160,15 @@ mod test {
 
     #[simd_test(enable = "neon")]
     unsafe fn test_vcvtq_u32_f32() {
-        let a: f32x4 = f32x4::new(1.0, 2.0, 3.0, 4.0);
-        let e: u32x4 = u32x4::new(1, 2, 3, 4);
+        let a: f32x4 = f32x4::new(1.1, 2.1, 2.9, 3.9);
+        let e: u32x4 = u32x4::new(1, 2, 2, 3);
         let r: u32x4 = transmute(vcvtq_u32_f32(transmute(a)));
         assert_eq!(r, e);
     }
 
     #[simd_test(enable = "neon")]
     unsafe fn test_vcvt_u64_f64() {
-        let a: f64 = 1.0;
+        let a: f64 = 1.1;
         let e: u64x1 = u64x1::new(1);
         let r: u64x1 = transmute(vcvt_u64_f64(transmute(a)));
         assert_eq!(r, e);
@@ -3176,7 +3176,7 @@ mod test {
 
     #[simd_test(enable = "neon")]
     unsafe fn test_vcvtq_u64_f64() {
-        let a: f64x2 = f64x2::new(1.0, 2.0);
+        let a: f64x2 = f64x2::new(1.1, 2.1);
         let e: u64x2 = u64x2::new(1, 2);
         let r: u64x2 = transmute(vcvtq_u64_f64(transmute(a)));
         assert_eq!(r, e);
@@ -3184,7 +3184,7 @@ mod test {
 
     #[simd_test(enable = "neon")]
     unsafe fn test_vcvta_u32_f32() {
-        let a: f32x2 = f32x2::new(1.0, 2.0);
+        let a: f32x2 = f32x2::new(1.1, 2.1);
         let e: u32x2 = u32x2::new(1, 2);
         let r: u32x2 = transmute(vcvta_u32_f32(transmute(a)));
         assert_eq!(r, e);
@@ -3192,7 +3192,7 @@ mod test {
 
     #[simd_test(enable = "neon")]
     unsafe fn test_vcvtaq_u32_f32() {
-        let a: f32x4 = f32x4::new(1.0, 2.0, 3.0, 4.0);
+        let a: f32x4 = f32x4::new(1.1, 2.1, 2.9, 3.9);
         let e: u32x4 = u32x4::new(1, 2, 3, 4);
         let r: u32x4 = transmute(vcvtaq_u32_f32(transmute(a)));
         assert_eq!(r, e);
@@ -3200,7 +3200,7 @@ mod test {
 
     #[simd_test(enable = "neon")]
     unsafe fn test_vcvta_u64_f64() {
-        let a: f64 = 1.0;
+        let a: f64 = 1.1;
         let e: u64x1 = u64x1::new(1);
         let r: u64x1 = transmute(vcvta_u64_f64(transmute(a)));
         assert_eq!(r, e);
@@ -3208,7 +3208,7 @@ mod test {
 
     #[simd_test(enable = "neon")]
     unsafe fn test_vcvtaq_u64_f64() {
-        let a: f64x2 = f64x2::new(1.0, 2.0);
+        let a: f64x2 = f64x2::new(1.1, 2.1);
         let e: u64x2 = u64x2::new(1, 2);
         let r: u64x2 = transmute(vcvtaq_u64_f64(transmute(a)));
         assert_eq!(r, e);
@@ -3216,39 +3216,39 @@ mod test {
 
     #[simd_test(enable = "neon")]
     unsafe fn test_vcvtn_u32_f32() {
-        let a: f32x2 = f32x2::new(1.0, 2.0);
-        let e: u32x2 = u32x2::new(1, 2);
+        let a: f32x2 = f32x2::new(1.5, 2.1);
+        let e: u32x2 = u32x2::new(2, 2);
         let r: u32x2 = transmute(vcvtn_u32_f32(transmute(a)));
         assert_eq!(r, e);
     }
 
     #[simd_test(enable = "neon")]
     unsafe fn test_vcvtnq_u32_f32() {
-        let a: f32x4 = f32x4::new(1.0, 2.0, 3.0, 4.0);
-        let e: u32x4 = u32x4::new(1, 2, 3, 4);
+        let a: f32x4 = f32x4::new(1.5, 2.1, 2.9, 3.9);
+        let e: u32x4 = u32x4::new(2, 2, 3, 4);
         let r: u32x4 = transmute(vcvtnq_u32_f32(transmute(a)));
         assert_eq!(r, e);
     }
 
     #[simd_test(enable = "neon")]
     unsafe fn test_vcvtn_u64_f64() {
-        let a: f64 = 1.0;
-        let e: u64x1 = u64x1::new(1);
+        let a: f64 = 1.5;
+        let e: u64x1 = u64x1::new(2);
         let r: u64x1 = transmute(vcvtn_u64_f64(transmute(a)));
         assert_eq!(r, e);
     }
 
     #[simd_test(enable = "neon")]
     unsafe fn test_vcvtnq_u64_f64() {
-        let a: f64x2 = f64x2::new(1.0, 2.0);
-        let e: u64x2 = u64x2::new(1, 2);
+        let a: f64x2 = f64x2::new(1.5, 2.1);
+        let e: u64x2 = u64x2::new(2, 2);
         let r: u64x2 = transmute(vcvtnq_u64_f64(transmute(a)));
         assert_eq!(r, e);
     }
 
     #[simd_test(enable = "neon")]
     unsafe fn test_vcvtm_u32_f32() {
-        let a: f32x2 = f32x2::new(1.0, 2.0);
+        let a: f32x2 = f32x2::new(1.1, 2.1);
         let e: u32x2 = u32x2::new(1, 2);
         let r: u32x2 = transmute(vcvtm_u32_f32(transmute(a)));
         assert_eq!(r, e);
@@ -3256,15 +3256,15 @@ mod test {
 
     #[simd_test(enable = "neon")]
     unsafe fn test_vcvtmq_u32_f32() {
-        let a: f32x4 = f32x4::new(1.0, 2.0, 3.0, 4.0);
-        let e: u32x4 = u32x4::new(1, 2, 3, 4);
+        let a: f32x4 = f32x4::new(1.1, 2.1, 2.9, 3.9);
+        let e: u32x4 = u32x4::new(1, 2, 2, 3);
         let r: u32x4 = transmute(vcvtmq_u32_f32(transmute(a)));
         assert_eq!(r, e);
     }
 
     #[simd_test(enable = "neon")]
     unsafe fn test_vcvtm_u64_f64() {
-        let a: f64 = 1.0;
+        let a: f64 = 1.1;
         let e: u64x1 = u64x1::new(1);
         let r: u64x1 = transmute(vcvtm_u64_f64(transmute(a)));
         assert_eq!(r, e);
@@ -3272,7 +3272,7 @@ mod test {
 
     #[simd_test(enable = "neon")]
     unsafe fn test_vcvtmq_u64_f64() {
-        let a: f64x2 = f64x2::new(1.0, 2.0);
+        let a: f64x2 = f64x2::new(1.1, 2.1);
         let e: u64x2 = u64x2::new(1, 2);
         let r: u64x2 = transmute(vcvtmq_u64_f64(transmute(a)));
         assert_eq!(r, e);
@@ -3280,32 +3280,32 @@ mod test {
 
     #[simd_test(enable = "neon")]
     unsafe fn test_vcvtp_u32_f32() {
-        let a: f32x2 = f32x2::new(1.0, 2.0);
-        let e: u32x2 = u32x2::new(1, 2);
+        let a: f32x2 = f32x2::new(1.1, 2.1);
+        let e: u32x2 = u32x2::new(2, 3);
         let r: u32x2 = transmute(vcvtp_u32_f32(transmute(a)));
         assert_eq!(r, e);
     }
 
     #[simd_test(enable = "neon")]
     unsafe fn test_vcvtpq_u32_f32() {
-        let a: f32x4 = f32x4::new(1.0, 2.0, 3.0, 4.0);
-        let e: u32x4 = u32x4::new(1, 2, 3, 4);
+        let a: f32x4 = f32x4::new(1.1, 2.1, 2.9, 3.9);
+        let e: u32x4 = u32x4::new(2, 3, 3, 4);
         let r: u32x4 = transmute(vcvtpq_u32_f32(transmute(a)));
         assert_eq!(r, e);
     }
 
     #[simd_test(enable = "neon")]
     unsafe fn test_vcvtp_u64_f64() {
-        let a: f64 = 1.0;
-        let e: u64x1 = u64x1::new(1);
+        let a: f64 = 1.1;
+        let e: u64x1 = u64x1::new(2);
         let r: u64x1 = transmute(vcvtp_u64_f64(transmute(a)));
         assert_eq!(r, e);
     }
 
     #[simd_test(enable = "neon")]
     unsafe fn test_vcvtpq_u64_f64() {
-        let a: f64x2 = f64x2::new(1.0, 2.0);
-        let e: u64x2 = u64x2::new(1, 2);
+        let a: f64x2 = f64x2::new(1.1, 2.1);
+        let e: u64x2 = u64x2::new(2, 3);
         let r: u64x2 = transmute(vcvtpq_u64_f64(transmute(a)));
         assert_eq!(r, e);
     }
