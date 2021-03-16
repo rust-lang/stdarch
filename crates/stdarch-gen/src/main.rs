@@ -649,6 +649,9 @@ fn gen_arm(
     } else {
         format!("{}{}", current_name, type_to_suffix(in_t2))
     };
+    let current_aarch64 = current_aarch64
+        .clone()
+        .unwrap_or_else(|| current_arm.to_string());
 
     let current_fn = if let Some(current_fn) = current_fn.clone() {
         if link_aarch64.is_some() || link_arm.is_some() {
@@ -765,27 +768,19 @@ fn gen_arm(
         ),
         (_, _, _) => String::new(),
     };
-    let aarch64_expand = if let Some(current_aarch64) = current_aarch64 {
-        format!(
-            r#"
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr({}))]"#,
-            expand_intrinsic(current_aarch64, in_t)
-        )
-    } else {
-        String::new()
-    };
     let function = format!(
         r#"
 {}
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr({}))]{}
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr({}))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr({}))]
 {}
 "#,
         current_comment,
         expand_intrinsic(&current_arm, in_t),
-        aarch64_expand,
+        expand_intrinsic(&current_aarch64, in_t),
         call,
     );
     let test = gen_test(
