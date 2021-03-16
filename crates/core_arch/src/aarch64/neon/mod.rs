@@ -1548,24 +1548,8 @@ pub unsafe fn vdupq_n_f64(value: f64) -> float64x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(mov))]
-pub unsafe fn vmov_n_p64(value: p64) -> poly64x1_t {
-    vdup_n_p64(value)
-}
-
-/// Duplicate vector element to vector or scalar
-#[inline]
-#[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(mov))]
 pub unsafe fn vmov_n_f64(value: f64) -> float64x1_t {
     vdup_n_f64(value)
-}
-
-/// Duplicate vector element to vector or scalar
-#[inline]
-#[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(mov))]
-pub unsafe fn vmovq_n_p64(value: p64) -> poly64x2_t {
-    vdupq_n_p64(value)
 }
 
 /// Duplicate vector element to vector or scalar
@@ -3604,26 +3588,10 @@ mod tests {
     }
 
     #[simd_test(enable = "neon")]
-    unsafe fn test_vmov_n_p64() {
-        let a: u64 = 3;
-        let e = u64x1::new(3);
-        let r: u64x1 = transmute(vmov_n_p64(transmute(a)));
-        assert_eq!(r, e);
-    }
-
-    #[simd_test(enable = "neon")]
     unsafe fn test_vmovq_n_f64() {
         let a: f64 = 3.3;
         let e = f64x2::new(3.3, 3.3);
         let r: f64x2 = transmute(vmovq_n_f64(transmute(a)));
-        assert_eq!(r, e);
-    }
-
-    #[simd_test(enable = "neon")]
-    unsafe fn test_vmovq_n_p64() {
-        let a: u64 = 3;
-        let e = u64x2::new(3, 3);
-        let r: u64x2 = transmute(vmovq_n_p64(transmute(a)));
         assert_eq!(r, e);
     }
 
