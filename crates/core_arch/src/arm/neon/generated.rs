@@ -1946,6 +1946,7 @@ pub unsafe fn vcaleq_f32(a: float32x4_t, b: float32x4_t) -> uint32x4_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(vcvt))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(fcvtzs))]
 pub unsafe fn vcvt_s32_f32(a: float32x2_t) -> int32x2_t {
     simd_cast(a)
 }
@@ -1955,6 +1956,7 @@ pub unsafe fn vcvt_s32_f32(a: float32x2_t) -> int32x2_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(vcvt))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(fcvtzs))]
 pub unsafe fn vcvtq_s32_f32(a: float32x4_t) -> int32x4_t {
     simd_cast(a)
 }
@@ -1964,6 +1966,7 @@ pub unsafe fn vcvtq_s32_f32(a: float32x4_t) -> int32x4_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(vcvt))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(fcvtzu))]
 pub unsafe fn vcvt_u32_f32(a: float32x2_t) -> uint32x2_t {
     simd_cast(a)
 }
@@ -1973,6 +1976,7 @@ pub unsafe fn vcvt_u32_f32(a: float32x2_t) -> uint32x2_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(vcvt))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(fcvtzu))]
 pub unsafe fn vcvtq_u32_f32(a: float32x4_t) -> uint32x4_t {
     simd_cast(a)
 }
