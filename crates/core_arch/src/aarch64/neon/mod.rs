@@ -1515,7 +1515,7 @@ pub unsafe fn vcombine_p64(low: poly64x1_t, high: poly64x1_t) -> poly64x2_t {
 /// Duplicate vector element to vector or scalar
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(mov))]
+#[cfg_attr(test, assert_instr(fmov))]
 pub unsafe fn vdup_n_p64(value: p64) -> poly64x1_t {
     transmute(u64x1::new(value))
 }
@@ -1523,7 +1523,7 @@ pub unsafe fn vdup_n_p64(value: p64) -> poly64x1_t {
 /// Duplicate vector element to vector or scalar
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(mov))]
+#[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vdup_n_f64(value: f64) -> float64x1_t {
     float64x1_t(value)
 }
@@ -1531,7 +1531,7 @@ pub unsafe fn vdup_n_f64(value: f64) -> float64x1_t {
 /// Duplicate vector element to vector or scalar
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(mov))]
+#[cfg_attr(test, assert_instr(dup))]
 pub unsafe fn vdupq_n_p64(value: p64) -> poly64x2_t {
     transmute(u64x2::new(value, value))
 }
@@ -1539,7 +1539,7 @@ pub unsafe fn vdupq_n_p64(value: p64) -> poly64x2_t {
 /// Duplicate vector element to vector or scalar
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(mov))]
+#[cfg_attr(test, assert_instr(dup))]
 pub unsafe fn vdupq_n_f64(value: f64) -> float64x2_t {
     float64x2_t(value, value)
 }
@@ -1547,7 +1547,7 @@ pub unsafe fn vdupq_n_f64(value: f64) -> float64x2_t {
 /// Duplicate vector element to vector or scalar
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(mov))]
+#[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vmov_n_f64(value: f64) -> float64x1_t {
     vdup_n_f64(value)
 }
@@ -1555,7 +1555,7 @@ pub unsafe fn vmov_n_f64(value: f64) -> float64x1_t {
 /// Duplicate vector element to vector or scalar
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(mov))]
+#[cfg_attr(test, assert_instr(dup))]
 pub unsafe fn vmovq_n_f64(value: f64) -> float64x2_t {
     vdupq_n_f64(value)
 }

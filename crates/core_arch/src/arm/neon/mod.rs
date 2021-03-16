@@ -4000,7 +4000,7 @@ pub unsafe fn vdupq_n_s32(value: i32) -> int32x4_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vmov"))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(mov))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(dup))]
 pub unsafe fn vdupq_n_s64(value: i64) -> int64x2_t {
     int64x2_t(value, value)
 }
@@ -4043,7 +4043,7 @@ pub unsafe fn vdupq_n_u32(value: u32) -> uint32x4_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vmov"))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(mov))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(dup))]
 pub unsafe fn vdupq_n_u64(value: u64) -> uint64x2_t {
     uint64x2_t(value, value)
 }
@@ -4116,7 +4116,7 @@ pub unsafe fn vdup_n_s32(value: i32) -> int32x2_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vmov"))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(mov))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(fmov))]
 pub unsafe fn vdup_n_s64(value: i64) -> int64x1_t {
     int64x1_t(value)
 }
@@ -4156,7 +4156,7 @@ pub unsafe fn vdup_n_u32(value: u32) -> uint32x2_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vmov"))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(mov))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(fmov))]
 pub unsafe fn vdup_n_u64(value: u64) -> uint64x1_t {
     uint64x1_t(value)
 }
@@ -4226,7 +4226,7 @@ pub unsafe fn vmov_n_s32(value: i32) -> int32x2_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vmov"))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(mov))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(fmov))]
 pub unsafe fn vmov_n_s64(value: i64) -> int64x1_t {
     vdup_n_s64(value)
 }
@@ -4266,7 +4266,7 @@ pub unsafe fn vmov_n_u32(value: u32) -> uint32x2_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vmov"))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(mov))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(fmov))]
 pub unsafe fn vmov_n_u64(value: u64) -> uint64x1_t {
     vdup_n_u64(value)
 }
@@ -4336,7 +4336,7 @@ pub unsafe fn vmovq_n_s32(value: i32) -> int32x4_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vmov"))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(mov))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(dup))]
 pub unsafe fn vmovq_n_s64(value: i64) -> int64x2_t {
     vdupq_n_s64(value)
 }
@@ -4376,7 +4376,7 @@ pub unsafe fn vmovq_n_u32(value: u32) -> uint32x4_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vmov"))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(mov))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(dup))]
 pub unsafe fn vmovq_n_u64(value: u64) -> uint64x2_t {
     vdupq_n_u64(value)
 }
