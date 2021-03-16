@@ -1981,6 +1981,94 @@ pub unsafe fn vcvtq_u32_f32(a: float32x4_t) -> uint32x4_t {
     simd_cast(a)
 }
 
+/// Negate
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vsub))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(sub))]
+pub unsafe fn vneg_s8(a: int8x8_t) -> int8x8_t {
+    let b: i8x8 = i8x8::new(0, 0, 0, 0, 0, 0, 0, 0);
+    simd_sub(transmute(b), a)
+}
+
+/// Negate
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vsub))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(sub))]
+pub unsafe fn vnegq_s8(a: int8x16_t) -> int8x16_t {
+    let b: i8x16 = i8x16::new(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    simd_sub(transmute(b), a)
+}
+
+/// Negate
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vsub))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(sub))]
+pub unsafe fn vneg_s16(a: int16x4_t) -> int16x4_t {
+    let b: i16x4 = i16x4::new(0, 0, 0, 0);
+    simd_sub(transmute(b), a)
+}
+
+/// Negate
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vsub))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(sub))]
+pub unsafe fn vnegq_s16(a: int16x8_t) -> int16x8_t {
+    let b: i16x8 = i16x8::new(0, 0, 0, 0, 0, 0, 0, 0);
+    simd_sub(transmute(b), a)
+}
+
+/// Negate
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vsub))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(sub))]
+pub unsafe fn vneg_s32(a: int32x2_t) -> int32x2_t {
+    let b: i32x2 = i32x2::new(0, 0);
+    simd_sub(transmute(b), a)
+}
+
+/// Negate
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vsub))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(sub))]
+pub unsafe fn vnegq_s32(a: int32x4_t) -> int32x4_t {
+    let b: i32x4 = i32x4::new(0, 0, 0, 0);
+    simd_sub(transmute(b), a)
+}
+
+/// Floating-point negate
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vsub))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(fsub))]
+pub unsafe fn vneg_f32(a: float32x2_t) -> float32x2_t {
+    let b: f32x2 = f32x2::new(0., 0.);
+    simd_sub(transmute(b), a)
+}
+
+/// Floating-point negate
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vsub))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(fsub))]
+pub unsafe fn vnegq_f32(a: float32x4_t) -> float32x4_t {
+    let b: f32x4 = f32x4::new(0., 0., 0., 0.);
+    simd_sub(transmute(b), a)
+}
+
 /// Saturating subtract
 #[inline]
 #[target_feature(enable = "neon")]
@@ -5554,6 +5642,70 @@ mod test {
         let a: f32x4 = f32x4::new(1.1, 2.1, 2.9, 3.9);
         let e: u32x4 = u32x4::new(1, 2, 2, 3);
         let r: u32x4 = transmute(vcvtq_u32_f32(transmute(a)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vneg_s8() {
+        let a: i8x8 = i8x8::new(-7, -6, -5, -4, -3, -2, -1, 0);
+        let e: i8x8 = i8x8::new(7, 6, 5, 4, 3, 2, 1, 0);
+        let r: i8x8 = transmute(vneg_s8(transmute(a)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vnegq_s8() {
+        let a: i8x16 = i8x16::new(-7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8);
+        let e: i8x16 = i8x16::new(7, 6, 5, 4, 3, 2, 1, 0, -1, -2, -3, -4, -5, -6, -7, -8);
+        let r: i8x16 = transmute(vnegq_s8(transmute(a)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vneg_s16() {
+        let a: i16x4 = i16x4::new(-7, -6, -5, -4);
+        let e: i16x4 = i16x4::new(7, 6, 5, 4);
+        let r: i16x4 = transmute(vneg_s16(transmute(a)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vnegq_s16() {
+        let a: i16x8 = i16x8::new(-7, -6, -5, -4, -3, -2, -1, 0);
+        let e: i16x8 = i16x8::new(7, 6, 5, 4, 3, 2, 1, 0);
+        let r: i16x8 = transmute(vnegq_s16(transmute(a)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vneg_s32() {
+        let a: i32x2 = i32x2::new(-7, -6);
+        let e: i32x2 = i32x2::new(7, 6);
+        let r: i32x2 = transmute(vneg_s32(transmute(a)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vnegq_s32() {
+        let a: i32x4 = i32x4::new(-7, -6, -5, -4);
+        let e: i32x4 = i32x4::new(7, 6, 5, 4);
+        let r: i32x4 = transmute(vnegq_s32(transmute(a)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vneg_f32() {
+        let a: f32x2 = f32x2::new(-3., -2.);
+        let e: f32x2 = f32x2::new(3., 2.);
+        let r: f32x2 = transmute(vneg_f32(transmute(a)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vnegq_f32() {
+        let a: f32x4 = f32x4::new(-3., -2., -1., 0.);
+        let e: f32x4 = f32x4::new(3., 2., 1., 0.);
+        let r: f32x4 = transmute(vnegq_f32(transmute(a)));
         assert_eq!(r, e);
     }
 

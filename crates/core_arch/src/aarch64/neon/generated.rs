@@ -1601,6 +1601,42 @@ pub unsafe fn vcvtpq_u64_f64(a: float64x2_t) -> uint64x2_t {
     vcvtpq_u64_f64_(a)
 }
 
+/// Negate
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(sub))]
+pub unsafe fn vneg_s64(a: int64x1_t) -> int64x1_t {
+    let b: i64x1 = i64x1::new(0);
+    simd_sub(transmute(b), a)
+}
+
+/// Negate
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(sub))]
+pub unsafe fn vnegq_s64(a: int64x2_t) -> int64x2_t {
+    let b: i64x2 = i64x2::new(0, 0);
+    simd_sub(transmute(b), a)
+}
+
+/// Floating-point negate
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(fsub))]
+pub unsafe fn vneg_f64(a: float64x1_t) -> float64x1_t {
+    let b: f64 = 0.;
+    simd_sub(transmute(b), a)
+}
+
+/// Floating-point negate
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(fsub))]
+pub unsafe fn vnegq_f64(a: float64x2_t) -> float64x2_t {
+    let b: f64x2 = f64x2::new(0., 0.);
+    simd_sub(transmute(b), a)
+}
+
 /// Multiply
 #[inline]
 #[target_feature(enable = "neon")]
@@ -3203,6 +3239,38 @@ mod test {
         let a: f64x2 = f64x2::new(1.1, 2.1);
         let e: u64x2 = u64x2::new(2, 3);
         let r: u64x2 = transmute(vcvtpq_u64_f64(transmute(a)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vneg_s64() {
+        let a: i64x1 = i64x1::new(-7);
+        let e: i64x1 = i64x1::new(7);
+        let r: i64x1 = transmute(vneg_s64(transmute(a)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vnegq_s64() {
+        let a: i64x2 = i64x2::new(-7, -6);
+        let e: i64x2 = i64x2::new(7, 6);
+        let r: i64x2 = transmute(vnegq_s64(transmute(a)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vneg_f64() {
+        let a: f64 = -3.;
+        let e: f64 = 3.;
+        let r: f64 = transmute(vneg_f64(transmute(a)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vnegq_f64() {
+        let a: f64x2 = f64x2::new(-3., -2.);
+        let e: f64x2 = f64x2::new(3., 2.);
+        let r: f64x2 = transmute(vnegq_f64(transmute(a)));
         assert_eq!(r, e);
     }
 

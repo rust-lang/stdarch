@@ -758,6 +758,34 @@ aarch64 = fcvtpu
 link-aarch64 = fcvtpu._EXT2_._EXT_
 generate float32x2_t:uint32x2_t, float32x4_t:uint32x4_t, float64x1_t:uint64x1_t, float64x2_t:uint64x2_t
 
+/// Negate
+name = vneg
+multi_fn = fixed, b:in_t
+multi_fn = simd_sub, transmute(b), a
+a = -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8
+fixed = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+validate 7, 6, 5, 4, 3, 2, 1, 0, -1, -2, -3, -4, -5, -6, -7, -8
+
+aarch64 = sub
+generate int64x*_t
+
+arm = vsub
+generate int*_t
+
+/// Floating-point negate
+name = vneg
+multi_fn = fixed, b:in_t
+multi_fn = simd_sub, transmute(b), a
+a = -3., -2., -1., 0., 1., 2., 3., 4.
+fixed = 0., 0., 0., 0., 0., 0., 0., 0.
+validate 3., 2., 1., 0., -1., -2., -3., -4.
+
+aarch64 = fsub
+generate float64x*_t
+
+arm = vsub
+generate float*_t
+
 /// Saturating subtract
 name = vqsub
 a = 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42
