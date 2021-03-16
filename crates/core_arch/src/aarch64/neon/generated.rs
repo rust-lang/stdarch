@@ -1604,7 +1604,7 @@ pub unsafe fn vcvtpq_u64_f64(a: float64x2_t) -> uint64x2_t {
 /// Negate
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(sub))]
+#[cfg_attr(test, assert_instr(neg))]
 pub unsafe fn vneg_s64(a: int64x1_t) -> int64x1_t {
     let b: i64x1 = i64x1::new(0);
     simd_sub(transmute(b), a)
@@ -1613,7 +1613,7 @@ pub unsafe fn vneg_s64(a: int64x1_t) -> int64x1_t {
 /// Negate
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(sub))]
+#[cfg_attr(test, assert_instr(neg))]
 pub unsafe fn vnegq_s64(a: int64x2_t) -> int64x2_t {
     let b: i64x2 = i64x2::new(0, 0);
     simd_sub(transmute(b), a)
