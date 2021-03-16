@@ -3999,8 +3999,8 @@ pub unsafe fn vdupq_n_s32(value: i32) -> int32x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vdup"))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(dup))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vmov"))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(mov))]
 pub unsafe fn vdupq_n_s64(value: i64) -> int64x2_t {
     int64x2_t(value, value)
 }
@@ -4042,8 +4042,8 @@ pub unsafe fn vdupq_n_u32(value: u32) -> uint32x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vdup"))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(dup))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vmov"))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(mov))]
 pub unsafe fn vdupq_n_u64(value: u64) -> uint64x2_t {
     uint64x2_t(value, value)
 }
@@ -4115,8 +4115,8 @@ pub unsafe fn vdup_n_s32(value: i32) -> int32x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vdup"))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(dup))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vmov"))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(mov))]
 pub unsafe fn vdup_n_s64(value: i64) -> int64x1_t {
     int64x1_t(value)
 }
@@ -4155,8 +4155,8 @@ pub unsafe fn vdup_n_u32(value: u32) -> uint32x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vdup"))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(dup))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vmov"))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(mov))]
 pub unsafe fn vdup_n_u64(value: u64) -> uint64x1_t {
     uint64x1_t(value)
 }
