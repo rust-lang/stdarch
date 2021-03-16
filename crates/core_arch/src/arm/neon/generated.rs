@@ -1985,7 +1985,7 @@ pub unsafe fn vcvtq_u32_f32(a: float32x4_t) -> uint32x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vsub))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vneg))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(sub))]
 pub unsafe fn vneg_s8(a: int8x8_t) -> int8x8_t {
     let b: i8x8 = i8x8::new(0, 0, 0, 0, 0, 0, 0, 0);
@@ -1996,7 +1996,7 @@ pub unsafe fn vneg_s8(a: int8x8_t) -> int8x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vsub))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vneg))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(sub))]
 pub unsafe fn vnegq_s8(a: int8x16_t) -> int8x16_t {
     let b: i8x16 = i8x16::new(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
@@ -2007,7 +2007,7 @@ pub unsafe fn vnegq_s8(a: int8x16_t) -> int8x16_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vsub))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vneg))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(sub))]
 pub unsafe fn vneg_s16(a: int16x4_t) -> int16x4_t {
     let b: i16x4 = i16x4::new(0, 0, 0, 0);
@@ -2018,7 +2018,7 @@ pub unsafe fn vneg_s16(a: int16x4_t) -> int16x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vsub))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vneg))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(sub))]
 pub unsafe fn vnegq_s16(a: int16x8_t) -> int16x8_t {
     let b: i16x8 = i16x8::new(0, 0, 0, 0, 0, 0, 0, 0);
@@ -2029,7 +2029,7 @@ pub unsafe fn vnegq_s16(a: int16x8_t) -> int16x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vsub))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vneg))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(sub))]
 pub unsafe fn vneg_s32(a: int32x2_t) -> int32x2_t {
     let b: i32x2 = i32x2::new(0, 0);
@@ -2040,7 +2040,7 @@ pub unsafe fn vneg_s32(a: int32x2_t) -> int32x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vsub))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vneg))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(sub))]
 pub unsafe fn vnegq_s32(a: int32x4_t) -> int32x4_t {
     let b: i32x4 = i32x4::new(0, 0, 0, 0);
