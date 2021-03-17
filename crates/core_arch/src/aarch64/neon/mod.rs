@@ -1547,7 +1547,7 @@ pub unsafe fn vdupq_n_f64(value: f64) -> float64x2_t {
 /// Duplicate vector element to vector or scalar
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(dup))]
+#[cfg_attr(test, assert_instr(fmov))]
 pub unsafe fn vmov_n_p64(value: p64) -> poly64x1_t {
     vdup_n_p64(value)
 }
