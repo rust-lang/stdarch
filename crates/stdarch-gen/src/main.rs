@@ -1054,7 +1054,7 @@ fn main() -> io::Result<()> {
     let mut link_arm: Option<String> = None;
     let mut link_aarch64: Option<String> = None;
     let mut para_num = 2;
-    let mut suffix: Suffix = NoQ;
+    let mut suffix: Suffix = Normal;
     let mut a: Vec<String> = Vec::new();
     let mut b: Vec<String> = Vec::new();
     let mut c: Vec<String> = Vec::new();
@@ -1253,7 +1253,7 @@ mod test {
     tests_aarch64.push('}');
     tests_aarch64.push('\n');
 
-    let arm_out_path: PathBuf = PathBuf::from("./crates/core_arch")
+    let arm_out_path: PathBuf = PathBuf::from(env::var("OUT_DIR").unwrap())
         .join("src")
         .join("arm")
         .join("neon");
@@ -1263,8 +1263,7 @@ mod test {
     file_arm.write_all(out_arm.as_bytes())?;
     file_arm.write_all(tests_arm.as_bytes())?;
 
-    //let aarch64_out_path: PathBuf = PathBuf::from(env::var("OUT_DIR").unwrap())
-    let aarch64_out_path: PathBuf = PathBuf::from("./crates/core_arch")
+    let aarch64_out_path: PathBuf = PathBuf::from(env::var("OUT_DIR").unwrap())
         .join("src")
         .join("aarch64")
         .join("neon");
