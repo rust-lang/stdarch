@@ -394,6 +394,7 @@ fn verify_all_signatures() {
             "brk" | "__breakpoint" | "udf" | "_prefetch" => continue,
             _ => {}
         }
+        let skip_intrinsic_verify = ["vmov_n_p64", "vmovq_n_p64"];
         let arm = match map.get(rust.name) {
             Some(i) => i,
             None => {
@@ -408,6 +409,7 @@ fn verify_all_signatures() {
                     && !rust.file.ends_with("v7.rs\"")
                     && !rust.file.ends_with("v8.rs\"")
                     && !rust.file.ends_with("tme.rs\"")
+                    && !skip_intrinsic_verify.contains(&rust.name)
                 {
                     println!(
                         "missing arm definition for {:?} in {}",
