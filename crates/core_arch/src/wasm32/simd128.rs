@@ -305,7 +305,7 @@ pub unsafe fn i16x8_load_extend_i8x8(m: *const i8) -> v128 {
 #[inline]
 #[cfg_attr(test, assert_instr(v128.load8x8_u))]
 #[target_feature(enable = "simd128")]
-pub unsafe fn u16x8_load_extend_u8x8(m: *const u8) -> v128 {
+pub unsafe fn i16x8_load_extend_u8x8(m: *const u8) -> v128 {
     transmute(simd_cast::<_, simd::u16x8>(*(m as *const simd::u8x8)))
 }
 
@@ -321,7 +321,7 @@ pub unsafe fn i32x4_load_extend_i16x4(m: *const i16) -> v128 {
 #[inline]
 #[cfg_attr(test, assert_instr(v128.load16x4_u))]
 #[target_feature(enable = "simd128")]
-pub unsafe fn u32x4_load_extend_u16x4(m: *const u16) -> v128 {
+pub unsafe fn i32x4_load_extend_u16x4(m: *const u16) -> v128 {
     transmute(simd_cast::<_, simd::u32x4>(*(m as *const simd::u16x4)))
 }
 
@@ -337,7 +337,7 @@ pub unsafe fn i64x2_load_extend_i32x2(m: *const i32) -> v128 {
 #[inline]
 #[cfg_attr(test, assert_instr(v128.load32x2_u))]
 #[target_feature(enable = "simd128")]
-pub unsafe fn u64x2_load_extend_u32x2(m: *const u32) -> v128 {
+pub unsafe fn i64x2_load_extend_u32x2(m: *const u32) -> v128 {
     transmute(simd_cast::<_, simd::u64x2>(*(m as *const simd::u32x2)))
 }
 
@@ -3218,19 +3218,19 @@ pub mod tests {
             let arr: [i8; 8] = [-3, -2, -1, 0, 1, 2, 3, 4];
             let vec = i16x8_load_extend_i8x8(arr.as_ptr());
             compare_bytes(vec, i16x8(-3, -2, -1, 0, 1, 2, 3, 4));
-            let vec = u16x8_load_extend_u8x8(arr.as_ptr() as *const u8);
+            let vec = i16x8_load_extend_u8x8(arr.as_ptr() as *const u8);
             compare_bytes(vec, i16x8(253, 254, 255, 0, 1, 2, 3, 4));
 
             let arr: [i16; 4] = [-1, 0, 1, 2];
             let vec = i32x4_load_extend_i16x4(arr.as_ptr());
             compare_bytes(vec, i32x4(-1, 0, 1, 2));
-            let vec = u32x4_load_extend_u16x4(arr.as_ptr() as *const u16);
+            let vec = i32x4_load_extend_u16x4(arr.as_ptr() as *const u16);
             compare_bytes(vec, i32x4(65535, 0, 1, 2));
 
             let arr: [i32; 2] = [-1, 1];
             let vec = i64x2_load_extend_i32x2(arr.as_ptr());
             compare_bytes(vec, i64x2(-1, 1));
-            let vec = u64x2_load_extend_u32x2(arr.as_ptr() as *const u32);
+            let vec = i64x2_load_extend_u32x2(arr.as_ptr() as *const u32);
             compare_bytes(vec, i64x2(u32::max_value().into(), 1));
         }
     }
