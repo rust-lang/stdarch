@@ -1399,7 +1399,6 @@ validate 20, 20
 aarch64 = add
 generate uint64x2_t:uint32x4_t:uint32x4_t:uint64x2_t
 
-
 ////////////////////
 // Signed Absolute difference and Accumulate Long
 ////////////////////
