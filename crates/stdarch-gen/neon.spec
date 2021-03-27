@@ -1353,7 +1353,7 @@ b = 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
 c = 10, 10, 10, 10, 10, 10, 10, 10, 20, 0, 2, 4, 6, 8, 10, 12
 validate 10, 10, 10, 10, 10, 10, 10, 10, 20, 20, 20, 20, 20, 20, 20, 20
 
-arm = vabd.s
+arm = vabal.s
 aarch64 = uabd
 generate uint16x8_t:uint8x8_t:uint8x8_t:uint16x8_t, uint32x4_t:uint16x4_t:uint16x4_t:uint32x4_t, uint64x2_t:uint32x2_t:uint32x2_t:uint64x2_t
 
