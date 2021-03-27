@@ -1354,7 +1354,7 @@ c = 10, 10, 10, 10, 10, 10, 10, 10, 20, 0, 2, 4, 6, 8, 10, 12
 validate 10, 10, 10, 10, 10, 10, 10, 10, 20, 20, 20, 20, 20, 20, 20, 20
 
 arm = vabal.s
-aarch64 = uabd
+aarch64 = uabal
 generate uint16x8_t:uint8x8_t:uint8x8_t:uint16x8_t, uint32x4_t:uint16x4_t:uint16x4_t:uint32x4_t, uint64x2_t:uint32x2_t:uint32x2_t:uint64x2_t
 
 /// Unsigned Absolute difference and Accumulate Long
