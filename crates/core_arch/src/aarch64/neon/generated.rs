@@ -2730,7 +2730,7 @@ pub unsafe fn vzip2q_f64(a: float64x2_t, b: float64x2_t) -> float64x2_t {
 /// Unsigned Absolute difference and Accumulate Long
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(add))]
+#[cfg_attr(test, assert_instr(uabal))]
 pub unsafe fn vabal_high_u8(a: uint16x8_t, b: uint8x16_t, c: uint8x16_t) -> uint16x8_t {
     let d: uint8x16_t = vabdq_u8(b, c);
     let e: uint8x8_t = simd_shuffle8(d, d, [8, 9, 10, 11, 12, 13, 14, 15]);
@@ -2740,7 +2740,7 @@ pub unsafe fn vabal_high_u8(a: uint16x8_t, b: uint8x16_t, c: uint8x16_t) -> uint
 /// Unsigned Absolute difference and Accumulate Long
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(add))]
+#[cfg_attr(test, assert_instr(uabal))]
 pub unsafe fn vabal_high_u16(a: uint32x4_t, b: uint16x8_t, c: uint16x8_t) -> uint32x4_t {
     let d: uint16x8_t = vabdq_u16(b, c);
     let e: uint16x4_t = simd_shuffle4(d, d, [4, 5, 6, 7]);
@@ -2750,7 +2750,7 @@ pub unsafe fn vabal_high_u16(a: uint32x4_t, b: uint16x8_t, c: uint16x8_t) -> uin
 /// Unsigned Absolute difference and Accumulate Long
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(add))]
+#[cfg_attr(test, assert_instr(uabal))]
 pub unsafe fn vabal_high_u32(a: uint64x2_t, b: uint32x4_t, c: uint32x4_t) -> uint64x2_t {
     let d: uint32x4_t = vabdq_u32(b, c);
     let e: uint32x2_t = simd_shuffle2(d, d, [2, 3]);
@@ -2760,7 +2760,7 @@ pub unsafe fn vabal_high_u32(a: uint64x2_t, b: uint32x4_t, c: uint32x4_t) -> uin
 /// Signed Absolute difference and Accumulate Long
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(add))]
+#[cfg_attr(test, assert_instr(sabal))]
 pub unsafe fn vabal_high_s8(a: int16x8_t, b: int8x16_t, c: int8x16_t) -> int16x8_t {
     let d: int8x16_t = vabdq_s8(b, c);
     let e: int8x8_t = simd_shuffle8(d, d, [8, 9, 10, 11, 12, 13, 14, 15]);
@@ -2770,7 +2770,7 @@ pub unsafe fn vabal_high_s8(a: int16x8_t, b: int8x16_t, c: int8x16_t) -> int16x8
 /// Signed Absolute difference and Accumulate Long
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(add))]
+#[cfg_attr(test, assert_instr(sabal))]
 pub unsafe fn vabal_high_s16(a: int32x4_t, b: int16x8_t, c: int16x8_t) -> int32x4_t {
     let d: int16x8_t = vabdq_s16(b, c);
     let e: int16x4_t = simd_shuffle4(d, d, [4, 5, 6, 7]);
@@ -2780,7 +2780,7 @@ pub unsafe fn vabal_high_s16(a: int32x4_t, b: int16x8_t, c: int16x8_t) -> int32x
 /// Signed Absolute difference and Accumulate Long
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(add))]
+#[cfg_attr(test, assert_instr(sabal))]
 pub unsafe fn vabal_high_s32(a: int64x2_t, b: int32x4_t, c: int32x4_t) -> int64x2_t {
     let d: int32x4_t = vabdq_s32(b, c);
     let e: int32x2_t = simd_shuffle2(d, d, [2, 3]);

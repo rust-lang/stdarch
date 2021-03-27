@@ -1353,8 +1353,8 @@ b = 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
 c = 10, 10, 10, 10, 10, 10, 10, 10, 20, 0, 2, 4, 6, 8, 10, 12
 validate 10, 10, 10, 10, 10, 10, 10, 10, 20, 20, 20, 20, 20, 20, 20, 20
 
-arm = add
-aarch64 = add
+arm = vabal
+aarch64 = uabal
 generate uint16x8_t:uint8x8_t:uint8x8_t:uint16x8_t, uint32x4_t:uint16x4_t:uint16x4_t:uint32x4_t, uint64x2_t:uint32x2_t:uint32x2_t:uint64x2_t
 
 /// Unsigned Absolute difference and Accumulate Long
@@ -1368,7 +1368,7 @@ b = 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
 c = 10, 10, 10, 10, 10, 10, 10, 10, 20, 0, 2, 4, 6, 8, 10, 12
 validate 20, 20, 20, 20, 20, 20, 20, 20
 
-aarch64 = add
+aarch64 = uabal
 generate uint16x8_t:uint8x16_t:uint8x16_t:uint16x8_t
 
 /// Unsigned Absolute difference and Accumulate Long
@@ -1382,7 +1382,7 @@ b = 1, 2, 3, 4, 9, 10, 11, 12
 c = 10, 10, 10, 10, 20, 0, 2, 4
 validate 20, 20, 20, 20
 
-aarch64 = add
+aarch64 = uabal
 generate uint32x4_t:uint16x8_t:uint16x8_t:uint32x4_t
 
 /// Unsigned Absolute difference and Accumulate Long
@@ -1396,7 +1396,7 @@ b = 1, 2, 15, 16
 c = 10, 10, 10, 12
 validate 20, 20
 
-aarch64 = add
+aarch64 = uabal
 generate uint64x2_t:uint32x4_t:uint32x4_t:uint64x2_t
 
 ////////////////////
@@ -1412,8 +1412,8 @@ b = 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
 c = 10, 10, 10, 10, 10, 10, 10, 10, 20, 0, 2, 4, 6, 8, 10, 12
 validate 10, 10, 10, 10, 10, 10, 10, 10, 20, 20, 20, 20, 20, 20, 20, 20
 
-arm = add
-aarch64 = add
+arm = vabal
+aarch64 = sabal
 generate int16x8_t:int8x8_t:int8x8_t:int16x8_t, int32x4_t:int16x4_t:int16x4_t:int32x4_t, int64x2_t:int32x2_t:int32x2_t:int64x2_t
 
 /// Signed Absolute difference and Accumulate Long
@@ -1427,7 +1427,7 @@ b = 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
 c = 10, 10, 10, 10, 10, 10, 10, 10, 20, 0, 2, 4, 6, 8, 10, 12
 validate 20, 20, 20, 20, 20, 20, 20, 20
 
-aarch64 = add
+aarch64 = sabal
 generate int16x8_t:int8x16_t:int8x16_t:int16x8_t
 
 /// Signed Absolute difference and Accumulate Long
@@ -1441,7 +1441,7 @@ b = 1, 2, 3, 4, 9, 10, 11, 12
 c = 10, 10, 10, 10, 20, 0, 2, 4
 validate 20, 20, 20, 20
 
-aarch64 = add
+aarch64 = sabal
 generate int32x4_t:int16x8_t:int16x8_t:int32x4_t
 
 /// Signed Absolute difference and Accumulate Long
@@ -1455,5 +1455,5 @@ b = 1, 2, 15, 16
 c = 10, 10, 10, 12
 validate 20, 20
 
-aarch64 = add
+aarch64 = sabal
 generate int64x2_t:int32x4_t:int32x4_t:int64x2_t

@@ -4417,8 +4417,8 @@ vrecpeq_f32_(a)
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(add))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(add))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vabal))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(uabal))]
 pub unsafe fn vabal_u8(a: uint16x8_t, b: uint8x8_t, c: uint8x8_t) -> uint16x8_t {
     let d: uint8x8_t = vabd_u8(b, c);
     simd_add(a, simd_cast(d))
@@ -4428,8 +4428,8 @@ pub unsafe fn vabal_u8(a: uint16x8_t, b: uint8x8_t, c: uint8x8_t) -> uint16x8_t 
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(add))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(add))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vabal))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(uabal))]
 pub unsafe fn vabal_u16(a: uint32x4_t, b: uint16x4_t, c: uint16x4_t) -> uint32x4_t {
     let d: uint16x4_t = vabd_u16(b, c);
     simd_add(a, simd_cast(d))
@@ -4439,8 +4439,8 @@ pub unsafe fn vabal_u16(a: uint32x4_t, b: uint16x4_t, c: uint16x4_t) -> uint32x4
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(add))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(add))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vabal))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(uabal))]
 pub unsafe fn vabal_u32(a: uint64x2_t, b: uint32x2_t, c: uint32x2_t) -> uint64x2_t {
     let d: uint32x2_t = vabd_u32(b, c);
     simd_add(a, simd_cast(d))
@@ -4450,8 +4450,8 @@ pub unsafe fn vabal_u32(a: uint64x2_t, b: uint32x2_t, c: uint32x2_t) -> uint64x2
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(add))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(add))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vabal))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(sabal))]
 pub unsafe fn vabal_s8(a: int16x8_t, b: int8x8_t, c: int8x8_t) -> int16x8_t {
     let d: int8x8_t = vabd_s8(b, c);
     simd_add(a, simd_cast(d))
@@ -4461,8 +4461,8 @@ pub unsafe fn vabal_s8(a: int16x8_t, b: int8x8_t, c: int8x8_t) -> int16x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(add))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(add))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vabal))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(sabal))]
 pub unsafe fn vabal_s16(a: int32x4_t, b: int16x4_t, c: int16x4_t) -> int32x4_t {
     let d: int16x4_t = vabd_s16(b, c);
     simd_add(a, simd_cast(d))
@@ -4472,8 +4472,8 @@ pub unsafe fn vabal_s16(a: int32x4_t, b: int16x4_t, c: int16x4_t) -> int32x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(add))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(add))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vabal))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(sabal))]
 pub unsafe fn vabal_s32(a: int64x2_t, b: int32x2_t, c: int32x2_t) -> int64x2_t {
     let d: int32x2_t = vabd_s32(b, c);
     simd_add(a, simd_cast(d))
