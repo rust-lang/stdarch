@@ -4450,33 +4450,36 @@ pub unsafe fn vabal_u32(a: uint64x2_t, b: uint32x2_t, c: uint32x2_t) -> uint64x2
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vabd.s8"))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(sabd))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vabal.s8"))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(sabal))]
 pub unsafe fn vabal_s8(a: int16x8_t, b: int8x8_t, c: int8x8_t) -> int16x8_t {
     let d: int8x8_t = vabd_s8(b, c);
-    simd_add(a, simd_cast(d))
+    let e: uint8x8_t = simd_cast(d);
+    simd_add(a, simd_cast(e))
 }
 
 /// Signed Absolute difference and Accumulate Long
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vabd.s16"))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(sabd))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vabal.s16"))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(sabal))]
 pub unsafe fn vabal_s16(a: int32x4_t, b: int16x4_t, c: int16x4_t) -> int32x4_t {
     let d: int16x4_t = vabd_s16(b, c);
-    simd_add(a, simd_cast(d))
+    let e: uint16x4_t = simd_cast(d);
+    simd_add(a, simd_cast(e))
 }
 
 /// Signed Absolute difference and Accumulate Long
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vabd.s32"))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(sabd))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vabal.s32"))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(sabal))]
 pub unsafe fn vabal_s32(a: int64x2_t, b: int32x2_t, c: int32x2_t) -> int64x2_t {
     let d: int32x2_t = vabd_s32(b, c);
-    simd_add(a, simd_cast(d))
+    let e: uint32x2_t = simd_cast(d);
+    simd_add(a, simd_cast(e))
 }
 
 #[cfg(test)]
