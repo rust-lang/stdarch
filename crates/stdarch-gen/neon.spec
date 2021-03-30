@@ -1428,7 +1428,7 @@ aarch64 = str
 generate poly64x1_t:int64x1_t, poly64x1_t:uint64x1_t, int64x1_t:poly64x1_t, uint64x1_t:poly64x1_t
 generate poly64x2_t:int64x2_t, poly64x2_t:uint64x2_t, int64x2_t:poly64x2_t, uint64x2_t:poly64x2_t
 
-arm = vstr
+arm = str
 generate uint8x8_t:int8x8_t, poly8x8_t:int8x8_t, poly16x4_t:int16x4_t, uint16x4_t:int16x4_t, uint32x2_t:int32x2_t, uint64x1_t:int64x1_t
 generate uint8x16_t:int8x16_t, poly8x16_t:int8x16_t, poly16x8_t:int16x8_t, uint16x8_t:int16x8_t, uint32x4_t:int32x4_t, uint64x2_t:int64x2_t
 generate poly8x8_t:uint8x8_t, int8x8_t:uint8x8_t, poly16x4_t:uint16x4_t, int16x4_t:uint16x4_t, int32x2_t:uint32x2_t, int64x1_t:uint64x1_t
@@ -1447,7 +1447,7 @@ aarch64 = str
 generate poly64x1_t:int32x2_t, poly64x1_t:uint32x2_t
 generate poly64x2_t:int32x4_t, poly64x2_t:uint32x4_t
 
-arm = vstr
+arm = str
 generate int16x4_t:int8x8_t, uint16x4_t:int8x8_t, poly16x4_t:int8x8_t, int32x2_t:int16x4_t, uint32x2_t:int16x4_t, int64x1_t:int32x2_t, uint64x1_t:int32x2_t
 generate int16x8_t:int8x16_t, uint16x8_t:int8x16_t, poly16x8_t:int8x16_t, int32x4_t:int16x8_t, uint32x4_t:int16x8_t, int64x2_t:int32x4_t, uint64x2_t:int32x4_t
 generate poly16x4_t:uint8x8_t, int16x4_t:uint8x8_t, uint16x4_t:uint8x8_t, int32x2_t:uint16x4_t, uint32x2_t:uint16x4_t, int64x1_t:uint32x2_t, uint64x1_t:uint32x2_t
@@ -1466,7 +1466,7 @@ aarch64 = str
 generate int32x2_t:poly64x1_t, uint32x2_t:poly64x1_t
 generate int32x4_t:poly64x2_t, uint32x4_t:poly64x2_t
 
-arm = vstr
+arm = str
 generate poly8x8_t:int16x4_t, int8x8_t:int16x4_t, uint8x8_t:int16x4_t, poly16x4_t:int32x2_t, int16x4_t:int32x2_t, uint16x4_t:int32x2_t, int32x2_t:int64x1_t, uint32x2_t:int64x1_t
 generate poly8x16_t:int16x8_t, int8x16_t:int16x8_t, uint8x16_t:int16x8_t, poly16x8_t:int32x4_t, int16x8_t:int32x4_t, uint16x8_t:int32x4_t, int32x4_t:int64x2_t, uint32x4_t:int64x2_t
 generate poly8x8_t:uint16x4_t, int8x8_t:uint16x4_t, uint8x8_t:uint16x4_t, poly16x4_t:uint32x2_t, int16x4_t:uint32x2_t, uint16x4_t:uint32x2_t, int32x2_t:uint64x1_t, uint32x2_t:uint64x1_t
@@ -1485,7 +1485,7 @@ aarch64 = str
 generate poly64x1_t:int16x4_t, poly64x1_t:uint16x4_t, poly64x1_t:poly16x4_t
 generate poly64x2_t:int16x8_t, poly64x2_t:uint16x8_t, poly64x2_t:poly16x8_t
 
-arm = vstr
+arm = str
 generate int32x2_t:int8x8_t, uint32x2_t:int8x8_t, int64x1_t:int16x4_t, uint64x1_t:int16x4_t
 generate int32x4_t:int8x16_t, uint32x4_t:int8x16_t, int64x2_t:int16x8_t, uint64x2_t:int16x8_t
 generate int32x2_t:uint8x8_t, uint32x2_t:uint8x8_t, int64x1_t:uint16x4_t, uint64x1_t:uint16x4_t
@@ -1504,7 +1504,7 @@ aarch64 = str
 generate poly16x4_t:poly64x1_t, int16x4_t:poly64x1_t, uint16x4_t:poly64x1_t
 generate poly16x8_t:poly64x2_t, int16x8_t:poly64x2_t, uint16x8_t:poly64x2_t
 
-arm = vstr
+arm = str
 generate poly8x8_t:int32x2_t, int8x8_t:int32x2_t, uint8x8_t:int32x2_t, poly16x4_t:int64x1_t, int16x4_t:int64x1_t, uint16x4_t:int64x1_t
 generate poly8x16_t:int32x4_t, int8x16_t:int32x4_t, uint8x16_t:int32x4_t, poly16x8_t:int64x2_t, int16x8_t:int64x2_t, uint16x8_t:int64x2_t
 generate poly8x8_t:uint32x2_t, int8x8_t:uint32x2_t, uint8x8_t:uint32x2_t, poly16x4_t:uint64x1_t, int16x4_t:uint64x1_t, uint16x4_t:uint64x1_t
@@ -1521,7 +1521,7 @@ aarch64 = str
 generate poly64x1_t:int8x8_t, poly64x1_t:uint8x8_t, poly64x1_t:poly8x8_t
 generate poly64x2_t:int8x16_t, poly64x2_t:uint8x16_t, poly64x2_t:poly8x16_t
 
-arm = vstr
+arm = str
 generate int64x1_t:int8x8_t, uint64x1_t:int8x8_t, int64x1_t:uint8x8_t, uint64x1_t:uint8x8_t, int64x1_t:poly8x8_t, uint64x1_t:poly8x8_t
 generate int64x2_t:int8x16_t, uint64x2_t:int8x16_t, int64x2_t:uint8x16_t, uint64x2_t:uint8x16_t, int64x2_t:poly8x16_t, uint64x2_t:poly8x16_t
 
@@ -1536,7 +1536,7 @@ aarch64 = str
 generate poly8x8_t:poly64x1_t, int8x8_t:poly64x1_t, uint8x8_t:poly64x1_t
 generate poly8x16_t:poly64x2_t, int8x16_t:poly64x2_t, uint8x16_t:poly64x2_t
 
-arm = vstr
+arm = str
 generate poly8x8_t:int64x1_t, int8x8_t:int64x1_t, uint8x8_t:int64x1_t, poly8x8_t:uint64x1_t, int8x8_t:uint64x1_t, uint8x8_t:uint64x1_t
 generate poly8x16_t:int64x2_t, int8x16_t:int64x2_t, uint8x16_t:int64x2_t, poly8x16_t:uint64x2_t, int8x16_t:uint64x2_t, uint8x16_t:uint64x2_t
 
@@ -1555,7 +1555,7 @@ generate float64x2_t:uint8x16_t, float64x2_t:uint16x8_t, float64x2_t:uint32x4_t,
 generate float64x1_t:poly8x8_t, float64x1_t:poly16x4_t, float32x2_t:poly64x1_t, float64x1_t:poly64x1_t
 generate float64x2_t:poly8x16_t, float64x2_t:poly16x8_t, float32x4_t:poly64x2_t, float64x2_t:poly64x2_t
 
-arm = vstr
+arm = str
 generate float32x2_t:int8x8_t, float32x2_t:int16x4_t, float32x2_t:int32x2_t, float32x2_t:int64x1_t
 generate float32x4_t:int8x16_t, float32x4_t:int16x8_t, float32x4_t:int32x4_t, float32x4_t:int64x2_t
 generate float32x2_t:uint8x8_t, float32x2_t:uint16x4_t, float32x2_t:uint32x2_t, float32x2_t:uint64x1_t
@@ -1578,7 +1578,7 @@ generate poly8x16_t:float64x2_t, uint16x8_t:float64x2_t, uint32x4_t:float64x2_t,
 generate uint8x8_t:float64x1_t, poly16x4_t:float64x1_t, poly64x1_t:float64x1_t, poly64x1_t:float32x2_t
 generate uint8x16_t:float64x2_t, poly16x8_t:float64x2_t, poly64x2_t:float64x2_t, poly64x2_t:float32x4_t
 
-arm = vstr
+arm = str
 generate int8x8_t:float32x2_t, int16x4_t:float32x2_t, int32x2_t:float32x2_t, int64x1_t:float32x2_t
 generate int8x16_t:float32x4_t, int16x8_t:float32x4_t, int32x4_t:float32x4_t, int64x2_t:float32x4_t
 generate uint8x8_t:float32x2_t, uint16x4_t:float32x2_t, uint32x2_t:float32x2_t, uint64x1_t:float32x2_t
