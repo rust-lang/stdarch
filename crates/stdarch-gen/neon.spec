@@ -1197,8 +1197,8 @@ name = vrndn
 a = -1.5, 0.5, 1.5, 2.5
 validate -2.0, 0.0, 2.0, 2.0
 
+link-aarch64 = frintn._EXT_
 aarch64 = frintn
-link-aarch64 = llvm.roundeven._EXT_
 generate float*_t, float64x*_t
 
 /// Floating-point round to integral, toward minus infinity
