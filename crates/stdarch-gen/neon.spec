@@ -272,16 +272,6 @@ validate 7, 6
 aarch64 = sabdl
 generate int32x4_t:int32x4_t:int64x2_t
 
-/// Bitwise exclusive OR
-name = vadd
-fn = simd_xor
-a = 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15
-b = 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
-validate 1, 3, 1, 7, 1, 3, 1, 15, 1, 3, 1, 7, 1, 3, 1, 31
-
-aarch64 = xor
-generate poly8x8_t, poly8x16_t, poly16x4_t, poly16x8_t, poly64x1_t, poly64x2_t
-
 ////////////////////
 // equality
 ////////////////////
@@ -730,27 +720,6 @@ generate float64x1_t:uint64x1_t, float64x2_t:uint64x2_t
 
 arm = vacge.s
 generate float32x2_t:uint32x2_t, float32x4_t:uint32x4_t
-
-/// Population count per byte
-name = vcnt
-a = 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15
-validate 0, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 3, 3, 4
-
-arm = ctpop
-aarch64 = ctpop
-link-arm = llvm.ctpop._EXT_
-link-aarch64 = llvm.ctpop._EXT_
-generate int8x8_t, int8x16_t
-
-/// Population count per byte
-name = vcnt
-multi_fn = transmute, {vcnt-signed-noext, transmute(a)}
-a = 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15
-validate 0, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 3, 3, 4
-
-arm = ctpop
-aarch64 = ctpop
-generate uint8x8_t, uint8x16_t, poly8x8_t, poly8x16_t
 
 /// Floating-point convert to higher precision long
 name = vcvt

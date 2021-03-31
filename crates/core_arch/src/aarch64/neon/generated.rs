@@ -98,54 +98,6 @@ pub unsafe fn vabdl_high_s32(a: int32x4_t, b: int32x4_t) -> int64x2_t {
     simd_cast(e)
 }
 
-/// Bitwise exclusive OR
-#[inline]
-#[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(xor))]
-pub unsafe fn vadd_p8(a: poly8x8_t, b: poly8x8_t) -> poly8x8_t {
-    simd_xor(a, b)
-}
-
-/// Bitwise exclusive OR
-#[inline]
-#[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(xor))]
-pub unsafe fn vaddq_p8(a: poly8x16_t, b: poly8x16_t) -> poly8x16_t {
-    simd_xor(a, b)
-}
-
-/// Bitwise exclusive OR
-#[inline]
-#[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(xor))]
-pub unsafe fn vadd_p16(a: poly16x4_t, b: poly16x4_t) -> poly16x4_t {
-    simd_xor(a, b)
-}
-
-/// Bitwise exclusive OR
-#[inline]
-#[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(xor))]
-pub unsafe fn vaddq_p16(a: poly16x8_t, b: poly16x8_t) -> poly16x8_t {
-    simd_xor(a, b)
-}
-
-/// Bitwise exclusive OR
-#[inline]
-#[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(xor))]
-pub unsafe fn vadd_p64(a: poly64x1_t, b: poly64x1_t) -> poly64x1_t {
-    simd_xor(a, b)
-}
-
-/// Bitwise exclusive OR
-#[inline]
-#[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(xor))]
-pub unsafe fn vaddq_p64(a: poly64x2_t, b: poly64x2_t) -> poly64x2_t {
-    simd_xor(a, b)
-}
-
 /// Compare bitwise Equal (vector)
 #[inline]
 #[target_feature(enable = "neon")]
@@ -4279,60 +4231,6 @@ mod test {
         let b: i32x4 = i32x4::new(10, 10, 10, 10);
         let e: i64x2 = i64x2::new(7, 6);
         let r: i64x2 = transmute(vabdl_high_s32(transmute(a), transmute(b)));
-        assert_eq!(r, e);
-    }
-
-    #[simd_test(enable = "neon")]
-    unsafe fn test_vadd_p8() {
-        let a: i8x8 = i8x8::new(0, 1, 2, 3, 4, 5, 6, 7);
-        let b: i8x8 = i8x8::new(1, 2, 3, 4, 5, 6, 7, 8);
-        let e: i8x8 = i8x8::new(1, 3, 1, 7, 1, 3, 1, 15);
-        let r: i8x8 = transmute(vadd_p8(transmute(a), transmute(b)));
-        assert_eq!(r, e);
-    }
-
-    #[simd_test(enable = "neon")]
-    unsafe fn test_vaddq_p8() {
-        let a: i8x16 = i8x16::new(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
-        let b: i8x16 = i8x16::new(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
-        let e: i8x16 = i8x16::new(1, 3, 1, 7, 1, 3, 1, 15, 1, 3, 1, 7, 1, 3, 1, 31);
-        let r: i8x16 = transmute(vaddq_p8(transmute(a), transmute(b)));
-        assert_eq!(r, e);
-    }
-
-    #[simd_test(enable = "neon")]
-    unsafe fn test_vadd_p16() {
-        let a: i16x4 = i16x4::new(0, 1, 2, 3);
-        let b: i16x4 = i16x4::new(1, 2, 3, 4);
-        let e: i16x4 = i16x4::new(1, 3, 1, 7);
-        let r: i16x4 = transmute(vadd_p16(transmute(a), transmute(b)));
-        assert_eq!(r, e);
-    }
-
-    #[simd_test(enable = "neon")]
-    unsafe fn test_vaddq_p16() {
-        let a: i16x8 = i16x8::new(0, 1, 2, 3, 4, 5, 6, 7);
-        let b: i16x8 = i16x8::new(1, 2, 3, 4, 5, 6, 7, 8);
-        let e: i16x8 = i16x8::new(1, 3, 1, 7, 1, 3, 1, 15);
-        let r: i16x8 = transmute(vaddq_p16(transmute(a), transmute(b)));
-        assert_eq!(r, e);
-    }
-
-    #[simd_test(enable = "neon")]
-    unsafe fn test_vadd_p64() {
-        let a: i64x1 = i64x1::new(0);
-        let b: i64x1 = i64x1::new(1);
-        let e: i64x1 = i64x1::new(1);
-        let r: i64x1 = transmute(vadd_p64(transmute(a), transmute(b)));
-        assert_eq!(r, e);
-    }
-
-    #[simd_test(enable = "neon")]
-    unsafe fn test_vaddq_p64() {
-        let a: i64x2 = i64x2::new(0, 1);
-        let b: i64x2 = i64x2::new(1, 2);
-        let e: i64x2 = i64x2::new(1, 3);
-        let r: i64x2 = transmute(vaddq_p64(transmute(a), transmute(b)));
         assert_eq!(r, e);
     }
 
