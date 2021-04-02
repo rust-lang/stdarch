@@ -1431,7 +1431,7 @@ pub unsafe fn vpmaxq_f64(a: float64x2_t, b: float64x2_t) -> float64x2_t {
 /// Extract vector from pair of vectors
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(ext, N = 0))]
+#[cfg_attr(test, assert_instr(str, N = 0))]
 #[rustc_legacy_const_generics(2)]
 pub unsafe fn vext_p64<const N: i32>(a: poly64x1_t, _b: poly64x1_t) -> poly64x1_t {
     if N != 0 {
@@ -1443,7 +1443,7 @@ pub unsafe fn vext_p64<const N: i32>(a: poly64x1_t, _b: poly64x1_t) -> poly64x1_
 /// Extract vector from pair of vectors
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(ext, N = 0))]
+#[cfg_attr(test, assert_instr(str, N = 0))]
 #[rustc_legacy_const_generics(2)]
 pub unsafe fn vext_f64<const N: i32>(a: float64x1_t, _b: float64x1_t) -> float64x1_t {
     if N != 0 {
