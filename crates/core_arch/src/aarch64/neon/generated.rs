@@ -2536,32 +2536,6 @@ pub unsafe fn vmaxnmq_f64(a: float64x2_t, b: float64x2_t) -> float64x2_t {
     vmaxnmq_f64_(a, b)
 }
 
-/// Floating-point Maximun Number (vector)
-#[inline]
-#[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(fmaxnm))]
-pub unsafe fn vmaxnm_f32(a: float32x2_t, b: float32x2_t) -> float32x2_t {
-    #[allow(improper_ctypes)]
-    extern "C" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.fmaxnm.v2f32")]
-        fn vmaxnm_f32_(a: float32x2_t, b: float32x2_t) -> float32x2_t;
-    }
-    vmaxnm_f32_(a, b)
-}
-
-/// Floating-point Maximun Number (vector)
-#[inline]
-#[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(fmaxnm))]
-pub unsafe fn vmaxnmq_f32(a: float32x4_t, b: float32x4_t) -> float32x4_t {
-    #[allow(improper_ctypes)]
-    extern "C" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.fmaxnm.v4f32")]
-        fn vmaxnmq_f32_(a: float32x4_t, b: float32x4_t) -> float32x4_t;
-    }
-    vmaxnmq_f32_(a, b)
-}
-
 /// Floating-point Maximum Number Pairwise (vector).
 #[inline]
 #[target_feature(enable = "neon")]
@@ -2651,32 +2625,6 @@ pub unsafe fn vminnmq_f64(a: float64x2_t, b: float64x2_t) -> float64x2_t {
         fn vminnmq_f64_(a: float64x2_t, b: float64x2_t) -> float64x2_t;
     }
     vminnmq_f64_(a, b)
-}
-
-/// Floating-point Minimun Number (vector)
-#[inline]
-#[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(fminnm))]
-pub unsafe fn vminnm_f32(a: float32x2_t, b: float32x2_t) -> float32x2_t {
-    #[allow(improper_ctypes)]
-    extern "C" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.fminnm.v2f32")]
-        fn vminnm_f32_(a: float32x2_t, b: float32x2_t) -> float32x2_t;
-    }
-    vminnm_f32_(a, b)
-}
-
-/// Floating-point Minimun Number (vector)
-#[inline]
-#[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(fminnm))]
-pub unsafe fn vminnmq_f32(a: float32x4_t, b: float32x4_t) -> float32x4_t {
-    #[allow(improper_ctypes)]
-    extern "C" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.fminnm.v4f32")]
-        fn vminnmq_f32_(a: float32x4_t, b: float32x4_t) -> float32x4_t;
-    }
-    vminnmq_f32_(a, b)
 }
 
 /// Floating-point Minimum Number Pairwise (vector).
@@ -6502,24 +6450,6 @@ mod test {
     }
 
     #[simd_test(enable = "neon")]
-    unsafe fn test_vmaxnm_f32() {
-        let a: f32x2 = f32x2::new(1.0, 2.0);
-        let b: f32x2 = f32x2::new(8.0, 16.0);
-        let e: f32x2 = f32x2::new(8.0, 16.0);
-        let r: f32x2 = transmute(vmaxnm_f32(transmute(a), transmute(b)));
-        assert_eq!(r, e);
-    }
-
-    #[simd_test(enable = "neon")]
-    unsafe fn test_vmaxnmq_f32() {
-        let a: f32x4 = f32x4::new(1.0, 2.0, 3.0, -4.0);
-        let b: f32x4 = f32x4::new(8.0, 16.0, -1.0, 6.0);
-        let e: f32x4 = f32x4::new(8.0, 16.0, 3.0, 6.0);
-        let r: f32x4 = transmute(vmaxnmq_f32(transmute(a), transmute(b)));
-        assert_eq!(r, e);
-    }
-
-    #[simd_test(enable = "neon")]
     unsafe fn test_vpmaxnm_f32() {
         let a: f32x2 = f32x2::new(1.0, 2.0);
         let b: f32x2 = f32x2::new(6.0, -3.0);
@@ -6579,24 +6509,6 @@ mod test {
         let b: f64x2 = f64x2::new(8.0, 16.0);
         let e: f64x2 = f64x2::new(1.0, 2.0);
         let r: f64x2 = transmute(vminnmq_f64(transmute(a), transmute(b)));
-        assert_eq!(r, e);
-    }
-
-    #[simd_test(enable = "neon")]
-    unsafe fn test_vminnm_f32() {
-        let a: f32x2 = f32x2::new(1.0, 2.0);
-        let b: f32x2 = f32x2::new(8.0, 16.0);
-        let e: f32x2 = f32x2::new(1.0, 2.0);
-        let r: f32x2 = transmute(vminnm_f32(transmute(a), transmute(b)));
-        assert_eq!(r, e);
-    }
-
-    #[simd_test(enable = "neon")]
-    unsafe fn test_vminnmq_f32() {
-        let a: f32x4 = f32x4::new(1.0, 2.0, 3.0, -4.0);
-        let b: f32x4 = f32x4::new(8.0, 16.0, -1.0, 6.0);
-        let e: f32x4 = f32x4::new(1.0, 2.0, -1.0, -4.0);
-        let r: f32x4 = transmute(vminnmq_f32(transmute(a), transmute(b)));
         assert_eq!(r, e);
     }
 

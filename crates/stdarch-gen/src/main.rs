@@ -1,4 +1,5 @@
 use self::Suffix::*;
+use self::TargetFeature::*;
 use std::env;
 use std::fs::File;
 use std::io::prelude::*;
@@ -208,6 +209,12 @@ enum Suffix {
     Double,
     NoQ,
     NoQDouble,
+}
+
+#[derive(Clone, Copy)]
+enum TargetFeature {
+    ArmV7,
+    ArmV8,
 }
 
 fn type_to_global_type(t: &str) -> &str {
@@ -800,6 +807,7 @@ fn gen_arm(
     current_tests: &[(Vec<String>, Vec<String>, Vec<String>, Vec<String>)],
     suffix: Suffix,
     para_num: i32,
+    target: TargetFeature,
     fixed: &Vec<String>,
     multi_fn: &Vec<String>,
 ) -> (String, String) {
@@ -822,6 +830,11 @@ fn gen_arm(
     let current_aarch64 = current_aarch64
         .clone()
         .unwrap_or_else(|| current_arm.to_string());
+
+    let current_target = match target {
+        ArmV7 => "v7",
+        ArmV8 => "v8",
+    };
 
     let current_fn = if let Some(current_fn) = current_fn.clone() {
         if link_aarch64.is_some() || link_arm.is_some() {
@@ -965,12 +978,13 @@ fn gen_arm(
 {}
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "{}"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr({}))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr({}))]
 {}
 "#,
         current_comment,
+        current_target,
         expand_intrinsic(&current_arm, in_t[1]),
         expand_intrinsic(&current_aarch64, in_t[1]),
         call,
@@ -1233,6 +1247,7 @@ fn main() -> io::Result<()> {
     let mut fixed: Vec<String> = Vec::new();
     let mut current_tests: Vec<(Vec<String>, Vec<String>, Vec<String>, Vec<String>)> = Vec::new();
     let mut multi_fn: Vec<String> = Vec::new();
+    let mut target: TargetFeature = ArmV7;
 
     //
     // THIS FILE IS GENERATED FORM neon.spec DO NOT CHANGE IT MANUALLY
@@ -1309,6 +1324,7 @@ mod test {
             c = Vec::new();
             fixed = Vec::new();
             multi_fn = Vec::new();
+            target = ArmV7;
         } else if line.starts_with("//") {
         } else if line.starts_with("name = ") {
             current_name = Some(String::from(&line[7..]));
@@ -1341,6 +1357,14 @@ mod test {
             link_aarch64 = Some(String::from(&line[15..]));
         } else if line.starts_with("link-arm = ") {
             link_arm = Some(String::from(&line[11..]));
+        } else if line.starts_with("target = ") {
+            target = match Some(String::from(&line[9..])) {
+                Some(input) => match input.as_str() {
+                    "v8" => ArmV8,
+                    _ => ArmV7,
+                },
+                _ => ArmV7,
+            }
         } else if line.starts_with("generate ") {
             let line = &line[9..];
             let types: Vec<String> = line
@@ -1396,6 +1420,7 @@ mod test {
                         &current_tests,
                         suffix,
                         para_num,
+                        target,
                         &fixed,
                         &multi_fn,
                     );

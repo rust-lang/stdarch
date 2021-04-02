@@ -1479,7 +1479,14 @@ validate 8.0, 16.0, 3.0, 6.0
 
 aarch64 = fmaxnm
 link-aarch64 = fmaxnm._EXT_
-generate float64x*_t, float*_t
+generate float64x*_t
+
+target = v8
+arm = vmaxnm
+aarch64 = fmaxnm
+link-arm = vmaxnm._EXT_
+link-aarch64 = fmaxnm._EXT_
+generate float*_t
 
 /// Floating-point Maximum Number Pairwise (vector).
 name = vpmaxnm
@@ -1541,7 +1548,14 @@ validate 1.0, 2.0, -1.0, -4.0
 
 aarch64 = fminnm
 link-aarch64 = fminnm._EXT_
-generate float64x*_t, float*_t
+generate float64x*_t
+
+target = v8
+arm = vminnm
+aarch64 = fminnm
+link-arm = vminnm._EXT_
+link-aarch64 = fminnm._EXT_
+generate float*_t
 
 /// Floating-point Minimum Number Pairwise (vector).
 name = vpminnm
