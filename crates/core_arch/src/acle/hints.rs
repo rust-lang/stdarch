@@ -10,7 +10,6 @@
 // Section 10.1 of ACLE says that the supported arches are: 8, 6K, 6-M
 // LLVM says "instruction requires: armv6k"
 #[cfg(any(target_feature = "v6", target_arch = "aarch64", doc))]
-#[doc(cfg(target_arch = "arm"))]
 #[inline(always)]
 pub unsafe fn __wfi() {
     hint(HINT_WFI);
@@ -24,7 +23,6 @@ pub unsafe fn __wfi() {
 // Section 10.1 of ACLE says that the supported arches are: 8, 6K, 6-M
 // LLVM says "instruction requires: armv6k"
 #[cfg(any(target_feature = "v6", target_arch = "aarch64", doc))]
-#[doc(cfg(target_arch = "arm"))]
 #[inline(always)]
 pub unsafe fn __wfe() {
     hint(HINT_WFE);
@@ -37,7 +35,6 @@ pub unsafe fn __wfe() {
 // Section 10.1 of ACLE says that the supported arches are: 8, 6K, 6-M, 7-M
 // LLVM says "instruction requires: armv6k"
 #[cfg(any(target_feature = "v6", target_arch = "aarch64", doc))]
-#[doc(cfg(target_arch = "aarch64"))]
 #[inline(always)]
 pub unsafe fn __sev() {
     hint(HINT_SEV);
@@ -68,7 +65,6 @@ pub unsafe fn __sevl() {
 // Section 10.1 of ACLE says that the supported arches are: 8, 6K, 6-M
 // LLVM says "instruction requires: armv6k"
 #[cfg(any(target_feature = "v6", target_arch = "aarch64", doc))]
-#[doc(cfg(target_arch = "aarch64"))]
 #[inline(always)]
 pub unsafe fn __yield() {
     hint(HINT_YIELD);
