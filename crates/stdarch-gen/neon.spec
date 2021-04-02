@@ -900,11 +900,25 @@ b = 9, 11, 14, 15, 16, 17, 18, 19, 0, 8, 8, 9, 8, 9, 9, 11
 n = HFLEN
 validate 8, 9, 9, 11, 9, 11, 14, 15, 9, 11, 14, 15, 16, 17, 18, 19
 
+arm = "vext.8"
+aarch64 = ext
+generate int*_t, uint*_t, poly8x8_t, poly8x16_t, poly16x4_t, poly16x8_t
+
+/// Extract vector from pair of vectors
+name = vext
+constn = N
+multi_fn = static_assert_imm-out_exp_len-N
+multi_fn = matchn-out_exp_len, simd_shuffle-out_len-noext, a, b, {asc-n-out_len}
+a = 0, 8, 8, 9, 8, 9, 9, 11, 8, 9, 9, 11, 9, 11, 14, 15
+b = 9, 11, 14, 15, 16, 17, 18, 19, 0, 8, 8, 9, 8, 9, 9, 11
+n = HFLEN
+validate 8, 9, 9, 11, 9, 11, 14, 15, 9, 11, 14, 15, 16, 17, 18, 19
+
 aarch64 = ext
 generate poly64x2_t
 
-arm = vext.sz
-generate int*_t, int64x2_t, uint*_t, uint64x2_t, poly8x8_t, poly8x16_t, poly16x4_t, poly16x8_t
+arm = vmov
+generate int64x2_t, uint64x2_t
 
 /// Extract vector from pair of vectors
 name = vext
@@ -919,7 +933,7 @@ validate 2., 3., 3., 4.
 aarch64 = ext
 generate float64x2_t
 
-arm = vext.sz
+arm = "vext.8"
 generate float*_t
 
 /// Multiply-add to accumulator

@@ -2100,7 +2100,7 @@ pub unsafe fn vextq_s8<const N: i32>(a: int8x16_t, b: int8x16_t) -> int8x16_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vext.16", N = 2))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vext.8", N = 2))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ext, N = 2))]
 #[rustc_legacy_const_generics(2)]
 pub unsafe fn vext_s16<const N: i32>(a: int16x4_t, b: int16x4_t) -> int16x4_t {
@@ -2118,7 +2118,7 @@ pub unsafe fn vext_s16<const N: i32>(a: int16x4_t, b: int16x4_t) -> int16x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vext.16", N = 4))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vext.8", N = 4))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ext, N = 4))]
 #[rustc_legacy_const_generics(2)]
 pub unsafe fn vextq_s16<const N: i32>(a: int16x8_t, b: int16x8_t) -> int16x8_t {
@@ -2140,7 +2140,7 @@ pub unsafe fn vextq_s16<const N: i32>(a: int16x8_t, b: int16x8_t) -> int16x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vext.32", N = 1))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vext.8", N = 1))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ext, N = 1))]
 #[rustc_legacy_const_generics(2)]
 pub unsafe fn vext_s32<const N: i32>(a: int32x2_t, b: int32x2_t) -> int32x2_t {
@@ -2156,7 +2156,7 @@ pub unsafe fn vext_s32<const N: i32>(a: int32x2_t, b: int32x2_t) -> int32x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vext.32", N = 2))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vext.8", N = 2))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ext, N = 2))]
 #[rustc_legacy_const_generics(2)]
 pub unsafe fn vextq_s32<const N: i32>(a: int32x4_t, b: int32x4_t) -> int32x4_t {
@@ -2166,22 +2166,6 @@ pub unsafe fn vextq_s32<const N: i32>(a: int32x4_t, b: int32x4_t) -> int32x4_t {
         1 => simd_shuffle4(a, b, [1, 2, 3, 4]),
         2 => simd_shuffle4(a, b, [2, 3, 4, 5]),
         3 => simd_shuffle4(a, b, [3, 4, 5, 6]),
-        _ => unreachable_unchecked(),
-    }
-}
-
-/// Extract vector from pair of vectors
-#[inline]
-#[target_feature(enable = "neon")]
-#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vext.64", N = 1))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ext, N = 1))]
-#[rustc_legacy_const_generics(2)]
-pub unsafe fn vextq_s64<const N: i32>(a: int64x2_t, b: int64x2_t) -> int64x2_t {
-    static_assert_imm1!(N);
-    match N & 0b1 {
-        0 => simd_shuffle2(a, b, [0, 1]),
-        1 => simd_shuffle2(a, b, [1, 2]),
         _ => unreachable_unchecked(),
     }
 }
@@ -2242,7 +2226,7 @@ pub unsafe fn vextq_u8<const N: i32>(a: uint8x16_t, b: uint8x16_t) -> uint8x16_t
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vext.16", N = 2))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vext.8", N = 2))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ext, N = 2))]
 #[rustc_legacy_const_generics(2)]
 pub unsafe fn vext_u16<const N: i32>(a: uint16x4_t, b: uint16x4_t) -> uint16x4_t {
@@ -2260,7 +2244,7 @@ pub unsafe fn vext_u16<const N: i32>(a: uint16x4_t, b: uint16x4_t) -> uint16x4_t
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vext.16", N = 4))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vext.8", N = 4))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ext, N = 4))]
 #[rustc_legacy_const_generics(2)]
 pub unsafe fn vextq_u16<const N: i32>(a: uint16x8_t, b: uint16x8_t) -> uint16x8_t {
@@ -2282,7 +2266,7 @@ pub unsafe fn vextq_u16<const N: i32>(a: uint16x8_t, b: uint16x8_t) -> uint16x8_
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vext.32", N = 1))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vext.8", N = 1))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ext, N = 1))]
 #[rustc_legacy_const_generics(2)]
 pub unsafe fn vext_u32<const N: i32>(a: uint32x2_t, b: uint32x2_t) -> uint32x2_t {
@@ -2298,7 +2282,7 @@ pub unsafe fn vext_u32<const N: i32>(a: uint32x2_t, b: uint32x2_t) -> uint32x2_t
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vext.32", N = 2))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vext.8", N = 2))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ext, N = 2))]
 #[rustc_legacy_const_generics(2)]
 pub unsafe fn vextq_u32<const N: i32>(a: uint32x4_t, b: uint32x4_t) -> uint32x4_t {
@@ -2308,22 +2292,6 @@ pub unsafe fn vextq_u32<const N: i32>(a: uint32x4_t, b: uint32x4_t) -> uint32x4_
         1 => simd_shuffle4(a, b, [1, 2, 3, 4]),
         2 => simd_shuffle4(a, b, [2, 3, 4, 5]),
         3 => simd_shuffle4(a, b, [3, 4, 5, 6]),
-        _ => unreachable_unchecked(),
-    }
-}
-
-/// Extract vector from pair of vectors
-#[inline]
-#[target_feature(enable = "neon")]
-#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vext.64", N = 1))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ext, N = 1))]
-#[rustc_legacy_const_generics(2)]
-pub unsafe fn vextq_u64<const N: i32>(a: uint64x2_t, b: uint64x2_t) -> uint64x2_t {
-    static_assert_imm1!(N);
-    match N & 0b1 {
-        0 => simd_shuffle2(a, b, [0, 1]),
-        1 => simd_shuffle2(a, b, [1, 2]),
         _ => unreachable_unchecked(),
     }
 }
@@ -2384,7 +2352,7 @@ pub unsafe fn vextq_p8<const N: i32>(a: poly8x16_t, b: poly8x16_t) -> poly8x16_t
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vext.16", N = 2))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vext.8", N = 2))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ext, N = 2))]
 #[rustc_legacy_const_generics(2)]
 pub unsafe fn vext_p16<const N: i32>(a: poly16x4_t, b: poly16x4_t) -> poly16x4_t {
@@ -2402,7 +2370,7 @@ pub unsafe fn vext_p16<const N: i32>(a: poly16x4_t, b: poly16x4_t) -> poly16x4_t
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vext.16", N = 4))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vext.8", N = 4))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ext, N = 4))]
 #[rustc_legacy_const_generics(2)]
 pub unsafe fn vextq_p16<const N: i32>(a: poly16x8_t, b: poly16x8_t) -> poly16x8_t {
@@ -2424,7 +2392,39 @@ pub unsafe fn vextq_p16<const N: i32>(a: poly16x8_t, b: poly16x8_t) -> poly16x8_
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vext.32", N = 1))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vmov, N = 1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ext, N = 1))]
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn vextq_s64<const N: i32>(a: int64x2_t, b: int64x2_t) -> int64x2_t {
+    static_assert_imm1!(N);
+    match N & 0b1 {
+        0 => simd_shuffle2(a, b, [0, 1]),
+        1 => simd_shuffle2(a, b, [1, 2]),
+        _ => unreachable_unchecked(),
+    }
+}
+
+/// Extract vector from pair of vectors
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vmov, N = 1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ext, N = 1))]
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn vextq_u64<const N: i32>(a: uint64x2_t, b: uint64x2_t) -> uint64x2_t {
+    static_assert_imm1!(N);
+    match N & 0b1 {
+        0 => simd_shuffle2(a, b, [0, 1]),
+        1 => simd_shuffle2(a, b, [1, 2]),
+        _ => unreachable_unchecked(),
+    }
+}
+
+/// Extract vector from pair of vectors
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vext.8", N = 1))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ext, N = 1))]
 #[rustc_legacy_const_generics(2)]
 pub unsafe fn vext_f32<const N: i32>(a: float32x2_t, b: float32x2_t) -> float32x2_t {
@@ -2440,7 +2440,7 @@ pub unsafe fn vext_f32<const N: i32>(a: float32x2_t, b: float32x2_t) -> float32x
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vext.32", N = 2))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vext.8", N = 2))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ext, N = 2))]
 #[rustc_legacy_const_generics(2)]
 pub unsafe fn vextq_f32<const N: i32>(a: float32x4_t, b: float32x4_t) -> float32x4_t {
@@ -9452,15 +9452,6 @@ mod test {
     }
 
     #[simd_test(enable = "neon")]
-    unsafe fn test_vextq_s64() {
-        let a: i64x2 = i64x2::new(0, 8);
-        let b: i64x2 = i64x2::new(9, 11);
-        let e: i64x2 = i64x2::new(8, 9);
-        let r: i64x2 = transmute(vextq_s64::<1>(transmute(a), transmute(b)));
-        assert_eq!(r, e);
-    }
-
-    #[simd_test(enable = "neon")]
     unsafe fn test_vext_u8() {
         let a: u8x8 = u8x8::new(0, 8, 8, 9, 8, 9, 9, 11);
         let b: u8x8 = u8x8::new(9, 11, 14, 15, 16, 17, 18, 19);
@@ -9515,15 +9506,6 @@ mod test {
     }
 
     #[simd_test(enable = "neon")]
-    unsafe fn test_vextq_u64() {
-        let a: u64x2 = u64x2::new(0, 8);
-        let b: u64x2 = u64x2::new(9, 11);
-        let e: u64x2 = u64x2::new(8, 9);
-        let r: u64x2 = transmute(vextq_u64::<1>(transmute(a), transmute(b)));
-        assert_eq!(r, e);
-    }
-
-    #[simd_test(enable = "neon")]
     unsafe fn test_vext_p8() {
         let a: i8x8 = i8x8::new(0, 8, 8, 9, 8, 9, 9, 11);
         let b: i8x8 = i8x8::new(9, 11, 14, 15, 16, 17, 18, 19);
@@ -9556,6 +9538,24 @@ mod test {
         let b: i16x8 = i16x8::new(9, 11, 14, 15, 16, 17, 18, 19);
         let e: i16x8 = i16x8::new(8, 9, 9, 11, 9, 11, 14, 15);
         let r: i16x8 = transmute(vextq_p16::<4>(transmute(a), transmute(b)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vextq_s64() {
+        let a: i64x2 = i64x2::new(0, 8);
+        let b: i64x2 = i64x2::new(9, 11);
+        let e: i64x2 = i64x2::new(8, 9);
+        let r: i64x2 = transmute(vextq_s64::<1>(transmute(a), transmute(b)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vextq_u64() {
+        let a: u64x2 = u64x2::new(0, 8);
+        let b: u64x2 = u64x2::new(9, 11);
+        let e: u64x2 = u64x2::new(8, 9);
+        let r: u64x2 = transmute(vextq_u64::<1>(transmute(a), transmute(b)));
         assert_eq!(r, e);
     }
 

@@ -1251,20 +1251,6 @@ fn expand_intrinsic(intr: &str, t: &str) -> String {
             _ => panic!("unknown type for extension: {}", t),
         };
         format!(r#""{}{}""#, &intr[..intr.len() - 1], ext)
-    } else if intr.ends_with(".sz") {
-        let ext = match t {
-            "int8x8_t" | "int8x16_t" | "uint8x8_t" | "uint8x16_t" | "poly8x8_t" | "poly8x16_t" => {
-                "8"
-            }
-            "int16x4_t" | "int16x8_t" | "uint16x4_t" | "uint16x8_t" | "poly16x4_t"
-            | "poly16x8_t" => "16",
-            "int32x2_t" | "int32x4_t" | "uint32x2_t" | "uint32x4_t" | "float32x2_t"
-            | "float32x4_t" => "32",
-            "int64x1_t" | "int64x2_t" | "uint64x1_t" | "uint64x2_t" | "float64x1_t"
-            | "float64x2_t" | "poly64x1_t" | "poly64x2_t" => "64",
-            _ => panic!("unknown type for extension: {}", t),
-        };
-        format!(r#""{}{}""#, &intr[..intr.len() - 2], ext)
     } else {
         intr.to_string()
     }
