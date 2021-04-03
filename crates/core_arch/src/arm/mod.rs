@@ -25,9 +25,6 @@ mod neon;
 pub use self::neon::*;
 
 #[cfg(any(target_arch = "aarch64", target_feature = "v7"))]
-pub use crate::core_arch::acle::crc::*;
-
-#[cfg(any(target_arch = "aarch64", target_feature = "v7"))]
 mod crypto;
 #[cfg(any(target_arch = "aarch64", target_feature = "v7"))]
 pub use self::crypto::*;

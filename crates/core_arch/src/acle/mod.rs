@@ -119,8 +119,10 @@ mod simd32;
 ))]
 pub use self::simd32::*;
 
-#[cfg(any(target_arch = "aarch64", target_feature = "v7"))]
-pub mod crc;
+#[cfg(any(target_arch = "aarch64", target_feature = "v7", doc))]
+mod crc;
+#[cfg(any(target_arch = "aarch64", target_feature = "v7", doc))]
+pub use crc::*;
 
 mod sealed {
     pub trait Dmb {
