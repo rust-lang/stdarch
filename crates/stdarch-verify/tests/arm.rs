@@ -149,6 +149,7 @@ static U8X16X2: Type = Type::U(8, 16, 2);
 static U8X16X3: Type = Type::U(8, 16, 3);
 static U8X16X4: Type = Type::U(8, 16, 4);
 static U8X8: Type = Type::U(8, 8, 1);
+static U8X4: Type = Type::U(8, 4, 1);
 static U8X8X2: Type = Type::U(8, 8, 2);
 static U8X8X3: Type = Type::U(8, 8, 3);
 static U8X8X4: Type = Type::U(8, 8, 4);
@@ -386,6 +387,30 @@ fn verify_all_signatures() {
                 "__smlatt",
                 "__smlawb",
                 "__smlawt",
+                "__qadd8",
+                "__qsub8",
+                "__qsub16",
+                "__qadd16",
+                "__qasx",
+                "__qsax",
+                "__sadd16",
+                "__sadd8",
+                "__smlad",
+                "__smlsd",
+                "__sasx",
+                "__sel",
+                "__shadd8",
+                "__shadd16",
+                "__shsub8",
+                "__usub8",
+                "__ssub8",
+                "__shsub16",
+                "__smuad",
+                "__smuadx",
+                "__smusd",
+                "__smusdx",
+                "__usad8",
+                "__usada8",
             ];
             if !skip.contains(&rust.name) {
                 println!(
@@ -427,6 +452,7 @@ fn verify_all_signatures() {
                 // TODO: we still need to verify these intrinsics or find a
                 // reference for them, need to figure out where though!
                 if !rust.file.ends_with("dsp.rs\"")
+                    && !rust.file.ends_with("simd32.rs\"")
                     && !rust.file.ends_with("cmsis.rs\"")
                     && !rust.file.ends_with("v6.rs\"")
                     && !rust.file.ends_with("v7.rs\"")
