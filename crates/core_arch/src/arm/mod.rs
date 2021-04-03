@@ -26,7 +26,7 @@ pub use self::sat::*;
 // section 5.4.7)
 // Here we workaround the difference between LLVM's +dsp and ACLE's __ARM_FEATURE_DSP by gating on
 // '+v5te' rather than on '+dsp'
-#[cfg(all(
+#[cfg(any(all(
     not(target_arch = "aarch64"),
     any(
         // >= v5TE but excludes v7-M
@@ -34,15 +34,18 @@ pub use self::sat::*;
         // v7E-M
         all(target_feature = "mclass", target_feature = "dsp"),
     )
-))]
+), doc))]
 mod dsp;
 
-#[cfg(all(
-    not(target_arch = "aarch64"),
-    any(
-        all(target_feature = "v5te", not(target_feature = "mclass")),
-        all(target_feature = "mclass", target_feature = "dsp"),
-    )
+#[cfg(any(
+    all(
+        not(target_arch = "aarch64"),
+        any(
+            all(target_feature = "v5te", not(target_feature = "mclass")),
+            all(target_feature = "mclass", target_feature = "dsp"),
+        )
+    ),
+    doc
 ))]
 pub use self::dsp::*;
 
