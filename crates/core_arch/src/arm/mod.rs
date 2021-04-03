@@ -15,10 +15,10 @@ mod v6;
 pub use self::v6::*;
 
 // Supported arches: 6, 7-M. See Section 10.1 of ACLE (e.g. SSAT)
-#[cfg(all(not(target_arch = "aarch64"), target_feature = "v6",))]
+#[cfg(any(all(not(target_arch = "aarch64"), target_feature = "v6",), doc))]
 mod sat;
 
-#[cfg(all(not(target_arch = "aarch64"), target_feature = "v6",))]
+#[cfg(any(all(not(target_arch = "aarch64"), target_feature = "v6",), doc))]
 pub use self::sat::*;
 
 #[cfg(any(target_arch = "aarch64", target_feature = "v7"))]
