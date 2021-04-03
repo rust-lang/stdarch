@@ -21,6 +21,31 @@ mod sat;
 #[cfg(any(all(not(target_arch = "aarch64"), target_feature = "v6",), doc))]
 pub use self::sat::*;
 
+// Supported arches: 5TE, 7E-M. See Section 10.1 of ACLE (e.g. QADD)
+// We also include the A profile even though DSP is deprecated on that profile as of ACLE 2.0 (see
+// section 5.4.7)
+// Here we workaround the difference between LLVM's +dsp and ACLE's __ARM_FEATURE_DSP by gating on
+// '+v5te' rather than on '+dsp'
+#[cfg(all(
+    not(target_arch = "aarch64"),
+    any(
+        // >= v5TE but excludes v7-M
+        all(target_feature = "v5te", not(target_feature = "mclass")),
+        // v7E-M
+        all(target_feature = "mclass", target_feature = "dsp"),
+    )
+))]
+mod dsp;
+
+#[cfg(all(
+    not(target_arch = "aarch64"),
+    any(
+        all(target_feature = "v5te", not(target_feature = "mclass")),
+        all(target_feature = "mclass", target_feature = "dsp"),
+    )
+))]
+pub use self::dsp::*;
+
 #[cfg(any(target_arch = "aarch64", target_feature = "v7"))]
 mod v7;
 #[cfg(any(target_arch = "aarch64", target_feature = "v7"))]
