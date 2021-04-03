@@ -35,7 +35,7 @@ pub use self::sat::*;
         all(target_feature = "mclass", target_feature = "dsp"),
     )
 ), doc))]
-mod dsp;
+pub(crate) mod dsp;
 
 #[cfg(any(
     all(
