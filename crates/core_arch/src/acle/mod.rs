@@ -124,6 +124,11 @@ mod crc;
 #[cfg(any(target_arch = "aarch64", target_feature = "v7", doc))]
 pub use crc::*;
 
+#[cfg(any(target_arch = "aarch64", target_feature = "v7", doc))]
+mod crypto;
+#[cfg(any(target_arch = "aarch64", target_feature = "v7", doc))]
+pub use self::crypto::*;
+
 mod sealed {
     pub trait Dmb {
         unsafe fn __dmb(&self);
