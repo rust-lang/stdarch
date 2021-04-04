@@ -47,6 +47,9 @@
 //!
 //! - [ACLE Q2 2018](https://developer.arm.com/docs/101028/latest)
 
+// Only for 'neon' submodule
+#![allow(non_camel_case_types)]
+
 // 8, 7 and 6-M are supported via dedicated instructions like DMB. All other arches are supported
 // via CP15 instructions. See Section 10.1 of ACLE
 mod barrier;
@@ -74,6 +77,11 @@ pub use crc::*;
 mod crypto;
 #[cfg(any(target_arch = "aarch64", target_feature = "v7", doc))]
 pub use self::crypto::*;
+
+#[cfg(any(target_arch = "aarch64", target_feature = "v7", doc))]
+mod neon;
+#[cfg(any(target_arch = "aarch64", target_feature = "v7", doc))]
+pub use self::neon::*;
 
 mod sealed {
     pub trait Dmb {

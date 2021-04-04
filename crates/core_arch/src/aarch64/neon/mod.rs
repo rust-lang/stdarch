@@ -4219,13 +4219,13 @@ mod tests {
 
 #[cfg(test)]
 #[cfg(target_endian = "little")]
-#[path = "../../arm/neon/table_lookup_tests.rs"]
+#[path = "../../acle/neon/table_lookup_tests.rs"]
 mod table_lookup_tests;
 
 #[cfg(test)]
-#[path = "../../arm/neon/shift_and_insert_tests.rs"]
+#[path = "../../acle/neon/shift_and_insert_tests.rs"]
 mod shift_and_insert_tests;
 
 #[cfg(test)]
-#[path = "../../arm/neon/load_tests.rs"]
+#[path = "../../acle/neon/load_tests.rs"]
 mod load_tests;
