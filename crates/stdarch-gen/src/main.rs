@@ -1429,7 +1429,7 @@ mod test {
 
     let arm_out_path: PathBuf = PathBuf::from(env::var("OUT_DIR").unwrap())
         .join("src")
-        .join("arm")
+        .join("acle")
         .join("neon");
     std::fs::create_dir_all(&arm_out_path)?;
 
