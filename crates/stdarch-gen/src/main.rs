@@ -995,7 +995,7 @@ fn gen_arm(
 
     let current_target = match target {
         ArmV7 => "v7",
-        FPArmV8 => "fp-armv8",
+        FPArmV8 => "fp-armv8,v8",
     };
 
     let current_fn = if let Some(current_fn) = current_fn.clone() {
