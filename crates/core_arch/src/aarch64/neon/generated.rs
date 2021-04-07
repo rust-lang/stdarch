@@ -1664,6 +1664,34 @@ pub unsafe fn vcvtpq_u64_f64(a: float64x2_t) -> uint64x2_t {
     vcvtpq_u64_f64_(a)
 }
 
+/// Extract vector from pair of vectors
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(ext, N = 1))]
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn vextq_p64<const N: i32>(a: poly64x2_t, b: poly64x2_t) -> poly64x2_t {
+    static_assert_imm1!(N);
+    match N & 0b1 {
+        0 => simd_shuffle2(a, b, [0, 1]),
+        1 => simd_shuffle2(a, b, [1, 2]),
+        _ => unreachable_unchecked(),
+    }
+}
+
+/// Extract vector from pair of vectors
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(ext, N = 1))]
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn vextq_f64<const N: i32>(a: float64x2_t, b: float64x2_t) -> float64x2_t {
+    static_assert_imm1!(N);
+    match N & 0b1 {
+        0 => simd_shuffle2(a, b, [0, 1]),
+        1 => simd_shuffle2(a, b, [1, 2]),
+        _ => unreachable_unchecked(),
+    }
+}
+
 /// Floating-point multiply-add to accumulator
 #[inline]
 #[target_feature(enable = "neon")]
@@ -2510,6 +2538,71 @@ pub unsafe fn vmaxq_f64(a: float64x2_t, b: float64x2_t) -> float64x2_t {
     vmaxq_f64_(a, b)
 }
 
+/// Floating-point Maximun Number (vector)
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(fmaxnm))]
+pub unsafe fn vmaxnm_f64(a: float64x1_t, b: float64x1_t) -> float64x1_t {
+    #[allow(improper_ctypes)]
+    extern "C" {
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.fmaxnm.v1f64")]
+        fn vmaxnm_f64_(a: float64x1_t, b: float64x1_t) -> float64x1_t;
+    }
+    vmaxnm_f64_(a, b)
+}
+
+/// Floating-point Maximun Number (vector)
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(fmaxnm))]
+pub unsafe fn vmaxnmq_f64(a: float64x2_t, b: float64x2_t) -> float64x2_t {
+    #[allow(improper_ctypes)]
+    extern "C" {
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.fmaxnm.v2f64")]
+        fn vmaxnmq_f64_(a: float64x2_t, b: float64x2_t) -> float64x2_t;
+    }
+    vmaxnmq_f64_(a, b)
+}
+
+/// Floating-point Maximum Number Pairwise (vector).
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(fmaxnmp))]
+pub unsafe fn vpmaxnm_f32(a: float32x2_t, b: float32x2_t) -> float32x2_t {
+    #[allow(improper_ctypes)]
+    extern "C" {
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.fmaxnmp.v2f32")]
+        fn vpmaxnm_f32_(a: float32x2_t, b: float32x2_t) -> float32x2_t;
+    }
+    vpmaxnm_f32_(a, b)
+}
+
+/// Floating-point Maximum Number Pairwise (vector).
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(fmaxnmp))]
+pub unsafe fn vpmaxnmq_f64(a: float64x2_t, b: float64x2_t) -> float64x2_t {
+    #[allow(improper_ctypes)]
+    extern "C" {
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.fmaxnmp.v2f64")]
+        fn vpmaxnmq_f64_(a: float64x2_t, b: float64x2_t) -> float64x2_t;
+    }
+    vpmaxnmq_f64_(a, b)
+}
+
+/// Floating-point Maximum Number Pairwise (vector).
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(fmaxnmp))]
+pub unsafe fn vpmaxnmq_f32(a: float32x4_t, b: float32x4_t) -> float32x4_t {
+    #[allow(improper_ctypes)]
+    extern "C" {
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.fmaxnmp.v4f32")]
+        fn vpmaxnmq_f32_(a: float32x4_t, b: float32x4_t) -> float32x4_t;
+    }
+    vpmaxnmq_f32_(a, b)
+}
+
 /// Minimum (vector)
 #[inline]
 #[target_feature(enable = "neon")]
@@ -2534,6 +2627,71 @@ pub unsafe fn vminq_f64(a: float64x2_t, b: float64x2_t) -> float64x2_t {
         fn vminq_f64_(a: float64x2_t, b: float64x2_t) -> float64x2_t;
     }
     vminq_f64_(a, b)
+}
+
+/// Floating-point Minimun Number (vector)
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(fminnm))]
+pub unsafe fn vminnm_f64(a: float64x1_t, b: float64x1_t) -> float64x1_t {
+    #[allow(improper_ctypes)]
+    extern "C" {
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.fminnm.v1f64")]
+        fn vminnm_f64_(a: float64x1_t, b: float64x1_t) -> float64x1_t;
+    }
+    vminnm_f64_(a, b)
+}
+
+/// Floating-point Minimun Number (vector)
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(fminnm))]
+pub unsafe fn vminnmq_f64(a: float64x2_t, b: float64x2_t) -> float64x2_t {
+    #[allow(improper_ctypes)]
+    extern "C" {
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.fminnm.v2f64")]
+        fn vminnmq_f64_(a: float64x2_t, b: float64x2_t) -> float64x2_t;
+    }
+    vminnmq_f64_(a, b)
+}
+
+/// Floating-point Minimum Number Pairwise (vector).
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(fminnmp))]
+pub unsafe fn vpminnm_f32(a: float32x2_t, b: float32x2_t) -> float32x2_t {
+    #[allow(improper_ctypes)]
+    extern "C" {
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.fminnmp.v2f32")]
+        fn vpminnm_f32_(a: float32x2_t, b: float32x2_t) -> float32x2_t;
+    }
+    vpminnm_f32_(a, b)
+}
+
+/// Floating-point Minimum Number Pairwise (vector).
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(fminnmp))]
+pub unsafe fn vpminnmq_f64(a: float64x2_t, b: float64x2_t) -> float64x2_t {
+    #[allow(improper_ctypes)]
+    extern "C" {
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.fminnmp.v2f64")]
+        fn vpminnmq_f64_(a: float64x2_t, b: float64x2_t) -> float64x2_t;
+    }
+    vpminnmq_f64_(a, b)
+}
+
+/// Floating-point Minimum Number Pairwise (vector).
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(fminnmp))]
+pub unsafe fn vpminnmq_f32(a: float32x4_t, b: float32x4_t) -> float32x4_t {
+    #[allow(improper_ctypes)]
+    extern "C" {
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.fminnmp.v4f32")]
+        fn vpminnmq_f32_(a: float32x4_t, b: float32x4_t) -> float32x4_t;
+    }
+    vpminnmq_f32_(a, b)
 }
 
 /// Calculates the square root of each lane.
@@ -5615,6 +5773,24 @@ mod test {
     }
 
     #[simd_test(enable = "neon")]
+    unsafe fn test_vextq_p64() {
+        let a: i64x2 = i64x2::new(0, 8);
+        let b: i64x2 = i64x2::new(9, 11);
+        let e: i64x2 = i64x2::new(8, 9);
+        let r: i64x2 = transmute(vextq_p64::<1>(transmute(a), transmute(b)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vextq_f64() {
+        let a: f64x2 = f64x2::new(0., 2.);
+        let b: f64x2 = f64x2::new(3., 4.);
+        let e: f64x2 = f64x2::new(2., 3.);
+        let r: f64x2 = transmute(vextq_f64::<1>(transmute(a), transmute(b)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
     unsafe fn test_vmla_f64() {
         let a: f64 = 0.;
         let b: f64 = 2.;
@@ -6302,6 +6478,51 @@ mod test {
     }
 
     #[simd_test(enable = "neon")]
+    unsafe fn test_vmaxnm_f64() {
+        let a: f64 = 1.0;
+        let b: f64 = 8.0;
+        let e: f64 = 8.0;
+        let r: f64 = transmute(vmaxnm_f64(transmute(a), transmute(b)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vmaxnmq_f64() {
+        let a: f64x2 = f64x2::new(1.0, 2.0);
+        let b: f64x2 = f64x2::new(8.0, 16.0);
+        let e: f64x2 = f64x2::new(8.0, 16.0);
+        let r: f64x2 = transmute(vmaxnmq_f64(transmute(a), transmute(b)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vpmaxnm_f32() {
+        let a: f32x2 = f32x2::new(1.0, 2.0);
+        let b: f32x2 = f32x2::new(6.0, -3.0);
+        let e: f32x2 = f32x2::new(2.0, 6.0);
+        let r: f32x2 = transmute(vpmaxnm_f32(transmute(a), transmute(b)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vpmaxnmq_f64() {
+        let a: f64x2 = f64x2::new(1.0, 2.0);
+        let b: f64x2 = f64x2::new(6.0, -3.0);
+        let e: f64x2 = f64x2::new(2.0, 6.0);
+        let r: f64x2 = transmute(vpmaxnmq_f64(transmute(a), transmute(b)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vpmaxnmq_f32() {
+        let a: f32x4 = f32x4::new(1.0, 2.0, 3.0, -4.0);
+        let b: f32x4 = f32x4::new(8.0, 16.0, -1.0, 6.0);
+        let e: f32x4 = f32x4::new(2.0, 3.0, 16.0, 6.0);
+        let r: f32x4 = transmute(vpmaxnmq_f32(transmute(a), transmute(b)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
     unsafe fn test_vmin_f64() {
         let a: f64 = 1.0;
         let b: f64 = 0.0;
@@ -6316,6 +6537,51 @@ mod test {
         let b: f64x2 = f64x2::new(0.0, 3.0);
         let e: f64x2 = f64x2::new(0.0, -2.0);
         let r: f64x2 = transmute(vminq_f64(transmute(a), transmute(b)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vminnm_f64() {
+        let a: f64 = 1.0;
+        let b: f64 = 8.0;
+        let e: f64 = 1.0;
+        let r: f64 = transmute(vminnm_f64(transmute(a), transmute(b)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vminnmq_f64() {
+        let a: f64x2 = f64x2::new(1.0, 2.0);
+        let b: f64x2 = f64x2::new(8.0, 16.0);
+        let e: f64x2 = f64x2::new(1.0, 2.0);
+        let r: f64x2 = transmute(vminnmq_f64(transmute(a), transmute(b)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vpminnm_f32() {
+        let a: f32x2 = f32x2::new(1.0, 2.0);
+        let b: f32x2 = f32x2::new(6.0, -3.0);
+        let e: f32x2 = f32x2::new(1.0, -3.0);
+        let r: f32x2 = transmute(vpminnm_f32(transmute(a), transmute(b)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vpminnmq_f64() {
+        let a: f64x2 = f64x2::new(1.0, 2.0);
+        let b: f64x2 = f64x2::new(6.0, -3.0);
+        let e: f64x2 = f64x2::new(1.0, -3.0);
+        let r: f64x2 = transmute(vpminnmq_f64(transmute(a), transmute(b)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vpminnmq_f32() {
+        let a: f32x4 = f32x4::new(1.0, 2.0, 3.0, -4.0);
+        let b: f32x4 = f32x4::new(8.0, 16.0, -1.0, 6.0);
+        let e: f32x4 = f32x4::new(1.0, -4.0, 8.0, -1.0);
+        let r: f32x4 = transmute(vpminnmq_f32(transmute(a), transmute(b)));
         assert_eq!(r, e);
     }
 
