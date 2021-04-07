@@ -80,6 +80,9 @@ pub use crate::core_arch::acle::*;
 #[cfg(test)]
 use stdarch_test::assert_instr;
 
+mod neon;
+pub use neon::*;
+
 /// Generates the trap instruction `UDF`
 #[cfg(target_arch = "arm")]
 #[cfg_attr(test, assert_instr(udf))]

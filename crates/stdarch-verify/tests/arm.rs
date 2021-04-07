@@ -436,6 +436,18 @@ fn verify_all_signatures() {
                 "vld1q_f32",
                 "vld1_f64",
                 "vld1q_f64",
+                "vpadal_s8",
+                "vpadal_s16",
+                "vpadal_s32",
+                "vpadalq_s8",
+                "vpadalq_s16",
+                "vpadalq_s32",
+                "vpadal_u8",
+                "vpadal_u16",
+                "vpadal_u32",
+                "vpadalq_u8",
+                "vpadalq_u16",
+                "vpadalq_u32",
             ];
             if !skip.contains(&rust.name) {
                 println!(

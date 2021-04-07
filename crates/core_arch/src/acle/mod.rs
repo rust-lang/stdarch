@@ -79,7 +79,7 @@ mod crypto;
 pub use self::crypto::*;
 
 #[cfg(any(target_arch = "aarch64", target_feature = "v7", doc))]
-mod neon;
+pub(crate) mod neon;
 #[cfg(any(target_arch = "aarch64", target_feature = "v7", doc))]
 pub use self::neon::*;
 
