@@ -7594,7 +7594,7 @@ pub unsafe fn vreinterpretq_f32_p16(a: poly16x8_t) -> float32x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vshl.s8"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vshl))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(sshl))]
 pub unsafe fn vshl_s8(a: int8x8_t, b: int8x8_t) -> int8x8_t {
     #[allow(improper_ctypes)]
@@ -7610,7 +7610,7 @@ vshl_s8_(a, b)
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vshl.s8"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vshl))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(sshl))]
 pub unsafe fn vshlq_s8(a: int8x16_t, b: int8x16_t) -> int8x16_t {
     #[allow(improper_ctypes)]
@@ -7626,7 +7626,7 @@ vshlq_s8_(a, b)
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vshl.s16"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vshl))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(sshl))]
 pub unsafe fn vshl_s16(a: int16x4_t, b: int16x4_t) -> int16x4_t {
     #[allow(improper_ctypes)]
@@ -7642,7 +7642,7 @@ vshl_s16_(a, b)
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vshl.s16"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vshl))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(sshl))]
 pub unsafe fn vshlq_s16(a: int16x8_t, b: int16x8_t) -> int16x8_t {
     #[allow(improper_ctypes)]
@@ -7658,7 +7658,7 @@ vshlq_s16_(a, b)
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vshl.s32"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vshl))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(sshl))]
 pub unsafe fn vshl_s32(a: int32x2_t, b: int32x2_t) -> int32x2_t {
     #[allow(improper_ctypes)]
@@ -7674,7 +7674,7 @@ vshl_s32_(a, b)
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vshl.s32"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vshl))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(sshl))]
 pub unsafe fn vshlq_s32(a: int32x4_t, b: int32x4_t) -> int32x4_t {
     #[allow(improper_ctypes)]
@@ -7690,7 +7690,7 @@ vshlq_s32_(a, b)
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vshl.s64"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vshl))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(sshl))]
 pub unsafe fn vshl_s64(a: int64x1_t, b: int64x1_t) -> int64x1_t {
     #[allow(improper_ctypes)]
@@ -7706,7 +7706,7 @@ vshl_s64_(a, b)
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vshl.s64"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vshl))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(sshl))]
 pub unsafe fn vshlq_s64(a: int64x2_t, b: int64x2_t) -> int64x2_t {
     #[allow(improper_ctypes)]
@@ -7722,7 +7722,7 @@ vshlq_s64_(a, b)
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vshl.s8"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vshl))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ushl))]
 pub unsafe fn vshl_u8(a: uint8x8_t, b: int8x8_t) -> uint8x8_t {
     #[allow(improper_ctypes)]
@@ -7738,7 +7738,7 @@ vshl_u8_(a, b)
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vshl.s8"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vshl))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ushl))]
 pub unsafe fn vshlq_u8(a: uint8x16_t, b: int8x16_t) -> uint8x16_t {
     #[allow(improper_ctypes)]
@@ -7754,7 +7754,7 @@ vshlq_u8_(a, b)
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vshl.s16"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vshl))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ushl))]
 pub unsafe fn vshl_u16(a: uint16x4_t, b: int16x4_t) -> uint16x4_t {
     #[allow(improper_ctypes)]
@@ -7770,7 +7770,7 @@ vshl_u16_(a, b)
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vshl.s16"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vshl))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ushl))]
 pub unsafe fn vshlq_u16(a: uint16x8_t, b: int16x8_t) -> uint16x8_t {
     #[allow(improper_ctypes)]
@@ -7786,7 +7786,7 @@ vshlq_u16_(a, b)
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vshl.s32"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vshl))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ushl))]
 pub unsafe fn vshl_u32(a: uint32x2_t, b: int32x2_t) -> uint32x2_t {
     #[allow(improper_ctypes)]
@@ -7802,7 +7802,7 @@ vshl_u32_(a, b)
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vshl.s32"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vshl))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ushl))]
 pub unsafe fn vshlq_u32(a: uint32x4_t, b: int32x4_t) -> uint32x4_t {
     #[allow(improper_ctypes)]
@@ -7818,7 +7818,7 @@ vshlq_u32_(a, b)
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vshl.s64"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vshl))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ushl))]
 pub unsafe fn vshl_u64(a: uint64x1_t, b: int64x1_t) -> uint64x1_t {
     #[allow(improper_ctypes)]
@@ -7834,7 +7834,7 @@ vshl_u64_(a, b)
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vshl.s64"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vshl))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ushl))]
 pub unsafe fn vshlq_u64(a: uint64x2_t, b: int64x2_t) -> uint64x2_t {
     #[allow(improper_ctypes)]
@@ -7850,7 +7850,7 @@ vshlq_u64_(a, b)
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vshl.s8", N = 2))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vshl, N = 2))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(shl, N = 2))]
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn vshl_n_s8<const N: i32>(a: int8x8_t) -> int8x8_t {
@@ -7862,7 +7862,7 @@ pub unsafe fn vshl_n_s8<const N: i32>(a: int8x8_t) -> int8x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vshl.s8", N = 2))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vshl, N = 2))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(shl, N = 2))]
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn vshlq_n_s8<const N: i32>(a: int8x16_t) -> int8x16_t {
@@ -7874,7 +7874,7 @@ pub unsafe fn vshlq_n_s8<const N: i32>(a: int8x16_t) -> int8x16_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vshl.s16", N = 2))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vshl, N = 2))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(shl, N = 2))]
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn vshl_n_s16<const N: i32>(a: int16x4_t) -> int16x4_t {
@@ -7886,7 +7886,7 @@ pub unsafe fn vshl_n_s16<const N: i32>(a: int16x4_t) -> int16x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vshl.s16", N = 2))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vshl, N = 2))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(shl, N = 2))]
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn vshlq_n_s16<const N: i32>(a: int16x8_t) -> int16x8_t {
@@ -7898,7 +7898,7 @@ pub unsafe fn vshlq_n_s16<const N: i32>(a: int16x8_t) -> int16x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vshl.s32", N = 2))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vshl, N = 2))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(shl, N = 2))]
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn vshl_n_s32<const N: i32>(a: int32x2_t) -> int32x2_t {
@@ -7910,7 +7910,7 @@ pub unsafe fn vshl_n_s32<const N: i32>(a: int32x2_t) -> int32x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vshl.s32", N = 2))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vshl, N = 2))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(shl, N = 2))]
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn vshlq_n_s32<const N: i32>(a: int32x4_t) -> int32x4_t {
@@ -7922,7 +7922,7 @@ pub unsafe fn vshlq_n_s32<const N: i32>(a: int32x4_t) -> int32x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vshl.u8", N = 2))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vshl, N = 2))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(shl, N = 2))]
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn vshl_n_u8<const N: i32>(a: uint8x8_t) -> uint8x8_t {
@@ -7934,7 +7934,7 @@ pub unsafe fn vshl_n_u8<const N: i32>(a: uint8x8_t) -> uint8x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vshl.u8", N = 2))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vshl, N = 2))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(shl, N = 2))]
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn vshlq_n_u8<const N: i32>(a: uint8x16_t) -> uint8x16_t {
@@ -7946,7 +7946,7 @@ pub unsafe fn vshlq_n_u8<const N: i32>(a: uint8x16_t) -> uint8x16_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vshl.u16", N = 2))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vshl, N = 2))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(shl, N = 2))]
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn vshl_n_u16<const N: i32>(a: uint16x4_t) -> uint16x4_t {
@@ -7958,7 +7958,7 @@ pub unsafe fn vshl_n_u16<const N: i32>(a: uint16x4_t) -> uint16x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vshl.u16", N = 2))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vshl, N = 2))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(shl, N = 2))]
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn vshlq_n_u16<const N: i32>(a: uint16x8_t) -> uint16x8_t {
@@ -7970,7 +7970,7 @@ pub unsafe fn vshlq_n_u16<const N: i32>(a: uint16x8_t) -> uint16x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vshl.u32", N = 2))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vshl, N = 2))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(shl, N = 2))]
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn vshl_n_u32<const N: i32>(a: uint32x2_t) -> uint32x2_t {
@@ -7982,7 +7982,7 @@ pub unsafe fn vshl_n_u32<const N: i32>(a: uint32x2_t) -> uint32x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vshl.u32", N = 2))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vshl, N = 2))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(shl, N = 2))]
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn vshlq_n_u32<const N: i32>(a: uint32x4_t) -> uint32x4_t {
@@ -7994,7 +7994,7 @@ pub unsafe fn vshlq_n_u32<const N: i32>(a: uint32x4_t) -> uint32x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vshl.s64", N = 2))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vshl, N = 2))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(shl, N = 2))]
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn vshl_n_s64<const N: i32>(a: int64x1_t) -> int64x1_t {
@@ -8006,7 +8006,7 @@ pub unsafe fn vshl_n_s64<const N: i32>(a: int64x1_t) -> int64x1_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vshl.s64", N = 2))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vshl, N = 2))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(shl, N = 2))]
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn vshlq_n_s64<const N: i32>(a: int64x2_t) -> int64x2_t {
@@ -8018,7 +8018,7 @@ pub unsafe fn vshlq_n_s64<const N: i32>(a: int64x2_t) -> int64x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vshl.u64", N = 2))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vshl, N = 2))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(shl, N = 2))]
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn vshl_n_u64<const N: i32>(a: uint64x1_t) -> uint64x1_t {
@@ -8030,7 +8030,7 @@ pub unsafe fn vshl_n_u64<const N: i32>(a: uint64x1_t) -> uint64x1_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vshl.u64", N = 2))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vshl, N = 2))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(shl, N = 2))]
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn vshlq_n_u64<const N: i32>(a: uint64x2_t) -> uint64x2_t {
@@ -8110,7 +8110,7 @@ pub unsafe fn vshll_n_u32<const N: i32>(a: uint32x2_t) -> uint64x2_t {
     simd_shl(simd_cast(a), vdupq_n_u64(N.try_into().unwrap()))
 }
 
-/// Shift left
+/// Shift right
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
@@ -8122,7 +8122,7 @@ pub unsafe fn vshr_n_s8<const N: i32>(a: int8x8_t) -> int8x8_t {
     simd_shr(a, vdup_n_s8(N.try_into().unwrap()))
 }
 
-/// Shift left
+/// Shift right
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
@@ -8134,7 +8134,7 @@ pub unsafe fn vshrq_n_s8<const N: i32>(a: int8x16_t) -> int8x16_t {
     simd_shr(a, vdupq_n_s8(N.try_into().unwrap()))
 }
 
-/// Shift left
+/// Shift right
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
@@ -8146,7 +8146,7 @@ pub unsafe fn vshr_n_s16<const N: i32>(a: int16x4_t) -> int16x4_t {
     simd_shr(a, vdup_n_s16(N.try_into().unwrap()))
 }
 
-/// Shift left
+/// Shift right
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
@@ -8158,7 +8158,7 @@ pub unsafe fn vshrq_n_s16<const N: i32>(a: int16x8_t) -> int16x8_t {
     simd_shr(a, vdupq_n_s16(N.try_into().unwrap()))
 }
 
-/// Shift left
+/// Shift right
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
@@ -8170,7 +8170,7 @@ pub unsafe fn vshr_n_s32<const N: i32>(a: int32x2_t) -> int32x2_t {
     simd_shr(a, vdup_n_s32(N.try_into().unwrap()))
 }
 
-/// Shift left
+/// Shift right
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
@@ -8182,7 +8182,7 @@ pub unsafe fn vshrq_n_s32<const N: i32>(a: int32x4_t) -> int32x4_t {
     simd_shr(a, vdupq_n_s32(N.try_into().unwrap()))
 }
 
-/// Shift left
+/// Shift right
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
@@ -8194,7 +8194,7 @@ pub unsafe fn vshr_n_s64<const N: i32>(a: int64x1_t) -> int64x1_t {
     simd_shr(a, vdup_n_s64(N.try_into().unwrap()))
 }
 
-/// Shift left
+/// Shift right
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
@@ -8206,7 +8206,7 @@ pub unsafe fn vshrq_n_s64<const N: i32>(a: int64x2_t) -> int64x2_t {
     simd_shr(a, vdupq_n_s64(N.try_into().unwrap()))
 }
 
-/// Shift left
+/// Shift right
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
@@ -8218,7 +8218,7 @@ pub unsafe fn vshr_n_u8<const N: i32>(a: uint8x8_t) -> uint8x8_t {
     simd_shr(a, vdup_n_u8(N.try_into().unwrap()))
 }
 
-/// Shift left
+/// Shift right
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
@@ -8230,7 +8230,7 @@ pub unsafe fn vshrq_n_u8<const N: i32>(a: uint8x16_t) -> uint8x16_t {
     simd_shr(a, vdupq_n_u8(N.try_into().unwrap()))
 }
 
-/// Shift left
+/// Shift right
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
@@ -8242,7 +8242,7 @@ pub unsafe fn vshr_n_u16<const N: i32>(a: uint16x4_t) -> uint16x4_t {
     simd_shr(a, vdup_n_u16(N.try_into().unwrap()))
 }
 
-/// Shift left
+/// Shift right
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
@@ -8254,7 +8254,7 @@ pub unsafe fn vshrq_n_u16<const N: i32>(a: uint16x8_t) -> uint16x8_t {
     simd_shr(a, vdupq_n_u16(N.try_into().unwrap()))
 }
 
-/// Shift left
+/// Shift right
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
@@ -8266,7 +8266,7 @@ pub unsafe fn vshr_n_u32<const N: i32>(a: uint32x2_t) -> uint32x2_t {
     simd_shr(a, vdup_n_u32(N.try_into().unwrap()))
 }
 
-/// Shift left
+/// Shift right
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
@@ -8278,7 +8278,7 @@ pub unsafe fn vshrq_n_u32<const N: i32>(a: uint32x4_t) -> uint32x4_t {
     simd_shr(a, vdupq_n_u32(N.try_into().unwrap()))
 }
 
-/// Shift left
+/// Shift right
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
@@ -8290,7 +8290,7 @@ pub unsafe fn vshr_n_u64<const N: i32>(a: uint64x1_t) -> uint64x1_t {
     simd_shr(a, vdup_n_u64(N.try_into().unwrap()))
 }
 
-/// Shift left
+/// Shift right
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
@@ -8306,7 +8306,7 @@ pub unsafe fn vshrq_n_u64<const N: i32>(a: uint64x2_t) -> uint64x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vshrn.s16", N = 2))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vshrn.i16", N = 2))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(shrn, N = 2))]
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn vshrn_n_s16<const N: i32>(a: int16x8_t) -> int8x8_t {
@@ -8318,7 +8318,7 @@ pub unsafe fn vshrn_n_s16<const N: i32>(a: int16x8_t) -> int8x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vshrn.s32", N = 2))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vshrn.i32", N = 2))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(shrn, N = 2))]
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn vshrn_n_s32<const N: i32>(a: int32x4_t) -> int16x4_t {
@@ -8330,7 +8330,7 @@ pub unsafe fn vshrn_n_s32<const N: i32>(a: int32x4_t) -> int16x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vshrn.s64", N = 2))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vshrn.i64", N = 2))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(shrn, N = 2))]
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn vshrn_n_s64<const N: i32>(a: int64x2_t) -> int32x2_t {
@@ -8342,7 +8342,7 @@ pub unsafe fn vshrn_n_s64<const N: i32>(a: int64x2_t) -> int32x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vshrn.u16", N = 2))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vshrn.i16", N = 2))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(shrn, N = 2))]
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn vshrn_n_u16<const N: i32>(a: uint16x8_t) -> uint8x8_t {
@@ -8354,7 +8354,7 @@ pub unsafe fn vshrn_n_u16<const N: i32>(a: uint16x8_t) -> uint8x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vshrn.u32", N = 2))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vshrn.i32", N = 2))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(shrn, N = 2))]
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn vshrn_n_u32<const N: i32>(a: uint32x4_t) -> uint16x4_t {
@@ -8366,7 +8366,7 @@ pub unsafe fn vshrn_n_u32<const N: i32>(a: uint32x4_t) -> uint16x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vshrn.u64", N = 2))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vshrn.i64", N = 2))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(shrn, N = 2))]
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn vshrn_n_u64<const N: i32>(a: uint64x2_t) -> uint32x2_t {

@@ -2064,7 +2064,7 @@ a = 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
 b = 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2
 validate 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60, 64
 
-arm = vshl.s
+arm = vshl
 link-arm = vshifts._EXT_
 aarch64 = sshl
 link-aarch64 = sshl._EXT_
@@ -2077,7 +2077,7 @@ a = 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
 b = 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2
 validate 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60, 64
 
-arm = vshl.s
+arm = vshl
 link-arm = vshiftu._EXT_
 aarch64 = ushl
 link-aarch64 = ushl._EXT_
@@ -2094,7 +2094,7 @@ a = 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
 n = 2
 validate 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60, 64
 
-arm = vshl.s
+arm = vshl
 aarch64 = shl
 generate int*_t, uint*_t, int64x*_t, uint64x*_t
 
@@ -2130,7 +2130,7 @@ generate int8x16_t:int16x8_t, int16x8_t:int32x4_t, int32x4_t:int64x2_t
 aarch64 = ushll2
 generate uint8x16_t:uint16x8_t, uint16x8_t:uint32x4_t, uint32x4_t:uint64x2_t
 
-/// Shift left
+/// Shift right
 name = vshr
 n-suffix
 constn = N
@@ -2156,7 +2156,7 @@ a = 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60, 64
 n = 2
 validate 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
 
-arm = vshrn.s
+arm = vshrn.
 aarch64 = shrn
 generate int16x8_t:int8x8_t, int32x4_t:int16x4_t, int64x2_t:int32x2_t
 generate uint16x8_t:uint8x8_t, uint32x4_t:uint16x4_t, uint64x2_t:uint32x2_t
