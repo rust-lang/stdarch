@@ -8126,18 +8126,6 @@ pub unsafe fn vshr_n_s8<const N: i32>(a: int8x8_t) -> int8x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vshr.s8", N = 2))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(sshr, N = 2))]
-#[rustc_legacy_const_generics(1)]
-pub unsafe fn vshrq_n_s8<const N: i32>(a: int8x16_t) -> int8x16_t {
-    static_assert!(N : i32 where N >= 1 && N <= 8);
-    simd_shr(a, vdupq_n_s8(N.try_into().unwrap()))
-}
-
-/// Shift right
-#[inline]
-#[target_feature(enable = "neon")]
-#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vshr.s16", N = 2))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(sshr, N = 2))]
 #[rustc_legacy_const_generics(1)]
@@ -8216,18 +8204,6 @@ pub unsafe fn vshrq_n_s64<const N: i32>(a: int64x2_t) -> int64x2_t {
 pub unsafe fn vshr_n_u8<const N: i32>(a: uint8x8_t) -> uint8x8_t {
     static_assert!(N : i32 where N >= 1 && N <= 8);
     simd_shr(a, vdup_n_u8(N.try_into().unwrap()))
-}
-
-/// Shift right
-#[inline]
-#[target_feature(enable = "neon")]
-#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vshr.u8", N = 2))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ushr, N = 2))]
-#[rustc_legacy_const_generics(1)]
-pub unsafe fn vshrq_n_u8<const N: i32>(a: uint8x16_t) -> uint8x16_t {
-    static_assert!(N : i32 where N >= 1 && N <= 8);
-    simd_shr(a, vdupq_n_u8(N.try_into().unwrap()))
 }
 
 /// Shift right
@@ -14663,14 +14639,6 @@ mod test {
     }
 
     #[simd_test(enable = "neon")]
-    unsafe fn test_vshrq_n_s8() {
-        let a: i8x16 = i8x16::new(4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60, 64);
-        let e: i8x16 = i8x16::new(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
-        let r: i8x16 = transmute(vshrq_n_s8::<2>(transmute(a)));
-        assert_eq!(r, e);
-    }
-
-    #[simd_test(enable = "neon")]
     unsafe fn test_vshr_n_s16() {
         let a: i16x4 = i16x4::new(4, 8, 12, 16);
         let e: i16x4 = i16x4::new(1, 2, 3, 4);
@@ -14723,14 +14691,6 @@ mod test {
         let a: u8x8 = u8x8::new(4, 8, 12, 16, 20, 24, 28, 32);
         let e: u8x8 = u8x8::new(1, 2, 3, 4, 5, 6, 7, 8);
         let r: u8x8 = transmute(vshr_n_u8::<2>(transmute(a)));
-        assert_eq!(r, e);
-    }
-
-    #[simd_test(enable = "neon")]
-    unsafe fn test_vshrq_n_u8() {
-        let a: u8x16 = u8x16::new(4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60, 64);
-        let e: u8x16 = u8x16::new(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
-        let r: u8x16 = transmute(vshrq_n_u8::<2>(transmute(a)));
         assert_eq!(r, e);
     }
 
