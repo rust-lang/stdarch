@@ -1,5 +1,9 @@
+#[allow(unused_imports)]
 use crate::core_arch::acle::neon::*;
+#[allow(unused_imports)]
 use crate::core_arch::simd_llvm::*;
+#[allow(unused_imports)]
+use crate::core_arch::simd::{i32x4, u32x4, f32x4};
 #[allow(unused_imports)]
 use crate::mem::transmute;
 
