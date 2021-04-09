@@ -68,19 +68,17 @@ mod ex;
 
 pub use self::ex::*;
 
-#[cfg(any(target_arch = "aarch64", target_feature = "v7", doc))]
+#[cfg(any(target_feature = "v7", doc))]
 mod crc;
-#[cfg(any(target_arch = "aarch64", target_feature = "v7", doc))]
+#[cfg(any(target_feature = "v7", doc))]
 pub use crc::*;
 
-#[cfg(any(target_arch = "aarch64", target_feature = "v7", doc))]
+#[cfg(any(target_feature = "v7", doc))]
 mod crypto;
-#[cfg(any(target_arch = "aarch64", target_feature = "v7", doc))]
+#[cfg(any(arget_feature = "v7", doc))]
 pub use self::crypto::*;
 
-#[cfg(any(target_arch = "aarch64", target_feature = "v7", doc))]
 pub(crate) mod neon;
-#[cfg(any(target_arch = "aarch64", target_feature = "v7", doc))]
 pub use self::neon::*;
 
 mod sealed {

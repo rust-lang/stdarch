@@ -26,30 +26,30 @@ extern "C" {
     #[link_name = "llvm.arm.neon.vbsl.v16i8"]
     fn vbslq_s8_(a: int8x16_t, b: int8x16_t, c: int8x16_t) -> int8x16_t;
     #[link_name = "llvm.arm.neon.vpadals.v4i16.v8i8"]
-    fn vpadal_s8_(a: int16x4_t, b: int8x8_t) -> int16x4_t;
+    pub(crate) fn vpadal_s8_(a: int16x4_t, b: int8x8_t) -> int16x4_t;
     #[link_name = "llvm.arm.neon.vpadals.v2i32.v4i16"]
-    fn vpadal_s16_(a: int32x2_t, b: int16x4_t) -> int32x2_t;
+    pub(crate) fn vpadal_s16_(a: int32x2_t, b: int16x4_t) -> int32x2_t;
     #[link_name = "llvm.arm.neon.vpadals.v1i64.v2i32"]
-    fn vpadal_s32_(a: int64x1_t, b: int32x2_t) -> int64x1_t;
+    pub(crate) fn vpadal_s32_(a: int64x1_t, b: int32x2_t) -> int64x1_t;
     #[link_name = "llvm.arm.neon.vpadals.v8i16.v16i8"]
-    fn vpadalq_s8_(a: int16x8_t, b: int8x16_t) -> int16x8_t;
+    pub(crate) fn vpadalq_s8_(a: int16x8_t, b: int8x16_t) -> int16x8_t;
     #[link_name = "llvm.arm.neon.vpadals.v4i32.v8i16"]
-    fn vpadalq_s16_(a: int32x4_t, b: int16x8_t) -> int32x4_t;
+    pub(crate) fn vpadalq_s16_(a: int32x4_t, b: int16x8_t) -> int32x4_t;
     #[link_name = "llvm.arm.neon.vpadals.v2i64.v4i32"]
-    fn vpadalq_s32_(a: int64x2_t, b: int32x4_t) -> int64x2_t;
+    pub(crate) fn vpadalq_s32_(a: int64x2_t, b: int32x4_t) -> int64x2_t;
 
     #[link_name = "llvm.arm.neon.vpadalu.v4i16.v8i8"]
-    fn vpadal_u8_(a: uint16x4_t, b: uint8x8_t) -> uint16x4_t;
+    pub(crate) fn vpadal_u8_(a: uint16x4_t, b: uint8x8_t) -> uint16x4_t;
     #[link_name = "llvm.arm.neon.vpadalu.v2i32.v4i16"]
-    fn vpadal_u16_(a: uint32x2_t, b: uint16x4_t) -> uint32x2_t;
+    pub(crate) fn vpadal_u16_(a: uint32x2_t, b: uint16x4_t) -> uint32x2_t;
     #[link_name = "llvm.arm.neon.vpadalu.v1i64.v2i32"]
-    fn vpadal_u32_(a: uint64x1_t, b: uint32x2_t) -> uint64x1_t;
+    pub(crate) fn vpadal_u32_(a: uint64x1_t, b: uint32x2_t) -> uint64x1_t;
     #[link_name = "llvm.arm.neon.vpadalu.v8i16.v16i8"]
-    fn vpadalq_u8_(a: uint16x8_t, b: uint8x16_t) -> uint16x8_t;
+    pub(crate) fn vpadalq_u8_(a: uint16x8_t, b: uint8x16_t) -> uint16x8_t;
     #[link_name = "llvm.arm.neon.vpadalu.v4i32.v8i16"]
-    fn vpadalq_u16_(a: uint32x4_t, b: uint16x8_t) -> uint32x4_t;
+    pub(crate) fn vpadalq_u16_(a: uint32x4_t, b: uint16x8_t) -> uint32x4_t;
     #[link_name = "llvm.arm.neon.vpadalu.v2i64.v4i32"]
-    fn vpadalq_u32_(a: uint64x2_t, b: uint32x4_t) -> uint64x2_t;
+    pub(crate) fn vpadalq_u32_(a: uint64x2_t, b: uint32x4_t) -> uint64x2_t;
 
     #[link_name = "llvm.arm.neon.vtbl1"]
     fn vtbl1(a: int8x8_t, b: int8x8_t) -> int8x8_t;
@@ -1162,6 +1162,11 @@ pub unsafe fn vsriq_n_p16<const N: i32>(a: poly16x8_t, b: poly16x8_t) -> poly16x
 
 #[cfg(test)]
 mod tests {
+    use super::*;
+    use crate::core_arch::{arm::*, simd::*};
+    use stdarch_test::simd_test;
+    use crate::mem::transmute;
+
     #[cfg(target_arch = "arm")]
     #[simd_test(enable = "neon")]
     unsafe fn test_vcvtq_s32_f32() {

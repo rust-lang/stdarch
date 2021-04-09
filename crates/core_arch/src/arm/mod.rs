@@ -80,7 +80,7 @@ pub use crate::core_arch::acle::*;
 #[cfg(test)]
 use stdarch_test::assert_instr;
 
-mod neon;
+pub(crate) mod neon;
 pub use neon::*;
 
 /// Generates the trap instruction `UDF`
@@ -92,5 +92,4 @@ pub unsafe fn udf() -> ! {
 }
 
 #[cfg(test)]
-#[cfg(any(target_arch = "aarch64", target_feature = "v7"))]
 pub(crate) mod test_support;

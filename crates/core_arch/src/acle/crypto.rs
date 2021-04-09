@@ -191,6 +191,7 @@ pub unsafe fn vsha256su1q_u32(
 
 #[cfg(test)]
 mod tests {
+    use super::*;
     use crate::core_arch::{arm::*, simd::*};
     use std::mem;
     use stdarch_test::simd_test;
