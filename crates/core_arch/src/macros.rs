@@ -89,6 +89,6 @@ macro_rules! types {
         #[allow(non_camel_case_types)]
         #[repr(simd)]
         #[allow(clippy::missing_inline_in_public_items)]
-        pub struct $name($($fields)*);
+        pub struct $name(pub(crate) $($fields)*);
     )*)
 }

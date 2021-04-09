@@ -1,4 +1,3 @@
-#[rustfmt::skip]
 use crate::core_arch::acle::neon::*;
 use crate::core_arch::simd_llvm::*;
 #[allow(unused_imports)]
