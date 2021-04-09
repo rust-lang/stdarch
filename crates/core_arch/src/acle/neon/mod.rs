@@ -19,67 +19,67 @@ pub(crate) type p128 = u128;
 
 types! {
     /// ARM-specific 64-bit wide vector of eight packed `i8`.
-    pub struct int8x8_t(i8, i8, i8, i8, i8, i8, i8, i8);
+    pub struct int8x8_t(pub(crate) i8, pub(crate) i8, pub(crate) i8, pub(crate) i8, pub(crate) i8, pub(crate) i8, pub(crate) i8, pub(crate) i8);
     /// ARM-specific 64-bit wide vector of eight packed `u8`.
-    pub struct uint8x8_t(u8, u8, u8, u8, u8, u8, u8, u8);
+    pub struct uint8x8_t(pub(crate) u8, pub(crate) u8, pub(crate) u8, pub(crate) u8, pub(crate) u8, pub(crate) u8, pub(crate) u8, pub(crate) u8);
     /// ARM-specific 64-bit wide polynomial vector of eight packed `p8`.
-    pub struct poly8x8_t(p8, p8, p8, p8, p8, p8, p8, p8);
+    pub struct poly8x8_t(pub(crate) p8, pub(crate) p8, pub(crate) p8, pub(crate) p8, pub(crate) p8, pub(crate) p8, pub(crate) p8, pub(crate) p8);
     /// ARM-specific 64-bit wide vector of four packed `i16`.
-    pub struct int16x4_t(i16, i16, i16, i16);
+    pub struct int16x4_t(pub(crate) i16, pub(crate) i16, pub(crate) i16, pub(crate) i16);
     /// ARM-specific 64-bit wide vector of four packed `u16`.
-    pub struct uint16x4_t(u16, u16, u16, u16);
+    pub struct uint16x4_t(pub(crate) u16, pub(crate) u16, pub(crate) u16, pub(crate) u16);
     // FIXME: ARM-specific 64-bit wide vector of four packed `f16`.
     // pub struct float16x4_t(f16, f16, f16, f16);
     /// ARM-specific 64-bit wide vector of four packed `p16`.
-    pub struct poly16x4_t(p16, p16, p16, p16);
+    pub struct poly16x4_t(pub(crate) p16, pub(crate) p16, pub(crate) p16, pub(crate) p16);
     /// ARM-specific 64-bit wide vector of two packed `i32`.
-    pub struct int32x2_t(i32, i32);
+    pub struct int32x2_t(pub(crate) i32, pub(crate) i32);
     /// ARM-specific 64-bit wide vector of two packed `u32`.
-    pub struct uint32x2_t(u32, u32);
+    pub struct uint32x2_t(pub(crate) u32, pub(crate) u32);
     /// ARM-specific 64-bit wide vector of two packed `f32`.
-    pub struct float32x2_t(f32, f32);
+    pub struct float32x2_t(pub(crate) f32, pub(crate) f32);
     /// ARM-specific 64-bit wide vector of one packed `i64`.
-    pub struct int64x1_t(i64);
+    pub struct int64x1_t(pub(crate) i64);
     /// ARM-specific 64-bit wide vector of one packed `u64`.
-    pub struct uint64x1_t(u64);
+    pub struct uint64x1_t(pub(crate) u64);
     /// ARM-specific 64-bit wide vector of one packed `p64`.
-    pub struct poly64x1_t(p64);
+    pub struct poly64x1_t(pub(crate) p64);
 
     /// ARM-specific 128-bit wide vector of sixteen packed `i8`.
     pub struct int8x16_t(
-        i8, i8, i8, i8, i8, i8 ,i8, i8,
-        i8, i8, i8, i8, i8, i8 ,i8, i8,
+        pub(crate) i8, pub(crate) i8, pub(crate) i8, pub(crate) i8, pub(crate) i8, pub(crate) i8 , pub(crate) i8, pub(crate) i8,
+        pub(crate) i8, pub(crate) i8, pub(crate) i8, pub(crate) i8, pub(crate) i8, pub(crate) i8 , pub(crate) i8, pub(crate) i8,
     );
     /// ARM-specific 128-bit wide vector of sixteen packed `u8`.
     pub struct uint8x16_t(
-        u8, u8 ,u8, u8, u8, u8 ,u8, u8,
-        u8, u8 ,u8, u8, u8, u8 ,u8, u8,
+        pub(crate) u8, pub(crate) u8 , pub(crate) u8, pub(crate) u8, pub(crate) u8, pub(crate) u8 , pub(crate) u8, pub(crate) u8,
+        pub(crate) u8, pub(crate) u8 , pub(crate) u8,  pub(crate) u8,  pub(crate) u8,  pub(crate) u8 , pub(crate) u8,  pub(crate) u8,
     );
     /// ARM-specific 128-bit wide vector of sixteen packed `p8`.
     pub struct poly8x16_t(
-        p8, p8, p8, p8, p8, p8, p8, p8,
-        p8, p8, p8, p8, p8, p8, p8, p8,
+         pub(crate) p8,  pub(crate) p8,  pub(crate) p8,  pub(crate) p8,  pub(crate) p8,  pub(crate) p8,  pub(crate) p8,  pub(crate) p8,
+         pub(crate) p8,  pub(crate) p8,  pub(crate) p8,  pub(crate) p8,  pub(crate) p8,  pub(crate) p8,  pub(crate) p8,  pub(crate) p8,
     );
     /// ARM-specific 128-bit wide vector of eight packed `i16`.
-    pub struct int16x8_t(i16, i16, i16, i16, i16, i16, i16, i16);
+    pub struct int16x8_t(pub(crate) i16, pub(crate) i16, pub(crate) i16, pub(crate) i16, pub(crate) i16, pub(crate) i16, pub(crate) i16, pub(crate) i16);
     /// ARM-specific 128-bit wide vector of eight packed `u16`.
-    pub struct uint16x8_t(u16, u16, u16, u16, u16, u16, u16, u16);
+    pub struct uint16x8_t(pub(crate) u16, pub(crate) u16, pub(crate) u16, pub(crate) u16, pub(crate) u16, pub(crate) u16, pub(crate) u16, pub(crate) u16);
     // FIXME: ARM-specific 128-bit wide vector of eight packed `f16`.
     // pub struct float16x8_t(f16, f16, f16, f16, f16, f16, f16);
     /// ARM-specific 128-bit wide vector of eight packed `p16`.
-    pub struct poly16x8_t(p16, p16, p16, p16, p16, p16, p16, p16);
+    pub struct poly16x8_t(pub(crate) p16, pub(crate) p16, pub(crate) p16, pub(crate) p16, pub(crate) p16, pub(crate) p16, pub(crate) p16, pub(crate) p16);
     /// ARM-specific 128-bit wide vector of four packed `i32`.
-    pub struct int32x4_t(i32, i32, i32, i32);
+    pub struct int32x4_t(pub(crate) i32, pub(crate) i32, pub(crate) i32, pub(crate) i32);
     /// ARM-specific 128-bit wide vector of four packed `u32`.
-    pub struct uint32x4_t(u32, u32, u32, u32);
+    pub struct uint32x4_t(pub(crate) u32, pub(crate) u32, pub(crate) u32, pub(crate) u32);
     /// ARM-specific 128-bit wide vector of four packed `f32`.
-    pub struct float32x4_t(f32, f32, f32, f32);
+    pub struct float32x4_t(pub(crate) f32, pub(crate) f32, pub(crate) f32, pub(crate) f32);
     /// ARM-specific 128-bit wide vector of two packed `i64`.
-    pub struct int64x2_t(i64, i64);
+    pub struct int64x2_t(pub(crate) i64, pub(crate) i64);
     /// ARM-specific 128-bit wide vector of two packed `u64`.
-    pub struct uint64x2_t(u64, u64);
+    pub struct uint64x2_t(pub(crate) u64, pub(crate) u64);
     /// ARM-specific 128-bit wide vector of two packed `p64`.
-    pub struct poly64x2_t(p64, p64);
+    pub struct poly64x2_t(pub(crate) p64, pub(crate) p64);
 }
 
 /// ARM-specific type containing two `int8x8_t` vectors.
