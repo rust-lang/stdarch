@@ -926,6 +926,7 @@ a = 1, 1, 1, 4, 1, 6, 7, 8, 1, 10, 11, 12, 13, 14, 15, 16
 n = HFLEN
 validate 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
 
+aarch64 = dup
 arm = vmov
 generate int64x2_t, int64x1_t:int64x2_t, uint64x2_t, uint64x1_t:uint64x2_t
 
