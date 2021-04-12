@@ -903,18 +903,31 @@ validate 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
 aarch64 = dup
 generate poly64x2_t, poly64x1_t:poly64x2_t
 
-arm = vdup.
-generate int*_t, int64x2_t
+arm = vdup.l
+generate int*_t
 generate int8x16_t:int8x8_t, int16x8_t:int16x4_t, int32x4_t:int32x2_t
-generate int8x8_t:int8x16_t, int16x4_t:int16x8_t, int32x2_t:int32x4_t, int64x1_t:int64x2_t
+generate int8x8_t:int8x16_t, int16x4_t:int16x8_t, int32x2_t:int32x4_t
 
-generate uint*_t, uint64x2_t
+generate uint*_t
 generate uint8x16_t:uint8x8_t, uint16x8_t:uint16x4_t, uint32x4_t:uint32x2_t
-generate uint8x8_t:uint8x16_t, uint16x4_t:uint16x8_t, uint32x2_t:uint32x4_t, uint64x1_t:uint64x2_t
+generate uint8x8_t:uint8x16_t, uint16x4_t:uint16x8_t, uint32x2_t:uint32x4_t
 
 generate poly8x8_t, poly8x16_t, poly16x4_t, poly16x8_t
 generate poly8x16_t:poly8x8_t, poly16x8_t:poly16x4_t
 generate poly8x8_t:poly8x16_t, poly16x4_t:poly16x8_t
+
+/// Set all vector lanes to the same value
+name = vdup
+lane-suffixes
+constn = N
+multi_fn = static_assert_imm-in_exp_len-N
+multi_fn = simd_shuffle-out_len-noext, a, a, {dup-out_len-N as u32}
+a = 1, 1, 1, 4, 1, 6, 7, 8, 1, 10, 11, 12, 13, 14, 15, 16
+n = HFLEN
+validate 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+
+arm = vmov
+generate int64x2_t, int64x1_t:int64x2_t, uint64x2_t, uint64x1_t:uint64x2_t
 
 /// Set all vector lanes to the same value
 name = vdup
@@ -929,7 +942,7 @@ validate 1., 1., 1., 1.
 aarch64 = dup
 generate float64x2_t, float64x1_t:float64x2_t
 
-arm = vdup.
+arm = vdup.l
 generate float*_t, float32x4_t:float32x2_t, float32x2_t:float32x4_t
 
 /// Set all vector lanes to the same value
@@ -945,7 +958,7 @@ validate 0
 aarch64 = str
 generate poly64x1_t
 
-arm = str
+arm = vmov
 generate int64x1_t, uint64x1_t
 
 /// Set all vector lanes to the same value
@@ -974,7 +987,7 @@ validate 1
 aarch64 = str
 generate poly64x2_t:poly64x1_t
 
-arm = str
+arm = vmov
 generate int64x2_t:int64x1_t, uint64x2_t:uint64x1_t
 
 /// Set all vector lanes to the same value

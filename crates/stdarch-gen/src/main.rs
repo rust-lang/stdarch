@@ -1360,6 +1360,39 @@ fn expand_intrinsic(intr: &str, t: &str) -> String {
             _ => panic!("unknown type for extension: {}", t),
         };
         format!(r#""{}{}""#, &intr[..intr.len() - 1], ext)
+    } else if intr.ends_with(".l") {
+        let ext = match t {
+            "int8x8_t" => "8",
+            "int8x16_t" => "8",
+            "int16x4_t" => "16",
+            "int16x8_t" => "16",
+            "int32x2_t" => "32",
+            "int32x4_t" => "32",
+            "int64x1_t" => "64",
+            "int64x2_t" => "64",
+            "uint8x8_t" => "8",
+            "uint8x16_t" => "8",
+            "uint16x4_t" => "16",
+            "uint16x8_t" => "16",
+            "uint32x2_t" => "32",
+            "uint32x4_t" => "32",
+            "uint64x1_t" => "64",
+            "uint64x2_t" => "64",
+            "poly8x8_t" => "8",
+            "poly8x16_t" => "8",
+            "poly16x4_t" => "16",
+            "poly16x8_t" => "16",
+            "float16x4_t" => "16",
+            "float16x8_t" => "16",
+            "float32x2_t" => "32",
+            "float32x4_t" => "32",
+            "float64x1_t" => "64",
+            "float64x2_t" => "64",
+            "poly64x1_t" => "64",
+            "poly64x2_t" => "64",
+            _ => panic!("unknown type for extension: {}", t),
+        };
+        format!(r#""{}{}""#, &intr[..intr.len() - 1], ext)
     } else {
         intr.to_string()
     }
