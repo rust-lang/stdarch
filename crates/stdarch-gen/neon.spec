@@ -1017,6 +1017,7 @@ validate 1
 aarch64 = str
 generate int8x8_t:i8, int8x16_t:i8, int16x4_t:i16, int16x8_t:i16, int32x2_t:i32, int32x4_t:i32, int64x1_t:i64, int64x2_t:i64
 generate uint8x8_t:u8, uint8x16_t:u8, uint16x4_t:u16, uint16x8_t:u16, uint32x2_t:u32, uint32x4_t:u32, uint64x1_t:u64, uint64x2_t:u64
+generate poly8x8_t:p8, poly8x16_t:p8, poly16x4_t:p16, poly16x8_t:p16
 
 /// Set all vector lanes to the same value
 name = vdup

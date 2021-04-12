@@ -80,7 +80,8 @@ fn type_len(t: &str) -> usize {
         "poly16x8_t" => 8,
         "poly64x1_t" => 1,
         "poly64x2_t" => 2,
-        "i8" | "i16" | "i32" | "i64" | "u8" | "u16" | "u32" | "u64" | "f32" | "f64" => 1,
+        "i8" | "i16" | "i32" | "i64" | "u8" | "u16" | "u32" | "u64" | "f32" | "f64" | "p8"
+        | "p16" => 1,
         _ => panic!("unknown type: {}", t),
     }
 }
@@ -179,6 +180,8 @@ fn type_to_suffix(t: &str) -> &str {
         "u64" => "d_u64",
         "f32" => "s_f32",
         "f64" => "d_f64",
+        "p8" => "b_p8",
+        "p16" => "h_p16",
         _ => panic!("unknown type: {}", t),
     }
 }
@@ -370,6 +373,8 @@ fn type_to_global_type(t: &str) -> &str {
         "u64" => "u64",
         "f32" => "f32",
         "f64" => "f64",
+        "p8" => "p8",
+        "p16" => "p16",
         _ => panic!("unknown type: {}", t),
     }
 }

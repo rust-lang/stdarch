@@ -1907,6 +1907,46 @@ pub unsafe fn vdupd_laneq_u64<const N: i32>(a: uint64x2_t) -> u64 {
 /// Set all vector lanes to the same value
 #[inline]
 #[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(str, N = 4))]
+#[rustc_legacy_const_generics(1)]
+pub unsafe fn vdupb_lane_p8<const N: i32>(a: poly8x8_t) -> p8 {
+    static_assert_imm3!(N);
+    simd_extract(a, N as u32)
+}
+
+/// Set all vector lanes to the same value
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(str, N = 8))]
+#[rustc_legacy_const_generics(1)]
+pub unsafe fn vdupb_laneq_p8<const N: i32>(a: poly8x16_t) -> p8 {
+    static_assert_imm4!(N);
+    simd_extract(a, N as u32)
+}
+
+/// Set all vector lanes to the same value
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(str, N = 2))]
+#[rustc_legacy_const_generics(1)]
+pub unsafe fn vduph_lane_p16<const N: i32>(a: poly16x4_t) -> p16 {
+    static_assert_imm2!(N);
+    simd_extract(a, N as u32)
+}
+
+/// Set all vector lanes to the same value
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(str, N = 4))]
+#[rustc_legacy_const_generics(1)]
+pub unsafe fn vduph_laneq_p16<const N: i32>(a: poly16x8_t) -> p16 {
+    static_assert_imm3!(N);
+    simd_extract(a, N as u32)
+}
+
+/// Set all vector lanes to the same value
+#[inline]
+#[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(str, N = 1))]
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn vdups_lane_f32<const N: i32>(a: float32x2_t) -> f32 {
@@ -6493,6 +6533,38 @@ mod test {
         let a: u64x2 = u64x2::new(1, 1);
         let e: u64 = 1;
         let r: u64 = transmute(vdupd_laneq_u64::<1>(transmute(a)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vdupb_lane_p8() {
+        let a: i8x8 = i8x8::new(1, 1, 1, 4, 1, 6, 7, 8);
+        let e: p8 = 1;
+        let r: p8 = transmute(vdupb_lane_p8::<4>(transmute(a)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vdupb_laneq_p8() {
+        let a: i8x16 = i8x16::new(1, 1, 1, 4, 1, 6, 7, 8, 1, 10, 11, 12, 13, 14, 15, 16);
+        let e: p8 = 1;
+        let r: p8 = transmute(vdupb_laneq_p8::<8>(transmute(a)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vduph_lane_p16() {
+        let a: i16x4 = i16x4::new(1, 1, 1, 4);
+        let e: p16 = 1;
+        let r: p16 = transmute(vduph_lane_p16::<2>(transmute(a)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vduph_laneq_p16() {
+        let a: i16x8 = i16x8::new(1, 1, 1, 4, 1, 6, 7, 8);
+        let e: p16 = 1;
+        let r: p16 = transmute(vduph_laneq_p16::<4>(transmute(a)));
         assert_eq!(r, e);
     }
 
