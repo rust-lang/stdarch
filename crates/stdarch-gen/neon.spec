@@ -958,7 +958,7 @@ validate 0
 aarch64 = str
 generate poly64x1_t
 
-arm = vmov
+arm = str
 generate int64x1_t, uint64x1_t
 
 /// Set all vector lanes to the same value
