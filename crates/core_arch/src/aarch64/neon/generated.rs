@@ -1707,7 +1707,7 @@ pub unsafe fn vdupq_lane_f64<const N: i32>(a: float64x1_t) -> float64x2_t {
 /// Set all vector lanes to the same value
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(str, N = 0))]
+#[cfg_attr(test, assert_instr(nop, N = 0))]
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn vdup_lane_p64<const N: i32>(a: poly64x1_t) -> poly64x1_t {
     static_assert!(N : i32 where N == 0);
@@ -1717,7 +1717,7 @@ pub unsafe fn vdup_lane_p64<const N: i32>(a: poly64x1_t) -> poly64x1_t {
 /// Set all vector lanes to the same value
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(str, N = 0))]
+#[cfg_attr(test, assert_instr(nop, N = 0))]
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn vdup_lane_f64<const N: i32>(a: float64x1_t) -> float64x1_t {
     static_assert!(N : i32 where N == 0);
@@ -1727,7 +1727,7 @@ pub unsafe fn vdup_lane_f64<const N: i32>(a: float64x1_t) -> float64x1_t {
 /// Set all vector lanes to the same value
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(str, N = 1))]
+#[cfg_attr(test, assert_instr(nop, N = 1))]
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn vdup_laneq_p64<const N: i32>(a: poly64x2_t) -> poly64x1_t {
     static_assert_imm1!(N);
@@ -1737,7 +1737,7 @@ pub unsafe fn vdup_laneq_p64<const N: i32>(a: poly64x2_t) -> poly64x1_t {
 /// Set all vector lanes to the same value
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(str, N = 1))]
+#[cfg_attr(test, assert_instr(nop, N = 1))]
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn vdup_laneq_f64<const N: i32>(a: float64x2_t) -> float64x1_t {
     static_assert_imm1!(N);
@@ -1747,7 +1747,7 @@ pub unsafe fn vdup_laneq_f64<const N: i32>(a: float64x2_t) -> float64x1_t {
 /// Set all vector lanes to the same value
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(str, N = 4))]
+#[cfg_attr(test, assert_instr(nop, N = 4))]
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn vdupb_lane_s8<const N: i32>(a: int8x8_t) -> i8 {
     static_assert_imm3!(N);
@@ -1757,7 +1757,7 @@ pub unsafe fn vdupb_lane_s8<const N: i32>(a: int8x8_t) -> i8 {
 /// Set all vector lanes to the same value
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(str, N = 8))]
+#[cfg_attr(test, assert_instr(nop, N = 8))]
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn vdupb_laneq_s8<const N: i32>(a: int8x16_t) -> i8 {
     static_assert_imm4!(N);
@@ -1767,7 +1767,7 @@ pub unsafe fn vdupb_laneq_s8<const N: i32>(a: int8x16_t) -> i8 {
 /// Set all vector lanes to the same value
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(str, N = 2))]
+#[cfg_attr(test, assert_instr(nop, N = 2))]
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn vduph_lane_s16<const N: i32>(a: int16x4_t) -> i16 {
     static_assert_imm2!(N);
@@ -1777,7 +1777,7 @@ pub unsafe fn vduph_lane_s16<const N: i32>(a: int16x4_t) -> i16 {
 /// Set all vector lanes to the same value
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(str, N = 4))]
+#[cfg_attr(test, assert_instr(nop, N = 4))]
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn vduph_laneq_s16<const N: i32>(a: int16x8_t) -> i16 {
     static_assert_imm3!(N);
@@ -1787,7 +1787,7 @@ pub unsafe fn vduph_laneq_s16<const N: i32>(a: int16x8_t) -> i16 {
 /// Set all vector lanes to the same value
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(str, N = 1))]
+#[cfg_attr(test, assert_instr(nop, N = 1))]
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn vdups_lane_s32<const N: i32>(a: int32x2_t) -> i32 {
     static_assert_imm1!(N);
@@ -1797,7 +1797,7 @@ pub unsafe fn vdups_lane_s32<const N: i32>(a: int32x2_t) -> i32 {
 /// Set all vector lanes to the same value
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(str, N = 2))]
+#[cfg_attr(test, assert_instr(nop, N = 2))]
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn vdups_laneq_s32<const N: i32>(a: int32x4_t) -> i32 {
     static_assert_imm2!(N);
@@ -1807,7 +1807,7 @@ pub unsafe fn vdups_laneq_s32<const N: i32>(a: int32x4_t) -> i32 {
 /// Set all vector lanes to the same value
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(str, N = 0))]
+#[cfg_attr(test, assert_instr(nop, N = 0))]
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn vdupd_lane_s64<const N: i32>(a: int64x1_t) -> i64 {
     static_assert!(N : i32 where N == 0);
@@ -1817,7 +1817,7 @@ pub unsafe fn vdupd_lane_s64<const N: i32>(a: int64x1_t) -> i64 {
 /// Set all vector lanes to the same value
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(str, N = 1))]
+#[cfg_attr(test, assert_instr(nop, N = 1))]
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn vdupd_laneq_s64<const N: i32>(a: int64x2_t) -> i64 {
     static_assert_imm1!(N);
@@ -1827,7 +1827,7 @@ pub unsafe fn vdupd_laneq_s64<const N: i32>(a: int64x2_t) -> i64 {
 /// Set all vector lanes to the same value
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(str, N = 4))]
+#[cfg_attr(test, assert_instr(nop, N = 4))]
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn vdupb_lane_u8<const N: i32>(a: uint8x8_t) -> u8 {
     static_assert_imm3!(N);
@@ -1837,7 +1837,7 @@ pub unsafe fn vdupb_lane_u8<const N: i32>(a: uint8x8_t) -> u8 {
 /// Set all vector lanes to the same value
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(str, N = 8))]
+#[cfg_attr(test, assert_instr(nop, N = 8))]
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn vdupb_laneq_u8<const N: i32>(a: uint8x16_t) -> u8 {
     static_assert_imm4!(N);
@@ -1847,7 +1847,7 @@ pub unsafe fn vdupb_laneq_u8<const N: i32>(a: uint8x16_t) -> u8 {
 /// Set all vector lanes to the same value
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(str, N = 2))]
+#[cfg_attr(test, assert_instr(nop, N = 2))]
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn vduph_lane_u16<const N: i32>(a: uint16x4_t) -> u16 {
     static_assert_imm2!(N);
@@ -1857,7 +1857,7 @@ pub unsafe fn vduph_lane_u16<const N: i32>(a: uint16x4_t) -> u16 {
 /// Set all vector lanes to the same value
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(str, N = 4))]
+#[cfg_attr(test, assert_instr(nop, N = 4))]
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn vduph_laneq_u16<const N: i32>(a: uint16x8_t) -> u16 {
     static_assert_imm3!(N);
@@ -1867,7 +1867,7 @@ pub unsafe fn vduph_laneq_u16<const N: i32>(a: uint16x8_t) -> u16 {
 /// Set all vector lanes to the same value
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(str, N = 1))]
+#[cfg_attr(test, assert_instr(nop, N = 1))]
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn vdups_lane_u32<const N: i32>(a: uint32x2_t) -> u32 {
     static_assert_imm1!(N);
@@ -1877,7 +1877,7 @@ pub unsafe fn vdups_lane_u32<const N: i32>(a: uint32x2_t) -> u32 {
 /// Set all vector lanes to the same value
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(str, N = 2))]
+#[cfg_attr(test, assert_instr(nop, N = 2))]
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn vdups_laneq_u32<const N: i32>(a: uint32x4_t) -> u32 {
     static_assert_imm2!(N);
@@ -1887,7 +1887,7 @@ pub unsafe fn vdups_laneq_u32<const N: i32>(a: uint32x4_t) -> u32 {
 /// Set all vector lanes to the same value
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(str, N = 0))]
+#[cfg_attr(test, assert_instr(nop, N = 0))]
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn vdupd_lane_u64<const N: i32>(a: uint64x1_t) -> u64 {
     static_assert!(N : i32 where N == 0);
@@ -1897,7 +1897,7 @@ pub unsafe fn vdupd_lane_u64<const N: i32>(a: uint64x1_t) -> u64 {
 /// Set all vector lanes to the same value
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(str, N = 1))]
+#[cfg_attr(test, assert_instr(nop, N = 1))]
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn vdupd_laneq_u64<const N: i32>(a: uint64x2_t) -> u64 {
     static_assert_imm1!(N);
@@ -1907,7 +1907,7 @@ pub unsafe fn vdupd_laneq_u64<const N: i32>(a: uint64x2_t) -> u64 {
 /// Set all vector lanes to the same value
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(str, N = 4))]
+#[cfg_attr(test, assert_instr(nop, N = 4))]
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn vdupb_lane_p8<const N: i32>(a: poly8x8_t) -> p8 {
     static_assert_imm3!(N);
@@ -1917,7 +1917,7 @@ pub unsafe fn vdupb_lane_p8<const N: i32>(a: poly8x8_t) -> p8 {
 /// Set all vector lanes to the same value
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(str, N = 8))]
+#[cfg_attr(test, assert_instr(nop, N = 8))]
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn vdupb_laneq_p8<const N: i32>(a: poly8x16_t) -> p8 {
     static_assert_imm4!(N);
@@ -1927,7 +1927,7 @@ pub unsafe fn vdupb_laneq_p8<const N: i32>(a: poly8x16_t) -> p8 {
 /// Set all vector lanes to the same value
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(str, N = 2))]
+#[cfg_attr(test, assert_instr(nop, N = 2))]
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn vduph_lane_p16<const N: i32>(a: poly16x4_t) -> p16 {
     static_assert_imm2!(N);
@@ -1937,7 +1937,7 @@ pub unsafe fn vduph_lane_p16<const N: i32>(a: poly16x4_t) -> p16 {
 /// Set all vector lanes to the same value
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(str, N = 4))]
+#[cfg_attr(test, assert_instr(nop, N = 4))]
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn vduph_laneq_p16<const N: i32>(a: poly16x8_t) -> p16 {
     static_assert_imm3!(N);
@@ -1947,7 +1947,7 @@ pub unsafe fn vduph_laneq_p16<const N: i32>(a: poly16x8_t) -> p16 {
 /// Set all vector lanes to the same value
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(str, N = 1))]
+#[cfg_attr(test, assert_instr(nop, N = 1))]
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn vdups_lane_f32<const N: i32>(a: float32x2_t) -> f32 {
     static_assert_imm1!(N);
@@ -1957,7 +1957,7 @@ pub unsafe fn vdups_lane_f32<const N: i32>(a: float32x2_t) -> f32 {
 /// Set all vector lanes to the same value
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(str, N = 2))]
+#[cfg_attr(test, assert_instr(nop, N = 2))]
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn vdups_laneq_f32<const N: i32>(a: float32x4_t) -> f32 {
     static_assert_imm2!(N);
@@ -1967,7 +1967,7 @@ pub unsafe fn vdups_laneq_f32<const N: i32>(a: float32x4_t) -> f32 {
 /// Set all vector lanes to the same value
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(str, N = 0))]
+#[cfg_attr(test, assert_instr(nop, N = 0))]
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn vdupd_lane_f64<const N: i32>(a: float64x1_t) -> f64 {
     static_assert!(N : i32 where N == 0);
@@ -1977,7 +1977,7 @@ pub unsafe fn vdupd_lane_f64<const N: i32>(a: float64x1_t) -> f64 {
 /// Set all vector lanes to the same value
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(str, N = 1))]
+#[cfg_attr(test, assert_instr(nop, N = 1))]
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn vdupd_laneq_f64<const N: i32>(a: float64x2_t) -> f64 {
     static_assert_imm1!(N);

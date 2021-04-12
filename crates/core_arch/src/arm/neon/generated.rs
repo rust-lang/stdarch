@@ -2528,8 +2528,8 @@ pub unsafe fn vdupq_lane_f32<const N: i32>(a: float32x2_t) -> float32x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str, N = 0))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str, N = 0))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop, N = 0))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(nop, N = 0))]
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn vdup_lane_s64<const N: i32>(a: int64x1_t) -> int64x1_t {
     static_assert!(N : i32 where N == 0);
@@ -2540,8 +2540,8 @@ pub unsafe fn vdup_lane_s64<const N: i32>(a: int64x1_t) -> int64x1_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str, N = 0))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str, N = 0))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop, N = 0))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(nop, N = 0))]
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn vdup_lane_u64<const N: i32>(a: uint64x1_t) -> uint64x1_t {
     static_assert!(N : i32 where N == 0);
@@ -2553,7 +2553,7 @@ pub unsafe fn vdup_lane_u64<const N: i32>(a: uint64x1_t) -> uint64x1_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(vmov, N = 1))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str, N = 1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(nop, N = 1))]
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn vdup_laneq_s64<const N: i32>(a: int64x2_t) -> int64x1_t {
     static_assert_imm1!(N);
@@ -2565,7 +2565,7 @@ pub unsafe fn vdup_laneq_s64<const N: i32>(a: int64x2_t) -> int64x1_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(vmov, N = 1))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str, N = 1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(nop, N = 1))]
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn vdup_laneq_u64<const N: i32>(a: uint64x2_t) -> uint64x1_t {
     static_assert_imm1!(N);
