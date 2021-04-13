@@ -6,9 +6,9 @@ mod generated;
 pub use self::generated::*;
 
 use crate::{
-    core_arch::simd::*, core_arch::simd_llvm::*, hint::unreachable_unchecked, mem::transmute,
+    convert::TryInto, core_arch::simd::*, core_arch::simd_llvm::*, hint::unreachable_unchecked,
+    mem::transmute,
 };
-use core::convert::TryInto;
 #[cfg(test)]
 use stdarch_test::assert_instr;
 
