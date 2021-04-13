@@ -1546,16 +1546,12 @@ generate poly8x16_t:poly8x16_t:poly16x8_t
 
 /// Floating-point fused Multiply-Add to accumulator(vector)
 name = vfma
-no-q
 a = 2.0, 3.0
 b = 6.0, 4.0
 c = 8.0, 18.0
 validate 20.0, 30.0
 
-target = fp-armv8
-arm = vfma
 aarch64 = fma
-link-arm = llvm.fma._EXT_
 link-aarch64 = llvm.fma._EXT_
 generate float64x1_t
 

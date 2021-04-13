@@ -18,6 +18,8 @@ use crate::{
 use stdarch_test::assert_instr;
 
 types! {
+    /// ARM-specific 64-bit wide vector of one packed `f64`.
+    pub struct float64x1_t(f64); // FIXME: check this!
     /// ARM-specific 128-bit wide vector of two packed `f64`.
     pub struct float64x2_t(f64, f64);
 }
@@ -1542,7 +1544,7 @@ pub unsafe fn vdup_n_p64(value: p64) -> poly64x1_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vdup_n_f64(value: f64) -> float64x1_t {
-    transmute(f64x1::new(value))
+    float64x1_t(value)
 }
 
 /// Duplicate vector element to vector or scalar
@@ -1598,7 +1600,7 @@ pub unsafe fn vmovq_n_f64(value: f64) -> float64x2_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(mov))]
 pub unsafe fn vget_high_f64(a: float64x2_t) -> float64x1_t {
-    transmute(f64x1::new(simd_extract(a, 1)))
+    float64x1_t(simd_extract(a, 1))
 }
 
 /// Duplicate vector element to vector or scalar
@@ -1614,7 +1616,7 @@ pub unsafe fn vget_high_p64(a: poly64x2_t) -> poly64x1_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vget_low_f64(a: float64x2_t) -> float64x1_t {
-    transmute(f64x1::new(simd_extract(a, 0)))
+    float64x1_t(simd_extract(a, 0))
 }
 
 /// Duplicate vector element to vector or scalar
