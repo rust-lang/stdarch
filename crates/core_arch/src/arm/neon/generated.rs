@@ -4706,6 +4706,38 @@ pub unsafe fn vmull_p8(a: poly8x8_t, b: poly8x8_t) -> poly16x8_t {
 vmull_p8_(a, b)
 }
 
+/// Floating-point fused Multiply-Add to accumulator(vector)
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "fp-armv8,v8"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vfma))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(fma))]
+pub unsafe fn vfma_f64(a: float64x1_t, b: float64x1_t, c: float64x1_t) -> float64x1_t {
+    #[allow(improper_ctypes)]
+    extern "C" {
+        #[cfg_attr(target_arch = "arm", link_name = "llvm.fma.v1f64")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.fma.v1f64")]
+        fn vfma_f64_(a: float64x1_t, b: float64x1_t, c: float64x1_t) -> float64x1_t;
+    }
+vfma_f64_(a, b, c)
+}
+
+/// Floating-point fused Multiply-Add to accumulator(vector)
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "fp-armv8,v8"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vfma))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(fmla))]
+pub unsafe fn vfma_f32(a: float32x2_t, b: float32x2_t, c: float32x2_t) -> float32x2_t {
+    #[allow(improper_ctypes)]
+    extern "C" {
+        #[cfg_attr(target_arch = "arm", link_name = "llvm.fma.v2f32")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.fma.v2f32")]
+        fn vfma_f32_(a: float32x2_t, b: float32x2_t, c: float32x2_t) -> float32x2_t;
+    }
+vfma_f32_(a, b, c)
+}
+
 /// Subtract
 #[inline]
 #[target_feature(enable = "neon")]
@@ -12639,6 +12671,26 @@ mod test {
         let b: i8x8 = i8x8::new(1, 3, 1, 3, 1, 3, 1, 3);
         let e: i16x8 = i16x8::new(1, 6, 3, 12, 5, 10, 7, 24);
         let r: i16x8 = transmute(vmull_p8(transmute(a), transmute(b)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vfma_f64() {
+        let a: f64 = 2.0;
+        let b: f64 = 6.0;
+        let c: f64 = 8.0;
+        let e: f64 = 20.0;
+        let r: f64 = transmute(vfma_f64(transmute(a), transmute(b), transmute(c)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vfma_f32() {
+        let a: f32x2 = f32x2::new(2.0, 3.0);
+        let b: f32x2 = f32x2::new(6.0, 4.0);
+        let c: f32x2 = f32x2::new(8.0, 18.0);
+        let e: f32x2 = f32x2::new(20.0, 30.0);
+        let r: f32x2 = transmute(vfma_f32(transmute(a), transmute(b), transmute(c)));
         assert_eq!(r, e);
     }
 

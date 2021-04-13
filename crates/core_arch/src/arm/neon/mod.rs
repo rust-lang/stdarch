@@ -40,6 +40,8 @@ types! {
     pub struct uint32x2_t(u32, u32);
     /// ARM-specific 64-bit wide vector of two packed `f32`.
     pub struct float32x2_t(f32, f32);
+    /// ARM-specific 64-bit wide vector of one packed `f64`.
+    pub struct float64x1_t(f64); // FIXME: check this!
     /// ARM-specific 64-bit wide vector of one packed `i64`.
     pub struct int64x1_t(i64);
     /// ARM-specific 64-bit wide vector of one packed `u64`.
