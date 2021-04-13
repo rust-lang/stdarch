@@ -2797,6 +2797,19 @@ pub unsafe fn vfma_f64(a: float64x1_t, b: float64x1_t, c: float64x1_t) -> float6
     vfma_f64_(a, b, c)
 }
 
+/// Floating-point fused Multiply-Add to accumulator(vector)
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(fmla))]
+pub unsafe fn vfmaq_f64(a: float64x2_t, b: float64x2_t, c: float64x2_t) -> float64x2_t {
+    #[allow(improper_ctypes)]
+    extern "C" {
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.fma.v2f64")]
+        fn vfmaq_f64_(a: float64x2_t, b: float64x2_t, c: float64x2_t) -> float64x2_t;
+    }
+    vfmaq_f64_(a, b, c)
+}
+
 /// Divide
 #[inline]
 #[target_feature(enable = "neon")]
@@ -7253,6 +7266,16 @@ mod test {
         let c: f64 = 8.0;
         let e: f64 = 20.0;
         let r: f64 = transmute(vfma_f64(transmute(a), transmute(b), transmute(c)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vfmaq_f64() {
+        let a: f64x2 = f64x2::new(2.0, 3.0);
+        let b: f64x2 = f64x2::new(6.0, 4.0);
+        let c: f64x2 = f64x2::new(8.0, 18.0);
+        let e: f64x2 = f64x2::new(20.0, 30.0);
+        let r: f64x2 = transmute(vfmaq_f64(transmute(a), transmute(b), transmute(c)));
         assert_eq!(r, e);
     }
 
