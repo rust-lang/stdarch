@@ -1551,7 +1551,7 @@ b = 6.0, 4.0, 7.0, 8.0
 c = 8.0, 18.0, 12.0, 10.0
 validate 20.0, 30.0, 40.0, 50.0
 
-aarch64 = fma
+aarch64 = fmadd
 link-aarch64 = llvm.fma._EXT_
 generate float64x1_t
 

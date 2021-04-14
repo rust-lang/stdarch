@@ -2787,7 +2787,7 @@ pub unsafe fn vmull_high_p8(a: poly8x16_t, b: poly8x16_t) -> poly16x8_t {
 /// Floating-point fused Multiply-Add to accumulator(vector)
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(fma))]
+#[cfg_attr(test, assert_instr(fmadd))]
 pub unsafe fn vfma_f64(a: float64x1_t, b: float64x1_t, c: float64x1_t) -> float64x1_t {
     #[allow(improper_ctypes)]
     extern "C" {
