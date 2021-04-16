@@ -51,7 +51,6 @@ pub unsafe fn __sev() {
     target_arch = "aarch64", // AArch64
     doc,
 ))]
-#[doc(cfg(target_arch = "aarch64"))]
 #[inline(always)]
 pub unsafe fn __sevl() {
     hint(HINT_SEVL);

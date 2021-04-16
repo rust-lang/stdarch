@@ -14,10 +14,10 @@ mod v6;
 pub use self::v6::*;
 
 // Supported arches: 6, 7-M. See Section 10.1 of ACLE (e.g. SSAT)
-#[cfg(any(all(not(target_arch = "aarch64"), target_feature = "v6",), doc))]
+#[cfg(any(target_feature = "v6", doc))]
 mod sat;
 
-#[cfg(any(all(not(target_arch = "aarch64"), target_feature = "v6",), doc))]
+#[cfg(any(target_feature = "v6", doc))]
 pub use self::sat::*;
 
 // Supported arches: 5TE, 7E-M. See Section 10.1 of ACLE (e.g. QADD)
@@ -25,54 +25,47 @@ pub use self::sat::*;
 // section 5.4.7)
 // Here we workaround the difference between LLVM's +dsp and ACLE's __ARM_FEATURE_DSP by gating on
 // '+v5te' rather than on '+dsp'
-#[cfg(any(all(
-    not(target_arch = "aarch64"),
-    any(
-        // >= v5TE but excludes v7-M
-        all(target_feature = "v5te", not(target_feature = "mclass")),
-        // v7E-M
-        all(target_feature = "mclass", target_feature = "dsp"),
-    )
-), doc))]
+#[cfg(any(
+    // >= v5TE but excludes v7-M
+    all(target_feature = "v5te", not(target_feature = "mclass")),
+    // v7E-M
+    all(target_feature = "mclass", target_feature = "dsp"),
+    doc,
+))]
 pub(crate) mod dsp;
 
 #[cfg(any(
-    all(
-        not(target_arch = "aarch64"),
-        any(
-            all(target_feature = "v5te", not(target_feature = "mclass")),
-            all(target_feature = "mclass", target_feature = "dsp"),
-        )
-    ),
-    doc
+    // >= v5TE but excludes v7-M
+    all(target_feature = "v5te", not(target_feature = "mclass")),
+    // v7E-M
+    all(target_feature = "mclass", target_feature = "dsp"),
+    doc,
 ))]
 pub use self::dsp::*;
 
 // Deprecated in ACLE 2.0 for the A profile but fully supported on the M and R profiles, says
 // Section 5.4.9 of ACLE. We'll expose these for the A profile even if deprecated
-#[cfg(all(
-    not(target_arch = "aarch64"),
-    any(
-        // v7-A, v7-R
-        all(target_feature = "v6", not(target_feature = "mclass")),
-        // v7E-M
-        all(target_feature = "mclass", target_feature = "dsp")
-    )
+#[cfg(any(
+    // v7-A, v7-R
+    all(target_feature = "v6", not(target_feature = "mclass")),
+    // v7E-M
+    all(target_feature = "mclass", target_feature = "dsp"),
+    doc,
 ))]
 mod simd32;
 
-#[cfg(all(
-    not(target_arch = "aarch64"),
-    any(
-        all(target_feature = "v6", not(target_feature = "mclass")),
-        all(target_feature = "mclass", target_feature = "dsp")
-    )
+#[cfg(any(
+    // v7-A, v7-R
+    all(target_feature = "v6", not(target_feature = "mclass")),
+    // v7E-M
+    all(target_feature = "mclass", target_feature = "dsp"),
+    doc,
 ))]
 pub use self::simd32::*;
 
-#[cfg(any(target_arch = "aarch64", target_feature = "v7"))]
+#[cfg(any(target_feature = "v7", doc))]
 mod v7;
-#[cfg(any(target_arch = "aarch64", target_feature = "v7"))]
+#[cfg(any(target_feature = "v7", doc))]
 pub use self::v7::*;
 
 pub use crate::core_arch::acle::*;
@@ -80,7 +73,9 @@ pub use crate::core_arch::acle::*;
 #[cfg(test)]
 use stdarch_test::assert_instr;
 
+#[cfg(any(target_feature = "v7", doc))]
 pub(crate) mod neon;
+#[cfg(any(target_feature = "v7", doc))]
 pub use neon::*;
 
 /// Generates the trap instruction `UDF`
@@ -92,4 +87,5 @@ pub unsafe fn udf() -> ! {
 }
 
 #[cfg(test)]
+#[cfg(any(target_feature = "v7", doc))]
 pub(crate) mod test_support;
