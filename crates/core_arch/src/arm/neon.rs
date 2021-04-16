@@ -1,9 +1,9 @@
 #[allow(unused_imports)]
 use crate::core_arch::acle::neon::*;
 #[allow(unused_imports)]
-use crate::core_arch::simd_llvm::*;
+use crate::core_arch::simd::{f32x4, i32x4, u32x4};
 #[allow(unused_imports)]
-use crate::core_arch::simd::{i32x4, u32x4, f32x4};
+use crate::core_arch::simd_llvm::*;
 #[allow(unused_imports)]
 use crate::mem::transmute;
 
@@ -1164,8 +1164,8 @@ pub unsafe fn vsriq_n_p16<const N: i32>(a: poly16x8_t, b: poly16x8_t) -> poly16x
 mod tests {
     use super::*;
     use crate::core_arch::{arm::*, simd::*};
-    use stdarch_test::simd_test;
     use crate::mem::transmute;
+    use stdarch_test::simd_test;
 
     #[cfg(target_arch = "arm")]
     #[simd_test(enable = "neon")]

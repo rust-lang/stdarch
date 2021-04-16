@@ -4273,12 +4273,12 @@ pub unsafe fn vpadalq_u32(a: uint64x2_t, b: uint32x4_t) -> uint64x2_t {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::core_arch::arm::test_support::*;
-    use crate::core_arch::simd::*;
-    #[cfg(target_arch = "arm")]
-    use crate::core_arch::arm::*;
     #[cfg(target_arch = "aarch64")]
     use crate::core_arch::aarch64::*;
+    use crate::core_arch::arm::test_support::*;
+    #[cfg(target_arch = "arm")]
+    use crate::core_arch::arm::*;
+    use crate::core_arch::simd::*;
     use std::{i16, i32, i8, mem::transmute, u16, u32, u8, vec::Vec};
     use stdarch_test::simd_test;
 
