@@ -26,8 +26,6 @@ use stdarch_test::assert_instr;
 /// The current implementation only accepts values in range `[0, 255]`.
 ///
 /// [arm_docs]: https://developer.arm.com/docs/100067/latest/compiler-specific-intrinsics/__breakpoint-intrinsic
-#[cfg(any(target_arch = "arm", doc))]
-#[doc(cfg(target_arch = "arm"))]
 #[cfg_attr(test, assert_instr(bkpt, VAL = 0))]
 #[inline(always)]
 #[rustc_legacy_const_generics(0)]

@@ -57,16 +57,10 @@ mod barrier;
 pub use self::barrier::*;
 
 mod hints;
-
 pub use self::hints::*;
 
 mod registers;
-
 pub use self::registers::*;
-
-mod ex;
-
-pub use self::ex::*;
 
 #[cfg(any(target_arch = "aarch64", target_feature = "v7", doc))]
 mod crc;

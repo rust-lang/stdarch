@@ -14,7 +14,6 @@ use stdarch_test::assert_instr;
 /// `VAL` is a compile-time constant integer in range `[0, 65535]`.
 ///
 /// The breakpoint instruction inserted is `BRK` on A64.
-#[cfg(all(target_arch = "aarch64", not(doc)))]
 #[cfg_attr(test, assert_instr(brk, VAL = 0))]
 #[inline(always)]
 #[rustc_legacy_const_generics(0)]
