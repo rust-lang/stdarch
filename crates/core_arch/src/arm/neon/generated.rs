@@ -4738,6 +4738,32 @@ pub unsafe fn vfmaq_f32(a: float32x4_t, b: float32x4_t, c: float32x4_t) -> float
 vfmaq_f32_(a, b, c)
 }
 
+/// Floating-point fused Multiply-Add to accumulator(vector)
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "fp-armv8,v8"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vfma))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(fmla))]
+pub unsafe fn vfma_n_f32(a: float32x2_t, b: float32x2_t, c: f32) -> float32x2_t {
+    let d: f32x2 = f32x2::new(0.0, 0.0);
+    let e: float32x2_t = simd_insert(transmute(d), 0, c);
+    let f: float32x2_t = simd_shuffle2(e, e, [0, 0]);
+    vfma_f32(b, f, a)
+}
+
+/// Floating-point fused Multiply-Add to accumulator(vector)
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "fp-armv8,v8"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vfma))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(fmla))]
+pub unsafe fn vfmaq_n_f32(a: float32x4_t, b: float32x4_t, c: f32) -> float32x4_t {
+    let d: f32x4 = f32x4::new(0.0, 0.0, 0.0, 0.0);
+    let e: float32x4_t = simd_insert(transmute(d), 0, c);
+    let f: float32x4_t = simd_shuffle4(e, e, [0, 0, 0, 0]);
+    vfmaq_f32(b, f, a)
+}
+
 /// Subtract
 #[inline]
 #[target_feature(enable = "neon")]
@@ -13971,6 +13997,26 @@ mod test {
         let c: f32x4 = f32x4::new(8.0, 18.0, 12.0, 10.0);
         let e: f32x4 = f32x4::new(20.0, 30.0, 40.0, 50.0);
         let r: f32x4 = transmute(vfmaq_f32(transmute(a), transmute(b), transmute(c)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vfma_n_f32() {
+        let a: f32x2 = f32x2::new(2.0, 3.0);
+        let b: f32x2 = f32x2::new(6.0, 4.0);
+        let c: f32 = 8.0;
+        let e: f32x2 = f32x2::new(50.0, 35.0);
+        let r: f32x2 = transmute(vfma_n_f32(transmute(a), transmute(b), transmute(c)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vfmaq_n_f32() {
+        let a: f32x4 = f32x4::new(2.0, 3.0, 4.0, 5.0);
+        let b: f32x4 = f32x4::new(6.0, 4.0, 7.0, 8.0);
+        let c: f32 = 8.0;
+        let e: f32x4 = f32x4::new(50.0, 35.0, 60.0, 69.0);
+        let r: f32x4 = transmute(vfmaq_n_f32(transmute(a), transmute(b), transmute(c)));
         assert_eq!(r, e);
     }
 

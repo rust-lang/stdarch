@@ -1566,6 +1566,60 @@ link-arm = llvm.fma._EXT_
 link-aarch64 = llvm.fma._EXT_
 generate float*_t
 
+/// Floating-point fused Multiply-Add to accumulator(vector)
+name = vfma
+n-suffix
+multi_fn = fixed, d:in_t
+multi_fn = simd_insert, e:out_t, transmute(d), 0, c
+multi_fn = vfma-self-noext, b, e, a
+a = 2.0, 3.0, 4.0, 5.0
+b = 6.0, 4.0, 7.0, 8.0
+c = 8.0
+fixed = 0.0, 0.0, 0.0, 0.0
+validate 50.0, 35.0, 60.0, 69.0
+
+aarch64 = fmadd
+generate float64x1_t:float64x1_t:f64:float64x1_t
+
+/// Floating-point fused Multiply-Add to accumulator(vector)
+name = vfma
+n-suffix
+multi_fn = fixed, d:in_t
+multi_fn = simd_insert, e:out_t, transmute(d), 0, c
+multi_fn = simd_shuffle-out_len-noext, f:out_t, e, e, [0, 0]
+multi_fn = vfma-self-noext, b, f, a
+a = 2.0, 3.0, 4.0, 5.0
+b = 6.0, 4.0, 7.0, 8.0
+c = 8.0
+fixed = 0.0, 0.0, 0.0, 0.0
+validate 50.0, 35.0, 60.0, 69.0
+
+aarch64 = fmla
+generate float64x2_t:float64x2_t:f64:float64x2_t
+
+target = fp-armv8
+arm = vfma
+aarch64 = fmla
+generate float32x2_t:float32x2_t:f32:float32x2_t
+
+/// Floating-point fused Multiply-Add to accumulator(vector)
+name = vfma
+n-suffix
+multi_fn = fixed, d:in_t
+multi_fn = simd_insert, e:out_t, transmute(d), 0, c
+multi_fn = simd_shuffle-out_len-noext, f:out_t, e, e, [0, 0, 0, 0]
+multi_fn = vfma-self-noext, b, f, a
+a = 2.0, 3.0, 4.0, 5.0
+b = 6.0, 4.0, 7.0, 8.0
+c = 8.0
+fixed = 0.0, 0.0, 0.0, 0.0
+validate 50.0, 35.0, 60.0, 69.0
+
+target = fp-armv8
+arm = vfma
+aarch64 = fmla
+generate float32x4_t:float32x4_t:f32:float32x4_t
+
 /// Divide
 name = vdiv
 fn = simd_div
