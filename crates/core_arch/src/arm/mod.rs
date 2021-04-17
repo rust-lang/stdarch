@@ -32,7 +32,7 @@ pub use self::sat::*;
     all(target_feature = "mclass", target_feature = "dsp"),
     doc,
 ))]
-pub(crate) mod dsp;
+pub mod dsp;
 
 #[cfg(any(
     // >= v5TE but excludes v7-M

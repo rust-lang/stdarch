@@ -11,10 +11,8 @@ pub(crate) type p8 = u8;
 #[allow(non_camel_case_types)]
 pub(crate) type p16 = u16;
 
-#[cfg(target_arch = "arm")]
 use crate::mem::align_of;
 
-#[cfg(target_arch = "arm")]
 #[allow(improper_ctypes)]
 extern "C" {
     #[link_name = "llvm.arm.neon.vbsl.v8i8"]
@@ -113,7 +111,6 @@ extern "C" {
 
 /// Load multiple single-element structures to one, two, three, or four registers.
 #[inline]
-#[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr("vld1.8"))]
 pub unsafe fn vld1_s8(ptr: *const i8) -> int8x8_t {
@@ -122,7 +119,6 @@ pub unsafe fn vld1_s8(ptr: *const i8) -> int8x8_t {
 
 /// Load multiple single-element structures to one, two, three, or four registers.
 #[inline]
-#[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr("vld1.8"))]
 pub unsafe fn vld1q_s8(ptr: *const i8) -> int8x16_t {
@@ -131,7 +127,6 @@ pub unsafe fn vld1q_s8(ptr: *const i8) -> int8x16_t {
 
 /// Load multiple single-element structures to one, two, three, or four registers.
 #[inline]
-#[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr("vld1.16"))]
 pub unsafe fn vld1_s16(ptr: *const i16) -> int16x4_t {
@@ -140,7 +135,6 @@ pub unsafe fn vld1_s16(ptr: *const i16) -> int16x4_t {
 
 /// Load multiple single-element structures to one, two, three, or four registers.
 #[inline]
-#[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr("vld1.16"))]
 pub unsafe fn vld1q_s16(ptr: *const i16) -> int16x8_t {
@@ -149,7 +143,6 @@ pub unsafe fn vld1q_s16(ptr: *const i16) -> int16x8_t {
 
 /// Load multiple single-element structures to one, two, three, or four registers.
 #[inline]
-#[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr(vldr))]
 pub unsafe fn vld1_s32(ptr: *const i32) -> int32x2_t {
@@ -158,7 +151,6 @@ pub unsafe fn vld1_s32(ptr: *const i32) -> int32x2_t {
 
 /// Load multiple single-element structures to one, two, three, or four registers.
 #[inline]
-#[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr("vld1.32"))]
 pub unsafe fn vld1q_s32(ptr: *const i32) -> int32x4_t {
@@ -167,7 +159,6 @@ pub unsafe fn vld1q_s32(ptr: *const i32) -> int32x4_t {
 
 /// Load multiple single-element structures to one, two, three, or four registers.
 #[inline]
-#[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr(vldr))]
 pub unsafe fn vld1_s64(ptr: *const i64) -> int64x1_t {
@@ -176,7 +167,6 @@ pub unsafe fn vld1_s64(ptr: *const i64) -> int64x1_t {
 
 /// Load multiple single-element structures to one, two, three, or four registers.
 #[inline]
-#[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr("vld1.64"))]
 pub unsafe fn vld1q_s64(ptr: *const i64) -> int64x2_t {
@@ -185,7 +175,6 @@ pub unsafe fn vld1q_s64(ptr: *const i64) -> int64x2_t {
 
 /// Load multiple single-element structures to one, two, three, or four registers.
 #[inline]
-#[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr("vld1.8"))]
 pub unsafe fn vld1_u8(ptr: *const u8) -> uint8x8_t {
@@ -194,7 +183,6 @@ pub unsafe fn vld1_u8(ptr: *const u8) -> uint8x8_t {
 
 /// Load multiple single-element structures to one, two, three, or four registers.
 #[inline]
-#[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr("vld1.8"))]
 pub unsafe fn vld1q_u8(ptr: *const u8) -> uint8x16_t {
@@ -203,7 +191,6 @@ pub unsafe fn vld1q_u8(ptr: *const u8) -> uint8x16_t {
 
 /// Load multiple single-element structures to one, two, three, or four registers.
 #[inline]
-#[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr("vld1.16"))]
 pub unsafe fn vld1_u16(ptr: *const u16) -> uint16x4_t {
@@ -212,7 +199,6 @@ pub unsafe fn vld1_u16(ptr: *const u16) -> uint16x4_t {
 
 /// Load multiple single-element structures to one, two, three, or four registers.
 #[inline]
-#[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr("vld1.16"))]
 pub unsafe fn vld1q_u16(ptr: *const u16) -> uint16x8_t {
@@ -221,7 +207,6 @@ pub unsafe fn vld1q_u16(ptr: *const u16) -> uint16x8_t {
 
 /// Load multiple single-element structures to one, two, three, or four registers.
 #[inline]
-#[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr(vldr))]
 pub unsafe fn vld1_u32(ptr: *const u32) -> uint32x2_t {
@@ -230,7 +215,6 @@ pub unsafe fn vld1_u32(ptr: *const u32) -> uint32x2_t {
 
 /// Load multiple single-element structures to one, two, three, or four registers.
 #[inline]
-#[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr("vld1.32"))]
 pub unsafe fn vld1q_u32(ptr: *const u32) -> uint32x4_t {
@@ -239,7 +223,6 @@ pub unsafe fn vld1q_u32(ptr: *const u32) -> uint32x4_t {
 
 /// Load multiple single-element structures to one, two, three, or four registers.
 #[inline]
-#[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr(vldr))]
 pub unsafe fn vld1_u64(ptr: *const u64) -> uint64x1_t {
@@ -248,7 +231,6 @@ pub unsafe fn vld1_u64(ptr: *const u64) -> uint64x1_t {
 
 /// Load multiple single-element structures to one, two, three, or four registers.
 #[inline]
-#[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr("vld1.64"))]
 pub unsafe fn vld1q_u64(ptr: *const u64) -> uint64x2_t {
@@ -257,7 +239,6 @@ pub unsafe fn vld1q_u64(ptr: *const u64) -> uint64x2_t {
 
 /// Load multiple single-element structures to one, two, three, or four registers.
 #[inline]
-#[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr("vld1.8"))]
 pub unsafe fn vld1_p8(ptr: *const p8) -> poly8x8_t {
@@ -266,7 +247,6 @@ pub unsafe fn vld1_p8(ptr: *const p8) -> poly8x8_t {
 
 /// Load multiple single-element structures to one, two, three, or four registers.
 #[inline]
-#[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr("vld1.8"))]
 pub unsafe fn vld1q_p8(ptr: *const p8) -> poly8x16_t {
@@ -275,7 +255,6 @@ pub unsafe fn vld1q_p8(ptr: *const p8) -> poly8x16_t {
 
 /// Load multiple single-element structures to one, two, three, or four registers.
 #[inline]
-#[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr("vld1.16"))]
 pub unsafe fn vld1_p16(ptr: *const p16) -> poly16x4_t {
@@ -284,7 +263,6 @@ pub unsafe fn vld1_p16(ptr: *const p16) -> poly16x4_t {
 
 /// Load multiple single-element structures to one, two, three, or four registers.
 #[inline]
-#[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr("vld1.16"))]
 pub unsafe fn vld1q_p16(ptr: *const p16) -> poly16x8_t {
@@ -293,7 +271,6 @@ pub unsafe fn vld1q_p16(ptr: *const p16) -> poly16x8_t {
 
 /// Load multiple single-element structures to one, two, three, or four registers.
 #[inline]
-#[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr(vldr))]
 pub unsafe fn vld1_f32(ptr: *const f32) -> float32x2_t {
@@ -302,7 +279,6 @@ pub unsafe fn vld1_f32(ptr: *const f32) -> float32x2_t {
 
 /// Load multiple single-element structures to one, two, three, or four registers.
 #[inline]
-#[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr("vld1.32"))]
 pub unsafe fn vld1q_f32(ptr: *const f32) -> float32x4_t {
@@ -311,7 +287,6 @@ pub unsafe fn vld1q_f32(ptr: *const f32) -> float32x4_t {
 
 /// Table look-up
 #[inline]
-#[cfg(target_arch = "arm")]
 #[cfg(target_endian = "little")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr(vtbl))]
@@ -321,7 +296,6 @@ pub unsafe fn vtbl1_s8(a: int8x8_t, b: int8x8_t) -> int8x8_t {
 
 /// Table look-up
 #[inline]
-#[cfg(target_arch = "arm")]
 #[cfg(target_endian = "little")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr(vtbl))]
@@ -331,7 +305,6 @@ pub unsafe fn vtbl1_u8(a: uint8x8_t, b: uint8x8_t) -> uint8x8_t {
 
 /// Table look-up
 #[inline]
-#[cfg(target_arch = "arm")]
 #[cfg(target_endian = "little")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr(vtbl))]
@@ -341,7 +314,6 @@ pub unsafe fn vtbl1_p8(a: poly8x8_t, b: uint8x8_t) -> poly8x8_t {
 
 /// Table look-up
 #[inline]
-#[cfg(target_arch = "arm")]
 #[cfg(target_endian = "little")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr(vtbl))]
@@ -351,7 +323,6 @@ pub unsafe fn vtbl2_s8(a: int8x8x2_t, b: int8x8_t) -> int8x8_t {
 
 /// Table look-up
 #[inline]
-#[cfg(target_arch = "arm")]
 #[cfg(target_endian = "little")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr(vtbl))]
@@ -361,7 +332,6 @@ pub unsafe fn vtbl2_u8(a: uint8x8x2_t, b: uint8x8_t) -> uint8x8_t {
 
 /// Table look-up
 #[inline]
-#[cfg(target_arch = "arm")]
 #[cfg(target_endian = "little")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr(vtbl))]
@@ -371,7 +341,6 @@ pub unsafe fn vtbl2_p8(a: poly8x8x2_t, b: uint8x8_t) -> poly8x8_t {
 
 /// Table look-up
 #[inline]
-#[cfg(target_arch = "arm")]
 #[cfg(target_endian = "little")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr(vtbl))]
@@ -381,7 +350,6 @@ pub unsafe fn vtbl3_s8(a: int8x8x3_t, b: int8x8_t) -> int8x8_t {
 
 /// Table look-up
 #[inline]
-#[cfg(target_arch = "arm")]
 #[cfg(target_endian = "little")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr(vtbl))]
@@ -396,7 +364,6 @@ pub unsafe fn vtbl3_u8(a: uint8x8x3_t, b: uint8x8_t) -> uint8x8_t {
 
 /// Table look-up
 #[inline]
-#[cfg(target_arch = "arm")]
 #[cfg(target_endian = "little")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr(vtbl))]
@@ -411,7 +378,6 @@ pub unsafe fn vtbl3_p8(a: poly8x8x3_t, b: uint8x8_t) -> poly8x8_t {
 
 /// Table look-up
 #[inline]
-#[cfg(target_arch = "arm")]
 #[cfg(target_endian = "little")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr(vtbl))]
@@ -421,7 +387,6 @@ pub unsafe fn vtbl4_s8(a: int8x8x4_t, b: int8x8_t) -> int8x8_t {
 
 /// Table look-up
 #[inline]
-#[cfg(target_arch = "arm")]
 #[cfg(target_endian = "little")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr(vtbl))]
@@ -437,7 +402,6 @@ pub unsafe fn vtbl4_u8(a: uint8x8x4_t, b: uint8x8_t) -> uint8x8_t {
 
 /// Table look-up
 #[inline]
-#[cfg(target_arch = "arm")]
 #[cfg(target_endian = "little")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr(vtbl))]
@@ -453,7 +417,6 @@ pub unsafe fn vtbl4_p8(a: poly8x8x4_t, b: uint8x8_t) -> poly8x8_t {
 
 /// Extended table look-up
 #[inline]
-#[cfg(target_arch = "arm")]
 #[cfg(target_endian = "little")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr(vtbx))]
@@ -463,7 +426,6 @@ pub unsafe fn vtbx1_s8(a: int8x8_t, b: int8x8_t, c: int8x8_t) -> int8x8_t {
 
 /// Extended table look-up
 #[inline]
-#[cfg(target_arch = "arm")]
 #[cfg(target_endian = "little")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr(vtbx))]
@@ -473,7 +435,6 @@ pub unsafe fn vtbx1_u8(a: uint8x8_t, b: uint8x8_t, c: uint8x8_t) -> uint8x8_t {
 
 /// Extended table look-up
 #[inline]
-#[cfg(target_arch = "arm")]
 #[cfg(target_endian = "little")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr(vtbx))]
@@ -483,7 +444,6 @@ pub unsafe fn vtbx1_p8(a: poly8x8_t, b: poly8x8_t, c: uint8x8_t) -> poly8x8_t {
 
 /// Extended table look-up
 #[inline]
-#[cfg(target_arch = "arm")]
 #[cfg(target_endian = "little")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr(vtbx))]
@@ -493,7 +453,6 @@ pub unsafe fn vtbx2_s8(a: int8x8_t, b: int8x8x2_t, c: int8x8_t) -> int8x8_t {
 
 /// Extended table look-up
 #[inline]
-#[cfg(target_arch = "arm")]
 #[cfg(target_endian = "little")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr(vtbx))]
@@ -508,7 +467,6 @@ pub unsafe fn vtbx2_u8(a: uint8x8_t, b: uint8x8x2_t, c: uint8x8_t) -> uint8x8_t 
 
 /// Extended table look-up
 #[inline]
-#[cfg(target_arch = "arm")]
 #[cfg(target_endian = "little")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr(vtbx))]
@@ -523,7 +481,6 @@ pub unsafe fn vtbx2_p8(a: poly8x8_t, b: poly8x8x2_t, c: uint8x8_t) -> poly8x8_t 
 
 /// Extended table look-up
 #[inline]
-#[cfg(target_arch = "arm")]
 #[cfg(target_endian = "little")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr(vtbx))]
@@ -533,7 +490,6 @@ pub unsafe fn vtbx3_s8(a: int8x8_t, b: int8x8x3_t, c: int8x8_t) -> int8x8_t {
 
 /// Extended table look-up
 #[inline]
-#[cfg(target_arch = "arm")]
 #[cfg(target_endian = "little")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr(vtbx))]
@@ -549,7 +505,6 @@ pub unsafe fn vtbx3_u8(a: uint8x8_t, b: uint8x8x3_t, c: uint8x8_t) -> uint8x8_t 
 
 /// Extended table look-up
 #[inline]
-#[cfg(target_arch = "arm")]
 #[cfg(target_endian = "little")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr(vtbx))]
@@ -565,7 +520,6 @@ pub unsafe fn vtbx3_p8(a: poly8x8_t, b: poly8x8x3_t, c: uint8x8_t) -> poly8x8_t 
 
 /// Extended table look-up
 #[inline]
-#[cfg(target_arch = "arm")]
 #[cfg(target_endian = "little")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr(vtbx))]
@@ -575,7 +529,6 @@ pub unsafe fn vtbx4_s8(a: int8x8_t, b: int8x8x4_t, c: int8x8_t) -> int8x8_t {
 
 /// Extended table look-up
 #[inline]
-#[cfg(target_arch = "arm")]
 #[cfg(target_endian = "little")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr(vtbx))]
@@ -592,7 +545,6 @@ pub unsafe fn vtbx4_u8(a: uint8x8_t, b: uint8x8x4_t, c: uint8x8_t) -> uint8x8_t 
 
 /// Extended table look-up
 #[inline]
-#[cfg(target_arch = "arm")]
 #[cfg(target_endian = "little")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr(vtbx))]
@@ -612,7 +564,6 @@ pub unsafe fn vtbx4_p8(a: poly8x8_t, b: poly8x8x4_t, c: uint8x8_t) -> poly8x8_t 
 
 /// Floating-point Convert to Signed fixed-point, rounding toward Zero (vector)
 #[inline]
-#[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon")]
 #[target_feature(enable = "v7")]
 #[cfg_attr(test, assert_instr("vcvt.s32.f32"))]
@@ -622,7 +573,6 @@ pub unsafe fn vcvtq_s32_f32(a: float32x4_t) -> int32x4_t {
 
 /// Floating-point Convert to Unsigned fixed-point, rounding toward Zero (vector)
 #[inline]
-#[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon")]
 #[target_feature(enable = "v7")]
 #[cfg_attr(test, assert_instr("vcvt.u32.f32"))]
@@ -632,7 +582,6 @@ pub unsafe fn vcvtq_u32_f32(a: float32x4_t) -> uint32x4_t {
 
 /// Shift Left and Insert (immediate)
 #[inline]
-#[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr("vsli.8", N = 1))]
 #[rustc_legacy_const_generics(2)]
@@ -643,7 +592,6 @@ pub unsafe fn vsli_n_s8<const N: i32>(a: int8x8_t, b: int8x8_t) -> int8x8_t {
 }
 /// Shift Left and Insert (immediate)
 #[inline]
-#[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr("vsli.8", N = 1))]
 #[rustc_legacy_const_generics(2)]
@@ -658,7 +606,6 @@ pub unsafe fn vsliq_n_s8<const N: i32>(a: int8x16_t, b: int8x16_t) -> int8x16_t 
 }
 /// Shift Left and Insert (immediate)
 #[inline]
-#[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr("vsli.16", N = 1))]
 #[rustc_legacy_const_generics(2)]
@@ -669,7 +616,6 @@ pub unsafe fn vsli_n_s16<const N: i32>(a: int16x4_t, b: int16x4_t) -> int16x4_t 
 }
 /// Shift Left and Insert (immediate)
 #[inline]
-#[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr("vsli.16", N = 1))]
 #[rustc_legacy_const_generics(2)]
@@ -680,7 +626,6 @@ pub unsafe fn vsliq_n_s16<const N: i32>(a: int16x8_t, b: int16x8_t) -> int16x8_t
 }
 /// Shift Left and Insert (immediate)
 #[inline]
-#[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr("vsli.32", N = 1))]
 #[rustc_legacy_const_generics(2)]
@@ -690,7 +635,6 @@ pub unsafe fn vsli_n_s32<const N: i32>(a: int32x2_t, b: int32x2_t) -> int32x2_t 
 }
 /// Shift Left and Insert (immediate)
 #[inline]
-#[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr("vsli.32", N = 1))]
 #[rustc_legacy_const_generics(2)]
@@ -700,7 +644,6 @@ pub unsafe fn vsliq_n_s32<const N: i32>(a: int32x4_t, b: int32x4_t) -> int32x4_t
 }
 /// Shift Left and Insert (immediate)
 #[inline]
-#[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr("vsli.64", N = 1))]
 #[rustc_legacy_const_generics(2)]
@@ -710,7 +653,6 @@ pub unsafe fn vsli_n_s64<const N: i32>(a: int64x1_t, b: int64x1_t) -> int64x1_t 
 }
 /// Shift Left and Insert (immediate)
 #[inline]
-#[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr("vsli.64", N = 1))]
 #[rustc_legacy_const_generics(2)]
@@ -720,7 +662,6 @@ pub unsafe fn vsliq_n_s64<const N: i32>(a: int64x2_t, b: int64x2_t) -> int64x2_t
 }
 /// Shift Left and Insert (immediate)
 #[inline]
-#[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr("vsli.8", N = 1))]
 #[rustc_legacy_const_generics(2)]
@@ -735,7 +676,6 @@ pub unsafe fn vsli_n_u8<const N: i32>(a: uint8x8_t, b: uint8x8_t) -> uint8x8_t {
 }
 /// Shift Left and Insert (immediate)
 #[inline]
-#[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr("vsli.8", N = 1))]
 #[rustc_legacy_const_generics(2)]
@@ -750,7 +690,6 @@ pub unsafe fn vsliq_n_u8<const N: i32>(a: uint8x16_t, b: uint8x16_t) -> uint8x16
 }
 /// Shift Left and Insert (immediate)
 #[inline]
-#[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr("vsli.16", N = 1))]
 #[rustc_legacy_const_generics(2)]
@@ -765,7 +704,6 @@ pub unsafe fn vsli_n_u16<const N: i32>(a: uint16x4_t, b: uint16x4_t) -> uint16x4
 }
 /// Shift Left and Insert (immediate)
 #[inline]
-#[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr("vsli.16", N = 1))]
 #[rustc_legacy_const_generics(2)]
@@ -780,7 +718,6 @@ pub unsafe fn vsliq_n_u16<const N: i32>(a: uint16x8_t, b: uint16x8_t) -> uint16x
 }
 /// Shift Left and Insert (immediate)
 #[inline]
-#[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr("vsli.32", N = 1))]
 #[rustc_legacy_const_generics(2)]
@@ -790,7 +727,6 @@ pub unsafe fn vsli_n_u32<const N: i32>(a: uint32x2_t, b: uint32x2_t) -> uint32x2
 }
 /// Shift Left and Insert (immediate)
 #[inline]
-#[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr("vsli.32", N = 1))]
 #[rustc_legacy_const_generics(2)]
@@ -804,7 +740,6 @@ pub unsafe fn vsliq_n_u32<const N: i32>(a: uint32x4_t, b: uint32x4_t) -> uint32x
 }
 /// Shift Left and Insert (immediate)
 #[inline]
-#[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr("vsli.64", N = 1))]
 #[rustc_legacy_const_generics(2)]
@@ -818,7 +753,6 @@ pub unsafe fn vsli_n_u64<const N: i32>(a: uint64x1_t, b: uint64x1_t) -> uint64x1
 }
 /// Shift Left and Insert (immediate)
 #[inline]
-#[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr("vsli.64", N = 1))]
 #[rustc_legacy_const_generics(2)]
@@ -832,7 +766,6 @@ pub unsafe fn vsliq_n_u64<const N: i32>(a: uint64x2_t, b: uint64x2_t) -> uint64x
 }
 /// Shift Left and Insert (immediate)
 #[inline]
-#[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr("vsli.8", N = 1))]
 #[rustc_legacy_const_generics(2)]
@@ -847,7 +780,6 @@ pub unsafe fn vsli_n_p8<const N: i32>(a: poly8x8_t, b: poly8x8_t) -> poly8x8_t {
 }
 /// Shift Left and Insert (immediate)
 #[inline]
-#[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr("vsli.8", N = 1))]
 #[rustc_legacy_const_generics(2)]
@@ -862,7 +794,6 @@ pub unsafe fn vsliq_n_p8<const N: i32>(a: poly8x16_t, b: poly8x16_t) -> poly8x16
 }
 /// Shift Left and Insert (immediate)
 #[inline]
-#[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr("vsli.16", N = 1))]
 #[rustc_legacy_const_generics(2)]
@@ -877,7 +808,6 @@ pub unsafe fn vsli_n_p16<const N: i32>(a: poly16x4_t, b: poly16x4_t) -> poly16x4
 }
 /// Shift Left and Insert (immediate)
 #[inline]
-#[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr("vsli.16", N = 1))]
 #[rustc_legacy_const_generics(2)]
@@ -893,7 +823,6 @@ pub unsafe fn vsliq_n_p16<const N: i32>(a: poly16x8_t, b: poly16x8_t) -> poly16x
 
 /// Shift Right and Insert (immediate)
 #[inline]
-#[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr("vsri.8", N = 1))]
 #[rustc_legacy_const_generics(2)]
@@ -904,7 +833,6 @@ pub unsafe fn vsri_n_s8<const N: i32>(a: int8x8_t, b: int8x8_t) -> int8x8_t {
 }
 /// Shift Right and Insert (immediate)
 #[inline]
-#[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr("vsri.8", N = 1))]
 #[rustc_legacy_const_generics(2)]
@@ -919,7 +847,6 @@ pub unsafe fn vsriq_n_s8<const N: i32>(a: int8x16_t, b: int8x16_t) -> int8x16_t 
 }
 /// Shift Right and Insert (immediate)
 #[inline]
-#[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr("vsri.16", N = 1))]
 #[rustc_legacy_const_generics(2)]
@@ -930,7 +857,6 @@ pub unsafe fn vsri_n_s16<const N: i32>(a: int16x4_t, b: int16x4_t) -> int16x4_t 
 }
 /// Shift Right and Insert (immediate)
 #[inline]
-#[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr("vsri.16", N = 1))]
 #[rustc_legacy_const_generics(2)]
@@ -941,7 +867,6 @@ pub unsafe fn vsriq_n_s16<const N: i32>(a: int16x8_t, b: int16x8_t) -> int16x8_t
 }
 /// Shift Right and Insert (immediate)
 #[inline]
-#[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr("vsri.32", N = 1))]
 #[rustc_legacy_const_generics(2)]
@@ -951,7 +876,6 @@ pub unsafe fn vsri_n_s32<const N: i32>(a: int32x2_t, b: int32x2_t) -> int32x2_t 
 }
 /// Shift Right and Insert (immediate)
 #[inline]
-#[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr("vsri.32", N = 1))]
 #[rustc_legacy_const_generics(2)]
@@ -961,7 +885,6 @@ pub unsafe fn vsriq_n_s32<const N: i32>(a: int32x4_t, b: int32x4_t) -> int32x4_t
 }
 /// Shift Right and Insert (immediate)
 #[inline]
-#[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr("vsri.64", N = 1))]
 #[rustc_legacy_const_generics(2)]
@@ -971,7 +894,6 @@ pub unsafe fn vsri_n_s64<const N: i32>(a: int64x1_t, b: int64x1_t) -> int64x1_t 
 }
 /// Shift Right and Insert (immediate)
 #[inline]
-#[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr("vsri.64", N = 1))]
 #[rustc_legacy_const_generics(2)]
@@ -981,7 +903,6 @@ pub unsafe fn vsriq_n_s64<const N: i32>(a: int64x2_t, b: int64x2_t) -> int64x2_t
 }
 /// Shift Right and Insert (immediate)
 #[inline]
-#[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr("vsri.8", N = 1))]
 #[rustc_legacy_const_generics(2)]
@@ -996,7 +917,6 @@ pub unsafe fn vsri_n_u8<const N: i32>(a: uint8x8_t, b: uint8x8_t) -> uint8x8_t {
 }
 /// Shift Right and Insert (immediate)
 #[inline]
-#[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr("vsri.8", N = 1))]
 #[rustc_legacy_const_generics(2)]
@@ -1011,7 +931,6 @@ pub unsafe fn vsriq_n_u8<const N: i32>(a: uint8x16_t, b: uint8x16_t) -> uint8x16
 }
 /// Shift Right and Insert (immediate)
 #[inline]
-#[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr("vsri.16", N = 1))]
 #[rustc_legacy_const_generics(2)]
@@ -1026,7 +945,6 @@ pub unsafe fn vsri_n_u16<const N: i32>(a: uint16x4_t, b: uint16x4_t) -> uint16x4
 }
 /// Shift Right and Insert (immediate)
 #[inline]
-#[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr("vsri.16", N = 1))]
 #[rustc_legacy_const_generics(2)]
@@ -1041,7 +959,6 @@ pub unsafe fn vsriq_n_u16<const N: i32>(a: uint16x8_t, b: uint16x8_t) -> uint16x
 }
 /// Shift Right and Insert (immediate)
 #[inline]
-#[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr("vsri.32", N = 1))]
 #[rustc_legacy_const_generics(2)]
@@ -1055,7 +972,6 @@ pub unsafe fn vsri_n_u32<const N: i32>(a: uint32x2_t, b: uint32x2_t) -> uint32x2
 }
 /// Shift Right and Insert (immediate)
 #[inline]
-#[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr("vsri.32", N = 1))]
 #[rustc_legacy_const_generics(2)]
@@ -1069,7 +985,6 @@ pub unsafe fn vsriq_n_u32<const N: i32>(a: uint32x4_t, b: uint32x4_t) -> uint32x
 }
 /// Shift Right and Insert (immediate)
 #[inline]
-#[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr("vsri.64", N = 1))]
 #[rustc_legacy_const_generics(2)]
@@ -1083,7 +998,6 @@ pub unsafe fn vsri_n_u64<const N: i32>(a: uint64x1_t, b: uint64x1_t) -> uint64x1
 }
 /// Shift Right and Insert (immediate)
 #[inline]
-#[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr("vsri.64", N = 1))]
 #[rustc_legacy_const_generics(2)]
@@ -1097,7 +1011,6 @@ pub unsafe fn vsriq_n_u64<const N: i32>(a: uint64x2_t, b: uint64x2_t) -> uint64x
 }
 /// Shift Right and Insert (immediate)
 #[inline]
-#[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr("vsri.8", N = 1))]
 #[rustc_legacy_const_generics(2)]
@@ -1112,7 +1025,6 @@ pub unsafe fn vsri_n_p8<const N: i32>(a: poly8x8_t, b: poly8x8_t) -> poly8x8_t {
 }
 /// Shift Right and Insert (immediate)
 #[inline]
-#[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr("vsri.8", N = 1))]
 #[rustc_legacy_const_generics(2)]
@@ -1127,7 +1039,6 @@ pub unsafe fn vsriq_n_p8<const N: i32>(a: poly8x16_t, b: poly8x16_t) -> poly8x16
 }
 /// Shift Right and Insert (immediate)
 #[inline]
-#[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr("vsri.16", N = 1))]
 #[rustc_legacy_const_generics(2)]
@@ -1142,7 +1053,6 @@ pub unsafe fn vsri_n_p16<const N: i32>(a: poly16x4_t, b: poly16x4_t) -> poly16x4
 }
 /// Shift Right and Insert (immediate)
 #[inline]
-#[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(test, assert_instr("vsri.16", N = 1))]
 #[rustc_legacy_const_generics(2)]
@@ -1163,7 +1073,6 @@ mod tests {
     use crate::mem::transmute;
     use stdarch_test::simd_test;
 
-    #[cfg(target_arch = "arm")]
     #[simd_test(enable = "neon")]
     unsafe fn test_vcvtq_s32_f32() {
         let f = f32x4::new(-1., 2., 3., 4.);
@@ -1172,7 +1081,6 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[cfg(target_arch = "arm")]
     #[simd_test(enable = "neon")]
     unsafe fn test_vcvtq_u32_f32() {
         let f = f32x4::new(1., 2., 3., 4.);
