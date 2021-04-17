@@ -2815,9 +2815,8 @@ pub unsafe fn vfmaq_f64(a: float64x2_t, b: float64x2_t, c: float64x2_t) -> float
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(fmadd))]
 pub unsafe fn vfma_n_f64(a: float64x1_t, b: float64x1_t, c: f64) -> float64x1_t {
-    let d: f64 = 0.0;
-    let e: float64x1_t = simd_insert(transmute(d), 0, c);
-    vfma_f64(b, e, a)
+    let d: float64x1_t = transmute(f64x1::new(c));
+    vfma_f64(b, transmute(d), a)
 }
 
 /// Floating-point fused Multiply-Add to accumulator(vector)
@@ -2825,10 +2824,8 @@ pub unsafe fn vfma_n_f64(a: float64x1_t, b: float64x1_t, c: f64) -> float64x1_t 
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(fmla))]
 pub unsafe fn vfmaq_n_f64(a: float64x2_t, b: float64x2_t, c: f64) -> float64x2_t {
-    let d: f64x2 = f64x2::new(0.0, 0.0);
-    let e: float64x2_t = simd_insert(transmute(d), 0, c);
-    let f: float64x2_t = simd_shuffle2(e, e, [0, 0]);
-    vfmaq_f64(b, f, a)
+    let d: float64x2_t = transmute(f64x2::new(c, c));
+    vfmaq_f64(b, d, a)
 }
 
 /// Divide

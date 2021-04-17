@@ -4745,10 +4745,8 @@ vfmaq_f32_(a, b, c)
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(vfma))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(fmla))]
 pub unsafe fn vfma_n_f32(a: float32x2_t, b: float32x2_t, c: f32) -> float32x2_t {
-    let d: f32x2 = f32x2::new(0.0, 0.0);
-    let e: float32x2_t = simd_insert(transmute(d), 0, c);
-    let f: float32x2_t = simd_shuffle2(e, e, [0, 0]);
-    vfma_f32(b, f, a)
+    let d: float32x2_t = transmute(f32x2::new(c, c));
+    vfma_f32(b, d, a)
 }
 
 /// Floating-point fused Multiply-Add to accumulator(vector)
@@ -4758,10 +4756,8 @@ pub unsafe fn vfma_n_f32(a: float32x2_t, b: float32x2_t, c: f32) -> float32x2_t 
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(vfma))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(fmla))]
 pub unsafe fn vfmaq_n_f32(a: float32x4_t, b: float32x4_t, c: f32) -> float32x4_t {
-    let d: f32x4 = f32x4::new(0.0, 0.0, 0.0, 0.0);
-    let e: float32x4_t = simd_insert(transmute(d), 0, c);
-    let f: float32x4_t = simd_shuffle4(e, e, [0, 0, 0, 0]);
-    vfmaq_f32(b, f, a)
+    let d: float32x4_t = transmute(f32x4::new(c, c, c, c));
+    vfmaq_f32(b, d, a)
 }
 
 /// Subtract
