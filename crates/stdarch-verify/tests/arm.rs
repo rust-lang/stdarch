@@ -487,6 +487,7 @@ fn verify_all_signatures() {
             "vreinterpret_p64_s64",
             "vreinterpret_f32_p64",
             "vreinterpretq_f32_p64",
+            "__dbg",
         ];
         let arm = match map.get(rust.name) {
             Some(i) => i,
