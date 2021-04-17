@@ -448,6 +448,14 @@ fn verify_all_signatures() {
                 "vpadalq_u8",
                 "vpadalq_u16",
                 "vpadalq_u32",
+                "__ldrex",
+                "__strex",
+                "__ldrexb",
+                "__strexb",
+                "__ldrexh",
+                "__strexh",
+                "__clrex",
+                "__dbg",
             ];
             if !skip.contains(&rust.name) {
                 println!(
