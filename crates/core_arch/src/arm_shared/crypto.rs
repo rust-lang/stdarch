@@ -1,4 +1,4 @@
-use crate::core_arch::acle::{uint32x4_t, uint8x16_t};
+use crate::core_arch::arm_shared::{uint32x4_t, uint8x16_t};
 
 #[allow(improper_ctypes)]
 extern "C" {

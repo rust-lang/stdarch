@@ -5,7 +5,7 @@
 mod macros;
 
 #[cfg(any(target_arch = "arm", target_arch = "aarch64", doc))]
-mod acle;
+mod arm_shared;
 
 mod simd;
 

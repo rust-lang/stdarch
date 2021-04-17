@@ -68,7 +68,7 @@ mod v7;
 #[cfg(any(target_feature = "v7", doc))]
 pub use self::v7::*;
 
-pub use crate::core_arch::acle::*;
+pub use crate::core_arch::arm_shared::*;
 
 #[cfg(test)]
 use stdarch_test::assert_instr;

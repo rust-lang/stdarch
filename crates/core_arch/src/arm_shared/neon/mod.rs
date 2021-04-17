@@ -4275,9 +4275,9 @@ mod tests {
     use super::*;
     #[cfg(target_arch = "aarch64")]
     use crate::core_arch::aarch64::*;
-    use crate::core_arch::acle::test_support::*;
     #[cfg(target_arch = "arm")]
     use crate::core_arch::arm::*;
+    use crate::core_arch::arm_shared::test_support::*;
     use crate::core_arch::simd::*;
     use std::{i16, i32, i8, mem::transmute, u16, u32, u8, vec::Vec};
     use stdarch_test::simd_test;

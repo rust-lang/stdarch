@@ -1,4 +1,4 @@
-use crate::core_arch::acle::neon::*;
+use crate::core_arch::arm_shared::neon::*;
 use crate::core_arch::simd::{f32x4, i32x4, u32x4};
 use crate::core_arch::simd_llvm::*;
 use crate::mem::transmute;
