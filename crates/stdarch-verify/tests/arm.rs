@@ -448,7 +448,6 @@ fn verify_all_signatures() {
                 "vpadalq_u8",
                 "vpadalq_u16",
                 "vpadalq_u32",
-                "__dbg",
             ];
             if !skip.contains(&rust.name) {
                 println!(
@@ -480,7 +479,6 @@ fn verify_all_signatures() {
             "vreinterpret_p64_s64",
             "vreinterpret_f32_p64",
             "vreinterpretq_f32_p64",
-            "__dbg",
         ];
         let arm = match map.get(rust.name) {
             Some(i) => i,

@@ -69,6 +69,27 @@ pub unsafe fn __yield() {
     hint(HINT_YIELD);
 }
 
+/// Generates a DBG instruction.
+///
+/// This provides a hint to debugging and related systems. The argument must be
+/// a constant integer from 0 to 15 inclusive. See implementation documentation
+/// for the effect (if any) of this instruction and the meaning of the
+/// argument. This is available only when compliling for AArch32.
+// Section 10.1 of ACLE says that the supported arches are: 7, 7-M
+// "The DBG hint instruction is added in ARMv7. It is UNDEFINED in the ARMv6 base architecture, and
+// executes as a NOP instruction in ARMv6K and ARMv6T2." - ARM Architecture Reference Manual ARMv7-A
+// and ARMv7-R edition (ARM DDI 0406C.c) sections D12.4.1 "ARM instruction set support" and D12.4.2
+// "Thumb instruction set support"
+#[cfg(target_feature = "v7")]
+#[cfg(any(target_arch = "arm", doc))]
+#[doc(cfg(target_arch = "arm"))]
+#[inline(always)]
+#[rustc_legacy_const_generics(0)]
+pub unsafe fn __dbg<const IMM4: i32>() {
+    static_assert_imm4!(IMM4);
+    dbg(IMM4);
+}
+
 /// Generates an unspecified no-op instruction.
 ///
 /// Note that not all architectures provide a distinguished NOP instruction. On
