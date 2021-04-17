@@ -7,7 +7,6 @@
 //! [arm_dat]: https://developer.arm.com/technologies/neon/intrinsics
 
 mod armclang;
-
 pub use self::armclang::*;
 
 mod v6;
