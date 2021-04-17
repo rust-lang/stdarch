@@ -2812,7 +2812,7 @@ pub unsafe fn vsriq_n_p16<const N: i32>(a: poly16x8_t, b: poly16x8_t) -> poly16x
 #[cfg(test)]
 mod tests {
     use crate::core_arch::aarch64::test_support::*;
-    use crate::core_arch::arm::test_support::*;
+    use crate::core_arch::acle::test_support::*;
     use crate::core_arch::{aarch64::neon::*, aarch64::*, simd::*};
     use std::mem::transmute;
     use stdarch_test::simd_test;

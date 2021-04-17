@@ -4275,7 +4275,7 @@ mod tests {
     use super::*;
     #[cfg(target_arch = "aarch64")]
     use crate::core_arch::aarch64::*;
-    use crate::core_arch::arm::test_support::*;
+    use crate::core_arch::acle::test_support::*;
     #[cfg(target_arch = "arm")]
     use crate::core_arch::arm::*;
     use crate::core_arch::simd::*;

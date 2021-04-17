@@ -85,7 +85,3 @@ pub use neon::*;
 pub unsafe fn udf() -> ! {
     crate::intrinsics::abort()
 }
-
-#[cfg(test)]
-#[cfg(any(target_feature = "v7", doc))]
-pub(crate) mod test_support;

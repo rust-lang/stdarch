@@ -83,6 +83,10 @@ pub(crate) mod neon;
 #[cfg(any(target_arch = "aarch64", target_feature = "v7", doc))]
 pub use self::neon::*;
 
+#[cfg(test)]
+#[cfg(any(target_arch = "aarch64", target_feature = "v7", doc))]
+pub(crate) mod test_support;
+
 mod sealed {
     pub trait Dmb {
         unsafe fn __dmb(&self);
