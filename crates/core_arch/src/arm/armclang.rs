@@ -1,3 +1,14 @@
+//! ARM compiler specific intrinsics
+//!
+//! # References
+//!
+//! - [ARM Compiler v 6.10 - armclang Reference Guide][arm_comp_ref]
+//!
+//! [arm_comp_ref]: https://developer.arm.com/docs/100067/0610
+
+#[cfg(test)]
+use stdarch_test::assert_instr;
+
 /// Inserts a breakpoint instruction.
 ///
 /// `VAL` is a compile-time constant integer in range `[0, 255]`.
