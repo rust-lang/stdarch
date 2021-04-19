@@ -2717,11 +2717,20 @@ validate 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60, 64
 
 aarch64 = srshl
 link-aarch64 = srshl._EXT_
-generate i64
 
 arm = vrshl
 link-arm = vrshifts._EXT_
 generate int*_t, int64x*_t
+
+/// Signed rounding shift left
+name = vrshl
+multi_fn = transmute, {vrshl-in_ntt-noext, transmute(a), transmute(b)}
+a = 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
+b = 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2
+validate 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60, 64
+
+aarch64 = srshl
+generate i64
 
 /// Unsigned rounding shift left
 name = vrshl
@@ -2732,12 +2741,22 @@ validate 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60, 64
 
 aarch64 = urshl
 link-aarch64 = urshl._EXT_
-generate u64:i64:u64
 
 arm = vrshl
 link-arm = vrshiftu._EXT_
 generate uint8x8_t:int8x8_t:uint8x8_t, uint8x16_t:int8x16_t:uint8x16_t, uint16x4_t:int16x4_t:uint16x4_t, uint16x8_t:int16x8_t:uint16x8_t
 generate uint32x2_t:int32x2_t:uint32x2_t, uint32x4_t:int32x4_t:uint32x4_t, uint64x1_t:int64x1_t:uint64x1_t, uint64x2_t:int64x2_t:uint64x2_t
+
+/// Unsigned rounding shift left
+name = vrshl
+out-suffix
+multi_fn = transmute, {vrshl-out_ntt-noext, transmute(a), transmute(b)}
+a = 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
+b = 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2
+validate 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60, 64
+
+aarch64 = urshl
+generate u64:i64:u64
 
 /// Signed rounding shift right
 name = vrshr
@@ -2882,7 +2901,7 @@ b = 4
 n = 2
 validate 2
 
-aarch64 = srsra
+aarch64 = nop
 generate i64
 
 /// Ungisned rounding shift right and accumulate
@@ -2897,7 +2916,7 @@ b = 4
 n = 2
 validate 2
 
-aarch64 = ursra
+aarch64 = nop
 generate u64
 
 /// Signed Shift left
@@ -2906,13 +2925,21 @@ a = 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
 b = 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2
 validate 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60, 64
 
-aarch64 = sshl
-link-aarch64 = sshl._EXT_
-generate i64
-
 arm = vshl
 link-arm = vshifts._EXT_
+aarch64 = sshl
+link-aarch64 = sshl._EXT_
 generate int*_t, int64x*_t
+
+/// Signed Shift left
+name = vshl
+multi_fn = transmute, {vshl-in_ntt-noext, transmute(a), transmute(b)}
+a = 1
+b = 2
+validate 4
+
+aarch64 = sshl
+generate i64
 
 /// Unsigned Shift left
 name = vshl
@@ -2921,14 +2948,23 @@ a = 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
 b = 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2
 validate 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60, 64
 
-aarch64 = ushl
-link-aarch64 = ushl._EXT_
-generate u64:i64:u64
-
 arm = vshl
 link-arm = vshiftu._EXT_
+aarch64 = ushl
+link-aarch64 = ushl._EXT_
 generate uint8x8_t:int8x8_t:uint8x8_t, uint8x16_t:int8x16_t:uint8x16_t, uint16x4_t:int16x4_t:uint16x4_t, uint16x8_t:int16x8_t:uint16x8_t
 generate uint32x2_t:int32x2_t:uint32x2_t, uint32x4_t:int32x4_t:uint32x4_t, uint64x1_t:int64x1_t:uint64x1_t, uint64x2_t:int64x2_t:uint64x2_t
+
+/// Unsigned Shift left
+out-suffix
+name = vshl
+multi_fn = transmute, {vshl-out_ntt-noext, transmute(a), transmute(b)}
+a = 1
+b = 2
+validate 4
+
+aarch64 = ushl
+generate u64:i64:u64
 
 /// Shift left
 name = vshl

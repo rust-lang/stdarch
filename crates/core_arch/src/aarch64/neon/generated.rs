@@ -4610,12 +4610,7 @@ pub unsafe fn vreinterpretq_f32_f64(a: float64x2_t) -> float32x4_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(srshl))]
 pub unsafe fn vrshld_s64(a: i64, b: i64) -> i64 {
-    #[allow(improper_ctypes)]
-    extern "C" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.srshl.i64")]
-        fn vrshld_s64_(a: i64, b: i64) -> i64;
-    }
-    vrshld_s64_(a, b)
+    transmute(vrshl_s64(transmute(a), transmute(b)))
 }
 
 /// Unsigned rounding shift left
@@ -4623,12 +4618,7 @@ pub unsafe fn vrshld_s64(a: i64, b: i64) -> i64 {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(urshl))]
 pub unsafe fn vrshld_u64(a: u64, b: i64) -> u64 {
-    #[allow(improper_ctypes)]
-    extern "C" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.urshl.i64")]
-        fn vrshld_u64_(a: u64, b: i64) -> u64;
-    }
-    vrshld_u64_(a, b)
+    transmute(vrshl_u64(transmute(a), transmute(b)))
 }
 
 /// Signed rounding shift right
@@ -4714,7 +4704,7 @@ pub unsafe fn vrshrn_high_n_u64<const N: i32>(a: uint32x2_t, b: uint64x2_t) -> u
 /// Signed rounding shift right and accumulate
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(srsra, N = 2))]
+#[cfg_attr(test, assert_instr(nop, N = 2))]
 #[rustc_legacy_const_generics(2)]
 pub unsafe fn vrsrad_n_s64<const N: i32>(a: i64, b: i64) -> i64 {
     static_assert!(N : i32 where N >= 1 && N <= 64);
@@ -4725,7 +4715,7 @@ pub unsafe fn vrsrad_n_s64<const N: i32>(a: i64, b: i64) -> i64 {
 /// Ungisned rounding shift right and accumulate
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(ursra, N = 2))]
+#[cfg_attr(test, assert_instr(nop, N = 2))]
 #[rustc_legacy_const_generics(2)]
 pub unsafe fn vrsrad_n_u64<const N: i32>(a: u64, b: u64) -> u64 {
     static_assert!(N : i32 where N >= 1 && N <= 64);
@@ -4738,12 +4728,7 @@ pub unsafe fn vrsrad_n_u64<const N: i32>(a: u64, b: u64) -> u64 {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(sshl))]
 pub unsafe fn vshld_s64(a: i64, b: i64) -> i64 {
-    #[allow(improper_ctypes)]
-    extern "C" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.sshl.i64")]
-        fn vshld_s64_(a: i64, b: i64) -> i64;
-    }
-    vshld_s64_(a, b)
+    transmute(vshl_s64(transmute(a), transmute(b)))
 }
 
 /// Unsigned Shift left
@@ -4751,12 +4736,7 @@ pub unsafe fn vshld_s64(a: i64, b: i64) -> i64 {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ushl))]
 pub unsafe fn vshld_u64(a: u64, b: i64) -> u64 {
-    #[allow(improper_ctypes)]
-    extern "C" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ushl.i64")]
-        fn vshld_u64_(a: u64, b: i64) -> u64;
-    }
-    vshld_u64_(a, b)
+    transmute(vshl_u64(transmute(a), transmute(b)))
 }
 
 /// Signed shift left long
