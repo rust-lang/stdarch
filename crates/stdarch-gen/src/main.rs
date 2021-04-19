@@ -482,14 +482,14 @@ fn type_to_ext(t: &str) -> &str {
         "poly8x16_t" => "v16i8",
         "poly16x4_t" => "v4i16",
         "poly16x8_t" => "v8i16",
-        "i8" => "v8i8",
-        "i16" => "v4i16",
-        "i32" => "v2i32",
-        "i64" => "v1i64",
-        "u8" => "v8i8",
-        "u16" => "v4i16",
-        "u32" => "v2i32",
-        "u64" => "v1i64",
+        "i8" => "i8",
+        "i16" => "i16",
+        "i32" => "i32",
+        "i64" => "i64",
+        "u8" => "i8",
+        "u16" => "i16",
+        "u32" => "i32",
+        "u64" => "i64",
         /*
         "poly64x1_t" => "i64x1",
         "poly64x2_t" => "i64x2",
@@ -1932,6 +1932,8 @@ fn get_call(
             fn_name.push_str(&type_to_noq_double_suffixes(out_t, in_t[1]));
         } else if fn_format[1] == "noqself" {
             fn_name.push_str(type_to_noq_suffix(in_t[1]));
+        } else if fn_format[1] == "noqsigned" {
+            fn_name.push_str(type_to_noq_suffix(type_to_signed(in_t[1])));
         } else if fn_format[1] == "nosuffix" {
         } else if fn_format[1] == "in_len" {
             fn_name.push_str(&type_len(in_t[1]).to_string());
