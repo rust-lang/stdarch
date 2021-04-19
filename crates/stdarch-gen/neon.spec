@@ -2901,7 +2901,7 @@ b = 4
 n = 2
 validate 2
 
-aarch64 = nop
+aarch64 = srsra
 generate i64
 
 /// Ungisned rounding shift right and accumulate
@@ -2916,7 +2916,7 @@ b = 4
 n = 2
 validate 2
 
-aarch64 = nop
+aarch64 = ursra
 generate u64
 
 /// Signed Shift left

@@ -4704,7 +4704,7 @@ pub unsafe fn vrshrn_high_n_u64<const N: i32>(a: uint32x2_t, b: uint64x2_t) -> u
 /// Signed rounding shift right and accumulate
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(nop, N = 2))]
+#[cfg_attr(test, assert_instr(srsra, N = 2))]
 #[rustc_legacy_const_generics(2)]
 pub unsafe fn vrsrad_n_s64<const N: i32>(a: i64, b: i64) -> i64 {
     static_assert!(N : i32 where N >= 1 && N <= 64);
@@ -4715,7 +4715,7 @@ pub unsafe fn vrsrad_n_s64<const N: i32>(a: i64, b: i64) -> i64 {
 /// Ungisned rounding shift right and accumulate
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(nop, N = 2))]
+#[cfg_attr(test, assert_instr(ursra, N = 2))]
 #[rustc_legacy_const_generics(2)]
 pub unsafe fn vrsrad_n_u64<const N: i32>(a: u64, b: u64) -> u64 {
     static_assert!(N : i32 where N >= 1 && N <= 64);
