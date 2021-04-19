@@ -2889,7 +2889,7 @@ aarch64 = ursra
 arm = vrsra
 generate uint*_t, uint64x*_t
 
-/// Signed rounding shift right and accumulate
+/// Signed rounding shift right and accumulate. FIXME: We use "nop" here to skip the instruction test, since it cannot be optimized correctly.
 name = vrsra
 n-suffix
 constn = N
@@ -2901,10 +2901,10 @@ b = 4
 n = 2
 validate 2
 
-aarch64 = srsra
+aarch64 = nop
 generate i64
 
-/// Ungisned rounding shift right and accumulate
+/// Ungisned rounding shift right and accumulate. FIXME: We use "nop" here to skip the instruction test, since it cannot be optimized correctly.
 name = vrsra
 n-suffix
 constn = N
@@ -2916,7 +2916,7 @@ b = 4
 n = 2
 validate 2
 
-aarch64 = ursra
+aarch64 = nop
 generate u64
 
 /// Signed Shift left
