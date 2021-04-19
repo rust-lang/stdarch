@@ -4701,7 +4701,7 @@ pub unsafe fn vrshrn_high_n_u64<const N: i32>(a: uint32x2_t, b: uint64x2_t) -> u
     simd_shuffle4(a, vrshrn_n_u64::<N>(b), [0, 1, 2, 3])
 }
 
-/// Signed rounding shift right and accumulate. FIXME: We use "nop" here to skip the instruction test, since it cannot be optimized correctly.
+/// Signed rounding shift right and accumulate.
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(nop, N = 2))]
@@ -4712,7 +4712,7 @@ pub unsafe fn vrsrad_n_s64<const N: i32>(a: i64, b: i64) -> i64 {
     transmute(simd_add(transmute(a), b))
 }
 
-/// Ungisned rounding shift right and accumulate. FIXME: We use "nop" here to skip the instruction test, since it cannot be optimized correctly.
+/// Ungisned rounding shift right and accumulate.
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(nop, N = 2))]
