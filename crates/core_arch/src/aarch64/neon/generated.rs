@@ -2319,7 +2319,7 @@ pub unsafe fn vqsubd_s64(a: i64, b: i64) -> i64 {
 /// Saturating subtract
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(sqsub))]
+#[cfg_attr(test, assert_instr(uqsub))]
 pub unsafe fn vqsubb_u8(a: u8, b: u8) -> u8 {
     let a: uint8x8_t = vdup_n_u8(a);
     let b: uint8x8_t = vdup_n_u8(b);
@@ -2329,7 +2329,7 @@ pub unsafe fn vqsubb_u8(a: u8, b: u8) -> u8 {
 /// Saturating subtract
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(sqsub))]
+#[cfg_attr(test, assert_instr(uqsub))]
 pub unsafe fn vqsubh_u16(a: u16, b: u16) -> u16 {
     let a: uint16x4_t = vdup_n_u16(a);
     let b: uint16x4_t = vdup_n_u16(b);
@@ -2339,7 +2339,7 @@ pub unsafe fn vqsubh_u16(a: u16, b: u16) -> u16 {
 /// Saturating subtract
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(sqsub))]
+#[cfg_attr(test, assert_instr(uqsub))]
 pub unsafe fn vqsubs_u32(a: u32, b: u32) -> u32 {
     let a: uint32x2_t = vdup_n_u32(a);
     let b: uint32x2_t = vdup_n_u32(b);
@@ -2349,7 +2349,7 @@ pub unsafe fn vqsubs_u32(a: u32, b: u32) -> u32 {
 /// Saturating subtract
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(sqsub))]
+#[cfg_attr(test, assert_instr(uqsub))]
 pub unsafe fn vqsubd_u64(a: u64, b: u64) -> u64 {
     let a: uint64x1_t = vdup_n_u64(a);
     let b: uint64x1_t = vdup_n_u64(b);
@@ -2821,7 +2821,7 @@ pub unsafe fn vqaddd_s64(a: i64, b: i64) -> i64 {
 /// Saturating add
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(sqadd))]
+#[cfg_attr(test, assert_instr(uqadd))]
 pub unsafe fn vqaddb_u8(a: u8, b: u8) -> u8 {
     let a: uint8x8_t = vdup_n_u8(a);
     let b: uint8x8_t = vdup_n_u8(b);
@@ -2831,7 +2831,7 @@ pub unsafe fn vqaddb_u8(a: u8, b: u8) -> u8 {
 /// Saturating add
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(sqadd))]
+#[cfg_attr(test, assert_instr(uqadd))]
 pub unsafe fn vqaddh_u16(a: u16, b: u16) -> u16 {
     let a: uint16x4_t = vdup_n_u16(a);
     let b: uint16x4_t = vdup_n_u16(b);
@@ -2841,7 +2841,7 @@ pub unsafe fn vqaddh_u16(a: u16, b: u16) -> u16 {
 /// Saturating add
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(sqadd))]
+#[cfg_attr(test, assert_instr(uqadd))]
 pub unsafe fn vqadds_u32(a: u32, b: u32) -> u32 {
     let a: uint32x2_t = vdup_n_u32(a);
     let b: uint32x2_t = vdup_n_u32(b);
@@ -2851,7 +2851,7 @@ pub unsafe fn vqadds_u32(a: u32, b: u32) -> u32 {
 /// Saturating add
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(sqadd))]
+#[cfg_attr(test, assert_instr(uqadd))]
 pub unsafe fn vqaddd_u64(a: u64, b: u64) -> u64 {
     let a: uint64x1_t = vdup_n_u64(a);
     let b: uint64x1_t = vdup_n_u64(b);
@@ -3357,11 +3357,14 @@ pub unsafe fn vqdmullh_s16(a: i16, b: i16) -> i32 {
 /// Signed saturating doubling multiply long
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(sqdmull))]
+#[cfg_attr(test, assert_instr(sqdmulls))]
 pub unsafe fn vqdmulls_s32(a: i32, b: i32) -> i64 {
-    let a: int32x2_t = vdup_n_s32(a);
-    let b: int32x2_t = vdup_n_s32(b);
-    simd_extract(vqdmull_s32(a, b), 0)
+    #[allow(improper_ctypes)]
+    extern "C" {
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.sqdmulls.scalar")]
+        fn vqdmulls_s32_(a: i32, b: i32) -> i64;
+    }
+    vqdmulls_s32_(a, b)
 }
 
 /// Signed saturating doubling multiply long
@@ -3837,7 +3840,7 @@ pub unsafe fn vqdmulhs_s32(a: i32, b: i32) -> i32 {
 /// Signed saturating doubling multiply returning high half
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(vqdmulh, N = 2))]
+#[cfg_attr(test, assert_instr(sqdmulh, N = 2))]
 #[rustc_legacy_const_generics(2)]
 pub unsafe fn vqdmulhh_lane_s16<const N: i32>(a: i16, b: int16x4_t) -> i16 {
     static_assert_imm2!(N);
@@ -3848,7 +3851,7 @@ pub unsafe fn vqdmulhh_lane_s16<const N: i32>(a: i16, b: int16x4_t) -> i16 {
 /// Signed saturating doubling multiply returning high half
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(vqdmulh, N = 2))]
+#[cfg_attr(test, assert_instr(sqdmulh, N = 2))]
 #[rustc_legacy_const_generics(2)]
 pub unsafe fn vqdmulhh_laneq_s16<const N: i32>(a: i16, b: int16x8_t) -> i16 {
     static_assert_imm3!(N);
@@ -3859,7 +3862,7 @@ pub unsafe fn vqdmulhh_laneq_s16<const N: i32>(a: i16, b: int16x8_t) -> i16 {
 /// Signed saturating doubling multiply returning high half
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(vqdmulh, N = 1))]
+#[cfg_attr(test, assert_instr(sqdmulh, N = 1))]
 #[rustc_legacy_const_generics(2)]
 pub unsafe fn vqdmulhs_lane_s32<const N: i32>(a: i32, b: int32x2_t) -> i32 {
     static_assert_imm1!(N);
@@ -3870,7 +3873,7 @@ pub unsafe fn vqdmulhs_lane_s32<const N: i32>(a: i32, b: int32x2_t) -> i32 {
 /// Signed saturating doubling multiply returning high half
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(vqdmulh, N = 1))]
+#[cfg_attr(test, assert_instr(sqdmulh, N = 1))]
 #[rustc_legacy_const_generics(2)]
 pub unsafe fn vqdmulhs_laneq_s32<const N: i32>(a: i32, b: int32x4_t) -> i32 {
     static_assert_imm2!(N);

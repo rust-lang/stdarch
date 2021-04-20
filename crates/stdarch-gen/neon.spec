@@ -1316,7 +1316,9 @@ b = 1
 validate 41
 
 aarch64 = sqsub
-generate i8, i16, i32, i64, u8, u16, u32, u64
+generate i8, i16, i32, i64
+aarch64 = uqsub
+generate u8, u16, u32, u64
 
 /// Halving add
 name = vhadd
@@ -1465,7 +1467,9 @@ b = 1
 validate 43
 
 aarch64 = sqadd
-generate i8, i16, i32, i64, u8, u16, u32, u64
+generate i8, i16, i32, i64
+aarch64 = uqadd
+generate u8, u16, u32, u64
 
 /// Multiply
 name = vmul
@@ -2109,7 +2113,17 @@ b = 3
 validate 12
 
 aarch64 = sqdmull
-generate i16:i16:i32, i32:i32:i64
+generate i16:i16:i32
+
+/// Signed saturating doubling multiply long
+name = vqdmull
+a = 2
+b = 3
+validate 12
+
+aarch64 = sqdmulls
+link-aarch64 = sqdmulls.scalar
+generate i32:i32:i64
 
 /// Vector saturating doubling long multiply with scalar
 name = vqdmull_n
@@ -2513,7 +2527,7 @@ b = 0, 0, MAX, 0, 0, 0, 0, 0
 n = 2
 validate 1
 
-aarch64 = vqdmulh
+aarch64 = sqdmulh
 generate i16:int16x4_t:i16, i16:int16x8_t:i16
 
 /// Signed saturating doubling multiply returning high half
@@ -2527,7 +2541,7 @@ b = 0, MAX, 0, 0
 n = 1
 validate 1
 
-aarch64 = vqdmulh
+aarch64 = sqdmulh
 generate i32:int32x2_t:i32, i32:int32x4_t:i32
 
 /// Signed saturating rounding shift left
