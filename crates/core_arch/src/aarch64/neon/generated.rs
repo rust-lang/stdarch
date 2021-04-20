@@ -3357,7 +3357,7 @@ pub unsafe fn vqdmullh_s16(a: i16, b: i16) -> i32 {
 /// Signed saturating doubling multiply long
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(sqdmulls))]
+#[cfg_attr(test, assert_instr(sqdmull))]
 pub unsafe fn vqdmulls_s32(a: i32, b: i32) -> i64 {
     #[allow(improper_ctypes)]
     extern "C" {
@@ -3524,22 +3524,6 @@ pub unsafe fn vqdmull_high_laneq_s32<const N: i32>(a: int32x4_t, b: int32x4_t) -
 /// Signed saturating doubling multiply-add long
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(sqdmlal))]
-pub unsafe fn vqdmlalh_s16(a: i32, b: i16, c: i16) -> i32 {
-    vqadds_s32(a, vqdmullh_s16(b, c))
-}
-
-/// Signed saturating doubling multiply-add long
-#[inline]
-#[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(sqdmlal))]
-pub unsafe fn vqdmlals_s32(a: i64, b: i32, c: i32) -> i64 {
-    vqaddd_s64(a, vqdmulls_s32(b, c))
-}
-
-/// Signed saturating doubling multiply-add long
-#[inline]
-#[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(sqdmlal2))]
 pub unsafe fn vqdmlal_high_s16(a: int32x4_t, b: int16x8_t, c: int16x8_t) -> int32x4_t {
     vqaddq_s32(a, vqdmull_high_s16(b, c))
@@ -3592,46 +3576,6 @@ pub unsafe fn vqdmlal_laneq_s32<const N: i32>(a: int64x2_t, b: int32x2_t, c: int
 /// Signed saturating doubling multiply-add long
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(sqdmlal, N = 1))]
-#[rustc_legacy_const_generics(3)]
-pub unsafe fn vqdmlalh_lane_s16<const N: i32>(a: i32, b: i16, c: int16x4_t) -> i32 {
-    static_assert_imm2!(N);
-    vqadds_s32(a, vqdmullh_lane_s16::<N>(b, c))
-}
-
-/// Signed saturating doubling multiply-add long
-#[inline]
-#[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(sqdmlal, N = 1))]
-#[rustc_legacy_const_generics(3)]
-pub unsafe fn vqdmlalh_laneq_s16<const N: i32>(a: i32, b: i16, c: int16x8_t) -> i32 {
-    static_assert_imm3!(N);
-    vqadds_s32(a, vqdmullh_laneq_s16::<N>(b, c))
-}
-
-/// Signed saturating doubling multiply-add long
-#[inline]
-#[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(sqdmlal, N = 1))]
-#[rustc_legacy_const_generics(3)]
-pub unsafe fn vqdmlals_lane_s32<const N: i32>(a: i64, b: i32, c: int32x2_t) -> i64 {
-    static_assert_imm1!(N);
-    vqaddd_s64(a, vqdmulls_lane_s32::<N>(b, c))
-}
-
-/// Signed saturating doubling multiply-add long
-#[inline]
-#[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(sqdmlal, N = 1))]
-#[rustc_legacy_const_generics(3)]
-pub unsafe fn vqdmlals_laneq_s32<const N: i32>(a: i64, b: i32, c: int32x4_t) -> i64 {
-    static_assert_imm2!(N);
-    vqaddd_s64(a, vqdmulls_laneq_s32::<N>(b, c))
-}
-
-/// Signed saturating doubling multiply-add long
-#[inline]
-#[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(sqdmlal2, N = 1))]
 #[rustc_legacy_const_generics(3)]
 pub unsafe fn vqdmlal_high_lane_s16<const N: i32>(a: int32x4_t, b: int16x8_t, c: int16x4_t) -> int32x4_t {
@@ -3667,22 +3611,6 @@ pub unsafe fn vqdmlal_high_lane_s32<const N: i32>(a: int64x2_t, b: int32x4_t, c:
 pub unsafe fn vqdmlal_high_laneq_s32<const N: i32>(a: int64x2_t, b: int32x4_t, c: int32x4_t) -> int64x2_t {
     static_assert_imm2!(N);
     vqaddq_s64(a, vqdmull_high_laneq_s32::<N>(b, c))
-}
-
-/// Signed saturating doubling multiply-subtract long
-#[inline]
-#[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(sqdmlsl))]
-pub unsafe fn vqdmlslh_s16(a: i32, b: i16, c: i16) -> i32 {
-    vqsubs_s32(a, vqdmullh_s16(b, c))
-}
-
-/// Signed saturating doubling multiply-subtract long
-#[inline]
-#[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(sqdmlsl))]
-pub unsafe fn vqdmlsls_s32(a: i64, b: i32, c: i32) -> i64 {
-    vqsubd_s64(a, vqdmulls_s32(b, c))
 }
 
 /// Signed saturating doubling multiply-subtract long
@@ -3735,46 +3663,6 @@ pub unsafe fn vqdmlsl_laneq_s16<const N: i32>(a: int32x4_t, b: int16x4_t, c: int
 pub unsafe fn vqdmlsl_laneq_s32<const N: i32>(a: int64x2_t, b: int32x2_t, c: int32x4_t) -> int64x2_t {
     static_assert_imm2!(N);
     vqsubq_s64(a, vqdmull_laneq_s32::<N>(b, c))
-}
-
-/// Signed saturating doubling multiply-subtract long
-#[inline]
-#[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(sqdmlsl, N = 1))]
-#[rustc_legacy_const_generics(3)]
-pub unsafe fn vqdmlslh_lane_s16<const N: i32>(a: i32, b: i16, c: int16x4_t) -> i32 {
-    static_assert_imm2!(N);
-    vqsubs_s32(a, vqdmullh_lane_s16::<N>(b, c))
-}
-
-/// Signed saturating doubling multiply-subtract long
-#[inline]
-#[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(sqdmlsl, N = 1))]
-#[rustc_legacy_const_generics(3)]
-pub unsafe fn vqdmlslh_laneq_s16<const N: i32>(a: i32, b: i16, c: int16x8_t) -> i32 {
-    static_assert_imm3!(N);
-    vqsubs_s32(a, vqdmullh_laneq_s16::<N>(b, c))
-}
-
-/// Signed saturating doubling multiply-subtract long
-#[inline]
-#[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(sqdmlsl, N = 1))]
-#[rustc_legacy_const_generics(3)]
-pub unsafe fn vqdmlsls_lane_s32<const N: i32>(a: i64, b: i32, c: int32x2_t) -> i64 {
-    static_assert_imm1!(N);
-    vqsubd_s64(a, vqdmulls_lane_s32::<N>(b, c))
-}
-
-/// Signed saturating doubling multiply-subtract long
-#[inline]
-#[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(sqdmlsl, N = 1))]
-#[rustc_legacy_const_generics(3)]
-pub unsafe fn vqdmlsls_laneq_s32<const N: i32>(a: i64, b: i32, c: int32x4_t) -> i64 {
-    static_assert_imm2!(N);
-    vqsubd_s64(a, vqdmulls_laneq_s32::<N>(b, c))
 }
 
 /// Signed saturating doubling multiply-subtract long
@@ -9678,26 +9566,6 @@ mod test {
     }
 
     #[simd_test(enable = "neon")]
-    unsafe fn test_vqdmlalh_s16() {
-        let a: i32 = 1;
-        let b: i16 = 1;
-        let c: i16 = 2;
-        let e: i32 = 5;
-        let r: i32 = transmute(vqdmlalh_s16(transmute(a), transmute(b), transmute(c)));
-        assert_eq!(r, e);
-    }
-
-    #[simd_test(enable = "neon")]
-    unsafe fn test_vqdmlals_s32() {
-        let a: i64 = 1;
-        let b: i32 = 1;
-        let c: i32 = 2;
-        let e: i64 = 5;
-        let r: i64 = transmute(vqdmlals_s32(transmute(a), transmute(b), transmute(c)));
-        assert_eq!(r, e);
-    }
-
-    #[simd_test(enable = "neon")]
     unsafe fn test_vqdmlal_high_s16() {
         let a: i32x4 = i32x4::new(1, 2, 3, 4);
         let b: i16x8 = i16x8::new(0, 1, 4, 5, 4, 5, 6, 7);
@@ -9758,46 +9626,6 @@ mod test {
     }
 
     #[simd_test(enable = "neon")]
-    unsafe fn test_vqdmlalh_lane_s16() {
-        let a: i32 = 1;
-        let b: i16 = 2;
-        let c: i16x4 = i16x4::new(0, 2, 0, 0);
-        let e: i32 = 9;
-        let r: i32 = transmute(vqdmlalh_lane_s16::<1>(transmute(a), transmute(b), transmute(c)));
-        assert_eq!(r, e);
-    }
-
-    #[simd_test(enable = "neon")]
-    unsafe fn test_vqdmlalh_laneq_s16() {
-        let a: i32 = 1;
-        let b: i16 = 2;
-        let c: i16x8 = i16x8::new(0, 2, 0, 0, 0, 0, 0, 0);
-        let e: i32 = 9;
-        let r: i32 = transmute(vqdmlalh_laneq_s16::<1>(transmute(a), transmute(b), transmute(c)));
-        assert_eq!(r, e);
-    }
-
-    #[simd_test(enable = "neon")]
-    unsafe fn test_vqdmlals_lane_s32() {
-        let a: i64 = 1;
-        let b: i32 = 2;
-        let c: i32x2 = i32x2::new(0, 2);
-        let e: i64 = 9;
-        let r: i64 = transmute(vqdmlals_lane_s32::<1>(transmute(a), transmute(b), transmute(c)));
-        assert_eq!(r, e);
-    }
-
-    #[simd_test(enable = "neon")]
-    unsafe fn test_vqdmlals_laneq_s32() {
-        let a: i64 = 1;
-        let b: i32 = 2;
-        let c: i32x4 = i32x4::new(0, 2, 0, 0);
-        let e: i64 = 9;
-        let r: i64 = transmute(vqdmlals_laneq_s32::<1>(transmute(a), transmute(b), transmute(c)));
-        assert_eq!(r, e);
-    }
-
-    #[simd_test(enable = "neon")]
     unsafe fn test_vqdmlal_high_lane_s16() {
         let a: i32x4 = i32x4::new(1, 2, 3, 4);
         let b: i16x8 = i16x8::new(0, 1, 4, 5, 4, 5, 6, 7);
@@ -9834,26 +9662,6 @@ mod test {
         let c: i32x4 = i32x4::new(0, 2, 0, 0);
         let e: i64x2 = i64x2::new(17, 22);
         let r: i64x2 = transmute(vqdmlal_high_laneq_s32::<1>(transmute(a), transmute(b), transmute(c)));
-        assert_eq!(r, e);
-    }
-
-    #[simd_test(enable = "neon")]
-    unsafe fn test_vqdmlslh_s16() {
-        let a: i32 = 3;
-        let b: i16 = 1;
-        let c: i16 = 2;
-        let e: i32 = -1;
-        let r: i32 = transmute(vqdmlslh_s16(transmute(a), transmute(b), transmute(c)));
-        assert_eq!(r, e);
-    }
-
-    #[simd_test(enable = "neon")]
-    unsafe fn test_vqdmlsls_s32() {
-        let a: i64 = 3;
-        let b: i32 = 1;
-        let c: i32 = 2;
-        let e: i64 = -1;
-        let r: i64 = transmute(vqdmlsls_s32(transmute(a), transmute(b), transmute(c)));
         assert_eq!(r, e);
     }
 
@@ -9914,46 +9722,6 @@ mod test {
         let c: i32x4 = i32x4::new(0, 2, 2, 0);
         let e: i64x2 = i64x2::new(-1, -2);
         let r: i64x2 = transmute(vqdmlsl_laneq_s32::<1>(transmute(a), transmute(b), transmute(c)));
-        assert_eq!(r, e);
-    }
-
-    #[simd_test(enable = "neon")]
-    unsafe fn test_vqdmlslh_lane_s16() {
-        let a: i32 = 7;
-        let b: i16 = 2;
-        let c: i16x4 = i16x4::new(0, 2, 0, 0);
-        let e: i32 = -1;
-        let r: i32 = transmute(vqdmlslh_lane_s16::<1>(transmute(a), transmute(b), transmute(c)));
-        assert_eq!(r, e);
-    }
-
-    #[simd_test(enable = "neon")]
-    unsafe fn test_vqdmlslh_laneq_s16() {
-        let a: i32 = 7;
-        let b: i16 = 2;
-        let c: i16x8 = i16x8::new(0, 2, 0, 0, 0, 0, 0, 0);
-        let e: i32 = -1;
-        let r: i32 = transmute(vqdmlslh_laneq_s16::<1>(transmute(a), transmute(b), transmute(c)));
-        assert_eq!(r, e);
-    }
-
-    #[simd_test(enable = "neon")]
-    unsafe fn test_vqdmlsls_lane_s32() {
-        let a: i64 = 7;
-        let b: i32 = 2;
-        let c: i32x2 = i32x2::new(0, 2);
-        let e: i64 = -1;
-        let r: i64 = transmute(vqdmlsls_lane_s32::<1>(transmute(a), transmute(b), transmute(c)));
-        assert_eq!(r, e);
-    }
-
-    #[simd_test(enable = "neon")]
-    unsafe fn test_vqdmlsls_laneq_s32() {
-        let a: i64 = 7;
-        let b: i32 = 2;
-        let c: i32x4 = i32x4::new(0, 2, 0, 0);
-        let e: i64 = -1;
-        let r: i64 = transmute(vqdmlsls_laneq_s32::<1>(transmute(a), transmute(b), transmute(c)));
         assert_eq!(r, e);
     }
 

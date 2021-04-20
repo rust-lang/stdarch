@@ -2121,7 +2121,7 @@ a = 2
 b = 3
 validate 12
 
-aarch64 = sqdmulls
+aarch64 = sqdmull
 link-aarch64 = sqdmulls.scalar
 generate i32:i32:i64
 
@@ -2247,8 +2247,6 @@ c = 2, 2, 2, 2
 validate 5, 9, 13, 17
 
 aarch64 = sqdmlal
-generate i32:i16:i16:i32, i64:i32:i32:i64
-
 arm = vqdmlal
 generate int32x4_t:int16x4_t:int16x4_t:int32x4_t, int64x2_t:int32x2_t:int32x2_t:int64x2_t
 
@@ -2308,36 +2306,6 @@ arm = vqdmlal
 generate int32x4_t:int16x4_t:int16x4_t:int32x4_t, int64x2_t:int32x2_t:int32x2_t:int64x2_t
 
 /// Signed saturating doubling multiply-add long
-name = vqdmlalh_lane
-in2-suffix
-constn = N
-multi_fn = static_assert_imm-in2_exp_len-N
-multi_fn = vqadd-out-noext, a, {vqdmullh_lane-in2-::<N>, b, c}
-a = 1
-b = 2
-c = 0, 2, 0, 0, 0, 0, 0, 0
-n = 1
-validate 9
-
-aarch64 = sqdmlal
-generate i32:i16:int16x4_t:i32, i32:i16:int16x8_t:i32
-
-/// Signed saturating doubling multiply-add long
-name = vqdmlals_lane
-in2-suffix
-constn = N
-multi_fn = static_assert_imm-in2_exp_len-N
-multi_fn = vqadd-out-noext, a, {vqdmulls_lane-in2-::<N>, b, c}
-a = 1
-b = 2
-c = 0, 2, 0, 0
-n = 1
-validate 9
-
-aarch64 = sqdmlal
-generate i64:i32:int32x2_t:i64, i64:i32:int32x4_t:i64
-
-/// Signed saturating doubling multiply-add long
 name = vqdmlal_high_lane
 in2-suffix
 constn = N
@@ -2361,8 +2329,6 @@ c = 2, 2, 2, 2
 validate -1, -1, -1, -1
 
 aarch64 = sqdmlsl
-generate i32:i16:i16:i32, i64:i32:i32:i64
-
 arm = vqdmlsl
 generate int32x4_t:int16x4_t:int16x4_t:int32x4_t, int64x2_t:int32x2_t:int32x2_t:int64x2_t
 
@@ -2420,36 +2386,6 @@ generate int32x4_t:int16x4_t:int16x8_t:int32x4_t, int64x2_t:int32x2_t:int32x4_t:
 
 arm = vqdmlsl
 generate int32x4_t:int16x4_t:int16x4_t:int32x4_t, int64x2_t:int32x2_t:int32x2_t:int64x2_t
-
-/// Signed saturating doubling multiply-subtract long
-name = vqdmlslh_lane
-in2-suffix
-constn = N
-multi_fn = static_assert_imm-in2_exp_len-N
-multi_fn = vqsub-out-noext, a, {vqdmullh_lane-in2-::<N>, b, c}
-a = 7
-b = 2
-c = 0, 2, 0, 0, 0, 0, 0, 0
-n = 1
-validate -1
-
-aarch64 = sqdmlsl
-generate i32:i16:int16x4_t:i32, i32:i16:int16x8_t:i32
-
-/// Signed saturating doubling multiply-subtract long
-name = vqdmlsls_lane
-in2-suffix
-constn = N
-multi_fn = static_assert_imm-in2_exp_len-N
-multi_fn = vqsub-out-noext, a, {vqdmulls_lane-in2-::<N>, b, c}
-a = 7
-b = 2
-c = 0, 2, 0, 0
-n = 1
-validate -1
-
-aarch64 = sqdmlsl
-generate i64:i32:int32x2_t:i64, i64:i32:int32x4_t:i64
 
 /// Signed saturating doubling multiply-subtract long
 name = vqdmlsl_high_lane
