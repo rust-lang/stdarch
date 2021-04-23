@@ -1165,7 +1165,7 @@ pub unsafe fn vcaleq_f64(a: float64x2_t, b: float64x2_t) -> uint64x2_t {
 /// Insert vector element from another vector element
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(ins, LANE1 = 0, LANE2 = 1))]
+#[cfg_attr(test, assert_instr(mov, LANE1 = 0, LANE2 = 1))]
 #[rustc_legacy_const_generics(1, 3)]
 pub unsafe fn vcopy_lane_s8<const LANE1: i32, const LANE2: i32>(a: int8x8_t, b: int8x8_t) -> int8x8_t {
     static_assert_imm3!(LANE1);
@@ -1186,7 +1186,7 @@ pub unsafe fn vcopy_lane_s8<const LANE1: i32, const LANE2: i32>(a: int8x8_t, b: 
 /// Insert vector element from another vector element
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(ins, LANE1 = 0, LANE2 = 1))]
+#[cfg_attr(test, assert_instr(mov, LANE1 = 0, LANE2 = 1))]
 #[rustc_legacy_const_generics(1, 3)]
 pub unsafe fn vcopyq_laneq_s8<const LANE1: i32, const LANE2: i32>(a: int8x16_t, b: int8x16_t) -> int8x16_t {
     static_assert_imm4!(LANE1);
@@ -1215,7 +1215,7 @@ pub unsafe fn vcopyq_laneq_s8<const LANE1: i32, const LANE2: i32>(a: int8x16_t, 
 /// Insert vector element from another vector element
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(ins, LANE1 = 0, LANE2 = 1))]
+#[cfg_attr(test, assert_instr(mov, LANE1 = 0, LANE2 = 1))]
 #[rustc_legacy_const_generics(1, 3)]
 pub unsafe fn vcopy_lane_s16<const LANE1: i32, const LANE2: i32>(a: int16x4_t, b: int16x4_t) -> int16x4_t {
     static_assert_imm2!(LANE1);
@@ -1232,7 +1232,7 @@ pub unsafe fn vcopy_lane_s16<const LANE1: i32, const LANE2: i32>(a: int16x4_t, b
 /// Insert vector element from another vector element
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(ins, LANE1 = 0, LANE2 = 1))]
+#[cfg_attr(test, assert_instr(mov, LANE1 = 0, LANE2 = 1))]
 #[rustc_legacy_const_generics(1, 3)]
 pub unsafe fn vcopyq_laneq_s16<const LANE1: i32, const LANE2: i32>(a: int16x8_t, b: int16x8_t) -> int16x8_t {
     static_assert_imm3!(LANE1);
@@ -1253,7 +1253,7 @@ pub unsafe fn vcopyq_laneq_s16<const LANE1: i32, const LANE2: i32>(a: int16x8_t,
 /// Insert vector element from another vector element
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(ins, LANE1 = 0, LANE2 = 1))]
+#[cfg_attr(test, assert_instr(mov, LANE1 = 0, LANE2 = 1))]
 #[rustc_legacy_const_generics(1, 3)]
 pub unsafe fn vcopy_lane_s32<const LANE1: i32, const LANE2: i32>(a: int32x2_t, b: int32x2_t) -> int32x2_t {
     static_assert_imm1!(LANE1);
@@ -1268,7 +1268,7 @@ pub unsafe fn vcopy_lane_s32<const LANE1: i32, const LANE2: i32>(a: int32x2_t, b
 /// Insert vector element from another vector element
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(ins, LANE1 = 0, LANE2 = 1))]
+#[cfg_attr(test, assert_instr(mov, LANE1 = 0, LANE2 = 1))]
 #[rustc_legacy_const_generics(1, 3)]
 pub unsafe fn vcopyq_laneq_s32<const LANE1: i32, const LANE2: i32>(a: int32x4_t, b: int32x4_t) -> int32x4_t {
     static_assert_imm2!(LANE1);
@@ -1285,7 +1285,7 @@ pub unsafe fn vcopyq_laneq_s32<const LANE1: i32, const LANE2: i32>(a: int32x4_t,
 /// Insert vector element from another vector element
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(ins, LANE1 = 0, LANE2 = 1))]
+#[cfg_attr(test, assert_instr(mov, LANE1 = 0, LANE2 = 1))]
 #[rustc_legacy_const_generics(1, 3)]
 pub unsafe fn vcopyq_laneq_s64<const LANE1: i32, const LANE2: i32>(a: int64x2_t, b: int64x2_t) -> int64x2_t {
     static_assert_imm1!(LANE1);
@@ -1300,7 +1300,7 @@ pub unsafe fn vcopyq_laneq_s64<const LANE1: i32, const LANE2: i32>(a: int64x2_t,
 /// Insert vector element from another vector element
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(ins, LANE1 = 0, LANE2 = 1))]
+#[cfg_attr(test, assert_instr(mov, LANE1 = 0, LANE2 = 1))]
 #[rustc_legacy_const_generics(1, 3)]
 pub unsafe fn vcopy_lane_u8<const LANE1: i32, const LANE2: i32>(a: uint8x8_t, b: uint8x8_t) -> uint8x8_t {
     static_assert_imm3!(LANE1);
@@ -1321,7 +1321,7 @@ pub unsafe fn vcopy_lane_u8<const LANE1: i32, const LANE2: i32>(a: uint8x8_t, b:
 /// Insert vector element from another vector element
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(ins, LANE1 = 0, LANE2 = 1))]
+#[cfg_attr(test, assert_instr(mov, LANE1 = 0, LANE2 = 1))]
 #[rustc_legacy_const_generics(1, 3)]
 pub unsafe fn vcopyq_laneq_u8<const LANE1: i32, const LANE2: i32>(a: uint8x16_t, b: uint8x16_t) -> uint8x16_t {
     static_assert_imm4!(LANE1);
@@ -1350,7 +1350,7 @@ pub unsafe fn vcopyq_laneq_u8<const LANE1: i32, const LANE2: i32>(a: uint8x16_t,
 /// Insert vector element from another vector element
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(ins, LANE1 = 0, LANE2 = 1))]
+#[cfg_attr(test, assert_instr(mov, LANE1 = 0, LANE2 = 1))]
 #[rustc_legacy_const_generics(1, 3)]
 pub unsafe fn vcopy_lane_u16<const LANE1: i32, const LANE2: i32>(a: uint16x4_t, b: uint16x4_t) -> uint16x4_t {
     static_assert_imm2!(LANE1);
@@ -1367,7 +1367,7 @@ pub unsafe fn vcopy_lane_u16<const LANE1: i32, const LANE2: i32>(a: uint16x4_t, 
 /// Insert vector element from another vector element
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(ins, LANE1 = 0, LANE2 = 1))]
+#[cfg_attr(test, assert_instr(mov, LANE1 = 0, LANE2 = 1))]
 #[rustc_legacy_const_generics(1, 3)]
 pub unsafe fn vcopyq_laneq_u16<const LANE1: i32, const LANE2: i32>(a: uint16x8_t, b: uint16x8_t) -> uint16x8_t {
     static_assert_imm3!(LANE1);
@@ -1388,7 +1388,7 @@ pub unsafe fn vcopyq_laneq_u16<const LANE1: i32, const LANE2: i32>(a: uint16x8_t
 /// Insert vector element from another vector element
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(ins, LANE1 = 0, LANE2 = 1))]
+#[cfg_attr(test, assert_instr(mov, LANE1 = 0, LANE2 = 1))]
 #[rustc_legacy_const_generics(1, 3)]
 pub unsafe fn vcopy_lane_u32<const LANE1: i32, const LANE2: i32>(a: uint32x2_t, b: uint32x2_t) -> uint32x2_t {
     static_assert_imm1!(LANE1);
@@ -1403,7 +1403,7 @@ pub unsafe fn vcopy_lane_u32<const LANE1: i32, const LANE2: i32>(a: uint32x2_t, 
 /// Insert vector element from another vector element
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(ins, LANE1 = 0, LANE2 = 1))]
+#[cfg_attr(test, assert_instr(mov, LANE1 = 0, LANE2 = 1))]
 #[rustc_legacy_const_generics(1, 3)]
 pub unsafe fn vcopyq_laneq_u32<const LANE1: i32, const LANE2: i32>(a: uint32x4_t, b: uint32x4_t) -> uint32x4_t {
     static_assert_imm2!(LANE1);
@@ -1420,7 +1420,7 @@ pub unsafe fn vcopyq_laneq_u32<const LANE1: i32, const LANE2: i32>(a: uint32x4_t
 /// Insert vector element from another vector element
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(ins, LANE1 = 0, LANE2 = 1))]
+#[cfg_attr(test, assert_instr(mov, LANE1 = 0, LANE2 = 1))]
 #[rustc_legacy_const_generics(1, 3)]
 pub unsafe fn vcopyq_laneq_u64<const LANE1: i32, const LANE2: i32>(a: uint64x2_t, b: uint64x2_t) -> uint64x2_t {
     static_assert_imm1!(LANE1);
@@ -1435,7 +1435,7 @@ pub unsafe fn vcopyq_laneq_u64<const LANE1: i32, const LANE2: i32>(a: uint64x2_t
 /// Insert vector element from another vector element
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(ins, LANE1 = 0, LANE2 = 1))]
+#[cfg_attr(test, assert_instr(mov, LANE1 = 0, LANE2 = 1))]
 #[rustc_legacy_const_generics(1, 3)]
 pub unsafe fn vcopy_lane_p8<const LANE1: i32, const LANE2: i32>(a: poly8x8_t, b: poly8x8_t) -> poly8x8_t {
     static_assert_imm3!(LANE1);
@@ -1456,7 +1456,7 @@ pub unsafe fn vcopy_lane_p8<const LANE1: i32, const LANE2: i32>(a: poly8x8_t, b:
 /// Insert vector element from another vector element
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(ins, LANE1 = 0, LANE2 = 1))]
+#[cfg_attr(test, assert_instr(mov, LANE1 = 0, LANE2 = 1))]
 #[rustc_legacy_const_generics(1, 3)]
 pub unsafe fn vcopyq_laneq_p8<const LANE1: i32, const LANE2: i32>(a: poly8x16_t, b: poly8x16_t) -> poly8x16_t {
     static_assert_imm4!(LANE1);
@@ -1485,7 +1485,7 @@ pub unsafe fn vcopyq_laneq_p8<const LANE1: i32, const LANE2: i32>(a: poly8x16_t,
 /// Insert vector element from another vector element
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(ins, LANE1 = 0, LANE2 = 1))]
+#[cfg_attr(test, assert_instr(mov, LANE1 = 0, LANE2 = 1))]
 #[rustc_legacy_const_generics(1, 3)]
 pub unsafe fn vcopy_lane_p16<const LANE1: i32, const LANE2: i32>(a: poly16x4_t, b: poly16x4_t) -> poly16x4_t {
     static_assert_imm2!(LANE1);
@@ -1502,7 +1502,7 @@ pub unsafe fn vcopy_lane_p16<const LANE1: i32, const LANE2: i32>(a: poly16x4_t, 
 /// Insert vector element from another vector element
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(ins, LANE1 = 0, LANE2 = 1))]
+#[cfg_attr(test, assert_instr(mov, LANE1 = 0, LANE2 = 1))]
 #[rustc_legacy_const_generics(1, 3)]
 pub unsafe fn vcopyq_laneq_p16<const LANE1: i32, const LANE2: i32>(a: poly16x8_t, b: poly16x8_t) -> poly16x8_t {
     static_assert_imm3!(LANE1);
@@ -1523,7 +1523,7 @@ pub unsafe fn vcopyq_laneq_p16<const LANE1: i32, const LANE2: i32>(a: poly16x8_t
 /// Insert vector element from another vector element
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(ins, LANE1 = 0, LANE2 = 1))]
+#[cfg_attr(test, assert_instr(mov, LANE1 = 0, LANE2 = 1))]
 #[rustc_legacy_const_generics(1, 3)]
 pub unsafe fn vcopyq_laneq_p64<const LANE1: i32, const LANE2: i32>(a: poly64x2_t, b: poly64x2_t) -> poly64x2_t {
     static_assert_imm1!(LANE1);
@@ -1538,7 +1538,7 @@ pub unsafe fn vcopyq_laneq_p64<const LANE1: i32, const LANE2: i32>(a: poly64x2_t
 /// Insert vector element from another vector element
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(ins, LANE1 = 0, LANE2 = 1))]
+#[cfg_attr(test, assert_instr(mov, LANE1 = 0, LANE2 = 1))]
 #[rustc_legacy_const_generics(1, 3)]
 pub unsafe fn vcopy_lane_f32<const LANE1: i32, const LANE2: i32>(a: float32x2_t, b: float32x2_t) -> float32x2_t {
     static_assert_imm1!(LANE1);
@@ -1553,7 +1553,7 @@ pub unsafe fn vcopy_lane_f32<const LANE1: i32, const LANE2: i32>(a: float32x2_t,
 /// Insert vector element from another vector element
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(ins, LANE1 = 0, LANE2 = 1))]
+#[cfg_attr(test, assert_instr(mov, LANE1 = 0, LANE2 = 1))]
 #[rustc_legacy_const_generics(1, 3)]
 pub unsafe fn vcopyq_laneq_f32<const LANE1: i32, const LANE2: i32>(a: float32x4_t, b: float32x4_t) -> float32x4_t {
     static_assert_imm2!(LANE1);
@@ -1570,7 +1570,7 @@ pub unsafe fn vcopyq_laneq_f32<const LANE1: i32, const LANE2: i32>(a: float32x4_
 /// Insert vector element from another vector element
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(ins, LANE1 = 0, LANE2 = 1))]
+#[cfg_attr(test, assert_instr(mov, LANE1 = 0, LANE2 = 1))]
 #[rustc_legacy_const_generics(1, 3)]
 pub unsafe fn vcopyq_laneq_f64<const LANE1: i32, const LANE2: i32>(a: float64x2_t, b: float64x2_t) -> float64x2_t {
     static_assert_imm1!(LANE1);
@@ -1585,7 +1585,7 @@ pub unsafe fn vcopyq_laneq_f64<const LANE1: i32, const LANE2: i32>(a: float64x2_
 /// Insert vector element from another vector element
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(ins, LANE1 = 0, LANE2 = 1))]
+#[cfg_attr(test, assert_instr(mov, LANE1 = 0, LANE2 = 1))]
 #[rustc_legacy_const_generics(1, 3)]
 pub unsafe fn vcopy_laneq_s8<const LANE1: i32, const LANE2: i32>(a: int8x8_t, b: int8x16_t) -> int8x8_t {
     static_assert_imm3!(LANE1);
@@ -1607,7 +1607,7 @@ pub unsafe fn vcopy_laneq_s8<const LANE1: i32, const LANE2: i32>(a: int8x8_t, b:
 /// Insert vector element from another vector element
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(ins, LANE1 = 0, LANE2 = 1))]
+#[cfg_attr(test, assert_instr(mov, LANE1 = 0, LANE2 = 1))]
 #[rustc_legacy_const_generics(1, 3)]
 pub unsafe fn vcopy_laneq_s16<const LANE1: i32, const LANE2: i32>(a: int16x4_t, b: int16x8_t) -> int16x4_t {
     static_assert_imm2!(LANE1);
@@ -1625,7 +1625,7 @@ pub unsafe fn vcopy_laneq_s16<const LANE1: i32, const LANE2: i32>(a: int16x4_t, 
 /// Insert vector element from another vector element
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(ins, LANE1 = 0, LANE2 = 1))]
+#[cfg_attr(test, assert_instr(mov, LANE1 = 0, LANE2 = 1))]
 #[rustc_legacy_const_generics(1, 3)]
 pub unsafe fn vcopy_laneq_s32<const LANE1: i32, const LANE2: i32>(a: int32x2_t, b: int32x4_t) -> int32x2_t {
     static_assert_imm1!(LANE1);
@@ -1641,7 +1641,7 @@ pub unsafe fn vcopy_laneq_s32<const LANE1: i32, const LANE2: i32>(a: int32x2_t, 
 /// Insert vector element from another vector element
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(ins, LANE1 = 0, LANE2 = 1))]
+#[cfg_attr(test, assert_instr(mov, LANE1 = 0, LANE2 = 1))]
 #[rustc_legacy_const_generics(1, 3)]
 pub unsafe fn vcopy_laneq_u8<const LANE1: i32, const LANE2: i32>(a: uint8x8_t, b: uint8x16_t) -> uint8x8_t {
     static_assert_imm3!(LANE1);
@@ -1663,7 +1663,7 @@ pub unsafe fn vcopy_laneq_u8<const LANE1: i32, const LANE2: i32>(a: uint8x8_t, b
 /// Insert vector element from another vector element
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(ins, LANE1 = 0, LANE2 = 1))]
+#[cfg_attr(test, assert_instr(mov, LANE1 = 0, LANE2 = 1))]
 #[rustc_legacy_const_generics(1, 3)]
 pub unsafe fn vcopy_laneq_u16<const LANE1: i32, const LANE2: i32>(a: uint16x4_t, b: uint16x8_t) -> uint16x4_t {
     static_assert_imm2!(LANE1);
@@ -1681,7 +1681,7 @@ pub unsafe fn vcopy_laneq_u16<const LANE1: i32, const LANE2: i32>(a: uint16x4_t,
 /// Insert vector element from another vector element
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(ins, LANE1 = 0, LANE2 = 1))]
+#[cfg_attr(test, assert_instr(mov, LANE1 = 0, LANE2 = 1))]
 #[rustc_legacy_const_generics(1, 3)]
 pub unsafe fn vcopy_laneq_u32<const LANE1: i32, const LANE2: i32>(a: uint32x2_t, b: uint32x4_t) -> uint32x2_t {
     static_assert_imm1!(LANE1);
@@ -1697,7 +1697,7 @@ pub unsafe fn vcopy_laneq_u32<const LANE1: i32, const LANE2: i32>(a: uint32x2_t,
 /// Insert vector element from another vector element
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(ins, LANE1 = 0, LANE2 = 1))]
+#[cfg_attr(test, assert_instr(mov, LANE1 = 0, LANE2 = 1))]
 #[rustc_legacy_const_generics(1, 3)]
 pub unsafe fn vcopy_laneq_p8<const LANE1: i32, const LANE2: i32>(a: poly8x8_t, b: poly8x16_t) -> poly8x8_t {
     static_assert_imm3!(LANE1);
@@ -1719,7 +1719,7 @@ pub unsafe fn vcopy_laneq_p8<const LANE1: i32, const LANE2: i32>(a: poly8x8_t, b
 /// Insert vector element from another vector element
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(ins, LANE1 = 0, LANE2 = 1))]
+#[cfg_attr(test, assert_instr(mov, LANE1 = 0, LANE2 = 1))]
 #[rustc_legacy_const_generics(1, 3)]
 pub unsafe fn vcopy_laneq_p16<const LANE1: i32, const LANE2: i32>(a: poly16x4_t, b: poly16x8_t) -> poly16x4_t {
     static_assert_imm2!(LANE1);
@@ -1737,7 +1737,7 @@ pub unsafe fn vcopy_laneq_p16<const LANE1: i32, const LANE2: i32>(a: poly16x4_t,
 /// Insert vector element from another vector element
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(ins, LANE1 = 0, LANE2 = 1))]
+#[cfg_attr(test, assert_instr(mov, LANE1 = 0, LANE2 = 1))]
 #[rustc_legacy_const_generics(1, 3)]
 pub unsafe fn vcopy_laneq_f32<const LANE1: i32, const LANE2: i32>(a: float32x2_t, b: float32x4_t) -> float32x2_t {
     static_assert_imm1!(LANE1);
@@ -1753,7 +1753,7 @@ pub unsafe fn vcopy_laneq_f32<const LANE1: i32, const LANE2: i32>(a: float32x2_t
 /// Insert vector element from another vector element
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(ins, LANE1 = 0, LANE2 = 1))]
+#[cfg_attr(test, assert_instr(mov, LANE1 = 0, LANE2 = 1))]
 #[rustc_legacy_const_generics(1, 3)]
 pub unsafe fn vcopyq_lane_s8<const LANE1: i32, const LANE2: i32>(a: int8x16_t, b: int8x8_t) -> int8x16_t {
     static_assert_imm4!(LANE1);
@@ -1783,7 +1783,7 @@ pub unsafe fn vcopyq_lane_s8<const LANE1: i32, const LANE2: i32>(a: int8x16_t, b
 /// Insert vector element from another vector element
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(ins, LANE1 = 0, LANE2 = 1))]
+#[cfg_attr(test, assert_instr(mov, LANE1 = 0, LANE2 = 1))]
 #[rustc_legacy_const_generics(1, 3)]
 pub unsafe fn vcopyq_lane_s16<const LANE1: i32, const LANE2: i32>(a: int16x8_t, b: int16x4_t) -> int16x8_t {
     static_assert_imm3!(LANE1);
@@ -1805,7 +1805,7 @@ pub unsafe fn vcopyq_lane_s16<const LANE1: i32, const LANE2: i32>(a: int16x8_t, 
 /// Insert vector element from another vector element
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(ins, LANE1 = 0, LANE2 = 1))]
+#[cfg_attr(test, assert_instr(mov, LANE1 = 0, LANE2 = 1))]
 #[rustc_legacy_const_generics(1, 3)]
 pub unsafe fn vcopyq_lane_s32<const LANE1: i32, const LANE2: i32>(a: int32x4_t, b: int32x2_t) -> int32x4_t {
     static_assert_imm2!(LANE1);
@@ -1823,7 +1823,7 @@ pub unsafe fn vcopyq_lane_s32<const LANE1: i32, const LANE2: i32>(a: int32x4_t, 
 /// Insert vector element from another vector element
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(ins, LANE1 = 0, LANE2 = 1))]
+#[cfg_attr(test, assert_instr(mov, LANE1 = 0, LANE2 = 1))]
 #[rustc_legacy_const_generics(1, 3)]
 pub unsafe fn vcopyq_lane_u8<const LANE1: i32, const LANE2: i32>(a: uint8x16_t, b: uint8x8_t) -> uint8x16_t {
     static_assert_imm4!(LANE1);
@@ -1853,7 +1853,7 @@ pub unsafe fn vcopyq_lane_u8<const LANE1: i32, const LANE2: i32>(a: uint8x16_t, 
 /// Insert vector element from another vector element
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(ins, LANE1 = 0, LANE2 = 1))]
+#[cfg_attr(test, assert_instr(mov, LANE1 = 0, LANE2 = 1))]
 #[rustc_legacy_const_generics(1, 3)]
 pub unsafe fn vcopyq_lane_u16<const LANE1: i32, const LANE2: i32>(a: uint16x8_t, b: uint16x4_t) -> uint16x8_t {
     static_assert_imm3!(LANE1);
@@ -1875,7 +1875,7 @@ pub unsafe fn vcopyq_lane_u16<const LANE1: i32, const LANE2: i32>(a: uint16x8_t,
 /// Insert vector element from another vector element
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(ins, LANE1 = 0, LANE2 = 1))]
+#[cfg_attr(test, assert_instr(mov, LANE1 = 0, LANE2 = 1))]
 #[rustc_legacy_const_generics(1, 3)]
 pub unsafe fn vcopyq_lane_u32<const LANE1: i32, const LANE2: i32>(a: uint32x4_t, b: uint32x2_t) -> uint32x4_t {
     static_assert_imm2!(LANE1);
@@ -1893,7 +1893,7 @@ pub unsafe fn vcopyq_lane_u32<const LANE1: i32, const LANE2: i32>(a: uint32x4_t,
 /// Insert vector element from another vector element
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(ins, LANE1 = 0, LANE2 = 1))]
+#[cfg_attr(test, assert_instr(mov, LANE1 = 0, LANE2 = 1))]
 #[rustc_legacy_const_generics(1, 3)]
 pub unsafe fn vcopyq_lane_p8<const LANE1: i32, const LANE2: i32>(a: poly8x16_t, b: poly8x8_t) -> poly8x16_t {
     static_assert_imm4!(LANE1);
@@ -1923,7 +1923,7 @@ pub unsafe fn vcopyq_lane_p8<const LANE1: i32, const LANE2: i32>(a: poly8x16_t, 
 /// Insert vector element from another vector element
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(ins, LANE1 = 0, LANE2 = 1))]
+#[cfg_attr(test, assert_instr(mov, LANE1 = 0, LANE2 = 1))]
 #[rustc_legacy_const_generics(1, 3)]
 pub unsafe fn vcopyq_lane_p16<const LANE1: i32, const LANE2: i32>(a: poly16x8_t, b: poly16x4_t) -> poly16x8_t {
     static_assert_imm3!(LANE1);
@@ -1945,7 +1945,7 @@ pub unsafe fn vcopyq_lane_p16<const LANE1: i32, const LANE2: i32>(a: poly16x8_t,
 /// Insert vector element from another vector element
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(ins, LANE1 = 1, LANE2 = 0))]
+#[cfg_attr(test, assert_instr(zip1, LANE1 = 1, LANE2 = 0))]
 #[rustc_legacy_const_generics(1, 3)]
 pub unsafe fn vcopyq_lane_s64<const LANE1: i32, const LANE2: i32>(a: int64x2_t, b: int64x1_t) -> int64x2_t {
     static_assert_imm1!(LANE1);
@@ -1961,7 +1961,7 @@ pub unsafe fn vcopyq_lane_s64<const LANE1: i32, const LANE2: i32>(a: int64x2_t, 
 /// Insert vector element from another vector element
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(ins, LANE1 = 1, LANE2 = 0))]
+#[cfg_attr(test, assert_instr(zip1, LANE1 = 1, LANE2 = 0))]
 #[rustc_legacy_const_generics(1, 3)]
 pub unsafe fn vcopyq_lane_u64<const LANE1: i32, const LANE2: i32>(a: uint64x2_t, b: uint64x1_t) -> uint64x2_t {
     static_assert_imm1!(LANE1);
@@ -1977,7 +1977,7 @@ pub unsafe fn vcopyq_lane_u64<const LANE1: i32, const LANE2: i32>(a: uint64x2_t,
 /// Insert vector element from another vector element
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(ins, LANE1 = 1, LANE2 = 0))]
+#[cfg_attr(test, assert_instr(zip1, LANE1 = 1, LANE2 = 0))]
 #[rustc_legacy_const_generics(1, 3)]
 pub unsafe fn vcopyq_lane_p64<const LANE1: i32, const LANE2: i32>(a: poly64x2_t, b: poly64x1_t) -> poly64x2_t {
     static_assert_imm1!(LANE1);
@@ -1993,7 +1993,7 @@ pub unsafe fn vcopyq_lane_p64<const LANE1: i32, const LANE2: i32>(a: poly64x2_t,
 /// Insert vector element from another vector element
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(ins, LANE1 = 1, LANE2 = 0))]
+#[cfg_attr(test, assert_instr(mov, LANE1 = 1, LANE2 = 0))]
 #[rustc_legacy_const_generics(1, 3)]
 pub unsafe fn vcopyq_lane_f32<const LANE1: i32, const LANE2: i32>(a: float32x4_t, b: float32x2_t) -> float32x4_t {
     static_assert_imm2!(LANE1);
@@ -2011,7 +2011,7 @@ pub unsafe fn vcopyq_lane_f32<const LANE1: i32, const LANE2: i32>(a: float32x4_t
 /// Insert vector element from another vector element
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(ins, LANE1 = 1, LANE2 = 0))]
+#[cfg_attr(test, assert_instr(zip1, LANE1 = 1, LANE2 = 0))]
 #[rustc_legacy_const_generics(1, 3)]
 pub unsafe fn vcopyq_lane_f64<const LANE1: i32, const LANE2: i32>(a: float64x2_t, b: float64x1_t) -> float64x2_t {
     static_assert_imm1!(LANE1);

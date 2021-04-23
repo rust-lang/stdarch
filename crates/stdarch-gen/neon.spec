@@ -733,7 +733,7 @@ b = 0, MAX, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 n = 0:1
 validate MAX, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
 
-aarch64 = ins
+aarch64 = mov
 generate int8x8_t, int8x16_t, int16x4_t, int16x8_t, int32x2_t, int32x4_t, int64x2_t
 generate uint8x8_t, uint8x16_t, uint16x4_t, uint16x8_t, uint32x2_t, uint32x4_t, uint64x2_t
 generate poly8x8_t, poly8x16_t, poly16x4_t, poly16x8_t, poly64x2_t
@@ -750,7 +750,7 @@ b = 0., 0.5, 0., 0.
 n = 0:1
 validate 0.5, 2., 3., 4.
 
-aarch64 = ins
+aarch64 = mov
 generate float32x2_t, float32x4_t, float64x2_t
 
 /// Insert vector element from another vector element
@@ -766,7 +766,7 @@ b = 0, MAX, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 n = 0:1
 validate MAX, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
 
-aarch64 = ins
+aarch64 = mov
 generate int8x8_t:int8x16_t:int8x8_t, int16x4_t:int16x8_t:int16x4_t, int32x2_t:int32x4_t:int32x2_t
 generate uint8x8_t:uint8x16_t:uint8x8_t, uint16x4_t:uint16x8_t:uint16x4_t, uint32x2_t:uint32x4_t:uint32x2_t
 generate poly8x8_t:poly8x16_t:poly8x8_t, poly16x4_t:poly16x8_t:poly16x4_t
@@ -784,7 +784,7 @@ b = 0., 0.5, 0., 0.
 n = 0:1
 validate 0.5, 2., 3., 4.
 
-aarch64 = ins
+aarch64 = mov
 generate float32x2_t:float32x4_t:float32x2_t
 
 /// Insert vector element from another vector element
@@ -800,7 +800,7 @@ b = 0, MAX, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 n = 0:1
 validate MAX, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
 
-aarch64 = ins
+aarch64 = mov
 generate int8x16_t:int8x8_t:int8x16_t, int16x8_t:int16x4_t:int16x8_t, int32x4_t:int32x2_t:int32x4_t
 generate uint8x16_t:uint8x8_t:uint8x16_t, uint16x8_t:uint16x4_t:uint16x8_t, uint32x4_t:uint32x2_t:uint32x4_t
 generate poly8x16_t:poly8x8_t:poly8x16_t, poly16x8_t:poly16x4_t:poly16x8_t
@@ -818,7 +818,7 @@ b = MAX, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 n = 1:0
 validate 1, MAX
 
-aarch64 = ins
+aarch64 = zip1
 generate int64x2_t:int64x1_t:int64x2_t, uint64x2_t:uint64x1_t:uint64x2_t, poly64x2_t:poly64x1_t:poly64x2_t
 
 /// Insert vector element from another vector element
@@ -834,8 +834,10 @@ b = 0.5, 0., 0., 0.
 n = 1:0
 validate 1., 0.5, 3., 4.
 
-aarch64 = ins
-generate float32x4_t:float32x2_t:float32x4_t, float64x2_t:float64x1_t:float64x2_t
+aarch64 = mov
+generate float32x4_t:float32x2_t:float32x4_t
+aarch64 = zip1
+generate float64x2_t:float64x1_t:float64x2_t
 
 /// Floating-point convert to higher precision long
 name = vcvt
