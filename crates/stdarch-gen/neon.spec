@@ -4025,3 +4025,139 @@ validate MAX, 7
 aarch64 = sqabs
 link-aarch64 = sqabs._EXT_
 generate int64x*_t
+
+/// Load one single-element structure and replicate to all lanes (of one register)
+name = vld1_dup
+out-suffix
+multi_fn = vdup_n-out-noext, *ptr
+test-load
+a = 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
+validate 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+
+aarch64 = ldr
+generate *const p64:poly64x1_t
+
+arm = ldr
+generate *const i8:int8x8_t, *const i16:int16x4_t, *const i32:int32x2_t, *const i64:int64x1_t
+generate *const u8:uint8x8_t, *const u16:uint16x4_t, *const u32:uint32x2_t, *const u64:uint64x1_t
+generate *const p8:poly8x8_t, *const p16:poly16x4_t
+
+/// Load one single-element structure and replicate to all lanes (of one register)
+name = vld1q_dup
+noq-out-suffix
+multi_fn = vdupq_n-noqout-noext, *ptr
+test-load
+a = 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
+validate 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+
+aarch64 = ldr
+generate *const p64:poly64x2_t
+
+arm = ldr
+generate *const i8:int8x16_t, *const i16:int16x8_t, *const i32:int32x4_t, *const i64:int64x2_t
+generate *const u8:uint8x16_t, *const u16:uint16x8_t, *const u32:uint32x4_t, *const u64:uint64x2_t
+generate *const p8:poly8x16_t, *const p16:poly16x8_t
+
+/// Load one single-element structure and replicate to all lanes (of one register)
+name = vld1_dup
+out-suffix
+multi_fn = vdup_n-out-noext, *ptr
+test-load
+a = 0., 1., 2., 3., 4.
+validate 1., 1., 1., 1.
+
+aarch64 = ldr
+generate *const f64:float64x1_t
+
+arm = ldr
+generate *const f32:float32x2_t
+
+/// Load one single-element structure and replicate to all lanes (of one register)
+name = vld1q_dup
+noq-out-suffix
+multi_fn = vdupq_n-noqout-noext, *ptr
+test-load
+a = 0., 1., 2., 3., 4.
+validate 1., 1., 1., 1.
+
+aarch64 = ldr
+generate *const f64:float64x2_t
+
+arm = ldr
+generate *const f32:float32x4_t
+
+/// Load multiple single-element structures to one, two, three, or four registers
+name = vld1_lane
+constn = LANE
+multi_fn = static_assert_imm-in_exp_len-LANE
+multi_fn = simd_insert, b, LANE as u32, *ptr
+test-load
+a = 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
+b = 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2
+n = 0
+validate 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2
+
+aarch64 = ldr
+generate *const p64:poly64x1_t:poly64x1_t
+
+arm = ldr
+generate *const i8:int8x8_t:int8x8_t, *const i16:int16x4_t:int16x4_t, *const i32:int32x2_t:int32x2_t, *const i64:int64x1_t:int64x1_t
+generate *const u8:uint8x8_t:uint8x8_t, *const u16:uint16x4_t:uint16x4_t, *const u32:uint32x2_t:uint32x2_t, *const u64:uint64x1_t:uint64x1_t
+generate *const p8:poly8x8_t:poly8x8_t, *const p16:poly16x4_t:poly16x4_t
+
+/// Load multiple single-element structures to one, two, three, or four registers
+name = vld1q_lane
+no-q
+constn = LANE
+multi_fn = static_assert_imm-in_exp_len-LANE
+multi_fn = simd_insert, b, LANE as u32, *ptr
+test-load
+a = 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
+b = 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2
+n = 0
+validate 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2
+
+aarch64 = ldr
+generate *const p64:poly64x2_t:poly64x2_t
+
+arm = ldr
+generate *const i8:int8x16_t:int8x16_t, *const i16:int16x8_t:int16x8_t, *const i32:int32x4_t:int32x4_t, *const i64:int64x2_t:int64x2_t
+generate *const u8:uint8x16_t:uint8x16_t, *const u16:uint16x8_t:uint16x8_t, *const u32:uint32x4_t:uint32x4_t, *const u64:uint64x2_t:uint64x2_t
+generate *const p8:poly8x16_t:poly8x16_t, *const p16:poly16x8_t:poly16x8_t
+
+/// Load multiple single-element structures to one, two, three, or four registers
+name = vld1_lane
+constn = LANE
+multi_fn = static_assert_imm-in_exp_len-LANE
+multi_fn = simd_insert, b, LANE as u32, *ptr
+test-load
+a = 0., 1., 2., 3., 4.
+b = 2., 2., 2., 2.
+n = 0
+validate 1., 2., 2., 2.
+
+aarch64 = ldr
+generate *const f64:float64x1_t:float64x1_t
+
+arm = ldr
+generate *const f32:float32x2_t:float32x2_t
+
+/// Load multiple single-element structures to one, two, three, or four registers
+name = vld1q_lane
+no-q
+constn = LANE
+multi_fn = static_assert_imm-in_exp_len-LANE
+multi_fn = simd_insert, b, LANE as u32, *ptr
+test-load
+a = 0., 1., 2., 3., 4.
+b = 2., 2., 2., 2.
+n = 0
+validate 1., 2., 2., 2.
+
+aarch64 = ldr
+generate *const f64:float64x2_t:float64x2_t
+
+arm = ldr
+generate *const f32:float32x4_t:float32x4_t
+
+

@@ -347,8 +347,16 @@ enum Suffix {
     NSuffix,
     NoQNSuffix,
     OutSuffix,
+    NoQOut,
     Lane,
     In2,
+}
+
+#[derive(Clone, Copy)]
+enum Test {
+    Normal,
+    Load,
+    Store,
 }
 
 #[derive(Clone, Copy)]
@@ -399,6 +407,19 @@ fn type_to_global_type(t: &str) -> &str {
         "f64" => "f64",
         "p8" => "p8",
         "p16" => "p16",
+        "*const i8" => "*const i8",
+        "*const i16" => "*const i16",
+        "*const i32" => "*const i32",
+        "*const i64" => "*const i64",
+        "*const u8" => "*const u8",
+        "*const u16" => "*const u16",
+        "*const u32" => "*const u32",
+        "*const u64" => "*const u64",
+        "*const p8" => "*const p8",
+        "*const p16" => "*const p16",
+        "*const p64" => "*const p64",
+        "*const f32" => "*const f32",
+        "*const f64" => "*const f64",
         _ => panic!("unknown type: {}", t),
     }
 }
@@ -416,6 +437,8 @@ fn type_to_native_type(t: &str) -> &str {
         "float16x4_t" | "float16x8_t" => "f16",
         "float32x2_t" | "float32x4_t" => "f32",
         "float64x1_t" | "float64x2_t" => "f64",
+        "poly8x8_t" | "poly8x16_t" => "u8",
+        "poly16x4_t" | "poly16x8_t" => "u16",
         "poly64x1_t" | "poly64x2_t" => "u64",
         _ => panic!("unknown type: {}", t),
     }
@@ -491,6 +514,7 @@ fn type_to_ext(t: &str) -> &str {
         "u16" => "v4i16",
         "u32" => "v2i32",
         "u64" => "v1i64",
+        "*const i16" => "",
         /*
         "poly64x1_t" => "i64x1",
         "poly64x2_t" => "i64x2",
@@ -515,6 +539,16 @@ fn type_to_half(t: &str) -> &str {
         "float64x2_t" => "float64x1_t",
         _ => panic!("unknown half type for {}", t),
     }
+}
+
+fn type_to_load_type(t: &str) -> String {
+    let nt = type_to_native_type(t);
+    let mut s = String::from("[");
+    s.push_str(nt);
+    s.push_str("; ");
+    s.push_str(&(type_len(t) + 1).to_string());
+    s.push_str("]");
+    s
 }
 
 fn asc(start: i32, len: usize) -> String {
@@ -607,6 +641,18 @@ fn values(t: &str, vs: &[String]) -> String {
                 .join(", ")
         )
     }
+}
+
+fn load_values(t: &str, vs: &[String]) -> String {
+    format!(
+        ": {} = [{}]",
+        type_to_load_type(t),
+        vs.iter()
+            .map(|v| map_val(type_to_global_type(t), v))
+            //.map(|v| format!("{}{}", v, type_to_native_type(t)))
+            .collect::<Vec<_>>()
+            .join(", ")
+    )
 }
 
 fn max_val(t: &str) -> &'static str {
@@ -824,6 +870,7 @@ fn gen_aarch64(
     )],
     suffix: Suffix,
     para_num: i32,
+    test: Test,
     fixed: &Vec<String>,
     multi_fn: &Vec<String>,
 ) -> (String, String) {
@@ -845,6 +892,7 @@ fn gen_aarch64(
         NSuffix => format!("{}{}", current_name, type_to_n_suffix(in_t[1])),
         NoQNSuffix => format!("{}{}", current_name, type_to_noq_n_suffix(in_t[1])),
         OutSuffix => format!("{}{}", current_name, type_to_suffix(out_t)),
+        NoQOut => format!("{}{}", current_name, type_to_noq_suffix(out_t)),
         Lane => format!("{}{}", current_name, type_to_lane_suffixes(out_t, in_t[1])),
         In2 => format!("{}{}", current_name, type_to_suffix(in_t[2])),
     };
@@ -1028,58 +1076,74 @@ fn gen_aarch64(
             _ => String::new(),
         }
     } else {
+        let para_0 = if in_t[0].starts_with("*const") {
+            "ptr"
+        } else {
+            "a"
+        };
         match (multi_calls.len(), para_num, fixed.len()) {
             (0, 1, 0) => format!(
-                r#"pub unsafe fn {}{}(a: {}) -> {} {{
-    {}{}(a)
+                r#"pub unsafe fn {}{}({}: {}) -> {} {{
+    {}{}({})
 }}"#,
-                name, const_declare, in_t[0], out_t, ext_c, current_fn,
+                name, const_declare, para_0, in_t[0], out_t, ext_c, current_fn, para_0,
             ),
             (0, 1, _) => {
                 let fixed: Vec<String> = fixed.iter().take(type_len(in_t[0])).cloned().collect();
                 format!(
-                    r#"pub unsafe fn {}{}(a: {}) -> {} {{
+                    r#"pub unsafe fn {}{}({}: {}) -> {} {{
     let b{};
-    {}{}(a, transmute(b))
+    {}{}({}, transmute(b))
 }}"#,
                     name,
                     const_declare,
+                    para_0,
                     in_t[0],
                     out_t,
                     values(in_t[0], &fixed),
                     ext_c,
                     current_fn,
+                    para_0,
                 )
             }
             (0, 2, _) => format!(
-                r#"pub unsafe fn {}{}(a: {}, b: {}) -> {} {{
-    {}{}(a, b)
+                r#"pub unsafe fn {}{}({}: {}, b: {}) -> {} {{
+    {}{}({}, b)
 }}"#,
-                name, const_declare, in_t[0], in_t[1], out_t, ext_c, current_fn,
+                name, const_declare, para_0, in_t[0], in_t[1], out_t, ext_c, current_fn, para_0,
             ),
             (0, 3, _) => format!(
-                r#"pub unsafe fn {}{}(a: {}, b: {}, c: {}) -> {} {{
-    {}{}(a, b, c)
+                r#"pub unsafe fn {}{}({}: {}, b: {}, c: {}) -> {} {{
+    {}{}({}, b, c)
 }}"#,
-                name, const_declare, in_t[0], in_t[1], in_t[2], out_t, ext_c, current_fn,
+                name,
+                const_declare,
+                para_0,
+                in_t[0],
+                in_t[1],
+                in_t[2],
+                out_t,
+                ext_c,
+                current_fn,
+                para_0,
             ),
             (_, 1, _) => format!(
-                r#"pub unsafe fn {}{}(a: {}) -> {} {{
+                r#"pub unsafe fn {}{}({}: {}) -> {} {{
     {}{}
 }}"#,
-                name, const_declare, in_t[0], out_t, ext_c, multi_calls,
+                name, const_declare, para_0, in_t[0], out_t, ext_c, multi_calls,
             ),
             (_, 2, _) => format!(
-                r#"pub unsafe fn {}{}(a: {}, b: {}) -> {} {{
+                r#"pub unsafe fn {}{}({}: {}, b: {}) -> {} {{
     {}{}
 }}"#,
-                name, const_declare, in_t[0], in_t[1], out_t, ext_c, multi_calls,
+                name, const_declare, para_0, in_t[0], in_t[1], out_t, ext_c, multi_calls,
             ),
             (_, 3, _) => format!(
-                r#"pub unsafe fn {}{}(a: {}, b: {}, c: {}) -> {} {{
+                r#"pub unsafe fn {}{}({}: {}, b: {}, c: {}) -> {} {{
     {}{}
 }}"#,
-                name, const_declare, in_t[0], in_t[1], in_t[2], out_t, ext_c, multi_calls,
+                name, const_declare, para_0, in_t[0], in_t[1], in_t[2], out_t, ext_c, multi_calls,
             ),
             (_, _, _) => String::new(),
         }
@@ -1095,15 +1159,26 @@ fn gen_aarch64(
         current_comment, current_aarch64, const_assert, const_legacy, call
     );
 
-    let test = gen_test(
-        &name,
-        in_t,
-        &out_t,
-        current_tests,
-        [type_len(in_t[0]), type_len(in_t[1]), type_len(in_t[2])],
-        type_len(out_t),
-        para_num,
-    );
+    let test = match test {
+        Test::Normal => gen_test(
+            &name,
+            in_t,
+            &out_t,
+            current_tests,
+            [type_len(in_t[0]), type_len(in_t[1]), type_len(in_t[2])],
+            type_len(out_t),
+            para_num,
+        ),
+        Test::Load => gen_load_test(
+            &name,
+            &in_t,
+            &out_t,
+            current_tests,
+            type_len(out_t),
+            para_num,
+        ),
+        _ => String::new(),
+    };
     (function, test)
 }
 
@@ -1212,6 +1287,82 @@ fn gen_test(
     test
 }
 
+fn gen_load_test(
+    name: &str,
+    in_t: &[&str; 3],
+    out_t: &str,
+    current_tests: &[(
+        Vec<String>,
+        Vec<String>,
+        Vec<String>,
+        Option<String>,
+        Vec<String>,
+    )],
+    len_out: usize,
+    para_num: i32,
+) -> String {
+    let mut test = format!(
+        r#"
+    #[simd_test(enable = "neon")]
+    unsafe fn test_{}() {{"#,
+        name,
+    );
+    for (a, b, c, n, e) in current_tests {
+        let a: Vec<String> = a.iter().take(len_out + 1).cloned().collect();
+        let b: Vec<String> = b.iter().take(len_out).cloned().collect();
+        let _c: Vec<String> = c.iter().take(len_out).cloned().collect();
+        let e: Vec<String> = e.iter().take(len_out).cloned().collect();
+        let const_value = if let Some(constn) = n {
+            if constn.contains(":") {
+                let constns: Vec<_> = constn.split(':').map(|v| v.to_string()).collect();
+                format!(
+                    r#"::<{}, {}>"#,
+                    map_val(in_t[1], &constns[0]),
+                    map_val(in_t[1], &constns[1])
+                )
+            } else {
+                format!(r#"::<{}>"#, map_val(in_t[1], constn))
+            }
+        } else {
+            String::new()
+        };
+        let t = match para_num {
+            1 => format!(
+                r#"
+        let a{};
+        let e{};
+        let r: {} = transmute({}{}(a[1..].as_ptr()));
+        assert_eq!(r, e);
+"#,
+                load_values(out_t, &a),
+                values(out_t, &e),
+                type_to_global_type(out_t),
+                name,
+                const_value
+            ),
+            2 => format!(
+                r#"
+        let a{};
+        let b{};
+        let e{};
+        let r: {} = transmute({}{}(a[1..].as_ptr(), transmute(b)));
+        assert_eq!(r, e);
+"#,
+                load_values(out_t, &a),
+                values(in_t[1], &b),
+                values(out_t, &e),
+                type_to_global_type(out_t),
+                name,
+                const_value
+            ),
+            _ => String::new(),
+        };
+        test.push_str(&t);
+    }
+    test.push_str("    }\n");
+    test
+}
+
 #[allow(clippy::too_many_arguments)]
 fn gen_arm(
     current_comment: &str,
@@ -1236,6 +1387,7 @@ fn gen_arm(
     suffix: Suffix,
     para_num: i32,
     target: TargetFeature,
+    test: Test,
     fixed: &Vec<String>,
     multi_fn: &Vec<String>,
 ) -> (String, String) {
@@ -1257,6 +1409,7 @@ fn gen_arm(
         NSuffix => format!("{}{}", current_name, type_to_n_suffix(in_t[1])),
         NoQNSuffix => format!("{}{}", current_name, type_to_noq_n_suffix(in_t[1])),
         OutSuffix => format!("{}{}", current_name, type_to_suffix(out_t)),
+        NoQOut => format!("{}{}", current_name, type_to_noq_suffix(out_t)),
         Lane => format!("{}{}", current_name, type_to_lane_suffixes(out_t, in_t[1])),
         In2 => format!("{}{}", current_name, type_to_suffix(in_t[2])),
     };
@@ -1308,6 +1461,11 @@ fn gen_arm(
             link.push_str(&link_aarch64);
             link.replace("_EXT_", ext).replace("_EXT2_", ext2)
         };
+        let para_0 = if in_t[0].starts_with("*const") {
+            "ptr"
+        } else {
+            "a"
+        };
         ext_c = format!(
             r#"#[allow(improper_ctypes)]
     extern "C" {{
@@ -1321,13 +1479,13 @@ fn gen_arm(
             current_fn,
             match para_num {
                 1 => {
-                    format!("a: {}", in_t[0])
+                    format!("{}: {}", para_0, in_t[0])
                 }
                 2 => {
-                    format!("a: {}, b: {}", in_t[0], in_t[1])
+                    format!("{}: {}, b: {}", para_0, in_t[0], in_t[1])
                 }
                 3 => {
-                    format!("a: {}, b: {}, c: {}", in_t[0], in_t[1], in_t[2])
+                    format!("{}: {}, b: {}, c: {}", para_0, in_t[0], in_t[1], in_t[2])
                 }
                 _ => unimplemented!("unknown para_num"),
             },
@@ -1427,58 +1585,74 @@ fn gen_arm(
     } else {
         String::new()
     };
+    let para_0 = if in_t[0].starts_with("*const") {
+        "ptr"
+    } else {
+        "a"
+    };
     let call = match (multi_calls.len(), para_num, fixed.len()) {
         (0, 1, 0) => format!(
-            r#"pub unsafe fn {}{}(a: {}) -> {} {{
-    {}{}(a)
+            r#"pub unsafe fn {}{}({}: {}) -> {} {{
+    {}{}({})
 }}"#,
-            name, const_declare, in_t[0], out_t, ext_c, current_fn,
+            name, const_declare, para_0, in_t[0], out_t, ext_c, current_fn, para_0
         ),
         (0, 1, _) => {
             let fixed: Vec<String> = fixed.iter().take(type_len(in_t[0])).cloned().collect();
             format!(
-                r#"pub unsafe fn {}{}(a: {}) -> {} {{
+                r#"pub unsafe fn {}{}({}: {}) -> {} {{
     let b{};
-    {}{}(a, transmute(b))
+    {}{}({}, transmute(b))
 }}"#,
                 name,
                 const_declare,
+                para_0,
                 in_t[0],
                 out_t,
                 values(in_t[0], &fixed),
                 ext_c,
                 current_fn,
+                para_0,
             )
         }
         (0, 2, _) => format!(
-            r#"pub unsafe fn {}{}(a: {}, b: {}) -> {} {{
-    {}{}(a, b)
+            r#"pub unsafe fn {}{}({}: {}, b: {}) -> {} {{
+    {}{}({}, b)
 }}"#,
-            name, const_declare, in_t[0], in_t[1], out_t, ext_c, current_fn,
+            name, const_declare, para_0, in_t[0], in_t[1], out_t, ext_c, current_fn, para_0,
         ),
         (0, 3, _) => format!(
-            r#"pub unsafe fn {}{}(a: {}, b: {}, c: {}) -> {} {{
-    {}{}(a, b, c)
+            r#"pub unsafe fn {}{}({}: {}, b: {}, c: {}) -> {} {{
+    {}{}({}, b, c)
 }}"#,
-            name, const_declare, in_t[0], in_t[1], in_t[2], out_t, ext_c, current_fn,
+            name,
+            const_declare,
+            para_0,
+            in_t[0],
+            in_t[1],
+            in_t[2],
+            out_t,
+            ext_c,
+            current_fn,
+            para_0,
         ),
         (_, 1, _) => format!(
-            r#"pub unsafe fn {}{}(a: {}) -> {} {{
+            r#"pub unsafe fn {}{}({}: {}) -> {} {{
     {}{}
 }}"#,
-            name, const_declare, in_t[0], out_t, ext_c, multi_calls,
+            name, const_declare, para_0, in_t[0], out_t, ext_c, multi_calls,
         ),
         (_, 2, _) => format!(
-            r#"pub unsafe fn {}{}(a: {}, b: {}) -> {} {{
+            r#"pub unsafe fn {}{}({}: {}, b: {}) -> {} {{
     {}{}
 }}"#,
-            name, const_declare, in_t[0], in_t[1], out_t, ext_c, multi_calls,
+            name, const_declare, para_0, in_t[0], in_t[1], out_t, ext_c, multi_calls,
         ),
         (_, 3, _) => format!(
-            r#"pub unsafe fn {}{}(a: {}, b: {}, c: {}) -> {} {{
+            r#"pub unsafe fn {}{}({}: {}, b: {}, c: {}) -> {} {{
     {}{}
 }}"#,
-            name, const_declare, in_t[0], in_t[1], in_t[2], out_t, ext_c, multi_calls,
+            name, const_declare, para_0, in_t[0], in_t[1], in_t[2], out_t, ext_c, multi_calls,
         ),
         (_, _, _) => String::new(),
     };
@@ -1593,15 +1767,26 @@ fn gen_arm(
             call,
         )
     };
-    let test = gen_test(
-        &name,
-        in_t,
-        &out_t,
-        current_tests,
-        [type_len(in_t[0]), type_len(in_t[1]), type_len(in_t[2])],
-        type_len(out_t),
-        para_num,
-    );
+    let test = match test {
+        Test::Normal => gen_test(
+            &name,
+            in_t,
+            &out_t,
+            current_tests,
+            [type_len(in_t[0]), type_len(in_t[1]), type_len(in_t[2])],
+            type_len(out_t),
+            para_num,
+        ),
+        Test::Load => gen_load_test(
+            &name,
+            &in_t,
+            &out_t,
+            current_tests,
+            type_len(out_t),
+            para_num,
+        ),
+        _ => String::new(),
+    };
 
     (function, test)
 }
@@ -2012,6 +2197,8 @@ fn get_call(
             fn_name.push_str(&type_to_noq_double_suffixes(out_t, in_t[1]));
         } else if fn_format[1] == "noqself" {
             fn_name.push_str(type_to_noq_suffix(in_t[1]));
+        } else if fn_format[1] == "noqout" {
+            fn_name.push_str(type_to_noq_suffix(out_t));
         } else if fn_format[1] == "noqsigned" {
             fn_name.push_str(type_to_noq_suffix(type_to_signed(in_t[1])));
         } else if fn_format[1] == "nosuffix" {
@@ -2097,6 +2284,7 @@ fn main() -> io::Result<()> {
     let mut c: Vec<String> = Vec::new();
     let mut n: Option<String> = None;
     let mut fixed: Vec<String> = Vec::new();
+    let mut test: Test = Test::Normal;
     let mut current_tests: Vec<(
         Vec<String>,
         Vec<String>,
@@ -2183,6 +2371,7 @@ mod test {
             a = Vec::new();
             b = Vec::new();
             c = Vec::new();
+            test = Test::Normal;
             fixed = Vec::new();
             n = None;
             multi_fn = Vec::new();
@@ -2212,10 +2401,16 @@ mod test {
             suffix = NoQNSuffix;
         } else if line.starts_with("out-suffix") {
             suffix = OutSuffix;
+        } else if line.starts_with("noq-out-suffix") {
+            suffix = NoQOut;
         } else if line.starts_with("lane-suffixes") {
             suffix = Lane;
         } else if line.starts_with("in2-suffix") {
             suffix = In2;
+        } else if line.starts_with("test-load") {
+            test = Test::Load;
+        } else if line.starts_with("test-store") {
+            test = Test::Store;
         } else if line.starts_with("a = ") {
             a = line[4..].split(',').map(|v| v.trim().to_string()).collect();
         } else if line.starts_with("b = ") {
@@ -2304,6 +2499,7 @@ mod test {
                         suffix,
                         para_num,
                         target,
+                        test,
                         &fixed,
                         &multi_fn,
                     );
@@ -2323,6 +2519,7 @@ mod test {
                         &current_tests,
                         suffix,
                         para_num,
+                        test,
                         &fixed,
                         &multi_fn,
                     );
