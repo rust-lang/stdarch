@@ -4096,6 +4096,19 @@ pub unsafe fn vmull_high_u32(a: uint32x4_t, b: uint32x4_t) -> uint64x2_t {
 
 /// Polynomial multiply long
 #[inline]
+#[target_feature(enable = "neon,crypto")]
+#[cfg_attr(test, assert_instr(pmull))]
+pub unsafe fn vmull_p64(a: p64, b: p64) -> p128 {
+    #[allow(improper_ctypes)]
+    extern "C" {
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.pmull64")]
+        fn vmull_p64_(a: p64, b: p64) -> int8x16_t;
+    }
+    transmute(vmull_p64_(a, b))
+}
+
+/// Polynomial multiply long
+#[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(pmull))]
 pub unsafe fn vmull_high_p8(a: poly8x16_t, b: poly8x16_t) -> poly16x8_t {
@@ -4106,7 +4119,7 @@ pub unsafe fn vmull_high_p8(a: poly8x16_t, b: poly8x16_t) -> poly16x8_t {
 
 /// Polynomial multiply long
 #[inline]
-#[target_feature(enable = "neon")]
+#[target_feature(enable = "neon,crypto")]
 #[cfg_attr(test, assert_instr(pmull2))]
 pub unsafe fn vmull_high_p64(a: poly64x2_t, b: poly64x2_t) -> p128 {
     vmull_p64(simd_extract(a, 1), simd_extract(b, 1))
@@ -11373,6 +11386,15 @@ mod test {
         let b: u32x4 = u32x4::new(1, 2, 1, 2);
         let e: u64x2 = u64x2::new(9, 20);
         let r: u64x2 = transmute(vmull_high_u32(transmute(a), transmute(b)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vmull_p64() {
+        let a: p64 = 15;
+        let b: p64 = 3;
+        let e: p128 = 17;
+        let r: p128 = transmute(vmull_p64(transmute(a), transmute(b)));
         assert_eq!(r, e);
     }
 

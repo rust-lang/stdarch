@@ -2056,6 +2056,18 @@ link-aarch64 = pmull._EXT_
 generate poly8x8_t:poly8x8_t:poly16x8_t
 
 /// Polynomial multiply long
+name = vmull
+no-q
+a = 15
+b = 3
+validate 17
+target = crypto
+
+aarch64 = pmull
+link-aarch64 = pmull64:p64:p64:p64:int8x16_t
+generate p64:p64:p128
+
+/// Polynomial multiply long
 name = vmull_high
 no-q
 multi_fn = simd_shuffle-out_len-noext, a:half, a, a, {fixed-half-right}
@@ -2076,6 +2088,7 @@ multi_fn = vmull-noqself-noext, {simd_extract, a, 1}, {simd_extract, b, 1}
 a = 1, 15
 b = 1, 3
 validate 17
+target = crypto
 
 aarch64 = pmull2
 generate poly64x2_t:poly64x2_t:p128

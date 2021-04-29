@@ -81,7 +81,7 @@ fn type_len(t: &str) -> usize {
         "poly64x1_t" => 1,
         "poly64x2_t" => 2,
         "i8" | "i16" | "i32" | "i64" | "u8" | "u16" | "u32" | "u64" | "f32" | "f64" | "p8"
-        | "p16" | "p128" => 1,
+        | "p16" | "p64" | "p128" => 1,
         _ => panic!("unknown type: {}", t),
     }
 }
@@ -333,7 +333,7 @@ fn type_to_noq_suffix(t: &str) -> &str {
         "float64x1_t" | "float64x2_t" => "_f64",
         "poly8x8_t" | "poly8x16_t" => "_p8",
         "poly16x4_t" | "poly16x8_t" => "_p16",
-        "poly64x1_t" | "poly64x2_t" => "_p64",
+        "poly64x1_t" | "poly64x2_t" | "p64" => "_p64",
         _ => panic!("unknown type: {}", t),
     }
 }
@@ -355,8 +355,10 @@ enum Suffix {
 
 #[derive(Clone, Copy)]
 enum TargetFeature {
+    Default,
     ArmV7,
     FPArmV8,
+    Crypto,
 }
 
 fn type_to_global_type(t: &str) -> &str {
@@ -401,6 +403,7 @@ fn type_to_global_type(t: &str) -> &str {
         "f64" => "f64",
         "p8" => "p8",
         "p16" => "p16",
+        "p64" => "p64",
         "p128" => "p128",
         _ => panic!("unknown type: {}", t),
     }
@@ -496,6 +499,8 @@ fn type_to_ext(t: &str) -> &str {
         "u64" => "v1i64",
         "f32" => "f32",
         "f64" => "f64",
+        "p64" => "p64",
+        "p128" => "p128",
         /*
         "poly64x1_t" => "i64x1",
         "poly64x2_t" => "i64x2",
@@ -829,6 +834,7 @@ fn gen_aarch64(
     )],
     suffix: Suffix,
     para_num: i32,
+    target: TargetFeature,
     fixed: &Vec<String>,
     multi_fn: &Vec<String>,
 ) -> (String, String) {
@@ -855,12 +861,15 @@ fn gen_aarch64(
         In2 => format!("{}{}", current_name, type_to_suffix(in_t[2])),
         In2Lane => format!("{}{}", current_name, type_to_lane_suffixes(out_t, in_t[2])),
     };
+    let current_target = match target {
+        Default => "neon",
+        ArmV7 => "v7",
+        FPArmV8 => "fp-armv8,v8",
+        Crypto => "neon,crypto",
+    };
     let current_fn = if let Some(current_fn) = current_fn.clone() {
         if link_aarch64.is_some() {
-            panic!(
-                "[{}] Can't specify link and (multi) fn at the same time.",
-                name
-            )
+            panic!("[{}] Can't specify link and fn at the same time.", name)
         }
         current_fn
     } else if link_aarch64.is_some() {
@@ -877,7 +886,24 @@ fn gen_aarch64(
     let current_aarch64 = current_aarch64.clone().unwrap();
     let mut ext_c = String::new();
     let mut ext_c_const = String::new();
-    if let Some(link_aarch64) = link_aarch64.clone() {
+    let mut link_t: Vec<String> = vec![
+        in_t[0].to_string(),
+        in_t[1].to_string(),
+        in_t[2].to_string(),
+        out_t.to_string(),
+    ];
+    if let Some(mut link_aarch64) = link_aarch64.clone() {
+        if link_aarch64.contains(":") {
+            let links: Vec<_> = link_aarch64.split(':').map(|v| v.to_string()).collect();
+            assert_eq!(links.len(), 5);
+            link_aarch64 = links[0].to_string();
+            link_t = vec![
+                links[1].clone(),
+                links[2].clone(),
+                links[3].clone(),
+                links[4].clone(),
+            ];
+        }
         let ext = type_to_ext(in_t[0]);
         let ext2 = type_to_ext(out_t);
         let link_aarch64 = if link_aarch64.starts_with("llvm") {
@@ -898,17 +924,17 @@ fn gen_aarch64(
             current_fn,
             match para_num {
                 1 => {
-                    format!("a: {}", in_t[0])
+                    format!("a: {}", link_t[0])
                 }
                 2 => {
-                    format!("a: {}, b: {}", in_t[0], in_t[1])
+                    format!("a: {}, b: {}", link_t[0], link_t[1])
                 }
                 3 => {
-                    format!("a: {}, b: {}, c: {}", in_t[0], in_t[1], in_t[2])
+                    format!("a: {}, b: {}, c: {}", link_t[0], link_t[1], link_t[2])
                 }
                 _ => unimplemented!("unknown para_num"),
             },
-            out_t
+            link_t[3]
         );
         if const_aarch64.is_some() {
             ext_c_const = format!(
@@ -1003,6 +1029,11 @@ fn gen_aarch64(
     } else {
         String::new()
     };
+    let trans: [&str; 2] = if link_t[3] != out_t {
+        ["transmute(", ")"]
+    } else {
+        ["", ""]
+    };
     let call = if let Some(const_aarch64) = const_aarch64 {
         match para_num {
             1 => format!(
@@ -1038,16 +1069,16 @@ fn gen_aarch64(
         match (multi_calls.len(), para_num, fixed.len()) {
             (0, 1, 0) => format!(
                 r#"pub unsafe fn {}{}(a: {}) -> {} {{
-    {}{}(a)
+    {}{}{}(a){}
 }}"#,
-                name, const_declare, in_t[0], out_t, ext_c, current_fn,
+                name, const_declare, in_t[0], out_t, ext_c, trans[0], current_fn, trans[1]
             ),
             (0, 1, _) => {
                 let fixed: Vec<String> = fixed.iter().take(type_len(in_t[0])).cloned().collect();
                 format!(
                     r#"pub unsafe fn {}{}(a: {}) -> {} {{
     let b{};
-    {}{}(a, transmute(b))
+    {}{}{}(a, transmute(b)){}
 }}"#,
                     name,
                     const_declare,
@@ -1055,14 +1086,16 @@ fn gen_aarch64(
                     out_t,
                     values(in_t[0], &fixed),
                     ext_c,
+                    trans[0],
                     current_fn,
+                    trans[1],
                 )
             }
             (0, 2, _) => format!(
                 r#"pub unsafe fn {}{}(a: {}, b: {}) -> {} {{
-    {}{}(a, b)
+    {}{}{}(a, b){}
 }}"#,
-                name, const_declare, in_t[0], in_t[1], out_t, ext_c, current_fn,
+                name, const_declare, in_t[0], in_t[1], out_t, ext_c, trans[0], current_fn, trans[1],
             ),
             (0, 3, _) => format!(
                 r#"pub unsafe fn {}{}(a: {}, b: {}, c: {}) -> {} {{
@@ -1095,11 +1128,11 @@ fn gen_aarch64(
         r#"
 {}
 #[inline]
-#[target_feature(enable = "neon")]
+#[target_feature(enable = "{}")]
 #[cfg_attr(test, assert_instr({}{}))]{}
 {}
 "#,
-        current_comment, current_aarch64, const_assert, const_legacy, call
+        current_comment, current_target, current_aarch64, const_assert, const_legacy, call
     );
 
     let test = gen_test(
@@ -1274,8 +1307,10 @@ fn gen_arm(
         .unwrap_or_else(|| current_arm.to_string());
 
     let current_target = match target {
+        Default => "v7",
         ArmV7 => "v7",
         FPArmV8 => "fp-armv8,v8",
+        Crypto => "crypto",
     };
 
     let current_fn = if let Some(current_fn) = current_fn.clone() {
@@ -2074,7 +2109,7 @@ fn get_call(
         }
     }
     if param_str.is_empty() {
-        return fn_name
+        return fn_name;
     }
     let fn_str = if let Some((re_name, re_type)) = re.clone() {
         format!(
@@ -2119,7 +2154,7 @@ fn main() -> io::Result<()> {
         Vec<String>,
     )> = Vec::new();
     let mut multi_fn: Vec<String> = Vec::new();
-    let mut target: TargetFeature = ArmV7;
+    let mut target: TargetFeature = Default;
 
     //
     // THIS FILE IS GENERATED FORM neon.spec DO NOT CHANGE IT MANUALLY
@@ -2200,7 +2235,7 @@ mod test {
             fixed = Vec::new();
             n = None;
             multi_fn = Vec::new();
-            target = ArmV7;
+            target = Default;
         } else if line.starts_with("//") {
         } else if line.starts_with("name = ") {
             current_name = Some(String::from(&line[7..]));
@@ -2258,10 +2293,12 @@ mod test {
         } else if line.starts_with("target = ") {
             target = match Some(String::from(&line[9..])) {
                 Some(input) => match input.as_str() {
+                    "v7" => ArmV7,
                     "fp-armv8" => FPArmV8,
-                    _ => ArmV7,
+                    "crypto" => Crypto,
+                    _ => Default,
                 },
-                _ => ArmV7,
+                _ => Default,
             }
         } else if line.starts_with("generate ") {
             let line = &line[9..];
@@ -2341,6 +2378,7 @@ mod test {
                         &current_tests,
                         suffix,
                         para_num,
+                        target,
                         &fixed,
                         &multi_fn,
                     );
