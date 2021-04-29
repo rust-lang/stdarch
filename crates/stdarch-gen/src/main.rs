@@ -81,7 +81,7 @@ fn type_len(t: &str) -> usize {
         "poly64x1_t" => 1,
         "poly64x2_t" => 2,
         "i8" | "i16" | "i32" | "i64" | "u8" | "u16" | "u32" | "u64" | "f32" | "f64" | "p8"
-        | "p16" => 1,
+        | "p16" | "p128" => 1,
         _ => panic!("unknown type: {}", t),
     }
 }
@@ -324,10 +324,10 @@ fn type_to_noq_suffix(t: &str) -> &str {
         "int16x4_t" | "int16x8_t" | "i16" => "_s16",
         "int32x2_t" | "int32x4_t" | "i32" => "_s32",
         "int64x1_t" | "int64x2_t" | "i64" => "_s64",
-        "uint8x8_t" | "uint8x16_t" => "_u8",
-        "uint16x4_t" | "uint16x8_t" => "_u16",
-        "uint32x2_t" | "uint32x4_t" => "_u32",
-        "uint64x1_t" | "uint64x2_t" => "_u64",
+        "uint8x8_t" | "uint8x16_t" | "u8" => "_u8",
+        "uint16x4_t" | "uint16x8_t" | "u16" => "_u16",
+        "uint32x2_t" | "uint32x4_t" | "u32" => "_u32",
+        "uint64x1_t" | "uint64x2_t" | "u64" => "_u64",
         "float16x4_t" | "float16x8_t" => "_f16",
         "float32x2_t" | "float32x4_t" => "_f32",
         "float64x1_t" | "float64x2_t" => "_f64",
@@ -347,6 +347,7 @@ enum Suffix {
     NSuffix,
     NoQNSuffix,
     OutSuffix,
+    OutNSuffix,
     Lane,
     In2,
     In2Lane,
@@ -400,6 +401,7 @@ fn type_to_global_type(t: &str) -> &str {
         "f64" => "f64",
         "p8" => "p8",
         "p16" => "p16",
+        "p128" => "p128",
         _ => panic!("unknown type: {}", t),
     }
 }
@@ -492,6 +494,8 @@ fn type_to_ext(t: &str) -> &str {
         "u16" => "v4i16",
         "u32" => "v2i32",
         "u64" => "v1i64",
+        "f32" => "f32",
+        "f64" => "f64",
         /*
         "poly64x1_t" => "i64x1",
         "poly64x2_t" => "i64x2",
@@ -846,6 +850,7 @@ fn gen_aarch64(
         NSuffix => format!("{}{}", current_name, type_to_n_suffix(in_t[1])),
         NoQNSuffix => format!("{}{}", current_name, type_to_noq_n_suffix(in_t[1])),
         OutSuffix => format!("{}{}", current_name, type_to_suffix(out_t)),
+        OutNSuffix => format!("{}{}", current_name, type_to_n_suffix(out_t)),
         Lane => format!("{}{}", current_name, type_to_lane_suffixes(out_t, in_t[1])),
         In2 => format!("{}{}", current_name, type_to_suffix(in_t[2])),
         In2Lane => format!("{}{}", current_name, type_to_lane_suffixes(out_t, in_t[2])),
@@ -1259,6 +1264,7 @@ fn gen_arm(
         NSuffix => format!("{}{}", current_name, type_to_n_suffix(in_t[1])),
         NoQNSuffix => format!("{}{}", current_name, type_to_noq_n_suffix(in_t[1])),
         OutSuffix => format!("{}{}", current_name, type_to_suffix(out_t)),
+        OutNSuffix => format!("{}{}", current_name, type_to_n_suffix(out_t)),
         Lane => format!("{}{}", current_name, type_to_lane_suffixes(out_t, in_t[1])),
         In2 => format!("{}{}", current_name, type_to_suffix(in_t[2])),
         In2Lane => format!("{}{}", current_name, type_to_lane_suffixes(out_t, in_t[2])),
@@ -1755,6 +1761,7 @@ fn get_call(
         let len = match &*fn_format[1] {
             "out_len" => type_len(out_t),
             "in_len" => type_len(in_t[1]),
+            "in0_len" => type_len(in_t[0]),
             "halflen" => type_len(in_t[1]) / 2,
             _ => 0,
         };
@@ -2003,6 +2010,8 @@ fn get_call(
             fn_name.push_str(type_to_n_suffix(in_t[1]));
         } else if fn_format[1] == "out" {
             fn_name.push_str(type_to_suffix(out_t));
+        } else if fn_format[1] == "in0" {
+            fn_name.push_str(type_to_suffix(in_t[0]));
         } else if fn_format[1] == "in2" {
             fn_name.push_str(type_to_suffix(in_t[2]));
         } else if fn_format[1] == "signed" {
@@ -2028,6 +2037,8 @@ fn get_call(
             fn_name.push_str(&(type_len(in_t[1]) / 2).to_string());
         } else if fn_format[1] == "nout" {
             fn_name.push_str(type_to_n_suffix(out_t));
+        } else if fn_format[1] == "nin0" {
+            fn_name.push_str(type_to_n_suffix(in_t[0]));
         } else if fn_format[1] == "nsigned" {
             fn_name.push_str(type_to_n_suffix(type_to_signed(in_t[1])));
         } else if fn_format[1] == "in_ntt" {
@@ -2063,7 +2074,7 @@ fn get_call(
         }
     }
     if param_str.is_empty() {
-        param_str.push_str("a, b");
+        return fn_name
     }
     let fn_str = if let Some((re_name, re_type)) = re.clone() {
         format!(
@@ -2211,6 +2222,8 @@ mod test {
             suffix = NoQDouble;
         } else if line.starts_with("n-suffix") {
             suffix = NSuffix;
+        } else if line.starts_with("out-n-suffix") {
+            suffix = OutNSuffix;
         } else if line.starts_with("noq-n-suffix") {
             suffix = NoQNSuffix;
         } else if line.starts_with("out-suffix") {
