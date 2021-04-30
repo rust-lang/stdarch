@@ -6062,6 +6062,34 @@ pub unsafe fn vmull_p8(a: poly8x8_t, b: poly8x8_t) -> poly16x8_t {
 vmull_p8_(a, b)
 }
 
+/// Polynomial multiply long
+#[inline]
+#[cfg(target_arch = "arm")]
+#[target_feature(enable = "neon,crypto,v8")]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vmull))]
+pub unsafe fn vmull_p64(a: p64, b: p64) -> p128 {
+    #[allow(improper_ctypes)]
+    extern "C" {
+        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vmullp.v2i64")]
+        fn vmull_p64_(a: int64x1_t, b: int64x1_t) -> int64x2_t;
+    }
+transmute(vmull_p64_(transmute(a), transmute(b)))
+}
+
+/// Polynomial multiply long
+#[inline]
+#[cfg(target_arch = "aarch64")]
+#[target_feature(enable = "neon,crypto")]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(pmull))]
+pub unsafe fn vmull_p64(a: p64, b: p64) -> p128 {
+    #[allow(improper_ctypes)]
+    extern "C" {
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.pmull64")]
+        fn vmull_p64_(a: p64, b: p64) -> int8x16_t;
+    }
+transmute(vmull_p64_(a, b))
+}
+
 /// Vector long multiply with scalar
 #[inline]
 #[target_feature(enable = "neon")]
@@ -17887,6 +17915,15 @@ mod test {
         let b: i8x8 = i8x8::new(1, 3, 1, 3, 1, 3, 1, 3);
         let e: i16x8 = i16x8::new(1, 6, 3, 12, 5, 10, 7, 24);
         let r: i16x8 = transmute(vmull_p8(transmute(a), transmute(b)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vmull_p64() {
+        let a: p64 = 15;
+        let b: p64 = 3;
+        let e: p128 = 17;
+        let r: p128 = transmute(vmull_p64(transmute(a), transmute(b)));
         assert_eq!(r, e);
     }
 

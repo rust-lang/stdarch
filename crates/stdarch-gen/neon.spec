@@ -2065,7 +2065,10 @@ target = crypto
 
 aarch64 = pmull
 link-aarch64 = pmull64:p64:p64:p64:int8x16_t
+arm = vmull
+link-arm = vmullp.v2i64:int64x1_t:int64x1_t:int64x1_t:int64x2_t
 generate p64:p64:p128
+
 
 /// Polynomial multiply long
 name = vmull_high
