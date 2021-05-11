@@ -2170,7 +2170,15 @@ fn get_call(
             let sub_match = format!(
                 "        {} => {},\n",
                 i,
-                get_call(&sub_call, current_name, const_declare, in_t, out_t, fixed, Some(i as i32))
+                get_call(
+                    &sub_call,
+                    current_name,
+                    const_declare,
+                    in_t,
+                    out_t,
+                    fixed,
+                    Some(i as i32)
+                )
             );
             call.push_str(&sub_match);
         }
