@@ -40,8 +40,8 @@ pub unsafe fn vabdq_f64(a: float64x2_t, b: float64x2_t) -> float64x2_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(uabdl))]
 pub unsafe fn vabdl_high_u8(a: uint8x16_t, b: uint8x16_t) -> uint16x8_t {
-    let c: uint8x8_t = simd_shuffle8(a, a, [8, 9, 10, 11, 12, 13, 14, 15]);
-    let d: uint8x8_t = simd_shuffle8(b, b, [8, 9, 10, 11, 12, 13, 14, 15]);
+    let c: uint8x8_t = simd_shuffle8!(a, a, [8, 9, 10, 11, 12, 13, 14, 15]);
+    let d: uint8x8_t = simd_shuffle8!(b, b, [8, 9, 10, 11, 12, 13, 14, 15]);
     simd_cast(vabd_u8(c, d))
 }
 
@@ -50,8 +50,8 @@ pub unsafe fn vabdl_high_u8(a: uint8x16_t, b: uint8x16_t) -> uint16x8_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(uabdl))]
 pub unsafe fn vabdl_high_u16(a: uint16x8_t, b: uint16x8_t) -> uint32x4_t {
-    let c: uint16x4_t = simd_shuffle4(a, a, [4, 5, 6, 7]);
-    let d: uint16x4_t = simd_shuffle4(b, b, [4, 5, 6, 7]);
+    let c: uint16x4_t = simd_shuffle4!(a, a, [4, 5, 6, 7]);
+    let d: uint16x4_t = simd_shuffle4!(b, b, [4, 5, 6, 7]);
     simd_cast(vabd_u16(c, d))
 }
 
@@ -60,8 +60,8 @@ pub unsafe fn vabdl_high_u16(a: uint16x8_t, b: uint16x8_t) -> uint32x4_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(uabdl))]
 pub unsafe fn vabdl_high_u32(a: uint32x4_t, b: uint32x4_t) -> uint64x2_t {
-    let c: uint32x2_t = simd_shuffle2(a, a, [2, 3]);
-    let d: uint32x2_t = simd_shuffle2(b, b, [2, 3]);
+    let c: uint32x2_t = simd_shuffle2!(a, a, [2, 3]);
+    let d: uint32x2_t = simd_shuffle2!(b, b, [2, 3]);
     simd_cast(vabd_u32(c, d))
 }
 
@@ -70,8 +70,8 @@ pub unsafe fn vabdl_high_u32(a: uint32x4_t, b: uint32x4_t) -> uint64x2_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(sabdl))]
 pub unsafe fn vabdl_high_s8(a: int8x16_t, b: int8x16_t) -> int16x8_t {
-    let c: int8x8_t = simd_shuffle8(a, a, [8, 9, 10, 11, 12, 13, 14, 15]);
-    let d: int8x8_t = simd_shuffle8(b, b, [8, 9, 10, 11, 12, 13, 14, 15]);
+    let c: int8x8_t = simd_shuffle8!(a, a, [8, 9, 10, 11, 12, 13, 14, 15]);
+    let d: int8x8_t = simd_shuffle8!(b, b, [8, 9, 10, 11, 12, 13, 14, 15]);
     let e: uint8x8_t = simd_cast(vabd_s8(c, d));
     simd_cast(e)
 }
@@ -81,8 +81,8 @@ pub unsafe fn vabdl_high_s8(a: int8x16_t, b: int8x16_t) -> int16x8_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(sabdl))]
 pub unsafe fn vabdl_high_s16(a: int16x8_t, b: int16x8_t) -> int32x4_t {
-    let c: int16x4_t = simd_shuffle4(a, a, [4, 5, 6, 7]);
-    let d: int16x4_t = simd_shuffle4(b, b, [4, 5, 6, 7]);
+    let c: int16x4_t = simd_shuffle4!(a, a, [4, 5, 6, 7]);
+    let d: int16x4_t = simd_shuffle4!(b, b, [4, 5, 6, 7]);
     let e: uint16x4_t = simd_cast(vabd_s16(c, d));
     simd_cast(e)
 }
@@ -92,8 +92,8 @@ pub unsafe fn vabdl_high_s16(a: int16x8_t, b: int16x8_t) -> int32x4_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(sabdl))]
 pub unsafe fn vabdl_high_s32(a: int32x4_t, b: int32x4_t) -> int64x2_t {
-    let c: int32x2_t = simd_shuffle2(a, a, [2, 3]);
-    let d: int32x2_t = simd_shuffle2(b, b, [2, 3]);
+    let c: int32x2_t = simd_shuffle2!(a, a, [2, 3]);
+    let d: int32x2_t = simd_shuffle2!(b, b, [2, 3]);
     let e: uint32x2_t = simd_cast(vabd_s32(c, d));
     simd_cast(e)
 }
@@ -2077,7 +2077,7 @@ pub unsafe fn vcvt_f64_f32(a: float32x2_t) -> float64x2_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(fcvtl))]
 pub unsafe fn vcvt_high_f64_f32(a: float32x4_t) -> float64x2_t {
-    let b: float32x2_t = simd_shuffle2(a, a, [2, 3]);
+    let b: float32x2_t = simd_shuffle2!(a, a, [2, 3]);
     simd_cast(b)
 }
 
@@ -2094,7 +2094,7 @@ pub unsafe fn vcvt_f32_f64(a: float64x2_t) -> float32x2_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(fcvtn))]
 pub unsafe fn vcvt_high_f32_f64(a: float32x2_t, b: float64x2_t) -> float32x4_t {
-    simd_shuffle4(a, simd_cast(b), [0, 1, 2, 3])
+    simd_shuffle4!(a, simd_cast(b), [0, 1, 2, 3])
 }
 
 /// Floating-point convert to lower precision narrow, rounding to odd
@@ -2115,7 +2115,7 @@ pub unsafe fn vcvtx_f32_f64(a: float64x2_t) -> float32x2_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(fcvtxn))]
 pub unsafe fn vcvtx_high_f32_f64(a: float32x2_t, b: float64x2_t) -> float32x4_t {
-    simd_shuffle4(a, vcvtx_f32_f64(b), [0, 1, 2, 3])
+    simd_shuffle4!(a, vcvtx_f32_f64(b), [0, 1, 2, 3])
 }
 
 /// Fixed-point convert to floating-point
@@ -5167,7 +5167,7 @@ pub unsafe fn vaddlvq_u32(a: uint32x4_t) -> u64 {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ssubw))]
 pub unsafe fn vsubw_high_s8(a: int16x8_t, b: int8x16_t) -> int16x8_t {
-    let c: int8x8_t = simd_shuffle8(b, b, [8, 9, 10, 11, 12, 13, 14, 15]);
+    let c: int8x8_t = simd_shuffle8!(b, b, [8, 9, 10, 11, 12, 13, 14, 15]);
     simd_sub(a, simd_cast(c))
 }
 
@@ -5176,7 +5176,7 @@ pub unsafe fn vsubw_high_s8(a: int16x8_t, b: int8x16_t) -> int16x8_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ssubw))]
 pub unsafe fn vsubw_high_s16(a: int32x4_t, b: int16x8_t) -> int32x4_t {
-    let c: int16x4_t = simd_shuffle4(b, b, [4, 5, 6, 7]);
+    let c: int16x4_t = simd_shuffle4!(b, b, [4, 5, 6, 7]);
     simd_sub(a, simd_cast(c))
 }
 
@@ -5185,7 +5185,7 @@ pub unsafe fn vsubw_high_s16(a: int32x4_t, b: int16x8_t) -> int32x4_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ssubw))]
 pub unsafe fn vsubw_high_s32(a: int64x2_t, b: int32x4_t) -> int64x2_t {
-    let c: int32x2_t = simd_shuffle2(b, b, [2, 3]);
+    let c: int32x2_t = simd_shuffle2!(b, b, [2, 3]);
     simd_sub(a, simd_cast(c))
 }
 
@@ -5194,7 +5194,7 @@ pub unsafe fn vsubw_high_s32(a: int64x2_t, b: int32x4_t) -> int64x2_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(usubw))]
 pub unsafe fn vsubw_high_u8(a: uint16x8_t, b: uint8x16_t) -> uint16x8_t {
-    let c: uint8x8_t = simd_shuffle8(b, b, [8, 9, 10, 11, 12, 13, 14, 15]);
+    let c: uint8x8_t = simd_shuffle8!(b, b, [8, 9, 10, 11, 12, 13, 14, 15]);
     simd_sub(a, simd_cast(c))
 }
 
@@ -5203,7 +5203,7 @@ pub unsafe fn vsubw_high_u8(a: uint16x8_t, b: uint8x16_t) -> uint16x8_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(usubw))]
 pub unsafe fn vsubw_high_u16(a: uint32x4_t, b: uint16x8_t) -> uint32x4_t {
-    let c: uint16x4_t = simd_shuffle4(b, b, [4, 5, 6, 7]);
+    let c: uint16x4_t = simd_shuffle4!(b, b, [4, 5, 6, 7]);
     simd_sub(a, simd_cast(c))
 }
 
@@ -5212,7 +5212,7 @@ pub unsafe fn vsubw_high_u16(a: uint32x4_t, b: uint16x8_t) -> uint32x4_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(usubw))]
 pub unsafe fn vsubw_high_u32(a: uint64x2_t, b: uint32x4_t) -> uint64x2_t {
-    let c: uint32x2_t = simd_shuffle2(b, b, [2, 3]);
+    let c: uint32x2_t = simd_shuffle2!(b, b, [2, 3]);
     simd_sub(a, simd_cast(c))
 }
 
@@ -5221,9 +5221,9 @@ pub unsafe fn vsubw_high_u32(a: uint64x2_t, b: uint32x4_t) -> uint64x2_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ssubl))]
 pub unsafe fn vsubl_high_s8(a: int8x16_t, b: int8x16_t) -> int16x8_t {
-    let c: int8x8_t = simd_shuffle8(a, a, [8, 9, 10, 11, 12, 13, 14, 15]);
+    let c: int8x8_t = simd_shuffle8!(a, a, [8, 9, 10, 11, 12, 13, 14, 15]);
     let d: int16x8_t = simd_cast(c);
-    let e: int8x8_t = simd_shuffle8(b, b, [8, 9, 10, 11, 12, 13, 14, 15]);
+    let e: int8x8_t = simd_shuffle8!(b, b, [8, 9, 10, 11, 12, 13, 14, 15]);
     let f: int16x8_t = simd_cast(e);
     simd_sub(d, f)
 }
@@ -5233,9 +5233,9 @@ pub unsafe fn vsubl_high_s8(a: int8x16_t, b: int8x16_t) -> int16x8_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ssubl))]
 pub unsafe fn vsubl_high_s16(a: int16x8_t, b: int16x8_t) -> int32x4_t {
-    let c: int16x4_t = simd_shuffle4(a, a, [4, 5, 6, 7]);
+    let c: int16x4_t = simd_shuffle4!(a, a, [4, 5, 6, 7]);
     let d: int32x4_t = simd_cast(c);
-    let e: int16x4_t = simd_shuffle4(b, b, [4, 5, 6, 7]);
+    let e: int16x4_t = simd_shuffle4!(b, b, [4, 5, 6, 7]);
     let f: int32x4_t = simd_cast(e);
     simd_sub(d, f)
 }
@@ -5245,9 +5245,9 @@ pub unsafe fn vsubl_high_s16(a: int16x8_t, b: int16x8_t) -> int32x4_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ssubl))]
 pub unsafe fn vsubl_high_s32(a: int32x4_t, b: int32x4_t) -> int64x2_t {
-    let c: int32x2_t = simd_shuffle2(a, a, [2, 3]);
+    let c: int32x2_t = simd_shuffle2!(a, a, [2, 3]);
     let d: int64x2_t = simd_cast(c);
-    let e: int32x2_t = simd_shuffle2(b, b, [2, 3]);
+    let e: int32x2_t = simd_shuffle2!(b, b, [2, 3]);
     let f: int64x2_t = simd_cast(e);
     simd_sub(d, f)
 }
@@ -5257,9 +5257,9 @@ pub unsafe fn vsubl_high_s32(a: int32x4_t, b: int32x4_t) -> int64x2_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(usubl))]
 pub unsafe fn vsubl_high_u8(a: uint8x16_t, b: uint8x16_t) -> uint16x8_t {
-    let c: uint8x8_t = simd_shuffle8(a, a, [8, 9, 10, 11, 12, 13, 14, 15]);
+    let c: uint8x8_t = simd_shuffle8!(a, a, [8, 9, 10, 11, 12, 13, 14, 15]);
     let d: uint16x8_t = simd_cast(c);
-    let e: uint8x8_t = simd_shuffle8(b, b, [8, 9, 10, 11, 12, 13, 14, 15]);
+    let e: uint8x8_t = simd_shuffle8!(b, b, [8, 9, 10, 11, 12, 13, 14, 15]);
     let f: uint16x8_t = simd_cast(e);
     simd_sub(d, f)
 }
@@ -5269,9 +5269,9 @@ pub unsafe fn vsubl_high_u8(a: uint8x16_t, b: uint8x16_t) -> uint16x8_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(usubl))]
 pub unsafe fn vsubl_high_u16(a: uint16x8_t, b: uint16x8_t) -> uint32x4_t {
-    let c: uint16x4_t = simd_shuffle4(a, a, [4, 5, 6, 7]);
+    let c: uint16x4_t = simd_shuffle4!(a, a, [4, 5, 6, 7]);
     let d: uint32x4_t = simd_cast(c);
-    let e: uint16x4_t = simd_shuffle4(b, b, [4, 5, 6, 7]);
+    let e: uint16x4_t = simd_shuffle4!(b, b, [4, 5, 6, 7]);
     let f: uint32x4_t = simd_cast(e);
     simd_sub(d, f)
 }
@@ -5281,9 +5281,9 @@ pub unsafe fn vsubl_high_u16(a: uint16x8_t, b: uint16x8_t) -> uint32x4_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(usubl))]
 pub unsafe fn vsubl_high_u32(a: uint32x4_t, b: uint32x4_t) -> uint64x2_t {
-    let c: uint32x2_t = simd_shuffle2(a, a, [2, 3]);
+    let c: uint32x2_t = simd_shuffle2!(a, a, [2, 3]);
     let d: uint64x2_t = simd_cast(c);
-    let e: uint32x2_t = simd_shuffle2(b, b, [2, 3]);
+    let e: uint32x2_t = simd_shuffle2!(b, b, [2, 3]);
     let f: uint64x2_t = simd_cast(e);
     simd_sub(d, f)
 }
@@ -8805,8 +8805,8 @@ pub unsafe fn vuzp2q_f64(a: float64x2_t, b: float64x2_t) -> float64x2_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(uabal))]
 pub unsafe fn vabal_high_u8(a: uint16x8_t, b: uint8x16_t, c: uint8x16_t) -> uint16x8_t {
-    let d: uint8x8_t = simd_shuffle8(b, b, [8, 9, 10, 11, 12, 13, 14, 15]);
-    let e: uint8x8_t = simd_shuffle8(c, c, [8, 9, 10, 11, 12, 13, 14, 15]);
+    let d: uint8x8_t = simd_shuffle8!(b, b, [8, 9, 10, 11, 12, 13, 14, 15]);
+    let e: uint8x8_t = simd_shuffle8!(c, c, [8, 9, 10, 11, 12, 13, 14, 15]);
     let f: uint8x8_t = vabd_u8(d, e);
     simd_add(a, simd_cast(f))
 }
@@ -8816,8 +8816,8 @@ pub unsafe fn vabal_high_u8(a: uint16x8_t, b: uint8x16_t, c: uint8x16_t) -> uint
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(uabal))]
 pub unsafe fn vabal_high_u16(a: uint32x4_t, b: uint16x8_t, c: uint16x8_t) -> uint32x4_t {
-    let d: uint16x4_t = simd_shuffle4(b, b, [4, 5, 6, 7]);
-    let e: uint16x4_t = simd_shuffle4(c, c, [4, 5, 6, 7]);
+    let d: uint16x4_t = simd_shuffle4!(b, b, [4, 5, 6, 7]);
+    let e: uint16x4_t = simd_shuffle4!(c, c, [4, 5, 6, 7]);
     let f: uint16x4_t = vabd_u16(d, e);
     simd_add(a, simd_cast(f))
 }
@@ -8827,8 +8827,8 @@ pub unsafe fn vabal_high_u16(a: uint32x4_t, b: uint16x8_t, c: uint16x8_t) -> uin
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(uabal))]
 pub unsafe fn vabal_high_u32(a: uint64x2_t, b: uint32x4_t, c: uint32x4_t) -> uint64x2_t {
-    let d: uint32x2_t = simd_shuffle2(b, b, [2, 3]);
-    let e: uint32x2_t = simd_shuffle2(c, c, [2, 3]);
+    let d: uint32x2_t = simd_shuffle2!(b, b, [2, 3]);
+    let e: uint32x2_t = simd_shuffle2!(c, c, [2, 3]);
     let f: uint32x2_t = vabd_u32(d, e);
     simd_add(a, simd_cast(f))
 }
@@ -8838,8 +8838,8 @@ pub unsafe fn vabal_high_u32(a: uint64x2_t, b: uint32x4_t, c: uint32x4_t) -> uin
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(sabal))]
 pub unsafe fn vabal_high_s8(a: int16x8_t, b: int8x16_t, c: int8x16_t) -> int16x8_t {
-    let d: int8x8_t = simd_shuffle8(b, b, [8, 9, 10, 11, 12, 13, 14, 15]);
-    let e: int8x8_t = simd_shuffle8(c, c, [8, 9, 10, 11, 12, 13, 14, 15]);
+    let d: int8x8_t = simd_shuffle8!(b, b, [8, 9, 10, 11, 12, 13, 14, 15]);
+    let e: int8x8_t = simd_shuffle8!(c, c, [8, 9, 10, 11, 12, 13, 14, 15]);
     let f: int8x8_t = vabd_s8(d, e);
     let f: uint8x8_t = simd_cast(f);
     simd_add(a, simd_cast(f))
@@ -8850,8 +8850,8 @@ pub unsafe fn vabal_high_s8(a: int16x8_t, b: int8x16_t, c: int8x16_t) -> int16x8
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(sabal))]
 pub unsafe fn vabal_high_s16(a: int32x4_t, b: int16x8_t, c: int16x8_t) -> int32x4_t {
-    let d: int16x4_t = simd_shuffle4(b, b, [4, 5, 6, 7]);
-    let e: int16x4_t = simd_shuffle4(c, c, [4, 5, 6, 7]);
+    let d: int16x4_t = simd_shuffle4!(b, b, [4, 5, 6, 7]);
+    let e: int16x4_t = simd_shuffle4!(c, c, [4, 5, 6, 7]);
     let f: int16x4_t = vabd_s16(d, e);
     let f: uint16x4_t = simd_cast(f);
     simd_add(a, simd_cast(f))
@@ -8862,8 +8862,8 @@ pub unsafe fn vabal_high_s16(a: int32x4_t, b: int16x8_t, c: int16x8_t) -> int32x
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(sabal))]
 pub unsafe fn vabal_high_s32(a: int64x2_t, b: int32x4_t, c: int32x4_t) -> int64x2_t {
-    let d: int32x2_t = simd_shuffle2(b, b, [2, 3]);
-    let e: int32x2_t = simd_shuffle2(c, c, [2, 3]);
+    let d: int32x2_t = simd_shuffle2!(b, b, [2, 3]);
+    let e: int32x2_t = simd_shuffle2!(c, c, [2, 3]);
     let f: int32x2_t = vabd_s32(d, e);
     let f: uint32x2_t = simd_cast(f);
     simd_add(a, simd_cast(f))

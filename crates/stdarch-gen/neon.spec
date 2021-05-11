@@ -194,8 +194,8 @@ generate int32x2_t:int32x2_t:int64x2_t
 /// Unsigned Absolute difference Long
 name = vabdl_high
 no-q
-multi_fn = simd_shuffle8, c:uint8x8_t, a, a, [8, 9, 10, 11, 12, 13, 14, 15]
-multi_fn = simd_shuffle8, d:uint8x8_t, b, b, [8, 9, 10, 11, 12, 13, 14, 15]
+multi_fn = simd_shuffle8!, c:uint8x8_t, a, a, [8, 9, 10, 11, 12, 13, 14, 15]
+multi_fn = simd_shuffle8!, d:uint8x8_t, b, b, [8, 9, 10, 11, 12, 13, 14, 15]
 multi_fn = simd_cast, {vabd_u8, c, d}
 a = 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
 b = 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10
@@ -207,8 +207,8 @@ generate uint8x16_t:uint8x16_t:uint16x8_t
 /// Unsigned Absolute difference Long
 name = vabdl_high
 no-q
-multi_fn = simd_shuffle4, c:uint16x4_t, a, a, [4, 5, 6, 7]
-multi_fn = simd_shuffle4, d:uint16x4_t, b, b, [4, 5, 6, 7]
+multi_fn = simd_shuffle4!, c:uint16x4_t, a, a, [4, 5, 6, 7]
+multi_fn = simd_shuffle4!, d:uint16x4_t, b, b, [4, 5, 6, 7]
 multi_fn = simd_cast, {vabd_u16, c, d}
 a = 1, 2, 3, 4, 8, 9, 11, 12
 b = 10, 10, 10, 10, 10, 10, 10, 10
@@ -220,8 +220,8 @@ generate uint16x8_t:uint16x8_t:uint32x4_t
 /// Unsigned Absolute difference Long
 name = vabdl_high
 no-q
-multi_fn = simd_shuffle2, c:uint32x2_t, a, a, [2, 3]
-multi_fn = simd_shuffle2, d:uint32x2_t, b, b, [2, 3]
+multi_fn = simd_shuffle2!, c:uint32x2_t, a, a, [2, 3]
+multi_fn = simd_shuffle2!, d:uint32x2_t, b, b, [2, 3]
 multi_fn = simd_cast, {vabd_u32, c, d}
 a = 1, 2, 3, 4
 b = 10, 10, 10, 10
@@ -233,8 +233,8 @@ generate uint32x4_t:uint32x4_t:uint64x2_t
 /// Signed Absolute difference Long
 name = vabdl_high
 no-q
-multi_fn = simd_shuffle8, c:int8x8_t, a, a, [8, 9, 10, 11, 12, 13, 14, 15]
-multi_fn = simd_shuffle8, d:int8x8_t, b, b, [8, 9, 10, 11, 12, 13, 14, 15]
+multi_fn = simd_shuffle8!, c:int8x8_t, a, a, [8, 9, 10, 11, 12, 13, 14, 15]
+multi_fn = simd_shuffle8!, d:int8x8_t, b, b, [8, 9, 10, 11, 12, 13, 14, 15]
 multi_fn = simd_cast, e:uint8x8_t, {vabd_s8, c, d}
 multi_fn = simd_cast, e
 a = 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
@@ -247,8 +247,8 @@ generate int8x16_t:int8x16_t:int16x8_t
 /// Signed Absolute difference Long
 name = vabdl_high
 no-q
-multi_fn = simd_shuffle4, c:int16x4_t, a, a, [4, 5, 6, 7]
-multi_fn = simd_shuffle4, d:int16x4_t, b, b, [4, 5, 6, 7]
+multi_fn = simd_shuffle4!, c:int16x4_t, a, a, [4, 5, 6, 7]
+multi_fn = simd_shuffle4!, d:int16x4_t, b, b, [4, 5, 6, 7]
 multi_fn = simd_cast, e:uint16x4_t, {vabd_s16, c, d}
 multi_fn = simd_cast, e
 a = 1, 2, 3, 4, 9, 10, 11, 12
@@ -261,8 +261,8 @@ generate int16x8_t:int16x8_t:int32x4_t
 /// Signed Absolute difference Long
 name = vabdl_high
 no-q
-multi_fn = simd_shuffle2, c:int32x2_t, a, a, [2, 3]
-multi_fn = simd_shuffle2, d:int32x2_t, b, b, [2, 3]
+multi_fn = simd_shuffle2!, c:int32x2_t, a, a, [2, 3]
+multi_fn = simd_shuffle2!, d:int32x2_t, b, b, [2, 3]
 multi_fn = simd_cast, e:uint32x2_t, {vabd_s32, c, d}
 multi_fn = simd_cast, e
 a = 1, 2, 3, 4
@@ -897,7 +897,7 @@ generate float32x2_t:float64x2_t
 /// Floating-point convert to higher precision long
 name = vcvt_high
 noq-double-suffixes
-multi_fn = simd_shuffle2, b:float32x2_t, a, a, [2, 3]
+multi_fn = simd_shuffle2!, b:float32x2_t, a, a, [2, 3]
 multi_fn = simd_cast, b
 a = -1.2, 1.2, 2.3, 3.4
 validate 2.3f32 as f64, 3.4f32 as f64
@@ -918,7 +918,7 @@ generate float64x2_t:float32x2_t
 /// Floating-point convert to lower precision narrow
 name = vcvt_high
 noq-double-suffixes
-multi_fn = simd_shuffle4, a, {simd_cast, b}, [0, 1, 2, 3]
+multi_fn = simd_shuffle4!, a, {simd_cast, b}, [0, 1, 2, 3]
 a = -1.2, 1.2
 b = -2.3, 3.4
 validate -1.2, 1.2, -2.3f64 as f32, 3.4f64 as f32
@@ -939,7 +939,7 @@ generate float64x2_t:float32x2_t
 /// Floating-point convert to lower precision narrow, rounding to odd
 name = vcvtx_high
 noq-double-suffixes
-multi_fn = simd_shuffle4, a, {vcvtx-noq_doubleself-noext, b}, [0, 1, 2, 3]
+multi_fn = simd_shuffle4!, a, {vcvtx-noq_doubleself-noext, b}, [0, 1, 2, 3]
 a = -1.0, 2.0
 b = -3.0, 4.0
 validate -1.0, 2.0, -3.0, 4.0
@@ -2629,7 +2629,7 @@ generate uint16x8_t:uint8x8_t:uint16x8_t, uint32x4_t:uint16x4_t:uint32x4_t, uint
 /// Signed Subtract Wide
 name = vsubw_high
 no-q
-multi_fn = simd_shuffle8, c:int8x8_t, b, b, [8, 9, 10, 11, 12, 13, 14, 15]
+multi_fn = simd_shuffle8!, c:int8x8_t, b, b, [8, 9, 10, 11, 12, 13, 14, 15]
 multi_fn = simd_sub, a, {simd_cast, c}
 a = 8, 9, 10, 12, 13, 14, 15, 16
 b = 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14, 15, 16
@@ -2641,7 +2641,7 @@ generate int16x8_t:int8x16_t:int16x8_t
 /// Signed Subtract Wide
 name = vsubw_high
 no-q
-multi_fn = simd_shuffle4, c:int16x4_t, b, b, [4, 5, 6, 7]
+multi_fn = simd_shuffle4!, c:int16x4_t, b, b, [4, 5, 6, 7]
 multi_fn = simd_sub, a, {simd_cast, c}
 a = 8, 9, 10, 11
 b = 0, 1, 2, 3, 8, 9, 10, 11
@@ -2653,7 +2653,7 @@ generate int32x4_t:int16x8_t:int32x4_t
 /// Signed Subtract Wide
 name = vsubw_high
 no-q
-multi_fn = simd_shuffle2, c:int32x2_t, b, b, [2, 3]
+multi_fn = simd_shuffle2!, c:int32x2_t, b, b, [2, 3]
 multi_fn = simd_sub, a, {simd_cast, c}
 a = 8, 9
 b = 6, 7, 8, 9
@@ -2665,7 +2665,7 @@ generate int64x2_t:int32x4_t:int64x2_t
 /// Unsigned Subtract Wide
 name = vsubw_high
 no-q
-multi_fn = simd_shuffle8, c:uint8x8_t, b, b, [8, 9, 10, 11, 12, 13, 14, 15]
+multi_fn = simd_shuffle8!, c:uint8x8_t, b, b, [8, 9, 10, 11, 12, 13, 14, 15]
 multi_fn = simd_sub, a, {simd_cast, c}
 a = 8, 9, 10, 11, 12, 13, 14, 15
 b = 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15
@@ -2677,7 +2677,7 @@ generate uint16x8_t:uint8x16_t:uint16x8_t
 /// Unsigned Subtract Wide
 name = vsubw_high
 no-q
-multi_fn = simd_shuffle4, c:uint16x4_t, b, b, [4, 5, 6, 7]
+multi_fn = simd_shuffle4!, c:uint16x4_t, b, b, [4, 5, 6, 7]
 multi_fn = simd_sub, a, {simd_cast, c}
 a = 8, 9, 10, 11
 b = 0, 1, 2, 3, 8, 9, 10, 11
@@ -2689,7 +2689,7 @@ generate uint32x4_t:uint16x8_t:uint32x4_t
 /// Unsigned Subtract Wide
 name = vsubw_high
 no-q
-multi_fn = simd_shuffle2, c:uint32x2_t, b, b, [2, 3]
+multi_fn = simd_shuffle2!, c:uint32x2_t, b, b, [2, 3]
 multi_fn = simd_sub, a, {simd_cast, c}
 a = 8, 9
 b = 6, 7, 8, 9
@@ -2731,9 +2731,9 @@ generate uint8x8_t:uint8x8_t:uint16x8_t, uint16x4_t:uint16x4_t:uint32x4_t, uint3
 /// Signed Subtract Long
 name = vsubl_high
 no-q
-multi_fn = simd_shuffle8, c:int8x8_t, a, a, [8, 9, 10, 11, 12, 13, 14, 15]
+multi_fn = simd_shuffle8!, c:int8x8_t, a, a, [8, 9, 10, 11, 12, 13, 14, 15]
 multi_fn = simd_cast, d:out_t, c
-multi_fn = simd_shuffle8, e:int8x8_t, b, b, [8, 9, 10, 11, 12, 13, 14, 15]
+multi_fn = simd_shuffle8!, e:int8x8_t, b, b, [8, 9, 10, 11, 12, 13, 14, 15]
 multi_fn = simd_cast, f:out_t, e
 multi_fn = simd_sub, d, f
 
@@ -2747,9 +2747,9 @@ generate int8x16_t:int8x16_t:int16x8_t
 /// Signed Subtract Long
 name = vsubl_high
 no-q
-multi_fn = simd_shuffle4, c:int16x4_t, a, a, [4, 5, 6, 7]
+multi_fn = simd_shuffle4!, c:int16x4_t, a, a, [4, 5, 6, 7]
 multi_fn = simd_cast, d:out_t, c
-multi_fn = simd_shuffle4, e:int16x4_t, b, b, [4, 5, 6, 7]
+multi_fn = simd_shuffle4!, e:int16x4_t, b, b, [4, 5, 6, 7]
 multi_fn = simd_cast, f:out_t, e
 multi_fn = simd_sub, d, f
 
@@ -2763,9 +2763,9 @@ generate int16x8_t:int16x8_t:int32x4_t
 /// Signed Subtract Long
 name = vsubl_high
 no-q
-multi_fn = simd_shuffle2, c:int32x2_t, a, a, [2, 3]
+multi_fn = simd_shuffle2!, c:int32x2_t, a, a, [2, 3]
 multi_fn = simd_cast, d:out_t, c
-multi_fn = simd_shuffle2, e:int32x2_t, b, b, [2, 3]
+multi_fn = simd_shuffle2!, e:int32x2_t, b, b, [2, 3]
 multi_fn = simd_cast, f:out_t, e
 multi_fn = simd_sub, d, f
 
@@ -2779,9 +2779,9 @@ generate int32x4_t:int32x4_t:int64x2_t
 /// Unsigned Subtract Long
 name = vsubl_high
 no-q
-multi_fn = simd_shuffle8, c:uint8x8_t, a, a, [8, 9, 10, 11, 12, 13, 14, 15]
+multi_fn = simd_shuffle8!, c:uint8x8_t, a, a, [8, 9, 10, 11, 12, 13, 14, 15]
 multi_fn = simd_cast, d:out_t, c
-multi_fn = simd_shuffle8, e:uint8x8_t, b, b, [8, 9, 10, 11, 12, 13, 14, 15]
+multi_fn = simd_shuffle8!, e:uint8x8_t, b, b, [8, 9, 10, 11, 12, 13, 14, 15]
 multi_fn = simd_cast, f:out_t, e
 multi_fn = simd_sub, d, f
 
@@ -2795,9 +2795,9 @@ generate uint8x16_t:uint8x16_t:uint16x8_t
 /// Unsigned Subtract Long
 name = vsubl_high
 no-q
-multi_fn = simd_shuffle4, c:uint16x4_t, a, a, [4, 5, 6, 7]
+multi_fn = simd_shuffle4!, c:uint16x4_t, a, a, [4, 5, 6, 7]
 multi_fn = simd_cast, d:out_t, c
-multi_fn = simd_shuffle4, e:uint16x4_t, b, b, [4, 5, 6, 7]
+multi_fn = simd_shuffle4!, e:uint16x4_t, b, b, [4, 5, 6, 7]
 multi_fn = simd_cast, f:out_t, e
 multi_fn = simd_sub, d, f
 
@@ -2811,9 +2811,9 @@ generate uint16x8_t:uint16x8_t:uint32x4_t
 /// Unsigned Subtract Long
 name = vsubl_high
 no-q
-multi_fn = simd_shuffle2, c:uint32x2_t, a, a, [2, 3]
+multi_fn = simd_shuffle2!, c:uint32x2_t, a, a, [2, 3]
 multi_fn = simd_cast, d:out_t, c
-multi_fn = simd_shuffle2, e:uint32x2_t, b, b, [2, 3]
+multi_fn = simd_shuffle2!, e:uint32x2_t, b, b, [2, 3]
 multi_fn = simd_cast, f:out_t, e
 multi_fn = simd_sub, d, f
 
@@ -4717,8 +4717,8 @@ generate uint16x8_t:uint8x8_t:uint8x8_t:uint16x8_t, uint32x4_t:uint16x4_t:uint16
 /// Unsigned Absolute difference and Accumulate Long
 name = vabal_high
 no-q
-multi_fn = simd_shuffle8, d:uint8x8_t, b, b, [8, 9, 10, 11, 12, 13, 14, 15]
-multi_fn = simd_shuffle8, e:uint8x8_t, c, c, [8, 9, 10, 11, 12, 13, 14, 15]
+multi_fn = simd_shuffle8!, d:uint8x8_t, b, b, [8, 9, 10, 11, 12, 13, 14, 15]
+multi_fn = simd_shuffle8!, e:uint8x8_t, c, c, [8, 9, 10, 11, 12, 13, 14, 15]
 multi_fn = vabd_u8, d, e, f:uint8x8_t
 multi_fn = simd_add, a, {simd_cast, f}
 a = 9, 10, 11, 12, 13, 14, 15, 16
@@ -4732,8 +4732,8 @@ generate uint16x8_t:uint8x16_t:uint8x16_t:uint16x8_t
 /// Unsigned Absolute difference and Accumulate Long
 name = vabal_high
 no-q
-multi_fn = simd_shuffle4, d:uint16x4_t, b, b, [4, 5, 6, 7]
-multi_fn = simd_shuffle4, e:uint16x4_t, c, c, [4, 5, 6, 7]
+multi_fn = simd_shuffle4!, d:uint16x4_t, b, b, [4, 5, 6, 7]
+multi_fn = simd_shuffle4!, e:uint16x4_t, c, c, [4, 5, 6, 7]
 multi_fn = vabd_u16, d, e, f:uint16x4_t
 multi_fn = simd_add, a, {simd_cast, f}
 a = 9, 10, 11, 12
@@ -4747,8 +4747,8 @@ generate uint32x4_t:uint16x8_t:uint16x8_t:uint32x4_t
 /// Unsigned Absolute difference and Accumulate Long
 name = vabal_high
 no-q
-multi_fn = simd_shuffle2, d:uint32x2_t, b, b, [2, 3]
-multi_fn = simd_shuffle2, e:uint32x2_t, c, c, [2, 3]
+multi_fn = simd_shuffle2!, d:uint32x2_t, b, b, [2, 3]
+multi_fn = simd_shuffle2!, e:uint32x2_t, c, c, [2, 3]
 multi_fn = vabd_u32, d, e, f:uint32x2_t
 multi_fn = simd_add, a, {simd_cast, f}
 a = 15, 16
@@ -4808,8 +4808,8 @@ generate int64x2_t:int32x2_t:int32x2_t:int64x2_t
 /// Signed Absolute difference and Accumulate Long
 name = vabal_high
 no-q
-multi_fn = simd_shuffle8, d:int8x8_t, b, b, [8, 9, 10, 11, 12, 13, 14, 15]
-multi_fn = simd_shuffle8, e:int8x8_t, c, c, [8, 9, 10, 11, 12, 13, 14, 15]
+multi_fn = simd_shuffle8!, d:int8x8_t, b, b, [8, 9, 10, 11, 12, 13, 14, 15]
+multi_fn = simd_shuffle8!, e:int8x8_t, c, c, [8, 9, 10, 11, 12, 13, 14, 15]
 multi_fn = vabd_s8, d, e, f:int8x8_t
 multi_fn = simd_cast, f:uint8x8_t, f
 multi_fn = simd_add, a, {simd_cast, f}
@@ -4824,8 +4824,8 @@ generate int16x8_t:int8x16_t:int8x16_t:int16x8_t
 /// Signed Absolute difference and Accumulate Long
 name = vabal_high
 no-q
-multi_fn = simd_shuffle4, d:int16x4_t, b, b, [4, 5, 6, 7]
-multi_fn = simd_shuffle4, e:int16x4_t, c, c, [4, 5, 6, 7]
+multi_fn = simd_shuffle4!, d:int16x4_t, b, b, [4, 5, 6, 7]
+multi_fn = simd_shuffle4!, e:int16x4_t, c, c, [4, 5, 6, 7]
 multi_fn = vabd_s16, d, e, f:int16x4_t
 multi_fn = simd_cast, f:uint16x4_t, f
 multi_fn = simd_add, a, {simd_cast, f}
@@ -4840,8 +4840,8 @@ generate int32x4_t:int16x8_t:int16x8_t:int32x4_t
 /// Signed Absolute difference and Accumulate Long
 name = vabal_high
 no-q
-multi_fn = simd_shuffle2, d:int32x2_t, b, b, [2, 3]
-multi_fn = simd_shuffle2, e:int32x2_t, c, c, [2, 3]
+multi_fn = simd_shuffle2!, d:int32x2_t, b, b, [2, 3]
+multi_fn = simd_shuffle2!, e:int32x2_t, c, c, [2, 3]
 multi_fn = vabd_s32, d, e, f:int32x2_t
 multi_fn = simd_cast, f:uint32x2_t, f
 multi_fn = simd_add, a, {simd_cast, f}

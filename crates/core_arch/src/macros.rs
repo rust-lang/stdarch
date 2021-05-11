@@ -92,3 +92,123 @@ macro_rules! types {
         pub struct $name($($fields)*);
     )*)
 }
+
+#[allow(unused_macros)]
+macro_rules! simd_shuffle2 {
+    ($x:expr, $y:expr, $idx:expr $(,)?) => {{
+        const IDX: [u32; 2] = $idx;
+        simd_shuffle2($x, $y, IDX)
+    }};
+}
+
+#[allow(unused_macros)]
+macro_rules! simd_shuffle2_param {
+    ($x:expr, $y:expr, <const $imm:ident : $ty:ty> $idx:expr $(,)?) => {{
+        struct ConstParam<const $imm: $ty>;
+        impl<const $imm: $ty> ConstParam<$imm> {
+            const IDX: [u32; 2] = $idx;
+        }
+
+        simd_shuffle2($x, $y, ConstParam::<$imm>::IDX)
+    }};
+}
+
+#[allow(unused_macros)]
+macro_rules! simd_shuffle4 {
+    ($x:expr, $y:expr, $idx:expr $(,)?) => {{
+        const IDX: [u32; 4] = $idx;
+        simd_shuffle4($x, $y, IDX)
+    }};
+}
+
+#[allow(unused_macros)]
+macro_rules! simd_shuffle4_param {
+    ($x:expr, $y:expr, <const $imm:ident : $ty:ty> $idx:expr $(,)?) => {{
+        struct ConstParam<const $imm: $ty>;
+        impl<const $imm: $ty> ConstParam<$imm> {
+            const IDX: [u32; 4] = $idx;
+        }
+
+        simd_shuffle4($x, $y, ConstParam::<$imm>::IDX)
+    }};
+}
+
+#[allow(unused_macros)]
+macro_rules! simd_shuffle8 {
+    ($x:expr, $y:expr, $idx:expr $(,)?) => {{
+        const IDX: [u32; 8] = $idx;
+        simd_shuffle8($x, $y, IDX)
+    }};
+}
+
+#[allow(unused_macros)]
+macro_rules! simd_shuffle8_param {
+    ($x:expr, $y:expr, <const $imm:ident : $ty:ty> $idx:expr $(,)?) => {{
+        struct ConstParam<const $imm: $ty>;
+        impl<const $imm: $ty> ConstParam<$imm> {
+            const IDX: [u32; 8] = $idx;
+        }
+
+        simd_shuffle8($x, $y, ConstParam::<$imm>::IDX)
+    }};
+}
+
+#[allow(unused_macros)]
+macro_rules! simd_shuffle16 {
+    ($x:expr, $y:expr, $idx:expr $(,)?) => {{
+        const IDX: [u32; 16] = $idx;
+        simd_shuffle16($x, $y, IDX)
+    }};
+}
+
+#[allow(unused_macros)]
+macro_rules! simd_shuffle16_param {
+    ($x:expr, $y:expr, <const $imm:ident : $ty:ty> $idx:expr $(,)?) => {{
+        struct ConstParam<const $imm: $ty>;
+        impl<const $imm: $ty> ConstParam<$imm> {
+            const IDX: [u32; 16] = $idx;
+        }
+
+        simd_shuffle16($x, $y, ConstParam::<$imm>::IDX)
+    }};
+}
+
+#[allow(unused_macros)]
+macro_rules! simd_shuffle32 {
+    ($x:expr, $y:expr, $idx:expr $(,)?) => {{
+        const IDX: [u32; 32] = $idx;
+        simd_shuffle32($x, $y, IDX)
+    }};
+}
+
+#[allow(unused_macros)]
+macro_rules! simd_shuffle32_param {
+    ($x:expr, $y:expr, <const $imm:ident : $ty:ty> $idx:expr $(,)?) => {{
+        struct ConstParam<const $imm: $ty>;
+        impl<const $imm: $ty> ConstParam<$imm> {
+            const IDX: [u32; 32] = $idx;
+        }
+
+        simd_shuffle32($x, $y, ConstParam::<$imm>::IDX)
+    }};
+}
+
+#[allow(unused_macros)]
+macro_rules! simd_shuffle64 {
+    ($x:expr, $y:expr, $idx:expr $(,)?) => {{
+        const IDX: [u32; 64] = $idx;
+        simd_shuffle64($x, $y, IDX)
+    }};
+}
+
+#[allow(unused_macros)]
+macro_rules! simd_shuffle64_param {
+    ($x:expr, $y:expr, <const $imm:ident : $ty:ty> $idx:expr $(,)?) => {{
+        struct ConstParam<const $imm: $ty>;
+        impl<const $imm: $ty> ConstParam<$imm> {
+            const IDX: [u32; 64] = $idx;
+        }
+
+        simd_shuffle64($x, $y, ConstParam::<$imm>::IDX)
+    }};
+}
