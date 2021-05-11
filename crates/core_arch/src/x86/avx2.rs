@@ -1712,7 +1712,8 @@ pub unsafe fn _mm256_inserti128_si256<const IMM1: i32>(a: __m256i, b: __m128i) -
     static_assert_imm1!(IMM1);
     let a = a.as_i64x4();
     let b = _mm256_castsi128_si256(b).as_i64x4();
-    let dst: i64x4 = simd_shuffle4_param!(a, b, <const IMM1: i32> [[4, 5, 2, 3], [0, 1, 4, 5]][IMM1 as usize]);
+    let dst: i64x4 =
+        simd_shuffle4_param!(a, b, <const IMM1: i32> [[4, 5, 2, 3], [0, 1, 4, 5]][IMM1 as usize]);
     transmute(dst)
 }
 
