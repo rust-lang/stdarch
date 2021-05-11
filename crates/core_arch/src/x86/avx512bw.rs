@@ -7133,7 +7133,7 @@ pub unsafe fn _mm_maskz_set1_epi8(k: __mmask16, a: i8) -> __m128i {
 pub unsafe fn _mm512_shufflelo_epi16<const IMM8: i32>(a: __m512i) -> __m512i {
     static_assert_imm8!(IMM8);
     let a = a.as_i16x32();
-    let r: i16x32 = simd_shuffle32_param!(
+    let r: i16x32 = simd_shuffle32!(
         a,
         a,
         <const IMM8: i32> [
@@ -7277,7 +7277,7 @@ pub unsafe fn _mm_maskz_shufflelo_epi16<const IMM8: i32>(k: __mmask8, a: __m128i
 pub unsafe fn _mm512_shufflehi_epi16<const IMM8: i32>(a: __m512i) -> __m512i {
     static_assert_imm8!(IMM8);
     let a = a.as_i16x32();
-    let r: i16x32 = simd_shuffle32_param!(
+    let r: i16x32 = simd_shuffle32!(
         a,
         a,
         <const IMM8: i32> [
@@ -8875,7 +8875,7 @@ pub unsafe fn _mm512_bslli_epi128<const IMM8: i32>(a: __m512i) -> __m512i {
     static_assert_imm8!(IMM8);
     let a = a.as_i8x64();
     let zero = _mm512_setzero_si512().as_i8x64();
-    let r: i8x64 = simd_shuffle64_param!(
+    let r: i8x64 = simd_shuffle64!(
         zero,
         a,
         <const IMM8: i32> [

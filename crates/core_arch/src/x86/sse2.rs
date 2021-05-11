@@ -432,7 +432,7 @@ unsafe fn _mm_slli_si128_impl<const IMM8: i32>(a: __m128i) -> __m128i {
         }
     }
     let zero = _mm_set1_epi8(0).as_i8x16();
-    transmute::<i8x16, _>(simd_shuffle16_param!(
+    transmute::<i8x16, _>(simd_shuffle16!(
         zero,
         a.as_i8x16(),
         <const IMM8: i32> [
@@ -635,7 +635,7 @@ unsafe fn _mm_srli_si128_impl<const IMM8: i32>(a: __m128i) -> __m128i {
         }
     }
     let zero = _mm_set1_epi8(0).as_i8x16();
-    let x: i8x16 = simd_shuffle16_param!(
+    let x: i8x16 = simd_shuffle16!(
         a.as_i8x16(),
         zero,
         <const IMM8: i32> [
@@ -1391,7 +1391,7 @@ pub unsafe fn _mm_movemask_epi8(a: __m128i) -> i32 {
 pub unsafe fn _mm_shuffle_epi32<const IMM8: i32>(a: __m128i) -> __m128i {
     static_assert_imm8!(IMM8);
     let a = a.as_i32x4();
-    let x: i32x4 = simd_shuffle4_param!(
+    let x: i32x4 = simd_shuffle4!(
         a,
         a,
         <const IMM8: i32> [
@@ -1419,7 +1419,7 @@ pub unsafe fn _mm_shuffle_epi32<const IMM8: i32>(a: __m128i) -> __m128i {
 pub unsafe fn _mm_shufflehi_epi16<const IMM8: i32>(a: __m128i) -> __m128i {
     static_assert_imm8!(IMM8);
     let a = a.as_i16x8();
-    let x: i16x8 = simd_shuffle8_param!(
+    let x: i16x8 = simd_shuffle8!(
         a,
         a,
         <const IMM8: i32> [
@@ -1451,7 +1451,7 @@ pub unsafe fn _mm_shufflehi_epi16<const IMM8: i32>(a: __m128i) -> __m128i {
 pub unsafe fn _mm_shufflelo_epi16<const IMM8: i32>(a: __m128i) -> __m128i {
     static_assert_imm8!(IMM8);
     let a = a.as_i16x8();
-    let x: i16x8 = simd_shuffle8_param!(
+    let x: i16x8 = simd_shuffle8!(
         a,
         a,
         <const IMM8: i32> [
@@ -2653,7 +2653,7 @@ pub unsafe fn _mm_loadu_pd(mem_addr: *const f64) -> __m128d {
 #[stable(feature = "simd_x86", since = "1.27.0")]
 pub unsafe fn _mm_shuffle_pd<const MASK: i32>(a: __m128d, b: __m128d) -> __m128d {
     static_assert_imm8!(MASK);
-    simd_shuffle2_param!(a, b, <const MASK: i32> [MASK as u32 & 0b1, ((MASK as u32 >> 1) & 0b1) + 2])
+    simd_shuffle2!(a, b, <const MASK: i32> [MASK as u32 & 0b1, ((MASK as u32 >> 1) & 0b1) + 2])
 }
 
 /// Constructs a 128-bit floating-point vector of `[2 x double]`. The lower

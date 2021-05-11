@@ -19215,7 +19215,7 @@ pub unsafe fn _mm_maskz_srlv_epi64(k: __mmask8, a: __m128i, count: __m128i) -> _
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn _mm512_permute_ps<const MASK: i32>(a: __m512) -> __m512 {
     static_assert_imm8!(MASK);
-    simd_shuffle16_param!(
+    simd_shuffle16!(
         a,
         a,
         <const MASK: i32> [
@@ -19333,7 +19333,7 @@ pub unsafe fn _mm_maskz_permute_ps<const MASK: i32>(k: __mmask8, a: __m128) -> _
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn _mm512_permute_pd<const MASK: i32>(a: __m512d) -> __m512d {
     static_assert_imm8!(MASK);
-    simd_shuffle8_param!(
+    simd_shuffle8!(
         a,
         a,
         <const MASK: i32> [
@@ -19451,7 +19451,7 @@ pub unsafe fn _mm_maskz_permute_pd<const IMM2: i32>(k: __mmask8, a: __m128d) -> 
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn _mm512_permutex_epi64<const MASK: i32>(a: __m512i) -> __m512i {
     static_assert_imm8!(MASK);
-    simd_shuffle8_param!(
+    simd_shuffle8!(
         a,
         a,
         <const MASK: i32> [
@@ -19507,7 +19507,7 @@ pub unsafe fn _mm512_maskz_permutex_epi64<const MASK: i32>(k: __mmask8, a: __m51
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn _mm256_permutex_epi64<const MASK: i32>(a: __m256i) -> __m256i {
     static_assert_imm8!(MASK);
-    simd_shuffle4_param!(
+    simd_shuffle4!(
         a,
         a,
         <const MASK: i32> [
@@ -19559,7 +19559,7 @@ pub unsafe fn _mm256_maskz_permutex_epi64<const MASK: i32>(k: __mmask8, a: __m25
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn _mm512_permutex_pd<const MASK: i32>(a: __m512d) -> __m512d {
     static_assert_imm8!(MASK);
-    simd_shuffle8_param!(
+    simd_shuffle8!(
         a,
         a,
         <const MASK: i32> [
@@ -19613,7 +19613,7 @@ pub unsafe fn _mm512_maskz_permutex_pd<const MASK: i32>(k: __mmask8, a: __m512d)
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn _mm256_permutex_pd<const MASK: i32>(a: __m256d) -> __m256d {
     static_assert_imm8!(MASK);
-    simd_shuffle4_param!(
+    simd_shuffle4!(
         a,
         a,
         <const MASK: i32> [
@@ -20867,7 +20867,7 @@ pub unsafe fn _mm_mask2_permutex2var_pd(
 #[rustc_legacy_const_generics(1)]
 pub unsafe fn _mm512_shuffle_epi32<const MASK: _MM_PERM_ENUM>(a: __m512i) -> __m512i {
     static_assert_imm8!(MASK);
-    let r: i32x16 = simd_shuffle16_param!(
+    let r: i32x16 = simd_shuffle16!(
         a.as_i32x16(),
         a.as_i32x16(),
         <const MASK: _MM_PERM_ENUM> [
@@ -21003,7 +21003,7 @@ pub unsafe fn _mm_maskz_shuffle_epi32<const MASK: _MM_PERM_ENUM>(
 #[rustc_legacy_const_generics(2)]
 pub unsafe fn _mm512_shuffle_ps<const MASK: i32>(a: __m512, b: __m512) -> __m512 {
     static_assert_imm8!(MASK);
-    simd_shuffle16_param!(
+    simd_shuffle16!(
         a,
         b,
         <const MASK: i32> [
@@ -21140,7 +21140,7 @@ pub unsafe fn _mm_maskz_shuffle_ps<const MASK: i32>(k: __mmask8, a: __m128, b: _
 #[rustc_legacy_const_generics(2)]
 pub unsafe fn _mm512_shuffle_pd<const MASK: i32>(a: __m512d, b: __m512d) -> __m512d {
     static_assert_imm8!(MASK);
-    simd_shuffle8_param!(
+    simd_shuffle8!(
         a,
         b,
         <const MASK: i32> [
@@ -21275,7 +21275,7 @@ pub unsafe fn _mm512_shuffle_i32x4<const MASK: i32>(a: __m512i, b: __m512i) -> _
     static_assert_imm8!(MASK);
     let a = a.as_i32x16();
     let b = b.as_i32x16();
-    let r: i32x16 = simd_shuffle16_param!(
+    let r: i32x16 = simd_shuffle16!(
         a,
         b,
         <const MASK: i32> [
@@ -21347,7 +21347,7 @@ pub unsafe fn _mm256_shuffle_i32x4<const MASK: i32>(a: __m256i, b: __m256i) -> _
     static_assert_imm8!(MASK);
     let a = a.as_i32x8();
     let b = b.as_i32x8();
-    let r: i32x8 = simd_shuffle8_param!(
+    let r: i32x8 = simd_shuffle8!(
         a,
         b,
         <const MASK: i32> [
@@ -21411,7 +21411,7 @@ pub unsafe fn _mm512_shuffle_i64x2<const MASK: i32>(a: __m512i, b: __m512i) -> _
     static_assert_imm8!(MASK);
     let a = a.as_i64x8();
     let b = b.as_i64x8();
-    let r: i64x8 = simd_shuffle8_param!(
+    let r: i64x8 = simd_shuffle8!(
         a,
         b,
         <const MASK: i32> [
@@ -21475,7 +21475,7 @@ pub unsafe fn _mm256_shuffle_i64x2<const MASK: i32>(a: __m256i, b: __m256i) -> _
     static_assert_imm8!(MASK);
     let a = a.as_i64x4();
     let b = b.as_i64x4();
-    let r: i64x4 = simd_shuffle4_param!(
+    let r: i64x4 = simd_shuffle4!(
         a,
         b,
         <const MASK: i32> [
@@ -21535,7 +21535,7 @@ pub unsafe fn _mm512_shuffle_f32x4<const MASK: i32>(a: __m512, b: __m512) -> __m
     static_assert_imm8!(MASK);
     let a = a.as_f32x16();
     let b = b.as_f32x16();
-    let r: f32x16 = simd_shuffle16_param!(
+    let r: f32x16 = simd_shuffle16!(
         a,
         b,
         <const MASK: i32> [
@@ -21607,7 +21607,7 @@ pub unsafe fn _mm256_shuffle_f32x4<const MASK: i32>(a: __m256, b: __m256) -> __m
     static_assert_imm8!(MASK);
     let a = a.as_f32x8();
     let b = b.as_f32x8();
-    let r: f32x8 = simd_shuffle8_param!(
+    let r: f32x8 = simd_shuffle8!(
         a,
         b,
         <const MASK: i32> [
@@ -21671,7 +21671,7 @@ pub unsafe fn _mm512_shuffle_f64x2<const MASK: i32>(a: __m512d, b: __m512d) -> _
     static_assert_imm8!(MASK);
     let a = a.as_f64x8();
     let b = b.as_f64x8();
-    let r: f64x8 = simd_shuffle8_param!(
+    let r: f64x8 = simd_shuffle8!(
         a,
         b,
         <const MASK: i32> [
@@ -21735,7 +21735,7 @@ pub unsafe fn _mm256_shuffle_f64x2<const MASK: i32>(a: __m256d, b: __m256d) -> _
     static_assert_imm8!(MASK);
     let a = a.as_f64x4();
     let b = b.as_f64x4();
-    let r: f64x4 = simd_shuffle4_param!(
+    let r: f64x4 = simd_shuffle4!(
         a,
         b,
         <const MASK: i32> [

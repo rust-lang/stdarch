@@ -1011,7 +1011,7 @@ pub const fn _MM_SHUFFLE(z: u32, y: u32, x: u32, w: u32) -> i32 {
 #[stable(feature = "simd_x86", since = "1.27.0")]
 pub unsafe fn _mm_shuffle_ps<const MASK: i32>(a: __m128, b: __m128) -> __m128 {
     static_assert_imm8!(MASK);
-    simd_shuffle4_param!(
+    simd_shuffle4!(
         a,
         b,
         <const MASK: i32> [
