@@ -71,7 +71,7 @@ macro_rules! static_assert {
         struct Validate<const $imm: $ty>();
         impl<const $imm: $ty> Validate<$imm> {
             const VALID: () = {
-                assert!($e, "Assertion failed");
+                assert!($e, concat!("Assertion failed: ", stringify!($e)));
             };
         }
         let _ = Validate::<$imm>::VALID;
