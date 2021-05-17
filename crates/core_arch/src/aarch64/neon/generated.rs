@@ -5992,7 +5992,7 @@ pub unsafe fn vqmovnd_s64(a: i64) -> i32 {
 pub unsafe fn vqmovnd_u64(a: u64) -> u32 {
     #[allow(improper_ctypes)]
     extern "C" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.scalar.uqxtn.i32.EXT_")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.scalar.uqxtn.i32.i64")]
         fn vqmovnd_u64_(a: u64) -> u32;
     }
     vqmovnd_u64_(a)

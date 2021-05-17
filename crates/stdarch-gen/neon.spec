@@ -3425,7 +3425,7 @@ link-aarch64 = scalar.sqxtn._EXT2_._EXT_
 generate i64:i32
 
 aarch64 = uqxtn
-link-aarch64 = scalar.uqxtn._EXT2_.EXT_
+link-aarch64 = scalar.uqxtn._EXT2_._EXT_
 generate u64:u32
 
 /// Signed saturating extract narrow
