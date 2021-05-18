@@ -7866,12 +7866,7 @@ pub unsafe fn vsetq_lane_f64<const LANE: i32>(a: f64, b: float64x2_t) -> float64
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(sshl))]
 pub unsafe fn vshld_s64(a: i64, b: i64) -> i64 {
-    #[allow(improper_ctypes)]
-    extern "C" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.sshl.i64")]
-        fn vshld_s64_(a: i64, b: i64) -> i64;
-    }
-    vshld_s64_(a, b)
+    transmute(vshl_s64(transmute(a), transmute(b)))
 }
 
 /// Unsigned Shift left
@@ -7879,12 +7874,7 @@ pub unsafe fn vshld_s64(a: i64, b: i64) -> i64 {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ushl))]
 pub unsafe fn vshld_u64(a: u64, b: i64) -> u64 {
-    #[allow(improper_ctypes)]
-    extern "C" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ushl.i64")]
-        fn vshld_u64_(a: u64, b: i64) -> u64;
-    }
-    vshld_u64_(a, b)
+    transmute(vshl_u64(transmute(a), transmute(b)))
 }
 
 /// Signed shift left long
