@@ -19,7 +19,6 @@ features! {
     /// * `"fp16"` - FEAT_FP16
     /// * `"sve"` - FEAT_SVE
     /// * `"crc"` - FEAT_CRC
-    /// * `"crypto"` - Cryptographic Extension (AES + PMULL + SHA1 + SHA2-256)
     /// * `"lse"` - FEAT_LSE
     /// * `"lse2"` - FEAT_LSE2
     /// * `"rdm"` - FEAT_RDM
@@ -50,6 +49,7 @@ features! {
     /// * `"mte"` - FEAT_MTE
     /// * `"jsconv"` - FEAT_JSCVT
     /// * `"fcma"` - FEAT_FCMA
+    /// * `"aes"` - FEAT_AES
     /// * `"sha2"` - FEAT_SHA1 & FEAT_SHA256
     /// * `"sha3"` - FEAT_SHA512 & FEAT_SHA3
     /// * `"sm4"` - FEAT_SM3 & FEAT_SM4
@@ -77,8 +77,6 @@ features! {
     /// FEAT_SVE (Scalable Vector Extension)
     @FEATURE: #[unstable(feature = "stdsimd", issue = "27731")] crc: "crc";
     /// FEAT_CRC32 (Cyclic Redundancy Check)
-    @FEATURE: #[unstable(feature = "stdsimd", issue = "27731")] crypto: "crypto";
-    /// Cryptographic Extension (AES + PMULL + SHA1 + SHA2-256)
     @FEATURE: #[unstable(feature = "stdsimd", issue = "27731")] lse: "lse";
     /// FEAT_LSE (Large System Extension - atomics)
     @FEATURE: #[unstable(feature = "stdsimd", issue = "27731")] lse2: "lse2";
@@ -139,6 +137,8 @@ features! {
     /// FEAT_JSCVT (JavaScript float conversion instructions)
     @FEATURE: #[unstable(feature = "stdsimd", issue = "27731")] fcma: "fcma";
     /// FEAT_FCMA (float complex number operations)
+    @FEATURE: #[unstable(feature = "stdsimd", issue = "27731")] aes: "aes";
+    /// FEAT_AES (AES instructions)
     @FEATURE: #[unstable(feature = "stdsimd", issue = "27731")] sha2: "sha2";
     /// FEAT_SHA1 & FEAT_SHA256 (SHA1 & SHA2-256 instructions)
     @FEATURE: #[unstable(feature = "stdsimd", issue = "27731")] sha3: "sha3";

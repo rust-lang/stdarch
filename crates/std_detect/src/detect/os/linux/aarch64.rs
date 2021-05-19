@@ -261,6 +261,7 @@ impl AtHwcap {
             enable_feature(Feature::f64mm, self.svef64mm && self.sve && asimd);
 
             // Cryptographic extensions require ASIMD
+            enable_feature(Feature::aes, self.aes && asimd);
             enable_feature(Feature::sha2, self.sha1 && self.sha2 && asimd);
             // SHA512/SHA3 require SHA1 & SHA256
             enable_feature(Feature::sha3, self.sha512 && self.sha3 && self.sha1 && self.sha2 && asimd);
@@ -274,12 +275,6 @@ impl AtHwcap {
             enable_feature(Feature::sve2_sm4, self.svesm4 && sve2 && self.sm3 && self.sm4);
             enable_feature(Feature::sve2_sha3, self.svesha3 && sve2 && self.sha512 && self.sha3 && self.sha1 && self.sha2);
             enable_feature(Feature::sve2_bitperm, self.svebitperm && self.sve2);
-
-            // Crypto is specified as AES + PMULL + SHA1 + SHA2 per LLVM/hosts.cpp
-            enable_feature(
-                Feature::crypto,
-                self.aes && self.pmull && self.sha1 && self.sha2,
-            );
         }
         value
     }
