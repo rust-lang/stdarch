@@ -1,6 +1,6 @@
 //! Run-time feature detection for Aarch64 on FreeBSD.
 
-pub use super::super::aarch64::detect_features;
+pub(crate) use super::super::aarch64::detect_features;
 
 #[cfg(test)]
 mod tests {
