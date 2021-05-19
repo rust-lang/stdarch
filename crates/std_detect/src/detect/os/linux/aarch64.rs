@@ -241,7 +241,7 @@ impl AtHwcap {
             enable_feature(Feature::jsconv, self.jscvt && self.fp);
             enable_feature(Feature::rdm, self.asimdrdm);
             enable_feature(Feature::dotprod, self.asimddp);
-            enable_feature(Feature::fptoint, self.frint);
+            enable_feature(Feature::frintts, self.frint);
 
             // FEAT_I8MM & FEAT_BF16 also include optional SVE components which linux exposes
             // separately. We ignore that distinction here.

@@ -25,7 +25,8 @@ fn arm_linux() {
     println!("neon: {}", is_arm_feature_detected!("neon"));
     println!("pmull: {}", is_arm_feature_detected!("pmull"));
     println!("crc: {}", is_arm_feature_detected!("crc"));
-    println!("crypto: {}", is_arm_feature_detected!("crypto"));
+    println!("aes: {}", is_arm_feature_detected!("aes"));
+    println!("sha2: {}", is_arm_feature_detected!("sha2"));
 }
 
 #[test]
@@ -41,7 +42,6 @@ fn aarch64_linux() {
     println!("fp16: {}", is_aarch64_feature_detected!("fp16"));
     println!("sve: {}", is_aarch64_feature_detected!("sve"));
     println!("crc: {}", is_aarch64_feature_detected!("crc"));
-    println!("crypto: {}", is_aarch64_feature_detected!("crypto"));
     println!("lse: {}", is_aarch64_feature_detected!("lse"));
     println!("lse2: {}", is_aarch64_feature_detected!("lse2"));
     println!("rdm: {}", is_aarch64_feature_detected!("rdm"));
@@ -62,7 +62,7 @@ fn aarch64_linux() {
     println!("sve2-sm4: {}", is_aarch64_feature_detected!("sve2-sm4"));
     println!("sve2-sha3: {}", is_aarch64_feature_detected!("sve2-sha3"));
     println!("sve2-bitperm: {}", is_aarch64_feature_detected!("sve2-bitperm"));
-    println!("fptoint: {}", is_aarch64_feature_detected!("fptoint"));
+    println!("frintts: {}", is_aarch64_feature_detected!("frintts"));
     println!("i8mm: {}", is_aarch64_feature_detected!("i8mm"));
     println!("f32mm: {}", is_aarch64_feature_detected!("f32mm"));
     println!("f64mm: {}", is_aarch64_feature_detected!("f64mm"));
@@ -72,6 +72,7 @@ fn aarch64_linux() {
     println!("mte: {}", is_aarch64_feature_detected!("mte"));
     println!("jsconv: {}", is_aarch64_feature_detected!("jsconv"));
     println!("fcma: {}", is_aarch64_feature_detected!("fcma"));
+    println!("aes: {}", is_aarch64_feature_detected!("aes"));
     println!("sha2: {}", is_aarch64_feature_detected!("sha2"));
     println!("sha3: {}", is_aarch64_feature_detected!("sha3"));
     println!("sm4: {}", is_aarch64_feature_detected!("sm4"));

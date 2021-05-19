@@ -40,7 +40,7 @@ features! {
     /// * `"sve2-sm4"` - FEAT_SVE2_SM4
     /// * `"sve2-sha3"` - FEAT_SVE2_SHA3
     /// * `"sve2-bitperm"` - FEAT_SVE2_BitPerm
-    /// * `"fptoint"` - FEAT_FRINTTS
+    /// * `"frintts"` - FEAT_FRINTTS
     /// * `"i8mm"` - FEAT_I8MM
     /// * `"f32mm"` - FEAT_F32MM
     /// * `"f64mm"` - FEAT_F64MM
@@ -119,7 +119,7 @@ features! {
     /// FEAT_SVE_SHA3 (SVE2 SHA3 crypto)
     @FEATURE: #[unstable(feature = "stdsimd", issue = "27731")] sve2_bitperm: "sve2-bitperm";
     /// FEAT_SVE_BitPerm (SVE2 bit permutation instructions)
-    @FEATURE: #[unstable(feature = "stdsimd", issue = "27731")] fptoint: "fptoint";
+    @FEATURE: #[unstable(feature = "stdsimd", issue = "27731")] frintts: "frintts";
     /// FEAT_FRINTTS (float to integer rounding instructions)
     @FEATURE: #[unstable(feature = "stdsimd", issue = "27731")] i8mm: "i8mm";
     /// FEAT_I8MM (integer matrix multiplication, plus ASIMD support)
