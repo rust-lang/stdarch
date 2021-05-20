@@ -2408,9 +2408,11 @@ b = 6.0, 4.0, 7.0, 8.0
 c = 2.0, 3.0, 4.0, 5.0
 validate 20.0, 30.0, 40.0, 50.0
 
-aarch64 = fmla
 link-aarch64 = llvm.fma._EXT_
-generate float64x*_t
+aarch64 = fmadd
+generate float64x1_t
+aarch64 = fmla
+generate float64x2_t
 
 target = fp-armv8
 arm = vfma
@@ -2426,8 +2428,10 @@ b = 6.0, 4.0, 7.0, 8.0
 c = 8.0
 validate 50.0, 35.0, 60.0, 69.0
 
+aarch64 = fmadd
+generate float64x1_t:float64x1_t:f64:float64x1_t
 aarch64 = fmla
-generate float64x1_t:float64x1_t:f64:float64x1_t, float64x2_t:float64x2_t:f64:float64x2_t
+generate float64x2_t:float64x2_t:f64:float64x2_t
 
 target = fp-armv8
 arm = vfma
@@ -2447,7 +2451,10 @@ validate 14., 11., 18., 21.
 
 aarch64 = fmla
 generate float32x2_t, float32x2_t:float32x2_t:float32x4_t:float32x2_t, float32x4_t:float32x4_t:float32x2_t:float32x4_t, float32x4_t
-generate float64x1_t, float64x1_t:float64x1_t:float64x2_t:float64x1_t, float64x2_t:float64x2_t:float64x1_t:float64x2_t, float64x2_t
+aarch64 = fmadd
+generate float64x1_t
+aarch64 = fmla
+generate float64x1_t:float64x1_t:float64x2_t:float64x1_t, float64x2_t:float64x2_t:float64x1_t:float64x2_t, float64x2_t
 
 /// Floating-point fused multiply-add to accumulator
 name = vfma
@@ -2466,7 +2473,10 @@ aarch64 = fmla
 link-aarch64 = llvm.fma._EXT_:f32:f32:f32:f32
 generate f32:f32:float32x2_t:f32, f32:f32:float32x4_t:f32
 link-aarch64 = llvm.fma._EXT_:f64:f64:f64:f64
-generate f64:f64:float64x1_t:f64, f64:f64:float64x2_t:f64
+aarch64 = fmadd
+generate f64:f64:float64x1_t:f64
+aarch64 = fmla
+generate f64:f64:float64x2_t:f64
 
 /// Floating-point fused multiply-subtract from accumulator
 name = vfms
@@ -2477,8 +2487,10 @@ b = 6.0, 4.0, 7.0, 8.0
 c = 2.0, 3.0, 4.0, 5.0
 validate 8.0, 18.0, 12.0, 10.0
 
+aarch64 = fmsub
+generate float64x1_t
 aarch64 = fmls
-generate float64x*_t
+generate float64x2_t
 
 target = fp-armv8
 arm = vfms
@@ -2493,8 +2505,10 @@ b = 6.0, 4.0, 7.0, 8.0
 c = 8.0
 validate 2.0, 3.0, 4.0, 5.0
 
+aarch64 = fmsub
+generate float64x1_t:float64x1_t:f64:float64x1_t
 aarch64 = fmls
-generate float64x1_t:float64x1_t:f64:float64x1_t, float64x2_t:float64x2_t:f64:float64x2_t
+generate float64x2_t:float64x2_t:f64:float64x2_t
 
 target = fp-armv8
 arm = vfms
@@ -2514,7 +2528,10 @@ validate 2., 3., 4., 5.
 
 aarch64 = fmls
 generate float32x2_t, float32x2_t:float32x2_t:float32x4_t:float32x2_t, float32x4_t:float32x4_t:float32x2_t:float32x4_t, float32x4_t
-generate float64x1_t, float64x1_t:float64x1_t:float64x2_t:float64x1_t, float64x2_t:float64x2_t:float64x1_t:float64x2_t, float64x2_t
+aarch64 = fmsub
+generate float64x1_t
+aarch64 = fmls
+generate float64x1_t:float64x1_t:float64x2_t:float64x1_t, float64x2_t:float64x2_t:float64x1_t:float64x2_t, float64x2_t
 
 /// Floating-point fused multiply-subtract to accumulator
 name = vfms
@@ -2529,7 +2546,10 @@ validate 2.
 
 aarch64 = fmls
 generate f32:f32:float32x2_t:f32, f32:f32:float32x4_t:f32
-generate f64:f64:float64x1_t:f64, f64:f64:float64x2_t:f64
+aarch64 = fmsub
+generate f64:f64:float64x1_t:f64
+aarch64 = fmls
+generate f64:f64:float64x2_t:f64
 
 /// Divide
 name = vdiv

@@ -5014,7 +5014,7 @@ pub unsafe fn vmulxd_laneq_f64<const LANE: i32>(a: f64, b: float64x2_t) -> f64 {
 /// Floating-point fused Multiply-Add to accumulator(vector)
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(fmla))]
+#[cfg_attr(test, assert_instr(fmadd))]
 pub unsafe fn vfma_f64(a: float64x1_t, b: float64x1_t, c: float64x1_t) -> float64x1_t {
     #[allow(improper_ctypes)]
     extern "C" {
@@ -5040,7 +5040,7 @@ pub unsafe fn vfmaq_f64(a: float64x2_t, b: float64x2_t, c: float64x2_t) -> float
 /// Floating-point fused Multiply-Add to accumulator(vector)
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(fmla))]
+#[cfg_attr(test, assert_instr(fmadd))]
 pub unsafe fn vfma_n_f64(a: float64x1_t, b: float64x1_t, c: f64) -> float64x1_t {
     vfma_f64(a, b, vdup_n_f64(c))
 }
@@ -5096,7 +5096,7 @@ pub unsafe fn vfmaq_laneq_f32<const LANE: i32>(a: float32x4_t, b: float32x4_t, c
 /// Floating-point fused multiply-add to accumulator
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(fmla, LANE = 0))]
+#[cfg_attr(test, assert_instr(fmadd, LANE = 0))]
 #[rustc_legacy_const_generics(3)]
 pub unsafe fn vfma_lane_f64<const LANE: i32>(a: float64x1_t, b: float64x1_t, c: float64x1_t) -> float64x1_t {
     static_assert!(LANE : i32 where LANE == 0);
@@ -5168,7 +5168,7 @@ pub unsafe fn vfmas_laneq_f32<const LANE: i32>(a: f32, b: f32, c: float32x4_t) -
 /// Floating-point fused multiply-add to accumulator
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(fmla, LANE = 0))]
+#[cfg_attr(test, assert_instr(fmadd, LANE = 0))]
 #[rustc_legacy_const_generics(3)]
 pub unsafe fn vfmad_lane_f64<const LANE: i32>(a: f64, b: f64, c: float64x1_t) -> f64 {
     #[allow(improper_ctypes)]
@@ -5200,7 +5200,7 @@ pub unsafe fn vfmad_laneq_f64<const LANE: i32>(a: f64, b: f64, c: float64x2_t) -
 /// Floating-point fused multiply-subtract from accumulator
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(fmls))]
+#[cfg_attr(test, assert_instr(fmsub))]
 pub unsafe fn vfms_f64(a: float64x1_t, b: float64x1_t, c: float64x1_t) -> float64x1_t {
     let b: float64x1_t = simd_neg(b);
     vfma_f64(a, b, c)
@@ -5218,7 +5218,7 @@ pub unsafe fn vfmsq_f64(a: float64x2_t, b: float64x2_t, c: float64x2_t) -> float
 /// Floating-point fused Multiply-subtract to accumulator(vector)
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(fmls))]
+#[cfg_attr(test, assert_instr(fmsub))]
 pub unsafe fn vfms_n_f64(a: float64x1_t, b: float64x1_t, c: f64) -> float64x1_t {
     vfms_f64(a, b, vdup_n_f64(c))
 }
@@ -5274,7 +5274,7 @@ pub unsafe fn vfmsq_laneq_f32<const LANE: i32>(a: float32x4_t, b: float32x4_t, c
 /// Floating-point fused multiply-subtract to accumulator
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(fmls, LANE = 0))]
+#[cfg_attr(test, assert_instr(fmsub, LANE = 0))]
 #[rustc_legacy_const_generics(3)]
 pub unsafe fn vfms_lane_f64<const LANE: i32>(a: float64x1_t, b: float64x1_t, c: float64x1_t) -> float64x1_t {
     static_assert!(LANE : i32 where LANE == 0);
@@ -5332,7 +5332,7 @@ pub unsafe fn vfmss_laneq_f32<const LANE: i32>(a: f32, b: f32, c: float32x4_t) -
 /// Floating-point fused multiply-subtract to accumulator
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(fmls, LANE = 0))]
+#[cfg_attr(test, assert_instr(fmsub, LANE = 0))]
 #[rustc_legacy_const_generics(3)]
 pub unsafe fn vfmsd_lane_f64<const LANE: i32>(a: f64, b: f64, c: float64x1_t) -> f64 {
     vfmad_lane_f64::<LANE>(a, -b, c)
