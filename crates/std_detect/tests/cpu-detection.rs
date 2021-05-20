@@ -61,7 +61,10 @@ fn aarch64_linux() {
     println!("sve2-aes: {}", is_aarch64_feature_detected!("sve2-aes"));
     println!("sve2-sm4: {}", is_aarch64_feature_detected!("sve2-sm4"));
     println!("sve2-sha3: {}", is_aarch64_feature_detected!("sve2-sha3"));
-    println!("sve2-bitperm: {}", is_aarch64_feature_detected!("sve2-bitperm"));
+    println!(
+        "sve2-bitperm: {}",
+        is_aarch64_feature_detected!("sve2-bitperm")
+    );
     println!("frintts: {}", is_aarch64_feature_detected!("frintts"));
     println!("i8mm: {}", is_aarch64_feature_detected!("i8mm"));
     println!("f32mm: {}", is_aarch64_feature_detected!("f32mm"));

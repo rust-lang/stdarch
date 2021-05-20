@@ -24,57 +24,57 @@ pub(crate) fn detect_features() -> cache::Initializer {
 ///
 /// [hwcap]: https://github.com/torvalds/linux/blob/master/arch/arm64/include/uapi/asm/hwcap.h
 struct AtHwcap {
-    fp: bool,         // 0
-    asimd: bool,      // 1
-//  evtstrm: bool,    // 2 No LLVM support
-    aes: bool,        // 3
-    pmull: bool,      // 4
-    sha1: bool,       // 5
-    sha2: bool,       // 6
-    crc32: bool,      // 7
-    atomics: bool,    // 8
-    fphp: bool,       // 9
-    asimdhp: bool,    // 10
-//  cpuid: bool,      // 11 No LLVM support
-    asimdrdm: bool,   // 12
-    jscvt: bool,      // 13
-    fcma: bool,       // 14
-    lrcpc: bool,      // 15
-    dcpop: bool,      // 16
-    sha3: bool,       // 17
-    sm3: bool,        // 18
-    sm4: bool,        // 19
-    asimddp: bool,    // 20
-    sha512: bool,     // 21
-    sve: bool,        // 22
-    fhm: bool,        // 23
-    dit: bool,        // 24
-    uscat: bool,      // 25
-    ilrcpc: bool,     // 26
-    flagm: bool,      // 27
-    ssbs: bool,       // 28
-    sb: bool,         // 29
-    paca: bool,       // 30
-    pacg: bool,       // 31
-    dcpodp: bool,     // 32
-    sve2: bool,       // 33
-    sveaes: bool,     // 34
-//  svepmull: bool,   // 35 No LLVM support
+    fp: bool,    // 0
+    asimd: bool, // 1
+    // evtstrm: bool, // 2 No LLVM support
+    aes: bool,     // 3
+    pmull: bool,   // 4
+    sha1: bool,    // 5
+    sha2: bool,    // 6
+    crc32: bool,   // 7
+    atomics: bool, // 8
+    fphp: bool,    // 9
+    asimdhp: bool, // 10
+    // cpuid: bool, // 11 No LLVM support
+    asimdrdm: bool, // 12
+    jscvt: bool,    // 13
+    fcma: bool,     // 14
+    lrcpc: bool,    // 15
+    dcpop: bool,    // 16
+    sha3: bool,     // 17
+    sm3: bool,      // 18
+    sm4: bool,      // 19
+    asimddp: bool,  // 20
+    sha512: bool,   // 21
+    sve: bool,      // 22
+    fhm: bool,      // 23
+    dit: bool,      // 24
+    uscat: bool,    // 25
+    ilrcpc: bool,   // 26
+    flagm: bool,    // 27
+    ssbs: bool,     // 28
+    sb: bool,       // 29
+    paca: bool,     // 30
+    pacg: bool,     // 31
+    dcpodp: bool,   // 32
+    sve2: bool,     // 33
+    sveaes: bool,   // 34
+    // svepmull: bool, // 35 No LLVM support
     svebitperm: bool, // 36
     svesha3: bool,    // 37
     svesm4: bool,     // 38
-//  flagm2: bool,     // 39 No LLVM support
-    frint: bool,      // 40
-//  svei8mm: bool,    // 41 See i8mm feature
-    svef32mm: bool,   // 42
-    svef64mm: bool,   // 43
-//  svebf16: bool,    // 44 See bf16 feature
-    i8mm: bool,       // 45
-    bf16: bool,       // 46
-//  dgh: bool,        // 47 No LLVM support
-    rng: bool,        // 48
-    bti: bool,        // 49
-    mte: bool,        // 50
+    // flagm2: bool, // 39 No LLVM support
+    frint: bool, // 40
+    // svei8mm: bool, // 41 See i8mm feature
+    svef32mm: bool, // 42
+    svef64mm: bool, // 43
+    // svebf16: bool, // 44 See bf16 feature
+    i8mm: bool, // 45
+    bf16: bool, // 46
+    // dgh: bool, // 47 No LLVM support
+    rng: bool, // 48
+    bti: bool, // 49
+    mte: bool, // 50
 }
 
 impl From<auxvec::AuxVec> for AtHwcap {
@@ -83,7 +83,7 @@ impl From<auxvec::AuxVec> for AtHwcap {
         AtHwcap {
             fp: bit::test(auxv.hwcap, 0),
             asimd: bit::test(auxv.hwcap, 1),
-//          evtstrm: bit::test(auxv.hwcap, 2),
+            // evtstrm: bit::test(auxv.hwcap, 2),
             aes: bit::test(auxv.hwcap, 3),
             pmull: bit::test(auxv.hwcap, 4),
             sha1: bit::test(auxv.hwcap, 5),
@@ -92,7 +92,7 @@ impl From<auxvec::AuxVec> for AtHwcap {
             atomics: bit::test(auxv.hwcap, 8),
             fphp: bit::test(auxv.hwcap, 9),
             asimdhp: bit::test(auxv.hwcap, 10),
-//          cpuid: bit::test(auxv.hwcap, 11),
+            // cpuid: bit::test(auxv.hwcap, 11),
             asimdrdm: bit::test(auxv.hwcap, 12),
             jscvt: bit::test(auxv.hwcap, 13),
             fcma: bit::test(auxv.hwcap, 14),
@@ -116,19 +116,19 @@ impl From<auxvec::AuxVec> for AtHwcap {
             dcpodp: bit::test(auxv.hwcap, 32),
             sve2: bit::test(auxv.hwcap, 33),
             sveaes: bit::test(auxv.hwcap, 34),
-//          svepmull: bit::test(auxv.hwcap, 35),
+            // svepmull: bit::test(auxv.hwcap, 35),
             svebitperm: bit::test(auxv.hwcap, 36),
             svesha3: bit::test(auxv.hwcap, 37),
             svesm4: bit::test(auxv.hwcap, 38),
-//          flagm2: bit::test(auxv.hwcap, 39),
+            // flagm2: bit::test(auxv.hwcap, 39),
             frint: bit::test(auxv.hwcap, 40),
-//          svei8mm: bit::test(auxv.hwcap, 41),
+            // svei8mm: bit::test(auxv.hwcap, 41),
             svef32mm: bit::test(auxv.hwcap, 42),
             svef64mm: bit::test(auxv.hwcap, 43),
-//          svebf16: bit::test(auxv.hwcap, 44),
+            // svebf16: bit::test(auxv.hwcap, 44),
             i8mm: bit::test(auxv.hwcap, 45),
             bf16: bit::test(auxv.hwcap, 46),
-//          dgh: bit::test(auxv.hwcap, 47),
+            // dgh: bit::test(auxv.hwcap, 47),
             rng: bit::test(auxv.hwcap, 48),
             bti: bit::test(auxv.hwcap, 49),
             mte: bit::test(auxv.hwcap, 50),
@@ -147,7 +147,7 @@ impl From<super::cpuinfo::CpuInfo> for AtHwcap {
             // cover that yet.
             fp: f.has("fp"),
             asimd: f.has("asimd"),
-//          evtstrm: f.has("evtstrm"),
+            // evtstrm: f.has("evtstrm"),
             aes: f.has("aes"),
             pmull: f.has("pmull"),
             sha1: f.has("sha1"),
@@ -156,7 +156,7 @@ impl From<super::cpuinfo::CpuInfo> for AtHwcap {
             atomics: f.has("atomics"),
             fphp: f.has("fphp"),
             asimdhp: f.has("asimdhp"),
-//          cpuid: f.has("cpuid"),
+            // cpuid: f.has("cpuid"),
             asimdrdm: f.has("asimdrdm"),
             jscvt: f.has("jscvt"),
             fcma: f.has("fcma"),
@@ -180,19 +180,19 @@ impl From<super::cpuinfo::CpuInfo> for AtHwcap {
             dcpodp: f.has("dcpodp"),
             sve2: f.has("sve2"),
             sveaes: f.has("sveaes"),
-//          svepmull: f.has("svepmull"),
+            // svepmull: f.has("svepmull"),
             svebitperm: f.has("svebitperm"),
             svesha3: f.has("svesha3"),
             svesm4: f.has("svesm4"),
-//          flagm2: f.has("flagm2"),
+            // flagm2: f.has("flagm2"),
             frint: f.has("frint"),
-//          svei8mm: f.has("svei8mm"),
+            // svei8mm: f.has("svei8mm"),
             svef32mm: f.has("svef32mm"),
             svef64mm: f.has("svef64mm"),
-//          svebf16: f.has("svebf16"),
+            // svebf16: f.has("svebf16"),
             i8mm: f.has("i8mm"),
             bf16: f.has("bf16"),
-//          dgh: f.has("dgh"),
+            // dgh: f.has("dgh"),
             rng: f.has("rng"),
             bti: f.has("bti"),
             mte: f.has("mte"),
@@ -264,7 +264,10 @@ impl AtHwcap {
             enable_feature(Feature::aes, self.aes && asimd);
             enable_feature(Feature::sha2, self.sha1 && self.sha2 && asimd);
             // SHA512/SHA3 require SHA1 & SHA256
-            enable_feature(Feature::sha3, self.sha512 && self.sha3 && self.sha1 && self.sha2 && asimd);
+            enable_feature(
+                Feature::sha3,
+                self.sha512 && self.sha3 && self.sha1 && self.sha2 && asimd,
+            );
             enable_feature(Feature::sm4, self.sm3 && self.sm4 && asimd);
 
             // SVE2 requires SVE
@@ -272,8 +275,14 @@ impl AtHwcap {
             enable_feature(Feature::sve2, sve2);
             // SVE2 extensions require SVE2 and crypto features
             enable_feature(Feature::sve2_aes, self.sveaes && sve2 && self.aes);
-            enable_feature(Feature::sve2_sm4, self.svesm4 && sve2 && self.sm3 && self.sm4);
-            enable_feature(Feature::sve2_sha3, self.svesha3 && sve2 && self.sha512 && self.sha3 && self.sha1 && self.sha2);
+            enable_feature(
+                Feature::sve2_sm4,
+                self.svesm4 && sve2 && self.sm3 && self.sm4,
+            );
+            enable_feature(
+                Feature::sve2_sha3,
+                self.svesha3 && sve2 && self.sha512 && self.sha3 && self.sha1 && self.sha2,
+            );
             enable_feature(Feature::sve2_bitperm, self.svebitperm && self.sve2);
         }
         value
