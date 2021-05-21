@@ -210,7 +210,8 @@ mod tests {
     use std::mem;
     use stdarch_test::simd_test;
 
-    #[simd_test(enable = "crypto")]
+    #[cfg_attr(bootstrap, simd_test(enable = "crypto"))]
+    #[cfg_attr(not(bootstrap), simd_test(enable = "aes"))]
     unsafe fn test_vaeseq_u8() {
         let data = mem::transmute(u8x16::new(1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8));
         let key = mem::transmute(u8x16::new(0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7));
