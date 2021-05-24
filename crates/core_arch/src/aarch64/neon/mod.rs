@@ -803,8 +803,8 @@ pub unsafe fn vld1q_f64(ptr: *const f64) -> float64x2_t {
 #[allow(clippy::cast_ptr_alignment)]
 pub unsafe fn vst1_s8(ptr: *mut i8, a: int8x8_t) {
     copy_nonoverlapping(
-        &a as *const int8x8_t as *const u8,
-        ptr as *mut u8,
+        &a as *const int8x8_t as *const i8,
+        ptr as *mut i8,
         size_of::<int8x8_t>(),
     )
 }
@@ -816,8 +816,8 @@ pub unsafe fn vst1_s8(ptr: *mut i8, a: int8x8_t) {
 #[allow(clippy::cast_ptr_alignment)]
 pub unsafe fn vst1q_s8(ptr: *mut i8, a: int8x16_t) {
     copy_nonoverlapping(
-        &a as *const int8x16_t as *const u8,
-        ptr as *mut u8,
+        &a as *const int8x16_t as *const i8,
+        ptr as *mut i8,
         size_of::<int8x16_t>(),
     )
 }
@@ -829,8 +829,8 @@ pub unsafe fn vst1q_s8(ptr: *mut i8, a: int8x16_t) {
 #[allow(clippy::cast_ptr_alignment)]
 pub unsafe fn vst1_s16(ptr: *mut i16, a: int16x4_t) {
     copy_nonoverlapping(
-        &a as *const int16x4_t as *const u8,
-        ptr as *mut u8,
+        &a as *const int16x4_t as *const i16,
+        ptr as *mut i16,
         size_of::<int16x4_t>(),
     )
 }
@@ -842,8 +842,8 @@ pub unsafe fn vst1_s16(ptr: *mut i16, a: int16x4_t) {
 #[allow(clippy::cast_ptr_alignment)]
 pub unsafe fn vst1q_s16(ptr: *mut i16, a: int16x8_t) {
     copy_nonoverlapping(
-        &a as *const int16x8_t as *const u8,
-        ptr as *mut u8,
+        &a as *const int16x8_t as *const i16,
+        ptr as *mut i16,
         size_of::<int16x8_t>(),
     )
 }
@@ -855,8 +855,8 @@ pub unsafe fn vst1q_s16(ptr: *mut i16, a: int16x8_t) {
 #[allow(clippy::cast_ptr_alignment)]
 pub unsafe fn vst1_s32(ptr: *mut i32, a: int32x2_t) {
     copy_nonoverlapping(
-        &a as *const int32x2_t as *const u8,
-        ptr as *mut u8,
+        &a as *const int32x2_t as *const i32,
+        ptr as *mut i32,
         size_of::<int32x2_t>(),
     )
 }
@@ -868,8 +868,8 @@ pub unsafe fn vst1_s32(ptr: *mut i32, a: int32x2_t) {
 #[allow(clippy::cast_ptr_alignment)]
 pub unsafe fn vst1q_s32(ptr: *mut i32, a: int32x4_t) {
     copy_nonoverlapping(
-        &a as *const int32x4_t as *const u8,
-        ptr as *mut u8,
+        &a as *const int32x4_t as *const i32,
+        ptr as *mut i32,
         size_of::<int32x4_t>(),
     )
 }
@@ -881,8 +881,8 @@ pub unsafe fn vst1q_s32(ptr: *mut i32, a: int32x4_t) {
 #[allow(clippy::cast_ptr_alignment)]
 pub unsafe fn vst1_s64(ptr: *mut i64, a: int64x1_t) {
     copy_nonoverlapping(
-        &a as *const int64x1_t as *const u8,
-        ptr as *mut u8,
+        &a as *const int64x1_t as *const i64,
+        ptr as *mut i64,
         size_of::<int64x1_t>(),
     )
 }
@@ -894,8 +894,8 @@ pub unsafe fn vst1_s64(ptr: *mut i64, a: int64x1_t) {
 #[allow(clippy::cast_ptr_alignment)]
 pub unsafe fn vst1q_s64(ptr: *mut i64, a: int64x2_t) {
     copy_nonoverlapping(
-        &a as *const int64x2_t as *const u8,
-        ptr as *mut u8,
+        &a as *const int64x2_t as *const i64,
+        ptr as *mut i64,
         size_of::<int64x2_t>(),
     )
 }
@@ -933,8 +933,8 @@ pub unsafe fn vst1q_u8(ptr: *mut u8, a: uint8x16_t) {
 #[allow(clippy::cast_ptr_alignment)]
 pub unsafe fn vst1_u16(ptr: *mut u16, a: uint16x4_t) {
     copy_nonoverlapping(
-        &a as *const uint16x4_t as *const u8,
-        ptr as *mut u8,
+        &a as *const uint16x4_t as *const u16,
+        ptr as *mut u16,
         size_of::<uint16x4_t>(),
     )
 }
@@ -946,8 +946,8 @@ pub unsafe fn vst1_u16(ptr: *mut u16, a: uint16x4_t) {
 #[allow(clippy::cast_ptr_alignment)]
 pub unsafe fn vst1q_u16(ptr: *mut u16, a: uint16x8_t) {
     copy_nonoverlapping(
-        &a as *const uint16x8_t as *const u8,
-        ptr as *mut u8,
+        &a as *const uint16x8_t as *const u16,
+        ptr as *mut u16,
         size_of::<uint16x8_t>(),
     )
 }
@@ -959,8 +959,8 @@ pub unsafe fn vst1q_u16(ptr: *mut u16, a: uint16x8_t) {
 #[allow(clippy::cast_ptr_alignment)]
 pub unsafe fn vst1_u32(ptr: *mut u32, a: uint32x2_t) {
     copy_nonoverlapping(
-        &a as *const uint32x2_t as *const u8,
-        ptr as *mut u8,
+        &a as *const uint32x2_t as *const u32,
+        ptr as *mut u32,
         size_of::<uint32x2_t>(),
     )
 }
@@ -972,8 +972,8 @@ pub unsafe fn vst1_u32(ptr: *mut u32, a: uint32x2_t) {
 #[allow(clippy::cast_ptr_alignment)]
 pub unsafe fn vst1q_u32(ptr: *mut u32, a: uint32x4_t) {
     copy_nonoverlapping(
-        &a as *const uint32x4_t as *const u8,
-        ptr as *mut u8,
+        &a as *const uint32x4_t as *const u32,
+        ptr as *mut u32,
         size_of::<uint32x4_t>(),
     )
 }
@@ -985,8 +985,8 @@ pub unsafe fn vst1q_u32(ptr: *mut u32, a: uint32x4_t) {
 #[allow(clippy::cast_ptr_alignment)]
 pub unsafe fn vst1_u64(ptr: *mut u64, a: uint64x1_t) {
     copy_nonoverlapping(
-        &a as *const uint64x1_t as *const u8,
-        ptr as *mut u8,
+        &a as *const uint64x1_t as *const u64,
+        ptr as *mut u64,
         size_of::<uint64x1_t>(),
     )
 }
@@ -998,8 +998,8 @@ pub unsafe fn vst1_u64(ptr: *mut u64, a: uint64x1_t) {
 #[allow(clippy::cast_ptr_alignment)]
 pub unsafe fn vst1q_u64(ptr: *mut u64, a: uint64x2_t) {
     copy_nonoverlapping(
-        &a as *const uint64x2_t as *const u8,
-        ptr as *mut u8,
+        &a as *const uint64x2_t as *const u64,
+        ptr as *mut u64,
         size_of::<uint64x2_t>(),
     )
 }
@@ -1011,8 +1011,8 @@ pub unsafe fn vst1q_u64(ptr: *mut u64, a: uint64x2_t) {
 #[allow(clippy::cast_ptr_alignment)]
 pub unsafe fn vst1_p8(ptr: *mut p8, a: poly8x8_t) {
     copy_nonoverlapping(
-        &a as *const poly8x8_t as *const u8,
-        ptr as *mut u8,
+        &a as *const poly8x8_t as *const p8,
+        ptr as *mut p8,
         size_of::<poly8x8_t>(),
     )
 }
@@ -1024,8 +1024,8 @@ pub unsafe fn vst1_p8(ptr: *mut p8, a: poly8x8_t) {
 #[allow(clippy::cast_ptr_alignment)]
 pub unsafe fn vst1q_p8(ptr: *mut p8, a: poly8x16_t) {
     copy_nonoverlapping(
-        &a as *const poly8x16_t as *const u8,
-        ptr as *mut u8,
+        &a as *const poly8x16_t as *const p8,
+        ptr as *mut p8,
         size_of::<poly8x16_t>(),
     )
 }
@@ -1037,8 +1037,8 @@ pub unsafe fn vst1q_p8(ptr: *mut p8, a: poly8x16_t) {
 #[allow(clippy::cast_ptr_alignment)]
 pub unsafe fn vst1_p16(ptr: *mut p16, a: poly16x4_t) {
     copy_nonoverlapping(
-        &a as *const poly16x4_t as *const u8,
-        ptr as *mut u8,
+        &a as *const poly16x4_t as *const p16,
+        ptr as *mut p16,
         size_of::<poly16x4_t>(),
     )
 }
@@ -1050,8 +1050,8 @@ pub unsafe fn vst1_p16(ptr: *mut p16, a: poly16x4_t) {
 #[allow(clippy::cast_ptr_alignment)]
 pub unsafe fn vst1q_p16(ptr: *mut p16, a: poly16x8_t) {
     copy_nonoverlapping(
-        &a as *const poly16x8_t as *const u8,
-        ptr as *mut u8,
+        &a as *const poly16x8_t as *const p16,
+        ptr as *mut p16,
         size_of::<poly16x8_t>(),
     )
 }
@@ -1063,8 +1063,8 @@ pub unsafe fn vst1q_p16(ptr: *mut p16, a: poly16x8_t) {
 #[allow(clippy::cast_ptr_alignment)]
 pub unsafe fn vst1_f32(ptr: *mut f32, a: float32x2_t) {
     copy_nonoverlapping(
-        &a as *const float32x2_t as *const u8,
-        ptr as *mut u8,
+        &a as *const float32x2_t as *const f32,
+        ptr as *mut f32,
         size_of::<float32x2_t>(),
     )
 }
@@ -1076,8 +1076,8 @@ pub unsafe fn vst1_f32(ptr: *mut f32, a: float32x2_t) {
 #[allow(clippy::cast_ptr_alignment)]
 pub unsafe fn vst1q_f32(ptr: *mut f32, a: float32x4_t) {
     copy_nonoverlapping(
-        &a as *const float32x4_t as *const u8,
-        ptr as *mut u8,
+        &a as *const float32x4_t as *const f32,
+        ptr as *mut f32,
         size_of::<float32x4_t>(),
     )
 }

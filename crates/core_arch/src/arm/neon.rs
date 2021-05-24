@@ -1,7 +1,7 @@
 use crate::core_arch::arm_shared::neon::*;
 use crate::core_arch::simd::{f32x4, i32x4, u32x4};
 use crate::core_arch::simd_llvm::*;
-use crate::mem::transmute;
+use crate::mem::{align_of, transmute};
 
 #[cfg(test)]
 use stdarch_test::assert_instr;
@@ -10,8 +10,6 @@ use stdarch_test::assert_instr;
 pub(crate) type p8 = u8;
 #[allow(non_camel_case_types)]
 pub(crate) type p16 = u16;
-
-use crate::mem::align_of;
 
 #[allow(improper_ctypes)]
 extern "C" {
