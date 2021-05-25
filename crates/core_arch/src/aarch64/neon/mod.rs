@@ -1061,6 +1061,32 @@ pub unsafe fn vst1q_p16(ptr: *mut p16, a: poly16x8_t) {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(str))]
 #[allow(clippy::cast_ptr_alignment)]
+pub unsafe fn vst1_p64(ptr: *mut p64, a: poly64x1_t) {
+    copy_nonoverlapping(
+        &a as *const poly64x1_t as *const p64,
+        ptr as *mut p64,
+        size_of::<poly64x1_t>(),
+    )
+}
+
+// Store multiple single-element structures from one, two, three, or four registers.
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(str))]
+#[allow(clippy::cast_ptr_alignment)]
+pub unsafe fn vst1q_p64(ptr: *mut p64, a: poly64x2_t) {
+    copy_nonoverlapping(
+        &a as *const poly64x2_t as *const p64,
+        ptr as *mut p64,
+        size_of::<poly64x2_t>(),
+    )
+}
+
+// Store multiple single-element structures from one, two, three, or four registers.
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(str))]
+#[allow(clippy::cast_ptr_alignment)]
 pub unsafe fn vst1_f32(ptr: *mut f32, a: float32x2_t) {
     copy_nonoverlapping(
         &a as *const float32x2_t as *const f32,
@@ -1079,6 +1105,32 @@ pub unsafe fn vst1q_f32(ptr: *mut f32, a: float32x4_t) {
         &a as *const float32x4_t as *const f32,
         ptr as *mut f32,
         size_of::<float32x4_t>(),
+    )
+}
+
+// Store multiple single-element structures from one, two, three, or four registers.
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(str))]
+#[allow(clippy::cast_ptr_alignment)]
+pub unsafe fn vst1_f64(ptr: *mut f64, a: float64x1_t) {
+    copy_nonoverlapping(
+        &a as *const float64x1_t as *const f64,
+        ptr as *mut f64,
+        size_of::<float64x1_t>(),
+    )
+}
+
+// Store multiple single-element structures from one, two, three, or four registers.
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(str))]
+#[allow(clippy::cast_ptr_alignment)]
+pub unsafe fn vst1q_f64(ptr: *mut f64, a: float64x2_t) {
+    copy_nonoverlapping(
+        &a as *const float64x2_t as *const f64,
+        ptr as *mut f64,
+        size_of::<float64x2_t>(),
     )
 }
 
@@ -4895,6 +4947,52 @@ mod tests {
         let r: u16 = vaddlvq_u8(transmute(a));
         let e = 136_u16;
         assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vst1_p64() {
+        let mut vals = [0_u64; 2];
+        let a = u64x1::new(1);
+
+        vst1_p64(vals[1..].as_mut_ptr(), transmute(a));
+
+        assert_eq!(vals[0], 0);
+        assert_eq!(vals[1], 1);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vst1q_p64() {
+        let mut vals = [0_u64; 3];
+        let a = u64x2::new(1, 2);
+
+        vst1q_p64(vals[1..].as_mut_ptr(), transmute(a));
+
+        assert_eq!(vals[0], 0);
+        assert_eq!(vals[1], 1);
+        assert_eq!(vals[2], 2);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vst1_f64() {
+        let mut vals = [0_f64; 2];
+        let a = f64x1::new(1.);
+
+        vst1_f64(vals[1..].as_mut_ptr(), transmute(a));
+
+        assert_eq!(vals[0], 0.);
+        assert_eq!(vals[1], 1.);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vst1q_f64() {
+        let mut vals = [0_f64; 3];
+        let a = f64x2::new(1., 2.);
+
+        vst1q_f64(vals[1..].as_mut_ptr(), transmute(a));
+
+        assert_eq!(vals[0], 0.);
+        assert_eq!(vals[1], 1.);
+        assert_eq!(vals[2], 2.);
     }
 }
 
