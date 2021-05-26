@@ -51,10 +51,13 @@ extern "C" {
 #[cfg(test)]
 use stdarch_test::assert_instr;
 
+// Rust compilers without 8a57820bca64a252489790a57cb5ea23db6f9198 need crypto (hence the bootstrap check)
+// LLVM builds without b8baa2a9132498ea286dbb0d03f005760ecc6fdb need crypto for arm (hence the target_arch check)
+
 /// AES single round encryption.
 #[inline]
-#[cfg_attr(bootstrap, target_feature(enable = "crypto"))]
-#[cfg_attr(not(bootstrap), target_feature(enable = "aes"))]
+#[cfg_attr(any(bootstrap, target_arch = "arm"), target_feature(enable = "crypto"))]
+#[cfg_attr(not(any(bootstrap, target_arch = "arm")), target_feature(enable = "aes"))]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v8"))]
 #[cfg_attr(test, assert_instr(aese))]
 pub unsafe fn vaeseq_u8(data: uint8x16_t, key: uint8x16_t) -> uint8x16_t {
@@ -63,8 +66,8 @@ pub unsafe fn vaeseq_u8(data: uint8x16_t, key: uint8x16_t) -> uint8x16_t {
 
 /// AES single round decryption.
 #[inline]
-#[cfg_attr(bootstrap, target_feature(enable = "crypto"))]
-#[cfg_attr(not(bootstrap), target_feature(enable = "aes"))]
+#[cfg_attr(any(bootstrap, target_arch = "arm"), target_feature(enable = "crypto"))]
+#[cfg_attr(not(any(bootstrap, target_arch = "arm")), target_feature(enable = "aes"))]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v8"))]
 #[cfg_attr(test, assert_instr(aesd))]
 pub unsafe fn vaesdq_u8(data: uint8x16_t, key: uint8x16_t) -> uint8x16_t {
@@ -73,8 +76,8 @@ pub unsafe fn vaesdq_u8(data: uint8x16_t, key: uint8x16_t) -> uint8x16_t {
 
 /// AES mix columns.
 #[inline]
-#[cfg_attr(bootstrap, target_feature(enable = "crypto"))]
-#[cfg_attr(not(bootstrap), target_feature(enable = "aes"))]
+#[cfg_attr(any(bootstrap, target_arch = "arm"), target_feature(enable = "crypto"))]
+#[cfg_attr(not(any(bootstrap, target_arch = "arm")), target_feature(enable = "aes"))]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v8"))]
 #[cfg_attr(test, assert_instr(aesmc))]
 pub unsafe fn vaesmcq_u8(data: uint8x16_t) -> uint8x16_t {
@@ -83,8 +86,8 @@ pub unsafe fn vaesmcq_u8(data: uint8x16_t) -> uint8x16_t {
 
 /// AES inverse mix columns.
 #[inline]
-#[cfg_attr(bootstrap, target_feature(enable = "crypto"))]
-#[cfg_attr(not(bootstrap), target_feature(enable = "aes"))]
+#[cfg_attr(any(bootstrap, target_arch = "arm"), target_feature(enable = "crypto"))]
+#[cfg_attr(not(any(bootstrap, target_arch = "arm")), target_feature(enable = "aes"))]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v8"))]
 #[cfg_attr(test, assert_instr(aesimc))]
 pub unsafe fn vaesimcq_u8(data: uint8x16_t) -> uint8x16_t {
@@ -93,8 +96,8 @@ pub unsafe fn vaesimcq_u8(data: uint8x16_t) -> uint8x16_t {
 
 /// SHA1 fixed rotate.
 #[inline]
-#[cfg_attr(bootstrap, target_feature(enable = "crypto"))]
-#[cfg_attr(not(bootstrap), target_feature(enable = "sha2"))]
+#[cfg_attr(any(bootstrap, target_arch = "arm"), target_feature(enable = "crypto"))]
+#[cfg_attr(not(any(bootstrap, target_arch = "arm")), target_feature(enable = "sha2"))]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v8"))]
 #[cfg_attr(test, assert_instr(sha1h))]
 pub unsafe fn vsha1h_u32(hash_e: u32) -> u32 {
@@ -103,8 +106,8 @@ pub unsafe fn vsha1h_u32(hash_e: u32) -> u32 {
 
 /// SHA1 hash update accelerator, choose.
 #[inline]
-#[cfg_attr(bootstrap, target_feature(enable = "crypto"))]
-#[cfg_attr(not(bootstrap), target_feature(enable = "sha2"))]
+#[cfg_attr(any(bootstrap, target_arch = "arm"), target_feature(enable = "crypto"))]
+#[cfg_attr(not(any(bootstrap, target_arch = "arm")), target_feature(enable = "sha2"))]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v8"))]
 #[cfg_attr(test, assert_instr(sha1c))]
 pub unsafe fn vsha1cq_u32(hash_abcd: uint32x4_t, hash_e: u32, wk: uint32x4_t) -> uint32x4_t {
@@ -113,8 +116,8 @@ pub unsafe fn vsha1cq_u32(hash_abcd: uint32x4_t, hash_e: u32, wk: uint32x4_t) ->
 
 /// SHA1 hash update accelerator, majority.
 #[inline]
-#[cfg_attr(bootstrap, target_feature(enable = "crypto"))]
-#[cfg_attr(not(bootstrap), target_feature(enable = "sha2"))]
+#[cfg_attr(any(bootstrap, target_arch = "arm"), target_feature(enable = "crypto"))]
+#[cfg_attr(not(any(bootstrap, target_arch = "arm")), target_feature(enable = "sha2"))]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v8"))]
 #[cfg_attr(test, assert_instr(sha1m))]
 pub unsafe fn vsha1mq_u32(hash_abcd: uint32x4_t, hash_e: u32, wk: uint32x4_t) -> uint32x4_t {
@@ -123,8 +126,8 @@ pub unsafe fn vsha1mq_u32(hash_abcd: uint32x4_t, hash_e: u32, wk: uint32x4_t) ->
 
 /// SHA1 hash update accelerator, parity.
 #[inline]
-#[cfg_attr(bootstrap, target_feature(enable = "crypto"))]
-#[cfg_attr(not(bootstrap), target_feature(enable = "sha2"))]
+#[cfg_attr(any(bootstrap, target_arch = "arm"), target_feature(enable = "crypto"))]
+#[cfg_attr(not(any(bootstrap, target_arch = "arm")), target_feature(enable = "sha2"))]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v8"))]
 #[cfg_attr(test, assert_instr(sha1p))]
 pub unsafe fn vsha1pq_u32(hash_abcd: uint32x4_t, hash_e: u32, wk: uint32x4_t) -> uint32x4_t {
@@ -133,8 +136,8 @@ pub unsafe fn vsha1pq_u32(hash_abcd: uint32x4_t, hash_e: u32, wk: uint32x4_t) ->
 
 /// SHA1 schedule update accelerator, first part.
 #[inline]
-#[cfg_attr(bootstrap, target_feature(enable = "crypto"))]
-#[cfg_attr(not(bootstrap), target_feature(enable = "sha2"))]
+#[cfg_attr(any(bootstrap, target_arch = "arm"), target_feature(enable = "crypto"))]
+#[cfg_attr(not(any(bootstrap, target_arch = "arm")), target_feature(enable = "sha2"))]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v8"))]
 #[cfg_attr(test, assert_instr(sha1su0))]
 pub unsafe fn vsha1su0q_u32(w0_3: uint32x4_t, w4_7: uint32x4_t, w8_11: uint32x4_t) -> uint32x4_t {
@@ -143,8 +146,8 @@ pub unsafe fn vsha1su0q_u32(w0_3: uint32x4_t, w4_7: uint32x4_t, w8_11: uint32x4_
 
 /// SHA1 schedule update accelerator, second part.
 #[inline]
-#[cfg_attr(bootstrap, target_feature(enable = "crypto"))]
-#[cfg_attr(not(bootstrap), target_feature(enable = "sha2"))]
+#[cfg_attr(any(bootstrap, target_arch = "arm"), target_feature(enable = "crypto"))]
+#[cfg_attr(not(any(bootstrap, target_arch = "arm")), target_feature(enable = "sha2"))]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v8"))]
 #[cfg_attr(test, assert_instr(sha1su1))]
 pub unsafe fn vsha1su1q_u32(tw0_3: uint32x4_t, w12_15: uint32x4_t) -> uint32x4_t {
@@ -153,8 +156,8 @@ pub unsafe fn vsha1su1q_u32(tw0_3: uint32x4_t, w12_15: uint32x4_t) -> uint32x4_t
 
 /// SHA256 hash update accelerator.
 #[inline]
-#[cfg_attr(bootstrap, target_feature(enable = "crypto"))]
-#[cfg_attr(not(bootstrap), target_feature(enable = "sha2"))]
+#[cfg_attr(any(bootstrap, target_arch = "arm"), target_feature(enable = "crypto"))]
+#[cfg_attr(not(any(bootstrap, target_arch = "arm")), target_feature(enable = "sha2"))]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v8"))]
 #[cfg_attr(test, assert_instr(sha256h))]
 pub unsafe fn vsha256hq_u32(
@@ -167,8 +170,8 @@ pub unsafe fn vsha256hq_u32(
 
 /// SHA256 hash update accelerator, upper part.
 #[inline]
-#[cfg_attr(bootstrap, target_feature(enable = "crypto"))]
-#[cfg_attr(not(bootstrap), target_feature(enable = "sha2"))]
+#[cfg_attr(any(bootstrap, target_arch = "arm"), target_feature(enable = "crypto"))]
+#[cfg_attr(not(any(bootstrap, target_arch = "arm")), target_feature(enable = "sha2"))]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v8"))]
 #[cfg_attr(test, assert_instr(sha256h2))]
 pub unsafe fn vsha256h2q_u32(
@@ -181,8 +184,8 @@ pub unsafe fn vsha256h2q_u32(
 
 /// SHA256 schedule update accelerator, first part.
 #[inline]
-#[cfg_attr(bootstrap, target_feature(enable = "crypto"))]
-#[cfg_attr(not(bootstrap), target_feature(enable = "sha2"))]
+#[cfg_attr(any(bootstrap, target_arch = "arm"), target_feature(enable = "crypto"))]
+#[cfg_attr(not(any(bootstrap, target_arch = "arm")), target_feature(enable = "sha2"))]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v8"))]
 #[cfg_attr(test, assert_instr(sha256su0))]
 pub unsafe fn vsha256su0q_u32(w0_3: uint32x4_t, w4_7: uint32x4_t) -> uint32x4_t {
@@ -191,8 +194,8 @@ pub unsafe fn vsha256su0q_u32(w0_3: uint32x4_t, w4_7: uint32x4_t) -> uint32x4_t 
 
 /// SHA256 schedule update accelerator, second part.
 #[inline]
-#[cfg_attr(bootstrap, target_feature(enable = "crypto"))]
-#[cfg_attr(not(bootstrap), target_feature(enable = "sha2"))]
+#[cfg_attr(any(bootstrap, target_arch = "arm"), target_feature(enable = "crypto"))]
+#[cfg_attr(not(any(bootstrap, target_arch = "arm")), target_feature(enable = "sha2"))]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v8"))]
 #[cfg_attr(test, assert_instr(sha256su1))]
 pub unsafe fn vsha256su1q_u32(
@@ -210,8 +213,8 @@ mod tests {
     use std::mem;
     use stdarch_test::simd_test;
 
-    #[cfg_attr(bootstrap, simd_test(enable = "crypto"))]
-    #[cfg_attr(not(bootstrap), simd_test(enable = "aes"))]
+    #[cfg_attr(any(bootstrap, target_arch = "arm"), simd_test(enable = "crypto"))]
+    #[cfg_attr(all(not(bootstrap), target_arch = "aarch64"), simd_test(enable = "aes"))]
     unsafe fn test_vaeseq_u8() {
         let data = mem::transmute(u8x16::new(1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8));
         let key = mem::transmute(u8x16::new(0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7));
@@ -224,8 +227,8 @@ mod tests {
         );
     }
 
-    #[cfg_attr(bootstrap, simd_test(enable = "crypto"))]
-    #[cfg_attr(not(bootstrap), simd_test(enable = "aes"))]
+    #[cfg_attr(any(bootstrap, target_arch = "arm"), simd_test(enable = "crypto"))]
+    #[cfg_attr(all(not(bootstrap), target_arch = "aarch64"), simd_test(enable = "aes"))]
     unsafe fn test_vaesdq_u8() {
         let data = mem::transmute(u8x16::new(1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8));
         let key = mem::transmute(u8x16::new(0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7));
@@ -236,8 +239,8 @@ mod tests {
         );
     }
 
-    #[cfg_attr(bootstrap, simd_test(enable = "crypto"))]
-    #[cfg_attr(not(bootstrap), simd_test(enable = "aes"))]
+    #[cfg_attr(any(bootstrap, target_arch = "arm"), simd_test(enable = "crypto"))]
+    #[cfg_attr(all(not(bootstrap), target_arch = "aarch64"), simd_test(enable = "aes"))]
     unsafe fn test_vaesmcq_u8() {
         let data = mem::transmute(u8x16::new(1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8));
         let r: u8x16 = mem::transmute(vaesmcq_u8(data));
@@ -247,8 +250,8 @@ mod tests {
         );
     }
 
-    #[cfg_attr(bootstrap, simd_test(enable = "crypto"))]
-    #[cfg_attr(not(bootstrap), simd_test(enable = "aes"))]
+    #[cfg_attr(any(bootstrap, target_arch = "arm"), simd_test(enable = "crypto"))]
+    #[cfg_attr(all(not(bootstrap), target_arch = "aarch64"), simd_test(enable = "aes"))]
     unsafe fn test_vaesimcq_u8() {
         let data = mem::transmute(u8x16::new(1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8));
         let r: u8x16 = mem::transmute(vaesimcq_u8(data));
@@ -258,15 +261,15 @@ mod tests {
         );
     }
 
-    #[cfg_attr(bootstrap, simd_test(enable = "crypto"))]
-    #[cfg_attr(not(bootstrap), simd_test(enable = "sha2"))]
+    #[cfg_attr(any(bootstrap, target_arch = "arm"), simd_test(enable = "crypto"))]
+    #[cfg_attr(not(any(bootstrap, target_arch = "arm")), simd_test(enable = "sha2"))]
     unsafe fn test_vsha1h_u32() {
         assert_eq!(vsha1h_u32(0x1234), 0x048d);
         assert_eq!(vsha1h_u32(0x5678), 0x159e);
     }
 
-    #[cfg_attr(bootstrap, simd_test(enable = "crypto"))]
-    #[cfg_attr(not(bootstrap), simd_test(enable = "sha2"))]
+    #[cfg_attr(any(bootstrap, target_arch = "arm"), simd_test(enable = "crypto"))]
+    #[cfg_attr(not(any(bootstrap, target_arch = "arm")), simd_test(enable = "sha2"))]
     unsafe fn test_vsha1su0q_u32() {
         let r: u32x4 = mem::transmute(vsha1su0q_u32(
             mem::transmute(u32x4::new(0x1234_u32, 0x5678_u32, 0x9abc_u32, 0xdef0_u32)),
@@ -276,8 +279,8 @@ mod tests {
         assert_eq!(r, u32x4::new(0x9abc, 0xdef0, 0x1234, 0x5678));
     }
 
-    #[cfg_attr(bootstrap, simd_test(enable = "crypto"))]
-    #[cfg_attr(not(bootstrap), simd_test(enable = "sha2"))]
+    #[cfg_attr(any(bootstrap, target_arch = "arm"), simd_test(enable = "crypto"))]
+    #[cfg_attr(not(any(bootstrap, target_arch = "arm")), simd_test(enable = "sha2"))]
     unsafe fn test_vsha1su1q_u32() {
         let r: u32x4 = mem::transmute(vsha1su1q_u32(
             mem::transmute(u32x4::new(0x1234, 0x5678, 0x9abc, 0xdef0)),
@@ -289,8 +292,8 @@ mod tests {
         );
     }
 
-    #[cfg_attr(bootstrap, simd_test(enable = "crypto"))]
-    #[cfg_attr(not(bootstrap), simd_test(enable = "sha2"))]
+    #[cfg_attr(any(bootstrap, target_arch = "arm"), simd_test(enable = "crypto"))]
+    #[cfg_attr(not(any(bootstrap, target_arch = "arm")), simd_test(enable = "sha2"))]
     unsafe fn test_vsha1cq_u32() {
         let r: u32x4 = mem::transmute(vsha1cq_u32(
             mem::transmute(u32x4::new(0x1234, 0x5678, 0x9abc, 0xdef0)),
@@ -303,8 +306,8 @@ mod tests {
         );
     }
 
-    #[cfg_attr(bootstrap, simd_test(enable = "crypto"))]
-    #[cfg_attr(not(bootstrap), simd_test(enable = "sha2"))]
+    #[cfg_attr(any(bootstrap, target_arch = "arm"), simd_test(enable = "crypto"))]
+    #[cfg_attr(not(any(bootstrap, target_arch = "arm")), simd_test(enable = "sha2"))]
     unsafe fn test_vsha1pq_u32() {
         let r: u32x4 = mem::transmute(vsha1pq_u32(
             mem::transmute(u32x4::new(0x1234, 0x5678, 0x9abc, 0xdef0)),
@@ -317,8 +320,8 @@ mod tests {
         );
     }
 
-    #[cfg_attr(bootstrap, simd_test(enable = "crypto"))]
-    #[cfg_attr(not(bootstrap), simd_test(enable = "sha2"))]
+    #[cfg_attr(any(bootstrap, target_arch = "arm"), simd_test(enable = "crypto"))]
+    #[cfg_attr(not(any(bootstrap, target_arch = "arm")), simd_test(enable = "sha2"))]
     unsafe fn test_vsha1mq_u32() {
         let r: u32x4 = mem::transmute(vsha1mq_u32(
             mem::transmute(u32x4::new(0x1234, 0x5678, 0x9abc, 0xdef0)),
@@ -331,8 +334,8 @@ mod tests {
         );
     }
 
-    #[cfg_attr(bootstrap, simd_test(enable = "crypto"))]
-    #[cfg_attr(not(bootstrap), simd_test(enable = "sha2"))]
+    #[cfg_attr(any(bootstrap, target_arch = "arm"), simd_test(enable = "crypto"))]
+    #[cfg_attr(not(any(bootstrap, target_arch = "arm")), simd_test(enable = "sha2"))]
     unsafe fn test_vsha256hq_u32() {
         let r: u32x4 = mem::transmute(vsha256hq_u32(
             mem::transmute(u32x4::new(0x1234, 0x5678, 0x9abc, 0xdef0)),
@@ -345,8 +348,8 @@ mod tests {
         );
     }
 
-    #[cfg_attr(bootstrap, simd_test(enable = "crypto"))]
-    #[cfg_attr(not(bootstrap), simd_test(enable = "sha2"))]
+    #[cfg_attr(any(bootstrap, target_arch = "arm"), simd_test(enable = "crypto"))]
+    #[cfg_attr(not(any(bootstrap, target_arch = "arm")), simd_test(enable = "sha2"))]
     unsafe fn test_vsha256h2q_u32() {
         let r: u32x4 = mem::transmute(vsha256h2q_u32(
             mem::transmute(u32x4::new(0x1234, 0x5678, 0x9abc, 0xdef0)),
@@ -359,8 +362,8 @@ mod tests {
         );
     }
 
-    #[cfg_attr(bootstrap, simd_test(enable = "crypto"))]
-    #[cfg_attr(not(bootstrap), simd_test(enable = "sha2"))]
+    #[cfg_attr(any(bootstrap, target_arch = "arm"), simd_test(enable = "crypto"))]
+    #[cfg_attr(not(any(bootstrap, target_arch = "arm")), simd_test(enable = "sha2"))]
     unsafe fn test_vsha256su0q_u32() {
         let r: u32x4 = mem::transmute(vsha256su0q_u32(
             mem::transmute(u32x4::new(0x1234, 0x5678, 0x9abc, 0xdef0)),
@@ -372,8 +375,8 @@ mod tests {
         );
     }
 
-    #[cfg_attr(bootstrap, simd_test(enable = "crypto"))]
-    #[cfg_attr(not(bootstrap), simd_test(enable = "sha2"))]
+    #[cfg_attr(any(bootstrap, target_arch = "arm"), simd_test(enable = "crypto"))]
+    #[cfg_attr(not(any(bootstrap, target_arch = "arm")), simd_test(enable = "sha2"))]
     unsafe fn test_vsha256su1q_u32() {
         let r: u32x4 = mem::transmute(vsha256su1q_u32(
             mem::transmute(u32x4::new(0x1234, 0x5678, 0x9abc, 0xdef0)),
