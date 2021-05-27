@@ -304,6 +304,8 @@ pub unsafe fn i16x8_load_extend_u8x8(m: *const u8) -> v128 {
     transmute(simd_cast::<_, simd::u16x8>(*(m as *const simd::u8x8)))
 }
 
+pub use i16x8_load_extend_u8x8 as u16x8_load_extend_u8x8;
+
 /// Load four 16-bit integers and sign extend each one to a 32-bit lane
 #[inline]
 #[cfg_attr(test, assert_instr(v128.load16x4_s))]
@@ -322,6 +324,8 @@ pub unsafe fn i32x4_load_extend_u16x4(m: *const u16) -> v128 {
     transmute(simd_cast::<_, simd::u32x4>(*(m as *const simd::u16x4)))
 }
 
+pub use i32x4_load_extend_u16x4 as u32x4_load_extend_u16x4;
+
 /// Load two 32-bit integers and sign extend each one to a 64-bit lane
 #[inline]
 #[cfg_attr(test, assert_instr(v128.load32x2_s))]
@@ -339,6 +343,8 @@ pub unsafe fn i64x2_load_extend_i32x2(m: *const i32) -> v128 {
 pub unsafe fn i64x2_load_extend_u32x2(m: *const u32) -> v128 {
     transmute(simd_cast::<_, simd::u64x2>(*(m as *const simd::u32x2)))
 }
+
+pub use i64x2_load_extend_u32x2 as u64x2_load_extend_u32x2;
 
 /// Load a single element and splat to all lanes of a v128 vector.
 #[inline]
@@ -798,6 +804,8 @@ pub unsafe fn i8x16_shuffle<
     transmute(shuf)
 }
 
+pub use i8x16_shuffle as u8x16_shuffle;
+
 /// Same as [`i8x16_shuffle`], except operates as if the inputs were eight
 /// 16-bit integers, only taking 8 indices to shuffle.
 ///
@@ -861,6 +869,8 @@ pub unsafe fn i16x8_shuffle<
     transmute(shuf)
 }
 
+pub use i16x8_shuffle as u16x8_shuffle;
+
 /// Same as [`i8x16_shuffle`], except operates as if the inputs were four
 /// 32-bit integers, only taking 4 indices to shuffle.
 ///
@@ -888,6 +898,8 @@ pub unsafe fn i32x4_shuffle<const I0: usize, const I1: usize, const I2: usize, c
     transmute(shuf)
 }
 
+pub use i32x4_shuffle as u32x4_shuffle;
+
 /// Same as [`i8x16_shuffle`], except operates as if the inputs were two
 /// 64-bit integers, only taking 2 indices to shuffle.
 ///
@@ -909,6 +921,8 @@ pub unsafe fn i64x2_shuffle<const I0: usize, const I1: usize>(a: v128, b: v128) 
     );
     transmute(shuf)
 }
+
+pub use i64x2_shuffle as u64x2_shuffle;
 
 /// Extracts a lane from a 128-bit vector interpreted as 16 packed i8 numbers.
 ///
@@ -1175,6 +1189,8 @@ pub unsafe fn i8x16_swizzle(a: v128, s: v128) -> v128 {
     transmute(llvm_swizzle(transmute(a), transmute(s)))
 }
 
+pub use i8x16_swizzle as u8x16_swizzle;
+
 /// Creates a vector with identical lanes.
 ///
 /// Constructs a vector with `x` replicated to all 16 lanes.
@@ -1309,6 +1325,9 @@ pub unsafe fn i8x16_ne(a: v128, b: v128) -> v128 {
     transmute(simd_ne::<_, simd::i8x16>(a.as_i8x16(), b.as_i8x16()))
 }
 
+pub use i8x16_eq as u8x16_eq;
+pub use i8x16_ne as u8x16_ne;
+
 /// Compares two 128-bit vectors as if they were two vectors of 16 eight-bit
 /// signed integers.
 ///
@@ -1438,6 +1457,9 @@ pub unsafe fn i16x8_eq(a: v128, b: v128) -> v128 {
 pub unsafe fn i16x8_ne(a: v128, b: v128) -> v128 {
     transmute(simd_ne::<_, simd::i16x8>(a.as_i16x8(), b.as_i16x8()))
 }
+
+pub use i16x8_eq as u16x8_eq;
+pub use i16x8_ne as u16x8_ne;
 
 /// Compares two 128-bit vectors as if they were two vectors of 8 sixteen-bit
 /// signed integers.
@@ -1569,6 +1591,9 @@ pub unsafe fn i32x4_ne(a: v128, b: v128) -> v128 {
     transmute(simd_ne::<_, simd::i32x4>(a.as_i32x4(), b.as_i32x4()))
 }
 
+pub use i32x4_eq as u32x4_eq;
+pub use i32x4_ne as u32x4_ne;
+
 /// Compares two 128-bit vectors as if they were two vectors of 4 thirty-two-bit
 /// signed integers.
 ///
@@ -1698,6 +1723,9 @@ pub unsafe fn i64x2_eq(a: v128, b: v128) -> v128 {
 pub unsafe fn i64x2_ne(a: v128, b: v128) -> v128 {
     transmute(simd_ne::<_, simd::i64x2>(a.as_i64x2(), b.as_i64x2()))
 }
+
+pub use i64x2_eq as u64x2_eq;
+pub use i64x2_ne as u64x2_ne;
 
 /// Compares two 128-bit vectors as if they were two vectors of 2 sixty-four-bit
 /// signed integers.
@@ -2011,6 +2039,8 @@ pub unsafe fn i8x16_popcnt(v: v128) -> v128 {
     transmute(llvm_popcnt(v.as_i8x16()))
 }
 
+pub use i8x16_popcnt as u8x16_popcnt;
+
 /// Returns true if all lanes are nonzero or false if any lane is nonzero.
 #[inline]
 #[cfg_attr(test, assert_instr(i8x16.all_true))]
@@ -2019,6 +2049,8 @@ pub unsafe fn i8x16_popcnt(v: v128) -> v128 {
 pub unsafe fn i8x16_all_true(a: v128) -> bool {
     llvm_i8x16_all_true(a.as_i8x16()) != 0
 }
+
+pub use i8x16_all_true as u8x16_all_true;
 
 /// Extracts the high bit for each lane in `a` and produce a scalar mask with
 /// all bits concatenated.
@@ -2029,6 +2061,8 @@ pub unsafe fn i8x16_all_true(a: v128) -> bool {
 pub unsafe fn i8x16_bitmask(a: v128) -> i32 {
     llvm_bitmask_i8x16(transmute(a))
 }
+
+pub use i8x16_bitmask as u8x16_bitmask;
 
 /// Converts two input vectors into a smaller lane vector by narrowing each
 /// lane.
@@ -2068,6 +2102,8 @@ pub unsafe fn i8x16_shl(a: v128, amt: u32) -> v128 {
     transmute(simd_shl(a.as_i8x16(), simd::i8x16::splat(amt as i8)))
 }
 
+pub use i8x16_shl as u8x16_shl;
+
 /// Shifts each lane to the right by the specified number of bits, sign
 /// extending.
 ///
@@ -2103,6 +2139,8 @@ pub unsafe fn i8x16_add(a: v128, b: v128) -> v128 {
     transmute(simd_add(a.as_i8x16(), b.as_i8x16()))
 }
 
+pub use i8x16_add as u8x16_add;
+
 /// Adds two 128-bit vectors as if they were two packed sixteen 8-bit signed
 /// integers, saturating on overflow to `i8::MAX`.
 #[inline]
@@ -2131,6 +2169,8 @@ pub unsafe fn u8x16_add_sat(a: v128, b: v128) -> v128 {
 pub unsafe fn i8x16_sub(a: v128, b: v128) -> v128 {
     transmute(simd_sub(a.as_i8x16(), b.as_i8x16()))
 }
+
+pub use i8x16_sub as u8x16_sub;
 
 /// Subtracts two 128-bit vectors as if they were two packed sixteen 8-bit
 /// signed integers, saturating on overflow to `i8::MIN`.
@@ -2229,6 +2269,8 @@ pub unsafe fn i16x8_extadd_pairwise_u8x16(a: v128) -> v128 {
     transmute(llvm_i16x8_extadd_pairwise_i8x16_u(a.as_i8x16()))
 }
 
+pub use i16x8_extadd_pairwise_u8x16 as u16x8_extadd_pairwise_u8x16;
+
 /// Lane-wise wrapping absolute value.
 #[inline]
 #[cfg_attr(test, assert_instr(i16x8.abs))]
@@ -2271,6 +2313,8 @@ pub unsafe fn i16x8_all_true(a: v128) -> bool {
     llvm_i16x8_all_true(a.as_i16x8()) != 0
 }
 
+pub use i16x8_all_true as u16x8_all_true;
+
 /// Extracts the high bit for each lane in `a` and produce a scalar mask with
 /// all bits concatenated.
 #[inline]
@@ -2280,6 +2324,8 @@ pub unsafe fn i16x8_all_true(a: v128) -> bool {
 pub unsafe fn i16x8_bitmask(a: v128) -> i32 {
     llvm_bitmask_i16x8(transmute(a))
 }
+
+pub use i16x8_bitmask as u16x8_bitmask;
 
 /// Converts two input vectors into a smaller lane vector by narrowing each
 /// lane.
@@ -2349,6 +2395,8 @@ pub unsafe fn i16x8_extend_low_u8x16(a: v128) -> v128 {
     )))
 }
 
+pub use i16x8_extend_low_u8x16 as u16x8_extend_low_u8x16;
+
 /// Converts high half of the smaller lane vector to a larger lane
 /// vector, zero extended.
 #[inline]
@@ -2363,6 +2411,8 @@ pub unsafe fn i16x8_extend_high_u8x16(a: v128) -> v128 {
     )))
 }
 
+pub use i16x8_extend_high_u8x16 as u16x8_extend_high_u8x16;
+
 /// Shifts each lane to the left by the specified number of bits.
 ///
 /// Only the low bits of the shift amount are used if the shift amount is
@@ -2374,6 +2424,8 @@ pub unsafe fn i16x8_extend_high_u8x16(a: v128) -> v128 {
 pub unsafe fn i16x8_shl(a: v128, amt: u32) -> v128 {
     transmute(simd_shl(a.as_i16x8(), simd::i16x8::splat(amt as i16)))
 }
+
+pub use i16x8_shl as u16x8_shl;
 
 /// Shifts each lane to the right by the specified number of bits, sign
 /// extending.
@@ -2410,6 +2462,8 @@ pub unsafe fn i16x8_add(a: v128, b: v128) -> v128 {
     transmute(simd_add(a.as_i16x8(), b.as_i16x8()))
 }
 
+pub use i16x8_add as u16x8_add;
+
 /// Adds two 128-bit vectors as if they were two packed eight 16-bit signed
 /// integers, saturating on overflow to `i16::MAX`.
 #[inline]
@@ -2438,6 +2492,8 @@ pub unsafe fn u16x8_add_sat(a: v128, b: v128) -> v128 {
 pub unsafe fn i16x8_sub(a: v128, b: v128) -> v128 {
     transmute(simd_sub(a.as_i16x8(), b.as_i16x8()))
 }
+
+pub use i16x8_sub as u16x8_sub;
 
 /// Subtracts two 128-bit vectors as if they were two packed eight 16-bit
 /// signed integers, saturating on overflow to `i16::MIN`.
@@ -2468,6 +2524,8 @@ pub unsafe fn u16x8_sub_sat(a: v128, b: v128) -> v128 {
 pub unsafe fn i16x8_mul(a: v128, b: v128) -> v128 {
     transmute(simd_mul(a.as_i16x8(), b.as_i16x8()))
 }
+
+pub use i16x8_mul as u16x8_mul;
 
 /// Compares lane-wise signed integers, and returns the minimum of
 /// each pair.
@@ -2562,6 +2620,8 @@ pub unsafe fn i16x8_extmul_low_u8x16(a: v128, b: v128) -> v128 {
     transmute(llvm_i16x8_extmul_low_i8x16_u(a.as_i8x16(), b.as_i8x16()))
 }
 
+pub use i16x8_extmul_low_u8x16 as u16x8_extmul_low_u8x16;
+
 /// Lane-wise integer extended multiplication producing twice wider result than
 /// the inputs.
 ///
@@ -2573,6 +2633,8 @@ pub unsafe fn i16x8_extmul_low_u8x16(a: v128, b: v128) -> v128 {
 pub unsafe fn i16x8_extmul_high_u8x16(a: v128, b: v128) -> v128 {
     transmute(llvm_i16x8_extmul_high_i8x16_u(a.as_i8x16(), b.as_i8x16()))
 }
+
+pub use i16x8_extmul_high_u8x16 as u16x8_extmul_high_u8x16;
 
 /// Lane-wise integer extended pairwise addition producing extended results
 /// (twice wider results than the inputs).
@@ -2593,6 +2655,8 @@ pub unsafe fn i32x4_extadd_pairwise_i16x8(a: v128) -> v128 {
 pub unsafe fn i32x4_extadd_pairwise_u16x8(a: v128) -> v128 {
     transmute(llvm_i32x4_extadd_pairwise_i16x8_u(a.as_i16x8()))
 }
+
+pub use i32x4_extadd_pairwise_u16x8 as u32x4_extadd_pairwise_u16x8;
 
 /// Lane-wise wrapping absolute value.
 #[inline]
@@ -2627,6 +2691,8 @@ pub unsafe fn i32x4_all_true(a: v128) -> bool {
     llvm_i32x4_all_true(a.as_i32x4()) != 0
 }
 
+pub use i32x4_all_true as u32x4_all_true;
+
 /// Extracts the high bit for each lane in `a` and produce a scalar mask with
 /// all bits concatenated.
 #[inline]
@@ -2636,6 +2702,8 @@ pub unsafe fn i32x4_all_true(a: v128) -> bool {
 pub unsafe fn i32x4_bitmask(a: v128) -> i32 {
     llvm_bitmask_i32x4(transmute(a))
 }
+
+pub use i32x4_bitmask as u32x4_bitmask;
 
 /// Converts low half of the smaller lane vector to a larger lane
 /// vector, sign extended.
@@ -2679,6 +2747,8 @@ pub unsafe fn i32x4_extend_low_u16x8(a: v128) -> v128 {
     )))
 }
 
+pub use i32x4_extend_low_u16x8 as u32x4_extend_low_u16x8;
+
 /// Converts high half of the smaller lane vector to a larger lane
 /// vector, zero extended.
 #[inline]
@@ -2693,6 +2763,8 @@ pub unsafe fn i32x4_extend_high_u16x8(a: v128) -> v128 {
     )))
 }
 
+pub use i32x4_extend_high_u16x8 as u32x4_extend_high_u16x8;
+
 /// Shifts each lane to the left by the specified number of bits.
 ///
 /// Only the low bits of the shift amount are used if the shift amount is
@@ -2704,6 +2776,8 @@ pub unsafe fn i32x4_extend_high_u16x8(a: v128) -> v128 {
 pub unsafe fn i32x4_shl(a: v128, amt: u32) -> v128 {
     transmute(simd_shl(a.as_i32x4(), simd::i32x4::splat(amt as i32)))
 }
+
+pub use i32x4_shl as u32x4_shl;
 
 /// Shifts each lane to the right by the specified number of bits, sign
 /// extending.
@@ -2740,6 +2814,8 @@ pub unsafe fn i32x4_add(a: v128, b: v128) -> v128 {
     transmute(simd_add(a.as_i32x4(), b.as_i32x4()))
 }
 
+pub use i32x4_add as u32x4_add;
+
 /// Subtracts two 128-bit vectors as if they were two packed four 32-bit integers.
 #[inline]
 #[cfg_attr(test, assert_instr(i32x4.sub))]
@@ -2748,6 +2824,8 @@ pub unsafe fn i32x4_add(a: v128, b: v128) -> v128 {
 pub unsafe fn i32x4_sub(a: v128, b: v128) -> v128 {
     transmute(simd_sub(a.as_i32x4(), b.as_i32x4()))
 }
+
+pub use i32x4_sub as u32x4_sub;
 
 /// Multiplies two 128-bit vectors as if they were two packed four 32-bit
 /// signed integers.
@@ -2758,6 +2836,8 @@ pub unsafe fn i32x4_sub(a: v128, b: v128) -> v128 {
 pub unsafe fn i32x4_mul(a: v128, b: v128) -> v128 {
     transmute(simd_mul(a.as_i32x4(), b.as_i32x4()))
 }
+
+pub use i32x4_mul as u32x4_mul;
 
 /// Compares lane-wise signed integers, and returns the minimum of
 /// each pair.
@@ -2853,6 +2933,8 @@ pub unsafe fn i32x4_extmul_low_u16x8(a: v128, b: v128) -> v128 {
     transmute(llvm_i32x4_extmul_low_i16x8_u(a.as_i16x8(), b.as_i16x8()))
 }
 
+pub use i32x4_extmul_low_u16x8 as u32x4_extmul_low_u16x8;
+
 /// Lane-wise integer extended multiplication producing twice wider result than
 /// the inputs.
 ///
@@ -2864,6 +2946,8 @@ pub unsafe fn i32x4_extmul_low_u16x8(a: v128, b: v128) -> v128 {
 pub unsafe fn i32x4_extmul_high_u16x8(a: v128, b: v128) -> v128 {
     transmute(llvm_i32x4_extmul_high_i16x8_u(a.as_i16x8(), b.as_i16x8()))
 }
+
+pub use i32x4_extmul_high_u16x8 as u32x4_extmul_high_u16x8;
 
 /// Lane-wise wrapping absolute value.
 #[inline]
@@ -2898,6 +2982,8 @@ pub unsafe fn i64x2_all_true(a: v128) -> bool {
     llvm_i64x2_all_true(a.as_i64x2()) != 0
 }
 
+pub use i64x2_all_true as u64x2_all_true;
+
 /// Extracts the high bit for each lane in `a` and produce a scalar mask with
 /// all bits concatenated.
 #[inline]
@@ -2907,6 +2993,8 @@ pub unsafe fn i64x2_all_true(a: v128) -> bool {
 pub unsafe fn i64x2_bitmask(a: v128) -> i32 {
     llvm_bitmask_i64x2(transmute(a))
 }
+
+pub use i64x2_bitmask as u64x2_bitmask;
 
 /// Converts low half of the smaller lane vector to a larger lane
 /// vector, sign extended.
@@ -2950,6 +3038,8 @@ pub unsafe fn i64x2_extend_low_u32x4(a: v128) -> v128 {
     )))
 }
 
+pub use i64x2_extend_low_u32x4 as u64x2_extend_low_u32x4;
+
 /// Converts high half of the smaller lane vector to a larger lane
 /// vector, zero extended.
 #[inline]
@@ -2964,6 +3054,8 @@ pub unsafe fn i64x2_extend_high_u32x4(a: v128) -> v128 {
     )))
 }
 
+pub use i64x2_extend_high_u32x4 as u64x2_extend_high_u32x4;
+
 /// Shifts each lane to the left by the specified number of bits.
 ///
 /// Only the low bits of the shift amount are used if the shift amount is
@@ -2975,6 +3067,8 @@ pub unsafe fn i64x2_extend_high_u32x4(a: v128) -> v128 {
 pub unsafe fn i64x2_shl(a: v128, amt: u32) -> v128 {
     transmute(simd_shl(a.as_i64x2(), simd::i64x2::splat(amt as i64)))
 }
+
+pub use i64x2_shl as u64x2_shl;
 
 /// Shifts each lane to the right by the specified number of bits, sign
 /// extending.
@@ -3011,6 +3105,8 @@ pub unsafe fn i64x2_add(a: v128, b: v128) -> v128 {
     transmute(simd_add(a.as_i64x2(), b.as_i64x2()))
 }
 
+pub use i64x2_add as u64x2_add;
+
 /// Subtracts two 128-bit vectors as if they were two packed two 64-bit integers.
 #[inline]
 #[cfg_attr(test, assert_instr(i64x2.sub))]
@@ -3020,6 +3116,8 @@ pub unsafe fn i64x2_sub(a: v128, b: v128) -> v128 {
     transmute(simd_sub(a.as_i64x2(), b.as_i64x2()))
 }
 
+pub use i64x2_sub as u64x2_sub;
+
 /// Multiplies two 128-bit vectors as if they were two packed two 64-bit integers.
 #[inline]
 #[cfg_attr(test, assert_instr(i64x2.mul))]
@@ -3028,6 +3126,8 @@ pub unsafe fn i64x2_sub(a: v128, b: v128) -> v128 {
 pub unsafe fn i64x2_mul(a: v128, b: v128) -> v128 {
     transmute(simd_mul(a.as_i64x2(), b.as_i64x2()))
 }
+
+pub use i64x2_mul as u64x2_mul;
 
 /// Lane-wise integer extended multiplication producing twice wider result than
 /// the inputs.
@@ -3065,6 +3165,8 @@ pub unsafe fn i64x2_extmul_low_u32x4(a: v128, b: v128) -> v128 {
     transmute(llvm_i64x2_extmul_low_i32x4_u(a.as_i32x4(), b.as_i32x4()))
 }
 
+pub use i64x2_extmul_low_u32x4 as u64x2_extmul_low_u32x4;
+
 /// Lane-wise integer extended multiplication producing twice wider result than
 /// the inputs.
 ///
@@ -3076,6 +3178,8 @@ pub unsafe fn i64x2_extmul_low_u32x4(a: v128, b: v128) -> v128 {
 pub unsafe fn i64x2_extmul_high_u32x4(a: v128, b: v128) -> v128 {
     transmute(llvm_i64x2_extmul_high_i32x4_u(a.as_i32x4(), b.as_i32x4()))
 }
+
+pub use i64x2_extmul_high_u32x4 as u64x2_extmul_high_u32x4;
 
 /// Lane-wise rounding to the nearest integral value not smaller than the input.
 #[inline]
