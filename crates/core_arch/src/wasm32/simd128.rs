@@ -718,7 +718,7 @@ pub const fn u64x2(a0: u64, a1: u64) -> v128 {
 #[cfg_attr(test, assert_instr(v128.const, a0 = 0.0, a1 = 1.0, a2 = 2.0, a3 = 3.0))]
 #[doc(alias("v128.const"))]
 #[stable(feature = "wasm_simd", since = "1.54.0")]
-#[rustc_const_unstable(feature = "wasm_simd_const", issue = "73288")]
+#[rustc_const_unstable(feature = "wasm_simd_const", issue = "72447")]
 pub const fn f32x4(a0: f32, a1: f32, a2: f32, a3: f32) -> v128 {
     simd::f32x4(a0, a1, a2, a3).v128()
 }
@@ -732,7 +732,7 @@ pub const fn f32x4(a0: f32, a1: f32, a2: f32, a3: f32) -> v128 {
 #[cfg_attr(test, assert_instr(v128.const, a0 = 0.0, a1 = 1.0))]
 #[doc(alias("v128.const"))]
 #[stable(feature = "wasm_simd", since = "1.54.0")]
-#[rustc_const_unstable(feature = "wasm_simd_const", issue = "73288")]
+#[rustc_const_unstable(feature = "wasm_simd_const", issue = "72447")]
 pub const fn f64x2(a0: f64, a1: f64) -> v128 {
     simd::f64x2(a0, a1).v128()
 }
