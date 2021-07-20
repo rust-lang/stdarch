@@ -84,7 +84,7 @@ fi
 case ${TARGET} in
     x86*)
         export STDARCH_DISABLE_ASSERT_INSTR=1
-        export RUSTFLAGS="${RUSTFLAGS} -C target-feature=+avx"
+        export RUSTFLAGS="${RUSTFLAGS} -C target-feature=+avx -C target-cpu=skylake"
         cargo_test "--release"
         ;;
     # FIXME: don't build anymore

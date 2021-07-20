@@ -114,7 +114,11 @@ pub fn assert_instr(
     // Use an ABI on Windows that passes SIMD values in registers, like what
     // happens on Unix (I think?) by default.
     let abi = if cfg!(windows) {
-        syn::LitStr::new("vectorcall", proc_macro2::Span::call_site())
+        if env!("TARGET").contains("x86_64") {
+            syn::LitStr::new("sysv64", proc_macro2::Span::call_site())
+        } else {
+            syn::LitStr::new("vectorcall", proc_macro2::Span::call_site())
+        }
     } else {
         syn::LitStr::new("C", proc_macro2::Span::call_site())
     };
