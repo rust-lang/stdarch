@@ -70,7 +70,7 @@ fn generate_rust_program(intrinsic: &Intrinsic) -> String {
 #![feature(link_llvm_intrinsics)]
 #![feature(stdsimd)]
 #![allow(overflowing_literals)]
-use core::arch::aarch64::*;
+use core_arch::arch::aarch64::*;
 
 fn main() {{
 {passes}
@@ -159,6 +159,8 @@ version = "{version}"
 authors = ["{authors}"]
 edition = "2018"
 [workspace]
+[dependencies]
+core_arch = {{ path = "../crates/core_arch" }}
 {binaries}"#,
                 version = env!("CARGO_PKG_VERSION"),
                 authors = env!("CARGO_PKG_AUTHORS"),
@@ -288,6 +290,11 @@ fn main() {
                 .is_none()
         })
         .filter(|i| i.arguments.iter().find(|a| a.name == "n").is_none())
+        // clang-12 fails to compile this intrinsic due to an error.
+        // fatal error: error in backend: Cannot select: 0x2b99c30: i64 = AArch64ISD::VSHL Constant:i64<1>, Constant:i32<1>
+        // 0x2b9a520: i64 = Constant<1>
+        // 0x2b9a248: i32 = Constant<1>
+        .filter(|i| !["vshld_s64", "vshld_u64"].contains(&i.name.as_str()))
         .collect::<Vec<_>>();
     intrinsics.dedup();
 
