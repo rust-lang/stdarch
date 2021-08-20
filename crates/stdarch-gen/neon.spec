@@ -2048,12 +2048,12 @@ generate *const i8:int8x8x2_t, *const i16:int16x4x2_t, *const i32:int32x2x2_t, *
 generate *const i8:int8x16x2_t, *const i16:int16x8x2_t, *const i32:int32x4x2_t, *const i64:int64x2x2_t
 
 link-aarch64 = ld1x3._EXT2_
-link-arm = ld1x3._EXT2_
+link-arm = vld1x3._EXT2_
 generate *const i8:int8x8x3_t, *const i16:int16x4x3_t, *const i32:int32x2x3_t, *const i64:int64x1x3_t
 generate *const i8:int8x16x3_t, *const i16:int16x8x3_t, *const i32:int32x4x3_t, *const i64:int64x2x3_t
 
 link-aarch64 = ld1x4._EXT2_
-link-arm = vldx4._EXT2_
+link-arm = vld1x4._EXT2_
 generate *const i8:int8x8x4_t, *const i16:int16x4x4_t, *const i32:int32x2x4_t, *const i64:int64x1x4_t
 generate *const i8:int8x16x4_t, *const i16:int16x8x4_t, *const i32:int32x4x4_t, *const i64:int64x2x4_t
 

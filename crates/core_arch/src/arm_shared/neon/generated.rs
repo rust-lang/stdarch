@@ -5995,7 +5995,7 @@ vld1q_s64_x2_(a)
 pub unsafe fn vld1_s8_x3(a: *const i8) -> int8x8x3_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.ld1x3.v8i8.p0i8")]
+        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vld1x3.v8i8.p0i8")]
         #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld1x3.v8i8.p0i8")]
         fn vld1_s8_x3_(a: *const i8) -> int8x8x3_t;
     }
@@ -6011,7 +6011,7 @@ vld1_s8_x3_(a)
 pub unsafe fn vld1_s16_x3(a: *const i16) -> int16x4x3_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.ld1x3.v4i16.p0i16")]
+        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vld1x3.v4i16.p0i16")]
         #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld1x3.v4i16.p0i16")]
         fn vld1_s16_x3_(a: *const i16) -> int16x4x3_t;
     }
@@ -6027,7 +6027,7 @@ vld1_s16_x3_(a)
 pub unsafe fn vld1_s32_x3(a: *const i32) -> int32x2x3_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.ld1x3.v2i32.p0i32")]
+        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vld1x3.v2i32.p0i32")]
         #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld1x3.v2i32.p0i32")]
         fn vld1_s32_x3_(a: *const i32) -> int32x2x3_t;
     }
@@ -6043,7 +6043,7 @@ vld1_s32_x3_(a)
 pub unsafe fn vld1_s64_x3(a: *const i64) -> int64x1x3_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.ld1x3.v1i64.p0i64")]
+        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vld1x3.v1i64.p0i64")]
         #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld1x3.v1i64.p0i64")]
         fn vld1_s64_x3_(a: *const i64) -> int64x1x3_t;
     }
@@ -6059,7 +6059,7 @@ vld1_s64_x3_(a)
 pub unsafe fn vld1q_s8_x3(a: *const i8) -> int8x16x3_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.ld1x3.v16i8.p0i8")]
+        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vld1x3.v16i8.p0i8")]
         #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld1x3.v16i8.p0i8")]
         fn vld1q_s8_x3_(a: *const i8) -> int8x16x3_t;
     }
@@ -6075,7 +6075,7 @@ vld1q_s8_x3_(a)
 pub unsafe fn vld1q_s16_x3(a: *const i16) -> int16x8x3_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.ld1x3.v8i16.p0i16")]
+        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vld1x3.v8i16.p0i16")]
         #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld1x3.v8i16.p0i16")]
         fn vld1q_s16_x3_(a: *const i16) -> int16x8x3_t;
     }
@@ -6091,7 +6091,7 @@ vld1q_s16_x3_(a)
 pub unsafe fn vld1q_s32_x3(a: *const i32) -> int32x4x3_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.ld1x3.v4i32.p0i32")]
+        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vld1x3.v4i32.p0i32")]
         #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld1x3.v4i32.p0i32")]
         fn vld1q_s32_x3_(a: *const i32) -> int32x4x3_t;
     }
@@ -6107,7 +6107,7 @@ vld1q_s32_x3_(a)
 pub unsafe fn vld1q_s64_x3(a: *const i64) -> int64x2x3_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.ld1x3.v2i64.p0i64")]
+        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vld1x3.v2i64.p0i64")]
         #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld1x3.v2i64.p0i64")]
         fn vld1q_s64_x3_(a: *const i64) -> int64x2x3_t;
     }
@@ -6123,7 +6123,7 @@ vld1q_s64_x3_(a)
 pub unsafe fn vld1_s8_x4(a: *const i8) -> int8x8x4_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vldx4.v8i8.p0i8")]
+        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vld1x4.v8i8.p0i8")]
         #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld1x4.v8i8.p0i8")]
         fn vld1_s8_x4_(a: *const i8) -> int8x8x4_t;
     }
@@ -6139,7 +6139,7 @@ vld1_s8_x4_(a)
 pub unsafe fn vld1_s16_x4(a: *const i16) -> int16x4x4_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vldx4.v4i16.p0i16")]
+        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vld1x4.v4i16.p0i16")]
         #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld1x4.v4i16.p0i16")]
         fn vld1_s16_x4_(a: *const i16) -> int16x4x4_t;
     }
@@ -6155,7 +6155,7 @@ vld1_s16_x4_(a)
 pub unsafe fn vld1_s32_x4(a: *const i32) -> int32x2x4_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vldx4.v2i32.p0i32")]
+        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vld1x4.v2i32.p0i32")]
         #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld1x4.v2i32.p0i32")]
         fn vld1_s32_x4_(a: *const i32) -> int32x2x4_t;
     }
@@ -6171,7 +6171,7 @@ vld1_s32_x4_(a)
 pub unsafe fn vld1_s64_x4(a: *const i64) -> int64x1x4_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vldx4.v1i64.p0i64")]
+        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vld1x4.v1i64.p0i64")]
         #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld1x4.v1i64.p0i64")]
         fn vld1_s64_x4_(a: *const i64) -> int64x1x4_t;
     }
@@ -6187,7 +6187,7 @@ vld1_s64_x4_(a)
 pub unsafe fn vld1q_s8_x4(a: *const i8) -> int8x16x4_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vldx4.v16i8.p0i8")]
+        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vld1x4.v16i8.p0i8")]
         #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld1x4.v16i8.p0i8")]
         fn vld1q_s8_x4_(a: *const i8) -> int8x16x4_t;
     }
@@ -6203,7 +6203,7 @@ vld1q_s8_x4_(a)
 pub unsafe fn vld1q_s16_x4(a: *const i16) -> int16x8x4_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vldx4.v8i16.p0i16")]
+        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vld1x4.v8i16.p0i16")]
         #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld1x4.v8i16.p0i16")]
         fn vld1q_s16_x4_(a: *const i16) -> int16x8x4_t;
     }
@@ -6219,7 +6219,7 @@ vld1q_s16_x4_(a)
 pub unsafe fn vld1q_s32_x4(a: *const i32) -> int32x4x4_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vldx4.v4i32.p0i32")]
+        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vld1x4.v4i32.p0i32")]
         #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld1x4.v4i32.p0i32")]
         fn vld1q_s32_x4_(a: *const i32) -> int32x4x4_t;
     }
@@ -6235,7 +6235,7 @@ vld1q_s32_x4_(a)
 pub unsafe fn vld1q_s64_x4(a: *const i64) -> int64x2x4_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vldx4.v2i64.p0i64")]
+        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vld1x4.v2i64.p0i64")]
         #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld1x4.v2i64.p0i64")]
         fn vld1q_s64_x4_(a: *const i64) -> int64x2x4_t;
     }
