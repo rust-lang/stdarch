@@ -5858,6 +5858,846 @@ pub unsafe fn vqaddq_s64(a: int64x2_t, b: int64x2_t) -> int64x2_t {
 vqaddq_s64_(a, b)
 }
 
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
+pub unsafe fn vld1_s8_x2(a: *const i8) -> int8x8x2_t {
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vld1x2.v8i8.p0i8")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld1x2.v8i8.p0i8")]
+        fn vld1_s8_x2_(a: *const i8) -> int8x8x2_t;
+    }
+vld1_s8_x2_(a)
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
+pub unsafe fn vld1_s16_x2(a: *const i16) -> int16x4x2_t {
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vld1x2.v4i16.p0i16")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld1x2.v4i16.p0i16")]
+        fn vld1_s16_x2_(a: *const i16) -> int16x4x2_t;
+    }
+vld1_s16_x2_(a)
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
+pub unsafe fn vld1_s32_x2(a: *const i32) -> int32x2x2_t {
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vld1x2.v2i32.p0i32")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld1x2.v2i32.p0i32")]
+        fn vld1_s32_x2_(a: *const i32) -> int32x2x2_t;
+    }
+vld1_s32_x2_(a)
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
+pub unsafe fn vld1_s64_x2(a: *const i64) -> int64x1x2_t {
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vld1x2.v1i64.p0i64")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld1x2.v1i64.p0i64")]
+        fn vld1_s64_x2_(a: *const i64) -> int64x1x2_t;
+    }
+vld1_s64_x2_(a)
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
+pub unsafe fn vld1q_s8_x2(a: *const i8) -> int8x16x2_t {
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vld1x2.v16i8.p0i8")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld1x2.v16i8.p0i8")]
+        fn vld1q_s8_x2_(a: *const i8) -> int8x16x2_t;
+    }
+vld1q_s8_x2_(a)
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
+pub unsafe fn vld1q_s16_x2(a: *const i16) -> int16x8x2_t {
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vld1x2.v8i16.p0i16")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld1x2.v8i16.p0i16")]
+        fn vld1q_s16_x2_(a: *const i16) -> int16x8x2_t;
+    }
+vld1q_s16_x2_(a)
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
+pub unsafe fn vld1q_s32_x2(a: *const i32) -> int32x4x2_t {
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vld1x2.v4i32.p0i32")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld1x2.v4i32.p0i32")]
+        fn vld1q_s32_x2_(a: *const i32) -> int32x4x2_t;
+    }
+vld1q_s32_x2_(a)
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
+pub unsafe fn vld1q_s64_x2(a: *const i64) -> int64x2x2_t {
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vld1x2.v2i64.p0i64")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld1x2.v2i64.p0i64")]
+        fn vld1q_s64_x2_(a: *const i64) -> int64x2x2_t;
+    }
+vld1q_s64_x2_(a)
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
+pub unsafe fn vld1_s8_x3(a: *const i8) -> int8x8x3_t {
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.ld1x3.v8i8.p0i8")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld1x3.v8i8.p0i8")]
+        fn vld1_s8_x3_(a: *const i8) -> int8x8x3_t;
+    }
+vld1_s8_x3_(a)
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
+pub unsafe fn vld1_s16_x3(a: *const i16) -> int16x4x3_t {
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.ld1x3.v4i16.p0i16")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld1x3.v4i16.p0i16")]
+        fn vld1_s16_x3_(a: *const i16) -> int16x4x3_t;
+    }
+vld1_s16_x3_(a)
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
+pub unsafe fn vld1_s32_x3(a: *const i32) -> int32x2x3_t {
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.ld1x3.v2i32.p0i32")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld1x3.v2i32.p0i32")]
+        fn vld1_s32_x3_(a: *const i32) -> int32x2x3_t;
+    }
+vld1_s32_x3_(a)
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
+pub unsafe fn vld1_s64_x3(a: *const i64) -> int64x1x3_t {
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.ld1x3.v1i64.p0i64")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld1x3.v1i64.p0i64")]
+        fn vld1_s64_x3_(a: *const i64) -> int64x1x3_t;
+    }
+vld1_s64_x3_(a)
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
+pub unsafe fn vld1q_s8_x3(a: *const i8) -> int8x16x3_t {
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.ld1x3.v16i8.p0i8")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld1x3.v16i8.p0i8")]
+        fn vld1q_s8_x3_(a: *const i8) -> int8x16x3_t;
+    }
+vld1q_s8_x3_(a)
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
+pub unsafe fn vld1q_s16_x3(a: *const i16) -> int16x8x3_t {
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.ld1x3.v8i16.p0i16")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld1x3.v8i16.p0i16")]
+        fn vld1q_s16_x3_(a: *const i16) -> int16x8x3_t;
+    }
+vld1q_s16_x3_(a)
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
+pub unsafe fn vld1q_s32_x3(a: *const i32) -> int32x4x3_t {
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.ld1x3.v4i32.p0i32")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld1x3.v4i32.p0i32")]
+        fn vld1q_s32_x3_(a: *const i32) -> int32x4x3_t;
+    }
+vld1q_s32_x3_(a)
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
+pub unsafe fn vld1q_s64_x3(a: *const i64) -> int64x2x3_t {
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.ld1x3.v2i64.p0i64")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld1x3.v2i64.p0i64")]
+        fn vld1q_s64_x3_(a: *const i64) -> int64x2x3_t;
+    }
+vld1q_s64_x3_(a)
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
+pub unsafe fn vld1_s8_x4(a: *const i8) -> int8x8x4_t {
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vldx4.v8i8.p0i8")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld1x4.v8i8.p0i8")]
+        fn vld1_s8_x4_(a: *const i8) -> int8x8x4_t;
+    }
+vld1_s8_x4_(a)
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
+pub unsafe fn vld1_s16_x4(a: *const i16) -> int16x4x4_t {
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vldx4.v4i16.p0i16")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld1x4.v4i16.p0i16")]
+        fn vld1_s16_x4_(a: *const i16) -> int16x4x4_t;
+    }
+vld1_s16_x4_(a)
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
+pub unsafe fn vld1_s32_x4(a: *const i32) -> int32x2x4_t {
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vldx4.v2i32.p0i32")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld1x4.v2i32.p0i32")]
+        fn vld1_s32_x4_(a: *const i32) -> int32x2x4_t;
+    }
+vld1_s32_x4_(a)
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
+pub unsafe fn vld1_s64_x4(a: *const i64) -> int64x1x4_t {
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vldx4.v1i64.p0i64")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld1x4.v1i64.p0i64")]
+        fn vld1_s64_x4_(a: *const i64) -> int64x1x4_t;
+    }
+vld1_s64_x4_(a)
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
+pub unsafe fn vld1q_s8_x4(a: *const i8) -> int8x16x4_t {
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vldx4.v16i8.p0i8")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld1x4.v16i8.p0i8")]
+        fn vld1q_s8_x4_(a: *const i8) -> int8x16x4_t;
+    }
+vld1q_s8_x4_(a)
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
+pub unsafe fn vld1q_s16_x4(a: *const i16) -> int16x8x4_t {
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vldx4.v8i16.p0i16")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld1x4.v8i16.p0i16")]
+        fn vld1q_s16_x4_(a: *const i16) -> int16x8x4_t;
+    }
+vld1q_s16_x4_(a)
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
+pub unsafe fn vld1q_s32_x4(a: *const i32) -> int32x4x4_t {
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vldx4.v4i32.p0i32")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld1x4.v4i32.p0i32")]
+        fn vld1q_s32_x4_(a: *const i32) -> int32x4x4_t;
+    }
+vld1q_s32_x4_(a)
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
+pub unsafe fn vld1q_s64_x4(a: *const i64) -> int64x2x4_t {
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vldx4.v2i64.p0i64")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld1x4.v2i64.p0i64")]
+        fn vld1q_s64_x4_(a: *const i64) -> int64x2x4_t;
+    }
+vld1q_s64_x4_(a)
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
+pub unsafe fn vld1_u8_x2(a: *const u8) -> uint8x8x2_t {
+    transmute(vld1_s8_x2(transmute(a)))
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
+pub unsafe fn vld1_u16_x2(a: *const u16) -> uint16x4x2_t {
+    transmute(vld1_s16_x2(transmute(a)))
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
+pub unsafe fn vld1_u32_x2(a: *const u32) -> uint32x2x2_t {
+    transmute(vld1_s32_x2(transmute(a)))
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
+pub unsafe fn vld1_u64_x2(a: *const u64) -> uint64x1x2_t {
+    transmute(vld1_s64_x2(transmute(a)))
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
+pub unsafe fn vld1q_u8_x2(a: *const u8) -> uint8x16x2_t {
+    transmute(vld1q_s8_x2(transmute(a)))
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
+pub unsafe fn vld1q_u16_x2(a: *const u16) -> uint16x8x2_t {
+    transmute(vld1q_s16_x2(transmute(a)))
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
+pub unsafe fn vld1q_u32_x2(a: *const u32) -> uint32x4x2_t {
+    transmute(vld1q_s32_x2(transmute(a)))
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
+pub unsafe fn vld1q_u64_x2(a: *const u64) -> uint64x2x2_t {
+    transmute(vld1q_s64_x2(transmute(a)))
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
+pub unsafe fn vld1_u8_x3(a: *const u8) -> uint8x8x3_t {
+    transmute(vld1_s8_x3(transmute(a)))
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
+pub unsafe fn vld1_u16_x3(a: *const u16) -> uint16x4x3_t {
+    transmute(vld1_s16_x3(transmute(a)))
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
+pub unsafe fn vld1_u32_x3(a: *const u32) -> uint32x2x3_t {
+    transmute(vld1_s32_x3(transmute(a)))
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
+pub unsafe fn vld1_u64_x3(a: *const u64) -> uint64x1x3_t {
+    transmute(vld1_s64_x3(transmute(a)))
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
+pub unsafe fn vld1q_u8_x3(a: *const u8) -> uint8x16x3_t {
+    transmute(vld1q_s8_x3(transmute(a)))
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
+pub unsafe fn vld1q_u16_x3(a: *const u16) -> uint16x8x3_t {
+    transmute(vld1q_s16_x3(transmute(a)))
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
+pub unsafe fn vld1q_u32_x3(a: *const u32) -> uint32x4x3_t {
+    transmute(vld1q_s32_x3(transmute(a)))
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
+pub unsafe fn vld1q_u64_x3(a: *const u64) -> uint64x2x3_t {
+    transmute(vld1q_s64_x3(transmute(a)))
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
+pub unsafe fn vld1_u8_x4(a: *const u8) -> uint8x8x4_t {
+    transmute(vld1_s8_x4(transmute(a)))
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
+pub unsafe fn vld1_u16_x4(a: *const u16) -> uint16x4x4_t {
+    transmute(vld1_s16_x4(transmute(a)))
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
+pub unsafe fn vld1_u32_x4(a: *const u32) -> uint32x2x4_t {
+    transmute(vld1_s32_x4(transmute(a)))
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
+pub unsafe fn vld1_u64_x4(a: *const u64) -> uint64x1x4_t {
+    transmute(vld1_s64_x4(transmute(a)))
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
+pub unsafe fn vld1q_u8_x4(a: *const u8) -> uint8x16x4_t {
+    transmute(vld1q_s8_x4(transmute(a)))
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
+pub unsafe fn vld1q_u16_x4(a: *const u16) -> uint16x8x4_t {
+    transmute(vld1q_s16_x4(transmute(a)))
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
+pub unsafe fn vld1q_u32_x4(a: *const u32) -> uint32x4x4_t {
+    transmute(vld1q_s32_x4(transmute(a)))
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
+pub unsafe fn vld1q_u64_x4(a: *const u64) -> uint64x2x4_t {
+    transmute(vld1q_s64_x4(transmute(a)))
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
+pub unsafe fn vld1_p8_x2(a: *const p8) -> poly8x8x2_t {
+    transmute(vld1_s8_x2(transmute(a)))
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
+pub unsafe fn vld1_p8_x3(a: *const p8) -> poly8x8x3_t {
+    transmute(vld1_s8_x3(transmute(a)))
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
+pub unsafe fn vld1_p8_x4(a: *const p8) -> poly8x8x4_t {
+    transmute(vld1_s8_x4(transmute(a)))
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
+pub unsafe fn vld1q_p8_x2(a: *const p8) -> poly8x16x2_t {
+    transmute(vld1q_s8_x2(transmute(a)))
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
+pub unsafe fn vld1q_p8_x3(a: *const p8) -> poly8x16x3_t {
+    transmute(vld1q_s8_x3(transmute(a)))
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
+pub unsafe fn vld1q_p8_x4(a: *const p8) -> poly8x16x4_t {
+    transmute(vld1q_s8_x4(transmute(a)))
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
+pub unsafe fn vld1_p16_x2(a: *const p16) -> poly16x4x2_t {
+    transmute(vld1_s16_x2(transmute(a)))
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
+pub unsafe fn vld1_p16_x3(a: *const p16) -> poly16x4x3_t {
+    transmute(vld1_s16_x3(transmute(a)))
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
+pub unsafe fn vld1_p16_x4(a: *const p16) -> poly16x4x4_t {
+    transmute(vld1_s16_x4(transmute(a)))
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
+pub unsafe fn vld1q_p16_x2(a: *const p16) -> poly16x8x2_t {
+    transmute(vld1q_s16_x2(transmute(a)))
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
+pub unsafe fn vld1q_p16_x3(a: *const p16) -> poly16x8x3_t {
+    transmute(vld1q_s16_x3(transmute(a)))
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
+pub unsafe fn vld1q_p16_x4(a: *const p16) -> poly16x8x4_t {
+    transmute(vld1q_s16_x4(transmute(a)))
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
+pub unsafe fn vld1_f32_x2(a: *const f32) -> float32x2x2_t {
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vld1x2.v2f32.p0f32")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld1x2.v2f32.p0f32")]
+        fn vld1_f32_x2_(a: *const f32) -> float32x2x2_t;
+    }
+vld1_f32_x2_(a)
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
+pub unsafe fn vld1q_f32_x2(a: *const f32) -> float32x4x2_t {
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vld1x2.v4f32.p0f32")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld1x2.v4f32.p0f32")]
+        fn vld1q_f32_x2_(a: *const f32) -> float32x4x2_t;
+    }
+vld1q_f32_x2_(a)
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
+pub unsafe fn vld1_f32_x3(a: *const f32) -> float32x2x3_t {
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vld1x3.v2f32.p0f32")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld1x3.v2f32.p0f32")]
+        fn vld1_f32_x3_(a: *const f32) -> float32x2x3_t;
+    }
+vld1_f32_x3_(a)
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
+pub unsafe fn vld1q_f32_x3(a: *const f32) -> float32x4x3_t {
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vld1x3.v4f32.p0f32")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld1x3.v4f32.p0f32")]
+        fn vld1q_f32_x3_(a: *const f32) -> float32x4x3_t;
+    }
+vld1q_f32_x3_(a)
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
+pub unsafe fn vld1_f32_x4(a: *const f32) -> float32x2x4_t {
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vld1x4.v2f32.p0f32")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld1x4.v2f32.p0f32")]
+        fn vld1_f32_x4_(a: *const f32) -> float32x2x4_t;
+    }
+vld1_f32_x4_(a)
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
+pub unsafe fn vld1q_f32_x4(a: *const f32) -> float32x4x4_t {
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vld1x4.v4f32.p0f32")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld1x4.v4f32.p0f32")]
+        fn vld1q_f32_x4_(a: *const f32) -> float32x4x4_t;
+    }
+vld1q_f32_x4_(a)
+}
+
 /// Multiply
 #[inline]
 #[target_feature(enable = "neon")]
@@ -18958,6 +19798,534 @@ mod test {
         let b: i64x2 = i64x2::new(1, 2);
         let e: i64x2 = i64x2::new(43, 44);
         let r: i64x2 = transmute(vqaddq_s64(transmute(a), transmute(b)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1_s8_x2() {
+        let a: [i8; 17] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+        let e: [i8x8; 2] = [i8x8::new(1, 2, 3, 4, 5, 6, 7, 8), i8x8::new(9, 10, 11, 12, 13, 14, 15, 16)];
+        let r: [i8x8; 2] = transmute(vld1_s8_x2(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1_s16_x2() {
+        let a: [i16; 9] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+        let e: [i16x4; 2] = [i16x4::new(1, 2, 3, 4), i16x4::new(5, 6, 7, 8)];
+        let r: [i16x4; 2] = transmute(vld1_s16_x2(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1_s32_x2() {
+        let a: [i32; 5] = [0, 1, 2, 3, 4];
+        let e: [i32x2; 2] = [i32x2::new(1, 2), i32x2::new(3, 4)];
+        let r: [i32x2; 2] = transmute(vld1_s32_x2(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1_s64_x2() {
+        let a: [i64; 3] = [0, 1, 2];
+        let e: [i64x1; 2] = [i64x1::new(1), i64x1::new(2)];
+        let r: [i64x1; 2] = transmute(vld1_s64_x2(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1q_s8_x2() {
+        let a: [i8; 33] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
+        let e: [i8x16; 2] = [i8x16::new(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16), i8x16::new(17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32)];
+        let r: [i8x16; 2] = transmute(vld1q_s8_x2(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1q_s16_x2() {
+        let a: [i16; 17] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+        let e: [i16x8; 2] = [i16x8::new(1, 2, 3, 4, 5, 6, 7, 8), i16x8::new(9, 10, 11, 12, 13, 14, 15, 16)];
+        let r: [i16x8; 2] = transmute(vld1q_s16_x2(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1q_s32_x2() {
+        let a: [i32; 9] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+        let e: [i32x4; 2] = [i32x4::new(1, 2, 3, 4), i32x4::new(5, 6, 7, 8)];
+        let r: [i32x4; 2] = transmute(vld1q_s32_x2(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1q_s64_x2() {
+        let a: [i64; 5] = [0, 1, 2, 3, 4];
+        let e: [i64x2; 2] = [i64x2::new(1, 2), i64x2::new(3, 4)];
+        let r: [i64x2; 2] = transmute(vld1q_s64_x2(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1_s8_x3() {
+        let a: [i8; 25] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
+        let e: [i8x8; 3] = [i8x8::new(1, 2, 3, 4, 5, 6, 7, 8), i8x8::new(9, 10, 11, 12, 13, 14, 15, 16), i8x8::new(17, 18, 19, 20, 21, 22, 23, 24)];
+        let r: [i8x8; 3] = transmute(vld1_s8_x3(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1_s16_x3() {
+        let a: [i16; 13] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+        let e: [i16x4; 3] = [i16x4::new(1, 2, 3, 4), i16x4::new(5, 6, 7, 8), i16x4::new(9, 10, 11, 12)];
+        let r: [i16x4; 3] = transmute(vld1_s16_x3(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1_s32_x3() {
+        let a: [i32; 7] = [0, 1, 2, 3, 4, 5, 6];
+        let e: [i32x2; 3] = [i32x2::new(1, 2), i32x2::new(3, 4), i32x2::new(5, 6)];
+        let r: [i32x2; 3] = transmute(vld1_s32_x3(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1_s64_x3() {
+        let a: [i64; 4] = [0, 1, 2, 3];
+        let e: [i64x1; 3] = [i64x1::new(1), i64x1::new(2), i64x1::new(3)];
+        let r: [i64x1; 3] = transmute(vld1_s64_x3(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1q_s8_x3() {
+        let a: [i8; 49] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+        let e: [i8x16; 3] = [i8x16::new(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16), i8x16::new(17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32), i8x16::new(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16)];
+        let r: [i8x16; 3] = transmute(vld1q_s8_x3(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1q_s16_x3() {
+        let a: [i16; 25] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
+        let e: [i16x8; 3] = [i16x8::new(1, 2, 3, 4, 5, 6, 7, 8), i16x8::new(9, 10, 11, 12, 13, 14, 15, 16), i16x8::new(17, 18, 19, 20, 21, 22, 23, 24)];
+        let r: [i16x8; 3] = transmute(vld1q_s16_x3(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1q_s32_x3() {
+        let a: [i32; 13] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+        let e: [i32x4; 3] = [i32x4::new(1, 2, 3, 4), i32x4::new(5, 6, 7, 8), i32x4::new(9, 10, 11, 12)];
+        let r: [i32x4; 3] = transmute(vld1q_s32_x3(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1q_s64_x3() {
+        let a: [i64; 7] = [0, 1, 2, 3, 4, 5, 6];
+        let e: [i64x2; 3] = [i64x2::new(1, 2), i64x2::new(3, 4), i64x2::new(5, 6)];
+        let r: [i64x2; 3] = transmute(vld1q_s64_x3(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1_s8_x4() {
+        let a: [i8; 33] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
+        let e: [i8x8; 4] = [i8x8::new(1, 2, 3, 4, 5, 6, 7, 8), i8x8::new(9, 10, 11, 12, 13, 14, 15, 16), i8x8::new(17, 18, 19, 20, 21, 22, 23, 24), i8x8::new(25, 26, 27, 28, 29, 30, 31, 32)];
+        let r: [i8x8; 4] = transmute(vld1_s8_x4(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1_s16_x4() {
+        let a: [i16; 17] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+        let e: [i16x4; 4] = [i16x4::new(1, 2, 3, 4), i16x4::new(5, 6, 7, 8), i16x4::new(9, 10, 11, 12), i16x4::new(13, 14, 15, 16)];
+        let r: [i16x4; 4] = transmute(vld1_s16_x4(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1_s32_x4() {
+        let a: [i32; 9] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+        let e: [i32x2; 4] = [i32x2::new(1, 2), i32x2::new(3, 4), i32x2::new(5, 6), i32x2::new(7, 8)];
+        let r: [i32x2; 4] = transmute(vld1_s32_x4(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1_s64_x4() {
+        let a: [i64; 5] = [0, 1, 2, 3, 4];
+        let e: [i64x1; 4] = [i64x1::new(1), i64x1::new(2), i64x1::new(3), i64x1::new(4)];
+        let r: [i64x1; 4] = transmute(vld1_s64_x4(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1q_s8_x4() {
+        let a: [i8; 65] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
+        let e: [i8x16; 4] = [i8x16::new(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16), i8x16::new(17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32), i8x16::new(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16), i8x16::new(17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32)];
+        let r: [i8x16; 4] = transmute(vld1q_s8_x4(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1q_s16_x4() {
+        let a: [i16; 33] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
+        let e: [i16x8; 4] = [i16x8::new(1, 2, 3, 4, 5, 6, 7, 8), i16x8::new(9, 10, 11, 12, 13, 14, 15, 16), i16x8::new(17, 18, 19, 20, 21, 22, 23, 24), i16x8::new(25, 26, 27, 28, 29, 30, 31, 32)];
+        let r: [i16x8; 4] = transmute(vld1q_s16_x4(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1q_s32_x4() {
+        let a: [i32; 17] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+        let e: [i32x4; 4] = [i32x4::new(1, 2, 3, 4), i32x4::new(5, 6, 7, 8), i32x4::new(9, 10, 11, 12), i32x4::new(13, 14, 15, 16)];
+        let r: [i32x4; 4] = transmute(vld1q_s32_x4(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1q_s64_x4() {
+        let a: [i64; 9] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+        let e: [i64x2; 4] = [i64x2::new(1, 2), i64x2::new(3, 4), i64x2::new(5, 6), i64x2::new(7, 8)];
+        let r: [i64x2; 4] = transmute(vld1q_s64_x4(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1_u8_x2() {
+        let a: [u8; 17] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+        let e: [u8x8; 2] = [u8x8::new(1, 2, 3, 4, 5, 6, 7, 8), u8x8::new(9, 10, 11, 12, 13, 14, 15, 16)];
+        let r: [u8x8; 2] = transmute(vld1_u8_x2(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1_u16_x2() {
+        let a: [u16; 9] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+        let e: [u16x4; 2] = [u16x4::new(1, 2, 3, 4), u16x4::new(5, 6, 7, 8)];
+        let r: [u16x4; 2] = transmute(vld1_u16_x2(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1_u32_x2() {
+        let a: [u32; 5] = [0, 1, 2, 3, 4];
+        let e: [u32x2; 2] = [u32x2::new(1, 2), u32x2::new(3, 4)];
+        let r: [u32x2; 2] = transmute(vld1_u32_x2(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1_u64_x2() {
+        let a: [u64; 3] = [0, 1, 2];
+        let e: [u64x1; 2] = [u64x1::new(1), u64x1::new(2)];
+        let r: [u64x1; 2] = transmute(vld1_u64_x2(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1q_u8_x2() {
+        let a: [u8; 33] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
+        let e: [u8x16; 2] = [u8x16::new(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16), u8x16::new(17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32)];
+        let r: [u8x16; 2] = transmute(vld1q_u8_x2(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1q_u16_x2() {
+        let a: [u16; 17] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+        let e: [u16x8; 2] = [u16x8::new(1, 2, 3, 4, 5, 6, 7, 8), u16x8::new(9, 10, 11, 12, 13, 14, 15, 16)];
+        let r: [u16x8; 2] = transmute(vld1q_u16_x2(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1q_u32_x2() {
+        let a: [u32; 9] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+        let e: [u32x4; 2] = [u32x4::new(1, 2, 3, 4), u32x4::new(5, 6, 7, 8)];
+        let r: [u32x4; 2] = transmute(vld1q_u32_x2(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1q_u64_x2() {
+        let a: [u64; 5] = [0, 1, 2, 3, 4];
+        let e: [u64x2; 2] = [u64x2::new(1, 2), u64x2::new(3, 4)];
+        let r: [u64x2; 2] = transmute(vld1q_u64_x2(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1_u8_x3() {
+        let a: [u8; 25] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
+        let e: [u8x8; 3] = [u8x8::new(1, 2, 3, 4, 5, 6, 7, 8), u8x8::new(9, 10, 11, 12, 13, 14, 15, 16), u8x8::new(17, 18, 19, 20, 21, 22, 23, 24)];
+        let r: [u8x8; 3] = transmute(vld1_u8_x3(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1_u16_x3() {
+        let a: [u16; 13] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+        let e: [u16x4; 3] = [u16x4::new(1, 2, 3, 4), u16x4::new(5, 6, 7, 8), u16x4::new(9, 10, 11, 12)];
+        let r: [u16x4; 3] = transmute(vld1_u16_x3(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1_u32_x3() {
+        let a: [u32; 7] = [0, 1, 2, 3, 4, 5, 6];
+        let e: [u32x2; 3] = [u32x2::new(1, 2), u32x2::new(3, 4), u32x2::new(5, 6)];
+        let r: [u32x2; 3] = transmute(vld1_u32_x3(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1_u64_x3() {
+        let a: [u64; 4] = [0, 1, 2, 3];
+        let e: [u64x1; 3] = [u64x1::new(1), u64x1::new(2), u64x1::new(3)];
+        let r: [u64x1; 3] = transmute(vld1_u64_x3(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1q_u8_x3() {
+        let a: [u8; 49] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+        let e: [u8x16; 3] = [u8x16::new(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16), u8x16::new(17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32), u8x16::new(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16)];
+        let r: [u8x16; 3] = transmute(vld1q_u8_x3(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1q_u16_x3() {
+        let a: [u16; 25] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
+        let e: [u16x8; 3] = [u16x8::new(1, 2, 3, 4, 5, 6, 7, 8), u16x8::new(9, 10, 11, 12, 13, 14, 15, 16), u16x8::new(17, 18, 19, 20, 21, 22, 23, 24)];
+        let r: [u16x8; 3] = transmute(vld1q_u16_x3(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1q_u32_x3() {
+        let a: [u32; 13] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+        let e: [u32x4; 3] = [u32x4::new(1, 2, 3, 4), u32x4::new(5, 6, 7, 8), u32x4::new(9, 10, 11, 12)];
+        let r: [u32x4; 3] = transmute(vld1q_u32_x3(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1q_u64_x3() {
+        let a: [u64; 7] = [0, 1, 2, 3, 4, 5, 6];
+        let e: [u64x2; 3] = [u64x2::new(1, 2), u64x2::new(3, 4), u64x2::new(5, 6)];
+        let r: [u64x2; 3] = transmute(vld1q_u64_x3(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1_u8_x4() {
+        let a: [u8; 33] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
+        let e: [u8x8; 4] = [u8x8::new(1, 2, 3, 4, 5, 6, 7, 8), u8x8::new(9, 10, 11, 12, 13, 14, 15, 16), u8x8::new(17, 18, 19, 20, 21, 22, 23, 24), u8x8::new(25, 26, 27, 28, 29, 30, 31, 32)];
+        let r: [u8x8; 4] = transmute(vld1_u8_x4(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1_u16_x4() {
+        let a: [u16; 17] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+        let e: [u16x4; 4] = [u16x4::new(1, 2, 3, 4), u16x4::new(5, 6, 7, 8), u16x4::new(9, 10, 11, 12), u16x4::new(13, 14, 15, 16)];
+        let r: [u16x4; 4] = transmute(vld1_u16_x4(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1_u32_x4() {
+        let a: [u32; 9] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+        let e: [u32x2; 4] = [u32x2::new(1, 2), u32x2::new(3, 4), u32x2::new(5, 6), u32x2::new(7, 8)];
+        let r: [u32x2; 4] = transmute(vld1_u32_x4(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1_u64_x4() {
+        let a: [u64; 5] = [0, 1, 2, 3, 4];
+        let e: [u64x1; 4] = [u64x1::new(1), u64x1::new(2), u64x1::new(3), u64x1::new(4)];
+        let r: [u64x1; 4] = transmute(vld1_u64_x4(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1q_u8_x4() {
+        let a: [u8; 65] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
+        let e: [u8x16; 4] = [u8x16::new(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16), u8x16::new(17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32), u8x16::new(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16), u8x16::new(17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32)];
+        let r: [u8x16; 4] = transmute(vld1q_u8_x4(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1q_u16_x4() {
+        let a: [u16; 33] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
+        let e: [u16x8; 4] = [u16x8::new(1, 2, 3, 4, 5, 6, 7, 8), u16x8::new(9, 10, 11, 12, 13, 14, 15, 16), u16x8::new(17, 18, 19, 20, 21, 22, 23, 24), u16x8::new(25, 26, 27, 28, 29, 30, 31, 32)];
+        let r: [u16x8; 4] = transmute(vld1q_u16_x4(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1q_u32_x4() {
+        let a: [u32; 17] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+        let e: [u32x4; 4] = [u32x4::new(1, 2, 3, 4), u32x4::new(5, 6, 7, 8), u32x4::new(9, 10, 11, 12), u32x4::new(13, 14, 15, 16)];
+        let r: [u32x4; 4] = transmute(vld1q_u32_x4(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1q_u64_x4() {
+        let a: [u64; 9] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+        let e: [u64x2; 4] = [u64x2::new(1, 2), u64x2::new(3, 4), u64x2::new(5, 6), u64x2::new(7, 8)];
+        let r: [u64x2; 4] = transmute(vld1q_u64_x4(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1_p8_x2() {
+        let a: [u8; 17] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+        let e: [i8x8; 2] = [i8x8::new(1, 2, 3, 4, 5, 6, 7, 8), i8x8::new(9, 10, 11, 12, 13, 14, 15, 16)];
+        let r: [i8x8; 2] = transmute(vld1_p8_x2(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1_p8_x3() {
+        let a: [u8; 25] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
+        let e: [i8x8; 3] = [i8x8::new(1, 2, 3, 4, 5, 6, 7, 8), i8x8::new(9, 10, 11, 12, 13, 14, 15, 16), i8x8::new(17, 18, 19, 20, 21, 22, 23, 24)];
+        let r: [i8x8; 3] = transmute(vld1_p8_x3(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1_p8_x4() {
+        let a: [u8; 33] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
+        let e: [i8x8; 4] = [i8x8::new(1, 2, 3, 4, 5, 6, 7, 8), i8x8::new(9, 10, 11, 12, 13, 14, 15, 16), i8x8::new(17, 18, 19, 20, 21, 22, 23, 24), i8x8::new(25, 26, 27, 28, 29, 30, 31, 32)];
+        let r: [i8x8; 4] = transmute(vld1_p8_x4(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1q_p8_x2() {
+        let a: [u8; 33] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
+        let e: [i8x16; 2] = [i8x16::new(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16), i8x16::new(17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32)];
+        let r: [i8x16; 2] = transmute(vld1q_p8_x2(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1q_p8_x3() {
+        let a: [u8; 49] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+        let e: [i8x16; 3] = [i8x16::new(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16), i8x16::new(17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32), i8x16::new(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16)];
+        let r: [i8x16; 3] = transmute(vld1q_p8_x3(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1q_p8_x4() {
+        let a: [u8; 65] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
+        let e: [i8x16; 4] = [i8x16::new(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16), i8x16::new(17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32), i8x16::new(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16), i8x16::new(17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32)];
+        let r: [i8x16; 4] = transmute(vld1q_p8_x4(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1_p16_x2() {
+        let a: [u16; 9] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+        let e: [i16x4; 2] = [i16x4::new(1, 2, 3, 4), i16x4::new(5, 6, 7, 8)];
+        let r: [i16x4; 2] = transmute(vld1_p16_x2(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1_p16_x3() {
+        let a: [u16; 13] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+        let e: [i16x4; 3] = [i16x4::new(1, 2, 3, 4), i16x4::new(5, 6, 7, 8), i16x4::new(9, 10, 11, 12)];
+        let r: [i16x4; 3] = transmute(vld1_p16_x3(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1_p16_x4() {
+        let a: [u16; 17] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+        let e: [i16x4; 4] = [i16x4::new(1, 2, 3, 4), i16x4::new(5, 6, 7, 8), i16x4::new(9, 10, 11, 12), i16x4::new(13, 14, 15, 16)];
+        let r: [i16x4; 4] = transmute(vld1_p16_x4(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1q_p16_x2() {
+        let a: [u16; 17] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+        let e: [i16x8; 2] = [i16x8::new(1, 2, 3, 4, 5, 6, 7, 8), i16x8::new(9, 10, 11, 12, 13, 14, 15, 16)];
+        let r: [i16x8; 2] = transmute(vld1q_p16_x2(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1q_p16_x3() {
+        let a: [u16; 25] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
+        let e: [i16x8; 3] = [i16x8::new(1, 2, 3, 4, 5, 6, 7, 8), i16x8::new(9, 10, 11, 12, 13, 14, 15, 16), i16x8::new(17, 18, 19, 20, 21, 22, 23, 24)];
+        let r: [i16x8; 3] = transmute(vld1q_p16_x3(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1q_p16_x4() {
+        let a: [u16; 33] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
+        let e: [i16x8; 4] = [i16x8::new(1, 2, 3, 4, 5, 6, 7, 8), i16x8::new(9, 10, 11, 12, 13, 14, 15, 16), i16x8::new(17, 18, 19, 20, 21, 22, 23, 24), i16x8::new(25, 26, 27, 28, 29, 30, 31, 32)];
+        let r: [i16x8; 4] = transmute(vld1q_p16_x4(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1_f32_x2() {
+        let a: [f32; 5] = [0., 1., 2., 3., 4.];
+        let e: [f32x2; 2] = [f32x2::new(1., 2.), f32x2::new(3., 4.)];
+        let r: [f32x2; 2] = transmute(vld1_f32_x2(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1q_f32_x2() {
+        let a: [f32; 9] = [0., 1., 2., 3., 4., 5., 6., 7., 8.];
+        let e: [f32x4; 2] = [f32x4::new(1., 2., 3., 4.), f32x4::new(5., 6., 7., 8.)];
+        let r: [f32x4; 2] = transmute(vld1q_f32_x2(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1_f32_x3() {
+        let a: [f32; 7] = [0., 1., 2., 3., 4., 5., 6.];
+        let e: [f32x2; 3] = [f32x2::new(1., 2.), f32x2::new(3., 4.), f32x2::new(5., 6.)];
+        let r: [f32x2; 3] = transmute(vld1_f32_x3(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1q_f32_x3() {
+        let a: [f32; 13] = [0., 1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12.];
+        let e: [f32x4; 3] = [f32x4::new(1., 2., 3., 4.), f32x4::new(5., 6., 7., 8.), f32x4::new(9., 10., 11., 12.)];
+        let r: [f32x4; 3] = transmute(vld1q_f32_x3(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1_f32_x4() {
+        let a: [f32; 9] = [0., 1., 2., 3., 4., 5., 6., 7., 8.];
+        let e: [f32x2; 4] = [f32x2::new(1., 2.), f32x2::new(3., 4.), f32x2::new(5., 6.), f32x2::new(7., 8.)];
+        let r: [f32x2; 4] = transmute(vld1_f32_x4(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1q_f32_x4() {
+        let a: [f32; 17] = [0., 1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15., 16.];
+        let e: [f32x4; 4] = [f32x4::new(1., 2., 3., 4.), f32x4::new(5., 6., 7., 8.), f32x4::new(9., 10., 11., 12.), f32x4::new(13., 14., 15., 16.)];
+        let r: [f32x4; 4] = transmute(vld1q_f32_x4(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
 

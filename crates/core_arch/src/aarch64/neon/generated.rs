@@ -4514,6 +4514,84 @@ pub unsafe fn vqaddd_s64(a: i64, b: i64) -> i64 {
     vqaddd_s64_(a, b)
 }
 
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(ld1))]
+pub unsafe fn vld1_f64_x2(a: *const f64) -> float64x1x2_t {
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld1x2.v1f64.p0f64")]
+        fn vld1_f64_x2_(a: *const f64) -> float64x1x2_t;
+    }
+    vld1_f64_x2_(a)
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(ld1))]
+pub unsafe fn vld1q_f64_x2(a: *const f64) -> float64x2x2_t {
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld1x2.v2f64.p0f64")]
+        fn vld1q_f64_x2_(a: *const f64) -> float64x2x2_t;
+    }
+    vld1q_f64_x2_(a)
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(ld1))]
+pub unsafe fn vld1_f64_x3(a: *const f64) -> float64x1x3_t {
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld1x3.v1f64.p0f64")]
+        fn vld1_f64_x3_(a: *const f64) -> float64x1x3_t;
+    }
+    vld1_f64_x3_(a)
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(ld1))]
+pub unsafe fn vld1q_f64_x3(a: *const f64) -> float64x2x3_t {
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld1x3.v2f64.p0f64")]
+        fn vld1q_f64_x3_(a: *const f64) -> float64x2x3_t;
+    }
+    vld1q_f64_x3_(a)
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(ld1))]
+pub unsafe fn vld1_f64_x4(a: *const f64) -> float64x1x4_t {
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld1x4.v1f64.p0f64")]
+        fn vld1_f64_x4_(a: *const f64) -> float64x1x4_t;
+    }
+    vld1_f64_x4_(a)
+}
+
+/// Load multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(ld1))]
+pub unsafe fn vld1q_f64_x4(a: *const f64) -> float64x2x4_t {
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld1x4.v2f64.p0f64")]
+        fn vld1q_f64_x4_(a: *const f64) -> float64x2x4_t;
+    }
+    vld1q_f64_x4_(a)
+}
+
 /// Multiply
 #[inline]
 #[target_feature(enable = "neon")]
@@ -12854,6 +12932,54 @@ mod test {
         let b: i64 = 1;
         let e: i64 = 43;
         let r: i64 = transmute(vqaddd_s64(transmute(a), transmute(b)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1_f64_x2() {
+        let a: [f64; 3] = [0., 1., 2.];
+        let e: [f64; 2] = [1., 2.];
+        let r: [f64; 2] = transmute(vld1_f64_x2(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1q_f64_x2() {
+        let a: [f64; 5] = [0., 1., 2., 3., 4.];
+        let e: [f64x2; 2] = [f64x2::new(1., 2.), f64x2::new(3., 4.)];
+        let r: [f64x2; 2] = transmute(vld1q_f64_x2(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1_f64_x3() {
+        let a: [f64; 4] = [0., 1., 2., 3.];
+        let e: [f64; 3] = [1., 2., 3.];
+        let r: [f64; 3] = transmute(vld1_f64_x3(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1q_f64_x3() {
+        let a: [f64; 7] = [0., 1., 2., 3., 4., 5., 6.];
+        let e: [f64x2; 3] = [f64x2::new(1., 2.), f64x2::new(3., 4.), f64x2::new(5., 6.)];
+        let r: [f64x2; 3] = transmute(vld1q_f64_x3(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1_f64_x4() {
+        let a: [f64; 5] = [0., 1., 2., 3., 4.];
+        let e: [f64; 4] = [1., 2., 3., 4.];
+        let r: [f64; 4] = transmute(vld1_f64_x4(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld1q_f64_x4() {
+        let a: [f64; 9] = [0., 1., 2., 3., 4., 5., 6., 7., 8.];
+        let e: [f64x2; 4] = [f64x2::new(1., 2.), f64x2::new(3., 4.), f64x2::new(5., 6.), f64x2::new(7., 8.)];
+        let r: [f64x2; 4] = transmute(vld1q_f64_x4(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
 
