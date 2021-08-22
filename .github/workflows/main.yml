@@ -63,6 +63,7 @@ jobs:
     name: Test
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         target:
         # Dockers that are run through docker on linux
