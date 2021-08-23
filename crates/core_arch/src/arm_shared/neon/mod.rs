@@ -3117,7 +3117,7 @@ pub unsafe fn vpmax_f32(a: float32x2_t, b: float32x2_t) -> float32x2_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[rustc_legacy_const_generics(1)]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vmov.32", IMM5 = 1))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vmov", IMM5 = 1))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(mov, IMM5 = 1))]
 // Based on the discussion in https://github.com/rust-lang/stdarch/pull/792
 // `mov` seems to be an acceptable intrinsic to compile to
@@ -3242,7 +3242,7 @@ pub unsafe fn vget_lane_p64<const IMM5: i32>(v: poly64x1_t) -> p64 {
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[rustc_legacy_const_generics(1)]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vmov.32", IMM5 = 0))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vmov", IMM5 = 0))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(fmov, IMM5 = 0))]
 pub unsafe fn vgetq_lane_p64<const IMM5: i32>(v: poly64x2_t) -> p64 {
     static_assert_imm1!(IMM5);
@@ -3266,7 +3266,7 @@ pub unsafe fn vget_lane_s64<const IMM5: i32>(v: int64x1_t) -> i64 {
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[rustc_legacy_const_generics(1)]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vmov.32", IMM5 = 0))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vmov", IMM5 = 0))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(fmov, IMM5 = 0))]
 pub unsafe fn vgetq_lane_s64<const IMM5: i32>(v: int64x2_t) -> i64 {
     static_assert_imm1!(IMM5);
