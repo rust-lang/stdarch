@@ -56,7 +56,7 @@ pub struct float64x2x4_t(
 );
 
 #[allow(improper_ctypes)]
-extern "C" {
+extern "unadjusted" {
     // absolute value
     #[link_name = "llvm.aarch64.neon.abs.i64"]
     fn vabsd_s64_(a: i64) -> i64;

@@ -363,7 +363,7 @@ pub struct uint64x2x4_t(
 );
 
 #[allow(improper_ctypes)]
-extern "C" {
+extern "unadjusted" {
     // absolute value (64-bit)
     #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vabs.v8i8")]
     #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.abs.v8i8")]
