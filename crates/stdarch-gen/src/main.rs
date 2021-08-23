@@ -51,142 +51,34 @@ const FLOAT_TYPES_64: [&str; 2] = [
 ];
 
 fn type_len(t: &str) -> usize {
-    match t {
-        "int8x8_t" => 8,
-        "int8x16_t" => 16,
-        "int16x4_t" => 4,
-        "int16x8_t" => 8,
-        "int32x2_t" => 2,
-        "int32x4_t" => 4,
-        "int64x1_t" => 1,
-        "int64x2_t" => 2,
-        "uint8x8_t" => 8,
-        "uint8x16_t" => 16,
-        "uint16x4_t" => 4,
-        "uint16x8_t" => 8,
-        "uint32x2_t" => 2,
-        "uint32x4_t" => 4,
-        "uint64x1_t" => 1,
-        "uint64x2_t" => 2,
-        "float16x4_t" => 4,
-        "float16x8_t" => 8,
-        "float32x2_t" => 2,
-        "float32x4_t" => 4,
-        "float64x1_t" => 1,
-        "float64x2_t" => 2,
-        "poly8x8_t" => 8,
-        "poly8x16_t" => 16,
-        "poly16x4_t" => 4,
-        "poly16x8_t" => 8,
-        "poly64x1_t" => 1,
-        "poly64x2_t" => 2,
-        "int8x8x2_t" => 16,
-        "int8x8x3_t" => 24,
-        "int8x8x4_t" => 32,
-        "int16x4x2_t" => 8,
-        "int16x4x3_t" => 12,
-        "int16x4x4_t" => 16,
-        "int32x2x2_t" => 4,
-        "int32x2x3_t" => 6,
-        "int32x2x4_t" => 8,
-        "int64x1x2_t" => 2,
-        "int64x1x3_t" => 3,
-        "int64x1x4_t" => 4,
-        "uint8x8x2_t" => 16,
-        "uint8x8x3_t" => 24,
-        "uint8x8x4_t" => 32,
-        "uint16x4x2_t" => 8,
-        "uint16x4x3_t" => 12,
-        "uint16x4x4_t" => 16,
-        "uint32x2x2_t" => 4,
-        "uint32x2x3_t" => 6,
-        "uint32x2x4_t" => 8,
-        "uint64x1x2_t" => 2,
-        "uint64x1x3_t" => 3,
-        "uint64x1x4_t" => 4,
-        "poly8x8x2_t" => 16,
-        "poly8x8x3_t" => 24,
-        "poly8x8x4_t" => 32,
-        "poly16x4x2_t" => 8,
-        "poly16x4x3_t" => 12,
-        "poly16x4x4_t" => 16,
-        "poly64x1x2_t" => 2,
-        "poly64x1x3_t" => 3,
-        "poly64x1x4_t" => 4,
-        "float32x2x2_t" => 4,
-        "float32x2x3_t" => 6,
-        "float32x2x4_t" => 8,
-        "float64x1x2_t" => 2,
-        "float64x1x3_t" => 3,
-        "float64x1x4_t" => 4,
-        "int8x16x2_t" => 32,
-        "int8x16x3_t" => 48,
-        "int8x16x4_t" => 64,
-        "int16x8x2_t" => 16,
-        "int16x8x3_t" => 24,
-        "int16x8x4_t" => 32,
-        "int32x4x2_t" => 8,
-        "int32x4x3_t" => 12,
-        "int32x4x4_t" => 16,
-        "int64x2x2_t" => 4,
-        "int64x2x3_t" => 6,
-        "int64x2x4_t" => 8,
-        "uint8x16x2_t" => 32,
-        "uint8x16x3_t" => 48,
-        "uint8x16x4_t" => 64,
-        "uint16x8x2_t" => 16,
-        "uint16x8x3_t" => 24,
-        "uint16x8x4_t" => 32,
-        "uint32x4x2_t" => 8,
-        "uint32x4x3_t" => 12,
-        "uint32x4x4_t" => 16,
-        "uint64x2x2_t" => 4,
-        "uint64x2x3_t" => 6,
-        "uint64x2x4_t" => 8,
-        "poly8x16x2_t" => 32,
-        "poly8x16x3_t" => 48,
-        "poly8x16x4_t" => 64,
-        "poly16x8x2_t" => 16,
-        "poly16x8x3_t" => 24,
-        "poly16x8x4_t" => 32,
-        "poly64x2x2_t" => 4,
-        "poly64x2x3_t" => 6,
-        "poly64x2x4_t" => 8,
-        "float32x4x2_t" => 8,
-        "float32x4x3_t" => 12,
-        "float32x4x4_t" => 16,
-        "float64x2x2_t" => 4,
-        "float64x2x3_t" => 6,
-        "float64x2x4_t" => 8,
-        "i8" | "i16" | "i32" | "i64" | "u8" | "u16" | "u32" | "u64" | "f32" | "f64" | "p8"
-        | "p16" | "p64" | "p128" => 1,
-        _ => panic!("unknown type: {}", t),
+    let s: Vec<_> = t.split("x").collect();
+    if s.len() == 2 {
+        match &s[1][0..2] {
+            "1_" => 1,
+            "2_" => 2,
+            "4_" => 4,
+            "8_" => 8,
+            "16" => 16,
+            _ => panic!("unknown type: {}", t),
+        }
+    } else if s.len() == 3 {
+        s[1].parse::<usize>().unwrap() * type_sub_len(t)
+    } else {
+        1
     }
 }
 
 fn type_sub_len(t: &str) -> usize {
-    match t {
-        "int8x8_t" | "int16x4_t" | "int32x2_t" | "int64x1_t" | "uint8x8_t" | "uint16x4_t"
-        | "uint32x2_t" | "uint64x1_t" => 1,
-        "int8x8x2_t" | "int16x4x2_t" | "int32x2x2_t" | "int64x1x2_t" | "uint8x8x2_t"
-        | "uint16x4x2_t" | "uint32x2x2_t" | "uint64x1x2_t" | "poly8x8x2_t" | "poly16x4x2_t"
-        | "poly64x1x2_t" | "float32x2x2_t" | "float64x1x2_t" | "int8x16x2_t" | "int16x8x2_t"
-        | "int32x4x2_t" | "int64x2x2_t" | "uint8x16x2_t" | "uint16x8x2_t" | "uint32x4x2_t"
-        | "uint64x2x2_t" | "poly8x16x2_t" | "poly16x8x2_t" | "poly64x2x2_t" | "float32x4x2_t"
-        | "float64x2x2_t" => 2,
-        "int8x8x3_t" | "int16x4x3_t" | "int32x2x3_t" | "int64x1x3_t" | "uint8x8x3_t"
-        | "uint16x4x3_t" | "uint32x2x3_t" | "uint64x1x3_t" | "poly8x8x3_t" | "poly16x4x3_t"
-        | "poly64x1x3_t" | "float32x2x3_t" | "float64x1x3_t" | "int8x16x3_t" | "int16x8x3_t"
-        | "int32x4x3_t" | "int64x2x3_t" | "uint8x16x3_t" | "uint16x8x3_t" | "uint32x4x3_t"
-        | "uint64x2x3_t" | "poly8x16x3_t" | "poly16x8x3_t" | "poly64x2x3_t" | "float32x4x3_t"
-        | "float64x2x3_t" => 3,
-        "int8x8x4_t" | "int16x4x4_t" | "int32x2x4_t" | "int64x1x4_t" | "uint8x8x4_t"
-        | "uint16x4x4_t" | "uint32x2x4_t" | "uint64x1x4_t" | "poly8x8x4_t" | "poly16x4x4_t"
-        | "poly64x1x4_t" | "float32x2x4_t" | "float64x1x4_t" | "int8x16x4_t" | "int16x8x4_t"
-        | "int32x4x4_t" | "int64x2x4_t" | "uint8x16x4_t" | "uint16x8x4_t" | "uint32x4x4_t"
-        | "uint64x2x4_t" | "poly8x16x4_t" | "poly16x8x4_t" | "poly64x2x4_t" | "float32x4x4_t"
-        | "float64x2x4_t" => 4,
-        _ => panic!("unknown type: {}", t),
+    let s: Vec<_> = t.split('x').collect();
+    if s.len() != 3 {
+        1
+    } else {
+        match s[2] {
+            "2_t" => 2,
+            "3_t" => 3,
+            "4_t" => 4,
+            _ => panic!("unknown type len: {}", t),
+        }
     }
 }
 
@@ -1157,19 +1049,13 @@ fn gen_aarch64(
             link.push_str(&link_aarch64);
             link.replace("_EXT_", ext).replace("_EXT2_", ext2)
         };
-        let abi = if test_fn != "normal" {
-            "unadjusted"
-        } else {
-            "C"
-        };
         ext_c = format!(
             r#"#[allow(improper_ctypes)]
-    extern "{}" {{
+    extern "unadjusted" {{
         #[cfg_attr(target_arch = "aarch64", link_name = "{}")]
         fn {}({}) -> {};
     }}
     "#,
-            abi,
             link_aarch64,
             current_fn,
             match para_num {
@@ -1189,7 +1075,7 @@ fn gen_aarch64(
         if const_aarch64.is_some() {
             ext_c_const = format!(
                 r#"#[allow(improper_ctypes)]
-    extern "C" {{
+    extern "unadjusted" {{
         #[cfg_attr(target_arch = "aarch64", link_name = "{}")]
         fn {}({}) -> {};
     }}
@@ -1737,21 +1623,15 @@ fn gen_arm(
             link.push_str(&link_aarch64);
             link.replace("_EXT_", ext).replace("_EXT2_", ext2)
         };
-        let abi = if test_fn == "load_test" {
-            "unadjusted"
-        } else {
-            "C"
-        };
         if out_t == link_arm_t[3] && out_t == link_aarch64_t[3] {
             ext_c = format!(
                 r#"#[allow(improper_ctypes)]
-    extern "{}" {{
+    extern "unadjusted" {{
         #[cfg_attr(target_arch = "arm", link_name = "{}")]
         #[cfg_attr(target_arch = "aarch64", link_name = "{}")]
         fn {}({}) -> {};
     }}
 "#,
-                abi,
                 link_arm,
                 link_aarch64,
                 current_fn,
@@ -1782,7 +1662,7 @@ fn gen_arm(
             };
             ext_c_arm.push_str(&format!(
                 r#"#[allow(improper_ctypes)]
-    extern "C" {{
+    extern "unadjusted" {{
         #[cfg_attr(target_arch = "arm", link_name = "{}")]
         fn {}({}) -> {};
     }}
@@ -1810,7 +1690,7 @@ fn gen_arm(
         if out_t != link_arm_t[3] {
             ext_c_arm.push_str(&format!(
                 r#"#[allow(improper_ctypes)]
-    extern "C" {{
+    extern "unadjusted" {{
         #[cfg_attr(target_arch = "arm", link_name = "{}")]
         fn {}({}) -> {};
     }}
@@ -1838,7 +1718,7 @@ fn gen_arm(
         if const_aarch64.is_some() {
             ext_c_aarch64.push_str(&format!(
                 r#"#[allow(improper_ctypes)]
-    extern "C" {{
+    extern "unadjusted" {{
         #[cfg_attr(target_arch = "aarch64", link_name = "{}")]
         fn {}({}) -> {};
     }}
@@ -1863,7 +1743,7 @@ fn gen_arm(
         if out_t != link_aarch64_t[3] {
             ext_c_aarch64.push_str(&format!(
                 r#"#[allow(improper_ctypes)]
-    extern "C" {{
+    extern "unadjusted" {{
         #[cfg_attr(target_arch = "aarch64", link_name = "{}")]
         fn {}({}) -> {};
     }}
