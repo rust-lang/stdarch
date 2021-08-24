@@ -3117,8 +3117,7 @@ pub unsafe fn vpmax_f32(a: float32x2_t, b: float32x2_t) -> float32x2_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[rustc_legacy_const_generics(1)]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("nop", IMM5 = 1))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(nop, IMM5 = 1))]
+#[cfg_attr(test, assert_instr(nop, IMM5 = 1))]
 pub unsafe fn vgetq_lane_u64<const IMM5: i32>(v: uint64x2_t) -> u64 {
     static_assert_imm1!(IMM5);
     simd_extract(v, IMM5 as u32)
@@ -3129,8 +3128,7 @@ pub unsafe fn vgetq_lane_u64<const IMM5: i32>(v: uint64x2_t) -> u64 {
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[rustc_legacy_const_generics(1)]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("nop", IMM5 = 0))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(nop, IMM5 = 0))]
+#[cfg_attr(test, assert_instr(nop, IMM5 = 0))]
 pub unsafe fn vget_lane_u64<const IMM5: i32>(v: uint64x1_t) -> u64 {
     static_assert!(IMM5 : i32 where IMM5 == 0);
     simd_extract(v, 0)
@@ -3141,8 +3139,7 @@ pub unsafe fn vget_lane_u64<const IMM5: i32>(v: uint64x1_t) -> u64 {
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[rustc_legacy_const_generics(1)]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("nop", IMM5 = 2))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(nop, IMM5 = 2))]
+#[cfg_attr(test, assert_instr(nop, IMM5 = 2))]
 pub unsafe fn vget_lane_u16<const IMM5: i32>(v: uint16x4_t) -> u16 {
     static_assert_imm2!(IMM5);
     simd_extract(v, IMM5 as u32)
@@ -3153,8 +3150,7 @@ pub unsafe fn vget_lane_u16<const IMM5: i32>(v: uint16x4_t) -> u16 {
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[rustc_legacy_const_generics(1)]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("nop", IMM5 = 2))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(nop, IMM5 = 2))]
+#[cfg_attr(test, assert_instr(nop, IMM5 = 2))]
 pub unsafe fn vget_lane_s16<const IMM5: i32>(v: int16x4_t) -> i16 {
     static_assert_imm2!(IMM5);
     simd_extract(v, IMM5 as u32)
@@ -3165,8 +3161,7 @@ pub unsafe fn vget_lane_s16<const IMM5: i32>(v: int16x4_t) -> i16 {
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[rustc_legacy_const_generics(1)]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("nop", IMM5 = 2))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(nop, IMM5 = 2))]
+#[cfg_attr(test, assert_instr(nop, IMM5 = 2))]
 pub unsafe fn vget_lane_p16<const IMM5: i32>(v: poly16x4_t) -> p16 {
     static_assert_imm2!(IMM5);
     simd_extract(v, IMM5 as u32)
@@ -3177,8 +3172,7 @@ pub unsafe fn vget_lane_p16<const IMM5: i32>(v: poly16x4_t) -> p16 {
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[rustc_legacy_const_generics(1)]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("nop", IMM5 = 1))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(nop, IMM5 = 1))]
+#[cfg_attr(test, assert_instr(nop, IMM5 = 1))]
 pub unsafe fn vget_lane_u32<const IMM5: i32>(v: uint32x2_t) -> u32 {
     static_assert_imm1!(IMM5);
     simd_extract(v, IMM5 as u32)
@@ -3189,8 +3183,7 @@ pub unsafe fn vget_lane_u32<const IMM5: i32>(v: uint32x2_t) -> u32 {
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[rustc_legacy_const_generics(1)]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("nop", IMM5 = 1))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(nop, IMM5 = 1))]
+#[cfg_attr(test, assert_instr(nop, IMM5 = 1))]
 pub unsafe fn vget_lane_s32<const IMM5: i32>(v: int32x2_t) -> i32 {
     static_assert_imm1!(IMM5);
     simd_extract(v, IMM5 as u32)
@@ -3201,8 +3194,7 @@ pub unsafe fn vget_lane_s32<const IMM5: i32>(v: int32x2_t) -> i32 {
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[rustc_legacy_const_generics(1)]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("nop", IMM5 = 1))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(nop, IMM5 = 1))]
+#[cfg_attr(test, assert_instr(nop, IMM5 = 1))]
 pub unsafe fn vget_lane_f32<const IMM5: i32>(v: float32x2_t) -> f32 {
     static_assert_imm1!(IMM5);
     simd_extract(v, IMM5 as u32)
@@ -3213,8 +3205,7 @@ pub unsafe fn vget_lane_f32<const IMM5: i32>(v: float32x2_t) -> f32 {
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[rustc_legacy_const_generics(1)]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("nop", IMM5 = 1))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(nop, IMM5 = 1))]
+#[cfg_attr(test, assert_instr(nop, IMM5 = 1))]
 pub unsafe fn vgetq_lane_f32<const IMM5: i32>(v: float32x4_t) -> f32 {
     static_assert_imm2!(IMM5);
     simd_extract(v, IMM5 as u32)
@@ -3225,8 +3216,7 @@ pub unsafe fn vgetq_lane_f32<const IMM5: i32>(v: float32x4_t) -> f32 {
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[rustc_legacy_const_generics(1)]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("nop", IMM5 = 0))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(nop, IMM5 = 0))]
+#[cfg_attr(test, assert_instr(nop, IMM5 = 0))]
 pub unsafe fn vget_lane_p64<const IMM5: i32>(v: poly64x1_t) -> p64 {
     static_assert!(IMM5 : i32 where IMM5 == 0);
     simd_extract(v, IMM5 as u32)
@@ -3237,8 +3227,7 @@ pub unsafe fn vget_lane_p64<const IMM5: i32>(v: poly64x1_t) -> p64 {
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[rustc_legacy_const_generics(1)]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("nop", IMM5 = 0))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(nop, IMM5 = 0))]
+#[cfg_attr(test, assert_instr(nop, IMM5 = 0))]
 pub unsafe fn vgetq_lane_p64<const IMM5: i32>(v: poly64x2_t) -> p64 {
     static_assert_imm1!(IMM5);
     simd_extract(v, IMM5 as u32)
@@ -3249,8 +3238,7 @@ pub unsafe fn vgetq_lane_p64<const IMM5: i32>(v: poly64x2_t) -> p64 {
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[rustc_legacy_const_generics(1)]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("nop", IMM5 = 0))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(nop, IMM5 = 0))]
+#[cfg_attr(test, assert_instr(nop, IMM5 = 0))]
 pub unsafe fn vget_lane_s64<const IMM5: i32>(v: int64x1_t) -> i64 {
     static_assert!(IMM5 : i32 where IMM5 == 0);
     simd_extract(v, IMM5 as u32)
@@ -3261,8 +3249,7 @@ pub unsafe fn vget_lane_s64<const IMM5: i32>(v: int64x1_t) -> i64 {
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[rustc_legacy_const_generics(1)]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("nop", IMM5 = 0))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(nop, IMM5 = 0))]
+#[cfg_attr(test, assert_instr(nop, IMM5 = 0))]
 pub unsafe fn vgetq_lane_s64<const IMM5: i32>(v: int64x2_t) -> i64 {
     static_assert_imm1!(IMM5);
     simd_extract(v, IMM5 as u32)
@@ -3273,8 +3260,7 @@ pub unsafe fn vgetq_lane_s64<const IMM5: i32>(v: int64x2_t) -> i64 {
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[rustc_legacy_const_generics(1)]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("nop", IMM5 = 2))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(nop, IMM5 = 2))]
+#[cfg_attr(test, assert_instr(nop, IMM5 = 2))]
 pub unsafe fn vgetq_lane_u16<const IMM5: i32>(v: uint16x8_t) -> u16 {
     static_assert_imm3!(IMM5);
     simd_extract(v, IMM5 as u32)
@@ -3285,8 +3271,7 @@ pub unsafe fn vgetq_lane_u16<const IMM5: i32>(v: uint16x8_t) -> u16 {
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[rustc_legacy_const_generics(1)]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("nop", IMM5 = 2))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(nop, IMM5 = 2))]
+#[cfg_attr(test, assert_instr(nop, IMM5 = 2))]
 pub unsafe fn vgetq_lane_u32<const IMM5: i32>(v: uint32x4_t) -> u32 {
     static_assert_imm2!(IMM5);
     simd_extract(v, IMM5 as u32)
@@ -3297,8 +3282,7 @@ pub unsafe fn vgetq_lane_u32<const IMM5: i32>(v: uint32x4_t) -> u32 {
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[rustc_legacy_const_generics(1)]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("nop", IMM5 = 2))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(nop, IMM5 = 2))]
+#[cfg_attr(test, assert_instr(nop, IMM5 = 2))]
 pub unsafe fn vgetq_lane_s16<const IMM5: i32>(v: int16x8_t) -> i16 {
     static_assert_imm3!(IMM5);
     simd_extract(v, IMM5 as u32)
@@ -3309,8 +3293,7 @@ pub unsafe fn vgetq_lane_s16<const IMM5: i32>(v: int16x8_t) -> i16 {
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[rustc_legacy_const_generics(1)]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("nop", IMM5 = 2))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(nop, IMM5 = 2))]
+#[cfg_attr(test, assert_instr(nop, IMM5 = 2))]
 pub unsafe fn vgetq_lane_p16<const IMM5: i32>(v: poly16x8_t) -> p16 {
     static_assert_imm3!(IMM5);
     simd_extract(v, IMM5 as u32)
@@ -3321,8 +3304,7 @@ pub unsafe fn vgetq_lane_p16<const IMM5: i32>(v: poly16x8_t) -> p16 {
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[rustc_legacy_const_generics(1)]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("nop", IMM5 = 2))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(nop, IMM5 = 2))]
+#[cfg_attr(test, assert_instr(nop, IMM5 = 2))]
 pub unsafe fn vgetq_lane_s32<const IMM5: i32>(v: int32x4_t) -> i32 {
     static_assert_imm2!(IMM5);
     simd_extract(v, IMM5 as u32)
@@ -3333,8 +3315,7 @@ pub unsafe fn vgetq_lane_s32<const IMM5: i32>(v: int32x4_t) -> i32 {
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[rustc_legacy_const_generics(1)]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("nop", IMM5 = 2))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(nop, IMM5 = 2))]
+#[cfg_attr(test, assert_instr(nop, IMM5 = 2))]
 pub unsafe fn vget_lane_u8<const IMM5: i32>(v: uint8x8_t) -> u8 {
     static_assert_imm3!(IMM5);
     simd_extract(v, IMM5 as u32)
@@ -3345,8 +3326,7 @@ pub unsafe fn vget_lane_u8<const IMM5: i32>(v: uint8x8_t) -> u8 {
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[rustc_legacy_const_generics(1)]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("nop", IMM5 = 2))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(nop, IMM5 = 2))]
+#[cfg_attr(test, assert_instr(nop, IMM5 = 2))]
 pub unsafe fn vget_lane_s8<const IMM5: i32>(v: int8x8_t) -> i8 {
     static_assert_imm3!(IMM5);
     simd_extract(v, IMM5 as u32)
@@ -3357,8 +3337,7 @@ pub unsafe fn vget_lane_s8<const IMM5: i32>(v: int8x8_t) -> i8 {
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[rustc_legacy_const_generics(1)]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("nop", IMM5 = 2))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(nop, IMM5 = 2))]
+#[cfg_attr(test, assert_instr(nop, IMM5 = 2))]
 pub unsafe fn vget_lane_p8<const IMM5: i32>(v: poly8x8_t) -> p8 {
     static_assert_imm3!(IMM5);
     simd_extract(v, IMM5 as u32)
@@ -3369,8 +3348,7 @@ pub unsafe fn vget_lane_p8<const IMM5: i32>(v: poly8x8_t) -> p8 {
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[rustc_legacy_const_generics(1)]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("nop", IMM5 = 2))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(nop, IMM5 = 2))]
+#[cfg_attr(test, assert_instr(nop, IMM5 = 2))]
 pub unsafe fn vgetq_lane_u8<const IMM5: i32>(v: uint8x16_t) -> u8 {
     static_assert_imm4!(IMM5);
     simd_extract(v, IMM5 as u32)
@@ -3381,8 +3359,7 @@ pub unsafe fn vgetq_lane_u8<const IMM5: i32>(v: uint8x16_t) -> u8 {
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[rustc_legacy_const_generics(1)]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("nop", IMM5 = 2))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(nop, IMM5 = 2))]
+#[cfg_attr(test, assert_instr(nop, IMM5 = 2))]
 pub unsafe fn vgetq_lane_s8<const IMM5: i32>(v: int8x16_t) -> i8 {
     static_assert_imm4!(IMM5);
     simd_extract(v, IMM5 as u32)
@@ -3393,8 +3370,7 @@ pub unsafe fn vgetq_lane_s8<const IMM5: i32>(v: int8x16_t) -> i8 {
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[rustc_legacy_const_generics(1)]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("nop", IMM5 = 2))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(nop, IMM5 = 2))]
+#[cfg_attr(test, assert_instr(nop, IMM5 = 2))]
 pub unsafe fn vgetq_lane_p8<const IMM5: i32>(v: poly8x16_t) -> p8 {
     static_assert_imm4!(IMM5);
     simd_extract(v, IMM5 as u32)
@@ -3514,8 +3490,7 @@ pub unsafe fn vget_high_f32(a: float32x4_t) -> float32x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("nop"))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(nop))]
+#[cfg_attr(test, assert_instr(nop))]
 pub unsafe fn vget_low_s8(a: int8x16_t) -> int8x8_t {
     simd_shuffle8!(a, a, [0, 1, 2, 3, 4, 5, 6, 7])
 }
@@ -3524,8 +3499,7 @@ pub unsafe fn vget_low_s8(a: int8x16_t) -> int8x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("nop"))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(nop))]
+#[cfg_attr(test, assert_instr(nop))]
 pub unsafe fn vget_low_s16(a: int16x8_t) -> int16x4_t {
     simd_shuffle4!(a, a, [0, 1, 2, 3])
 }
@@ -3534,8 +3508,7 @@ pub unsafe fn vget_low_s16(a: int16x8_t) -> int16x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("nop"))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(nop))]
+#[cfg_attr(test, assert_instr(nop))]
 pub unsafe fn vget_low_s32(a: int32x4_t) -> int32x2_t {
     simd_shuffle2!(a, a, [0, 1])
 }
@@ -3544,8 +3517,7 @@ pub unsafe fn vget_low_s32(a: int32x4_t) -> int32x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("nop"))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(nop))]
+#[cfg_attr(test, assert_instr(nop))]
 pub unsafe fn vget_low_s64(a: int64x2_t) -> int64x1_t {
     int64x1_t(simd_extract(a, 0))
 }
@@ -3554,8 +3526,7 @@ pub unsafe fn vget_low_s64(a: int64x2_t) -> int64x1_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("nop"))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(nop))]
+#[cfg_attr(test, assert_instr(nop))]
 pub unsafe fn vget_low_u8(a: uint8x16_t) -> uint8x8_t {
     simd_shuffle8!(a, a, [0, 1, 2, 3, 4, 5, 6, 7])
 }
@@ -3564,8 +3535,7 @@ pub unsafe fn vget_low_u8(a: uint8x16_t) -> uint8x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("nop"))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(nop))]
+#[cfg_attr(test, assert_instr(nop))]
 pub unsafe fn vget_low_u16(a: uint16x8_t) -> uint16x4_t {
     simd_shuffle4!(a, a, [0, 1, 2, 3])
 }
@@ -3574,8 +3544,7 @@ pub unsafe fn vget_low_u16(a: uint16x8_t) -> uint16x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("nop"))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(nop))]
+#[cfg_attr(test, assert_instr(nop))]
 pub unsafe fn vget_low_u32(a: uint32x4_t) -> uint32x2_t {
     simd_shuffle2!(a, a, [0, 1])
 }
@@ -3584,8 +3553,7 @@ pub unsafe fn vget_low_u32(a: uint32x4_t) -> uint32x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("nop"))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(nop))]
+#[cfg_attr(test, assert_instr(nop))]
 pub unsafe fn vget_low_u64(a: uint64x2_t) -> uint64x1_t {
     uint64x1_t(simd_extract(a, 0))
 }
@@ -3594,8 +3562,7 @@ pub unsafe fn vget_low_u64(a: uint64x2_t) -> uint64x1_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("nop"))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(nop))]
+#[cfg_attr(test, assert_instr(nop))]
 pub unsafe fn vget_low_p8(a: poly8x16_t) -> poly8x8_t {
     simd_shuffle8!(a, a, [0, 1, 2, 3, 4, 5, 6, 7])
 }
@@ -3604,8 +3571,7 @@ pub unsafe fn vget_low_p8(a: poly8x16_t) -> poly8x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("nop"))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(nop))]
+#[cfg_attr(test, assert_instr(nop))]
 pub unsafe fn vget_low_p16(a: poly16x8_t) -> poly16x4_t {
     simd_shuffle4!(a, a, [0, 1, 2, 3])
 }
@@ -3614,8 +3580,7 @@ pub unsafe fn vget_low_p16(a: poly16x8_t) -> poly16x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("nop"))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(nop))]
+#[cfg_attr(test, assert_instr(nop))]
 pub unsafe fn vget_low_f32(a: float32x4_t) -> float32x2_t {
     simd_shuffle2!(a, a, [0, 1])
 }
