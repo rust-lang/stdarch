@@ -464,16 +464,7 @@ pub unsafe fn vcopy_laneq_f64<const LANE1: i32, const LANE2: i32>(
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1_s8(ptr: *const i8) -> int8x8_t {
-    transmute(i8x8::new(
-        *ptr,
-        *ptr.offset(1),
-        *ptr.offset(2),
-        *ptr.offset(3),
-        *ptr.offset(4),
-        *ptr.offset(5),
-        *ptr.offset(6),
-        *ptr.offset(7),
-    ))
+    core::ptr::read_unaligned(ptr as *const int8x8_t)
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -481,24 +472,7 @@ pub unsafe fn vld1_s8(ptr: *const i8) -> int8x8_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1q_s8(ptr: *const i8) -> int8x16_t {
-    transmute(i8x16::new(
-        *ptr,
-        *ptr.offset(1),
-        *ptr.offset(2),
-        *ptr.offset(3),
-        *ptr.offset(4),
-        *ptr.offset(5),
-        *ptr.offset(6),
-        *ptr.offset(7),
-        *ptr.offset(8),
-        *ptr.offset(9),
-        *ptr.offset(10),
-        *ptr.offset(11),
-        *ptr.offset(12),
-        *ptr.offset(13),
-        *ptr.offset(14),
-        *ptr.offset(15),
-    ))
+    core::ptr::read_unaligned(ptr as *const int8x16_t)
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -506,12 +480,7 @@ pub unsafe fn vld1q_s8(ptr: *const i8) -> int8x16_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1_s16(ptr: *const i16) -> int16x4_t {
-    transmute(i16x4::new(
-        *ptr,
-        *ptr.offset(1),
-        *ptr.offset(2),
-        *ptr.offset(3),
-    ))
+    core::ptr::read_unaligned(ptr as *const int16x4_t)
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -519,16 +488,7 @@ pub unsafe fn vld1_s16(ptr: *const i16) -> int16x4_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1q_s16(ptr: *const i16) -> int16x8_t {
-    transmute(i16x8::new(
-        *ptr,
-        *ptr.offset(1),
-        *ptr.offset(2),
-        *ptr.offset(3),
-        *ptr.offset(4),
-        *ptr.offset(5),
-        *ptr.offset(6),
-        *ptr.offset(7),
-    ))
+    core::ptr::read_unaligned(ptr as *const int16x8_t)
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -536,7 +496,7 @@ pub unsafe fn vld1q_s16(ptr: *const i16) -> int16x8_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1_s32(ptr: *const i32) -> int32x2_t {
-    transmute(i32x2::new(*ptr, *ptr.offset(1)))
+    core::ptr::read_unaligned(ptr as *const int32x2_t)
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -544,12 +504,7 @@ pub unsafe fn vld1_s32(ptr: *const i32) -> int32x2_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1q_s32(ptr: *const i32) -> int32x4_t {
-    transmute(i32x4::new(
-        *ptr,
-        *ptr.offset(1),
-        *ptr.offset(2),
-        *ptr.offset(3),
-    ))
+    core::ptr::read_unaligned(ptr as *const int32x4_t)
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -557,7 +512,7 @@ pub unsafe fn vld1q_s32(ptr: *const i32) -> int32x4_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1_s64(ptr: *const i64) -> int64x1_t {
-    transmute(i64x1::new(*ptr))
+    core::ptr::read_unaligned(ptr as *const int64x1_t)
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -565,7 +520,7 @@ pub unsafe fn vld1_s64(ptr: *const i64) -> int64x1_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1q_s64(ptr: *const i64) -> int64x2_t {
-    transmute(i64x2::new(*ptr, *ptr.offset(1)))
+    core::ptr::read_unaligned(ptr as *const int64x2_t)
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -573,16 +528,7 @@ pub unsafe fn vld1q_s64(ptr: *const i64) -> int64x2_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1_u8(ptr: *const u8) -> uint8x8_t {
-    transmute(u8x8::new(
-        *ptr,
-        *ptr.offset(1),
-        *ptr.offset(2),
-        *ptr.offset(3),
-        *ptr.offset(4),
-        *ptr.offset(5),
-        *ptr.offset(6),
-        *ptr.offset(7),
-    ))
+    core::ptr::read_unaligned(ptr as *const uint8x8_t)
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -590,24 +536,7 @@ pub unsafe fn vld1_u8(ptr: *const u8) -> uint8x8_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1q_u8(ptr: *const u8) -> uint8x16_t {
-    transmute(u8x16::new(
-        *ptr,
-        *ptr.offset(1),
-        *ptr.offset(2),
-        *ptr.offset(3),
-        *ptr.offset(4),
-        *ptr.offset(5),
-        *ptr.offset(6),
-        *ptr.offset(7),
-        *ptr.offset(8),
-        *ptr.offset(9),
-        *ptr.offset(10),
-        *ptr.offset(11),
-        *ptr.offset(12),
-        *ptr.offset(13),
-        *ptr.offset(14),
-        *ptr.offset(15),
-    ))
+    core::ptr::read_unaligned(ptr as *const uint8x16_t)
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -615,12 +544,7 @@ pub unsafe fn vld1q_u8(ptr: *const u8) -> uint8x16_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1_u16(ptr: *const u16) -> uint16x4_t {
-    transmute(u16x4::new(
-        *ptr,
-        *ptr.offset(1),
-        *ptr.offset(2),
-        *ptr.offset(3),
-    ))
+    core::ptr::read_unaligned(ptr as *const uint16x4_t)
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -628,16 +552,7 @@ pub unsafe fn vld1_u16(ptr: *const u16) -> uint16x4_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1q_u16(ptr: *const u16) -> uint16x8_t {
-    transmute(u16x8::new(
-        *ptr,
-        *ptr.offset(1),
-        *ptr.offset(2),
-        *ptr.offset(3),
-        *ptr.offset(4),
-        *ptr.offset(5),
-        *ptr.offset(6),
-        *ptr.offset(7),
-    ))
+    core::ptr::read_unaligned(ptr as *const uint16x8_t)
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -645,7 +560,7 @@ pub unsafe fn vld1q_u16(ptr: *const u16) -> uint16x8_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1_u32(ptr: *const u32) -> uint32x2_t {
-    transmute(u32x2::new(*ptr, *ptr.offset(1)))
+    core::ptr::read_unaligned(ptr as *const uint32x2_t)
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -653,12 +568,7 @@ pub unsafe fn vld1_u32(ptr: *const u32) -> uint32x2_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1q_u32(ptr: *const u32) -> uint32x4_t {
-    transmute(u32x4::new(
-        *ptr,
-        *ptr.offset(1),
-        *ptr.offset(2),
-        *ptr.offset(3),
-    ))
+    core::ptr::read_unaligned(ptr as *const uint32x4_t)
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -666,7 +576,7 @@ pub unsafe fn vld1q_u32(ptr: *const u32) -> uint32x4_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1_u64(ptr: *const u64) -> uint64x1_t {
-    transmute(u64x1::new(*ptr))
+    core::ptr::read_unaligned(ptr as *const uint64x1_t)
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -674,7 +584,7 @@ pub unsafe fn vld1_u64(ptr: *const u64) -> uint64x1_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1q_u64(ptr: *const u64) -> uint64x2_t {
-    transmute(u64x2::new(*ptr, *ptr.offset(1)))
+    core::ptr::read_unaligned(ptr as *const uint64x2_t)
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -682,16 +592,7 @@ pub unsafe fn vld1q_u64(ptr: *const u64) -> uint64x2_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1_p8(ptr: *const p8) -> poly8x8_t {
-    transmute(u8x8::new(
-        *ptr,
-        *ptr.offset(1),
-        *ptr.offset(2),
-        *ptr.offset(3),
-        *ptr.offset(4),
-        *ptr.offset(5),
-        *ptr.offset(6),
-        *ptr.offset(7),
-    ))
+    core::ptr::read_unaligned(ptr as *const poly8x8_t)
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -699,24 +600,7 @@ pub unsafe fn vld1_p8(ptr: *const p8) -> poly8x8_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1q_p8(ptr: *const p8) -> poly8x16_t {
-    transmute(u8x16::new(
-        *ptr,
-        *ptr.offset(1),
-        *ptr.offset(2),
-        *ptr.offset(3),
-        *ptr.offset(4),
-        *ptr.offset(5),
-        *ptr.offset(6),
-        *ptr.offset(7),
-        *ptr.offset(8),
-        *ptr.offset(9),
-        *ptr.offset(10),
-        *ptr.offset(11),
-        *ptr.offset(12),
-        *ptr.offset(13),
-        *ptr.offset(14),
-        *ptr.offset(15),
-    ))
+    core::ptr::read_unaligned(ptr as *const poly8x16_t)
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -724,12 +608,7 @@ pub unsafe fn vld1q_p8(ptr: *const p8) -> poly8x16_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1_p16(ptr: *const p16) -> poly16x4_t {
-    transmute(u16x4::new(
-        *ptr,
-        *ptr.offset(1),
-        *ptr.offset(2),
-        *ptr.offset(3),
-    ))
+    core::ptr::read_unaligned(ptr as *const poly16x4_t)
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -737,16 +616,7 @@ pub unsafe fn vld1_p16(ptr: *const p16) -> poly16x4_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1q_p16(ptr: *const p16) -> poly16x8_t {
-    transmute(u16x8::new(
-        *ptr,
-        *ptr.offset(1),
-        *ptr.offset(2),
-        *ptr.offset(3),
-        *ptr.offset(4),
-        *ptr.offset(5),
-        *ptr.offset(6),
-        *ptr.offset(7),
-    ))
+    core::ptr::read_unaligned(ptr as *const poly16x8_t)
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -754,7 +624,7 @@ pub unsafe fn vld1q_p16(ptr: *const p16) -> poly16x8_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1_f32(ptr: *const f32) -> float32x2_t {
-    transmute(f32x2::new(*ptr, *ptr.offset(1)))
+    core::ptr::read_unaligned(ptr as *const float32x2_t)
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -762,12 +632,7 @@ pub unsafe fn vld1_f32(ptr: *const f32) -> float32x2_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1q_f32(ptr: *const f32) -> float32x4_t {
-    transmute(f32x4::new(
-        *ptr,
-        *ptr.offset(1),
-        *ptr.offset(2),
-        *ptr.offset(3),
-    ))
+    core::ptr::read_unaligned(ptr as *const float32x4_t)
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -775,7 +640,7 @@ pub unsafe fn vld1q_f32(ptr: *const f32) -> float32x4_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1_f64(ptr: *const f64) -> float64x1_t {
-    transmute(f64x1::new(*ptr))
+    core::ptr::read_unaligned(ptr as *const float64x1_t)
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -783,7 +648,7 @@ pub unsafe fn vld1_f64(ptr: *const f64) -> float64x1_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1q_f64(ptr: *const f64) -> float64x2_t {
-    transmute(f64x2::new(*ptr, *ptr.offset(1)))
+    core::ptr::read_unaligned(ptr as *const float64x2_t)
 }
 
 /// Store multiple single-element structures from one, two, three, or four registers.
