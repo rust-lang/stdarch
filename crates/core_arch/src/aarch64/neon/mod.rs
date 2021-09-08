@@ -13,6 +13,7 @@ use crate::{
     core_arch::{arm_shared::*, simd::*, simd_llvm::*},
     hint::unreachable_unchecked,
     mem::{transmute, zeroed},
+    ptr::{read_unaligned, write_unaligned},
 };
 #[cfg(test)]
 use stdarch_test::assert_instr;
@@ -463,7 +464,7 @@ pub unsafe fn vcopy_laneq_f64<const LANE1: i32, const LANE2: i32>(
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1_s8(ptr: *const i8) -> int8x8_t {
-    core::ptr::read_unaligned(ptr.cast())
+    read_unaligned(ptr.cast())
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -471,7 +472,7 @@ pub unsafe fn vld1_s8(ptr: *const i8) -> int8x8_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1q_s8(ptr: *const i8) -> int8x16_t {
-    core::ptr::read_unaligned(ptr.cast())
+    read_unaligned(ptr.cast())
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -479,7 +480,7 @@ pub unsafe fn vld1q_s8(ptr: *const i8) -> int8x16_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1_s16(ptr: *const i16) -> int16x4_t {
-    core::ptr::read_unaligned(ptr.cast())
+    read_unaligned(ptr.cast())
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -487,7 +488,7 @@ pub unsafe fn vld1_s16(ptr: *const i16) -> int16x4_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1q_s16(ptr: *const i16) -> int16x8_t {
-    core::ptr::read_unaligned(ptr.cast())
+    read_unaligned(ptr.cast())
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -495,7 +496,7 @@ pub unsafe fn vld1q_s16(ptr: *const i16) -> int16x8_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1_s32(ptr: *const i32) -> int32x2_t {
-    core::ptr::read_unaligned(ptr.cast())
+    read_unaligned(ptr.cast())
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -503,7 +504,7 @@ pub unsafe fn vld1_s32(ptr: *const i32) -> int32x2_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1q_s32(ptr: *const i32) -> int32x4_t {
-    core::ptr::read_unaligned(ptr.cast())
+    read_unaligned(ptr.cast())
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -511,7 +512,7 @@ pub unsafe fn vld1q_s32(ptr: *const i32) -> int32x4_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1_s64(ptr: *const i64) -> int64x1_t {
-    core::ptr::read_unaligned(ptr.cast())
+    read_unaligned(ptr.cast())
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -519,7 +520,7 @@ pub unsafe fn vld1_s64(ptr: *const i64) -> int64x1_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1q_s64(ptr: *const i64) -> int64x2_t {
-    core::ptr::read_unaligned(ptr.cast())
+    read_unaligned(ptr.cast())
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -527,7 +528,7 @@ pub unsafe fn vld1q_s64(ptr: *const i64) -> int64x2_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1_u8(ptr: *const u8) -> uint8x8_t {
-    core::ptr::read_unaligned(ptr.cast())
+    read_unaligned(ptr.cast())
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -535,7 +536,7 @@ pub unsafe fn vld1_u8(ptr: *const u8) -> uint8x8_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1q_u8(ptr: *const u8) -> uint8x16_t {
-    core::ptr::read_unaligned(ptr.cast())
+    read_unaligned(ptr.cast())
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -543,7 +544,7 @@ pub unsafe fn vld1q_u8(ptr: *const u8) -> uint8x16_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1_u16(ptr: *const u16) -> uint16x4_t {
-    core::ptr::read_unaligned(ptr.cast())
+    read_unaligned(ptr.cast())
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -551,7 +552,7 @@ pub unsafe fn vld1_u16(ptr: *const u16) -> uint16x4_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1q_u16(ptr: *const u16) -> uint16x8_t {
-    core::ptr::read_unaligned(ptr.cast())
+    read_unaligned(ptr.cast())
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -559,7 +560,7 @@ pub unsafe fn vld1q_u16(ptr: *const u16) -> uint16x8_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1_u32(ptr: *const u32) -> uint32x2_t {
-    core::ptr::read_unaligned(ptr.cast())
+    read_unaligned(ptr.cast())
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -567,7 +568,7 @@ pub unsafe fn vld1_u32(ptr: *const u32) -> uint32x2_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1q_u32(ptr: *const u32) -> uint32x4_t {
-    core::ptr::read_unaligned(ptr.cast())
+    read_unaligned(ptr.cast())
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -575,7 +576,7 @@ pub unsafe fn vld1q_u32(ptr: *const u32) -> uint32x4_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1_u64(ptr: *const u64) -> uint64x1_t {
-    core::ptr::read_unaligned(ptr.cast())
+    read_unaligned(ptr.cast())
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -583,7 +584,7 @@ pub unsafe fn vld1_u64(ptr: *const u64) -> uint64x1_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1q_u64(ptr: *const u64) -> uint64x2_t {
-    core::ptr::read_unaligned(ptr.cast())
+    read_unaligned(ptr.cast())
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -591,7 +592,7 @@ pub unsafe fn vld1q_u64(ptr: *const u64) -> uint64x2_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1_p8(ptr: *const p8) -> poly8x8_t {
-    core::ptr::read_unaligned(ptr.cast())
+    read_unaligned(ptr.cast())
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -599,7 +600,7 @@ pub unsafe fn vld1_p8(ptr: *const p8) -> poly8x8_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1q_p8(ptr: *const p8) -> poly8x16_t {
-    core::ptr::read_unaligned(ptr.cast())
+    read_unaligned(ptr.cast())
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -607,7 +608,7 @@ pub unsafe fn vld1q_p8(ptr: *const p8) -> poly8x16_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1_p16(ptr: *const p16) -> poly16x4_t {
-    core::ptr::read_unaligned(ptr.cast())
+    read_unaligned(ptr.cast())
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -615,7 +616,7 @@ pub unsafe fn vld1_p16(ptr: *const p16) -> poly16x4_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1q_p16(ptr: *const p16) -> poly16x8_t {
-    core::ptr::read_unaligned(ptr.cast())
+    read_unaligned(ptr.cast())
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -623,7 +624,7 @@ pub unsafe fn vld1q_p16(ptr: *const p16) -> poly16x8_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1_f32(ptr: *const f32) -> float32x2_t {
-    core::ptr::read_unaligned(ptr.cast())
+    read_unaligned(ptr.cast())
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -631,7 +632,7 @@ pub unsafe fn vld1_f32(ptr: *const f32) -> float32x2_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1q_f32(ptr: *const f32) -> float32x4_t {
-    core::ptr::read_unaligned(ptr.cast())
+    read_unaligned(ptr.cast())
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -639,7 +640,7 @@ pub unsafe fn vld1q_f32(ptr: *const f32) -> float32x4_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1_f64(ptr: *const f64) -> float64x1_t {
-    core::ptr::read_unaligned(ptr.cast())
+    read_unaligned(ptr.cast())
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -647,7 +648,7 @@ pub unsafe fn vld1_f64(ptr: *const f64) -> float64x1_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1q_f64(ptr: *const f64) -> float64x2_t {
-    core::ptr::read_unaligned(ptr.cast())
+    read_unaligned(ptr.cast())
 }
 
 /// Store multiple single-element structures from one, two, three, or four registers.
@@ -656,7 +657,7 @@ pub unsafe fn vld1q_f64(ptr: *const f64) -> float64x2_t {
 #[cfg_attr(test, assert_instr(str))]
 #[allow(clippy::cast_ptr_alignment)]
 pub unsafe fn vst1_s8(ptr: *mut i8, a: int8x8_t) {
-    core::ptr::write_unaligned(ptr.cast(), a);
+    write_unaligned(ptr.cast(), a);
 }
 
 /// Store multiple single-element structures from one, two, three, or four registers.
@@ -665,7 +666,7 @@ pub unsafe fn vst1_s8(ptr: *mut i8, a: int8x8_t) {
 #[cfg_attr(test, assert_instr(str))]
 #[allow(clippy::cast_ptr_alignment)]
 pub unsafe fn vst1q_s8(ptr: *mut i8, a: int8x16_t) {
-    core::ptr::write_unaligned(ptr.cast(), a);
+    write_unaligned(ptr.cast(), a);
 }
 
 /// Store multiple single-element structures from one, two, three, or four registers.
@@ -674,7 +675,7 @@ pub unsafe fn vst1q_s8(ptr: *mut i8, a: int8x16_t) {
 #[cfg_attr(test, assert_instr(str))]
 #[allow(clippy::cast_ptr_alignment)]
 pub unsafe fn vst1_s16(ptr: *mut i16, a: int16x4_t) {
-    core::ptr::write_unaligned(ptr.cast(), a);
+    write_unaligned(ptr.cast(), a);
 }
 
 /// Store multiple single-element structures from one, two, three, or four registers.
@@ -683,7 +684,7 @@ pub unsafe fn vst1_s16(ptr: *mut i16, a: int16x4_t) {
 #[cfg_attr(test, assert_instr(str))]
 #[allow(clippy::cast_ptr_alignment)]
 pub unsafe fn vst1q_s16(ptr: *mut i16, a: int16x8_t) {
-    core::ptr::write_unaligned(ptr.cast(), a);
+    write_unaligned(ptr.cast(), a);
 }
 
 /// Store multiple single-element structures from one, two, three, or four registers.
@@ -692,7 +693,7 @@ pub unsafe fn vst1q_s16(ptr: *mut i16, a: int16x8_t) {
 #[cfg_attr(test, assert_instr(str))]
 #[allow(clippy::cast_ptr_alignment)]
 pub unsafe fn vst1_s32(ptr: *mut i32, a: int32x2_t) {
-    core::ptr::write_unaligned(ptr.cast(), a);
+    write_unaligned(ptr.cast(), a);
 }
 
 /// Store multiple single-element structures from one, two, three, or four registers.
@@ -701,7 +702,7 @@ pub unsafe fn vst1_s32(ptr: *mut i32, a: int32x2_t) {
 #[cfg_attr(test, assert_instr(str))]
 #[allow(clippy::cast_ptr_alignment)]
 pub unsafe fn vst1q_s32(ptr: *mut i32, a: int32x4_t) {
-    core::ptr::write_unaligned(ptr.cast(), a);
+    write_unaligned(ptr.cast(), a);
 }
 
 /// Store multiple single-element structures from one, two, three, or four registers.
@@ -710,7 +711,7 @@ pub unsafe fn vst1q_s32(ptr: *mut i32, a: int32x4_t) {
 #[cfg_attr(test, assert_instr(str))]
 #[allow(clippy::cast_ptr_alignment)]
 pub unsafe fn vst1_s64(ptr: *mut i64, a: int64x1_t) {
-    core::ptr::write_unaligned(ptr.cast(), a);
+    write_unaligned(ptr.cast(), a);
 }
 
 /// Store multiple single-element structures from one, two, three, or four registers.
@@ -719,7 +720,7 @@ pub unsafe fn vst1_s64(ptr: *mut i64, a: int64x1_t) {
 #[cfg_attr(test, assert_instr(str))]
 #[allow(clippy::cast_ptr_alignment)]
 pub unsafe fn vst1q_s64(ptr: *mut i64, a: int64x2_t) {
-    core::ptr::write_unaligned(ptr.cast(), a);
+    write_unaligned(ptr.cast(), a);
 }
 
 /// Store multiple single-element structures from one, two, three, or four registers.
@@ -728,7 +729,7 @@ pub unsafe fn vst1q_s64(ptr: *mut i64, a: int64x2_t) {
 #[cfg_attr(test, assert_instr(str))]
 #[allow(clippy::cast_ptr_alignment)]
 pub unsafe fn vst1_u8(ptr: *mut u8, a: uint8x8_t) {
-    core::ptr::write_unaligned(ptr.cast(), a);
+    write_unaligned(ptr.cast(), a);
 }
 
 /// Store multiple single-element structures from one, two, three, or four registers.
@@ -737,7 +738,7 @@ pub unsafe fn vst1_u8(ptr: *mut u8, a: uint8x8_t) {
 #[cfg_attr(test, assert_instr(str))]
 #[allow(clippy::cast_ptr_alignment)]
 pub unsafe fn vst1q_u8(ptr: *mut u8, a: uint8x16_t) {
-    core::ptr::write_unaligned(ptr.cast(), a);
+    write_unaligned(ptr.cast(), a);
 }
 
 /// Store multiple single-element structures from one, two, three, or four registers.
@@ -746,7 +747,7 @@ pub unsafe fn vst1q_u8(ptr: *mut u8, a: uint8x16_t) {
 #[cfg_attr(test, assert_instr(str))]
 #[allow(clippy::cast_ptr_alignment)]
 pub unsafe fn vst1_u16(ptr: *mut u16, a: uint16x4_t) {
-    core::ptr::write_unaligned(ptr.cast(), a);
+    write_unaligned(ptr.cast(), a);
 }
 
 /// Store multiple single-element structures from one, two, three, or four registers.
@@ -755,7 +756,7 @@ pub unsafe fn vst1_u16(ptr: *mut u16, a: uint16x4_t) {
 #[cfg_attr(test, assert_instr(str))]
 #[allow(clippy::cast_ptr_alignment)]
 pub unsafe fn vst1q_u16(ptr: *mut u16, a: uint16x8_t) {
-    core::ptr::write_unaligned(ptr.cast(), a);
+    write_unaligned(ptr.cast(), a);
 }
 
 /// Store multiple single-element structures from one, two, three, or four registers.
@@ -764,7 +765,7 @@ pub unsafe fn vst1q_u16(ptr: *mut u16, a: uint16x8_t) {
 #[cfg_attr(test, assert_instr(str))]
 #[allow(clippy::cast_ptr_alignment)]
 pub unsafe fn vst1_u32(ptr: *mut u32, a: uint32x2_t) {
-    core::ptr::write_unaligned(ptr.cast(), a);
+    write_unaligned(ptr.cast(), a);
 }
 
 /// Store multiple single-element structures from one, two, three, or four registers.
@@ -773,7 +774,7 @@ pub unsafe fn vst1_u32(ptr: *mut u32, a: uint32x2_t) {
 #[cfg_attr(test, assert_instr(str))]
 #[allow(clippy::cast_ptr_alignment)]
 pub unsafe fn vst1q_u32(ptr: *mut u32, a: uint32x4_t) {
-    core::ptr::write_unaligned(ptr.cast(), a);
+    write_unaligned(ptr.cast(), a);
 }
 
 /// Store multiple single-element structures from one, two, three, or four registers.
@@ -782,7 +783,7 @@ pub unsafe fn vst1q_u32(ptr: *mut u32, a: uint32x4_t) {
 #[cfg_attr(test, assert_instr(str))]
 #[allow(clippy::cast_ptr_alignment)]
 pub unsafe fn vst1_u64(ptr: *mut u64, a: uint64x1_t) {
-    core::ptr::write_unaligned(ptr.cast(), a);
+    write_unaligned(ptr.cast(), a);
 }
 
 /// Store multiple single-element structures from one, two, three, or four registers.
@@ -791,7 +792,7 @@ pub unsafe fn vst1_u64(ptr: *mut u64, a: uint64x1_t) {
 #[cfg_attr(test, assert_instr(str))]
 #[allow(clippy::cast_ptr_alignment)]
 pub unsafe fn vst1q_u64(ptr: *mut u64, a: uint64x2_t) {
-    core::ptr::write_unaligned(ptr.cast(), a);
+    write_unaligned(ptr.cast(), a);
 }
 
 /// Store multiple single-element structures from one, two, three, or four registers.
@@ -800,7 +801,7 @@ pub unsafe fn vst1q_u64(ptr: *mut u64, a: uint64x2_t) {
 #[cfg_attr(test, assert_instr(str))]
 #[allow(clippy::cast_ptr_alignment)]
 pub unsafe fn vst1_p8(ptr: *mut p8, a: poly8x8_t) {
-    core::ptr::write_unaligned(ptr.cast(), a);
+    write_unaligned(ptr.cast(), a);
 }
 
 /// Store multiple single-element structures from one, two, three, or four registers.
@@ -809,7 +810,7 @@ pub unsafe fn vst1_p8(ptr: *mut p8, a: poly8x8_t) {
 #[cfg_attr(test, assert_instr(str))]
 #[allow(clippy::cast_ptr_alignment)]
 pub unsafe fn vst1q_p8(ptr: *mut p8, a: poly8x16_t) {
-    core::ptr::write_unaligned(ptr.cast(), a);
+    write_unaligned(ptr.cast(), a);
 }
 
 /// Store multiple single-element structures from one, two, three, or four registers.
@@ -818,7 +819,7 @@ pub unsafe fn vst1q_p8(ptr: *mut p8, a: poly8x16_t) {
 #[cfg_attr(test, assert_instr(str))]
 #[allow(clippy::cast_ptr_alignment)]
 pub unsafe fn vst1_p16(ptr: *mut p16, a: poly16x4_t) {
-    core::ptr::write_unaligned(ptr.cast(), a);
+    write_unaligned(ptr.cast(), a);
 }
 
 /// Store multiple single-element structures from one, two, three, or four registers.
@@ -827,7 +828,7 @@ pub unsafe fn vst1_p16(ptr: *mut p16, a: poly16x4_t) {
 #[cfg_attr(test, assert_instr(str))]
 #[allow(clippy::cast_ptr_alignment)]
 pub unsafe fn vst1q_p16(ptr: *mut p16, a: poly16x8_t) {
-    core::ptr::write_unaligned(ptr.cast(), a);
+    write_unaligned(ptr.cast(), a);
 }
 
 // Store multiple single-element structures from one, two, three, or four registers.
@@ -836,7 +837,7 @@ pub unsafe fn vst1q_p16(ptr: *mut p16, a: poly16x8_t) {
 #[cfg_attr(test, assert_instr(str))]
 #[allow(clippy::cast_ptr_alignment)]
 pub unsafe fn vst1_p64(ptr: *mut p64, a: poly64x1_t) {
-    core::ptr::write_unaligned(ptr.cast(), a);
+    write_unaligned(ptr.cast(), a);
 }
 
 // Store multiple single-element structures from one, two, three, or four registers.
@@ -845,7 +846,7 @@ pub unsafe fn vst1_p64(ptr: *mut p64, a: poly64x1_t) {
 #[cfg_attr(test, assert_instr(str))]
 #[allow(clippy::cast_ptr_alignment)]
 pub unsafe fn vst1q_p64(ptr: *mut p64, a: poly64x2_t) {
-    core::ptr::write_unaligned(ptr.cast(), a);
+    write_unaligned(ptr.cast(), a);
 }
 
 // Store multiple single-element structures from one, two, three, or four registers.
@@ -854,7 +855,7 @@ pub unsafe fn vst1q_p64(ptr: *mut p64, a: poly64x2_t) {
 #[cfg_attr(test, assert_instr(str))]
 #[allow(clippy::cast_ptr_alignment)]
 pub unsafe fn vst1_f32(ptr: *mut f32, a: float32x2_t) {
-    core::ptr::write_unaligned(ptr.cast(), a);
+    write_unaligned(ptr.cast(), a);
 }
 
 // Store multiple single-element structures from one, two, three, or four registers.
@@ -863,7 +864,7 @@ pub unsafe fn vst1_f32(ptr: *mut f32, a: float32x2_t) {
 #[cfg_attr(test, assert_instr(str))]
 #[allow(clippy::cast_ptr_alignment)]
 pub unsafe fn vst1q_f32(ptr: *mut f32, a: float32x4_t) {
-    core::ptr::write_unaligned(ptr.cast(), a);
+    write_unaligned(ptr.cast(), a);
 }
 
 // Store multiple single-element structures from one, two, three, or four registers.
@@ -872,7 +873,7 @@ pub unsafe fn vst1q_f32(ptr: *mut f32, a: float32x4_t) {
 #[cfg_attr(test, assert_instr(str))]
 #[allow(clippy::cast_ptr_alignment)]
 pub unsafe fn vst1_f64(ptr: *mut f64, a: float64x1_t) {
-    core::ptr::write_unaligned(ptr.cast(), a);
+    write_unaligned(ptr.cast(), a);
 }
 
 // Store multiple single-element structures from one, two, three, or four registers.
@@ -881,7 +882,7 @@ pub unsafe fn vst1_f64(ptr: *mut f64, a: float64x1_t) {
 #[cfg_attr(test, assert_instr(str))]
 #[allow(clippy::cast_ptr_alignment)]
 pub unsafe fn vst1q_f64(ptr: *mut f64, a: float64x2_t) {
-    core::ptr::write_unaligned(ptr.cast(), a);
+    write_unaligned(ptr.cast(), a);
 }
 
 /// Absolute Value (wrapping).
