@@ -464,7 +464,7 @@ pub unsafe fn vcopy_laneq_f64<const LANE1: i32, const LANE2: i32>(
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1_s8(ptr: *const i8) -> int8x8_t {
-    core::ptr::read_unaligned(ptr as *const int8x8_t)
+    core::ptr::read_unaligned(ptr.cast())
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -472,7 +472,7 @@ pub unsafe fn vld1_s8(ptr: *const i8) -> int8x8_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1q_s8(ptr: *const i8) -> int8x16_t {
-    core::ptr::read_unaligned(ptr as *const int8x16_t)
+    core::ptr::read_unaligned(ptr.cast())
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -480,7 +480,7 @@ pub unsafe fn vld1q_s8(ptr: *const i8) -> int8x16_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1_s16(ptr: *const i16) -> int16x4_t {
-    core::ptr::read_unaligned(ptr as *const int16x4_t)
+    core::ptr::read_unaligned(ptr.cast())
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -488,7 +488,7 @@ pub unsafe fn vld1_s16(ptr: *const i16) -> int16x4_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1q_s16(ptr: *const i16) -> int16x8_t {
-    core::ptr::read_unaligned(ptr as *const int16x8_t)
+    core::ptr::read_unaligned(ptr.cast())
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -496,7 +496,7 @@ pub unsafe fn vld1q_s16(ptr: *const i16) -> int16x8_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1_s32(ptr: *const i32) -> int32x2_t {
-    core::ptr::read_unaligned(ptr as *const int32x2_t)
+    core::ptr::read_unaligned(ptr.cast())
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -504,7 +504,7 @@ pub unsafe fn vld1_s32(ptr: *const i32) -> int32x2_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1q_s32(ptr: *const i32) -> int32x4_t {
-    core::ptr::read_unaligned(ptr as *const int32x4_t)
+    core::ptr::read_unaligned(ptr.cast())
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -512,7 +512,7 @@ pub unsafe fn vld1q_s32(ptr: *const i32) -> int32x4_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1_s64(ptr: *const i64) -> int64x1_t {
-    core::ptr::read_unaligned(ptr as *const int64x1_t)
+    core::ptr::read_unaligned(ptr.cast())
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -520,7 +520,7 @@ pub unsafe fn vld1_s64(ptr: *const i64) -> int64x1_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1q_s64(ptr: *const i64) -> int64x2_t {
-    core::ptr::read_unaligned(ptr as *const int64x2_t)
+    core::ptr::read_unaligned(ptr.cast())
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -528,7 +528,7 @@ pub unsafe fn vld1q_s64(ptr: *const i64) -> int64x2_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1_u8(ptr: *const u8) -> uint8x8_t {
-    core::ptr::read_unaligned(ptr as *const uint8x8_t)
+    core::ptr::read_unaligned(ptr.cast())
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -536,7 +536,7 @@ pub unsafe fn vld1_u8(ptr: *const u8) -> uint8x8_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1q_u8(ptr: *const u8) -> uint8x16_t {
-    core::ptr::read_unaligned(ptr as *const uint8x16_t)
+    core::ptr::read_unaligned(ptr.cast())
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -544,7 +544,7 @@ pub unsafe fn vld1q_u8(ptr: *const u8) -> uint8x16_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1_u16(ptr: *const u16) -> uint16x4_t {
-    core::ptr::read_unaligned(ptr as *const uint16x4_t)
+    core::ptr::read_unaligned(ptr.cast())
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -552,7 +552,7 @@ pub unsafe fn vld1_u16(ptr: *const u16) -> uint16x4_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1q_u16(ptr: *const u16) -> uint16x8_t {
-    core::ptr::read_unaligned(ptr as *const uint16x8_t)
+    core::ptr::read_unaligned(ptr.cast())
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -560,7 +560,7 @@ pub unsafe fn vld1q_u16(ptr: *const u16) -> uint16x8_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1_u32(ptr: *const u32) -> uint32x2_t {
-    core::ptr::read_unaligned(ptr as *const uint32x2_t)
+    core::ptr::read_unaligned(ptr.cast())
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -568,7 +568,7 @@ pub unsafe fn vld1_u32(ptr: *const u32) -> uint32x2_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1q_u32(ptr: *const u32) -> uint32x4_t {
-    core::ptr::read_unaligned(ptr as *const uint32x4_t)
+    core::ptr::read_unaligned(ptr.cast())
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -576,7 +576,7 @@ pub unsafe fn vld1q_u32(ptr: *const u32) -> uint32x4_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1_u64(ptr: *const u64) -> uint64x1_t {
-    core::ptr::read_unaligned(ptr as *const uint64x1_t)
+    core::ptr::read_unaligned(ptr.cast())
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -584,7 +584,7 @@ pub unsafe fn vld1_u64(ptr: *const u64) -> uint64x1_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1q_u64(ptr: *const u64) -> uint64x2_t {
-    core::ptr::read_unaligned(ptr as *const uint64x2_t)
+    core::ptr::read_unaligned(ptr.cast())
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -592,7 +592,7 @@ pub unsafe fn vld1q_u64(ptr: *const u64) -> uint64x2_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1_p8(ptr: *const p8) -> poly8x8_t {
-    core::ptr::read_unaligned(ptr as *const poly8x8_t)
+    core::ptr::read_unaligned(ptr.cast())
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -600,7 +600,7 @@ pub unsafe fn vld1_p8(ptr: *const p8) -> poly8x8_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1q_p8(ptr: *const p8) -> poly8x16_t {
-    core::ptr::read_unaligned(ptr as *const poly8x16_t)
+    core::ptr::read_unaligned(ptr.cast())
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -608,7 +608,7 @@ pub unsafe fn vld1q_p8(ptr: *const p8) -> poly8x16_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1_p16(ptr: *const p16) -> poly16x4_t {
-    core::ptr::read_unaligned(ptr as *const poly16x4_t)
+    core::ptr::read_unaligned(ptr.cast())
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -616,7 +616,7 @@ pub unsafe fn vld1_p16(ptr: *const p16) -> poly16x4_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1q_p16(ptr: *const p16) -> poly16x8_t {
-    core::ptr::read_unaligned(ptr as *const poly16x8_t)
+    core::ptr::read_unaligned(ptr.cast())
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -624,7 +624,7 @@ pub unsafe fn vld1q_p16(ptr: *const p16) -> poly16x8_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1_f32(ptr: *const f32) -> float32x2_t {
-    core::ptr::read_unaligned(ptr as *const float32x2_t)
+    core::ptr::read_unaligned(ptr.cast())
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -632,7 +632,7 @@ pub unsafe fn vld1_f32(ptr: *const f32) -> float32x2_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1q_f32(ptr: *const f32) -> float32x4_t {
-    core::ptr::read_unaligned(ptr as *const float32x4_t)
+    core::ptr::read_unaligned(ptr.cast())
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -640,7 +640,7 @@ pub unsafe fn vld1q_f32(ptr: *const f32) -> float32x4_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1_f64(ptr: *const f64) -> float64x1_t {
-    core::ptr::read_unaligned(ptr as *const float64x1_t)
+    core::ptr::read_unaligned(ptr.cast())
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -648,7 +648,7 @@ pub unsafe fn vld1_f64(ptr: *const f64) -> float64x1_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1q_f64(ptr: *const f64) -> float64x2_t {
-    core::ptr::read_unaligned(ptr as *const float64x2_t)
+    core::ptr::read_unaligned(ptr.cast())
 }
 
 /// Store multiple single-element structures from one, two, three, or four registers.
