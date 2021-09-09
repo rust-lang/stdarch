@@ -8697,7 +8697,7 @@ vfmaq_f32_(b, c, a)
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(vfma))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(fmla))]
 pub unsafe fn vfma_n_f32(a: float32x2_t, b: float32x2_t, c: f32) -> float32x2_t {
-    vfma_f32(a, b, vdup_n_f32(c))
+    vfma_f32(a, b, vdup_n_f32_v8(c))
 }
 
 /// Floating-point fused Multiply-Add to accumulator(vector)
@@ -8707,7 +8707,7 @@ pub unsafe fn vfma_n_f32(a: float32x2_t, b: float32x2_t, c: f32) -> float32x2_t 
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(vfma))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(fmla))]
 pub unsafe fn vfmaq_n_f32(a: float32x4_t, b: float32x4_t, c: f32) -> float32x4_t {
-    vfmaq_f32(a, b, vdupq_n_f32(c))
+    vfmaq_f32(a, b, vdupq_n_f32_v8(c))
 }
 
 /// Floating-point fused multiply-subtract from accumulator
@@ -8739,7 +8739,7 @@ pub unsafe fn vfmsq_f32(a: float32x4_t, b: float32x4_t, c: float32x4_t) -> float
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(vfms))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(fmls))]
 pub unsafe fn vfms_n_f32(a: float32x2_t, b: float32x2_t, c: f32) -> float32x2_t {
-    vfms_f32(a, b, vdup_n_f32(c))
+    vfms_f32(a, b, vdup_n_f32_v8(c))
 }
 
 /// Floating-point fused Multiply-subtract to accumulator(vector)
@@ -8749,7 +8749,7 @@ pub unsafe fn vfms_n_f32(a: float32x2_t, b: float32x2_t, c: f32) -> float32x2_t 
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(vfms))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(fmls))]
 pub unsafe fn vfmsq_n_f32(a: float32x4_t, b: float32x4_t, c: f32) -> float32x4_t {
-    vfmsq_f32(a, b, vdupq_n_f32(c))
+    vfmsq_f32(a, b, vdupq_n_f32_v8(c))
 }
 
 /// Subtract

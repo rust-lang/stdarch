@@ -3707,6 +3707,16 @@ pub unsafe fn vdupq_n_f32(value: f32) -> float32x4_t {
 /// Duplicate vector element to vector or scalar
 #[inline]
 #[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "fp-armv8,v8"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vdup.32"))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(dup))]
+unsafe fn vdupq_n_f32_v8(value: f32) -> float32x4_t {
+    float32x4_t(value, value, value, value)
+}
+
+/// Duplicate vector element to vector or scalar
+#[inline]
+#[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vdup.8"))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(dup))]
@@ -3811,6 +3821,16 @@ pub unsafe fn vdup_n_p16(value: p16) -> poly16x4_t {
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vdup.32"))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(dup))]
 pub unsafe fn vdup_n_f32(value: f32) -> float32x2_t {
+    float32x2_t(value, value)
+}
+
+/// Duplicate vector element to vector or scalar
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "fp-armv8,v8"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vdup.32"))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(dup))]
+unsafe fn vdup_n_f32_v8(value: f32) -> float32x2_t {
     float32x2_t(value, value)
 }
 

@@ -1108,6 +1108,7 @@ fn gen_aarch64(
                 out_t,
                 fixed,
                 None,
+                true,
             ));
         }
         calls
@@ -1947,6 +1948,7 @@ fn gen_arm(
                 out_t,
                 fixed,
                 None,
+                false,
             ));
         }
         calls
@@ -2364,6 +2366,7 @@ fn get_call(
     out_t: &str,
     fixed: &Vec<String>,
     n: Option<i32>,
+    aarch64: bool,
 ) -> String {
     let params: Vec<_> = in_str.split(',').map(|v| v.trim().to_string()).collect();
     assert!(params.len() > 0);
@@ -2531,7 +2534,8 @@ fn get_call(
                     in_t,
                     out_t,
                     fixed,
-                    Some(i as i32)
+                    Some(i as i32),
+                    aarch64
                 )
             );
             call.push_str(&sub_match);
@@ -2580,6 +2584,7 @@ fn get_call(
                 out_t,
                 fixed,
                 n.clone(),
+                aarch64,
             );
             if !param_str.is_empty() {
                 param_str.push_str(", ");
@@ -2650,6 +2655,11 @@ fn get_call(
             fn_name.push_str(type_to_suffix(in_t[1]));
         } else if fn_format[1] == "nself" {
             fn_name.push_str(type_to_n_suffix(in_t[1]));
+        } else if fn_format[1] == "nselfv8" {
+            fn_name.push_str(type_to_n_suffix(in_t[1]));
+            if !aarch64 {
+                fn_name.push_str("_v8");
+            }
         } else if fn_format[1] == "out" {
             fn_name.push_str(type_to_suffix(out_t));
         } else if fn_format[1] == "in0" {

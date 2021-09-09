@@ -2576,7 +2576,7 @@ generate float*_t
 /// Floating-point fused Multiply-Add to accumulator(vector)
 name = vfma
 n-suffix
-multi_fn = vfma-self-noext, a, b, {vdup-nself-noext, c}
+multi_fn = vfma-self-noext, a, b, {vdup-nselfv8-noext, c}
 a = 2.0, 3.0, 4.0, 5.0
 b = 6.0, 4.0, 7.0, 8.0
 c = 8.0
@@ -2653,7 +2653,7 @@ generate float*_t
 /// Floating-point fused Multiply-subtract to accumulator(vector)
 name = vfms
 n-suffix
-multi_fn = vfms-self-noext, a, b, {vdup-nself-noext, c}
+multi_fn = vfms-self-noext, a, b, {vdup-nselfv8-noext, c}
 a = 50.0, 35.0, 60.0, 69.0
 b = 6.0, 4.0, 7.0, 8.0
 c = 8.0
