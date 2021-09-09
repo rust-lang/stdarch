@@ -10,7 +10,9 @@ set -ex
 #export RUST_TEST_NOCAPTURE=1
 #export RUST_TEST_THREADS=1
 
-RUSTFLAGS="$RUSTFLAGS -D warnings "
+export RUSTFLAGS="${RUSTFLAGS} -D warnings -Z merge-functions=disabled "
+
+export STDARCH_DISABLE_DEDUP_GUARD=1
 
 case ${TARGET} in
     *-pc-windows-msvc)
