@@ -12186,7 +12186,7 @@ vrecpeq_f32_(a)
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_s8_u8(a: uint8x8_t) -> int8x8_t {
     transmute(a)
@@ -12196,7 +12196,7 @@ pub unsafe fn vreinterpret_s8_u8(a: uint8x8_t) -> int8x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_s8_p8(a: poly8x8_t) -> int8x8_t {
     transmute(a)
@@ -12206,7 +12206,7 @@ pub unsafe fn vreinterpret_s8_p8(a: poly8x8_t) -> int8x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_s16_p16(a: poly16x4_t) -> int16x4_t {
     transmute(a)
@@ -12216,7 +12216,7 @@ pub unsafe fn vreinterpret_s16_p16(a: poly16x4_t) -> int16x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_s16_u16(a: uint16x4_t) -> int16x4_t {
     transmute(a)
@@ -12226,7 +12226,7 @@ pub unsafe fn vreinterpret_s16_u16(a: uint16x4_t) -> int16x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_s32_u32(a: uint32x2_t) -> int32x2_t {
     transmute(a)
@@ -12236,7 +12236,7 @@ pub unsafe fn vreinterpret_s32_u32(a: uint32x2_t) -> int32x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_s64_u64(a: uint64x1_t) -> int64x1_t {
     transmute(a)
@@ -12246,7 +12246,7 @@ pub unsafe fn vreinterpret_s64_u64(a: uint64x1_t) -> int64x1_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_s8_u8(a: uint8x16_t) -> int8x16_t {
     transmute(a)
@@ -12256,7 +12256,7 @@ pub unsafe fn vreinterpretq_s8_u8(a: uint8x16_t) -> int8x16_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_s8_p8(a: poly8x16_t) -> int8x16_t {
     transmute(a)
@@ -12266,7 +12266,7 @@ pub unsafe fn vreinterpretq_s8_p8(a: poly8x16_t) -> int8x16_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_s16_p16(a: poly16x8_t) -> int16x8_t {
     transmute(a)
@@ -12276,7 +12276,7 @@ pub unsafe fn vreinterpretq_s16_p16(a: poly16x8_t) -> int16x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_s16_u16(a: uint16x8_t) -> int16x8_t {
     transmute(a)
@@ -12286,7 +12286,7 @@ pub unsafe fn vreinterpretq_s16_u16(a: uint16x8_t) -> int16x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_s32_u32(a: uint32x4_t) -> int32x4_t {
     transmute(a)
@@ -12296,7 +12296,7 @@ pub unsafe fn vreinterpretq_s32_u32(a: uint32x4_t) -> int32x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_s64_u64(a: uint64x2_t) -> int64x2_t {
     transmute(a)
@@ -12306,7 +12306,7 @@ pub unsafe fn vreinterpretq_s64_u64(a: uint64x2_t) -> int64x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_u8_p8(a: poly8x8_t) -> uint8x8_t {
     transmute(a)
@@ -12316,7 +12316,7 @@ pub unsafe fn vreinterpret_u8_p8(a: poly8x8_t) -> uint8x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_u8_s8(a: int8x8_t) -> uint8x8_t {
     transmute(a)
@@ -12326,7 +12326,7 @@ pub unsafe fn vreinterpret_u8_s8(a: int8x8_t) -> uint8x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_u16_p16(a: poly16x4_t) -> uint16x4_t {
     transmute(a)
@@ -12336,7 +12336,7 @@ pub unsafe fn vreinterpret_u16_p16(a: poly16x4_t) -> uint16x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_u16_s16(a: int16x4_t) -> uint16x4_t {
     transmute(a)
@@ -12346,7 +12346,7 @@ pub unsafe fn vreinterpret_u16_s16(a: int16x4_t) -> uint16x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_u32_s32(a: int32x2_t) -> uint32x2_t {
     transmute(a)
@@ -12356,7 +12356,7 @@ pub unsafe fn vreinterpret_u32_s32(a: int32x2_t) -> uint32x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_u64_s64(a: int64x1_t) -> uint64x1_t {
     transmute(a)
@@ -12366,7 +12366,7 @@ pub unsafe fn vreinterpret_u64_s64(a: int64x1_t) -> uint64x1_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_u8_p8(a: poly8x16_t) -> uint8x16_t {
     transmute(a)
@@ -12376,7 +12376,7 @@ pub unsafe fn vreinterpretq_u8_p8(a: poly8x16_t) -> uint8x16_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_u8_s8(a: int8x16_t) -> uint8x16_t {
     transmute(a)
@@ -12386,7 +12386,7 @@ pub unsafe fn vreinterpretq_u8_s8(a: int8x16_t) -> uint8x16_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_u16_p16(a: poly16x8_t) -> uint16x8_t {
     transmute(a)
@@ -12396,7 +12396,7 @@ pub unsafe fn vreinterpretq_u16_p16(a: poly16x8_t) -> uint16x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_u16_s16(a: int16x8_t) -> uint16x8_t {
     transmute(a)
@@ -12406,7 +12406,7 @@ pub unsafe fn vreinterpretq_u16_s16(a: int16x8_t) -> uint16x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_u32_s32(a: int32x4_t) -> uint32x4_t {
     transmute(a)
@@ -12416,7 +12416,7 @@ pub unsafe fn vreinterpretq_u32_s32(a: int32x4_t) -> uint32x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_u64_s64(a: int64x2_t) -> uint64x2_t {
     transmute(a)
@@ -12426,7 +12426,7 @@ pub unsafe fn vreinterpretq_u64_s64(a: int64x2_t) -> uint64x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_p8_s8(a: int8x8_t) -> poly8x8_t {
     transmute(a)
@@ -12436,7 +12436,7 @@ pub unsafe fn vreinterpret_p8_s8(a: int8x8_t) -> poly8x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_p8_u8(a: uint8x8_t) -> poly8x8_t {
     transmute(a)
@@ -12446,7 +12446,7 @@ pub unsafe fn vreinterpret_p8_u8(a: uint8x8_t) -> poly8x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_p16_s16(a: int16x4_t) -> poly16x4_t {
     transmute(a)
@@ -12456,7 +12456,7 @@ pub unsafe fn vreinterpret_p16_s16(a: int16x4_t) -> poly16x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_p16_u16(a: uint16x4_t) -> poly16x4_t {
     transmute(a)
@@ -12466,7 +12466,7 @@ pub unsafe fn vreinterpret_p16_u16(a: uint16x4_t) -> poly16x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_p8_s8(a: int8x16_t) -> poly8x16_t {
     transmute(a)
@@ -12476,7 +12476,7 @@ pub unsafe fn vreinterpretq_p8_s8(a: int8x16_t) -> poly8x16_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_p8_u8(a: uint8x16_t) -> poly8x16_t {
     transmute(a)
@@ -12486,7 +12486,7 @@ pub unsafe fn vreinterpretq_p8_u8(a: uint8x16_t) -> poly8x16_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_p16_s16(a: int16x8_t) -> poly16x8_t {
     transmute(a)
@@ -12496,7 +12496,7 @@ pub unsafe fn vreinterpretq_p16_s16(a: int16x8_t) -> poly16x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_p16_u16(a: uint16x8_t) -> poly16x8_t {
     transmute(a)
@@ -12506,7 +12506,7 @@ pub unsafe fn vreinterpretq_p16_u16(a: uint16x8_t) -> poly16x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_s8_s16(a: int16x4_t) -> int8x8_t {
     transmute(a)
@@ -12516,7 +12516,7 @@ pub unsafe fn vreinterpret_s8_s16(a: int16x4_t) -> int8x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_s8_u16(a: uint16x4_t) -> int8x8_t {
     transmute(a)
@@ -12526,7 +12526,7 @@ pub unsafe fn vreinterpret_s8_u16(a: uint16x4_t) -> int8x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_s8_p16(a: poly16x4_t) -> int8x8_t {
     transmute(a)
@@ -12536,7 +12536,7 @@ pub unsafe fn vreinterpret_s8_p16(a: poly16x4_t) -> int8x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_s16_s32(a: int32x2_t) -> int16x4_t {
     transmute(a)
@@ -12546,7 +12546,7 @@ pub unsafe fn vreinterpret_s16_s32(a: int32x2_t) -> int16x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_s16_u32(a: uint32x2_t) -> int16x4_t {
     transmute(a)
@@ -12556,7 +12556,7 @@ pub unsafe fn vreinterpret_s16_u32(a: uint32x2_t) -> int16x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_s32_s64(a: int64x1_t) -> int32x2_t {
     transmute(a)
@@ -12566,7 +12566,7 @@ pub unsafe fn vreinterpret_s32_s64(a: int64x1_t) -> int32x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_s32_u64(a: uint64x1_t) -> int32x2_t {
     transmute(a)
@@ -12576,7 +12576,7 @@ pub unsafe fn vreinterpret_s32_u64(a: uint64x1_t) -> int32x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_s8_s16(a: int16x8_t) -> int8x16_t {
     transmute(a)
@@ -12586,7 +12586,7 @@ pub unsafe fn vreinterpretq_s8_s16(a: int16x8_t) -> int8x16_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_s8_u16(a: uint16x8_t) -> int8x16_t {
     transmute(a)
@@ -12596,7 +12596,7 @@ pub unsafe fn vreinterpretq_s8_u16(a: uint16x8_t) -> int8x16_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_s8_p16(a: poly16x8_t) -> int8x16_t {
     transmute(a)
@@ -12606,7 +12606,7 @@ pub unsafe fn vreinterpretq_s8_p16(a: poly16x8_t) -> int8x16_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_s16_s32(a: int32x4_t) -> int16x8_t {
     transmute(a)
@@ -12616,7 +12616,7 @@ pub unsafe fn vreinterpretq_s16_s32(a: int32x4_t) -> int16x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_s16_u32(a: uint32x4_t) -> int16x8_t {
     transmute(a)
@@ -12626,7 +12626,7 @@ pub unsafe fn vreinterpretq_s16_u32(a: uint32x4_t) -> int16x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_s32_s64(a: int64x2_t) -> int32x4_t {
     transmute(a)
@@ -12636,7 +12636,7 @@ pub unsafe fn vreinterpretq_s32_s64(a: int64x2_t) -> int32x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_s32_u64(a: uint64x2_t) -> int32x4_t {
     transmute(a)
@@ -12646,7 +12646,7 @@ pub unsafe fn vreinterpretq_s32_u64(a: uint64x2_t) -> int32x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_u8_p16(a: poly16x4_t) -> uint8x8_t {
     transmute(a)
@@ -12656,7 +12656,7 @@ pub unsafe fn vreinterpret_u8_p16(a: poly16x4_t) -> uint8x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_u8_s16(a: int16x4_t) -> uint8x8_t {
     transmute(a)
@@ -12666,7 +12666,7 @@ pub unsafe fn vreinterpret_u8_s16(a: int16x4_t) -> uint8x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_u8_u16(a: uint16x4_t) -> uint8x8_t {
     transmute(a)
@@ -12676,7 +12676,7 @@ pub unsafe fn vreinterpret_u8_u16(a: uint16x4_t) -> uint8x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_u16_s32(a: int32x2_t) -> uint16x4_t {
     transmute(a)
@@ -12686,7 +12686,7 @@ pub unsafe fn vreinterpret_u16_s32(a: int32x2_t) -> uint16x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_u16_u32(a: uint32x2_t) -> uint16x4_t {
     transmute(a)
@@ -12696,7 +12696,7 @@ pub unsafe fn vreinterpret_u16_u32(a: uint32x2_t) -> uint16x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_u32_s64(a: int64x1_t) -> uint32x2_t {
     transmute(a)
@@ -12706,7 +12706,7 @@ pub unsafe fn vreinterpret_u32_s64(a: int64x1_t) -> uint32x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_u32_u64(a: uint64x1_t) -> uint32x2_t {
     transmute(a)
@@ -12716,7 +12716,7 @@ pub unsafe fn vreinterpret_u32_u64(a: uint64x1_t) -> uint32x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_u8_p16(a: poly16x8_t) -> uint8x16_t {
     transmute(a)
@@ -12726,7 +12726,7 @@ pub unsafe fn vreinterpretq_u8_p16(a: poly16x8_t) -> uint8x16_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_u8_s16(a: int16x8_t) -> uint8x16_t {
     transmute(a)
@@ -12736,7 +12736,7 @@ pub unsafe fn vreinterpretq_u8_s16(a: int16x8_t) -> uint8x16_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_u8_u16(a: uint16x8_t) -> uint8x16_t {
     transmute(a)
@@ -12746,7 +12746,7 @@ pub unsafe fn vreinterpretq_u8_u16(a: uint16x8_t) -> uint8x16_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_u16_s32(a: int32x4_t) -> uint16x8_t {
     transmute(a)
@@ -12756,7 +12756,7 @@ pub unsafe fn vreinterpretq_u16_s32(a: int32x4_t) -> uint16x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_u16_u32(a: uint32x4_t) -> uint16x8_t {
     transmute(a)
@@ -12766,7 +12766,7 @@ pub unsafe fn vreinterpretq_u16_u32(a: uint32x4_t) -> uint16x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_u32_s64(a: int64x2_t) -> uint32x4_t {
     transmute(a)
@@ -12776,7 +12776,7 @@ pub unsafe fn vreinterpretq_u32_s64(a: int64x2_t) -> uint32x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_u32_u64(a: uint64x2_t) -> uint32x4_t {
     transmute(a)
@@ -12786,7 +12786,7 @@ pub unsafe fn vreinterpretq_u32_u64(a: uint64x2_t) -> uint32x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_p8_p16(a: poly16x4_t) -> poly8x8_t {
     transmute(a)
@@ -12796,7 +12796,7 @@ pub unsafe fn vreinterpret_p8_p16(a: poly16x4_t) -> poly8x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_p8_s16(a: int16x4_t) -> poly8x8_t {
     transmute(a)
@@ -12806,7 +12806,7 @@ pub unsafe fn vreinterpret_p8_s16(a: int16x4_t) -> poly8x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_p8_u16(a: uint16x4_t) -> poly8x8_t {
     transmute(a)
@@ -12816,7 +12816,7 @@ pub unsafe fn vreinterpret_p8_u16(a: uint16x4_t) -> poly8x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_p16_s32(a: int32x2_t) -> poly16x4_t {
     transmute(a)
@@ -12826,7 +12826,7 @@ pub unsafe fn vreinterpret_p16_s32(a: int32x2_t) -> poly16x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_p16_u32(a: uint32x2_t) -> poly16x4_t {
     transmute(a)
@@ -12836,7 +12836,7 @@ pub unsafe fn vreinterpret_p16_u32(a: uint32x2_t) -> poly16x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_p8_p16(a: poly16x8_t) -> poly8x16_t {
     transmute(a)
@@ -12846,7 +12846,7 @@ pub unsafe fn vreinterpretq_p8_p16(a: poly16x8_t) -> poly8x16_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_p8_s16(a: int16x8_t) -> poly8x16_t {
     transmute(a)
@@ -12856,7 +12856,7 @@ pub unsafe fn vreinterpretq_p8_s16(a: int16x8_t) -> poly8x16_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_p8_u16(a: uint16x8_t) -> poly8x16_t {
     transmute(a)
@@ -12866,7 +12866,7 @@ pub unsafe fn vreinterpretq_p8_u16(a: uint16x8_t) -> poly8x16_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_p16_s32(a: int32x4_t) -> poly16x8_t {
     transmute(a)
@@ -12876,7 +12876,7 @@ pub unsafe fn vreinterpretq_p16_s32(a: int32x4_t) -> poly16x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_p16_u32(a: uint32x4_t) -> poly16x8_t {
     transmute(a)
@@ -12886,7 +12886,7 @@ pub unsafe fn vreinterpretq_p16_u32(a: uint32x4_t) -> poly16x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_s16_p8(a: poly8x8_t) -> int16x4_t {
     transmute(a)
@@ -12896,7 +12896,7 @@ pub unsafe fn vreinterpret_s16_p8(a: poly8x8_t) -> int16x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_s16_s8(a: int8x8_t) -> int16x4_t {
     transmute(a)
@@ -12906,7 +12906,7 @@ pub unsafe fn vreinterpret_s16_s8(a: int8x8_t) -> int16x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_s16_u8(a: uint8x8_t) -> int16x4_t {
     transmute(a)
@@ -12916,7 +12916,7 @@ pub unsafe fn vreinterpret_s16_u8(a: uint8x8_t) -> int16x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_s32_p16(a: poly16x4_t) -> int32x2_t {
     transmute(a)
@@ -12926,7 +12926,7 @@ pub unsafe fn vreinterpret_s32_p16(a: poly16x4_t) -> int32x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_s32_s16(a: int16x4_t) -> int32x2_t {
     transmute(a)
@@ -12936,7 +12936,7 @@ pub unsafe fn vreinterpret_s32_s16(a: int16x4_t) -> int32x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_s32_u16(a: uint16x4_t) -> int32x2_t {
     transmute(a)
@@ -12946,7 +12946,7 @@ pub unsafe fn vreinterpret_s32_u16(a: uint16x4_t) -> int32x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_s64_s32(a: int32x2_t) -> int64x1_t {
     transmute(a)
@@ -12956,7 +12956,7 @@ pub unsafe fn vreinterpret_s64_s32(a: int32x2_t) -> int64x1_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_s64_u32(a: uint32x2_t) -> int64x1_t {
     transmute(a)
@@ -12966,7 +12966,7 @@ pub unsafe fn vreinterpret_s64_u32(a: uint32x2_t) -> int64x1_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_s16_p8(a: poly8x16_t) -> int16x8_t {
     transmute(a)
@@ -12976,7 +12976,7 @@ pub unsafe fn vreinterpretq_s16_p8(a: poly8x16_t) -> int16x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_s16_s8(a: int8x16_t) -> int16x8_t {
     transmute(a)
@@ -12986,7 +12986,7 @@ pub unsafe fn vreinterpretq_s16_s8(a: int8x16_t) -> int16x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_s16_u8(a: uint8x16_t) -> int16x8_t {
     transmute(a)
@@ -12996,7 +12996,7 @@ pub unsafe fn vreinterpretq_s16_u8(a: uint8x16_t) -> int16x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_s32_p16(a: poly16x8_t) -> int32x4_t {
     transmute(a)
@@ -13006,7 +13006,7 @@ pub unsafe fn vreinterpretq_s32_p16(a: poly16x8_t) -> int32x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_s32_s16(a: int16x8_t) -> int32x4_t {
     transmute(a)
@@ -13016,7 +13016,7 @@ pub unsafe fn vreinterpretq_s32_s16(a: int16x8_t) -> int32x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_s32_u16(a: uint16x8_t) -> int32x4_t {
     transmute(a)
@@ -13026,7 +13026,7 @@ pub unsafe fn vreinterpretq_s32_u16(a: uint16x8_t) -> int32x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_s64_s32(a: int32x4_t) -> int64x2_t {
     transmute(a)
@@ -13036,7 +13036,7 @@ pub unsafe fn vreinterpretq_s64_s32(a: int32x4_t) -> int64x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_s64_u32(a: uint32x4_t) -> int64x2_t {
     transmute(a)
@@ -13046,7 +13046,7 @@ pub unsafe fn vreinterpretq_s64_u32(a: uint32x4_t) -> int64x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_u16_p8(a: poly8x8_t) -> uint16x4_t {
     transmute(a)
@@ -13056,7 +13056,7 @@ pub unsafe fn vreinterpret_u16_p8(a: poly8x8_t) -> uint16x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_u16_s8(a: int8x8_t) -> uint16x4_t {
     transmute(a)
@@ -13066,7 +13066,7 @@ pub unsafe fn vreinterpret_u16_s8(a: int8x8_t) -> uint16x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_u16_u8(a: uint8x8_t) -> uint16x4_t {
     transmute(a)
@@ -13076,7 +13076,7 @@ pub unsafe fn vreinterpret_u16_u8(a: uint8x8_t) -> uint16x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_u32_p16(a: poly16x4_t) -> uint32x2_t {
     transmute(a)
@@ -13086,7 +13086,7 @@ pub unsafe fn vreinterpret_u32_p16(a: poly16x4_t) -> uint32x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_u32_s16(a: int16x4_t) -> uint32x2_t {
     transmute(a)
@@ -13096,7 +13096,7 @@ pub unsafe fn vreinterpret_u32_s16(a: int16x4_t) -> uint32x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_u32_u16(a: uint16x4_t) -> uint32x2_t {
     transmute(a)
@@ -13106,7 +13106,7 @@ pub unsafe fn vreinterpret_u32_u16(a: uint16x4_t) -> uint32x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_u64_s32(a: int32x2_t) -> uint64x1_t {
     transmute(a)
@@ -13116,7 +13116,7 @@ pub unsafe fn vreinterpret_u64_s32(a: int32x2_t) -> uint64x1_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_u64_u32(a: uint32x2_t) -> uint64x1_t {
     transmute(a)
@@ -13126,7 +13126,7 @@ pub unsafe fn vreinterpret_u64_u32(a: uint32x2_t) -> uint64x1_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_u16_p8(a: poly8x16_t) -> uint16x8_t {
     transmute(a)
@@ -13136,7 +13136,7 @@ pub unsafe fn vreinterpretq_u16_p8(a: poly8x16_t) -> uint16x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_u16_s8(a: int8x16_t) -> uint16x8_t {
     transmute(a)
@@ -13146,7 +13146,7 @@ pub unsafe fn vreinterpretq_u16_s8(a: int8x16_t) -> uint16x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_u16_u8(a: uint8x16_t) -> uint16x8_t {
     transmute(a)
@@ -13156,7 +13156,7 @@ pub unsafe fn vreinterpretq_u16_u8(a: uint8x16_t) -> uint16x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_u32_p16(a: poly16x8_t) -> uint32x4_t {
     transmute(a)
@@ -13166,7 +13166,7 @@ pub unsafe fn vreinterpretq_u32_p16(a: poly16x8_t) -> uint32x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_u32_s16(a: int16x8_t) -> uint32x4_t {
     transmute(a)
@@ -13176,7 +13176,7 @@ pub unsafe fn vreinterpretq_u32_s16(a: int16x8_t) -> uint32x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_u32_u16(a: uint16x8_t) -> uint32x4_t {
     transmute(a)
@@ -13186,7 +13186,7 @@ pub unsafe fn vreinterpretq_u32_u16(a: uint16x8_t) -> uint32x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_u64_s32(a: int32x4_t) -> uint64x2_t {
     transmute(a)
@@ -13196,7 +13196,7 @@ pub unsafe fn vreinterpretq_u64_s32(a: int32x4_t) -> uint64x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_u64_u32(a: uint32x4_t) -> uint64x2_t {
     transmute(a)
@@ -13206,7 +13206,7 @@ pub unsafe fn vreinterpretq_u64_u32(a: uint32x4_t) -> uint64x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_p16_p8(a: poly8x8_t) -> poly16x4_t {
     transmute(a)
@@ -13216,7 +13216,7 @@ pub unsafe fn vreinterpret_p16_p8(a: poly8x8_t) -> poly16x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_p16_s8(a: int8x8_t) -> poly16x4_t {
     transmute(a)
@@ -13226,7 +13226,7 @@ pub unsafe fn vreinterpret_p16_s8(a: int8x8_t) -> poly16x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_p16_u8(a: uint8x8_t) -> poly16x4_t {
     transmute(a)
@@ -13236,7 +13236,7 @@ pub unsafe fn vreinterpret_p16_u8(a: uint8x8_t) -> poly16x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_p16_p8(a: poly8x16_t) -> poly16x8_t {
     transmute(a)
@@ -13246,7 +13246,7 @@ pub unsafe fn vreinterpretq_p16_p8(a: poly8x16_t) -> poly16x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_p16_s8(a: int8x16_t) -> poly16x8_t {
     transmute(a)
@@ -13256,7 +13256,7 @@ pub unsafe fn vreinterpretq_p16_s8(a: int8x16_t) -> poly16x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_p16_u8(a: uint8x16_t) -> poly16x8_t {
     transmute(a)
@@ -13266,7 +13266,7 @@ pub unsafe fn vreinterpretq_p16_u8(a: uint8x16_t) -> poly16x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_s8_s32(a: int32x2_t) -> int8x8_t {
     transmute(a)
@@ -13276,7 +13276,7 @@ pub unsafe fn vreinterpret_s8_s32(a: int32x2_t) -> int8x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_s8_u32(a: uint32x2_t) -> int8x8_t {
     transmute(a)
@@ -13286,7 +13286,7 @@ pub unsafe fn vreinterpret_s8_u32(a: uint32x2_t) -> int8x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_s16_s64(a: int64x1_t) -> int16x4_t {
     transmute(a)
@@ -13296,7 +13296,7 @@ pub unsafe fn vreinterpret_s16_s64(a: int64x1_t) -> int16x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_s16_u64(a: uint64x1_t) -> int16x4_t {
     transmute(a)
@@ -13306,7 +13306,7 @@ pub unsafe fn vreinterpret_s16_u64(a: uint64x1_t) -> int16x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_s8_s32(a: int32x4_t) -> int8x16_t {
     transmute(a)
@@ -13316,7 +13316,7 @@ pub unsafe fn vreinterpretq_s8_s32(a: int32x4_t) -> int8x16_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_s8_u32(a: uint32x4_t) -> int8x16_t {
     transmute(a)
@@ -13326,7 +13326,7 @@ pub unsafe fn vreinterpretq_s8_u32(a: uint32x4_t) -> int8x16_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_s16_s64(a: int64x2_t) -> int16x8_t {
     transmute(a)
@@ -13336,7 +13336,7 @@ pub unsafe fn vreinterpretq_s16_s64(a: int64x2_t) -> int16x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_s16_u64(a: uint64x2_t) -> int16x8_t {
     transmute(a)
@@ -13346,7 +13346,7 @@ pub unsafe fn vreinterpretq_s16_u64(a: uint64x2_t) -> int16x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_u8_s32(a: int32x2_t) -> uint8x8_t {
     transmute(a)
@@ -13356,7 +13356,7 @@ pub unsafe fn vreinterpret_u8_s32(a: int32x2_t) -> uint8x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_u8_u32(a: uint32x2_t) -> uint8x8_t {
     transmute(a)
@@ -13366,7 +13366,7 @@ pub unsafe fn vreinterpret_u8_u32(a: uint32x2_t) -> uint8x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_u16_s64(a: int64x1_t) -> uint16x4_t {
     transmute(a)
@@ -13376,7 +13376,7 @@ pub unsafe fn vreinterpret_u16_s64(a: int64x1_t) -> uint16x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_u16_u64(a: uint64x1_t) -> uint16x4_t {
     transmute(a)
@@ -13386,7 +13386,7 @@ pub unsafe fn vreinterpret_u16_u64(a: uint64x1_t) -> uint16x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_u8_s32(a: int32x4_t) -> uint8x16_t {
     transmute(a)
@@ -13396,7 +13396,7 @@ pub unsafe fn vreinterpretq_u8_s32(a: int32x4_t) -> uint8x16_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_u8_u32(a: uint32x4_t) -> uint8x16_t {
     transmute(a)
@@ -13406,7 +13406,7 @@ pub unsafe fn vreinterpretq_u8_u32(a: uint32x4_t) -> uint8x16_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_u16_s64(a: int64x2_t) -> uint16x8_t {
     transmute(a)
@@ -13416,7 +13416,7 @@ pub unsafe fn vreinterpretq_u16_s64(a: int64x2_t) -> uint16x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_u16_u64(a: uint64x2_t) -> uint16x8_t {
     transmute(a)
@@ -13426,7 +13426,7 @@ pub unsafe fn vreinterpretq_u16_u64(a: uint64x2_t) -> uint16x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_p8_s32(a: int32x2_t) -> poly8x8_t {
     transmute(a)
@@ -13436,7 +13436,7 @@ pub unsafe fn vreinterpret_p8_s32(a: int32x2_t) -> poly8x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_p8_u32(a: uint32x2_t) -> poly8x8_t {
     transmute(a)
@@ -13446,7 +13446,7 @@ pub unsafe fn vreinterpret_p8_u32(a: uint32x2_t) -> poly8x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_p16_s64(a: int64x1_t) -> poly16x4_t {
     transmute(a)
@@ -13456,7 +13456,7 @@ pub unsafe fn vreinterpret_p16_s64(a: int64x1_t) -> poly16x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_p16_u64(a: uint64x1_t) -> poly16x4_t {
     transmute(a)
@@ -13466,7 +13466,7 @@ pub unsafe fn vreinterpret_p16_u64(a: uint64x1_t) -> poly16x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_p8_s32(a: int32x4_t) -> poly8x16_t {
     transmute(a)
@@ -13476,7 +13476,7 @@ pub unsafe fn vreinterpretq_p8_s32(a: int32x4_t) -> poly8x16_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_p8_u32(a: uint32x4_t) -> poly8x16_t {
     transmute(a)
@@ -13486,7 +13486,7 @@ pub unsafe fn vreinterpretq_p8_u32(a: uint32x4_t) -> poly8x16_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_p16_s64(a: int64x2_t) -> poly16x8_t {
     transmute(a)
@@ -13496,7 +13496,7 @@ pub unsafe fn vreinterpretq_p16_s64(a: int64x2_t) -> poly16x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_p16_u64(a: uint64x2_t) -> poly16x8_t {
     transmute(a)
@@ -13506,7 +13506,7 @@ pub unsafe fn vreinterpretq_p16_u64(a: uint64x2_t) -> poly16x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_s32_p8(a: poly8x8_t) -> int32x2_t {
     transmute(a)
@@ -13516,7 +13516,7 @@ pub unsafe fn vreinterpret_s32_p8(a: poly8x8_t) -> int32x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_s32_s8(a: int8x8_t) -> int32x2_t {
     transmute(a)
@@ -13526,7 +13526,7 @@ pub unsafe fn vreinterpret_s32_s8(a: int8x8_t) -> int32x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_s32_u8(a: uint8x8_t) -> int32x2_t {
     transmute(a)
@@ -13536,7 +13536,7 @@ pub unsafe fn vreinterpret_s32_u8(a: uint8x8_t) -> int32x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_s64_p16(a: poly16x4_t) -> int64x1_t {
     transmute(a)
@@ -13546,7 +13546,7 @@ pub unsafe fn vreinterpret_s64_p16(a: poly16x4_t) -> int64x1_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_s64_s16(a: int16x4_t) -> int64x1_t {
     transmute(a)
@@ -13556,7 +13556,7 @@ pub unsafe fn vreinterpret_s64_s16(a: int16x4_t) -> int64x1_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_s64_u16(a: uint16x4_t) -> int64x1_t {
     transmute(a)
@@ -13566,7 +13566,7 @@ pub unsafe fn vreinterpret_s64_u16(a: uint16x4_t) -> int64x1_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_s32_p8(a: poly8x16_t) -> int32x4_t {
     transmute(a)
@@ -13576,7 +13576,7 @@ pub unsafe fn vreinterpretq_s32_p8(a: poly8x16_t) -> int32x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_s32_s8(a: int8x16_t) -> int32x4_t {
     transmute(a)
@@ -13586,7 +13586,7 @@ pub unsafe fn vreinterpretq_s32_s8(a: int8x16_t) -> int32x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_s32_u8(a: uint8x16_t) -> int32x4_t {
     transmute(a)
@@ -13596,7 +13596,7 @@ pub unsafe fn vreinterpretq_s32_u8(a: uint8x16_t) -> int32x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_s64_p16(a: poly16x8_t) -> int64x2_t {
     transmute(a)
@@ -13606,7 +13606,7 @@ pub unsafe fn vreinterpretq_s64_p16(a: poly16x8_t) -> int64x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_s64_s16(a: int16x8_t) -> int64x2_t {
     transmute(a)
@@ -13616,7 +13616,7 @@ pub unsafe fn vreinterpretq_s64_s16(a: int16x8_t) -> int64x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_s64_u16(a: uint16x8_t) -> int64x2_t {
     transmute(a)
@@ -13626,7 +13626,7 @@ pub unsafe fn vreinterpretq_s64_u16(a: uint16x8_t) -> int64x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_u32_p8(a: poly8x8_t) -> uint32x2_t {
     transmute(a)
@@ -13636,7 +13636,7 @@ pub unsafe fn vreinterpret_u32_p8(a: poly8x8_t) -> uint32x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_u32_s8(a: int8x8_t) -> uint32x2_t {
     transmute(a)
@@ -13646,7 +13646,7 @@ pub unsafe fn vreinterpret_u32_s8(a: int8x8_t) -> uint32x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_u32_u8(a: uint8x8_t) -> uint32x2_t {
     transmute(a)
@@ -13656,7 +13656,7 @@ pub unsafe fn vreinterpret_u32_u8(a: uint8x8_t) -> uint32x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_u64_p16(a: poly16x4_t) -> uint64x1_t {
     transmute(a)
@@ -13666,7 +13666,7 @@ pub unsafe fn vreinterpret_u64_p16(a: poly16x4_t) -> uint64x1_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_u64_s16(a: int16x4_t) -> uint64x1_t {
     transmute(a)
@@ -13676,7 +13676,7 @@ pub unsafe fn vreinterpret_u64_s16(a: int16x4_t) -> uint64x1_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_u64_u16(a: uint16x4_t) -> uint64x1_t {
     transmute(a)
@@ -13686,7 +13686,7 @@ pub unsafe fn vreinterpret_u64_u16(a: uint16x4_t) -> uint64x1_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_u32_p8(a: poly8x16_t) -> uint32x4_t {
     transmute(a)
@@ -13696,7 +13696,7 @@ pub unsafe fn vreinterpretq_u32_p8(a: poly8x16_t) -> uint32x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_u32_s8(a: int8x16_t) -> uint32x4_t {
     transmute(a)
@@ -13706,7 +13706,7 @@ pub unsafe fn vreinterpretq_u32_s8(a: int8x16_t) -> uint32x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_u32_u8(a: uint8x16_t) -> uint32x4_t {
     transmute(a)
@@ -13716,7 +13716,7 @@ pub unsafe fn vreinterpretq_u32_u8(a: uint8x16_t) -> uint32x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_u64_p16(a: poly16x8_t) -> uint64x2_t {
     transmute(a)
@@ -13726,7 +13726,7 @@ pub unsafe fn vreinterpretq_u64_p16(a: poly16x8_t) -> uint64x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_u64_s16(a: int16x8_t) -> uint64x2_t {
     transmute(a)
@@ -13736,7 +13736,7 @@ pub unsafe fn vreinterpretq_u64_s16(a: int16x8_t) -> uint64x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_u64_u16(a: uint16x8_t) -> uint64x2_t {
     transmute(a)
@@ -13746,7 +13746,7 @@ pub unsafe fn vreinterpretq_u64_u16(a: uint16x8_t) -> uint64x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_s8_s64(a: int64x1_t) -> int8x8_t {
     transmute(a)
@@ -13756,7 +13756,7 @@ pub unsafe fn vreinterpret_s8_s64(a: int64x1_t) -> int8x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_s8_u64(a: uint64x1_t) -> int8x8_t {
     transmute(a)
@@ -13766,7 +13766,7 @@ pub unsafe fn vreinterpret_s8_u64(a: uint64x1_t) -> int8x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_u8_s64(a: int64x1_t) -> uint8x8_t {
     transmute(a)
@@ -13776,7 +13776,7 @@ pub unsafe fn vreinterpret_u8_s64(a: int64x1_t) -> uint8x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_u8_u64(a: uint64x1_t) -> uint8x8_t {
     transmute(a)
@@ -13786,7 +13786,7 @@ pub unsafe fn vreinterpret_u8_u64(a: uint64x1_t) -> uint8x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_p8_s64(a: int64x1_t) -> poly8x8_t {
     transmute(a)
@@ -13796,7 +13796,7 @@ pub unsafe fn vreinterpret_p8_s64(a: int64x1_t) -> poly8x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_p8_u64(a: uint64x1_t) -> poly8x8_t {
     transmute(a)
@@ -13806,7 +13806,7 @@ pub unsafe fn vreinterpret_p8_u64(a: uint64x1_t) -> poly8x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_s8_s64(a: int64x2_t) -> int8x16_t {
     transmute(a)
@@ -13816,7 +13816,7 @@ pub unsafe fn vreinterpretq_s8_s64(a: int64x2_t) -> int8x16_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_s8_u64(a: uint64x2_t) -> int8x16_t {
     transmute(a)
@@ -13826,7 +13826,7 @@ pub unsafe fn vreinterpretq_s8_u64(a: uint64x2_t) -> int8x16_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_u8_s64(a: int64x2_t) -> uint8x16_t {
     transmute(a)
@@ -13836,7 +13836,7 @@ pub unsafe fn vreinterpretq_u8_s64(a: int64x2_t) -> uint8x16_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_u8_u64(a: uint64x2_t) -> uint8x16_t {
     transmute(a)
@@ -13846,7 +13846,7 @@ pub unsafe fn vreinterpretq_u8_u64(a: uint64x2_t) -> uint8x16_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_p8_s64(a: int64x2_t) -> poly8x16_t {
     transmute(a)
@@ -13856,7 +13856,7 @@ pub unsafe fn vreinterpretq_p8_s64(a: int64x2_t) -> poly8x16_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_p8_u64(a: uint64x2_t) -> poly8x16_t {
     transmute(a)
@@ -13866,7 +13866,7 @@ pub unsafe fn vreinterpretq_p8_u64(a: uint64x2_t) -> poly8x16_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_s64_p8(a: poly8x8_t) -> int64x1_t {
     transmute(a)
@@ -13876,7 +13876,7 @@ pub unsafe fn vreinterpret_s64_p8(a: poly8x8_t) -> int64x1_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_s64_s8(a: int8x8_t) -> int64x1_t {
     transmute(a)
@@ -13886,7 +13886,7 @@ pub unsafe fn vreinterpret_s64_s8(a: int8x8_t) -> int64x1_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_s64_u8(a: uint8x8_t) -> int64x1_t {
     transmute(a)
@@ -13896,7 +13896,7 @@ pub unsafe fn vreinterpret_s64_u8(a: uint8x8_t) -> int64x1_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_u64_p8(a: poly8x8_t) -> uint64x1_t {
     transmute(a)
@@ -13906,7 +13906,7 @@ pub unsafe fn vreinterpret_u64_p8(a: poly8x8_t) -> uint64x1_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_u64_s8(a: int8x8_t) -> uint64x1_t {
     transmute(a)
@@ -13916,7 +13916,7 @@ pub unsafe fn vreinterpret_u64_s8(a: int8x8_t) -> uint64x1_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_u64_u8(a: uint8x8_t) -> uint64x1_t {
     transmute(a)
@@ -13926,7 +13926,7 @@ pub unsafe fn vreinterpret_u64_u8(a: uint8x8_t) -> uint64x1_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_s64_p8(a: poly8x16_t) -> int64x2_t {
     transmute(a)
@@ -13936,7 +13936,7 @@ pub unsafe fn vreinterpretq_s64_p8(a: poly8x16_t) -> int64x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_s64_s8(a: int8x16_t) -> int64x2_t {
     transmute(a)
@@ -13946,7 +13946,7 @@ pub unsafe fn vreinterpretq_s64_s8(a: int8x16_t) -> int64x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_s64_u8(a: uint8x16_t) -> int64x2_t {
     transmute(a)
@@ -13956,7 +13956,7 @@ pub unsafe fn vreinterpretq_s64_u8(a: uint8x16_t) -> int64x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_u64_p8(a: poly8x16_t) -> uint64x2_t {
     transmute(a)
@@ -13966,7 +13966,7 @@ pub unsafe fn vreinterpretq_u64_p8(a: poly8x16_t) -> uint64x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_u64_s8(a: int8x16_t) -> uint64x2_t {
     transmute(a)
@@ -13976,7 +13976,7 @@ pub unsafe fn vreinterpretq_u64_s8(a: int8x16_t) -> uint64x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_u64_u8(a: uint8x16_t) -> uint64x2_t {
     transmute(a)
@@ -13986,7 +13986,7 @@ pub unsafe fn vreinterpretq_u64_u8(a: uint8x16_t) -> uint64x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_s8_f32(a: float32x2_t) -> int8x8_t {
     transmute(a)
@@ -13996,7 +13996,7 @@ pub unsafe fn vreinterpret_s8_f32(a: float32x2_t) -> int8x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_s16_f32(a: float32x2_t) -> int16x4_t {
     transmute(a)
@@ -14006,7 +14006,7 @@ pub unsafe fn vreinterpret_s16_f32(a: float32x2_t) -> int16x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_s32_f32(a: float32x2_t) -> int32x2_t {
     transmute(a)
@@ -14016,7 +14016,7 @@ pub unsafe fn vreinterpret_s32_f32(a: float32x2_t) -> int32x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_s64_f32(a: float32x2_t) -> int64x1_t {
     transmute(a)
@@ -14026,7 +14026,7 @@ pub unsafe fn vreinterpret_s64_f32(a: float32x2_t) -> int64x1_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_s8_f32(a: float32x4_t) -> int8x16_t {
     transmute(a)
@@ -14036,7 +14036,7 @@ pub unsafe fn vreinterpretq_s8_f32(a: float32x4_t) -> int8x16_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_s16_f32(a: float32x4_t) -> int16x8_t {
     transmute(a)
@@ -14046,7 +14046,7 @@ pub unsafe fn vreinterpretq_s16_f32(a: float32x4_t) -> int16x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_s32_f32(a: float32x4_t) -> int32x4_t {
     transmute(a)
@@ -14056,7 +14056,7 @@ pub unsafe fn vreinterpretq_s32_f32(a: float32x4_t) -> int32x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_s64_f32(a: float32x4_t) -> int64x2_t {
     transmute(a)
@@ -14066,7 +14066,7 @@ pub unsafe fn vreinterpretq_s64_f32(a: float32x4_t) -> int64x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_u8_f32(a: float32x2_t) -> uint8x8_t {
     transmute(a)
@@ -14076,7 +14076,7 @@ pub unsafe fn vreinterpret_u8_f32(a: float32x2_t) -> uint8x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_u16_f32(a: float32x2_t) -> uint16x4_t {
     transmute(a)
@@ -14086,7 +14086,7 @@ pub unsafe fn vreinterpret_u16_f32(a: float32x2_t) -> uint16x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_u32_f32(a: float32x2_t) -> uint32x2_t {
     transmute(a)
@@ -14096,7 +14096,7 @@ pub unsafe fn vreinterpret_u32_f32(a: float32x2_t) -> uint32x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_u64_f32(a: float32x2_t) -> uint64x1_t {
     transmute(a)
@@ -14106,7 +14106,7 @@ pub unsafe fn vreinterpret_u64_f32(a: float32x2_t) -> uint64x1_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_u8_f32(a: float32x4_t) -> uint8x16_t {
     transmute(a)
@@ -14116,7 +14116,7 @@ pub unsafe fn vreinterpretq_u8_f32(a: float32x4_t) -> uint8x16_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_u16_f32(a: float32x4_t) -> uint16x8_t {
     transmute(a)
@@ -14126,7 +14126,7 @@ pub unsafe fn vreinterpretq_u16_f32(a: float32x4_t) -> uint16x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_u32_f32(a: float32x4_t) -> uint32x4_t {
     transmute(a)
@@ -14136,7 +14136,7 @@ pub unsafe fn vreinterpretq_u32_f32(a: float32x4_t) -> uint32x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_u64_f32(a: float32x4_t) -> uint64x2_t {
     transmute(a)
@@ -14146,7 +14146,7 @@ pub unsafe fn vreinterpretq_u64_f32(a: float32x4_t) -> uint64x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_p8_f32(a: float32x2_t) -> poly8x8_t {
     transmute(a)
@@ -14156,7 +14156,7 @@ pub unsafe fn vreinterpret_p8_f32(a: float32x2_t) -> poly8x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_p16_f32(a: float32x2_t) -> poly16x4_t {
     transmute(a)
@@ -14166,7 +14166,7 @@ pub unsafe fn vreinterpret_p16_f32(a: float32x2_t) -> poly16x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_p8_f32(a: float32x4_t) -> poly8x16_t {
     transmute(a)
@@ -14176,7 +14176,7 @@ pub unsafe fn vreinterpretq_p8_f32(a: float32x4_t) -> poly8x16_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_p16_f32(a: float32x4_t) -> poly16x8_t {
     transmute(a)
@@ -14186,7 +14186,7 @@ pub unsafe fn vreinterpretq_p16_f32(a: float32x4_t) -> poly16x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_f32_s8(a: int8x8_t) -> float32x2_t {
     transmute(a)
@@ -14196,7 +14196,7 @@ pub unsafe fn vreinterpret_f32_s8(a: int8x8_t) -> float32x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_f32_s16(a: int16x4_t) -> float32x2_t {
     transmute(a)
@@ -14206,7 +14206,7 @@ pub unsafe fn vreinterpret_f32_s16(a: int16x4_t) -> float32x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_f32_s32(a: int32x2_t) -> float32x2_t {
     transmute(a)
@@ -14216,7 +14216,7 @@ pub unsafe fn vreinterpret_f32_s32(a: int32x2_t) -> float32x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_f32_s64(a: int64x1_t) -> float32x2_t {
     transmute(a)
@@ -14226,7 +14226,7 @@ pub unsafe fn vreinterpret_f32_s64(a: int64x1_t) -> float32x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_f32_s8(a: int8x16_t) -> float32x4_t {
     transmute(a)
@@ -14236,7 +14236,7 @@ pub unsafe fn vreinterpretq_f32_s8(a: int8x16_t) -> float32x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_f32_s16(a: int16x8_t) -> float32x4_t {
     transmute(a)
@@ -14246,7 +14246,7 @@ pub unsafe fn vreinterpretq_f32_s16(a: int16x8_t) -> float32x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_f32_s32(a: int32x4_t) -> float32x4_t {
     transmute(a)
@@ -14256,7 +14256,7 @@ pub unsafe fn vreinterpretq_f32_s32(a: int32x4_t) -> float32x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_f32_s64(a: int64x2_t) -> float32x4_t {
     transmute(a)
@@ -14266,7 +14266,7 @@ pub unsafe fn vreinterpretq_f32_s64(a: int64x2_t) -> float32x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_f32_u8(a: uint8x8_t) -> float32x2_t {
     transmute(a)
@@ -14276,7 +14276,7 @@ pub unsafe fn vreinterpret_f32_u8(a: uint8x8_t) -> float32x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_f32_u16(a: uint16x4_t) -> float32x2_t {
     transmute(a)
@@ -14286,7 +14286,7 @@ pub unsafe fn vreinterpret_f32_u16(a: uint16x4_t) -> float32x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_f32_u32(a: uint32x2_t) -> float32x2_t {
     transmute(a)
@@ -14296,7 +14296,7 @@ pub unsafe fn vreinterpret_f32_u32(a: uint32x2_t) -> float32x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_f32_u64(a: uint64x1_t) -> float32x2_t {
     transmute(a)
@@ -14306,7 +14306,7 @@ pub unsafe fn vreinterpret_f32_u64(a: uint64x1_t) -> float32x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_f32_u8(a: uint8x16_t) -> float32x4_t {
     transmute(a)
@@ -14316,7 +14316,7 @@ pub unsafe fn vreinterpretq_f32_u8(a: uint8x16_t) -> float32x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_f32_u16(a: uint16x8_t) -> float32x4_t {
     transmute(a)
@@ -14326,7 +14326,7 @@ pub unsafe fn vreinterpretq_f32_u16(a: uint16x8_t) -> float32x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_f32_u32(a: uint32x4_t) -> float32x4_t {
     transmute(a)
@@ -14336,7 +14336,7 @@ pub unsafe fn vreinterpretq_f32_u32(a: uint32x4_t) -> float32x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_f32_u64(a: uint64x2_t) -> float32x4_t {
     transmute(a)
@@ -14346,7 +14346,7 @@ pub unsafe fn vreinterpretq_f32_u64(a: uint64x2_t) -> float32x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_f32_p8(a: poly8x8_t) -> float32x2_t {
     transmute(a)
@@ -14356,7 +14356,7 @@ pub unsafe fn vreinterpret_f32_p8(a: poly8x8_t) -> float32x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpret_f32_p16(a: poly16x4_t) -> float32x2_t {
     transmute(a)
@@ -14366,7 +14366,7 @@ pub unsafe fn vreinterpret_f32_p16(a: poly16x4_t) -> float32x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_f32_p8(a: poly8x16_t) -> float32x4_t {
     transmute(a)
@@ -14376,7 +14376,7 @@ pub unsafe fn vreinterpretq_f32_p8(a: poly8x16_t) -> float32x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(str))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(str))]
 pub unsafe fn vreinterpretq_f32_p16(a: poly16x8_t) -> float32x4_t {
     transmute(a)
