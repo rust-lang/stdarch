@@ -6616,7 +6616,7 @@ pub unsafe fn vld1_p64_x2(a: *const p64) -> poly64x1x2_t {
 #[inline]
 #[target_feature(enable = "neon,aes")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "aes,v8"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(ldr))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
 pub unsafe fn vld1_p64_x3(a: *const p64) -> poly64x1x3_t {
     transmute(vld1_s64_x3(transmute(a)))
@@ -6626,7 +6626,7 @@ pub unsafe fn vld1_p64_x3(a: *const p64) -> poly64x1x3_t {
 #[inline]
 #[target_feature(enable = "neon,aes")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "aes,v8"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(ldr))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
 pub unsafe fn vld1_p64_x4(a: *const p64) -> poly64x1x4_t {
     transmute(vld1_s64_x4(transmute(a)))
@@ -6636,7 +6636,7 @@ pub unsafe fn vld1_p64_x4(a: *const p64) -> poly64x1x4_t {
 #[inline]
 #[target_feature(enable = "neon,aes")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "aes,v8"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(ldr))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
 pub unsafe fn vld1q_p64_x2(a: *const p64) -> poly64x2x2_t {
     transmute(vld1q_s64_x2(transmute(a)))
@@ -6646,7 +6646,7 @@ pub unsafe fn vld1q_p64_x2(a: *const p64) -> poly64x2x2_t {
 #[inline]
 #[target_feature(enable = "neon,aes")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "aes,v8"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(ldr))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
 pub unsafe fn vld1q_p64_x3(a: *const p64) -> poly64x2x3_t {
     transmute(vld1q_s64_x3(transmute(a)))
@@ -6656,7 +6656,7 @@ pub unsafe fn vld1q_p64_x3(a: *const p64) -> poly64x2x3_t {
 #[inline]
 #[target_feature(enable = "neon,aes")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "aes,v8"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(ldr))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]
 pub unsafe fn vld1q_p64_x4(a: *const p64) -> poly64x2x4_t {
     transmute(vld1q_s64_x4(transmute(a)))
