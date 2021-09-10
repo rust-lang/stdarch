@@ -2085,7 +2085,6 @@ generate *const p64:poly64x1x2_t
 arm = ldr
 generate *const p64:poly64x1x3_t, *const p64:poly64x1x4_t
 generate *const p64:poly64x2x2_t, *const p64:poly64x2x3_t, *const p64:poly64x2x4_t
-
 /// Load multiple single-element structures to one, two, three, or four registers
 name = vld1
 out-suffix
