@@ -624,7 +624,7 @@ pub unsafe fn vld1q_p16(ptr: *const p16) -> poly16x8_t {
 #[target_feature(enable = "neon,aes")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1_p64(ptr: *const p64) -> poly64x1_t {
-    transmute(u64x1::new(*ptr))
+    read_unaligned(ptr.cast())
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
@@ -632,7 +632,7 @@ pub unsafe fn vld1_p64(ptr: *const p64) -> poly64x1_t {
 #[target_feature(enable = "neon,aes")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1q_p64(ptr: *const p64) -> poly64x2_t {
-    transmute(u64x2::new(*ptr, *ptr.offset(1)))
+    read_unaligned(ptr.cast())
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
