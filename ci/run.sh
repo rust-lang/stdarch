@@ -15,7 +15,12 @@ export RUSTFLAGS="${RUSTFLAGS} -D warnings -Z merge-functions=disabled "
 export STDARCH_DISABLE_DEDUP_GUARD=1
 
 case ${TARGET} in
+    # On Windows the linker performs identical COMDAT folding (ICF) by default
+    # in release mode which removes identical COMDAT sections. This interferes
+    # with our instruction assertions just like LLVM's MergeFunctions pass so
+    # we disable it.
     *-pc-windows-msvc)
+        export RUSTFLAGS="${RUSTFLAGS} -Clink-args=/OPT:NOICF"
         ;;
     # On 32-bit use a static relocation model which avoids some extra
     # instructions when dealing with static data, notably allowing some
