@@ -4039,7 +4039,7 @@ pub unsafe fn vmovq_n_f32(value: f32) -> float32x4_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("nop", N = 0))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr("str", N = 0))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr("nop", N = 0))]
 #[rustc_legacy_const_generics(2)]
 pub unsafe fn vext_s64<const N: i32>(a: int64x1_t, _b: int64x1_t) -> int64x1_t {
     if N != 0 {
@@ -4053,7 +4053,7 @@ pub unsafe fn vext_s64<const N: i32>(a: int64x1_t, _b: int64x1_t) -> int64x1_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("nop", N = 0))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr("str", N = 0))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr("nop", N = 0))]
 #[rustc_legacy_const_generics(2)]
 pub unsafe fn vext_u64<const N: i32>(a: uint64x1_t, _b: uint64x1_t) -> uint64x1_t {
     if N != 0 {

@@ -4360,7 +4360,7 @@ fn = transmute
 a = 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15
 validate 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15
 
-aarch64 = str
+aarch64 = nop
 generate poly64x1_t:int64x1_t, poly64x1_t:uint64x1_t, int64x1_t:poly64x1_t, uint64x1_t:poly64x1_t
 generate poly64x2_t:int64x2_t, poly64x2_t:uint64x2_t, int64x2_t:poly64x2_t, uint64x2_t:poly64x2_t
 
@@ -4379,7 +4379,7 @@ fn = transmute
 a = 0, 1, 2, 3, 4, 5, 6, 7
 validate 0, 0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0, 6, 0, 7, 0
 
-aarch64 = str
+aarch64 = nop
 generate poly64x1_t:int32x2_t, poly64x1_t:uint32x2_t
 generate poly64x2_t:int32x4_t, poly64x2_t:uint32x4_t
 
@@ -4398,7 +4398,7 @@ fn = transmute
 a = 0, 0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0, 6, 0, 7, 0
 validate 0, 1, 2, 3, 4, 5, 6, 7
 
-aarch64 = str
+aarch64 = nop
 generate int32x2_t:poly64x1_t, uint32x2_t:poly64x1_t
 generate int32x4_t:poly64x2_t, uint32x4_t:poly64x2_t
 
@@ -4417,7 +4417,7 @@ fn = transmute
 a = 0, 1, 2, 3
 validate 0, 0, 0, 0, 1, 0, 0, 0, 2, 0, 0, 0, 3, 0, 0, 0
 
-aarch64 = str
+aarch64 = nop
 generate poly64x1_t:int16x4_t, poly64x1_t:uint16x4_t, poly64x1_t:poly16x4_t
 generate poly64x2_t:int16x8_t, poly64x2_t:uint16x8_t, poly64x2_t:poly16x8_t
 
@@ -4436,7 +4436,7 @@ fn = transmute
 a = 0, 0, 0, 0, 1, 0, 0, 0, 2, 0, 0, 0, 3, 0, 0, 0
 validate 0, 1, 2, 3
 
-aarch64 = str
+aarch64 = nop
 generate poly16x4_t:poly64x1_t, int16x4_t:poly64x1_t, uint16x4_t:poly64x1_t
 generate poly16x8_t:poly64x2_t, int16x8_t:poly64x2_t, uint16x8_t:poly64x2_t
 
@@ -4453,7 +4453,7 @@ fn = transmute
 a = 0, 1
 validate 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0
 
-aarch64 = str
+aarch64 = nop
 generate poly64x1_t:int8x8_t, poly64x1_t:uint8x8_t, poly64x1_t:poly8x8_t
 generate poly64x2_t:int8x16_t, poly64x2_t:uint8x16_t, poly64x2_t:poly8x16_t
 
@@ -4468,7 +4468,7 @@ fn = transmute
 a = 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0
 validate 0, 1
 
-aarch64 = str
+aarch64 = nop
 generate poly8x8_t:poly64x1_t, int8x8_t:poly64x1_t, uint8x8_t:poly64x1_t
 generate poly8x16_t:poly64x2_t, int8x16_t:poly64x2_t, uint8x16_t:poly64x2_t
 
@@ -4483,7 +4483,7 @@ fn = transmute
 a = 0., 0., 0., 0., 0., 0., 0., 0.
 validate 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 
-aarch64 = str
+aarch64 = nop
 generate float64x1_t:int8x8_t, float64x1_t:int16x4_t, float64x1_t:int32x2_t, float64x1_t:int64x1_t
 generate float64x2_t:int8x16_t, float64x2_t:int16x8_t, float64x2_t:int32x4_t, float64x2_t:int64x2_t
 generate float64x1_t:uint8x8_t, float64x1_t:uint16x4_t, float64x1_t:uint32x2_t, float64x1_t:uint64x1_t
@@ -4506,7 +4506,7 @@ fn = transmute
 a = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 validate 0., 0., 0., 0., 0., 0., 0., 0.
 
-aarch64 = str
+aarch64 = nop
 generate int8x8_t:float64x1_t, int16x4_t:float64x1_t, int32x2_t:float64x1_t, int64x1_t:float64x1_t
 generate int8x16_t:float64x2_t, int16x8_t:float64x2_t, int32x4_t:float64x2_t, int64x2_t:float64x2_t
 generate poly8x8_t:float64x1_t, uint16x4_t:float64x1_t, uint32x2_t:float64x1_t, uint64x1_t:float64x1_t
@@ -4529,7 +4529,7 @@ fn = transmute
 a = 0., 0., 0., 0., 0., 0., 0., 0.
 validate 0., 0., 0., 0., 0., 0., 0., 0.
 
-aarch64 = str
+aarch64 = nop
 generate float32x2_t:float64x1_t, float64x1_t:float32x2_t
 generate float32x4_t:float64x2_t, float64x2_t:float32x4_t
 
