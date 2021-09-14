@@ -1,5 +1,5 @@
 //! Parses ELF auxiliary vectors.
-#![cfg_attr(not(target_arch = "aarch64"), allow(dead_code))]
+#![allow(dead_code)]
 
 pub(crate) const AT_NULL: usize = 0;
 
