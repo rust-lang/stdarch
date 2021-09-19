@@ -438,6 +438,7 @@ enum Suffix {
 enum TargetFeature {
     Default,
     ArmV7,
+    Vfp4,
     FPArmV8,
     AES,
 }
@@ -980,6 +981,7 @@ fn gen_aarch64(
     let current_target = match target {
         Default => "neon",
         ArmV7 => "v7",
+        Vfp4 => "vfp4",
         FPArmV8 => "fp-armv8,v8",
         AES => "neon,aes",
     };
@@ -1630,12 +1632,14 @@ fn gen_arm(
     let current_target_aarch64 = match target {
         Default => "neon",
         ArmV7 => "neon",
+        Vfp4 => "neon",
         FPArmV8 => "neon",
         AES => "neon,aes",
     };
     let current_target_arm = match target {
         Default => "v7",
         ArmV7 => "v7",
+        Vfp4 => "vfp4",
         FPArmV8 => "fp-armv8,v8",
         AES => "aes,v8",
     };
@@ -2854,6 +2858,7 @@ mod test {
             target = match Some(String::from(&line[9..])) {
                 Some(input) => match input.as_str() {
                     "v7" => ArmV7,
+                    "vfp4" => Vfp4,
                     "fp-armv8" => FPArmV8,
                     "aes" => AES,
                     _ => Default,

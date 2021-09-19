@@ -2733,7 +2733,7 @@ generate float64x1_t
 aarch64 = fmla
 generate float64x2_t
 
-target = fp-armv8
+target = vfp4
 arm = vfma
 link-arm = llvm.fma._EXT_
 generate float*_t
@@ -2752,7 +2752,7 @@ generate float64x1_t:float64x1_t:f64:float64x1_t
 aarch64 = fmla
 generate float64x2_t:float64x2_t:f64:float64x2_t
 
-target = fp-armv8
+target = vfp4
 arm = vfma
 generate float32x2_t:float32x2_t:f32:float32x2_t, float32x4_t:float32x4_t:f32:float32x4_t
 
@@ -2811,7 +2811,7 @@ generate float64x1_t
 aarch64 = fmls
 generate float64x2_t
 
-target = fp-armv8
+target = vfp4
 arm = vfms
 generate float*_t
 
@@ -2829,7 +2829,7 @@ generate float64x1_t:float64x1_t:f64:float64x1_t
 aarch64 = fmls
 generate float64x2_t:float64x2_t:f64:float64x2_t
 
-target = fp-armv8
+target = vfp4
 arm = vfms
 generate float32x2_t:float32x2_t:f32:float32x2_t, float32x4_t:float32x4_t:f32:float32x4_t
 
