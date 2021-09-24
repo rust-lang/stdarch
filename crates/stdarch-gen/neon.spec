@@ -2731,7 +2731,9 @@ generate *mut p8:poly8x16x2_t:void, *mut p8:poly8x16x3_t:void, *mut p8:poly8x16x
 generate *mut p16:poly16x4x2_t:void, *mut p16:poly16x4x3_t:void, *mut p16:poly16x4x4_t:void
 generate *mut p16:poly16x8x2_t:void, *mut p16:poly16x8x3_t:void, *mut p16:poly16x8x4_t:void
 target = aes
-generate *mut p64:poly64x1x2_t:void, *mut p64:poly64x1x3_t:void, *mut p64:poly64x1x4_t:void
+generate *mut p64:poly64x1x2_t:void
+arm = str
+generate *mut p64:poly64x1x3_t:void, *mut p64:poly64x1x4_t:void
 generate *mut p64:poly64x2x2_t:void, *mut p64:poly64x2x3_t:void, *mut p64:poly64x2x4_t:void
 
 /// Store multiple single-element structures to one, two, three, or four registers
