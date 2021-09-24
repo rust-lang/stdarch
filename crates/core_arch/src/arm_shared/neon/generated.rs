@@ -7791,6 +7791,66 @@ pub unsafe fn vst1q_p16_x4(a: *mut p16, b: poly16x8x4_t) {
 
 /// Store multiple single-element structures to one, two, three, or four registers
 #[inline]
+#[target_feature(enable = "neon,aes")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "aes,v8"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vst1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(st1))]
+pub unsafe fn vst1_p64_x2(a: *mut p64, b: poly64x1x2_t) {
+    vst1_s64_x2(transmute(a), transmute(b))
+}
+
+/// Store multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon,aes")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "aes,v8"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vst1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(st1))]
+pub unsafe fn vst1_p64_x3(a: *mut p64, b: poly64x1x3_t) {
+    vst1_s64_x3(transmute(a), transmute(b))
+}
+
+/// Store multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon,aes")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "aes,v8"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vst1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(st1))]
+pub unsafe fn vst1_p64_x4(a: *mut p64, b: poly64x1x4_t) {
+    vst1_s64_x4(transmute(a), transmute(b))
+}
+
+/// Store multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon,aes")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "aes,v8"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vst1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(st1))]
+pub unsafe fn vst1q_p64_x2(a: *mut p64, b: poly64x2x2_t) {
+    vst1q_s64_x2(transmute(a), transmute(b))
+}
+
+/// Store multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon,aes")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "aes,v8"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vst1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(st1))]
+pub unsafe fn vst1q_p64_x3(a: *mut p64, b: poly64x2x3_t) {
+    vst1q_s64_x3(transmute(a), transmute(b))
+}
+
+/// Store multiple single-element structures to one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon,aes")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "aes,v8"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vst1))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(st1))]
+pub unsafe fn vst1q_p64_x4(a: *mut p64, b: poly64x2x4_t) {
+    vst1q_s64_x4(transmute(a), transmute(b))
+}
+
+/// Store multiple single-element structures to one, two, three, or four registers
+#[inline]
 #[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(vst1))]
@@ -21641,7 +21701,7 @@ mod test {
         let a: [i8; 17] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
         let e: [i8; 16] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
         let mut r: [i8; 16] = [0i8; 16];
-        vst1_s8_x2(r.as_mut_ptr(), vld1_s8_x2(a[1..].as_ptr()));
+        vst1_s8_x2(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
@@ -21650,7 +21710,7 @@ mod test {
         let a: [i16; 9] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
         let e: [i16; 8] = [1, 2, 3, 4, 5, 6, 7, 8];
         let mut r: [i16; 8] = [0i16; 8];
-        vst1_s16_x2(r.as_mut_ptr(), vld1_s16_x2(a[1..].as_ptr()));
+        vst1_s16_x2(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
@@ -21659,7 +21719,7 @@ mod test {
         let a: [i32; 5] = [0, 1, 2, 3, 4];
         let e: [i32; 4] = [1, 2, 3, 4];
         let mut r: [i32; 4] = [0i32; 4];
-        vst1_s32_x2(r.as_mut_ptr(), vld1_s32_x2(a[1..].as_ptr()));
+        vst1_s32_x2(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
@@ -21668,7 +21728,7 @@ mod test {
         let a: [i64; 3] = [0, 1, 2];
         let e: [i64; 2] = [1, 2];
         let mut r: [i64; 2] = [0i64; 2];
-        vst1_s64_x2(r.as_mut_ptr(), vld1_s64_x2(a[1..].as_ptr()));
+        vst1_s64_x2(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
@@ -21677,7 +21737,7 @@ mod test {
         let a: [i8; 33] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
         let e: [i8; 32] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
         let mut r: [i8; 32] = [0i8; 32];
-        vst1q_s8_x2(r.as_mut_ptr(), vld1q_s8_x2(a[1..].as_ptr()));
+        vst1q_s8_x2(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
@@ -21686,7 +21746,7 @@ mod test {
         let a: [i16; 17] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
         let e: [i16; 16] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
         let mut r: [i16; 16] = [0i16; 16];
-        vst1q_s16_x2(r.as_mut_ptr(), vld1q_s16_x2(a[1..].as_ptr()));
+        vst1q_s16_x2(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
@@ -21695,7 +21755,7 @@ mod test {
         let a: [i32; 9] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
         let e: [i32; 8] = [1, 2, 3, 4, 5, 6, 7, 8];
         let mut r: [i32; 8] = [0i32; 8];
-        vst1q_s32_x2(r.as_mut_ptr(), vld1q_s32_x2(a[1..].as_ptr()));
+        vst1q_s32_x2(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
@@ -21704,7 +21764,7 @@ mod test {
         let a: [i64; 5] = [0, 1, 2, 3, 4];
         let e: [i64; 4] = [1, 2, 3, 4];
         let mut r: [i64; 4] = [0i64; 4];
-        vst1q_s64_x2(r.as_mut_ptr(), vld1q_s64_x2(a[1..].as_ptr()));
+        vst1q_s64_x2(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
@@ -21713,7 +21773,7 @@ mod test {
         let a: [i8; 25] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
         let e: [i8; 24] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
         let mut r: [i8; 24] = [0i8; 24];
-        vst1_s8_x3(r.as_mut_ptr(), vld1_s8_x3(a[1..].as_ptr()));
+        vst1_s8_x3(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
@@ -21722,7 +21782,7 @@ mod test {
         let a: [i16; 13] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
         let e: [i16; 12] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
         let mut r: [i16; 12] = [0i16; 12];
-        vst1_s16_x3(r.as_mut_ptr(), vld1_s16_x3(a[1..].as_ptr()));
+        vst1_s16_x3(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
@@ -21731,7 +21791,7 @@ mod test {
         let a: [i32; 7] = [0, 1, 2, 3, 4, 5, 6];
         let e: [i32; 6] = [1, 2, 3, 4, 5, 6];
         let mut r: [i32; 6] = [0i32; 6];
-        vst1_s32_x3(r.as_mut_ptr(), vld1_s32_x3(a[1..].as_ptr()));
+        vst1_s32_x3(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
@@ -21740,7 +21800,7 @@ mod test {
         let a: [i64; 4] = [0, 1, 2, 3];
         let e: [i64; 3] = [1, 2, 3];
         let mut r: [i64; 3] = [0i64; 3];
-        vst1_s64_x3(r.as_mut_ptr(), vld1_s64_x3(a[1..].as_ptr()));
+        vst1_s64_x3(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
@@ -21749,7 +21809,7 @@ mod test {
         let a: [i8; 49] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
         let e: [i8; 48] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
         let mut r: [i8; 48] = [0i8; 48];
-        vst1q_s8_x3(r.as_mut_ptr(), vld1q_s8_x3(a[1..].as_ptr()));
+        vst1q_s8_x3(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
@@ -21758,7 +21818,7 @@ mod test {
         let a: [i16; 25] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
         let e: [i16; 24] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
         let mut r: [i16; 24] = [0i16; 24];
-        vst1q_s16_x3(r.as_mut_ptr(), vld1q_s16_x3(a[1..].as_ptr()));
+        vst1q_s16_x3(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
@@ -21767,7 +21827,7 @@ mod test {
         let a: [i32; 13] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
         let e: [i32; 12] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
         let mut r: [i32; 12] = [0i32; 12];
-        vst1q_s32_x3(r.as_mut_ptr(), vld1q_s32_x3(a[1..].as_ptr()));
+        vst1q_s32_x3(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
@@ -21776,7 +21836,7 @@ mod test {
         let a: [i64; 7] = [0, 1, 2, 3, 4, 5, 6];
         let e: [i64; 6] = [1, 2, 3, 4, 5, 6];
         let mut r: [i64; 6] = [0i64; 6];
-        vst1q_s64_x3(r.as_mut_ptr(), vld1q_s64_x3(a[1..].as_ptr()));
+        vst1q_s64_x3(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
@@ -21785,7 +21845,7 @@ mod test {
         let a: [i8; 33] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
         let e: [i8; 32] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
         let mut r: [i8; 32] = [0i8; 32];
-        vst1_s8_x4(r.as_mut_ptr(), vld1_s8_x4(a[1..].as_ptr()));
+        vst1_s8_x4(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
@@ -21794,7 +21854,7 @@ mod test {
         let a: [i16; 17] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
         let e: [i16; 16] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
         let mut r: [i16; 16] = [0i16; 16];
-        vst1_s16_x4(r.as_mut_ptr(), vld1_s16_x4(a[1..].as_ptr()));
+        vst1_s16_x4(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
@@ -21803,7 +21863,7 @@ mod test {
         let a: [i32; 9] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
         let e: [i32; 8] = [1, 2, 3, 4, 5, 6, 7, 8];
         let mut r: [i32; 8] = [0i32; 8];
-        vst1_s32_x4(r.as_mut_ptr(), vld1_s32_x4(a[1..].as_ptr()));
+        vst1_s32_x4(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
@@ -21812,7 +21872,7 @@ mod test {
         let a: [i64; 5] = [0, 1, 2, 3, 4];
         let e: [i64; 4] = [1, 2, 3, 4];
         let mut r: [i64; 4] = [0i64; 4];
-        vst1_s64_x4(r.as_mut_ptr(), vld1_s64_x4(a[1..].as_ptr()));
+        vst1_s64_x4(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
@@ -21821,7 +21881,7 @@ mod test {
         let a: [i8; 65] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
         let e: [i8; 64] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
         let mut r: [i8; 64] = [0i8; 64];
-        vst1q_s8_x4(r.as_mut_ptr(), vld1q_s8_x4(a[1..].as_ptr()));
+        vst1q_s8_x4(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
@@ -21830,7 +21890,7 @@ mod test {
         let a: [i16; 33] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
         let e: [i16; 32] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
         let mut r: [i16; 32] = [0i16; 32];
-        vst1q_s16_x4(r.as_mut_ptr(), vld1q_s16_x4(a[1..].as_ptr()));
+        vst1q_s16_x4(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
@@ -21839,7 +21899,7 @@ mod test {
         let a: [i32; 17] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
         let e: [i32; 16] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
         let mut r: [i32; 16] = [0i32; 16];
-        vst1q_s32_x4(r.as_mut_ptr(), vld1q_s32_x4(a[1..].as_ptr()));
+        vst1q_s32_x4(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
@@ -21848,7 +21908,7 @@ mod test {
         let a: [i64; 9] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
         let e: [i64; 8] = [1, 2, 3, 4, 5, 6, 7, 8];
         let mut r: [i64; 8] = [0i64; 8];
-        vst1q_s64_x4(r.as_mut_ptr(), vld1q_s64_x4(a[1..].as_ptr()));
+        vst1q_s64_x4(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
@@ -21857,7 +21917,7 @@ mod test {
         let a: [u8; 17] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
         let e: [u8; 16] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
         let mut r: [u8; 16] = [0u8; 16];
-        vst1_u8_x2(r.as_mut_ptr(), vld1_u8_x2(a[1..].as_ptr()));
+        vst1_u8_x2(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
@@ -21866,7 +21926,7 @@ mod test {
         let a: [u16; 9] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
         let e: [u16; 8] = [1, 2, 3, 4, 5, 6, 7, 8];
         let mut r: [u16; 8] = [0u16; 8];
-        vst1_u16_x2(r.as_mut_ptr(), vld1_u16_x2(a[1..].as_ptr()));
+        vst1_u16_x2(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
@@ -21875,7 +21935,7 @@ mod test {
         let a: [u32; 5] = [0, 1, 2, 3, 4];
         let e: [u32; 4] = [1, 2, 3, 4];
         let mut r: [u32; 4] = [0u32; 4];
-        vst1_u32_x2(r.as_mut_ptr(), vld1_u32_x2(a[1..].as_ptr()));
+        vst1_u32_x2(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
@@ -21884,7 +21944,7 @@ mod test {
         let a: [u64; 3] = [0, 1, 2];
         let e: [u64; 2] = [1, 2];
         let mut r: [u64; 2] = [0u64; 2];
-        vst1_u64_x2(r.as_mut_ptr(), vld1_u64_x2(a[1..].as_ptr()));
+        vst1_u64_x2(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
@@ -21893,7 +21953,7 @@ mod test {
         let a: [u8; 33] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
         let e: [u8; 32] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
         let mut r: [u8; 32] = [0u8; 32];
-        vst1q_u8_x2(r.as_mut_ptr(), vld1q_u8_x2(a[1..].as_ptr()));
+        vst1q_u8_x2(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
@@ -21902,7 +21962,7 @@ mod test {
         let a: [u16; 17] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
         let e: [u16; 16] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
         let mut r: [u16; 16] = [0u16; 16];
-        vst1q_u16_x2(r.as_mut_ptr(), vld1q_u16_x2(a[1..].as_ptr()));
+        vst1q_u16_x2(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
@@ -21911,7 +21971,7 @@ mod test {
         let a: [u32; 9] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
         let e: [u32; 8] = [1, 2, 3, 4, 5, 6, 7, 8];
         let mut r: [u32; 8] = [0u32; 8];
-        vst1q_u32_x2(r.as_mut_ptr(), vld1q_u32_x2(a[1..].as_ptr()));
+        vst1q_u32_x2(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
@@ -21920,7 +21980,7 @@ mod test {
         let a: [u64; 5] = [0, 1, 2, 3, 4];
         let e: [u64; 4] = [1, 2, 3, 4];
         let mut r: [u64; 4] = [0u64; 4];
-        vst1q_u64_x2(r.as_mut_ptr(), vld1q_u64_x2(a[1..].as_ptr()));
+        vst1q_u64_x2(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
@@ -21929,7 +21989,7 @@ mod test {
         let a: [u8; 25] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
         let e: [u8; 24] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
         let mut r: [u8; 24] = [0u8; 24];
-        vst1_u8_x3(r.as_mut_ptr(), vld1_u8_x3(a[1..].as_ptr()));
+        vst1_u8_x3(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
@@ -21938,7 +21998,7 @@ mod test {
         let a: [u16; 13] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
         let e: [u16; 12] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
         let mut r: [u16; 12] = [0u16; 12];
-        vst1_u16_x3(r.as_mut_ptr(), vld1_u16_x3(a[1..].as_ptr()));
+        vst1_u16_x3(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
@@ -21947,7 +22007,7 @@ mod test {
         let a: [u32; 7] = [0, 1, 2, 3, 4, 5, 6];
         let e: [u32; 6] = [1, 2, 3, 4, 5, 6];
         let mut r: [u32; 6] = [0u32; 6];
-        vst1_u32_x3(r.as_mut_ptr(), vld1_u32_x3(a[1..].as_ptr()));
+        vst1_u32_x3(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
@@ -21956,7 +22016,7 @@ mod test {
         let a: [u64; 4] = [0, 1, 2, 3];
         let e: [u64; 3] = [1, 2, 3];
         let mut r: [u64; 3] = [0u64; 3];
-        vst1_u64_x3(r.as_mut_ptr(), vld1_u64_x3(a[1..].as_ptr()));
+        vst1_u64_x3(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
@@ -21965,7 +22025,7 @@ mod test {
         let a: [u8; 49] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
         let e: [u8; 48] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
         let mut r: [u8; 48] = [0u8; 48];
-        vst1q_u8_x3(r.as_mut_ptr(), vld1q_u8_x3(a[1..].as_ptr()));
+        vst1q_u8_x3(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
@@ -21974,7 +22034,7 @@ mod test {
         let a: [u16; 25] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
         let e: [u16; 24] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
         let mut r: [u16; 24] = [0u16; 24];
-        vst1q_u16_x3(r.as_mut_ptr(), vld1q_u16_x3(a[1..].as_ptr()));
+        vst1q_u16_x3(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
@@ -21983,7 +22043,7 @@ mod test {
         let a: [u32; 13] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
         let e: [u32; 12] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
         let mut r: [u32; 12] = [0u32; 12];
-        vst1q_u32_x3(r.as_mut_ptr(), vld1q_u32_x3(a[1..].as_ptr()));
+        vst1q_u32_x3(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
@@ -21992,7 +22052,7 @@ mod test {
         let a: [u64; 7] = [0, 1, 2, 3, 4, 5, 6];
         let e: [u64; 6] = [1, 2, 3, 4, 5, 6];
         let mut r: [u64; 6] = [0u64; 6];
-        vst1q_u64_x3(r.as_mut_ptr(), vld1q_u64_x3(a[1..].as_ptr()));
+        vst1q_u64_x3(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
@@ -22001,7 +22061,7 @@ mod test {
         let a: [u8; 33] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
         let e: [u8; 32] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
         let mut r: [u8; 32] = [0u8; 32];
-        vst1_u8_x4(r.as_mut_ptr(), vld1_u8_x4(a[1..].as_ptr()));
+        vst1_u8_x4(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
@@ -22010,7 +22070,7 @@ mod test {
         let a: [u16; 17] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
         let e: [u16; 16] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
         let mut r: [u16; 16] = [0u16; 16];
-        vst1_u16_x4(r.as_mut_ptr(), vld1_u16_x4(a[1..].as_ptr()));
+        vst1_u16_x4(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
@@ -22019,7 +22079,7 @@ mod test {
         let a: [u32; 9] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
         let e: [u32; 8] = [1, 2, 3, 4, 5, 6, 7, 8];
         let mut r: [u32; 8] = [0u32; 8];
-        vst1_u32_x4(r.as_mut_ptr(), vld1_u32_x4(a[1..].as_ptr()));
+        vst1_u32_x4(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
@@ -22028,7 +22088,7 @@ mod test {
         let a: [u64; 5] = [0, 1, 2, 3, 4];
         let e: [u64; 4] = [1, 2, 3, 4];
         let mut r: [u64; 4] = [0u64; 4];
-        vst1_u64_x4(r.as_mut_ptr(), vld1_u64_x4(a[1..].as_ptr()));
+        vst1_u64_x4(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
@@ -22037,7 +22097,7 @@ mod test {
         let a: [u8; 65] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
         let e: [u8; 64] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
         let mut r: [u8; 64] = [0u8; 64];
-        vst1q_u8_x4(r.as_mut_ptr(), vld1q_u8_x4(a[1..].as_ptr()));
+        vst1q_u8_x4(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
@@ -22046,7 +22106,7 @@ mod test {
         let a: [u16; 33] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
         let e: [u16; 32] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
         let mut r: [u16; 32] = [0u16; 32];
-        vst1q_u16_x4(r.as_mut_ptr(), vld1q_u16_x4(a[1..].as_ptr()));
+        vst1q_u16_x4(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
@@ -22055,7 +22115,7 @@ mod test {
         let a: [u32; 17] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
         let e: [u32; 16] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
         let mut r: [u32; 16] = [0u32; 16];
-        vst1q_u32_x4(r.as_mut_ptr(), vld1q_u32_x4(a[1..].as_ptr()));
+        vst1q_u32_x4(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
@@ -22064,7 +22124,7 @@ mod test {
         let a: [u64; 9] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
         let e: [u64; 8] = [1, 2, 3, 4, 5, 6, 7, 8];
         let mut r: [u64; 8] = [0u64; 8];
-        vst1q_u64_x4(r.as_mut_ptr(), vld1q_u64_x4(a[1..].as_ptr()));
+        vst1q_u64_x4(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
@@ -22073,7 +22133,7 @@ mod test {
         let a: [u8; 17] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
         let e: [u8; 16] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
         let mut r: [u8; 16] = [0u8; 16];
-        vst1_p8_x2(r.as_mut_ptr(), vld1_p8_x2(a[1..].as_ptr()));
+        vst1_p8_x2(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
@@ -22082,7 +22142,7 @@ mod test {
         let a: [u8; 25] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
         let e: [u8; 24] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
         let mut r: [u8; 24] = [0u8; 24];
-        vst1_p8_x3(r.as_mut_ptr(), vld1_p8_x3(a[1..].as_ptr()));
+        vst1_p8_x3(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
@@ -22091,7 +22151,7 @@ mod test {
         let a: [u8; 33] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
         let e: [u8; 32] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
         let mut r: [u8; 32] = [0u8; 32];
-        vst1_p8_x4(r.as_mut_ptr(), vld1_p8_x4(a[1..].as_ptr()));
+        vst1_p8_x4(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
@@ -22100,7 +22160,7 @@ mod test {
         let a: [u8; 33] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
         let e: [u8; 32] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
         let mut r: [u8; 32] = [0u8; 32];
-        vst1q_p8_x2(r.as_mut_ptr(), vld1q_p8_x2(a[1..].as_ptr()));
+        vst1q_p8_x2(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
@@ -22109,7 +22169,7 @@ mod test {
         let a: [u8; 49] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
         let e: [u8; 48] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
         let mut r: [u8; 48] = [0u8; 48];
-        vst1q_p8_x3(r.as_mut_ptr(), vld1q_p8_x3(a[1..].as_ptr()));
+        vst1q_p8_x3(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
@@ -22118,7 +22178,7 @@ mod test {
         let a: [u8; 65] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
         let e: [u8; 64] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
         let mut r: [u8; 64] = [0u8; 64];
-        vst1q_p8_x4(r.as_mut_ptr(), vld1q_p8_x4(a[1..].as_ptr()));
+        vst1q_p8_x4(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
@@ -22127,7 +22187,7 @@ mod test {
         let a: [u16; 9] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
         let e: [u16; 8] = [1, 2, 3, 4, 5, 6, 7, 8];
         let mut r: [u16; 8] = [0u16; 8];
-        vst1_p16_x2(r.as_mut_ptr(), vld1_p16_x2(a[1..].as_ptr()));
+        vst1_p16_x2(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
@@ -22136,7 +22196,7 @@ mod test {
         let a: [u16; 13] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
         let e: [u16; 12] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
         let mut r: [u16; 12] = [0u16; 12];
-        vst1_p16_x3(r.as_mut_ptr(), vld1_p16_x3(a[1..].as_ptr()));
+        vst1_p16_x3(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
@@ -22145,7 +22205,7 @@ mod test {
         let a: [u16; 17] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
         let e: [u16; 16] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
         let mut r: [u16; 16] = [0u16; 16];
-        vst1_p16_x4(r.as_mut_ptr(), vld1_p16_x4(a[1..].as_ptr()));
+        vst1_p16_x4(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
@@ -22154,7 +22214,7 @@ mod test {
         let a: [u16; 17] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
         let e: [u16; 16] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
         let mut r: [u16; 16] = [0u16; 16];
-        vst1q_p16_x2(r.as_mut_ptr(), vld1q_p16_x2(a[1..].as_ptr()));
+        vst1q_p16_x2(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
@@ -22163,7 +22223,7 @@ mod test {
         let a: [u16; 25] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
         let e: [u16; 24] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
         let mut r: [u16; 24] = [0u16; 24];
-        vst1q_p16_x3(r.as_mut_ptr(), vld1q_p16_x3(a[1..].as_ptr()));
+        vst1q_p16_x3(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
@@ -22172,7 +22232,61 @@ mod test {
         let a: [u16; 33] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
         let e: [u16; 32] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
         let mut r: [u16; 32] = [0u16; 32];
-        vst1q_p16_x4(r.as_mut_ptr(), vld1q_p16_x4(a[1..].as_ptr()));
+        vst1q_p16_x4(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vst1_p64_x2() {
+        let a: [u64; 3] = [0, 1, 2];
+        let e: [u64; 2] = [1, 2];
+        let mut r: [u64; 2] = [0u64; 2];
+        vst1_p64_x2(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vst1_p64_x3() {
+        let a: [u64; 4] = [0, 1, 2, 3];
+        let e: [u64; 3] = [1, 2, 3];
+        let mut r: [u64; 3] = [0u64; 3];
+        vst1_p64_x3(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vst1_p64_x4() {
+        let a: [u64; 5] = [0, 1, 2, 3, 4];
+        let e: [u64; 4] = [1, 2, 3, 4];
+        let mut r: [u64; 4] = [0u64; 4];
+        vst1_p64_x4(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vst1q_p64_x2() {
+        let a: [u64; 5] = [0, 1, 2, 3, 4];
+        let e: [u64; 4] = [1, 2, 3, 4];
+        let mut r: [u64; 4] = [0u64; 4];
+        vst1q_p64_x2(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vst1q_p64_x3() {
+        let a: [u64; 7] = [0, 1, 2, 3, 4, 5, 6];
+        let e: [u64; 6] = [1, 2, 3, 4, 5, 6];
+        let mut r: [u64; 6] = [0u64; 6];
+        vst1q_p64_x3(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vst1q_p64_x4() {
+        let a: [u64; 9] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+        let e: [u64; 8] = [1, 2, 3, 4, 5, 6, 7, 8];
+        let mut r: [u64; 8] = [0u64; 8];
+        vst1q_p64_x4(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
@@ -22181,7 +22295,7 @@ mod test {
         let a: [f32; 5] = [0., 1., 2., 3., 4.];
         let e: [f32; 4] = [1., 2., 3., 4.];
         let mut r: [f32; 4] = [0f32; 4];
-        vst1_f32_x2(r.as_mut_ptr(), vld1_f32_x2(a[1..].as_ptr()));
+        vst1_f32_x2(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
@@ -22190,7 +22304,7 @@ mod test {
         let a: [f32; 9] = [0., 1., 2., 3., 4., 5., 6., 7., 8.];
         let e: [f32; 8] = [1., 2., 3., 4., 5., 6., 7., 8.];
         let mut r: [f32; 8] = [0f32; 8];
-        vst1q_f32_x2(r.as_mut_ptr(), vld1q_f32_x2(a[1..].as_ptr()));
+        vst1q_f32_x2(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
@@ -22199,7 +22313,7 @@ mod test {
         let a: [f32; 7] = [0., 1., 2., 3., 4., 5., 6.];
         let e: [f32; 6] = [1., 2., 3., 4., 5., 6.];
         let mut r: [f32; 6] = [0f32; 6];
-        vst1_f32_x3(r.as_mut_ptr(), vld1_f32_x3(a[1..].as_ptr()));
+        vst1_f32_x3(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
@@ -22208,7 +22322,7 @@ mod test {
         let a: [f32; 13] = [0., 1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12.];
         let e: [f32; 12] = [1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12.];
         let mut r: [f32; 12] = [0f32; 12];
-        vst1q_f32_x3(r.as_mut_ptr(), vld1q_f32_x3(a[1..].as_ptr()));
+        vst1q_f32_x3(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
@@ -22217,7 +22331,7 @@ mod test {
         let a: [f32; 9] = [0., 1., 2., 3., 4., 5., 6., 7., 8.];
         let e: [f32; 8] = [1., 2., 3., 4., 5., 6., 7., 8.];
         let mut r: [f32; 8] = [0f32; 8];
-        vst1_f32_x4(r.as_mut_ptr(), vld1_f32_x4(a[1..].as_ptr()));
+        vst1_f32_x4(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
@@ -22226,7 +22340,7 @@ mod test {
         let a: [f32; 17] = [0., 1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15., 16.];
         let e: [f32; 16] = [1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15., 16.];
         let mut r: [f32; 16] = [0f32; 16];
-        vst1q_f32_x4(r.as_mut_ptr(), vld1q_f32_x4(a[1..].as_ptr()));
+        vst1q_f32_x4(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
