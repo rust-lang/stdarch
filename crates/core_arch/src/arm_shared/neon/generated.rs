@@ -6663,7 +6663,8 @@ pub unsafe fn vld1q_p64_x4(a: *const p64) -> poly64x2x4_t {
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers
-#[inline]#[target_feature(enable = "neon")]
+#[inline]
+#[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld1))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld1))]

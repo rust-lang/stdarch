@@ -636,7 +636,8 @@ pub unsafe fn vld1q_p64(ptr: *const p64) -> poly64x2_t {
 }
 
 /// Load multiple single-element structures to one, two, three, or four registers.
-#[inline]#[target_feature(enable = "neon")]
+#[inline]
+#[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 pub unsafe fn vld1_f32(ptr: *const f32) -> float32x2_t {
     read_unaligned(ptr.cast())
