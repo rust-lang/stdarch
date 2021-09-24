@@ -2082,7 +2082,7 @@ generate *const p16:poly16x4x2_t, *const p16:poly16x4x3_t, *const p16:poly16x4x4
 generate *const p16:poly16x8x2_t, *const p16:poly16x8x3_t, *const p16:poly16x8x4_t
 target = aes
 generate *const p64:poly64x1x2_t
-arm = ldr
+arm = nop
 generate *const p64:poly64x1x3_t, *const p64:poly64x1x4_t
 generate *const p64:poly64x2x2_t, *const p64:poly64x2x3_t, *const p64:poly64x2x4_t
 /// Load multiple single-element structures to one, two, three, or four registers
@@ -2732,7 +2732,7 @@ generate *mut p16:poly16x4x2_t:void, *mut p16:poly16x4x3_t:void, *mut p16:poly16
 generate *mut p16:poly16x8x2_t:void, *mut p16:poly16x8x3_t:void, *mut p16:poly16x8x4_t:void
 target = aes
 generate *mut p64:poly64x1x2_t:void
-arm = str
+arm = nop
 generate *mut p64:poly64x1x3_t:void, *mut p64:poly64x1x4_t:void
 generate *mut p64:poly64x2x2_t:void, *mut p64:poly64x2x3_t:void, *mut p64:poly64x2x4_t:void
 
