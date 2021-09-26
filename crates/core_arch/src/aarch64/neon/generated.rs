@@ -4624,7 +4624,7 @@ pub unsafe fn vld2q_p64(a: *const p64) -> poly64x2x2_t {
 /// Load multiple 2-element structures to two registers
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(ld2))]
+#[cfg_attr(test, assert_instr(ld))]
 pub unsafe fn vld2_f64(a: *const f64) -> float64x1x2_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {

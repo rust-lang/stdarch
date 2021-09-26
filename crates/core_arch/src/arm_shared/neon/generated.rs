@@ -6944,7 +6944,7 @@ vld2_s64_(a as *const i8, 8)
 #[inline]
 #[cfg(target_arch = "aarch64")]
 #[target_feature(enable = "neon")]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld2))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld))]
 pub unsafe fn vld2_s64(a: *const i64) -> int64x1x2_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
@@ -7059,7 +7059,7 @@ pub unsafe fn vld2q_p16(a: *const p16) -> poly16x8x2_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld2))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld))]
 pub unsafe fn vld2_u64(a: *const u64) -> uint64x1x2_t {
     transmute(vld2_s64(transmute(a)))
 }
@@ -7069,7 +7069,7 @@ pub unsafe fn vld2_u64(a: *const u64) -> uint64x1x2_t {
 #[target_feature(enable = "neon,aes")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "aes,v8"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld2))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld))]
 pub unsafe fn vld2_p64(a: *const p64) -> poly64x1x2_t {
     transmute(vld2_s64(transmute(a)))
 }
