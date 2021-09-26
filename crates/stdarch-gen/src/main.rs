@@ -1832,9 +1832,14 @@ fn gen_arm(
                         ),
                         _ => panic!("unknown type: {}", in_t[1]),
                     };
+                    let out = if out_t == "void" {
+                        String::new()
+                    } else {
+                        format!(" -> {}", out_t)
+                    };
                     (
                         format!("ptr: {}, {}, n: i32, size: i32", ptr_type, inputs),
-                        String::new(),
+                        out,
                     )
                 } else {
                     let (_, const_type) = if const_arm.contains(":") {

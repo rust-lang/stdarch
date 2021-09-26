@@ -7513,7 +7513,7 @@ pub unsafe fn vld2_lane_s8<const LANE: i32>(a: *const i8, b: int8x8x2_t) -> int8
     #[allow(improper_ctypes)]
     extern "unadjusted" {
         #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vld2lane.v8i8.p0i8")]
-        fn vld2_lane_s8_(ptr: *const i8, a: int8x8_t, b: int8x8_t, n: i32, size: i32);
+        fn vld2_lane_s8_(ptr: *const i8, a: int8x8_t, b: int8x8_t, n: i32, size: i32) -> int8x8x2_t;
     }
 vld2_lane_s8_(a.cast(), b.0, b.1, LANE, 1)
 }
@@ -7545,7 +7545,7 @@ pub unsafe fn vld2_lane_s16<const LANE: i32>(a: *const i16, b: int16x4x2_t) -> i
     #[allow(improper_ctypes)]
     extern "unadjusted" {
         #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vld2lane.v4i16.p0i8")]
-        fn vld2_lane_s16_(ptr: *const i8, a: int16x4_t, b: int16x4_t, n: i32, size: i32);
+        fn vld2_lane_s16_(ptr: *const i8, a: int16x4_t, b: int16x4_t, n: i32, size: i32) -> int16x4x2_t;
     }
 vld2_lane_s16_(a.cast(), b.0, b.1, LANE, 2)
 }
@@ -7577,7 +7577,7 @@ pub unsafe fn vld2_lane_s32<const LANE: i32>(a: *const i32, b: int32x2x2_t) -> i
     #[allow(improper_ctypes)]
     extern "unadjusted" {
         #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vld2lane.v2i32.p0i8")]
-        fn vld2_lane_s32_(ptr: *const i8, a: int32x2_t, b: int32x2_t, n: i32, size: i32);
+        fn vld2_lane_s32_(ptr: *const i8, a: int32x2_t, b: int32x2_t, n: i32, size: i32) -> int32x2x2_t;
     }
 vld2_lane_s32_(a.cast(), b.0, b.1, LANE, 4)
 }
@@ -7609,7 +7609,7 @@ pub unsafe fn vld2q_lane_s16<const LANE: i32>(a: *const i16, b: int16x8x2_t) -> 
     #[allow(improper_ctypes)]
     extern "unadjusted" {
         #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vld2lane.v8i16.p0i8")]
-        fn vld2q_lane_s16_(ptr: *const i8, a: int16x8_t, b: int16x8_t, n: i32, size: i32);
+        fn vld2q_lane_s16_(ptr: *const i8, a: int16x8_t, b: int16x8_t, n: i32, size: i32) -> int16x8x2_t;
     }
 vld2q_lane_s16_(a.cast(), b.0, b.1, LANE, 2)
 }
@@ -7641,7 +7641,7 @@ pub unsafe fn vld2q_lane_s32<const LANE: i32>(a: *const i32, b: int32x4x2_t) -> 
     #[allow(improper_ctypes)]
     extern "unadjusted" {
         #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vld2lane.v4i32.p0i8")]
-        fn vld2q_lane_s32_(ptr: *const i8, a: int32x4_t, b: int32x4_t, n: i32, size: i32);
+        fn vld2q_lane_s32_(ptr: *const i8, a: int32x4_t, b: int32x4_t, n: i32, size: i32) -> int32x4x2_t;
     }
 vld2q_lane_s32_(a.cast(), b.0, b.1, LANE, 4)
 }
@@ -7769,7 +7769,7 @@ pub unsafe fn vld2_lane_f32<const LANE: i32>(a: *const f32, b: float32x2x2_t) ->
     #[allow(improper_ctypes)]
     extern "unadjusted" {
         #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vld2lane.v2f32.p0i8")]
-        fn vld2_lane_f32_(ptr: *const i8, a: float32x2_t, b: float32x2_t, n: i32, size: i32);
+        fn vld2_lane_f32_(ptr: *const i8, a: float32x2_t, b: float32x2_t, n: i32, size: i32) -> float32x2x2_t;
     }
 vld2_lane_f32_(a.cast(), b.0, b.1, LANE, 4)
 }
@@ -7801,7 +7801,7 @@ pub unsafe fn vld2q_lane_f32<const LANE: i32>(a: *const f32, b: float32x4x2_t) -
     #[allow(improper_ctypes)]
     extern "unadjusted" {
         #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vld2lane.v4f32.p0i8")]
-        fn vld2q_lane_f32_(ptr: *const i8, a: float32x4_t, b: float32x4_t, n: i32, size: i32);
+        fn vld2q_lane_f32_(ptr: *const i8, a: float32x4_t, b: float32x4_t, n: i32, size: i32) -> float32x4x2_t;
     }
 vld2q_lane_f32_(a.cast(), b.0, b.1, LANE, 4)
 }
