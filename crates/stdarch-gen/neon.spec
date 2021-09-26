@@ -2946,12 +2946,15 @@ arm-aarch64-separate
 
 aarch64 = st3
 link-aarch64 = st3._EXTpi8_
-//generate *mut i64:int64x2x3_t:void
+generate *mut i64:int64x2x3_t:void
 
 arm = vst3
 link-arm = vst3._EXTpi8r_
-//generate *mut i8:int8x8x3_t:void, *mut i16:int16x4x3_t:void, *mut i32:int32x2x3_t:void, *mut i64:int64x1x3_t:void
-//generate *mut i8:int8x16x3_t:void, *mut i16:int16x8x3_t:void, *mut i32:int32x4x3_t:void
+generate *mut i8:int8x8x3_t:void, *mut i16:int16x4x3_t:void, *mut i32:int32x2x3_t:void
+generate *mut i8:int8x16x3_t:void, *mut i16:int16x8x3_t:void, *mut i32:int32x4x3_t:void
+arm = nop
+aarch64 = nop
+generate *mut i64:int64x1x3_t:void
 
 /// Store multiple 3-element structures from three registers
 name = vst3
@@ -2962,17 +2965,20 @@ validate 1, 2, 2, 2, 4, 4, 2, 7, 7, 4, 8, 8, 2, 13, 13, 4, 14, 14, 7, 15, 15, 8,
 store_fn
 
 aarch64 = st3
-//generate *mut u64:uint64x2x3_t:void
+generate *mut u64:uint64x2x3_t:void
 target = aes
-//generate *mut p64:poly64x2x3_t:void
+generate *mut p64:poly64x2x3_t:void
 
 target = default
 arm = vst3
-//generate *mut u8:uint8x8x3_t:void, *mut u16:uint16x4x3_t:void, *mut u32:uint32x2x3_t:void, *mut u64:uint64x1x3_t:void
-//generate *mut u8:uint8x16x3_t:void, *mut u16:uint16x8x3_t:void, *mut u32:uint32x4x3_t:void
-//generate *mut p8:poly8x8x3_t:void, *mut p16:poly16x4x3_t:void, *mut p8:poly8x16x3_t:void, *mut p16:poly16x8x3_t:void
+generate *mut u8:uint8x8x3_t:void, *mut u16:uint16x4x3_t:void, *mut u32:uint32x2x3_t:void
+generate *mut u8:uint8x16x3_t:void, *mut u16:uint16x8x3_t:void, *mut u32:uint32x4x3_t:void
+generate *mut p8:poly8x8x3_t:void, *mut p16:poly16x4x3_t:void, *mut p8:poly8x16x3_t:void, *mut p16:poly16x8x3_t:void
+arm = nop
+aarch64 = nop
+generate *mut u64:uint64x1x3_t:void
 target = aes
-//generate *mut p64:poly64x1x3_t:void
+generate *mut p64:poly64x1x3_t:void
 
 /// Store multiple 3-element structures from three registers
 name = vst3
@@ -2984,11 +2990,13 @@ arm-aarch64-separate
 
 aarch64 = st3
 link-aarch64 = st3._EXTpi8_
-//generate *mut f64:float64x1x3_t:void, *mut f64:float64x2x3_t:void
+generate *mut f64:float64x1x3_t:void
+aarch64 = nop
+generate *mut f64:float64x2x3_t:void
 
 arm = vst3
 link-arm = vst3._EXTpi8r_
-//generate *mut f32:float32x2x3_t:void, *mut f32:float32x4x3_t:void
+generate *mut f32:float32x2x3_t:void, *mut f32:float32x4x3_t:void
 
 /// Store multiple 3-element structures from three registers
 name = vst3
@@ -3065,12 +3073,15 @@ arm-aarch64-separate
 
 aarch64 = st4
 link-aarch64 = st4._EXTpi8_
-//generate *mut i64:int64x2x4_t:void
+generate *mut i64:int64x2x4_t:void
 
 arm = vst4
 link-arm = vst4._EXTpi8r_
-//generate *mut i8:int8x8x4_t:void, *mut i16:int16x4x4_t:void, *mut i32:int32x2x4_t:void, *mut i64:int64x1x4_t:void
-//generate *mut i8:int8x16x4_t:void, *mut i16:int16x8x4_t:void, *mut i32:int32x4x4_t:void
+generate *mut i8:int8x8x4_t:void, *mut i16:int16x4x4_t:void, *mut i32:int32x2x4_t:void
+generate *mut i8:int8x16x4_t:void, *mut i16:int16x8x4_t:void, *mut i32:int32x4x4_t:void
+arm = nop
+aarch64 = nop
+generate *mut i64:int64x1x4_t:void
 
 /// Store multiple 4-element structures from four registers
 name = vst4
@@ -3081,17 +3092,20 @@ validate 1, 2, 2, 6, 2, 6, 6, 8, 2, 6, 6, 8, 6, 8, 8, 16, 2, 6, 6, 8, 6, 8, 8, 1
 store_fn
 
 aarch64 = st4
-//generate *mut u64:uint64x2x4_t:void
+generate *mut u64:uint64x2x4_t:void
 target = aes
-//generate *mut p64:poly64x2x4_t:void
+generate *mut p64:poly64x2x4_t:void
 
 target = default
 arm = vst4
-//generate *mut u8:uint8x8x4_t:void, *mut u16:uint16x4x4_t:void, *mut u32:uint32x2x4_t:void, *mut u64:uint64x1x4_t:void
-//generate *mut u8:uint8x16x4_t:void, *mut u16:uint16x8x4_t:void, *mut u32:uint32x4x4_t:void
-//generate *mut p8:poly8x8x4_t:void, *mut p16:poly16x4x4_t:void, *mut p8:poly8x16x4_t:void, *mut p16:poly16x8x4_t:void
+generate *mut u8:uint8x8x4_t:void, *mut u16:uint16x4x4_t:void, *mut u32:uint32x2x4_t:void
+generate *mut u8:uint8x16x4_t:void, *mut u16:uint16x8x4_t:void, *mut u32:uint32x4x4_t:void
+generate *mut p8:poly8x8x4_t:void, *mut p16:poly16x4x4_t:void, *mut p8:poly8x16x4_t:void, *mut p16:poly16x8x4_t:void
+arm = nop
+aarch64 = nop
+generate *mut u64:uint64x1x4_t:void
 target = aes
-//generate *mut p64:poly64x1x4_t:void
+generate *mut p64:poly64x1x4_t:void
 
 /// Store multiple 4-element structures from four registers
 name = vst4
@@ -3103,11 +3117,13 @@ arm-aarch64-separate
 
 aarch64 = st4
 link-aarch64 = st4._EXTpi8_
-//generate *mut f64:float64x1x4_t:void, *mut f64:float64x2x4_t:void
+generate *mut f64:float64x1x4_t:void
+aarch64 = nop
+generate *mut f64:float64x2x4_t:void
 
 arm = vst4
 link-arm = vst4._EXTpi8r_
-//generate *mut f32:float32x2x4_t:void, *mut f32:float32x4x4_t:void
+generate *mut f32:float32x2x4_t:void, *mut f32:float32x4x4_t:void
 
 /// Store multiple 4-element structures from four registers
 name = vst4
