@@ -4757,6 +4757,61 @@ pub unsafe fn vld3q_f64(a: *const f64) -> float64x2x3_t {
     vld3q_f64_(a.cast())
 }
 
+/// Load single 3-element structure and replicate to all lanes of three registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(ld3r))]
+pub unsafe fn vld3q_dup_s64(a: *const i64) -> int64x2x3_t {
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld3r.v2i64.p0i64")]
+        fn vld3q_dup_s64_(ptr: *const i64) -> int64x2x3_t;
+    }
+    vld3q_dup_s64_(a.cast())
+}
+
+/// Load single 3-element structure and replicate to all lanes of three registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(ld3r))]
+pub unsafe fn vld3q_dup_u64(a: *const u64) -> uint64x2x3_t {
+    transmute(vld3q_dup_s64(transmute(a)))
+}
+
+/// Load single 3-element structure and replicate to all lanes of three registers
+#[inline]
+#[target_feature(enable = "neon,aes")]
+#[cfg_attr(test, assert_instr(ld3r))]
+pub unsafe fn vld3q_dup_p64(a: *const p64) -> poly64x2x3_t {
+    transmute(vld3q_dup_s64(transmute(a)))
+}
+
+/// Load single 3-element structure and replicate to all lanes of three registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(ld3r))]
+pub unsafe fn vld3_dup_f64(a: *const f64) -> float64x1x3_t {
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld3r.v1f64.p0f64")]
+        fn vld3_dup_f64_(ptr: *const f64) -> float64x1x3_t;
+    }
+    vld3_dup_f64_(a.cast())
+}
+
+/// Load single 3-element structure and replicate to all lanes of three registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(ld3r))]
+pub unsafe fn vld3q_dup_f64(a: *const f64) -> float64x2x3_t {
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld3r.v2f64.p0f64")]
+        fn vld3q_dup_f64_(ptr: *const f64) -> float64x2x3_t;
+    }
+    vld3q_dup_f64_(a.cast())
+}
+
 /// Load multiple 4-element structures to four registers
 #[inline]
 #[target_feature(enable = "neon")]
@@ -4810,6 +4865,61 @@ pub unsafe fn vld4q_f64(a: *const f64) -> float64x2x4_t {
         fn vld4q_f64_(ptr: *const float64x2_t) -> float64x2x4_t;
     }
     vld4q_f64_(a.cast())
+}
+
+/// Load single 4-element structure and replicate to all lanes of four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(ld4r))]
+pub unsafe fn vld4q_dup_s64(a: *const i64) -> int64x2x4_t {
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld4r.v2i64.p0i64")]
+        fn vld4q_dup_s64_(ptr: *const i64) -> int64x2x4_t;
+    }
+    vld4q_dup_s64_(a.cast())
+}
+
+/// Load single 4-element structure and replicate to all lanes of four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(ld4r))]
+pub unsafe fn vld4q_dup_u64(a: *const u64) -> uint64x2x4_t {
+    transmute(vld4q_dup_s64(transmute(a)))
+}
+
+/// Load single 4-element structure and replicate to all lanes of four registers
+#[inline]
+#[target_feature(enable = "neon,aes")]
+#[cfg_attr(test, assert_instr(ld4r))]
+pub unsafe fn vld4q_dup_p64(a: *const p64) -> poly64x2x4_t {
+    transmute(vld4q_dup_s64(transmute(a)))
+}
+
+/// Load single 4-element structure and replicate to all lanes of four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(ld4r))]
+pub unsafe fn vld4_dup_f64(a: *const f64) -> float64x1x4_t {
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld4r.v1f64.p0f64")]
+        fn vld4_dup_f64_(ptr: *const f64) -> float64x1x4_t;
+    }
+    vld4_dup_f64_(a.cast())
+}
+
+/// Load single 4-element structure and replicate to all lanes of four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(ld4r))]
+pub unsafe fn vld4q_dup_f64(a: *const f64) -> float64x2x4_t {
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld4r.v2f64.p0f64")]
+        fn vld4q_dup_f64_(ptr: *const f64) -> float64x2x4_t;
+    }
+    vld4q_dup_f64_(a.cast())
 }
 
 /// Store multiple single-element structures to one, two, three, or four registers
@@ -13402,6 +13512,46 @@ mod test {
     }
 
     #[simd_test(enable = "neon")]
+    unsafe fn test_vld3q_dup_s64() {
+        let a: [i64; 7] = [0, 1, 1, 1, 3, 1, 4];
+        let e: [i64x2; 3] = [i64x2::new(1, 1), i64x2::new(1, 1), i64x2::new(1, 1)];
+        let r: [i64x2; 3] = transmute(vld3q_dup_s64(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld3q_dup_u64() {
+        let a: [u64; 7] = [0, 1, 1, 1, 3, 1, 4];
+        let e: [u64x2; 3] = [u64x2::new(1, 1), u64x2::new(1, 1), u64x2::new(1, 1)];
+        let r: [u64x2; 3] = transmute(vld3q_dup_u64(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld3q_dup_p64() {
+        let a: [u64; 7] = [0, 1, 1, 1, 3, 1, 4];
+        let e: [i64x2; 3] = [i64x2::new(1, 1), i64x2::new(1, 1), i64x2::new(1, 1)];
+        let r: [i64x2; 3] = transmute(vld3q_dup_p64(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld3_dup_f64() {
+        let a: [f64; 4] = [0., 1., 1., 1.];
+        let e: [f64; 3] = [1., 1., 1.];
+        let r: [f64; 3] = transmute(vld3_dup_f64(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld3q_dup_f64() {
+        let a: [f64; 7] = [0., 1., 1., 1., 3., 1., 4.];
+        let e: [f64x2; 3] = [f64x2::new(1., 1.), f64x2::new(1., 1.), f64x2::new(1., 1.)];
+        let r: [f64x2; 3] = transmute(vld3q_dup_f64(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
     unsafe fn test_vld4q_s64() {
         let a: [i64; 9] = [0, 1, 2, 2, 6, 2, 6, 6, 8];
         let e: [i64x2; 4] = [i64x2::new(1, 2), i64x2::new(2, 6), i64x2::new(2, 6), i64x2::new(6, 8)];
@@ -13438,6 +13588,46 @@ mod test {
         let a: [f64; 9] = [0., 1., 2., 2., 6., 2., 6., 6., 8.];
         let e: [f64x2; 4] = [f64x2::new(1., 2.), f64x2::new(2., 6.), f64x2::new(2., 6.), f64x2::new(6., 8.)];
         let r: [f64x2; 4] = transmute(vld4q_f64(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld4q_dup_s64() {
+        let a: [i64; 9] = [0, 1, 1, 1, 1, 2, 4, 3, 5];
+        let e: [i64x2; 4] = [i64x2::new(1, 1), i64x2::new(1, 1), i64x2::new(1, 1), i64x2::new(1, 1)];
+        let r: [i64x2; 4] = transmute(vld4q_dup_s64(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld4q_dup_u64() {
+        let a: [u64; 9] = [0, 1, 1, 1, 1, 2, 4, 3, 5];
+        let e: [u64x2; 4] = [u64x2::new(1, 1), u64x2::new(1, 1), u64x2::new(1, 1), u64x2::new(1, 1)];
+        let r: [u64x2; 4] = transmute(vld4q_dup_u64(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld4q_dup_p64() {
+        let a: [u64; 9] = [0, 1, 1, 1, 1, 2, 4, 3, 5];
+        let e: [i64x2; 4] = [i64x2::new(1, 1), i64x2::new(1, 1), i64x2::new(1, 1), i64x2::new(1, 1)];
+        let r: [i64x2; 4] = transmute(vld4q_dup_p64(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld4_dup_f64() {
+        let a: [f64; 5] = [0., 1., 1., 1., 1.];
+        let e: [f64; 4] = [1., 1., 1., 1.];
+        let r: [f64; 4] = transmute(vld4_dup_f64(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld4q_dup_f64() {
+        let a: [f64; 9] = [0., 1., 1., 1., 1., 6., 4., 3., 5.];
+        let e: [f64x2; 4] = [f64x2::new(1., 1.), f64x2::new(1., 1.), f64x2::new(1., 1.), f64x2::new(1., 1.)];
+        let r: [f64x2; 4] = transmute(vld4q_dup_f64(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
 

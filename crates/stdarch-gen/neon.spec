@@ -2378,15 +2378,18 @@ out-dup-nox
 a = 0, 1, 1, 1, 3, 1, 4, 3, 5, 1, 6, 3, 7, 4, 8, 5, 9, 2, 10, 3, 11, 4, 12, 5, 13, 6, 14, 7, 15, 8, 16, 9, 17, 6, 14, 7, 15, 8, 16, 9, 17, 6, 14, 7, 15, 8, 16, 9, 17
 validate 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
 load_fn
+arm-aarch64-separate
 
 aarch64 = ld3r
 link-aarch64 = ld3r._EXT2_
-//generate *const i64:int64x2x3_t
+generate *const i64:int64x2x3_t
 
-arm = vld3dup
+arm = vld3
 link-arm = vld3dup._EXTpi82_
-//generate *const i8:int8x8x3_t, *const i16:int16x4x3_t, *const i32:int32x2x3_t, *const i64:int64x1x3_t
-//generate *const i8:int8x16x3_t, *const i16:int16x8x3_t, *const i32:int32x4x3_t
+generate *const i8:int8x8x3_t, *const i16:int16x4x3_t, *const i32:int32x2x3_t
+generate *const i8:int8x16x3_t, *const i16:int16x8x3_t, *const i32:int32x4x3_t
+arm = nop
+generate *const i64:int64x1x3_t
 
 /// Load single 3-element structure and replicate to all lanes of three registers
 name = vld3
@@ -2397,17 +2400,19 @@ validate 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 load_fn
 
 aarch64 = ld3r
-//generate *const u64:uint64x2x3_t
+generate *const u64:uint64x2x3_t
 target = aes
-//generate *const p64:poly64x2x3_t
+generate *const p64:poly64x2x3_t
 
 target = default
-arm = vld3dup
-//generate *const u8:uint8x8x3_t, *const u16:uint16x4x3_t, *const u32:uint32x2x3_t, *const u64:uint64x1x3_t
-//generate *const u8:uint8x16x3_t, *const u16:uint16x8x3_t, *const u32:uint32x4x3_t
-//generate *const p8:poly8x8x3_t, *const p16:poly16x4x3_t, *const p8:poly8x16x3_t, *const p16:poly16x8x3_t
+arm = vld3
+generate *const u8:uint8x8x3_t, *const u16:uint16x4x3_t, *const u32:uint32x2x3_t
+generate *const u8:uint8x16x3_t, *const u16:uint16x8x3_t, *const u32:uint32x4x3_t
+generate *const p8:poly8x8x3_t, *const p16:poly16x4x3_t, *const p8:poly8x16x3_t, *const p16:poly16x8x3_t
+arm = nop
+generate *const u64:uint64x1x3_t
 target = aes
-//generate *const p64:poly64x1x3_t
+generate *const p64:poly64x1x3_t
 
 /// Load single 3-element structure and replicate to all lanes of three registers
 name = vld3
@@ -2415,14 +2420,15 @@ out-dup-nox
 a = 0., 1., 1., 1., 3., 1., 4., 3., 5., 1., 4., 3., 5.
 validate 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.
 load_fn
+arm-aarch64-separate
 
 aarch64 = ld3r
 link-aarch64 = ld3r._EXT2_
-//generate *const f64:float64x1x3_t, *const f64:float64x2x3_t
+generate *const f64:float64x1x3_t, *const f64:float64x2x3_t
 
-arm = vld3dup
+arm = vld3
 link-arm = vld3dup._EXTpi82_
-//generate *const f32:float32x2x3_t, *const f32:float32x4x3_t
+generate *const f32:float32x2x3_t, *const f32:float32x4x3_t
 
 /// Load multiple 3-element structures to two registers
 name = vld3
@@ -2563,15 +2569,18 @@ out-dup-nox
 a = 0, 1, 1, 1, 1, 2, 4, 3, 5, 8, 6, 3, 7, 4, 8, 5, 9, 8, 6, 3, 7, 4, 8, 5, 9, 8, 6, 3, 7, 4, 8, 5, 9, 8, 6, 3, 7, 4, 8, 5, 9, 8, 6, 3, 7, 4, 8, 5, 9, 8, 6, 3, 7, 4, 8, 5, 9, 8, 6, 3, 7, 4, 8, 5, 9
 validate 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
 load_fn
+arm-aarch64-separate
 
 aarch64 = ld4r
 link-aarch64 = ld4r._EXT2_
-//generate *const i64:int64x2x4_t
+generate *const i64:int64x2x4_t
 
 arm = vld4dup
 link-arm = vld4dup._EXTpi82_
-//generate *const i8:int8x8x4_t, *const i16:int16x4x4_t, *const i32:int32x2x4_t, *const i64:int64x1x4_t
-//generate *const i8:int8x16x4_t, *const i16:int16x8x4_t, *const i32:int32x4x4_t
+generate *const i8:int8x8x4_t, *const i16:int16x4x4_t, *const i32:int32x2x4_t
+generate *const i8:int8x16x4_t, *const i16:int16x8x4_t, *const i32:int32x4x4_t
+arm = nop
+generate *const i64:int64x1x4_t
 
 /// Load single 4-element structure and replicate to all lanes of four registers
 name = vld4
@@ -2582,17 +2591,19 @@ validate 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 load_fn
 
 aarch64 = ld4r
-//generate *const u64:uint64x2x4_t
+generate *const u64:uint64x2x4_t
 target = aes
-//generate *const p64:poly64x2x4_t
+generate *const p64:poly64x2x4_t
 
 target = default
 arm = vld4dup
-//generate *const u8:uint8x8x4_t, *const u16:uint16x4x4_t, *const u32:uint32x2x4_t, *const u64:uint64x1x4_t
-//generate *const u8:uint8x16x4_t, *const u16:uint16x8x4_t, *const u32:uint32x4x4_t
-//generate *const p8:poly8x8x4_t, *const p16:poly16x4x4_t, *const p8:poly8x16x4_t, *const p16:poly16x8x4_t
+generate *const u8:uint8x8x4_t, *const u16:uint16x4x4_t, *const u32:uint32x2x4_t
+generate *const u8:uint8x16x4_t, *const u16:uint16x8x4_t, *const u32:uint32x4x4_t
+generate *const p8:poly8x8x4_t, *const p16:poly16x4x4_t, *const p8:poly8x16x4_t, *const p16:poly16x8x4_t
+arm = nop
+generate *const u64:uint64x1x4_t
 target = aes
-//generate *const p64:poly64x1x4_t
+generate *const p64:poly64x1x4_t
 
 /// Load single 4-element structure and replicate to all lanes of four registers
 name = vld4
@@ -2600,14 +2611,15 @@ out-dup-nox
 a = 0., 1., 1., 1., 1., 6., 4., 3., 5., 7., 4., 3., 5., 8., 4., 3., 5., 9., 4., 3., 5.
 validate 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.
 load_fn
+arm-aarch64-separate
 
 aarch64 = ld4r
 link-aarch64 = ld4r._EXT2_
-//generate *const f64:float64x1x4_t, *const f64:float64x2x4_t
+generate *const f64:float64x1x4_t, *const f64:float64x2x4_t
 
 arm = vld4dup
 link-arm = vld4dup._EXTpi82_
-//generate *const f32:float32x2x4_t, *const f32:float32x4x4_t
+generate *const f32:float32x2x4_t, *const f32:float32x4x4_t
 
 /// Load multiple 4-element structures to four registers
 name = vld4
