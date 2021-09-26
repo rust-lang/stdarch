@@ -2184,6 +2184,7 @@ out-dup-nox
 a = 0, 1, 1, 2, 3, 1, 4, 3, 5, 1, 6, 3, 7, 4, 8, 5, 9, 2, 10, 3, 11, 4, 12, 5, 13, 6, 14, 7, 15, 8, 16, 9, 17
 validate 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
 load_fn
+arm-aarch64-separate
 
 aarch64 = ld2r
 link-aarch64 = ld2r._EXT2_
@@ -2221,6 +2222,7 @@ out-dup-nox
 a = 0., 1., 1., 2., 3., 1., 4., 3., 5.
 validate 1., 1., 1., 1., 1., 1., 1., 1.
 load_fn
+arm-aarch64-separate
 
 aarch64 = ld2r
 link-aarch64 = ld2r._EXT2_

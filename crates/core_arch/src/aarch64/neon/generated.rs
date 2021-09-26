@@ -4655,9 +4655,9 @@ pub unsafe fn vld2q_dup_s64(a: *const i64) -> int64x2x2_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
         #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld2r.v2i64.p0i64")]
-        fn vld2q_dup_s64_(a: *const i64) -> int64x2x2_t;
+        fn vld2q_dup_s64_(ptr: *const i64) -> int64x2x2_t;
     }
-    vld2q_dup_s64_(a)
+    vld2q_dup_s64_(a.cast())
 }
 
 /// Load single 2-element structure and replicate to all lanes of two registers
@@ -4684,9 +4684,9 @@ pub unsafe fn vld2_dup_f64(a: *const f64) -> float64x1x2_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
         #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld2r.v1f64.p0f64")]
-        fn vld2_dup_f64_(a: *const f64) -> float64x1x2_t;
+        fn vld2_dup_f64_(ptr: *const f64) -> float64x1x2_t;
     }
-    vld2_dup_f64_(a)
+    vld2_dup_f64_(a.cast())
 }
 
 /// Load single 2-element structure and replicate to all lanes of two registers
@@ -4697,9 +4697,9 @@ pub unsafe fn vld2q_dup_f64(a: *const f64) -> float64x2x2_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
         #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld2r.v2f64.p0f64")]
-        fn vld2q_dup_f64_(a: *const f64) -> float64x2x2_t;
+        fn vld2q_dup_f64_(ptr: *const f64) -> float64x2x2_t;
     }
-    vld2q_dup_f64_(a)
+    vld2q_dup_f64_(a.cast())
 }
 
 /// Load multiple 3-element structures to three registers

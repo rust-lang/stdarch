@@ -7132,114 +7132,198 @@ vld2q_f32_(a.cast())
 
 /// Load single 2-element structure and replicate to all lanes of two registers
 #[inline]
-#[target_feature(enable = "neon")]
-#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg(target_arch = "arm")]
+#[target_feature(enable = "neon,v7")]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld2dup))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld2r))]
 pub unsafe fn vld2_dup_s8(a: *const i8) -> int8x8x2_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
         #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vld2dup.v8i8.p0i8")]
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld2r.v8i8.p0i8")]
-        fn vld2_dup_s8_(a: *const i8) -> int8x8x2_t;
+        fn vld2_dup_s8_(ptr: *const i8, size: i32) -> int8x8x2_t;
     }
-vld2_dup_s8_(a)
+vld2_dup_s8_(a as *const i8, 1)
 }
 
 /// Load single 2-element structure and replicate to all lanes of two registers
 #[inline]
+#[cfg(target_arch = "aarch64")]
 #[target_feature(enable = "neon")]
-#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld2dup))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld2r))]
+pub unsafe fn vld2_dup_s8(a: *const i8) -> int8x8x2_t {
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld2r.v8i8.p0i8")]
+        fn vld2_dup_s8_(ptr: *const i8) -> int8x8x2_t;
+    }
+vld2_dup_s8_(a.cast())
+}
+
+/// Load single 2-element structure and replicate to all lanes of two registers
+#[inline]
+#[cfg(target_arch = "arm")]
+#[target_feature(enable = "neon,v7")]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld2dup))]
 pub unsafe fn vld2_dup_s16(a: *const i16) -> int16x4x2_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
         #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vld2dup.v4i16.p0i8")]
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld2r.v4i16.p0i16")]
-        fn vld2_dup_s16_(a: *const i16) -> int16x4x2_t;
+        fn vld2_dup_s16_(ptr: *const i8, size: i32) -> int16x4x2_t;
     }
-vld2_dup_s16_(a)
+vld2_dup_s16_(a as *const i8, 2)
 }
 
 /// Load single 2-element structure and replicate to all lanes of two registers
 #[inline]
+#[cfg(target_arch = "aarch64")]
 #[target_feature(enable = "neon")]
-#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld2dup))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld2r))]
+pub unsafe fn vld2_dup_s16(a: *const i16) -> int16x4x2_t {
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld2r.v4i16.p0i16")]
+        fn vld2_dup_s16_(ptr: *const i16) -> int16x4x2_t;
+    }
+vld2_dup_s16_(a.cast())
+}
+
+/// Load single 2-element structure and replicate to all lanes of two registers
+#[inline]
+#[cfg(target_arch = "arm")]
+#[target_feature(enable = "neon,v7")]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld2dup))]
 pub unsafe fn vld2_dup_s32(a: *const i32) -> int32x2x2_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
         #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vld2dup.v2i32.p0i8")]
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld2r.v2i32.p0i32")]
-        fn vld2_dup_s32_(a: *const i32) -> int32x2x2_t;
+        fn vld2_dup_s32_(ptr: *const i8, size: i32) -> int32x2x2_t;
     }
-vld2_dup_s32_(a)
+vld2_dup_s32_(a as *const i8, 4)
 }
 
 /// Load single 2-element structure and replicate to all lanes of two registers
 #[inline]
+#[cfg(target_arch = "aarch64")]
 #[target_feature(enable = "neon")]
-#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld2dup))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld2r))]
+pub unsafe fn vld2_dup_s32(a: *const i32) -> int32x2x2_t {
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld2r.v2i32.p0i32")]
+        fn vld2_dup_s32_(ptr: *const i32) -> int32x2x2_t;
+    }
+vld2_dup_s32_(a.cast())
+}
+
+/// Load single 2-element structure and replicate to all lanes of two registers
+#[inline]
+#[cfg(target_arch = "arm")]
+#[target_feature(enable = "neon,v7")]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld2dup))]
 pub unsafe fn vld2_dup_s64(a: *const i64) -> int64x1x2_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
         #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vld2dup.v1i64.p0i8")]
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld2r.v1i64.p0i64")]
-        fn vld2_dup_s64_(a: *const i64) -> int64x1x2_t;
+        fn vld2_dup_s64_(ptr: *const i8, size: i32) -> int64x1x2_t;
     }
-vld2_dup_s64_(a)
+vld2_dup_s64_(a as *const i8, 8)
 }
 
 /// Load single 2-element structure and replicate to all lanes of two registers
 #[inline]
+#[cfg(target_arch = "aarch64")]
 #[target_feature(enable = "neon")]
-#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld2dup))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld2r))]
+pub unsafe fn vld2_dup_s64(a: *const i64) -> int64x1x2_t {
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld2r.v1i64.p0i64")]
+        fn vld2_dup_s64_(ptr: *const i64) -> int64x1x2_t;
+    }
+vld2_dup_s64_(a.cast())
+}
+
+/// Load single 2-element structure and replicate to all lanes of two registers
+#[inline]
+#[cfg(target_arch = "arm")]
+#[target_feature(enable = "neon,v7")]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld2dup))]
 pub unsafe fn vld2q_dup_s8(a: *const i8) -> int8x16x2_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
         #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vld2dup.v16i8.p0i8")]
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld2r.v16i8.p0i8")]
-        fn vld2q_dup_s8_(a: *const i8) -> int8x16x2_t;
+        fn vld2q_dup_s8_(ptr: *const i8, size: i32) -> int8x16x2_t;
     }
-vld2q_dup_s8_(a)
+vld2q_dup_s8_(a as *const i8, 1)
 }
 
 /// Load single 2-element structure and replicate to all lanes of two registers
 #[inline]
+#[cfg(target_arch = "aarch64")]
 #[target_feature(enable = "neon")]
-#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld2dup))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld2r))]
+pub unsafe fn vld2q_dup_s8(a: *const i8) -> int8x16x2_t {
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld2r.v16i8.p0i8")]
+        fn vld2q_dup_s8_(ptr: *const i8) -> int8x16x2_t;
+    }
+vld2q_dup_s8_(a.cast())
+}
+
+/// Load single 2-element structure and replicate to all lanes of two registers
+#[inline]
+#[cfg(target_arch = "arm")]
+#[target_feature(enable = "neon,v7")]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld2dup))]
 pub unsafe fn vld2q_dup_s16(a: *const i16) -> int16x8x2_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
         #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vld2dup.v8i16.p0i8")]
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld2r.v8i16.p0i16")]
-        fn vld2q_dup_s16_(a: *const i16) -> int16x8x2_t;
+        fn vld2q_dup_s16_(ptr: *const i8, size: i32) -> int16x8x2_t;
     }
-vld2q_dup_s16_(a)
+vld2q_dup_s16_(a as *const i8, 2)
 }
 
 /// Load single 2-element structure and replicate to all lanes of two registers
 #[inline]
+#[cfg(target_arch = "aarch64")]
 #[target_feature(enable = "neon")]
-#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld2dup))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld2r))]
+pub unsafe fn vld2q_dup_s16(a: *const i16) -> int16x8x2_t {
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld2r.v8i16.p0i16")]
+        fn vld2q_dup_s16_(ptr: *const i16) -> int16x8x2_t;
+    }
+vld2q_dup_s16_(a.cast())
+}
+
+/// Load single 2-element structure and replicate to all lanes of two registers
+#[inline]
+#[cfg(target_arch = "arm")]
+#[target_feature(enable = "neon,v7")]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld2dup))]
 pub unsafe fn vld2q_dup_s32(a: *const i32) -> int32x4x2_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
         #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vld2dup.v4i32.p0i8")]
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld2r.v4i32.p0i32")]
-        fn vld2q_dup_s32_(a: *const i32) -> int32x4x2_t;
+        fn vld2q_dup_s32_(ptr: *const i8, size: i32) -> int32x4x2_t;
     }
-vld2q_dup_s32_(a)
+vld2q_dup_s32_(a as *const i8, 4)
+}
+
+/// Load single 2-element structure and replicate to all lanes of two registers
+#[inline]
+#[cfg(target_arch = "aarch64")]
+#[target_feature(enable = "neon")]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld2r))]
+pub unsafe fn vld2q_dup_s32(a: *const i32) -> int32x4x2_t {
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld2r.v4i32.p0i32")]
+        fn vld2q_dup_s32_(ptr: *const i32) -> int32x4x2_t;
+    }
+vld2q_dup_s32_(a.cast())
 }
 
 /// Load single 2-element structure and replicate to all lanes of two registers
@@ -7364,34 +7448,58 @@ pub unsafe fn vld2_dup_p64(a: *const p64) -> poly64x1x2_t {
 
 /// Load single 2-element structure and replicate to all lanes of two registers
 #[inline]
-#[target_feature(enable = "neon")]
-#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg(target_arch = "arm")]
+#[target_feature(enable = "neon,v7")]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld2dup))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld2r))]
 pub unsafe fn vld2_dup_f32(a: *const f32) -> float32x2x2_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
         #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vld2dup.v2f32.p0i8")]
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld2r.v2f32.p0f32")]
-        fn vld2_dup_f32_(a: *const f32) -> float32x2x2_t;
+        fn vld2_dup_f32_(ptr: *const i8, size: i32) -> float32x2x2_t;
     }
-vld2_dup_f32_(a)
+vld2_dup_f32_(a as *const i8, 4)
 }
 
 /// Load single 2-element structure and replicate to all lanes of two registers
 #[inline]
+#[cfg(target_arch = "aarch64")]
 #[target_feature(enable = "neon")]
-#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld2dup))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld2r))]
+pub unsafe fn vld2_dup_f32(a: *const f32) -> float32x2x2_t {
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld2r.v2f32.p0f32")]
+        fn vld2_dup_f32_(ptr: *const f32) -> float32x2x2_t;
+    }
+vld2_dup_f32_(a.cast())
+}
+
+/// Load single 2-element structure and replicate to all lanes of two registers
+#[inline]
+#[cfg(target_arch = "arm")]
+#[target_feature(enable = "neon,v7")]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld2dup))]
 pub unsafe fn vld2q_dup_f32(a: *const f32) -> float32x4x2_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
         #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vld2dup.v4f32.p0i8")]
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld2r.v4f32.p0f32")]
-        fn vld2q_dup_f32_(a: *const f32) -> float32x4x2_t;
+        fn vld2q_dup_f32_(ptr: *const i8, size: i32) -> float32x4x2_t;
     }
-vld2q_dup_f32_(a)
+vld2q_dup_f32_(a as *const i8, 4)
+}
+
+/// Load single 2-element structure and replicate to all lanes of two registers
+#[inline]
+#[cfg(target_arch = "aarch64")]
+#[target_feature(enable = "neon")]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld2r))]
+pub unsafe fn vld2q_dup_f32(a: *const f32) -> float32x4x2_t {
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld2r.v4f32.p0f32")]
+        fn vld2q_dup_f32_(ptr: *const f32) -> float32x4x2_t;
+    }
+vld2q_dup_f32_(a.cast())
 }
 
 /// Load multiple 3-element structures to three registers
