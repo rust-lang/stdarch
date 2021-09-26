@@ -2129,8 +2129,10 @@ generate *const i64:int64x2x2_t
 
 arm = vld2
 link-arm = vld2._EXTpi82_
-generate *const i8:int8x8x2_t, *const i16:int16x4x2_t, *const i32:int32x2x2_t, *const i64:int64x1x2_t
+generate *const i8:int8x8x2_t, *const i16:int16x4x2_t, *const i32:int32x2x2_t
 generate *const i8:int8x16x2_t, *const i16:int16x8x2_t, *const i32:int32x4x2_t
+arm = vld
+generate *const i64:int64x1x2_t
 
 /// Load multiple 2-element structures to two registers
 name = vld2
@@ -2147,11 +2149,14 @@ generate *const p64:poly64x2x2_t
 
 target = default
 arm = vld2
-generate *const u8:uint8x8x2_t, *const u16:uint16x4x2_t, *const u32:uint32x2x2_t, *const u64:uint64x1x2_t
+generate *const u8:uint8x8x2_t, *const u16:uint16x4x2_t, *const u32:uint32x2x2_t
 generate *const u8:uint8x16x2_t, *const u16:uint16x8x2_t, *const u32:uint32x4x2_t
 generate *const p8:poly8x8x2_t, *const p16:poly16x4x2_t, *const p8:poly8x16x2_t, *const p16:poly16x8x2_t
+arm = vld
+generate *const u64:uint64x1x2_t
 target = aes
 generate *const p64:poly64x1x2_t
+
 
 /// Load multiple 2-element structures to two registers
 name = vld2
