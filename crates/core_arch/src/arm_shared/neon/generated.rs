@@ -7134,7 +7134,7 @@ vld2q_f32_(a.cast())
 #[inline]
 #[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld2dup))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld2))]
 pub unsafe fn vld2_dup_s8(a: *const i8) -> int8x8x2_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
@@ -7162,7 +7162,7 @@ vld2_dup_s8_(a.cast())
 #[inline]
 #[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld2dup))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld2))]
 pub unsafe fn vld2_dup_s16(a: *const i16) -> int16x4x2_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
@@ -7190,7 +7190,7 @@ vld2_dup_s16_(a.cast())
 #[inline]
 #[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld2dup))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld2))]
 pub unsafe fn vld2_dup_s32(a: *const i32) -> int32x2x2_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
@@ -7218,7 +7218,7 @@ vld2_dup_s32_(a.cast())
 #[inline]
 #[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld2dup))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld2))]
 pub unsafe fn vld2_dup_s64(a: *const i64) -> int64x1x2_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
@@ -7246,7 +7246,7 @@ vld2_dup_s64_(a.cast())
 #[inline]
 #[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld2dup))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld2))]
 pub unsafe fn vld2q_dup_s8(a: *const i8) -> int8x16x2_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
@@ -7274,7 +7274,7 @@ vld2q_dup_s8_(a.cast())
 #[inline]
 #[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld2dup))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld2))]
 pub unsafe fn vld2q_dup_s16(a: *const i16) -> int16x8x2_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
@@ -7302,7 +7302,7 @@ vld2q_dup_s16_(a.cast())
 #[inline]
 #[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld2dup))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld2))]
 pub unsafe fn vld2q_dup_s32(a: *const i32) -> int32x4x2_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
@@ -7330,7 +7330,7 @@ vld2q_dup_s32_(a.cast())
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld2dup))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld2))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld2r))]
 pub unsafe fn vld2_dup_u8(a: *const u8) -> uint8x8x2_t {
     transmute(vld2_dup_s8(transmute(a)))
@@ -7340,7 +7340,7 @@ pub unsafe fn vld2_dup_u8(a: *const u8) -> uint8x8x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld2dup))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld2))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld2r))]
 pub unsafe fn vld2_dup_u16(a: *const u16) -> uint16x4x2_t {
     transmute(vld2_dup_s16(transmute(a)))
@@ -7350,7 +7350,7 @@ pub unsafe fn vld2_dup_u16(a: *const u16) -> uint16x4x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld2dup))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld2))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld2r))]
 pub unsafe fn vld2_dup_u32(a: *const u32) -> uint32x2x2_t {
     transmute(vld2_dup_s32(transmute(a)))
@@ -7360,7 +7360,7 @@ pub unsafe fn vld2_dup_u32(a: *const u32) -> uint32x2x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld2dup))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld2))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld2r))]
 pub unsafe fn vld2_dup_u64(a: *const u64) -> uint64x1x2_t {
     transmute(vld2_dup_s64(transmute(a)))
@@ -7370,7 +7370,7 @@ pub unsafe fn vld2_dup_u64(a: *const u64) -> uint64x1x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld2dup))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld2))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld2r))]
 pub unsafe fn vld2q_dup_u8(a: *const u8) -> uint8x16x2_t {
     transmute(vld2q_dup_s8(transmute(a)))
@@ -7380,7 +7380,7 @@ pub unsafe fn vld2q_dup_u8(a: *const u8) -> uint8x16x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld2dup))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld2))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld2r))]
 pub unsafe fn vld2q_dup_u16(a: *const u16) -> uint16x8x2_t {
     transmute(vld2q_dup_s16(transmute(a)))
@@ -7390,7 +7390,7 @@ pub unsafe fn vld2q_dup_u16(a: *const u16) -> uint16x8x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld2dup))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld2))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld2r))]
 pub unsafe fn vld2q_dup_u32(a: *const u32) -> uint32x4x2_t {
     transmute(vld2q_dup_s32(transmute(a)))
@@ -7400,7 +7400,7 @@ pub unsafe fn vld2q_dup_u32(a: *const u32) -> uint32x4x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld2dup))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld2))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld2r))]
 pub unsafe fn vld2_dup_p8(a: *const p8) -> poly8x8x2_t {
     transmute(vld2_dup_s8(transmute(a)))
@@ -7410,7 +7410,7 @@ pub unsafe fn vld2_dup_p8(a: *const p8) -> poly8x8x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld2dup))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld2))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld2r))]
 pub unsafe fn vld2_dup_p16(a: *const p16) -> poly16x4x2_t {
     transmute(vld2_dup_s16(transmute(a)))
@@ -7420,7 +7420,7 @@ pub unsafe fn vld2_dup_p16(a: *const p16) -> poly16x4x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld2dup))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld2))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld2r))]
 pub unsafe fn vld2q_dup_p8(a: *const p8) -> poly8x16x2_t {
     transmute(vld2q_dup_s8(transmute(a)))
@@ -7430,7 +7430,7 @@ pub unsafe fn vld2q_dup_p8(a: *const p8) -> poly8x16x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld2dup))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld2))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld2r))]
 pub unsafe fn vld2q_dup_p16(a: *const p16) -> poly16x8x2_t {
     transmute(vld2q_dup_s16(transmute(a)))
@@ -7440,7 +7440,7 @@ pub unsafe fn vld2q_dup_p16(a: *const p16) -> poly16x8x2_t {
 #[inline]
 #[target_feature(enable = "neon,aes")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "aes,v8"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld2dup))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld2))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld2r))]
 pub unsafe fn vld2_dup_p64(a: *const p64) -> poly64x1x2_t {
     transmute(vld2_dup_s64(transmute(a)))
@@ -7450,7 +7450,7 @@ pub unsafe fn vld2_dup_p64(a: *const p64) -> poly64x1x2_t {
 #[inline]
 #[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld2dup))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld2))]
 pub unsafe fn vld2_dup_f32(a: *const f32) -> float32x2x2_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
@@ -7478,7 +7478,7 @@ vld2_dup_f32_(a.cast())
 #[inline]
 #[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld2dup))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld2))]
 pub unsafe fn vld2q_dup_f32(a: *const f32) -> float32x4x2_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
