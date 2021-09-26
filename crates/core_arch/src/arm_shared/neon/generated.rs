@@ -12204,7 +12204,7 @@ vst3_f32_(a.cast(), b.0, b.1, b.2, 4)
 #[inline]
 #[cfg(target_arch = "aarch64")]
 #[target_feature(enable = "neon")]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(nop))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(st3))]
 pub unsafe fn vst3_f32(a: *mut f32, b: float32x2x3_t) {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
@@ -12232,7 +12232,7 @@ vst3q_f32_(a.cast(), b.0, b.1, b.2, 4)
 #[inline]
 #[cfg(target_arch = "aarch64")]
 #[target_feature(enable = "neon")]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(nop))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(st3))]
 pub unsafe fn vst3q_f32(a: *mut f32, b: float32x4x3_t) {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
@@ -12576,7 +12576,7 @@ vst4_f32_(a.cast(), b.0, b.1, b.2, b.3, 4)
 #[inline]
 #[cfg(target_arch = "aarch64")]
 #[target_feature(enable = "neon")]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(nop))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(st4))]
 pub unsafe fn vst4_f32(a: *mut f32, b: float32x2x4_t) {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
@@ -12604,7 +12604,7 @@ vst4q_f32_(a.cast(), b.0, b.1, b.2, b.3, 4)
 #[inline]
 #[cfg(target_arch = "aarch64")]
 #[target_feature(enable = "neon")]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(nop))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(st4))]
 pub unsafe fn vst4q_f32(a: *mut f32, b: float32x4x4_t) {
     #[allow(improper_ctypes)]
     extern "unadjusted" {

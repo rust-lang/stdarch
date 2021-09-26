@@ -2988,10 +2988,10 @@ validate 1., 2., 2., 2., 4., 4., 2., 7., 7., 4., 8., 8., 2., 13., 13., 4.
 store_fn
 arm-aarch64-separate
 
-aarch64 = st3
+aarch64 = nop
 link-aarch64 = st3._EXTpi8_
 generate *mut f64:float64x1x3_t:void
-aarch64 = nop
+aarch64 = st3
 generate *mut f64:float64x2x3_t:void
 
 arm = vst3
@@ -3115,10 +3115,10 @@ validate 1., 2., 2., 6., 2., 6., 6., 8., 2., 6., 6., 8., 6., 8., 8., 16.
 store_fn
 arm-aarch64-separate
 
-aarch64 = st4
+aarch64 = nop
 link-aarch64 = st4._EXTpi8_
 generate *mut f64:float64x1x4_t:void
-aarch64 = nop
+aarch64 = st4
 generate *mut f64:float64x2x4_t:void
 
 arm = vst4

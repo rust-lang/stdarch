@@ -5512,7 +5512,7 @@ pub unsafe fn vst3q_p64(a: *mut p64, b: poly64x2x3_t) {
 /// Store multiple 3-element structures from three registers
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(st3))]
+#[cfg_attr(test, assert_instr(nop))]
 pub unsafe fn vst3_f64(a: *mut f64, b: float64x1x3_t) {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
@@ -5525,7 +5525,7 @@ pub unsafe fn vst3_f64(a: *mut f64, b: float64x1x3_t) {
 /// Store multiple 3-element structures from three registers
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(nop))]
+#[cfg_attr(test, assert_instr(st3))]
 pub unsafe fn vst3q_f64(a: *mut f64, b: float64x2x3_t) {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
@@ -5567,7 +5567,7 @@ pub unsafe fn vst4q_p64(a: *mut p64, b: poly64x2x4_t) {
 /// Store multiple 4-element structures from four registers
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(st4))]
+#[cfg_attr(test, assert_instr(nop))]
 pub unsafe fn vst4_f64(a: *mut f64, b: float64x1x4_t) {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
@@ -5580,7 +5580,7 @@ pub unsafe fn vst4_f64(a: *mut f64, b: float64x1x4_t) {
 /// Store multiple 4-element structures from four registers
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(nop))]
+#[cfg_attr(test, assert_instr(st4))]
 pub unsafe fn vst4q_f64(a: *mut f64, b: float64x2x4_t) {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
