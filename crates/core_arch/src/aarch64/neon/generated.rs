@@ -4624,7 +4624,7 @@ pub unsafe fn vld2q_p64(a: *const p64) -> poly64x2x2_t {
 /// Load multiple 2-element structures to two registers
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(ld))]
+#[cfg_attr(test, assert_instr(nop))]
 pub unsafe fn vld2_f64(a: *const f64) -> float64x1x2_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
@@ -4679,7 +4679,7 @@ pub unsafe fn vld3q_p64(a: *const p64) -> poly64x2x3_t {
 /// Load multiple 3-element structures to three registers
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(ld3))]
+#[cfg_attr(test, assert_instr(nop))]
 pub unsafe fn vld3_f64(a: *const f64) -> float64x1x3_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
@@ -4734,7 +4734,7 @@ pub unsafe fn vld4q_p64(a: *const p64) -> poly64x2x4_t {
 /// Load multiple 4-element structures to four registers
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(ld4))]
+#[cfg_attr(test, assert_instr(nop))]
 pub unsafe fn vld4_f64(a: *const f64) -> float64x1x4_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
