@@ -2187,12 +2187,12 @@ load_fn
 
 aarch64 = ld2r
 link-aarch64 = ld2r._EXT2_
-//generate *const i64:int64x2x2_t
+generate *const i64:int64x2x2_t
 
 arm = vld2dup
 link-arm = vld2dup._EXTpi82_
-//generate *const i8:int8x8x2_t, *const i16:int16x4x2_t, *const i32:int32x2x2_t, *const i64:int64x1x2_t
-//generate *const i8:int8x16x2_t, *const i16:int16x8x2_t, *const i32:int32x4x2_t
+generate *const i8:int8x8x2_t, *const i16:int16x4x2_t, *const i32:int32x2x2_t, *const i64:int64x1x2_t
+generate *const i8:int8x16x2_t, *const i16:int16x8x2_t, *const i32:int32x4x2_t
 
 /// Load single 2-element structure and replicate to all lanes of two registers
 name = vld2
@@ -2203,17 +2203,17 @@ validate 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 load_fn
 
 aarch64 = ld2r
-//generate *const u64:uint64x2x2_t
+generate *const u64:uint64x2x2_t
 target = aes
-//generate *const p64:poly64x2x2_t
+generate *const p64:poly64x2x2_t
 
 target = default
 arm = vld2dup
-//generate *const u8:uint8x8x2_t, *const u16:uint16x4x2_t, *const u32:uint32x2x2_t, *const u64:uint64x1x2_t
-//generate *const u8:uint8x16x2_t, *const u16:uint16x8x2_t, *const u32:uint32x4x2_t
-//generate *const p8:poly8x8x2_t, *const p16:poly16x4x2_t, *const p8:poly8x16x2_t, *const p16:poly16x8x2_t
+generate *const u8:uint8x8x2_t, *const u16:uint16x4x2_t, *const u32:uint32x2x2_t, *const u64:uint64x1x2_t
+generate *const u8:uint8x16x2_t, *const u16:uint16x8x2_t, *const u32:uint32x4x2_t
+generate *const p8:poly8x8x2_t, *const p16:poly16x4x2_t, *const p8:poly8x16x2_t, *const p16:poly16x8x2_t
 target = aes
-//generate *const p64:poly64x1x2_t
+generate *const p64:poly64x1x2_t
 
 /// Load single 2-element structure and replicate to all lanes of two registers
 name = vld2
@@ -2224,11 +2224,11 @@ load_fn
 
 aarch64 = ld2r
 link-aarch64 = ld2r._EXT2_
-//generate *const f64:float64x1x2_t, *const f64:float64x2x2_t
+generate *const f64:float64x1x2_t, *const f64:float64x2x2_t
 
 arm = vld2dup
 link-arm = vld2dup._EXTpi82_
-//generate *const f32:float32x2x2_t, *const f32:float32x4x2_t
+generate *const f32:float32x2x2_t, *const f32:float32x4x2_t
 
 /// Load multiple 2-element structures to two registers
 name = vld2
