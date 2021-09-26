@@ -2442,16 +2442,16 @@ validate 1, 2, 2, 14, 2, 16, 17, 18, 2, 20, 21, 22, 23, 24, 25, 26, 2, 12, 13, 1
 load_fn
 arm-aarch64-separate
 
-aarch64 = ld3lane
+aarch64 = ld3
 const-aarch64 = LANE
 link-aarch64 = ld3lane._EXTpi82_
-//generate *const i8:int8x16x3_t:int8x16x3_t, *const i64:int64x1x3_t:int64x1x3_t, *const i64:int64x2x3_t:int64x2x3_t
+generate *const i8:int8x16x3_t:int8x16x3_t, *const i64:int64x1x3_t:int64x1x3_t, *const i64:int64x2x3_t:int64x2x3_t
 
-arm = vld3lane
+arm = vld3
 const-arm = LANE
 link-arm = vld3lane._EXTpi82_
-//generate *const i8:int8x8x3_t:int8x8x3_t, *const i16:int16x4x3_t:int16x4x3_t, *const i32:int32x2x3_t:int32x2x3_t
-//generate *const i16:int16x8x3_t:int16x8x3_t, *const i32:int32x4x3_t:int32x4x3_t
+generate *const i8:int8x8x3_t:int8x8x3_t, *const i16:int16x4x3_t:int16x4x3_t, *const i32:int32x2x3_t:int32x2x3_t
+generate *const i16:int16x8x3_t:int16x8x3_t, *const i32:int32x4x3_t:int32x4x3_t
 
 /// Load multiple 3-element structures to three registers
 name = vld3
@@ -2465,19 +2465,19 @@ n = 0
 validate 1, 2, 2, 14, 2, 16, 17, 18, 2, 20, 21, 22, 23, 24, 25, 26, 2, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 2, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8
 load_fn
 
-aarch64 = ld3lane
+aarch64 = ld3
 const-aarch64 = LANE
 target = aes
-//generate *const p64:poly64x1x3_t:poly64x1x3_t, *const p64:poly64x2x3_t:poly64x2x3_t
+generate *const p64:poly64x1x3_t:poly64x1x3_t, *const p64:poly64x2x3_t:poly64x2x3_t
 target = default
-//generate *const p8:poly8x16x3_t:poly8x16x3_t, *const u8:uint8x16x3_t:uint8x16x3_t, *const u64:uint64x1x3_t:uint64x1x3_t, *const u64:uint64x2x3_t:uint64x2x3_t
+generate *const p8:poly8x16x3_t:poly8x16x3_t, *const u8:uint8x16x3_t:uint8x16x3_t, *const u64:uint64x1x3_t:uint64x1x3_t, *const u64:uint64x2x3_t:uint64x2x3_t
 
-arm = vld3lane
+arm = vld3
 const-arm = LANE
-//generate *const u8:uint8x8x3_t:uint8x8x3_t, *const u16:uint16x4x3_t:uint16x4x3_t, *const u32:uint32x2x3_t:uint32x2x3_t
-//generate *const u16:uint16x8x3_t:uint16x8x3_t, *const u32:uint32x4x3_t:uint32x4x3_t
-//generate *const p8:poly8x8x3_t:poly8x8x3_t, *const p16:poly16x4x3_t:poly16x4x3_t
-//generate *const p16:poly16x8x3_t:poly16x8x3_t
+generate *const u8:uint8x8x3_t:uint8x8x3_t, *const u16:uint16x4x3_t:uint16x4x3_t, *const u32:uint32x2x3_t:uint32x2x3_t
+generate *const u16:uint16x8x3_t:uint16x8x3_t, *const u32:uint32x4x3_t:uint32x4x3_t
+generate *const p8:poly8x8x3_t:poly8x8x3_t, *const p16:poly16x4x3_t:poly16x4x3_t
+generate *const p16:poly16x8x3_t:poly16x8x3_t
 
 /// Load multiple 3-element structures to three registers
 name = vld3
@@ -2491,15 +2491,15 @@ validate 1., 2., 2., 14., 2., 16., 17., 18., 2., 6., 7., 8.
 load_fn
 arm-aarch64-separate
 
-aarch64 = ld3lane
+aarch64 = ld3
 const-aarch64 = LANE
 link-aarch64 = ld3lane._EXTpi82_
-//generate *const f64:float64x1x3_t:float64x1x3_t, *const f64:float64x2x3_t:float64x2x3_t
+generate *const f64:float64x1x3_t:float64x1x3_t, *const f64:float64x2x3_t:float64x2x3_t
 
-arm = vld3lane
+arm = vld3
 const-arm = LANE
 link-arm = vld3lane._EXTpi82_
-//generate *const f32:float32x2x3_t:float32x2x3_t, *const f32:float32x4x3_t:float32x4x3_t
+generate *const f32:float32x2x3_t:float32x2x3_t, *const f32:float32x4x3_t:float32x4x3_t
 
 /// Load multiple 4-element structures to four registers
 name = vld4
@@ -2633,16 +2633,16 @@ validate 1, 2, 2, 2, 2, 16, 2, 18, 2, 20, 21, 22, 2, 24, 25, 26, 2, 12, 13, 14, 
 load_fn
 arm-aarch64-separate
 
-aarch64 = ld4lane
+aarch64 = ld4
 const-aarch64 = LANE
 link-aarch64 = ld4lane._EXTpi82_
-//generate *const i8:int8x16x4_t:int8x16x4_t, *const i64:int64x1x4_t:int64x1x4_t, *const i64:int64x2x4_t:int64x2x4_t
+generate *const i8:int8x16x4_t:int8x16x4_t, *const i64:int64x1x4_t:int64x1x4_t, *const i64:int64x2x4_t:int64x2x4_t
 
-arm = vld4lane
+arm = vld4
 const-arm = LANE
 link-arm = vld4lane._EXTpi82_
-//generate *const i8:int8x8x4_t:int8x8x4_t, *const i16:int16x4x4_t:int16x4x4_t, *const i32:int32x2x4_t:int32x2x4_t
-//generate *const i16:int16x8x4_t:int16x8x4_t, *const i32:int32x4x4_t:int32x4x4_t
+generate *const i8:int8x8x4_t:int8x8x4_t, *const i16:int16x4x4_t:int16x4x4_t, *const i32:int32x2x4_t:int32x2x4_t
+generate *const i16:int16x8x4_t:int16x8x4_t, *const i32:int32x4x4_t:int32x4x4_t
 
 /// Load multiple 4-element structures to four registers
 name = vld4
@@ -2656,19 +2656,19 @@ n = 0
 validate 1, 2, 2, 2, 2, 16, 2, 18, 2, 20, 21, 22, 2, 24, 25, 26, 2, 12, 13, 14, 15, 16, 2, 18, 2, 20, 21, 22, 23, 24, 25, 26, 2, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8, 2, 2, 2, 4, 2, 4, 7, 8, 2, 4, 7, 8, 13, 14, 15, 16
 load_fn
 
-aarch64 = ld4lane
+aarch64 = ld4
 const-aarch64 = LANE
 target = aes
-//generate *const p64:poly64x1x4_t:poly64x1x4_t, *const p64:poly64x2x4_t:poly64x2x4_t
+generate *const p64:poly64x1x4_t:poly64x1x4_t, *const p64:poly64x2x4_t:poly64x2x4_t
 target = default
-//generate *const p8:poly8x16x4_t:poly8x16x4_t, *const u8:uint8x16x4_t:uint8x16x4_t, *const u64:uint64x1x4_t:uint64x1x4_t, *const u64:uint64x2x4_t:uint64x2x4_t
+generate *const p8:poly8x16x4_t:poly8x16x4_t, *const u8:uint8x16x4_t:uint8x16x4_t, *const u64:uint64x1x4_t:uint64x1x4_t, *const u64:uint64x2x4_t:uint64x2x4_t
 
-arm = vld4lane
+arm = vld4
 const-arm = LANE
-//generate *const u8:uint8x8x4_t:uint8x8x4_t, *const u16:uint16x4x4_t:uint16x4x4_t, *const u32:uint32x2x4_t:uint32x2x4_t
-//generate *const u16:uint16x8x4_t:uint16x8x4_t, *const u32:uint32x4x4_t:uint32x4x4_t
-//generate *const p8:poly8x8x4_t:poly8x8x4_t, *const p16:poly16x4x4_t:poly16x4x4_t
-//generate *const p16:poly16x8x4_t:poly16x8x4_t
+generate *const u8:uint8x8x4_t:uint8x8x4_t, *const u16:uint16x4x4_t:uint16x4x4_t, *const u32:uint32x2x4_t:uint32x2x4_t
+generate *const u16:uint16x8x4_t:uint16x8x4_t, *const u32:uint32x4x4_t:uint32x4x4_t
+generate *const p8:poly8x8x4_t:poly8x8x4_t, *const p16:poly16x4x4_t:poly16x4x4_t
+generate *const p16:poly16x8x4_t:poly16x8x4_t
 
 /// Load multiple 4-element structures to four registers
 name = vld4
@@ -2682,15 +2682,15 @@ validate 1., 2., 2., 2., 2., 16., 2., 18., 2., 6., 7., 8., 2., 4., 3., 5.
 load_fn
 arm-aarch64-separate
 
-aarch64 = ld4lane
+aarch64 = ld4
 const-aarch64 = LANE
 link-aarch64 = ld4lane._EXTpi82_
-//generate *const f64:float64x1x4_t:float64x1x4_t, *const f64:float64x2x4_t:float64x2x4_t
+generate *const f64:float64x1x4_t:float64x1x4_t, *const f64:float64x2x4_t:float64x2x4_t
 
-arm = vld4lane
+arm = vld4
 const-arm = LANE
 link-arm = vld4lane._EXTpi82_
-//generate *const f32:float32x2x4_t:float32x2x4_t, *const f32:float32x4x4_t:float32x4x4_t
+generate *const f32:float32x2x4_t:float32x2x4_t, *const f32:float32x4x4_t:float32x4x4_t
 
 /// Store multiple single-element structures from one, two, three, or four registers
 name = vst1
