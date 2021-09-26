@@ -8622,7 +8622,7 @@ vld4q_f32_(a.cast())
 #[inline]
 #[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld4dup))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld4))]
 pub unsafe fn vld4_dup_s8(a: *const i8) -> int8x8x4_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
@@ -8650,7 +8650,7 @@ vld4_dup_s8_(a.cast())
 #[inline]
 #[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld4dup))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld4))]
 pub unsafe fn vld4_dup_s16(a: *const i16) -> int16x4x4_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
@@ -8678,7 +8678,7 @@ vld4_dup_s16_(a.cast())
 #[inline]
 #[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld4dup))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld4))]
 pub unsafe fn vld4_dup_s32(a: *const i32) -> int32x2x4_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
@@ -8706,7 +8706,7 @@ vld4_dup_s32_(a.cast())
 #[inline]
 #[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld4dup))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld4))]
 pub unsafe fn vld4q_dup_s8(a: *const i8) -> int8x16x4_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
@@ -8734,7 +8734,7 @@ vld4q_dup_s8_(a.cast())
 #[inline]
 #[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld4dup))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld4))]
 pub unsafe fn vld4q_dup_s16(a: *const i16) -> int16x8x4_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
@@ -8762,7 +8762,7 @@ vld4q_dup_s16_(a.cast())
 #[inline]
 #[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld4dup))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld4))]
 pub unsafe fn vld4q_dup_s32(a: *const i32) -> int32x4x4_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
@@ -8818,7 +8818,7 @@ vld4_dup_s64_(a.cast())
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld4dup))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld4))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld4r))]
 pub unsafe fn vld4_dup_u8(a: *const u8) -> uint8x8x4_t {
     transmute(vld4_dup_s8(transmute(a)))
@@ -8828,7 +8828,7 @@ pub unsafe fn vld4_dup_u8(a: *const u8) -> uint8x8x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld4dup))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld4))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld4r))]
 pub unsafe fn vld4_dup_u16(a: *const u16) -> uint16x4x4_t {
     transmute(vld4_dup_s16(transmute(a)))
@@ -8838,7 +8838,7 @@ pub unsafe fn vld4_dup_u16(a: *const u16) -> uint16x4x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld4dup))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld4))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld4r))]
 pub unsafe fn vld4_dup_u32(a: *const u32) -> uint32x2x4_t {
     transmute(vld4_dup_s32(transmute(a)))
@@ -8848,7 +8848,7 @@ pub unsafe fn vld4_dup_u32(a: *const u32) -> uint32x2x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld4dup))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld4))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld4r))]
 pub unsafe fn vld4q_dup_u8(a: *const u8) -> uint8x16x4_t {
     transmute(vld4q_dup_s8(transmute(a)))
@@ -8858,7 +8858,7 @@ pub unsafe fn vld4q_dup_u8(a: *const u8) -> uint8x16x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld4dup))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld4))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld4r))]
 pub unsafe fn vld4q_dup_u16(a: *const u16) -> uint16x8x4_t {
     transmute(vld4q_dup_s16(transmute(a)))
@@ -8868,7 +8868,7 @@ pub unsafe fn vld4q_dup_u16(a: *const u16) -> uint16x8x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld4dup))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld4))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld4r))]
 pub unsafe fn vld4q_dup_u32(a: *const u32) -> uint32x4x4_t {
     transmute(vld4q_dup_s32(transmute(a)))
@@ -8878,7 +8878,7 @@ pub unsafe fn vld4q_dup_u32(a: *const u32) -> uint32x4x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld4dup))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld4))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld4r))]
 pub unsafe fn vld4_dup_p8(a: *const p8) -> poly8x8x4_t {
     transmute(vld4_dup_s8(transmute(a)))
@@ -8888,7 +8888,7 @@ pub unsafe fn vld4_dup_p8(a: *const p8) -> poly8x8x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld4dup))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld4))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld4r))]
 pub unsafe fn vld4_dup_p16(a: *const p16) -> poly16x4x4_t {
     transmute(vld4_dup_s16(transmute(a)))
@@ -8898,7 +8898,7 @@ pub unsafe fn vld4_dup_p16(a: *const p16) -> poly16x4x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld4dup))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld4))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld4r))]
 pub unsafe fn vld4q_dup_p8(a: *const p8) -> poly8x16x4_t {
     transmute(vld4q_dup_s8(transmute(a)))
@@ -8908,7 +8908,7 @@ pub unsafe fn vld4q_dup_p8(a: *const p8) -> poly8x16x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld4dup))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld4))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld4r))]
 pub unsafe fn vld4q_dup_p16(a: *const p16) -> poly16x8x4_t {
     transmute(vld4q_dup_s16(transmute(a)))
@@ -8938,7 +8938,7 @@ pub unsafe fn vld4_dup_p64(a: *const p64) -> poly64x1x4_t {
 #[inline]
 #[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld4dup))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld4))]
 pub unsafe fn vld4_dup_f32(a: *const f32) -> float32x2x4_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
@@ -8966,7 +8966,7 @@ vld4_dup_f32_(a.cast())
 #[inline]
 #[cfg(target_arch = "arm")]
 #[target_feature(enable = "neon,v7")]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld4dup))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld4))]
 pub unsafe fn vld4q_dup_f32(a: *const f32) -> float32x4x4_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {

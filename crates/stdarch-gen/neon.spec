@@ -2575,7 +2575,7 @@ aarch64 = ld4r
 link-aarch64 = ld4r._EXT2_
 generate *const i64:int64x2x4_t
 
-arm = vld4dup
+arm = vld4
 link-arm = vld4dup._EXTpi82_
 generate *const i8:int8x8x4_t, *const i16:int16x4x4_t, *const i32:int32x2x4_t
 generate *const i8:int8x16x4_t, *const i16:int16x8x4_t, *const i32:int32x4x4_t
@@ -2596,7 +2596,7 @@ target = aes
 generate *const p64:poly64x2x4_t
 
 target = default
-arm = vld4dup
+arm = vld4
 generate *const u8:uint8x8x4_t, *const u16:uint16x4x4_t, *const u32:uint32x2x4_t
 generate *const u8:uint8x16x4_t, *const u16:uint16x8x4_t, *const u32:uint32x4x4_t
 generate *const p8:poly8x8x4_t, *const p16:poly16x4x4_t, *const p8:poly8x16x4_t, *const p16:poly16x8x4_t
@@ -2617,7 +2617,7 @@ aarch64 = ld4r
 link-aarch64 = ld4r._EXT2_
 generate *const f64:float64x1x4_t, *const f64:float64x2x4_t
 
-arm = vld4dup
+arm = vld4
 link-arm = vld4dup._EXTpi82_
 generate *const f32:float32x2x4_t, *const f32:float32x4x4_t
 
