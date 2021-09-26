@@ -2823,8 +2823,10 @@ generate *mut i64:int64x2x2_t:void
 
 arm = vst2
 link-arm = vst2._EXTpi8r_
-generate *mut i8:int8x8x2_t:void, *mut i16:int16x4x2_t:void, *mut i32:int32x2x2_t:void, *mut i64:int64x1x2_t:void
+generate *mut i8:int8x8x2_t:void, *mut i16:int16x4x2_t:void, *mut i32:int32x2x2_t:void
 generate *mut i8:int8x16x2_t:void, *mut i16:int16x8x2_t:void, *mut i32:int32x4x2_t:void
+arm = nop
+generate *mut i64:int64x1x2_t:void
 
 /// Store multiple 2-element structures from two registers
 name = vst2
@@ -2841,9 +2843,11 @@ generate *mut p64:poly64x2x2_t:void
 
 target = default
 arm = vst2
-generate *mut u8:uint8x8x2_t:void, *mut u16:uint16x4x2_t:void, *mut u32:uint32x2x2_t:void, *mut u64:uint64x1x2_t:void
+generate *mut u8:uint8x8x2_t:void, *mut u16:uint16x4x2_t:void, *mut u32:uint32x2x2_t:void
 generate *mut u8:uint8x16x2_t:void, *mut u16:uint16x8x2_t:void, *mut u32:uint32x4x2_t:void
 generate *mut p8:poly8x8x2_t:void, *mut p16:poly16x4x2_t:void, *mut p8:poly8x16x2_t:void, *mut p16:poly16x8x2_t:void
+arm = nop
+generate *mut u64:uint64x1x2_t:void
 target = aes
 generate *mut p64:poly64x1x2_t:void
 
