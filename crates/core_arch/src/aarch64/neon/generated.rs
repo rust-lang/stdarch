@@ -5327,6 +5327,26 @@ pub unsafe fn vld4q_lane_f64<const LANE: i32>(a: *const f64, b: float64x2x4_t) -
     vld4q_lane_f64_(b.0, b.1, b.2, b.3, LANE as i64, a.cast())
 }
 
+/// Store multiple single-element structures from one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(nop, LANE = 0))]
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn vst1_lane_f64<const LANE: i32>(a: *mut f64, b: float64x1_t) {
+    static_assert!(LANE : i32 where LANE == 0);
+    *a = simd_extract(b, LANE as u32);
+}
+
+/// Store multiple single-element structures from one, two, three, or four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(nop, LANE = 0))]
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn vst1q_lane_f64<const LANE: i32>(a: *mut f64, b: float64x2_t) {
+    static_assert_imm1!(LANE);
+    *a = simd_extract(b, LANE as u32);
+}
+
 /// Store multiple single-element structures to one, two, three, or four registers
 #[inline]
 #[target_feature(enable = "neon")]
@@ -14330,6 +14350,24 @@ mod test {
         let b: [f64x2; 4] = [f64x2::new(0., 2.), f64x2::new(2., 2.), f64x2::new(2., 16.), f64x2::new(2., 18.)];
         let e: [f64x2; 4] = [f64x2::new(1., 2.), f64x2::new(2., 2.), f64x2::new(2., 16.), f64x2::new(2., 18.)];
         let r: [f64x2; 4] = transmute(vld4q_lane_f64::<0>(a[1..].as_ptr(), transmute(b)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vst1_lane_f64() {
+        let a: [f64; 2] = [0., 1.];
+        let e: [f64; 1] = [1.];
+        let mut r: [f64; 1] = [0f64; 1];
+        vst1_lane_f64::<0>(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vst1q_lane_f64() {
+        let a: [f64; 3] = [0., 1., 2.];
+        let e: [f64; 2] = [1., 0.];
+        let mut r: [f64; 2] = [0f64; 2];
+        vst1q_lane_f64::<0>(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 

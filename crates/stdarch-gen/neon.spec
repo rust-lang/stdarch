@@ -2705,13 +2705,13 @@ store_fn
 
 aarch64 = nop
 arm = nop
-//generate *mut i8:int8x8_t:void, *mut i16:int16x4_t:void, *mut i32:int32x2_t:void, *mut i64:int64x1_t:void
-//generate *mut i8:int8x16_t:void, *mut i16:int16x8_t:void, *mut i32:int32x4_t:void, *mut i64:int64x2_t:void
-//generate *mut u8:uint8x8_t:void, *mut u16:uint16x4_t:void, *mut u32:uint32x2_t:void, *mut u64:uint64x1_t:void
-//generate *mut u8:uint8x16_t:void, *mut u16:uint16x8_t:void, *mut u32:uint32x4_t:void, *mut u64:uint64x2_t:void
-//generate *mut p8:poly8x8_t:void, *mut p16:poly16x4_t:void, *mut p8:poly8x16_t:void, *mut p16:poly16x8_t:void
+generate *mut i8:int8x8_t:void, *mut i16:int16x4_t:void, *mut i32:int32x2_t:void, *mut i64:int64x1_t:void
+generate *mut i8:int8x16_t:void, *mut i16:int16x8_t:void, *mut i32:int32x4_t:void, *mut i64:int64x2_t:void
+generate *mut u8:uint8x8_t:void, *mut u16:uint16x4_t:void, *mut u32:uint32x2_t:void, *mut u64:uint64x1_t:void
+generate *mut u8:uint8x16_t:void, *mut u16:uint16x8_t:void, *mut u32:uint32x4_t:void, *mut u64:uint64x2_t:void
+generate *mut p8:poly8x8_t:void, *mut p16:poly16x4_t:void, *mut p8:poly8x16_t:void, *mut p16:poly16x8_t:void
 target = aes
-//generate *mut p64:poly64x1_t:void, *mut p64:poly64x2_t:void
+generate *mut p64:poly64x1_t:void, *mut p64:poly64x2_t:void
 
 /// Store multiple single-element structures from one, two, three, or four registers
 name = vst1
@@ -2725,10 +2725,10 @@ validate 1., 0., 0., 0., 0., 0., 0., 0.
 store_fn
 
 aarch64 = nop
-//generate *mut f64:float64x1_t:void, *mut f64:float64x2_t:void
+generate *mut f64:float64x1_t:void, *mut f64:float64x2_t:void
 
 arm = nop
-//generate *mut f32:float32x2_t:void, *mut f32:float32x4_t:void
+generate *mut f32:float32x2_t:void, *mut f32:float32x4_t:void
 
 /// Store multiple single-element structures from one, two, three, or four registers
 name = vst1
