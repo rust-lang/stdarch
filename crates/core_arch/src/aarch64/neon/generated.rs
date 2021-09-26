@@ -5670,6 +5670,141 @@ pub unsafe fn vst3q_f64(a: *mut f64, b: float64x2x3_t) {
     vst3q_f64_(b.0, b.1, b.2, a.cast())
 }
 
+/// Store multiple 3-element structures from three registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(st3, LANE = 0))]
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn vst3q_lane_s8<const LANE: i32>(a: *mut i8, b: int8x16x3_t) {
+    static_assert_imm4!(LANE);
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st3lane.v16i8.p0i8")]
+        fn vst3q_lane_s8_(a: int8x16_t, b: int8x16_t, c: int8x16_t, n: i64, ptr: *mut i8);
+    }
+    vst3q_lane_s8_(b.0, b.1, b.2, LANE as i64, a.cast())
+}
+
+/// Store multiple 3-element structures from three registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(st3, LANE = 0))]
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn vst3_lane_s64<const LANE: i32>(a: *mut i64, b: int64x1x3_t) {
+    static_assert!(LANE : i32 where LANE == 0);
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st3lane.v1i64.p0i8")]
+        fn vst3_lane_s64_(a: int64x1_t, b: int64x1_t, c: int64x1_t, n: i64, ptr: *mut i8);
+    }
+    vst3_lane_s64_(b.0, b.1, b.2, LANE as i64, a.cast())
+}
+
+/// Store multiple 3-element structures from three registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(st3, LANE = 0))]
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn vst3q_lane_s64<const LANE: i32>(a: *mut i64, b: int64x2x3_t) {
+    static_assert_imm1!(LANE);
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st3lane.v2i64.p0i8")]
+        fn vst3q_lane_s64_(a: int64x2_t, b: int64x2_t, c: int64x2_t, n: i64, ptr: *mut i8);
+    }
+    vst3q_lane_s64_(b.0, b.1, b.2, LANE as i64, a.cast())
+}
+
+/// Store multiple 3-element structures from three registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(st3, LANE = 0))]
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn vst3q_lane_u8<const LANE: i32>(a: *mut u8, b: uint8x16x3_t) {
+    static_assert_imm4!(LANE);
+    transmute(vst3q_lane_s8::<LANE>(transmute(a), transmute(b)))
+}
+
+/// Store multiple 3-element structures from three registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(st3, LANE = 0))]
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn vst3_lane_u64<const LANE: i32>(a: *mut u64, b: uint64x1x3_t) {
+    static_assert!(LANE : i32 where LANE == 0);
+    transmute(vst3_lane_s64::<LANE>(transmute(a), transmute(b)))
+}
+
+/// Store multiple 3-element structures from three registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(st3, LANE = 0))]
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn vst3q_lane_u64<const LANE: i32>(a: *mut u64, b: uint64x2x3_t) {
+    static_assert_imm1!(LANE);
+    transmute(vst3q_lane_s64::<LANE>(transmute(a), transmute(b)))
+}
+
+/// Store multiple 3-element structures from three registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(st3, LANE = 0))]
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn vst3q_lane_p8<const LANE: i32>(a: *mut p8, b: poly8x16x3_t) {
+    static_assert_imm4!(LANE);
+    transmute(vst3q_lane_s8::<LANE>(transmute(a), transmute(b)))
+}
+
+/// Store multiple 3-element structures from three registers
+#[inline]
+#[target_feature(enable = "neon,aes")]
+#[cfg_attr(test, assert_instr(st3, LANE = 0))]
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn vst3_lane_p64<const LANE: i32>(a: *mut p64, b: poly64x1x3_t) {
+    static_assert!(LANE : i32 where LANE == 0);
+    transmute(vst3_lane_s64::<LANE>(transmute(a), transmute(b)))
+}
+
+/// Store multiple 3-element structures from three registers
+#[inline]
+#[target_feature(enable = "neon,aes")]
+#[cfg_attr(test, assert_instr(st3, LANE = 0))]
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn vst3q_lane_p64<const LANE: i32>(a: *mut p64, b: poly64x2x3_t) {
+    static_assert_imm1!(LANE);
+    transmute(vst3q_lane_s64::<LANE>(transmute(a), transmute(b)))
+}
+
+/// Store multiple 3-element structures from three registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(st3, LANE = 0))]
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn vst3_lane_f64<const LANE: i32>(a: *mut f64, b: float64x1x3_t) {
+    static_assert!(LANE : i32 where LANE == 0);
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st3lane.v1f64.p0i8")]
+        fn vst3_lane_f64_(a: float64x1_t, b: float64x1_t, c: float64x1_t, n: i64, ptr: *mut i8);
+    }
+    vst3_lane_f64_(b.0, b.1, b.2, LANE as i64, a.cast())
+}
+
+/// Store multiple 3-element structures from three registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(st3, LANE = 0))]
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn vst3q_lane_f64<const LANE: i32>(a: *mut f64, b: float64x2x3_t) {
+    static_assert_imm1!(LANE);
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st3lane.v2f64.p0i8")]
+        fn vst3q_lane_f64_(a: float64x2_t, b: float64x2_t, c: float64x2_t, n: i64, ptr: *mut i8);
+    }
+    vst3q_lane_f64_(b.0, b.1, b.2, LANE as i64, a.cast())
+}
+
 /// Store multiple 4-element structures from four registers
 #[inline]
 #[target_feature(enable = "neon")]
@@ -5723,6 +5858,141 @@ pub unsafe fn vst4q_f64(a: *mut f64, b: float64x2x4_t) {
         fn vst4q_f64_(a: float64x2_t, b: float64x2_t, c: float64x2_t, d: float64x2_t, ptr: *mut i8);
     }
     vst4q_f64_(b.0, b.1, b.2, b.3, a.cast())
+}
+
+/// Store multiple 4-element structures from four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(st4, LANE = 0))]
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn vst4q_lane_s8<const LANE: i32>(a: *mut i8, b: int8x16x4_t) {
+    static_assert_imm4!(LANE);
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st4lane.v16i8.p0i8")]
+        fn vst4q_lane_s8_(a: int8x16_t, b: int8x16_t, c: int8x16_t, d: int8x16_t, n: i64, ptr: *mut i8);
+    }
+    vst4q_lane_s8_(b.0, b.1, b.2, b.3, LANE as i64, a.cast())
+}
+
+/// Store multiple 4-element structures from four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(st4, LANE = 0))]
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn vst4_lane_s64<const LANE: i32>(a: *mut i64, b: int64x1x4_t) {
+    static_assert!(LANE : i32 where LANE == 0);
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st4lane.v1i64.p0i8")]
+        fn vst4_lane_s64_(a: int64x1_t, b: int64x1_t, c: int64x1_t, d: int64x1_t, n: i64, ptr: *mut i8);
+    }
+    vst4_lane_s64_(b.0, b.1, b.2, b.3, LANE as i64, a.cast())
+}
+
+/// Store multiple 4-element structures from four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(st4, LANE = 0))]
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn vst4q_lane_s64<const LANE: i32>(a: *mut i64, b: int64x2x4_t) {
+    static_assert_imm1!(LANE);
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st4lane.v2i64.p0i8")]
+        fn vst4q_lane_s64_(a: int64x2_t, b: int64x2_t, c: int64x2_t, d: int64x2_t, n: i64, ptr: *mut i8);
+    }
+    vst4q_lane_s64_(b.0, b.1, b.2, b.3, LANE as i64, a.cast())
+}
+
+/// Store multiple 4-element structures from four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(st4, LANE = 0))]
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn vst4q_lane_u8<const LANE: i32>(a: *mut u8, b: uint8x16x4_t) {
+    static_assert_imm4!(LANE);
+    transmute(vst4q_lane_s8::<LANE>(transmute(a), transmute(b)))
+}
+
+/// Store multiple 4-element structures from four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(st4, LANE = 0))]
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn vst4_lane_u64<const LANE: i32>(a: *mut u64, b: uint64x1x4_t) {
+    static_assert!(LANE : i32 where LANE == 0);
+    transmute(vst4_lane_s64::<LANE>(transmute(a), transmute(b)))
+}
+
+/// Store multiple 4-element structures from four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(st4, LANE = 0))]
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn vst4q_lane_u64<const LANE: i32>(a: *mut u64, b: uint64x2x4_t) {
+    static_assert_imm1!(LANE);
+    transmute(vst4q_lane_s64::<LANE>(transmute(a), transmute(b)))
+}
+
+/// Store multiple 4-element structures from four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(st4, LANE = 0))]
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn vst4q_lane_p8<const LANE: i32>(a: *mut p8, b: poly8x16x4_t) {
+    static_assert_imm4!(LANE);
+    transmute(vst4q_lane_s8::<LANE>(transmute(a), transmute(b)))
+}
+
+/// Store multiple 4-element structures from four registers
+#[inline]
+#[target_feature(enable = "neon,aes")]
+#[cfg_attr(test, assert_instr(st4, LANE = 0))]
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn vst4_lane_p64<const LANE: i32>(a: *mut p64, b: poly64x1x4_t) {
+    static_assert!(LANE : i32 where LANE == 0);
+    transmute(vst4_lane_s64::<LANE>(transmute(a), transmute(b)))
+}
+
+/// Store multiple 4-element structures from four registers
+#[inline]
+#[target_feature(enable = "neon,aes")]
+#[cfg_attr(test, assert_instr(st4, LANE = 0))]
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn vst4q_lane_p64<const LANE: i32>(a: *mut p64, b: poly64x2x4_t) {
+    static_assert_imm1!(LANE);
+    transmute(vst4q_lane_s64::<LANE>(transmute(a), transmute(b)))
+}
+
+/// Store multiple 4-element structures from four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(st4, LANE = 0))]
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn vst4_lane_f64<const LANE: i32>(a: *mut f64, b: float64x1x4_t) {
+    static_assert!(LANE : i32 where LANE == 0);
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st4lane.v1f64.p0i8")]
+        fn vst4_lane_f64_(a: float64x1_t, b: float64x1_t, c: float64x1_t, d: float64x1_t, n: i64, ptr: *mut i8);
+    }
+    vst4_lane_f64_(b.0, b.1, b.2, b.3, LANE as i64, a.cast())
+}
+
+/// Store multiple 4-element structures from four registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(st4, LANE = 0))]
+#[rustc_legacy_const_generics(2)]
+pub unsafe fn vst4q_lane_f64<const LANE: i32>(a: *mut f64, b: float64x2x4_t) {
+    static_assert_imm1!(LANE);
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st4lane.v2f64.p0i8")]
+        fn vst4q_lane_f64_(a: float64x2_t, b: float64x2_t, c: float64x2_t, d: float64x2_t, n: i64, ptr: *mut i8);
+    }
+    vst4q_lane_f64_(b.0, b.1, b.2, b.3, LANE as i64, a.cast())
 }
 
 /// Multiply
@@ -14915,6 +15185,105 @@ mod test {
     }
 
     #[simd_test(enable = "neon")]
+    unsafe fn test_vst3q_lane_s8() {
+        let a: [i8; 49] = [0, 1, 2, 2, 4, 2, 4, 7, 8, 2, 4, 7, 8, 13, 14, 15, 16, 2, 4, 7, 8, 13, 14, 15, 16, 25, 26, 27, 28, 29, 30, 31, 32, 2, 4, 7, 8, 13, 14, 15, 16, 41, 42, 43, 44, 45, 46, 47, 48];
+        let e: [i8; 48] = [1, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        let mut r: [i8; 48] = [0i8; 48];
+        vst3q_lane_s8::<0>(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vst3_lane_s64() {
+        let a: [i64; 4] = [0, 1, 2, 2];
+        let e: [i64; 3] = [1, 2, 2];
+        let mut r: [i64; 3] = [0i64; 3];
+        vst3_lane_s64::<0>(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vst3q_lane_s64() {
+        let a: [i64; 7] = [0, 1, 2, 2, 4, 2, 4];
+        let e: [i64; 6] = [1, 2, 2, 0, 0, 0];
+        let mut r: [i64; 6] = [0i64; 6];
+        vst3q_lane_s64::<0>(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vst3q_lane_u8() {
+        let a: [u8; 49] = [0, 1, 2, 2, 4, 2, 4, 7, 8, 2, 4, 7, 8, 13, 14, 15, 16, 2, 4, 7, 8, 13, 14, 15, 16, 25, 26, 27, 28, 29, 30, 31, 32, 2, 4, 7, 8, 13, 14, 15, 16, 41, 42, 43, 44, 45, 46, 47, 48];
+        let e: [u8; 48] = [1, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        let mut r: [u8; 48] = [0u8; 48];
+        vst3q_lane_u8::<0>(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vst3_lane_u64() {
+        let a: [u64; 4] = [0, 1, 2, 2];
+        let e: [u64; 3] = [1, 2, 2];
+        let mut r: [u64; 3] = [0u64; 3];
+        vst3_lane_u64::<0>(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vst3q_lane_u64() {
+        let a: [u64; 7] = [0, 1, 2, 2, 4, 2, 4];
+        let e: [u64; 6] = [1, 2, 2, 0, 0, 0];
+        let mut r: [u64; 6] = [0u64; 6];
+        vst3q_lane_u64::<0>(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vst3q_lane_p8() {
+        let a: [u8; 49] = [0, 1, 2, 2, 4, 2, 4, 7, 8, 2, 4, 7, 8, 13, 14, 15, 16, 2, 4, 7, 8, 13, 14, 15, 16, 25, 26, 27, 28, 29, 30, 31, 32, 2, 4, 7, 8, 13, 14, 15, 16, 41, 42, 43, 44, 45, 46, 47, 48];
+        let e: [u8; 48] = [1, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        let mut r: [u8; 48] = [0u8; 48];
+        vst3q_lane_p8::<0>(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vst3_lane_p64() {
+        let a: [u64; 4] = [0, 1, 2, 2];
+        let e: [u64; 3] = [1, 2, 2];
+        let mut r: [u64; 3] = [0u64; 3];
+        vst3_lane_p64::<0>(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vst3q_lane_p64() {
+        let a: [u64; 7] = [0, 1, 2, 2, 4, 2, 4];
+        let e: [u64; 6] = [1, 2, 2, 0, 0, 0];
+        let mut r: [u64; 6] = [0u64; 6];
+        vst3q_lane_p64::<0>(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vst3_lane_f64() {
+        let a: [f64; 4] = [0., 1., 2., 2.];
+        let e: [f64; 3] = [1., 2., 2.];
+        let mut r: [f64; 3] = [0f64; 3];
+        vst3_lane_f64::<0>(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vst3q_lane_f64() {
+        let a: [f64; 7] = [0., 1., 2., 2., 3., 2., 3.];
+        let e: [f64; 6] = [1., 2., 2., 0., 0., 0.];
+        let mut r: [f64; 6] = [0f64; 6];
+        vst3q_lane_f64::<0>(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
     unsafe fn test_vst4q_s64() {
         let a: [i64; 9] = [0, 1, 2, 2, 6, 2, 6, 6, 8];
         let e: [i64; 8] = [1, 2, 2, 6, 2, 6, 6, 8];
@@ -14956,6 +15325,105 @@ mod test {
         let e: [f64; 8] = [1., 2., 2., 6., 2., 6., 6., 8.];
         let mut r: [f64; 8] = [0f64; 8];
         vst4q_f64(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vst4q_lane_s8() {
+        let a: [i8; 65] = [0, 1, 2, 2, 6, 2, 6, 6, 8, 2, 6, 6, 8, 6, 8, 8, 16, 2, 6, 6, 8, 6, 8, 8, 16, 6, 8, 8, 16, 8, 16, 16, 32, 2, 6, 6, 8, 6, 8, 8, 16, 6, 8, 43, 44, 8, 16, 44, 48, 6, 8, 8, 16, 8, 16, 16, 32, 8, 16, 44, 48, 16, 32, 48, 64];
+        let e: [i8; 64] = [1, 2, 2, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        let mut r: [i8; 64] = [0i8; 64];
+        vst4q_lane_s8::<0>(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vst4_lane_s64() {
+        let a: [i64; 5] = [0, 1, 2, 2, 6];
+        let e: [i64; 4] = [1, 2, 2, 6];
+        let mut r: [i64; 4] = [0i64; 4];
+        vst4_lane_s64::<0>(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vst4q_lane_s64() {
+        let a: [i64; 9] = [0, 1, 2, 2, 6, 2, 6, 6, 8];
+        let e: [i64; 8] = [1, 2, 2, 6, 0, 0, 0, 0];
+        let mut r: [i64; 8] = [0i64; 8];
+        vst4q_lane_s64::<0>(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vst4q_lane_u8() {
+        let a: [u8; 65] = [0, 1, 2, 2, 6, 2, 6, 6, 8, 2, 6, 6, 8, 6, 8, 8, 16, 2, 6, 6, 8, 6, 8, 8, 16, 6, 8, 8, 16, 8, 16, 16, 32, 2, 6, 6, 8, 6, 8, 8, 16, 6, 8, 43, 44, 8, 16, 44, 48, 6, 8, 8, 16, 8, 16, 16, 32, 8, 16, 44, 48, 16, 32, 48, 64];
+        let e: [u8; 64] = [1, 2, 2, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        let mut r: [u8; 64] = [0u8; 64];
+        vst4q_lane_u8::<0>(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vst4_lane_u64() {
+        let a: [u64; 5] = [0, 1, 2, 2, 6];
+        let e: [u64; 4] = [1, 2, 2, 6];
+        let mut r: [u64; 4] = [0u64; 4];
+        vst4_lane_u64::<0>(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vst4q_lane_u64() {
+        let a: [u64; 9] = [0, 1, 2, 2, 6, 2, 6, 6, 8];
+        let e: [u64; 8] = [1, 2, 2, 6, 0, 0, 0, 0];
+        let mut r: [u64; 8] = [0u64; 8];
+        vst4q_lane_u64::<0>(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vst4q_lane_p8() {
+        let a: [u8; 65] = [0, 1, 2, 2, 6, 2, 6, 6, 8, 2, 6, 6, 8, 6, 8, 8, 16, 2, 6, 6, 8, 6, 8, 8, 16, 6, 8, 8, 16, 8, 16, 16, 32, 2, 6, 6, 8, 6, 8, 8, 16, 6, 8, 43, 44, 8, 16, 44, 48, 6, 8, 8, 16, 8, 16, 16, 32, 8, 16, 44, 48, 16, 32, 48, 64];
+        let e: [u8; 64] = [1, 2, 2, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        let mut r: [u8; 64] = [0u8; 64];
+        vst4q_lane_p8::<0>(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vst4_lane_p64() {
+        let a: [u64; 5] = [0, 1, 2, 2, 6];
+        let e: [u64; 4] = [1, 2, 2, 6];
+        let mut r: [u64; 4] = [0u64; 4];
+        vst4_lane_p64::<0>(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vst4q_lane_p64() {
+        let a: [u64; 9] = [0, 1, 2, 2, 6, 2, 6, 6, 8];
+        let e: [u64; 8] = [1, 2, 2, 6, 0, 0, 0, 0];
+        let mut r: [u64; 8] = [0u64; 8];
+        vst4q_lane_p64::<0>(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vst4_lane_f64() {
+        let a: [f64; 5] = [0., 1., 2., 2., 6.];
+        let e: [f64; 4] = [1., 2., 2., 6.];
+        let mut r: [f64; 4] = [0f64; 4];
+        vst4_lane_f64::<0>(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vst4q_lane_f64() {
+        let a: [f64; 9] = [0., 1., 2., 2., 6., 2., 6., 6., 8.];
+        let e: [f64; 8] = [1., 2., 2., 6., 0., 0., 0., 0.];
+        let mut r: [f64; 8] = [0f64; 8];
+        vst4q_lane_f64::<0>(r.as_mut_ptr(), core::ptr::read_unaligned(a[1..].as_ptr().cast()));
         assert_eq!(r, e);
     }
 
