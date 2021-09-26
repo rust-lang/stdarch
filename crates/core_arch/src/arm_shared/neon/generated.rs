@@ -7522,7 +7522,7 @@ vld2_lane_s8_(a.cast(), b.0, b.1, LANE, 1)
 #[inline]
 #[cfg(target_arch = "aarch64")]
 #[target_feature(enable = "neon")]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld2lane, LANE = 0))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld2, LANE = 0))]
 #[rustc_legacy_const_generics(2)]
 pub unsafe fn vld2_lane_s8<const LANE: i32>(a: *const i8, b: int8x8x2_t) -> int8x8x2_t {
     static_assert_imm3!(LANE);
@@ -7554,7 +7554,7 @@ vld2_lane_s16_(a.cast(), b.0, b.1, LANE, 2)
 #[inline]
 #[cfg(target_arch = "aarch64")]
 #[target_feature(enable = "neon")]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld2lane, LANE = 0))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld2, LANE = 0))]
 #[rustc_legacy_const_generics(2)]
 pub unsafe fn vld2_lane_s16<const LANE: i32>(a: *const i16, b: int16x4x2_t) -> int16x4x2_t {
     static_assert_imm2!(LANE);
@@ -7586,7 +7586,7 @@ vld2_lane_s32_(a.cast(), b.0, b.1, LANE, 4)
 #[inline]
 #[cfg(target_arch = "aarch64")]
 #[target_feature(enable = "neon")]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld2lane, LANE = 0))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld2, LANE = 0))]
 #[rustc_legacy_const_generics(2)]
 pub unsafe fn vld2_lane_s32<const LANE: i32>(a: *const i32, b: int32x2x2_t) -> int32x2x2_t {
     static_assert_imm1!(LANE);
@@ -7618,7 +7618,7 @@ vld2q_lane_s16_(a.cast(), b.0, b.1, LANE, 2)
 #[inline]
 #[cfg(target_arch = "aarch64")]
 #[target_feature(enable = "neon")]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld2lane, LANE = 0))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld2, LANE = 0))]
 #[rustc_legacy_const_generics(2)]
 pub unsafe fn vld2q_lane_s16<const LANE: i32>(a: *const i16, b: int16x8x2_t) -> int16x8x2_t {
     static_assert_imm3!(LANE);
@@ -7650,7 +7650,7 @@ vld2q_lane_s32_(a.cast(), b.0, b.1, LANE, 4)
 #[inline]
 #[cfg(target_arch = "aarch64")]
 #[target_feature(enable = "neon")]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld2lane, LANE = 0))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld2, LANE = 0))]
 #[rustc_legacy_const_generics(2)]
 pub unsafe fn vld2q_lane_s32<const LANE: i32>(a: *const i32, b: int32x4x2_t) -> int32x4x2_t {
     static_assert_imm2!(LANE);
@@ -7667,7 +7667,7 @@ vld2q_lane_s32_(b.0, b.1, LANE as i64, a.cast())
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld2, LANE = 0))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld2lane, LANE = 0))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld2, LANE = 0))]
 #[rustc_legacy_const_generics(2)]
 pub unsafe fn vld2_lane_u8<const LANE: i32>(a: *const u8, b: uint8x8x2_t) -> uint8x8x2_t {
     static_assert_imm3!(LANE);
@@ -7679,7 +7679,7 @@ pub unsafe fn vld2_lane_u8<const LANE: i32>(a: *const u8, b: uint8x8x2_t) -> uin
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld2, LANE = 0))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld2lane, LANE = 0))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld2, LANE = 0))]
 #[rustc_legacy_const_generics(2)]
 pub unsafe fn vld2_lane_u16<const LANE: i32>(a: *const u16, b: uint16x4x2_t) -> uint16x4x2_t {
     static_assert_imm2!(LANE);
@@ -7691,7 +7691,7 @@ pub unsafe fn vld2_lane_u16<const LANE: i32>(a: *const u16, b: uint16x4x2_t) -> 
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld2, LANE = 0))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld2lane, LANE = 0))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld2, LANE = 0))]
 #[rustc_legacy_const_generics(2)]
 pub unsafe fn vld2_lane_u32<const LANE: i32>(a: *const u32, b: uint32x2x2_t) -> uint32x2x2_t {
     static_assert_imm1!(LANE);
@@ -7703,7 +7703,7 @@ pub unsafe fn vld2_lane_u32<const LANE: i32>(a: *const u32, b: uint32x2x2_t) -> 
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld2, LANE = 0))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld2lane, LANE = 0))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld2, LANE = 0))]
 #[rustc_legacy_const_generics(2)]
 pub unsafe fn vld2q_lane_u16<const LANE: i32>(a: *const u16, b: uint16x8x2_t) -> uint16x8x2_t {
     static_assert_imm3!(LANE);
@@ -7715,7 +7715,7 @@ pub unsafe fn vld2q_lane_u16<const LANE: i32>(a: *const u16, b: uint16x8x2_t) ->
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld2, LANE = 0))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld2lane, LANE = 0))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld2, LANE = 0))]
 #[rustc_legacy_const_generics(2)]
 pub unsafe fn vld2q_lane_u32<const LANE: i32>(a: *const u32, b: uint32x4x2_t) -> uint32x4x2_t {
     static_assert_imm2!(LANE);
@@ -7727,7 +7727,7 @@ pub unsafe fn vld2q_lane_u32<const LANE: i32>(a: *const u32, b: uint32x4x2_t) ->
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld2, LANE = 0))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld2lane, LANE = 0))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld2, LANE = 0))]
 #[rustc_legacy_const_generics(2)]
 pub unsafe fn vld2_lane_p8<const LANE: i32>(a: *const p8, b: poly8x8x2_t) -> poly8x8x2_t {
     static_assert_imm3!(LANE);
@@ -7739,7 +7739,7 @@ pub unsafe fn vld2_lane_p8<const LANE: i32>(a: *const p8, b: poly8x8x2_t) -> pol
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld2, LANE = 0))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld2lane, LANE = 0))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld2, LANE = 0))]
 #[rustc_legacy_const_generics(2)]
 pub unsafe fn vld2_lane_p16<const LANE: i32>(a: *const p16, b: poly16x4x2_t) -> poly16x4x2_t {
     static_assert_imm2!(LANE);
@@ -7751,7 +7751,7 @@ pub unsafe fn vld2_lane_p16<const LANE: i32>(a: *const p16, b: poly16x4x2_t) -> 
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld2, LANE = 0))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld2lane, LANE = 0))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld2, LANE = 0))]
 #[rustc_legacy_const_generics(2)]
 pub unsafe fn vld2q_lane_p16<const LANE: i32>(a: *const p16, b: poly16x8x2_t) -> poly16x8x2_t {
     static_assert_imm3!(LANE);

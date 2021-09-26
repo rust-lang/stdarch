@@ -2248,7 +2248,7 @@ validate 1, 2, 2, 14, 2, 16, 17, 18, 2, 20, 21, 22, 23, 24, 25, 26, 2, 12, 13, 1
 load_fn
 arm-aarch64-separate
 
-aarch64 = ld2lane
+aarch64 = ld2
 const-aarch64 = LANE
 link-aarch64 = ld2lane._EXTpi82_
 generate *const i8:int8x16x2_t:int8x16x2_t, *const i64:int64x1x2_t:int64x1x2_t, *const i64:int64x2x2_t:int64x2x2_t
@@ -2271,7 +2271,7 @@ n = 0
 validate 1, 2, 2, 14, 2, 16, 17, 18, 2, 20, 21, 22, 23, 24, 25, 26, 2, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26
 load_fn
 
-aarch64 = ld2lane
+aarch64 = ld2
 const-aarch64 = LANE
 
 target = aes
