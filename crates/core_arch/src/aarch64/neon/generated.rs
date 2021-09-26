@@ -4810,7 +4810,7 @@ pub unsafe fn vld2q_lane_p8<const LANE: i32>(a: *const p8, b: poly8x16x2_t) -> p
 /// Load multiple 2-element structures to two registers
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(ld2lane, LANE = 0))]
+#[cfg_attr(test, assert_instr(ld2, LANE = 0))]
 #[rustc_legacy_const_generics(2)]
 pub unsafe fn vld2_lane_f64<const LANE: i32>(a: *const f64, b: float64x1x2_t) -> float64x1x2_t {
     static_assert!(LANE : i32 where LANE == 0);
@@ -4825,7 +4825,7 @@ pub unsafe fn vld2_lane_f64<const LANE: i32>(a: *const f64, b: float64x1x2_t) ->
 /// Load multiple 2-element structures to two registers
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(ld2lane, LANE = 0))]
+#[cfg_attr(test, assert_instr(ld2, LANE = 0))]
 #[rustc_legacy_const_generics(2)]
 pub unsafe fn vld2q_lane_f64<const LANE: i32>(a: *const f64, b: float64x2x2_t) -> float64x2x2_t {
     static_assert_imm1!(LANE);

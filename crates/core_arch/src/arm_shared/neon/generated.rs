@@ -7778,7 +7778,7 @@ vld2_lane_f32_(a.cast(), b.0, b.1, LANE, 4)
 #[inline]
 #[cfg(target_arch = "aarch64")]
 #[target_feature(enable = "neon")]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld2lane, LANE = 0))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld2, LANE = 0))]
 #[rustc_legacy_const_generics(2)]
 pub unsafe fn vld2_lane_f32<const LANE: i32>(a: *const f32, b: float32x2x2_t) -> float32x2x2_t {
     static_assert_imm1!(LANE);
@@ -7810,7 +7810,7 @@ vld2q_lane_f32_(a.cast(), b.0, b.1, LANE, 4)
 #[inline]
 #[cfg(target_arch = "aarch64")]
 #[target_feature(enable = "neon")]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld2lane, LANE = 0))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ld2, LANE = 0))]
 #[rustc_legacy_const_generics(2)]
 pub unsafe fn vld2q_lane_f32<const LANE: i32>(a: *const f32, b: float32x4x2_t) -> float32x4x2_t {
     static_assert_imm2!(LANE);

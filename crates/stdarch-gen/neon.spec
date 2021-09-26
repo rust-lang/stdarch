@@ -2300,7 +2300,7 @@ validate 1., 2., 2., 14., 2., 16., 17., 18.
 load_fn
 arm-aarch64-separate
 
-aarch64 = ld2lane
+aarch64 = ld2
 const-aarch64 = LANE
 link-aarch64 = ld2lane._EXTpi82_
 generate *const f64:float64x1x2_t:float64x1x2_t, *const f64:float64x2x2_t:float64x2x2_t
