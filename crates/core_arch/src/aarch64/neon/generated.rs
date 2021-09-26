@@ -4592,6 +4592,61 @@ pub unsafe fn vld1q_f64_x4(a: *const f64) -> float64x2x4_t {
     vld1q_f64_x4_(a)
 }
 
+/// Load multiple 2-element structures to two registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(ld2))]
+pub unsafe fn vld2q_s64(a: *const i64) -> int64x2x2_t {
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld2.v2i64.p0v2i64")]
+        fn vld2q_s64_(ptr: *const int64x2_t) -> int64x2x2_t;
+    }
+    vld2q_s64_(a.cast())
+}
+
+/// Load multiple 2-element structures to two registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(ld2))]
+pub unsafe fn vld2q_u64(a: *const u64) -> uint64x2x2_t {
+    transmute(vld2q_s64(transmute(a)))
+}
+
+/// Load multiple 2-element structures to two registers
+#[inline]
+#[target_feature(enable = "neon,aes")]
+#[cfg_attr(test, assert_instr(ld2))]
+pub unsafe fn vld2q_p64(a: *const p64) -> poly64x2x2_t {
+    transmute(vld2q_s64(transmute(a)))
+}
+
+/// Load multiple 2-element structures to two registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(ld2))]
+pub unsafe fn vld2_f64(a: *const f64) -> float64x1x2_t {
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld2.v1f64.p0v1f64")]
+        fn vld2_f64_(ptr: *const float64x1_t) -> float64x1x2_t;
+    }
+    vld2_f64_(a.cast())
+}
+
+/// Load multiple 2-element structures to two registers
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(ld2))]
+pub unsafe fn vld2q_f64(a: *const f64) -> float64x2x2_t {
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld2.v2f64.p0v2f64")]
+        fn vld2q_f64_(ptr: *const float64x2_t) -> float64x2x2_t;
+    }
+    vld2q_f64_(a.cast())
+}
+
 /// Store multiple single-element structures to one, two, three, or four registers
 #[inline]
 #[target_feature(enable = "neon")]
@@ -13058,6 +13113,46 @@ mod test {
         let a: [f64; 9] = [0., 1., 2., 3., 4., 5., 6., 7., 8.];
         let e: [f64x2; 4] = [f64x2::new(1., 2.), f64x2::new(3., 4.), f64x2::new(5., 6.), f64x2::new(7., 8.)];
         let r: [f64x2; 4] = transmute(vld1q_f64_x4(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld2q_s64() {
+        let a: [i64; 5] = [0, 1, 2, 2, 3];
+        let e: [i64x2; 2] = [i64x2::new(1, 2), i64x2::new(2, 3)];
+        let r: [i64x2; 2] = transmute(vld2q_s64(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld2q_u64() {
+        let a: [u64; 5] = [0, 1, 2, 2, 3];
+        let e: [u64x2; 2] = [u64x2::new(1, 2), u64x2::new(2, 3)];
+        let r: [u64x2; 2] = transmute(vld2q_u64(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld2q_p64() {
+        let a: [u64; 5] = [0, 1, 2, 2, 3];
+        let e: [i64x2; 2] = [i64x2::new(1, 2), i64x2::new(2, 3)];
+        let r: [i64x2; 2] = transmute(vld2q_p64(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld2_f64() {
+        let a: [f64; 3] = [0., 1., 2.];
+        let e: [f64; 2] = [1., 2.];
+        let r: [f64; 2] = transmute(vld2_f64(a[1..].as_ptr()));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vld2q_f64() {
+        let a: [f64; 5] = [0., 1., 2., 2., 3.];
+        let e: [f64x2; 2] = [f64x2::new(1., 2.), f64x2::new(2., 3.)];
+        let r: [f64x2; 2] = transmute(vld2q_f64(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
 
