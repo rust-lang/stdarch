@@ -5457,7 +5457,7 @@ pub unsafe fn vst2q_p64(a: *mut p64, b: poly64x2x2_t) {
 /// Store multiple 2-element structures from two registers
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(st2))]
+#[cfg_attr(test, assert_instr(st1))]
 pub unsafe fn vst2_f64(a: *mut f64, b: float64x1x2_t) {
     #[allow(improper_ctypes)]
     extern "unadjusted" {

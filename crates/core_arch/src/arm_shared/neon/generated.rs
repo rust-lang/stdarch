@@ -11684,7 +11684,7 @@ vst2_s64_(a.cast(), b.0, b.1, 8)
 #[inline]
 #[cfg(target_arch = "aarch64")]
 #[target_feature(enable = "neon")]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(st2))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(nop))]
 pub unsafe fn vst2_s64(a: *mut i64, b: int64x1x2_t) {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
@@ -11799,7 +11799,7 @@ pub unsafe fn vst2q_p16(a: *mut p16, b: poly16x8x2_t) {
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(st2))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(nop))]
 pub unsafe fn vst2_u64(a: *mut u64, b: uint64x1x2_t) {
     transmute(vst2_s64(transmute(a), transmute(b)))
 }
@@ -11809,7 +11809,7 @@ pub unsafe fn vst2_u64(a: *mut u64, b: uint64x1x2_t) {
 #[target_feature(enable = "neon,aes")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "aes,v8"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(st2))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(nop))]
 pub unsafe fn vst2_p64(a: *mut p64, b: poly64x1x2_t) {
     transmute(vst2_s64(transmute(a), transmute(b)))
 }

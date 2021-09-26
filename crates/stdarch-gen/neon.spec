@@ -2826,6 +2826,7 @@ link-arm = vst2._EXTpi8r_
 generate *mut i8:int8x8x2_t:void, *mut i16:int16x4x2_t:void, *mut i32:int32x2x2_t:void
 generate *mut i8:int8x16x2_t:void, *mut i16:int16x8x2_t:void, *mut i32:int32x4x2_t:void
 arm = nop
+aarch64 = nop
 generate *mut i64:int64x1x2_t:void
 
 /// Store multiple 2-element structures from two registers
@@ -2847,6 +2848,7 @@ generate *mut u8:uint8x8x2_t:void, *mut u16:uint16x4x2_t:void, *mut u32:uint32x2
 generate *mut u8:uint8x16x2_t:void, *mut u16:uint16x8x2_t:void, *mut u32:uint32x4x2_t:void
 generate *mut p8:poly8x8x2_t:void, *mut p16:poly16x4x2_t:void, *mut p8:poly8x16x2_t:void, *mut p16:poly16x8x2_t:void
 arm = nop
+aarch64 = nop
 generate *mut u64:uint64x1x2_t:void
 target = aes
 generate *mut p64:poly64x1x2_t:void
@@ -2859,9 +2861,11 @@ validate 1., 2., 2., 3., 2., 4., 3., 5., 2., 6., 3., 7., 4., 8., 5., 9.
 store_fn
 arm-aarch64-separate
 
-aarch64 = st2
+aarch64 = st1
 link-aarch64 = st2._EXTpi8_
-generate *mut f64:float64x1x2_t:void, *mut f64:float64x2x2_t:void
+generate *mut f64:float64x1x2_t:void
+aarch64 = st2
+generate *mut f64:float64x2x2_t:void
 
 arm = vst2
 link-arm = vst2._EXTpi8r_
