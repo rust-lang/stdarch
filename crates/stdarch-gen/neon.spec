@@ -447,8 +447,6 @@ validate 2, 4, 6, 8, 2, 4, 6, 8, 2, 4, 6, 8, 2, 4, 6, 8
 
 aarch64 = suqadd
 link-aarch64 = suqadd._EXT_
-generate int8x8_t:uint8x8_t:int8x8_t, int16x4_t:uint16x4_t:int16x4_t, int32x2_t:uint32x2_t:int32x2_t, int64x1_t:uint64x1_t:int64x1_t
-generate int8x16_t:uint8x16_t:int8x16_t, int16x8_t:uint16x8_t:int16x8_t, int32x4_t:uint32x4_t:int32x4_t, int64x2_t:uint64x2_t:int64x2_t
 generate i32:u32:i32, i64:u64:i64
 
 /// Signed saturating accumulate of unsigned value
@@ -2159,45 +2157,6 @@ aarch64 = shadd
 link-aarch64 = shadd._EXT_
 link-arm = vhadds._EXT_
 generate int*_t
-
-/// Rounding add returning high narrow
-name = vraddhn
-no-q
-a = MAX, MIN, 3, 4, 5, 6, 7, 8
-b = 1, 2, 3, 4, 5, 6, 7, 8
-validate MIN, MIN, 0, 0, 0, 0, 0, 0
-
-aarch64 = raddhn
-link-aarch64 = raddhn._EXT2_
-arm = vraddhn
-link-arm = vraddhn._EXT2_
-generate int16x8_t:int16x8_t:int8x8_t, int32x4_t:int32x4_t:int16x4_t, int64x2_t:int64x2_t:int32x2_t
-
-/// Rounding add returning high narrow
-name = vraddhn
-no-q
-multi_fn = transmute, {vraddhn-noqsigned-noext, {transmute, a}, {transmute, b}}
-a = MAX, MIN, 3, 4, 5, 6, 7, 8
-b = 1, 2, 3, 4, 5, 6, 7, 8
-validate 0, 0, 0, 0, 0, 0, 0, 0
-
-aarch64 = raddhn
-arm = vraddhn
-generate uint16x8_t:uint16x8_t:uint8x8_t, uint32x4_t:uint32x4_t:uint16x4_t, uint64x2_t:uint64x2_t:uint32x2_t
-
-/// Rounding add returning high narrow
-name = vraddhn_high
-no-q
-multi_fn = vraddhn-noqself-noext, x:in_t0, b, c
-multi_fn = simd_shuffle-out_len-!, a, x, {asc-0-out_len}
-a = 1, 2, 0, 0, 0, 0, 0, 0
-b = 1, 2, 3, 4, 5, 6, 7, 8
-c = 1, 2, 3, 4, 5, 6, 7, 8
-validate 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-
-aarch64 = raddhn2
-generate int8x8_t:int16x8_t:int16x8_t:int8x16_t, int16x4_t:int32x4_t:int32x4_t:int16x8_t, int32x2_t:int64x2_t:int64x2_t:int32x4_t
-generate uint8x8_t:uint16x8_t:uint16x8_t:uint8x16_t, uint16x4_t:uint32x4_t:uint32x4_t:uint16x8_t, uint32x2_t:uint64x2_t:uint64x2_t:uint32x4_t
 
 /// Reverse bit order
 name = vrbit
