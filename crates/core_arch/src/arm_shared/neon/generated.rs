@@ -22680,42 +22680,6 @@ pub unsafe fn vzip_s16(a: int16x4_t, b: int16x4_t) -> int16x4x2_t {
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(vzip))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(zip))]
-pub unsafe fn vzipq_s8(a: int8x16_t, b: int8x16_t) -> int8x16x2_t {
-    let a0: int8x16_t = simd_shuffle16!(a, b, [0, 16, 1, 17, 2, 18, 3, 19, 4, 20, 5, 21, 6, 22, 7, 23]);
-    let b0: int8x16_t = simd_shuffle16!(a, b, [8, 24, 9, 25, 10, 26, 11, 27, 12, 28, 13, 29, 14, 30, 15, 31]);
-    transmute((a0, b0))
-}
-
-/// Zip vectors
-#[inline]
-#[target_feature(enable = "neon")]
-#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vzip))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(zip))]
-pub unsafe fn vzipq_s16(a: int16x8_t, b: int16x8_t) -> int16x8x2_t {
-    let a0: int16x8_t = simd_shuffle8!(a, b, [0, 8, 1, 9, 2, 10, 3, 11]);
-    let b0: int16x8_t = simd_shuffle8!(a, b, [4, 12, 5, 13, 6, 14, 7, 15]);
-    transmute((a0, b0))
-}
-
-/// Zip vectors
-#[inline]
-#[target_feature(enable = "neon")]
-#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vzip))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(zip))]
-pub unsafe fn vzipq_s32(a: int32x4_t, b: int32x4_t) -> int32x4x2_t {
-    let a0: int32x4_t = simd_shuffle4!(a, b, [0, 4, 1, 5]);
-    let b0: int32x4_t = simd_shuffle4!(a, b, [2, 6, 3, 7]);
-    transmute((a0, b0))
-}
-
-/// Zip vectors
-#[inline]
-#[target_feature(enable = "neon")]
-#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vzip))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(zip))]
 pub unsafe fn vzip_u8(a: uint8x8_t, b: uint8x8_t) -> uint8x8x2_t {
     let a0: uint8x8_t = simd_shuffle8!(a, b, [0, 8, 1, 9, 2, 10, 3, 11]);
     let b0: uint8x8_t = simd_shuffle8!(a, b, [4, 12, 5, 13, 6, 14, 7, 15]);
@@ -22731,42 +22695,6 @@ pub unsafe fn vzip_u8(a: uint8x8_t, b: uint8x8_t) -> uint8x8x2_t {
 pub unsafe fn vzip_u16(a: uint16x4_t, b: uint16x4_t) -> uint16x4x2_t {
     let a0: uint16x4_t = simd_shuffle4!(a, b, [0, 4, 1, 5]);
     let b0: uint16x4_t = simd_shuffle4!(a, b, [2, 6, 3, 7]);
-    transmute((a0, b0))
-}
-
-/// Zip vectors
-#[inline]
-#[target_feature(enable = "neon")]
-#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vzip))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(zip))]
-pub unsafe fn vzipq_u8(a: uint8x16_t, b: uint8x16_t) -> uint8x16x2_t {
-    let a0: uint8x16_t = simd_shuffle16!(a, b, [0, 16, 1, 17, 2, 18, 3, 19, 4, 20, 5, 21, 6, 22, 7, 23]);
-    let b0: uint8x16_t = simd_shuffle16!(a, b, [8, 24, 9, 25, 10, 26, 11, 27, 12, 28, 13, 29, 14, 30, 15, 31]);
-    transmute((a0, b0))
-}
-
-/// Zip vectors
-#[inline]
-#[target_feature(enable = "neon")]
-#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vzip))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(zip))]
-pub unsafe fn vzipq_u16(a: uint16x8_t, b: uint16x8_t) -> uint16x8x2_t {
-    let a0: uint16x8_t = simd_shuffle8!(a, b, [0, 8, 1, 9, 2, 10, 3, 11]);
-    let b0: uint16x8_t = simd_shuffle8!(a, b, [4, 12, 5, 13, 6, 14, 7, 15]);
-    transmute((a0, b0))
-}
-
-/// Zip vectors
-#[inline]
-#[target_feature(enable = "neon")]
-#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vzip))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(zip))]
-pub unsafe fn vzipq_u32(a: uint32x4_t, b: uint32x4_t) -> uint32x4x2_t {
-    let a0: uint32x4_t = simd_shuffle4!(a, b, [0, 4, 1, 5]);
-    let b0: uint32x4_t = simd_shuffle4!(a, b, [2, 6, 3, 7]);
     transmute((a0, b0))
 }
 
@@ -22798,31 +22726,7 @@ pub unsafe fn vzip_p16(a: poly16x4_t, b: poly16x4_t) -> poly16x4x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vzip))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(zip))]
-pub unsafe fn vzipq_p8(a: poly8x16_t, b: poly8x16_t) -> poly8x16x2_t {
-    let a0: poly8x16_t = simd_shuffle16!(a, b, [0, 16, 1, 17, 2, 18, 3, 19, 4, 20, 5, 21, 6, 22, 7, 23]);
-    let b0: poly8x16_t = simd_shuffle16!(a, b, [8, 24, 9, 25, 10, 26, 11, 27, 12, 28, 13, 29, 14, 30, 15, 31]);
-    transmute((a0, b0))
-}
-
-/// Zip vectors
-#[inline]
-#[target_feature(enable = "neon")]
-#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vzip))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(zip))]
-pub unsafe fn vzipq_p16(a: poly16x8_t, b: poly16x8_t) -> poly16x8x2_t {
-    let a0: poly16x8_t = simd_shuffle8!(a, b, [0, 8, 1, 9, 2, 10, 3, 11]);
-    let b0: poly16x8_t = simd_shuffle8!(a, b, [4, 12, 5, 13, 6, 14, 7, 15]);
-    transmute((a0, b0))
-}
-
-/// Zip vectors
-#[inline]
-#[target_feature(enable = "neon")]
-#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vzip))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vtrn))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(zip))]
 pub unsafe fn vzip_s32(a: int32x2_t, b: int32x2_t) -> int32x2x2_t {
     let a0: int32x2_t = simd_shuffle2!(a, b, [0, 2]);
@@ -22834,7 +22738,7 @@ pub unsafe fn vzip_s32(a: int32x2_t, b: int32x2_t) -> int32x2x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vzip))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vtrn))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(zip))]
 pub unsafe fn vzip_u32(a: uint32x2_t, b: uint32x2_t) -> uint32x2x2_t {
     let a0: uint32x2_t = simd_shuffle2!(a, b, [0, 2]);
@@ -22846,7 +22750,103 @@ pub unsafe fn vzip_u32(a: uint32x2_t, b: uint32x2_t) -> uint32x2x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vzip))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vorr))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ext))]
+pub unsafe fn vzipq_s8(a: int8x16_t, b: int8x16_t) -> int8x16x2_t {
+    let a0: int8x16_t = simd_shuffle16!(a, b, [0, 16, 1, 17, 2, 18, 3, 19, 4, 20, 5, 21, 6, 22, 7, 23]);
+    let b0: int8x16_t = simd_shuffle16!(a, b, [8, 24, 9, 25, 10, 26, 11, 27, 12, 28, 13, 29, 14, 30, 15, 31]);
+    transmute((a0, b0))
+}
+
+/// Zip vectors
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vorr))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ext))]
+pub unsafe fn vzipq_s16(a: int16x8_t, b: int16x8_t) -> int16x8x2_t {
+    let a0: int16x8_t = simd_shuffle8!(a, b, [0, 8, 1, 9, 2, 10, 3, 11]);
+    let b0: int16x8_t = simd_shuffle8!(a, b, [4, 12, 5, 13, 6, 14, 7, 15]);
+    transmute((a0, b0))
+}
+
+/// Zip vectors
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vorr))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ext))]
+pub unsafe fn vzipq_s32(a: int32x4_t, b: int32x4_t) -> int32x4x2_t {
+    let a0: int32x4_t = simd_shuffle4!(a, b, [0, 4, 1, 5]);
+    let b0: int32x4_t = simd_shuffle4!(a, b, [2, 6, 3, 7]);
+    transmute((a0, b0))
+}
+
+/// Zip vectors
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vorr))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ext))]
+pub unsafe fn vzipq_u8(a: uint8x16_t, b: uint8x16_t) -> uint8x16x2_t {
+    let a0: uint8x16_t = simd_shuffle16!(a, b, [0, 16, 1, 17, 2, 18, 3, 19, 4, 20, 5, 21, 6, 22, 7, 23]);
+    let b0: uint8x16_t = simd_shuffle16!(a, b, [8, 24, 9, 25, 10, 26, 11, 27, 12, 28, 13, 29, 14, 30, 15, 31]);
+    transmute((a0, b0))
+}
+
+/// Zip vectors
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vorr))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ext))]
+pub unsafe fn vzipq_u16(a: uint16x8_t, b: uint16x8_t) -> uint16x8x2_t {
+    let a0: uint16x8_t = simd_shuffle8!(a, b, [0, 8, 1, 9, 2, 10, 3, 11]);
+    let b0: uint16x8_t = simd_shuffle8!(a, b, [4, 12, 5, 13, 6, 14, 7, 15]);
+    transmute((a0, b0))
+}
+
+/// Zip vectors
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vorr))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ext))]
+pub unsafe fn vzipq_u32(a: uint32x4_t, b: uint32x4_t) -> uint32x4x2_t {
+    let a0: uint32x4_t = simd_shuffle4!(a, b, [0, 4, 1, 5]);
+    let b0: uint32x4_t = simd_shuffle4!(a, b, [2, 6, 3, 7]);
+    transmute((a0, b0))
+}
+
+/// Zip vectors
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vorr))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ext))]
+pub unsafe fn vzipq_p8(a: poly8x16_t, b: poly8x16_t) -> poly8x16x2_t {
+    let a0: poly8x16_t = simd_shuffle16!(a, b, [0, 16, 1, 17, 2, 18, 3, 19, 4, 20, 5, 21, 6, 22, 7, 23]);
+    let b0: poly8x16_t = simd_shuffle16!(a, b, [8, 24, 9, 25, 10, 26, 11, 27, 12, 28, 13, 29, 14, 30, 15, 31]);
+    transmute((a0, b0))
+}
+
+/// Zip vectors
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vorr))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ext))]
+pub unsafe fn vzipq_p16(a: poly16x8_t, b: poly16x8_t) -> poly16x8x2_t {
+    let a0: poly16x8_t = simd_shuffle8!(a, b, [0, 8, 1, 9, 2, 10, 3, 11]);
+    let b0: poly16x8_t = simd_shuffle8!(a, b, [4, 12, 5, 13, 6, 14, 7, 15]);
+    transmute((a0, b0))
+}
+
+/// Zip vectors
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vtrn))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(zip))]
 pub unsafe fn vzip_f32(a: float32x2_t, b: float32x2_t) -> float32x2x2_t {
     let a0: float32x2_t = simd_shuffle2!(a, b, [0, 2]);
@@ -22858,8 +22858,8 @@ pub unsafe fn vzip_f32(a: float32x2_t, b: float32x2_t) -> float32x2x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vzip))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(zip))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vorr))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ext))]
 pub unsafe fn vzipq_f32(a: float32x4_t, b: float32x4_t) -> float32x4x2_t {
     let a0: float32x4_t = simd_shuffle4!(a, b, [0, 4, 1, 5]);
     let b0: float32x4_t = simd_shuffle4!(a, b, [2, 6, 3, 7]);
@@ -22870,7 +22870,7 @@ pub unsafe fn vzipq_f32(a: float32x4_t, b: float32x4_t) -> float32x4x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vzup))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vuzp))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(uzp))]
 pub unsafe fn vuzp_s8(a: int8x8_t, b: int8x8_t) -> int8x8x2_t {
     let a0: int8x8_t = simd_shuffle8!(a, b, [0, 2, 4, 6, 8, 10, 12, 14]);
@@ -22882,7 +22882,7 @@ pub unsafe fn vuzp_s8(a: int8x8_t, b: int8x8_t) -> int8x8x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vzup))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vuzp))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(uzp))]
 pub unsafe fn vuzp_s16(a: int16x4_t, b: int16x4_t) -> int16x4x2_t {
     let a0: int16x4_t = simd_shuffle4!(a, b, [0, 2, 4, 6]);
@@ -22894,7 +22894,7 @@ pub unsafe fn vuzp_s16(a: int16x4_t, b: int16x4_t) -> int16x4x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vzup))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vuzp))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(uzp))]
 pub unsafe fn vuzpq_s8(a: int8x16_t, b: int8x16_t) -> int8x16x2_t {
     let a0: int8x16_t = simd_shuffle16!(a, b, [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30]);
@@ -22906,7 +22906,7 @@ pub unsafe fn vuzpq_s8(a: int8x16_t, b: int8x16_t) -> int8x16x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vzup))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vuzp))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(uzp))]
 pub unsafe fn vuzpq_s16(a: int16x8_t, b: int16x8_t) -> int16x8x2_t {
     let a0: int16x8_t = simd_shuffle8!(a, b, [0, 2, 4, 6, 8, 10, 12, 14]);
@@ -22918,7 +22918,7 @@ pub unsafe fn vuzpq_s16(a: int16x8_t, b: int16x8_t) -> int16x8x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vzup))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vuzp))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(uzp))]
 pub unsafe fn vuzpq_s32(a: int32x4_t, b: int32x4_t) -> int32x4x2_t {
     let a0: int32x4_t = simd_shuffle4!(a, b, [0, 2, 4, 6]);
@@ -22930,7 +22930,7 @@ pub unsafe fn vuzpq_s32(a: int32x4_t, b: int32x4_t) -> int32x4x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vzup))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vuzp))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(uzp))]
 pub unsafe fn vuzp_u8(a: uint8x8_t, b: uint8x8_t) -> uint8x8x2_t {
     let a0: uint8x8_t = simd_shuffle8!(a, b, [0, 2, 4, 6, 8, 10, 12, 14]);
@@ -22942,7 +22942,7 @@ pub unsafe fn vuzp_u8(a: uint8x8_t, b: uint8x8_t) -> uint8x8x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vzup))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vuzp))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(uzp))]
 pub unsafe fn vuzp_u16(a: uint16x4_t, b: uint16x4_t) -> uint16x4x2_t {
     let a0: uint16x4_t = simd_shuffle4!(a, b, [0, 2, 4, 6]);
@@ -22954,7 +22954,7 @@ pub unsafe fn vuzp_u16(a: uint16x4_t, b: uint16x4_t) -> uint16x4x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vzup))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vuzp))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(uzp))]
 pub unsafe fn vuzpq_u8(a: uint8x16_t, b: uint8x16_t) -> uint8x16x2_t {
     let a0: uint8x16_t = simd_shuffle16!(a, b, [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30]);
@@ -22966,7 +22966,7 @@ pub unsafe fn vuzpq_u8(a: uint8x16_t, b: uint8x16_t) -> uint8x16x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vzup))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vuzp))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(uzp))]
 pub unsafe fn vuzpq_u16(a: uint16x8_t, b: uint16x8_t) -> uint16x8x2_t {
     let a0: uint16x8_t = simd_shuffle8!(a, b, [0, 2, 4, 6, 8, 10, 12, 14]);
@@ -22978,7 +22978,7 @@ pub unsafe fn vuzpq_u16(a: uint16x8_t, b: uint16x8_t) -> uint16x8x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vzup))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vuzp))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(uzp))]
 pub unsafe fn vuzpq_u32(a: uint32x4_t, b: uint32x4_t) -> uint32x4x2_t {
     let a0: uint32x4_t = simd_shuffle4!(a, b, [0, 2, 4, 6]);
@@ -22990,7 +22990,7 @@ pub unsafe fn vuzpq_u32(a: uint32x4_t, b: uint32x4_t) -> uint32x4x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vzup))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vuzp))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(uzp))]
 pub unsafe fn vuzp_p8(a: poly8x8_t, b: poly8x8_t) -> poly8x8x2_t {
     let a0: poly8x8_t = simd_shuffle8!(a, b, [0, 2, 4, 6, 8, 10, 12, 14]);
@@ -23002,7 +23002,7 @@ pub unsafe fn vuzp_p8(a: poly8x8_t, b: poly8x8_t) -> poly8x8x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vzup))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vuzp))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(uzp))]
 pub unsafe fn vuzp_p16(a: poly16x4_t, b: poly16x4_t) -> poly16x4x2_t {
     let a0: poly16x4_t = simd_shuffle4!(a, b, [0, 2, 4, 6]);
@@ -23014,7 +23014,7 @@ pub unsafe fn vuzp_p16(a: poly16x4_t, b: poly16x4_t) -> poly16x4x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vzup))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vuzp))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(uzp))]
 pub unsafe fn vuzpq_p8(a: poly8x16_t, b: poly8x16_t) -> poly8x16x2_t {
     let a0: poly8x16_t = simd_shuffle16!(a, b, [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30]);
@@ -23026,7 +23026,7 @@ pub unsafe fn vuzpq_p8(a: poly8x16_t, b: poly8x16_t) -> poly8x16x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vzup))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vuzp))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(uzp))]
 pub unsafe fn vuzpq_p16(a: poly16x8_t, b: poly16x8_t) -> poly16x8x2_t {
     let a0: poly16x8_t = simd_shuffle8!(a, b, [0, 2, 4, 6, 8, 10, 12, 14]);
@@ -23074,7 +23074,7 @@ pub unsafe fn vuzp_f32(a: float32x2_t, b: float32x2_t) -> float32x2x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vzup))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vuzp))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(uzp))]
 pub unsafe fn vuzpq_f32(a: float32x4_t, b: float32x4_t) -> float32x4x2_t {
     let a0: float32x4_t = simd_shuffle4!(a, b, [0, 2, 4, 6]);
@@ -37720,6 +37720,60 @@ mod test {
     }
 
     #[simd_test(enable = "neon")]
+    unsafe fn test_vzip_u8() {
+        let a: u8x8 = u8x8::new(0, 2, 4, 6, 8, 10, 12, 14);
+        let b: u8x8 = u8x8::new(1, 3, 5, 7, 9, 11, 13, 15);
+        let e: [u8; 16] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+        let r: [u8; 16] = transmute(vzip_u8(transmute(a), transmute(b)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vzip_u16() {
+        let a: u16x4 = u16x4::new(0, 2, 4, 6);
+        let b: u16x4 = u16x4::new(1, 3, 5, 7);
+        let e: [u16; 8] = [0, 1, 2, 3, 4, 5, 6, 7];
+        let r: [u16; 8] = transmute(vzip_u16(transmute(a), transmute(b)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vzip_p8() {
+        let a: i8x8 = i8x8::new(0, 2, 4, 6, 8, 10, 12, 14);
+        let b: i8x8 = i8x8::new(1, 3, 5, 7, 9, 11, 13, 15);
+        let e: [u8; 16] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+        let r: [u8; 16] = transmute(vzip_p8(transmute(a), transmute(b)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vzip_p16() {
+        let a: i16x4 = i16x4::new(0, 2, 4, 6);
+        let b: i16x4 = i16x4::new(1, 3, 5, 7);
+        let e: [u16; 8] = [0, 1, 2, 3, 4, 5, 6, 7];
+        let r: [u16; 8] = transmute(vzip_p16(transmute(a), transmute(b)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vzip_s32() {
+        let a: i32x2 = i32x2::new(0, 2);
+        let b: i32x2 = i32x2::new(1, 3);
+        let e: [i32; 4] = [0, 1, 2, 3];
+        let r: [i32; 4] = transmute(vzip_s32(transmute(a), transmute(b)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vzip_u32() {
+        let a: u32x2 = u32x2::new(0, 2);
+        let b: u32x2 = u32x2::new(1, 3);
+        let e: [u32; 4] = [0, 1, 2, 3];
+        let r: [u32; 4] = transmute(vzip_u32(transmute(a), transmute(b)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
     unsafe fn test_vzipq_s8() {
         let a: i8x16 = i8x16::new(0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30);
         let b: i8x16 = i8x16::new(1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31);
@@ -37743,24 +37797,6 @@ mod test {
         let b: i32x4 = i32x4::new(1, 3, 5, 7);
         let e: [i32; 8] = [0, 1, 2, 3, 4, 5, 6, 7];
         let r: [i32; 8] = transmute(vzipq_s32(transmute(a), transmute(b)));
-        assert_eq!(r, e);
-    }
-
-    #[simd_test(enable = "neon")]
-    unsafe fn test_vzip_u8() {
-        let a: u8x8 = u8x8::new(0, 2, 4, 6, 8, 10, 12, 14);
-        let b: u8x8 = u8x8::new(1, 3, 5, 7, 9, 11, 13, 15);
-        let e: [u8; 16] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
-        let r: [u8; 16] = transmute(vzip_u8(transmute(a), transmute(b)));
-        assert_eq!(r, e);
-    }
-
-    #[simd_test(enable = "neon")]
-    unsafe fn test_vzip_u16() {
-        let a: u16x4 = u16x4::new(0, 2, 4, 6);
-        let b: u16x4 = u16x4::new(1, 3, 5, 7);
-        let e: [u16; 8] = [0, 1, 2, 3, 4, 5, 6, 7];
-        let r: [u16; 8] = transmute(vzip_u16(transmute(a), transmute(b)));
         assert_eq!(r, e);
     }
 
@@ -37792,24 +37828,6 @@ mod test {
     }
 
     #[simd_test(enable = "neon")]
-    unsafe fn test_vzip_p8() {
-        let a: i8x8 = i8x8::new(0, 2, 4, 6, 8, 10, 12, 14);
-        let b: i8x8 = i8x8::new(1, 3, 5, 7, 9, 11, 13, 15);
-        let e: [u8; 16] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
-        let r: [u8; 16] = transmute(vzip_p8(transmute(a), transmute(b)));
-        assert_eq!(r, e);
-    }
-
-    #[simd_test(enable = "neon")]
-    unsafe fn test_vzip_p16() {
-        let a: i16x4 = i16x4::new(0, 2, 4, 6);
-        let b: i16x4 = i16x4::new(1, 3, 5, 7);
-        let e: [u16; 8] = [0, 1, 2, 3, 4, 5, 6, 7];
-        let r: [u16; 8] = transmute(vzip_p16(transmute(a), transmute(b)));
-        assert_eq!(r, e);
-    }
-
-    #[simd_test(enable = "neon")]
     unsafe fn test_vzipq_p8() {
         let a: i8x16 = i8x16::new(0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30);
         let b: i8x16 = i8x16::new(1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31);
@@ -37824,24 +37842,6 @@ mod test {
         let b: i16x8 = i16x8::new(1, 3, 5, 7, 9, 11, 13, 15);
         let e: [u16; 16] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
         let r: [u16; 16] = transmute(vzipq_p16(transmute(a), transmute(b)));
-        assert_eq!(r, e);
-    }
-
-    #[simd_test(enable = "neon")]
-    unsafe fn test_vzip_s32() {
-        let a: i32x2 = i32x2::new(0, 2);
-        let b: i32x2 = i32x2::new(1, 3);
-        let e: [i32; 4] = [0, 1, 2, 3];
-        let r: [i32; 4] = transmute(vzip_s32(transmute(a), transmute(b)));
-        assert_eq!(r, e);
-    }
-
-    #[simd_test(enable = "neon")]
-    unsafe fn test_vzip_u32() {
-        let a: u32x2 = u32x2::new(0, 2);
-        let b: u32x2 = u32x2::new(1, 3);
-        let e: [u32; 4] = [0, 1, 2, 3];
-        let r: [u32; 4] = transmute(vzip_u32(transmute(a), transmute(b)));
         assert_eq!(r, e);
     }
 

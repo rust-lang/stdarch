@@ -335,7 +335,7 @@ a = 1
 b = 2
 validate 0
 
-aarch64 = cmeq
+aarch64 = cmp
 generate i64:u64, u64
 
 /// Floating-point compare equal
@@ -345,7 +345,7 @@ a = 1.
 b = 2.
 validate 0
 
-aarch64 = fcmeq
+aarch64 = fcmp
 generate f32:u32, f64:u64
 
 /// Signed compare bitwise equal to zero
@@ -384,7 +384,7 @@ multi_fn = transmute, {vceqz-in_ntt-noext, {transmute, a}}
 a = 1
 validate 0
 
-aarch64 = cmeq
+aarch64 = cmp
 generate i64:u64, u64
 
 /// Floating-point compare bitwise equal to zero
@@ -393,7 +393,7 @@ multi_fn = simd_extract, {vceqz-in_ntt-noext, {vdup_n-in_ntt-noext, a}}, 0
 a = 1.
 validate 0
 
-aarch64 = fcmeq
+aarch64 = fcmp
 generate f32:u32, f64:u64
 
 /// Signed compare bitwise Test bits nonzero
@@ -435,7 +435,7 @@ a = 0
 b = 0
 validate 0
 
-aarch64 = cmtst
+aarch64 = tst
 generate i64:i64:u64, u64
 
 /// Signed saturating accumulate of unsigned value
@@ -524,10 +524,8 @@ a = 1
 b = 2
 validate 0
 
-aarch64 = cmgt
-generate i64:u64
-aarch64 = cmhi
-generate u64
+aarch64 = cmp
+generate i64:u64, u64
 
 /// Floating-point compare greater than
 name = vcgt
@@ -536,7 +534,7 @@ a = 1.
 b = 2.
 validate 0
 
-aarch64 = fcmgt
+aarch64 = fcmp
 generate f32:u32, f64:u64
 
 ////////////////////
@@ -588,10 +586,8 @@ a = 2
 b = 1
 validate 0
 
-aarch64 = cmgt
-generate i64:u64
-aarch64 = cmhi
-generate u64
+aarch64 = cmp
+generate i64:u64, u64
 
 /// Floating-point compare less than
 name = vclt
@@ -600,7 +596,7 @@ a = 2.
 b = 1.
 validate 0
 
-aarch64 = fcmgt
+aarch64 = fcmp
 generate f32:u32, f64:u64
 
 ////////////////////
@@ -627,7 +623,7 @@ a = 1
 b = 2
 validate 0
 
-aarch64 = cmge
+aarch64 = cmp
 generate i64:u64, u64
 
 /// Floating-point compare greater than or equal
@@ -637,7 +633,7 @@ a = 1.
 b = 2.
 validate 0
 
-aarch64 = fcmge
+aarch64 = fcmp
 generate f32:u32, f64:u64
 
 /// Compare unsigned less than or equal
@@ -672,10 +668,8 @@ a = 2
 b = 1
 validate 0
 
-aarch64 = cmge
-generate i64:u64
-aaech64 = cmhs
-generate u64
+aarch64 = cmp
+generate i64:u64, u64
 
 /// Floating-point compare less than or equal
 name = vcle
@@ -684,7 +678,7 @@ a = 2.
 b = 1.
 validate 0
 
-aarch64 = fcmge
+aarch64 = fcmp
 generate f32:u32, f64:u64
 
 ////////////////////
@@ -756,7 +750,7 @@ multi_fn = transmute, {vcgez-in_ntt-noext, {transmute, a}}
 a = -1
 validate 0
 
-aarch64 = cmge
+aarch64 = eor
 generate i64:u64
 
 /// Floating-point compare greater than or equal to zero
@@ -765,7 +759,7 @@ multi_fn = simd_extract, {vcgez-in_ntt-noext, {vdup_n-in_ntt-noext, a}}, 0
 a = -1.
 validate 0
 
-aarch64 = fcmge
+aarch64 = fcmp
 generate f32:u32, f64:u64
 
 /// Compare signed greater than zero
@@ -794,7 +788,7 @@ multi_fn = transmute, {vcgtz-in_ntt-noext, {transmute, a}}
 a = -1
 validate 0
 
-aarch64 = cmgt
+aarch64 = cmp
 generate i64:u64
 
 /// Floating-point compare greater than zero
@@ -803,7 +797,7 @@ multi_fn = simd_extract, {vcgtz-in_ntt-noext, {vdup_n-in_ntt-noext, a}}, 0
 a = -1.
 validate 0
 
-aarch64 = fcmgt
+aarch64 = fcmp
 generate f32:u32, f64:u64
 
 /// Compare signed less than or equal to zero
@@ -832,7 +826,7 @@ multi_fn = transmute, {vclez-in_ntt-noext, {transmute, a}}
 a = 2
 validate 0
 
-aarch64 = cmgt
+aarch64 = cmp
 generate i64:u64
 
 /// Floating-point compare less than or equal to zero
@@ -841,7 +835,7 @@ multi_fn = simd_extract, {vclez-in_ntt-noext, {vdup_n-in_ntt-noext, a}}, 0
 a = 2.
 validate 0
 
-aarch64 = fcmle
+aarch64 = fcmp
 generate f32:u32, f64:u64
 
 /// Compare signed less than zero
@@ -870,7 +864,7 @@ multi_fn = transmute, {vcltz-in_ntt-noext, {transmute, a}}
 a = 2
 validate 0
 
-aarch64 = sshr
+aarch64 = asr
 generate i64:u64
 
 /// Floating-point compare less than zero
@@ -879,7 +873,7 @@ multi_fn = simd_extract, {vcltz-in_ntt-noext, {vdup_n-in_ntt-noext, a}}, 0
 a = 2.
 validate 0
 
-aarch64 = fcmlt
+aarch64 = fcmp
 generate f32:u32, f64:u64
 
 /// Count leading sign bits
@@ -4096,7 +4090,7 @@ name = vaddv
 a = 1., 2., 0., 0.
 validate 3.
 
-aarch64 = faddv
+aarch64 = faddp
 link-aarch64 = faddv._EXT2_._EXT_
 generate float32x2_t:f32, float32x4_t:f32, float64x2_t:f64
 
@@ -4701,9 +4695,11 @@ name = vmaxnmv
 a = 1., 2., 0., 1.
 validate 2.
 
-aarch64 = fmaxnmv
+aarch64 = fmaxnmp
 link-aarch64 = fmaxnmv._EXT2_._EXT_
-generate float32x2_t:f32, float32x4_t:f32, float64x2_t:f64
+generate float32x2_t:f32, float64x2_t:f64
+aarch64 = fmaxnmv
+generate float32x4_t:f32
 
 /// Floating-point Maximum Number Pairwise (vector).
 name = vpmaxnm
@@ -4803,9 +4799,11 @@ name = vminnmv
 a = 1., 0., 2., 3.
 validate 0.
 
-aarch64 = fminnmv
+aarch64 = fminnmp
 link-aarch64 = fminnmv._EXT2_._EXT_
-generate float32x2_t:f32, float32x4_t:f32, float64x2_t:f64
+generate float32x2_t:f32, float64x2_t:f64
+aarch64 = fminnmv
+generate float32x4_t:f32
 
 /// 8-bit integer matrix multiply-accumulate
 name = vmmlaq
@@ -4833,10 +4831,10 @@ multi_fn = vmovl-noqself-noext, a
 a = 1, 2, 3, 4, 3, 4, 5, 6, 3, 4, 5, 6, 7, 8, 9, 10
 validate 3, 4, 5, 6, 7, 8, 9, 10
 
-aarch64 = sshll2
+aarch64 = sxtl2
 generate int8x16_t:int16x8_t, int16x8_t:int32x4_t, int32x4_t:int64x2_t
 
-aarch64 = ushll2
+aarch64 = uxtl2
 generate uint8x16_t:uint16x8_t, uint16x8_t:uint32x4_t, uint32x4_t:uint64x2_t
 
 /// Floating-point add pairwise
@@ -5161,9 +5159,10 @@ c = 2, 1, 1, 1, 1, 1, 1, 1
 n = 0
 validate 5
 
-aarch64 = sqdmull
+aarch64 = sqdmlal
 generate i32:i16:int16x4_t:i32, i32:i16:int16x8_t:i32
 name = vqdmlals_lane
+aarch64 = sqdmull
 generate i64:i32:int32x2_t:i64, i64:i32:int32x4_t:i64
 
 /// Signed saturating doubling multiply-subtract long
@@ -5272,9 +5271,10 @@ c = 2, 1, 1, 1, 1, 1, 1, 1
 n = 0
 validate 6
 
-aarch64 = sqdmull
+aarch64 = sqdmlsl
 generate i32:i16:int16x4_t:i32, i32:i16:int16x8_t:i32
 name = vqdmlsls_lane
+aarch64 = sqdmull
 generate i64:i32:int32x2_t:i64, i64:i32:int32x4_t:i64
 
 /// Signed saturating doubling multiply returning high half
@@ -6951,10 +6951,16 @@ validate 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 2
 
 aarch64 = zip
 arm = vzip
-generate int8x8_t:int8x8_t:int8x8x2_t, int16x4_t:int16x4_t:int16x4x2_t, int8x16_t:int8x16_t:int8x16x2_t, int16x8_t:int16x8_t:int16x8x2_t, int32x4_t:int32x4_t:int32x4x2_t
-generate uint8x8_t:uint8x8_t:uint8x8x2_t, uint16x4_t:uint16x4_t:uint16x4x2_t, uint8x16_t:uint8x16_t:uint8x16x2_t, uint16x8_t:uint16x8_t:uint16x8x2_t, uint32x4_t:uint32x4_t:uint32x4x2_t
-generate poly8x8_t:poly8x8_t:poly8x8x2_t, poly16x4_t:poly16x4_t:poly16x4x2_t, poly8x16_t:poly8x16_t:poly8x16x2_t, poly16x8_t:poly16x8_t:poly16x8x2_t
+generate int8x8_t:int8x8_t:int8x8x2_t, int16x4_t:int16x4_t:int16x4x2_t
+generate uint8x8_t:uint8x8_t:uint8x8x2_t, uint16x4_t:uint16x4_t:uint16x4x2_t
+generate poly8x8_t:poly8x8_t:poly8x8x2_t, poly16x4_t:poly16x4_t:poly16x4x2_t
+arm = vtrn
 generate int32x2_t:int32x2_t:int32x2x2_t, uint32x2_t:uint32x2_t:uint32x2x2_t
+aarch64 = ext
+arm = vorr
+generate int8x16_t:int8x16_t:int8x16x2_t, int16x8_t:int16x8_t:int16x8x2_t, int32x4_t:int32x4_t:int32x4x2_t
+generate uint8x16_t:uint8x16_t:uint8x16x2_t, uint16x8_t:uint16x8_t:uint16x8x2_t, uint32x4_t:uint32x4_t:uint32x4x2_t
+generate poly8x16_t:poly8x16_t:poly8x16x2_t, poly16x8_t:poly16x8_t:poly16x8x2_t
 
 /// Zip vectors
 name = vzip
@@ -6966,8 +6972,11 @@ b = 5., 6., 7., 8.
 validate 1., 5., 2., 6., 3., 7., 4., 8.
 
 aarch64 = zip
-arm = vzip
-generate float32x2_t:float32x2_t:float32x2x2_t, float32x4_t:float32x4_t:float32x4x2_t
+arm = vtrn
+generate float32x2_t:float32x2_t:float32x2x2_t
+aarch64 = ext
+arm = vorr
+generate float32x4_t:float32x4_t:float32x4x2_t
 
 /// Zip vectors
 name = vzip1
@@ -7019,7 +7028,7 @@ b = 2, 3, 3, 8, 3, 15, 8, 16, 3, 29, 8, 30, 15, 31, 16, 32
 validate 1, 2, 2, 3, 2, 3, 3, 8, 2, 3, 3, 8, 3, 8, 15, 16, 2, 3, 3, 8, 3, 8, 15, 16, 3, 8, 15, 16, 29, 30, 31, 32
 
 aarch64 = uzp
-arm = vzup
+arm = vuzp
 generate int8x8_t:int8x8_t:int8x8x2_t, int16x4_t:int16x4_t:int16x4x2_t, int8x16_t:int8x16_t:int8x16x2_t, int16x8_t:int16x8_t:int16x8x2_t, int32x4_t:int32x4_t:int32x4x2_t
 generate uint8x8_t:uint8x8_t:uint8x8x2_t, uint16x4_t:uint16x4_t:uint16x4x2_t, uint8x16_t:uint8x16_t:uint8x16x2_t, uint16x8_t:uint16x8_t:uint16x8x2_t, uint32x4_t:uint32x4_t:uint32x4x2_t
 generate poly8x8_t:poly8x8_t:poly8x8x2_t, poly16x4_t:poly16x4_t:poly16x4x2_t, poly8x16_t:poly8x16_t:poly8x16x2_t, poly16x8_t:poly16x8_t:poly16x8x2_t
@@ -7040,7 +7049,7 @@ aarch64 = zip
 arm = vtrn
 generate float32x2_t:float32x2_t:float32x2x2_t
 aarch64 = uzp
-arm = vzup
+arm = vuzp
 generate float32x4_t:float32x4_t:float32x4x2_t
 
 /// Unzip vectors

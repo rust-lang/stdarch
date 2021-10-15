@@ -245,7 +245,7 @@ pub unsafe fn vceqq_f64(a: float64x2_t, b: float64x2_t) -> uint64x2_t {
 /// Compare bitwise equal
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(cmeq))]
+#[cfg_attr(test, assert_instr(cmp))]
 pub unsafe fn vceqd_s64(a: i64, b: i64) -> u64 {
     transmute(vceq_s64(transmute(a), transmute(b)))
 }
@@ -253,7 +253,7 @@ pub unsafe fn vceqd_s64(a: i64, b: i64) -> u64 {
 /// Compare bitwise equal
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(cmeq))]
+#[cfg_attr(test, assert_instr(cmp))]
 pub unsafe fn vceqd_u64(a: u64, b: u64) -> u64 {
     transmute(vceq_u64(transmute(a), transmute(b)))
 }
@@ -261,7 +261,7 @@ pub unsafe fn vceqd_u64(a: u64, b: u64) -> u64 {
 /// Floating-point compare equal
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(fcmeq))]
+#[cfg_attr(test, assert_instr(fcmp))]
 pub unsafe fn vceqs_f32(a: f32, b: f32) -> u32 {
     simd_extract(vceq_f32(vdup_n_f32(a), vdup_n_f32(b)), 0)
 }
@@ -269,7 +269,7 @@ pub unsafe fn vceqs_f32(a: f32, b: f32) -> u32 {
 /// Floating-point compare equal
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(fcmeq))]
+#[cfg_attr(test, assert_instr(fcmp))]
 pub unsafe fn vceqd_f64(a: f64, b: f64) -> u64 {
     simd_extract(vceq_f64(vdup_n_f64(a), vdup_n_f64(b)), 0)
 }
@@ -493,7 +493,7 @@ pub unsafe fn vceqzq_f64(a: float64x2_t) -> uint64x2_t {
 /// Compare bitwise equal to zero
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(cmeq))]
+#[cfg_attr(test, assert_instr(cmp))]
 pub unsafe fn vceqzd_s64(a: i64) -> u64 {
     transmute(vceqz_s64(transmute(a)))
 }
@@ -501,7 +501,7 @@ pub unsafe fn vceqzd_s64(a: i64) -> u64 {
 /// Compare bitwise equal to zero
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(cmeq))]
+#[cfg_attr(test, assert_instr(cmp))]
 pub unsafe fn vceqzd_u64(a: u64) -> u64 {
     transmute(vceqz_u64(transmute(a)))
 }
@@ -509,7 +509,7 @@ pub unsafe fn vceqzd_u64(a: u64) -> u64 {
 /// Floating-point compare bitwise equal to zero
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(fcmeq))]
+#[cfg_attr(test, assert_instr(fcmp))]
 pub unsafe fn vceqzs_f32(a: f32) -> u32 {
     simd_extract(vceqz_f32(vdup_n_f32(a)), 0)
 }
@@ -517,7 +517,7 @@ pub unsafe fn vceqzs_f32(a: f32) -> u32 {
 /// Floating-point compare bitwise equal to zero
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(fcmeq))]
+#[cfg_attr(test, assert_instr(fcmp))]
 pub unsafe fn vceqzd_f64(a: f64) -> u64 {
     simd_extract(vceqz_f64(vdup_n_f64(a)), 0)
 }
@@ -585,7 +585,7 @@ pub unsafe fn vtstq_u64(a: uint64x2_t, b: uint64x2_t) -> uint64x2_t {
 /// Compare bitwise test bits nonzero
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(cmtst))]
+#[cfg_attr(test, assert_instr(tst))]
 pub unsafe fn vtstd_s64(a: i64, b: i64) -> u64 {
     transmute(vtst_s64(transmute(a), transmute(b)))
 }
@@ -593,7 +593,7 @@ pub unsafe fn vtstd_s64(a: i64, b: i64) -> u64 {
 /// Compare bitwise test bits nonzero
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(cmtst))]
+#[cfg_attr(test, assert_instr(tst))]
 pub unsafe fn vtstd_u64(a: u64, b: u64) -> u64 {
     transmute(vtst_u64(transmute(a), transmute(b)))
 }
@@ -707,7 +707,7 @@ pub unsafe fn vcgtq_f64(a: float64x2_t, b: float64x2_t) -> uint64x2_t {
 /// Compare greater than
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(cmgt))]
+#[cfg_attr(test, assert_instr(cmp))]
 pub unsafe fn vcgtd_s64(a: i64, b: i64) -> u64 {
     transmute(vcgt_s64(transmute(a), transmute(b)))
 }
@@ -715,7 +715,7 @@ pub unsafe fn vcgtd_s64(a: i64, b: i64) -> u64 {
 /// Compare greater than
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(cmhi))]
+#[cfg_attr(test, assert_instr(cmp))]
 pub unsafe fn vcgtd_u64(a: u64, b: u64) -> u64 {
     transmute(vcgt_u64(transmute(a), transmute(b)))
 }
@@ -723,7 +723,7 @@ pub unsafe fn vcgtd_u64(a: u64, b: u64) -> u64 {
 /// Floating-point compare greater than
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(fcmgt))]
+#[cfg_attr(test, assert_instr(fcmp))]
 pub unsafe fn vcgts_f32(a: f32, b: f32) -> u32 {
     simd_extract(vcgt_f32(vdup_n_f32(a), vdup_n_f32(b)), 0)
 }
@@ -731,7 +731,7 @@ pub unsafe fn vcgts_f32(a: f32, b: f32) -> u32 {
 /// Floating-point compare greater than
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(fcmgt))]
+#[cfg_attr(test, assert_instr(fcmp))]
 pub unsafe fn vcgtd_f64(a: f64, b: f64) -> u64 {
     simd_extract(vcgt_f64(vdup_n_f64(a), vdup_n_f64(b)), 0)
 }
@@ -787,7 +787,7 @@ pub unsafe fn vcltq_f64(a: float64x2_t, b: float64x2_t) -> uint64x2_t {
 /// Compare less than
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(cmgt))]
+#[cfg_attr(test, assert_instr(cmp))]
 pub unsafe fn vcltd_s64(a: i64, b: i64) -> u64 {
     transmute(vclt_s64(transmute(a), transmute(b)))
 }
@@ -795,7 +795,7 @@ pub unsafe fn vcltd_s64(a: i64, b: i64) -> u64 {
 /// Compare less than
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(cmhi))]
+#[cfg_attr(test, assert_instr(cmp))]
 pub unsafe fn vcltd_u64(a: u64, b: u64) -> u64 {
     transmute(vclt_u64(transmute(a), transmute(b)))
 }
@@ -803,7 +803,7 @@ pub unsafe fn vcltd_u64(a: u64, b: u64) -> u64 {
 /// Floating-point compare less than
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(fcmgt))]
+#[cfg_attr(test, assert_instr(fcmp))]
 pub unsafe fn vclts_f32(a: f32, b: f32) -> u32 {
     simd_extract(vclt_f32(vdup_n_f32(a), vdup_n_f32(b)), 0)
 }
@@ -811,7 +811,7 @@ pub unsafe fn vclts_f32(a: f32, b: f32) -> u32 {
 /// Floating-point compare less than
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(fcmgt))]
+#[cfg_attr(test, assert_instr(fcmp))]
 pub unsafe fn vcltd_f64(a: f64, b: f64) -> u64 {
     simd_extract(vclt_f64(vdup_n_f64(a), vdup_n_f64(b)), 0)
 }
@@ -835,7 +835,7 @@ pub unsafe fn vcleq_s64(a: int64x2_t, b: int64x2_t) -> uint64x2_t {
 /// Compare greater than or equal
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(cmge))]
+#[cfg_attr(test, assert_instr(cmp))]
 pub unsafe fn vcged_s64(a: i64, b: i64) -> u64 {
     transmute(vcge_s64(transmute(a), transmute(b)))
 }
@@ -843,7 +843,7 @@ pub unsafe fn vcged_s64(a: i64, b: i64) -> u64 {
 /// Compare greater than or equal
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(cmge))]
+#[cfg_attr(test, assert_instr(cmp))]
 pub unsafe fn vcged_u64(a: u64, b: u64) -> u64 {
     transmute(vcge_u64(transmute(a), transmute(b)))
 }
@@ -851,7 +851,7 @@ pub unsafe fn vcged_u64(a: u64, b: u64) -> u64 {
 /// Floating-point compare greater than or equal
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(fcmge))]
+#[cfg_attr(test, assert_instr(fcmp))]
 pub unsafe fn vcges_f32(a: f32, b: f32) -> u32 {
     simd_extract(vcge_f32(vdup_n_f32(a), vdup_n_f32(b)), 0)
 }
@@ -859,7 +859,7 @@ pub unsafe fn vcges_f32(a: f32, b: f32) -> u32 {
 /// Floating-point compare greater than or equal
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(fcmge))]
+#[cfg_attr(test, assert_instr(fcmp))]
 pub unsafe fn vcged_f64(a: f64, b: f64) -> u64 {
     simd_extract(vcge_f64(vdup_n_f64(a), vdup_n_f64(b)), 0)
 }
@@ -899,7 +899,7 @@ pub unsafe fn vcleq_f64(a: float64x2_t, b: float64x2_t) -> uint64x2_t {
 /// Compare less than or equal
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(cmge))]
+#[cfg_attr(test, assert_instr(cmp))]
 pub unsafe fn vcled_s64(a: i64, b: i64) -> u64 {
     transmute(vcle_s64(transmute(a), transmute(b)))
 }
@@ -907,7 +907,7 @@ pub unsafe fn vcled_s64(a: i64, b: i64) -> u64 {
 /// Compare less than or equal
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(cmge))]
+#[cfg_attr(test, assert_instr(cmp))]
 pub unsafe fn vcled_u64(a: u64, b: u64) -> u64 {
     transmute(vcle_u64(transmute(a), transmute(b)))
 }
@@ -915,7 +915,7 @@ pub unsafe fn vcled_u64(a: u64, b: u64) -> u64 {
 /// Floating-point compare less than or equal
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(fcmge))]
+#[cfg_attr(test, assert_instr(fcmp))]
 pub unsafe fn vcles_f32(a: f32, b: f32) -> u32 {
     simd_extract(vcle_f32(vdup_n_f32(a), vdup_n_f32(b)), 0)
 }
@@ -923,7 +923,7 @@ pub unsafe fn vcles_f32(a: f32, b: f32) -> u32 {
 /// Floating-point compare less than or equal
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(fcmge))]
+#[cfg_attr(test, assert_instr(fcmp))]
 pub unsafe fn vcled_f64(a: f64, b: f64) -> u64 {
     simd_extract(vcle_f64(vdup_n_f64(a), vdup_n_f64(b)), 0)
 }
@@ -1087,7 +1087,7 @@ pub unsafe fn vcgezq_f64(a: float64x2_t) -> uint64x2_t {
 /// Compare signed greater than or equal to zero
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(cmge))]
+#[cfg_attr(test, assert_instr(eor))]
 pub unsafe fn vcgezd_s64(a: i64) -> u64 {
     transmute(vcgez_s64(transmute(a)))
 }
@@ -1095,7 +1095,7 @@ pub unsafe fn vcgezd_s64(a: i64) -> u64 {
 /// Floating-point compare greater than or equal to zero
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(fcmge))]
+#[cfg_attr(test, assert_instr(fcmp))]
 pub unsafe fn vcgezs_f32(a: f32) -> u32 {
     simd_extract(vcgez_f32(vdup_n_f32(a)), 0)
 }
@@ -1103,7 +1103,7 @@ pub unsafe fn vcgezs_f32(a: f32) -> u32 {
 /// Floating-point compare greater than or equal to zero
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(fcmge))]
+#[cfg_attr(test, assert_instr(fcmp))]
 pub unsafe fn vcgezd_f64(a: f64) -> u64 {
     simd_extract(vcgez_f64(vdup_n_f64(a)), 0)
 }
@@ -1219,7 +1219,7 @@ pub unsafe fn vcgtzq_f64(a: float64x2_t) -> uint64x2_t {
 /// Compare signed greater than zero
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(cmgt))]
+#[cfg_attr(test, assert_instr(cmp))]
 pub unsafe fn vcgtzd_s64(a: i64) -> u64 {
     transmute(vcgtz_s64(transmute(a)))
 }
@@ -1227,7 +1227,7 @@ pub unsafe fn vcgtzd_s64(a: i64) -> u64 {
 /// Floating-point compare greater than zero
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(fcmgt))]
+#[cfg_attr(test, assert_instr(fcmp))]
 pub unsafe fn vcgtzs_f32(a: f32) -> u32 {
     simd_extract(vcgtz_f32(vdup_n_f32(a)), 0)
 }
@@ -1235,7 +1235,7 @@ pub unsafe fn vcgtzs_f32(a: f32) -> u32 {
 /// Floating-point compare greater than zero
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(fcmgt))]
+#[cfg_attr(test, assert_instr(fcmp))]
 pub unsafe fn vcgtzd_f64(a: f64) -> u64 {
     simd_extract(vcgtz_f64(vdup_n_f64(a)), 0)
 }
@@ -1351,7 +1351,7 @@ pub unsafe fn vclezq_f64(a: float64x2_t) -> uint64x2_t {
 /// Compare less than or equal to zero
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(cmgt))]
+#[cfg_attr(test, assert_instr(cmp))]
 pub unsafe fn vclezd_s64(a: i64) -> u64 {
     transmute(vclez_s64(transmute(a)))
 }
@@ -1359,7 +1359,7 @@ pub unsafe fn vclezd_s64(a: i64) -> u64 {
 /// Floating-point compare less than or equal to zero
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(fcmle))]
+#[cfg_attr(test, assert_instr(fcmp))]
 pub unsafe fn vclezs_f32(a: f32) -> u32 {
     simd_extract(vclez_f32(vdup_n_f32(a)), 0)
 }
@@ -1367,7 +1367,7 @@ pub unsafe fn vclezs_f32(a: f32) -> u32 {
 /// Floating-point compare less than or equal to zero
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(fcmle))]
+#[cfg_attr(test, assert_instr(fcmp))]
 pub unsafe fn vclezd_f64(a: f64) -> u64 {
     simd_extract(vclez_f64(vdup_n_f64(a)), 0)
 }
@@ -1483,7 +1483,7 @@ pub unsafe fn vcltzq_f64(a: float64x2_t) -> uint64x2_t {
 /// Compare less than zero
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(sshr))]
+#[cfg_attr(test, assert_instr(asr))]
 pub unsafe fn vcltzd_s64(a: i64) -> u64 {
     transmute(vcltz_s64(transmute(a)))
 }
@@ -1491,7 +1491,7 @@ pub unsafe fn vcltzd_s64(a: i64) -> u64 {
 /// Floating-point compare less than zero
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(fcmlt))]
+#[cfg_attr(test, assert_instr(fcmp))]
 pub unsafe fn vcltzs_f32(a: f32) -> u32 {
     simd_extract(vcltz_f32(vdup_n_f32(a)), 0)
 }
@@ -1499,7 +1499,7 @@ pub unsafe fn vcltzs_f32(a: f32) -> u32 {
 /// Floating-point compare less than zero
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(fcmlt))]
+#[cfg_attr(test, assert_instr(fcmp))]
 pub unsafe fn vcltzd_f64(a: f64) -> u64 {
     simd_extract(vcltz_f64(vdup_n_f64(a)), 0)
 }
@@ -7502,7 +7502,7 @@ pub unsafe fn vaddd_u64(a: u64, b: u64) -> u64 {
 /// Floating-point add across vector
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(faddv))]
+#[cfg_attr(test, assert_instr(faddp))]
 pub unsafe fn vaddv_f32(a: float32x2_t) -> f32 {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
@@ -7515,7 +7515,7 @@ pub unsafe fn vaddv_f32(a: float32x2_t) -> f32 {
 /// Floating-point add across vector
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(faddv))]
+#[cfg_attr(test, assert_instr(faddp))]
 pub unsafe fn vaddvq_f32(a: float32x4_t) -> f32 {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
@@ -7528,7 +7528,7 @@ pub unsafe fn vaddvq_f32(a: float32x4_t) -> f32 {
 /// Floating-point add across vector
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(faddv))]
+#[cfg_attr(test, assert_instr(faddp))]
 pub unsafe fn vaddvq_f64(a: float64x2_t) -> f64 {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
@@ -8437,7 +8437,7 @@ pub unsafe fn vmaxnmq_f64(a: float64x2_t, b: float64x2_t) -> float64x2_t {
 /// Floating-point maximum number across vector
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(fmaxnmv))]
+#[cfg_attr(test, assert_instr(fmaxnmp))]
 pub unsafe fn vmaxnmv_f32(a: float32x2_t) -> f32 {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
@@ -8445,6 +8445,19 @@ pub unsafe fn vmaxnmv_f32(a: float32x2_t) -> f32 {
         fn vmaxnmv_f32_(a: float32x2_t) -> f32;
     }
     vmaxnmv_f32_(a)
+}
+
+/// Floating-point maximum number across vector
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(fmaxnmp))]
+pub unsafe fn vmaxnmvq_f64(a: float64x2_t) -> f64 {
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.fmaxnmv.f64.v2f64")]
+        fn vmaxnmvq_f64_(a: float64x2_t) -> f64;
+    }
+    vmaxnmvq_f64_(a)
 }
 
 /// Floating-point maximum number across vector
@@ -8458,19 +8471,6 @@ pub unsafe fn vmaxnmvq_f32(a: float32x4_t) -> f32 {
         fn vmaxnmvq_f32_(a: float32x4_t) -> f32;
     }
     vmaxnmvq_f32_(a)
-}
-
-/// Floating-point maximum number across vector
-#[inline]
-#[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(fmaxnmv))]
-pub unsafe fn vmaxnmvq_f64(a: float64x2_t) -> f64 {
-    #[allow(improper_ctypes)]
-    extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.fmaxnmv.f64.v2f64")]
-        fn vmaxnmvq_f64_(a: float64x2_t) -> f64;
-    }
-    vmaxnmvq_f64_(a)
 }
 
 /// Floating-point Maximum Number Pairwise (vector).
@@ -8619,7 +8619,7 @@ pub unsafe fn vminnmq_f64(a: float64x2_t, b: float64x2_t) -> float64x2_t {
 /// Floating-point minimum number across vector
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(fminnmv))]
+#[cfg_attr(test, assert_instr(fminnmp))]
 pub unsafe fn vminnmv_f32(a: float32x2_t) -> f32 {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
@@ -8627,6 +8627,19 @@ pub unsafe fn vminnmv_f32(a: float32x2_t) -> f32 {
         fn vminnmv_f32_(a: float32x2_t) -> f32;
     }
     vminnmv_f32_(a)
+}
+
+/// Floating-point minimum number across vector
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(fminnmp))]
+pub unsafe fn vminnmvq_f64(a: float64x2_t) -> f64 {
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.fminnmv.f64.v2f64")]
+        fn vminnmvq_f64_(a: float64x2_t) -> f64;
+    }
+    vminnmvq_f64_(a)
 }
 
 /// Floating-point minimum number across vector
@@ -8642,23 +8655,10 @@ pub unsafe fn vminnmvq_f32(a: float32x4_t) -> f32 {
     vminnmvq_f32_(a)
 }
 
-/// Floating-point minimum number across vector
-#[inline]
-#[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(fminnmv))]
-pub unsafe fn vminnmvq_f64(a: float64x2_t) -> f64 {
-    #[allow(improper_ctypes)]
-    extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.fminnmv.f64.v2f64")]
-        fn vminnmvq_f64_(a: float64x2_t) -> f64;
-    }
-    vminnmvq_f64_(a)
-}
-
 /// Vector move
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(sshll2))]
+#[cfg_attr(test, assert_instr(sxtl2))]
 pub unsafe fn vmovl_high_s8(a: int8x16_t) -> int16x8_t {
     let a: int8x8_t = simd_shuffle8!(a, a, [8, 9, 10, 11, 12, 13, 14, 15]);
     vmovl_s8(a)
@@ -8667,7 +8667,7 @@ pub unsafe fn vmovl_high_s8(a: int8x16_t) -> int16x8_t {
 /// Vector move
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(sshll2))]
+#[cfg_attr(test, assert_instr(sxtl2))]
 pub unsafe fn vmovl_high_s16(a: int16x8_t) -> int32x4_t {
     let a: int16x4_t = simd_shuffle4!(a, a, [4, 5, 6, 7]);
     vmovl_s16(a)
@@ -8676,7 +8676,7 @@ pub unsafe fn vmovl_high_s16(a: int16x8_t) -> int32x4_t {
 /// Vector move
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(sshll2))]
+#[cfg_attr(test, assert_instr(sxtl2))]
 pub unsafe fn vmovl_high_s32(a: int32x4_t) -> int64x2_t {
     let a: int32x2_t = simd_shuffle2!(a, a, [2, 3]);
     vmovl_s32(a)
@@ -8685,7 +8685,7 @@ pub unsafe fn vmovl_high_s32(a: int32x4_t) -> int64x2_t {
 /// Vector move
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(ushll2))]
+#[cfg_attr(test, assert_instr(uxtl2))]
 pub unsafe fn vmovl_high_u8(a: uint8x16_t) -> uint16x8_t {
     let a: uint8x8_t = simd_shuffle8!(a, a, [8, 9, 10, 11, 12, 13, 14, 15]);
     vmovl_u8(a)
@@ -8694,7 +8694,7 @@ pub unsafe fn vmovl_high_u8(a: uint8x16_t) -> uint16x8_t {
 /// Vector move
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(ushll2))]
+#[cfg_attr(test, assert_instr(uxtl2))]
 pub unsafe fn vmovl_high_u16(a: uint16x8_t) -> uint32x4_t {
     let a: uint16x4_t = simd_shuffle4!(a, a, [4, 5, 6, 7]);
     vmovl_u16(a)
@@ -8703,7 +8703,7 @@ pub unsafe fn vmovl_high_u16(a: uint16x8_t) -> uint32x4_t {
 /// Vector move
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(ushll2))]
+#[cfg_attr(test, assert_instr(uxtl2))]
 pub unsafe fn vmovl_high_u32(a: uint32x4_t) -> uint64x2_t {
     let a: uint32x2_t = simd_shuffle2!(a, a, [2, 3]);
     vmovl_u32(a)
@@ -9136,7 +9136,7 @@ pub unsafe fn vqdmlals_s32(a: i64, b: i32, c: i32) -> i64 {
 /// Signed saturating doubling multiply-add long
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(sqdmull, LANE = 0))]
+#[cfg_attr(test, assert_instr(sqdmlal, LANE = 0))]
 #[rustc_legacy_const_generics(3)]
 pub unsafe fn vqdmlalh_lane_s16<const LANE: i32>(a: i32, b: i16, c: int16x4_t) -> i32 {
     static_assert_imm2!(LANE);
@@ -9146,7 +9146,7 @@ pub unsafe fn vqdmlalh_lane_s16<const LANE: i32>(a: i32, b: i16, c: int16x4_t) -
 /// Signed saturating doubling multiply-add long
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(sqdmull, LANE = 0))]
+#[cfg_attr(test, assert_instr(sqdmlal, LANE = 0))]
 #[rustc_legacy_const_generics(3)]
 pub unsafe fn vqdmlalh_laneq_s16<const LANE: i32>(a: i32, b: i16, c: int16x8_t) -> i32 {
     static_assert_imm3!(LANE);
@@ -9286,7 +9286,7 @@ pub unsafe fn vqdmlsls_s32(a: i64, b: i32, c: i32) -> i64 {
 /// Signed saturating doubling multiply-subtract long
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(sqdmull, LANE = 0))]
+#[cfg_attr(test, assert_instr(sqdmlsl, LANE = 0))]
 #[rustc_legacy_const_generics(3)]
 pub unsafe fn vqdmlslh_lane_s16<const LANE: i32>(a: i32, b: i16, c: int16x4_t) -> i32 {
     static_assert_imm2!(LANE);
@@ -9296,7 +9296,7 @@ pub unsafe fn vqdmlslh_lane_s16<const LANE: i32>(a: i32, b: i16, c: int16x4_t) -
 /// Signed saturating doubling multiply-subtract long
 #[inline]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(sqdmull, LANE = 0))]
+#[cfg_attr(test, assert_instr(sqdmlsl, LANE = 0))]
 #[rustc_legacy_const_generics(3)]
 pub unsafe fn vqdmlslh_laneq_s16<const LANE: i32>(a: i32, b: i16, c: int16x8_t) -> i32 {
     static_assert_imm3!(LANE);
@@ -19673,18 +19673,18 @@ mod test {
     }
 
     #[simd_test(enable = "neon")]
-    unsafe fn test_vmaxnmvq_f32() {
-        let a: f32x4 = f32x4::new(1., 2., 0., 1.);
-        let e: f32 = 2.;
-        let r: f32 = transmute(vmaxnmvq_f32(transmute(a)));
-        assert_eq!(r, e);
-    }
-
-    #[simd_test(enable = "neon")]
     unsafe fn test_vmaxnmvq_f64() {
         let a: f64x2 = f64x2::new(1., 2.);
         let e: f64 = 2.;
         let r: f64 = transmute(vmaxnmvq_f64(transmute(a)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vmaxnmvq_f32() {
+        let a: f32x4 = f32x4::new(1., 2., 0., 1.);
+        let e: f32 = 2.;
+        let r: f32 = transmute(vmaxnmvq_f32(transmute(a)));
         assert_eq!(r, e);
     }
 
@@ -19792,18 +19792,18 @@ mod test {
     }
 
     #[simd_test(enable = "neon")]
-    unsafe fn test_vminnmvq_f32() {
-        let a: f32x4 = f32x4::new(1., 0., 2., 3.);
-        let e: f32 = 0.;
-        let r: f32 = transmute(vminnmvq_f32(transmute(a)));
-        assert_eq!(r, e);
-    }
-
-    #[simd_test(enable = "neon")]
     unsafe fn test_vminnmvq_f64() {
         let a: f64x2 = f64x2::new(1., 0.);
         let e: f64 = 0.;
         let r: f64 = transmute(vminnmvq_f64(transmute(a)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon")]
+    unsafe fn test_vminnmvq_f32() {
+        let a: f32x4 = f32x4::new(1., 0., 2., 3.);
+        let e: f32 = 0.;
+        let r: f32 = transmute(vminnmvq_f32(transmute(a)));
         assert_eq!(r, e);
     }
 
