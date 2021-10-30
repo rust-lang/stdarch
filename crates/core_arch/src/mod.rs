@@ -172,7 +172,7 @@ pub mod arch {
         #[stable(feature = "simd_wasm32", since = "1.33.0")]
         pub use crate::core_arch::wasm32::*;
     }
-    
+
     /// Platform-specific intrinsics for the `wasm` target family.
     ///
     /// See the [module documentation](../index.html) for more details.
