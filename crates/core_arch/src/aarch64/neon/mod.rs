@@ -4963,7 +4963,7 @@ mod tests {
         let a: u32x4 = u32x4::new(1, 2, 3, 4);
         let b: u32x4 = u32x4::new(1, 2, 3, 4);
         let c: u32x4 = u32x4::new(1, 2, 3, 4);
-        let e: u32x4 = u32x4::new(1, 2, 3, 4);
+        let e: u32x4 = u32x4::new(2, 1536, 4, 16395);
         let r: u32x4 = transmute(vsm3tt1aq_u32::<0>(transmute(a), transmute(b), transmute(c)));
         assert_eq!(r, e);
     }
@@ -4973,7 +4973,7 @@ mod tests {
         let a: u32x4 = u32x4::new(1, 2, 3, 4);
         let b: u32x4 = u32x4::new(1, 2, 3, 4);
         let c: u32x4 = u32x4::new(1, 2, 3, 4);
-        let e: u32x4 = u32x4::new(1, 2, 3, 4);
+        let e: u32x4 = u32x4::new(2, 1536, 4, 16392);
         let r: u32x4 = transmute(vsm3tt1bq_u32::<0>(transmute(a), transmute(b), transmute(c)));
         assert_eq!(r, e);
     }
@@ -4983,7 +4983,7 @@ mod tests {
         let a: u32x4 = u32x4::new(1, 2, 3, 4);
         let b: u32x4 = u32x4::new(1, 2, 3, 4);
         let c: u32x4 = u32x4::new(1, 2, 3, 4);
-        let e: u32x4 = u32x4::new(1, 2, 3, 4);
+        let e: u32x4 = u32x4::new(2, 1572864, 4, 1447435);
         let r: u32x4 = transmute(vsm3tt2aq_u32::<0>(transmute(a), transmute(b), transmute(c)));
         assert_eq!(r, e);
     }
@@ -4993,7 +4993,7 @@ mod tests {
         let a: u32x4 = u32x4::new(1, 2, 3, 4);
         let b: u32x4 = u32x4::new(1, 2, 3, 4);
         let c: u32x4 = u32x4::new(1, 2, 3, 4);
-        let e: u32x4 = u32x4::new(1, 2, 3, 4);
+        let e: u32x4 = u32x4::new(2, 1572864, 4, 1052680);
         let r: u32x4 = transmute(vsm3tt2bq_u32::<0>(transmute(a), transmute(b), transmute(c)));
         assert_eq!(r, e);
     }
@@ -5001,8 +5001,8 @@ mod tests {
     #[simd_test(enable = "neon,sha3")]
     unsafe fn test_vxarq_u64() {
         let a: u64x2 = u64x2::new(1, 2);
-        let b: u64x2 = u64x2::new(1, 2);
-        let e: u64x2 = u64x2::new(5, 6);
+        let b: u64x2 = u64x2::new(3, 4);
+        let e: u64x2 = u64x2::new(2, 6);
         let r: u64x2 = transmute(vxarq_u64::<0>(transmute(a), transmute(b)));
         assert_eq!(r, e);
     }

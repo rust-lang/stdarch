@@ -4810,7 +4810,7 @@ pub unsafe fn vpadalq_u32(a: uint64x2_t, b: uint32x4_t) -> uint64x2_t {
 #[inline]
 #[target_feature(enable = "neon,i8mm")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v8"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vsmmla))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(smmla))]
 pub unsafe fn vmmlaq_s32(a: int32x4_t, b: int8x16_t, c: int8x16_t) -> int32x4_t {
     #[allow(improper_ctypes)]
@@ -4829,7 +4829,7 @@ pub unsafe fn vmmlaq_s32(a: int32x4_t, b: int8x16_t, c: int8x16_t) -> int32x4_t 
 #[inline]
 #[target_feature(enable = "neon,i8mm")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v8"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vummla))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ummla))]
 pub unsafe fn vmmlaq_u32(a: uint32x4_t, b: uint8x16_t, c: uint8x16_t) -> uint32x4_t {
     #[allow(improper_ctypes)]
@@ -4848,7 +4848,7 @@ pub unsafe fn vmmlaq_u32(a: uint32x4_t, b: uint8x16_t, c: uint8x16_t) -> uint32x
 #[inline]
 #[target_feature(enable = "neon,i8mm")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v8"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vusmmla))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(usmmla))]
 pub unsafe fn vusmmlaq_s32(a: int32x4_t, b: uint8x16_t, c: int8x16_t) -> int32x4_t {
     #[allow(improper_ctypes)]
@@ -10427,9 +10427,9 @@ mod tests {
     }
     #[simd_test(enable = "neon,i8mm")]
     unsafe fn test_vmmlaq_s32() {
-        let a: i32x4 = i32x4::new(1, 2, 3, 4);
-        let b: i8x16 = i8x16::new(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
-        let c: i8x16 = i8x16::new(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+        let a: i32x4 = i32x4::new(1, 3, 4, 9);
+        let b: i8x16 = i8x16::new(1, 21, 31, 14, 5, 6, 17, 8, 9, 13, 15, 12, 13, 19, 20, 16);
+        let c: i8x16 = i8x16::new(12, 22, 3, 4, 5, 56, 7, 8, 91, 10, 11, 15, 13, 14, 17, 16);
         let e: i32x4 = i32x4::new(1, 2, 3, 4);
         let r: i32x4 = transmute(vmmlaq_s32(transmute(a), transmute(b), transmute(c)));
         assert_eq!(r, e);
@@ -10437,9 +10437,9 @@ mod tests {
 
     #[simd_test(enable = "neon,i8mm")]
     unsafe fn test_vmmlaq_u32() {
-        let a: u32x4 = u32x4::new(1, 2, 3, 4);
-        let b: u8x16 = u8x16::new(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
-        let c: u8x16 = u8x16::new(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+        let a: u32x4 = u32x4::new(1, 3, 4, 9);
+        let b: i8x16 = i8x16::new(1, 21, 31, 14, 5, 6, 17, 8, 9, 13, 15, 12, 13, 19, 20, 16);
+        let c: i8x16 = i8x16::new(12, 22, 3, 4, 5, 56, 7, 8, 91, 10, 11, 15, 13, 14, 17, 16);
         let e: u32x4 = u32x4::new(1, 2, 3, 4);
         let r: u32x4 = transmute(vmmlaq_u32(transmute(a), transmute(b), transmute(c)));
         assert_eq!(r, e);
@@ -10447,9 +10447,9 @@ mod tests {
 
     #[simd_test(enable = "neon,i8mm")]
     unsafe fn test_vusmmlaq_s32() {
-        let a: i32x4 = i32x4::new(1, 2, 3, 4);
-        let b: u8x16 = u8x16::new(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
-        let c: i8x16 = i8x16::new(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+        let a: i32x4 = i32x4::new(1, 3, 4, 9);
+        let b: i8x16 = i8x16::new(1, 21, 31, 14, 5, 6, 17, 8, 9, 13, 15, 12, 13, 19, 20, 16);
+        let c: i8x16 = i8x16::new(12, 22, 3, 4, 5, 56, 7, 8, 91, 10, 11, 15, 13, 14, 17, 16);
         let e: i32x4 = i32x4::new(1, 2, 3, 4);
         let r: i32x4 = transmute(vusmmlaq_s32(transmute(a), transmute(b), transmute(c)));
         assert_eq!(r, e);

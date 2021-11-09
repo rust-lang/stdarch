@@ -6851,7 +6851,7 @@ name = vsm3partw1
 a = 1, 2, 3, 4
 b = 1, 2, 3, 4
 c = 1, 2, 3, 4
-validate 1, 2, 3, 4
+validate 2147549312, 3221323968, 131329, 2684362752
 target = sm4
 
 aarch64 = sm3partw1
@@ -6863,7 +6863,7 @@ name = vsm3partw2
 a = 1, 2, 3, 4
 b = 1, 2, 3, 4
 c = 1, 2, 3, 4
-validate 1, 2, 3, 4
+validate 128, 256, 384, 1077977696
 target = sm4
 
 aarch64 = sm3partw2
@@ -6875,7 +6875,7 @@ name = vsm3ss1
 a = 1, 2, 3, 4
 b = 1, 2, 3, 4
 c = 1, 2, 3, 4
-validate 1, 2, 3, 4
+validate 0, 0, 0, 2098176
 target = sm4
 
 aarch64 = sm3ss1
@@ -6886,7 +6886,7 @@ generate uint32x4_t
 name = vsm4ekey
 a = 1, 2, 3, 4
 b = 1, 2, 3, 4
-validate 1, 2, 3, 4
+validate 1784948604, 136020997, 2940231695, 3789947679
 target = sm4
 
 aarch64 = sm4ekey
@@ -6897,7 +6897,7 @@ generate uint32x4_t
 name = vsm4e
 a = 1, 2, 3, 4
 b = 1, 2, 3, 4
-validate 1, 2, 3, 4
+validate 1093874472, 3616769504, 3878330411, 2765298765
 target = sm4
 
 aarch64 = sm4e
@@ -6908,7 +6908,7 @@ generate uint32x4_t
 name = vrax1
 a = 1, 2
 b = 3, 4
-validate 5, 6
+validate 7, 10
 target = sha3
 
 aarch64 = rax1
@@ -6920,7 +6920,7 @@ name = vsha512h
 a = 1, 2
 b = 3, 4
 c = 5, 6
-validate 7, 8
+validate 11189044327219203, 7177611956453380
 target = sha3
 
 aarch64 = sha512h
@@ -6932,7 +6932,7 @@ name = vsha512h2
 a = 1, 2
 b = 3, 4
 c = 5, 6
-validate 7, 8
+validate 5770237651009406214, 349133864969
 target = sha3
 
 aarch64 = sha512h2
@@ -6943,7 +6943,7 @@ generate uint64x2_t
 name = vsha512su0
 a = 1, 2
 b = 3, 4
-validate 7, 8
+validate 144115188075855874, 9439544818968559619
 target = sha3
 
 aarch64 = sha512su0
@@ -6955,7 +6955,7 @@ name = vsha512su1
 a = 1, 2
 b = 3, 4
 c = 5, 6
-validate 7, 8
+validate 105553116266526, 140737488355368
 target = sha3
 
 aarch64 = sha512su1
