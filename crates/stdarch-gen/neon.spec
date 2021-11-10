@@ -6966,42 +6966,41 @@ generate uint64x2_t
 name = vrnd32x
 a = 1.1, 1.9, -1.7, -2.3
 validate 1.0, 2.0, -2.0, -2.0
-target = v8.5a
+target = frintts
 
 aarch64 = frint32x
 link-aarch64 = frint32x._EXT_
-// v8.5a is no_runtime feature
-//generate float32x2_t, float32x4_t
+generate float32x2_t, float32x4_t
 
 /// Floating-point round to 32-bit integer toward zero
 name = vrnd32z
 a = 1.1, 1.9, -1.7, -2.3
 validate 1.0, 1.0, -1.0, -2.0
-target = v8.5a
+target = frintts
 
 aarch64 = frint32z
 link-aarch64 = frint32z._EXT_
-//generate float32x2_t, float32x4_t
+generate float32x2_t, float32x4_t
 
 /// Floating-point round to 64-bit integer, using current rounding mode
 name = vrnd64x
 a = 1.1, 1.9, -1.7, -2.3
 validate 1.0, 2.0, -2.0, -2.0
-target = v8.5a
+target = frintts
 
 aarch64 = frint64x
 link-aarch64 = frint64x._EXT_
-//generate float32x2_t, float32x4_t
+generate float32x2_t, float32x4_t
 
 /// Floating-point round to 64-bit integer toward zero
 name = vrnd64z
 a = 1.1, 1.9, -1.7, -2.3
 validate 1.0, 1.0, -1.0, -2.0
-target = v8.5a
+target = frintts
 
 aarch64 = frint64z
 link-aarch64 = frint64z._EXT_
-//generate float32x2_t, float32x4_t
+generate float32x2_t, float32x4_t
 
 /// Transpose elements
 name = vtrn

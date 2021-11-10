@@ -467,7 +467,7 @@ enum TargetFeature {
     SHA3,
     RDM,
     SM4,
-    V85a,
+    FTTS,
 }
 
 #[derive(Clone, Copy)]
@@ -1074,7 +1074,7 @@ fn gen_aarch64(
         SHA3 => "neon,sha3",
         RDM => "rdm",
         SM4 => "neon,sm4",
-        V85a => "neon,v8.5a",
+        FTTS => "neon,frintts",
     };
     let current_fn = if let Some(current_fn) = current_fn.clone() {
         if link_aarch64.is_some() {
@@ -1389,7 +1389,7 @@ fn gen_aarch64(
         I8MM => "neon,i8mm",
         SM4 => "neon,sm4",
         SHA3 => "neon,sha3",
-        V85a => "neon,v8.5a",
+        FTTS => "neon,frintts",
         _ => "neon",
     };
     let test = match fn_type {
@@ -1795,7 +1795,7 @@ fn gen_arm(
         SHA3 => "neon,sha3",
         RDM => "rdm",
         SM4 => "neon,sm4",
-        V85a => "neon,v8.5a",
+        FTTS => "neon,frintts",
     };
     let current_target_arm = match target {
         Default => "v7",
@@ -1809,7 +1809,7 @@ fn gen_arm(
         RDM => unreachable!(),
         SM4 => unreachable!(),
         SHA3 => unreachable!(),
-        V85a => unreachable!(),
+        FTTS => unreachable!(),
     };
     let current_fn = if let Some(current_fn) = current_fn.clone() {
         if link_aarch64.is_some() || link_arm.is_some() {
@@ -2389,7 +2389,7 @@ fn gen_arm(
         I8MM => "neon,i8mm",
         SM4 => "neon,sm4",
         SHA3 => "neon,sha3",
-        V85a => "neon,v8.5a",
+        FTTS => "neon,frintts",
         _ => "neon",
     };
     let test = match fn_type {
@@ -3205,7 +3205,7 @@ mod test {
                     "sha3" => SHA3,
                     "rdm" => RDM,
                     "sm4" => SM4,
-                    "v8.5a" => V85a,
+                    "frintts" => FTTS,
                     _ => Default,
                 },
                 _ => Default,

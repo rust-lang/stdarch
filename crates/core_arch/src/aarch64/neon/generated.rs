@@ -12096,6 +12096,110 @@ pub unsafe fn vsha512su1q_u64(a: uint64x2_t, b: uint64x2_t, c: uint64x2_t) -> ui
     vsha512su1q_u64_(a, b, c)
 }
 
+/// Floating-point round to 32-bit integer, using current rounding mode
+#[inline]
+#[target_feature(enable = "neon,frintts")]
+#[cfg_attr(test, assert_instr(frint32x))]
+pub unsafe fn vrnd32x_f32(a: float32x2_t) -> float32x2_t {
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.frint32x.v2f32")]
+        fn vrnd32x_f32_(a: float32x2_t) -> float32x2_t;
+    }
+    vrnd32x_f32_(a)
+}
+
+/// Floating-point round to 32-bit integer, using current rounding mode
+#[inline]
+#[target_feature(enable = "neon,frintts")]
+#[cfg_attr(test, assert_instr(frint32x))]
+pub unsafe fn vrnd32xq_f32(a: float32x4_t) -> float32x4_t {
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.frint32x.v4f32")]
+        fn vrnd32xq_f32_(a: float32x4_t) -> float32x4_t;
+    }
+    vrnd32xq_f32_(a)
+}
+
+/// Floating-point round to 32-bit integer toward zero
+#[inline]
+#[target_feature(enable = "neon,frintts")]
+#[cfg_attr(test, assert_instr(frint32z))]
+pub unsafe fn vrnd32z_f32(a: float32x2_t) -> float32x2_t {
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.frint32z.v2f32")]
+        fn vrnd32z_f32_(a: float32x2_t) -> float32x2_t;
+    }
+    vrnd32z_f32_(a)
+}
+
+/// Floating-point round to 32-bit integer toward zero
+#[inline]
+#[target_feature(enable = "neon,frintts")]
+#[cfg_attr(test, assert_instr(frint32z))]
+pub unsafe fn vrnd32zq_f32(a: float32x4_t) -> float32x4_t {
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.frint32z.v4f32")]
+        fn vrnd32zq_f32_(a: float32x4_t) -> float32x4_t;
+    }
+    vrnd32zq_f32_(a)
+}
+
+/// Floating-point round to 64-bit integer, using current rounding mode
+#[inline]
+#[target_feature(enable = "neon,frintts")]
+#[cfg_attr(test, assert_instr(frint64x))]
+pub unsafe fn vrnd64x_f32(a: float32x2_t) -> float32x2_t {
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.frint64x.v2f32")]
+        fn vrnd64x_f32_(a: float32x2_t) -> float32x2_t;
+    }
+    vrnd64x_f32_(a)
+}
+
+/// Floating-point round to 64-bit integer, using current rounding mode
+#[inline]
+#[target_feature(enable = "neon,frintts")]
+#[cfg_attr(test, assert_instr(frint64x))]
+pub unsafe fn vrnd64xq_f32(a: float32x4_t) -> float32x4_t {
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.frint64x.v4f32")]
+        fn vrnd64xq_f32_(a: float32x4_t) -> float32x4_t;
+    }
+    vrnd64xq_f32_(a)
+}
+
+/// Floating-point round to 64-bit integer toward zero
+#[inline]
+#[target_feature(enable = "neon,frintts")]
+#[cfg_attr(test, assert_instr(frint64z))]
+pub unsafe fn vrnd64z_f32(a: float32x2_t) -> float32x2_t {
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.frint64z.v2f32")]
+        fn vrnd64z_f32_(a: float32x2_t) -> float32x2_t;
+    }
+    vrnd64z_f32_(a)
+}
+
+/// Floating-point round to 64-bit integer toward zero
+#[inline]
+#[target_feature(enable = "neon,frintts")]
+#[cfg_attr(test, assert_instr(frint64z))]
+pub unsafe fn vrnd64zq_f32(a: float32x4_t) -> float32x4_t {
+    #[allow(improper_ctypes)]
+    extern "unadjusted" {
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.frint64z.v4f32")]
+        fn vrnd64zq_f32_(a: float32x4_t) -> float32x4_t;
+    }
+    vrnd64zq_f32_(a)
+}
+
 /// Transpose vectors
 #[inline]
 #[target_feature(enable = "neon")]
@@ -23144,6 +23248,70 @@ mod test {
         let c: u64x2 = u64x2::new(5, 6);
         let e: u64x2 = u64x2::new(105553116266526, 140737488355368);
         let r: u64x2 = transmute(vsha512su1q_u64(transmute(a), transmute(b), transmute(c)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon,frintts")]
+    unsafe fn test_vrnd32x_f32() {
+        let a: f32x2 = f32x2::new(1.1, 1.9);
+        let e: f32x2 = f32x2::new(1.0, 2.0);
+        let r: f32x2 = transmute(vrnd32x_f32(transmute(a)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon,frintts")]
+    unsafe fn test_vrnd32xq_f32() {
+        let a: f32x4 = f32x4::new(1.1, 1.9, -1.7, -2.3);
+        let e: f32x4 = f32x4::new(1.0, 2.0, -2.0, -2.0);
+        let r: f32x4 = transmute(vrnd32xq_f32(transmute(a)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon,frintts")]
+    unsafe fn test_vrnd32z_f32() {
+        let a: f32x2 = f32x2::new(1.1, 1.9);
+        let e: f32x2 = f32x2::new(1.0, 1.0);
+        let r: f32x2 = transmute(vrnd32z_f32(transmute(a)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon,frintts")]
+    unsafe fn test_vrnd32zq_f32() {
+        let a: f32x4 = f32x4::new(1.1, 1.9, -1.7, -2.3);
+        let e: f32x4 = f32x4::new(1.0, 1.0, -1.0, -2.0);
+        let r: f32x4 = transmute(vrnd32zq_f32(transmute(a)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon,frintts")]
+    unsafe fn test_vrnd64x_f32() {
+        let a: f32x2 = f32x2::new(1.1, 1.9);
+        let e: f32x2 = f32x2::new(1.0, 2.0);
+        let r: f32x2 = transmute(vrnd64x_f32(transmute(a)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon,frintts")]
+    unsafe fn test_vrnd64xq_f32() {
+        let a: f32x4 = f32x4::new(1.1, 1.9, -1.7, -2.3);
+        let e: f32x4 = f32x4::new(1.0, 2.0, -2.0, -2.0);
+        let r: f32x4 = transmute(vrnd64xq_f32(transmute(a)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon,frintts")]
+    unsafe fn test_vrnd64z_f32() {
+        let a: f32x2 = f32x2::new(1.1, 1.9);
+        let e: f32x2 = f32x2::new(1.0, 1.0);
+        let r: f32x2 = transmute(vrnd64z_f32(transmute(a)));
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "neon,frintts")]
+    unsafe fn test_vrnd64zq_f32() {
+        let a: f32x4 = f32x4::new(1.1, 1.9, -1.7, -2.3);
+        let e: f32x4 = f32x4::new(1.0, 1.0, -1.0, -2.0);
+        let r: f32x4 = transmute(vrnd64zq_f32(transmute(a)));
         assert_eq!(r, e);
     }
 
