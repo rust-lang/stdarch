@@ -116,6 +116,7 @@ struct Intrinsic {
     #[serde(rename = "return")]
     return_: Return,
     name: String,
+    tech: String,
     #[serde(rename = "CPUID", default)]
     cpuid: Vec<String>,
     #[serde(rename = "parameter", default)]
@@ -155,7 +156,7 @@ fn verify_all_signatures() {
     //   https://software.intel.com/sites/landingpage/IntrinsicsGuide/#
     //
     // Open up the network console and you'll see an xml file was downloaded
-    // (currently called data-3.4.xml). That's the file we downloaded
+    // (currently called data-3.6.xml). That's the file we downloaded
     // here.
     let xml = include_bytes!("../x86-intel.xml");
 
@@ -381,17 +382,14 @@ fn verify_all_signatures() {
             continue;
         }
 
-        // we'll get to avx-512 later
-        // let avx512 = intel.iter().any(|i| {
-        //     i.name.starts_with("_mm512") || i.cpuid.iter().any(|c| {
-        //         c.contains("512")
-        //     })
-        // });
-        // if avx512 {
-        //     continue
-        // }
-
         for intel in intel {
+            // ignore intrinsics from Intel's Short Vector Math Library (SVML)
+            // these don't map directly to single instructions but correspond
+            // to optimized functions implemented in that library
+            if intel.tech == "SVML" {
+                continue;
+            }
+
             missing
                 .entry(&intel.cpuid)
                 .or_insert_with(Vec::new)
@@ -406,8 +404,7 @@ fn verify_all_signatures() {
                 println!("\n<details><summary>{:?}</summary><p>\n", k);
                 for intel in v {
                     let url = format!(
-                        "https://software.intel.com/sites/landingpage\
-                         /IntrinsicsGuide/#text={}&expand=5236",
+                        "https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text={}",
                         intel.name
                     );
                     println!("  * [ ] [`{}`]({})", intel.name, url);
