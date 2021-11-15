@@ -30323,6 +30323,160 @@ pub unsafe fn _mm512_store_pd(mem_addr: *mut f64, a: __m512d) {
     ptr::write(mem_addr as *mut __m512d, a);
 }
 
+/// Load packed 32-bit integers from memory into dst using writemask k
+/// (elements are copied from src when the corresponding mask bit is not set).
+/// mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=_mm512_mask_loadu_epi32)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vmovdqu32))]
+pub unsafe fn _mm512_mask_loadu_epi32(src: __m512i, mask: __mmask16, ptr: *const i32) -> __m512i {
+    let mut result: __m512i = src;
+
+    asm!(
+    "vmovdqu32 {io}{{{k}}}, [{p}]",
+    p = in(reg) ptr,
+    k = in(kreg) mask,
+    io = inout(zmm_reg) result,
+    options(nostack), options(pure), options(readonly)
+    );
+
+    result
+}
+
+/// Store packed 32-bit integers from a into memory using writemask k.
+/// mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=_mm512_mask_storeu_epi32)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vmovdqu32))]
+pub unsafe fn _mm512_mask_storeu_epi32(ptr: *mut i32, mask: __mmask16, a: __m512i) {
+    asm!(
+    "vmovdqu32 [{p}]{{{k}}}, {i}",
+    p = in(reg) ptr,
+    k = in(kreg) mask,
+    i = in(zmm_reg) a,
+    options(nostack)
+    );
+}
+
+/// Load packed 64-bit integers from memory into dst using writemask k
+/// (elements are copied from src when the corresponding mask bit is not set).
+/// mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=_mm512_mask_loadu_epi64)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vmovdqu64))]
+pub unsafe fn _mm512_mask_loadu_epi64(src: __m512i, mask: __mmask8, ptr: *const i64) -> __m512i {
+    let mut result: __m512i = src;
+
+    asm!(
+    "vmovdqu64 {io}{{{k}}}, [{p}]",
+    p = in(reg) ptr,
+    k = in(kreg) mask,
+    io = inout(zmm_reg) result,
+    options(nostack), options(pure), options(readonly)
+    );
+
+    result
+}
+
+/// Store packed 64-bit integers from a into memory using writemask k.
+/// mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=_mm512_mask_storeu_epi64)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vmovdqu64))]
+pub unsafe fn _mm512_mask_storeu_epi64(ptr: *mut i64, mask: __mmask8, a: __m512i) {
+    asm!(
+    "vmovdqu64 [{p}]{{{k}}}, {i}",
+    p = in(reg) ptr,
+    k = in(kreg) mask,
+    i = in(zmm_reg) a,
+    options(nostack)
+    );
+}
+
+/// Load packed single-precision (32-bit) floating-point elements from memory into dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+/// mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=_mm512_mask_loadu_ps)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vmovups))]
+pub unsafe fn _mm512_mask_loadu_ps(src: __m512, mask: __mmask16, ptr: *const f32) -> __m512 {
+    let mut result: __m512 = src;
+
+    asm!(
+    "vmovups {io}{{{k}}}, [{p}]",
+    p = in(reg) ptr,
+    k = in(kreg) mask,
+    io = inout(zmm_reg) result,
+    options(nostack), options(pure), options(readonly)
+    );
+
+    result
+}
+
+/// Store packed single-precision (32-bit) floating-point elements from a into memory using writemask k.
+/// mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=_mm512_mask_storeu_ps)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vmovups))]
+pub unsafe fn _mm512_mask_storeu_ps(ptr: *mut f32, mask: __mmask16, a: __m512) {
+    asm!(
+    "vmovups [{p}]{{{k}}}, {i}",
+    p = in(reg) ptr,
+    k = in(kreg) mask,
+    i = in(zmm_reg) a,
+    options(nostack)
+    );
+}
+
+/// Load packed double-precision (64-bit) floating-point elements from memory into dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
+/// mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=_mm512_mask_loadu_pd)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vmovupd))]
+pub unsafe fn _mm512_mask_loadu_pd(src: __m512d, mask: __mmask8, ptr: *const f64) -> __m512d {
+    let mut result: __m512d = src;
+
+    asm!(
+    "vmovupd {io}{{{k}}}, [{p}]",
+    p = in(reg) ptr,
+    k = in(kreg) mask,
+    io = inout(zmm_reg) result,
+    options(nostack), options(pure), options(readonly)
+    );
+
+    result
+}
+
+/// Store packed double-precision (64-bit) floating-point elements from a into memory using writemask k.
+/// mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=_mm512_mask_storeu_pd)
+#[inline]
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(vmovupd))]
+pub unsafe fn _mm512_mask_storeu_pd(ptr: *mut f64, mask: __mmask8, a: __m512d) {
+    asm!(
+    "vmovupd [{p}]{{{k}}}, {i}",
+    p = in(reg) ptr,
+    k = in(kreg) mask,
+    i = in(zmm_reg) a,
+    options(nostack)
+    );
+}
+
 /// Set packed double-precision (64-bit) floating-point elements in dst with the supplied values in reverse order.
 ///
 /// [Intel's documentation]( https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_setr_pd&expand=5002)
@@ -44585,6 +44739,101 @@ mod tests {
         let mut r = _mm512_undefined_ps();
         _mm512_storeu_ps(&mut r as *mut _ as *mut f32, a);
         assert_eq_m512(r, a);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_loadu_epi32() {
+        let src = _mm512_set1_epi32(42);
+        let a = &[1_i32, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+        let p = a.as_ptr();
+        let m = 0b11101000_11001010;
+        let r = _mm512_mask_loadu_epi32(src, m, black_box(p));
+        let e = _mm512_setr_epi32(42, 2, 42, 4, 42, 42, 7, 8, 42, 42, 42, 12, 42, 14, 15, 16);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_storeu_epi32() {
+        let mut r = _mm512_set1_epi32(42);
+        let a = _mm512_setr_epi32(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
+        let m = 0b11101000_11001010;
+        _mm512_mask_storeu_epi32(&mut r as *mut _ as *mut i32, m, a);
+        let e = _mm512_setr_epi32(42, 2, 42, 4, 42, 42, 7, 8, 42, 42, 42, 12, 42, 14, 15, 16);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_loadu_epi64() {
+        let src = _mm512_set1_epi64(42);
+        let a = &[1_i64, 2, 3, 4, 5, 6, 7, 8];
+        let p = a.as_ptr();
+        let m = 0b11001010;
+        let r = _mm512_mask_loadu_epi64(src, m, black_box(p));
+        let e = _mm512_setr_epi64(42, 2, 42, 4, 42, 42, 7, 8);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_storeu_epi64() {
+        let mut r = _mm512_set1_epi64(42);
+        let a = _mm512_setr_epi64(1, 2, 3, 4, 5, 6, 7, 8);
+        let m = 0b11001010;
+        _mm512_mask_storeu_epi64(&mut r as *mut _ as *mut i64, m, a);
+        let e = _mm512_setr_epi64(42, 2, 42, 4, 42, 42, 7, 8);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_loadu_ps() {
+        let src = _mm512_set1_ps(42.0);
+        let a = &[
+            1.0_f32, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0,
+            16.0,
+        ];
+        let p = a.as_ptr();
+        let m = 0b11101000_11001010;
+        let r = _mm512_mask_loadu_ps(src, m, black_box(p));
+        let e = _mm512_setr_ps(
+            42.0, 2.0, 42.0, 4.0, 42.0, 42.0, 7.0, 8.0, 42.0, 42.0, 42.0, 12.0, 42.0, 14.0, 15.0,
+            16.0,
+        );
+        assert_eq_m512(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_storeu_ps() {
+        let mut r = _mm512_set1_ps(42.0);
+        let a = _mm512_setr_ps(
+            1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0,
+        );
+        let m = 0b11101000_11001010;
+        _mm512_mask_storeu_ps(&mut r as *mut _ as *mut f32, m, a);
+        let e = _mm512_setr_ps(
+            42.0, 2.0, 42.0, 4.0, 42.0, 42.0, 7.0, 8.0, 42.0, 42.0, 42.0, 12.0, 42.0, 14.0, 15.0,
+            16.0,
+        );
+        assert_eq_m512(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_loadu_pd() {
+        let src = _mm512_set1_pd(42.0);
+        let a = &[1.0_f64, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0];
+        let p = a.as_ptr();
+        let m = 0b11001010;
+        let r = _mm512_mask_loadu_pd(src, m, black_box(p));
+        let e = _mm512_setr_pd(42.0, 2.0, 42.0, 4.0, 42.0, 42.0, 7.0, 8.0);
+        assert_eq_m512d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_storeu_pd() {
+        let mut r = _mm512_set1_pd(42.0);
+        let a = _mm512_setr_pd(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0);
+        let m = 0b11001010;
+        _mm512_mask_storeu_pd(&mut r as *mut _ as *mut f64, m, a);
+        let e = _mm512_setr_pd(42.0, 2.0, 42.0, 4.0, 42.0, 42.0, 7.0, 8.0);
+        assert_eq_m512d(r, e);
     }
 
     #[simd_test(enable = "avx512f")]
