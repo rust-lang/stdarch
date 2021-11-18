@@ -894,7 +894,7 @@ multi_fn = transmute, {vcls-signed-noext, {transmute, a}}
 a = MIN, MAX, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, MAX
 validate BITS_M1, BITS_M1, BITS_M1, BITS_M1, BITS_M1, BITS_M1, BITS_M1, BITS_M1, BITS_M1, BITS_M1, BITS_M1, BITS_M1, BITS_M1, BITS_M1, BITS_M1, BITS_M1
 
-arm = vcls.s
+arm = vcls
 aarch64 = cls
 generate uint*_t
 

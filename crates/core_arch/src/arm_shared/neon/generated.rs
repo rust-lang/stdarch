@@ -1784,7 +1784,7 @@ vclsq_s32_(a)
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vcls.u8"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vcls))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(cls))]
 pub unsafe fn vcls_u8(a: uint8x8_t) -> uint8x8_t {
     transmute(vcls_s8(transmute(a)))
@@ -1794,7 +1794,7 @@ pub unsafe fn vcls_u8(a: uint8x8_t) -> uint8x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vcls.u8"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vcls))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(cls))]
 pub unsafe fn vclsq_u8(a: uint8x16_t) -> uint8x16_t {
     transmute(vclsq_s8(transmute(a)))
@@ -1804,7 +1804,7 @@ pub unsafe fn vclsq_u8(a: uint8x16_t) -> uint8x16_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vcls.u16"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vcls))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(cls))]
 pub unsafe fn vcls_u16(a: uint16x4_t) -> uint16x4_t {
     transmute(vcls_s16(transmute(a)))
@@ -1814,7 +1814,7 @@ pub unsafe fn vcls_u16(a: uint16x4_t) -> uint16x4_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vcls.u16"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vcls))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(cls))]
 pub unsafe fn vclsq_u16(a: uint16x8_t) -> uint16x8_t {
     transmute(vclsq_s16(transmute(a)))
@@ -1824,7 +1824,7 @@ pub unsafe fn vclsq_u16(a: uint16x8_t) -> uint16x8_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vcls.u32"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vcls))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(cls))]
 pub unsafe fn vcls_u32(a: uint32x2_t) -> uint32x2_t {
     transmute(vcls_s32(transmute(a)))
@@ -1834,7 +1834,7 @@ pub unsafe fn vcls_u32(a: uint32x2_t) -> uint32x2_t {
 #[inline]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr("vcls.u32"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vcls))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(cls))]
 pub unsafe fn vclsq_u32(a: uint32x4_t) -> uint32x4_t {
     transmute(vclsq_s32(transmute(a)))
