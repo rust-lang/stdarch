@@ -31,11 +31,7 @@ pub enum Language {
 
 fn gen_code_c(intrinsic: &Intrinsic, constraints: &[&Argument], name: String) -> String {
     if let Some((current, constraints)) = constraints.split_last() {
-        let range = current
-            .constraints
-            .iter()
-            .map(|c| c.to_range())
-            .flat_map(|r| r.into_iter());
+        let range = current.constraints.iter().map(|c| c.to_range()).flat_map(|r| r.into_iter());
 
         range
             .map(|i| {
@@ -52,19 +48,12 @@ fn gen_code_c(intrinsic: &Intrinsic, constraints: &[&Argument], name: String) ->
             })
             .collect()
     } else {
-        (1..20)
-            .map(|idx| intrinsic.generate_pass_c(idx, &name))
-            .collect::<Vec<_>>()
-            .join("\n")
+        (1..20).map(|idx| intrinsic.generate_pass_c(idx, &name)).collect::<Vec<_>>().join("\n")
     }
 }
 
 fn generate_c_program(header_files: &[&str], intrinsic: &Intrinsic) -> String {
-    let constraints = intrinsic
-        .arguments
-        .iter()
-        .filter(|i| i.has_constraint())
-        .collect_vec();
+    let constraints = intrinsic.arguments.iter().filter(|i| i.has_constraint()).collect_vec();
 
     format!(
         r#"{header_files}
@@ -105,11 +94,7 @@ int main(int argc, char **argv) {{
 
 fn gen_code_rust(intrinsic: &Intrinsic, constraints: &[&Argument], name: String) -> String {
     if let Some((current, constraints)) = constraints.split_last() {
-        let range = current
-            .constraints
-            .iter()
-            .map(|c| c.to_range())
-            .flat_map(|r| r.into_iter());
+        let range = current.constraints.iter().map(|c| c.to_range()).flat_map(|r| r.into_iter());
 
         range
             .map(|i| {
@@ -126,19 +111,12 @@ fn gen_code_rust(intrinsic: &Intrinsic, constraints: &[&Argument], name: String)
             })
             .collect()
     } else {
-        (1..20)
-            .map(|idx| intrinsic.generate_pass_rust(idx, &name))
-            .collect::<Vec<_>>()
-            .join("\n")
+        (1..20).map(|idx| intrinsic.generate_pass_rust(idx, &name)).collect::<Vec<_>>().join("\n")
     }
 }
 
 fn generate_rust_program(intrinsic: &Intrinsic) -> String {
-    let constraints = intrinsic
-        .arguments
-        .iter()
-        .filter(|i| i.has_constraint())
-        .collect_vec();
+    let constraints = intrinsic.arguments.iter().filter(|i| i.has_constraint()).collect_vec();
 
     format!(
         r#"#![feature(simd_ffi)]
@@ -320,15 +298,13 @@ fn main() {
         .get_matches();
 
     let filename = matches.value_of("INPUT").unwrap();
-    let toolchain = matches
-        .value_of("TOOLCHAIN")
-        .map_or("".into(), |t| format!("+{}", t));
+    let toolchain = matches.value_of("TOOLCHAIN").map_or("".into(), |t| format!("+{}", t));
 
     let cpp_compiler = matches.value_of("CPPCOMPILER").unwrap();
     let c_runner = matches.value_of("RUNNER").unwrap_or("");
     let skip = if let Some(filename) = matches.value_of("SKIP") {
         let data = std::fs::read_to_string(&filename).expect("Failed to open file");
-        data.lines().map(String::from).collect_vec()
+        data.lines().map(str::trim).filter(|s| !s.contains('#')).map(String::from).collect_vec()
     } else {
         Default::default()
     };
@@ -343,9 +319,7 @@ fn main() {
         .filter(|i| !(i.results.kind() == TypeKind::Float && i.results.inner_size() == 16))
         .filter(|i| !i.arguments.iter().any(|a| a.ty.kind() == TypeKind::BFloat))
         .filter(|i| {
-            !i.arguments
-                .iter()
-                .any(|a| a.ty.kind() == TypeKind::Float && a.ty.inner_size() == 16)
+            !i.arguments.iter().any(|a| a.ty.kind() == TypeKind::Float && a.ty.inner_size() == 16)
         })
         // Skip pointers for now, we would probably need to look at the return
         // type to work out how many elements we need to point to.
@@ -408,23 +382,15 @@ fn compare_outputs(intrinsics: &Vec<Intrinsic>, toolchain: &str, runner: &str) -
             }
 
             if !rust.status.success() {
-                error!(
-                    "Failed to run rust program for intrinsic {}",
-                    intrinsic.name
-                );
+                error!("Failed to run rust program for intrinsic {}", intrinsic.name);
                 return Some(FailureReason::RunRust(intrinsic.name.clone()));
             }
 
             info!("Comparing intrinsic: {}", intrinsic.name);
 
-            let c = std::str::from_utf8(&c.stdout)
-                .unwrap()
-                .to_lowercase()
-                .replace("-nan", "nan");
-            let rust = std::str::from_utf8(&rust.stdout)
-                .unwrap()
-                .to_lowercase()
-                .replace("-nan", "nan");
+            let c = std::str::from_utf8(&c.stdout).unwrap().to_lowercase().replace("-nan", "nan");
+            let rust =
+                std::str::from_utf8(&rust.stdout).unwrap().to_lowercase().replace("-nan", "nan");
 
             if c == rust {
                 None
