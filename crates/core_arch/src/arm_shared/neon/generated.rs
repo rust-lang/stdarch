@@ -1810,7 +1810,7 @@ vclsq_s32_(a)
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(vcls))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(cls))]
-pub unsafe fn vcls_u8(a: uint8x8_t) -> uint8x8_t {
+pub unsafe fn vcls_u8(a: uint8x8_t) -> int8x8_t {
     transmute(vcls_s8(transmute(a)))
 }
 
@@ -1820,7 +1820,7 @@ pub unsafe fn vcls_u8(a: uint8x8_t) -> uint8x8_t {
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(vcls))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(cls))]
-pub unsafe fn vclsq_u8(a: uint8x16_t) -> uint8x16_t {
+pub unsafe fn vclsq_u8(a: uint8x16_t) -> int8x16_t {
     transmute(vclsq_s8(transmute(a)))
 }
 
@@ -1830,7 +1830,7 @@ pub unsafe fn vclsq_u8(a: uint8x16_t) -> uint8x16_t {
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(vcls))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(cls))]
-pub unsafe fn vcls_u16(a: uint16x4_t) -> uint16x4_t {
+pub unsafe fn vcls_u16(a: uint16x4_t) -> int16x4_t {
     transmute(vcls_s16(transmute(a)))
 }
 
@@ -1840,7 +1840,7 @@ pub unsafe fn vcls_u16(a: uint16x4_t) -> uint16x4_t {
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(vcls))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(cls))]
-pub unsafe fn vclsq_u16(a: uint16x8_t) -> uint16x8_t {
+pub unsafe fn vclsq_u16(a: uint16x8_t) -> int16x8_t {
     transmute(vclsq_s16(transmute(a)))
 }
 
@@ -1850,7 +1850,7 @@ pub unsafe fn vclsq_u16(a: uint16x8_t) -> uint16x8_t {
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(vcls))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(cls))]
-pub unsafe fn vcls_u32(a: uint32x2_t) -> uint32x2_t {
+pub unsafe fn vcls_u32(a: uint32x2_t) -> int32x2_t {
     transmute(vcls_s32(transmute(a)))
 }
 
@@ -1860,7 +1860,7 @@ pub unsafe fn vcls_u32(a: uint32x2_t) -> uint32x2_t {
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(vcls))]
 #[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(cls))]
-pub unsafe fn vclsq_u32(a: uint32x4_t) -> uint32x4_t {
+pub unsafe fn vclsq_u32(a: uint32x4_t) -> int32x4_t {
     transmute(vclsq_s32(transmute(a)))
 }
 
@@ -25706,48 +25706,48 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vcls_u8() {
         let a: u8x8 = u8x8::new(0, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00);
-        let e: u8x8 = u8x8::new(7, 7, 7, 7, 7, 7, 7, 7);
-        let r: u8x8 = transmute(vcls_u8(transmute(a)));
+        let e: i8x8 = i8x8::new(7, 7, 7, 7, 7, 7, 7, 7);
+        let r: i8x8 = transmute(vcls_u8(transmute(a)));
         assert_eq!(r, e);
     }
 
     #[simd_test(enable = "neon")]
     unsafe fn test_vclsq_u8() {
         let a: u8x16 = u8x16::new(0, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF);
-        let e: u8x16 = u8x16::new(7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7);
-        let r: u8x16 = transmute(vclsq_u8(transmute(a)));
+        let e: i8x16 = i8x16::new(7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7);
+        let r: i8x16 = transmute(vclsq_u8(transmute(a)));
         assert_eq!(r, e);
     }
 
     #[simd_test(enable = "neon")]
     unsafe fn test_vcls_u16() {
         let a: u16x4 = u16x4::new(0, 0xFF_FF, 0x00, 0x00);
-        let e: u16x4 = u16x4::new(15, 15, 15, 15);
-        let r: u16x4 = transmute(vcls_u16(transmute(a)));
+        let e: i16x4 = i16x4::new(15, 15, 15, 15);
+        let r: i16x4 = transmute(vcls_u16(transmute(a)));
         assert_eq!(r, e);
     }
 
     #[simd_test(enable = "neon")]
     unsafe fn test_vclsq_u16() {
         let a: u16x8 = u16x8::new(0, 0xFF_FF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00);
-        let e: u16x8 = u16x8::new(15, 15, 15, 15, 15, 15, 15, 15);
-        let r: u16x8 = transmute(vclsq_u16(transmute(a)));
+        let e: i16x8 = i16x8::new(15, 15, 15, 15, 15, 15, 15, 15);
+        let r: i16x8 = transmute(vclsq_u16(transmute(a)));
         assert_eq!(r, e);
     }
 
     #[simd_test(enable = "neon")]
     unsafe fn test_vcls_u32() {
         let a: u32x2 = u32x2::new(0, 0xFF_FF_FF_FF);
-        let e: u32x2 = u32x2::new(31, 31);
-        let r: u32x2 = transmute(vcls_u32(transmute(a)));
+        let e: i32x2 = i32x2::new(31, 31);
+        let r: i32x2 = transmute(vcls_u32(transmute(a)));
         assert_eq!(r, e);
     }
 
     #[simd_test(enable = "neon")]
     unsafe fn test_vclsq_u32() {
         let a: u32x4 = u32x4::new(0, 0xFF_FF_FF_FF, 0x00, 0x00);
-        let e: u32x4 = u32x4::new(31, 31, 31, 31);
-        let r: u32x4 = transmute(vclsq_u32(transmute(a)));
+        let e: i32x4 = i32x4::new(31, 31, 31, 31);
+        let r: i32x4 = transmute(vclsq_u32(transmute(a)));
         assert_eq!(r, e);
     }
 

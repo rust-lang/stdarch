@@ -896,7 +896,7 @@ validate BITS_M1, BITS_M1, BITS_M1, BITS_M1, BITS_M1, BITS_M1, BITS_M1, BITS_M1,
 
 arm = vcls
 aarch64 = cls
-generate uint*_t
+generate uint8x8_t:int8x8_t, uint8x16_t:int8x16_t, uint16x4_t:int16x4_t, uint16x8_t:int16x8_t, uint32x2_t:int32x2_t, uint32x4_t:int32x4_t
 
 /// Count leading zero bits
 name = vclz
