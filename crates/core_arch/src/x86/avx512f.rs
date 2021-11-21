@@ -30323,65 +30323,1301 @@ pub unsafe fn _mm512_store_pd(mem_addr: *mut f64, a: __m512d) {
     ptr::write(mem_addr as *mut __m512d, a);
 }
 
-define_masked_load_unaligned!("avx512f", _mm512_mask_loadu_epi32, _mm512_maskz_loadu_epi32, "32-bit integers", vmovdqu32, __m512i, zmm_reg, __mmask16, i32);
-define_masked_load_unaligned!("avx512f", _mm512_mask_loadu_epi64, _mm512_maskz_loadu_epi64, "64-bit integers", vmovdqu64, __m512i, zmm_reg, __mmask8, i64);
-define_masked_load_unaligned!("avx512f", _mm512_mask_loadu_ps, _mm512_maskz_loadu_ps, "single-precision (32-bit) floating-point elements", vmovups, __m512, zmm_reg, __mmask16, f32);
-define_masked_load_unaligned!("avx512f", _mm512_mask_loadu_pd, _mm512_maskz_loadu_pd, "double-precision (64-bit) floating-point elements", vmovupd, __m512d, zmm_reg, __mmask8, f64);
+/// Load packed 32-bit integers from memory into dst using writemask k
+/// (elements are copied from src when the corresponding mask bit is not set).
+/// mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_loadu_epi32)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_mask_loadu_epi32(src: __m512i, k: __mmask16, mem_addr: *const i32) -> __m512i {
+    let mut dst: __m512i = src;
+    asm!(
+         "vmovdqu32 {2}{{{1}}}, [{0}]",
+         in(reg) mem_addr,
+         in(kreg) k,
+         inout(zmm_reg) dst,
+         options(pure, readonly, nostack)
+    );
+    dst
+}
 
-define_masked_load_unaligned!("avx512f,avx512vl,avx", _mm256_mask_loadu_epi32, _mm256_maskz_loadu_epi32, "32-bit integers", vmovdqu32, __m256i, ymm_reg, __mmask8, i32);
-define_masked_load_unaligned!("avx512f,avx512vl,avx", _mm256_mask_loadu_epi64, _mm256_maskz_loadu_epi64, "64-bit integers", vmovdqu64, __m256i, ymm_reg, __mmask8, i64);
-define_masked_load_unaligned!("avx512f,avx512vl,avx", _mm256_mask_loadu_ps, _mm256_maskz_loadu_ps, "single-precision (32-bit) floating-point elements", vmovups, __m256, ymm_reg, __mmask8, f32);
-define_masked_load_unaligned!("avx512f,avx512vl,avx", _mm256_mask_loadu_pd, _mm256_maskz_loadu_pd, "double-precision (64-bit) floating-point elements", vmovupd, __m256d, ymm_reg, __mmask8, f64);
+/// Load packed 32-bit integers from memory into dst using zeromask k
+/// (elements are zeroed out when the corresponding mask bit is not set).
+/// mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_loadu_epi32)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_maskz_loadu_epi32(k: __mmask16, mem_addr: *const i32) -> __m512i {
+    let mut dst: __m512i;
+    asm!(
+         "vmovdqu32 {2}{{{1}}} {{z}}, [{0}]",
+         in(reg) mem_addr,
+         in(kreg) k,
+         out(zmm_reg) dst,
+         options(pure, readonly, nostack)
+    );
+    dst
+}
 
-define_masked_load_unaligned!("avx512f,avx512vl,avx", _mm_mask_loadu_epi32, _mm_maskz_loadu_epi32, "32-bit integers", vmovdqu32, __m128i, xmm_reg, __mmask8, i32);
-define_masked_load_unaligned!("avx512f,avx512vl,avx", _mm_mask_loadu_epi64, _mm_maskz_loadu_epi64, "64-bit integers", vmovdqu64, __m128i, xmm_reg, __mmask8, i64);
-define_masked_load_unaligned!("avx512f,avx512vl,avx", _mm_mask_loadu_ps, _mm_maskz_loadu_ps, "single-precision (32-bit) floating-point elements", vmovups, __m128, xmm_reg, __mmask8, f32);
-define_masked_load_unaligned!("avx512f,avx512vl,avx", _mm_mask_loadu_pd, _mm_maskz_loadu_pd, "double-precision (64-bit) floating-point elements", vmovupd, __m128d, xmm_reg, __mmask8, f64);
+/// Load packed 64-bit integers from memory into dst using writemask k
+/// (elements are copied from src when the corresponding mask bit is not set).
+/// mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_loadu_epi64)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_mask_loadu_epi64(src: __m512i, k: __mmask8, mem_addr: *const i64) -> __m512i {
+    let mut dst: __m512i = src;
+    asm!(
+         "vmovdqu64 {2}{{{1}}}, [{0}]",
+         in(reg) mem_addr,
+         in(kreg) k,
+         inout(zmm_reg) dst,
+         options(pure, readonly, nostack)
+    );
+    dst
+}
 
-define_masked_load_aligned!("avx512f", _mm512_mask_load_epi32, _mm512_maskz_load_epi32, "32-bit integers", vmovdqa32, __m512i, zmm_reg, __mmask16, i32, "64-byte");
-define_masked_load_aligned!("avx512f", _mm512_mask_load_epi64, _mm512_maskz_load_epi64, "64-bit integers", vmovdqa64, __m512i, zmm_reg, __mmask8, i64, "64-byte");
-define_masked_load_aligned!("avx512f", _mm512_mask_load_ps, _mm512_maskz_load_ps, "single-precision (32-bit) floating-point elements", vmovaps, __m512, zmm_reg, __mmask16, f32, "64-byte");
-define_masked_load_aligned!("avx512f", _mm512_mask_load_pd, _mm512_maskz_load_pd, "double-precision (64-bit) floating-point elements", vmovapd, __m512d, zmm_reg, __mmask8, f64, "64-byte");
+/// Load packed 64-bit integers from memory into dst using zeromask k
+/// (elements are zeroed out when the corresponding mask bit is not set).
+/// mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_loadu_epi64)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_maskz_loadu_epi64(k: __mmask8, mem_addr: *const i64) -> __m512i {
+    let mut dst: __m512i;
+    asm!(
+         "vmovdqu64 {2}{{{1}}} {{z}}, [{0}]",
+         in(reg) mem_addr,
+         in(kreg) k,
+         out(zmm_reg) dst,
+         options(pure, readonly, nostack)
+    );
+    dst
+}
 
-define_masked_load_aligned!("avx512f,avx512vl,avx", _mm256_mask_load_epi32, _mm256_maskz_load_epi32, "32-bit integers", vmovdqa32, __m256i, ymm_reg, __mmask8, i32, "32-byte");
-define_masked_load_aligned!("avx512f,avx512vl,avx", _mm256_mask_load_epi64, _mm256_maskz_load_epi64, "64-bit integers", vmovdqa64, __m256i, ymm_reg, __mmask8, i64, "32-byte");
-define_masked_load_aligned!("avx512f,avx512vl,avx", _mm256_mask_load_ps, _mm256_maskz_load_ps, "single-precision (32-bit) floating-point elements", vmovaps, __m256, ymm_reg, __mmask8, f32, "32-byte");
-define_masked_load_aligned!("avx512f,avx512vl,avx", _mm256_mask_load_pd, _mm256_maskz_load_pd, "double-precision (64-bit) floating-point elements", vmovapd, __m256d, ymm_reg, __mmask8, f64, "32-byte");
+/// Load packed single-precision (32-bit) floating-point elements from memory into dst using writemask k
+/// (elements are copied from src when the corresponding mask bit is not set).
+/// mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_loadu_ps)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_mask_loadu_ps(src: __m512, k: __mmask16, mem_addr: *const f32) -> __m512 {
+    let mut dst: __m512 = src;
+    asm!(
+         "vmovups {2}{{{1}}}, [{0}]",
+         in(reg) mem_addr,
+         in(kreg) k,
+         inout(zmm_reg) dst,
+         options(pure, readonly, nostack)
+    );
+    dst
+}
 
-define_masked_load_aligned!("avx512f,avx512vl,avx", _mm_mask_load_epi32, _mm_maskz_load_epi32, "32-bit integers", vmovdqa32, __m128i, xmm_reg, __mmask8, i32, "16-byte");
-define_masked_load_aligned!("avx512f,avx512vl,avx", _mm_mask_load_epi64, _mm_maskz_load_epi64, "64-bit integers", vmovdqa64, __m128i, xmm_reg, __mmask8, i64, "16-byte");
-define_masked_load_aligned!("avx512f,avx512vl,avx", _mm_mask_load_ps, _mm_maskz_load_ps, "single-precision (32-bit) floating-point elements", vmovaps, __m128, xmm_reg, __mmask8, f32, "16-byte");
-define_masked_load_aligned!("avx512f,avx512vl,avx", _mm_mask_load_pd, _mm_maskz_load_pd, "double-precision (64-bit) floating-point elements", vmovapd, __m128d, xmm_reg, __mmask8, f64, "16-byte");
+/// Load packed single-precision (32-bit) floating-point elements from memory into dst using zeromask k
+/// (elements are zeroed out when the corresponding mask bit is not set).
+/// mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_loadu_ps)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_maskz_loadu_ps(k: __mmask16, mem_addr: *const f32) -> __m512 {
+    let mut dst: __m512;
+    asm!(
+         "vmovups {2}{{{1}}} {{z}}, [{0}]",
+         in(reg) mem_addr,
+         in(kreg) k,
+         out(zmm_reg) dst,
+         options(pure, readonly, nostack)
+    );
+    dst
+}
 
-define_masked_store_unaligned!("avx512f", _mm512_mask_storeu_epi32, "32-bit integers", vmovdqu32, __m512i, zmm_reg, __mmask16, i32);
-define_masked_store_unaligned!("avx512f", _mm512_mask_storeu_epi64, "64-bit integers", vmovdqu64, __m512i, zmm_reg, __mmask8, i64);
-define_masked_store_unaligned!("avx512f", _mm512_mask_storeu_ps, "single-precision (32-bit) floating-point elements", vmovups, __m512, zmm_reg, __mmask16, f32);
-define_masked_store_unaligned!("avx512f", _mm512_mask_storeu_pd, "double-precision (64-bit) floating-point elements", vmovupd, __m512d, zmm_reg, __mmask8, f64);
+/// Load packed double-precision (64-bit) floating-point elements from memory into dst using writemask k
+/// (elements are copied from src when the corresponding mask bit is not set).
+/// mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_loadu_pd)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_mask_loadu_pd(src: __m512d, k: __mmask8, mem_addr: *const f64) -> __m512d {
+    let mut dst: __m512d = src;
+    asm!(
+         "vmovupd {2}{{{1}}}, [{0}]",
+         in(reg) mem_addr,
+         in(kreg) k,
+         inout(zmm_reg) dst,
+         options(pure, readonly, nostack)
+    );
+    dst
+}
 
-define_masked_store_unaligned!("avx512f,avx512vl,avx", _mm256_mask_storeu_epi32, "32-bit integers", vmovdqu32, __m256i, ymm_reg, __mmask8, i32);
-define_masked_store_unaligned!("avx512f,avx512vl,avx", _mm256_mask_storeu_epi64, "64-bit integers", vmovdqu64, __m256i, ymm_reg, __mmask8, i64);
-define_masked_store_unaligned!("avx512f,avx512vl,avx", _mm256_mask_storeu_ps, "single-precision (32-bit) floating-point elements", vmovups, __m256, ymm_reg, __mmask8, f32);
-define_masked_store_unaligned!("avx512f,avx512vl,avx", _mm256_mask_storeu_pd, "double-precision (64-bit) floating-point elements", vmovupd, __m256d, ymm_reg, __mmask8, f64);
+/// Load packed double-precision (64-bit) floating-point elements from memory into dst using zeromask k
+/// (elements are zeroed out when the corresponding mask bit is not set).
+/// mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_loadu_pd)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_maskz_loadu_pd(k: __mmask8, mem_addr: *const f64) -> __m512d {
+    let mut dst: __m512d;
+    asm!(
+         "vmovupd {2}{{{1}}} {{z}}, [{0}]",
+         in(reg) mem_addr,
+         in(kreg) k,
+         out(zmm_reg) dst,
+         options(pure, readonly, nostack)
+    );
+    dst
+}
 
-define_masked_store_unaligned!("avx512f,avx512vl,avx", _mm_mask_storeu_epi32, "32-bit integers", vmovdqu32, __m128i, xmm_reg, __mmask8, i32);
-define_masked_store_unaligned!("avx512f,avx512vl,avx", _mm_mask_storeu_epi64, "64-bit integers", vmovdqu64, __m128i, xmm_reg, __mmask8, i64);
-define_masked_store_unaligned!("avx512f,avx512vl,avx", _mm_mask_storeu_ps, "single-precision (32-bit) floating-point elements", vmovups, __m128, xmm_reg, __mmask8, f32);
-define_masked_store_unaligned!("avx512f,avx512vl,avx", _mm_mask_storeu_pd, "double-precision (64-bit) floating-point elements", vmovupd, __m128d, xmm_reg, __mmask8, f64);
+/// Load packed 32-bit integers from memory into dst using writemask k
+/// (elements are copied from src when the corresponding mask bit is not set).
+/// mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_loadu_epi32)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl,avx")]
+pub unsafe fn _mm256_mask_loadu_epi32(src: __m256i, k: __mmask8, mem_addr: *const i32) -> __m256i {
+    let mut dst: __m256i = src;
+    asm!(
+         "vmovdqu32 {2}{{{1}}}, [{0}]",
+         in(reg) mem_addr,
+         in(kreg) k,
+         inout(ymm_reg) dst,
+         options(pure, readonly, nostack)
+    );
+    dst
+}
 
-define_masked_store_aligned!("avx512f", _mm512_mask_store_epi32, "32-bit integers", vmovdqa32, __m512i, zmm_reg, __mmask16, i32, "64-byte");
-define_masked_store_aligned!("avx512f", _mm512_mask_store_epi64, "64-bit integers", vmovdqa64, __m512i, zmm_reg, __mmask8, i64, "64-byte");
-define_masked_store_aligned!("avx512f", _mm512_mask_store_ps, "single-precision (32-bit) floating-point elements", vmovaps, __m512, zmm_reg, __mmask16, f32, "64-byte");
-define_masked_store_aligned!("avx512f", _mm512_mask_store_pd, "double-precision (64-bit) floating-point elements", vmovapd, __m512d, zmm_reg, __mmask8, f64, "64-byte");
+/// Load packed 32-bit integers from memory into dst using zeromask k
+/// (elements are zeroed out when the corresponding mask bit is not set).
+/// mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_loadu_epi32)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl,avx")]
+pub unsafe fn _mm256_maskz_loadu_epi32(k: __mmask8, mem_addr: *const i32) -> __m256i {
+    let mut dst: __m256i;
+    asm!(
+         "vmovdqu32 {2}{{{1}}} {{z}}, [{0}]",
+         in(reg) mem_addr,
+         in(kreg) k,
+         out(ymm_reg) dst,
+         options(pure, readonly, nostack)
+    );
+    dst
+}
 
-define_masked_store_aligned!("avx512f,avx512vl,avx", _mm256_mask_store_epi32, "32-bit integers", vmovdqa32, __m256i, ymm_reg, __mmask8, i32, "32-byte");
-define_masked_store_aligned!("avx512f,avx512vl,avx", _mm256_mask_store_epi64, "64-bit integers", vmovdqa64, __m256i, ymm_reg, __mmask8, i64, "32-byte");
-define_masked_store_aligned!("avx512f,avx512vl,avx", _mm256_mask_store_ps, "single-precision (32-bit) floating-point elements", vmovaps, __m256, ymm_reg, __mmask8, f32, "32-byte");
-define_masked_store_aligned!("avx512f,avx512vl,avx", _mm256_mask_store_pd, "double-precision (64-bit) floating-point elements", vmovapd, __m256d, ymm_reg, __mmask8, f64, "32-byte");
+/// Load packed 64-bit integers from memory into dst using writemask k
+/// (elements are copied from src when the corresponding mask bit is not set).
+/// mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_loadu_epi64)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl,avx")]
+pub unsafe fn _mm256_mask_loadu_epi64(src: __m256i, k: __mmask8, mem_addr: *const i64) -> __m256i {
+    let mut dst: __m256i = src;
+    asm!(
+         "vmovdqu64 {2}{{{1}}}, [{0}]",
+         in(reg) mem_addr,
+         in(kreg) k,
+         inout(ymm_reg) dst,
+         options(pure, readonly, nostack)
+    );
+    dst
+}
 
-define_masked_store_aligned!("avx512f,avx512vl,avx", _mm_mask_store_epi32, "32-bit integers", vmovdqa32, __m128i, xmm_reg, __mmask8, i32, "16-byte");
-define_masked_store_aligned!("avx512f,avx512vl,avx", _mm_mask_store_epi64, "64-bit integers", vmovdqa64, __m128i, xmm_reg, __mmask8, i64, "16-byte");
-define_masked_store_aligned!("avx512f,avx512vl,avx", _mm_mask_store_ps, "single-precision (32-bit) floating-point elements", vmovaps, __m128, xmm_reg, __mmask8, f32, "16-byte");
-define_masked_store_aligned!("avx512f,avx512vl,avx", _mm_mask_store_pd, "double-precision (64-bit) floating-point elements", vmovapd, __m128d, xmm_reg, __mmask8, f64, "16-byte");
+/// Load packed 64-bit integers from memory into dst using zeromask k
+/// (elements are zeroed out when the corresponding mask bit is not set).
+/// mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_loadu_epi64)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl,avx")]
+pub unsafe fn _mm256_maskz_loadu_epi64(k: __mmask8, mem_addr: *const i64) -> __m256i {
+    let mut dst: __m256i;
+    asm!(
+         "vmovdqu64 {2}{{{1}}} {{z}}, [{0}]",
+         in(reg) mem_addr,
+         in(kreg) k,
+         out(ymm_reg) dst,
+         options(pure, readonly, nostack)
+    );
+    dst
+}
+
+/// Load packed single-precision (32-bit) floating-point elements from memory into dst using writemask k
+/// (elements are copied from src when the corresponding mask bit is not set).
+/// mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_loadu_ps)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl,avx")]
+pub unsafe fn _mm256_mask_loadu_ps(src: __m256, k: __mmask8, mem_addr: *const f32) -> __m256 {
+    let mut dst: __m256 = src;
+    asm!(
+         "vmovups {2}{{{1}}}, [{0}]",
+         in(reg) mem_addr,
+         in(kreg) k,
+         inout(ymm_reg) dst,
+         options(pure, readonly, nostack)
+    );
+    dst
+}
+
+/// Load packed single-precision (32-bit) floating-point elements from memory into dst using zeromask k
+/// (elements are zeroed out when the corresponding mask bit is not set).
+/// mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_loadu_ps)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl,avx")]
+pub unsafe fn _mm256_maskz_loadu_ps(k: __mmask8, mem_addr: *const f32) -> __m256 {
+    let mut dst: __m256;
+    asm!(
+         "vmovups {2}{{{1}}} {{z}}, [{0}]",
+         in(reg) mem_addr,
+         in(kreg) k,
+         out(ymm_reg) dst,
+         options(pure, readonly, nostack)
+    );
+    dst
+}
+
+/// Load packed double-precision (64-bit) floating-point elements from memory into dst using writemask k
+/// (elements are copied from src when the corresponding mask bit is not set).
+/// mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_loadu_pd)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl,avx")]
+pub unsafe fn _mm256_mask_loadu_pd(src: __m256d, k: __mmask8, mem_addr: *const f64) -> __m256d {
+    let mut dst: __m256d = src;
+    asm!(
+         "vmovupd {2}{{{1}}}, [{0}]",
+         in(reg) mem_addr,
+         in(kreg) k,
+         inout(ymm_reg) dst,
+         options(pure, readonly, nostack)
+    );
+    dst
+}
+
+/// Load packed double-precision (64-bit) floating-point elements from memory into dst using zeromask k
+/// (elements are zeroed out when the corresponding mask bit is not set).
+/// mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_loadu_pd)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl,avx")]
+pub unsafe fn _mm256_maskz_loadu_pd(k: __mmask8, mem_addr: *const f64) -> __m256d {
+    let mut dst: __m256d;
+    asm!(
+         "vmovupd {2}{{{1}}} {{z}}, [{0}]",
+         in(reg) mem_addr,
+         in(kreg) k,
+         out(ymm_reg) dst,
+         options(pure, readonly, nostack)
+    );
+    dst
+}
+
+/// Load packed 32-bit integers from memory into dst using writemask k
+/// (elements are copied from src when the corresponding mask bit is not set).
+/// mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_loadu_epi32)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl,avx")]
+pub unsafe fn _mm_mask_loadu_epi32(src: __m128i, k: __mmask8, mem_addr: *const i32) -> __m128i {
+    let mut dst: __m128i = src;
+    asm!(
+         "vmovdqu32 {2}{{{1}}}, [{0}]",
+         in(reg) mem_addr,
+         in(kreg) k,
+         inout(xmm_reg) dst,
+         options(pure, readonly, nostack)
+    );
+    dst
+}
+
+/// Load packed 32-bit integers from memory into dst using zeromask k
+/// (elements are zeroed out when the corresponding mask bit is not set).
+/// mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_loadu_epi32)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl,avx")]
+pub unsafe fn _mm_maskz_loadu_epi32(k: __mmask8, mem_addr: *const i32) -> __m128i {
+    let mut dst: __m128i;
+    asm!(
+         "vmovdqu32 {2}{{{1}}} {{z}}, [{0}]",
+         in(reg) mem_addr,
+         in(kreg) k,
+         out(xmm_reg) dst,
+         options(pure, readonly, nostack)
+    );
+    dst
+}
+
+/// Load packed 64-bit integers from memory into dst using writemask k
+/// (elements are copied from src when the corresponding mask bit is not set).
+/// mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_loadu_epi64)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl,avx")]
+pub unsafe fn _mm_mask_loadu_epi64(src: __m128i, k: __mmask8, mem_addr: *const i64) -> __m128i {
+    let mut dst: __m128i = src;
+    asm!(
+         "vmovdqu64 {2}{{{1}}}, [{0}]",
+         in(reg) mem_addr,
+         in(kreg) k,
+         inout(xmm_reg) dst,
+         options(pure, readonly, nostack)
+    );
+    dst
+}
+
+/// Load packed 64-bit integers from memory into dst using zeromask k
+/// (elements are zeroed out when the corresponding mask bit is not set).
+/// mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_loadu_epi64)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl,avx")]
+pub unsafe fn _mm_maskz_loadu_epi64(k: __mmask8, mem_addr: *const i64) -> __m128i {
+    let mut dst: __m128i;
+    asm!(
+         "vmovdqu64 {2}{{{1}}} {{z}}, [{0}]",
+         in(reg) mem_addr,
+         in(kreg) k,
+         out(xmm_reg) dst,
+         options(pure, readonly, nostack)
+    );
+    dst
+}
+
+/// Load packed single-precision (32-bit) floating-point elements from memory into dst using writemask k
+/// (elements are copied from src when the corresponding mask bit is not set).
+/// mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_loadu_ps)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl,avx")]
+pub unsafe fn _mm_mask_loadu_ps(src: __m128, k: __mmask8, mem_addr: *const f32) -> __m128 {
+    let mut dst: __m128 = src;
+    asm!(
+         "vmovups {2}{{{1}}}, [{0}]",
+         in(reg) mem_addr,
+         in(kreg) k,
+         inout(xmm_reg) dst,
+         options(pure, readonly, nostack)
+    );
+    dst
+}
+
+/// Load packed single-precision (32-bit) floating-point elements from memory into dst using zeromask k
+/// (elements are zeroed out when the corresponding mask bit is not set).
+/// mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_loadu_ps)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl,avx")]
+pub unsafe fn _mm_maskz_loadu_ps(k: __mmask8, mem_addr: *const f32) -> __m128 {
+    let mut dst: __m128;
+    asm!(
+         "vmovups {2}{{{1}}} {{z}}, [{0}]",
+         in(reg) mem_addr,
+         in(kreg) k,
+         out(xmm_reg) dst,
+         options(pure, readonly, nostack)
+    );
+    dst
+}
+
+/// Load packed double-precision (64-bit) floating-point elements from memory into dst using writemask k
+/// (elements are copied from src when the corresponding mask bit is not set).
+/// mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_loadu_pd)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl,avx")]
+pub unsafe fn _mm_mask_loadu_pd(src: __m128d, k: __mmask8, mem_addr: *const f64) -> __m128d {
+    let mut dst: __m128d = src;
+    asm!(
+         "vmovupd {2}{{{1}}}, [{0}]",
+         in(reg) mem_addr,
+         in(kreg) k,
+         inout(xmm_reg) dst,
+         options(pure, readonly, nostack)
+    );
+    dst
+}
+
+/// Load packed double-precision (64-bit) floating-point elements from memory into dst using zeromask k
+/// (elements are zeroed out when the corresponding mask bit is not set).
+/// mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_loadu_pd)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl,avx")]
+pub unsafe fn _mm_maskz_loadu_pd(k: __mmask8, mem_addr: *const f64) -> __m128d {
+    let mut dst: __m128d;
+    asm!(
+         "vmovupd {2}{{{1}}} {{z}}, [{0}]",
+         in(reg) mem_addr,
+         in(kreg) k,
+         out(xmm_reg) dst,
+         options(pure, readonly, nostack)
+    );
+    dst
+}
+
+/// Load packed 32-bit integers from memory into dst using writemask k
+/// (elements are copied from src when the corresponding mask bit is not set).
+/// mem_addr must be aligned on a 64-byte boundary or a general-protection exception may be generated.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_load_epi32)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_mask_load_epi32(src: __m512i, k: __mmask16, mem_addr: *const i32) -> __m512i {
+    let mut dst: __m512i = src;
+    asm!(
+         "vmovdqa32 {2}{{{1}}}, [{0}]",
+         in(reg) mem_addr,
+         in(kreg) k,
+         inout(zmm_reg) dst,
+         options(pure, readonly, nostack)
+    );
+    dst
+}
+
+/// Load packed 32-bit integers from memory into dst using zeromask k
+/// (elements are zeroed out when the corresponding mask bit is not set).
+/// mem_addr must be aligned on a 64-byte boundary or a general-protection exception may be generated.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_load_epi32)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_maskz_load_epi32(k: __mmask16, mem_addr: *const i32) -> __m512i {
+    let mut dst: __m512i;
+    asm!(
+         "vmovdqa32 {2}{{{1}}} {{z}}, [{0}]",
+         in(reg) mem_addr,
+         in(kreg) k,
+         out(zmm_reg) dst,
+         options(pure, readonly, nostack)
+    );
+    dst
+}
+
+/// Load packed 64-bit integers from memory into dst using writemask k
+/// (elements are copied from src when the corresponding mask bit is not set).
+/// mem_addr must be aligned on a 64-byte boundary or a general-protection exception may be generated.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_load_epi64)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_mask_load_epi64(src: __m512i, k: __mmask8, mem_addr: *const i64) -> __m512i {
+    let mut dst: __m512i = src;
+    asm!(
+         "vmovdqa64 {2}{{{1}}}, [{0}]",
+         in(reg) mem_addr,
+         in(kreg) k,
+         inout(zmm_reg) dst,
+         options(pure, readonly, nostack)
+    );
+    dst
+}
+
+/// Load packed 64-bit integers from memory into dst using zeromask k
+/// (elements are zeroed out when the corresponding mask bit is not set).
+/// mem_addr must be aligned on a 64-byte boundary or a general-protection exception may be generated.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_load_epi64)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_maskz_load_epi64(k: __mmask8, mem_addr: *const i64) -> __m512i {
+    let mut dst: __m512i;
+    asm!(
+         "vmovdqa64 {2}{{{1}}} {{z}}, [{0}]",
+         in(reg) mem_addr,
+         in(kreg) k,
+         out(zmm_reg) dst,
+         options(pure, readonly, nostack)
+    );
+    dst
+}
+
+/// Load packed single-precision (32-bit) floating-point elements from memory into dst using writemask k
+/// (elements are copied from src when the corresponding mask bit is not set).
+/// mem_addr must be aligned on a 64-byte boundary or a general-protection exception may be generated.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_load_ps)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_mask_load_ps(src: __m512, k: __mmask16, mem_addr: *const f32) -> __m512 {
+    let mut dst: __m512 = src;
+    asm!(
+         "vmovaps {2}{{{1}}}, [{0}]",
+         in(reg) mem_addr,
+         in(kreg) k,
+         inout(zmm_reg) dst,
+         options(pure, readonly, nostack)
+    );
+    dst
+}
+
+/// Load packed single-precision (32-bit) floating-point elements from memory into dst using zeromask k
+/// (elements are zeroed out when the corresponding mask bit is not set).
+/// mem_addr must be aligned on a 64-byte boundary or a general-protection exception may be generated.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_load_ps)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_maskz_load_ps(k: __mmask16, mem_addr: *const f32) -> __m512 {
+    let mut dst: __m512;
+    asm!(
+         "vmovaps {2}{{{1}}} {{z}}, [{0}]",
+         in(reg) mem_addr,
+         in(kreg) k,
+         out(zmm_reg) dst,
+         options(pure, readonly, nostack)
+    );
+    dst
+}
+
+/// Load packed double-precision (64-bit) floating-point elements from memory into dst using writemask k
+/// (elements are copied from src when the corresponding mask bit is not set).
+/// mem_addr must be aligned on a 64-byte boundary or a general-protection exception may be generated.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_load_pd)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_mask_load_pd(src: __m512d, k: __mmask8, mem_addr: *const f64) -> __m512d {
+    let mut dst: __m512d = src;
+    asm!(
+         "vmovapd {2}{{{1}}}, [{0}]",
+         in(reg) mem_addr,
+         in(kreg) k,
+         inout(zmm_reg) dst,
+         options(pure, readonly, nostack)
+    );
+    dst
+}
+
+/// Load packed double-precision (64-bit) floating-point elements from memory into dst using zeromask k
+/// (elements are zeroed out when the corresponding mask bit is not set).
+/// mem_addr must be aligned on a 64-byte boundary or a general-protection exception may be generated.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_load_pd)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_maskz_load_pd(k: __mmask8, mem_addr: *const f64) -> __m512d {
+    let mut dst: __m512d;
+    asm!(
+         "vmovapd {2}{{{1}}} {{z}}, [{0}]",
+         in(reg) mem_addr,
+         in(kreg) k,
+         out(zmm_reg) dst,
+         options(pure, readonly, nostack)
+    );
+    dst
+}
+
+/// Load packed 32-bit integers from memory into dst using writemask k
+/// (elements are copied from src when the corresponding mask bit is not set).
+/// mem_addr must be aligned on a 32-byte boundary or a general-protection exception may be generated.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_load_epi32)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl,avx")]
+pub unsafe fn _mm256_mask_load_epi32(src: __m256i, k: __mmask8, mem_addr: *const i32) -> __m256i {
+    let mut dst: __m256i = src;
+    asm!(
+         "vmovdqa32 {2}{{{1}}}, [{0}]",
+         in(reg) mem_addr,
+         in(kreg) k,
+         inout(ymm_reg) dst,
+         options(pure, readonly, nostack)
+    );
+    dst
+}
+
+/// Load packed 32-bit integers from memory into dst using zeromask k
+/// (elements are zeroed out when the corresponding mask bit is not set).
+/// mem_addr must be aligned on a 32-byte boundary or a general-protection exception may be generated.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_load_epi32)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl,avx")]
+pub unsafe fn _mm256_maskz_load_epi32(k: __mmask8, mem_addr: *const i32) -> __m256i {
+    let mut dst: __m256i;
+    asm!(
+         "vmovdqa32 {2}{{{1}}} {{z}}, [{0}]",
+         in(reg) mem_addr,
+         in(kreg) k,
+         out(ymm_reg) dst,
+         options(pure, readonly, nostack)
+    );
+    dst
+}
+
+/// Load packed 64-bit integers from memory into dst using writemask k
+/// (elements are copied from src when the corresponding mask bit is not set).
+/// mem_addr must be aligned on a 32-byte boundary or a general-protection exception may be generated.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_load_epi64)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl,avx")]
+pub unsafe fn _mm256_mask_load_epi64(src: __m256i, k: __mmask8, mem_addr: *const i64) -> __m256i {
+    let mut dst: __m256i = src;
+    asm!(
+         "vmovdqa64 {2}{{{1}}}, [{0}]",
+         in(reg) mem_addr,
+         in(kreg) k,
+         inout(ymm_reg) dst,
+         options(pure, readonly, nostack)
+    );
+    dst
+}
+
+/// Load packed 64-bit integers from memory into dst using zeromask k
+/// (elements are zeroed out when the corresponding mask bit is not set).
+/// mem_addr must be aligned on a 32-byte boundary or a general-protection exception may be generated.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_load_epi64)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl,avx")]
+pub unsafe fn _mm256_maskz_load_epi64(k: __mmask8, mem_addr: *const i64) -> __m256i {
+    let mut dst: __m256i;
+    asm!(
+         "vmovdqa64 {2}{{{1}}} {{z}}, [{0}]",
+         in(reg) mem_addr,
+         in(kreg) k,
+         out(ymm_reg) dst,
+         options(pure, readonly, nostack)
+    );
+    dst
+}
+
+/// Load packed single-precision (32-bit) floating-point elements from memory into dst using writemask k
+/// (elements are copied from src when the corresponding mask bit is not set).
+/// mem_addr must be aligned on a 32-byte boundary or a general-protection exception may be generated.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_load_ps)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl,avx")]
+pub unsafe fn _mm256_mask_load_ps(src: __m256, k: __mmask8, mem_addr: *const f32) -> __m256 {
+    let mut dst: __m256 = src;
+    asm!(
+         "vmovaps {2}{{{1}}}, [{0}]",
+         in(reg) mem_addr,
+         in(kreg) k,
+         inout(ymm_reg) dst,
+         options(pure, readonly, nostack)
+    );
+    dst
+}
+
+/// Load packed single-precision (32-bit) floating-point elements from memory into dst using zeromask k
+/// (elements are zeroed out when the corresponding mask bit is not set).
+/// mem_addr must be aligned on a 32-byte boundary or a general-protection exception may be generated.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_load_ps)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl,avx")]
+pub unsafe fn _mm256_maskz_load_ps(k: __mmask8, mem_addr: *const f32) -> __m256 {
+    let mut dst: __m256;
+    asm!(
+         "vmovaps {2}{{{1}}} {{z}}, [{0}]",
+         in(reg) mem_addr,
+         in(kreg) k,
+         out(ymm_reg) dst,
+         options(pure, readonly, nostack)
+    );
+    dst
+}
+
+/// Load packed double-precision (64-bit) floating-point elements from memory into dst using writemask k
+/// (elements are copied from src when the corresponding mask bit is not set).
+/// mem_addr must be aligned on a 32-byte boundary or a general-protection exception may be generated.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_load_pd)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl,avx")]
+pub unsafe fn _mm256_mask_load_pd(src: __m256d, k: __mmask8, mem_addr: *const f64) -> __m256d {
+    let mut dst: __m256d = src;
+    asm!(
+         "vmovapd {2}{{{1}}}, [{0}]",
+         in(reg) mem_addr,
+         in(kreg) k,
+         inout(ymm_reg) dst,
+         options(pure, readonly, nostack)
+    );
+    dst
+}
+
+/// Load packed double-precision (64-bit) floating-point elements from memory into dst using zeromask k
+/// (elements are zeroed out when the corresponding mask bit is not set).
+/// mem_addr must be aligned on a 32-byte boundary or a general-protection exception may be generated.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_load_pd)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl,avx")]
+pub unsafe fn _mm256_maskz_load_pd(k: __mmask8, mem_addr: *const f64) -> __m256d {
+    let mut dst: __m256d;
+    asm!(
+         "vmovapd {2}{{{1}}} {{z}}, [{0}]",
+         in(reg) mem_addr,
+         in(kreg) k,
+         out(ymm_reg) dst,
+         options(pure, readonly, nostack)
+    );
+    dst
+}
+
+/// Load packed 32-bit integers from memory into dst using writemask k
+/// (elements are copied from src when the corresponding mask bit is not set).
+/// mem_addr must be aligned on a 16-byte boundary or a general-protection exception may be generated.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_load_epi32)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl,avx")]
+pub unsafe fn _mm_mask_load_epi32(src: __m128i, k: __mmask8, mem_addr: *const i32) -> __m128i {
+    let mut dst: __m128i = src;
+    asm!(
+         "vmovdqa32 {2}{{{1}}}, [{0}]",
+         in(reg) mem_addr,
+         in(kreg) k,
+         inout(xmm_reg) dst,
+         options(pure, readonly, nostack)
+    );
+    dst
+}
+
+/// Load packed 32-bit integers from memory into dst using zeromask k
+/// (elements are zeroed out when the corresponding mask bit is not set).
+/// mem_addr must be aligned on a 16-byte boundary or a general-protection exception may be generated.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_load_epi32)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl,avx")]
+pub unsafe fn _mm_maskz_load_epi32(k: __mmask8, mem_addr: *const i32) -> __m128i {
+    let mut dst: __m128i;
+    asm!(
+         "vmovdqa32 {2}{{{1}}} {{z}}, [{0}]",
+         in(reg) mem_addr,
+         in(kreg) k,
+         out(xmm_reg) dst,
+         options(pure, readonly, nostack)
+    );
+    dst
+}
+
+/// Load packed 64-bit integers from memory into dst using writemask k
+/// (elements are copied from src when the corresponding mask bit is not set).
+/// mem_addr must be aligned on a 16-byte boundary or a general-protection exception may be generated.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_load_epi64)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl,avx")]
+pub unsafe fn _mm_mask_load_epi64(src: __m128i, k: __mmask8, mem_addr: *const i64) -> __m128i {
+    let mut dst: __m128i = src;
+    asm!(
+         "vmovdqa64 {2}{{{1}}}, [{0}]",
+         in(reg) mem_addr,
+         in(kreg) k,
+         inout(xmm_reg) dst,
+         options(pure, readonly, nostack)
+    );
+    dst
+}
+
+/// Load packed 64-bit integers from memory into dst using zeromask k
+/// (elements are zeroed out when the corresponding mask bit is not set).
+/// mem_addr must be aligned on a 16-byte boundary or a general-protection exception may be generated.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_load_epi64)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl,avx")]
+pub unsafe fn _mm_maskz_load_epi64(k: __mmask8, mem_addr: *const i64) -> __m128i {
+    let mut dst: __m128i;
+    asm!(
+         "vmovdqa64 {2}{{{1}}} {{z}}, [{0}]",
+         in(reg) mem_addr,
+         in(kreg) k,
+         out(xmm_reg) dst,
+         options(pure, readonly, nostack)
+    );
+    dst
+}
+
+/// Load packed single-precision (32-bit) floating-point elements from memory into dst using writemask k
+/// (elements are copied from src when the corresponding mask bit is not set).
+/// mem_addr must be aligned on a 16-byte boundary or a general-protection exception may be generated.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_load_ps)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl,avx")]
+pub unsafe fn _mm_mask_load_ps(src: __m128, k: __mmask8, mem_addr: *const f32) -> __m128 {
+    let mut dst: __m128 = src;
+    asm!(
+         "vmovaps {2}{{{1}}}, [{0}]",
+         in(reg) mem_addr,
+         in(kreg) k,
+         inout(xmm_reg) dst,
+         options(pure, readonly, nostack)
+    );
+    dst
+}
+
+/// Load packed single-precision (32-bit) floating-point elements from memory into dst using zeromask k
+/// (elements are zeroed out when the corresponding mask bit is not set).
+/// mem_addr must be aligned on a 16-byte boundary or a general-protection exception may be generated.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_load_ps)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl,avx")]
+pub unsafe fn _mm_maskz_load_ps(k: __mmask8, mem_addr: *const f32) -> __m128 {
+    let mut dst: __m128;
+    asm!(
+         "vmovaps {2}{{{1}}} {{z}}, [{0}]",
+         in(reg) mem_addr,
+         in(kreg) k,
+         out(xmm_reg) dst,
+         options(pure, readonly, nostack)
+    );
+    dst
+}
+
+/// Load packed double-precision (64-bit) floating-point elements from memory into dst using writemask k
+/// (elements are copied from src when the corresponding mask bit is not set).
+/// mem_addr must be aligned on a 16-byte boundary or a general-protection exception may be generated.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_load_pd)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl,avx")]
+pub unsafe fn _mm_mask_load_pd(src: __m128d, k: __mmask8, mem_addr: *const f64) -> __m128d {
+    let mut dst: __m128d = src;
+    asm!(
+         "vmovapd {2}{{{1}}}, [{0}]",
+         in(reg) mem_addr,
+         in(kreg) k,
+         inout(xmm_reg) dst,
+         options(pure, readonly, nostack)
+    );
+    dst
+}
+
+/// Load packed double-precision (64-bit) floating-point elements from memory into dst using zeromask k
+/// (elements are zeroed out when the corresponding mask bit is not set).
+/// mem_addr must be aligned on a 16-byte boundary or a general-protection exception may be generated.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_load_pd)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl,avx")]
+pub unsafe fn _mm_maskz_load_pd(k: __mmask8, mem_addr: *const f64) -> __m128d {
+    let mut dst: __m128d;
+    asm!(
+         "vmovapd {2}{{{1}}} {{z}}, [{0}]",
+         in(reg) mem_addr,
+         in(kreg) k,
+         out(xmm_reg) dst,
+         options(pure, readonly, nostack)
+    );
+    dst
+}
+
+/// Store packed 32-bit integers from a into memory using writemask k.
+/// mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_storeu_epi32)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_mask_storeu_epi32(mem_addr: *mut i32, mask: __mmask16, a: __m512i) {
+    asm!(
+         "vmovdqu32 [{0}]{{{1}}}, {2}",
+         in(reg) mem_addr,
+         in(kreg) mask,
+         in(zmm_reg) a,
+         options(nostack)
+    );
+}
+
+/// Store packed 64-bit integers from a into memory using writemask k.
+/// mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_storeu_epi64)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_mask_storeu_epi64(mem_addr: *mut i64, mask: __mmask8, a: __m512i) {
+    asm!(
+         "vmovdqu64 [{0}]{{{1}}}, {2}",
+         in(reg) mem_addr,
+         in(kreg) mask,
+         in(zmm_reg) a,
+         options(nostack)
+    );
+}
+
+/// Store packed single-precision (32-bit) floating-point elements from a into memory using writemask k.
+/// mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_storeu_ps)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_mask_storeu_ps(mem_addr: *mut f32, mask: __mmask16, a: __m512) {
+    asm!(
+         "vmovups [{0}]{{{1}}}, {2}",
+         in(reg) mem_addr,
+         in(kreg) mask,
+         in(zmm_reg) a,
+         options(nostack)
+    );
+}
+
+/// Store packed double-precision (64-bit) floating-point elements from a into memory using writemask k.
+/// mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_storeu_pd)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_mask_storeu_pd(mem_addr: *mut f64, mask: __mmask8, a: __m512d) {
+    asm!(
+         "vmovupd [{0}]{{{1}}}, {2}",
+         in(reg) mem_addr,
+         in(kreg) mask,
+         in(zmm_reg) a,
+         options(nostack)
+    );
+}
+
+/// Store packed 32-bit integers from a into memory using writemask k.
+/// mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_storeu_epi32)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl,avx")]
+pub unsafe fn _mm256_mask_storeu_epi32(mem_addr: *mut i32, mask: __mmask8, a: __m256i) {
+    asm!(
+         "vmovdqu32 [{0}]{{{1}}}, {2}",
+         in(reg) mem_addr,
+         in(kreg) mask,
+         in(ymm_reg) a,
+         options(nostack)
+    );
+}
+
+/// Store packed 64-bit integers from a into memory using writemask k.
+/// mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_storeu_epi64)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl,avx")]
+pub unsafe fn _mm256_mask_storeu_epi64(mem_addr: *mut i64, mask: __mmask8, a: __m256i) {
+    asm!(
+         "vmovdqu64 [{0}]{{{1}}}, {2}",
+         in(reg) mem_addr,
+         in(kreg) mask,
+         in(ymm_reg) a,
+         options(nostack)
+    );
+}
+
+/// Store packed single-precision (32-bit) floating-point elements from a into memory using writemask k.
+/// mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_storeu_ps)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl,avx")]
+pub unsafe fn _mm256_mask_storeu_ps(mem_addr: *mut f32, mask: __mmask8, a: __m256) {
+    asm!(
+         "vmovups [{0}]{{{1}}}, {2}",
+         in(reg) mem_addr,
+         in(kreg) mask,
+         in(ymm_reg) a,
+         options(nostack)
+    );
+}
+
+/// Store packed double-precision (64-bit) floating-point elements from a into memory using writemask k.
+/// mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_storeu_pd)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl,avx")]
+pub unsafe fn _mm256_mask_storeu_pd(mem_addr: *mut f64, mask: __mmask8, a: __m256d) {
+    asm!(
+         "vmovupd [{0}]{{{1}}}, {2}",
+         in(reg) mem_addr,
+         in(kreg) mask,
+         in(ymm_reg) a,
+         options(nostack)
+    );
+}
+
+/// Store packed 32-bit integers from a into memory using writemask k.
+/// mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_storeu_epi32)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl,avx")]
+pub unsafe fn _mm_mask_storeu_epi32(mem_addr: *mut i32, mask: __mmask8, a: __m128i) {
+    asm!(
+         "vmovdqu32 [{0}]{{{1}}}, {2}",
+         in(reg) mem_addr,
+         in(kreg) mask,
+         in(xmm_reg) a,
+         options(nostack)
+    );
+}
+
+/// Store packed 64-bit integers from a into memory using writemask k.
+/// mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_storeu_epi64)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl,avx")]
+pub unsafe fn _mm_mask_storeu_epi64(mem_addr: *mut i64, mask: __mmask8, a: __m128i) {
+    asm!(
+         "vmovdqu64 [{0}]{{{1}}}, {2}",
+         in(reg) mem_addr,
+         in(kreg) mask,
+         in(xmm_reg) a,
+         options(nostack)
+    );
+}
+
+/// Store packed single-precision (32-bit) floating-point elements from a into memory using writemask k.
+/// mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_storeu_ps)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl,avx")]
+pub unsafe fn _mm_mask_storeu_ps(mem_addr: *mut f32, mask: __mmask8, a: __m128) {
+    asm!(
+         "vmovups [{0}]{{{1}}}, {2}",
+         in(reg) mem_addr,
+         in(kreg) mask,
+         in(xmm_reg) a,
+         options(nostack)
+    );
+}
+
+/// Store packed double-precision (64-bit) floating-point elements from a into memory using writemask k.
+/// mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_storeu_pd)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl,avx")]
+pub unsafe fn _mm_mask_storeu_pd(mem_addr: *mut f64, mask: __mmask8, a: __m128d) {
+    asm!(
+         "vmovupd [{0}]{{{1}}}, {2}",
+         in(reg) mem_addr,
+         in(kreg) mask,
+         in(xmm_reg) a,
+         options(nostack)
+    );
+}
+
+/// Store packed 32-bit integers from a into memory using writemask k.
+/// mem_addr must be aligned on a 64-byte boundary or a general-protection exception may be generated.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_store_epi32)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_mask_store_epi32(mem_addr: *mut i32, mask: __mmask16, a: __m512i) {
+    asm!(
+         "vmovdqa32 [{0}]{{{1}}}, {2}",
+         in(reg) mem_addr,
+         in(kreg) mask,
+         in(zmm_reg) a,
+         options(nostack)
+    );
+}
+
+/// Store packed 64-bit integers from a into memory using writemask k.
+/// mem_addr must be aligned on a 64-byte boundary or a general-protection exception may be generated.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_store_epi64)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_mask_store_epi64(mem_addr: *mut i64, mask: __mmask8, a: __m512i) {
+    asm!(
+         "vmovdqa64 [{0}]{{{1}}}, {2}",
+         in(reg) mem_addr,
+         in(kreg) mask,
+         in(zmm_reg) a,
+         options(nostack)
+    );
+}
+
+/// Store packed single-precision (32-bit) floating-point elements from a into memory using writemask k.
+/// mem_addr must be aligned on a 64-byte boundary or a general-protection exception may be generated.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_store_ps)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_mask_store_ps(mem_addr: *mut f32, mask: __mmask16, a: __m512) {
+    asm!(
+         "vmovaps [{0}]{{{1}}}, {2}",
+         in(reg) mem_addr,
+         in(kreg) mask,
+         in(zmm_reg) a,
+         options(nostack)
+    );
+}
+
+/// Store packed double-precision (64-bit) floating-point elements from a into memory using writemask k.
+/// mem_addr must be aligned on a 64-byte boundary or a general-protection exception may be generated.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_store_pd)
+#[inline]
+#[target_feature(enable = "avx512f")]
+pub unsafe fn _mm512_mask_store_pd(mem_addr: *mut f64, mask: __mmask8, a: __m512d) {
+    asm!(
+         "vmovapd [{0}]{{{1}}}, {2}",
+         in(reg) mem_addr,
+         in(kreg) mask,
+         in(zmm_reg) a,
+         options(nostack)
+    );
+}
+
+/// Store packed 32-bit integers from a into memory using writemask k.
+/// mem_addr must be aligned on a 32-byte boundary or a general-protection exception may be generated.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_store_epi32)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl,avx")]
+pub unsafe fn _mm256_mask_store_epi32(mem_addr: *mut i32, mask: __mmask8, a: __m256i) {
+    asm!(
+         "vmovdqa32 [{0}]{{{1}}}, {2}",
+         in(reg) mem_addr,
+         in(kreg) mask,
+         in(ymm_reg) a,
+         options(nostack)
+    );
+}
+
+/// Store packed 64-bit integers from a into memory using writemask k.
+/// mem_addr must be aligned on a 32-byte boundary or a general-protection exception may be generated.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_store_epi64)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl,avx")]
+pub unsafe fn _mm256_mask_store_epi64(mem_addr: *mut i64, mask: __mmask8, a: __m256i) {
+    asm!(
+         "vmovdqa64 [{0}]{{{1}}}, {2}",
+         in(reg) mem_addr,
+         in(kreg) mask,
+         in(ymm_reg) a,
+         options(nostack)
+    );
+}
+
+/// Store packed single-precision (32-bit) floating-point elements from a into memory using writemask k.
+/// mem_addr must be aligned on a 32-byte boundary or a general-protection exception may be generated.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_store_ps)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl,avx")]
+pub unsafe fn _mm256_mask_store_ps(mem_addr: *mut f32, mask: __mmask8, a: __m256) {
+    asm!(
+         "vmovaps [{0}]{{{1}}}, {2}",
+         in(reg) mem_addr,
+         in(kreg) mask,
+         in(ymm_reg) a,
+         options(nostack)
+    );
+}
+
+/// Store packed double-precision (64-bit) floating-point elements from a into memory using writemask k.
+/// mem_addr must be aligned on a 32-byte boundary or a general-protection exception may be generated.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_store_pd)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl,avx")]
+pub unsafe fn _mm256_mask_store_pd(mem_addr: *mut f64, mask: __mmask8, a: __m256d) {
+    asm!(
+         "vmovapd [{0}]{{{1}}}, {2}",
+         in(reg) mem_addr,
+         in(kreg) mask,
+         in(ymm_reg) a,
+         options(nostack)
+    );
+}
+
+/// Store packed 32-bit integers from a into memory using writemask k.
+/// mem_addr must be aligned on a 16-byte boundary or a general-protection exception may be generated.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_store_epi32)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl,avx")]
+pub unsafe fn _mm_mask_store_epi32(mem_addr: *mut i32, mask: __mmask8, a: __m128i) {
+    asm!(
+         "vmovdqa32 [{0}]{{{1}}}, {2}",
+         in(reg) mem_addr,
+         in(kreg) mask,
+         in(xmm_reg) a,
+         options(nostack)
+    );
+}
+
+/// Store packed 64-bit integers from a into memory using writemask k.
+/// mem_addr must be aligned on a 16-byte boundary or a general-protection exception may be generated.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_store_epi64)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl,avx")]
+pub unsafe fn _mm_mask_store_epi64(mem_addr: *mut i64, mask: __mmask8, a: __m128i) {
+    asm!(
+         "vmovdqa64 [{0}]{{{1}}}, {2}",
+         in(reg) mem_addr,
+         in(kreg) mask,
+         in(xmm_reg) a,
+         options(nostack)
+    );
+}
+
+/// Store packed single-precision (32-bit) floating-point elements from a into memory using writemask k.
+/// mem_addr must be aligned on a 16-byte boundary or a general-protection exception may be generated.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_store_ps)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl,avx")]
+pub unsafe fn _mm_mask_store_ps(mem_addr: *mut f32, mask: __mmask8, a: __m128) {
+    asm!(
+         "vmovaps [{0}]{{{1}}}, {2}",
+         in(reg) mem_addr,
+         in(kreg) mask,
+         in(xmm_reg) a,
+         options(nostack)
+    );
+}
+
+/// Store packed double-precision (64-bit) floating-point elements from a into memory using writemask k.
+/// mem_addr must be aligned on a 16-byte boundary or a general-protection exception may be generated.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_store_pd)
+#[inline]
+#[target_feature(enable = "avx512f,avx512vl,avx")]
+pub unsafe fn _mm_mask_store_pd(mem_addr: *mut f64, mask: __mmask8, a: __m128d) {
+    asm!(
+         "vmovapd [{0}]{{{1}}}, {2}",
+         in(reg) mem_addr,
+         in(kreg) mask,
+         in(xmm_reg) a,
+         options(nostack)
+    );
+}
 
 /// Set packed double-precision (64-bit) floating-point elements in dst with the supplied values in reverse order.
 ///
@@ -44659,6 +45895,49 @@ mod tests {
     }
 
     #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_maskz_loadu_epi32() {
+        let a = &[1_i32, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+        let p = a.as_ptr();
+        let m = 0b11101000_11001010;
+        let r = _mm512_maskz_loadu_epi32(m, black_box(p));
+        let e = _mm512_setr_epi32(0, 2, 0, 4, 0, 0, 7, 8, 0, 0, 0, 12, 0, 14, 15, 16);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_load_epi32() {
+        #[repr(align(64))]
+        struct Align {
+            data: [i32; 16], // 64 bytes
+        }
+        let src = _mm512_set1_epi32(42);
+        let a = Align {
+            data: [1_i32, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
+        };
+        let p = a.data.as_ptr();
+        let m = 0b11101000_11001010;
+        let r = _mm512_mask_load_epi32(src, m, black_box(p));
+        let e = _mm512_setr_epi32(42, 2, 42, 4, 42, 42, 7, 8, 42, 42, 42, 12, 42, 14, 15, 16);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_maskz_load_epi32() {
+        #[repr(align(64))]
+        struct Align {
+            data: [i32; 16], // 64 bytes
+        }
+        let a = Align {
+            data: [1_i32, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
+        };
+        let p = a.data.as_ptr();
+        let m = 0b11101000_11001010;
+        let r = _mm512_maskz_load_epi32(m, black_box(p));
+        let e = _mm512_setr_epi32(0, 2, 0, 4, 0, 0, 7, 8, 0, 0, 0, 12, 0, 14, 15, 16);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_mask_storeu_epi32() {
         let mut r = _mm512_set1_epi32(42);
         let a = _mm512_setr_epi32(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
@@ -44676,6 +45955,49 @@ mod tests {
         let m = 0b11001010;
         let r = _mm512_mask_loadu_epi64(src, m, black_box(p));
         let e = _mm512_setr_epi64(42, 2, 42, 4, 42, 42, 7, 8);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_maskz_loadu_epi64() {
+        let a = &[1_i64, 2, 3, 4, 5, 6, 7, 8];
+        let p = a.as_ptr();
+        let m = 0b11001010;
+        let r = _mm512_maskz_loadu_epi64(m, black_box(p));
+        let e = _mm512_setr_epi64(0, 2, 0, 4, 0, 0, 7, 8);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_load_epi64() {
+        #[repr(align(64))]
+        struct Align {
+            data: [i64; 8], // 64 bytes
+        }
+        let src = _mm512_set1_epi64(42);
+        let a = Align {
+            data: [1_i64, 2, 3, 4, 5, 6, 7, 8],
+        };
+        let p = a.data.as_ptr();
+        let m = 0b11001010;
+        let r = _mm512_mask_load_epi64(src, m, black_box(p));
+        let e = _mm512_setr_epi64(42, 2, 42, 4, 42, 42, 7, 8);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_maskz_load_epi64() {
+        #[repr(align(64))]
+        struct Align {
+            data: [i64; 8], // 64 bytes
+        }
+        let a = Align {
+            data: [1_i64, 2, 3, 4, 5, 6, 7, 8],
+        };
+        let p = a.data.as_ptr();
+        let m = 0b11001010;
+        let r = _mm512_maskz_load_epi64(m, black_box(p));
+        let e = _mm512_setr_epi64(0, 2, 0, 4, 0, 0, 7, 8);
         assert_eq_m512i(r, e);
     }
 
@@ -44707,6 +46029,65 @@ mod tests {
     }
 
     #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_maskz_loadu_ps() {
+        let a = &[
+            1.0_f32, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0,
+            16.0,
+        ];
+        let p = a.as_ptr();
+        let m = 0b11101000_11001010;
+        let r = _mm512_maskz_loadu_ps(m, black_box(p));
+        let e = _mm512_setr_ps(
+            0.0, 2.0, 0.0, 4.0, 0.0, 0.0, 7.0, 8.0, 0.0, 0.0, 0.0, 12.0, 0.0, 14.0, 15.0, 16.0,
+        );
+        assert_eq_m512(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_load_ps() {
+        #[repr(align(64))]
+        struct Align {
+            data: [f32; 16], // 64 bytes
+        }
+        let src = _mm512_set1_ps(42.0);
+        let a = Align {
+            data: [
+                1.0_f32, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0,
+                15.0, 16.0,
+            ],
+        };
+        let p = a.data.as_ptr();
+        let m = 0b11101000_11001010;
+        let r = _mm512_mask_load_ps(src, m, black_box(p));
+        let e = _mm512_setr_ps(
+            42.0, 2.0, 42.0, 4.0, 42.0, 42.0, 7.0, 8.0, 42.0, 42.0, 42.0, 12.0, 42.0, 14.0, 15.0,
+            16.0,
+        );
+        assert_eq_m512(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_maskz_load_ps() {
+        #[repr(align(64))]
+        struct Align {
+            data: [f32; 16], // 64 bytes
+        }
+        let a = Align {
+            data: [
+                1.0_f32, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0,
+                15.0, 16.0,
+            ],
+        };
+        let p = a.data.as_ptr();
+        let m = 0b11101000_11001010;
+        let r = _mm512_maskz_load_ps(m, black_box(p));
+        let e = _mm512_setr_ps(
+            0.0, 2.0, 0.0, 4.0, 0.0, 0.0, 7.0, 8.0, 0.0, 0.0, 0.0, 12.0, 0.0, 14.0, 15.0, 16.0,
+        );
+        assert_eq_m512(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_mask_storeu_ps() {
         let mut r = _mm512_set1_ps(42.0);
         let a = _mm512_setr_ps(
@@ -44729,6 +46110,49 @@ mod tests {
         let m = 0b11001010;
         let r = _mm512_mask_loadu_pd(src, m, black_box(p));
         let e = _mm512_setr_pd(42.0, 2.0, 42.0, 4.0, 42.0, 42.0, 7.0, 8.0);
+        assert_eq_m512d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_maskz_loadu_pd() {
+        let a = &[1.0_f64, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0];
+        let p = a.as_ptr();
+        let m = 0b11001010;
+        let r = _mm512_maskz_loadu_pd(m, black_box(p));
+        let e = _mm512_setr_pd(0.0, 2.0, 0.0, 4.0, 0.0, 0.0, 7.0, 8.0);
+        assert_eq_m512d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_mask_load_pd() {
+        #[repr(align(64))]
+        struct Align {
+            data: [f64; 8], // 64 bytes
+        }
+        let src = _mm512_set1_pd(42.0);
+        let a = Align {
+            data: [1.0_f64, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0],
+        };
+        let p = a.data.as_ptr();
+        let m = 0b11001010;
+        let r = _mm512_mask_load_pd(src, m, black_box(p));
+        let e = _mm512_setr_pd(42.0, 2.0, 42.0, 4.0, 42.0, 42.0, 7.0, 8.0);
+        assert_eq_m512d(r, e);
+    }
+
+    #[simd_test(enable = "avx512f")]
+    unsafe fn test_mm512_maskz_load_pd() {
+        #[repr(align(64))]
+        struct Align {
+            data: [f64; 8], // 64 bytes
+        }
+        let a = Align {
+            data: [1.0_f64, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0],
+        };
+        let p = a.data.as_ptr();
+        let m = 0b11001010;
+        let r = _mm512_maskz_load_pd(m, black_box(p));
+        let e = _mm512_setr_pd(0.0, 2.0, 0.0, 4.0, 0.0, 0.0, 7.0, 8.0);
         assert_eq_m512d(r, e);
     }
 
