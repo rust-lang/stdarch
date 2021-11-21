@@ -267,6 +267,7 @@ path = "{intrinsic}/main.rs""#,
                 "aarch64-unknown-linux-gnu"
             },
         ))
+        .env("RUSTFLAGS", "-Cdebuginfo=0")
         .output();
     if let Ok(output) = output {
         if output.status.success() {
@@ -406,7 +407,7 @@ fn compare_outputs(intrinsics: &Vec<Intrinsic>, toolchain: &str, runner: &str, a
                 .current_dir("rust_programs")
                 .arg("-c")
                 .arg(format!(
-                    "cargo {toolchain} run --release --target {target} --bin {intrinsic}",
+                    "cargo {toolchain} run --target {target} --bin {intrinsic}",
                     intrinsic = intrinsic.name,
                     toolchain = toolchain,
                     target = if a32 {
@@ -415,6 +416,7 @@ fn compare_outputs(intrinsics: &Vec<Intrinsic>, toolchain: &str, runner: &str, a
                         "aarch64-unknown-linux-gnu"
                     },
                 ))
+                .env("RUSTFLAGS", "-Cdebuginfo=0")
                 .output();
 
             let (c, rust) = match (c, rust) {

@@ -245,3 +245,6 @@ vrshrn_n_s64
 vrshrn_n_u16
 vrshrn_n_u32
 vrshrn_n_u64
+
+vshrq_n_u64
+vshr_n_u64
