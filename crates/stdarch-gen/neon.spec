@@ -5894,7 +5894,7 @@ name = vqshl
 n-suffix
 constn = N
 multi_fn = static_assert_imm-out_bits_exp_len-N
-multi_fn = vqshl-self-noext, a, {vdup-nself-noext, N.try_into().unwrap()}
+multi_fn = vqshl-self-noext, a, {vdup-nself-noext, N as _}
 a = 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15
 n = 2
 validate 0, 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60
@@ -5921,7 +5921,7 @@ name = vqshl
 n-suffix
 constn = N
 multi_fn = static_assert_imm-out_bits_exp_len-N
-multi_fn = vqshl-self-noext, a, {vdup-nsigned-noext, N.try_into().unwrap()}
+multi_fn = vqshl-self-noext, a, {vdup-nsigned-noext, N as _}
 a = 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15
 n = 2
 validate 0, 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60
@@ -6480,7 +6480,7 @@ name = vrshr
 n-suffix
 constn = N
 multi_fn = static_assert-N-1-bits
-multi_fn = vrshl-self-noext, a, {vdup-nself-noext, (-N).try_into().unwrap()}
+multi_fn = vrshl-self-noext, a, {vdup-nself-noext, (-N) as _}
 a = 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60, 64
 n = 2
 validate 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
@@ -6507,7 +6507,7 @@ name = vrshr
 n-suffix
 constn = N
 multi_fn = static_assert-N-1-bits
-multi_fn = vrshl-self-noext, a, {vdup-nsigned-noext, (-N).try_into().unwrap()}
+multi_fn = vrshl-self-noext, a, {vdup-nsigned-noext, (-N) as _}
 a = 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60, 64
 n = 2
 validate 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
@@ -6804,7 +6804,7 @@ name = vshl
 n-suffix
 constn = N
 multi_fn = static_assert_imm-out_bits_exp_len-N
-multi_fn = simd_shl, a, {vdup-nself-noext, N.try_into().unwrap()}
+multi_fn = simd_shl, a, {vdup-nself-noext, N as _}
 a = 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
 n = 2
 validate 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60, 64
@@ -6818,7 +6818,7 @@ name = vshll
 n-suffix
 constn = N
 multi_fn = static_assert-N-0-bits
-multi_fn = simd_shl, {simd_cast, a}, {vdup-nout-noext, N.try_into().unwrap()}
+multi_fn = simd_shl, {simd_cast, a}, {vdup-nout-noext, N as _}
 a = 1, 2, 3, 4, 5, 6, 7, 8
 n = 2
 validate 4, 8, 12, 16, 20, 24, 28, 32
@@ -6851,7 +6851,7 @@ n-suffix
 constn = N
 multi_fn = static_assert-N-1-bits
 multi_fn = fix_right_shift_imm-N-bits
-multi_fn = simd_shr, a, {vdup-nself-noext, n.try_into().unwrap()}
+multi_fn = simd_shr, a, {vdup-nself-noext, n as _}
 a = 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60, 64
 n = 2
 validate 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
@@ -6867,7 +6867,7 @@ name = vshrn_n
 no-q
 constn = N
 multi_fn = static_assert-N-1-halfbits
-multi_fn = simd_cast, {simd_shr, a, {vdup-nself-noext, N.try_into().unwrap()}}
+multi_fn = simd_cast, {simd_shr, a, {vdup-nself-noext, N as _}}
 a = 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60, 64
 n = 2
 validate 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
