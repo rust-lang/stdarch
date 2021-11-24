@@ -282,7 +282,7 @@ impl IntrinsicType {
                 16 => "(uint16_t)",
                 32 => "(uint32_t)",
                 64 => "(uint64_t)",
-                128 => "(__uint128_t)",
+                128 => "",
                 _ => panic!("invalid bit_len"),
             },
             _ => "",
