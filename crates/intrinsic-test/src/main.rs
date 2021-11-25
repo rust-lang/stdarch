@@ -168,7 +168,7 @@ fn compile_c(c_filename: &str, intrinsic: &Intrinsic, compiler: &str, a32: bool)
     let output = Command::new("sh")
         .arg("-c")
         .arg(format!(
-            "{cpp} {cppflags} {arch_flags} -Wno-narrowing -O0 -target {target} -o c_programs/{intrinsic} {filename}",
+            "{cpp} {cppflags} {arch_flags} -Wno-narrowing -O2 -target {target} -o c_programs/{intrinsic} {filename}",
             target = if a32 { "armv7-unknown-linux-gnueabihf" } else { "aarch64-unknown-linux-gnu" },
             arch_flags = if a32 { "-march=armv8.6-a+crypto+crc+dotprod" } else { "-march=armv8.6-a+crypto+sha3+crc+dotprod" },
             filename = c_filename,

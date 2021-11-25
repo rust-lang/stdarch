@@ -4455,7 +4455,7 @@ pub unsafe fn vnegq_s64(a: int64x2_t) -> int64x2_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(neg))]
 pub unsafe fn vnegd_s64(a: i64) -> i64 {
-    -a
+    a.wrapping_neg()
 }
 
 /// Negate
@@ -7512,7 +7512,7 @@ pub unsafe fn vsubq_f64(a: float64x2_t, b: float64x2_t) -> float64x2_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(nop))]
 pub unsafe fn vsubd_s64(a: i64, b: i64) -> i64 {
-    a - b
+    a.wrapping_sub(b)
 }
 
 /// Subtract
@@ -7520,7 +7520,7 @@ pub unsafe fn vsubd_s64(a: i64, b: i64) -> i64 {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(nop))]
 pub unsafe fn vsubd_u64(a: u64, b: u64) -> u64 {
-    a - b
+    a.wrapping_sub(b)
 }
 
 /// Add
@@ -7528,7 +7528,7 @@ pub unsafe fn vsubd_u64(a: u64, b: u64) -> u64 {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(nop))]
 pub unsafe fn vaddd_s64(a: i64, b: i64) -> i64 {
-    a + b
+    a.wrapping_add(b)
 }
 
 /// Add
@@ -7536,7 +7536,7 @@ pub unsafe fn vaddd_s64(a: i64, b: i64) -> i64 {
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(nop))]
 pub unsafe fn vaddd_u64(a: u64, b: u64) -> u64 {
-    a + b
+    a.wrapping_add(b)
 }
 
 /// Floating-point add across vector
@@ -11536,7 +11536,7 @@ pub unsafe fn vrshrn_high_n_u64<const N: i32>(a: uint32x2_t, b: uint64x2_t) -> u
 pub unsafe fn vrsrad_n_s64<const N: i32>(a: i64, b: i64) -> i64 {
     static_assert!(N : i32 where N >= 1 && N <= 64);
     let b: i64 = vrshrd_n_s64::<N>(b);
-    a + b
+    a.wrapping_add(b)
 }
 
 /// Ungisned rounding shift right and accumulate.
@@ -11547,7 +11547,7 @@ pub unsafe fn vrsrad_n_s64<const N: i32>(a: i64, b: i64) -> i64 {
 pub unsafe fn vrsrad_n_u64<const N: i32>(a: u64, b: u64) -> u64 {
     static_assert!(N : i32 where N >= 1 && N <= 64);
     let b: u64 = vrshrd_n_u64::<N>(b);
-    a + b
+    a.wrapping_add(b)
 }
 
 /// Rounding subtract returning high narrow

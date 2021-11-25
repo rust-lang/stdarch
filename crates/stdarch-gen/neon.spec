@@ -2058,7 +2058,7 @@ generate int*_t
 
 /// Negate
 name = vneg
-multi_fn = -a
+multi_fn = a.wrapping_neg()
 a = 1
 validate -1
 
@@ -4055,7 +4055,7 @@ generate float*_t
 
 /// Subtract
 name = vsub
-multi_fn = a - b
+multi_fn = a.wrapping_sub(b)
 a = 3
 b = 2
 validate 1
@@ -4065,7 +4065,7 @@ generate i64, u64
 
 /// Add
 name = vadd
-multi_fn = a + b
+multi_fn = a.wrapping_add(b)
 a = 1
 b = 2
 validate 3
@@ -6613,7 +6613,7 @@ n-suffix
 constn = N
 multi_fn = static_assert-N-1-bits
 multi_fn = vrshr-nself-::<N>, b:in_t, b
-multi_fn = a + b
+multi_fn = a.wrapping_add(b)
 a = 1
 b = 4
 n = 2
@@ -6628,7 +6628,7 @@ n-suffix
 constn = N
 multi_fn = static_assert-N-1-bits
 multi_fn = vrshr-nself-::<N>, b:in_t, b
-multi_fn = a + b
+multi_fn = a.wrapping_add(b)
 a = 1
 b = 4
 n = 2
