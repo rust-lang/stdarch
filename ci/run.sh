@@ -41,6 +41,7 @@ case ${TARGET} in
     # missing a fix from https://github.com/alexcrichton/cc-rs/pull/627. Apply
     # the workaround manually here.
     armv7-*eabihf | thumbv7-*eabihf)
+        export RUSTFLAGS="${RUSTFLAGS} -Ctarget-feature=+neon"
         export TARGET_CFLAGS="-mfpu=vfpv3-d16"
         ;;
 esac
