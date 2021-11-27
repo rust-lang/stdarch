@@ -45939,28 +45939,26 @@ mod tests {
 
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_mask_storeu_epi32() {
-        let mut r = _mm512_set1_epi32(42);
+        let mut r = [42_i32; 16];
         let a = _mm512_setr_epi32(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
         let m = 0b11101000_11001010;
-        _mm512_mask_storeu_epi32(&mut r as *mut _ as *mut i32, m, a);
+        _mm512_mask_storeu_epi32(r.as_mut_ptr(), m, a);
         let e = _mm512_setr_epi32(42, 2, 42, 4, 42, 42, 7, 8, 42, 42, 42, 12, 42, 14, 15, 16);
-        assert_eq_m512i(r, e);
+        assert_eq_m512i(_mm512_loadu_epi32(r.as_ptr()), e);
     }
 
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_mask_store_epi32() {
         #[repr(align(64))]
         struct Align {
-            data: __m512i,
+            data: [i32; 16],
         }
-        let mut r = Align {
-            data: _mm512_set1_epi32(42),
-        };
+        let mut r = Align { data: [42; 16] };
         let a = _mm512_setr_epi32(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
         let m = 0b11101000_11001010;
-        _mm512_mask_store_epi32(&mut r.data as *mut _ as *mut i32, m, a);
+        _mm512_mask_store_epi32(r.data.as_mut_ptr(), m, a);
         let e = _mm512_setr_epi32(42, 2, 42, 4, 42, 42, 7, 8, 42, 42, 42, 12, 42, 14, 15, 16);
-        assert_eq_m512i(r.data, e);
+        assert_eq_m512i(_mm512_load_epi32(r.data.as_ptr()), e);
     }
 
     #[simd_test(enable = "avx512f")]
@@ -46019,28 +46017,27 @@ mod tests {
 
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_mask_storeu_epi64() {
-        let mut r = _mm512_set1_epi64(42);
+        let mut r = [42_i64; 8];
         let a = _mm512_setr_epi64(1, 2, 3, 4, 5, 6, 7, 8);
         let m = 0b11001010;
-        _mm512_mask_storeu_epi64(&mut r as *mut _ as *mut i64, m, a);
+        _mm512_mask_storeu_epi64(r.as_mut_ptr(), m, a);
         let e = _mm512_setr_epi64(42, 2, 42, 4, 42, 42, 7, 8);
-        assert_eq_m512i(r, e);
+        assert_eq_m512i(_mm512_loadu_epi64(r.as_ptr()), e);
     }
 
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_mask_store_epi64() {
         #[repr(align(64))]
         struct Align {
-            data: __m512i,
+            data: [i64; 8],
         }
-        let mut r = Align {
-            data: _mm512_set1_epi32(42),
-        };
+        let mut r = Align { data: [42; 8] };
         let a = _mm512_setr_epi64(1, 2, 3, 4, 5, 6, 7, 8);
         let m = 0b11001010;
-        _mm512_mask_store_epi64(&mut r.data as *mut _ as *mut i64, m, a);
+        let p = r.data.as_mut_ptr();
+        _mm512_mask_store_epi64(p, m, a);
         let e = _mm512_setr_epi64(42, 2, 42, 4, 42, 42, 7, 8);
-        assert_eq_m512i(r.data, e);
+        assert_eq_m512i(_mm512_load_epi64(r.data.as_ptr()), e);
     }
 
     #[simd_test(enable = "avx512f")]
@@ -46121,38 +46118,36 @@ mod tests {
 
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_mask_storeu_ps() {
-        let mut r = _mm512_set1_ps(42.0);
+        let mut r = [42_f32; 16];
         let a = _mm512_setr_ps(
             1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0,
         );
         let m = 0b11101000_11001010;
-        _mm512_mask_storeu_ps(&mut r as *mut _ as *mut f32, m, a);
+        _mm512_mask_storeu_ps(r.as_mut_ptr(), m, a);
         let e = _mm512_setr_ps(
             42.0, 2.0, 42.0, 4.0, 42.0, 42.0, 7.0, 8.0, 42.0, 42.0, 42.0, 12.0, 42.0, 14.0, 15.0,
             16.0,
         );
-        assert_eq_m512(r, e);
+        assert_eq_m512(_mm512_loadu_ps(r.as_ptr()), e);
     }
 
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_mask_store_ps() {
         #[repr(align(64))]
         struct Align {
-            data: __m512,
+            data: [f32; 16],
         }
-        let mut r = Align {
-            data: _mm512_set1_ps(42.0),
-        };
+        let mut r = Align { data: [42.0; 16] };
         let a = _mm512_setr_ps(
             1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0,
         );
         let m = 0b11101000_11001010;
-        _mm512_mask_store_ps(&mut r.data as *mut _ as *mut f32, m, a);
+        _mm512_mask_store_ps(r.data.as_mut_ptr(), m, a);
         let e = _mm512_setr_ps(
             42.0, 2.0, 42.0, 4.0, 42.0, 42.0, 7.0, 8.0, 42.0, 42.0, 42.0, 12.0, 42.0, 14.0, 15.0,
             16.0,
         );
-        assert_eq_m512(r.data, e);
+        assert_eq_m512(_mm512_load_ps(r.data.as_ptr()), e);
     }
 
     #[simd_test(enable = "avx512f")]
@@ -46211,28 +46206,26 @@ mod tests {
 
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_mask_storeu_pd() {
-        let mut r = _mm512_set1_pd(42.0);
+        let mut r = [42_f64; 8];
         let a = _mm512_setr_pd(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0);
         let m = 0b11001010;
-        _mm512_mask_storeu_pd(&mut r as *mut _ as *mut f64, m, a);
+        _mm512_mask_storeu_pd(r.as_mut_ptr(), m, a);
         let e = _mm512_setr_pd(42.0, 2.0, 42.0, 4.0, 42.0, 42.0, 7.0, 8.0);
-        assert_eq_m512d(r, e);
+        assert_eq_m512d(_mm512_loadu_pd(r.as_ptr()), e);
     }
 
     #[simd_test(enable = "avx512f")]
     unsafe fn test_mm512_mask_store_pd() {
         #[repr(align(64))]
         struct Align {
-            data: __m512d,
+            data: [f64; 8],
         }
-        let mut r = Align {
-            data: _mm512_set1_pd(42.0),
-        };
+        let mut r = Align { data: [42.0; 8] };
         let a = _mm512_setr_pd(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0);
         let m = 0b11001010;
-        _mm512_mask_store_pd(&mut r.data as *mut _ as *mut f64, m, a);
+        _mm512_mask_store_pd(r.data.as_mut_ptr(), m, a);
         let e = _mm512_setr_pd(42.0, 2.0, 42.0, 4.0, 42.0, 42.0, 7.0, 8.0);
-        assert_eq_m512d(r.data, e);
+        assert_eq_m512d(_mm512_load_pd(r.data.as_ptr()), e);
     }
 
     #[simd_test(enable = "avx512f,avx512vl")]
@@ -46291,28 +46284,26 @@ mod tests {
 
     #[simd_test(enable = "avx512f,avx512vl")]
     unsafe fn test_mm256_mask_storeu_epi32() {
-        let mut r = _mm256_set1_epi32(42);
+        let mut r = [42_i32; 8];
         let a = _mm256_setr_epi32(1, 2, 3, 4, 5, 6, 7, 8);
         let m = 0b11001010;
-        _mm256_mask_storeu_epi32(&mut r as *mut _ as *mut i32, m, a);
+        _mm256_mask_storeu_epi32(r.as_mut_ptr(), m, a);
         let e = _mm256_setr_epi32(42, 2, 42, 4, 42, 42, 7, 8);
-        assert_eq_m256i(r, e);
+        assert_eq_m256i(_mm256_loadu_epi32(r.as_ptr()), e);
     }
 
     #[simd_test(enable = "avx512f,avx512vl")]
     unsafe fn test_mm256_mask_store_epi32() {
         #[repr(align(64))]
         struct Align {
-            data: __m256i,
+            data: [i32; 8],
         }
-        let mut r = Align {
-            data: _mm256_set1_epi32(42),
-        };
+        let mut r = Align { data: [42; 8] };
         let a = _mm256_setr_epi32(1, 2, 3, 4, 5, 6, 7, 8);
         let m = 0b11001010;
-        _mm256_mask_store_epi32(&mut r.data as *mut _ as *mut i32, m, a);
+        _mm256_mask_store_epi32(r.data.as_mut_ptr(), m, a);
         let e = _mm256_setr_epi32(42, 2, 42, 4, 42, 42, 7, 8);
-        assert_eq_m256i(r.data, e);
+        assert_eq_m256i(_mm256_load_epi32(r.data.as_ptr()), e);
     }
 
     #[simd_test(enable = "avx512f,avx512vl")]
@@ -46371,28 +46362,26 @@ mod tests {
 
     #[simd_test(enable = "avx512f,avx512vl")]
     unsafe fn test_mm256_mask_storeu_epi64() {
-        let mut r = _mm256_set1_epi64x(42);
+        let mut r = [42_i64; 4];
         let a = _mm256_setr_epi64x(1, 2, 3, 4);
         let m = 0b1010;
-        _mm256_mask_storeu_epi64(&mut r as *mut _ as *mut i64, m, a);
+        _mm256_mask_storeu_epi64(r.as_mut_ptr(), m, a);
         let e = _mm256_setr_epi64x(42, 2, 42, 4);
-        assert_eq_m256i(r, e);
+        assert_eq_m256i(_mm256_loadu_epi64(r.as_ptr()), e);
     }
 
     #[simd_test(enable = "avx512f,avx512vl")]
     unsafe fn test_mm256_mask_store_epi64() {
         #[repr(align(32))]
         struct Align {
-            data: __m256i,
+            data: [i64; 4],
         }
-        let mut r = Align {
-            data: _mm256_set1_epi32(42),
-        };
+        let mut r = Align { data: [42; 4] };
         let a = _mm256_setr_epi64x(1, 2, 3, 4);
         let m = 0b1010;
-        _mm256_mask_store_epi64(&mut r.data as *mut _ as *mut i64, m, a);
+        _mm256_mask_store_epi64(r.data.as_mut_ptr(), m, a);
         let e = _mm256_setr_epi64x(42, 2, 42, 4);
-        assert_eq_m256i(r.data, e);
+        assert_eq_m256i(_mm256_load_epi64(r.data.as_ptr()), e);
     }
 
     #[simd_test(enable = "avx512f,avx512vl")]
@@ -46451,28 +46440,26 @@ mod tests {
 
     #[simd_test(enable = "avx512f,avx512vl")]
     unsafe fn test_mm256_mask_storeu_ps() {
-        let mut r = _mm256_set1_ps(42.0);
+        let mut r = [42_f32; 8];
         let a = _mm256_setr_ps(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0);
         let m = 0b11001010;
-        _mm256_mask_storeu_ps(&mut r as *mut _ as *mut f32, m, a);
+        _mm256_mask_storeu_ps(r.as_mut_ptr(), m, a);
         let e = _mm256_setr_ps(42.0, 2.0, 42.0, 4.0, 42.0, 42.0, 7.0, 8.0);
-        assert_eq_m256(r, e);
+        assert_eq_m256(_mm256_loadu_ps(r.as_ptr()), e);
     }
 
     #[simd_test(enable = "avx512f,avx512vl")]
     unsafe fn test_mm256_mask_store_ps() {
         #[repr(align(32))]
         struct Align {
-            data: __m256,
+            data: [f32; 8],
         }
-        let mut r = Align {
-            data: _mm256_set1_ps(42.0),
-        };
+        let mut r = Align { data: [42.0; 8] };
         let a = _mm256_setr_ps(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0);
         let m = 0b11001010;
-        _mm256_mask_store_ps(&mut r.data as *mut _ as *mut f32, m, a);
+        _mm256_mask_store_ps(r.data.as_mut_ptr(), m, a);
         let e = _mm256_setr_ps(42.0, 2.0, 42.0, 4.0, 42.0, 42.0, 7.0, 8.0);
-        assert_eq_m256(r.data, e);
+        assert_eq_m256(_mm256_load_ps(r.data.as_ptr()), e);
     }
 
     #[simd_test(enable = "avx512f,avx512vl")]
@@ -46531,28 +46518,26 @@ mod tests {
 
     #[simd_test(enable = "avx512f,avx512vl")]
     unsafe fn test_mm256_mask_storeu_pd() {
-        let mut r = _mm256_set1_pd(42.0);
+        let mut r = [42_f64; 4];
         let a = _mm256_setr_pd(1.0, 2.0, 3.0, 4.0);
         let m = 0b1010;
-        _mm256_mask_storeu_pd(&mut r as *mut _ as *mut f64, m, a);
+        _mm256_mask_storeu_pd(r.as_mut_ptr(), m, a);
         let e = _mm256_setr_pd(42.0, 2.0, 42.0, 4.0);
-        assert_eq_m256d(r, e);
+        assert_eq_m256d(_mm256_loadu_pd(r.as_ptr()), e);
     }
 
     #[simd_test(enable = "avx512f,avx512vl")]
     unsafe fn test_mm256_mask_store_pd() {
         #[repr(align(32))]
         struct Align {
-            data: __m256d,
+            data: [f64; 4],
         }
-        let mut r = Align {
-            data: _mm256_set1_pd(42.0),
-        };
+        let mut r = Align { data: [42.0; 4] };
         let a = _mm256_setr_pd(1.0, 2.0, 3.0, 4.0);
         let m = 0b1010;
-        _mm256_mask_store_pd(&mut r.data as *mut _ as *mut f64, m, a);
+        _mm256_mask_store_pd(r.data.as_mut_ptr(), m, a);
         let e = _mm256_setr_pd(42.0, 2.0, 42.0, 4.0);
-        assert_eq_m256d(r.data, e);
+        assert_eq_m256d(_mm256_load_pd(r.data.as_ptr()), e);
     }
 
     #[simd_test(enable = "avx512f")]
