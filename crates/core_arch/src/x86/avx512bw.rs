@@ -4385,7 +4385,7 @@ pub unsafe fn _mm256_maskz_loadu_epi8(k: __mmask32, mem_addr: *const i8) -> __m2
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_loadu_epi16)
 #[inline]
-#[target_feature(enable = "avx512f,avx512bw,avx512vl,avx")]
+#[target_feature(enable = "avx512f,avx512bw,avx512vl,avx,sse")]
 pub unsafe fn _mm_mask_loadu_epi16(src: __m128i, k: __mmask8, mem_addr: *const i16) -> __m128i {
     let mut dst: __m128i = src;
     asm!(
@@ -4404,7 +4404,7 @@ pub unsafe fn _mm_mask_loadu_epi16(src: __m128i, k: __mmask8, mem_addr: *const i
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_loadu_epi16)
 #[inline]
-#[target_feature(enable = "avx512f,avx512bw,avx512vl,avx")]
+#[target_feature(enable = "avx512f,avx512bw,avx512vl,avx,sse")]
 pub unsafe fn _mm_maskz_loadu_epi16(k: __mmask8, mem_addr: *const i16) -> __m128i {
     let mut dst: __m128i;
     asm!(
@@ -4423,7 +4423,7 @@ pub unsafe fn _mm_maskz_loadu_epi16(k: __mmask8, mem_addr: *const i16) -> __m128
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_loadu_epi8)
 #[inline]
-#[target_feature(enable = "avx512f,avx512bw,avx512vl,avx")]
+#[target_feature(enable = "avx512f,avx512bw,avx512vl,avx,sse")]
 pub unsafe fn _mm_mask_loadu_epi8(src: __m128i, k: __mmask16, mem_addr: *const i8) -> __m128i {
     let mut dst: __m128i = src;
     asm!(
@@ -4442,7 +4442,7 @@ pub unsafe fn _mm_mask_loadu_epi8(src: __m128i, k: __mmask16, mem_addr: *const i
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_loadu_epi8)
 #[inline]
-#[target_feature(enable = "avx512f,avx512bw,avx512vl,avx")]
+#[target_feature(enable = "avx512f,avx512bw,avx512vl,avx,sse")]
 pub unsafe fn _mm_maskz_loadu_epi8(k: __mmask16, mem_addr: *const i8) -> __m128i {
     let mut dst: __m128i;
     asm!(
@@ -4524,7 +4524,7 @@ pub unsafe fn _mm256_mask_storeu_epi8(mem_addr: *mut i8, mask: __mmask32, a: __m
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_storeu_epi16)
 #[inline]
-#[target_feature(enable = "avx512f,avx512bw,avx512vl,avx")]
+#[target_feature(enable = "avx512f,avx512bw,avx512vl,avx,sse")]
 pub unsafe fn _mm_mask_storeu_epi16(mem_addr: *mut i16, mask: __mmask8, a: __m128i) {
     asm!(
          "vmovdqu16 [{0}]{{{1}}}, {2}",
@@ -4540,7 +4540,7 @@ pub unsafe fn _mm_mask_storeu_epi16(mem_addr: *mut i16, mask: __mmask8, a: __m12
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_storeu_epi8)
 #[inline]
-#[target_feature(enable = "avx512f,avx512bw,avx512vl,avx")]
+#[target_feature(enable = "avx512f,avx512bw,avx512vl,avx,sse")]
 pub unsafe fn _mm_mask_storeu_epi8(mem_addr: *mut i8, mask: __mmask16, a: __m128i) {
     asm!(
          "vmovdqu8 [{0}]{{{1}}}, {2}",
