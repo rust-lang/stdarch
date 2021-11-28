@@ -4227,6 +4227,330 @@ pub unsafe fn _mm_storeu_epi8(mem_addr: *mut i8, a: __m128i) {
     ptr::write_unaligned(mem_addr as *mut __m128i, a);
 }
 
+/// Load packed 16-bit integers from memory into dst using writemask k
+/// (elements are copied from src when the corresponding mask bit is not set).
+/// mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_loadu_epi16)
+#[inline]
+#[target_feature(enable = "avx512f,avx512bw")]
+pub unsafe fn _mm512_mask_loadu_epi16(src: __m512i, k: __mmask32, mem_addr: *const i16) -> __m512i {
+    let mut dst: __m512i = src;
+    asm!(
+         "vmovdqu16 {2}{{{1}}}, [{0}]",
+         in(reg) mem_addr,
+         in(kreg) k,
+         inout(zmm_reg) dst,
+         options(pure, readonly, nostack)
+    );
+    dst
+}
+
+/// Load packed 16-bit integers from memory into dst using zeromask k
+/// (elements are zeroed out when the corresponding mask bit is not set).
+/// mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_loadu_epi16)
+#[inline]
+#[target_feature(enable = "avx512f,avx512bw")]
+pub unsafe fn _mm512_maskz_loadu_epi16(k: __mmask32, mem_addr: *const i16) -> __m512i {
+    let mut dst: __m512i;
+    asm!(
+         "vmovdqu16 {2}{{{1}}} {{z}}, [{0}]",
+         in(reg) mem_addr,
+         in(kreg) k,
+         out(zmm_reg) dst,
+         options(pure, readonly, nostack)
+    );
+    dst
+}
+
+/// Load packed 8-bit integers from memory into dst using writemask k
+/// (elements are copied from src when the corresponding mask bit is not set).
+/// mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_loadu_epi8)
+#[inline]
+#[target_feature(enable = "avx512f,avx512bw")]
+pub unsafe fn _mm512_mask_loadu_epi8(src: __m512i, k: __mmask64, mem_addr: *const i8) -> __m512i {
+    let mut dst: __m512i = src;
+    asm!(
+         "vmovdqu8 {2}{{{1}}}, [{0}]",
+         in(reg) mem_addr,
+         in(kreg) k,
+         inout(zmm_reg) dst,
+         options(pure, readonly, nostack)
+    );
+    dst
+}
+
+/// Load packed 8-bit integers from memory into dst using zeromask k
+/// (elements are zeroed out when the corresponding mask bit is not set).
+/// mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_loadu_epi8)
+#[inline]
+#[target_feature(enable = "avx512f,avx512bw")]
+pub unsafe fn _mm512_maskz_loadu_epi8(k: __mmask64, mem_addr: *const i8) -> __m512i {
+    let mut dst: __m512i;
+    asm!(
+         "vmovdqu8 {2}{{{1}}} {{z}}, [{0}]",
+         in(reg) mem_addr,
+         in(kreg) k,
+         out(zmm_reg) dst,
+         options(pure, readonly, nostack)
+    );
+    dst
+}
+
+/// Load packed 16-bit integers from memory into dst using writemask k
+/// (elements are copied from src when the corresponding mask bit is not set).
+/// mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_loadu_epi16)
+#[inline]
+#[target_feature(enable = "avx512f,avx512bw,avx512vl,avx")]
+pub unsafe fn _mm256_mask_loadu_epi16(src: __m256i, k: __mmask16, mem_addr: *const i16) -> __m256i {
+    let mut dst: __m256i = src;
+    asm!(
+         "vmovdqu16 {2}{{{1}}}, [{0}]",
+         in(reg) mem_addr,
+         in(kreg) k,
+         inout(ymm_reg) dst,
+         options(pure, readonly, nostack)
+    );
+    dst
+}
+
+/// Load packed 16-bit integers from memory into dst using zeromask k
+/// (elements are zeroed out when the corresponding mask bit is not set).
+/// mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_loadu_epi16)
+#[inline]
+#[target_feature(enable = "avx512f,avx512bw,avx512vl,avx")]
+pub unsafe fn _mm256_maskz_loadu_epi16(k: __mmask16, mem_addr: *const i16) -> __m256i {
+    let mut dst: __m256i;
+    asm!(
+         "vmovdqu16 {2}{{{1}}} {{z}}, [{0}]",
+         in(reg) mem_addr,
+         in(kreg) k,
+         out(ymm_reg) dst,
+         options(pure, readonly, nostack)
+    );
+    dst
+}
+
+/// Load packed 8-bit integers from memory into dst using writemask k
+/// (elements are copied from src when the corresponding mask bit is not set).
+/// mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_loadu_epi8)
+#[inline]
+#[target_feature(enable = "avx512f,avx512bw,avx512vl,avx")]
+pub unsafe fn _mm256_mask_loadu_epi8(src: __m256i, k: __mmask32, mem_addr: *const i8) -> __m256i {
+    let mut dst: __m256i = src;
+    asm!(
+         "vmovdqu8 {2}{{{1}}}, [{0}]",
+         in(reg) mem_addr,
+         in(kreg) k,
+         inout(ymm_reg) dst,
+         options(pure, readonly, nostack)
+    );
+    dst
+}
+
+/// Load packed 8-bit integers from memory into dst using zeromask k
+/// (elements are zeroed out when the corresponding mask bit is not set).
+/// mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_loadu_epi8)
+#[inline]
+#[target_feature(enable = "avx512f,avx512bw,avx512vl,avx")]
+pub unsafe fn _mm256_maskz_loadu_epi8(k: __mmask32, mem_addr: *const i8) -> __m256i {
+    let mut dst: __m256i;
+    asm!(
+         "vmovdqu8 {2}{{{1}}} {{z}}, [{0}]",
+         in(reg) mem_addr,
+         in(kreg) k,
+         out(ymm_reg) dst,
+         options(pure, readonly, nostack)
+    );
+    dst
+}
+
+/// Load packed 16-bit integers from memory into dst using writemask k
+/// (elements are copied from src when the corresponding mask bit is not set).
+/// mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_loadu_epi16)
+#[inline]
+#[target_feature(enable = "avx512f,avx512bw,avx512vl,avx")]
+pub unsafe fn _mm_mask_loadu_epi16(src: __m128i, k: __mmask8, mem_addr: *const i16) -> __m128i {
+    let mut dst: __m128i = src;
+    asm!(
+         "vmovdqu16 {2}{{{1}}}, [{0}]",
+         in(reg) mem_addr,
+         in(kreg) k,
+         inout(xmm_reg) dst,
+         options(pure, readonly, nostack)
+    );
+    dst
+}
+
+/// Load packed 16-bit integers from memory into dst using zeromask k
+/// (elements are zeroed out when the corresponding mask bit is not set).
+/// mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_loadu_epi16)
+#[inline]
+#[target_feature(enable = "avx512f,avx512bw,avx512vl,avx")]
+pub unsafe fn _mm_maskz_loadu_epi16(k: __mmask8, mem_addr: *const i16) -> __m128i {
+    let mut dst: __m128i;
+    asm!(
+         "vmovdqu16 {2}{{{1}}} {{z}}, [{0}]",
+         in(reg) mem_addr,
+         in(kreg) k,
+         out(xmm_reg) dst,
+         options(pure, readonly, nostack)
+    );
+    dst
+}
+
+/// Load packed 8-bit integers from memory into dst using writemask k
+/// (elements are copied from src when the corresponding mask bit is not set).
+/// mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_loadu_epi8)
+#[inline]
+#[target_feature(enable = "avx512f,avx512bw,avx512vl,avx")]
+pub unsafe fn _mm_mask_loadu_epi8(src: __m128i, k: __mmask16, mem_addr: *const i8) -> __m128i {
+    let mut dst: __m128i = src;
+    asm!(
+         "vmovdqu8 {2}{{{1}}}, [{0}]",
+         in(reg) mem_addr,
+         in(kreg) k,
+         inout(xmm_reg) dst,
+         options(pure, readonly, nostack)
+    );
+    dst
+}
+
+/// Load packed 8-bit integers from memory into dst using zeromask k
+/// (elements are zeroed out when the corresponding mask bit is not set).
+/// mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_loadu_epi8)
+#[inline]
+#[target_feature(enable = "avx512f,avx512bw,avx512vl,avx")]
+pub unsafe fn _mm_maskz_loadu_epi8(k: __mmask16, mem_addr: *const i8) -> __m128i {
+    let mut dst: __m128i;
+    asm!(
+         "vmovdqu8 {2}{{{1}}} {{z}}, [{0}]",
+         in(reg) mem_addr,
+         in(kreg) k,
+         out(xmm_reg) dst,
+         options(pure, readonly, nostack)
+    );
+    dst
+}
+
+/// Store packed 16-bit integers from a into memory using writemask k.
+/// mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_storeu_epi16)
+#[inline]
+#[target_feature(enable = "avx512f,avx512bw")]
+pub unsafe fn _mm512_mask_storeu_epi16(mem_addr: *mut i16, mask: __mmask32, a: __m512i) {
+    asm!(
+         "vmovdqu16 [{0}]{{{1}}}, {2}",
+         in(reg) mem_addr,
+         in(kreg) mask,
+         in(zmm_reg) a,
+         options(nostack)
+    );
+}
+
+/// Store packed 8-bit integers from a into memory using writemask k.
+/// mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_storeu_epi8)
+#[inline]
+#[target_feature(enable = "avx512f,avx512bw")]
+pub unsafe fn _mm512_mask_storeu_epi8(mem_addr: *mut i8, mask: __mmask64, a: __m512i) {
+    asm!(
+         "vmovdqu8 [{0}]{{{1}}}, {2}",
+         in(reg) mem_addr,
+         in(kreg) mask,
+         in(zmm_reg) a,
+         options(nostack)
+    );
+}
+
+/// Store packed 16-bit integers from a into memory using writemask k.
+/// mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_storeu_epi16)
+#[inline]
+#[target_feature(enable = "avx512f,avx512bw,avx512vl,avx")]
+pub unsafe fn _mm256_mask_storeu_epi16(mem_addr: *mut i16, mask: __mmask16, a: __m256i) {
+    asm!(
+         "vmovdqu16 [{0}]{{{1}}}, {2}",
+         in(reg) mem_addr,
+         in(kreg) mask,
+         in(ymm_reg) a,
+         options(nostack)
+    );
+}
+
+/// Store packed 8-bit integers from a into memory using writemask k.
+/// mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_storeu_epi8)
+#[inline]
+#[target_feature(enable = "avx512f,avx512bw,avx512vl,avx")]
+pub unsafe fn _mm256_mask_storeu_epi8(mem_addr: *mut i8, mask: __mmask32, a: __m256i) {
+    asm!(
+         "vmovdqu8 [{0}]{{{1}}}, {2}",
+         in(reg) mem_addr,
+         in(kreg) mask,
+         in(ymm_reg) a,
+         options(nostack)
+    );
+}
+
+/// Store packed 16-bit integers from a into memory using writemask k.
+/// mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_storeu_epi16)
+#[inline]
+#[target_feature(enable = "avx512f,avx512bw,avx512vl,avx")]
+pub unsafe fn _mm_mask_storeu_epi16(mem_addr: *mut i16, mask: __mmask8, a: __m128i) {
+    asm!(
+         "vmovdqu16 [{0}]{{{1}}}, {2}",
+         in(reg) mem_addr,
+         in(kreg) mask,
+         in(xmm_reg) a,
+         options(nostack)
+    );
+}
+
+/// Store packed 8-bit integers from a into memory using writemask k.
+/// mem_addr does not need to be aligned on any particular boundary.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_storeu_epi8)
+#[inline]
+#[target_feature(enable = "avx512f,avx512bw,avx512vl,avx")]
+pub unsafe fn _mm_mask_storeu_epi8(mem_addr: *mut i8, mask: __mmask16, a: __m128i) {
+    asm!(
+         "vmovdqu8 [{0}]{{{1}}}, {2}",
+         in(reg) mem_addr,
+         in(kreg) mask,
+         in(xmm_reg) a,
+         options(nostack)
+    );
+}
+
 /// Multiply packed signed 16-bit integers in a and b, producing intermediate signed 32-bit integers. Horizontally add adjacent pairs of intermediate 32-bit integers, and pack the results in dst.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_madd_epi16&expand=3511)
