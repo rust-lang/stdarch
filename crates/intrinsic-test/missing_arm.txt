@@ -301,3 +301,34 @@ vsriq_n_u16
 vsriq_n_u32
 vsriq_n_u64
 vsriq_n_u8
+
+# These produce a different result on Clang depending on the optimization level.
+# This is definitely a bug in LLVM.
+vadd_f32
+vaddq_f32
+vcvt_s32_f32
+vcvt_u32_f32
+vcvtq_s32_f32
+vcvtq_u32_f32
+vfma_f32
+vfma_n_f32
+vfmaq_f32
+vfmaq_n_f32
+vfms_f32
+vfmsq_f32
+vmla_f32
+vmla_lane_f32
+vmla_n_f32
+vmlaq_f32
+vmlaq_lane_f32
+vmlaq_n_f32
+vmls_f32
+vmls_lane_f32
+vmls_n_f32
+vmlsq_f32
+vmlsq_lane_f32
+vmlsq_n_f32
+vmul_lane_f32
+vmul_n_f32
+vmulq_lane_f32
+vmulq_n_f32
