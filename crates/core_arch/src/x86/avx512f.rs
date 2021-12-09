@@ -4,6 +4,35 @@ use crate::{
     ptr,
 };
 
+// x86-32 wants to use a 32-bit address size, but asm! defaults to using the full
+// register name (e.g. rax). We have to explicitly override the placeholder to
+// use the 32-bit register name in that case.
+
+#[cfg(target_pointer_width = "32")]
+macro_rules! vpl {
+    ($inst:expr) => {
+        concat!($inst, ", [{p:e}]")
+    };
+}
+#[cfg(target_pointer_width = "64")]
+macro_rules! vpl {
+    ($inst:expr) => {
+        concat!($inst, ", [{p}]")
+    };
+}
+#[cfg(target_pointer_width = "32")]
+macro_rules! vps {
+    ($inst1:expr, $inst2:expr) => {
+        concat!($inst1, " [{p:e}]", $inst2)
+    };
+}
+#[cfg(target_pointer_width = "64")]
+macro_rules! vps {
+    ($inst1:expr, $inst2:expr) => {
+        concat!($inst1, " [{p}]", $inst2)
+    };
+}
+
 #[cfg(test)]
 use stdarch_test::assert_instr;
 
@@ -30333,11 +30362,11 @@ pub unsafe fn _mm512_store_pd(mem_addr: *mut f64, a: __m512d) {
 pub unsafe fn _mm512_mask_loadu_epi32(src: __m512i, k: __mmask16, mem_addr: *const i32) -> __m512i {
     let mut dst: __m512i = src;
     asm!(
-         "vmovdqu32 {2}{{{1}}}, [{0}]",
-         in(reg) mem_addr,
-         in(kreg) k,
-         inout(zmm_reg) dst,
-         options(pure, readonly, nostack)
+        vpl!("vmovdqu32 {dst}{{{k}}}"),
+        p = in(reg) mem_addr,
+        k = in(kreg) k,
+        dst = inout(zmm_reg) dst,
+        options(pure, readonly, nostack)
     );
     dst
 }
@@ -30352,11 +30381,11 @@ pub unsafe fn _mm512_mask_loadu_epi32(src: __m512i, k: __mmask16, mem_addr: *con
 pub unsafe fn _mm512_maskz_loadu_epi32(k: __mmask16, mem_addr: *const i32) -> __m512i {
     let mut dst: __m512i;
     asm!(
-         "vmovdqu32 {2}{{{1}}} {{z}}, [{0}]",
-         in(reg) mem_addr,
-         in(kreg) k,
-         out(zmm_reg) dst,
-         options(pure, readonly, nostack)
+        vpl!("vmovdqu32 {dst}{{{k}}} {{z}}"),
+        p = in(reg) mem_addr,
+        k = in(kreg) k,
+        dst = out(zmm_reg) dst,
+        options(pure, readonly, nostack)
     );
     dst
 }
@@ -30371,11 +30400,11 @@ pub unsafe fn _mm512_maskz_loadu_epi32(k: __mmask16, mem_addr: *const i32) -> __
 pub unsafe fn _mm512_mask_loadu_epi64(src: __m512i, k: __mmask8, mem_addr: *const i64) -> __m512i {
     let mut dst: __m512i = src;
     asm!(
-         "vmovdqu64 {2}{{{1}}}, [{0}]",
-         in(reg) mem_addr,
-         in(kreg) k,
-         inout(zmm_reg) dst,
-         options(pure, readonly, nostack)
+        vpl!("vmovdqu64 {dst}{{{k}}}"),
+        p = in(reg) mem_addr,
+        k = in(kreg) k,
+        dst = inout(zmm_reg) dst,
+        options(pure, readonly, nostack)
     );
     dst
 }
@@ -30390,11 +30419,11 @@ pub unsafe fn _mm512_mask_loadu_epi64(src: __m512i, k: __mmask8, mem_addr: *cons
 pub unsafe fn _mm512_maskz_loadu_epi64(k: __mmask8, mem_addr: *const i64) -> __m512i {
     let mut dst: __m512i;
     asm!(
-         "vmovdqu64 {2}{{{1}}} {{z}}, [{0}]",
-         in(reg) mem_addr,
-         in(kreg) k,
-         out(zmm_reg) dst,
-         options(pure, readonly, nostack)
+        vpl!("vmovdqu64 {dst}{{{k}}} {{z}}"),
+        p = in(reg) mem_addr,
+        k = in(kreg) k,
+        dst = out(zmm_reg) dst,
+        options(pure, readonly, nostack)
     );
     dst
 }
@@ -30409,11 +30438,11 @@ pub unsafe fn _mm512_maskz_loadu_epi64(k: __mmask8, mem_addr: *const i64) -> __m
 pub unsafe fn _mm512_mask_loadu_ps(src: __m512, k: __mmask16, mem_addr: *const f32) -> __m512 {
     let mut dst: __m512 = src;
     asm!(
-         "vmovups {2}{{{1}}}, [{0}]",
-         in(reg) mem_addr,
-         in(kreg) k,
-         inout(zmm_reg) dst,
-         options(pure, readonly, nostack)
+        vpl!("vmovups {dst}{{{k}}}"),
+        p = in(reg) mem_addr,
+        k = in(kreg) k,
+        dst = inout(zmm_reg) dst,
+        options(pure, readonly, nostack)
     );
     dst
 }
@@ -30428,11 +30457,11 @@ pub unsafe fn _mm512_mask_loadu_ps(src: __m512, k: __mmask16, mem_addr: *const f
 pub unsafe fn _mm512_maskz_loadu_ps(k: __mmask16, mem_addr: *const f32) -> __m512 {
     let mut dst: __m512;
     asm!(
-         "vmovups {2}{{{1}}} {{z}}, [{0}]",
-         in(reg) mem_addr,
-         in(kreg) k,
-         out(zmm_reg) dst,
-         options(pure, readonly, nostack)
+        vpl!("vmovups {dst}{{{k}}} {{z}}"),
+        p = in(reg) mem_addr,
+        k = in(kreg) k,
+        dst = out(zmm_reg) dst,
+        options(pure, readonly, nostack)
     );
     dst
 }
@@ -30447,11 +30476,11 @@ pub unsafe fn _mm512_maskz_loadu_ps(k: __mmask16, mem_addr: *const f32) -> __m51
 pub unsafe fn _mm512_mask_loadu_pd(src: __m512d, k: __mmask8, mem_addr: *const f64) -> __m512d {
     let mut dst: __m512d = src;
     asm!(
-         "vmovupd {2}{{{1}}}, [{0}]",
-         in(reg) mem_addr,
-         in(kreg) k,
-         inout(zmm_reg) dst,
-         options(pure, readonly, nostack)
+        vpl!("vmovupd {dst}{{{k}}}"),
+        p = in(reg) mem_addr,
+        k = in(kreg) k,
+        dst = inout(zmm_reg) dst,
+        options(pure, readonly, nostack)
     );
     dst
 }
@@ -30466,11 +30495,11 @@ pub unsafe fn _mm512_mask_loadu_pd(src: __m512d, k: __mmask8, mem_addr: *const f
 pub unsafe fn _mm512_maskz_loadu_pd(k: __mmask8, mem_addr: *const f64) -> __m512d {
     let mut dst: __m512d;
     asm!(
-         "vmovupd {2}{{{1}}} {{z}}, [{0}]",
-         in(reg) mem_addr,
-         in(kreg) k,
-         out(zmm_reg) dst,
-         options(pure, readonly, nostack)
+        vpl!("vmovupd {dst}{{{k}}} {{z}}"),
+        p = in(reg) mem_addr,
+        k = in(kreg) k,
+        dst = out(zmm_reg) dst,
+        options(pure, readonly, nostack)
     );
     dst
 }
@@ -30485,11 +30514,11 @@ pub unsafe fn _mm512_maskz_loadu_pd(k: __mmask8, mem_addr: *const f64) -> __m512
 pub unsafe fn _mm256_mask_loadu_epi32(src: __m256i, k: __mmask8, mem_addr: *const i32) -> __m256i {
     let mut dst: __m256i = src;
     asm!(
-         "vmovdqu32 {2}{{{1}}}, [{0}]",
-         in(reg) mem_addr,
-         in(kreg) k,
-         inout(ymm_reg) dst,
-         options(pure, readonly, nostack)
+        vpl!("vmovdqu32 {dst}{{{k}}}"),
+        p = in(reg) mem_addr,
+        k = in(kreg) k,
+        dst = inout(ymm_reg) dst,
+        options(pure, readonly, nostack)
     );
     dst
 }
@@ -30504,11 +30533,11 @@ pub unsafe fn _mm256_mask_loadu_epi32(src: __m256i, k: __mmask8, mem_addr: *cons
 pub unsafe fn _mm256_maskz_loadu_epi32(k: __mmask8, mem_addr: *const i32) -> __m256i {
     let mut dst: __m256i;
     asm!(
-         "vmovdqu32 {2}{{{1}}} {{z}}, [{0}]",
-         in(reg) mem_addr,
-         in(kreg) k,
-         out(ymm_reg) dst,
-         options(pure, readonly, nostack)
+        vpl!("vmovdqu32 {dst}{{{k}}} {{z}}"),
+        p = in(reg) mem_addr,
+        k = in(kreg) k,
+        dst = out(ymm_reg) dst,
+        options(pure, readonly, nostack)
     );
     dst
 }
@@ -30523,11 +30552,11 @@ pub unsafe fn _mm256_maskz_loadu_epi32(k: __mmask8, mem_addr: *const i32) -> __m
 pub unsafe fn _mm256_mask_loadu_epi64(src: __m256i, k: __mmask8, mem_addr: *const i64) -> __m256i {
     let mut dst: __m256i = src;
     asm!(
-         "vmovdqu64 {2}{{{1}}}, [{0}]",
-         in(reg) mem_addr,
-         in(kreg) k,
-         inout(ymm_reg) dst,
-         options(pure, readonly, nostack)
+        vpl!("vmovdqu64 {dst}{{{k}}}"),
+        p = in(reg) mem_addr,
+        k = in(kreg) k,
+        dst = inout(ymm_reg) dst,
+        options(pure, readonly, nostack)
     );
     dst
 }
@@ -30542,11 +30571,11 @@ pub unsafe fn _mm256_mask_loadu_epi64(src: __m256i, k: __mmask8, mem_addr: *cons
 pub unsafe fn _mm256_maskz_loadu_epi64(k: __mmask8, mem_addr: *const i64) -> __m256i {
     let mut dst: __m256i;
     asm!(
-         "vmovdqu64 {2}{{{1}}} {{z}}, [{0}]",
-         in(reg) mem_addr,
-         in(kreg) k,
-         out(ymm_reg) dst,
-         options(pure, readonly, nostack)
+        vpl!("vmovdqu64 {dst}{{{k}}} {{z}}"),
+        p = in(reg) mem_addr,
+        k = in(kreg) k,
+        dst = out(ymm_reg) dst,
+        options(pure, readonly, nostack)
     );
     dst
 }
@@ -30561,11 +30590,11 @@ pub unsafe fn _mm256_maskz_loadu_epi64(k: __mmask8, mem_addr: *const i64) -> __m
 pub unsafe fn _mm256_mask_loadu_ps(src: __m256, k: __mmask8, mem_addr: *const f32) -> __m256 {
     let mut dst: __m256 = src;
     asm!(
-         "vmovups {2}{{{1}}}, [{0}]",
-         in(reg) mem_addr,
-         in(kreg) k,
-         inout(ymm_reg) dst,
-         options(pure, readonly, nostack)
+        vpl!("vmovups {dst}{{{k}}}"),
+        p = in(reg) mem_addr,
+        k = in(kreg) k,
+        dst = inout(ymm_reg) dst,
+        options(pure, readonly, nostack)
     );
     dst
 }
@@ -30580,11 +30609,11 @@ pub unsafe fn _mm256_mask_loadu_ps(src: __m256, k: __mmask8, mem_addr: *const f3
 pub unsafe fn _mm256_maskz_loadu_ps(k: __mmask8, mem_addr: *const f32) -> __m256 {
     let mut dst: __m256;
     asm!(
-         "vmovups {2}{{{1}}} {{z}}, [{0}]",
-         in(reg) mem_addr,
-         in(kreg) k,
-         out(ymm_reg) dst,
-         options(pure, readonly, nostack)
+        vpl!("vmovups {dst}{{{k}}} {{z}}"),
+        p = in(reg) mem_addr,
+        k = in(kreg) k,
+        dst = out(ymm_reg) dst,
+        options(pure, readonly, nostack)
     );
     dst
 }
@@ -30599,11 +30628,11 @@ pub unsafe fn _mm256_maskz_loadu_ps(k: __mmask8, mem_addr: *const f32) -> __m256
 pub unsafe fn _mm256_mask_loadu_pd(src: __m256d, k: __mmask8, mem_addr: *const f64) -> __m256d {
     let mut dst: __m256d = src;
     asm!(
-         "vmovupd {2}{{{1}}}, [{0}]",
-         in(reg) mem_addr,
-         in(kreg) k,
-         inout(ymm_reg) dst,
-         options(pure, readonly, nostack)
+        vpl!("vmovupd {dst}{{{k}}}"),
+        p = in(reg) mem_addr,
+        k = in(kreg) k,
+        dst = inout(ymm_reg) dst,
+        options(pure, readonly, nostack)
     );
     dst
 }
@@ -30618,11 +30647,11 @@ pub unsafe fn _mm256_mask_loadu_pd(src: __m256d, k: __mmask8, mem_addr: *const f
 pub unsafe fn _mm256_maskz_loadu_pd(k: __mmask8, mem_addr: *const f64) -> __m256d {
     let mut dst: __m256d;
     asm!(
-         "vmovupd {2}{{{1}}} {{z}}, [{0}]",
-         in(reg) mem_addr,
-         in(kreg) k,
-         out(ymm_reg) dst,
-         options(pure, readonly, nostack)
+        vpl!("vmovupd {dst}{{{k}}} {{z}}"),
+        p = in(reg) mem_addr,
+        k = in(kreg) k,
+        dst = out(ymm_reg) dst,
+        options(pure, readonly, nostack)
     );
     dst
 }
@@ -30637,11 +30666,11 @@ pub unsafe fn _mm256_maskz_loadu_pd(k: __mmask8, mem_addr: *const f64) -> __m256
 pub unsafe fn _mm_mask_loadu_epi32(src: __m128i, k: __mmask8, mem_addr: *const i32) -> __m128i {
     let mut dst: __m128i = src;
     asm!(
-         "vmovdqu32 {2}{{{1}}}, [{0}]",
-         in(reg) mem_addr,
-         in(kreg) k,
-         inout(xmm_reg) dst,
-         options(pure, readonly, nostack)
+        vpl!("vmovdqu32 {dst}{{{k}}}"),
+        p = in(reg) mem_addr,
+        k = in(kreg) k,
+        dst = inout(xmm_reg) dst,
+        options(pure, readonly, nostack)
     );
     dst
 }
@@ -30656,11 +30685,11 @@ pub unsafe fn _mm_mask_loadu_epi32(src: __m128i, k: __mmask8, mem_addr: *const i
 pub unsafe fn _mm_maskz_loadu_epi32(k: __mmask8, mem_addr: *const i32) -> __m128i {
     let mut dst: __m128i;
     asm!(
-         "vmovdqu32 {2}{{{1}}} {{z}}, [{0}]",
-         in(reg) mem_addr,
-         in(kreg) k,
-         out(xmm_reg) dst,
-         options(pure, readonly, nostack)
+        vpl!("vmovdqu32 {dst}{{{k}}} {{z}}"),
+        p = in(reg) mem_addr,
+        k = in(kreg) k,
+        dst = out(xmm_reg) dst,
+        options(pure, readonly, nostack)
     );
     dst
 }
@@ -30675,11 +30704,11 @@ pub unsafe fn _mm_maskz_loadu_epi32(k: __mmask8, mem_addr: *const i32) -> __m128
 pub unsafe fn _mm_mask_loadu_epi64(src: __m128i, k: __mmask8, mem_addr: *const i64) -> __m128i {
     let mut dst: __m128i = src;
     asm!(
-         "vmovdqu64 {2}{{{1}}}, [{0}]",
-         in(reg) mem_addr,
-         in(kreg) k,
-         inout(xmm_reg) dst,
-         options(pure, readonly, nostack)
+        vpl!("vmovdqu64 {dst}{{{k}}}"),
+        p = in(reg) mem_addr,
+        k = in(kreg) k,
+        dst = inout(xmm_reg) dst,
+        options(pure, readonly, nostack)
     );
     dst
 }
@@ -30694,11 +30723,11 @@ pub unsafe fn _mm_mask_loadu_epi64(src: __m128i, k: __mmask8, mem_addr: *const i
 pub unsafe fn _mm_maskz_loadu_epi64(k: __mmask8, mem_addr: *const i64) -> __m128i {
     let mut dst: __m128i;
     asm!(
-         "vmovdqu64 {2}{{{1}}} {{z}}, [{0}]",
-         in(reg) mem_addr,
-         in(kreg) k,
-         out(xmm_reg) dst,
-         options(pure, readonly, nostack)
+        vpl!("vmovdqu64 {dst}{{{k}}} {{z}}"),
+        p = in(reg) mem_addr,
+        k = in(kreg) k,
+        dst = out(xmm_reg) dst,
+        options(pure, readonly, nostack)
     );
     dst
 }
@@ -30713,11 +30742,11 @@ pub unsafe fn _mm_maskz_loadu_epi64(k: __mmask8, mem_addr: *const i64) -> __m128
 pub unsafe fn _mm_mask_loadu_ps(src: __m128, k: __mmask8, mem_addr: *const f32) -> __m128 {
     let mut dst: __m128 = src;
     asm!(
-         "vmovups {2}{{{1}}}, [{0}]",
-         in(reg) mem_addr,
-         in(kreg) k,
-         inout(xmm_reg) dst,
-         options(pure, readonly, nostack)
+        vpl!("vmovups {dst}{{{k}}}"),
+        p = in(reg) mem_addr,
+        k = in(kreg) k,
+        dst = inout(xmm_reg) dst,
+        options(pure, readonly, nostack)
     );
     dst
 }
@@ -30732,11 +30761,11 @@ pub unsafe fn _mm_mask_loadu_ps(src: __m128, k: __mmask8, mem_addr: *const f32) 
 pub unsafe fn _mm_maskz_loadu_ps(k: __mmask8, mem_addr: *const f32) -> __m128 {
     let mut dst: __m128;
     asm!(
-         "vmovups {2}{{{1}}} {{z}}, [{0}]",
-         in(reg) mem_addr,
-         in(kreg) k,
-         out(xmm_reg) dst,
-         options(pure, readonly, nostack)
+        vpl!("vmovups {dst}{{{k}}} {{z}}"),
+        p = in(reg) mem_addr,
+        k = in(kreg) k,
+        dst = out(xmm_reg) dst,
+        options(pure, readonly, nostack)
     );
     dst
 }
@@ -30751,11 +30780,11 @@ pub unsafe fn _mm_maskz_loadu_ps(k: __mmask8, mem_addr: *const f32) -> __m128 {
 pub unsafe fn _mm_mask_loadu_pd(src: __m128d, k: __mmask8, mem_addr: *const f64) -> __m128d {
     let mut dst: __m128d = src;
     asm!(
-         "vmovupd {2}{{{1}}}, [{0}]",
-         in(reg) mem_addr,
-         in(kreg) k,
-         inout(xmm_reg) dst,
-         options(pure, readonly, nostack)
+        vpl!("vmovupd {dst}{{{k}}}"),
+        p = in(reg) mem_addr,
+        k = in(kreg) k,
+        dst = inout(xmm_reg) dst,
+        options(pure, readonly, nostack)
     );
     dst
 }
@@ -30770,11 +30799,11 @@ pub unsafe fn _mm_mask_loadu_pd(src: __m128d, k: __mmask8, mem_addr: *const f64)
 pub unsafe fn _mm_maskz_loadu_pd(k: __mmask8, mem_addr: *const f64) -> __m128d {
     let mut dst: __m128d;
     asm!(
-         "vmovupd {2}{{{1}}} {{z}}, [{0}]",
-         in(reg) mem_addr,
-         in(kreg) k,
-         out(xmm_reg) dst,
-         options(pure, readonly, nostack)
+        vpl!("vmovupd {dst}{{{k}}} {{z}}"),
+        p = in(reg) mem_addr,
+        k = in(kreg) k,
+        dst = out(xmm_reg) dst,
+        options(pure, readonly, nostack)
     );
     dst
 }
@@ -30789,11 +30818,11 @@ pub unsafe fn _mm_maskz_loadu_pd(k: __mmask8, mem_addr: *const f64) -> __m128d {
 pub unsafe fn _mm512_mask_load_epi32(src: __m512i, k: __mmask16, mem_addr: *const i32) -> __m512i {
     let mut dst: __m512i = src;
     asm!(
-         "vmovdqa32 {2}{{{1}}}, [{0}]",
-         in(reg) mem_addr,
-         in(kreg) k,
-         inout(zmm_reg) dst,
-         options(pure, readonly, nostack)
+        vpl!("vmovdqa32 {dst}{{{k}}}"),
+        p = in(reg) mem_addr,
+        k = in(kreg) k,
+        dst = inout(zmm_reg) dst,
+        options(pure, readonly, nostack)
     );
     dst
 }
@@ -30808,11 +30837,11 @@ pub unsafe fn _mm512_mask_load_epi32(src: __m512i, k: __mmask16, mem_addr: *cons
 pub unsafe fn _mm512_maskz_load_epi32(k: __mmask16, mem_addr: *const i32) -> __m512i {
     let mut dst: __m512i;
     asm!(
-         "vmovdqa32 {2}{{{1}}} {{z}}, [{0}]",
-         in(reg) mem_addr,
-         in(kreg) k,
-         out(zmm_reg) dst,
-         options(pure, readonly, nostack)
+        vpl!("vmovdqa32 {dst}{{{k}}} {{z}}"),
+        p = in(reg) mem_addr,
+        k = in(kreg) k,
+        dst = out(zmm_reg) dst,
+        options(pure, readonly, nostack)
     );
     dst
 }
@@ -30827,11 +30856,11 @@ pub unsafe fn _mm512_maskz_load_epi32(k: __mmask16, mem_addr: *const i32) -> __m
 pub unsafe fn _mm512_mask_load_epi64(src: __m512i, k: __mmask8, mem_addr: *const i64) -> __m512i {
     let mut dst: __m512i = src;
     asm!(
-         "vmovdqa64 {2}{{{1}}}, [{0}]",
-         in(reg) mem_addr,
-         in(kreg) k,
-         inout(zmm_reg) dst,
-         options(pure, readonly, nostack)
+        vpl!("vmovdqa64 {dst}{{{k}}}"),
+        p = in(reg) mem_addr,
+        k = in(kreg) k,
+        dst = inout(zmm_reg) dst,
+        options(pure, readonly, nostack)
     );
     dst
 }
@@ -30846,11 +30875,11 @@ pub unsafe fn _mm512_mask_load_epi64(src: __m512i, k: __mmask8, mem_addr: *const
 pub unsafe fn _mm512_maskz_load_epi64(k: __mmask8, mem_addr: *const i64) -> __m512i {
     let mut dst: __m512i;
     asm!(
-         "vmovdqa64 {2}{{{1}}} {{z}}, [{0}]",
-         in(reg) mem_addr,
-         in(kreg) k,
-         out(zmm_reg) dst,
-         options(pure, readonly, nostack)
+        vpl!("vmovdqa64 {dst}{{{k}}} {{z}}"),
+        p = in(reg) mem_addr,
+        k = in(kreg) k,
+        dst = out(zmm_reg) dst,
+        options(pure, readonly, nostack)
     );
     dst
 }
@@ -30865,11 +30894,11 @@ pub unsafe fn _mm512_maskz_load_epi64(k: __mmask8, mem_addr: *const i64) -> __m5
 pub unsafe fn _mm512_mask_load_ps(src: __m512, k: __mmask16, mem_addr: *const f32) -> __m512 {
     let mut dst: __m512 = src;
     asm!(
-         "vmovaps {2}{{{1}}}, [{0}]",
-         in(reg) mem_addr,
-         in(kreg) k,
-         inout(zmm_reg) dst,
-         options(pure, readonly, nostack)
+        vpl!("vmovaps {dst}{{{k}}}"),
+        p = in(reg) mem_addr,
+        k = in(kreg) k,
+        dst = inout(zmm_reg) dst,
+        options(pure, readonly, nostack)
     );
     dst
 }
@@ -30884,11 +30913,11 @@ pub unsafe fn _mm512_mask_load_ps(src: __m512, k: __mmask16, mem_addr: *const f3
 pub unsafe fn _mm512_maskz_load_ps(k: __mmask16, mem_addr: *const f32) -> __m512 {
     let mut dst: __m512;
     asm!(
-         "vmovaps {2}{{{1}}} {{z}}, [{0}]",
-         in(reg) mem_addr,
-         in(kreg) k,
-         out(zmm_reg) dst,
-         options(pure, readonly, nostack)
+        vpl!("vmovaps {dst}{{{k}}} {{z}}"),
+        p = in(reg) mem_addr,
+        k = in(kreg) k,
+        dst = out(zmm_reg) dst,
+        options(pure, readonly, nostack)
     );
     dst
 }
@@ -30903,11 +30932,11 @@ pub unsafe fn _mm512_maskz_load_ps(k: __mmask16, mem_addr: *const f32) -> __m512
 pub unsafe fn _mm512_mask_load_pd(src: __m512d, k: __mmask8, mem_addr: *const f64) -> __m512d {
     let mut dst: __m512d = src;
     asm!(
-         "vmovapd {2}{{{1}}}, [{0}]",
-         in(reg) mem_addr,
-         in(kreg) k,
-         inout(zmm_reg) dst,
-         options(pure, readonly, nostack)
+        vpl!("vmovapd {dst}{{{k}}}"),
+        p = in(reg) mem_addr,
+        k = in(kreg) k,
+        dst = inout(zmm_reg) dst,
+        options(pure, readonly, nostack)
     );
     dst
 }
@@ -30922,11 +30951,11 @@ pub unsafe fn _mm512_mask_load_pd(src: __m512d, k: __mmask8, mem_addr: *const f6
 pub unsafe fn _mm512_maskz_load_pd(k: __mmask8, mem_addr: *const f64) -> __m512d {
     let mut dst: __m512d;
     asm!(
-         "vmovapd {2}{{{1}}} {{z}}, [{0}]",
-         in(reg) mem_addr,
-         in(kreg) k,
-         out(zmm_reg) dst,
-         options(pure, readonly, nostack)
+        vpl!("vmovapd {dst}{{{k}}} {{z}}"),
+        p = in(reg) mem_addr,
+        k = in(kreg) k,
+        dst = out(zmm_reg) dst,
+        options(pure, readonly, nostack)
     );
     dst
 }
@@ -30941,11 +30970,11 @@ pub unsafe fn _mm512_maskz_load_pd(k: __mmask8, mem_addr: *const f64) -> __m512d
 pub unsafe fn _mm256_mask_load_epi32(src: __m256i, k: __mmask8, mem_addr: *const i32) -> __m256i {
     let mut dst: __m256i = src;
     asm!(
-         "vmovdqa32 {2}{{{1}}}, [{0}]",
-         in(reg) mem_addr,
-         in(kreg) k,
-         inout(ymm_reg) dst,
-         options(pure, readonly, nostack)
+        vpl!("vmovdqa32 {dst}{{{k}}}"),
+        p = in(reg) mem_addr,
+        k = in(kreg) k,
+        dst = inout(ymm_reg) dst,
+        options(pure, readonly, nostack)
     );
     dst
 }
@@ -30960,11 +30989,11 @@ pub unsafe fn _mm256_mask_load_epi32(src: __m256i, k: __mmask8, mem_addr: *const
 pub unsafe fn _mm256_maskz_load_epi32(k: __mmask8, mem_addr: *const i32) -> __m256i {
     let mut dst: __m256i;
     asm!(
-         "vmovdqa32 {2}{{{1}}} {{z}}, [{0}]",
-         in(reg) mem_addr,
-         in(kreg) k,
-         out(ymm_reg) dst,
-         options(pure, readonly, nostack)
+        vpl!("vmovdqa32 {dst}{{{k}}} {{z}}"),
+        p = in(reg) mem_addr,
+        k = in(kreg) k,
+        dst = out(ymm_reg) dst,
+        options(pure, readonly, nostack)
     );
     dst
 }
@@ -30979,11 +31008,11 @@ pub unsafe fn _mm256_maskz_load_epi32(k: __mmask8, mem_addr: *const i32) -> __m2
 pub unsafe fn _mm256_mask_load_epi64(src: __m256i, k: __mmask8, mem_addr: *const i64) -> __m256i {
     let mut dst: __m256i = src;
     asm!(
-         "vmovdqa64 {2}{{{1}}}, [{0}]",
-         in(reg) mem_addr,
-         in(kreg) k,
-         inout(ymm_reg) dst,
-         options(pure, readonly, nostack)
+        vpl!("vmovdqa64 {dst}{{{k}}}"),
+        p = in(reg) mem_addr,
+        k = in(kreg) k,
+        dst = inout(ymm_reg) dst,
+        options(pure, readonly, nostack)
     );
     dst
 }
@@ -30998,11 +31027,11 @@ pub unsafe fn _mm256_mask_load_epi64(src: __m256i, k: __mmask8, mem_addr: *const
 pub unsafe fn _mm256_maskz_load_epi64(k: __mmask8, mem_addr: *const i64) -> __m256i {
     let mut dst: __m256i;
     asm!(
-         "vmovdqa64 {2}{{{1}}} {{z}}, [{0}]",
-         in(reg) mem_addr,
-         in(kreg) k,
-         out(ymm_reg) dst,
-         options(pure, readonly, nostack)
+        vpl!("vmovdqa64 {dst}{{{k}}} {{z}}"),
+        p = in(reg) mem_addr,
+        k = in(kreg) k,
+        dst = out(ymm_reg) dst,
+        options(pure, readonly, nostack)
     );
     dst
 }
@@ -31017,11 +31046,11 @@ pub unsafe fn _mm256_maskz_load_epi64(k: __mmask8, mem_addr: *const i64) -> __m2
 pub unsafe fn _mm256_mask_load_ps(src: __m256, k: __mmask8, mem_addr: *const f32) -> __m256 {
     let mut dst: __m256 = src;
     asm!(
-         "vmovaps {2}{{{1}}}, [{0}]",
-         in(reg) mem_addr,
-         in(kreg) k,
-         inout(ymm_reg) dst,
-         options(pure, readonly, nostack)
+        vpl!("vmovaps {dst}{{{k}}}"),
+        p = in(reg) mem_addr,
+        k = in(kreg) k,
+        dst = inout(ymm_reg) dst,
+        options(pure, readonly, nostack)
     );
     dst
 }
@@ -31036,11 +31065,11 @@ pub unsafe fn _mm256_mask_load_ps(src: __m256, k: __mmask8, mem_addr: *const f32
 pub unsafe fn _mm256_maskz_load_ps(k: __mmask8, mem_addr: *const f32) -> __m256 {
     let mut dst: __m256;
     asm!(
-         "vmovaps {2}{{{1}}} {{z}}, [{0}]",
-         in(reg) mem_addr,
-         in(kreg) k,
-         out(ymm_reg) dst,
-         options(pure, readonly, nostack)
+        vpl!("vmovaps {dst}{{{k}}} {{z}}"),
+        p = in(reg) mem_addr,
+        k = in(kreg) k,
+        dst = out(ymm_reg) dst,
+        options(pure, readonly, nostack)
     );
     dst
 }
@@ -31055,11 +31084,11 @@ pub unsafe fn _mm256_maskz_load_ps(k: __mmask8, mem_addr: *const f32) -> __m256 
 pub unsafe fn _mm256_mask_load_pd(src: __m256d, k: __mmask8, mem_addr: *const f64) -> __m256d {
     let mut dst: __m256d = src;
     asm!(
-         "vmovapd {2}{{{1}}}, [{0}]",
-         in(reg) mem_addr,
-         in(kreg) k,
-         inout(ymm_reg) dst,
-         options(pure, readonly, nostack)
+        vpl!("vmovapd {dst}{{{k}}}"),
+        p = in(reg) mem_addr,
+        k = in(kreg) k,
+        dst = inout(ymm_reg) dst,
+        options(pure, readonly, nostack)
     );
     dst
 }
@@ -31074,11 +31103,11 @@ pub unsafe fn _mm256_mask_load_pd(src: __m256d, k: __mmask8, mem_addr: *const f6
 pub unsafe fn _mm256_maskz_load_pd(k: __mmask8, mem_addr: *const f64) -> __m256d {
     let mut dst: __m256d;
     asm!(
-         "vmovapd {2}{{{1}}} {{z}}, [{0}]",
-         in(reg) mem_addr,
-         in(kreg) k,
-         out(ymm_reg) dst,
-         options(pure, readonly, nostack)
+        vpl!("vmovapd {dst}{{{k}}} {{z}}"),
+        p = in(reg) mem_addr,
+        k = in(kreg) k,
+        dst = out(ymm_reg) dst,
+        options(pure, readonly, nostack)
     );
     dst
 }
@@ -31093,11 +31122,11 @@ pub unsafe fn _mm256_maskz_load_pd(k: __mmask8, mem_addr: *const f64) -> __m256d
 pub unsafe fn _mm_mask_load_epi32(src: __m128i, k: __mmask8, mem_addr: *const i32) -> __m128i {
     let mut dst: __m128i = src;
     asm!(
-         "vmovdqa32 {2}{{{1}}}, [{0}]",
-         in(reg) mem_addr,
-         in(kreg) k,
-         inout(xmm_reg) dst,
-         options(pure, readonly, nostack)
+        vpl!("vmovdqa32 {dst}{{{k}}}"),
+        p = in(reg) mem_addr,
+        k = in(kreg) k,
+        dst = inout(xmm_reg) dst,
+        options(pure, readonly, nostack)
     );
     dst
 }
@@ -31112,11 +31141,11 @@ pub unsafe fn _mm_mask_load_epi32(src: __m128i, k: __mmask8, mem_addr: *const i3
 pub unsafe fn _mm_maskz_load_epi32(k: __mmask8, mem_addr: *const i32) -> __m128i {
     let mut dst: __m128i;
     asm!(
-         "vmovdqa32 {2}{{{1}}} {{z}}, [{0}]",
-         in(reg) mem_addr,
-         in(kreg) k,
-         out(xmm_reg) dst,
-         options(pure, readonly, nostack)
+        vpl!("vmovdqa32 {dst}{{{k}}} {{z}}"),
+        p = in(reg) mem_addr,
+        k = in(kreg) k,
+        dst = out(xmm_reg) dst,
+        options(pure, readonly, nostack)
     );
     dst
 }
@@ -31131,11 +31160,11 @@ pub unsafe fn _mm_maskz_load_epi32(k: __mmask8, mem_addr: *const i32) -> __m128i
 pub unsafe fn _mm_mask_load_epi64(src: __m128i, k: __mmask8, mem_addr: *const i64) -> __m128i {
     let mut dst: __m128i = src;
     asm!(
-         "vmovdqa64 {2}{{{1}}}, [{0}]",
-         in(reg) mem_addr,
-         in(kreg) k,
-         inout(xmm_reg) dst,
-         options(pure, readonly, nostack)
+        vpl!("vmovdqa64 {dst}{{{k}}}"),
+        p = in(reg) mem_addr,
+        k = in(kreg) k,
+        dst = inout(xmm_reg) dst,
+        options(pure, readonly, nostack)
     );
     dst
 }
@@ -31150,11 +31179,11 @@ pub unsafe fn _mm_mask_load_epi64(src: __m128i, k: __mmask8, mem_addr: *const i6
 pub unsafe fn _mm_maskz_load_epi64(k: __mmask8, mem_addr: *const i64) -> __m128i {
     let mut dst: __m128i;
     asm!(
-         "vmovdqa64 {2}{{{1}}} {{z}}, [{0}]",
-         in(reg) mem_addr,
-         in(kreg) k,
-         out(xmm_reg) dst,
-         options(pure, readonly, nostack)
+        vpl!("vmovdqa64 {dst}{{{k}}} {{z}}"),
+        p = in(reg) mem_addr,
+        k = in(kreg) k,
+        dst = out(xmm_reg) dst,
+        options(pure, readonly, nostack)
     );
     dst
 }
@@ -31169,11 +31198,11 @@ pub unsafe fn _mm_maskz_load_epi64(k: __mmask8, mem_addr: *const i64) -> __m128i
 pub unsafe fn _mm_mask_load_ps(src: __m128, k: __mmask8, mem_addr: *const f32) -> __m128 {
     let mut dst: __m128 = src;
     asm!(
-         "vmovaps {2}{{{1}}}, [{0}]",
-         in(reg) mem_addr,
-         in(kreg) k,
-         inout(xmm_reg) dst,
-         options(pure, readonly, nostack)
+        vpl!("vmovaps {dst}{{{k}}}"),
+        p = in(reg) mem_addr,
+        k = in(kreg) k,
+        dst = inout(xmm_reg) dst,
+        options(pure, readonly, nostack)
     );
     dst
 }
@@ -31188,11 +31217,11 @@ pub unsafe fn _mm_mask_load_ps(src: __m128, k: __mmask8, mem_addr: *const f32) -
 pub unsafe fn _mm_maskz_load_ps(k: __mmask8, mem_addr: *const f32) -> __m128 {
     let mut dst: __m128;
     asm!(
-         "vmovaps {2}{{{1}}} {{z}}, [{0}]",
-         in(reg) mem_addr,
-         in(kreg) k,
-         out(xmm_reg) dst,
-         options(pure, readonly, nostack)
+        vpl!("vmovaps {dst}{{{k}}} {{z}}"),
+        p = in(reg) mem_addr,
+        k = in(kreg) k,
+        dst = out(xmm_reg) dst,
+        options(pure, readonly, nostack)
     );
     dst
 }
@@ -31207,11 +31236,11 @@ pub unsafe fn _mm_maskz_load_ps(k: __mmask8, mem_addr: *const f32) -> __m128 {
 pub unsafe fn _mm_mask_load_pd(src: __m128d, k: __mmask8, mem_addr: *const f64) -> __m128d {
     let mut dst: __m128d = src;
     asm!(
-         "vmovapd {2}{{{1}}}, [{0}]",
-         in(reg) mem_addr,
-         in(kreg) k,
-         inout(xmm_reg) dst,
-         options(pure, readonly, nostack)
+        vpl!("vmovapd {dst}{{{k}}}"),
+        p = in(reg) mem_addr,
+        k = in(kreg) k,
+        dst = inout(xmm_reg) dst,
+        options(pure, readonly, nostack)
     );
     dst
 }
@@ -31226,11 +31255,11 @@ pub unsafe fn _mm_mask_load_pd(src: __m128d, k: __mmask8, mem_addr: *const f64) 
 pub unsafe fn _mm_maskz_load_pd(k: __mmask8, mem_addr: *const f64) -> __m128d {
     let mut dst: __m128d;
     asm!(
-         "vmovapd {2}{{{1}}} {{z}}, [{0}]",
-         in(reg) mem_addr,
-         in(kreg) k,
-         out(xmm_reg) dst,
-         options(pure, readonly, nostack)
+        vpl!("vmovapd {dst}{{{k}}} {{z}}"),
+        p = in(reg) mem_addr,
+        k = in(kreg) k,
+        dst = out(xmm_reg) dst,
+        options(pure, readonly, nostack)
     );
     dst
 }
@@ -31243,11 +31272,11 @@ pub unsafe fn _mm_maskz_load_pd(k: __mmask8, mem_addr: *const f64) -> __m128d {
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_mask_storeu_epi32(mem_addr: *mut i32, mask: __mmask16, a: __m512i) {
     asm!(
-         "vmovdqu32 [{0}]{{{1}}}, {2}",
-         in(reg) mem_addr,
-         in(kreg) mask,
-         in(zmm_reg) a,
-         options(nostack)
+        vps!("vmovdqu32", "{{{mask}}}, {a}"),
+        p = in(reg) mem_addr,
+        mask = in(kreg) mask,
+        a = in(zmm_reg) a,
+        options(nostack)
     );
 }
 
@@ -31259,11 +31288,11 @@ pub unsafe fn _mm512_mask_storeu_epi32(mem_addr: *mut i32, mask: __mmask16, a: _
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_mask_storeu_epi64(mem_addr: *mut i64, mask: __mmask8, a: __m512i) {
     asm!(
-         "vmovdqu64 [{0}]{{{1}}}, {2}",
-         in(reg) mem_addr,
-         in(kreg) mask,
-         in(zmm_reg) a,
-         options(nostack)
+        vps!("vmovdqu64", "{{{mask}}}, {a}"),
+        p = in(reg) mem_addr,
+        mask = in(kreg) mask,
+        a = in(zmm_reg) a,
+        options(nostack)
     );
 }
 
@@ -31275,11 +31304,11 @@ pub unsafe fn _mm512_mask_storeu_epi64(mem_addr: *mut i64, mask: __mmask8, a: __
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_mask_storeu_ps(mem_addr: *mut f32, mask: __mmask16, a: __m512) {
     asm!(
-         "vmovups [{0}]{{{1}}}, {2}",
-         in(reg) mem_addr,
-         in(kreg) mask,
-         in(zmm_reg) a,
-         options(nostack)
+        vps!("vmovups", "{{{mask}}}, {a}"),
+        p = in(reg) mem_addr,
+        mask = in(kreg) mask,
+        a = in(zmm_reg) a,
+        options(nostack)
     );
 }
 
@@ -31291,11 +31320,11 @@ pub unsafe fn _mm512_mask_storeu_ps(mem_addr: *mut f32, mask: __mmask16, a: __m5
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_mask_storeu_pd(mem_addr: *mut f64, mask: __mmask8, a: __m512d) {
     asm!(
-         "vmovupd [{0}]{{{1}}}, {2}",
-         in(reg) mem_addr,
-         in(kreg) mask,
-         in(zmm_reg) a,
-         options(nostack)
+        vps!("vmovupd", "{{{mask}}}, {a}"),
+        p = in(reg) mem_addr,
+        mask = in(kreg) mask,
+        a = in(zmm_reg) a,
+        options(nostack)
     );
 }
 
@@ -31307,11 +31336,11 @@ pub unsafe fn _mm512_mask_storeu_pd(mem_addr: *mut f64, mask: __mmask8, a: __m51
 #[target_feature(enable = "avx512f,avx512vl,avx")]
 pub unsafe fn _mm256_mask_storeu_epi32(mem_addr: *mut i32, mask: __mmask8, a: __m256i) {
     asm!(
-         "vmovdqu32 [{0}]{{{1}}}, {2}",
-         in(reg) mem_addr,
-         in(kreg) mask,
-         in(ymm_reg) a,
-         options(nostack)
+        vps!("vmovdqu32", "{{{mask}}}, {a}"),
+        p = in(reg) mem_addr,
+        mask = in(kreg) mask,
+        a = in(ymm_reg) a,
+        options(nostack)
     );
 }
 
@@ -31323,11 +31352,11 @@ pub unsafe fn _mm256_mask_storeu_epi32(mem_addr: *mut i32, mask: __mmask8, a: __
 #[target_feature(enable = "avx512f,avx512vl,avx")]
 pub unsafe fn _mm256_mask_storeu_epi64(mem_addr: *mut i64, mask: __mmask8, a: __m256i) {
     asm!(
-         "vmovdqu64 [{0}]{{{1}}}, {2}",
-         in(reg) mem_addr,
-         in(kreg) mask,
-         in(ymm_reg) a,
-         options(nostack)
+        vps!("vmovdqu64", "{{{mask}}}, {a}"),
+        p = in(reg) mem_addr,
+        mask = in(kreg) mask,
+        a = in(ymm_reg) a,
+        options(nostack)
     );
 }
 
@@ -31339,11 +31368,11 @@ pub unsafe fn _mm256_mask_storeu_epi64(mem_addr: *mut i64, mask: __mmask8, a: __
 #[target_feature(enable = "avx512f,avx512vl,avx")]
 pub unsafe fn _mm256_mask_storeu_ps(mem_addr: *mut f32, mask: __mmask8, a: __m256) {
     asm!(
-         "vmovups [{0}]{{{1}}}, {2}",
-         in(reg) mem_addr,
-         in(kreg) mask,
-         in(ymm_reg) a,
-         options(nostack)
+        vps!("vmovups", "{{{mask}}}, {a}"),
+        p = in(reg) mem_addr,
+        mask = in(kreg) mask,
+        a = in(ymm_reg) a,
+        options(nostack)
     );
 }
 
@@ -31355,11 +31384,11 @@ pub unsafe fn _mm256_mask_storeu_ps(mem_addr: *mut f32, mask: __mmask8, a: __m25
 #[target_feature(enable = "avx512f,avx512vl,avx")]
 pub unsafe fn _mm256_mask_storeu_pd(mem_addr: *mut f64, mask: __mmask8, a: __m256d) {
     asm!(
-         "vmovupd [{0}]{{{1}}}, {2}",
-         in(reg) mem_addr,
-         in(kreg) mask,
-         in(ymm_reg) a,
-         options(nostack)
+        vps!("vmovupd", "{{{mask}}}, {a}"),
+        p = in(reg) mem_addr,
+        mask = in(kreg) mask,
+        a = in(ymm_reg) a,
+        options(nostack)
     );
 }
 
@@ -31371,11 +31400,11 @@ pub unsafe fn _mm256_mask_storeu_pd(mem_addr: *mut f64, mask: __mmask8, a: __m25
 #[target_feature(enable = "avx512f,avx512vl,avx,sse")]
 pub unsafe fn _mm_mask_storeu_epi32(mem_addr: *mut i32, mask: __mmask8, a: __m128i) {
     asm!(
-         "vmovdqu32 [{0}]{{{1}}}, {2}",
-         in(reg) mem_addr,
-         in(kreg) mask,
-         in(xmm_reg) a,
-         options(nostack)
+        vps!("vmovdqu32", "{{{mask}}}, {a}"),
+        p = in(reg) mem_addr,
+        mask = in(kreg) mask,
+        a = in(xmm_reg) a,
+        options(nostack)
     );
 }
 
@@ -31387,11 +31416,11 @@ pub unsafe fn _mm_mask_storeu_epi32(mem_addr: *mut i32, mask: __mmask8, a: __m12
 #[target_feature(enable = "avx512f,avx512vl,avx,sse")]
 pub unsafe fn _mm_mask_storeu_epi64(mem_addr: *mut i64, mask: __mmask8, a: __m128i) {
     asm!(
-         "vmovdqu64 [{0}]{{{1}}}, {2}",
-         in(reg) mem_addr,
-         in(kreg) mask,
-         in(xmm_reg) a,
-         options(nostack)
+        vps!("vmovdqu64", "{{{mask}}}, {a}"),
+        p = in(reg) mem_addr,
+        mask = in(kreg) mask,
+        a = in(xmm_reg) a,
+        options(nostack)
     );
 }
 
@@ -31403,11 +31432,11 @@ pub unsafe fn _mm_mask_storeu_epi64(mem_addr: *mut i64, mask: __mmask8, a: __m12
 #[target_feature(enable = "avx512f,avx512vl,avx,sse")]
 pub unsafe fn _mm_mask_storeu_ps(mem_addr: *mut f32, mask: __mmask8, a: __m128) {
     asm!(
-         "vmovups [{0}]{{{1}}}, {2}",
-         in(reg) mem_addr,
-         in(kreg) mask,
-         in(xmm_reg) a,
-         options(nostack)
+        vps!("vmovups", "{{{mask}}}, {a}"),
+        p = in(reg) mem_addr,
+        mask = in(kreg) mask,
+        a = in(xmm_reg) a,
+        options(nostack)
     );
 }
 
@@ -31419,11 +31448,11 @@ pub unsafe fn _mm_mask_storeu_ps(mem_addr: *mut f32, mask: __mmask8, a: __m128) 
 #[target_feature(enable = "avx512f,avx512vl,avx,sse")]
 pub unsafe fn _mm_mask_storeu_pd(mem_addr: *mut f64, mask: __mmask8, a: __m128d) {
     asm!(
-         "vmovupd [{0}]{{{1}}}, {2}",
-         in(reg) mem_addr,
-         in(kreg) mask,
-         in(xmm_reg) a,
-         options(nostack)
+        vps!("vmovupd", "{{{mask}}}, {a}"),
+        p = in(reg) mem_addr,
+        mask = in(kreg) mask,
+        a = in(xmm_reg) a,
+        options(nostack)
     );
 }
 
@@ -31435,11 +31464,11 @@ pub unsafe fn _mm_mask_storeu_pd(mem_addr: *mut f64, mask: __mmask8, a: __m128d)
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_mask_store_epi32(mem_addr: *mut i32, mask: __mmask16, a: __m512i) {
     asm!(
-         "vmovdqa32 [{0}]{{{1}}}, {2}",
-         in(reg) mem_addr,
-         in(kreg) mask,
-         in(zmm_reg) a,
-         options(nostack)
+        vps!("vmovdqa32", "{{{mask}}}, {a}"),
+        p = in(reg) mem_addr,
+        mask = in(kreg) mask,
+        a = in(zmm_reg) a,
+        options(nostack)
     );
 }
 
@@ -31451,11 +31480,11 @@ pub unsafe fn _mm512_mask_store_epi32(mem_addr: *mut i32, mask: __mmask16, a: __
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_mask_store_epi64(mem_addr: *mut i64, mask: __mmask8, a: __m512i) {
     asm!(
-         "vmovdqa64 [{0}]{{{1}}}, {2}",
-         in(reg) mem_addr,
-         in(kreg) mask,
-         in(zmm_reg) a,
-         options(nostack)
+        vps!("vmovdqa64", "{{{mask}}}, {a}"),
+        p = in(reg) mem_addr,
+        mask = in(kreg) mask,
+        a = in(zmm_reg) a,
+        options(nostack)
     );
 }
 
@@ -31467,11 +31496,11 @@ pub unsafe fn _mm512_mask_store_epi64(mem_addr: *mut i64, mask: __mmask8, a: __m
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_mask_store_ps(mem_addr: *mut f32, mask: __mmask16, a: __m512) {
     asm!(
-         "vmovaps [{0}]{{{1}}}, {2}",
-         in(reg) mem_addr,
-         in(kreg) mask,
-         in(zmm_reg) a,
-         options(nostack)
+        vps!("vmovaps", "{{{mask}}}, {a}"),
+        p = in(reg) mem_addr,
+        mask = in(kreg) mask,
+        a = in(zmm_reg) a,
+        options(nostack)
     );
 }
 
@@ -31483,11 +31512,11 @@ pub unsafe fn _mm512_mask_store_ps(mem_addr: *mut f32, mask: __mmask16, a: __m51
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_mask_store_pd(mem_addr: *mut f64, mask: __mmask8, a: __m512d) {
     asm!(
-         "vmovapd [{0}]{{{1}}}, {2}",
-         in(reg) mem_addr,
-         in(kreg) mask,
-         in(zmm_reg) a,
-         options(nostack)
+        vps!("vmovapd", "{{{mask}}}, {a}"),
+        p = in(reg) mem_addr,
+        mask = in(kreg) mask,
+        a = in(zmm_reg) a,
+        options(nostack)
     );
 }
 
@@ -31499,11 +31528,11 @@ pub unsafe fn _mm512_mask_store_pd(mem_addr: *mut f64, mask: __mmask8, a: __m512
 #[target_feature(enable = "avx512f,avx512vl,avx")]
 pub unsafe fn _mm256_mask_store_epi32(mem_addr: *mut i32, mask: __mmask8, a: __m256i) {
     asm!(
-         "vmovdqa32 [{0}]{{{1}}}, {2}",
-         in(reg) mem_addr,
-         in(kreg) mask,
-         in(ymm_reg) a,
-         options(nostack)
+        vps!("vmovdqa32", "{{{mask}}}, {a}"),
+        p = in(reg) mem_addr,
+        mask = in(kreg) mask,
+        a = in(ymm_reg) a,
+        options(nostack)
     );
 }
 
@@ -31515,11 +31544,11 @@ pub unsafe fn _mm256_mask_store_epi32(mem_addr: *mut i32, mask: __mmask8, a: __m
 #[target_feature(enable = "avx512f,avx512vl,avx")]
 pub unsafe fn _mm256_mask_store_epi64(mem_addr: *mut i64, mask: __mmask8, a: __m256i) {
     asm!(
-         "vmovdqa64 [{0}]{{{1}}}, {2}",
-         in(reg) mem_addr,
-         in(kreg) mask,
-         in(ymm_reg) a,
-         options(nostack)
+        vps!("vmovdqa64", "{{{mask}}}, {a}"),
+        p = in(reg) mem_addr,
+        mask = in(kreg) mask,
+        a = in(ymm_reg) a,
+        options(nostack)
     );
 }
 
@@ -31531,11 +31560,11 @@ pub unsafe fn _mm256_mask_store_epi64(mem_addr: *mut i64, mask: __mmask8, a: __m
 #[target_feature(enable = "avx512f,avx512vl,avx")]
 pub unsafe fn _mm256_mask_store_ps(mem_addr: *mut f32, mask: __mmask8, a: __m256) {
     asm!(
-         "vmovaps [{0}]{{{1}}}, {2}",
-         in(reg) mem_addr,
-         in(kreg) mask,
-         in(ymm_reg) a,
-         options(nostack)
+        vps!("vmovaps", "{{{mask}}}, {a}"),
+        p = in(reg) mem_addr,
+        mask = in(kreg) mask,
+        a = in(ymm_reg) a,
+        options(nostack)
     );
 }
 
@@ -31547,11 +31576,11 @@ pub unsafe fn _mm256_mask_store_ps(mem_addr: *mut f32, mask: __mmask8, a: __m256
 #[target_feature(enable = "avx512f,avx512vl,avx")]
 pub unsafe fn _mm256_mask_store_pd(mem_addr: *mut f64, mask: __mmask8, a: __m256d) {
     asm!(
-         "vmovapd [{0}]{{{1}}}, {2}",
-         in(reg) mem_addr,
-         in(kreg) mask,
-         in(ymm_reg) a,
-         options(nostack)
+        vps!("vmovapd", "{{{mask}}}, {a}"),
+        p = in(reg) mem_addr,
+        mask = in(kreg) mask,
+        a = in(ymm_reg) a,
+        options(nostack)
     );
 }
 
@@ -31563,11 +31592,11 @@ pub unsafe fn _mm256_mask_store_pd(mem_addr: *mut f64, mask: __mmask8, a: __m256
 #[target_feature(enable = "avx512f,avx512vl,avx,sse")]
 pub unsafe fn _mm_mask_store_epi32(mem_addr: *mut i32, mask: __mmask8, a: __m128i) {
     asm!(
-         "vmovdqa32 [{0}]{{{1}}}, {2}",
-         in(reg) mem_addr,
-         in(kreg) mask,
-         in(xmm_reg) a,
-         options(nostack)
+        vps!("vmovdqa32", "{{{mask}}}, {a}"),
+        p = in(reg) mem_addr,
+        mask = in(kreg) mask,
+        a = in(xmm_reg) a,
+        options(nostack)
     );
 }
 
@@ -31579,11 +31608,11 @@ pub unsafe fn _mm_mask_store_epi32(mem_addr: *mut i32, mask: __mmask8, a: __m128
 #[target_feature(enable = "avx512f,avx512vl,avx,sse")]
 pub unsafe fn _mm_mask_store_epi64(mem_addr: *mut i64, mask: __mmask8, a: __m128i) {
     asm!(
-         "vmovdqa64 [{0}]{{{1}}}, {2}",
-         in(reg) mem_addr,
-         in(kreg) mask,
-         in(xmm_reg) a,
-         options(nostack)
+        vps!("vmovdqa64", "{{{mask}}}, {a}"),
+        p = in(reg) mem_addr,
+        mask = in(kreg) mask,
+        a = in(xmm_reg) a,
+        options(nostack)
     );
 }
 
@@ -31595,11 +31624,11 @@ pub unsafe fn _mm_mask_store_epi64(mem_addr: *mut i64, mask: __mmask8, a: __m128
 #[target_feature(enable = "avx512f,avx512vl,avx,sse")]
 pub unsafe fn _mm_mask_store_ps(mem_addr: *mut f32, mask: __mmask8, a: __m128) {
     asm!(
-         "vmovaps [{0}]{{{1}}}, {2}",
-         in(reg) mem_addr,
-         in(kreg) mask,
-         in(xmm_reg) a,
-         options(nostack)
+        vps!("vmovaps", "{{{mask}}}, {a}"),
+        p = in(reg) mem_addr,
+        mask = in(kreg) mask,
+        a = in(xmm_reg) a,
+        options(nostack)
     );
 }
 
@@ -31611,11 +31640,11 @@ pub unsafe fn _mm_mask_store_ps(mem_addr: *mut f32, mask: __mmask8, a: __m128) {
 #[target_feature(enable = "avx512f,avx512vl,avx,sse")]
 pub unsafe fn _mm_mask_store_pd(mem_addr: *mut f64, mask: __mmask8, a: __m128d) {
     asm!(
-         "vmovapd [{0}]{{{1}}}, {2}",
-         in(reg) mem_addr,
-         in(kreg) mask,
-         in(xmm_reg) a,
-         options(nostack)
+        vps!("vmovapd", "{{{mask}}}, {a}"),
+        p = in(reg) mem_addr,
+        mask = in(kreg) mask,
+        a = in(xmm_reg) a,
+        options(nostack)
     );
 }
 
