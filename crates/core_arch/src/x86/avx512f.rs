@@ -33,6 +33,8 @@ macro_rules! vps {
     };
 }
 
+pub(crate) use {vpl, vps};
+
 #[cfg(test)]
 use stdarch_test::assert_instr;
 
