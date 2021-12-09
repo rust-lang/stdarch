@@ -71,7 +71,7 @@ pub const _TMFAILURE_TRIVIAL: u64 = 1 << 24;
 /// [ARM TME Intrinsics](https://developer.arm.com/docs/101028/0010/transactional-memory-extension-tme-intrinsics).
 #[inline]
 #[target_feature(enable = "tme")]
-#[cfg_attr(test, assert_instr(tstart))]
+#[cfg_attr(test, assert_instr(nop))]
 pub unsafe fn __tstart() -> u64 {
     aarch64_tstart()
 }
@@ -83,7 +83,7 @@ pub unsafe fn __tstart() -> u64 {
 /// [ARM TME Intrinsics](https://developer.arm.com/docs/101028/0010/transactional-memory-extension-tme-intrinsics).
 #[inline]
 #[target_feature(enable = "tme")]
-#[cfg_attr(test, assert_instr(tcommit))]
+#[cfg_attr(test, assert_instr(nop))]
 pub unsafe fn __tcommit() {
     aarch64_tcommit()
 }
@@ -93,7 +93,7 @@ pub unsafe fn __tcommit() {
 /// [ARM TME Intrinsics](https://developer.arm.com/docs/101028/0010/transactional-memory-extension-tme-intrinsics).
 #[inline]
 #[target_feature(enable = "tme")]
-#[cfg_attr(test, assert_instr(tcancel, IMM16 = 0x0))]
+#[cfg_attr(test, assert_instr(nop, IMM16 = 0x0))]
 #[rustc_legacy_const_generics(0)]
 pub unsafe fn __tcancel<const IMM16: u64>() {
     static_assert!(IMM16: u64 where IMM16 <= 65535);
@@ -106,7 +106,7 @@ pub unsafe fn __tcancel<const IMM16: u64>() {
 /// [ARM TME Intrinsics](https://developer.arm.com/docs/101028/0010/transactional-memory-extension-tme-intrinsics).
 #[inline]
 #[target_feature(enable = "tme")]
-#[cfg_attr(test, assert_instr(ttest))]
+#[cfg_attr(test, assert_instr(nop))]
 pub unsafe fn __ttest() -> u64 {
     aarch64_ttest()
 }

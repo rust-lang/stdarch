@@ -7044,7 +7044,7 @@ a = 1.1, 1.9, -1.7, -2.3
 validate 1.0, 2.0, -2.0, -2.0
 target = frintts
 
-aarch64 = frint32x
+aarch64 = nop
 link-aarch64 = frint32x._EXT_
 generate float32x2_t, float32x4_t
 
@@ -7054,7 +7054,7 @@ a = 1.1, 1.9, -1.7, -2.3
 validate 1.0, 1.0, -1.0, -2.0
 target = frintts
 
-aarch64 = frint32z
+aarch64 = nop
 link-aarch64 = frint32z._EXT_
 generate float32x2_t, float32x4_t
 
@@ -7064,7 +7064,7 @@ a = 1.1, 1.9, -1.7, -2.3
 validate 1.0, 2.0, -2.0, -2.0
 target = frintts
 
-aarch64 = frint64x
+aarch64 = nop
 link-aarch64 = frint64x._EXT_
 generate float32x2_t, float32x4_t
 
@@ -7074,7 +7074,7 @@ a = 1.1, 1.9, -1.7, -2.3
 validate 1.0, 1.0, -1.0, -2.0
 target = frintts
 
-aarch64 = frint64z
+aarch64 = nop
 link-aarch64 = frint64z._EXT_
 generate float32x2_t, float32x4_t
 

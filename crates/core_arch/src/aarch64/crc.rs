@@ -13,6 +13,7 @@ use stdarch_test::assert_instr;
 #[inline]
 #[target_feature(enable = "crc")]
 #[cfg_attr(test, assert_instr(crc32x))]
+#[stable(feature = "neon_intrinsics", since = "1.59.0")]
 pub unsafe fn __crc32d(crc: u32, data: u64) -> u32 {
     crc32x_(crc, data)
 }
@@ -21,6 +22,7 @@ pub unsafe fn __crc32d(crc: u32, data: u64) -> u32 {
 #[inline]
 #[target_feature(enable = "crc")]
 #[cfg_attr(test, assert_instr(crc32cx))]
+#[stable(feature = "neon_intrinsics", since = "1.59.0")]
 pub unsafe fn __crc32cd(crc: u32, data: u64) -> u32 {
     crc32cx_(crc, data)
 }
