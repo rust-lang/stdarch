@@ -6687,7 +6687,7 @@ pub unsafe fn vpadalq_u32(a: uint64x2_t, b: uint32x4_t) -> uint64x2_t {
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v8"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(nop))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(smmla))]
 pub unsafe fn vmmlaq_s32(a: int32x4_t, b: int8x16_t, c: int8x16_t) -> int32x4_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
@@ -6707,7 +6707,7 @@ pub unsafe fn vmmlaq_s32(a: int32x4_t, b: int8x16_t, c: int8x16_t) -> int32x4_t 
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v8"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(nop))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(ummla))]
 pub unsafe fn vmmlaq_u32(a: uint32x4_t, b: uint8x16_t, c: uint8x16_t) -> uint32x4_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
@@ -6727,7 +6727,7 @@ pub unsafe fn vmmlaq_u32(a: uint32x4_t, b: uint8x16_t, c: uint8x16_t) -> uint32x
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v8"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
-#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(nop))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(usmmla))]
 pub unsafe fn vusmmlaq_s32(a: int32x4_t, b: uint8x16_t, c: int8x16_t) -> int32x4_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {

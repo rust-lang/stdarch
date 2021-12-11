@@ -12904,7 +12904,7 @@ pub unsafe fn vsha512su1q_u64(a: uint64x2_t, b: uint64x2_t, c: uint64x2_t) -> ui
 /// Floating-point round to 32-bit integer, using current rounding mode
 #[inline]
 #[target_feature(enable = "neon,frintts")]
-#[cfg_attr(test, assert_instr(nop))]
+#[cfg_attr(test, assert_instr(frint32x))]
 pub unsafe fn vrnd32x_f32(a: float32x2_t) -> float32x2_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
@@ -12917,7 +12917,7 @@ pub unsafe fn vrnd32x_f32(a: float32x2_t) -> float32x2_t {
 /// Floating-point round to 32-bit integer, using current rounding mode
 #[inline]
 #[target_feature(enable = "neon,frintts")]
-#[cfg_attr(test, assert_instr(nop))]
+#[cfg_attr(test, assert_instr(frint32x))]
 pub unsafe fn vrnd32xq_f32(a: float32x4_t) -> float32x4_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
@@ -12930,7 +12930,7 @@ pub unsafe fn vrnd32xq_f32(a: float32x4_t) -> float32x4_t {
 /// Floating-point round to 32-bit integer toward zero
 #[inline]
 #[target_feature(enable = "neon,frintts")]
-#[cfg_attr(test, assert_instr(nop))]
+#[cfg_attr(test, assert_instr(frint32z))]
 pub unsafe fn vrnd32z_f32(a: float32x2_t) -> float32x2_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
@@ -12943,7 +12943,7 @@ pub unsafe fn vrnd32z_f32(a: float32x2_t) -> float32x2_t {
 /// Floating-point round to 32-bit integer toward zero
 #[inline]
 #[target_feature(enable = "neon,frintts")]
-#[cfg_attr(test, assert_instr(nop))]
+#[cfg_attr(test, assert_instr(frint32z))]
 pub unsafe fn vrnd32zq_f32(a: float32x4_t) -> float32x4_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
@@ -12956,7 +12956,7 @@ pub unsafe fn vrnd32zq_f32(a: float32x4_t) -> float32x4_t {
 /// Floating-point round to 64-bit integer, using current rounding mode
 #[inline]
 #[target_feature(enable = "neon,frintts")]
-#[cfg_attr(test, assert_instr(nop))]
+#[cfg_attr(test, assert_instr(frint64x))]
 pub unsafe fn vrnd64x_f32(a: float32x2_t) -> float32x2_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
@@ -12969,7 +12969,7 @@ pub unsafe fn vrnd64x_f32(a: float32x2_t) -> float32x2_t {
 /// Floating-point round to 64-bit integer, using current rounding mode
 #[inline]
 #[target_feature(enable = "neon,frintts")]
-#[cfg_attr(test, assert_instr(nop))]
+#[cfg_attr(test, assert_instr(frint64x))]
 pub unsafe fn vrnd64xq_f32(a: float32x4_t) -> float32x4_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
@@ -12982,7 +12982,7 @@ pub unsafe fn vrnd64xq_f32(a: float32x4_t) -> float32x4_t {
 /// Floating-point round to 64-bit integer toward zero
 #[inline]
 #[target_feature(enable = "neon,frintts")]
-#[cfg_attr(test, assert_instr(nop))]
+#[cfg_attr(test, assert_instr(frint64z))]
 pub unsafe fn vrnd64z_f32(a: float32x2_t) -> float32x2_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
@@ -12995,7 +12995,7 @@ pub unsafe fn vrnd64z_f32(a: float32x2_t) -> float32x2_t {
 /// Floating-point round to 64-bit integer toward zero
 #[inline]
 #[target_feature(enable = "neon,frintts")]
-#[cfg_attr(test, assert_instr(nop))]
+#[cfg_attr(test, assert_instr(frint64z))]
 pub unsafe fn vrnd64zq_f32(a: float32x4_t) -> float32x4_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
