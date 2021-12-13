@@ -5822,9 +5822,7 @@ pub unsafe fn vmovq_n_f32(value: f32) -> float32x4_t {
     stable(feature = "neon_intrinsics", since = "1.59.0")
 )]
 pub unsafe fn vext_s64<const N: i32>(a: int64x1_t, _b: int64x1_t) -> int64x1_t {
-    if N != 0 {
-        unreachable_unchecked()
-    }
+    static_assert!(N : i32 where N == 0);
     a
 }
 
@@ -5840,9 +5838,7 @@ pub unsafe fn vext_s64<const N: i32>(a: int64x1_t, _b: int64x1_t) -> int64x1_t {
     stable(feature = "neon_intrinsics", since = "1.59.0")
 )]
 pub unsafe fn vext_u64<const N: i32>(a: uint64x1_t, _b: uint64x1_t) -> uint64x1_t {
-    if N != 0 {
-        unreachable_unchecked()
-    }
+    static_assert!(N : i32 where N == 0);
     a
 }
 
