@@ -1372,7 +1372,7 @@ pub unsafe fn _mm_sfence() {
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_getcsr)
 #[rustc_deprecated(
-    since = "1.40.0",
+    since = "1.59.0",
     reason = "accessing floating point exception state causes undefined behavior in LLVM, see https://github.com/rust-lang/stdarch/issues/781"
 )]
 #[inline]
@@ -1391,7 +1391,7 @@ pub unsafe fn _mm_getcsr() -> u32 {
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_setcsr)
 #[rustc_deprecated(
-    since = "1.40.0",
+    since = "1.59.0",
     reason = "accessing floating point exception state causes undefined behavior in LLVM, see https://github.com/rust-lang/stdarch/issues/781"
 )]
 #[inline]
