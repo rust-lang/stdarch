@@ -1371,14 +1371,14 @@ pub unsafe fn _mm_sfence() {
 /// For more info see [`_mm_setcsr`](fn._mm_setcsr.html)
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_getcsr)
-#[rustc_deprecated(
-    since = "1.59.0",
-    reason = "accessing floating point exception state causes undefined behavior in LLVM, see https://github.com/rust-lang/stdarch/issues/781"
-)]
 #[inline]
 #[target_feature(enable = "sse")]
 #[cfg_attr(test, assert_instr(stmxcsr))]
 #[stable(feature = "simd_x86", since = "1.27.0")]
+#[rustc_deprecated(
+    since = "1.59.0",
+    reason = "accessing floating point exception state causes undefined behavior in LLVM, see https://github.com/rust-lang/stdarch/issues/781"
+)]
 pub unsafe fn _mm_getcsr() -> u32 {
     let mut result = 0_i32;
     stmxcsr((&mut result) as *mut _ as *mut i8);
@@ -1390,14 +1390,14 @@ pub unsafe fn _mm_getcsr() -> u32 {
 /// This function cannot be used safely as it causes undefined behavior in LLVM.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_setcsr)
-#[rustc_deprecated(
-    since = "1.59.0",
-    reason = "accessing floating point exception state causes undefined behavior in LLVM, see https://github.com/rust-lang/stdarch/issues/781"
-)]
 #[inline]
 #[target_feature(enable = "sse")]
 #[cfg_attr(test, assert_instr(ldmxcsr))]
 #[stable(feature = "simd_x86", since = "1.27.0")]
+#[rustc_deprecated(
+    since = "1.59.0",
+    reason = "accessing floating point exception state causes undefined behavior in LLVM, see https://github.com/rust-lang/stdarch/issues/781"
+)]
 pub unsafe fn _mm_setcsr(val: u32) {
     ldmxcsr(&val as *const _ as *const i8);
 }
@@ -1477,9 +1477,13 @@ pub const _MM_FLUSH_ZERO_OFF: u32 = 0x0000;
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_MM_GET_EXCEPTION_MASK)
 #[inline]
-#[allow(non_snake_case)]
+#[allow(deprecated, non_snake_case)]
 #[target_feature(enable = "sse")]
 #[stable(feature = "simd_x86", since = "1.27.0")]
+#[rustc_deprecated(
+    since = "1.59.0",
+    reason = "accessing floating point exception state causes undefined behavior in LLVM, see https://github.com/rust-lang/stdarch/issues/781"
+)]
 pub unsafe fn _MM_GET_EXCEPTION_MASK() -> u32 {
     _mm_getcsr() & _MM_MASK_MASK
 }
@@ -1488,9 +1492,13 @@ pub unsafe fn _MM_GET_EXCEPTION_MASK() -> u32 {
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_MM_GET_EXCEPTION_STATE)
 #[inline]
-#[allow(non_snake_case)]
+#[allow(deprecated, non_snake_case)]
 #[target_feature(enable = "sse")]
 #[stable(feature = "simd_x86", since = "1.27.0")]
+#[rustc_deprecated(
+    since = "1.59.0",
+    reason = "accessing floating point exception state causes undefined behavior in LLVM, see https://github.com/rust-lang/stdarch/issues/781"
+)]
 pub unsafe fn _MM_GET_EXCEPTION_STATE() -> u32 {
     _mm_getcsr() & _MM_EXCEPT_MASK
 }
@@ -1499,9 +1507,13 @@ pub unsafe fn _MM_GET_EXCEPTION_STATE() -> u32 {
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_MM_GET_FLUSH_ZERO_MODE)
 #[inline]
-#[allow(non_snake_case)]
+#[allow(deprecated, non_snake_case)]
 #[target_feature(enable = "sse")]
 #[stable(feature = "simd_x86", since = "1.27.0")]
+#[rustc_deprecated(
+    since = "1.59.0",
+    reason = "accessing floating point exception state causes undefined behavior in LLVM, see https://github.com/rust-lang/stdarch/issues/781"
+)]
 pub unsafe fn _MM_GET_FLUSH_ZERO_MODE() -> u32 {
     _mm_getcsr() & _MM_FLUSH_ZERO_MASK
 }
@@ -1510,9 +1522,13 @@ pub unsafe fn _MM_GET_FLUSH_ZERO_MODE() -> u32 {
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_MM_GET_ROUNDING_MODE)
 #[inline]
-#[allow(non_snake_case)]
+#[allow(deprecated, non_snake_case)]
 #[target_feature(enable = "sse")]
 #[stable(feature = "simd_x86", since = "1.27.0")]
+#[rustc_deprecated(
+    since = "1.59.0",
+    reason = "accessing floating point exception state causes undefined behavior in LLVM, see https://github.com/rust-lang/stdarch/issues/781"
+)]
 pub unsafe fn _MM_GET_ROUNDING_MODE() -> u32 {
     _mm_getcsr() & _MM_ROUND_MASK
 }
@@ -1521,9 +1537,13 @@ pub unsafe fn _MM_GET_ROUNDING_MODE() -> u32 {
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_MM_SET_EXCEPTION_MASK)
 #[inline]
-#[allow(non_snake_case)]
+#[allow(deprecated, non_snake_case)]
 #[target_feature(enable = "sse")]
 #[stable(feature = "simd_x86", since = "1.27.0")]
+#[rustc_deprecated(
+    since = "1.59.0",
+    reason = "accessing floating point exception state causes undefined behavior in LLVM, see https://github.com/rust-lang/stdarch/issues/781"
+)]
 pub unsafe fn _MM_SET_EXCEPTION_MASK(x: u32) {
     _mm_setcsr((_mm_getcsr() & !_MM_MASK_MASK) | x)
 }
@@ -1532,9 +1552,13 @@ pub unsafe fn _MM_SET_EXCEPTION_MASK(x: u32) {
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_MM_SET_EXCEPTION_STATE)
 #[inline]
-#[allow(non_snake_case)]
+#[allow(deprecated, non_snake_case)]
 #[target_feature(enable = "sse")]
 #[stable(feature = "simd_x86", since = "1.27.0")]
+#[rustc_deprecated(
+    since = "1.59.0",
+    reason = "accessing floating point exception state causes undefined behavior in LLVM, see https://github.com/rust-lang/stdarch/issues/781"
+)]
 pub unsafe fn _MM_SET_EXCEPTION_STATE(x: u32) {
     _mm_setcsr((_mm_getcsr() & !_MM_EXCEPT_MASK) | x)
 }
@@ -1543,9 +1567,13 @@ pub unsafe fn _MM_SET_EXCEPTION_STATE(x: u32) {
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_MM_SET_FLUSH_ZERO_MODE)
 #[inline]
-#[allow(non_snake_case)]
+#[allow(deprecated, non_snake_case)]
 #[target_feature(enable = "sse")]
 #[stable(feature = "simd_x86", since = "1.27.0")]
+#[rustc_deprecated(
+    since = "1.59.0",
+    reason = "accessing floating point exception state causes undefined behavior in LLVM, see https://github.com/rust-lang/stdarch/issues/781"
+)]
 pub unsafe fn _MM_SET_FLUSH_ZERO_MODE(x: u32) {
     let val = (_mm_getcsr() & !_MM_FLUSH_ZERO_MASK) | x;
     // println!("setting csr={:x}", val);
@@ -1556,9 +1584,13 @@ pub unsafe fn _MM_SET_FLUSH_ZERO_MODE(x: u32) {
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_MM_SET_ROUNDING_MODE)
 #[inline]
-#[allow(non_snake_case)]
+#[allow(deprecated, non_snake_case)]
 #[target_feature(enable = "sse")]
 #[stable(feature = "simd_x86", since = "1.27.0")]
+#[rustc_deprecated(
+    since = "1.59.0",
+    reason = "accessing floating point exception state causes undefined behavior in LLVM, see https://github.com/rust-lang/stdarch/issues/781"
+)]
 pub unsafe fn _MM_SET_ROUNDING_MODE(x: u32) {
     _mm_setcsr((_mm_getcsr() & !_MM_ROUND_MASK) | x)
 }
@@ -3075,58 +3107,6 @@ mod tests {
     #[simd_test(enable = "sse")]
     unsafe fn test_mm_sfence() {
         _mm_sfence();
-    }
-
-    #[simd_test(enable = "sse")]
-    unsafe fn test_mm_getcsr_setcsr_1() {
-        let saved_csr = _mm_getcsr();
-
-        let a = _mm_setr_ps(1.1e-36, 0.0, 0.0, 1.0);
-        let b = _mm_setr_ps(0.001, 0.0, 0.0, 1.0);
-
-        _MM_SET_FLUSH_ZERO_MODE(_MM_FLUSH_ZERO_ON);
-        let r = _mm_mul_ps(*black_box(&a), *black_box(&b));
-
-        _mm_setcsr(saved_csr);
-
-        let exp = _mm_setr_ps(0.0, 0.0, 0.0, 1.0);
-        assert_eq_m128(r, exp); // first component is a denormalized f32
-    }
-
-    #[simd_test(enable = "sse")]
-    unsafe fn test_mm_getcsr_setcsr_2() {
-        // Same as _mm_setcsr_1 test, but with opposite flag value.
-
-        let saved_csr = _mm_getcsr();
-
-        let a = _mm_setr_ps(1.1e-36, 0.0, 0.0, 1.0);
-        let b = _mm_setr_ps(0.001, 0.0, 0.0, 1.0);
-
-        _MM_SET_FLUSH_ZERO_MODE(_MM_FLUSH_ZERO_OFF);
-        let r = _mm_mul_ps(*black_box(&a), *black_box(&b));
-
-        _mm_setcsr(saved_csr);
-
-        let exp = _mm_setr_ps(1.1e-39, 0.0, 0.0, 1.0);
-        assert_eq_m128(r, exp); // first component is a denormalized f32
-    }
-
-    #[simd_test(enable = "sse")]
-    unsafe fn test_mm_getcsr_setcsr_underflow() {
-        _MM_SET_EXCEPTION_STATE(0);
-
-        let a = _mm_setr_ps(1.1e-36, 0.0, 0.0, 1.0);
-        let b = _mm_setr_ps(1e-5, 0.0, 0.0, 1.0);
-
-        assert_eq!(_MM_GET_EXCEPTION_STATE(), 0); // just to be sure
-
-        let r = _mm_mul_ps(*black_box(&a), *black_box(&b));
-
-        let exp = _mm_setr_ps(1.1e-41, 0.0, 0.0, 1.0);
-        assert_eq_m128(r, exp);
-
-        let underflow = _MM_GET_EXCEPTION_STATE() & _MM_EXCEPT_UNDERFLOW != 0;
-        assert_eq!(underflow, true);
     }
 
     #[simd_test(enable = "sse")]
