@@ -42,7 +42,7 @@ pub unsafe fn fence_i() {
     asm!("fence.i")
 }
 
-/// Generates the `SFENCE.VMA` instruction for given virtual address and address space
+/// Supervisor memory management fence for given virtual address and address space
 ///
 /// The fence orders only reads and writes made to leaf page table entries corresponding to
 /// the virtual address in parameter `vaddr`, for the address space identified by integer parameter
@@ -55,7 +55,7 @@ pub unsafe fn sfence_vma(vaddr: usize, asid: usize) {
     asm!("sfence.vma {}, {}", in(reg) vaddr, in(reg) asid)
 }
 
-/// Generates the `SFENCE.VMA` instruction for given virtual address
+/// Supervisor memory management fence for given virtual address
 ///
 /// The fence orders only reads and writes made to leaf page table entries corresponding to
 /// the virtual address in parameter `vaddr`, for all address spaces.
@@ -66,7 +66,7 @@ pub unsafe fn sfence_vma_vaddr(vaddr: usize) {
     asm!("sfence.vma {}, x0", in(reg) vaddr)
 }
 
-/// Generates the `SFENCE.VMA` instruction for given address space
+/// Supervisor memory management fence for given address space
 ///
 /// The fence orders all reads and writes made to any level of the page tables,
 /// but only for the address space identified by integer parameter `asid`.
@@ -79,7 +79,7 @@ pub unsafe fn sfence_vma_asid(asid: usize) {
     asm!("sfence.vma x0, {}", in(reg) asid)
 }
 
-/// Generates the `SFENCE.VMA` instruction for all address spaces and virtual addresses
+/// Supervisor memory management fence for all address spaces and virtual addresses
 ///
 /// The fence orders all reads and writes made to any level of the page
 /// tables, for all address spaces. The fence also invalidates all address-translation cache entries,
@@ -89,7 +89,7 @@ pub unsafe fn sfence_vma_all() {
     asm!("sfence.vma")
 }
 
-/// Generates the `SINVAL.VMA` instruction for given virtual address and address space
+/// Invalidate supervisor translation cache for given virtual address and address space
 ///
 /// This instruction invalidates any address-translation cache entries that an
 /// `SFENCE.VMA` instruction with the same values of `vaddr` and `asid` would invalidate.
@@ -99,7 +99,7 @@ pub unsafe fn sinval_vma(vaddr: usize, asid: usize) {
     asm!(".insn r 0x73, 0, 0x0B, x0, {}, {}", in(reg) vaddr, in(reg) asid)
 }
 
-/// Generates the `SINVAL.VMA` instruction for given virtual address
+/// Invalidate supervisor translation cache for given virtual address
 ///
 /// This instruction invalidates any address-translation cache entries that an
 /// `SFENCE.VMA` instruction with the same values of `vaddr` and `asid` would invalidate.
@@ -108,7 +108,7 @@ pub unsafe fn sinval_vma_vaddr(vaddr: usize) {
     asm!(".insn r 0x73, 0, 0x0B, x0, {}, x0", in(reg) vaddr)
 }
 
-/// Generates the `SINVAL.VMA` instruction for given address space
+/// Invalidate supervisor translation cache for given address space
 ///
 /// This instruction invalidates any address-translation cache entries that an
 /// `SFENCE.VMA` instruction with the same values of `vaddr` and `asid` would invalidate.
@@ -117,7 +117,7 @@ pub unsafe fn sinval_vma_asid(asid: usize) {
     asm!(".insn r 0x73, 0, 0x0B, x0, x0, {}", in(reg) asid)
 }
 
-/// Generates the `SINVAL.VMA` instruction for all address spaces and virtual addresses
+/// Invalidate supervisor translation cache for all address spaces and virtual addresses
 ///
 /// This instruction invalidates any address-translation cache entries that an
 /// `SFENCE.VMA` instruction with the same values of `vaddr` and `asid` would invalidate.
@@ -132,6 +132,7 @@ pub unsafe fn sinval_vma_all() {
 /// are ordered before subsequent `SINVAL.VMA` instructions executed by the same hart.
 #[inline]
 pub unsafe fn sfence_w_inval() {
+    // asm!("sfence.w.inval")
     asm!(".insn i 0x73, 0, x0, x0, 0x180")
 }
 
@@ -141,6 +142,7 @@ pub unsafe fn sfence_w_inval() {
 /// are ordered before subsequent implicit references by that hart to the memory-management data structures.
 #[inline]
 pub unsafe fn sfence_inval_ir() {
+    // asm!("sfence.inval.ir")
     asm!(".insn i 0x73, 0, x0, x0, 0x181")
 }
 
@@ -306,4 +308,194 @@ pub unsafe fn hsv_h(dst: *mut i16, src: i16) {
 #[inline]
 pub unsafe fn hsv_w(dst: *mut i32, src: i32) {
     asm!(".insn r 0x73, 0x4, 0x35, x0, {}, {}", in(reg) dst, in(reg) src);
+}
+
+/// Hypervisor memory management fence for given guest virtual address and guest address space
+///
+/// Guarantees that any previous stores already visible to the current hart are ordered before all
+/// implicit reads by that hart done for VS-stage address translation for instructions that:
+/// - are subsequent to the `HFENCE.VVMA`, and
+/// - execute when `hgatp.VMID` has the same setting as it did when `HFENCE.VVMA` executed.
+///
+/// This fence specifies a single guest virtual address, and a single guest address-space identifier.
+#[inline]
+pub unsafe fn hfence_vvma(vaddr: usize, asid: usize) {
+    // asm!("hfence.vvma {}, {}", in(reg) vaddr, in(reg) asid)
+    asm!(".insn r 0x73, 0, 0x11, x0, {}, {}", in(reg) vaddr, in(reg) asid)
+}
+
+/// Hypervisor memory management fence for given guest virtual address
+///
+/// Guarantees that any previous stores already visible to the current hart are ordered before all
+/// implicit reads by that hart done for VS-stage address translation for instructions that:
+/// - are subsequent to the `HFENCE.VVMA`, and
+/// - execute when `hgatp.VMID` has the same setting as it did when `HFENCE.VVMA` executed.
+///
+/// This fence specifies a single guest virtual address.
+#[inline]
+pub unsafe fn hfence_vvma_vaddr(vaddr: usize) {
+    asm!(".insn r 0x73, 0, 0x11, x0, {}, x0", in(reg) vaddr)
+}
+
+/// Hypervisor memory management fence for given guest address space
+///
+/// Guarantees that any previous stores already visible to the current hart are ordered before all
+/// implicit reads by that hart done for VS-stage address translation for instructions that:
+/// - are subsequent to the `HFENCE.VVMA`, and
+/// - execute when `hgatp.VMID` has the same setting as it did when `HFENCE.VVMA` executed.
+///
+/// This fence specifies a single guest address-space identifier.
+#[inline]
+pub unsafe fn hfence_vvma_asid(asid: usize) {
+    asm!(".insn r 0x73, 0, 0x11, x0, x0, {}", in(reg) asid)
+}
+
+/// Hypervisor memory management fence for all guest address spaces and guest virtual addresses
+///
+/// Guarantees that any previous stores already visible to the current hart are ordered before all
+/// implicit reads by that hart done for VS-stage address translation for instructions that:
+/// - are subsequent to the `HFENCE.VVMA`, and
+/// - execute when `hgatp.VMID` has the same setting as it did when `HFENCE.VVMA` executed.
+///
+/// This fence applies to any guest address spaces and guest virtual addresses.
+#[inline]
+pub unsafe fn hfence_vvma_all() {
+    asm!(".insn r 0x73, 0, 0x11, x0, x0, x0")
+}
+
+/// Hypervisor memory management fence for guest physical address and virtual machine
+///
+/// Guarantees that any previous stores already visible to the current hart are ordered before all implicit reads
+/// by that hart done for G-stage address translation for instructions that follow the HFENCE.GVMA.
+///
+/// This fence specifies a single guest physical address, **shifted right by 2 bits**, and a single virtual machine
+/// by virtual machine identifier (VMID).
+#[inline]
+pub unsafe fn hfence_gvma(gaddr: usize, vmid: usize) {
+    // asm!("hfence.gvma {}, {}", in(reg) gaddr, in(reg) vmid)
+    asm!(".insn r 0x73, 0, 0x31, x0, {}, {}", in(reg) gaddr, in(reg) vmid)
+}
+
+/// Hypervisor memory management fence for guest physical address
+///
+/// Guarantees that any previous stores already visible to the current hart are ordered before all implicit reads
+/// by that hart done for G-stage address translation for instructions that follow the HFENCE.GVMA.
+///
+/// This fence specifies a single guest physical address; **the physical address should be shifted right by 2 bits**.
+#[inline]
+pub unsafe fn hfence_gvma_gaddr(gaddr: usize) {
+    asm!(".insn r 0x73, 0, 0x31, x0, {}, x0", in(reg) gaddr)
+}
+
+/// Hypervisor memory management fence for given virtual machine
+///
+/// Guarantees that any previous stores already visible to the current hart are ordered before all implicit reads
+/// by that hart done for G-stage address translation for instructions that follow the HFENCE.GVMA.
+///
+/// This fence specifies a single virtual machine by virtual machine identifier (VMID).
+#[inline]
+pub unsafe fn hfence_gvma_vmid(vmid: usize) {
+    asm!(".insn r 0x73, 0, 0x31, x0, x0, {}", in(reg) vmid)
+}
+
+/// Hypervisor memory management fence for all virtual machines and guest physical addresses
+///
+/// Guarantees that any previous stores already visible to the current hart are ordered before all implicit reads
+/// by that hart done for G-stage address translation for instructions that follow the HFENCE.GVMA.
+///
+/// This fence specifies all guest physical addresses and all virtual machines.
+#[inline]
+pub unsafe fn hfence_gvma_all() {
+    asm!(".insn r 0x73, 0, 0x31, x0, x0, x0")
+}
+
+/// Invalidate hypervisor translation cache for given guest virtual address and guest address space
+///
+/// This instruction invalidates any address-translation cache entries that an
+/// `HFENCE.VVMA` instruction with the same values of `vaddr` and `asid` would invalidate.
+///
+/// This fence specifies a single guest virtual address, and a single guest address-space identifier.
+#[inline]
+pub unsafe fn hinval_vvma(vaddr: usize, asid: usize) {
+    // asm!("hinval.vvma {}, {}", in(reg) vaddr, in(reg) asid)
+    asm!(".insn r 0x73, 0, 0x13, x0, {}, {}", in(reg) vaddr, in(reg) asid)
+}
+
+/// Invalidate hypervisor translation cache for given guest virtual address
+///
+/// This instruction invalidates any address-translation cache entries that an
+/// `HFENCE.VVMA` instruction with the same values of `vaddr` and `asid` would invalidate.
+///
+/// This fence specifies a single guest virtual address.
+#[inline]
+pub unsafe fn hinval_vvma_vaddr(vaddr: usize) {
+    asm!(".insn r 0x73, 0, 0x13, x0, {}, x0", in(reg) vaddr)
+}
+
+/// Invalidate hypervisor translation cache for given guest address space
+///
+/// This instruction invalidates any address-translation cache entries that an
+/// `HFENCE.VVMA` instruction with the same values of `vaddr` and `asid` would invalidate.
+///
+/// This fence specifies a single guest address-space identifier.
+#[inline]
+pub unsafe fn hinval_vvma_asid(asid: usize) {
+    asm!(".insn r 0x73, 0, 0x13, x0, x0, {}", in(reg) asid)
+}
+
+/// Invalidate hypervisor translation cache for all guest address spaces and guest virtual addresses
+///
+/// This instruction invalidates any address-translation cache entries that an
+/// `HFENCE.VVMA` instruction with the same values of `vaddr` and `asid` would invalidate.
+///
+/// This fence applies to any guest address spaces and guest virtual addresses.
+#[inline]
+pub unsafe fn hinval_vvma_all() {
+    asm!(".insn r 0x73, 0, 0x13, x0, x0, x0")
+}
+
+/// Invalidate hypervisor translation cache for guest physical address and virtual machine
+///
+/// This instruction invalidates any address-translation cache entries that an
+/// `HFENCE.GVMA` instruction with the same values of `gaddr` and `vmid` would invalidate.
+///
+/// This fence specifies a single guest physical address, **shifted right by 2 bits**, and a single virtual machine
+/// by virtual machine identifier (VMID).
+#[inline]
+pub unsafe fn hinval_gvma(gaddr: usize, vmid: usize) {
+    // asm!("hinval.gvma {}, {}", in(reg) gaddr, in(reg) vmid)
+    asm!(".insn r 0x73, 0, 0x33, x0, {}, {}", in(reg) gaddr, in(reg) vmid)
+}
+
+/// Invalidate hypervisor translation cache for guest physical address
+///
+/// This instruction invalidates any address-translation cache entries that an
+/// `HFENCE.GVMA` instruction with the same values of `gaddr` and `vmid` would invalidate.
+///
+/// This fence specifies a single guest physical address; **the physical address should be shifted right by 2 bits**.
+#[inline]
+pub unsafe fn hinval_gvma_gaddr(gaddr: usize) {
+    asm!(".insn r 0x73, 0, 0x33, x0, {}, x0", in(reg) gaddr)
+}
+
+/// Invalidate hypervisor translation cache for given virtual machine
+///
+/// This instruction invalidates any address-translation cache entries that an
+/// `HFENCE.GVMA` instruction with the same values of `gaddr` and `vmid` would invalidate.
+///
+/// This fence specifies a single virtual machine by virtual machine identifier (VMID).
+#[inline]
+pub unsafe fn hinval_gvma_vmid(vmid: usize) {
+    asm!(".insn r 0x73, 0, 0x33, x0, x0, {}", in(reg) vmid)
+}
+
+/// Invalidate hypervisor translation cache for all virtual machines and guest physical addresses
+///
+/// This instruction invalidates any address-translation cache entries that an
+/// `HFENCE.GVMA` instruction with the same values of `gaddr` and `vmid` would invalidate.
+///
+/// This fence specifies all guest physical addresses and all virtual machines.
+#[inline]
+pub unsafe fn hinval_gvma_all() {
+    asm!(".insn r 0x73, 0, 0x33, x0, x0, x0")
 }
