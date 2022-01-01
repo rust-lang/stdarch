@@ -146,16 +146,14 @@ pub unsafe fn sfence_inval_ir() {
     asm!(".insn i 0x73, 0, x0, x0, 0x181")
 }
 
-/// Loads memory from hypervisor by signed byte integer
+/// Loads virtual machine memory by signed byte integer
 ///
 /// This instruction performs an explicit memory access as though `V=1`;
 /// i.e., with the address translation and protection, and the endianness, that apply to memory
 /// accesses in either VS-mode or VU-mode.
 ///
-/// # Unsafety
-///
-/// This function accesses the virtual supervisor or user via a `HLV.B` instruction which is effectively
-/// an unreference to any memory address, thus is wrapped into an unsafe function.
+/// This function is unsafe for it accesses the virtual supervisor or user via a `HLV.B`
+/// instruction which is effectively an unreference to any memory address.
 #[inline]
 pub unsafe fn hlv_b(src: *const i8) -> i8 {
     let value: i8;
@@ -163,16 +161,14 @@ pub unsafe fn hlv_b(src: *const i8) -> i8 {
     value
 }
 
-/// Loads memory from hypervisor by unsigned byte integer
+/// Loads virtual machine memory by unsigned byte integer
 ///
 /// This instruction performs an explicit memory access as though `V=1`;
 /// i.e., with the address translation and protection, and the endianness, that apply to memory
 /// accesses in either VS-mode or VU-mode.
 ///
-/// # Unsafety
-///
-/// This function accesses the virtual supervisor or user via a `HLV.BU` instruction which is effectively
-/// an unreference to any memory address, thus is wrapped into an unsafe function.
+/// This function is unsafe for it accesses the virtual supervisor or user via a `HLV.BU`
+/// instruction which is effectively an unreference to any memory address.
 #[inline]
 pub unsafe fn hlv_bu(src: *const u8) -> u8 {
     let value: u8;
@@ -180,16 +176,14 @@ pub unsafe fn hlv_bu(src: *const u8) -> u8 {
     value
 }
 
-/// Loads memory from hypervisor by signed half integer
+/// Loads virtual machine memory by signed half integer
 ///
 /// This instruction performs an explicit memory access as though `V=1`;
 /// i.e., with the address translation and protection, and the endianness, that apply to memory
 /// accesses in either VS-mode or VU-mode.
 ///
-/// # Unsafety
-///
-/// This function accesses the virtual supervisor or user via a `HLV.H` instruction which is effectively
-/// an unreference to any memory address, thus is wrapped into an unsafe function.
+/// This function is unsafe for it accesses the virtual supervisor or user via a `HLV.H`
+/// instruction which is effectively an unreference to any memory address.
 #[inline]
 pub unsafe fn hlv_h(src: *const i16) -> i16 {
     let value: i16;
@@ -197,16 +191,14 @@ pub unsafe fn hlv_h(src: *const i16) -> i16 {
     value
 }
 
-/// Loads memory from hypervisor by unsigned half integer
+/// Loads virtual machine memory by unsigned half integer
 ///
 /// This instruction performs an explicit memory access as though `V=1`;
 /// i.e., with the address translation and protection, and the endianness, that apply to memory
 /// accesses in either VS-mode or VU-mode.
 ///
-/// # Unsafety
-///
-/// This function accesses the virtual supervisor or user via a `HLV.HU` instruction which is effectively
-/// an unreference to any memory address, thus is wrapped into an unsafe function.
+/// This function is unsafe for it accesses the virtual supervisor or user via a `HLV.HU`
+/// instruction which is effectively an unreference to any memory address.
 #[inline]
 pub unsafe fn hlv_hu(src: *const u16) -> u16 {
     let value: u16;
@@ -214,16 +206,14 @@ pub unsafe fn hlv_hu(src: *const u16) -> u16 {
     value
 }
 
-/// Accesses instruction from hypervisor by unsigned half integer
+/// Accesses virtual machine instruction by unsigned half integer
 ///
 /// This instruction performs an explicit memory access as though `V=1`;
 /// the memory being read must be executable in both stages of address translation,
 /// but read permission is not required.
 ///
-/// # Unsafety
-///
-/// This function accesses the virtual supervisor or user via a `HLVX.HU` instruction which is effectively
-/// an unreference to any memory address, thus is wrapped into an unsafe function.
+/// This function is unsafe for it accesses the virtual supervisor or user via a `HLVX.HU`
+/// instruction which is effectively an unreference to any memory address.
 #[inline]
 pub unsafe fn hlvx_hu(src: *const u16) -> u16 {
     let insn: u16;
@@ -231,16 +221,14 @@ pub unsafe fn hlvx_hu(src: *const u16) -> u16 {
     insn
 }
 
-/// Loads memory from hypervisor by signed word integer
+/// Loads virtual machine memory by signed word integer
 ///
 /// This instruction performs an explicit memory access as though `V=1`;
 /// i.e., with the address translation and protection, and the endianness, that apply to memory
 /// accesses in either VS-mode or VU-mode.
 ///
-/// # Unsafety
-///
-/// This function accesses the virtual supervisor or user via a `HLV.W` instruction which is effectively
-/// an unreference to any memory address, thus is wrapped into an unsafe function.
+/// This function is unsafe for it accesses the virtual supervisor or user via a `HLV.W`
+/// instruction which is effectively an unreference to any memory address.
 #[inline]
 pub unsafe fn hlv_w(src: *const i32) -> i32 {
     let value: i32;
@@ -248,16 +236,14 @@ pub unsafe fn hlv_w(src: *const i32) -> i32 {
     value
 }
 
-/// Accesses instruction from hypervisor by unsigned word integer
+/// Accesses virtual machine instruction by unsigned word integer
 ///
 /// This instruction performs an explicit memory access as though `V=1`;
 /// the memory being read must be executable in both stages of address translation,
 /// but read permission is not required.
 ///
-/// # Unsafety
-///
-/// This function accesses the virtual supervisor or user via a `HLVX.WU` instruction which is effectively
-/// an unreference to any memory address, thus is wrapped into an unsafe function.
+/// This function is unsafe for it accesses the virtual supervisor or user via a `HLVX.WU`
+/// instruction which is effectively an unreference to any memory address.
 #[inline]
 pub unsafe fn hlvx_wu(src: *const u32) -> u32 {
     let insn: u32;
@@ -265,46 +251,40 @@ pub unsafe fn hlvx_wu(src: *const u32) -> u32 {
     insn
 }
 
-/// Stores memory from hypervisor by byte integer
+/// Stores virtual machine memory by byte integer
 ///
 /// This instruction performs an explicit memory access as though `V=1`;
 /// i.e., with the address translation and protection, and the endianness, that apply to memory
 /// accesses in either VS-mode or VU-mode.
 ///
-/// # Unsafety
-///
-/// This function accesses the virtual supervisor or user via a `HSV.B` instruction which is effectively
-/// an unreference to any memory address, thus is wrapped into an unsafe function.
+/// This function is unsafe for it accesses the virtual supervisor or user via a `HSV.B`
+/// instruction which is effectively an unreference to any memory address.
 #[inline]
 pub unsafe fn hsv_b(dst: *mut i8, src: i8) {
     asm!(".insn r 0x73, 0x4, 0x31, x0, {}, {}", in(reg) dst, in(reg) src);
 }
 
-/// Stores memory from hypervisor by half integer
+/// Stores virtual machine memory by half integer
 ///
 /// This instruction performs an explicit memory access as though `V=1`;
 /// i.e., with the address translation and protection, and the endianness, that apply to memory
 /// accesses in either VS-mode or VU-mode.
 ///
-/// # Unsafety
-///
-/// This function accesses the virtual supervisor or user via a `HSV.H` instruction which is effectively
-/// an unreference to any memory address, thus is wrapped into an unsafe function.
+/// This function is unsafe for it accesses the virtual supervisor or user via a `HSV.H`
+/// instruction which is effectively an unreference to any memory address.
 #[inline]
 pub unsafe fn hsv_h(dst: *mut i16, src: i16) {
     asm!(".insn r 0x73, 0x4, 0x33, x0, {}, {}", in(reg) dst, in(reg) src);
 }
 
-/// Stores memory from hypervisor by word integer
+/// Stores virtual machine memory by word integer
 ///
 /// This instruction performs an explicit memory access as though `V=1`;
 /// i.e., with the address translation and protection, and the endianness, that apply to memory
 /// accesses in either VS-mode or VU-mode.
 ///
-/// # Unsafety
-///
-/// This function accesses the virtual supervisor or user via a `HSV.W` instruction which is effectively
-/// an unreference to any memory address, thus is wrapped into an unsafe function.
+/// This function is unsafe for it accesses the virtual supervisor or user via a `HSV.W`
+/// instruction which is effectively an unreference to any memory address.
 #[inline]
 pub unsafe fn hsv_w(dst: *mut i32, src: i32) {
     asm!(".insn r 0x73, 0x4, 0x35, x0, {}, {}", in(reg) dst, in(reg) src);
