@@ -1,4 +1,4 @@
-//! RISC-V intrinsics
+//! Shared RISC-V intrinsics
 
 use crate::arch::asm;
 
