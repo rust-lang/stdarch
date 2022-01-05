@@ -14,7 +14,7 @@ use crate::arch::asm;
 #[inline]
 pub unsafe fn hlv_wu(src: *const u32) -> u32 {
     let value: u32;
-    asm!(".insn i 0x73, 0x4, {}, {}, 0x681", out(reg) value, in(reg) src);
+    asm!(".insn i 0x73, 0x4, {}, {}, 0x681", out(reg) value, in(reg) src, options(readonly, nostack));
     value
 }
 
@@ -31,7 +31,7 @@ pub unsafe fn hlv_wu(src: *const u32) -> u32 {
 #[inline]
 pub unsafe fn hlv_d(src: *const i64) -> i64 {
     let value: i64;
-    asm!(".insn i 0x73, 0x4, {}, {}, 0x6C0", out(reg) value, in(reg) src);
+    asm!(".insn i 0x73, 0x4, {}, {}, 0x6C0", out(reg) value, in(reg) src, options(readonly, nostack));
     value
 }
 
@@ -45,5 +45,5 @@ pub unsafe fn hlv_d(src: *const i64) -> i64 {
 /// instruction which is effectively an unreference to any memory address.
 #[inline]
 pub unsafe fn hsv_d(dst: *mut i64, src: i64) {
-    asm!(".insn r 0x73, 0x4, 0x37, x0, {}, {}", in(reg) dst, in(reg) src);
+    asm!(".insn r 0x73, 0x4, 0x37, x0, {}, {}", in(reg) dst, in(reg) src, options(nostack));
 }
