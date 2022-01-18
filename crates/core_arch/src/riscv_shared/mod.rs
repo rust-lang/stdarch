@@ -153,7 +153,7 @@ pub unsafe fn sfence_inval_ir() {
 /// accesses in either VS-mode or VU-mode.
 ///
 /// This function is unsafe for it accesses the virtual supervisor or user via a `HLV.B`
-/// instruction which is effectively an unreference to any memory address.
+/// instruction which is effectively a dereference to any memory address.
 #[inline]
 pub unsafe fn hlv_b(src: *const i8) -> i8 {
     let value: i8;
@@ -168,7 +168,7 @@ pub unsafe fn hlv_b(src: *const i8) -> i8 {
 /// accesses in either VS-mode or VU-mode.
 ///
 /// This function is unsafe for it accesses the virtual supervisor or user via a `HLV.BU`
-/// instruction which is effectively an unreference to any memory address.
+/// instruction which is effectively a dereference to any memory address.
 #[inline]
 pub unsafe fn hlv_bu(src: *const u8) -> u8 {
     let value: u8;
@@ -183,7 +183,7 @@ pub unsafe fn hlv_bu(src: *const u8) -> u8 {
 /// accesses in either VS-mode or VU-mode.
 ///
 /// This function is unsafe for it accesses the virtual supervisor or user via a `HLV.H`
-/// instruction which is effectively an unreference to any memory address.
+/// instruction which is effectively a dereference to any memory address.
 #[inline]
 pub unsafe fn hlv_h(src: *const i16) -> i16 {
     let value: i16;
@@ -198,7 +198,7 @@ pub unsafe fn hlv_h(src: *const i16) -> i16 {
 /// accesses in either VS-mode or VU-mode.
 ///
 /// This function is unsafe for it accesses the virtual supervisor or user via a `HLV.HU`
-/// instruction which is effectively an unreference to any memory address.
+/// instruction which is effectively a dereference to any memory address.
 #[inline]
 pub unsafe fn hlv_hu(src: *const u16) -> u16 {
     let value: u16;
@@ -213,7 +213,7 @@ pub unsafe fn hlv_hu(src: *const u16) -> u16 {
 /// but read permission is not required.
 ///
 /// This function is unsafe for it accesses the virtual supervisor or user via a `HLVX.HU`
-/// instruction which is effectively an unreference to any memory address.
+/// instruction which is effectively a dereference to any memory address.
 #[inline]
 pub unsafe fn hlvx_hu(src: *const u16) -> u16 {
     let insn: u16;
@@ -228,7 +228,7 @@ pub unsafe fn hlvx_hu(src: *const u16) -> u16 {
 /// accesses in either VS-mode or VU-mode.
 ///
 /// This function is unsafe for it accesses the virtual supervisor or user via a `HLV.W`
-/// instruction which is effectively an unreference to any memory address.
+/// instruction which is effectively a dereference to any memory address.
 #[inline]
 pub unsafe fn hlv_w(src: *const i32) -> i32 {
     let value: i32;
@@ -243,7 +243,7 @@ pub unsafe fn hlv_w(src: *const i32) -> i32 {
 /// but read permission is not required.
 ///
 /// This function is unsafe for it accesses the virtual supervisor or user via a `HLVX.WU`
-/// instruction which is effectively an unreference to any memory address.
+/// instruction which is effectively a dereference to any memory address.
 #[inline]
 pub unsafe fn hlvx_wu(src: *const u32) -> u32 {
     let insn: u32;
@@ -258,7 +258,7 @@ pub unsafe fn hlvx_wu(src: *const u32) -> u32 {
 /// accesses in either VS-mode or VU-mode.
 ///
 /// This function is unsafe for it accesses the virtual supervisor or user via a `HSV.B`
-/// instruction which is effectively an unreference to any memory address.
+/// instruction which is effectively a dereference to any memory address.
 #[inline]
 pub unsafe fn hsv_b(dst: *mut i8, src: i8) {
     asm!(".insn r 0x73, 0x4, 0x31, x0, {}, {}", in(reg) dst, in(reg) src, options(nostack));
@@ -271,7 +271,7 @@ pub unsafe fn hsv_b(dst: *mut i8, src: i8) {
 /// accesses in either VS-mode or VU-mode.
 ///
 /// This function is unsafe for it accesses the virtual supervisor or user via a `HSV.H`
-/// instruction which is effectively an unreference to any memory address.
+/// instruction which is effectively a dereference to any memory address.
 #[inline]
 pub unsafe fn hsv_h(dst: *mut i16, src: i16) {
     asm!(".insn r 0x73, 0x4, 0x33, x0, {}, {}", in(reg) dst, in(reg) src, options(nostack));
@@ -284,7 +284,7 @@ pub unsafe fn hsv_h(dst: *mut i16, src: i16) {
 /// accesses in either VS-mode or VU-mode.
 ///
 /// This function is unsafe for it accesses the virtual supervisor or user via a `HSV.W`
-/// instruction which is effectively an unreference to any memory address.
+/// instruction which is effectively a dereference to any memory address.
 #[inline]
 pub unsafe fn hsv_w(dst: *mut i32, src: i32) {
     asm!(".insn r 0x73, 0x4, 0x35, x0, {}, {}", in(reg) dst, in(reg) src, options(nostack));
