@@ -18,7 +18,7 @@ pub unsafe fn hlv_wu(src: *const u32) -> u32 {
     value
 }
 
-/// Loads virtual machine memory by unsigned double integer
+/// Loads virtual machine memory by double integer
 ///
 /// This instruction performs an explicit memory access as though `V=1`;
 /// i.e., with the address translation and protection, and the endianness, that apply to memory

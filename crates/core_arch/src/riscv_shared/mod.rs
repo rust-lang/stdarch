@@ -479,3 +479,115 @@ pub unsafe fn hinval_gvma_vmid(vmid: usize) {
 pub unsafe fn hinval_gvma_all() {
     asm!(".insn r 0x73, 0, 0x33, x0, x0, x0", options(nostack))
 }
+
+/// `P0` transformation function as is used in the SM3 hash algorithm
+///
+/// This function is included in `Zksh` extension. It's defined as:
+///
+/// ```text
+/// P0(X) = X ⊕ (X ≪ 9) ⊕ (X ≪ 17)
+/// ```
+///
+/// where `⊕` represents 32-bit xor, and `≪ k` represents rotate left by `k` bits.
+///
+/// In the SM3 algorithm, the `P0` transformation is used as `E ← P0(TT2)` when the
+/// compression function `CF` uses the intermediate value `TT2` to calculate
+/// the variable `E` in one iteration for subsequent processes.
+///
+/// According to RISC-V Cryptography Extensions, Volume I, the execution latency of
+/// this instruction must always be independent from the data it operates on.
+#[inline]
+pub fn sm3p0(x: u32) -> u32 {
+    let ans: u32;
+    unsafe {
+        // asm!("sm3p0 {}, {}", out(reg) ans, in(reg) x, options(nomem, nostack))
+        asm!(".insn i 0x13, 0x1, {}, {}, 0x108", out(reg) ans, in(reg) x, options(nomem, nostack))
+    };
+    ans
+}
+
+/// `P1` transformation function as is used in the SM3 hash algorithm
+///
+/// This function is included in `Zksh` extension. It's defined as:
+///
+/// ```text
+/// P1(X) = X ⊕ (X ≪ 15) ⊕ (X ≪ 23)
+/// ```
+///
+/// where `⊕` represents 32-bit xor, and `≪ k` represents rotate left by `k` bits.
+///
+/// In the SM3 algorithm, the `P1` transformation is used to expand message,
+/// where expanded word `Wj` can be generated from the previous words.
+/// The whole process can be described as the following pseudocode:
+///
+/// ```text
+/// FOR j=16 TO 67
+///     Wj ← P1(Wj−16 ⊕ Wj−9 ⊕ (Wj−3 ≪ 15)) ⊕ (Wj−13 ≪ 7) ⊕ Wj−6
+/// ENDFOR
+/// ```
+///
+/// According to RISC-V Cryptography Extensions, Volume I, the execution latency of
+/// this instruction must always be independent from the data it operates on.
+#[inline]
+pub fn sm3p1(x: u32) -> u32 {
+    let ans: u32;
+    unsafe {
+        // asm!("sm3p1 {}, {}", out(reg) ans, in(reg) x, options(nomem, nostack))
+        asm!(".insn i 0x13, 0x1, {}, {}, 0x109", out(reg) ans, in(reg) x, options(nomem, nostack))
+    };
+    ans
+}
+
+/// Acceleates the round function `F` in the SM4 block cipher algorithm
+///
+/// This instruction is included in extension `Zksed`. It's defined as:
+///
+/// ```text
+/// SM4ED(x, a, BS) = x ⊕ T(ai)
+/// ... where
+/// ai = a.bytes[BS]
+/// T(ai) = L(τ(ai))
+/// bi = τ(ai) = SM4-S-Box(ai)
+/// ci = L(bi) = bi ⊕ (bi ≪ 2) ⊕ (bi ≪ 10) ⊕ (bi ≪ 18) ⊕ (bi ≪ 24)
+/// SM4ED = (ci ≪ (BS * 8)) ⊕ x
+/// ```
+///
+/// where `⊕` represents 32-bit xor, and `≪ k` represents rotate left by `k` bits.
+/// As is defined above, `T` is a combined transformation of non linear S-Box transform `τ`
+/// and linear layer transform `L`.
+///
+/// In the SM4 algorithm, the round function `F` is defined as:
+///
+/// ```text
+/// F(x0, x1, x2, x3, rk) = x0 ⊕ T(x1 ⊕ x2 ⊕ x3 ⊕ rk)
+/// ... where
+/// T(A) = L(τ(A))
+/// B = τ(A) = (SM4-S-Box(a0), SM4-S-Box(a1), SM4-S-Box(a2), SM4-S-Box(a3))
+/// C = L(B) = B ⊕ (B ≪ 2) ⊕ (B ≪ 10) ⊕ (B ≪ 18) ⊕ (B ≪ 24)
+/// ```
+///
+/// It can be implemented by `sm4ed` instruction like:
+///
+/// ```no_run
+/// let a = x1 ^ x2 ^ x3 ^ rk;
+/// let c0 = sm4ed::<0>(x0, a);
+/// let c1 = sm4ed::<1>(c0, a); // c1 represents c[0..=1], etc.
+/// let c2 = sm4ed::<2>(c1, a);
+/// let c3 = sm4ed::<3>(c2, a);
+/// return c3; // c3 represents c[0..=3]
+/// ```
+///
+/// According to RISC-V Cryptography Extensions, Volume I, the execution latency of
+/// this instruction must always be independent from the data it operates on.
+pub fn sm4ed<const BS: u8>(x: u32, a: u32) -> u32 {
+    static_assert_imm2!(BS); // `bs` immediate value must be within [0, 3]
+    let ans: u32;
+    match BS {
+        0 => unsafe { asm!(".insn r 0x33, 0, 0x18, {}, {}, {}", out(reg) ans, in(reg) x, in(reg) a, options(nomem, nostack)) },
+        1 => unsafe { asm!(".insn r 0x33, 0, 0x38, {}, {}, {}", out(reg) ans, in(reg) x, in(reg) a, options(nomem, nostack)) },
+        2 => unsafe { asm!(".insn r 0x33, 0, 0x58, {}, {}, {}", out(reg) ans, in(reg) x, in(reg) a, options(nomem, nostack)) },
+        3 => unsafe { asm!(".insn r 0x33, 0, 0x78, {}, {}, {}", out(reg) ans, in(reg) x, in(reg) a, options(nomem, nostack)) },
+        _ => unreachable!()
+    };
+    ans
+}
