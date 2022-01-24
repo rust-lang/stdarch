@@ -16162,8 +16162,8 @@ pub unsafe fn _mm_maskz_compress_pd(k: __mmask8, a: __m128d) -> __m128d {
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpcompressd))]
-pub unsafe fn _mm512_mask_compressstoreu_epi32(base_addr: *mut i8, k: __mmask16, a: __m512i) {
-    vcompressd_mem(base_addr, a.as_i32x16(), k)
+pub unsafe fn _mm512_mask_compressstoreu_epi32(base_addr: *mut u8, k: __mmask16, a: __m512i) {
+    vcompressstored(base_addr as *mut _, a.as_i32x16(), k)
 }
 
 /// Contiguously store the active 32-bit integers in a (those with their respective bit set in writemask k) to unaligned memory at base_addr.
@@ -16172,8 +16172,8 @@ pub unsafe fn _mm512_mask_compressstoreu_epi32(base_addr: *mut i8, k: __mmask16,
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
 #[cfg_attr(test, assert_instr(vpcompressd))]
-pub unsafe fn _mm256_mask_compressstoreu_epi32(base_addr: *mut i8, k: __mmask8, a: __m256i) {
-    vcompressd256_mem(base_addr, a.as_i32x8(), k)
+pub unsafe fn _mm256_mask_compressstoreu_epi32(base_addr: *mut u8, k: __mmask8, a: __m256i) {
+    vcompressstored256(base_addr as *mut _, a.as_i32x8(), k)
 }
 
 /// Contiguously store the active 32-bit integers in a (those with their respective bit set in writemask k) to unaligned memory at base_addr.
@@ -16182,8 +16182,8 @@ pub unsafe fn _mm256_mask_compressstoreu_epi32(base_addr: *mut i8, k: __mmask8, 
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
 #[cfg_attr(test, assert_instr(vpcompressd))]
-pub unsafe fn _mm_mask_compressstoreu_epi32(base_addr: *mut i8, k: __mmask8, a: __m128i) {
-    vcompressd128_mem(base_addr, a.as_i32x4(), k)
+pub unsafe fn _mm_mask_compressstoreu_epi32(base_addr: *mut u8, k: __mmask8, a: __m128i) {
+    vcompressstored128(base_addr as *mut _, a.as_i32x4(), k)
 }
 
 /// Contiguously store the active 64-bit integers in a (those with their respective bit set in writemask k) to unaligned memory at base_addr.
@@ -16192,8 +16192,8 @@ pub unsafe fn _mm_mask_compressstoreu_epi32(base_addr: *mut i8, k: __mmask8, a: 
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vpcompressq))]
-pub unsafe fn _mm512_mask_compressstoreu_epi64(base_addr: *mut i8, k: __mmask8, a: __m512i) {
-    vcompressq_mem(base_addr, a.as_i64x8(), k)
+pub unsafe fn _mm512_mask_compressstoreu_epi64(base_addr: *mut u8, k: __mmask8, a: __m512i) {
+    vcompressstoreq(base_addr as *mut _, a.as_i64x8(), k)
 }
 
 /// Contiguously store the active 64-bit integers in a (those with their respective bit set in writemask k) to unaligned memory at base_addr.
@@ -16202,8 +16202,8 @@ pub unsafe fn _mm512_mask_compressstoreu_epi64(base_addr: *mut i8, k: __mmask8, 
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
 #[cfg_attr(test, assert_instr(vpcompressq))]
-pub unsafe fn _mm256_mask_compressstoreu_epi64(base_addr: *mut i8, k: __mmask8, a: __m256i) {
-    vcompressq256_mem(base_addr, a.as_i64x4(), k)
+pub unsafe fn _mm256_mask_compressstoreu_epi64(base_addr: *mut u8, k: __mmask8, a: __m256i) {
+    vcompressstoreq256(base_addr as *mut _, a.as_i64x4(), k)
 }
 
 /// Contiguously store the active 64-bit integers in a (those with their respective bit set in writemask k) to unaligned memory at base_addr.
@@ -16212,8 +16212,8 @@ pub unsafe fn _mm256_mask_compressstoreu_epi64(base_addr: *mut i8, k: __mmask8, 
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
 #[cfg_attr(test, assert_instr(vpcompressq))]
-pub unsafe fn _mm_mask_compressstoreu_epi64(base_addr: *mut i8, k: __mmask8, a: __m128i) {
-    vcompressq128_mem(base_addr, a.as_i64x2(), k)
+pub unsafe fn _mm_mask_compressstoreu_epi64(base_addr: *mut u8, k: __mmask8, a: __m128i) {
+    vcompressstoreq128(base_addr as *mut _, a.as_i64x2(), k)
 }
 
 /// Contiguously store the active single-precision (32-bit) floating-point elements in a (those with their respective bit set in writemask k) to unaligned memory at base_addr.
@@ -16222,8 +16222,8 @@ pub unsafe fn _mm_mask_compressstoreu_epi64(base_addr: *mut i8, k: __mmask8, a: 
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vcompressps))]
-pub unsafe fn _mm512_mask_compressstoreu_ps(base_addr: *mut i8, k: __mmask16, a: __m512) {
-    vcompressps_mem(base_addr, a.as_f32x16(), k)
+pub unsafe fn _mm512_mask_compressstoreu_ps(base_addr: *mut u8, k: __mmask16, a: __m512) {
+    vcompressstoreps(base_addr as *mut _, a.as_f32x16(), k)
 }
 
 /// Contiguously store the active single-precision (32-bit) floating-point elements in a (those with their respective bit set in writemask k) to unaligned memory at base_addr.
@@ -16232,8 +16232,8 @@ pub unsafe fn _mm512_mask_compressstoreu_ps(base_addr: *mut i8, k: __mmask16, a:
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
 #[cfg_attr(test, assert_instr(vcompressps))]
-pub unsafe fn _mm256_mask_compressstoreu_ps(base_addr: *mut i8, k: __mmask8, a: __m256) {
-    vcompressps256_mem(base_addr, a.as_f32x8(), k)
+pub unsafe fn _mm256_mask_compressstoreu_ps(base_addr: *mut u8, k: __mmask8, a: __m256) {
+    vcompressstoreps256(base_addr as *mut _, a.as_f32x8(), k)
 }
 
 /// Contiguously store the active single-precision (32-bit) floating-point elements in a (those with their respective bit set in writemask k) to unaligned memory at base_addr.
@@ -16242,8 +16242,8 @@ pub unsafe fn _mm256_mask_compressstoreu_ps(base_addr: *mut i8, k: __mmask8, a: 
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
 #[cfg_attr(test, assert_instr(vcompressps))]
-pub unsafe fn _mm_mask_compressstoreu_ps(base_addr: *mut i8, k: __mmask8, a: __m128) {
-    vcompressps128_mem(base_addr, a.as_f32x4(), k)
+pub unsafe fn _mm_mask_compressstoreu_ps(base_addr: *mut u8, k: __mmask8, a: __m128) {
+    vcompressstoreps128(base_addr as *mut _, a.as_f32x4(), k)
 }
 
 /// Contiguously store the active double-precision (64-bit) floating-point elements in a (those with their respective bit set in writemask k) to unaligned memory at base_addr.
@@ -16252,8 +16252,8 @@ pub unsafe fn _mm_mask_compressstoreu_ps(base_addr: *mut i8, k: __mmask8, a: __m
 #[inline]
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(vcompresspd))]
-pub unsafe fn _mm512_mask_compressstoreu_pd(base_addr: *mut i8, k: __mmask8, a: __m512d) {
-    vcompresspd_mem(base_addr, a.as_f64x8(), k)
+pub unsafe fn _mm512_mask_compressstoreu_pd(base_addr: *mut u8, k: __mmask8, a: __m512d) {
+    vcompressstorepd(base_addr as *mut _, a.as_f64x8(), k)
 }
 
 /// Contiguously store the active double-precision (64-bit) floating-point elements in a (those with their respective bit set in writemask k) to unaligned memory at base_addr.
@@ -16262,8 +16262,8 @@ pub unsafe fn _mm512_mask_compressstoreu_pd(base_addr: *mut i8, k: __mmask8, a: 
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
 #[cfg_attr(test, assert_instr(vcompresspd))]
-pub unsafe fn _mm256_mask_compressstoreu_pd(base_addr: *mut i8, k: __mmask8, a: __m256d) {
-    vcompresspd256_mem(base_addr, a.as_f64x4(), k)
+pub unsafe fn _mm256_mask_compressstoreu_pd(base_addr: *mut u8, k: __mmask8, a: __m256d) {
+    vcompressstorepd256(base_addr as *mut _, a.as_f64x4(), k)
 }
 
 /// Contiguously store the active double-precision (64-bit) floating-point elements in a (those with their respective bit set in writemask k) to unaligned memory at base_addr.
@@ -16272,8 +16272,8 @@ pub unsafe fn _mm256_mask_compressstoreu_pd(base_addr: *mut i8, k: __mmask8, a: 
 #[inline]
 #[target_feature(enable = "avx512f,avx512vl")]
 #[cfg_attr(test, assert_instr(vcompresspd))]
-pub unsafe fn _mm_mask_compressstoreu_pd(base_addr: *mut i8, k: __mmask8, a: __m128d) {
-    vcompresspd128_mem(base_addr, a.as_f64x2(), k)
+pub unsafe fn _mm_mask_compressstoreu_pd(base_addr: *mut u8, k: __mmask8, a: __m128d) {
+    vcompressstorepd128(base_addr as *mut _, a.as_f64x2(), k)
 }
 
 /// Load contiguous active 32-bit integers from a (those with their respective bit set in mask k), and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
@@ -38128,32 +38128,32 @@ extern "C" {
     fn vcompresspd128(a: f64x2, src: f64x2, mask: u8) -> f64x2;
 
     #[link_name = "llvm.x86.avx512.mask.compress.store.d.512"]
-    fn vcompressd_mem(mem: *mut i8, data: i32x16, mask: u16);
+    fn vcompressstored(mem: *mut i8, data: i32x16, mask: u16);
     #[link_name = "llvm.x86.avx512.mask.compress.store.d.256"]
-    fn vcompressd256_mem(mem: *mut i8, data: i32x8, mask: u8);
+    fn vcompressstored256(mem: *mut i8, data: i32x8, mask: u8);
     #[link_name = "llvm.x86.avx512.mask.compress.store.d.128"]
-    fn vcompressd128_mem(mem: *mut i8, data: i32x4, mask: u8);
+    fn vcompressstored128(mem: *mut i8, data: i32x4, mask: u8);
 
     #[link_name = "llvm.x86.avx512.mask.compress.store.q.512"]
-    fn vcompressq_mem(mem: *mut i8, data: i64x8, mask: u8);
+    fn vcompressstoreq(mem: *mut i8, data: i64x8, mask: u8);
     #[link_name = "llvm.x86.avx512.mask.compress.store.q.256"]
-    fn vcompressq256_mem(mem: *mut i8, data: i64x4, mask: u8);
+    fn vcompressstoreq256(mem: *mut i8, data: i64x4, mask: u8);
     #[link_name = "llvm.x86.avx512.mask.compress.store.q.128"]
-    fn vcompressq128_mem(mem: *mut i8, data: i64x2, mask: u8);
+    fn vcompressstoreq128(mem: *mut i8, data: i64x2, mask: u8);
 
     #[link_name = "llvm.x86.avx512.mask.compress.store.ps.512"]
-    fn vcompressps_mem(mem: *mut i8, data: f32x16, mask: u16);
+    fn vcompressstoreps(mem: *mut i8, data: f32x16, mask: u16);
     #[link_name = "llvm.x86.avx512.mask.compress.store.ps.256"]
-    fn vcompressps256_mem(mem: *mut i8, data: f32x8, mask: u8);
+    fn vcompressstoreps256(mem: *mut i8, data: f32x8, mask: u8);
     #[link_name = "llvm.x86.avx512.mask.compress.store.ps.128"]
-    fn vcompressps128_mem(mem: *mut i8, data: f32x4, mask: u8);
+    fn vcompressstoreps128(mem: *mut i8, data: f32x4, mask: u8);
 
     #[link_name = "llvm.x86.avx512.mask.compress.store.pd.512"]
-    fn vcompresspd_mem(mem: *mut i8, data: f64x8, mask: u8);
+    fn vcompressstorepd(mem: *mut i8, data: f64x8, mask: u8);
     #[link_name = "llvm.x86.avx512.mask.compress.store.pd.256"]
-    fn vcompresspd256_mem(mem: *mut i8, data: f64x4, mask: u8);
+    fn vcompressstorepd256(mem: *mut i8, data: f64x4, mask: u8);
     #[link_name = "llvm.x86.avx512.mask.compress.store.pd.128"]
-    fn vcompresspd128_mem(mem: *mut i8, data: f64x2, mask: u8);
+    fn vcompressstorepd128(mem: *mut i8, data: f64x2, mask: u8);
 
     #[link_name = "llvm.x86.avx512.mask.expand.d.512"]
     fn vpexpandd(a: i32x16, src: i32x16, mask: u16) -> i32x16;
