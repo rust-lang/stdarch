@@ -685,7 +685,7 @@ pub fn sm3p1(x: u32) -> u32 {
 /// According to RISC-V Cryptography Extensions, Volume I, the execution latency of
 /// this instruction must always be independent from the data it operates on.
 pub fn sm4ed<const BS: u8>(x: u32, a: u32) -> u32 {
-    static_assert_imm2!(BS); // `bs` immediate value must be within [0, 3]
+    static_assert!(BS: u8 where BS <= 3);
     let ans: u32;
     match BS {
         0 => unsafe {
@@ -750,7 +750,7 @@ pub fn sm4ed<const BS: u8>(x: u32, a: u32) -> u32 {
 /// According to RISC-V Cryptography Extensions, Volume I, the execution latency of
 /// this instruction must always be independent from the data it operates on.
 pub fn sm4ks<const BS: u8>(x: u32, k: u32) -> u32 {
-    static_assert_imm2!(BS); // `bs` immediate value must be within [0, 3]
+    static_assert!(BS: u8 where BS <= 3);
     let ans: u32;
     match BS {
         0 => unsafe {
