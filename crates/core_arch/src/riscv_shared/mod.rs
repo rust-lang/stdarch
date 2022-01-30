@@ -469,6 +469,111 @@ pub unsafe fn hinval_gvma_vmid(vmid: usize) {
     asm!(".insn r 0x73, 0, 0x33, x0, x0, {}", in(reg) vmid, options(nostack))
 }
 
+/// Reads the floating-point control and status register `fcsr`
+///
+/// Register `fcsr` is a 32-bit read/write register that selects the dynamic rounding mode
+/// for floating-point arithmetic operations and holds the accrued exception flag.
+///
+/// Accoding to "F" Standard Extension for Single-Precision Floating-Point, Version 2.2,
+/// register `fcsr` is defined as:
+///
+/// | Bit index | Meaning |
+/// |:----------|:--------|
+/// | 0..=4 | Accrued Exceptions (`fflags`) |
+/// | 5..=7 | Rounding Mode (`frm`) |
+/// | 8..=31 | _Reserved_ |
+///
+/// For definition of each field, visit [`frrm`] and [`frflags`].
+///
+/// [`frrm`]: fn.frrm.html
+/// [`frflags`]: fn.frflags.html
+#[inline]
+pub fn frcsr() -> u32 {
+    let value: u32;
+    unsafe { asm!("frcsr {}", out(reg) value, options(nomem, nostack)) };
+    value
+}
+
+/// Swaps the floating-point control and status register `fcsr`
+///
+/// This function swaps the value in `fcsr` by copying the original value to be returned,
+/// and then writing a new value obtained from input variable `value` into `fcsr`.
+#[inline]
+pub fn fscsr(value: u32) -> u32 {
+    let original: u32;
+    unsafe { asm!("fscsr {}, {}", out(reg) original, in(reg) value, options(nomem, nostack)) }
+    original
+}
+
+/// Reads the floating-point rounding mode register `frm`
+///
+/// Accoding to "F" Standard Extension for Single-Precision Floating-Point, Version 2.2,
+/// the rounding mode field is defined as listed in the table below:
+///
+/// | Rounding Mode | Mnemonic | Meaning |
+/// |:-------------|:----------|:---------|
+/// | 000 | RNE | Round to Nearest, ties to Even |
+/// | 001 | RTZ | Round towards Zero |
+/// | 010 | RDN | Round Down (towards −∞) |
+/// | 011 | RUP | Round Up (towards +∞) |
+/// | 100 | RMM | Round to Nearest, ties to Max Magnitude |
+/// | 101 |     | _Reserved for future use._ |
+/// | 110 |     | _Reserved for future use._ |
+/// | 111 | DYN | In Rounding Mode register, _reserved_. |
+#[inline]
+pub fn frrm() -> u32 {
+    let value: u32;
+    unsafe { asm!("frrm {}", out(reg) value, options(nomem, nostack)) };
+    value
+}
+
+/// Swaps the floating-point rounding mode register `frm`
+///
+/// This function swaps the value in `frm` by copying the original value to be returned,
+/// and then writing a new value obtained from the three least-significant bits of
+/// input variable `value` into `frm`.
+#[inline]
+pub fn fsrm(value: u32) -> u32 {
+    let original: u32;
+    unsafe { asm!("fsrm {}, {}", out(reg) original, in(reg) value, options(nomem, nostack)) }
+    original
+}
+
+/// Reads the floating-point accrued exception flags register `fflags`
+///
+/// The accrued exception flags indicate the exception conditions that have arisen
+/// on any floating-point arithmetic instruction since the field was last reset by software.
+///
+/// Accoding to "F" Standard Extension for Single-Precision Floating-Point, Version 2.2,
+/// the accured exception flags is defined as a bit vector of 5 bits.
+/// The meaning of each binary bit is listed in the table below.
+///
+/// | Bit index | Mnemonic | Meaning |
+/// |:--|:---|:-----------------|
+/// | 4 | NV | Invalid Operation |
+/// | 3 | DZ | Divide by Zero |
+/// | 2 | OF | Overflow |
+/// | 1 | UF | Underflow |
+/// | 0 | NX | Inexact |
+#[inline]
+pub fn frflags() -> u32 {
+    let value: u32;
+    unsafe { asm!("frflags {}", out(reg) value, options(nomem, nostack)) };
+    value
+}
+
+/// Swaps the floating-point accrued exception flags register `fflags`
+///
+/// This function swaps the value in `fflags` by copying the original value to be returned,
+/// and then writing a new value obtained from the five least-significant bits of
+/// input variable `value` into `fflags`.
+#[inline]
+pub fn fsflags(value: u32) -> u32 {
+    let original: u32;
+    unsafe { asm!("fsflags {}, {}", out(reg) original, in(reg) value, options(nomem, nostack)) }
+    original
+}
+
 /// Invalidate hypervisor translation cache for all virtual machines and guest physical addresses
 ///
 /// This instruction invalidates any address-translation cache entries that an
