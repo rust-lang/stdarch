@@ -538,7 +538,7 @@ pub fn sm3p1(x: u32) -> u32 {
     ans
 }
 
-/// Acceleates the round function `F` in the SM4 block cipher algorithm
+/// Accelerates the round function `F` in the SM4 block cipher algorithm
 ///
 /// This instruction is included in extension `Zksed`. It's defined as:
 ///
@@ -583,11 +583,84 @@ pub fn sm4ed<const BS: u8>(x: u32, a: u32) -> u32 {
     static_assert_imm2!(BS); // `bs` immediate value must be within [0, 3]
     let ans: u32;
     match BS {
-        0 => unsafe { asm!(".insn r 0x33, 0, 0x18, {}, {}, {}", out(reg) ans, in(reg) x, in(reg) a, options(nomem, nostack)) },
-        1 => unsafe { asm!(".insn r 0x33, 0, 0x38, {}, {}, {}", out(reg) ans, in(reg) x, in(reg) a, options(nomem, nostack)) },
-        2 => unsafe { asm!(".insn r 0x33, 0, 0x58, {}, {}, {}", out(reg) ans, in(reg) x, in(reg) a, options(nomem, nostack)) },
-        3 => unsafe { asm!(".insn r 0x33, 0, 0x78, {}, {}, {}", out(reg) ans, in(reg) x, in(reg) a, options(nomem, nostack)) },
-        _ => unreachable!()
+        0 => unsafe {
+            asm!(".insn r 0x33, 0, 0x18, {}, {}, {}", out(reg) ans, in(reg) x, in(reg) a, options(nomem, nostack))
+        },
+        1 => unsafe {
+            asm!(".insn r 0x33, 0, 0x38, {}, {}, {}", out(reg) ans, in(reg) x, in(reg) a, options(nomem, nostack))
+        },
+        2 => unsafe {
+            asm!(".insn r 0x33, 0, 0x58, {}, {}, {}", out(reg) ans, in(reg) x, in(reg) a, options(nomem, nostack))
+        },
+        3 => unsafe {
+            asm!(".insn r 0x33, 0, 0x78, {}, {}, {}", out(reg) ans, in(reg) x, in(reg) a, options(nomem, nostack))
+        },
+        _ => unreachable!(),
+    };
+    ans
+}
+
+/// Accelerates the key schedule operation in the SM4 block cipher algorithm
+///
+/// This instruction is included in extension `Zksed`. It's defined as:
+///
+/// ```text
+/// SM4KS(x, k, BS) = x ⊕ T'(ki)
+/// ... where
+/// ki = k.bytes[BS]
+/// T'(ki) = L'(τ(ki))
+/// bi = τ(ki) = SM4-S-Box(ki)
+/// ci = L'(bi) = bi ⊕ (bi ≪ 13) ⊕ (bi ≪ 23)
+/// SM4KS = (ci ≪ (BS * 8)) ⊕ x
+/// ```
+///
+/// where `⊕` represents 32-bit xor, and `≪ k` represents rotate left by `k` bits.
+/// As is defined above, `T'` is a combined transformation of non linear S-Box transform `τ`
+/// and the replaced linear layer transform `L'`.
+///
+/// In the SM4 algorithm, the key schedule is defined as:
+///
+/// ```text
+/// rk[i] = K[i+4] = K[i] ⊕ T'(K[i+1] ⊕ K[i+2] ⊕ K[i+3] ⊕ CK[i])
+/// ... where
+/// K[0..=3] = MK[0..=3] ⊕ FK[0..=3]
+/// T'(K) = L'(τ(K))
+/// B = τ(K) = (SM4-S-Box(k0), SM4-S-Box(k1), SM4-S-Box(k2), SM4-S-Box(k3))
+/// C = L'(B) = B ⊕ (B ≪ 13) ⊕ (B ≪ 23)
+/// ```
+///
+/// where `MK` represents the input 128-bit encryption key,
+/// constants `FK` and `CK` are fixed system configuration constant values defined by the SM4 algorithm.
+/// Hence, the key schedule operation can be implemented by `sm4ks` instruction like:
+///
+/// ```no_run
+/// let k = k1 ^ k2 ^ k3 ^ ck_i;
+/// let c0 = sm4ks::<0>(k0, k);
+/// let c1 = sm4ks::<1>(c0, k); // c1 represents c[0..=1], etc.
+/// let c2 = sm4ks::<2>(c1, k);
+/// let c3 = sm4ks::<3>(c2, k);
+/// return c3; // c3 represents c[0..=3]
+/// ```
+///
+/// According to RISC-V Cryptography Extensions, Volume I, the execution latency of
+/// this instruction must always be independent from the data it operates on.
+pub fn sm4ks<const BS: u8>(x: u32, k: u32) -> u32 {
+    static_assert_imm2!(BS); // `bs` immediate value must be within [0, 3]
+    let ans: u32;
+    match BS {
+        0 => unsafe {
+            asm!(".insn r 0x33, 0, 0x1A, {}, {}, {}", out(reg) ans, in(reg) x, in(reg) k, options(nomem, nostack))
+        },
+        1 => unsafe {
+            asm!(".insn r 0x33, 0, 0x3A, {}, {}, {}", out(reg) ans, in(reg) x, in(reg) k, options(nomem, nostack))
+        },
+        2 => unsafe {
+            asm!(".insn r 0x33, 0, 0x5A, {}, {}, {}", out(reg) ans, in(reg) x, in(reg) k, options(nomem, nostack))
+        },
+        3 => unsafe {
+            asm!(".insn r 0x33, 0, 0x7A, {}, {}, {}", out(reg) ans, in(reg) x, in(reg) k, options(nomem, nostack))
+        },
+        _ => unreachable!(),
     };
     ans
 }
