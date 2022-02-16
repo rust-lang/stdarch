@@ -55,11 +55,13 @@ macro_rules! features {
             $(
                 ($feature_lit) => {
                     compile_error!(
-                        r#"
-                        This macro cannot be used on the current target.
-                        You can prevent it from being used in other architectures by
-                        guarding it behind a cfg(target_arch).
-                        "#
+                        concat!(
+                            r#"This macro cannot be used on the current target.
+                            You can prevent it from being used in other architectures by
+                            guarding it behind a cfg("#,
+                            stringify!($cfg),
+                            ")."
+                        )
                     )
                 };
             )*
