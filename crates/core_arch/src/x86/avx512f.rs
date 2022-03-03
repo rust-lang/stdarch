@@ -25685,9 +25685,9 @@ pub unsafe fn _mm512_kand(a: __mmask16, b: __mmask16) -> __mmask16 {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=kor_mask16&expand=3239)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(or))] // generate normal or code instead of korw
+#[cfg_attr(test, assert_instr(korw))]
 pub unsafe fn _kor_mask16(a: __mmask16, b: __mmask16) -> __mmask16 {
-    transmute(a | b)
+    _mm512_kor(a, b)
 }
 
 /// Compute the bitwise OR of 16-bit masks a and b, and store the result in k.
@@ -25695,9 +25695,12 @@ pub unsafe fn _kor_mask16(a: __mmask16, b: __mmask16) -> __mmask16 {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_kor&expand=3237)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(or))] // generate normal or code instead of korw
 pub unsafe fn _mm512_kor(a: __mmask16, b: __mmask16) -> __mmask16 {
-    transmute(a | b)
+    let mut dst: __mmask16;
+    asm!("korw {}, {}, {}", out(kreg) dst, in(kreg) a, in(kreg) b,
+        options(pure, readonly, nostack)
+    );
+    dst
 }
 
 /// Compute the bitwise XOR of 16-bit masks a and b, and store the result in k.
