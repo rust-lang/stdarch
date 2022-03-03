@@ -4230,6 +4230,32 @@ pub unsafe fn _mm_storeu_epi8(mem_addr: *mut i8, a: __m128i) {
     ptr::write_unaligned(mem_addr as *mut __m128i, a);
 }
 
+/// Unpack and interleave 32 bits from masks a and b, and store the 64-bit result in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_kunpackd)
+#[inline]
+#[target_feature(enable = "avx512f,avx512bw")]
+pub unsafe fn _mm512_kunpackd(a: __mmask64, b: __mmask64) -> __mmask64 {
+    let mut dst: __mmask64;
+    asm!("kunpckdq {}, {}, {}", out(kreg) dst, in(kreg) a, in(kreg) b,
+        options(pure, readonly, nostack)
+    );
+    dst
+}
+
+/// Unpack and interleave 16 bits from masks a and b, and store the 32-bit result in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_kunpackw)
+#[inline]
+#[target_feature(enable = "avx512f,avx512bw")]
+pub unsafe fn _mm512_kunpackw(a: __mmask32, b: __mmask32) -> __mmask32 {
+    let mut dst: __mmask32;
+    asm!("kunpckwd {}, {}, {}", out(kreg) dst, in(kreg) a, in(kreg) b,
+        options(pure, readonly, nostack)
+    );
+    dst
+}
+
 /// Load packed 16-bit integers from memory into dst using writemask k
 /// (elements are copied from src when the corresponding mask bit is not set).
 /// mem_addr does not need to be aligned on any particular boundary.
@@ -8569,9 +8595,12 @@ pub unsafe fn _kadd_mask64(a: __mmask64, b: __mmask64) -> __mmask64 {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_kand_mask32&expand=3213)
 #[inline]
 #[target_feature(enable = "avx512bw")]
-#[cfg_attr(test, assert_instr(and))] // generate normal and code instead of kandd
 pub unsafe fn _kand_mask32(a: __mmask32, b: __mmask32) -> __mmask32 {
-    transmute(a & b)
+    let mut dst: __mmask32;
+    asm!("kandd {}, {}, {}", out(kreg) dst, in(kreg) a, in(kreg) b,
+        options(pure, readonly, nostack)
+    );
+    dst
 }
 
 /// Compute the bitwise AND of 64-bit masks a and b, and store the result in k.
@@ -8579,9 +8608,12 @@ pub unsafe fn _kand_mask32(a: __mmask32, b: __mmask32) -> __mmask32 {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_kand_mask64&expand=3214)
 #[inline]
 #[target_feature(enable = "avx512bw")]
-#[cfg_attr(test, assert_instr(and))] // generate normal and code instead of kandq
 pub unsafe fn _kand_mask64(a: __mmask64, b: __mmask64) -> __mmask64 {
-    transmute(a & b)
+    let mut dst: __mmask64;
+    asm!("kandq {}, {}, {}", out(kreg) dst, in(kreg) a, in(kreg) b,
+        options(pure, readonly, nostack)
+    );
+    dst
 }
 
 /// Compute the bitwise NOT of 32-bit mask a, and store the result in k.
@@ -8607,9 +8639,12 @@ pub unsafe fn _knot_mask64(a: __mmask64) -> __mmask64 {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_kandn_mask32&expand=3219)
 #[inline]
 #[target_feature(enable = "avx512bw")]
-#[cfg_attr(test, assert_instr(not))] // generate normal and code instead of kandnd
 pub unsafe fn _kandn_mask32(a: __mmask32, b: __mmask32) -> __mmask32 {
-    transmute(_knot_mask32(a) & b)
+    let mut dst: __mmask32;
+    asm!("kandnd {}, {}, {}", out(kreg) dst, in(kreg) a, in(kreg) b,
+        options(pure, readonly, nostack)
+    );
+    dst
 }
 
 /// Compute the bitwise NOT of 64-bit masks a and then AND with b, and store the result in k.
@@ -8617,9 +8652,12 @@ pub unsafe fn _kandn_mask32(a: __mmask32, b: __mmask32) -> __mmask32 {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_kandn_mask64&expand=3220)
 #[inline]
 #[target_feature(enable = "avx512bw")]
-#[cfg_attr(test, assert_instr(not))] // generate normal and code instead of kandnq
 pub unsafe fn _kandn_mask64(a: __mmask64, b: __mmask64) -> __mmask64 {
-    transmute(_knot_mask64(a) & b)
+    let mut dst: __mmask64;
+    asm!("kandnq {}, {}, {}", out(kreg) dst, in(kreg) a, in(kreg) b,
+        options(pure, readonly, nostack)
+    );
+    dst
 }
 
 /// Compute the bitwise OR of 32-bit masks a and b, and store the result in k.
@@ -18781,5 +18819,23 @@ mod tests {
             u8::MAX as i8, u8::MAX as i8, u8::MAX as i8, u8::MAX as i8,
         );
         assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_mm512_kunpackd() {
+        let a = 0b11111111_00000000_11111111_00000000_11111111_00000000_11111111_00000000;
+        let b = 0b00000000_11111111_00000000_11111111_00000000_11111111_00000000_11111111;
+        let r = _mm512_kunpackd(a, b);
+        let e = 0b11111111_00000000_11111111_00000000_00000000_11111111_00000000_11111111;
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_mm512_kunpackw() {
+        let a = 0b11111111_00000000_11111111_00000000;
+        let b = 0b00000000_11111111_00000000_11111111;
+        let r = _mm512_kunpackw(a, b);
+        let e = 0b11111111_00000000_00000000_11111111;
+        assert_eq!(r, e);
     }
 }

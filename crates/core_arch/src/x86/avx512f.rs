@@ -25672,9 +25672,12 @@ pub unsafe fn _kand_mask16(a: __mmask16, b: __mmask16) -> __mmask16 {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_kand&expand=3210)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(and))] // generate normal and code instead of kandw
 pub unsafe fn _mm512_kand(a: __mmask16, b: __mmask16) -> __mmask16 {
-    transmute(a & b)
+    let mut dst: __mmask16;
+    asm!("kandw {}, {}, {}", out(kreg) dst, in(kreg) a, in(kreg) b,
+        options(pure, readonly, nostack)
+    );
+    dst
 }
 
 /// Compute the bitwise OR of 16-bit masks a and b, and store the result in k.
@@ -25740,9 +25743,9 @@ pub unsafe fn _mm512_knot(a: __mmask16) -> __mmask16 {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=kandn_mask16&expand=3218)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(not))] // generate normal and, not code instead of kandnw
+#[cfg_attr(test, assert_instr(kandnw))]
 pub unsafe fn _kandn_mask16(a: __mmask16, b: __mmask16) -> __mmask16 {
-    _mm512_kand(_mm512_knot(a), b)
+    _mm512_kandn(a, b)
 }
 
 /// Compute the bitwise NOT of 16-bit masks a and then AND with b, and store the result in k.
@@ -25750,9 +25753,12 @@ pub unsafe fn _kandn_mask16(a: __mmask16, b: __mmask16) -> __mmask16 {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_kandn&expand=3216)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(not))] // generate normal and code instead of kandw
 pub unsafe fn _mm512_kandn(a: __mmask16, b: __mmask16) -> __mmask16 {
-    _mm512_kand(_mm512_knot(a), b)
+    let mut dst: __mmask16;
+    asm!("kandnw {}, {}, {}", out(kreg) dst, in(kreg) a, in(kreg) b,
+        options(pure, readonly, nostack)
+    );
+    dst
 }
 
 /// Compute the bitwise XNOR of 16-bit masks a and b, and store the result in k.
@@ -25807,16 +25813,17 @@ pub unsafe fn _mm512_mask2int(k1: __mmask16) -> i32 {
     transmute(r)
 }
 
-/// Unpack and interleave 8 bits from masks a and b, and store the 16-bit result in k.
+/// Unpack and interleave 8 bits from masks a and b, and store the 16-bit result in dst.
 ///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_kunpackb&expand=3280)
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_kunpackb)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(mov))] // generate normal and code instead of kunpckbw
 pub unsafe fn _mm512_kunpackb(a: __mmask16, b: __mmask16) -> __mmask16 {
-    let a = a & 0b00000000_11111111;
-    let b = b & 0b11111111_00000000;
-    transmute(a | b)
+    let mut dst: __mmask16;
+    asm!("kunpckbw {}, {}, {}", out(kreg) dst, in(kreg) a, in(kreg) b,
+        options(pure, readonly, nostack)
+    );
+    dst
 }
 
 /// Performs bitwise OR between k1 and k2, storing the result in dst. CF flag is set if dst consists of all 1's.
@@ -25833,6 +25840,19 @@ pub unsafe fn _mm512_kortestc(a: __mmask16, b: __mmask16) -> i32 {
         0
     }
 }
+
+/// Performs bitwise OR between k1 and k2, storing the result in dst. ZF flag is set if dst is 0.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_kortestz)
+//#[inline]
+//#[target_feature(enable = "avx512f")]
+//#[cfg_attr(test, assert_instr(kortestw))]
+//pub unsafe fn _mm512_kortestz(k1: __mmask16, k2: __mmask16) -> i32 {
+    //transmute(kortestw(k1, k2))
+//    let dst: i32 = 0;
+//    asm!("kortestw {}, {}", in(kreg) k1, in(kreg) k2);
+//    dst
+//}
 
 /// Compute the bitwise AND of packed 32-bit integers in a and b, producing intermediate 32-bit values, and set the corresponding bit in result mask k if the intermediate value is non-zero.
 ///
@@ -38725,6 +38745,9 @@ extern "C" {
     fn vcomiss(a: f32x4, b: f32x4, imm8: i32, sae: i32) -> i32;
     #[link_name = "llvm.x86.avx512.vcomi.sd"]
     fn vcomisd(a: f64x2, b: f64x2, imm8: i32, sae: i32) -> i32;
+
+    #[link_name = "llvm.x86.avx512.kortestz.w"]
+    fn kortestw(mask1: u16, mask2: u16) -> i32;
 }
 
 #[cfg(test)]
@@ -51487,7 +51510,7 @@ mod tests {
         let a: u16 = 0b11001100_00110011;
         let b: u16 = 0b00101110_00001011;
         let r = _mm512_kunpackb(a, b);
-        let e: u16 = 0b00101110_00110011;
+        let e: u16 = 0b00110011_00001011;
         assert_eq!(r, e);
     }
 
