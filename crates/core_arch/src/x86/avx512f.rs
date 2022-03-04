@@ -25772,9 +25772,9 @@ pub unsafe fn _mm512_kandn(a: __mmask16, b: __mmask16) -> __mmask16 {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=kxnor_mask16&expand=3285)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(kxor))] // generate normal xor, not code instead of kxnorw
+#[cfg_attr(test, assert_instr(kxnorw))]
 pub unsafe fn _kxnor_mask16(a: __mmask16, b: __mmask16) -> __mmask16 {
-    _mm512_knot(_mm512_kxor(a, b))
+    _mm512_kxnor(a, b)
 }
 
 /// Compute the bitwise XNOR of 16-bit masks a and b, and store the result in k.
@@ -25782,9 +25782,12 @@ pub unsafe fn _kxnor_mask16(a: __mmask16, b: __mmask16) -> __mmask16 {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_kxnor&expand=3283)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(kxor))] // generate normal and code instead of kandw
 pub unsafe fn _mm512_kxnor(a: __mmask16, b: __mmask16) -> __mmask16 {
-    _mm512_knot(_mm512_kxor(a, b))
+    let mut dst: __mmask16;
+    asm!("kxnorw {}, {}, {}", out(kreg) dst, in(kreg) a, in(kreg) b,
+        options(pure, readonly, nostack)
+    );
+    dst
 }
 
 /// Copy 16-bit mask a to k.

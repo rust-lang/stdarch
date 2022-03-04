@@ -8717,9 +8717,12 @@ pub unsafe fn _kxor_mask64(a: __mmask64, b: __mmask64) -> __mmask64 {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_kxnor_mask32&expand=3286)
 #[inline]
 #[target_feature(enable = "avx512bw")]
-#[cfg_attr(test, assert_instr(xor))] // generate normal and code instead of kxnord
 pub unsafe fn _kxnor_mask32(a: __mmask32, b: __mmask32) -> __mmask32 {
-    transmute(_knot_mask32(a ^ b))
+    let mut dst: __mmask32;
+    asm!("kxnord {}, {}, {}", out(kreg) dst, in(kreg) a, in(kreg) b,
+        options(pure, readonly, nostack)
+    );
+    dst
 }
 
 /// Compute the bitwise XNOR of 64-bit masks a and b, and store the result in k.
@@ -8727,9 +8730,12 @@ pub unsafe fn _kxnor_mask32(a: __mmask32, b: __mmask32) -> __mmask32 {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_kxnor_mask64&expand=3287)
 #[inline]
 #[target_feature(enable = "avx512bw")]
-#[cfg_attr(test, assert_instr(xor))] // generate normal and code instead of kxnorq
 pub unsafe fn _kxnor_mask64(a: __mmask64, b: __mmask64) -> __mmask64 {
-    transmute(_knot_mask64(a ^ b))
+    let mut dst: __mmask64;
+    asm!("kxnorq {}, {}, {}", out(kreg) dst, in(kreg) a, in(kreg) b,
+        options(pure, readonly, nostack)
+    );
+    dst
 }
 
 /// Convert packed 16-bit integers in a to packed 8-bit integers with truncation, and store the results in dst.
