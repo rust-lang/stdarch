@@ -25815,7 +25815,7 @@ pub unsafe fn _mm512_kmov(a: __mmask16) -> __mmask16 {
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(kmovw))]
 pub unsafe fn _mm512_int2mask(mask: i32) -> __mmask16 {
-    _mm512_kmov(mask as __mmask16) 
+    _mm512_kmov(mask as __mmask16)
 }
 
 /// Converts bit mask k1 into an integer value, storing the results in dst.
@@ -25825,7 +25825,7 @@ pub unsafe fn _mm512_int2mask(mask: i32) -> __mmask16 {
 #[target_feature(enable = "avx512f")]
 #[cfg_attr(test, assert_instr(kmovw))]
 pub unsafe fn _mm512_mask2int(k1: __mmask16) -> i32 {
-    _mm512_kmov(k1) as i32 
+    _mm512_kmov(k1) as i32
 }
 
 /// Unpack and interleave 8 bits from masks a and b, and store the 16-bit result in dst.
@@ -25855,19 +25855,6 @@ pub unsafe fn _mm512_kortestc(a: __mmask16, b: __mmask16) -> i32 {
         0
     }
 }
-
-/// Performs bitwise OR between k1 and k2, storing the result in dst. ZF flag is set if dst is 0.
-///
-/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_kortestz)
-//#[inline]
-//#[target_feature(enable = "avx512f")]
-//#[cfg_attr(test, assert_instr(kortestw))]
-//pub unsafe fn _mm512_kortestz(k1: __mmask16, k2: __mmask16) -> i32 {
-    //transmute(kortestw(k1, k2))
-//    let dst: i32 = 0;
-//    asm!("kortestw {}, {}", in(kreg) k1, in(kreg) k2);
-//    dst
-//}
 
 /// Compute the bitwise AND of packed 32-bit integers in a and b, producing intermediate 32-bit values, and set the corresponding bit in result mask k if the intermediate value is non-zero.
 ///
