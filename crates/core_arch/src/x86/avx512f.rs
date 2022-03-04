@@ -25708,9 +25708,9 @@ pub unsafe fn _mm512_kor(a: __mmask16, b: __mmask16) -> __mmask16 {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=kxor_mask16&expand=3291)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(xor))] // generate normal xor code instead of kxorw
+#[cfg_attr(test, assert_instr(kxorw))]
 pub unsafe fn _kxor_mask16(a: __mmask16, b: __mmask16) -> __mmask16 {
-    transmute(a ^ b)
+    _mm512_kxor(a, b)
 }
 
 /// Compute the bitwise XOR of 16-bit masks a and b, and store the result in k.
@@ -25718,9 +25718,12 @@ pub unsafe fn _kxor_mask16(a: __mmask16, b: __mmask16) -> __mmask16 {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_kxor&expand=3289)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(xor))] // generate normal xor code instead of kxorw
 pub unsafe fn _mm512_kxor(a: __mmask16, b: __mmask16) -> __mmask16 {
-    transmute(a ^ b)
+    let mut dst: __mmask16;
+    asm!("kxorw {}, {}, {}", out(kreg) dst, in(kreg) a, in(kreg) b,
+        options(pure, readonly, nostack)
+    );
+    dst
 }
 
 /// Compute the bitwise NOT of 16-bit mask a, and store the result in k.
@@ -25769,7 +25772,7 @@ pub unsafe fn _mm512_kandn(a: __mmask16, b: __mmask16) -> __mmask16 {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=kxnor_mask16&expand=3285)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(xor))] // generate normal xor, not code instead of kxnorw
+#[cfg_attr(test, assert_instr(kxor))] // generate normal xor, not code instead of kxnorw
 pub unsafe fn _kxnor_mask16(a: __mmask16, b: __mmask16) -> __mmask16 {
     _mm512_knot(_mm512_kxor(a, b))
 }
@@ -25779,7 +25782,7 @@ pub unsafe fn _kxnor_mask16(a: __mmask16, b: __mmask16) -> __mmask16 {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_kxnor&expand=3283)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(xor))] // generate normal and code instead of kandw
+#[cfg_attr(test, assert_instr(kxor))] // generate normal and code instead of kandw
 pub unsafe fn _mm512_kxnor(a: __mmask16, b: __mmask16) -> __mmask16 {
     _mm512_knot(_mm512_kxor(a, b))
 }

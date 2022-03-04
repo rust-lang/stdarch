@@ -8691,9 +8691,12 @@ pub unsafe fn _kor_mask64(a: __mmask64, b: __mmask64) -> __mmask64 {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_kxor_mask32&expand=3292)
 #[inline]
 #[target_feature(enable = "avx512bw")]
-#[cfg_attr(test, assert_instr(xor))] // generate normal and code instead of kxord
 pub unsafe fn _kxor_mask32(a: __mmask32, b: __mmask32) -> __mmask32 {
-    transmute(a ^ b)
+    let mut dst: __mmask32;
+    asm!("kxord {}, {}, {}", out(kreg) dst, in(kreg) a, in(kreg) b,
+        options(pure, readonly, nostack)
+    );
+    dst
 }
 
 /// Compute the bitwise XOR of 64-bit masks a and b, and store the result in k.
@@ -8701,9 +8704,12 @@ pub unsafe fn _kxor_mask32(a: __mmask32, b: __mmask32) -> __mmask32 {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_kxor_mask64&expand=3293)
 #[inline]
 #[target_feature(enable = "avx512bw")]
-#[cfg_attr(test, assert_instr(xor))] // generate normal and code instead of kxorq
 pub unsafe fn _kxor_mask64(a: __mmask64, b: __mmask64) -> __mmask64 {
-    transmute(a ^ b)
+    let mut dst: __mmask64;
+    asm!("kxorq {}, {}, {}", out(kreg) dst, in(kreg) a, in(kreg) b,
+        options(pure, readonly, nostack)
+    );
+    dst
 }
 
 /// Compute the bitwise XNOR of 32-bit masks a and b, and store the result in k.
