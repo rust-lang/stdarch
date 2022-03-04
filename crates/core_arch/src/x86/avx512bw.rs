@@ -8622,7 +8622,11 @@ pub unsafe fn _kand_mask64(a: __mmask64, b: __mmask64) -> __mmask64 {
 #[inline]
 #[target_feature(enable = "avx512bw")]
 pub unsafe fn _knot_mask32(a: __mmask32) -> __mmask32 {
-    transmute(a ^ 0b11111111_11111111_11111111_11111111)
+    let mut dst: __mmask32;
+    asm!("knotd {}, {}", out(kreg) dst, in(kreg) a,
+        options(pure, readonly, nostack)
+    );
+    dst
 }
 
 /// Compute the bitwise NOT of 64-bit mask a, and store the result in k.
@@ -8631,7 +8635,11 @@ pub unsafe fn _knot_mask32(a: __mmask32) -> __mmask32 {
 #[inline]
 #[target_feature(enable = "avx512bw")]
 pub unsafe fn _knot_mask64(a: __mmask64) -> __mmask64 {
-    transmute(a ^ 0b11111111_11111111_11111111_11111111_11111111_11111111_11111111_11111111)
+    let mut dst: __mmask64;
+    asm!("knotq {}, {}", out(kreg) dst, in(kreg) a,
+        options(pure, readonly, nostack)
+    );
+    dst
 }
 
 /// Compute the bitwise NOT of 32-bit masks a and then AND with b, and store the result in k.

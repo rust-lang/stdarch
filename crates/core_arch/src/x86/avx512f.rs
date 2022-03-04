@@ -25731,8 +25731,9 @@ pub unsafe fn _mm512_kxor(a: __mmask16, b: __mmask16) -> __mmask16 {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=knot_mask16&expand=3233)
 #[inline]
 #[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(knotw))]
 pub unsafe fn _knot_mask16(a: __mmask16) -> __mmask16 {
-    transmute(a ^ 0b11111111_11111111)
+    _mm512_knot(a)
 }
 
 /// Compute the bitwise NOT of 16-bit mask a, and store the result in k.
@@ -25741,7 +25742,11 @@ pub unsafe fn _knot_mask16(a: __mmask16) -> __mmask16 {
 #[inline]
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_knot(a: __mmask16) -> __mmask16 {
-    transmute(a ^ 0b11111111_11111111)
+    let mut dst: __mmask16;
+    asm!("knotw {}, {}", out(kreg) dst, in(kreg) a,
+        options(pure, readonly, nostack)
+    );
+    dst
 }
 
 /// Compute the bitwise NOT of 16-bit masks a and then AND with b, and store the result in k.
