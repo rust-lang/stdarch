@@ -8571,11 +8571,12 @@ pub unsafe fn _mm_movm_epi8(k: __mmask16) -> __m128i {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_kadd_mask32&expand=3207)
 #[inline]
 #[target_feature(enable = "avx512bw")]
-#[cfg_attr(all(test, target_arch = "x86"), assert_instr(add))]
-#[cfg_attr(all(test, target_arch = "x86_64"), assert_instr(lea))] // generate normal lea/add code instead of kaddd
-                                                                  //llvm.x86.avx512.kadd.d
 pub unsafe fn _kadd_mask32(a: __mmask32, b: __mmask32) -> __mmask32 {
-    transmute(a + b)
+    let mut dst: __mmask32;
+    asm!("kaddd {}, {}, {}", out(kreg) dst, in(kreg) a, in(kreg) b,
+        options(pure, readonly, nostack)
+    );
+    dst
 }
 
 /// Add 64-bit masks in a and b, and store the result in k.
@@ -8583,11 +8584,12 @@ pub unsafe fn _kadd_mask32(a: __mmask32, b: __mmask32) -> __mmask32 {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_kadd_mask64&expand=3208)
 #[inline]
 #[target_feature(enable = "avx512bw")]
-#[cfg_attr(all(test, target_arch = "x86"), assert_instr(add))]
-#[cfg_attr(all(test, target_arch = "x86_64"), assert_instr(lea))] // generate normal lea/add code instead of kaddd
-                                                                  //llvm.x86.avx512.kadd.d
 pub unsafe fn _kadd_mask64(a: __mmask64, b: __mmask64) -> __mmask64 {
-    transmute(a + b)
+    let mut dst: __mmask64;
+    asm!("kaddq {}, {}, {}", out(kreg) dst, in(kreg) a, in(kreg) b,
+        options(pure, readonly, nostack)
+    );
+    dst
 }
 
 /// Compute the bitwise AND of 32-bit masks a and b, and store the result in k.
