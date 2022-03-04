@@ -9913,6 +9913,58 @@ pub unsafe fn _mm_mask_cvtusepi16_storeu_epi8(mem_addr: *mut i8, k: __mmask8, a:
     vpmovuswbmem128(mem_addr as *mut i8, a.as_i16x8(), k);
 }
 
+/// Convert 32-bit mask a into an integer value, and store the result in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_cvtmask32_u32)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+pub unsafe fn _cvtmask32_u32(a: __mmask32) -> u32 {
+    let mut dst: __mmask32;
+    asm!("kmovd {}, {}", out(kreg) dst, in(kreg) a,
+        options(pure, readonly, nostack)
+    );
+    dst as u32
+}
+
+/// Convert integer value a into an 32-bit mask, and store the result in k.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_cvtu32_mask32)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+pub unsafe fn _cvtu32_mask32(a: u32) -> __mmask32 {
+    let mut dst: __mmask32;
+    asm!("kmovd {}, {}", out(kreg) dst, in(kreg) a as __mmask32,
+        options(pure, readonly, nostack)
+    );
+    dst
+}
+
+/// Convert 64-bit mask a into an integer value, and store the result in dst.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_cvtmask64_u64)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+pub unsafe fn _cvtmask64_u64(a: __mmask64) -> u64 {
+    let mut dst: __mmask64;
+    asm!("kmovq {}, {}", out(kreg) dst, in(kreg) a,
+        options(pure, readonly, nostack)
+    );
+    dst as u64
+}
+
+/// Convert integer value a into an 64-bit mask, and store the result in k.
+///
+/// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_cvtu64_mask64)
+#[inline]
+#[target_feature(enable = "avx512bw")]
+pub unsafe fn _cvtu64_mask64(a: u64) -> __mmask64 {
+    let mut dst: __mmask64;
+    asm!("kmovq {}, {}", out(kreg) dst, in(kreg) a as __mmask64,
+        options(pure, readonly, nostack)
+    );
+    dst
+}
+
 #[allow(improper_ctypes)]
 extern "C" {
     #[link_name = "llvm.x86.avx512.mask.paddus.w.512"]
@@ -18862,6 +18914,38 @@ mod tests {
         let b = 0b00000000_11111111_00000000_11111111;
         let r = _mm512_kunpackw(a, b);
         let e = 0b11111111_00000000_00000000_11111111;
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_cvtmask32_u32() {
+        let a = 0b10000000_00000000_00000000_00000001;
+        let r = _cvtmask32_u32(a);
+        let e: u32 = 0b10000000_00000000_00000000_00000001;
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_cvtu32_mask32() {
+        let a: u32 = 0b10000000_00000000_00000000_00000001;
+        let r = _cvtu32_mask32(a);
+        let e: __mmask32 = 0b10000000_00000000_00000000_00000001;
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_cvtmask64_u64() {
+        let a = 0b10000000_00000000_00000000_00000001_11111111_00000000_00000000_11111111;
+        let r = _cvtmask64_u64(a);
+        let e: u64 = 0b10000000_00000000_00000000_00000001_11111111_00000000_00000000_11111111;
+        assert_eq!(r, e);
+    }
+
+    #[simd_test(enable = "avx512bw")]
+    unsafe fn test_cvtu64_mask64() {
+        let a: u64 = 0b10000000_00000000_00000000_00000001_11111111_00000000_00000000_11111111;
+        let r = _cvtu64_mask64(a);
+        let e: __mmask64 = 0b10000000_00000000_00000000_00000001_11111111_00000000_00000000_11111111;
         assert_eq!(r, e);
     }
 }
