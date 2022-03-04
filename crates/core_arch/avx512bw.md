@@ -1,34 +1,34 @@
 <summary>["AVX512BW"]</summary><p>
 
   * [x] [`_mm512_loadu_epi16`]
-  * [x] [`_mm512_mask_loadu_epi16`] //need i1
-  * [x] [`_mm512_maskz_loadu_epi16`] //need i1
+  * [x] [`_mm512_mask_loadu_epi16`]
+  * [x] [`_mm512_maskz_loadu_epi16`]
   * [x] [`_mm_loadu_epi16`]
-  * [x] [`_mm_mask_loadu_epi16`] //need i1
-  * [x] [`_mm_maskz_loadu_epi16`] //need i1
+  * [x] [`_mm_mask_loadu_epi16`]
+  * [x] [`_mm_maskz_loadu_epi16`]
   * [x] [`_mm256_loadu_epi16`]
-  * [x] [`_mm256_mask_loadu_epi16`] //need i1
-  * [x] [`_mm256_maskz_loadu_epi16`] //need i1
+  * [x] [`_mm256_mask_loadu_epi16`]
+  * [x] [`_mm256_maskz_loadu_epi16`]
   * [x] [`_mm512_loadu_epi8`]
-  * [x] [`_mm512_mask_loadu_epi8`] //need i1
-  * [x] [`_mm512_maskz_loadu_epi8`] //need i1
+  * [x] [`_mm512_mask_loadu_epi8`]
+  * [x] [`_mm512_maskz_loadu_epi8`]
   * [x] [`_mm_loadu_epi8`]
-  * [x] [`_mm_mask_loadu_epi8`] //need i1
-  * [x] [`_mm_maskz_loadu_epi8`] //need i1
+  * [x] [`_mm_mask_loadu_epi8`]
+  * [x] [`_mm_maskz_loadu_epi8`]
   * [x] [`_mm256_loadu_epi8`]
-  * [x] [`_mm256_mask_loadu_epi8`] //need i1
-  * [x] [`_mm256_maskz_loadu_epi8`] //need i1
+  * [x] [`_mm256_mask_loadu_epi8`]
+  * [x] [`_mm256_maskz_loadu_epi8`]
   * [x] [`_mm512_mask_storeu_epi16`]
   * [x] [`_mm512_storeu_epi16`]
-  * [x] [`_mm_mask_storeu_epi16`] //need i1
+  * [x] [`_mm_mask_storeu_epi16`]
   * [x] [`_mm_storeu_epi16`]
-  * [x] [`_mm256_mask_storeu_epi16`] //need i1
+  * [x] [`_mm256_mask_storeu_epi16`]
   * [x] [`_mm256_storeu_epi16`]
-  * [x] [`_mm512_mask_storeu_epi8`] //need i1
+  * [x] [`_mm512_mask_storeu_epi8`]
   * [x] [`_mm512_storeu_epi8`]
-  * [x] [`_mm_mask_storeu_epi8`] //need i1
+  * [x] [`_mm_mask_storeu_epi8`]
   * [x] [`_mm_storeu_epi8`]
-  * [x] [`_mm256_mask_storeu_epi8`] //need i1
+  * [x] [`_mm256_mask_storeu_epi8`]
   * [x] [`_mm256_storeu_epi8`]
   * [x] [`_mm512_abs_epi16`]
   * [x] [`_mm512_mask_abs_epi16`]
@@ -382,8 +382,8 @@
   * [_] [`_ktestc_mask64_u8`]
   * [_] [`_ktestz_mask32_u8`]
   * [_] [`_ktestz_mask64_u8`]
-  * [_] [`_mm512_kunpackd`]
-  * [_] [`_mm512_kunpackw`]
+  * [x] [`_mm512_kunpackd`]
+  * [x] [`_mm512_kunpackw`]
   * [x] [`_kxnor_mask32`]
   * [x] [`_kxnor_mask64`]
   * [x] [`_kxor_mask32`]
@@ -605,10 +605,10 @@
   * [x] [`_mm512_mask_slli_epi16`]
   * [x] [`_mm512_maskz_slli_epi16`]
   * [x] [`_mm512_slli_epi16`]
-  * [x] [`_mm_mask_slli_epi16
-  * [x] [`_mm_maskz_slli_epi16
-  * [x] [`_mm256_mask_slli_epi16
-  * [x] [`_mm256_maskz_slli_epi16
+  * [x] [`_mm_mask_slli_epi16`]
+  * [x] [`_mm_maskz_slli_epi16`]
+  * [x] [`_mm256_mask_slli_epi16`]
+  * [x] [`_mm256_maskz_slli_epi16`]
   * [x] [`_mm512_mask_sllv_epi16`]
   * [x] [`_mm512_maskz_sllv_epi16`]
   * [x] [`_mm512_sllv_epi16`]

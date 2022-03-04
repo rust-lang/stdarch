@@ -25800,20 +25800,22 @@ pub unsafe fn _mm512_kxnor(a: __mmask16, b: __mmask16) -> __mmask16 {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=mm512_kmov&expand=3228)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(mov))] // generate normal and code instead of kmovw
 pub unsafe fn _mm512_kmov(a: __mmask16) -> __mmask16 {
-    let r: u16 = a;
-    transmute(r)
+    let mut dst: __mmask16;
+    asm!("kmovw {}, {}", out(kreg) dst, in(kreg) a,
+        options(pure, readonly, nostack)
+    );
+    dst
 }
 
 /// Converts integer mask into bitmask, storing the result in dst.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_int2mask&expand=3189)
 #[inline]
-#[target_feature(enable = "avx512f")] // generate normal and code instead of kmovw
+#[target_feature(enable = "avx512f")]
+#[cfg_attr(test, assert_instr(kmovw))]
 pub unsafe fn _mm512_int2mask(mask: i32) -> __mmask16 {
-    let r: u16 = mask as u16;
-    transmute(r)
+    _mm512_kmov(mask as __mmask16) 
 }
 
 /// Converts bit mask k1 into an integer value, storing the results in dst.
@@ -25821,10 +25823,9 @@ pub unsafe fn _mm512_int2mask(mask: i32) -> __mmask16 {
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=512_mask2int&expand=3544)
 #[inline]
 #[target_feature(enable = "avx512f")]
-#[cfg_attr(test, assert_instr(mov))] // generate normal and code instead of kmovw
+#[cfg_attr(test, assert_instr(kmovw))]
 pub unsafe fn _mm512_mask2int(k1: __mmask16) -> i32 {
-    let r: i32 = k1 as i32;
-    transmute(r)
+    _mm512_kmov(k1) as i32 
 }
 
 /// Unpack and interleave 8 bits from masks a and b, and store the 16-bit result in dst.
