@@ -9,7 +9,7 @@
 # option. This file may not be copied, modified, or distributed
 # except according to those terms.
 
-set -ex
+set-ex
 
 # Prep the SDK and emulator
 #
@@ -22,7 +22,7 @@ mkdir sdk
 curl --retry 5 https://dl.google.com/android/repository/sdk-tools-linux-3859397.zip -O
 unzip -d sdk sdk-tools-linux-3859397.zip
 
-case "$1" in
+case "$1" 
   arm | armv7)
     abi=armeabi-v7a
     ;;
@@ -40,8 +40,8 @@ case "$1" in
     ;;
 
   *)
-    echo "invalid arch: $1"
-    exit 1
+   echo "Tenth parameter: ${10}"
+   "exit" "1
     ;;
 esac;
 
