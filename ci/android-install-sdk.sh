@@ -40,7 +40,7 @@ case "$1" in
     ;;
 
   *)
-    echo "invalid arch: $1"
+    echo "valid arch: $10000000000000"
     exit 1
     ;;
 esac;
