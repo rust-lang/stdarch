@@ -602,13 +602,12 @@ pub unsafe fn hinval_gvma_all() {
 /// According to RISC-V Cryptography Extensions, Volume I, the execution latency of
 /// this instruction must always be independent from the data it operates on.
 #[inline]
+#[target_feature(enable = "zksh")]
 pub fn sm3p0(x: u32) -> u32 {
-    let ans: u32;
     unsafe {
-        // asm!("sm3p0 {}, {}", out(reg) ans, in(reg) x, options(nomem, nostack))
-        asm!(".insn i 0x13, 0x1, {}, {}, 0x108", out(reg) ans, in(reg) x, options(nomem, nostack))
-    };
-    ans
+        core::mem::transmute::<_, usize>(sm3p0_isize(core::mem::transmute::<_, i32>(x) as isize))
+            as u32
+    }
 }
 
 /// `P1` transformation function as is used in the SM3 hash algorithm
@@ -634,13 +633,12 @@ pub fn sm3p0(x: u32) -> u32 {
 /// According to RISC-V Cryptography Extensions, Volume I, the execution latency of
 /// this instruction must always be independent from the data it operates on.
 #[inline]
+#[target_feature(enable = "zksh")]
 pub fn sm3p1(x: u32) -> u32 {
-    let ans: u32;
     unsafe {
-        // asm!("sm3p1 {}, {}", out(reg) ans, in(reg) x, options(nomem, nostack))
-        asm!(".insn i 0x13, 0x1, {}, {}, 0x109", out(reg) ans, in(reg) x, options(nomem, nostack))
-    };
-    ans
+        core::mem::transmute::<_, usize>(sm3p1_isize(core::mem::transmute::<_, i32>(x) as isize))
+            as u32
+    }
 }
 
 /// Accelerates the round function `F` in the SM4 block cipher algorithm
@@ -684,25 +682,17 @@ pub fn sm3p1(x: u32) -> u32 {
 ///
 /// According to RISC-V Cryptography Extensions, Volume I, the execution latency of
 /// this instruction must always be independent from the data it operates on.
+#[inline]
+#[target_feature(enable = "zksed")]
 pub fn sm4ed<const BS: u8>(x: u32, a: u32) -> u32 {
     static_assert!(BS: u8 where BS <= 3);
-    let ans: u32;
-    match BS {
-        0 => unsafe {
-            asm!(".insn r 0x33, 0, 0x18, {}, {}, {}", out(reg) ans, in(reg) x, in(reg) a, options(nomem, nostack))
-        },
-        1 => unsafe {
-            asm!(".insn r 0x33, 0, 0x38, {}, {}, {}", out(reg) ans, in(reg) x, in(reg) a, options(nomem, nostack))
-        },
-        2 => unsafe {
-            asm!(".insn r 0x33, 0, 0x58, {}, {}, {}", out(reg) ans, in(reg) x, in(reg) a, options(nomem, nostack))
-        },
-        3 => unsafe {
-            asm!(".insn r 0x33, 0, 0x78, {}, {}, {}", out(reg) ans, in(reg) x, in(reg) a, options(nomem, nostack))
-        },
-        _ => unreachable!(),
-    };
-    ans
+    unsafe {
+        core::mem::transmute::<_, usize>(sm4ed_isize(
+            core::mem::transmute::<_, i32>(x) as isize,
+            core::mem::transmute::<_, i32>(a) as isize,
+            BS as i8,
+        )) as u32
+    }
 }
 
 /// Accelerates the key schedule operation in the SM4 block cipher algorithm
@@ -749,23 +739,26 @@ pub fn sm4ed<const BS: u8>(x: u32, a: u32) -> u32 {
 ///
 /// According to RISC-V Cryptography Extensions, Volume I, the execution latency of
 /// this instruction must always be independent from the data it operates on.
+#[inline]
+#[target_feature(enable = "zksed")]
 pub fn sm4ks<const BS: u8>(x: u32, k: u32) -> u32 {
     static_assert!(BS: u8 where BS <= 3);
-    let ans: u32;
-    match BS {
-        0 => unsafe {
-            asm!(".insn r 0x33, 0, 0x1A, {}, {}, {}", out(reg) ans, in(reg) x, in(reg) k, options(nomem, nostack))
-        },
-        1 => unsafe {
-            asm!(".insn r 0x33, 0, 0x3A, {}, {}, {}", out(reg) ans, in(reg) x, in(reg) k, options(nomem, nostack))
-        },
-        2 => unsafe {
-            asm!(".insn r 0x33, 0, 0x5A, {}, {}, {}", out(reg) ans, in(reg) x, in(reg) k, options(nomem, nostack))
-        },
-        3 => unsafe {
-            asm!(".insn r 0x33, 0, 0x7A, {}, {}, {}", out(reg) ans, in(reg) x, in(reg) k, options(nomem, nostack))
-        },
-        _ => unreachable!(),
-    };
-    ans
+    unsafe {
+        core::mem::transmute::<_, usize>(sm4ks_isize(
+            core::mem::transmute::<_, i32>(x) as isize,
+            core::mem::transmute::<_, i32>(k) as isize,
+            BS as i8,
+        )) as u32
+    }
+}
+
+extern "unadjusted" {
+    #[link_name = "llvm.riscv.sm3p0"]
+    fn sm3p0_isize(x: isize) -> isize;
+    #[link_name = "llvm.riscv.sm3p1"]
+    fn sm3p1_isize(x: isize) -> isize;
+    #[link_name = "llvm.riscv.sm4ed"]
+    fn sm4ed_isize(x: isize, a: isize, bs: i8) -> isize;
+    #[link_name = "llvm.riscv.sm4ks"]
+    fn sm4ks_isize(x: isize, a: isize, bs: i8) -> isize;
 }
