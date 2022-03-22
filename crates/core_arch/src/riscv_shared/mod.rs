@@ -1,6 +1,7 @@
 //! Shared RISC-V intrinsics
 
 use crate::arch::asm;
+use core::mem::transmute;
 
 /// Generates the `PAUSE` instruction
 ///
@@ -604,7 +605,8 @@ pub unsafe fn hinval_gvma_all() {
 #[inline]
 #[target_feature(enable = "zksh")]
 pub fn sm3p0(x: u32) -> u32 {
-    unsafe { sm3p0_usize(x as usize) as u32 }
+    // sign extend parameter to isize
+    unsafe { sm3p0_isize(transmute::<_, i32>(x) as isize) as u32 }
 }
 
 /// `P1` transformation function as is used in the SM3 hash algorithm
@@ -632,7 +634,7 @@ pub fn sm3p0(x: u32) -> u32 {
 #[inline]
 #[target_feature(enable = "zksh")]
 pub fn sm3p1(x: u32) -> u32 {
-    unsafe { sm3p1_usize(x as usize) as u32 }
+    unsafe { sm3p1_isize(transmute::<_, i32>(x) as isize) as u32 }
 }
 
 /// Accelerates the round function `F` in the SM4 block cipher algorithm
@@ -680,7 +682,13 @@ pub fn sm3p1(x: u32) -> u32 {
 #[target_feature(enable = "zksed")]
 pub fn sm4ed<const BS: u8>(x: u32, a: u32) -> u32 {
     static_assert!(BS: u8 where BS <= 3);
-    unsafe { sm4ed_usize(x as usize, a as usize, BS as i8) as u32 }
+    unsafe {
+        sm4ed_isize(
+            transmute::<_, i32>(x) as isize,
+            transmute::<_, i32>(a) as isize,
+            BS as i8,
+        ) as u32
+    }
 }
 
 /// Accelerates the key schedule operation in the SM4 block cipher algorithm
@@ -731,16 +739,22 @@ pub fn sm4ed<const BS: u8>(x: u32, a: u32) -> u32 {
 #[target_feature(enable = "zksed")]
 pub fn sm4ks<const BS: u8>(x: u32, k: u32) -> u32 {
     static_assert!(BS: u8 where BS <= 3);
-    unsafe { sm4ks_usize(x as usize, k as usize, BS as i8) as u32 }
+    unsafe {
+        sm4ks_isize(
+            transmute::<_, i32>(x) as isize,
+            transmute::<_, i32>(k) as isize,
+            BS as i8,
+        ) as u32
+    }
 }
 
 extern "unadjusted" {
     #[link_name = "llvm.riscv.sm3p0"]
-    fn sm3p0_usize(x: usize) -> usize;
+    fn sm3p0_isize(x: isize) -> isize;
     #[link_name = "llvm.riscv.sm3p1"]
-    fn sm3p1_usize(x: usize) -> usize;
+    fn sm3p1_isize(x: isize) -> isize;
     #[link_name = "llvm.riscv.sm4ed"]
-    fn sm4ed_usize(x: usize, a: usize, bs: i8) -> usize;
+    fn sm4ed_isize(x: isize, a: isize, bs: i8) -> isize;
     #[link_name = "llvm.riscv.sm4ks"]
-    fn sm4ks_usize(x: usize, k: usize, bs: i8) -> usize;
+    fn sm4ks_isize(x: isize, k: isize, bs: i8) -> isize;
 }
