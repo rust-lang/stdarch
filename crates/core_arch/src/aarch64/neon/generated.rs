@@ -10534,6 +10534,7 @@ pub unsafe fn vqrdmulhs_laneq_s32<const LANE: i32>(a: i32, b: int32x4_t) -> i32 
 #[inline]
 #[target_feature(enable = "rdm")]
 #[cfg_attr(test, assert_instr(sqrdmlah))]
+#[stable(feature = "rdm_intrinsics", since = "1.62.0")]
 pub unsafe fn vqrdmlah_s16(a: int16x4_t, b: int16x4_t, c: int16x4_t) -> int16x4_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
@@ -10547,6 +10548,7 @@ pub unsafe fn vqrdmlah_s16(a: int16x4_t, b: int16x4_t, c: int16x4_t) -> int16x4_
 #[inline]
 #[target_feature(enable = "rdm")]
 #[cfg_attr(test, assert_instr(sqrdmlah))]
+#[stable(feature = "rdm_intrinsics", since = "1.62.0")]
 pub unsafe fn vqrdmlahq_s16(a: int16x8_t, b: int16x8_t, c: int16x8_t) -> int16x8_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
@@ -10560,6 +10562,7 @@ pub unsafe fn vqrdmlahq_s16(a: int16x8_t, b: int16x8_t, c: int16x8_t) -> int16x8
 #[inline]
 #[target_feature(enable = "rdm")]
 #[cfg_attr(test, assert_instr(sqrdmlah))]
+#[stable(feature = "rdm_intrinsics", since = "1.62.0")]
 pub unsafe fn vqrdmlah_s32(a: int32x2_t, b: int32x2_t, c: int32x2_t) -> int32x2_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
@@ -10573,6 +10576,7 @@ pub unsafe fn vqrdmlah_s32(a: int32x2_t, b: int32x2_t, c: int32x2_t) -> int32x2_
 #[inline]
 #[target_feature(enable = "rdm")]
 #[cfg_attr(test, assert_instr(sqrdmlah))]
+#[stable(feature = "rdm_intrinsics", since = "1.62.0")]
 pub unsafe fn vqrdmlahq_s32(a: int32x4_t, b: int32x4_t, c: int32x4_t) -> int32x4_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
@@ -10586,6 +10590,7 @@ pub unsafe fn vqrdmlahq_s32(a: int32x4_t, b: int32x4_t, c: int32x4_t) -> int32x4
 #[inline]
 #[target_feature(enable = "rdm")]
 #[cfg_attr(test, assert_instr(sqrdmlah))]
+#[stable(feature = "rdm_intrinsics", since = "1.62.0")]
 pub unsafe fn vqrdmlahh_s16(a: i16, b: i16, c: i16) -> i16 {
     let a: int16x4_t = vdup_n_s16(a);
     let b: int16x4_t = vdup_n_s16(b);
@@ -10597,6 +10602,7 @@ pub unsafe fn vqrdmlahh_s16(a: i16, b: i16, c: i16) -> i16 {
 #[inline]
 #[target_feature(enable = "rdm")]
 #[cfg_attr(test, assert_instr(sqrdmlah))]
+#[stable(feature = "rdm_intrinsics", since = "1.62.0")]
 pub unsafe fn vqrdmlahs_s32(a: i32, b: i32, c: i32) -> i32 {
     let a: int32x2_t = vdup_n_s32(a);
     let b: int32x2_t = vdup_n_s32(b);
@@ -10609,6 +10615,7 @@ pub unsafe fn vqrdmlahs_s32(a: i32, b: i32, c: i32) -> i32 {
 #[target_feature(enable = "rdm")]
 #[cfg_attr(test, assert_instr(sqrdmlah, LANE = 1))]
 #[rustc_legacy_const_generics(3)]
+#[stable(feature = "rdm_intrinsics", since = "1.62.0")]
 pub unsafe fn vqrdmlah_lane_s16<const LANE: i32>(a: int16x4_t, b: int16x4_t, c: int16x4_t) -> int16x4_t {
     static_assert_imm2!(LANE);
     let c: int16x4_t = simd_shuffle4!(c, c, <const LANE: i32> [LANE as u32, LANE as u32, LANE as u32, LANE as u32]);
@@ -10620,6 +10627,7 @@ pub unsafe fn vqrdmlah_lane_s16<const LANE: i32>(a: int16x4_t, b: int16x4_t, c: 
 #[target_feature(enable = "rdm")]
 #[cfg_attr(test, assert_instr(sqrdmlah, LANE = 1))]
 #[rustc_legacy_const_generics(3)]
+#[stable(feature = "rdm_intrinsics", since = "1.62.0")]
 pub unsafe fn vqrdmlah_laneq_s16<const LANE: i32>(a: int16x4_t, b: int16x4_t, c: int16x8_t) -> int16x4_t {
     static_assert_imm3!(LANE);
     let c: int16x4_t = simd_shuffle4!(c, c, <const LANE: i32> [LANE as u32, LANE as u32, LANE as u32, LANE as u32]);
@@ -10631,6 +10639,7 @@ pub unsafe fn vqrdmlah_laneq_s16<const LANE: i32>(a: int16x4_t, b: int16x4_t, c:
 #[target_feature(enable = "rdm")]
 #[cfg_attr(test, assert_instr(sqrdmlah, LANE = 1))]
 #[rustc_legacy_const_generics(3)]
+#[stable(feature = "rdm_intrinsics", since = "1.62.0")]
 pub unsafe fn vqrdmlahq_lane_s16<const LANE: i32>(a: int16x8_t, b: int16x8_t, c: int16x4_t) -> int16x8_t {
     static_assert_imm2!(LANE);
     let c: int16x8_t = simd_shuffle8!(c, c, <const LANE: i32> [LANE as u32, LANE as u32, LANE as u32, LANE as u32, LANE as u32, LANE as u32, LANE as u32, LANE as u32]);
@@ -10642,6 +10651,7 @@ pub unsafe fn vqrdmlahq_lane_s16<const LANE: i32>(a: int16x8_t, b: int16x8_t, c:
 #[target_feature(enable = "rdm")]
 #[cfg_attr(test, assert_instr(sqrdmlah, LANE = 1))]
 #[rustc_legacy_const_generics(3)]
+#[stable(feature = "rdm_intrinsics", since = "1.62.0")]
 pub unsafe fn vqrdmlahq_laneq_s16<const LANE: i32>(a: int16x8_t, b: int16x8_t, c: int16x8_t) -> int16x8_t {
     static_assert_imm3!(LANE);
     let c: int16x8_t = simd_shuffle8!(c, c, <const LANE: i32> [LANE as u32, LANE as u32, LANE as u32, LANE as u32, LANE as u32, LANE as u32, LANE as u32, LANE as u32]);
@@ -10653,6 +10663,7 @@ pub unsafe fn vqrdmlahq_laneq_s16<const LANE: i32>(a: int16x8_t, b: int16x8_t, c
 #[target_feature(enable = "rdm")]
 #[cfg_attr(test, assert_instr(sqrdmlah, LANE = 1))]
 #[rustc_legacy_const_generics(3)]
+#[stable(feature = "rdm_intrinsics", since = "1.62.0")]
 pub unsafe fn vqrdmlah_lane_s32<const LANE: i32>(a: int32x2_t, b: int32x2_t, c: int32x2_t) -> int32x2_t {
     static_assert_imm1!(LANE);
     let c: int32x2_t = simd_shuffle2!(c, c, <const LANE: i32> [LANE as u32, LANE as u32]);
@@ -10664,6 +10675,7 @@ pub unsafe fn vqrdmlah_lane_s32<const LANE: i32>(a: int32x2_t, b: int32x2_t, c: 
 #[target_feature(enable = "rdm")]
 #[cfg_attr(test, assert_instr(sqrdmlah, LANE = 1))]
 #[rustc_legacy_const_generics(3)]
+#[stable(feature = "rdm_intrinsics", since = "1.62.0")]
 pub unsafe fn vqrdmlah_laneq_s32<const LANE: i32>(a: int32x2_t, b: int32x2_t, c: int32x4_t) -> int32x2_t {
     static_assert_imm2!(LANE);
     let c: int32x2_t = simd_shuffle2!(c, c, <const LANE: i32> [LANE as u32, LANE as u32]);
@@ -10675,6 +10687,7 @@ pub unsafe fn vqrdmlah_laneq_s32<const LANE: i32>(a: int32x2_t, b: int32x2_t, c:
 #[target_feature(enable = "rdm")]
 #[cfg_attr(test, assert_instr(sqrdmlah, LANE = 1))]
 #[rustc_legacy_const_generics(3)]
+#[stable(feature = "rdm_intrinsics", since = "1.62.0")]
 pub unsafe fn vqrdmlahq_lane_s32<const LANE: i32>(a: int32x4_t, b: int32x4_t, c: int32x2_t) -> int32x4_t {
     static_assert_imm1!(LANE);
     let c: int32x4_t = simd_shuffle4!(c, c, <const LANE: i32> [LANE as u32, LANE as u32, LANE as u32, LANE as u32]);
@@ -10686,6 +10699,7 @@ pub unsafe fn vqrdmlahq_lane_s32<const LANE: i32>(a: int32x4_t, b: int32x4_t, c:
 #[target_feature(enable = "rdm")]
 #[cfg_attr(test, assert_instr(sqrdmlah, LANE = 1))]
 #[rustc_legacy_const_generics(3)]
+#[stable(feature = "rdm_intrinsics", since = "1.62.0")]
 pub unsafe fn vqrdmlahq_laneq_s32<const LANE: i32>(a: int32x4_t, b: int32x4_t, c: int32x4_t) -> int32x4_t {
     static_assert_imm2!(LANE);
     let c: int32x4_t = simd_shuffle4!(c, c, <const LANE: i32> [LANE as u32, LANE as u32, LANE as u32, LANE as u32]);
@@ -10697,6 +10711,7 @@ pub unsafe fn vqrdmlahq_laneq_s32<const LANE: i32>(a: int32x4_t, b: int32x4_t, c
 #[target_feature(enable = "rdm")]
 #[cfg_attr(test, assert_instr(sqrdmlah, LANE = 1))]
 #[rustc_legacy_const_generics(3)]
+#[stable(feature = "rdm_intrinsics", since = "1.62.0")]
 pub unsafe fn vqrdmlahh_lane_s16<const LANE: i32>(a: i16, b: i16, c: int16x4_t) -> i16 {
     static_assert_imm2!(LANE);
     vqrdmlahh_s16(a, b, simd_extract(c, LANE as u32))
@@ -10707,6 +10722,7 @@ pub unsafe fn vqrdmlahh_lane_s16<const LANE: i32>(a: i16, b: i16, c: int16x4_t) 
 #[target_feature(enable = "rdm")]
 #[cfg_attr(test, assert_instr(sqrdmlah, LANE = 1))]
 #[rustc_legacy_const_generics(3)]
+#[stable(feature = "rdm_intrinsics", since = "1.62.0")]
 pub unsafe fn vqrdmlahh_laneq_s16<const LANE: i32>(a: i16, b: i16, c: int16x8_t) -> i16 {
     static_assert_imm3!(LANE);
     vqrdmlahh_s16(a, b, simd_extract(c, LANE as u32))
@@ -10717,6 +10733,7 @@ pub unsafe fn vqrdmlahh_laneq_s16<const LANE: i32>(a: i16, b: i16, c: int16x8_t)
 #[target_feature(enable = "rdm")]
 #[cfg_attr(test, assert_instr(sqrdmlah, LANE = 1))]
 #[rustc_legacy_const_generics(3)]
+#[stable(feature = "rdm_intrinsics", since = "1.62.0")]
 pub unsafe fn vqrdmlahs_lane_s32<const LANE: i32>(a: i32, b: i32, c: int32x2_t) -> i32 {
     static_assert_imm1!(LANE);
     vqrdmlahs_s32(a, b, simd_extract(c, LANE as u32))
@@ -10727,6 +10744,7 @@ pub unsafe fn vqrdmlahs_lane_s32<const LANE: i32>(a: i32, b: i32, c: int32x2_t) 
 #[target_feature(enable = "rdm")]
 #[cfg_attr(test, assert_instr(sqrdmlah, LANE = 1))]
 #[rustc_legacy_const_generics(3)]
+#[stable(feature = "rdm_intrinsics", since = "1.62.0")]
 pub unsafe fn vqrdmlahs_laneq_s32<const LANE: i32>(a: i32, b: i32, c: int32x4_t) -> i32 {
     static_assert_imm2!(LANE);
     vqrdmlahs_s32(a, b, simd_extract(c, LANE as u32))
@@ -10736,6 +10754,7 @@ pub unsafe fn vqrdmlahs_laneq_s32<const LANE: i32>(a: i32, b: i32, c: int32x4_t)
 #[inline]
 #[target_feature(enable = "rdm")]
 #[cfg_attr(test, assert_instr(sqrdmlsh))]
+#[stable(feature = "rdm_intrinsics", since = "1.62.0")]
 pub unsafe fn vqrdmlsh_s16(a: int16x4_t, b: int16x4_t, c: int16x4_t) -> int16x4_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
@@ -10749,6 +10768,7 @@ pub unsafe fn vqrdmlsh_s16(a: int16x4_t, b: int16x4_t, c: int16x4_t) -> int16x4_
 #[inline]
 #[target_feature(enable = "rdm")]
 #[cfg_attr(test, assert_instr(sqrdmlsh))]
+#[stable(feature = "rdm_intrinsics", since = "1.62.0")]
 pub unsafe fn vqrdmlshq_s16(a: int16x8_t, b: int16x8_t, c: int16x8_t) -> int16x8_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
@@ -10762,6 +10782,7 @@ pub unsafe fn vqrdmlshq_s16(a: int16x8_t, b: int16x8_t, c: int16x8_t) -> int16x8
 #[inline]
 #[target_feature(enable = "rdm")]
 #[cfg_attr(test, assert_instr(sqrdmlsh))]
+#[stable(feature = "rdm_intrinsics", since = "1.62.0")]
 pub unsafe fn vqrdmlsh_s32(a: int32x2_t, b: int32x2_t, c: int32x2_t) -> int32x2_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
@@ -10775,6 +10796,7 @@ pub unsafe fn vqrdmlsh_s32(a: int32x2_t, b: int32x2_t, c: int32x2_t) -> int32x2_
 #[inline]
 #[target_feature(enable = "rdm")]
 #[cfg_attr(test, assert_instr(sqrdmlsh))]
+#[stable(feature = "rdm_intrinsics", since = "1.62.0")]
 pub unsafe fn vqrdmlshq_s32(a: int32x4_t, b: int32x4_t, c: int32x4_t) -> int32x4_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
@@ -10788,6 +10810,7 @@ pub unsafe fn vqrdmlshq_s32(a: int32x4_t, b: int32x4_t, c: int32x4_t) -> int32x4
 #[inline]
 #[target_feature(enable = "rdm")]
 #[cfg_attr(test, assert_instr(sqrdmlsh))]
+#[stable(feature = "rdm_intrinsics", since = "1.62.0")]
 pub unsafe fn vqrdmlshh_s16(a: i16, b: i16, c: i16) -> i16 {
     let a: int16x4_t = vdup_n_s16(a);
     let b: int16x4_t = vdup_n_s16(b);
@@ -10799,6 +10822,7 @@ pub unsafe fn vqrdmlshh_s16(a: i16, b: i16, c: i16) -> i16 {
 #[inline]
 #[target_feature(enable = "rdm")]
 #[cfg_attr(test, assert_instr(sqrdmlsh))]
+#[stable(feature = "rdm_intrinsics", since = "1.62.0")]
 pub unsafe fn vqrdmlshs_s32(a: i32, b: i32, c: i32) -> i32 {
     let a: int32x2_t = vdup_n_s32(a);
     let b: int32x2_t = vdup_n_s32(b);
@@ -10811,6 +10835,7 @@ pub unsafe fn vqrdmlshs_s32(a: i32, b: i32, c: i32) -> i32 {
 #[target_feature(enable = "rdm")]
 #[cfg_attr(test, assert_instr(sqrdmlsh, LANE = 1))]
 #[rustc_legacy_const_generics(3)]
+#[stable(feature = "rdm_intrinsics", since = "1.62.0")]
 pub unsafe fn vqrdmlsh_lane_s16<const LANE: i32>(a: int16x4_t, b: int16x4_t, c: int16x4_t) -> int16x4_t {
     static_assert_imm2!(LANE);
     let c: int16x4_t = simd_shuffle4!(c, c, <const LANE: i32> [LANE as u32, LANE as u32, LANE as u32, LANE as u32]);
@@ -10822,6 +10847,7 @@ pub unsafe fn vqrdmlsh_lane_s16<const LANE: i32>(a: int16x4_t, b: int16x4_t, c: 
 #[target_feature(enable = "rdm")]
 #[cfg_attr(test, assert_instr(sqrdmlsh, LANE = 1))]
 #[rustc_legacy_const_generics(3)]
+#[stable(feature = "rdm_intrinsics", since = "1.62.0")]
 pub unsafe fn vqrdmlsh_laneq_s16<const LANE: i32>(a: int16x4_t, b: int16x4_t, c: int16x8_t) -> int16x4_t {
     static_assert_imm3!(LANE);
     let c: int16x4_t = simd_shuffle4!(c, c, <const LANE: i32> [LANE as u32, LANE as u32, LANE as u32, LANE as u32]);
@@ -10833,6 +10859,7 @@ pub unsafe fn vqrdmlsh_laneq_s16<const LANE: i32>(a: int16x4_t, b: int16x4_t, c:
 #[target_feature(enable = "rdm")]
 #[cfg_attr(test, assert_instr(sqrdmlsh, LANE = 1))]
 #[rustc_legacy_const_generics(3)]
+#[stable(feature = "rdm_intrinsics", since = "1.62.0")]
 pub unsafe fn vqrdmlshq_lane_s16<const LANE: i32>(a: int16x8_t, b: int16x8_t, c: int16x4_t) -> int16x8_t {
     static_assert_imm2!(LANE);
     let c: int16x8_t = simd_shuffle8!(c, c, <const LANE: i32> [LANE as u32, LANE as u32, LANE as u32, LANE as u32, LANE as u32, LANE as u32, LANE as u32, LANE as u32]);
@@ -10844,6 +10871,7 @@ pub unsafe fn vqrdmlshq_lane_s16<const LANE: i32>(a: int16x8_t, b: int16x8_t, c:
 #[target_feature(enable = "rdm")]
 #[cfg_attr(test, assert_instr(sqrdmlsh, LANE = 1))]
 #[rustc_legacy_const_generics(3)]
+#[stable(feature = "rdm_intrinsics", since = "1.62.0")]
 pub unsafe fn vqrdmlshq_laneq_s16<const LANE: i32>(a: int16x8_t, b: int16x8_t, c: int16x8_t) -> int16x8_t {
     static_assert_imm3!(LANE);
     let c: int16x8_t = simd_shuffle8!(c, c, <const LANE: i32> [LANE as u32, LANE as u32, LANE as u32, LANE as u32, LANE as u32, LANE as u32, LANE as u32, LANE as u32]);
@@ -10855,6 +10883,7 @@ pub unsafe fn vqrdmlshq_laneq_s16<const LANE: i32>(a: int16x8_t, b: int16x8_t, c
 #[target_feature(enable = "rdm")]
 #[cfg_attr(test, assert_instr(sqrdmlsh, LANE = 1))]
 #[rustc_legacy_const_generics(3)]
+#[stable(feature = "rdm_intrinsics", since = "1.62.0")]
 pub unsafe fn vqrdmlsh_lane_s32<const LANE: i32>(a: int32x2_t, b: int32x2_t, c: int32x2_t) -> int32x2_t {
     static_assert_imm1!(LANE);
     let c: int32x2_t = simd_shuffle2!(c, c, <const LANE: i32> [LANE as u32, LANE as u32]);
@@ -10866,6 +10895,7 @@ pub unsafe fn vqrdmlsh_lane_s32<const LANE: i32>(a: int32x2_t, b: int32x2_t, c: 
 #[target_feature(enable = "rdm")]
 #[cfg_attr(test, assert_instr(sqrdmlsh, LANE = 1))]
 #[rustc_legacy_const_generics(3)]
+#[stable(feature = "rdm_intrinsics", since = "1.62.0")]
 pub unsafe fn vqrdmlsh_laneq_s32<const LANE: i32>(a: int32x2_t, b: int32x2_t, c: int32x4_t) -> int32x2_t {
     static_assert_imm2!(LANE);
     let c: int32x2_t = simd_shuffle2!(c, c, <const LANE: i32> [LANE as u32, LANE as u32]);
@@ -10877,6 +10907,7 @@ pub unsafe fn vqrdmlsh_laneq_s32<const LANE: i32>(a: int32x2_t, b: int32x2_t, c:
 #[target_feature(enable = "rdm")]
 #[cfg_attr(test, assert_instr(sqrdmlsh, LANE = 1))]
 #[rustc_legacy_const_generics(3)]
+#[stable(feature = "rdm_intrinsics", since = "1.62.0")]
 pub unsafe fn vqrdmlshq_lane_s32<const LANE: i32>(a: int32x4_t, b: int32x4_t, c: int32x2_t) -> int32x4_t {
     static_assert_imm1!(LANE);
     let c: int32x4_t = simd_shuffle4!(c, c, <const LANE: i32> [LANE as u32, LANE as u32, LANE as u32, LANE as u32]);
@@ -10888,6 +10919,7 @@ pub unsafe fn vqrdmlshq_lane_s32<const LANE: i32>(a: int32x4_t, b: int32x4_t, c:
 #[target_feature(enable = "rdm")]
 #[cfg_attr(test, assert_instr(sqrdmlsh, LANE = 1))]
 #[rustc_legacy_const_generics(3)]
+#[stable(feature = "rdm_intrinsics", since = "1.62.0")]
 pub unsafe fn vqrdmlshq_laneq_s32<const LANE: i32>(a: int32x4_t, b: int32x4_t, c: int32x4_t) -> int32x4_t {
     static_assert_imm2!(LANE);
     let c: int32x4_t = simd_shuffle4!(c, c, <const LANE: i32> [LANE as u32, LANE as u32, LANE as u32, LANE as u32]);
@@ -10899,6 +10931,7 @@ pub unsafe fn vqrdmlshq_laneq_s32<const LANE: i32>(a: int32x4_t, b: int32x4_t, c
 #[target_feature(enable = "rdm")]
 #[cfg_attr(test, assert_instr(sqrdmlsh, LANE = 1))]
 #[rustc_legacy_const_generics(3)]
+#[stable(feature = "rdm_intrinsics", since = "1.62.0")]
 pub unsafe fn vqrdmlshh_lane_s16<const LANE: i32>(a: i16, b: i16, c: int16x4_t) -> i16 {
     static_assert_imm2!(LANE);
     vqrdmlshh_s16(a, b, simd_extract(c, LANE as u32))
@@ -10909,6 +10942,7 @@ pub unsafe fn vqrdmlshh_lane_s16<const LANE: i32>(a: i16, b: i16, c: int16x4_t) 
 #[target_feature(enable = "rdm")]
 #[cfg_attr(test, assert_instr(sqrdmlsh, LANE = 1))]
 #[rustc_legacy_const_generics(3)]
+#[stable(feature = "rdm_intrinsics", since = "1.62.0")]
 pub unsafe fn vqrdmlshh_laneq_s16<const LANE: i32>(a: i16, b: i16, c: int16x8_t) -> i16 {
     static_assert_imm3!(LANE);
     vqrdmlshh_s16(a, b, simd_extract(c, LANE as u32))
@@ -10919,6 +10953,7 @@ pub unsafe fn vqrdmlshh_laneq_s16<const LANE: i32>(a: i16, b: i16, c: int16x8_t)
 #[target_feature(enable = "rdm")]
 #[cfg_attr(test, assert_instr(sqrdmlsh, LANE = 1))]
 #[rustc_legacy_const_generics(3)]
+#[stable(feature = "rdm_intrinsics", since = "1.62.0")]
 pub unsafe fn vqrdmlshs_lane_s32<const LANE: i32>(a: i32, b: i32, c: int32x2_t) -> i32 {
     static_assert_imm1!(LANE);
     vqrdmlshs_s32(a, b, simd_extract(c, LANE as u32))
@@ -10929,6 +10964,7 @@ pub unsafe fn vqrdmlshs_lane_s32<const LANE: i32>(a: i32, b: i32, c: int32x2_t) 
 #[target_feature(enable = "rdm")]
 #[cfg_attr(test, assert_instr(sqrdmlsh, LANE = 1))]
 #[rustc_legacy_const_generics(3)]
+#[stable(feature = "rdm_intrinsics", since = "1.62.0")]
 pub unsafe fn vqrdmlshs_laneq_s32<const LANE: i32>(a: i32, b: i32, c: int32x4_t) -> i32 {
     static_assert_imm2!(LANE);
     vqrdmlshs_s32(a, b, simd_extract(c, LANE as u32))
