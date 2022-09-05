@@ -71,6 +71,8 @@ pub(crate) fn auxv() -> Result<AuxVec, ()> {
                 target_arch = "mips64"
             ))]
             {
+                // Zero could indicate that no features were detected, but it's also used to
+                // indicate an error. In either case, try the fallback.
                 if hwcap != 0 {
                     return Ok(AuxVec { hwcap });
                 }
@@ -84,7 +86,11 @@ pub(crate) fn auxv() -> Result<AuxVec, ()> {
             ))]
             {
                 if let Ok(hwcap2) = getauxval(AT_HWCAP2) {
-                    if hwcap != 0 && hwcap2 != 0 {
+                    // Zero could indicate that no features were detected, but it's also used to
+                    // indicate an error. In particular, on many platforms AT_HWCAP2 will be
+                    // legitimately zero, since it contains the most recent feature flags. Use the
+                    // fallback only if no features were detected at all.
+                    if hwcap != 0 || hwcap2 != 0 {
                         return Ok(AuxVec { hwcap, hwcap2 });
                     }
                 }
@@ -105,6 +111,8 @@ pub(crate) fn auxv() -> Result<AuxVec, ()> {
         ))]
         {
             let hwcap = unsafe { libc::getauxval(AT_HWCAP as libc::c_ulong) as usize };
+            // Zero could indicate that no features were detected, but it's also used to indicate
+            // an error. In either case, try the fallback.
             if hwcap != 0 {
                 return Ok(AuxVec { hwcap });
             }
@@ -119,7 +127,11 @@ pub(crate) fn auxv() -> Result<AuxVec, ()> {
         {
             let hwcap = unsafe { libc::getauxval(AT_HWCAP as libc::c_ulong) as usize };
             let hwcap2 = unsafe { libc::getauxval(AT_HWCAP2 as libc::c_ulong) as usize };
-            if hwcap != 0 && hwcap2 != 0 {
+            // Zero could indicate that no features were detected, but it's also used to indicate
+            // an error. In particular, on many platforms AT_HWCAP2 will be legitimately zero,
+            // since it contains the most recent feature flags. Use the fallback only if no
+            // features were detected at all.
+            if hwcap != 0 || hwcap2 != 0 {
                 return Ok(AuxVec { hwcap, hwcap2 });
             }
         }
@@ -204,17 +216,18 @@ fn auxv_from_buf(buf: &[usize; 64]) -> Result<AuxVec, ()> {
     ))]
     {
         let mut hwcap = None;
-        let mut hwcap2 = None;
+        // For some platforms, AT_HWCAP2 was added recently, so let it default to zero.
+        let mut hwcap2 = 0;
         for el in buf.chunks(2) {
             match el[0] {
                 AT_NULL => break,
                 AT_HWCAP => hwcap = Some(el[1]),
-                AT_HWCAP2 => hwcap2 = Some(el[1]),
+                AT_HWCAP2 => hwcap2 = el[1],
                 _ => (),
             }
         }
 
-        if let (Some(hwcap), Some(hwcap2)) = (hwcap, hwcap2) {
+        if let Some(hwcap) = hwcap {
             return Ok(AuxVec { hwcap, hwcap2 });
         }
     }
