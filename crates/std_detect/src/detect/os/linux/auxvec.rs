@@ -7,6 +7,7 @@ pub(crate) const AT_NULL: usize = 0;
 pub(crate) const AT_HWCAP: usize = 16;
 /// Key to access the CPU Hardware capabilities 2 bitfield.
 #[cfg(any(
+    target_arch = "aarch64",
     target_arch = "arm",
     target_arch = "powerpc",
     target_arch = "powerpc64"
@@ -21,6 +22,7 @@ pub(crate) const AT_HWCAP2: usize = 26;
 pub(crate) struct AuxVec {
     pub hwcap: usize,
     #[cfg(any(
+        target_arch = "aarch64",
         target_arch = "arm",
         target_arch = "powerpc",
         target_arch = "powerpc64"
@@ -64,7 +66,6 @@ pub(crate) fn auxv() -> Result<AuxVec, ()> {
         if let Ok(hwcap) = getauxval(AT_HWCAP) {
             // Targets with only AT_HWCAP:
             #[cfg(any(
-                target_arch = "aarch64",
                 target_arch = "riscv32",
                 target_arch = "riscv64",
                 target_arch = "mips",
@@ -80,6 +81,7 @@ pub(crate) fn auxv() -> Result<AuxVec, ()> {
 
             // Targets with AT_HWCAP and AT_HWCAP2:
             #[cfg(any(
+                target_arch = "aarch64",
                 target_arch = "arm",
                 target_arch = "powerpc",
                 target_arch = "powerpc64"
@@ -103,7 +105,6 @@ pub(crate) fn auxv() -> Result<AuxVec, ()> {
     {
         // Targets with only AT_HWCAP:
         #[cfg(any(
-            target_arch = "aarch64",
             target_arch = "riscv32",
             target_arch = "riscv64",
             target_arch = "mips",
@@ -120,6 +121,7 @@ pub(crate) fn auxv() -> Result<AuxVec, ()> {
 
         // Targets with AT_HWCAP and AT_HWCAP2:
         #[cfg(any(
+            target_arch = "aarch64",
             target_arch = "arm",
             target_arch = "powerpc",
             target_arch = "powerpc64"
@@ -170,7 +172,7 @@ fn getauxval(key: usize) -> Result<usize, ()> {
 /// Tries to read the auxiliary vector from the `file`. If this fails, this
 /// function returns `Err`.
 #[cfg(feature = "std_detect_file_io")]
-fn auxv_from_file(file: &str) -> Result<AuxVec, ()> {
+pub(super) fn auxv_from_file(file: &str) -> Result<AuxVec, ()> {
     let file = super::read_file(file)?;
 
     // See <https://github.com/torvalds/linux/blob/v3.19/include/uapi/linux/auxvec.h>.
@@ -193,7 +195,6 @@ fn auxv_from_file(file: &str) -> Result<AuxVec, ()> {
 fn auxv_from_buf(buf: &[usize; 64]) -> Result<AuxVec, ()> {
     // Targets with only AT_HWCAP:
     #[cfg(any(
-        target_arch = "aarch64",
         target_arch = "riscv32",
         target_arch = "riscv64",
         target_arch = "mips",
@@ -210,6 +211,7 @@ fn auxv_from_buf(buf: &[usize; 64]) -> Result<AuxVec, ()> {
     }
     // Targets with AT_HWCAP and AT_HWCAP2:
     #[cfg(any(
+        target_arch = "aarch64",
         target_arch = "arm",
         target_arch = "powerpc",
         target_arch = "powerpc64"
@@ -269,7 +271,6 @@ mod tests {
     // FIXME: on mips/mips64 getauxval returns 0, and /proc/self/auxv
     // does not always contain the AT_HWCAP key under qemu.
     #[cfg(any(
-        target_arch = "aarch64",
         target_arch = "arm",
         target_arch = "powerpc",
         target_arch = "powerpc64"
@@ -284,6 +285,7 @@ mod tests {
 
         // Targets with AT_HWCAP and AT_HWCAP2:
         #[cfg(any(
+            target_arch = "aarch64",
             target_arch = "arm",
             target_arch = "powerpc",
             target_arch = "powerpc64"
@@ -328,11 +330,21 @@ mod tests {
             }
         } else if #[cfg(target_arch = "aarch64")] {
             #[test]
-            fn linux_x64() {
-                let file = concat!(env!("CARGO_MANIFEST_DIR"), "/src/detect/test_data/linux-x64-i7-6850k.auxv");
+            fn linux_artificial_aarch64() {
+                let file = concat!(env!("CARGO_MANIFEST_DIR"), "/src/detect/test_data/linux-artificial-aarch64.auxv");
                 println!("file: {}", file);
                 let v = auxv_from_file(file).unwrap();
-                assert_eq!(v.hwcap, 3219913727);
+                assert_eq!(v.hwcap, 0x0123456789abcdef);
+                assert_eq!(v.hwcap2, 0x02468ace13579bdf);
+            }
+            #[test]
+            fn linux_no_hwcap2_aarch64() {
+                let file = concat!(env!("CARGO_MANIFEST_DIR"), "/src/detect/test_data/linux-no-hwcap2-aarch64.auxv");
+                println!("file: {}", file);
+                let v = auxv_from_file(file).unwrap();
+                // An absent HWCAP2 is treated as zero, and does not prevent acceptance of HWCAP.
+                assert_ne!(v.hwcap, 0);
+                assert_eq!(v.hwcap2, 0);
             }
         }
     }
@@ -363,6 +375,7 @@ mod tests {
 
         // Targets with AT_HWCAP and AT_HWCAP2:
         #[cfg(any(
+            target_arch = "aarch64",
             target_arch = "arm",
             target_arch = "powerpc",
             target_arch = "powerpc64"
