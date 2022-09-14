@@ -318,16 +318,13 @@ mod tests {
             }
 
             #[test]
-            #[should_panic]
             fn linux_macos_vb() {
                 let file = concat!(env!("CARGO_MANIFEST_DIR"), "/src/detect/test_data/macos-virtualbox-linux-x86-4850HQ.auxv");
                 println!("file: {}", file);
+                // The file contains HWCAP but not HWCAP2. In that case, we treat HWCAP2 as zero.
                 let v = auxv_from_file(file).unwrap();
-                // this file is incomplete (contains hwcap but not hwcap2), we
-                // want to fall back to /proc/cpuinfo in this case, so
-                // reading should fail. assert_eq!(v.hwcap, 126614527);
-                // assert_eq!(v.hwcap2, 0);
-                let _ = v;
+                assert_eq!(v.hwcap, 126614527);
+                assert_eq!(v.hwcap2, 0);
             }
         } else if #[cfg(target_arch = "aarch64")] {
             #[test]
