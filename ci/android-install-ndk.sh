@@ -12,27 +12,7 @@
 set -ex
 
 curl --retry 5 -O \
-     https://dl.google.com/android/repository/android-ndk-r15b-linux-x86_64.zip
-unzip -q android-ndk-r15b-linux-x86_64.zip
-
-case "${1}" in
-  aarch64)
-    arch=arm64
-    ;;
-
-  i686)
-    arch=x86
-    ;;
-
-  *)
-    arch="${1}"
-    ;;
-esac;
-
-android-ndk-r15b/build/tools/make_standalone_toolchain.py \
-        --unified-headers \
-        --install-dir "/android/ndk-${1}" \
-        --arch "${arch}" \
-        --api 24
-
-rm -rf ./android-ndk-r15b-linux-x86_64.zip ./android-ndk-r15b
+     https://dl.google.com/android/repository/android-ndk-r25b-linux.zip
+unzip -q android-ndk-r25b-linux.zip
+mv android-ndk-r25b "/android/ndk-${1}"
+rm -rf ./android-ndk-r25b-linux.zip

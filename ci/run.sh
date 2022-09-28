@@ -35,8 +35,8 @@ case ${TARGET} in
         ;;
     #Unoptimized build uses fast-isel which breaks with msa
     mips-* | mipsel-*)
-	export RUSTFLAGS="${RUSTFLAGS} -C llvm-args=-fast-isel=false"
-	;;
+        export RUSTFLAGS="${RUSTFLAGS} -C llvm-args=-fast-isel=false"
+        ;;
     # Some of our test dependencies use the deprecated `gcc` crates which is
     # missing a fix from https://github.com/alexcrichton/cc-rs/pull/627. Apply
     # the workaround manually here.
@@ -49,6 +49,8 @@ case ${TARGET} in
     riscv64*)
         export TARGET_CC="riscv64-linux-gnu-gcc"
         ;;
+    *android*)
+        export LD="${TARGET}-clang"
 esac
 
 echo "RUSTFLAGS=${RUSTFLAGS}"
