@@ -3,13 +3,12 @@ FROM ubuntu:22.04
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
   ca-certificates \
-  curl \
+  wget \
   gcc \
   libc-dev \
-  python-is-python3 \
-  unzip \
-  file \
-  make
+  python3 \
+  python3-distutils \
+  unzip
 
 WORKDIR /android/
 ENV ANDROID_ARCH=x86_64

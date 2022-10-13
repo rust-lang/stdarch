@@ -1,13 +1,4 @@
 #!/usr/bin/env sh
-# Copyright 2016 The Rust Project Developers. See the COPYRIGHT
-# file at the top-level directory of this distribution and at
-# http://rust-lang.org/COPYRIGHT.
-#
-# Licensed under the Apache License, Version 2.0 <LICENSE-APACHE or
-# http://www.apache.org/licenses/LICENSE-2.0> or the MIT license
-# <LICENSE-MIT or http://opensource.org/licenses/MIT>, at your
-# option. This file may not be copied, modified, or distributed
-# except according to those terms.
 
 set -ex
 
@@ -18,43 +9,56 @@ set -ex
 # located in https://github.com/appunite/docker by just wrapping it in a script
 # which apparently magically accepts the licenses.
 
-mkdir sdk
-curl --retry 5 https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip -O
-unzip -d sdk sdk-tools-linux-4333796.zip
+SDK=6609375
+mkdir -p sdk/cmdline-tools
+wget -q --tries=20 https://dl.google.com/android/repository/commandlinetools-linux-${SDK}_latest.zip
+unzip -q -d sdk/cmdline-tools commandlinetools-linux-${SDK}_latest.zip
 
 case "$1" in
   arm | armv7)
-    abi=armeabi-v7a
+    api=24
+    image="system-images;android-${api};default;armeabi-v7a"
     ;;
-
   aarch64)
-    abi=arm64-v8a
+    api=24
+    image="system-images;android-${api};google_apis;arm64-v8a"
     ;;
-
   i686)
-    abi=x86
+    api=28
+    image="system-images;android-${api};default;x86"
     ;;
-
   x86_64)
-    abi=x86_64
+    api=28
+    image="system-images;android-${api};default;x86_64"
     ;;
-
   *)
     echo "invalid arch: $1"
     exit 1
     ;;
 esac;
 
+# Try to fix warning about missing file.
+# See https://askubuntu.com/a/1078784
+mkdir -p /root/.android/
+echo '### User Sources for Android SDK Manager' >> /root/.android/repositories.cfg
+echo '#Fri Nov 03 10:11:27 CET 2017 count=0' >> /root/.android/repositories.cfg
+
+# Print all available packages
+# yes | ./sdk/tools/bin/sdkmanager --list --verbose
+
 # --no_https avoids
 # javax.net.ssl.SSLHandshakeException: sun.security.validator.ValidatorException: No trusted certificate found
-yes | ./sdk/tools/bin/sdkmanager --licenses --no_https
-yes | ./sdk/tools/bin/sdkmanager --no_https \
-    "emulator" \
-    "platform-tools" \
-    "platforms;android-24" \
-    "system-images;android-24;default;$abi"
+#
+# | grep -v = || true    removes the progress bar output from the sdkmanager
+# which produces an insane amount of output.
+yes | ./sdk/cmdline-tools/tools/bin/sdkmanager --licenses --no_https | grep -v = || true
+yes | ./sdk/cmdline-tools/tools/bin/sdkmanager --no_https \
+        "emulator" \
+        "platform-tools" \
+        "platforms;android-${api}" \
+        "${image}" | grep -v = || true
 
 echo "no" |
-    ./sdk/tools/bin/avdmanager create avd \
+    ./sdk/cmdline-tools/tools/bin/avdmanager create avd \
         --name "${1}" \
-        --package "system-images;android-24;default;$abi"
+        --package "${image}" | grep -v = || true

@@ -1,34 +1,34 @@
 FROM ubuntu:22.04
 
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
+RUN dpkg --add-architecture i386
+RUN apt-get update
+RUN apt-get install -y --no-install-recommends libc6-dev gcc
+RUN apt-get install -y --no-install-recommends \
   file \
-  make \
-  curl \
+  wget \
   ca-certificates \
-  python-is-python3 \
+  python3 \
+  python3-distutils \
   unzip \
   expect \
   openjdk-8-jre \
-  libstdc++6-i386-cross \
-  libpulse0 \
-  gcc \
-  libc6-dev
+  libstdc++6:i386 \
+  libpulse0
 
 WORKDIR /android/
 COPY android* /android/
 
 ENV ANDROID_ARCH=aarch64
-ENV PATH=$PATH:/android/ndk-$ANDROID_ARCH/bin:/android/sdk/tools:/android/sdk/platform-tools
+ENV PATH=$PATH:/android/ndk-$ANDROID_ARCH/bin:/android/sdk/cmdline-tools/tools:/android/sdk/platform-tools
 
 RUN sh /android/android-install-ndk.sh $ANDROID_ARCH
 RUN sh /android/android-install-sdk.sh $ANDROID_ARCH
 RUN mv /root/.android /tmp
 RUN chmod 777 -R /tmp/.android
-RUN chmod 755 /android/sdk/tools/* /android/sdk/emulator/qemu/linux-x86_64/*
+RUN chmod 755 /android/sdk/cmdline-tools/tools/* /android/sdk/emulator/qemu/linux-x86_64/*
 
 ENV PATH=$PATH:/rust/bin \
-    CARGO_TARGET_AARCH64_LINUX_ANDROID_LINKER=aarch64-linux-android-gcc \
+    CARGO_TARGET_AARCH64_LINUX_ANDROID_LINKER=aarch64-linux-android28-clang \
     CARGO_TARGET_AARCH64_LINUX_ANDROID_RUNNER=/tmp/runtest \
     OBJDUMP=aarch64-linux-android-objdump \
     HOME=/tmp
