@@ -941,20 +941,14 @@ fn map_val<'v>(t: &str, v: &'v str) -> &'v str {
     }
 }
 
-fn type_to_ext(t: &str, v: bool, r: bool, pi8: bool) -> String {
+fn type_to_ext(t: &str, r: bool) -> String {
     if !t.contains('x') {
         return t.replace("u", "i");
     }
     let native = type_to_native_type(t);
     let sub_ext = match type_sub_len(t) {
-        1 => String::new(),
-        _ if v => format!(
-            ".p0v{}{}",
-            &type_len(&type_to_sub_type(t)).to_string(),
-            native
-        ),
-        _ if pi8 => format!(".p0i8"),
-        _ => format!(".p0{}", native),
+        1 => "",
+        _ => ".p0",
     };
     let sub_type = match &native[0..1] {
         "i" | "f" => native,
@@ -980,15 +974,15 @@ fn type_to_ext(t: &str, v: bool, r: bool, pi8: bool) -> String {
 }
 
 fn ext(s: &str, in_t: &[&str; 3], out_t: &str) -> String {
-    s.replace("_EXT_", &type_to_ext(in_t[0], false, false, false))
-        .replace("_EXT2_", &type_to_ext(out_t, false, false, false))
-        .replace("_EXT3_", &type_to_ext(in_t[1], false, false, false))
-        .replace("_EXT4_", &type_to_ext(in_t[2], false, false, false))
-        .replace("_EXTr3_", &type_to_ext(in_t[1], false, true, false))
-        .replace("_EXTv2_", &type_to_ext(out_t, true, false, false))
-        .replace("_EXTpi8_", &type_to_ext(in_t[1], false, false, true))
-        .replace("_EXTpi82_", &type_to_ext(out_t, false, false, true))
-        .replace("_EXTpi8r_", &type_to_ext(in_t[1], false, true, true))
+    s.replace("_EXT_", &type_to_ext(in_t[0], false))
+        .replace("_EXT2_", &type_to_ext(out_t, false))
+        .replace("_EXT3_", &type_to_ext(in_t[1], false))
+        .replace("_EXT4_", &type_to_ext(in_t[2], false))
+        .replace("_EXTr3_", &type_to_ext(in_t[1], true))
+        .replace("_EXTv2_", &type_to_ext(out_t, false))
+        .replace("_EXTpi8_", &type_to_ext(in_t[1], false))
+        .replace("_EXTpi82_", &type_to_ext(out_t, false))
+        .replace("_EXTpi8r_", &type_to_ext(in_t[1], true))
 }
 
 fn is_vldx(name: &str) -> bool {

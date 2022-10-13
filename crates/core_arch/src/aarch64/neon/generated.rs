@@ -6507,7 +6507,7 @@ pub unsafe fn vqaddd_s64(a: i64, b: i64) -> i64 {
 pub unsafe fn vld1_f64_x2(a: *const f64) -> float64x1x2_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld1x2.v1f64.p0f64")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld1x2.v1f64.p0")]
         fn vld1_f64_x2_(a: *const f64) -> float64x1x2_t;
     }
     vld1_f64_x2_(a)
@@ -6523,7 +6523,7 @@ pub unsafe fn vld1_f64_x2(a: *const f64) -> float64x1x2_t {
 pub unsafe fn vld1q_f64_x2(a: *const f64) -> float64x2x2_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld1x2.v2f64.p0f64")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld1x2.v2f64.p0")]
         fn vld1q_f64_x2_(a: *const f64) -> float64x2x2_t;
     }
     vld1q_f64_x2_(a)
@@ -6539,7 +6539,7 @@ pub unsafe fn vld1q_f64_x2(a: *const f64) -> float64x2x2_t {
 pub unsafe fn vld1_f64_x3(a: *const f64) -> float64x1x3_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld1x3.v1f64.p0f64")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld1x3.v1f64.p0")]
         fn vld1_f64_x3_(a: *const f64) -> float64x1x3_t;
     }
     vld1_f64_x3_(a)
@@ -6555,7 +6555,7 @@ pub unsafe fn vld1_f64_x3(a: *const f64) -> float64x1x3_t {
 pub unsafe fn vld1q_f64_x3(a: *const f64) -> float64x2x3_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld1x3.v2f64.p0f64")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld1x3.v2f64.p0")]
         fn vld1q_f64_x3_(a: *const f64) -> float64x2x3_t;
     }
     vld1q_f64_x3_(a)
@@ -6571,7 +6571,7 @@ pub unsafe fn vld1q_f64_x3(a: *const f64) -> float64x2x3_t {
 pub unsafe fn vld1_f64_x4(a: *const f64) -> float64x1x4_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld1x4.v1f64.p0f64")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld1x4.v1f64.p0")]
         fn vld1_f64_x4_(a: *const f64) -> float64x1x4_t;
     }
     vld1_f64_x4_(a)
@@ -6587,7 +6587,7 @@ pub unsafe fn vld1_f64_x4(a: *const f64) -> float64x1x4_t {
 pub unsafe fn vld1q_f64_x4(a: *const f64) -> float64x2x4_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld1x4.v2f64.p0f64")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld1x4.v2f64.p0")]
         fn vld1q_f64_x4_(a: *const f64) -> float64x2x4_t;
     }
     vld1q_f64_x4_(a)
@@ -6603,7 +6603,7 @@ pub unsafe fn vld1q_f64_x4(a: *const f64) -> float64x2x4_t {
 pub unsafe fn vld2q_s64(a: *const i64) -> int64x2x2_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld2.v2i64.p0v2i64")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld2.v2i64.p0")]
         fn vld2q_s64_(ptr: *const int64x2_t) -> int64x2x2_t;
     }
     vld2q_s64_(a as _)
@@ -6641,7 +6641,7 @@ pub unsafe fn vld2q_p64(a: *const p64) -> poly64x2x2_t {
 pub unsafe fn vld2_f64(a: *const f64) -> float64x1x2_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld2.v1f64.p0v1f64")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld2.v1f64.p0")]
         fn vld2_f64_(ptr: *const float64x1_t) -> float64x1x2_t;
     }
     vld2_f64_(a as _)
@@ -6657,7 +6657,7 @@ pub unsafe fn vld2_f64(a: *const f64) -> float64x1x2_t {
 pub unsafe fn vld2q_f64(a: *const f64) -> float64x2x2_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld2.v2f64.p0v2f64")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld2.v2f64.p0")]
         fn vld2q_f64_(ptr: *const float64x2_t) -> float64x2x2_t;
     }
     vld2q_f64_(a as _)
@@ -6673,7 +6673,7 @@ pub unsafe fn vld2q_f64(a: *const f64) -> float64x2x2_t {
 pub unsafe fn vld2q_dup_s64(a: *const i64) -> int64x2x2_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld2r.v2i64.p0i64")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld2r.v2i64.p0")]
         fn vld2q_dup_s64_(ptr: *const i64) -> int64x2x2_t;
     }
     vld2q_dup_s64_(a as _)
@@ -6711,7 +6711,7 @@ pub unsafe fn vld2q_dup_p64(a: *const p64) -> poly64x2x2_t {
 pub unsafe fn vld2_dup_f64(a: *const f64) -> float64x1x2_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld2r.v1f64.p0f64")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld2r.v1f64.p0")]
         fn vld2_dup_f64_(ptr: *const f64) -> float64x1x2_t;
     }
     vld2_dup_f64_(a as _)
@@ -6727,7 +6727,7 @@ pub unsafe fn vld2_dup_f64(a: *const f64) -> float64x1x2_t {
 pub unsafe fn vld2q_dup_f64(a: *const f64) -> float64x2x2_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld2r.v2f64.p0f64")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld2r.v2f64.p0")]
         fn vld2q_dup_f64_(ptr: *const f64) -> float64x2x2_t;
     }
     vld2q_dup_f64_(a as _)
@@ -6745,7 +6745,7 @@ pub unsafe fn vld2q_lane_s8<const LANE: i32>(a: *const i8, b: int8x16x2_t) -> in
     static_assert_imm4!(LANE);
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld2lane.v16i8.p0i8")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld2lane.v16i8.p0")]
         fn vld2q_lane_s8_(a: int8x16_t, b: int8x16_t, n: i64, ptr: *const i8) -> int8x16x2_t;
     }
     vld2q_lane_s8_(b.0, b.1, LANE as i64, a as _)
@@ -6763,7 +6763,7 @@ pub unsafe fn vld2_lane_s64<const LANE: i32>(a: *const i64, b: int64x1x2_t) -> i
     static_assert!(LANE : i32 where LANE == 0);
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld2lane.v1i64.p0i8")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld2lane.v1i64.p0")]
         fn vld2_lane_s64_(a: int64x1_t, b: int64x1_t, n: i64, ptr: *const i8) -> int64x1x2_t;
     }
     vld2_lane_s64_(b.0, b.1, LANE as i64, a as _)
@@ -6781,7 +6781,7 @@ pub unsafe fn vld2q_lane_s64<const LANE: i32>(a: *const i64, b: int64x2x2_t) -> 
     static_assert_imm1!(LANE);
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld2lane.v2i64.p0i8")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld2lane.v2i64.p0")]
         fn vld2q_lane_s64_(a: int64x2_t, b: int64x2_t, n: i64, ptr: *const i8) -> int64x2x2_t;
     }
     vld2q_lane_s64_(b.0, b.1, LANE as i64, a as _)
@@ -6877,7 +6877,7 @@ pub unsafe fn vld2_lane_f64<const LANE: i32>(a: *const f64, b: float64x1x2_t) ->
     static_assert!(LANE : i32 where LANE == 0);
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld2lane.v1f64.p0i8")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld2lane.v1f64.p0")]
         fn vld2_lane_f64_(a: float64x1_t, b: float64x1_t, n: i64, ptr: *const i8) -> float64x1x2_t;
     }
     vld2_lane_f64_(b.0, b.1, LANE as i64, a as _)
@@ -6895,7 +6895,7 @@ pub unsafe fn vld2q_lane_f64<const LANE: i32>(a: *const f64, b: float64x2x2_t) -
     static_assert_imm1!(LANE);
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld2lane.v2f64.p0i8")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld2lane.v2f64.p0")]
         fn vld2q_lane_f64_(a: float64x2_t, b: float64x2_t, n: i64, ptr: *const i8) -> float64x2x2_t;
     }
     vld2q_lane_f64_(b.0, b.1, LANE as i64, a as _)
@@ -6911,7 +6911,7 @@ pub unsafe fn vld2q_lane_f64<const LANE: i32>(a: *const f64, b: float64x2x2_t) -
 pub unsafe fn vld3q_s64(a: *const i64) -> int64x2x3_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld3.v2i64.p0v2i64")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld3.v2i64.p0")]
         fn vld3q_s64_(ptr: *const int64x2_t) -> int64x2x3_t;
     }
     vld3q_s64_(a as _)
@@ -6949,7 +6949,7 @@ pub unsafe fn vld3q_p64(a: *const p64) -> poly64x2x3_t {
 pub unsafe fn vld3_f64(a: *const f64) -> float64x1x3_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld3.v1f64.p0v1f64")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld3.v1f64.p0")]
         fn vld3_f64_(ptr: *const float64x1_t) -> float64x1x3_t;
     }
     vld3_f64_(a as _)
@@ -6965,7 +6965,7 @@ pub unsafe fn vld3_f64(a: *const f64) -> float64x1x3_t {
 pub unsafe fn vld3q_f64(a: *const f64) -> float64x2x3_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld3.v2f64.p0v2f64")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld3.v2f64.p0")]
         fn vld3q_f64_(ptr: *const float64x2_t) -> float64x2x3_t;
     }
     vld3q_f64_(a as _)
@@ -6981,7 +6981,7 @@ pub unsafe fn vld3q_f64(a: *const f64) -> float64x2x3_t {
 pub unsafe fn vld3q_dup_s64(a: *const i64) -> int64x2x3_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld3r.v2i64.p0i64")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld3r.v2i64.p0")]
         fn vld3q_dup_s64_(ptr: *const i64) -> int64x2x3_t;
     }
     vld3q_dup_s64_(a as _)
@@ -7019,7 +7019,7 @@ pub unsafe fn vld3q_dup_p64(a: *const p64) -> poly64x2x3_t {
 pub unsafe fn vld3_dup_f64(a: *const f64) -> float64x1x3_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld3r.v1f64.p0f64")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld3r.v1f64.p0")]
         fn vld3_dup_f64_(ptr: *const f64) -> float64x1x3_t;
     }
     vld3_dup_f64_(a as _)
@@ -7035,7 +7035,7 @@ pub unsafe fn vld3_dup_f64(a: *const f64) -> float64x1x3_t {
 pub unsafe fn vld3q_dup_f64(a: *const f64) -> float64x2x3_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld3r.v2f64.p0f64")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld3r.v2f64.p0")]
         fn vld3q_dup_f64_(ptr: *const f64) -> float64x2x3_t;
     }
     vld3q_dup_f64_(a as _)
@@ -7053,7 +7053,7 @@ pub unsafe fn vld3q_lane_s8<const LANE: i32>(a: *const i8, b: int8x16x3_t) -> in
     static_assert_imm4!(LANE);
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld3lane.v16i8.p0i8")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld3lane.v16i8.p0")]
         fn vld3q_lane_s8_(a: int8x16_t, b: int8x16_t, c: int8x16_t, n: i64, ptr: *const i8) -> int8x16x3_t;
     }
     vld3q_lane_s8_(b.0, b.1, b.2, LANE as i64, a as _)
@@ -7071,7 +7071,7 @@ pub unsafe fn vld3_lane_s64<const LANE: i32>(a: *const i64, b: int64x1x3_t) -> i
     static_assert!(LANE : i32 where LANE == 0);
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld3lane.v1i64.p0i8")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld3lane.v1i64.p0")]
         fn vld3_lane_s64_(a: int64x1_t, b: int64x1_t, c: int64x1_t, n: i64, ptr: *const i8) -> int64x1x3_t;
     }
     vld3_lane_s64_(b.0, b.1, b.2, LANE as i64, a as _)
@@ -7089,7 +7089,7 @@ pub unsafe fn vld3q_lane_s64<const LANE: i32>(a: *const i64, b: int64x2x3_t) -> 
     static_assert_imm1!(LANE);
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld3lane.v2i64.p0i8")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld3lane.v2i64.p0")]
         fn vld3q_lane_s64_(a: int64x2_t, b: int64x2_t, c: int64x2_t, n: i64, ptr: *const i8) -> int64x2x3_t;
     }
     vld3q_lane_s64_(b.0, b.1, b.2, LANE as i64, a as _)
@@ -7185,7 +7185,7 @@ pub unsafe fn vld3_lane_f64<const LANE: i32>(a: *const f64, b: float64x1x3_t) ->
     static_assert!(LANE : i32 where LANE == 0);
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld3lane.v1f64.p0i8")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld3lane.v1f64.p0")]
         fn vld3_lane_f64_(a: float64x1_t, b: float64x1_t, c: float64x1_t, n: i64, ptr: *const i8) -> float64x1x3_t;
     }
     vld3_lane_f64_(b.0, b.1, b.2, LANE as i64, a as _)
@@ -7203,7 +7203,7 @@ pub unsafe fn vld3q_lane_f64<const LANE: i32>(a: *const f64, b: float64x2x3_t) -
     static_assert_imm1!(LANE);
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld3lane.v2f64.p0i8")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld3lane.v2f64.p0")]
         fn vld3q_lane_f64_(a: float64x2_t, b: float64x2_t, c: float64x2_t, n: i64, ptr: *const i8) -> float64x2x3_t;
     }
     vld3q_lane_f64_(b.0, b.1, b.2, LANE as i64, a as _)
@@ -7219,7 +7219,7 @@ pub unsafe fn vld3q_lane_f64<const LANE: i32>(a: *const f64, b: float64x2x3_t) -
 pub unsafe fn vld4q_s64(a: *const i64) -> int64x2x4_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld4.v2i64.p0v2i64")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld4.v2i64.p0")]
         fn vld4q_s64_(ptr: *const int64x2_t) -> int64x2x4_t;
     }
     vld4q_s64_(a as _)
@@ -7257,7 +7257,7 @@ pub unsafe fn vld4q_p64(a: *const p64) -> poly64x2x4_t {
 pub unsafe fn vld4_f64(a: *const f64) -> float64x1x4_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld4.v1f64.p0v1f64")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld4.v1f64.p0")]
         fn vld4_f64_(ptr: *const float64x1_t) -> float64x1x4_t;
     }
     vld4_f64_(a as _)
@@ -7273,7 +7273,7 @@ pub unsafe fn vld4_f64(a: *const f64) -> float64x1x4_t {
 pub unsafe fn vld4q_f64(a: *const f64) -> float64x2x4_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld4.v2f64.p0v2f64")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld4.v2f64.p0")]
         fn vld4q_f64_(ptr: *const float64x2_t) -> float64x2x4_t;
     }
     vld4q_f64_(a as _)
@@ -7289,7 +7289,7 @@ pub unsafe fn vld4q_f64(a: *const f64) -> float64x2x4_t {
 pub unsafe fn vld4q_dup_s64(a: *const i64) -> int64x2x4_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld4r.v2i64.p0i64")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld4r.v2i64.p0")]
         fn vld4q_dup_s64_(ptr: *const i64) -> int64x2x4_t;
     }
     vld4q_dup_s64_(a as _)
@@ -7327,7 +7327,7 @@ pub unsafe fn vld4q_dup_p64(a: *const p64) -> poly64x2x4_t {
 pub unsafe fn vld4_dup_f64(a: *const f64) -> float64x1x4_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld4r.v1f64.p0f64")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld4r.v1f64.p0")]
         fn vld4_dup_f64_(ptr: *const f64) -> float64x1x4_t;
     }
     vld4_dup_f64_(a as _)
@@ -7343,7 +7343,7 @@ pub unsafe fn vld4_dup_f64(a: *const f64) -> float64x1x4_t {
 pub unsafe fn vld4q_dup_f64(a: *const f64) -> float64x2x4_t {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld4r.v2f64.p0f64")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld4r.v2f64.p0")]
         fn vld4q_dup_f64_(ptr: *const f64) -> float64x2x4_t;
     }
     vld4q_dup_f64_(a as _)
@@ -7361,7 +7361,7 @@ pub unsafe fn vld4q_lane_s8<const LANE: i32>(a: *const i8, b: int8x16x4_t) -> in
     static_assert_imm4!(LANE);
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld4lane.v16i8.p0i8")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld4lane.v16i8.p0")]
         fn vld4q_lane_s8_(a: int8x16_t, b: int8x16_t, c: int8x16_t, d: int8x16_t, n: i64, ptr: *const i8) -> int8x16x4_t;
     }
     vld4q_lane_s8_(b.0, b.1, b.2, b.3, LANE as i64, a as _)
@@ -7379,7 +7379,7 @@ pub unsafe fn vld4_lane_s64<const LANE: i32>(a: *const i64, b: int64x1x4_t) -> i
     static_assert!(LANE : i32 where LANE == 0);
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld4lane.v1i64.p0i8")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld4lane.v1i64.p0")]
         fn vld4_lane_s64_(a: int64x1_t, b: int64x1_t, c: int64x1_t, d: int64x1_t, n: i64, ptr: *const i8) -> int64x1x4_t;
     }
     vld4_lane_s64_(b.0, b.1, b.2, b.3, LANE as i64, a as _)
@@ -7397,7 +7397,7 @@ pub unsafe fn vld4q_lane_s64<const LANE: i32>(a: *const i64, b: int64x2x4_t) -> 
     static_assert_imm1!(LANE);
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld4lane.v2i64.p0i8")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld4lane.v2i64.p0")]
         fn vld4q_lane_s64_(a: int64x2_t, b: int64x2_t, c: int64x2_t, d: int64x2_t, n: i64, ptr: *const i8) -> int64x2x4_t;
     }
     vld4q_lane_s64_(b.0, b.1, b.2, b.3, LANE as i64, a as _)
@@ -7493,7 +7493,7 @@ pub unsafe fn vld4_lane_f64<const LANE: i32>(a: *const f64, b: float64x1x4_t) ->
     static_assert!(LANE : i32 where LANE == 0);
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld4lane.v1f64.p0i8")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld4lane.v1f64.p0")]
         fn vld4_lane_f64_(a: float64x1_t, b: float64x1_t, c: float64x1_t, d: float64x1_t, n: i64, ptr: *const i8) -> float64x1x4_t;
     }
     vld4_lane_f64_(b.0, b.1, b.2, b.3, LANE as i64, a as _)
@@ -7511,7 +7511,7 @@ pub unsafe fn vld4q_lane_f64<const LANE: i32>(a: *const f64, b: float64x2x4_t) -
     static_assert_imm1!(LANE);
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld4lane.v2f64.p0i8")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.ld4lane.v2f64.p0")]
         fn vld4q_lane_f64_(a: float64x2_t, b: float64x2_t, c: float64x2_t, d: float64x2_t, n: i64, ptr: *const i8) -> float64x2x4_t;
     }
     vld4q_lane_f64_(b.0, b.1, b.2, b.3, LANE as i64, a as _)
@@ -7553,7 +7553,7 @@ pub unsafe fn vst1q_lane_f64<const LANE: i32>(a: *mut f64, b: float64x2_t) {
 pub unsafe fn vst1_f64_x2(a: *mut f64, b: float64x1x2_t) {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st1x2.v1f64.p0f64")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st1x2.v1f64.p0")]
         fn vst1_f64_x2_(a: float64x1_t, b: float64x1_t, ptr: *mut f64);
     }
     vst1_f64_x2_(b.0, b.1, a)
@@ -7569,7 +7569,7 @@ pub unsafe fn vst1_f64_x2(a: *mut f64, b: float64x1x2_t) {
 pub unsafe fn vst1q_f64_x2(a: *mut f64, b: float64x2x2_t) {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st1x2.v2f64.p0f64")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st1x2.v2f64.p0")]
         fn vst1q_f64_x2_(a: float64x2_t, b: float64x2_t, ptr: *mut f64);
     }
     vst1q_f64_x2_(b.0, b.1, a)
@@ -7585,7 +7585,7 @@ pub unsafe fn vst1q_f64_x2(a: *mut f64, b: float64x2x2_t) {
 pub unsafe fn vst1_f64_x3(a: *mut f64, b: float64x1x3_t) {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st1x3.v1f64.p0f64")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st1x3.v1f64.p0")]
         fn vst1_f64_x3_(a: float64x1_t, b: float64x1_t, c: float64x1_t, ptr: *mut f64);
     }
     vst1_f64_x3_(b.0, b.1, b.2, a)
@@ -7601,7 +7601,7 @@ pub unsafe fn vst1_f64_x3(a: *mut f64, b: float64x1x3_t) {
 pub unsafe fn vst1q_f64_x3(a: *mut f64, b: float64x2x3_t) {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st1x3.v2f64.p0f64")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st1x3.v2f64.p0")]
         fn vst1q_f64_x3_(a: float64x2_t, b: float64x2_t, c: float64x2_t, ptr: *mut f64);
     }
     vst1q_f64_x3_(b.0, b.1, b.2, a)
@@ -7617,7 +7617,7 @@ pub unsafe fn vst1q_f64_x3(a: *mut f64, b: float64x2x3_t) {
 pub unsafe fn vst1_f64_x4(a: *mut f64, b: float64x1x4_t) {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st1x4.v1f64.p0f64")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st1x4.v1f64.p0")]
         fn vst1_f64_x4_(a: float64x1_t, b: float64x1_t, c: float64x1_t, d: float64x1_t, ptr: *mut f64);
     }
     vst1_f64_x4_(b.0, b.1, b.2, b.3, a)
@@ -7633,7 +7633,7 @@ pub unsafe fn vst1_f64_x4(a: *mut f64, b: float64x1x4_t) {
 pub unsafe fn vst1q_f64_x4(a: *mut f64, b: float64x2x4_t) {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st1x4.v2f64.p0f64")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st1x4.v2f64.p0")]
         fn vst1q_f64_x4_(a: float64x2_t, b: float64x2_t, c: float64x2_t, d: float64x2_t, ptr: *mut f64);
     }
     vst1q_f64_x4_(b.0, b.1, b.2, b.3, a)
@@ -7649,7 +7649,7 @@ pub unsafe fn vst1q_f64_x4(a: *mut f64, b: float64x2x4_t) {
 pub unsafe fn vst2q_s64(a: *mut i64, b: int64x2x2_t) {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st2.v2i64.p0i8")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st2.v2i64.p0")]
         fn vst2q_s64_(a: int64x2_t, b: int64x2_t, ptr: *mut i8);
     }
     vst2q_s64_(b.0, b.1, a as _)
@@ -7687,7 +7687,7 @@ pub unsafe fn vst2q_p64(a: *mut p64, b: poly64x2x2_t) {
 pub unsafe fn vst2_f64(a: *mut f64, b: float64x1x2_t) {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st2.v1f64.p0i8")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st2.v1f64.p0")]
         fn vst2_f64_(a: float64x1_t, b: float64x1_t, ptr: *mut i8);
     }
     vst2_f64_(b.0, b.1, a as _)
@@ -7703,7 +7703,7 @@ pub unsafe fn vst2_f64(a: *mut f64, b: float64x1x2_t) {
 pub unsafe fn vst2q_f64(a: *mut f64, b: float64x2x2_t) {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st2.v2f64.p0i8")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st2.v2f64.p0")]
         fn vst2q_f64_(a: float64x2_t, b: float64x2_t, ptr: *mut i8);
     }
     vst2q_f64_(b.0, b.1, a as _)
@@ -7721,7 +7721,7 @@ pub unsafe fn vst2q_lane_s8<const LANE: i32>(a: *mut i8, b: int8x16x2_t) {
     static_assert_imm4!(LANE);
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st2lane.v16i8.p0i8")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st2lane.v16i8.p0")]
         fn vst2q_lane_s8_(a: int8x16_t, b: int8x16_t, n: i64, ptr: *mut i8);
     }
     vst2q_lane_s8_(b.0, b.1, LANE as i64, a as _)
@@ -7739,7 +7739,7 @@ pub unsafe fn vst2_lane_s64<const LANE: i32>(a: *mut i64, b: int64x1x2_t) {
     static_assert!(LANE : i32 where LANE == 0);
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st2lane.v1i64.p0i8")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st2lane.v1i64.p0")]
         fn vst2_lane_s64_(a: int64x1_t, b: int64x1_t, n: i64, ptr: *mut i8);
     }
     vst2_lane_s64_(b.0, b.1, LANE as i64, a as _)
@@ -7757,7 +7757,7 @@ pub unsafe fn vst2q_lane_s64<const LANE: i32>(a: *mut i64, b: int64x2x2_t) {
     static_assert_imm1!(LANE);
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st2lane.v2i64.p0i8")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st2lane.v2i64.p0")]
         fn vst2q_lane_s64_(a: int64x2_t, b: int64x2_t, n: i64, ptr: *mut i8);
     }
     vst2q_lane_s64_(b.0, b.1, LANE as i64, a as _)
@@ -7853,7 +7853,7 @@ pub unsafe fn vst2_lane_f64<const LANE: i32>(a: *mut f64, b: float64x1x2_t) {
     static_assert!(LANE : i32 where LANE == 0);
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st2lane.v1f64.p0i8")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st2lane.v1f64.p0")]
         fn vst2_lane_f64_(a: float64x1_t, b: float64x1_t, n: i64, ptr: *mut i8);
     }
     vst2_lane_f64_(b.0, b.1, LANE as i64, a as _)
@@ -7871,7 +7871,7 @@ pub unsafe fn vst2q_lane_f64<const LANE: i32>(a: *mut f64, b: float64x2x2_t) {
     static_assert_imm1!(LANE);
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st2lane.v2f64.p0i8")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st2lane.v2f64.p0")]
         fn vst2q_lane_f64_(a: float64x2_t, b: float64x2_t, n: i64, ptr: *mut i8);
     }
     vst2q_lane_f64_(b.0, b.1, LANE as i64, a as _)
@@ -7887,7 +7887,7 @@ pub unsafe fn vst2q_lane_f64<const LANE: i32>(a: *mut f64, b: float64x2x2_t) {
 pub unsafe fn vst3q_s64(a: *mut i64, b: int64x2x3_t) {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st3.v2i64.p0i8")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st3.v2i64.p0")]
         fn vst3q_s64_(a: int64x2_t, b: int64x2_t, c: int64x2_t, ptr: *mut i8);
     }
     vst3q_s64_(b.0, b.1, b.2, a as _)
@@ -7925,7 +7925,7 @@ pub unsafe fn vst3q_p64(a: *mut p64, b: poly64x2x3_t) {
 pub unsafe fn vst3_f64(a: *mut f64, b: float64x1x3_t) {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st3.v1f64.p0i8")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st3.v1f64.p0")]
         fn vst3_f64_(a: float64x1_t, b: float64x1_t, c: float64x1_t, ptr: *mut i8);
     }
     vst3_f64_(b.0, b.1, b.2, a as _)
@@ -7941,7 +7941,7 @@ pub unsafe fn vst3_f64(a: *mut f64, b: float64x1x3_t) {
 pub unsafe fn vst3q_f64(a: *mut f64, b: float64x2x3_t) {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st3.v2f64.p0i8")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st3.v2f64.p0")]
         fn vst3q_f64_(a: float64x2_t, b: float64x2_t, c: float64x2_t, ptr: *mut i8);
     }
     vst3q_f64_(b.0, b.1, b.2, a as _)
@@ -7959,7 +7959,7 @@ pub unsafe fn vst3q_lane_s8<const LANE: i32>(a: *mut i8, b: int8x16x3_t) {
     static_assert_imm4!(LANE);
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st3lane.v16i8.p0i8")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st3lane.v16i8.p0")]
         fn vst3q_lane_s8_(a: int8x16_t, b: int8x16_t, c: int8x16_t, n: i64, ptr: *mut i8);
     }
     vst3q_lane_s8_(b.0, b.1, b.2, LANE as i64, a as _)
@@ -7977,7 +7977,7 @@ pub unsafe fn vst3_lane_s64<const LANE: i32>(a: *mut i64, b: int64x1x3_t) {
     static_assert!(LANE : i32 where LANE == 0);
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st3lane.v1i64.p0i8")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st3lane.v1i64.p0")]
         fn vst3_lane_s64_(a: int64x1_t, b: int64x1_t, c: int64x1_t, n: i64, ptr: *mut i8);
     }
     vst3_lane_s64_(b.0, b.1, b.2, LANE as i64, a as _)
@@ -7995,7 +7995,7 @@ pub unsafe fn vst3q_lane_s64<const LANE: i32>(a: *mut i64, b: int64x2x3_t) {
     static_assert_imm1!(LANE);
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st3lane.v2i64.p0i8")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st3lane.v2i64.p0")]
         fn vst3q_lane_s64_(a: int64x2_t, b: int64x2_t, c: int64x2_t, n: i64, ptr: *mut i8);
     }
     vst3q_lane_s64_(b.0, b.1, b.2, LANE as i64, a as _)
@@ -8091,7 +8091,7 @@ pub unsafe fn vst3_lane_f64<const LANE: i32>(a: *mut f64, b: float64x1x3_t) {
     static_assert!(LANE : i32 where LANE == 0);
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st3lane.v1f64.p0i8")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st3lane.v1f64.p0")]
         fn vst3_lane_f64_(a: float64x1_t, b: float64x1_t, c: float64x1_t, n: i64, ptr: *mut i8);
     }
     vst3_lane_f64_(b.0, b.1, b.2, LANE as i64, a as _)
@@ -8109,7 +8109,7 @@ pub unsafe fn vst3q_lane_f64<const LANE: i32>(a: *mut f64, b: float64x2x3_t) {
     static_assert_imm1!(LANE);
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st3lane.v2f64.p0i8")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st3lane.v2f64.p0")]
         fn vst3q_lane_f64_(a: float64x2_t, b: float64x2_t, c: float64x2_t, n: i64, ptr: *mut i8);
     }
     vst3q_lane_f64_(b.0, b.1, b.2, LANE as i64, a as _)
@@ -8125,7 +8125,7 @@ pub unsafe fn vst3q_lane_f64<const LANE: i32>(a: *mut f64, b: float64x2x3_t) {
 pub unsafe fn vst4q_s64(a: *mut i64, b: int64x2x4_t) {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st4.v2i64.p0i8")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st4.v2i64.p0")]
         fn vst4q_s64_(a: int64x2_t, b: int64x2_t, c: int64x2_t, d: int64x2_t, ptr: *mut i8);
     }
     vst4q_s64_(b.0, b.1, b.2, b.3, a as _)
@@ -8163,7 +8163,7 @@ pub unsafe fn vst4q_p64(a: *mut p64, b: poly64x2x4_t) {
 pub unsafe fn vst4_f64(a: *mut f64, b: float64x1x4_t) {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st4.v1f64.p0i8")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st4.v1f64.p0")]
         fn vst4_f64_(a: float64x1_t, b: float64x1_t, c: float64x1_t, d: float64x1_t, ptr: *mut i8);
     }
     vst4_f64_(b.0, b.1, b.2, b.3, a as _)
@@ -8179,7 +8179,7 @@ pub unsafe fn vst4_f64(a: *mut f64, b: float64x1x4_t) {
 pub unsafe fn vst4q_f64(a: *mut f64, b: float64x2x4_t) {
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st4.v2f64.p0i8")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st4.v2f64.p0")]
         fn vst4q_f64_(a: float64x2_t, b: float64x2_t, c: float64x2_t, d: float64x2_t, ptr: *mut i8);
     }
     vst4q_f64_(b.0, b.1, b.2, b.3, a as _)
@@ -8197,7 +8197,7 @@ pub unsafe fn vst4q_lane_s8<const LANE: i32>(a: *mut i8, b: int8x16x4_t) {
     static_assert_imm4!(LANE);
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st4lane.v16i8.p0i8")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st4lane.v16i8.p0")]
         fn vst4q_lane_s8_(a: int8x16_t, b: int8x16_t, c: int8x16_t, d: int8x16_t, n: i64, ptr: *mut i8);
     }
     vst4q_lane_s8_(b.0, b.1, b.2, b.3, LANE as i64, a as _)
@@ -8215,7 +8215,7 @@ pub unsafe fn vst4_lane_s64<const LANE: i32>(a: *mut i64, b: int64x1x4_t) {
     static_assert!(LANE : i32 where LANE == 0);
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st4lane.v1i64.p0i8")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st4lane.v1i64.p0")]
         fn vst4_lane_s64_(a: int64x1_t, b: int64x1_t, c: int64x1_t, d: int64x1_t, n: i64, ptr: *mut i8);
     }
     vst4_lane_s64_(b.0, b.1, b.2, b.3, LANE as i64, a as _)
@@ -8233,7 +8233,7 @@ pub unsafe fn vst4q_lane_s64<const LANE: i32>(a: *mut i64, b: int64x2x4_t) {
     static_assert_imm1!(LANE);
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st4lane.v2i64.p0i8")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st4lane.v2i64.p0")]
         fn vst4q_lane_s64_(a: int64x2_t, b: int64x2_t, c: int64x2_t, d: int64x2_t, n: i64, ptr: *mut i8);
     }
     vst4q_lane_s64_(b.0, b.1, b.2, b.3, LANE as i64, a as _)
@@ -8329,7 +8329,7 @@ pub unsafe fn vst4_lane_f64<const LANE: i32>(a: *mut f64, b: float64x1x4_t) {
     static_assert!(LANE : i32 where LANE == 0);
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st4lane.v1f64.p0i8")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st4lane.v1f64.p0")]
         fn vst4_lane_f64_(a: float64x1_t, b: float64x1_t, c: float64x1_t, d: float64x1_t, n: i64, ptr: *mut i8);
     }
     vst4_lane_f64_(b.0, b.1, b.2, b.3, LANE as i64, a as _)
@@ -8347,7 +8347,7 @@ pub unsafe fn vst4q_lane_f64<const LANE: i32>(a: *mut f64, b: float64x2x4_t) {
     static_assert_imm1!(LANE);
     #[allow(improper_ctypes)]
     extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st4lane.v2f64.p0i8")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.neon.st4lane.v2f64.p0")]
         fn vst4q_lane_f64_(a: float64x2_t, b: float64x2_t, c: float64x2_t, d: float64x2_t, n: i64, ptr: *mut i8);
     }
     vst4q_lane_f64_(b.0, b.1, b.2, b.3, LANE as i64, a as _)

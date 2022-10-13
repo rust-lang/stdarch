@@ -85,46 +85,46 @@ extern "unadjusted" {
     #[link_name = "llvm.arm.neon.vshiftins.v2i64"]
     fn vshiftins_v2i64(a: int64x2_t, b: int64x2_t, shift: int64x2_t) -> int64x2_t;
 
-    #[link_name = "llvm.arm.neon.vld1.v8i8.p0i8"]
+    #[link_name = "llvm.arm.neon.vld1.v8i8.p0"]
     fn vld1_v8i8(addr: *const i8, align: i32) -> int8x8_t;
-    #[link_name = "llvm.arm.neon.vld1.v16i8.p0i8"]
+    #[link_name = "llvm.arm.neon.vld1.v16i8.p0"]
     fn vld1q_v16i8(addr: *const i8, align: i32) -> int8x16_t;
-    #[link_name = "llvm.arm.neon.vld1.v4i16.p0i8"]
+    #[link_name = "llvm.arm.neon.vld1.v4i16.p0"]
     fn vld1_v4i16(addr: *const i8, align: i32) -> int16x4_t;
-    #[link_name = "llvm.arm.neon.vld1.v8i16.p0i8"]
+    #[link_name = "llvm.arm.neon.vld1.v8i16.p0"]
     fn vld1q_v8i16(addr: *const i8, align: i32) -> int16x8_t;
-    #[link_name = "llvm.arm.neon.vld1.v2i32.p0i8"]
+    #[link_name = "llvm.arm.neon.vld1.v2i32.p0"]
     fn vld1_v2i32(addr: *const i8, align: i32) -> int32x2_t;
-    #[link_name = "llvm.arm.neon.vld1.v4i32.p0i8"]
+    #[link_name = "llvm.arm.neon.vld1.v4i32.p0"]
     fn vld1q_v4i32(addr: *const i8, align: i32) -> int32x4_t;
-    #[link_name = "llvm.arm.neon.vld1.v1i64.p0i8"]
+    #[link_name = "llvm.arm.neon.vld1.v1i64.p0"]
     fn vld1_v1i64(addr: *const i8, align: i32) -> int64x1_t;
-    #[link_name = "llvm.arm.neon.vld1.v2i64.p0i8"]
+    #[link_name = "llvm.arm.neon.vld1.v2i64.p0"]
     fn vld1q_v2i64(addr: *const i8, align: i32) -> int64x2_t;
-    #[link_name = "llvm.arm.neon.vld1.v2f32.p0i8"]
+    #[link_name = "llvm.arm.neon.vld1.v2f32.p0"]
     fn vld1_v2f32(addr: *const i8, align: i32) -> float32x2_t;
-    #[link_name = "llvm.arm.neon.vld1.v4f32.p0i8"]
+    #[link_name = "llvm.arm.neon.vld1.v4f32.p0"]
     fn vld1q_v4f32(addr: *const i8, align: i32) -> float32x4_t;
 
-    #[link_name = "llvm.arm.neon.vst1.p0i8.v8i8"]
+    #[link_name = "llvm.arm.neon.vst1.p0.v8i8"]
     fn vst1_v8i8(addr: *const i8, val: int8x8_t, align: i32);
-    #[link_name = "llvm.arm.neon.vst1.p0i8.v16i8"]
+    #[link_name = "llvm.arm.neon.vst1.p0.v16i8"]
     fn vst1q_v16i8(addr: *const i8, val: int8x16_t, align: i32);
-    #[link_name = "llvm.arm.neon.vst1.p0i8.v4i16"]
+    #[link_name = "llvm.arm.neon.vst1.p0.v4i16"]
     fn vst1_v4i16(addr: *const i8, val: int16x4_t, align: i32);
-    #[link_name = "llvm.arm.neon.vst1.p0i8.v8i16"]
+    #[link_name = "llvm.arm.neon.vst1.p0.v8i16"]
     fn vst1q_v8i16(addr: *const i8, val: int16x8_t, align: i32);
-    #[link_name = "llvm.arm.neon.vst1.p0i8.v2i32"]
+    #[link_name = "llvm.arm.neon.vst1.p0.v2i32"]
     fn vst1_v2i32(addr: *const i8, val: int32x2_t, align: i32);
-    #[link_name = "llvm.arm.neon.vst1.p0i8.v4i32"]
+    #[link_name = "llvm.arm.neon.vst1.p0.v4i32"]
     fn vst1q_v4i32(addr: *const i8, val: int32x4_t, align: i32);
-    #[link_name = "llvm.arm.neon.vst1.p0i8.v1i64"]
+    #[link_name = "llvm.arm.neon.vst1.p0.v1i64"]
     fn vst1_v1i64(addr: *const i8, val: int64x1_t, align: i32);
-    #[link_name = "llvm.arm.neon.vst1.p0i8.v2i64"]
+    #[link_name = "llvm.arm.neon.vst1.p0.v2i64"]
     fn vst1q_v2i64(addr: *const i8, val: int64x2_t, align: i32);
-    #[link_name = "llvm.arm.neon.vst1.p0i8.v2f32"]
+    #[link_name = "llvm.arm.neon.vst1.p0.v2f32"]
     fn vst1_v2f32(addr: *const i8, val: float32x2_t, align: i32);
-    #[link_name = "llvm.arm.neon.vst1.p0i8.v4f32"]
+    #[link_name = "llvm.arm.neon.vst1.p0.v4f32"]
     fn vst1q_v4f32(addr: *const i8, val: float32x4_t, align: i32);
 }
 
