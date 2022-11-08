@@ -47,7 +47,7 @@ cfg_if! {
         // On x86/x86_64 no OS specific functionality is required.
         #[path = "os/x86.rs"]
         mod os;
-    } else if #[cfg(all(target_os = "linux", feature = "libc"))] {
+    } else if #[cfg(any(all(target_os = "linux", feature = "libc"), target_os = "android"))] {
         #[path = "os/linux/mod.rs"]
         mod os;
     } else if #[cfg(all(target_os = "freebsd", feature = "libc"))] {
