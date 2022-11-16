@@ -31,8 +31,11 @@ fn x86_all() {
         is_x86_feature_detected!("avx512vpopcntdq")
     );
     println!("avx512vbmi2 {:?}", is_x86_feature_detected!("avx512vbmi2"));
+    println!("gfni {:?}", is_x86_feature_detected!("gfni"));
     println!("avx512gfni {:?}", is_x86_feature_detected!("avx512gfni"));
+    println!("vaes {:?}", is_x86_feature_detected!("vaes"));
     println!("avx512vaes {:?}", is_x86_feature_detected!("avx512vaes"));
+    println!("vpclmulqdq {:?}", is_x86_feature_detected!("vpclmulqdq"));
     println!(
         "avx512vpclmulqdq {:?}",
         is_x86_feature_detected!("avx512vpclmulqdq")
