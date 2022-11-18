@@ -95,9 +95,9 @@ features! {
     /// [docs]: https://software.intel.com/sites/landingpage/IntrinsicsGuide
     #[stable(feature = "simd_x86", since = "1.27.0")]
     @BIND_FEATURE_NAME: "abm"; "lzcnt"; // abm is a synonym for lzcnt
-    @BIND_FEATURE_NAME: "avx512gfni"; "gfni"; // avx512gfni was previously used for gnfi
-    @BIND_FEATURE_NAME: "avx512vaes"; "vaes"; // avx512vaes was previously used for vaes
-    @BIND_FEATURE_NAME: "avx512vpclmulqdq"; "vpclmulqdq"; // avx512vpclmulqdq was previously used for vpclmulqdq
+    @BIND_FEATURE_NAME: "avx512gfni"; "gfni"; #[deprecated(since = "1.67.0", note = "the `avx512gfni` feature has been renamed to `gfni`")];
+    @BIND_FEATURE_NAME: "avx512vaes"; "vaes"; #[deprecated(since = "1.67.0", note = "the `avx512vaes` feature has been renamed to `vaes`")];
+    @BIND_FEATURE_NAME: "avx512vpclmulqdq"; "vpclmulqdq"; #[deprecated(since = "1.67.0", note = "the `avx512vpclmulqdq` feature has been renamed to `vpclmulqdq`")];
     @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] aes: "aes";
     /// AES (Advanced Encryption Standard New Instructions AES-NI)
     @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] pclmulqdq: "pclmulqdq";
