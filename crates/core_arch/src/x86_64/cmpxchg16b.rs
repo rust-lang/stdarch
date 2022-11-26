@@ -42,6 +42,7 @@ use stdarch_test::assert_instr;
 #[cfg_attr(miri, track_caller)] // even without panics, this helps for Miri backtraces
 #[cfg_attr(test, assert_instr(cmpxchg16b, success = Ordering::SeqCst, failure = Ordering::SeqCst))]
 #[target_feature(enable = "cmpxchg16b")]
+#[stable(feature = "cmpxchg16b_instrinsic", since = "1.67.0")]
 pub unsafe fn cmpxchg16b(
     dst: *mut u128,
     old: u128,
