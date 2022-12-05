@@ -4349,43 +4349,6 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    macro_rules! test_vcombine {
-        ($test_id:ident => $fn_id:ident ([$($a:expr),*], [$($b:expr),*])) => {
-            #[allow(unused_assignments)]
-            #[simd_test(enable = "neon")]
-            unsafe fn $test_id() {
-                let a = [$($a),*];
-                let b = [$($b),*];
-                let e = [$($a),* $(, $b)*];
-                let c = $fn_id(transmute(a), transmute(b));
-                let mut d = e;
-                d = transmute(c);
-                assert_eq!(d, e);
-            }
-        }
-    }
-
-    test_vcombine!(test_vcombine_s8 => vcombine_s8([3_i8, -4, 5, -6, 7, 8, 9, 10], [13_i8, -14, 15, -16, 17, 18, 19, 110]));
-    test_vcombine!(test_vcombine_u8 => vcombine_u8([3_u8, 4, 5, 6, 7, 8, 9, 10], [13_u8, 14, 15, 16, 17, 18, 19, 110]));
-    test_vcombine!(test_vcombine_p8 => vcombine_p8([3_u8, 4, 5, 6, 7, 8, 9, 10], [13_u8, 14, 15, 16, 17, 18, 19, 110]));
-
-    test_vcombine!(test_vcombine_s16 => vcombine_s16([3_i16, -4, 5, -6], [13_i16, -14, 15, -16]));
-    test_vcombine!(test_vcombine_u16 => vcombine_u16([3_u16, 4, 5, 6], [13_u16, 14, 15, 16]));
-    test_vcombine!(test_vcombine_p16 => vcombine_p16([3_u16, 4, 5, 6], [13_u16, 14, 15, 16]));
-    // FIXME: 16-bit floats
-    // test_vcombine!(test_vcombine_f16 => vcombine_f16([3_f16, 4., 5., 6.],
-    // [13_f16, 14., 15., 16.]));
-
-    test_vcombine!(test_vcombine_s32 => vcombine_s32([3_i32, -4], [13_i32, -14]));
-    test_vcombine!(test_vcombine_u32 => vcombine_u32([3_u32, 4], [13_u32, 14]));
-    // note: poly32x4 does not exist, and neither does vcombine_p32
-    test_vcombine!(test_vcombine_f32 => vcombine_f32([3_f32, -4.], [13_f32, -14.]));
-
-    test_vcombine!(test_vcombine_s64 => vcombine_s64([-3_i64], [13_i64]));
-    test_vcombine!(test_vcombine_u64 => vcombine_u64([3_u64], [13_u64]));
-    test_vcombine!(test_vcombine_p64 => vcombine_p64([3_u64], [13_u64]));
-    test_vcombine!(test_vcombine_f64 => vcombine_f64([-3_f64], [13_f64]));
-
     #[simd_test(enable = "neon")]
     unsafe fn test_vdup_n_f64() {
         let a: f64 = 3.3;
