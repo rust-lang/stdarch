@@ -6915,6 +6915,177 @@ pub unsafe fn vusmmlaq_s32(a: int32x4_t, b: uint8x16_t, c: int8x16_t) -> int32x4
     vusmmlaq_s32_(a, b, c)
 }
 
+/* FIXME: 16-bit float
+/// Vector combine
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(test, assert_instr(nop))]
+pub unsafe fn vcombine_f16 ( low: float16x4_t,  high: float16x4_t) -> float16x8_t {
+    simd_shuffle8!(low, high, [0, 1, 2, 3, 4, 5, 6, 7])
+}
+*/
+
+/// Vector combine
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(test, assert_instr(nop))]
+#[stable(feature = "neon_intrinsics", since = "1.59.0")]
+pub unsafe fn vcombine_f32(low: float32x2_t, high: float32x2_t) -> float32x4_t {
+    simd_shuffle4!(low, high, [0, 1, 2, 3])
+}
+
+/// Vector combine
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(test, assert_instr(nop))]
+#[stable(feature = "neon_intrinsics", since = "1.59.0")]
+pub unsafe fn vcombine_p8(low: poly8x8_t, high: poly8x8_t) -> poly8x16_t {
+    simd_shuffle16!(
+        low,
+        high,
+        [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+    )
+}
+
+/// Vector combine
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(test, assert_instr(nop))]
+#[stable(feature = "neon_intrinsics", since = "1.59.0")]
+pub unsafe fn vcombine_p16(low: poly16x4_t, high: poly16x4_t) -> poly16x8_t {
+    simd_shuffle8!(low, high, [0, 1, 2, 3, 4, 5, 6, 7])
+}
+
+/// Vector combine
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(test, assert_instr(nop))]
+#[cfg_attr(
+    target_arch = "aarch64",
+    stable(feature = "neon_intrinsics", since = "1.59.0")
+)]
+pub unsafe fn vcombine_s8(low: int8x8_t, high: int8x8_t) -> int8x16_t {
+    simd_shuffle16!(
+        low,
+        high,
+        [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+    )
+}
+
+/// Vector combine
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(test, assert_instr(nop))]
+#[cfg_attr(
+    target_arch = "aarch64",
+    stable(feature = "neon_intrinsics", since = "1.59.0")
+)]
+pub unsafe fn vcombine_s16(low: int16x4_t, high: int16x4_t) -> int16x8_t {
+    simd_shuffle8!(low, high, [0, 1, 2, 3, 4, 5, 6, 7])
+}
+
+/// Vector combine
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(test, assert_instr(nop))]
+#[cfg_attr(
+    target_arch = "aarch64",
+    stable(feature = "neon_intrinsics", since = "1.59.0")
+)]
+pub unsafe fn vcombine_s32(low: int32x2_t, high: int32x2_t) -> int32x4_t {
+    simd_shuffle4!(low, high, [0, 1, 2, 3])
+}
+
+/// Vector combine
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(test, assert_instr(nop))]
+#[cfg_attr(
+    target_arch = "aarch64",
+    stable(feature = "neon_intrinsics", since = "1.59.0")
+)]
+pub unsafe fn vcombine_s64(low: int64x1_t, high: int64x1_t) -> int64x2_t {
+    simd_shuffle2!(low, high, [0, 1])
+}
+
+/// Vector combine
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(test, assert_instr(nop))]
+#[cfg_attr(
+    target_arch = "aarch64",
+    stable(feature = "neon_intrinsics", since = "1.59.0")
+)]
+pub unsafe fn vcombine_u8(low: uint8x8_t, high: uint8x8_t) -> uint8x16_t {
+    simd_shuffle16!(
+        low,
+        high,
+        [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+    )
+}
+
+/// Vector combine
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(test, assert_instr(nop))]
+#[cfg_attr(
+    target_arch = "aarch64",
+    stable(feature = "neon_intrinsics", since = "1.59.0")
+)]
+pub unsafe fn vcombine_u16(low: uint16x4_t, high: uint16x4_t) -> uint16x8_t {
+    simd_shuffle8!(low, high, [0, 1, 2, 3, 4, 5, 6, 7])
+}
+
+/// Vector combine
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
+#[cfg_attr(all(test, target_arch = "aarch64"), assert_instr(mov))]
+#[cfg_attr(
+    target_arch = "aarch64",
+    stable(feature = "neon_intrinsics", since = "1.59.0")
+)]
+pub unsafe fn vcombine_u32(low: uint32x2_t, high: uint32x2_t) -> uint32x4_t {
+    simd_shuffle4!(low, high, [0, 1, 2, 3])
+}
+
+/// Vector combine
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(test, assert_instr(nop))]
+#[cfg_attr(
+    target_arch = "aarch64",
+    stable(feature = "neon_intrinsics", since = "1.59.0")
+)]
+pub unsafe fn vcombine_u64(low: uint64x1_t, high: uint64x1_t) -> uint64x2_t {
+    simd_shuffle2!(low, high, [0, 1])
+}
+
+/// Vector combine
+#[inline]
+#[target_feature(enable = "neon")]
+#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
+#[cfg_attr(test, assert_instr(nop))]
+#[cfg_attr(
+    target_arch = "aarch64",
+    stable(feature = "neon_intrinsics", since = "1.59.0")
+)]
+pub unsafe fn vcombine_p64(low: poly64x1_t, high: poly64x1_t) -> poly64x2_t {
+    simd_shuffle2!(low, high, [0, 1])
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
