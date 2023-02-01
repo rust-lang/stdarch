@@ -56,7 +56,7 @@ pub(crate) struct AuxVec {
 ///
 /// Note: The `std_detect_dlsym_getauxval` cargo feature is ignored on `*-linux-gnu*` targets,
 /// since [all `*-linux-gnu*` targets ([since Rust 1.64](https://blog.rust-lang.org/2022/08/01/Increasing-glibc-kernel-requirements.html))
-/// have glibc requirements higher than [glibc 2.16 that `getauxval` added](https://sourceware.org/legacy-ml/libc-announce/2012/msg00000.html),
+/// have glibc requirements higher than [glibc 2.16 that added `getauxval`](https://sourceware.org/legacy-ml/libc-announce/2012/msg00000.html),
 /// and we can safely assume [`getauxval`] is linked to the binary.
 ///
 /// For more information about when `getauxval` is available check the great
