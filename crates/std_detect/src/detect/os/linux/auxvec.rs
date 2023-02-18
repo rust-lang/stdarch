@@ -52,7 +52,7 @@ pub(crate) struct AuxVec {
 /// Note that run-time feature detection is not invoked for features that can
 /// be detected at compile-time. Also note that if this function returns an
 /// error, cpuinfo still can (and will) be used to try to perform run-time
-/// feature detecton on some platforms.
+/// feature detection on some platforms.
 ///
 /// For more information about when `getauxval` is available check the great
 /// [`auxv` crate documentation][auxv_docs].
