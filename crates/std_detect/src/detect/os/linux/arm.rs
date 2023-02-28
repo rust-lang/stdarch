@@ -16,50 +16,56 @@ pub(crate) fn detect_features() -> cache::Initializer {
     // The values are part of the platform-specific [asm/hwcap.h][hwcap]
     //
     // [hwcap]: https://github.com/torvalds/linux/blob/master/arch/arm/include/uapi/asm/hwcap.h
+    //
+    // The feature dependencies here come directly from LLVM's feature definitions:
+    // https://github.com/llvm/llvm-project/blob/main/llvm/lib/Target/ARM/ARM.td
     if let Ok(auxv) = auxvec::auxv() {
-        enable_feature(&mut value, Feature::neon, bit::test(auxv.hwcap, 12));
+        let neon = bit::test(auxv.hwcap, 12);
+        enable_feature(&mut value, Feature::neon, neon);
         enable_feature(&mut value, Feature::pmull, bit::test(auxv.hwcap2, 1));
         enable_feature(&mut value, Feature::crc, bit::test(auxv.hwcap2, 4));
+        // Cryptographic extensions require NEON
         enable_feature(
             &mut value,
             Feature::crypto,
-            bit::test(auxv.hwcap2, 0)
+            neon && bit::test(auxv.hwcap2, 0)
                 && bit::test(auxv.hwcap2, 1)
                 && bit::test(auxv.hwcap2, 2)
                 && bit::test(auxv.hwcap2, 3),
         );
-        enable_feature(&mut value, Feature::aes, bit::test(auxv.hwcap2, 0));
+        enable_feature(&mut value, Feature::aes, neon && bit::test(auxv.hwcap2, 0));
         // SHA2 requires SHA1 & SHA2 features
         enable_feature(
             &mut value,
             Feature::sha2,
-            bit::test(auxv.hwcap2, 2) && bit::test(auxv.hwcap2, 3),
+            neon && bit::test(auxv.hwcap2, 2) && bit::test(auxv.hwcap2, 3),
         );
         return value;
     }
 
     #[cfg(feature = "std_detect_file_io")]
     if let Ok(c) = super::cpuinfo::CpuInfo::new() {
-        enable_feature(
-            &mut value,
-            Feature::neon,
-            c.field("Features").has("neon") && !has_broken_neon(&c),
-        );
+        let neon = c.field("Features").has("neon") && !has_broken_neon(&c);
+        enable_feature(&mut value, Feature::neon, neon);
         enable_feature(&mut value, Feature::pmull, c.field("Features").has("pmull"));
         enable_feature(&mut value, Feature::crc, c.field("Features").has("crc32"));
         enable_feature(
             &mut value,
             Feature::crypto,
-            c.field("Features").has("aes")
+            neon && c.field("Features").has("aes")
                 && c.field("Features").has("pmull")
                 && c.field("Features").has("sha1")
                 && c.field("Features").has("sha2"),
         );
-        enable_feature(&mut value, Feature::aes, c.field("Features").has("aes"));
+        enable_feature(
+            &mut value,
+            Feature::aes,
+            neon && c.field("Features").has("aes"),
+        );
         enable_feature(
             &mut value,
             Feature::sha2,
-            c.field("Features").has("sha1") && c.field("Features").has("sha2"),
+            neon && c.field("Features").has("sha1") && c.field("Features").has("sha2"),
         );
         return value;
     }
