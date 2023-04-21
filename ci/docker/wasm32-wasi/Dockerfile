@@ -12,5 +12,5 @@ ENV PATH=$PATH:/wasmtime-v8.0.0-x86_64-linux
 
 ENV CARGO_TARGET_WASM32_WASI_RUNNER="wasmtime \
   --wasm-features=threads,relaxed-simd \
-  --mapdir .::/checkout/target/wasm32-wasi/release/deps \
+  --mapdir .::/checkout/target/wasm32-wasi-preview1/release/deps \
   --"
