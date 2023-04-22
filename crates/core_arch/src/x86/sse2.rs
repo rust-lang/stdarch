@@ -951,7 +951,7 @@ pub unsafe fn _mm_cvtps_epi32(a: __m128) -> __m128i {
 #[target_feature(enable = "sse2")]
 #[stable(feature = "simd_x86", since = "1.27.0")]
 pub unsafe fn _mm_cvtsi32_si128(a: i32) -> __m128i {
-    transmute(i32x4::new(a, 0, 0, 0))
+    transmute(i32x4::new([a, 0, 0, 0]))
 }
 
 /// Returns the lowest element of `a`.
@@ -973,7 +973,7 @@ pub unsafe fn _mm_cvtsi128_si32(a: __m128i) -> i32 {
 // no particular instruction to test
 #[stable(feature = "simd_x86", since = "1.27.0")]
 pub unsafe fn _mm_set_epi64x(e1: i64, e0: i64) -> __m128i {
-    transmute(i64x2::new(e0, e1))
+    transmute(i64x2::new([e0, e1]))
 }
 
 /// Sets packed 32-bit integers with the supplied values.
@@ -984,7 +984,7 @@ pub unsafe fn _mm_set_epi64x(e1: i64, e0: i64) -> __m128i {
 // no particular instruction to test
 #[stable(feature = "simd_x86", since = "1.27.0")]
 pub unsafe fn _mm_set_epi32(e3: i32, e2: i32, e1: i32, e0: i32) -> __m128i {
-    transmute(i32x4::new(e0, e1, e2, e3))
+    transmute(i32x4::new([e0, e1, e2, e3]))
 }
 
 /// Sets packed 16-bit integers with the supplied values.
@@ -1004,7 +1004,7 @@ pub unsafe fn _mm_set_epi16(
     e1: i16,
     e0: i16,
 ) -> __m128i {
-    transmute(i16x8::new(e0, e1, e2, e3, e4, e5, e6, e7))
+    transmute(i16x8::new([e0, e1, e2, e3, e4, e5, e6, e7]))
 }
 
 /// Sets packed 8-bit integers with the supplied values.
@@ -1034,7 +1034,7 @@ pub unsafe fn _mm_set_epi8(
 ) -> __m128i {
     #[rustfmt::skip]
     transmute(i8x16::new(
-        e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15,
+        [e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15]
     ))
 }
 
@@ -2371,7 +2371,7 @@ pub unsafe fn _mm_set_pd1(a: f64) -> __m128d {
 #[target_feature(enable = "sse2")]
 #[stable(feature = "simd_x86", since = "1.27.0")]
 pub unsafe fn _mm_set_pd(a: f64, b: f64) -> __m128d {
-    __m128d(b, a)
+    __m128d([b, a])
 }
 
 /// Sets packed double-precision (64-bit) floating-point elements in the return
@@ -2746,7 +2746,7 @@ pub unsafe fn _mm_castsi128_ps(a: __m128i) -> __m128 {
 #[target_feature(enable = "sse2")]
 #[stable(feature = "simd_x86", since = "1.27.0")]
 pub unsafe fn _mm_undefined_pd() -> __m128d {
-    __m128d(0.0, 0.0)
+    __m128d([0.0, 0.0])
 }
 
 /// Returns vector of type __m128i with indeterminate elements.
@@ -2758,7 +2758,7 @@ pub unsafe fn _mm_undefined_pd() -> __m128d {
 #[target_feature(enable = "sse2")]
 #[stable(feature = "simd_x86", since = "1.27.0")]
 pub unsafe fn _mm_undefined_si128() -> __m128i {
-    __m128i(0, 0)
+    __m128i([0, 0])
 }
 
 /// The resulting `__m128d` element is composed by the low-order values of

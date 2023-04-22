@@ -15013,9 +15013,9 @@ pub unsafe fn _mm512_setr_epi32(
     e1: i32,
     e0: i32,
 ) -> __m512i {
-    let r = i32x16(
+    let r = i32x16([
         e15, e14, e13, e12, e11, e10, e9, e8, e7, e6, e5, e4, e3, e2, e1, e0,
-    );
+    ]);
     transmute(r)
 }
 
@@ -15090,12 +15090,12 @@ pub unsafe fn _mm512_set_epi8(
     e1: i8,
     e0: i8,
 ) -> __m512i {
-    let r = i8x64(
+    let r = i8x64([
         e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15, e16, e17, e18, e19,
         e20, e21, e22, e23, e24, e25, e26, e27, e28, e29, e30, e31, e32, e33, e34, e35, e36, e37,
         e38, e39, e40, e41, e42, e43, e44, e45, e46, e47, e48, e49, e50, e51, e52, e53, e54, e55,
         e56, e57, e58, e59, e60, e61, e62, e63,
-    );
+    ]);
     transmute(r)
 }
 
@@ -15138,10 +15138,10 @@ pub unsafe fn _mm512_set_epi16(
     e1: i16,
     e0: i16,
 ) -> __m512i {
-    let r = i16x32(
+    let r = i16x32([
         e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15, e16, e17, e18, e19,
         e20, e21, e22, e23, e24, e25, e26, e27, e28, e29, e30, e31,
-    );
+    ]);
     transmute(r)
 }
 
@@ -15232,7 +15232,7 @@ pub unsafe fn _mm512_setr_epi64(
     e6: i64,
     e7: i64,
 ) -> __m512i {
-    let r = i64x8::new(e0, e1, e2, e3, e4, e5, e6, e7);
+    let r = i64x8::new([e0, e1, e2, e3, e4, e5, e6, e7]);
     transmute(r)
 }
 
@@ -26207,9 +26207,9 @@ pub unsafe fn _mm512_setr_ps(
     e14: f32,
     e15: f32,
 ) -> __m512 {
-    let r = f32x16::new(
+    let r = f32x16::new([
         e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15,
-    );
+    ]);
     transmute(r)
 }
 
@@ -26437,7 +26437,7 @@ pub unsafe fn _mm_maskz_set1_epi64(k: __mmask8, a: i64) -> __m128i {
 #[inline]
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_set4_epi64(d: i64, c: i64, b: i64, a: i64) -> __m512i {
-    let r = i64x8::new(d, c, b, a, d, c, b, a);
+    let r = i64x8::new([d, c, b, a, d, c, b, a]);
     transmute(r)
 }
 
@@ -26447,7 +26447,7 @@ pub unsafe fn _mm512_set4_epi64(d: i64, c: i64, b: i64, a: i64) -> __m512i {
 #[inline]
 #[target_feature(enable = "avx512f")]
 pub unsafe fn _mm512_setr4_epi64(d: i64, c: i64, b: i64, a: i64) -> __m512i {
-    let r = i64x8::new(a, b, c, d, a, b, c, d);
+    let r = i64x8::new([a, b, c, d, a, b, c, d]);
     transmute(r)
 }
 
@@ -32238,7 +32238,7 @@ pub unsafe fn _mm512_setr_pd(
     e6: f64,
     e7: f64,
 ) -> __m512d {
-    let r = f64x8::new(e0, e1, e2, e3, e4, e5, e6, e7);
+    let r = f64x8::new([e0, e1, e2, e3, e4, e5, e6, e7]);
     transmute(r)
 }
 
