@@ -18,13 +18,13 @@ use crate::mem::transmute;
 types! {
     // pub struct vector_Float16 = f16x8;
     /// PowerPC-specific 128-bit wide vector of two packed `i64`
-    pub struct vector_signed_long(i64, i64);
+    pub struct vector_signed_long([i64; 2]);
     /// PowerPC-specific 128-bit wide vector of two packed `u64`
-    pub struct vector_unsigned_long(u64, u64);
+    pub struct vector_unsigned_long([u64; 2]);
     /// PowerPC-specific 128-bit wide vector mask of two `i64`
-    pub struct vector_bool_long(i64, i64);
+    pub struct vector_bool_long([i64; 2]);
     /// PowerPC-specific 128-bit wide vector of two packed `f64`
-    pub struct vector_double(f64, f64);
+    pub struct vector_double([f64; 2]);
     // pub struct vector_signed_long_long = vector_signed_long;
     // pub struct vector_unsigned_long_long = vector_unsigned_long;
     // pub struct vector_bool_long_long = vector_bool_long;

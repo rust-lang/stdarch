@@ -69,9 +69,9 @@ use crate::{core_arch::arm::dsp::int16x2_t, mem::transmute};
 
 types! {
     /// ARM-specific 32-bit wide vector of four packed `i8`.
-    pub struct int8x4_t(i8, i8, i8, i8);
+    pub struct int8x4_t([i8; 4]);
     /// ARM-specific 32-bit wide vector of four packed `u8`.
-    pub struct uint8x4_t(u8, u8, u8, u8);
+    pub struct uint8x4_t([u8; 4]);
 }
 
 macro_rules! dsp_call {

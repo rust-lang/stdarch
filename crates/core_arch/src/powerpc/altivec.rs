@@ -23,30 +23,27 @@ use stdarch_test::assert_instr;
 
 types! {
     /// PowerPC-specific 128-bit wide vector of sixteen packed `i8`
-    pub struct vector_signed_char(i8, i8, i8, i8, i8, i8, i8, i8,
-                                  i8, i8, i8, i8, i8, i8, i8, i8);
+    pub struct vector_signed_char([i8; 16]);
     /// PowerPC-specific 128-bit wide vector of sixteen packed `u8`
-    pub struct vector_unsigned_char(u8, u8, u8, u8, u8, u8, u8, u8,
-                                    u8, u8, u8, u8, u8, u8, u8, u8);
+    pub struct vector_unsigned_char([u8; 16]);
 
     /// PowerPC-specific 128-bit wide vector mask of sixteen packed elements
-    pub struct vector_bool_char(i8, i8, i8, i8, i8, i8, i8, i8,
-                                i8, i8, i8, i8, i8, i8, i8, i8);
+    pub struct vector_bool_char([i8; 16]);
     /// PowerPC-specific 128-bit wide vector of eight packed `i16`
-    pub struct vector_signed_short(i16, i16, i16, i16, i16, i16, i16, i16);
+    pub struct vector_signed_short([i16; 8]);
     /// PowerPC-specific 128-bit wide vector of eight packed `u16`
-    pub struct vector_unsigned_short(u16, u16, u16, u16, u16, u16, u16, u16);
+    pub struct vector_unsigned_short([u16; 8]);
     /// PowerPC-specific 128-bit wide vector mask of eight packed elements
-    pub struct vector_bool_short(i16, i16, i16, i16, i16, i16, i16, i16);
+    pub struct vector_bool_short([i16; 8]);
     // pub struct vector_pixel(???);
     /// PowerPC-specific 128-bit wide vector of four packed `i32`
-    pub struct vector_signed_int(i32, i32, i32, i32);
+    pub struct vector_signed_int([i32; 4]);
     /// PowerPC-specific 128-bit wide vector of four packed `u32`
-    pub struct vector_unsigned_int(u32, u32, u32, u32);
+    pub struct vector_unsigned_int([u32; 4]);
     /// PowerPC-specific 128-bit wide vector mask of four packed elements
-    pub struct vector_bool_int(i32, i32, i32, i32);
+    pub struct vector_bool_int([i32; 4]);
     /// PowerPC-specific 128-bit wide vector of four packed `f32`
-    pub struct vector_float(f32, f32, f32, f32);
+    pub struct vector_float([f32; 4]);
 }
 
 #[allow(improper_ctypes)]
