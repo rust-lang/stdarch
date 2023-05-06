@@ -52,14 +52,14 @@ macro_rules! static_assert_simm_bits {
 macro_rules! types {
     ($(
         $(#[$doc:meta])*
-        pub struct $name:ident($field:tt);
+        pub struct $name:ident($( $field:tt )+);
     )*) => ($(
         $(#[$doc])*
         #[derive(Copy, Clone, Debug)]
         #[allow(non_camel_case_types)]
         #[repr(simd)]
         #[allow(clippy::missing_inline_in_public_items)]
-        pub struct $name($field);
+        pub struct $name($( $field )+);
     )*)
 }
 
