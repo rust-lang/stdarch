@@ -48,7 +48,7 @@ types! {
     /// # }
     /// ```
     #[stable(feature = "simd_x86", since = "1.27.0")]
-    pub struct __m128i(i64, i64);
+    pub struct __m128i([i64; 2]);
 
     /// 128-bit wide set of four `f32` types, x86-specific
     ///
@@ -85,7 +85,7 @@ types! {
     /// # }
     /// ```
     #[stable(feature = "simd_x86", since = "1.27.0")]
-    pub struct __m128(f32, f32, f32, f32);
+    pub struct __m128([f32; 4]);
 
     /// 128-bit wide set of two `f64` types, x86-specific
     ///
@@ -122,7 +122,7 @@ types! {
     /// # }
     /// ```
     #[stable(feature = "simd_x86", since = "1.27.0")]
-    pub struct __m128d(f64, f64);
+    pub struct __m128d([f64; 2]);
 
     /// 256-bit wide integer vector type, x86-specific
     ///
@@ -163,7 +163,7 @@ types! {
     /// # }
     /// ```
     #[stable(feature = "simd_x86", since = "1.27.0")]
-    pub struct __m256i(i64, i64, i64, i64);
+    pub struct __m256i([i64; 4]);
 
     /// 256-bit wide set of eight `f32` types, x86-specific
     ///
@@ -200,7 +200,7 @@ types! {
     /// # }
     /// ```
     #[stable(feature = "simd_x86", since = "1.27.0")]
-    pub struct __m256(f32, f32, f32, f32, f32, f32, f32, f32);
+    pub struct __m256([f32; 8]);
 
     /// 256-bit wide set of four `f64` types, x86-specific
     ///
@@ -237,7 +237,7 @@ types! {
     /// # }
     /// ```
     #[stable(feature = "simd_x86", since = "1.27.0")]
-    pub struct __m256d(f64, f64, f64, f64);
+    pub struct __m256d([f64; 4]);
 
     /// 512-bit wide integer vector type, x86-specific
     ///
@@ -258,7 +258,7 @@ types! {
     ///
     /// Note that this means that an instance of `__m512i` typically just means
     /// a "bag of bits" which is left up to interpretation at the point of use.
-    pub struct __m512i(i64, i64, i64, i64, i64, i64, i64, i64);
+    pub struct __m512i([i64; 8]);
 
     /// 512-bit wide set of sixteen `f32` types, x86-specific
     ///
@@ -275,10 +275,7 @@ types! {
     /// Most intrinsics using `__m512` are prefixed with `_mm512_` and are
     /// suffixed with "ps" (or otherwise contain "ps"). Not to be confused with
     /// "pd" which is used for `__m512d`.
-    pub struct __m512(
-        f32, f32, f32, f32, f32, f32, f32, f32,
-        f32, f32, f32, f32, f32, f32, f32, f32,
-    );
+    pub struct __m512([f32; 16]);
 
     /// 512-bit wide set of eight `f64` types, x86-specific
     ///
@@ -295,14 +292,14 @@ types! {
     /// Most intrinsics using `__m512d` are prefixed with `_mm512_` and are
     /// suffixed with "pd" (or otherwise contain "pd"). Not to be confused with
     /// "ps" which is used for `__m512`.
-    pub struct __m512d(f64, f64, f64, f64, f64, f64, f64, f64);
+    pub struct __m512d([f64; 8]);
 
     /// 128-bit wide set of eight 'u16' types, x86-specific
     ///
     /// This type is representing a 128-bit SIMD register which internally is consisted of
     /// eight packed `u16` instances. Its purpose is for bf16 related intrinsic
     /// implementations.
-    pub struct __m128bh(u16, u16, u16, u16, u16, u16, u16, u16);
+    pub struct __m128bh([u16; 8]);
 
     /// 256-bit wide set of 16 'u16' types, x86-specific
     ///
@@ -310,10 +307,7 @@ types! {
     /// representing a 256-bit SIMD register which internally is consisted of
     /// 16 packed `u16` instances. Its purpose is for bf16 related intrinsic
     /// implementations.
-    pub struct __m256bh(
-        u16, u16, u16, u16, u16, u16, u16, u16,
-        u16, u16, u16, u16, u16, u16, u16, u16
-    );
+    pub struct __m256bh([u16; 16]);
 
     /// 512-bit wide set of 32 'u16' types, x86-specific
     ///
@@ -321,12 +315,7 @@ types! {
     /// representing a 512-bit SIMD register which internally is consisted of
     /// 32 packed `u16` instances. Its purpose is for bf16 related intrinsic
     /// implementations.
-    pub struct __m512bh(
-        u16, u16, u16, u16, u16, u16, u16, u16,
-        u16, u16, u16, u16, u16, u16, u16, u16,
-        u16, u16, u16, u16, u16, u16, u16, u16,
-        u16, u16, u16, u16, u16, u16, u16, u16
-    );
+    pub struct __m512bh([u16; 32]);
 }
 
 /// The `__mmask64` type used in AVX-512 intrinsics, a 64-bit integer

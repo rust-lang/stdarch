@@ -2263,7 +2263,7 @@ pub unsafe fn _mm256_set_epi64x(a: i64, b: i64, c: i64, d: i64) -> __m256i {
 // This intrinsic has no corresponding instruction.
 #[stable(feature = "simd_x86", since = "1.27.0")]
 pub unsafe fn _mm256_setr_pd(a: f64, b: f64, c: f64, d: f64) -> __m256d {
-    __m256d(a, b, c, d)
+    __m256d([a, b, c, d])
 }
 
 /// Sets packed single-precision (32-bit) floating-point elements in returned
@@ -2284,7 +2284,7 @@ pub unsafe fn _mm256_setr_ps(
     g: f32,
     h: f32,
 ) -> __m256 {
-    __m256(a, b, c, d, e, f, g, h)
+    __m256([a, b, c, d, e, f, g, h])
 }
 
 /// Sets packed 8-bit integers in returned vector with the supplied values in
@@ -2331,10 +2331,10 @@ pub unsafe fn _mm256_setr_epi8(
 ) -> __m256i {
     #[rustfmt::skip]
     transmute(i8x32::new(
-        e00, e01, e02, e03, e04, e05, e06, e07,
+    [e00, e01, e02, e03, e04, e05, e06, e07,
         e08, e09, e10, e11, e12, e13, e14, e15,
         e16, e17, e18, e19, e20, e21, e22, e23,
-        e24, e25, e26, e27, e28, e29, e30, e31,
+        e24, e25, e26, e27, e28, e29, e30, e31]
     ))
 }
 
@@ -2366,10 +2366,10 @@ pub unsafe fn _mm256_setr_epi16(
 ) -> __m256i {
     #[rustfmt::skip]
     transmute(i16x16::new(
-        e00, e01, e02, e03,
+        [e00, e01, e02, e03,
         e04, e05, e06, e07,
         e08, e09, e10, e11,
-        e12, e13, e14, e15,
+        e12, e13, e14, e15]
     ))
 }
 
@@ -2391,7 +2391,7 @@ pub unsafe fn _mm256_setr_epi32(
     e6: i32,
     e7: i32,
 ) -> __m256i {
-    transmute(i32x8::new(e0, e1, e2, e3, e4, e5, e6, e7))
+    transmute(i32x8::new([e0, e1, e2, e3, e4, e5, e6, e7]))
 }
 
 /// Sets packed 64-bit integers in returned vector with the supplied values in
@@ -2403,7 +2403,7 @@ pub unsafe fn _mm256_setr_epi32(
 // This intrinsic has no corresponding instruction.
 #[stable(feature = "simd_x86", since = "1.27.0")]
 pub unsafe fn _mm256_setr_epi64x(a: i64, b: i64, c: i64, d: i64) -> __m256i {
-    transmute(i64x4::new(a, b, c, d))
+    transmute(i64x4::new([a, b, c, d]))
 }
 
 /// Broadcasts double-precision (64-bit) floating-point value `a` to all
@@ -2723,7 +2723,7 @@ pub unsafe fn _mm256_undefined_pd() -> __m256d {
 // This intrinsic has no corresponding instruction.
 #[stable(feature = "simd_x86", since = "1.27.0")]
 pub unsafe fn _mm256_undefined_si256() -> __m256i {
-    __m256i(0, 0, 0, 0)
+    __m256i([0, 0, 0, 0])
 }
 
 /// Sets packed __m256 returned vector with the supplied values.

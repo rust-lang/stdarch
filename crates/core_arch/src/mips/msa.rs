@@ -12,56 +12,34 @@ use crate::mem;
 
 types! {
     // / MIPS-specific 128-bit wide vector of 16 packed `i8`.
-   pub struct v16i8(
-       i8, i8, i8, i8, i8, i8, i8, i8,
-       i8, i8, i8, i8, i8, i8, i8, i8,
-   );
+   pub struct v16i8([i8; 16]);
 
     // / MIPS-specific 128-bit wide vector of 8 packed `i16`.
-   pub struct v8i16(
-       i16, i16, i16, i16, i16, i16, i16, i16,
-   );
+   pub struct v8i16([i16; 8]);
 
     // / MIPS-specific 128-bit wide vector of 4 packed `i32`.
-   pub struct v4i32(
-       i32, i32, i32, i32,
-   );
+   pub struct v4i32([i32; 4]);
 
     // / MIPS-specific 128-bit wide vector of 2 packed `i64`.
-   pub struct v2i64(
-       i64, i64,
-   );
+   pub struct v2i64([i64; 2]);
 
     // / MIPS-specific 128-bit wide vector of 16 packed `u8`.
-   pub struct v16u8(
-       u8, u8, u8, u8, u8, u8, u8, u8,
-       u8, u8, u8, u8, u8, u8, u8, u8,
-   );
+   pub struct v16u8([u8; 16]);
 
     // / MIPS-specific 128-bit wide vector of 8 packed `u16`.
-   pub struct v8u16(
-       u16, u16, u16, u16, u16, u16, u16, u16,
-   );
+   pub struct v8u16([u16; 8]);
 
     // / MIPS-specific 128-bit wide vector of 4 packed `u32`.
-   pub struct v4u32(
-       u32, u32, u32, u32,
-   );
+   pub struct v4u32([u32; 4]);
 
     // / MIPS-specific 128-bit wide vector of 2 packed `u64`.
-   pub struct v2u64(
-       u64, u64,
-   );
+   pub struct v2u64([u64; 2]);
 
    // / MIPS-specific 128-bit wide vector of 4 packed `f32`.
-   pub struct v4f32(
-       f32, f32, f32, f32,
-   );
+   pub struct v4f32([f32; 4]);
 
     // / MIPS-specific 128-bit wide vector of 2 packed `f64`.
-   pub struct v2f64(
-       f64, f64,
-   );
+   pub struct v2f64([f64; 2]);
 }
 
 #[allow(improper_ctypes)]

@@ -21,10 +21,10 @@ use stdarch_test::assert_instr;
 types! {
     /// ARM-specific 64-bit wide vector of one packed `f64`.
     #[stable(feature = "neon_intrinsics", since = "1.59.0")]
-    pub struct float64x1_t(f64); // FIXME: check this!
+    pub struct float64x1_t([f64; 1]); // FIXME: check this!
     /// ARM-specific 128-bit wide vector of two packed `f64`.
     #[stable(feature = "neon_intrinsics", since = "1.59.0")]
-    pub struct float64x2_t(f64, f64);
+    pub struct float64x2_t([f64; 2]);
 }
 
 /// ARM-specific type containing two `float64x1_t` vectors.
@@ -1980,7 +1980,7 @@ pub unsafe fn vdup_n_p64(value: p64) -> poly64x1_t {
 #[cfg_attr(test, assert_instr(nop))]
 #[stable(feature = "neon_intrinsics", since = "1.59.0")]
 pub unsafe fn vdup_n_f64(value: f64) -> float64x1_t {
-    float64x1_t(value)
+    float64x1_t([value])
 }
 
 /// Duplicate vector element to vector or scalar
@@ -1998,7 +1998,7 @@ pub unsafe fn vdupq_n_p64(value: p64) -> poly64x2_t {
 #[cfg_attr(test, assert_instr(dup))]
 #[stable(feature = "neon_intrinsics", since = "1.59.0")]
 pub unsafe fn vdupq_n_f64(value: f64) -> float64x2_t {
-    float64x2_t(value, value)
+    float64x2_t([value, value])
 }
 
 /// Duplicate vector element to vector or scalar

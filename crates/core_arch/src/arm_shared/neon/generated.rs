@@ -1532,7 +1532,7 @@ pub unsafe fn vcgtq_s32(a: int32x4_t, b: int32x4_t) -> uint32x4_t {
     simd_gt(a, b)
 }
 
-/// Compare unsigned highe
+/// Compare unsigned greater than
 ///
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vcgt_u8)
 #[inline]
@@ -1545,7 +1545,7 @@ pub unsafe fn vcgt_u8(a: uint8x8_t, b: uint8x8_t) -> uint8x8_t {
     simd_gt(a, b)
 }
 
-/// Compare unsigned highe
+/// Compare unsigned greater than
 ///
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vcgtq_u8)
 #[inline]
@@ -1558,7 +1558,7 @@ pub unsafe fn vcgtq_u8(a: uint8x16_t, b: uint8x16_t) -> uint8x16_t {
     simd_gt(a, b)
 }
 
-/// Compare unsigned highe
+/// Compare unsigned greater than
 ///
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vcgt_u16)
 #[inline]
@@ -1571,7 +1571,7 @@ pub unsafe fn vcgt_u16(a: uint16x4_t, b: uint16x4_t) -> uint16x4_t {
     simd_gt(a, b)
 }
 
-/// Compare unsigned highe
+/// Compare unsigned greater than
 ///
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vcgtq_u16)
 #[inline]
@@ -1584,7 +1584,7 @@ pub unsafe fn vcgtq_u16(a: uint16x8_t, b: uint16x8_t) -> uint16x8_t {
     simd_gt(a, b)
 }
 
-/// Compare unsigned highe
+/// Compare unsigned greater than
 ///
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vcgt_u32)
 #[inline]
@@ -1597,7 +1597,7 @@ pub unsafe fn vcgt_u32(a: uint32x2_t, b: uint32x2_t) -> uint32x2_t {
     simd_gt(a, b)
 }
 
-/// Compare unsigned highe
+/// Compare unsigned greater than
 ///
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vcgtq_u32)
 #[inline]
@@ -34001,7 +34001,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1_s8_x2() {
         let a: [i8; 17] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
-        let e: [i8x8; 2] = [i8x8::new(1, 2, 3, 4, 5, 6, 7, 8), i8x8::new(9, 10, 11, 12, 13, 14, 15, 16)];
+        let e: [i8x8; 2] = [i8x8::new([1, 2, 3, 4, 5, 6, 7, 8]), i8x8::new([9, 10, 11, 12, 13, 14, 15, 16])];
         let r: [i8x8; 2] = transmute(vld1_s8_x2(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34009,7 +34009,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1_s16_x2() {
         let a: [i16; 9] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
-        let e: [i16x4; 2] = [i16x4::new(1, 2, 3, 4), i16x4::new(5, 6, 7, 8)];
+        let e: [i16x4; 2] = [i16x4::new([1, 2, 3, 4]), i16x4::new([5, 6, 7, 8])];
         let r: [i16x4; 2] = transmute(vld1_s16_x2(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34017,7 +34017,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1_s32_x2() {
         let a: [i32; 5] = [0, 1, 2, 3, 4];
-        let e: [i32x2; 2] = [i32x2::new(1, 2), i32x2::new(3, 4)];
+        let e: [i32x2; 2] = [i32x2::new([1, 2]), i32x2::new([3, 4])];
         let r: [i32x2; 2] = transmute(vld1_s32_x2(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34025,7 +34025,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1_s64_x2() {
         let a: [i64; 3] = [0, 1, 2];
-        let e: [i64x1; 2] = [i64x1::new(1), i64x1::new(2)];
+        let e: [i64x1; 2] = [i64x1::new([1]), i64x1::new([2])];
         let r: [i64x1; 2] = transmute(vld1_s64_x2(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34033,7 +34033,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1q_s8_x2() {
         let a: [i8; 33] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
-        let e: [i8x16; 2] = [i8x16::new(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16), i8x16::new(17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32)];
+        let e: [i8x16; 2] = [i8x16::new([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]), i8x16::new([17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32])];
         let r: [i8x16; 2] = transmute(vld1q_s8_x2(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34041,7 +34041,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1q_s16_x2() {
         let a: [i16; 17] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
-        let e: [i16x8; 2] = [i16x8::new(1, 2, 3, 4, 5, 6, 7, 8), i16x8::new(9, 10, 11, 12, 13, 14, 15, 16)];
+        let e: [i16x8; 2] = [i16x8::new([1, 2, 3, 4, 5, 6, 7, 8]), i16x8::new([9, 10, 11, 12, 13, 14, 15, 16])];
         let r: [i16x8; 2] = transmute(vld1q_s16_x2(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34049,7 +34049,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1q_s32_x2() {
         let a: [i32; 9] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
-        let e: [i32x4; 2] = [i32x4::new(1, 2, 3, 4), i32x4::new(5, 6, 7, 8)];
+        let e: [i32x4; 2] = [i32x4::new([1, 2, 3, 4]), i32x4::new([5, 6, 7, 8])];
         let r: [i32x4; 2] = transmute(vld1q_s32_x2(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34057,7 +34057,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1q_s64_x2() {
         let a: [i64; 5] = [0, 1, 2, 3, 4];
-        let e: [i64x2; 2] = [i64x2::new(1, 2), i64x2::new(3, 4)];
+        let e: [i64x2; 2] = [i64x2::new([1, 2]), i64x2::new([3, 4])];
         let r: [i64x2; 2] = transmute(vld1q_s64_x2(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34065,7 +34065,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1_s8_x3() {
         let a: [i8; 25] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
-        let e: [i8x8; 3] = [i8x8::new(1, 2, 3, 4, 5, 6, 7, 8), i8x8::new(9, 10, 11, 12, 13, 14, 15, 16), i8x8::new(17, 18, 19, 20, 21, 22, 23, 24)];
+        let e: [i8x8; 3] = [i8x8::new([1, 2, 3, 4, 5, 6, 7, 8]), i8x8::new([9, 10, 11, 12, 13, 14, 15, 16]), i8x8::new([17, 18, 19, 20, 21, 22, 23, 24])];
         let r: [i8x8; 3] = transmute(vld1_s8_x3(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34073,7 +34073,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1_s16_x3() {
         let a: [i16; 13] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-        let e: [i16x4; 3] = [i16x4::new(1, 2, 3, 4), i16x4::new(5, 6, 7, 8), i16x4::new(9, 10, 11, 12)];
+        let e: [i16x4; 3] = [i16x4::new([1, 2, 3, 4]), i16x4::new([5, 6, 7, 8]), i16x4::new([9, 10, 11, 12])];
         let r: [i16x4; 3] = transmute(vld1_s16_x3(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34081,7 +34081,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1_s32_x3() {
         let a: [i32; 7] = [0, 1, 2, 3, 4, 5, 6];
-        let e: [i32x2; 3] = [i32x2::new(1, 2), i32x2::new(3, 4), i32x2::new(5, 6)];
+        let e: [i32x2; 3] = [i32x2::new([1, 2]), i32x2::new([3, 4]), i32x2::new([5, 6])];
         let r: [i32x2; 3] = transmute(vld1_s32_x3(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34089,7 +34089,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1_s64_x3() {
         let a: [i64; 4] = [0, 1, 2, 3];
-        let e: [i64x1; 3] = [i64x1::new(1), i64x1::new(2), i64x1::new(3)];
+        let e: [i64x1; 3] = [i64x1::new([1]), i64x1::new([2]), i64x1::new([3])];
         let r: [i64x1; 3] = transmute(vld1_s64_x3(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34097,7 +34097,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1q_s8_x3() {
         let a: [i8; 49] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
-        let e: [i8x16; 3] = [i8x16::new(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16), i8x16::new(17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32), i8x16::new(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16)];
+        let e: [i8x16; 3] = [i8x16::new([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]), i8x16::new([17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32]), i8x16::new([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16])];
         let r: [i8x16; 3] = transmute(vld1q_s8_x3(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34105,7 +34105,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1q_s16_x3() {
         let a: [i16; 25] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
-        let e: [i16x8; 3] = [i16x8::new(1, 2, 3, 4, 5, 6, 7, 8), i16x8::new(9, 10, 11, 12, 13, 14, 15, 16), i16x8::new(17, 18, 19, 20, 21, 22, 23, 24)];
+        let e: [i16x8; 3] = [i16x8::new([1, 2, 3, 4, 5, 6, 7, 8]), i16x8::new([9, 10, 11, 12, 13, 14, 15, 16]), i16x8::new([17, 18, 19, 20, 21, 22, 23, 24])];
         let r: [i16x8; 3] = transmute(vld1q_s16_x3(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34113,7 +34113,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1q_s32_x3() {
         let a: [i32; 13] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-        let e: [i32x4; 3] = [i32x4::new(1, 2, 3, 4), i32x4::new(5, 6, 7, 8), i32x4::new(9, 10, 11, 12)];
+        let e: [i32x4; 3] = [i32x4::new([1, 2, 3, 4]), i32x4::new([5, 6, 7, 8]), i32x4::new([9, 10, 11, 12])];
         let r: [i32x4; 3] = transmute(vld1q_s32_x3(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34121,7 +34121,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1q_s64_x3() {
         let a: [i64; 7] = [0, 1, 2, 3, 4, 5, 6];
-        let e: [i64x2; 3] = [i64x2::new(1, 2), i64x2::new(3, 4), i64x2::new(5, 6)];
+        let e: [i64x2; 3] = [i64x2::new([1, 2]), i64x2::new([3, 4]), i64x2::new([5, 6])];
         let r: [i64x2; 3] = transmute(vld1q_s64_x3(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34129,7 +34129,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1_s8_x4() {
         let a: [i8; 33] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
-        let e: [i8x8; 4] = [i8x8::new(1, 2, 3, 4, 5, 6, 7, 8), i8x8::new(9, 10, 11, 12, 13, 14, 15, 16), i8x8::new(17, 18, 19, 20, 21, 22, 23, 24), i8x8::new(25, 26, 27, 28, 29, 30, 31, 32)];
+        let e: [i8x8; 4] = [i8x8::new([1, 2, 3, 4, 5, 6, 7, 8]), i8x8::new([9, 10, 11, 12, 13, 14, 15, 16]), i8x8::new([17, 18, 19, 20, 21, 22, 23, 24]), i8x8::new([25, 26, 27, 28, 29, 30, 31, 32])];
         let r: [i8x8; 4] = transmute(vld1_s8_x4(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34137,7 +34137,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1_s16_x4() {
         let a: [i16; 17] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
-        let e: [i16x4; 4] = [i16x4::new(1, 2, 3, 4), i16x4::new(5, 6, 7, 8), i16x4::new(9, 10, 11, 12), i16x4::new(13, 14, 15, 16)];
+        let e: [i16x4; 4] = [i16x4::new([1, 2, 3, 4]), i16x4::new([5, 6, 7, 8]), i16x4::new([9, 10, 11, 12]), i16x4::new([13, 14, 15, 16])];
         let r: [i16x4; 4] = transmute(vld1_s16_x4(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34145,7 +34145,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1_s32_x4() {
         let a: [i32; 9] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
-        let e: [i32x2; 4] = [i32x2::new(1, 2), i32x2::new(3, 4), i32x2::new(5, 6), i32x2::new(7, 8)];
+        let e: [i32x2; 4] = [i32x2::new([1, 2]), i32x2::new([3, 4]), i32x2::new([5, 6]), i32x2::new([7, 8])];
         let r: [i32x2; 4] = transmute(vld1_s32_x4(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34153,7 +34153,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1_s64_x4() {
         let a: [i64; 5] = [0, 1, 2, 3, 4];
-        let e: [i64x1; 4] = [i64x1::new(1), i64x1::new(2), i64x1::new(3), i64x1::new(4)];
+        let e: [i64x1; 4] = [i64x1::new([1]), i64x1::new([2]), i64x1::new([3]), i64x1::new([4])];
         let r: [i64x1; 4] = transmute(vld1_s64_x4(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34161,7 +34161,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1q_s8_x4() {
         let a: [i8; 65] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
-        let e: [i8x16; 4] = [i8x16::new(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16), i8x16::new(17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32), i8x16::new(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16), i8x16::new(17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32)];
+        let e: [i8x16; 4] = [i8x16::new([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]), i8x16::new([17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32]), i8x16::new([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]), i8x16::new([17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32])];
         let r: [i8x16; 4] = transmute(vld1q_s8_x4(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34169,7 +34169,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1q_s16_x4() {
         let a: [i16; 33] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
-        let e: [i16x8; 4] = [i16x8::new(1, 2, 3, 4, 5, 6, 7, 8), i16x8::new(9, 10, 11, 12, 13, 14, 15, 16), i16x8::new(17, 18, 19, 20, 21, 22, 23, 24), i16x8::new(25, 26, 27, 28, 29, 30, 31, 32)];
+        let e: [i16x8; 4] = [i16x8::new([1, 2, 3, 4, 5, 6, 7, 8]), i16x8::new([9, 10, 11, 12, 13, 14, 15, 16]), i16x8::new([17, 18, 19, 20, 21, 22, 23, 24]), i16x8::new([25, 26, 27, 28, 29, 30, 31, 32])];
         let r: [i16x8; 4] = transmute(vld1q_s16_x4(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34177,7 +34177,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1q_s32_x4() {
         let a: [i32; 17] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
-        let e: [i32x4; 4] = [i32x4::new(1, 2, 3, 4), i32x4::new(5, 6, 7, 8), i32x4::new(9, 10, 11, 12), i32x4::new(13, 14, 15, 16)];
+        let e: [i32x4; 4] = [i32x4::new([1, 2, 3, 4]), i32x4::new([5, 6, 7, 8]), i32x4::new([9, 10, 11, 12]), i32x4::new([13, 14, 15, 16])];
         let r: [i32x4; 4] = transmute(vld1q_s32_x4(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34185,7 +34185,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1q_s64_x4() {
         let a: [i64; 9] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
-        let e: [i64x2; 4] = [i64x2::new(1, 2), i64x2::new(3, 4), i64x2::new(5, 6), i64x2::new(7, 8)];
+        let e: [i64x2; 4] = [i64x2::new([1, 2]), i64x2::new([3, 4]), i64x2::new([5, 6]), i64x2::new([7, 8])];
         let r: [i64x2; 4] = transmute(vld1q_s64_x4(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34193,7 +34193,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1_u8_x2() {
         let a: [u8; 17] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
-        let e: [u8x8; 2] = [u8x8::new(1, 2, 3, 4, 5, 6, 7, 8), u8x8::new(9, 10, 11, 12, 13, 14, 15, 16)];
+        let e: [u8x8; 2] = [u8x8::new([1, 2, 3, 4, 5, 6, 7, 8]), u8x8::new([9, 10, 11, 12, 13, 14, 15, 16])];
         let r: [u8x8; 2] = transmute(vld1_u8_x2(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34201,7 +34201,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1_u16_x2() {
         let a: [u16; 9] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
-        let e: [u16x4; 2] = [u16x4::new(1, 2, 3, 4), u16x4::new(5, 6, 7, 8)];
+        let e: [u16x4; 2] = [u16x4::new([1, 2, 3, 4]), u16x4::new([5, 6, 7, 8])];
         let r: [u16x4; 2] = transmute(vld1_u16_x2(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34209,7 +34209,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1_u32_x2() {
         let a: [u32; 5] = [0, 1, 2, 3, 4];
-        let e: [u32x2; 2] = [u32x2::new(1, 2), u32x2::new(3, 4)];
+        let e: [u32x2; 2] = [u32x2::new([1, 2]), u32x2::new([3, 4])];
         let r: [u32x2; 2] = transmute(vld1_u32_x2(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34217,7 +34217,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1_u64_x2() {
         let a: [u64; 3] = [0, 1, 2];
-        let e: [u64x1; 2] = [u64x1::new(1), u64x1::new(2)];
+        let e: [u64x1; 2] = [u64x1::new([1]), u64x1::new([2])];
         let r: [u64x1; 2] = transmute(vld1_u64_x2(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34225,7 +34225,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1q_u8_x2() {
         let a: [u8; 33] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
-        let e: [u8x16; 2] = [u8x16::new(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16), u8x16::new(17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32)];
+        let e: [u8x16; 2] = [u8x16::new([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]), u8x16::new([17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32])];
         let r: [u8x16; 2] = transmute(vld1q_u8_x2(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34233,7 +34233,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1q_u16_x2() {
         let a: [u16; 17] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
-        let e: [u16x8; 2] = [u16x8::new(1, 2, 3, 4, 5, 6, 7, 8), u16x8::new(9, 10, 11, 12, 13, 14, 15, 16)];
+        let e: [u16x8; 2] = [u16x8::new([1, 2, 3, 4, 5, 6, 7, 8]), u16x8::new([9, 10, 11, 12, 13, 14, 15, 16])];
         let r: [u16x8; 2] = transmute(vld1q_u16_x2(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34241,7 +34241,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1q_u32_x2() {
         let a: [u32; 9] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
-        let e: [u32x4; 2] = [u32x4::new(1, 2, 3, 4), u32x4::new(5, 6, 7, 8)];
+        let e: [u32x4; 2] = [u32x4::new([1, 2, 3, 4]), u32x4::new([5, 6, 7, 8])];
         let r: [u32x4; 2] = transmute(vld1q_u32_x2(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34249,7 +34249,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1q_u64_x2() {
         let a: [u64; 5] = [0, 1, 2, 3, 4];
-        let e: [u64x2; 2] = [u64x2::new(1, 2), u64x2::new(3, 4)];
+        let e: [u64x2; 2] = [u64x2::new([1, 2]), u64x2::new([3, 4])];
         let r: [u64x2; 2] = transmute(vld1q_u64_x2(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34257,7 +34257,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1_u8_x3() {
         let a: [u8; 25] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
-        let e: [u8x8; 3] = [u8x8::new(1, 2, 3, 4, 5, 6, 7, 8), u8x8::new(9, 10, 11, 12, 13, 14, 15, 16), u8x8::new(17, 18, 19, 20, 21, 22, 23, 24)];
+        let e: [u8x8; 3] = [u8x8::new([1, 2, 3, 4, 5, 6, 7, 8]), u8x8::new([9, 10, 11, 12, 13, 14, 15, 16]), u8x8::new([17, 18, 19, 20, 21, 22, 23, 24])];
         let r: [u8x8; 3] = transmute(vld1_u8_x3(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34265,7 +34265,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1_u16_x3() {
         let a: [u16; 13] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-        let e: [u16x4; 3] = [u16x4::new(1, 2, 3, 4), u16x4::new(5, 6, 7, 8), u16x4::new(9, 10, 11, 12)];
+        let e: [u16x4; 3] = [u16x4::new([1, 2, 3, 4]), u16x4::new([5, 6, 7, 8]), u16x4::new([9, 10, 11, 12])];
         let r: [u16x4; 3] = transmute(vld1_u16_x3(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34273,7 +34273,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1_u32_x3() {
         let a: [u32; 7] = [0, 1, 2, 3, 4, 5, 6];
-        let e: [u32x2; 3] = [u32x2::new(1, 2), u32x2::new(3, 4), u32x2::new(5, 6)];
+        let e: [u32x2; 3] = [u32x2::new([1, 2]), u32x2::new([3, 4]), u32x2::new([5, 6])];
         let r: [u32x2; 3] = transmute(vld1_u32_x3(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34281,7 +34281,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1_u64_x3() {
         let a: [u64; 4] = [0, 1, 2, 3];
-        let e: [u64x1; 3] = [u64x1::new(1), u64x1::new(2), u64x1::new(3)];
+        let e: [u64x1; 3] = [u64x1::new([1]), u64x1::new([2]), u64x1::new([3])];
         let r: [u64x1; 3] = transmute(vld1_u64_x3(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34289,7 +34289,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1q_u8_x3() {
         let a: [u8; 49] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
-        let e: [u8x16; 3] = [u8x16::new(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16), u8x16::new(17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32), u8x16::new(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16)];
+        let e: [u8x16; 3] = [u8x16::new([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]), u8x16::new([17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32]), u8x16::new([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16])];
         let r: [u8x16; 3] = transmute(vld1q_u8_x3(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34297,7 +34297,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1q_u16_x3() {
         let a: [u16; 25] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
-        let e: [u16x8; 3] = [u16x8::new(1, 2, 3, 4, 5, 6, 7, 8), u16x8::new(9, 10, 11, 12, 13, 14, 15, 16), u16x8::new(17, 18, 19, 20, 21, 22, 23, 24)];
+        let e: [u16x8; 3] = [u16x8::new([1, 2, 3, 4, 5, 6, 7, 8]), u16x8::new([9, 10, 11, 12, 13, 14, 15, 16]), u16x8::new([17, 18, 19, 20, 21, 22, 23, 24])];
         let r: [u16x8; 3] = transmute(vld1q_u16_x3(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34305,7 +34305,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1q_u32_x3() {
         let a: [u32; 13] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-        let e: [u32x4; 3] = [u32x4::new(1, 2, 3, 4), u32x4::new(5, 6, 7, 8), u32x4::new(9, 10, 11, 12)];
+        let e: [u32x4; 3] = [u32x4::new([1, 2, 3, 4]), u32x4::new([5, 6, 7, 8]), u32x4::new([9, 10, 11, 12])];
         let r: [u32x4; 3] = transmute(vld1q_u32_x3(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34313,7 +34313,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1q_u64_x3() {
         let a: [u64; 7] = [0, 1, 2, 3, 4, 5, 6];
-        let e: [u64x2; 3] = [u64x2::new(1, 2), u64x2::new(3, 4), u64x2::new(5, 6)];
+        let e: [u64x2; 3] = [u64x2::new([1, 2]), u64x2::new([3, 4]), u64x2::new([5, 6])];
         let r: [u64x2; 3] = transmute(vld1q_u64_x3(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34321,7 +34321,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1_u8_x4() {
         let a: [u8; 33] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
-        let e: [u8x8; 4] = [u8x8::new(1, 2, 3, 4, 5, 6, 7, 8), u8x8::new(9, 10, 11, 12, 13, 14, 15, 16), u8x8::new(17, 18, 19, 20, 21, 22, 23, 24), u8x8::new(25, 26, 27, 28, 29, 30, 31, 32)];
+        let e: [u8x8; 4] = [u8x8::new([1, 2, 3, 4, 5, 6, 7, 8]), u8x8::new([9, 10, 11, 12, 13, 14, 15, 16]), u8x8::new([17, 18, 19, 20, 21, 22, 23, 24]), u8x8::new([25, 26, 27, 28, 29, 30, 31, 32])];
         let r: [u8x8; 4] = transmute(vld1_u8_x4(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34329,7 +34329,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1_u16_x4() {
         let a: [u16; 17] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
-        let e: [u16x4; 4] = [u16x4::new(1, 2, 3, 4), u16x4::new(5, 6, 7, 8), u16x4::new(9, 10, 11, 12), u16x4::new(13, 14, 15, 16)];
+        let e: [u16x4; 4] = [u16x4::new([1, 2, 3, 4]), u16x4::new([5, 6, 7, 8]), u16x4::new([9, 10, 11, 12]), u16x4::new([13, 14, 15, 16])];
         let r: [u16x4; 4] = transmute(vld1_u16_x4(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34337,7 +34337,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1_u32_x4() {
         let a: [u32; 9] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
-        let e: [u32x2; 4] = [u32x2::new(1, 2), u32x2::new(3, 4), u32x2::new(5, 6), u32x2::new(7, 8)];
+        let e: [u32x2; 4] = [u32x2::new([1, 2]), u32x2::new([3, 4]), u32x2::new([5, 6]), u32x2::new([7, 8])];
         let r: [u32x2; 4] = transmute(vld1_u32_x4(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34345,7 +34345,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1_u64_x4() {
         let a: [u64; 5] = [0, 1, 2, 3, 4];
-        let e: [u64x1; 4] = [u64x1::new(1), u64x1::new(2), u64x1::new(3), u64x1::new(4)];
+        let e: [u64x1; 4] = [u64x1::new([1]), u64x1::new([2]), u64x1::new([3]), u64x1::new([4])];
         let r: [u64x1; 4] = transmute(vld1_u64_x4(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34353,7 +34353,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1q_u8_x4() {
         let a: [u8; 65] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
-        let e: [u8x16; 4] = [u8x16::new(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16), u8x16::new(17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32), u8x16::new(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16), u8x16::new(17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32)];
+        let e: [u8x16; 4] = [u8x16::new([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]), u8x16::new([17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32]), u8x16::new([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]), u8x16::new([17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32])];
         let r: [u8x16; 4] = transmute(vld1q_u8_x4(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34361,7 +34361,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1q_u16_x4() {
         let a: [u16; 33] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
-        let e: [u16x8; 4] = [u16x8::new(1, 2, 3, 4, 5, 6, 7, 8), u16x8::new(9, 10, 11, 12, 13, 14, 15, 16), u16x8::new(17, 18, 19, 20, 21, 22, 23, 24), u16x8::new(25, 26, 27, 28, 29, 30, 31, 32)];
+        let e: [u16x8; 4] = [u16x8::new([1, 2, 3, 4, 5, 6, 7, 8]), u16x8::new([9, 10, 11, 12, 13, 14, 15, 16]), u16x8::new([17, 18, 19, 20, 21, 22, 23, 24]), u16x8::new([25, 26, 27, 28, 29, 30, 31, 32])];
         let r: [u16x8; 4] = transmute(vld1q_u16_x4(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34369,7 +34369,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1q_u32_x4() {
         let a: [u32; 17] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
-        let e: [u32x4; 4] = [u32x4::new(1, 2, 3, 4), u32x4::new(5, 6, 7, 8), u32x4::new(9, 10, 11, 12), u32x4::new(13, 14, 15, 16)];
+        let e: [u32x4; 4] = [u32x4::new([1, 2, 3, 4]), u32x4::new([5, 6, 7, 8]), u32x4::new([9, 10, 11, 12]), u32x4::new([13, 14, 15, 16])];
         let r: [u32x4; 4] = transmute(vld1q_u32_x4(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34377,7 +34377,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1q_u64_x4() {
         let a: [u64; 9] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
-        let e: [u64x2; 4] = [u64x2::new(1, 2), u64x2::new(3, 4), u64x2::new(5, 6), u64x2::new(7, 8)];
+        let e: [u64x2; 4] = [u64x2::new([1, 2]), u64x2::new([3, 4]), u64x2::new([5, 6]), u64x2::new([7, 8])];
         let r: [u64x2; 4] = transmute(vld1q_u64_x4(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34385,7 +34385,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1_p8_x2() {
         let a: [u8; 17] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
-        let e: [i8x8; 2] = [i8x8::new(1, 2, 3, 4, 5, 6, 7, 8), i8x8::new(9, 10, 11, 12, 13, 14, 15, 16)];
+        let e: [i8x8; 2] = [i8x8::new([1, 2, 3, 4, 5, 6, 7, 8]), i8x8::new([9, 10, 11, 12, 13, 14, 15, 16])];
         let r: [i8x8; 2] = transmute(vld1_p8_x2(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34393,7 +34393,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1_p8_x3() {
         let a: [u8; 25] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
-        let e: [i8x8; 3] = [i8x8::new(1, 2, 3, 4, 5, 6, 7, 8), i8x8::new(9, 10, 11, 12, 13, 14, 15, 16), i8x8::new(17, 18, 19, 20, 21, 22, 23, 24)];
+        let e: [i8x8; 3] = [i8x8::new([1, 2, 3, 4, 5, 6, 7, 8]), i8x8::new([9, 10, 11, 12, 13, 14, 15, 16]), i8x8::new([17, 18, 19, 20, 21, 22, 23, 24])];
         let r: [i8x8; 3] = transmute(vld1_p8_x3(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34401,7 +34401,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1_p8_x4() {
         let a: [u8; 33] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
-        let e: [i8x8; 4] = [i8x8::new(1, 2, 3, 4, 5, 6, 7, 8), i8x8::new(9, 10, 11, 12, 13, 14, 15, 16), i8x8::new(17, 18, 19, 20, 21, 22, 23, 24), i8x8::new(25, 26, 27, 28, 29, 30, 31, 32)];
+        let e: [i8x8; 4] = [i8x8::new([1, 2, 3, 4, 5, 6, 7, 8]), i8x8::new([9, 10, 11, 12, 13, 14, 15, 16]), i8x8::new([17, 18, 19, 20, 21, 22, 23, 24]), i8x8::new([25, 26, 27, 28, 29, 30, 31, 32])];
         let r: [i8x8; 4] = transmute(vld1_p8_x4(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34409,7 +34409,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1q_p8_x2() {
         let a: [u8; 33] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
-        let e: [i8x16; 2] = [i8x16::new(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16), i8x16::new(17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32)];
+        let e: [i8x16; 2] = [i8x16::new([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]), i8x16::new([17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32])];
         let r: [i8x16; 2] = transmute(vld1q_p8_x2(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34417,7 +34417,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1q_p8_x3() {
         let a: [u8; 49] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
-        let e: [i8x16; 3] = [i8x16::new(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16), i8x16::new(17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32), i8x16::new(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16)];
+        let e: [i8x16; 3] = [i8x16::new([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]), i8x16::new([17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32]), i8x16::new([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16])];
         let r: [i8x16; 3] = transmute(vld1q_p8_x3(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34425,7 +34425,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1q_p8_x4() {
         let a: [u8; 65] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
-        let e: [i8x16; 4] = [i8x16::new(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16), i8x16::new(17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32), i8x16::new(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16), i8x16::new(17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32)];
+        let e: [i8x16; 4] = [i8x16::new([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]), i8x16::new([17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32]), i8x16::new([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]), i8x16::new([17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32])];
         let r: [i8x16; 4] = transmute(vld1q_p8_x4(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34433,7 +34433,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1_p16_x2() {
         let a: [u16; 9] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
-        let e: [i16x4; 2] = [i16x4::new(1, 2, 3, 4), i16x4::new(5, 6, 7, 8)];
+        let e: [i16x4; 2] = [i16x4::new([1, 2, 3, 4]), i16x4::new([5, 6, 7, 8])];
         let r: [i16x4; 2] = transmute(vld1_p16_x2(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34441,7 +34441,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1_p16_x3() {
         let a: [u16; 13] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-        let e: [i16x4; 3] = [i16x4::new(1, 2, 3, 4), i16x4::new(5, 6, 7, 8), i16x4::new(9, 10, 11, 12)];
+        let e: [i16x4; 3] = [i16x4::new([1, 2, 3, 4]), i16x4::new([5, 6, 7, 8]), i16x4::new([9, 10, 11, 12])];
         let r: [i16x4; 3] = transmute(vld1_p16_x3(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34449,7 +34449,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1_p16_x4() {
         let a: [u16; 17] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
-        let e: [i16x4; 4] = [i16x4::new(1, 2, 3, 4), i16x4::new(5, 6, 7, 8), i16x4::new(9, 10, 11, 12), i16x4::new(13, 14, 15, 16)];
+        let e: [i16x4; 4] = [i16x4::new([1, 2, 3, 4]), i16x4::new([5, 6, 7, 8]), i16x4::new([9, 10, 11, 12]), i16x4::new([13, 14, 15, 16])];
         let r: [i16x4; 4] = transmute(vld1_p16_x4(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34457,7 +34457,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1q_p16_x2() {
         let a: [u16; 17] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
-        let e: [i16x8; 2] = [i16x8::new(1, 2, 3, 4, 5, 6, 7, 8), i16x8::new(9, 10, 11, 12, 13, 14, 15, 16)];
+        let e: [i16x8; 2] = [i16x8::new([1, 2, 3, 4, 5, 6, 7, 8]), i16x8::new([9, 10, 11, 12, 13, 14, 15, 16])];
         let r: [i16x8; 2] = transmute(vld1q_p16_x2(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34465,7 +34465,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1q_p16_x3() {
         let a: [u16; 25] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
-        let e: [i16x8; 3] = [i16x8::new(1, 2, 3, 4, 5, 6, 7, 8), i16x8::new(9, 10, 11, 12, 13, 14, 15, 16), i16x8::new(17, 18, 19, 20, 21, 22, 23, 24)];
+        let e: [i16x8; 3] = [i16x8::new([1, 2, 3, 4, 5, 6, 7, 8]), i16x8::new([9, 10, 11, 12, 13, 14, 15, 16]), i16x8::new([17, 18, 19, 20, 21, 22, 23, 24])];
         let r: [i16x8; 3] = transmute(vld1q_p16_x3(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34473,7 +34473,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1q_p16_x4() {
         let a: [u16; 33] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
-        let e: [i16x8; 4] = [i16x8::new(1, 2, 3, 4, 5, 6, 7, 8), i16x8::new(9, 10, 11, 12, 13, 14, 15, 16), i16x8::new(17, 18, 19, 20, 21, 22, 23, 24), i16x8::new(25, 26, 27, 28, 29, 30, 31, 32)];
+        let e: [i16x8; 4] = [i16x8::new([1, 2, 3, 4, 5, 6, 7, 8]), i16x8::new([9, 10, 11, 12, 13, 14, 15, 16]), i16x8::new([17, 18, 19, 20, 21, 22, 23, 24]), i16x8::new([25, 26, 27, 28, 29, 30, 31, 32])];
         let r: [i16x8; 4] = transmute(vld1q_p16_x4(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34481,7 +34481,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1_p64_x2() {
         let a: [u64; 3] = [0, 1, 2];
-        let e: [i64x1; 2] = [i64x1::new(1), i64x1::new(2)];
+        let e: [i64x1; 2] = [i64x1::new([1]), i64x1::new([2])];
         let r: [i64x1; 2] = transmute(vld1_p64_x2(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34489,7 +34489,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1_p64_x3() {
         let a: [u64; 4] = [0, 1, 2, 3];
-        let e: [i64x1; 3] = [i64x1::new(1), i64x1::new(2), i64x1::new(3)];
+        let e: [i64x1; 3] = [i64x1::new([1]), i64x1::new([2]), i64x1::new([3])];
         let r: [i64x1; 3] = transmute(vld1_p64_x3(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34497,7 +34497,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1_p64_x4() {
         let a: [u64; 5] = [0, 1, 2, 3, 4];
-        let e: [i64x1; 4] = [i64x1::new(1), i64x1::new(2), i64x1::new(3), i64x1::new(4)];
+        let e: [i64x1; 4] = [i64x1::new([1]), i64x1::new([2]), i64x1::new([3]), i64x1::new([4])];
         let r: [i64x1; 4] = transmute(vld1_p64_x4(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34505,7 +34505,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1q_p64_x2() {
         let a: [u64; 5] = [0, 1, 2, 3, 4];
-        let e: [i64x2; 2] = [i64x2::new(1, 2), i64x2::new(3, 4)];
+        let e: [i64x2; 2] = [i64x2::new([1, 2]), i64x2::new([3, 4])];
         let r: [i64x2; 2] = transmute(vld1q_p64_x2(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34513,7 +34513,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1q_p64_x3() {
         let a: [u64; 7] = [0, 1, 2, 3, 4, 5, 6];
-        let e: [i64x2; 3] = [i64x2::new(1, 2), i64x2::new(3, 4), i64x2::new(5, 6)];
+        let e: [i64x2; 3] = [i64x2::new([1, 2]), i64x2::new([3, 4]), i64x2::new([5, 6])];
         let r: [i64x2; 3] = transmute(vld1q_p64_x3(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34521,7 +34521,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1q_p64_x4() {
         let a: [u64; 9] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
-        let e: [i64x2; 4] = [i64x2::new(1, 2), i64x2::new(3, 4), i64x2::new(5, 6), i64x2::new(7, 8)];
+        let e: [i64x2; 4] = [i64x2::new([1, 2]), i64x2::new([3, 4]), i64x2::new([5, 6]), i64x2::new([7, 8])];
         let r: [i64x2; 4] = transmute(vld1q_p64_x4(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34529,7 +34529,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1_f32_x2() {
         let a: [f32; 5] = [0., 1., 2., 3., 4.];
-        let e: [f32x2; 2] = [f32x2::new(1., 2.), f32x2::new(3., 4.)];
+        let e: [f32x2; 2] = [f32x2::new([1., 2.]), f32x2::new([3., 4.])];
         let r: [f32x2; 2] = transmute(vld1_f32_x2(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34537,7 +34537,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1q_f32_x2() {
         let a: [f32; 9] = [0., 1., 2., 3., 4., 5., 6., 7., 8.];
-        let e: [f32x4; 2] = [f32x4::new(1., 2., 3., 4.), f32x4::new(5., 6., 7., 8.)];
+        let e: [f32x4; 2] = [f32x4::new([1., 2., 3., 4.]), f32x4::new([5., 6., 7., 8.])];
         let r: [f32x4; 2] = transmute(vld1q_f32_x2(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34545,7 +34545,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1_f32_x3() {
         let a: [f32; 7] = [0., 1., 2., 3., 4., 5., 6.];
-        let e: [f32x2; 3] = [f32x2::new(1., 2.), f32x2::new(3., 4.), f32x2::new(5., 6.)];
+        let e: [f32x2; 3] = [f32x2::new([1., 2.]), f32x2::new([3., 4.]), f32x2::new([5., 6.])];
         let r: [f32x2; 3] = transmute(vld1_f32_x3(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34553,7 +34553,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1q_f32_x3() {
         let a: [f32; 13] = [0., 1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12.];
-        let e: [f32x4; 3] = [f32x4::new(1., 2., 3., 4.), f32x4::new(5., 6., 7., 8.), f32x4::new(9., 10., 11., 12.)];
+        let e: [f32x4; 3] = [f32x4::new([1., 2., 3., 4.]), f32x4::new([5., 6., 7., 8.]), f32x4::new([9., 10., 11., 12.])];
         let r: [f32x4; 3] = transmute(vld1q_f32_x3(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34561,7 +34561,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1_f32_x4() {
         let a: [f32; 9] = [0., 1., 2., 3., 4., 5., 6., 7., 8.];
-        let e: [f32x2; 4] = [f32x2::new(1., 2.), f32x2::new(3., 4.), f32x2::new(5., 6.), f32x2::new(7., 8.)];
+        let e: [f32x2; 4] = [f32x2::new([1., 2.]), f32x2::new([3., 4.]), f32x2::new([5., 6.]), f32x2::new([7., 8.])];
         let r: [f32x2; 4] = transmute(vld1_f32_x4(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34569,7 +34569,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld1q_f32_x4() {
         let a: [f32; 17] = [0., 1., 2., 3., 4., 5., 6., 7., 8., 9., 10., 11., 12., 13., 14., 15., 16.];
-        let e: [f32x4; 4] = [f32x4::new(1., 2., 3., 4.), f32x4::new(5., 6., 7., 8.), f32x4::new(9., 10., 11., 12.), f32x4::new(13., 14., 15., 16.)];
+        let e: [f32x4; 4] = [f32x4::new([1., 2., 3., 4.]), f32x4::new([5., 6., 7., 8.]), f32x4::new([9., 10., 11., 12.]), f32x4::new([13., 14., 15., 16.])];
         let r: [f32x4; 4] = transmute(vld1q_f32_x4(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34577,7 +34577,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld2_s8() {
         let a: [i8; 17] = [0, 1, 2, 2, 3, 2, 4, 3, 5, 2, 6, 3, 7, 4, 8, 5, 9];
-        let e: [i8x8; 2] = [i8x8::new(1, 2, 2, 3, 2, 3, 4, 5), i8x8::new(2, 3, 4, 5, 6, 7, 8, 9)];
+        let e: [i8x8; 2] = [i8x8::new([1, 2, 2, 3, 2, 3, 4, 5]), i8x8::new([2, 3, 4, 5, 6, 7, 8, 9])];
         let r: [i8x8; 2] = transmute(vld2_s8(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34585,7 +34585,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld2_s16() {
         let a: [i16; 9] = [0, 1, 2, 2, 3, 2, 4, 3, 5];
-        let e: [i16x4; 2] = [i16x4::new(1, 2, 2, 3), i16x4::new(2, 3, 4, 5)];
+        let e: [i16x4; 2] = [i16x4::new([1, 2, 2, 3]), i16x4::new([2, 3, 4, 5])];
         let r: [i16x4; 2] = transmute(vld2_s16(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34593,7 +34593,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld2_s32() {
         let a: [i32; 5] = [0, 1, 2, 2, 3];
-        let e: [i32x2; 2] = [i32x2::new(1, 2), i32x2::new(2, 3)];
+        let e: [i32x2; 2] = [i32x2::new([1, 2]), i32x2::new([2, 3])];
         let r: [i32x2; 2] = transmute(vld2_s32(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34601,7 +34601,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld2q_s8() {
         let a: [i8; 33] = [0, 1, 2, 2, 3, 2, 4, 3, 5, 2, 6, 3, 7, 4, 8, 5, 9, 2, 10, 3, 11, 4, 12, 5, 13, 6, 14, 7, 15, 8, 16, 9, 17];
-        let e: [i8x16; 2] = [i8x16::new(1, 2, 2, 3, 2, 3, 4, 5, 2, 3, 4, 5, 6, 7, 8, 9), i8x16::new(2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17)];
+        let e: [i8x16; 2] = [i8x16::new([1, 2, 2, 3, 2, 3, 4, 5, 2, 3, 4, 5, 6, 7, 8, 9]), i8x16::new([2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17])];
         let r: [i8x16; 2] = transmute(vld2q_s8(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34609,7 +34609,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld2q_s16() {
         let a: [i16; 17] = [0, 1, 2, 2, 3, 2, 4, 3, 5, 2, 6, 3, 7, 4, 8, 5, 9];
-        let e: [i16x8; 2] = [i16x8::new(1, 2, 2, 3, 2, 3, 4, 5), i16x8::new(2, 3, 4, 5, 6, 7, 8, 9)];
+        let e: [i16x8; 2] = [i16x8::new([1, 2, 2, 3, 2, 3, 4, 5]), i16x8::new([2, 3, 4, 5, 6, 7, 8, 9])];
         let r: [i16x8; 2] = transmute(vld2q_s16(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34617,7 +34617,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld2q_s32() {
         let a: [i32; 9] = [0, 1, 2, 2, 3, 2, 4, 3, 5];
-        let e: [i32x4; 2] = [i32x4::new(1, 2, 2, 3), i32x4::new(2, 3, 4, 5)];
+        let e: [i32x4; 2] = [i32x4::new([1, 2, 2, 3]), i32x4::new([2, 3, 4, 5])];
         let r: [i32x4; 2] = transmute(vld2q_s32(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34625,7 +34625,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld2_s64() {
         let a: [i64; 3] = [0, 1, 2];
-        let e: [i64x1; 2] = [i64x1::new(1), i64x1::new(2)];
+        let e: [i64x1; 2] = [i64x1::new([1]), i64x1::new([2])];
         let r: [i64x1; 2] = transmute(vld2_s64(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34633,7 +34633,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld2_u8() {
         let a: [u8; 17] = [0, 1, 2, 2, 3, 2, 4, 3, 5, 2, 6, 3, 7, 4, 8, 5, 9];
-        let e: [u8x8; 2] = [u8x8::new(1, 2, 2, 3, 2, 3, 4, 5), u8x8::new(2, 3, 4, 5, 6, 7, 8, 9)];
+        let e: [u8x8; 2] = [u8x8::new([1, 2, 2, 3, 2, 3, 4, 5]), u8x8::new([2, 3, 4, 5, 6, 7, 8, 9])];
         let r: [u8x8; 2] = transmute(vld2_u8(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34641,7 +34641,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld2_u16() {
         let a: [u16; 9] = [0, 1, 2, 2, 3, 2, 4, 3, 5];
-        let e: [u16x4; 2] = [u16x4::new(1, 2, 2, 3), u16x4::new(2, 3, 4, 5)];
+        let e: [u16x4; 2] = [u16x4::new([1, 2, 2, 3]), u16x4::new([2, 3, 4, 5])];
         let r: [u16x4; 2] = transmute(vld2_u16(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34649,7 +34649,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld2_u32() {
         let a: [u32; 5] = [0, 1, 2, 2, 3];
-        let e: [u32x2; 2] = [u32x2::new(1, 2), u32x2::new(2, 3)];
+        let e: [u32x2; 2] = [u32x2::new([1, 2]), u32x2::new([2, 3])];
         let r: [u32x2; 2] = transmute(vld2_u32(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34657,7 +34657,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld2q_u8() {
         let a: [u8; 33] = [0, 1, 2, 2, 3, 2, 4, 3, 5, 2, 6, 3, 7, 4, 8, 5, 9, 2, 10, 3, 11, 4, 12, 5, 13, 6, 14, 7, 15, 8, 16, 9, 17];
-        let e: [u8x16; 2] = [u8x16::new(1, 2, 2, 3, 2, 3, 4, 5, 2, 3, 4, 5, 6, 7, 8, 9), u8x16::new(2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17)];
+        let e: [u8x16; 2] = [u8x16::new([1, 2, 2, 3, 2, 3, 4, 5, 2, 3, 4, 5, 6, 7, 8, 9]), u8x16::new([2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17])];
         let r: [u8x16; 2] = transmute(vld2q_u8(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34665,7 +34665,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld2q_u16() {
         let a: [u16; 17] = [0, 1, 2, 2, 3, 2, 4, 3, 5, 2, 6, 3, 7, 4, 8, 5, 9];
-        let e: [u16x8; 2] = [u16x8::new(1, 2, 2, 3, 2, 3, 4, 5), u16x8::new(2, 3, 4, 5, 6, 7, 8, 9)];
+        let e: [u16x8; 2] = [u16x8::new([1, 2, 2, 3, 2, 3, 4, 5]), u16x8::new([2, 3, 4, 5, 6, 7, 8, 9])];
         let r: [u16x8; 2] = transmute(vld2q_u16(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34673,7 +34673,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld2q_u32() {
         let a: [u32; 9] = [0, 1, 2, 2, 3, 2, 4, 3, 5];
-        let e: [u32x4; 2] = [u32x4::new(1, 2, 2, 3), u32x4::new(2, 3, 4, 5)];
+        let e: [u32x4; 2] = [u32x4::new([1, 2, 2, 3]), u32x4::new([2, 3, 4, 5])];
         let r: [u32x4; 2] = transmute(vld2q_u32(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34681,7 +34681,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld2_p8() {
         let a: [u8; 17] = [0, 1, 2, 2, 3, 2, 4, 3, 5, 2, 6, 3, 7, 4, 8, 5, 9];
-        let e: [i8x8; 2] = [i8x8::new(1, 2, 2, 3, 2, 3, 4, 5), i8x8::new(2, 3, 4, 5, 6, 7, 8, 9)];
+        let e: [i8x8; 2] = [i8x8::new([1, 2, 2, 3, 2, 3, 4, 5]), i8x8::new([2, 3, 4, 5, 6, 7, 8, 9])];
         let r: [i8x8; 2] = transmute(vld2_p8(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34689,7 +34689,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld2_p16() {
         let a: [u16; 9] = [0, 1, 2, 2, 3, 2, 4, 3, 5];
-        let e: [i16x4; 2] = [i16x4::new(1, 2, 2, 3), i16x4::new(2, 3, 4, 5)];
+        let e: [i16x4; 2] = [i16x4::new([1, 2, 2, 3]), i16x4::new([2, 3, 4, 5])];
         let r: [i16x4; 2] = transmute(vld2_p16(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34697,7 +34697,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld2q_p8() {
         let a: [u8; 33] = [0, 1, 2, 2, 3, 2, 4, 3, 5, 2, 6, 3, 7, 4, 8, 5, 9, 2, 10, 3, 11, 4, 12, 5, 13, 6, 14, 7, 15, 8, 16, 9, 17];
-        let e: [i8x16; 2] = [i8x16::new(1, 2, 2, 3, 2, 3, 4, 5, 2, 3, 4, 5, 6, 7, 8, 9), i8x16::new(2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17)];
+        let e: [i8x16; 2] = [i8x16::new([1, 2, 2, 3, 2, 3, 4, 5, 2, 3, 4, 5, 6, 7, 8, 9]), i8x16::new([2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17])];
         let r: [i8x16; 2] = transmute(vld2q_p8(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34705,7 +34705,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld2q_p16() {
         let a: [u16; 17] = [0, 1, 2, 2, 3, 2, 4, 3, 5, 2, 6, 3, 7, 4, 8, 5, 9];
-        let e: [i16x8; 2] = [i16x8::new(1, 2, 2, 3, 2, 3, 4, 5), i16x8::new(2, 3, 4, 5, 6, 7, 8, 9)];
+        let e: [i16x8; 2] = [i16x8::new([1, 2, 2, 3, 2, 3, 4, 5]), i16x8::new([2, 3, 4, 5, 6, 7, 8, 9])];
         let r: [i16x8; 2] = transmute(vld2q_p16(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34713,7 +34713,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld2_u64() {
         let a: [u64; 3] = [0, 1, 2];
-        let e: [u64x1; 2] = [u64x1::new(1), u64x1::new(2)];
+        let e: [u64x1; 2] = [u64x1::new([1]), u64x1::new([2])];
         let r: [u64x1; 2] = transmute(vld2_u64(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34721,7 +34721,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld2_p64() {
         let a: [u64; 3] = [0, 1, 2];
-        let e: [i64x1; 2] = [i64x1::new(1), i64x1::new(2)];
+        let e: [i64x1; 2] = [i64x1::new([1]), i64x1::new([2])];
         let r: [i64x1; 2] = transmute(vld2_p64(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34729,7 +34729,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld2_f32() {
         let a: [f32; 5] = [0., 1., 2., 2., 3.];
-        let e: [f32x2; 2] = [f32x2::new(1., 2.), f32x2::new(2., 3.)];
+        let e: [f32x2; 2] = [f32x2::new([1., 2.]), f32x2::new([2., 3.])];
         let r: [f32x2; 2] = transmute(vld2_f32(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34737,7 +34737,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld2q_f32() {
         let a: [f32; 9] = [0., 1., 2., 2., 3., 2., 4., 3., 5.];
-        let e: [f32x4; 2] = [f32x4::new(1., 2., 2., 3.), f32x4::new(2., 3., 4., 5.)];
+        let e: [f32x4; 2] = [f32x4::new([1., 2., 2., 3.]), f32x4::new([2., 3., 4., 5.])];
         let r: [f32x4; 2] = transmute(vld2q_f32(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34745,7 +34745,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld2_dup_s8() {
         let a: [i8; 17] = [0, 1, 1, 2, 3, 1, 4, 3, 5, 1, 6, 3, 7, 4, 8, 5, 9];
-        let e: [i8x8; 2] = [i8x8::new(1, 1, 1, 1, 1, 1, 1, 1), i8x8::new(1, 1, 1, 1, 1, 1, 1, 1)];
+        let e: [i8x8; 2] = [i8x8::new([1, 1, 1, 1, 1, 1, 1, 1]), i8x8::new([1, 1, 1, 1, 1, 1, 1, 1])];
         let r: [i8x8; 2] = transmute(vld2_dup_s8(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34753,7 +34753,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld2_dup_s16() {
         let a: [i16; 9] = [0, 1, 1, 2, 3, 1, 4, 3, 5];
-        let e: [i16x4; 2] = [i16x4::new(1, 1, 1, 1), i16x4::new(1, 1, 1, 1)];
+        let e: [i16x4; 2] = [i16x4::new([1, 1, 1, 1]), i16x4::new([1, 1, 1, 1])];
         let r: [i16x4; 2] = transmute(vld2_dup_s16(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34761,7 +34761,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld2_dup_s32() {
         let a: [i32; 5] = [0, 1, 1, 2, 3];
-        let e: [i32x2; 2] = [i32x2::new(1, 1), i32x2::new(1, 1)];
+        let e: [i32x2; 2] = [i32x2::new([1, 1]), i32x2::new([1, 1])];
         let r: [i32x2; 2] = transmute(vld2_dup_s32(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34769,7 +34769,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld2q_dup_s8() {
         let a: [i8; 33] = [0, 1, 1, 2, 3, 1, 4, 3, 5, 1, 6, 3, 7, 4, 8, 5, 9, 2, 10, 3, 11, 4, 12, 5, 13, 6, 14, 7, 15, 8, 16, 9, 17];
-        let e: [i8x16; 2] = [i8x16::new(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1), i8x16::new(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)];
+        let e: [i8x16; 2] = [i8x16::new([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]), i8x16::new([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1])];
         let r: [i8x16; 2] = transmute(vld2q_dup_s8(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34777,7 +34777,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld2q_dup_s16() {
         let a: [i16; 17] = [0, 1, 1, 2, 3, 1, 4, 3, 5, 1, 6, 3, 7, 4, 8, 5, 9];
-        let e: [i16x8; 2] = [i16x8::new(1, 1, 1, 1, 1, 1, 1, 1), i16x8::new(1, 1, 1, 1, 1, 1, 1, 1)];
+        let e: [i16x8; 2] = [i16x8::new([1, 1, 1, 1, 1, 1, 1, 1]), i16x8::new([1, 1, 1, 1, 1, 1, 1, 1])];
         let r: [i16x8; 2] = transmute(vld2q_dup_s16(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34785,7 +34785,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld2q_dup_s32() {
         let a: [i32; 9] = [0, 1, 1, 2, 3, 1, 4, 3, 5];
-        let e: [i32x4; 2] = [i32x4::new(1, 1, 1, 1), i32x4::new(1, 1, 1, 1)];
+        let e: [i32x4; 2] = [i32x4::new([1, 1, 1, 1]), i32x4::new([1, 1, 1, 1])];
         let r: [i32x4; 2] = transmute(vld2q_dup_s32(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34793,7 +34793,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld2_dup_s64() {
         let a: [i64; 3] = [0, 1, 1];
-        let e: [i64x1; 2] = [i64x1::new(1), i64x1::new(1)];
+        let e: [i64x1; 2] = [i64x1::new([1]), i64x1::new([1])];
         let r: [i64x1; 2] = transmute(vld2_dup_s64(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34801,7 +34801,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld2_dup_u8() {
         let a: [u8; 17] = [0, 1, 1, 2, 3, 1, 4, 3, 5, 1, 6, 3, 7, 4, 8, 5, 9];
-        let e: [u8x8; 2] = [u8x8::new(1, 1, 1, 1, 1, 1, 1, 1), u8x8::new(1, 1, 1, 1, 1, 1, 1, 1)];
+        let e: [u8x8; 2] = [u8x8::new([1, 1, 1, 1, 1, 1, 1, 1]), u8x8::new([1, 1, 1, 1, 1, 1, 1, 1])];
         let r: [u8x8; 2] = transmute(vld2_dup_u8(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34809,7 +34809,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld2_dup_u16() {
         let a: [u16; 9] = [0, 1, 1, 2, 3, 1, 4, 3, 5];
-        let e: [u16x4; 2] = [u16x4::new(1, 1, 1, 1), u16x4::new(1, 1, 1, 1)];
+        let e: [u16x4; 2] = [u16x4::new([1, 1, 1, 1]), u16x4::new([1, 1, 1, 1])];
         let r: [u16x4; 2] = transmute(vld2_dup_u16(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34817,7 +34817,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld2_dup_u32() {
         let a: [u32; 5] = [0, 1, 1, 2, 3];
-        let e: [u32x2; 2] = [u32x2::new(1, 1), u32x2::new(1, 1)];
+        let e: [u32x2; 2] = [u32x2::new([1, 1]), u32x2::new([1, 1])];
         let r: [u32x2; 2] = transmute(vld2_dup_u32(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34825,7 +34825,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld2q_dup_u8() {
         let a: [u8; 33] = [0, 1, 1, 2, 3, 1, 4, 3, 5, 1, 6, 3, 7, 4, 8, 5, 9, 2, 10, 3, 11, 4, 12, 5, 13, 6, 14, 7, 15, 8, 16, 9, 17];
-        let e: [u8x16; 2] = [u8x16::new(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1), u8x16::new(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)];
+        let e: [u8x16; 2] = [u8x16::new([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]), u8x16::new([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1])];
         let r: [u8x16; 2] = transmute(vld2q_dup_u8(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34833,7 +34833,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld2q_dup_u16() {
         let a: [u16; 17] = [0, 1, 1, 2, 3, 1, 4, 3, 5, 1, 6, 3, 7, 4, 8, 5, 9];
-        let e: [u16x8; 2] = [u16x8::new(1, 1, 1, 1, 1, 1, 1, 1), u16x8::new(1, 1, 1, 1, 1, 1, 1, 1)];
+        let e: [u16x8; 2] = [u16x8::new([1, 1, 1, 1, 1, 1, 1, 1]), u16x8::new([1, 1, 1, 1, 1, 1, 1, 1])];
         let r: [u16x8; 2] = transmute(vld2q_dup_u16(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34841,7 +34841,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld2q_dup_u32() {
         let a: [u32; 9] = [0, 1, 1, 2, 3, 1, 4, 3, 5];
-        let e: [u32x4; 2] = [u32x4::new(1, 1, 1, 1), u32x4::new(1, 1, 1, 1)];
+        let e: [u32x4; 2] = [u32x4::new([1, 1, 1, 1]), u32x4::new([1, 1, 1, 1])];
         let r: [u32x4; 2] = transmute(vld2q_dup_u32(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34849,7 +34849,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld2_dup_p8() {
         let a: [u8; 17] = [0, 1, 1, 2, 3, 1, 4, 3, 5, 1, 6, 3, 7, 4, 8, 5, 9];
-        let e: [i8x8; 2] = [i8x8::new(1, 1, 1, 1, 1, 1, 1, 1), i8x8::new(1, 1, 1, 1, 1, 1, 1, 1)];
+        let e: [i8x8; 2] = [i8x8::new([1, 1, 1, 1, 1, 1, 1, 1]), i8x8::new([1, 1, 1, 1, 1, 1, 1, 1])];
         let r: [i8x8; 2] = transmute(vld2_dup_p8(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34857,7 +34857,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld2_dup_p16() {
         let a: [u16; 9] = [0, 1, 1, 2, 3, 1, 4, 3, 5];
-        let e: [i16x4; 2] = [i16x4::new(1, 1, 1, 1), i16x4::new(1, 1, 1, 1)];
+        let e: [i16x4; 2] = [i16x4::new([1, 1, 1, 1]), i16x4::new([1, 1, 1, 1])];
         let r: [i16x4; 2] = transmute(vld2_dup_p16(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34865,7 +34865,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld2q_dup_p8() {
         let a: [u8; 33] = [0, 1, 1, 2, 3, 1, 4, 3, 5, 1, 6, 3, 7, 4, 8, 5, 9, 2, 10, 3, 11, 4, 12, 5, 13, 6, 14, 7, 15, 8, 16, 9, 17];
-        let e: [i8x16; 2] = [i8x16::new(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1), i8x16::new(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)];
+        let e: [i8x16; 2] = [i8x16::new([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]), i8x16::new([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1])];
         let r: [i8x16; 2] = transmute(vld2q_dup_p8(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34873,7 +34873,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld2q_dup_p16() {
         let a: [u16; 17] = [0, 1, 1, 2, 3, 1, 4, 3, 5, 1, 6, 3, 7, 4, 8, 5, 9];
-        let e: [i16x8; 2] = [i16x8::new(1, 1, 1, 1, 1, 1, 1, 1), i16x8::new(1, 1, 1, 1, 1, 1, 1, 1)];
+        let e: [i16x8; 2] = [i16x8::new([1, 1, 1, 1, 1, 1, 1, 1]), i16x8::new([1, 1, 1, 1, 1, 1, 1, 1])];
         let r: [i16x8; 2] = transmute(vld2q_dup_p16(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34881,7 +34881,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld2_dup_u64() {
         let a: [u64; 3] = [0, 1, 1];
-        let e: [u64x1; 2] = [u64x1::new(1), u64x1::new(1)];
+        let e: [u64x1; 2] = [u64x1::new([1]), u64x1::new([1])];
         let r: [u64x1; 2] = transmute(vld2_dup_u64(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34889,7 +34889,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld2_dup_p64() {
         let a: [u64; 3] = [0, 1, 1];
-        let e: [i64x1; 2] = [i64x1::new(1), i64x1::new(1)];
+        let e: [i64x1; 2] = [i64x1::new([1]), i64x1::new([1])];
         let r: [i64x1; 2] = transmute(vld2_dup_p64(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34897,7 +34897,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld2_dup_f32() {
         let a: [f32; 5] = [0., 1., 1., 2., 3.];
-        let e: [f32x2; 2] = [f32x2::new(1., 1.), f32x2::new(1., 1.)];
+        let e: [f32x2; 2] = [f32x2::new([1., 1.]), f32x2::new([1., 1.])];
         let r: [f32x2; 2] = transmute(vld2_dup_f32(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34905,7 +34905,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld2q_dup_f32() {
         let a: [f32; 9] = [0., 1., 1., 2., 3., 1., 4., 3., 5.];
-        let e: [f32x4; 2] = [f32x4::new(1., 1., 1., 1.), f32x4::new(1., 1., 1., 1.)];
+        let e: [f32x4; 2] = [f32x4::new([1., 1., 1., 1.]), f32x4::new([1., 1., 1., 1.])];
         let r: [f32x4; 2] = transmute(vld2q_dup_f32(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -34913,8 +34913,8 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld2_lane_s8() {
         let a: [i8; 17] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8];
-        let b: [i8x8; 2] = [i8x8::new(0, 2, 2, 14, 2, 16, 17, 18), i8x8::new(2, 20, 21, 22, 23, 24, 25, 26)];
-        let e: [i8x8; 2] = [i8x8::new(1, 2, 2, 14, 2, 16, 17, 18), i8x8::new(2, 20, 21, 22, 23, 24, 25, 26)];
+        let b: [i8x8; 2] = [i8x8::new([0, 2, 2, 14, 2, 16, 17, 18]), i8x8::new([2, 20, 21, 22, 23, 24, 25, 26])];
+        let e: [i8x8; 2] = [i8x8::new([1, 2, 2, 14, 2, 16, 17, 18]), i8x8::new([2, 20, 21, 22, 23, 24, 25, 26])];
         let r: [i8x8; 2] = transmute(vld2_lane_s8::<0>(a[1..].as_ptr(), transmute(b)));
         assert_eq!(r, e);
     }
@@ -34922,8 +34922,8 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld2_lane_s16() {
         let a: [i16; 9] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
-        let b: [i16x4; 2] = [i16x4::new(0, 2, 2, 14), i16x4::new(2, 16, 17, 18)];
-        let e: [i16x4; 2] = [i16x4::new(1, 2, 2, 14), i16x4::new(2, 16, 17, 18)];
+        let b: [i16x4; 2] = [i16x4::new([0, 2, 2, 14]), i16x4::new([2, 16, 17, 18])];
+        let e: [i16x4; 2] = [i16x4::new([1, 2, 2, 14]), i16x4::new([2, 16, 17, 18])];
         let r: [i16x4; 2] = transmute(vld2_lane_s16::<0>(a[1..].as_ptr(), transmute(b)));
         assert_eq!(r, e);
     }
@@ -34931,8 +34931,8 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld2_lane_s32() {
         let a: [i32; 5] = [0, 1, 2, 3, 4];
-        let b: [i32x2; 2] = [i32x2::new(0, 2), i32x2::new(2, 14)];
-        let e: [i32x2; 2] = [i32x2::new(1, 2), i32x2::new(2, 14)];
+        let b: [i32x2; 2] = [i32x2::new([0, 2]), i32x2::new([2, 14])];
+        let e: [i32x2; 2] = [i32x2::new([1, 2]), i32x2::new([2, 14])];
         let r: [i32x2; 2] = transmute(vld2_lane_s32::<0>(a[1..].as_ptr(), transmute(b)));
         assert_eq!(r, e);
     }
@@ -34940,8 +34940,8 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld2q_lane_s16() {
         let a: [i16; 17] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8];
-        let b: [i16x8; 2] = [i16x8::new(0, 2, 2, 14, 2, 16, 17, 18), i16x8::new(2, 20, 21, 22, 23, 24, 25, 26)];
-        let e: [i16x8; 2] = [i16x8::new(1, 2, 2, 14, 2, 16, 17, 18), i16x8::new(2, 20, 21, 22, 23, 24, 25, 26)];
+        let b: [i16x8; 2] = [i16x8::new([0, 2, 2, 14, 2, 16, 17, 18]), i16x8::new([2, 20, 21, 22, 23, 24, 25, 26])];
+        let e: [i16x8; 2] = [i16x8::new([1, 2, 2, 14, 2, 16, 17, 18]), i16x8::new([2, 20, 21, 22, 23, 24, 25, 26])];
         let r: [i16x8; 2] = transmute(vld2q_lane_s16::<0>(a[1..].as_ptr(), transmute(b)));
         assert_eq!(r, e);
     }
@@ -34949,8 +34949,8 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld2q_lane_s32() {
         let a: [i32; 9] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
-        let b: [i32x4; 2] = [i32x4::new(0, 2, 2, 14), i32x4::new(2, 16, 17, 18)];
-        let e: [i32x4; 2] = [i32x4::new(1, 2, 2, 14), i32x4::new(2, 16, 17, 18)];
+        let b: [i32x4; 2] = [i32x4::new([0, 2, 2, 14]), i32x4::new([2, 16, 17, 18])];
+        let e: [i32x4; 2] = [i32x4::new([1, 2, 2, 14]), i32x4::new([2, 16, 17, 18])];
         let r: [i32x4; 2] = transmute(vld2q_lane_s32::<0>(a[1..].as_ptr(), transmute(b)));
         assert_eq!(r, e);
     }
@@ -34958,8 +34958,8 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld2_lane_u8() {
         let a: [u8; 17] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8];
-        let b: [u8x8; 2] = [u8x8::new(0, 2, 2, 14, 2, 16, 17, 18), u8x8::new(2, 20, 21, 22, 23, 24, 25, 26)];
-        let e: [u8x8; 2] = [u8x8::new(1, 2, 2, 14, 2, 16, 17, 18), u8x8::new(2, 20, 21, 22, 23, 24, 25, 26)];
+        let b: [u8x8; 2] = [u8x8::new([0, 2, 2, 14, 2, 16, 17, 18]), u8x8::new([2, 20, 21, 22, 23, 24, 25, 26])];
+        let e: [u8x8; 2] = [u8x8::new([1, 2, 2, 14, 2, 16, 17, 18]), u8x8::new([2, 20, 21, 22, 23, 24, 25, 26])];
         let r: [u8x8; 2] = transmute(vld2_lane_u8::<0>(a[1..].as_ptr(), transmute(b)));
         assert_eq!(r, e);
     }
@@ -34967,8 +34967,8 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld2_lane_u16() {
         let a: [u16; 9] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
-        let b: [u16x4; 2] = [u16x4::new(0, 2, 2, 14), u16x4::new(2, 16, 17, 18)];
-        let e: [u16x4; 2] = [u16x4::new(1, 2, 2, 14), u16x4::new(2, 16, 17, 18)];
+        let b: [u16x4; 2] = [u16x4::new([0, 2, 2, 14]), u16x4::new([2, 16, 17, 18])];
+        let e: [u16x4; 2] = [u16x4::new([1, 2, 2, 14]), u16x4::new([2, 16, 17, 18])];
         let r: [u16x4; 2] = transmute(vld2_lane_u16::<0>(a[1..].as_ptr(), transmute(b)));
         assert_eq!(r, e);
     }
@@ -34976,8 +34976,8 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld2_lane_u32() {
         let a: [u32; 5] = [0, 1, 2, 3, 4];
-        let b: [u32x2; 2] = [u32x2::new(0, 2), u32x2::new(2, 14)];
-        let e: [u32x2; 2] = [u32x2::new(1, 2), u32x2::new(2, 14)];
+        let b: [u32x2; 2] = [u32x2::new([0, 2]), u32x2::new([2, 14])];
+        let e: [u32x2; 2] = [u32x2::new([1, 2]), u32x2::new([2, 14])];
         let r: [u32x2; 2] = transmute(vld2_lane_u32::<0>(a[1..].as_ptr(), transmute(b)));
         assert_eq!(r, e);
     }
@@ -34985,8 +34985,8 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld2q_lane_u16() {
         let a: [u16; 17] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8];
-        let b: [u16x8; 2] = [u16x8::new(0, 2, 2, 14, 2, 16, 17, 18), u16x8::new(2, 20, 21, 22, 23, 24, 25, 26)];
-        let e: [u16x8; 2] = [u16x8::new(1, 2, 2, 14, 2, 16, 17, 18), u16x8::new(2, 20, 21, 22, 23, 24, 25, 26)];
+        let b: [u16x8; 2] = [u16x8::new([0, 2, 2, 14, 2, 16, 17, 18]), u16x8::new([2, 20, 21, 22, 23, 24, 25, 26])];
+        let e: [u16x8; 2] = [u16x8::new([1, 2, 2, 14, 2, 16, 17, 18]), u16x8::new([2, 20, 21, 22, 23, 24, 25, 26])];
         let r: [u16x8; 2] = transmute(vld2q_lane_u16::<0>(a[1..].as_ptr(), transmute(b)));
         assert_eq!(r, e);
     }
@@ -34994,8 +34994,8 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld2q_lane_u32() {
         let a: [u32; 9] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
-        let b: [u32x4; 2] = [u32x4::new(0, 2, 2, 14), u32x4::new(2, 16, 17, 18)];
-        let e: [u32x4; 2] = [u32x4::new(1, 2, 2, 14), u32x4::new(2, 16, 17, 18)];
+        let b: [u32x4; 2] = [u32x4::new([0, 2, 2, 14]), u32x4::new([2, 16, 17, 18])];
+        let e: [u32x4; 2] = [u32x4::new([1, 2, 2, 14]), u32x4::new([2, 16, 17, 18])];
         let r: [u32x4; 2] = transmute(vld2q_lane_u32::<0>(a[1..].as_ptr(), transmute(b)));
         assert_eq!(r, e);
     }
@@ -35003,8 +35003,8 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld2_lane_p8() {
         let a: [u8; 17] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8];
-        let b: [i8x8; 2] = [i8x8::new(0, 2, 2, 14, 2, 16, 17, 18), i8x8::new(2, 20, 21, 22, 23, 24, 25, 26)];
-        let e: [i8x8; 2] = [i8x8::new(1, 2, 2, 14, 2, 16, 17, 18), i8x8::new(2, 20, 21, 22, 23, 24, 25, 26)];
+        let b: [i8x8; 2] = [i8x8::new([0, 2, 2, 14, 2, 16, 17, 18]), i8x8::new([2, 20, 21, 22, 23, 24, 25, 26])];
+        let e: [i8x8; 2] = [i8x8::new([1, 2, 2, 14, 2, 16, 17, 18]), i8x8::new([2, 20, 21, 22, 23, 24, 25, 26])];
         let r: [i8x8; 2] = transmute(vld2_lane_p8::<0>(a[1..].as_ptr(), transmute(b)));
         assert_eq!(r, e);
     }
@@ -35012,8 +35012,8 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld2_lane_p16() {
         let a: [u16; 9] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
-        let b: [i16x4; 2] = [i16x4::new(0, 2, 2, 14), i16x4::new(2, 16, 17, 18)];
-        let e: [i16x4; 2] = [i16x4::new(1, 2, 2, 14), i16x4::new(2, 16, 17, 18)];
+        let b: [i16x4; 2] = [i16x4::new([0, 2, 2, 14]), i16x4::new([2, 16, 17, 18])];
+        let e: [i16x4; 2] = [i16x4::new([1, 2, 2, 14]), i16x4::new([2, 16, 17, 18])];
         let r: [i16x4; 2] = transmute(vld2_lane_p16::<0>(a[1..].as_ptr(), transmute(b)));
         assert_eq!(r, e);
     }
@@ -35021,8 +35021,8 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld2q_lane_p16() {
         let a: [u16; 17] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8];
-        let b: [i16x8; 2] = [i16x8::new(0, 2, 2, 14, 2, 16, 17, 18), i16x8::new(2, 20, 21, 22, 23, 24, 25, 26)];
-        let e: [i16x8; 2] = [i16x8::new(1, 2, 2, 14, 2, 16, 17, 18), i16x8::new(2, 20, 21, 22, 23, 24, 25, 26)];
+        let b: [i16x8; 2] = [i16x8::new([0, 2, 2, 14, 2, 16, 17, 18]), i16x8::new([2, 20, 21, 22, 23, 24, 25, 26])];
+        let e: [i16x8; 2] = [i16x8::new([1, 2, 2, 14, 2, 16, 17, 18]), i16x8::new([2, 20, 21, 22, 23, 24, 25, 26])];
         let r: [i16x8; 2] = transmute(vld2q_lane_p16::<0>(a[1..].as_ptr(), transmute(b)));
         assert_eq!(r, e);
     }
@@ -35030,8 +35030,8 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld2_lane_f32() {
         let a: [f32; 5] = [0., 1., 2., 3., 4.];
-        let b: [f32x2; 2] = [f32x2::new(0., 2.), f32x2::new(2., 14.)];
-        let e: [f32x2; 2] = [f32x2::new(1., 2.), f32x2::new(2., 14.)];
+        let b: [f32x2; 2] = [f32x2::new([0., 2.]), f32x2::new([2., 14.])];
+        let e: [f32x2; 2] = [f32x2::new([1., 2.]), f32x2::new([2., 14.])];
         let r: [f32x2; 2] = transmute(vld2_lane_f32::<0>(a[1..].as_ptr(), transmute(b)));
         assert_eq!(r, e);
     }
@@ -35039,8 +35039,8 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld2q_lane_f32() {
         let a: [f32; 9] = [0., 1., 2., 3., 4., 5., 6., 7., 8.];
-        let b: [f32x4; 2] = [f32x4::new(0., 2., 2., 14.), f32x4::new(2., 16., 17., 18.)];
-        let e: [f32x4; 2] = [f32x4::new(1., 2., 2., 14.), f32x4::new(2., 16., 17., 18.)];
+        let b: [f32x4; 2] = [f32x4::new([0., 2., 2., 14.]), f32x4::new([2., 16., 17., 18.])];
+        let e: [f32x4; 2] = [f32x4::new([1., 2., 2., 14.]), f32x4::new([2., 16., 17., 18.])];
         let r: [f32x4; 2] = transmute(vld2q_lane_f32::<0>(a[1..].as_ptr(), transmute(b)));
         assert_eq!(r, e);
     }
@@ -35048,7 +35048,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld3_s8() {
         let a: [i8; 25] = [0, 1, 2, 2, 2, 4, 4, 2, 7, 7, 4, 8, 8, 2, 13, 13, 4, 14, 14, 7, 15, 15, 8, 16, 16];
-        let e: [i8x8; 3] = [i8x8::new(1, 2, 2, 4, 2, 4, 7, 8), i8x8::new(2, 4, 7, 8, 13, 14, 15, 16), i8x8::new(2, 4, 7, 8, 13, 14, 15, 16)];
+        let e: [i8x8; 3] = [i8x8::new([1, 2, 2, 4, 2, 4, 7, 8]), i8x8::new([2, 4, 7, 8, 13, 14, 15, 16]), i8x8::new([2, 4, 7, 8, 13, 14, 15, 16])];
         let r: [i8x8; 3] = transmute(vld3_s8(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35056,7 +35056,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld3_s16() {
         let a: [i16; 13] = [0, 1, 2, 2, 2, 4, 4, 2, 7, 7, 4, 8, 8];
-        let e: [i16x4; 3] = [i16x4::new(1, 2, 2, 4), i16x4::new(2, 4, 7, 8), i16x4::new(2, 4, 7, 8)];
+        let e: [i16x4; 3] = [i16x4::new([1, 2, 2, 4]), i16x4::new([2, 4, 7, 8]), i16x4::new([2, 4, 7, 8])];
         let r: [i16x4; 3] = transmute(vld3_s16(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35064,7 +35064,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld3_s32() {
         let a: [i32; 7] = [0, 1, 2, 2, 2, 4, 4];
-        let e: [i32x2; 3] = [i32x2::new(1, 2), i32x2::new(2, 4), i32x2::new(2, 4)];
+        let e: [i32x2; 3] = [i32x2::new([1, 2]), i32x2::new([2, 4]), i32x2::new([2, 4])];
         let r: [i32x2; 3] = transmute(vld3_s32(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35072,7 +35072,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld3q_s8() {
         let a: [i8; 49] = [0, 1, 2, 2, 2, 4, 4, 2, 7, 7, 4, 8, 8, 2, 13, 13, 4, 14, 14, 7, 15, 15, 8, 16, 16, 2, 25, 41, 4, 26, 42, 7, 27, 43, 8, 28, 44, 13, 29, 45, 14, 30, 46, 15, 31, 47, 16, 32, 48];
-        let e: [i8x16; 3] = [i8x16::new(1, 2, 2, 4, 2, 4, 7, 8, 2, 4, 7, 8, 13, 14, 15, 16), i8x16::new(2, 4, 7, 8, 13, 14, 15, 16, 25, 26, 27, 28, 29, 30, 31, 32), i8x16::new(2, 4, 7, 8, 13, 14, 15, 16, 41, 42, 43, 44, 45, 46, 47, 48)];
+        let e: [i8x16; 3] = [i8x16::new([1, 2, 2, 4, 2, 4, 7, 8, 2, 4, 7, 8, 13, 14, 15, 16]), i8x16::new([2, 4, 7, 8, 13, 14, 15, 16, 25, 26, 27, 28, 29, 30, 31, 32]), i8x16::new([2, 4, 7, 8, 13, 14, 15, 16, 41, 42, 43, 44, 45, 46, 47, 48])];
         let r: [i8x16; 3] = transmute(vld3q_s8(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35080,7 +35080,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld3q_s16() {
         let a: [i16; 25] = [0, 1, 2, 2, 2, 4, 4, 2, 7, 7, 4, 8, 8, 2, 13, 13, 4, 14, 14, 7, 15, 15, 8, 16, 16];
-        let e: [i16x8; 3] = [i16x8::new(1, 2, 2, 4, 2, 4, 7, 8), i16x8::new(2, 4, 7, 8, 13, 14, 15, 16), i16x8::new(2, 4, 7, 8, 13, 14, 15, 16)];
+        let e: [i16x8; 3] = [i16x8::new([1, 2, 2, 4, 2, 4, 7, 8]), i16x8::new([2, 4, 7, 8, 13, 14, 15, 16]), i16x8::new([2, 4, 7, 8, 13, 14, 15, 16])];
         let r: [i16x8; 3] = transmute(vld3q_s16(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35088,7 +35088,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld3q_s32() {
         let a: [i32; 13] = [0, 1, 2, 2, 2, 4, 4, 2, 7, 7, 4, 8, 8];
-        let e: [i32x4; 3] = [i32x4::new(1, 2, 2, 4), i32x4::new(2, 4, 7, 8), i32x4::new(2, 4, 7, 8)];
+        let e: [i32x4; 3] = [i32x4::new([1, 2, 2, 4]), i32x4::new([2, 4, 7, 8]), i32x4::new([2, 4, 7, 8])];
         let r: [i32x4; 3] = transmute(vld3q_s32(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35096,7 +35096,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld3_s64() {
         let a: [i64; 4] = [0, 1, 2, 2];
-        let e: [i64x1; 3] = [i64x1::new(1), i64x1::new(2), i64x1::new(2)];
+        let e: [i64x1; 3] = [i64x1::new([1]), i64x1::new([2]), i64x1::new([2])];
         let r: [i64x1; 3] = transmute(vld3_s64(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35104,7 +35104,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld3_u8() {
         let a: [u8; 25] = [0, 1, 2, 2, 2, 4, 4, 2, 7, 7, 4, 8, 8, 2, 13, 13, 4, 14, 14, 7, 15, 15, 8, 16, 16];
-        let e: [u8x8; 3] = [u8x8::new(1, 2, 2, 4, 2, 4, 7, 8), u8x8::new(2, 4, 7, 8, 13, 14, 15, 16), u8x8::new(2, 4, 7, 8, 13, 14, 15, 16)];
+        let e: [u8x8; 3] = [u8x8::new([1, 2, 2, 4, 2, 4, 7, 8]), u8x8::new([2, 4, 7, 8, 13, 14, 15, 16]), u8x8::new([2, 4, 7, 8, 13, 14, 15, 16])];
         let r: [u8x8; 3] = transmute(vld3_u8(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35112,7 +35112,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld3_u16() {
         let a: [u16; 13] = [0, 1, 2, 2, 2, 4, 4, 2, 7, 7, 4, 8, 8];
-        let e: [u16x4; 3] = [u16x4::new(1, 2, 2, 4), u16x4::new(2, 4, 7, 8), u16x4::new(2, 4, 7, 8)];
+        let e: [u16x4; 3] = [u16x4::new([1, 2, 2, 4]), u16x4::new([2, 4, 7, 8]), u16x4::new([2, 4, 7, 8])];
         let r: [u16x4; 3] = transmute(vld3_u16(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35120,7 +35120,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld3_u32() {
         let a: [u32; 7] = [0, 1, 2, 2, 2, 4, 4];
-        let e: [u32x2; 3] = [u32x2::new(1, 2), u32x2::new(2, 4), u32x2::new(2, 4)];
+        let e: [u32x2; 3] = [u32x2::new([1, 2]), u32x2::new([2, 4]), u32x2::new([2, 4])];
         let r: [u32x2; 3] = transmute(vld3_u32(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35128,7 +35128,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld3q_u8() {
         let a: [u8; 49] = [0, 1, 2, 2, 2, 4, 4, 2, 7, 7, 4, 8, 8, 2, 13, 13, 4, 14, 14, 7, 15, 15, 8, 16, 16, 2, 25, 41, 4, 26, 42, 7, 27, 43, 8, 28, 44, 13, 29, 45, 14, 30, 46, 15, 31, 47, 16, 32, 48];
-        let e: [u8x16; 3] = [u8x16::new(1, 2, 2, 4, 2, 4, 7, 8, 2, 4, 7, 8, 13, 14, 15, 16), u8x16::new(2, 4, 7, 8, 13, 14, 15, 16, 25, 26, 27, 28, 29, 30, 31, 32), u8x16::new(2, 4, 7, 8, 13, 14, 15, 16, 41, 42, 43, 44, 45, 46, 47, 48)];
+        let e: [u8x16; 3] = [u8x16::new([1, 2, 2, 4, 2, 4, 7, 8, 2, 4, 7, 8, 13, 14, 15, 16]), u8x16::new([2, 4, 7, 8, 13, 14, 15, 16, 25, 26, 27, 28, 29, 30, 31, 32]), u8x16::new([2, 4, 7, 8, 13, 14, 15, 16, 41, 42, 43, 44, 45, 46, 47, 48])];
         let r: [u8x16; 3] = transmute(vld3q_u8(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35136,7 +35136,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld3q_u16() {
         let a: [u16; 25] = [0, 1, 2, 2, 2, 4, 4, 2, 7, 7, 4, 8, 8, 2, 13, 13, 4, 14, 14, 7, 15, 15, 8, 16, 16];
-        let e: [u16x8; 3] = [u16x8::new(1, 2, 2, 4, 2, 4, 7, 8), u16x8::new(2, 4, 7, 8, 13, 14, 15, 16), u16x8::new(2, 4, 7, 8, 13, 14, 15, 16)];
+        let e: [u16x8; 3] = [u16x8::new([1, 2, 2, 4, 2, 4, 7, 8]), u16x8::new([2, 4, 7, 8, 13, 14, 15, 16]), u16x8::new([2, 4, 7, 8, 13, 14, 15, 16])];
         let r: [u16x8; 3] = transmute(vld3q_u16(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35144,7 +35144,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld3q_u32() {
         let a: [u32; 13] = [0, 1, 2, 2, 2, 4, 4, 2, 7, 7, 4, 8, 8];
-        let e: [u32x4; 3] = [u32x4::new(1, 2, 2, 4), u32x4::new(2, 4, 7, 8), u32x4::new(2, 4, 7, 8)];
+        let e: [u32x4; 3] = [u32x4::new([1, 2, 2, 4]), u32x4::new([2, 4, 7, 8]), u32x4::new([2, 4, 7, 8])];
         let r: [u32x4; 3] = transmute(vld3q_u32(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35152,7 +35152,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld3_p8() {
         let a: [u8; 25] = [0, 1, 2, 2, 2, 4, 4, 2, 7, 7, 4, 8, 8, 2, 13, 13, 4, 14, 14, 7, 15, 15, 8, 16, 16];
-        let e: [i8x8; 3] = [i8x8::new(1, 2, 2, 4, 2, 4, 7, 8), i8x8::new(2, 4, 7, 8, 13, 14, 15, 16), i8x8::new(2, 4, 7, 8, 13, 14, 15, 16)];
+        let e: [i8x8; 3] = [i8x8::new([1, 2, 2, 4, 2, 4, 7, 8]), i8x8::new([2, 4, 7, 8, 13, 14, 15, 16]), i8x8::new([2, 4, 7, 8, 13, 14, 15, 16])];
         let r: [i8x8; 3] = transmute(vld3_p8(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35160,7 +35160,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld3_p16() {
         let a: [u16; 13] = [0, 1, 2, 2, 2, 4, 4, 2, 7, 7, 4, 8, 8];
-        let e: [i16x4; 3] = [i16x4::new(1, 2, 2, 4), i16x4::new(2, 4, 7, 8), i16x4::new(2, 4, 7, 8)];
+        let e: [i16x4; 3] = [i16x4::new([1, 2, 2, 4]), i16x4::new([2, 4, 7, 8]), i16x4::new([2, 4, 7, 8])];
         let r: [i16x4; 3] = transmute(vld3_p16(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35168,7 +35168,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld3q_p8() {
         let a: [u8; 49] = [0, 1, 2, 2, 2, 4, 4, 2, 7, 7, 4, 8, 8, 2, 13, 13, 4, 14, 14, 7, 15, 15, 8, 16, 16, 2, 25, 41, 4, 26, 42, 7, 27, 43, 8, 28, 44, 13, 29, 45, 14, 30, 46, 15, 31, 47, 16, 32, 48];
-        let e: [i8x16; 3] = [i8x16::new(1, 2, 2, 4, 2, 4, 7, 8, 2, 4, 7, 8, 13, 14, 15, 16), i8x16::new(2, 4, 7, 8, 13, 14, 15, 16, 25, 26, 27, 28, 29, 30, 31, 32), i8x16::new(2, 4, 7, 8, 13, 14, 15, 16, 41, 42, 43, 44, 45, 46, 47, 48)];
+        let e: [i8x16; 3] = [i8x16::new([1, 2, 2, 4, 2, 4, 7, 8, 2, 4, 7, 8, 13, 14, 15, 16]), i8x16::new([2, 4, 7, 8, 13, 14, 15, 16, 25, 26, 27, 28, 29, 30, 31, 32]), i8x16::new([2, 4, 7, 8, 13, 14, 15, 16, 41, 42, 43, 44, 45, 46, 47, 48])];
         let r: [i8x16; 3] = transmute(vld3q_p8(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35176,7 +35176,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld3q_p16() {
         let a: [u16; 25] = [0, 1, 2, 2, 2, 4, 4, 2, 7, 7, 4, 8, 8, 2, 13, 13, 4, 14, 14, 7, 15, 15, 8, 16, 16];
-        let e: [i16x8; 3] = [i16x8::new(1, 2, 2, 4, 2, 4, 7, 8), i16x8::new(2, 4, 7, 8, 13, 14, 15, 16), i16x8::new(2, 4, 7, 8, 13, 14, 15, 16)];
+        let e: [i16x8; 3] = [i16x8::new([1, 2, 2, 4, 2, 4, 7, 8]), i16x8::new([2, 4, 7, 8, 13, 14, 15, 16]), i16x8::new([2, 4, 7, 8, 13, 14, 15, 16])];
         let r: [i16x8; 3] = transmute(vld3q_p16(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35184,7 +35184,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld3_u64() {
         let a: [u64; 4] = [0, 1, 2, 2];
-        let e: [u64x1; 3] = [u64x1::new(1), u64x1::new(2), u64x1::new(2)];
+        let e: [u64x1; 3] = [u64x1::new([1]), u64x1::new([2]), u64x1::new([2])];
         let r: [u64x1; 3] = transmute(vld3_u64(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35192,7 +35192,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld3_p64() {
         let a: [u64; 4] = [0, 1, 2, 2];
-        let e: [i64x1; 3] = [i64x1::new(1), i64x1::new(2), i64x1::new(2)];
+        let e: [i64x1; 3] = [i64x1::new([1]), i64x1::new([2]), i64x1::new([2])];
         let r: [i64x1; 3] = transmute(vld3_p64(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35200,7 +35200,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld3_f32() {
         let a: [f32; 7] = [0., 1., 2., 2., 2., 4., 4.];
-        let e: [f32x2; 3] = [f32x2::new(1., 2.), f32x2::new(2., 4.), f32x2::new(2., 4.)];
+        let e: [f32x2; 3] = [f32x2::new([1., 2.]), f32x2::new([2., 4.]), f32x2::new([2., 4.])];
         let r: [f32x2; 3] = transmute(vld3_f32(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35208,7 +35208,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld3q_f32() {
         let a: [f32; 13] = [0., 1., 2., 2., 2., 4., 4., 2., 7., 7., 4., 8., 8.];
-        let e: [f32x4; 3] = [f32x4::new(1., 2., 2., 4.), f32x4::new(2., 4., 7., 8.), f32x4::new(2., 4., 7., 8.)];
+        let e: [f32x4; 3] = [f32x4::new([1., 2., 2., 4.]), f32x4::new([2., 4., 7., 8.]), f32x4::new([2., 4., 7., 8.])];
         let r: [f32x4; 3] = transmute(vld3q_f32(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35216,7 +35216,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld3_dup_s8() {
         let a: [i8; 25] = [0, 1, 1, 1, 3, 1, 4, 3, 5, 1, 6, 3, 7, 4, 8, 5, 9, 2, 10, 3, 11, 4, 12, 5, 13];
-        let e: [i8x8; 3] = [i8x8::new(1, 1, 1, 1, 1, 1, 1, 1), i8x8::new(1, 1, 1, 1, 1, 1, 1, 1), i8x8::new(1, 1, 1, 1, 1, 1, 1, 1)];
+        let e: [i8x8; 3] = [i8x8::new([1, 1, 1, 1, 1, 1, 1, 1]), i8x8::new([1, 1, 1, 1, 1, 1, 1, 1]), i8x8::new([1, 1, 1, 1, 1, 1, 1, 1])];
         let r: [i8x8; 3] = transmute(vld3_dup_s8(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35224,7 +35224,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld3_dup_s16() {
         let a: [i16; 13] = [0, 1, 1, 1, 3, 1, 4, 3, 5, 1, 6, 3, 7];
-        let e: [i16x4; 3] = [i16x4::new(1, 1, 1, 1), i16x4::new(1, 1, 1, 1), i16x4::new(1, 1, 1, 1)];
+        let e: [i16x4; 3] = [i16x4::new([1, 1, 1, 1]), i16x4::new([1, 1, 1, 1]), i16x4::new([1, 1, 1, 1])];
         let r: [i16x4; 3] = transmute(vld3_dup_s16(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35232,7 +35232,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld3_dup_s32() {
         let a: [i32; 7] = [0, 1, 1, 1, 3, 1, 4];
-        let e: [i32x2; 3] = [i32x2::new(1, 1), i32x2::new(1, 1), i32x2::new(1, 1)];
+        let e: [i32x2; 3] = [i32x2::new([1, 1]), i32x2::new([1, 1]), i32x2::new([1, 1])];
         let r: [i32x2; 3] = transmute(vld3_dup_s32(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35240,7 +35240,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld3q_dup_s8() {
         let a: [i8; 49] = [0, 1, 1, 1, 3, 1, 4, 3, 5, 1, 6, 3, 7, 4, 8, 5, 9, 2, 10, 3, 11, 4, 12, 5, 13, 6, 14, 7, 15, 8, 16, 9, 17, 6, 14, 7, 15, 8, 16, 9, 17, 6, 14, 7, 15, 8, 16, 9, 17];
-        let e: [i8x16; 3] = [i8x16::new(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1), i8x16::new(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1), i8x16::new(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)];
+        let e: [i8x16; 3] = [i8x16::new([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]), i8x16::new([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]), i8x16::new([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1])];
         let r: [i8x16; 3] = transmute(vld3q_dup_s8(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35248,7 +35248,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld3q_dup_s16() {
         let a: [i16; 25] = [0, 1, 1, 1, 3, 1, 4, 3, 5, 1, 6, 3, 7, 4, 8, 5, 9, 2, 10, 3, 11, 4, 12, 5, 13];
-        let e: [i16x8; 3] = [i16x8::new(1, 1, 1, 1, 1, 1, 1, 1), i16x8::new(1, 1, 1, 1, 1, 1, 1, 1), i16x8::new(1, 1, 1, 1, 1, 1, 1, 1)];
+        let e: [i16x8; 3] = [i16x8::new([1, 1, 1, 1, 1, 1, 1, 1]), i16x8::new([1, 1, 1, 1, 1, 1, 1, 1]), i16x8::new([1, 1, 1, 1, 1, 1, 1, 1])];
         let r: [i16x8; 3] = transmute(vld3q_dup_s16(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35256,7 +35256,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld3q_dup_s32() {
         let a: [i32; 13] = [0, 1, 1, 1, 3, 1, 4, 3, 5, 1, 6, 3, 7];
-        let e: [i32x4; 3] = [i32x4::new(1, 1, 1, 1), i32x4::new(1, 1, 1, 1), i32x4::new(1, 1, 1, 1)];
+        let e: [i32x4; 3] = [i32x4::new([1, 1, 1, 1]), i32x4::new([1, 1, 1, 1]), i32x4::new([1, 1, 1, 1])];
         let r: [i32x4; 3] = transmute(vld3q_dup_s32(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35264,7 +35264,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld3_dup_s64() {
         let a: [i64; 4] = [0, 1, 1, 1];
-        let e: [i64x1; 3] = [i64x1::new(1), i64x1::new(1), i64x1::new(1)];
+        let e: [i64x1; 3] = [i64x1::new([1]), i64x1::new([1]), i64x1::new([1])];
         let r: [i64x1; 3] = transmute(vld3_dup_s64(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35272,7 +35272,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld3_dup_u8() {
         let a: [u8; 25] = [0, 1, 1, 1, 3, 1, 4, 3, 5, 1, 6, 3, 7, 4, 8, 5, 9, 2, 10, 3, 11, 4, 12, 5, 13];
-        let e: [u8x8; 3] = [u8x8::new(1, 1, 1, 1, 1, 1, 1, 1), u8x8::new(1, 1, 1, 1, 1, 1, 1, 1), u8x8::new(1, 1, 1, 1, 1, 1, 1, 1)];
+        let e: [u8x8; 3] = [u8x8::new([1, 1, 1, 1, 1, 1, 1, 1]), u8x8::new([1, 1, 1, 1, 1, 1, 1, 1]), u8x8::new([1, 1, 1, 1, 1, 1, 1, 1])];
         let r: [u8x8; 3] = transmute(vld3_dup_u8(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35280,7 +35280,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld3_dup_u16() {
         let a: [u16; 13] = [0, 1, 1, 1, 3, 1, 4, 3, 5, 1, 6, 3, 7];
-        let e: [u16x4; 3] = [u16x4::new(1, 1, 1, 1), u16x4::new(1, 1, 1, 1), u16x4::new(1, 1, 1, 1)];
+        let e: [u16x4; 3] = [u16x4::new([1, 1, 1, 1]), u16x4::new([1, 1, 1, 1]), u16x4::new([1, 1, 1, 1])];
         let r: [u16x4; 3] = transmute(vld3_dup_u16(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35288,7 +35288,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld3_dup_u32() {
         let a: [u32; 7] = [0, 1, 1, 1, 3, 1, 4];
-        let e: [u32x2; 3] = [u32x2::new(1, 1), u32x2::new(1, 1), u32x2::new(1, 1)];
+        let e: [u32x2; 3] = [u32x2::new([1, 1]), u32x2::new([1, 1]), u32x2::new([1, 1])];
         let r: [u32x2; 3] = transmute(vld3_dup_u32(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35296,7 +35296,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld3q_dup_u8() {
         let a: [u8; 49] = [0, 1, 1, 1, 3, 1, 4, 3, 5, 1, 6, 3, 7, 4, 8, 5, 9, 2, 10, 3, 11, 4, 12, 5, 13, 6, 14, 7, 15, 8, 16, 9, 17, 6, 14, 7, 15, 8, 16, 9, 17, 6, 14, 7, 15, 8, 16, 9, 17];
-        let e: [u8x16; 3] = [u8x16::new(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1), u8x16::new(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1), u8x16::new(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)];
+        let e: [u8x16; 3] = [u8x16::new([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]), u8x16::new([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]), u8x16::new([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1])];
         let r: [u8x16; 3] = transmute(vld3q_dup_u8(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35304,7 +35304,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld3q_dup_u16() {
         let a: [u16; 25] = [0, 1, 1, 1, 3, 1, 4, 3, 5, 1, 6, 3, 7, 4, 8, 5, 9, 2, 10, 3, 11, 4, 12, 5, 13];
-        let e: [u16x8; 3] = [u16x8::new(1, 1, 1, 1, 1, 1, 1, 1), u16x8::new(1, 1, 1, 1, 1, 1, 1, 1), u16x8::new(1, 1, 1, 1, 1, 1, 1, 1)];
+        let e: [u16x8; 3] = [u16x8::new([1, 1, 1, 1, 1, 1, 1, 1]), u16x8::new([1, 1, 1, 1, 1, 1, 1, 1]), u16x8::new([1, 1, 1, 1, 1, 1, 1, 1])];
         let r: [u16x8; 3] = transmute(vld3q_dup_u16(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35312,7 +35312,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld3q_dup_u32() {
         let a: [u32; 13] = [0, 1, 1, 1, 3, 1, 4, 3, 5, 1, 6, 3, 7];
-        let e: [u32x4; 3] = [u32x4::new(1, 1, 1, 1), u32x4::new(1, 1, 1, 1), u32x4::new(1, 1, 1, 1)];
+        let e: [u32x4; 3] = [u32x4::new([1, 1, 1, 1]), u32x4::new([1, 1, 1, 1]), u32x4::new([1, 1, 1, 1])];
         let r: [u32x4; 3] = transmute(vld3q_dup_u32(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35320,7 +35320,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld3_dup_p8() {
         let a: [u8; 25] = [0, 1, 1, 1, 3, 1, 4, 3, 5, 1, 6, 3, 7, 4, 8, 5, 9, 2, 10, 3, 11, 4, 12, 5, 13];
-        let e: [i8x8; 3] = [i8x8::new(1, 1, 1, 1, 1, 1, 1, 1), i8x8::new(1, 1, 1, 1, 1, 1, 1, 1), i8x8::new(1, 1, 1, 1, 1, 1, 1, 1)];
+        let e: [i8x8; 3] = [i8x8::new([1, 1, 1, 1, 1, 1, 1, 1]), i8x8::new([1, 1, 1, 1, 1, 1, 1, 1]), i8x8::new([1, 1, 1, 1, 1, 1, 1, 1])];
         let r: [i8x8; 3] = transmute(vld3_dup_p8(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35328,7 +35328,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld3_dup_p16() {
         let a: [u16; 13] = [0, 1, 1, 1, 3, 1, 4, 3, 5, 1, 6, 3, 7];
-        let e: [i16x4; 3] = [i16x4::new(1, 1, 1, 1), i16x4::new(1, 1, 1, 1), i16x4::new(1, 1, 1, 1)];
+        let e: [i16x4; 3] = [i16x4::new([1, 1, 1, 1]), i16x4::new([1, 1, 1, 1]), i16x4::new([1, 1, 1, 1])];
         let r: [i16x4; 3] = transmute(vld3_dup_p16(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35336,7 +35336,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld3q_dup_p8() {
         let a: [u8; 49] = [0, 1, 1, 1, 3, 1, 4, 3, 5, 1, 6, 3, 7, 4, 8, 5, 9, 2, 10, 3, 11, 4, 12, 5, 13, 6, 14, 7, 15, 8, 16, 9, 17, 6, 14, 7, 15, 8, 16, 9, 17, 6, 14, 7, 15, 8, 16, 9, 17];
-        let e: [i8x16; 3] = [i8x16::new(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1), i8x16::new(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1), i8x16::new(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)];
+        let e: [i8x16; 3] = [i8x16::new([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]), i8x16::new([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]), i8x16::new([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1])];
         let r: [i8x16; 3] = transmute(vld3q_dup_p8(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35344,7 +35344,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld3q_dup_p16() {
         let a: [u16; 25] = [0, 1, 1, 1, 3, 1, 4, 3, 5, 1, 6, 3, 7, 4, 8, 5, 9, 2, 10, 3, 11, 4, 12, 5, 13];
-        let e: [i16x8; 3] = [i16x8::new(1, 1, 1, 1, 1, 1, 1, 1), i16x8::new(1, 1, 1, 1, 1, 1, 1, 1), i16x8::new(1, 1, 1, 1, 1, 1, 1, 1)];
+        let e: [i16x8; 3] = [i16x8::new([1, 1, 1, 1, 1, 1, 1, 1]), i16x8::new([1, 1, 1, 1, 1, 1, 1, 1]), i16x8::new([1, 1, 1, 1, 1, 1, 1, 1])];
         let r: [i16x8; 3] = transmute(vld3q_dup_p16(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35352,7 +35352,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld3_dup_u64() {
         let a: [u64; 4] = [0, 1, 1, 1];
-        let e: [u64x1; 3] = [u64x1::new(1), u64x1::new(1), u64x1::new(1)];
+        let e: [u64x1; 3] = [u64x1::new([1]), u64x1::new([1]), u64x1::new([1])];
         let r: [u64x1; 3] = transmute(vld3_dup_u64(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35360,7 +35360,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld3_dup_p64() {
         let a: [u64; 4] = [0, 1, 1, 1];
-        let e: [i64x1; 3] = [i64x1::new(1), i64x1::new(1), i64x1::new(1)];
+        let e: [i64x1; 3] = [i64x1::new([1]), i64x1::new([1]), i64x1::new([1])];
         let r: [i64x1; 3] = transmute(vld3_dup_p64(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35368,7 +35368,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld3_dup_f32() {
         let a: [f32; 7] = [0., 1., 1., 1., 3., 1., 4.];
-        let e: [f32x2; 3] = [f32x2::new(1., 1.), f32x2::new(1., 1.), f32x2::new(1., 1.)];
+        let e: [f32x2; 3] = [f32x2::new([1., 1.]), f32x2::new([1., 1.]), f32x2::new([1., 1.])];
         let r: [f32x2; 3] = transmute(vld3_dup_f32(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35376,7 +35376,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld3q_dup_f32() {
         let a: [f32; 13] = [0., 1., 1., 1., 3., 1., 4., 3., 5., 1., 4., 3., 5.];
-        let e: [f32x4; 3] = [f32x4::new(1., 1., 1., 1.), f32x4::new(1., 1., 1., 1.), f32x4::new(1., 1., 1., 1.)];
+        let e: [f32x4; 3] = [f32x4::new([1., 1., 1., 1.]), f32x4::new([1., 1., 1., 1.]), f32x4::new([1., 1., 1., 1.])];
         let r: [f32x4; 3] = transmute(vld3q_dup_f32(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35384,8 +35384,8 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld3_lane_s8() {
         let a: [i8; 25] = [0, 1, 2, 2, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8];
-        let b: [i8x8; 3] = [i8x8::new(0, 2, 2, 14, 2, 16, 17, 18), i8x8::new(2, 20, 21, 22, 23, 24, 25, 26), i8x8::new(11, 12, 13, 14, 15, 16, 17, 18)];
-        let e: [i8x8; 3] = [i8x8::new(1, 2, 2, 14, 2, 16, 17, 18), i8x8::new(2, 20, 21, 22, 23, 24, 25, 26), i8x8::new(2, 12, 13, 14, 15, 16, 17, 18)];
+        let b: [i8x8; 3] = [i8x8::new([0, 2, 2, 14, 2, 16, 17, 18]), i8x8::new([2, 20, 21, 22, 23, 24, 25, 26]), i8x8::new([11, 12, 13, 14, 15, 16, 17, 18])];
+        let e: [i8x8; 3] = [i8x8::new([1, 2, 2, 14, 2, 16, 17, 18]), i8x8::new([2, 20, 21, 22, 23, 24, 25, 26]), i8x8::new([2, 12, 13, 14, 15, 16, 17, 18])];
         let r: [i8x8; 3] = transmute(vld3_lane_s8::<0>(a[1..].as_ptr(), transmute(b)));
         assert_eq!(r, e);
     }
@@ -35393,8 +35393,8 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld3_lane_s16() {
         let a: [i16; 13] = [0, 1, 2, 2, 4, 5, 6, 7, 8, 1, 2, 3, 4];
-        let b: [i16x4; 3] = [i16x4::new(0, 2, 2, 14), i16x4::new(2, 16, 17, 18), i16x4::new(2, 20, 21, 22)];
-        let e: [i16x4; 3] = [i16x4::new(1, 2, 2, 14), i16x4::new(2, 16, 17, 18), i16x4::new(2, 20, 21, 22)];
+        let b: [i16x4; 3] = [i16x4::new([0, 2, 2, 14]), i16x4::new([2, 16, 17, 18]), i16x4::new([2, 20, 21, 22])];
+        let e: [i16x4; 3] = [i16x4::new([1, 2, 2, 14]), i16x4::new([2, 16, 17, 18]), i16x4::new([2, 20, 21, 22])];
         let r: [i16x4; 3] = transmute(vld3_lane_s16::<0>(a[1..].as_ptr(), transmute(b)));
         assert_eq!(r, e);
     }
@@ -35402,8 +35402,8 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld3_lane_s32() {
         let a: [i32; 7] = [0, 1, 2, 2, 4, 5, 6];
-        let b: [i32x2; 3] = [i32x2::new(0, 2), i32x2::new(2, 14), i32x2::new(2, 16)];
-        let e: [i32x2; 3] = [i32x2::new(1, 2), i32x2::new(2, 14), i32x2::new(2, 16)];
+        let b: [i32x2; 3] = [i32x2::new([0, 2]), i32x2::new([2, 14]), i32x2::new([2, 16])];
+        let e: [i32x2; 3] = [i32x2::new([1, 2]), i32x2::new([2, 14]), i32x2::new([2, 16])];
         let r: [i32x2; 3] = transmute(vld3_lane_s32::<0>(a[1..].as_ptr(), transmute(b)));
         assert_eq!(r, e);
     }
@@ -35411,8 +35411,8 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld3q_lane_s16() {
         let a: [i16; 25] = [0, 1, 2, 2, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8];
-        let b: [i16x8; 3] = [i16x8::new(0, 2, 2, 14, 2, 16, 17, 18), i16x8::new(2, 20, 21, 22, 23, 24, 25, 26), i16x8::new(11, 12, 13, 14, 15, 16, 17, 18)];
-        let e: [i16x8; 3] = [i16x8::new(1, 2, 2, 14, 2, 16, 17, 18), i16x8::new(2, 20, 21, 22, 23, 24, 25, 26), i16x8::new(2, 12, 13, 14, 15, 16, 17, 18)];
+        let b: [i16x8; 3] = [i16x8::new([0, 2, 2, 14, 2, 16, 17, 18]), i16x8::new([2, 20, 21, 22, 23, 24, 25, 26]), i16x8::new([11, 12, 13, 14, 15, 16, 17, 18])];
+        let e: [i16x8; 3] = [i16x8::new([1, 2, 2, 14, 2, 16, 17, 18]), i16x8::new([2, 20, 21, 22, 23, 24, 25, 26]), i16x8::new([2, 12, 13, 14, 15, 16, 17, 18])];
         let r: [i16x8; 3] = transmute(vld3q_lane_s16::<0>(a[1..].as_ptr(), transmute(b)));
         assert_eq!(r, e);
     }
@@ -35420,8 +35420,8 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld3q_lane_s32() {
         let a: [i32; 13] = [0, 1, 2, 2, 4, 5, 6, 7, 8, 1, 2, 3, 4];
-        let b: [i32x4; 3] = [i32x4::new(0, 2, 2, 14), i32x4::new(2, 16, 17, 18), i32x4::new(2, 20, 21, 22)];
-        let e: [i32x4; 3] = [i32x4::new(1, 2, 2, 14), i32x4::new(2, 16, 17, 18), i32x4::new(2, 20, 21, 22)];
+        let b: [i32x4; 3] = [i32x4::new([0, 2, 2, 14]), i32x4::new([2, 16, 17, 18]), i32x4::new([2, 20, 21, 22])];
+        let e: [i32x4; 3] = [i32x4::new([1, 2, 2, 14]), i32x4::new([2, 16, 17, 18]), i32x4::new([2, 20, 21, 22])];
         let r: [i32x4; 3] = transmute(vld3q_lane_s32::<0>(a[1..].as_ptr(), transmute(b)));
         assert_eq!(r, e);
     }
@@ -35429,8 +35429,8 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld3_lane_u8() {
         let a: [u8; 25] = [0, 1, 2, 2, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8];
-        let b: [u8x8; 3] = [u8x8::new(0, 2, 2, 14, 2, 16, 17, 18), u8x8::new(2, 20, 21, 22, 23, 24, 25, 26), u8x8::new(11, 12, 13, 14, 15, 16, 17, 18)];
-        let e: [u8x8; 3] = [u8x8::new(1, 2, 2, 14, 2, 16, 17, 18), u8x8::new(2, 20, 21, 22, 23, 24, 25, 26), u8x8::new(2, 12, 13, 14, 15, 16, 17, 18)];
+        let b: [u8x8; 3] = [u8x8::new([0, 2, 2, 14, 2, 16, 17, 18]), u8x8::new([2, 20, 21, 22, 23, 24, 25, 26]), u8x8::new([11, 12, 13, 14, 15, 16, 17, 18])];
+        let e: [u8x8; 3] = [u8x8::new([1, 2, 2, 14, 2, 16, 17, 18]), u8x8::new([2, 20, 21, 22, 23, 24, 25, 26]), u8x8::new([2, 12, 13, 14, 15, 16, 17, 18])];
         let r: [u8x8; 3] = transmute(vld3_lane_u8::<0>(a[1..].as_ptr(), transmute(b)));
         assert_eq!(r, e);
     }
@@ -35438,8 +35438,8 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld3_lane_u16() {
         let a: [u16; 13] = [0, 1, 2, 2, 4, 5, 6, 7, 8, 1, 2, 3, 4];
-        let b: [u16x4; 3] = [u16x4::new(0, 2, 2, 14), u16x4::new(2, 16, 17, 18), u16x4::new(2, 20, 21, 22)];
-        let e: [u16x4; 3] = [u16x4::new(1, 2, 2, 14), u16x4::new(2, 16, 17, 18), u16x4::new(2, 20, 21, 22)];
+        let b: [u16x4; 3] = [u16x4::new([0, 2, 2, 14]), u16x4::new([2, 16, 17, 18]), u16x4::new([2, 20, 21, 22])];
+        let e: [u16x4; 3] = [u16x4::new([1, 2, 2, 14]), u16x4::new([2, 16, 17, 18]), u16x4::new([2, 20, 21, 22])];
         let r: [u16x4; 3] = transmute(vld3_lane_u16::<0>(a[1..].as_ptr(), transmute(b)));
         assert_eq!(r, e);
     }
@@ -35447,8 +35447,8 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld3_lane_u32() {
         let a: [u32; 7] = [0, 1, 2, 2, 4, 5, 6];
-        let b: [u32x2; 3] = [u32x2::new(0, 2), u32x2::new(2, 14), u32x2::new(2, 16)];
-        let e: [u32x2; 3] = [u32x2::new(1, 2), u32x2::new(2, 14), u32x2::new(2, 16)];
+        let b: [u32x2; 3] = [u32x2::new([0, 2]), u32x2::new([2, 14]), u32x2::new([2, 16])];
+        let e: [u32x2; 3] = [u32x2::new([1, 2]), u32x2::new([2, 14]), u32x2::new([2, 16])];
         let r: [u32x2; 3] = transmute(vld3_lane_u32::<0>(a[1..].as_ptr(), transmute(b)));
         assert_eq!(r, e);
     }
@@ -35456,8 +35456,8 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld3q_lane_u16() {
         let a: [u16; 25] = [0, 1, 2, 2, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8];
-        let b: [u16x8; 3] = [u16x8::new(0, 2, 2, 14, 2, 16, 17, 18), u16x8::new(2, 20, 21, 22, 23, 24, 25, 26), u16x8::new(11, 12, 13, 14, 15, 16, 17, 18)];
-        let e: [u16x8; 3] = [u16x8::new(1, 2, 2, 14, 2, 16, 17, 18), u16x8::new(2, 20, 21, 22, 23, 24, 25, 26), u16x8::new(2, 12, 13, 14, 15, 16, 17, 18)];
+        let b: [u16x8; 3] = [u16x8::new([0, 2, 2, 14, 2, 16, 17, 18]), u16x8::new([2, 20, 21, 22, 23, 24, 25, 26]), u16x8::new([11, 12, 13, 14, 15, 16, 17, 18])];
+        let e: [u16x8; 3] = [u16x8::new([1, 2, 2, 14, 2, 16, 17, 18]), u16x8::new([2, 20, 21, 22, 23, 24, 25, 26]), u16x8::new([2, 12, 13, 14, 15, 16, 17, 18])];
         let r: [u16x8; 3] = transmute(vld3q_lane_u16::<0>(a[1..].as_ptr(), transmute(b)));
         assert_eq!(r, e);
     }
@@ -35465,8 +35465,8 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld3q_lane_u32() {
         let a: [u32; 13] = [0, 1, 2, 2, 4, 5, 6, 7, 8, 1, 2, 3, 4];
-        let b: [u32x4; 3] = [u32x4::new(0, 2, 2, 14), u32x4::new(2, 16, 17, 18), u32x4::new(2, 20, 21, 22)];
-        let e: [u32x4; 3] = [u32x4::new(1, 2, 2, 14), u32x4::new(2, 16, 17, 18), u32x4::new(2, 20, 21, 22)];
+        let b: [u32x4; 3] = [u32x4::new([0, 2, 2, 14]), u32x4::new([2, 16, 17, 18]), u32x4::new([2, 20, 21, 22])];
+        let e: [u32x4; 3] = [u32x4::new([1, 2, 2, 14]), u32x4::new([2, 16, 17, 18]), u32x4::new([2, 20, 21, 22])];
         let r: [u32x4; 3] = transmute(vld3q_lane_u32::<0>(a[1..].as_ptr(), transmute(b)));
         assert_eq!(r, e);
     }
@@ -35474,8 +35474,8 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld3_lane_p8() {
         let a: [u8; 25] = [0, 1, 2, 2, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8];
-        let b: [i8x8; 3] = [i8x8::new(0, 2, 2, 14, 2, 16, 17, 18), i8x8::new(2, 20, 21, 22, 23, 24, 25, 26), i8x8::new(11, 12, 13, 14, 15, 16, 17, 18)];
-        let e: [i8x8; 3] = [i8x8::new(1, 2, 2, 14, 2, 16, 17, 18), i8x8::new(2, 20, 21, 22, 23, 24, 25, 26), i8x8::new(2, 12, 13, 14, 15, 16, 17, 18)];
+        let b: [i8x8; 3] = [i8x8::new([0, 2, 2, 14, 2, 16, 17, 18]), i8x8::new([2, 20, 21, 22, 23, 24, 25, 26]), i8x8::new([11, 12, 13, 14, 15, 16, 17, 18])];
+        let e: [i8x8; 3] = [i8x8::new([1, 2, 2, 14, 2, 16, 17, 18]), i8x8::new([2, 20, 21, 22, 23, 24, 25, 26]), i8x8::new([2, 12, 13, 14, 15, 16, 17, 18])];
         let r: [i8x8; 3] = transmute(vld3_lane_p8::<0>(a[1..].as_ptr(), transmute(b)));
         assert_eq!(r, e);
     }
@@ -35483,8 +35483,8 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld3_lane_p16() {
         let a: [u16; 13] = [0, 1, 2, 2, 4, 5, 6, 7, 8, 1, 2, 3, 4];
-        let b: [i16x4; 3] = [i16x4::new(0, 2, 2, 14), i16x4::new(2, 16, 17, 18), i16x4::new(2, 20, 21, 22)];
-        let e: [i16x4; 3] = [i16x4::new(1, 2, 2, 14), i16x4::new(2, 16, 17, 18), i16x4::new(2, 20, 21, 22)];
+        let b: [i16x4; 3] = [i16x4::new([0, 2, 2, 14]), i16x4::new([2, 16, 17, 18]), i16x4::new([2, 20, 21, 22])];
+        let e: [i16x4; 3] = [i16x4::new([1, 2, 2, 14]), i16x4::new([2, 16, 17, 18]), i16x4::new([2, 20, 21, 22])];
         let r: [i16x4; 3] = transmute(vld3_lane_p16::<0>(a[1..].as_ptr(), transmute(b)));
         assert_eq!(r, e);
     }
@@ -35492,8 +35492,8 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld3q_lane_p16() {
         let a: [u16; 25] = [0, 1, 2, 2, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8];
-        let b: [i16x8; 3] = [i16x8::new(0, 2, 2, 14, 2, 16, 17, 18), i16x8::new(2, 20, 21, 22, 23, 24, 25, 26), i16x8::new(11, 12, 13, 14, 15, 16, 17, 18)];
-        let e: [i16x8; 3] = [i16x8::new(1, 2, 2, 14, 2, 16, 17, 18), i16x8::new(2, 20, 21, 22, 23, 24, 25, 26), i16x8::new(2, 12, 13, 14, 15, 16, 17, 18)];
+        let b: [i16x8; 3] = [i16x8::new([0, 2, 2, 14, 2, 16, 17, 18]), i16x8::new([2, 20, 21, 22, 23, 24, 25, 26]), i16x8::new([11, 12, 13, 14, 15, 16, 17, 18])];
+        let e: [i16x8; 3] = [i16x8::new([1, 2, 2, 14, 2, 16, 17, 18]), i16x8::new([2, 20, 21, 22, 23, 24, 25, 26]), i16x8::new([2, 12, 13, 14, 15, 16, 17, 18])];
         let r: [i16x8; 3] = transmute(vld3q_lane_p16::<0>(a[1..].as_ptr(), transmute(b)));
         assert_eq!(r, e);
     }
@@ -35501,8 +35501,8 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld3_lane_f32() {
         let a: [f32; 7] = [0., 1., 2., 2., 4., 5., 6.];
-        let b: [f32x2; 3] = [f32x2::new(0., 2.), f32x2::new(2., 14.), f32x2::new(9., 16.)];
-        let e: [f32x2; 3] = [f32x2::new(1., 2.), f32x2::new(2., 14.), f32x2::new(2., 16.)];
+        let b: [f32x2; 3] = [f32x2::new([0., 2.]), f32x2::new([2., 14.]), f32x2::new([9., 16.])];
+        let e: [f32x2; 3] = [f32x2::new([1., 2.]), f32x2::new([2., 14.]), f32x2::new([2., 16.])];
         let r: [f32x2; 3] = transmute(vld3_lane_f32::<0>(a[1..].as_ptr(), transmute(b)));
         assert_eq!(r, e);
     }
@@ -35510,8 +35510,8 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld3q_lane_f32() {
         let a: [f32; 13] = [0., 1., 2., 2., 4., 5., 6., 7., 8., 5., 6., 7., 8.];
-        let b: [f32x4; 3] = [f32x4::new(0., 2., 2., 14.), f32x4::new(9., 16., 17., 18.), f32x4::new(5., 6., 7., 8.)];
-        let e: [f32x4; 3] = [f32x4::new(1., 2., 2., 14.), f32x4::new(2., 16., 17., 18.), f32x4::new(2., 6., 7., 8.)];
+        let b: [f32x4; 3] = [f32x4::new([0., 2., 2., 14.]), f32x4::new([9., 16., 17., 18.]), f32x4::new([5., 6., 7., 8.])];
+        let e: [f32x4; 3] = [f32x4::new([1., 2., 2., 14.]), f32x4::new([2., 16., 17., 18.]), f32x4::new([2., 6., 7., 8.])];
         let r: [f32x4; 3] = transmute(vld3q_lane_f32::<0>(a[1..].as_ptr(), transmute(b)));
         assert_eq!(r, e);
     }
@@ -35519,7 +35519,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld4_s8() {
         let a: [i8; 33] = [0, 1, 2, 2, 6, 2, 6, 6, 8, 2, 6, 6, 8, 6, 8, 8, 16, 2, 6, 6, 8, 6, 8, 8, 16, 6, 8, 8, 16, 8, 16, 16, 32];
-        let e: [i8x8; 4] = [i8x8::new(1, 2, 2, 6, 2, 6, 6, 8), i8x8::new(2, 6, 6, 8, 6, 8, 8, 16), i8x8::new(2, 6, 6, 8, 6, 8, 8, 16), i8x8::new(6, 8, 8, 16, 8, 16, 16, 32)];
+        let e: [i8x8; 4] = [i8x8::new([1, 2, 2, 6, 2, 6, 6, 8]), i8x8::new([2, 6, 6, 8, 6, 8, 8, 16]), i8x8::new([2, 6, 6, 8, 6, 8, 8, 16]), i8x8::new([6, 8, 8, 16, 8, 16, 16, 32])];
         let r: [i8x8; 4] = transmute(vld4_s8(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35527,7 +35527,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld4_s16() {
         let a: [i16; 17] = [0, 1, 2, 2, 6, 2, 6, 6, 8, 2, 6, 6, 8, 6, 8, 8, 16];
-        let e: [i16x4; 4] = [i16x4::new(1, 2, 2, 6), i16x4::new(2, 6, 6, 8), i16x4::new(2, 6, 6, 8), i16x4::new(6, 8, 8, 16)];
+        let e: [i16x4; 4] = [i16x4::new([1, 2, 2, 6]), i16x4::new([2, 6, 6, 8]), i16x4::new([2, 6, 6, 8]), i16x4::new([6, 8, 8, 16])];
         let r: [i16x4; 4] = transmute(vld4_s16(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35535,7 +35535,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld4_s32() {
         let a: [i32; 9] = [0, 1, 2, 2, 6, 2, 6, 6, 8];
-        let e: [i32x2; 4] = [i32x2::new(1, 2), i32x2::new(2, 6), i32x2::new(2, 6), i32x2::new(6, 8)];
+        let e: [i32x2; 4] = [i32x2::new([1, 2]), i32x2::new([2, 6]), i32x2::new([2, 6]), i32x2::new([6, 8])];
         let r: [i32x2; 4] = transmute(vld4_s32(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35543,7 +35543,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld4q_s8() {
         let a: [i8; 65] = [0, 1, 2, 2, 6, 2, 6, 6, 8, 2, 6, 6, 8, 6, 8, 8, 16, 2, 6, 6, 8, 6, 8, 8, 16, 6, 8, 8, 16, 8, 16, 16, 32, 2, 6, 6, 8, 6, 8, 8, 16, 6, 8, 43, 44, 8, 16, 44, 48, 6, 8, 8, 16, 8, 16, 16, 32, 8, 16, 44, 48, 16, 32, 48, 64];
-        let e: [i8x16; 4] = [i8x16::new(1, 2, 2, 6, 2, 6, 6, 8, 2, 6, 6, 8, 6, 8, 8, 16), i8x16::new(2, 6, 6, 8, 6, 8, 8, 16, 6, 8, 8, 16, 8, 16, 16, 32), i8x16::new(2, 6, 6, 8, 6, 8, 8, 16, 6, 8, 43, 44, 8, 16, 44, 48), i8x16::new(6, 8, 8, 16, 8, 16, 16, 32, 8, 16, 44, 48, 16, 32, 48, 64)];
+        let e: [i8x16; 4] = [i8x16::new([1, 2, 2, 6, 2, 6, 6, 8, 2, 6, 6, 8, 6, 8, 8, 16]), i8x16::new([2, 6, 6, 8, 6, 8, 8, 16, 6, 8, 8, 16, 8, 16, 16, 32]), i8x16::new([2, 6, 6, 8, 6, 8, 8, 16, 6, 8, 43, 44, 8, 16, 44, 48]), i8x16::new([6, 8, 8, 16, 8, 16, 16, 32, 8, 16, 44, 48, 16, 32, 48, 64])];
         let r: [i8x16; 4] = transmute(vld4q_s8(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35551,7 +35551,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld4q_s16() {
         let a: [i16; 33] = [0, 1, 2, 2, 6, 2, 6, 6, 8, 2, 6, 6, 8, 6, 8, 8, 16, 2, 6, 6, 8, 6, 8, 8, 16, 6, 8, 8, 16, 8, 16, 16, 32];
-        let e: [i16x8; 4] = [i16x8::new(1, 2, 2, 6, 2, 6, 6, 8), i16x8::new(2, 6, 6, 8, 6, 8, 8, 16), i16x8::new(2, 6, 6, 8, 6, 8, 8, 16), i16x8::new(6, 8, 8, 16, 8, 16, 16, 32)];
+        let e: [i16x8; 4] = [i16x8::new([1, 2, 2, 6, 2, 6, 6, 8]), i16x8::new([2, 6, 6, 8, 6, 8, 8, 16]), i16x8::new([2, 6, 6, 8, 6, 8, 8, 16]), i16x8::new([6, 8, 8, 16, 8, 16, 16, 32])];
         let r: [i16x8; 4] = transmute(vld4q_s16(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35559,7 +35559,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld4q_s32() {
         let a: [i32; 17] = [0, 1, 2, 2, 6, 2, 6, 6, 8, 2, 6, 6, 8, 6, 8, 8, 16];
-        let e: [i32x4; 4] = [i32x4::new(1, 2, 2, 6), i32x4::new(2, 6, 6, 8), i32x4::new(2, 6, 6, 8), i32x4::new(6, 8, 8, 16)];
+        let e: [i32x4; 4] = [i32x4::new([1, 2, 2, 6]), i32x4::new([2, 6, 6, 8]), i32x4::new([2, 6, 6, 8]), i32x4::new([6, 8, 8, 16])];
         let r: [i32x4; 4] = transmute(vld4q_s32(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35567,7 +35567,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld4_s64() {
         let a: [i64; 5] = [0, 1, 2, 2, 6];
-        let e: [i64x1; 4] = [i64x1::new(1), i64x1::new(2), i64x1::new(2), i64x1::new(6)];
+        let e: [i64x1; 4] = [i64x1::new([1]), i64x1::new([2]), i64x1::new([2]), i64x1::new([6])];
         let r: [i64x1; 4] = transmute(vld4_s64(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35575,7 +35575,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld4_u8() {
         let a: [u8; 33] = [0, 1, 2, 2, 6, 2, 6, 6, 8, 2, 6, 6, 8, 6, 8, 8, 16, 2, 6, 6, 8, 6, 8, 8, 16, 6, 8, 8, 16, 8, 16, 16, 32];
-        let e: [u8x8; 4] = [u8x8::new(1, 2, 2, 6, 2, 6, 6, 8), u8x8::new(2, 6, 6, 8, 6, 8, 8, 16), u8x8::new(2, 6, 6, 8, 6, 8, 8, 16), u8x8::new(6, 8, 8, 16, 8, 16, 16, 32)];
+        let e: [u8x8; 4] = [u8x8::new([1, 2, 2, 6, 2, 6, 6, 8]), u8x8::new([2, 6, 6, 8, 6, 8, 8, 16]), u8x8::new([2, 6, 6, 8, 6, 8, 8, 16]), u8x8::new([6, 8, 8, 16, 8, 16, 16, 32])];
         let r: [u8x8; 4] = transmute(vld4_u8(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35583,7 +35583,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld4_u16() {
         let a: [u16; 17] = [0, 1, 2, 2, 6, 2, 6, 6, 8, 2, 6, 6, 8, 6, 8, 8, 16];
-        let e: [u16x4; 4] = [u16x4::new(1, 2, 2, 6), u16x4::new(2, 6, 6, 8), u16x4::new(2, 6, 6, 8), u16x4::new(6, 8, 8, 16)];
+        let e: [u16x4; 4] = [u16x4::new([1, 2, 2, 6]), u16x4::new([2, 6, 6, 8]), u16x4::new([2, 6, 6, 8]), u16x4::new([6, 8, 8, 16])];
         let r: [u16x4; 4] = transmute(vld4_u16(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35591,7 +35591,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld4_u32() {
         let a: [u32; 9] = [0, 1, 2, 2, 6, 2, 6, 6, 8];
-        let e: [u32x2; 4] = [u32x2::new(1, 2), u32x2::new(2, 6), u32x2::new(2, 6), u32x2::new(6, 8)];
+        let e: [u32x2; 4] = [u32x2::new([1, 2]), u32x2::new([2, 6]), u32x2::new([2, 6]), u32x2::new([6, 8])];
         let r: [u32x2; 4] = transmute(vld4_u32(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35599,7 +35599,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld4q_u8() {
         let a: [u8; 65] = [0, 1, 2, 2, 6, 2, 6, 6, 8, 2, 6, 6, 8, 6, 8, 8, 16, 2, 6, 6, 8, 6, 8, 8, 16, 6, 8, 8, 16, 8, 16, 16, 32, 2, 6, 6, 8, 6, 8, 8, 16, 6, 8, 43, 44, 8, 16, 44, 48, 6, 8, 8, 16, 8, 16, 16, 32, 8, 16, 44, 48, 16, 32, 48, 64];
-        let e: [u8x16; 4] = [u8x16::new(1, 2, 2, 6, 2, 6, 6, 8, 2, 6, 6, 8, 6, 8, 8, 16), u8x16::new(2, 6, 6, 8, 6, 8, 8, 16, 6, 8, 8, 16, 8, 16, 16, 32), u8x16::new(2, 6, 6, 8, 6, 8, 8, 16, 6, 8, 43, 44, 8, 16, 44, 48), u8x16::new(6, 8, 8, 16, 8, 16, 16, 32, 8, 16, 44, 48, 16, 32, 48, 64)];
+        let e: [u8x16; 4] = [u8x16::new([1, 2, 2, 6, 2, 6, 6, 8, 2, 6, 6, 8, 6, 8, 8, 16]), u8x16::new([2, 6, 6, 8, 6, 8, 8, 16, 6, 8, 8, 16, 8, 16, 16, 32]), u8x16::new([2, 6, 6, 8, 6, 8, 8, 16, 6, 8, 43, 44, 8, 16, 44, 48]), u8x16::new([6, 8, 8, 16, 8, 16, 16, 32, 8, 16, 44, 48, 16, 32, 48, 64])];
         let r: [u8x16; 4] = transmute(vld4q_u8(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35607,7 +35607,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld4q_u16() {
         let a: [u16; 33] = [0, 1, 2, 2, 6, 2, 6, 6, 8, 2, 6, 6, 8, 6, 8, 8, 16, 2, 6, 6, 8, 6, 8, 8, 16, 6, 8, 8, 16, 8, 16, 16, 32];
-        let e: [u16x8; 4] = [u16x8::new(1, 2, 2, 6, 2, 6, 6, 8), u16x8::new(2, 6, 6, 8, 6, 8, 8, 16), u16x8::new(2, 6, 6, 8, 6, 8, 8, 16), u16x8::new(6, 8, 8, 16, 8, 16, 16, 32)];
+        let e: [u16x8; 4] = [u16x8::new([1, 2, 2, 6, 2, 6, 6, 8]), u16x8::new([2, 6, 6, 8, 6, 8, 8, 16]), u16x8::new([2, 6, 6, 8, 6, 8, 8, 16]), u16x8::new([6, 8, 8, 16, 8, 16, 16, 32])];
         let r: [u16x8; 4] = transmute(vld4q_u16(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35615,7 +35615,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld4q_u32() {
         let a: [u32; 17] = [0, 1, 2, 2, 6, 2, 6, 6, 8, 2, 6, 6, 8, 6, 8, 8, 16];
-        let e: [u32x4; 4] = [u32x4::new(1, 2, 2, 6), u32x4::new(2, 6, 6, 8), u32x4::new(2, 6, 6, 8), u32x4::new(6, 8, 8, 16)];
+        let e: [u32x4; 4] = [u32x4::new([1, 2, 2, 6]), u32x4::new([2, 6, 6, 8]), u32x4::new([2, 6, 6, 8]), u32x4::new([6, 8, 8, 16])];
         let r: [u32x4; 4] = transmute(vld4q_u32(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35623,7 +35623,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld4_p8() {
         let a: [u8; 33] = [0, 1, 2, 2, 6, 2, 6, 6, 8, 2, 6, 6, 8, 6, 8, 8, 16, 2, 6, 6, 8, 6, 8, 8, 16, 6, 8, 8, 16, 8, 16, 16, 32];
-        let e: [i8x8; 4] = [i8x8::new(1, 2, 2, 6, 2, 6, 6, 8), i8x8::new(2, 6, 6, 8, 6, 8, 8, 16), i8x8::new(2, 6, 6, 8, 6, 8, 8, 16), i8x8::new(6, 8, 8, 16, 8, 16, 16, 32)];
+        let e: [i8x8; 4] = [i8x8::new([1, 2, 2, 6, 2, 6, 6, 8]), i8x8::new([2, 6, 6, 8, 6, 8, 8, 16]), i8x8::new([2, 6, 6, 8, 6, 8, 8, 16]), i8x8::new([6, 8, 8, 16, 8, 16, 16, 32])];
         let r: [i8x8; 4] = transmute(vld4_p8(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35631,7 +35631,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld4_p16() {
         let a: [u16; 17] = [0, 1, 2, 2, 6, 2, 6, 6, 8, 2, 6, 6, 8, 6, 8, 8, 16];
-        let e: [i16x4; 4] = [i16x4::new(1, 2, 2, 6), i16x4::new(2, 6, 6, 8), i16x4::new(2, 6, 6, 8), i16x4::new(6, 8, 8, 16)];
+        let e: [i16x4; 4] = [i16x4::new([1, 2, 2, 6]), i16x4::new([2, 6, 6, 8]), i16x4::new([2, 6, 6, 8]), i16x4::new([6, 8, 8, 16])];
         let r: [i16x4; 4] = transmute(vld4_p16(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35639,7 +35639,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld4q_p8() {
         let a: [u8; 65] = [0, 1, 2, 2, 6, 2, 6, 6, 8, 2, 6, 6, 8, 6, 8, 8, 16, 2, 6, 6, 8, 6, 8, 8, 16, 6, 8, 8, 16, 8, 16, 16, 32, 2, 6, 6, 8, 6, 8, 8, 16, 6, 8, 43, 44, 8, 16, 44, 48, 6, 8, 8, 16, 8, 16, 16, 32, 8, 16, 44, 48, 16, 32, 48, 64];
-        let e: [i8x16; 4] = [i8x16::new(1, 2, 2, 6, 2, 6, 6, 8, 2, 6, 6, 8, 6, 8, 8, 16), i8x16::new(2, 6, 6, 8, 6, 8, 8, 16, 6, 8, 8, 16, 8, 16, 16, 32), i8x16::new(2, 6, 6, 8, 6, 8, 8, 16, 6, 8, 43, 44, 8, 16, 44, 48), i8x16::new(6, 8, 8, 16, 8, 16, 16, 32, 8, 16, 44, 48, 16, 32, 48, 64)];
+        let e: [i8x16; 4] = [i8x16::new([1, 2, 2, 6, 2, 6, 6, 8, 2, 6, 6, 8, 6, 8, 8, 16]), i8x16::new([2, 6, 6, 8, 6, 8, 8, 16, 6, 8, 8, 16, 8, 16, 16, 32]), i8x16::new([2, 6, 6, 8, 6, 8, 8, 16, 6, 8, 43, 44, 8, 16, 44, 48]), i8x16::new([6, 8, 8, 16, 8, 16, 16, 32, 8, 16, 44, 48, 16, 32, 48, 64])];
         let r: [i8x16; 4] = transmute(vld4q_p8(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35647,7 +35647,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld4q_p16() {
         let a: [u16; 33] = [0, 1, 2, 2, 6, 2, 6, 6, 8, 2, 6, 6, 8, 6, 8, 8, 16, 2, 6, 6, 8, 6, 8, 8, 16, 6, 8, 8, 16, 8, 16, 16, 32];
-        let e: [i16x8; 4] = [i16x8::new(1, 2, 2, 6, 2, 6, 6, 8), i16x8::new(2, 6, 6, 8, 6, 8, 8, 16), i16x8::new(2, 6, 6, 8, 6, 8, 8, 16), i16x8::new(6, 8, 8, 16, 8, 16, 16, 32)];
+        let e: [i16x8; 4] = [i16x8::new([1, 2, 2, 6, 2, 6, 6, 8]), i16x8::new([2, 6, 6, 8, 6, 8, 8, 16]), i16x8::new([2, 6, 6, 8, 6, 8, 8, 16]), i16x8::new([6, 8, 8, 16, 8, 16, 16, 32])];
         let r: [i16x8; 4] = transmute(vld4q_p16(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35655,7 +35655,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld4_u64() {
         let a: [u64; 5] = [0, 1, 2, 2, 6];
-        let e: [u64x1; 4] = [u64x1::new(1), u64x1::new(2), u64x1::new(2), u64x1::new(6)];
+        let e: [u64x1; 4] = [u64x1::new([1]), u64x1::new([2]), u64x1::new([2]), u64x1::new([6])];
         let r: [u64x1; 4] = transmute(vld4_u64(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35663,7 +35663,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld4_p64() {
         let a: [u64; 5] = [0, 1, 2, 2, 6];
-        let e: [i64x1; 4] = [i64x1::new(1), i64x1::new(2), i64x1::new(2), i64x1::new(6)];
+        let e: [i64x1; 4] = [i64x1::new([1]), i64x1::new([2]), i64x1::new([2]), i64x1::new([6])];
         let r: [i64x1; 4] = transmute(vld4_p64(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35671,7 +35671,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld4_f32() {
         let a: [f32; 9] = [0., 1., 2., 2., 6., 2., 6., 6., 8.];
-        let e: [f32x2; 4] = [f32x2::new(1., 2.), f32x2::new(2., 6.), f32x2::new(2., 6.), f32x2::new(6., 8.)];
+        let e: [f32x2; 4] = [f32x2::new([1., 2.]), f32x2::new([2., 6.]), f32x2::new([2., 6.]), f32x2::new([6., 8.])];
         let r: [f32x2; 4] = transmute(vld4_f32(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35679,7 +35679,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld4q_f32() {
         let a: [f32; 17] = [0., 1., 2., 2., 6., 2., 6., 6., 8., 2., 6., 6., 8., 6., 8., 15., 16.];
-        let e: [f32x4; 4] = [f32x4::new(1., 2., 2., 6.), f32x4::new(2., 6., 6., 8.), f32x4::new(2., 6., 6., 15.), f32x4::new(6., 8., 8., 16.)];
+        let e: [f32x4; 4] = [f32x4::new([1., 2., 2., 6.]), f32x4::new([2., 6., 6., 8.]), f32x4::new([2., 6., 6., 15.]), f32x4::new([6., 8., 8., 16.])];
         let r: [f32x4; 4] = transmute(vld4q_f32(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35687,7 +35687,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld4_dup_s8() {
         let a: [i8; 33] = [0, 1, 1, 1, 1, 2, 4, 3, 5, 8, 6, 3, 7, 4, 8, 5, 9, 8, 6, 3, 7, 4, 8, 5, 9, 8, 6, 3, 7, 4, 8, 5, 9];
-        let e: [i8x8; 4] = [i8x8::new(1, 1, 1, 1, 1, 1, 1, 1), i8x8::new(1, 1, 1, 1, 1, 1, 1, 1), i8x8::new(1, 1, 1, 1, 1, 1, 1, 1), i8x8::new(1, 1, 1, 1, 1, 1, 1, 1)];
+        let e: [i8x8; 4] = [i8x8::new([1, 1, 1, 1, 1, 1, 1, 1]), i8x8::new([1, 1, 1, 1, 1, 1, 1, 1]), i8x8::new([1, 1, 1, 1, 1, 1, 1, 1]), i8x8::new([1, 1, 1, 1, 1, 1, 1, 1])];
         let r: [i8x8; 4] = transmute(vld4_dup_s8(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35695,7 +35695,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld4_dup_s16() {
         let a: [i16; 17] = [0, 1, 1, 1, 1, 2, 4, 3, 5, 8, 6, 3, 7, 4, 8, 5, 9];
-        let e: [i16x4; 4] = [i16x4::new(1, 1, 1, 1), i16x4::new(1, 1, 1, 1), i16x4::new(1, 1, 1, 1), i16x4::new(1, 1, 1, 1)];
+        let e: [i16x4; 4] = [i16x4::new([1, 1, 1, 1]), i16x4::new([1, 1, 1, 1]), i16x4::new([1, 1, 1, 1]), i16x4::new([1, 1, 1, 1])];
         let r: [i16x4; 4] = transmute(vld4_dup_s16(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35703,7 +35703,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld4_dup_s32() {
         let a: [i32; 9] = [0, 1, 1, 1, 1, 2, 4, 3, 5];
-        let e: [i32x2; 4] = [i32x2::new(1, 1), i32x2::new(1, 1), i32x2::new(1, 1), i32x2::new(1, 1)];
+        let e: [i32x2; 4] = [i32x2::new([1, 1]), i32x2::new([1, 1]), i32x2::new([1, 1]), i32x2::new([1, 1])];
         let r: [i32x2; 4] = transmute(vld4_dup_s32(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35711,7 +35711,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld4q_dup_s8() {
         let a: [i8; 65] = [0, 1, 1, 1, 1, 2, 4, 3, 5, 8, 6, 3, 7, 4, 8, 5, 9, 8, 6, 3, 7, 4, 8, 5, 9, 8, 6, 3, 7, 4, 8, 5, 9, 8, 6, 3, 7, 4, 8, 5, 9, 8, 6, 3, 7, 4, 8, 5, 9, 8, 6, 3, 7, 4, 8, 5, 9, 8, 6, 3, 7, 4, 8, 5, 9];
-        let e: [i8x16; 4] = [i8x16::new(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1), i8x16::new(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1), i8x16::new(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1), i8x16::new(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)];
+        let e: [i8x16; 4] = [i8x16::new([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]), i8x16::new([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]), i8x16::new([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]), i8x16::new([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1])];
         let r: [i8x16; 4] = transmute(vld4q_dup_s8(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35719,7 +35719,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld4q_dup_s16() {
         let a: [i16; 33] = [0, 1, 1, 1, 1, 2, 4, 3, 5, 8, 6, 3, 7, 4, 8, 5, 9, 8, 6, 3, 7, 4, 8, 5, 9, 8, 6, 3, 7, 4, 8, 5, 9];
-        let e: [i16x8; 4] = [i16x8::new(1, 1, 1, 1, 1, 1, 1, 1), i16x8::new(1, 1, 1, 1, 1, 1, 1, 1), i16x8::new(1, 1, 1, 1, 1, 1, 1, 1), i16x8::new(1, 1, 1, 1, 1, 1, 1, 1)];
+        let e: [i16x8; 4] = [i16x8::new([1, 1, 1, 1, 1, 1, 1, 1]), i16x8::new([1, 1, 1, 1, 1, 1, 1, 1]), i16x8::new([1, 1, 1, 1, 1, 1, 1, 1]), i16x8::new([1, 1, 1, 1, 1, 1, 1, 1])];
         let r: [i16x8; 4] = transmute(vld4q_dup_s16(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35727,7 +35727,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld4q_dup_s32() {
         let a: [i32; 17] = [0, 1, 1, 1, 1, 2, 4, 3, 5, 8, 6, 3, 7, 4, 8, 5, 9];
-        let e: [i32x4; 4] = [i32x4::new(1, 1, 1, 1), i32x4::new(1, 1, 1, 1), i32x4::new(1, 1, 1, 1), i32x4::new(1, 1, 1, 1)];
+        let e: [i32x4; 4] = [i32x4::new([1, 1, 1, 1]), i32x4::new([1, 1, 1, 1]), i32x4::new([1, 1, 1, 1]), i32x4::new([1, 1, 1, 1])];
         let r: [i32x4; 4] = transmute(vld4q_dup_s32(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35735,7 +35735,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld4_dup_s64() {
         let a: [i64; 5] = [0, 1, 1, 1, 1];
-        let e: [i64x1; 4] = [i64x1::new(1), i64x1::new(1), i64x1::new(1), i64x1::new(1)];
+        let e: [i64x1; 4] = [i64x1::new([1]), i64x1::new([1]), i64x1::new([1]), i64x1::new([1])];
         let r: [i64x1; 4] = transmute(vld4_dup_s64(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35743,7 +35743,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld4_dup_u8() {
         let a: [u8; 33] = [0, 1, 1, 1, 1, 2, 4, 3, 5, 8, 6, 3, 7, 4, 8, 5, 9, 8, 6, 3, 7, 4, 8, 5, 9, 8, 6, 3, 7, 4, 8, 5, 9];
-        let e: [u8x8; 4] = [u8x8::new(1, 1, 1, 1, 1, 1, 1, 1), u8x8::new(1, 1, 1, 1, 1, 1, 1, 1), u8x8::new(1, 1, 1, 1, 1, 1, 1, 1), u8x8::new(1, 1, 1, 1, 1, 1, 1, 1)];
+        let e: [u8x8; 4] = [u8x8::new([1, 1, 1, 1, 1, 1, 1, 1]), u8x8::new([1, 1, 1, 1, 1, 1, 1, 1]), u8x8::new([1, 1, 1, 1, 1, 1, 1, 1]), u8x8::new([1, 1, 1, 1, 1, 1, 1, 1])];
         let r: [u8x8; 4] = transmute(vld4_dup_u8(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35751,7 +35751,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld4_dup_u16() {
         let a: [u16; 17] = [0, 1, 1, 1, 1, 2, 4, 3, 5, 8, 6, 3, 7, 4, 8, 5, 9];
-        let e: [u16x4; 4] = [u16x4::new(1, 1, 1, 1), u16x4::new(1, 1, 1, 1), u16x4::new(1, 1, 1, 1), u16x4::new(1, 1, 1, 1)];
+        let e: [u16x4; 4] = [u16x4::new([1, 1, 1, 1]), u16x4::new([1, 1, 1, 1]), u16x4::new([1, 1, 1, 1]), u16x4::new([1, 1, 1, 1])];
         let r: [u16x4; 4] = transmute(vld4_dup_u16(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35759,7 +35759,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld4_dup_u32() {
         let a: [u32; 9] = [0, 1, 1, 1, 1, 2, 4, 3, 5];
-        let e: [u32x2; 4] = [u32x2::new(1, 1), u32x2::new(1, 1), u32x2::new(1, 1), u32x2::new(1, 1)];
+        let e: [u32x2; 4] = [u32x2::new([1, 1]), u32x2::new([1, 1]), u32x2::new([1, 1]), u32x2::new([1, 1])];
         let r: [u32x2; 4] = transmute(vld4_dup_u32(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35767,7 +35767,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld4q_dup_u8() {
         let a: [u8; 65] = [0, 1, 1, 1, 1, 2, 4, 3, 5, 8, 6, 3, 7, 4, 8, 5, 9, 8, 6, 3, 7, 4, 8, 5, 9, 8, 6, 3, 7, 4, 8, 5, 9, 8, 6, 3, 7, 4, 8, 5, 9, 8, 6, 3, 7, 4, 8, 5, 9, 8, 6, 3, 7, 4, 8, 5, 9, 8, 6, 3, 7, 4, 8, 5, 9];
-        let e: [u8x16; 4] = [u8x16::new(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1), u8x16::new(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1), u8x16::new(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1), u8x16::new(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)];
+        let e: [u8x16; 4] = [u8x16::new([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]), u8x16::new([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]), u8x16::new([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]), u8x16::new([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1])];
         let r: [u8x16; 4] = transmute(vld4q_dup_u8(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35775,7 +35775,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld4q_dup_u16() {
         let a: [u16; 33] = [0, 1, 1, 1, 1, 2, 4, 3, 5, 8, 6, 3, 7, 4, 8, 5, 9, 8, 6, 3, 7, 4, 8, 5, 9, 8, 6, 3, 7, 4, 8, 5, 9];
-        let e: [u16x8; 4] = [u16x8::new(1, 1, 1, 1, 1, 1, 1, 1), u16x8::new(1, 1, 1, 1, 1, 1, 1, 1), u16x8::new(1, 1, 1, 1, 1, 1, 1, 1), u16x8::new(1, 1, 1, 1, 1, 1, 1, 1)];
+        let e: [u16x8; 4] = [u16x8::new([1, 1, 1, 1, 1, 1, 1, 1]), u16x8::new([1, 1, 1, 1, 1, 1, 1, 1]), u16x8::new([1, 1, 1, 1, 1, 1, 1, 1]), u16x8::new([1, 1, 1, 1, 1, 1, 1, 1])];
         let r: [u16x8; 4] = transmute(vld4q_dup_u16(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35783,7 +35783,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld4q_dup_u32() {
         let a: [u32; 17] = [0, 1, 1, 1, 1, 2, 4, 3, 5, 8, 6, 3, 7, 4, 8, 5, 9];
-        let e: [u32x4; 4] = [u32x4::new(1, 1, 1, 1), u32x4::new(1, 1, 1, 1), u32x4::new(1, 1, 1, 1), u32x4::new(1, 1, 1, 1)];
+        let e: [u32x4; 4] = [u32x4::new([1, 1, 1, 1]), u32x4::new([1, 1, 1, 1]), u32x4::new([1, 1, 1, 1]), u32x4::new([1, 1, 1, 1])];
         let r: [u32x4; 4] = transmute(vld4q_dup_u32(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35791,7 +35791,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld4_dup_p8() {
         let a: [u8; 33] = [0, 1, 1, 1, 1, 2, 4, 3, 5, 8, 6, 3, 7, 4, 8, 5, 9, 8, 6, 3, 7, 4, 8, 5, 9, 8, 6, 3, 7, 4, 8, 5, 9];
-        let e: [i8x8; 4] = [i8x8::new(1, 1, 1, 1, 1, 1, 1, 1), i8x8::new(1, 1, 1, 1, 1, 1, 1, 1), i8x8::new(1, 1, 1, 1, 1, 1, 1, 1), i8x8::new(1, 1, 1, 1, 1, 1, 1, 1)];
+        let e: [i8x8; 4] = [i8x8::new([1, 1, 1, 1, 1, 1, 1, 1]), i8x8::new([1, 1, 1, 1, 1, 1, 1, 1]), i8x8::new([1, 1, 1, 1, 1, 1, 1, 1]), i8x8::new([1, 1, 1, 1, 1, 1, 1, 1])];
         let r: [i8x8; 4] = transmute(vld4_dup_p8(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35799,7 +35799,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld4_dup_p16() {
         let a: [u16; 17] = [0, 1, 1, 1, 1, 2, 4, 3, 5, 8, 6, 3, 7, 4, 8, 5, 9];
-        let e: [i16x4; 4] = [i16x4::new(1, 1, 1, 1), i16x4::new(1, 1, 1, 1), i16x4::new(1, 1, 1, 1), i16x4::new(1, 1, 1, 1)];
+        let e: [i16x4; 4] = [i16x4::new([1, 1, 1, 1]), i16x4::new([1, 1, 1, 1]), i16x4::new([1, 1, 1, 1]), i16x4::new([1, 1, 1, 1])];
         let r: [i16x4; 4] = transmute(vld4_dup_p16(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35807,7 +35807,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld4q_dup_p8() {
         let a: [u8; 65] = [0, 1, 1, 1, 1, 2, 4, 3, 5, 8, 6, 3, 7, 4, 8, 5, 9, 8, 6, 3, 7, 4, 8, 5, 9, 8, 6, 3, 7, 4, 8, 5, 9, 8, 6, 3, 7, 4, 8, 5, 9, 8, 6, 3, 7, 4, 8, 5, 9, 8, 6, 3, 7, 4, 8, 5, 9, 8, 6, 3, 7, 4, 8, 5, 9];
-        let e: [i8x16; 4] = [i8x16::new(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1), i8x16::new(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1), i8x16::new(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1), i8x16::new(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)];
+        let e: [i8x16; 4] = [i8x16::new([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]), i8x16::new([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]), i8x16::new([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]), i8x16::new([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1])];
         let r: [i8x16; 4] = transmute(vld4q_dup_p8(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35815,7 +35815,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld4q_dup_p16() {
         let a: [u16; 33] = [0, 1, 1, 1, 1, 2, 4, 3, 5, 8, 6, 3, 7, 4, 8, 5, 9, 8, 6, 3, 7, 4, 8, 5, 9, 8, 6, 3, 7, 4, 8, 5, 9];
-        let e: [i16x8; 4] = [i16x8::new(1, 1, 1, 1, 1, 1, 1, 1), i16x8::new(1, 1, 1, 1, 1, 1, 1, 1), i16x8::new(1, 1, 1, 1, 1, 1, 1, 1), i16x8::new(1, 1, 1, 1, 1, 1, 1, 1)];
+        let e: [i16x8; 4] = [i16x8::new([1, 1, 1, 1, 1, 1, 1, 1]), i16x8::new([1, 1, 1, 1, 1, 1, 1, 1]), i16x8::new([1, 1, 1, 1, 1, 1, 1, 1]), i16x8::new([1, 1, 1, 1, 1, 1, 1, 1])];
         let r: [i16x8; 4] = transmute(vld4q_dup_p16(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35823,7 +35823,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld4_dup_u64() {
         let a: [u64; 5] = [0, 1, 1, 1, 1];
-        let e: [u64x1; 4] = [u64x1::new(1), u64x1::new(1), u64x1::new(1), u64x1::new(1)];
+        let e: [u64x1; 4] = [u64x1::new([1]), u64x1::new([1]), u64x1::new([1]), u64x1::new([1])];
         let r: [u64x1; 4] = transmute(vld4_dup_u64(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35831,7 +35831,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld4_dup_p64() {
         let a: [u64; 5] = [0, 1, 1, 1, 1];
-        let e: [i64x1; 4] = [i64x1::new(1), i64x1::new(1), i64x1::new(1), i64x1::new(1)];
+        let e: [i64x1; 4] = [i64x1::new([1]), i64x1::new([1]), i64x1::new([1]), i64x1::new([1])];
         let r: [i64x1; 4] = transmute(vld4_dup_p64(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35839,7 +35839,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld4_dup_f32() {
         let a: [f32; 9] = [0., 1., 1., 1., 1., 6., 4., 3., 5.];
-        let e: [f32x2; 4] = [f32x2::new(1., 1.), f32x2::new(1., 1.), f32x2::new(1., 1.), f32x2::new(1., 1.)];
+        let e: [f32x2; 4] = [f32x2::new([1., 1.]), f32x2::new([1., 1.]), f32x2::new([1., 1.]), f32x2::new([1., 1.])];
         let r: [f32x2; 4] = transmute(vld4_dup_f32(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35847,7 +35847,7 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld4q_dup_f32() {
         let a: [f32; 17] = [0., 1., 1., 1., 1., 6., 4., 3., 5., 7., 4., 3., 5., 8., 4., 3., 5.];
-        let e: [f32x4; 4] = [f32x4::new(1., 1., 1., 1.), f32x4::new(1., 1., 1., 1.), f32x4::new(1., 1., 1., 1.), f32x4::new(1., 1., 1., 1.)];
+        let e: [f32x4; 4] = [f32x4::new([1., 1., 1., 1.]), f32x4::new([1., 1., 1., 1.]), f32x4::new([1., 1., 1., 1.]), f32x4::new([1., 1., 1., 1.])];
         let r: [f32x4; 4] = transmute(vld4q_dup_f32(a[1..].as_ptr()));
         assert_eq!(r, e);
     }
@@ -35855,8 +35855,8 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld4_lane_s8() {
         let a: [i8; 33] = [0, 1, 2, 2, 2, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8];
-        let b: [i8x8; 4] = [i8x8::new(0, 2, 2, 2, 2, 16, 2, 18), i8x8::new(2, 20, 21, 22, 2, 24, 25, 26), i8x8::new(11, 12, 13, 14, 15, 16, 2, 18), i8x8::new(2, 20, 21, 22, 23, 24, 25, 26)];
-        let e: [i8x8; 4] = [i8x8::new(1, 2, 2, 2, 2, 16, 2, 18), i8x8::new(2, 20, 21, 22, 2, 24, 25, 26), i8x8::new(2, 12, 13, 14, 15, 16, 2, 18), i8x8::new(2, 20, 21, 22, 23, 24, 25, 26)];
+        let b: [i8x8; 4] = [i8x8::new([0, 2, 2, 2, 2, 16, 2, 18]), i8x8::new([2, 20, 21, 22, 2, 24, 25, 26]), i8x8::new([11, 12, 13, 14, 15, 16, 2, 18]), i8x8::new([2, 20, 21, 22, 23, 24, 25, 26])];
+        let e: [i8x8; 4] = [i8x8::new([1, 2, 2, 2, 2, 16, 2, 18]), i8x8::new([2, 20, 21, 22, 2, 24, 25, 26]), i8x8::new([2, 12, 13, 14, 15, 16, 2, 18]), i8x8::new([2, 20, 21, 22, 23, 24, 25, 26])];
         let r: [i8x8; 4] = transmute(vld4_lane_s8::<0>(a[1..].as_ptr(), transmute(b)));
         assert_eq!(r, e);
     }
@@ -35864,8 +35864,8 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld4_lane_s16() {
         let a: [i16; 17] = [0, 1, 2, 2, 2, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8];
-        let b: [i16x4; 4] = [i16x4::new(0, 2, 2, 2), i16x4::new(2, 16, 2, 18), i16x4::new(2, 20, 21, 22), i16x4::new(2, 24, 25, 26)];
-        let e: [i16x4; 4] = [i16x4::new(1, 2, 2, 2), i16x4::new(2, 16, 2, 18), i16x4::new(2, 20, 21, 22), i16x4::new(2, 24, 25, 26)];
+        let b: [i16x4; 4] = [i16x4::new([0, 2, 2, 2]), i16x4::new([2, 16, 2, 18]), i16x4::new([2, 20, 21, 22]), i16x4::new([2, 24, 25, 26])];
+        let e: [i16x4; 4] = [i16x4::new([1, 2, 2, 2]), i16x4::new([2, 16, 2, 18]), i16x4::new([2, 20, 21, 22]), i16x4::new([2, 24, 25, 26])];
         let r: [i16x4; 4] = transmute(vld4_lane_s16::<0>(a[1..].as_ptr(), transmute(b)));
         assert_eq!(r, e);
     }
@@ -35873,8 +35873,8 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld4_lane_s32() {
         let a: [i32; 9] = [0, 1, 2, 2, 2, 5, 6, 7, 8];
-        let b: [i32x2; 4] = [i32x2::new(0, 2), i32x2::new(2, 2), i32x2::new(2, 16), i32x2::new(2, 18)];
-        let e: [i32x2; 4] = [i32x2::new(1, 2), i32x2::new(2, 2), i32x2::new(2, 16), i32x2::new(2, 18)];
+        let b: [i32x2; 4] = [i32x2::new([0, 2]), i32x2::new([2, 2]), i32x2::new([2, 16]), i32x2::new([2, 18])];
+        let e: [i32x2; 4] = [i32x2::new([1, 2]), i32x2::new([2, 2]), i32x2::new([2, 16]), i32x2::new([2, 18])];
         let r: [i32x2; 4] = transmute(vld4_lane_s32::<0>(a[1..].as_ptr(), transmute(b)));
         assert_eq!(r, e);
     }
@@ -35882,8 +35882,8 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld4q_lane_s16() {
         let a: [i16; 33] = [0, 1, 2, 2, 2, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8];
-        let b: [i16x8; 4] = [i16x8::new(0, 2, 2, 2, 2, 16, 2, 18), i16x8::new(2, 20, 21, 22, 2, 24, 25, 26), i16x8::new(11, 12, 13, 14, 15, 16, 2, 18), i16x8::new(2, 20, 21, 22, 23, 24, 25, 26)];
-        let e: [i16x8; 4] = [i16x8::new(1, 2, 2, 2, 2, 16, 2, 18), i16x8::new(2, 20, 21, 22, 2, 24, 25, 26), i16x8::new(2, 12, 13, 14, 15, 16, 2, 18), i16x8::new(2, 20, 21, 22, 23, 24, 25, 26)];
+        let b: [i16x8; 4] = [i16x8::new([0, 2, 2, 2, 2, 16, 2, 18]), i16x8::new([2, 20, 21, 22, 2, 24, 25, 26]), i16x8::new([11, 12, 13, 14, 15, 16, 2, 18]), i16x8::new([2, 20, 21, 22, 23, 24, 25, 26])];
+        let e: [i16x8; 4] = [i16x8::new([1, 2, 2, 2, 2, 16, 2, 18]), i16x8::new([2, 20, 21, 22, 2, 24, 25, 26]), i16x8::new([2, 12, 13, 14, 15, 16, 2, 18]), i16x8::new([2, 20, 21, 22, 23, 24, 25, 26])];
         let r: [i16x8; 4] = transmute(vld4q_lane_s16::<0>(a[1..].as_ptr(), transmute(b)));
         assert_eq!(r, e);
     }
@@ -35891,8 +35891,8 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld4q_lane_s32() {
         let a: [i32; 17] = [0, 1, 2, 2, 2, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8];
-        let b: [i32x4; 4] = [i32x4::new(0, 2, 2, 2), i32x4::new(2, 16, 2, 18), i32x4::new(2, 20, 21, 22), i32x4::new(2, 24, 25, 26)];
-        let e: [i32x4; 4] = [i32x4::new(1, 2, 2, 2), i32x4::new(2, 16, 2, 18), i32x4::new(2, 20, 21, 22), i32x4::new(2, 24, 25, 26)];
+        let b: [i32x4; 4] = [i32x4::new([0, 2, 2, 2]), i32x4::new([2, 16, 2, 18]), i32x4::new([2, 20, 21, 22]), i32x4::new([2, 24, 25, 26])];
+        let e: [i32x4; 4] = [i32x4::new([1, 2, 2, 2]), i32x4::new([2, 16, 2, 18]), i32x4::new([2, 20, 21, 22]), i32x4::new([2, 24, 25, 26])];
         let r: [i32x4; 4] = transmute(vld4q_lane_s32::<0>(a[1..].as_ptr(), transmute(b)));
         assert_eq!(r, e);
     }
@@ -35900,8 +35900,8 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld4_lane_u8() {
         let a: [u8; 33] = [0, 1, 2, 2, 2, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8];
-        let b: [u8x8; 4] = [u8x8::new(0, 2, 2, 2, 2, 16, 2, 18), u8x8::new(2, 20, 21, 22, 2, 24, 25, 26), u8x8::new(11, 12, 13, 14, 15, 16, 2, 18), u8x8::new(2, 20, 21, 22, 23, 24, 25, 26)];
-        let e: [u8x8; 4] = [u8x8::new(1, 2, 2, 2, 2, 16, 2, 18), u8x8::new(2, 20, 21, 22, 2, 24, 25, 26), u8x8::new(2, 12, 13, 14, 15, 16, 2, 18), u8x8::new(2, 20, 21, 22, 23, 24, 25, 26)];
+        let b: [u8x8; 4] = [u8x8::new([0, 2, 2, 2, 2, 16, 2, 18]), u8x8::new([2, 20, 21, 22, 2, 24, 25, 26]), u8x8::new([11, 12, 13, 14, 15, 16, 2, 18]), u8x8::new([2, 20, 21, 22, 23, 24, 25, 26])];
+        let e: [u8x8; 4] = [u8x8::new([1, 2, 2, 2, 2, 16, 2, 18]), u8x8::new([2, 20, 21, 22, 2, 24, 25, 26]), u8x8::new([2, 12, 13, 14, 15, 16, 2, 18]), u8x8::new([2, 20, 21, 22, 23, 24, 25, 26])];
         let r: [u8x8; 4] = transmute(vld4_lane_u8::<0>(a[1..].as_ptr(), transmute(b)));
         assert_eq!(r, e);
     }
@@ -35909,8 +35909,8 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld4_lane_u16() {
         let a: [u16; 17] = [0, 1, 2, 2, 2, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8];
-        let b: [u16x4; 4] = [u16x4::new(0, 2, 2, 2), u16x4::new(2, 16, 2, 18), u16x4::new(2, 20, 21, 22), u16x4::new(2, 24, 25, 26)];
-        let e: [u16x4; 4] = [u16x4::new(1, 2, 2, 2), u16x4::new(2, 16, 2, 18), u16x4::new(2, 20, 21, 22), u16x4::new(2, 24, 25, 26)];
+        let b: [u16x4; 4] = [u16x4::new([0, 2, 2, 2]), u16x4::new([2, 16, 2, 18]), u16x4::new([2, 20, 21, 22]), u16x4::new([2, 24, 25, 26])];
+        let e: [u16x4; 4] = [u16x4::new([1, 2, 2, 2]), u16x4::new([2, 16, 2, 18]), u16x4::new([2, 20, 21, 22]), u16x4::new([2, 24, 25, 26])];
         let r: [u16x4; 4] = transmute(vld4_lane_u16::<0>(a[1..].as_ptr(), transmute(b)));
         assert_eq!(r, e);
     }
@@ -35918,8 +35918,8 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld4_lane_u32() {
         let a: [u32; 9] = [0, 1, 2, 2, 2, 5, 6, 7, 8];
-        let b: [u32x2; 4] = [u32x2::new(0, 2), u32x2::new(2, 2), u32x2::new(2, 16), u32x2::new(2, 18)];
-        let e: [u32x2; 4] = [u32x2::new(1, 2), u32x2::new(2, 2), u32x2::new(2, 16), u32x2::new(2, 18)];
+        let b: [u32x2; 4] = [u32x2::new([0, 2]), u32x2::new([2, 2]), u32x2::new([2, 16]), u32x2::new([2, 18])];
+        let e: [u32x2; 4] = [u32x2::new([1, 2]), u32x2::new([2, 2]), u32x2::new([2, 16]), u32x2::new([2, 18])];
         let r: [u32x2; 4] = transmute(vld4_lane_u32::<0>(a[1..].as_ptr(), transmute(b)));
         assert_eq!(r, e);
     }
@@ -35927,8 +35927,8 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld4q_lane_u16() {
         let a: [u16; 33] = [0, 1, 2, 2, 2, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8];
-        let b: [u16x8; 4] = [u16x8::new(0, 2, 2, 2, 2, 16, 2, 18), u16x8::new(2, 20, 21, 22, 2, 24, 25, 26), u16x8::new(11, 12, 13, 14, 15, 16, 2, 18), u16x8::new(2, 20, 21, 22, 23, 24, 25, 26)];
-        let e: [u16x8; 4] = [u16x8::new(1, 2, 2, 2, 2, 16, 2, 18), u16x8::new(2, 20, 21, 22, 2, 24, 25, 26), u16x8::new(2, 12, 13, 14, 15, 16, 2, 18), u16x8::new(2, 20, 21, 22, 23, 24, 25, 26)];
+        let b: [u16x8; 4] = [u16x8::new([0, 2, 2, 2, 2, 16, 2, 18]), u16x8::new([2, 20, 21, 22, 2, 24, 25, 26]), u16x8::new([11, 12, 13, 14, 15, 16, 2, 18]), u16x8::new([2, 20, 21, 22, 23, 24, 25, 26])];
+        let e: [u16x8; 4] = [u16x8::new([1, 2, 2, 2, 2, 16, 2, 18]), u16x8::new([2, 20, 21, 22, 2, 24, 25, 26]), u16x8::new([2, 12, 13, 14, 15, 16, 2, 18]), u16x8::new([2, 20, 21, 22, 23, 24, 25, 26])];
         let r: [u16x8; 4] = transmute(vld4q_lane_u16::<0>(a[1..].as_ptr(), transmute(b)));
         assert_eq!(r, e);
     }
@@ -35936,8 +35936,8 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld4q_lane_u32() {
         let a: [u32; 17] = [0, 1, 2, 2, 2, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8];
-        let b: [u32x4; 4] = [u32x4::new(0, 2, 2, 2), u32x4::new(2, 16, 2, 18), u32x4::new(2, 20, 21, 22), u32x4::new(2, 24, 25, 26)];
-        let e: [u32x4; 4] = [u32x4::new(1, 2, 2, 2), u32x4::new(2, 16, 2, 18), u32x4::new(2, 20, 21, 22), u32x4::new(2, 24, 25, 26)];
+        let b: [u32x4; 4] = [u32x4::new([0, 2, 2, 2]), u32x4::new([2, 16, 2, 18]), u32x4::new([2, 20, 21, 22]), u32x4::new([2, 24, 25, 26])];
+        let e: [u32x4; 4] = [u32x4::new([1, 2, 2, 2]), u32x4::new([2, 16, 2, 18]), u32x4::new([2, 20, 21, 22]), u32x4::new([2, 24, 25, 26])];
         let r: [u32x4; 4] = transmute(vld4q_lane_u32::<0>(a[1..].as_ptr(), transmute(b)));
         assert_eq!(r, e);
     }
@@ -35945,8 +35945,8 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld4_lane_p8() {
         let a: [u8; 33] = [0, 1, 2, 2, 2, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8];
-        let b: [i8x8; 4] = [i8x8::new(0, 2, 2, 2, 2, 16, 2, 18), i8x8::new(2, 20, 21, 22, 2, 24, 25, 26), i8x8::new(11, 12, 13, 14, 15, 16, 2, 18), i8x8::new(2, 20, 21, 22, 23, 24, 25, 26)];
-        let e: [i8x8; 4] = [i8x8::new(1, 2, 2, 2, 2, 16, 2, 18), i8x8::new(2, 20, 21, 22, 2, 24, 25, 26), i8x8::new(2, 12, 13, 14, 15, 16, 2, 18), i8x8::new(2, 20, 21, 22, 23, 24, 25, 26)];
+        let b: [i8x8; 4] = [i8x8::new([0, 2, 2, 2, 2, 16, 2, 18]), i8x8::new([2, 20, 21, 22, 2, 24, 25, 26]), i8x8::new([11, 12, 13, 14, 15, 16, 2, 18]), i8x8::new([2, 20, 21, 22, 23, 24, 25, 26])];
+        let e: [i8x8; 4] = [i8x8::new([1, 2, 2, 2, 2, 16, 2, 18]), i8x8::new([2, 20, 21, 22, 2, 24, 25, 26]), i8x8::new([2, 12, 13, 14, 15, 16, 2, 18]), i8x8::new([2, 20, 21, 22, 23, 24, 25, 26])];
         let r: [i8x8; 4] = transmute(vld4_lane_p8::<0>(a[1..].as_ptr(), transmute(b)));
         assert_eq!(r, e);
     }
@@ -35954,8 +35954,8 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld4_lane_p16() {
         let a: [u16; 17] = [0, 1, 2, 2, 2, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8];
-        let b: [i16x4; 4] = [i16x4::new(0, 2, 2, 2), i16x4::new(2, 16, 2, 18), i16x4::new(2, 20, 21, 22), i16x4::new(2, 24, 25, 26)];
-        let e: [i16x4; 4] = [i16x4::new(1, 2, 2, 2), i16x4::new(2, 16, 2, 18), i16x4::new(2, 20, 21, 22), i16x4::new(2, 24, 25, 26)];
+        let b: [i16x4; 4] = [i16x4::new([0, 2, 2, 2]), i16x4::new([2, 16, 2, 18]), i16x4::new([2, 20, 21, 22]), i16x4::new([2, 24, 25, 26])];
+        let e: [i16x4; 4] = [i16x4::new([1, 2, 2, 2]), i16x4::new([2, 16, 2, 18]), i16x4::new([2, 20, 21, 22]), i16x4::new([2, 24, 25, 26])];
         let r: [i16x4; 4] = transmute(vld4_lane_p16::<0>(a[1..].as_ptr(), transmute(b)));
         assert_eq!(r, e);
     }
@@ -35963,8 +35963,8 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld4q_lane_p16() {
         let a: [u16; 33] = [0, 1, 2, 2, 2, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8];
-        let b: [i16x8; 4] = [i16x8::new(0, 2, 2, 2, 2, 16, 2, 18), i16x8::new(2, 20, 21, 22, 2, 24, 25, 26), i16x8::new(11, 12, 13, 14, 15, 16, 2, 18), i16x8::new(2, 20, 21, 22, 23, 24, 25, 26)];
-        let e: [i16x8; 4] = [i16x8::new(1, 2, 2, 2, 2, 16, 2, 18), i16x8::new(2, 20, 21, 22, 2, 24, 25, 26), i16x8::new(2, 12, 13, 14, 15, 16, 2, 18), i16x8::new(2, 20, 21, 22, 23, 24, 25, 26)];
+        let b: [i16x8; 4] = [i16x8::new([0, 2, 2, 2, 2, 16, 2, 18]), i16x8::new([2, 20, 21, 22, 2, 24, 25, 26]), i16x8::new([11, 12, 13, 14, 15, 16, 2, 18]), i16x8::new([2, 20, 21, 22, 23, 24, 25, 26])];
+        let e: [i16x8; 4] = [i16x8::new([1, 2, 2, 2, 2, 16, 2, 18]), i16x8::new([2, 20, 21, 22, 2, 24, 25, 26]), i16x8::new([2, 12, 13, 14, 15, 16, 2, 18]), i16x8::new([2, 20, 21, 22, 23, 24, 25, 26])];
         let r: [i16x8; 4] = transmute(vld4q_lane_p16::<0>(a[1..].as_ptr(), transmute(b)));
         assert_eq!(r, e);
     }
@@ -35972,8 +35972,8 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld4_lane_f32() {
         let a: [f32; 9] = [0., 1., 2., 2., 2., 5., 6., 7., 8.];
-        let b: [f32x2; 4] = [f32x2::new(0., 2.), f32x2::new(2., 2.), f32x2::new(2., 16.), f32x2::new(2., 18.)];
-        let e: [f32x2; 4] = [f32x2::new(1., 2.), f32x2::new(2., 2.), f32x2::new(2., 16.), f32x2::new(2., 18.)];
+        let b: [f32x2; 4] = [f32x2::new([0., 2.]), f32x2::new([2., 2.]), f32x2::new([2., 16.]), f32x2::new([2., 18.])];
+        let e: [f32x2; 4] = [f32x2::new([1., 2.]), f32x2::new([2., 2.]), f32x2::new([2., 16.]), f32x2::new([2., 18.])];
         let r: [f32x2; 4] = transmute(vld4_lane_f32::<0>(a[1..].as_ptr(), transmute(b)));
         assert_eq!(r, e);
     }
@@ -35981,8 +35981,8 @@ mod test {
     #[simd_test(enable = "neon")]
     unsafe fn test_vld4q_lane_f32() {
         let a: [f32; 17] = [0., 1., 2., 2., 2., 5., 6., 7., 8., 5., 6., 7., 8., 1., 4., 3., 5.];
-        let b: [f32x4; 4] = [f32x4::new(0., 2., 2., 2.), f32x4::new(2., 16., 2., 18.), f32x4::new(5., 6., 7., 8.), f32x4::new(1., 4., 3., 5.)];
-        let e: [f32x4; 4] = [f32x4::new(1., 2., 2., 2.), f32x4::new(2., 16., 2., 18.), f32x4::new(2., 6., 7., 8.), f32x4::new(2., 4., 3., 5.)];
+        let b: [f32x4; 4] = [f32x4::new([0., 2., 2., 2.]), f32x4::new([2., 16., 2., 18.]), f32x4::new([5., 6., 7., 8.]), f32x4::new([1., 4., 3., 5.])];
+        let e: [f32x4; 4] = [f32x4::new([1., 2., 2., 2.]), f32x4::new([2., 16., 2., 18.]), f32x4::new([2., 6., 7., 8.]), f32x4::new([2., 4., 3., 5.])];
         let r: [f32x4; 4] = transmute(vld4q_lane_f32::<0>(a[1..].as_ptr(), transmute(b)));
         assert_eq!(r, e);
     }

@@ -1662,14 +1662,14 @@ fn gen_load_test(
                 }
                 let sub_len = type_len / type_sub_len(out_t);
                 if type_to_global_type(out_t) != "f64" {
-                    let mut sub_output = format!("{}::new(", type_to_global_type(out_t));
+                    let mut sub_output = format!("{}::new([", type_to_global_type(out_t));
                     for j in 0..sub_len {
                         if j != 0 {
                             sub_output.push_str(", ");
                         }
                         sub_output.push_str(&v[i * sub_len + j]);
                     }
-                    sub_output.push_str(")");
+                    sub_output.push_str("])");
                     output.push_str(&sub_output);
                 } else {
                     output.push_str(&v[i]);

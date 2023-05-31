@@ -27,9 +27,9 @@ use crate::mem::transmute;
 
 types! {
     /// ARM-specific 32-bit wide vector of two packed `i16`.
-    pub struct int16x2_t(i16, i16);
+    pub struct int16x2_t([i16; 2]);
     /// ARM-specific 32-bit wide vector of two packed `u16`.
-    pub struct uint16x2_t(u16, u16);
+    pub struct uint16x2_t([u16; 2]);
 }
 
 extern "unadjusted" {
