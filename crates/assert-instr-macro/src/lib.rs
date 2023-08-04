@@ -14,6 +14,7 @@ extern crate quote;
 
 use proc_macro2::TokenStream;
 use quote::ToTokens;
+use syn::spanned::Spanned;
 
 #[proc_macro_attribute]
 pub fn assert_instr(
@@ -79,17 +80,17 @@ pub fn assert_instr(
     let ret = &func.sig.output;
     for arg in func.sig.inputs.iter() {
         let capture = match *arg {
-            syn::FnArg::Typed(ref c) => c,
+            syn::FnArg::Typed(ref c) => c.to_owned(),
             ref v => panic!(
                 "arguments must not have patterns: `{:?}`",
                 v.clone().into_token_stream()
             ),
         };
-        let ident = match *capture.pat {
-            syn::Pat::Ident(ref i) => &i.ident,
+        let ident = match capture.pat.as_ref() {
+            syn::Pat::Ident(i) => i.ident.to_owned(),
             _ => panic!("must have bare arguments"),
         };
-        if let Some((_, tokens)) = invoc.args.iter().find(|a| *ident == a.0) {
+        if let Some(&(_, ref tokens)) = invoc.args.iter().find(|a| ident == a.0) {
             input_vals.push(quote! { #tokens });
         } else {
             inputs.push(capture);
@@ -97,15 +98,45 @@ pub fn assert_instr(
         }
     }
     for arg in func.sig.generics.params.iter() {
-        let c = match *arg {
-            syn::GenericParam::Const(ref c) => c,
+        let (ident, is_ty) = match *arg {
+            syn::GenericParam::Const(ref c) => (&c.ident, false),
+            syn::GenericParam::Type(ref t) => (&t.ident, true),
             ref v => panic!(
                 "only const generics are allowed: `{:?}`",
                 v.clone().into_token_stream()
             ),
         };
-        if let Some((_, tokens)) = invoc.args.iter().find(|a| c.ident == a.0) {
-            const_vals.push(quote! { #tokens });
+        if let Some(&(_, ref tokens)) = invoc.args.iter().find(|a| ident == &a.0) {
+            if is_ty {
+                if let syn::Expr::Path(syn::ExprPath { qself, path, .. }) = tokens {
+                    const_vals.push(syn::Ident::new("_", tokens.span()).to_token_stream());
+
+                    let generic_ty_value = syn::TypePath {
+                        qself: qself.clone(),
+                        path: path.clone(),
+                    };
+
+                    inputs.iter_mut().for_each(|arg| {
+                        update_type_path(arg.ty.as_mut(), |type_path: &mut syn::TypePath| {
+                            if let Some(syn::PathSegment {
+                                ident: last_ident, ..
+                            }) = type_path.path.segments.last_mut()
+                            {
+                                if last_ident == ident {
+                                    *type_path = generic_ty_value.to_owned()
+                                }
+                            }
+                        })
+                    });
+                } else {
+                    panic!(
+                        "invalid generic type value {:?} given",
+                        tokens.to_token_stream()
+                    )
+                }
+            } else {
+                const_vals.push(quote! { #tokens });
+            }
         } else {
             panic!("const generics must have a value for tests");
         }
@@ -256,5 +287,23 @@ where
         for item in self.0.clone() {
             item.to_tokens(tokens);
         }
+    }
+}
+
+fn update_type_path<F>(ty: &mut syn::Type, fn_ptr: F)
+where
+    F: Fn(&mut syn::TypePath),
+{
+    use syn::Type::*;
+    match ty {
+        Array(syn::TypeArray { elem, .. })
+        | Group(syn::TypeGroup { elem, .. })
+        | Paren(syn::TypeParen { elem, .. })
+        | Ptr(syn::TypePtr { elem, .. })
+        | Reference(syn::TypeReference { elem, .. })
+        | Slice(syn::TypeSlice { elem, .. }) => update_type_path(elem.as_mut(), fn_ptr),
+        Path(path @ syn::TypePath { .. }) => fn_ptr(path),
+        Tuple(..) => panic!("tuples and generic types together are not yet supported"),
+        _ => {}
     }
 }

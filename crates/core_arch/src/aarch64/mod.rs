@@ -13,6 +13,9 @@ mod neon;
 #[stable(feature = "neon_intrinsics", since = "1.59.0")]
 pub use self::neon::*;
 
+#[unstable(feature = "stdarch_aarch64_sve", issue = "99999999")]
+pub mod sve;
+
 mod tme;
 #[unstable(feature = "stdarch_aarch64_tme", issue = "117216")]
 pub use self::tme::*;

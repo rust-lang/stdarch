@@ -48,6 +48,22 @@ macro_rules! static_assert_simm_bits {
     };
 }
 
+#[allow(unused_macros)]
+macro_rules! static_assert_range {
+    ($imm:ident, $min:literal, $max:literal) => {
+        static_assert!(
+            $min <= $imm && $imm <= $max,
+            concat!(
+                stringify!($imm),
+                " is not in range ",
+                stringify!($min),
+                "-",
+                stringify!($max),
+            )
+        )
+    };
+}
+
 #[allow(unused)]
 macro_rules! types {
     ($(

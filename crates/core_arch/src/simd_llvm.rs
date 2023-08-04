@@ -18,7 +18,8 @@ extern "platform-intrinsic" {
     //pub fn simd_select
     pub fn simd_bitmask<T, U>(x: T) -> U;
 
-    pub fn simd_cast<T, U>(x: T) -> U;
+    pub fn simd_cast<T: ?Sized, U: ?Sized>(x: T) -> U;
+    pub fn simd_reinterpret<Src: ?Sized, Dst: ?Sized>(src: Src) -> Dst;
 
     pub fn simd_add<T>(x: T, y: T) -> T;
     pub fn simd_sub<T>(x: T, y: T) -> T;
@@ -52,7 +53,7 @@ extern "platform-intrinsic" {
     pub fn simd_reduce_all<T>(x: T) -> bool;
     pub fn simd_reduce_any<T>(x: T) -> bool;
 
-    pub fn simd_select<M, T>(m: M, a: T, b: T) -> T;
+    pub fn simd_select<M: ?Sized, T: ?Sized>(m: M, a: T, b: T) -> T;
     pub fn simd_select_bitmask<M, T>(m: M, a: T, b: T) -> T;
 
     pub fn simd_fmin<T>(a: T, b: T) -> T;
