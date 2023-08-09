@@ -62,6 +62,18 @@ pub unsafe fn _mm_insert_si64(x: __m128i, y: __m128i) -> __m128i {
 /// Non-temporal store of `a.0` into `p`.
 ///
 /// Writes 64-bit data to a memory location without polluting the caches.
+///
+/// # Safety
+///
+/// After using this intrinsic, but before any atomic operations occur, a call
+/// to `_mm_sfence()` must be performed. A safe function that includes unsafe
+/// usage of this intrinsic must always end in `_mm_sfence()`.
+///
+/// Reading and writing to the memory stored-to by any other means, after any
+/// nontemporal store has been used to write to that memory, but before the
+/// use of `_mm_sfence()`, is discouraged. Such reads can lead to pipeline
+/// stalls and yet-unspecified program behavior.
+///
 #[inline]
 #[target_feature(enable = "sse4a")]
 #[cfg_attr(test, assert_instr(movntsd))]
@@ -73,6 +85,18 @@ pub unsafe fn _mm_stream_sd(p: *mut f64, a: __m128d) {
 /// Non-temporal store of `a.0` into `p`.
 ///
 /// Writes 32-bit data to a memory location without polluting the caches.
+///
+/// # Safety
+///
+/// After using this intrinsic, but before any atomic operations occur, a call
+/// to `_mm_sfence()` must be performed. A safe function that includes unsafe
+/// usage of this intrinsic must always end in `_mm_sfence()`.
+///
+/// Reading and writing to the memory stored-to by any other means, after any
+/// nontemporal store has been used to write to that memory, but before the
+/// use of `_mm_sfence()`, is discouraged. Such reads can lead to pipeline
+/// stalls and yet-unspecified program behavior.
+///
 #[inline]
 #[target_feature(enable = "sse4a")]
 #[cfg_attr(test, assert_instr(movntss))]

@@ -66,6 +66,16 @@ pub unsafe fn _mm_cvttsd_si64x(a: __m128d) -> i64 {
 /// To minimize caching, the data is flagged as non-temporal (unlikely to be
 /// used again soon).
 ///
+/// # Safety
+///
+/// After using this intrinsic, but before any atomic operations occur, a call
+/// to `_mm_sfence()` must be performed. A safe function that includes unsafe
+/// usage of this intrinsic must always end in `_mm_sfence()`.
+///
+/// Reading and writing to the memory stored-to by any other means, after any
+/// nontemporal store has been used to write to that memory, is discouraged.
+/// Doing so can lead to pipeline stalls and yet-unspecified program behavior.
+///
 /// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=_mm_stream_si64)
 #[inline]
 #[target_feature(enable = "sse2")]

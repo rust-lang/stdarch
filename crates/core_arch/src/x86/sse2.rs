@@ -1277,6 +1277,17 @@ pub unsafe fn _mm_storel_epi64(mem_addr: *mut __m128i, a: __m128i) {
 /// To minimize caching, the data is flagged as non-temporal (unlikely to be
 /// used again soon).
 ///
+/// # Safety
+///
+/// After using this intrinsic, but before any atomic operations occur, a call
+/// to `_mm_sfence()` must be performed. A safe function that includes unsafe
+/// usage of this intrinsic must always end in `_mm_sfence()`.
+///
+/// Reading and writing to the memory stored-to by any other means, after any
+/// nontemporal store has been used to write to that memory, but before the
+/// use of `_mm_sfence()`, is discouraged. Such reads can lead to pipeline
+/// stalls and yet-unspecified program behavior.
+///
 /// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=_mm_stream_si128)
 #[inline]
 #[target_feature(enable = "sse2")]
@@ -1289,6 +1300,17 @@ pub unsafe fn _mm_stream_si128(mem_addr: *mut __m128i, a: __m128i) {
 /// Stores a 32-bit integer value in the specified memory location.
 /// To minimize caching, the data is flagged as non-temporal (unlikely to be
 /// used again soon).
+///
+/// # Safety
+///
+/// After using this intrinsic, but before any atomic operations occur, a call
+/// to `_mm_sfence()` must be performed. A safe function that includes unsafe
+/// usage of this intrinsic must always end in `_mm_sfence()`.
+///
+/// Reading and writing to the memory stored-to by any other means, after any
+/// nontemporal store has been used to write to that memory, but before the
+/// use of `_mm_sfence()`, is discouraged. Such reads can lead to pipeline
+/// stalls and yet-unspecified program behavior.
 ///
 /// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=_mm_stream_si32)
 #[inline]
@@ -2468,6 +2490,17 @@ pub unsafe fn _mm_loadl_pd(a: __m128d, mem_addr: *const f64) -> __m128d {
 /// aligned memory location.
 /// To minimize caching, the data is flagged as non-temporal (unlikely to be
 /// used again soon).
+///
+/// # Safety
+///
+/// After using this intrinsic, but before any atomic operations occur, a call
+/// to `_mm_sfence()` must be performed. A safe function that includes unsafe
+/// usage of this intrinsic must always end in `_mm_sfence()`.
+///
+/// Reading and writing to the memory stored-to by any other means, after any
+/// nontemporal store has been used to write to that memory, but before the
+/// use of `_mm_sfence()`, is discouraged. Such reads can lead to pipeline
+/// stalls and yet-unspecified program behavior.
 ///
 /// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=_mm_stream_pd)
 #[inline]

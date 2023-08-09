@@ -26144,6 +26144,17 @@ pub unsafe fn _mm_mask_testn_epi64_mask(k: __mmask8, a: __m128i, b: __m128i) -> 
 
 /// Store 512-bits (composed of 16 packed single-precision (32-bit) floating-point elements) from a into memory using a non-temporal memory hint. mem_addr must be aligned on a 64-byte boundary or a general-protection exception may be generated.
 ///
+/// # Safety
+///
+/// After using this intrinsic, but before any atomic operations occur, a call
+/// to `_mm_sfence()` must be performed. A safe function that includes unsafe
+/// usage of this intrinsic must always end in `_mm_sfence()`.
+///
+/// Reading and writing to the memory stored-to by any other means, after any
+/// nontemporal store has been used to write to that memory, but before the
+/// use of `_mm_sfence()`, is discouraged. Such reads can lead to pipeline
+/// stalls and yet-unspecified program behavior.
+///
 /// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=_mm512_stream_ps&expand=5671)
 #[inline]
 #[target_feature(enable = "avx512f")]
@@ -26155,6 +26166,17 @@ pub unsafe fn _mm512_stream_ps(mem_addr: *mut f32, a: __m512) {
 
 /// Store 512-bits (composed of 8 packed double-precision (64-bit) floating-point elements) from a into memory using a non-temporal memory hint. mem_addr must be aligned on a 64-byte boundary or a general-protection exception may be generated.
 ///
+/// # Safety
+///
+/// After using this intrinsic, but before any atomic operations occur, a call
+/// to `_mm_sfence()` must be performed. A safe function that includes unsafe
+/// usage of this intrinsic must always end in `_mm_sfence()`.
+///
+/// Reading and writing to the memory stored-to by any other means, after any
+/// nontemporal store has been used to write to that memory, but before the
+/// use of `_mm_sfence()`, is discouraged. Such reads can lead to pipeline
+/// stalls and yet-unspecified program behavior.
+///
 /// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=_mm512_stream_pd&expand=5667)
 #[inline]
 #[target_feature(enable = "avx512f")]
@@ -26165,6 +26187,17 @@ pub unsafe fn _mm512_stream_pd(mem_addr: *mut f64, a: __m512d) {
 }
 
 /// Store 512-bits of integer data from a into memory using a non-temporal memory hint. mem_addr must be aligned on a 64-byte boundary or a general-protection exception may be generated.
+///
+/// # Safety
+///
+/// After using this intrinsic, but before any atomic operations occur, a call
+/// to `_mm_sfence()` must be performed. A safe function that includes unsafe
+/// usage of this intrinsic must always end in `_mm_sfence()`.
+///
+/// Reading and writing to the memory stored-to by any other means, after any
+/// nontemporal store has been used to write to that memory, but before the
+/// use of `_mm_sfence()`, is discouraged. Such reads can lead to pipeline
+/// stalls and yet-unspecified program behavior.
 ///
 /// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=_mm512_stream_si512&expand=5675)
 #[inline]
