@@ -20,6 +20,9 @@ extern "unadjusted" {
     #[link_name = "llvm.riscv.aes64ks2"]
     fn _aes64ks2(rs1: i64, rs2: i64) -> i64;
 
+    #[link_name = "llvm.riscv.aes64im"]
+    fn _aes64im(rs1: i64) -> i64;
+
     #[link_name = "llvm.riscv.sha512sig0"]
     fn _sha512sig0(rs1: i64) -> i64;
 
@@ -50,8 +53,7 @@ extern "unadjusted" {
 ///
 /// This function is safe to use if the `zkne` target feature is present.
 #[target_feature(enable = "zkne")]
-// See #1464
-// #[cfg_attr(test, assert_instr(aes64es))]
+#[cfg_attr(test, assert_instr(aes64es))]
 #[inline]
 pub unsafe fn aes64es(rs1: u64, rs2: u64) -> u64 {
     _aes64es(rs1 as i64, rs2 as i64) as u64
@@ -74,8 +76,7 @@ pub unsafe fn aes64es(rs1: u64, rs2: u64) -> u64 {
 ///
 /// This function is safe to use if the `zkne` target feature is present.
 #[target_feature(enable = "zkne")]
-// See #1464
-// #[cfg_attr(test, assert_instr(aes64esm))]
+#[cfg_attr(test, assert_instr(aes64esm))]
 #[inline]
 pub unsafe fn aes64esm(rs1: u64, rs2: u64) -> u64 {
     _aes64esm(rs1 as i64, rs2 as i64) as u64
@@ -98,8 +99,7 @@ pub unsafe fn aes64esm(rs1: u64, rs2: u64) -> u64 {
 ///
 /// This function is safe to use if the `zknd` target feature is present.
 #[target_feature(enable = "zknd")]
-// See #1464
-// #[cfg_attr(test, assert_instr(aes64ds))]
+#[cfg_attr(test, assert_instr(aes64ds))]
 #[inline]
 pub unsafe fn aes64ds(rs1: u64, rs2: u64) -> u64 {
     _aes64ds(rs1 as i64, rs2 as i64) as u64
@@ -122,8 +122,7 @@ pub unsafe fn aes64ds(rs1: u64, rs2: u64) -> u64 {
 ///
 /// This function is safe to use if the `zknd` target feature is present.
 #[target_feature(enable = "zknd")]
-// See #1464
-// #[cfg_attr(test, assert_instr(aes64dsm))]
+#[cfg_attr(test, assert_instr(aes64dsm))]
 #[inline]
 pub unsafe fn aes64dsm(rs1: u64, rs2: u64) -> u64 {
     _aes64dsm(rs1 as i64, rs2 as i64) as u64
@@ -152,8 +151,7 @@ pub unsafe fn aes64dsm(rs1: u64, rs2: u64) -> u64 {
 /// This function is safe to use if the `zkne` or `zknd` target feature is present.
 #[target_feature(enable = "zkne", enable = "zknd")]
 #[rustc_legacy_const_generics(1)]
-// See #1464
-// #[cfg_attr(test, assert_instr(aes64ks1i, RNUM = 0))]
+#[cfg_attr(test, assert_instr(aes64ks1i, RNUM = 0))]
 #[inline]
 pub unsafe fn aes64ks1i<const RNUM: u8>(rs1: u64) -> u64 {
     static_assert!(RNUM <= 10);
@@ -177,11 +175,34 @@ pub unsafe fn aes64ks1i<const RNUM: u8>(rs1: u64) -> u64 {
 ///
 /// This function is safe to use if the `zkne` or `zknd` target feature is present.
 #[target_feature(enable = "zkne", enable = "zknd")]
-// See #1464
-// #[cfg_attr(test, assert_instr(aes64ks2))]
+#[cfg_attr(test, assert_instr(aes64ks2))]
 #[inline]
 pub unsafe fn aes64ks2(rs1: u64, rs2: u64) -> u64 {
     _aes64ks2(rs1 as i64, rs2 as i64) as u64
+}
+
+/// This instruction accelerates the inverse MixColumns step of the AES Block Cipher, and is used to aid creation of
+/// the decryption KeySchedule.
+///
+/// The instruction applies the inverse MixColumns transformation to two columns of the state array, packed
+/// into a single 64-bit register. It is used to create the inverse cipher KeySchedule, according to the equivalent
+/// inverse cipher construction in (Page 23, Section 5.3.5). This instruction must always be implemented
+/// such that its execution latency does not depend on the data being operated on.
+///
+/// Source: RISC-V Cryptography Extensions Volume I: Scalar & Entropy Source Instructions
+///
+/// Version: v1.0.1
+///
+/// Section: 3.9
+///
+/// # Safety
+///
+/// This function is safe to use if the `zkne` or `zknd` target feature is present.
+#[target_feature(enable = "zkne", enable = "zknd")]
+#[cfg_attr(test, assert_instr(aes64im))]
+#[inline]
+pub unsafe fn aes64im(rs1: u64) -> u64 {
+    _aes64im(rs1 as i64) as u64
 }
 
 /// Implements the Sigma0 transformation function as used in the SHA2-512 hash function \[49\]
@@ -201,8 +222,7 @@ pub unsafe fn aes64ks2(rs1: u64, rs2: u64) -> u64 {
 ///
 /// This function is safe to use if the `zknh` target feature is present.
 #[target_feature(enable = "zknh")]
-// See #1464
-// #[cfg_attr(test, assert_instr(sha512sig0))]
+#[cfg_attr(test, assert_instr(sha512sig0))]
 #[inline]
 pub unsafe fn sha512sig0(rs1: u64) -> u64 {
     _sha512sig0(rs1 as i64) as u64
@@ -225,8 +245,7 @@ pub unsafe fn sha512sig0(rs1: u64) -> u64 {
 ///
 /// This function is safe to use if the `zknh` target feature is present.
 #[target_feature(enable = "zknh")]
-// See #1464
-// #[cfg_attr(test, assert_instr(sha512sig1))]
+#[cfg_attr(test, assert_instr(sha512sig1))]
 #[inline]
 pub unsafe fn sha512sig1(rs1: u64) -> u64 {
     _sha512sig1(rs1 as i64) as u64
@@ -249,8 +268,7 @@ pub unsafe fn sha512sig1(rs1: u64) -> u64 {
 ///
 /// This function is safe to use if the `zknh` target feature is present.
 #[target_feature(enable = "zknh")]
-// See #1464
-// #[cfg_attr(test, assert_instr(sha512sum0))]
+#[cfg_attr(test, assert_instr(sha512sum0))]
 #[inline]
 pub unsafe fn sha512sum0(rs1: u64) -> u64 {
     _sha512sum0(rs1 as i64) as u64
@@ -273,8 +291,7 @@ pub unsafe fn sha512sum0(rs1: u64) -> u64 {
 ///
 /// This function is safe to use if the `zknh` target feature is present.
 #[target_feature(enable = "zknh")]
-// See #1464
-// #[cfg_attr(test, assert_instr(sha512sum1))]
+#[cfg_attr(test, assert_instr(sha512sum1))]
 #[inline]
 pub unsafe fn sha512sum1(rs1: u64) -> u64 {
     _sha512sum1(rs1 as i64) as u64

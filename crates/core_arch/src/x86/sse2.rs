@@ -3343,83 +3343,124 @@ mod tests {
 
     #[simd_test(enable = "sse2")]
     unsafe fn test_mm_slli_epi16() {
-        #[rustfmt::skip]
-        let a = _mm_setr_epi16(
-            0xFFFF as u16 as i16, 0x0FFF, 0x00FF, 0x000F, 0, 0, 0, 0,
-        );
+        let a = _mm_setr_epi16(0xCC, -0xCC, 0xDD, -0xDD, 0xEE, -0xEE, 0xFF, -0xFF);
         let r = _mm_slli_epi16::<4>(a);
-
-        #[rustfmt::skip]
-        let e = _mm_setr_epi16(
-            0xFFF0 as u16 as i16, 0xFFF0 as u16 as i16, 0x0FF0, 0x00F0,
-            0, 0, 0, 0,
+        assert_eq_m128i(
+            r,
+            _mm_setr_epi16(0xCC0, -0xCC0, 0xDD0, -0xDD0, 0xEE0, -0xEE0, 0xFF0, -0xFF0),
         );
-        assert_eq_m128i(r, e);
+        let r = _mm_slli_epi16::<16>(a);
+        assert_eq_m128i(r, _mm_set1_epi16(0));
     }
 
     #[simd_test(enable = "sse2")]
     unsafe fn test_mm_sll_epi16() {
-        let a = _mm_setr_epi16(0xFF, 0, 0, 0, 0, 0, 0, 0);
-        let r = _mm_sll_epi16(a, _mm_setr_epi16(4, 0, 0, 0, 0, 0, 0, 0));
-        assert_eq_m128i(r, _mm_setr_epi16(0xFF0, 0, 0, 0, 0, 0, 0, 0));
-        let r = _mm_sll_epi16(a, _mm_setr_epi16(0, 0, 0, 0, 4, 0, 0, 0));
-        assert_eq_m128i(r, _mm_setr_epi16(0xFF, 0, 0, 0, 0, 0, 0, 0));
+        let a = _mm_setr_epi16(0xCC, -0xCC, 0xDD, -0xDD, 0xEE, -0xEE, 0xFF, -0xFF);
+        let r = _mm_sll_epi16(a, _mm_set_epi64x(0, 4));
+        assert_eq_m128i(
+            r,
+            _mm_setr_epi16(0xCC0, -0xCC0, 0xDD0, -0xDD0, 0xEE0, -0xEE0, 0xFF0, -0xFF0),
+        );
+        let r = _mm_sll_epi16(a, _mm_set_epi64x(4, 0));
+        assert_eq_m128i(r, a);
+        let r = _mm_sll_epi16(a, _mm_set_epi64x(0, 16));
+        assert_eq_m128i(r, _mm_set1_epi16(0));
+        let r = _mm_sll_epi16(a, _mm_set_epi64x(0, i64::MAX));
+        assert_eq_m128i(r, _mm_set1_epi16(0));
     }
 
     #[simd_test(enable = "sse2")]
     unsafe fn test_mm_slli_epi32() {
-        let r = _mm_slli_epi32::<4>(_mm_set1_epi32(0xFFFF));
-        assert_eq_m128i(r, _mm_set1_epi32(0xFFFF0));
+        let a = _mm_setr_epi32(0xEEEE, -0xEEEE, 0xFFFF, -0xFFFF);
+        let r = _mm_slli_epi32::<4>(a);
+        assert_eq_m128i(r, _mm_setr_epi32(0xEEEE0, -0xEEEE0, 0xFFFF0, -0xFFFF0));
+        let r = _mm_slli_epi32::<32>(a);
+        assert_eq_m128i(r, _mm_set1_epi32(0));
     }
 
     #[simd_test(enable = "sse2")]
     unsafe fn test_mm_sll_epi32() {
-        let a = _mm_set1_epi32(0xFFFF);
-        let b = _mm_setr_epi32(4, 0, 0, 0);
-        let r = _mm_sll_epi32(a, b);
-        assert_eq_m128i(r, _mm_set1_epi32(0xFFFF0));
+        let a = _mm_setr_epi32(0xEEEE, -0xEEEE, 0xFFFF, -0xFFFF);
+        let r = _mm_sll_epi32(a, _mm_set_epi64x(0, 4));
+        assert_eq_m128i(r, _mm_setr_epi32(0xEEEE0, -0xEEEE0, 0xFFFF0, -0xFFFF0));
+        let r = _mm_sll_epi32(a, _mm_set_epi64x(4, 0));
+        assert_eq_m128i(r, a);
+        let r = _mm_sll_epi32(a, _mm_set_epi64x(0, 32));
+        assert_eq_m128i(r, _mm_set1_epi32(0));
+        let r = _mm_sll_epi32(a, _mm_set_epi64x(0, i64::MAX));
+        assert_eq_m128i(r, _mm_set1_epi32(0));
     }
 
     #[simd_test(enable = "sse2")]
     unsafe fn test_mm_slli_epi64() {
-        let r = _mm_slli_epi64::<4>(_mm_set1_epi64x(0xFFFFFFFF));
-        assert_eq_m128i(r, _mm_set1_epi64x(0xFFFFFFFF0));
+        let a = _mm_set_epi64x(0xFFFFFFFF, -0xFFFFFFFF);
+        let r = _mm_slli_epi64::<4>(a);
+        assert_eq_m128i(r, _mm_set_epi64x(0xFFFFFFFF0, -0xFFFFFFFF0));
+        let r = _mm_slli_epi64::<64>(a);
+        assert_eq_m128i(r, _mm_set1_epi64x(0));
     }
 
     #[simd_test(enable = "sse2")]
     unsafe fn test_mm_sll_epi64() {
-        let a = _mm_set1_epi64x(0xFFFFFFFF);
-        let b = _mm_setr_epi64x(4, 0);
-        let r = _mm_sll_epi64(a, b);
-        assert_eq_m128i(r, _mm_set1_epi64x(0xFFFFFFFF0));
+        let a = _mm_set_epi64x(0xFFFFFFFF, -0xFFFFFFFF);
+        let r = _mm_sll_epi64(a, _mm_set_epi64x(0, 4));
+        assert_eq_m128i(r, _mm_set_epi64x(0xFFFFFFFF0, -0xFFFFFFFF0));
+        let r = _mm_sll_epi64(a, _mm_set_epi64x(4, 0));
+        assert_eq_m128i(r, a);
+        let r = _mm_sll_epi64(a, _mm_set_epi64x(0, 64));
+        assert_eq_m128i(r, _mm_set1_epi64x(0));
+        let r = _mm_sll_epi64(a, _mm_set_epi64x(0, i64::MAX));
+        assert_eq_m128i(r, _mm_set1_epi64x(0));
     }
 
     #[simd_test(enable = "sse2")]
     unsafe fn test_mm_srai_epi16() {
-        let r = _mm_srai_epi16::<1>(_mm_set1_epi16(-1));
-        assert_eq_m128i(r, _mm_set1_epi16(-1));
+        let a = _mm_setr_epi16(0xCC, -0xCC, 0xDD, -0xDD, 0xEE, -0xEE, 0xFF, -0xFF);
+        let r = _mm_srai_epi16::<4>(a);
+        assert_eq_m128i(
+            r,
+            _mm_setr_epi16(0xC, -0xD, 0xD, -0xE, 0xE, -0xF, 0xF, -0x10),
+        );
+        let r = _mm_srai_epi16::<16>(a);
+        assert_eq_m128i(r, _mm_setr_epi16(0, -1, 0, -1, 0, -1, 0, -1));
     }
 
     #[simd_test(enable = "sse2")]
     unsafe fn test_mm_sra_epi16() {
-        let a = _mm_set1_epi16(-1);
-        let b = _mm_setr_epi16(1, 0, 0, 0, 0, 0, 0, 0);
-        let r = _mm_sra_epi16(a, b);
-        assert_eq_m128i(r, _mm_set1_epi16(-1));
+        let a = _mm_setr_epi16(0xCC, -0xCC, 0xDD, -0xDD, 0xEE, -0xEE, 0xFF, -0xFF);
+        let r = _mm_sra_epi16(a, _mm_set_epi64x(0, 4));
+        assert_eq_m128i(
+            r,
+            _mm_setr_epi16(0xC, -0xD, 0xD, -0xE, 0xE, -0xF, 0xF, -0x10),
+        );
+        let r = _mm_sra_epi16(a, _mm_set_epi64x(4, 0));
+        assert_eq_m128i(r, a);
+        let r = _mm_sra_epi16(a, _mm_set_epi64x(0, 16));
+        assert_eq_m128i(r, _mm_setr_epi16(0, -1, 0, -1, 0, -1, 0, -1));
+        let r = _mm_sra_epi16(a, _mm_set_epi64x(0, i64::MAX));
+        assert_eq_m128i(r, _mm_setr_epi16(0, -1, 0, -1, 0, -1, 0, -1));
     }
 
     #[simd_test(enable = "sse2")]
     unsafe fn test_mm_srai_epi32() {
-        let r = _mm_srai_epi32::<1>(_mm_set1_epi32(-1));
-        assert_eq_m128i(r, _mm_set1_epi32(-1));
+        let a = _mm_setr_epi32(0xEEEE, -0xEEEE, 0xFFFF, -0xFFFF);
+        let r = _mm_srai_epi32::<4>(a);
+        assert_eq_m128i(r, _mm_setr_epi32(0xEEE, -0xEEF, 0xFFF, -0x1000));
+        let r = _mm_srai_epi32::<32>(a);
+        assert_eq_m128i(r, _mm_setr_epi32(0, -1, 0, -1));
     }
 
     #[simd_test(enable = "sse2")]
     unsafe fn test_mm_sra_epi32() {
-        let a = _mm_set1_epi32(-1);
-        let b = _mm_setr_epi32(1, 0, 0, 0);
-        let r = _mm_sra_epi32(a, b);
-        assert_eq_m128i(r, _mm_set1_epi32(-1));
+        let a = _mm_setr_epi32(0xEEEE, -0xEEEE, 0xFFFF, -0xFFFF);
+        let r = _mm_sra_epi32(a, _mm_set_epi64x(0, 4));
+        assert_eq_m128i(r, _mm_setr_epi32(0xEEE, -0xEEF, 0xFFF, -0x1000));
+        let r = _mm_sra_epi32(a, _mm_set_epi64x(4, 0));
+        assert_eq_m128i(r, a);
+        let r = _mm_sra_epi32(a, _mm_set_epi64x(0, 32));
+        assert_eq_m128i(r, _mm_setr_epi32(0, -1, 0, -1));
+        let r = _mm_sra_epi32(a, _mm_set_epi64x(0, i64::MAX));
+        assert_eq_m128i(r, _mm_setr_epi32(0, -1, 0, -1));
     }
 
     #[simd_test(enable = "sse2")]
@@ -3453,53 +3494,74 @@ mod tests {
 
     #[simd_test(enable = "sse2")]
     unsafe fn test_mm_srli_epi16() {
-        #[rustfmt::skip]
-        let a = _mm_setr_epi16(
-            0xFFFF as u16 as i16, 0x0FFF, 0x00FF, 0x000F, 0, 0, 0, 0,
-        );
+        let a = _mm_setr_epi16(0xCC, -0xCC, 0xDD, -0xDD, 0xEE, -0xEE, 0xFF, -0xFF);
         let r = _mm_srli_epi16::<4>(a);
-        #[rustfmt::skip]
-        let e = _mm_setr_epi16(
-            0xFFF as u16 as i16, 0xFF as u16 as i16, 0xF, 0, 0, 0, 0, 0,
+        assert_eq_m128i(
+            r,
+            _mm_setr_epi16(0xC, 0xFF3, 0xD, 0xFF2, 0xE, 0xFF1, 0xF, 0xFF0),
         );
-        assert_eq_m128i(r, e);
+        let r = _mm_srli_epi16::<16>(a);
+        assert_eq_m128i(r, _mm_set1_epi16(0));
     }
 
     #[simd_test(enable = "sse2")]
     unsafe fn test_mm_srl_epi16() {
-        let a = _mm_setr_epi16(0xFF, 0, 0, 0, 0, 0, 0, 0);
-        let r = _mm_srl_epi16(a, _mm_setr_epi16(4, 0, 0, 0, 0, 0, 0, 0));
-        assert_eq_m128i(r, _mm_setr_epi16(0xF, 0, 0, 0, 0, 0, 0, 0));
-        let r = _mm_srl_epi16(a, _mm_setr_epi16(0, 0, 0, 0, 4, 0, 0, 0));
-        assert_eq_m128i(r, _mm_setr_epi16(0xFF, 0, 0, 0, 0, 0, 0, 0));
+        let a = _mm_setr_epi16(0xCC, -0xCC, 0xDD, -0xDD, 0xEE, -0xEE, 0xFF, -0xFF);
+        let r = _mm_srl_epi16(a, _mm_set_epi64x(0, 4));
+        assert_eq_m128i(
+            r,
+            _mm_setr_epi16(0xC, 0xFF3, 0xD, 0xFF2, 0xE, 0xFF1, 0xF, 0xFF0),
+        );
+        let r = _mm_srl_epi16(a, _mm_set_epi64x(4, 0));
+        assert_eq_m128i(r, a);
+        let r = _mm_srl_epi16(a, _mm_set_epi64x(0, 16));
+        assert_eq_m128i(r, _mm_set1_epi16(0));
+        let r = _mm_srl_epi16(a, _mm_set_epi64x(0, i64::MAX));
+        assert_eq_m128i(r, _mm_set1_epi16(0));
     }
 
     #[simd_test(enable = "sse2")]
     unsafe fn test_mm_srli_epi32() {
-        let r = _mm_srli_epi32::<4>(_mm_set1_epi32(0xFFFF));
-        assert_eq_m128i(r, _mm_set1_epi32(0xFFF));
+        let a = _mm_setr_epi32(0xEEEE, -0xEEEE, 0xFFFF, -0xFFFF);
+        let r = _mm_srli_epi32::<4>(a);
+        assert_eq_m128i(r, _mm_setr_epi32(0xEEE, 0xFFFF111, 0xFFF, 0xFFFF000));
+        let r = _mm_srli_epi32::<32>(a);
+        assert_eq_m128i(r, _mm_set1_epi32(0));
     }
 
     #[simd_test(enable = "sse2")]
     unsafe fn test_mm_srl_epi32() {
-        let a = _mm_set1_epi32(0xFFFF);
-        let b = _mm_setr_epi32(4, 0, 0, 0);
-        let r = _mm_srl_epi32(a, b);
-        assert_eq_m128i(r, _mm_set1_epi32(0xFFF));
+        let a = _mm_setr_epi32(0xEEEE, -0xEEEE, 0xFFFF, -0xFFFF);
+        let r = _mm_srl_epi32(a, _mm_set_epi64x(0, 4));
+        assert_eq_m128i(r, _mm_setr_epi32(0xEEE, 0xFFFF111, 0xFFF, 0xFFFF000));
+        let r = _mm_srl_epi32(a, _mm_set_epi64x(4, 0));
+        assert_eq_m128i(r, a);
+        let r = _mm_srl_epi32(a, _mm_set_epi64x(0, 32));
+        assert_eq_m128i(r, _mm_set1_epi32(0));
+        let r = _mm_srl_epi32(a, _mm_set_epi64x(0, i64::MAX));
+        assert_eq_m128i(r, _mm_set1_epi32(0));
     }
 
     #[simd_test(enable = "sse2")]
     unsafe fn test_mm_srli_epi64() {
-        let r = _mm_srli_epi64::<4>(_mm_set1_epi64x(0xFFFFFFFF));
-        assert_eq_m128i(r, _mm_set1_epi64x(0xFFFFFFF));
+        let a = _mm_set_epi64x(0xFFFFFFFF, -0xFFFFFFFF);
+        let r = _mm_srli_epi64::<4>(a);
+        assert_eq_m128i(r, _mm_set_epi64x(0xFFFFFFF, 0xFFFFFFFF0000000));
+        let r = _mm_srli_epi64::<64>(a);
+        assert_eq_m128i(r, _mm_set1_epi64x(0));
     }
 
     #[simd_test(enable = "sse2")]
     unsafe fn test_mm_srl_epi64() {
-        let a = _mm_set1_epi64x(0xFFFFFFFF);
-        let b = _mm_setr_epi64x(4, 0);
-        let r = _mm_srl_epi64(a, b);
-        assert_eq_m128i(r, _mm_set1_epi64x(0xFFFFFFF));
+        let a = _mm_set_epi64x(0xFFFFFFFF, -0xFFFFFFFF);
+        let r = _mm_srl_epi64(a, _mm_set_epi64x(0, 4));
+        assert_eq_m128i(r, _mm_set_epi64x(0xFFFFFFF, 0xFFFFFFFF0000000));
+        let r = _mm_srl_epi64(a, _mm_set_epi64x(4, 0));
+        assert_eq_m128i(r, a);
+        let r = _mm_srl_epi64(a, _mm_set_epi64x(0, 64));
+        assert_eq_m128i(r, _mm_set1_epi64x(0));
+        let r = _mm_srl_epi64(a, _mm_set_epi64x(0, i64::MAX));
+        assert_eq_m128i(r, _mm_set1_epi64x(0));
     }
 
     #[simd_test(enable = "sse2")]
@@ -4055,6 +4117,17 @@ mod tests {
         let b = _mm_setr_pd(5.0, 10.0);
         let r = _mm_max_pd(a, b);
         assert_eq_m128d(r, _mm_setr_pd(5.0, 10.0));
+
+        // Check SSE(2)-specific semantics for -0.0 handling.
+        let a = _mm_setr_pd(-0.0, 0.0);
+        let b = _mm_setr_pd(0.0, 0.0);
+        let r1: [u8; 16] = transmute(_mm_max_pd(a, b));
+        let r2: [u8; 16] = transmute(_mm_max_pd(b, a));
+        let a: [u8; 16] = transmute(a);
+        let b: [u8; 16] = transmute(b);
+        assert_eq!(r1, b);
+        assert_eq!(r2, a);
+        assert_ne!(a, b); // sanity check that -0.0 is actually present
     }
 
     #[simd_test(enable = "sse2")]
@@ -4071,6 +4144,17 @@ mod tests {
         let b = _mm_setr_pd(5.0, 10.0);
         let r = _mm_min_pd(a, b);
         assert_eq_m128d(r, _mm_setr_pd(1.0, 2.0));
+
+        // Check SSE(2)-specific semantics for -0.0 handling.
+        let a = _mm_setr_pd(-0.0, 0.0);
+        let b = _mm_setr_pd(0.0, 0.0);
+        let r1: [u8; 16] = transmute(_mm_min_pd(a, b));
+        let r2: [u8; 16] = transmute(_mm_min_pd(b, a));
+        let a: [u8; 16] = transmute(a);
+        let b: [u8; 16] = transmute(b);
+        assert_eq!(r1, b);
+        assert_eq!(r2, a);
+        assert_ne!(a, b); // sanity check that -0.0 is actually present
     }
 
     #[simd_test(enable = "sse2")]
