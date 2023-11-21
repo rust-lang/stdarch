@@ -12,7 +12,6 @@
     simd_ffi,
     proc_macro_hygiene,
     stmt_expr_attributes,
-    core_intrinsics,
     intrinsics,
     no_core,
     rustc_attrs,
@@ -85,4 +84,155 @@ pub mod arch {
 }
 
 #[allow(unused_imports)]
-use core::{convert, ffi, hint, intrinsics, marker, mem, ops, ptr, sync};
+use core::{convert, ffi, hint, marker, mem, ops, ptr, sync};
+
+// `core` is changing the feature name for the `intrinsics` module.
+// To permit that transition, we avoid using that feature for now.
+mod intrinsics {
+    extern "rust-intrinsic" {
+        /// Emits a `!nontemporal` store according to LLVM (see their docs).
+        /// Probably will never become stable.
+        #[rustc_nounwind]
+        pub fn nontemporal_store<T>(ptr: *mut T, val: T);
+
+        /// Aborts the execution of the process.
+        ///
+        /// Note that, unlike most intrinsics, this is safe to call;
+        /// it does not require an `unsafe` block.
+        /// Therefore, implementations must not require the user to uphold
+        /// any safety invariants.
+        ///
+        /// [`std::process::abort`](../../std/process/fn.abort.html) is to be preferred if possible,
+        /// as its behavior is more user-friendly and more stable.
+        ///
+        /// The current implementation of `intrinsics::abort` is to invoke an invalid instruction,
+        /// on most platforms.
+        /// On Unix, the
+        /// process will probably terminate with a signal like `SIGABRT`, `SIGILL`, `SIGTRAP`, `SIGSEGV` or
+        /// `SIGBUS`.  The precise behaviour is not guaranteed and not stable.
+        #[rustc_safe_intrinsic]
+        #[rustc_nounwind]
+        pub fn abort() -> !;
+
+        /// Stores a value if the current value is the same as the `old` value.
+        ///
+        /// The stabilized version of this intrinsic is available on the
+        /// [`atomic`] types via the `compare_exchange` method by passing
+        /// [`Ordering::Relaxed`] as both the success and failure parameters.
+        /// For example, [`AtomicBool::compare_exchange`].
+        #[rustc_nounwind]
+        pub fn atomic_cxchg_relaxed_relaxed<T: Copy>(dst: *mut T, old: T, src: T) -> (T, bool);
+        /// Stores a value if the current value is the same as the `old` value.
+        ///
+        /// The stabilized version of this intrinsic is available on the
+        /// [`atomic`] types via the `compare_exchange` method by passing
+        /// [`Ordering::Relaxed`] and [`Ordering::Acquire`] as the success and failure parameters.
+        /// For example, [`AtomicBool::compare_exchange`].
+        #[rustc_nounwind]
+        pub fn atomic_cxchg_relaxed_acquire<T: Copy>(dst: *mut T, old: T, src: T) -> (T, bool);
+        /// Stores a value if the current value is the same as the `old` value.
+        ///
+        /// The stabilized version of this intrinsic is available on the
+        /// [`atomic`] types via the `compare_exchange` method by passing
+        /// [`Ordering::Relaxed`] and [`Ordering::SeqCst`] as the success and failure parameters.
+        /// For example, [`AtomicBool::compare_exchange`].
+        #[rustc_nounwind]
+        pub fn atomic_cxchg_relaxed_seqcst<T: Copy>(dst: *mut T, old: T, src: T) -> (T, bool);
+        /// Stores a value if the current value is the same as the `old` value.
+        ///
+        /// The stabilized version of this intrinsic is available on the
+        /// [`atomic`] types via the `compare_exchange` method by passing
+        /// [`Ordering::Acquire`] and [`Ordering::Relaxed`] as the success and failure parameters.
+        /// For example, [`AtomicBool::compare_exchange`].
+        #[rustc_nounwind]
+        pub fn atomic_cxchg_acquire_relaxed<T: Copy>(dst: *mut T, old: T, src: T) -> (T, bool);
+        /// Stores a value if the current value is the same as the `old` value.
+        ///
+        /// The stabilized version of this intrinsic is available on the
+        /// [`atomic`] types via the `compare_exchange` method by passing
+        /// [`Ordering::Acquire`] as both the success and failure parameters.
+        /// For example, [`AtomicBool::compare_exchange`].
+        #[rustc_nounwind]
+        pub fn atomic_cxchg_acquire_acquire<T: Copy>(dst: *mut T, old: T, src: T) -> (T, bool);
+        /// Stores a value if the current value is the same as the `old` value.
+        ///
+        /// The stabilized version of this intrinsic is available on the
+        /// [`atomic`] types via the `compare_exchange` method by passing
+        /// [`Ordering::Acquire`] and [`Ordering::SeqCst`] as the success and failure parameters.
+        /// For example, [`AtomicBool::compare_exchange`].
+        #[rustc_nounwind]
+        pub fn atomic_cxchg_acquire_seqcst<T: Copy>(dst: *mut T, old: T, src: T) -> (T, bool);
+        /// Stores a value if the current value is the same as the `old` value.
+        ///
+        /// The stabilized version of this intrinsic is available on the
+        /// [`atomic`] types via the `compare_exchange` method by passing
+        /// [`Ordering::Release`] and [`Ordering::Relaxed`] as the success and failure parameters.
+        /// For example, [`AtomicBool::compare_exchange`].
+        #[rustc_nounwind]
+        pub fn atomic_cxchg_release_relaxed<T: Copy>(dst: *mut T, old: T, src: T) -> (T, bool);
+        /// Stores a value if the current value is the same as the `old` value.
+        ///
+        /// The stabilized version of this intrinsic is available on the
+        /// [`atomic`] types via the `compare_exchange` method by passing
+        /// [`Ordering::Release`] and [`Ordering::Acquire`] as the success and failure parameters.
+        /// For example, [`AtomicBool::compare_exchange`].
+        #[rustc_nounwind]
+        pub fn atomic_cxchg_release_acquire<T: Copy>(dst: *mut T, old: T, src: T) -> (T, bool);
+        /// Stores a value if the current value is the same as the `old` value.
+        ///
+        /// The stabilized version of this intrinsic is available on the
+        /// [`atomic`] types via the `compare_exchange` method by passing
+        /// [`Ordering::Release`] and [`Ordering::SeqCst`] as the success and failure parameters.
+        /// For example, [`AtomicBool::compare_exchange`].
+        #[rustc_nounwind]
+        pub fn atomic_cxchg_release_seqcst<T: Copy>(dst: *mut T, old: T, src: T) -> (T, bool);
+        /// Stores a value if the current value is the same as the `old` value.
+        ///
+        /// The stabilized version of this intrinsic is available on the
+        /// [`atomic`] types via the `compare_exchange` method by passing
+        /// [`Ordering::AcqRel`] and [`Ordering::Relaxed`] as the success and failure parameters.
+        /// For example, [`AtomicBool::compare_exchange`].
+        #[rustc_nounwind]
+        pub fn atomic_cxchg_acqrel_relaxed<T: Copy>(dst: *mut T, old: T, src: T) -> (T, bool);
+        /// Stores a value if the current value is the same as the `old` value.
+        ///
+        /// The stabilized version of this intrinsic is available on the
+        /// [`atomic`] types via the `compare_exchange` method by passing
+        /// [`Ordering::AcqRel`] and [`Ordering::Acquire`] as the success and failure parameters.
+        /// For example, [`AtomicBool::compare_exchange`].
+        #[rustc_nounwind]
+        pub fn atomic_cxchg_acqrel_acquire<T: Copy>(dst: *mut T, old: T, src: T) -> (T, bool);
+        /// Stores a value if the current value is the same as the `old` value.
+        ///
+        /// The stabilized version of this intrinsic is available on the
+        /// [`atomic`] types via the `compare_exchange` method by passing
+        /// [`Ordering::AcqRel`] and [`Ordering::SeqCst`] as the success and failure parameters.
+        /// For example, [`AtomicBool::compare_exchange`].
+        #[rustc_nounwind]
+        pub fn atomic_cxchg_acqrel_seqcst<T: Copy>(dst: *mut T, old: T, src: T) -> (T, bool);
+        /// Stores a value if the current value is the same as the `old` value.
+        ///
+        /// The stabilized version of this intrinsic is available on the
+        /// [`atomic`] types via the `compare_exchange` method by passing
+        /// [`Ordering::SeqCst`] and [`Ordering::Relaxed`] as the success and failure parameters.
+        /// For example, [`AtomicBool::compare_exchange`].
+        #[rustc_nounwind]
+        pub fn atomic_cxchg_seqcst_relaxed<T: Copy>(dst: *mut T, old: T, src: T) -> (T, bool);
+        /// Stores a value if the current value is the same as the `old` value.
+        ///
+        /// The stabilized version of this intrinsic is available on the
+        /// [`atomic`] types via the `compare_exchange` method by passing
+        /// [`Ordering::SeqCst`] and [`Ordering::Acquire`] as the success and failure parameters.
+        /// For example, [`AtomicBool::compare_exchange`].
+        #[rustc_nounwind]
+        pub fn atomic_cxchg_seqcst_acquire<T: Copy>(dst: *mut T, old: T, src: T) -> (T, bool);
+        /// Stores a value if the current value is the same as the `old` value.
+        ///
+        /// The stabilized version of this intrinsic is available on the
+        /// [`atomic`] types via the `compare_exchange` method by passing
+        /// [`Ordering::SeqCst`] as both the success and failure parameters.
+        /// For example, [`AtomicBool::compare_exchange`].
+        #[rustc_nounwind]
+        pub fn atomic_cxchg_seqcst_seqcst<T: Copy>(dst: *mut T, old: T, src: T) -> (T, bool);
+    }
+}
