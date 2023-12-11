@@ -148,11 +148,16 @@ case ${TARGET} in
 esac
 
 if [ "${TARGET}" = "aarch64-unknown-linux-gnu" ]; then
+
     (
         CPPFLAGS="-fuse-ld=lld -I/usr/aarch64-linux-gnu/include/ -I/usr/aarch64-linux-gnu/include/c++/9/aarch64-linux-gnu/" \
             RUSTFLAGS="$HOST_RUSTFLAGS" \
             RUST_LOG=warn \
             cargo run ${INTRINSIC_TEST} --release --bin intrinsic-test -- intrinsics_data/arm_intrinsics.json --runner "${CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_RUNNER}" --cppcompiler "clang++-15" --skip crates/intrinsic-test/missing_aarch64.txt
+        CPPFLAGS="-fuse-ld=lld -I/usr/aarch64-linux-gnu/include/ -I/usr/aarch64-linux-gnu/include/c++/9/aarch64-linux-gnu/" \
+            RUSTFLAGS="$HOST_RUSTFLAGS" \
+            RUST_LOG=warn \
+            cargo run ${INTRINSIC_TEST} --release --bin intrinsic-test -- intrinsics_data/arm_intrinsics.json --runner "${CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_RUNNER}" --cppcompiler "clang++-15" --skip crates/intrinsic-test/missing_aarch64.txt --sve
     )
 elif [ "${TARGET}" = "armv7-unknown-linux-gnueabihf" ]; then
     (
