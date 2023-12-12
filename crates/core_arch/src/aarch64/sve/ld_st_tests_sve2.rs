@@ -239,7 +239,7 @@ unsafe fn test_svldnt1_gather_s64index_f64_with_svstnt1_scatter_s64index_f64() {
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1_gather_s64index_s64_with_svstnt1_scatter_s64index_s64() {
     let mut storage = [0 as i64; 160usize];
-    let data = svindex_s64((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_s64((0usize) as i64, 1usize.try_into().unwrap());
     let indices = svindex_s64(0, 1);
     svstnt1_scatter_s64index_s64(svptrue_b64(), storage.as_mut_ptr(), indices, data);
     for (i, &val) in storage.iter().enumerate() {
@@ -250,13 +250,13 @@ unsafe fn test_svldnt1_gather_s64index_s64_with_svstnt1_scatter_s64index_s64() {
         svldnt1_gather_s64index_s64(svptrue_b64(), storage.as_ptr() as *const i64, indices);
     assert_vector_matches_i64(
         loaded,
-        svindex_s64((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_s64((0usize) as i64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1_gather_s64index_u64_with_svstnt1_scatter_s64index_u64() {
     let mut storage = [0 as u64; 160usize];
-    let data = svindex_u64((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_u64((0usize) as u64, 1usize.try_into().unwrap());
     let indices = svindex_s64(0, 1);
     svstnt1_scatter_s64index_u64(svptrue_b64(), storage.as_mut_ptr(), indices, data);
     for (i, &val) in storage.iter().enumerate() {
@@ -267,7 +267,7 @@ unsafe fn test_svldnt1_gather_s64index_u64_with_svstnt1_scatter_s64index_u64() {
         svldnt1_gather_s64index_u64(svptrue_b64(), storage.as_ptr() as *const u64, indices);
     assert_vector_matches_u64(
         loaded,
-        svindex_u64((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_u64((0usize) as u64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
@@ -296,7 +296,7 @@ unsafe fn test_svldnt1_gather_u64index_f64_with_svstnt1_scatter_u64index_f64() {
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1_gather_u64index_s64_with_svstnt1_scatter_u64index_s64() {
     let mut storage = [0 as i64; 160usize];
-    let data = svindex_s64((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_s64((0usize) as i64, 1usize.try_into().unwrap());
     let indices = svindex_u64(0, 1);
     svstnt1_scatter_u64index_s64(svptrue_b64(), storage.as_mut_ptr(), indices, data);
     for (i, &val) in storage.iter().enumerate() {
@@ -307,13 +307,13 @@ unsafe fn test_svldnt1_gather_u64index_s64_with_svstnt1_scatter_u64index_s64() {
         svldnt1_gather_u64index_s64(svptrue_b64(), storage.as_ptr() as *const i64, indices);
     assert_vector_matches_i64(
         loaded,
-        svindex_s64((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_s64((0usize) as i64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1_gather_u64index_u64_with_svstnt1_scatter_u64index_u64() {
     let mut storage = [0 as u64; 160usize];
-    let data = svindex_u64((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_u64((0usize) as u64, 1usize.try_into().unwrap());
     let indices = svindex_u64(0, 1);
     svstnt1_scatter_u64index_u64(svptrue_b64(), storage.as_mut_ptr(), indices, data);
     for (i, &val) in storage.iter().enumerate() {
@@ -324,7 +324,7 @@ unsafe fn test_svldnt1_gather_u64index_u64_with_svstnt1_scatter_u64index_u64() {
         svldnt1_gather_u64index_u64(svptrue_b64(), storage.as_ptr() as *const u64, indices);
     assert_vector_matches_u64(
         loaded,
-        svindex_u64((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_u64((0usize) as u64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
@@ -353,7 +353,7 @@ unsafe fn test_svldnt1_gather_s64offset_f64_with_svstnt1_scatter_s64offset_f64()
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1_gather_s64offset_s64_with_svstnt1_scatter_s64offset_s64() {
     let mut storage = [0 as i64; 160usize];
-    let data = svindex_s64((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_s64((0usize) as i64, 1usize.try_into().unwrap());
     let offsets = svindex_s64(0, 8u32.try_into().unwrap());
     svstnt1_scatter_s64offset_s64(svptrue_b64(), storage.as_mut_ptr(), offsets, data);
     for (i, &val) in storage.iter().enumerate() {
@@ -364,13 +364,13 @@ unsafe fn test_svldnt1_gather_s64offset_s64_with_svstnt1_scatter_s64offset_s64()
         svldnt1_gather_s64offset_s64(svptrue_b64(), storage.as_ptr() as *const i64, offsets);
     assert_vector_matches_i64(
         loaded,
-        svindex_s64((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_s64((0usize) as i64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1_gather_s64offset_u64_with_svstnt1_scatter_s64offset_u64() {
     let mut storage = [0 as u64; 160usize];
-    let data = svindex_u64((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_u64((0usize) as u64, 1usize.try_into().unwrap());
     let offsets = svindex_s64(0, 8u32.try_into().unwrap());
     svstnt1_scatter_s64offset_u64(svptrue_b64(), storage.as_mut_ptr(), offsets, data);
     for (i, &val) in storage.iter().enumerate() {
@@ -381,7 +381,7 @@ unsafe fn test_svldnt1_gather_s64offset_u64_with_svstnt1_scatter_s64offset_u64()
         svldnt1_gather_s64offset_u64(svptrue_b64(), storage.as_ptr() as *const u64, offsets);
     assert_vector_matches_u64(
         loaded,
-        svindex_u64((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_u64((0usize) as u64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
@@ -410,7 +410,7 @@ unsafe fn test_svldnt1_gather_u32offset_f32_with_svstnt1_scatter_u32offset_f32()
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1_gather_u32offset_s32_with_svstnt1_scatter_u32offset_s32() {
     let mut storage = [0 as i32; 320usize];
-    let data = svindex_s32((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_s32((0usize) as i32, 1usize.try_into().unwrap());
     let offsets = svindex_u32(0, 4u32.try_into().unwrap());
     svstnt1_scatter_u32offset_s32(svptrue_b32(), storage.as_mut_ptr(), offsets, data);
     for (i, &val) in storage.iter().enumerate() {
@@ -421,13 +421,13 @@ unsafe fn test_svldnt1_gather_u32offset_s32_with_svstnt1_scatter_u32offset_s32()
         svldnt1_gather_u32offset_s32(svptrue_b32(), storage.as_ptr() as *const i32, offsets);
     assert_vector_matches_i32(
         loaded,
-        svindex_s32((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_s32((0usize) as i32, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1_gather_u32offset_u32_with_svstnt1_scatter_u32offset_u32() {
     let mut storage = [0 as u32; 320usize];
-    let data = svindex_u32((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_u32((0usize) as u32, 1usize.try_into().unwrap());
     let offsets = svindex_u32(0, 4u32.try_into().unwrap());
     svstnt1_scatter_u32offset_u32(svptrue_b32(), storage.as_mut_ptr(), offsets, data);
     for (i, &val) in storage.iter().enumerate() {
@@ -438,7 +438,7 @@ unsafe fn test_svldnt1_gather_u32offset_u32_with_svstnt1_scatter_u32offset_u32()
         svldnt1_gather_u32offset_u32(svptrue_b32(), storage.as_ptr() as *const u32, offsets);
     assert_vector_matches_u32(
         loaded,
-        svindex_u32((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_u32((0usize) as u32, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
@@ -467,7 +467,7 @@ unsafe fn test_svldnt1_gather_u64offset_f64_with_svstnt1_scatter_u64offset_f64()
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1_gather_u64offset_s64_with_svstnt1_scatter_u64offset_s64() {
     let mut storage = [0 as i64; 160usize];
-    let data = svindex_s64((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_s64((0usize) as i64, 1usize.try_into().unwrap());
     let offsets = svindex_u64(0, 8u32.try_into().unwrap());
     svstnt1_scatter_u64offset_s64(svptrue_b64(), storage.as_mut_ptr(), offsets, data);
     for (i, &val) in storage.iter().enumerate() {
@@ -478,13 +478,13 @@ unsafe fn test_svldnt1_gather_u64offset_s64_with_svstnt1_scatter_u64offset_s64()
         svldnt1_gather_u64offset_s64(svptrue_b64(), storage.as_ptr() as *const i64, offsets);
     assert_vector_matches_i64(
         loaded,
-        svindex_s64((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_s64((0usize) as i64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1_gather_u64offset_u64_with_svstnt1_scatter_u64offset_u64() {
     let mut storage = [0 as u64; 160usize];
-    let data = svindex_u64((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_u64((0usize) as u64, 1usize.try_into().unwrap());
     let offsets = svindex_u64(0, 8u32.try_into().unwrap());
     svstnt1_scatter_u64offset_u64(svptrue_b64(), storage.as_mut_ptr(), offsets, data);
     for (i, &val) in storage.iter().enumerate() {
@@ -495,7 +495,7 @@ unsafe fn test_svldnt1_gather_u64offset_u64_with_svstnt1_scatter_u64offset_u64()
         svldnt1_gather_u64offset_u64(svptrue_b64(), storage.as_ptr() as *const u64, offsets);
     assert_vector_matches_u64(
         loaded,
-        svindex_u64((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_u64((0usize) as u64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
@@ -525,7 +525,7 @@ unsafe fn test_svldnt1_gather_u64base_f64_with_svstnt1_scatter_u64base_f64() {
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1_gather_u64base_s64_with_svstnt1_scatter_u64base_s64() {
     let mut storage = [0 as i64; 160usize];
-    let data = svindex_s64((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_s64((0usize) as i64, 1usize.try_into().unwrap());
     let bases = svdup_n_u64(storage.as_ptr() as u64);
     let offsets = svindex_u64(0, 8u32.try_into().unwrap());
     let bases = svadd_u64_x(svptrue_b64(), bases, offsets);
@@ -537,13 +537,13 @@ unsafe fn test_svldnt1_gather_u64base_s64_with_svstnt1_scatter_u64base_s64() {
     let loaded = svldnt1_gather_u64base_s64(svptrue_b64(), bases);
     assert_vector_matches_i64(
         loaded,
-        svindex_s64((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_s64((0usize) as i64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1_gather_u64base_u64_with_svstnt1_scatter_u64base_u64() {
     let mut storage = [0 as u64; 160usize];
-    let data = svindex_u64((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_u64((0usize) as u64, 1usize.try_into().unwrap());
     let bases = svdup_n_u64(storage.as_ptr() as u64);
     let offsets = svindex_u64(0, 8u32.try_into().unwrap());
     let bases = svadd_u64_x(svptrue_b64(), bases, offsets);
@@ -555,7 +555,7 @@ unsafe fn test_svldnt1_gather_u64base_u64_with_svstnt1_scatter_u64base_u64() {
     let loaded = svldnt1_gather_u64base_u64(svptrue_b64(), bases);
     assert_vector_matches_u64(
         loaded,
-        svindex_u64((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_u64((0usize) as u64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
@@ -592,7 +592,7 @@ unsafe fn test_svldnt1_gather_u32base_index_f32_with_svstnt1_scatter_u32base_ind
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1_gather_u32base_index_s32_with_svstnt1_scatter_u32base_index_s32() {
     let mut storage = [0 as i32; 320usize];
-    let data = svindex_s32((1usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_s32((1usize) as i32, 1usize.try_into().unwrap());
     let bases = svindex_u32(0, 4u32.try_into().unwrap());
     svstnt1_scatter_u32base_index_s32(
         svptrue_b32(),
@@ -611,13 +611,13 @@ unsafe fn test_svldnt1_gather_u32base_index_s32_with_svstnt1_scatter_u32base_ind
     );
     assert_vector_matches_i32(
         loaded,
-        svindex_s32((1usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_s32((1usize) as i32, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1_gather_u32base_index_u32_with_svstnt1_scatter_u32base_index_u32() {
     let mut storage = [0 as u32; 320usize];
-    let data = svindex_u32((1usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_u32((1usize) as u32, 1usize.try_into().unwrap());
     let bases = svindex_u32(0, 4u32.try_into().unwrap());
     svstnt1_scatter_u32base_index_u32(
         svptrue_b32(),
@@ -636,7 +636,7 @@ unsafe fn test_svldnt1_gather_u32base_index_u32_with_svstnt1_scatter_u32base_ind
     );
     assert_vector_matches_u32(
         loaded,
-        svindex_u32((1usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_u32((1usize) as u32, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
@@ -666,7 +666,7 @@ unsafe fn test_svldnt1_gather_u64base_index_f64_with_svstnt1_scatter_u64base_ind
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1_gather_u64base_index_s64_with_svstnt1_scatter_u64base_index_s64() {
     let mut storage = [0 as i64; 160usize];
-    let data = svindex_s64((1usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_s64((1usize) as i64, 1usize.try_into().unwrap());
     let bases = svdup_n_u64(storage.as_ptr() as u64);
     let offsets = svindex_u64(0, 8u32.try_into().unwrap());
     let bases = svadd_u64_x(svptrue_b64(), bases, offsets);
@@ -678,13 +678,13 @@ unsafe fn test_svldnt1_gather_u64base_index_s64_with_svstnt1_scatter_u64base_ind
     let loaded = svldnt1_gather_u64base_index_s64(svptrue_b64(), bases, 1.try_into().unwrap());
     assert_vector_matches_i64(
         loaded,
-        svindex_s64((1usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_s64((1usize) as i64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1_gather_u64base_index_u64_with_svstnt1_scatter_u64base_index_u64() {
     let mut storage = [0 as u64; 160usize];
-    let data = svindex_u64((1usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_u64((1usize) as u64, 1usize.try_into().unwrap());
     let bases = svdup_n_u64(storage.as_ptr() as u64);
     let offsets = svindex_u64(0, 8u32.try_into().unwrap());
     let bases = svadd_u64_x(svptrue_b64(), bases, offsets);
@@ -696,7 +696,7 @@ unsafe fn test_svldnt1_gather_u64base_index_u64_with_svstnt1_scatter_u64base_ind
     let loaded = svldnt1_gather_u64base_index_u64(svptrue_b64(), bases, 1.try_into().unwrap());
     assert_vector_matches_u64(
         loaded,
-        svindex_u64((1usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_u64((1usize) as u64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
@@ -733,7 +733,7 @@ unsafe fn test_svldnt1_gather_u32base_offset_f32_with_svstnt1_scatter_u32base_of
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1_gather_u32base_offset_s32_with_svstnt1_scatter_u32base_offset_s32() {
     let mut storage = [0 as i32; 320usize];
-    let data = svindex_s32((1usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_s32((1usize) as i32, 1usize.try_into().unwrap());
     let bases = svindex_u32(0, 4u32.try_into().unwrap());
     svstnt1_scatter_u32base_offset_s32(
         svptrue_b32(),
@@ -752,13 +752,13 @@ unsafe fn test_svldnt1_gather_u32base_offset_s32_with_svstnt1_scatter_u32base_of
     );
     assert_vector_matches_i32(
         loaded,
-        svindex_s32((1usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_s32((1usize) as i32, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1_gather_u32base_offset_u32_with_svstnt1_scatter_u32base_offset_u32() {
     let mut storage = [0 as u32; 320usize];
-    let data = svindex_u32((1usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_u32((1usize) as u32, 1usize.try_into().unwrap());
     let bases = svindex_u32(0, 4u32.try_into().unwrap());
     svstnt1_scatter_u32base_offset_u32(
         svptrue_b32(),
@@ -777,7 +777,7 @@ unsafe fn test_svldnt1_gather_u32base_offset_u32_with_svstnt1_scatter_u32base_of
     );
     assert_vector_matches_u32(
         loaded,
-        svindex_u32((1usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_u32((1usize) as u32, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
@@ -807,7 +807,7 @@ unsafe fn test_svldnt1_gather_u64base_offset_f64_with_svstnt1_scatter_u64base_of
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1_gather_u64base_offset_s64_with_svstnt1_scatter_u64base_offset_s64() {
     let mut storage = [0 as i64; 160usize];
-    let data = svindex_s64((1usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_s64((1usize) as i64, 1usize.try_into().unwrap());
     let bases = svdup_n_u64(storage.as_ptr() as u64);
     let offsets = svindex_u64(0, 8u32.try_into().unwrap());
     let bases = svadd_u64_x(svptrue_b64(), bases, offsets);
@@ -819,13 +819,13 @@ unsafe fn test_svldnt1_gather_u64base_offset_s64_with_svstnt1_scatter_u64base_of
     let loaded = svldnt1_gather_u64base_offset_s64(svptrue_b64(), bases, 8u32.try_into().unwrap());
     assert_vector_matches_i64(
         loaded,
-        svindex_s64((1usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_s64((1usize) as i64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1_gather_u64base_offset_u64_with_svstnt1_scatter_u64base_offset_u64() {
     let mut storage = [0 as u64; 160usize];
-    let data = svindex_u64((1usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_u64((1usize) as u64, 1usize.try_into().unwrap());
     let bases = svdup_n_u64(storage.as_ptr() as u64);
     let offsets = svindex_u64(0, 8u32.try_into().unwrap());
     let bases = svadd_u64_x(svptrue_b64(), bases, offsets);
@@ -837,13 +837,13 @@ unsafe fn test_svldnt1_gather_u64base_offset_u64_with_svstnt1_scatter_u64base_of
     let loaded = svldnt1_gather_u64base_offset_u64(svptrue_b64(), bases, 8u32.try_into().unwrap());
     assert_vector_matches_u64(
         loaded,
-        svindex_u64((1usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_u64((1usize) as u64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1sb_gather_s64offset_s64_with_svstnt1b_scatter_s64offset_s64() {
     let mut storage = [0 as i8; 1280usize];
-    let data = svindex_s64((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_s64((0usize) as i64, 1usize.try_into().unwrap());
     let offsets = svindex_s64(0, 1u32.try_into().unwrap());
     svstnt1b_scatter_s64offset_s64(svptrue_b8(), storage.as_mut_ptr(), offsets, data);
     for (i, &val) in storage.iter().enumerate() {
@@ -854,13 +854,13 @@ unsafe fn test_svldnt1sb_gather_s64offset_s64_with_svstnt1b_scatter_s64offset_s6
         svldnt1sb_gather_s64offset_s64(svptrue_b8(), storage.as_ptr() as *const i8, offsets);
     assert_vector_matches_i64(
         loaded,
-        svindex_s64((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_s64((0usize) as i64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1sh_gather_s64offset_s64_with_svstnt1h_scatter_s64offset_s64() {
     let mut storage = [0 as i16; 640usize];
-    let data = svindex_s64((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_s64((0usize) as i64, 1usize.try_into().unwrap());
     let offsets = svindex_s64(0, 2u32.try_into().unwrap());
     svstnt1h_scatter_s64offset_s64(svptrue_b16(), storage.as_mut_ptr(), offsets, data);
     for (i, &val) in storage.iter().enumerate() {
@@ -871,13 +871,13 @@ unsafe fn test_svldnt1sh_gather_s64offset_s64_with_svstnt1h_scatter_s64offset_s6
         svldnt1sh_gather_s64offset_s64(svptrue_b16(), storage.as_ptr() as *const i16, offsets);
     assert_vector_matches_i64(
         loaded,
-        svindex_s64((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_s64((0usize) as i64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1sw_gather_s64offset_s64_with_svstnt1w_scatter_s64offset_s64() {
     let mut storage = [0 as i32; 320usize];
-    let data = svindex_s64((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_s64((0usize) as i64, 1usize.try_into().unwrap());
     let offsets = svindex_s64(0, 4u32.try_into().unwrap());
     svstnt1w_scatter_s64offset_s64(svptrue_b32(), storage.as_mut_ptr(), offsets, data);
     for (i, &val) in storage.iter().enumerate() {
@@ -888,13 +888,13 @@ unsafe fn test_svldnt1sw_gather_s64offset_s64_with_svstnt1w_scatter_s64offset_s6
         svldnt1sw_gather_s64offset_s64(svptrue_b32(), storage.as_ptr() as *const i32, offsets);
     assert_vector_matches_i64(
         loaded,
-        svindex_s64((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_s64((0usize) as i64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1sb_gather_s64offset_u64_with_svstnt1b_scatter_s64offset_u64() {
     let mut storage = [0 as u8; 1280usize];
-    let data = svindex_u64((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_u64((0usize) as u64, 1usize.try_into().unwrap());
     let offsets = svindex_s64(0, 1u32.try_into().unwrap());
     svstnt1b_scatter_s64offset_u64(svptrue_b8(), storage.as_mut_ptr(), offsets, data);
     for (i, &val) in storage.iter().enumerate() {
@@ -905,13 +905,13 @@ unsafe fn test_svldnt1sb_gather_s64offset_u64_with_svstnt1b_scatter_s64offset_u6
         svldnt1sb_gather_s64offset_u64(svptrue_b8(), storage.as_ptr() as *const i8, offsets);
     assert_vector_matches_u64(
         loaded,
-        svindex_u64((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_u64((0usize) as u64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1sh_gather_s64offset_u64_with_svstnt1h_scatter_s64offset_u64() {
     let mut storage = [0 as u16; 640usize];
-    let data = svindex_u64((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_u64((0usize) as u64, 1usize.try_into().unwrap());
     let offsets = svindex_s64(0, 2u32.try_into().unwrap());
     svstnt1h_scatter_s64offset_u64(svptrue_b16(), storage.as_mut_ptr(), offsets, data);
     for (i, &val) in storage.iter().enumerate() {
@@ -922,13 +922,13 @@ unsafe fn test_svldnt1sh_gather_s64offset_u64_with_svstnt1h_scatter_s64offset_u6
         svldnt1sh_gather_s64offset_u64(svptrue_b16(), storage.as_ptr() as *const i16, offsets);
     assert_vector_matches_u64(
         loaded,
-        svindex_u64((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_u64((0usize) as u64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1sw_gather_s64offset_u64_with_svstnt1w_scatter_s64offset_u64() {
     let mut storage = [0 as u32; 320usize];
-    let data = svindex_u64((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_u64((0usize) as u64, 1usize.try_into().unwrap());
     let offsets = svindex_s64(0, 4u32.try_into().unwrap());
     svstnt1w_scatter_s64offset_u64(svptrue_b32(), storage.as_mut_ptr(), offsets, data);
     for (i, &val) in storage.iter().enumerate() {
@@ -939,13 +939,13 @@ unsafe fn test_svldnt1sw_gather_s64offset_u64_with_svstnt1w_scatter_s64offset_u6
         svldnt1sw_gather_s64offset_u64(svptrue_b32(), storage.as_ptr() as *const i32, offsets);
     assert_vector_matches_u64(
         loaded,
-        svindex_u64((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_u64((0usize) as u64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1sb_gather_u32offset_s32_with_svstnt1b_scatter_u32offset_s32() {
     let mut storage = [0 as i8; 1280usize];
-    let data = svindex_s32((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_s32((0usize) as i32, 1usize.try_into().unwrap());
     let offsets = svindex_u32(0, 1u32.try_into().unwrap());
     svstnt1b_scatter_u32offset_s32(svptrue_b8(), storage.as_mut_ptr(), offsets, data);
     for (i, &val) in storage.iter().enumerate() {
@@ -956,13 +956,13 @@ unsafe fn test_svldnt1sb_gather_u32offset_s32_with_svstnt1b_scatter_u32offset_s3
         svldnt1sb_gather_u32offset_s32(svptrue_b8(), storage.as_ptr() as *const i8, offsets);
     assert_vector_matches_i32(
         loaded,
-        svindex_s32((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_s32((0usize) as i32, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1sh_gather_u32offset_s32_with_svstnt1h_scatter_u32offset_s32() {
     let mut storage = [0 as i16; 640usize];
-    let data = svindex_s32((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_s32((0usize) as i32, 1usize.try_into().unwrap());
     let offsets = svindex_u32(0, 2u32.try_into().unwrap());
     svstnt1h_scatter_u32offset_s32(svptrue_b16(), storage.as_mut_ptr(), offsets, data);
     for (i, &val) in storage.iter().enumerate() {
@@ -973,13 +973,13 @@ unsafe fn test_svldnt1sh_gather_u32offset_s32_with_svstnt1h_scatter_u32offset_s3
         svldnt1sh_gather_u32offset_s32(svptrue_b16(), storage.as_ptr() as *const i16, offsets);
     assert_vector_matches_i32(
         loaded,
-        svindex_s32((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_s32((0usize) as i32, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1sb_gather_u32offset_u32_with_svstnt1b_scatter_u32offset_u32() {
     let mut storage = [0 as u8; 1280usize];
-    let data = svindex_u32((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_u32((0usize) as u32, 1usize.try_into().unwrap());
     let offsets = svindex_u32(0, 1u32.try_into().unwrap());
     svstnt1b_scatter_u32offset_u32(svptrue_b8(), storage.as_mut_ptr(), offsets, data);
     for (i, &val) in storage.iter().enumerate() {
@@ -990,13 +990,13 @@ unsafe fn test_svldnt1sb_gather_u32offset_u32_with_svstnt1b_scatter_u32offset_u3
         svldnt1sb_gather_u32offset_u32(svptrue_b8(), storage.as_ptr() as *const i8, offsets);
     assert_vector_matches_u32(
         loaded,
-        svindex_u32((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_u32((0usize) as u32, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1sh_gather_u32offset_u32_with_svstnt1h_scatter_u32offset_u32() {
     let mut storage = [0 as u16; 640usize];
-    let data = svindex_u32((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_u32((0usize) as u32, 1usize.try_into().unwrap());
     let offsets = svindex_u32(0, 2u32.try_into().unwrap());
     svstnt1h_scatter_u32offset_u32(svptrue_b16(), storage.as_mut_ptr(), offsets, data);
     for (i, &val) in storage.iter().enumerate() {
@@ -1007,13 +1007,13 @@ unsafe fn test_svldnt1sh_gather_u32offset_u32_with_svstnt1h_scatter_u32offset_u3
         svldnt1sh_gather_u32offset_u32(svptrue_b16(), storage.as_ptr() as *const i16, offsets);
     assert_vector_matches_u32(
         loaded,
-        svindex_u32((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_u32((0usize) as u32, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1sb_gather_u64offset_s64_with_svstnt1b_scatter_u64offset_s64() {
     let mut storage = [0 as i8; 1280usize];
-    let data = svindex_s64((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_s64((0usize) as i64, 1usize.try_into().unwrap());
     let offsets = svindex_u64(0, 1u32.try_into().unwrap());
     svstnt1b_scatter_u64offset_s64(svptrue_b8(), storage.as_mut_ptr(), offsets, data);
     for (i, &val) in storage.iter().enumerate() {
@@ -1024,13 +1024,13 @@ unsafe fn test_svldnt1sb_gather_u64offset_s64_with_svstnt1b_scatter_u64offset_s6
         svldnt1sb_gather_u64offset_s64(svptrue_b8(), storage.as_ptr() as *const i8, offsets);
     assert_vector_matches_i64(
         loaded,
-        svindex_s64((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_s64((0usize) as i64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1sh_gather_u64offset_s64_with_svstnt1h_scatter_u64offset_s64() {
     let mut storage = [0 as i16; 640usize];
-    let data = svindex_s64((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_s64((0usize) as i64, 1usize.try_into().unwrap());
     let offsets = svindex_u64(0, 2u32.try_into().unwrap());
     svstnt1h_scatter_u64offset_s64(svptrue_b16(), storage.as_mut_ptr(), offsets, data);
     for (i, &val) in storage.iter().enumerate() {
@@ -1041,13 +1041,13 @@ unsafe fn test_svldnt1sh_gather_u64offset_s64_with_svstnt1h_scatter_u64offset_s6
         svldnt1sh_gather_u64offset_s64(svptrue_b16(), storage.as_ptr() as *const i16, offsets);
     assert_vector_matches_i64(
         loaded,
-        svindex_s64((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_s64((0usize) as i64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1sw_gather_u64offset_s64_with_svstnt1w_scatter_u64offset_s64() {
     let mut storage = [0 as i32; 320usize];
-    let data = svindex_s64((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_s64((0usize) as i64, 1usize.try_into().unwrap());
     let offsets = svindex_u64(0, 4u32.try_into().unwrap());
     svstnt1w_scatter_u64offset_s64(svptrue_b32(), storage.as_mut_ptr(), offsets, data);
     for (i, &val) in storage.iter().enumerate() {
@@ -1058,13 +1058,13 @@ unsafe fn test_svldnt1sw_gather_u64offset_s64_with_svstnt1w_scatter_u64offset_s6
         svldnt1sw_gather_u64offset_s64(svptrue_b32(), storage.as_ptr() as *const i32, offsets);
     assert_vector_matches_i64(
         loaded,
-        svindex_s64((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_s64((0usize) as i64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1sb_gather_u64offset_u64_with_svstnt1b_scatter_u64offset_u64() {
     let mut storage = [0 as u8; 1280usize];
-    let data = svindex_u64((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_u64((0usize) as u64, 1usize.try_into().unwrap());
     let offsets = svindex_u64(0, 1u32.try_into().unwrap());
     svstnt1b_scatter_u64offset_u64(svptrue_b8(), storage.as_mut_ptr(), offsets, data);
     for (i, &val) in storage.iter().enumerate() {
@@ -1075,13 +1075,13 @@ unsafe fn test_svldnt1sb_gather_u64offset_u64_with_svstnt1b_scatter_u64offset_u6
         svldnt1sb_gather_u64offset_u64(svptrue_b8(), storage.as_ptr() as *const i8, offsets);
     assert_vector_matches_u64(
         loaded,
-        svindex_u64((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_u64((0usize) as u64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1sh_gather_u64offset_u64_with_svstnt1h_scatter_u64offset_u64() {
     let mut storage = [0 as u16; 640usize];
-    let data = svindex_u64((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_u64((0usize) as u64, 1usize.try_into().unwrap());
     let offsets = svindex_u64(0, 2u32.try_into().unwrap());
     svstnt1h_scatter_u64offset_u64(svptrue_b16(), storage.as_mut_ptr(), offsets, data);
     for (i, &val) in storage.iter().enumerate() {
@@ -1092,13 +1092,13 @@ unsafe fn test_svldnt1sh_gather_u64offset_u64_with_svstnt1h_scatter_u64offset_u6
         svldnt1sh_gather_u64offset_u64(svptrue_b16(), storage.as_ptr() as *const i16, offsets);
     assert_vector_matches_u64(
         loaded,
-        svindex_u64((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_u64((0usize) as u64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1sw_gather_u64offset_u64_with_svstnt1w_scatter_u64offset_u64() {
     let mut storage = [0 as u32; 320usize];
-    let data = svindex_u64((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_u64((0usize) as u64, 1usize.try_into().unwrap());
     let offsets = svindex_u64(0, 4u32.try_into().unwrap());
     svstnt1w_scatter_u64offset_u64(svptrue_b32(), storage.as_mut_ptr(), offsets, data);
     for (i, &val) in storage.iter().enumerate() {
@@ -1109,13 +1109,13 @@ unsafe fn test_svldnt1sw_gather_u64offset_u64_with_svstnt1w_scatter_u64offset_u6
         svldnt1sw_gather_u64offset_u64(svptrue_b32(), storage.as_ptr() as *const i32, offsets);
     assert_vector_matches_u64(
         loaded,
-        svindex_u64((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_u64((0usize) as u64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1sb_gather_u32base_offset_s32_with_svstnt1b_scatter_u32base_offset_s32() {
     let mut storage = [0 as i8; 1280usize];
-    let data = svindex_s32((1usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_s32((1usize) as i32, 1usize.try_into().unwrap());
     let bases = svindex_u32(0, 1u32.try_into().unwrap());
     svstnt1b_scatter_u32base_offset_s32(
         svptrue_b8(),
@@ -1134,13 +1134,13 @@ unsafe fn test_svldnt1sb_gather_u32base_offset_s32_with_svstnt1b_scatter_u32base
     );
     assert_vector_matches_i32(
         loaded,
-        svindex_s32((1usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_s32((1usize) as i32, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1sh_gather_u32base_offset_s32_with_svstnt1h_scatter_u32base_offset_s32() {
     let mut storage = [0 as i16; 640usize];
-    let data = svindex_s32((1usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_s32((1usize) as i32, 1usize.try_into().unwrap());
     let bases = svindex_u32(0, 2u32.try_into().unwrap());
     svstnt1h_scatter_u32base_offset_s32(
         svptrue_b16(),
@@ -1159,13 +1159,13 @@ unsafe fn test_svldnt1sh_gather_u32base_offset_s32_with_svstnt1h_scatter_u32base
     );
     assert_vector_matches_i32(
         loaded,
-        svindex_s32((1usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_s32((1usize) as i32, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1sb_gather_u32base_offset_u32_with_svstnt1b_scatter_u32base_offset_u32() {
     let mut storage = [0 as i8; 1280usize];
-    let data = svindex_u32((1usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_u32((1usize) as u32, 1usize.try_into().unwrap());
     let bases = svindex_u32(0, 1u32.try_into().unwrap());
     svstnt1b_scatter_u32base_offset_u32(
         svptrue_b8(),
@@ -1184,13 +1184,13 @@ unsafe fn test_svldnt1sb_gather_u32base_offset_u32_with_svstnt1b_scatter_u32base
     );
     assert_vector_matches_u32(
         loaded,
-        svindex_u32((1usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_u32((1usize) as u32, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1sh_gather_u32base_offset_u32_with_svstnt1h_scatter_u32base_offset_u32() {
     let mut storage = [0 as i16; 640usize];
-    let data = svindex_u32((1usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_u32((1usize) as u32, 1usize.try_into().unwrap());
     let bases = svindex_u32(0, 2u32.try_into().unwrap());
     svstnt1h_scatter_u32base_offset_u32(
         svptrue_b16(),
@@ -1209,13 +1209,13 @@ unsafe fn test_svldnt1sh_gather_u32base_offset_u32_with_svstnt1h_scatter_u32base
     );
     assert_vector_matches_u32(
         loaded,
-        svindex_u32((1usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_u32((1usize) as u32, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1sb_gather_u64base_offset_s64_with_svstnt1b_scatter_u64base_offset_s64() {
     let mut storage = [0 as i8; 1280usize];
-    let data = svindex_s64((1usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_s64((1usize) as i64, 1usize.try_into().unwrap());
     let bases = svdup_n_u64(storage.as_ptr() as u64);
     let offsets = svindex_u64(0, 1u32.try_into().unwrap());
     let bases = svadd_u64_x(svptrue_b8(), bases, offsets);
@@ -1227,13 +1227,13 @@ unsafe fn test_svldnt1sb_gather_u64base_offset_s64_with_svstnt1b_scatter_u64base
     let loaded = svldnt1sb_gather_u64base_offset_s64(svptrue_b8(), bases, 1u32.try_into().unwrap());
     assert_vector_matches_i64(
         loaded,
-        svindex_s64((1usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_s64((1usize) as i64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1sh_gather_u64base_offset_s64_with_svstnt1h_scatter_u64base_offset_s64() {
     let mut storage = [0 as i16; 640usize];
-    let data = svindex_s64((1usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_s64((1usize) as i64, 1usize.try_into().unwrap());
     let bases = svdup_n_u64(storage.as_ptr() as u64);
     let offsets = svindex_u64(0, 2u32.try_into().unwrap());
     let bases = svadd_u64_x(svptrue_b16(), bases, offsets);
@@ -1246,13 +1246,13 @@ unsafe fn test_svldnt1sh_gather_u64base_offset_s64_with_svstnt1h_scatter_u64base
         svldnt1sh_gather_u64base_offset_s64(svptrue_b16(), bases, 2u32.try_into().unwrap());
     assert_vector_matches_i64(
         loaded,
-        svindex_s64((1usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_s64((1usize) as i64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1sw_gather_u64base_offset_s64_with_svstnt1w_scatter_u64base_offset_s64() {
     let mut storage = [0 as i32; 320usize];
-    let data = svindex_s64((1usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_s64((1usize) as i64, 1usize.try_into().unwrap());
     let bases = svdup_n_u64(storage.as_ptr() as u64);
     let offsets = svindex_u64(0, 4u32.try_into().unwrap());
     let bases = svadd_u64_x(svptrue_b32(), bases, offsets);
@@ -1265,13 +1265,13 @@ unsafe fn test_svldnt1sw_gather_u64base_offset_s64_with_svstnt1w_scatter_u64base
         svldnt1sw_gather_u64base_offset_s64(svptrue_b32(), bases, 4u32.try_into().unwrap());
     assert_vector_matches_i64(
         loaded,
-        svindex_s64((1usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_s64((1usize) as i64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1sb_gather_u64base_offset_u64_with_svstnt1b_scatter_u64base_offset_u64() {
     let mut storage = [0 as i8; 1280usize];
-    let data = svindex_u64((1usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_u64((1usize) as u64, 1usize.try_into().unwrap());
     let bases = svdup_n_u64(storage.as_ptr() as u64);
     let offsets = svindex_u64(0, 1u32.try_into().unwrap());
     let bases = svadd_u64_x(svptrue_b8(), bases, offsets);
@@ -1283,13 +1283,13 @@ unsafe fn test_svldnt1sb_gather_u64base_offset_u64_with_svstnt1b_scatter_u64base
     let loaded = svldnt1sb_gather_u64base_offset_u64(svptrue_b8(), bases, 1u32.try_into().unwrap());
     assert_vector_matches_u64(
         loaded,
-        svindex_u64((1usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_u64((1usize) as u64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1sh_gather_u64base_offset_u64_with_svstnt1h_scatter_u64base_offset_u64() {
     let mut storage = [0 as i16; 640usize];
-    let data = svindex_u64((1usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_u64((1usize) as u64, 1usize.try_into().unwrap());
     let bases = svdup_n_u64(storage.as_ptr() as u64);
     let offsets = svindex_u64(0, 2u32.try_into().unwrap());
     let bases = svadd_u64_x(svptrue_b16(), bases, offsets);
@@ -1302,13 +1302,13 @@ unsafe fn test_svldnt1sh_gather_u64base_offset_u64_with_svstnt1h_scatter_u64base
         svldnt1sh_gather_u64base_offset_u64(svptrue_b16(), bases, 2u32.try_into().unwrap());
     assert_vector_matches_u64(
         loaded,
-        svindex_u64((1usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_u64((1usize) as u64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1sw_gather_u64base_offset_u64_with_svstnt1w_scatter_u64base_offset_u64() {
     let mut storage = [0 as i32; 320usize];
-    let data = svindex_u64((1usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_u64((1usize) as u64, 1usize.try_into().unwrap());
     let bases = svdup_n_u64(storage.as_ptr() as u64);
     let offsets = svindex_u64(0, 4u32.try_into().unwrap());
     let bases = svadd_u64_x(svptrue_b32(), bases, offsets);
@@ -1321,13 +1321,13 @@ unsafe fn test_svldnt1sw_gather_u64base_offset_u64_with_svstnt1w_scatter_u64base
         svldnt1sw_gather_u64base_offset_u64(svptrue_b32(), bases, 4u32.try_into().unwrap());
     assert_vector_matches_u64(
         loaded,
-        svindex_u64((1usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_u64((1usize) as u64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1sb_gather_u64base_s64_with_svstnt1b_scatter_u64base_s64() {
     let mut storage = [0 as i8; 1280usize];
-    let data = svindex_s64((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_s64((0usize) as i64, 1usize.try_into().unwrap());
     let bases = svdup_n_u64(storage.as_ptr() as u64);
     let offsets = svindex_u64(0, 1u32.try_into().unwrap());
     let bases = svadd_u64_x(svptrue_b8(), bases, offsets);
@@ -1339,13 +1339,13 @@ unsafe fn test_svldnt1sb_gather_u64base_s64_with_svstnt1b_scatter_u64base_s64() 
     let loaded = svldnt1sb_gather_u64base_s64(svptrue_b8(), bases);
     assert_vector_matches_i64(
         loaded,
-        svindex_s64((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_s64((0usize) as i64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1sh_gather_u64base_s64_with_svstnt1h_scatter_u64base_s64() {
     let mut storage = [0 as i16; 640usize];
-    let data = svindex_s64((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_s64((0usize) as i64, 1usize.try_into().unwrap());
     let bases = svdup_n_u64(storage.as_ptr() as u64);
     let offsets = svindex_u64(0, 2u32.try_into().unwrap());
     let bases = svadd_u64_x(svptrue_b16(), bases, offsets);
@@ -1357,13 +1357,13 @@ unsafe fn test_svldnt1sh_gather_u64base_s64_with_svstnt1h_scatter_u64base_s64() 
     let loaded = svldnt1sh_gather_u64base_s64(svptrue_b16(), bases);
     assert_vector_matches_i64(
         loaded,
-        svindex_s64((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_s64((0usize) as i64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1sw_gather_u64base_s64_with_svstnt1w_scatter_u64base_s64() {
     let mut storage = [0 as i32; 320usize];
-    let data = svindex_s64((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_s64((0usize) as i64, 1usize.try_into().unwrap());
     let bases = svdup_n_u64(storage.as_ptr() as u64);
     let offsets = svindex_u64(0, 4u32.try_into().unwrap());
     let bases = svadd_u64_x(svptrue_b32(), bases, offsets);
@@ -1375,13 +1375,13 @@ unsafe fn test_svldnt1sw_gather_u64base_s64_with_svstnt1w_scatter_u64base_s64() 
     let loaded = svldnt1sw_gather_u64base_s64(svptrue_b32(), bases);
     assert_vector_matches_i64(
         loaded,
-        svindex_s64((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_s64((0usize) as i64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1sb_gather_u64base_u64_with_svstnt1b_scatter_u64base_u64() {
     let mut storage = [0 as i8; 1280usize];
-    let data = svindex_u64((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_u64((0usize) as u64, 1usize.try_into().unwrap());
     let bases = svdup_n_u64(storage.as_ptr() as u64);
     let offsets = svindex_u64(0, 1u32.try_into().unwrap());
     let bases = svadd_u64_x(svptrue_b8(), bases, offsets);
@@ -1393,13 +1393,13 @@ unsafe fn test_svldnt1sb_gather_u64base_u64_with_svstnt1b_scatter_u64base_u64() 
     let loaded = svldnt1sb_gather_u64base_u64(svptrue_b8(), bases);
     assert_vector_matches_u64(
         loaded,
-        svindex_u64((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_u64((0usize) as u64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1sh_gather_u64base_u64_with_svstnt1h_scatter_u64base_u64() {
     let mut storage = [0 as i16; 640usize];
-    let data = svindex_u64((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_u64((0usize) as u64, 1usize.try_into().unwrap());
     let bases = svdup_n_u64(storage.as_ptr() as u64);
     let offsets = svindex_u64(0, 2u32.try_into().unwrap());
     let bases = svadd_u64_x(svptrue_b16(), bases, offsets);
@@ -1411,13 +1411,13 @@ unsafe fn test_svldnt1sh_gather_u64base_u64_with_svstnt1h_scatter_u64base_u64() 
     let loaded = svldnt1sh_gather_u64base_u64(svptrue_b16(), bases);
     assert_vector_matches_u64(
         loaded,
-        svindex_u64((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_u64((0usize) as u64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1sw_gather_u64base_u64_with_svstnt1w_scatter_u64base_u64() {
     let mut storage = [0 as i32; 320usize];
-    let data = svindex_u64((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_u64((0usize) as u64, 1usize.try_into().unwrap());
     let bases = svdup_n_u64(storage.as_ptr() as u64);
     let offsets = svindex_u64(0, 4u32.try_into().unwrap());
     let bases = svadd_u64_x(svptrue_b32(), bases, offsets);
@@ -1429,13 +1429,13 @@ unsafe fn test_svldnt1sw_gather_u64base_u64_with_svstnt1w_scatter_u64base_u64() 
     let loaded = svldnt1sw_gather_u64base_u64(svptrue_b32(), bases);
     assert_vector_matches_u64(
         loaded,
-        svindex_u64((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_u64((0usize) as u64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1sh_gather_s64index_s64_with_svstnt1h_scatter_s64index_s64() {
     let mut storage = [0 as i16; 640usize];
-    let data = svindex_s64((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_s64((0usize) as i64, 1usize.try_into().unwrap());
     let indices = svindex_s64(0, 1);
     svstnt1h_scatter_s64index_s64(svptrue_b16(), storage.as_mut_ptr(), indices, data);
     for (i, &val) in storage.iter().enumerate() {
@@ -1446,13 +1446,13 @@ unsafe fn test_svldnt1sh_gather_s64index_s64_with_svstnt1h_scatter_s64index_s64(
         svldnt1sh_gather_s64index_s64(svptrue_b16(), storage.as_ptr() as *const i16, indices);
     assert_vector_matches_i64(
         loaded,
-        svindex_s64((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_s64((0usize) as i64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1sw_gather_s64index_s64_with_svstnt1w_scatter_s64index_s64() {
     let mut storage = [0 as i32; 320usize];
-    let data = svindex_s64((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_s64((0usize) as i64, 1usize.try_into().unwrap());
     let indices = svindex_s64(0, 1);
     svstnt1w_scatter_s64index_s64(svptrue_b32(), storage.as_mut_ptr(), indices, data);
     for (i, &val) in storage.iter().enumerate() {
@@ -1463,13 +1463,13 @@ unsafe fn test_svldnt1sw_gather_s64index_s64_with_svstnt1w_scatter_s64index_s64(
         svldnt1sw_gather_s64index_s64(svptrue_b32(), storage.as_ptr() as *const i32, indices);
     assert_vector_matches_i64(
         loaded,
-        svindex_s64((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_s64((0usize) as i64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1sh_gather_s64index_u64_with_svstnt1h_scatter_s64index_u64() {
     let mut storage = [0 as u16; 640usize];
-    let data = svindex_u64((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_u64((0usize) as u64, 1usize.try_into().unwrap());
     let indices = svindex_s64(0, 1);
     svstnt1h_scatter_s64index_u64(svptrue_b16(), storage.as_mut_ptr(), indices, data);
     for (i, &val) in storage.iter().enumerate() {
@@ -1480,13 +1480,13 @@ unsafe fn test_svldnt1sh_gather_s64index_u64_with_svstnt1h_scatter_s64index_u64(
         svldnt1sh_gather_s64index_u64(svptrue_b16(), storage.as_ptr() as *const i16, indices);
     assert_vector_matches_u64(
         loaded,
-        svindex_u64((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_u64((0usize) as u64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1sw_gather_s64index_u64_with_svstnt1w_scatter_s64index_u64() {
     let mut storage = [0 as u32; 320usize];
-    let data = svindex_u64((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_u64((0usize) as u64, 1usize.try_into().unwrap());
     let indices = svindex_s64(0, 1);
     svstnt1w_scatter_s64index_u64(svptrue_b32(), storage.as_mut_ptr(), indices, data);
     for (i, &val) in storage.iter().enumerate() {
@@ -1497,13 +1497,13 @@ unsafe fn test_svldnt1sw_gather_s64index_u64_with_svstnt1w_scatter_s64index_u64(
         svldnt1sw_gather_s64index_u64(svptrue_b32(), storage.as_ptr() as *const i32, indices);
     assert_vector_matches_u64(
         loaded,
-        svindex_u64((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_u64((0usize) as u64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1sh_gather_u64index_s64_with_svstnt1h_scatter_u64index_s64() {
     let mut storage = [0 as i16; 640usize];
-    let data = svindex_s64((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_s64((0usize) as i64, 1usize.try_into().unwrap());
     let indices = svindex_u64(0, 1);
     svstnt1h_scatter_u64index_s64(svptrue_b16(), storage.as_mut_ptr(), indices, data);
     for (i, &val) in storage.iter().enumerate() {
@@ -1514,13 +1514,13 @@ unsafe fn test_svldnt1sh_gather_u64index_s64_with_svstnt1h_scatter_u64index_s64(
         svldnt1sh_gather_u64index_s64(svptrue_b16(), storage.as_ptr() as *const i16, indices);
     assert_vector_matches_i64(
         loaded,
-        svindex_s64((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_s64((0usize) as i64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1sw_gather_u64index_s64_with_svstnt1w_scatter_u64index_s64() {
     let mut storage = [0 as i32; 320usize];
-    let data = svindex_s64((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_s64((0usize) as i64, 1usize.try_into().unwrap());
     let indices = svindex_u64(0, 1);
     svstnt1w_scatter_u64index_s64(svptrue_b32(), storage.as_mut_ptr(), indices, data);
     for (i, &val) in storage.iter().enumerate() {
@@ -1531,13 +1531,13 @@ unsafe fn test_svldnt1sw_gather_u64index_s64_with_svstnt1w_scatter_u64index_s64(
         svldnt1sw_gather_u64index_s64(svptrue_b32(), storage.as_ptr() as *const i32, indices);
     assert_vector_matches_i64(
         loaded,
-        svindex_s64((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_s64((0usize) as i64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1sh_gather_u64index_u64_with_svstnt1h_scatter_u64index_u64() {
     let mut storage = [0 as u16; 640usize];
-    let data = svindex_u64((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_u64((0usize) as u64, 1usize.try_into().unwrap());
     let indices = svindex_u64(0, 1);
     svstnt1h_scatter_u64index_u64(svptrue_b16(), storage.as_mut_ptr(), indices, data);
     for (i, &val) in storage.iter().enumerate() {
@@ -1548,13 +1548,13 @@ unsafe fn test_svldnt1sh_gather_u64index_u64_with_svstnt1h_scatter_u64index_u64(
         svldnt1sh_gather_u64index_u64(svptrue_b16(), storage.as_ptr() as *const i16, indices);
     assert_vector_matches_u64(
         loaded,
-        svindex_u64((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_u64((0usize) as u64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1sw_gather_u64index_u64_with_svstnt1w_scatter_u64index_u64() {
     let mut storage = [0 as u32; 320usize];
-    let data = svindex_u64((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_u64((0usize) as u64, 1usize.try_into().unwrap());
     let indices = svindex_u64(0, 1);
     svstnt1w_scatter_u64index_u64(svptrue_b32(), storage.as_mut_ptr(), indices, data);
     for (i, &val) in storage.iter().enumerate() {
@@ -1565,13 +1565,13 @@ unsafe fn test_svldnt1sw_gather_u64index_u64_with_svstnt1w_scatter_u64index_u64(
         svldnt1sw_gather_u64index_u64(svptrue_b32(), storage.as_ptr() as *const i32, indices);
     assert_vector_matches_u64(
         loaded,
-        svindex_u64((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_u64((0usize) as u64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1sh_gather_u32base_index_s32_with_svstnt1h_scatter_u32base_index_s32() {
     let mut storage = [0 as i16; 640usize];
-    let data = svindex_s32((1usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_s32((1usize) as i32, 1usize.try_into().unwrap());
     let bases = svindex_u32(0, 2u32.try_into().unwrap());
     svstnt1h_scatter_u32base_index_s32(
         svptrue_b16(),
@@ -1590,13 +1590,13 @@ unsafe fn test_svldnt1sh_gather_u32base_index_s32_with_svstnt1h_scatter_u32base_
     );
     assert_vector_matches_i32(
         loaded,
-        svindex_s32((1usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_s32((1usize) as i32, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1sh_gather_u32base_index_u32_with_svstnt1h_scatter_u32base_index_u32() {
     let mut storage = [0 as i16; 640usize];
-    let data = svindex_u32((1usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_u32((1usize) as u32, 1usize.try_into().unwrap());
     let bases = svindex_u32(0, 2u32.try_into().unwrap());
     svstnt1h_scatter_u32base_index_u32(
         svptrue_b16(),
@@ -1615,13 +1615,13 @@ unsafe fn test_svldnt1sh_gather_u32base_index_u32_with_svstnt1h_scatter_u32base_
     );
     assert_vector_matches_u32(
         loaded,
-        svindex_u32((1usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_u32((1usize) as u32, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1sh_gather_u64base_index_s64_with_svstnt1h_scatter_u64base_index_s64() {
     let mut storage = [0 as i16; 640usize];
-    let data = svindex_s64((1usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_s64((1usize) as i64, 1usize.try_into().unwrap());
     let bases = svdup_n_u64(storage.as_ptr() as u64);
     let offsets = svindex_u64(0, 2u32.try_into().unwrap());
     let bases = svadd_u64_x(svptrue_b16(), bases, offsets);
@@ -1633,13 +1633,13 @@ unsafe fn test_svldnt1sh_gather_u64base_index_s64_with_svstnt1h_scatter_u64base_
     let loaded = svldnt1sh_gather_u64base_index_s64(svptrue_b16(), bases, 1.try_into().unwrap());
     assert_vector_matches_i64(
         loaded,
-        svindex_s64((1usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_s64((1usize) as i64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1sw_gather_u64base_index_s64_with_svstnt1w_scatter_u64base_index_s64() {
     let mut storage = [0 as i32; 320usize];
-    let data = svindex_s64((1usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_s64((1usize) as i64, 1usize.try_into().unwrap());
     let bases = svdup_n_u64(storage.as_ptr() as u64);
     let offsets = svindex_u64(0, 4u32.try_into().unwrap());
     let bases = svadd_u64_x(svptrue_b32(), bases, offsets);
@@ -1651,13 +1651,13 @@ unsafe fn test_svldnt1sw_gather_u64base_index_s64_with_svstnt1w_scatter_u64base_
     let loaded = svldnt1sw_gather_u64base_index_s64(svptrue_b32(), bases, 1.try_into().unwrap());
     assert_vector_matches_i64(
         loaded,
-        svindex_s64((1usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_s64((1usize) as i64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1sh_gather_u64base_index_u64_with_svstnt1h_scatter_u64base_index_u64() {
     let mut storage = [0 as i16; 640usize];
-    let data = svindex_u64((1usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_u64((1usize) as u64, 1usize.try_into().unwrap());
     let bases = svdup_n_u64(storage.as_ptr() as u64);
     let offsets = svindex_u64(0, 2u32.try_into().unwrap());
     let bases = svadd_u64_x(svptrue_b16(), bases, offsets);
@@ -1669,13 +1669,13 @@ unsafe fn test_svldnt1sh_gather_u64base_index_u64_with_svstnt1h_scatter_u64base_
     let loaded = svldnt1sh_gather_u64base_index_u64(svptrue_b16(), bases, 1.try_into().unwrap());
     assert_vector_matches_u64(
         loaded,
-        svindex_u64((1usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_u64((1usize) as u64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1sw_gather_u64base_index_u64_with_svstnt1w_scatter_u64base_index_u64() {
     let mut storage = [0 as i32; 320usize];
-    let data = svindex_u64((1usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_u64((1usize) as u64, 1usize.try_into().unwrap());
     let bases = svdup_n_u64(storage.as_ptr() as u64);
     let offsets = svindex_u64(0, 4u32.try_into().unwrap());
     let bases = svadd_u64_x(svptrue_b32(), bases, offsets);
@@ -1687,13 +1687,13 @@ unsafe fn test_svldnt1sw_gather_u64base_index_u64_with_svstnt1w_scatter_u64base_
     let loaded = svldnt1sw_gather_u64base_index_u64(svptrue_b32(), bases, 1.try_into().unwrap());
     assert_vector_matches_u64(
         loaded,
-        svindex_u64((1usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_u64((1usize) as u64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1ub_gather_s64offset_s64_with_svstnt1b_scatter_s64offset_s64() {
     let mut storage = [0 as i8; 1280usize];
-    let data = svindex_s64((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_s64((0usize) as i64, 1usize.try_into().unwrap());
     let offsets = svindex_s64(0, 1u32.try_into().unwrap());
     svstnt1b_scatter_s64offset_s64(svptrue_b8(), storage.as_mut_ptr(), offsets, data);
     for (i, &val) in storage.iter().enumerate() {
@@ -1704,13 +1704,13 @@ unsafe fn test_svldnt1ub_gather_s64offset_s64_with_svstnt1b_scatter_s64offset_s6
         svldnt1ub_gather_s64offset_s64(svptrue_b8(), storage.as_ptr() as *const u8, offsets);
     assert_vector_matches_i64(
         loaded,
-        svindex_s64((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_s64((0usize) as i64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1uh_gather_s64offset_s64_with_svstnt1h_scatter_s64offset_s64() {
     let mut storage = [0 as i16; 640usize];
-    let data = svindex_s64((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_s64((0usize) as i64, 1usize.try_into().unwrap());
     let offsets = svindex_s64(0, 2u32.try_into().unwrap());
     svstnt1h_scatter_s64offset_s64(svptrue_b16(), storage.as_mut_ptr(), offsets, data);
     for (i, &val) in storage.iter().enumerate() {
@@ -1721,13 +1721,13 @@ unsafe fn test_svldnt1uh_gather_s64offset_s64_with_svstnt1h_scatter_s64offset_s6
         svldnt1uh_gather_s64offset_s64(svptrue_b16(), storage.as_ptr() as *const u16, offsets);
     assert_vector_matches_i64(
         loaded,
-        svindex_s64((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_s64((0usize) as i64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1uw_gather_s64offset_s64_with_svstnt1w_scatter_s64offset_s64() {
     let mut storage = [0 as i32; 320usize];
-    let data = svindex_s64((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_s64((0usize) as i64, 1usize.try_into().unwrap());
     let offsets = svindex_s64(0, 4u32.try_into().unwrap());
     svstnt1w_scatter_s64offset_s64(svptrue_b32(), storage.as_mut_ptr(), offsets, data);
     for (i, &val) in storage.iter().enumerate() {
@@ -1738,13 +1738,13 @@ unsafe fn test_svldnt1uw_gather_s64offset_s64_with_svstnt1w_scatter_s64offset_s6
         svldnt1uw_gather_s64offset_s64(svptrue_b32(), storage.as_ptr() as *const u32, offsets);
     assert_vector_matches_i64(
         loaded,
-        svindex_s64((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_s64((0usize) as i64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1ub_gather_s64offset_u64_with_svstnt1b_scatter_s64offset_u64() {
     let mut storage = [0 as u8; 1280usize];
-    let data = svindex_u64((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_u64((0usize) as u64, 1usize.try_into().unwrap());
     let offsets = svindex_s64(0, 1u32.try_into().unwrap());
     svstnt1b_scatter_s64offset_u64(svptrue_b8(), storage.as_mut_ptr(), offsets, data);
     for (i, &val) in storage.iter().enumerate() {
@@ -1755,13 +1755,13 @@ unsafe fn test_svldnt1ub_gather_s64offset_u64_with_svstnt1b_scatter_s64offset_u6
         svldnt1ub_gather_s64offset_u64(svptrue_b8(), storage.as_ptr() as *const u8, offsets);
     assert_vector_matches_u64(
         loaded,
-        svindex_u64((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_u64((0usize) as u64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1uh_gather_s64offset_u64_with_svstnt1h_scatter_s64offset_u64() {
     let mut storage = [0 as u16; 640usize];
-    let data = svindex_u64((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_u64((0usize) as u64, 1usize.try_into().unwrap());
     let offsets = svindex_s64(0, 2u32.try_into().unwrap());
     svstnt1h_scatter_s64offset_u64(svptrue_b16(), storage.as_mut_ptr(), offsets, data);
     for (i, &val) in storage.iter().enumerate() {
@@ -1772,13 +1772,13 @@ unsafe fn test_svldnt1uh_gather_s64offset_u64_with_svstnt1h_scatter_s64offset_u6
         svldnt1uh_gather_s64offset_u64(svptrue_b16(), storage.as_ptr() as *const u16, offsets);
     assert_vector_matches_u64(
         loaded,
-        svindex_u64((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_u64((0usize) as u64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1uw_gather_s64offset_u64_with_svstnt1w_scatter_s64offset_u64() {
     let mut storage = [0 as u32; 320usize];
-    let data = svindex_u64((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_u64((0usize) as u64, 1usize.try_into().unwrap());
     let offsets = svindex_s64(0, 4u32.try_into().unwrap());
     svstnt1w_scatter_s64offset_u64(svptrue_b32(), storage.as_mut_ptr(), offsets, data);
     for (i, &val) in storage.iter().enumerate() {
@@ -1789,13 +1789,13 @@ unsafe fn test_svldnt1uw_gather_s64offset_u64_with_svstnt1w_scatter_s64offset_u6
         svldnt1uw_gather_s64offset_u64(svptrue_b32(), storage.as_ptr() as *const u32, offsets);
     assert_vector_matches_u64(
         loaded,
-        svindex_u64((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_u64((0usize) as u64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1ub_gather_u32offset_s32_with_svstnt1b_scatter_u32offset_s32() {
     let mut storage = [0 as i8; 1280usize];
-    let data = svindex_s32((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_s32((0usize) as i32, 1usize.try_into().unwrap());
     let offsets = svindex_u32(0, 1u32.try_into().unwrap());
     svstnt1b_scatter_u32offset_s32(svptrue_b8(), storage.as_mut_ptr(), offsets, data);
     for (i, &val) in storage.iter().enumerate() {
@@ -1806,13 +1806,13 @@ unsafe fn test_svldnt1ub_gather_u32offset_s32_with_svstnt1b_scatter_u32offset_s3
         svldnt1ub_gather_u32offset_s32(svptrue_b8(), storage.as_ptr() as *const u8, offsets);
     assert_vector_matches_i32(
         loaded,
-        svindex_s32((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_s32((0usize) as i32, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1uh_gather_u32offset_s32_with_svstnt1h_scatter_u32offset_s32() {
     let mut storage = [0 as i16; 640usize];
-    let data = svindex_s32((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_s32((0usize) as i32, 1usize.try_into().unwrap());
     let offsets = svindex_u32(0, 2u32.try_into().unwrap());
     svstnt1h_scatter_u32offset_s32(svptrue_b16(), storage.as_mut_ptr(), offsets, data);
     for (i, &val) in storage.iter().enumerate() {
@@ -1823,13 +1823,13 @@ unsafe fn test_svldnt1uh_gather_u32offset_s32_with_svstnt1h_scatter_u32offset_s3
         svldnt1uh_gather_u32offset_s32(svptrue_b16(), storage.as_ptr() as *const u16, offsets);
     assert_vector_matches_i32(
         loaded,
-        svindex_s32((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_s32((0usize) as i32, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1ub_gather_u32offset_u32_with_svstnt1b_scatter_u32offset_u32() {
     let mut storage = [0 as u8; 1280usize];
-    let data = svindex_u32((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_u32((0usize) as u32, 1usize.try_into().unwrap());
     let offsets = svindex_u32(0, 1u32.try_into().unwrap());
     svstnt1b_scatter_u32offset_u32(svptrue_b8(), storage.as_mut_ptr(), offsets, data);
     for (i, &val) in storage.iter().enumerate() {
@@ -1840,13 +1840,13 @@ unsafe fn test_svldnt1ub_gather_u32offset_u32_with_svstnt1b_scatter_u32offset_u3
         svldnt1ub_gather_u32offset_u32(svptrue_b8(), storage.as_ptr() as *const u8, offsets);
     assert_vector_matches_u32(
         loaded,
-        svindex_u32((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_u32((0usize) as u32, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1uh_gather_u32offset_u32_with_svstnt1h_scatter_u32offset_u32() {
     let mut storage = [0 as u16; 640usize];
-    let data = svindex_u32((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_u32((0usize) as u32, 1usize.try_into().unwrap());
     let offsets = svindex_u32(0, 2u32.try_into().unwrap());
     svstnt1h_scatter_u32offset_u32(svptrue_b16(), storage.as_mut_ptr(), offsets, data);
     for (i, &val) in storage.iter().enumerate() {
@@ -1857,13 +1857,13 @@ unsafe fn test_svldnt1uh_gather_u32offset_u32_with_svstnt1h_scatter_u32offset_u3
         svldnt1uh_gather_u32offset_u32(svptrue_b16(), storage.as_ptr() as *const u16, offsets);
     assert_vector_matches_u32(
         loaded,
-        svindex_u32((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_u32((0usize) as u32, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1ub_gather_u64offset_s64_with_svstnt1b_scatter_u64offset_s64() {
     let mut storage = [0 as i8; 1280usize];
-    let data = svindex_s64((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_s64((0usize) as i64, 1usize.try_into().unwrap());
     let offsets = svindex_u64(0, 1u32.try_into().unwrap());
     svstnt1b_scatter_u64offset_s64(svptrue_b8(), storage.as_mut_ptr(), offsets, data);
     for (i, &val) in storage.iter().enumerate() {
@@ -1874,13 +1874,13 @@ unsafe fn test_svldnt1ub_gather_u64offset_s64_with_svstnt1b_scatter_u64offset_s6
         svldnt1ub_gather_u64offset_s64(svptrue_b8(), storage.as_ptr() as *const u8, offsets);
     assert_vector_matches_i64(
         loaded,
-        svindex_s64((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_s64((0usize) as i64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1uh_gather_u64offset_s64_with_svstnt1h_scatter_u64offset_s64() {
     let mut storage = [0 as i16; 640usize];
-    let data = svindex_s64((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_s64((0usize) as i64, 1usize.try_into().unwrap());
     let offsets = svindex_u64(0, 2u32.try_into().unwrap());
     svstnt1h_scatter_u64offset_s64(svptrue_b16(), storage.as_mut_ptr(), offsets, data);
     for (i, &val) in storage.iter().enumerate() {
@@ -1891,13 +1891,13 @@ unsafe fn test_svldnt1uh_gather_u64offset_s64_with_svstnt1h_scatter_u64offset_s6
         svldnt1uh_gather_u64offset_s64(svptrue_b16(), storage.as_ptr() as *const u16, offsets);
     assert_vector_matches_i64(
         loaded,
-        svindex_s64((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_s64((0usize) as i64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1uw_gather_u64offset_s64_with_svstnt1w_scatter_u64offset_s64() {
     let mut storage = [0 as i32; 320usize];
-    let data = svindex_s64((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_s64((0usize) as i64, 1usize.try_into().unwrap());
     let offsets = svindex_u64(0, 4u32.try_into().unwrap());
     svstnt1w_scatter_u64offset_s64(svptrue_b32(), storage.as_mut_ptr(), offsets, data);
     for (i, &val) in storage.iter().enumerate() {
@@ -1908,13 +1908,13 @@ unsafe fn test_svldnt1uw_gather_u64offset_s64_with_svstnt1w_scatter_u64offset_s6
         svldnt1uw_gather_u64offset_s64(svptrue_b32(), storage.as_ptr() as *const u32, offsets);
     assert_vector_matches_i64(
         loaded,
-        svindex_s64((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_s64((0usize) as i64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1ub_gather_u64offset_u64_with_svstnt1b_scatter_u64offset_u64() {
     let mut storage = [0 as u8; 1280usize];
-    let data = svindex_u64((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_u64((0usize) as u64, 1usize.try_into().unwrap());
     let offsets = svindex_u64(0, 1u32.try_into().unwrap());
     svstnt1b_scatter_u64offset_u64(svptrue_b8(), storage.as_mut_ptr(), offsets, data);
     for (i, &val) in storage.iter().enumerate() {
@@ -1925,13 +1925,13 @@ unsafe fn test_svldnt1ub_gather_u64offset_u64_with_svstnt1b_scatter_u64offset_u6
         svldnt1ub_gather_u64offset_u64(svptrue_b8(), storage.as_ptr() as *const u8, offsets);
     assert_vector_matches_u64(
         loaded,
-        svindex_u64((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_u64((0usize) as u64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1uh_gather_u64offset_u64_with_svstnt1h_scatter_u64offset_u64() {
     let mut storage = [0 as u16; 640usize];
-    let data = svindex_u64((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_u64((0usize) as u64, 1usize.try_into().unwrap());
     let offsets = svindex_u64(0, 2u32.try_into().unwrap());
     svstnt1h_scatter_u64offset_u64(svptrue_b16(), storage.as_mut_ptr(), offsets, data);
     for (i, &val) in storage.iter().enumerate() {
@@ -1942,13 +1942,13 @@ unsafe fn test_svldnt1uh_gather_u64offset_u64_with_svstnt1h_scatter_u64offset_u6
         svldnt1uh_gather_u64offset_u64(svptrue_b16(), storage.as_ptr() as *const u16, offsets);
     assert_vector_matches_u64(
         loaded,
-        svindex_u64((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_u64((0usize) as u64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1uw_gather_u64offset_u64_with_svstnt1w_scatter_u64offset_u64() {
     let mut storage = [0 as u32; 320usize];
-    let data = svindex_u64((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_u64((0usize) as u64, 1usize.try_into().unwrap());
     let offsets = svindex_u64(0, 4u32.try_into().unwrap());
     svstnt1w_scatter_u64offset_u64(svptrue_b32(), storage.as_mut_ptr(), offsets, data);
     for (i, &val) in storage.iter().enumerate() {
@@ -1959,13 +1959,13 @@ unsafe fn test_svldnt1uw_gather_u64offset_u64_with_svstnt1w_scatter_u64offset_u6
         svldnt1uw_gather_u64offset_u64(svptrue_b32(), storage.as_ptr() as *const u32, offsets);
     assert_vector_matches_u64(
         loaded,
-        svindex_u64((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_u64((0usize) as u64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1ub_gather_u32base_offset_s32_with_svstnt1b_scatter_u32base_offset_s32() {
     let mut storage = [0 as i8; 1280usize];
-    let data = svindex_s32((1usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_s32((1usize) as i32, 1usize.try_into().unwrap());
     let bases = svindex_u32(0, 1u32.try_into().unwrap());
     svstnt1b_scatter_u32base_offset_s32(
         svptrue_b8(),
@@ -1984,13 +1984,13 @@ unsafe fn test_svldnt1ub_gather_u32base_offset_s32_with_svstnt1b_scatter_u32base
     );
     assert_vector_matches_i32(
         loaded,
-        svindex_s32((1usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_s32((1usize) as i32, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1uh_gather_u32base_offset_s32_with_svstnt1h_scatter_u32base_offset_s32() {
     let mut storage = [0 as i16; 640usize];
-    let data = svindex_s32((1usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_s32((1usize) as i32, 1usize.try_into().unwrap());
     let bases = svindex_u32(0, 2u32.try_into().unwrap());
     svstnt1h_scatter_u32base_offset_s32(
         svptrue_b16(),
@@ -2009,13 +2009,13 @@ unsafe fn test_svldnt1uh_gather_u32base_offset_s32_with_svstnt1h_scatter_u32base
     );
     assert_vector_matches_i32(
         loaded,
-        svindex_s32((1usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_s32((1usize) as i32, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1ub_gather_u32base_offset_u32_with_svstnt1b_scatter_u32base_offset_u32() {
     let mut storage = [0 as i8; 1280usize];
-    let data = svindex_u32((1usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_u32((1usize) as u32, 1usize.try_into().unwrap());
     let bases = svindex_u32(0, 1u32.try_into().unwrap());
     svstnt1b_scatter_u32base_offset_u32(
         svptrue_b8(),
@@ -2034,13 +2034,13 @@ unsafe fn test_svldnt1ub_gather_u32base_offset_u32_with_svstnt1b_scatter_u32base
     );
     assert_vector_matches_u32(
         loaded,
-        svindex_u32((1usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_u32((1usize) as u32, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1uh_gather_u32base_offset_u32_with_svstnt1h_scatter_u32base_offset_u32() {
     let mut storage = [0 as i16; 640usize];
-    let data = svindex_u32((1usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_u32((1usize) as u32, 1usize.try_into().unwrap());
     let bases = svindex_u32(0, 2u32.try_into().unwrap());
     svstnt1h_scatter_u32base_offset_u32(
         svptrue_b16(),
@@ -2059,13 +2059,13 @@ unsafe fn test_svldnt1uh_gather_u32base_offset_u32_with_svstnt1h_scatter_u32base
     );
     assert_vector_matches_u32(
         loaded,
-        svindex_u32((1usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_u32((1usize) as u32, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1ub_gather_u64base_offset_s64_with_svstnt1b_scatter_u64base_offset_s64() {
     let mut storage = [0 as i8; 1280usize];
-    let data = svindex_s64((1usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_s64((1usize) as i64, 1usize.try_into().unwrap());
     let bases = svdup_n_u64(storage.as_ptr() as u64);
     let offsets = svindex_u64(0, 1u32.try_into().unwrap());
     let bases = svadd_u64_x(svptrue_b8(), bases, offsets);
@@ -2077,13 +2077,13 @@ unsafe fn test_svldnt1ub_gather_u64base_offset_s64_with_svstnt1b_scatter_u64base
     let loaded = svldnt1ub_gather_u64base_offset_s64(svptrue_b8(), bases, 1u32.try_into().unwrap());
     assert_vector_matches_i64(
         loaded,
-        svindex_s64((1usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_s64((1usize) as i64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1uh_gather_u64base_offset_s64_with_svstnt1h_scatter_u64base_offset_s64() {
     let mut storage = [0 as i16; 640usize];
-    let data = svindex_s64((1usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_s64((1usize) as i64, 1usize.try_into().unwrap());
     let bases = svdup_n_u64(storage.as_ptr() as u64);
     let offsets = svindex_u64(0, 2u32.try_into().unwrap());
     let bases = svadd_u64_x(svptrue_b16(), bases, offsets);
@@ -2096,13 +2096,13 @@ unsafe fn test_svldnt1uh_gather_u64base_offset_s64_with_svstnt1h_scatter_u64base
         svldnt1uh_gather_u64base_offset_s64(svptrue_b16(), bases, 2u32.try_into().unwrap());
     assert_vector_matches_i64(
         loaded,
-        svindex_s64((1usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_s64((1usize) as i64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1uw_gather_u64base_offset_s64_with_svstnt1w_scatter_u64base_offset_s64() {
     let mut storage = [0 as i32; 320usize];
-    let data = svindex_s64((1usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_s64((1usize) as i64, 1usize.try_into().unwrap());
     let bases = svdup_n_u64(storage.as_ptr() as u64);
     let offsets = svindex_u64(0, 4u32.try_into().unwrap());
     let bases = svadd_u64_x(svptrue_b32(), bases, offsets);
@@ -2115,13 +2115,13 @@ unsafe fn test_svldnt1uw_gather_u64base_offset_s64_with_svstnt1w_scatter_u64base
         svldnt1uw_gather_u64base_offset_s64(svptrue_b32(), bases, 4u32.try_into().unwrap());
     assert_vector_matches_i64(
         loaded,
-        svindex_s64((1usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_s64((1usize) as i64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1ub_gather_u64base_offset_u64_with_svstnt1b_scatter_u64base_offset_u64() {
     let mut storage = [0 as i8; 1280usize];
-    let data = svindex_u64((1usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_u64((1usize) as u64, 1usize.try_into().unwrap());
     let bases = svdup_n_u64(storage.as_ptr() as u64);
     let offsets = svindex_u64(0, 1u32.try_into().unwrap());
     let bases = svadd_u64_x(svptrue_b8(), bases, offsets);
@@ -2133,13 +2133,13 @@ unsafe fn test_svldnt1ub_gather_u64base_offset_u64_with_svstnt1b_scatter_u64base
     let loaded = svldnt1ub_gather_u64base_offset_u64(svptrue_b8(), bases, 1u32.try_into().unwrap());
     assert_vector_matches_u64(
         loaded,
-        svindex_u64((1usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_u64((1usize) as u64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1uh_gather_u64base_offset_u64_with_svstnt1h_scatter_u64base_offset_u64() {
     let mut storage = [0 as i16; 640usize];
-    let data = svindex_u64((1usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_u64((1usize) as u64, 1usize.try_into().unwrap());
     let bases = svdup_n_u64(storage.as_ptr() as u64);
     let offsets = svindex_u64(0, 2u32.try_into().unwrap());
     let bases = svadd_u64_x(svptrue_b16(), bases, offsets);
@@ -2152,13 +2152,13 @@ unsafe fn test_svldnt1uh_gather_u64base_offset_u64_with_svstnt1h_scatter_u64base
         svldnt1uh_gather_u64base_offset_u64(svptrue_b16(), bases, 2u32.try_into().unwrap());
     assert_vector_matches_u64(
         loaded,
-        svindex_u64((1usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_u64((1usize) as u64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1uw_gather_u64base_offset_u64_with_svstnt1w_scatter_u64base_offset_u64() {
     let mut storage = [0 as i32; 320usize];
-    let data = svindex_u64((1usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_u64((1usize) as u64, 1usize.try_into().unwrap());
     let bases = svdup_n_u64(storage.as_ptr() as u64);
     let offsets = svindex_u64(0, 4u32.try_into().unwrap());
     let bases = svadd_u64_x(svptrue_b32(), bases, offsets);
@@ -2171,13 +2171,13 @@ unsafe fn test_svldnt1uw_gather_u64base_offset_u64_with_svstnt1w_scatter_u64base
         svldnt1uw_gather_u64base_offset_u64(svptrue_b32(), bases, 4u32.try_into().unwrap());
     assert_vector_matches_u64(
         loaded,
-        svindex_u64((1usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_u64((1usize) as u64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1ub_gather_u64base_s64_with_svstnt1b_scatter_u64base_s64() {
     let mut storage = [0 as i8; 1280usize];
-    let data = svindex_s64((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_s64((0usize) as i64, 1usize.try_into().unwrap());
     let bases = svdup_n_u64(storage.as_ptr() as u64);
     let offsets = svindex_u64(0, 1u32.try_into().unwrap());
     let bases = svadd_u64_x(svptrue_b8(), bases, offsets);
@@ -2189,13 +2189,13 @@ unsafe fn test_svldnt1ub_gather_u64base_s64_with_svstnt1b_scatter_u64base_s64() 
     let loaded = svldnt1ub_gather_u64base_s64(svptrue_b8(), bases);
     assert_vector_matches_i64(
         loaded,
-        svindex_s64((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_s64((0usize) as i64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1uh_gather_u64base_s64_with_svstnt1h_scatter_u64base_s64() {
     let mut storage = [0 as i16; 640usize];
-    let data = svindex_s64((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_s64((0usize) as i64, 1usize.try_into().unwrap());
     let bases = svdup_n_u64(storage.as_ptr() as u64);
     let offsets = svindex_u64(0, 2u32.try_into().unwrap());
     let bases = svadd_u64_x(svptrue_b16(), bases, offsets);
@@ -2207,13 +2207,13 @@ unsafe fn test_svldnt1uh_gather_u64base_s64_with_svstnt1h_scatter_u64base_s64() 
     let loaded = svldnt1uh_gather_u64base_s64(svptrue_b16(), bases);
     assert_vector_matches_i64(
         loaded,
-        svindex_s64((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_s64((0usize) as i64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1uw_gather_u64base_s64_with_svstnt1w_scatter_u64base_s64() {
     let mut storage = [0 as i32; 320usize];
-    let data = svindex_s64((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_s64((0usize) as i64, 1usize.try_into().unwrap());
     let bases = svdup_n_u64(storage.as_ptr() as u64);
     let offsets = svindex_u64(0, 4u32.try_into().unwrap());
     let bases = svadd_u64_x(svptrue_b32(), bases, offsets);
@@ -2225,13 +2225,13 @@ unsafe fn test_svldnt1uw_gather_u64base_s64_with_svstnt1w_scatter_u64base_s64() 
     let loaded = svldnt1uw_gather_u64base_s64(svptrue_b32(), bases);
     assert_vector_matches_i64(
         loaded,
-        svindex_s64((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_s64((0usize) as i64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1ub_gather_u64base_u64_with_svstnt1b_scatter_u64base_u64() {
     let mut storage = [0 as i8; 1280usize];
-    let data = svindex_u64((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_u64((0usize) as u64, 1usize.try_into().unwrap());
     let bases = svdup_n_u64(storage.as_ptr() as u64);
     let offsets = svindex_u64(0, 1u32.try_into().unwrap());
     let bases = svadd_u64_x(svptrue_b8(), bases, offsets);
@@ -2243,13 +2243,13 @@ unsafe fn test_svldnt1ub_gather_u64base_u64_with_svstnt1b_scatter_u64base_u64() 
     let loaded = svldnt1ub_gather_u64base_u64(svptrue_b8(), bases);
     assert_vector_matches_u64(
         loaded,
-        svindex_u64((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_u64((0usize) as u64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1uh_gather_u64base_u64_with_svstnt1h_scatter_u64base_u64() {
     let mut storage = [0 as i16; 640usize];
-    let data = svindex_u64((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_u64((0usize) as u64, 1usize.try_into().unwrap());
     let bases = svdup_n_u64(storage.as_ptr() as u64);
     let offsets = svindex_u64(0, 2u32.try_into().unwrap());
     let bases = svadd_u64_x(svptrue_b16(), bases, offsets);
@@ -2261,13 +2261,13 @@ unsafe fn test_svldnt1uh_gather_u64base_u64_with_svstnt1h_scatter_u64base_u64() 
     let loaded = svldnt1uh_gather_u64base_u64(svptrue_b16(), bases);
     assert_vector_matches_u64(
         loaded,
-        svindex_u64((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_u64((0usize) as u64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1uw_gather_u64base_u64_with_svstnt1w_scatter_u64base_u64() {
     let mut storage = [0 as i32; 320usize];
-    let data = svindex_u64((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_u64((0usize) as u64, 1usize.try_into().unwrap());
     let bases = svdup_n_u64(storage.as_ptr() as u64);
     let offsets = svindex_u64(0, 4u32.try_into().unwrap());
     let bases = svadd_u64_x(svptrue_b32(), bases, offsets);
@@ -2279,13 +2279,13 @@ unsafe fn test_svldnt1uw_gather_u64base_u64_with_svstnt1w_scatter_u64base_u64() 
     let loaded = svldnt1uw_gather_u64base_u64(svptrue_b32(), bases);
     assert_vector_matches_u64(
         loaded,
-        svindex_u64((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_u64((0usize) as u64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1uh_gather_s64index_s64_with_svstnt1h_scatter_s64index_s64() {
     let mut storage = [0 as i16; 640usize];
-    let data = svindex_s64((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_s64((0usize) as i64, 1usize.try_into().unwrap());
     let indices = svindex_s64(0, 1);
     svstnt1h_scatter_s64index_s64(svptrue_b16(), storage.as_mut_ptr(), indices, data);
     for (i, &val) in storage.iter().enumerate() {
@@ -2296,13 +2296,13 @@ unsafe fn test_svldnt1uh_gather_s64index_s64_with_svstnt1h_scatter_s64index_s64(
         svldnt1uh_gather_s64index_s64(svptrue_b16(), storage.as_ptr() as *const u16, indices);
     assert_vector_matches_i64(
         loaded,
-        svindex_s64((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_s64((0usize) as i64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1uw_gather_s64index_s64_with_svstnt1w_scatter_s64index_s64() {
     let mut storage = [0 as i32; 320usize];
-    let data = svindex_s64((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_s64((0usize) as i64, 1usize.try_into().unwrap());
     let indices = svindex_s64(0, 1);
     svstnt1w_scatter_s64index_s64(svptrue_b32(), storage.as_mut_ptr(), indices, data);
     for (i, &val) in storage.iter().enumerate() {
@@ -2313,13 +2313,13 @@ unsafe fn test_svldnt1uw_gather_s64index_s64_with_svstnt1w_scatter_s64index_s64(
         svldnt1uw_gather_s64index_s64(svptrue_b32(), storage.as_ptr() as *const u32, indices);
     assert_vector_matches_i64(
         loaded,
-        svindex_s64((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_s64((0usize) as i64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1uh_gather_s64index_u64_with_svstnt1h_scatter_s64index_u64() {
     let mut storage = [0 as u16; 640usize];
-    let data = svindex_u64((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_u64((0usize) as u64, 1usize.try_into().unwrap());
     let indices = svindex_s64(0, 1);
     svstnt1h_scatter_s64index_u64(svptrue_b16(), storage.as_mut_ptr(), indices, data);
     for (i, &val) in storage.iter().enumerate() {
@@ -2330,13 +2330,13 @@ unsafe fn test_svldnt1uh_gather_s64index_u64_with_svstnt1h_scatter_s64index_u64(
         svldnt1uh_gather_s64index_u64(svptrue_b16(), storage.as_ptr() as *const u16, indices);
     assert_vector_matches_u64(
         loaded,
-        svindex_u64((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_u64((0usize) as u64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1uw_gather_s64index_u64_with_svstnt1w_scatter_s64index_u64() {
     let mut storage = [0 as u32; 320usize];
-    let data = svindex_u64((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_u64((0usize) as u64, 1usize.try_into().unwrap());
     let indices = svindex_s64(0, 1);
     svstnt1w_scatter_s64index_u64(svptrue_b32(), storage.as_mut_ptr(), indices, data);
     for (i, &val) in storage.iter().enumerate() {
@@ -2347,13 +2347,13 @@ unsafe fn test_svldnt1uw_gather_s64index_u64_with_svstnt1w_scatter_s64index_u64(
         svldnt1uw_gather_s64index_u64(svptrue_b32(), storage.as_ptr() as *const u32, indices);
     assert_vector_matches_u64(
         loaded,
-        svindex_u64((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_u64((0usize) as u64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1uh_gather_u64index_s64_with_svstnt1h_scatter_u64index_s64() {
     let mut storage = [0 as i16; 640usize];
-    let data = svindex_s64((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_s64((0usize) as i64, 1usize.try_into().unwrap());
     let indices = svindex_u64(0, 1);
     svstnt1h_scatter_u64index_s64(svptrue_b16(), storage.as_mut_ptr(), indices, data);
     for (i, &val) in storage.iter().enumerate() {
@@ -2364,13 +2364,13 @@ unsafe fn test_svldnt1uh_gather_u64index_s64_with_svstnt1h_scatter_u64index_s64(
         svldnt1uh_gather_u64index_s64(svptrue_b16(), storage.as_ptr() as *const u16, indices);
     assert_vector_matches_i64(
         loaded,
-        svindex_s64((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_s64((0usize) as i64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1uw_gather_u64index_s64_with_svstnt1w_scatter_u64index_s64() {
     let mut storage = [0 as i32; 320usize];
-    let data = svindex_s64((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_s64((0usize) as i64, 1usize.try_into().unwrap());
     let indices = svindex_u64(0, 1);
     svstnt1w_scatter_u64index_s64(svptrue_b32(), storage.as_mut_ptr(), indices, data);
     for (i, &val) in storage.iter().enumerate() {
@@ -2381,13 +2381,13 @@ unsafe fn test_svldnt1uw_gather_u64index_s64_with_svstnt1w_scatter_u64index_s64(
         svldnt1uw_gather_u64index_s64(svptrue_b32(), storage.as_ptr() as *const u32, indices);
     assert_vector_matches_i64(
         loaded,
-        svindex_s64((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_s64((0usize) as i64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1uh_gather_u64index_u64_with_svstnt1h_scatter_u64index_u64() {
     let mut storage = [0 as u16; 640usize];
-    let data = svindex_u64((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_u64((0usize) as u64, 1usize.try_into().unwrap());
     let indices = svindex_u64(0, 1);
     svstnt1h_scatter_u64index_u64(svptrue_b16(), storage.as_mut_ptr(), indices, data);
     for (i, &val) in storage.iter().enumerate() {
@@ -2398,13 +2398,13 @@ unsafe fn test_svldnt1uh_gather_u64index_u64_with_svstnt1h_scatter_u64index_u64(
         svldnt1uh_gather_u64index_u64(svptrue_b16(), storage.as_ptr() as *const u16, indices);
     assert_vector_matches_u64(
         loaded,
-        svindex_u64((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_u64((0usize) as u64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1uw_gather_u64index_u64_with_svstnt1w_scatter_u64index_u64() {
     let mut storage = [0 as u32; 320usize];
-    let data = svindex_u64((0usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_u64((0usize) as u64, 1usize.try_into().unwrap());
     let indices = svindex_u64(0, 1);
     svstnt1w_scatter_u64index_u64(svptrue_b32(), storage.as_mut_ptr(), indices, data);
     for (i, &val) in storage.iter().enumerate() {
@@ -2415,13 +2415,13 @@ unsafe fn test_svldnt1uw_gather_u64index_u64_with_svstnt1w_scatter_u64index_u64(
         svldnt1uw_gather_u64index_u64(svptrue_b32(), storage.as_ptr() as *const u32, indices);
     assert_vector_matches_u64(
         loaded,
-        svindex_u64((0usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_u64((0usize) as u64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1uh_gather_u32base_index_s32_with_svstnt1h_scatter_u32base_index_s32() {
     let mut storage = [0 as i16; 640usize];
-    let data = svindex_s32((1usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_s32((1usize) as i32, 1usize.try_into().unwrap());
     let bases = svindex_u32(0, 2u32.try_into().unwrap());
     svstnt1h_scatter_u32base_index_s32(
         svptrue_b16(),
@@ -2440,13 +2440,13 @@ unsafe fn test_svldnt1uh_gather_u32base_index_s32_with_svstnt1h_scatter_u32base_
     );
     assert_vector_matches_i32(
         loaded,
-        svindex_s32((1usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_s32((1usize) as i32, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1uh_gather_u32base_index_u32_with_svstnt1h_scatter_u32base_index_u32() {
     let mut storage = [0 as i16; 640usize];
-    let data = svindex_u32((1usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_u32((1usize) as u32, 1usize.try_into().unwrap());
     let bases = svindex_u32(0, 2u32.try_into().unwrap());
     svstnt1h_scatter_u32base_index_u32(
         svptrue_b16(),
@@ -2465,13 +2465,13 @@ unsafe fn test_svldnt1uh_gather_u32base_index_u32_with_svstnt1h_scatter_u32base_
     );
     assert_vector_matches_u32(
         loaded,
-        svindex_u32((1usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_u32((1usize) as u32, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1uh_gather_u64base_index_s64_with_svstnt1h_scatter_u64base_index_s64() {
     let mut storage = [0 as i16; 640usize];
-    let data = svindex_s64((1usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_s64((1usize) as i64, 1usize.try_into().unwrap());
     let bases = svdup_n_u64(storage.as_ptr() as u64);
     let offsets = svindex_u64(0, 2u32.try_into().unwrap());
     let bases = svadd_u64_x(svptrue_b16(), bases, offsets);
@@ -2483,13 +2483,13 @@ unsafe fn test_svldnt1uh_gather_u64base_index_s64_with_svstnt1h_scatter_u64base_
     let loaded = svldnt1uh_gather_u64base_index_s64(svptrue_b16(), bases, 1.try_into().unwrap());
     assert_vector_matches_i64(
         loaded,
-        svindex_s64((1usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_s64((1usize) as i64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1uw_gather_u64base_index_s64_with_svstnt1w_scatter_u64base_index_s64() {
     let mut storage = [0 as i32; 320usize];
-    let data = svindex_s64((1usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_s64((1usize) as i64, 1usize.try_into().unwrap());
     let bases = svdup_n_u64(storage.as_ptr() as u64);
     let offsets = svindex_u64(0, 4u32.try_into().unwrap());
     let bases = svadd_u64_x(svptrue_b32(), bases, offsets);
@@ -2501,13 +2501,13 @@ unsafe fn test_svldnt1uw_gather_u64base_index_s64_with_svstnt1w_scatter_u64base_
     let loaded = svldnt1uw_gather_u64base_index_s64(svptrue_b32(), bases, 1.try_into().unwrap());
     assert_vector_matches_i64(
         loaded,
-        svindex_s64((1usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_s64((1usize) as i64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1uh_gather_u64base_index_u64_with_svstnt1h_scatter_u64base_index_u64() {
     let mut storage = [0 as i16; 640usize];
-    let data = svindex_u64((1usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_u64((1usize) as u64, 1usize.try_into().unwrap());
     let bases = svdup_n_u64(storage.as_ptr() as u64);
     let offsets = svindex_u64(0, 2u32.try_into().unwrap());
     let bases = svadd_u64_x(svptrue_b16(), bases, offsets);
@@ -2519,13 +2519,13 @@ unsafe fn test_svldnt1uh_gather_u64base_index_u64_with_svstnt1h_scatter_u64base_
     let loaded = svldnt1uh_gather_u64base_index_u64(svptrue_b16(), bases, 1.try_into().unwrap());
     assert_vector_matches_u64(
         loaded,
-        svindex_u64((1usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_u64((1usize) as u64, 1usize.try_into().unwrap()),
     );
 }
 #[simd_test(enable = "sve,sve2")]
 unsafe fn test_svldnt1uw_gather_u64base_index_u64_with_svstnt1w_scatter_u64base_index_u64() {
     let mut storage = [0 as i32; 320usize];
-    let data = svindex_u64((1usize).try_into().unwrap(), 1usize.try_into().unwrap());
+    let data = svindex_u64((1usize) as u64, 1usize.try_into().unwrap());
     let bases = svdup_n_u64(storage.as_ptr() as u64);
     let offsets = svindex_u64(0, 4u32.try_into().unwrap());
     let bases = svadd_u64_x(svptrue_b32(), bases, offsets);
@@ -2537,6 +2537,6 @@ unsafe fn test_svldnt1uw_gather_u64base_index_u64_with_svstnt1w_scatter_u64base_
     let loaded = svldnt1uw_gather_u64base_index_u64(svptrue_b32(), bases, 1.try_into().unwrap());
     assert_vector_matches_u64(
         loaded,
-        svindex_u64((1usize).try_into().unwrap(), 1usize.try_into().unwrap()),
+        svindex_u64((1usize) as u64, 1usize.try_into().unwrap()),
     );
 }

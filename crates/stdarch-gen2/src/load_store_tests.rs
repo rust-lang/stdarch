@@ -541,8 +541,17 @@ fn get_expected_range(tuple_idx: usize, props: &LoadIntrinsicProps) -> proc_macr
             quote! { #cvt_fn(#pred_fn(), #svindex_fn((#vnum_adjust #start).try_into().unwrap(), #tuple_len.try_into().unwrap()))}
         } else {
             let ret_acle = props.ret_type.as_ref().unwrap().acle_notation_repr();
+            let ret_ident = format_ident!(
+                "{}",
+                props
+                    .ret_type
+                    .as_ref()
+                    .and_then(TypeKind::base_type)
+                    .unwrap()
+                    .rust_repr()
+            );
             let svindex = format_ident!("svindex_{ret_acle}");
-            quote!(#svindex((#vnum_adjust #start).try_into().unwrap(), #tuple_len.try_into().unwrap()))
+            quote!(#svindex((#vnum_adjust #start) as #ret_ident, #tuple_len.try_into().unwrap()))
         }
     }
 }
