@@ -123,13 +123,13 @@ fn generate_single_test(
     load: Intrinsic,
     store: Option<Intrinsic>,
 ) -> Result<proc_macro2::TokenStream, String> {
-    let chars = LdIntrCharacteristics::new(&load)?;
+    let props = LoadIntrinsicProps::new(&load)?;
     let fn_name = load.signature.fn_name().to_string();
 
-    if let Some(ty) = &chars.gather_bases_type {
+    if let Some(ty) = &props.gather_bases_type {
         if ty.base_type().unwrap().get_size() == Ok(32)
-            && chars.gather_index_type.is_none()
-            && chars.gather_offset_type.is_none()
+            && props.gather_index_type.is_none()
+            && props.gather_offset_type.is_none()
         {
             // We lack a way to ensure data is in the bottom 32 bits of the address space
             println!("Skipping test for {fn_name}");
@@ -154,7 +154,7 @@ fn generate_single_test(
         }
     );
 
-    let load_type = &chars.load_type;
+    let load_type = &props.load_type;
     let acle_type = load_type.acle_notation_repr();
 
     // If there's no return type, fallback to the load type for things that depend on it
@@ -176,8 +176,8 @@ fn generate_single_test(
     let assert_fn = format_ident!("assert_vector_matches_{rust_ret_type}");
 
     // Use vnum=1, so adjust all values by one vector length
-    let (length_call, vnum_arg) = if chars.vnum {
-        if chars.is_prf {
+    let (length_call, vnum_arg) = if props.vnum {
+        if props.is_prf {
             (quote!(), quote!(, 1))
         } else {
             (quote!(let len = #size_fn() as usize;), quote!(, 1))
@@ -186,14 +186,14 @@ fn generate_single_test(
         (quote!(), quote!())
     };
 
-    let (bases_load, bases_arg) = if let Some(ty) = &chars.gather_bases_type {
+    let (bases_load, bases_arg) = if let Some(ty) = &props.gather_bases_type {
         // Bases is a vector of (sometimes 32-bit) pointers
         // When we combine bases with an offset/index argument, we load from the data arrays
         // starting at 1
         let base_ty = ty.base_type().unwrap();
         let rust_type = format_ident!("{}", base_ty.rust_repr());
         let index_fn = format_ident!("svindex_{}", base_ty.acle_notation_repr());
-        let size_in_bytes = chars.load_type.get_size().unwrap() / 8;
+        let size_in_bytes = props.load_type.get_size().unwrap() / 8;
 
         if base_ty.get_size().unwrap() == 32 {
             // Treat bases as a vector of offsets here - we don't test this without an offset or
@@ -210,7 +210,7 @@ fn generate_single_test(
             let data_array = if store.is_some() {
                 format_ident!("storage")
             } else {
-                format_ident!("{}_DATA", chars.load_type.rust_repr().to_uppercase())
+                format_ident!("{}_DATA", props.load_type.rust_repr().to_uppercase())
             };
 
             let add_fn = format_ident!("svadd_{}_x", base_ty.acle_notation_repr());
@@ -227,9 +227,9 @@ fn generate_single_test(
         (None, quote!())
     };
 
-    let index_arg = if let Some(ty) = &chars.gather_index_type {
+    let index_arg = if let Some(ty) = &props.gather_index_type {
         let rust_type = format_ident!("{}", ty.rust_repr());
-        if chars
+        if props
             .gather_bases_type
             .as_ref()
             .and_then(TypeKind::base_type)
@@ -241,9 +241,9 @@ fn generate_single_test(
             let data_array = if store.is_some() {
                 format_ident!("storage")
             } else {
-                format_ident!("{}_DATA", chars.load_type.rust_repr().to_uppercase())
+                format_ident!("{}_DATA", props.load_type.rust_repr().to_uppercase())
             };
-            let size_in_bytes = chars.load_type.get_size().unwrap() / 8;
+            let size_in_bytes = props.load_type.get_size().unwrap() / 8;
             quote!(, #data_array.as_ptr() as #rust_type / (#size_in_bytes as #rust_type) + 1)
         } else {
             quote!(, 1.try_into().unwrap())
@@ -252,9 +252,9 @@ fn generate_single_test(
         quote!()
     };
 
-    let offset_arg = if let Some(ty) = &chars.gather_offset_type {
-        let size_in_bytes = chars.load_type.get_size().unwrap() / 8;
-        if chars
+    let offset_arg = if let Some(ty) = &props.gather_offset_type {
+        let size_in_bytes = props.load_type.get_size().unwrap() / 8;
+        if props
             .gather_bases_type
             .as_ref()
             .and_then(TypeKind::base_type)
@@ -267,7 +267,7 @@ fn generate_single_test(
             let data_array = if store.is_some() {
                 format_ident!("storage")
             } else {
-                format_ident!("{}_DATA", chars.load_type.rust_repr().to_uppercase())
+                format_ident!("{}_DATA", props.load_type.rust_repr().to_uppercase())
             };
             quote!(, #data_array.as_ptr() as #rust_type + #size_in_bytes as #rust_type)
         } else {
@@ -277,11 +277,11 @@ fn generate_single_test(
         quote!()
     };
 
-    let (offsets_load, offsets_arg) = if let Some(ty) = &chars.gather_offsets_type {
+    let (offsets_load, offsets_arg) = if let Some(ty) = &props.gather_offsets_type {
         // Offsets is a scalable vector of per-element offsets in bytes. We re-use the contiguous
         // data for this, then multiply to get indices
         let offsets_fn = format_ident!("svindex_{}", ty.base_type().unwrap().acle_notation_repr());
-        let size_in_bytes = chars.load_type.get_size().unwrap() / 8;
+        let size_in_bytes = props.load_type.get_size().unwrap() / 8;
         (
             Some(quote! {
                 let offsets = #offsets_fn(0, #size_in_bytes.try_into().unwrap());
@@ -292,7 +292,7 @@ fn generate_single_test(
         (None, quote!())
     };
 
-    let (indices_load, indices_arg) = if let Some(ty) = &chars.gather_indices_type {
+    let (indices_load, indices_arg) = if let Some(ty) = &props.gather_indices_type {
         // There's no need to multiply indices by the load type width
         let base_ty = ty.base_type().unwrap();
         let indices_fn = format_ident!("svindex_{}", base_ty.acle_notation_repr());
@@ -306,21 +306,21 @@ fn generate_single_test(
         (None, quote!())
     };
 
-    let ptr = if chars.gather_bases_type.is_some() {
+    let ptr = if props.gather_bases_type.is_some() {
         quote!()
-    } else if chars.is_prf {
+    } else if props.is_prf {
         quote!(, I64_DATA.as_ptr())
     } else {
         quote!(, #data_array.as_ptr())
     };
 
-    let tuple_len = &chars.tuple_len;
-    let expecteds = if chars.is_prf {
+    let tuple_len = &props.tuple_len;
+    let expecteds = if props.is_prf {
         // No return value for prefetches
         vec![]
     } else {
         (0..*tuple_len)
-            .map(|i| get_expected_range(i, &chars))
+            .map(|i| get_expected_range(i, &props))
             .collect()
     };
     let asserts: Vec<_> =
@@ -336,7 +336,7 @@ fn generate_single_test(
                 .collect()
         };
 
-    let function = if chars.is_prf {
+    let function = if props.is_prf {
         if fn_name.contains("gather") && fn_name.contains("base") && !fn_name.starts_with("svprf_")
         {
             // svprf(b|h|w|d)_gather base intrinsics do not have a generic type parameter
@@ -348,7 +348,7 @@ fn generate_single_test(
         quote!(#fn_ident)
     };
 
-    let octaword_guard = if chars.replicate_width == Some(256) {
+    let octaword_guard = if props.replicate_width == Some(256) {
         let msg = format!("Skipping {test_name} due to SVE vector length");
         quote! {
             if svcntb() < 32 {
@@ -369,7 +369,7 @@ fn generate_single_test(
             let create = format_ident!("svcreate{tuple_len}_{acle_type}");
             quote!(#create(#(#expecteds),*))
         };
-        let input = store.input.types.get(0).unwrap().get(0).unwrap();
+        let input = store.input.types.first().unwrap().get(0).unwrap();
         let store_type = input
             .get(store.test.get_typeset_index().unwrap())
             .and_then(InputType::typekind)
@@ -377,10 +377,10 @@ fn generate_single_test(
             .unwrap();
 
         let store_type = format_ident!("{}", store_type.rust_repr());
-        let storage_len = NUM_VECS * VL_MAX_BITS / chars.load_type.get_size()? as usize;
+        let storage_len = NUM_VECS * VL_MAX_BITS / props.load_type.get_size()? as usize;
         let store_fn = format_ident!("{}", store.signature.fn_name().to_string());
-        let load_type = format_ident!("{}", chars.load_type.rust_repr());
-        let (store_ptr, store_mut_ptr) = if chars.gather_bases_type.is_none() {
+        let load_type = format_ident!("{}", props.load_type.rust_repr());
+        let (store_ptr, store_mut_ptr) = if props.gather_bases_type.is_none() {
             (
                 quote!(, storage.as_ptr() as *const #load_type),
                 quote!(, storage.as_mut_ptr()),
@@ -389,7 +389,7 @@ fn generate_single_test(
             (quote!(), quote!())
         };
         let args = quote!(#pred_fn() #store_ptr #vnum_arg #bases_arg #offset_arg #index_arg #offsets_arg #indices_arg);
-        let call = if chars.uses_ffr {
+        let call = if props.uses_ffr {
             // Doing a normal load first maximises the number of elements our ff/nf test loads
             let non_ffr_fn_name = format_ident!(
                 "{}",
@@ -433,7 +433,7 @@ fn generate_single_test(
         })
     } else {
         let args = quote!(#pred_fn() #ptr #vnum_arg #bases_arg #offset_arg #index_arg #offsets_arg #indices_arg);
-        let call = if chars.uses_ffr {
+        let call = if props.uses_ffr {
             // Doing a normal load first maximises the number of elements our ff/nf test loads
             let non_ffr_fn_name = format_ident!(
                 "{}",
@@ -469,28 +469,28 @@ fn generate_single_test(
     }
 }
 
-/// Assumes chars.ret_type is not None
-fn get_expected_range(tuple_idx: usize, chars: &LdIntrCharacteristics) -> proc_macro2::TokenStream {
+/// Assumes props.ret_type is not None
+fn get_expected_range(tuple_idx: usize, props: &LoadIntrinsicProps) -> proc_macro2::TokenStream {
     // vnum=1
-    let vnum_adjust = if chars.vnum { quote!(len+) } else { quote!() };
+    let vnum_adjust = if props.vnum { quote!(len+) } else { quote!() };
 
     let bases_adjust =
-        (chars.gather_index_type.is_some() || chars.gather_offset_type.is_some()) as usize;
+        (props.gather_index_type.is_some() || props.gather_offset_type.is_some()) as usize;
 
-    let tuple_len = chars.tuple_len;
-    let size = chars
+    let tuple_len = props.tuple_len;
+    let size = props
         .ret_type
         .as_ref()
         .and_then(TypeKind::base_type)
-        .unwrap_or(&chars.load_type)
+        .unwrap_or(&props.load_type)
         .get_size()
         .unwrap() as usize;
 
-    if chars.replicate_width == Some(128) {
+    if props.replicate_width == Some(128) {
         // svld1rq
         let ty_rust = format_ident!(
             "{}",
-            chars
+            props
                 .ret_type
                 .as_ref()
                 .unwrap()
@@ -501,14 +501,14 @@ fn get_expected_range(tuple_idx: usize, chars: &LdIntrCharacteristics) -> proc_m
         let args: Vec<_> = (0..(128 / size)).map(|i| quote!(#i as #ty_rust)).collect();
         let dup = format_ident!(
             "svdupq_n_{}",
-            chars.ret_type.as_ref().unwrap().acle_notation_repr()
+            props.ret_type.as_ref().unwrap().acle_notation_repr()
         );
         quote!(#dup(#(#args,)*))
-    } else if chars.replicate_width == Some(256) {
+    } else if props.replicate_width == Some(256) {
         // svld1ro - we use two interleaved svdups to create a repeating 256-bit pattern
         let ty_rust = format_ident!(
             "{}",
-            chars
+            props
                 .ret_type
                 .as_ref()
                 .unwrap()
@@ -516,7 +516,7 @@ fn get_expected_range(tuple_idx: usize, chars: &LdIntrCharacteristics) -> proc_m
                 .unwrap()
                 .rust_repr()
         );
-        let ret_acle = chars.ret_type.as_ref().unwrap().acle_notation_repr();
+        let ret_acle = props.ret_type.as_ref().unwrap().acle_notation_repr();
         let args: Vec<_> = (0..(128 / size)).map(|i| quote!(#i as #ty_rust)).collect();
         let args2: Vec<_> = ((128 / size)..(256 / size))
             .map(|i| quote!(#i as #ty_rust))
@@ -526,7 +526,7 @@ fn get_expected_range(tuple_idx: usize, chars: &LdIntrCharacteristics) -> proc_m
         quote!(#interleave(#dup(#(#args,)*), #dup(#(#args2,)*)))
     } else {
         let start = bases_adjust + tuple_idx;
-        if chars
+        if props
             .ret_type
             .as_ref()
             .unwrap()
@@ -540,14 +540,14 @@ fn get_expected_range(tuple_idx: usize, chars: &LdIntrCharacteristics) -> proc_m
             let svindex_fn = format_ident!("svindex_s{size}");
             quote! { #cvt_fn(#pred_fn(), #svindex_fn((#vnum_adjust #start).try_into().unwrap(), #tuple_len.try_into().unwrap()))}
         } else {
-            let ret_acle = chars.ret_type.as_ref().unwrap().acle_notation_repr();
+            let ret_acle = props.ret_type.as_ref().unwrap().acle_notation_repr();
             let svindex = format_ident!("svindex_{ret_acle}");
             quote!(#svindex((#vnum_adjust #start).try_into().unwrap(), #tuple_len.try_into().unwrap()))
         }
     }
 }
 
-struct LdIntrCharacteristics {
+struct LoadIntrinsicProps {
     // The data type to load from (not necessarily the data type returned)
     load_type: BaseType,
     // The data type to return (None for unit)
@@ -574,9 +574,9 @@ struct LdIntrCharacteristics {
     gather_indices_type: Option<TypeKind>,
 }
 
-impl LdIntrCharacteristics {
-    fn new(intr: &Intrinsic) -> Result<LdIntrCharacteristics, String> {
-        let input = intr.input.types.get(0).unwrap().get(0).unwrap();
+impl LoadIntrinsicProps {
+    fn new(intr: &Intrinsic) -> Result<LoadIntrinsicProps, String> {
+        let input = intr.input.types.first().unwrap().get(0).unwrap();
         let load_type = input
             .get(intr.test.get_typeset_index().unwrap())
             .and_then(InputType::typekind)
@@ -618,7 +618,7 @@ impl LdIntrCharacteristics {
         let gather_offsets_type = get_ty_of_arg("offsets");
         let gather_indices_type = get_ty_of_arg("indices");
 
-        Ok(LdIntrCharacteristics {
+        Ok(LoadIntrinsicProps {
             load_type: *load_type,
             ret_type,
             tuple_len,
@@ -720,81 +720,81 @@ static U64_DATA: LazyLock<[u64; {LEN_U64} * {NUM_VECS}]> = LazyLock::new(|| {{
 #[target_feature(enable = "sve")]
 fn assert_vector_matches_f32(vector: svfloat32_t, expected: svfloat32_t) {{
     let defined = svrdffr();
-    assert!(svptest_first(svptrue_b32(), defined));
+    assert!(svptest_first(svptrue_b32(), defined), "The intrinsic under test appears to have loaded 0 elements");
     let cmp = svcmpne_f32(defined, vector, expected);
-    assert!(!svptest_any(defined, cmp))
+    assert!(!svptest_any(defined, cmp), "Scalable f32 vector didn't match the expected value")
 }}
 
 #[target_feature(enable = "sve")]
 fn assert_vector_matches_f64(vector: svfloat64_t, expected: svfloat64_t) {{
     let defined = svrdffr();
-    assert!(svptest_first(svptrue_b64(), defined));
+    assert!(svptest_first(svptrue_b64(), defined), "The intrinsic under test appears to have loaded 0 elements");
     let cmp = svcmpne_f64(defined, vector, expected);
-    assert!(!svptest_any(defined, cmp))
+    assert!(!svptest_any(defined, cmp), "Scalable f64 vector didn't match the expected value")
 }}
 
 #[target_feature(enable = "sve")]
 fn assert_vector_matches_i8(vector: svint8_t, expected: svint8_t) {{
     let defined = svrdffr();
-    assert!(svptest_first(svptrue_b8(), defined));
+    assert!(svptest_first(svptrue_b8(), defined), "The intrinsic under test appears to have loaded 0 elements");
     let cmp = svcmpne_s8(defined, vector, expected);
-    assert!(!svptest_any(defined, cmp))
+    assert!(!svptest_any(defined, cmp), "Scalable i8 vector didn't match the expected value")
 }}
 
 #[target_feature(enable = "sve")]
 fn assert_vector_matches_i16(vector: svint16_t, expected: svint16_t) {{
     let defined = svrdffr();
-    assert!(svptest_first(svptrue_b16(), defined));
+    assert!(svptest_first(svptrue_b16(), defined), "The intrinsic under test appears to have loaded 0 elements");
     let cmp = svcmpne_s16(defined, vector, expected);
-    assert!(!svptest_any(defined, cmp))
+    assert!(!svptest_any(defined, cmp), "Scalable i16 vector didn't match the expected value")
 }}
 
 #[target_feature(enable = "sve")]
 fn assert_vector_matches_i32(vector: svint32_t, expected: svint32_t) {{
     let defined = svrdffr();
-    assert!(svptest_first(svptrue_b32(), defined));
+    assert!(svptest_first(svptrue_b32(), defined), "The intrinsic under test appears to have loaded 0 elements");
     let cmp = svcmpne_s32(defined, vector, expected);
-    assert!(!svptest_any(defined, cmp))
+    assert!(!svptest_any(defined, cmp), "Scalable i32 vector didn't match the expected value")
 }}
 
 #[target_feature(enable = "sve")]
 fn assert_vector_matches_i64(vector: svint64_t, expected: svint64_t) {{
     let defined = svrdffr();
-    assert!(svptest_first(svptrue_b64(), defined));
+    assert!(svptest_first(svptrue_b64(), defined), "The intrinsic under test appears to have loaded 0 elements");
     let cmp = svcmpne_s64(defined, vector, expected);
-    assert!(!svptest_any(defined, cmp))
+    assert!(!svptest_any(defined, cmp), "Scalable i64 vector didn't match the expected value")
 }}
 
 #[target_feature(enable = "sve")]
 fn assert_vector_matches_u8(vector: svuint8_t, expected: svuint8_t) {{
     let defined = svrdffr();
-    assert!(svptest_first(svptrue_b8(), defined));
+    assert!(svptest_first(svptrue_b8(), defined), "The intrinsic under test appears to have loaded 0 elements");
     let cmp = svcmpne_u8(defined, vector, expected);
-    assert!(!svptest_any(defined, cmp))
+    assert!(!svptest_any(defined, cmp), "Scalable u8 vector didn't match the expected value")
 }}
 
 #[target_feature(enable = "sve")]
 fn assert_vector_matches_u16(vector: svuint16_t, expected: svuint16_t) {{
     let defined = svrdffr();
-    assert!(svptest_first(svptrue_b16(), defined));
+    assert!(svptest_first(svptrue_b16(), defined), "The intrinsic under test appears to have loaded 0 elements");
     let cmp = svcmpne_u16(defined, vector, expected);
-    assert!(!svptest_any(defined, cmp))
+    assert!(!svptest_any(defined, cmp), "Scalable u16 vector didn't match the expected value")
 }}
 
 #[target_feature(enable = "sve")]
 fn assert_vector_matches_u32(vector: svuint32_t, expected: svuint32_t) {{
     let defined = svrdffr();
-    assert!(svptest_first(svptrue_b32(), defined));
+    assert!(svptest_first(svptrue_b32(), defined), "The intrinsic under test appears to have loaded 0 elements");
     let cmp = svcmpne_u32(defined, vector, expected);
-    assert!(!svptest_any(defined, cmp))
+    assert!(!svptest_any(defined, cmp), "Scalable u32 vector didn't match the expected value")
 }}
 
 #[target_feature(enable = "sve")]
 fn assert_vector_matches_u64(vector: svuint64_t, expected: svuint64_t) {{
     let defined = svrdffr();
-    assert!(svptest_first(svptrue_b64(), defined));
+    assert!(svptest_first(svptrue_b64(), defined), "The intrinsic under test appears to have loaded 0 elements");
     let cmp = svcmpne_u64(defined, vector, expected);
-    assert!(!svptest_any(defined, cmp))
+    assert!(!svptest_any(defined, cmp), "Scalable u64 vector didn't match the expected value")
 }}
 "#
     );

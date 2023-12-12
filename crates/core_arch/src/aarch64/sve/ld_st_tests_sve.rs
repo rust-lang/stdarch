@@ -86,72 +86,132 @@ static U64_DATA: LazyLock<[u64; 32 * 5]> = LazyLock::new(|| {
 #[target_feature(enable = "sve")]
 fn assert_vector_matches_f32(vector: svfloat32_t, expected: svfloat32_t) {
     let defined = svrdffr();
-    assert!(svptest_first(svptrue_b32(), defined));
+    assert!(
+        svptest_first(svptrue_b32(), defined),
+        "The intrinsic under test appears to have loaded 0 elements"
+    );
     let cmp = svcmpne_f32(defined, vector, expected);
-    assert!(!svptest_any(defined, cmp))
+    assert!(
+        !svptest_any(defined, cmp),
+        "Scalable f32 vector didn't match the expected value"
+    )
 }
 #[target_feature(enable = "sve")]
 fn assert_vector_matches_f64(vector: svfloat64_t, expected: svfloat64_t) {
     let defined = svrdffr();
-    assert!(svptest_first(svptrue_b64(), defined));
+    assert!(
+        svptest_first(svptrue_b64(), defined),
+        "The intrinsic under test appears to have loaded 0 elements"
+    );
     let cmp = svcmpne_f64(defined, vector, expected);
-    assert!(!svptest_any(defined, cmp))
+    assert!(
+        !svptest_any(defined, cmp),
+        "Scalable f64 vector didn't match the expected value"
+    )
 }
 #[target_feature(enable = "sve")]
 fn assert_vector_matches_i8(vector: svint8_t, expected: svint8_t) {
     let defined = svrdffr();
-    assert!(svptest_first(svptrue_b8(), defined));
+    assert!(
+        svptest_first(svptrue_b8(), defined),
+        "The intrinsic under test appears to have loaded 0 elements"
+    );
     let cmp = svcmpne_s8(defined, vector, expected);
-    assert!(!svptest_any(defined, cmp))
+    assert!(
+        !svptest_any(defined, cmp),
+        "Scalable i8 vector didn't match the expected value"
+    )
 }
 #[target_feature(enable = "sve")]
 fn assert_vector_matches_i16(vector: svint16_t, expected: svint16_t) {
     let defined = svrdffr();
-    assert!(svptest_first(svptrue_b16(), defined));
+    assert!(
+        svptest_first(svptrue_b16(), defined),
+        "The intrinsic under test appears to have loaded 0 elements"
+    );
     let cmp = svcmpne_s16(defined, vector, expected);
-    assert!(!svptest_any(defined, cmp))
+    assert!(
+        !svptest_any(defined, cmp),
+        "Scalable i16 vector didn't match the expected value"
+    )
 }
 #[target_feature(enable = "sve")]
 fn assert_vector_matches_i32(vector: svint32_t, expected: svint32_t) {
     let defined = svrdffr();
-    assert!(svptest_first(svptrue_b32(), defined));
+    assert!(
+        svptest_first(svptrue_b32(), defined),
+        "The intrinsic under test appears to have loaded 0 elements"
+    );
     let cmp = svcmpne_s32(defined, vector, expected);
-    assert!(!svptest_any(defined, cmp))
+    assert!(
+        !svptest_any(defined, cmp),
+        "Scalable i32 vector didn't match the expected value"
+    )
 }
 #[target_feature(enable = "sve")]
 fn assert_vector_matches_i64(vector: svint64_t, expected: svint64_t) {
     let defined = svrdffr();
-    assert!(svptest_first(svptrue_b64(), defined));
+    assert!(
+        svptest_first(svptrue_b64(), defined),
+        "The intrinsic under test appears to have loaded 0 elements"
+    );
     let cmp = svcmpne_s64(defined, vector, expected);
-    assert!(!svptest_any(defined, cmp))
+    assert!(
+        !svptest_any(defined, cmp),
+        "Scalable i64 vector didn't match the expected value"
+    )
 }
 #[target_feature(enable = "sve")]
 fn assert_vector_matches_u8(vector: svuint8_t, expected: svuint8_t) {
     let defined = svrdffr();
-    assert!(svptest_first(svptrue_b8(), defined));
+    assert!(
+        svptest_first(svptrue_b8(), defined),
+        "The intrinsic under test appears to have loaded 0 elements"
+    );
     let cmp = svcmpne_u8(defined, vector, expected);
-    assert!(!svptest_any(defined, cmp))
+    assert!(
+        !svptest_any(defined, cmp),
+        "Scalable u8 vector didn't match the expected value"
+    )
 }
 #[target_feature(enable = "sve")]
 fn assert_vector_matches_u16(vector: svuint16_t, expected: svuint16_t) {
     let defined = svrdffr();
-    assert!(svptest_first(svptrue_b16(), defined));
+    assert!(
+        svptest_first(svptrue_b16(), defined),
+        "The intrinsic under test appears to have loaded 0 elements"
+    );
     let cmp = svcmpne_u16(defined, vector, expected);
-    assert!(!svptest_any(defined, cmp))
+    assert!(
+        !svptest_any(defined, cmp),
+        "Scalable u16 vector didn't match the expected value"
+    )
 }
 #[target_feature(enable = "sve")]
 fn assert_vector_matches_u32(vector: svuint32_t, expected: svuint32_t) {
     let defined = svrdffr();
-    assert!(svptest_first(svptrue_b32(), defined));
+    assert!(
+        svptest_first(svptrue_b32(), defined),
+        "The intrinsic under test appears to have loaded 0 elements"
+    );
     let cmp = svcmpne_u32(defined, vector, expected);
-    assert!(!svptest_any(defined, cmp))
+    assert!(
+        !svptest_any(defined, cmp),
+        "Scalable u32 vector didn't match the expected value"
+    )
 }
 #[target_feature(enable = "sve")]
 fn assert_vector_matches_u64(vector: svuint64_t, expected: svuint64_t) {
     let defined = svrdffr();
-    assert!(svptest_first(svptrue_b64(), defined));
+    assert!(
+        svptest_first(svptrue_b64(), defined),
+        "The intrinsic under test appears to have loaded 0 elements"
+    );
     let cmp = svcmpne_u64(defined, vector, expected);
-    assert!(!svptest_any(defined, cmp))
+    assert!(
+        !svptest_any(defined, cmp),
+        "Scalable u64 vector didn't match the expected value"
+    )
 }
 #[simd_test(enable = "sve")]
 unsafe fn test_svld1_f32_with_svst1_f32() {
