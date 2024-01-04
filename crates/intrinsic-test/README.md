@@ -9,6 +9,7 @@ USAGE:
 FLAGS:
         --a32              Run tests for A32 instrinsics instead of A64
         --generate-only    Regenerate test programs, but don't build or run them
+        --sve              Run tests for SVE instead of Neon
     -h, --help             Prints help information
     -V, --version          Prints version information
 

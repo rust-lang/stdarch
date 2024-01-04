@@ -1,5 +1,7 @@
 #![feature(slice_partition_dedup)]
 #[macro_use]
+extern crate lazy_static;
+#[macro_use]
 extern crate log;
 
 use std::fs::File;
@@ -14,7 +16,7 @@ use types::TypeKind;
 
 use crate::argument::Argument;
 use crate::format::Indentation;
-use crate::json_parser::get_neon_intrinsics;
+use crate::json_parser::{get_neon_intrinsics, get_sve_intrinsics};
 
 mod argument;
 mod format;
@@ -23,52 +25,103 @@ mod json_parser;
 mod types;
 mod values;
 
-// The number of times each intrinsic will be called.
+// The number of times each intrinsic will be called per constraint (also per-predicate pattern,
+// for SVE intrinsics).
 const PASSES: u32 = 20;
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Copy, Clone, PartialEq)]
 pub enum Language {
     Rust,
     C,
 }
 
+#[derive(Debug, Copy, Clone, PartialEq)]
+pub enum Extension {
+    NEON,
+    SVE,
+}
+
 fn gen_code_c(
     indentation: Indentation,
     intrinsic: &Intrinsic,
-    constraints: &[&Argument],
-    name: String,
-    p64_armv7_workaround: bool,
+    preset_vals: &[&Argument],
+    context: String,
+    mode: Extension,
+    is_aarch32: bool,
 ) -> String {
-    if let Some((current, constraints)) = constraints.split_last() {
-        let range = current
-            .constraints
-            .iter()
-            .map(|c| c.to_range())
-            .flat_map(|r| r.into_iter());
-
-        let body_indentation = indentation.nested();
-        range
-            .map(|i| {
-                format!(
-                    "{indentation}{{\n\
-                        {body_indentation}{ty} {name} = {val};\n\
-                        {pass}\n\
-                    {indentation}}}",
-                    name = current.name,
-                    ty = current.ty.c_type(),
-                    val = i,
-                    pass = gen_code_c(
-                        body_indentation,
-                        intrinsic,
-                        constraints,
-                        format!("{name}-{i}"),
-                        p64_armv7_workaround
+    if let Some((current, preset_vals)) = preset_vals.split_last() {
+        let name = &current.name;
+        if current.is_predicate() {
+            let passes = current
+                .get_predicate_decls(indentation.nested(), Language::C)
+                .into_iter()
+                .enumerate()
+                .map(|(i, p)| {
+                    format!(
+                        r#"{indentation}{{
+{p}
+{pass}
+{indentation}}}"#,
+                        pass = gen_code_c(
+                            indentation.nested(),
+                            intrinsic,
+                            preset_vals,
+                            format!("{context} {name}=pat{i}"),
+                            mode,
+                            is_aarch32
+                        )
                     )
+                })
+                .join("\n");
+            format!("{indentation}svbool_t {name};\n{passes}")
+        } else if current.ty.kind() == TypeKind::Bool {
+            // Some bool intrinics nest quite deeply, so prefer looping
+            format!(
+                r"{indentation}bool {name}_vals[] = {{true, false}};
+{indentation}for(bool {name}: {name}_vals) {{
+{pass}
+{indentation}}}",
+                pass = gen_code_c(
+                    indentation.nested(),
+                    intrinsic,
+                    preset_vals,
+                    format!("{context} {name}=\" << {name} << \""),
+                    mode,
+                    is_aarch32
                 )
-            })
-            .join("\n")
+            )
+        } else {
+            current
+                .constraints
+                .iter()
+                .flat_map(|c| c.iter())
+                .map(|i| {
+                    let ty = current.ty.c_type();
+                    let val = if current.ty.kind().is_enum() {
+                        format!("static_cast<{ty}>({i})")
+                    } else {
+                        i.to_string()
+                    };
+                    let indentation_1 = indentation.nested();
+                    format!(
+                        r#"{indentation}{{
+{indentation_1}{ty} {name} = {val};
+{pass}
+{indentation}}}"#,
+                        pass = gen_code_c(
+                            indentation_1,
+                            intrinsic,
+                            preset_vals,
+                            format!("{context} {name}={i}"),
+                            mode,
+                            is_aarch32
+                        )
+                    )
+                })
+                .join("\n")
+        }
     } else {
-        intrinsic.generate_loop_c(indentation, &name, PASSES, p64_armv7_workaround)
+        intrinsic.generate_loop_c(indentation, &context, PASSES, mode, is_aarch32)
     }
 }
 
@@ -76,15 +129,52 @@ fn generate_c_program(
     notices: &str,
     header_files: &[&str],
     intrinsic: &Intrinsic,
-    p64_armv7_workaround: bool,
+    mode: Extension,
+    is_aarch32: bool,
 ) -> String {
-    let constraints = intrinsic
+    let preset_vals = intrinsic
         .arguments
         .iter()
-        .filter(|i| i.has_constraint())
+        .filter(|i| i.uses_set_values())
         .collect_vec();
 
     let indentation = Indentation::default();
+
+    let neon_poly128_override = r#"#ifdef __aarch64__
+std::ostream& operator<<(std::ostream& os, poly128_t value) {{
+  std::stringstream temp;
+  do {{
+    int n = value % 10;
+    value /= 10;
+    temp << n;
+  }} while (value != 0);
+  std::string tempstr(temp.str());
+  std::string res(tempstr.rbegin(), tempstr.rend());
+  os << res;
+  return os;
+}}
+#endif
+"#;
+    let indentation_1 = indentation.nested();
+    let main_body = format!(
+        r#"{results_array}
+{element_count}
+
+{passes}
+{indentation_1}return 0;
+}}"#,
+        results_array = intrinsic.gen_results_array_c(indentation_1),
+        element_count = intrinsic.gen_element_count_c(indentation_1, Language::C),
+        passes = gen_code_c(
+            indentation_1,
+            intrinsic,
+            preset_vals.as_slice(),
+            Default::default(),
+            mode,
+            is_aarch32
+        )
+    );
+
     format!(
         r#"{notices}{header_files}
 #include <iostream>
@@ -99,92 +189,126 @@ template<typename T1, typename T2> T1 cast(T2 x) {{
   return ret;
 }}
 
-#ifdef __aarch64__
-std::ostream& operator<<(std::ostream& os, poly128_t value) {{
-  std::stringstream temp;
-  do {{
-    int n = value % 10;
-    value /= 10;
-    temp << n;
-  }} while (value != 0);
-  std::string tempstr(temp.str());
-  std::string res(tempstr.rbegin(), tempstr.rend());
-  os << res;
-  return os;
-}}
-#endif
+{neon_poly128_override}
 
 {arglists}
 
 int main(int argc, char **argv) {{
-{passes}
-    return 0;
-}}"#,
+{body}"#,
         header_files = header_files
             .iter()
             .map(|header| format!("#include <{header}>"))
-            .collect::<Vec<_>>()
             .join("\n"),
         arglists = intrinsic.arguments.gen_arglists_c(indentation, PASSES),
-        passes = gen_code_c(
-            indentation.nested(),
-            intrinsic,
-            constraints.as_slice(),
-            Default::default(),
-            p64_armv7_workaround
-        ),
+        body = main_body,
+        neon_poly128_override = if let Extension::NEON = mode {
+            neon_poly128_override
+        } else {
+            ""
+        }
     )
 }
 
 fn gen_code_rust(
     indentation: Indentation,
     intrinsic: &Intrinsic,
-    constraints: &[&Argument],
-    name: String,
+    preset_vals: &[&Argument],
+    context: String,
+    mode: Extension,
+    is_aarch32: bool,
 ) -> String {
-    if let Some((current, constraints)) = constraints.split_last() {
-        let range = current
-            .constraints
-            .iter()
-            .map(|c| c.to_range())
-            .flat_map(|r| r.into_iter());
-
-        let body_indentation = indentation.nested();
-        range
-            .map(|i| {
-                format!(
-                    "{indentation}{{\n\
-                        {body_indentation}const {name}: {ty} = {val};\n\
-                        {pass}\n\
-                    {indentation}}}",
-                    name = current.name,
-                    ty = current.ty.rust_type(),
-                    val = i,
-                    pass = gen_code_rust(
-                        body_indentation,
-                        intrinsic,
-                        constraints,
-                        format!("{name}-{i}")
+    if let Some((current, preset_vals)) = preset_vals.split_last() {
+        let name = &current.name;
+        if current.is_predicate() {
+            current
+                .get_predicate_decls(indentation, Language::Rust)
+                .into_iter()
+                .enumerate()
+                .map(|(i, p)| {
+                    format!(
+                        r#"{p}
+{pass}"#,
+                        pass = gen_code_rust(
+                            indentation,
+                            intrinsic,
+                            preset_vals,
+                            format!("{context} {name}=pat{i}"),
+                            mode,
+                            is_aarch32
+                        )
                     )
+                })
+                .join("\n")
+        } else if current.ty.kind() == TypeKind::Bool {
+            // Some bool intrinics nest quite deeply, so prefer looping
+            format!(
+                r"{indentation}for {name} in [true, false] {{
+{pass}
+{indentation}}}",
+                pass = gen_code_rust(
+                    indentation.nested(),
+                    intrinsic,
+                    preset_vals,
+                    format!("{context} {name}={{{name}}}"),
+                    mode,
+                    is_aarch32
                 )
-            })
-            .join("\n")
+            )
+        } else {
+            current
+                .constraints
+                .iter()
+                .flat_map(|c| c.iter())
+                .map(|i| {
+                    let ty = current.ty.rust_type();
+                    let val = if current.ty.kind().is_enum() {
+                        // This is defined behaviour as enums in types.rs are `#[repr(i32)]`
+                        // in order to facilitating passing them as const-generics
+                        format!("unsafe {{ core::mem::transmute::<i32, _>({i}) }}")
+                    } else {
+                        i.to_string()
+                    };
+                    let indentation_1 = indentation.nested();
+                    format!(
+                        r#"{indentation}{{
+{indentation_1}const {name}: {ty} = {val};
+{pass}
+{indentation}}}"#,
+                        pass = gen_code_rust(
+                            indentation_1,
+                            intrinsic,
+                            preset_vals,
+                            format!("{context} {name}={i}"),
+                            mode,
+                            is_aarch32
+                        )
+                    )
+                })
+                .join("\n")
+        }
     } else {
-        intrinsic.generate_loop_rust(indentation, &name, PASSES)
+        intrinsic.generate_loop_rust(indentation, &context, PASSES, mode, is_aarch32)
     }
 }
 
-fn generate_rust_program(notices: &str, intrinsic: &Intrinsic, a32: bool) -> String {
-    let constraints = intrinsic
+fn generate_rust_program(
+    notices: &str,
+    intrinsic: &Intrinsic,
+    mode: Extension,
+    is_aarch32: bool,
+) -> String {
+    let preset_vals = intrinsic
         .arguments
         .iter()
-        .filter(|i| i.has_constraint())
+        .filter(|i| i.uses_set_values())
         .collect_vec();
 
     let indentation = Indentation::default();
     format!(
         r#"{notices}#![feature(simd_ffi)]
 #![feature(link_llvm_intrinsics)]
+#![feature(unsized_fn_params)]
+#![feature(unsized_locals)]
 #![cfg_attr(target_arch = "arm", feature(stdarch_arm_neon_intrinsics))]
 #![feature(stdarch_arm_crc32)]
 #![cfg_attr(target_arch = "aarch64", feature(stdarch_neon_fcma))]
@@ -193,43 +317,67 @@ fn generate_rust_program(notices: &str, intrinsic: &Intrinsic, a32: bool) -> Str
 #![cfg_attr(target_arch = "aarch64", feature(stdarch_neon_sha3))]
 #![cfg_attr(target_arch = "aarch64", feature(stdarch_neon_sm4))]
 #![cfg_attr(target_arch = "aarch64", feature(stdarch_neon_ftts))]
+#![cfg_attr(target_arch = "aarch64", feature(stdarch_aarch64_sve))]
 #![allow(non_upper_case_globals)]
-use core_arch::arch::{target_arch}::*;
+#![allow(internal_features)]
+#![allow(incomplete_features)]
+use core_arch::arch::{target_arch}::{extension};
 
 fn main() {{
+{results_array}
+{element_count}
+
 {arglists}
 {passes}
 }}
 "#,
-        target_arch = if a32 { "arm" } else { "aarch64" },
+        target_arch = if is_aarch32 { "arm" } else { "aarch64" },
+        extension = if let Extension::SVE = mode {
+            "sve::*"
+        } else {
+            "*"
+        },
         arglists = intrinsic
             .arguments
             .gen_arglists_rust(indentation.nested(), PASSES),
         passes = gen_code_rust(
             indentation.nested(),
             intrinsic,
-            &constraints,
-            Default::default()
-        )
+            &preset_vals,
+            Default::default(),
+            mode,
+            is_aarch32
+        ),
+        results_array = intrinsic.gen_results_array_rust(indentation.nested()),
+        element_count = intrinsic.gen_element_count_c(indentation.nested(), Language::Rust),
     )
 }
 
-fn compile_c(c_filename: &str, intrinsic: &Intrinsic, compiler: &str, a32: bool) -> bool {
-    let flags = std::env::var("CPPFLAGS").unwrap_or("".into());
+fn compile_c(
+    c_filename: &str,
+    intrinsic: &Intrinsic,
+    compiler: &str,
+    mode: Extension,
+    is_aarch32: bool,
+) -> bool {
+    let flags = std::env::var("CPPFLAGS").unwrap_or_default();
+    let mut a64_archflags = String::from("-march=armv8.6-a+crypto+sha3+sm4+crc+dotprod");
+    if let Extension::SVE = mode {
+        a64_archflags.push_str("+sve2-aes+sve2-sm4+sve2-sha3+sve2-bitperm+f32mm+f64mm");
+    }
 
     let output = Command::new("sh")
         .arg("-c")
         .arg(format!(
             // -ffp-contract=off emulates Rust's approach of not fusing separate mul-add operations
             "{cpp} {cppflags} {arch_flags} -ffp-contract=off -Wno-narrowing -O2 -target {target} -o c_programs/{intrinsic} {filename}",
-            target = if a32 { "armv7-unknown-linux-gnueabihf" } else { "aarch64-unknown-linux-gnu" },
-            arch_flags = if a32 { "-march=armv8.6-a+crypto+crc+dotprod" } else { "-march=armv8.6-a+crypto+sha3+crc+dotprod" },
+            target = if is_aarch32 { "armv7-unknown-linux-gnueabihf" } else { "aarch64-unknown-linux-gnu" },
+            arch_flags = if is_aarch32 { "-march=armv8.6-a+crypto+crc+dotprod" } else { a64_archflags.as_str() },
             filename = c_filename,
             intrinsic = intrinsic.name,
             cpp = compiler,
             cppflags = flags,
-        ))
-        .output();
+        )).output();
     if let Ok(output) = output {
         if output.status.success() {
             true
@@ -258,7 +406,13 @@ fn build_notices(line_prefix: &str) -> String {
     )
 }
 
-fn build_c(notices: &str, intrinsics: &Vec<Intrinsic>, compiler: Option<&str>, a32: bool) -> bool {
+fn build_c(
+    notices: &str,
+    intrinsics: &Vec<Intrinsic>,
+    compiler: Option<&str>,
+    mode: Extension,
+    is_aarch32: bool,
+) -> bool {
     let _ = std::fs::create_dir("c_programs");
     intrinsics
         .par_iter()
@@ -266,25 +420,36 @@ fn build_c(notices: &str, intrinsics: &Vec<Intrinsic>, compiler: Option<&str>, a
             let c_filename = format!(r#"c_programs/{}.cpp"#, i.name);
             let mut file = File::create(&c_filename).unwrap();
 
-            let c_code = generate_c_program(notices, &["arm_neon.h", "arm_acle.h"], i, a32);
+            let header = if let Extension::SVE = mode {
+                "arm_sve.h"
+            } else {
+                "arm_neon.h"
+            };
+            let c_code = generate_c_program(notices, &[header, "arm_acle.h"], i, mode, is_aarch32);
             file.write_all(c_code.into_bytes().as_slice()).unwrap();
             match compiler {
                 None => true,
-                Some(compiler) => compile_c(&c_filename, i, compiler, a32),
+                Some(compiler) => compile_c(&c_filename, i, compiler, mode, is_aarch32),
             }
         })
         .find_any(|x| !x)
         .is_none()
 }
 
-fn build_rust(notices: &str, intrinsics: &[Intrinsic], toolchain: Option<&str>, a32: bool) -> bool {
+fn build_rust(
+    notices: &str,
+    intrinsics: &[Intrinsic],
+    toolchain: Option<&str>,
+    mode: Extension,
+    is_aarch32: bool,
+) -> bool {
     intrinsics.iter().for_each(|i| {
         let rust_dir = format!(r#"rust_programs/{}"#, i.name);
         let _ = std::fs::create_dir_all(&rust_dir);
         let rust_filename = format!(r#"{rust_dir}/main.rs"#);
-        let mut file = File::create(&rust_filename).unwrap();
+        let mut file = File::create(rust_filename).unwrap();
 
-        let c_code = generate_rust_program(notices, i, a32);
+        let c_code = generate_rust_program(notices, i, mode, is_aarch32);
         file.write_all(c_code.into_bytes().as_slice()).unwrap();
     });
 
@@ -317,7 +482,6 @@ path = "{intrinsic}/main.rs""#,
                             intrinsic = i.name
                         )
                     })
-                    .collect::<Vec<_>>()
                     .join("\n")
             )
             .into_bytes()
@@ -330,19 +494,25 @@ path = "{intrinsic}/main.rs""#,
         Some(t) => t,
     };
 
+    let features = if mode == Extension::SVE {
+        "-Ctarget-feature=+sve,+sve2,+sve2-aes,+sve2-sm4,+sve2-sha3,+sve2-bitperm,+f32mm,+f64mm"
+    } else {
+        ""
+    };
+
     let output = Command::new("sh")
         .current_dir("rust_programs")
         .arg("-c")
         .arg(format!(
             "cargo {toolchain} build --target {target} --release",
             toolchain = toolchain,
-            target = if a32 {
+            target = if is_aarch32 {
                 "armv7-unknown-linux-gnueabihf"
             } else {
                 "aarch64-unknown-linux-gnu"
             },
         ))
-        .env("RUSTFLAGS", "-Cdebuginfo=0")
+        .env("RUSTFLAGS", format!("-Cdebuginfo=0 {features}"))
         .output();
     if let Ok(output) = output {
         if output.status.success() {
@@ -394,6 +564,10 @@ struct Cli {
     /// Regenerate test programs, but don't build or run them
     #[arg(long)]
     generate_only: bool,
+
+    /// Run tests for SVE instead of Neon
+    #[arg(long)]
+    sve: bool,
 }
 
 fn main() {
@@ -413,31 +587,47 @@ fn main() {
     } else {
         Default::default()
     };
+
     let a32 = args.a32;
-    let mut intrinsics = get_neon_intrinsics(&filename).expect("Error parsing input file");
+
+    let (mode, mut intrinsics) = if args.sve {
+        (
+            Extension::SVE,
+            get_sve_intrinsics(&filename).expect("Error parsing input file"),
+        )
+    } else {
+        (
+            Extension::NEON,
+            get_neon_intrinsics(&filename).expect("Error parsing input file"),
+        )
+    };
 
     intrinsics.sort_by(|a, b| a.name.cmp(&b.name));
 
     let mut intrinsics = intrinsics
         .into_iter()
-        // Not sure how we would compare intrinsic that returns void.
+        // Void intrinsics consist of stores, prefetch and svwrffr, all of which we can't test here
         .filter(|i| i.results.kind() != TypeKind::Void)
-        .filter(|i| i.results.kind() != TypeKind::BFloat)
-        .filter(|i| !(i.results.kind() == TypeKind::Float && i.results.inner_size() == 16))
-        .filter(|i| !i.arguments.iter().any(|a| a.ty.kind() == TypeKind::BFloat))
+        // Most pointer intrinsics access memory, which we handle with separate tests
+        .filter(|i| {
+            !i.arguments.iter().any(|a| a.is_ptr())
+                || i.name.starts_with("svwhilewr")
+                || i.name.starts_with("svwhilerw")
+        })
+        // Bases arguments are really pointers, but memory isn't accessed for address calculation
+        // intrinsics
+        .filter(|i| !i.arguments.iter().any(|a| a.name == "bases") || i.name.starts_with("svadr"))
         .filter(|i| {
             !i.arguments
                 .iter()
-                .any(|a| a.ty.kind() == TypeKind::Float && a.ty.inner_size() == 16)
+                .any(|a| !a.is_predicate() && a.ty.inner_size() == 128)
         })
-        // Skip pointers for now, we would probably need to look at the return
-        // type to work out how many elements we need to point to.
-        .filter(|i| !i.arguments.iter().any(|a| a.is_ptr()))
-        .filter(|i| !i.arguments.iter().any(|a| a.ty.inner_size() == 128))
         .filter(|i| !skip.contains(&i.name))
         .filter(|i| !(a32 && i.a64_only))
         .collect::<Vec<_>>();
+
     intrinsics.dedup();
+    println!("Testing {} intrinsics", intrinsics.len());
 
     let (toolchain, cpp_compiler) = if args.generate_only {
         (None, None)
@@ -450,16 +640,16 @@ fn main() {
 
     let notices = build_notices("// ");
 
-    if !build_c(&notices, &intrinsics, cpp_compiler.as_deref(), a32) {
+    if !build_c(&notices, &intrinsics, cpp_compiler.as_deref(), mode, a32) {
         std::process::exit(2);
     }
 
-    if !build_rust(&notices, &intrinsics, toolchain.as_deref(), a32) {
+    if !build_rust(&notices, &intrinsics, toolchain.as_deref(), mode, a32) {
         std::process::exit(3);
     }
 
     if let Some(ref toolchain) = toolchain {
-        if !compare_outputs(&intrinsics, toolchain, &c_runner, a32) {
+        if !compare_outputs(&intrinsics, toolchain, &c_runner, mode, a32) {
             std::process::exit(1)
         }
     }
@@ -471,7 +661,18 @@ enum FailureReason {
     Difference(String, String, String),
 }
 
-fn compare_outputs(intrinsics: &Vec<Intrinsic>, toolchain: &str, runner: &str, a32: bool) -> bool {
+fn compare_outputs(
+    intrinsics: &Vec<Intrinsic>,
+    toolchain: &str,
+    runner: &str,
+    mode: Extension,
+    is_aarch32: bool,
+) -> bool {
+    let features = if mode == Extension::SVE {
+        "-Ctarget-feature=+sve,+sve2,+sve2-aes,+sve2-sm4,+sve2-sha3,+sve2-bitperm,+f32mm,+f64mm"
+    } else {
+        ""
+    };
     let intrinsics = intrinsics
         .par_iter()
         .filter_map(|intrinsic| {
@@ -490,13 +691,13 @@ fn compare_outputs(intrinsics: &Vec<Intrinsic>, toolchain: &str, runner: &str, a
                     "cargo {toolchain} run --target {target} --bin {intrinsic} --release",
                     intrinsic = intrinsic.name,
                     toolchain = toolchain,
-                    target = if a32 {
+                    target = if is_aarch32 {
                         "armv7-unknown-linux-gnueabihf"
                     } else {
                         "aarch64-unknown-linux-gnu"
                     },
                 ))
-                .env("RUSTFLAGS", "-Cdebuginfo=0")
+                .env("RUSTFLAGS", format!("-Cdebuginfo=0 {features}"))
                 .output();
 
             let (c, rust) = match (c, rust) {
@@ -506,6 +707,8 @@ fn compare_outputs(intrinsics: &Vec<Intrinsic>, toolchain: &str, runner: &str, a
 
             if !c.status.success() {
                 error!("Failed to run C program for intrinsic {}", intrinsic.name);
+                error!("stdout: {}", std::str::from_utf8(&c.stdout).unwrap());
+                error!("stderr: {}", std::str::from_utf8(&c.stderr).unwrap());
                 return Some(FailureReason::RunC(intrinsic.name.clone()));
             }
 
@@ -514,6 +717,8 @@ fn compare_outputs(intrinsics: &Vec<Intrinsic>, toolchain: &str, runner: &str, a
                     "Failed to run rust program for intrinsic {}",
                     intrinsic.name
                 );
+                error!("stdout: {}", std::str::from_utf8(&rust.stdout).unwrap());
+                error!("stderr: {}", std::str::from_utf8(&rust.stderr).unwrap());
                 return Some(FailureReason::RunRust(intrinsic.name.clone()));
             }
 
