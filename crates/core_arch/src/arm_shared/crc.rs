@@ -113,6 +113,20 @@ pub unsafe fn __crc32d(crc: u32, data: u64) -> u32 {
 
 /// CRC32 single round checksum for quad words (64 bits).
 ///
+/// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/__crc32d)
+#[inline]
+#[target_feature(enable = "crc")]
+#[cfg(target_arch = "arm")]
+#[cfg_attr(test, assert_instr(crc32w))]
+#[unstable(feature = "stdarch_arm_crc32", issue = "117215")]
+pub unsafe fn __crc32d(crc: u32, data: u64) -> u32 {
+    // On 32-bit ARM this intrinsic emits a chain of two `crc32_w` instructions
+    // and truncates the data to 32 bits in both clang and gcc
+    crc32w_(crc32w_(crc, (data & 0xffffffff) as u32), (data >> 32) as u32)
+}
+
+/// CRC32 single round checksum for quad words (64 bits).
+///
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/__crc32cd)
 #[inline]
 #[target_feature(enable = "crc")]
@@ -121,6 +135,20 @@ pub unsafe fn __crc32d(crc: u32, data: u64) -> u32 {
 #[unstable(feature = "stdarch_arm_crc32", issue = "117215")]
 pub unsafe fn __crc32cd(crc: u32, data: u64) -> u32 {
     crc32cx_(crc, data)
+}
+
+/// CRC32 single round checksum for quad words (64 bits).
+///
+/// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/__crc3c2d)
+#[inline]
+#[target_feature(enable = "crc")]
+#[cfg(target_arch = "arm")]
+#[cfg_attr(test, assert_instr(crc32cw))]
+#[unstable(feature = "stdarch_arm_crc32", issue = "117215")]
+pub unsafe fn __crc32cd(crc: u32, data: u64) -> u32 {
+    // On 32-bit ARM this intrinsic emits a chain of two `crc32_cw` instructions
+    // and truncates the data to 32 bits in both clang and gcc
+    crc32cw_(crc32cw_(crc, (data & 0xffffffff) as u32), (data >> 32) as u32)
 }
 
 #[cfg(test)]
