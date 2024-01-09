@@ -142,7 +142,7 @@ pub unsafe fn __crc32cd(crc: u32, data: u64) -> u32 {
 
 /// CRC32 single round checksum for quad words (64 bits).
 ///
-/// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/__crc3c2d)
+/// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/__crc32cd)
 #[inline]
 #[target_feature(enable = "crc")]
 #[cfg(target_arch = "arm")]
