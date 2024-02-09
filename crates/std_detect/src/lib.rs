@@ -23,7 +23,7 @@
 // Temporary hack: needed to build against toolchains from before the mass feature renaming.
 // Remove this as soon as the stdarch submodule is updated on nightly.
 #![allow(stable_features)]
-#![cfg_attr(not(feature = "rustc-dep-of-std"), feature(stdsimd))]
+#![cfg_attr(not(feature = "rustc-dep-of-std"), feature(stdarch_internal))]
 #![cfg_attr(
     all(
         any(target_arch = "x86", target_arch = "x86_64"),
