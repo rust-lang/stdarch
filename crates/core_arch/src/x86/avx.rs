@@ -1691,6 +1691,17 @@ pub unsafe fn _mm256_lddqu_si256(mem_addr: *const __m256i) -> __m256i {
 /// aligned memory location. To minimize caching, the data is flagged as
 /// non-temporal (unlikely to be used again soon)
 ///
+/// # Safety
+///
+/// After using this intrinsic, but before any atomic operations occur, a call
+/// to `_mm_sfence()` must be performed. A safe function that includes unsafe
+/// usage of this intrinsic must always end in `_mm_sfence()`.
+///
+/// Reading and writing to the memory stored-to by any other means, after any
+/// nontemporal store has been used to write to that memory, but before the
+/// use of `_mm_sfence()`, is discouraged. Such reads can lead to pipeline
+/// stalls and yet-unspecified program behavior.
+///
 /// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=_mm256_stream_si256)
 #[inline]
 #[target_feature(enable = "avx")]
@@ -1703,6 +1714,17 @@ pub unsafe fn _mm256_stream_si256(mem_addr: *mut __m256i, a: __m256i) {
 /// Moves double-precision values from a 256-bit vector of `[4 x double]`
 /// to a 32-byte aligned memory location. To minimize caching, the data is
 /// flagged as non-temporal (unlikely to be used again soon).
+///
+/// # Safety
+///
+/// After using this intrinsic, but before any atomic operations occur, a call
+/// to `_mm_sfence()` must be performed. A safe function that includes unsafe
+/// usage of this intrinsic must always end in `_mm_sfence()`.
+///
+/// Reading and writing to the memory stored-to by any other means, after any
+/// nontemporal store has been used to write to that memory, but before the
+/// use of `_mm_sfence()`, is discouraged. Such reads can lead to pipeline
+/// stalls and yet-unspecified program behavior.
 ///
 /// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=_mm256_stream_pd)
 #[inline]
@@ -1718,6 +1740,17 @@ pub unsafe fn _mm256_stream_pd(mem_addr: *mut f64, a: __m256d) {
 /// of `[8 x float]` to a 32-byte aligned memory location. To minimize
 /// caching, the data is flagged as non-temporal (unlikely to be used again
 /// soon).
+///
+/// # Safety
+///
+/// After using this intrinsic, but before any atomic operations occur, a call
+/// to `_mm_sfence()` must be performed. A safe function that includes unsafe
+/// usage of this intrinsic must always end in `_mm_sfence()`.
+///
+/// Reading and writing to the memory stored-to by any other means, after any
+/// nontemporal store has been used to write to that memory, but before the
+/// use of `_mm_sfence()`, is discouraged. Such reads can lead to pipeline
+/// stalls and yet-unspecified program behavior.
 ///
 /// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=_mm256_stream_ps)
 #[inline]
