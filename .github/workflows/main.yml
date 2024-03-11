@@ -149,6 +149,10 @@ jobs:
           os: windows-latest
         - target: i686-pc-windows-msvc
           os: windows-latest
+        - target: aarch64-pc-windows-msvc
+          os: windows-latest
+        - target: arm64ec-pc-windows-msvc
+          os: windows-latest
         - target: i586-unknown-linux-gnu
           os: ubuntu-latest
         - target: nvptx64-nvidia-cuda
