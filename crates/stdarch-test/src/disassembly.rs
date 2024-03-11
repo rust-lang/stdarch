@@ -48,6 +48,8 @@ pub(crate) fn disassemble_myself() -> HashSet<Function> {
             "x86_64-pc-windows-msvc"
         } else if cfg!(target_arch = "x86") {
             "i686-pc-windows-msvc"
+        } else if cfg!(any(target_arch = "aarch64", target_arch = "arm64ec")) {
+            "aarch64-pc-windows-msvc"
         } else {
             panic!("disassembly unimplemented")
         };
