@@ -529,7 +529,7 @@ impl TargetFeature {
             FCMA => "unstable(feature = \"stdarch_neon_fcma\", issue = \"117222\")",
             Dotprod => "unstable(feature = \"stdarch_neon_dotprod\", issue = \"117224\")",
             I8MM => "unstable(feature = \"stdarch_neon_i8mm\", issue = \"117223\")",
-            SHA3 => "stable(feature = \"stdarch_neon_sha3\", since = \"CURRENT_RUSTC_VERSION\")",
+            SHA3 => "stable(feature = \"stdarch_neon_sha3\", since = \"1.78.0\")",
             RDM => "stable(feature = \"rdm_intrinsics\", since = \"1.62.0\")",
             SM4 => "unstable(feature = \"stdarch_neon_sm4\", issue = \"117226\")",
             FTTS => "unstable(feature = \"stdarch_neon_ftts\", issue = \"117227\")",
