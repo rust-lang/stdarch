@@ -186,10 +186,12 @@ fn verify_all_signatures() {
                 "_mm_store_ps1",
                 "_mm_getcsr",
                 "_mm_setcsr",
+                "_MM_GET_DENORMALS_ZERO_MODE",
                 "_MM_GET_EXCEPTION_MASK",
                 "_MM_GET_EXCEPTION_STATE",
                 "_MM_GET_FLUSH_ZERO_MODE",
                 "_MM_GET_ROUNDING_MODE",
+                "_MM_SET_DENORMALS_ZERO_MODE",
                 "_MM_SET_EXCEPTION_MASK",
                 "_MM_SET_EXCEPTION_STATE",
                 "_MM_SET_FLUSH_ZERO_MODE",
@@ -338,6 +340,8 @@ fn verify_all_signatures() {
             // take a signed-integer. This breaks `_MM_SHUFFLE` for
             // `_mm_shuffle_ps`:
             "_mm_shuffle_ps" => continue,
+            // Not listed with intel, but manually verified
+            "_MM_GET_DENORMALS_ZERO_MODE" | "_MM_SET_DENORMALS_ZERO_MODE" => continue,
             _ => {}
         }
 
