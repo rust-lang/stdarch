@@ -53,7 +53,7 @@ cfg_if! {
     } else {
         // Unimplemented architecture:
         #[doc(hidden)]
-        pub(crate) enum Feature {
+        pub enum Feature {
             Null
         }
         #[doc(hidden)]

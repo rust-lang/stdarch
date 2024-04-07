@@ -77,8 +77,8 @@ cfg_if! {
 
 /// Performs run-time feature detection.
 #[inline]
-#[allow(dead_code)]
-fn check_for(x: Feature) -> bool {
+#[unstable(feature = "stdarch_internal", issue = "none")]
+pub fn check_for(x: Feature) -> bool {
     cache::test(x as u32)
 }
 
