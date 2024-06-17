@@ -84,7 +84,7 @@ pub(crate) fn detect_features() -> cache::Initializer {
         } = unsafe { __cpuid_count(0x0000_0007_u32, 0x0000_0001_u32) };
         (ebx, ecx, edx, eax_1, edx_1)
     } else {
-        (0, 0, 0, 0) // CPUID does not support "Extended Features"
+        (0, 0, 0, 0, 0) // CPUID does not support "Extended Features"
     };
 
     // EAX = 0x8000_0000, ECX = 0: Get Highest Extended Function Supported
