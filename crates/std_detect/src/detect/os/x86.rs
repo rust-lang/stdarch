@@ -77,8 +77,11 @@ pub(crate) fn detect_features() -> cache::Initializer {
         extended_features_edx_leaf_1,
     ) = if max_basic_leaf >= 7 {
         let CpuidResult { ebx, ecx, edx, .. } = unsafe { __cpuid(0x0000_0007_u32) };
-        let CpuidResult { eax: eax_1, edx: edx_1, .. } =
-            unsafe { __cpuid_count(0x0000_0007_u32, 0x0000_0001_u32) };
+        let CpuidResult {
+            eax: eax_1,
+            edx: edx_1,
+            ..
+        } = unsafe { __cpuid_count(0x0000_0007_u32, 0x0000_0001_u32) };
         (ebx, ecx, edx, eax_1, edx_1)
     } else {
         (0, 0, 0, 0) // CPUID does not support "Extended Features"
@@ -222,7 +225,7 @@ pub(crate) fn detect_features() -> cache::Initializer {
                     enable(extended_features_eax_leaf_1, 0, Feature::sha512);
                     enable(extended_features_eax_leaf_1, 1, Feature::sm3);
                     enable(extended_features_eax_leaf_1, 2, Feature::sm4);
-                    
+
                     // For AVX-512 the OS also needs to support saving/restoring
                     // the extended state, only then we enable AVX-512 support:
                     if os_avx512_support {
