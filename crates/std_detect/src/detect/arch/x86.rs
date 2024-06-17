@@ -181,22 +181,22 @@ features! {
     @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] avxifma: "avxifma";
     /// AVX-IFMA (Integer Fused Multiply Add)
     @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] avxneconvert: "avxneconvert";
-    /// AVX-NE-CONVERT
+    /// AVX-NE-CONVERT (No Exception Conversions)
     @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] avxvnni: "avxvnni";
     /// AVX-VNNI (Vector Neural Network Instructions)
     @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] avxvnniint8: "avxvnniint8";
     /// AVX-VNNI_INT8
     @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] avxvnniint16: "avxvnniint16";
     /// AVX-VNNI_INT16
-    @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] amx-tile: "amx-tile";
+    @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] amx_tile: "amx-tile";
     /// AMX (Advanced Matrix Extensions) Tile Instructions
-    @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] amx-int8: "amx-int8";
+    @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] amx_int8: "amx-int8";
     /// AMX-INT8 (8-bit Integer Instructions)
-    @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] amx-bf16: "amx-bf16";
+    @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] amx_bf16: "amx-bf16";
     /// AMX-BF16 (BFloat16 Instructions)
-    @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] amx-fp16: "amx-fp16";
+    @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] amx_fp16: "amx-fp16";
     /// AMX-FP16 (Float16 Instructions)
-    @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] amx-complex: "amx-complex";
+    @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] amx_complex: "amx-complex";
     /// AMX-COMPLEX (Complex Number Instructions)
     @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] f16c: "f16c";
     /// F16C (Conversions between IEEE-754 `binary16` and `binary32` formats)
