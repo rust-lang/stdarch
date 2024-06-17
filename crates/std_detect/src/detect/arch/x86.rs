@@ -129,6 +129,12 @@ features! {
     /// SSE4a (Streaming SIMD Extensions 4a)
     @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] sha: "sha";
     /// SHA
+    @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] sha512: "sha512";
+    /// SHA-512
+    @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] sm3: "sm3";
+    /// SM3
+    @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] sm4: "sm4";
+    /// SM4
     @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] avx: "avx";
     /// AVX (Advanced Vector Extensions)
     @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] avx2: "avx2";
@@ -138,7 +144,7 @@ features! {
     @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] avx512cd: "avx512cd" ;
     /// AVX-512 CD (Conflict Detection Instructions)
     @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] avx512er: "avx512er";
-    /// AVX-512 ER (Expo nential and Reciprocal Instructions)
+    /// AVX-512 ER (Exponential and Reciprocal Instructions)
     @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] avx512pf: "avx512pf";
     /// AVX-512 PF (Prefetch Instructions)
     @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] avx512bw: "avx512bw";
@@ -172,6 +178,26 @@ features! {
     /// AVX-512 P2INTERSECT
     @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] avx512fp16: "avx512fp16";
     /// AVX-512 FP16 (FLOAT16 instructions)
+    @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] avxifma: "avxifma";
+    /// AVX-IFMA (Integer Fused Multiply Add)
+    @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] avxneconvert: "avxneconvert";
+    /// AVX-NE-CONVERT
+    @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] avxvnni: "avxvnni";
+    /// AVX-VNNI (Vector Neural Network Instructions)
+    @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] avxvnniint8: "avxvnniint8";
+    /// AVX-VNNI_INT8
+    @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] avxvnniint16: "avxvnniint16";
+    /// AVX-VNNI_INT16
+    @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] amx-tile: "amx-tile";
+    /// AMX (Advanced Matrix Extensions) Tile Instructions
+    @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] amx-int8: "amx-int8";
+    /// AMX-INT8 (8-bit Integer Instructions)
+    @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] amx-bf16: "amx-bf16";
+    /// AMX-BF16 (BFloat16 Instructions)
+    @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] amx-fp16: "amx-fp16";
+    /// AMX-FP16 (Float16 Instructions)
+    @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] amx-complex: "amx-complex";
+    /// AMX-COMPLEX (Complex Number Instructions)
     @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] f16c: "f16c";
     /// F16C (Conversions between IEEE-754 `binary16` and `binary32` formats)
     @FEATURE: #[stable(feature = "simd_x86", since = "1.27.0")] fma: "fma";
