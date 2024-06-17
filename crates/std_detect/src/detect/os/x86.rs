@@ -74,11 +74,12 @@ pub(crate) fn detect_features() -> cache::Initializer {
         extended_features_ecx,
         extended_features_edx,
         extended_features_eax_leaf_1,
+        extended_features_edx_leaf_1,
     ) = if max_basic_leaf >= 7 {
         let CpuidResult { ebx, ecx, edx, .. } = unsafe { __cpuid(0x0000_0007_u32) };
-        let CpuidResult { eax: eax_1, .. } =
+        let CpuidResult { eax: eax_1, edx: edx_1, .. } =
             unsafe { __cpuid_count(0x0000_0007_u32, 0x0000_0001_u32) };
-        (ebx, ecx, edx, eax_1)
+        (ebx, ecx, edx, eax_1, edx_1)
     } else {
         (0, 0, 0, 0) // CPUID does not support "Extended Features"
     };
@@ -129,6 +130,11 @@ pub(crate) fn detect_features() -> cache::Initializer {
         enable(proc_info_edx, 26, Feature::sse2);
         enable(extended_features_ebx, 29, Feature::sha);
 
+        // These features can be enabled even without AVX=512 support
+        enable(extended_features_ecx, 8, Feature::gfni);
+        enable(extended_features_ecx, 9, Feature::vaes);
+        enable(extended_features_ecx, 10, Feature::vpclmulqdq);
+
         enable(extended_features_ebx, 3, Feature::bmi1);
         enable(extended_features_ebx, 8, Feature::bmi2);
 
@@ -167,6 +173,8 @@ pub(crate) fn detect_features() -> cache::Initializer {
                 let os_avx_support = xcr0 & 6 == 6;
                 // Test `XCR0.AVX-512[7:5]` with the mask `0b1110_0000 == 224`:
                 let os_avx512_support = xcr0 & 224 == 224;
+                // Test `XCR0.AMX[18:17]` with the mask `0b110_00000000_00000000 == 0x60000`
+                let os_amx_support = xcr0 & 0x60000 == 0x60000;
 
                 // Only if the OS and the CPU support saving/restoring the AVX
                 // registers we enable `xsave` support:
@@ -203,6 +211,18 @@ pub(crate) fn detect_features() -> cache::Initializer {
                     enable(proc_info_ecx, 28, Feature::avx);
                     enable(extended_features_ebx, 5, Feature::avx2);
 
+                    // These are VEX-encoded versions of AVX512, can be enabled without AVX512
+                    enable(extended_features_eax_leaf_1, 23, Feature::avxifma);
+                    enable(extended_features_eax_leaf_1, 4, Feature::avxvnni);
+                    enable(extended_features_edx_leaf_1, 5, Feature::avxneconvert);
+                    enable(extended_features_edx_leaf_1, 4, Feature::avxvnniint8);
+                    enable(extended_features_edx_leaf_1, 10, Feature::avxvnniint16);
+
+                    // These Instructions require AVX
+                    enable(extended_features_eax_leaf_1, 0, Feature::sha512);
+                    enable(extended_features_eax_leaf_1, 1, Feature::sm3);
+                    enable(extended_features_eax_leaf_1, 2, Feature::sm4);
+                    
                     // For AVX-512 the OS also needs to support saving/restoring
                     // the extended state, only then we enable AVX-512 support:
                     if os_avx512_support {
@@ -216,15 +236,22 @@ pub(crate) fn detect_features() -> cache::Initializer {
                         enable(extended_features_ebx, 31, Feature::avx512vl);
                         enable(extended_features_ecx, 1, Feature::avx512vbmi);
                         enable(extended_features_ecx, 6, Feature::avx512vbmi2);
-                        enable(extended_features_ecx, 8, Feature::gfni);
-                        enable(extended_features_ecx, 9, Feature::vaes);
-                        enable(extended_features_ecx, 10, Feature::vpclmulqdq);
                         enable(extended_features_ecx, 11, Feature::avx512vnni);
                         enable(extended_features_ecx, 12, Feature::avx512bitalg);
                         enable(extended_features_ecx, 14, Feature::avx512vpopcntdq);
                         enable(extended_features_edx, 8, Feature::avx512vp2intersect);
                         enable(extended_features_edx, 23, Feature::avx512fp16);
                         enable(extended_features_eax_leaf_1, 5, Feature::avx512bf16);
+                    }
+
+                    // For AMX the OS also needs to support saving/restoring
+                    // the extended state, only then we enable AMX support:
+                    if os_amx_support {
+                        enable(extended_features_edx, 24, Feature::amx_tile);
+                        enable(extended_features_edx, 25, Feature::amx_int8);
+                        enable(extended_features_edx, 22, Feature::amx_bf16);
+                        enable(extended_features_eax_leaf_1, 21, Feature::amx_fp16);
+                        enable(extended_features_edx_leaf_1, 8, Feature::amx_complex);
                     }
                 }
             }
