@@ -1575,7 +1575,20 @@ pub unsafe fn _mm_getcsr() -> u32 {
 /// _MM_SET_ROUNDING_MODE(_MM_ROUND_DOWN)
 /// ```
 ///
-/// ## Denormals-are-zero/Flush-to-zero Mode
+/// ## Denormals-are-Zero Mode
+///
+/// If this bit is set, denormal values used as input to floating-point instructions
+/// wil be treated as zero.
+///
+/// You can read and enable/disable this mode via the helper functions
+/// `_MM_GET_DENORMALS_ZERO_MODE()` and `_MM_SET_DENORMALS_ZERO_MODE()`.
+///
+/// ```rust,ignore
+/// _MM_SET_DENORMALS_ZERO_MODE(_MM_DENORMALS_ZERO_OFF); // turn off (default)
+/// _MM_SET_DENORMALS_ZERO_MODE(_MM_DENORMALS_ZERO_ON); // turn on
+/// ```
+///
+/// ## Flush-to-zero Mode
 ///
 /// If this bit is set, values that would be denormalized will be set to zero
 /// instead. This is turned off by default.
@@ -1673,6 +1686,25 @@ pub const _MM_FLUSH_ZERO_ON: u32 = 0x8000;
 #[stable(feature = "simd_x86", since = "1.27.0")]
 pub const _MM_FLUSH_ZERO_OFF: u32 = 0x0000;
 
+/// See [`_MM_GET_DENORMALS_ZERO_MODE`](fn._MM_GET_DENORMALS_ZERO_MODE.html)
+#[stable(feature = "simd_x86", since = "1.27.0")]
+pub const _MM_DENORMALS_ZERO_MASK: u32 = 0x0040;
+/// See [`_mm_setcsr`](fn._mm_setcsr.html)
+#[stable(feature = "simd_x86", since = "1.27.0")]
+pub const _MM_DENORMALS_ZERO_ON: u32 = 0x0040;
+/// See [`_mm_setcsr`](fn._mm_setcsr.html)
+#[stable(feature = "simd_x86", since = "1.27.0")]
+pub const _MM_DENORMALS_ZERO_OFF: u32 = 0x0000;
+
+/// See [`_mm_setcsr`](fn._mm_setcsr.html)
+#[inline]
+#[allow(non_snake_case)]
+#[target_feature(enable = "sse")]
+#[stable(feature = "simd_x86", since = "1.27.0")]
+pub unsafe fn _MM_GET_DENORMALS_ZERO_MODE() -> u32 {
+    _mm_getcsr() & _MM_DENORMALS_ZERO_MASK
+}
+
 /// See [`_mm_setcsr`](fn._mm_setcsr.html)
 ///
 /// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=_MM_GET_EXCEPTION_MASK)
@@ -1735,6 +1767,15 @@ pub unsafe fn _MM_GET_FLUSH_ZERO_MODE() -> u32 {
 )]
 pub unsafe fn _MM_GET_ROUNDING_MODE() -> u32 {
     _mm_getcsr() & _MM_ROUND_MASK
+}
+
+/// See [`_mm_setcsr`](fn._mm_setcsr.html)
+#[inline]
+#[allow(non_snake_case)]
+#[target_feature(enable = "sse")]
+#[stable(feature = "simd_x86", since = "1.27.0")]
+pub unsafe fn _MM_SET_DENORMALS_ZERO_MODE(x: u32) {
+    _mm_setcsr((_mm_getcsr() & !_MM_DENORMALS_ZERO_MASK) | x);
 }
 
 /// See [`_mm_setcsr`](fn._mm_setcsr.html)
