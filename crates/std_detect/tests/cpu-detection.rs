@@ -3,6 +3,10 @@
 #![cfg_attr(target_arch = "arm", feature(stdarch_arm_feature_detection))]
 #![cfg_attr(target_arch = "powerpc", feature(stdarch_powerpc_feature_detection))]
 #![cfg_attr(target_arch = "powerpc64", feature(stdarch_powerpc_feature_detection))]
+#![cfg_attr(
+    any(target_arch = "x86", target_arch = "x86_64"),
+    feature(xop_target_feature)
+)]
 #![allow(clippy::unwrap_used, clippy::use_debug, clippy::print_stdout)]
 
 #[cfg_attr(
@@ -252,6 +256,7 @@ fn x86_all() {
     println!("xsaveopt: {:?}", is_x86_feature_detected!("xsaveopt"));
     println!("xsaves: {:?}", is_x86_feature_detected!("xsaves"));
     println!("xsavec: {:?}", is_x86_feature_detected!("xsavec"));
+    println!("xop: {:?}", is_x86_feature_detected!("xop"));
 }
 
 #[test]

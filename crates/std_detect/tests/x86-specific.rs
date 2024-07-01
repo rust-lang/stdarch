@@ -1,6 +1,6 @@
 #![cfg(any(target_arch = "x86", target_arch = "x86_64"))]
 #![allow(internal_features)]
-#![feature(stdarch_internal, avx512_target_feature)]
+#![feature(stdarch_internal, avx512_target_feature, xop_target_feature)]
 
 extern crate cupid;
 #[macro_use]
@@ -79,6 +79,7 @@ fn dump() {
         "avxvnniint16: {:?}",
         is_x86_feature_detected!("avxvnniint16")
     );
+    println!("xop: {:?}", is_x86_feature_detected!("xop"));
 }
 
 #[cfg(feature = "std_detect_env_override")]
