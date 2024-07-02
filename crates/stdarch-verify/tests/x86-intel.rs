@@ -22,6 +22,7 @@ struct Function {
     has_test: bool,
 }
 
+static F16: Type = Type::PrimFloat(16);
 static F32: Type = Type::PrimFloat(32);
 static F64: Type = Type::PrimFloat(64);
 static I8: Type = Type::PrimSigned(8);
@@ -39,14 +40,17 @@ static M128: Type = Type::M128;
 static M128BH: Type = Type::M128BH;
 static M128I: Type = Type::M128I;
 static M128D: Type = Type::M128D;
+static M128H: Type = Type::M128H;
 static M256: Type = Type::M256;
 static M256BH: Type = Type::M256BH;
 static M256I: Type = Type::M256I;
 static M256D: Type = Type::M256D;
+static M256H: Type = Type::M256H;
 static M512: Type = Type::M512;
 static M512BH: Type = Type::M512BH;
 static M512I: Type = Type::M512I;
 static M512D: Type = Type::M512D;
+static M512H: Type = Type::M512H;
 static MMASK8: Type = Type::MMASK8;
 static MMASK16: Type = Type::MMASK16;
 static MMASK32: Type = Type::MMASK32;
@@ -70,14 +74,17 @@ enum Type {
     M128,
     M128BH,
     M128D,
+    M128H,
     M128I,
     M256,
     M256BH,
     M256D,
+    M256H,
     M256I,
     M512,
     M512BH,
     M512D,
+    M512H,
     M512I,
     MMASK8,
     MMASK16,
@@ -480,6 +487,9 @@ fn matches(rust: &Function, intel: &Intrinsic) -> Result<(), String> {
             // The XML file names BF16 as "avx512_bf16", while Rust calls
             // it "avx512bf16".
             "avx512_bf16" => String::from("avx512bf16"),
+            // The XML file names FP16 as "avx512_fp16", while Rust calls
+            // it "avx512fp16".
+            "avx512_fp16" => String::from("avx512fp16"),
             // The XML file names AVX-VNNI as "avx_vnni", while Rust calls
             // it "avxvnni"
             "avx_vnni" => String::from("avxvnni"),
@@ -692,6 +702,7 @@ fn equate(
         }
     }
     match (t, &intel[..]) {
+        (&Type::PrimFloat(16), "_Float16") => {}
         (&Type::PrimFloat(32), "float") => {}
         (&Type::PrimFloat(64), "double") => {}
         (&Type::PrimSigned(8), "__int8" | "char") => {}
@@ -710,14 +721,17 @@ fn equate(
         (&Type::M128BH, "__m128bh") => {}
         (&Type::M128I, "__m128i") => {}
         (&Type::M128D, "__m128d") => {}
+        (&Type::M128H, "__m128h") => {}
         (&Type::M256, "__m256") => {}
         (&Type::M256BH, "__m256bh") => {}
         (&Type::M256I, "__m256i") => {}
         (&Type::M256D, "__m256d") => {}
+        (&Type::M256H, "__m256h") => {}
         (&Type::M512, "__m512") => {}
         (&Type::M512BH, "__m512bh") => {}
         (&Type::M512I, "__m512i") => {}
         (&Type::M512D, "__m512d") => {}
+        (&Type::M512H, "__m512h") => {}
         (&Type::MMASK64, "__mmask64") => {}
         (&Type::MMASK32, "__mmask32") => {}
         (&Type::MMASK16, "__mmask16") => {}
@@ -753,6 +767,7 @@ fn equate(
         (&Type::MutPtr(&Type::M512D), "__m512d*") => {}
 
         (&Type::ConstPtr(_), "void const*") => {}
+        (&Type::ConstPtr(&Type::PrimFloat(16)), "_Float16 const*") => {}
         (&Type::ConstPtr(&Type::PrimFloat(32)), "float const*") => {}
         (&Type::ConstPtr(&Type::PrimFloat(64)), "double const*") => {}
         (&Type::ConstPtr(&Type::PrimSigned(8)), "char const*") => {}
@@ -766,6 +781,7 @@ fn equate(
         (&Type::ConstPtr(&Type::M128BH), "__m128bh const*") => {}
         (&Type::ConstPtr(&Type::M128I), "__m128i const*") => {}
         (&Type::ConstPtr(&Type::M128D), "__m128d const*") => {}
+        (&Type::ConstPtr(&Type::M128H), "__m128h const*") => {}
         (&Type::ConstPtr(&Type::M256), "__m256 const*") => {}
         (&Type::ConstPtr(&Type::M256BH), "__m256bh const*") => {}
         (&Type::ConstPtr(&Type::M256I), "__m256i const*") => {}
