@@ -33,7 +33,8 @@
     asm_const,
     target_feature_11,
     generic_arg_infer,
-    asm_experimental_arch
+    asm_experimental_arch,
+    f16
 )]
 #![cfg_attr(test, feature(test, abi_vectorcall, stdarch_internal))]
 #![deny(clippy::missing_inline_in_public_items)]
