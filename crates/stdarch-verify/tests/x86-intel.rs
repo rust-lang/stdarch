@@ -699,7 +699,7 @@ fn equate(
         (&Type::PrimSigned(32), "__int32" | "const int" | "int") => {}
         (&Type::PrimSigned(64), "__int64" | "long long") => {}
         (&Type::PrimUnsigned(8), "unsigned char") => {}
-        (&Type::PrimUnsigned(16), "unsigned short") => {}
+        (&Type::PrimUnsigned(16), "unsigned short" | "__bfloat16") => {}
         (
             &Type::PrimUnsigned(32),
             "unsigned __int32" | "unsigned int" | "unsigned long" | "const unsigned int",
@@ -758,7 +758,7 @@ fn equate(
         (&Type::ConstPtr(&Type::PrimSigned(8)), "char const*") => {}
         (&Type::ConstPtr(&Type::PrimSigned(32)), "__int32 const*" | "int const*") => {}
         (&Type::ConstPtr(&Type::PrimSigned(64)), "__int64 const*") => {}
-        (&Type::ConstPtr(&Type::PrimUnsigned(16)), "unsigned short const*") => {}
+        (&Type::ConstPtr(&Type::PrimUnsigned(16)), "unsigned short const*" | "__bf16 const*") => {}
         (&Type::ConstPtr(&Type::PrimUnsigned(32)), "unsigned int const*") => {}
         (&Type::ConstPtr(&Type::PrimUnsigned(64)), "unsigned __int64 const*") => {}
 
