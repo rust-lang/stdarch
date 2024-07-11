@@ -660,6 +660,7 @@ pub unsafe fn v128_store64_lane<const L: usize>(v: v128, m: *mut u64) {
         a15 = 15,
     )
 )]
+#[target_feature(enable = "simd128")]
 #[doc(alias("v128.const"))]
 #[stable(feature = "wasm_simd", since = "1.54.0")]
 #[rustc_const_stable(feature = "wasm_simd", since = "1.54.0")]
@@ -692,6 +693,7 @@ pub const fn i8x16(
 /// If possible this will generate a `v128.const` instruction, otherwise it may
 /// be lowered to a sequence of instructions to materialize the vector value.
 #[inline]
+#[target_feature(enable = "simd128")]
 #[doc(alias("v128.const"))]
 #[stable(feature = "wasm_simd", since = "1.54.0")]
 #[rustc_const_stable(feature = "wasm_simd", since = "1.54.0")]
@@ -738,6 +740,7 @@ pub const fn u8x16(
         a7 = 7,
     )
 )]
+#[target_feature(enable = "simd128")]
 #[doc(alias("v128.const"))]
 #[stable(feature = "wasm_simd", since = "1.54.0")]
 #[rustc_const_stable(feature = "wasm_simd", since = "1.54.0")]
@@ -750,6 +753,7 @@ pub const fn i16x8(a0: i16, a1: i16, a2: i16, a3: i16, a4: i16, a5: i16, a6: i16
 /// If possible this will generate a `v128.const` instruction, otherwise it may
 /// be lowered to a sequence of instructions to materialize the vector value.
 #[inline]
+#[target_feature(enable = "simd128")]
 #[doc(alias("v128.const"))]
 #[stable(feature = "wasm_simd", since = "1.54.0")]
 #[rustc_const_stable(feature = "wasm_simd", since = "1.54.0")]
@@ -763,6 +767,7 @@ pub const fn u16x8(a0: u16, a1: u16, a2: u16, a3: u16, a4: u16, a5: u16, a6: u16
 /// be lowered to a sequence of instructions to materialize the vector value.
 #[inline]
 #[cfg_attr(test, assert_instr(v128.const, a0 = 0, a1 = 1, a2 = 2, a3 = 3))]
+#[target_feature(enable = "simd128")]
 #[doc(alias("v128.const"))]
 #[stable(feature = "wasm_simd", since = "1.54.0")]
 #[rustc_const_stable(feature = "wasm_simd", since = "1.54.0")]
@@ -775,6 +780,7 @@ pub const fn i32x4(a0: i32, a1: i32, a2: i32, a3: i32) -> v128 {
 /// If possible this will generate a `v128.const` instruction, otherwise it may
 /// be lowered to a sequence of instructions to materialize the vector value.
 #[inline]
+#[target_feature(enable = "simd128")]
 #[doc(alias("v128.const"))]
 #[stable(feature = "wasm_simd", since = "1.54.0")]
 #[rustc_const_stable(feature = "wasm_simd", since = "1.54.0")]
@@ -788,6 +794,7 @@ pub const fn u32x4(a0: u32, a1: u32, a2: u32, a3: u32) -> v128 {
 /// be lowered to a sequence of instructions to materialize the vector value.
 #[inline]
 #[cfg_attr(test, assert_instr(v128.const, a0 = 1, a1 = 2))]
+#[target_feature(enable = "simd128")]
 #[doc(alias("v128.const"))]
 #[stable(feature = "wasm_simd", since = "1.54.0")]
 #[rustc_const_stable(feature = "wasm_simd", since = "1.54.0")]
@@ -800,6 +807,7 @@ pub const fn i64x2(a0: i64, a1: i64) -> v128 {
 /// If possible this will generate a `v128.const` instruction, otherwise it may
 /// be lowered to a sequence of instructions to materialize the vector value.
 #[inline]
+#[target_feature(enable = "simd128")]
 #[doc(alias("v128.const"))]
 #[stable(feature = "wasm_simd", since = "1.54.0")]
 #[rustc_const_stable(feature = "wasm_simd", since = "1.54.0")]
@@ -813,6 +821,7 @@ pub const fn u64x2(a0: u64, a1: u64) -> v128 {
 /// be lowered to a sequence of instructions to materialize the vector value.
 #[inline]
 #[cfg_attr(test, assert_instr(v128.const, a0 = 0.0, a1 = 1.0, a2 = 2.0, a3 = 3.0))]
+#[target_feature(enable = "simd128")]
 #[doc(alias("v128.const"))]
 #[stable(feature = "wasm_simd", since = "1.54.0")]
 #[rustc_const_stable(feature = "wasm_simd_const", since = "1.56.0")]
@@ -826,6 +835,7 @@ pub const fn f32x4(a0: f32, a1: f32, a2: f32, a3: f32) -> v128 {
 /// be lowered to a sequence of instructions to materialize the vector value.
 #[inline]
 #[cfg_attr(test, assert_instr(v128.const, a0 = 0.0, a1 = 1.0))]
+#[target_feature(enable = "simd128")]
 #[doc(alias("v128.const"))]
 #[stable(feature = "wasm_simd", since = "1.54.0")]
 #[rustc_const_stable(feature = "wasm_simd_const", since = "1.56.0")]
