@@ -320,7 +320,7 @@ fn verify_all_signatures() {
 
         // these are all AMD-specific intrinsics
         if let Some(feature) = rust.target_feature {
-            if feature.contains("sse4a") || feature.contains("tbm") {
+            if feature.contains("sse4a") || feature.contains("tbm") || feature.contains("xop") {
                 continue;
             }
         }

@@ -437,6 +437,11 @@ pub type _MM_MANTISSA_SIGN_ENUM = i32;
 #[unstable(feature = "stdarch_x86_avx512", issue = "111137")]
 pub type _MM_PERM_ENUM = i32;
 
+/// The `_MM_PCOMCTRL_ENUM` type used to specify comparison control operations in XOP intrinsics.
+#[allow(non_camel_case_types)]
+#[unstable(feature = "xop_target_feature", issue = "127208")]
+pub type _MM_PCOMCTRL_ENUM = i32;
+
 #[cfg(test)]
 mod test;
 #[cfg(test)]
@@ -1008,3 +1013,7 @@ pub use self::avxneconvert::*;
 mod avx512fp16;
 #[unstable(feature = "stdarch_x86_avx512_f16", issue = "127213")]
 pub use self::avx512fp16::*;
+
+mod xop;
+#[unstable(feature = "xop_target_feature", issue = "127208")]
+pub use self::xop::*;

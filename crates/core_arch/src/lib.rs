@@ -35,7 +35,8 @@
     generic_arg_infer,
     asm_experimental_arch,
     sha512_sm_x86,
-    f16
+    f16,
+    xop_target_feature
 )]
 #![cfg_attr(test, feature(test, abi_vectorcall, stdarch_internal))]
 #![deny(clippy::missing_inline_in_public_items)]
