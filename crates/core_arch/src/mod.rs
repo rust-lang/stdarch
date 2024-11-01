@@ -23,7 +23,7 @@ pub mod arch {
     ///
     /// See the [module documentation](../index.html) for more details.
     #[cfg(any(target_arch = "x86", doc))]
-    #[doc(cfg(any(target_arch = "x86", target_arch = "x86_64")))]
+    #[doc(cfg(target_arch = "x86"))]
     #[stable(feature = "simd_x86", since = "1.27.0")]
     pub mod x86 {
         #[stable(feature = "simd_x86", since = "1.27.0")]
