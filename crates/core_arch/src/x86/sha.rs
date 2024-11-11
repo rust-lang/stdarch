@@ -16,6 +16,12 @@ extern "C" {
     fn sha256msg2(a: i32x4, b: i32x4) -> i32x4;
     #[link_name = "llvm.x86.sha256rnds2"]
     fn sha256rnds2(a: i32x4, b: i32x4, k: i32x4) -> i32x4;
+    #[link_name = "llvm.x86.vsha512msg1"]
+    fn vsha512msg1(a: i32x8, b: i32x4) -> i32x8;
+    #[link_name = "llvm.x86.vsha512msg2"]
+    fn vsha512msg2(a: i32x8, b: i32x8) -> i32x8;
+    #[link_name = "llvm.x86.vsha512rnds2"]
+    fn vsha512rnds2_epi64(a: i32x8, b: i32x8, c: i32x4) -> i32x4;
 }
 
 #[cfg(test)]
@@ -118,6 +124,30 @@ pub unsafe fn _mm_sha256rnds2_epu32(a: __m128i, b: __m128i, k: __m128i) -> __m12
     transmute(sha256rnds2(a.as_i32x4(), b.as_i32x4(), k.as_i32x4()))
 }
 
+
+/// Performs an intermediate calculation for the next four SHA512 message qwords.
+///
+/// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=_mm256_sha512msg1_epi64)
+#[inline]
+#[target_feature(enable = "sha512,avx")]
+#[cfg_attr(test, assert_instr(vsha512msg1))]
+#[unstable(feature = "sha512", issue = "none")]
+pub unsafe fn _mm256_sha512msg1_epi64(a: __m256i, b: __m128i) -> __m256i {
+    transmute(vsha512msg1(a.as_i32x8(), b.as_i32x4()))
+}
+
+
+/// Performs the final calculation for the next four SHA512 message qwords.
+///
+/// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=_mm256_sha512msg2_epi64)
+#[inline]
+#[target_feature(enable = "sha512,avx")]
+#[cfg_attr(test, assert_instr(vsha512msg2))]
+#[unstable(feature = "sha512", issue = "none")]
+pub unsafe fn _mm256_sha512msg2_epi64(a: __m256i, b: __m256i) -> __m256i {
+    transmute(vsha512msg2(a.as_i32x8(), b.as_i32x8()))
+}
+
 #[cfg(test)]
 mod tests {
     use std::{
@@ -214,5 +244,15 @@ mod tests {
         let expected = _mm_set_epi64x(0xd3063037effb15ea, 0x187ee3db0d6d1d19);
         let r = _mm_sha256rnds2_epu32(a, b, k);
         assert_eq_m128i(r, expected);
+    }
+
+    #[simd_test(enable = "sha512,avx")]
+    #[allow(overflowing_literals)]
+    unsafe fn test_mm256_sha512msg1_epi64() {
+        let a = _mm256_set_epi64x(0xe9b5dba5b5c0fbcf, 0x71374491428a2f98, 0x0, 0x0);
+        let b = _mm_set_epi64x(0xab1c5ed5923f82a4, 0x59f111f13956c25b);
+        let expected = _mm256_set_epi64x(0xeb84973fd5cda67d, 0x2857b88f406b09ee, 0x0, 0x0);
+        let r = _mm256_sha512msg1_epi64(a, b);
+        assert_eq_m256i(r, expected);
     }
 }
