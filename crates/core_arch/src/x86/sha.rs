@@ -279,7 +279,6 @@ mod tests {
         assert_eq_m256i(r, expected);
     }
 
-
     #[simd_test(enable = "sha512,avx")]
     #[allow(overflowing_literals)]
     unsafe fn test_mm_sha512rnds2_epi64() {
