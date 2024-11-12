@@ -147,7 +147,7 @@ pub unsafe fn _mm256_sha512msg2_epi64(a: __m256i, b: __m256i) -> __m256i {
 }
 
 /// Performs two rounds of SHA512 operation using initial SHA512 state (C,D,G,H) from `a`,
-/// an initial SHA512 state (A,B,E,F) from `b`, and a pre-computed sum of the next two 
+/// an initial SHA512 state (A,B,E,F) from `b`, and a pre-computed sum of the next two
 /// round message qwords and the corresponding round constants from `c` (only the two
 /// lower qwords of the third operand). The updated SHA512 state (A,B,E,F) is returned, and
 /// can be used as the updated state (C,D,G,H) in later rounds.
