@@ -281,7 +281,7 @@ mod tests {
 
     #[simd_test(enable = "sha512,avx")]
     #[allow(overflowing_literals)]
-    unsafe fn test_mm_sha512rnds2_epi64() {
+    unsafe fn test_mm256_sha512rnds2_epi64() {
         let a = _mm256_set_epi64x(0xe9b5dba5b5c0fbcf, 0x71374491428a2f98, 0x0, 0x0);
         let b = _mm256_set_epi64x(0xab1c5ed5923f82a4, 0x59f111f13956c25b, 0x0, 0x0);
         let k = _mm_set_epi64x(0, 0x12835b01d807aa98);
