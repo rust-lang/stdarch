@@ -221,6 +221,10 @@ jobs:
       shell: bash
       if: startsWith(matrix.target.tuple, 'thumb') || matrix.target.tuple == 'nvptx64-nvidia-cuda'
 
+    - run: objdump --version
+      if: matrix.target.tuple == 'x86_64-apple-darwin'
+      shell: bash
+
     # Windows & OSX go straight to `run.sh` ...
     - run: ./ci/run.sh
       shell: bash
