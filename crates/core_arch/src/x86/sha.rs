@@ -124,7 +124,6 @@ pub unsafe fn _mm_sha256rnds2_epu32(a: __m128i, b: __m128i, k: __m128i) -> __m12
     transmute(sha256rnds2(a.as_i32x4(), b.as_i32x4(), k.as_i32x4()))
 }
 
-
 /// Performs an intermediate calculation for the next four SHA512 message qwords.
 ///
 /// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=_mm256_sha512msg1_epi64)
@@ -135,7 +134,6 @@ pub unsafe fn _mm_sha256rnds2_epu32(a: __m128i, b: __m128i, k: __m128i) -> __m12
 pub unsafe fn _mm256_sha512msg1_epi64(a: __m256i, b: __m128i) -> __m256i {
     transmute(vsha512msg1(a.as_i64x4(), b.as_i64x2()))
 }
-
 
 /// Performs the final calculation for the next four SHA512 message qwords.
 ///
