@@ -2107,14 +2107,12 @@ validate 41, 40, 39, 38, 37, 36, 35, 34, 33, 32, 31, 30, 29, 28, 27, 26
 
 arm = vqsub.s
 aarch64 = uqsub
-link-arm = llvm.usub.sat._EXT_
-link-aarch64 = uqsub._EXT_
+fn = simd_saturating_sub
 generate uint*_t, uint64x*_t
 
 arm = vqsub.s
 aarch64 = sqsub
-link-arm = llvm.ssub.sat._EXT_
-link-aarch64 = sqsub._EXT_
+fn = simd_saturating_sub
 generate int*_t, int64x*_t
 
 /// Saturating subtract
@@ -2286,14 +2284,12 @@ validate 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58
 
 arm = vqadd.s
 aarch64 = uqadd
-link-arm = llvm.uadd.sat._EXT_
-link-aarch64 = uqadd._EXT_
+fn = simd_saturating_add
 generate uint*_t, uint64x*_t
 
 arm = vqadd.s
 aarch64 = sqadd
-link-arm = llvm.sadd.sat._EXT_
-link-aarch64 = sqadd._EXT_
+fn = simd_saturating_add
 generate int*_t, int64x*_t
 
 /// Saturating add
