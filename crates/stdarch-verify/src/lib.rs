@@ -116,29 +116,25 @@ fn functions(input: TokenStream, dirs: &[&str]) -> TokenStream {
                 quote! { None }
             };
 
-            let required_const = find_required_const("rustc_args_required_const", &f.attrs);
             let mut const_generics_indices =
                 find_required_const("rustc_legacy_const_generics", &f.attrs);
-            if !required_const.is_empty() && !const_generics_indices.is_empty() {
+            if !const_generics_indices.is_empty() {
                 panic!(
                     "Can't have both #[rustc_args_required_const] and \
                      #[rustc_legacy_const_generics]"
                 );
             }
 
-            // Newer intrinsics don't have legacy support - assume they belong at the end of the argument list
-            if required_const.is_empty() && const_generics_indices.is_empty() {
+            // Newer intrinsics don't have legacy support:
+            // Thus assume they belong at the end of the argument list
+            if const_generics_indices.is_empty() {
                 const_generics_indices =
                     (arguments.len()..(arguments.len() + const_arguments.len())).collect();
             }
 
-            // The list of required consts, used to verify the arguments, comes from either the
-            // `rustc_args_required_const` or the `rustc_legacy_const_generics` attribute.
-            let required_const = if required_const.is_empty() {
-                const_generics_indices.clone()
-            } else {
-                required_const
-            };
+            // The list of required consts, used to verify the arguments, comes
+            // from the `rustc_legacy_const_generics` attribute.
+            let required_const = const_generics_indices.clone();
 
             const_generics_indices.sort();
             for (idx, ty) in const_generics_indices
