@@ -45,6 +45,7 @@ dox arm armv7-unknown-linux-gnueabihf
 dox aarch64 aarch64-unknown-linux-gnu
 dox powerpc powerpc-unknown-linux-gnu
 dox powerpc64le powerpc64le-unknown-linux-gnu
+dox loongarch64 loongarch64-unknown-linux-gnu
 # MIPS targets disabled since they are dropped to tier 3.
 # See https://github.com/rust-lang/compiler-team/issues/648
 #dox mips mips-unknown-linux-gnu
