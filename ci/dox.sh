@@ -41,7 +41,8 @@ dox() {
 
 dox i686 i686-unknown-linux-gnu
 dox x86_64 x86_64-unknown-linux-gnu
-dox arm armv7-unknown-linux-gnueabihf
+# Disabled temporarily, see rust-lang/rust#134511
+#dox arm armv7-unknown-linux-gnueabihf
 dox aarch64 aarch64-unknown-linux-gnu
 dox powerpc powerpc-unknown-linux-gnu
 dox powerpc64le powerpc64le-unknown-linux-gnu
