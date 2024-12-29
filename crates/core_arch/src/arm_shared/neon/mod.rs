@@ -11,6 +11,38 @@ use crate::{core_arch::simd::*, hint::unreachable_unchecked, intrinsics::simd::*
 #[cfg(test)]
 use stdarch_test::assert_instr;
 
+pub(crate) trait AsUnsigned {
+    type Unsigned: ?Sized;
+    fn as_unsigned(self) -> Self::Unsigned;
+}
+
+pub(crate) trait AsSigned {
+    type Signed: ?Sized;
+    fn as_signed(self) -> Self::Signed;
+}
+
+macro_rules! impl_sign_conversions_neon {
+    ($(($signed:ty, $unsigned:ty))*) => ($(
+        impl AsUnsigned for $signed {
+            type Unsigned = $unsigned;
+
+            #[inline]
+            fn as_unsigned(self) -> $unsigned {
+                unsafe { transmute(self) }
+            }
+        }
+
+        impl AsSigned for $unsigned {
+            type Signed = $signed;
+
+            #[inline]
+            fn as_signed(self) -> $signed {
+                unsafe { transmute(self) }
+            }
+        }
+    )*)
+}
+
 pub(crate) type p8 = u8;
 pub(crate) type p16 = u16;
 pub(crate) type p64 = u64;
@@ -1032,6 +1064,85 @@ pub struct poly64x2x4_t(
     pub poly64x2_t,
     pub poly64x2_t,
 );
+
+impl_sign_conversions_neon! {
+    (i8, u8)
+    (i16, u16)
+    (i32, u32)
+    (i64, u64)
+    (*const i8, *const u8)
+    (*const i16, *const u16)
+    (*const i32, *const u32)
+    (*const i64, *const u64)
+    (*mut i8, *mut u8)
+    (*mut i16, *mut u16)
+    (*mut i32, *mut u32)
+    (*mut i64, *mut u64)
+    (int16x4_t, uint16x4_t)
+    (int16x8_t, uint16x8_t)
+    (int32x2_t, uint32x2_t)
+    (int32x4_t, uint32x4_t)
+    (int64x1_t, uint64x1_t)
+    (int64x2_t, uint64x2_t)
+    (int8x16_t, uint8x16_t)
+    (int8x8_t, uint8x8_t)
+    (uint16x4_t, int16x4_t)
+    (uint16x8_t, int16x8_t)
+    (uint32x2_t, int32x2_t)
+    (uint32x4_t, int32x4_t)
+    (uint64x1_t, int64x1_t)
+    (uint64x2_t, int64x2_t)
+    (uint8x16_t, int8x16_t)
+    (uint8x8_t, int8x8_t)
+    (int16x4x2_t, uint16x4x2_t)
+    (int16x4x3_t, uint16x4x3_t)
+    (int16x4x4_t, uint16x4x4_t)
+    (int16x8x2_t, uint16x8x2_t)
+    (int16x8x3_t, uint16x8x3_t)
+    (int16x8x4_t, uint16x8x4_t)
+    (int32x2x2_t, uint32x2x2_t)
+    (int32x2x3_t, uint32x2x3_t)
+    (int32x2x4_t, uint32x2x4_t)
+    (int32x4x2_t, uint32x4x2_t)
+    (int32x4x3_t, uint32x4x3_t)
+    (int32x4x4_t, uint32x4x4_t)
+    (int64x1x2_t, uint64x1x2_t)
+    (int64x1x3_t, uint64x1x3_t)
+    (int64x1x4_t, uint64x1x4_t)
+    (int64x2x2_t, uint64x2x2_t)
+    (int64x2x3_t, uint64x2x3_t)
+    (int64x2x4_t, uint64x2x4_t)
+    (int8x16x2_t, uint8x16x2_t)
+    (int8x16x3_t, uint8x16x3_t)
+    (int8x16x4_t, uint8x16x4_t)
+    (int8x8x2_t, uint8x8x2_t)
+    (int8x8x3_t, uint8x8x3_t)
+    (int8x8x4_t, uint8x8x4_t)
+    (uint16x4x2_t, int16x4x2_t)
+    (uint16x4x3_t, int16x4x3_t)
+    (uint16x4x4_t, int16x4x4_t)
+    (uint16x8x2_t, int16x8x2_t)
+    (uint16x8x3_t, int16x8x3_t)
+    (uint16x8x4_t, int16x8x4_t)
+    (uint32x2x2_t, int32x2x2_t)
+    (uint32x2x3_t, int32x2x3_t)
+    (uint32x2x4_t, int32x2x4_t)
+    (uint32x4x2_t, int32x4x2_t)
+    (uint32x4x3_t, int32x4x3_t)
+    (uint32x4x4_t, int32x4x4_t)
+    (uint64x1x2_t, int64x1x2_t)
+    (uint64x1x3_t, int64x1x3_t)
+    (uint64x1x4_t, int64x1x4_t)
+    (uint64x2x2_t, int64x2x2_t)
+    (uint64x2x3_t, int64x2x3_t)
+    (uint64x2x4_t, int64x2x4_t)
+    (uint8x16x2_t, int8x16x2_t)
+    (uint8x16x3_t, int8x16x3_t)
+    (uint8x16x4_t, int8x16x4_t)
+    (uint8x8x2_t, int8x8x2_t)
+    (uint8x8x3_t, int8x8x3_t)
+    (uint8x8x4_t, int8x8x4_t)
+}
 
 #[allow(improper_ctypes)]
 extern "unadjusted" {

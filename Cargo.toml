@@ -2,7 +2,9 @@
 resolver = "1"
 members = [
   "crates/*",
-  "examples"
+]
+exclude = [
+  "crates/wasm-assert-instr-tests"
 ]
 
 [profile.release]
