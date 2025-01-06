@@ -16,20 +16,20 @@ features! {
     /// * `"lbt"`
     /// * `"lvz"`
     /// * `"ual"`
-    #[unstable(feature = "stdarch_loongarch_feature_detection", issue = "117425")]
-    @FEATURE: #[unstable(feature = "stdarch_loongarch_feature_detection", issue = "117425")] f: "f";
+    #[stable(feature = "stdarch_loongarch_feature", since = "1.88.0")]
+    @FEATURE: #[stable(feature = "stdarch_loongarch_feature", since = "1.88.0")] f: "f";
     /// F
-    @FEATURE: #[unstable(feature = "stdarch_loongarch_feature_detection", issue = "117425")] d: "d";
+    @FEATURE: #[stable(feature = "stdarch_loongarch_feature", since = "1.88.0")] d: "d";
     /// D
-    @FEATURE: #[unstable(feature = "stdarch_loongarch_feature_detection", issue = "117425")] frecipe: "frecipe";
+    @FEATURE: #[stable(feature = "stdarch_loongarch_feature", since = "1.88.0")] frecipe: "frecipe";
     /// Frecipe
-    @FEATURE: #[unstable(feature = "stdarch_loongarch_feature_detection", issue = "117425")] lsx: "lsx";
+    @FEATURE: #[stable(feature = "stdarch_loongarch_feature", since = "1.88.0")] lsx: "lsx";
     /// LSX
-    @FEATURE: #[unstable(feature = "stdarch_loongarch_feature_detection", issue = "117425")] lasx: "lasx";
+    @FEATURE: #[stable(feature = "stdarch_loongarch_feature", since = "1.88.0")] lasx: "lasx";
     /// LASX
-    @FEATURE: #[unstable(feature = "stdarch_loongarch_feature_detection", issue = "117425")] lbt: "lbt";
+    @FEATURE: #[stable(feature = "stdarch_loongarch_feature", since = "1.88.0")] lbt: "lbt";
     /// LBT
-    @FEATURE: #[unstable(feature = "stdarch_loongarch_feature_detection", issue = "117425")] lvz: "lvz";
+    @FEATURE: #[stable(feature = "stdarch_loongarch_feature", since = "1.88.0")] lvz: "lvz";
     /// LVZ
     @FEATURE: #[unstable(feature = "stdarch_loongarch_feature_detection", issue = "117425")] ual: "ual";
     /// UAL
