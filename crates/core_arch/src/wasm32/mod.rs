@@ -41,7 +41,7 @@ pub fn unreachable() -> ! {
 #[cfg_attr(test, assert_instr(f32.ceil))]
 #[inline]
 #[must_use = "method returns a new number and does not mutate the original value"]
-#[unstable(feature = "wasm_numeric_instr", issue = "133908")]
+#[stable(feature = "wasm_numeric_instr", since = "1.86.0")]
 pub fn f32_ceil(a: f32) -> f32 {
     unsafe { crate::intrinsics::ceilf32(a) }
 }
@@ -55,7 +55,7 @@ pub fn f32_ceil(a: f32) -> f32 {
 #[cfg_attr(test, assert_instr(f32.floor))]
 #[inline]
 #[must_use = "method returns a new number and does not mutate the original value"]
-#[unstable(feature = "wasm_numeric_instr", issue = "133908")]
+#[stable(feature = "wasm_numeric_instr", since = "1.86.0")]
 pub fn f32_floor(a: f32) -> f32 {
     unsafe { crate::intrinsics::floorf32(a) }
 }
@@ -69,7 +69,7 @@ pub fn f32_floor(a: f32) -> f32 {
 #[cfg_attr(test, assert_instr(f32.trunc))]
 #[inline]
 #[must_use = "method returns a new number and does not mutate the original value"]
-#[unstable(feature = "wasm_numeric_instr", issue = "133908")]
+#[stable(feature = "wasm_numeric_instr", since = "1.86.0")]
 pub fn f32_trunc(a: f32) -> f32 {
     unsafe { crate::intrinsics::truncf32(a) }
 }
@@ -84,7 +84,7 @@ pub fn f32_trunc(a: f32) -> f32 {
 #[cfg_attr(test, assert_instr(f32.nearest))]
 #[inline]
 #[must_use = "method returns a new number and does not mutate the original value"]
-#[unstable(feature = "wasm_numeric_instr", issue = "133908")]
+#[stable(feature = "wasm_numeric_instr", since = "1.86.0")]
 pub fn f32_nearest(a: f32) -> f32 {
     unsafe { crate::intrinsics::rintf32(a) }
 }
@@ -98,7 +98,7 @@ pub fn f32_nearest(a: f32) -> f32 {
 #[cfg_attr(test, assert_instr(f32.sqrt))]
 #[inline]
 #[must_use = "method returns a new number and does not mutate the original value"]
-#[unstable(feature = "wasm_numeric_instr", issue = "133908")]
+#[stable(feature = "wasm_numeric_instr", since = "1.86.0")]
 pub fn f32_sqrt(a: f32) -> f32 {
     unsafe { crate::intrinsics::sqrtf32(a) }
 }
@@ -112,7 +112,7 @@ pub fn f32_sqrt(a: f32) -> f32 {
 #[cfg_attr(test, assert_instr(f64.ceil))]
 #[inline]
 #[must_use = "method returns a new number and does not mutate the original value"]
-#[unstable(feature = "wasm_numeric_instr", issue = "133908")]
+#[stable(feature = "wasm_numeric_instr", since = "1.86.0")]
 pub fn f64_ceil(a: f64) -> f64 {
     unsafe { crate::intrinsics::ceilf64(a) }
 }
@@ -126,7 +126,7 @@ pub fn f64_ceil(a: f64) -> f64 {
 #[cfg_attr(test, assert_instr(f64.floor))]
 #[inline]
 #[must_use = "method returns a new number and does not mutate the original value"]
-#[unstable(feature = "wasm_numeric_instr", issue = "133908")]
+#[stable(feature = "wasm_numeric_instr", since = "1.86.0")]
 pub fn f64_floor(a: f64) -> f64 {
     unsafe { crate::intrinsics::floorf64(a) }
 }
@@ -140,7 +140,7 @@ pub fn f64_floor(a: f64) -> f64 {
 #[cfg_attr(test, assert_instr(f64.trunc))]
 #[inline]
 #[must_use = "method returns a new number and does not mutate the original value"]
-#[unstable(feature = "wasm_numeric_instr", issue = "133908")]
+#[stable(feature = "wasm_numeric_instr", since = "1.86.0")]
 pub fn f64_trunc(a: f64) -> f64 {
     unsafe { crate::intrinsics::truncf64(a) }
 }
@@ -155,7 +155,7 @@ pub fn f64_trunc(a: f64) -> f64 {
 #[cfg_attr(test, assert_instr(f64.nearest))]
 #[inline]
 #[must_use = "method returns a new number and does not mutate the original value"]
-#[unstable(feature = "wasm_numeric_instr", issue = "133908")]
+#[stable(feature = "wasm_numeric_instr", since = "1.86.0")]
 pub fn f64_nearest(a: f64) -> f64 {
     unsafe { crate::intrinsics::rintf64(a) }
 }
@@ -169,7 +169,7 @@ pub fn f64_nearest(a: f64) -> f64 {
 #[cfg_attr(test, assert_instr(f64.sqrt))]
 #[inline]
 #[must_use = "method returns a new number and does not mutate the original value"]
-#[unstable(feature = "wasm_numeric_instr", issue = "133908")]
+#[stable(feature = "wasm_numeric_instr", since = "1.86.0")]
 pub fn f64_sqrt(a: f64) -> f64 {
     unsafe { crate::intrinsics::sqrtf64(a) }
 }
