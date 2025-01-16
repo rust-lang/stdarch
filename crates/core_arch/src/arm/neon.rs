@@ -1425,6 +1425,39 @@ pub unsafe fn vsriq_n_p64<const N: i32>(a: poly64x2_t, b: poly64x2_t) -> poly64x
     ))
 }
 
+#[cfg(target_arch = "aarch64")]
+mod neon_sve {
+    use std::arch::asm;
+
+    // SIMD operation for f16 - Add 2 f16 values using NEON
+    pub fn add_f16(a: f16, b: f16) -> f16 {
+        unsafe {
+            let result: f16;
+            asm!(
+                "fadd {0}, {1}, {2}", // NEON SIMD add for f16
+                inout(vreg) a => result,
+                in(vreg) b,
+                options(nostack),
+            );
+            result
+        }
+    }
+
+    // SIMD operation for f128 - Add 2 f128 values using SVE
+    pub fn add_f128(a: f128, b: f128) -> f128 {
+        unsafe {
+            let result: f128;
+            asm!(
+                "fadd {0}, {1}, {2}", // SVE SIMD add for f128
+                inout(vreg) a => result,
+                in(vreg) b,
+                options(nostack),
+            );
+            result
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

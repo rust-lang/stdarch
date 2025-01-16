@@ -750,3 +750,35 @@ pub use self::avxneconvert::*;
 mod avx512fp16;
 #[unstable(feature = "stdarch_x86_avx512_f16", issue = "127213")]
 pub use self::avx512fp16::*;
+
+#[cfg(target_arch = "x86_64")]
+mod avx512 {
+    use std::arch::asm;
+
+    pub fn add_f16(a: f16, b: f16) -> f16 {
+        unsafe {
+            let result: f16;
+
+            asm!(
+                "vaddps {0}, {1}, {2}"
+                inout(xmm_reg) a => result,
+                in(xmm_reg) b,
+                options(nostack),
+            );
+            result
+        }
+    }
+
+    pub fn add_f128(a: f128, b: f128) -> f128 {
+        unsafe {
+            let result: f128;
+            asm!{
+                "vaddps {0}, {1}, {2}",
+                inout(ymm_reg) a => result,
+                in(ymm_reg) b,
+                options(nostack),
+            };
+            result
+        }
+    }
+}

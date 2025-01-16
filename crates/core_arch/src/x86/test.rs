@@ -166,3 +166,17 @@ pub unsafe fn assert_eq_m512h(a: __m512h, b: __m512h) {
         panic!("{:?} != {:?}", a, b);
     }
 }
+
+#[test]
+fn test_add_f16() {
+    let a: f16 = 1.5;
+    let b: f16 = 2.5;
+    assert_eq!(add_f16(a, b), 4.0);
+}
+
+#[test]
+fn test_add_f128() {
+    let a: f128 = 3.5;
+    let b: f128 = 4.5;
+    assert_eq!(add_f128(a, b), 8.0);
+}
