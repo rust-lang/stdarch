@@ -1,3 +1,5 @@
+#![allow(unknown_lints)]
+#![allow(redundant_transmutation)]
 use crate::{
     arch::asm,
     core_arch::{simd::*, x86::*},
