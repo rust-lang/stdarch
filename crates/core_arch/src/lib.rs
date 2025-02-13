@@ -38,6 +38,7 @@
     asm_experimental_arch,
     sha512_sm_x86,
     x86_amx_intrinsics,
+    integer_sign_cast,
     f16
 )]
 #![cfg_attr(test, feature(test, abi_vectorcall, stdarch_internal))]
