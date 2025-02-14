@@ -73,6 +73,15 @@ unsafe extern "unadjusted" {
     #[link_name = "llvm.umin.v8i16"] fn vmnlh(a: vector_unsigned_short, b: vector_unsigned_short) -> vector_unsigned_short;
     #[link_name = "llvm.umin.v4i32"] fn vmnlf(a: vector_unsigned_int, b: vector_unsigned_int) -> vector_unsigned_int;
     #[link_name = "llvm.umin.v2i64"] fn vmnlg(a: vector_unsigned_long_long, b: vector_unsigned_long_long) -> vector_unsigned_long_long;
+
+    #[link_name = "llvm.nearbyint.v4f32"] fn nearbyint_v4f32(a: vector_float) -> vector_float;
+    #[link_name = "llvm.nearbyint.v2f64"] fn nearbyint_v2f64(a: vector_double) -> vector_double;
+
+    #[link_name = "llvm.rint.v4f32"] fn rint_v4f32(a: vector_float) -> vector_float;
+    #[link_name = "llvm.rint.v2f64"] fn rint_v2f64(a: vector_double) -> vector_double;
+
+    #[link_name = "llvm.roundeven.v4f32"] fn roundeven_v4f32(a: vector_float) -> vector_float;
+    #[link_name = "llvm.roundeven.v2f64"] fn roundeven_v2f64(a: vector_double) -> vector_double;
 }
 
 impl_from! { i8x16, u8x16,  i16x8, u16x8, i32x4, u32x4, i64x2, u64x2, f32x4, f64x2 }
@@ -326,6 +335,13 @@ mod sealed {
 
     impl_vec_trait! { [VectorMax vec_max] ~(vmxlb, vmxb, vmxlh, vmxh, vmxlf, vmxf, vmxlg, vmxg) }
 
+    // FIXME(vector-enhancements-1) test for the `vfmaxsb` etc. instruction
+    test_impl! { vec_vfmaxsb (a: vector_float, b: vector_float) -> vector_float [simd_fmax, _] }
+    test_impl! { vec_vfmaxdb (a: vector_double, b: vector_double) -> vector_double [simd_fmax, _] }
+
+    impl_vec_trait!([VectorMax vec_max] vec_vfmaxsb (vector_float, vector_float) -> vector_float);
+    impl_vec_trait!([VectorMax vec_max] vec_vfmaxdb (vector_double, vector_double) -> vector_double);
+
     #[unstable(feature = "stdarch_s390x", issue = "135681")]
     pub trait VectorMin<Other> {
         type Result;
@@ -343,6 +359,13 @@ mod sealed {
     test_impl! { vec_vmnslg (a: vector_unsigned_long_long, b: vector_unsigned_long_long) -> vector_unsigned_long_long [vmnlg, vmnlg] }
 
     impl_vec_trait! { [VectorMin vec_min] ~(vmxlb, vmxb, vmxlh, vmxh, vmxlf, vmxf, vmxlg, vmxg) }
+
+    // FIXME(vector-enhancements-1) test for the `vfminsb` etc. instruction
+    test_impl! { vec_vfminsb (a: vector_float, b: vector_float) -> vector_float [simd_fmin, _] }
+    test_impl! { vec_vfmindb (a: vector_double, b: vector_double) -> vector_double [simd_fmin, _] }
+
+    impl_vec_trait!([VectorMin vec_min] vec_vfminsb (vector_float, vector_float) -> vector_float);
+    impl_vec_trait!([VectorMin vec_min] vec_vfmindb (vector_double, vector_double) -> vector_double);
 
     #[unstable(feature = "stdarch_s390x", issue = "135681")]
     pub trait VectorAbs {
@@ -366,21 +389,9 @@ mod sealed {
     impl_abs! { vec_abs_i32, i32x4 }
     impl_abs! { vec_abs_i64, i64x2 }
 
-    #[inline]
-    #[target_feature(enable = "vector")]
-    unsafe fn vec_abs_f32(v: vector_float) -> vector_float {
-        let v: u32x4 = transmute(v);
-
-        transmute(simd_and(v, u32x4::splat(0x7FFFFFFF)))
-    }
-
-    #[inline]
-    #[target_feature(enable = "vector")]
-    unsafe fn vec_abs_f64(v: vector_double) -> vector_double {
-        let v: u64x2 = transmute(v);
-
-        transmute(simd_and(v, u64x2::splat(0x7FFFFFFF_FFFFFFFF)))
-    }
+    // FIXME(vector-enhancements-1)
+    test_impl! { vec_abs_f32 (v: vector_float) -> vector_float [ simd_fabs, _ ] }
+    test_impl! { vec_abs_f64 (v: vector_double) -> vector_double [ simd_fabs, vflpdb ] }
 
     impl_vec_trait! { [VectorAbs vec_abs] vec_abs_f32 (vector_float) }
     impl_vec_trait! { [VectorAbs vec_abs] vec_abs_f64 (vector_double) }
@@ -629,6 +640,68 @@ mod sealed {
     }
 
     impl_vec_trait! { [VectorOrc vec_orc]+ 2c (orc) }
+
+    // FIXME(vector-enhancements-1) add instr tests for f32
+    test_impl! { vec_roundc_f32 (a: vector_float) -> vector_float [nearbyint_v4f32, _] }
+    test_impl! { vec_roundc_f64 (a: vector_double) -> vector_double [nearbyint_v2f64, vfidb] }
+
+    // FIXME(llvm) roundeven does not yet lower to vfidb (but should in the future)
+    test_impl! { vec_round_f32 (a: vector_float) -> vector_float [roundeven_v4f32, _] }
+    test_impl! { vec_round_f64 (a: vector_double) -> vector_double [roundeven_v2f64, _] }
+
+    test_impl! { vec_rint_f32 (a: vector_float) -> vector_float [rint_v4f32, _] }
+    test_impl! { vec_rint_f64 (a: vector_double) -> vector_double [rint_v2f64, vfidb] }
+
+    #[unstable(feature = "stdarch_s390x", issue = "135681")]
+    pub trait VectorRoundc {
+        unsafe fn vec_roundc(self) -> Self;
+    }
+
+    #[unstable(feature = "stdarch_s390x", issue = "135681")]
+    pub trait VectorRound {
+        unsafe fn vec_round(self) -> Self;
+    }
+
+    #[unstable(feature = "stdarch_s390x", issue = "135681")]
+    pub trait VectorRint {
+        unsafe fn vec_rint(self) -> Self;
+    }
+
+    impl_vec_trait! { [VectorRoundc vec_roundc] vec_roundc_f32 (vector_float) }
+    impl_vec_trait! { [VectorRoundc vec_roundc] vec_roundc_f64 (vector_double) }
+
+    impl_vec_trait! { [VectorRound vec_round] vec_round_f32 (vector_float) }
+    impl_vec_trait! { [VectorRound vec_round] vec_round_f64 (vector_double) }
+
+    impl_vec_trait! { [VectorRint vec_rint] vec_rint_f32 (vector_float) }
+    impl_vec_trait! { [VectorRint vec_rint] vec_rint_f64 (vector_double) }
+
+    #[unstable(feature = "stdarch_s390x", issue = "135681")]
+    pub trait VectorTrunc {
+        // same as vec_roundz
+        unsafe fn vec_trunc(self) -> Self;
+    }
+
+    #[unstable(feature = "stdarch_s390x", issue = "135681")]
+    pub trait VectorCeil {
+        // same as vec_roundp
+        unsafe fn vec_ceil(self) -> Self;
+    }
+
+    #[unstable(feature = "stdarch_s390x", issue = "135681")]
+    pub trait VectorFloor {
+        // same as vec_roundm
+        unsafe fn vec_floor(self) -> Self;
+    }
+
+    impl_vec_trait! { [VectorTrunc vec_trunc] simd_trunc (vector_float) }
+    impl_vec_trait! { [VectorTrunc vec_trunc] simd_trunc (vector_double) }
+
+    impl_vec_trait! { [VectorCeil vec_ceil] simd_ceil (vector_float) }
+    impl_vec_trait! { [VectorCeil vec_ceil] simd_ceil (vector_double) }
+
+    impl_vec_trait! { [VectorFloor vec_floor] simd_floor (vector_float) }
+    impl_vec_trait! { [VectorFloor vec_floor] simd_floor (vector_double) }
 }
 
 /// Vector element-wise addition.
@@ -843,6 +916,126 @@ where
     a.vec_orc(b)
 }
 
+/// Vector floor.
+#[inline]
+#[target_feature(enable = "vector")]
+#[unstable(feature = "stdarch_s390x", issue = "135681")]
+pub unsafe fn vec_floor<T>(a: T) -> T
+where
+    T: sealed::VectorFloor,
+{
+    a.vec_floor()
+}
+
+/// Vector ceil.
+#[inline]
+#[target_feature(enable = "vector")]
+#[unstable(feature = "stdarch_s390x", issue = "135681")]
+pub unsafe fn vec_ceil<T>(a: T) -> T
+where
+    T: sealed::VectorCeil,
+{
+    a.vec_ceil()
+}
+
+/// Returns a vector containing the truncated values of the corresponding elements of the given vector.
+/// Each element of the result contains the value of the corresponding element of a, truncated to an integral value.
+#[inline]
+#[target_feature(enable = "vector")]
+#[unstable(feature = "stdarch_s390x", issue = "135681")]
+pub unsafe fn vec_trunc<T>(a: T) -> T
+where
+    T: sealed::VectorTrunc,
+{
+    a.vec_trunc()
+}
+
+/// Returns a vector containing the rounded values to the nearest representable floating-point integer,
+/// using IEEE round-to-nearest rounding, of the corresponding elements of the given vector
+#[inline]
+#[target_feature(enable = "vector")]
+#[unstable(feature = "stdarch_s390x", issue = "135681")]
+pub unsafe fn vec_round<T>(a: T) -> T
+where
+    T: sealed::VectorRound,
+{
+    a.vec_round()
+}
+
+/// Returns a vector by using the current rounding mode to round every
+/// floating-point element in the given vector to integer.
+#[inline]
+#[target_feature(enable = "vector")]
+#[unstable(feature = "stdarch_s390x", issue = "135681")]
+pub unsafe fn vec_roundc<T>(a: T) -> T
+where
+    T: sealed::VectorRoundc,
+{
+    a.vec_roundc()
+}
+
+/// Returns a vector containing the largest representable floating-point integral values less
+/// than or equal to the values of the corresponding elements of the given vector.
+#[inline]
+#[target_feature(enable = "vector")]
+#[unstable(feature = "stdarch_s390x", issue = "135681")]
+pub unsafe fn vec_roundm<T>(a: T) -> T
+where
+    T: sealed::VectorFloor,
+{
+    // the IBM docs note
+    //
+    // > vec_roundm provides the same functionality as vec_floor, except that vec_roundz would not trigger the IEEE-inexact exception.
+    //
+    // but in practice `vec_floor` also does not trigger that exception, so both are equivalent
+    a.vec_floor()
+}
+
+/// Returns a vector containing the smallest representable floating-point integral values greater
+/// than or equal to the values of the corresponding elements of the given vector.
+#[inline]
+#[target_feature(enable = "vector")]
+#[unstable(feature = "stdarch_s390x", issue = "135681")]
+pub unsafe fn vec_roundp<T>(a: T) -> T
+where
+    T: sealed::VectorCeil,
+{
+    // the IBM docs note
+    //
+    // > vec_roundp provides the same functionality as vec_ceil, except that vec_roundz would not trigger the IEEE-inexact exception.
+    //
+    // but in practice `vec_ceil` also does not trigger that exception, so both are equivalent
+    a.vec_ceil()
+}
+
+/// Returns a vector containing the truncated values of the corresponding elements of the given vector.
+/// Each element of the result contains the value of the corresponding element of a, truncated to an integral value.
+#[inline]
+#[target_feature(enable = "vector")]
+#[unstable(feature = "stdarch_s390x", issue = "135681")]
+pub unsafe fn vec_roundz<T>(a: T) -> T
+where
+    T: sealed::VectorTrunc,
+{
+    // the IBM docs note
+    //
+    // > vec_roundz provides the same functionality as vec_trunc, except that vec_roundz would not trigger the IEEE-inexact exception.
+    //
+    // but in practice `vec_trunc` also does not trigger that exception, so both are equivalent
+    a.vec_trunc()
+}
+
+/// Returns a vector by using the current rounding mode to round every floating-point element in the given vector to integer.
+#[inline]
+#[target_feature(enable = "vector")]
+#[unstable(feature = "stdarch_s390x", issue = "135681")]
+pub unsafe fn vec_rint<T>(a: T) -> T
+where
+    T: sealed::VectorRint,
+{
+    a.vec_rint()
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -851,6 +1044,33 @@ mod tests {
 
     use crate::core_arch::simd::*;
     use stdarch_test::simd_test;
+
+    macro_rules! test_vec_1 {
+        { $name: ident, $fn:ident, f32x4, [$($a:expr),+], ~[$($d:expr),+] } => {
+            #[simd_test(enable = "vector")]
+            unsafe fn $name() {
+                let a: vector_float = transmute(f32x4::new($($a),+));
+
+                let d: vector_float = transmute(f32x4::new($($d),+));
+                let r = transmute(vec_cmple(vec_abs(vec_sub($fn(a), d)), vec_splats(f32::EPSILON)));
+                let e = m32x4::new(true, true, true, true);
+                assert_eq!(e, r);
+            }
+        };
+        { $name: ident, $fn:ident, $ty: ident, [$($a:expr),+], [$($d:expr),+] } => {
+            test_vec_1! { $name, $fn, $ty -> $ty, [$($a),+], [$($d),+] }
+        };
+        { $name: ident, $fn:ident, $ty: ident -> $ty_out: ident, [$($a:expr),+], [$($d:expr),+] } => {
+            #[simd_test(enable = "vector")]
+            unsafe fn $name() {
+                let a: s_t_l!($ty) = transmute($ty::new($($a),+));
+
+                let d = $ty_out::new($($d),+);
+                let r : $ty_out = transmute($fn(a));
+                assert_eq!(d, r);
+            }
+        }
+    }
 
     macro_rules! test_vec_2 {
         { $name: ident, $fn:ident, $ty: ident, [$($a:expr),+], [$($b:expr),+], [$($d:expr),+] } => {
@@ -1059,4 +1279,88 @@ mod tests {
     [0b11001100, 0b11001100, 0b11001100, 0b11001100],
     [0b00110011, 0b11110011, 0b00001100, 0b00000000],
     [!0b11111111, !0b00111111, !0b11000000, !0b11001100] }
+
+    test_vec_1! { test_vec_floor_f32, vec_floor, f32x4,
+        [1.1, 1.9, -0.5, -0.9],
+        [1.0, 1.0, -1.0, -1.0]
+    }
+
+    test_vec_1! { test_vec_floor_f64_1, vec_floor, f64x2,
+        [1.1, 1.9],
+        [1.0, 1.0]
+    }
+    test_vec_1! { test_vec_floor_f64_2, vec_floor, f64x2,
+        [-0.5, -0.9],
+        [-1.0, -1.0]
+    }
+
+    test_vec_1! { test_vec_ceil_f32, vec_ceil, f32x4,
+        [0.1, 0.5, 0.6, 0.9],
+        [1.0, 1.0, 1.0, 1.0]
+    }
+    test_vec_1! { test_vec_ceil_f64_1, vec_ceil, f64x2,
+        [0.1, 0.5],
+        [1.0, 1.0]
+    }
+    test_vec_1! { test_vec_ceil_f64_2, vec_ceil, f64x2,
+        [0.6, 0.9],
+        [1.0, 1.0]
+    }
+
+    test_vec_1! { test_vec_round_f32, vec_round, f32x4,
+        [0.1, 0.5, 0.6, 0.9],
+        [0.0, 0.0, 1.0, 1.0]
+    }
+
+    test_vec_1! { test_vec_round_f32_even_odd, vec_round, f32x4,
+        [0.5, 1.5, 2.5, 3.5],
+        [0.0, 2.0, 2.0, 4.0]
+    }
+
+    test_vec_1! { test_vec_round_f64_1, vec_round, f64x2,
+        [0.1, 0.5],
+        [0.0, 0.0]
+    }
+    test_vec_1! { test_vec_round_f64_2, vec_round, f64x2,
+        [0.6, 0.9],
+        [1.0, 1.0]
+    }
+
+    test_vec_1! { test_vec_roundc_f32, vec_roundc, f32x4,
+        [0.1, 0.5, 0.6, 0.9],
+        [0.0, 0.0, 1.0, 1.0]
+    }
+
+    test_vec_1! { test_vec_roundc_f32_even_odd, vec_roundc, f32x4,
+        [0.5, 1.5, 2.5, 3.5],
+        [0.0, 2.0, 2.0, 4.0]
+    }
+
+    test_vec_1! { test_vec_roundc_f64_1, vec_roundc, f64x2,
+        [0.1, 0.5],
+        [0.0, 0.0]
+    }
+    test_vec_1! { test_vec_roundc_f64_2, vec_roundc, f64x2,
+        [0.6, 0.9],
+        [1.0, 1.0]
+    }
+
+    test_vec_1! { test_vec_rint_f32, vec_rint, f32x4,
+        [0.1, 0.5, 0.6, 0.9],
+        [0.0, 0.0, 1.0, 1.0]
+    }
+
+    test_vec_1! { test_vec_rint_f32_even_odd, vec_rint, f32x4,
+        [0.5, 1.5, 2.5, 3.5],
+        [0.0, 2.0, 2.0, 4.0]
+    }
+
+    test_vec_1! { test_vec_rint_f64_1, vec_rint, f64x2,
+        [0.1, 0.5],
+        [0.0, 0.0]
+    }
+    test_vec_1! { test_vec_rint_f64_2, vec_rint, f64x2,
+        [0.6, 0.9],
+        [1.0, 1.0]
+    }
 }
