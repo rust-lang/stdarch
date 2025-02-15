@@ -73,8 +73,7 @@ intrinsics:
     return_type: "{type}"
     attr: [*neon-stable]
     assert_instr: [nop]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - i64
       - u64
@@ -92,8 +91,7 @@ intrinsics:
       - FnCall: [target_feature, ['enable = "neon,sha3"']]
       - FnCall: [stable, ['feature = "stdarch_neon_sha3"', 'since = "1.79.0"']]
     assert_instr: [eor3]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - int8x16_t
       - int16x8_t
@@ -114,8 +112,7 @@ intrinsics:
       - FnCall: [target_feature, ['enable = "neon,sha3"']]
       - FnCall: [stable, ['feature = "stdarch_neon_sha3"', 'since = "1.79.0"']]
     assert_instr: [eor3]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - uint8x16_t
       - uint16x8_t
@@ -134,8 +131,7 @@ intrinsics:
     return_type: "{neon_type}"
     attr: [*neon-stable]
     assert_instr: [fabd]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - float64x1_t
       - float64x2_t
@@ -152,8 +148,7 @@ intrinsics:
     return_type: "{type[1]}"
     attr: [*neon-stable]
     assert_instr: [fabd]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ['s_f32', 'f32']
       - ['d_f64', 'f64']
@@ -172,8 +167,7 @@ intrinsics:
     return_type: "{neon_type[1]}"
     attr: [*neon-stable]
     assert_instr: [sabdl]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int8x16_t, int16x8_t, int8x8_t, uint8x8_t]
     compose:
@@ -216,8 +210,7 @@ intrinsics:
           - - 'feature = "neon_intrinsics"'
             - 'since = "1.59.0"'
     assert_instr: [sabdl]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int16x8_t, int32x4_t, int16x4_t, uint16x4_t]
     compose:
@@ -260,8 +253,7 @@ intrinsics:
           - - 'feature = "neon_intrinsics"'
             - 'since = "1.59.0"'
     assert_instr: [sabdl]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int32x4_t, int64x2_t, int32x2_t, uint32x2_t]
     compose:
@@ -301,8 +293,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [cmeq]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [uint64x1_t, uint64x1_t]
       - [uint64x2_t, uint64x2_t]
@@ -320,8 +311,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [fcmeq]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [float64x1_t, uint64x1_t]
       - [float64x2_t, uint64x2_t]
@@ -335,8 +325,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [fcmp]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["s_f32", "f32", "u32"]
       - ["d_f64", "f64", "u64"]
@@ -356,8 +345,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [cmp]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["i64", "u64", "s64"]
       - ["u64", "u64", "u64"]
@@ -376,8 +364,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [cmtst]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int64x1_t, uint64x1_t, 'i64x1', 'i64x1::new(0)']
       - [int64x2_t, uint64x2_t, 'i64x2', 'i64x2::new(0, 0)']
@@ -395,8 +382,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [tst]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["i64", "u64", "s64"]
       - ["u64", "u64", "u64"]
@@ -415,8 +401,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [suqadd]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["s_s32", "i32", "u32"]
       - ["d_s64", "i64", "u64"]
@@ -434,8 +419,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [suqadd]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["b_s8", "i8", "u8", "s8"]
       - ["h_s16", "i16", "u16", "s16"]
@@ -455,8 +439,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [fabs]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - float64x1_t
       - float64x2_t
@@ -470,8 +453,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [cmgt]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int64x1_t, uint64x1_t]
       - [int64x2_t, uint64x2_t]
@@ -485,8 +467,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [cmhi]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - uint64x1_t
       - uint64x2_t
@@ -500,8 +481,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [fcmgt]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [float64x1_t, uint64x1_t]
       - [float64x2_t, uint64x2_t]
@@ -515,8 +495,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [fcmp]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["s_f32", "f32", "u32"]
       - ["d_f64", "f64", "u64"]
@@ -536,8 +515,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [cmgt]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int64x1_t, uint64x1_t]
       - [int64x2_t, uint64x2_t]
@@ -551,8 +529,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [cmge]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int64x1_t, uint64x1_t]
       - [int64x2_t, uint64x2_t]
@@ -566,8 +543,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [fcmge]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [float64x1_t, uint64x1_t]
       - [float64x2_t, uint64x2_t]
@@ -581,8 +557,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [fcmp]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["s_f32", "f32", "u32"]
       - ["d_f64", "f64", "u64"]
@@ -602,8 +577,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [cmge]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int64x1_t, uint64x1_t]
       - [int64x2_t, uint64x2_t]
@@ -617,8 +591,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [cmge]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int8x8_t, uint8x8_t, i8x8, 'i8x8::new(0, 0, 0, 0, 0, 0, 0, 0)']
       - [int8x16_t, uint8x16_t, i8x16, 'i8x16::new(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)']
@@ -639,8 +612,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [nop]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["i64", "u64"]
     compose:
@@ -657,8 +629,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [cmle]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int8x8_t, uint8x8_t, i8x8, 'i8x8::new(0, 0, 0, 0, 0, 0, 0, 0)']
       - [int8x16_t, uint8x16_t, i8x16, 'i8x16::new(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)']
@@ -682,8 +653,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [fcmle]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [float32x2_t, uint32x2_t, f32x2, 'f32x2::new(0.0, 0.0)']
       - [float32x4_t, uint32x4_t, f32x4, 'f32x4::new(0.0, 0.0, 0.0, 0.0)']
@@ -703,8 +673,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [fcmp]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["s_f32", "f32", "u32"]
       - ["d_f64", "f64", "u64"]
@@ -723,8 +692,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [cmlt]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int8x8_t, uint8x8_t, i8x8, 'i8x8::new(0, 0, 0, 0, 0, 0, 0, 0)']
       - [int8x16_t, uint8x16_t, i8x16, 'i8x16::new(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)']
@@ -748,8 +716,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [fcmlt]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [float32x2_t, uint32x2_t, f32x2, 'f32x2::new(0.0, 0.0)']
       - [float32x4_t, uint32x4_t, f32x4, 'f32x4::new(0.0, 0.0, 0.0, 0.0)']
@@ -769,8 +736,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [fcmp]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["s_f32", "f32", "u32"]
       - ["d_f64", "f64", "u64"]
@@ -789,8 +755,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [asr]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["i64", "u64"]
     compose:
@@ -807,8 +772,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [facgt]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [float64x1_t, uint64x1_t]
       - [float64x2_t, uint64x2_t]
@@ -826,8 +790,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [facgt]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["s_f32", "f32", "u32", i32]
       - ["d_f64", "f64", "u64", i64]
@@ -845,8 +808,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [facge]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [float64x1_t, uint64x1_t]
       - [float64x2_t, uint64x2_t]
@@ -864,8 +826,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [facge]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["s_f32", "f32", "u32", i32]
       - ["d_f64", "f64", "u64", i64]
@@ -883,8 +844,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [facgt]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [float64x1_t, uint64x1_t]
       - [float64x2_t, uint64x2_t]
@@ -898,8 +858,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [facgt]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["s_f32", "f32", "u32"]
       - ["d_f64", "f64", "u64"]
@@ -913,8 +872,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [facge]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [float64x1_t, uint64x1_t]
       - [float64x2_t, uint64x2_t]
@@ -928,8 +886,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [facge]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["s_f32", "f32", "u32"]
       - ["d_f64", "f64", "u64"]
@@ -943,8 +900,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [scvtf]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int64x1_t, float64x1_t]
       - [int64x2_t, float64x2_t]
@@ -958,8 +914,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [scvtf]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["s_f32", "i32", "f32", s32]
       - ["d_f64", "i64", "f64", s64]
@@ -973,8 +928,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [ucvtf]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [uint64x1_t, float64x1_t]
       - [uint64x2_t, float64x2_t]
@@ -988,8 +942,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [ucvtf]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["u32", "f32", "s_f32"]
       - ["u64", "f64", "d_f64"]
@@ -1005,8 +958,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['1']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const N: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int64x1_t, float64x1_t]
       - [int64x2_t, float64x2_t]
@@ -1020,7 +972,7 @@ intrinsics:
           links:
             - link: "llvm.aarch64.neon.vcvtfxs2fp.{neon_type[1]}.{neon_type[0]}"
               arch: aarch64,arm64ec
-      - FnCall: ["_vcvt{neon_type[1].N}_{neon_type[0]}", [a, N]]
+      - FnCall: ["_vcvt{neon_type[1].N}_{neon_type[0]}", [a, N], [], true]
 
   - name: "vcvt{type[2]}"
     doc: "Fixed-point convert to floating-point"
@@ -1031,8 +983,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['1']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const N: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["i32", "f32", 's_n_f32_s32', 'N >= 1 && N <= 32']
       - ["i64", "f64", 'd_n_f64_s64', 'N >= 1 && N <= 64']
@@ -1046,7 +997,7 @@ intrinsics:
           links:
             - link: "llvm.aarch64.neon.vcvtfxs2fp.{type[1]}.{type[0]}"
               arch: aarch64,arm64ec
-      - FnCall: ["_vcvt{type[2]}", [a, N]]
+      - FnCall: ["_vcvt{type[2]}", [a, N], [], true]
 
   - name: "vcvt{neon_type[1].N}_{neon_type[0]}"
     doc: "Fixed-point convert to floating-point"
@@ -1057,8 +1008,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['1']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const N: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [uint64x1_t, float64x1_t]
       - [uint64x2_t, float64x2_t]
@@ -1072,7 +1022,7 @@ intrinsics:
           links:
             - link: "llvm.aarch64.neon.vcvtfxu2fp.{neon_type[1]}.{neon_type[0]}"
               arch: aarch64,arm64ec
-      - FnCall: ["_vcvt{neon_type[1].N}_{neon_type[0]}", ["a.as_signed()", N]]
+      - FnCall: ["_vcvt{neon_type[1].N}_{neon_type[0]}", ["a.as_signed()", N], [], true]
 
   - name: "vcvt{type[2]}"
     doc: "Fixed-point convert to floating-point"
@@ -1083,8 +1033,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['1']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const N: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["u32", "f32", 's_n_f32_u32', 'N >= 1 && N <= 32']
       - ["u64", "f64", 'd_n_f64_u64', 'N >= 1 && N <= 64']
@@ -1098,7 +1047,7 @@ intrinsics:
           links:
             - link: "llvm.aarch64.neon.vcvtfxu2fp.{type[1]}.{type[0]}"
               arch: aarch64,arm64ec
-      - FnCall: ["_vcvt{type[2]}", ["a.as_signed()", N]]
+      - FnCall: ["_vcvt{type[2]}", ["a.as_signed()", N], [], true]
 
   - name: "vcvt{type[2]}"
     doc: "Fixed-point convert to floating-point"
@@ -1107,8 +1056,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [fcvtzs]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["f32", "i32", "s_s32_f32", "32"]
       - ["f64", "i64", "d_s64_f64", "64"]
@@ -1122,8 +1070,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [fcvtzu]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["f32", "u32", "s_u32_f32"]
       - ["f64", "u64", "d_u64_f64"]
@@ -1137,8 +1084,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [fcvtl]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [float32x2_t, float64x2_t]
     compose:
@@ -1151,8 +1097,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [fcvtl]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [float32x4_t, float64x2_t]
     compose:
@@ -1173,8 +1118,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [fcvtn]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [float64x2_t, float32x2_t]
     compose:
@@ -1187,8 +1131,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [fcvtn]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [float32x2_t, float64x2_t, float32x4_t]
     compose:
@@ -1205,8 +1148,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [fcvtxn]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [float64x2_t, float32x2_t]
     compose:
@@ -1223,8 +1165,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [fcvtxn]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["f64", "f32"]
     compose:
@@ -1242,8 +1183,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [fcvtxn]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [float32x2_t, float64x2_t, float32x4_t]
     compose:
@@ -1262,8 +1202,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['1']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const N: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [float64x1_t, int64x1_t, _n_s64_f64, '64']
       - [float64x2_t, int64x2_t, q_n_s64_f64, '64']
@@ -1275,7 +1214,7 @@ intrinsics:
           links:
             - link: "llvm.aarch64.neon.vcvtfp2fxs.{type[1]}.{type[0]}"
               arch: aarch64,arm64ec
-      - FnCall: ["_vcvt{type[2]}", [a, N]]
+      - FnCall: ["_vcvt{type[2]}", [a, N], [], true]
 
   - name: "vcvt{type[2]}"
     doc: "Floating-point convert to fixed-point, rounding toward zero"
@@ -1286,8 +1225,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['1']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const N: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["f32", "i32", s_n_s32_f32, '32']
       - ["f64", "i64", d_n_s64_f64, '64']
@@ -1299,7 +1237,7 @@ intrinsics:
           links:
             - link: "llvm.aarch64.neon.vcvtfp2fxs.{type[1]}.{type[0]}"
               arch: aarch64,arm64ec
-      - FnCall: ["_vcvt{type[2]}", [a, N]]
+      - FnCall: ["_vcvt{type[2]}", [a, N], [], true]
 
   - name: "vcvt{type[2]}"
     doc: "Floating-point convert to fixed-point, rounding toward zero"
@@ -1310,8 +1248,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['1']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const N: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [float64x1_t, uint64x1_t, _n_u64_f64, '64']
       - [float64x2_t, uint64x2_t, q_n_u64_f64, '64']
@@ -1323,7 +1260,7 @@ intrinsics:
           links:
             - link: "llvm.aarch64.neon.vcvtfp2fxu.{type[1]}.{type[0]}"
               arch: aarch64,arm64ec
-      - FnCall: ["_vcvt{type[2]}", [a, N]]
+      - FnCall: ["_vcvt{type[2]}", [a, N], [], true]
 
   - name: "vcvt{type[2]}"
     doc: "Floating-point convert to fixed-point, rounding toward zero"
@@ -1334,8 +1271,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['1']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const N: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["f32", "u32", s_n_u32_f32, '32']
       - ["f64", "u64", d_n_u64_f64, '64']
@@ -1347,7 +1283,7 @@ intrinsics:
           links:
             - link: "llvm.aarch64.neon.vcvtfp2fxu.{type[1]}.{type[0]}"
               arch: aarch64,arm64ec
-      - FnCall: ["_vcvt{type[2]}", [a, N]]
+      - FnCall: ["_vcvt{type[2]}", [a, N], [], true]
 
   - name: "vcvta{type[2]}"
     doc: "Floating-point convert to signed integer, rounding to nearest with ties to away"
@@ -1356,8 +1292,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [fcvtas]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [float32x2_t, int32x2_t, _s32_f32]
       - [float32x4_t, int32x4_t, q_s32_f32]
@@ -1377,8 +1312,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [fcvtas]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["f32", "i32", 's_s32_f32']
       - ["f64", "i64", 'd_s64_f64']
@@ -1396,8 +1330,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [fcvtau]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["f32", "u32", 's_u32_f32']
       - ["f64", "u64", 'd_u64_f64']
@@ -1415,8 +1348,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [fcvtns]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [float32x2_t, int32x2_t]
       - [float32x4_t, int32x4_t]
@@ -1436,8 +1368,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [fcvtns]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["f32", "i32", 's_s32_f32']
       - ["f64", "i64", 'd_s64_f64']
@@ -1455,8 +1386,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [fcvtms]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [float32x2_t, int32x2_t]
       - [float32x4_t, int32x4_t]
@@ -1476,8 +1406,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [fcvtms]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["f32", "i32", 's_s32_f32']
       - ["f64", "i64", 'd_s64_f64']
@@ -1495,8 +1424,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [fcvtps]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [float32x2_t, int32x2_t]
       - [float32x4_t, int32x4_t]
@@ -1516,8 +1444,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [fcvtps]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["f32", "i32", 's_s32_f32']
       - ["f64", "i64", 'd_s64_f64']
@@ -1535,8 +1462,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [fcvtnu]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [float32x2_t, uint32x2_t]
       - [float32x4_t, uint32x4_t]
@@ -1556,8 +1482,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [fcvtnu]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["f32", "u32", 's_u32_f32']
       - ["f64", "u64", 'd_u64_f64']
@@ -1575,8 +1500,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [fcvtmu]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [float32x2_t, uint32x2_t]
       - [float32x4_t, uint32x4_t]
@@ -1596,8 +1520,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [fcvtmu]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["f32", "u32", s_u32_f32]
       - ["f64", "u64", d_u64_f64]
@@ -1615,8 +1538,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [fcvtpu]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [float32x2_t, uint32x2_t]
       - [float32x4_t, uint32x4_t]
@@ -1636,8 +1558,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [fcvtpu]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["f32", "u32", s_u32_f32, 'i32']
       - ["f64", "u64", d_u64_f64, 'u64']
@@ -1660,8 +1581,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['1']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const N: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - poly64x2_t
       - float64x2_t
@@ -1678,8 +1598,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['1']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const N: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [poly64x1_t, poly64x2_t]
       - [float64x1_t, float64x2_t]
@@ -1696,8 +1615,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['1']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const N: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - poly64x1_t
       - float64x1_t
@@ -1714,8 +1632,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['1']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const N: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int64x1_t, "i64"]
       - [uint64x1_t, "u64"]
@@ -1733,8 +1650,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['1']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const N: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [poly64x2_t, poly64x1_t, 'u64']
       - [float64x2_t, float64x1_t, 'f64']
@@ -1753,8 +1669,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['1']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const N: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int32x2_t, "i32", s_lane_s32]
       - [int64x2_t, "i64", d_laneq_s64]
@@ -1775,8 +1690,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['1']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const N: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int8x8_t, "i8", b_lane_s8]
       - [int16x8_t, "i16", h_laneq_s16]
@@ -1797,8 +1711,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['1']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const N: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int8x16_t, "i8", b_laneq_s8]
       - [uint8x16_t, "u8", b_laneq_u8]
@@ -1816,8 +1729,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['1']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const N: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int16x4_t, "i16", h_lane_s16]
       - [int32x4_t, "i32", s_laneq_s32]
@@ -1838,11 +1750,10 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['2']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const N: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
-      - [poly64x2_t, ' static_assert_uimm_bits!(N, 1); match N & 0b1 { 0 => simd_shuffle!(a, b, [0, 1]), 1 => simd_shuffle!(a, b, [1, 2]), _ => unreachable_unchecked(), }']
-      - [float64x2_t, ' static_assert_uimm_bits!(N, 1); match N & 0b1 { 0 => simd_shuffle!(a, b, [0, 1]), 1 => simd_shuffle!(a, b, [1, 2]), _ => unreachable_unchecked(), }']
+      - [poly64x2_t, ' static_assert_uimm_bits!(N, 1); unsafe { match N & 0b1 { 0 => simd_shuffle!(a, b, [0, 1]), 1 => simd_shuffle!(a, b, [1, 2]), _ => unreachable_unchecked(), } }']
+      - [float64x2_t, ' static_assert_uimm_bits!(N, 1); unsafe { match N & 0b1 { 0 => simd_shuffle!(a, b, [0, 1]), 1 => simd_shuffle!(a, b, [1, 2]), _ => unreachable_unchecked(), } }']
     compose:
       - Identifier: ["{type[1]}", Symbol]
 
@@ -1853,8 +1764,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [fmul]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - float64x1_t
       - float64x2_t
@@ -1868,8 +1778,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [smlal2]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int16x8_t, int8x16_t, int8x8_t, '[8, 9, 10, 11, 12, 13, 14, 15]', '[8, 9, 10, 11, 12, 13, 14, 15]']
       - [int32x4_t, int16x8_t, int16x4_t, '[4, 5, 6, 7]', '[4, 5, 6, 7]']
@@ -1886,8 +1795,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [umlal2]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [uint16x8_t, uint8x16_t, uint8x8_t, '[8, 9, 10, 11, 12, 13, 14, 15]']
       - [uint32x4_t, uint16x8_t, uint16x4_t, '[4, 5, 6, 7]']
@@ -1910,8 +1818,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [smlsl2]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int16x8_t, int8x16_t, int8x8_t, '[8, 9, 10, 11, 12, 13, 14, 15]']
       - [int32x4_t, int16x8_t, int16x4_t, '[4, 5, 6, 7]']
@@ -1934,8 +1841,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [umlsl2]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [uint16x8_t, uint8x16_t, uint8x8_t, '[8, 9, 10, 11, 12, 13, 14, 15]']
       - [uint32x4_t, uint16x8_t, uint16x4_t, '[4, 5, 6, 7]']
@@ -1951,8 +1857,7 @@ intrinsics:
     return_type: "{neon_type[2]}"
     attr: [*neon-stable]
     assert_instr: [xtn2]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int8x8_t, int16x8_t, int8x16_t, '[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]']
       - [int16x4_t, int32x4_t, int16x8_t, '[0, 1, 2, 3, 4, 5, 6, 7]']
@@ -1979,8 +1884,7 @@ intrinsics:
     return_type: "{neon_type}"
     attr: [*neon-stable]
     assert_instr: [neg]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - int64x1_t
       - int64x2_t
@@ -1995,8 +1899,7 @@ intrinsics:
     return_type: "{type}"
     attr: [*neon-stable]
     assert_instr: [neg]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - i64
     compose:
@@ -2012,8 +1915,7 @@ intrinsics:
           - - 'feature = "neon_intrinsics"'
             - 'since = "1.59.0"'
     assert_instr: [fneg]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - float64x1_t
       - float64x2_t
@@ -2028,8 +1930,7 @@ intrinsics:
     return_type: "{type[0]}"
     attr: [*neon-stable]
     assert_instr: [sqneg]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [i8, 'b_s8', 's8']
       - [i16, 'h_s16', 's16']
@@ -2049,8 +1950,7 @@ intrinsics:
     return_type: "{type[0]}"
     attr: [*neon-stable]
     assert_instr: [sqneg]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int64x1_t, 'i64']
       - [int64x2_t, 'i64']
@@ -2067,8 +1967,7 @@ intrinsics:
     return_type: "{type[0]}"
     attr: [*neon-stable]
     assert_instr: [sqsub]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [i32, 's_s32', 'i32']
       - [i64, 'd_s64', 'i64']
@@ -2085,8 +1984,7 @@ intrinsics:
     return_type: "{type[0]}"
     attr: [*neon-stable]
     assert_instr: [uqsub]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [u32, 's_u32', 'i32']
       - [u64, 'd_u64', 'i64']
@@ -2103,8 +2001,7 @@ intrinsics:
     return_type: "{type[0]}"
     attr: [*neon-stable]
     assert_instr: [sqsub]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [i8, int8x8_t, s8, 'b_s8']
       - [i16, int16x4_t, s16, 'h_s16']
@@ -2135,8 +2032,7 @@ intrinsics:
     return_type: "{type[0]}"
     attr: [*neon-stable]
     assert_instr: [uqsub]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [u8, uint8x8_t, u8, 'b_u8']
       - [u16, uint16x4_t, u16, 'h_u16']
@@ -2167,8 +2063,7 @@ intrinsics:
     return_type: "{neon_type}"
     attr: [*neon-stable]
     assert_instr: [rbit]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - int8x8_t
       - int8x16_t
@@ -2185,8 +2080,7 @@ intrinsics:
     return_type: "{neon_type[0]}"
     attr: [*neon-stable]
     assert_instr: [rbit]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [uint8x8_t, int8x8_t]
       - [uint8x16_t, int8x16_t]
@@ -2205,8 +2099,7 @@ intrinsics:
     return_type: "{neon_type}"
     attr: [*neon-stable]
     assert_instr: [frintx]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - float32x2_t
       - float32x4_t
@@ -2225,8 +2118,7 @@ intrinsics:
     return_type: "{neon_type}"
     attr: [*neon-stable]
     assert_instr: [frinta]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - float32x2_t
       - float32x4_t
@@ -2245,8 +2137,7 @@ intrinsics:
     return_type: "{neon_type}"
     attr: [*neon-stable]
     assert_instr: [frintn]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - float64x1_t
       - float64x2_t
@@ -2263,8 +2154,7 @@ intrinsics:
     return_type: "{type}"
     attr: [*neon-stable]
     assert_instr: [frintn]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - f32
     compose:
@@ -2280,8 +2170,7 @@ intrinsics:
     return_type: "{neon_type}"
     attr: [*neon-stable]
     assert_instr: [frintm]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - float32x2_t
       - float32x4_t
@@ -2300,8 +2189,7 @@ intrinsics:
     return_type: "{neon_type}"
     attr: [*neon-stable]
     assert_instr: [frintp]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - float32x2_t
       - float32x4_t
@@ -2320,8 +2208,7 @@ intrinsics:
     return_type: "{neon_type}"
     attr: [*neon-stable]
     assert_instr: [frintz]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - float32x2_t
       - float32x4_t
@@ -2340,8 +2227,7 @@ intrinsics:
     return_type: "{neon_type}"
     attr: [*neon-stable]
     assert_instr: [frinti]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - float32x2_t
       - float32x4_t
@@ -2360,8 +2246,7 @@ intrinsics:
     return_type: "{type[0]}"
     attr: [*neon-stable]
     assert_instr: [uqadd]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [u32, 's_u32', i32]
       - [u64, 'd_u64', i64]
@@ -2378,8 +2263,7 @@ intrinsics:
     return_type: "{type[0]}"
     attr: [*neon-stable]
     assert_instr: [sqadd]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [i32, 's_s32', i32]
       - [i64, 'd_s64', i64]
@@ -2396,8 +2280,7 @@ intrinsics:
     return_type: "{type[0]}"
     attr: [*neon-stable]
     assert_instr: [sqadd]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [i8, int8x8_t, 'b_s8']
       - [i16, int16x4_t, 'h_s16']
@@ -2428,8 +2311,7 @@ intrinsics:
     return_type: "{type[0]}"
     attr: [*neon-stable]
     assert_instr: [uqadd]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [u8, uint8x8_t, 'b_u8']
       - [u16, uint16x4_t, 'h_u16']
@@ -4080,8 +3962,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['3']]
       - FnCall: [unstable, ['feature = "stdarch_neon_i8mm"', 'issue = "117223"']]
     static_defs: ["const LANE: i32"]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int32x2_t, uint8x8_t, int8x16_t, '[LANE as u32, LANE as u32]']
       - [int32x4_t, uint8x16_t, int8x16_t, '[LANE as u32, LANE as u32, LANE as u32, LANE as u32]']
@@ -4101,8 +3982,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['3']]
       - FnCall: [unstable, ['feature = "stdarch_neon_i8mm"', 'issue = "117223"']]
     static_defs: ["const LANE: i32"]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int32x2_t, int8x8_t, uint8x16_t, '[LANE as u32, LANE as u32]', uint32x2_t]
       - [int32x4_t, int8x16_t, uint8x16_t, '[LANE as u32, LANE as u32, LANE as u32, LANE as u32]', uint32x4_t]
@@ -4124,8 +4004,7 @@ intrinsics:
     return_type: "{neon_type}"
     attr: [*neon-stable]
     assert_instr: [fmul]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - float64x1_t
       - float64x2_t
@@ -4138,8 +4017,7 @@ intrinsics:
     return_type: "{neon_type[3]}"
     attr: [*neon-stable]
     assert_instr: [smull2]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int8x16_t, int8x8_t, '[8, 9, 10, 11, 12, 13, 14, 15]', int16x8_t]
       - [int16x8_t, int16x4_t, '[4, 5, 6, 7]', int32x4_t]
@@ -4161,8 +4039,7 @@ intrinsics:
     return_type: "{neon_type[3]}"
     attr: [*neon-stable]
     assert_instr: [umull2]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [uint8x16_t, uint8x8_t, '[8, 9, 10, 11, 12, 13, 14, 15]', uint16x8_t]
       - [uint16x8_t, uint16x4_t, '[4, 5, 6, 7]', uint32x4_t]
@@ -4185,8 +4062,7 @@ intrinsics:
     attr:
       - *neon-aes
       - *neon-stable
-    safety:
-      unsafe: [neon]
+    safety: safe
     assert_instr: [pmull]
     types:
       - ["p64", "p128"]
@@ -4205,8 +4081,7 @@ intrinsics:
     return_type: "{neon_type[3]}"
     attr:
       - *neon-stable
-    safety:
-      unsafe: [neon]
+    safety: safe
     assert_instr: [pmull]
     types:
       - [poly8x16_t, poly8x8_t, '[8, 9, 10, 11, 12, 13, 14, 15]', poly16x8_t]
@@ -4228,8 +4103,7 @@ intrinsics:
     attr:
       - *neon-aes
       - *neon-stable
-    safety:
-      unsafe: [neon]
+    safety: safe
     assert_instr: [pmull]
     types:
       - [poly64x2_t, "p128"]
@@ -4245,8 +4119,7 @@ intrinsics:
     return_type: "{neon_type}"
     attr: [*neon-stable]
     assert_instr: [fmulx]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - float32x2_t
       - float32x4_t
@@ -4265,8 +4138,7 @@ intrinsics:
     return_type: "{type[1]}"
     attr: [*neon-stable]
     assert_instr: [fmulx]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["s_f32", "f32"]
       - ["d_f64", "f64"]
@@ -4286,8 +4158,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['2']]
       - *neon-stable
     static_defs: ["const LANE: i32"]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - float64x1_t
     compose:
@@ -4311,8 +4182,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['2']]
       - *neon-stable
     static_defs: ["const LANE: i32"]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["q_lane_f64", float64x2_t, float64x1_t, "q_f64", '[LANE as u32, LANE as u32]']
     compose:
@@ -4335,8 +4205,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['2']]
       - *neon-stable
     static_defs: ["const LANE: i32"]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["d_lane_f64", "f64", float64x1_t, "d_f64", 'LANE as u32']
     compose:
@@ -4358,8 +4227,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['2']]
       - *neon-stable
     static_defs: ["const LANE: i32"]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [float64x1_t, float64x2_t]
     compose:
@@ -4383,8 +4251,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['2']]
       - *neon-stable
     static_defs: ["const LANE: i32"]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ['_lane_f32', float32x2_t, float32x2_t, '1', '_f32', '[LANE as u32, LANE as u32]']
       - ['_laneq_f32', float32x2_t, float32x4_t, '2', '_f32', '[LANE as u32, LANE as u32]']
@@ -4411,8 +4278,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['2']]
       - *neon-stable
     static_defs: ["const LANE: i32"]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ['s_lane_f32', f32, float32x2_t, '1', 's_f32', 'LANE as u32']
       - ['s_laneq_f32', f32, float32x4_t, '2', 's_f32', 'LANE as u32']
@@ -4434,8 +4300,7 @@ intrinsics:
     attr:
       - *neon-stable
     assert_instr: [fmadd]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - float64x1_t
     compose:
@@ -4445,7 +4310,7 @@ intrinsics:
           links:
             - link: "llvm.fma.{neon_type}"
               arch: aarch64,arm64ec
-      - FnCall: ["_vfma{neon_type.no}", [b, c, a]]
+      - FnCall: ["_vfma{neon_type.no}", [b, c, a], [], true]
 
   - name: "vfma{neon_type.no}"
     doc: Floating-point fused Multiply-Add to accumulator(vector)
@@ -4454,8 +4319,7 @@ intrinsics:
     attr:
       - *neon-stable
     assert_instr: [fmla]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - float64x2_t
     compose:
@@ -4465,7 +4329,7 @@ intrinsics:
           links:
             - link: "llvm.fma.{neon_type}"
               arch: aarch64,arm64ec
-      - FnCall: ["_vfma{neon_type.no}", [b, c, a]]
+      - FnCall: ["_vfma{neon_type.no}", [b, c, a], [], true]
 
   - name: "vfma_n_f64"
     doc: Floating-point fused Multiply-Add to accumulator(vector)
@@ -4474,8 +4338,7 @@ intrinsics:
     attr:
       - *neon-stable
     assert_instr: [fmadd]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [float64x1_t, f64]
     compose:
@@ -4497,8 +4360,7 @@ intrinsics:
           - - 'feature = "neon_intrinsics"'
             - 'since = "1.59.0"'
     assert_instr: [fmla]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [float64x2_t, f64]
     compose:
@@ -4516,8 +4378,7 @@ intrinsics:
     return_type: "{neon_type}"
     attr: [*neon-stable]
     assert_instr: [fdiv]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - float32x2_t
       - float32x4_t
@@ -4532,8 +4393,7 @@ intrinsics:
     return_type: "{neon_type}"
     attr: [*neon-stable]
     assert_instr: [fsub]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - float64x1_t
       - float64x2_t
@@ -4546,8 +4406,7 @@ intrinsics:
     return_type: "{type[1]}"
     attr: [*neon-stable]
     assert_instr: [nop]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ['d_s64', 'i64']
       - ['d_u64', 'u64']
@@ -4564,8 +4423,7 @@ intrinsics:
           - - 'feature = "neon_intrinsics"'
             - 'since = "1.59.0"'
     assert_instr: [faddp]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [float32x2_t, f32]
       - [float32x4_t, f32]
@@ -4583,8 +4441,7 @@ intrinsics:
     return_type: "{type[1]}"
     attr: [*neon-stable]
     assert_instr: [saddlv]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int16x4_t, i32]
       - [int16x8_t, i32]
@@ -4602,8 +4459,7 @@ intrinsics:
     return_type: "i64"
     attr: [*neon-stable]
     assert_instr: [saddlp]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - int32x2_t
     compose:
@@ -4619,8 +4475,7 @@ intrinsics:
     return_type: "{type[1]}"
     attr: [*neon-stable]
     assert_instr: [uaddlv]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [uint16x4_t, u32, i32]
       - [uint16x8_t, u32, i32]
@@ -4638,8 +4493,7 @@ intrinsics:
     return_type: "{type[1]}"
     attr: [*neon-stable]
     assert_instr: [uaddlp]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [uint32x2_t, u64, i64]
     compose:
@@ -4655,8 +4509,7 @@ intrinsics:
     return_type: "{neon_type[0]}"
     attr: [*neon-stable]
     assert_instr: [ssubw]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int16x8_t, int8x16_t, int8x8_t, '[8, 9, 10, 11, 12, 13, 14, 15]']
       - [int32x4_t, int16x8_t, int16x4_t, '[4, 5, 6, 7]']
@@ -4677,8 +4530,7 @@ intrinsics:
     return_type: "{neon_type[0]}"
     attr: [*neon-stable]
     assert_instr: [usubw]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [uint16x8_t, uint8x16_t, uint8x8_t, '[8, 9, 10, 11, 12, 13, 14, 15]']
       - [uint32x4_t, uint16x8_t, uint16x4_t, '[4, 5, 6, 7]']
@@ -4699,8 +4551,7 @@ intrinsics:
     return_type: "{neon_type[1]}"
     attr: [*neon-stable]
     assert_instr: [ssubl]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int8x16_t, int16x8_t, '[8, 9, 10, 11, 12, 13, 14, 15]', int8x8_t]
       - [int16x8_t, int32x4_t, '[4, 5, 6, 7]', int16x4_t]
@@ -4730,8 +4581,7 @@ intrinsics:
     return_type: "{neon_type[1]}"
     attr: [*neon-stable]
     assert_instr: [usubl]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [uint8x16_t, uint16x8_t, '[8, 9, 10, 11, 12, 13, 14, 15]', uint8x8_t]
       - [uint16x8_t, uint32x4_t, '[4, 5, 6, 7]', uint16x4_t]
@@ -4763,8 +4613,7 @@ intrinsics:
       - FnCall: [target_feature, ['enable = "neon,sha3"']]
       - FnCall: [stable, ['feature = "stdarch_neon_sha3"', 'since = "1.79.0"']]
     assert_instr: [bcax]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - int8x16_t
       - int16x8_t
@@ -4785,8 +4634,7 @@ intrinsics:
       - FnCall: [target_feature, ['enable = "neon,sha3"']]
       - FnCall: [stable, ['feature = "stdarch_neon_sha3"', 'since = "1.79.0"']]
     assert_instr: [bcax]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - uint8x16_t
       - uint16x8_t
@@ -4807,8 +4655,7 @@ intrinsics:
       - FnCall: [target_feature, ['enable = "neon,fcma"']]
       - *neon-unstable-fcma
     assert_instr: [fcadd]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - float32x2_t
       - float32x4_t
@@ -4828,8 +4675,7 @@ intrinsics:
       - FnCall: [target_feature, ['enable = "neon,fcma"']]
       - *neon-unstable-fcma
     assert_instr: [fcadd]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - float32x2_t
       - float32x4_t
@@ -4849,8 +4695,7 @@ intrinsics:
       - FnCall: [target_feature, ['enable = "neon,fcma"']]
       - *neon-unstable-fcma
     assert_instr: [fcmla]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - float32x2_t
       - float32x4_t
@@ -4870,8 +4715,7 @@ intrinsics:
       - FnCall: [target_feature, ['enable = "neon,fcma"']]
       - *neon-unstable-fcma
     assert_instr: [fcmla]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - float32x2_t
       - float32x4_t
@@ -4891,8 +4735,7 @@ intrinsics:
       - FnCall: [target_feature, ['enable = "neon,fcma"']]
       - *neon-unstable-fcma
     assert_instr: [fcmla]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - float32x2_t
       - float32x4_t
@@ -4914,8 +4757,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['3']]
       - *neon-unstable-fcma
     static_defs: ["const LANE: i32"]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [float32x2_t, float32x4_t, '[2 * LANE as u32, 2 * LANE as u32 + 1]']
       - [float32x4_t, float32x4_t, '[2 * LANE as u32, 2 * LANE as u32 + 1, 2 * LANE as u32, 2 * LANE as u32 + 1]']
@@ -4937,8 +4779,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['3']]
       - *neon-unstable-fcma
     static_defs: ["const LANE: i32"]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [float32x2_t, float32x4_t, '[2 * LANE as u32, 2 * LANE as u32 + 1]']
       - [float32x4_t, float32x4_t, '[2 * LANE as u32, 2 * LANE as u32 + 1, 2 * LANE as u32, 2 * LANE as u32 + 1]']
@@ -4960,8 +4801,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['3']]
       - *neon-unstable-fcma
     static_defs: ["const LANE: i32"]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [float32x2_t, float32x2_t, '[2 * LANE as u32, 2 * LANE as u32 + 1]']
       - [float32x4_t, float32x2_t, '[2 * LANE as u32, 2 * LANE as u32 + 1, 2 * LANE as u32, 2 * LANE as u32 + 1]']
@@ -4981,8 +4821,7 @@ intrinsics:
       - FnCall: [target_feature, ['enable = "neon,fcma"']]
       - *neon-unstable-fcma
     assert_instr: [fcmla]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - float32x2_t
       - float32x4_t
@@ -5004,8 +4843,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['3']]
       - *neon-unstable-fcma
     static_defs: ["const LANE: i32"]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [float32x2_t, float32x4_t, '[2 * LANE as u32, 2 * LANE as u32 + 1]']
       - [float32x4_t, float32x4_t, '[2 * LANE as u32, 2 * LANE as u32 + 1, 2 * LANE as u32, 2 * LANE as u32 + 1]']
@@ -5027,8 +4865,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['3']]
       - *neon-unstable-fcma
     static_defs: ["const LANE: i32"]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [float32x2_t, float32x2_t, '[2 * LANE as u32, 2 * LANE as u32 + 1]', '_rot180_lane_f32']
       - [float32x4_t, float32x2_t, '[2 * LANE as u32, 2 * LANE as u32 + 1, 2 * LANE as u32, 2 * LANE as u32 + 1]', 'q_rot180_lane_f32']
@@ -5050,8 +4887,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['3']]
       - *neon-unstable-fcma
     static_defs: ["const LANE: i32"]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [float32x2_t, float32x4_t, '[2 * LANE as u32, 2 * LANE as u32 + 1]']
       - [float32x4_t, float32x4_t, '[2 * LANE as u32, 2 * LANE as u32 + 1, 2 * LANE as u32, 2 * LANE as u32 + 1]']
@@ -5073,8 +4909,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['3']]
       - *neon-unstable-fcma
     static_defs: ["const LANE: i32"]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [float32x2_t, float32x2_t, '[2 * LANE as u32, 2 * LANE as u32 + 1]']
       - [float32x4_t, float32x2_t, '[2 * LANE as u32, 2 * LANE as u32 + 1, 2 * LANE as u32, 2 * LANE as u32 + 1]']
@@ -5096,8 +4931,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['3']]
       - *neon-unstable-fcma
     static_defs: ["const LANE: i32"]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [float32x2_t, float32x2_t, '[2 * LANE as u32, 2 * LANE as u32 + 1]']
       - [float32x4_t, float32x2_t, '[2 * LANE as u32, 2 * LANE as u32 + 1, 2 * LANE as u32, 2 * LANE as u32 + 1]']
@@ -5116,8 +4950,7 @@ intrinsics:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [sdot, 'LANE = 0']]}]]
       - FnCall: [rustc_legacy_const_generics, ['3']]
       - FnCall: [unstable, ['feature = "stdarch_neon_dotprod"', 'issue = "117224"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int32x2_t, int8x8_t, int8x16_t, int32x4_t, '[LANE as u32, LANE as u32]']
       - [int32x4_t, int8x16_t, int8x16_t, int32x4_t, '[LANE as u32, LANE as u32, LANE as u32, LANE as u32]']
@@ -5147,8 +4980,7 @@ intrinsics:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [udot, 'LANE = 0']]}]]
       - FnCall: [rustc_legacy_const_generics, ['3']]
       - FnCall: [unstable, ['feature = "stdarch_neon_dotprod"', 'issue = "117224"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [uint32x2_t, uint8x8_t, uint8x16_t, uint32x4_t, '[LANE as u32, LANE as u32]']
       - [uint32x4_t, uint8x16_t, uint8x16_t, uint32x4_t, '[LANE as u32, LANE as u32, LANE as u32, LANE as u32]']
@@ -5174,8 +5006,7 @@ intrinsics:
     return_type: "{neon_type}"
     attr: [*neon-stable]
     assert_instr: [fmax]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - float64x1_t
       - float64x2_t
@@ -5192,8 +5023,7 @@ intrinsics:
     return_type: "{neon_type}"
     attr: [*neon-stable]
     assert_instr: [fmaxnm]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - float64x1_t
       - float64x2_t
@@ -5210,8 +5040,7 @@ intrinsics:
     return_type: "{type[1]}"
     attr: [*neon-stable]
     assert_instr: [fmaxnmp]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [float32x2_t, f32]
       - [float64x2_t, f64]
@@ -5228,8 +5057,7 @@ intrinsics:
     return_type: "{type[1]}"
     attr: [*neon-stable]
     assert_instr: [fmaxnmv]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [float32x4_t, f32]
     compose:
@@ -5245,8 +5073,7 @@ intrinsics:
     return_type: "{type[2]}"
     attr: [*neon-stable]
     assert_instr: [fmaxp]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["s_f32", float32x2_t, f32]
       - ["qd_f64", float64x2_t, f64]
@@ -5263,8 +5090,7 @@ intrinsics:
     return_type: "{neon_type}"
     attr: [*neon-stable]
     assert_instr: [fmin]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - float64x1_t
       - float64x2_t
@@ -5281,8 +5107,7 @@ intrinsics:
     return_type: "{neon_type}"
     attr: [*neon-stable]
     assert_instr: [fminnm]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - float64x1_t
       - float64x2_t
@@ -5300,8 +5125,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [fminnmp]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [float32x2_t, "f32"]
       - [float64x2_t, "f64"]
@@ -5319,8 +5143,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [fminnmv]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [float32x4_t, "f32"]
     compose:
@@ -5336,8 +5159,7 @@ intrinsics:
     return_type: "{neon_type[1]}"
     attr: [*neon-stable]
     assert_instr: [sxtl2]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int8x16_t, int16x8_t, int8x8_t, '[8, 9, 10, 11, 12, 13, 14, 15]']
       - [int16x8_t, int32x4_t, int16x4_t, '[4, 5, 6, 7]']
@@ -5355,8 +5177,7 @@ intrinsics:
     return_type: "{neon_type[1]}"
     attr: [*neon-stable]
     assert_instr: [uxtl2]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [uint8x16_t, uint16x8_t, uint8x8_t, '[8, 9, 10, 11, 12, 13, 14, 15]']
       - [uint16x8_t, uint32x4_t, uint16x4_t, '[4, 5, 6, 7]']
@@ -5374,8 +5195,7 @@ intrinsics:
     return_type: "{type}"
     attr: [*neon-stable]
     assert_instr: [faddp]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - float32x4_t
       - float64x2_t
@@ -5392,8 +5212,7 @@ intrinsics:
     return_type: "{type[2]}"
     attr: [*neon-stable]
     assert_instr: [nop]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["s_f32", float32x2_t, f32]
       - ["d_f64", float64x2_t, f64]
@@ -5414,8 +5233,7 @@ intrinsics:
     return_type: "{type[2]}"
     attr: [*neon-stable]
     assert_instr: [fminp]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["s_f32", float32x2_t, f32]
       - ["qd_f64", float64x2_t, f64]
@@ -5433,8 +5251,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [sqdmull]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["i16", "i32"]
     compose:
@@ -5449,8 +5266,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [sqdmull]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["i32", "i64"]
     compose:
@@ -5467,8 +5283,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [sqdmull2]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int16x8_t, int32x4_t, int16x4_t, '[4, 5, 6, 7]']
       - [int32x4_t, int64x2_t, int32x2_t, '[2, 3]']
@@ -5484,8 +5299,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [sqdmull2]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int16x8_t, "i16", int32x4_t, int16x4_t, '[4, 5, 6, 7]']
       - [int32x4_t, "i32", int64x2_t, int32x2_t, '[2, 3]']
@@ -5503,8 +5317,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['2']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const N: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["i16", int16x4_t, "i32", 'h_lane_s16', 'h_s16']
       - ["i32", int32x4_t, "i64", 's_laneq_s32', 's_s32']
@@ -5522,8 +5335,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['2']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const N: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["i16", int16x8_t, "i32"]
     compose:
@@ -5540,8 +5352,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['2']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const N: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["i32", int32x2_t, "i64"]
     compose:
@@ -5558,8 +5369,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['2']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const N: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int16x8_t, int16x4_t, int32x4_t, int16x4_t, '[4, 5, 6, 7]', '[N as u32, N as u32, N as u32, N as u32]', '_high_lane_s16']
       - [int32x4_t, int32x4_t, int64x2_t, int32x2_t, '[2, 3]', '[N as u32, N as u32]', '_high_laneq_s32']
@@ -5578,8 +5388,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['2']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const N: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int32x4_t, int32x2_t, int64x2_t, int32x2_t, '[2, 3]', '[N as u32, N as u32]']
     compose:
@@ -5597,8 +5406,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['2']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const N: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int16x8_t, int16x8_t, int32x4_t, int16x4_t, '[4, 5, 6, 7]', '[N as u32, N as u32, N as u32, N as u32]']
     compose:
@@ -5616,8 +5424,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['2']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const N: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int16x4_t, int16x8_t, int32x4_t, '[N as u32, N as u32, N as u32, N as u32]']
     compose:
@@ -5634,8 +5441,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['2']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const N: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int32x2_t, int32x4_t, int64x2_t, '[N as u32, N as u32]']
     compose:
@@ -5650,8 +5456,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [sqdmlal2]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int32x4_t, int16x8_t, int16x8_t, int32x4_t, _high_s16]
       - [int64x2_t, int32x4_t, int32x4_t, int64x2_t, _high_s32]
@@ -5669,8 +5474,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['3']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const N: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int32x4_t, int16x8_t, int16x4_t, int32x4_t, _high_lane_s16, '2']
       - [int32x4_t, int16x8_t, int16x8_t, int32x4_t, _high_laneq_s16, '3']
@@ -5687,8 +5491,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [sqdmlal]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["i32", "i16", "s16"]
     compose:
@@ -5702,8 +5505,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [sqdmlal]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["i64", "i32", "i32", "i64"]
     compose:
@@ -5719,8 +5521,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['3']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const LANE: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["i32", "i16", int16x4_t, "i32", h_lane_s16, '2', h_s16]
       - ["i32", "i16", int16x8_t, "i32", h_laneq_s16, '3', h_s16]
@@ -5739,8 +5540,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['3']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const N: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int32x4_t, int16x4_t, int16x8_t, int32x4_t]
     compose:
@@ -5756,8 +5556,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['3']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const N: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int64x2_t, int32x2_t, int32x4_t, int64x2_t]
     compose:
@@ -5771,8 +5570,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [sqdmlsl2]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int32x4_t, int16x8_t, int16x8_t, int32x4_t, _high_s16]
       - [int64x2_t, int32x4_t, int32x4_t, int64x2_t, _high_s32]
@@ -5790,8 +5588,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['3']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const N: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int32x4_t, int16x8_t, int16x4_t, int32x4_t, '_high_lane_s16', '2']
       - [int32x4_t, int16x8_t, int16x8_t, int32x4_t, '_high_laneq_s16', '3']
@@ -5808,8 +5605,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [sqdmlsl]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["i32", "i16"]
     compose:
@@ -5823,8 +5619,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [sqdmlsl]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["i64", "i32", "i32", "i64"]
     compose:
@@ -5840,8 +5635,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['3']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const LANE: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["i32", "i16", int16x4_t, "i32", 'h_lane_s16', '2', 'h_s16']
       - ["i32", "i16", int16x8_t, "i32", 'h_laneq_s16', '3', 'h_s16']
@@ -5860,8 +5654,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['3']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const N: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int32x4_t, int16x4_t, int16x8_t, int32x4_t]
     compose:
@@ -5877,8 +5670,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['3']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const N: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int64x2_t, int32x2_t, int32x4_t, int64x2_t]
     compose:
@@ -5892,8 +5684,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [sqdmulh]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["i16", "i16", "i16", int16x4_t, 'h_s16']
       - ["i32", "i32", "i32", int32x2_t, 's_s32']
@@ -5911,8 +5702,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['2']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const N: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["i16", int16x4_t, "i16", '_lane_s16', '2']
       - ["i16", int16x8_t, "i16", '_laneq_s16', '3']
@@ -5930,8 +5720,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['2']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const N: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["i32", int32x2_t, "i32", "_lane_s32", '1']
       - ["i32", int32x4_t, "i32", "_laneq_s32", '2']
@@ -5947,8 +5736,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [sqxtn2]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int8x8_t, int16x8_t, int8x16_t, '[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]']
       - [int16x4_t, int32x4_t, int16x8_t, '[0, 1, 2, 3, 4, 5, 6, 7]']
@@ -5963,8 +5751,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [uqxtn2]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [uint8x8_t, uint16x8_t, uint8x16_t, '[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]']
       - [uint16x4_t, uint32x4_t, uint16x8_t, '[0, 1, 2, 3, 4, 5, 6, 7]']
@@ -5979,8 +5766,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [sqxtn]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["i16", "i8", 'h_s16', s16]
       - ["i32", "i16", 's_s32', s32]
@@ -5994,8 +5780,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [uqxtn]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["u16", "u8", 'h_u16', 'u16']
       - ["u32", "u16", 's_u32', 'u32']
@@ -6009,8 +5794,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [sqxtn]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["i64", "i32"]
     compose:
@@ -6027,8 +5811,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [uqxtn]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["u64", "u32"]
     compose:
@@ -6045,8 +5828,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [sqxtun]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["i16", "u8", 'h_s16', s16]
       - ["i32", "u16", 's_s32', s32]
@@ -6061,8 +5843,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [sqxtun2]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [uint8x8_t, int16x8_t, uint8x16_t, s16, '[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]']
       - [uint16x4_t, int32x4_t, uint16x8_t, s32, '[0, 1, 2, 3, 4, 5, 6, 7]']
@@ -6077,8 +5858,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [sqrdmulh]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["i16", 'h_s16', 's16']
       - ["i32", 's_s32', 's32']
@@ -6094,8 +5874,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['2']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const LANE: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["i16", int16x4_t, 'h_lane_s16', 'h_s16', '2']
       - ["i16", int16x8_t, 'h_laneq_s16', 'h_s16', '3']
@@ -6113,8 +5892,7 @@ intrinsics:
       - FnCall: [target_feature, ['enable = "rdm"']]
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [sqrdmlah]]}]]
       - FnCall: [stable, ['feature = "rdm_intrinsics"', 'since = "1.62.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - int16x4_t
       - int16x8_t
@@ -6135,8 +5913,7 @@ intrinsics:
       - FnCall: [target_feature, ['enable = "rdm"']]
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [sqrdmlah]]}]]
       - FnCall: [stable, ['feature = "rdm_intrinsics"', 'since = "1.62.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["i16", int16x4_t, s16, 'h_s16']
       - ["i32", int32x2_t, s32, 's_s32']
@@ -6156,8 +5933,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['3']]
       - FnCall: [stable, ['feature = "rdm_intrinsics"', 'since = "1.62.0"']]
     static_defs: ['const LANE: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [_lane_s16, int16x4_t, int16x4_t, int16x4_t, '2', '[LANE as u32, LANE as u32, LANE as u32, LANE as u32]']
       - [_laneq_s16, int16x4_t, int16x4_t, int16x8_t, '3', '[LANE as u32, LANE as u32, LANE as u32, LANE as u32]']
@@ -6182,8 +5958,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['3']]
       - FnCall: [stable, ['feature = "rdm_intrinsics"', 'since = "1.62.0"']]
     static_defs: ['const LANE: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["i16", int16x4_t, '2', "h_s16", h_lane_s16, h_s16]
       - ["i16", int16x8_t, '3', "h_s16", h_laneq_s16, h_s16]
@@ -6201,8 +5976,7 @@ intrinsics:
       - FnCall: [target_feature, ['enable = "rdm"']]
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [sqrdmlsh]]}]]
       - FnCall: [stable, ['feature = "rdm_intrinsics"', 'since = "1.62.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - int16x4_t
       - int16x8_t
@@ -6223,8 +5997,7 @@ intrinsics:
       - FnCall: [target_feature, ['enable = "rdm"']]
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [sqrdmlsh]]}]]
       - FnCall: [stable, ['feature = "rdm_intrinsics"', 'since = "1.62.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["i16", "h_s16", int16x4_t, s16]
       - ["i32", "s_s32", int32x2_t, s32]
@@ -6244,8 +6017,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['3']]
       - FnCall: [stable, ['feature = "rdm_intrinsics"', 'since = "1.62.0"']]
     static_defs: ['const LANE: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [_lane_s16, int16x4_t, int16x4_t, int16x4_t, '2', '[LANE as u32, LANE as u32, LANE as u32, LANE as u32]']
       - [_laneq_s16, int16x4_t, int16x4_t, int16x8_t, '3', '[LANE as u32, LANE as u32, LANE as u32, LANE as u32]']
@@ -6270,8 +6042,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['3']]
       - FnCall: [stable, ['feature = "rdm_intrinsics"', 'since = "1.62.0"']]
     static_defs: ['const LANE: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["i16", int16x4_t, '2', h_lane_s16, h_s16]
       - ["i16", int16x8_t, '3', h_laneq_s16, h_s16]
@@ -6288,8 +6059,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [sqrshl]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ['s_s32', "i32"]
       - ['d_s64', "i64"]
@@ -6307,8 +6077,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [sqrshl]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["i8", 'b_s8', int8x8_t, s8]
       - ["i16", 'h_s16', int16x4_t, s16]
@@ -6324,8 +6093,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [uqrshl]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["u32", "i32", 's_u32']
       - ["u64", "i64", 'd_u64']
@@ -6343,8 +6111,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [uqrshl]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["u8", "i8", "b_u8", uint8x8_t, int8x8_t, s8]
       - ["u16", "i16", "h_u16", uint16x4_t, int16x4_t, s16]
@@ -6362,8 +6129,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['1']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const N: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["i16", "i8", 'h_n_s16', 'N >= 1 && N <= 8', int16x8_t, q_n_s16]
       - ["i32", "i16", 's_n_s32', 'N >= 1 && N <= 16', int32x4_t, q_n_s32]
@@ -6382,8 +6148,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['2']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const N: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int8x8_t, int16x8_t, int8x16_t, '_high_n_s16', '[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]', 'N >= 1 && N <= 8']
       - [int16x4_t, int32x4_t, int16x8_t, '_high_n_s32', '[0, 1, 2, 3, 4, 5, 6, 7]', 'N >= 1 && N <= 16']
@@ -6401,8 +6166,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['1']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const N: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [h_n_u16, u16, u8, 'N >= 1 && N <= 8', uint16x8_t, q_n_u16, _n_u16]
       - [s_n_u32, u32, u16, 'N >= 1 && N <= 16', uint32x4_t, q_n_u32, _n_u32]
@@ -6421,8 +6185,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['2']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const N: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [uint8x8_t, uint16x8_t, uint8x16_t, 'N >= 1 && N <= 8', '[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]']
       - [uint16x4_t, uint32x4_t, uint16x8_t, 'N >= 1 && N <= 16', '[0, 1, 2, 3, 4, 5, 6, 7]']
@@ -6446,8 +6209,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['1']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const N: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [h_n_s16, "i16", "u8", 'N >= 1 && N <= 8', int16x8_t, s16]
       - [s_n_s32, "i32", "u16", 'N >= 1 && N <= 16', int32x4_t, s32]
@@ -6474,8 +6236,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['2']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const N: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [uint8x8_t, int16x8_t, uint8x16_t, 'N >= 1 && N <= 8', s16, '[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]']
       - [uint16x4_t, int32x4_t, uint16x8_t, 'N >= 1 && N <= 16', s32, '[0, 1, 2, 3, 4, 5, 6, 7]']
@@ -6497,8 +6258,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [sqshl]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - i64
     compose:
@@ -6515,8 +6275,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [sqshl]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [b_s8, "i8", int8x8_t]
       - [h_s16, "i16", int16x4_t]
@@ -6540,8 +6299,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['1']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const N: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [b_n_s8, "i8", "3", s8]
       - [h_n_s16, "i16", "4", s16]
@@ -6563,8 +6321,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [uqshl]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["u64", "i64"]
     compose:
@@ -6581,8 +6338,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [uqshl]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [b_u8, "u8", "i8", uint8x8_t, int8x8_t]
       - [h_u16, "u16", "i16", uint16x4_t, int16x4_t]
@@ -6606,8 +6362,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['1']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const N: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [b_n_u8, "u8", '3']
       - [h_n_u16, "u16", '4']
@@ -6629,8 +6384,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['1']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const N: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["i64", "i32"]
     compose:
@@ -6643,7 +6397,7 @@ intrinsics:
           links:
             - link: "llvm.aarch64.neon.sqshrn.{type[1]}"
               arch: aarch64,arm64ec
-      - FnCall: ["_vqshrnd_n_s64", [a, N]]
+      - FnCall: ["_vqshrnd_n_s64", [a, N], [], true]
 
   - name: "vqshrn{type[0]}"
     doc: "Signed saturating shift right narrow"
@@ -6654,8 +6408,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['1']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const N: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [h_n_s16, "i16", "i8", 'N >= 1 && N <= 8', s16]
       - [s_n_s32, "i32", "i16", 'N >= 1 && N <= 16', s32]
@@ -6677,8 +6430,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['2']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const N: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [_high_n_s16, int8x8_t, int16x8_t, int8x16_t, 'N >= 1 && N <= 8', '[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]', s16]
       - [_high_n_s32, int16x4_t, int32x4_t, int16x8_t, 'N >= 1 && N <= 16', '[0, 1, 2, 3, 4, 5, 6, 7]', s32]
@@ -6700,8 +6452,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['1']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const N: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["u64", "u32"]
     compose:
@@ -6714,7 +6465,7 @@ intrinsics:
           links:
             - link: "llvm.aarch64.neon.uqshrn.i32"
               arch: aarch64,arm64ec
-      - FnCall: ["_vqshrnd_n_u64", ["a.as_signed()", N]]
+      - FnCall: ["_vqshrnd_n_u64", ["a.as_signed()", N], [], true]
 
   - name: "vqshrn{type[0]}"
     doc: "Unsigned saturating shift right narrow"
@@ -6725,8 +6476,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['1']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const N: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ['h_n_u16', "u16", "u8", 'N >= 1 && N <= 8']
       - ['s_n_u32', "u32", "u16", 'N >= 1 && N <= 16']
@@ -6748,8 +6498,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['2']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const N: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [_high_n_u16, uint8x8_t, uint16x8_t, uint8x16_t, 'N >= 1 && N <= 8', '[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]']
       - [_high_n_u32, uint16x4_t, uint32x4_t, uint16x8_t, 'N >= 1 && N <= 16', '[0, 1, 2, 3, 4, 5, 6, 7]']
@@ -6771,8 +6520,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['1']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const N: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [h_n_s16, "i16", "u8", 'N >= 1 && N <= 8', s16]
       - [s_n_s32, "i32", "u16", 'N >= 1 && N <= 16', s32]
@@ -6795,8 +6543,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['2']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const N: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [uint8x8_t, int16x8_t, uint8x16_t, 'N >= 1 && N <= 8', '[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]']
       - [uint16x4_t, int32x4_t, uint16x8_t, 'N >= 1 && N <= 16', '[0, 1, 2, 3, 4, 5, 6, 7]']
@@ -6816,8 +6563,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [usqadd]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [b_u8, "u8", "i8", s8]
       - [h_u16, "u16", "i16", s16]
@@ -6837,8 +6583,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [usqadd]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [s_u32, "u32", "i32"]
       - [d_u64, "u64", "i64"]
@@ -6856,8 +6601,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [fsqrt]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - float32x2_t
       - float32x4_t
@@ -6873,8 +6617,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [frsqrts]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [_f64, float64x1_t, v1f64]
       - [q_f64, float64x2_t, v2f64]
@@ -6892,8 +6635,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [frsqrts]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [s_f32, "f32"]
       - [d_f64, "f64"]
@@ -6911,8 +6653,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [frecpe]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [_f64, float64x1_t, v1f64]
       - [q_f64, float64x2_t, v2f64]
@@ -6930,8 +6671,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [frecpe]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [s_f32, "f32"]
       - [d_f64, "f64"]
@@ -6949,8 +6689,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [frecps]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [_f64, float64x1_t, v1f64]
       - [q_f64, float64x2_t, v2f64]
@@ -6968,8 +6707,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [frecps]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [s_f32, "f32"]
       - [d_f64, "f64"]
@@ -6987,8 +6725,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [frecpx]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [s_f32, "f32"]
       - [d_f64, "f64"]
@@ -7005,8 +6742,7 @@ intrinsics:
     return_type: "{type[1]}"
     attr: [*neon-stable]
     assert_instr: [nop]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [poly64x1_t, int64x1_t]
       - [poly64x1_t, uint64x1_t]
@@ -7080,8 +6816,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [srshl]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - "i64"
     compose:
@@ -7098,8 +6833,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [urshl]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["u64", "i64"]
     compose:
@@ -7118,8 +6852,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['1']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const N: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["i64", 'N >= 1 && N <= 64', '-N as i64']
     compose:
@@ -7135,8 +6868,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['1']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const N: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - "u64"
     compose:
@@ -7152,8 +6884,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['2']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const N: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int8x8_t, int16x8_t, int8x16_t, 'N >= 1 && N <= 8', '[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]']
       - [int16x4_t, int32x4_t, int16x8_t, 'N >= 1 && N <= 16', '[0, 1, 2, 3, 4, 5, 6, 7]']
@@ -7176,8 +6907,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [rsubhn2]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int8x8_t, int16x8_t, int16x8_t, int8x16_t, '[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]']
       - [int16x4_t, int32x4_t, int32x4_t, int16x8_t, '[0, 1, 2, 3, 4, 5, 6, 7]']
@@ -7201,26 +6931,25 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['1', '3']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const LANE1: i32, const LANE2: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
-      - [int8x8_t, int8x8_t, int8x8_t, '3', '3', ' match LANE1 & 0b111 { 0 => simd_shuffle!(a, b, [8 + LANE2 as u32, 1, 2, 3, 4, 5, 6, 7]), 1 => simd_shuffle!(a, b, [0, 8 + LANE2 as u32, 2, 3, 4, 5, 6, 7]), 2 => simd_shuffle!(a, b, [0, 1, 8 + LANE2 as u32, 3, 4, 5, 6, 7]), 3 => simd_shuffle!(a, b, [0, 1, 2, 8 + LANE2 as u32, 4, 5, 6, 7]), 4 => simd_shuffle!(a, b, [0, 1, 2, 3, 8 + LANE2 as u32, 5, 6, 7]), 5 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 8 + LANE2 as u32, 6, 7]), 6 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 8 + LANE2 as u32, 7]), 7 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 8 + LANE2 as u32]), _ => unreachable_unchecked(), }']
-      - [int16x4_t, int16x4_t, int16x4_t, '2', '2', ' match LANE1 & 0b11 { 0 => simd_shuffle!(a, b, [4 + LANE2 as u32, 1, 2, 3]), 1 => simd_shuffle!(a, b, [0, 4 + LANE2 as u32, 2, 3]), 2 => simd_shuffle!(a, b, [0, 1, 4 + LANE2 as u32, 3]), 3 => simd_shuffle!(a, b, [0, 1, 2, 4 + LANE2 as u32]), _ => unreachable_unchecked(), }']
-      - [int32x2_t, int32x2_t, int32x2_t, '1', '1', ' match LANE1 & 0b1 { 0 => simd_shuffle!(a, b, [2 + LANE2 as u32, 1]), 1 => simd_shuffle!(a, b, [0, 2 + LANE2 as u32]), _ => unreachable_unchecked(), }']
-      - [uint8x8_t, uint8x8_t, uint8x8_t, '3', '3', ' match LANE1 & 0b111 { 0 => simd_shuffle!(a, b, [8 + LANE2 as u32, 1, 2, 3, 4, 5, 6, 7]), 1 => simd_shuffle!(a, b, [0, 8 + LANE2 as u32, 2, 3, 4, 5, 6, 7]), 2 => simd_shuffle!(a, b, [0, 1, 8 + LANE2 as u32, 3, 4, 5, 6, 7]), 3 => simd_shuffle!(a, b, [0, 1, 2, 8 + LANE2 as u32, 4, 5, 6, 7]), 4 => simd_shuffle!(a, b, [0, 1, 2, 3, 8 + LANE2 as u32, 5, 6, 7]), 5 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 8 + LANE2 as u32, 6, 7]), 6 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 8 + LANE2 as u32, 7]), 7 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 8 + LANE2 as u32]), _ => unreachable_unchecked(), }']
-      - [uint16x4_t, uint16x4_t, uint16x4_t, '2', '2', ' match LANE1 & 0b11 { 0 => simd_shuffle!(a, b, [4 + LANE2 as u32, 1, 2, 3]), 1 => simd_shuffle!(a, b, [0, 4 + LANE2 as u32, 2, 3]), 2 => simd_shuffle!(a, b, [0, 1, 4 + LANE2 as u32, 3]), 3 => simd_shuffle!(a, b, [0, 1, 2, 4 + LANE2 as u32]), _ => unreachable_unchecked(), }']
-      - [uint32x2_t, uint32x2_t, uint32x2_t, '1', '1', ' match LANE1 & 0b1 { 0 => simd_shuffle!(a, b, [2 + LANE2 as u32, 1]), 1 => simd_shuffle!(a, b, [0, 2 + LANE2 as u32]), _ => unreachable_unchecked(), }']
-      - [poly8x8_t, poly8x8_t, poly8x8_t, '3', '3', ' match LANE1 & 0b111 { 0 => simd_shuffle!(a, b, [8 + LANE2 as u32, 1, 2, 3, 4, 5, 6, 7]), 1 => simd_shuffle!(a, b, [0, 8 + LANE2 as u32, 2, 3, 4, 5, 6, 7]), 2 => simd_shuffle!(a, b, [0, 1, 8 + LANE2 as u32, 3, 4, 5, 6, 7]), 3 => simd_shuffle!(a, b, [0, 1, 2, 8 + LANE2 as u32, 4, 5, 6, 7]), 4 => simd_shuffle!(a, b, [0, 1, 2, 3, 8 + LANE2 as u32, 5, 6, 7]), 5 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 8 + LANE2 as u32, 6, 7]), 6 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 8 + LANE2 as u32, 7]), 7 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 8 + LANE2 as u32]), _ => unreachable_unchecked(), }']
-      - [poly16x4_t, poly16x4_t, poly16x4_t, '2', '2', ' match LANE1 & 0b11 { 0 => simd_shuffle!(a, b, [4 + LANE2 as u32, 1, 2, 3]), 1 => simd_shuffle!(a, b, [0, 4 + LANE2 as u32, 2, 3]), 2 => simd_shuffle!(a, b, [0, 1, 4 + LANE2 as u32, 3]), 3 => simd_shuffle!(a, b, [0, 1, 2, 4 + LANE2 as u32]), _ => unreachable_unchecked(), }']
-      - [float32x2_t, float32x2_t, float32x2_t, '1', '1', ' match LANE1 & 0b1 { 0 => simd_shuffle!(a, b, [2 + LANE2 as u32, 1]), 1 => simd_shuffle!(a, b, [0, 2 + LANE2 as u32]), _ => unreachable_unchecked(), }']
-      - [int8x16_t, int8x8_t, int8x16_t, '4', '3', ' let b: int8x16_t = simd_shuffle!(b, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]); match LANE1 & 0b1111 { 0 => simd_shuffle!(a, b, [16 + LANE2 as u32, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 1 => simd_shuffle!(a, b, [0, 16 + LANE2 as u32, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 2 => simd_shuffle!(a, b, [0, 1, 16 + LANE2 as u32, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 3 => simd_shuffle!(a, b, [0, 1, 2, 16 + LANE2 as u32, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 4 => simd_shuffle!(a, b, [0, 1, 2, 3, 16 + LANE2 as u32, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 5 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 16 + LANE2 as u32, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 6 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 16 + LANE2 as u32, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 7 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 16 + LANE2 as u32, 8, 9, 10, 11, 12, 13, 14, 15]), 8 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 16 + LANE2 as u32, 9, 10, 11, 12, 13, 14, 15]), 9 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 16 + LANE2 as u32, 10, 11, 12, 13, 14, 15]), 10 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 16 + LANE2 as u32, 11, 12, 13, 14, 15]), 11 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 16 + LANE2 as u32, 12, 13, 14, 15]), 12 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 16 + LANE2 as u32, 13, 14, 15]), 13 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16 + LANE2 as u32, 14, 15]), 14 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 16 + LANE2 as u32, 15]), 15 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16 + LANE2 as u32]), _ => unreachable_unchecked(), }']
-      - [int16x8_t, int16x4_t, int16x8_t, '3', '2', ' let b: int16x8_t = simd_shuffle!(b, b, [0, 1, 2, 3, 4, 5, 6, 7]); match LANE1 & 0b111 { 0 => simd_shuffle!(a, b, [8 + LANE2 as u32, 1, 2, 3, 4, 5, 6, 7]), 1 => simd_shuffle!(a, b, [0, 8 + LANE2 as u32, 2, 3, 4, 5, 6, 7]), 2 => simd_shuffle!(a, b, [0, 1, 8 + LANE2 as u32, 3, 4, 5, 6, 7]), 3 => simd_shuffle!(a, b, [0, 1, 2, 8 + LANE2 as u32, 4, 5, 6, 7]), 4 => simd_shuffle!(a, b, [0, 1, 2, 3, 8 + LANE2 as u32, 5, 6, 7]), 5 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 8 + LANE2 as u32, 6, 7]), 6 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 8 + LANE2 as u32, 7]), 7 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 8 + LANE2 as u32]), _ => unreachable_unchecked(), }']
-      - [int32x4_t, int32x2_t, int32x4_t, '2', '1', ' let b: int32x4_t = simd_shuffle!(b, b, [0, 1, 2, 3]); match LANE1 & 0b11 { 0 => simd_shuffle!(a, b, [4 + LANE2 as u32, 1, 2, 3]), 1 => simd_shuffle!(a, b, [0, 4 + LANE2 as u32, 2, 3]), 2 => simd_shuffle!(a, b, [0, 1, 4 + LANE2 as u32, 3]), 3 => simd_shuffle!(a, b, [0, 1, 2, 4 + LANE2 as u32]), _ => unreachable_unchecked(), }']
-      - [uint8x16_t, uint8x8_t, uint8x16_t, '4', '3', ' let b: uint8x16_t = simd_shuffle!(b, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]); match LANE1 & 0b1111 { 0 => simd_shuffle!(a, b, [16 + LANE2 as u32, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 1 => simd_shuffle!(a, b, [0, 16 + LANE2 as u32, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 2 => simd_shuffle!(a, b, [0, 1, 16 + LANE2 as u32, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 3 => simd_shuffle!(a, b, [0, 1, 2, 16 + LANE2 as u32, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 4 => simd_shuffle!(a, b, [0, 1, 2, 3, 16 + LANE2 as u32, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 5 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 16 + LANE2 as u32, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 6 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 16 + LANE2 as u32, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 7 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 16 + LANE2 as u32, 8, 9, 10, 11, 12, 13, 14, 15]), 8 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 16 + LANE2 as u32, 9, 10, 11, 12, 13, 14, 15]), 9 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 16 + LANE2 as u32, 10, 11, 12, 13, 14, 15]), 10 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 16 + LANE2 as u32, 11, 12, 13, 14, 15]), 11 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 16 + LANE2 as u32, 12, 13, 14, 15]), 12 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 16 + LANE2 as u32, 13, 14, 15]), 13 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16 + LANE2 as u32, 14, 15]), 14 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 16 + LANE2 as u32, 15]), 15 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16 + LANE2 as u32]), _ => unreachable_unchecked(), }']
-      - [uint16x8_t, uint16x4_t, uint16x8_t, '3', '2', ' let b: uint16x8_t = simd_shuffle!(b, b, [0, 1, 2, 3, 4, 5, 6, 7]); match LANE1 & 0b111 { 0 => simd_shuffle!(a, b, [8 + LANE2 as u32, 1, 2, 3, 4, 5, 6, 7]), 1 => simd_shuffle!(a, b, [0, 8 + LANE2 as u32, 2, 3, 4, 5, 6, 7]), 2 => simd_shuffle!(a, b, [0, 1, 8 + LANE2 as u32, 3, 4, 5, 6, 7]), 3 => simd_shuffle!(a, b, [0, 1, 2, 8 + LANE2 as u32, 4, 5, 6, 7]), 4 => simd_shuffle!(a, b, [0, 1, 2, 3, 8 + LANE2 as u32, 5, 6, 7]), 5 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 8 + LANE2 as u32, 6, 7]), 6 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 8 + LANE2 as u32, 7]), 7 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 8 + LANE2 as u32]), _ => unreachable_unchecked(), }']
-      - [uint32x4_t, uint32x2_t, uint32x4_t, '2', '1', ' let b: uint32x4_t = simd_shuffle!(b, b, [0, 1, 2, 3]); match LANE1 & 0b11 { 0 => simd_shuffle!(a, b, [4 + LANE2 as u32, 1, 2, 3]), 1 => simd_shuffle!(a, b, [0, 4 + LANE2 as u32, 2, 3]), 2 => simd_shuffle!(a, b, [0, 1, 4 + LANE2 as u32, 3]), 3 => simd_shuffle!(a, b, [0, 1, 2, 4 + LANE2 as u32]), _ => unreachable_unchecked(), }']
-      - [poly8x16_t, poly8x8_t, poly8x16_t, '4', '3', ' let b: poly8x16_t = simd_shuffle!(b, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]); match LANE1 & 0b1111 { 0 => simd_shuffle!(a, b, [16 + LANE2 as u32, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 1 => simd_shuffle!(a, b, [0, 16 + LANE2 as u32, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 2 => simd_shuffle!(a, b, [0, 1, 16 + LANE2 as u32, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 3 => simd_shuffle!(a, b, [0, 1, 2, 16 + LANE2 as u32, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 4 => simd_shuffle!(a, b, [0, 1, 2, 3, 16 + LANE2 as u32, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 5 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 16 + LANE2 as u32, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 6 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 16 + LANE2 as u32, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 7 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 16 + LANE2 as u32, 8, 9, 10, 11, 12, 13, 14, 15]), 8 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 16 + LANE2 as u32, 9, 10, 11, 12, 13, 14, 15]), 9 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 16 + LANE2 as u32, 10, 11, 12, 13, 14, 15]), 10 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 16 + LANE2 as u32, 11, 12, 13, 14, 15]), 11 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 16 + LANE2 as u32, 12, 13, 14, 15]), 12 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 16 + LANE2 as u32, 13, 14, 15]), 13 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16 + LANE2 as u32, 14, 15]), 14 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 16 + LANE2 as u32, 15]), 15 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16 + LANE2 as u32]), _ => unreachable_unchecked(), }']
-      - [poly16x8_t, poly16x4_t, poly16x8_t, '3', '2', ' let b: poly16x8_t = simd_shuffle!(b, b, [0, 1, 2, 3, 4, 5, 6, 7]); match LANE1 & 0b111 { 0 => simd_shuffle!(a, b, [8 + LANE2 as u32, 1, 2, 3, 4, 5, 6, 7]), 1 => simd_shuffle!(a, b, [0, 8 + LANE2 as u32, 2, 3, 4, 5, 6, 7]), 2 => simd_shuffle!(a, b, [0, 1, 8 + LANE2 as u32, 3, 4, 5, 6, 7]), 3 => simd_shuffle!(a, b, [0, 1, 2, 8 + LANE2 as u32, 4, 5, 6, 7]), 4 => simd_shuffle!(a, b, [0, 1, 2, 3, 8 + LANE2 as u32, 5, 6, 7]), 5 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 8 + LANE2 as u32, 6, 7]), 6 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 8 + LANE2 as u32, 7]), 7 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 8 + LANE2 as u32]), _ => unreachable_unchecked(), }']
+      - [int8x8_t, int8x8_t, int8x8_t, '3', '3', ' unsafe { match LANE1 & 0b111 { 0 => simd_shuffle!(a, b, [8 + LANE2 as u32, 1, 2, 3, 4, 5, 6, 7]), 1 => simd_shuffle!(a, b, [0, 8 + LANE2 as u32, 2, 3, 4, 5, 6, 7]), 2 => simd_shuffle!(a, b, [0, 1, 8 + LANE2 as u32, 3, 4, 5, 6, 7]), 3 => simd_shuffle!(a, b, [0, 1, 2, 8 + LANE2 as u32, 4, 5, 6, 7]), 4 => simd_shuffle!(a, b, [0, 1, 2, 3, 8 + LANE2 as u32, 5, 6, 7]), 5 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 8 + LANE2 as u32, 6, 7]), 6 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 8 + LANE2 as u32, 7]), 7 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 8 + LANE2 as u32]), _ => unreachable_unchecked(), } }']
+      - [int16x4_t, int16x4_t, int16x4_t, '2', '2', ' unsafe { match LANE1 & 0b11 { 0 => simd_shuffle!(a, b, [4 + LANE2 as u32, 1, 2, 3]), 1 => simd_shuffle!(a, b, [0, 4 + LANE2 as u32, 2, 3]), 2 => simd_shuffle!(a, b, [0, 1, 4 + LANE2 as u32, 3]), 3 => simd_shuffle!(a, b, [0, 1, 2, 4 + LANE2 as u32]), _ => unreachable_unchecked(), } }']
+      - [int32x2_t, int32x2_t, int32x2_t, '1', '1', ' unsafe { match LANE1 & 0b1 { 0 => simd_shuffle!(a, b, [2 + LANE2 as u32, 1]), 1 => simd_shuffle!(a, b, [0, 2 + LANE2 as u32]), _ => unreachable_unchecked(), } }']
+      - [uint8x8_t, uint8x8_t, uint8x8_t, '3', '3', ' unsafe { match LANE1 & 0b111 { 0 => simd_shuffle!(a, b, [8 + LANE2 as u32, 1, 2, 3, 4, 5, 6, 7]), 1 => simd_shuffle!(a, b, [0, 8 + LANE2 as u32, 2, 3, 4, 5, 6, 7]), 2 => simd_shuffle!(a, b, [0, 1, 8 + LANE2 as u32, 3, 4, 5, 6, 7]), 3 => simd_shuffle!(a, b, [0, 1, 2, 8 + LANE2 as u32, 4, 5, 6, 7]), 4 => simd_shuffle!(a, b, [0, 1, 2, 3, 8 + LANE2 as u32, 5, 6, 7]), 5 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 8 + LANE2 as u32, 6, 7]), 6 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 8 + LANE2 as u32, 7]), 7 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 8 + LANE2 as u32]), _ => unreachable_unchecked(), } }']
+      - [uint16x4_t, uint16x4_t, uint16x4_t, '2', '2', ' unsafe { match LANE1 & 0b11 { 0 => simd_shuffle!(a, b, [4 + LANE2 as u32, 1, 2, 3]), 1 => simd_shuffle!(a, b, [0, 4 + LANE2 as u32, 2, 3]), 2 => simd_shuffle!(a, b, [0, 1, 4 + LANE2 as u32, 3]), 3 => simd_shuffle!(a, b, [0, 1, 2, 4 + LANE2 as u32]), _ => unreachable_unchecked(), } }']
+      - [uint32x2_t, uint32x2_t, uint32x2_t, '1', '1', ' unsafe { match LANE1 & 0b1 { 0 => simd_shuffle!(a, b, [2 + LANE2 as u32, 1]), 1 => simd_shuffle!(a, b, [0, 2 + LANE2 as u32]), _ => unreachable_unchecked(), } }']
+      - [poly8x8_t, poly8x8_t, poly8x8_t, '3', '3', ' unsafe { match LANE1 & 0b111 { 0 => simd_shuffle!(a, b, [8 + LANE2 as u32, 1, 2, 3, 4, 5, 6, 7]), 1 => simd_shuffle!(a, b, [0, 8 + LANE2 as u32, 2, 3, 4, 5, 6, 7]), 2 => simd_shuffle!(a, b, [0, 1, 8 + LANE2 as u32, 3, 4, 5, 6, 7]), 3 => simd_shuffle!(a, b, [0, 1, 2, 8 + LANE2 as u32, 4, 5, 6, 7]), 4 => simd_shuffle!(a, b, [0, 1, 2, 3, 8 + LANE2 as u32, 5, 6, 7]), 5 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 8 + LANE2 as u32, 6, 7]), 6 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 8 + LANE2 as u32, 7]), 7 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 8 + LANE2 as u32]), _ => unreachable_unchecked(), } }']
+      - [poly16x4_t, poly16x4_t, poly16x4_t, '2', '2', ' unsafe { match LANE1 & 0b11 { 0 => simd_shuffle!(a, b, [4 + LANE2 as u32, 1, 2, 3]), 1 => simd_shuffle!(a, b, [0, 4 + LANE2 as u32, 2, 3]), 2 => simd_shuffle!(a, b, [0, 1, 4 + LANE2 as u32, 3]), 3 => simd_shuffle!(a, b, [0, 1, 2, 4 + LANE2 as u32]), _ => unreachable_unchecked(), } }']
+      - [float32x2_t, float32x2_t, float32x2_t, '1', '1', ' unsafe { match LANE1 & 0b1 { 0 => simd_shuffle!(a, b, [2 + LANE2 as u32, 1]), 1 => simd_shuffle!(a, b, [0, 2 + LANE2 as u32]), _ => unreachable_unchecked(), } }']
+      - [int8x16_t, int8x8_t, int8x16_t, '4', '3', ' unsafe { let b: int8x16_t = simd_shuffle!(b, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]); match LANE1 & 0b1111 { 0 => simd_shuffle!(a, b, [16 + LANE2 as u32, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 1 => simd_shuffle!(a, b, [0, 16 + LANE2 as u32, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 2 => simd_shuffle!(a, b, [0, 1, 16 + LANE2 as u32, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 3 => simd_shuffle!(a, b, [0, 1, 2, 16 + LANE2 as u32, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 4 => simd_shuffle!(a, b, [0, 1, 2, 3, 16 + LANE2 as u32, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 5 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 16 + LANE2 as u32, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 6 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 16 + LANE2 as u32, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 7 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 16 + LANE2 as u32, 8, 9, 10, 11, 12, 13, 14, 15]), 8 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 16 + LANE2 as u32, 9, 10, 11, 12, 13, 14, 15]), 9 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 16 + LANE2 as u32, 10, 11, 12, 13, 14, 15]), 10 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 16 + LANE2 as u32, 11, 12, 13, 14, 15]), 11 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 16 + LANE2 as u32, 12, 13, 14, 15]), 12 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 16 + LANE2 as u32, 13, 14, 15]), 13 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16 + LANE2 as u32, 14, 15]), 14 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 16 + LANE2 as u32, 15]), 15 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16 + LANE2 as u32]), _ => unreachable_unchecked(), } }']
+      - [int16x8_t, int16x4_t, int16x8_t, '3', '2', ' unsafe { let b: int16x8_t = simd_shuffle!(b, b, [0, 1, 2, 3, 4, 5, 6, 7]); match LANE1 & 0b111 { 0 => simd_shuffle!(a, b, [8 + LANE2 as u32, 1, 2, 3, 4, 5, 6, 7]), 1 => simd_shuffle!(a, b, [0, 8 + LANE2 as u32, 2, 3, 4, 5, 6, 7]), 2 => simd_shuffle!(a, b, [0, 1, 8 + LANE2 as u32, 3, 4, 5, 6, 7]), 3 => simd_shuffle!(a, b, [0, 1, 2, 8 + LANE2 as u32, 4, 5, 6, 7]), 4 => simd_shuffle!(a, b, [0, 1, 2, 3, 8 + LANE2 as u32, 5, 6, 7]), 5 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 8 + LANE2 as u32, 6, 7]), 6 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 8 + LANE2 as u32, 7]), 7 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 8 + LANE2 as u32]), _ => unreachable_unchecked(), } }']
+      - [int32x4_t, int32x2_t, int32x4_t, '2', '1', ' unsafe { let b: int32x4_t = simd_shuffle!(b, b, [0, 1, 2, 3]); match LANE1 & 0b11 { 0 => simd_shuffle!(a, b, [4 + LANE2 as u32, 1, 2, 3]), 1 => simd_shuffle!(a, b, [0, 4 + LANE2 as u32, 2, 3]), 2 => simd_shuffle!(a, b, [0, 1, 4 + LANE2 as u32, 3]), 3 => simd_shuffle!(a, b, [0, 1, 2, 4 + LANE2 as u32]), _ => unreachable_unchecked(), } }']
+      - [uint8x16_t, uint8x8_t, uint8x16_t, '4', '3', ' unsafe { let b: uint8x16_t = simd_shuffle!(b, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]); match LANE1 & 0b1111 { 0 => simd_shuffle!(a, b, [16 + LANE2 as u32, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 1 => simd_shuffle!(a, b, [0, 16 + LANE2 as u32, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 2 => simd_shuffle!(a, b, [0, 1, 16 + LANE2 as u32, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 3 => simd_shuffle!(a, b, [0, 1, 2, 16 + LANE2 as u32, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 4 => simd_shuffle!(a, b, [0, 1, 2, 3, 16 + LANE2 as u32, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 5 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 16 + LANE2 as u32, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 6 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 16 + LANE2 as u32, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 7 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 16 + LANE2 as u32, 8, 9, 10, 11, 12, 13, 14, 15]), 8 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 16 + LANE2 as u32, 9, 10, 11, 12, 13, 14, 15]), 9 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 16 + LANE2 as u32, 10, 11, 12, 13, 14, 15]), 10 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 16 + LANE2 as u32, 11, 12, 13, 14, 15]), 11 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 16 + LANE2 as u32, 12, 13, 14, 15]), 12 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 16 + LANE2 as u32, 13, 14, 15]), 13 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16 + LANE2 as u32, 14, 15]), 14 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 16 + LANE2 as u32, 15]), 15 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16 + LANE2 as u32]), _ => unreachable_unchecked(), } }']
+      - [uint16x8_t, uint16x4_t, uint16x8_t, '3', '2', ' unsafe { let b: uint16x8_t = simd_shuffle!(b, b, [0, 1, 2, 3, 4, 5, 6, 7]); match LANE1 & 0b111 { 0 => simd_shuffle!(a, b, [8 + LANE2 as u32, 1, 2, 3, 4, 5, 6, 7]), 1 => simd_shuffle!(a, b, [0, 8 + LANE2 as u32, 2, 3, 4, 5, 6, 7]), 2 => simd_shuffle!(a, b, [0, 1, 8 + LANE2 as u32, 3, 4, 5, 6, 7]), 3 => simd_shuffle!(a, b, [0, 1, 2, 8 + LANE2 as u32, 4, 5, 6, 7]), 4 => simd_shuffle!(a, b, [0, 1, 2, 3, 8 + LANE2 as u32, 5, 6, 7]), 5 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 8 + LANE2 as u32, 6, 7]), 6 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 8 + LANE2 as u32, 7]), 7 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 8 + LANE2 as u32]), _ => unreachable_unchecked(), } }']
+      - [uint32x4_t, uint32x2_t, uint32x4_t, '2', '1', ' unsafe { let b: uint32x4_t = simd_shuffle!(b, b, [0, 1, 2, 3]); match LANE1 & 0b11 { 0 => simd_shuffle!(a, b, [4 + LANE2 as u32, 1, 2, 3]), 1 => simd_shuffle!(a, b, [0, 4 + LANE2 as u32, 2, 3]), 2 => simd_shuffle!(a, b, [0, 1, 4 + LANE2 as u32, 3]), 3 => simd_shuffle!(a, b, [0, 1, 2, 4 + LANE2 as u32]), _ => unreachable_unchecked(), } }']
+      - [poly8x16_t, poly8x8_t, poly8x16_t, '4', '3', ' unsafe { let b: poly8x16_t = simd_shuffle!(b, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]); match LANE1 & 0b1111 { 0 => simd_shuffle!(a, b, [16 + LANE2 as u32, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 1 => simd_shuffle!(a, b, [0, 16 + LANE2 as u32, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 2 => simd_shuffle!(a, b, [0, 1, 16 + LANE2 as u32, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 3 => simd_shuffle!(a, b, [0, 1, 2, 16 + LANE2 as u32, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 4 => simd_shuffle!(a, b, [0, 1, 2, 3, 16 + LANE2 as u32, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 5 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 16 + LANE2 as u32, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 6 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 16 + LANE2 as u32, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 7 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 16 + LANE2 as u32, 8, 9, 10, 11, 12, 13, 14, 15]), 8 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 16 + LANE2 as u32, 9, 10, 11, 12, 13, 14, 15]), 9 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 16 + LANE2 as u32, 10, 11, 12, 13, 14, 15]), 10 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 16 + LANE2 as u32, 11, 12, 13, 14, 15]), 11 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 16 + LANE2 as u32, 12, 13, 14, 15]), 12 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 16 + LANE2 as u32, 13, 14, 15]), 13 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16 + LANE2 as u32, 14, 15]), 14 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 16 + LANE2 as u32, 15]), 15 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16 + LANE2 as u32]), _ => unreachable_unchecked(), } }']
+      - [poly16x8_t, poly16x4_t, poly16x8_t, '3', '2', ' unsafe { let b: poly16x8_t = simd_shuffle!(b, b, [0, 1, 2, 3, 4, 5, 6, 7]); match LANE1 & 0b111 { 0 => simd_shuffle!(a, b, [8 + LANE2 as u32, 1, 2, 3, 4, 5, 6, 7]), 1 => simd_shuffle!(a, b, [0, 8 + LANE2 as u32, 2, 3, 4, 5, 6, 7]), 2 => simd_shuffle!(a, b, [0, 1, 8 + LANE2 as u32, 3, 4, 5, 6, 7]), 3 => simd_shuffle!(a, b, [0, 1, 2, 8 + LANE2 as u32, 4, 5, 6, 7]), 4 => simd_shuffle!(a, b, [0, 1, 2, 3, 8 + LANE2 as u32, 5, 6, 7]), 5 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 8 + LANE2 as u32, 6, 7]), 6 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 8 + LANE2 as u32, 7]), 7 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 8 + LANE2 as u32]), _ => unreachable_unchecked(), } }']
     compose:
       - FnCall: [static_assert_uimm_bits!, [LANE1, '{type[3]}']]
       - FnCall: [static_assert_uimm_bits!, [LANE2, '{type[4]}']]
@@ -7235,31 +6964,30 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['1', '3']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const LANE1: i32, const LANE2: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
-      - [int8x16_t, int8x16_t, int8x16_t, '4', '4', ' match LANE1 & 0b1111 { 0 => simd_shuffle!(a, b, [16 + LANE2 as u32, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 1 => simd_shuffle!(a, b, [0, 16 + LANE2 as u32, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 2 => simd_shuffle!(a, b, [0, 1, 16 + LANE2 as u32, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 3 => simd_shuffle!(a, b, [0, 1, 2, 16 + LANE2 as u32, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 4 => simd_shuffle!(a, b, [0, 1, 2, 3, 16 + LANE2 as u32, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 5 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 16 + LANE2 as u32, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 6 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 16 + LANE2 as u32, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 7 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 16 + LANE2 as u32, 8, 9, 10, 11, 12, 13, 14, 15]), 8 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 16 + LANE2 as u32, 9, 10, 11, 12, 13, 14, 15]), 9 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 16 + LANE2 as u32, 10, 11, 12, 13, 14, 15]), 10 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 16 + LANE2 as u32, 11, 12, 13, 14, 15]), 11 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 16 + LANE2 as u32, 12, 13, 14, 15]), 12 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 16 + LANE2 as u32, 13, 14, 15]), 13 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16 + LANE2 as u32, 14, 15]), 14 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 16 + LANE2 as u32, 15]), 15 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16 + LANE2 as u32]), _ => unreachable_unchecked(), }']
-      - [int16x8_t, int16x8_t, int16x8_t, '3', '3', ' match LANE1 & 0b111 { 0 => simd_shuffle!(a, b, [8 + LANE2 as u32, 1, 2, 3, 4, 5, 6, 7]), 1 => simd_shuffle!(a, b, [0, 8 + LANE2 as u32, 2, 3, 4, 5, 6, 7]), 2 => simd_shuffle!(a, b, [0, 1, 8 + LANE2 as u32, 3, 4, 5, 6, 7]), 3 => simd_shuffle!(a, b, [0, 1, 2, 8 + LANE2 as u32, 4, 5, 6, 7]), 4 => simd_shuffle!(a, b, [0, 1, 2, 3, 8 + LANE2 as u32, 5, 6, 7]), 5 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 8 + LANE2 as u32, 6, 7]), 6 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 8 + LANE2 as u32, 7]), 7 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 8 + LANE2 as u32]), _ => unreachable_unchecked(), }']
-      - [int32x4_t, int32x4_t, int32x4_t, '2', '2', ' match LANE1 & 0b11 { 0 => simd_shuffle!(a, b, [4 + LANE2 as u32, 1, 2, 3]), 1 => simd_shuffle!(a, b, [0, 4 + LANE2 as u32, 2, 3]), 2 => simd_shuffle!(a, b, [0, 1, 4 + LANE2 as u32, 3]), 3 => simd_shuffle!(a, b, [0, 1, 2, 4 + LANE2 as u32]), _ => unreachable_unchecked(), }']
-      - [int64x2_t, int64x2_t, int64x2_t, '1', '1', ' match LANE1 & 0b1 { 0 => simd_shuffle!(a, b, [2 + LANE2 as u32, 1]), 1 => simd_shuffle!(a, b, [0, 2 + LANE2 as u32]), _ => unreachable_unchecked(), }']
-      - [uint8x16_t, uint8x16_t, uint8x16_t, '4', '4', ' match LANE1 & 0b1111 { 0 => simd_shuffle!(a, b, [16 + LANE2 as u32, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 1 => simd_shuffle!(a, b, [0, 16 + LANE2 as u32, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 2 => simd_shuffle!(a, b, [0, 1, 16 + LANE2 as u32, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 3 => simd_shuffle!(a, b, [0, 1, 2, 16 + LANE2 as u32, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 4 => simd_shuffle!(a, b, [0, 1, 2, 3, 16 + LANE2 as u32, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 5 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 16 + LANE2 as u32, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 6 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 16 + LANE2 as u32, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 7 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 16 + LANE2 as u32, 8, 9, 10, 11, 12, 13, 14, 15]), 8 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 16 + LANE2 as u32, 9, 10, 11, 12, 13, 14, 15]), 9 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 16 + LANE2 as u32, 10, 11, 12, 13, 14, 15]), 10 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 16 + LANE2 as u32, 11, 12, 13, 14, 15]), 11 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 16 + LANE2 as u32, 12, 13, 14, 15]), 12 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 16 + LANE2 as u32, 13, 14, 15]), 13 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16 + LANE2 as u32, 14, 15]), 14 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 16 + LANE2 as u32, 15]), 15 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16 + LANE2 as u32]), _ => unreachable_unchecked(), }']
-      - [uint16x8_t, uint16x8_t, uint16x8_t, '3', '3', ' match LANE1 & 0b111 { 0 => simd_shuffle!(a, b, [8 + LANE2 as u32, 1, 2, 3, 4, 5, 6, 7]), 1 => simd_shuffle!(a, b, [0, 8 + LANE2 as u32, 2, 3, 4, 5, 6, 7]), 2 => simd_shuffle!(a, b, [0, 1, 8 + LANE2 as u32, 3, 4, 5, 6, 7]), 3 => simd_shuffle!(a, b, [0, 1, 2, 8 + LANE2 as u32, 4, 5, 6, 7]), 4 => simd_shuffle!(a, b, [0, 1, 2, 3, 8 + LANE2 as u32, 5, 6, 7]), 5 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 8 + LANE2 as u32, 6, 7]), 6 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 8 + LANE2 as u32, 7]), 7 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 8 + LANE2 as u32]), _ => unreachable_unchecked(), }']
-      - [uint32x4_t, uint32x4_t, uint32x4_t, '2', '2', ' match LANE1 & 0b11 { 0 => simd_shuffle!(a, b, [4 + LANE2 as u32, 1, 2, 3]), 1 => simd_shuffle!(a, b, [0, 4 + LANE2 as u32, 2, 3]), 2 => simd_shuffle!(a, b, [0, 1, 4 + LANE2 as u32, 3]), 3 => simd_shuffle!(a, b, [0, 1, 2, 4 + LANE2 as u32]), _ => unreachable_unchecked(), }']
-      - [uint64x2_t, uint64x2_t, uint64x2_t, '1', '1', ' match LANE1 & 0b1 { 0 => simd_shuffle!(a, b, [2 + LANE2 as u32, 1]), 1 => simd_shuffle!(a, b, [0, 2 + LANE2 as u32]), _ => unreachable_unchecked(), }']
-      - [poly8x16_t, poly8x16_t, poly8x16_t, '4', '4', ' match LANE1 & 0b1111 { 0 => simd_shuffle!(a, b, [16 + LANE2 as u32, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 1 => simd_shuffle!(a, b, [0, 16 + LANE2 as u32, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 2 => simd_shuffle!(a, b, [0, 1, 16 + LANE2 as u32, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 3 => simd_shuffle!(a, b, [0, 1, 2, 16 + LANE2 as u32, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 4 => simd_shuffle!(a, b, [0, 1, 2, 3, 16 + LANE2 as u32, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 5 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 16 + LANE2 as u32, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 6 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 16 + LANE2 as u32, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 7 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 16 + LANE2 as u32, 8, 9, 10, 11, 12, 13, 14, 15]), 8 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 16 + LANE2 as u32, 9, 10, 11, 12, 13, 14, 15]), 9 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 16 + LANE2 as u32, 10, 11, 12, 13, 14, 15]), 10 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 16 + LANE2 as u32, 11, 12, 13, 14, 15]), 11 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 16 + LANE2 as u32, 12, 13, 14, 15]), 12 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 16 + LANE2 as u32, 13, 14, 15]), 13 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16 + LANE2 as u32, 14, 15]), 14 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 16 + LANE2 as u32, 15]), 15 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16 + LANE2 as u32]), _ => unreachable_unchecked(), }']
-      - [poly16x8_t, poly16x8_t, poly16x8_t, '3', '3', ' match LANE1 & 0b111 { 0 => simd_shuffle!(a, b, [8 + LANE2 as u32, 1, 2, 3, 4, 5, 6, 7]), 1 => simd_shuffle!(a, b, [0, 8 + LANE2 as u32, 2, 3, 4, 5, 6, 7]), 2 => simd_shuffle!(a, b, [0, 1, 8 + LANE2 as u32, 3, 4, 5, 6, 7]), 3 => simd_shuffle!(a, b, [0, 1, 2, 8 + LANE2 as u32, 4, 5, 6, 7]), 4 => simd_shuffle!(a, b, [0, 1, 2, 3, 8 + LANE2 as u32, 5, 6, 7]), 5 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 8 + LANE2 as u32, 6, 7]), 6 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 8 + LANE2 as u32, 7]), 7 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 8 + LANE2 as u32]), _ => unreachable_unchecked(), }']
-      - [poly64x2_t, poly64x2_t, poly64x2_t, '1', '1', ' match LANE1 & 0b1 { 0 => simd_shuffle!(a, b, [2 + LANE2 as u32, 1]), 1 => simd_shuffle!(a, b, [0, 2 + LANE2 as u32]), _ => unreachable_unchecked(), }']
-      - [float32x4_t, float32x4_t, float32x4_t, '2', '2', ' match LANE1 & 0b11 { 0 => simd_shuffle!(a, b, [4 + LANE2 as u32, 1, 2, 3]), 1 => simd_shuffle!(a, b, [0, 4 + LANE2 as u32, 2, 3]), 2 => simd_shuffle!(a, b, [0, 1, 4 + LANE2 as u32, 3]), 3 => simd_shuffle!(a, b, [0, 1, 2, 4 + LANE2 as u32]), _ => unreachable_unchecked(), }']
-      - [float64x2_t, float64x2_t, float64x2_t, '1', '1', ' match LANE1 & 0b1 { 0 => simd_shuffle!(a, b, [2 + LANE2 as u32, 1]), 1 => simd_shuffle!(a, b, [0, 2 + LANE2 as u32]), _ => unreachable_unchecked(), }']
-      - [int8x8_t, int8x16_t, int8x8_t, '3', '4', ' let a: int8x16_t = simd_shuffle!(a, a, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]); match LANE1 & 0b111 { 0 => simd_shuffle!(a, b, [16 + LANE2 as u32, 1, 2, 3, 4, 5, 6, 7]), 1 => simd_shuffle!(a, b, [0, 16 + LANE2 as u32, 2, 3, 4, 5, 6, 7]), 2 => simd_shuffle!(a, b, [0, 1, 16 + LANE2 as u32, 3, 4, 5, 6, 7]), 3 => simd_shuffle!(a, b, [0, 1, 2, 16 + LANE2 as u32, 4, 5, 6, 7]), 4 => simd_shuffle!(a, b, [0, 1, 2, 3, 16 + LANE2 as u32, 5, 6, 7]), 5 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 16 + LANE2 as u32, 6, 7]), 6 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 16 + LANE2 as u32, 7]), 7 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 16 + LANE2 as u32]), _ => unreachable_unchecked(), }']
-      - [int16x4_t, int16x8_t, int16x4_t, '2', '3', ' let a: int16x8_t = simd_shuffle!(a, a, [0, 1, 2, 3, 4, 5, 6, 7]); match LANE1 & 0b11 { 0 => simd_shuffle!(a, b, [8 + LANE2 as u32, 1, 2, 3]), 1 => simd_shuffle!(a, b, [0, 8 + LANE2 as u32, 2, 3]), 2 => simd_shuffle!(a, b, [0, 1, 8 + LANE2 as u32, 3]), 3 => simd_shuffle!(a, b, [0, 1, 2, 8 + LANE2 as u32]), _ => unreachable_unchecked(), }']
-      - [int32x2_t, int32x4_t, int32x2_t, '1', '2', ' let a: int32x4_t = simd_shuffle!(a, a, [0, 1, 2, 3]); match LANE1 & 0b1 { 0 => simd_shuffle!(a, b, [4 + LANE2 as u32, 1]), 1 => simd_shuffle!(a, b, [0, 4 + LANE2 as u32]), _ => unreachable_unchecked(), }']
-      - [uint8x8_t, uint8x16_t, uint8x8_t, '3', '4', ' let a: uint8x16_t = simd_shuffle!(a, a, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]); match LANE1 & 0b111 { 0 => simd_shuffle!(a, b, [16 + LANE2 as u32, 1, 2, 3, 4, 5, 6, 7]), 1 => simd_shuffle!(a, b, [0, 16 + LANE2 as u32, 2, 3, 4, 5, 6, 7]), 2 => simd_shuffle!(a, b, [0, 1, 16 + LANE2 as u32, 3, 4, 5, 6, 7]), 3 => simd_shuffle!(a, b, [0, 1, 2, 16 + LANE2 as u32, 4, 5, 6, 7]), 4 => simd_shuffle!(a, b, [0, 1, 2, 3, 16 + LANE2 as u32, 5, 6, 7]), 5 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 16 + LANE2 as u32, 6, 7]), 6 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 16 + LANE2 as u32, 7]), 7 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 16 + LANE2 as u32]), _ => unreachable_unchecked(), }']
-      - [uint16x4_t, uint16x8_t, uint16x4_t, '2', '3', ' let a: uint16x8_t = simd_shuffle!(a, a, [0, 1, 2, 3, 4, 5, 6, 7]); match LANE1 & 0b11 { 0 => simd_shuffle!(a, b, [8 + LANE2 as u32, 1, 2, 3]), 1 => simd_shuffle!(a, b, [0, 8 + LANE2 as u32, 2, 3]), 2 => simd_shuffle!(a, b, [0, 1, 8 + LANE2 as u32, 3]), 3 => simd_shuffle!(a, b, [0, 1, 2, 8 + LANE2 as u32]), _ => unreachable_unchecked(), }']
-      - [uint32x2_t, uint32x4_t, uint32x2_t, '1', '2', 'let a: uint32x4_t = simd_shuffle!(a, a, [0, 1, 2, 3]); match LANE1 & 0b1 { 0 => simd_shuffle!(a, b, [4 + LANE2 as u32, 1]), 1 => simd_shuffle!(a, b, [0, 4 + LANE2 as u32]), _ => unreachable_unchecked(), }']
-      - [poly8x8_t, poly8x16_t, poly8x8_t, '3', '4', ' let a: poly8x16_t = simd_shuffle!(a, a, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]); match LANE1 & 0b111 { 0 => simd_shuffle!(a, b, [16 + LANE2 as u32, 1, 2, 3, 4, 5, 6, 7]), 1 => simd_shuffle!(a, b, [0, 16 + LANE2 as u32, 2, 3, 4, 5, 6, 7]), 2 => simd_shuffle!(a, b, [0, 1, 16 + LANE2 as u32, 3, 4, 5, 6, 7]), 3 => simd_shuffle!(a, b, [0, 1, 2, 16 + LANE2 as u32, 4, 5, 6, 7]), 4 => simd_shuffle!(a, b, [0, 1, 2, 3, 16 + LANE2 as u32, 5, 6, 7]), 5 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 16 + LANE2 as u32, 6, 7]), 6 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 16 + LANE2 as u32, 7]), 7 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 16 + LANE2 as u32]), _ => unreachable_unchecked(), }']
-      - [poly16x4_t, poly16x8_t, poly16x4_t, '2', '3', ' let a: poly16x8_t = simd_shuffle!(a, a, [0, 1, 2, 3, 4, 5, 6, 7]); match LANE1 & 0b11 { 0 => simd_shuffle!(a, b, [8 + LANE2 as u32, 1, 2, 3]), 1 => simd_shuffle!(a, b, [0, 8 + LANE2 as u32, 2, 3]), 2 => simd_shuffle!(a, b, [0, 1, 8 + LANE2 as u32, 3]), 3 => simd_shuffle!(a, b, [0, 1, 2, 8 + LANE2 as u32]), _ => unreachable_unchecked(), }']
-      - [float32x2_t, float32x4_t, float32x2_t, '1', '2', ' let a: float32x4_t = simd_shuffle!(a, a, [0, 1, 2, 3]); match LANE1 & 0b1 { 0 => simd_shuffle!(a, b, [4 + LANE2 as u32, 1]), 1 => simd_shuffle!(a, b, [0, 4 + LANE2 as u32]), _ => unreachable_unchecked(), }']
+      - [int8x16_t, int8x16_t, int8x16_t, '4', '4', ' unsafe { match LANE1 & 0b1111 { 0 => simd_shuffle!(a, b, [16 + LANE2 as u32, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 1 => simd_shuffle!(a, b, [0, 16 + LANE2 as u32, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 2 => simd_shuffle!(a, b, [0, 1, 16 + LANE2 as u32, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 3 => simd_shuffle!(a, b, [0, 1, 2, 16 + LANE2 as u32, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 4 => simd_shuffle!(a, b, [0, 1, 2, 3, 16 + LANE2 as u32, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 5 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 16 + LANE2 as u32, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 6 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 16 + LANE2 as u32, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 7 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 16 + LANE2 as u32, 8, 9, 10, 11, 12, 13, 14, 15]), 8 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 16 + LANE2 as u32, 9, 10, 11, 12, 13, 14, 15]), 9 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 16 + LANE2 as u32, 10, 11, 12, 13, 14, 15]), 10 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 16 + LANE2 as u32, 11, 12, 13, 14, 15]), 11 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 16 + LANE2 as u32, 12, 13, 14, 15]), 12 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 16 + LANE2 as u32, 13, 14, 15]), 13 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16 + LANE2 as u32, 14, 15]), 14 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 16 + LANE2 as u32, 15]), 15 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16 + LANE2 as u32]), _ => unreachable_unchecked(), } }']
+      - [int16x8_t, int16x8_t, int16x8_t, '3', '3', ' unsafe { match LANE1 & 0b111 { 0 => simd_shuffle!(a, b, [8 + LANE2 as u32, 1, 2, 3, 4, 5, 6, 7]), 1 => simd_shuffle!(a, b, [0, 8 + LANE2 as u32, 2, 3, 4, 5, 6, 7]), 2 => simd_shuffle!(a, b, [0, 1, 8 + LANE2 as u32, 3, 4, 5, 6, 7]), 3 => simd_shuffle!(a, b, [0, 1, 2, 8 + LANE2 as u32, 4, 5, 6, 7]), 4 => simd_shuffle!(a, b, [0, 1, 2, 3, 8 + LANE2 as u32, 5, 6, 7]), 5 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 8 + LANE2 as u32, 6, 7]), 6 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 8 + LANE2 as u32, 7]), 7 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 8 + LANE2 as u32]), _ => unreachable_unchecked(), } }']
+      - [int32x4_t, int32x4_t, int32x4_t, '2', '2', ' unsafe { match LANE1 & 0b11 { 0 => simd_shuffle!(a, b, [4 + LANE2 as u32, 1, 2, 3]), 1 => simd_shuffle!(a, b, [0, 4 + LANE2 as u32, 2, 3]), 2 => simd_shuffle!(a, b, [0, 1, 4 + LANE2 as u32, 3]), 3 => simd_shuffle!(a, b, [0, 1, 2, 4 + LANE2 as u32]), _ => unreachable_unchecked(), } }']
+      - [int64x2_t, int64x2_t, int64x2_t, '1', '1', ' unsafe { match LANE1 & 0b1 { 0 => simd_shuffle!(a, b, [2 + LANE2 as u32, 1]), 1 => simd_shuffle!(a, b, [0, 2 + LANE2 as u32]), _ => unreachable_unchecked(), } }']
+      - [uint8x16_t, uint8x16_t, uint8x16_t, '4', '4', ' unsafe { match LANE1 & 0b1111 { 0 => simd_shuffle!(a, b, [16 + LANE2 as u32, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 1 => simd_shuffle!(a, b, [0, 16 + LANE2 as u32, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 2 => simd_shuffle!(a, b, [0, 1, 16 + LANE2 as u32, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 3 => simd_shuffle!(a, b, [0, 1, 2, 16 + LANE2 as u32, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 4 => simd_shuffle!(a, b, [0, 1, 2, 3, 16 + LANE2 as u32, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 5 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 16 + LANE2 as u32, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 6 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 16 + LANE2 as u32, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 7 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 16 + LANE2 as u32, 8, 9, 10, 11, 12, 13, 14, 15]), 8 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 16 + LANE2 as u32, 9, 10, 11, 12, 13, 14, 15]), 9 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 16 + LANE2 as u32, 10, 11, 12, 13, 14, 15]), 10 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 16 + LANE2 as u32, 11, 12, 13, 14, 15]), 11 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 16 + LANE2 as u32, 12, 13, 14, 15]), 12 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 16 + LANE2 as u32, 13, 14, 15]), 13 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16 + LANE2 as u32, 14, 15]), 14 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 16 + LANE2 as u32, 15]), 15 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16 + LANE2 as u32]), _ => unreachable_unchecked(), } }']
+      - [uint16x8_t, uint16x8_t, uint16x8_t, '3', '3', ' unsafe { match LANE1 & 0b111 { 0 => simd_shuffle!(a, b, [8 + LANE2 as u32, 1, 2, 3, 4, 5, 6, 7]), 1 => simd_shuffle!(a, b, [0, 8 + LANE2 as u32, 2, 3, 4, 5, 6, 7]), 2 => simd_shuffle!(a, b, [0, 1, 8 + LANE2 as u32, 3, 4, 5, 6, 7]), 3 => simd_shuffle!(a, b, [0, 1, 2, 8 + LANE2 as u32, 4, 5, 6, 7]), 4 => simd_shuffle!(a, b, [0, 1, 2, 3, 8 + LANE2 as u32, 5, 6, 7]), 5 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 8 + LANE2 as u32, 6, 7]), 6 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 8 + LANE2 as u32, 7]), 7 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 8 + LANE2 as u32]), _ => unreachable_unchecked(), } }']
+      - [uint32x4_t, uint32x4_t, uint32x4_t, '2', '2', ' unsafe { match LANE1 & 0b11 { 0 => simd_shuffle!(a, b, [4 + LANE2 as u32, 1, 2, 3]), 1 => simd_shuffle!(a, b, [0, 4 + LANE2 as u32, 2, 3]), 2 => simd_shuffle!(a, b, [0, 1, 4 + LANE2 as u32, 3]), 3 => simd_shuffle!(a, b, [0, 1, 2, 4 + LANE2 as u32]), _ => unreachable_unchecked(), } }']
+      - [uint64x2_t, uint64x2_t, uint64x2_t, '1', '1', ' unsafe { match LANE1 & 0b1 { 0 => simd_shuffle!(a, b, [2 + LANE2 as u32, 1]), 1 => simd_shuffle!(a, b, [0, 2 + LANE2 as u32]), _ => unreachable_unchecked(), } }']
+      - [poly8x16_t, poly8x16_t, poly8x16_t, '4', '4', ' unsafe { match LANE1 & 0b1111 { 0 => simd_shuffle!(a, b, [16 + LANE2 as u32, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 1 => simd_shuffle!(a, b, [0, 16 + LANE2 as u32, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 2 => simd_shuffle!(a, b, [0, 1, 16 + LANE2 as u32, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 3 => simd_shuffle!(a, b, [0, 1, 2, 16 + LANE2 as u32, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 4 => simd_shuffle!(a, b, [0, 1, 2, 3, 16 + LANE2 as u32, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 5 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 16 + LANE2 as u32, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 6 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 16 + LANE2 as u32, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 7 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 16 + LANE2 as u32, 8, 9, 10, 11, 12, 13, 14, 15]), 8 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 16 + LANE2 as u32, 9, 10, 11, 12, 13, 14, 15]), 9 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 16 + LANE2 as u32, 10, 11, 12, 13, 14, 15]), 10 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 16 + LANE2 as u32, 11, 12, 13, 14, 15]), 11 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 16 + LANE2 as u32, 12, 13, 14, 15]), 12 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 16 + LANE2 as u32, 13, 14, 15]), 13 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16 + LANE2 as u32, 14, 15]), 14 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 16 + LANE2 as u32, 15]), 15 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16 + LANE2 as u32]), _ => unreachable_unchecked(), } }']
+      - [poly16x8_t, poly16x8_t, poly16x8_t, '3', '3', ' unsafe { match LANE1 & 0b111 { 0 => simd_shuffle!(a, b, [8 + LANE2 as u32, 1, 2, 3, 4, 5, 6, 7]), 1 => simd_shuffle!(a, b, [0, 8 + LANE2 as u32, 2, 3, 4, 5, 6, 7]), 2 => simd_shuffle!(a, b, [0, 1, 8 + LANE2 as u32, 3, 4, 5, 6, 7]), 3 => simd_shuffle!(a, b, [0, 1, 2, 8 + LANE2 as u32, 4, 5, 6, 7]), 4 => simd_shuffle!(a, b, [0, 1, 2, 3, 8 + LANE2 as u32, 5, 6, 7]), 5 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 8 + LANE2 as u32, 6, 7]), 6 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 8 + LANE2 as u32, 7]), 7 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 8 + LANE2 as u32]), _ => unreachable_unchecked(), } }']
+      - [poly64x2_t, poly64x2_t, poly64x2_t, '1', '1', ' unsafe { match LANE1 & 0b1 { 0 => simd_shuffle!(a, b, [2 + LANE2 as u32, 1]), 1 => simd_shuffle!(a, b, [0, 2 + LANE2 as u32]), _ => unreachable_unchecked(), } }']
+      - [float32x4_t, float32x4_t, float32x4_t, '2', '2', ' unsafe { match LANE1 & 0b11 { 0 => simd_shuffle!(a, b, [4 + LANE2 as u32, 1, 2, 3]), 1 => simd_shuffle!(a, b, [0, 4 + LANE2 as u32, 2, 3]), 2 => simd_shuffle!(a, b, [0, 1, 4 + LANE2 as u32, 3]), 3 => simd_shuffle!(a, b, [0, 1, 2, 4 + LANE2 as u32]), _ => unreachable_unchecked(), } }']
+      - [float64x2_t, float64x2_t, float64x2_t, '1', '1', ' unsafe { match LANE1 & 0b1 { 0 => simd_shuffle!(a, b, [2 + LANE2 as u32, 1]), 1 => simd_shuffle!(a, b, [0, 2 + LANE2 as u32]), _ => unreachable_unchecked(), } }']
+      - [int8x8_t, int8x16_t, int8x8_t, '3', '4', ' unsafe { let a: int8x16_t = simd_shuffle!(a, a, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]); match LANE1 & 0b111 { 0 => simd_shuffle!(a, b, [16 + LANE2 as u32, 1, 2, 3, 4, 5, 6, 7]), 1 => simd_shuffle!(a, b, [0, 16 + LANE2 as u32, 2, 3, 4, 5, 6, 7]), 2 => simd_shuffle!(a, b, [0, 1, 16 + LANE2 as u32, 3, 4, 5, 6, 7]), 3 => simd_shuffle!(a, b, [0, 1, 2, 16 + LANE2 as u32, 4, 5, 6, 7]), 4 => simd_shuffle!(a, b, [0, 1, 2, 3, 16 + LANE2 as u32, 5, 6, 7]), 5 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 16 + LANE2 as u32, 6, 7]), 6 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 16 + LANE2 as u32, 7]), 7 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 16 + LANE2 as u32]), _ => unreachable_unchecked(), } }']
+      - [int16x4_t, int16x8_t, int16x4_t, '2', '3', ' unsafe { let a: int16x8_t = simd_shuffle!(a, a, [0, 1, 2, 3, 4, 5, 6, 7]); match LANE1 & 0b11 { 0 => simd_shuffle!(a, b, [8 + LANE2 as u32, 1, 2, 3]), 1 => simd_shuffle!(a, b, [0, 8 + LANE2 as u32, 2, 3]), 2 => simd_shuffle!(a, b, [0, 1, 8 + LANE2 as u32, 3]), 3 => simd_shuffle!(a, b, [0, 1, 2, 8 + LANE2 as u32]), _ => unreachable_unchecked(), } }']
+      - [int32x2_t, int32x4_t, int32x2_t, '1', '2', ' unsafe { let a: int32x4_t = simd_shuffle!(a, a, [0, 1, 2, 3]); match LANE1 & 0b1 { 0 => simd_shuffle!(a, b, [4 + LANE2 as u32, 1]), 1 => simd_shuffle!(a, b, [0, 4 + LANE2 as u32]), _ => unreachable_unchecked(), } }']
+      - [uint8x8_t, uint8x16_t, uint8x8_t, '3', '4', ' unsafe { let a: uint8x16_t = simd_shuffle!(a, a, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]); match LANE1 & 0b111 { 0 => simd_shuffle!(a, b, [16 + LANE2 as u32, 1, 2, 3, 4, 5, 6, 7]), 1 => simd_shuffle!(a, b, [0, 16 + LANE2 as u32, 2, 3, 4, 5, 6, 7]), 2 => simd_shuffle!(a, b, [0, 1, 16 + LANE2 as u32, 3, 4, 5, 6, 7]), 3 => simd_shuffle!(a, b, [0, 1, 2, 16 + LANE2 as u32, 4, 5, 6, 7]), 4 => simd_shuffle!(a, b, [0, 1, 2, 3, 16 + LANE2 as u32, 5, 6, 7]), 5 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 16 + LANE2 as u32, 6, 7]), 6 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 16 + LANE2 as u32, 7]), 7 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 16 + LANE2 as u32]), _ => unreachable_unchecked(), } }']
+      - [uint16x4_t, uint16x8_t, uint16x4_t, '2', '3', ' unsafe { let a: uint16x8_t = simd_shuffle!(a, a, [0, 1, 2, 3, 4, 5, 6, 7]); match LANE1 & 0b11 { 0 => simd_shuffle!(a, b, [8 + LANE2 as u32, 1, 2, 3]), 1 => simd_shuffle!(a, b, [0, 8 + LANE2 as u32, 2, 3]), 2 => simd_shuffle!(a, b, [0, 1, 8 + LANE2 as u32, 3]), 3 => simd_shuffle!(a, b, [0, 1, 2, 8 + LANE2 as u32]), _ => unreachable_unchecked(), } }']
+      - [uint32x2_t, uint32x4_t, uint32x2_t, '1', '2', ' unsafe { let a: uint32x4_t = simd_shuffle!(a, a, [0, 1, 2, 3]); match LANE1 & 0b1 { 0 => simd_shuffle!(a, b, [4 + LANE2 as u32, 1]), 1 => simd_shuffle!(a, b, [0, 4 + LANE2 as u32]), _ => unreachable_unchecked(), } }']
+      - [poly8x8_t, poly8x16_t, poly8x8_t, '3', '4', ' unsafe { let a: poly8x16_t = simd_shuffle!(a, a, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]); match LANE1 & 0b111 { 0 => simd_shuffle!(a, b, [16 + LANE2 as u32, 1, 2, 3, 4, 5, 6, 7]), 1 => simd_shuffle!(a, b, [0, 16 + LANE2 as u32, 2, 3, 4, 5, 6, 7]), 2 => simd_shuffle!(a, b, [0, 1, 16 + LANE2 as u32, 3, 4, 5, 6, 7]), 3 => simd_shuffle!(a, b, [0, 1, 2, 16 + LANE2 as u32, 4, 5, 6, 7]), 4 => simd_shuffle!(a, b, [0, 1, 2, 3, 16 + LANE2 as u32, 5, 6, 7]), 5 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 16 + LANE2 as u32, 6, 7]), 6 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 16 + LANE2 as u32, 7]), 7 => simd_shuffle!(a, b, [0, 1, 2, 3, 4, 5, 6, 16 + LANE2 as u32]), _ => unreachable_unchecked(), } }']
+      - [poly16x4_t, poly16x8_t, poly16x4_t, '2', '3', ' unsafe { let a: poly16x8_t = simd_shuffle!(a, a, [0, 1, 2, 3, 4, 5, 6, 7]); match LANE1 & 0b11 { 0 => simd_shuffle!(a, b, [8 + LANE2 as u32, 1, 2, 3]), 1 => simd_shuffle!(a, b, [0, 8 + LANE2 as u32, 2, 3]), 2 => simd_shuffle!(a, b, [0, 1, 8 + LANE2 as u32, 3]), 3 => simd_shuffle!(a, b, [0, 1, 2, 8 + LANE2 as u32]), _ => unreachable_unchecked(), } }']
+      - [float32x2_t, float32x4_t, float32x2_t, '1', '2', ' unsafe { let a: float32x4_t = simd_shuffle!(a, a, [0, 1, 2, 3]); match LANE1 & 0b1 { 0 => simd_shuffle!(a, b, [4 + LANE2 as u32, 1]), 1 => simd_shuffle!(a, b, [0, 4 + LANE2 as u32]), _ => unreachable_unchecked(), } }']
     compose:
       - FnCall: [static_assert_uimm_bits!, [LANE1, '{type[3]}']]
       - FnCall: [static_assert_uimm_bits!, [LANE2, '{type[4]}']]
@@ -7274,13 +7002,12 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['1', '3']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const LANE1: i32, const LANE2: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
-      - [int64x2_t, int64x1_t, 'let b: int64x2_t = simd_shuffle!(b, b, [0, 1]); match LANE1 & 0b1 { 0 => simd_shuffle!(a, b, [2 + LANE2 as u32, 1]), 1 => simd_shuffle!(a, b, [0, 2 + LANE2 as u32]), _ => unreachable_unchecked(), }']
-      - [uint64x2_t, uint64x1_t, 'let b: uint64x2_t = simd_shuffle!(b, b, [0, 1]); match LANE1 & 0b1 { 0 => simd_shuffle!(a, b, [2 + LANE2 as u32, 1]), 1 => simd_shuffle!(a, b, [0, 2 + LANE2 as u32]), _ => unreachable_unchecked(), }']
-      - [poly64x2_t, poly64x1_t, 'let b: poly64x2_t = simd_shuffle!(b, b, [0, 1]); match LANE1 & 0b1 { 0 => simd_shuffle!(a, b, [2 + LANE2 as u32, 1]), 1 => simd_shuffle!(a, b, [0, 2 + LANE2 as u32]), _ => unreachable_unchecked(), }']
-      - [float64x2_t, float64x1_t, ' let b: float64x2_t = simd_shuffle!(b, b, [0, 1]); match LANE1 & 0b1 { 0 => simd_shuffle!(a, b, [2 + LANE2 as u32, 1]), 1 => simd_shuffle!(a, b, [0, 2 + LANE2 as u32]), _ => unreachable_unchecked(), }']
+      - [int64x2_t, int64x1_t, ' unsafe { let b: int64x2_t = simd_shuffle!(b, b, [0, 1]); match LANE1 & 0b1 { 0 => simd_shuffle!(a, b, [2 + LANE2 as u32, 1]), 1 => simd_shuffle!(a, b, [0, 2 + LANE2 as u32]), _ => unreachable_unchecked(), } }']
+      - [uint64x2_t, uint64x1_t, ' unsafe { let b: uint64x2_t = simd_shuffle!(b, b, [0, 1]); match LANE1 & 0b1 { 0 => simd_shuffle!(a, b, [2 + LANE2 as u32, 1]), 1 => simd_shuffle!(a, b, [0, 2 + LANE2 as u32]), _ => unreachable_unchecked(), } }']
+      - [poly64x2_t, poly64x1_t, ' unsafe { let b: poly64x2_t = simd_shuffle!(b, b, [0, 1]); match LANE1 & 0b1 { 0 => simd_shuffle!(a, b, [2 + LANE2 as u32, 1]), 1 => simd_shuffle!(a, b, [0, 2 + LANE2 as u32]), _ => unreachable_unchecked(), } }']
+      - [float64x2_t, float64x1_t, ' unsafe { let b: float64x2_t = simd_shuffle!(b, b, [0, 1]); match LANE1 & 0b1 { 0 => simd_shuffle!(a, b, [2 + LANE2 as u32, 1]), 1 => simd_shuffle!(a, b, [0, 2 + LANE2 as u32]), _ => unreachable_unchecked(), } }']
     compose:
       - FnCall: [static_assert_uimm_bits!, [LANE1, '1']]
       - FnCall: [static_assert!, ['LANE2 == 0']]
@@ -7295,10 +7022,9 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['1', '3']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const LANE1: i32, const LANE2: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
-      - [float32x4_t, float32x2_t, ' let b: float32x4_t = simd_shuffle!(b, b, [0, 1, 2, 3]); match LANE1 & 0b11 { 0 => simd_shuffle!(a, b, [4 + LANE2 as u32, 1, 2, 3]), 1 => simd_shuffle!(a, b, [0, 4 + LANE2 as u32, 2, 3]), 2 => simd_shuffle!(a, b, [0, 1, 4 + LANE2 as u32, 3]), 3 => simd_shuffle!(a, b, [0, 1, 2, 4 + LANE2 as u32]), _ => unreachable_unchecked(), }']
+      - [float32x4_t, float32x2_t, ' unsafe { let b: float32x4_t = simd_shuffle!(b, b, [0, 1, 2, 3]); match LANE1 & 0b11 { 0 => simd_shuffle!(a, b, [4 + LANE2 as u32, 1, 2, 3]), 1 => simd_shuffle!(a, b, [0, 4 + LANE2 as u32, 2, 3]), 2 => simd_shuffle!(a, b, [0, 1, 4 + LANE2 as u32, 3]), 3 => simd_shuffle!(a, b, [0, 1, 2, 4 + LANE2 as u32]), _ => unreachable_unchecked(), } }']
     compose:
       - FnCall: [static_assert_uimm_bits!, [LANE1, 2]]
       - FnCall: [static_assert_uimm_bits!, [LANE2, 1]]
@@ -7311,8 +7037,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [nop]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["u64", float64x1_t]
     compose:
@@ -7327,8 +7052,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['2']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const LANE: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["f64", float64x1_t, float64x1_t]
     compose:
@@ -7344,8 +7068,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['2']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const LANE: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["f64", float64x2_t, float64x2_t]
     compose:
@@ -7359,8 +7082,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [sshl]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - "i64"
     compose:
@@ -7378,8 +7100,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [ushl]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["u64", "i64"]
     compose:
@@ -7399,8 +7120,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['1']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const N: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int8x16_t, int16x8_t, int8x8_t, 'N >= 0 && N <= 8', '[8, 9, 10, 11, 12, 13, 14, 15]']
       - [int16x8_t, int32x4_t, int16x4_t, 'N >= 0 && N <= 16', '[4, 5, 6, 7]']
@@ -7419,8 +7139,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['1']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const N: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [uint8x16_t, uint16x8_t, uint8x8_t, 'N >= 0 && N <= 8', '[8, 9, 10, 11, 12, 13, 14, 15]']
       - [uint16x8_t, uint32x4_t, uint16x4_t, 'N >= 0 && N <= 16', '[4, 5, 6, 7]']
@@ -7439,8 +7158,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['2']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const N: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int8x8_t, int16x8_t, int8x16_t, 'N >= 1 && N <= 8', '[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]']
       - [int16x4_t, int32x4_t, int16x8_t, 'N >= 1 && N <= 16', '[0, 1, 2, 3, 4, 5, 6, 7]']
@@ -7464,8 +7182,7 @@ intrinsics:
       - FnCall: [target_feature, ['enable = "neon,sm4"']]
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [sm3partw1]]}]]
       - FnCall: [unstable, ['feature = "stdarch_neon_sm4"', 'issue = "117226"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - uint32x4_t
     compose:
@@ -7483,8 +7200,7 @@ intrinsics:
       - FnCall: [target_feature, ['enable = "neon,sm4"']]
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [sm3partw2]]}]]
       - FnCall: [unstable, ['feature = "stdarch_neon_sm4"', 'issue = "117226"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - uint32x4_t
     compose:
@@ -7502,8 +7218,7 @@ intrinsics:
       - FnCall: [target_feature, ['enable = "neon,sm4"']]
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [sm3ss1]]}]]
       - FnCall: [unstable, ['feature = "stdarch_neon_sm4"', 'issue = "117226"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - uint32x4_t
     compose:
@@ -7521,8 +7236,7 @@ intrinsics:
       - FnCall: [target_feature, ['enable = "neon,sm4"']]
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [sm4ekey]]}]]
       - FnCall: [unstable, ['feature = "stdarch_neon_sm4"', 'issue = "117226"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - uint32x4_t
     compose:
@@ -7540,8 +7254,7 @@ intrinsics:
       - FnCall: [target_feature, ['enable = "neon,sm4"']]
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [sm4e]]}]]
       - FnCall: [unstable, ['feature = "stdarch_neon_sm4"', 'issue = "117226"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - uint32x4_t
     compose:
@@ -7559,8 +7272,7 @@ intrinsics:
       - FnCall: [target_feature, ['enable = "neon,sha3"']]
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [rax1]]}]]
       - FnCall: [stable, ['feature = "stdarch_neon_sha3"', 'since = "1.79.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - uint64x2_t
     compose:
@@ -7578,8 +7290,7 @@ intrinsics:
       - FnCall: [target_feature, ['enable = "neon,sha3"']]
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [sha512h]]}]]
       - FnCall: [stable, ['feature = "stdarch_neon_sha3"', 'since = "1.79.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - uint64x2_t
     compose:
@@ -7597,8 +7308,7 @@ intrinsics:
       - FnCall: [target_feature, ['enable = "neon,sha3"']]
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [sha512h2]]}]]
       - FnCall: [stable, ['feature = "stdarch_neon_sha3"', 'since = "1.79.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - uint64x2_t
     compose:
@@ -7616,8 +7326,7 @@ intrinsics:
       - FnCall: [target_feature, ['enable = "neon,sha3"']]
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [sha512su0]]}]]
       - FnCall: [stable, ['feature = "stdarch_neon_sha3"', 'since = "1.79.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - uint64x2_t
     compose:
@@ -7635,8 +7344,7 @@ intrinsics:
       - FnCall: [target_feature, ['enable = "neon,sha3"']]
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [sha512su1]]}]]
       - FnCall: [stable, ['feature = "stdarch_neon_sha3"', 'since = "1.79.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - uint64x2_t
     compose:
@@ -7654,8 +7362,7 @@ intrinsics:
       - FnCall: [target_feature, ['enable = "neon,frintts"']]
       - FnCall: [unstable, ['feature = "stdarch_neon_ftts"', 'issue = "117227"']]
       - FnCall: [cfg_attr, [{FnCall: [all, [test, {FnCall: [not, ['target_env = "msvc"']]}]]}, {FnCall: [assert_instr, [frint32x]]}]]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - float32x2_t
       - float32x4_t
@@ -7675,8 +7382,7 @@ intrinsics:
       - FnCall: [target_feature, ['enable = "neon,frintts"']]
       - FnCall: [unstable, ['feature = "stdarch_neon_ftts"', 'issue = "117227"']]
       - FnCall: [cfg_attr, [{FnCall: [all, [test, {FnCall: [not, ['target_env = "msvc"']]}]]}, {FnCall: [assert_instr, [frint32x]]}]]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - float64x1_t
     compose:
@@ -7702,8 +7408,7 @@ intrinsics:
       - FnCall: [target_feature, ['enable = "neon,frintts"']]
       - FnCall: [unstable, ['feature = "stdarch_neon_ftts"', 'issue = "117227"']]
       - FnCall: [cfg_attr, [{FnCall: [all, [test, {FnCall: [not, ['target_env = "msvc"']]}]]}, {FnCall: [assert_instr, [frint32z]]}]]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - float32x2_t
       - float32x4_t
@@ -7723,8 +7428,7 @@ intrinsics:
       - FnCall: [target_feature, ['enable = "neon,frintts"']]
       - FnCall: [unstable, ['feature = "stdarch_neon_ftts"', 'issue = "117227"']]
       - FnCall: [cfg_attr, [{FnCall: [all, [test, {FnCall: [not, ['target_env = "msvc"']]}]]}, {FnCall: [assert_instr, [frint32z]]}]]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - float64x1_t
     compose:
@@ -7748,8 +7452,7 @@ intrinsics:
       - FnCall: [target_feature, ['enable = "neon,frintts"']]
       - FnCall: [unstable, ['feature = "stdarch_neon_ftts"', 'issue = "117227"']]
       - FnCall: [cfg_attr, [{FnCall: [all, [test, {FnCall: [not, ['target_env = "msvc"']]}]]}, {FnCall: [assert_instr, [frint64x]]}]]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - float32x2_t
       - float32x4_t
@@ -7769,8 +7472,7 @@ intrinsics:
       - FnCall: [target_feature, ['enable = "neon,frintts"']]
       - FnCall: [unstable, ['feature = "stdarch_neon_ftts"', 'issue = "117227"']]
       - FnCall: [cfg_attr, [{FnCall: [all, [test, {FnCall: [not, ['target_env = "msvc"']]}]]}, {FnCall: [assert_instr, [frint64x]]}]]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - float64x1_t
     compose:
@@ -7794,8 +7496,7 @@ intrinsics:
       - FnCall: [target_feature, ['enable = "neon,frintts"']]
       - FnCall: [unstable, ['feature = "stdarch_neon_ftts"', 'issue = "117227"']]
       - FnCall: [cfg_attr, [{FnCall: [all, [test, {FnCall: [not, ['target_env = "msvc"']]}]]}, {FnCall: [assert_instr, [frint64z]]}]]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - float32x2_t
       - float32x4_t
@@ -7815,8 +7516,7 @@ intrinsics:
       - FnCall: [target_feature, ['enable = "neon,frintts"']]
       - FnCall: [unstable, ['feature = "stdarch_neon_ftts"', 'issue = "117227"']]
       - FnCall: [cfg_attr, [{FnCall: [all, [test, {FnCall: [not, ['target_env = "msvc"']]}]]}, {FnCall: [assert_instr, [frint64z]]}]]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - float64x1_t
     compose:
@@ -7839,8 +7539,7 @@ intrinsics:
     attr:
       - *neon-stable
       - FnCall: [cfg_attr, [{FnCall: [all, [test, {FnCall: [not, ['target_env = "msvc"']]}]]}, {FnCall: [assert_instr, [trn1]]}]]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int8x8_t, '[0, 8, 2, 10, 4, 12, 6, 14]']
       - [int8x16_t, '[0, 16, 2, 18, 4, 20, 6, 22, 8, 24, 10, 26, 12, 28, 14, 30]']
@@ -7867,8 +7566,7 @@ intrinsics:
     attr:
       - *neon-stable
       - FnCall: [cfg_attr, [{FnCall: [all, [test, {FnCall: [not, ['target_env = "msvc"']]}]]}, {FnCall: [assert_instr, [zip1]]}]]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int32x2_t, '[0, 2]']
       - [int64x2_t, '[0, 2]']
@@ -7887,8 +7585,7 @@ intrinsics:
     attr:
       - *neon-stable
       - FnCall: [cfg_attr, [{FnCall: [all, [test, {FnCall: [not, ['target_env = "msvc"']]}]]}, {FnCall: [assert_instr, [trn2]]}]]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int8x8_t, '[1, 9, 3, 11, 5, 13, 7, 15]']
       - [int8x16_t, '[1, 17, 3, 19, 5, 21, 7, 23, 9, 25, 11, 27, 13, 29, 15, 31]']
@@ -7915,8 +7612,7 @@ intrinsics:
     attr:
       - *neon-stable
       - FnCall: [cfg_attr, [{FnCall: [all, [test, {FnCall: [not, ['target_env = "msvc"']]}]]}, {FnCall: [assert_instr, [zip2]]}]]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int32x2_t, '[1, 3]']
       - [int64x2_t, '[1, 3]']
@@ -7935,8 +7631,7 @@ intrinsics:
     attr:
       - *neon-stable
       - FnCall: [cfg_attr, [{FnCall: [all, [test, {FnCall: [not, ['target_env = "msvc"']]}]]}, {FnCall: [assert_instr, [zip2]]}]]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int8x8_t, '[4, 12, 5, 13, 6, 14, 7, 15]']
       - [int8x16_t, '[8, 24, 9, 25, 10, 26, 11, 27, 12, 28, 13, 29, 14, 30, 15, 31]']
@@ -7970,8 +7665,7 @@ intrinsics:
     attr:
       - *neon-stable
       - FnCall: [cfg_attr, [{FnCall: [all, [test, {FnCall: [not, ['target_env = "msvc"']]}]]}, {FnCall: [assert_instr, [zip1]]}]]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int8x8_t, '[0, 8, 1, 9, 2, 10, 3, 11]']
       - [int8x16_t, '[0, 16, 1, 17, 2, 18, 3, 19, 4, 20, 5, 21, 6, 22, 7, 23]']
@@ -8005,8 +7699,7 @@ intrinsics:
     attr:
       - *neon-stable
       - FnCall: [cfg_attr, [{FnCall: [all, [test, {FnCall: [not, ['target_env = "msvc"']]}]]}, {FnCall: [assert_instr, [zip1]]}]]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int32x2_t, '[0, 2]']
       - [int64x2_t, '[0, 2]']
@@ -8025,8 +7718,7 @@ intrinsics:
     attr:
       - *neon-stable
       - FnCall: [cfg_attr, [{FnCall: [all, [test, {FnCall: [not, ['target_env = "msvc"']]}]]}, {FnCall: [assert_instr, [uzp1]]}]]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int8x8_t, '[0, 2, 4, 6, 8, 10, 12, 14]']
       - [int8x16_t, '[0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30]']
@@ -8053,8 +7745,7 @@ intrinsics:
     attr:
       - *neon-stable
       - FnCall: [cfg_attr, [{FnCall: [all, [test, {FnCall: [not, ['target_env = "msvc"']]}]]}, {FnCall: [assert_instr, [zip2]]}]]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int32x2_t, '[1, 3]']
       - [int64x2_t, '[1, 3]']
@@ -8073,8 +7764,7 @@ intrinsics:
     attr:
       - *neon-stable
       - FnCall: [cfg_attr, [{FnCall: [all, [test, {FnCall: [not, ['target_env = "msvc"']]}]]}, {FnCall: [assert_instr, [uzp2]]}]]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int8x8_t, '[1, 3, 5, 7, 9, 11, 13, 15]']
       - [int8x16_t, '[1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31]']
@@ -8105,8 +7795,7 @@ intrinsics:
     attr:
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
       - FnCall: [cfg_attr, [{FnCall: [all, [test, {FnCall: [not, ['target_env = "msvc"']]}]]}, {FnCall: [assert_instr, [uabal]]}]]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [uint16x8_t, uint8x16_t, uint8x8_t, '[8, 9, 10, 11, 12, 13, 14, 15]', '[8, 9, 10, 11, 12, 13, 14, 15]']
       - [uint32x4_t, uint16x8_t, uint16x4_t, '[4, 5, 6, 7]', '[4, 5, 6, 7]']
@@ -8133,8 +7822,7 @@ intrinsics:
     attr:
       - *neon-stable
       - FnCall: [cfg_attr, [{FnCall: [all, [test, {FnCall: [not, ['target_env = "msvc"']]}]]}, {FnCall: [assert_instr, [sabal]]}]]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int16x8_t, int8x16_t, int8x16_t, '[8, 9, 10, 11, 12, 13, 14, 15]', int8x8_t, uint8x8_t]
       - [int32x4_t, int16x8_t, int16x8_t, '[4, 5, 6, 7]', int16x4_t, uint16x4_t]
@@ -8183,8 +7871,7 @@ intrinsics:
     attr:
       - *neon-stable
       - FnCall: [cfg_attr, [{FnCall: [all, [test, {FnCall: [not, ['target_env = "msvc"']]}]]}, {FnCall: [assert_instr, [sqabs]]}]]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - int64x1_t
       - int64x2_t
@@ -8205,8 +7892,7 @@ intrinsics:
       - *neon-stable
       - FnCall: [rustc_legacy_const_generics, ['2']]
       - FnCall: [cfg_attr, [{FnCall: [all, [test, {FnCall: [not, ['target_env = "msvc"']]}]]}, {FnCall: [assert_instr, [sli, 'N = 2']]}]]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - i64
       - u64
@@ -8235,8 +7921,7 @@ intrinsics:
       - *neon-stable
       - FnCall: [rustc_legacy_const_generics, ['2']]
       - FnCall: [cfg_attr, [{FnCall: [all, [test, {FnCall: [not, ['target_env = "msvc"']]}]]}, {FnCall: [assert_instr, [sri, 'N = 2']]}]]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - i64
       - u64
@@ -8262,8 +7947,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [fmaxnmp]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - float32x2_t
       - float64x2_t
@@ -8356,8 +8040,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['3']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const LANE: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [float32x2_t, float32x2_t, '1', '_lane_f32']
       - [float32x2_t, float32x4_t, '2', '_laneq_f32']
@@ -8381,8 +8064,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['3']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const LANE: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - float64x1_t
     compose:
@@ -8402,8 +8084,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['3']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const LANE: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [float64x1_t, float64x2_t]
     compose:
@@ -8423,8 +8104,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['3']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const LANE: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [float64x2_t, float64x1_t]
     compose:
@@ -8444,8 +8124,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['3']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const LANE: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["f32", float32x2_t, "s_lane_f32", '1']
       - ["f32", float32x4_t, "s_laneq_f32", '2']
@@ -8459,7 +8138,7 @@ intrinsics:
               arch: aarch64,arm64ec
       - FnCall: [static_assert_uimm_bits!, ['LANE', "{type[3]}"]]
       - Let: [c, "{type[0]}", {FnCall: [simd_extract!, [c, 'LANE as u32']]}]
-      - FnCall: ["_vfma{type[2]}", [b, c, a]]
+      - FnCall: ["_vfma{type[2]}", [b, c, a], [], true]
 
   - name: "vfmad_lane_f64"
     doc: "Floating-point fused multiply-add to accumulator"
@@ -8470,8 +8149,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['3']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const LANE: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["f64", float64x1_t]
     compose:
@@ -8492,8 +8170,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [fmsub]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - float64x1_t
     compose:
@@ -8507,8 +8184,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [fmls]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - float64x2_t
     compose:
@@ -8522,8 +8198,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [fmul]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - float64x1_t
       - float64x2_t
@@ -8539,8 +8214,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['3']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const LANE: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [float32x2_t, float32x2_t, '1', _lane_f32]
       - [float32x2_t, float32x4_t, '2', _laneq_f32]
@@ -8560,8 +8234,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['3']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const LANE: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - float64x1_t
     compose:
@@ -8577,8 +8250,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['3']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const LANE: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [float64x1_t, float64x2_t]
     compose:
@@ -8594,8 +8266,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['3']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const LANE: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [float64x2_t, float64x1_t]
     compose:
@@ -8611,8 +8282,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['3']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const LANE: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["f32", float32x2_t, "s_lane_f32"]
       - ["f32", float32x4_t, "s_laneq_f32"]
@@ -8628,8 +8298,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [fcmeq]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [float32x2_t, uint32x2_t, 'f32x2', 'f32x2::new(0.0, 0.0)']
       - [float32x4_t, uint32x4_t, 'f32x4', 'f32x4::new(0.0, 0.0, 0.0, 0.0)']
@@ -8646,8 +8315,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [fcmp]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["f32", "u32", "s_f32"]
       - ["f64", "u64", "d_f64"]
@@ -8666,8 +8334,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [cmp]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["i64", "u64", "s64"]
       - ["u64", "u64", "u64"]
@@ -8685,8 +8352,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [cmeq]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int8x8_t, uint8x8_t, i8x8, 'i8x8::new(0, 0, 0, 0, 0, 0, 0, 0)']
       - [int8x16_t, uint8x16_t, i8x16, 'i8x16::new(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)']
@@ -8714,8 +8380,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [cmeq]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [uint8x8_t, uint8x8_t, u8x8, 'u8x8::new(0, 0, 0, 0, 0, 0, 0, 0)']
       - [uint8x16_t, uint8x16_t, u8x16, 'u8x16::new(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)']
@@ -8739,8 +8404,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [cmhs]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - uint64x1_t
       - uint64x2_t
@@ -8754,8 +8418,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [fcmp]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["s_f32", "f32", "u32"]
       - ["d_f64", "f64", "u64"]
@@ -8775,8 +8438,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [fcmge]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [float64x1_t, uint64x1_t]
       - [float64x2_t, uint64x2_t]
@@ -8790,8 +8452,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [cmp]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["d_s64", "i64", "u64", s64]
       - ["d_u64", "u64", "u64", u64]
@@ -8810,8 +8471,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [cmhi]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - uint64x1_t
       - uint64x2_t
@@ -8825,8 +8485,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [cmp]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["s64", "i64", "u64"]
       - ["u64", "u64", "u64"]
@@ -8845,8 +8504,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [cmtst]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [uint64x1_t, u64x1, 'u64x1::new(0)']
       - [uint64x2_t, u64x2, 'u64x2::new(0, 0)']
@@ -8862,8 +8520,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [fcmge]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [float32x2_t, uint32x2_t, f32x2, 'f32x2::new(0.0, 0.0)']
       - [float32x4_t, uint32x4_t, f32x4, 'f32x4::new(0.0, 0.0, 0.0, 0.0)']
@@ -8883,8 +8540,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [fcmp]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["s_f32", "f32", "u32"]
       - ["d_f64", "f64", "u64"]
@@ -8903,8 +8559,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [cmp]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["i64", "u64"]
     compose:
@@ -8919,8 +8574,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [cmp]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["i64", "u64", 's64']
       - ["u64", "u64", 'u64']
@@ -8939,8 +8593,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [cmgt]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int8x8_t, uint8x8_t, i8x8, 'i8x8::new(0, 0, 0, 0, 0, 0, 0, 0)']
       - [int8x16_t, uint8x16_t, i8x16, 'i8x16::new(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)']
@@ -8964,8 +8617,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [cmp]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["i64", "u64"]
     compose:
@@ -8982,8 +8634,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [fcmgt]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [float32x2_t, uint32x2_t, f32x2, 'f32x2::new(0.0, 0.0)']
       - [float32x4_t, uint32x4_t, f32x4, 'f32x4::new(0.0, 0.0, 0.0, 0.0)']
@@ -9000,8 +8651,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [fcmp]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["s_f32", "f32", "u32"]
       - ["d_f64", "f64", "u64"]
@@ -9020,8 +8670,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [fcvtzu]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [float64x1_t, uint64x1_t]
       - [float64x2_t, uint64x2_t]
@@ -9039,8 +8688,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [fmul]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [float64x1_t, "f64"]
       - [float64x2_t, "f64"]
@@ -9059,8 +8707,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['2']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const LANE: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - float64x1_t
     compose:
@@ -9081,8 +8728,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['2']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const LANE: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [float64x2_t, float64x1_t]
     compose:
@@ -9101,8 +8747,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['2']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const LANE: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["f64", float64x1_t]
     compose:
@@ -9119,8 +8764,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['2']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const LANE: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [float64x1_t, float64x2_t]
     compose:
@@ -9141,8 +8785,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['2']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const LANE: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [float64x2_t, float64x2_t, float64x2_t]
     compose:
@@ -9161,8 +8804,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['2']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const LANE: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["f32", float32x2_t, "s_lane_f32", '1']
       - ["f32", float32x4_t, "s_laneq_f32", '2']
@@ -9181,8 +8823,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['2']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const N: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - "i64"
     compose:
@@ -9197,8 +8838,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [smlsl2]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int32x4_t, int16x8_t, "i16"]
       - [int64x2_t, int32x4_t, "i32"]
@@ -9212,8 +8852,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [umlsl2]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [uint32x4_t, uint16x8_t, "u16"]
       - [uint64x2_t, uint32x4_t, "u32"]
@@ -9229,8 +8868,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['3']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const LANE: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int32x4_t, int16x8_t, int16x4_t, '2', '[LANE as u32, LANE as u32, LANE as u32, LANE as u32, LANE as u32, LANE as u32, LANE as u32, LANE as u32]']
       - [int32x4_t, int16x8_t, int16x8_t, '3', '[LANE as u32, LANE as u32, LANE as u32, LANE as u32, LANE as u32, LANE as u32, LANE as u32, LANE as u32]']
@@ -9253,8 +8891,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['3']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const LANE: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [uint32x4_t, uint16x8_t, uint16x4_t, '2', '[LANE as u32, LANE as u32, LANE as u32, LANE as u32, LANE as u32, LANE as u32, LANE as u32, LANE as u32]']
       - [uint32x4_t, uint16x8_t, uint16x8_t, '3', '[LANE as u32, LANE as u32, LANE as u32, LANE as u32, LANE as u32, LANE as u32, LANE as u32, LANE as u32]']
@@ -9275,8 +8912,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [fcmgt]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [float64x1_t, uint64x1_t]
       - [float64x2_t, uint64x2_t]
@@ -9290,8 +8926,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [fcmp]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["f32", "u32", 's_f32']
       - ["f64", "u64", 'd_f64']
@@ -9311,8 +8946,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [uabdl]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [uint8x16_t, uint16x8_t, uint8x8_t, '[8, 9, 10, 11, 12, 13, 14, 15]']
       - [uint16x8_t, uint32x4_t, uint16x4_t, '[4, 5, 6, 7]']
@@ -9329,8 +8963,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [fmsub]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [float64x1_t, "f64"]
     compose:
@@ -9347,8 +8980,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [fmls]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [float64x2_t, "f64"]
     compose:
@@ -9365,8 +8997,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [fminnmp]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ['s_f32', float32x2_t, "f32"]
       - ['qd_f64', float64x2_t, "f64"]
@@ -9384,8 +9015,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [fmaxnmp]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ['s_f32', float32x2_t, "f32"]
       - ['qd_f64', float64x2_t, "f64"]
@@ -9403,8 +9033,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [cmp]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["s64", "i64", "u64"]
       - ["u64", "u64", "u64"]
@@ -9425,8 +9054,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['2']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const LANE: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int16x4_t, int16x4_t, '2']
       - [int16x8_t, int16x4_t, '2']
@@ -9448,8 +9076,7 @@ intrinsics:
     attr:
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
       - FnCall: [cfg_attr, [{FnCall: [all, [test, {FnCall: [not, ['target_env = "msvc"']]}]]}, {FnCall: [assert_instr, [sqabs]]}]]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["i8", "s8", 'b_s8']
       - ["i16", "s16", 'h_s16']
@@ -9466,8 +9093,7 @@ intrinsics:
     attr:
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
       - FnCall: [cfg_attr, [{FnCall: [all, [test, {FnCall: [not, ['target_env = "msvc"']]}]]}, {FnCall: [assert_instr, [sqabs]]}]]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["i32", "s_s32"]
       - ["i64", "d_s64"]
@@ -9485,8 +9111,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [smull2]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int16x8_t, "i16", int32x4_t]
       - [int32x4_t, "i32", int64x2_t]
@@ -9503,8 +9128,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [umull2]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [uint16x8_t, "u16", uint32x4_t]
       - [uint32x4_t, "u32", uint64x2_t]
@@ -9523,8 +9147,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['2']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const LANE: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int16x8_t, int16x4_t, int32x4_t, '2', '[LANE as u32, LANE as u32, LANE as u32, LANE as u32, LANE as u32, LANE as u32, LANE as u32, LANE as u32]']
       - [int16x8_t, int16x8_t, int32x4_t, '3', '[LANE as u32, LANE as u32, LANE as u32, LANE as u32, LANE as u32, LANE as u32, LANE as u32, LANE as u32]']
@@ -9546,8 +9169,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['2']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const LANE: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [uint16x8_t, uint16x4_t, uint32x4_t, '2', '[LANE as u32, LANE as u32, LANE as u32, LANE as u32, LANE as u32, LANE as u32, LANE as u32, LANE as u32]']
       - [uint16x8_t, uint16x8_t, uint32x4_t, '3', '[LANE as u32, LANE as u32, LANE as u32, LANE as u32, LANE as u32, LANE as u32, LANE as u32, LANE as u32]']
@@ -9567,8 +9189,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [frsqrte]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - float64x1_t
       - float64x2_t
@@ -9586,8 +9207,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [frsqrte]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - ["s_f32", "f32"]
       - ["d_f64", "f64"]
@@ -9605,8 +9225,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [fminnmp]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - float32x2_t
       - float64x2_t
@@ -9627,8 +9246,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['1']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const N: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [b_n_s8, i8, u8, '3', s8]
       - [h_n_s16, i16, u16, '4', s16]
@@ -9650,8 +9268,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [fcvtau]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [float32x2_t, uint32x2_t]
       - [float32x4_t, uint32x4_t]
@@ -9671,8 +9288,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [fcvtzs]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [float64x1_t, int64x1_t]
       - [float64x2_t, int64x2_t]
@@ -9690,8 +9306,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [smlal2]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int32x4_t, int16x8_t, "i16"]
       - [int64x2_t, int32x4_t, "i32"]
@@ -9709,8 +9324,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [umlal2]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [uint32x4_t, uint16x8_t, "u16"]
       - [uint64x2_t, uint32x4_t, "u32"]
@@ -9730,8 +9344,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['3']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const LANE: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [int32x4_t, int16x8_t, int16x4_t, '2', '[LANE as u32, LANE as u32, LANE as u32, LANE as u32, LANE as u32, LANE as u32, LANE as u32, LANE as u32]']
       - [int32x4_t, int16x8_t, int16x8_t, '3', '[LANE as u32, LANE as u32, LANE as u32, LANE as u32, LANE as u32, LANE as u32, LANE as u32, LANE as u32]']
@@ -9750,8 +9363,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['3']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const LANE: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - [uint32x4_t, uint16x8_t, uint16x4_t, '2', '[LANE as u32, LANE as u32, LANE as u32, LANE as u32, LANE as u32, LANE as u32, LANE as u32, LANE as u32]']
       - [uint32x4_t, uint16x8_t, uint16x8_t, '3', '[LANE as u32, LANE as u32, LANE as u32, LANE as u32, LANE as u32, LANE as u32, LANE as u32, LANE as u32]']
@@ -9770,8 +9382,7 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['2']]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
     static_defs: ['const N: i32']
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - "u64"
     compose:
@@ -9786,8 +9397,7 @@ intrinsics:
     attr:
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [cmhs]]}]]
       - FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]
-    safety:
-      unsafe: [neon]
+    safety: safe
     types:
       - uint64x1_t
       - uint64x2_t

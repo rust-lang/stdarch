@@ -2557,8 +2557,8 @@ pub unsafe fn vld1q_dup_f32(ptr: *const f32) -> float32x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vaba_s8(a: int8x8_t, b: int8x8_t, c: int8x8_t) -> int8x8_t {
-    simd_add(a, vabd_s8(b, c))
+pub fn vaba_s8(a: int8x8_t, b: int8x8_t, c: int8x8_t) -> int8x8_t {
+    unsafe { simd_add(a, vabd_s8(b, c)) }
 }
 #[inline]
 #[target_feature(enable = "neon")]
@@ -2576,8 +2576,8 @@ pub unsafe fn vaba_s8(a: int8x8_t, b: int8x8_t, c: int8x8_t) -> int8x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vaba_s16(a: int16x4_t, b: int16x4_t, c: int16x4_t) -> int16x4_t {
-    simd_add(a, vabd_s16(b, c))
+pub fn vaba_s16(a: int16x4_t, b: int16x4_t, c: int16x4_t) -> int16x4_t {
+    unsafe { simd_add(a, vabd_s16(b, c)) }
 }
 #[inline]
 #[target_feature(enable = "neon")]
@@ -2595,8 +2595,8 @@ pub unsafe fn vaba_s16(a: int16x4_t, b: int16x4_t, c: int16x4_t) -> int16x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vaba_s32(a: int32x2_t, b: int32x2_t, c: int32x2_t) -> int32x2_t {
-    simd_add(a, vabd_s32(b, c))
+pub fn vaba_s32(a: int32x2_t, b: int32x2_t, c: int32x2_t) -> int32x2_t {
+    unsafe { simd_add(a, vabd_s32(b, c)) }
 }
 #[inline]
 #[target_feature(enable = "neon")]
@@ -2614,8 +2614,8 @@ pub unsafe fn vaba_s32(a: int32x2_t, b: int32x2_t, c: int32x2_t) -> int32x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vaba_u8(a: uint8x8_t, b: uint8x8_t, c: uint8x8_t) -> uint8x8_t {
-    simd_add(a, vabd_u8(b, c))
+pub fn vaba_u8(a: uint8x8_t, b: uint8x8_t, c: uint8x8_t) -> uint8x8_t {
+    unsafe { simd_add(a, vabd_u8(b, c)) }
 }
 #[inline]
 #[target_feature(enable = "neon")]
@@ -2633,8 +2633,8 @@ pub unsafe fn vaba_u8(a: uint8x8_t, b: uint8x8_t, c: uint8x8_t) -> uint8x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vaba_u16(a: uint16x4_t, b: uint16x4_t, c: uint16x4_t) -> uint16x4_t {
-    simd_add(a, vabd_u16(b, c))
+pub fn vaba_u16(a: uint16x4_t, b: uint16x4_t, c: uint16x4_t) -> uint16x4_t {
+    unsafe { simd_add(a, vabd_u16(b, c)) }
 }
 #[inline]
 #[target_feature(enable = "neon")]
@@ -2652,8 +2652,8 @@ pub unsafe fn vaba_u16(a: uint16x4_t, b: uint16x4_t, c: uint16x4_t) -> uint16x4_
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vaba_u32(a: uint32x2_t, b: uint32x2_t, c: uint32x2_t) -> uint32x2_t {
-    simd_add(a, vabd_u32(b, c))
+pub fn vaba_u32(a: uint32x2_t, b: uint32x2_t, c: uint32x2_t) -> uint32x2_t {
+    unsafe { simd_add(a, vabd_u32(b, c)) }
 }
 // signed absolute difference and accumulate (128-bit)
 #[inline]
@@ -2672,8 +2672,8 @@ pub unsafe fn vaba_u32(a: uint32x2_t, b: uint32x2_t, c: uint32x2_t) -> uint32x2_
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vabaq_s8(a: int8x16_t, b: int8x16_t, c: int8x16_t) -> int8x16_t {
-    simd_add(a, vabdq_s8(b, c))
+pub fn vabaq_s8(a: int8x16_t, b: int8x16_t, c: int8x16_t) -> int8x16_t {
+    unsafe { simd_add(a, vabdq_s8(b, c)) }
 }
 #[inline]
 #[target_feature(enable = "neon")]
@@ -2691,8 +2691,8 @@ pub unsafe fn vabaq_s8(a: int8x16_t, b: int8x16_t, c: int8x16_t) -> int8x16_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vabaq_s16(a: int16x8_t, b: int16x8_t, c: int16x8_t) -> int16x8_t {
-    simd_add(a, vabdq_s16(b, c))
+pub fn vabaq_s16(a: int16x8_t, b: int16x8_t, c: int16x8_t) -> int16x8_t {
+    unsafe { simd_add(a, vabdq_s16(b, c)) }
 }
 #[inline]
 #[target_feature(enable = "neon")]
@@ -2710,8 +2710,8 @@ pub unsafe fn vabaq_s16(a: int16x8_t, b: int16x8_t, c: int16x8_t) -> int16x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vabaq_s32(a: int32x4_t, b: int32x4_t, c: int32x4_t) -> int32x4_t {
-    simd_add(a, vabdq_s32(b, c))
+pub fn vabaq_s32(a: int32x4_t, b: int32x4_t, c: int32x4_t) -> int32x4_t {
+    unsafe { simd_add(a, vabdq_s32(b, c)) }
 }
 #[inline]
 #[target_feature(enable = "neon")]
@@ -2729,8 +2729,8 @@ pub unsafe fn vabaq_s32(a: int32x4_t, b: int32x4_t, c: int32x4_t) -> int32x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vabaq_u8(a: uint8x16_t, b: uint8x16_t, c: uint8x16_t) -> uint8x16_t {
-    simd_add(a, vabdq_u8(b, c))
+pub fn vabaq_u8(a: uint8x16_t, b: uint8x16_t, c: uint8x16_t) -> uint8x16_t {
+    unsafe { simd_add(a, vabdq_u8(b, c)) }
 }
 #[inline]
 #[target_feature(enable = "neon")]
@@ -2748,8 +2748,8 @@ pub unsafe fn vabaq_u8(a: uint8x16_t, b: uint8x16_t, c: uint8x16_t) -> uint8x16_
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vabaq_u16(a: uint16x8_t, b: uint16x8_t, c: uint16x8_t) -> uint16x8_t {
-    simd_add(a, vabdq_u16(b, c))
+pub fn vabaq_u16(a: uint16x8_t, b: uint16x8_t, c: uint16x8_t) -> uint16x8_t {
+    unsafe { simd_add(a, vabdq_u16(b, c)) }
 }
 #[inline]
 #[target_feature(enable = "neon")]
@@ -2767,8 +2767,8 @@ pub unsafe fn vabaq_u16(a: uint16x8_t, b: uint16x8_t, c: uint16x8_t) -> uint16x8
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vabaq_u32(a: uint32x4_t, b: uint32x4_t, c: uint32x4_t) -> uint32x4_t {
-    simd_add(a, vabdq_u32(b, c))
+pub fn vabaq_u32(a: uint32x4_t, b: uint32x4_t, c: uint32x4_t) -> uint32x4_t {
+    unsafe { simd_add(a, vabdq_u32(b, c)) }
 }
 
 /// Absolute value (wrapping).
@@ -2788,8 +2788,8 @@ pub unsafe fn vabaq_u32(a: uint32x4_t, b: uint32x4_t, c: uint32x4_t) -> uint32x4
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vabs_s8(a: int8x8_t) -> int8x8_t {
-    vabs_s8_(a)
+pub fn vabs_s8(a: int8x8_t) -> int8x8_t {
+    unsafe { vabs_s8_(a) }
 }
 /// Absolute value (wrapping).
 #[inline]
@@ -2808,8 +2808,8 @@ pub unsafe fn vabs_s8(a: int8x8_t) -> int8x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vabs_s16(a: int16x4_t) -> int16x4_t {
-    vabs_s16_(a)
+pub fn vabs_s16(a: int16x4_t) -> int16x4_t {
+    unsafe { vabs_s16_(a) }
 }
 /// Absolute value (wrapping).
 #[inline]
@@ -2828,8 +2828,8 @@ pub unsafe fn vabs_s16(a: int16x4_t) -> int16x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vabs_s32(a: int32x2_t) -> int32x2_t {
-    vabs_s32_(a)
+pub fn vabs_s32(a: int32x2_t) -> int32x2_t {
+    unsafe { vabs_s32_(a) }
 }
 /// Absolute value (wrapping).
 #[inline]
@@ -2848,8 +2848,8 @@ pub unsafe fn vabs_s32(a: int32x2_t) -> int32x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vabsq_s8(a: int8x16_t) -> int8x16_t {
-    vabsq_s8_(a)
+pub fn vabsq_s8(a: int8x16_t) -> int8x16_t {
+    unsafe { vabsq_s8_(a) }
 }
 /// Absolute value (wrapping).
 #[inline]
@@ -2868,8 +2868,8 @@ pub unsafe fn vabsq_s8(a: int8x16_t) -> int8x16_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vabsq_s16(a: int16x8_t) -> int16x8_t {
-    vabsq_s16_(a)
+pub fn vabsq_s16(a: int16x8_t) -> int16x8_t {
+    unsafe { vabsq_s16_(a) }
 }
 /// Absolute value (wrapping).
 #[inline]
@@ -2888,8 +2888,8 @@ pub unsafe fn vabsq_s16(a: int16x8_t) -> int16x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vabsq_s32(a: int32x4_t) -> int32x4_t {
-    vabsq_s32_(a)
+pub fn vabsq_s32(a: int32x4_t) -> int32x4_t {
+    unsafe { vabsq_s32_(a) }
 }
 
 /// Add pairwise.
@@ -2909,8 +2909,8 @@ pub unsafe fn vabsq_s32(a: int32x4_t) -> int32x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vpadd_s16(a: int16x4_t, b: int16x4_t) -> int16x4_t {
-    vpadd_s16_(a, b)
+pub fn vpadd_s16(a: int16x4_t, b: int16x4_t) -> int16x4_t {
+    unsafe { vpadd_s16_(a, b) }
 }
 /// Add pairwise.
 #[inline]
@@ -2929,8 +2929,8 @@ pub unsafe fn vpadd_s16(a: int16x4_t, b: int16x4_t) -> int16x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vpadd_s32(a: int32x2_t, b: int32x2_t) -> int32x2_t {
-    vpadd_s32_(a, b)
+pub fn vpadd_s32(a: int32x2_t, b: int32x2_t) -> int32x2_t {
+    unsafe { vpadd_s32_(a, b) }
 }
 /// Add pairwise.
 #[inline]
@@ -2949,8 +2949,8 @@ pub unsafe fn vpadd_s32(a: int32x2_t, b: int32x2_t) -> int32x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vpadd_s8(a: int8x8_t, b: int8x8_t) -> int8x8_t {
-    vpadd_s8_(a, b)
+pub fn vpadd_s8(a: int8x8_t, b: int8x8_t) -> int8x8_t {
+    unsafe { vpadd_s8_(a, b) }
 }
 /// Add pairwise.
 #[inline]
@@ -2969,8 +2969,8 @@ pub unsafe fn vpadd_s8(a: int8x8_t, b: int8x8_t) -> int8x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vpadd_u16(a: uint16x4_t, b: uint16x4_t) -> uint16x4_t {
-    transmute(vpadd_s16_(transmute(a), transmute(b)))
+pub fn vpadd_u16(a: uint16x4_t, b: uint16x4_t) -> uint16x4_t {
+    unsafe { transmute(vpadd_s16_(transmute(a), transmute(b))) }
 }
 /// Add pairwise.
 #[inline]
@@ -2989,8 +2989,8 @@ pub unsafe fn vpadd_u16(a: uint16x4_t, b: uint16x4_t) -> uint16x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vpadd_u32(a: uint32x2_t, b: uint32x2_t) -> uint32x2_t {
-    transmute(vpadd_s32_(transmute(a), transmute(b)))
+pub fn vpadd_u32(a: uint32x2_t, b: uint32x2_t) -> uint32x2_t {
+    unsafe { transmute(vpadd_s32_(transmute(a), transmute(b))) }
 }
 /// Add pairwise.
 #[inline]
@@ -3009,8 +3009,8 @@ pub unsafe fn vpadd_u32(a: uint32x2_t, b: uint32x2_t) -> uint32x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vpadd_u8(a: uint8x8_t, b: uint8x8_t) -> uint8x8_t {
-    transmute(vpadd_s8_(transmute(a), transmute(b)))
+pub fn vpadd_u8(a: uint8x8_t, b: uint8x8_t) -> uint8x8_t {
+    unsafe { transmute(vpadd_s8_(transmute(a), transmute(b))) }
 }
 
 /// Vector add.
@@ -3030,8 +3030,8 @@ pub unsafe fn vpadd_u8(a: uint8x8_t, b: uint8x8_t) -> uint8x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vadd_s8(a: int8x8_t, b: int8x8_t) -> int8x8_t {
-    simd_add(a, b)
+pub fn vadd_s8(a: int8x8_t, b: int8x8_t) -> int8x8_t {
+    unsafe { simd_add(a, b) }
 }
 
 /// Vector add.
@@ -3051,8 +3051,8 @@ pub unsafe fn vadd_s8(a: int8x8_t, b: int8x8_t) -> int8x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vaddq_s8(a: int8x16_t, b: int8x16_t) -> int8x16_t {
-    simd_add(a, b)
+pub fn vaddq_s8(a: int8x16_t, b: int8x16_t) -> int8x16_t {
+    unsafe { simd_add(a, b) }
 }
 
 /// Vector add.
@@ -3072,8 +3072,8 @@ pub unsafe fn vaddq_s8(a: int8x16_t, b: int8x16_t) -> int8x16_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vadd_s16(a: int16x4_t, b: int16x4_t) -> int16x4_t {
-    simd_add(a, b)
+pub fn vadd_s16(a: int16x4_t, b: int16x4_t) -> int16x4_t {
+    unsafe { simd_add(a, b) }
 }
 
 /// Vector add.
@@ -3093,8 +3093,8 @@ pub unsafe fn vadd_s16(a: int16x4_t, b: int16x4_t) -> int16x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vaddq_s16(a: int16x8_t, b: int16x8_t) -> int16x8_t {
-    simd_add(a, b)
+pub fn vaddq_s16(a: int16x8_t, b: int16x8_t) -> int16x8_t {
+    unsafe { simd_add(a, b) }
 }
 
 /// Vector add.
@@ -3114,8 +3114,8 @@ pub unsafe fn vaddq_s16(a: int16x8_t, b: int16x8_t) -> int16x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vadd_s32(a: int32x2_t, b: int32x2_t) -> int32x2_t {
-    simd_add(a, b)
+pub fn vadd_s32(a: int32x2_t, b: int32x2_t) -> int32x2_t {
+    unsafe { simd_add(a, b) }
 }
 
 /// Vector add.
@@ -3135,8 +3135,8 @@ pub unsafe fn vadd_s32(a: int32x2_t, b: int32x2_t) -> int32x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vaddq_s32(a: int32x4_t, b: int32x4_t) -> int32x4_t {
-    simd_add(a, b)
+pub fn vaddq_s32(a: int32x4_t, b: int32x4_t) -> int32x4_t {
+    unsafe { simd_add(a, b) }
 }
 
 /// Vector add.
@@ -3156,8 +3156,8 @@ pub unsafe fn vaddq_s32(a: int32x4_t, b: int32x4_t) -> int32x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vaddq_s64(a: int64x2_t, b: int64x2_t) -> int64x2_t {
-    simd_add(a, b)
+pub fn vaddq_s64(a: int64x2_t, b: int64x2_t) -> int64x2_t {
+    unsafe { simd_add(a, b) }
 }
 
 /// Vector add.
@@ -3177,8 +3177,8 @@ pub unsafe fn vaddq_s64(a: int64x2_t, b: int64x2_t) -> int64x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vadd_u8(a: uint8x8_t, b: uint8x8_t) -> uint8x8_t {
-    simd_add(a, b)
+pub fn vadd_u8(a: uint8x8_t, b: uint8x8_t) -> uint8x8_t {
+    unsafe { simd_add(a, b) }
 }
 
 /// Vector add.
@@ -3198,8 +3198,8 @@ pub unsafe fn vadd_u8(a: uint8x8_t, b: uint8x8_t) -> uint8x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vaddq_u8(a: uint8x16_t, b: uint8x16_t) -> uint8x16_t {
-    simd_add(a, b)
+pub fn vaddq_u8(a: uint8x16_t, b: uint8x16_t) -> uint8x16_t {
+    unsafe { simd_add(a, b) }
 }
 
 /// Vector add.
@@ -3219,8 +3219,8 @@ pub unsafe fn vaddq_u8(a: uint8x16_t, b: uint8x16_t) -> uint8x16_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vadd_u16(a: uint16x4_t, b: uint16x4_t) -> uint16x4_t {
-    simd_add(a, b)
+pub fn vadd_u16(a: uint16x4_t, b: uint16x4_t) -> uint16x4_t {
+    unsafe { simd_add(a, b) }
 }
 
 /// Vector add.
@@ -3240,8 +3240,8 @@ pub unsafe fn vadd_u16(a: uint16x4_t, b: uint16x4_t) -> uint16x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vaddq_u16(a: uint16x8_t, b: uint16x8_t) -> uint16x8_t {
-    simd_add(a, b)
+pub fn vaddq_u16(a: uint16x8_t, b: uint16x8_t) -> uint16x8_t {
+    unsafe { simd_add(a, b) }
 }
 
 /// Vector add.
@@ -3261,8 +3261,8 @@ pub unsafe fn vaddq_u16(a: uint16x8_t, b: uint16x8_t) -> uint16x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vadd_u32(a: uint32x2_t, b: uint32x2_t) -> uint32x2_t {
-    simd_add(a, b)
+pub fn vadd_u32(a: uint32x2_t, b: uint32x2_t) -> uint32x2_t {
+    unsafe { simd_add(a, b) }
 }
 
 /// Vector add.
@@ -3282,8 +3282,8 @@ pub unsafe fn vadd_u32(a: uint32x2_t, b: uint32x2_t) -> uint32x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vaddq_u32(a: uint32x4_t, b: uint32x4_t) -> uint32x4_t {
-    simd_add(a, b)
+pub fn vaddq_u32(a: uint32x4_t, b: uint32x4_t) -> uint32x4_t {
+    unsafe { simd_add(a, b) }
 }
 
 /// Vector add.
@@ -3303,8 +3303,8 @@ pub unsafe fn vaddq_u32(a: uint32x4_t, b: uint32x4_t) -> uint32x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vaddq_u64(a: uint64x2_t, b: uint64x2_t) -> uint64x2_t {
-    simd_add(a, b)
+pub fn vaddq_u64(a: uint64x2_t, b: uint64x2_t) -> uint64x2_t {
+    unsafe { simd_add(a, b) }
 }
 
 /// Vector add.
@@ -3324,8 +3324,8 @@ pub unsafe fn vaddq_u64(a: uint64x2_t, b: uint64x2_t) -> uint64x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vadd_f32(a: float32x2_t, b: float32x2_t) -> float32x2_t {
-    simd_add(a, b)
+pub fn vadd_f32(a: float32x2_t, b: float32x2_t) -> float32x2_t {
+    unsafe { simd_add(a, b) }
 }
 
 /// Vector add.
@@ -3345,8 +3345,8 @@ pub unsafe fn vadd_f32(a: float32x2_t, b: float32x2_t) -> float32x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vaddq_f32(a: float32x4_t, b: float32x4_t) -> float32x4_t {
-    simd_add(a, b)
+pub fn vaddq_f32(a: float32x4_t, b: float32x4_t) -> float32x4_t {
+    unsafe { simd_add(a, b) }
 }
 
 /// Signed Add Long (vector).
@@ -3366,10 +3366,12 @@ pub unsafe fn vaddq_f32(a: float32x4_t, b: float32x4_t) -> float32x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vaddl_s8(a: int8x8_t, b: int8x8_t) -> int16x8_t {
-    let a: int16x8_t = simd_cast(a);
-    let b: int16x8_t = simd_cast(b);
-    simd_add(a, b)
+pub fn vaddl_s8(a: int8x8_t, b: int8x8_t) -> int16x8_t {
+    unsafe {
+        let a: int16x8_t = simd_cast(a);
+        let b: int16x8_t = simd_cast(b);
+        simd_add(a, b)
+    }
 }
 
 /// Signed Add Long (vector).
@@ -3389,10 +3391,12 @@ pub unsafe fn vaddl_s8(a: int8x8_t, b: int8x8_t) -> int16x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vaddl_s16(a: int16x4_t, b: int16x4_t) -> int32x4_t {
-    let a: int32x4_t = simd_cast(a);
-    let b: int32x4_t = simd_cast(b);
-    simd_add(a, b)
+pub fn vaddl_s16(a: int16x4_t, b: int16x4_t) -> int32x4_t {
+    unsafe {
+        let a: int32x4_t = simd_cast(a);
+        let b: int32x4_t = simd_cast(b);
+        simd_add(a, b)
+    }
 }
 
 /// Signed Add Long (vector).
@@ -3412,10 +3416,12 @@ pub unsafe fn vaddl_s16(a: int16x4_t, b: int16x4_t) -> int32x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vaddl_s32(a: int32x2_t, b: int32x2_t) -> int64x2_t {
-    let a: int64x2_t = simd_cast(a);
-    let b: int64x2_t = simd_cast(b);
-    simd_add(a, b)
+pub fn vaddl_s32(a: int32x2_t, b: int32x2_t) -> int64x2_t {
+    unsafe {
+        let a: int64x2_t = simd_cast(a);
+        let b: int64x2_t = simd_cast(b);
+        simd_add(a, b)
+    }
 }
 
 /// Unsigned Add Long (vector).
@@ -3435,10 +3441,12 @@ pub unsafe fn vaddl_s32(a: int32x2_t, b: int32x2_t) -> int64x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vaddl_u8(a: uint8x8_t, b: uint8x8_t) -> uint16x8_t {
-    let a: uint16x8_t = simd_cast(a);
-    let b: uint16x8_t = simd_cast(b);
-    simd_add(a, b)
+pub fn vaddl_u8(a: uint8x8_t, b: uint8x8_t) -> uint16x8_t {
+    unsafe {
+        let a: uint16x8_t = simd_cast(a);
+        let b: uint16x8_t = simd_cast(b);
+        simd_add(a, b)
+    }
 }
 
 /// Unsigned Add Long (vector).
@@ -3458,10 +3466,12 @@ pub unsafe fn vaddl_u8(a: uint8x8_t, b: uint8x8_t) -> uint16x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vaddl_u16(a: uint16x4_t, b: uint16x4_t) -> uint32x4_t {
-    let a: uint32x4_t = simd_cast(a);
-    let b: uint32x4_t = simd_cast(b);
-    simd_add(a, b)
+pub fn vaddl_u16(a: uint16x4_t, b: uint16x4_t) -> uint32x4_t {
+    unsafe {
+        let a: uint32x4_t = simd_cast(a);
+        let b: uint32x4_t = simd_cast(b);
+        simd_add(a, b)
+    }
 }
 
 /// Unsigned Add Long (vector).
@@ -3481,10 +3491,12 @@ pub unsafe fn vaddl_u16(a: uint16x4_t, b: uint16x4_t) -> uint32x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vaddl_u32(a: uint32x2_t, b: uint32x2_t) -> uint64x2_t {
-    let a: uint64x2_t = simd_cast(a);
-    let b: uint64x2_t = simd_cast(b);
-    simd_add(a, b)
+pub fn vaddl_u32(a: uint32x2_t, b: uint32x2_t) -> uint64x2_t {
+    unsafe {
+        let a: uint64x2_t = simd_cast(a);
+        let b: uint64x2_t = simd_cast(b);
+        simd_add(a, b)
+    }
 }
 
 /// Signed Add Long (vector, high half).
@@ -3504,12 +3516,14 @@ pub unsafe fn vaddl_u32(a: uint32x2_t, b: uint32x2_t) -> uint64x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vaddl_high_s8(a: int8x16_t, b: int8x16_t) -> int16x8_t {
-    let a: int8x8_t = simd_shuffle!(a, a, [8, 9, 10, 11, 12, 13, 14, 15]);
-    let b: int8x8_t = simd_shuffle!(b, b, [8, 9, 10, 11, 12, 13, 14, 15]);
-    let a: int16x8_t = simd_cast(a);
-    let b: int16x8_t = simd_cast(b);
-    simd_add(a, b)
+pub fn vaddl_high_s8(a: int8x16_t, b: int8x16_t) -> int16x8_t {
+    unsafe {
+        let a: int8x8_t = simd_shuffle!(a, a, [8, 9, 10, 11, 12, 13, 14, 15]);
+        let b: int8x8_t = simd_shuffle!(b, b, [8, 9, 10, 11, 12, 13, 14, 15]);
+        let a: int16x8_t = simd_cast(a);
+        let b: int16x8_t = simd_cast(b);
+        simd_add(a, b)
+    }
 }
 
 /// Signed Add Long (vector, high half).
@@ -3529,12 +3543,14 @@ pub unsafe fn vaddl_high_s8(a: int8x16_t, b: int8x16_t) -> int16x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vaddl_high_s16(a: int16x8_t, b: int16x8_t) -> int32x4_t {
-    let a: int16x4_t = simd_shuffle!(a, a, [4, 5, 6, 7]);
-    let b: int16x4_t = simd_shuffle!(b, b, [4, 5, 6, 7]);
-    let a: int32x4_t = simd_cast(a);
-    let b: int32x4_t = simd_cast(b);
-    simd_add(a, b)
+pub fn vaddl_high_s16(a: int16x8_t, b: int16x8_t) -> int32x4_t {
+    unsafe {
+        let a: int16x4_t = simd_shuffle!(a, a, [4, 5, 6, 7]);
+        let b: int16x4_t = simd_shuffle!(b, b, [4, 5, 6, 7]);
+        let a: int32x4_t = simd_cast(a);
+        let b: int32x4_t = simd_cast(b);
+        simd_add(a, b)
+    }
 }
 
 /// Signed Add Long (vector, high half).
@@ -3554,12 +3570,14 @@ pub unsafe fn vaddl_high_s16(a: int16x8_t, b: int16x8_t) -> int32x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vaddl_high_s32(a: int32x4_t, b: int32x4_t) -> int64x2_t {
-    let a: int32x2_t = simd_shuffle!(a, a, [2, 3]);
-    let b: int32x2_t = simd_shuffle!(b, b, [2, 3]);
-    let a: int64x2_t = simd_cast(a);
-    let b: int64x2_t = simd_cast(b);
-    simd_add(a, b)
+pub fn vaddl_high_s32(a: int32x4_t, b: int32x4_t) -> int64x2_t {
+    unsafe {
+        let a: int32x2_t = simd_shuffle!(a, a, [2, 3]);
+        let b: int32x2_t = simd_shuffle!(b, b, [2, 3]);
+        let a: int64x2_t = simd_cast(a);
+        let b: int64x2_t = simd_cast(b);
+        simd_add(a, b)
+    }
 }
 
 /// Unsigned Add Long (vector, high half).
@@ -3579,12 +3597,14 @@ pub unsafe fn vaddl_high_s32(a: int32x4_t, b: int32x4_t) -> int64x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vaddl_high_u8(a: uint8x16_t, b: uint8x16_t) -> uint16x8_t {
-    let a: uint8x8_t = simd_shuffle!(a, a, [8, 9, 10, 11, 12, 13, 14, 15]);
-    let b: uint8x8_t = simd_shuffle!(b, b, [8, 9, 10, 11, 12, 13, 14, 15]);
-    let a: uint16x8_t = simd_cast(a);
-    let b: uint16x8_t = simd_cast(b);
-    simd_add(a, b)
+pub fn vaddl_high_u8(a: uint8x16_t, b: uint8x16_t) -> uint16x8_t {
+    unsafe {
+        let a: uint8x8_t = simd_shuffle!(a, a, [8, 9, 10, 11, 12, 13, 14, 15]);
+        let b: uint8x8_t = simd_shuffle!(b, b, [8, 9, 10, 11, 12, 13, 14, 15]);
+        let a: uint16x8_t = simd_cast(a);
+        let b: uint16x8_t = simd_cast(b);
+        simd_add(a, b)
+    }
 }
 
 /// Unsigned Add Long (vector, high half).
@@ -3604,12 +3624,14 @@ pub unsafe fn vaddl_high_u8(a: uint8x16_t, b: uint8x16_t) -> uint16x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vaddl_high_u16(a: uint16x8_t, b: uint16x8_t) -> uint32x4_t {
-    let a: uint16x4_t = simd_shuffle!(a, a, [4, 5, 6, 7]);
-    let b: uint16x4_t = simd_shuffle!(b, b, [4, 5, 6, 7]);
-    let a: uint32x4_t = simd_cast(a);
-    let b: uint32x4_t = simd_cast(b);
-    simd_add(a, b)
+pub fn vaddl_high_u16(a: uint16x8_t, b: uint16x8_t) -> uint32x4_t {
+    unsafe {
+        let a: uint16x4_t = simd_shuffle!(a, a, [4, 5, 6, 7]);
+        let b: uint16x4_t = simd_shuffle!(b, b, [4, 5, 6, 7]);
+        let a: uint32x4_t = simd_cast(a);
+        let b: uint32x4_t = simd_cast(b);
+        simd_add(a, b)
+    }
 }
 
 /// Unsigned Add Long (vector, high half).
@@ -3629,12 +3651,14 @@ pub unsafe fn vaddl_high_u16(a: uint16x8_t, b: uint16x8_t) -> uint32x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vaddl_high_u32(a: uint32x4_t, b: uint32x4_t) -> uint64x2_t {
-    let a: uint32x2_t = simd_shuffle!(a, a, [2, 3]);
-    let b: uint32x2_t = simd_shuffle!(b, b, [2, 3]);
-    let a: uint64x2_t = simd_cast(a);
-    let b: uint64x2_t = simd_cast(b);
-    simd_add(a, b)
+pub fn vaddl_high_u32(a: uint32x4_t, b: uint32x4_t) -> uint64x2_t {
+    unsafe {
+        let a: uint32x2_t = simd_shuffle!(a, a, [2, 3]);
+        let b: uint32x2_t = simd_shuffle!(b, b, [2, 3]);
+        let a: uint64x2_t = simd_cast(a);
+        let b: uint64x2_t = simd_cast(b);
+        simd_add(a, b)
+    }
 }
 
 /// Signed Add Wide.
@@ -3654,9 +3678,11 @@ pub unsafe fn vaddl_high_u32(a: uint32x4_t, b: uint32x4_t) -> uint64x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vaddw_s8(a: int16x8_t, b: int8x8_t) -> int16x8_t {
-    let b: int16x8_t = simd_cast(b);
-    simd_add(a, b)
+pub fn vaddw_s8(a: int16x8_t, b: int8x8_t) -> int16x8_t {
+    unsafe {
+        let b: int16x8_t = simd_cast(b);
+        simd_add(a, b)
+    }
 }
 
 /// Signed Add Wide.
@@ -3676,9 +3702,11 @@ pub unsafe fn vaddw_s8(a: int16x8_t, b: int8x8_t) -> int16x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vaddw_s16(a: int32x4_t, b: int16x4_t) -> int32x4_t {
-    let b: int32x4_t = simd_cast(b);
-    simd_add(a, b)
+pub fn vaddw_s16(a: int32x4_t, b: int16x4_t) -> int32x4_t {
+    unsafe {
+        let b: int32x4_t = simd_cast(b);
+        simd_add(a, b)
+    }
 }
 
 /// Signed Add Wide.
@@ -3698,9 +3726,11 @@ pub unsafe fn vaddw_s16(a: int32x4_t, b: int16x4_t) -> int32x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vaddw_s32(a: int64x2_t, b: int32x2_t) -> int64x2_t {
-    let b: int64x2_t = simd_cast(b);
-    simd_add(a, b)
+pub fn vaddw_s32(a: int64x2_t, b: int32x2_t) -> int64x2_t {
+    unsafe {
+        let b: int64x2_t = simd_cast(b);
+        simd_add(a, b)
+    }
 }
 
 /// Unsigned Add Wide.
@@ -3720,9 +3750,11 @@ pub unsafe fn vaddw_s32(a: int64x2_t, b: int32x2_t) -> int64x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vaddw_u8(a: uint16x8_t, b: uint8x8_t) -> uint16x8_t {
-    let b: uint16x8_t = simd_cast(b);
-    simd_add(a, b)
+pub fn vaddw_u8(a: uint16x8_t, b: uint8x8_t) -> uint16x8_t {
+    unsafe {
+        let b: uint16x8_t = simd_cast(b);
+        simd_add(a, b)
+    }
 }
 
 /// Unsigned Add Wide.
@@ -3742,9 +3774,11 @@ pub unsafe fn vaddw_u8(a: uint16x8_t, b: uint8x8_t) -> uint16x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vaddw_u16(a: uint32x4_t, b: uint16x4_t) -> uint32x4_t {
-    let b: uint32x4_t = simd_cast(b);
-    simd_add(a, b)
+pub fn vaddw_u16(a: uint32x4_t, b: uint16x4_t) -> uint32x4_t {
+    unsafe {
+        let b: uint32x4_t = simd_cast(b);
+        simd_add(a, b)
+    }
 }
 
 /// Unsigned Add Wide.
@@ -3764,9 +3798,11 @@ pub unsafe fn vaddw_u16(a: uint32x4_t, b: uint16x4_t) -> uint32x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vaddw_u32(a: uint64x2_t, b: uint32x2_t) -> uint64x2_t {
-    let b: uint64x2_t = simd_cast(b);
-    simd_add(a, b)
+pub fn vaddw_u32(a: uint64x2_t, b: uint32x2_t) -> uint64x2_t {
+    unsafe {
+        let b: uint64x2_t = simd_cast(b);
+        simd_add(a, b)
+    }
 }
 
 /// Signed Add Wide (high half).
@@ -3786,10 +3822,12 @@ pub unsafe fn vaddw_u32(a: uint64x2_t, b: uint32x2_t) -> uint64x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vaddw_high_s8(a: int16x8_t, b: int8x16_t) -> int16x8_t {
-    let b: int8x8_t = simd_shuffle!(b, b, [8, 9, 10, 11, 12, 13, 14, 15]);
-    let b: int16x8_t = simd_cast(b);
-    simd_add(a, b)
+pub fn vaddw_high_s8(a: int16x8_t, b: int8x16_t) -> int16x8_t {
+    unsafe {
+        let b: int8x8_t = simd_shuffle!(b, b, [8, 9, 10, 11, 12, 13, 14, 15]);
+        let b: int16x8_t = simd_cast(b);
+        simd_add(a, b)
+    }
 }
 
 /// Signed Add Wide (high half).
@@ -3809,10 +3847,12 @@ pub unsafe fn vaddw_high_s8(a: int16x8_t, b: int8x16_t) -> int16x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vaddw_high_s16(a: int32x4_t, b: int16x8_t) -> int32x4_t {
-    let b: int16x4_t = simd_shuffle!(b, b, [4, 5, 6, 7]);
-    let b: int32x4_t = simd_cast(b);
-    simd_add(a, b)
+pub fn vaddw_high_s16(a: int32x4_t, b: int16x8_t) -> int32x4_t {
+    unsafe {
+        let b: int16x4_t = simd_shuffle!(b, b, [4, 5, 6, 7]);
+        let b: int32x4_t = simd_cast(b);
+        simd_add(a, b)
+    }
 }
 
 /// Signed Add Wide (high half).
@@ -3832,10 +3872,12 @@ pub unsafe fn vaddw_high_s16(a: int32x4_t, b: int16x8_t) -> int32x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vaddw_high_s32(a: int64x2_t, b: int32x4_t) -> int64x2_t {
-    let b: int32x2_t = simd_shuffle!(b, b, [2, 3]);
-    let b: int64x2_t = simd_cast(b);
-    simd_add(a, b)
+pub fn vaddw_high_s32(a: int64x2_t, b: int32x4_t) -> int64x2_t {
+    unsafe {
+        let b: int32x2_t = simd_shuffle!(b, b, [2, 3]);
+        let b: int64x2_t = simd_cast(b);
+        simd_add(a, b)
+    }
 }
 
 /// Unsigned Add Wide (high half).
@@ -3855,10 +3897,12 @@ pub unsafe fn vaddw_high_s32(a: int64x2_t, b: int32x4_t) -> int64x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vaddw_high_u8(a: uint16x8_t, b: uint8x16_t) -> uint16x8_t {
-    let b: uint8x8_t = simd_shuffle!(b, b, [8, 9, 10, 11, 12, 13, 14, 15]);
-    let b: uint16x8_t = simd_cast(b);
-    simd_add(a, b)
+pub fn vaddw_high_u8(a: uint16x8_t, b: uint8x16_t) -> uint16x8_t {
+    unsafe {
+        let b: uint8x8_t = simd_shuffle!(b, b, [8, 9, 10, 11, 12, 13, 14, 15]);
+        let b: uint16x8_t = simd_cast(b);
+        simd_add(a, b)
+    }
 }
 
 /// Unsigned Add Wide (high half).
@@ -3878,10 +3922,12 @@ pub unsafe fn vaddw_high_u8(a: uint16x8_t, b: uint8x16_t) -> uint16x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vaddw_high_u16(a: uint32x4_t, b: uint16x8_t) -> uint32x4_t {
-    let b: uint16x4_t = simd_shuffle!(b, b, [4, 5, 6, 7]);
-    let b: uint32x4_t = simd_cast(b);
-    simd_add(a, b)
+pub fn vaddw_high_u16(a: uint32x4_t, b: uint16x8_t) -> uint32x4_t {
+    unsafe {
+        let b: uint16x4_t = simd_shuffle!(b, b, [4, 5, 6, 7]);
+        let b: uint32x4_t = simd_cast(b);
+        simd_add(a, b)
+    }
 }
 
 /// Unsigned Add Wide (high half).
@@ -3901,10 +3947,12 @@ pub unsafe fn vaddw_high_u16(a: uint32x4_t, b: uint16x8_t) -> uint32x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vaddw_high_u32(a: uint64x2_t, b: uint32x4_t) -> uint64x2_t {
-    let b: uint32x2_t = simd_shuffle!(b, b, [2, 3]);
-    let b: uint64x2_t = simd_cast(b);
-    simd_add(a, b)
+pub fn vaddw_high_u32(a: uint64x2_t, b: uint32x4_t) -> uint64x2_t {
+    unsafe {
+        let b: uint32x2_t = simd_shuffle!(b, b, [2, 3]);
+        let b: uint64x2_t = simd_cast(b);
+        simd_add(a, b)
+    }
 }
 
 /// Add returning High Narrow.
@@ -3924,8 +3972,8 @@ pub unsafe fn vaddw_high_u32(a: uint64x2_t, b: uint32x4_t) -> uint64x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vaddhn_s16(a: int16x8_t, b: int16x8_t) -> int8x8_t {
-    simd_cast(simd_shr(simd_add(a, b), int16x8_t::splat(8)))
+pub fn vaddhn_s16(a: int16x8_t, b: int16x8_t) -> int8x8_t {
+    unsafe { simd_cast(simd_shr(simd_add(a, b), int16x8_t::splat(8))) }
 }
 
 /// Add returning High Narrow.
@@ -3945,8 +3993,8 @@ pub unsafe fn vaddhn_s16(a: int16x8_t, b: int16x8_t) -> int8x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vaddhn_s32(a: int32x4_t, b: int32x4_t) -> int16x4_t {
-    simd_cast(simd_shr(simd_add(a, b), int32x4_t::splat(16)))
+pub fn vaddhn_s32(a: int32x4_t, b: int32x4_t) -> int16x4_t {
+    unsafe { simd_cast(simd_shr(simd_add(a, b), int32x4_t::splat(16))) }
 }
 
 /// Add returning High Narrow.
@@ -3966,8 +4014,8 @@ pub unsafe fn vaddhn_s32(a: int32x4_t, b: int32x4_t) -> int16x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vaddhn_s64(a: int64x2_t, b: int64x2_t) -> int32x2_t {
-    simd_cast(simd_shr(simd_add(a, b), int64x2_t::splat(32)))
+pub fn vaddhn_s64(a: int64x2_t, b: int64x2_t) -> int32x2_t {
+    unsafe { simd_cast(simd_shr(simd_add(a, b), int64x2_t::splat(32))) }
 }
 
 /// Add returning High Narrow.
@@ -3987,8 +4035,8 @@ pub unsafe fn vaddhn_s64(a: int64x2_t, b: int64x2_t) -> int32x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vaddhn_u16(a: uint16x8_t, b: uint16x8_t) -> uint8x8_t {
-    simd_cast(simd_shr(simd_add(a, b), uint16x8_t::splat(8)))
+pub fn vaddhn_u16(a: uint16x8_t, b: uint16x8_t) -> uint8x8_t {
+    unsafe { simd_cast(simd_shr(simd_add(a, b), uint16x8_t::splat(8))) }
 }
 
 /// Add returning High Narrow.
@@ -4008,8 +4056,8 @@ pub unsafe fn vaddhn_u16(a: uint16x8_t, b: uint16x8_t) -> uint8x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vaddhn_u32(a: uint32x4_t, b: uint32x4_t) -> uint16x4_t {
-    simd_cast(simd_shr(simd_add(a, b), uint32x4_t::splat(16)))
+pub fn vaddhn_u32(a: uint32x4_t, b: uint32x4_t) -> uint16x4_t {
+    unsafe { simd_cast(simd_shr(simd_add(a, b), uint32x4_t::splat(16))) }
 }
 
 /// Add returning High Narrow.
@@ -4029,8 +4077,8 @@ pub unsafe fn vaddhn_u32(a: uint32x4_t, b: uint32x4_t) -> uint16x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vaddhn_u64(a: uint64x2_t, b: uint64x2_t) -> uint32x2_t {
-    simd_cast(simd_shr(simd_add(a, b), uint64x2_t::splat(32)))
+pub fn vaddhn_u64(a: uint64x2_t, b: uint64x2_t) -> uint32x2_t {
+    unsafe { simd_cast(simd_shr(simd_add(a, b), uint64x2_t::splat(32))) }
 }
 
 /// Add returning High Narrow (high half).
@@ -4050,9 +4098,11 @@ pub unsafe fn vaddhn_u64(a: uint64x2_t, b: uint64x2_t) -> uint32x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vaddhn_high_s16(r: int8x8_t, a: int16x8_t, b: int16x8_t) -> int8x16_t {
-    let x = simd_cast(simd_shr(simd_add(a, b), int16x8_t::splat(8)));
-    simd_shuffle!(r, x, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15])
+pub fn vaddhn_high_s16(r: int8x8_t, a: int16x8_t, b: int16x8_t) -> int8x16_t {
+    unsafe {
+        let x = simd_cast(simd_shr(simd_add(a, b), int16x8_t::splat(8)));
+        simd_shuffle!(r, x, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15])
+    }
 }
 
 /// Add returning High Narrow (high half).
@@ -4072,9 +4122,11 @@ pub unsafe fn vaddhn_high_s16(r: int8x8_t, a: int16x8_t, b: int16x8_t) -> int8x1
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vaddhn_high_s32(r: int16x4_t, a: int32x4_t, b: int32x4_t) -> int16x8_t {
-    let x = simd_cast(simd_shr(simd_add(a, b), int32x4_t::splat(16)));
-    simd_shuffle!(r, x, [0, 1, 2, 3, 4, 5, 6, 7])
+pub fn vaddhn_high_s32(r: int16x4_t, a: int32x4_t, b: int32x4_t) -> int16x8_t {
+    unsafe {
+        let x = simd_cast(simd_shr(simd_add(a, b), int32x4_t::splat(16)));
+        simd_shuffle!(r, x, [0, 1, 2, 3, 4, 5, 6, 7])
+    }
 }
 
 /// Add returning High Narrow (high half).
@@ -4094,9 +4146,11 @@ pub unsafe fn vaddhn_high_s32(r: int16x4_t, a: int32x4_t, b: int32x4_t) -> int16
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vaddhn_high_s64(r: int32x2_t, a: int64x2_t, b: int64x2_t) -> int32x4_t {
-    let x = simd_cast(simd_shr(simd_add(a, b), int64x2_t::splat(32)));
-    simd_shuffle!(r, x, [0, 1, 2, 3])
+pub fn vaddhn_high_s64(r: int32x2_t, a: int64x2_t, b: int64x2_t) -> int32x4_t {
+    unsafe {
+        let x = simd_cast(simd_shr(simd_add(a, b), int64x2_t::splat(32)));
+        simd_shuffle!(r, x, [0, 1, 2, 3])
+    }
 }
 
 /// Add returning High Narrow (high half).
@@ -4116,9 +4170,11 @@ pub unsafe fn vaddhn_high_s64(r: int32x2_t, a: int64x2_t, b: int64x2_t) -> int32
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vaddhn_high_u16(r: uint8x8_t, a: uint16x8_t, b: uint16x8_t) -> uint8x16_t {
-    let x = simd_cast(simd_shr(simd_add(a, b), uint16x8_t::splat(8)));
-    simd_shuffle!(r, x, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15])
+pub fn vaddhn_high_u16(r: uint8x8_t, a: uint16x8_t, b: uint16x8_t) -> uint8x16_t {
+    unsafe {
+        let x = simd_cast(simd_shr(simd_add(a, b), uint16x8_t::splat(8)));
+        simd_shuffle!(r, x, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15])
+    }
 }
 
 /// Add returning High Narrow (high half).
@@ -4138,9 +4194,11 @@ pub unsafe fn vaddhn_high_u16(r: uint8x8_t, a: uint16x8_t, b: uint16x8_t) -> uin
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vaddhn_high_u32(r: uint16x4_t, a: uint32x4_t, b: uint32x4_t) -> uint16x8_t {
-    let x = simd_cast(simd_shr(simd_add(a, b), uint32x4_t::splat(16)));
-    simd_shuffle!(r, x, [0, 1, 2, 3, 4, 5, 6, 7])
+pub fn vaddhn_high_u32(r: uint16x4_t, a: uint32x4_t, b: uint32x4_t) -> uint16x8_t {
+    unsafe {
+        let x = simd_cast(simd_shr(simd_add(a, b), uint32x4_t::splat(16)));
+        simd_shuffle!(r, x, [0, 1, 2, 3, 4, 5, 6, 7])
+    }
 }
 
 /// Add returning High Narrow (high half).
@@ -4160,9 +4218,11 @@ pub unsafe fn vaddhn_high_u32(r: uint16x4_t, a: uint32x4_t, b: uint32x4_t) -> ui
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vaddhn_high_u64(r: uint32x2_t, a: uint64x2_t, b: uint64x2_t) -> uint32x4_t {
-    let x = simd_cast(simd_shr(simd_add(a, b), uint64x2_t::splat(32)));
-    simd_shuffle!(r, x, [0, 1, 2, 3])
+pub fn vaddhn_high_u64(r: uint32x2_t, a: uint64x2_t, b: uint64x2_t) -> uint32x4_t {
+    unsafe {
+        let x = simd_cast(simd_shr(simd_add(a, b), uint64x2_t::splat(32)));
+        simd_shuffle!(r, x, [0, 1, 2, 3])
+    }
 }
 
 /// Rounding Add returning High Narrow.
@@ -4182,8 +4242,8 @@ pub unsafe fn vaddhn_high_u64(r: uint32x2_t, a: uint64x2_t, b: uint64x2_t) -> ui
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vraddhn_s16(a: int16x8_t, b: int16x8_t) -> int8x8_t {
-    vraddhn_s16_(a, b)
+pub fn vraddhn_s16(a: int16x8_t, b: int16x8_t) -> int8x8_t {
+    unsafe { vraddhn_s16_(a, b) }
 }
 
 /// Rounding Add returning High Narrow.
@@ -4203,8 +4263,8 @@ pub unsafe fn vraddhn_s16(a: int16x8_t, b: int16x8_t) -> int8x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vraddhn_s32(a: int32x4_t, b: int32x4_t) -> int16x4_t {
-    vraddhn_s32_(a, b)
+pub fn vraddhn_s32(a: int32x4_t, b: int32x4_t) -> int16x4_t {
+    unsafe { vraddhn_s32_(a, b) }
 }
 
 /// Rounding Add returning High Narrow.
@@ -4224,8 +4284,8 @@ pub unsafe fn vraddhn_s32(a: int32x4_t, b: int32x4_t) -> int16x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vraddhn_s64(a: int64x2_t, b: int64x2_t) -> int32x2_t {
-    vraddhn_s64_(a, b)
+pub fn vraddhn_s64(a: int64x2_t, b: int64x2_t) -> int32x2_t {
+    unsafe { vraddhn_s64_(a, b) }
 }
 
 /// Rounding Add returning High Narrow.
@@ -4245,8 +4305,8 @@ pub unsafe fn vraddhn_s64(a: int64x2_t, b: int64x2_t) -> int32x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vraddhn_u16(a: uint16x8_t, b: uint16x8_t) -> uint8x8_t {
-    transmute(vraddhn_s16_(transmute(a), transmute(b)))
+pub fn vraddhn_u16(a: uint16x8_t, b: uint16x8_t) -> uint8x8_t {
+    unsafe { transmute(vraddhn_s16_(transmute(a), transmute(b))) }
 }
 
 /// Rounding Add returning High Narrow.
@@ -4266,8 +4326,8 @@ pub unsafe fn vraddhn_u16(a: uint16x8_t, b: uint16x8_t) -> uint8x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vraddhn_u32(a: uint32x4_t, b: uint32x4_t) -> uint16x4_t {
-    transmute(vraddhn_s32_(transmute(a), transmute(b)))
+pub fn vraddhn_u32(a: uint32x4_t, b: uint32x4_t) -> uint16x4_t {
+    unsafe { transmute(vraddhn_s32_(transmute(a), transmute(b))) }
 }
 
 /// Rounding Add returning High Narrow.
@@ -4287,8 +4347,8 @@ pub unsafe fn vraddhn_u32(a: uint32x4_t, b: uint32x4_t) -> uint16x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vraddhn_u64(a: uint64x2_t, b: uint64x2_t) -> uint32x2_t {
-    transmute(vraddhn_s64_(transmute(a), transmute(b)))
+pub fn vraddhn_u64(a: uint64x2_t, b: uint64x2_t) -> uint32x2_t {
+    unsafe { transmute(vraddhn_s64_(transmute(a), transmute(b))) }
 }
 
 /// Rounding Add returning High Narrow (high half).
@@ -4308,9 +4368,11 @@ pub unsafe fn vraddhn_u64(a: uint64x2_t, b: uint64x2_t) -> uint32x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vraddhn_high_s16(r: int8x8_t, a: int16x8_t, b: int16x8_t) -> int8x16_t {
-    let x = vraddhn_s16_(a, b);
-    simd_shuffle!(r, x, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15])
+pub fn vraddhn_high_s16(r: int8x8_t, a: int16x8_t, b: int16x8_t) -> int8x16_t {
+    unsafe {
+        let x = vraddhn_s16_(a, b);
+        simd_shuffle!(r, x, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15])
+    }
 }
 
 /// Rounding Add returning High Narrow (high half).
@@ -4330,9 +4392,11 @@ pub unsafe fn vraddhn_high_s16(r: int8x8_t, a: int16x8_t, b: int16x8_t) -> int8x
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vraddhn_high_s32(r: int16x4_t, a: int32x4_t, b: int32x4_t) -> int16x8_t {
-    let x = vraddhn_s32_(a, b);
-    simd_shuffle!(r, x, [0, 1, 2, 3, 4, 5, 6, 7])
+pub fn vraddhn_high_s32(r: int16x4_t, a: int32x4_t, b: int32x4_t) -> int16x8_t {
+    unsafe {
+        let x = vraddhn_s32_(a, b);
+        simd_shuffle!(r, x, [0, 1, 2, 3, 4, 5, 6, 7])
+    }
 }
 
 /// Rounding Add returning High Narrow (high half).
@@ -4352,9 +4416,11 @@ pub unsafe fn vraddhn_high_s32(r: int16x4_t, a: int32x4_t, b: int32x4_t) -> int1
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vraddhn_high_s64(r: int32x2_t, a: int64x2_t, b: int64x2_t) -> int32x4_t {
-    let x = vraddhn_s64_(a, b);
-    simd_shuffle!(r, x, [0, 1, 2, 3])
+pub fn vraddhn_high_s64(r: int32x2_t, a: int64x2_t, b: int64x2_t) -> int32x4_t {
+    unsafe {
+        let x = vraddhn_s64_(a, b);
+        simd_shuffle!(r, x, [0, 1, 2, 3])
+    }
 }
 
 /// Rounding Add returning High Narrow (high half).
@@ -4374,9 +4440,11 @@ pub unsafe fn vraddhn_high_s64(r: int32x2_t, a: int64x2_t, b: int64x2_t) -> int3
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vraddhn_high_u16(r: uint8x8_t, a: uint16x8_t, b: uint16x8_t) -> uint8x16_t {
-    let x: uint8x8_t = transmute(vraddhn_s16_(transmute(a), transmute(b)));
-    simd_shuffle!(r, x, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15])
+pub fn vraddhn_high_u16(r: uint8x8_t, a: uint16x8_t, b: uint16x8_t) -> uint8x16_t {
+    unsafe {
+        let x: uint8x8_t = transmute(vraddhn_s16_(transmute(a), transmute(b)));
+        simd_shuffle!(r, x, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15])
+    }
 }
 
 /// Rounding Add returning High Narrow (high half).
@@ -4396,9 +4464,11 @@ pub unsafe fn vraddhn_high_u16(r: uint8x8_t, a: uint16x8_t, b: uint16x8_t) -> ui
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vraddhn_high_u32(r: uint16x4_t, a: uint32x4_t, b: uint32x4_t) -> uint16x8_t {
-    let x: uint16x4_t = transmute(vraddhn_s32_(transmute(a), transmute(b)));
-    simd_shuffle!(r, x, [0, 1, 2, 3, 4, 5, 6, 7])
+pub fn vraddhn_high_u32(r: uint16x4_t, a: uint32x4_t, b: uint32x4_t) -> uint16x8_t {
+    unsafe {
+        let x: uint16x4_t = transmute(vraddhn_s32_(transmute(a), transmute(b)));
+        simd_shuffle!(r, x, [0, 1, 2, 3, 4, 5, 6, 7])
+    }
 }
 
 /// Rounding Add returning High Narrow (high half).
@@ -4418,9 +4488,11 @@ pub unsafe fn vraddhn_high_u32(r: uint16x4_t, a: uint32x4_t, b: uint32x4_t) -> u
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vraddhn_high_u64(r: uint32x2_t, a: uint64x2_t, b: uint64x2_t) -> uint32x4_t {
-    let x: uint32x2_t = transmute(vraddhn_s64_(transmute(a), transmute(b)));
-    simd_shuffle!(r, x, [0, 1, 2, 3])
+pub fn vraddhn_high_u64(r: uint32x2_t, a: uint64x2_t, b: uint64x2_t) -> uint32x4_t {
+    unsafe {
+        let x: uint32x2_t = transmute(vraddhn_s64_(transmute(a), transmute(b)));
+        simd_shuffle!(r, x, [0, 1, 2, 3])
+    }
 }
 
 /// Signed Add Long Pairwise.
@@ -4440,8 +4512,8 @@ pub unsafe fn vraddhn_high_u64(r: uint32x2_t, a: uint64x2_t, b: uint64x2_t) -> u
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vpaddl_s8(a: int8x8_t) -> int16x4_t {
-    vpaddl_s8_(a)
+pub fn vpaddl_s8(a: int8x8_t) -> int16x4_t {
+    unsafe { vpaddl_s8_(a) }
 }
 
 /// Signed Add Long Pairwise.
@@ -4461,8 +4533,8 @@ pub unsafe fn vpaddl_s8(a: int8x8_t) -> int16x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vpaddl_s16(a: int16x4_t) -> int32x2_t {
-    vpaddl_s16_(a)
+pub fn vpaddl_s16(a: int16x4_t) -> int32x2_t {
+    unsafe { vpaddl_s16_(a) }
 }
 
 /// Signed Add Long Pairwise.
@@ -4482,8 +4554,8 @@ pub unsafe fn vpaddl_s16(a: int16x4_t) -> int32x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vpaddl_s32(a: int32x2_t) -> int64x1_t {
-    vpaddl_s32_(a)
+pub fn vpaddl_s32(a: int32x2_t) -> int64x1_t {
+    unsafe { vpaddl_s32_(a) }
 }
 
 /// Signed Add Long Pairwise.
@@ -4503,8 +4575,8 @@ pub unsafe fn vpaddl_s32(a: int32x2_t) -> int64x1_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vpaddlq_s8(a: int8x16_t) -> int16x8_t {
-    vpaddlq_s8_(a)
+pub fn vpaddlq_s8(a: int8x16_t) -> int16x8_t {
+    unsafe { vpaddlq_s8_(a) }
 }
 
 /// Signed Add Long Pairwise.
@@ -4524,8 +4596,8 @@ pub unsafe fn vpaddlq_s8(a: int8x16_t) -> int16x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vpaddlq_s16(a: int16x8_t) -> int32x4_t {
-    vpaddlq_s16_(a)
+pub fn vpaddlq_s16(a: int16x8_t) -> int32x4_t {
+    unsafe { vpaddlq_s16_(a) }
 }
 
 /// Signed Add Long Pairwise.
@@ -4545,8 +4617,8 @@ pub unsafe fn vpaddlq_s16(a: int16x8_t) -> int32x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vpaddlq_s32(a: int32x4_t) -> int64x2_t {
-    vpaddlq_s32_(a)
+pub fn vpaddlq_s32(a: int32x4_t) -> int64x2_t {
+    unsafe { vpaddlq_s32_(a) }
 }
 
 /// Unsigned Add Long Pairwise.
@@ -4566,8 +4638,8 @@ pub unsafe fn vpaddlq_s32(a: int32x4_t) -> int64x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vpaddl_u8(a: uint8x8_t) -> uint16x4_t {
-    vpaddl_u8_(a)
+pub fn vpaddl_u8(a: uint8x8_t) -> uint16x4_t {
+    unsafe { vpaddl_u8_(a) }
 }
 
 /// Unsigned Add Long Pairwise.
@@ -4587,8 +4659,8 @@ pub unsafe fn vpaddl_u8(a: uint8x8_t) -> uint16x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vpaddl_u16(a: uint16x4_t) -> uint32x2_t {
-    vpaddl_u16_(a)
+pub fn vpaddl_u16(a: uint16x4_t) -> uint32x2_t {
+    unsafe { vpaddl_u16_(a) }
 }
 
 /// Unsigned Add Long Pairwise.
@@ -4608,8 +4680,8 @@ pub unsafe fn vpaddl_u16(a: uint16x4_t) -> uint32x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vpaddl_u32(a: uint32x2_t) -> uint64x1_t {
-    vpaddl_u32_(a)
+pub fn vpaddl_u32(a: uint32x2_t) -> uint64x1_t {
+    unsafe { vpaddl_u32_(a) }
 }
 
 /// Unsigned Add Long Pairwise.
@@ -4629,8 +4701,8 @@ pub unsafe fn vpaddl_u32(a: uint32x2_t) -> uint64x1_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vpaddlq_u8(a: uint8x16_t) -> uint16x8_t {
-    vpaddlq_u8_(a)
+pub fn vpaddlq_u8(a: uint8x16_t) -> uint16x8_t {
+    unsafe { vpaddlq_u8_(a) }
 }
 
 /// Unsigned Add Long Pairwise.
@@ -4650,8 +4722,8 @@ pub unsafe fn vpaddlq_u8(a: uint8x16_t) -> uint16x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vpaddlq_u16(a: uint16x8_t) -> uint32x4_t {
-    vpaddlq_u16_(a)
+pub fn vpaddlq_u16(a: uint16x8_t) -> uint32x4_t {
+    unsafe { vpaddlq_u16_(a) }
 }
 
 /// Unsigned Add Long Pairwise.
@@ -4671,8 +4743,8 @@ pub unsafe fn vpaddlq_u16(a: uint16x8_t) -> uint32x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vpaddlq_u32(a: uint32x4_t) -> uint64x2_t {
-    vpaddlq_u32_(a)
+pub fn vpaddlq_u32(a: uint32x4_t) -> uint64x2_t {
+    unsafe { vpaddlq_u32_(a) }
 }
 
 /// Vector narrow integer.
@@ -4692,8 +4764,8 @@ pub unsafe fn vpaddlq_u32(a: uint32x4_t) -> uint64x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vmovn_s16(a: int16x8_t) -> int8x8_t {
-    simd_cast(a)
+pub fn vmovn_s16(a: int16x8_t) -> int8x8_t {
+    unsafe { simd_cast(a) }
 }
 
 /// Vector narrow integer.
@@ -4713,8 +4785,8 @@ pub unsafe fn vmovn_s16(a: int16x8_t) -> int8x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vmovn_s32(a: int32x4_t) -> int16x4_t {
-    simd_cast(a)
+pub fn vmovn_s32(a: int32x4_t) -> int16x4_t {
+    unsafe { simd_cast(a) }
 }
 
 /// Vector narrow integer.
@@ -4734,8 +4806,8 @@ pub unsafe fn vmovn_s32(a: int32x4_t) -> int16x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vmovn_s64(a: int64x2_t) -> int32x2_t {
-    simd_cast(a)
+pub fn vmovn_s64(a: int64x2_t) -> int32x2_t {
+    unsafe { simd_cast(a) }
 }
 
 /// Vector narrow integer.
@@ -4755,8 +4827,8 @@ pub unsafe fn vmovn_s64(a: int64x2_t) -> int32x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vmovn_u16(a: uint16x8_t) -> uint8x8_t {
-    simd_cast(a)
+pub fn vmovn_u16(a: uint16x8_t) -> uint8x8_t {
+    unsafe { simd_cast(a) }
 }
 
 /// Vector narrow integer.
@@ -4776,8 +4848,8 @@ pub unsafe fn vmovn_u16(a: uint16x8_t) -> uint8x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vmovn_u32(a: uint32x4_t) -> uint16x4_t {
-    simd_cast(a)
+pub fn vmovn_u32(a: uint32x4_t) -> uint16x4_t {
+    unsafe { simd_cast(a) }
 }
 
 /// Vector narrow integer.
@@ -4797,8 +4869,8 @@ pub unsafe fn vmovn_u32(a: uint32x4_t) -> uint16x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vmovn_u64(a: uint64x2_t) -> uint32x2_t {
-    simd_cast(a)
+pub fn vmovn_u64(a: uint64x2_t) -> uint32x2_t {
+    unsafe { simd_cast(a) }
 }
 
 /// Vector long move.
@@ -4818,8 +4890,8 @@ pub unsafe fn vmovn_u64(a: uint64x2_t) -> uint32x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vmovl_s8(a: int8x8_t) -> int16x8_t {
-    simd_cast(a)
+pub fn vmovl_s8(a: int8x8_t) -> int16x8_t {
+    unsafe { simd_cast(a) }
 }
 
 /// Vector long move.
@@ -4839,8 +4911,8 @@ pub unsafe fn vmovl_s8(a: int8x8_t) -> int16x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vmovl_s16(a: int16x4_t) -> int32x4_t {
-    simd_cast(a)
+pub fn vmovl_s16(a: int16x4_t) -> int32x4_t {
+    unsafe { simd_cast(a) }
 }
 
 /// Vector long move.
@@ -4860,8 +4932,8 @@ pub unsafe fn vmovl_s16(a: int16x4_t) -> int32x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vmovl_s32(a: int32x2_t) -> int64x2_t {
-    simd_cast(a)
+pub fn vmovl_s32(a: int32x2_t) -> int64x2_t {
+    unsafe { simd_cast(a) }
 }
 
 /// Vector long move.
@@ -4881,8 +4953,8 @@ pub unsafe fn vmovl_s32(a: int32x2_t) -> int64x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vmovl_u8(a: uint8x8_t) -> uint16x8_t {
-    simd_cast(a)
+pub fn vmovl_u8(a: uint8x8_t) -> uint16x8_t {
+    unsafe { simd_cast(a) }
 }
 
 /// Vector long move.
@@ -4902,8 +4974,8 @@ pub unsafe fn vmovl_u8(a: uint8x8_t) -> uint16x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vmovl_u16(a: uint16x4_t) -> uint32x4_t {
-    simd_cast(a)
+pub fn vmovl_u16(a: uint16x4_t) -> uint32x4_t {
+    unsafe { simd_cast(a) }
 }
 
 /// Vector long move.
@@ -4923,8 +4995,8 @@ pub unsafe fn vmovl_u16(a: uint16x4_t) -> uint32x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vmovl_u32(a: uint32x2_t) -> uint64x2_t {
-    simd_cast(a)
+pub fn vmovl_u32(a: uint32x2_t) -> uint64x2_t {
+    unsafe { simd_cast(a) }
 }
 
 /// Vector bitwise not.
@@ -4944,9 +5016,9 @@ pub unsafe fn vmovl_u32(a: uint32x2_t) -> uint64x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vmvn_s8(a: int8x8_t) -> int8x8_t {
+pub fn vmvn_s8(a: int8x8_t) -> int8x8_t {
     let b = int8x8_t::splat(-1);
-    simd_xor(a, b)
+    unsafe { simd_xor(a, b) }
 }
 
 /// Vector bitwise not.
@@ -4966,9 +5038,9 @@ pub unsafe fn vmvn_s8(a: int8x8_t) -> int8x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vmvnq_s8(a: int8x16_t) -> int8x16_t {
+pub fn vmvnq_s8(a: int8x16_t) -> int8x16_t {
     let b = int8x16_t::splat(-1);
-    simd_xor(a, b)
+    unsafe { simd_xor(a, b) }
 }
 
 /// Vector bitwise not.
@@ -4988,9 +5060,9 @@ pub unsafe fn vmvnq_s8(a: int8x16_t) -> int8x16_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vmvn_s16(a: int16x4_t) -> int16x4_t {
+pub fn vmvn_s16(a: int16x4_t) -> int16x4_t {
     let b = int16x4_t::splat(-1);
-    simd_xor(a, b)
+    unsafe { simd_xor(a, b) }
 }
 
 /// Vector bitwise not.
@@ -5010,9 +5082,9 @@ pub unsafe fn vmvn_s16(a: int16x4_t) -> int16x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vmvnq_s16(a: int16x8_t) -> int16x8_t {
+pub fn vmvnq_s16(a: int16x8_t) -> int16x8_t {
     let b = int16x8_t::splat(-1);
-    simd_xor(a, b)
+    unsafe { simd_xor(a, b) }
 }
 
 /// Vector bitwise not.
@@ -5032,9 +5104,9 @@ pub unsafe fn vmvnq_s16(a: int16x8_t) -> int16x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vmvn_s32(a: int32x2_t) -> int32x2_t {
+pub fn vmvn_s32(a: int32x2_t) -> int32x2_t {
     let b = int32x2_t::splat(-1);
-    simd_xor(a, b)
+    unsafe { simd_xor(a, b) }
 }
 
 /// Vector bitwise not.
@@ -5054,9 +5126,9 @@ pub unsafe fn vmvn_s32(a: int32x2_t) -> int32x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vmvnq_s32(a: int32x4_t) -> int32x4_t {
+pub fn vmvnq_s32(a: int32x4_t) -> int32x4_t {
     let b = int32x4_t::splat(-1);
-    simd_xor(a, b)
+    unsafe { simd_xor(a, b) }
 }
 
 /// Vector bitwise not.
@@ -5076,9 +5148,9 @@ pub unsafe fn vmvnq_s32(a: int32x4_t) -> int32x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vmvn_u8(a: uint8x8_t) -> uint8x8_t {
+pub fn vmvn_u8(a: uint8x8_t) -> uint8x8_t {
     let b = uint8x8_t::splat(255);
-    simd_xor(a, b)
+    unsafe { simd_xor(a, b) }
 }
 
 /// Vector bitwise not.
@@ -5098,9 +5170,9 @@ pub unsafe fn vmvn_u8(a: uint8x8_t) -> uint8x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vmvnq_u8(a: uint8x16_t) -> uint8x16_t {
+pub fn vmvnq_u8(a: uint8x16_t) -> uint8x16_t {
     let b = uint8x16_t::splat(255);
-    simd_xor(a, b)
+    unsafe { simd_xor(a, b) }
 }
 
 /// Vector bitwise not.
@@ -5120,9 +5192,9 @@ pub unsafe fn vmvnq_u8(a: uint8x16_t) -> uint8x16_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vmvn_u16(a: uint16x4_t) -> uint16x4_t {
+pub fn vmvn_u16(a: uint16x4_t) -> uint16x4_t {
     let b = uint16x4_t::splat(65_535);
-    simd_xor(a, b)
+    unsafe { simd_xor(a, b) }
 }
 
 /// Vector bitwise not.
@@ -5142,9 +5214,9 @@ pub unsafe fn vmvn_u16(a: uint16x4_t) -> uint16x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vmvnq_u16(a: uint16x8_t) -> uint16x8_t {
+pub fn vmvnq_u16(a: uint16x8_t) -> uint16x8_t {
     let b = uint16x8_t::splat(65_535);
-    simd_xor(a, b)
+    unsafe { simd_xor(a, b) }
 }
 
 /// Vector bitwise not.
@@ -5164,9 +5236,9 @@ pub unsafe fn vmvnq_u16(a: uint16x8_t) -> uint16x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vmvn_u32(a: uint32x2_t) -> uint32x2_t {
+pub fn vmvn_u32(a: uint32x2_t) -> uint32x2_t {
     let b = uint32x2_t::splat(4_294_967_295);
-    simd_xor(a, b)
+    unsafe { simd_xor(a, b) }
 }
 
 /// Vector bitwise not.
@@ -5186,9 +5258,9 @@ pub unsafe fn vmvn_u32(a: uint32x2_t) -> uint32x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vmvnq_u32(a: uint32x4_t) -> uint32x4_t {
+pub fn vmvnq_u32(a: uint32x4_t) -> uint32x4_t {
     let b = uint32x4_t::splat(4_294_967_295);
-    simd_xor(a, b)
+    unsafe { simd_xor(a, b) }
 }
 
 /// Vector bitwise not.
@@ -5208,9 +5280,9 @@ pub unsafe fn vmvnq_u32(a: uint32x4_t) -> uint32x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vmvn_p8(a: poly8x8_t) -> poly8x8_t {
+pub fn vmvn_p8(a: poly8x8_t) -> poly8x8_t {
     let b = poly8x8_t::splat(255);
-    simd_xor(a, b)
+    unsafe { simd_xor(a, b) }
 }
 
 /// Vector bitwise not.
@@ -5230,9 +5302,9 @@ pub unsafe fn vmvn_p8(a: poly8x8_t) -> poly8x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vmvnq_p8(a: poly8x16_t) -> poly8x16_t {
+pub fn vmvnq_p8(a: poly8x16_t) -> poly8x16_t {
     let b = poly8x16_t::splat(255);
-    simd_xor(a, b)
+    unsafe { simd_xor(a, b) }
 }
 
 /// Vector bitwise bit clear
@@ -5252,9 +5324,9 @@ pub unsafe fn vmvnq_p8(a: poly8x16_t) -> poly8x16_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vbic_s8(a: int8x8_t, b: int8x8_t) -> int8x8_t {
+pub fn vbic_s8(a: int8x8_t, b: int8x8_t) -> int8x8_t {
     let c = int8x8_t::splat(-1);
-    simd_and(simd_xor(b, c), a)
+    unsafe { simd_and(simd_xor(b, c), a) }
 }
 
 /// Vector bitwise bit clear
@@ -5274,9 +5346,9 @@ pub unsafe fn vbic_s8(a: int8x8_t, b: int8x8_t) -> int8x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vbicq_s8(a: int8x16_t, b: int8x16_t) -> int8x16_t {
+pub fn vbicq_s8(a: int8x16_t, b: int8x16_t) -> int8x16_t {
     let c = int8x16_t::splat(-1);
-    simd_and(simd_xor(b, c), a)
+    unsafe { simd_and(simd_xor(b, c), a) }
 }
 
 /// Vector bitwise bit clear
@@ -5296,9 +5368,9 @@ pub unsafe fn vbicq_s8(a: int8x16_t, b: int8x16_t) -> int8x16_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vbic_s16(a: int16x4_t, b: int16x4_t) -> int16x4_t {
+pub fn vbic_s16(a: int16x4_t, b: int16x4_t) -> int16x4_t {
     let c = int16x4_t::splat(-1);
-    simd_and(simd_xor(b, c), a)
+    unsafe { simd_and(simd_xor(b, c), a) }
 }
 
 /// Vector bitwise bit clear
@@ -5318,9 +5390,9 @@ pub unsafe fn vbic_s16(a: int16x4_t, b: int16x4_t) -> int16x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vbicq_s16(a: int16x8_t, b: int16x8_t) -> int16x8_t {
+pub fn vbicq_s16(a: int16x8_t, b: int16x8_t) -> int16x8_t {
     let c = int16x8_t::splat(-1);
-    simd_and(simd_xor(b, c), a)
+    unsafe { simd_and(simd_xor(b, c), a) }
 }
 
 /// Vector bitwise bit clear
@@ -5340,9 +5412,9 @@ pub unsafe fn vbicq_s16(a: int16x8_t, b: int16x8_t) -> int16x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vbic_s32(a: int32x2_t, b: int32x2_t) -> int32x2_t {
+pub fn vbic_s32(a: int32x2_t, b: int32x2_t) -> int32x2_t {
     let c = int32x2_t::splat(-1);
-    simd_and(simd_xor(b, c), a)
+    unsafe { simd_and(simd_xor(b, c), a) }
 }
 
 /// Vector bitwise bit clear
@@ -5362,9 +5434,9 @@ pub unsafe fn vbic_s32(a: int32x2_t, b: int32x2_t) -> int32x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vbicq_s32(a: int32x4_t, b: int32x4_t) -> int32x4_t {
+pub fn vbicq_s32(a: int32x4_t, b: int32x4_t) -> int32x4_t {
     let c = int32x4_t::splat(-1);
-    simd_and(simd_xor(b, c), a)
+    unsafe { simd_and(simd_xor(b, c), a) }
 }
 
 /// Vector bitwise bit clear
@@ -5384,9 +5456,9 @@ pub unsafe fn vbicq_s32(a: int32x4_t, b: int32x4_t) -> int32x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vbic_s64(a: int64x1_t, b: int64x1_t) -> int64x1_t {
+pub fn vbic_s64(a: int64x1_t, b: int64x1_t) -> int64x1_t {
     let c = int64x1_t::splat(-1);
-    simd_and(simd_xor(b, c), a)
+    unsafe { simd_and(simd_xor(b, c), a) }
 }
 
 /// Vector bitwise bit clear
@@ -5406,9 +5478,9 @@ pub unsafe fn vbic_s64(a: int64x1_t, b: int64x1_t) -> int64x1_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vbicq_s64(a: int64x2_t, b: int64x2_t) -> int64x2_t {
+pub fn vbicq_s64(a: int64x2_t, b: int64x2_t) -> int64x2_t {
     let c = int64x2_t::splat(-1);
-    simd_and(simd_xor(b, c), a)
+    unsafe { simd_and(simd_xor(b, c), a) }
 }
 
 /// Vector bitwise bit clear
@@ -5428,9 +5500,9 @@ pub unsafe fn vbicq_s64(a: int64x2_t, b: int64x2_t) -> int64x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vbic_u8(a: uint8x8_t, b: uint8x8_t) -> uint8x8_t {
+pub fn vbic_u8(a: uint8x8_t, b: uint8x8_t) -> uint8x8_t {
     let c = int8x8_t::splat(-1);
-    simd_and(simd_xor(b, transmute(c)), a)
+    unsafe { simd_and(simd_xor(b, transmute(c)), a) }
 }
 
 /// Vector bitwise bit clear
@@ -5450,9 +5522,9 @@ pub unsafe fn vbic_u8(a: uint8x8_t, b: uint8x8_t) -> uint8x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vbicq_u8(a: uint8x16_t, b: uint8x16_t) -> uint8x16_t {
+pub fn vbicq_u8(a: uint8x16_t, b: uint8x16_t) -> uint8x16_t {
     let c = int8x16_t::splat(-1);
-    simd_and(simd_xor(b, transmute(c)), a)
+    unsafe { simd_and(simd_xor(b, transmute(c)), a) }
 }
 
 /// Vector bitwise bit clear
@@ -5472,9 +5544,9 @@ pub unsafe fn vbicq_u8(a: uint8x16_t, b: uint8x16_t) -> uint8x16_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vbic_u16(a: uint16x4_t, b: uint16x4_t) -> uint16x4_t {
+pub fn vbic_u16(a: uint16x4_t, b: uint16x4_t) -> uint16x4_t {
     let c = int16x4_t::splat(-1);
-    simd_and(simd_xor(b, transmute(c)), a)
+    unsafe { simd_and(simd_xor(b, transmute(c)), a) }
 }
 
 /// Vector bitwise bit clear
@@ -5494,9 +5566,9 @@ pub unsafe fn vbic_u16(a: uint16x4_t, b: uint16x4_t) -> uint16x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vbicq_u16(a: uint16x8_t, b: uint16x8_t) -> uint16x8_t {
+pub fn vbicq_u16(a: uint16x8_t, b: uint16x8_t) -> uint16x8_t {
     let c = int16x8_t::splat(-1);
-    simd_and(simd_xor(b, transmute(c)), a)
+    unsafe { simd_and(simd_xor(b, transmute(c)), a) }
 }
 
 /// Vector bitwise bit clear
@@ -5516,9 +5588,9 @@ pub unsafe fn vbicq_u16(a: uint16x8_t, b: uint16x8_t) -> uint16x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vbic_u32(a: uint32x2_t, b: uint32x2_t) -> uint32x2_t {
+pub fn vbic_u32(a: uint32x2_t, b: uint32x2_t) -> uint32x2_t {
     let c = int32x2_t::splat(-1);
-    simd_and(simd_xor(b, transmute(c)), a)
+    unsafe { simd_and(simd_xor(b, transmute(c)), a) }
 }
 
 /// Vector bitwise bit clear
@@ -5538,9 +5610,9 @@ pub unsafe fn vbic_u32(a: uint32x2_t, b: uint32x2_t) -> uint32x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vbicq_u32(a: uint32x4_t, b: uint32x4_t) -> uint32x4_t {
+pub fn vbicq_u32(a: uint32x4_t, b: uint32x4_t) -> uint32x4_t {
     let c = int32x4_t::splat(-1);
-    simd_and(simd_xor(b, transmute(c)), a)
+    unsafe { simd_and(simd_xor(b, transmute(c)), a) }
 }
 
 /// Vector bitwise bit clear
@@ -5560,9 +5632,9 @@ pub unsafe fn vbicq_u32(a: uint32x4_t, b: uint32x4_t) -> uint32x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vbic_u64(a: uint64x1_t, b: uint64x1_t) -> uint64x1_t {
+pub fn vbic_u64(a: uint64x1_t, b: uint64x1_t) -> uint64x1_t {
     let c = int64x1_t::splat(-1);
-    simd_and(simd_xor(b, transmute(c)), a)
+    unsafe { simd_and(simd_xor(b, transmute(c)), a) }
 }
 
 /// Vector bitwise bit clear
@@ -5582,9 +5654,9 @@ pub unsafe fn vbic_u64(a: uint64x1_t, b: uint64x1_t) -> uint64x1_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vbicq_u64(a: uint64x2_t, b: uint64x2_t) -> uint64x2_t {
+pub fn vbicq_u64(a: uint64x2_t, b: uint64x2_t) -> uint64x2_t {
     let c = int64x2_t::splat(-1);
-    simd_and(simd_xor(b, transmute(c)), a)
+    unsafe { simd_and(simd_xor(b, transmute(c)), a) }
 }
 
 /// Bitwise Select instructions. This instruction sets each bit in the destination SIMD&FP register
@@ -5608,12 +5680,14 @@ pub unsafe fn vbicq_u64(a: uint64x2_t, b: uint64x2_t) -> uint64x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vbsl_s8(a: uint8x8_t, b: int8x8_t, c: int8x8_t) -> int8x8_t {
+pub fn vbsl_s8(a: uint8x8_t, b: int8x8_t, c: int8x8_t) -> int8x8_t {
     let not = int8x8_t::splat(-1);
-    transmute(simd_or(
-        simd_and(a, transmute(b)),
-        simd_and(simd_xor(a, transmute(not)), transmute(c)),
-    ))
+    unsafe {
+        transmute(simd_or(
+            simd_and(a, transmute(b)),
+            simd_and(simd_xor(a, transmute(not)), transmute(c)),
+        ))
+    }
 }
 
 /// Bitwise Select.
@@ -5633,12 +5707,14 @@ pub unsafe fn vbsl_s8(a: uint8x8_t, b: int8x8_t, c: int8x8_t) -> int8x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vbsl_s16(a: uint16x4_t, b: int16x4_t, c: int16x4_t) -> int16x4_t {
+pub fn vbsl_s16(a: uint16x4_t, b: int16x4_t, c: int16x4_t) -> int16x4_t {
     let not = int16x4_t::splat(-1);
-    transmute(simd_or(
-        simd_and(a, transmute(b)),
-        simd_and(simd_xor(a, transmute(not)), transmute(c)),
-    ))
+    unsafe {
+        transmute(simd_or(
+            simd_and(a, transmute(b)),
+            simd_and(simd_xor(a, transmute(not)), transmute(c)),
+        ))
+    }
 }
 
 /// Bitwise Select.
@@ -5658,12 +5734,14 @@ pub unsafe fn vbsl_s16(a: uint16x4_t, b: int16x4_t, c: int16x4_t) -> int16x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vbsl_s32(a: uint32x2_t, b: int32x2_t, c: int32x2_t) -> int32x2_t {
+pub fn vbsl_s32(a: uint32x2_t, b: int32x2_t, c: int32x2_t) -> int32x2_t {
     let not = int32x2_t::splat(-1);
-    transmute(simd_or(
-        simd_and(a, transmute(b)),
-        simd_and(simd_xor(a, transmute(not)), transmute(c)),
-    ))
+    unsafe {
+        transmute(simd_or(
+            simd_and(a, transmute(b)),
+            simd_and(simd_xor(a, transmute(not)), transmute(c)),
+        ))
+    }
 }
 
 /// Bitwise Select.
@@ -5683,12 +5761,14 @@ pub unsafe fn vbsl_s32(a: uint32x2_t, b: int32x2_t, c: int32x2_t) -> int32x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vbsl_s64(a: uint64x1_t, b: int64x1_t, c: int64x1_t) -> int64x1_t {
+pub fn vbsl_s64(a: uint64x1_t, b: int64x1_t, c: int64x1_t) -> int64x1_t {
     let not = int64x1_t::splat(-1);
-    transmute(simd_or(
-        simd_and(a, transmute(b)),
-        simd_and(simd_xor(a, transmute(not)), transmute(c)),
-    ))
+    unsafe {
+        transmute(simd_or(
+            simd_and(a, transmute(b)),
+            simd_and(simd_xor(a, transmute(not)), transmute(c)),
+        ))
+    }
 }
 
 /// Bitwise Select.
@@ -5708,9 +5788,9 @@ pub unsafe fn vbsl_s64(a: uint64x1_t, b: int64x1_t, c: int64x1_t) -> int64x1_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vbsl_u8(a: uint8x8_t, b: uint8x8_t, c: uint8x8_t) -> uint8x8_t {
+pub fn vbsl_u8(a: uint8x8_t, b: uint8x8_t, c: uint8x8_t) -> uint8x8_t {
     let not = int8x8_t::splat(-1);
-    simd_or(simd_and(a, b), simd_and(simd_xor(a, transmute(not)), c))
+    unsafe { simd_or(simd_and(a, b), simd_and(simd_xor(a, transmute(not)), c)) }
 }
 
 /// Bitwise Select.
@@ -5730,9 +5810,9 @@ pub unsafe fn vbsl_u8(a: uint8x8_t, b: uint8x8_t, c: uint8x8_t) -> uint8x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vbsl_u16(a: uint16x4_t, b: uint16x4_t, c: uint16x4_t) -> uint16x4_t {
+pub fn vbsl_u16(a: uint16x4_t, b: uint16x4_t, c: uint16x4_t) -> uint16x4_t {
     let not = int16x4_t::splat(-1);
-    simd_or(simd_and(a, b), simd_and(simd_xor(a, transmute(not)), c))
+    unsafe { simd_or(simd_and(a, b), simd_and(simd_xor(a, transmute(not)), c)) }
 }
 
 /// Bitwise Select.
@@ -5752,9 +5832,9 @@ pub unsafe fn vbsl_u16(a: uint16x4_t, b: uint16x4_t, c: uint16x4_t) -> uint16x4_
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vbsl_u32(a: uint32x2_t, b: uint32x2_t, c: uint32x2_t) -> uint32x2_t {
+pub fn vbsl_u32(a: uint32x2_t, b: uint32x2_t, c: uint32x2_t) -> uint32x2_t {
     let not = int32x2_t::splat(-1);
-    simd_or(simd_and(a, b), simd_and(simd_xor(a, transmute(not)), c))
+    unsafe { simd_or(simd_and(a, b), simd_and(simd_xor(a, transmute(not)), c)) }
 }
 
 /// Bitwise Select.
@@ -5774,9 +5854,9 @@ pub unsafe fn vbsl_u32(a: uint32x2_t, b: uint32x2_t, c: uint32x2_t) -> uint32x2_
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vbsl_u64(a: uint64x1_t, b: uint64x1_t, c: uint64x1_t) -> uint64x1_t {
+pub fn vbsl_u64(a: uint64x1_t, b: uint64x1_t, c: uint64x1_t) -> uint64x1_t {
     let not = int64x1_t::splat(-1);
-    simd_or(simd_and(a, b), simd_and(simd_xor(a, transmute(not)), c))
+    unsafe { simd_or(simd_and(a, b), simd_and(simd_xor(a, transmute(not)), c)) }
 }
 
 /// Bitwise Select.
@@ -5796,12 +5876,14 @@ pub unsafe fn vbsl_u64(a: uint64x1_t, b: uint64x1_t, c: uint64x1_t) -> uint64x1_
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vbsl_f32(a: uint32x2_t, b: float32x2_t, c: float32x2_t) -> float32x2_t {
+pub fn vbsl_f32(a: uint32x2_t, b: float32x2_t, c: float32x2_t) -> float32x2_t {
     let not = int32x2_t::splat(-1);
-    transmute(simd_or(
-        simd_and(a, transmute(b)),
-        simd_and(simd_xor(a, transmute(not)), transmute(c)),
-    ))
+    unsafe {
+        transmute(simd_or(
+            simd_and(a, transmute(b)),
+            simd_and(simd_xor(a, transmute(not)), transmute(c)),
+        ))
+    }
 }
 
 /// Bitwise Select.
@@ -5821,12 +5903,14 @@ pub unsafe fn vbsl_f32(a: uint32x2_t, b: float32x2_t, c: float32x2_t) -> float32
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vbsl_p8(a: uint8x8_t, b: poly8x8_t, c: poly8x8_t) -> poly8x8_t {
+pub fn vbsl_p8(a: uint8x8_t, b: poly8x8_t, c: poly8x8_t) -> poly8x8_t {
     let not = int8x8_t::splat(-1);
-    transmute(simd_or(
-        simd_and(a, transmute(b)),
-        simd_and(simd_xor(a, transmute(not)), transmute(c)),
-    ))
+    unsafe {
+        transmute(simd_or(
+            simd_and(a, transmute(b)),
+            simd_and(simd_xor(a, transmute(not)), transmute(c)),
+        ))
+    }
 }
 
 /// Bitwise Select.
@@ -5846,12 +5930,14 @@ pub unsafe fn vbsl_p8(a: uint8x8_t, b: poly8x8_t, c: poly8x8_t) -> poly8x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vbsl_p16(a: uint16x4_t, b: poly16x4_t, c: poly16x4_t) -> poly16x4_t {
+pub fn vbsl_p16(a: uint16x4_t, b: poly16x4_t, c: poly16x4_t) -> poly16x4_t {
     let not = int16x4_t::splat(-1);
-    transmute(simd_or(
-        simd_and(a, transmute(b)),
-        simd_and(simd_xor(a, transmute(not)), transmute(c)),
-    ))
+    unsafe {
+        transmute(simd_or(
+            simd_and(a, transmute(b)),
+            simd_and(simd_xor(a, transmute(not)), transmute(c)),
+        ))
+    }
 }
 
 /// Bitwise Select. (128-bit)
@@ -5871,12 +5957,14 @@ pub unsafe fn vbsl_p16(a: uint16x4_t, b: poly16x4_t, c: poly16x4_t) -> poly16x4_
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vbslq_s8(a: uint8x16_t, b: int8x16_t, c: int8x16_t) -> int8x16_t {
+pub fn vbslq_s8(a: uint8x16_t, b: int8x16_t, c: int8x16_t) -> int8x16_t {
     let not = int8x16_t::splat(-1);
-    transmute(simd_or(
-        simd_and(a, transmute(b)),
-        simd_and(simd_xor(a, transmute(not)), transmute(c)),
-    ))
+    unsafe {
+        transmute(simd_or(
+            simd_and(a, transmute(b)),
+            simd_and(simd_xor(a, transmute(not)), transmute(c)),
+        ))
+    }
 }
 
 /// Bitwise Select. (128-bit)
@@ -5896,12 +5984,14 @@ pub unsafe fn vbslq_s8(a: uint8x16_t, b: int8x16_t, c: int8x16_t) -> int8x16_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vbslq_s16(a: uint16x8_t, b: int16x8_t, c: int16x8_t) -> int16x8_t {
+pub fn vbslq_s16(a: uint16x8_t, b: int16x8_t, c: int16x8_t) -> int16x8_t {
     let not = int16x8_t::splat(-1);
-    transmute(simd_or(
-        simd_and(a, transmute(b)),
-        simd_and(simd_xor(a, transmute(not)), transmute(c)),
-    ))
+    unsafe {
+        transmute(simd_or(
+            simd_and(a, transmute(b)),
+            simd_and(simd_xor(a, transmute(not)), transmute(c)),
+        ))
+    }
 }
 
 /// Bitwise Select. (128-bit)
@@ -5921,12 +6011,14 @@ pub unsafe fn vbslq_s16(a: uint16x8_t, b: int16x8_t, c: int16x8_t) -> int16x8_t 
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vbslq_s32(a: uint32x4_t, b: int32x4_t, c: int32x4_t) -> int32x4_t {
+pub fn vbslq_s32(a: uint32x4_t, b: int32x4_t, c: int32x4_t) -> int32x4_t {
     let not = int32x4_t::splat(-1);
-    transmute(simd_or(
-        simd_and(a, transmute(b)),
-        simd_and(simd_xor(a, transmute(not)), transmute(c)),
-    ))
+    unsafe {
+        transmute(simd_or(
+            simd_and(a, transmute(b)),
+            simd_and(simd_xor(a, transmute(not)), transmute(c)),
+        ))
+    }
 }
 
 /// Bitwise Select. (128-bit)
@@ -5946,12 +6038,14 @@ pub unsafe fn vbslq_s32(a: uint32x4_t, b: int32x4_t, c: int32x4_t) -> int32x4_t 
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vbslq_s64(a: uint64x2_t, b: int64x2_t, c: int64x2_t) -> int64x2_t {
+pub fn vbslq_s64(a: uint64x2_t, b: int64x2_t, c: int64x2_t) -> int64x2_t {
     let not = int64x2_t::splat(-1);
-    transmute(simd_or(
-        simd_and(a, transmute(b)),
-        simd_and(simd_xor(a, transmute(not)), transmute(c)),
-    ))
+    unsafe {
+        transmute(simd_or(
+            simd_and(a, transmute(b)),
+            simd_and(simd_xor(a, transmute(not)), transmute(c)),
+        ))
+    }
 }
 
 /// Bitwise Select. (128-bit)
@@ -5971,9 +6065,9 @@ pub unsafe fn vbslq_s64(a: uint64x2_t, b: int64x2_t, c: int64x2_t) -> int64x2_t 
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vbslq_u8(a: uint8x16_t, b: uint8x16_t, c: uint8x16_t) -> uint8x16_t {
+pub fn vbslq_u8(a: uint8x16_t, b: uint8x16_t, c: uint8x16_t) -> uint8x16_t {
     let not = int8x16_t::splat(-1);
-    simd_or(simd_and(a, b), simd_and(simd_xor(a, transmute(not)), c))
+    unsafe { simd_or(simd_and(a, b), simd_and(simd_xor(a, transmute(not)), c)) }
 }
 
 /// Bitwise Select. (128-bit)
@@ -5993,9 +6087,9 @@ pub unsafe fn vbslq_u8(a: uint8x16_t, b: uint8x16_t, c: uint8x16_t) -> uint8x16_
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vbslq_u16(a: uint16x8_t, b: uint16x8_t, c: uint16x8_t) -> uint16x8_t {
+pub fn vbslq_u16(a: uint16x8_t, b: uint16x8_t, c: uint16x8_t) -> uint16x8_t {
     let not = int16x8_t::splat(-1);
-    simd_or(simd_and(a, b), simd_and(simd_xor(a, transmute(not)), c))
+    unsafe { simd_or(simd_and(a, b), simd_and(simd_xor(a, transmute(not)), c)) }
 }
 
 /// Bitwise Select. (128-bit)
@@ -6015,9 +6109,9 @@ pub unsafe fn vbslq_u16(a: uint16x8_t, b: uint16x8_t, c: uint16x8_t) -> uint16x8
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vbslq_u32(a: uint32x4_t, b: uint32x4_t, c: uint32x4_t) -> uint32x4_t {
+pub fn vbslq_u32(a: uint32x4_t, b: uint32x4_t, c: uint32x4_t) -> uint32x4_t {
     let not = int32x4_t::splat(-1);
-    simd_or(simd_and(a, b), simd_and(simd_xor(a, transmute(not)), c))
+    unsafe { simd_or(simd_and(a, b), simd_and(simd_xor(a, transmute(not)), c)) }
 }
 
 /// Bitwise Select. (128-bit)
@@ -6037,9 +6131,9 @@ pub unsafe fn vbslq_u32(a: uint32x4_t, b: uint32x4_t, c: uint32x4_t) -> uint32x4
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vbslq_u64(a: uint64x2_t, b: uint64x2_t, c: uint64x2_t) -> uint64x2_t {
+pub fn vbslq_u64(a: uint64x2_t, b: uint64x2_t, c: uint64x2_t) -> uint64x2_t {
     let not = int64x2_t::splat(-1);
-    simd_or(simd_and(a, b), simd_and(simd_xor(a, transmute(not)), c))
+    unsafe { simd_or(simd_and(a, b), simd_and(simd_xor(a, transmute(not)), c)) }
 }
 
 /// Bitwise Select. (128-bit)
@@ -6059,12 +6153,14 @@ pub unsafe fn vbslq_u64(a: uint64x2_t, b: uint64x2_t, c: uint64x2_t) -> uint64x2
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vbslq_p8(a: uint8x16_t, b: poly8x16_t, c: poly8x16_t) -> poly8x16_t {
+pub fn vbslq_p8(a: uint8x16_t, b: poly8x16_t, c: poly8x16_t) -> poly8x16_t {
     let not = int8x16_t::splat(-1);
-    transmute(simd_or(
-        simd_and(a, transmute(b)),
-        simd_and(simd_xor(a, transmute(not)), transmute(c)),
-    ))
+    unsafe {
+        transmute(simd_or(
+            simd_and(a, transmute(b)),
+            simd_and(simd_xor(a, transmute(not)), transmute(c)),
+        ))
+    }
 }
 
 /// Bitwise Select. (128-bit)
@@ -6084,12 +6180,14 @@ pub unsafe fn vbslq_p8(a: uint8x16_t, b: poly8x16_t, c: poly8x16_t) -> poly8x16_
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vbslq_p16(a: uint16x8_t, b: poly16x8_t, c: poly16x8_t) -> poly16x8_t {
+pub fn vbslq_p16(a: uint16x8_t, b: poly16x8_t, c: poly16x8_t) -> poly16x8_t {
     let not = int16x8_t::splat(-1);
-    transmute(simd_or(
-        simd_and(a, transmute(b)),
-        simd_and(simd_xor(a, transmute(not)), transmute(c)),
-    ))
+    unsafe {
+        transmute(simd_or(
+            simd_and(a, transmute(b)),
+            simd_and(simd_xor(a, transmute(not)), transmute(c)),
+        ))
+    }
 }
 
 /// Bitwise Select. (128-bit)
@@ -6109,12 +6207,14 @@ pub unsafe fn vbslq_p16(a: uint16x8_t, b: poly16x8_t, c: poly16x8_t) -> poly16x8
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vbslq_f32(a: uint32x4_t, b: float32x4_t, c: float32x4_t) -> float32x4_t {
+pub fn vbslq_f32(a: uint32x4_t, b: float32x4_t, c: float32x4_t) -> float32x4_t {
     let not = int32x4_t::splat(-1);
-    transmute(simd_or(
-        simd_and(a, transmute(b)),
-        simd_and(simd_xor(a, transmute(not)), transmute(c)),
-    ))
+    unsafe {
+        transmute(simd_or(
+            simd_and(a, transmute(b)),
+            simd_and(simd_xor(a, transmute(not)), transmute(c)),
+        ))
+    }
 }
 
 /// Vector bitwise inclusive OR NOT
@@ -6134,9 +6234,9 @@ pub unsafe fn vbslq_f32(a: uint32x4_t, b: float32x4_t, c: float32x4_t) -> float3
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vorn_s8(a: int8x8_t, b: int8x8_t) -> int8x8_t {
+pub fn vorn_s8(a: int8x8_t, b: int8x8_t) -> int8x8_t {
     let c = int8x8_t::splat(-1);
-    simd_or(simd_xor(b, c), a)
+    unsafe { simd_or(simd_xor(b, c), a) }
 }
 
 /// Vector bitwise inclusive OR NOT
@@ -6156,9 +6256,9 @@ pub unsafe fn vorn_s8(a: int8x8_t, b: int8x8_t) -> int8x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vornq_s8(a: int8x16_t, b: int8x16_t) -> int8x16_t {
+pub fn vornq_s8(a: int8x16_t, b: int8x16_t) -> int8x16_t {
     let c = int8x16_t::splat(-1);
-    simd_or(simd_xor(b, c), a)
+    unsafe { simd_or(simd_xor(b, c), a) }
 }
 
 /// Vector bitwise inclusive OR NOT
@@ -6178,9 +6278,9 @@ pub unsafe fn vornq_s8(a: int8x16_t, b: int8x16_t) -> int8x16_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vorn_s16(a: int16x4_t, b: int16x4_t) -> int16x4_t {
+pub fn vorn_s16(a: int16x4_t, b: int16x4_t) -> int16x4_t {
     let c = int16x4_t::splat(-1);
-    simd_or(simd_xor(b, c), a)
+    unsafe { simd_or(simd_xor(b, c), a) }
 }
 
 /// Vector bitwise inclusive OR NOT
@@ -6200,9 +6300,9 @@ pub unsafe fn vorn_s16(a: int16x4_t, b: int16x4_t) -> int16x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vornq_s16(a: int16x8_t, b: int16x8_t) -> int16x8_t {
+pub fn vornq_s16(a: int16x8_t, b: int16x8_t) -> int16x8_t {
     let c = int16x8_t::splat(-1);
-    simd_or(simd_xor(b, c), a)
+    unsafe { simd_or(simd_xor(b, c), a) }
 }
 
 /// Vector bitwise inclusive OR NOT
@@ -6222,9 +6322,9 @@ pub unsafe fn vornq_s16(a: int16x8_t, b: int16x8_t) -> int16x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vorn_s32(a: int32x2_t, b: int32x2_t) -> int32x2_t {
+pub fn vorn_s32(a: int32x2_t, b: int32x2_t) -> int32x2_t {
     let c = int32x2_t::splat(-1);
-    simd_or(simd_xor(b, c), a)
+    unsafe { simd_or(simd_xor(b, c), a) }
 }
 
 /// Vector bitwise inclusive OR NOT
@@ -6244,9 +6344,9 @@ pub unsafe fn vorn_s32(a: int32x2_t, b: int32x2_t) -> int32x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vornq_s32(a: int32x4_t, b: int32x4_t) -> int32x4_t {
+pub fn vornq_s32(a: int32x4_t, b: int32x4_t) -> int32x4_t {
     let c = int32x4_t::splat(-1);
-    simd_or(simd_xor(b, c), a)
+    unsafe { simd_or(simd_xor(b, c), a) }
 }
 
 /// Vector bitwise inclusive OR NOT
@@ -6266,9 +6366,9 @@ pub unsafe fn vornq_s32(a: int32x4_t, b: int32x4_t) -> int32x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vorn_s64(a: int64x1_t, b: int64x1_t) -> int64x1_t {
+pub fn vorn_s64(a: int64x1_t, b: int64x1_t) -> int64x1_t {
     let c = int64x1_t::splat(-1);
-    simd_or(simd_xor(b, c), a)
+    unsafe { simd_or(simd_xor(b, c), a) }
 }
 
 /// Vector bitwise inclusive OR NOT
@@ -6288,9 +6388,9 @@ pub unsafe fn vorn_s64(a: int64x1_t, b: int64x1_t) -> int64x1_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vornq_s64(a: int64x2_t, b: int64x2_t) -> int64x2_t {
+pub fn vornq_s64(a: int64x2_t, b: int64x2_t) -> int64x2_t {
     let c = int64x2_t::splat(-1);
-    simd_or(simd_xor(b, c), a)
+    unsafe { simd_or(simd_xor(b, c), a) }
 }
 
 /// Vector bitwise inclusive OR NOT
@@ -6310,9 +6410,9 @@ pub unsafe fn vornq_s64(a: int64x2_t, b: int64x2_t) -> int64x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vorn_u8(a: uint8x8_t, b: uint8x8_t) -> uint8x8_t {
+pub fn vorn_u8(a: uint8x8_t, b: uint8x8_t) -> uint8x8_t {
     let c = int8x8_t::splat(-1);
-    simd_or(simd_xor(b, transmute(c)), a)
+    unsafe { simd_or(simd_xor(b, transmute(c)), a) }
 }
 
 /// Vector bitwise inclusive OR NOT
@@ -6332,9 +6432,9 @@ pub unsafe fn vorn_u8(a: uint8x8_t, b: uint8x8_t) -> uint8x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vornq_u8(a: uint8x16_t, b: uint8x16_t) -> uint8x16_t {
+pub fn vornq_u8(a: uint8x16_t, b: uint8x16_t) -> uint8x16_t {
     let c = int8x16_t::splat(-1);
-    simd_or(simd_xor(b, transmute(c)), a)
+    unsafe { simd_or(simd_xor(b, transmute(c)), a) }
 }
 
 /// Vector bitwise inclusive OR NOT
@@ -6354,9 +6454,9 @@ pub unsafe fn vornq_u8(a: uint8x16_t, b: uint8x16_t) -> uint8x16_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vorn_u16(a: uint16x4_t, b: uint16x4_t) -> uint16x4_t {
+pub fn vorn_u16(a: uint16x4_t, b: uint16x4_t) -> uint16x4_t {
     let c = int16x4_t::splat(-1);
-    simd_or(simd_xor(b, transmute(c)), a)
+    unsafe { simd_or(simd_xor(b, transmute(c)), a) }
 }
 
 /// Vector bitwise inclusive OR NOT
@@ -6376,9 +6476,9 @@ pub unsafe fn vorn_u16(a: uint16x4_t, b: uint16x4_t) -> uint16x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vornq_u16(a: uint16x8_t, b: uint16x8_t) -> uint16x8_t {
+pub fn vornq_u16(a: uint16x8_t, b: uint16x8_t) -> uint16x8_t {
     let c = int16x8_t::splat(-1);
-    simd_or(simd_xor(b, transmute(c)), a)
+    unsafe { simd_or(simd_xor(b, transmute(c)), a) }
 }
 
 /// Vector bitwise inclusive OR NOT
@@ -6398,9 +6498,9 @@ pub unsafe fn vornq_u16(a: uint16x8_t, b: uint16x8_t) -> uint16x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vorn_u32(a: uint32x2_t, b: uint32x2_t) -> uint32x2_t {
+pub fn vorn_u32(a: uint32x2_t, b: uint32x2_t) -> uint32x2_t {
     let c = int32x2_t::splat(-1);
-    simd_or(simd_xor(b, transmute(c)), a)
+    unsafe { simd_or(simd_xor(b, transmute(c)), a) }
 }
 
 /// Vector bitwise inclusive OR NOT
@@ -6420,9 +6520,9 @@ pub unsafe fn vorn_u32(a: uint32x2_t, b: uint32x2_t) -> uint32x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vornq_u32(a: uint32x4_t, b: uint32x4_t) -> uint32x4_t {
+pub fn vornq_u32(a: uint32x4_t, b: uint32x4_t) -> uint32x4_t {
     let c = int32x4_t::splat(-1);
-    simd_or(simd_xor(b, transmute(c)), a)
+    unsafe { simd_or(simd_xor(b, transmute(c)), a) }
 }
 
 /// Vector bitwise inclusive OR NOT
@@ -6442,9 +6542,9 @@ pub unsafe fn vornq_u32(a: uint32x4_t, b: uint32x4_t) -> uint32x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vorn_u64(a: uint64x1_t, b: uint64x1_t) -> uint64x1_t {
+pub fn vorn_u64(a: uint64x1_t, b: uint64x1_t) -> uint64x1_t {
     let c = int64x1_t::splat(-1);
-    simd_or(simd_xor(b, transmute(c)), a)
+    unsafe { simd_or(simd_xor(b, transmute(c)), a) }
 }
 
 /// Vector bitwise inclusive OR NOT
@@ -6464,9 +6564,9 @@ pub unsafe fn vorn_u64(a: uint64x1_t, b: uint64x1_t) -> uint64x1_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vornq_u64(a: uint64x2_t, b: uint64x2_t) -> uint64x2_t {
+pub fn vornq_u64(a: uint64x2_t, b: uint64x2_t) -> uint64x2_t {
     let c = int64x2_t::splat(-1);
-    simd_or(simd_xor(b, transmute(c)), a)
+    unsafe { simd_or(simd_xor(b, transmute(c)), a) }
 }
 
 /// Folding minimum of adjacent pairs
@@ -6486,8 +6586,8 @@ pub unsafe fn vornq_u64(a: uint64x2_t, b: uint64x2_t) -> uint64x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vpmin_s8(a: int8x8_t, b: int8x8_t) -> int8x8_t {
-    vpmins_v8i8(a, b)
+pub fn vpmin_s8(a: int8x8_t, b: int8x8_t) -> int8x8_t {
+    unsafe { vpmins_v8i8(a, b) }
 }
 
 /// Folding minimum of adjacent pairs
@@ -6507,8 +6607,8 @@ pub unsafe fn vpmin_s8(a: int8x8_t, b: int8x8_t) -> int8x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vpmin_s16(a: int16x4_t, b: int16x4_t) -> int16x4_t {
-    vpmins_v4i16(a, b)
+pub fn vpmin_s16(a: int16x4_t, b: int16x4_t) -> int16x4_t {
+    unsafe { vpmins_v4i16(a, b) }
 }
 
 /// Folding minimum of adjacent pairs
@@ -6528,8 +6628,8 @@ pub unsafe fn vpmin_s16(a: int16x4_t, b: int16x4_t) -> int16x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vpmin_s32(a: int32x2_t, b: int32x2_t) -> int32x2_t {
-    vpmins_v2i32(a, b)
+pub fn vpmin_s32(a: int32x2_t, b: int32x2_t) -> int32x2_t {
+    unsafe { vpmins_v2i32(a, b) }
 }
 
 /// Folding minimum of adjacent pairs
@@ -6549,8 +6649,8 @@ pub unsafe fn vpmin_s32(a: int32x2_t, b: int32x2_t) -> int32x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vpmin_u8(a: uint8x8_t, b: uint8x8_t) -> uint8x8_t {
-    vpminu_v8i8(a, b)
+pub fn vpmin_u8(a: uint8x8_t, b: uint8x8_t) -> uint8x8_t {
+    unsafe { vpminu_v8i8(a, b) }
 }
 
 /// Folding minimum of adjacent pairs
@@ -6570,8 +6670,8 @@ pub unsafe fn vpmin_u8(a: uint8x8_t, b: uint8x8_t) -> uint8x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vpmin_u16(a: uint16x4_t, b: uint16x4_t) -> uint16x4_t {
-    vpminu_v4i16(a, b)
+pub fn vpmin_u16(a: uint16x4_t, b: uint16x4_t) -> uint16x4_t {
+    unsafe { vpminu_v4i16(a, b) }
 }
 
 /// Folding minimum of adjacent pairs
@@ -6591,8 +6691,8 @@ pub unsafe fn vpmin_u16(a: uint16x4_t, b: uint16x4_t) -> uint16x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vpmin_u32(a: uint32x2_t, b: uint32x2_t) -> uint32x2_t {
-    vpminu_v2i32(a, b)
+pub fn vpmin_u32(a: uint32x2_t, b: uint32x2_t) -> uint32x2_t {
+    unsafe { vpminu_v2i32(a, b) }
 }
 
 /// Folding minimum of adjacent pairs
@@ -6612,8 +6712,8 @@ pub unsafe fn vpmin_u32(a: uint32x2_t, b: uint32x2_t) -> uint32x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vpmin_f32(a: float32x2_t, b: float32x2_t) -> float32x2_t {
-    vpminf_v2f32(a, b)
+pub fn vpmin_f32(a: float32x2_t, b: float32x2_t) -> float32x2_t {
+    unsafe { vpminf_v2f32(a, b) }
 }
 
 /// Folding maximum of adjacent pairs
@@ -6633,8 +6733,8 @@ pub unsafe fn vpmin_f32(a: float32x2_t, b: float32x2_t) -> float32x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vpmax_s8(a: int8x8_t, b: int8x8_t) -> int8x8_t {
-    vpmaxs_v8i8(a, b)
+pub fn vpmax_s8(a: int8x8_t, b: int8x8_t) -> int8x8_t {
+    unsafe { vpmaxs_v8i8(a, b) }
 }
 
 /// Folding maximum of adjacent pairs
@@ -6654,8 +6754,8 @@ pub unsafe fn vpmax_s8(a: int8x8_t, b: int8x8_t) -> int8x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vpmax_s16(a: int16x4_t, b: int16x4_t) -> int16x4_t {
-    vpmaxs_v4i16(a, b)
+pub fn vpmax_s16(a: int16x4_t, b: int16x4_t) -> int16x4_t {
+    unsafe { vpmaxs_v4i16(a, b) }
 }
 
 /// Folding maximum of adjacent pairs
@@ -6675,8 +6775,8 @@ pub unsafe fn vpmax_s16(a: int16x4_t, b: int16x4_t) -> int16x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vpmax_s32(a: int32x2_t, b: int32x2_t) -> int32x2_t {
-    vpmaxs_v2i32(a, b)
+pub fn vpmax_s32(a: int32x2_t, b: int32x2_t) -> int32x2_t {
+    unsafe { vpmaxs_v2i32(a, b) }
 }
 
 /// Folding maximum of adjacent pairs
@@ -6696,8 +6796,8 @@ pub unsafe fn vpmax_s32(a: int32x2_t, b: int32x2_t) -> int32x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vpmax_u8(a: uint8x8_t, b: uint8x8_t) -> uint8x8_t {
-    vpmaxu_v8i8(a, b)
+pub fn vpmax_u8(a: uint8x8_t, b: uint8x8_t) -> uint8x8_t {
+    unsafe { vpmaxu_v8i8(a, b) }
 }
 
 /// Folding maximum of adjacent pairs
@@ -6717,8 +6817,8 @@ pub unsafe fn vpmax_u8(a: uint8x8_t, b: uint8x8_t) -> uint8x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vpmax_u16(a: uint16x4_t, b: uint16x4_t) -> uint16x4_t {
-    vpmaxu_v4i16(a, b)
+pub fn vpmax_u16(a: uint16x4_t, b: uint16x4_t) -> uint16x4_t {
+    unsafe { vpmaxu_v4i16(a, b) }
 }
 
 /// Folding maximum of adjacent pairs
@@ -6738,8 +6838,8 @@ pub unsafe fn vpmax_u16(a: uint16x4_t, b: uint16x4_t) -> uint16x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vpmax_u32(a: uint32x2_t, b: uint32x2_t) -> uint32x2_t {
-    vpmaxu_v2i32(a, b)
+pub fn vpmax_u32(a: uint32x2_t, b: uint32x2_t) -> uint32x2_t {
+    unsafe { vpmaxu_v2i32(a, b) }
 }
 
 /// Folding maximum of adjacent pairs
@@ -6759,8 +6859,8 @@ pub unsafe fn vpmax_u32(a: uint32x2_t, b: uint32x2_t) -> uint32x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vpmax_f32(a: float32x2_t, b: float32x2_t) -> float32x2_t {
-    vpmaxf_v2f32(a, b)
+pub fn vpmax_f32(a: float32x2_t, b: float32x2_t) -> float32x2_t {
+    unsafe { vpmaxf_v2f32(a, b) }
 }
 
 /// Move vector element to general-purpose register
@@ -6777,9 +6877,9 @@ pub unsafe fn vpmax_f32(a: float32x2_t, b: float32x2_t) -> float32x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vgetq_lane_u64<const IMM5: i32>(v: uint64x2_t) -> u64 {
+pub fn vgetq_lane_u64<const IMM5: i32>(v: uint64x2_t) -> u64 {
     static_assert_uimm_bits!(IMM5, 1);
-    simd_extract!(v, IMM5 as u32)
+    unsafe { simd_extract!(v, IMM5 as u32) }
 }
 
 /// Move vector element to general-purpose register
@@ -6796,9 +6896,9 @@ pub unsafe fn vgetq_lane_u64<const IMM5: i32>(v: uint64x2_t) -> u64 {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vget_lane_u64<const IMM5: i32>(v: uint64x1_t) -> u64 {
+pub fn vget_lane_u64<const IMM5: i32>(v: uint64x1_t) -> u64 {
     static_assert!(IMM5 == 0);
-    simd_extract!(v, 0)
+    unsafe { simd_extract!(v, 0) }
 }
 
 /// Move vector element to general-purpose register
@@ -6815,9 +6915,9 @@ pub unsafe fn vget_lane_u64<const IMM5: i32>(v: uint64x1_t) -> u64 {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vget_lane_u16<const IMM5: i32>(v: uint16x4_t) -> u16 {
+pub fn vget_lane_u16<const IMM5: i32>(v: uint16x4_t) -> u16 {
     static_assert_uimm_bits!(IMM5, 2);
-    simd_extract!(v, IMM5 as u32)
+    unsafe { simd_extract!(v, IMM5 as u32) }
 }
 
 /// Move vector element to general-purpose register
@@ -6834,9 +6934,9 @@ pub unsafe fn vget_lane_u16<const IMM5: i32>(v: uint16x4_t) -> u16 {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vget_lane_s16<const IMM5: i32>(v: int16x4_t) -> i16 {
+pub fn vget_lane_s16<const IMM5: i32>(v: int16x4_t) -> i16 {
     static_assert_uimm_bits!(IMM5, 2);
-    simd_extract!(v, IMM5 as u32)
+    unsafe { simd_extract!(v, IMM5 as u32) }
 }
 
 /// Move vector element to general-purpose register
@@ -6853,9 +6953,9 @@ pub unsafe fn vget_lane_s16<const IMM5: i32>(v: int16x4_t) -> i16 {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vget_lane_p16<const IMM5: i32>(v: poly16x4_t) -> p16 {
+pub fn vget_lane_p16<const IMM5: i32>(v: poly16x4_t) -> p16 {
     static_assert_uimm_bits!(IMM5, 2);
-    simd_extract!(v, IMM5 as u32)
+    unsafe { simd_extract!(v, IMM5 as u32) }
 }
 
 /// Move vector element to general-purpose register
@@ -6872,9 +6972,9 @@ pub unsafe fn vget_lane_p16<const IMM5: i32>(v: poly16x4_t) -> p16 {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vget_lane_u32<const IMM5: i32>(v: uint32x2_t) -> u32 {
+pub fn vget_lane_u32<const IMM5: i32>(v: uint32x2_t) -> u32 {
     static_assert_uimm_bits!(IMM5, 1);
-    simd_extract!(v, IMM5 as u32)
+    unsafe { simd_extract!(v, IMM5 as u32) }
 }
 
 /// Move vector element to general-purpose register
@@ -6891,9 +6991,9 @@ pub unsafe fn vget_lane_u32<const IMM5: i32>(v: uint32x2_t) -> u32 {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vget_lane_s32<const IMM5: i32>(v: int32x2_t) -> i32 {
+pub fn vget_lane_s32<const IMM5: i32>(v: int32x2_t) -> i32 {
     static_assert_uimm_bits!(IMM5, 1);
-    simd_extract!(v, IMM5 as u32)
+    unsafe { simd_extract!(v, IMM5 as u32) }
 }
 
 /// Duplicate vector element to vector or scalar
@@ -6910,9 +7010,9 @@ pub unsafe fn vget_lane_s32<const IMM5: i32>(v: int32x2_t) -> i32 {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vget_lane_f32<const IMM5: i32>(v: float32x2_t) -> f32 {
+pub fn vget_lane_f32<const IMM5: i32>(v: float32x2_t) -> f32 {
     static_assert_uimm_bits!(IMM5, 1);
-    simd_extract!(v, IMM5 as u32)
+    unsafe { simd_extract!(v, IMM5 as u32) }
 }
 
 /// Duplicate vector element to vector or scalar
@@ -6929,9 +7029,9 @@ pub unsafe fn vget_lane_f32<const IMM5: i32>(v: float32x2_t) -> f32 {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vgetq_lane_f32<const IMM5: i32>(v: float32x4_t) -> f32 {
+pub fn vgetq_lane_f32<const IMM5: i32>(v: float32x4_t) -> f32 {
     static_assert_uimm_bits!(IMM5, 2);
-    simd_extract!(v, IMM5 as u32)
+    unsafe { simd_extract!(v, IMM5 as u32) }
 }
 
 /// Move vector element to general-purpose register
@@ -6948,9 +7048,9 @@ pub unsafe fn vgetq_lane_f32<const IMM5: i32>(v: float32x4_t) -> f32 {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vget_lane_p64<const IMM5: i32>(v: poly64x1_t) -> p64 {
+pub fn vget_lane_p64<const IMM5: i32>(v: poly64x1_t) -> p64 {
     static_assert!(IMM5 == 0);
-    simd_extract!(v, IMM5 as u32)
+    unsafe { simd_extract!(v, IMM5 as u32) }
 }
 
 /// Move vector element to general-purpose register
@@ -6967,9 +7067,9 @@ pub unsafe fn vget_lane_p64<const IMM5: i32>(v: poly64x1_t) -> p64 {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vgetq_lane_p64<const IMM5: i32>(v: poly64x2_t) -> p64 {
+pub fn vgetq_lane_p64<const IMM5: i32>(v: poly64x2_t) -> p64 {
     static_assert_uimm_bits!(IMM5, 1);
-    simd_extract!(v, IMM5 as u32)
+    unsafe { simd_extract!(v, IMM5 as u32) }
 }
 
 /// Move vector element to general-purpose register
@@ -6986,9 +7086,9 @@ pub unsafe fn vgetq_lane_p64<const IMM5: i32>(v: poly64x2_t) -> p64 {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vget_lane_s64<const IMM5: i32>(v: int64x1_t) -> i64 {
+pub fn vget_lane_s64<const IMM5: i32>(v: int64x1_t) -> i64 {
     static_assert!(IMM5 == 0);
-    simd_extract!(v, IMM5 as u32)
+    unsafe { simd_extract!(v, IMM5 as u32) }
 }
 
 /// Move vector element to general-purpose register
@@ -7005,9 +7105,9 @@ pub unsafe fn vget_lane_s64<const IMM5: i32>(v: int64x1_t) -> i64 {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vgetq_lane_s64<const IMM5: i32>(v: int64x2_t) -> i64 {
+pub fn vgetq_lane_s64<const IMM5: i32>(v: int64x2_t) -> i64 {
     static_assert_uimm_bits!(IMM5, 1);
-    simd_extract!(v, IMM5 as u32)
+    unsafe { simd_extract!(v, IMM5 as u32) }
 }
 
 /// Move vector element to general-purpose register
@@ -7024,9 +7124,9 @@ pub unsafe fn vgetq_lane_s64<const IMM5: i32>(v: int64x2_t) -> i64 {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vgetq_lane_u16<const IMM5: i32>(v: uint16x8_t) -> u16 {
+pub fn vgetq_lane_u16<const IMM5: i32>(v: uint16x8_t) -> u16 {
     static_assert_uimm_bits!(IMM5, 3);
-    simd_extract!(v, IMM5 as u32)
+    unsafe { simd_extract!(v, IMM5 as u32) }
 }
 
 /// Move vector element to general-purpose register
@@ -7043,9 +7143,9 @@ pub unsafe fn vgetq_lane_u16<const IMM5: i32>(v: uint16x8_t) -> u16 {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vgetq_lane_u32<const IMM5: i32>(v: uint32x4_t) -> u32 {
+pub fn vgetq_lane_u32<const IMM5: i32>(v: uint32x4_t) -> u32 {
     static_assert_uimm_bits!(IMM5, 2);
-    simd_extract!(v, IMM5 as u32)
+    unsafe { simd_extract!(v, IMM5 as u32) }
 }
 
 /// Move vector element to general-purpose register
@@ -7062,9 +7162,9 @@ pub unsafe fn vgetq_lane_u32<const IMM5: i32>(v: uint32x4_t) -> u32 {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vgetq_lane_s16<const IMM5: i32>(v: int16x8_t) -> i16 {
+pub fn vgetq_lane_s16<const IMM5: i32>(v: int16x8_t) -> i16 {
     static_assert_uimm_bits!(IMM5, 3);
-    simd_extract!(v, IMM5 as u32)
+    unsafe { simd_extract!(v, IMM5 as u32) }
 }
 
 /// Move vector element to general-purpose register
@@ -7081,9 +7181,9 @@ pub unsafe fn vgetq_lane_s16<const IMM5: i32>(v: int16x8_t) -> i16 {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vgetq_lane_p16<const IMM5: i32>(v: poly16x8_t) -> p16 {
+pub fn vgetq_lane_p16<const IMM5: i32>(v: poly16x8_t) -> p16 {
     static_assert_uimm_bits!(IMM5, 3);
-    simd_extract!(v, IMM5 as u32)
+    unsafe { simd_extract!(v, IMM5 as u32) }
 }
 
 /// Move vector element to general-purpose register
@@ -7100,9 +7200,9 @@ pub unsafe fn vgetq_lane_p16<const IMM5: i32>(v: poly16x8_t) -> p16 {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vgetq_lane_s32<const IMM5: i32>(v: int32x4_t) -> i32 {
+pub fn vgetq_lane_s32<const IMM5: i32>(v: int32x4_t) -> i32 {
     static_assert_uimm_bits!(IMM5, 2);
-    simd_extract!(v, IMM5 as u32)
+    unsafe { simd_extract!(v, IMM5 as u32) }
 }
 
 /// Move vector element to general-purpose register
@@ -7119,9 +7219,9 @@ pub unsafe fn vgetq_lane_s32<const IMM5: i32>(v: int32x4_t) -> i32 {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vget_lane_u8<const IMM5: i32>(v: uint8x8_t) -> u8 {
+pub fn vget_lane_u8<const IMM5: i32>(v: uint8x8_t) -> u8 {
     static_assert_uimm_bits!(IMM5, 3);
-    simd_extract!(v, IMM5 as u32)
+    unsafe { simd_extract!(v, IMM5 as u32) }
 }
 
 /// Move vector element to general-purpose register
@@ -7138,9 +7238,9 @@ pub unsafe fn vget_lane_u8<const IMM5: i32>(v: uint8x8_t) -> u8 {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vget_lane_s8<const IMM5: i32>(v: int8x8_t) -> i8 {
+pub fn vget_lane_s8<const IMM5: i32>(v: int8x8_t) -> i8 {
     static_assert_uimm_bits!(IMM5, 3);
-    simd_extract!(v, IMM5 as u32)
+    unsafe { simd_extract!(v, IMM5 as u32) }
 }
 
 /// Move vector element to general-purpose register
@@ -7157,9 +7257,9 @@ pub unsafe fn vget_lane_s8<const IMM5: i32>(v: int8x8_t) -> i8 {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vget_lane_p8<const IMM5: i32>(v: poly8x8_t) -> p8 {
+pub fn vget_lane_p8<const IMM5: i32>(v: poly8x8_t) -> p8 {
     static_assert_uimm_bits!(IMM5, 3);
-    simd_extract!(v, IMM5 as u32)
+    unsafe { simd_extract!(v, IMM5 as u32) }
 }
 
 /// Move vector element to general-purpose register
@@ -7176,9 +7276,9 @@ pub unsafe fn vget_lane_p8<const IMM5: i32>(v: poly8x8_t) -> p8 {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vgetq_lane_u8<const IMM5: i32>(v: uint8x16_t) -> u8 {
+pub fn vgetq_lane_u8<const IMM5: i32>(v: uint8x16_t) -> u8 {
     static_assert_uimm_bits!(IMM5, 4);
-    simd_extract!(v, IMM5 as u32)
+    unsafe { simd_extract!(v, IMM5 as u32) }
 }
 
 /// Move vector element to general-purpose register
@@ -7195,9 +7295,9 @@ pub unsafe fn vgetq_lane_u8<const IMM5: i32>(v: uint8x16_t) -> u8 {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vgetq_lane_s8<const IMM5: i32>(v: int8x16_t) -> i8 {
+pub fn vgetq_lane_s8<const IMM5: i32>(v: int8x16_t) -> i8 {
     static_assert_uimm_bits!(IMM5, 4);
-    simd_extract!(v, IMM5 as u32)
+    unsafe { simd_extract!(v, IMM5 as u32) }
 }
 
 /// Move vector element to general-purpose register
@@ -7214,9 +7314,9 @@ pub unsafe fn vgetq_lane_s8<const IMM5: i32>(v: int8x16_t) -> i8 {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vgetq_lane_p8<const IMM5: i32>(v: poly8x16_t) -> p8 {
+pub fn vgetq_lane_p8<const IMM5: i32>(v: poly8x16_t) -> p8 {
     static_assert_uimm_bits!(IMM5, 4);
-    simd_extract!(v, IMM5 as u32)
+    unsafe { simd_extract!(v, IMM5 as u32) }
 }
 
 /// Duplicate vector element to vector or scalar
@@ -7236,8 +7336,8 @@ pub unsafe fn vgetq_lane_p8<const IMM5: i32>(v: poly8x16_t) -> p8 {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vget_high_s8(a: int8x16_t) -> int8x8_t {
-    simd_shuffle!(a, a, [8, 9, 10, 11, 12, 13, 14, 15])
+pub fn vget_high_s8(a: int8x16_t) -> int8x8_t {
+    unsafe { simd_shuffle!(a, a, [8, 9, 10, 11, 12, 13, 14, 15]) }
 }
 
 /// Duplicate vector element to vector or scalar
@@ -7257,8 +7357,8 @@ pub unsafe fn vget_high_s8(a: int8x16_t) -> int8x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vget_high_s16(a: int16x8_t) -> int16x4_t {
-    simd_shuffle!(a, a, [4, 5, 6, 7])
+pub fn vget_high_s16(a: int16x8_t) -> int16x4_t {
+    unsafe { simd_shuffle!(a, a, [4, 5, 6, 7]) }
 }
 
 /// Duplicate vector element to vector or scalar
@@ -7278,8 +7378,8 @@ pub unsafe fn vget_high_s16(a: int16x8_t) -> int16x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vget_high_s32(a: int32x4_t) -> int32x2_t {
-    simd_shuffle!(a, a, [2, 3])
+pub fn vget_high_s32(a: int32x4_t) -> int32x2_t {
+    unsafe { simd_shuffle!(a, a, [2, 3]) }
 }
 
 /// Duplicate vector element to vector or scalar
@@ -7299,8 +7399,8 @@ pub unsafe fn vget_high_s32(a: int32x4_t) -> int32x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vget_high_s64(a: int64x2_t) -> int64x1_t {
-    int64x1_t([simd_extract!(a, 1)])
+pub fn vget_high_s64(a: int64x2_t) -> int64x1_t {
+    unsafe { int64x1_t([simd_extract!(a, 1)]) }
 }
 
 /// Duplicate vector element to vector or scalar
@@ -7320,8 +7420,8 @@ pub unsafe fn vget_high_s64(a: int64x2_t) -> int64x1_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vget_high_u8(a: uint8x16_t) -> uint8x8_t {
-    simd_shuffle!(a, a, [8, 9, 10, 11, 12, 13, 14, 15])
+pub fn vget_high_u8(a: uint8x16_t) -> uint8x8_t {
+    unsafe { simd_shuffle!(a, a, [8, 9, 10, 11, 12, 13, 14, 15]) }
 }
 
 /// Duplicate vector element to vector or scalar
@@ -7341,8 +7441,8 @@ pub unsafe fn vget_high_u8(a: uint8x16_t) -> uint8x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vget_high_u16(a: uint16x8_t) -> uint16x4_t {
-    simd_shuffle!(a, a, [4, 5, 6, 7])
+pub fn vget_high_u16(a: uint16x8_t) -> uint16x4_t {
+    unsafe { simd_shuffle!(a, a, [4, 5, 6, 7]) }
 }
 
 /// Duplicate vector element to vector or scalar
@@ -7362,8 +7462,8 @@ pub unsafe fn vget_high_u16(a: uint16x8_t) -> uint16x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vget_high_u32(a: uint32x4_t) -> uint32x2_t {
-    simd_shuffle!(a, a, [2, 3])
+pub fn vget_high_u32(a: uint32x4_t) -> uint32x2_t {
+    unsafe { simd_shuffle!(a, a, [2, 3]) }
 }
 
 /// Duplicate vector element to vector or scalar
@@ -7383,8 +7483,8 @@ pub unsafe fn vget_high_u32(a: uint32x4_t) -> uint32x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vget_high_u64(a: uint64x2_t) -> uint64x1_t {
-    uint64x1_t([simd_extract!(a, 1)])
+pub fn vget_high_u64(a: uint64x2_t) -> uint64x1_t {
+    unsafe { uint64x1_t([simd_extract!(a, 1)]) }
 }
 
 /// Duplicate vector element to vector or scalar
@@ -7404,8 +7504,8 @@ pub unsafe fn vget_high_u64(a: uint64x2_t) -> uint64x1_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vget_high_p8(a: poly8x16_t) -> poly8x8_t {
-    simd_shuffle!(a, a, [8, 9, 10, 11, 12, 13, 14, 15])
+pub fn vget_high_p8(a: poly8x16_t) -> poly8x8_t {
+    unsafe { simd_shuffle!(a, a, [8, 9, 10, 11, 12, 13, 14, 15]) }
 }
 
 /// Duplicate vector element to vector or scalar
@@ -7425,8 +7525,8 @@ pub unsafe fn vget_high_p8(a: poly8x16_t) -> poly8x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vget_high_p16(a: poly16x8_t) -> poly16x4_t {
-    simd_shuffle!(a, a, [4, 5, 6, 7])
+pub fn vget_high_p16(a: poly16x8_t) -> poly16x4_t {
+    unsafe { simd_shuffle!(a, a, [4, 5, 6, 7]) }
 }
 
 /// Duplicate vector element to vector or scalar
@@ -7446,8 +7546,8 @@ pub unsafe fn vget_high_p16(a: poly16x8_t) -> poly16x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vget_high_f32(a: float32x4_t) -> float32x2_t {
-    simd_shuffle!(a, a, [2, 3])
+pub fn vget_high_f32(a: float32x4_t) -> float32x2_t {
+    unsafe { simd_shuffle!(a, a, [2, 3]) }
 }
 
 /// Duplicate vector element to vector or scalar
@@ -7463,8 +7563,8 @@ pub unsafe fn vget_high_f32(a: float32x4_t) -> float32x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vget_low_s8(a: int8x16_t) -> int8x8_t {
-    simd_shuffle!(a, a, [0, 1, 2, 3, 4, 5, 6, 7])
+pub fn vget_low_s8(a: int8x16_t) -> int8x8_t {
+    unsafe { simd_shuffle!(a, a, [0, 1, 2, 3, 4, 5, 6, 7]) }
 }
 
 /// Duplicate vector element to vector or scalar
@@ -7480,8 +7580,8 @@ pub unsafe fn vget_low_s8(a: int8x16_t) -> int8x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vget_low_s16(a: int16x8_t) -> int16x4_t {
-    simd_shuffle!(a, a, [0, 1, 2, 3])
+pub fn vget_low_s16(a: int16x8_t) -> int16x4_t {
+    unsafe { simd_shuffle!(a, a, [0, 1, 2, 3]) }
 }
 
 /// Duplicate vector element to vector or scalar
@@ -7497,8 +7597,8 @@ pub unsafe fn vget_low_s16(a: int16x8_t) -> int16x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vget_low_s32(a: int32x4_t) -> int32x2_t {
-    simd_shuffle!(a, a, [0, 1])
+pub fn vget_low_s32(a: int32x4_t) -> int32x2_t {
+    unsafe { simd_shuffle!(a, a, [0, 1]) }
 }
 
 /// Duplicate vector element to vector or scalar
@@ -7514,8 +7614,8 @@ pub unsafe fn vget_low_s32(a: int32x4_t) -> int32x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vget_low_s64(a: int64x2_t) -> int64x1_t {
-    int64x1_t([simd_extract!(a, 0)])
+pub fn vget_low_s64(a: int64x2_t) -> int64x1_t {
+    unsafe { int64x1_t([simd_extract!(a, 0)]) }
 }
 
 /// Duplicate vector element to vector or scalar
@@ -7531,8 +7631,8 @@ pub unsafe fn vget_low_s64(a: int64x2_t) -> int64x1_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vget_low_u8(a: uint8x16_t) -> uint8x8_t {
-    simd_shuffle!(a, a, [0, 1, 2, 3, 4, 5, 6, 7])
+pub fn vget_low_u8(a: uint8x16_t) -> uint8x8_t {
+    unsafe { simd_shuffle!(a, a, [0, 1, 2, 3, 4, 5, 6, 7]) }
 }
 
 /// Duplicate vector element to vector or scalar
@@ -7548,8 +7648,8 @@ pub unsafe fn vget_low_u8(a: uint8x16_t) -> uint8x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vget_low_u16(a: uint16x8_t) -> uint16x4_t {
-    simd_shuffle!(a, a, [0, 1, 2, 3])
+pub fn vget_low_u16(a: uint16x8_t) -> uint16x4_t {
+    unsafe { simd_shuffle!(a, a, [0, 1, 2, 3]) }
 }
 
 /// Duplicate vector element to vector or scalar
@@ -7565,8 +7665,8 @@ pub unsafe fn vget_low_u16(a: uint16x8_t) -> uint16x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vget_low_u32(a: uint32x4_t) -> uint32x2_t {
-    simd_shuffle!(a, a, [0, 1])
+pub fn vget_low_u32(a: uint32x4_t) -> uint32x2_t {
+    unsafe { simd_shuffle!(a, a, [0, 1]) }
 }
 
 /// Duplicate vector element to vector or scalar
@@ -7582,8 +7682,8 @@ pub unsafe fn vget_low_u32(a: uint32x4_t) -> uint32x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vget_low_u64(a: uint64x2_t) -> uint64x1_t {
-    uint64x1_t([simd_extract!(a, 0)])
+pub fn vget_low_u64(a: uint64x2_t) -> uint64x1_t {
+    unsafe { uint64x1_t([simd_extract!(a, 0)]) }
 }
 
 /// Duplicate vector element to vector or scalar
@@ -7599,8 +7699,8 @@ pub unsafe fn vget_low_u64(a: uint64x2_t) -> uint64x1_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vget_low_p8(a: poly8x16_t) -> poly8x8_t {
-    simd_shuffle!(a, a, [0, 1, 2, 3, 4, 5, 6, 7])
+pub fn vget_low_p8(a: poly8x16_t) -> poly8x8_t {
+    unsafe { simd_shuffle!(a, a, [0, 1, 2, 3, 4, 5, 6, 7]) }
 }
 
 /// Duplicate vector element to vector or scalar
@@ -7616,8 +7716,8 @@ pub unsafe fn vget_low_p8(a: poly8x16_t) -> poly8x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vget_low_p16(a: poly16x8_t) -> poly16x4_t {
-    simd_shuffle!(a, a, [0, 1, 2, 3])
+pub fn vget_low_p16(a: poly16x8_t) -> poly16x4_t {
+    unsafe { simd_shuffle!(a, a, [0, 1, 2, 3]) }
 }
 
 /// Duplicate vector element to vector or scalar
@@ -7633,8 +7733,8 @@ pub unsafe fn vget_low_p16(a: poly16x8_t) -> poly16x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vget_low_f32(a: float32x4_t) -> float32x2_t {
-    simd_shuffle!(a, a, [0, 1])
+pub fn vget_low_f32(a: float32x4_t) -> float32x2_t {
+    unsafe { simd_shuffle!(a, a, [0, 1]) }
 }
 
 /// Duplicate vector element to vector or scalar
@@ -7654,7 +7754,7 @@ pub unsafe fn vget_low_f32(a: float32x4_t) -> float32x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vdupq_n_s8(value: i8) -> int8x16_t {
+pub fn vdupq_n_s8(value: i8) -> int8x16_t {
     int8x16_t::splat(value)
 }
 
@@ -7675,7 +7775,7 @@ pub unsafe fn vdupq_n_s8(value: i8) -> int8x16_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vdupq_n_s16(value: i16) -> int16x8_t {
+pub fn vdupq_n_s16(value: i16) -> int16x8_t {
     int16x8_t::splat(value)
 }
 
@@ -7696,7 +7796,7 @@ pub unsafe fn vdupq_n_s16(value: i16) -> int16x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vdupq_n_s32(value: i32) -> int32x4_t {
+pub fn vdupq_n_s32(value: i32) -> int32x4_t {
     int32x4_t::splat(value)
 }
 
@@ -7717,7 +7817,7 @@ pub unsafe fn vdupq_n_s32(value: i32) -> int32x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vdupq_n_s64(value: i64) -> int64x2_t {
+pub fn vdupq_n_s64(value: i64) -> int64x2_t {
     int64x2_t::splat(value)
 }
 
@@ -7738,7 +7838,7 @@ pub unsafe fn vdupq_n_s64(value: i64) -> int64x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vdupq_n_u8(value: u8) -> uint8x16_t {
+pub fn vdupq_n_u8(value: u8) -> uint8x16_t {
     uint8x16_t::splat(value)
 }
 
@@ -7759,7 +7859,7 @@ pub unsafe fn vdupq_n_u8(value: u8) -> uint8x16_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vdupq_n_u16(value: u16) -> uint16x8_t {
+pub fn vdupq_n_u16(value: u16) -> uint16x8_t {
     uint16x8_t::splat(value)
 }
 
@@ -7780,7 +7880,7 @@ pub unsafe fn vdupq_n_u16(value: u16) -> uint16x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vdupq_n_u32(value: u32) -> uint32x4_t {
+pub fn vdupq_n_u32(value: u32) -> uint32x4_t {
     uint32x4_t::splat(value)
 }
 
@@ -7801,7 +7901,7 @@ pub unsafe fn vdupq_n_u32(value: u32) -> uint32x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vdupq_n_u64(value: u64) -> uint64x2_t {
+pub fn vdupq_n_u64(value: u64) -> uint64x2_t {
     uint64x2_t::splat(value)
 }
 
@@ -7822,7 +7922,7 @@ pub unsafe fn vdupq_n_u64(value: u64) -> uint64x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vdupq_n_p8(value: p8) -> poly8x16_t {
+pub fn vdupq_n_p8(value: p8) -> poly8x16_t {
     poly8x16_t::splat(value)
 }
 
@@ -7843,7 +7943,7 @@ pub unsafe fn vdupq_n_p8(value: p8) -> poly8x16_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vdupq_n_p16(value: p16) -> poly16x8_t {
+pub fn vdupq_n_p16(value: p16) -> poly16x8_t {
     poly16x8_t::splat(value)
 }
 
@@ -7864,7 +7964,7 @@ pub unsafe fn vdupq_n_p16(value: p16) -> poly16x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vdupq_n_f32(value: f32) -> float32x4_t {
+pub fn vdupq_n_f32(value: f32) -> float32x4_t {
     float32x4_t::splat(value)
 }
 
@@ -7884,7 +7984,7 @@ pub unsafe fn vdupq_n_f32(value: f32) -> float32x4_t {
     not(target_arch = "arm"),
     stable(feature = "neon_intrinsics", since = "1.59.0")
 )]
-unsafe fn vdupq_n_f32_vfp4(value: f32) -> float32x4_t {
+fn vdupq_n_f32_vfp4(value: f32) -> float32x4_t {
     float32x4_t::splat(value)
 }
 
@@ -7905,7 +8005,7 @@ unsafe fn vdupq_n_f32_vfp4(value: f32) -> float32x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vdup_n_s8(value: i8) -> int8x8_t {
+pub fn vdup_n_s8(value: i8) -> int8x8_t {
     int8x8_t::splat(value)
 }
 
@@ -7926,7 +8026,7 @@ pub unsafe fn vdup_n_s8(value: i8) -> int8x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vdup_n_s16(value: i16) -> int16x4_t {
+pub fn vdup_n_s16(value: i16) -> int16x4_t {
     int16x4_t::splat(value)
 }
 
@@ -7947,7 +8047,7 @@ pub unsafe fn vdup_n_s16(value: i16) -> int16x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vdup_n_s32(value: i32) -> int32x2_t {
+pub fn vdup_n_s32(value: i32) -> int32x2_t {
     int32x2_t::splat(value)
 }
 
@@ -7968,7 +8068,7 @@ pub unsafe fn vdup_n_s32(value: i32) -> int32x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vdup_n_s64(value: i64) -> int64x1_t {
+pub fn vdup_n_s64(value: i64) -> int64x1_t {
     int64x1_t::splat(value)
 }
 
@@ -7989,7 +8089,7 @@ pub unsafe fn vdup_n_s64(value: i64) -> int64x1_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vdup_n_u8(value: u8) -> uint8x8_t {
+pub fn vdup_n_u8(value: u8) -> uint8x8_t {
     uint8x8_t::splat(value)
 }
 
@@ -8010,7 +8110,7 @@ pub unsafe fn vdup_n_u8(value: u8) -> uint8x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vdup_n_u16(value: u16) -> uint16x4_t {
+pub fn vdup_n_u16(value: u16) -> uint16x4_t {
     uint16x4_t::splat(value)
 }
 
@@ -8031,7 +8131,7 @@ pub unsafe fn vdup_n_u16(value: u16) -> uint16x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vdup_n_u32(value: u32) -> uint32x2_t {
+pub fn vdup_n_u32(value: u32) -> uint32x2_t {
     uint32x2_t::splat(value)
 }
 
@@ -8052,7 +8152,7 @@ pub unsafe fn vdup_n_u32(value: u32) -> uint32x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vdup_n_u64(value: u64) -> uint64x1_t {
+pub fn vdup_n_u64(value: u64) -> uint64x1_t {
     uint64x1_t::splat(value)
 }
 
@@ -8073,7 +8173,7 @@ pub unsafe fn vdup_n_u64(value: u64) -> uint64x1_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vdup_n_p8(value: p8) -> poly8x8_t {
+pub fn vdup_n_p8(value: p8) -> poly8x8_t {
     poly8x8_t::splat(value)
 }
 
@@ -8094,7 +8194,7 @@ pub unsafe fn vdup_n_p8(value: p8) -> poly8x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vdup_n_p16(value: p16) -> poly16x4_t {
+pub fn vdup_n_p16(value: p16) -> poly16x4_t {
     poly16x4_t::splat(value)
 }
 
@@ -8115,7 +8215,7 @@ pub unsafe fn vdup_n_p16(value: p16) -> poly16x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vdup_n_f32(value: f32) -> float32x2_t {
+pub fn vdup_n_f32(value: f32) -> float32x2_t {
     float32x2_t::splat(value)
 }
 
@@ -8135,7 +8235,7 @@ pub unsafe fn vdup_n_f32(value: f32) -> float32x2_t {
     not(target_arch = "arm"),
     stable(feature = "neon_intrinsics", since = "1.59.0")
 )]
-unsafe fn vdup_n_f32_vfp4(value: f32) -> float32x2_t {
+fn vdup_n_f32_vfp4(value: f32) -> float32x2_t {
     float32x2_t::splat(value)
 }
 
@@ -8198,7 +8298,7 @@ pub unsafe fn vstrq_p128(a: *mut p128, b: p128) {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vmov_n_s8(value: i8) -> int8x8_t {
+pub fn vmov_n_s8(value: i8) -> int8x8_t {
     vdup_n_s8(value)
 }
 
@@ -8219,7 +8319,7 @@ pub unsafe fn vmov_n_s8(value: i8) -> int8x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vmov_n_s16(value: i16) -> int16x4_t {
+pub fn vmov_n_s16(value: i16) -> int16x4_t {
     vdup_n_s16(value)
 }
 
@@ -8240,7 +8340,7 @@ pub unsafe fn vmov_n_s16(value: i16) -> int16x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vmov_n_s32(value: i32) -> int32x2_t {
+pub fn vmov_n_s32(value: i32) -> int32x2_t {
     vdup_n_s32(value)
 }
 
@@ -8261,7 +8361,7 @@ pub unsafe fn vmov_n_s32(value: i32) -> int32x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vmov_n_s64(value: i64) -> int64x1_t {
+pub fn vmov_n_s64(value: i64) -> int64x1_t {
     vdup_n_s64(value)
 }
 
@@ -8282,7 +8382,7 @@ pub unsafe fn vmov_n_s64(value: i64) -> int64x1_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vmov_n_u8(value: u8) -> uint8x8_t {
+pub fn vmov_n_u8(value: u8) -> uint8x8_t {
     vdup_n_u8(value)
 }
 
@@ -8303,7 +8403,7 @@ pub unsafe fn vmov_n_u8(value: u8) -> uint8x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vmov_n_u16(value: u16) -> uint16x4_t {
+pub fn vmov_n_u16(value: u16) -> uint16x4_t {
     vdup_n_u16(value)
 }
 
@@ -8324,7 +8424,7 @@ pub unsafe fn vmov_n_u16(value: u16) -> uint16x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vmov_n_u32(value: u32) -> uint32x2_t {
+pub fn vmov_n_u32(value: u32) -> uint32x2_t {
     vdup_n_u32(value)
 }
 
@@ -8345,7 +8445,7 @@ pub unsafe fn vmov_n_u32(value: u32) -> uint32x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vmov_n_u64(value: u64) -> uint64x1_t {
+pub fn vmov_n_u64(value: u64) -> uint64x1_t {
     vdup_n_u64(value)
 }
 
@@ -8366,7 +8466,7 @@ pub unsafe fn vmov_n_u64(value: u64) -> uint64x1_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vmov_n_p8(value: p8) -> poly8x8_t {
+pub fn vmov_n_p8(value: p8) -> poly8x8_t {
     vdup_n_p8(value)
 }
 
@@ -8387,7 +8487,7 @@ pub unsafe fn vmov_n_p8(value: p8) -> poly8x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vmov_n_p16(value: p16) -> poly16x4_t {
+pub fn vmov_n_p16(value: p16) -> poly16x4_t {
     vdup_n_p16(value)
 }
 
@@ -8408,7 +8508,7 @@ pub unsafe fn vmov_n_p16(value: p16) -> poly16x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vmov_n_f32(value: f32) -> float32x2_t {
+pub fn vmov_n_f32(value: f32) -> float32x2_t {
     vdup_n_f32(value)
 }
 
@@ -8429,7 +8529,7 @@ pub unsafe fn vmov_n_f32(value: f32) -> float32x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vmovq_n_s8(value: i8) -> int8x16_t {
+pub fn vmovq_n_s8(value: i8) -> int8x16_t {
     vdupq_n_s8(value)
 }
 
@@ -8450,7 +8550,7 @@ pub unsafe fn vmovq_n_s8(value: i8) -> int8x16_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vmovq_n_s16(value: i16) -> int16x8_t {
+pub fn vmovq_n_s16(value: i16) -> int16x8_t {
     vdupq_n_s16(value)
 }
 
@@ -8471,7 +8571,7 @@ pub unsafe fn vmovq_n_s16(value: i16) -> int16x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vmovq_n_s32(value: i32) -> int32x4_t {
+pub fn vmovq_n_s32(value: i32) -> int32x4_t {
     vdupq_n_s32(value)
 }
 
@@ -8492,7 +8592,7 @@ pub unsafe fn vmovq_n_s32(value: i32) -> int32x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vmovq_n_s64(value: i64) -> int64x2_t {
+pub fn vmovq_n_s64(value: i64) -> int64x2_t {
     vdupq_n_s64(value)
 }
 
@@ -8513,7 +8613,7 @@ pub unsafe fn vmovq_n_s64(value: i64) -> int64x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vmovq_n_u8(value: u8) -> uint8x16_t {
+pub fn vmovq_n_u8(value: u8) -> uint8x16_t {
     vdupq_n_u8(value)
 }
 
@@ -8534,7 +8634,7 @@ pub unsafe fn vmovq_n_u8(value: u8) -> uint8x16_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vmovq_n_u16(value: u16) -> uint16x8_t {
+pub fn vmovq_n_u16(value: u16) -> uint16x8_t {
     vdupq_n_u16(value)
 }
 
@@ -8555,7 +8655,7 @@ pub unsafe fn vmovq_n_u16(value: u16) -> uint16x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vmovq_n_u32(value: u32) -> uint32x4_t {
+pub fn vmovq_n_u32(value: u32) -> uint32x4_t {
     vdupq_n_u32(value)
 }
 
@@ -8576,7 +8676,7 @@ pub unsafe fn vmovq_n_u32(value: u32) -> uint32x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vmovq_n_u64(value: u64) -> uint64x2_t {
+pub fn vmovq_n_u64(value: u64) -> uint64x2_t {
     vdupq_n_u64(value)
 }
 
@@ -8597,7 +8697,7 @@ pub unsafe fn vmovq_n_u64(value: u64) -> uint64x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vmovq_n_p8(value: p8) -> poly8x16_t {
+pub fn vmovq_n_p8(value: p8) -> poly8x16_t {
     vdupq_n_p8(value)
 }
 
@@ -8618,7 +8718,7 @@ pub unsafe fn vmovq_n_p8(value: p8) -> poly8x16_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vmovq_n_p16(value: p16) -> poly16x8_t {
+pub fn vmovq_n_p16(value: p16) -> poly16x8_t {
     vdupq_n_p16(value)
 }
 
@@ -8639,7 +8739,7 @@ pub unsafe fn vmovq_n_p16(value: p16) -> poly16x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vmovq_n_f32(value: f32) -> float32x4_t {
+pub fn vmovq_n_f32(value: f32) -> float32x4_t {
     vdupq_n_f32(value)
 }
 
@@ -8661,7 +8761,7 @@ pub unsafe fn vmovq_n_f32(value: f32) -> float32x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vext_s64<const N: i32>(a: int64x1_t, _b: int64x1_t) -> int64x1_t {
+pub fn vext_s64<const N: i32>(a: int64x1_t, _b: int64x1_t) -> int64x1_t {
     static_assert!(N == 0);
     a
 }
@@ -8684,7 +8784,7 @@ pub unsafe fn vext_s64<const N: i32>(a: int64x1_t, _b: int64x1_t) -> int64x1_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vext_u64<const N: i32>(a: uint64x1_t, _b: uint64x1_t) -> uint64x1_t {
+pub fn vext_u64<const N: i32>(a: uint64x1_t, _b: uint64x1_t) -> uint64x1_t {
     static_assert!(N == 0);
     a
 }
@@ -8706,8 +8806,8 @@ pub unsafe fn vext_u64<const N: i32>(a: uint64x1_t, _b: uint64x1_t) -> uint64x1_
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vcnt_s8(a: int8x8_t) -> int8x8_t {
-    vcnt_s8_(a)
+pub fn vcnt_s8(a: int8x8_t) -> int8x8_t {
+    unsafe { vcnt_s8_(a) }
 }
 /// Population count per byte.
 #[inline]
@@ -8726,8 +8826,8 @@ pub unsafe fn vcnt_s8(a: int8x8_t) -> int8x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vcntq_s8(a: int8x16_t) -> int8x16_t {
-    vcntq_s8_(a)
+pub fn vcntq_s8(a: int8x16_t) -> int8x16_t {
+    unsafe { vcntq_s8_(a) }
 }
 /// Population count per byte.
 #[inline]
@@ -8746,8 +8846,8 @@ pub unsafe fn vcntq_s8(a: int8x16_t) -> int8x16_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vcnt_u8(a: uint8x8_t) -> uint8x8_t {
-    transmute(vcnt_s8_(transmute(a)))
+pub fn vcnt_u8(a: uint8x8_t) -> uint8x8_t {
+    unsafe { transmute(vcnt_s8_(transmute(a))) }
 }
 /// Population count per byte.
 #[inline]
@@ -8766,8 +8866,8 @@ pub unsafe fn vcnt_u8(a: uint8x8_t) -> uint8x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vcntq_u8(a: uint8x16_t) -> uint8x16_t {
-    transmute(vcntq_s8_(transmute(a)))
+pub fn vcntq_u8(a: uint8x16_t) -> uint8x16_t {
+    unsafe { transmute(vcntq_s8_(transmute(a))) }
 }
 /// Population count per byte.
 #[inline]
@@ -8786,8 +8886,8 @@ pub unsafe fn vcntq_u8(a: uint8x16_t) -> uint8x16_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vcnt_p8(a: poly8x8_t) -> poly8x8_t {
-    transmute(vcnt_s8_(transmute(a)))
+pub fn vcnt_p8(a: poly8x8_t) -> poly8x8_t {
+    unsafe { transmute(vcnt_s8_(transmute(a))) }
 }
 /// Population count per byte.
 #[inline]
@@ -8806,8 +8906,8 @@ pub unsafe fn vcnt_p8(a: poly8x8_t) -> poly8x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vcntq_p8(a: poly8x16_t) -> poly8x16_t {
-    transmute(vcntq_s8_(transmute(a)))
+pub fn vcntq_p8(a: poly8x16_t) -> poly8x16_t {
+    unsafe { transmute(vcntq_s8_(transmute(a))) }
 }
 
 /// Reversing vector elements (swap endianness)
@@ -8827,8 +8927,8 @@ pub unsafe fn vcntq_p8(a: poly8x16_t) -> poly8x16_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vrev16_s8(a: int8x8_t) -> int8x8_t {
-    simd_shuffle!(a, a, [1, 0, 3, 2, 5, 4, 7, 6])
+pub fn vrev16_s8(a: int8x8_t) -> int8x8_t {
+    unsafe { simd_shuffle!(a, a, [1, 0, 3, 2, 5, 4, 7, 6]) }
 }
 
 /// Reversing vector elements (swap endianness)
@@ -8848,8 +8948,8 @@ pub unsafe fn vrev16_s8(a: int8x8_t) -> int8x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vrev16q_s8(a: int8x16_t) -> int8x16_t {
-    simd_shuffle!(a, a, [1, 0, 3, 2, 5, 4, 7, 6, 9, 8, 11, 10, 13, 12, 15, 14])
+pub fn vrev16q_s8(a: int8x16_t) -> int8x16_t {
+    unsafe { simd_shuffle!(a, a, [1, 0, 3, 2, 5, 4, 7, 6, 9, 8, 11, 10, 13, 12, 15, 14]) }
 }
 
 /// Reversing vector elements (swap endianness)
@@ -8869,8 +8969,8 @@ pub unsafe fn vrev16q_s8(a: int8x16_t) -> int8x16_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vrev16_u8(a: uint8x8_t) -> uint8x8_t {
-    simd_shuffle!(a, a, [1, 0, 3, 2, 5, 4, 7, 6])
+pub fn vrev16_u8(a: uint8x8_t) -> uint8x8_t {
+    unsafe { simd_shuffle!(a, a, [1, 0, 3, 2, 5, 4, 7, 6]) }
 }
 
 /// Reversing vector elements (swap endianness)
@@ -8890,8 +8990,8 @@ pub unsafe fn vrev16_u8(a: uint8x8_t) -> uint8x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vrev16q_u8(a: uint8x16_t) -> uint8x16_t {
-    simd_shuffle!(a, a, [1, 0, 3, 2, 5, 4, 7, 6, 9, 8, 11, 10, 13, 12, 15, 14])
+pub fn vrev16q_u8(a: uint8x16_t) -> uint8x16_t {
+    unsafe { simd_shuffle!(a, a, [1, 0, 3, 2, 5, 4, 7, 6, 9, 8, 11, 10, 13, 12, 15, 14]) }
 }
 
 /// Reversing vector elements (swap endianness)
@@ -8911,8 +9011,8 @@ pub unsafe fn vrev16q_u8(a: uint8x16_t) -> uint8x16_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vrev16_p8(a: poly8x8_t) -> poly8x8_t {
-    simd_shuffle!(a, a, [1, 0, 3, 2, 5, 4, 7, 6])
+pub fn vrev16_p8(a: poly8x8_t) -> poly8x8_t {
+    unsafe { simd_shuffle!(a, a, [1, 0, 3, 2, 5, 4, 7, 6]) }
 }
 
 /// Reversing vector elements (swap endianness)
@@ -8932,8 +9032,8 @@ pub unsafe fn vrev16_p8(a: poly8x8_t) -> poly8x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vrev16q_p8(a: poly8x16_t) -> poly8x16_t {
-    simd_shuffle!(a, a, [1, 0, 3, 2, 5, 4, 7, 6, 9, 8, 11, 10, 13, 12, 15, 14])
+pub fn vrev16q_p8(a: poly8x16_t) -> poly8x16_t {
+    unsafe { simd_shuffle!(a, a, [1, 0, 3, 2, 5, 4, 7, 6, 9, 8, 11, 10, 13, 12, 15, 14]) }
 }
 
 /// Reversing vector elements (swap endianness)
@@ -8953,8 +9053,8 @@ pub unsafe fn vrev16q_p8(a: poly8x16_t) -> poly8x16_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vrev32_s8(a: int8x8_t) -> int8x8_t {
-    simd_shuffle!(a, a, [3, 2, 1, 0, 7, 6, 5, 4])
+pub fn vrev32_s8(a: int8x8_t) -> int8x8_t {
+    unsafe { simd_shuffle!(a, a, [3, 2, 1, 0, 7, 6, 5, 4]) }
 }
 
 /// Reversing vector elements (swap endianness)
@@ -8974,8 +9074,8 @@ pub unsafe fn vrev32_s8(a: int8x8_t) -> int8x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vrev32q_s8(a: int8x16_t) -> int8x16_t {
-    simd_shuffle!(a, a, [3, 2, 1, 0, 7, 6, 5, 4, 11, 10, 9, 8, 15, 14, 13, 12])
+pub fn vrev32q_s8(a: int8x16_t) -> int8x16_t {
+    unsafe { simd_shuffle!(a, a, [3, 2, 1, 0, 7, 6, 5, 4, 11, 10, 9, 8, 15, 14, 13, 12]) }
 }
 
 /// Reversing vector elements (swap endianness)
@@ -8995,8 +9095,8 @@ pub unsafe fn vrev32q_s8(a: int8x16_t) -> int8x16_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vrev32_u8(a: uint8x8_t) -> uint8x8_t {
-    simd_shuffle!(a, a, [3, 2, 1, 0, 7, 6, 5, 4])
+pub fn vrev32_u8(a: uint8x8_t) -> uint8x8_t {
+    unsafe { simd_shuffle!(a, a, [3, 2, 1, 0, 7, 6, 5, 4]) }
 }
 
 /// Reversing vector elements (swap endianness)
@@ -9016,8 +9116,8 @@ pub unsafe fn vrev32_u8(a: uint8x8_t) -> uint8x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vrev32q_u8(a: uint8x16_t) -> uint8x16_t {
-    simd_shuffle!(a, a, [3, 2, 1, 0, 7, 6, 5, 4, 11, 10, 9, 8, 15, 14, 13, 12])
+pub fn vrev32q_u8(a: uint8x16_t) -> uint8x16_t {
+    unsafe { simd_shuffle!(a, a, [3, 2, 1, 0, 7, 6, 5, 4, 11, 10, 9, 8, 15, 14, 13, 12]) }
 }
 
 /// Reversing vector elements (swap endianness)
@@ -9037,8 +9137,8 @@ pub unsafe fn vrev32q_u8(a: uint8x16_t) -> uint8x16_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vrev32_s16(a: int16x4_t) -> int16x4_t {
-    simd_shuffle!(a, a, [1, 0, 3, 2])
+pub fn vrev32_s16(a: int16x4_t) -> int16x4_t {
+    unsafe { simd_shuffle!(a, a, [1, 0, 3, 2]) }
 }
 
 /// Reversing vector elements (swap endianness)
@@ -9058,8 +9158,8 @@ pub unsafe fn vrev32_s16(a: int16x4_t) -> int16x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vrev32q_s16(a: int16x8_t) -> int16x8_t {
-    simd_shuffle!(a, a, [1, 0, 3, 2, 5, 4, 7, 6])
+pub fn vrev32q_s16(a: int16x8_t) -> int16x8_t {
+    unsafe { simd_shuffle!(a, a, [1, 0, 3, 2, 5, 4, 7, 6]) }
 }
 
 /// Reversing vector elements (swap endianness)
@@ -9079,8 +9179,8 @@ pub unsafe fn vrev32q_s16(a: int16x8_t) -> int16x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vrev32_p16(a: poly16x4_t) -> poly16x4_t {
-    simd_shuffle!(a, a, [1, 0, 3, 2])
+pub fn vrev32_p16(a: poly16x4_t) -> poly16x4_t {
+    unsafe { simd_shuffle!(a, a, [1, 0, 3, 2]) }
 }
 
 /// Reversing vector elements (swap endianness)
@@ -9100,8 +9200,8 @@ pub unsafe fn vrev32_p16(a: poly16x4_t) -> poly16x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vrev32q_p16(a: poly16x8_t) -> poly16x8_t {
-    simd_shuffle!(a, a, [1, 0, 3, 2, 5, 4, 7, 6])
+pub fn vrev32q_p16(a: poly16x8_t) -> poly16x8_t {
+    unsafe { simd_shuffle!(a, a, [1, 0, 3, 2, 5, 4, 7, 6]) }
 }
 
 /// Reversing vector elements (swap endianness)
@@ -9121,8 +9221,8 @@ pub unsafe fn vrev32q_p16(a: poly16x8_t) -> poly16x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vrev32_u16(a: uint16x4_t) -> uint16x4_t {
-    simd_shuffle!(a, a, [1, 0, 3, 2])
+pub fn vrev32_u16(a: uint16x4_t) -> uint16x4_t {
+    unsafe { simd_shuffle!(a, a, [1, 0, 3, 2]) }
 }
 
 /// Reversing vector elements (swap endianness)
@@ -9142,8 +9242,8 @@ pub unsafe fn vrev32_u16(a: uint16x4_t) -> uint16x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vrev32q_u16(a: uint16x8_t) -> uint16x8_t {
-    simd_shuffle!(a, a, [1, 0, 3, 2, 5, 4, 7, 6])
+pub fn vrev32q_u16(a: uint16x8_t) -> uint16x8_t {
+    unsafe { simd_shuffle!(a, a, [1, 0, 3, 2, 5, 4, 7, 6]) }
 }
 
 /// Reversing vector elements (swap endianness)
@@ -9163,8 +9263,8 @@ pub unsafe fn vrev32q_u16(a: uint16x8_t) -> uint16x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vrev32_p8(a: poly8x8_t) -> poly8x8_t {
-    simd_shuffle!(a, a, [3, 2, 1, 0, 7, 6, 5, 4])
+pub fn vrev32_p8(a: poly8x8_t) -> poly8x8_t {
+    unsafe { simd_shuffle!(a, a, [3, 2, 1, 0, 7, 6, 5, 4]) }
 }
 
 /// Reversing vector elements (swap endianness)
@@ -9184,8 +9284,8 @@ pub unsafe fn vrev32_p8(a: poly8x8_t) -> poly8x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vrev32q_p8(a: poly8x16_t) -> poly8x16_t {
-    simd_shuffle!(a, a, [3, 2, 1, 0, 7, 6, 5, 4, 11, 10, 9, 8, 15, 14, 13, 12])
+pub fn vrev32q_p8(a: poly8x16_t) -> poly8x16_t {
+    unsafe { simd_shuffle!(a, a, [3, 2, 1, 0, 7, 6, 5, 4, 11, 10, 9, 8, 15, 14, 13, 12]) }
 }
 
 /// Reversing vector elements (swap endianness)
@@ -9205,8 +9305,8 @@ pub unsafe fn vrev32q_p8(a: poly8x16_t) -> poly8x16_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vrev64_s8(a: int8x8_t) -> int8x8_t {
-    simd_shuffle!(a, a, [7, 6, 5, 4, 3, 2, 1, 0])
+pub fn vrev64_s8(a: int8x8_t) -> int8x8_t {
+    unsafe { simd_shuffle!(a, a, [7, 6, 5, 4, 3, 2, 1, 0]) }
 }
 
 /// Reversing vector elements (swap endianness)
@@ -9226,8 +9326,8 @@ pub unsafe fn vrev64_s8(a: int8x8_t) -> int8x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vrev64q_s8(a: int8x16_t) -> int8x16_t {
-    simd_shuffle!(a, a, [7, 6, 5, 4, 3, 2, 1, 0, 15, 14, 13, 12, 11, 10, 9, 8])
+pub fn vrev64q_s8(a: int8x16_t) -> int8x16_t {
+    unsafe { simd_shuffle!(a, a, [7, 6, 5, 4, 3, 2, 1, 0, 15, 14, 13, 12, 11, 10, 9, 8]) }
 }
 
 /// Reversing vector elements (swap endianness)
@@ -9247,8 +9347,8 @@ pub unsafe fn vrev64q_s8(a: int8x16_t) -> int8x16_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vrev64_s16(a: int16x4_t) -> int16x4_t {
-    simd_shuffle!(a, a, [3, 2, 1, 0])
+pub fn vrev64_s16(a: int16x4_t) -> int16x4_t {
+    unsafe { simd_shuffle!(a, a, [3, 2, 1, 0]) }
 }
 
 /// Reversing vector elements (swap endianness)
@@ -9268,8 +9368,8 @@ pub unsafe fn vrev64_s16(a: int16x4_t) -> int16x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vrev64q_s16(a: int16x8_t) -> int16x8_t {
-    simd_shuffle!(a, a, [3, 2, 1, 0, 7, 6, 5, 4])
+pub fn vrev64q_s16(a: int16x8_t) -> int16x8_t {
+    unsafe { simd_shuffle!(a, a, [3, 2, 1, 0, 7, 6, 5, 4]) }
 }
 
 /// Reversing vector elements (swap endianness)
@@ -9289,8 +9389,8 @@ pub unsafe fn vrev64q_s16(a: int16x8_t) -> int16x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vrev64_s32(a: int32x2_t) -> int32x2_t {
-    simd_shuffle!(a, a, [1, 0])
+pub fn vrev64_s32(a: int32x2_t) -> int32x2_t {
+    unsafe { simd_shuffle!(a, a, [1, 0]) }
 }
 
 /// Reversing vector elements (swap endianness)
@@ -9310,8 +9410,8 @@ pub unsafe fn vrev64_s32(a: int32x2_t) -> int32x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vrev64q_s32(a: int32x4_t) -> int32x4_t {
-    simd_shuffle!(a, a, [1, 0, 3, 2])
+pub fn vrev64q_s32(a: int32x4_t) -> int32x4_t {
+    unsafe { simd_shuffle!(a, a, [1, 0, 3, 2]) }
 }
 
 /// Reversing vector elements (swap endianness)
@@ -9331,8 +9431,8 @@ pub unsafe fn vrev64q_s32(a: int32x4_t) -> int32x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vrev64_u8(a: uint8x8_t) -> uint8x8_t {
-    simd_shuffle!(a, a, [7, 6, 5, 4, 3, 2, 1, 0])
+pub fn vrev64_u8(a: uint8x8_t) -> uint8x8_t {
+    unsafe { simd_shuffle!(a, a, [7, 6, 5, 4, 3, 2, 1, 0]) }
 }
 
 /// Reversing vector elements (swap endianness)
@@ -9352,8 +9452,8 @@ pub unsafe fn vrev64_u8(a: uint8x8_t) -> uint8x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vrev64q_u8(a: uint8x16_t) -> uint8x16_t {
-    simd_shuffle!(a, a, [7, 6, 5, 4, 3, 2, 1, 0, 15, 14, 13, 12, 11, 10, 9, 8])
+pub fn vrev64q_u8(a: uint8x16_t) -> uint8x16_t {
+    unsafe { simd_shuffle!(a, a, [7, 6, 5, 4, 3, 2, 1, 0, 15, 14, 13, 12, 11, 10, 9, 8]) }
 }
 
 /// Reversing vector elements (swap endianness)
@@ -9373,8 +9473,8 @@ pub unsafe fn vrev64q_u8(a: uint8x16_t) -> uint8x16_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vrev64_u16(a: uint16x4_t) -> uint16x4_t {
-    simd_shuffle!(a, a, [3, 2, 1, 0])
+pub fn vrev64_u16(a: uint16x4_t) -> uint16x4_t {
+    unsafe { simd_shuffle!(a, a, [3, 2, 1, 0]) }
 }
 
 /// Reversing vector elements (swap endianness)
@@ -9394,8 +9494,8 @@ pub unsafe fn vrev64_u16(a: uint16x4_t) -> uint16x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vrev64q_u16(a: uint16x8_t) -> uint16x8_t {
-    simd_shuffle!(a, a, [3, 2, 1, 0, 7, 6, 5, 4])
+pub fn vrev64q_u16(a: uint16x8_t) -> uint16x8_t {
+    unsafe { simd_shuffle!(a, a, [3, 2, 1, 0, 7, 6, 5, 4]) }
 }
 
 /// Reversing vector elements (swap endianness)
@@ -9415,8 +9515,8 @@ pub unsafe fn vrev64q_u16(a: uint16x8_t) -> uint16x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vrev64_u32(a: uint32x2_t) -> uint32x2_t {
-    simd_shuffle!(a, a, [1, 0])
+pub fn vrev64_u32(a: uint32x2_t) -> uint32x2_t {
+    unsafe { simd_shuffle!(a, a, [1, 0]) }
 }
 
 /// Reversing vector elements (swap endianness)
@@ -9436,8 +9536,8 @@ pub unsafe fn vrev64_u32(a: uint32x2_t) -> uint32x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vrev64q_u32(a: uint32x4_t) -> uint32x4_t {
-    simd_shuffle!(a, a, [1, 0, 3, 2])
+pub fn vrev64q_u32(a: uint32x4_t) -> uint32x4_t {
+    unsafe { simd_shuffle!(a, a, [1, 0, 3, 2]) }
 }
 
 /// Reversing vector elements (swap endianness)
@@ -9457,8 +9557,8 @@ pub unsafe fn vrev64q_u32(a: uint32x4_t) -> uint32x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vrev64_f32(a: float32x2_t) -> float32x2_t {
-    simd_shuffle!(a, a, [1, 0])
+pub fn vrev64_f32(a: float32x2_t) -> float32x2_t {
+    unsafe { simd_shuffle!(a, a, [1, 0]) }
 }
 
 /// Reversing vector elements (swap endianness)
@@ -9478,8 +9578,8 @@ pub unsafe fn vrev64_f32(a: float32x2_t) -> float32x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vrev64q_f32(a: float32x4_t) -> float32x4_t {
-    simd_shuffle!(a, a, [1, 0, 3, 2])
+pub fn vrev64q_f32(a: float32x4_t) -> float32x4_t {
+    unsafe { simd_shuffle!(a, a, [1, 0, 3, 2]) }
 }
 
 /// Reversing vector elements (swap endianness)
@@ -9499,8 +9599,8 @@ pub unsafe fn vrev64q_f32(a: float32x4_t) -> float32x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vrev64_p8(a: poly8x8_t) -> poly8x8_t {
-    simd_shuffle!(a, a, [7, 6, 5, 4, 3, 2, 1, 0])
+pub fn vrev64_p8(a: poly8x8_t) -> poly8x8_t {
+    unsafe { simd_shuffle!(a, a, [7, 6, 5, 4, 3, 2, 1, 0]) }
 }
 
 /// Reversing vector elements (swap endianness)
@@ -9520,8 +9620,8 @@ pub unsafe fn vrev64_p8(a: poly8x8_t) -> poly8x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vrev64q_p8(a: poly8x16_t) -> poly8x16_t {
-    simd_shuffle!(a, a, [7, 6, 5, 4, 3, 2, 1, 0, 15, 14, 13, 12, 11, 10, 9, 8])
+pub fn vrev64q_p8(a: poly8x16_t) -> poly8x16_t {
+    unsafe { simd_shuffle!(a, a, [7, 6, 5, 4, 3, 2, 1, 0, 15, 14, 13, 12, 11, 10, 9, 8]) }
 }
 
 /// Reversing vector elements (swap endianness)
@@ -9541,8 +9641,8 @@ pub unsafe fn vrev64q_p8(a: poly8x16_t) -> poly8x16_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vrev64_p16(a: poly16x4_t) -> poly16x4_t {
-    simd_shuffle!(a, a, [3, 2, 1, 0])
+pub fn vrev64_p16(a: poly16x4_t) -> poly16x4_t {
+    unsafe { simd_shuffle!(a, a, [3, 2, 1, 0]) }
 }
 
 /// Reversing vector elements (swap endianness)
@@ -9562,8 +9662,8 @@ pub unsafe fn vrev64_p16(a: poly16x4_t) -> poly16x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vrev64q_p16(a: poly16x8_t) -> poly16x8_t {
-    simd_shuffle!(a, a, [3, 2, 1, 0, 7, 6, 5, 4])
+pub fn vrev64q_p16(a: poly16x8_t) -> poly16x8_t {
+    unsafe { simd_shuffle!(a, a, [3, 2, 1, 0, 7, 6, 5, 4]) }
 }
 
 /// Signed Add and Accumulate Long Pairwise.
@@ -9583,13 +9683,13 @@ pub unsafe fn vrev64q_p16(a: poly16x8_t) -> poly16x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vpadal_s8(a: int16x4_t, b: int8x8_t) -> int16x4_t {
+pub fn vpadal_s8(a: int16x4_t, b: int8x8_t) -> int16x4_t {
     #[cfg(target_arch = "arm")]
-    {
+    unsafe {
         crate::core_arch::arm::neon::vpadal_s8_(a, b)
     }
     #[cfg(any(target_arch = "aarch64", target_arch = "arm64ec"))]
-    {
+    unsafe {
         simd_add(vpaddl_s8_(b), a)
     }
 }
@@ -9611,13 +9711,13 @@ pub unsafe fn vpadal_s8(a: int16x4_t, b: int8x8_t) -> int16x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vpadal_s16(a: int32x2_t, b: int16x4_t) -> int32x2_t {
+pub fn vpadal_s16(a: int32x2_t, b: int16x4_t) -> int32x2_t {
     #[cfg(target_arch = "arm")]
-    {
+    unsafe {
         crate::core_arch::arm::neon::vpadal_s16_(a, b)
     }
     #[cfg(any(target_arch = "aarch64", target_arch = "arm64ec"))]
-    {
+    unsafe {
         simd_add(vpaddl_s16_(b), a)
     }
 }
@@ -9639,13 +9739,13 @@ pub unsafe fn vpadal_s16(a: int32x2_t, b: int16x4_t) -> int32x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vpadal_s32(a: int64x1_t, b: int32x2_t) -> int64x1_t {
+pub fn vpadal_s32(a: int64x1_t, b: int32x2_t) -> int64x1_t {
     #[cfg(target_arch = "arm")]
-    {
+    unsafe {
         crate::core_arch::arm::neon::vpadal_s32_(a, b)
     }
     #[cfg(any(target_arch = "aarch64", target_arch = "arm64ec"))]
-    {
+    unsafe {
         simd_add(vpaddl_s32_(b), a)
     }
 }
@@ -9667,13 +9767,13 @@ pub unsafe fn vpadal_s32(a: int64x1_t, b: int32x2_t) -> int64x1_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vpadalq_s8(a: int16x8_t, b: int8x16_t) -> int16x8_t {
+pub fn vpadalq_s8(a: int16x8_t, b: int8x16_t) -> int16x8_t {
     #[cfg(target_arch = "arm")]
-    {
+    unsafe {
         crate::core_arch::arm::neon::vpadalq_s8_(a, b)
     }
     #[cfg(any(target_arch = "aarch64", target_arch = "arm64ec"))]
-    {
+    unsafe {
         simd_add(vpaddlq_s8_(b), a)
     }
 }
@@ -9695,13 +9795,13 @@ pub unsafe fn vpadalq_s8(a: int16x8_t, b: int8x16_t) -> int16x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vpadalq_s16(a: int32x4_t, b: int16x8_t) -> int32x4_t {
+pub fn vpadalq_s16(a: int32x4_t, b: int16x8_t) -> int32x4_t {
     #[cfg(target_arch = "arm")]
-    {
+    unsafe {
         crate::core_arch::arm::neon::vpadalq_s16_(a, b)
     }
     #[cfg(any(target_arch = "aarch64", target_arch = "arm64ec"))]
-    {
+    unsafe {
         simd_add(vpaddlq_s16_(b), a)
     }
 }
@@ -9723,13 +9823,13 @@ pub unsafe fn vpadalq_s16(a: int32x4_t, b: int16x8_t) -> int32x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vpadalq_s32(a: int64x2_t, b: int32x4_t) -> int64x2_t {
+pub fn vpadalq_s32(a: int64x2_t, b: int32x4_t) -> int64x2_t {
     #[cfg(target_arch = "arm")]
-    {
+    unsafe {
         crate::core_arch::arm::neon::vpadalq_s32_(a, b)
     }
     #[cfg(any(target_arch = "aarch64", target_arch = "arm64ec"))]
-    {
+    unsafe {
         simd_add(vpaddlq_s32_(b), a)
     }
 }
@@ -9751,13 +9851,13 @@ pub unsafe fn vpadalq_s32(a: int64x2_t, b: int32x4_t) -> int64x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vpadal_u8(a: uint16x4_t, b: uint8x8_t) -> uint16x4_t {
+pub fn vpadal_u8(a: uint16x4_t, b: uint8x8_t) -> uint16x4_t {
     #[cfg(target_arch = "arm")]
-    {
+    unsafe {
         crate::core_arch::arm::neon::vpadal_u8_(a, b)
     }
     #[cfg(any(target_arch = "aarch64", target_arch = "arm64ec"))]
-    {
+    unsafe {
         simd_add(vpaddl_u8_(b), a)
     }
 }
@@ -9779,13 +9879,13 @@ pub unsafe fn vpadal_u8(a: uint16x4_t, b: uint8x8_t) -> uint16x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vpadal_u16(a: uint32x2_t, b: uint16x4_t) -> uint32x2_t {
+pub fn vpadal_u16(a: uint32x2_t, b: uint16x4_t) -> uint32x2_t {
     #[cfg(target_arch = "arm")]
-    {
+    unsafe {
         crate::core_arch::arm::neon::vpadal_u16_(a, b)
     }
     #[cfg(any(target_arch = "aarch64", target_arch = "arm64ec"))]
-    {
+    unsafe {
         simd_add(vpaddl_u16_(b), a)
     }
 }
@@ -9807,13 +9907,13 @@ pub unsafe fn vpadal_u16(a: uint32x2_t, b: uint16x4_t) -> uint32x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vpadal_u32(a: uint64x1_t, b: uint32x2_t) -> uint64x1_t {
+pub fn vpadal_u32(a: uint64x1_t, b: uint32x2_t) -> uint64x1_t {
     #[cfg(target_arch = "arm")]
-    {
+    unsafe {
         crate::core_arch::arm::neon::vpadal_u32_(a, b)
     }
     #[cfg(any(target_arch = "aarch64", target_arch = "arm64ec"))]
-    {
+    unsafe {
         simd_add(vpaddl_u32_(b), a)
     }
 }
@@ -9835,13 +9935,13 @@ pub unsafe fn vpadal_u32(a: uint64x1_t, b: uint32x2_t) -> uint64x1_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vpadalq_u8(a: uint16x8_t, b: uint8x16_t) -> uint16x8_t {
+pub fn vpadalq_u8(a: uint16x8_t, b: uint8x16_t) -> uint16x8_t {
     #[cfg(target_arch = "arm")]
-    {
+    unsafe {
         crate::core_arch::arm::neon::vpadalq_u8_(a, b)
     }
     #[cfg(any(target_arch = "aarch64", target_arch = "arm64ec"))]
-    {
+    unsafe {
         simd_add(vpaddlq_u8_(b), a)
     }
 }
@@ -9863,13 +9963,13 @@ pub unsafe fn vpadalq_u8(a: uint16x8_t, b: uint8x16_t) -> uint16x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vpadalq_u16(a: uint32x4_t, b: uint16x8_t) -> uint32x4_t {
+pub fn vpadalq_u16(a: uint32x4_t, b: uint16x8_t) -> uint32x4_t {
     #[cfg(target_arch = "arm")]
-    {
+    unsafe {
         crate::core_arch::arm::neon::vpadalq_u16_(a, b)
     }
     #[cfg(any(target_arch = "aarch64", target_arch = "arm64ec"))]
-    {
+    unsafe {
         simd_add(vpaddlq_u16_(b), a)
     }
 }
@@ -9891,13 +9991,13 @@ pub unsafe fn vpadalq_u16(a: uint32x4_t, b: uint16x8_t) -> uint32x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vpadalq_u32(a: uint64x2_t, b: uint32x4_t) -> uint64x2_t {
+pub fn vpadalq_u32(a: uint64x2_t, b: uint32x4_t) -> uint64x2_t {
     #[cfg(target_arch = "arm")]
-    {
+    unsafe {
         crate::core_arch::arm::neon::vpadalq_u32_(a, b)
     }
     #[cfg(any(target_arch = "aarch64", target_arch = "arm64ec"))]
-    {
+    unsafe {
         simd_add(vpaddlq_u32_(b), a)
     }
 }
@@ -9919,7 +10019,7 @@ pub unsafe fn vpadalq_u32(a: uint64x2_t, b: uint32x4_t) -> uint64x2_t {
     not(target_arch = "arm"),
     unstable(feature = "stdarch_neon_i8mm", issue = "117223")
 )]
-pub unsafe fn vmmlaq_s32(a: int32x4_t, b: int8x16_t, c: int8x16_t) -> int32x4_t {
+pub fn vmmlaq_s32(a: int32x4_t, b: int8x16_t, c: int8x16_t) -> int32x4_t {
     #[allow(improper_ctypes)]
     unsafe extern "unadjusted" {
         #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.smmla.v4i32.v16i8")]
@@ -9929,7 +10029,7 @@ pub unsafe fn vmmlaq_s32(a: int32x4_t, b: int8x16_t, c: int8x16_t) -> int32x4_t 
         )]
         fn vmmlaq_s32_(a: int32x4_t, b: int8x16_t, c: int8x16_t) -> int32x4_t;
     }
-    vmmlaq_s32_(a, b, c)
+    unsafe { vmmlaq_s32_(a, b, c) }
 }
 
 /// 8-bit integer matrix multiply-accumulate
@@ -9949,7 +10049,7 @@ pub unsafe fn vmmlaq_s32(a: int32x4_t, b: int8x16_t, c: int8x16_t) -> int32x4_t 
     not(target_arch = "arm"),
     unstable(feature = "stdarch_neon_i8mm", issue = "117223")
 )]
-pub unsafe fn vmmlaq_u32(a: uint32x4_t, b: uint8x16_t, c: uint8x16_t) -> uint32x4_t {
+pub fn vmmlaq_u32(a: uint32x4_t, b: uint8x16_t, c: uint8x16_t) -> uint32x4_t {
     #[allow(improper_ctypes)]
     unsafe extern "unadjusted" {
         #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.ummla.v4i32.v16i8")]
@@ -9959,7 +10059,7 @@ pub unsafe fn vmmlaq_u32(a: uint32x4_t, b: uint8x16_t, c: uint8x16_t) -> uint32x
         )]
         fn vmmlaq_u32_(a: uint32x4_t, b: uint8x16_t, c: uint8x16_t) -> uint32x4_t;
     }
-    vmmlaq_u32_(a, b, c)
+    unsafe { vmmlaq_u32_(a, b, c) }
 }
 
 /// Unsigned and signed 8-bit integer matrix multiply-accumulate
@@ -9979,7 +10079,7 @@ pub unsafe fn vmmlaq_u32(a: uint32x4_t, b: uint8x16_t, c: uint8x16_t) -> uint32x
     not(target_arch = "arm"),
     unstable(feature = "stdarch_neon_i8mm", issue = "117223")
 )]
-pub unsafe fn vusmmlaq_s32(a: int32x4_t, b: uint8x16_t, c: int8x16_t) -> int32x4_t {
+pub fn vusmmlaq_s32(a: int32x4_t, b: uint8x16_t, c: int8x16_t) -> int32x4_t {
     #[allow(improper_ctypes)]
     unsafe extern "unadjusted" {
         #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.usmmla.v4i32.v16i8")]
@@ -9989,7 +10089,7 @@ pub unsafe fn vusmmlaq_s32(a: int32x4_t, b: uint8x16_t, c: int8x16_t) -> int32x4
         )]
         fn vusmmlaq_s32_(a: int32x4_t, b: uint8x16_t, c: int8x16_t) -> int32x4_t;
     }
-    vusmmlaq_s32_(a, b, c)
+    unsafe { vusmmlaq_s32_(a, b, c) }
 }
 
 /* FIXME: 16-bit float
@@ -10001,8 +10101,8 @@ pub unsafe fn vusmmlaq_s32(a: int32x4_t, b: uint8x16_t, c: int8x16_t) -> int32x4
 #[cfg_attr(
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
-)] pub unsafe fn vcombine_f16 ( low: float16x4_t,  high: float16x4_t) -> float16x8_t {
-    simd_shuffle!(low, high, [0, 1, 2, 3, 4, 5, 6, 7])
+)] pub fn vcombine_f16 ( low: float16x4_t,  high: float16x4_t) -> float16x8_t {
+    unsafe { simd_shuffle!(low, high, [0, 1, 2, 3, 4, 5, 6, 7]) }
 }
 */
 
@@ -10019,8 +10119,8 @@ pub unsafe fn vusmmlaq_s32(a: int32x4_t, b: uint8x16_t, c: int8x16_t) -> int32x4
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vcombine_f32(low: float32x2_t, high: float32x2_t) -> float32x4_t {
-    simd_shuffle!(low, high, [0, 1, 2, 3])
+pub fn vcombine_f32(low: float32x2_t, high: float32x2_t) -> float32x4_t {
+    unsafe { simd_shuffle!(low, high, [0, 1, 2, 3]) }
 }
 
 /// Vector combine
@@ -10036,12 +10136,14 @@ pub unsafe fn vcombine_f32(low: float32x2_t, high: float32x2_t) -> float32x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vcombine_p8(low: poly8x8_t, high: poly8x8_t) -> poly8x16_t {
-    simd_shuffle!(
-        low,
-        high,
-        [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
-    )
+pub fn vcombine_p8(low: poly8x8_t, high: poly8x8_t) -> poly8x16_t {
+    unsafe {
+        simd_shuffle!(
+            low,
+            high,
+            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+        )
+    }
 }
 
 /// Vector combine
@@ -10057,8 +10159,8 @@ pub unsafe fn vcombine_p8(low: poly8x8_t, high: poly8x8_t) -> poly8x16_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vcombine_p16(low: poly16x4_t, high: poly16x4_t) -> poly16x8_t {
-    simd_shuffle!(low, high, [0, 1, 2, 3, 4, 5, 6, 7])
+pub fn vcombine_p16(low: poly16x4_t, high: poly16x4_t) -> poly16x8_t {
+    unsafe { simd_shuffle!(low, high, [0, 1, 2, 3, 4, 5, 6, 7]) }
 }
 
 /// Vector combine
@@ -10074,12 +10176,14 @@ pub unsafe fn vcombine_p16(low: poly16x4_t, high: poly16x4_t) -> poly16x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vcombine_s8(low: int8x8_t, high: int8x8_t) -> int8x16_t {
-    simd_shuffle!(
-        low,
-        high,
-        [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
-    )
+pub fn vcombine_s8(low: int8x8_t, high: int8x8_t) -> int8x16_t {
+    unsafe {
+        simd_shuffle!(
+            low,
+            high,
+            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+        )
+    }
 }
 
 /// Vector combine
@@ -10095,8 +10199,8 @@ pub unsafe fn vcombine_s8(low: int8x8_t, high: int8x8_t) -> int8x16_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vcombine_s16(low: int16x4_t, high: int16x4_t) -> int16x8_t {
-    simd_shuffle!(low, high, [0, 1, 2, 3, 4, 5, 6, 7])
+pub fn vcombine_s16(low: int16x4_t, high: int16x4_t) -> int16x8_t {
+    unsafe { simd_shuffle!(low, high, [0, 1, 2, 3, 4, 5, 6, 7]) }
 }
 
 /// Vector combine
@@ -10112,8 +10216,8 @@ pub unsafe fn vcombine_s16(low: int16x4_t, high: int16x4_t) -> int16x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vcombine_s32(low: int32x2_t, high: int32x2_t) -> int32x4_t {
-    simd_shuffle!(low, high, [0, 1, 2, 3])
+pub fn vcombine_s32(low: int32x2_t, high: int32x2_t) -> int32x4_t {
+    unsafe { simd_shuffle!(low, high, [0, 1, 2, 3]) }
 }
 
 /// Vector combine
@@ -10129,8 +10233,8 @@ pub unsafe fn vcombine_s32(low: int32x2_t, high: int32x2_t) -> int32x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vcombine_s64(low: int64x1_t, high: int64x1_t) -> int64x2_t {
-    simd_shuffle!(low, high, [0, 1])
+pub fn vcombine_s64(low: int64x1_t, high: int64x1_t) -> int64x2_t {
+    unsafe { simd_shuffle!(low, high, [0, 1]) }
 }
 
 /// Vector combine
@@ -10146,12 +10250,14 @@ pub unsafe fn vcombine_s64(low: int64x1_t, high: int64x1_t) -> int64x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vcombine_u8(low: uint8x8_t, high: uint8x8_t) -> uint8x16_t {
-    simd_shuffle!(
-        low,
-        high,
-        [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
-    )
+pub fn vcombine_u8(low: uint8x8_t, high: uint8x8_t) -> uint8x16_t {
+    unsafe {
+        simd_shuffle!(
+            low,
+            high,
+            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+        )
+    }
 }
 
 /// Vector combine
@@ -10167,8 +10273,8 @@ pub unsafe fn vcombine_u8(low: uint8x8_t, high: uint8x8_t) -> uint8x16_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vcombine_u16(low: uint16x4_t, high: uint16x4_t) -> uint16x8_t {
-    simd_shuffle!(low, high, [0, 1, 2, 3, 4, 5, 6, 7])
+pub fn vcombine_u16(low: uint16x4_t, high: uint16x4_t) -> uint16x8_t {
+    unsafe { simd_shuffle!(low, high, [0, 1, 2, 3, 4, 5, 6, 7]) }
 }
 
 /// Vector combine
@@ -10188,8 +10294,8 @@ pub unsafe fn vcombine_u16(low: uint16x4_t, high: uint16x4_t) -> uint16x8_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vcombine_u32(low: uint32x2_t, high: uint32x2_t) -> uint32x4_t {
-    simd_shuffle!(low, high, [0, 1, 2, 3])
+pub fn vcombine_u32(low: uint32x2_t, high: uint32x2_t) -> uint32x4_t {
+    unsafe { simd_shuffle!(low, high, [0, 1, 2, 3]) }
 }
 
 /// Vector combine
@@ -10205,8 +10311,8 @@ pub unsafe fn vcombine_u32(low: uint32x2_t, high: uint32x2_t) -> uint32x4_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vcombine_u64(low: uint64x1_t, high: uint64x1_t) -> uint64x2_t {
-    simd_shuffle!(low, high, [0, 1])
+pub fn vcombine_u64(low: uint64x1_t, high: uint64x1_t) -> uint64x2_t {
+    unsafe { simd_shuffle!(low, high, [0, 1]) }
 }
 
 /// Vector combine
@@ -10222,8 +10328,8 @@ pub unsafe fn vcombine_u64(low: uint64x1_t, high: uint64x1_t) -> uint64x2_t {
     target_arch = "arm",
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
-pub unsafe fn vcombine_p64(low: poly64x1_t, high: poly64x1_t) -> poly64x2_t {
-    simd_shuffle!(low, high, [0, 1])
+pub fn vcombine_p64(low: poly64x1_t, high: poly64x1_t) -> poly64x2_t {
+    unsafe { simd_shuffle!(low, high, [0, 1]) }
 }
 
 #[cfg(test)]
