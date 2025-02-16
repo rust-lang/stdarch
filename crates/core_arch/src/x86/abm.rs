@@ -29,7 +29,7 @@ use stdarch_test::assert_instr;
 #[target_feature(enable = "lzcnt")]
 #[cfg_attr(test, assert_instr(lzcnt))]
 #[stable(feature = "simd_x86", since = "1.27.0")]
-pub unsafe fn _lzcnt_u32(x: u32) -> u32 {
+pub fn _lzcnt_u32(x: u32) -> u32 {
     x.leading_zeros()
 }
 
@@ -40,7 +40,7 @@ pub unsafe fn _lzcnt_u32(x: u32) -> u32 {
 #[target_feature(enable = "popcnt")]
 #[cfg_attr(test, assert_instr(popcnt))]
 #[stable(feature = "simd_x86", since = "1.27.0")]
-pub unsafe fn _popcnt32(x: i32) -> i32 {
+pub fn _popcnt32(x: i32) -> i32 {
     x.count_ones() as i32
 }
 
