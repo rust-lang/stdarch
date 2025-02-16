@@ -66,8 +66,8 @@ use stdarch_test::assert_instr;
     not(target_arch = "arm"),
     stable(feature = "stdarch_aarch64_crc32", since = "1.80.0")
 )]
-pub unsafe fn __crc32b(crc: u32, data: u8) -> u32 {
-    crc32b_(crc, data as u32)
+pub fn __crc32b(crc: u32, data: u8) -> u32 {
+    unsafe { crc32b_(crc, data as u32) }
 }
 
 /// CRC32 single round checksum for half words (16 bits).
@@ -85,8 +85,8 @@ pub unsafe fn __crc32b(crc: u32, data: u8) -> u32 {
     not(target_arch = "arm"),
     stable(feature = "stdarch_aarch64_crc32", since = "1.80.0")
 )]
-pub unsafe fn __crc32h(crc: u32, data: u16) -> u32 {
-    crc32h_(crc, data as u32)
+pub fn __crc32h(crc: u32, data: u16) -> u32 {
+    unsafe { crc32h_(crc, data as u32) }
 }
 
 /// CRC32 single round checksum for words (32 bits).
@@ -104,8 +104,8 @@ pub unsafe fn __crc32h(crc: u32, data: u16) -> u32 {
     not(target_arch = "arm"),
     stable(feature = "stdarch_aarch64_crc32", since = "1.80.0")
 )]
-pub unsafe fn __crc32w(crc: u32, data: u32) -> u32 {
-    crc32w_(crc, data)
+pub fn __crc32w(crc: u32, data: u32) -> u32 {
+    unsafe { crc32w_(crc, data) }
 }
 
 /// CRC32-C single round checksum for bytes (8 bits).
@@ -123,8 +123,8 @@ pub unsafe fn __crc32w(crc: u32, data: u32) -> u32 {
     not(target_arch = "arm"),
     stable(feature = "stdarch_aarch64_crc32", since = "1.80.0")
 )]
-pub unsafe fn __crc32cb(crc: u32, data: u8) -> u32 {
-    crc32cb_(crc, data as u32)
+pub fn __crc32cb(crc: u32, data: u8) -> u32 {
+    unsafe { crc32cb_(crc, data as u32) }
 }
 
 /// CRC32-C single round checksum for half words (16 bits).
@@ -142,8 +142,8 @@ pub unsafe fn __crc32cb(crc: u32, data: u8) -> u32 {
     not(target_arch = "arm"),
     stable(feature = "stdarch_aarch64_crc32", since = "1.80.0")
 )]
-pub unsafe fn __crc32ch(crc: u32, data: u16) -> u32 {
-    crc32ch_(crc, data as u32)
+pub fn __crc32ch(crc: u32, data: u16) -> u32 {
+    unsafe { crc32ch_(crc, data as u32) }
 }
 
 /// CRC32-C single round checksum for words (32 bits).
@@ -161,8 +161,8 @@ pub unsafe fn __crc32ch(crc: u32, data: u16) -> u32 {
     not(target_arch = "arm"),
     stable(feature = "stdarch_aarch64_crc32", since = "1.80.0")
 )]
-pub unsafe fn __crc32cw(crc: u32, data: u32) -> u32 {
-    crc32cw_(crc, data)
+pub fn __crc32cw(crc: u32, data: u32) -> u32 {
+    unsafe { crc32cw_(crc, data) }
 }
 
 /// CRC32 single round checksum for quad words (64 bits).
@@ -173,8 +173,8 @@ pub unsafe fn __crc32cw(crc: u32, data: u32) -> u32 {
 #[cfg(not(target_arch = "arm"))]
 #[cfg_attr(test, assert_instr(crc32x))]
 #[stable(feature = "stdarch_aarch64_crc32", since = "1.80.0")]
-pub unsafe fn __crc32d(crc: u32, data: u64) -> u32 {
-    crc32x_(crc, data)
+pub fn __crc32d(crc: u32, data: u64) -> u32 {
+    unsafe { crc32x_(crc, data) }
 }
 
 /// CRC32 single round checksum for quad words (64 bits).
@@ -185,13 +185,15 @@ pub unsafe fn __crc32d(crc: u32, data: u64) -> u32 {
 #[cfg(target_arch = "arm")]
 #[cfg_attr(test, assert_instr(crc32w))]
 #[unstable(feature = "stdarch_aarch32_crc32", issue = "125085")]
-pub unsafe fn __crc32d(crc: u32, data: u64) -> u32 {
+pub fn __crc32d(crc: u32, data: u64) -> u32 {
     // On 32-bit ARM this intrinsic emits a chain of two `crc32_w` instructions
     // and truncates the data to 32 bits in both clang and gcc
-    crc32w_(
-        crc32w_(crc, (data & 0xffffffff) as u32),
-        (data >> 32) as u32,
-    )
+    unsafe {
+        crc32w_(
+            crc32w_(crc, (data & 0xffffffff) as u32),
+            (data >> 32) as u32,
+        )
+    }
 }
 
 /// CRC32 single round checksum for quad words (64 bits).
@@ -202,8 +204,8 @@ pub unsafe fn __crc32d(crc: u32, data: u64) -> u32 {
 #[cfg(not(target_arch = "arm"))]
 #[cfg_attr(test, assert_instr(crc32cx))]
 #[stable(feature = "stdarch_aarch64_crc32", since = "1.80.0")]
-pub unsafe fn __crc32cd(crc: u32, data: u64) -> u32 {
-    crc32cx_(crc, data)
+pub fn __crc32cd(crc: u32, data: u64) -> u32 {
+    unsafe { crc32cx_(crc, data) }
 }
 
 /// CRC32 single round checksum for quad words (64 bits).
@@ -214,13 +216,15 @@ pub unsafe fn __crc32cd(crc: u32, data: u64) -> u32 {
 #[cfg(target_arch = "arm")]
 #[cfg_attr(test, assert_instr(crc32cw))]
 #[unstable(feature = "stdarch_aarch32_crc32", issue = "125085")]
-pub unsafe fn __crc32cd(crc: u32, data: u64) -> u32 {
+pub fn __crc32cd(crc: u32, data: u64) -> u32 {
     // On 32-bit ARM this intrinsic emits a chain of two `crc32_cw` instructions
     // and truncates the data to 32 bits in both clang and gcc
-    crc32cw_(
-        crc32cw_(crc, (data & 0xffffffff) as u32),
-        (data >> 32) as u32,
-    )
+    unsafe {
+        crc32cw_(
+            crc32cw_(crc, (data & 0xffffffff) as u32),
+            (data >> 32) as u32,
+        )
+    }
 }
 
 #[cfg(test)]

@@ -108,8 +108,8 @@ use stdarch_test::assert_instr;
     not(target_arch = "arm"),
     stable(feature = "aarch64_neon_crypto_intrinsics", since = "1.72.0")
 )]
-pub unsafe fn vaeseq_u8(data: uint8x16_t, key: uint8x16_t) -> uint8x16_t {
-    vaeseq_u8_(data, key)
+pub fn vaeseq_u8(data: uint8x16_t, key: uint8x16_t) -> uint8x16_t {
+    unsafe { vaeseq_u8_(data, key) }
 }
 
 /// AES single round decryption.
@@ -127,8 +127,8 @@ pub unsafe fn vaeseq_u8(data: uint8x16_t, key: uint8x16_t) -> uint8x16_t {
     not(target_arch = "arm"),
     stable(feature = "aarch64_neon_crypto_intrinsics", since = "1.72.0")
 )]
-pub unsafe fn vaesdq_u8(data: uint8x16_t, key: uint8x16_t) -> uint8x16_t {
-    vaesdq_u8_(data, key)
+pub fn vaesdq_u8(data: uint8x16_t, key: uint8x16_t) -> uint8x16_t {
+    unsafe { vaesdq_u8_(data, key) }
 }
 
 /// AES mix columns.
@@ -146,8 +146,8 @@ pub unsafe fn vaesdq_u8(data: uint8x16_t, key: uint8x16_t) -> uint8x16_t {
     not(target_arch = "arm"),
     stable(feature = "aarch64_neon_crypto_intrinsics", since = "1.72.0")
 )]
-pub unsafe fn vaesmcq_u8(data: uint8x16_t) -> uint8x16_t {
-    vaesmcq_u8_(data)
+pub fn vaesmcq_u8(data: uint8x16_t) -> uint8x16_t {
+    unsafe { vaesmcq_u8_(data) }
 }
 
 /// AES inverse mix columns.
@@ -165,8 +165,8 @@ pub unsafe fn vaesmcq_u8(data: uint8x16_t) -> uint8x16_t {
     not(target_arch = "arm"),
     stable(feature = "aarch64_neon_crypto_intrinsics", since = "1.72.0")
 )]
-pub unsafe fn vaesimcq_u8(data: uint8x16_t) -> uint8x16_t {
-    vaesimcq_u8_(data)
+pub fn vaesimcq_u8(data: uint8x16_t) -> uint8x16_t {
+    unsafe { vaesimcq_u8_(data) }
 }
 
 /// SHA1 fixed rotate.
@@ -184,8 +184,8 @@ pub unsafe fn vaesimcq_u8(data: uint8x16_t) -> uint8x16_t {
     not(target_arch = "arm"),
     stable(feature = "aarch64_neon_crypto_intrinsics", since = "1.72.0")
 )]
-pub unsafe fn vsha1h_u32(hash_e: u32) -> u32 {
-    vsha1h_u32_(hash_e)
+pub fn vsha1h_u32(hash_e: u32) -> u32 {
+    unsafe { vsha1h_u32_(hash_e) }
 }
 
 /// SHA1 hash update accelerator, choose.
@@ -203,8 +203,8 @@ pub unsafe fn vsha1h_u32(hash_e: u32) -> u32 {
     not(target_arch = "arm"),
     stable(feature = "aarch64_neon_crypto_intrinsics", since = "1.72.0")
 )]
-pub unsafe fn vsha1cq_u32(hash_abcd: uint32x4_t, hash_e: u32, wk: uint32x4_t) -> uint32x4_t {
-    vsha1cq_u32_(hash_abcd, hash_e, wk)
+pub fn vsha1cq_u32(hash_abcd: uint32x4_t, hash_e: u32, wk: uint32x4_t) -> uint32x4_t {
+    unsafe { vsha1cq_u32_(hash_abcd, hash_e, wk) }
 }
 
 /// SHA1 hash update accelerator, majority.
@@ -222,8 +222,8 @@ pub unsafe fn vsha1cq_u32(hash_abcd: uint32x4_t, hash_e: u32, wk: uint32x4_t) ->
     not(target_arch = "arm"),
     stable(feature = "aarch64_neon_crypto_intrinsics", since = "1.72.0")
 )]
-pub unsafe fn vsha1mq_u32(hash_abcd: uint32x4_t, hash_e: u32, wk: uint32x4_t) -> uint32x4_t {
-    vsha1mq_u32_(hash_abcd, hash_e, wk)
+pub fn vsha1mq_u32(hash_abcd: uint32x4_t, hash_e: u32, wk: uint32x4_t) -> uint32x4_t {
+    unsafe { vsha1mq_u32_(hash_abcd, hash_e, wk) }
 }
 
 /// SHA1 hash update accelerator, parity.
@@ -241,8 +241,8 @@ pub unsafe fn vsha1mq_u32(hash_abcd: uint32x4_t, hash_e: u32, wk: uint32x4_t) ->
     not(target_arch = "arm"),
     stable(feature = "aarch64_neon_crypto_intrinsics", since = "1.72.0")
 )]
-pub unsafe fn vsha1pq_u32(hash_abcd: uint32x4_t, hash_e: u32, wk: uint32x4_t) -> uint32x4_t {
-    vsha1pq_u32_(hash_abcd, hash_e, wk)
+pub fn vsha1pq_u32(hash_abcd: uint32x4_t, hash_e: u32, wk: uint32x4_t) -> uint32x4_t {
+    unsafe { vsha1pq_u32_(hash_abcd, hash_e, wk) }
 }
 
 /// SHA1 schedule update accelerator, first part.
@@ -260,8 +260,8 @@ pub unsafe fn vsha1pq_u32(hash_abcd: uint32x4_t, hash_e: u32, wk: uint32x4_t) ->
     not(target_arch = "arm"),
     stable(feature = "aarch64_neon_crypto_intrinsics", since = "1.72.0")
 )]
-pub unsafe fn vsha1su0q_u32(w0_3: uint32x4_t, w4_7: uint32x4_t, w8_11: uint32x4_t) -> uint32x4_t {
-    vsha1su0q_u32_(w0_3, w4_7, w8_11)
+pub fn vsha1su0q_u32(w0_3: uint32x4_t, w4_7: uint32x4_t, w8_11: uint32x4_t) -> uint32x4_t {
+    unsafe { vsha1su0q_u32_(w0_3, w4_7, w8_11) }
 }
 
 /// SHA1 schedule update accelerator, second part.
@@ -279,8 +279,8 @@ pub unsafe fn vsha1su0q_u32(w0_3: uint32x4_t, w4_7: uint32x4_t, w8_11: uint32x4_
     not(target_arch = "arm"),
     stable(feature = "aarch64_neon_crypto_intrinsics", since = "1.72.0")
 )]
-pub unsafe fn vsha1su1q_u32(tw0_3: uint32x4_t, w12_15: uint32x4_t) -> uint32x4_t {
-    vsha1su1q_u32_(tw0_3, w12_15)
+pub fn vsha1su1q_u32(tw0_3: uint32x4_t, w12_15: uint32x4_t) -> uint32x4_t {
+    unsafe { vsha1su1q_u32_(tw0_3, w12_15) }
 }
 
 /// SHA256 hash update accelerator.
@@ -298,12 +298,8 @@ pub unsafe fn vsha1su1q_u32(tw0_3: uint32x4_t, w12_15: uint32x4_t) -> uint32x4_t
     not(target_arch = "arm"),
     stable(feature = "aarch64_neon_crypto_intrinsics", since = "1.72.0")
 )]
-pub unsafe fn vsha256hq_u32(
-    hash_abcd: uint32x4_t,
-    hash_efgh: uint32x4_t,
-    wk: uint32x4_t,
-) -> uint32x4_t {
-    vsha256hq_u32_(hash_abcd, hash_efgh, wk)
+pub fn vsha256hq_u32(hash_abcd: uint32x4_t, hash_efgh: uint32x4_t, wk: uint32x4_t) -> uint32x4_t {
+    unsafe { vsha256hq_u32_(hash_abcd, hash_efgh, wk) }
 }
 
 /// SHA256 hash update accelerator, upper part.
@@ -321,12 +317,8 @@ pub unsafe fn vsha256hq_u32(
     not(target_arch = "arm"),
     stable(feature = "aarch64_neon_crypto_intrinsics", since = "1.72.0")
 )]
-pub unsafe fn vsha256h2q_u32(
-    hash_efgh: uint32x4_t,
-    hash_abcd: uint32x4_t,
-    wk: uint32x4_t,
-) -> uint32x4_t {
-    vsha256h2q_u32_(hash_efgh, hash_abcd, wk)
+pub fn vsha256h2q_u32(hash_efgh: uint32x4_t, hash_abcd: uint32x4_t, wk: uint32x4_t) -> uint32x4_t {
+    unsafe { vsha256h2q_u32_(hash_efgh, hash_abcd, wk) }
 }
 
 /// SHA256 schedule update accelerator, first part.
@@ -344,8 +336,8 @@ pub unsafe fn vsha256h2q_u32(
     not(target_arch = "arm"),
     stable(feature = "aarch64_neon_crypto_intrinsics", since = "1.72.0")
 )]
-pub unsafe fn vsha256su0q_u32(w0_3: uint32x4_t, w4_7: uint32x4_t) -> uint32x4_t {
-    vsha256su0q_u32_(w0_3, w4_7)
+pub fn vsha256su0q_u32(w0_3: uint32x4_t, w4_7: uint32x4_t) -> uint32x4_t {
+    unsafe { vsha256su0q_u32_(w0_3, w4_7) }
 }
 
 /// SHA256 schedule update accelerator, second part.
@@ -363,12 +355,8 @@ pub unsafe fn vsha256su0q_u32(w0_3: uint32x4_t, w4_7: uint32x4_t) -> uint32x4_t 
     not(target_arch = "arm"),
     stable(feature = "aarch64_neon_crypto_intrinsics", since = "1.72.0")
 )]
-pub unsafe fn vsha256su1q_u32(
-    tw0_3: uint32x4_t,
-    w8_11: uint32x4_t,
-    w12_15: uint32x4_t,
-) -> uint32x4_t {
-    vsha256su1q_u32_(tw0_3, w8_11, w12_15)
+pub fn vsha256su1q_u32(tw0_3: uint32x4_t, w8_11: uint32x4_t, w12_15: uint32x4_t) -> uint32x4_t {
+    unsafe { vsha256su1q_u32_(tw0_3, w8_11, w12_15) }
 }
 
 #[cfg(test)]
