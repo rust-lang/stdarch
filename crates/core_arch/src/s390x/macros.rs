@@ -55,6 +55,16 @@ macro_rules! impl_vec_trait {
             }
         }
     };
+    ([$Trait:ident $m:ident]+ $fun:ident ($a:ty)) => {
+        #[unstable(feature = "stdarch_s390x", issue = "135681")]
+        impl $Trait for $a {
+            #[inline]
+            #[target_feature(enable = "vector")]
+            unsafe fn $m(self) -> Self {
+                transmute($fun(transmute(self)))
+            }
+        }
+    };
     ([$Trait:ident $m:ident] $fun:ident ($a:ty) -> $r:ty) => {
         #[unstable(feature = "stdarch_s390x", issue = "135681")]
         impl $Trait for $a {
@@ -213,6 +223,41 @@ macro_rules! s_t_l {
     };
 }
 
+macro_rules! l_t_t {
+    (vector_signed_long_long) => {
+        i64
+    };
+    (vector_signed_int) => {
+        i32
+    };
+    (vector_signed_short) => {
+        i16
+    };
+    (vector_signed_char) => {
+        i8
+    };
+
+    (vector_unsigned_long_long ) => {
+        u64
+    };
+    (vector_unsigned_int ) => {
+        u32
+    };
+    (vector_unsigned_short ) => {
+        u16
+    };
+    (vector_unsigned_char ) => {
+        u8
+    };
+
+    (vector_float) => {
+        f32
+    };
+    (vector_double) => {
+        f64
+    };
+}
+
 macro_rules! t_t_l {
     (i64) => {
         vector_signed_long_long
@@ -315,7 +360,7 @@ macro_rules! t_u {
         vector_unsigned_int
     };
     (vector_signed_long_long) => {
-        vector_signed_long_long
+        vector_unsigned_long_long
     };
     (vector_float) => {
         vector_unsigned_int
@@ -391,8 +436,7 @@ macro_rules! impl_neg {
         impl crate::ops::Neg for s_t_l!($s) {
             type Output = s_t_l!($s);
             fn neg(self) -> Self::Output {
-                let zero = $s::splat($zero);
-                unsafe { transmute(simd_sub(zero, transmute(self))) }
+                unsafe { simd_neg(self) }
             }
         }
     };
@@ -401,6 +445,7 @@ macro_rules! impl_neg {
 pub(crate) use impl_from;
 pub(crate) use impl_neg;
 pub(crate) use impl_vec_trait;
+pub(crate) use l_t_t;
 pub(crate) use s_t_l;
 pub(crate) use t_b;
 pub(crate) use t_t_l;
