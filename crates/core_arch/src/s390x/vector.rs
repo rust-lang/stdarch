@@ -7,7 +7,7 @@
 
 #![allow(non_camel_case_types)]
 
-use crate::{core_arch::simd::*, intrinsics::simd::*, mem::transmute};
+use crate::{core_arch::simd::*, intrinsics::simd::*, mem::MaybeUninit, mem::transmute};
 
 #[cfg(test)]
 use stdarch_test::assert_instr;
@@ -122,6 +122,8 @@ unsafe extern "unadjusted" {
     #[link_name = "llvm.s390.vsbiq"] fn vsbiq(a: u128, b: u128, c: u128) -> u128;
     #[link_name = "llvm.s390.vsbcbiq"] fn vsbcbiq(a: u128, b: u128, c: u128) -> u128;
 
+    #[link_name = "llvm.s390.vacq"] fn vacq(a: u128, b: u128, c: u128) -> u128;
+
     #[link_name = "llvm.s390.vscbib"] fn vscbib(a: vector_unsigned_char, b: vector_unsigned_char) -> vector_unsigned_char;
     #[link_name = "llvm.s390.vscbih"] fn vscbih(a: vector_unsigned_short, b: vector_unsigned_short) -> vector_unsigned_short;
     #[link_name = "llvm.s390.vscbif"] fn vscbif(a: vector_unsigned_int, b: vector_unsigned_int) -> vector_unsigned_int;
@@ -142,6 +144,68 @@ unsafe extern "unadjusted" {
     #[link_name = "llvm.s390.vfaezbs"] fn vfaezbs(a: vector_signed_char, b: vector_signed_char, c: i32) -> PackedTuple<vector_signed_char, i32>;
     #[link_name = "llvm.s390.vfaezhs"] fn vfaezhs(a: vector_signed_short, b: vector_signed_short, c: i32) -> PackedTuple<vector_signed_short, i32>;
     #[link_name = "llvm.s390.vfaezfs"] fn vfaezfs(a: vector_signed_int, b: vector_signed_int, c: i32) -> PackedTuple<vector_signed_int, i32>;
+
+    #[link_name = "llvm.s390.vll"] fn vll(a: u32, b: *const u8) -> vector_signed_char;
+    #[link_name = "llvm.s390.vstl"] fn vstl(a: vector_signed_char, b: u32, c: *mut u8);
+
+    #[link_name = "llvm.s390.vlrl"] fn vlrl(a: u32, b: *const u8) -> vector_unsigned_char;
+    #[link_name = "llvm.s390.vstrl"] fn vstrl(a: vector_unsigned_char, b: u32, c: *mut u8);
+
+    #[link_name = "llvm.s390.lcbb"] fn lcbb(a: *const u8, b: u32) -> u32;
+    #[link_name = "llvm.s390.vlbb"] fn vlbb(a: *const u8, b: u32) -> MaybeUninit<vector_signed_char>;
+
+    #[link_name = "llvm.s390.vpksh"] fn vpksh(a: vector_signed_short, b: vector_signed_short) -> vector_signed_char;
+    #[link_name = "llvm.s390.vpksf"] fn vpksf(a: vector_signed_int, b: vector_signed_int) -> vector_signed_short;
+    #[link_name = "llvm.s390.vpksg"] fn vpksg(a: vector_signed_long_long, b: vector_signed_long_long) -> vector_signed_int;
+
+    #[link_name = "llvm.s390.vpklsh"] fn vpklsh(a: vector_signed_short, b: vector_signed_short) -> vector_unsigned_char;
+    #[link_name = "llvm.s390.vpklsf"] fn vpklsf(a: vector_signed_int, b: vector_signed_int) -> vector_unsigned_short;
+    #[link_name = "llvm.s390.vpklsg"] fn vpklsg(a: vector_signed_long_long, b: vector_signed_long_long) -> vector_unsigned_int;
+
+    #[link_name = "llvm.s390.vpkshs"] fn vpkshs(a: vector_signed_short, b: vector_signed_short) -> PackedTuple<vector_signed_char, i32>;
+    #[link_name = "llvm.s390.vpksfs"] fn vpksfs(a: vector_signed_int, b: vector_signed_int) -> PackedTuple<vector_signed_short, i32>;
+    #[link_name = "llvm.s390.vpksgs"] fn vpksgs(a: vector_signed_long_long, b: vector_signed_long_long) -> PackedTuple<vector_signed_int, i32>;
+
+    #[link_name = "llvm.s390.vpklshs"] fn vpklshs(a: vector_unsigned_short, b: vector_unsigned_short) -> PackedTuple<vector_unsigned_char, i32>;
+    #[link_name = "llvm.s390.vpklsfs"] fn vpklsfs(a: vector_unsigned_int, b: vector_unsigned_int) -> PackedTuple<vector_unsigned_short, i32>;
+    #[link_name = "llvm.s390.vpklsgs"] fn vpklsgs(a: vector_unsigned_long_long, b: vector_unsigned_long_long) -> PackedTuple<vector_unsigned_int, i32>;
+
+    #[link_name = "llvm.s390.vuplbw"] fn vuplbw (a: vector_signed_char) -> vector_signed_short;
+    #[link_name = "llvm.s390.vuplhw"] fn vuplhw (a: vector_signed_short) -> vector_signed_int;
+    #[link_name = "llvm.s390.vuplfw"] fn vuplfw (a: vector_signed_int) -> vector_signed_long_long;
+    #[link_name = "llvm.s390.vupllb"] fn vupllb (a: vector_unsigned_char) -> vector_unsigned_short;
+    #[link_name = "llvm.s390.vupllh"] fn vupllh (a: vector_unsigned_short) -> vector_unsigned_int;
+    #[link_name = "llvm.s390.vupllf"] fn vupllf (a: vector_unsigned_int) -> vector_unsigned_long_long;
+
+    #[link_name = "llvm.s390.vavgb"] fn vavgb(a: vector_signed_char, b: vector_signed_char) -> vector_signed_char;
+    #[link_name = "llvm.s390.vavgh"] fn vavgh(a: vector_signed_short, b: vector_signed_short) -> vector_signed_short;
+    #[link_name = "llvm.s390.vavgf"] fn vavgf(a: vector_signed_int, b: vector_signed_int) -> vector_signed_int;
+    #[link_name = "llvm.s390.vavgg"] fn vavgg(a: vector_signed_long_long, b: vector_signed_long_long) -> vector_signed_long_long;
+
+    #[link_name = "llvm.s390.vavglb"] fn vavglb(a: vector_unsigned_char, b: vector_unsigned_char) -> vector_unsigned_char;
+    #[link_name = "llvm.s390.vavglh"] fn vavglh(a: vector_unsigned_short, b: vector_unsigned_short) -> vector_unsigned_short;
+    #[link_name = "llvm.s390.vavglf"] fn vavglf(a: vector_unsigned_int, b: vector_unsigned_int) -> vector_unsigned_int;
+    #[link_name = "llvm.s390.vavglg"] fn vavglg(a: vector_unsigned_long_long, b: vector_unsigned_long_long) -> vector_unsigned_long_long;
+
+    #[link_name = "llvm.s390.vcksm"] fn vcksm(a: vector_unsigned_int, b: vector_unsigned_int) -> vector_unsigned_int;
+
+    #[link_name = "llvm.s390.vmeb"] fn vmeb(a: vector_signed_char, b: vector_signed_char) -> vector_signed_short;
+    #[link_name = "llvm.s390.vmeh"] fn vmeh(a: vector_signed_short, b: vector_signed_short) -> vector_signed_int;
+    #[link_name = "llvm.s390.vmef"] fn vmef(a: vector_signed_int, b: vector_signed_int) -> vector_signed_long_long;
+
+    #[link_name = "llvm.s390.vmleb"] fn vmleb(a: vector_unsigned_char, b: vector_unsigned_char) -> vector_unsigned_short;
+    #[link_name = "llvm.s390.vmleh"] fn vmleh(a: vector_unsigned_short, b: vector_unsigned_short) -> vector_unsigned_int;
+    #[link_name = "llvm.s390.vmlef"] fn vmlef(a: vector_unsigned_int, b: vector_unsigned_int) -> vector_unsigned_long_long;
+
+    #[link_name = "llvm.s390.vgfmb"] fn vgfmb(a: vector_unsigned_char, b: vector_unsigned_char) -> vector_unsigned_short;
+    #[link_name = "llvm.s390.vgfmh"] fn vgfmh(a: vector_unsigned_short, b: vector_unsigned_short) -> vector_unsigned_int;
+    #[link_name = "llvm.s390.vgfmf"] fn vgfmf(a: vector_unsigned_int, b: vector_unsigned_int) -> vector_unsigned_long_long;
+    #[link_name = "llvm.s390.vgfmg"] fn vgfmg(a: vector_unsigned_long_long, b: vector_unsigned_long_long) -> u128;
+
+    #[link_name = "llvm.s390.vgfmab"] fn vgfmab(a: vector_unsigned_char, b: vector_unsigned_char, c: vector_unsigned_short) -> vector_unsigned_short;
+    #[link_name = "llvm.s390.vgfmah"] fn vgfmah(a: vector_unsigned_short, b: vector_unsigned_short, c: vector_unsigned_int) -> vector_unsigned_int;
+    #[link_name = "llvm.s390.vgfmaf"] fn vgfmaf(a: vector_unsigned_int, b: vector_unsigned_int, c: vector_unsigned_long_long) -> vector_unsigned_long_long;
+    #[link_name = "llvm.s390.vgfmag"] fn vgfmag(a: vector_unsigned_long_long, b: vector_unsigned_long_long, c: u128) -> u128;
 }
 
 impl_from! { i8x16, u8x16,  i16x8, u16x8, i32x4, u32x4, i64x2, u64x2, f32x4, f64x2 }
@@ -194,6 +258,39 @@ impl<const N: usize> ShuffleMask<N> {
         }
         ShuffleMask(mask)
     }
+
+    const fn pack() -> Self {
+        let mut mask = [0; N];
+        let mut i = 1;
+        let mut index = 0;
+        while index < N {
+            mask[index] = i as u32;
+
+            i += 2;
+            index += 1;
+        }
+        ShuffleMask(mask)
+    }
+
+    const fn unpack_low() -> Self {
+        let mut mask = [0; N];
+        let mut i = 0;
+        while i < N {
+            mask[i] = (N + i) as u32;
+            i += 1;
+        }
+        ShuffleMask(mask)
+    }
+
+    const fn unpack_high() -> Self {
+        let mut mask = [0; N];
+        let mut i = 0;
+        while i < N {
+            mask[i] = i as u32;
+            i += 1;
+        }
+        ShuffleMask(mask)
+    }
 }
 
 const fn genmask<const MASK: u16>() -> [u8; 16] {
@@ -227,6 +324,16 @@ const fn genmasks(bit_width: u32, a: u8, b: u8) -> u64 {
     let b = (bit_width - 1) - b;
 
     ((1u64.wrapping_shl(a as u32 + 1)) - 1) & !((1u64.wrapping_shl(b as u32)) - 1)
+}
+
+const fn validate_block_boundary(block_boundary: u16) -> u32 {
+    assert!(
+        block_boundary.is_power_of_two() && block_boundary >= 64 && block_boundary <= 4096,
+        "block boundary must be a constant power of 2 from 64 to 4096",
+    );
+
+    // so that 64 is encoded as 0, 128 as 1, ect.
+    block_boundary as u32 >> 7
 }
 
 #[macro_use]
@@ -553,6 +660,88 @@ mod sealed {
     impl_vec_trait! { [VectorNabs vec_nabs] vec_nabs_f64 (vector_double) }
 
     #[unstable(feature = "stdarch_s390x", issue = "135681")]
+    pub trait VectorNmsub {
+        unsafe fn vec_nmsub(self, b: Self, c: Self) -> Self;
+    }
+
+    #[inline]
+    #[target_feature(enable = "vector")]
+    #[cfg_attr(
+        all(test, target_feature = "vector-enhancements-2"),
+        assert_instr(vfnmssb)
+    )]
+    unsafe fn vec_nmsub_f32(a: vector_float, b: vector_float, c: vector_float) -> vector_float {
+        simd_neg(simd_fma(a, b, simd_neg(c)))
+    }
+
+    #[unstable(feature = "stdarch_s390x", issue = "135681")]
+    impl VectorNmsub for vector_float {
+        #[target_feature(enable = "vector")]
+        unsafe fn vec_nmsub(self, b: Self, c: Self) -> Self {
+            vec_nmsub_f32(self, b, c)
+        }
+    }
+
+    #[inline]
+    #[target_feature(enable = "vector")]
+    #[cfg_attr(
+        all(test, target_feature = "vector-enhancements-2"),
+        assert_instr(vfnmsdb)
+    )]
+    unsafe fn vec_nmsub_f64(a: vector_double, b: vector_double, c: vector_double) -> vector_double {
+        simd_neg(simd_fma(a, b, simd_neg(c)))
+    }
+
+    #[unstable(feature = "stdarch_s390x", issue = "135681")]
+    impl VectorNmsub for vector_double {
+        #[target_feature(enable = "vector")]
+        unsafe fn vec_nmsub(self, b: Self, c: Self) -> Self {
+            vec_nmsub_f64(self, b, c)
+        }
+    }
+
+    #[unstable(feature = "stdarch_s390x", issue = "135681")]
+    pub trait VectorNmadd {
+        unsafe fn vec_nmadd(self, b: Self, c: Self) -> Self;
+    }
+
+    #[inline]
+    #[target_feature(enable = "vector")]
+    #[cfg_attr(
+        all(test, target_feature = "vector-enhancements-2"),
+        assert_instr(vfnmasb)
+    )]
+    unsafe fn vec_nmadd_f32(a: vector_float, b: vector_float, c: vector_float) -> vector_float {
+        simd_neg(simd_fma(a, b, c))
+    }
+
+    #[unstable(feature = "stdarch_s390x", issue = "135681")]
+    impl VectorNmadd for vector_float {
+        #[target_feature(enable = "vector")]
+        unsafe fn vec_nmadd(self, b: Self, c: Self) -> Self {
+            vec_nmadd_f32(self, b, c)
+        }
+    }
+
+    #[inline]
+    #[target_feature(enable = "vector")]
+    #[cfg_attr(
+        all(test, target_feature = "vector-enhancements-2"),
+        assert_instr(vfnmadb)
+    )]
+    unsafe fn vec_nmadd_f64(a: vector_double, b: vector_double, c: vector_double) -> vector_double {
+        simd_neg(simd_fma(a, b, c))
+    }
+
+    #[unstable(feature = "stdarch_s390x", issue = "135681")]
+    impl VectorNmadd for vector_double {
+        #[target_feature(enable = "vector")]
+        unsafe fn vec_nmadd(self, b: Self, c: Self) -> Self {
+            vec_nmadd_f64(self, b, c)
+        }
+    }
+
+    #[unstable(feature = "stdarch_s390x", issue = "135681")]
     pub trait VectorSplat {
         unsafe fn vec_splat<const IMM: u32>(self) -> Self;
     }
@@ -871,7 +1060,8 @@ mod sealed {
     test_impl! { vec_roundc_f32 (a: vector_float) -> vector_float [nearbyint_v4f32,  "vector-enhancements-1" vfisb] }
     test_impl! { vec_roundc_f64 (a: vector_double) -> vector_double [nearbyint_v2f64, vfidb] }
 
-    // FIXME(llvm) roundeven does not yet lower to vfidb (but should in the future)
+    // FIXME(llvm) llvm trunk already lowers roundeven to vfidb, but rust does not use it yet
+    // use https://godbolt.org/z/cWq95fexe to check, and enable the instruction test when it works
     test_impl! { vec_round_f32 (a: vector_float) -> vector_float [roundeven_v4f32, _] }
     test_impl! { vec_round_f64 (a: vector_double) -> vector_double [roundeven_v2f64, _] }
 
@@ -1210,6 +1400,21 @@ mod sealed {
     #[unstable(feature = "stdarch_s390x", issue = "135681")]
     pub trait VectorReve {
         unsafe fn vec_reve(self) -> Self;
+    }
+
+    #[repr(simd)]
+    struct ReverseMask<const N: usize>([u32; N]);
+
+    impl<const N: usize> ReverseMask<N> {
+        const fn new() -> Self {
+            let mut index = [0; N];
+            let mut i = 0;
+            while i < N {
+                index[i] = (N - i - 1) as u32;
+                i += 1;
+            }
+            ReverseMask(index)
+        }
     }
 
     macro_rules! impl_reve {
@@ -1784,13 +1989,13 @@ mod sealed {
      }
 
     vfaes_wrapper! {
-       vfaebs vector_signed_char
-       vfaehs vector_signed_short
-       vfaefs vector_signed_int
+        vfaebs vector_signed_char
+        vfaehs vector_signed_short
+        vfaefs vector_signed_int
 
-       vfaezbs vector_signed_char
-       vfaezhs vector_signed_short
-       vfaezfs vector_signed_int
+        vfaezbs vector_signed_char
+        vfaezhs vector_signed_short
+        vfaezfs vector_signed_int
     }
 
     #[unstable(feature = "stdarch_s390x", issue = "135681")]
@@ -1840,6 +2045,563 @@ mod sealed {
     }
 
     impl_vfae! { [idx_cc VectorFindAnyNeOrZeroIdxCC vec_find_any_ne_or_0_idx_cc] NeIdx vfaezbs vfaezhs vfaezfs }
+
+    #[inline]
+    #[target_feature(enable = "vector")]
+    #[cfg_attr(test, assert_instr(vl))]
+    unsafe fn test_vector_load(offset: isize, ptr: *const i32) -> vector_signed_int {
+        ptr.byte_offset(offset)
+            .cast::<vector_signed_int>()
+            .read_unaligned()
+    }
+
+    #[inline]
+    #[target_feature(enable = "vector")]
+    #[cfg_attr(test, assert_instr(vst))]
+    unsafe fn test_vector_store(vector: vector_signed_int, offset: isize, ptr: *mut i32) {
+        ptr.byte_offset(offset)
+            .cast::<vector_signed_int>()
+            .write_unaligned(vector)
+    }
+
+    #[unstable(feature = "stdarch_s390x", issue = "135681")]
+    pub trait VectorLoad: Sized {
+        type ElementType;
+
+        #[inline]
+        #[target_feature(enable = "vector")]
+        unsafe fn vec_xl(offset: isize, ptr: *const Self::ElementType) -> Self {
+            ptr.byte_offset(offset).cast::<Self>().read_unaligned()
+        }
+
+        unsafe fn vec_load_len(ptr: *const Self::ElementType, byte_count: u32) -> Self;
+
+        unsafe fn vec_load_bndry<const BLOCK_BOUNDARY: u16>(
+            ptr: *const Self::ElementType,
+        ) -> MaybeUninit<Self>;
+    }
+
+    #[unstable(feature = "stdarch_s390x", issue = "135681")]
+    pub trait VectorStore: Sized {
+        type ElementType;
+
+        #[inline]
+        #[target_feature(enable = "vector")]
+        unsafe fn vec_xst(self, offset: isize, ptr: *mut Self::ElementType) {
+            ptr.byte_offset(offset).cast::<Self>().write_unaligned(self)
+        }
+
+        unsafe fn vec_store_len(self, ptr: *mut Self::ElementType, byte_count: u32);
+    }
+
+    macro_rules! impl_load_store {
+        ($($ty:ident)*) => {
+            $(
+                #[unstable(feature = "stdarch_s390x", issue = "135681")]
+                impl VectorLoad for t_t_l!($ty) {
+                    type ElementType = $ty;
+
+                    #[inline]
+                    #[target_feature(enable = "vector")]
+                    unsafe fn vec_load_len(ptr: *const Self::ElementType, byte_count: u32) -> Self {
+                        transmute(vll( byte_count, ptr.cast(),))
+                    }
+
+                    #[inline]
+                    #[target_feature(enable = "vector")]
+                    unsafe fn vec_load_bndry<const BLOCK_BOUNDARY: u16>(ptr: *const Self::ElementType) -> MaybeUninit<Self> {
+                        transmute(vlbb(ptr.cast(), const { validate_block_boundary(BLOCK_BOUNDARY) }))
+                    }
+
+                }
+
+                #[unstable(feature = "stdarch_s390x", issue = "135681")]
+                impl VectorStore for t_t_l!($ty) {
+                    type ElementType = $ty;
+
+                    #[inline]
+                    #[target_feature(enable = "vector")]
+                    unsafe fn vec_store_len(self, ptr: *mut Self::ElementType, byte_count: u32) {
+                        vstl(transmute(self), byte_count, ptr.cast())
+                    }
+                }
+            )*
+        }
+    }
+
+    impl_load_store! { i8 u8 i16 u16 i32 u32 i64 u64 f32 f64 }
+
+    #[inline]
+    #[target_feature(enable = "vector")]
+    #[cfg_attr(test, assert_instr(vll))]
+    unsafe fn test_vec_load_len(ptr: *const i32, byte_count: u32) -> vector_signed_int {
+        vector_signed_int::vec_load_len(ptr, byte_count)
+    }
+
+    #[inline]
+    #[target_feature(enable = "vector")]
+    #[cfg_attr(test, assert_instr("vlbb"))]
+    unsafe fn test_vec_load_bndry(ptr: *const i32) -> MaybeUninit<vector_signed_int> {
+        vector_signed_int::vec_load_bndry::<512>(ptr)
+    }
+
+    #[inline]
+    #[target_feature(enable = "vector")]
+    #[cfg_attr(test, assert_instr(vst))]
+    unsafe fn test_vec_store_len(vector: vector_signed_int, ptr: *mut i32, byte_count: u32) {
+        vector.vec_store_len(ptr, byte_count)
+    }
+
+    #[unstable(feature = "stdarch_s390x", issue = "135681")]
+    pub trait VectorLoadPair: Sized {
+        type ElementType;
+
+        unsafe fn vec_load_pair(a: Self::ElementType, b: Self::ElementType) -> Self;
+    }
+
+    #[unstable(feature = "stdarch_s390x", issue = "135681")]
+    impl VectorLoadPair for vector_signed_long_long {
+        type ElementType = i64;
+
+        #[inline]
+        #[target_feature(enable = "vector")]
+        unsafe fn vec_load_pair(a: i64, b: i64) -> Self {
+            vector_signed_long_long([a, b])
+        }
+    }
+
+    #[unstable(feature = "stdarch_s390x", issue = "135681")]
+    impl VectorLoadPair for vector_unsigned_long_long {
+        type ElementType = u64;
+
+        #[inline]
+        #[target_feature(enable = "vector")]
+        unsafe fn vec_load_pair(a: u64, b: u64) -> Self {
+            vector_unsigned_long_long([a, b])
+        }
+    }
+
+    #[inline]
+    #[target_feature(enable = "vector")]
+    unsafe fn pack<T, const N: usize>(a: T, b: T) -> T {
+        simd_shuffle(a, b, const { ShuffleMask::<N>::pack() })
+    }
+
+    #[inline]
+    #[target_feature(enable = "vector")]
+    #[cfg_attr(test, assert_instr(vpkh))]
+    unsafe fn vpkh(a: i16x8, b: i16x8) -> i8x16 {
+        let a: i8x16 = transmute(a);
+        let b: i8x16 = transmute(b);
+        simd_shuffle(a, b, const { ShuffleMask::<16>::pack() })
+    }
+    #[inline]
+    #[target_feature(enable = "vector")]
+    #[cfg_attr(test, assert_instr(vpkf))]
+    unsafe fn vpkf(a: i32x4, b: i32x4) -> i16x8 {
+        let a: i16x8 = transmute(a);
+        let b: i16x8 = transmute(b);
+        simd_shuffle(a, b, const { ShuffleMask::<8>::pack() })
+    }
+    #[inline]
+    #[target_feature(enable = "vector")]
+    #[cfg_attr(test, assert_instr(vpkg))]
+    unsafe fn vpkg(a: i64x2, b: i64x2) -> i32x4 {
+        let a: i32x4 = transmute(a);
+        let b: i32x4 = transmute(b);
+        simd_shuffle(a, b, const { ShuffleMask::<4>::pack() })
+    }
+
+    #[unstable(feature = "stdarch_s390x", issue = "135681")]
+    pub trait VectorPack<Other> {
+        type Result;
+        unsafe fn vec_pack(self, b: Other) -> Self::Result;
+    }
+
+    impl_vec_trait! { [VectorPack vec_pack]+ vpkh (vector_signed_short, vector_signed_short) -> vector_signed_char }
+    impl_vec_trait! { [VectorPack vec_pack]+ vpkh (vector_unsigned_short, vector_unsigned_short) -> vector_unsigned_char }
+    impl_vec_trait! { [VectorPack vec_pack]+ vpkh (vector_bool_short, vector_bool_short) -> vector_bool_char }
+    impl_vec_trait! { [VectorPack vec_pack]+ vpkf (vector_signed_int, vector_signed_int) -> vector_signed_short }
+    impl_vec_trait! { [VectorPack vec_pack]+ vpkf (vector_unsigned_int, vector_unsigned_int) -> vector_unsigned_short }
+    impl_vec_trait! { [VectorPack vec_pack]+ vpkf (vector_bool_int, vector_bool_int) -> vector_bool_short }
+    impl_vec_trait! { [VectorPack vec_pack]+ vpkg (vector_signed_long_long, vector_signed_long_long) -> vector_signed_int }
+    impl_vec_trait! { [VectorPack vec_pack]+ vpkg (vector_unsigned_long_long, vector_unsigned_long_long) -> vector_unsigned_int }
+    impl_vec_trait! { [VectorPack vec_pack]+ vpkg (vector_bool_long_long, vector_bool_long_long) -> vector_bool_int }
+
+    #[unstable(feature = "stdarch_powerpc", issue = "111145")]
+    pub trait VectorPacks<Other> {
+        type Result;
+        unsafe fn vec_packs(self, b: Other) -> Self::Result;
+    }
+
+    impl_vec_trait! { [VectorPacks vec_packs] vpksh (vector_signed_short, vector_signed_short) -> vector_signed_char }
+    impl_vec_trait! { [VectorPacks vec_packs] vpklsh (vector_unsigned_short, vector_unsigned_short) -> vector_unsigned_char }
+    impl_vec_trait! { [VectorPacks vec_packs] vpksf (vector_signed_int, vector_signed_int) -> vector_signed_short }
+    impl_vec_trait! { [VectorPacks vec_packs] vpklsf (vector_unsigned_int, vector_unsigned_int) -> vector_unsigned_short }
+    impl_vec_trait! { [VectorPacks vec_packs] vpksg (vector_signed_long_long, vector_signed_long_long) -> vector_signed_int }
+    impl_vec_trait! { [VectorPacks vec_packs] vpklsg (vector_unsigned_long_long, vector_unsigned_long_long) -> vector_unsigned_int }
+
+    #[unstable(feature = "stdarch_powerpc", issue = "111145")]
+    pub trait VectorPacksu<Other> {
+        type Result;
+        unsafe fn vec_packsu(self, b: Other) -> Self::Result;
+    }
+
+    unsafe fn simd_smax<T: Copy>(a: T, b: T) -> T {
+        simd_select::<T, T>(simd_gt::<T, T>(a, b), a, b)
+    }
+
+    #[inline]
+    #[target_feature(enable = "vector")]
+    #[cfg_attr(test, assert_instr(vpklsh))]
+    unsafe fn vpacksuh(a: vector_signed_short, b: vector_signed_short) -> vector_unsigned_char {
+        vpklsh(
+            simd_smax(a, vector_signed_short([0; 8])),
+            simd_smax(b, vector_signed_short([0; 8])),
+        )
+    }
+    #[inline]
+    #[target_feature(enable = "vector")]
+    #[cfg_attr(test, assert_instr(vpklsf))]
+    unsafe fn vpacksuf(a: vector_signed_int, b: vector_signed_int) -> vector_unsigned_short {
+        vpklsf(
+            simd_smax(a, vector_signed_int([0; 4])),
+            simd_smax(b, vector_signed_int([0; 4])),
+        )
+    }
+    #[inline]
+    #[target_feature(enable = "vector")]
+    #[cfg_attr(test, assert_instr(vpklsg))]
+    unsafe fn vpacksug(
+        a: vector_signed_long_long,
+        b: vector_signed_long_long,
+    ) -> vector_unsigned_int {
+        vpklsg(
+            simd_smax(a, vector_signed_long_long([0; 2])),
+            simd_smax(b, vector_signed_long_long([0; 2])),
+        )
+    }
+
+    impl_vec_trait! { [VectorPacksu vec_packsu] vpacksuh (vector_signed_short, vector_signed_short) -> vector_unsigned_char }
+    impl_vec_trait! { [VectorPacksu vec_packsu] vpklsh (vector_unsigned_short, vector_unsigned_short) -> vector_unsigned_char }
+    impl_vec_trait! { [VectorPacksu vec_packsu] vpacksuf (vector_signed_int, vector_signed_int) -> vector_unsigned_short }
+    impl_vec_trait! { [VectorPacksu vec_packsu] vpklsf (vector_unsigned_int, vector_unsigned_int) -> vector_unsigned_short }
+    impl_vec_trait! { [VectorPacksu vec_packsu] vpacksug (vector_signed_long_long, vector_signed_long_long) -> vector_unsigned_int }
+    impl_vec_trait! { [VectorPacksu vec_packsu] vpklsg (vector_unsigned_long_long, vector_unsigned_long_long) -> vector_unsigned_int }
+
+    macro_rules! impl_vector_packs_cc {
+        ($($intr:ident $ty:ident $outty:ident)*) => {
+            $(
+                #[inline]
+                #[target_feature(enable = "vector")]
+                #[cfg_attr(test, assert_instr($intr))]
+                unsafe fn $intr(
+                    a: $ty,
+                    b: $ty,
+                    c: *mut i32,
+                ) -> $outty {
+                    let PackedTuple { x, y } = super::$intr(a, b);
+                    c.write(y);
+                    x
+                }
+
+                #[unstable(feature = "stdarch_s390x", issue = "135681")]
+                impl VectorPacksCC for $ty {
+                    type Result = $outty;
+
+                    #[inline]
+                    #[target_feature(enable = "vector")]
+                    unsafe fn vec_packs_cc(self, b: Self, c: *mut i32) -> Self::Result {
+                        $intr(self, b, c)
+                    }
+                }
+            )*
+        }
+    }
+
+    #[unstable(feature = "stdarch_powerpc", issue = "111145")]
+    pub trait VectorPacksCC {
+        type Result;
+        unsafe fn vec_packs_cc(self, b: Self, c: *mut i32) -> Self::Result;
+    }
+
+    impl_vector_packs_cc! {
+        vpkshs vector_signed_short vector_signed_char
+        vpklshs vector_unsigned_short vector_unsigned_char
+        vpksfs vector_signed_int vector_signed_short
+        vpklsfs vector_unsigned_int vector_unsigned_short
+        vpksgs vector_signed_long_long vector_signed_int
+        vpklsgs vector_unsigned_long_long vector_unsigned_int
+    }
+
+    macro_rules! impl_vector_packsu_cc {
+        ($($intr:ident $ty:ident $outty:ident)*) => {
+            $(
+                #[unstable(feature = "stdarch_s390x", issue = "135681")]
+                impl VectorPacksuCC for $ty {
+                    type Result = $outty;
+
+                    #[inline]
+                    #[target_feature(enable = "vector")]
+                    unsafe fn vec_packsu_cc(self, b: Self, c: *mut i32) -> Self::Result {
+                        $intr(self, b, c)
+                    }
+                }
+            )*
+        }
+    }
+
+    #[unstable(feature = "stdarch_powerpc", issue = "111145")]
+    pub trait VectorPacksuCC {
+        type Result;
+        unsafe fn vec_packsu_cc(self, b: Self, c: *mut i32) -> Self::Result;
+    }
+
+    impl_vector_packsu_cc! {
+        vpklshs vector_unsigned_short vector_unsigned_char
+        vpklsfs vector_unsigned_int vector_unsigned_short
+        vpklsgs vector_unsigned_long_long vector_unsigned_int
+    }
+
+    #[unstable(feature = "stdarch_powerpc", issue = "111145")]
+    pub trait VectorMadd {
+        unsafe fn vec_madd(self, b: Self, c: Self) -> Self;
+        unsafe fn vec_msub(self, b: Self, c: Self) -> Self;
+    }
+
+    test_impl! { vfmasb (a: vector_float, b: vector_float, c: vector_float) -> vector_float [simd_fma, "vector-enhancements-1" vfmasb] }
+    test_impl! { vfmadb (a: vector_double, b: vector_double, c: vector_double) -> vector_double [simd_fma, vfmadb] }
+
+    #[inline]
+    unsafe fn simd_fms<T>(a: T, b: T, c: T) -> T {
+        simd_fma(a, b, simd_neg(c))
+    }
+
+    test_impl! { vfmssb (a: vector_float, b: vector_float, c: vector_float) -> vector_float [simd_fms, "vector-enhancements-1" vfmssb] }
+    test_impl! { vfmsdb (a: vector_double, b: vector_double, c: vector_double) -> vector_double [simd_fms, vfmsdb] }
+
+    #[unstable(feature = "stdarch_s390x", issue = "135681")]
+    impl VectorMadd for vector_float {
+        #[inline]
+        #[target_feature(enable = "vector")]
+        unsafe fn vec_madd(self, b: Self, c: Self) -> Self {
+            vfmasb(self, b, c)
+        }
+
+        #[inline]
+        #[target_feature(enable = "vector")]
+        unsafe fn vec_msub(self, b: Self, c: Self) -> Self {
+            vfmssb(self, b, c)
+        }
+    }
+
+    #[unstable(feature = "stdarch_s390x", issue = "135681")]
+    impl VectorMadd for vector_double {
+        #[inline]
+        #[target_feature(enable = "vector")]
+        unsafe fn vec_madd(self, b: Self, c: Self) -> Self {
+            vfmadb(self, b, c)
+        }
+
+        #[inline]
+        #[target_feature(enable = "vector")]
+        unsafe fn vec_msub(self, b: Self, c: Self) -> Self {
+            vfmsdb(self, b, c)
+        }
+    }
+
+    macro_rules! impl_vec_unpack {
+        ($mask:ident $instr:ident $src:ident $shuffled:ident $dst:ident $width:literal) => {
+            #[inline]
+            #[target_feature(enable = "vector")]
+            #[cfg_attr(test, assert_instr($instr))]
+            unsafe fn $instr(a: $src) -> $dst {
+                simd_as(simd_shuffle::<_, _, $shuffled>(
+                    a,
+                    a,
+                    const { ShuffleMask::<$width>::$mask() },
+                ))
+            }
+        };
+    }
+
+    #[unstable(feature = "stdarch_s390x", issue = "135681")]
+    pub trait VectorUnpackh {
+        type Result;
+        unsafe fn vec_unpackh(self) -> Self::Result;
+    }
+
+    impl_vec_unpack!(unpack_high vuphb vector_signed_char i8x8 vector_signed_short 8);
+    impl_vec_unpack!(unpack_high vuphh vector_signed_short i16x4 vector_signed_int 4);
+    impl_vec_unpack!(unpack_high vuphf vector_signed_int i32x2 vector_signed_long_long 2);
+
+    impl_vec_unpack!(unpack_high vuplhb vector_unsigned_char u8x8 vector_unsigned_short 8);
+    impl_vec_unpack!(unpack_high vuplhh vector_unsigned_short u16x4 vector_unsigned_int 4);
+    impl_vec_unpack!(unpack_high vuplhf vector_unsigned_int u32x2 vector_unsigned_long_long 2);
+
+    impl_vec_trait! {[VectorUnpackh vec_unpackh] vuphb (vector_signed_char) -> vector_signed_short}
+    impl_vec_trait! {[VectorUnpackh vec_unpackh] vuphh (vector_signed_short) -> vector_signed_int}
+    impl_vec_trait! {[VectorUnpackh vec_unpackh] vuphf (vector_signed_int) -> vector_signed_long_long}
+
+    impl_vec_trait! {[VectorUnpackh vec_unpackh] vuplhb (vector_unsigned_char) -> vector_unsigned_short}
+    impl_vec_trait! {[VectorUnpackh vec_unpackh] vuplhh (vector_unsigned_short) -> vector_unsigned_int}
+    impl_vec_trait! {[VectorUnpackh vec_unpackh] vuplhf (vector_unsigned_int) -> vector_unsigned_long_long}
+
+    impl_vec_trait! {[VectorUnpackh vec_unpackh]+ vuplhb (vector_bool_char) -> vector_bool_short}
+    impl_vec_trait! {[VectorUnpackh vec_unpackh]+ vuplhh (vector_bool_short) -> vector_bool_int}
+    impl_vec_trait! {[VectorUnpackh vec_unpackh]+ vuplhf (vector_bool_int) -> vector_bool_long_long}
+
+    #[unstable(feature = "stdarch_s390x", issue = "135681")]
+    pub trait VectorUnpackl {
+        type Result;
+        unsafe fn vec_unpackl(self) -> Self::Result;
+    }
+
+    // FIXME(llvm): a shuffle + simd_as does not currently optimize into a single instruction like
+    // unpachk above. Tracked in https://github.com/llvm/llvm-project/issues/129576.
+
+    impl_vec_trait! {[VectorUnpackl vec_unpackl] vuplbw (vector_signed_char) -> vector_signed_short}
+    impl_vec_trait! {[VectorUnpackl vec_unpackl] vuplhw (vector_signed_short) -> vector_signed_int}
+    impl_vec_trait! {[VectorUnpackl vec_unpackl] vuplfw (vector_signed_int) -> vector_signed_long_long}
+
+    impl_vec_trait! {[VectorUnpackl vec_unpackl] vupllb (vector_unsigned_char) -> vector_unsigned_short}
+    impl_vec_trait! {[VectorUnpackl vec_unpackl] vupllh (vector_unsigned_short) -> vector_unsigned_int}
+    impl_vec_trait! {[VectorUnpackl vec_unpackl] vupllf (vector_unsigned_int) -> vector_unsigned_long_long}
+
+    impl_vec_trait! {[VectorUnpackl vec_unpackl]+ vupllb (vector_bool_char) -> vector_bool_short}
+    impl_vec_trait! {[VectorUnpackl vec_unpackl]+ vupllh (vector_bool_short) -> vector_bool_int}
+    impl_vec_trait! {[VectorUnpackl vec_unpackl]+ vupllf (vector_bool_int) -> vector_bool_long_long}
+
+    test_impl! { vec_vavgb(a: vector_signed_char, b: vector_signed_char) -> vector_signed_char [ vavgb, vavgb ] }
+    test_impl! { vec_vavgh(a: vector_signed_short, b: vector_signed_short) -> vector_signed_short [ vavgh, vavgh ] }
+    test_impl! { vec_vavgf(a: vector_signed_int, b: vector_signed_int) -> vector_signed_int [ vavgf, vavgf ] }
+    test_impl! { vec_vavgg(a: vector_signed_long_long, b: vector_signed_long_long) -> vector_signed_long_long [ vavgg, vavgg ] }
+
+    test_impl! { vec_vavglb(a: vector_unsigned_char, b: vector_unsigned_char) -> vector_unsigned_char [ vavglb, vavglb ] }
+    test_impl! { vec_vavglh(a: vector_unsigned_short, b: vector_unsigned_short) -> vector_unsigned_short [ vavglh, vavglh ] }
+    test_impl! { vec_vavglf(a: vector_unsigned_int, b: vector_unsigned_int) -> vector_unsigned_int [ vavglf, vavglf ] }
+    test_impl! { vec_vavglg(a: vector_unsigned_long_long, b: vector_unsigned_long_long) -> vector_unsigned_long_long [ vavglg, vavglg ] }
+
+    #[unstable(feature = "stdarch_s390x", issue = "135681")]
+    pub trait VectorAvg<Other> {
+        type Result;
+        unsafe fn vec_avg(self, b: Other) -> Self::Result;
+    }
+
+    impl_vec_trait! { [VectorAvg vec_avg] 2 (vec_vavglb, vec_vavgb, vec_vavglh, vec_vavgh, vec_vavglf, vec_vavgf, vec_vavglg, vec_vavgg) }
+
+    macro_rules! impl_mul {
+        ([$Trait:ident $m:ident] $fun:ident ($a:ty, $b:ty) -> $r:ty) => {
+            #[unstable(feature = "stdarch_s390x", issue = "135681")]
+            impl $Trait<$r> for $a {
+                #[inline]
+                #[target_feature(enable = "vector")]
+                unsafe fn $m(self, b: $b) -> $r {
+                    $fun(transmute(self), transmute(b))
+                }
+            }
+        };
+    }
+
+    #[unstable(feature = "stdarch_s390x", issue = "135681")]
+    pub trait VectorMule<Result> {
+        unsafe fn vec_mule(self, b: Self) -> Result;
+    }
+
+    // FIXME(llvm) sadly this does not yet work https://github.com/llvm/llvm-project/issues/129705
+    //    #[target_feature(enable = "vector")]
+    //    #[cfg_attr(test, assert_instr(vmleh))]
+    //    unsafe fn vec_vmleh(a: vector_unsigned_short, b: vector_unsigned_short) -> vector_unsigned_int {
+    //        let even_a: vector_unsigned_int = simd_as(simd_shuffle::<_, _, u16x4>(
+    //            a,
+    //            a,
+    //            const { ShuffleMask([0, 2, 4, 6]) },
+    //        ));
+    //
+    //        let even_b: vector_unsigned_int = simd_as(simd_shuffle::<_, _, u16x4>(
+    //            b,
+    //            b,
+    //            const { ShuffleMask([0, 2, 4, 6]) },
+    //        ));
+    //
+    //        simd_mul(even_a, even_b)
+    //    }
+
+    test_impl! { vec_vmeb(a: vector_signed_char, b: vector_signed_char) -> vector_signed_short [ vmeb, vmeb ] }
+    test_impl! { vec_vmeh(a: vector_signed_short, b: vector_signed_short) -> vector_signed_int[ vmeh, vmeh ] }
+    test_impl! { vec_vmef(a: vector_signed_int, b: vector_signed_int) -> vector_signed_long_long [ vmef, vmef ] }
+
+    test_impl! { vec_vmleb(a: vector_unsigned_char, b: vector_unsigned_char) -> vector_unsigned_short [ vmleb, vmleb ] }
+    test_impl! { vec_vmleh(a: vector_unsigned_short, b: vector_unsigned_short) -> vector_unsigned_int[ vmleh, vmleh ] }
+    test_impl! { vec_vmlef(a: vector_unsigned_int, b: vector_unsigned_int) -> vector_unsigned_long_long [ vmlef, vmlef ] }
+
+    impl_mul!([VectorMule vec_mule] vec_vmeb (vector_signed_char, vector_signed_char) -> vector_signed_short );
+    impl_mul!([VectorMule vec_mule] vec_vmeh (vector_signed_short, vector_signed_short) -> vector_signed_int);
+    impl_mul!([VectorMule vec_mule] vec_vmef (vector_signed_int, vector_signed_int) -> vector_signed_long_long );
+
+    impl_mul!([VectorMule vec_mule] vec_vmleb (vector_unsigned_char, vector_unsigned_char) -> vector_unsigned_short );
+    impl_mul!([VectorMule vec_mule] vec_vmleh (vector_unsigned_short, vector_unsigned_short) -> vector_unsigned_int);
+    impl_mul!([VectorMule vec_mule] vec_vmlef (vector_unsigned_int, vector_unsigned_int) -> vector_unsigned_long_long );
+
+    #[unstable(feature = "stdarch_s390x", issue = "135681")]
+    pub trait VectorGfmsum<Result> {
+        unsafe fn vec_gfmsum(self, b: Self) -> Result;
+    }
+
+    test_impl! { vec_vgfmb(a: vector_unsigned_char, b: vector_unsigned_char) -> vector_unsigned_short [ vgfmb, vgfmb ] }
+    test_impl! { vec_vgfmh(a: vector_unsigned_short, b: vector_unsigned_short) -> vector_unsigned_int[ vgfmh, vgfmh] }
+    test_impl! { vec_vgfmf(a: vector_unsigned_int, b: vector_unsigned_int) -> vector_unsigned_long_long [ vgfmf, vgfmf ] }
+
+    impl_mul!([VectorGfmsum vec_gfmsum] vec_vgfmb (vector_unsigned_char, vector_unsigned_char) -> vector_unsigned_short );
+    impl_mul!([VectorGfmsum vec_gfmsum] vec_vgfmh (vector_unsigned_short, vector_unsigned_short) -> vector_unsigned_int);
+    impl_mul!([VectorGfmsum vec_gfmsum] vec_vgfmf (vector_unsigned_int, vector_unsigned_int) -> vector_unsigned_long_long );
+
+    #[unstable(feature = "stdarch_s390x", issue = "135681")]
+    pub trait VectorGfmsumAccum {
+        type Result;
+        unsafe fn vec_gfmsum_accum(self, b: Self, c: Self::Result) -> Self::Result;
+    }
+
+    test_impl! { vec_vgfmab(a: vector_unsigned_char, b: vector_unsigned_char, c: vector_unsigned_short) -> vector_unsigned_short [ vgfmab, vgfmab ] }
+    test_impl! { vec_vgfmah(a: vector_unsigned_short, b: vector_unsigned_short, c: vector_unsigned_int) -> vector_unsigned_int[ vgfmah, vgfmah] }
+    test_impl! { vec_vgfmaf(a: vector_unsigned_int, b: vector_unsigned_int, c: vector_unsigned_long_long) -> vector_unsigned_long_long [ vgfmaf, vgfmaf ] }
+
+    #[unstable(feature = "stdarch_s390x", issue = "135681")]
+    impl VectorGfmsumAccum for vector_unsigned_char {
+        type Result = vector_unsigned_short;
+        #[inline]
+        #[target_feature(enable = "vector")]
+        unsafe fn vec_gfmsum_accum(self, b: Self, c: Self::Result) -> Self::Result {
+            vec_vgfmab(self, b, c)
+        }
+    }
+    #[unstable(feature = "stdarch_s390x", issue = "135681")]
+    impl VectorGfmsumAccum for vector_unsigned_short {
+        type Result = vector_unsigned_int;
+        #[inline]
+        #[target_feature(enable = "vector")]
+        unsafe fn vec_gfmsum_accum(self, b: Self, c: Self::Result) -> Self::Result {
+            vec_vgfmah(self, b, c)
+        }
+    }
+    #[unstable(feature = "stdarch_s390x", issue = "135681")]
+    impl VectorGfmsumAccum for vector_unsigned_int {
+        type Result = vector_unsigned_long_long;
+        #[inline]
+        #[target_feature(enable = "vector")]
+        unsafe fn vec_gfmsum_accum(self, b: Self, c: Self::Result) -> Self::Result {
+            vec_vgfmaf(self, b, c)
+        }
+    }
+}
+
+/// Load Count to Block Boundary
+#[inline]
+#[target_feature(enable = "vector")]
+#[unstable(feature = "stdarch_s390x", issue = "135681")]
+#[cfg_attr(test, assert_instr(lcbb, BLOCK_BOUNDARY = 512))]
+unsafe fn __lcbb<const BLOCK_BOUNDARY: u16>(ptr: *const u8) -> u32 {
+    lcbb(ptr, const { validate_block_boundary(BLOCK_BOUNDARY) })
 }
 
 /// Vector element-wise addition.
@@ -1953,11 +2715,24 @@ where
 #[inline]
 #[target_feature(enable = "vector")]
 #[unstable(feature = "stdarch_s390x", issue = "135681")]
-pub unsafe fn vec_nabs<T>(a: T) -> T
-where
-    T: sealed::VectorNabs,
-{
+pub unsafe fn vec_nabs<T: sealed::VectorNabs>(a: T) -> T {
     a.vec_nabs()
+}
+
+/// Vector Negative Multiply Add
+#[inline]
+#[target_feature(enable = "vector")]
+#[unstable(feature = "stdarch_s390x", issue = "135681")]
+pub unsafe fn vec_nmadd<T: sealed::VectorNmadd>(a: T, b: T, c: T) -> T {
+    a.vec_nmadd(b, c)
+}
+
+/// Vector Negative Multiply Subtract
+#[inline]
+#[target_feature(enable = "vector")]
+#[unstable(feature = "stdarch_s390x", issue = "135681")]
+pub unsafe fn vec_nmsub<T: sealed::VectorNmsub>(a: T, b: T, c: T) -> T {
+    a.vec_nmsub(b, c)
 }
 
 /// Vector square root.
@@ -2207,6 +2982,14 @@ where
     a.vec_rint()
 }
 
+/// Vector Average
+#[inline]
+#[target_feature(enable = "vector")]
+#[unstable(feature = "stdarch_s390x", issue = "135681")]
+pub unsafe fn vec_avg<T: sealed::VectorAvg<U>, U>(a: T, b: U) -> T::Result {
+    a.vec_avg(b)
+}
+
 /// Vector Shift Left
 #[inline]
 #[target_feature(enable = "vector")]
@@ -2366,6 +3149,62 @@ where
     a.vec_mergeh(b)
 }
 
+/// Vector Pack
+#[inline]
+#[target_feature(enable = "vector")]
+#[unstable(feature = "stdarch_s390x", issue = "135681")]
+pub unsafe fn vec_pack<T: sealed::VectorPack<U>, U>(a: T, b: U) -> T::Result {
+    a.vec_pack(b)
+}
+
+/// Vector Pack Saturated
+#[inline]
+#[target_feature(enable = "vector")]
+#[unstable(feature = "stdarch_s390x", issue = "135681")]
+pub unsafe fn vec_packs<T: sealed::VectorPacks<U>, U>(a: T, b: U) -> T::Result {
+    a.vec_packs(b)
+}
+
+/// Vector Pack Saturated Condition Code
+#[inline]
+#[target_feature(enable = "vector")]
+#[unstable(feature = "stdarch_s390x", issue = "135681")]
+pub unsafe fn vec_packs_cc<T: sealed::VectorPacksCC>(a: T, b: T, c: *mut i32) -> T::Result {
+    a.vec_packs_cc(b, c)
+}
+
+/// Vector Pack Saturated Unsigned
+#[inline]
+#[target_feature(enable = "vector")]
+#[unstable(feature = "stdarch_s390x", issue = "135681")]
+pub unsafe fn vec_packsu<T: sealed::VectorPacksu<U>, U>(a: T, b: U) -> T::Result {
+    a.vec_packsu(b)
+}
+
+/// Vector Pack Saturated Unsigned Condition Code
+#[inline]
+#[target_feature(enable = "vector")]
+#[unstable(feature = "stdarch_s390x", issue = "135681")]
+pub unsafe fn vec_packsu_cc<T: sealed::VectorPacksuCC>(a: T, b: T, c: *mut i32) -> T::Result {
+    a.vec_packsu_cc(b, c)
+}
+
+/// Vector Unpack High
+#[inline]
+#[target_feature(enable = "vector")]
+#[unstable(feature = "stdarch_s390x", issue = "135681")]
+pub unsafe fn vec_unpackh<T: sealed::VectorUnpackh>(a: T) -> <T as sealed::VectorUnpackh>::Result {
+    a.vec_unpackh()
+}
+
+/// Vector Unpack Low
+#[inline]
+#[target_feature(enable = "vector")]
+#[unstable(feature = "stdarch_s390x", issue = "135681")]
+pub unsafe fn vec_unpackl<T: sealed::VectorUnpackl>(a: T) -> <T as sealed::VectorUnpackl>::Result {
+    a.vec_unpackl()
+}
+
 /// Merges the least significant ("low") halves of two vectors.
 #[inline]
 #[target_feature(enable = "vector")]
@@ -2466,6 +3305,24 @@ pub unsafe fn vec_sum4<T: sealed::VectorSum4>(a: T, b: T) -> vector_unsigned_int
     a.vec_sum4(b)
 }
 
+/// Vector Addition unsigned 128-bits
+///
+/// Adds unsigned quadword values.
+///
+/// This function operates on the vectors as 128-bit unsigned integers. It returns low 128 bits of a + b.
+#[inline]
+#[target_feature(enable = "vector")]
+#[unstable(feature = "stdarch_s390x", issue = "135681")]
+#[cfg_attr(test, assert_instr(vaq))]
+pub unsafe fn vec_add_u128(
+    a: vector_unsigned_char,
+    b: vector_unsigned_char,
+) -> vector_unsigned_char {
+    let a: u128 = transmute(a);
+    let b: u128 = transmute(b);
+    transmute(a.wrapping_add(b))
+}
+
 /// Vector Subtract unsigned 128-bits
 ///
 /// Subtracts unsigned quadword values.
@@ -2511,7 +3368,61 @@ pub unsafe fn vec_subc_u128(
     a: vector_unsigned_char,
     b: vector_unsigned_char,
 ) -> vector_unsigned_char {
+    // FIXME(llvm) sadly this does not work https://github.com/llvm/llvm-project/issues/129608
+    // let a: u128 = transmute(a);
+    // let b: u128 = transmute(b);
+    // transmute(!a.overflowing_sub(b).1 as u128)
     transmute(vscbiq(transmute(a), transmute(b)))
+}
+
+/// Vector Add Compute Carryout unsigned 128-bits
+#[inline]
+#[target_feature(enable = "vector")]
+#[unstable(feature = "stdarch_s390x", issue = "135681")]
+#[cfg_attr(test, assert_instr(vaccq))]
+pub unsafe fn vec_addc_u128(
+    a: vector_unsigned_char,
+    b: vector_unsigned_char,
+) -> vector_unsigned_char {
+    let a: u128 = transmute(a);
+    let b: u128 = transmute(b);
+    transmute(a.overflowing_add(b).1 as u128)
+}
+
+/// Vector Add With Carry unsigned 128-bits
+#[inline]
+#[target_feature(enable = "vector")]
+#[unstable(feature = "stdarch_s390x", issue = "135681")]
+#[cfg_attr(test, assert_instr(vacq))]
+pub unsafe fn vec_adde_u128(
+    a: vector_unsigned_char,
+    b: vector_unsigned_char,
+    c: vector_unsigned_char,
+) -> vector_unsigned_char {
+    let a: u128 = transmute(a);
+    let b: u128 = transmute(b);
+    let c: u128 = transmute(c);
+    // FIXME(llvm) sadly this does not work
+    //     let (d, _carry) = a.carrying_add(b, c & 1 != 0);
+    //     transmute(d)
+    transmute(vacq(a, b, c))
+}
+
+/// Vector Add With Carry Compute Carry unsigned 128-bits
+#[inline]
+#[target_feature(enable = "vector")]
+#[unstable(feature = "stdarch_s390x", issue = "135681")]
+#[cfg_attr(test, assert_instr(vacccq))]
+pub unsafe fn vec_addec_u128(
+    a: vector_unsigned_char,
+    b: vector_unsigned_char,
+    c: vector_unsigned_char,
+) -> vector_unsigned_char {
+    let a: u128 = transmute(a);
+    let b: u128 = transmute(b);
+    let c: u128 = transmute(c);
+    let (_d, carry) = a.carrying_add(b, c & 1 != 0);
+    transmute(carry as u128)
 }
 
 /// Subtracts unsigned quadword values with carry bit from a previous operation.
@@ -2558,7 +3469,7 @@ pub unsafe fn vec_subec_u128(
 #[target_feature(enable = "vector")]
 #[unstable(feature = "stdarch_s390x", issue = "135681")]
 #[cfg_attr(test, assert_instr(vrepib, IMM = 42))]
-pub unsafe fn vec_splat_i8<const IMM: i8>() -> vector_signed_char {
+pub unsafe fn vec_splat_s8<const IMM: i8>() -> vector_signed_char {
     vector_signed_char([IMM; 16])
 }
 
@@ -2567,7 +3478,7 @@ pub unsafe fn vec_splat_i8<const IMM: i8>() -> vector_signed_char {
 #[target_feature(enable = "vector")]
 #[unstable(feature = "stdarch_s390x", issue = "135681")]
 #[cfg_attr(test, assert_instr(vrepih, IMM = 42))]
-pub unsafe fn vec_splat_i16<const IMM: i16>() -> vector_signed_short {
+pub unsafe fn vec_splat_s16<const IMM: i16>() -> vector_signed_short {
     vector_signed_short([IMM as i16; 8])
 }
 
@@ -2576,7 +3487,7 @@ pub unsafe fn vec_splat_i16<const IMM: i16>() -> vector_signed_short {
 #[target_feature(enable = "vector")]
 #[unstable(feature = "stdarch_s390x", issue = "135681")]
 #[cfg_attr(test, assert_instr(vrepif, IMM = 42))]
-pub unsafe fn vec_splat_i32<const IMM: i16>() -> vector_signed_int {
+pub unsafe fn vec_splat_s32<const IMM: i16>() -> vector_signed_int {
     vector_signed_int([IMM as i32; 4])
 }
 
@@ -2585,7 +3496,7 @@ pub unsafe fn vec_splat_i32<const IMM: i16>() -> vector_signed_int {
 #[target_feature(enable = "vector")]
 #[unstable(feature = "stdarch_s390x", issue = "135681")]
 #[cfg_attr(test, assert_instr(vrepig, IMM = 42))]
-pub unsafe fn vec_splat_i64<const IMM: i16>() -> vector_signed_long_long {
+pub unsafe fn vec_splat_s64<const IMM: i16>() -> vector_signed_long_long {
     vector_signed_long_long([IMM as i64; 2])
 }
 
@@ -2675,6 +3586,159 @@ vec_find_any_cc! {
     VectorFindAnyNeOrZeroIdxCC vec_find_any_ne_or_0_idx_cc
 }
 
+/// Vector Load
+#[inline]
+#[target_feature(enable = "vector")]
+#[unstable(feature = "stdarch_s390x", issue = "135681")]
+pub unsafe fn vec_xl<T: sealed::VectorLoad>(offset: isize, ptr: *const T::ElementType) -> T {
+    T::vec_xl(offset, ptr)
+}
+
+/// Vector Load Pair
+#[inline]
+#[target_feature(enable = "vector")]
+#[unstable(feature = "stdarch_s390x", issue = "135681")]
+pub unsafe fn vec_load_pair<T: sealed::VectorLoadPair>(a: T::ElementType, b: T::ElementType) -> T {
+    T::vec_load_pair(a, b)
+}
+
+/// Vector Load to Block Boundary
+#[inline]
+#[target_feature(enable = "vector")]
+#[unstable(feature = "stdarch_s390x", issue = "135681")]
+pub unsafe fn vec_load_bndry<T: sealed::VectorLoad, const BLOCK_BOUNDARY: u16>(
+    ptr: *const T::ElementType,
+) -> MaybeUninit<T> {
+    T::vec_load_bndry::<BLOCK_BOUNDARY>(ptr)
+}
+
+/// Vector Store
+#[inline]
+#[target_feature(enable = "vector")]
+#[unstable(feature = "stdarch_s390x", issue = "135681")]
+pub unsafe fn vec_xst<T: sealed::VectorStore>(vector: T, offset: isize, ptr: *mut T::ElementType) {
+    vector.vec_xst(offset, ptr)
+}
+
+/// Vector Load with Length
+#[inline]
+#[target_feature(enable = "vector")]
+#[unstable(feature = "stdarch_s390x", issue = "135681")]
+pub unsafe fn vec_load_len<T: sealed::VectorLoad>(
+    ptr: *const T::ElementType,
+    byte_count: u32,
+) -> T {
+    T::vec_load_len(ptr, byte_count)
+}
+
+/// Vector Store with Length
+#[inline]
+#[target_feature(enable = "vector")]
+#[unstable(feature = "stdarch_s390x", issue = "135681")]
+pub unsafe fn vec_store_len<T: sealed::VectorStore>(
+    vector: T,
+    ptr: *mut T::ElementType,
+    byte_count: u32,
+) {
+    vector.vec_store_len(ptr, byte_count)
+}
+
+/// Vector Load Rightmost with Length
+#[inline]
+#[target_feature(enable = "vector-packed-decimal")]
+#[unstable(feature = "stdarch_s390x", issue = "135681")]
+#[cfg_attr(test, assert_instr(vlrlr))]
+pub unsafe fn vec_load_len_r(ptr: *const u8, byte_count: u32) -> vector_unsigned_char {
+    vlrl(byte_count, ptr)
+}
+
+/// Vector Store Rightmost with Length
+#[inline]
+#[target_feature(enable = "vector-packed-decimal")]
+#[unstable(feature = "stdarch_s390x", issue = "135681")]
+#[cfg_attr(test, assert_instr(vstrlr))]
+pub unsafe fn vec_store_len_r(vector: vector_unsigned_char, ptr: *mut u8, byte_count: u32) {
+    vstrl(vector, byte_count, ptr)
+}
+
+/// Vector Multiply Add
+#[inline]
+#[target_feature(enable = "vector-packed-decimal")]
+#[unstable(feature = "stdarch_s390x", issue = "135681")]
+pub unsafe fn vec_madd<T: sealed::VectorMadd>(a: T, b: T, c: T) -> T {
+    a.vec_madd(b, c)
+}
+
+/// Vector Multiply Add
+#[inline]
+#[target_feature(enable = "vector-packed-decimal")]
+#[unstable(feature = "stdarch_s390x", issue = "135681")]
+pub unsafe fn vec_msub<T: sealed::VectorMadd>(a: T, b: T, c: T) -> T {
+    a.vec_msub(b, c)
+}
+
+/// Vector Checksum
+#[inline]
+#[target_feature(enable = "vector")]
+#[unstable(feature = "stdarch_s390x", issue = "135681")]
+#[cfg_attr(test, assert_instr(vcksm))]
+pub unsafe fn vec_checksum(a: vector_unsigned_int, b: vector_unsigned_int) -> vector_unsigned_int {
+    vcksm(a, b)
+}
+
+/// Vector Multiply Even
+#[inline]
+#[target_feature(enable = "vector")]
+#[unstable(feature = "stdarch_s390x", issue = "135681")]
+pub unsafe fn vec_mule<T: sealed::VectorMule<U>, U>(a: T, b: T) -> U {
+    a.vec_mule(b)
+}
+
+/// Vector Galois Field Multiply Sum
+#[inline]
+#[target_feature(enable = "vector")]
+#[unstable(feature = "stdarch_s390x", issue = "135681")]
+pub unsafe fn vec_gfmsum<T: sealed::VectorGfmsum<U>, U>(a: T, b: T) -> U {
+    a.vec_gfmsum(b)
+}
+
+/// Vector Galois Field Multiply Sum
+#[inline]
+#[target_feature(enable = "vector")]
+#[unstable(feature = "stdarch_s390x", issue = "135681")]
+pub unsafe fn vec_gfmsum_accum<T: sealed::VectorGfmsumAccum>(
+    a: T,
+    b: T,
+    c: T::Result,
+) -> T::Result {
+    a.vec_gfmsum_accum(b, c)
+}
+
+/// Vector Galois Field Multiply Sum 128-bits
+#[inline]
+#[target_feature(enable = "vector")]
+#[unstable(feature = "stdarch_s390x", issue = "135681")]
+#[cfg_attr(test, assert_instr(vgfmg))]
+pub unsafe fn vec_gfmsum_128(
+    a: vector_unsigned_long_long,
+    b: vector_unsigned_long_long,
+) -> vector_unsigned_char {
+    transmute(vgfmg(a, b))
+}
+
+/// Vector Galois Field Multiply Sum and Accumulate 128-bits
+#[inline]
+#[target_feature(enable = "vector")]
+#[unstable(feature = "stdarch_s390x", issue = "135681")]
+#[cfg_attr(test, assert_instr(vgfmag))]
+pub unsafe fn vec_gfmsum_accum_128(
+    a: vector_unsigned_long_long,
+    b: vector_unsigned_long_long,
+    c: vector_unsigned_char,
+) -> vector_unsigned_char {
+    transmute(vgfmag(a, b, transmute(c)))
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -2697,6 +3761,11 @@ mod tests {
     #[test]
     fn mergeh_mask() {
         assert_eq!(ShuffleMask::<4>::merge_high().0, [0, 4, 1, 5]);
+    }
+
+    #[test]
+    fn pack_mask() {
+        assert_eq!(ShuffleMask::<4>::pack().0, [1, 3, 5, 7]);
     }
 
     #[test]
@@ -3075,11 +4144,6 @@ mod tests {
     [0, 0, 0, 1, 0, 0, 0, 2, 0, 0, 0, 3, 0, 0, 0, 16],
     [-4, -2, -1, -8] }
 
-    test_vec_2! { test_vec_rl, vec_rl, u32x4,
-    [0x12345678, 0x9ABCDEF0, 0x0F0F0F0F, 0x12345678],
-    [4, 8, 12, 68],
-    [0x23456781, 0xBCDEF09A, 0xF0F0F0F0, 0x23456781] }
-
     test_vec_1! { test_vec_reve_f32, vec_reve, f32x4,
         [0.1, 0.5, 0.6, 0.9],
         [0.9, 0.6, 0.5, 0.1]
@@ -3377,5 +4441,239 @@ mod tests {
         let d = unsafe { vec_find_any_ne_or_0_idx_cc(a, b, &mut c) };
         assert_eq!(c, 3);
         assert_eq!(d.as_array(), &[0, 16, 0, 0]);
+    }
+
+    #[simd_test(enable = "vector")]
+    fn test_vector_load() {
+        let expected = [0xAAAA_AAAA, 0xBBBB_BBBB, 0xCCCC_CCCC, 0xDDDD_DDDD];
+
+        let source: [u32; 8] = [
+            0xAAAA_AAAA,
+            0xBBBB_BBBB,
+            0xCCCC_CCCC,
+            0xDDDD_DDDD,
+            0,
+            0,
+            0,
+            0,
+        ];
+        assert_eq!(
+            unsafe { vec_xl::<vector_unsigned_int>(0, source.as_ptr()) }.as_array(),
+            &expected
+        );
+
+        // offset is in bytes
+        let source: [u32; 8] = [
+            0x0000_AAAA,
+            0xAAAA_BBBB,
+            0xBBBB_CCCC,
+            0xCCCC_DDDD,
+            0xDDDD_0000,
+            0,
+            0,
+            0,
+        ];
+        assert_eq!(
+            unsafe { vec_xl::<vector_unsigned_int>(2, source.as_ptr()) }.as_array(),
+            &expected
+        );
+    }
+
+    #[simd_test(enable = "vector")]
+    fn test_vector_store() {
+        let vec = vector_unsigned_int([0xAAAA_AAAA, 0xBBBB_BBBB, 0xCCCC_CCCC, 0xDDDD_DDDD]);
+
+        let mut dest = [0u32; 8];
+        unsafe { vec_xst(vec, 0, dest.as_mut_ptr()) };
+        assert_eq!(
+            dest,
+            [
+                0xAAAA_AAAA,
+                0xBBBB_BBBB,
+                0xCCCC_CCCC,
+                0xDDDD_DDDD,
+                0,
+                0,
+                0,
+                0
+            ]
+        );
+
+        // offset is in bytes
+        let mut dest = [0u32; 8];
+        unsafe { vec_xst(vec, 2, dest.as_mut_ptr()) };
+        assert_eq!(
+            dest,
+            [
+                0x0000_AAAA,
+                0xAAAA_BBBB,
+                0xBBBB_CCCC,
+                0xCCCC_DDDD,
+                0xDDDD_0000,
+                0,
+                0,
+                0,
+            ]
+        );
+    }
+
+    #[simd_test(enable = "vector")]
+    fn test_vector_lcbb() {
+        #[repr(align(64))]
+        struct Align64<T>(T);
+
+        static ARRAY: Align64<[u8; 128]> = Align64([0; 128]);
+
+        assert_eq!(unsafe { __lcbb::<64>(ARRAY.0[64..].as_ptr()) }, 16);
+        assert_eq!(unsafe { __lcbb::<64>(ARRAY.0[63..].as_ptr()) }, 1);
+        assert_eq!(unsafe { __lcbb::<64>(ARRAY.0[56..].as_ptr()) }, 8);
+        assert_eq!(unsafe { __lcbb::<64>(ARRAY.0[48..].as_ptr()) }, 16);
+    }
+
+    test_vec_2! { test_vec_pack, vec_pack, i16x8, i16x8 -> i8x16,
+        [0, 1, -1, 42, 32767, -32768, 30000, -30000],
+        [32767, -32768, 12345, -12345, 0, 1, -1, 42],
+        [0, 1, -1, 42, -1, 0, 48, -48, -1, 0, 57, -57, 0, 1, -1, 42]
+    }
+
+    test_vec_2! { test_vec_packs, vec_packs, i16x8, i16x8 -> i8x16,
+        [0, 1, -1, 42, 32767, -32768, 30000, -30000],
+        [32767, -32768, 12345, -12345, 0, 1, -1, 42],
+        [0, 1, -1, 42, 127, -128, 127, -128, 127, -128, 127, -128, 0, 1, -1, 42]
+    }
+
+    test_vec_2! { test_vec_packsu_signed, vec_packsu, i16x8, i16x8 -> u8x16,
+        [0, 1, -1, 42, 32767, -32768, 30000, -30000],
+        [32767, -32768, 12345, -12345, 0, 1, -1, 42],
+        [0, 1, 0, 42, 255, 0, 255, 0, 255, 0, 255, 0, 0, 1, 0, 42]
+    }
+
+    test_vec_2! { test_vec_packsu_unsigned, vec_packsu, u16x8, u16x8 -> u8x16,
+        [65535, 32768, 1234, 5678, 16, 8, 4, 2],
+        [30000, 25000, 20000, 15000, 31, 63, 127, 255],
+        [255, 255, 255, 255, 16, 8, 4, 2, 255, 255, 255, 255, 31, 63, 127, 255]
+    }
+
+    test_vec_2! { test_vec_rl, vec_rl, u32x4,
+        [0x12345678, 0x9ABCDEF0, 0x0F0F0F0F, 0x12345678],
+        [4, 8, 12, 68],
+        [0x23456781, 0xBCDEF09A, 0xF0F0F0F0, 0x23456781]
+    }
+
+    test_vec_1! { test_vec_unpackh_i, vec_unpackh, i16x8 -> i32x4,
+        [0x1234, -2, 0x0F0F, -32768, 0, 0, 0, 0],
+        [0x1234, -2, 0x0F0F, -32768]
+    }
+
+    test_vec_1! { test_vec_unpackh_u, vec_unpackh, u16x8 -> u32x4,
+        [0x1234, 0xFFFF, 0x0F0F, 0x8000, 0, 0, 0, 0],
+        [0x1234, 0xFFFF, 0x0F0F, 0x8000]
+    }
+
+    test_vec_1! { test_vec_unpackl_i, vec_unpackl, i16x8 -> i32x4,
+        [0, 0, 0, 0, 0x1234, -2, 0x0F0F, -32768],
+        [0x1234, -2, 0x0F0F, -32768]
+    }
+
+    test_vec_1! { test_vec_unpackl_u, vec_unpackl, u16x8 -> u32x4,
+        [0, 0, 0, 0, 0x1234, 0xFFFF, 0x0F0F, 0x8000],
+        [0x1234, 0xFFFF, 0x0F0F, 0x8000]
+    }
+
+    test_vec_2! { test_vec_avg, vec_avg, u32x4,
+        [2, 1, u32::MAX, 0],
+        [4, 2, 2, 0],
+        [3, (1u32 + 2).div_ceil(2), (u32::MAX as u64 + 2u64).div_ceil(2) as u32, 0]
+    }
+
+    test_vec_2! { test_vec_checksum, vec_checksum, u32x4,
+        [1, 2, 3, u32::MAX],
+        [5, 6, 7, 8],
+        [0, 12, 0, 0]
+    }
+
+    test_vec_2! { test_vec_add_u128, vec_add_u128, u8x16,
+        [0x01, 0x05, 0x0F, 0x1A, 0x2F, 0x3F, 0x50, 0x65,
+                              0x7A, 0x8F, 0x9A, 0xAD, 0xB0, 0xC3, 0xD5, 0xE8],
+        [0xF0, 0xEF, 0xC3, 0xB1, 0x92, 0x71, 0x5A, 0x43,
+                              0x3B, 0x29, 0x13, 0x04, 0xD7, 0xA1, 0x8C, 0x76],
+        [0xF1, 0xF4, 0xD2, 0xCB, 0xC1, 0xB0, 0xAA, 0xA8, 0xB5, 0xB8, 0xAD, 0xB2, 0x88, 0x65, 0x62, 0x5E]
+    }
+
+    #[simd_test(enable = "vector")]
+    fn test_vec_addc_u128() {
+        unsafe {
+            let a = u128::MAX;
+            let b = 1u128;
+
+            let d: u128 = transmute(vec_addc_u128(transmute(a), transmute(b)));
+            assert!(a.checked_add(b).is_none());
+            assert_eq!(d, 1);
+
+            let a = 1u128;
+            let b = 1u128;
+
+            let d: u128 = transmute(vec_addc_u128(transmute(a), transmute(b)));
+            assert!(a.checked_add(b).is_some());
+            assert_eq!(d, 0);
+        }
+    }
+
+    #[simd_test(enable = "vector")]
+    fn test_vec_subc_u128() {
+        unsafe {
+            let a = 0u128;
+            let b = 1u128;
+
+            let d: u128 = transmute(vec_subc_u128(transmute(a), transmute(b)));
+            assert!(a.checked_sub(b).is_none());
+            assert_eq!(d, 0);
+
+            let a = 1u128;
+            let b = 1u128;
+
+            let d: u128 = transmute(vec_subc_u128(transmute(a), transmute(b)));
+            assert!(a.checked_sub(b).is_some());
+            assert_eq!(d, 1);
+        }
+    }
+
+    test_vec_2! { test_vec_mule_u, vec_mule, u16x8, u16x8 -> u32x4,
+        [0xFFFF, 0, 2, 0, 2, 0, 1, 0],
+        [0xFFFF, 0, 4, 0, 0xFFFF, 0, 2, 0],
+        [0xFFFE_0001, 8, 0x0001_FFFE, 2]
+    }
+
+    test_vec_2! { test_vec_mule_i, vec_mule, i16x8, i16x8 -> i32x4,
+        [i16::MIN, 0, -2, 0, 2, 0, 1, 0],
+        [i16::MIN, 0, 4, 0, i16::MAX, 0, 2, 0],
+        [0x4000_0000, -8, 0xFFFE, 2]
+    }
+
+    test_vec_2! { test_vec_gfmsum_1, vec_gfmsum, u16x8, u16x8 -> u32x4,
+        [0x1234, 0x5678, 0x9ABC, 0xDEF0, 0x1357, 0x2468, 0xACE0, 0xBDF0],
+        [0xFFFF, 0x0001, 0x8000, 0x7FFF, 0xAAAA, 0x5555, 0x1234, 0x5678],
+        [0xE13A794, 0x68764A50, 0x94AA3E, 0x2C93F300]
+    }
+
+    test_vec_2! { test_vec_gfmsum_2, vec_gfmsum, u16x8, u16x8 -> u32x4,
+        [0x0000, 0xFFFF, 0xAAAA, 0x5555, 0x1234, 0x5678, 0x9ABC, 0xDEF0],
+        [0xFFFF, 0x0000, 0x5555, 0xAAAA, 0x0001, 0x8000, 0x7FFF, 0x1357],
+        [0, 0, 0x2B3C1234, 0x3781D244]
+    }
+
+    #[simd_test(enable = "vector")]
+    fn test_vec_gfmsum_128() {
+        let a = vector_unsigned_long_long([1, 2]);
+        let b = vector_unsigned_long_long([3, 4]);
+
+        let d: u128 = unsafe { transmute(vec_gfmsum_128(a, b)) };
+        assert_eq!(d, 11);
+
+        let a = vector_unsigned_long_long([0x0101010101010101, 0x0202020202020202]);
+        let b = vector_unsigned_long_long([0x0404040404040404, 0x0505050505050505]);
+
+        let d: u128 = unsafe { transmute(vec_gfmsum_128(a, b)) };
+        assert_eq!(d, 0xE000E000E000E000E000E000E000E);
     }
 }
