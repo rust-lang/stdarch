@@ -193,6 +193,7 @@ others at:
 * [`powerpc64`]
 * [`nvptx`]
 * [`wasm32`]
+* [`s390x`]
 * [`loongarch64`]
 
 [`x86`]: ../../core/arch/x86/index.html
@@ -207,6 +208,7 @@ others at:
 [`powerpc64`]: ../../core/arch/powerpc64/index.html
 [`nvptx`]: ../../core/arch/nvptx/index.html
 [`wasm32`]: ../../core/arch/wasm32/index.html
+[`s390x`]: ../../core/arch/s390x/index.html
 [`loongarch64`]: ../../core/arch/loongarch64/index.html
 
 # Examples
