@@ -125,6 +125,10 @@ features! {
 
     @FEATURE: #[stable(feature = "riscv_ratified", since = "1.78.0")] a: "a";
     /// "A" Extension for Atomic Instructions
+    @FEATURE: #[unstable(feature = "stdarch_riscv_feature_detection", issue = "111192")] zacas: "zacas";
+    /// Atomic Compare-And-Swap Instructions
+    @FEATURE: #[unstable(feature = "stdarch_riscv_feature_detection", issue = "111192")] zawrs: "zawrs";
+    /// Wait on Reservation Set
     @FEATURE: #[unstable(feature = "stdarch_riscv_feature_detection", issue = "111192")] zam: "zam";
     without cfg check: true;
     /// "Zam" Extension for Misaligned Atomics
@@ -194,6 +198,85 @@ features! {
 
     @FEATURE: #[unstable(feature = "stdarch_riscv_feature_detection", issue = "111192")] v: "v";
     /// "V" Extension for Vector Operations
+    @FEATURE: #[unstable(feature = "stdarch_riscv_feature_detection", issue = "111192")] zvfh: "zvfh";
+    without cfg check: true; // FIXME: added in https://github.com/rust-lang/rust/pull/138742
+    /// Vector Extension for Half-Precision Floating-Point
+    @FEATURE: #[unstable(feature = "stdarch_riscv_feature_detection", issue = "111192")] zvfhmin: "zvfhmin";
+    without cfg check: true; // FIXME: added in https://github.com/rust-lang/rust/pull/138742
+    /// Vector Extension for Minimal Half-Precision Floating-Point
+    @FEATURE: #[unstable(feature = "stdarch_riscv_feature_detection", issue = "111192")] zve32x: "zve32x";
+    without cfg check: true; // FIXME: added in https://github.com/rust-lang/rust/pull/138742
+    /// Vector Extensions for Embedded Processors
+    @FEATURE: #[unstable(feature = "stdarch_riscv_feature_detection", issue = "111192")] zve32f: "zve32f";
+    without cfg check: true; // FIXME: added in https://github.com/rust-lang/rust/pull/138742
+    /// Vector Extensions for Embedded Processors
+    @FEATURE: #[unstable(feature = "stdarch_riscv_feature_detection", issue = "111192")] zve64x: "zve64x";
+    without cfg check: true; // FIXME: added in https://github.com/rust-lang/rust/pull/138742
+    /// Vector Extensions for Embedded Processors
+    @FEATURE: #[unstable(feature = "stdarch_riscv_feature_detection", issue = "111192")] zve64f: "zve64f";
+    without cfg check: true; // FIXME: added in https://github.com/rust-lang/rust/pull/138742
+    /// Vector Extensions for Embedded Processors
+    @FEATURE: #[unstable(feature = "stdarch_riscv_feature_detection", issue = "111192")] zve64d: "zve64d";
+    without cfg check: true; // FIXME: added in https://github.com/rust-lang/rust/pull/138742
+    /// Vector Extensions for Embedded Processors
+
+    // FIXME: we can implement this by getting the current vlen
+    // zvl*b: Minimum Vector Length Standard Extensions
+
+    @FEATURE: #[unstable(feature = "stdarch_riscv_feature_detection", issue = "111192")] zvkb: "zvkb";
+    without cfg check: true; // FIXME: added in https://github.com/rust-lang/rust/pull/138742
+    /// Vector Bit-manipulation used in Cryptography
+    @FEATURE: #[unstable(feature = "stdarch_riscv_feature_detection", issue = "111192")] zvbb: "zvbb";
+    without cfg check: true; // FIXME: added in https://github.com/rust-lang/rust/pull/138742
+    /// Vector basic bit-manipulation instructions
+    @FEATURE: #[unstable(feature = "stdarch_riscv_feature_detection", issue = "111192")] zvbc: "zvbc";
+    without cfg check: true; // FIXME: added in https://github.com/rust-lang/rust/pull/138742
+    /// Vector Carryless Multiplication
+    @FEATURE: #[unstable(feature = "stdarch_riscv_feature_detection", issue = "111192")] zvkg: "zvkg";
+    without cfg check: true; // FIXME: added in https://github.com/rust-lang/rust/pull/138742
+    /// Vector GCM instructions for Cryptography
+    @FEATURE: #[unstable(feature = "stdarch_riscv_feature_detection", issue = "111192")] zvkned: "zvkned";
+    without cfg check: true; // FIXME: added in https://github.com/rust-lang/rust/pull/138742
+    /// Vector AES Encryption & Decryption (Single Round)
+    @FEATURE: #[unstable(feature = "stdarch_riscv_feature_detection", issue = "111192")] zvknha: "zvknha";
+    without cfg check: true; // FIXME: added in https://github.com/rust-lang/rust/pull/138742
+    /// Vector SHA-2 (SHA-256 only))
+    @FEATURE: #[unstable(feature = "stdarch_riscv_feature_detection", issue = "111192")] zvknhb: "zvknhb";
+    without cfg check: true; // FIXME: added in https://github.com/rust-lang/rust/pull/138742
+    /// Vector SHA-2 (SHA-256 and SHA-512)
+    @FEATURE: #[unstable(feature = "stdarch_riscv_feature_detection", issue = "111192")] zvksed: "zvksed";
+    without cfg check: true; // FIXME: added in https://github.com/rust-lang/rust/pull/138742
+    /// SM4 Block Cipher Instructions
+    @FEATURE: #[unstable(feature = "stdarch_riscv_feature_detection", issue = "111192")] zvksh: "zvksh";
+    without cfg check: true; // FIXME: added in https://github.com/rust-lang/rust/pull/138742
+    /// SM3 Hash Function Instructions
+    @FEATURE: #[unstable(feature = "stdarch_riscv_feature_detection", issue = "111192")] zvkn: "zvkn";
+    without cfg check: true; // FIXME: added in https://github.com/rust-lang/rust/pull/138742
+    /// Shorthand for 'Zvkned', 'Zvknhb', 'Zvkb', and 'Zvkt'
+    @FEATURE: #[unstable(feature = "stdarch_riscv_feature_detection", issue = "111192")] zvknc: "zvknc";
+    without cfg check: true; // FIXME: added in https://github.com/rust-lang/rust/pull/138742
+    /// Shorthand for 'Zvkn' and 'Zvbc'
+    @FEATURE: #[unstable(feature = "stdarch_riscv_feature_detection", issue = "111192")] zvkng: "zvkng";
+    without cfg check: true; // FIXME: added in https://github.com/rust-lang/rust/pull/138742
+    /// Shorthand for 'Zvkn' and 'Zvkg'
+    @FEATURE: #[unstable(feature = "stdarch_riscv_feature_detection", issue = "111192")] zvks: "zvks";
+    without cfg check: true; // FIXME: added in https://github.com/rust-lang/rust/pull/138742
+    /// Shorthand for 'Zvksed', 'Zvksh', 'Zvkb', and 'Zvkt'
+    @FEATURE: #[unstable(feature = "stdarch_riscv_feature_detection", issue = "111192")] zvksc: "zvksc";
+    without cfg check: true; // FIXME: added in https://github.com/rust-lang/rust/pull/138742
+    /// Shorthand for 'Zvks' and 'Zvbc'
+    @FEATURE: #[unstable(feature = "stdarch_riscv_feature_detection", issue = "111192")] zvksg: "zvksg";
+    without cfg check: true; // FIXME: added in https://github.com/rust-lang/rust/pull/138742
+    /// Shorthand for 'Zvks' and 'Zvkg'
+    @FEATURE: #[unstable(feature = "stdarch_riscv_feature_detection", issue = "111192")] zvkt: "zvkt";
+    without cfg check: true; // FIXME: added in https://github.com/rust-lang/rust/pull/138742
+    /// Vector Data-Independent Execution Latency
+
+    @FEATURE: #[unstable(feature = "stdarch_riscv_feature_detection", issue = "111192")] unaligned_scalar_mem: "unaligned-scalar-mem";
+    /// Has reasonably performant unaligned scalar
+    @FEATURE: #[unstable(feature = "stdarch_riscv_feature_detection", issue = "111192")] unaligned_vector_mem: "unaligned-vector-mem";
+    without cfg check: true; // FIXME: added in https://github.com/rust-lang/rust/pull/138742
+    /// Has reasonably performant unaligned vector
 
     @FEATURE: #[unstable(feature = "stdarch_riscv_feature_detection", issue = "111192")] svnapot: "svnapot";
     without cfg check: true;

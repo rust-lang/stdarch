@@ -5,6 +5,10 @@
     any(target_arch = "aarch64", target_arch = "arm64ec"),
     feature(stdarch_aarch64_feature_detection)
 )]
+#![cfg_attr(
+    any(target_arch = "riscv32", target_arch = "riscv64"),
+    feature(stdarch_riscv_feature_detection)
+)]
 #![cfg_attr(target_arch = "powerpc", feature(stdarch_powerpc_feature_detection))]
 #![cfg_attr(target_arch = "powerpc64", feature(stdarch_powerpc_feature_detection))]
 #![cfg_attr(target_arch = "s390x", feature(stdarch_s390x_feature_detection))]
@@ -15,6 +19,8 @@
         target_arch = "arm",
         target_arch = "aarch64",
         target_arch = "arm64ec",
+        target_arch = "riscv32",
+        target_arch = "riscv64",
         target_arch = "powerpc",
         target_arch = "powerpc64",
         target_arch = "s390x",
@@ -218,6 +224,97 @@ fn aarch64_darwin() {
     println!("aes: {:?}", is_aarch64_feature_detected!("aes"));
     println!("sha2: {:?}", is_aarch64_feature_detected!("sha2"));
     println!("sha3: {:?}", is_aarch64_feature_detected!("sha3"));
+}
+
+#[test]
+#[cfg(all(
+    any(target_arch = "riscv32", target_arch = "riscv64"),
+    target_os = "linux"
+))]
+fn riscv_linux() {
+    println!("rv32i: {}", is_riscv_feature_detected!("rv32i"));
+    println!("rv32e: {}", is_riscv_feature_detected!("rv32e"));
+    println!("rv64i: {}", is_riscv_feature_detected!("rv64i"));
+    println!("rv128i: {}", is_riscv_feature_detected!("rv128i"));
+    println!("zicsr: {}", is_riscv_feature_detected!("zicsr"));
+    println!("zicntr: {}", is_riscv_feature_detected!("zicntr"));
+    println!("zihpm: {}", is_riscv_feature_detected!("zihpm"));
+    println!("zifencei: {}", is_riscv_feature_detected!("zifencei"));
+    println!("zihintpause: {}", is_riscv_feature_detected!("zihintpause"));
+    println!("m: {}", is_riscv_feature_detected!("m"));
+    println!("a: {}", is_riscv_feature_detected!("a"));
+    println!("zacas: {}", is_riscv_feature_detected!("zacas"));
+    println!("zawrs: {}", is_riscv_feature_detected!("zawrs"));
+    println!("zam: {}", is_riscv_feature_detected!("zam"));
+    println!("ztso: {}", is_riscv_feature_detected!("ztso"));
+    println!("f: {}", is_riscv_feature_detected!("f"));
+    println!("d: {}", is_riscv_feature_detected!("d"));
+    println!("q: {}", is_riscv_feature_detected!("q"));
+    println!("zfh: {}", is_riscv_feature_detected!("zfh"));
+    println!("zfhmin: {}", is_riscv_feature_detected!("zfhmin"));
+    println!("zfinx: {}", is_riscv_feature_detected!("zfinx"));
+    println!("zdinx: {}", is_riscv_feature_detected!("zdinx"));
+    println!("zhinx: {}", is_riscv_feature_detected!("zhinx"));
+    println!("zhinxmin: {}", is_riscv_feature_detected!("zhinxmin"));
+    println!("c: {}", is_riscv_feature_detected!("c"));
+    println!("zba: {}", is_riscv_feature_detected!("zba"));
+    println!("zbb: {}", is_riscv_feature_detected!("zbb"));
+    println!("zbc: {}", is_riscv_feature_detected!("zbc"));
+    println!("zbs: {}", is_riscv_feature_detected!("zbs"));
+    println!("zbkb: {}", is_riscv_feature_detected!("zbkb"));
+    println!("zbkc: {}", is_riscv_feature_detected!("zbkc"));
+    println!("zbkx: {}", is_riscv_feature_detected!("zbkx"));
+    println!("zknd: {}", is_riscv_feature_detected!("zknd"));
+    println!("zkne: {}", is_riscv_feature_detected!("zkne"));
+    println!("zknh: {}", is_riscv_feature_detected!("zknh"));
+    println!("zksed: {}", is_riscv_feature_detected!("zksed"));
+    println!("zksh: {}", is_riscv_feature_detected!("zksh"));
+    println!("zkr: {}", is_riscv_feature_detected!("zkr"));
+    println!("zksed: {}", is_riscv_feature_detected!("zksed"));
+    println!("zksh: {}", is_riscv_feature_detected!("zksh"));
+    println!("zkr: {}", is_riscv_feature_detected!("zkr"));
+    println!("zkn: {}", is_riscv_feature_detected!("zkn"));
+    println!("zks: {}", is_riscv_feature_detected!("zks"));
+    println!("zkt: {}", is_riscv_feature_detected!("zkt"));
+    println!("v: {}", is_riscv_feature_detected!("v"));
+    println!("zvfh: {}", is_riscv_feature_detected!("zvfh"));
+    println!("zvfhmin: {}", is_riscv_feature_detected!("zvfhmin"));
+    println!("zve32x: {}", is_riscv_feature_detected!("zve32x"));
+    println!("zve32f: {}", is_riscv_feature_detected!("zve32f"));
+    println!("zve64x: {}", is_riscv_feature_detected!("zve64x"));
+    println!("zve64f: {}", is_riscv_feature_detected!("zve64f"));
+    println!("zve64d: {}", is_riscv_feature_detected!("zve64d"));
+    println!("zvkb: {}", is_riscv_feature_detected!("zvkb"));
+    println!("zvbb: {}", is_riscv_feature_detected!("zvbb"));
+    println!("zvbc: {}", is_riscv_feature_detected!("zvbc"));
+    println!("zvkg: {}", is_riscv_feature_detected!("zvkg"));
+    println!("zvkned: {}", is_riscv_feature_detected!("zvkned"));
+    println!("zvknha: {}", is_riscv_feature_detected!("zvknha"));
+    println!("zvknhb: {}", is_riscv_feature_detected!("zvknhb"));
+    println!("zvksed: {}", is_riscv_feature_detected!("zvksed"));
+    println!("zvksh: {}", is_riscv_feature_detected!("zvksh"));
+    println!("zvkn: {}", is_riscv_feature_detected!("zvkn"));
+    println!("zvknc: {}", is_riscv_feature_detected!("zvknc"));
+    println!("zvkng: {}", is_riscv_feature_detected!("zvkng"));
+    println!("zvks: {}", is_riscv_feature_detected!("zvks"));
+    println!("zvksc: {}", is_riscv_feature_detected!("zvksc"));
+    println!("zvksg: {}", is_riscv_feature_detected!("zvksg"));
+    println!("zvkt: {}", is_riscv_feature_detected!("zvkt"));
+    println!(
+        "unaligned-scalar-mem: {}",
+        is_riscv_feature_detected!("unaligned-scalar-mem")
+    );
+    println!(
+        "unaligned-vector-mem: {}",
+        is_riscv_feature_detected!("unaligned-vector-mem")
+    );
+    println!("svnapot: {}", is_riscv_feature_detected!("svnapot"));
+    println!("svpbmt: {}", is_riscv_feature_detected!("svpbmt"));
+    println!("svinval: {}", is_riscv_feature_detected!("svinval"));
+    println!("h: {}", is_riscv_feature_detected!("h"));
+    println!("s: {}", is_riscv_feature_detected!("s"));
+    println!("j: {}", is_riscv_feature_detected!("j"));
+    println!("p: {}", is_riscv_feature_detected!("p"));
 }
 
 #[test]
