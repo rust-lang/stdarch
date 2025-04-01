@@ -253,7 +253,7 @@ pub(crate) fn detect_features() -> cache::Initializer {
                 out[3].value == RISCV_HWPROBE_MISALIGNED_VECTOR_FAST,
             );
         }
-        // FIXME: should be enough with hwprobe only, but our code below checks h and e
+        // FIXME: should be enough with hwprobe only, but our code below checks e
         // unavailable in neither uapi/asm/hwprobe.h nor uapi/asm/hwcap.h.
         // https://github.com/torvalds/linux/blob/master/arch/riscv/include/uapi/asm/hwcap.h
         // return value;
@@ -321,20 +321,11 @@ pub(crate) fn detect_features() -> cache::Initializer {
         Feature::rv32e,
         bit::test(auxv.hwcap, (b'e' - b'a').into()),
     );
-    // FIXME: h is not exposed in uapi/asm/hwcap.h and uapi/asm/hwprobe.h
-    enable_feature(
-        &mut value,
-        Feature::h,
-        bit::test(auxv.hwcap, (b'h' - b'a').into()),
-    );
     enable_feature(
         &mut value,
         Feature::m,
         bit::test(auxv.hwcap, (b'm' - b'a').into()),
     );
-
-    // Neither hwprobe nor auxv supports detection of supervisor feature.
-    // Since target_os = "linux" is for user mode, their detection is not useful.
 
     value
 }
