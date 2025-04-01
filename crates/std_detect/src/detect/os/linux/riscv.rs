@@ -21,13 +21,13 @@ struct riscv_hwprobe {
 #[allow(non_upper_case_globals)]
 const __NR_riscv_hwprobe: libc::c_long = 258;
 
-const RISCV_HWPROBE_KEY_BASE_BEHAVIOR: i64 = 3;
-const RISCV_HWPROBE_BASE_BEHAVIOR_IMA: u64 = 1 << 0;
+// const RISCV_HWPROBE_KEY_BASE_BEHAVIOR: i64 = 3;
+// const RISCV_HWPROBE_BASE_BEHAVIOR_IMA: u64 = 1 << 0;
 
 const RISCV_HWPROBE_KEY_IMA_EXT_0: i64 = 4;
-const RISCV_HWPROBE_IMA_FD: u64 = 1 << 0;
-const RISCV_HWPROBE_IMA_C: u64 = 1 << 1;
-const RISCV_HWPROBE_IMA_V: u64 = 1 << 2;
+// const RISCV_HWPROBE_IMA_FD: u64 = 1 << 0;
+// const RISCV_HWPROBE_IMA_C: u64 = 1 << 1;
+// const RISCV_HWPROBE_IMA_V: u64 = 1 << 2;
 const RISCV_HWPROBE_EXT_ZBA: u64 = 1 << 3;
 const RISCV_HWPROBE_EXT_ZBB: u64 = 1 << 4;
 const RISCV_HWPROBE_EXT_ZBS: u64 = 1 << 5;
@@ -62,11 +62,11 @@ const RISCV_HWPROBE_EXT_ZTSO: u64 = 1 << 33;
 const RISCV_HWPROBE_EXT_ZACAS: u64 = 1 << 34;
 // const RISCV_HWPROBE_EXT_ZICOND: u64 = 1 << 35;
 const RISCV_HWPROBE_EXT_ZIHINTPAUSE: u64 = 1 << 36;
-const RISCV_HWPROBE_EXT_ZVE32X: u64 = 1 << 37;
-const RISCV_HWPROBE_EXT_ZVE32F: u64 = 1 << 38;
-const RISCV_HWPROBE_EXT_ZVE64X: u64 = 1 << 39;
-const RISCV_HWPROBE_EXT_ZVE64F: u64 = 1 << 40;
-const RISCV_HWPROBE_EXT_ZVE64D: u64 = 1 << 41;
+// const RISCV_HWPROBE_EXT_ZVE32X: u64 = 1 << 37;
+// const RISCV_HWPROBE_EXT_ZVE32F: u64 = 1 << 38;
+// const RISCV_HWPROBE_EXT_ZVE64X: u64 = 1 << 39;
+// const RISCV_HWPROBE_EXT_ZVE64F: u64 = 1 << 40;
+// const RISCV_HWPROBE_EXT_ZVE64D: u64 = 1 << 41;
 // const RISCV_HWPROBE_EXT_ZIMOP: u64 = 1 << 42;
 // const RISCV_HWPROBE_EXT_ZCA: u64 = 1 << 43;
 // const RISCV_HWPROBE_EXT_ZCB: u64 = 1 << 44;
@@ -113,11 +113,79 @@ fn _riscv_hwprobe(out: &mut [riscv_hwprobe]) -> bool {
 pub(crate) fn detect_features() -> cache::Initializer {
     let mut value = cache::Initializer::default();
 
+    let enable_feature = |value: &mut cache::Initializer, feature, enable| {
+        if enable {
+            value.set(feature as u32);
+        }
+    };
+    let enable_features = |value: &mut cache::Initializer, feature_slice: &[Feature], enable| {
+        if enable {
+            for feature in feature_slice {
+                value.set(*feature as u32);
+            }
+        }
+    };
+
+    // The values are part of the platform-specific [asm/hwcap.h][hwcap]
+    //
+    // [hwcap]: https://github.com/torvalds/linux/blob/master/arch/riscv/include/asm/hwcap.h
+    let auxv = auxvec::auxv().expect("read auxvec"); // should not fail on RISC-V platform
+    #[allow(clippy::eq_op)]
+    enable_feature(
+        &mut value,
+        Feature::a,
+        bit::test(auxv.hwcap, (b'a' - b'a').into()),
+    );
+    enable_feature(
+        &mut value,
+        Feature::c,
+        bit::test(auxv.hwcap, (b'c' - b'a').into()),
+    );
+    enable_features(
+        &mut value,
+        &[Feature::d, Feature::f, Feature::zicsr],
+        bit::test(auxv.hwcap, (b'd' - b'a').into()),
+    );
+    enable_features(
+        &mut value,
+        &[Feature::f, Feature::zicsr],
+        bit::test(auxv.hwcap, (b'f' - b'a').into()),
+    );
+    let has_i = bit::test(auxv.hwcap, (b'i' - b'a').into());
+    // If future RV128I is supported, implement with `enable_feature` here
+    // Checking target_pointer_width instead of target_arch is incorrect since
+    // there are RV64ILP32* ABIs.
+    #[cfg(target_arch = "riscv64")]
+    enable_feature(&mut value, Feature::rv64i, has_i);
+    #[cfg(target_arch = "riscv32")]
+    enable_feature(&mut value, Feature::rv32i, has_i);
+    // FIXME: e is not exposed in any of asm/hwcap.h, uapi/asm/hwcap.h, uapi/asm/hwprobe.h
+    #[cfg(target_arch = "riscv32")]
+    enable_feature(
+        &mut value,
+        Feature::rv32e,
+        bit::test(auxv.hwcap, (b'e' - b'a').into()),
+    );
+    enable_feature(
+        &mut value,
+        Feature::m,
+        bit::test(auxv.hwcap, (b'm' - b'a').into()),
+    );
+    let has_v = bit::test(auxv.hwcap, (b'v' - b'a').into());
+    enable_features(
+        &mut value,
+        &[
+            Feature::v,
+            Feature::zve32f,
+            Feature::zve32x,
+            Feature::zve64d,
+            Feature::zve64f,
+            Feature::zve64x,
+        ],
+        has_v,
+    );
+
     let mut out = [
-        riscv_hwprobe {
-            key: RISCV_HWPROBE_KEY_BASE_BEHAVIOR,
-            value: 0,
-        },
         riscv_hwprobe {
             key: RISCV_HWPROBE_KEY_IMA_EXT_0,
             value: 0,
@@ -138,23 +206,13 @@ pub(crate) fn detect_features() -> cache::Initializer {
             }
         };
         if out[0].key != -1 {
-            let base_behavior = out[0].value;
-            let ima = base_behavior & RISCV_HWPROBE_BASE_BEHAVIOR_IMA != 0;
-            // If future RV128I is supported, implement with `enable_feature` here
-            #[cfg(target_arch = "riscv32")]
-            enable_feature(Feature::rv32i, ima);
-            #[cfg(target_arch = "riscv64")]
-            enable_feature(Feature::rv64i, ima);
-            enable_feature(Feature::m, ima);
-            enable_feature(Feature::a, ima);
-        }
-        if out[1].key != -1 {
-            let ima_ext_0 = out[1].value;
-            let fd = ima_ext_0 & RISCV_HWPROBE_IMA_FD != 0;
-            enable_feature(Feature::f, fd);
-            enable_feature(Feature::d, fd);
-            enable_feature(Feature::zicsr, fd); // implied by f
-            enable_feature(Feature::c, ima_ext_0 & RISCV_HWPROBE_IMA_C != 0);
+            let ima_ext_0 = out[0].value;
+            // i, m, a, f, d, zicsr, and c extensions are detected by hwcap.
+            // let fd = ima_ext_0 & RISCV_HWPROBE_IMA_FD != 0;
+            // enable_feature(Feature::f, fd);
+            // enable_feature(Feature::d, fd);
+            // enable_feature(Feature::zicsr, fd); // implied by f
+            // enable_feature(Feature::c, ima_ext_0 & RISCV_HWPROBE_IMA_C != 0);
             // enable_feature(Feature::zicboz, ima_ext_0 & RISCV_HWPROBE_EXT_ZICBOZ != 0);
             enable_feature(Feature::zfh, ima_ext_0 & RISCV_HWPROBE_EXT_ZFH != 0);
             enable_feature(Feature::zfhmin, ima_ext_0 & RISCV_HWPROBE_EXT_ZFHMIN != 0);
@@ -203,129 +261,64 @@ pub(crate) fn detect_features() -> cache::Initializer {
             enable_feature(Feature::zkn, zkn);
             // enable_feature(Feature::zk, zkn & zkr & zkt);
             enable_feature(Feature::zks, zbkb & zbkc & zbkx & zksed & zksh);
-            // Standard Vector Extensions
-            enable_feature(Feature::v, ima_ext_0 & RISCV_HWPROBE_IMA_V != 0);
-            enable_feature(Feature::zvfh, ima_ext_0 & RISCV_HWPROBE_EXT_ZVFH != 0);
-            enable_feature(Feature::zvfhmin, ima_ext_0 & RISCV_HWPROBE_EXT_ZVFHMIN != 0);
-            enable_feature(Feature::zve32x, ima_ext_0 & RISCV_HWPROBE_EXT_ZVE32X != 0);
-            enable_feature(Feature::zve32f, ima_ext_0 & RISCV_HWPROBE_EXT_ZVE32F != 0);
-            enable_feature(Feature::zve64x, ima_ext_0 & RISCV_HWPROBE_EXT_ZVE64X != 0);
-            enable_feature(Feature::zve64f, ima_ext_0 & RISCV_HWPROBE_EXT_ZVE64F != 0);
-            enable_feature(Feature::zve64d, ima_ext_0 & RISCV_HWPROBE_EXT_ZVE64D != 0);
-            // Vector Cryptography and Bit-manipulation Extensions
-            let zvbb = ima_ext_0 & RISCV_HWPROBE_EXT_ZVBB != 0;
-            enable_feature(Feature::zvbb, zvbb);
-            let zvbc = ima_ext_0 & RISCV_HWPROBE_EXT_ZVBC != 0;
-            enable_feature(Feature::zvbc, zvbc);
-            let zvkb = zvbb || ima_ext_0 & RISCV_HWPROBE_EXT_ZVKB != 0;
-            enable_feature(Feature::zvkb, zvkb);
-            let zvkg = ima_ext_0 & RISCV_HWPROBE_EXT_ZVKG != 0;
-            enable_feature(Feature::zvkg, zvkg);
-            let zvkned = ima_ext_0 & RISCV_HWPROBE_EXT_ZVKNED != 0;
-            enable_feature(Feature::zvkned, zvkned);
-            enable_feature(Feature::zvknha, ima_ext_0 & RISCV_HWPROBE_EXT_ZVKNHA != 0);
-            let zvknhb = ima_ext_0 & RISCV_HWPROBE_EXT_ZVKNHB != 0;
-            enable_feature(Feature::zvknhb, zvknhb);
-            let zvksed = ima_ext_0 & RISCV_HWPROBE_EXT_ZVKSED != 0;
-            enable_feature(Feature::zvksed, zvksed);
-            let zvksh = ima_ext_0 & RISCV_HWPROBE_EXT_ZVKSH != 0;
-            enable_feature(Feature::zvksh, zvksh);
-            let zvkt = ima_ext_0 & RISCV_HWPROBE_EXT_ZVKT != 0;
-            enable_feature(Feature::zvkt, zvkt);
-            let zvkn = zvkned & zvknhb & zvkb & zvkt;
-            enable_feature(Feature::zvkn, zvkn);
-            enable_feature(Feature::zvknc, zvkn & zvbc);
-            enable_feature(Feature::zvkng, zvkn & zvkg);
-            let zvks = zvksed & zvksh & zvkb & zvkt;
-            enable_feature(Feature::zvks, zvks);
-            enable_feature(Feature::zvksc, zvks & zvbc);
-            enable_feature(Feature::zvksg, zvks & zvkg);
+            // Refer result from hwcap because it reflects Vector enablement status, unlike hwprobe.
+            // prctl(PR_RISCV_V_GET_CONTROL) is another way to check this but it doesn't work with
+            // qemu-user (as of 9.2.1).
+            // See https://docs.kernel.org/arch/riscv/vector.html for more.
+            if has_v {
+                // Standard Vector Extensions
+                // v and zve{32,64}* extensions are detected by hwcap.
+                // enable_feature(Feature::v, ima_ext_0 & RISCV_HWPROBE_IMA_V != 0);
+                enable_feature(Feature::zvfh, ima_ext_0 & RISCV_HWPROBE_EXT_ZVFH != 0);
+                enable_feature(Feature::zvfhmin, ima_ext_0 & RISCV_HWPROBE_EXT_ZVFHMIN != 0);
+                // enable_feature(Feature::zve32x, ima_ext_0 & RISCV_HWPROBE_EXT_ZVE32X != 0);
+                // enable_feature(Feature::zve32f, ima_ext_0 & RISCV_HWPROBE_EXT_ZVE32F != 0);
+                // enable_feature(Feature::zve64x, ima_ext_0 & RISCV_HWPROBE_EXT_ZVE64X != 0);
+                // enable_feature(Feature::zve64f, ima_ext_0 & RISCV_HWPROBE_EXT_ZVE64F != 0);
+                // enable_feature(Feature::zve64d, ima_ext_0 & RISCV_HWPROBE_EXT_ZVE64D != 0);
+                // Vector Cryptography and Bit-manipulation Extensions
+                let zvbb = ima_ext_0 & RISCV_HWPROBE_EXT_ZVBB != 0;
+                enable_feature(Feature::zvbb, zvbb);
+                let zvbc = ima_ext_0 & RISCV_HWPROBE_EXT_ZVBC != 0;
+                enable_feature(Feature::zvbc, zvbc);
+                let zvkb = zvbb || ima_ext_0 & RISCV_HWPROBE_EXT_ZVKB != 0;
+                enable_feature(Feature::zvkb, zvkb);
+                let zvkg = ima_ext_0 & RISCV_HWPROBE_EXT_ZVKG != 0;
+                enable_feature(Feature::zvkg, zvkg);
+                let zvkned = ima_ext_0 & RISCV_HWPROBE_EXT_ZVKNED != 0;
+                enable_feature(Feature::zvkned, zvkned);
+                enable_feature(Feature::zvknha, ima_ext_0 & RISCV_HWPROBE_EXT_ZVKNHA != 0);
+                let zvknhb = ima_ext_0 & RISCV_HWPROBE_EXT_ZVKNHB != 0;
+                enable_feature(Feature::zvknhb, zvknhb);
+                let zvksed = ima_ext_0 & RISCV_HWPROBE_EXT_ZVKSED != 0;
+                enable_feature(Feature::zvksed, zvksed);
+                let zvksh = ima_ext_0 & RISCV_HWPROBE_EXT_ZVKSH != 0;
+                enable_feature(Feature::zvksh, zvksh);
+                let zvkt = ima_ext_0 & RISCV_HWPROBE_EXT_ZVKT != 0;
+                enable_feature(Feature::zvkt, zvkt);
+                let zvkn = zvkned & zvknhb & zvkb & zvkt;
+                enable_feature(Feature::zvkn, zvkn);
+                enable_feature(Feature::zvknc, zvkn & zvbc);
+                enable_feature(Feature::zvkng, zvkn & zvkg);
+                let zvks = zvksed & zvksh & zvkb & zvkt;
+                enable_feature(Feature::zvks, zvks);
+                enable_feature(Feature::zvksc, zvks & zvbc);
+                enable_feature(Feature::zvksg, zvks & zvkg);
+            }
+        }
+        if out[1].key != -1 {
+            enable_feature(
+                Feature::unaligned_scalar_mem,
+                out[1].value & RISCV_HWPROBE_MISALIGNED_MASK == RISCV_HWPROBE_MISALIGNED_FAST,
+            );
         }
         if out[2].key != -1 {
             enable_feature(
-                Feature::unaligned_scalar_mem,
-                out[2].value & RISCV_HWPROBE_MISALIGNED_MASK == RISCV_HWPROBE_MISALIGNED_FAST,
-            );
-        }
-        if out[3].key != -1 {
-            enable_feature(
                 Feature::unaligned_vector_mem,
-                out[3].value == RISCV_HWPROBE_MISALIGNED_VECTOR_FAST,
+                out[2].value == RISCV_HWPROBE_MISALIGNED_VECTOR_FAST,
             );
         }
-        // FIXME: should be enough with hwprobe only, but our code below checks e
-        // unavailable in neither uapi/asm/hwprobe.h nor uapi/asm/hwcap.h.
-        // https://github.com/torvalds/linux/blob/master/arch/riscv/include/uapi/asm/hwcap.h
-        // return value;
     }
-
-    // FIXME: As said in the above FIXME, we currently alway checks auxv too.
-    // // riscv_hwprobe requires Linux 6.4, so we fallback to auxv-based detection on
-    // // old Linux kernel.
-
-    let enable_feature = |value: &mut cache::Initializer, feature, enable| {
-        if enable {
-            value.set(feature as u32);
-        }
-    };
-    let enable_features = |value: &mut cache::Initializer, feature_slice: &[Feature], enable| {
-        if enable {
-            for feature in feature_slice {
-                value.set(*feature as u32);
-            }
-        }
-    };
-
-    // The values are part of the platform-specific [asm/hwcap.h][hwcap]
-    //
-    // [hwcap]: https://github.com/torvalds/linux/blob/master/arch/riscv/include/asm/hwcap.h
-    //
-    // Note that there is no need to check b'v' - b'a' here for the case where riscv_hwprobe is unsupported,
-    // since both RISCV_HWPROBE_IMA_V and COMPAT_HWCAP_ISA_V are only supported on Linux 6.5+.
-    // https://github.com/torvalds/linux/commit/162e4df137c1fea6557fda3e4cdf5dc6ca6d5510
-    // https://github.com/torvalds/linux/commit/dc6667a4e7e36f283bcd0264a0be55adae4d6f86
-    let auxv = auxvec::auxv().expect("read auxvec"); // should not fail on RISC-V platform
-    #[allow(clippy::eq_op)]
-    enable_feature(
-        &mut value,
-        Feature::a,
-        bit::test(auxv.hwcap, (b'a' - b'a').into()),
-    );
-    enable_feature(
-        &mut value,
-        Feature::c,
-        bit::test(auxv.hwcap, (b'c' - b'a').into()),
-    );
-    enable_features(
-        &mut value,
-        &[Feature::d, Feature::f, Feature::zicsr],
-        bit::test(auxv.hwcap, (b'd' - b'a').into()),
-    );
-    enable_features(
-        &mut value,
-        &[Feature::f, Feature::zicsr],
-        bit::test(auxv.hwcap, (b'f' - b'a').into()),
-    );
-    let has_i = bit::test(auxv.hwcap, (b'i' - b'a').into());
-    // If future RV128I is supported, implement with `enable_feature` here
-    // Checking target_pointer_width instead of target_arch is incorrect since
-    // there are RV64ILP32* ABIs.
-    #[cfg(target_arch = "riscv64")]
-    enable_feature(&mut value, Feature::rv64i, has_i);
-    #[cfg(target_arch = "riscv32")]
-    enable_feature(&mut value, Feature::rv32i, has_i);
-    // FIXME: e is not exposed in any of asm/hwcap.h, uapi/asm/hwcap.h, uapi/asm/hwprobe.h
-    #[cfg(target_arch = "riscv32")]
-    enable_feature(
-        &mut value,
-        Feature::rv32e,
-        bit::test(auxv.hwcap, (b'e' - b'a').into()),
-    );
-    enable_feature(
-        &mut value,
-        Feature::m,
-        bit::test(auxv.hwcap, (b'm' - b'a').into()),
-    );
 
     value
 }
