@@ -229,7 +229,7 @@ fn aarch64_darwin() {
 #[test]
 #[cfg(all(
     any(target_arch = "riscv32", target_arch = "riscv64"),
-    target_os = "linux"
+    any(target_os = "linux", target_os = "android")
 ))]
 fn riscv_linux() {
     println!("rv32i: {}", is_riscv_feature_detected!("rv32i"));
