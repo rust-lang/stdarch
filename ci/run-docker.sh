@@ -30,6 +30,7 @@ run() {
       --env NORUN \
       --env RUSTFLAGS \
       --env STDARCH_TEST_NORUN \
+      --env PROFILE \
       --volume "${HOME}/.cargo":/cargo \
       --volume "$(rustc --print sysroot)":/rust:ro \
       --volume "$(pwd)":/checkout:ro \
