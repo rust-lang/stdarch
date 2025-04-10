@@ -205,9 +205,6 @@ features! {
     @FEATURE: #[unstable(feature = "stdarch_riscv_feature_detection", issue = "111192")] zve64d: "zve64d";
     /// Vector Extensions for Embedded Processors
 
-    // FIXME: we can implement this by getting the current vlen
-    // zvl*b: Minimum Vector Length Standard Extensions
-
     @FEATURE: #[unstable(feature = "stdarch_riscv_feature_detection", issue = "111192")] zvkb: "zvkb";
     /// Vector Bit-manipulation used in Cryptography
     @FEATURE: #[unstable(feature = "stdarch_riscv_feature_detection", issue = "111192")] zvbb: "zvbb";
