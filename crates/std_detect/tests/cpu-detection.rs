@@ -5,6 +5,10 @@
     any(target_arch = "aarch64", target_arch = "arm64ec"),
     feature(stdarch_aarch64_feature_detection)
 )]
+#![cfg_attr(
+    any(target_arch = "riscv32", target_arch = "riscv64"),
+    feature(stdarch_riscv_feature_detection)
+)]
 #![cfg_attr(target_arch = "powerpc", feature(stdarch_powerpc_feature_detection))]
 #![cfg_attr(target_arch = "powerpc64", feature(stdarch_powerpc_feature_detection))]
 #![cfg_attr(target_arch = "s390x", feature(stdarch_s390x_feature_detection))]
@@ -15,6 +19,8 @@
         target_arch = "arm",
         target_arch = "aarch64",
         target_arch = "arm64ec",
+        target_arch = "riscv32",
+        target_arch = "riscv64",
         target_arch = "powerpc",
         target_arch = "powerpc64",
         target_arch = "s390x",
@@ -218,6 +224,104 @@ fn aarch64_darwin() {
     println!("aes: {:?}", is_aarch64_feature_detected!("aes"));
     println!("sha2: {:?}", is_aarch64_feature_detected!("sha2"));
     println!("sha3: {:?}", is_aarch64_feature_detected!("sha3"));
+}
+
+#[test]
+#[cfg(all(
+    any(target_arch = "riscv32", target_arch = "riscv64"),
+    any(target_os = "linux", target_os = "android")
+))]
+fn riscv_linux() {
+    println!("rv32i: {}", is_riscv_feature_detected!("rv32i"));
+    println!("rv32e: {}", is_riscv_feature_detected!("rv32e"));
+    println!("rv64i: {}", is_riscv_feature_detected!("rv64i"));
+    println!("rv128i: {}", is_riscv_feature_detected!("rv128i"));
+    println!(
+        "unaligned-scalar-mem: {}",
+        is_riscv_feature_detected!("unaligned-scalar-mem")
+    );
+    println!(
+        "unaligned-vector-mem: {}",
+        is_riscv_feature_detected!("unaligned-vector-mem")
+    );
+    println!("zicsr: {}", is_riscv_feature_detected!("zicsr"));
+    println!("zicntr: {}", is_riscv_feature_detected!("zicntr"));
+    println!("zihpm: {}", is_riscv_feature_detected!("zihpm"));
+    println!("zifencei: {}", is_riscv_feature_detected!("zifencei"));
+    println!("zihintntl: {}", is_riscv_feature_detected!("zihintntl"));
+    println!("zihintpause: {}", is_riscv_feature_detected!("zihintpause"));
+    println!("zimop: {}", is_riscv_feature_detected!("zimop"));
+    println!("zicboz: {}", is_riscv_feature_detected!("zicboz"));
+    println!("zicond: {}", is_riscv_feature_detected!("zicond"));
+    println!("m: {}", is_riscv_feature_detected!("m"));
+    println!("a: {}", is_riscv_feature_detected!("a"));
+    println!("zalrsc: {}", is_riscv_feature_detected!("zalrsc"));
+    println!("zaamo: {}", is_riscv_feature_detected!("zaamo"));
+    println!("zawrs: {}", is_riscv_feature_detected!("zawrs"));
+    println!("zacas: {}", is_riscv_feature_detected!("zacas"));
+    println!("zam: {}", is_riscv_feature_detected!("zam"));
+    println!("ztso: {}", is_riscv_feature_detected!("ztso"));
+    println!("f: {}", is_riscv_feature_detected!("f"));
+    println!("d: {}", is_riscv_feature_detected!("d"));
+    println!("q: {}", is_riscv_feature_detected!("q"));
+    println!("zfh: {}", is_riscv_feature_detected!("zfh"));
+    println!("zfhmin: {}", is_riscv_feature_detected!("zfhmin"));
+    println!("zfa: {}", is_riscv_feature_detected!("zfa"));
+    println!("zfinx: {}", is_riscv_feature_detected!("zfinx"));
+    println!("zdinx: {}", is_riscv_feature_detected!("zdinx"));
+    println!("zhinx: {}", is_riscv_feature_detected!("zhinx"));
+    println!("zhinxmin: {}", is_riscv_feature_detected!("zhinxmin"));
+    println!("c: {}", is_riscv_feature_detected!("c"));
+    println!("zca: {}", is_riscv_feature_detected!("zca"));
+    println!("zcf: {}", is_riscv_feature_detected!("zcf"));
+    println!("zcd: {}", is_riscv_feature_detected!("zcd"));
+    println!("zcb: {}", is_riscv_feature_detected!("zcb"));
+    println!("zcmop: {}", is_riscv_feature_detected!("zcmop"));
+    println!("b: {}", is_riscv_feature_detected!("b"));
+    println!("zba: {}", is_riscv_feature_detected!("zba"));
+    println!("zbb: {}", is_riscv_feature_detected!("zbb"));
+    println!("zbc: {}", is_riscv_feature_detected!("zbc"));
+    println!("zbs: {}", is_riscv_feature_detected!("zbs"));
+    println!("zbkb: {}", is_riscv_feature_detected!("zbkb"));
+    println!("zbkc: {}", is_riscv_feature_detected!("zbkc"));
+    println!("zbkx: {}", is_riscv_feature_detected!("zbkx"));
+    println!("zknd: {}", is_riscv_feature_detected!("zknd"));
+    println!("zkne: {}", is_riscv_feature_detected!("zkne"));
+    println!("zknh: {}", is_riscv_feature_detected!("zknh"));
+    println!("zksed: {}", is_riscv_feature_detected!("zksed"));
+    println!("zksh: {}", is_riscv_feature_detected!("zksh"));
+    println!("zkr: {}", is_riscv_feature_detected!("zkr"));
+    println!("zkn: {}", is_riscv_feature_detected!("zkn"));
+    println!("zks: {}", is_riscv_feature_detected!("zks"));
+    println!("zk: {}", is_riscv_feature_detected!("zk"));
+    println!("zkt: {}", is_riscv_feature_detected!("zkt"));
+    println!("v: {}", is_riscv_feature_detected!("v"));
+    println!("zve32x: {}", is_riscv_feature_detected!("zve32x"));
+    println!("zve32f: {}", is_riscv_feature_detected!("zve32f"));
+    println!("zve64x: {}", is_riscv_feature_detected!("zve64x"));
+    println!("zve64f: {}", is_riscv_feature_detected!("zve64f"));
+    println!("zve64d: {}", is_riscv_feature_detected!("zve64d"));
+    println!("zvfh: {}", is_riscv_feature_detected!("zvfh"));
+    println!("zvfhmin: {}", is_riscv_feature_detected!("zvfhmin"));
+    println!("zvbb: {}", is_riscv_feature_detected!("zvbb"));
+    println!("zvbc: {}", is_riscv_feature_detected!("zvbc"));
+    println!("zvkb: {}", is_riscv_feature_detected!("zvkb"));
+    println!("zvkg: {}", is_riscv_feature_detected!("zvkg"));
+    println!("zvkned: {}", is_riscv_feature_detected!("zvkned"));
+    println!("zvknha: {}", is_riscv_feature_detected!("zvknha"));
+    println!("zvknhb: {}", is_riscv_feature_detected!("zvknhb"));
+    println!("zvksed: {}", is_riscv_feature_detected!("zvksed"));
+    println!("zvksh: {}", is_riscv_feature_detected!("zvksh"));
+    println!("zvkn: {}", is_riscv_feature_detected!("zvkn"));
+    println!("zvknc: {}", is_riscv_feature_detected!("zvknc"));
+    println!("zvkng: {}", is_riscv_feature_detected!("zvkng"));
+    println!("zvks: {}", is_riscv_feature_detected!("zvks"));
+    println!("zvksc: {}", is_riscv_feature_detected!("zvksc"));
+    println!("zvksg: {}", is_riscv_feature_detected!("zvksg"));
+    println!("zvkt: {}", is_riscv_feature_detected!("zvkt"));
+    println!("supm: {}", is_riscv_feature_detected!("supm"));
+    println!("j: {}", is_riscv_feature_detected!("j"));
+    println!("p: {}", is_riscv_feature_detected!("p"));
 }
 
 #[test]
