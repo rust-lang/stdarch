@@ -20,6 +20,8 @@ features! {
     /// ISA prefix X. These sets are highly platform specific and should be
     /// detected with their own platform support crates.
     ///
+    /// [ISA manual]: https://riscv.org/specifications/ratified/
+    ///
     /// # Unprivileged Specification
     ///
     /// The supported ratified RISC-V instruction sets are as follows:
@@ -44,33 +46,30 @@ features! {
     /// * Zifencei: `"zifencei"`
     /// * Zihintpause: `"zihintpause"`
     /// * Zihpm: `"zihpm"`
+    /// * Zfh: `"zfh"`
+    ///   * Zfhmin: `"zfhmin"`
+    /// * Zfinx: `"zfinx"`
+    /// * Zdinx: `"zdinx"`
+    /// * Zhinx: `"zhinx"`
+    ///   * Zhinxmin: `"zhinxmin"`
+    /// * Zbkb: `"zbkb"`
+    /// * Zbkc: `"zbkc"`
+    /// * Zbkx: `"zbkx"`
     /// * Zk: `"zk"`
-    ///   * Zbkb: `"zbkb"`
-    ///   * Zbkc: `"zbkc"`
-    ///   * Zbkx: `"zbkx"`
-    ///   * Zkn: `"zkn"`
-    ///     * Zknd: `"zknd"`
-    ///     * Zkne: `"zkne"`
-    ///     * Zknh: `"zknh"`
-    ///   * Zkr: `"zkr"`
-    ///   * Zks: `"zks"`
-    ///     * Zksed: `"zksed"`
-    ///     * Zksh: `"zksh"`
-    ///   * Zkt: `"zkt"`
+    /// * Zkn: `"zkn"`
+    ///   * Zknd: `"zknd"`
+    ///   * Zkne: `"zkne"`
+    ///   * Zknh: `"zknh"`
+    /// * Zkr: `"zkr"`
+    /// * Zks: `"zks"`
+    ///   * Zksed: `"zksed"`
+    ///   * Zksh: `"zksh"`
+    /// * Zkt: `"zkt"`
+    /// * Ztso: `"ztso"`
     ///
     /// There's also bases and extensions marked as standard instruction set,
     /// but they are in frozen or draft state. These instruction sets are also
     /// reserved by this macro and can be detected in the future platforms.
-    ///
-    /// Frozen RISC-V instruction sets:
-    ///
-    /// * Zfh: `"zfh"`
-    /// * Zfhmin: `"zfhmin"`
-    /// * Zfinx: `"zfinx"`
-    /// * Zdinx: `"zdinx"`
-    /// * Zhinx: `"zhinx"`
-    /// * Zhinxmin: `"zhinxmin"`
-    /// * Ztso: `"ztso"`
     ///
     /// Draft RISC-V instruction sets:
     ///
@@ -81,13 +80,11 @@ features! {
     ///
     /// Defined by Privileged Specification:
     ///
-    /// * Supervisor: `"s"`
+    /// * *Supervisor-Level ISA* (not "S" extension): `"s"`
+    /// * H (hypervisor): `"h"`
     /// * Svnapot: `"svnapot"`
     /// * Svpbmt: `"svpbmt"`
     /// * Svinval: `"svinval"`
-    /// * Hypervisor: `"h"`
-    ///
-    /// [ISA manual]: https://github.com/riscv/riscv-isa-manual/
     #[stable(feature = "riscv_ratified", since = "1.78.0")]
 
     @FEATURE: #[unstable(feature = "stdarch_riscv_feature_detection", issue = "111192")] rv32i: "rv32i";
@@ -112,10 +109,10 @@ features! {
     @FEATURE: #[unstable(feature = "stdarch_riscv_feature_detection", issue = "111192")] zihpm: "zihpm";
     without cfg check: true;
     /// "Zihpm" Extension for Hardware Performance Counters
-
     @FEATURE: #[unstable(feature = "stdarch_riscv_feature_detection", issue = "111192")] zifencei: "zifencei";
     without cfg check: true;
     /// "Zifencei" Extension for Instruction-Fetch Fence
+
     @FEATURE: #[unstable(feature = "stdarch_riscv_feature_detection", issue = "111192")] zihintpause: "zihintpause";
     without cfg check: true;
     /// "Zihintpause" Extension for Pause Hint
@@ -163,14 +160,14 @@ features! {
     @FEATURE: #[stable(feature = "riscv_ratified", since = "1.78.0")] zbc: "zbc";
     /// "Zbc" Extension for Carry-less Multiplication
     @FEATURE: #[stable(feature = "riscv_ratified", since = "1.78.0")] zbs: "zbs";
-    /// "Zbs" Extension for Single-Bit instructions
+    /// "Zbs" Extension for Single-Bit Instructions
 
     @FEATURE: #[stable(feature = "riscv_ratified", since = "1.78.0")] zbkb: "zbkb";
-    /// "Zbkb" Extension for Bit-manipulation for Cryptography
+    /// "Zbkb" Extension for Bit-Manipulation for Cryptography
     @FEATURE: #[stable(feature = "riscv_ratified", since = "1.78.0")] zbkc: "zbkc";
-    /// "Zbkc" Extension for Carry-less multiplication for Cryptography
+    /// "Zbkc" Extension for Carry-less Multiplication for Cryptography
     @FEATURE: #[stable(feature = "riscv_ratified", since = "1.78.0")] zbkx: "zbkx";
-    /// "Zbkx" Extension for Crossbar permutations
+    /// "Zbkx" Extension for Crossbar Permutations
     @FEATURE: #[stable(feature = "riscv_ratified", since = "1.78.0")] zknd: "zknd";
     /// "Zknd" Cryptography Extension for NIST Suite: AES Decryption
     @FEATURE: #[stable(feature = "riscv_ratified", since = "1.78.0")] zkne: "zkne";
@@ -188,7 +185,7 @@ features! {
     @FEATURE: #[stable(feature = "riscv_ratified", since = "1.78.0")] zks: "zks";
     /// "Zks" Cryptography Extension for ShangMi Algorithm Suite
     @FEATURE: #[stable(feature = "riscv_ratified", since = "1.78.0")] zk: "zk";
-    /// "Zk" Cryptography Extension for Standard scalar cryptography
+    /// "Zk" Cryptography Extension for Standard Scalar Cryptography
     @FEATURE: #[stable(feature = "riscv_ratified", since = "1.78.0")] zkt: "zkt";
     /// "Zkt" Cryptography Extension for Data Independent Execution Latency
 
