@@ -171,24 +171,26 @@ esac
 case "${TARGET}" in
     aarch64-unknown-linux-gnu*|armv7-unknown-linux-gnueabihf*)
         CPPFLAGS="${TEST_CPPFLAGS}" RUSTFLAGS="${HOST_RUSTFLAGS}" RUST_LOG=warn \
-            cargo run "${INTRINSIC_TEST}" "${PROFILE}" \
+            cargo run "${INTRINSIC_TEST}" --release \
             --bin intrinsic-test -- intrinsics_data/arm_intrinsics.json \
             --runner "${TEST_RUNNER}" \
             --cppcompiler "${TEST_CXX_COMPILER}" \
             --skip "${TEST_SKIP_INTRINSICS}" \
-            --target "${TARGET}"
+            --target "${TARGET}" \
+            "${PROFILE}"
         ;;
 
     aarch64_be-unknown-linux-gnu*)
         CPPFLAGS="${TEST_CPPFLAGS}" RUSTFLAGS="${HOST_RUSTFLAGS}" RUST_LOG=warn \
-            cargo run "${INTRINSIC_TEST}" "${PROFILE}"  \
+            cargo run "${INTRINSIC_TEST}" --release \
             --bin intrinsic-test -- intrinsics_data/arm_intrinsics.json \
             --runner "${TEST_RUNNER}" \
             --cppcompiler "${TEST_CXX_COMPILER}" \
             --skip "${TEST_SKIP_INTRINSICS}" \
             --target "${TARGET}" \
             --linker "${CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER}" \
-            --cxx-toolchain-dir "${AARCH64_BE_TOOLCHAIN}"
+            --cxx-toolchain-dir "${AARCH64_BE_TOOLCHAIN}" \
+            "${PROFILE}"
         ;;
      *)
         ;;
