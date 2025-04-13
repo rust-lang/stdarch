@@ -21,22 +21,12 @@ macro_rules! simd_ty {
             pub(crate) const fn from_array(elements: [$elem_type; $len]) -> Self {
                 $id(elements)
             }
-            // FIXME: Workaround rust@60637
+            
             #[inline(always)]
             pub(crate) fn splat(value: $elem_type) -> Self {
-                #[derive(Copy, Clone)]
-                #[repr(simd)]
-                struct JustOne([$elem_type; 1]);
-                let one = JustOne([value]);
-                // SAFETY: 0 is always in-bounds because we're shuffling
-                // a simd type with exactly one element.
-                unsafe { simd_shuffle!(one, one, [0; $len]) }
+                $id([value; $len])
             }
 
-            /// Extract the element at position `index`.
-            /// `index` is not a constant so this is not efficient!
-            /// Use for testing only.
-            // FIXME: Workaround rust@60637
             #[inline(always)]
             pub(crate) fn extract(&self, index: usize) -> $elem_type {
                 self.as_array()[index]
@@ -87,16 +77,9 @@ macro_rules! simd_m_ty {
                 $id([$(Self::bool_to_internal($param_name)),*])
             }
 
-            // FIXME: Workaround rust@60637
             #[inline(always)]
             pub(crate) fn splat(value: bool) -> Self {
-                #[derive(Copy, Clone)]
-                #[repr(simd)]
-                struct JustOne([$elem_type; 1]);
-                let one = JustOne([Self::bool_to_internal(value)]);
-                // SAFETY: 0 is always in-bounds because we're shuffling
-                // a simd type with exactly one element.
-                unsafe { simd_shuffle!(one, one, [0; $len]) }
+                $id([Self::bool_to_internal(value); $len])
             }
 
             #[inline]
