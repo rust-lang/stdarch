@@ -34435,7 +34435,7 @@ pub unsafe fn _mm_storeu_epi64(mem_addr: *mut i64, a: __m128i) {
 #[target_feature(enable = "avx512f")]
 #[unstable(feature = "stdarch_x86_avx512", issue = "111137")]
 #[cfg_attr(test, assert_instr(vmovups))] //should be vmovdqu32
-pub unsafe fn _mm512_loadu_si512(mem_addr: *const i32) -> __m512i {
+pub unsafe fn _mm512_loadu_si512(mem_addr: *const __m512i) -> __m512i {
     ptr::read_unaligned(mem_addr as *const __m512i)
 }
 
@@ -34509,7 +34509,7 @@ pub unsafe fn _mm512_storeu_ps(mem_addr: *mut f32, a: __m512) {
 #[target_feature(enable = "avx512f")]
 #[unstable(feature = "stdarch_x86_avx512", issue = "111137")]
 #[cfg_attr(test, assert_instr(vmovaps))] //should be vmovdqa32
-pub unsafe fn _mm512_load_si512(mem_addr: *const i32) -> __m512i {
+pub unsafe fn _mm512_load_si512(mem_addr: *const __m512i) -> __m512i {
     ptr::read(mem_addr as *const __m512i)
 }
 
@@ -57232,7 +57232,7 @@ mod tests {
     unsafe fn test_mm512_loadu_si512() {
         let a = &[4, 3, 2, 5, 8, 9, 64, 50, -4, -3, -2, -5, -8, -9, -64, -50];
         let p = a.as_ptr();
-        let r = _mm512_loadu_si512(black_box(p));
+        let r = _mm512_loadu_si512(black_box(p.cast()));
         let e = _mm512_setr_epi32(4, 3, 2, 5, 8, 9, 64, 50, -4, -3, -2, -5, -8, -9, -64, -50);
         assert_eq_m512i(r, e);
     }
@@ -57255,7 +57255,7 @@ mod tests {
             data: [4, 3, 2, 5, 8, 9, 64, 50, -4, -3, -2, -5, -8, -9, -64, -50],
         };
         let p = (a.data).as_ptr();
-        let r = _mm512_load_si512(black_box(p));
+        let r = _mm512_load_si512(black_box(p.cast()));
         let e = _mm512_setr_epi32(4, 3, 2, 5, 8, 9, 64, 50, -4, -3, -2, -5, -8, -9, -64, -50);
         assert_eq_m512i(r, e);
     }
