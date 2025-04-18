@@ -357,6 +357,7 @@ fn build_rust(
     toolchain: Option<&str>,
     target: &str,
     linker: Option<&str>,
+    profile: &str,
 ) -> bool {
     intrinsics.iter().for_each(|i| {
         let rust_dir = format!(r#"rust_programs/{}"#, i.name);
@@ -413,11 +414,7 @@ path = "{intrinsic}/main.rs""#,
     /* If there has been a linker explicitly set from the command line then
      * we want to set it via setting it in the RUSTFLAGS*/
 
-    let cargo_command = format!(
-        "cargo {toolchain} build --target {target} --release",
-        toolchain = toolchain,
-        target = target
-    );
+    let cargo_command = format!("cargo {toolchain} build --target {target} --profile={profile}");
 
     let mut command = Command::new("sh");
     command
@@ -495,6 +492,10 @@ struct Cli {
     /// Set the sysroot for the C++ compiler
     #[arg(long)]
     cxx_toolchain_dir: Option<String>,
+
+    /// Set the profile to build Rust code under
+    #[arg(long, default_value_t = String::from("dev"))]
+    profile: String,
 }
 
 fn main() {
@@ -507,6 +508,7 @@ fn main() {
     let target: &str = args.target.as_str();
     let linker = args.linker.as_deref();
     let cxx_toolchain_dir = args.cxx_toolchain_dir;
+    let profile = args.profile;
 
     let skip = if let Some(filename) = args.skip {
         let data = std::fs::read_to_string(&filename).expect("Failed to open file");
@@ -559,12 +561,19 @@ fn main() {
         std::process::exit(2);
     }
 
-    if !build_rust(&notices, &intrinsics, toolchain.as_deref(), target, linker) {
+    if !build_rust(
+        &notices,
+        &intrinsics,
+        toolchain.as_deref(),
+        target,
+        linker,
+        &profile,
+    ) {
         std::process::exit(3);
     }
 
     if let Some(ref toolchain) = toolchain {
-        if !compare_outputs(&intrinsics, toolchain, &c_runner, target) {
+        if !compare_outputs(&intrinsics, toolchain, &c_runner, target, &profile) {
             std::process::exit(1)
         }
     }
@@ -581,6 +590,7 @@ fn compare_outputs(
     toolchain: &str,
     runner: &str,
     target: &str,
+    profile: &str,
 ) -> bool {
     let intrinsics = intrinsics
         .par_iter()
@@ -589,34 +599,19 @@ fn compare_outputs(
                 .arg("-c")
                 .arg(format!(
                     "{runner} ./c_programs/{intrinsic}",
-                    runner = runner,
                     intrinsic = intrinsic.name,
                 ))
                 .output();
 
-            let rust = if target != "aarch64_be-unknown-linux-gnu" {
-                Command::new("sh")
-                    .current_dir("rust_programs")
-                    .arg("-c")
-                    .arg(format!(
-                        "cargo {toolchain} run --target {target} --bin {intrinsic} --release",
-                        intrinsic = intrinsic.name,
-                        toolchain = toolchain,
-                        target = target
-                    ))
-                    .env("RUSTFLAGS", "-Cdebuginfo=0")
-                    .output()
-            } else {
-                Command::new("sh")
-                    .arg("-c")
-                    .arg(format!(
-                        "{runner} ./rust_programs/target/{target}/release/{intrinsic}",
-                        runner = runner,
-                        target = target,
-                        intrinsic = intrinsic.name,
-                    ))
-                    .output()
-            };
+            let rust = Command::new("sh")
+                .current_dir("rust_programs")
+                .arg("-c")
+                .arg(format!(
+                    "cargo {toolchain} run --target {target} --bin {intrinsic} --profile={profile}",
+                    intrinsic = intrinsic.name,
+                ))
+                .env("RUSTFLAGS", "-Cdebuginfo=0")
+                .output();
 
             let (c, rust) = match (c, rust) {
                 (Ok(c), Ok(rust)) => (c, rust),
