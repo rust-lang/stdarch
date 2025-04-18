@@ -1,4 +1,4 @@
-FROM ubuntu:24.04
+FROM ubuntu:25.04
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
         curl ca-certificates \
@@ -10,5 +10,5 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         file
 
 ENV CARGO_TARGET_S390X_UNKNOWN_LINUX_GNU_LINKER=s390x-linux-gnu-gcc \
-    CARGO_TARGET_S390X_UNKNOWN_LINUX_GNU_RUNNER="qemu-s390x -L /usr/s390x-linux-gnu" \
+    CARGO_TARGET_S390X_UNKNOWN_LINUX_GNU_RUNNER="qemu-s390x -cpu max -L /usr/s390x-linux-gnu" \
     OBJDUMP=s390x-linux-gnu-objdump

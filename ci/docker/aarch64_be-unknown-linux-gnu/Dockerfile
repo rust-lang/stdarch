@@ -1,4 +1,4 @@
-FROM ubuntu:24.04
+FROM ubuntu:25.04
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
   gcc \
@@ -25,5 +25,6 @@ ENV AARCH64_BE_TOOLCHAIN="/toolchains/${TOOLCHAIN}"
 ENV AARCH64_BE_LIBC="${AARCH64_BE_TOOLCHAIN}/aarch64_be-none-linux-gnu/libc"
 
 ENV CARGO_TARGET_AARCH64_BE_UNKNOWN_LINUX_GNU_LINKER="${AARCH64_BE_TOOLCHAIN}/bin/aarch64_be-none-linux-gnu-gcc"
-ENV CARGO_TARGET_AARCH64_BE_UNKNOWN_LINUX_GNU_RUNNER="qemu-aarch64_be -L ${AARCH64_BE_LIBC}"
+ENV CARGO_TARGET_AARCH64_BE_UNKNOWN_LINUX_GNU_RUNNER="qemu-aarch64_be -cpu max -L ${AARCH64_BE_LIBC}"
 ENV OBJDUMP="${AARCH64_BE_TOOLCHAIN}/bin/bin/aarch64-none-linux-gnu-objdump"
+ENV STDARCH_TEST_SKIP_FEATURE=tme

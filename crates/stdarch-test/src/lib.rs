@@ -104,7 +104,12 @@ pub fn assert(shim_addr: usize, fnname: &str, expected: &str) {
             // failed inlining something.
             s[0].starts_with("call ") && s[1].starts_with("pop") // FIXME: original logic but does not match comment
         })
-    } else if cfg!(any(target_arch = "aarch64", target_arch = "arm64ec")) {
+    } else if cfg!(any(
+        target_arch = "aarch64",
+        target_arch = "arm64ec",
+        target_arch = "powerpc",
+        target_arch = "powerpc64"
+    )) {
         instrs.iter().any(|s| s.starts_with("bl "))
     } else {
         // FIXME: Add detection for other archs
@@ -203,6 +208,3 @@ pub fn assert_skip_test_ok(name: &str, missing_features: &[&str]) {
         Err(_) => println!("Set STDARCH_TEST_EVERYTHING to make this an error."),
     }
 }
-
-// See comment in `assert-instr-macro` crate for why this exists
-pub static mut _DONT_DEDUP: *const u8 = std::ptr::null();
