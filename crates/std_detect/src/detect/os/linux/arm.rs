@@ -60,7 +60,7 @@ pub(crate) fn detect_features() -> cache::Initializer {
 
 /// Is the CPU known to have a broken NEON unit?
 ///
-/// See https://crbug.com/341598.
+/// See <https://crbug.com/341598>.
 #[cfg(feature = "std_detect_file_io")]
 fn has_broken_neon(cpuinfo: &super::cpuinfo::CpuInfo) -> bool {
     cpuinfo.field("CPU implementer") == "0x51"

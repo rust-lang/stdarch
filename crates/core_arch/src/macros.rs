@@ -94,13 +94,7 @@ macro_rules! types {
             /// so use this internal helper for it instead.
             #[inline(always)]
             $v fn splat(value: $elem_type) -> $name {
-                #[derive(Copy, Clone)]
-                #[repr(simd)]
-                struct JustOne([$elem_type; 1]);
-                let one = JustOne([value]);
-                // SAFETY: 0 is always in-bounds because we're shuffling
-                // a simd type with exactly one element.
-                unsafe { simd_shuffle!(one, one, [0; $len]) }
+                $name([value; $len])
             }
 
             /// Returns an array reference containing the entire SIMD vector.
@@ -108,11 +102,7 @@ macro_rules! types {
                 // SAFETY: this type is just an overaligned `[T; N]` with
                 // potential padding at the end, so pointer casting to a
                 // `&[T; N]` is safe.
-                //
-                // NOTE: This deliberately doesn't just use `&self.0` because it may soon be banned
-                // see https://github.com/rust-lang/compiler-team/issues/838
                 unsafe { &*(self as *const Self as *const [$elem_type; $len]) }
-
             }
 
             /// Returns a mutable array reference containing the entire SIMD vector.
@@ -121,9 +111,6 @@ macro_rules! types {
                 // SAFETY: this type is just an overaligned `[T; N]` with
                 // potential padding at the end, so pointer casting to a
                 // `&mut [T; N]` is safe.
-                //
-                // NOTE: This deliberately doesn't just use `&mut self.0` because it may soon be banned
-                // see https://github.com/rust-lang/compiler-team/issues/838
                 unsafe { &mut *(self as *mut Self as *mut [$elem_type; $len]) }
             }
         }
