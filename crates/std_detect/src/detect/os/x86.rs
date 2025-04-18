@@ -233,9 +233,16 @@ pub(crate) fn detect_features() -> cache::Initializer {
                     enable(extended_features_eax_leaf_1, 1, Feature::sm3);
                     enable(extended_features_eax_leaf_1, 2, Feature::sm4);
 
+                    let f16c = bit::test(proc_info_ecx as usize, 29);
+                    let fma = bit::test(proc_info_ecx as usize, 12);
+
                     // For AVX-512 the OS also needs to support saving/restoring
                     // the extended state, only then we enable AVX-512 support:
-                    if os_avx512_support {
+                    // Also, Rust makes `avx512f` imply `fma` and `f16c`, because
+                    // otherwise the assembler is broken. But Intel doesn't guarantee
+                    // that `fma` and `f16c` are available with `avx512f`, so we
+                    // need to check for them separately.
+                    if os_avx512_support && f16c && fma {
                         enable(extended_features_ebx, 16, Feature::avx512f);
                         enable(extended_features_ebx, 17, Feature::avx512dq);
                         enable(extended_features_ebx, 21, Feature::avx512ifma);
