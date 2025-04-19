@@ -1,64 +1,35 @@
-use std::ops::Range;
-
-use crate::Language;
-use crate::format::Indentation;
-use crate::json_parser::ArgPrep;
-use crate::types::{IntrinsicType, TypeKind};
+use crate::common::format::Indentation;
+use crate::common::intrinsic_types::IntrinsicTypeDefinition;
+use crate::common::types::Language;
+use serde_json::Value;
 
 /// An argument for the intrinsic.
 #[derive(Debug, PartialEq, Clone)]
-pub struct Argument {
+pub struct Argument<T: IntrinsicTypeDefinition, M: MetadataDefinition> {
     /// The argument's index in the intrinsic function call.
     pub pos: usize,
     /// The argument name.
     pub name: String,
     /// The type of the argument.
-    pub ty: IntrinsicType,
+    pub ty: T,
     /// Any constraints that are on this argument
-    pub constraints: Vec<Constraint>,
+    pub metadata: Vec<M>,
 }
 
-#[derive(Debug, PartialEq, Clone)]
-pub enum Constraint {
-    Equal(i64),
-    Range(Range<i64>),
+pub trait MetadataDefinition {
+    fn from_metadata(metadata: Option<Value>) -> Vec<Box<Self>>;
 }
 
-impl TryFrom<ArgPrep> for Constraint {
-    type Error = ();
-
-    fn try_from(prep: ArgPrep) -> Result<Self, Self::Error> {
-        let parsed_ints = match prep {
-            ArgPrep::Immediate { min, max } => Ok((min, max)),
-            _ => Err(()),
-        };
-        if let Ok((min, max)) = parsed_ints {
-            if min == max {
-                Ok(Constraint::Equal(min))
-            } else {
-                Ok(Constraint::Range(min..max + 1))
-            }
-        } else {
-            Err(())
-        }
-    }
-}
-
-impl Constraint {
-    pub fn to_range(&self) -> Range<i64> {
-        match self {
-            Constraint::Equal(eq) => *eq..*eq + 1,
-            Constraint::Range(range) => range.clone(),
-        }
-    }
-}
-
-impl Argument {
-    fn to_c_type(&self) -> String {
+impl<T, M> Argument<T, M>
+where
+    T: IntrinsicTypeDefinition,
+    M: MetadataDefinition,
+{
+    pub fn to_c_type(&self) -> String {
         self.ty.c_type()
     }
 
-    fn is_simd(&self) -> bool {
+    pub fn is_simd(&self) -> bool {
         self.ty.is_simd()
     }
 
@@ -67,7 +38,7 @@ impl Argument {
     }
 
     pub fn has_constraint(&self) -> bool {
-        !self.constraints.is_empty()
+        !self.metadata.is_empty()
     }
 
     pub fn type_and_name_from_c(arg: &str) -> (&str, &str) {
@@ -78,38 +49,9 @@ impl Argument {
         (arg[..split_index + 1].trim_end(), &arg[split_index + 1..])
     }
 
-    pub fn from_c(pos: usize, arg: &str, arg_prep: Option<ArgPrep>) -> Argument {
-        let (ty, var_name) = Self::type_and_name_from_c(arg);
-
-        let ty = IntrinsicType::from_c(ty)
-            .unwrap_or_else(|_| panic!("Failed to parse argument '{arg}'"));
-
-        let constraint = arg_prep.and_then(|a| a.try_into().ok());
-
-        Argument {
-            pos,
-            name: String::from(var_name),
-            ty,
-            constraints: constraint.map_or(vec![], |r| vec![r]),
-        }
-    }
-
-    fn is_rust_vals_array_const(&self) -> bool {
-        use TypeKind::*;
-        match self.ty {
-            // Floats have to be loaded at runtime for stable NaN conversion.
-            IntrinsicType::Type { kind: Float, .. } => false,
-            IntrinsicType::Type {
-                kind: Int | UInt | Poly,
-                ..
-            } => true,
-            _ => unimplemented!(),
-        }
-    }
-
     /// The binding keyword (e.g. "const" or "let") for the array of possible test inputs.
-    pub fn rust_vals_array_binding(&self) -> impl std::fmt::Display {
-        if self.is_rust_vals_array_const() {
+    fn rust_vals_array_binding(&self) -> impl std::fmt::Display {
+        if self.ty.is_rust_vals_array_const() {
             "const"
         } else {
             "let"
@@ -117,32 +59,55 @@ impl Argument {
     }
 
     /// The name (e.g. "A_VALS" or "a_vals") for the array of possible test inputs.
-    pub fn rust_vals_array_name(&self) -> impl std::fmt::Display {
-        if self.is_rust_vals_array_const() {
+    fn rust_vals_array_name(&self) -> impl std::fmt::Display {
+        if self.ty.is_rust_vals_array_const() {
             format!("{}_VALS", self.name.to_uppercase())
         } else {
             format!("{}_vals", self.name.to_lowercase())
         }
     }
+
+    pub fn from_c(
+        pos: usize,
+        arg: &str,
+        target: &String,
+        metadata: Option<Value>,
+    ) -> Argument<T, M> {
+        let (ty, var_name) = Self::type_and_name_from_c(arg);
+
+        let ty =
+            T::from_c(ty, target).unwrap_or_else(|_| panic!("Failed to parse argument '{arg}'"));
+
+        let metadata: Vec<M> = M::from_metadata(metadata).into_iter().map(|b| *b).collect();
+
+        Argument {
+            pos,
+            name: String::from(var_name),
+            ty: *ty,
+            metadata,
+        }
+    }
+
+    fn as_call_param_c(&self) -> String {
+        self.ty.as_call_param_c(&self.name)
+    }
 }
 
 #[derive(Debug, PartialEq, Clone)]
-pub struct ArgumentList {
-    pub args: Vec<Argument>,
+pub struct ArgumentList<T: IntrinsicTypeDefinition, M: MetadataDefinition> {
+    pub args: Vec<Argument<T, M>>,
 }
 
-impl ArgumentList {
+impl<T, M> ArgumentList<T, M>
+where
+    T: IntrinsicTypeDefinition,
+    M: MetadataDefinition,
+{
     /// Converts the argument list into the call parameters for a C function call.
     /// e.g. this would generate something like `a, &b, c`
     pub fn as_call_param_c(&self) -> String {
-        self.args
-            .iter()
-            .map(|arg| match arg.ty {
-                IntrinsicType::Ptr { .. } => {
-                    format!("&{}", arg.name)
-                }
-                IntrinsicType::Type { .. } => arg.name.clone(),
-            })
+        self.iter()
+            .map(|arg| arg.as_call_param_c())
             .collect::<Vec<String>>()
             .join(", ")
     }
@@ -150,8 +115,7 @@ impl ArgumentList {
     /// Converts the argument list into the call parameters for a Rust function.
     /// e.g. this would generate something like `a, b, c`
     pub fn as_call_param_rust(&self) -> String {
-        self.args
-            .iter()
+        self.iter()
             .filter(|a| !a.has_constraint())
             .map(|arg| arg.name.clone())
             .collect::<Vec<String>>()
@@ -159,8 +123,7 @@ impl ArgumentList {
     }
 
     pub fn as_constraint_parameters_rust(&self) -> String {
-        self.args
-            .iter()
+        self.iter()
             .filter(|a| a.has_constraint())
             .map(|arg| arg.name.clone())
             .collect::<Vec<String>>()
@@ -209,36 +172,23 @@ impl ArgumentList {
     /// Creates a line for each argument that initializes the argument from an array `[arg]_vals` at
     /// an offset `i` using a load intrinsic, in C.
     /// e.g `uint8x8_t a = vld1_u8(&a_vals[i]);`
-    pub fn load_values_c(&self, indentation: Indentation, target: &str) -> String {
+    ///
+    /// ARM-specific
+    pub fn load_values_c(&self, indentation: Indentation) -> String {
         self.iter()
             .filter_map(|arg| {
                 // The ACLE doesn't support 64-bit polynomial loads on Armv7
                 // This and the cast are a workaround for this
-                let armv7_p64 = if let TypeKind::Poly = arg.ty.kind() {
-                    target.contains("v7")
-                } else {
-                    false
-                };
 
                 (!arg.has_constraint()).then(|| {
                     format!(
-                        "{indentation}{ty} {name} = {open_cast}{load}(&{name}_vals[i]){close_cast};\n",
+                        "{indentation}{ty} {name} = cast<{ty}>({load}(&{name}_vals[i]));\n",
                         ty = arg.to_c_type(),
                         name = arg.name,
                         load = if arg.is_simd() {
-                            arg.ty.get_load_function(armv7_p64)
+                            arg.ty.get_load_function(Language::C)
                         } else {
                             "*".to_string()
-                        },
-                        open_cast = if armv7_p64 {
-                            format!("cast<{}>(", arg.to_c_type())
-                        } else {
-                            "".to_string()
-                        },
-                        close_cast = if armv7_p64 {
-                            ")".to_string()
-                        } else {
-                            "".to_string()
                         }
                     )
                 })
@@ -258,7 +208,7 @@ impl ArgumentList {
                         name = arg.name,
                         vals_name = arg.rust_vals_array_name(),
                         load = if arg.is_simd() {
-                            arg.ty.get_load_function(false)
+                            arg.ty.get_load_function(Language::Rust)
                         } else {
                             "*".to_string()
                         },
@@ -268,7 +218,7 @@ impl ArgumentList {
             .collect()
     }
 
-    pub fn iter(&self) -> std::slice::Iter<'_, Argument> {
+    pub fn iter(&self) -> std::slice::Iter<'_, Argument<T, M>> {
         self.args.iter()
     }
 }
