@@ -11,7 +11,6 @@ use crate::common::intrinsic_types::IntrinsicTypeDefinition;
 use crate::common::write_file;
 use itertools::Itertools;
 use rayon::prelude::*;
-use std::collections::BTreeMap;
 
 // The number of times each intrinsic will be called.
 const PASSES: u32 = 20;
@@ -162,7 +161,6 @@ fn generate_rust_program_arm(
 
 fn compile_c_arm(
     intrinsics_name_list: &Vec<String>,
-    _filename_mapping: BTreeMap<&String, String>,
     compiler: &str,
     target: &str,
     cxx_toolchain_dir: Option<&str>,
@@ -175,6 +173,10 @@ fn compile_c_arm(
         .set_cxx_toolchain_dir(cxx_toolchain_dir)
         .set_project_root("c_programs")
         .add_extra_flags(vec!["-ffp-contract=off", "-Wno-narrowing"]);
+
+    if !target.contains("v7") {
+        command = command.add_arch_flags(vec!["fanimalux", "lut", "sha3"]);
+    }
 
     command = if target == "aarch64_be-unknown-linux-gnu" {
         command
@@ -233,13 +235,7 @@ pub fn build_c(
 
     match compiler {
         None => true,
-        Some(compiler) => compile_c_arm(
-            &intrinsics_name_list,
-            filename_mapping,
-            compiler,
-            target,
-            cxx_toolchain_dir,
-        ),
+        Some(compiler) => compile_c_arm(&intrinsics_name_list, compiler, target, cxx_toolchain_dir),
     }
 }
 
