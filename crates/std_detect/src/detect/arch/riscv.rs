@@ -69,7 +69,7 @@ features! {
     /// | `"zbkx"`        | Zbkx        | 6.8                |
     /// | `"zbs"`         | Zbs         | 6.5                |
     /// | `"zca"`         | Zca         | 6.11 [^dep]        |
-    /// | `"zcb"`         | Zcb         | 6.11 [^dep]        |
+    /// | `"zcb"`         | Zcb         | 6.11               |
     /// | `"zcd"`         | Zcd         | 6.11 [^dep]        |
     /// | `"zcf"`         | Zcf         | 6.11 [^dep]        |
     /// | `"zcmop"`       | Zcmop       | 6.11               |
