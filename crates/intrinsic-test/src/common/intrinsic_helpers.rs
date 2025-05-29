@@ -117,11 +117,11 @@ impl IntrinsicType {
     }
 
     pub fn num_lanes(&self) -> u32 {
-        if let Some(sl) = self.simd_len { sl } else { 1 }
+        self.simd_len.unwrap_or(1)
     }
 
     pub fn num_vectors(&self) -> u32 {
-        if let Some(vl) = self.vec_len { vl } else { 1 }
+        self.vec_len.unwrap_or(1)
     }
 
     pub fn is_simd(&self) -> bool {
@@ -266,7 +266,7 @@ impl IntrinsicType {
 
     pub fn as_call_param_c(&self, name: &String) -> String {
         if self.ptr {
-            format!("&{}", name)
+            format!("&{name}")
         } else {
             name.clone()
         }

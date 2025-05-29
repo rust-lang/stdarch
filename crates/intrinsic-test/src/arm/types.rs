@@ -12,9 +12,9 @@ impl IntrinsicTypeDefinition for ArmIntrinsicType {
             (self.0.bit_len, self.0.simd_len, self.0.vec_len)
         {
             match (simd_len, vec_len) {
-                (None, None) => format!("{}{}{}_t", const_prefix, prefix, bit_len),
-                (Some(simd), None) => format!("{}{bit_len}x{simd}_t", prefix),
-                (Some(simd), Some(vec)) => format!("{}{bit_len}x{simd}x{vec}_t", prefix),
+                (None, None) => format!("{const_prefix}{prefix}{bit_len}_t"),
+                (Some(simd), None) => format!("{prefix}{bit_len}x{simd}_t"),
+                (Some(simd), Some(vec)) => format!("{prefix}{bit_len}x{simd}x{vec}_t"),
                 (None, Some(_)) => todo!("{:#?}", self), // Likely an invalid case
             }
         } else {
@@ -24,8 +24,10 @@ impl IntrinsicTypeDefinition for ArmIntrinsicType {
 
     fn c_single_vector_type(&self) -> String {
         if let (Some(bit_len), Some(simd_len)) = (self.0.bit_len, self.0.simd_len) {
-            let prefix = self.0.kind.c_prefix();
-            format!("{}{bit_len}x{simd_len}_t", prefix)
+            format!(
+                "{prefix}{bit_len}x{simd_len}_t",
+                prefix = self.0.kind.c_prefix()
+            )
         } else {
             unreachable!("Shouldn't be called on this type")
         }
@@ -39,10 +41,11 @@ impl IntrinsicTypeDefinition for ArmIntrinsicType {
         } else if let (Some(bit_len), simd_len, vec_len) =
             (self.0.bit_len, self.0.simd_len, self.0.vec_len)
         {
+            // TODO: investigation (c_prefix is created okay?)
             match (simd_len, vec_len) {
-                (None, None) => format!("{}{bit_len}", rust_prefix),
-                (Some(simd), None) => format!("{}{bit_len}x{simd}_t", c_prefix),
-                (Some(simd), Some(vec)) => format!("{}{bit_len}x{simd}x{vec}_t", c_prefix),
+                (None, None) => format!("{rust_prefix}{bit_len}"),
+                (Some(simd), None) => format!("{c_prefix}{bit_len}x{simd}_t"),
+                (Some(simd), Some(vec)) => format!("{c_prefix}{bit_len}x{simd}x{vec}_t"),
                 (None, Some(_)) => todo!("{:#?}", self), // Likely an invalid case
             }
         } else {
@@ -128,11 +131,11 @@ impl IntrinsicTypeDefinition for ArmIntrinsicType {
             };
             let s = s.trim_end();
             let temp_return = ArmIntrinsicType::from_c(s, target);
-            temp_return.and_then(|mut op| {
+            temp_return.map(|mut op| {
                 let edited = op.as_mut();
                 edited.0.ptr = true;
                 edited.0.ptr_constant = constant;
-                Ok(op)
+                op
             })
         } else {
             // [const ]TYPE[{bitlen}[x{simdlen}[x{vec_len}]]][_t]
