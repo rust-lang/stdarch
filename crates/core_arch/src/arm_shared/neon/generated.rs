@@ -37160,15 +37160,7 @@ pub fn vqabsq_s32(a: int32x4_t) -> int32x4_t {
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
 pub fn vqadd_s8(a: int8x8_t, b: int8x8_t) -> int8x8_t {
-    unsafe extern "unadjusted" {
-        #[cfg_attr(
-            any(target_arch = "aarch64", target_arch = "arm64ec"),
-            link_name = "llvm.aarch64.neon.sqadd.v8i8"
-        )]
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.sadd.sat.v8i8")]
-        fn _vqadd_s8(a: int8x8_t, b: int8x8_t) -> int8x8_t;
-    }
-    unsafe { _vqadd_s8(a, b) }
+    unsafe { simd_saturating_add(a, b) }
 }
 #[doc = "Saturating add"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vqaddq_s8)"]
@@ -37189,15 +37181,7 @@ pub fn vqadd_s8(a: int8x8_t, b: int8x8_t) -> int8x8_t {
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
 pub fn vqaddq_s8(a: int8x16_t, b: int8x16_t) -> int8x16_t {
-    unsafe extern "unadjusted" {
-        #[cfg_attr(
-            any(target_arch = "aarch64", target_arch = "arm64ec"),
-            link_name = "llvm.aarch64.neon.sqadd.v16i8"
-        )]
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.sadd.sat.v16i8")]
-        fn _vqaddq_s8(a: int8x16_t, b: int8x16_t) -> int8x16_t;
-    }
-    unsafe { _vqaddq_s8(a, b) }
+    unsafe { simd_saturating_add(a, b) }
 }
 #[doc = "Saturating add"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vqadd_s16)"]
@@ -37218,15 +37202,7 @@ pub fn vqaddq_s8(a: int8x16_t, b: int8x16_t) -> int8x16_t {
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
 pub fn vqadd_s16(a: int16x4_t, b: int16x4_t) -> int16x4_t {
-    unsafe extern "unadjusted" {
-        #[cfg_attr(
-            any(target_arch = "aarch64", target_arch = "arm64ec"),
-            link_name = "llvm.aarch64.neon.sqadd.v4i16"
-        )]
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.sadd.sat.v4i16")]
-        fn _vqadd_s16(a: int16x4_t, b: int16x4_t) -> int16x4_t;
-    }
-    unsafe { _vqadd_s16(a, b) }
+    unsafe { simd_saturating_add(a, b) }
 }
 #[doc = "Saturating add"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vqaddq_s16)"]
@@ -37247,15 +37223,7 @@ pub fn vqadd_s16(a: int16x4_t, b: int16x4_t) -> int16x4_t {
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
 pub fn vqaddq_s16(a: int16x8_t, b: int16x8_t) -> int16x8_t {
-    unsafe extern "unadjusted" {
-        #[cfg_attr(
-            any(target_arch = "aarch64", target_arch = "arm64ec"),
-            link_name = "llvm.aarch64.neon.sqadd.v8i16"
-        )]
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.sadd.sat.v8i16")]
-        fn _vqaddq_s16(a: int16x8_t, b: int16x8_t) -> int16x8_t;
-    }
-    unsafe { _vqaddq_s16(a, b) }
+    unsafe { simd_saturating_add(a, b) }
 }
 #[doc = "Saturating add"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vqadd_s32)"]
@@ -37276,15 +37244,7 @@ pub fn vqaddq_s16(a: int16x8_t, b: int16x8_t) -> int16x8_t {
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
 pub fn vqadd_s32(a: int32x2_t, b: int32x2_t) -> int32x2_t {
-    unsafe extern "unadjusted" {
-        #[cfg_attr(
-            any(target_arch = "aarch64", target_arch = "arm64ec"),
-            link_name = "llvm.aarch64.neon.sqadd.v2i32"
-        )]
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.sadd.sat.v2i32")]
-        fn _vqadd_s32(a: int32x2_t, b: int32x2_t) -> int32x2_t;
-    }
-    unsafe { _vqadd_s32(a, b) }
+    unsafe { simd_saturating_add(a, b) }
 }
 #[doc = "Saturating add"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vqaddq_s32)"]
@@ -37305,15 +37265,7 @@ pub fn vqadd_s32(a: int32x2_t, b: int32x2_t) -> int32x2_t {
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
 pub fn vqaddq_s32(a: int32x4_t, b: int32x4_t) -> int32x4_t {
-    unsafe extern "unadjusted" {
-        #[cfg_attr(
-            any(target_arch = "aarch64", target_arch = "arm64ec"),
-            link_name = "llvm.aarch64.neon.sqadd.v4i32"
-        )]
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.sadd.sat.v4i32")]
-        fn _vqaddq_s32(a: int32x4_t, b: int32x4_t) -> int32x4_t;
-    }
-    unsafe { _vqaddq_s32(a, b) }
+    unsafe { simd_saturating_add(a, b) }
 }
 #[doc = "Saturating add"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vqadd_s64)"]
@@ -37334,15 +37286,7 @@ pub fn vqaddq_s32(a: int32x4_t, b: int32x4_t) -> int32x4_t {
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
 pub fn vqadd_s64(a: int64x1_t, b: int64x1_t) -> int64x1_t {
-    unsafe extern "unadjusted" {
-        #[cfg_attr(
-            any(target_arch = "aarch64", target_arch = "arm64ec"),
-            link_name = "llvm.aarch64.neon.sqadd.v1i64"
-        )]
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.sadd.sat.v1i64")]
-        fn _vqadd_s64(a: int64x1_t, b: int64x1_t) -> int64x1_t;
-    }
-    unsafe { _vqadd_s64(a, b) }
+    unsafe { simd_saturating_add(a, b) }
 }
 #[doc = "Saturating add"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vqaddq_s64)"]
@@ -37363,15 +37307,7 @@ pub fn vqadd_s64(a: int64x1_t, b: int64x1_t) -> int64x1_t {
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
 pub fn vqaddq_s64(a: int64x2_t, b: int64x2_t) -> int64x2_t {
-    unsafe extern "unadjusted" {
-        #[cfg_attr(
-            any(target_arch = "aarch64", target_arch = "arm64ec"),
-            link_name = "llvm.aarch64.neon.sqadd.v2i64"
-        )]
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.sadd.sat.v2i64")]
-        fn _vqaddq_s64(a: int64x2_t, b: int64x2_t) -> int64x2_t;
-    }
-    unsafe { _vqaddq_s64(a, b) }
+    unsafe { simd_saturating_add(a, b) }
 }
 #[doc = "Saturating add"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vqadd_u8)"]
@@ -37392,15 +37328,7 @@ pub fn vqaddq_s64(a: int64x2_t, b: int64x2_t) -> int64x2_t {
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
 pub fn vqadd_u8(a: uint8x8_t, b: uint8x8_t) -> uint8x8_t {
-    unsafe extern "unadjusted" {
-        #[cfg_attr(
-            any(target_arch = "aarch64", target_arch = "arm64ec"),
-            link_name = "llvm.aarch64.neon.uqadd.v8i8"
-        )]
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.uadd.sat.v8i8")]
-        fn _vqadd_u8(a: uint8x8_t, b: uint8x8_t) -> uint8x8_t;
-    }
-    unsafe { _vqadd_u8(a, b) }
+    unsafe { simd_saturating_add(a, b) }
 }
 #[doc = "Saturating add"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vqaddq_u8)"]
@@ -37421,15 +37349,7 @@ pub fn vqadd_u8(a: uint8x8_t, b: uint8x8_t) -> uint8x8_t {
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
 pub fn vqaddq_u8(a: uint8x16_t, b: uint8x16_t) -> uint8x16_t {
-    unsafe extern "unadjusted" {
-        #[cfg_attr(
-            any(target_arch = "aarch64", target_arch = "arm64ec"),
-            link_name = "llvm.aarch64.neon.uqadd.v16i8"
-        )]
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.uadd.sat.v16i8")]
-        fn _vqaddq_u8(a: uint8x16_t, b: uint8x16_t) -> uint8x16_t;
-    }
-    unsafe { _vqaddq_u8(a, b) }
+    unsafe { simd_saturating_add(a, b) }
 }
 #[doc = "Saturating add"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vqadd_u16)"]
@@ -37450,15 +37370,7 @@ pub fn vqaddq_u8(a: uint8x16_t, b: uint8x16_t) -> uint8x16_t {
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
 pub fn vqadd_u16(a: uint16x4_t, b: uint16x4_t) -> uint16x4_t {
-    unsafe extern "unadjusted" {
-        #[cfg_attr(
-            any(target_arch = "aarch64", target_arch = "arm64ec"),
-            link_name = "llvm.aarch64.neon.uqadd.v4i16"
-        )]
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.uadd.sat.v4i16")]
-        fn _vqadd_u16(a: uint16x4_t, b: uint16x4_t) -> uint16x4_t;
-    }
-    unsafe { _vqadd_u16(a, b) }
+    unsafe { simd_saturating_add(a, b) }
 }
 #[doc = "Saturating add"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vqaddq_u16)"]
@@ -37479,15 +37391,7 @@ pub fn vqadd_u16(a: uint16x4_t, b: uint16x4_t) -> uint16x4_t {
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
 pub fn vqaddq_u16(a: uint16x8_t, b: uint16x8_t) -> uint16x8_t {
-    unsafe extern "unadjusted" {
-        #[cfg_attr(
-            any(target_arch = "aarch64", target_arch = "arm64ec"),
-            link_name = "llvm.aarch64.neon.uqadd.v8i16"
-        )]
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.uadd.sat.v8i16")]
-        fn _vqaddq_u16(a: uint16x8_t, b: uint16x8_t) -> uint16x8_t;
-    }
-    unsafe { _vqaddq_u16(a, b) }
+    unsafe { simd_saturating_add(a, b) }
 }
 #[doc = "Saturating add"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vqadd_u32)"]
@@ -37508,15 +37412,7 @@ pub fn vqaddq_u16(a: uint16x8_t, b: uint16x8_t) -> uint16x8_t {
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
 pub fn vqadd_u32(a: uint32x2_t, b: uint32x2_t) -> uint32x2_t {
-    unsafe extern "unadjusted" {
-        #[cfg_attr(
-            any(target_arch = "aarch64", target_arch = "arm64ec"),
-            link_name = "llvm.aarch64.neon.uqadd.v2i32"
-        )]
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.uadd.sat.v2i32")]
-        fn _vqadd_u32(a: uint32x2_t, b: uint32x2_t) -> uint32x2_t;
-    }
-    unsafe { _vqadd_u32(a, b) }
+    unsafe { simd_saturating_add(a, b) }
 }
 #[doc = "Saturating add"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vqaddq_u32)"]
@@ -37537,15 +37433,7 @@ pub fn vqadd_u32(a: uint32x2_t, b: uint32x2_t) -> uint32x2_t {
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
 pub fn vqaddq_u32(a: uint32x4_t, b: uint32x4_t) -> uint32x4_t {
-    unsafe extern "unadjusted" {
-        #[cfg_attr(
-            any(target_arch = "aarch64", target_arch = "arm64ec"),
-            link_name = "llvm.aarch64.neon.uqadd.v4i32"
-        )]
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.uadd.sat.v4i32")]
-        fn _vqaddq_u32(a: uint32x4_t, b: uint32x4_t) -> uint32x4_t;
-    }
-    unsafe { _vqaddq_u32(a, b) }
+    unsafe { simd_saturating_add(a, b) }
 }
 #[doc = "Saturating add"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vqadd_u64)"]
@@ -37566,15 +37454,7 @@ pub fn vqaddq_u32(a: uint32x4_t, b: uint32x4_t) -> uint32x4_t {
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
 pub fn vqadd_u64(a: uint64x1_t, b: uint64x1_t) -> uint64x1_t {
-    unsafe extern "unadjusted" {
-        #[cfg_attr(
-            any(target_arch = "aarch64", target_arch = "arm64ec"),
-            link_name = "llvm.aarch64.neon.uqadd.v1i64"
-        )]
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.uadd.sat.v1i64")]
-        fn _vqadd_u64(a: uint64x1_t, b: uint64x1_t) -> uint64x1_t;
-    }
-    unsafe { _vqadd_u64(a, b) }
+    unsafe { simd_saturating_add(a, b) }
 }
 #[doc = "Saturating add"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vqaddq_u64)"]
@@ -37595,15 +37475,7 @@ pub fn vqadd_u64(a: uint64x1_t, b: uint64x1_t) -> uint64x1_t {
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
 pub fn vqaddq_u64(a: uint64x2_t, b: uint64x2_t) -> uint64x2_t {
-    unsafe extern "unadjusted" {
-        #[cfg_attr(
-            any(target_arch = "aarch64", target_arch = "arm64ec"),
-            link_name = "llvm.aarch64.neon.uqadd.v2i64"
-        )]
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.uadd.sat.v2i64")]
-        fn _vqaddq_u64(a: uint64x2_t, b: uint64x2_t) -> uint64x2_t;
-    }
-    unsafe { _vqaddq_u64(a, b) }
+    unsafe { simd_saturating_add(a, b) }
 }
 #[doc = "Vector widening saturating doubling multiply accumulate with scalar"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vqdmlal_lane_s16)"]
@@ -41577,15 +41449,7 @@ pub fn vqshrun_n_s64<const N: i32>(a: int64x2_t) -> uint32x2_t {
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
 pub fn vqsub_s8(a: int8x8_t, b: int8x8_t) -> int8x8_t {
-    unsafe extern "unadjusted" {
-        #[cfg_attr(
-            any(target_arch = "aarch64", target_arch = "arm64ec"),
-            link_name = "llvm.aarch64.neon.sqsub.v8i8"
-        )]
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.ssub.sat.v8i8")]
-        fn _vqsub_s8(a: int8x8_t, b: int8x8_t) -> int8x8_t;
-    }
-    unsafe { _vqsub_s8(a, b) }
+    unsafe { simd_saturating_sub(a, b) }
 }
 #[doc = "Saturating subtract"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vqsubq_s8)"]
@@ -41606,15 +41470,7 @@ pub fn vqsub_s8(a: int8x8_t, b: int8x8_t) -> int8x8_t {
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
 pub fn vqsubq_s8(a: int8x16_t, b: int8x16_t) -> int8x16_t {
-    unsafe extern "unadjusted" {
-        #[cfg_attr(
-            any(target_arch = "aarch64", target_arch = "arm64ec"),
-            link_name = "llvm.aarch64.neon.sqsub.v16i8"
-        )]
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.ssub.sat.v16i8")]
-        fn _vqsubq_s8(a: int8x16_t, b: int8x16_t) -> int8x16_t;
-    }
-    unsafe { _vqsubq_s8(a, b) }
+    unsafe { simd_saturating_sub(a, b) }
 }
 #[doc = "Saturating subtract"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vqsub_s16)"]
@@ -41635,15 +41491,7 @@ pub fn vqsubq_s8(a: int8x16_t, b: int8x16_t) -> int8x16_t {
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
 pub fn vqsub_s16(a: int16x4_t, b: int16x4_t) -> int16x4_t {
-    unsafe extern "unadjusted" {
-        #[cfg_attr(
-            any(target_arch = "aarch64", target_arch = "arm64ec"),
-            link_name = "llvm.aarch64.neon.sqsub.v4i16"
-        )]
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.ssub.sat.v4i16")]
-        fn _vqsub_s16(a: int16x4_t, b: int16x4_t) -> int16x4_t;
-    }
-    unsafe { _vqsub_s16(a, b) }
+    unsafe { simd_saturating_sub(a, b) }
 }
 #[doc = "Saturating subtract"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vqsubq_s16)"]
@@ -41664,15 +41512,7 @@ pub fn vqsub_s16(a: int16x4_t, b: int16x4_t) -> int16x4_t {
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
 pub fn vqsubq_s16(a: int16x8_t, b: int16x8_t) -> int16x8_t {
-    unsafe extern "unadjusted" {
-        #[cfg_attr(
-            any(target_arch = "aarch64", target_arch = "arm64ec"),
-            link_name = "llvm.aarch64.neon.sqsub.v8i16"
-        )]
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.ssub.sat.v8i16")]
-        fn _vqsubq_s16(a: int16x8_t, b: int16x8_t) -> int16x8_t;
-    }
-    unsafe { _vqsubq_s16(a, b) }
+    unsafe { simd_saturating_sub(a, b) }
 }
 #[doc = "Saturating subtract"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vqsub_s32)"]
@@ -41693,15 +41533,7 @@ pub fn vqsubq_s16(a: int16x8_t, b: int16x8_t) -> int16x8_t {
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
 pub fn vqsub_s32(a: int32x2_t, b: int32x2_t) -> int32x2_t {
-    unsafe extern "unadjusted" {
-        #[cfg_attr(
-            any(target_arch = "aarch64", target_arch = "arm64ec"),
-            link_name = "llvm.aarch64.neon.sqsub.v2i32"
-        )]
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.ssub.sat.v2i32")]
-        fn _vqsub_s32(a: int32x2_t, b: int32x2_t) -> int32x2_t;
-    }
-    unsafe { _vqsub_s32(a, b) }
+    unsafe { simd_saturating_sub(a, b) }
 }
 #[doc = "Saturating subtract"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vqsubq_s32)"]
@@ -41722,15 +41554,7 @@ pub fn vqsub_s32(a: int32x2_t, b: int32x2_t) -> int32x2_t {
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
 pub fn vqsubq_s32(a: int32x4_t, b: int32x4_t) -> int32x4_t {
-    unsafe extern "unadjusted" {
-        #[cfg_attr(
-            any(target_arch = "aarch64", target_arch = "arm64ec"),
-            link_name = "llvm.aarch64.neon.sqsub.v4i32"
-        )]
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.ssub.sat.v4i32")]
-        fn _vqsubq_s32(a: int32x4_t, b: int32x4_t) -> int32x4_t;
-    }
-    unsafe { _vqsubq_s32(a, b) }
+    unsafe { simd_saturating_sub(a, b) }
 }
 #[doc = "Saturating subtract"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vqsub_s64)"]
@@ -41751,15 +41575,7 @@ pub fn vqsubq_s32(a: int32x4_t, b: int32x4_t) -> int32x4_t {
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
 pub fn vqsub_s64(a: int64x1_t, b: int64x1_t) -> int64x1_t {
-    unsafe extern "unadjusted" {
-        #[cfg_attr(
-            any(target_arch = "aarch64", target_arch = "arm64ec"),
-            link_name = "llvm.aarch64.neon.sqsub.v1i64"
-        )]
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.ssub.sat.v1i64")]
-        fn _vqsub_s64(a: int64x1_t, b: int64x1_t) -> int64x1_t;
-    }
-    unsafe { _vqsub_s64(a, b) }
+    unsafe { simd_saturating_sub(a, b) }
 }
 #[doc = "Saturating subtract"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vqsubq_s64)"]
@@ -41780,15 +41596,7 @@ pub fn vqsub_s64(a: int64x1_t, b: int64x1_t) -> int64x1_t {
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
 pub fn vqsubq_s64(a: int64x2_t, b: int64x2_t) -> int64x2_t {
-    unsafe extern "unadjusted" {
-        #[cfg_attr(
-            any(target_arch = "aarch64", target_arch = "arm64ec"),
-            link_name = "llvm.aarch64.neon.sqsub.v2i64"
-        )]
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.ssub.sat.v2i64")]
-        fn _vqsubq_s64(a: int64x2_t, b: int64x2_t) -> int64x2_t;
-    }
-    unsafe { _vqsubq_s64(a, b) }
+    unsafe { simd_saturating_sub(a, b) }
 }
 #[doc = "Saturating subtract"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vqsub_u8)"]
@@ -41809,15 +41617,7 @@ pub fn vqsubq_s64(a: int64x2_t, b: int64x2_t) -> int64x2_t {
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
 pub fn vqsub_u8(a: uint8x8_t, b: uint8x8_t) -> uint8x8_t {
-    unsafe extern "unadjusted" {
-        #[cfg_attr(
-            any(target_arch = "aarch64", target_arch = "arm64ec"),
-            link_name = "llvm.aarch64.neon.uqsub.v8i8"
-        )]
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.usub.sat.v8i8")]
-        fn _vqsub_u8(a: uint8x8_t, b: uint8x8_t) -> uint8x8_t;
-    }
-    unsafe { _vqsub_u8(a, b) }
+    unsafe { simd_saturating_sub(a, b) }
 }
 #[doc = "Saturating subtract"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vqsubq_u8)"]
@@ -41838,15 +41638,7 @@ pub fn vqsub_u8(a: uint8x8_t, b: uint8x8_t) -> uint8x8_t {
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
 pub fn vqsubq_u8(a: uint8x16_t, b: uint8x16_t) -> uint8x16_t {
-    unsafe extern "unadjusted" {
-        #[cfg_attr(
-            any(target_arch = "aarch64", target_arch = "arm64ec"),
-            link_name = "llvm.aarch64.neon.uqsub.v16i8"
-        )]
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.usub.sat.v16i8")]
-        fn _vqsubq_u8(a: uint8x16_t, b: uint8x16_t) -> uint8x16_t;
-    }
-    unsafe { _vqsubq_u8(a, b) }
+    unsafe { simd_saturating_sub(a, b) }
 }
 #[doc = "Saturating subtract"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vqsub_u16)"]
@@ -41867,15 +41659,7 @@ pub fn vqsubq_u8(a: uint8x16_t, b: uint8x16_t) -> uint8x16_t {
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
 pub fn vqsub_u16(a: uint16x4_t, b: uint16x4_t) -> uint16x4_t {
-    unsafe extern "unadjusted" {
-        #[cfg_attr(
-            any(target_arch = "aarch64", target_arch = "arm64ec"),
-            link_name = "llvm.aarch64.neon.uqsub.v4i16"
-        )]
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.usub.sat.v4i16")]
-        fn _vqsub_u16(a: uint16x4_t, b: uint16x4_t) -> uint16x4_t;
-    }
-    unsafe { _vqsub_u16(a, b) }
+    unsafe { simd_saturating_sub(a, b) }
 }
 #[doc = "Saturating subtract"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vqsubq_u16)"]
@@ -41896,15 +41680,7 @@ pub fn vqsub_u16(a: uint16x4_t, b: uint16x4_t) -> uint16x4_t {
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
 pub fn vqsubq_u16(a: uint16x8_t, b: uint16x8_t) -> uint16x8_t {
-    unsafe extern "unadjusted" {
-        #[cfg_attr(
-            any(target_arch = "aarch64", target_arch = "arm64ec"),
-            link_name = "llvm.aarch64.neon.uqsub.v8i16"
-        )]
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.usub.sat.v8i16")]
-        fn _vqsubq_u16(a: uint16x8_t, b: uint16x8_t) -> uint16x8_t;
-    }
-    unsafe { _vqsubq_u16(a, b) }
+    unsafe { simd_saturating_sub(a, b) }
 }
 #[doc = "Saturating subtract"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vqsub_u32)"]
@@ -41925,15 +41701,7 @@ pub fn vqsubq_u16(a: uint16x8_t, b: uint16x8_t) -> uint16x8_t {
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
 pub fn vqsub_u32(a: uint32x2_t, b: uint32x2_t) -> uint32x2_t {
-    unsafe extern "unadjusted" {
-        #[cfg_attr(
-            any(target_arch = "aarch64", target_arch = "arm64ec"),
-            link_name = "llvm.aarch64.neon.uqsub.v2i32"
-        )]
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.usub.sat.v2i32")]
-        fn _vqsub_u32(a: uint32x2_t, b: uint32x2_t) -> uint32x2_t;
-    }
-    unsafe { _vqsub_u32(a, b) }
+    unsafe { simd_saturating_sub(a, b) }
 }
 #[doc = "Saturating subtract"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vqsubq_u32)"]
@@ -41954,15 +41722,7 @@ pub fn vqsub_u32(a: uint32x2_t, b: uint32x2_t) -> uint32x2_t {
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
 pub fn vqsubq_u32(a: uint32x4_t, b: uint32x4_t) -> uint32x4_t {
-    unsafe extern "unadjusted" {
-        #[cfg_attr(
-            any(target_arch = "aarch64", target_arch = "arm64ec"),
-            link_name = "llvm.aarch64.neon.uqsub.v4i32"
-        )]
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.usub.sat.v4i32")]
-        fn _vqsubq_u32(a: uint32x4_t, b: uint32x4_t) -> uint32x4_t;
-    }
-    unsafe { _vqsubq_u32(a, b) }
+    unsafe { simd_saturating_sub(a, b) }
 }
 #[doc = "Saturating subtract"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vqsub_u64)"]
@@ -41983,15 +41743,7 @@ pub fn vqsubq_u32(a: uint32x4_t, b: uint32x4_t) -> uint32x4_t {
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
 pub fn vqsub_u64(a: uint64x1_t, b: uint64x1_t) -> uint64x1_t {
-    unsafe extern "unadjusted" {
-        #[cfg_attr(
-            any(target_arch = "aarch64", target_arch = "arm64ec"),
-            link_name = "llvm.aarch64.neon.uqsub.v1i64"
-        )]
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.usub.sat.v1i64")]
-        fn _vqsub_u64(a: uint64x1_t, b: uint64x1_t) -> uint64x1_t;
-    }
-    unsafe { _vqsub_u64(a, b) }
+    unsafe { simd_saturating_sub(a, b) }
 }
 #[doc = "Saturating subtract"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vqsubq_u64)"]
@@ -42012,15 +41764,7 @@ pub fn vqsub_u64(a: uint64x1_t, b: uint64x1_t) -> uint64x1_t {
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
 pub fn vqsubq_u64(a: uint64x2_t, b: uint64x2_t) -> uint64x2_t {
-    unsafe extern "unadjusted" {
-        #[cfg_attr(
-            any(target_arch = "aarch64", target_arch = "arm64ec"),
-            link_name = "llvm.aarch64.neon.uqsub.v2i64"
-        )]
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.usub.sat.v2i64")]
-        fn _vqsubq_u64(a: uint64x2_t, b: uint64x2_t) -> uint64x2_t;
-    }
-    unsafe { _vqsubq_u64(a, b) }
+    unsafe { simd_saturating_sub(a, b) }
 }
 #[doc = "Rounding Add returning High Narrow (high half)."]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vraddhn_high_s16)"]
