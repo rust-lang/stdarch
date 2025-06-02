@@ -34140,9 +34140,9 @@ pub fn vmull_s16(a: int16x4_t, b: int16x4_t) -> int32x4_t {
     unsafe extern "unadjusted" {
         #[cfg_attr(
             any(target_arch = "aarch64", target_arch = "arm64ec"),
-            link_name = "llvm.aarch64.neon.smull.v4i16"
+            link_name = "llvm.aarch64.neon.smull.v4i32"
         )]
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vmulls.v4i16")]
+        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vmulls.v4i32")]
         fn _vmull_s16(a: int16x4_t, b: int16x4_t) -> int32x4_t;
     }
     unsafe { _vmull_s16(a, b) }
@@ -34169,9 +34169,9 @@ pub fn vmull_s32(a: int32x2_t, b: int32x2_t) -> int64x2_t {
     unsafe extern "unadjusted" {
         #[cfg_attr(
             any(target_arch = "aarch64", target_arch = "arm64ec"),
-            link_name = "llvm.aarch64.neon.smull.v2i32"
+            link_name = "llvm.aarch64.neon.smull.v2i64"
         )]
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vmulls.v2i32")]
+        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vmulls.v2i64")]
         fn _vmull_s32(a: int32x2_t, b: int32x2_t) -> int64x2_t;
     }
     unsafe { _vmull_s32(a, b) }
@@ -34198,9 +34198,9 @@ pub fn vmull_s8(a: int8x8_t, b: int8x8_t) -> int16x8_t {
     unsafe extern "unadjusted" {
         #[cfg_attr(
             any(target_arch = "aarch64", target_arch = "arm64ec"),
-            link_name = "llvm.aarch64.neon.smull.v8i8"
+            link_name = "llvm.aarch64.neon.smull.v8i16"
         )]
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vmulls.v8i8")]
+        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vmulls.v8i16")]
         fn _vmull_s8(a: int8x8_t, b: int8x8_t) -> int16x8_t;
     }
     unsafe { _vmull_s8(a, b) }
@@ -34227,9 +34227,9 @@ pub fn vmull_u8(a: uint8x8_t, b: uint8x8_t) -> uint16x8_t {
     unsafe extern "unadjusted" {
         #[cfg_attr(
             any(target_arch = "aarch64", target_arch = "arm64ec"),
-            link_name = "llvm.aarch64.neon.umull.v8i8"
+            link_name = "llvm.aarch64.neon.umull.v8i16"
         )]
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vmullu.v8i8")]
+        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vmullu.v8i16")]
         fn _vmull_u8(a: uint8x8_t, b: uint8x8_t) -> uint16x8_t;
     }
     unsafe { _vmull_u8(a, b) }
@@ -34256,9 +34256,9 @@ pub fn vmull_u16(a: uint16x4_t, b: uint16x4_t) -> uint32x4_t {
     unsafe extern "unadjusted" {
         #[cfg_attr(
             any(target_arch = "aarch64", target_arch = "arm64ec"),
-            link_name = "llvm.aarch64.neon.umull.v4i16"
+            link_name = "llvm.aarch64.neon.umull.v4i32"
         )]
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vmullu.v4i16")]
+        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vmullu.v4i32")]
         fn _vmull_u16(a: uint16x4_t, b: uint16x4_t) -> uint32x4_t;
     }
     unsafe { _vmull_u16(a, b) }
@@ -34285,9 +34285,9 @@ pub fn vmull_u32(a: uint32x2_t, b: uint32x2_t) -> uint64x2_t {
     unsafe extern "unadjusted" {
         #[cfg_attr(
             any(target_arch = "aarch64", target_arch = "arm64ec"),
-            link_name = "llvm.aarch64.neon.umull.v2i32"
+            link_name = "llvm.aarch64.neon.umull.v2i64"
         )]
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vmullu.v2i32")]
+        #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vmullu.v2i64")]
         fn _vmull_u32(a: uint32x2_t, b: uint32x2_t) -> uint64x2_t;
     }
     unsafe { _vmull_u32(a, b) }
