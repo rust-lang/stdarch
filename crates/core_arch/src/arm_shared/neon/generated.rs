@@ -6924,15 +6924,7 @@ pub fn vcltzq_f16(a: float16x8_t) -> uint16x8_t {
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
 pub fn vclz_s8(a: int8x8_t) -> int8x8_t {
-    unsafe extern "unadjusted" {
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.ctlz.v8i8")]
-        #[cfg_attr(
-            any(target_arch = "aarch64", target_arch = "arm64ec"),
-            link_name = "llvm.ctlz.v8i8"
-        )]
-        fn _vclz_s8(a: int8x8_t) -> int8x8_t;
-    }
-    unsafe { _vclz_s8(a) }
+    unsafe { simd_ctlz(a) }
 }
 #[doc = "Count leading zero bits"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vclzq_s8)"]
@@ -6953,15 +6945,7 @@ pub fn vclz_s8(a: int8x8_t) -> int8x8_t {
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
 pub fn vclzq_s8(a: int8x16_t) -> int8x16_t {
-    unsafe extern "unadjusted" {
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.ctlz.v16i8")]
-        #[cfg_attr(
-            any(target_arch = "aarch64", target_arch = "arm64ec"),
-            link_name = "llvm.ctlz.v16i8"
-        )]
-        fn _vclzq_s8(a: int8x16_t) -> int8x16_t;
-    }
-    unsafe { _vclzq_s8(a) }
+    unsafe { simd_ctlz(a) }
 }
 #[doc = "Count leading zero bits"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vclz_s16)"]
@@ -6982,15 +6966,7 @@ pub fn vclzq_s8(a: int8x16_t) -> int8x16_t {
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
 pub fn vclz_s16(a: int16x4_t) -> int16x4_t {
-    unsafe extern "unadjusted" {
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.ctlz.v4i16")]
-        #[cfg_attr(
-            any(target_arch = "aarch64", target_arch = "arm64ec"),
-            link_name = "llvm.ctlz.v4i16"
-        )]
-        fn _vclz_s16(a: int16x4_t) -> int16x4_t;
-    }
-    unsafe { _vclz_s16(a) }
+    unsafe { simd_ctlz(a) }
 }
 #[doc = "Count leading zero bits"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vclzq_s16)"]
@@ -7011,15 +6987,7 @@ pub fn vclz_s16(a: int16x4_t) -> int16x4_t {
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
 pub fn vclzq_s16(a: int16x8_t) -> int16x8_t {
-    unsafe extern "unadjusted" {
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.ctlz.v8i16")]
-        #[cfg_attr(
-            any(target_arch = "aarch64", target_arch = "arm64ec"),
-            link_name = "llvm.ctlz.v8i16"
-        )]
-        fn _vclzq_s16(a: int16x8_t) -> int16x8_t;
-    }
-    unsafe { _vclzq_s16(a) }
+    unsafe { simd_ctlz(a) }
 }
 #[doc = "Count leading zero bits"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vclz_s32)"]
@@ -7040,15 +7008,7 @@ pub fn vclzq_s16(a: int16x8_t) -> int16x8_t {
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
 pub fn vclz_s32(a: int32x2_t) -> int32x2_t {
-    unsafe extern "unadjusted" {
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.ctlz.v2i32")]
-        #[cfg_attr(
-            any(target_arch = "aarch64", target_arch = "arm64ec"),
-            link_name = "llvm.ctlz.v2i32"
-        )]
-        fn _vclz_s32(a: int32x2_t) -> int32x2_t;
-    }
-    unsafe { _vclz_s32(a) }
+    unsafe { simd_ctlz(a) }
 }
 #[doc = "Count leading zero bits"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vclzq_s32)"]
@@ -7069,15 +7029,7 @@ pub fn vclz_s32(a: int32x2_t) -> int32x2_t {
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
 pub fn vclzq_s32(a: int32x4_t) -> int32x4_t {
-    unsafe extern "unadjusted" {
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.ctlz.v4i32")]
-        #[cfg_attr(
-            any(target_arch = "aarch64", target_arch = "arm64ec"),
-            link_name = "llvm.ctlz.v4i32"
-        )]
-        fn _vclzq_s32(a: int32x4_t) -> int32x4_t;
-    }
-    unsafe { _vclzq_s32(a) }
+    unsafe { simd_ctlz(a) }
 }
 #[doc = "Count leading zero bits"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vclz_u16)"]
@@ -7391,15 +7343,7 @@ pub fn vclzq_u8(a: uint8x16_t) -> uint8x16_t {
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
 pub fn vcnt_s8(a: int8x8_t) -> int8x8_t {
-    unsafe extern "unadjusted" {
-        #[cfg_attr(
-            any(target_arch = "aarch64", target_arch = "arm64ec"),
-            link_name = "llvm.ctpop.v8i8"
-        )]
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.ctpop.v8i8")]
-        fn _vcnt_s8(a: int8x8_t) -> int8x8_t;
-    }
-    unsafe { _vcnt_s8(a) }
+    unsafe { simd_ctpop(a) }
 }
 #[doc = "Population count per byte."]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vcntq_s8)"]
@@ -7420,15 +7364,7 @@ pub fn vcnt_s8(a: int8x8_t) -> int8x8_t {
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
 pub fn vcntq_s8(a: int8x16_t) -> int8x16_t {
-    unsafe extern "unadjusted" {
-        #[cfg_attr(
-            any(target_arch = "aarch64", target_arch = "arm64ec"),
-            link_name = "llvm.ctpop.v16i8"
-        )]
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.ctpop.v16i8")]
-        fn _vcntq_s8(a: int8x16_t) -> int8x16_t;
-    }
-    unsafe { _vcntq_s8(a) }
+    unsafe { simd_ctpop(a) }
 }
 #[doc = "Population count per byte."]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vcnt_u8)"]
@@ -12497,12 +12433,7 @@ pub fn vextq_p8<const N: i32>(a: poly8x16_t, b: poly8x16_t) -> poly8x16_t {
 #[target_feature(enable = "neon,fp16")]
 #[unstable(feature = "stdarch_neon_f16", issue = "136306")]
 pub fn vfma_f16(a: float16x4_t, b: float16x4_t, c: float16x4_t) -> float16x4_t {
-    unsafe extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.fma.v4f16")]
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.fma.v4f16")]
-        fn _vfma_f16(a: float16x4_t, b: float16x4_t, c: float16x4_t) -> float16x4_t;
-    }
-    unsafe { _vfma_f16(b, c, a) }
+    unsafe { simd_fma(b, c, a) }
 }
 #[doc = "Floating-point fused Multiply-Add to accumulator (vector)"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vfmaq_f16)"]
@@ -12516,12 +12447,7 @@ pub fn vfma_f16(a: float16x4_t, b: float16x4_t, c: float16x4_t) -> float16x4_t {
 #[target_feature(enable = "neon,fp16")]
 #[unstable(feature = "stdarch_neon_f16", issue = "136306")]
 pub fn vfmaq_f16(a: float16x8_t, b: float16x8_t, c: float16x8_t) -> float16x8_t {
-    unsafe extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.fma.v8f16")]
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.fma.v8f16")]
-        fn _vfmaq_f16(a: float16x8_t, b: float16x8_t, c: float16x8_t) -> float16x8_t;
-    }
-    unsafe { _vfmaq_f16(b, c, a) }
+    unsafe { simd_fma(b, c, a) }
 }
 #[doc = "Floating-point fused Multiply-Add to accumulator(vector)"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vfma_f32)"]
@@ -12542,12 +12468,7 @@ pub fn vfmaq_f16(a: float16x8_t, b: float16x8_t, c: float16x8_t) -> float16x8_t 
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
 pub fn vfma_f32(a: float32x2_t, b: float32x2_t, c: float32x2_t) -> float32x2_t {
-    unsafe extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.fma.v2f32")]
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.fma.v2f32")]
-        fn _vfma_f32(a: float32x2_t, b: float32x2_t, c: float32x2_t) -> float32x2_t;
-    }
-    unsafe { _vfma_f32(b, c, a) }
+    unsafe { simd_fma(b, c, a) }
 }
 #[doc = "Floating-point fused Multiply-Add to accumulator(vector)"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vfmaq_f32)"]
@@ -12568,12 +12489,7 @@ pub fn vfma_f32(a: float32x2_t, b: float32x2_t, c: float32x2_t) -> float32x2_t {
     unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
 )]
 pub fn vfmaq_f32(a: float32x4_t, b: float32x4_t, c: float32x4_t) -> float32x4_t {
-    unsafe extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.fma.v4f32")]
-        #[cfg_attr(target_arch = "arm", link_name = "llvm.fma.v4f32")]
-        fn _vfmaq_f32(a: float32x4_t, b: float32x4_t, c: float32x4_t) -> float32x4_t;
-    }
-    unsafe { _vfmaq_f32(b, c, a) }
+    unsafe { simd_fma(b, c, a) }
 }
 #[doc = "Floating-point fused Multiply-Add to accumulator(vector)"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vfma_n_f32)"]
