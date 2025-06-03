@@ -20,6 +20,15 @@ impl<T> Argument<T>
 where
     T: IntrinsicTypeDefinition,
 {
+    pub fn new(pos: usize, name: String, ty: T, constraint: Option<Constraint>) -> Self {
+        Argument {
+            pos,
+            name,
+            ty,
+            constraint,
+        }
+    }
+
     pub fn to_c_type(&self) -> String {
         self.ty.c_type()
     }
