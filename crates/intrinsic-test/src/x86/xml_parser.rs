@@ -1,6 +1,7 @@
-use crate::common::{
-    argument::Argument, intrinsic::Intrinsic, intrinsic_helpers::IntrinsicTypeDefinition,
-};
+use crate::common::argument::{Argument, ArgumentList};
+use crate::common::intrinsic::Intrinsic;
+use crate::common::intrinsic_helpers::{IntrinsicType, IntrinsicTypeDefinition};
+
 use serde::{Deserialize, Deserializer};
 use std::path::Path;
 
@@ -17,6 +18,15 @@ where
         "FALSE" => Ok(false),
         _ => Ok(false), // Default to false for any other value
     }
+}
+
+// Custom deserializer function to convert strings to u16
+fn string_to_u16<'de, D>(deserializer: D) -> Result<u16, D::Error>
+where
+    D: Deserializer<'de>,
+{
+    let s = String::deserialize(deserializer)?;
+    return Ok(s.as_str().parse::<u16>().unwrap_or(0u16));
 }
 
 #[derive(Deserialize)]
@@ -49,6 +59,10 @@ struct Parameter {
     type_data: String,
     #[serde(rename = "@etype", default)]
     etype: String,
+    #[serde(rename = "@memwidth", default, deserialize_with = "string_to_u16")]
+    memwidth: u16,
+    #[serde(rename = "@varname", default)]
+    var_name: String,
 }
 
 #[derive(Deserialize)]
@@ -84,21 +98,39 @@ pub fn get_xml_intrinsics(
     Ok(parsed_intrinsics)
 }
 
-pub fn xml_to_intrinsic(
-    mut intr: XMLIntrinsic,
+fn xml_to_intrinsic(
+    intr: XMLIntrinsic,
     target: &String,
 ) -> Result<Intrinsic<X86IntrinsicType>, Box<dyn std::error::Error>> {
     let name = intr.name;
     let results = X86IntrinsicType::from_c(&intr.return_data.type_data, target)?;
 
-    let arguments: Vec<_> = intr
+    let args: Vec<_> = intr
         .parameters
         .into_iter()
         .enumerate()
-        .map(|(i, arg)| {
-            // let arg_name = Argument::<X86IntrinsicType>::type_and_name_from_c(&arg).1;
+        .map(|(i, param)| {
+            let constraint = None;
+            let ty = X86IntrinsicType::from_c(param.type_data.as_str(), target)
+                .unwrap_or_else(|_| panic!("Failed to parse argument '{i}'"));
+
+            let mut arg = Argument::<X86IntrinsicType>::new(i, param.var_name, ty, constraint);
+            let IntrinsicType {
+                ref mut constant, ..
+            } = arg.ty.0;
+            if param.etype == "IMM" {
+                *constant = true
+            }
+            arg
         })
         .collect();
 
-    todo!("xml_to_intrinsic needs to collect the arguments properly!");
+    let arguments = ArgumentList::<X86IntrinsicType> { args };
+
+    Ok(Intrinsic {
+        name,
+        arguments,
+        results: results,
+        arch_tags: intr.cpuid,
+    })
 }
