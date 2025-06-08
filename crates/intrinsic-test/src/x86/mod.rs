@@ -1,15 +1,15 @@
+mod config;
 mod intrinsic;
 mod types;
 mod xml_parser;
-mod config;
 
 use crate::common::SupportedArchitectureTest;
 use crate::common::cli::ProcessedCli;
 use crate::common::intrinsic::{Intrinsic, IntrinsicDefinition};
 use crate::common::write_file::{write_c_testfiles, write_rust_testfiles};
+use config::build_notices;
 use intrinsic::X86IntrinsicType;
 use xml_parser::get_xml_intrinsics;
-use config::build_notices;
 
 pub struct X86ArchitectureTest {
     intrinsics: Vec<Intrinsic<X86IntrinsicType>>,
