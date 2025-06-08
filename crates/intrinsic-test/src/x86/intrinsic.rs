@@ -2,7 +2,7 @@ use crate::common::argument::ArgumentList;
 use crate::common::indentation::Indentation;
 use crate::common::intrinsic::{Intrinsic, IntrinsicDefinition};
 use crate::common::intrinsic_helpers::IntrinsicType;
-use std::ops::Deref;
+use std::ops::{Deref, DerefMut};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct X86IntrinsicType(pub IntrinsicType);
@@ -12,6 +12,13 @@ impl Deref for X86IntrinsicType {
 
     fn deref(&self) -> &Self::Target {
         &self.0
+    }
+}
+
+impl DerefMut for X86IntrinsicType {
+    // type Target = IntrinsicType;
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        &mut self.0
     }
 }
 

@@ -1,12 +1,15 @@
 mod intrinsic;
 mod types;
 mod xml_parser;
+mod config;
 
 use crate::common::SupportedArchitectureTest;
 use crate::common::cli::ProcessedCli;
-use crate::common::intrinsic::Intrinsic;
+use crate::common::intrinsic::{Intrinsic, IntrinsicDefinition};
+use crate::common::write_file::{write_c_testfiles, write_rust_testfiles};
 use intrinsic::X86IntrinsicType;
 use xml_parser::get_xml_intrinsics;
+use config::build_notices;
 
 pub struct X86ArchitectureTest {
     intrinsics: Vec<Intrinsic<X86IntrinsicType>>,
@@ -25,7 +28,25 @@ impl SupportedArchitectureTest for X86ArchitectureTest {
     }
 
     fn build_c_file(&self) -> bool {
-        todo!("build_c_file in X86ArchitectureTest is not implemented")
+        let compiler = self.cli_options.cpp_compiler.as_deref();
+        let target = &self.cli_options.target;
+        let cxx_toolchain_dir = self.cli_options.cxx_toolchain_dir.as_deref();
+        let c_target = "x86_64";
+
+        let intrinsics_name_list = write_c_testfiles(
+            &self
+                .intrinsics
+                .iter()
+                .map(|i| i as &dyn IntrinsicDefinition<_>)
+                .collect::<Vec<_>>(),
+            target,
+            c_target,
+            &["immintrin.h"],
+            &build_notices("// "),
+            &[],
+        );
+
+        true
     }
 
     fn build_rust_file(&self) -> bool {
