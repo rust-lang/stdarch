@@ -29,7 +29,9 @@ impl FromStr for TypeKind {
         match s {
             "bfloat" => Ok(Self::BFloat),
             "float" => Ok(Self::Float),
-            "int" => Ok(Self::Int(true)),
+            "double" => Ok(Self::Double),
+            "int" | "long" => Ok(Self::Int(true)),
+            "short" => Ok(Self::Short(true)),
             "poly" => Ok(Self::Poly),
             "char" => Ok(Self::Char(true)),
             "uint" | "unsigned" => Ok(Self::Int(false)),
@@ -70,7 +72,6 @@ impl TypeKind {
             Self::Int(false) => "uint",
             Self::Poly => "poly",
             Self::Char(true) => "char",
-            Self::Char(false) => "unsigned char",
             _ => unreachable!("Not used: {:#?}", self),
         }
     }
@@ -143,15 +144,15 @@ impl IntrinsicType {
     pub fn is_ptr(&self) -> bool {
         self.ptr
     }
-
+    
     pub fn set_bit_len(&mut self, value: Option<u32>) {
         self.bit_len = value;
     }
-
+    
     pub fn set_simd_len(&mut self, value: Option<u32>) {
         self.simd_len = value;
     }
-
+    
     pub fn set_vec_len(&mut self, value: Option<u32>) {
         self.vec_len = value;
     }
@@ -209,7 +210,7 @@ impl IntrinsicType {
         match self {
             IntrinsicType {
                 bit_len: Some(bit_len @ (8 | 16 | 32 | 64)),
-                kind: kind @ (TypeKind::Int(_) | TypeKind::Poly),
+                kind: kind @ (TypeKind::Int(_) | TypeKind::Poly | TypeKind::Char(_)),
                 simd_len,
                 vec_len,
                 ..

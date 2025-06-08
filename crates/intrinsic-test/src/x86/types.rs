@@ -1,6 +1,8 @@
+use std::str::FromStr;
+
 use super::intrinsic::X86IntrinsicType;
 use crate::common::cli::Language;
-use crate::common::intrinsic_helpers::IntrinsicTypeDefinition;
+use crate::common::intrinsic_helpers::{IntrinsicType, IntrinsicTypeDefinition, TypeKind};
 
 impl IntrinsicTypeDefinition for X86IntrinsicType {
     /// Gets a string containing the typename for this type in C format.
@@ -27,6 +29,50 @@ impl IntrinsicTypeDefinition for X86IntrinsicType {
     }
 
     fn from_c(s: &str, target: &String) -> Result<Self, String> {
-        todo!("from_c for X86IntrinsicType needs to be implemented!");
+        let mut s_copy = s.to_string();
+        s_copy = s_copy
+            .replace("*", "")
+            .replace("constexpr", "")
+            .replace("const", "")
+            .replace("literal", "");
+        
+        let s_split = s_copy.split(" ")
+            .filter_map(|s|if s.len() == 0 {None} else {Some(s)})
+            .last();
+        
+        // TODO: add more intrinsics by modifying 
+        // functionality below this line.
+        // Currently all the intrinsics that have an "_"
+        // is ignored.
+        if let Some(_) = s.matches("_").next() {
+            return Err(String::from("This functionality needs to be implemented"));
+        };
+        
+        // TODO: make the unwrapping safe
+        let kind = TypeKind::from_str(s_split.unwrap()).expect("Unable to parse type!");
+        let mut ptr_constant = false;
+        let mut constant = false;
+        let mut ptr = false;
+        
+        if let Some(_) = s.matches("const*").next() {
+            ptr_constant = true;
+        };
+        if let Some(_) = s.matches("const").next() {
+            constant = true;
+        };
+        if let Some(_) = s.matches("*").next() {
+            ptr = true;
+        };
+        
+        Ok(X86IntrinsicType(IntrinsicType {
+            ptr,
+            ptr_constant,
+            constant,
+            kind,
+            bit_len: None,
+            simd_len: None,
+            vec_len: None,
+            target: target.to_string(),
+        }))
     }
 }

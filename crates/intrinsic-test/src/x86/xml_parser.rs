@@ -91,7 +91,8 @@ pub fn get_xml_intrinsics(
         .intrinsics
         .into_iter()
         .filter_map(|intr| {
-            Some(xml_to_intrinsic(intr, target).expect("Couldn't parse XML properly!"))
+            // Some(xml_to_intrinsic(intr, target).expect("Couldn't parse XML properly!"))
+            xml_to_intrinsic(intr, target).ok()
         })
         .collect();
 
