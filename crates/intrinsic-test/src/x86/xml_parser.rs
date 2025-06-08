@@ -105,26 +105,33 @@ fn xml_to_intrinsic(
     let name = intr.name;
     let results = X86IntrinsicType::from_c(&intr.return_data.type_data, target)?;
 
-    let args: Vec<_> = intr
-        .parameters
-        .into_iter()
-        .enumerate()
-        .map(|(i, param)| {
-            let constraint = None;
-            let ty = X86IntrinsicType::from_c(param.type_data.as_str(), target)
-                .unwrap_or_else(|_| panic!("Failed to parse argument '{i}'"));
+    let args_check = intr.parameters.into_iter().enumerate().map(|(i, param)| {
+        let constraint = None;
+        let ty = X86IntrinsicType::from_c(param.type_data.as_str(), target);
 
-            let mut arg = Argument::<X86IntrinsicType>::new(i, param.var_name, ty, constraint);
-            let IntrinsicType {
-                ref mut constant, ..
-            } = arg.ty.0;
-            if param.etype == "IMM" {
-                *constant = true
-            }
-            arg
-        })
-        .collect();
+        if let Err(_) = ty {
+            return None;
+        }
+        let mut ty_bit_len = param.etype.clone();
+        ty_bit_len.retain(|c| c.is_numeric());
+        let ty_bit_len = str::parse::<u32>(ty_bit_len.as_str()).ok();
+        let mut ty = ty.unwrap();
+        ty.set_bit_len(ty_bit_len);
+        let mut arg = Argument::<X86IntrinsicType>::new(i, param.var_name, ty, constraint);
+        let IntrinsicType {
+            ref mut constant, ..
+        } = arg.ty.0;
+        if param.etype == "IMM" {
+            *constant = true
+        }
+        Some(arg)
+    });
 
+    let args = args_check.collect::<Vec<_>>();
+    if args.iter().any(|elem| elem.is_none()) {
+        return Err(Box::from("intrinsic isn't fully supported in this test!"));
+    }
+    let args = args.into_iter().map(|e| e.unwrap()).collect::<Vec<_>>();
     let arguments = ArgumentList::<X86IntrinsicType> { args };
 
     Ok(Intrinsic {

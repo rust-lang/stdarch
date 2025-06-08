@@ -73,8 +73,8 @@ impl IntrinsicTypeDefinition for ArmIntrinsicType {
             format!(
                 "vld{len}{quad}_{type}{size}",
                 type = match k {
-                    TypeKind::UInt => "u",
-                    TypeKind::Int => "s",
+                    TypeKind::Int(false) => "u",
+                    TypeKind::Int(true) => "s",
                     TypeKind::Float => "f",
                     // The ACLE doesn't support 64-bit polynomial loads on Armv7
                     // if armv7 and bl == 64, use "s", else "p"
@@ -107,8 +107,8 @@ impl IntrinsicTypeDefinition for ArmIntrinsicType {
             format!(
                 "vget{quad}_lane_{type}{size}",
                 type = match k {
-                    TypeKind::UInt => "u",
-                    TypeKind::Int => "s",
+                    TypeKind::Int(false) => "u",
+                    TypeKind::Int(true) => "s",
                     TypeKind::Float => "f",
                     TypeKind::Poly => "p",
                     x => todo!("get_load_function TypeKind: {:#?}", x),
@@ -175,7 +175,7 @@ impl IntrinsicTypeDefinition for ArmIntrinsicType {
             } else {
                 let kind = start.parse::<TypeKind>()?;
                 let bit_len = match kind {
-                    TypeKind::Int => Some(32),
+                    TypeKind::Int(_) => Some(32),
                     _ => None,
                 };
                 Ok(ArmIntrinsicType(IntrinsicType {
