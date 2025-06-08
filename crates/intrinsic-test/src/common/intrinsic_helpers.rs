@@ -12,8 +12,12 @@ use super::values::value_for_array;
 pub enum TypeKind {
     BFloat,
     Float,
-    Int,
-    UInt,
+    Double,
+
+    // if signed, then the inner value is true
+    Int(bool),
+    Char(bool),
+    Short(bool),
     Poly,
     Void,
 }
@@ -25,9 +29,10 @@ impl FromStr for TypeKind {
         match s {
             "bfloat" => Ok(Self::BFloat),
             "float" => Ok(Self::Float),
-            "int" => Ok(Self::Int),
+            "int" => Ok(Self::Int(true)),
             "poly" => Ok(Self::Poly),
-            "uint" | "unsigned" => Ok(Self::UInt),
+            "char" => Ok(Self::Char(true)),
+            "uint" | "unsigned" => Ok(Self::Int(false)),
             "void" => Ok(Self::Void),
             _ => Err(format!("Impossible to parse argument kind {s}")),
         }
@@ -42,10 +47,15 @@ impl fmt::Display for TypeKind {
             match self {
                 Self::BFloat => "bfloat",
                 Self::Float => "float",
-                Self::Int => "int",
-                Self::UInt => "uint",
+                Self::Double => "double",
+                Self::Int(true) => "int",
+                Self::Int(false) => "uint",
                 Self::Poly => "poly",
                 Self::Void => "void",
+                Self::Char(true) => "char",
+                Self::Char(false) => "unsigned char",
+                Self::Short(true) => "short",
+                Self::Short(false) => "unsigned short",
             }
         )
     }
@@ -56,9 +66,11 @@ impl TypeKind {
     pub fn c_prefix(&self) -> &str {
         match self {
             Self::Float => "float",
-            Self::Int => "int",
-            Self::UInt => "uint",
+            Self::Int(true) => "int",
+            Self::Int(false) => "uint",
             Self::Poly => "poly",
+            Self::Char(true) => "char",
+            Self::Char(false) => "unsigned char",
             _ => unreachable!("Not used: {:#?}", self),
         }
     }
@@ -67,8 +79,8 @@ impl TypeKind {
     pub fn rust_prefix(&self) -> &str {
         match self {
             Self::Float => "f",
-            Self::Int => "i",
-            Self::UInt => "u",
+            Self::Int(true) => "i",
+            Self::Int(false) => "u",
             Self::Poly => "u",
             _ => unreachable!("Unused type kind: {:#?}", self),
         }
@@ -132,6 +144,18 @@ impl IntrinsicType {
         self.ptr
     }
 
+    pub fn set_bit_len(&mut self, value: Option<u32>) {
+        self.bit_len = value;
+    }
+
+    pub fn set_simd_len(&mut self, value: Option<u32>) {
+        self.simd_len = value;
+    }
+
+    pub fn set_vec_len(&mut self, value: Option<u32>) {
+        self.vec_len = value;
+    }
+
     pub fn c_scalar_type(&self) -> String {
         format!(
             "{prefix}{bits}_t",
@@ -155,8 +179,8 @@ impl IntrinsicType {
                 bit_len: Some(8),
                 ..
             } => match kind {
-                TypeKind::Int => "(int)",
-                TypeKind::UInt => "(unsigned int)",
+                TypeKind::Int(true) => "(int)",
+                TypeKind::Int(false) => "(unsigned int)",
                 TypeKind::Poly => "(unsigned int)(uint8_t)",
                 _ => "",
             },
@@ -185,7 +209,7 @@ impl IntrinsicType {
         match self {
             IntrinsicType {
                 bit_len: Some(bit_len @ (8 | 16 | 32 | 64)),
-                kind: kind @ (TypeKind::Int | TypeKind::UInt | TypeKind::Poly),
+                kind: kind @ (TypeKind::Int(_) | TypeKind::Poly),
                 simd_len,
                 vec_len,
                 ..
@@ -201,7 +225,7 @@ impl IntrinsicType {
                         .format_with(",\n", |i, fmt| {
                             let src = value_for_array(*bit_len, i);
                             assert!(src == 0 || src.ilog2() < *bit_len);
-                            if *kind == TypeKind::Int && (src >> (*bit_len - 1)) != 0 {
+                            if *kind == TypeKind::Int(true) && (src >> (*bit_len - 1)) != 0 {
                                 // `src` is a two's complement representation of a negative value.
                                 let mask = !0u64 >> (64 - *bit_len);
                                 let ones_compl = src ^ mask;
@@ -257,7 +281,7 @@ impl IntrinsicType {
                 ..
             } => false,
             IntrinsicType {
-                kind: TypeKind::Int | TypeKind::UInt | TypeKind::Poly,
+                kind: TypeKind::Int(_) | TypeKind::Poly,
                 ..
             } => true,
             _ => unimplemented!(),
