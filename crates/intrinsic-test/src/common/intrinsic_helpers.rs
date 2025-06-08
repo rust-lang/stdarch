@@ -72,6 +72,7 @@ impl TypeKind {
             Self::Int(false) => "uint",
             Self::Poly => "poly",
             Self::Char(true) => "char",
+            Self::Double => "double",
             _ => unreachable!("Not used: {:#?}", self),
         }
     }
@@ -144,15 +145,15 @@ impl IntrinsicType {
     pub fn is_ptr(&self) -> bool {
         self.ptr
     }
-    
+
     pub fn set_bit_len(&mut self, value: Option<u32>) {
         self.bit_len = value;
     }
-    
+
     pub fn set_simd_len(&mut self, value: Option<u32>) {
         self.simd_len = value;
     }
-    
+
     pub fn set_vec_len(&mut self, value: Option<u32>) {
         self.vec_len = value;
     }
