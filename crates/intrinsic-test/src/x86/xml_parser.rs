@@ -1,6 +1,6 @@
 use crate::common::argument::{Argument, ArgumentList};
 use crate::common::intrinsic::Intrinsic;
-use crate::common::intrinsic_helpers::{IntrinsicType, IntrinsicTypeDefinition};
+use crate::common::intrinsic_helpers::{IntrinsicType, IntrinsicTypeDefinition, TypeKind};
 
 use serde::{Deserialize, Deserializer};
 use std::path::Path;
@@ -38,7 +38,7 @@ struct Data {
 #[derive(Deserialize)]
 struct XMLIntrinsic {
     #[serde(rename = "return")]
-    return_data: Return,
+    return_data: Parameter,
     #[serde(rename = "@name")]
     name: String,
     #[serde(rename = "@tech")]
@@ -65,12 +65,6 @@ struct Parameter {
     var_name: String,
 }
 
-#[derive(Deserialize)]
-struct Return {
-    #[serde(rename = "@type", default)]
-    type_data: String,
-}
-
 #[derive(Deserialize, Debug)]
 struct Instruction {
     #[serde(rename = "@name")]
@@ -86,7 +80,6 @@ pub fn get_xml_intrinsics(
     let data: Data =
         quick_xml::de::from_reader(reader).expect("failed to deserialize the source XML file");
 
-    // println!("{} intrinsics found", data.intrinsics.len());
     let parsed_intrinsics: Vec<Intrinsic<X86IntrinsicType>> = data
         .intrinsics
         .into_iter()
@@ -99,26 +92,43 @@ pub fn get_xml_intrinsics(
     Ok(parsed_intrinsics)
 }
 
+fn parse_observable(param: &Parameter, target: &String) -> Result<X86IntrinsicType, String> {
+    let ty = X86IntrinsicType::from_c(param.type_data.as_str(), target);
+
+    if let Err(_) = ty {
+        return ty;
+    }
+    let mut ty_bit_len = param.etype.clone();
+    ty_bit_len.retain(|c| c.is_numeric());
+    let ty_bit_len = str::parse::<u32>(ty_bit_len.as_str()).ok();
+    let mut ty = ty.unwrap();
+    let ty_bit_len = match ty_bit_len {
+        None => match ty.kind {
+            TypeKind::Int(_) => Some(32),
+            TypeKind::Float => Some(32),
+            TypeKind::BFloat => Some(16),
+            TypeKind::Void => Some(param.memwidth as u32),
+            _ => None,
+        },
+        ty => ty,
+    };
+    ty.set_bit_len(ty_bit_len);
+    Ok(ty)
+}
+
 fn xml_to_intrinsic(
     intr: XMLIntrinsic,
     target: &String,
 ) -> Result<Intrinsic<X86IntrinsicType>, Box<dyn std::error::Error>> {
     let name = intr.name;
-    let results = X86IntrinsicType::from_c(&intr.return_data.type_data, target)?;
-
+    let result = parse_observable(&intr.return_data, target);
     let args_check = intr.parameters.into_iter().enumerate().map(|(i, param)| {
-        let constraint = None;
-        let ty = X86IntrinsicType::from_c(param.type_data.as_str(), target);
-
+        let ty = parse_observable(&param, target);
         if let Err(_) = ty {
             return None;
         }
-        let mut ty_bit_len = param.etype.clone();
-        ty_bit_len.retain(|c| c.is_numeric());
-        let ty_bit_len = str::parse::<u32>(ty_bit_len.as_str()).ok();
-        let mut ty = ty.unwrap();
-        ty.set_bit_len(ty_bit_len);
-        let mut arg = Argument::<X86IntrinsicType>::new(i, param.var_name, ty, constraint);
+        let constraint = None;
+        let mut arg = Argument::<X86IntrinsicType>::new(i, param.var_name, ty.unwrap(), constraint);
         let IntrinsicType {
             ref mut constant, ..
         } = arg.ty.0;
@@ -132,13 +142,20 @@ fn xml_to_intrinsic(
     if args.iter().any(|elem| elem.is_none()) {
         return Err(Box::from("intrinsic isn't fully supported in this test!"));
     }
-    let args = args.into_iter().map(|e| e.unwrap()).collect::<Vec<_>>();
+    let args = args
+        .into_iter()
+        .map(|e| e.unwrap())
+        .filter(|arg| arg.ty.ptr || arg.ty.kind != TypeKind::Void)
+        .collect::<Vec<_>>();
     let arguments = ArgumentList::<X86IntrinsicType> { args };
 
+    if let Err(message) = result {
+        return Err(Box::from(message));
+    }
     Ok(Intrinsic {
         name,
         arguments,
-        results: results,
+        results: result.unwrap(),
         arch_tags: intr.cpuid,
     })
 }

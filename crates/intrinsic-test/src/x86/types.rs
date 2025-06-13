@@ -11,15 +11,9 @@ impl IntrinsicTypeDefinition for X86IntrinsicType {
         let part_1 = match self.kind {
             TypeKind::Int(false) => "unsigned int",
             TypeKind::Char(false) => "unsigned char",
-            TypeKind::Short(false) => "unsigned short",
-            TypeKind::Short(true) => "short",
             _ => self.kind.c_prefix(),
         };
-        let part_2 = if self.ptr {
-            if self.ptr_constant { "* const" } else { "*" }
-        } else {
-            ""
-        };
+        let part_2 = if self.ptr { "*" } else { "" };
 
         String::from(vec![part_0, part_1, part_2].join(" ").trim())
     }
@@ -59,23 +53,30 @@ impl IntrinsicTypeDefinition for X86IntrinsicType {
         // functionality below this line.
         // Currently all the intrinsics that have an "_"
         // is ignored.
-        if let Some(_) = s.matches("_").next() {
+        if s.matches("_").next().is_some() {
             return Err(String::from("This functionality needs to be implemented"));
         };
 
         // TODO: make the unwrapping safe
         let kind = TypeKind::from_str(s_split.unwrap()).expect("Unable to parse type!");
-        let mut ptr_constant = false;
+
+        let kind = if s.find("unsigned").is_some() {
+            match kind {
+                TypeKind::Int(_) => TypeKind::Int(false),
+                TypeKind::Char(_) => TypeKind::Char(false),
+                a => a,
+            }
+        } else {
+            kind
+        };
+        let ptr_constant = false;
         let mut constant = false;
         let mut ptr = false;
 
-        if let Some(_) = s.matches("const*").next() {
-            ptr_constant = true;
-        };
-        if let Some(_) = s.matches("const").next() {
+        if s.matches("const").next().is_some() {
             constant = true;
         };
-        if let Some(_) = s.matches("*").next() {
+        if s.matches("*").next().is_some() {
             ptr = true;
         };
 
