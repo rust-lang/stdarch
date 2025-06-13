@@ -12,12 +12,10 @@ use super::values::value_for_array;
 pub enum TypeKind {
     BFloat,
     Float,
-    Double,
 
     // if signed, then the inner value is true
     Int(bool),
     Char(bool),
-    Short(bool),
     Poly,
     Void,
 }
@@ -29,9 +27,8 @@ impl FromStr for TypeKind {
         match s {
             "bfloat" => Ok(Self::BFloat),
             "float" => Ok(Self::Float),
-            "double" => Ok(Self::Double),
-            "int" | "long" => Ok(Self::Int(true)),
-            "short" => Ok(Self::Short(true)),
+            "double" => Ok(Self::Float),
+            "int" | "long" | "short" => Ok(Self::Int(true)),
             "poly" => Ok(Self::Poly),
             "char" => Ok(Self::Char(true)),
             "uint" | "unsigned" => Ok(Self::Int(false)),
@@ -49,15 +46,12 @@ impl fmt::Display for TypeKind {
             match self {
                 Self::BFloat => "bfloat",
                 Self::Float => "float",
-                Self::Double => "double",
                 Self::Int(true) => "int",
                 Self::Int(false) => "uint",
                 Self::Poly => "poly",
                 Self::Void => "void",
                 Self::Char(true) => "char",
                 Self::Char(false) => "unsigned char",
-                Self::Short(true) => "short",
-                Self::Short(false) => "unsigned short",
             }
         )
     }
@@ -72,7 +66,6 @@ impl TypeKind {
             Self::Int(false) => "uint",
             Self::Poly => "poly",
             Self::Char(true) => "char",
-            Self::Double => "double",
             _ => unreachable!("Not used: {:#?}", self),
         }
     }
@@ -126,7 +119,7 @@ impl IntrinsicType {
         if let Some(bl) = self.bit_len {
             bl
         } else {
-            unreachable!("")
+            unreachable!("{}", self.kind)
         }
     }
 
@@ -159,11 +152,17 @@ impl IntrinsicType {
     }
 
     pub fn c_scalar_type(&self) -> String {
-        format!(
-            "{prefix}{bits}_t",
-            prefix = self.kind().c_prefix(),
-            bits = self.inner_size()
-        )
+        match self {
+            IntrinsicType {
+                kind: TypeKind::Char(_),
+                ..
+            } => String::from("char"),
+            _ => format!(
+                "{prefix}{bits}_t",
+                prefix = self.kind().c_prefix(),
+                bits = self.inner_size()
+            ),
+        }
     }
 
     pub fn rust_scalar_type(&self) -> String {
@@ -198,6 +197,21 @@ impl IntrinsicType {
                 128 => "",
                 _ => panic!("invalid bit_len"),
             },
+            IntrinsicType {
+                kind: TypeKind::Float,
+                bit_len: Some(bit_len),
+                ..
+            } => match bit_len {
+                16 => "(float16_t)",
+                32 => "(float)",
+                64 => "(double)",
+                128 => "",
+                _ => panic!("invalid bit_len"),
+            },
+            IntrinsicType {
+                kind: TypeKind::Char(_),
+                ..
+            } => "(char)",
             _ => "",
         }
     }

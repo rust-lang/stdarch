@@ -1,5 +1,7 @@
 use std::str::FromStr;
 
+use itertools::Itertools;
+
 use super::intrinsic::X86IntrinsicType;
 use crate::common::cli::Language;
 use crate::common::intrinsic_helpers::{IntrinsicType, IntrinsicTypeDefinition, TypeKind};
@@ -11,15 +13,9 @@ impl IntrinsicTypeDefinition for X86IntrinsicType {
         let part_1 = match self.kind {
             TypeKind::Int(false) => "unsigned int",
             TypeKind::Char(false) => "unsigned char",
-            TypeKind::Short(false) => "unsigned short",
-            TypeKind::Short(true) => "short",
             _ => self.kind.c_prefix(),
         };
-        let part_2 = if self.ptr {
-            if self.ptr_constant { "* const" } else { "*" }
-        } else {
-            ""
-        };
+        let part_2 = if self.ptr { "*" } else { "" };
 
         String::from(vec![part_0, part_1, part_2].join(" ").trim())
     }
@@ -46,6 +42,7 @@ impl IntrinsicTypeDefinition for X86IntrinsicType {
         let mut s_copy = s.to_string();
         s_copy = s_copy
             .replace("*", "")
+            .replace("_", "")
             .replace("constexpr", "")
             .replace("const", "")
             .replace("literal", "");
@@ -55,29 +52,24 @@ impl IntrinsicTypeDefinition for X86IntrinsicType {
             .filter_map(|s| if s.len() == 0 { None } else { Some(s) })
             .last();
 
-        // TODO: add more intrinsics by modifying
-        // functionality below this line.
-        // Currently all the intrinsics that have an "_"
-        // is ignored.
-        if let Some(_) = s.matches("_").next() {
-            return Err(String::from("This functionality needs to be implemented"));
-        };
+        let s_split = s_split.map(|s| s.chars().filter(|c| !c.is_numeric()).join(""));
 
         // TODO: make the unwrapping safe
-        let kind = TypeKind::from_str(s_split.unwrap()).expect("Unable to parse type!");
-        let mut ptr_constant = false;
-        let mut constant = false;
-        let mut ptr = false;
+        let kind = TypeKind::from_str(s_split.unwrap().trim()).unwrap_or(TypeKind::Void);
 
-        if let Some(_) = s.matches("const*").next() {
-            ptr_constant = true;
+        let kind = if s.find("unsigned").is_some() {
+            match kind {
+                TypeKind::Int(_) => TypeKind::Int(false),
+                TypeKind::Char(_) => TypeKind::Char(false),
+                a => a,
+            }
+        } else {
+            kind
         };
-        if let Some(_) = s.matches("const").next() {
-            constant = true;
-        };
-        if let Some(_) = s.matches("*").next() {
-            ptr = true;
-        };
+
+        let ptr_constant = false;
+        let constant = s.matches("const").next().is_some();
+        let ptr = s.matches("*").next().is_some();
 
         Ok(X86IntrinsicType(IntrinsicType {
             ptr,
@@ -89,5 +81,69 @@ impl IntrinsicTypeDefinition for X86IntrinsicType {
             vec_len: None,
             target: target.to_string(),
         }))
+    }
+}
+
+impl X86IntrinsicType {
+    pub fn from_param(param: &Parameter) -> Result<Self, String> {
+        match Self::from_c(param.type_data.as_str()) {
+            Err(message) => Err(message),
+            Ok(mut ret) => {
+                // First correct the type of the parameter using param.etype.
+                // The assumption is that the parameter of type void may have param.type
+                // as "__m128i", "__mmask8" and the like.
+                ret.set_metadata("etype".to_string(), param.etype.clone());
+                if !param.etype.is_empty() {
+                    match TypeKind::from_str(param.etype.as_str()) {
+                        Ok(value) => {
+                            ret.kind = value;
+                        }
+                        Err(_) => {}
+                    };
+                }
+
+                // check for param.etype.
+                // extract the numeric part and set as bit-len
+                // If param.etype is not present, guess the default bit-len
+
+                let mut etype_processed = param.etype.clone();
+                etype_processed.retain(|c| c.is_numeric());
+
+                match str::parse::<u32>(etype_processed.as_str()) {
+                    Ok(value) => ret.bit_len = Some(value),
+                    Err(_) => {
+                        ret.bit_len = match ret.kind() {
+                            TypeKind::Char(_) => Some(8),
+                            TypeKind::BFloat => Some(16),
+                            TypeKind::Int(_) => Some(32),
+                            TypeKind::Float => Some(32),
+                            _ => None,
+                        };
+                    }
+                }
+
+                // then check the param.type and extract numeric part if there are double
+                // underscores. divide this number with bit-len and set this as simd-len.
+
+                let mut type_processed = param.etype.clone();
+                type_processed.retain(|c| c.is_numeric());
+
+                ret.vec_len = match str::parse::<u32>(etype_processed.as_str()) {
+                    // If bit_len is None, vec_len will be None.
+                    // Else vec_len will be (num_bits / bit_len).
+                    Ok(num_bits) => ret.bit_len.and(Some(num_bits / ret.bit_len.unwrap())),
+                    Err(_) => None,
+                };
+
+                // if param.etype == IMM, then it is a constant.
+                // else it stays unchanged.
+                ret.constant |= param.etype == "IMM";
+
+                Ok(ret)
+            }
+        }
+        // Tile types won't currently reach here, since the intrinsic that involve them
+        // often return "null" type. Such intrinsics are not tested in `intrinsic-test`
+        // currently and are filtered out at `mod.rs`.
     }
 }

@@ -6,6 +6,7 @@ mod xml_parser;
 use crate::common::SupportedArchitectureTest;
 use crate::common::cli::ProcessedCli;
 use crate::common::intrinsic::{Intrinsic, IntrinsicDefinition};
+use crate::common::intrinsic_helpers::TypeKind;
 use crate::common::write_file::{write_c_testfiles, write_rust_testfiles};
 use config::build_notices;
 use intrinsic::X86IntrinsicType;
@@ -18,8 +19,23 @@ pub struct X86ArchitectureTest {
 
 impl SupportedArchitectureTest for X86ArchitectureTest {
     fn create(cli_options: ProcessedCli) -> Box<Self> {
-        let intrinsics = get_xml_intrinsics(&cli_options.filename, &cli_options.target)
+        let mut intrinsics = get_xml_intrinsics(&cli_options.filename, &cli_options.target)
             .expect("Error parsing input file");
+
+        intrinsics.sort_by(|a, b| a.name.cmp(&b.name));
+        let intrinsics = intrinsics
+            .into_iter()
+            // Not sure how we would compare intrinsic that returns void.
+            .filter(|i| i.results.kind() != TypeKind::Void)
+            .filter(|i| i.results.kind() != TypeKind::BFloat)
+            .filter(|i| i.arguments().args.len() > 0)
+            .filter(|i| !i.arguments.iter().any(|a| a.ty.kind() == TypeKind::BFloat))
+            // Skip pointers for now, we would probably need to look at the return
+            // type to work out how many elements we need to point to.
+            .filter(|i| !i.arguments.iter().any(|a| a.is_ptr()))
+            .filter(|i| !i.arguments.iter().any(|a| a.ty.inner_size() == 128))
+            .filter(|i| !cli_options.skip.contains(&i.name))
+            .collect::<Vec<_>>();
 
         Box::new(Self {
             intrinsics: intrinsics,

@@ -1,24 +1,11 @@
 use crate::common::argument::{Argument, ArgumentList};
 use crate::common::intrinsic::Intrinsic;
-use crate::common::intrinsic_helpers::{IntrinsicType, IntrinsicTypeDefinition};
+use crate::common::intrinsic_helpers::TypeKind;
 
 use serde::{Deserialize, Deserializer};
 use std::path::Path;
 
 use super::intrinsic::X86IntrinsicType;
-
-// Custom deserializer function to convert "TRUE"/"FALSE" strings to boolean
-fn string_to_bool<'de, D>(deserializer: D) -> Result<bool, D::Error>
-where
-    D: Deserializer<'de>,
-{
-    let s = String::deserialize(deserializer)?;
-    match s.as_str() {
-        "TRUE" => Ok(true),
-        "FALSE" => Ok(false),
-        _ => Ok(false), // Default to false for any other value
-    }
-}
 
 // Custom deserializer function to convert strings to u16
 fn string_to_u16<'de, D>(deserializer: D) -> Result<u16, D::Error>
@@ -38,7 +25,7 @@ struct Data {
 #[derive(Deserialize)]
 struct XMLIntrinsic {
     #[serde(rename = "return")]
-    return_data: Return,
+    return_data: Parameter,
     #[serde(rename = "@name")]
     name: String,
     #[serde(rename = "@tech")]
@@ -47,10 +34,6 @@ struct XMLIntrinsic {
     cpuid: Vec<String>,
     #[serde(rename = "parameter", default)]
     parameters: Vec<Parameter>,
-    #[serde(rename = "@sequence", default, deserialize_with = "string_to_bool")]
-    generates_sequence: bool,
-    #[serde(default)]
-    instruction: Vec<Instruction>,
 }
 
 #[derive(Deserialize)]
@@ -65,18 +48,6 @@ struct Parameter {
     var_name: String,
 }
 
-#[derive(Deserialize)]
-struct Return {
-    #[serde(rename = "@type", default)]
-    type_data: String,
-}
-
-#[derive(Deserialize, Debug)]
-struct Instruction {
-    #[serde(rename = "@name")]
-    name: String,
-}
-
 pub fn get_xml_intrinsics(
     filename: &Path,
     target: &String,
@@ -86,7 +57,6 @@ pub fn get_xml_intrinsics(
     let data: Data =
         quick_xml::de::from_reader(reader).expect("failed to deserialize the source XML file");
 
-    // println!("{} intrinsics found", data.intrinsics.len());
     let parsed_intrinsics: Vec<Intrinsic<X86IntrinsicType>> = data
         .intrinsics
         .into_iter()
@@ -104,41 +74,41 @@ fn xml_to_intrinsic(
     target: &String,
 ) -> Result<Intrinsic<X86IntrinsicType>, Box<dyn std::error::Error>> {
     let name = intr.name;
-    let results = X86IntrinsicType::from_c(&intr.return_data.type_data, target)?;
-
+    let result = X86IntrinsicType::from_param(&intr.return_data);
     let args_check = intr.parameters.into_iter().enumerate().map(|(i, param)| {
-        let constraint = None;
-        let ty = X86IntrinsicType::from_c(param.type_data.as_str(), target);
-
-        if let Err(_) = ty {
-            return None;
+        let ty = X86IntrinsicType::from_param(&param);
+        if ty.is_err() {
+            None
+        } else {
+            let constraint = None;
+            let arg = Argument::<X86IntrinsicType>::new(
+                i,
+                param.var_name.clone(),
+                ty.unwrap(),
+                constraint,
+            );
+            Some(arg)
         }
-        let mut ty_bit_len = param.etype.clone();
-        ty_bit_len.retain(|c| c.is_numeric());
-        let ty_bit_len = str::parse::<u32>(ty_bit_len.as_str()).ok();
-        let mut ty = ty.unwrap();
-        ty.set_bit_len(ty_bit_len);
-        let mut arg = Argument::<X86IntrinsicType>::new(i, param.var_name, ty, constraint);
-        let IntrinsicType {
-            ref mut constant, ..
-        } = arg.ty.0;
-        if param.etype == "IMM" {
-            *constant = true
-        }
-        Some(arg)
     });
 
     let args = args_check.collect::<Vec<_>>();
     if args.iter().any(|elem| elem.is_none()) {
         return Err(Box::from("intrinsic isn't fully supported in this test!"));
     }
-    let args = args.into_iter().map(|e| e.unwrap()).collect::<Vec<_>>();
+    let args = args
+        .into_iter()
+        .map(|e| e.unwrap())
+        .filter(|arg| arg.ty.ptr || arg.ty.kind != TypeKind::Void)
+        .collect::<Vec<_>>();
     let arguments = ArgumentList::<X86IntrinsicType> { args };
 
+    if let Err(message) = result {
+        return Err(Box::from(message));
+    }
     Ok(Intrinsic {
         name,
         arguments,
-        results: results,
+        results: result.unwrap(),
         arch_tags: intr.cpuid,
     })
 }
