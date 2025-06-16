@@ -16,7 +16,6 @@ impl Deref for X86IntrinsicType {
 }
 
 impl DerefMut for X86IntrinsicType {
-    // type Target = IntrinsicType;
     fn deref_mut(&mut self) -> &mut Self::Target {
         &mut self.0
     }

@@ -71,16 +71,10 @@ where
         }
     }
 
-    pub fn from_c(
-        pos: usize,
-        arg: &str,
-        target: &str,
-        constraint: Option<Constraint>,
-    ) -> Argument<T> {
+    pub fn from_c(pos: usize, arg: &str, constraint: Option<Constraint>) -> Argument<T> {
         let (ty, var_name) = Self::type_and_name_from_c(arg);
 
-        let ty = T::from_c(ty, &target.to_string())
-            .unwrap_or_else(|_| panic!("Failed to parse argument '{arg}'"));
+        let ty = T::from_c(ty).unwrap_or_else(|_| panic!("Failed to parse argument '{arg}'"));
 
         Argument {
             pos,

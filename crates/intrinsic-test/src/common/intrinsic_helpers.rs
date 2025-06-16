@@ -1,3 +1,4 @@
+use std::collections::HashMap;
 use std::fmt;
 use std::ops::Deref;
 use std::str::FromStr;
@@ -18,6 +19,7 @@ pub enum TypeKind {
     Char(bool),
     Poly,
     Void,
+    Mask,
 }
 
 impl FromStr for TypeKind {
@@ -25,14 +27,14 @@ impl FromStr for TypeKind {
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
-            "bfloat" => Ok(Self::BFloat),
-            "float" => Ok(Self::Float),
-            "double" => Ok(Self::Float),
-            "int" | "long" | "short" => Ok(Self::Int(true)),
+            "bfloat" | "BF16" => Ok(Self::BFloat),
+            "float" | "double" | "FP16" | "FP32" | "FP64" => Ok(Self::Float),
+            "int" | "long" | "short" | "SI8" | "SI16" | "SI32" | "SI64" => Ok(Self::Int(true)),
             "poly" => Ok(Self::Poly),
             "char" => Ok(Self::Char(true)),
-            "uint" | "unsigned" => Ok(Self::Int(false)),
+            "uint" | "unsigned" | "UI8" | "UI16" | "UI32" | "UI64" => Ok(Self::Int(false)),
             "void" => Ok(Self::Void),
+            "MASK" => Ok(Self::Mask),
             _ => Err(format!("Impossible to parse argument kind {s}")),
         }
     }
@@ -52,6 +54,7 @@ impl fmt::Display for TypeKind {
                 Self::Void => "void",
                 Self::Char(true) => "char",
                 Self::Char(false) => "unsigned char",
+                Self::Mask => "mask",
             }
         )
     }
@@ -107,7 +110,8 @@ pub struct IntrinsicType {
     /// A value of `None` can be assumed to be 1 though.
     pub vec_len: Option<u32>,
 
-    pub target: String,
+    // pub target: String,
+    pub metadata: HashMap<String, String>,
 }
 
 impl IntrinsicType {
@@ -149,6 +153,10 @@ impl IntrinsicType {
 
     pub fn set_vec_len(&mut self, value: Option<u32>) {
         self.vec_len = value;
+    }
+
+    pub fn set_metadata(&mut self, key: String, value: String) {
+        self.metadata.insert(key, value);
     }
 
     pub fn c_scalar_type(&self) -> String {
@@ -322,7 +330,7 @@ pub trait IntrinsicTypeDefinition: Deref<Target = IntrinsicType> {
     fn get_lane_function(&self) -> String;
 
     /// can be implemented in an `impl` block
-    fn from_c(_s: &str, _target: &String) -> Result<Self, String>
+    fn from_c(_s: &str) -> Result<Self, String>
     where
         Self: Sized;
 

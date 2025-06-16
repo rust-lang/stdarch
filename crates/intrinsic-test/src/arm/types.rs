@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use super::intrinsic::ArmIntrinsicType;
 use crate::common::cli::Language;
 use crate::common::intrinsic_helpers::{IntrinsicType, IntrinsicTypeDefinition, TypeKind};
@@ -59,7 +61,7 @@ impl IntrinsicTypeDefinition for ArmIntrinsicType {
             bit_len: Some(bl),
             simd_len,
             vec_len,
-            target,
+            metadata,
             ..
         } = &self.0
         {
@@ -69,7 +71,11 @@ impl IntrinsicTypeDefinition for ArmIntrinsicType {
                 ""
             };
 
-            let choose_workaround = language == Language::C && target.contains("v7");
+            let choose_workaround = language == Language::C
+                && metadata
+                    .get("target")
+                    .filter(|value| value.contains("v7"))
+                    .is_some();
             format!(
                 "vld{len}{quad}_{type}{size}",
                 type = match k {
@@ -121,7 +127,7 @@ impl IntrinsicTypeDefinition for ArmIntrinsicType {
         }
     }
 
-    fn from_c(s: &str, target: &String) -> Result<Self, String> {
+    fn from_c(s: &str) -> Result<Self, String> {
         const CONST_STR: &str = "const";
         if let Some(s) = s.strip_suffix('*') {
             let (s, constant) = match s.trim().strip_suffix(CONST_STR) {
@@ -129,10 +135,10 @@ impl IntrinsicTypeDefinition for ArmIntrinsicType {
                 None => (s, false),
             };
             let s = s.trim_end();
-            let temp_return = ArmIntrinsicType::from_c(s, target);
+            let temp_return = ArmIntrinsicType::from_c(s);
             temp_return.and_then(|mut op| {
-                op.0.ptr = true;
-                op.0.ptr_constant = constant;
+                op.ptr = true;
+                op.ptr_constant = constant;
                 Ok(op)
             })
         } else {
@@ -170,7 +176,7 @@ impl IntrinsicTypeDefinition for ArmIntrinsicType {
                     bit_len: Some(bit_len),
                     simd_len,
                     vec_len,
-                    target: target.to_string(),
+                    metadata: HashMap::new(),
                 }))
             } else {
                 let kind = start.parse::<TypeKind>()?;
@@ -186,7 +192,7 @@ impl IntrinsicTypeDefinition for ArmIntrinsicType {
                     bit_len,
                     simd_len: None,
                     vec_len: None,
-                    target: target.to_string(),
+                    metadata: HashMap::new(),
                 }))
             }
         }

@@ -79,8 +79,8 @@ fn json_to_intrinsic(
 ) -> Result<Intrinsic<ArmIntrinsicType>, Box<dyn std::error::Error>> {
     let name = intr.name.replace(['[', ']'], "");
 
-    let results = ArmIntrinsicType::from_c(&intr.return_type.value, &target.to_string())?;
-
+    let mut results = ArmIntrinsicType::from_c(&intr.return_type.value)?;
+    results.set_metadata("target".to_string(), target.to_string());
     let args = intr
         .arguments
         .into_iter()
@@ -92,7 +92,9 @@ fn json_to_intrinsic(
             let arg_prep: Option<ArgPrep> = metadata.and_then(|a| a.try_into().ok());
             let constraint: Option<Constraint> = arg_prep.and_then(|a| a.try_into().ok());
 
-            let mut arg = Argument::<ArmIntrinsicType>::from_c(i, &arg, target, constraint);
+            let mut arg = Argument::<ArmIntrinsicType>::from_c(i, &arg, constraint);
+            arg.ty
+                .set_metadata("target".to_string(), target.to_string());
 
             // The JSON doesn't list immediates as const
             let IntrinsicType {

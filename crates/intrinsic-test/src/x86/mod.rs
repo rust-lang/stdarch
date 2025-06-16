@@ -19,8 +19,8 @@ pub struct X86ArchitectureTest {
 
 impl SupportedArchitectureTest for X86ArchitectureTest {
     fn create(cli_options: ProcessedCli) -> Box<Self> {
-        let mut intrinsics = get_xml_intrinsics(&cli_options.filename, &cli_options.target)
-            .expect("Error parsing input file");
+        let mut intrinsics =
+            get_xml_intrinsics(&cli_options.filename).expect("Error parsing input file");
 
         intrinsics.sort_by(|a, b| a.name.cmp(&b.name));
         let intrinsics = intrinsics

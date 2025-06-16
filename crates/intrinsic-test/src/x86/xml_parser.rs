@@ -50,7 +50,6 @@ struct Parameter {
 
 pub fn get_xml_intrinsics(
     filename: &Path,
-    target: &String,
 ) -> Result<Vec<Intrinsic<X86IntrinsicType>>, Box<dyn std::error::Error>> {
     let file = std::fs::File::open(filename)?;
     let reader = std::io::BufReader::new(file);
@@ -62,7 +61,7 @@ pub fn get_xml_intrinsics(
         .into_iter()
         .filter_map(|intr| {
             // Some(xml_to_intrinsic(intr, target).expect("Couldn't parse XML properly!"))
-            xml_to_intrinsic(intr, target).ok()
+            xml_to_intrinsic(intr).ok()
         })
         .collect();
 
@@ -71,7 +70,6 @@ pub fn get_xml_intrinsics(
 
 fn xml_to_intrinsic(
     intr: XMLIntrinsic,
-    target: &String,
 ) -> Result<Intrinsic<X86IntrinsicType>, Box<dyn std::error::Error>> {
     let name = intr.name;
     let result = X86IntrinsicType::from_param(&intr.return_data);

@@ -1,3 +1,4 @@
+use std::collections::HashMap;
 use std::str::FromStr;
 
 use itertools::Itertools;
@@ -38,7 +39,7 @@ impl IntrinsicTypeDefinition for X86IntrinsicType {
         todo!("get_lane_function for X86IntrinsicType needs to be implemented!");
     }
 
-    fn from_c(s: &str, target: &String) -> Result<Self, String> {
+    fn from_c(s: &str) -> Result<Self, String> {
         let mut s_copy = s.to_string();
         s_copy = s_copy
             .replace("*", "")
@@ -79,7 +80,7 @@ impl IntrinsicTypeDefinition for X86IntrinsicType {
             bit_len: None,
             simd_len: None,
             vec_len: None,
-            target: target.to_string(),
+            metadata: HashMap::new(),
         }))
     }
 }
