@@ -30,7 +30,7 @@ impl IntrinsicTypeDefinition for X86IntrinsicType {
     }
 
     /// Determines the load function for this type.
-    fn get_load_function(&self, language: Language) -> String {
+    fn get_load_function(&self, _language: Language) -> String {
         todo!("get_load_function for X86IntrinsicType needs to be implemented!");
     }
 

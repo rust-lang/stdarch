@@ -7,7 +7,7 @@ use crate::common::SupportedArchitectureTest;
 use crate::common::cli::ProcessedCli;
 use crate::common::intrinsic::{Intrinsic, IntrinsicDefinition};
 use crate::common::intrinsic_helpers::TypeKind;
-use crate::common::write_file::{write_c_testfiles, write_rust_testfiles};
+use crate::common::write_file::write_c_testfiles;
 use config::build_notices;
 use intrinsic::X86IntrinsicType;
 use xml_parser::get_xml_intrinsics;
@@ -44,12 +44,13 @@ impl SupportedArchitectureTest for X86ArchitectureTest {
     }
 
     fn build_c_file(&self) -> bool {
-        let compiler = self.cli_options.cpp_compiler.as_deref();
+        // let compiler = self.cli_options.cpp_compiler.as_deref();
         let target = &self.cli_options.target;
-        let cxx_toolchain_dir = self.cli_options.cxx_toolchain_dir.as_deref();
+        // let cxx_toolchain_dir = self.cli_options.cxx_toolchain_dir.as_deref();
         let c_target = "x86_64";
 
-        let intrinsics_name_list = write_c_testfiles(
+        /* let intrinsics_name_list = */
+        write_c_testfiles(
             &self
                 .intrinsics
                 .iter()

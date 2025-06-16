@@ -2,19 +2,19 @@ use crate::common::argument::{Argument, ArgumentList};
 use crate::common::intrinsic::Intrinsic;
 use crate::common::intrinsic_helpers::TypeKind;
 
-use serde::{Deserialize, Deserializer};
+use serde::Deserialize;
 use std::path::Path;
 
 use super::intrinsic::X86IntrinsicType;
 
 // Custom deserializer function to convert strings to u16
-fn string_to_u16<'de, D>(deserializer: D) -> Result<u16, D::Error>
-where
-    D: Deserializer<'de>,
-{
-    let s = String::deserialize(deserializer)?;
-    return Ok(s.as_str().parse::<u16>().unwrap_or(0u16));
-}
+// fn string_to_u16<'de, D>(deserializer: D) -> Result<u16, D::Error>
+// where
+//     D: Deserializer<'de>,
+// {
+//     let s = String::deserialize(deserializer)?;
+//     return Ok(s.as_str().parse::<u16>().unwrap_or(0u16));
+// }
 
 #[derive(Deserialize)]
 struct Data {
@@ -28,8 +28,8 @@ struct XMLIntrinsic {
     return_data: Parameter,
     #[serde(rename = "@name")]
     name: String,
-    #[serde(rename = "@tech")]
-    tech: String,
+    // #[serde(rename = "@tech")]
+    // tech: String,
     #[serde(rename = "CPUID", default)]
     cpuid: Vec<String>,
     #[serde(rename = "parameter", default)]
@@ -42,8 +42,8 @@ struct Parameter {
     type_data: String,
     #[serde(rename = "@etype", default)]
     etype: String,
-    #[serde(rename = "@memwidth", default, deserialize_with = "string_to_u16")]
-    memwidth: u16,
+    // #[serde(rename = "@memwidth", default, deserialize_with = "string_to_u16")]
+    // memwidth: u16,
     #[serde(rename = "@varname", default)]
     var_name: String,
 }

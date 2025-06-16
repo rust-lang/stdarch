@@ -143,17 +143,9 @@ impl IntrinsicType {
         self.ptr
     }
 
-    pub fn set_bit_len(&mut self, value: Option<u32>) {
-        self.bit_len = value;
-    }
-
-    pub fn set_simd_len(&mut self, value: Option<u32>) {
-        self.simd_len = value;
-    }
-
-    pub fn set_vec_len(&mut self, value: Option<u32>) {
-        self.vec_len = value;
-    }
+    // pub fn set_bit_len(&mut self, value: Option<u32>) {
+    //     self.bit_len = value;
+    // }
 
     pub fn set_metadata(&mut self, key: String, value: String) {
         self.metadata.insert(key, value);
