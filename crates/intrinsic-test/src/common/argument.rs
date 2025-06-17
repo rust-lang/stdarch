@@ -45,14 +45,6 @@ where
         self.constraint.is_some()
     }
 
-    pub fn type_and_name_from_c(arg: &str) -> (&str, &str) {
-        let split_index = arg
-            .rfind([' ', '*'])
-            .expect("Couldn't split type and argname");
-
-        (arg[..split_index + 1].trim_end(), &arg[split_index + 1..])
-    }
-
     /// The binding keyword (e.g. "const" or "let") for the array of possible test inputs.
     fn rust_vals_array_binding(&self) -> impl std::fmt::Display {
         if self.ty.is_rust_vals_array_const() {
@@ -68,19 +60,6 @@ where
             format!("{}_VALS", self.name.to_uppercase())
         } else {
             format!("{}_vals", self.name.to_lowercase())
-        }
-    }
-
-    pub fn from_c(pos: usize, arg: &str, constraint: Option<Constraint>) -> Argument<T> {
-        let (ty, var_name) = Self::type_and_name_from_c(arg);
-
-        let ty = T::from_c(ty).unwrap_or_else(|_| panic!("Failed to parse argument '{arg}'"));
-
-        Argument {
-            pos,
-            name: String::from(var_name),
-            ty: ty,
-            constraint,
         }
     }
 

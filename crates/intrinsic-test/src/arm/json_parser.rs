@@ -86,13 +86,17 @@ fn json_to_intrinsic(
         .into_iter()
         .enumerate()
         .map(|(i, arg)| {
-            let arg_name = Argument::<ArmIntrinsicType>::type_and_name_from_c(&arg).1;
-            let metadata = intr.args_prep.as_mut();
-            let metadata = metadata.and_then(|a| a.remove(arg_name));
-            let arg_prep: Option<ArgPrep> = metadata.and_then(|a| a.try_into().ok());
+            let (type_name, arg_name) = Argument::<ArmIntrinsicType>::type_and_name_from_c(&arg);
+            let ty = ArmIntrinsicType::from_c(type_name)
+                .unwrap_or_else(|_| panic!("Failed to parse argument '{arg}'"));
+
+            let arg_prep = intr.args_prep.as_mut();
+            let arg_prep = arg_prep.and_then(|a| a.remove(arg_name));
+            let arg_prep: Option<ArgPrep> = arg_prep.and_then(|a| a.try_into().ok());
             let constraint: Option<Constraint> = arg_prep.and_then(|a| a.try_into().ok());
 
-            let mut arg = Argument::<ArmIntrinsicType>::from_c(i, &arg, constraint);
+            let mut arg =
+                Argument::<ArmIntrinsicType>::new(i, arg_name.to_string(), ty, constraint);
             arg.ty
                 .set_metadata("target".to_string(), target.to_string());
 

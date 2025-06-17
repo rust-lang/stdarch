@@ -8,17 +8,13 @@ use crate::common::cli::Language;
 use crate::common::intrinsic_helpers::{IntrinsicType, IntrinsicTypeDefinition, TypeKind};
 
 impl IntrinsicTypeDefinition for X86IntrinsicType {
-    /// Gets a string containing the typename for this type in C format.
+    /// Gets a string containing the type in C format.
+    /// This function assumes that this value is present in the metadata hashmap.
     fn c_type(&self) -> String {
-        let part_0 = if self.constant { "const" } else { "" };
-        let part_1 = match self.kind {
-            TypeKind::Int(false) => "unsigned int",
-            TypeKind::Char(false) => "unsigned char",
-            _ => self.kind.c_prefix(),
-        };
-        let part_2 = if self.ptr { "*" } else { "" };
-
-        String::from(vec![part_0, part_1, part_2].join(" ").trim())
+        self.metadata
+            .get("type")
+            .expect("Failed to extract the C typename in X86!")
+            .to_string()
     }
 
     fn c_single_vector_type(&self) -> String {
@@ -41,6 +37,8 @@ impl IntrinsicTypeDefinition for X86IntrinsicType {
 
     fn from_c(s: &str) -> Result<Self, String> {
         let mut s_copy = s.to_string();
+        let mut metadata: HashMap<String, String> = HashMap::new();
+        metadata.insert("type".to_string(), s.to_string());
         s_copy = s_copy
             .replace("*", "")
             .replace("_", "")
@@ -80,7 +78,7 @@ impl IntrinsicTypeDefinition for X86IntrinsicType {
             bit_len: None,
             simd_len: None,
             vec_len: None,
-            metadata: HashMap::new(),
+            metadata,
         }))
     }
 }
