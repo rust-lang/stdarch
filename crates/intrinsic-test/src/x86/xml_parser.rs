@@ -37,15 +37,15 @@ struct XMLIntrinsic {
 }
 
 #[derive(Deserialize)]
-struct Parameter {
+pub struct Parameter {
     #[serde(rename = "@type")]
-    type_data: String,
+    pub type_data: String,
     #[serde(rename = "@etype", default)]
-    etype: String,
+    pub etype: String,
     // #[serde(rename = "@memwidth", default, deserialize_with = "string_to_u16")]
-    // memwidth: u16,
+    // pub memwidth: u16,
     #[serde(rename = "@varname", default)]
-    var_name: String,
+    pub var_name: String,
 }
 
 pub fn get_xml_intrinsics(

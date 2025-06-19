@@ -5,7 +5,8 @@ use itertools::Itertools;
 
 use super::intrinsic::X86IntrinsicType;
 use crate::common::cli::Language;
-use crate::common::intrinsic_helpers::{IntrinsicType, IntrinsicTypeDefinition, TypeKind};
+use crate::common::intrinsic_helpers::{IntrinsicType, IntrinsicTypeDefinition, Sign, TypeKind};
+use crate::x86::xml_parser::Parameter;
 
 impl IntrinsicTypeDefinition for X86IntrinsicType {
     /// Gets a string containing the type in C format.
@@ -58,8 +59,8 @@ impl IntrinsicTypeDefinition for X86IntrinsicType {
 
         let kind = if s.find("unsigned").is_some() {
             match kind {
-                TypeKind::Int(_) => TypeKind::Int(false),
-                TypeKind::Char(_) => TypeKind::Char(false),
+                TypeKind::Int(_) => TypeKind::Int(Sign::Unsigned),
+                TypeKind::Char(_) => TypeKind::Char(Sign::Unsigned),
                 a => a,
             }
         } else {

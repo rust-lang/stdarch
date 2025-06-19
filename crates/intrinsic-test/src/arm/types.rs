@@ -2,7 +2,7 @@ use std::collections::HashMap;
 
 use super::intrinsic::ArmIntrinsicType;
 use crate::common::cli::Language;
-use crate::common::intrinsic_helpers::{IntrinsicType, IntrinsicTypeDefinition, TypeKind};
+use crate::common::intrinsic_helpers::{IntrinsicType, IntrinsicTypeDefinition, Sign, TypeKind};
 
 impl IntrinsicTypeDefinition for ArmIntrinsicType {
     /// Gets a string containing the typename for this type in C format.
@@ -70,8 +70,8 @@ impl IntrinsicTypeDefinition for ArmIntrinsicType {
             format!(
                 "vld{len}{quad}_{type}{size}",
                 type = match k {
-                    TypeKind::Int(false) => "u",
-                    TypeKind::Int(true) => "s",
+                    TypeKind::Int(Sign::Unsigned) => "u",
+                    TypeKind::Int(Sign::Signed) => "s",
                     TypeKind::Float => "f",
                     // The ACLE doesn't support 64-bit polynomial loads on Armv7
                     // if armv7 and bl == 64, use "s", else "p"
@@ -104,8 +104,8 @@ impl IntrinsicTypeDefinition for ArmIntrinsicType {
             format!(
                 "vget{quad}_lane_{type}{size}",
                 type = match k {
-                    TypeKind::Int(false) => "u",
-                    TypeKind::Int(true) => "s",
+                    TypeKind::Int(Sign::Unsigned) => "u",
+                    TypeKind::Int(Sign::Signed) => "s",
                     TypeKind::Float => "f",
                     TypeKind::Poly => "p",
                     x => todo!("get_load_function TypeKind: {:#?}", x),
@@ -129,6 +129,10 @@ impl IntrinsicTypeDefinition for ArmIntrinsicType {
             };
             let s = s.trim_end();
             let temp_return = ArmIntrinsicType::from_c(s);
+
+            // We are not adding the metadata hashmap here, since
+            // it is the return of a recursive call and the
+            // inner call would handle it.
             temp_return.and_then(|mut op| {
                 op.ptr = true;
                 op.ptr_constant = constant;

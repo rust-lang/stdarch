@@ -10,13 +10,19 @@ use super::indentation::Indentation;
 use super::values::value_for_array;
 
 #[derive(Debug, PartialEq, Copy, Clone)]
+pub enum Sign {
+    Signed,
+    Unsigned,
+}
+
+#[derive(Debug, PartialEq, Copy, Clone)]
 pub enum TypeKind {
     BFloat,
     Float,
 
     // if signed, then the inner value is true
-    Int(bool),
-    Char(bool),
+    Int(Sign),
+    Char(Sign),
     Poly,
     Void,
     Mask,
@@ -29,10 +35,12 @@ impl FromStr for TypeKind {
         match s {
             "bfloat" | "BF16" => Ok(Self::BFloat),
             "float" | "double" | "FP16" | "FP32" | "FP64" => Ok(Self::Float),
-            "int" | "long" | "short" | "SI8" | "SI16" | "SI32" | "SI64" => Ok(Self::Int(true)),
+            "int" | "long" | "short" | "SI8" | "SI16" | "SI32" | "SI64" => {
+                Ok(Self::Int(Sign::Signed))
+            }
             "poly" => Ok(Self::Poly),
-            "char" => Ok(Self::Char(true)),
-            "uint" | "unsigned" | "UI8" | "UI16" | "UI32" | "UI64" => Ok(Self::Int(false)),
+            "char" => Ok(Self::Char(Sign::Signed)),
+            "uint" | "unsigned" | "UI8" | "UI16" | "UI32" | "UI64" => Ok(Self::Int(Sign::Unsigned)),
             "void" => Ok(Self::Void),
             "MASK" => Ok(Self::Mask),
             _ => Err(format!("Impossible to parse argument kind {s}")),
@@ -48,12 +56,12 @@ impl fmt::Display for TypeKind {
             match self {
                 Self::BFloat => "bfloat",
                 Self::Float => "float",
-                Self::Int(true) => "int",
-                Self::Int(false) => "uint",
+                Self::Int(Sign::Signed) => "int",
+                Self::Int(Sign::Unsigned) => "uint",
                 Self::Poly => "poly",
                 Self::Void => "void",
-                Self::Char(true) => "char",
-                Self::Char(false) => "unsigned char",
+                Self::Char(Sign::Signed) => "char",
+                Self::Char(Sign::Unsigned) => "unsigned char",
                 Self::Mask => "mask",
             }
         )
@@ -65,10 +73,10 @@ impl TypeKind {
     pub fn c_prefix(&self) -> &str {
         match self {
             Self::Float => "float",
-            Self::Int(true) => "int",
-            Self::Int(false) => "uint",
+            Self::Int(Sign::Signed) => "int",
+            Self::Int(Sign::Unsigned) => "uint",
             Self::Poly => "poly",
-            Self::Char(true) => "char",
+            Self::Char(Sign::Signed) => "char",
             _ => unreachable!("Not used: {:#?}", self),
         }
     }
@@ -77,8 +85,8 @@ impl TypeKind {
     pub fn rust_prefix(&self) -> &str {
         match self {
             Self::Float => "f",
-            Self::Int(true) => "i",
-            Self::Int(false) => "u",
+            Self::Int(Sign::Signed) => "i",
+            Self::Int(Sign::Unsigned) => "u",
             Self::Poly => "u",
             _ => unreachable!("Unused type kind: {:#?}", self),
         }
@@ -180,8 +188,8 @@ impl IntrinsicType {
                 bit_len: Some(8),
                 ..
             } => match kind {
-                TypeKind::Int(true) => "(int)",
-                TypeKind::Int(false) => "(unsigned int)",
+                TypeKind::Int(Sign::Signed) => "(int)",
+                TypeKind::Int(Sign::Unsigned) => "(unsigned int)",
                 TypeKind::Poly => "(unsigned int)(uint8_t)",
                 _ => "",
             },
@@ -241,7 +249,8 @@ impl IntrinsicType {
                         .format_with(",\n", |i, fmt| {
                             let src = value_for_array(*bit_len, i);
                             assert!(src == 0 || src.ilog2() < *bit_len);
-                            if *kind == TypeKind::Int(true) && (src >> (*bit_len - 1)) != 0 {
+                            if *kind == TypeKind::Int(Sign::Signed) && (src >> (*bit_len - 1)) != 0
+                            {
                                 // `src` is a two's complement representation of a negative value.
                                 let mask = !0u64 >> (64 - *bit_len);
                                 let ones_compl = src ^ mask;
