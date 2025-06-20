@@ -105,7 +105,6 @@ pub fn generate_c_test_loop<T: IntrinsicTypeDefinition + Sized>(
     indentation: Indentation,
     additional: &str,
     passes: u32,
-    _target: &str,
 ) -> String {
     let body_indentation = indentation.nested();
     format!(
@@ -157,7 +156,7 @@ pub fn generate_c_constraint_blocks<T: IntrinsicTypeDefinition>(
             })
             .join("\n")
     } else {
-        generate_c_test_loop(intrinsic, indentation, &name, PASSES, target)
+        generate_c_test_loop(intrinsic, indentation, &name, PASSES)
     }
 }
 
