@@ -2,6 +2,7 @@ use std::collections::HashMap;
 use std::str::FromStr;
 
 use itertools::Itertools;
+use regex::Regex;
 
 use super::intrinsic::X86IntrinsicType;
 use crate::common::cli::Language;
@@ -19,7 +20,12 @@ impl IntrinsicTypeDefinition for X86IntrinsicType {
     }
 
     fn c_single_vector_type(&self) -> String {
-        todo!("c_single_vector_type for X86IntrinsicType needs to be implemented!");
+        // matches __m128, __m256 and similar types
+        let re = Regex::new(r"\__m\d+\").unwrap();
+        match self.metadata.get("type") {
+            Some(type_data) if re.is_match(type_data)  => type_data.to_string(),
+            _ => unreachable!("Shouldn't be called on this type"),
+        }
     }
 
     fn rust_type(&self) -> String {
@@ -150,10 +156,10 @@ impl X86IntrinsicType {
                 // then check the param.type and extract numeric part if there are double
                 // underscores. divide this number with bit-len and set this as simd-len.
 
-                let mut type_processed = param.etype.clone();
+                let mut type_processed = param.type_data.clone();
                 type_processed.retain(|c| c.is_numeric());
 
-                ret.vec_len = match str::parse::<u32>(etype_processed.as_str()) {
+                ret.vec_len = match str::parse::<u32>(type_processed.as_str()) {
                     // If bit_len is None, vec_len will be None.
                     // Else vec_len will be (num_bits / bit_len).
                     Ok(num_bits) => ret.bit_len.and(Some(num_bits / ret.bit_len.unwrap())),
