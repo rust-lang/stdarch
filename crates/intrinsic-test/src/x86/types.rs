@@ -28,7 +28,32 @@ impl IntrinsicTypeDefinition for X86IntrinsicType {
 
     /// Determines the load function for this type.
     fn get_load_function(&self, _language: Language) -> String {
-        todo!("get_load_function for X86IntrinsicType needs to be implemented!");
+        if let Some(type_value) = self.metadata.get("type") {
+            if type_value.starts_with("__mmask") {
+                // no need of loads, since they work directly
+                // with hex constants
+                String::from("*")
+            } else if type_value.starts_with("__m") {
+                // the structure is like the follows:
+                // if "type" starts with __m<num>{h/i/<null>},
+                // then use either _mm_set1_epi64,
+                // _mm256_set1_epi64 or _mm512_set1_epi64
+                let type_val_filtered = type_value
+                    .chars()
+                    .filter(|c| c.is_numeric())
+                    .join("")
+                    .replace("128", "");
+                format!("_mm{type_val_filtered}_set1_epi64")
+            } else {
+                // if it is a pointer, then rely on type conversion
+                // If it is not any of the above type (__int<num>, __bfloat16, unsigned short, etc)
+                // then typecast it.
+                format!("({type_value})")
+            }
+            // Look for edge cases (constexpr, literal, etc)
+        } else {
+            unimplemented!("the value for key 'type' is not present!");
+        }
     }
 
     /// Determines the get lane function for this type.
