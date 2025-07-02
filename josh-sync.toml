@@ -1,0 +1,4 @@
+org = "rust-lang"
+repo = "stdarch"
+path = "library/stdarch"
+last_upstream_sha = "f51c9870bab634afb9e7a262b6ca7816bb9e940d"
