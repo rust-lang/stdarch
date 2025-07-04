@@ -23,13 +23,73 @@ impl IntrinsicTypeDefinition for X86IntrinsicType {
         // matches __m128, __m256 and similar types
         let re = Regex::new(r"\__m\d+\").unwrap();
         match self.metadata.get("type") {
-            Some(type_data) if re.is_match(type_data)  => type_data.to_string(),
+            Some(type_data) if re.is_match(type_data) => type_data.to_string(),
             _ => unreachable!("Shouldn't be called on this type"),
         }
     }
 
     fn rust_type(&self) -> String {
-        todo!("rust_type for X86IntrinsicType needs to be implemented!");
+        // handling edge cases first
+        // the general handling is implemented below
+        if let Some(val) = self.metadata.get("type") {
+            match val.as_str() {
+                "__m128 const *" => {
+                    return "&__m128".to_string();
+                }
+                "__m128d const *" => {
+                    return "&__m128d".to_string();
+                }
+                "const void*" => {
+                    return "&__m128d".to_string();
+                }
+                _ => {}
+            }
+        }
+
+        if self.kind() == TypeKind::Void && self.ptr {
+            // this has been handled by default settings in
+            // the from_param function of X86IntrinsicType
+            unreachable!()
+        }
+
+        // general handling cases
+        let core_part = if self.kind() == TypeKind::Mask {
+            // all types of __mmask<int> are handled here
+            format!("__mask{}", self.bit_len.unwrap())
+        } else if self.simd_len.is_some() {
+            // all types of __m<int> vector types are handled here
+            let re = Regex::new(r"\__m\d+[a-z]*").unwrap();
+            let rust_type = self
+                .metadata
+                .get("type")
+                .map(|val| re.find(val).unwrap().as_str());
+            rust_type.unwrap().to_string()
+        } else {
+            format!(
+                "{}{}",
+                self.kind.rust_prefix().to_string(),
+                self.bit_len.unwrap()
+            )
+        };
+
+        // extracting "memsize" so that even vector types can be involved
+        let memwidth = self
+            .metadata
+            .get("memwidth")
+            .map(|n| str::parse::<u32>(n).unwrap());
+        let prefix_part = if self.ptr && self.constant && self.bit_len.eq(&memwidth) {
+            "&"
+        } else if self.ptr && self.bit_len.eq(&memwidth) {
+            "&mut "
+        } else if self.ptr && self.constant {
+            "*const "
+        } else if self.ptr {
+            "*mut "
+        } else {
+            ""
+        };
+
+        return prefix_part.to_string() + core_part.as_str();
     }
 
     /// Determines the load function for this type.
@@ -124,6 +184,7 @@ impl X86IntrinsicType {
                 // The assumption is that the parameter of type void may have param.type
                 // as "__m128i", "__mmask8" and the like.
                 ret.set_metadata("etype".to_string(), param.etype.clone());
+                ret.set_metadata("memwidth".to_string(), param.memwidth.to_string());
                 if !param.etype.is_empty() {
                     match TypeKind::from_str(param.etype.as_str()) {
                         Ok(value) => {
@@ -155,16 +216,26 @@ impl X86IntrinsicType {
 
                 // then check the param.type and extract numeric part if there are double
                 // underscores. divide this number with bit-len and set this as simd-len.
+                // Only __m<int> types can have a simd-len.
+                if param.type_data.matches("__m").next().is_some()
+                    && param.type_data.matches("__mmask").next().is_none()
+                {
+                    let mut type_processed = param.type_data.clone();
+                    type_processed.retain(|c| c.is_numeric());
+                    ret.vec_len = match str::parse::<u32>(type_processed.as_str()) {
+                        // If bit_len is None, vec_len will be None.
+                        // Else vec_len will be (num_bits / bit_len).
+                        Ok(num_bits) => ret.bit_len.and(Some(num_bits / ret.bit_len.unwrap())),
+                        Err(_) => None,
+                    };
+                }
 
-                let mut type_processed = param.type_data.clone();
-                type_processed.retain(|c| c.is_numeric());
-
-                ret.vec_len = match str::parse::<u32>(type_processed.as_str()) {
-                    // If bit_len is None, vec_len will be None.
-                    // Else vec_len will be (num_bits / bit_len).
-                    Ok(num_bits) => ret.bit_len.and(Some(num_bits / ret.bit_len.unwrap())),
-                    Err(_) => None,
-                };
+                // default settings for "void *" parameters
+                // often used by intrinsics to denote memory address or so.
+                if ret.kind == TypeKind::Void && ret.ptr {
+                    ret.kind = TypeKind::Int(Sign::Unsigned);
+                    ret.bit_len = Some(8);
+                }
 
                 // if param.etype == IMM, then it is a constant.
                 // else it stays unchanged.

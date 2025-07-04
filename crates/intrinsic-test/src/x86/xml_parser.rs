@@ -2,19 +2,19 @@ use crate::common::argument::{Argument, ArgumentList};
 use crate::common::intrinsic::Intrinsic;
 use crate::common::intrinsic_helpers::TypeKind;
 
-use serde::Deserialize;
+use serde::{Deserialize, Deserializer};
 use std::path::Path;
 
 use super::intrinsic::X86IntrinsicType;
 
-// Custom deserializer function to convert strings to u16
-// fn string_to_u16<'de, D>(deserializer: D) -> Result<u16, D::Error>
-// where
-//     D: Deserializer<'de>,
-// {
-//     let s = String::deserialize(deserializer)?;
-//     return Ok(s.as_str().parse::<u16>().unwrap_or(0u16));
-// }
+// Custom deserializer function to convert strings to u32
+fn string_to_u32<'de, D>(deserializer: D) -> Result<u32, D::Error>
+where
+    D: Deserializer<'de>,
+{
+    let s = String::deserialize(deserializer)?;
+    return s.as_str().parse::<u32>().or(Ok(0u16));
+}
 
 #[derive(Deserialize)]
 struct Data {
@@ -42,8 +42,8 @@ pub struct Parameter {
     pub type_data: String,
     #[serde(rename = "@etype", default)]
     pub etype: String,
-    // #[serde(rename = "@memwidth", default, deserialize_with = "string_to_u16")]
-    // pub memwidth: u16,
+    #[serde(rename = "@memwidth", default, deserialize_with = "string_to_u32")]
+    pub memwidth: u32,
     #[serde(rename = "@varname", default)]
     pub var_name: String,
 }
