@@ -12,6 +12,9 @@ impl IntrinsicTypeDefinition for ArmIntrinsicType {
         self.metadata
             .get("type")
             .expect("Failed to extract the C typename in Aarch!")
+            .replace("*", "")
+            .replace("  ", "")
+            .trim()
             .to_string()
     }
 

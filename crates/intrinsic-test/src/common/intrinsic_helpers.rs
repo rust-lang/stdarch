@@ -26,6 +26,7 @@ pub enum TypeKind {
     Poly,
     Void,
     Mask,
+    Vector,
 }
 
 impl FromStr for TypeKind {
@@ -43,6 +44,7 @@ impl FromStr for TypeKind {
             "uint" | "unsigned" | "UI8" | "UI16" | "UI32" | "UI64" => Ok(Self::Int(Sign::Unsigned)),
             "void" => Ok(Self::Void),
             "MASK" => Ok(Self::Mask),
+            "M64" | "M128" | "M256" | "M512" => Ok(Self::Vector),
             _ => Err(format!("Impossible to parse argument kind {s}")),
         }
     }
@@ -63,6 +65,7 @@ impl fmt::Display for TypeKind {
                 Self::Char(Sign::Signed) => "char",
                 Self::Char(Sign::Unsigned) => "unsigned char",
                 Self::Mask => "mask",
+                Self::Vector => "vector",
             }
         )
     }
@@ -84,10 +87,13 @@ impl TypeKind {
     /// Gets the rust prefix for the type kind i.e. i, u, f.
     pub fn rust_prefix(&self) -> &str {
         match self {
+            Self::BFloat => "bf",
             Self::Float => "f",
             Self::Int(Sign::Signed) => "i",
             Self::Int(Sign::Unsigned) => "u",
             Self::Poly => "u",
+            Self::Char(Sign::Unsigned) => "u",
+            Self::Char(Sign::Signed) => "i",
             _ => unreachable!("Unused type kind: {:#?}", self),
         }
     }
