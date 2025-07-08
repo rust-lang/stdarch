@@ -1,10 +1,9 @@
-use super::gen_c::create_c_test_program;
-use super::gen_c::setup_c_file_paths;
+use std::fs::File;
+use std::io::Write;
+
 use super::gen_rust::{create_rust_test_program, setup_rust_file_paths};
 use super::intrinsic::IntrinsicDefinition;
 use super::intrinsic_helpers::IntrinsicTypeDefinition;
-use std::fs::File;
-use std::io::Write;
 
 pub fn write_file(filename: &String, code: String) {
     let mut file = File::create(filename).unwrap();
@@ -12,34 +11,36 @@ pub fn write_file(filename: &String, code: String) {
 }
 
 pub fn write_c_testfiles<T: IntrinsicTypeDefinition + Sized>(
-    intrinsics: &Vec<&dyn IntrinsicDefinition<T>>,
+    intrinsics: &[&dyn IntrinsicDefinition<T>],
     target: &str,
     c_target: &str,
     headers: &[&str],
     notice: &str,
     arch_specific_definitions: &[&str],
-) -> Vec<String> {
-    let intrinsics_name_list = intrinsics
+) -> std::io::Result<Vec<String>> {
+    std::fs::create_dir_all("c_programs")?;
+
+    intrinsics
         .iter()
-        .map(|i| i.name().clone())
-        .collect::<Vec<_>>();
-    let filename_mapping = setup_c_file_paths(&intrinsics_name_list);
+        .map(|intrinsic| {
+            let identifier = intrinsic.name().to_owned();
+            let mut file = File::create(format!("c_programs/{identifier}.cpp")).unwrap();
 
-    intrinsics.iter().for_each(|&i| {
-        let c_code = create_c_test_program(
-            i,
-            headers,
-            target,
-            c_target,
-            notice,
-            arch_specific_definitions,
-        );
-        if let Some(filename) = filename_mapping.get(&i.name()) {
-            write_file(filename, c_code)
-        };
-    });
+            // write_c_test_program(&mut file, intrinsic)?;
+            let c_code = crate::common::gen_c::create_c_test_program(
+                *intrinsic,
+                headers,
+                target,
+                c_target,
+                notice,
+                arch_specific_definitions,
+            );
 
-    intrinsics_name_list
+            file.write_all(c_code.as_bytes())?;
+
+            Ok(identifier)
+        })
+        .collect()
 }
 
 pub fn write_rust_testfiles<T: IntrinsicTypeDefinition>(

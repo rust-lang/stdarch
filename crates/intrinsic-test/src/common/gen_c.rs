@@ -1,6 +1,5 @@
 use itertools::Itertools;
 use rayon::prelude::*;
-use std::collections::BTreeMap;
 use std::process::Command;
 
 use super::argument::Argument;
@@ -85,19 +84,6 @@ pub fn compile_c_programs(compiler_commands: &[String]) -> bool {
         })
         .find_any(|x| !x)
         .is_none()
-}
-
-// Creates directory structure and file path mappings
-pub fn setup_c_file_paths(identifiers: &Vec<String>) -> BTreeMap<&String, String> {
-    let _ = std::fs::create_dir("c_programs");
-    identifiers
-        .par_iter()
-        .map(|identifier| {
-            let c_filename = format!(r#"c_programs/{identifier}.cpp"#);
-
-            (identifier, c_filename)
-        })
-        .collect::<BTreeMap<&String, String>>()
 }
 
 pub fn generate_c_test_loop<T: IntrinsicTypeDefinition + Sized>(

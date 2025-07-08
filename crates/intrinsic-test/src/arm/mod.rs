@@ -72,7 +72,7 @@ impl SupportedArchitectureTest for ArmArchitectureTest {
         match compiler {
             None => true,
             Some(compiler) => compile_c_arm(
-                intrinsics_name_list.as_slice(),
+                intrinsics_name_list.unwrap().as_slice(),
                 compiler,
                 target,
                 cxx_toolchain_dir,
