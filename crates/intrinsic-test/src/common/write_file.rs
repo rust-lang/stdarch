@@ -63,10 +63,7 @@ where
             let rust_filename = format!("{rust_dir}/main.rs");
             let mut file = File::create(rust_filename).unwrap();
 
-            let rust_code =
-                create_rust_test_program(intrinsic, rust_target, notice, definitions, cfg);
-
-            file.write_all(rust_code.as_bytes())?;
+            create_rust_test_program(&mut file, intrinsic, rust_target, notice, definitions, cfg)?;
 
             Ok(identifier)
         })

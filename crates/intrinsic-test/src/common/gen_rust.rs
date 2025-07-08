@@ -10,31 +10,6 @@ use super::intrinsic_helpers::IntrinsicTypeDefinition;
 // The number of times each intrinsic will be called.
 const PASSES: u32 = 20;
 
-pub fn format_rust_main_template(
-    notices: &str,
-    definitions: &str,
-    configurations: &str,
-    arch_definition: &str,
-    arglists: &str,
-    passes: &str,
-) -> String {
-    format!(
-        r#"{notices}#![feature(simd_ffi)]
-#![feature(f16)]
-#![allow(unused)]
-{configurations}
-{definitions}
-
-use core_arch::arch::{arch_definition}::*;
-
-fn main() {{
-{arglists}
-{passes}
-}}
-"#,
-    )
-}
-
 fn write_cargo_toml(w: &mut impl std::io::Write, binaries: &[String]) -> std::io::Result<()> {
     writeln!(
         w,
@@ -123,11 +98,12 @@ pub fn compile_rust_programs(
 }
 
 pub fn generate_rust_test_loop<T: IntrinsicTypeDefinition>(
+    w: &mut impl std::io::Write,
     intrinsic: &dyn IntrinsicDefinition<T>,
     indentation: Indentation,
     additional: &str,
     passes: u32,
-) -> String {
+) -> std::io::Result<()> {
     let constraints = intrinsic.arguments().as_constraint_parameters_rust();
     let constraints = if !constraints.is_empty() {
         format!("::<{constraints}>")
@@ -138,7 +114,8 @@ pub fn generate_rust_test_loop<T: IntrinsicTypeDefinition>(
     let return_value = format_f16_return_value(intrinsic);
     let indentation2 = indentation.nested();
     let indentation3 = indentation2.nested();
-    format!(
+    write!(
+        w,
         "{indentation}for i in 0..{passes} {{\n\
             {indentation2}unsafe {{\n\
                 {loaded_args}\
@@ -153,74 +130,77 @@ pub fn generate_rust_test_loop<T: IntrinsicTypeDefinition>(
     )
 }
 
-pub fn generate_rust_constraint_blocks<T: IntrinsicTypeDefinition>(
+fn generate_rust_constraint_blocks<'a, T: IntrinsicTypeDefinition + 'a>(
+    w: &mut impl std::io::Write,
     intrinsic: &dyn IntrinsicDefinition<T>,
     indentation: Indentation,
-    constraints: &[&Argument<T>],
+    constraints: &mut (impl Iterator<Item = &'a Argument<T>> + Clone),
     name: String,
-) -> String {
-    if let Some((current, constraints)) = constraints.split_last() {
-        let range = current
-            .constraint
-            .iter()
-            .map(|c| c.to_range())
-            .flat_map(|r| r.into_iter());
+) -> std::io::Result<()> {
+    let Some(current) = constraints.next() else {
+        return generate_rust_test_loop(w, intrinsic, indentation, &name, PASSES);
+    };
 
-        let body_indentation = indentation.nested();
-        range
-            .map(|i| {
-                format!(
-                    "{indentation}{{\n\
-                        {body_indentation}const {name}: {ty} = {val};\n\
-                        {pass}\n\
-                    {indentation}}}",
-                    name = current.name,
-                    ty = current.ty.rust_type(),
-                    val = i,
-                    pass = generate_rust_constraint_blocks(
-                        intrinsic,
-                        body_indentation,
-                        constraints,
-                        format!("{name}-{i}")
-                    )
-                )
-            })
-            .join("\n")
-    } else {
-        generate_rust_test_loop(intrinsic, indentation, &name, PASSES)
+    let body_indentation = indentation.nested();
+    for i in current.constraint.iter().flat_map(|c| c.to_range()) {
+        let ty = current.ty.rust_type();
+
+        writeln!(w, "{indentation}{{")?;
+
+        writeln!(w, "{body_indentation}const {}: {ty} = {i};", current.name)?;
+
+        generate_rust_constraint_blocks(
+            w,
+            intrinsic,
+            body_indentation,
+            &mut constraints.clone(),
+            format!("{name}-{i}"),
+        )?;
+
+        writeln!(w, "{indentation}}}")?;
     }
+
+    Ok(())
 }
 
 // Top-level function to create complete test program
 pub fn create_rust_test_program<T: IntrinsicTypeDefinition>(
+    w: &mut impl std::io::Write,
     intrinsic: &dyn IntrinsicDefinition<T>,
     target: &str,
     notice: &str,
     definitions: &str,
     cfg: &str,
-) -> String {
-    let arguments = intrinsic.arguments();
-    let constraints = arguments
-        .iter()
-        .filter(|i| i.has_constraint())
-        .collect_vec();
-
+) -> std::io::Result<()> {
     let indentation = Indentation::default();
-    format_rust_main_template(
-        notice,
-        definitions,
-        cfg,
-        target,
-        intrinsic
-            .arguments()
-            .gen_arglists_rust(indentation.nested(), PASSES)
-            .as_str(),
-        generate_rust_constraint_blocks(
-            intrinsic,
-            indentation.nested(),
-            &constraints,
-            Default::default(),
-        )
-        .as_str(),
-    )
+
+    write!(w, "{notice}")?;
+
+    writeln!(w, "#![feature(simd_ffi)]")?;
+    writeln!(w, "#![feature(f16)]")?;
+    writeln!(w, "#![allow(unused)]")?;
+
+    writeln!(w, "{cfg}")?;
+    writeln!(w, "{definitions}")?;
+
+    writeln!(w, "use core_arch::arch::{target}::*;")?;
+
+    writeln!(w, "fn main() {{")?;
+
+    // Define the arrays of arguments.
+    let arguments = intrinsic.arguments();
+    arguments.gen_arglists_rust(w, indentation.nested(), PASSES)?;
+
+    // Define any const generics as `const` items, then generate the actual test loop.
+    generate_rust_constraint_blocks(
+        w,
+        intrinsic,
+        indentation.nested(),
+        &mut arguments.iter().rev().filter(|i| i.has_constraint()),
+        Default::default(),
+    )?;
+
+    writeln!(w, "}}")?;
+
+    Ok(())
 }
