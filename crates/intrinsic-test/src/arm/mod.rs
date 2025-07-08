@@ -57,11 +57,9 @@ impl SupportedArchitectureTest for ArmArchitectureTest {
         let c_target = "aarch64";
 
         let intrinsics_name_list = write_c_testfiles(
-            &self
-                .intrinsics
+            self.intrinsics
                 .iter()
-                .map(|i| i as &dyn IntrinsicDefinition<_>)
-                .collect::<Vec<_>>(),
+                .map(|i| i as &dyn IntrinsicDefinition<_>),
             target,
             c_target,
             &["arm_neon.h", "arm_acle.h", "arm_fp16.h"],
@@ -92,15 +90,14 @@ impl SupportedArchitectureTest for ArmArchitectureTest {
         let intrinsics_name_list = write_rust_testfiles(
             self.intrinsics
                 .iter()
-                .map(|i| i as &dyn IntrinsicDefinition<_>)
-                .collect::<Vec<_>>(),
+                .map(|i| i as &dyn IntrinsicDefinition<_>),
             rust_target,
             &build_notices("// "),
             F16_FORMATTING_DEF,
             AARCH_CONFIGURATIONS,
         );
 
-        compile_rust_programs(intrinsics_name_list, toolchain, target, linker)
+        compile_rust_programs(intrinsics_name_list.unwrap(), toolchain, target, linker)
     }
 
     fn compare_outputs(&self) -> bool {

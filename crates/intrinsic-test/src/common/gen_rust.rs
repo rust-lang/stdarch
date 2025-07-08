@@ -1,6 +1,4 @@
 use itertools::Itertools;
-use rayon::prelude::*;
-use std::collections::BTreeMap;
 use std::fs::File;
 use std::process::Command;
 
@@ -122,20 +120,6 @@ pub fn compile_rust_programs(
         error!("Command failed: {output:#?}");
         false
     }
-}
-
-// Creates directory structure and file path mappings
-pub fn setup_rust_file_paths(identifiers: &Vec<String>) -> BTreeMap<&String, String> {
-    identifiers
-        .par_iter()
-        .map(|identifier| {
-            let rust_dir = format!("rust_programs/{identifier}");
-            let _ = std::fs::create_dir_all(&rust_dir);
-            let rust_filename = format!("{rust_dir}/main.rs");
-
-            (identifier, rust_filename)
-        })
-        .collect::<BTreeMap<&String, String>>()
 }
 
 pub fn generate_rust_test_loop<T: IntrinsicTypeDefinition>(
