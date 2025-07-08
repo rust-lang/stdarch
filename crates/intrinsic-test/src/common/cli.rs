@@ -60,7 +60,7 @@ pub struct ProcessedCli {
     pub filename: PathBuf,
     pub toolchain: Option<String>,
     pub cpp_compiler: Option<String>,
-    pub c_runner: String,
+    pub runner: String,
     pub target: String,
     pub linker: Option<String>,
     pub cxx_toolchain_dir: Option<String>,
@@ -102,7 +102,7 @@ impl ProcessedCli {
         Self {
             toolchain,
             cpp_compiler,
-            c_runner,
+            runner: c_runner,
             target,
             linker,
             cxx_toolchain_dir,
