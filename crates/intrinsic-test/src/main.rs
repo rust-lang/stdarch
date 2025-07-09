@@ -30,13 +30,13 @@ fn main() {
 
     let test_environment = test_environment_result.unwrap();
 
-    info!("building C binaries");
-    if !test_environment.build_c_file() {
-        std::process::exit(2);
-    }
     info!("building Rust binaries");
     if !test_environment.build_rust_file() {
         std::process::exit(3);
+    }
+    info!("building C binaries");
+    if !test_environment.build_c_file() {
+        std::process::exit(2);
     }
     info!("comparing outputs");
     if !test_environment.compare_outputs() {

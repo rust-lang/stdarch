@@ -47,6 +47,7 @@ pub fn write_cargo_toml(w: &mut impl std::io::Write, binaries: &[String]) -> std
 
 pub fn write_main_rs<'a>(
     w: &mut impl std::io::Write,
+    available_parallelism: usize,
     architecture: &str,
     cfg: &str,
     definitions: &str,
@@ -61,8 +62,9 @@ pub fn write_main_rs<'a>(
 
     writeln!(w, "use core_arch::arch::{architecture}::*;")?;
 
-    for binary in intrinsics.clone() {
-        writeln!(w, "mod {binary};")?;
+    for module in 0..available_parallelism {
+        writeln!(w, "mod mod_{module};")?;
+        writeln!(w, "use mod_{module}::*;")?;
     }
 
     writeln!(w, "fn main() {{")?;
@@ -70,7 +72,7 @@ pub fn write_main_rs<'a>(
     writeln!(w, "    match std::env::args().nth(1).unwrap().as_str() {{")?;
 
     for binary in intrinsics {
-        writeln!(w, "        \"{binary}\" => {binary}::run(),")?;
+        writeln!(w, "        \"{binary}\" => run_{binary}(),")?;
     }
 
     writeln!(
@@ -194,20 +196,13 @@ fn generate_rust_constraint_blocks<'a, T: IntrinsicTypeDefinition + 'a>(
 }
 
 // Top-level function to create complete test program
-pub fn create_rust_test_program<T: IntrinsicTypeDefinition>(
+pub fn create_rust_test_module<T: IntrinsicTypeDefinition>(
     w: &mut impl std::io::Write,
     intrinsic: &dyn IntrinsicDefinition<T>,
-    architecture: &str,
-    notice: &str,
 ) -> std::io::Result<()> {
     let indentation = Indentation::default();
 
-    write!(w, "{notice}")?;
-
-    writeln!(w, "use core_arch::arch::{architecture}::*;")?;
-    writeln!(w, "use crate::{{debug_simd_finish, debug_f16}};")?;
-
-    writeln!(w, "pub fn run() {{")?;
+    writeln!(w, "pub fn run_{}() {{", intrinsic.name())?;
 
     // Define the arrays of arguments.
     let arguments = intrinsic.arguments();

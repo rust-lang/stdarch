@@ -14,7 +14,7 @@ use crate::common::compare::compare_outputs;
 use crate::common::gen_rust::{compile_rust_programs, write_cargo_toml, write_main_rs};
 use crate::common::intrinsic::Intrinsic;
 use crate::common::intrinsic_helpers::TypeKind;
-use crate::common::write_file::{write_c_testfiles, write_rust_testfiles};
+use crate::common::write_file::write_c_testfiles;
 use compile::compile_c_arm;
 use config::{AARCH_CONFIGURATIONS, F16_FORMATTING_DEF, POLY128_OSTREAM_DEF, build_notices};
 use intrinsic::ArmIntrinsicType;
@@ -81,11 +81,16 @@ impl SupportedArchitectureTest for ArmArchitectureTest {
     }
 
     fn build_rust_file(&self) -> bool {
+        std::fs::create_dir_all("rust_programs/src").unwrap();
+
         let architecture = if self.cli_options.target.contains("v7") {
             "arm"
         } else {
             "aarch64"
         };
+
+        let available_parallelism = std::thread::available_parallelism().unwrap().get();
+        let chunk_size = self.intrinsics.len().div_ceil(available_parallelism);
 
         let mut cargo = File::create("rust_programs/Cargo.toml").unwrap();
         write_cargo_toml(&mut cargo, &[]).unwrap();
@@ -93,6 +98,7 @@ impl SupportedArchitectureTest for ArmArchitectureTest {
         let mut main_rs = File::create("rust_programs/src/main.rs").unwrap();
         write_main_rs(
             &mut main_rs,
+            available_parallelism,
             architecture,
             AARCH_CONFIGURATIONS,
             F16_FORMATTING_DEF,
@@ -104,12 +110,29 @@ impl SupportedArchitectureTest for ArmArchitectureTest {
         let toolchain = self.cli_options.toolchain.as_deref();
         let linker = self.cli_options.linker.as_deref();
 
-        write_rust_testfiles(
-            self.intrinsics.par_iter(),
-            architecture,
-            &build_notices("// "),
-        )
-        .unwrap();
+        let notice = &build_notices("// ");
+        self.intrinsics
+            .par_chunks(chunk_size)
+            .enumerate()
+            .map(|(i, chunk)| {
+                use std::io::Write;
+
+                let rust_filename = format!("rust_programs/src/mod_{i}.rs");
+                let mut file = File::create(rust_filename).unwrap();
+
+                write!(file, "{notice}")?;
+
+                writeln!(file, "use core_arch::arch::{architecture}::*;")?;
+                writeln!(file, "use crate::{{debug_simd_finish, debug_f16}};")?;
+
+                for intrinsic in chunk {
+                    crate::common::gen_rust::create_rust_test_module(&mut file, intrinsic)?;
+                }
+
+                Ok(())
+            })
+            .collect::<Result<(), std::io::Error>>()
+            .unwrap();
 
         compile_rust_programs(toolchain, target, linker)
     }

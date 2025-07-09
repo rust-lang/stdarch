@@ -1,6 +1,5 @@
 use std::fs::File;
 
-use super::gen_rust::create_rust_test_program;
 use super::intrinsic::IntrinsicDefinition;
 use super::intrinsic_helpers::IntrinsicTypeDefinition;
 
@@ -37,32 +36,6 @@ where
             )?;
 
             Ok(identifier)
-        })
-        .collect()
-}
-
-pub fn write_rust_testfiles<'a, T, I, E>(
-    intrinsics: I,
-    architecture: &str,
-    notice: &str,
-) -> std::io::Result<()>
-where
-    T: IntrinsicTypeDefinition + Sized + 'a,
-    I: ParallelIterator<Item = &'a E>,
-    E: IntrinsicDefinition<T> + 'a,
-{
-    std::fs::create_dir_all("rust_programs/src")?;
-
-    intrinsics
-        .map(|intrinsic| {
-            let identifier = intrinsic.name().to_owned();
-
-            let rust_filename = format!("rust_programs/src/{identifier}.rs");
-            let mut file = File::create(rust_filename).unwrap();
-
-            create_rust_test_program(&mut file, intrinsic, architecture, notice)?;
-
-            Ok(())
         })
         .collect()
 }
