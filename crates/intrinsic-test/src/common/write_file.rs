@@ -1,5 +1,4 @@
 use std::fs::File;
-use std::io::Write;
 
 use super::gen_rust::create_rust_test_program;
 use super::intrinsic::IntrinsicDefinition;
@@ -24,17 +23,15 @@ where
             let identifier = intrinsic.name().to_owned();
             let mut file = File::create(format!("c_programs/{identifier}.cpp")).unwrap();
 
-            // write_c_test_program(&mut file, intrinsic)?;
-            let c_code = crate::common::gen_c::create_c_test_program(
+            crate::common::gen_c::create_c_test_program(
+                &mut file,
                 intrinsic,
                 headers,
                 target,
                 c_target,
                 notice,
                 arch_specific_definitions,
-            );
-
-            file.write_all(c_code.as_bytes())?;
+            )?;
 
             Ok(identifier)
         })

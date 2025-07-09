@@ -1,4 +1,3 @@
-use itertools::Itertools;
 use rayon::prelude::*;
 use std::process::Command;
 
@@ -9,57 +8,6 @@ use super::intrinsic_helpers::IntrinsicTypeDefinition;
 
 // The number of times each intrinsic will be called.
 const PASSES: u32 = 20;
-
-// Formats the main C program template with placeholders
-pub fn format_c_main_template(
-    notices: &str,
-    header_files: &[&str],
-    arch_identifier: &str,
-    arch_specific_definitions: &[&str],
-    arglists: &str,
-    passes: &str,
-) -> String {
-    format!(
-        r#"{notices}{header_files}
-#include <iostream>
-#include <cstring>
-#include <iomanip>
-#include <sstream>
-
-template<typename T1, typename T2> T1 cast(T2 x) {{
-  static_assert(sizeof(T1) == sizeof(T2), "sizeof T1 and T2 must be the same");
-  T1 ret{{}};
-  memcpy(&ret, &x, sizeof(T1));
-  return ret;
-}}
-
-std::ostream& operator<<(std::ostream& os, float16_t value) {{
-    uint16_t temp = 0;
-    memcpy(&temp, &value, sizeof(float16_t));
-    std::stringstream ss;
-    ss << "0x" << std::setfill('0') << std::setw(4) << std::hex << temp;
-    os << ss.str();
-    return os;
-}}
-
-#ifdef __{arch_identifier}__
-{arch_specific_definitions}
-#endif
-
-{arglists}
-
-int main(int argc, char **argv) {{
-{passes}
-    return 0;
-}}"#,
-        header_files = header_files
-            .iter()
-            .map(|header| format!("#include <{header}>"))
-            .collect::<Vec<_>>()
-            .join("\n"),
-        arch_specific_definitions = arch_specific_definitions.join("\n"),
-    )
-}
 
 pub fn compile_c_programs(compiler_commands: &[String]) -> bool {
     compiler_commands
@@ -87,14 +35,15 @@ pub fn compile_c_programs(compiler_commands: &[String]) -> bool {
 }
 
 pub fn generate_c_test_loop<T: IntrinsicTypeDefinition + Sized>(
+    w: &mut impl std::io::Write,
     intrinsic: &dyn IntrinsicDefinition<T>,
     indentation: Indentation,
     additional: &str,
     passes: u32,
-    _target: &str,
-) -> String {
+) -> std::io::Result<()> {
     let body_indentation = indentation.nested();
-    format!(
+    write!(
+        w,
         "{indentation}for (int i=0; i<{passes}; i++) {{\n\
             {loaded_args}\
             {body_indentation}auto __return_value = {intrinsic_call}({args});\n\
@@ -107,78 +56,105 @@ pub fn generate_c_test_loop<T: IntrinsicTypeDefinition + Sized>(
     )
 }
 
-pub fn generate_c_constraint_blocks<T: IntrinsicTypeDefinition>(
+pub fn generate_c_constraint_blocks<'a, T: IntrinsicTypeDefinition + 'a>(
+    w: &mut impl std::io::Write,
     intrinsic: &dyn IntrinsicDefinition<T>,
     indentation: Indentation,
-    constraints: &[&Argument<T>],
+    constraints: &mut (impl Iterator<Item = &'a Argument<T>> + Clone),
     name: String,
-    target: &str,
-) -> String {
-    if let Some((current, constraints)) = constraints.split_last() {
-        let range = current
-            .constraint
-            .iter()
-            .map(|c| c.to_range())
-            .flat_map(|r| r.into_iter());
+) -> std::io::Result<()> {
+    let Some(current) = constraints.next() else {
+        return generate_c_test_loop(w, intrinsic, indentation, &name, PASSES);
+    };
 
-        let body_indentation = indentation.nested();
-        range
-            .map(|i| {
-                format!(
-                    "{indentation}{{\n\
-                        {body_indentation}{ty} {name} = {val};\n\
-                        {pass}\n\
-                    {indentation}}}",
-                    name = current.name,
-                    ty = current.ty.c_type(),
-                    val = i,
-                    pass = generate_c_constraint_blocks(
-                        intrinsic,
-                        body_indentation,
-                        constraints,
-                        format!("{name}-{i}"),
-                        target,
-                    )
-                )
-            })
-            .join("\n")
-    } else {
-        generate_c_test_loop(intrinsic, indentation, &name, PASSES, target)
+    let body_indentation = indentation.nested();
+    for i in current.constraint.iter().flat_map(|c| c.to_range()) {
+        let ty = current.ty.c_type();
+
+        writeln!(w, "{indentation}{{")?;
+        writeln!(w, "{body_indentation}{ty} {} = {i};", current.name)?;
+
+        generate_c_constraint_blocks(
+            w,
+            intrinsic,
+            body_indentation,
+            &mut constraints.clone(),
+            format!("{name}-{i}"),
+        )?;
+
+        writeln!(w, "{indentation}}}")?;
     }
+
+    Ok(())
 }
 
 // Compiles C test programs using specified compiler
 pub fn create_c_test_program<T: IntrinsicTypeDefinition>(
+    w: &mut impl std::io::Write,
     intrinsic: &dyn IntrinsicDefinition<T>,
     header_files: &[&str],
-    target: &str,
+    _target: &str,
     c_target: &str,
     notices: &str,
     arch_specific_definitions: &[&str],
-) -> String {
-    let arguments = intrinsic.arguments();
-    let constraints = arguments
-        .iter()
-        .filter(|&i| i.has_constraint())
-        .collect_vec();
-
+) -> std::io::Result<()> {
     let indentation = Indentation::default();
-    format_c_main_template(
-        notices,
-        header_files,
-        c_target,
-        arch_specific_definitions,
-        intrinsic
-            .arguments()
-            .gen_arglists_c(indentation, PASSES)
-            .as_str(),
-        generate_c_constraint_blocks(
-            intrinsic,
-            indentation.nested(),
-            constraints.as_slice(),
-            Default::default(),
-            target,
-        )
-        .as_str(),
-    )
+
+    write!(w, "{notices}")?;
+
+    for header in header_files {
+        writeln!(w, "#include <{header}>")?;
+    }
+
+    writeln!(
+        w,
+        r#"
+#include <iostream>
+#include <cstring>
+#include <iomanip>
+#include <sstream>
+
+template<typename T1, typename T2> T1 cast(T2 x) {{
+  static_assert(sizeof(T1) == sizeof(T2), "sizeof T1 and T2 must be the same");
+  T1 ret{{}};
+  memcpy(&ret, &x, sizeof(T1));
+  return ret;
+}}
+
+std::ostream& operator<<(std::ostream& os, float16_t value) {{
+    uint16_t temp = 0;
+    memcpy(&temp, &value, sizeof(float16_t));
+    std::stringstream ss;
+    ss << "0x" << std::setfill('0') << std::setw(4) << std::hex << temp;
+    os << ss.str();
+    return os;
+}}
+"#
+    )?;
+
+    let arch_identifier = c_target;
+    writeln!(w, "#ifdef __{arch_identifier}__")?;
+    for def in arch_specific_definitions {
+        writeln!(w, "{def}")?;
+    }
+    writeln!(w, "#endif")?;
+
+    // Define the arrays of arguments.
+    let arguments = intrinsic.arguments();
+    arguments.gen_arglists_c(w, indentation, PASSES)?;
+
+    writeln!(w, "int main(int argc, char **argv) {{")?;
+
+    generate_c_constraint_blocks(
+        w,
+        intrinsic,
+        indentation.nested(),
+        &mut arguments.iter().rev().filter(|&i| i.has_constraint()),
+        Default::default(),
+    )?;
+
+    writeln!(w, "    return 0;")?;
+    writeln!(w, "}}")?;
+
+    Ok(())
 }
