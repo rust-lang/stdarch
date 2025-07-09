@@ -1,7 +1,7 @@
 use rayon::prelude::*;
 
 mod compile;
-mod config;
+pub mod config;
 mod intrinsic;
 mod json_parser;
 mod types;

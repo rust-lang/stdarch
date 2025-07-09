@@ -52,8 +52,49 @@ pub fn compile_rust_programs(
     target: &str,
     linker: Option<&str>,
 ) -> bool {
+    use std::io::Write;
+
     let mut cargo = File::create("rust_programs/Cargo.toml").unwrap();
-    write_cargo_toml(&mut cargo, &binaries).unwrap();
+    write_cargo_toml(&mut cargo, &[]).unwrap();
+    let mut main_rs = File::create("rust_programs/src/main.rs").unwrap();
+
+    writeln!(main_rs, "#![feature(simd_ffi)]").unwrap();
+    writeln!(main_rs, "#![feature(f16)]").unwrap();
+    writeln!(main_rs, "#![allow(unused)]").unwrap();
+
+    let definitions = crate::arm::config::F16_FORMATTING_DEF;
+    let cfg = crate::arm::config::AARCH_CONFIGURATIONS;
+
+    writeln!(main_rs, "{cfg}").unwrap();
+    writeln!(main_rs, "{definitions}").unwrap();
+
+    // TODO hardcodes target
+    writeln!(main_rs, "use core_arch::arch::aarch64::*;").unwrap();
+
+    for binary in binaries.iter() {
+        writeln!(main_rs, "mod {binary};").unwrap();
+    }
+
+    writeln!(main_rs, "fn main() {{").unwrap();
+
+    writeln!(
+        main_rs,
+        "    match std::env::args().nth(1).unwrap().as_str() {{"
+    )
+    .unwrap();
+
+    for binary in binaries {
+        writeln!(main_rs, "        \"{binary}\" => {binary}::run(),").unwrap();
+    }
+
+    writeln!(
+        main_rs,
+        "        other => panic!(\"unknown intrinsic `{{}}`\", other),"
+    )
+    .unwrap();
+
+    writeln!(main_rs, "    }}").unwrap();
+    writeln!(main_rs, "}}").unwrap();
 
     /* If there has been a linker explicitly set from the command line then
      * we want to set it via setting it in the RUSTFLAGS*/
@@ -185,7 +226,7 @@ pub fn create_rust_test_program<T: IntrinsicTypeDefinition>(
 
     writeln!(w, "use core_arch::arch::{target}::*;")?;
 
-    writeln!(w, "fn main() {{")?;
+    writeln!(w, "pub fn run() {{")?;
 
     // Define the arrays of arguments.
     let arguments = intrinsic.arguments();

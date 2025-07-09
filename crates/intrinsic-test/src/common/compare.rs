@@ -19,8 +19,9 @@ pub fn compare_outputs(intrinsic_name_list: &Vec<String>, runner: &str, target: 
                 .output();
 
             let rust = runner_command(runner)
-                .arg(format!("target/{target}/release/{intrinsic_name}"))
-                .env("RUSTFLAGS", "-Cdebuginfo=0")
+                .arg(format!("target/{target}/release/intrinsic-test-programs"))
+                .arg(intrinsic_name)
+                .current_dir("rust_programs")
                 .output();
 
             let (c, rust) = match (c, rust) {

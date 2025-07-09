@@ -53,15 +53,13 @@ where
     I: ParallelIterator<Item = &'a E>,
     E: IntrinsicDefinition<T> + 'a,
 {
-    std::fs::create_dir_all("rust_programs")?;
+    std::fs::create_dir_all("rust_programs/src")?;
 
     intrinsics
         .map(|intrinsic| {
             let identifier = intrinsic.name().to_owned();
 
-            let rust_dir = format!("rust_programs/{identifier}");
-            std::fs::create_dir_all(&rust_dir)?;
-            let rust_filename = format!("{rust_dir}/main.rs");
+            let rust_filename = format!("rust_programs/src/{identifier}.rs");
             let mut file = File::create(rust_filename).unwrap();
 
             create_rust_test_program(&mut file, intrinsic, rust_target, notice, definitions, cfg)?;
