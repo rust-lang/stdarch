@@ -11,11 +11,10 @@ mod types;
 use crate::common::SupportedArchitectureTest;
 use crate::common::cli::ProcessedCli;
 use crate::common::compare::compare_outputs;
+use crate::common::gen_c::{write_main_cpp, write_mod_cpp};
 use crate::common::gen_rust::{compile_rust_programs, write_cargo_toml, write_main_rs};
 use crate::common::intrinsic::Intrinsic;
 use crate::common::intrinsic_helpers::TypeKind;
-use crate::common::write_file::write_c_testfiles;
-use compile::compile_c_arm;
 use config::{AARCH_CONFIGURATIONS, F16_FORMATTING_DEF, POLY128_OSTREAM_DEF, build_notices};
 use intrinsic::ArmIntrinsicType;
 use json_parser::get_neon_intrinsics;
@@ -60,24 +59,86 @@ impl SupportedArchitectureTest for ArmArchitectureTest {
         let cxx_toolchain_dir = self.cli_options.cxx_toolchain_dir.as_deref();
         let c_target = "aarch64";
 
-        let intrinsics_name_list = write_c_testfiles(
-            self.intrinsics.par_iter(),
-            target,
-            c_target,
-            &["arm_neon.h", "arm_acle.h", "arm_fp16.h"],
-            &build_notices("// "),
-            &[POLY128_OSTREAM_DEF],
-        );
+        let available_parallelism = std::thread::available_parallelism().unwrap().get();
+        let chunk_size = self.intrinsics.len().div_ceil(available_parallelism);
 
-        match compiler {
-            None => true,
-            Some(compiler) => compile_c_arm(
-                intrinsics_name_list.unwrap().as_slice(),
-                compiler,
-                target,
-                cxx_toolchain_dir,
-            ),
+        let notice = &build_notices("// ");
+        self.intrinsics
+            .par_chunks(chunk_size)
+            .enumerate()
+            .map(|(i, chunk)| {
+                let c_filename = format!("c_programs/mod_{i}.cpp");
+                let mut file = File::create(&c_filename).unwrap();
+                write_mod_cpp(&mut file, &notice, chunk).unwrap();
+
+                // compile this cpp file into a .o file
+
+                // clang++ -march=armv8.6-a+crypto+crc+dotprod+fp16+faminmax+lut+sha3 -O2 -ffp-contract=off -Wno-narrowing --target=aarch64-unknown-linux-gnu c_file_0.c -c
+                let mut cmd = std::process::Command::new("clang++");
+                cmd.current_dir("c_programs");
+
+                cmd.arg("-march=armv8.6-a+crypto+crc+dotprod+fp16+faminmax+lut+sha3");
+                cmd.arg("-O2");
+                cmd.arg("-ffp-contract=off");
+                cmd.arg("-Wno-narrowing");
+                cmd.arg("--target=aarch64-unknown-linux-gnu");
+                cmd.arg("-c");
+                cmd.arg(format!("mod_{i}.cpp"));
+
+                let output = cmd.output();
+                eprintln!(
+                    "{}",
+                    String::from_utf8_lossy(&output.as_ref().unwrap().stderr)
+                );
+                assert!(output.unwrap().status.success());
+
+                Ok(())
+            })
+            .collect::<Result<(), std::io::Error>>()
+            .unwrap();
+
+        let c_filename = format!("c_programs/main.cpp");
+        let mut file = File::create(&c_filename).unwrap();
+        write_main_cpp(
+            &mut file,
+            c_target,
+            POLY128_OSTREAM_DEF,
+            self.intrinsics.iter().map(|i| i.name.as_str()),
+        )
+        .unwrap();
+
+        let mut cmd = std::process::Command::new("clang++");
+        cmd.current_dir("c_programs");
+
+        cmd.arg("-march=armv8.6-a+crypto+crc+dotprod+fp16+faminmax+lut+sha3");
+        cmd.arg("-O2");
+        cmd.arg("-ffp-contract=off");
+        cmd.arg("-Wno-narrowing");
+        cmd.arg("--target=aarch64-unknown-linux-gnu");
+        cmd.arg(format!("main.cpp"));
+        for i in 0..Ord::min(available_parallelism, self.intrinsics.len()) {
+            cmd.arg(format!("mod_{i}.o"));
         }
+        cmd.args(&["-o", "intrinsic-test-programs"]);
+
+        let output = cmd.output();
+        eprintln!(
+            "{}",
+            String::from_utf8_lossy(&output.as_ref().unwrap().stderr)
+        );
+        assert!(output.unwrap().status.success());
+
+        //        match compiler {
+        //            None => true,
+        //            Some(compiler) => compile_c_arm(
+        //                intrinsics_name_list.unwrap().as_slice(),
+        //                compiler,
+        //                target,
+        //                cxx_toolchain_dir,
+        //            ),
+        //        }
+
+        true
     }
 
     fn build_rust_file(&self) -> bool {

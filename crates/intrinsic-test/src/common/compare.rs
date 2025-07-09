@@ -15,7 +15,9 @@ pub fn compare_outputs(intrinsic_name_list: &Vec<String>, runner: &str, target: 
         .par_iter()
         .filter_map(|intrinsic_name| {
             let c = runner_command(runner)
-                .arg(format!("./c_programs/{intrinsic_name}"))
+                .arg("intrinsic-test-programs")
+                .arg(intrinsic_name)
+                .current_dir("c_programs")
                 .output();
 
             let rust = runner_command(runner)
