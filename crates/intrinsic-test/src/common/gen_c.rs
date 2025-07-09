@@ -1,6 +1,3 @@
-use rayon::prelude::*;
-use std::process::Command;
-
 use super::argument::Argument;
 use super::indentation::Indentation;
 use super::intrinsic::IntrinsicDefinition;
@@ -8,31 +5,6 @@ use super::intrinsic_helpers::IntrinsicTypeDefinition;
 
 // The number of times each intrinsic will be called.
 const PASSES: u32 = 20;
-
-pub fn compile_c_programs(compiler_commands: &[String]) -> bool {
-    compiler_commands
-        .par_iter()
-        .map(|compiler_command| {
-            let output = Command::new("sh").arg("-c").arg(compiler_command).output();
-            if let Ok(output) = output {
-                if output.status.success() {
-                    true
-                } else {
-                    error!(
-                        "Failed to compile code for intrinsics: \n\nstdout:\n{}\n\nstderr:\n{}",
-                        std::str::from_utf8(&output.stdout).unwrap_or(""),
-                        std::str::from_utf8(&output.stderr).unwrap_or("")
-                    );
-                    false
-                }
-            } else {
-                error!("Command failed: {output:#?}");
-                false
-            }
-        })
-        .find_any(|x| !x)
-        .is_none()
-}
 
 pub fn generate_c_test_loop<T: IntrinsicTypeDefinition + Sized>(
     w: &mut impl std::io::Write,
@@ -118,6 +90,7 @@ pub fn create_c_test_function<T: IntrinsicTypeDefinition>(
 pub fn write_mod_cpp<T: IntrinsicTypeDefinition>(
     w: &mut impl std::io::Write,
     notice: &str,
+    architecture: &str,
     intrinsics: &[impl IntrinsicDefinition<T>],
 ) -> std::io::Result<()> {
     write!(w, "{notice}")?;
@@ -142,9 +115,18 @@ template<typename T1, typename T2> T1 cast(T2 x) {{
 }}
 
 std::ostream& operator<<(std::ostream& os, float16_t value);
-std::ostream& operator<<(std::ostream& os, poly128_t value);
+
+
+
 "#
     )?;
+
+    writeln!(w, "#ifdef __{architecture}__")?;
+    writeln!(
+        w,
+        "std::ostream& operator<<(std::ostream& os, poly128_t value);"
+    )?;
+    writeln!(w, "#endif")?;
 
     for intrinsic in intrinsics {
         create_c_test_function(w, intrinsic)?;

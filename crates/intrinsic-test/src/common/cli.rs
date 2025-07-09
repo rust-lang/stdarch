@@ -90,11 +90,10 @@ impl ProcessedCli {
             (None, None)
         } else {
             (
-                Some(
-                    cli_options
-                        .toolchain
-                        .map_or_else(String::new, |t| format!("+{t}")),
-                ),
+                match cli_options.toolchain {
+                    Some(t) => Some(format!("+{t}")),
+                    None => Some(String::new()), // NOTE this is confusing
+                },
                 Some(cli_options.cppcompiler),
             )
         };

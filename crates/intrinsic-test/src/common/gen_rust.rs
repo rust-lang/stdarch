@@ -57,12 +57,17 @@ pub fn write_main_rs<'a>(
     writeln!(w, "#![feature(f16)]")?;
     writeln!(w, "#![allow(unused)]")?;
 
+    // NOTE: on CI, cargo is
+    writeln!(w, "#![allow(non_upper_case_globals)]")?;
+    writeln!(w, "#![allow(non_camel_case_types)]")?;
+    writeln!(w, "#![allow(non_snake_case)]")?;
+
     writeln!(w, "{cfg}")?;
     writeln!(w, "{definitions}")?;
 
     writeln!(w, "use core_arch::arch::{architecture}::*;")?;
 
-    for module in 0..available_parallelism {
+    for module in 0..Ord::min(available_parallelism, intrinsics.clone().count()) {
         writeln!(w, "mod mod_{module};")?;
         writeln!(w, "use mod_{module}::*;")?;
     }
@@ -90,13 +95,15 @@ pub fn compile_rust_programs(toolchain: Option<&str>, target: &str, linker: Opti
     /* If there has been a linker explicitly set from the command line then
      * we want to set it via setting it in the RUSTFLAGS*/
 
+    trace!("Building cargo command");
+
     let mut cargo_command = Command::new("cargo");
     cargo_command.current_dir("rust_programs");
 
-    if let Some(toolchain) = toolchain {
-        if !toolchain.is_empty() {
-            cargo_command.arg(toolchain);
-        }
+    if let Some(toolchain) = toolchain
+        && !toolchain.is_empty()
+    {
+        cargo_command.arg(toolchain);
     }
     cargo_command.args(["build", "--target", target, "--release"]);
 
@@ -110,7 +117,16 @@ pub fn compile_rust_programs(toolchain: Option<&str>, target: &str, linker: Opti
     }
 
     cargo_command.env("RUSTFLAGS", rust_flags);
+
+    trace!("running cargo");
+
+    if log::log_enabled!(log::Level::Trace) {
+        cargo_command.stdout(std::process::Stdio::inherit());
+        cargo_command.stderr(std::process::Stdio::inherit());
+    }
+
     let output = cargo_command.output();
+    trace!("cargo is done");
 
     if let Ok(output) = output {
         if output.status.success() {
@@ -200,6 +216,7 @@ pub fn create_rust_test_module<T: IntrinsicTypeDefinition>(
     w: &mut impl std::io::Write,
     intrinsic: &dyn IntrinsicDefinition<T>,
 ) -> std::io::Result<()> {
+    trace!("generating `{}`", intrinsic.name());
     let indentation = Indentation::default();
 
     writeln!(w, "pub fn run_{}() {{", intrinsic.name())?;

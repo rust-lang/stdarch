@@ -1,3 +1,5 @@
+use std::path::PathBuf;
+
 #[derive(Clone)]
 pub struct CompilationCommandBuilder {
     compiler: String,
@@ -8,7 +10,6 @@ pub struct CompilationCommandBuilder {
     include_paths: Vec<String>,
     project_root: Option<String>,
     output: String,
-    input: String,
     linker: Option<String>,
     extra_flags: Vec<String>,
 }
@@ -24,7 +25,6 @@ impl CompilationCommandBuilder {
             include_paths: Vec::new(),
             project_root: None,
             output: String::new(),
-            input: String::new(),
             linker: None,
             extra_flags: Vec::new(),
         }
@@ -71,18 +71,6 @@ impl CompilationCommandBuilder {
         self
     }
 
-    /// The name of the output executable, without any suffixes
-    pub fn set_output_name(mut self, path: &str) -> Self {
-        self.output = path.to_string();
-        self
-    }
-
-    /// The name of the input C file, without any suffixes
-    pub fn set_input_name(mut self, path: &str) -> Self {
-        self.input = path.to_string();
-        self
-    }
-
     pub fn set_linker(mut self, linker: String) -> Self {
         self.linker = Some(linker);
         self
@@ -99,56 +87,102 @@ impl CompilationCommandBuilder {
     }
 }
 
+#[derive(Debug)]
+#[allow(clippy::large_enum_variant)]
+pub enum CompilationCommand {
+    Simple(std::process::Command),
+    CustomLinker {
+        cmd: std::process::Command,
+        linker: std::process::Command,
+        cleanup: PathBuf,
+    },
+}
+
+impl CompilationCommand {
+    pub fn command_mut(&mut self) -> &mut std::process::Command {
+        match self {
+            CompilationCommand::Simple(command) => command,
+            CompilationCommand::CustomLinker { cmd, .. } => cmd,
+        }
+    }
+
+    pub fn output(self) -> std::io::Result<std::process::Output> {
+        match self {
+            CompilationCommand::Simple(mut cmd) => cmd.output(),
+            CompilationCommand::CustomLinker {
+                mut cmd,
+                mut linker,
+                cleanup,
+            } => {
+                let output = cmd.output()?;
+
+                linker.current_dir("c_programs");
+
+                if log::log_enabled!(log::Level::Trace) {
+                    linker.stdout(std::process::Stdio::inherit());
+                    linker.stderr(std::process::Stdio::inherit());
+                }
+
+                if let Err(e) = linker.output() {
+                    panic!(
+                        "Failed running custom linker {:?}:\n{e:?}",
+                        linker.get_program(),
+                    );
+                }
+                if cleanup.exists() {
+                    std::fs::remove_file(cleanup)?;
+                }
+
+                Ok(output)
+            }
+        }
+    }
+}
+
 impl CompilationCommandBuilder {
-    pub fn make_string(self) -> String {
-        let arch_flags = self.arch_flags.join("+");
-        let flags = std::env::var("CPPFLAGS").unwrap_or("".into());
+    pub fn into_command(self) -> CompilationCommand {
         let project_root = self.project_root.unwrap_or_default();
         let project_root_str = project_root.as_str();
-        let mut output = self.output.clone();
-        if self.linker.is_some() {
-            output += ".o"
-        };
-        let mut command = format!(
-            "{} {flags} -march={arch_flags} \
-            -O{} \
-            -o {project_root}/{} \
-            {project_root}/{}.cpp",
-            self.compiler, self.optimization, output, self.input,
-        );
 
-        command = command + " " + self.extra_flags.join(" ").as_str();
+        let mut cmd = std::process::Command::new(self.compiler);
+
+        let flags = std::env::var("CPPFLAGS").unwrap_or("".into());
+        cmd.args(flags.split_whitespace());
+
+        cmd.arg(format!("-march={}", self.arch_flags.join("+")));
+
+        cmd.arg(format!("-O{}", self.optimization));
+
+        cmd.args(self.extra_flags);
 
         if let Some(target) = &self.target {
-            command = command + " --target=" + target;
+            cmd.arg(format!("--target={target}"));
         }
 
         if let (Some(linker), Some(cxx_toolchain_dir)) = (&self.linker, &self.cxx_toolchain_dir) {
-            let include_args = self
-                .include_paths
-                .iter()
-                .map(|path| "--include-directory=".to_string() + cxx_toolchain_dir + path)
-                .collect::<Vec<_>>()
-                .join(" ");
+            cmd.arg("-c");
+            cmd.args(
+                self.include_paths
+                    .iter()
+                    .map(|path| "--include-directory=".to_string() + cxx_toolchain_dir + path),
+            );
 
-            command = command
-                + " -c "
-                + include_args.as_str()
-                + " && "
-                + linker
-                + " "
-                + project_root_str
-                + "/"
-                + &output
-                + " -o "
-                + project_root_str
-                + "/"
-                + &self.output
-                + " && rm "
-                + project_root_str
-                + "/"
-                + &output;
+            let output = "dummy_value";
+            let mut linker_cmd = std::process::Command::new(linker);
+            linker_cmd.arg(format!("{project_root_str}/{output}"));
+
+            linker_cmd.arg("-o");
+            linker_cmd.arg(format!("{project_root_str}/{}", self.output));
+
+            let remove_path = PathBuf::from(format!("{project_root_str}/{output}"));
+
+            CompilationCommand::CustomLinker {
+                cmd,
+                linker: linker_cmd,
+                cleanup: remove_path,
+            }
+        } else {
+            CompilationCommand::Simple(cmd)
         }
-        command
     }
 }

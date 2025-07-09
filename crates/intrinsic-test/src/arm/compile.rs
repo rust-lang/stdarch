@@ -1,11 +1,11 @@
 use crate::common::compile_c::CompilationCommandBuilder;
-use crate::common::gen_c::compile_c_programs;
 
 pub fn compile_c_arm(
-    intrinsics_name_list: &[String],
     compiler: &str,
     target: &str,
     cxx_toolchain_dir: Option<&str>,
+    inputs: &[String],
+    output: Option<&str>,
 ) -> bool {
     // -ffp-contract=off emulates Rust's approach of not fusing separate mul-add operations
     let mut command = CompilationCommandBuilder::new()
@@ -49,16 +49,52 @@ pub fn compile_c_arm(
         command = command.add_extra_flag("-flax-vector-conversions");
     }
 
-    let compiler_commands = intrinsics_name_list
-        .iter()
-        .map(|intrinsic_name| {
-            command
-                .clone()
-                .set_input_name(intrinsic_name)
-                .set_output_name(intrinsic_name)
-                .make_string()
-        })
-        .collect::<Vec<_>>();
+    let mut command = command.into_command();
+    command.command_mut().current_dir("c_programs");
 
-    compile_c_programs(&compiler_commands)
+    for input in inputs {
+        assert!(
+            std::path::Path::new("c_programs").join(input).exists(),
+            "{}",
+            input
+        );
+    }
+    command.command_mut().args(inputs);
+
+    if let Some(output) = output {
+        trace!("running {compiler} to produce {output}");
+        if output.ends_with(".o") {
+            command.command_mut().arg("-c");
+        }
+        command.command_mut().args(["-o", output]);
+    } else {
+        trace!("running {compiler}");
+    }
+
+    trace!("running {compiler}\n{:?}", &command);
+
+    if log::log_enabled!(log::Level::Trace) {
+        command.command_mut().stdout(std::process::Stdio::inherit());
+        command.command_mut().stderr(std::process::Stdio::inherit());
+    }
+
+    let output = command.output();
+
+    trace!("{compiler} is done");
+
+    if let Ok(output) = output {
+        if output.status.success() {
+            true
+        } else {
+            error!(
+                "Failed to compile code for intrinsics: \n\nstdout:\n{}\n\nstderr:\n{}",
+                std::str::from_utf8(&output.stdout).unwrap_or(""),
+                std::str::from_utf8(&output.stderr).unwrap_or("")
+            );
+            false
+        }
+    } else {
+        error!("Command failed: {output:#?}");
+        false
+    }
 }

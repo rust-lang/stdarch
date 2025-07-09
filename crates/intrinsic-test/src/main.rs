@@ -13,6 +13,12 @@ fn main() {
     let args: Cli = clap::Parser::parse();
     let processed_cli_options = ProcessedCli::new(args);
 
+    warn!(
+        "available parallelism: {:?} {}",
+        std::thread::available_parallelism(),
+        rayon::current_num_threads(),
+    );
+
     let test_environment_result: Option<Box<dyn SupportedArchitectureTest>> =
         match processed_cli_options.target.as_str() {
             "aarch64-unknown-linux-gnu"
@@ -30,15 +36,15 @@ fn main() {
 
     let test_environment = test_environment_result.unwrap();
 
-    info!("building Rust binaries");
+    warn!("building Rust binaries");
     if !test_environment.build_rust_file() {
         std::process::exit(3);
     }
-    info!("building C binaries");
+    warn!("building C binaries");
     if !test_environment.build_c_file() {
         std::process::exit(2);
     }
-    info!("comparing outputs");
+    warn!("comparing outputs");
     if !test_environment.compare_outputs() {
         std::process::exit(1);
     }

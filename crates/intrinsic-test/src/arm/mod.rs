@@ -8,6 +8,7 @@ mod intrinsic;
 mod json_parser;
 mod types;
 
+use crate::arm::compile::compile_c_arm;
 use crate::common::SupportedArchitectureTest;
 use crate::common::cli::ProcessedCli;
 use crate::common::compare::compare_outputs;
@@ -54,7 +55,7 @@ impl SupportedArchitectureTest for ArmArchitectureTest {
     }
 
     fn build_c_file(&self) -> bool {
-        let compiler = self.cli_options.cpp_compiler.as_deref();
+        let compiler = self.cli_options.cpp_compiler.as_deref().unwrap();
         let target = &self.cli_options.target;
         let cxx_toolchain_dir = self.cli_options.cxx_toolchain_dir.as_deref();
         let c_target = "aarch64";
@@ -69,36 +70,24 @@ impl SupportedArchitectureTest for ArmArchitectureTest {
             .map(|(i, chunk)| {
                 let c_filename = format!("c_programs/mod_{i}.cpp");
                 let mut file = File::create(&c_filename).unwrap();
-                write_mod_cpp(&mut file, &notice, chunk).unwrap();
+                write_mod_cpp(&mut file, notice, c_target, chunk).unwrap();
 
                 // compile this cpp file into a .o file
 
-                // clang++ -march=armv8.6-a+crypto+crc+dotprod+fp16+faminmax+lut+sha3 -O2 -ffp-contract=off -Wno-narrowing --target=aarch64-unknown-linux-gnu c_file_0.c -c
-                let mut cmd = std::process::Command::new("clang++");
-                cmd.current_dir("c_programs");
-
-                cmd.arg("-march=armv8.6-a+crypto+crc+dotprod+fp16+faminmax+lut+sha3");
-                cmd.arg("-O2");
-                cmd.arg("-ffp-contract=off");
-                cmd.arg("-Wno-narrowing");
-                cmd.arg("--target=aarch64-unknown-linux-gnu");
-                cmd.arg("-c");
-                cmd.arg(format!("mod_{i}.cpp"));
-
-                let output = cmd.output();
-                eprintln!(
-                    "{}",
-                    String::from_utf8_lossy(&output.as_ref().unwrap().stderr)
+                compile_c_arm(
+                    compiler,
+                    target,
+                    cxx_toolchain_dir,
+                    &[format!("mod_{i}.cpp")],
+                    Some(&format!("mod_{i}.o")),
                 );
-                assert!(output.unwrap().status.success());
 
                 Ok(())
             })
             .collect::<Result<(), std::io::Error>>()
             .unwrap();
 
-        let c_filename = format!("c_programs/main.cpp");
-        let mut file = File::create(&c_filename).unwrap();
+        let mut file = File::create("c_programs/main.cpp").unwrap();
         write_main_cpp(
             &mut file,
             c_target,
@@ -107,38 +96,18 @@ impl SupportedArchitectureTest for ArmArchitectureTest {
         )
         .unwrap();
 
-        let mut cmd = std::process::Command::new("clang++");
-        cmd.current_dir("c_programs");
-
-        cmd.arg("-march=armv8.6-a+crypto+crc+dotprod+fp16+faminmax+lut+sha3");
-        cmd.arg("-O2");
-        cmd.arg("-ffp-contract=off");
-        cmd.arg("-Wno-narrowing");
-        cmd.arg("--target=aarch64-unknown-linux-gnu");
-        cmd.arg(format!("main.cpp"));
+        let mut inputs = vec![format!("main.cpp")];
         for i in 0..Ord::min(available_parallelism, self.intrinsics.len()) {
-            cmd.arg(format!("mod_{i}.o"));
+            inputs.push(format!("mod_{i}.o"));
         }
-        cmd.args(&["-o", "intrinsic-test-programs"]);
 
-        let output = cmd.output();
-        eprintln!(
-            "{}",
-            String::from_utf8_lossy(&output.as_ref().unwrap().stderr)
-        );
-        assert!(output.unwrap().status.success());
-
-        //        match compiler {
-        //            None => true,
-        //            Some(compiler) => compile_c_arm(
-        //                intrinsics_name_list.unwrap().as_slice(),
-        //                compiler,
-        //                target,
-        //                cxx_toolchain_dir,
-        //            ),
-        //        }
-
-        true
+        compile_c_arm(
+            compiler,
+            target,
+            cxx_toolchain_dir,
+            &inputs,
+            Some("intrinsic-test-programs"),
+        )
     }
 
     fn build_rust_file(&self) -> bool {
@@ -171,6 +140,12 @@ impl SupportedArchitectureTest for ArmArchitectureTest {
         let toolchain = self.cli_options.toolchain.as_deref();
         let linker = self.cli_options.linker.as_deref();
 
+        warn!(
+            "available parallelism: {:?} {}",
+            std::thread::available_parallelism(),
+            rayon::current_num_threads(),
+        );
+
         let notice = &build_notices("// ");
         self.intrinsics
             .par_chunks(chunk_size)
@@ -178,7 +153,10 @@ impl SupportedArchitectureTest for ArmArchitectureTest {
             .map(|(i, chunk)| {
                 use std::io::Write;
 
+                dbg!(chunk_size, chunk.len());
+
                 let rust_filename = format!("rust_programs/src/mod_{i}.rs");
+                trace!("generating `{rust_filename}`");
                 let mut file = File::create(rust_filename).unwrap();
 
                 write!(file, "{notice}")?;

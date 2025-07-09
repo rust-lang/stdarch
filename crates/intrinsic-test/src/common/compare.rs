@@ -23,7 +23,6 @@ pub fn compare_outputs(intrinsic_name_list: &Vec<String>, runner: &str, target: 
             let rust = runner_command(runner)
                 .arg(format!("target/{target}/release/intrinsic-test-programs"))
                 .arg(intrinsic_name)
-                .current_dir("rust_programs")
                 .output();
 
             let (c, rust) = match (c, rust) {
@@ -33,19 +32,19 @@ pub fn compare_outputs(intrinsic_name_list: &Vec<String>, runner: &str, target: 
 
             if !c.status.success() {
                 error!(
-                    "Failed to run C program for intrinsic {intrinsic_name}\nstdout: {stdout}\nstderr: {stderr}",
+                    "Failed to run C program for intrinsic `{intrinsic_name}`\nstdout: {stdout}\nstderr: {stderr}",
                     stdout = std::str::from_utf8(&c.stdout).unwrap_or(""),
                     stderr = std::str::from_utf8(&c.stderr).unwrap_or(""),
-                );
+                    );
                 return Some(FailureReason::RunC(intrinsic_name.clone()));
             }
 
             if !rust.status.success() {
                 error!(
-                    "Failed to run Rust program for intrinsic {intrinsic_name}\nstdout: {stdout}\nstderr: {stderr}",
+                    "Failed to run Rust program for intrinsic `{intrinsic_name}`\nstdout: {stdout}\nstderr: {stderr}",
                     stdout = String::from_utf8_lossy(&rust.stdout),
                     stderr = String::from_utf8_lossy(&rust.stderr),
-                );
+                    );
                 return Some(FailureReason::RunRust(intrinsic_name.clone()));
             }
 

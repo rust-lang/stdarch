@@ -354,7 +354,6 @@ dependencies = [
  "csv",
  "diff",
  "itertools",
- "lazy_static",
  "log",
  "pretty_env_logger",
  "rayon",
