@@ -43,11 +43,9 @@ where
 
 pub fn write_rust_testfiles<'a, T, I, E>(
     intrinsics: I,
-    rust_target: &str,
+    architecture: &str,
     notice: &str,
-    definitions: &str,
-    cfg: &str,
-) -> std::io::Result<Vec<String>>
+) -> std::io::Result<()>
 where
     T: IntrinsicTypeDefinition + Sized + 'a,
     I: ParallelIterator<Item = &'a E>,
@@ -62,9 +60,9 @@ where
             let rust_filename = format!("rust_programs/src/{identifier}.rs");
             let mut file = File::create(rust_filename).unwrap();
 
-            create_rust_test_program(&mut file, intrinsic, rust_target, notice, definitions, cfg)?;
+            create_rust_test_program(&mut file, intrinsic, architecture, notice)?;
 
-            Ok(identifier)
+            Ok(())
         })
         .collect()
 }

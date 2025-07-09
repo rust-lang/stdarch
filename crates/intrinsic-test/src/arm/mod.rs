@@ -1,7 +1,9 @@
+use std::fs::File;
+
 use rayon::prelude::*;
 
 mod compile;
-pub mod config;
+mod config;
 mod intrinsic;
 mod json_parser;
 mod types;
@@ -9,7 +11,7 @@ mod types;
 use crate::common::SupportedArchitectureTest;
 use crate::common::cli::ProcessedCli;
 use crate::common::compare::compare_outputs;
-use crate::common::gen_rust::compile_rust_programs;
+use crate::common::gen_rust::{compile_rust_programs, write_cargo_toml, write_main_rs};
 use crate::common::intrinsic::Intrinsic;
 use crate::common::intrinsic_helpers::TypeKind;
 use crate::common::write_file::{write_c_testfiles, write_rust_testfiles};
@@ -79,23 +81,37 @@ impl SupportedArchitectureTest for ArmArchitectureTest {
     }
 
     fn build_rust_file(&self) -> bool {
-        let rust_target = if self.cli_options.target.contains("v7") {
+        let architecture = if self.cli_options.target.contains("v7") {
             "arm"
         } else {
             "aarch64"
         };
+
+        let mut cargo = File::create("rust_programs/Cargo.toml").unwrap();
+        write_cargo_toml(&mut cargo, &[]).unwrap();
+
+        let mut main_rs = File::create("rust_programs/src/main.rs").unwrap();
+        write_main_rs(
+            &mut main_rs,
+            architecture,
+            AARCH_CONFIGURATIONS,
+            F16_FORMATTING_DEF,
+            self.intrinsics.iter().map(|i| i.name.as_str()),
+        )
+        .unwrap();
+
         let target = &self.cli_options.target;
         let toolchain = self.cli_options.toolchain.as_deref();
         let linker = self.cli_options.linker.as_deref();
-        let intrinsics_name_list = write_rust_testfiles(
-            self.intrinsics.par_iter(),
-            rust_target,
-            &build_notices("// "),
-            F16_FORMATTING_DEF,
-            AARCH_CONFIGURATIONS,
-        );
 
-        compile_rust_programs(intrinsics_name_list.unwrap(), toolchain, target, linker)
+        write_rust_testfiles(
+            self.intrinsics.par_iter(),
+            architecture,
+            &build_notices("// "),
+        )
+        .unwrap();
+
+        compile_rust_programs(toolchain, target, linker)
     }
 
     fn compare_outputs(&self) -> bool {

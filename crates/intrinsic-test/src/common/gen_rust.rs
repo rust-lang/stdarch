@@ -1,5 +1,4 @@
 use itertools::Itertools;
-use std::fs::File;
 use std::process::Command;
 
 use super::argument::Argument;
@@ -10,7 +9,7 @@ use super::intrinsic_helpers::IntrinsicTypeDefinition;
 // The number of times each intrinsic will be called.
 const PASSES: u32 = 20;
 
-fn write_cargo_toml(w: &mut impl std::io::Write, binaries: &[String]) -> std::io::Result<()> {
+pub fn write_cargo_toml(w: &mut impl std::io::Write, binaries: &[String]) -> std::io::Result<()> {
     writeln!(
         w,
         concat!(
@@ -46,56 +45,46 @@ fn write_cargo_toml(w: &mut impl std::io::Write, binaries: &[String]) -> std::io
     Ok(())
 }
 
-pub fn compile_rust_programs(
-    binaries: Vec<String>,
-    toolchain: Option<&str>,
-    target: &str,
-    linker: Option<&str>,
-) -> bool {
-    use std::io::Write;
+pub fn write_main_rs<'a>(
+    w: &mut impl std::io::Write,
+    architecture: &str,
+    cfg: &str,
+    definitions: &str,
+    intrinsics: impl Iterator<Item = &'a str> + Clone,
+) -> std::io::Result<()> {
+    writeln!(w, "#![feature(simd_ffi)]")?;
+    writeln!(w, "#![feature(f16)]")?;
+    writeln!(w, "#![allow(unused)]")?;
 
-    let mut cargo = File::create("rust_programs/Cargo.toml").unwrap();
-    write_cargo_toml(&mut cargo, &[]).unwrap();
-    let mut main_rs = File::create("rust_programs/src/main.rs").unwrap();
+    writeln!(w, "{cfg}")?;
+    writeln!(w, "{definitions}")?;
 
-    writeln!(main_rs, "#![feature(simd_ffi)]").unwrap();
-    writeln!(main_rs, "#![feature(f16)]").unwrap();
-    writeln!(main_rs, "#![allow(unused)]").unwrap();
+    writeln!(w, "use core_arch::arch::{architecture}::*;")?;
 
-    let definitions = crate::arm::config::F16_FORMATTING_DEF;
-    let cfg = crate::arm::config::AARCH_CONFIGURATIONS;
-
-    writeln!(main_rs, "{cfg}").unwrap();
-    writeln!(main_rs, "{definitions}").unwrap();
-
-    // TODO hardcodes target
-    writeln!(main_rs, "use core_arch::arch::aarch64::*;").unwrap();
-
-    for binary in binaries.iter() {
-        writeln!(main_rs, "mod {binary};").unwrap();
+    for binary in intrinsics.clone() {
+        writeln!(w, "mod {binary};")?;
     }
 
-    writeln!(main_rs, "fn main() {{").unwrap();
+    writeln!(w, "fn main() {{")?;
 
-    writeln!(
-        main_rs,
-        "    match std::env::args().nth(1).unwrap().as_str() {{"
-    )
-    .unwrap();
+    writeln!(w, "    match std::env::args().nth(1).unwrap().as_str() {{")?;
 
-    for binary in binaries {
-        writeln!(main_rs, "        \"{binary}\" => {binary}::run(),").unwrap();
+    for binary in intrinsics {
+        writeln!(w, "        \"{binary}\" => {binary}::run(),")?;
     }
 
     writeln!(
-        main_rs,
+        w,
         "        other => panic!(\"unknown intrinsic `{{}}`\", other),"
-    )
-    .unwrap();
+    )?;
 
-    writeln!(main_rs, "    }}").unwrap();
-    writeln!(main_rs, "}}").unwrap();
+    writeln!(w, "    }}")?;
+    writeln!(w, "}}")?;
 
+    Ok(())
+}
+
+pub fn compile_rust_programs(toolchain: Option<&str>, target: &str, linker: Option<&str>) -> bool {
     /* If there has been a linker explicitly set from the command line then
      * we want to set it via setting it in the RUSTFLAGS*/
 
@@ -155,7 +144,7 @@ pub fn generate_rust_test_loop<T: IntrinsicTypeDefinition>(
     let return_value = format_f16_return_value(intrinsic);
     let indentation2 = indentation.nested();
     let indentation3 = indentation2.nested();
-    write!(
+    writeln!(
         w,
         "{indentation}for i in 0..{passes} {{\n\
             {indentation2}unsafe {{\n\
@@ -208,23 +197,15 @@ fn generate_rust_constraint_blocks<'a, T: IntrinsicTypeDefinition + 'a>(
 pub fn create_rust_test_program<T: IntrinsicTypeDefinition>(
     w: &mut impl std::io::Write,
     intrinsic: &dyn IntrinsicDefinition<T>,
-    target: &str,
+    architecture: &str,
     notice: &str,
-    definitions: &str,
-    cfg: &str,
 ) -> std::io::Result<()> {
     let indentation = Indentation::default();
 
     write!(w, "{notice}")?;
 
-    writeln!(w, "#![feature(simd_ffi)]")?;
-    writeln!(w, "#![feature(f16)]")?;
-    writeln!(w, "#![allow(unused)]")?;
-
-    writeln!(w, "{cfg}")?;
-    writeln!(w, "{definitions}")?;
-
-    writeln!(w, "use core_arch::arch::{target}::*;")?;
+    writeln!(w, "use core_arch::arch::{architecture}::*;")?;
+    writeln!(w, "use crate::{{debug_simd_finish, debug_f16}};")?;
 
     writeln!(w, "pub fn run() {{")?;
 
