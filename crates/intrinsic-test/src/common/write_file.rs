@@ -4,7 +4,9 @@ use super::gen_rust::create_rust_test_program;
 use super::intrinsic::IntrinsicDefinition;
 use super::intrinsic_helpers::IntrinsicTypeDefinition;
 
-pub fn write_c_testfiles<'a, T, I>(
+use rayon::prelude::*;
+
+pub fn write_c_testfiles<'a, T, I, E>(
     intrinsics: I,
     target: &str,
     c_target: &str,
@@ -14,7 +16,8 @@ pub fn write_c_testfiles<'a, T, I>(
 ) -> std::io::Result<Vec<String>>
 where
     T: IntrinsicTypeDefinition + Sized + 'a,
-    I: Iterator<Item = &'a dyn IntrinsicDefinition<T>>,
+    I: ParallelIterator<Item = &'a E>,
+    E: IntrinsicDefinition<T> + 'a,
 {
     std::fs::create_dir_all("c_programs")?;
 
@@ -38,7 +41,7 @@ where
         .collect()
 }
 
-pub fn write_rust_testfiles<'a, T, I>(
+pub fn write_rust_testfiles<'a, T, I, E>(
     intrinsics: I,
     rust_target: &str,
     notice: &str,
@@ -47,7 +50,8 @@ pub fn write_rust_testfiles<'a, T, I>(
 ) -> std::io::Result<Vec<String>>
 where
     T: IntrinsicTypeDefinition + Sized + 'a,
-    I: Iterator<Item = &'a dyn IntrinsicDefinition<T>>,
+    I: ParallelIterator<Item = &'a E>,
+    E: IntrinsicDefinition<T> + 'a,
 {
     std::fs::create_dir_all("rust_programs")?;
 

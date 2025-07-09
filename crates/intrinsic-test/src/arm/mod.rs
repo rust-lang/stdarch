@@ -1,3 +1,5 @@
+use rayon::prelude::*;
+
 mod compile;
 mod config;
 mod intrinsic;
@@ -8,7 +10,7 @@ use crate::common::SupportedArchitectureTest;
 use crate::common::cli::ProcessedCli;
 use crate::common::compare::compare_outputs;
 use crate::common::gen_rust::compile_rust_programs;
-use crate::common::intrinsic::{Intrinsic, IntrinsicDefinition};
+use crate::common::intrinsic::Intrinsic;
 use crate::common::intrinsic_helpers::TypeKind;
 use crate::common::write_file::{write_c_testfiles, write_rust_testfiles};
 use compile::compile_c_arm;
@@ -57,9 +59,7 @@ impl SupportedArchitectureTest for ArmArchitectureTest {
         let c_target = "aarch64";
 
         let intrinsics_name_list = write_c_testfiles(
-            self.intrinsics
-                .iter()
-                .map(|i| i as &dyn IntrinsicDefinition<_>),
+            self.intrinsics.par_iter(),
             target,
             c_target,
             &["arm_neon.h", "arm_acle.h", "arm_fp16.h"],
@@ -88,9 +88,7 @@ impl SupportedArchitectureTest for ArmArchitectureTest {
         let toolchain = self.cli_options.toolchain.as_deref();
         let linker = self.cli_options.linker.as_deref();
         let intrinsics_name_list = write_rust_testfiles(
-            self.intrinsics
-                .iter()
-                .map(|i| i as &dyn IntrinsicDefinition<_>),
+            self.intrinsics.par_iter(),
             rust_target,
             &build_notices("// "),
             F16_FORMATTING_DEF,
