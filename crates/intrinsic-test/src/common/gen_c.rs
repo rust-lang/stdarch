@@ -139,11 +139,11 @@ std::ostream& operator<<(std::ostream& os, float16_t value) {{
     }
     writeln!(w, "#endif")?;
 
+    writeln!(w, "int main(int argc, char **argv) {{")?;
+
     // Define the arrays of arguments.
     let arguments = intrinsic.arguments();
-    arguments.gen_arglists_c(w, indentation, PASSES)?;
-
-    writeln!(w, "int main(int argc, char **argv) {{")?;
+    arguments.gen_arglists_c(w, indentation.nested(), PASSES)?;
 
     generate_c_constraint_blocks(
         w,
