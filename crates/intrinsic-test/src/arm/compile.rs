@@ -1,4 +1,4 @@
-use crate::common::compile_c::CompilationCommandBuilder;
+use crate::common::compile_c::{CompilationCommand, CompilationCommandBuilder};
 
 pub fn compile_c_arm(
     compiler: &str,
@@ -67,11 +67,13 @@ pub fn compile_c_arm(
             command.command_mut().arg("-c");
         }
         command.command_mut().args(["-o", output]);
+
+        if let CompilationCommand::CustomLinker { linker, .. } = &mut command {
+            linker.arg(format!("c_programs/{output}"));
+        }
     } else {
         trace!("running {compiler}");
     }
-
-    trace!("running {compiler}\n{:?}", &command);
 
     if log::log_enabled!(log::Level::Trace) {
         command.command_mut().stdout(std::process::Stdio::inherit());

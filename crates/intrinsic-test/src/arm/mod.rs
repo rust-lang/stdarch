@@ -96,18 +96,51 @@ impl SupportedArchitectureTest for ArmArchitectureTest {
         )
         .unwrap();
 
-        let mut inputs = vec![format!("main.cpp")];
-        for i in 0..Ord::min(available_parallelism, self.intrinsics.len()) {
-            inputs.push(format!("mod_{i}.o"));
+        if let Some(linker) = &self.cli_options.linker {
+            compile_c_arm(
+                compiler,
+                target,
+                cxx_toolchain_dir,
+                &["main.cpp".to_string()],
+                Some("intrinsic-test-programs.o"),
+            );
+
+            let mut cmd = std::process::Command::new(linker);
+            cmd.current_dir("c_programs");
+
+            let mut inputs = vec![];
+            for i in 0..Ord::min(available_parallelism, self.intrinsics.len()) {
+                inputs.push(format!("mod_{i}.o"));
+            }
+            cmd.args(inputs);
+
+            cmd.arg("intrinsic-test-programs.o");
+
+            cmd.arg("-o");
+            cmd.arg("intrinsic-test-programs");
+
+            if log::log_enabled!(log::Level::Trace) {
+                cmd.stdout(std::process::Stdio::inherit());
+                cmd.stderr(std::process::Stdio::inherit());
+            }
+
+            assert!(cmd.output().unwrap().status.success());
+        } else {
+            let mut inputs = vec![format!("main.cpp")];
+            for i in 0..Ord::min(available_parallelism, self.intrinsics.len()) {
+                inputs.push(format!("mod_{i}.o"));
+            }
+
+            compile_c_arm(
+                compiler,
+                target,
+                cxx_toolchain_dir,
+                &inputs,
+                Some("intrinsic-test-programs"),
+            );
         }
 
-        compile_c_arm(
-            compiler,
-            target,
-            cxx_toolchain_dir,
-            &inputs,
-            Some("intrinsic-test-programs"),
-        )
+        true
     }
 
     fn build_rust_file(&self) -> bool {
@@ -152,8 +185,6 @@ impl SupportedArchitectureTest for ArmArchitectureTest {
             .enumerate()
             .map(|(i, chunk)| {
                 use std::io::Write;
-
-                dbg!(chunk_size, chunk.len());
 
                 let rust_filename = format!("rust_programs/src/mod_{i}.rs");
                 trace!("generating `{rust_filename}`");
