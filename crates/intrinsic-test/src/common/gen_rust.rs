@@ -25,6 +25,11 @@ pub fn format_rust_main_template(
         r#"{notices}#![feature(simd_ffi)]
 #![feature(link_llvm_intrinsics)]
 #![feature(f16)]
+
+#![allow(non_upper_case_globals)]
+#![allow(non_camel_case_types)]
+#![allow(non_snake_case)]
+
 {configurations}
 {definitions}
 
