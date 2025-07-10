@@ -144,14 +144,35 @@ fn clone_command(command: &std::process::Command) -> std::process::Command {
 }
 
 impl CppCompilation {
-    pub fn run(&self, inputs: &[String], output: &str) -> std::io::Result<std::process::Output> {
-        match self {
-            CppCompilation::Simple(command) => {
-                let mut cmd = clone_command(command);
-                cmd.args(inputs);
-                cmd.args(["-o", output]);
+    fn compile_cpp(
+        command: &std::process::Command,
+        includes: &[String],
+        inputs: &[String],
+        output: &str,
+    ) -> std::io::Result<std::process::Output> {
+        let mut cmd = clone_command(command);
+        cmd.args(includes);
+        cmd.args(inputs);
+        cmd.args(["-o", output]);
 
-                cmd.output()
+        if output.ends_with(".o") {
+            cmd.arg("-c");
+        }
+
+        cmd.output()
+    }
+
+    pub fn run(
+        &self,
+        includes: &[String],
+        inputs: &[String],
+        output: &str,
+    ) -> std::io::Result<std::process::Output> {
+        match self {
+            CppCompilation::Simple(command) => Self::compile_cpp(command, includes, inputs, output),
+            CppCompilation::CustomLinker { cpp_compiler, .. } if output.ends_with(".o") => {
+                // No need to invoke that custom linker if we're creating an object file.
+                Self::compile_cpp(cpp_compiler, includes, inputs, output)
             }
             CppCompilation::CustomLinker {
                 cpp_compiler,
@@ -174,6 +195,7 @@ impl CppCompilation {
 
                 // Use the custom linker to turn the object file into an executable.
                 let mut cmd = std::process::Command::new(linker);
+                cmd.args(includes);
                 cmd.args([object_file, "-o", output]);
 
                 if let Some(current_dir) = cpp_compiler.get_current_dir() {
