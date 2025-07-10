@@ -5,6 +5,7 @@ mod xml_parser;
 
 use crate::common::SupportedArchitectureTest;
 use crate::common::cli::ProcessedCli;
+use crate::common::compare::compare_outputs;
 use crate::common::gen_rust::compile_rust_programs;
 use crate::common::intrinsic::{Intrinsic, IntrinsicDefinition};
 use crate::common::intrinsic_helpers::TypeKind;
@@ -94,6 +95,21 @@ impl SupportedArchitectureTest for X86ArchitectureTest {
     }
 
     fn compare_outputs(&self) -> bool {
-        todo!("compare_outputs in X86ArchitectureTest is not implemented")
+        if let Some(ref toolchain) = self.cli_options.toolchain {
+            let intrinsics_name_list = self
+                .intrinsics
+                .iter()
+                .map(|i| i.name.clone())
+                .collect::<Vec<_>>();
+
+            compare_outputs(
+                &intrinsics_name_list,
+                toolchain,
+                &self.cli_options.c_runner,
+                &self.cli_options.target,
+            )
+        } else {
+            true
+        }
     }
 }
