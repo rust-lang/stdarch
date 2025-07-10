@@ -14171,8 +14171,8 @@ intrinsics:
       - ['vld1q_dup_u32', '*const u32', 'uint32x4_t', 'vld1.32', 'ld1r', 'vld1q_lane_u32::<0>', 'u32x4::splat(0)', '[0, 0, 0, 0]']
       - ['vld1q_dup_f32', '*const f32', 'float32x4_t', 'vld1.32', 'ld1r', 'vld1q_lane_f32::<0>', 'f32x4::splat(0.0)', '[0, 0, 0, 0]']
 
-      - ['vld1q_dup_s64', '*const i64', 'int64x2_t', 'vldr', 'ld1', 'vld1q_lane_s64::<0>', 'i64x2::splat(0)', '[0, 0]']
-      - ['vld1q_dup_u64', '*const u64', 'uint64x2_t', 'vldr', 'ld1', 'vld1q_lane_u64::<0>', 'u64x2::splat(0)', '[0, 0]']
+      - ['vld1q_dup_s64', '*const i64', 'int64x2_t', 'vldr', 'ld1r', 'vld1q_lane_s64::<0>', 'i64x2::splat(0)', '[0, 0]']
+      - ['vld1q_dup_u64', '*const u64', 'uint64x2_t', 'vldr', 'ld1r', 'vld1q_lane_u64::<0>', 'u64x2::splat(0)', '[0, 0]']
     compose:
       - Let:
           - x
