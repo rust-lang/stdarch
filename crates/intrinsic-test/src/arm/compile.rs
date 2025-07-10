@@ -1,11 +1,8 @@
 use crate::common::cli::ProcessedCli;
-use crate::common::compile_c::CompilationCommandBuilder;
-use crate::common::gen_c::compile_c_programs;
+use crate::common::compile_c::{CompilationCommandBuilder, CppCompilation};
 
-pub fn compile_c_arm(config: &ProcessedCli, intrinsics_name_list: &[String]) -> bool {
-    let Some(ref cpp_compiler) = config.cpp_compiler else {
-        return true;
-    };
+pub fn build_cpp_compilation(config: &ProcessedCli) -> Option<CppCompilation> {
+    let cpp_compiler = config.cpp_compiler.as_ref()?;
 
     // -ffp-contract=off emulates Rust's approach of not fusing separate mul-add operations
     let mut command = CompilationCommandBuilder::new()
@@ -60,16 +57,5 @@ pub fn compile_c_arm(config: &ProcessedCli, intrinsics_name_list: &[String]) -> 
         command = command.add_extra_flag("-flax-vector-conversions");
     }
 
-    let compiler_commands = intrinsics_name_list
-        .iter()
-        .map(|intrinsic_name| {
-            command
-                .clone()
-                .set_input_name(intrinsic_name)
-                .set_output_name(intrinsic_name)
-                .make_string()
-        })
-        .collect::<Vec<_>>();
-
-    compile_c_programs(&compiler_commands)
+    Some(command.into_cpp_compilation())
 }
