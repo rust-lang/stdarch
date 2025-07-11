@@ -209,6 +209,7 @@ impl CppCompilation {
                 let linker_output = cmd.output()?;
                 if !linker_output.status.success() {
                     error!("custom linker failed");
+                    error!("{}", String::from_utf8_lossy(&linker_output.stderr));
                     return Ok(linker_output);
                 }
 
