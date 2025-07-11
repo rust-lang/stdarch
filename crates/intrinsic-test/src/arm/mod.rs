@@ -13,7 +13,9 @@ use crate::common::SupportedArchitectureTest;
 use crate::common::cli::ProcessedCli;
 use crate::common::compare::compare_outputs;
 use crate::common::gen_c::{write_main_cpp, write_mod_cpp};
-use crate::common::gen_rust::{compile_rust_programs, write_cargo_toml, write_main_rs};
+use crate::common::gen_rust::{
+    compile_rust_programs, write_bin_cargo_toml, write_lib_cargo_toml, write_main_rs,
+};
 use crate::common::intrinsic::Intrinsic;
 use crate::common::intrinsic_helpers::TypeKind;
 use config::{AARCH_CONFIGURATIONS, F16_FORMATTING_DEF, build_notices};
@@ -137,19 +139,20 @@ impl SupportedArchitectureTest for ArmArchitectureTest {
             "aarch64"
         };
 
+        // Experimentally, keeping 2 cores free is fastest for cargo.
         let available_parallelism = std::thread::available_parallelism().unwrap().get();
-        let chunk_size = self.intrinsics.len().div_ceil(available_parallelism);
+        let chunk_count = Ord::min(available_parallelism, self.intrinsics.len());
+        let chunk_size = self.intrinsics.len().div_ceil(chunk_count);
 
         let mut cargo = File::create("rust_programs/Cargo.toml").unwrap();
-        write_cargo_toml(&mut cargo, &[]).unwrap();
+        write_bin_cargo_toml(&mut cargo, chunk_count).unwrap();
 
         let mut main_rs = File::create("rust_programs/src/main.rs").unwrap();
         write_main_rs(
             &mut main_rs,
-            available_parallelism,
-            architecture,
+            chunk_count,
             AARCH_CONFIGURATIONS,
-            F16_FORMATTING_DEF,
+            "",
             self.intrinsics.iter().map(|i| i.name.as_str()),
         )
         .unwrap();
@@ -165,18 +168,40 @@ impl SupportedArchitectureTest for ArmArchitectureTest {
             .map(|(i, chunk)| {
                 use std::io::Write;
 
-                let rust_filename = format!("rust_programs/src/mod_{i}.rs");
+                std::fs::create_dir_all(format!("rust_programs/mod_{i}/src"))?;
+
+                let rust_filename = format!("rust_programs/mod_{i}/src/lib.rs");
                 trace!("generating `{rust_filename}`");
                 let mut file = File::create(rust_filename).unwrap();
 
                 write!(file, "{notice}")?;
 
+                writeln!(file, "#![feature(simd_ffi)]")?;
+                writeln!(file, "#![feature(f16)]")?;
+                writeln!(file, "#![allow(unused)]")?;
+
+                // Cargo will spam the logs if these warnings are not silenced.
+                writeln!(file, "#![allow(non_upper_case_globals)]")?;
+                writeln!(file, "#![allow(non_camel_case_types)]")?;
+                writeln!(file, "#![allow(non_snake_case)]")?;
+
+                let cfg = AARCH_CONFIGURATIONS;
+                writeln!(file, "{cfg}")?;
+
                 writeln!(file, "use core_arch::arch::{architecture}::*;")?;
-                writeln!(file, "use crate::{{debug_simd_finish, debug_f16}};")?;
+
+                let definitions = F16_FORMATTING_DEF;
+                writeln!(file, "{definitions}")?;
 
                 for intrinsic in chunk {
                     crate::common::gen_rust::create_rust_test_module(&mut file, intrinsic)?;
                 }
+
+                let toml_filename = format!("rust_programs/mod_{i}/Cargo.toml");
+                trace!("generating `{toml_filename}`");
+                let mut file = File::create(toml_filename).unwrap();
+
+                write_lib_cargo_toml(&mut file, &format!("mod_{i}"))?;
 
                 Ok(())
             })

@@ -9,46 +9,53 @@ use super::intrinsic_helpers::IntrinsicTypeDefinition;
 // The number of times each intrinsic will be called.
 const PASSES: u32 = 20;
 
-pub fn write_cargo_toml(w: &mut impl std::io::Write, binaries: &[String]) -> std::io::Result<()> {
+fn write_cargo_toml_header(w: &mut impl std::io::Write, name: &str) -> std::io::Result<()> {
     writeln!(
         w,
         concat!(
             "[package]\n",
-            "name = \"intrinsic-test-programs\"\n",
+            "name = \"{name}\"\n",
             "version = \"{version}\"\n",
             "authors = [{authors}]\n",
             "license = \"{license}\"\n",
             "edition = \"2018\"\n",
-            "[workspace]\n",
-            "[dependencies]\n",
-            "core_arch = {{ path = \"../crates/core_arch\" }}",
         ),
+        name = name,
         version = env!("CARGO_PKG_VERSION"),
         authors = env!("CARGO_PKG_AUTHORS")
             .split(":")
             .format_with(", ", |author, fmt| fmt(&format_args!("\"{author}\""))),
         license = env!("CARGO_PKG_LICENSE"),
-    )?;
+    )
+}
 
-    for binary in binaries {
-        writeln!(
-            w,
-            concat!(
-                "[[bin]]\n",
-                "name = \"{binary}\"\n",
-                "path = \"{binary}/main.rs\"\n",
-            ),
-            binary = binary,
-        )?;
+pub fn write_bin_cargo_toml(
+    w: &mut impl std::io::Write,
+    module_count: usize,
+) -> std::io::Result<()> {
+    write_cargo_toml_header(w, "intrinsic-test-programs")?;
+
+    writeln!(w, "[dependencies]")?;
+
+    for i in 0..module_count {
+        writeln!(w, "mod_{i} = {{ path = \"mod_{i}/\" }}")?;
     }
+
+    Ok(())
+}
+
+pub fn write_lib_cargo_toml(w: &mut impl std::io::Write, name: &str) -> std::io::Result<()> {
+    write_cargo_toml_header(w, name)?;
+
+    writeln!(w, "[dependencies]")?;
+    writeln!(w, "core_arch = {{ path = \"../../crates/core_arch\" }}")?;
 
     Ok(())
 }
 
 pub fn write_main_rs<'a>(
     w: &mut impl std::io::Write,
-    available_parallelism: usize,
-    architecture: &str,
+    chunk_count: usize,
     cfg: &str,
     definitions: &str,
     intrinsics: impl Iterator<Item = &'a str> + Clone,
@@ -65,10 +72,7 @@ pub fn write_main_rs<'a>(
     writeln!(w, "{cfg}")?;
     writeln!(w, "{definitions}")?;
 
-    writeln!(w, "use core_arch::arch::{architecture}::*;")?;
-
-    for module in 0..Ord::min(available_parallelism, intrinsics.clone().count()) {
-        writeln!(w, "mod mod_{module};")?;
+    for module in 0..chunk_count {
         writeln!(w, "use mod_{module}::*;")?;
     }
 
@@ -99,6 +103,9 @@ pub fn compile_rust_programs(toolchain: Option<&str>, target: &str, linker: Opti
 
     let mut cargo_command = Command::new("cargo");
     cargo_command.current_dir("rust_programs");
+
+    // Do not use the target directory of the workspace please.
+    cargo_command.env("CARGO_TARGET_DIR", "target");
 
     if let Some(toolchain) = toolchain
         && !toolchain.is_empty()
