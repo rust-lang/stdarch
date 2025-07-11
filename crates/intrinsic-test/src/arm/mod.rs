@@ -59,9 +59,10 @@ impl SupportedArchitectureTest for ArmArchitectureTest {
         let platform_headers = &["arm_neon.h", "arm_acle.h", "arm_fp16.h"];
 
         let available_parallelism = std::thread::available_parallelism().unwrap().get();
-        let chunk_size = self.intrinsics.len().div_ceil(available_parallelism);
+        let chunk_count = Ord::min(available_parallelism, self.intrinsics.len());
+        let chunk_size = self.intrinsics.len().div_ceil(chunk_count);
 
-        let pipeline = compile::build_cpp_compilation(&self.cli_options).unwrap();
+        let cpp_compiler = compile::configure_cpp_compiler(&self.cli_options).unwrap();
 
         let notice = &build_notices("// ");
         self.intrinsics
@@ -69,18 +70,23 @@ impl SupportedArchitectureTest for ArmArchitectureTest {
             .enumerate()
             .map(|(i, chunk)| {
                 let c_filename = format!("c_programs/mod_{i}.cpp");
+                info!("writing {c_filename}");
                 let mut file = File::create(&c_filename).unwrap();
                 write_mod_cpp(&mut file, notice, c_target, platform_headers, chunk).unwrap();
 
                 // compile this cpp file into a .o file
-                let output = pipeline.run(&[], &[format!("mod_{i}.cpp")], &format!("mod_{i}.o"))?;
+                info!("compiling {c_filename}");
+                let output = cpp_compiler
+                    .compile_object_file(&format!("mod_{i}.cpp"), &format!("mod_{i}.o"))?;
                 assert!(output.status.success());
+                info!("done compiling {c_filename}");
 
                 Ok(())
             })
             .collect::<Result<(), std::io::Error>>()
             .unwrap();
 
+        info!("writing main.cpp");
         let mut file = File::create("c_programs/main.cpp").unwrap();
         write_main_cpp(
             &mut file,
@@ -90,19 +96,33 @@ impl SupportedArchitectureTest for ArmArchitectureTest {
         )
         .unwrap();
 
-        // Files to include in the final link step.
-        let mut includes = vec![];
-        for i in 0..Ord::min(available_parallelism, self.intrinsics.len()) {
-            includes.push(format!("mod_{i}.o"));
-        }
-
-        let output = pipeline
-            .run(
-                &includes,
-                &["main.cpp".to_string()],
-                "intrinsic-test-programs",
-            )
+        // compile this cpp file into a .o file
+        info!("compiling main.cpp");
+        let output = cpp_compiler
+            .compile_object_file("main.cpp", "intrinsic-test-programs.o")
             .unwrap();
+        assert!(output.status.success());
+
+        let object_files = (0..chunk_count)
+            .map(|i| format!("mod_{i}.o"))
+            .chain(["intrinsic-test-programs.o".to_owned()]);
+
+        let output = match &self.cli_options.linker {
+            Some(custom_linker) => {
+                let mut linker = std::process::Command::new(custom_linker);
+
+                linker.current_dir("c_programs");
+
+                linker.args(object_files);
+                linker.args(["-o", "intrinsic-test-programs"]);
+
+                info!("linking final C binary with {custom_linker}");
+                linker.output()
+            }
+            None => cpp_compiler.link_executable(object_files, "intrinsic-test-programs"),
+        };
+
+        let output = output.unwrap();
         assert!(output.status.success());
 
         true

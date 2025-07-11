@@ -1,7 +1,7 @@
 use crate::common::cli::ProcessedCli;
 use crate::common::compile_c::{CompilationCommandBuilder, CppCompilation};
 
-pub fn build_cpp_compilation(config: &ProcessedCli) -> Option<CppCompilation> {
+pub fn configure_cpp_compiler(config: &ProcessedCli) -> Option<CppCompilation> {
     let cpp_compiler = config.cpp_compiler.as_ref()?;
 
     // -ffp-contract=off emulates Rust's approach of not fusing separate mul-add operations

@@ -104,30 +104,19 @@ impl CompilationCommandBuilder {
             cpp_compiler.arg(format!("--target={target}"));
         }
 
-        if let (Some(linker), Some(cxx_toolchain_dir)) = (&self.linker, &self.cxx_toolchain_dir) {
+        if let Some(cxx_toolchain_dir) = &self.cxx_toolchain_dir {
             cpp_compiler.args(
                 self.include_paths
                     .iter()
-                    .map(|path| "--include-directory=".to_string() + cxx_toolchain_dir + path),
+                    .map(|path| format!("--include-directory={cxx_toolchain_dir}{path}")),
             );
-
-            CppCompilation::CustomLinker {
-                cpp_compiler,
-                linker: linker.to_owned(),
-            }
-        } else {
-            CppCompilation::Simple(cpp_compiler)
         }
+
+        CppCompilation(cpp_compiler)
     }
 }
 
-pub enum CppCompilation {
-    Simple(std::process::Command),
-    CustomLinker {
-        cpp_compiler: std::process::Command,
-        linker: String,
-    },
-}
+pub struct CppCompilation(std::process::Command);
 
 fn clone_command(command: &std::process::Command) -> std::process::Command {
     let mut cmd = std::process::Command::new(command.get_program());
@@ -144,85 +133,24 @@ fn clone_command(command: &std::process::Command) -> std::process::Command {
 }
 
 impl CppCompilation {
-    fn compile_cpp(
-        command: &std::process::Command,
-        includes: &[String],
-        inputs: &[String],
+    pub fn compile_object_file(
+        &self,
+        input: &str,
         output: &str,
     ) -> std::io::Result<std::process::Output> {
-        let mut cmd = clone_command(command);
-        cmd.args(includes);
-        cmd.args(inputs);
-        cmd.args(["-o", output]);
-
-        if output.ends_with(".o") {
-            cmd.arg("-c");
-        }
-
+        let mut cmd = clone_command(&self.0);
+        cmd.args([input, "-c", "-o", output]);
         cmd.output()
     }
 
-    pub fn run(
+    pub fn link_executable(
         &self,
-        includes: &[String],
-        inputs: &[String],
+        inputs: impl Iterator<Item = String>,
         output: &str,
     ) -> std::io::Result<std::process::Output> {
-        match self {
-            CppCompilation::Simple(command) => Self::compile_cpp(command, includes, inputs, output),
-            CppCompilation::CustomLinker { cpp_compiler, .. } if output.ends_with(".o") => {
-                // No need to invoke that custom linker if we're creating an object file.
-                Self::compile_cpp(cpp_compiler, includes, inputs, output)
-            }
-            CppCompilation::CustomLinker {
-                cpp_compiler,
-                linker,
-            } => {
-                let object_file = &format!("{output}.o");
-
-                // Build an object file using the cpp compiler.
-                let mut cmd = clone_command(cpp_compiler);
-                cmd.args(inputs);
-                cmd.args(["-c", "-o", object_file]);
-
-                let cpp_output = cmd.output()?;
-                if !cpp_output.status.success() {
-                    error!("c++ compilaton failed");
-                    return Ok(cpp_output);
-                }
-
-                trace!("using custom linker");
-
-                // Use the custom linker to turn the object file into an executable.
-                let mut cmd = std::process::Command::new(linker);
-                cmd.args(includes);
-                cmd.args([object_file, "-o", output]);
-
-                if let Some(current_dir) = cpp_compiler.get_current_dir() {
-                    cmd.current_dir(current_dir);
-                }
-
-                for (key, val) in cpp_compiler.get_envs() {
-                    cmd.env(key, val.unwrap_or_default());
-                }
-
-                let linker_output = cmd.output()?;
-                if !linker_output.status.success() {
-                    error!("custom linker failed");
-                    error!("{}", String::from_utf8_lossy(&linker_output.stderr));
-                    return Ok(linker_output);
-                }
-
-                trace!("removing {object_file}");
-                let object_file_path = match cpp_compiler.get_current_dir() {
-                    Some(current_dir) => &format!("{}/{object_file}", current_dir.display()),
-                    None => object_file,
-                };
-
-                std::fs::remove_file(object_file_path)?;
-
-                Ok(cpp_output)
-            }
-        }
+        let mut cmd = clone_command(&self.0);
+        cmd.args(inputs);
+        cmd.args(["-o", output]);
+        cmd.output()
     }
 }
