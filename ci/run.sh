@@ -169,7 +169,7 @@ esac
 # Arm specific
 case "${TARGET}" in
     aarch64-unknown-linux-gnu*|armv7-unknown-linux-gnueabihf*)
-        CPPFLAGS="${TEST_CPPFLAGS}" RUSTFLAGS="${HOST_RUSTFLAGS}" RUST_LOG=warn \
+        CPPFLAGS="${TEST_CPPFLAGS}" RUSTFLAGS="${HOST_RUSTFLAGS}" RUST_LOG=trace \
             cargo run "${INTRINSIC_TEST}" "${PROFILE}" \
             --bin intrinsic-test -- intrinsics_data/arm_intrinsics.json \
             --runner "${TEST_RUNNER}" \
@@ -179,7 +179,7 @@ case "${TARGET}" in
         ;;
 
     aarch64_be-unknown-linux-gnu*)
-        CPPFLAGS="${TEST_CPPFLAGS}" RUSTFLAGS="${HOST_RUSTFLAGS}" RUST_LOG=warn \
+        CPPFLAGS="${TEST_CPPFLAGS}" RUSTFLAGS="${HOST_RUSTFLAGS}" RUST_LOG=trace \
             cargo run "${INTRINSIC_TEST}" "${PROFILE}"  \
             --bin intrinsic-test -- intrinsics_data/arm_intrinsics.json \
             --runner "${TEST_RUNNER}" \

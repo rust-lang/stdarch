@@ -26,7 +26,7 @@ pub const F16_FORMATTING_DEF: &str = r#"
 /// Used to continue `Debug`ging SIMD types as `MySimd(1, 2, 3, 4)`, as they
 /// were before moving to array-based simd.
 #[inline]
-fn debug_simd_finish<T: core::fmt::Debug, const N: usize>(
+pub(crate) fn debug_simd_finish<T: core::fmt::Debug, const N: usize>(
     formatter: &mut core::fmt::Formatter<'_>,
     type_name: &str,
     array: &[T; N],
@@ -47,11 +47,11 @@ impl<T: DebugHexF16> core::fmt::Debug for Hex<T> {
     }
 }
 
-fn debug_f16<T: DebugHexF16>(x: T) -> impl core::fmt::Debug {
+pub(crate) fn debug_f16<T: DebugHexF16>(x: T) -> impl core::fmt::Debug {
     Hex(x)
 }
 
-trait DebugHexF16 {
+pub(crate) trait DebugHexF16 {
     fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result;
 }
 
@@ -114,7 +114,6 @@ pub const AARCH_CONFIGURATIONS: &str = r#"
 #![cfg_attr(any(target_arch = "aarch64", target_arch = "arm64ec"), feature(stdarch_neon_fcma))]
 #![cfg_attr(any(target_arch = "aarch64", target_arch = "arm64ec"), feature(stdarch_neon_dotprod))]
 #![cfg_attr(any(target_arch = "aarch64", target_arch = "arm64ec"), feature(stdarch_neon_i8mm))]
-#![cfg_attr(any(target_arch = "aarch64", target_arch = "arm64ec"), feature(stdarch_neon_sha3))]
 #![cfg_attr(any(target_arch = "aarch64", target_arch = "arm64ec"), feature(stdarch_neon_sm4))]
 #![cfg_attr(any(target_arch = "aarch64", target_arch = "arm64ec"), feature(stdarch_neon_ftts))]
 #![feature(fmt_helpers_for_derive)]

@@ -60,7 +60,7 @@ pub struct ProcessedCli {
     pub filename: PathBuf,
     pub toolchain: Option<String>,
     pub cpp_compiler: Option<String>,
-    pub c_runner: String,
+    pub runner: String,
     pub target: String,
     pub linker: Option<String>,
     pub cxx_toolchain_dir: Option<String>,
@@ -90,11 +90,10 @@ impl ProcessedCli {
             (None, None)
         } else {
             (
-                Some(
-                    cli_options
-                        .toolchain
-                        .map_or_else(String::new, |t| format!("+{t}")),
-                ),
+                match cli_options.toolchain {
+                    Some(t) => Some(format!("+{t}")),
+                    None => Some(String::new()), // NOTE this is confusing
+                },
                 Some(cli_options.cppcompiler),
             )
         };
@@ -102,7 +101,7 @@ impl ProcessedCli {
         Self {
             toolchain,
             cpp_compiler,
-            c_runner,
+            runner: c_runner,
             target,
             linker,
             cxx_toolchain_dir,
