@@ -1,13 +1,13 @@
 use crate::common::argument::ArgumentList;
 use crate::common::indentation::Indentation;
 use crate::common::intrinsic::{Intrinsic, IntrinsicDefinition};
-use crate::common::intrinsic_helpers::{IntrinsicType, IntrinsicTypeDefinition, Sign, TypeKind};
+use crate::common::intrinsic_helpers::{IntrinsicType, IntrinsicTypeDefinition, TypeKind};
 use std::ops::{Deref, DerefMut};
 
 #[derive(Debug, Clone, PartialEq)]
-pub struct ArmIntrinsicType(pub IntrinsicType);
+pub struct X86IntrinsicType(pub IntrinsicType);
 
-impl Deref for ArmIntrinsicType {
+impl Deref for X86IntrinsicType {
     type Target = IntrinsicType;
 
     fn deref(&self) -> &Self::Target {
@@ -15,18 +15,18 @@ impl Deref for ArmIntrinsicType {
     }
 }
 
-impl DerefMut for ArmIntrinsicType {
+impl DerefMut for X86IntrinsicType {
     fn deref_mut(&mut self) -> &mut Self::Target {
         &mut self.0
     }
 }
 
-impl IntrinsicDefinition<ArmIntrinsicType> for Intrinsic<ArmIntrinsicType> {
-    fn arguments(&self) -> ArgumentList<ArmIntrinsicType> {
+impl IntrinsicDefinition<X86IntrinsicType> for Intrinsic<X86IntrinsicType> {
+    fn arguments(&self) -> ArgumentList<X86IntrinsicType> {
         self.arguments.clone()
     }
 
-    fn results(&self) -> ArmIntrinsicType {
+    fn results(&self) -> X86IntrinsicType {
         self.results.clone()
     }
 
@@ -76,14 +76,17 @@ impl IntrinsicDefinition<ArmIntrinsicType> for Intrinsic<ArmIntrinsicType> {
             format!(
                 "{promote}cast<{cast}>(__return_value)",
                 cast = match self.results.kind() {
-                    TypeKind::Float if self.results().inner_size() == 16 => "float16_t".to_string(),
-                    TypeKind::Float if self.results().inner_size() == 32 => "float".to_string(),
+                    TypeKind::Void => "void".to_string(),
                     TypeKind::Float if self.results().inner_size() == 64 => "double".to_string(),
-                    TypeKind::Int(Sign::Signed) => format!("int{}_t", self.results().inner_size()),
-                    TypeKind::Int(Sign::Unsigned) =>
-                        format!("uint{}_t", self.results().inner_size()),
-                    TypeKind::Poly => format!("poly{}_t", self.results().inner_size()),
-                    ty => todo!("print_result_c - Unknown type: {:#?}", ty),
+                    TypeKind::Float if self.results().inner_size() == 32 => "float".to_string(),
+                    // TypeKind::Float if self.results().inner_size() == 16 => "float16_t".to_string(),
+                    // TypeKind::Int(true) if self.results().inner_size() == 64 => "long".to_string(),
+                    // TypeKind::Int(false) if self.results().inner_size() == 64 => "unsigned long".to_string(),
+                    // TypeKind::Int(true) if self.results().inner_size() == 32 => "int".to_string(),
+                    // TypeKind::Int(false) if self.results().inner_size() == 32 => "unsigned int".to_string(),
+                    // TypeKind::Int(true) if self.results().inner_size() == 16 => "short".to_string(),
+                    // TypeKind::Int(false) if self.results().inner_size() == 16 => "unsigned short".to_string(),
+                    _ => self.results.c_scalar_type(),
                 },
                 promote = self.results().c_promotion(),
             )
