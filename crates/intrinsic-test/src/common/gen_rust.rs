@@ -177,11 +177,7 @@ pub fn generate_rust_constraint_blocks<T: IntrinsicTypeDefinition>(
     name: String,
 ) -> String {
     if let Some((current, constraints)) = constraints.split_last() {
-        let range = current
-            .constraint
-            .iter()
-            .map(|c| c.to_range())
-            .flat_map(|r| r.into_iter());
+        let range = current.constraint.iter().flat_map(|c| c.to_vector());
 
         let body_indentation = indentation.nested();
         range
