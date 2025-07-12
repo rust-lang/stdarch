@@ -13,7 +13,7 @@ pub fn compare_outputs(
         .filter_map(|intrinsic_name| {
             let c = Command::new("sh")
                 .arg("-c")
-                .arg(format!("{runner} ./c_programs/{intrinsic_name}"))
+                .arg(format!("{runner} ./c_programs/intrinsic-test-programs {intrinsic_name}"))
                 .output();
 
             let rust = Command::new("sh")

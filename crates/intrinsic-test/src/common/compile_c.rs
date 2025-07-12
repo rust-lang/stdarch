@@ -7,8 +7,6 @@ pub struct CompilationCommandBuilder {
     optimization: String,
     include_paths: Vec<String>,
     project_root: Option<String>,
-    output: String,
-    input: String,
     linker: Option<String>,
     extra_flags: Vec<String>,
 }
@@ -23,8 +21,6 @@ impl CompilationCommandBuilder {
             optimization: "2".to_string(),
             include_paths: Vec::new(),
             project_root: None,
-            output: String::new(),
-            input: String::new(),
             linker: None,
             extra_flags: Vec::new(),
         }
@@ -71,18 +67,6 @@ impl CompilationCommandBuilder {
         self
     }
 
-    /// The name of the output executable, without any suffixes
-    pub fn set_output_name(mut self, path: &str) -> Self {
-        self.output = path.to_string();
-        self
-    }
-
-    /// The name of the input C file, without any suffixes
-    pub fn set_input_name(mut self, path: &str) -> Self {
-        self.input = path.to_string();
-        self
-    }
-
     pub fn set_linker(mut self, linker: String) -> Self {
         self.linker = Some(linker);
         self
@@ -100,55 +84,144 @@ impl CompilationCommandBuilder {
 }
 
 impl CompilationCommandBuilder {
-    pub fn make_string(self) -> String {
-        let arch_flags = self.arch_flags.join("+");
-        let flags = std::env::var("CPPFLAGS").unwrap_or("".into());
-        let project_root = self.project_root.unwrap_or_default();
-        let project_root_str = project_root.as_str();
-        let mut output = self.output.clone();
-        if self.linker.is_some() {
-            output += ".o"
-        };
-        let mut command = format!(
-            "{} {flags} -march={arch_flags} \
-            -O{} \
-            -o {project_root}/{} \
-            {project_root}/{}.cpp",
-            self.compiler, self.optimization, output, self.input,
-        );
+    pub fn into_cpp_compilation(self) -> CppCompilation {
+        let mut cpp_compiler = std::process::Command::new(self.compiler);
 
-        command = command + " " + self.extra_flags.join(" ").as_str();
+        if let Some(project_root) = self.project_root {
+            cpp_compiler.current_dir(project_root);
+        }
+
+        let flags = std::env::var("CPPFLAGS").unwrap_or("".into());
+        cpp_compiler.args(flags.split_whitespace());
+
+        cpp_compiler.arg(format!("-march={}", self.arch_flags.join("+")));
+
+        cpp_compiler.arg(format!("-O{}", self.optimization));
+
+        cpp_compiler.args(self.extra_flags);
 
         if let Some(target) = &self.target {
-            command = command + " --target=" + target;
+            cpp_compiler.arg(format!("--target={target}"));
         }
 
         if let (Some(linker), Some(cxx_toolchain_dir)) = (&self.linker, &self.cxx_toolchain_dir) {
-            let include_args = self
-                .include_paths
-                .iter()
-                .map(|path| "--include-directory=".to_string() + cxx_toolchain_dir + path)
-                .collect::<Vec<_>>()
-                .join(" ");
+            cpp_compiler.args(
+                self.include_paths
+                    .iter()
+                    .map(|path| "--include-directory=".to_string() + cxx_toolchain_dir + path),
+            );
 
-            command = command
-                + " -c "
-                + include_args.as_str()
-                + " && "
-                + linker
-                + " "
-                + project_root_str
-                + "/"
-                + &output
-                + " -o "
-                + project_root_str
-                + "/"
-                + &self.output
-                + " && rm "
-                + project_root_str
-                + "/"
-                + &output;
+            CppCompilation::CustomLinker {
+                cpp_compiler,
+                linker: linker.to_owned(),
+            }
+        } else {
+            CppCompilation::Simple(cpp_compiler)
         }
-        command
+    }
+}
+
+pub enum CppCompilation {
+    Simple(std::process::Command),
+    CustomLinker {
+        cpp_compiler: std::process::Command,
+        linker: String,
+    },
+}
+
+fn clone_command(command: &std::process::Command) -> std::process::Command {
+    let mut cmd = std::process::Command::new(command.get_program());
+    if let Some(current_dir) = command.get_current_dir() {
+        cmd.current_dir(current_dir);
+    }
+    cmd.args(command.get_args());
+
+    for (key, val) in command.get_envs() {
+        cmd.env(key, val.unwrap_or_default());
+    }
+
+    cmd
+}
+
+impl CppCompilation {
+    fn compile_cpp(
+        command: &std::process::Command,
+        includes: &[String],
+        inputs: &[String],
+        output: &str,
+    ) -> std::io::Result<std::process::Output> {
+        let mut cmd = clone_command(command);
+        cmd.args(includes);
+        cmd.args(inputs);
+        cmd.args(["-o", output]);
+
+        if output.ends_with(".o") {
+            cmd.arg("-c");
+        }
+
+        cmd.output()
+    }
+
+    pub fn run(
+        &self,
+        includes: &[String],
+        inputs: &[String],
+        output: &str,
+    ) -> std::io::Result<std::process::Output> {
+        match self {
+            CppCompilation::Simple(command) => Self::compile_cpp(command, includes, inputs, output),
+            CppCompilation::CustomLinker { cpp_compiler, .. } if output.ends_with(".o") => {
+                // No need to invoke that custom linker if we're creating an object file.
+                Self::compile_cpp(cpp_compiler, includes, inputs, output)
+            }
+            CppCompilation::CustomLinker {
+                cpp_compiler,
+                linker,
+            } => {
+                let object_file = &format!("{output}.o");
+
+                // Build an object file using the cpp compiler.
+                let mut cmd = clone_command(cpp_compiler);
+                cmd.args(inputs);
+                cmd.args(["-c", "-o", object_file]);
+
+                let cpp_output = cmd.output()?;
+                if !cpp_output.status.success() {
+                    error!("c++ compilaton failed");
+                    return Ok(cpp_output);
+                }
+
+                trace!("using custom linker");
+
+                // Use the custom linker to turn the object file into an executable.
+                let mut cmd = std::process::Command::new(linker);
+                cmd.args(includes);
+                cmd.args([object_file, "-o", output]);
+
+                if let Some(current_dir) = cpp_compiler.get_current_dir() {
+                    cmd.current_dir(current_dir);
+                }
+
+                for (key, val) in cpp_compiler.get_envs() {
+                    cmd.env(key, val.unwrap_or_default());
+                }
+
+                let linker_output = cmd.output()?;
+                if !linker_output.status.success() {
+                    error!("custom linker failed");
+                    return Ok(linker_output);
+                }
+
+                trace!("removing {object_file}");
+                let object_file_path = match cpp_compiler.get_current_dir() {
+                    Some(current_dir) => &format!("{}/{object_file}", current_dir.display()),
+                    None => object_file,
+                };
+
+                std::fs::remove_file(object_file_path)?;
+
+                Ok(cpp_output)
+            }
+        }
     }
 }
