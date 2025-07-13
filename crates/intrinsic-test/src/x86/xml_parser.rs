@@ -1,6 +1,7 @@
 use crate::common::argument::{Argument, ArgumentList};
 use crate::common::intrinsic::Intrinsic;
 use crate::common::intrinsic_helpers::TypeKind;
+use crate::x86::constraint::map_constraints;
 
 use serde::{Deserialize, Deserializer};
 use std::path::Path;
@@ -13,7 +14,7 @@ where
     D: Deserializer<'de>,
 {
     let s = String::deserialize(deserializer)?;
-    return s.as_str().parse::<u32>().or(Ok(0u16));
+    return s.as_str().parse::<u32>().or(Ok(0u32));
 }
 
 #[derive(Deserialize)]
@@ -38,14 +39,16 @@ struct XMLIntrinsic {
 
 #[derive(Deserialize)]
 pub struct Parameter {
+    #[serde(rename = "@varname")]
+    pub var_name: String,
     #[serde(rename = "@type")]
     pub type_data: String,
     #[serde(rename = "@etype", default)]
     pub etype: String,
     #[serde(rename = "@memwidth", default, deserialize_with = "string_to_u32")]
     pub memwidth: u32,
-    #[serde(rename = "@varname", default)]
-    pub var_name: String,
+    #[serde(rename = "@immtype", default)]
+    pub imm_type: String,
 }
 
 pub fn get_xml_intrinsics(
@@ -78,7 +81,7 @@ fn xml_to_intrinsic(
         if ty.is_err() {
             None
         } else {
-            let constraint = None;
+            let constraint = map_constraints(&param.imm_type);
             let arg = Argument::<X86IntrinsicType>::new(
                 i,
                 param.var_name.clone(),
