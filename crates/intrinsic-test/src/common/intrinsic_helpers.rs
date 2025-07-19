@@ -19,8 +19,6 @@ pub enum Sign {
 pub enum TypeKind {
     BFloat,
     Float,
-
-    // if signed, then the inner value is true
     Int(Sign),
     Char(Sign),
     Poly,
@@ -166,11 +164,8 @@ impl IntrinsicType {
     }
 
     pub fn c_scalar_type(&self) -> String {
-        match self {
-            IntrinsicType {
-                kind: TypeKind::Char(_),
-                ..
-            } => String::from("char"),
+        match self.kind() {
+            TypeKind::Char(_) => String::from("char"),
             _ => format!(
                 "{prefix}{bits}_t",
                 prefix = self.kind().c_prefix(),
@@ -337,7 +332,7 @@ pub trait IntrinsicTypeDefinition: Deref<Target = IntrinsicType> {
     fn get_lane_function(&self) -> String;
 
     /// can be implemented in an `impl` block
-    fn from_c(_s: &str) -> Result<Self, String>
+    fn from_c(_s: &str, _target: &str) -> Result<Self, String>
     where
         Self: Sized;
 

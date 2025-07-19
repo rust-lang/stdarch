@@ -121,7 +121,7 @@ impl IntrinsicTypeDefinition for ArmIntrinsicType {
         }
     }
 
-    fn from_c(s: &str) -> Result<Self, String> {
+    fn from_c(s: &str, target: &str) -> Result<Self, String> {
         const CONST_STR: &str = "const";
         let mut metadata: HashMap<String, String> = HashMap::new();
         metadata.insert("type".to_string(), s.to_string());
@@ -131,15 +131,11 @@ impl IntrinsicTypeDefinition for ArmIntrinsicType {
                 None => (s, false),
             };
             let s = s.trim_end();
-            let temp_return = ArmIntrinsicType::from_c(s);
-
-            // We are not adding the metadata hashmap here, since
-            // it is the return of a recursive call and the
-            // inner call would handle it.
-            temp_return.and_then(|mut op| {
+            let temp_return = ArmIntrinsicType::from_c(s, target);
+            temp_return.map(|mut op| {
                 op.ptr = true;
                 op.ptr_constant = constant;
-                Ok(op)
+                op
             })
         } else {
             // [const ]TYPE[{bitlen}[x{simdlen}[x{vec_len}]]][_t]
@@ -176,7 +172,7 @@ impl IntrinsicTypeDefinition for ArmIntrinsicType {
                     bit_len: Some(bit_len),
                     simd_len,
                     vec_len,
-                    metadata,
+                    target: target.to_string(),
                 }))
             } else {
                 let kind = start.parse::<TypeKind>()?;
@@ -192,7 +188,7 @@ impl IntrinsicTypeDefinition for ArmIntrinsicType {
                     bit_len,
                     simd_len: None,
                     vec_len: None,
-                    metadata,
+                    target: target.to_string(),
                 }))
             }
         }

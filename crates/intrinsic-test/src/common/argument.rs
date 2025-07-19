@@ -63,6 +63,25 @@ where
         }
     }
 
+    pub fn from_c(
+        pos: usize,
+        arg: &str,
+        target: &str,
+        constraint: Option<Constraint>,
+    ) -> Argument<T> {
+        let (ty, var_name) = Self::type_and_name_from_c(arg);
+
+        let ty =
+            T::from_c(ty, target).unwrap_or_else(|_| panic!("Failed to parse argument '{arg}'"));
+
+        Argument {
+            pos,
+            name: String::from(var_name),
+            ty: ty,
+            constraint,
+        }
+    }
+
     fn as_call_param_c(&self) -> String {
         self.ty.as_call_param_c(&self.name)
     }
@@ -107,19 +126,23 @@ where
     /// Creates a line for each argument that initializes an array for C from which `loads` argument
     /// values can be loaded  as a sliding window.
     /// e.g `const int32x2_t a_vals = {0x3effffff, 0x3effffff, 0x3f7fffff}`, if loads=2.
-    pub fn gen_arglists_c(&self, indentation: Indentation, loads: u32) -> String {
-        self.iter()
-            .filter(|&arg| !arg.has_constraint())
-            .map(|arg| {
-                format!(
-                    "{indentation}const {ty} {name}_vals[] = {values};",
-                    ty = arg.ty.c_scalar_type(),
-                    name = arg.name,
-                    values = arg.ty.populate_random(indentation, loads, &Language::C)
-                )
-            })
-            .collect::<Vec<_>>()
-            .join("\n")
+    pub fn gen_arglists_c(
+        &self,
+        w: &mut impl std::io::Write,
+        indentation: Indentation,
+        loads: u32,
+    ) -> std::io::Result<()> {
+        for arg in self.iter().filter(|&arg| !arg.has_constraint()) {
+            writeln!(
+                w,
+                "{indentation}const {ty} {name}_vals[] = {values};",
+                ty = arg.ty.c_scalar_type(),
+                name = arg.name,
+                values = arg.ty.populate_random(indentation, loads, &Language::C)
+            )?
+        }
+
+        Ok(())
     }
 
     /// Creates a line for each argument that initializes an array for Rust from which `loads` argument

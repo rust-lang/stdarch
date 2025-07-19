@@ -51,7 +51,7 @@ types! {
     pub struct vector_double(2 x f64);
 }
 
-#[repr(packed)]
+#[repr(C, packed)]
 struct PackedTuple<T, U> {
     x: T,
     y: U,
@@ -83,9 +83,6 @@ unsafe extern "unadjusted" {
     #[link_name = "llvm.nearbyint.v4f32"] fn nearbyint_v4f32(a: vector_float) -> vector_float;
     #[link_name = "llvm.nearbyint.v2f64"] fn nearbyint_v2f64(a: vector_double) -> vector_double;
 
-    #[link_name = "llvm.rint.v4f32"] fn rint_v4f32(a: vector_float) -> vector_float;
-    #[link_name = "llvm.rint.v2f64"] fn rint_v2f64(a: vector_double) -> vector_double;
-
     #[link_name = "llvm.roundeven.v4f32"] fn roundeven_v4f32(a: vector_float) -> vector_float;
     #[link_name = "llvm.roundeven.v2f64"] fn roundeven_v2f64(a: vector_double) -> vector_double;
 
@@ -100,11 +97,6 @@ unsafe extern "unadjusted" {
     #[link_name = "llvm.s390.vsldb"] fn vsldb(a: i8x16, b: i8x16, c: u32) -> i8x16;
     #[link_name = "llvm.s390.vsld"] fn vsld(a: i8x16, b: i8x16, c: u32) -> i8x16;
     #[link_name = "llvm.s390.vsrd"] fn vsrd(a: i8x16, b: i8x16, c: u32) -> i8x16;
-
-    #[link_name = "llvm.fshl.v16i8"] fn fshlb(a: vector_unsigned_char, b: vector_unsigned_char, c: vector_unsigned_char) -> vector_unsigned_char;
-    #[link_name = "llvm.fshl.v8i16"] fn fshlh(a: vector_unsigned_short, b: vector_unsigned_short, c: vector_unsigned_short) -> vector_unsigned_short;
-    #[link_name = "llvm.fshl.v4i32"] fn fshlf(a: vector_unsigned_int, b: vector_unsigned_int, c: vector_unsigned_int) -> vector_unsigned_int;
-    #[link_name = "llvm.fshl.v2i64"] fn fshlg(a: vector_unsigned_long_long, b: vector_unsigned_long_long, c: vector_unsigned_long_long) -> vector_unsigned_long_long;
 
     #[link_name = "llvm.s390.verimb"] fn verimb(a: vector_signed_char, b: vector_signed_char, c: vector_signed_char, d: i32) -> vector_signed_char;
     #[link_name = "llvm.s390.verimh"] fn verimh(a: vector_signed_short, b: vector_signed_short, c: vector_signed_short, d: i32) -> vector_signed_short;
@@ -1189,6 +1181,20 @@ mod sealed {
 
     impl_vec_trait! { [VectorOrc vec_orc]+ 2c (orc) }
 
+    // Z vector intrinsic      C23 math.h  LLVM IR         ISO/IEC 60559 operation        inexact  vfidb parameters
+    //
+    // vec_rint                rint        llvm.rint       roundToIntegralExact           yes      0, 0
+    // vec_roundc              nearbyint   llvm.nearbyint  n/a                            no       4, 0
+    // vec_floor / vec_roundm  floor       llvm.floor      roundToIntegralTowardNegative  no       4, 7
+    // vec_ceil / vec_roundp   ceil        llvm.ceil       roundToIntegralTowardPositive  no       4, 6
+    // vec_trunc / vec_roundz  trunc       llvm.trunc      roundToIntegralTowardZero      no       4, 5
+    // vec_round               roundeven   llvm.roundeven  roundToIntegralTiesToEven      no       4, 4
+    // n/a                     round       llvm.round      roundToIntegralTiesAway        no       4, 1
+
+    // `simd_round_ties_even` is implemented as `llvm.rint`.
+    test_impl! { vec_rint_f32 (a: vector_float) -> vector_float [simd_round_ties_even, "vector-enhancements-1" vfisb] }
+    test_impl! { vec_rint_f64 (a: vector_double) -> vector_double [simd_round_ties_even, vfidb] }
+
     test_impl! { vec_roundc_f32 (a: vector_float) -> vector_float [nearbyint_v4f32,  "vector-enhancements-1" vfisb] }
     test_impl! { vec_roundc_f64 (a: vector_double) -> vector_double [nearbyint_v2f64, vfidb] }
 
@@ -1196,9 +1202,6 @@ mod sealed {
     // use https://godbolt.org/z/cWq95fexe to check, and enable the instruction test when it works
     test_impl! { vec_round_f32 (a: vector_float) -> vector_float [roundeven_v4f32, _] }
     test_impl! { vec_round_f64 (a: vector_double) -> vector_double [roundeven_v2f64, _] }
-
-    test_impl! { vec_rint_f32 (a: vector_float) -> vector_float [rint_v4f32, "vector-enhancements-1" vfisb] }
-    test_impl! { vec_rint_f64 (a: vector_double) -> vector_double [rint_v2f64, vfidb] }
 
     #[unstable(feature = "stdarch_s390x", issue = "135681")]
     pub trait VectorRoundc {
@@ -1221,8 +1224,8 @@ mod sealed {
     impl_vec_trait! { [VectorRound vec_round] vec_round_f32 (vector_float) }
     impl_vec_trait! { [VectorRound vec_round] vec_round_f64 (vector_double) }
 
-    impl_vec_trait! { [VectorRint vec_rint] vec_rint_f32 (vector_float) }
-    impl_vec_trait! { [VectorRint vec_rint] vec_rint_f64 (vector_double) }
+    impl_vec_trait! { [VectorRint vec_rint] simd_round_ties_even (vector_float) }
+    impl_vec_trait! { [VectorRint vec_rint] simd_round_ties_even (vector_double) }
 
     #[unstable(feature = "stdarch_s390x", issue = "135681")]
     pub trait VectorTrunc {
@@ -1411,43 +1414,42 @@ mod sealed {
     }
 
     macro_rules! impl_rot {
-        ($fun:ident $intr:ident $ty:ident) => {
+        ($fun:ident $ty:ident) => {
             #[inline]
             #[target_feature(enable = "vector")]
             #[cfg_attr(test, assert_instr($fun))]
             unsafe fn $fun(a: t_t_l!($ty), b: t_t_l!($ty)) -> t_t_l!($ty) {
-                transmute($intr(transmute(a), transmute(a), transmute(b)))
+                simd_funnel_shl(a, a, b)
             }
         };
     }
 
-    impl_rot! { verllvb fshlb u8 }
-    impl_rot! { verllvh fshlh u16 }
-    impl_rot! { verllvf fshlf u32 }
-    impl_rot! { verllvg fshlg u64 }
+    impl_rot! { verllvb u8 }
+    impl_rot! { verllvh u16 }
+    impl_rot! { verllvf u32 }
+    impl_rot! { verllvg u64 }
 
     impl_vec_shift! { [VectorRl vec_rl] (verllvb, verllvh, verllvf, verllvg) }
 
     macro_rules! test_rot_imm {
-        ($fun:ident $instr:ident $intr:ident $ty:ident) => {
+        ($fun:ident $instr:ident $ty:ident) => {
             #[inline]
             #[target_feature(enable = "vector")]
             #[cfg_attr(test, assert_instr($instr))]
             unsafe fn $fun(a: t_t_l!($ty), bits: core::ffi::c_ulong) -> t_t_l!($ty) {
                 // mod by the number of bits in a's element type to prevent UB
                 let bits = (bits % $ty::BITS as core::ffi::c_ulong) as $ty;
-                let a = transmute(a);
                 let b = <t_t_s!($ty)>::splat(bits);
 
-                transmute($intr(a, a, transmute(b)))
+                simd_funnel_shl(a, a, transmute(b))
             }
         };
     }
 
-    test_rot_imm! { verllvb_imm verllb fshlb u8 }
-    test_rot_imm! { verllvh_imm verllh fshlh u16 }
-    test_rot_imm! { verllvf_imm verllf fshlf u32 }
-    test_rot_imm! { verllvg_imm verllg fshlg u64 }
+    test_rot_imm! { verllvb_imm verllb u8 }
+    test_rot_imm! { verllvh_imm verllh u16 }
+    test_rot_imm! { verllvf_imm verllf u32 }
+    test_rot_imm! { verllvg_imm verllg u64 }
 
     #[unstable(feature = "stdarch_s390x", issue = "135681")]
     pub trait VectorRli {
@@ -2263,14 +2265,14 @@ mod sealed {
 
     #[inline]
     #[target_feature(enable = "vector")]
-    #[cfg_attr(test, assert_instr("vlbb"))]
+    #[cfg_attr(test, assert_instr(vlbb))]
     unsafe fn test_vec_load_bndry(ptr: *const i32) -> MaybeUninit<vector_signed_int> {
         vector_signed_int::vec_load_bndry::<512>(ptr)
     }
 
     #[inline]
     #[target_feature(enable = "vector")]
-    #[cfg_attr(test, assert_instr(vst))]
+    #[cfg_attr(test, assert_instr(vstl))]
     unsafe fn test_vec_store_len(vector: vector_signed_int, ptr: *mut i32, byte_count: u32) {
         vector.vec_store_len(ptr, byte_count)
     }
@@ -2796,11 +2798,11 @@ mod sealed {
     }
 
     test_impl! { vec_vmal_ib(a: vector_signed_char, b: vector_signed_char, c: vector_signed_char) -> vector_signed_char [simd_mladd, vmalb ] }
-    test_impl! { vec_vmal_ih(a: vector_signed_short, b: vector_signed_short, c: vector_signed_short) -> vector_signed_short[simd_mladd, vmalh ] }
+    test_impl! { vec_vmal_ih(a: vector_signed_short, b: vector_signed_short, c: vector_signed_short) -> vector_signed_short[simd_mladd, vmalhw ] }
     test_impl! { vec_vmal_if(a: vector_signed_int, b: vector_signed_int, c: vector_signed_int) -> vector_signed_int [simd_mladd, vmalf ] }
 
     test_impl! { vec_vmal_ub(a: vector_unsigned_char, b: vector_unsigned_char, c: vector_unsigned_char) -> vector_unsigned_char [simd_mladd, vmalb ] }
-    test_impl! { vec_vmal_uh(a: vector_unsigned_short, b: vector_unsigned_short, c: vector_unsigned_short) -> vector_unsigned_short[simd_mladd, vmalh ] }
+    test_impl! { vec_vmal_uh(a: vector_unsigned_short, b: vector_unsigned_short, c: vector_unsigned_short) -> vector_unsigned_short[simd_mladd, vmalhw ] }
     test_impl! { vec_vmal_uf(a: vector_unsigned_int, b: vector_unsigned_int, c: vector_unsigned_int) -> vector_unsigned_int [simd_mladd, vmalf ] }
 
     impl_mul!([VectorMladd vec_mladd] vec_vmal_ib (vector_signed_char, vector_signed_char, vector_signed_char) -> vector_signed_char );
@@ -4787,7 +4789,7 @@ pub unsafe fn vec_splat_s8<const IMM: i8>() -> vector_signed_char {
 #[unstable(feature = "stdarch_s390x", issue = "135681")]
 #[cfg_attr(test, assert_instr(vrepih, IMM = 42))]
 pub unsafe fn vec_splat_s16<const IMM: i16>() -> vector_signed_short {
-    vector_signed_short([IMM as i16; 8])
+    vector_signed_short([IMM; 8])
 }
 
 /// Vector Splat Signed Word
