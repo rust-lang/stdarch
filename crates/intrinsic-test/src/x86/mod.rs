@@ -1,3 +1,4 @@
+mod compile;
 mod config;
 mod constraint;
 mod intrinsic;
@@ -11,6 +12,7 @@ use crate::common::gen_rust::compile_rust_programs;
 use crate::common::intrinsic::{Intrinsic, IntrinsicDefinition};
 use crate::common::intrinsic_helpers::TypeKind;
 use crate::common::write_file::{write_c_testfiles, write_rust_testfiles};
+use crate::x86::compile::compile_c_x86;
 use crate::x86::config::{F16_FORMATTING_DEF, X86_CONFIGURATIONS};
 use config::build_notices;
 use intrinsic::X86IntrinsicType;
@@ -23,11 +25,10 @@ pub struct X86ArchitectureTest {
 
 impl SupportedArchitectureTest for X86ArchitectureTest {
     fn create(cli_options: ProcessedCli) -> Box<Self> {
-        let mut intrinsics =
+        let intrinsics =
             get_xml_intrinsics(&cli_options.filename).expect("Error parsing input file");
 
-        intrinsics.sort_by(|a, b| a.name.cmp(&b.name));
-        let intrinsics = intrinsics
+        let mut intrinsics = intrinsics
             .into_iter()
             // Not sure how we would compare intrinsic that returns void.
             .filter(|i| i.results.kind() != TypeKind::Void)
@@ -41,6 +42,7 @@ impl SupportedArchitectureTest for X86ArchitectureTest {
             .filter(|i| !cli_options.skip.contains(&i.name))
             .collect::<Vec<_>>();
 
+        intrinsics.sort_by(|a, b| a.name.cmp(&b.name));
         Box::new(Self {
             intrinsics: intrinsics,
             cli_options: cli_options,
@@ -48,13 +50,12 @@ impl SupportedArchitectureTest for X86ArchitectureTest {
     }
 
     fn build_c_file(&self) -> bool {
-        // let compiler = self.cli_options.cpp_compiler.as_deref();
+        let compiler = self.cli_options.cpp_compiler.as_deref();
         let target = &self.cli_options.target;
-        // let cxx_toolchain_dir = self.cli_options.cxx_toolchain_dir.as_deref();
+        let cxx_toolchain_dir = self.cli_options.cxx_toolchain_dir.as_deref();
         let c_target = "x86_64";
 
-        /* let intrinsics_name_list = */
-        write_c_testfiles(
+        let intrinsics_name_list = write_c_testfiles(
             &self
                 .intrinsics
                 .iter()
@@ -67,7 +68,12 @@ impl SupportedArchitectureTest for X86ArchitectureTest {
             &[],
         );
 
-        true
+        match compiler {
+            None => true,
+            Some(compiler) => {
+                compile_c_x86(&intrinsics_name_list, compiler, target, cxx_toolchain_dir)
+            }
+        }
     }
 
     fn build_rust_file(&self) -> bool {
