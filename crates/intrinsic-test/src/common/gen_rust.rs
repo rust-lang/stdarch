@@ -88,11 +88,15 @@ pub fn compile_rust_programs(
     let mut cargo_command = Command::new("cargo");
     cargo_command.current_dir("rust_programs");
 
-    if let Some(toolchain) = toolchain {
-        if !toolchain.is_empty() {
-            cargo_command.arg(toolchain);
+    match toolchain {
+        None => return true,
+        Some(toolchain) => {
+            if !toolchain.is_empty() {
+                cargo_command.arg(toolchain);
+            }
         }
-    }
+    };
+
     cargo_command.args(["build", "--target", target, "--release"]);
 
     let mut rust_flags = "-Cdebuginfo=0".to_string();
@@ -105,6 +109,7 @@ pub fn compile_rust_programs(
     }
 
     cargo_command.env("RUSTFLAGS", rust_flags);
+
     let output = cargo_command.output();
 
     if let Ok(output) = output {
