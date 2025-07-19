@@ -99,6 +99,9 @@ fi
 # Test targets compiled with extra features.
 case ${TARGET} in
     x86_64-unknown-linux-gnu)
+        TEST_CPPFLAGS="-fuse-ld=lld -I/usr/include/x86_64-linux-gnu/"
+        TEST_CXX_COMPILER="clang++-19"
+        TEST_RUNNER="${CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_RUNNER}"
         export STDARCH_DISABLE_ASSERT_INSTR=1
 
         export RUSTFLAGS="${RUSTFLAGS} -C target-feature=+avx"
@@ -188,6 +191,14 @@ case "${TARGET}" in
             --target "${TARGET}" \
             --linker "${CARGO_TARGET_AARCH64_BE_UNKNOWN_LINUX_GNU_LINKER}" \
             --cxx-toolchain-dir "${AARCH64_BE_TOOLCHAIN}"
+        ;;
+    x86_64-unknown-linux-gnu*)
+        CPPFLAGS="${TEST_CPPFLAGS}" RUSTFLAGS="${HOST_RUSTFLAGS}" RUST_LOG=warn \
+            cargo run "${INTRINSIC_TEST}" "${PROFILE}"  \
+            --bin intrinsic-test -- intrinsics_data/x86-intel.xml \
+            --runner "${TEST_RUNNER}" \
+            --cppcompiler "${TEST_CXX_COMPILER}" \
+            --target "${TARGET}"
         ;;
      *)
         ;;

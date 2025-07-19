@@ -40,7 +40,7 @@ pub fn generate_c_constraint_blocks<'a, T: IntrinsicTypeDefinition + 'a>(
     };
 
     let body_indentation = indentation.nested();
-    for i in current.constraint.iter().flat_map(|c| c.to_range()) {
+    for i in current.constraint.iter().flat_map(|c| c.to_vector()) {
         let ty = current.ty.c_type();
 
         writeln!(w, "{indentation}{{")?;
@@ -140,12 +140,13 @@ pub fn write_main_cpp<'a>(
     w: &mut impl std::io::Write,
     architecture: &str,
     arch_specific_definitions: &str,
+    headers: Vec<&str>,
     intrinsics: impl Iterator<Item = &'a str> + Clone,
 ) -> std::io::Result<()> {
     writeln!(w, "#include <iostream>")?;
     writeln!(w, "#include <string>")?;
 
-    for header in ["arm_neon.h", "arm_acle.h", "arm_fp16.h"] {
+    for header in headers.iter() {
         writeln!(w, "#include <{header}>")?;
     }
 

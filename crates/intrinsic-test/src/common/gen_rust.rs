@@ -88,11 +88,15 @@ pub fn compile_rust_programs(
     let mut cargo_command = Command::new("cargo");
     cargo_command.current_dir("rust_programs");
 
-    if let Some(toolchain) = toolchain {
-        if !toolchain.is_empty() {
-            cargo_command.arg(toolchain);
+    match toolchain {
+        None => return true,
+        Some(toolchain) => {
+            if !toolchain.is_empty() {
+                cargo_command.arg(toolchain);
+            }
         }
-    }
+    };
+
     cargo_command.args(["build", "--target", target, "--release"]);
 
     let mut rust_flags = "-Cdebuginfo=0".to_string();
@@ -105,6 +109,7 @@ pub fn compile_rust_programs(
     }
 
     cargo_command.env("RUSTFLAGS", rust_flags);
+
     let output = cargo_command.output();
 
     if let Ok(output) = output {
@@ -176,11 +181,7 @@ pub fn generate_rust_constraint_blocks<T: IntrinsicTypeDefinition>(
     name: String,
 ) -> String {
     if let Some((current, constraints)) = constraints.split_last() {
-        let range = current
-            .constraint
-            .iter()
-            .map(|c| c.to_range())
-            .flat_map(|r| r.into_iter());
+        let range = current.constraint.iter().flat_map(|c| c.to_vector());
 
         let body_indentation = indentation.nested();
         range
