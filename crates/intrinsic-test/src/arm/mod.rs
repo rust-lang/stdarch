@@ -10,7 +10,6 @@ use std::fs;
 use rayon::prelude::*;
 
 use crate::arm::config::POLY128_OSTREAM_DEF;
-use crate::common::SupportedArchitectureTest;
 use crate::common::cli::ProcessedCli;
 use crate::common::compare::compare_outputs;
 use crate::common::gen_c::{write_main_cpp, write_mod_cpp};
@@ -18,6 +17,7 @@ use crate::common::gen_rust::compile_rust_programs;
 use crate::common::intrinsic::{Intrinsic, IntrinsicDefinition};
 use crate::common::intrinsic_helpers::TypeKind;
 use crate::common::write_file::write_rust_testfiles;
+use crate::common::{SupportedArchitectureTest, chunk_info};
 use config::{AARCH_CONFIGURATIONS, F16_FORMATTING_DEF, build_notices};
 use intrinsic::ArmIntrinsicType;
 use json_parser::get_neon_intrinsics;
@@ -25,13 +25,6 @@ use json_parser::get_neon_intrinsics;
 pub struct ArmArchitectureTest {
     intrinsics: Vec<Intrinsic<ArmIntrinsicType>>,
     cli_options: ProcessedCli,
-}
-
-fn chunk_info(intrinsic_count: usize) -> (usize, usize) {
-    let available_parallelism = std::thread::available_parallelism().unwrap().get();
-    let chunk_size = intrinsic_count.div_ceil(Ord::min(available_parallelism, intrinsic_count));
-
-    (chunk_size, intrinsic_count.div_ceil(chunk_size))
 }
 
 impl SupportedArchitectureTest for ArmArchitectureTest {
@@ -102,6 +95,7 @@ impl SupportedArchitectureTest for ArmArchitectureTest {
             &mut file,
             c_target,
             POLY128_OSTREAM_DEF,
+            Vec::from(platform_headers),
             self.intrinsics.iter().map(|i| i.name.as_str()),
         )
         .unwrap();
