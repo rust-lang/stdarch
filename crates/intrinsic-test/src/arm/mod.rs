@@ -1,3 +1,4 @@
+mod argument;
 mod compile;
 mod config;
 mod intrinsic;
