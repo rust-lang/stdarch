@@ -8,13 +8,15 @@ pub enum Constraint {
     Equal(i64),
     /// Test a range of values, e.g. `0..16`.
     Range(Range<i64>),
+    Set(Vec<i64>),
 }
 
 impl Constraint {
-    pub fn to_range(&self) -> Range<i64> {
+    pub fn to_vector(&self) -> Vec<i64> {
         match self {
-            Constraint::Equal(eq) => *eq..*eq + 1,
-            Constraint::Range(range) => range.clone(),
+            Constraint::Equal(eq) => vec![*eq],
+            Constraint::Range(range) => range.clone().collect::<Vec<i64>>(),
+            Constraint::Set(values) => values.clone(),
         }
     }
 }
