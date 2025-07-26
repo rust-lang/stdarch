@@ -5,7 +5,7 @@ mod intrinsic;
 mod json_parser;
 mod types;
 
-use std::fs;
+use std::fs::{self, File};
 
 use rayon::prelude::*;
 
