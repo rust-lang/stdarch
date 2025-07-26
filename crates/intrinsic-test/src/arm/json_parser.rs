@@ -79,7 +79,8 @@ fn json_to_intrinsic(
 ) -> Result<Intrinsic<ArmIntrinsicType>, Box<dyn std::error::Error>> {
     let name = intr.name.replace(['[', ']'], "");
 
-    let results = ArmIntrinsicType::from_c(&intr.return_type.value, target)?;
+    let mut results = ArmIntrinsicType::from_c(&intr.return_type.value)?;
+    results.set_metadata("target", target);
 
     let args = intr
         .arguments
@@ -91,8 +92,9 @@ fn json_to_intrinsic(
             let metadata = metadata.and_then(|a| a.remove(arg_name));
             let arg_prep: Option<ArgPrep> = metadata.and_then(|a| a.try_into().ok());
             let constraint: Option<Constraint> = arg_prep.and_then(|a| a.try_into().ok());
-            let ty = ArmIntrinsicType::from_c(type_name, target)
+            let mut ty = ArmIntrinsicType::from_c(type_name)
                 .unwrap_or_else(|_| panic!("Failed to parse argument '{arg}'"));
+            ty.set_metadata("target", target);
 
             let mut arg =
                 Argument::<ArmIntrinsicType>::new(i, String::from(arg_name), ty, constraint);
