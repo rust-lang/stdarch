@@ -130,8 +130,8 @@ pub fn compile_rust_programs(toolchain: Option<&str>, target: &str, linker: Opti
     /* If there has been a linker explicitly set from the command line then
      * we want to set it via setting it in the RUSTFLAGS*/
 
-     // This is done because `toolchain` is None when
-     // the --generate-only flag is passed
+    // This is done because `toolchain` is None when
+    // the --generate-only flag is passed
     if toolchain.is_none() {
         return true;
     }

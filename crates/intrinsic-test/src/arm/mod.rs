@@ -1,10 +1,11 @@
+mod argument;
 mod compile;
 mod config;
 mod intrinsic;
 mod json_parser;
 mod types;
 
-use std::fs::File;
+use std::fs::{self, File};
 
 use rayon::prelude::*;
 
@@ -72,6 +73,7 @@ impl SupportedArchitectureTest for ArmArchitectureTest {
         let cpp_compiler_wrapped = compile::build_cpp_compilation(&self.cli_options);
 
         let notice = &build_notices("// ");
+        fs::create_dir_all("c_programs").unwrap();
         self.intrinsics
             .par_chunks(chunk_size)
             .enumerate()
@@ -81,7 +83,7 @@ impl SupportedArchitectureTest for ArmArchitectureTest {
                 write_mod_cpp(&mut file, notice, c_target, platform_headers, chunk).unwrap();
 
                 // compile this cpp file into a .o file
-                if let Some(cpp_compiler) = cpp_compiler_wrapped.as_ref() {  
+                if let Some(cpp_compiler) = cpp_compiler_wrapped.as_ref() {
                     let output = cpp_compiler
                         .compile_object_file(&format!("mod_{i}.cpp"), &format!("mod_{i}.o"))?;
                     assert!(output.status.success(), "{output:?}");
@@ -104,17 +106,17 @@ impl SupportedArchitectureTest for ArmArchitectureTest {
         // This is done because `cpp_compiler_wrapped` is None when
         // the --generate-only flag is passed
         if let Some(cpp_compiler) = cpp_compiler_wrapped.as_ref() {
-        // compile this cpp file into a .o file
+            // compile this cpp file into a .o file
             info!("compiling main.cpp");
             let output = cpp_compiler
                 .compile_object_file("main.cpp", "intrinsic-test-programs.o")
                 .unwrap();
             assert!(output.status.success(), "{output:?}");
-    
+
             let object_files = (0..chunk_count)
                 .map(|i| format!("mod_{i}.o"))
                 .chain(["intrinsic-test-programs.o".to_owned()]);
-    
+
             let output = cpp_compiler
                 .link_executable(object_files, "intrinsic-test-programs")
                 .unwrap();
