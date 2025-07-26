@@ -138,10 +138,8 @@ pub fn compile_rust_programs(toolchain: Option<&str>, target: &str, linker: Opti
     // Do not use the target directory of the workspace please.
     cargo_command.env("CARGO_TARGET_DIR", "target");
 
-    if let Some(toolchain) = toolchain
-        && !toolchain.is_empty()
-    {
-        cargo_command.arg(toolchain);
+    if toolchain.is_some_and(|val| !val.is_empty()) {
+        cargo_command.arg(toolchain.unwrap());
     }
     cargo_command.args(["build", "--target", target, "--release"]);
 
@@ -251,12 +249,13 @@ pub fn generate_rust_test_loop<T: IntrinsicTypeDefinition>(
 
 /// Generate the specializations (unique sequences of const-generic arguments) for this intrinsic.
 fn generate_rust_specializations<'a>(
-    constraints: &mut impl Iterator<Item = std::ops::Range<i64>>,
+    constraints: &mut impl Iterator<Item = Vec<i64>>,
 ) -> Vec<Vec<u8>> {
     let mut specializations = vec![vec![]];
 
     for constraint in constraints {
         specializations = constraint
+            .into_iter()
             .flat_map(|right| {
                 specializations.iter().map(move |left| {
                     let mut left = left.clone();
@@ -288,7 +287,7 @@ pub fn create_rust_test_module<T: IntrinsicTypeDefinition>(
     let specializations = generate_rust_specializations(
         &mut arguments
             .iter()
-            .filter_map(|i| i.constraint.as_ref().map(|v| v.to_range())),
+            .filter_map(|i| i.constraint.as_ref().map(|v| v.to_vector())),
     );
 
     generate_rust_test_loop(w, intrinsic, indentation, &specializations, PASSES)?;

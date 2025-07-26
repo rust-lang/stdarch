@@ -1,10 +1,11 @@
+mod argument;
 mod compile;
 mod config;
 mod intrinsic;
 mod json_parser;
 mod types;
 
-use std::fs::File;
+use std::fs::{self, File};
 
 use rayon::prelude::*;
 
@@ -69,28 +70,31 @@ impl SupportedArchitectureTest for ArmArchitectureTest {
 
         let (chunk_size, chunk_count) = chunk_info(self.intrinsics.len());
 
-        let cpp_compiler = compile::build_cpp_compilation(&self.cli_options).unwrap();
+        let cpp_compiler_wrapped = compile::build_cpp_compilation(&self.cli_options);
 
         let notice = &build_notices("// ");
+        fs::create_dir_all("c_programs").unwrap();
         self.intrinsics
             .par_chunks(chunk_size)
             .enumerate()
             .map(|(i, chunk)| {
                 let c_filename = format!("c_programs/mod_{i}.cpp");
-                let mut file = File::create(&c_filename).unwrap();
+                let mut file = fs::File::create(&c_filename).unwrap();
                 write_mod_cpp(&mut file, notice, c_target, platform_headers, chunk).unwrap();
 
                 // compile this cpp file into a .o file
-                let output = cpp_compiler
-                    .compile_object_file(&format!("mod_{i}.cpp"), &format!("mod_{i}.o"))?;
-                assert!(output.status.success(), "{output:?}");
+                if let Some(cpp_compiler) = cpp_compiler_wrapped.as_ref() {
+                    let output = cpp_compiler
+                        .compile_object_file(&format!("mod_{i}.cpp"), &format!("mod_{i}.o"))?;
+                    assert!(output.status.success(), "{output:?}");
+                }
 
                 Ok(())
             })
             .collect::<Result<(), std::io::Error>>()
             .unwrap();
 
-        let mut file = File::create("c_programs/main.cpp").unwrap();
+        let mut file = fs::File::create("c_programs/main.cpp").unwrap();
         write_main_cpp(
             &mut file,
             c_target,
@@ -100,20 +104,22 @@ impl SupportedArchitectureTest for ArmArchitectureTest {
         .unwrap();
 
         // compile this cpp file into a .o file
-        info!("compiling main.cpp");
-        let output = cpp_compiler
-            .compile_object_file("main.cpp", "intrinsic-test-programs.o")
-            .unwrap();
-        assert!(output.status.success(), "{output:?}");
+        if let Some(cpp_compiler) = cpp_compiler_wrapped.as_ref() {
+            info!("compiling main.cpp");
+            let output = cpp_compiler
+                .compile_object_file("main.cpp", "intrinsic-test-programs.o")
+                .unwrap();
+            assert!(output.status.success(), "{output:?}");
 
-        let object_files = (0..chunk_count)
-            .map(|i| format!("mod_{i}.o"))
-            .chain(["intrinsic-test-programs.o".to_owned()]);
+            let object_files = (0..chunk_count)
+                .map(|i| format!("mod_{i}.o"))
+                .chain(["intrinsic-test-programs.o".to_owned()]);
 
-        let output = cpp_compiler
-            .link_executable(object_files, "intrinsic-test-programs")
-            .unwrap();
-        assert!(output.status.success(), "{output:?}");
+            let output = cpp_compiler
+                .link_executable(object_files, "intrinsic-test-programs")
+                .unwrap();
+            assert!(output.status.success(), "{output:?}");
+        }
 
         true
     }
@@ -172,7 +178,11 @@ impl SupportedArchitectureTest for ArmArchitectureTest {
             .collect::<Result<(), std::io::Error>>()
             .unwrap();
 
-        compile_rust_programs(toolchain, target, linker)
+        if self.cli_options.toolchain.is_some() {
+            compile_rust_programs(toolchain, target, linker)
+        } else {
+            true
+        }
     }
 
     fn compare_outputs(&self) -> bool {
