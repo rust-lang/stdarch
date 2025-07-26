@@ -1,3 +1,4 @@
+use std::collections::HashMap;
 use std::fmt;
 use std::ops::Deref;
 use std::str::FromStr;
@@ -121,7 +122,7 @@ pub struct IntrinsicType {
     /// A value of `None` can be assumed to be 1 though.
     pub vec_len: Option<u32>,
 
-    pub target: String,
+    pub metadata: HashMap<String, String>,
 }
 
 impl IntrinsicType {
@@ -151,6 +152,10 @@ impl IntrinsicType {
 
     pub fn is_ptr(&self) -> bool {
         self.ptr
+    }
+
+    pub fn set_metadata(&mut self, key: &str, value: &str) {
+        self.metadata.insert(key.to_string(), value.to_string());
     }
 
     pub fn c_scalar_type(&self) -> String {
@@ -322,7 +327,7 @@ pub trait IntrinsicTypeDefinition: Deref<Target = IntrinsicType> {
     fn get_lane_function(&self) -> String;
 
     /// can be implemented in an `impl` block
-    fn from_c(_s: &str, _target: &str) -> Result<Self, String>
+    fn from_c(_s: &str) -> Result<Self, String>
     where
         Self: Sized;
 
