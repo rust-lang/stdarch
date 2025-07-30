@@ -905,7 +905,7 @@ pub fn _mm_cvt_si2ss(a: __m128, b: i32) -> __m128 {
 #[cfg_attr(test, assert_instr(movss))]
 #[stable(feature = "simd_x86", since = "1.27.0")]
 pub fn _mm_set_ss(a: f32) -> __m128 {
-    __m128([a, 0.0, 0.0, 0.0])
+    __m128::from_array([a, 0.0, 0.0, 0.0])
 }
 
 /// Construct a `__m128` with all element set to `a`.
@@ -916,7 +916,7 @@ pub fn _mm_set_ss(a: f32) -> __m128 {
 #[cfg_attr(test, assert_instr(shufps))]
 #[stable(feature = "simd_x86", since = "1.27.0")]
 pub fn _mm_set1_ps(a: f32) -> __m128 {
-    __m128([a, a, a, a])
+    __m128::from_array([a, a, a, a])
 }
 
 /// Alias for [`_mm_set1_ps`](fn._mm_set1_ps.html)
@@ -954,7 +954,7 @@ pub fn _mm_set_ps1(a: f32) -> __m128 {
 #[cfg_attr(test, assert_instr(unpcklps))]
 #[stable(feature = "simd_x86", since = "1.27.0")]
 pub fn _mm_set_ps(a: f32, b: f32, c: f32, d: f32) -> __m128 {
-    __m128([d, c, b, a])
+    __m128::from_array([d, c, b, a])
 }
 
 /// Construct a `__m128` from four floating point values lowest to highest.
@@ -980,7 +980,7 @@ pub fn _mm_set_ps(a: f32, b: f32, c: f32, d: f32) -> __m128 {
 )]
 #[stable(feature = "simd_x86", since = "1.27.0")]
 pub fn _mm_setr_ps(a: f32, b: f32, c: f32, d: f32) -> __m128 {
-    __m128([a, b, c, d])
+    __m128::from_array([a, b, c, d])
 }
 
 /// Construct a `__m128` with all elements initialized to zero.
@@ -1116,7 +1116,7 @@ pub fn _mm_movemask_ps(a: __m128) -> i32 {
 #[cfg_attr(test, assert_instr(movss))]
 #[stable(feature = "simd_x86", since = "1.27.0")]
 pub unsafe fn _mm_load_ss(p: *const f32) -> __m128 {
-    __m128([*p, 0.0, 0.0, 0.0])
+    __m128::from_array([*p, 0.0, 0.0, 0.0])
 }
 
 /// Construct a `__m128` by duplicating the value read from `p` into all
@@ -1132,7 +1132,7 @@ pub unsafe fn _mm_load_ss(p: *const f32) -> __m128 {
 #[stable(feature = "simd_x86", since = "1.27.0")]
 pub unsafe fn _mm_load1_ps(p: *const f32) -> __m128 {
     let a = *p;
-    __m128([a, a, a, a])
+    __m128::from_array([a, a, a, a])
 }
 
 /// Alias for [`_mm_load1_ps`](fn._mm_load1_ps.html)
