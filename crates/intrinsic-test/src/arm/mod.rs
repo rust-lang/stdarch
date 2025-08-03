@@ -10,7 +10,6 @@ use std::fs::{self, File};
 use rayon::prelude::*;
 
 use crate::arm::config::POLY128_OSTREAM_DEF;
-use crate::common::SupportedArchitectureTest;
 use crate::common::cli::ProcessedCli;
 use crate::common::compare::compare_outputs;
 use crate::common::gen_c::{write_main_cpp, write_mod_cpp};
@@ -26,13 +25,6 @@ use json_parser::get_neon_intrinsics;
 pub struct ArmArchitectureTest {
     intrinsics: Vec<Intrinsic<ArmIntrinsicType>>,
     cli_options: ProcessedCli,
-}
-
-fn chunk_info(intrinsic_count: usize) -> (usize, usize) {
-    let available_parallelism = std::thread::available_parallelism().unwrap().get();
-    let chunk_size = intrinsic_count.div_ceil(Ord::min(available_parallelism, intrinsic_count));
-
-    (chunk_size, intrinsic_count.div_ceil(chunk_size))
 }
 
 impl SupportedArchitectureTest for ArmArchitectureTest {
@@ -79,7 +71,7 @@ impl SupportedArchitectureTest for ArmArchitectureTest {
             .enumerate()
             .map(|(i, chunk)| {
                 let c_filename = format!("c_programs/mod_{i}.cpp");
-                let mut file = File::create(&c_filename).unwrap();
+                let mut file = fs::File::create(&c_filename).unwrap();
                 write_mod_cpp(&mut file, notice, c_target, platform_headers, chunk).unwrap();
 
                 // compile this cpp file into a .o file.
@@ -97,11 +89,12 @@ impl SupportedArchitectureTest for ArmArchitectureTest {
             .collect::<Result<(), std::io::Error>>()
             .unwrap();
 
-        let mut file = File::create("c_programs/main.cpp").unwrap();
+        let mut file = fs::File::create("c_programs/main.cpp").unwrap();
         write_main_cpp(
             &mut file,
             c_target,
             POLY128_OSTREAM_DEF,
+            Vec::from(platform_headers),
             self.intrinsics.iter().map(|i| i.name.as_str()),
         )
         .unwrap();

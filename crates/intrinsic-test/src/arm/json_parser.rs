@@ -79,8 +79,8 @@ fn json_to_intrinsic(
 ) -> Result<Intrinsic<ArmIntrinsicType>, Box<dyn std::error::Error>> {
     let name = intr.name.replace(['[', ']'], "");
 
-    let results = ArmIntrinsicType::from_c(&intr.return_type.value, target)?;
-
+    let mut results = ArmIntrinsicType::from_c(&intr.return_type.value)?;
+    results.set_metadata("target".to_string(), target.to_string());
     let args = intr
         .arguments
         .into_iter()
