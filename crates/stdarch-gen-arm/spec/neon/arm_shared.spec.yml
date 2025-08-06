@@ -7830,9 +7830,9 @@ intrinsics:
     static_defs: ['const N: i32']
     safety: safe
     types:
-      - [int16x8_t, int8x8_t, 'N >= 1 && N <= 8', 'const { int16x8_t([-N as i16; 8]) }']
-      - [int32x4_t, int16x4_t, 'N >= 1 && N <= 16', 'const { int32x4_t([-N; 4]) }']
-      - [int64x2_t, int32x2_t, 'N >= 1 && N <= 32', 'const { int64x2_t([-N as i64; 2]) }']
+      - [int16x8_t, int8x8_t, 'N >= 1 && N <= 8', 'const { int16x8_t::from_array([-N as i16; 8]) }']
+      - [int32x4_t, int16x4_t, 'N >= 1 && N <= 16', 'const { int32x4_t::from_array([-N; 4]) }']
+      - [int64x2_t, int32x2_t, 'N >= 1 && N <= 32', 'const { int64x2_t::from_array([-N as i64; 2]) }']
     compose:
       - FnCall: [static_assert!, ["{type[2]}"]]
       - LLVMLink:
@@ -7885,9 +7885,9 @@ intrinsics:
     static_defs: ['const N: i32']
     safety: safe
     types:
-      - [int16x8_t, uint8x8_t, 'N >= 1 && N <= 8', 'const { int16x8_t([-N as i16; 8]) }']
-      - [int32x4_t, uint16x4_t, 'N >= 1 && N <= 16', 'const { int32x4_t([-N; 4]) }']
-      - [int64x2_t, uint32x2_t, 'N >= 1 && N <= 32', 'const { int64x2_t([-N as i64; 2]) }']
+      - [int16x8_t, uint8x8_t, 'N >= 1 && N <= 8', 'const { int16x8_t::from_array([-N as i16; 8]) }']
+      - [int32x4_t, uint16x4_t, 'N >= 1 && N <= 16', 'const { int32x4_t::from_array([-N; 4]) }']
+      - [int64x2_t, uint32x2_t, 'N >= 1 && N <= 32', 'const { int64x2_t::from_array([-N as i64; 2]) }']
     compose:
       - FnCall: [static_assert!, ["{type[2]}"]]
       - LLVMLink:
@@ -8061,9 +8061,9 @@ intrinsics:
     static_defs: ['const N: i32']
     safety: safe
     types:
-      - [int16x8_t, int8x8_t, 'N >= 1 && N <= 8', 'const { int16x8_t([-N as i16; 8]) }']
-      - [int32x4_t, int16x4_t, 'N >= 1 && N <= 16', 'const { int32x4_t([-N; 4]) }']
-      - [int64x2_t, int32x2_t, 'N >= 1 && N <= 32', 'const { int64x2_t([-N as i64; 2]) }']
+      - [int16x8_t, int8x8_t, 'N >= 1 && N <= 8', 'const { int16x8_t::from_array([-N as i16; 8]) }']
+      - [int32x4_t, int16x4_t, 'N >= 1 && N <= 16', 'const { int32x4_t::from_array([-N; 4]) }']
+      - [int64x2_t, int32x2_t, 'N >= 1 && N <= 32', 'const { int64x2_t::from_array([-N as i64; 2]) }']
     compose:
       - FnCall: [static_assert!, ["{type[2]}"]]
       - LLVMLink:
@@ -8116,9 +8116,9 @@ intrinsics:
     static_defs: ['const N: i32']
     safety: safe
     types:
-      - [uint16x8_t, uint8x8_t, 'N >= 1 && N <= 8', 'const { uint16x8_t([-N as u16, -N as u16, -N as u16, -N as u16, -N as u16, -N as u16, -N as u16, -N as u16]) }']
-      - [uint32x4_t, uint16x4_t, 'N >= 1 && N <= 16', 'const { uint32x4_t([-N as u32, -N as u32, -N as u32, -N as u32]) }']
-      - [uint64x2_t, uint32x2_t, 'N >= 1 && N <= 32', 'const { uint64x2_t([-N as u64, -N as u64]) }']
+      - [uint16x8_t, uint8x8_t, 'N >= 1 && N <= 8', 'const { uint16x8_t::from_array([-N as u16, -N as u16, -N as u16, -N as u16, -N as u16, -N as u16, -N as u16, -N as u16]) }']
+      - [uint32x4_t, uint16x4_t, 'N >= 1 && N <= 16', 'const { uint32x4_t::from_array([-N as u32, -N as u32, -N as u32, -N as u32]) }']
+      - [uint64x2_t, uint32x2_t, 'N >= 1 && N <= 32', 'const { uint64x2_t::from_array([-N as u64, -N as u64]) }']
     compose:
       - FnCall: [static_assert!, ["{type[2]}"]]
       - LLVMLink:
@@ -8171,9 +8171,9 @@ intrinsics:
     static_defs: ['const N: i32']
     safety: safe
     types:
-      - [int16x8_t, uint8x8_t, 'N >= 1 && N <= 8', 'const { int16x8_t([-N as i16; 8]) }']
-      - [int32x4_t, uint16x4_t, 'N >= 1 && N <= 16', 'const { int32x4_t([-N; 4]) }']
-      - [int64x2_t, uint32x2_t, 'N >= 1 && N <= 32', 'const { int64x2_t([-N as i64; 2]) }']
+      - [int16x8_t, uint8x8_t, 'N >= 1 && N <= 8', 'const { int16x8_t::from_array([-N as i16; 8]) }']
+      - [int32x4_t, uint16x4_t, 'N >= 1 && N <= 16', 'const { int32x4_t::from_array([-N; 4]) }']
+      - [int64x2_t, uint32x2_t, 'N >= 1 && N <= 32', 'const { int64x2_t::from_array([-N as i64; 2]) }']
     compose:
       - FnCall: [static_assert!, ["{type[2]}"]]
       - LLVMLink:
@@ -8895,9 +8895,9 @@ intrinsics:
     static_defs: ['const N: i32']
     safety: safe
     types:
-      - [int16x8_t, int8x8_t, 'N >= 1 && N <= 8', 'const { int16x8_t([-N as i16; 8]) }']
-      - [int32x4_t, int16x4_t, 'N >= 1 && N <= 16', 'const { int32x4_t([-N; 4]) }']
-      - [int64x2_t, int32x2_t, 'N >= 1 && N <= 32', 'const { int64x2_t([-N as i64; 2]) }']
+      - [int16x8_t, int8x8_t, 'N >= 1 && N <= 8', 'const { int16x8_t::from_array([-N as i16; 8]) }']
+      - [int32x4_t, int16x4_t, 'N >= 1 && N <= 16', 'const { int32x4_t::from_array([-N; 4]) }']
+      - [int64x2_t, int32x2_t, 'N >= 1 && N <= 32', 'const { int64x2_t::from_array([-N as i64; 2]) }']
     compose:
       - FnCall: [static_assert!, ["{type[2]}"]]
       - LLVMLink:
@@ -10557,9 +10557,9 @@ intrinsics:
     static_defs: ['const N: i32']
     safety: safe
     types:
-      - [uint16x8_t, uint8x8_t, '8', 'const { uint16x8_t([-N as u16, -N as u16, -N as u16, -N as u16, -N as u16, -N as u16, -N as u16, -N as u16]) }']
-      - [uint32x4_t, uint16x4_t, '16', 'const { uint32x4_t([-N as u32, -N as u32, -N as u32, -N as u32]) }']
-      - [uint64x2_t, uint32x2_t, '32', 'const { uint64x2_t([-N as u64, -N as u64]) }']
+      - [uint16x8_t, uint8x8_t, '8', 'const { uint16x8_t::from_array([-N as u16, -N as u16, -N as u16, -N as u16, -N as u16, -N as u16, -N as u16, -N as u16]) }']
+      - [uint32x4_t, uint16x4_t, '16', 'const { uint32x4_t::from_array([-N as u32, -N as u32, -N as u32, -N as u32]) }']
+      - [uint64x2_t, uint32x2_t, '32', 'const { uint64x2_t::from_array([-N as u64, -N as u64]) }']
     compose:
       - FnCall: [static_assert!, ['N >= 1 && N <= {type[2]}']]
       - LLVMLink:
@@ -11413,14 +11413,14 @@ intrinsics:
     static_defs: ['const N: i32']
     safety: safe
     types:
-      - [int8x8_t, uint8x8_t, '3', 'const { int8x8_t([N as i8; 8]) }']
-      - [int16x4_t, uint16x4_t, '4', 'const { int16x4_t([N as i16; 4]) }']
-      - [int32x2_t, uint32x2_t, '5', 'const { int32x2_t([N; 2]) }']
-      - [int64x1_t, uint64x1_t, '6', 'const { int64x1_t([N as i64]) }']
-      - [int8x16_t, uint8x16_t, '3', 'const { int8x16_t([N as i8; 16]) }']
-      - [int16x8_t, uint16x8_t, '4', 'const { int16x8_t([N as i16; 8]) }']
-      - [int32x4_t, uint32x4_t, '5', 'const { int32x4_t([N; 4]) }']
-      - [int64x2_t, uint64x2_t, '6', 'const { int64x2_t([N as i64; 2]) }']
+      - [int8x8_t, uint8x8_t, '3', 'const { int8x8_t::from_array([N as i8; 8]) }']
+      - [int16x4_t, uint16x4_t, '4', 'const { int16x4_t::from_array([N as i16; 4]) }']
+      - [int32x2_t, uint32x2_t, '5', 'const { int32x2_t::from_array([N; 2]) }']
+      - [int64x1_t, uint64x1_t, '6', 'const { int64x1_t::from_array([N as i64]) }']
+      - [int8x16_t, uint8x16_t, '3', 'const { int8x16_t::from_array([N as i8; 16]) }']
+      - [int16x8_t, uint16x8_t, '4', 'const { int16x8_t::from_array([N as i16; 8]) }']
+      - [int32x4_t, uint32x4_t, '5', 'const { int32x4_t::from_array([N; 4]) }']
+      - [int64x2_t, uint64x2_t, '6', 'const { int64x2_t::from_array([N as i64; 2]) }']
     compose:
       - FnCall: [static_assert_uimm_bits!, [N, "{type[2]}"]]
       - LLVMLink:
@@ -11445,14 +11445,14 @@ intrinsics:
     static_defs: ['const N: i32']
     safety: safe
     types:
-      - [int8x8_t, uint8x8_t, '3', 'const { int8x8_t([N as i8; 8]) }']
-      - [int16x4_t, uint16x4_t, '4', 'const { int16x4_t([N as i16; 4]) }']
-      - [int32x2_t, uint32x2_t, '5', 'const { int32x2_t([N; 2]) }']
-      - [int64x1_t, uint64x1_t, '6', 'const { int64x1_t([N as i64]) }']
-      - [int8x16_t, uint8x16_t, '3', 'const { int8x16_t([N as i8; 16]) }']
-      - [int16x8_t, uint16x8_t, '4', 'const { int16x8_t([N as i16; 8]) }']
-      - [int32x4_t, uint32x4_t, '5', 'const { int32x4_t([N; 4]) }']
-      - [int64x2_t, uint64x2_t, '6', 'const { int64x2_t([N as i64; 2]) }']
+      - [int8x8_t, uint8x8_t, '3', 'const { int8x8_t::from_array([N as i8; 8]) }']
+      - [int16x4_t, uint16x4_t, '4', 'const { int16x4_t::from_array([N as i16; 4]) }']
+      - [int32x2_t, uint32x2_t, '5', 'const { int32x2_t::from_array([N; 2]) }']
+      - [int64x1_t, uint64x1_t, '6', 'const { int64x1_t::from_array([N as i64]) }']
+      - [int8x16_t, uint8x16_t, '3', 'const { int8x16_t::from_array([N as i8; 16]) }']
+      - [int16x8_t, uint16x8_t, '4', 'const { int16x8_t::from_array([N as i16; 8]) }']
+      - [int32x4_t, uint32x4_t, '5', 'const { int32x4_t::from_array([N; 4]) }']
+      - [int64x2_t, uint64x2_t, '6', 'const { int64x2_t::from_array([N as i64; 2]) }']
     compose:
       - FnCall: [static_assert_uimm_bits!, [N, "{type[2]}"]]
       - LLVMLink:
@@ -14789,8 +14789,8 @@ intrinsics:
       - *neon-cfg-arm-unstable
     safety: safe
     types:
-      - ['vget_high_s64', 'int64x2_t', 'int64x1_t', 'vmov', 'ext', 'unsafe { int64x1_t([simd_extract!(a, 1)]) }']
-      - ['vget_high_u64', 'uint64x2_t', 'uint64x1_t', 'vmov', 'ext', 'unsafe { uint64x1_t([simd_extract!(a, 1)]) }']
+      - ['vget_high_s64', 'int64x2_t', 'int64x1_t', 'vmov', 'ext', 'unsafe { int64x1_t::from_array([simd_extract!(a, 1)]) }']
+      - ['vget_high_u64', 'uint64x2_t', 'uint64x1_t', 'vmov', 'ext', 'unsafe { uint64x1_t::from_array([simd_extract!(a, 1)]) }']
     compose:
       - Identifier: ['{type[5]}', Symbol]
 
@@ -14805,8 +14805,8 @@ intrinsics:
       - *neon-cfg-arm-unstable
     safety: safe
     types:
-      - ['vget_low_s64', 'int64x2_t', 'int64x1_t', 'unsafe { int64x1_t([simd_extract!(a, 0)]) }']
-      - ['vget_low_u64', 'uint64x2_t', 'uint64x1_t', 'unsafe { uint64x1_t([simd_extract!(a, 0)]) }']
+      - ['vget_low_s64', 'int64x2_t', 'int64x1_t', 'unsafe { int64x1_t::from_array([simd_extract!(a, 0)]) }']
+      - ['vget_low_u64', 'uint64x2_t', 'uint64x1_t', 'unsafe { uint64x1_t::from_array([simd_extract!(a, 0)]) }']
     compose:
       - Identifier: ['{type[3]}', Symbol]
 
