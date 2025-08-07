@@ -248,7 +248,7 @@ pub fn _mm256_alignr_epi8<const IMM8: i32>(a: __m256i, b: __m256i) -> __m256i {
 #[cfg_attr(test, assert_instr(vandps))]
 #[stable(feature = "simd_x86", since = "1.27.0")]
 pub fn _mm256_and_si256(a: __m256i, b: __m256i) -> __m256i {
-    unsafe { transmute(simd_and(a.as_i64x4(), b.as_i64x4())) }
+    a & b
 }
 
 /// Computes the bitwise NOT of 256 bits (representing integer data)
@@ -260,13 +260,7 @@ pub fn _mm256_and_si256(a: __m256i, b: __m256i) -> __m256i {
 #[cfg_attr(test, assert_instr(vandnps))]
 #[stable(feature = "simd_x86", since = "1.27.0")]
 pub fn _mm256_andnot_si256(a: __m256i, b: __m256i) -> __m256i {
-    unsafe {
-        let all_ones = _mm256_set1_epi8(-1);
-        transmute(simd_and(
-            simd_xor(a.as_i64x4(), all_ones.as_i64x4()),
-            b.as_i64x4(),
-        ))
-    }
+    !a & b
 }
 
 /// Averages packed unsigned 16-bit integers in `a` and `b`.
@@ -2184,7 +2178,7 @@ pub fn _mm256_mulhrs_epi16(a: __m256i, b: __m256i) -> __m256i {
 #[cfg_attr(test, assert_instr(vorps))]
 #[stable(feature = "simd_x86", since = "1.27.0")]
 pub fn _mm256_or_si256(a: __m256i, b: __m256i) -> __m256i {
-    unsafe { transmute(simd_or(a.as_i32x8(), b.as_i32x8())) }
+    a | b
 }
 
 /// Converts packed 16-bit integers from `a` and `b` to packed 8-bit integers
@@ -3557,7 +3551,7 @@ pub fn _mm256_unpacklo_epi64(a: __m256i, b: __m256i) -> __m256i {
 #[cfg_attr(test, assert_instr(vxorps))]
 #[stable(feature = "simd_x86", since = "1.27.0")]
 pub fn _mm256_xor_si256(a: __m256i, b: __m256i) -> __m256i {
-    unsafe { transmute(simd_xor(a.as_i64x4(), b.as_i64x4())) }
+    a ^ b
 }
 
 /// Extracts an 8-bit integer from `a`, selected with `INDEX`. Returns a 32-bit

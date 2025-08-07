@@ -28149,7 +28149,7 @@ pub fn _mm_maskz_alignr_epi64<const IMM8: i32>(k: __mmask8, a: __m128i, b: __m12
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpandq))] //should be vpandd, but generate vpandq
 pub fn _mm512_and_epi32(a: __m512i, b: __m512i) -> __m512i {
-    unsafe { transmute(simd_and(a.as_i32x16(), b.as_i32x16())) }
+    a & b
 }
 
 /// Performs element-by-element bitwise AND between packed 32-bit integer elements of a and b, storing the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
@@ -28244,7 +28244,7 @@ pub fn _mm_maskz_and_epi32(k: __mmask8, a: __m128i, b: __m128i) -> __m128i {
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpandq))]
 pub fn _mm512_and_epi64(a: __m512i, b: __m512i) -> __m512i {
-    unsafe { transmute(simd_and(a.as_i64x8(), b.as_i64x8())) }
+    a & b
 }
 
 /// Compute the bitwise AND of packed 64-bit integers in a and b, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
@@ -28339,7 +28339,7 @@ pub fn _mm_maskz_and_epi64(k: __mmask8, a: __m128i, b: __m128i) -> __m128i {
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpandq))]
 pub fn _mm512_and_si512(a: __m512i, b: __m512i) -> __m512i {
-    unsafe { transmute(simd_and(a.as_i32x16(), b.as_i32x16())) }
+    a & b
 }
 
 /// Compute the bitwise OR of packed 32-bit integers in a and b, and store the results in dst.
@@ -28350,7 +28350,7 @@ pub fn _mm512_and_si512(a: __m512i, b: __m512i) -> __m512i {
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vporq))]
 pub fn _mm512_or_epi32(a: __m512i, b: __m512i) -> __m512i {
-    unsafe { transmute(simd_or(a.as_i32x16(), b.as_i32x16())) }
+    a | b
 }
 
 /// Compute the bitwise OR of packed 32-bit integers in a and b, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
@@ -28389,7 +28389,7 @@ pub fn _mm512_maskz_or_epi32(k: __mmask16, a: __m512i, b: __m512i) -> __m512i {
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vor))] //should be vpord
 pub fn _mm256_or_epi32(a: __m256i, b: __m256i) -> __m256i {
-    unsafe { transmute(simd_or(a.as_i32x8(), b.as_i32x8())) }
+    a | b
 }
 
 /// Compute the bitwise OR of packed 32-bit integers in a and b, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
@@ -28428,7 +28428,7 @@ pub fn _mm256_maskz_or_epi32(k: __mmask8, a: __m256i, b: __m256i) -> __m256i {
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vor))] //should be vpord
 pub fn _mm_or_epi32(a: __m128i, b: __m128i) -> __m128i {
-    unsafe { transmute(simd_or(a.as_i32x4(), b.as_i32x4())) }
+    a | b
 }
 
 /// Compute the bitwise OR of packed 32-bit integers in a and b, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
@@ -28467,7 +28467,7 @@ pub fn _mm_maskz_or_epi32(k: __mmask8, a: __m128i, b: __m128i) -> __m128i {
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vporq))]
 pub fn _mm512_or_epi64(a: __m512i, b: __m512i) -> __m512i {
-    unsafe { transmute(simd_or(a.as_i64x8(), b.as_i64x8())) }
+    a | b
 }
 
 /// Compute the bitwise OR of packed 64-bit integers in a and b, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
@@ -28506,7 +28506,7 @@ pub fn _mm512_maskz_or_epi64(k: __mmask8, a: __m512i, b: __m512i) -> __m512i {
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vor))] //should be vporq
 pub fn _mm256_or_epi64(a: __m256i, b: __m256i) -> __m256i {
-    unsafe { transmute(simd_or(a.as_i64x4(), b.as_i64x4())) }
+    a | b
 }
 
 /// Compute the bitwise OR of packed 64-bit integers in a and b, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
@@ -28545,7 +28545,7 @@ pub fn _mm256_maskz_or_epi64(k: __mmask8, a: __m256i, b: __m256i) -> __m256i {
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vor))] //should be vporq
 pub fn _mm_or_epi64(a: __m128i, b: __m128i) -> __m128i {
-    unsafe { transmute(simd_or(a.as_i64x2(), b.as_i64x2())) }
+    a | b
 }
 
 /// Compute the bitwise OR of packed 64-bit integers in a and b, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
@@ -28584,7 +28584,7 @@ pub fn _mm_maskz_or_epi64(k: __mmask8, a: __m128i, b: __m128i) -> __m128i {
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vporq))]
 pub fn _mm512_or_si512(a: __m512i, b: __m512i) -> __m512i {
-    unsafe { transmute(simd_or(a.as_i32x16(), b.as_i32x16())) }
+    a | b
 }
 
 /// Compute the bitwise XOR of packed 32-bit integers in a and b, and store the results in dst.
@@ -28595,7 +28595,7 @@ pub fn _mm512_or_si512(a: __m512i, b: __m512i) -> __m512i {
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpxorq))] //should be vpxord
 pub fn _mm512_xor_epi32(a: __m512i, b: __m512i) -> __m512i {
-    unsafe { transmute(simd_xor(a.as_i32x16(), b.as_i32x16())) }
+    a ^ b
 }
 
 /// Compute the bitwise XOR of packed 32-bit integers in a and b, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
@@ -28634,7 +28634,7 @@ pub fn _mm512_maskz_xor_epi32(k: __mmask16, a: __m512i, b: __m512i) -> __m512i {
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vxor))] //should be vpxord
 pub fn _mm256_xor_epi32(a: __m256i, b: __m256i) -> __m256i {
-    unsafe { transmute(simd_xor(a.as_i32x8(), b.as_i32x8())) }
+    a ^ b
 }
 
 /// Compute the bitwise XOR of packed 32-bit integers in a and b, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
@@ -28673,7 +28673,7 @@ pub fn _mm256_maskz_xor_epi32(k: __mmask8, a: __m256i, b: __m256i) -> __m256i {
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vxor))] //should be vpxord
 pub fn _mm_xor_epi32(a: __m128i, b: __m128i) -> __m128i {
-    unsafe { transmute(simd_xor(a.as_i32x4(), b.as_i32x4())) }
+    a ^ b
 }
 
 /// Compute the bitwise XOR of packed 32-bit integers in a and b, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
@@ -28712,7 +28712,7 @@ pub fn _mm_maskz_xor_epi32(k: __mmask8, a: __m128i, b: __m128i) -> __m128i {
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpxorq))]
 pub fn _mm512_xor_epi64(a: __m512i, b: __m512i) -> __m512i {
-    unsafe { transmute(simd_xor(a.as_i64x8(), b.as_i64x8())) }
+    a ^ b
 }
 
 /// Compute the bitwise XOR of packed 64-bit integers in a and b, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
@@ -28751,7 +28751,7 @@ pub fn _mm512_maskz_xor_epi64(k: __mmask8, a: __m512i, b: __m512i) -> __m512i {
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vxor))] //should be vpxorq
 pub fn _mm256_xor_epi64(a: __m256i, b: __m256i) -> __m256i {
-    unsafe { transmute(simd_xor(a.as_i64x4(), b.as_i64x4())) }
+    a ^ b
 }
 
 /// Compute the bitwise XOR of packed 64-bit integers in a and b, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
@@ -28790,7 +28790,7 @@ pub fn _mm256_maskz_xor_epi64(k: __mmask8, a: __m256i, b: __m256i) -> __m256i {
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vxor))] //should be vpxorq
 pub fn _mm_xor_epi64(a: __m128i, b: __m128i) -> __m128i {
-    unsafe { transmute(simd_xor(a.as_i64x2(), b.as_i64x2())) }
+    a ^ b
 }
 
 /// Compute the bitwise XOR of packed 64-bit integers in a and b, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
@@ -28829,7 +28829,7 @@ pub fn _mm_maskz_xor_epi64(k: __mmask8, a: __m128i, b: __m128i) -> __m128i {
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpxorq))]
 pub fn _mm512_xor_si512(a: __m512i, b: __m512i) -> __m512i {
-    unsafe { transmute(simd_xor(a.as_i32x16(), b.as_i32x16())) }
+    a ^ b
 }
 
 /// Compute the bitwise NOT of packed 32-bit integers in a and then AND with b, and store the results in dst.
@@ -28840,7 +28840,7 @@ pub fn _mm512_xor_si512(a: __m512i, b: __m512i) -> __m512i {
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpandnq))] //should be vpandnd
 pub fn _mm512_andnot_epi32(a: __m512i, b: __m512i) -> __m512i {
-    _mm512_and_epi32(_mm512_xor_epi32(a, _mm512_set1_epi32(u32::MAX as i32)), b)
+    !a & b
 }
 
 /// Compute the bitwise NOT of packed 32-bit integers in a and then AND with b, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
@@ -28939,7 +28939,7 @@ pub fn _mm_maskz_andnot_epi32(k: __mmask8, a: __m128i, b: __m128i) -> __m128i {
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpandnq))] //should be vpandnd
 pub fn _mm512_andnot_epi64(a: __m512i, b: __m512i) -> __m512i {
-    _mm512_and_epi64(_mm512_xor_epi64(a, _mm512_set1_epi64(u64::MAX as i64)), b)
+    !a & b
 }
 
 /// Compute the bitwise NOT of packed 64-bit integers in a and then AND with b, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
@@ -29038,7 +29038,7 @@ pub fn _mm_maskz_andnot_epi64(k: __mmask8, a: __m128i, b: __m128i) -> __m128i {
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpandnq))]
 pub fn _mm512_andnot_si512(a: __m512i, b: __m512i) -> __m512i {
-    _mm512_and_epi64(_mm512_xor_epi64(a, _mm512_set1_epi64(u64::MAX as i64)), b)
+    !a & b
 }
 
 /// Convert 16-bit mask a into an integer value, and store the result in dst.

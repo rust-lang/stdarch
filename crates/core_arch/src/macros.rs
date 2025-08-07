@@ -163,3 +163,61 @@ macro_rules! simd_extract {
     ($x:expr, $idx:expr $(,)?) => {{ $crate::intrinsics::simd::simd_extract($x, const { $idx }) }};
     ($x:expr, $idx:expr, $ty:ty $(,)?) => {{ $crate::intrinsics::simd::simd_extract::<_, $ty>($x, const { $idx }) }};
 }
+
+#[allow(unused)]
+macro_rules! impl_arith_op {
+    (__internal $op:ident, $intrinsic:ident $_:ident) => {
+        #[inline]
+        fn $op(self, rhs: Self) -> Self {
+            unsafe { crate::intrinsics::simd::$intrinsic(self, rhs) }
+        }
+    };
+    (__internal $op:ident, $intrinsic:ident) => {
+        #[inline]
+        fn $op(self) -> Self {
+            unsafe { crate::intrinsics::simd::$intrinsic(self) }
+        }
+    };
+    (: $($tt:tt)*) => {};
+    (
+        $type:ty $(, $other_types:ty )* : $(
+            $Trait:ident, $op:ident $(, $TraitAssign:ident, $op_assign:ident)? = $intrinsic:ident
+        );* $(;)?
+    ) => {
+    $(
+        #[stable(feature = "stdarch_arith_ops", since = "CURRENT_RUSTC_VERSION")]
+        impl crate::ops::$Trait for $type {
+            type Output = Self;
+
+            impl_arith_op!(__internal $op, $intrinsic $( $TraitAssign )?);
+        }
+
+        $(
+            #[stable(feature = "stdarch_arith_ops", since = "CURRENT_RUSTC_VERSION")]
+            impl crate::ops::$TraitAssign for $type {
+                #[inline]
+                fn $op_assign(&mut self, rhs: Self) {
+                    *self = crate::ops::$Trait::$op(*self, rhs)
+                }
+            }
+        )?
+    )*
+
+    impl_arith_op!($($other_types),* : $($Trait, $op $(, $TraitAssign, $op_assign)? = $intrinsic);*);
+    };
+}
+
+#[allow(unused)]
+macro_rules! impl_not {
+    ($($type:ty),*) => {$(
+        #[stable(feature = "stdarch_arith_ops", since = "CURRENT_RUSTC_VERSION")]
+        impl crate::ops::Not for $type {
+            type Output = Self;
+
+            #[inline]
+            fn not(self) -> Self {
+                unsafe { crate::intrinsics::simd::simd_xor(<$type>::splat(!0), self) }
+            }
+        }
+    )*};
+}
