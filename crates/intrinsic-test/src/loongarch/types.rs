@@ -1,6 +1,6 @@
 use super::intrinsic::LoongArchIntrinsicType;
 use crate::common::cli::Language;
-use crate::common::intrinsic_helpers::IntrinsicTypeDefinition;
+use crate::common::intrinsic_helpers::{IntrinsicType, IntrinsicTypeDefinition, TypeKind};
 
 impl IntrinsicTypeDefinition for LoongArchIntrinsicType {
     /// Gets a string containing the type in C format.
@@ -24,4 +24,56 @@ impl IntrinsicTypeDefinition for LoongArchIntrinsicType {
     }
 }
 
-impl LoongArchIntrinsicType
+impl LoongArchIntrinsicType {
+    /// Accepts X, Y and Z.
+    /// Returns a `LoongArchType`
+    pub fn from_values(asm_fmt: &String, data_type: &String) -> Result<Self, String> {
+        let bit_len = match data_type.as_str() {
+            "A16QI" => Some(8),
+            "AM16QI" => Some(8),
+            "V16QI" => Some(8),
+            "V32QI" => Some(8),
+            "A32QI" => Some(8),
+            "AM32QI" => Some(8),
+            "V8HI" => Some(16),
+            "V16HI" => Some(16),
+            "V4SI" => Some(32),
+            "V8SI" => Some(32),
+            "V2DI" => Some(64),
+            "V4DI" => Some(64),
+            "UV16QI" => Some(8),
+            "UV32QI" => Some(8),
+            "UV8HI" => Some(16),
+            "UV16HI" => Some(16),
+            "UV4SI" => Some(32),
+            "UV8SI" => Some(32),
+            "UV2DI" => Some(64),
+            "UV4DI" => Some(64),
+            "V4SF" => Some(32),
+            "V8SF" => Some(32),
+            "V2DF" => Some(64),
+            "V4DF" => Some(64),
+            "SI" | "DI" | "USI" | "UDI" | "UQI" | "QI" | "CVPOINTER" | "HI" => None,
+            _ => panic!("unknown type {data_type} with ASM {asm_fmt}"),
+        };
+
+        let vec_len = match data_type.as_str() {
+            "SI" | "DI" | "USI" | "UDI" | "UQI" | "QI" | "HI" | => None,
+            "V32QI" | "V16HI" | "V8SI" | "V4DI" | "UV32QI" | "UV16HI" | "UV8SI" | "UV4DI"
+            | "V8SF" | "V4DF" => Some(4),
+            _ => Some(2),
+        };
+
+        Ok(LoongArchIntrinsicType {
+            data: IntrinsicType {
+                constant: false,
+                ptr_constant: false,
+                ptr: false,
+                kind: TypeKind::Mask,
+                bit_len,
+                vec_len,
+                simd_len: None
+            }
+        })
+    }
+}

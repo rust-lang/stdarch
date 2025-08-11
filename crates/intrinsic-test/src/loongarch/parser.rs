@@ -1,9 +1,9 @@
-use std::fs::{self, File};
+use std::fs::File;
 use std::io::{BufRead, BufReader};
 use std::path::Path;
 
+use crate::common::argument::{Argument, ArgumentList};
 use crate::common::intrinsic::Intrinsic;
-use crate::common::intrinsic_helpers::IntrinsicType;
 use crate::loongarch::intrinsic::LoongArchIntrinsicType;
 
 pub fn get_loongson_intrinsics(
@@ -13,12 +13,8 @@ pub fn get_loongson_intrinsics(
     let f = File::open(path).unwrap_or_else(|_| panic!("Failed to open {}", path.display()));
     let f = BufReader::new(f);
     
-    let mut para_num;
     let mut current_name: Option<String> = None;
     let mut asm_fmts: Vec<String> = Vec::new();
-    let mut impl_function_str = String::new();
-    let mut call_function_str = String::new();
-    let mut out = String::new();
 
     let mut intrinsics: Vec<Intrinsic<LoongArchIntrinsicType>> = Vec::new();
     for line in f.lines() {
@@ -35,37 +31,25 @@ pub fn get_loongson_intrinsics(
                 .collect();
         } else if line.starts_with("data-types = ") {
             let current_name = current_name.clone().unwrap();
-            let data_types: Vec<&str> = line
+            let mut data_types: Vec<String> = line
                 .get(12..)
                 .unwrap()
                 .split(',')
-                .map(|e| e.trim())
+                .map(|e| e.trim().to_string())
                 .collect();
-            let in_t;
-            let out_t;
-            if data_types.len() == 2 {
-                in_t = [data_types[1], "NULL", "NULL", "NULL"];
-                out_t = data_types[0];
-                para_num = 1;
-            } else if data_types.len() == 3 {
-                in_t = [data_types[1], data_types[2], "NULL", "NULL"];
-                out_t = data_types[0];
-                para_num = 2;
-            } else if data_types.len() == 4 {
-                in_t = [data_types[1], data_types[2], data_types[3], "NULL"];
-                out_t = data_types[0];
-                para_num = 3;
-            } else if data_types.len() == 5 {
-                in_t = [data_types[1], data_types[2], data_types[3], data_types[4]];
-                out_t = data_types[0];
-                para_num = 4;
-            } else {
+            let arguments;
+            let return_type;
+            let data_types_len = data_types.len();
+            if data_types_len > 0 && data_types_len < 6 {
+                arguments = data_types.split_off(1);
+                
+                // Being explicit here with the variable name
+                return_type = data_types.get(0).unwrap();
+            }  else {
                 panic!("DEBUG: line: {0} len: {1}", line, data_types.len());
             }
 
-            // TODO: implement the below functions
-            // create list of intrinsics
-            let intrinsic = gen_intrinsic(current_name.as_str(), asm_fmts.as_slice(), &in_t, out_t, para_num, target);
+            let intrinsic = gen_intrinsic(current_name.as_str(), asm_fmts.clone(), arguments, return_type, target);
             if intrinsic.is_ok() {
                 intrinsics.push(intrinsic.unwrap());
             }
@@ -76,98 +60,72 @@ pub fn get_loongson_intrinsics(
 
 fn gen_intrinsic(
     current_name: &str,
-    asm_fmts: &[String],
-    in_t: &[&str; 4],
-    out_t: &str,
-    para_num: i32,
+    asm_fmts: Vec<String>,
+    args: Vec<String>,
+    return_type: &String,
     target: &str,
 ) -> Result<Intrinsic<LoongArchIntrinsicType>, Box<dyn std::error::Error>> {
-    let type_to_ct = |t: &str| -> &str {
-        match t {
-            "V16QI" => "union v16qi",
-            "V32QI" => "union v32qi",
-            "V8HI" => "union v8hi",
-            "V16HI" => "union v16hi",
-            "V4SI" => "union v4si",
-            "V8SI" => "union v8si",
-            "V2DI" => "union v2di",
-            "V4DI" => "union v4di",
-            "UV16QI" => "union uv16qi",
-            "UV32QI" => "union uv32qi",
-            "UV8HI" => "union uv8hi",
-            "UV16HI" => "union uv16hi",
-            "UV4SI" => "union uv4si",
-            "UV8SI" => "union uv8si",
-            "UV2DI" => "union uv2di",
-            "UV4DI" => "union uv4di",
-            "SI" => "int32_t",
-            "DI" => "int64_t",
-            "USI" => "uint32_t",
-            "UDI" => "uint64_t",
-            "V4SF" => "union v4sf",
-            "V8SF" => "union v8sf",
-            "V2DF" => "union v2df",
-            "V4DF" => "union v4df",
-            "UQI" => "uint32_t",
-            "QI" => "int32_t",
-            "CVPOINTER" => "void*",
-            "HI" => "int32_t",
-            _ => panic!("unknown type: {t}"),
-        }
-    };
-    let type_to_size = |v: &str, t: &str| -> u32 {
-        let n = if v.starts_with('_') {
-            v.get(1..).unwrap()
-        } else {
-            v
-        };
-        match t {
-            "A16QI" => 8,
-            "AM16QI" => 8,
-            "V16QI" => 8,
-            "V32QI" => 8,
-            "A32QI" => 8,
-            "AM32QI" => 8,
-            "V8HI" => 16,
-            "V16HI" => 16,
-            "V4SI" => 32,
-            "V8SI" => 32,
-            "V2DI" => 64,
-            "V4DI" => 64,
-            "UV16QI" => 8,
-            "UV32QI" => 8,
-            "UV8HI" => 16,
-            "UV16HI" => 16,
-            "UV4SI" => 32,
-            "UV8SI" => 32,
-            "UV2DI" => 64,
-            "UV4DI" => 64,
-            "V4SF" => 32,
-            "V8SF" => 32,
-            "V2DF" => 64,
-            "V4DF" => 64,
-            "SI" | "DI" | "USI" | "UDI" | "UQI" | "QI" | "CVPOINTER" | "HI" => 0,
-            _ => panic!("unknown type: {t}"),
-        }
-    };
-    let type_to_rp = |t: &str| -> Option<u32> {
-        match t {
-            "SI" | "DI" | "USI" | "UDI" | "UQI" | "QI" | "HI" | => None,
-            "V32QI" | "V16HI" | "V8SI" | "V4DI" | "UV32QI" | "UV16HI" | "UV8SI" | "UV4DI"
-            | "V8SF" | "V4DF" => Some(4)
-            _ => Some(2),
-        }
-    };
-    let type_to_imm = |t| -> i8 {
-        match t {
-            'b' => 4,
-            'h' => 3,
-            'w' => 2,
-            'd' => 1,
-            _ => panic!("unsupported type"),
-        }
-    };
+    let para_num = args.len();
+    let mut arguments = asm_fmts
+        .iter()
+        .zip(args.iter())
+        .enumerate()
+        .map(|(i, (asm_fmt, arg_type))| {
+            let ty = LoongArchIntrinsicType::from_values(asm_fmt, arg_type).unwrap();
+            let arg = Argument::<LoongArchIntrinsicType>::new(i, format!("_{i}_{}", arg_type), ty, None);
+            return arg;
+        })
+        .collect::<Vec<Argument<LoongArchIntrinsicType>>>();
 
+    if para_num == 1 && args[0] == "HI" {
+        match asm_fmts[1].as_str() {
+            "si13" | "i13" => arguments[0].ty.constant = true,
+            "si10" => arguments[0].ty.constant = true,
+            _ => panic!("unsupported assembly format: {:?}", asm_fmts),
+        };
+    } else if para_num == 2 && (args[1] == "UQI" || args[1] == "USI") {
+        if asm_fmts[2].starts_with("ui") {
+            arguments[1].ty.constant = true;
+        } else {
+            panic!("unsupported assembly format: {:?}", asm_fmts);
+        };
+    } else if para_num == 2 && args[1] == "QI" {
+        if asm_fmts[2].starts_with("si") {
+            arguments[1].ty.constant = true;
+        } else {
+            panic!("unsupported assembly format: {:?}", asm_fmts);
+        };
+    } else if para_num == 2 && args[0] == "CVPOINTER" && args[1] == "SI" {
+        if asm_fmts[2].starts_with("si") {
+            arguments[1].ty.constant = true;
+        } else {
+            panic!("unsupported assembly format: {:?}", asm_fmts);
+        };
+    } else if para_num == 3 && (args[2] == "USI" || args[2] == "UQI") {
+        if asm_fmts[2].starts_with("ui") {
+            arguments[2].ty.constant = true;
+        } else {
+            panic!("unsupported assembly format: {:?}", asm_fmts);
+        };
+    } else if para_num == 3 && args[1] == "CVPOINTER" && args[2] == "SI" {
+        match asm_fmts[2].as_str() {
+            "si12" => arguments[2].ty.constant = true,
+            _ => panic!("unsupported assembly format: {:?}", asm_fmts),
+        };
+    } else if para_num == 4 {
+        match (asm_fmts[3].as_str(), current_name.chars().last().unwrap()) {
+            ("si8", t) => {
+                arguments[2].ty.constant = true;
+                arguments[3].ty.constant = true;
+            },
+            (_, _) => panic!(
+                "unsupported assembly format: {:?} for {}",
+                asm_fmts, current_name
+            ),
+        };
+    }
+    let results = LoongArchIntrinsicType::from_values(return_type, &asm_fmts[0])?;
+    let arguments = ArgumentList::<LoongArchIntrinsicType> { args: arguments };
     Ok(Intrinsic {
         name: current_name.to_string(),
         arguments,
