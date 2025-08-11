@@ -5,19 +5,21 @@ use crate::common::intrinsic_helpers::{IntrinsicType, IntrinsicTypeDefinition, S
 use std::ops::{Deref, DerefMut};
 
 #[derive(Debug, Clone, PartialEq)]
-pub struct LoongArchIntrinsicType(pub IntrinsicType);
+pub struct LoongArchIntrinsicType {
+    pub data: IntrinsicType,
+}
 
 impl Deref for LoongArchIntrinsicType {
     type Target = IntrinsicType;
 
     fn deref(&self) -> &Self::Target {
-        &self.0
+        &self.data
     }
 }
 
 impl DerefMut for LoongArchIntrinsicType {
     fn deref_mut(&mut self) -> &mut Self::Target {
-        &mut self.0
+        &mut self.data
     }
 }
 
