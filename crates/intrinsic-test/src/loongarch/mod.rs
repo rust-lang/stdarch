@@ -1,4 +1,5 @@
 mod intrinsic;
+mod parser;
 mod types;
 
 use std::fs::{self, File};
