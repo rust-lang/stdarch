@@ -24,7 +24,9 @@ fn main() {
                 Some(ArmArchitectureTest::create(processed_cli_options))
             }
 
-            "loongarch64-unknown-linux-gnu" => Some(LoongArchArchitectureTest::create(processed_cli_options)),
+            "loongarch64-unknown-linux-gnu" => {
+                Some(LoongArchArchitectureTest::create(processed_cli_options))
+            }
             _ => None,
         };
 

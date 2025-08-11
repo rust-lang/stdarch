@@ -6,10 +6,10 @@ use std::fs::{self, File};
 
 use rayon::prelude::*;
 
-use crate::common::intrinsic_helpers::TypeKind;
 use crate::common::SupportedArchitectureTest;
 use crate::common::cli::ProcessedCli;
 use crate::common::compare::compare_outputs;
+use crate::common::intrinsic_helpers::TypeKind;
 
 use crate::common::intrinsic::Intrinsic;
 use crate::loongarch::parser::get_loongson_intrinsics;

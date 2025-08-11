@@ -8,11 +8,11 @@ use crate::loongarch::intrinsic::LoongArchIntrinsicType;
 
 pub fn get_loongson_intrinsics(
     path: &Path,
-    target: &str
+    target: &str,
 ) -> Result<Vec<Intrinsic<LoongArchIntrinsicType>>, Box<dyn std::error::Error>> {
     let f = File::open(path).unwrap_or_else(|_| panic!("Failed to open {}", path.display()));
     let f = BufReader::new(f);
-    
+
     let mut current_name: Option<String> = None;
     let mut asm_fmts: Vec<String> = Vec::new();
 
@@ -42,20 +42,26 @@ pub fn get_loongson_intrinsics(
             let data_types_len = data_types.len();
             if data_types_len > 0 && data_types_len < 6 {
                 arguments = data_types.split_off(1);
-                
+
                 // Being explicit here with the variable name
                 return_type = data_types.get(0).unwrap();
-            }  else {
+            } else {
                 panic!("DEBUG: line: {0} len: {1}", line, data_types.len());
             }
 
-            let intrinsic = gen_intrinsic(current_name.as_str(), asm_fmts.clone(), arguments, return_type, target);
+            let intrinsic = gen_intrinsic(
+                current_name.as_str(),
+                asm_fmts.clone(),
+                arguments,
+                return_type,
+                target,
+            );
             if intrinsic.is_ok() {
                 intrinsics.push(intrinsic.unwrap());
             }
         }
-    };
-    return Ok(intrinsics)
+    }
+    return Ok(intrinsics);
 }
 
 fn gen_intrinsic(
@@ -72,7 +78,8 @@ fn gen_intrinsic(
         .enumerate()
         .map(|(i, (asm_fmt, arg_type))| {
             let ty = LoongArchIntrinsicType::from_values(asm_fmt, arg_type).unwrap();
-            let arg = Argument::<LoongArchIntrinsicType>::new(i, format!("_{i}_{}", arg_type), ty, None);
+            let arg =
+                Argument::<LoongArchIntrinsicType>::new(i, format!("_{i}_{}", arg_type), ty, None);
             return arg;
         })
         .collect::<Vec<Argument<LoongArchIntrinsicType>>>();
@@ -117,7 +124,7 @@ fn gen_intrinsic(
             ("si8", t) => {
                 arguments[2].ty.constant = true;
                 arguments[3].ty.constant = true;
-            },
+            }
             (_, _) => panic!(
                 "unsupported assembly format: {:?} for {}",
                 asm_fmts, current_name

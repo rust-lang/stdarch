@@ -40,6 +40,8 @@ impl IntrinsicDefinition<LoongArchIntrinsicType> for Intrinsic<LoongArchIntrinsi
     /// rust debug output format for the return type. The generated line assumes
     /// there is an int i in scope which is the current pass number.
     fn print_result_c(&self, indentation: Indentation, additional: &str) -> String {
-        unimplemented!("print_result_c of IntrinsicDefinition<LoongArchIntrinsicType> is not defined!")
+        unimplemented!(
+            "print_result_c of IntrinsicDefinition<LoongArchIntrinsicType> is not defined!"
+        )
     }
 }

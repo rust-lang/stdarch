@@ -1,5 +1,9 @@
 use super::intrinsic::LoongArchIntrinsicType;
 use crate::common::cli::Language;
+<<<<<<< HEAD
+=======
+use crate::common::intrinsic_helpers::Sign;
+>>>>>>> b094de07 (chenj)
 use crate::common::intrinsic_helpers::{IntrinsicType, IntrinsicTypeDefinition, TypeKind};
 
 impl IntrinsicTypeDefinition for LoongArchIntrinsicType {
