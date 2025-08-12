@@ -11,11 +11,14 @@ use rayon::prelude::*;
 use crate::common::cli::ProcessedCli;
 use crate::common::compare::compare_outputs;
 use crate::common::gen_c::{write_main_cpp, write_mod_cpp};
+use crate::common::gen_rust::{
+    compile_rust_programs, write_bin_cargo_toml, write_lib_cargo_toml, write_lib_rs, write_main_rs,
+};
 use crate::common::intrinsic_helpers::TypeKind;
 use crate::common::{SupportedArchitectureTest, chunk_info};
 
 use crate::common::intrinsic::Intrinsic;
-use crate::loongarch::config::build_notices;
+use crate::loongarch::config::{F16_FORMATTING_DEF, LOONGARCH_CONFIGURATIONS, build_notices};
 use crate::loongarch::parser::get_loongson_intrinsics;
 use intrinsic::LoongArchIntrinsicType;
 
@@ -111,7 +114,56 @@ impl SupportedArchitectureTest for LoongArchArchitectureTest {
     }
 
     fn build_rust_file(&self) -> bool {
-        unimplemented!("build_rust_file of LoongArchIntrinsicType is not defined!")
+        std::fs::create_dir_all("rust_programs/src").unwrap();
+
+        let architecture = "loongarch64";
+
+        let (chunk_size, chunk_count) = chunk_info(self.intrinsics.len());
+
+        let mut cargo = File::create("rust_programs/Cargo.toml").unwrap();
+        write_bin_cargo_toml(&mut cargo, chunk_count).unwrap();
+
+        let mut main_rs = File::create("rust_programs/src/main.rs").unwrap();
+        write_main_rs(
+            &mut main_rs,
+            chunk_count,
+            LOONGARCH_CONFIGURATIONS,
+            "",
+            self.intrinsics.iter().map(|i| i.name.as_str()),
+        )
+        .unwrap();
+
+        let target = &self.cli_options.target;
+        let toolchain = self.cli_options.toolchain.as_deref();
+        let linker = self.cli_options.linker.as_deref();
+
+        let notice = &build_notices("// ");
+        self.intrinsics
+            .par_chunks(chunk_size)
+            .enumerate()
+            .map(|(i, chunk)| {
+                std::fs::create_dir_all(format!("rust_programs/mod_{i}/src"))?;
+
+                let rust_filename = format!("rust_programs/mod_{i}/src/lib.rs");
+                trace!("generating `{rust_filename}`");
+                let mut file = File::create(rust_filename)?;
+
+                let cfg = LOONGARCH_CONFIGURATIONS;
+                let definitions = F16_FORMATTING_DEF;
+                write_lib_rs(&mut file, architecture, notice, cfg, definitions, chunk)?;
+
+                let toml_filename = format!("rust_programs/mod_{i}/Cargo.toml");
+                trace!("generating `{toml_filename}`");
+                let mut file = File::create(toml_filename).unwrap();
+
+                write_lib_cargo_toml(&mut file, &format!("mod_{i}"))?;
+
+                Ok(())
+            })
+            .collect::<Result<(), std::io::Error>>()
+            .unwrap();
+
+        compile_rust_programs(toolchain, target, linker)
     }
 
     fn compare_outputs(&self) -> bool {
