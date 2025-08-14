@@ -40,6 +40,7 @@ jobs:
     name: Test
     runs-on: ${{ matrix.target.os }}
     strategy:
+      fail-fast: false
       matrix:
         profile:
         - dev
