@@ -341,6 +341,7 @@ dependencies = [
  "log",
  "pretty_env_logger",
  "rayon",
+ "regex",
  "serde",
  "serde_json",
 ]
