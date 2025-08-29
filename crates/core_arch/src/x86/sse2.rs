@@ -823,7 +823,7 @@ pub fn _mm_srl_epi64(a: __m128i, count: __m128i) -> __m128i {
 #[cfg_attr(test, assert_instr(andps))]
 #[stable(feature = "simd_x86", since = "1.27.0")]
 pub fn _mm_and_si128(a: __m128i, b: __m128i) -> __m128i {
-    unsafe { simd_and(a, b) }
+    a & b
 }
 
 /// Computes the bitwise NOT of 128 bits (representing integer data) in `a` and
@@ -835,7 +835,7 @@ pub fn _mm_and_si128(a: __m128i, b: __m128i) -> __m128i {
 #[cfg_attr(test, assert_instr(andnps))]
 #[stable(feature = "simd_x86", since = "1.27.0")]
 pub fn _mm_andnot_si128(a: __m128i, b: __m128i) -> __m128i {
-    unsafe { simd_and(simd_xor(_mm_set1_epi8(-1), a), b) }
+    !a & b
 }
 
 /// Computes the bitwise OR of 128 bits (representing integer data) in `a` and
@@ -847,7 +847,7 @@ pub fn _mm_andnot_si128(a: __m128i, b: __m128i) -> __m128i {
 #[cfg_attr(test, assert_instr(orps))]
 #[stable(feature = "simd_x86", since = "1.27.0")]
 pub fn _mm_or_si128(a: __m128i, b: __m128i) -> __m128i {
-    unsafe { simd_or(a, b) }
+    a | b
 }
 
 /// Computes the bitwise XOR of 128 bits (representing integer data) in `a` and
@@ -859,7 +859,7 @@ pub fn _mm_or_si128(a: __m128i, b: __m128i) -> __m128i {
 #[cfg_attr(test, assert_instr(xorps))]
 #[stable(feature = "simd_x86", since = "1.27.0")]
 pub fn _mm_xor_si128(a: __m128i, b: __m128i) -> __m128i {
-    unsafe { simd_xor(a, b) }
+    a ^ b
 }
 
 /// Compares packed 8-bit integers in `a` and `b` for equality.
