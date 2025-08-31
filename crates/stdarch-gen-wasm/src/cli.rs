@@ -9,5 +9,5 @@ pub struct Args {
 
     /// The Rust source file path argument
     #[arg(short, long)]
-    pub rust: String,
+    pub rust: Vec<String>,
 }

@@ -3,7 +3,7 @@ use std::collections::HashSet;
 use crate::structs::{CIntrinsic, RustIntrinsic};
 
 /// Matches the set of intrinsics in Rust to their C counterpart.
-/// 
+///
 /// This function assumes that the list of Rust definitions
 /// will be a subset of the list of definitions in C.
 pub fn match_intrinsic_definitions<'a>(
@@ -33,10 +33,10 @@ pub fn match_intrinsic_definitions<'a>(
 fn match_intrinsic_definition(c_definition: &str, rust_definition: &str) -> bool {
     // Most intrinsics in C are of the format: `wasm_v128_load`.
     // Its Rust counterpart is named `v128_load`.
-    // 
+    //
     // Another one is `wasm_i8x16_const_splat`, and its Rust counterpart is `i8x16_splat`.
-    // 
-    // The pattern that is observed is that, each keyword "chunk" that constructs 
+    //
+    // The pattern that is observed is that, each keyword "chunk" that constructs
     // the intrinsic name in Rust will also be used to construct the intrinsic name in C.
     // These names are constructed by joining the chunks with an underscore (_).
 
