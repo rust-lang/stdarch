@@ -14,7 +14,7 @@ use crate::structs::{CIntrinsic, RustIntrinsic};
 use crate::utils::leaf_nodes_from_grammar_name;
 
 /// Read the Rust source code and returns its AST
-fn process_rust_code(source: &String) -> (String, Tree) {
+fn process_rust_code(source: String) -> (String, Tree) {
     let mut parser = Parser::new();
     parser
         .set_language(&tree_sitter_rust::LANGUAGE.into())
@@ -31,7 +31,7 @@ fn process_rust_code(source: &String) -> (String, Tree) {
 }
 
 /// Reads the C source code and returns its AST
-fn process_c_code(source: &String) -> (String, Tree) {
+fn process_c_code(source: String) -> (String, Tree) {
     let mut parser = Parser::new();
     parser
         .set_language(&tree_sitter_c::LANGUAGE.into())
@@ -76,7 +76,7 @@ rust-return-type = {}",
 }
 
 /// Create the spec sheet.
-/// 
+///
 /// Fields that would be present in the spec sheet:
 /// 1. c-intrinsic-name
 /// 2. c-arguments
@@ -92,9 +92,7 @@ fn main() {
     // Read the file-paths from CLI arguments
     // obtain the tree of tokens from the code
     let args = Args::parse();
-    let (c_source, c_tree) = process_c_code(&args.c);
-    let (rust_source, rust_tree) = process_rust_code(&args.rust);
-
+    let (c_source, c_tree) = process_c_code(args.c);
     let preproc_node = c_tree.root_node();
 
     let c_intrinsics = leaf_nodes_from_grammar_name(preproc_node, "function_definition")
@@ -102,12 +100,25 @@ fn main() {
         .map(|&node| CIntrinsic::new(node, &c_source))
         .collect::<Vec<_>>();
 
-    let mut rust_cursor = rust_tree.root_node().walk();
-    let rust_intrinsics = rust_tree
-        .root_node()
-        .children(&mut rust_cursor)
-        .filter(|node| node.grammar_name() == "function_item")
-        .map(|node| RustIntrinsic::new(node, &rust_source))
+    let rust_intrinsics_interim = args
+        .rust
+        .into_iter()
+        .map(|path| process_rust_code(path))
+        .collect::<Vec<_>>();
+
+    let rust_intrinsics = rust_intrinsics_interim
+        .iter()
+        .map(|(rust_source, rust_tree)| {
+            let rust_source_str = rust_source.as_str();
+            let mut rust_cursor = rust_tree.root_node().walk();
+            rust_tree
+                .root_node()
+                .children(&mut rust_cursor)
+                .filter(|node| node.grammar_name() == "function_item")
+                .map(|node| RustIntrinsic::new(node, rust_source_str))
+                .collect::<Vec<_>>()
+        })
+        .flatten()
         .collect::<Vec<_>>();
 
     let matching_intrinsics = match_intrinsic_definitions(&c_intrinsics, &rust_intrinsics);

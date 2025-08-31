@@ -1,6 +1,6 @@
 use tree_sitter::Node;
 
-/// Recursively searches the node and its children for a node 
+/// Recursively searches the node and its children for a node
 /// that matches its grammar name, using Depth-first search.
 pub fn leaf_nodes_from_grammar_name<'a>(node: Node<'a>, name: &str) -> Vec<Node<'a>> {
     if node.grammar_name() == name {
