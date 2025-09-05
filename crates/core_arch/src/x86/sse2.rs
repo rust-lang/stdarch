@@ -2497,7 +2497,7 @@ pub fn _mm_set_pd1(a: f64) -> __m128d {
 #[target_feature(enable = "sse2")]
 #[stable(feature = "simd_x86", since = "1.27.0")]
 pub fn _mm_set_pd(a: f64, b: f64) -> __m128d {
-    __m128d([b, a])
+    __m128d::from_array([b, a])
 }
 
 /// Sets packed double-precision (64-bit) floating-point elements in the return
