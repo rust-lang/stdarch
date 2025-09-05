@@ -3,8 +3,11 @@ extern crate log;
 
 mod arm;
 mod common;
+mod loongarch;
 
 use arm::ArmArchitectureTest;
+use loongarch::LoongArchArchitectureTest;
+
 use common::SupportedArchitectureTest;
 use common::cli::{Cli, ProcessedCli};
 
@@ -21,6 +24,9 @@ fn main() {
                 Some(ArmArchitectureTest::create(processed_cli_options))
             }
 
+            "loongarch64-unknown-linux-gnu" => {
+                Some(LoongArchArchitectureTest::create(processed_cli_options))
+            }
             _ => None,
         };
 
