@@ -111,6 +111,24 @@ pub unsafe fn _tile_dpbf16ps<const DST: i32, const A: i32, const B: i32>() {
     tdpbf16ps(DST as i8, A as i8, B as i8);
 }
 
+/// Compute transpose and dot-product of BF16 (16-bit) floating-point pairs in tiles a and b,
+/// accumulating the intermediate single-precision (32-bit) floating-point elements
+/// with elements in dst, and store the 32-bit result back to tile dst.
+#[inline]
+#[rustc_legacy_const_generics(0, 1, 2)]
+#[target_feature(enable = "amx-bf16,amx-transpose")]
+#[cfg_attr(
+    all(test, any(target_os = "linux", target_env = "msvc")),
+    assert_instr(ttdpbf16ps, DST = 0, A = 1, B = 2)
+)]
+#[unstable(feature = "x86_amx_intrinsics", issue = "126622")]
+pub unsafe fn _tile_tdpbf16ps<const DST: i32, const A: i32, const B: i32>() {
+    static_assert_uimm_bits!(DST, 3);
+    static_assert_uimm_bits!(A, 3);
+    static_assert_uimm_bits!(B, 3);
+    ttdpbf16ps(DST as i8, A as i8, B as i8);
+}
+
 /// Compute dot-product of bytes in tiles with a source/destination accumulator.
 /// Multiply groups of 4 adjacent pairs of signed 8-bit integers in a with corresponding
 /// signed 8-bit integers in b, producing 4 intermediate 32-bit results.
@@ -200,6 +218,24 @@ pub unsafe fn _tile_dpfp16ps<const DST: i32, const A: i32, const B: i32>() {
     tdpfp16ps(DST as i8, A as i8, B as i8);
 }
 
+/// Compute transpose and dot-product of FP16 (16-bit) floating-point pairs in tiles a and b,
+/// accumulating the intermediate single-precision (32-bit) floating-point elements
+/// with elements in dst, and store the 32-bit result back to tile dst.
+#[inline]
+#[rustc_legacy_const_generics(0, 1, 2)]
+#[target_feature(enable = "amx-fp16,amx-transpose")]
+#[cfg_attr(
+    all(test, any(target_os = "linux", target_env = "msvc")),
+    assert_instr(ttdpfp16ps, DST = 0, A = 1, B = 2)
+)]
+#[unstable(feature = "x86_amx_intrinsics", issue = "126622")]
+pub unsafe fn _tile_tdpfp16ps<const DST: i32, const A: i32, const B: i32>() {
+    static_assert_uimm_bits!(DST, 3);
+    static_assert_uimm_bits!(A, 3);
+    static_assert_uimm_bits!(B, 3);
+    ttdpfp16ps(DST as i8, A as i8, B as i8);
+}
+
 /// Perform matrix multiplication of two tiles containing complex elements and accumulate the results into a packed single precision tile.
 /// Each dword element in input tiles a and b is interpreted as a complex number with FP16 real part and FP16 imaginary part.
 /// Calculates the imaginary part of the result. For each possible combination of (row of a, column of b),
@@ -242,6 +278,395 @@ pub unsafe fn _tile_cmmrlfp16ps<const DST: i32, const A: i32, const B: i32>() {
     tcmmrlfp16ps(DST as i8, A as i8, B as i8);
 }
 
+/// Perform matrix multiplication of two tiles containing complex elements and accumulate the results into a packed single precision tile.
+/// Each dword element in input tiles a and b is interpreted as a complex number with FP16 real part and FP16 imaginary part.
+/// Calculates the imaginary part of the result. For each possible combination of (transposed column of a, column of b),
+/// it performs a set of multiplication and accumulations on all corresponding complex numbers (one from a and one from b).
+/// The imaginary part of the a element is multiplied with the real part of the corresponding b element, and the real part of
+/// the a element is multiplied with the imaginary part of the corresponding b elements. The two accumulated results are added,
+/// and then accumulated into the corresponding row and column of dst.
+#[inline]
+#[rustc_legacy_const_generics(0, 1, 2)]
+#[target_feature(enable = "amx-complex,amx-transpose")]
+#[cfg_attr(
+    all(test, any(target_os = "linux", target_env = "msvc")),
+    assert_instr(ttcmmimfp16ps, DST = 0, A = 1, B = 2)
+)]
+#[unstable(feature = "x86_amx_intrinsics", issue = "126622")]
+pub unsafe fn _tile_tcmmimfp16ps<const DST: i32, const A: i32, const B: i32>() {
+    static_assert_uimm_bits!(DST, 3);
+    static_assert_uimm_bits!(A, 3);
+    static_assert_uimm_bits!(B, 3);
+    ttcmmimfp16ps(DST as i8, A as i8, B as i8);
+}
+
+/// Perform matrix multiplication of two tiles containing complex elements and accumulate the results into a packed single precision tile.
+/// Each dword element in input tiles a and b is interpreted as a complex number with FP16 real part and FP16 imaginary part.
+/// Calculates the real part of the result. For each possible combination of (transposed column of a, column of b),
+/// it performs a set of multiplication and accumulations on all corresponding complex numbers (one from a and one from b).
+/// The real part of the a element is multiplied with the real part of the corresponding b element, and the negated imaginary part of
+/// the a element is multiplied with the imaginary part of the corresponding b elements.
+/// The two accumulated results are added, and then accumulated into the corresponding row and column of dst.
+#[inline]
+#[rustc_legacy_const_generics(0, 1, 2)]
+#[target_feature(enable = "amx-complex,amx-transpose")]
+#[cfg_attr(
+    all(test, any(target_os = "linux", target_env = "msvc")),
+    assert_instr(ttcmmrlfp16ps, DST = 0, A = 1, B = 2)
+)]
+#[unstable(feature = "x86_amx_intrinsics", issue = "126622")]
+pub unsafe fn _tile_ttcmmrlfp16ps<const DST: i32, const A: i32, const B: i32>() {
+    static_assert_uimm_bits!(DST, 3);
+    static_assert_uimm_bits!(A, 3);
+    static_assert_uimm_bits!(B, 3);
+    ttcmmrlfp16ps(DST as i8, A as i8, B as i8);
+}
+
+/// Perform matrix conjugate transpose and multiplication of two tiles containing complex elements and accumulate the results into a packed single precision tile.
+/// Each dword element in input tiles a and b is interpreted as a complex number with FP16 real part and FP16 imaginary part.
+/// Calculates the imaginary part of the result. For each possible combination of (transposed column of a, column of b),
+/// it performs a set of multiplication and accumulations on all corresponding complex numbers (one from a and one from b).
+/// The negated imaginary part of the a element is multiplied with the real part of the corresponding b element, and the real part of
+/// the a element is multiplied with the imaginary part of the corresponding b elements. The two accumulated results are added,
+/// and then accumulated into the corresponding row and column of dst.
+#[inline]
+#[rustc_legacy_const_generics(0, 1, 2)]
+#[target_feature(enable = "amx-complex,amx-transpose")]
+#[cfg_attr(
+    all(test, any(target_os = "linux", target_env = "msvc")),
+    assert_instr(tconjtcmmimfp16ps, DST = 0, A = 1, B = 2)
+)]
+#[unstable(feature = "x86_amx_intrinsics", issue = "126622")]
+pub unsafe fn _tile_conjtcmmimfp16ps<const DST: i32, const A: i32, const B: i32>() {
+    static_assert_uimm_bits!(DST, 3);
+    static_assert_uimm_bits!(A, 3);
+    static_assert_uimm_bits!(B, 3);
+    tconjtcmmimfp16ps(DST as i8, A as i8, B as i8);
+}
+
+/// Perform a conjugate transpose of an FP16-pair of complex numbers in tile a, and store the result in tile dst.
+#[inline]
+#[rustc_legacy_const_generics(0, 1)]
+#[target_feature(enable = "amx-complex,amx-transpose")]
+#[cfg_attr(
+    all(test, any(target_os = "linux", target_env = "msvc")),
+    assert_instr(tconjtfp16, DST = 0, A = 1)
+)]
+#[unstable(feature = "x86_amx_intrinsics", issue = "126622")]
+pub unsafe fn _tile_conjtfp16<const DST: i32, const A: i32>() {
+    static_assert_uimm_bits!(DST, 3);
+    static_assert_uimm_bits!(A, 3);
+    tconjtfp16(DST as i8, A as i8);
+}
+
+/// Compute dot-product of BF8 (8-bit) floating-point pairs in tiles a and b,
+/// accumulating the intermediate single-precision (32-bit) floating-point elements
+/// with elements in dst, and store the 32-bit result back to tile dst.
+#[inline]
+#[rustc_legacy_const_generics(0, 1, 2)]
+#[target_feature(enable = "amx-fp8")]
+#[cfg_attr(
+    all(test, any(target_os = "linux", target_env = "msvc")),
+    assert_instr(tdpbf8ps, DST = 0, A = 1, B = 2)
+)]
+#[unstable(feature = "x86_amx_intrinsics", issue = "126622")]
+pub unsafe fn _tile_dpbf8ps<const DST: i32, const A: i32, const B: i32>() {
+    static_assert_uimm_bits!(DST, 3);
+    static_assert_uimm_bits!(A, 3);
+    static_assert_uimm_bits!(B, 3);
+    tdpbf8ps(DST as i8, A as i8, B as i8);
+}
+
+/// Compute dot-product of BF8 (8-bit) floating-point elements in tile a and FP8
+/// (8-bit) floating-point elements in tile b, accumulating the intermediate single-precision
+/// (32-bit) floating-point elements with elements in dst, and store the 32-bit result
+/// back to tile dst.
+#[inline]
+#[rustc_legacy_const_generics(0, 1, 2)]
+#[target_feature(enable = "amx-fp8")]
+#[cfg_attr(
+    all(test, any(target_os = "linux", target_env = "msvc")),
+    assert_instr(tdpbhf8ps, DST = 0, A = 1, B = 2)
+)]
+#[unstable(feature = "x86_amx_intrinsics", issue = "126622")]
+pub unsafe fn _tile_dpbhf8ps_fp8<const DST: i32, const A: i32, const B: i32>() {
+    static_assert_uimm_bits!(DST, 3);
+    static_assert_uimm_bits!(A, 3);
+    static_assert_uimm_bits!(B, 3);
+    tdpbhf8ps(DST as i8, A as i8, B as i8);
+}
+
+/// Compute dot-product of FP8 (8-bit) floating-point elements in tile a and BF8 (8-bit)
+/// floating-point elements in tile b, accumulating the intermediate single-precision
+/// (32-bit) floating-point elements with elements in dst, and store the 32-bit result
+/// back to tile dst.
+#[inline]
+#[rustc_legacy_const_generics(0, 1, 2)]
+#[target_feature(enable = "amx-fp8")]
+#[cfg_attr(
+    all(test, any(target_os = "linux", target_env = "msvc")),
+    assert_instr(tdphbf8ps, DST = 0, A = 1, B = 2)
+)]
+#[unstable(feature = "x86_amx_intrinsics", issue = "126622")]
+pub unsafe fn _tile_dphbf8ps_bf8<const DST: i32, const A: i32, const B: i32>() {
+    static_assert_uimm_bits!(DST, 3);
+    static_assert_uimm_bits!(A, 3);
+    static_assert_uimm_bits!(B, 3);
+    tdphbf8ps(DST as i8, A as i8, B as i8);
+}
+
+/// Compute dot-product of FP8 (8-bit) floating-point elements in tile a and FP8 (8-bit)
+/// floating-point elements in tile b, accumulating the intermediate single-precision
+/// (32-bit) floating-point elements with elements in dst, and store the 32-bit result
+/// back to tile dst.
+#[inline]
+#[rustc_legacy_const_generics(0, 1, 2)]
+#[target_feature(enable = "amx-fp8")]
+#[cfg_attr(
+    all(test, any(target_os = "linux", target_env = "msvc")),
+    assert_instr(tdphf8ps, DST = 0, A = 1, B = 2)
+)]
+#[unstable(feature = "x86_amx_intrinsics", issue = "126622")]
+pub unsafe fn _tile_dphf8ps<const DST: i32, const A: i32, const B: i32>() {
+    static_assert_uimm_bits!(DST, 3);
+    static_assert_uimm_bits!(A, 3);
+    static_assert_uimm_bits!(B, 3);
+    tdphf8ps(DST as i8, A as i8, B as i8);
+}
+
+/// Load tile rows from memory specified by base address and stride into destination tile dst
+/// using the tile configuration previously configured via _tile_loadconfig.
+/// Additionally, this intrinsic indicates the source memory location is likely to become
+/// read-shared by multiple processors, i.e., read in the future by at least one other processor
+/// before it is written, assuming it is ever written in the future.
+#[inline]
+#[rustc_legacy_const_generics(0)]
+#[target_feature(enable = "amx-movrs")]
+#[cfg_attr(
+    all(test, any(target_os = "linux", target_env = "msvc")),
+    assert_instr(tileloaddrs, DST = 0)
+)]
+#[unstable(feature = "x86_amx_intrinsics", issue = "126622")]
+pub unsafe fn _tile_loaddrs<const DST: i32>(base: *const u8, stride: usize) {
+    static_assert_uimm_bits!(DST, 3);
+    tileloaddrs64(DST as i8, base, stride);
+}
+
+/// Load tile rows from memory specified by base address and stride into destination tile dst
+/// using the tile configuration previously configured via _tile_loadconfig.
+/// Provides a hint to the implementation that the data would be reused but does not need
+/// to be resident in the nearest cache levels.
+/// Additionally, this intrinsic indicates the source memory location is likely to become
+/// read-shared by multiple processors, i.e., read in the future by at least one other processor
+/// before it is written, assuming it is ever written in the future.
+#[inline]
+#[rustc_legacy_const_generics(0)]
+#[target_feature(enable = "amx-movrs")]
+#[cfg_attr(
+    all(test, any(target_os = "linux", target_env = "msvc")),
+    assert_instr(tileloaddrst1, DST = 0)
+)]
+#[unstable(feature = "x86_amx_intrinsics", issue = "126622")]
+pub unsafe fn _tile_stream_loaddrs<const DST: i32>(base: *const u8, stride: usize) {
+    static_assert_uimm_bits!(DST, 3);
+    tileloaddrst164(DST as i8, base, stride);
+}
+
+/// Perform matrix multiplication of two tiles a and b, containing packed single precision (32-bit)
+/// floating-point elements, which are converted to TF32 (tensor-float32) format, and accumulate the
+///  results into a packed single precision tile.
+/// For each possible combination of (row of a, column of b), it performs
+///  - convert to TF32
+///  - multiply the corresponding elements of a and b
+///  - accumulate the results into the corresponding row and column of dst using round-to-nearest-even
+/// rounding mode.
+/// Output FP32 denormals are always flushed to zero, input single precision denormals are always
+/// handled and *not* treated as zero.
+#[inline]
+#[rustc_legacy_const_generics(0, 1, 2)]
+#[target_feature(enable = "amx-tf32")]
+#[cfg_attr(
+    all(test, any(target_os = "linux", target_env = "msvc")),
+    assert_instr(tmmultf32ps, DST = 0, A = 1, B = 2)
+)]
+#[unstable(feature = "x86_amx_intrinsics", issue = "126622")]
+pub unsafe fn _tile_mmultf32ps<const DST: i32, const A: i32, const B: i32>() {
+    static_assert_uimm_bits!(DST, 3);
+    static_assert_uimm_bits!(A, 3);
+    static_assert_uimm_bits!(B, 3);
+    tmmultf32ps(DST as i8, A as i8, B as i8);
+}
+
+/// Perform matrix transpose and multiplication of two tiles a and b, containing packed single precision (32-bit)
+/// floating-point elements, which are converted to TF32 (tensor-float32) format, and accumulate the
+///  results into a packed single precision tile.
+/// For each possible combination of (transposed column of a, column of b), it performs
+///  - convert to TF32
+///  - multiply the corresponding elements of a and b
+///  - accumulate the results into the corresponding row and column of dst using round-to-nearest-even
+/// rounding mode.
+/// Output FP32 denormals are always flushed to zero, input single precision denormals are always
+/// handled and *not* treated as zero.
+#[inline]
+#[rustc_legacy_const_generics(0, 1, 2)]
+#[target_feature(enable = "amx-tf32,amx-transpose")]
+#[cfg_attr(
+    all(test, any(target_os = "linux", target_env = "msvc")),
+    assert_instr(ttmmultf32ps, DST = 0, A = 1, B = 2)
+)]
+#[unstable(feature = "x86_amx_intrinsics", issue = "126622")]
+pub unsafe fn _tile_tmmultf32ps<const DST: i32, const A: i32, const B: i32>() {
+    static_assert_uimm_bits!(DST, 3);
+    static_assert_uimm_bits!(A, 3);
+    static_assert_uimm_bits!(B, 3);
+    ttmmultf32ps(DST as i8, A as i8, B as i8);
+}
+
+/// Transposes 32-bit elements in tile a and stores the result in tile dst.
+#[inline]
+#[rustc_legacy_const_generics(0, 1)]
+#[target_feature(enable = "amx-transpose")]
+#[cfg_attr(
+    all(test, any(target_os = "linux", target_env = "msvc")),
+    assert_instr(ttransposed, DST = 0, A = 1)
+)]
+#[unstable(feature = "x86_amx_intrinsics", issue = "126622")]
+pub unsafe fn _tile_transposed<const DST: i32, const A: i32>() {
+    static_assert_uimm_bits!(DST, 3);
+    static_assert_uimm_bits!(A, 3);
+    ttransposed(DST as i8, A as i8);
+}
+
+/// TODO - Document
+#[inline]
+#[rustc_legacy_const_generics(0)]
+#[target_feature(enable = "amx-transpose")]
+#[cfg_attr(
+    all(test, any(target_os = "linux", target_env = "msvc")),
+    assert_instr(t2rpntlvwz0, DST = 0)
+)]
+#[unstable(feature = "x86_amx_intrinsics", issue = "126622")]
+pub unsafe fn _tile_2rpntlvwz0<const DST: i32>(base: *const u8, stride: usize) {
+    static_assert_uimm_bits!(DST, 3);
+    t2rpntlvwz0(DST as i8, base, stride);
+}
+
+/// TODO - Document
+/// Provides a hint to the implementation that the data would be reused but does not need
+/// to be resident in the nearest cache levels.
+#[rustc_legacy_const_generics(0)]
+#[target_feature(enable = "amx-transpose")]
+#[cfg_attr(
+    all(test, any(target_os = "linux", target_env = "msvc")),
+    assert_instr(t2rpntlvwz0t1, DST = 0)
+)]
+#[unstable(feature = "x86_amx_intrinsics", issue = "126622")]
+pub unsafe fn _tile_2rpntlvwz0t1<const DST: i32>(base: *const u8, stride: usize) {
+    static_assert_uimm_bits!(DST, 3);
+    t2rpntlvwz0t1(DST as i8, base, stride);
+}
+
+/// TODO - Document
+#[inline]
+#[rustc_legacy_const_generics(0)]
+#[target_feature(enable = "amx-transpose")]
+#[cfg_attr(
+    all(test, any(target_os = "linux", target_env = "msvc")),
+    assert_instr(t2rpntlvwz1, DST = 0)
+)]
+#[unstable(feature = "x86_amx_intrinsics", issue = "126622")]
+pub unsafe fn _tile_2rpntlvwz1<const DST: i32>(base: *const u8, stride: usize) {
+    static_assert_uimm_bits!(DST, 3);
+    t2rpntlvwz1(DST as i8, base, stride);
+}
+
+/// TODO - Document
+/// Provides a hint to the implementation that the data would be reused but does not need
+/// to be resident in the nearest cache levels.
+#[inline]
+#[rustc_legacy_const_generics(0)]
+#[target_feature(enable = "amx-transpose")]
+#[cfg_attr(
+    all(test, any(target_os = "linux", target_env = "msvc")),
+    assert_instr(t2rpntlvwz1t1, DST = 0)
+)]
+#[unstable(feature = "x86_amx_intrinsics", issue = "126622")]
+pub unsafe fn _tile_2rpntlvwz1t1<const DST: i32>(base: *const u8, stride: usize) {
+    static_assert_uimm_bits!(DST, 3);
+    t2rpntlvwz1t1(DST as i8, base, stride);
+}
+
+/// TODO - Document
+/// Additionally, this intrinsic indicates the source memory location is likely to become
+/// read-shared by multiple processors, i.e., read in the future by at least one other processor
+/// before it is written, assuming it is ever written in the future.
+#[inline]
+#[rustc_legacy_const_generics(0)]
+#[target_feature(enable = "amx-transpose,amx-movrs")]
+#[cfg_attr(
+    all(test, any(target_os = "linux", target_env = "msvc")),
+    assert_instr(t2rpntlvwz0rs, DST = 0)
+)]
+#[unstable(feature = "x86_amx_intrinsics", issue = "126622")]
+pub unsafe fn _tile_2rpntlvwz0rs<const DST: i32>(base: *const u8, stride: usize) {
+    static_assert_uimm_bits!(DST, 3);
+    t2rpntlvwz0rs(DST as i8, base, stride);
+}
+
+/// TODO - Document
+/// Provides a hint to the implementation that the data would be reused but does not need
+/// to be resident in the nearest cache levels.
+/// Additionally, this intrinsic indicates the source memory location is likely to become
+/// read-shared by multiple processors, i.e., read in the future by at least one other processor
+/// before it is written, assuming it is ever written in the future.
+#[rustc_legacy_const_generics(0)]
+#[target_feature(enable = "amx-transpose,amx-movrs")]
+#[cfg_attr(
+    all(test, any(target_os = "linux", target_env = "msvc")),
+    assert_instr(t2rpntlvwz0rst1, DST = 0)
+)]
+#[unstable(feature = "x86_amx_intrinsics", issue = "126622")]
+pub unsafe fn _tile_2rpntlvwz0rst1<const DST: i32>(base: *const u8, stride: usize) {
+    static_assert_uimm_bits!(DST, 3);
+    t2rpntlvwz0rst1(DST as i8, base, stride);
+}
+
+/// TODO - Document
+/// Additionally, this intrinsic indicates the source memory location is likely to become
+/// read-shared by multiple processors, i.e., read in the future by at least one other processor
+/// before it is written, assuming it is ever written in the future.
+#[inline]
+#[rustc_legacy_const_generics(0)]
+#[target_feature(enable = "amx-transpose,amx-movrs")]
+#[cfg_attr(
+    all(test, any(target_os = "linux", target_env = "msvc")),
+    assert_instr(t2rpntlvwz1rs, DST = 0)
+)]
+#[unstable(feature = "x86_amx_intrinsics", issue = "126622")]
+pub unsafe fn _tile_2rpntlvwz1rs<const DST: i32>(base: *const u8, stride: usize) {
+    static_assert_uimm_bits!(DST, 3);
+    t2rpntlvwz1rs(DST as i8, base, stride);
+}
+
+/// TODO - Document
+/// Provides a hint to the implementation that the data would be reused but does not need
+/// to be resident in the nearest cache levels.
+/// Additionally, this intrinsic indicates the source memory location is likely to become
+/// read-shared by multiple processors, i.e., read in the future by at least one other processor
+/// before it is written, assuming it is ever written in the future.
+#[inline]
+#[rustc_legacy_const_generics(0)]
+#[target_feature(enable = "amx-transpose,amx-movrs")]
+#[cfg_attr(
+    all(test, any(target_os = "linux", target_env = "msvc")),
+    assert_instr(t2rpntlvwz1rst1, DST = 0)
+)]
+#[unstable(feature = "x86_amx_intrinsics", issue = "126622")]
+pub unsafe fn _tile_2rpntlvwz1rst1<const DST: i32>(base: *const u8, stride: usize) {
+    static_assert_uimm_bits!(DST, 3);
+    t2rpntlvwz1rst1(DST as i8, base, stride);
+}
+
 #[allow(improper_ctypes)]
 unsafe extern "C" {
     #[link_name = "llvm.x86.ldtilecfg"]
@@ -260,6 +685,8 @@ unsafe extern "C" {
     fn tilezero(dst: i8);
     #[link_name = "llvm.x86.tdpbf16ps"]
     fn tdpbf16ps(dst: i8, a: i8, b: i8);
+    #[link_name = "llvm.x86.ttdpbf16ps"]
+    fn ttdpbf16ps(dst: i8, a: i8, b: i8);
     #[link_name = "llvm.x86.tdpbuud"]
     fn tdpbuud(dst: i8, a: i8, b: i8);
     #[link_name = "llvm.x86.tdpbusd"]
@@ -270,10 +697,54 @@ unsafe extern "C" {
     fn tdpbssd(dst: i8, a: i8, b: i8);
     #[link_name = "llvm.x86.tdpfp16ps"]
     fn tdpfp16ps(dst: i8, a: i8, b: i8);
+    #[link_name = "llvm.x86.ttdpfp16ps"]
+    fn ttdpfp16ps(dst: i8, a: i8, b: i8);
     #[link_name = "llvm.x86.tcmmimfp16ps"]
     fn tcmmimfp16ps(dst: i8, a: i8, b: i8);
     #[link_name = "llvm.x86.tcmmrlfp16ps"]
     fn tcmmrlfp16ps(dst: i8, a: i8, b: i8);
+    #[link_name = "llvm.x86.ttcmmimfp16ps"]
+    fn ttcmmimfp16ps(dst: i8, a: i8, b: i8);
+    #[link_name = "llvm.x86.ttcmmrlfp16ps"]
+    fn ttcmmrlfp16ps(dst: i8, a: i8, b: i8);
+    #[link_name = "llvm.x86.tconjtcmmimfp16ps"]
+    fn tconjtcmmimfp16ps(dst: i8, a: i8, b: i8);
+    #[link_name = "llvm.x86.tconjtfp16"]
+    fn tconjtfp16(dst: i8, a: i8);
+    #[link_name = "llvm.x86.tdpbf8ps"]
+    fn tdpbf8ps(dst: i8, a: i8, b: i8);
+    #[link_name = "llvm.x86.tdpbhf8ps"]
+    fn tdpbhf8ps(dst: i8, a: i8, b: i8);
+    #[link_name = "llvm.x86.tdphbf8ps"]
+    fn tdphbf8ps(dst: i8, a: i8, b: i8);
+    #[link_name = "llvm.x86.tdphf8ps"]
+    fn tdphf8ps(dst: i8, a: i8, b: i8);
+    #[link_name = "llvm.x86.tileloaddrs64"]
+    fn tileloaddrs64(dst: i8, base: *const u8, stride: usize);
+    #[link_name = "llvm.x86.tileloaddrst164"]
+    fn tileloaddrst164(dst: i8, base: *const u8, stride: usize);
+    #[link_name = "llvm.x86.tmmultf32ps"]
+    fn tmmultf32ps(dst: i8, a: i8, b: i8);
+    #[link_name = "llvm.x86.ttmmultf32ps"]
+    fn ttmmultf32ps(dst: i8, a: i8, b: i8);
+    #[link_name = "llvm.x86.ttransposed"]
+    fn ttransposed(dst: i8, a: i8);
+    #[link_name = "llvm.x86.t2rpntlvwz0"]
+    fn t2rpntlvwz0(dst: i8, base: *const u8, stride: usize);
+    #[link_name = "llvm.x86.t2rpntlvwz0t1"]
+    fn t2rpntlvwz0t1(dst: i8, base: *const u8, stride: usize);
+    #[link_name = "llvm.x86.t2rpntlvwz1"]
+    fn t2rpntlvwz1(dst: i8, base: *const u8, stride: usize);
+    #[link_name = "llvm.x86.t2rpntlvwz1t1"]
+    fn t2rpntlvwz1t1(dst: i8, base: *const u8, stride: usize);
+    #[link_name = "llvm.x86.t2rpntlvwz0rs"]
+    fn t2rpntlvwz0rs(dst: i8, base: *const u8, stride: usize);
+    #[link_name = "llvm.x86.t2rpntlvwz0rst1"]
+    fn t2rpntlvwz0rst1(dst: i8, base: *const u8, stride: usize);
+    #[link_name = "llvm.x86.t2rpntlvwz1rs"]
+    fn t2rpntlvwz1rs(dst: i8, base: *const u8, stride: usize);
+    #[link_name = "llvm.x86.t2rpntlvwz1rst1"]
+    fn t2rpntlvwz1rst1(dst: i8, base: *const u8, stride: usize);
 }
 
 #[cfg(test)]
