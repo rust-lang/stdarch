@@ -471,6 +471,29 @@ impl bf16 {
     }
 }
 
+impl_arith_op!(
+    __m128, __m128d, __m128h,
+    __m256, __m256d, __m256h,
+    __m512, __m512d, __m512h:
+    Add, add, AddAssign, add_assign = simd_add;
+    Sub, sub, SubAssign, sub_assign = simd_sub;
+    Mul, mul, MulAssign, mul_assign = simd_mul;
+    Div, div, DivAssign, div_assign = simd_div;
+    Rem, rem, RemAssign, rem_assign = simd_rem;
+    Neg, neg = simd_neg;
+);
+
+impl_arith_op!(
+    __m128i, __m256i, __m512i:
+    BitOr, bitor, BitOrAssign, bitor_assign = simd_or;
+    BitAnd, bitand, BitAndAssign, bitand_assign = simd_and;
+    BitXor, bitxor, BitXorAssign, bitxor_assign = simd_xor;
+);
+
+impl_not!(__m128i, __m256i, __m512i);
+
+// TODO: should we have `Rem` and `Not`?
+
 /// The `__mmask64` type used in AVX-512 intrinsics, a 64-bit integer
 #[allow(non_camel_case_types)]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
