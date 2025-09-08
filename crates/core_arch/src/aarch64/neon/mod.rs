@@ -425,7 +425,7 @@ pub fn vmovq_n_f64(value: f64) -> float64x2_t {
 #[cfg_attr(test, assert_instr(nop))]
 #[stable(feature = "neon_intrinsics", since = "1.59.0")]
 pub fn vget_high_f64(a: float64x2_t) -> float64x1_t {
-    unsafe { float64x1_t([simd_extract!(a, 1)]) }
+    unsafe { float64x1_t::from_array([simd_extract!(a, 1)]) }
 }
 
 /// Duplicate vector element to vector or scalar
@@ -443,7 +443,7 @@ pub fn vget_high_p64(a: poly64x2_t) -> poly64x1_t {
 #[cfg_attr(test, assert_instr(nop))]
 #[stable(feature = "neon_intrinsics", since = "1.59.0")]
 pub fn vget_low_f64(a: float64x2_t) -> float64x1_t {
-    unsafe { float64x1_t([simd_extract!(a, 0)]) }
+    unsafe { float64x1_t::from_array([simd_extract!(a, 0)]) }
 }
 
 /// Duplicate vector element to vector or scalar
