@@ -40,7 +40,9 @@ impl<'a> CIntrinsic<'a> {
 
         let return_type = node
             .children(&mut cursor)
-            .find(|node| node.grammar_name() == "identifier")
+            .find(|node| {
+                node.grammar_name() == "identifier" || node.grammar_name() == "primitive_type"
+            })
             .map(|node| source.get(node.byte_range()).unwrap());
 
         let specifier = source
