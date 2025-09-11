@@ -4073,6 +4073,7 @@ where
 /// Vector Convert to Signed Integer
 #[inline]
 #[target_feature(enable = "altivec")]
+#[rustc_legacy_const_generics(1)]
 #[cfg_attr(test, assert_instr(vctsxs, IMM5 = 1))]
 #[unstable(feature = "stdarch_powerpc", issue = "111145")]
 pub unsafe fn vec_cts<const IMM5: i32>(a: vector_float) -> vector_signed_int {
@@ -4084,6 +4085,7 @@ pub unsafe fn vec_cts<const IMM5: i32>(a: vector_float) -> vector_signed_int {
 /// Vector Convert to Unsigned Integer
 #[inline]
 #[target_feature(enable = "altivec")]
+#[rustc_legacy_const_generics(1)]
 #[cfg_attr(test, assert_instr(vctuxs, IMM5 = 1))]
 #[unstable(feature = "stdarch_powerpc", issue = "111145")]
 pub unsafe fn vec_ctu<const IMM5: i32>(a: vector_float) -> vector_unsigned_int {

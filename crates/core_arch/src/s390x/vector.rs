@@ -4558,6 +4558,7 @@ pub unsafe fn vec_unpackl<T: sealed::VectorUnpackl>(a: T) -> <T as sealed::Vecto
 /// in the corresponding byte element of d are set to ones. Otherwise, if the bit is zero, the corresponding byte element is set to zero.
 #[inline]
 #[target_feature(enable = "vector")]
+#[rustc_legacy_const_generics(0)]
 #[unstable(feature = "stdarch_s390x", issue = "135681")]
 #[cfg_attr(test, assert_instr(vgbm, MASK = 0x00FF))]
 pub unsafe fn vec_genmask<const MASK: u16>() -> vector_unsigned_char {
@@ -4567,6 +4568,7 @@ pub unsafe fn vec_genmask<const MASK: u16>() -> vector_unsigned_char {
 /// Vector Generate Mask (Byte)
 #[inline]
 #[target_feature(enable = "vector")]
+#[rustc_legacy_const_generics(0, 1)]
 #[unstable(feature = "stdarch_s390x", issue = "135681")]
 #[cfg_attr(test, assert_instr(vrepib, L = 3, H = 5))]
 pub unsafe fn vec_genmasks_8<const L: u8, const H: u8>() -> vector_unsigned_char {
@@ -4576,6 +4578,7 @@ pub unsafe fn vec_genmasks_8<const L: u8, const H: u8>() -> vector_unsigned_char
 /// Vector Generate Mask (Halfword)
 #[inline]
 #[target_feature(enable = "vector")]
+#[rustc_legacy_const_generics(0, 1)]
 #[unstable(feature = "stdarch_s390x", issue = "135681")]
 #[cfg_attr(test, assert_instr(vrepih, L = 3, H = 5))]
 pub unsafe fn vec_genmasks_16<const L: u8, const H: u8>() -> vector_unsigned_short {
@@ -4585,6 +4588,7 @@ pub unsafe fn vec_genmasks_16<const L: u8, const H: u8>() -> vector_unsigned_sho
 /// Vector Generate Mask (Word)
 #[inline]
 #[target_feature(enable = "vector")]
+#[rustc_legacy_const_generics(0, 1)]
 #[unstable(feature = "stdarch_s390x", issue = "135681")]
 #[cfg_attr(test, assert_instr(vgmf, L = 3, H = 5))]
 pub unsafe fn vec_genmasks_32<const L: u8, const H: u8>() -> vector_unsigned_int {
@@ -4594,6 +4598,7 @@ pub unsafe fn vec_genmasks_32<const L: u8, const H: u8>() -> vector_unsigned_int
 /// Vector Generate Mask (Doubleword)
 #[inline]
 #[target_feature(enable = "vector")]
+#[rustc_legacy_const_generics(0, 1)]
 #[unstable(feature = "stdarch_s390x", issue = "135681")]
 #[cfg_attr(test, assert_instr(vgmg, L = 3, H = 5))]
 pub unsafe fn vec_genmasks_64<const L: u8, const H: u8>() -> vector_unsigned_long_long {
@@ -4810,6 +4815,7 @@ pub unsafe fn vec_subec_u128(
 /// Vector Splat Signed Byte
 #[inline]
 #[target_feature(enable = "vector")]
+#[rustc_legacy_const_generics(0)]
 #[unstable(feature = "stdarch_s390x", issue = "135681")]
 #[cfg_attr(test, assert_instr(vrepib, IMM = 42))]
 pub unsafe fn vec_splat_s8<const IMM: i8>() -> vector_signed_char {
@@ -4819,6 +4825,7 @@ pub unsafe fn vec_splat_s8<const IMM: i8>() -> vector_signed_char {
 /// Vector Splat Signed Halfword
 #[inline]
 #[target_feature(enable = "vector")]
+#[rustc_legacy_const_generics(0)]
 #[unstable(feature = "stdarch_s390x", issue = "135681")]
 #[cfg_attr(test, assert_instr(vrepih, IMM = 42))]
 pub unsafe fn vec_splat_s16<const IMM: i16>() -> vector_signed_short {
@@ -4828,6 +4835,7 @@ pub unsafe fn vec_splat_s16<const IMM: i16>() -> vector_signed_short {
 /// Vector Splat Signed Word
 #[inline]
 #[target_feature(enable = "vector")]
+#[rustc_legacy_const_generics(0)]
 #[unstable(feature = "stdarch_s390x", issue = "135681")]
 #[cfg_attr(test, assert_instr(vrepif, IMM = 42))]
 pub unsafe fn vec_splat_s32<const IMM: i16>() -> vector_signed_int {
@@ -4837,6 +4845,7 @@ pub unsafe fn vec_splat_s32<const IMM: i16>() -> vector_signed_int {
 /// Vector Splat Signed Doubleword
 #[inline]
 #[target_feature(enable = "vector")]
+#[rustc_legacy_const_generics(0)]
 #[unstable(feature = "stdarch_s390x", issue = "135681")]
 #[cfg_attr(test, assert_instr(vrepig, IMM = 42))]
 pub unsafe fn vec_splat_s64<const IMM: i16>() -> vector_signed_long_long {
@@ -4846,6 +4855,7 @@ pub unsafe fn vec_splat_s64<const IMM: i16>() -> vector_signed_long_long {
 /// Vector Splat Unsigned Byte
 #[inline]
 #[target_feature(enable = "vector")]
+#[rustc_legacy_const_generics(0)]
 #[unstable(feature = "stdarch_s390x", issue = "135681")]
 #[cfg_attr(test, assert_instr(vrepib, IMM = 42))]
 pub unsafe fn vec_splat_u8<const IMM: u8>() -> vector_unsigned_char {
@@ -4855,6 +4865,7 @@ pub unsafe fn vec_splat_u8<const IMM: u8>() -> vector_unsigned_char {
 /// Vector Splat Unsigned Halfword
 #[inline]
 #[target_feature(enable = "vector")]
+#[rustc_legacy_const_generics(0)]
 #[unstable(feature = "stdarch_s390x", issue = "135681")]
 #[cfg_attr(test, assert_instr(vrepih, IMM = 42))]
 pub unsafe fn vec_splat_u16<const IMM: i16>() -> vector_unsigned_short {
@@ -4864,6 +4875,7 @@ pub unsafe fn vec_splat_u16<const IMM: i16>() -> vector_unsigned_short {
 /// Vector Splat Unsigned Word
 #[inline]
 #[target_feature(enable = "vector")]
+#[rustc_legacy_const_generics(0)]
 #[unstable(feature = "stdarch_s390x", issue = "135681")]
 #[cfg_attr(test, assert_instr(vrepif, IMM = 42))]
 pub unsafe fn vec_splat_u32<const IMM: i16>() -> vector_unsigned_int {
@@ -4873,6 +4885,7 @@ pub unsafe fn vec_splat_u32<const IMM: i16>() -> vector_unsigned_int {
 /// Vector Splat Unsigned Doubleword
 #[inline]
 #[target_feature(enable = "vector")]
+#[rustc_legacy_const_generics(0)]
 #[unstable(feature = "stdarch_s390x", issue = "135681")]
 #[cfg_attr(test, assert_instr(vrepig, IMM = 42))]
 pub unsafe fn vec_splat_u64<const IMM: i16>() -> vector_unsigned_long_long {
@@ -5366,6 +5379,7 @@ pub unsafe fn vec_cp_until_zero_cc<T: sealed::VectorCopyUntilZeroCC>(a: T) -> (T
 /// Vector Multiply Sum Logical
 #[inline]
 #[target_feature(enable = "vector-enhancements-1")]
+#[rustc_legacy_const_generics(3)]
 #[unstable(feature = "stdarch_s390x", issue = "135681")]
 #[cfg_attr(
     all(test, target_feature = "vector-enhancements-1"),

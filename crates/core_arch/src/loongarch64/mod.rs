@@ -63,6 +63,7 @@ pub fn crcc_w_d_w(a: i64, b: i32) -> i32 {
 
 /// Generates the cache operation instruction
 #[inline]
+#[rustc_legacy_const_generics(0, 2)]
 #[unstable(feature = "stdarch_loongarch", issue = "117427")]
 pub unsafe fn cacop<const IMM5: i64, const IMM_S12: i64>(b: i64) {
     static_assert_uimm_bits!(IMM5, 5);
@@ -72,6 +73,7 @@ pub unsafe fn cacop<const IMM5: i64, const IMM_S12: i64>(b: i64) {
 
 /// Reads the CSR
 #[inline]
+#[rustc_legacy_const_generics(0)]
 #[unstable(feature = "stdarch_loongarch", issue = "117427")]
 pub unsafe fn csrrd<const IMM14: i32>() -> i64 {
     static_assert_uimm_bits!(IMM14, 14);
@@ -80,6 +82,7 @@ pub unsafe fn csrrd<const IMM14: i32>() -> i64 {
 
 /// Writes the CSR
 #[inline]
+#[rustc_legacy_const_generics(1)]
 #[unstable(feature = "stdarch_loongarch", issue = "117427")]
 pub unsafe fn csrwr<const IMM14: i32>(a: i64) -> i64 {
     static_assert_uimm_bits!(IMM14, 14);
@@ -88,6 +91,7 @@ pub unsafe fn csrwr<const IMM14: i32>(a: i64) -> i64 {
 
 /// Exchanges the CSR
 #[inline]
+#[rustc_legacy_const_generics(2)]
 #[unstable(feature = "stdarch_loongarch", issue = "117427")]
 pub unsafe fn csrxchg<const IMM14: i32>(a: i64, b: i64) -> i64 {
     static_assert_uimm_bits!(IMM14, 14);

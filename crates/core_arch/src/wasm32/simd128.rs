@@ -458,6 +458,7 @@ pub unsafe fn v128_store(m: *mut v128, a: v128) {
 /// alignment requirement on this pointer since this intrinsic performs a
 /// 1-aligned load.
 #[inline]
+#[rustc_legacy_const_generics(2)]
 #[cfg_attr(test, assert_instr(v128.load8_lane, L = 0))]
 #[target_feature(enable = "simd128")]
 #[doc(alias("v128.load8_lane"))]
@@ -478,6 +479,7 @@ pub unsafe fn v128_load8_lane<const L: usize>(v: v128, m: *const u8) -> v128 {
 /// alignment requirement on this pointer since this intrinsic performs a
 /// 1-aligned load.
 #[inline]
+#[rustc_legacy_const_generics(2)]
 #[cfg_attr(test, assert_instr(v128.load16_lane, L = 0))]
 #[target_feature(enable = "simd128")]
 #[doc(alias("v128.load16_lane"))]
@@ -498,6 +500,7 @@ pub unsafe fn v128_load16_lane<const L: usize>(v: v128, m: *const u16) -> v128 {
 /// alignment requirement on this pointer since this intrinsic performs a
 /// 1-aligned load.
 #[inline]
+#[rustc_legacy_const_generics(2)]
 #[cfg_attr(test, assert_instr(v128.load32_lane, L = 0))]
 #[target_feature(enable = "simd128")]
 #[doc(alias("v128.load32_lane"))]
@@ -518,6 +521,7 @@ pub unsafe fn v128_load32_lane<const L: usize>(v: v128, m: *const u32) -> v128 {
 /// alignment requirement on this pointer since this intrinsic performs a
 /// 1-aligned load.
 #[inline]
+#[rustc_legacy_const_generics(2)]
 #[cfg_attr(test, assert_instr(v128.load64_lane, L = 0))]
 #[target_feature(enable = "simd128")]
 #[doc(alias("v128.load64_lane"))]
@@ -538,6 +542,7 @@ pub unsafe fn v128_load64_lane<const L: usize>(v: v128, m: *const u64) -> v128 {
 /// alignment requirement on this pointer since this intrinsic performs a
 /// 1-aligned store.
 #[inline]
+#[rustc_legacy_const_generics(2)]
 #[cfg_attr(test, assert_instr(v128.store8_lane, L = 0))]
 #[target_feature(enable = "simd128")]
 #[doc(alias("v128.store8_lane"))]
@@ -558,6 +563,7 @@ pub unsafe fn v128_store8_lane<const L: usize>(v: v128, m: *mut u8) {
 /// alignment requirement on this pointer since this intrinsic performs a
 /// 1-aligned store.
 #[inline]
+#[rustc_legacy_const_generics(2)]
 #[cfg_attr(test, assert_instr(v128.store16_lane, L = 0))]
 #[target_feature(enable = "simd128")]
 #[doc(alias("v128.store16_lane"))]
@@ -578,6 +584,7 @@ pub unsafe fn v128_store16_lane<const L: usize>(v: v128, m: *mut u16) {
 /// alignment requirement on this pointer since this intrinsic performs a
 /// 1-aligned store.
 #[inline]
+#[rustc_legacy_const_generics(2)]
 #[cfg_attr(test, assert_instr(v128.store32_lane, L = 0))]
 #[target_feature(enable = "simd128")]
 #[doc(alias("v128.store32_lane"))]
@@ -598,6 +605,7 @@ pub unsafe fn v128_store32_lane<const L: usize>(v: v128, m: *mut u32) {
 /// alignment requirement on this pointer since this intrinsic performs a
 /// 1-aligned store.
 #[inline]
+#[rustc_legacy_const_generics(2)]
 #[cfg_attr(test, assert_instr(v128.store64_lane, L = 0))]
 #[target_feature(enable = "simd128")]
 #[doc(alias("v128.store64_lane"))]
@@ -831,6 +839,7 @@ pub const fn f64x2(a0: f64, a1: f64) -> v128 {
 ///
 /// All indexes `$i*` must have the type `u32`.
 #[inline]
+#[rustc_legacy_const_generics(2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17)]
 #[cfg_attr(test,
     assert_instr(
         i8x16.shuffle,
@@ -917,6 +926,7 @@ pub use i8x16_shuffle as u8x16_shuffle;
 /// is no native `i16x8.shuffle` instruction (there is no need for one since
 /// `i8x16.shuffle` suffices).
 #[inline]
+#[rustc_legacy_const_generics(2, 3, 4, 5, 6, 7, 8, 9)]
 #[cfg_attr(test,
     assert_instr(
         i8x16.shuffle,
@@ -978,6 +988,7 @@ pub use i16x8_shuffle as u16x8_shuffle;
 /// is no native `i32x4.shuffle` instruction (there is no need for one since
 /// `i8x16.shuffle` suffices).
 #[inline]
+#[rustc_legacy_const_generics(2, 3, 4, 5)]
 #[cfg_attr(test, assert_instr(i8x16.shuffle, I0 = 0, I1 = 2, I2 = 4, I3 = 6))]
 #[target_feature(enable = "simd128")]
 #[doc(alias("i8x16.shuffle"))]
@@ -1011,6 +1022,7 @@ pub use i32x4_shuffle as u32x4_shuffle;
 /// is no native `i64x2.shuffle` instruction (there is no need for one since
 /// `i8x16.shuffle` suffices).
 #[inline]
+#[rustc_legacy_const_generics(2, 3)]
 #[cfg_attr(test, assert_instr(i8x16.shuffle, I0 = 0, I1 = 2))]
 #[target_feature(enable = "simd128")]
 #[doc(alias("i8x16.shuffle"))]
@@ -1031,6 +1043,7 @@ pub use i64x2_shuffle as u64x2_shuffle;
 /// Extracts the scalar value of lane specified in the immediate mode operand
 /// `N` from `a`. If `N` is out of bounds then it is a compile time error.
 #[inline]
+#[rustc_legacy_const_generics(1)]
 #[cfg_attr(test, assert_instr(i8x16.extract_lane_s, N = 3))]
 #[target_feature(enable = "simd128")]
 #[doc(alias("i8x16.extract_lane_s"))]
@@ -1045,6 +1058,7 @@ pub fn i8x16_extract_lane<const N: usize>(a: v128) -> i8 {
 /// Extracts the scalar value of lane specified in the immediate mode operand
 /// `N` from `a`. If `N` is out of bounds then it is a compile time error.
 #[inline]
+#[rustc_legacy_const_generics(1)]
 #[cfg_attr(test, assert_instr(i8x16.extract_lane_u, N = 3))]
 #[target_feature(enable = "simd128")]
 #[doc(alias("i8x16.extract_lane_u"))]
@@ -1059,6 +1073,7 @@ pub fn u8x16_extract_lane<const N: usize>(a: v128) -> u8 {
 /// Replaces the scalar value of lane specified in the immediate mode operand
 /// `N` from `a`. If `N` is out of bounds then it is a compile time error.
 #[inline]
+#[rustc_legacy_const_generics(1)]
 #[cfg_attr(test, assert_instr(i8x16.replace_lane, N = 2))]
 #[target_feature(enable = "simd128")]
 #[doc(alias("i8x16.replace_lane"))]
@@ -1073,6 +1088,7 @@ pub fn i8x16_replace_lane<const N: usize>(a: v128, val: i8) -> v128 {
 /// Replaces the scalar value of lane specified in the immediate mode operand
 /// `N` from `a`. If `N` is out of bounds then it is a compile time error.
 #[inline]
+#[rustc_legacy_const_generics(1)]
 #[cfg_attr(test, assert_instr(i8x16.replace_lane, N = 2))]
 #[target_feature(enable = "simd128")]
 #[doc(alias("i8x16.replace_lane"))]
@@ -1087,6 +1103,7 @@ pub fn u8x16_replace_lane<const N: usize>(a: v128, val: u8) -> v128 {
 /// Extracts a the scalar value of lane specified in the immediate mode operand
 /// `N` from `a`. If `N` is out of bounds then it is a compile time error.
 #[inline]
+#[rustc_legacy_const_generics(1)]
 #[cfg_attr(test, assert_instr(i16x8.extract_lane_s, N = 2))]
 #[target_feature(enable = "simd128")]
 #[doc(alias("i16x8.extract_lane_s"))]
@@ -1101,6 +1118,7 @@ pub fn i16x8_extract_lane<const N: usize>(a: v128) -> i16 {
 /// Extracts a the scalar value of lane specified in the immediate mode operand
 /// `N` from `a`. If `N` is out of bounds then it is a compile time error.
 #[inline]
+#[rustc_legacy_const_generics(1)]
 #[cfg_attr(test, assert_instr(i16x8.extract_lane_u, N = 2))]
 #[target_feature(enable = "simd128")]
 #[doc(alias("i16x8.extract_lane_u"))]
@@ -1115,6 +1133,7 @@ pub fn u16x8_extract_lane<const N: usize>(a: v128) -> u16 {
 /// Replaces the scalar value of lane specified in the immediate mode operand
 /// `N` from `a`. If `N` is out of bounds then it is a compile time error.
 #[inline]
+#[rustc_legacy_const_generics(1)]
 #[cfg_attr(test, assert_instr(i16x8.replace_lane, N = 2))]
 #[target_feature(enable = "simd128")]
 #[doc(alias("i16x8.replace_lane"))]
@@ -1129,6 +1148,7 @@ pub fn i16x8_replace_lane<const N: usize>(a: v128, val: i16) -> v128 {
 /// Replaces the scalar value of lane specified in the immediate mode operand
 /// `N` from `a`. If `N` is out of bounds then it is a compile time error.
 #[inline]
+#[rustc_legacy_const_generics(1)]
 #[cfg_attr(test, assert_instr(i16x8.replace_lane, N = 2))]
 #[target_feature(enable = "simd128")]
 #[doc(alias("i16x8.replace_lane"))]
@@ -1143,6 +1163,7 @@ pub fn u16x8_replace_lane<const N: usize>(a: v128, val: u16) -> v128 {
 /// Extracts the scalar value of lane specified in the immediate mode operand
 /// `N` from `a`. If `N` is out of bounds then it is a compile time error.
 #[inline]
+#[rustc_legacy_const_generics(1)]
 #[cfg_attr(test, assert_instr(i32x4.extract_lane, N = 2))]
 #[target_feature(enable = "simd128")]
 #[doc(alias("i32x4.extract_lane"))]
@@ -1157,6 +1178,7 @@ pub fn i32x4_extract_lane<const N: usize>(a: v128) -> i32 {
 /// Extracts the scalar value of lane specified in the immediate mode operand
 /// `N` from `a`. If `N` is out of bounds then it is a compile time error.
 #[inline]
+#[rustc_legacy_const_generics(1)]
 #[target_feature(enable = "simd128")]
 #[doc(alias("i32x4.extract_lane"))]
 #[stable(feature = "wasm_simd", since = "1.54.0")]
@@ -1169,6 +1191,7 @@ pub fn u32x4_extract_lane<const N: usize>(a: v128) -> u32 {
 /// Replaces the scalar value of lane specified in the immediate mode operand
 /// `N` from `a`. If `N` is out of bounds then it is a compile time error.
 #[inline]
+#[rustc_legacy_const_generics(1)]
 #[cfg_attr(test, assert_instr(i32x4.replace_lane, N = 2))]
 #[target_feature(enable = "simd128")]
 #[doc(alias("i32x4.replace_lane"))]
@@ -1183,6 +1206,7 @@ pub fn i32x4_replace_lane<const N: usize>(a: v128, val: i32) -> v128 {
 /// Replaces the scalar value of lane specified in the immediate mode operand
 /// `N` from `a`. If `N` is out of bounds then it is a compile time error.
 #[inline]
+#[rustc_legacy_const_generics(1)]
 #[target_feature(enable = "simd128")]
 #[doc(alias("i32x4.replace_lane"))]
 #[stable(feature = "wasm_simd", since = "1.54.0")]
@@ -1195,6 +1219,7 @@ pub fn u32x4_replace_lane<const N: usize>(a: v128, val: u32) -> v128 {
 /// Extracts the scalar value of lane specified in the immediate mode operand
 /// `N` from `a`. If `N` is out of bounds then it is a compile time error.
 #[inline]
+#[rustc_legacy_const_generics(1)]
 #[cfg_attr(test, assert_instr(i64x2.extract_lane, N = 1))]
 #[target_feature(enable = "simd128")]
 #[doc(alias("i64x2.extract_lane"))]
@@ -1209,6 +1234,7 @@ pub fn i64x2_extract_lane<const N: usize>(a: v128) -> i64 {
 /// Extracts the scalar value of lane specified in the immediate mode operand
 /// `N` from `a`. If `N` is out of bounds then it is a compile time error.
 #[inline]
+#[rustc_legacy_const_generics(1)]
 #[target_feature(enable = "simd128")]
 #[doc(alias("i64x2.extract_lane"))]
 #[stable(feature = "wasm_simd", since = "1.54.0")]
@@ -1221,6 +1247,7 @@ pub fn u64x2_extract_lane<const N: usize>(a: v128) -> u64 {
 /// Replaces the scalar value of lane specified in the immediate mode operand
 /// `N` from `a`. If `N` is out of bounds then it is a compile time error.
 #[inline]
+#[rustc_legacy_const_generics(1)]
 #[cfg_attr(test, assert_instr(i64x2.replace_lane, N = 0))]
 #[target_feature(enable = "simd128")]
 #[doc(alias("i64x2.replace_lane"))]
@@ -1235,6 +1262,7 @@ pub fn i64x2_replace_lane<const N: usize>(a: v128, val: i64) -> v128 {
 /// Replaces the scalar value of lane specified in the immediate mode operand
 /// `N` from `a`. If `N` is out of bounds then it is a compile time error.
 #[inline]
+#[rustc_legacy_const_generics(1)]
 #[target_feature(enable = "simd128")]
 #[doc(alias("i64x2.replace_lane"))]
 #[stable(feature = "wasm_simd", since = "1.54.0")]
@@ -1247,6 +1275,7 @@ pub fn u64x2_replace_lane<const N: usize>(a: v128, val: u64) -> v128 {
 /// Extracts the scalar value of lane specified fn the immediate mode operand
 /// `N` from `a`. If `N` is out of bounds then it is a compile time error.
 #[inline]
+#[rustc_legacy_const_generics(1)]
 #[cfg_attr(test, assert_instr(f32x4.extract_lane, N = 1))]
 #[target_feature(enable = "simd128")]
 #[doc(alias("f32x4.extract_lane"))]
@@ -1261,6 +1290,7 @@ pub fn f32x4_extract_lane<const N: usize>(a: v128) -> f32 {
 /// Replaces the scalar value of lane specified fn the immediate mode operand
 /// `N` from `a`. If `N` is out of bounds then it is a compile time error.
 #[inline]
+#[rustc_legacy_const_generics(1)]
 #[cfg_attr(test, assert_instr(f32x4.replace_lane, N = 1))]
 #[target_feature(enable = "simd128")]
 #[doc(alias("f32x4.replace_lane"))]
@@ -1275,6 +1305,7 @@ pub fn f32x4_replace_lane<const N: usize>(a: v128, val: f32) -> v128 {
 /// Extracts the scalar value of lane specified fn the immediate mode operand
 /// `N` from `a`. If `N` fs out of bounds then it is a compile time error.
 #[inline]
+#[rustc_legacy_const_generics(1)]
 #[cfg_attr(test, assert_instr(f64x2.extract_lane, N = 1))]
 #[target_feature(enable = "simd128")]
 #[doc(alias("f64x2.extract_lane"))]
@@ -1289,6 +1320,7 @@ pub fn f64x2_extract_lane<const N: usize>(a: v128) -> f64 {
 /// Replaces the scalar value of lane specified in the immediate mode operand
 /// `N` from `a`. If `N` is out of bounds then it is a compile time error.
 #[inline]
+#[rustc_legacy_const_generics(1)]
 #[cfg_attr(test, assert_instr(f64x2.replace_lane, N = 1))]
 #[target_feature(enable = "simd128")]
 #[doc(alias("f64x2.replace_lane"))]

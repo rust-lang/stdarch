@@ -114,6 +114,7 @@ pub fn crcc_w_w_w(a: i32, b: i32) -> i32 {
 
 /// Generates the memory barrier instruction
 #[inline]
+#[rustc_legacy_const_generics(0)]
 #[unstable(feature = "stdarch_loongarch", issue = "117427")]
 pub fn dbar<const IMM15: i32>() {
     static_assert_uimm_bits!(IMM15, 15);
@@ -122,6 +123,7 @@ pub fn dbar<const IMM15: i32>() {
 
 /// Generates the instruction-fetch barrier instruction
 #[inline]
+#[rustc_legacy_const_generics(0)]
 #[unstable(feature = "stdarch_loongarch", issue = "117427")]
 pub fn ibar<const IMM15: i32>() {
     static_assert_uimm_bits!(IMM15, 15);
@@ -130,6 +132,7 @@ pub fn ibar<const IMM15: i32>() {
 
 /// Moves data from a GPR to the FCSR
 #[inline]
+#[rustc_legacy_const_generics(1)]
 #[unstable(feature = "stdarch_loongarch", issue = "117427")]
 pub unsafe fn movgr2fcsr<const IMM2: i32>(a: i32) {
     static_assert_uimm_bits!(IMM2, 2);
@@ -138,6 +141,7 @@ pub unsafe fn movgr2fcsr<const IMM2: i32>(a: i32) {
 
 /// Moves data from a FCSR to the GPR
 #[inline]
+#[rustc_legacy_const_generics(0)]
 #[unstable(feature = "stdarch_loongarch", issue = "117427")]
 pub fn movfcsr2gr<const IMM2: i32>() -> i32 {
     static_assert_uimm_bits!(IMM2, 2);
@@ -188,6 +192,7 @@ pub unsafe fn iocsrwr_w(a: i32, b: i32) {
 
 /// Generates the breakpoint instruction
 #[inline]
+#[rustc_legacy_const_generics(0)]
 #[unstable(feature = "stdarch_loongarch", issue = "117427")]
 pub unsafe fn brk<const IMM15: i32>() {
     static_assert_uimm_bits!(IMM15, 15);
@@ -203,6 +208,7 @@ pub fn cpucfg(a: i32) -> i32 {
 
 /// Generates the syscall instruction
 #[inline]
+#[rustc_legacy_const_generics(0)]
 #[unstable(feature = "stdarch_loongarch", issue = "117427")]
 pub unsafe fn syscall<const IMM15: i32>() {
     static_assert_uimm_bits!(IMM15, 15);
