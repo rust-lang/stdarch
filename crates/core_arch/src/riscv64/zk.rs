@@ -1,6 +1,8 @@
 #[cfg(test)]
 use stdarch_test::assert_instr;
 
+use crate::arch::asm;
+
 unsafe extern "unadjusted" {
     #[link_name = "llvm.riscv.aes64es"]
     fn _aes64es(rs1: i64, rs2: i64) -> i64;
@@ -13,12 +15,6 @@ unsafe extern "unadjusted" {
 
     #[link_name = "llvm.riscv.aes64dsm"]
     fn _aes64dsm(rs1: i64, rs2: i64) -> i64;
-
-    #[link_name = "llvm.riscv.aes64ks1i"]
-    fn _aes64ks1i(rs1: i64, rnum: i32) -> i64;
-
-    #[link_name = "llvm.riscv.aes64ks2"]
-    fn _aes64ks2(rs1: i64, rs2: i64) -> i64;
 
     #[link_name = "llvm.riscv.aes64im"]
     fn _aes64im(rs1: i64) -> i64;
@@ -135,13 +131,23 @@ pub fn aes64dsm(rs1: u64, rs2: u64) -> u64 {
 /// The `RNUM` parameter is expected to be a constant value inside the range of `0..=10`.
 //#[target_feature(enable = "zkne", enable = "zknd")] // TODO: zkne_or_zknd
 #[rustc_legacy_const_generics(1)]
-#[cfg_attr(test, assert_instr(aes64ks1i, RNUM = 0))]
+#[cfg_attr(test, assert_instr(aes64ks1i, RNUM = 0))] // REMOVE if anything goes wrong
 #[inline]
 #[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
 pub fn aes64ks1i<const RNUM: u8>(rs1: u64) -> u64 {
     static_assert!(RNUM <= 10);
 
-    unsafe { _aes64ks1i(rs1 as i64, RNUM as i32) as u64 }
+    unsafe {
+        let rd: u64;
+        asm!(
+            ".insn i 0x13, 0x1, {}, {}, {}",
+            lateout(reg) rd,
+            in(reg) rs1,
+            const 0x310 + (RNUM & 0x0f) as u16,
+            options(pure, nomem, nostack, preserves_flags)
+        );
+        rd
+    }
 }
 
 /// This instruction implements part of the KeySchedule operation for the AES Block cipher.
@@ -156,11 +162,21 @@ pub fn aes64ks1i<const RNUM: u8>(rs1: u64) -> u64 {
 ///
 /// Section: 3.11
 //#[target_feature(enable = "zkne", enable = "zknd")] // TODO: zkne_or_zknd
-#[cfg_attr(test, assert_instr(aes64ks2))]
+#[cfg_attr(test, assert_instr(aes64ks2))] // REMOVE if anything goes wrong
 #[inline]
 #[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
 pub fn aes64ks2(rs1: u64, rs2: u64) -> u64 {
-    unsafe { _aes64ks2(rs1 as i64, rs2 as i64) as u64 }
+    unsafe {
+        let rd: u64;
+        asm!(
+            ".insn r 0x33, 0x0, 0x3f, {}, {}, {}",
+            lateout(reg) rd,
+            in(reg) rs1,
+            in(reg) rs2,
+            options(pure, nomem, nostack, preserves_flags)
+        );
+        rd
+    }
 }
 
 /// This instruction accelerates the inverse MixColumns step of the AES Block Cipher, and is used to aid creation of
