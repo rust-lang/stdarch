@@ -6,6 +6,7 @@ use std::ops::{Deref, DerefMut};
 pub struct X86IntrinsicType {
     pub data: IntrinsicType,
     pub param: Parameter,
+    pub debug: Vec<String>,
 }
 
 impl Deref for X86IntrinsicType {

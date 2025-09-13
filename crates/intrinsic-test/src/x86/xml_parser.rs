@@ -76,9 +76,9 @@ fn xml_to_intrinsic(
     intr: XMLIntrinsic,
 ) -> Result<Intrinsic<X86IntrinsicType>, Box<dyn std::error::Error>> {
     let name = intr.name;
-    let result = X86IntrinsicType::from_param(&intr.return_data);
+    let result = X86IntrinsicType::from_param(&intr.return_data, name.clone());
     let args_check = intr.parameters.into_iter().enumerate().map(|(i, param)| {
-        let ty = X86IntrinsicType::from_param(&param);
+        let ty = X86IntrinsicType::from_param(&param, name.clone());
         if ty.is_err() {
             None
         } else {
