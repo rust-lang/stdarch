@@ -75,8 +75,10 @@ impl TypeKind {
             Self::Float => "float",
             Self::Int(Sign::Signed) => "int",
             Self::Int(Sign::Unsigned) => "uint",
+            Self::Mask => "uint",
             Self::Poly => "poly",
             Self::Char(Sign::Signed) => "char",
+            Self::Vector => "int",
             _ => unreachable!("Not used: {:#?}", self),
         }
     }
@@ -131,7 +133,7 @@ impl IntrinsicType {
         if let Some(bl) = self.bit_len {
             bl
         } else {
-            unreachable!("")
+            unreachable!("{:#?}", self)
         }
     }
 
@@ -154,20 +156,13 @@ impl IntrinsicType {
     pub fn c_scalar_type(&self) -> String {
         match self.kind() {
             TypeKind::Char(_) => String::from("char"),
+            TypeKind::Vector => String::from("int32_t"),
             _ => format!(
                 "{prefix}{bits}_t",
                 prefix = self.kind().c_prefix(),
                 bits = self.inner_size()
             ),
         }
-    }
-
-    pub fn rust_scalar_type(&self) -> String {
-        format!(
-            "{prefix}{bits}",
-            prefix = self.kind().rust_prefix(),
-            bits = self.inner_size()
-        )
     }
 
     pub fn c_promotion(&self) -> &str {
@@ -222,7 +217,8 @@ impl IntrinsicType {
         match self {
             IntrinsicType {
                 bit_len: Some(bit_len @ (8 | 16 | 32 | 64)),
-                kind: kind @ (TypeKind::Int(_) | TypeKind::Poly | TypeKind::Char(_)),
+                kind:
+                    kind @ (TypeKind::Int(_) | TypeKind::Poly | TypeKind::Char(_) | TypeKind::Mask),
                 simd_len,
                 vec_len,
                 ..
@@ -283,6 +279,29 @@ impl IntrinsicType {
                         )))
                 )
             }
+            IntrinsicType {
+                kind: TypeKind::Vector,
+                bit_len: Some(bit_len @ (128 | 256 | 512)),
+                simd_len,
+                ..
+            } => {
+                let (prefix, suffix) = match language {
+                    Language::Rust => ("[", "]"),
+                    Language::C => ("{", "}"),
+                };
+                let body_indentation = indentation.nested();
+                let effective_bit_len = 32;
+                let effective_vec_len = bit_len / effective_bit_len;
+                format!(
+                    "{prefix}\n{body}\n{indentation}{suffix}",
+                    body = (0..(simd_len.unwrap_or(1) * effective_vec_len + loads - 1))
+                        .format_with(",\n", |i, fmt| {
+                            let src = value_for_array(effective_bit_len, i);
+                            assert!(src == 0 || src.ilog2() < *bit_len);
+                            fmt(&format_args!("{body_indentation}{src:#x}"))
+                        })
+                )
+            }
             _ => unimplemented!("populate random: {:#?}", self),
         }
     }
@@ -298,7 +317,7 @@ impl IntrinsicType {
                 kind: TypeKind::Int(_) | TypeKind::Poly,
                 ..
             } => true,
-            _ => unimplemented!(),
+            _ => true,
         }
     }
 
@@ -330,4 +349,13 @@ pub trait IntrinsicTypeDefinition: Deref<Target = IntrinsicType> {
     /// rust debug output format for the return type. The generated line assumes
     /// there is an int i in scope which is the current pass number.
     fn print_result_c(&self, indentation: Indentation, additional: &str) -> String;
+
+    /// To enable architecture-specific logic
+    fn rust_scalar_type(&self) -> String {
+        format!(
+            "{prefix}{bits}",
+            prefix = self.kind().rust_prefix(),
+            bits = self.inner_size()
+        )
+    }
 }
