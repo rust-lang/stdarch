@@ -34,7 +34,10 @@
     f16,
     aarch64_unstable_target_feature,
     bigint_helper_methods,
-    funnel_shifts
+    funnel_shifts,
+    const_trait_impl,
+    const_cmp,
+    const_convert
 )]
 #![cfg_attr(test, feature(test, abi_vectorcall, stdarch_internal))]
 #![deny(clippy::missing_inline_in_public_items)]
