@@ -23,7 +23,8 @@ macro_rules! simd_ty {
             }
             // FIXME: Workaround rust@60637
             #[inline(always)]
-            pub(crate) fn splat(value: $elem_type) -> Self {
+            #[rustc_const_unstable(feature = "stdarch_const_helpers", issue = "none")]
+            pub(crate) const fn splat(value: $elem_type) -> Self {
                 #[derive(Copy, Clone)]
                 #[repr(simd)]
                 struct JustOne([$elem_type; 1]);
@@ -38,12 +39,12 @@ macro_rules! simd_ty {
             /// Use for testing only.
             // FIXME: Workaround rust@60637
             #[inline(always)]
-            pub(crate) fn extract(&self, index: usize) -> $elem_type {
+            pub(crate) const fn extract(&self, index: usize) -> $elem_type {
                 self.as_array()[index]
             }
 
             #[inline]
-            pub(crate) fn as_array(&self) -> &[$elem_type; $len] {
+            pub(crate) const fn as_array(&self) -> &[$elem_type; $len] {
                 let simd_ptr: *const Self = self;
                 let array_ptr: *const [$elem_type; $len] = simd_ptr.cast();
                 // SAFETY: We can always read the prefix of a simd type as an array.
@@ -53,7 +54,8 @@ macro_rules! simd_ty {
             }
         }
 
-        impl core::cmp::PartialEq for $id {
+        #[rustc_const_unstable(feature = "stdarch_const_helpers", issue = "none")]
+        const impl core::cmp::PartialEq for $id {
             #[inline]
             fn eq(&self, other: &Self) -> bool {
                 self.as_array() == other.as_array()
@@ -89,7 +91,8 @@ macro_rules! simd_m_ty {
 
             // FIXME: Workaround rust@60637
             #[inline(always)]
-            pub(crate) fn splat(value: bool) -> Self {
+            #[rustc_const_unstable(feature = "stdarch_const_helpers", issue = "none")]
+            pub(crate) const fn splat(value: bool) -> Self {
                 #[derive(Copy, Clone)]
                 #[repr(simd)]
                 struct JustOne([$elem_type; 1]);
@@ -100,7 +103,7 @@ macro_rules! simd_m_ty {
             }
 
             #[inline]
-            pub(crate) fn as_array(&self) -> &[$elem_type; $len] {
+            pub(crate) const fn as_array(&self) -> &[$elem_type; $len] {
                 let simd_ptr: *const Self = self;
                 let array_ptr: *const [$elem_type; $len] = simd_ptr.cast();
                 // SAFETY: We can always read the prefix of a simd type as an array.
@@ -110,7 +113,8 @@ macro_rules! simd_m_ty {
             }
         }
 
-        impl core::cmp::PartialEq for $id {
+        #[rustc_const_unstable(feature = "stdarch_const_helpers", issue = "none")]
+        const impl core::cmp::PartialEq for $id {
             #[inline]
             fn eq(&self, other: &Self) -> bool {
                 self.as_array() == other.as_array()
