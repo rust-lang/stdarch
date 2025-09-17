@@ -189,8 +189,9 @@ case "${TARGET}" in
         # `CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_RUNNER` is not necessary for `intrinsic-test`
         # because the binary needs to run directly on the host.
         # Hence the use of `env -u`.
-        env -u CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_RUNNER
-            CPPFLAGS="${TEST_CPPFLAGS}" RUSTFLAGS="${HOST_RUSTFLAGS}" RUST_LOG=warn \
+        env -u CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_RUNNER \
+            CPPFLAGS="${TEST_CPPFLAGS}" RUSTFLAGS="${HOST_RUSTFLAGS}" \
+            RUST_LOG=warn RUST_BACKTRACE=1 \
             cargo run "${INTRINSIC_TEST}" "${PROFILE}"  \
             --bin intrinsic-test -- intrinsics_data/x86-intel.xml \
             --runner "${TEST_RUNNER}" \
