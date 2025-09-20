@@ -55,6 +55,10 @@ neon-target-aarch64-arm64ec: &neon-target-aarch64-arm64ec
 neon-not-arm-stable: &neon-not-arm-stable
   FnCall: [cfg_attr, [{ FnCall: [not, ['target_arch = "arm"']]}, {FnCall: [stable, ['feature = "neon_intrinsics"', 'since = "1.59.0"']]}]]
 
+# #[cfg_attr(not(target_arch = "arm"), stable(feature = "stdarch_neon_f16", since = "CURRENT_RUSTC_VERSION"))]
+neon-not-arm-stable-f16: &neon-not-arm-stable-f16
+  FnCall: [cfg_attr, [{ FnCall: [not, ['target_arch = "arm"']]}, {FnCall: [stable, ['feature = "stdarch_neon_f16"', 'since = "CURRENT_RUSTC_VERSION"']]}]]
+
 # #[cfg_attr(all(test, not(target_env = "msvc"))]
 msvc-disabled: &msvc-disabled
   FnCall: [all, [test, {FnCall: [not, ['target_env = "msvc"']]}]]
@@ -285,7 +289,8 @@ intrinsics:
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, ['"vabd.f16"']]}]]
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [fabd]]}]]
       - *neon-fp16
-      - *neon-unstable-f16-updates
+      - *neon-not-arm-stable-f16
+      - *neon-cfg-arm-unstable
       - *target-not-arm64ec
     safety: safe
     types:
@@ -404,7 +409,8 @@ intrinsics:
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, ['"vceq.f16"']]}]]
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [fcmeq]]}]]
       - *neon-fp16
-      - *neon-unstable-f16-updates
+      - *neon-not-arm-stable-f16
+      - *neon-cfg-arm-unstable
       - *target-not-arm64ec
     safety: safe
     types:
@@ -466,7 +472,8 @@ intrinsics:
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, [vabs]]}]]
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [fabs]]}]]
       - *neon-fp16
-      - *neon-unstable-f16-updates
+      - *neon-not-arm-stable-f16
+      - *neon-cfg-arm-unstable
       - *target-not-arm64ec
     safety: safe
     types:
@@ -566,7 +573,8 @@ intrinsics:
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, ['"vcgt.f16"']]}]]
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [fcmgt]]}]]
       - *neon-fp16
-      - *neon-unstable-f16-updates
+      - *neon-not-arm-stable-f16
+      - *neon-cfg-arm-unstable
       - *target-not-arm64ec
     safety: safe
     types:
@@ -585,7 +593,8 @@ intrinsics:
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, ['"vcgt.f16"']]}]]
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [fcmgt]]}]]
       - *neon-fp16
-      - *neon-unstable-f16-updates
+      - *neon-not-arm-stable-f16
+      - *neon-cfg-arm-unstable
       - *target-not-arm64ec
     safety: safe
     types:
@@ -664,7 +673,8 @@ intrinsics:
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, ['"vcge.f16"']]}]]
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [fcmge]]}]]
       - *neon-fp16
-      - *neon-unstable-f16-updates
+      - *neon-not-arm-stable-f16
+      - *neon-cfg-arm-unstable
       - *target-not-arm64ec
     safety: safe
     types:
@@ -682,7 +692,8 @@ intrinsics:
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, ['"vcle.f16"']]}]]
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [fcmle]]}]]
       - *neon-fp16
-      - *neon-unstable-f16-updates
+      - *neon-not-arm-stable-f16
+      - *neon-cfg-arm-unstable
       - *target-not-arm64ec
     safety: safe
     types:
@@ -864,7 +875,8 @@ intrinsics:
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, ['"vacgt.f16"']]}]]
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [facgt]]}]]
       - *neon-fp16
-      - *neon-unstable-f16-updates
+      - *neon-not-arm-stable-f16
+      - *neon-cfg-arm-unstable
       - *target-not-arm64ec
     safety: safe
     types:
@@ -911,7 +923,8 @@ intrinsics:
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, ['"vacge.f16"']]}]]
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [facge]]}]]
       - *neon-fp16
-      - *neon-unstable-f16-updates
+      - *neon-not-arm-stable-f16
+      - *neon-cfg-arm-unstable
       - *target-not-arm64ec
     safety: safe
     types:
@@ -952,7 +965,8 @@ intrinsics:
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, ['"vacgt.f16"']]}]]
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [facgt]]}]]
       - *neon-fp16
-      - *neon-unstable-f16-updates
+      - *neon-not-arm-stable-f16
+      - *neon-cfg-arm-unstable
       - *target-not-arm64ec
     safety: safe
     types:
@@ -988,7 +1002,8 @@ intrinsics:
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, ['"vacge.f16"']]}]]
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [facge]]}]]
       - *neon-fp16
-      - *neon-unstable-f16-updates
+      - *neon-not-arm-stable-f16
+      - *neon-cfg-arm-unstable
       - *target-not-arm64ec
     safety: safe
     types:
@@ -1023,7 +1038,8 @@ intrinsics:
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, [vcvt]]}]]
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [scvtf]]}]]
       - *neon-fp16
-      - *neon-unstable-f16-updates
+      - *neon-not-arm-stable-f16
+      - *neon-cfg-arm-unstable
       - *target-not-arm64ec
     safety: safe
     types:
@@ -1058,7 +1074,8 @@ intrinsics:
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, [vcvt]]}]]
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [ucvtf]]}]]
       - *neon-fp16
-      - *neon-unstable-f16-updates
+      - *neon-not-arm-stable-f16
+      - *neon-cfg-arm-unstable
       - *target-not-arm64ec
     safety: safe
     types:
@@ -1130,7 +1147,8 @@ intrinsics:
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [ucvtf, 'N = 1']]}]]
       - FnCall: [rustc_legacy_const_generics, ['1']]
       - *neon-fp16
-      - *neon-unstable-f16-updates
+      - *neon-not-arm-stable-f16
+      - *neon-cfg-arm-unstable
       - *target-not-arm64ec
     static_defs: ['const N: i32']
     safety: safe
@@ -1162,7 +1180,8 @@ intrinsics:
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [fcvtzs, 'N = 1']]}]]
       - FnCall: [rustc_legacy_const_generics, ['1']]
       - *neon-fp16
-      - *neon-unstable-f16-updates
+      - *neon-not-arm-stable-f16
+      - *neon-cfg-arm-unstable
       - *target-not-arm64ec
     static_defs: ['const N: i32']
     safety: safe
@@ -1194,7 +1213,8 @@ intrinsics:
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [fcvtzu, 'N = 1']]}]]
       - FnCall: [rustc_legacy_const_generics, ['1']]
       - *neon-fp16
-      - *neon-unstable-f16-updates
+      - *neon-not-arm-stable-f16
+      - *neon-cfg-arm-unstable
       - *target-not-arm64ec
     static_defs: ['const N: i32']
     safety: safe
@@ -1253,7 +1273,8 @@ intrinsics:
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [scvtf, 'N = 1']]}]]
       - FnCall: [rustc_legacy_const_generics, ['1']]
       - *neon-fp16
-      - *neon-unstable-f16-updates
+      - *neon-not-arm-stable-f16
+      - *neon-cfg-arm-unstable
       - *target-not-arm64ec
     static_defs: ['const N: i32']
     safety: safe
@@ -1507,7 +1528,8 @@ intrinsics:
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [dup, 'N = 4']]}]]
       - FnCall: [rustc_legacy_const_generics, ['1']]
       - *neon-fp16
-      - *neon-unstable-f16-updates
+      - *neon-not-arm-stable-f16
+      - *neon-cfg-arm-unstable
       - *target-not-arm64ec
     static_defs: ['const N: i32']
     safety: safe
@@ -1546,7 +1568,8 @@ intrinsics:
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [dup, 'N = 2']]}]]
       - FnCall: [rustc_legacy_const_generics, ['1']]
       - *neon-fp16
-      - *neon-unstable-f16-updates
+      - *neon-not-arm-stable-f16
+      - *neon-cfg-arm-unstable
       - *target-not-arm64ec
     static_defs: ['const N: i32']
     safety: safe
@@ -1768,7 +1791,8 @@ intrinsics:
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [ext, 'N = 3']]}]]
       - FnCall: [rustc_legacy_const_generics, ['2']]
       - *neon-fp16
-      - *neon-unstable-f16-updates
+      - *neon-not-arm-stable-f16
+      - *neon-cfg-arm-unstable
       - *target-not-arm64ec
     static_defs: ['const N: i32']
     safety: safe
@@ -1787,7 +1811,8 @@ intrinsics:
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [ext, 'N = 7']]}]]
       - FnCall: [rustc_legacy_const_generics, ['2']]
       - *neon-fp16
-      - *neon-unstable-f16-updates
+      - *neon-not-arm-stable-f16
+      - *neon-cfg-arm-unstable
       - *target-not-arm64ec
     static_defs: ['const N: i32']
     safety: safe
@@ -2237,7 +2262,8 @@ intrinsics:
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, ['"vneg.{type[1]}"']]}]]
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [fneg]]}]]
       - *neon-fp16
-      - *neon-unstable-f16-updates
+      - *neon-not-arm-stable-f16
+      - *neon-cfg-arm-unstable
       - *target-not-arm64ec
     safety: safe
     types:
@@ -2501,7 +2527,8 @@ intrinsics:
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, [vrintn]]}]]
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [frintn]]}]]
       - *neon-fp16
-      - *neon-unstable-f16-updates
+      - *neon-not-arm-stable-f16
+      - *neon-cfg-arm-unstable
       - *target-not-arm64ec
     safety: safe
     types:
@@ -6362,7 +6389,8 @@ intrinsics:
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, ['"vmul.{type[0]}"']]}]]
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [fmul]]}]]
       - *neon-fp16
-      - *neon-unstable-f16-updates
+      - *neon-not-arm-stable-f16
+      - *neon-cfg-arm-unstable
       - *target-not-arm64ec
     safety: safe
     types:
@@ -6412,7 +6440,8 @@ intrinsics:
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [fmul, 'LANE = 1']]}]]
       - FnCall: [rustc_legacy_const_generics, ['2']]
       - *neon-fp16
-      - *neon-unstable-f16-updates
+      - *neon-not-arm-stable-f16
+      - *neon-cfg-arm-unstable
       - *target-not-arm64ec
     static_defs: ["const LANE: i32"]
     safety: safe
@@ -6616,7 +6645,8 @@ intrinsics:
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, [vfma]]}]]
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [fmla]]}]]
       - *neon-fp16
-      - *neon-unstable-f16-updates
+      - *neon-not-arm-stable-f16
+      - *neon-cfg-arm-unstable
       - *target-not-arm64ec
     safety: safe
     types:
@@ -6726,7 +6756,8 @@ intrinsics:
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, ['"vsub.{type[0]}"']]}]]
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [fsub]]}]]
       - *neon-fp16
-      - *neon-unstable-f16-updates
+      - *neon-not-arm-stable-f16
+      - *neon-cfg-arm-unstable
       - *target-not-arm64ec
     safety: safe
     types:
@@ -6745,7 +6776,8 @@ intrinsics:
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, ['"vadd.f16"']]}]]
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [fadd]]}]]
       - *neon-fp16
-      - *neon-unstable-f16-updates
+      - *neon-not-arm-stable-f16
+      - *neon-cfg-arm-unstable
       - *target-not-arm64ec
     safety: safe
     types:
@@ -7245,7 +7277,8 @@ intrinsics:
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, [vmax]]}]]
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [fmax]]}]]
       - *neon-fp16
-      - *neon-unstable-f16-updates
+      - *neon-not-arm-stable-f16
+      - *neon-cfg-arm-unstable
       - *target-not-arm64ec
     safety: safe
     types:
@@ -7288,7 +7321,8 @@ intrinsics:
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, [vmaxnm]]}]]
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [fmaxnm]]}]]
       - *neon-fp16
-      - *neon-unstable-f16-updates
+      - *neon-not-arm-stable-f16
+      - *neon-cfg-arm-unstable
       - *target-not-arm64ec
     safety: safe
     types:
@@ -7307,7 +7341,8 @@ intrinsics:
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, [vminnm]]}]]
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [fminnm]]}]]
       - *neon-fp16
-      - *neon-unstable-f16-updates
+      - *neon-not-arm-stable-f16
+      - *neon-cfg-arm-unstable
       - *target-not-arm64ec
     safety: safe
     types:
@@ -7394,7 +7429,8 @@ intrinsics:
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, [vmin]]}]]
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [fmin]]}]]
       - *neon-fp16
-      - *neon-unstable-f16-updates
+      - *neon-not-arm-stable-f16
+      - *neon-cfg-arm-unstable
       - *target-not-arm64ec
     safety: safe
     types:
@@ -7459,7 +7495,8 @@ intrinsics:
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, [vpadd]]}]]
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [faddp]]}]]
       - *neon-fp16
-      - *neon-unstable-f16-updates
+      - *neon-not-arm-stable-f16
+      - *neon-cfg-arm-unstable
       - *target-not-arm64ec
     safety: safe
     types:
@@ -8303,7 +8340,8 @@ intrinsics:
       - *neon-fp16
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, [vrsqrts]]}]]
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [frsqrts]]}]]
-      - *neon-unstable-f16-updates
+      - *neon-not-arm-stable-f16
+      - *neon-cfg-arm-unstable
       - *target-not-arm64ec
     safety: safe
     types:
@@ -8352,7 +8390,8 @@ intrinsics:
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, [vrecpe]]}]]
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [frecpe]]}]]
       - *neon-fp16
-      - *neon-unstable-f16-updates
+      - *neon-not-arm-stable-f16
+      - *neon-cfg-arm-unstable
       - *target-not-arm64ec
     safety: safe
     types:
@@ -8401,7 +8440,8 @@ intrinsics:
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, [vrecps]]}]]
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [frecps]]}]]
       - *neon-fp16
-      - *neon-unstable-f16-updates
+      - *neon-not-arm-stable-f16
+      - *neon-cfg-arm-unstable
       - *target-not-arm64ec
     safety: safe
     types:
@@ -8736,7 +8776,8 @@ intrinsics:
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, [nop]]}]]
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [nop]]}]]
       - *neon-fp16
-      - *neon-unstable-f16-updates
+      - *neon-not-arm-stable-f16
+      - *neon-cfg-arm-unstable
       - *target-not-arm64ec
     safety: safe
     types:
@@ -8800,7 +8841,8 @@ intrinsics:
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, [nop]]}]]
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [nop]]}]]
       - *neon-fp16
-      - *neon-unstable-f16-updates
+      - *neon-not-arm-stable-f16
+      - *neon-cfg-arm-unstable
       - *target-not-arm64ec
     safety: safe
     types:
@@ -8824,7 +8866,8 @@ intrinsics:
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, [vrev64]]}]]
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [rev64]]}]]
       - *neon-fp16
-      - *neon-unstable-f16-updates
+      - *neon-not-arm-stable-f16
+      - *neon-cfg-arm-unstable
       - *target-not-arm64ec
     safety: safe
     types:
@@ -9140,7 +9183,8 @@ intrinsics:
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, [nop]]}]]
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [nop]]}]]
       - *neon-fp16
-      - *neon-unstable-f16-updates
+      - *neon-not-arm-stable-f16
+      - *neon-cfg-arm-unstable
       - *target-not-arm64ec
     safety: safe
     types:
@@ -9646,7 +9690,8 @@ intrinsics:
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [trn1]]}]]
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [trn2]]}]]
       - *neon-fp16
-      - *neon-unstable-f16-updates
+      - *neon-not-arm-stable-f16
+      - *neon-cfg-arm-unstable
       - *target-not-arm64ec
     safety: safe
     types:
@@ -9802,7 +9847,8 @@ intrinsics:
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [zip1]]}]]
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [zip2]]}]]
       - *neon-fp16
-      - *neon-unstable-f16-updates
+      - *neon-not-arm-stable-f16
+      - *neon-cfg-arm-unstable
       - *target-not-arm64ec
     safety: safe
     types:
@@ -9873,7 +9919,8 @@ intrinsics:
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [uzp1]]}]]
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [uzp2]]}]]
       - *neon-fp16
-      - *neon-unstable-f16-updates
+      - *neon-not-arm-stable-f16
+      - *neon-cfg-arm-unstable
       - *target-not-arm64ec
     safety: safe
     types:
@@ -10452,7 +10499,8 @@ intrinsics:
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, ['"vcge.f16"']]}]]
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [fcmge]]}]]
       - *neon-fp16
-      - *neon-unstable-f16-updates
+      - *neon-not-arm-stable-f16
+      - *neon-cfg-arm-unstable
       - *target-not-arm64ec
     safety: safe
     types:
@@ -10471,7 +10519,8 @@ intrinsics:
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, ['"vcge.f16"']]}]]
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [fcmge]]}]]
       - *neon-fp16
-      - *neon-unstable-f16-updates
+      - *neon-not-arm-stable-f16
+      - *neon-cfg-arm-unstable
       - *target-not-arm64ec
     safety: safe
     types:
@@ -10711,7 +10760,8 @@ intrinsics:
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, [vcvt]]}]]
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [fcvtzu]]}]]
       - *neon-fp16
-      - *neon-unstable-f16-updates
+      - *neon-not-arm-stable-f16
+      - *neon-cfg-arm-unstable
       - *target-not-arm64ec
     safety: safe
     types:
@@ -10731,7 +10781,8 @@ intrinsics:
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, [vcvt.f16.f32]]}]]
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [fcvtn]]}]]
       - *neon-fp16
-      - *neon-unstable-f16-updates
+      - *neon-not-arm-stable-f16
+      - *neon-cfg-arm-unstable
       - *target-not-arm64ec
     safety: safe
     types:
@@ -10748,7 +10799,8 @@ intrinsics:
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, [vcvt]]}]]
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [fcvtl]]}]]
       - *neon-fp16
-      - *neon-unstable-f16-updates
+      - *neon-not-arm-stable-f16
+      - *neon-cfg-arm-unstable
       - *target-not-arm64ec
     safety: safe
     types:
@@ -11223,7 +11275,8 @@ intrinsics:
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, ['"vcgt.f16"']]}]]
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [fcmgt]]}]]
       - *neon-fp16
-      - *neon-unstable-f16-updates
+      - *neon-not-arm-stable-f16
+      - *neon-cfg-arm-unstable
       - *target-not-arm64ec
     safety: safe
     types:
@@ -11242,7 +11295,8 @@ intrinsics:
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, ['"vclt.f16"']]}]]
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [fcmlt]]}]]
       - *neon-fp16
-      - *neon-unstable-f16-updates
+      - *neon-not-arm-stable-f16
+      - *neon-cfg-arm-unstable
       - *target-not-arm64ec
     safety: safe
     types:
@@ -11355,7 +11409,8 @@ intrinsics:
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, [nop]]}]]
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [fmls]]}]]
       - *neon-fp16
-      - *neon-unstable-f16-updates
+      - *neon-not-arm-stable-f16
+      - *neon-cfg-arm-unstable
       - *target-not-arm64ec
     safety: safe
     types:
@@ -11471,7 +11526,8 @@ intrinsics:
       - *neon-fp16
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, [vrsqrte]]}]]
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [frsqrte]]}]]
-      - *neon-unstable-f16-updates
+      - *neon-not-arm-stable-f16
+      - *neon-cfg-arm-unstable
       - *target-not-arm64ec
     safety: safe
     types:
@@ -11585,7 +11641,8 @@ intrinsics:
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, [vcvt]]}]]
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [fcvtzs]]}]]
       - *neon-fp16
-      - *neon-unstable-f16-updates
+      - *neon-not-arm-stable-f16
+      - *neon-cfg-arm-unstable
       - *target-not-arm64ec
     safety: safe
     types:
@@ -11835,7 +11892,7 @@ intrinsics:
       - *enable-v7
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, [nop]]}]]
       - *neon-fp16
-      - *neon-unstable-f16-updates
+      - *neon-arm-unstable
       - *target-not-arm64ec
     safety:
       unsafe: [neon]
@@ -13769,7 +13826,7 @@ intrinsics:
       - *target-is-arm
       - *neon-v7
       - *neon-fp16
-      - *neon-unstable-f16-updates
+      - *neon-arm-unstable
       - *target-not-arm64ec
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, ['"vst1.{type[4]}"']]}]]
     types:
@@ -14015,7 +14072,8 @@ intrinsics:
     attr:
       - *neon-v7
       - *neon-fp16
-      - *neon-unstable-f16-updates
+      - *neon-not-arm-stable-f16
+      - *neon-cfg-arm-unstable
       - *target-not-arm64ec
     assert_instr: [nop]
     safety: safe
@@ -14031,7 +14089,8 @@ intrinsics:
     attr:
       - *neon-v7
       - *neon-fp16
-      - *neon-unstable-f16-updates
+      - *neon-not-arm-stable-f16
+      - *neon-cfg-arm-unstable
       - *target-not-arm64ec
     assert_instr: [nop]
     safety: safe
@@ -14686,7 +14745,8 @@ intrinsics:
       - *neon-v7
       - FnCall: [cfg_attr, [*test-is-arm, { FnCall: [assert_instr, ['vbsl']]}]]
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, ['bsl']]}]]
-      - *neon-unstable-f16-updates
+      - *neon-not-arm-stable-f16
+      - *neon-cfg-arm-unstable
       - *target-not-arm64ec
     safety: safe
     types:
