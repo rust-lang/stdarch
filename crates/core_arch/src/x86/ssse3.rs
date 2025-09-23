@@ -16,7 +16,8 @@ use stdarch_test::assert_instr;
 #[target_feature(enable = "ssse3")]
 #[cfg_attr(test, assert_instr(pabsb))]
 #[stable(feature = "simd_x86", since = "1.27.0")]
-pub fn _mm_abs_epi8(a: __m128i) -> __m128i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm_abs_epi8(a: __m128i) -> __m128i {
     unsafe {
         let a = a.as_i8x16();
         let zero = i8x16::ZERO;
@@ -34,7 +35,8 @@ pub fn _mm_abs_epi8(a: __m128i) -> __m128i {
 #[target_feature(enable = "ssse3")]
 #[cfg_attr(test, assert_instr(pabsw))]
 #[stable(feature = "simd_x86", since = "1.27.0")]
-pub fn _mm_abs_epi16(a: __m128i) -> __m128i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm_abs_epi16(a: __m128i) -> __m128i {
     unsafe {
         let a = a.as_i16x8();
         let zero = i16x8::ZERO;
@@ -52,7 +54,8 @@ pub fn _mm_abs_epi16(a: __m128i) -> __m128i {
 #[target_feature(enable = "ssse3")]
 #[cfg_attr(test, assert_instr(pabsd))]
 #[stable(feature = "simd_x86", since = "1.27.0")]
-pub fn _mm_abs_epi32(a: __m128i) -> __m128i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm_abs_epi32(a: __m128i) -> __m128i {
     unsafe {
         let a = a.as_i32x4();
         let zero = i32x4::ZERO;
@@ -104,7 +107,8 @@ pub fn _mm_shuffle_epi8(a: __m128i, b: __m128i) -> __m128i {
 #[cfg_attr(test, assert_instr(palignr, IMM8 = 15))]
 #[rustc_legacy_const_generics(2)]
 #[stable(feature = "simd_x86", since = "1.27.0")]
-pub fn _mm_alignr_epi8<const IMM8: i32>(a: __m128i, b: __m128i) -> __m128i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm_alignr_epi8<const IMM8: i32>(a: __m128i, b: __m128i) -> __m128i {
     static_assert_uimm_bits!(IMM8, 8);
     // If palignr is shifting the pair of vectors more than the size of two
     // lanes, emit zero.
