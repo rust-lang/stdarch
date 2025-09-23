@@ -11,7 +11,8 @@ use stdarch_test::assert_instr;
 #[inline]
 #[cfg_attr(test, assert_instr(bswap))]
 #[stable(feature = "simd_x86", since = "1.27.0")]
-pub unsafe fn _bswap64(x: i64) -> i64 {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const unsafe fn _bswap64(x: i64) -> i64 {
     x.swap_bytes()
 }
 
