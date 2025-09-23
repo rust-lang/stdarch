@@ -13,7 +13,8 @@ use stdarch_test::assert_instr;
 #[cfg_attr(test, assert_instr(pextrq, IMM1 = 1))]
 #[rustc_legacy_const_generics(1)]
 #[stable(feature = "simd_x86", since = "1.27.0")]
-pub fn _mm_extract_epi64<const IMM1: i32>(a: __m128i) -> i64 {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm_extract_epi64<const IMM1: i32>(a: __m128i) -> i64 {
     static_assert_uimm_bits!(IMM1, 1);
     unsafe { simd_extract!(a.as_i64x2(), IMM1 as u32) }
 }
@@ -27,7 +28,8 @@ pub fn _mm_extract_epi64<const IMM1: i32>(a: __m128i) -> i64 {
 #[cfg_attr(test, assert_instr(pinsrq, IMM1 = 0))]
 #[rustc_legacy_const_generics(2)]
 #[stable(feature = "simd_x86", since = "1.27.0")]
-pub fn _mm_insert_epi64<const IMM1: i32>(a: __m128i, i: i64) -> __m128i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm_insert_epi64<const IMM1: i32>(a: __m128i, i: i64) -> __m128i {
     static_assert_uimm_bits!(IMM1, 1);
     unsafe { transmute(simd_insert!(a.as_i64x2(), IMM1 as u32, i)) }
 }
