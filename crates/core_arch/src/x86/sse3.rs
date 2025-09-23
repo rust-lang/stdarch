@@ -14,7 +14,8 @@ use stdarch_test::assert_instr;
 #[target_feature(enable = "sse3")]
 #[cfg_attr(test, assert_instr(addsubps))]
 #[stable(feature = "simd_x86", since = "1.27.0")]
-pub fn _mm_addsub_ps(a: __m128, b: __m128) -> __m128 {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm_addsub_ps(a: __m128, b: __m128) -> __m128 {
     unsafe {
         let a = a.as_f32x4();
         let b = b.as_f32x4();
@@ -32,7 +33,8 @@ pub fn _mm_addsub_ps(a: __m128, b: __m128) -> __m128 {
 #[target_feature(enable = "sse3")]
 #[cfg_attr(test, assert_instr(addsubpd))]
 #[stable(feature = "simd_x86", since = "1.27.0")]
-pub fn _mm_addsub_pd(a: __m128d, b: __m128d) -> __m128d {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm_addsub_pd(a: __m128d, b: __m128d) -> __m128d {
     unsafe {
         let a = a.as_f64x2();
         let b = b.as_f64x2();
@@ -50,7 +52,8 @@ pub fn _mm_addsub_pd(a: __m128d, b: __m128d) -> __m128d {
 #[target_feature(enable = "sse3")]
 #[cfg_attr(test, assert_instr(haddpd))]
 #[stable(feature = "simd_x86", since = "1.27.0")]
-pub fn _mm_hadd_pd(a: __m128d, b: __m128d) -> __m128d {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm_hadd_pd(a: __m128d, b: __m128d) -> __m128d {
     unsafe {
         let even = simd_shuffle!(a, b, [0, 2]);
         let odd = simd_shuffle!(a, b, [1, 3]);
@@ -66,7 +69,8 @@ pub fn _mm_hadd_pd(a: __m128d, b: __m128d) -> __m128d {
 #[target_feature(enable = "sse3")]
 #[cfg_attr(test, assert_instr(haddps))]
 #[stable(feature = "simd_x86", since = "1.27.0")]
-pub fn _mm_hadd_ps(a: __m128, b: __m128) -> __m128 {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm_hadd_ps(a: __m128, b: __m128) -> __m128 {
     unsafe {
         let even = simd_shuffle!(a, b, [0, 2, 4, 6]);
         let odd = simd_shuffle!(a, b, [1, 3, 5, 7]);
@@ -82,7 +86,8 @@ pub fn _mm_hadd_ps(a: __m128, b: __m128) -> __m128 {
 #[target_feature(enable = "sse3")]
 #[cfg_attr(test, assert_instr(hsubpd))]
 #[stable(feature = "simd_x86", since = "1.27.0")]
-pub fn _mm_hsub_pd(a: __m128d, b: __m128d) -> __m128d {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm_hsub_pd(a: __m128d, b: __m128d) -> __m128d {
     unsafe {
         let even = simd_shuffle!(a, b, [0, 2]);
         let odd = simd_shuffle!(a, b, [1, 3]);
@@ -98,7 +103,8 @@ pub fn _mm_hsub_pd(a: __m128d, b: __m128d) -> __m128d {
 #[target_feature(enable = "sse3")]
 #[cfg_attr(test, assert_instr(hsubps))]
 #[stable(feature = "simd_x86", since = "1.27.0")]
-pub fn _mm_hsub_ps(a: __m128, b: __m128) -> __m128 {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm_hsub_ps(a: __m128, b: __m128) -> __m128 {
     unsafe {
         let even = simd_shuffle!(a, b, [0, 2, 4, 6]);
         let odd = simd_shuffle!(a, b, [1, 3, 5, 7]);
@@ -127,7 +133,8 @@ pub unsafe fn _mm_lddqu_si128(mem_addr: *const __m128i) -> __m128i {
 #[target_feature(enable = "sse3")]
 #[cfg_attr(test, assert_instr(movddup))]
 #[stable(feature = "simd_x86", since = "1.27.0")]
-pub fn _mm_movedup_pd(a: __m128d) -> __m128d {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm_movedup_pd(a: __m128d) -> __m128d {
     unsafe { simd_shuffle!(a, a, [0, 0]) }
 }
 
@@ -139,7 +146,8 @@ pub fn _mm_movedup_pd(a: __m128d) -> __m128d {
 #[target_feature(enable = "sse3")]
 #[cfg_attr(test, assert_instr(movddup))]
 #[stable(feature = "simd_x86", since = "1.27.0")]
-pub unsafe fn _mm_loaddup_pd(mem_addr: *const f64) -> __m128d {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const unsafe fn _mm_loaddup_pd(mem_addr: *const f64) -> __m128d {
     _mm_load1_pd(mem_addr)
 }
 
@@ -151,7 +159,8 @@ pub unsafe fn _mm_loaddup_pd(mem_addr: *const f64) -> __m128d {
 #[target_feature(enable = "sse3")]
 #[cfg_attr(test, assert_instr(movshdup))]
 #[stable(feature = "simd_x86", since = "1.27.0")]
-pub fn _mm_movehdup_ps(a: __m128) -> __m128 {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm_movehdup_ps(a: __m128) -> __m128 {
     unsafe { simd_shuffle!(a, a, [1, 1, 3, 3]) }
 }
 
@@ -163,7 +172,8 @@ pub fn _mm_movehdup_ps(a: __m128) -> __m128 {
 #[target_feature(enable = "sse3")]
 #[cfg_attr(test, assert_instr(movsldup))]
 #[stable(feature = "simd_x86", since = "1.27.0")]
-pub fn _mm_moveldup_ps(a: __m128) -> __m128 {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm_moveldup_ps(a: __m128) -> __m128 {
     unsafe { simd_shuffle!(a, a, [0, 0, 2, 2]) }
 }
 
