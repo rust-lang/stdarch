@@ -563,7 +563,8 @@ pub fn _mm_crc32_u32(crc: u32, v: u32) -> u32 {
 #[target_feature(enable = "sse4.2")]
 #[cfg_attr(test, assert_instr(pcmpgtq))]
 #[stable(feature = "simd_x86", since = "1.27.0")]
-pub fn _mm_cmpgt_epi64(a: __m128i, b: __m128i) -> __m128i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm_cmpgt_epi64(a: __m128i, b: __m128i) -> __m128i {
     unsafe { transmute(simd_gt::<_, i64x2>(a.as_i64x2(), b.as_i64x2())) }
 }
 
