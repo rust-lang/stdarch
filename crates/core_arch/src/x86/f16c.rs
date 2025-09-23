@@ -25,7 +25,8 @@ unsafe extern "unadjusted" {
 #[target_feature(enable = "f16c")]
 #[cfg_attr(test, assert_instr("vcvtph2ps"))]
 #[stable(feature = "x86_f16c_intrinsics", since = "1.68.0")]
-pub fn _mm_cvtph_ps(a: __m128i) -> __m128 {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm_cvtph_ps(a: __m128i) -> __m128 {
     unsafe {
         let a: f16x8 = transmute(a);
         let a: f16x4 = simd_shuffle!(a, a, [0, 1, 2, 3]);
@@ -41,7 +42,8 @@ pub fn _mm_cvtph_ps(a: __m128i) -> __m128 {
 #[target_feature(enable = "f16c")]
 #[cfg_attr(test, assert_instr("vcvtph2ps"))]
 #[stable(feature = "x86_f16c_intrinsics", since = "1.68.0")]
-pub fn _mm256_cvtph_ps(a: __m128i) -> __m256 {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm256_cvtph_ps(a: __m128i) -> __m256 {
     unsafe {
         let a: f16x8 = transmute(a);
         simd_cast(a)
