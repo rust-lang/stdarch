@@ -29,7 +29,8 @@ use stdarch_test::assert_instr;
 #[target_feature(enable = "lzcnt")]
 #[cfg_attr(test, assert_instr(lzcnt))]
 #[stable(feature = "simd_x86", since = "1.27.0")]
-pub fn _lzcnt_u64(x: u64) -> u64 {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _lzcnt_u64(x: u64) -> u64 {
     x.leading_zeros() as u64
 }
 
@@ -40,7 +41,8 @@ pub fn _lzcnt_u64(x: u64) -> u64 {
 #[target_feature(enable = "popcnt")]
 #[cfg_attr(test, assert_instr(popcnt))]
 #[stable(feature = "simd_x86", since = "1.27.0")]
-pub fn _popcnt64(x: i64) -> i32 {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _popcnt64(x: i64) -> i32 {
     x.count_ones() as i32
 }
 
