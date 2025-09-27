@@ -91,6 +91,10 @@ fi
 # Test targets compiled with extra features.
 case ${TARGET} in
     x86_64-unknown-linux-gnu)
+        TEST_CPPFLAGS="-fuse-ld=lld -I/usr/include/x86_64-linux-gnu/"
+        TEST_CXX_COMPILER="clang++-19"
+        TEST_RUNNER="${CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_RUNNER}"
+        TEST_SKIP_INTRINSICS=crates/intrinsic-test/missing_x86.txt
         export STDARCH_DISABLE_ASSERT_INSTR=1
 
         export RUSTFLAGS="${RUSTFLAGS} -C target-feature=+avx"
@@ -180,6 +184,21 @@ case "${TARGET}" in
             --target "${TARGET}" \
             --linker "${CARGO_TARGET_AARCH64_BE_UNKNOWN_LINUX_GNU_LINKER}" \
             --cxx-toolchain-dir "${AARCH64_BE_TOOLCHAIN}"
+        ;;
+
+    x86_64-unknown-linux-gnu*)
+        # `CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_RUNNER` is not necessary for `intrinsic-test`
+        # because the binary needs to run directly on the host.
+        # Hence the use of `env -u`.
+        env -u CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_RUNNER \
+            CPPFLAGS="${TEST_CPPFLAGS}" RUSTFLAGS="${HOST_RUSTFLAGS}" \
+            RUST_LOG=warn RUST_BACKTRACE=1 \
+            cargo run "${INTRINSIC_TEST}" "${PROFILE}"  \
+            --bin intrinsic-test -- intrinsics_data/x86-intel.xml \
+            --runner "${TEST_RUNNER}" \
+            --skip "${TEST_SKIP_INTRINSICS}" \
+            --cppcompiler "${TEST_CXX_COMPILER}" \
+            --target "${TARGET}"
         ;;
      *)
         ;;
