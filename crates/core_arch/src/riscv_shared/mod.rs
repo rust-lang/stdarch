@@ -46,7 +46,10 @@ use crate::arch::asm;
 pub fn pause() {
     unsafe {
         asm!(
-            ".insn i 0x0F, 0, x0, x0, 0x010",
+            ".option push",
+            ".option arch, +zihintpause",
+            "pause",
+            ".option pop",
             options(nomem, nostack, preserves_flags)
         );
     }
@@ -146,9 +149,11 @@ pub unsafe fn sfence_vma_all() {
 #[inline]
 #[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
 pub unsafe fn sinval_vma(vaddr: usize, asid: usize) {
-    // asm!("sinval.vma {}, {}", in(reg) vaddr, in(reg) asid, options(nostack, preserves_flags));
     asm!(
-        ".insn r 0x73, 0, 0x0B, x0, {}, {}",
+        ".option push",
+        ".option arch, +svinval",
+        "sinval.vma {}, {}",
+        ".option pop",
         in(reg) vaddr,
         in(reg) asid,
         options(nostack, preserves_flags)
@@ -163,7 +168,10 @@ pub unsafe fn sinval_vma(vaddr: usize, asid: usize) {
 #[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
 pub unsafe fn sinval_vma_vaddr(vaddr: usize) {
     asm!(
-        ".insn r 0x73, 0, 0x0B, x0, {}, x0",
+        ".option push",
+        ".option arch, +svinval",
+        "sinval.vma {}, zero",
+        ".option pop",
         in(reg) vaddr,
         options(nostack, preserves_flags)
     );
@@ -177,7 +185,10 @@ pub unsafe fn sinval_vma_vaddr(vaddr: usize) {
 #[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
 pub unsafe fn sinval_vma_asid(asid: usize) {
     asm!(
-        ".insn r 0x73, 0, 0x0B, x0, x0, {}",
+        ".option push",
+        ".option arch, +svinval",
+        "sinval.vma zero, {}",
+        ".option pop",
         in(reg) asid,
         options(nostack, preserves_flags)
     );
@@ -191,7 +202,10 @@ pub unsafe fn sinval_vma_asid(asid: usize) {
 #[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
 pub unsafe fn sinval_vma_all() {
     asm!(
-        ".insn r 0x73, 0, 0x0B, x0, x0, x0",
+        ".option push",
+        ".option arch, +svinval",
+        "sinval.vma zero, zero",
+        ".option pop",
         options(nostack, preserves_flags)
     );
 }
@@ -203,9 +217,11 @@ pub unsafe fn sinval_vma_all() {
 #[inline]
 #[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
 pub unsafe fn sfence_w_inval() {
-    // asm!("sfence.w.inval", options(nostack, preserves_flags));
     asm!(
-        ".insn i 0x73, 0, x0, x0, 0x180",
+        ".option push",
+        ".option arch, +svinval",
+        "sfence.w.inval",
+        ".option pop",
         options(nostack, preserves_flags)
     );
 }
@@ -217,9 +233,11 @@ pub unsafe fn sfence_w_inval() {
 #[inline]
 #[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
 pub unsafe fn sfence_inval_ir() {
-    // asm!("sfence.inval.ir", options(nostack, preserves_flags));
     asm!(
-        ".insn i 0x73, 0, x0, x0, 0x181",
+        ".option push",
+        ".option arch, +svinval",
+        "sfence.inval.ir",
+        ".option pop",
         options(nostack, preserves_flags)
     );
 }
@@ -237,7 +255,10 @@ pub unsafe fn sfence_inval_ir() {
 pub unsafe fn hlv_b(src: *const i8) -> i8 {
     let value: i8;
     asm!(
-        ".insn i 0x73, 0x4, {}, {}, 0x600",
+        ".option push",
+        ".option arch, +h",
+        "hlv.b {}, 0({})",
+        ".option pop",
         lateout(reg) value,
         in(reg) src,
         options(readonly, nostack, preserves_flags)
@@ -258,7 +279,10 @@ pub unsafe fn hlv_b(src: *const i8) -> i8 {
 pub unsafe fn hlv_bu(src: *const u8) -> u8 {
     let value: u8;
     asm!(
-        ".insn i 0x73, 0x4, {}, {}, 0x601",
+        ".option push",
+        ".option arch, +h",
+        "hlv.bu {}, 0({})",
+        ".option pop",
         lateout(reg) value,
         in(reg) src,
         options(readonly, nostack, preserves_flags)
@@ -279,7 +303,10 @@ pub unsafe fn hlv_bu(src: *const u8) -> u8 {
 pub unsafe fn hlv_h(src: *const i16) -> i16 {
     let value: i16;
     asm!(
-        ".insn i 0x73, 0x4, {}, {}, 0x640",
+        ".option push",
+        ".option arch, +h",
+        "hlv.h {}, 0({})",
+        ".option pop",
         lateout(reg) value,
         in(reg) src,
         options(readonly, nostack, preserves_flags)
@@ -300,7 +327,10 @@ pub unsafe fn hlv_h(src: *const i16) -> i16 {
 pub unsafe fn hlv_hu(src: *const u16) -> u16 {
     let value: u16;
     asm!(
-        ".insn i 0x73, 0x4, {}, {}, 0x641",
+        ".option push",
+        ".option arch, +h",
+        "hlv.hu {}, 0({})",
+        ".option pop",
         lateout(reg) value,
         in(reg) src,
         options(readonly, nostack, preserves_flags)
@@ -321,7 +351,10 @@ pub unsafe fn hlv_hu(src: *const u16) -> u16 {
 pub unsafe fn hlvx_hu(src: *const u16) -> u16 {
     let insn: u16;
     asm!(
-        ".insn i 0x73, 0x4, {}, {}, 0x643",
+        ".option push",
+        ".option arch, +h",
+        "hlvx.hu {}, 0({})",
+        ".option pop",
         lateout(reg) insn,
         in(reg) src,
         options(readonly, nostack, preserves_flags)
@@ -342,7 +375,10 @@ pub unsafe fn hlvx_hu(src: *const u16) -> u16 {
 pub unsafe fn hlv_w(src: *const i32) -> i32 {
     let value: i32;
     asm!(
-        ".insn i 0x73, 0x4, {}, {}, 0x680",
+        ".option push",
+        ".option arch, +h",
+        "hlv.w {}, 0({})",
+        ".option pop",
         lateout(reg) value,
         in(reg) src,
         options(readonly, nostack, preserves_flags)
@@ -363,7 +399,10 @@ pub unsafe fn hlv_w(src: *const i32) -> i32 {
 pub unsafe fn hlvx_wu(src: *const u32) -> u32 {
     let insn: u32;
     asm!(
-        ".insn i 0x73, 0x4, {}, {}, 0x683",
+        ".option push",
+        ".option arch, +h",
+        "hlvx.wu {}, 0({})",
+        ".option pop",
         lateout(reg) insn,
         in(reg) src,
         options(readonly, nostack, preserves_flags)
@@ -383,7 +422,10 @@ pub unsafe fn hlvx_wu(src: *const u32) -> u32 {
 #[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
 pub unsafe fn hsv_b(dst: *mut i8, src: i8) {
     asm!(
-        ".insn r 0x73, 0x4, 0x31, x0, {}, {}",
+        ".option push",
+        ".option arch, +h",
+        "hsv.b {}, 0({})",
+        ".option pop",
         in(reg) dst,
         in(reg) src,
         options(nostack, preserves_flags)
@@ -402,7 +444,10 @@ pub unsafe fn hsv_b(dst: *mut i8, src: i8) {
 #[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
 pub unsafe fn hsv_h(dst: *mut i16, src: i16) {
     asm!(
-        ".insn r 0x73, 0x4, 0x33, x0, {}, {}",
+        ".option push",
+        ".option arch, +h",
+        "hsv.h {}, 0({})",
+        ".option pop",
         in(reg) dst,
         in(reg) src,
         options(nostack, preserves_flags)
@@ -421,7 +466,10 @@ pub unsafe fn hsv_h(dst: *mut i16, src: i16) {
 #[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
 pub unsafe fn hsv_w(dst: *mut i32, src: i32) {
     asm!(
-        ".insn r 0x73, 0x4, 0x35, x0, {}, {}",
+        ".option push",
+        ".option arch, +h",
+        "hsv.w {}, 0({})",
+        ".option pop",
         in(reg) dst,
         in(reg) src,
         options(nostack, preserves_flags)
@@ -439,9 +487,11 @@ pub unsafe fn hsv_w(dst: *mut i32, src: i32) {
 #[inline]
 #[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
 pub unsafe fn hfence_vvma(vaddr: usize, asid: usize) {
-    // asm!("hfence.vvma {}, {}", in(reg) vaddr, in(reg) asid, options(nostack, preserves_flags));
     asm!(
-        ".insn r 0x73, 0, 0x11, x0, {}, {}",
+        ".option push",
+        ".option arch, +h",
+        "hfence.vvma {}, {}",
+        ".option pop",
         in(reg) vaddr,
         in(reg) asid,
         options(nostack, preserves_flags)
@@ -460,7 +510,10 @@ pub unsafe fn hfence_vvma(vaddr: usize, asid: usize) {
 #[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
 pub unsafe fn hfence_vvma_vaddr(vaddr: usize) {
     asm!(
-        ".insn r 0x73, 0, 0x11, x0, {}, x0",
+        ".option push",
+        ".option arch, +h",
+        "hfence.vvma {}",
+        ".option pop",
         in(reg) vaddr,
         options(nostack, preserves_flags)
     );
@@ -478,7 +531,10 @@ pub unsafe fn hfence_vvma_vaddr(vaddr: usize) {
 #[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
 pub unsafe fn hfence_vvma_asid(asid: usize) {
     asm!(
-        ".insn r 0x73, 0, 0x11, x0, x0, {}",
+        ".option push",
+        ".option arch, +h",
+        "hfence.vvma zero, {}",
+        ".option pop",
         in(reg) asid,
         options(nostack, preserves_flags)
     );
@@ -496,7 +552,10 @@ pub unsafe fn hfence_vvma_asid(asid: usize) {
 #[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
 pub unsafe fn hfence_vvma_all() {
     asm!(
-        ".insn r 0x73, 0, 0x11, x0, x0, x0",
+        ".option push",
+        ".option arch, +h",
+        "hfence.vvma",
+        ".option pop",
         options(nostack, preserves_flags)
     );
 }
@@ -511,9 +570,11 @@ pub unsafe fn hfence_vvma_all() {
 #[inline]
 #[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
 pub unsafe fn hfence_gvma(gaddr: usize, vmid: usize) {
-    // asm!("hfence.gvma {}, {}", in(reg) gaddr, in(reg) vmid, options(nostack, preserves_flags));
     asm!(
-        ".insn r 0x73, 0, 0x31, x0, {}, {}",
+        ".option push",
+        ".option arch, +h",
+        "hfence.gvma {}, {}",
+        ".option pop",
         in(reg) gaddr,
         in(reg) vmid,
         options(nostack, preserves_flags)
@@ -530,7 +591,10 @@ pub unsafe fn hfence_gvma(gaddr: usize, vmid: usize) {
 #[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
 pub unsafe fn hfence_gvma_gaddr(gaddr: usize) {
     asm!(
-        ".insn r 0x73, 0, 0x31, x0, {}, x0",
+        ".option push",
+        ".option arch, +h",
+        "hfence.gvma {}",
+        ".option pop",
         in(reg) gaddr,
         options(nostack, preserves_flags)
     );
@@ -546,7 +610,10 @@ pub unsafe fn hfence_gvma_gaddr(gaddr: usize) {
 #[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
 pub unsafe fn hfence_gvma_vmid(vmid: usize) {
     asm!(
-        ".insn r 0x73, 0, 0x31, x0, x0, {}",
+        ".option push",
+        ".option arch, +h",
+        "hfence.gvma zero, {}",
+        ".option pop",
         in(reg) vmid,
         options(nostack, preserves_flags)
     );
@@ -562,7 +629,10 @@ pub unsafe fn hfence_gvma_vmid(vmid: usize) {
 #[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
 pub unsafe fn hfence_gvma_all() {
     asm!(
-        ".insn r 0x73, 0, 0x31, x0, x0, x0",
+        ".option push",
+        ".option arch, +h",
+        "hfence.gvma",
+        ".option pop",
         options(nostack, preserves_flags)
     );
 }
@@ -576,9 +646,11 @@ pub unsafe fn hfence_gvma_all() {
 #[inline]
 #[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
 pub unsafe fn hinval_vvma(vaddr: usize, asid: usize) {
-    // asm!("hinval.vvma {}, {}", in(reg) vaddr, in(reg) asid, options(nostack, preserves_flags));
     asm!(
-        ".insn r 0x73, 0, 0x13, x0, {}, {}",
+        ".option push",
+        ".option arch, +h,+svinval",
+        "hinval.vvma {}, {}",
+        ".option pop",
         in(reg) vaddr,
         in(reg) asid,
         options(nostack, preserves_flags)
@@ -595,7 +667,10 @@ pub unsafe fn hinval_vvma(vaddr: usize, asid: usize) {
 #[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
 pub unsafe fn hinval_vvma_vaddr(vaddr: usize) {
     asm!(
-        ".insn r 0x73, 0, 0x13, x0, {}, x0",
+        ".option push",
+        ".option arch, +h,+svinval",
+        "hinval.vvma {}, zero",
+        ".option pop",
         in(reg) vaddr,
         options(nostack, preserves_flags)
     );
@@ -611,7 +686,10 @@ pub unsafe fn hinval_vvma_vaddr(vaddr: usize) {
 #[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
 pub unsafe fn hinval_vvma_asid(asid: usize) {
     asm!(
-        ".insn r 0x73, 0, 0x13, x0, x0, {}",
+        ".option push",
+        ".option arch, +h,+svinval",
+        "hinval.vvma zero, {}",
+        ".option pop",
         in(reg) asid,
         options(nostack, preserves_flags)
     );
@@ -627,7 +705,10 @@ pub unsafe fn hinval_vvma_asid(asid: usize) {
 #[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
 pub unsafe fn hinval_vvma_all() {
     asm!(
-        ".insn r 0x73, 0, 0x13, x0, x0, x0",
+        ".option push",
+        ".option arch, +h,+svinval",
+        "hinval.vvma zero, zero",
+        ".option pop",
         options(nostack, preserves_flags)
     );
 }
@@ -642,9 +723,11 @@ pub unsafe fn hinval_vvma_all() {
 #[inline]
 #[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
 pub unsafe fn hinval_gvma(gaddr: usize, vmid: usize) {
-    // asm!("hinval.gvma {}, {}", in(reg) gaddr, in(reg) vmid, options(nostack, preserves_flags));
     asm!(
-        ".insn r 0x73, 0, 0x33, x0, {}, {}",
+        ".option push",
+        ".option arch, +h,+svinval",
+        "hinval.gvma {}, {}",
+        ".option pop",
         in(reg) gaddr,
         in(reg) vmid,
         options(nostack, preserves_flags)
@@ -661,7 +744,10 @@ pub unsafe fn hinval_gvma(gaddr: usize, vmid: usize) {
 #[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
 pub unsafe fn hinval_gvma_gaddr(gaddr: usize) {
     asm!(
-        ".insn r 0x73, 0, 0x33, x0, {}, x0",
+        ".option push",
+        ".option arch, +h,+svinval",
+        "hinval.gvma {}, zero",
+        ".option pop",
         in(reg) gaddr,
         options(nostack, preserves_flags)
     );
@@ -677,7 +763,10 @@ pub unsafe fn hinval_gvma_gaddr(gaddr: usize) {
 #[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
 pub unsafe fn hinval_gvma_vmid(vmid: usize) {
     asm!(
-        ".insn r 0x73, 0, 0x33, x0, x0, {}",
+        ".option push",
+        ".option arch, +h,+svinval",
+        "hinval.gvma zero, {}",
+        ".option pop",
         in(reg) vmid,
         options(nostack, preserves_flags)
     );
@@ -693,7 +782,10 @@ pub unsafe fn hinval_gvma_vmid(vmid: usize) {
 #[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
 pub unsafe fn hinval_gvma_all() {
     asm!(
-        ".insn r 0x73, 0, 0x33, x0, x0, x0",
+        ".option push",
+        ".option arch, +h,+svinval",
+        "hinval.gvma zero, zero",
+        ".option pop",
         options(nostack, preserves_flags)
     );
 }

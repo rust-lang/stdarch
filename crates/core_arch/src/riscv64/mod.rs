@@ -21,7 +21,10 @@ pub use zk::*;
 pub unsafe fn hlv_wu(src: *const u32) -> u32 {
     let value: u32;
     asm!(
-        ".insn i 0x73, 0x4, {}, {}, 0x681",
+        ".option push",
+        ".option arch, +h",
+        "hlv.wu {}, 0({})",
+        ".option pop",
         lateout(reg) value,
         in(reg) src,
         options(readonly, nostack, preserves_flags)
@@ -44,7 +47,10 @@ pub unsafe fn hlv_wu(src: *const u32) -> u32 {
 pub unsafe fn hlv_d(src: *const i64) -> i64 {
     let value: i64;
     asm!(
-        ".insn i 0x73, 0x4, {}, {}, 0x6C0",
+        ".option push",
+        ".option arch, +h",
+        "hlv.d {}, 0({})",
+        ".option pop",
         lateout(reg) value,
         in(reg) src,
         options(readonly, nostack, preserves_flags)
@@ -64,7 +70,10 @@ pub unsafe fn hlv_d(src: *const i64) -> i64 {
 #[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
 pub unsafe fn hsv_d(dst: *mut i64, src: i64) {
     asm!(
-        ".insn r 0x73, 0x4, 0x37, x0, {}, {}",
+        ".option push",
+        ".option arch, +h",
+        "hsv.d {}, 0({})",
+        ".option pop",
         in(reg) dst,
         in(reg) src,
         options(nostack, preserves_flags)
