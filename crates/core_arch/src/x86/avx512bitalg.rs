@@ -43,7 +43,8 @@ unsafe extern "C" {
 #[target_feature(enable = "avx512bitalg")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpopcntw))]
-pub fn _mm512_popcnt_epi16(a: __m512i) -> __m512i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm512_popcnt_epi16(a: __m512i) -> __m512i {
     unsafe { transmute(simd_ctpop(a.as_i16x32())) }
 }
 
@@ -57,7 +58,8 @@ pub fn _mm512_popcnt_epi16(a: __m512i) -> __m512i {
 #[target_feature(enable = "avx512bitalg")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpopcntw))]
-pub fn _mm512_maskz_popcnt_epi16(k: __mmask32, a: __m512i) -> __m512i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm512_maskz_popcnt_epi16(k: __mmask32, a: __m512i) -> __m512i {
     unsafe {
         transmute(simd_select_bitmask(
             k,
@@ -77,7 +79,8 @@ pub fn _mm512_maskz_popcnt_epi16(k: __mmask32, a: __m512i) -> __m512i {
 #[target_feature(enable = "avx512bitalg")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpopcntw))]
-pub fn _mm512_mask_popcnt_epi16(src: __m512i, k: __mmask32, a: __m512i) -> __m512i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm512_mask_popcnt_epi16(src: __m512i, k: __mmask32, a: __m512i) -> __m512i {
     unsafe {
         transmute(simd_select_bitmask(
             k,
@@ -94,7 +97,8 @@ pub fn _mm512_mask_popcnt_epi16(src: __m512i, k: __mmask32, a: __m512i) -> __m51
 #[target_feature(enable = "avx512bitalg,avx512vl")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpopcntw))]
-pub fn _mm256_popcnt_epi16(a: __m256i) -> __m256i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm256_popcnt_epi16(a: __m256i) -> __m256i {
     unsafe { transmute(simd_ctpop(a.as_i16x16())) }
 }
 
@@ -108,7 +112,8 @@ pub fn _mm256_popcnt_epi16(a: __m256i) -> __m256i {
 #[target_feature(enable = "avx512bitalg,avx512vl")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpopcntw))]
-pub fn _mm256_maskz_popcnt_epi16(k: __mmask16, a: __m256i) -> __m256i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm256_maskz_popcnt_epi16(k: __mmask16, a: __m256i) -> __m256i {
     unsafe {
         transmute(simd_select_bitmask(
             k,
@@ -128,7 +133,8 @@ pub fn _mm256_maskz_popcnt_epi16(k: __mmask16, a: __m256i) -> __m256i {
 #[target_feature(enable = "avx512bitalg,avx512vl")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpopcntw))]
-pub fn _mm256_mask_popcnt_epi16(src: __m256i, k: __mmask16, a: __m256i) -> __m256i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm256_mask_popcnt_epi16(src: __m256i, k: __mmask16, a: __m256i) -> __m256i {
     unsafe {
         transmute(simd_select_bitmask(
             k,
@@ -145,7 +151,8 @@ pub fn _mm256_mask_popcnt_epi16(src: __m256i, k: __mmask16, a: __m256i) -> __m25
 #[target_feature(enable = "avx512bitalg,avx512vl")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpopcntw))]
-pub fn _mm_popcnt_epi16(a: __m128i) -> __m128i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm_popcnt_epi16(a: __m128i) -> __m128i {
     unsafe { transmute(simd_ctpop(a.as_i16x8())) }
 }
 
@@ -159,7 +166,8 @@ pub fn _mm_popcnt_epi16(a: __m128i) -> __m128i {
 #[target_feature(enable = "avx512bitalg,avx512vl")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpopcntw))]
-pub fn _mm_maskz_popcnt_epi16(k: __mmask8, a: __m128i) -> __m128i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm_maskz_popcnt_epi16(k: __mmask8, a: __m128i) -> __m128i {
     unsafe {
         transmute(simd_select_bitmask(
             k,
@@ -179,7 +187,8 @@ pub fn _mm_maskz_popcnt_epi16(k: __mmask8, a: __m128i) -> __m128i {
 #[target_feature(enable = "avx512bitalg,avx512vl")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpopcntw))]
-pub fn _mm_mask_popcnt_epi16(src: __m128i, k: __mmask8, a: __m128i) -> __m128i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm_mask_popcnt_epi16(src: __m128i, k: __mmask8, a: __m128i) -> __m128i {
     unsafe {
         transmute(simd_select_bitmask(
             k,
@@ -196,7 +205,8 @@ pub fn _mm_mask_popcnt_epi16(src: __m128i, k: __mmask8, a: __m128i) -> __m128i {
 #[target_feature(enable = "avx512bitalg")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpopcntb))]
-pub fn _mm512_popcnt_epi8(a: __m512i) -> __m512i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm512_popcnt_epi8(a: __m512i) -> __m512i {
     unsafe { transmute(simd_ctpop(a.as_i8x64())) }
 }
 
@@ -210,7 +220,8 @@ pub fn _mm512_popcnt_epi8(a: __m512i) -> __m512i {
 #[target_feature(enable = "avx512bitalg")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpopcntb))]
-pub fn _mm512_maskz_popcnt_epi8(k: __mmask64, a: __m512i) -> __m512i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm512_maskz_popcnt_epi8(k: __mmask64, a: __m512i) -> __m512i {
     unsafe {
         transmute(simd_select_bitmask(
             k,
@@ -230,7 +241,8 @@ pub fn _mm512_maskz_popcnt_epi8(k: __mmask64, a: __m512i) -> __m512i {
 #[target_feature(enable = "avx512bitalg")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpopcntb))]
-pub fn _mm512_mask_popcnt_epi8(src: __m512i, k: __mmask64, a: __m512i) -> __m512i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm512_mask_popcnt_epi8(src: __m512i, k: __mmask64, a: __m512i) -> __m512i {
     unsafe {
         transmute(simd_select_bitmask(
             k,
@@ -247,7 +259,8 @@ pub fn _mm512_mask_popcnt_epi8(src: __m512i, k: __mmask64, a: __m512i) -> __m512
 #[target_feature(enable = "avx512bitalg,avx512vl")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpopcntb))]
-pub fn _mm256_popcnt_epi8(a: __m256i) -> __m256i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm256_popcnt_epi8(a: __m256i) -> __m256i {
     unsafe { transmute(simd_ctpop(a.as_i8x32())) }
 }
 
@@ -261,7 +274,8 @@ pub fn _mm256_popcnt_epi8(a: __m256i) -> __m256i {
 #[target_feature(enable = "avx512bitalg,avx512vl")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpopcntb))]
-pub fn _mm256_maskz_popcnt_epi8(k: __mmask32, a: __m256i) -> __m256i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm256_maskz_popcnt_epi8(k: __mmask32, a: __m256i) -> __m256i {
     unsafe {
         transmute(simd_select_bitmask(
             k,
@@ -281,7 +295,8 @@ pub fn _mm256_maskz_popcnt_epi8(k: __mmask32, a: __m256i) -> __m256i {
 #[target_feature(enable = "avx512bitalg,avx512vl")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpopcntb))]
-pub fn _mm256_mask_popcnt_epi8(src: __m256i, k: __mmask32, a: __m256i) -> __m256i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm256_mask_popcnt_epi8(src: __m256i, k: __mmask32, a: __m256i) -> __m256i {
     unsafe {
         transmute(simd_select_bitmask(
             k,
@@ -298,7 +313,8 @@ pub fn _mm256_mask_popcnt_epi8(src: __m256i, k: __mmask32, a: __m256i) -> __m256
 #[target_feature(enable = "avx512bitalg,avx512vl")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpopcntb))]
-pub fn _mm_popcnt_epi8(a: __m128i) -> __m128i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm_popcnt_epi8(a: __m128i) -> __m128i {
     unsafe { transmute(simd_ctpop(a.as_i8x16())) }
 }
 
@@ -312,7 +328,8 @@ pub fn _mm_popcnt_epi8(a: __m128i) -> __m128i {
 #[target_feature(enable = "avx512bitalg,avx512vl")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpopcntb))]
-pub fn _mm_maskz_popcnt_epi8(k: __mmask16, a: __m128i) -> __m128i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm_maskz_popcnt_epi8(k: __mmask16, a: __m128i) -> __m128i {
     unsafe {
         transmute(simd_select_bitmask(
             k,
@@ -332,7 +349,8 @@ pub fn _mm_maskz_popcnt_epi8(k: __mmask16, a: __m128i) -> __m128i {
 #[target_feature(enable = "avx512bitalg,avx512vl")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpopcntb))]
-pub fn _mm_mask_popcnt_epi8(src: __m128i, k: __mmask16, a: __m128i) -> __m128i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm_mask_popcnt_epi8(src: __m128i, k: __mmask16, a: __m128i) -> __m128i {
     unsafe {
         transmute(simd_select_bitmask(
             k,

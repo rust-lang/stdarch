@@ -499,8 +499,15 @@ pub fn _mm_maskz_expand_epi8(k: __mmask16, a: __m128i) -> __m128i {
 #[target_feature(enable = "avx512vbmi2")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldvq))]
-pub fn _mm512_shldv_epi64(a: __m512i, b: __m512i, c: __m512i) -> __m512i {
-    unsafe { transmute(simd_funnel_shl(a.as_i64x8(), b.as_i64x8(), c.as_i64x8())) }
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm512_shldv_epi64(a: __m512i, b: __m512i, c: __m512i) -> __m512i {
+    unsafe {
+        transmute(simd_funnel_shl(
+            a.as_i64x8(),
+            b.as_i64x8(),
+            simd_and(c.as_i64x8(), i64x8::splat(63)),
+        ))
+    }
 }
 
 /// Concatenate packed 64-bit integers in a and b producing an intermediate 128-bit result. Shift the result left by the amount specified in the corresponding element of c, and store the upper 64-bits in dst using writemask k (elements are copied from a when the corresponding mask bit is not set).
@@ -510,7 +517,8 @@ pub fn _mm512_shldv_epi64(a: __m512i, b: __m512i, c: __m512i) -> __m512i {
 #[target_feature(enable = "avx512vbmi2")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldvq))]
-pub fn _mm512_mask_shldv_epi64(a: __m512i, k: __mmask8, b: __m512i, c: __m512i) -> __m512i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm512_mask_shldv_epi64(a: __m512i, k: __mmask8, b: __m512i, c: __m512i) -> __m512i {
     unsafe {
         let shf = _mm512_shldv_epi64(a, b, c).as_i64x8();
         transmute(simd_select_bitmask(k, shf, a.as_i64x8()))
@@ -524,7 +532,8 @@ pub fn _mm512_mask_shldv_epi64(a: __m512i, k: __mmask8, b: __m512i, c: __m512i) 
 #[target_feature(enable = "avx512vbmi2")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldvq))]
-pub fn _mm512_maskz_shldv_epi64(k: __mmask8, a: __m512i, b: __m512i, c: __m512i) -> __m512i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm512_maskz_shldv_epi64(k: __mmask8, a: __m512i, b: __m512i, c: __m512i) -> __m512i {
     unsafe {
         let shf = _mm512_shldv_epi64(a, b, c).as_i64x8();
         transmute(simd_select_bitmask(k, shf, i64x8::ZERO))
@@ -538,8 +547,15 @@ pub fn _mm512_maskz_shldv_epi64(k: __mmask8, a: __m512i, b: __m512i, c: __m512i)
 #[target_feature(enable = "avx512vbmi2,avx512vl")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldvq))]
-pub fn _mm256_shldv_epi64(a: __m256i, b: __m256i, c: __m256i) -> __m256i {
-    unsafe { transmute(simd_funnel_shl(a.as_i64x4(), b.as_i64x4(), c.as_i64x4())) }
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm256_shldv_epi64(a: __m256i, b: __m256i, c: __m256i) -> __m256i {
+    unsafe {
+        transmute(simd_funnel_shl(
+            a.as_i64x4(),
+            b.as_i64x4(),
+            simd_and(c.as_i64x4(), i64x4::splat(63)),
+        ))
+    }
 }
 
 /// Concatenate packed 64-bit integers in a and b producing an intermediate 128-bit result. Shift the result left by the amount specified in the corresponding element of c, and store the upper 64-bits in dst using writemask k (elements are copied from a when the corresponding mask bit is not set).
@@ -549,7 +565,8 @@ pub fn _mm256_shldv_epi64(a: __m256i, b: __m256i, c: __m256i) -> __m256i {
 #[target_feature(enable = "avx512vbmi2,avx512vl")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldvq))]
-pub fn _mm256_mask_shldv_epi64(a: __m256i, k: __mmask8, b: __m256i, c: __m256i) -> __m256i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm256_mask_shldv_epi64(a: __m256i, k: __mmask8, b: __m256i, c: __m256i) -> __m256i {
     unsafe {
         let shf = _mm256_shldv_epi64(a, b, c).as_i64x4();
         transmute(simd_select_bitmask(k, shf, a.as_i64x4()))
@@ -563,7 +580,8 @@ pub fn _mm256_mask_shldv_epi64(a: __m256i, k: __mmask8, b: __m256i, c: __m256i) 
 #[target_feature(enable = "avx512vbmi2,avx512vl")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldvq))]
-pub fn _mm256_maskz_shldv_epi64(k: __mmask8, a: __m256i, b: __m256i, c: __m256i) -> __m256i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm256_maskz_shldv_epi64(k: __mmask8, a: __m256i, b: __m256i, c: __m256i) -> __m256i {
     unsafe {
         let shf = _mm256_shldv_epi64(a, b, c).as_i64x4();
         transmute(simd_select_bitmask(k, shf, i64x4::ZERO))
@@ -577,8 +595,15 @@ pub fn _mm256_maskz_shldv_epi64(k: __mmask8, a: __m256i, b: __m256i, c: __m256i)
 #[target_feature(enable = "avx512vbmi2,avx512vl")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldvq))]
-pub fn _mm_shldv_epi64(a: __m128i, b: __m128i, c: __m128i) -> __m128i {
-    unsafe { transmute(simd_funnel_shl(a.as_i64x2(), b.as_i64x2(), c.as_i64x2())) }
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm_shldv_epi64(a: __m128i, b: __m128i, c: __m128i) -> __m128i {
+    unsafe {
+        transmute(simd_funnel_shl(
+            a.as_i64x2(),
+            b.as_i64x2(),
+            simd_and(c.as_i64x2(), i64x2::splat(63)),
+        ))
+    }
 }
 
 /// Concatenate packed 64-bit integers in a and b producing an intermediate 128-bit result. Shift the result left by the amount specified in the corresponding element of c, and store the upper 64-bits in dst using writemask k (elements are copied from a when the corresponding mask bit is not set).
@@ -588,7 +613,8 @@ pub fn _mm_shldv_epi64(a: __m128i, b: __m128i, c: __m128i) -> __m128i {
 #[target_feature(enable = "avx512vbmi2,avx512vl")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldvq))]
-pub fn _mm_mask_shldv_epi64(a: __m128i, k: __mmask8, b: __m128i, c: __m128i) -> __m128i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm_mask_shldv_epi64(a: __m128i, k: __mmask8, b: __m128i, c: __m128i) -> __m128i {
     unsafe {
         let shf = _mm_shldv_epi64(a, b, c).as_i64x2();
         transmute(simd_select_bitmask(k, shf, a.as_i64x2()))
@@ -602,7 +628,8 @@ pub fn _mm_mask_shldv_epi64(a: __m128i, k: __mmask8, b: __m128i, c: __m128i) -> 
 #[target_feature(enable = "avx512vbmi2,avx512vl")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldvq))]
-pub fn _mm_maskz_shldv_epi64(k: __mmask8, a: __m128i, b: __m128i, c: __m128i) -> __m128i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm_maskz_shldv_epi64(k: __mmask8, a: __m128i, b: __m128i, c: __m128i) -> __m128i {
     unsafe {
         let shf = _mm_shldv_epi64(a, b, c).as_i64x2();
         transmute(simd_select_bitmask(k, shf, i64x2::ZERO))
@@ -616,8 +643,15 @@ pub fn _mm_maskz_shldv_epi64(k: __mmask8, a: __m128i, b: __m128i, c: __m128i) ->
 #[target_feature(enable = "avx512vbmi2")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldvd))]
-pub fn _mm512_shldv_epi32(a: __m512i, b: __m512i, c: __m512i) -> __m512i {
-    unsafe { transmute(simd_funnel_shl(a.as_i32x16(), b.as_i32x16(), c.as_i32x16())) }
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm512_shldv_epi32(a: __m512i, b: __m512i, c: __m512i) -> __m512i {
+    unsafe {
+        transmute(simd_funnel_shl(
+            a.as_i32x16(),
+            b.as_i32x16(),
+            simd_and(c.as_i32x16(), i32x16::splat(31)),
+        ))
+    }
 }
 
 /// Concatenate packed 32-bit integers in a and b producing an intermediate 64-bit result. Shift the result left by the amount specified in the corresponding element of c, and store the upper 32-bits in dst using writemask k (elements are copied from a when the corresponding mask bit is not set).
@@ -627,7 +661,8 @@ pub fn _mm512_shldv_epi32(a: __m512i, b: __m512i, c: __m512i) -> __m512i {
 #[target_feature(enable = "avx512vbmi2")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldvd))]
-pub fn _mm512_mask_shldv_epi32(a: __m512i, k: __mmask16, b: __m512i, c: __m512i) -> __m512i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm512_mask_shldv_epi32(a: __m512i, k: __mmask16, b: __m512i, c: __m512i) -> __m512i {
     unsafe {
         let shf = _mm512_shldv_epi32(a, b, c).as_i32x16();
         transmute(simd_select_bitmask(k, shf, a.as_i32x16()))
@@ -641,7 +676,8 @@ pub fn _mm512_mask_shldv_epi32(a: __m512i, k: __mmask16, b: __m512i, c: __m512i)
 #[target_feature(enable = "avx512vbmi2")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldvd))]
-pub fn _mm512_maskz_shldv_epi32(k: __mmask16, a: __m512i, b: __m512i, c: __m512i) -> __m512i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm512_maskz_shldv_epi32(k: __mmask16, a: __m512i, b: __m512i, c: __m512i) -> __m512i {
     unsafe {
         let shf = _mm512_shldv_epi32(a, b, c).as_i32x16();
         transmute(simd_select_bitmask(k, shf, i32x16::ZERO))
@@ -655,8 +691,15 @@ pub fn _mm512_maskz_shldv_epi32(k: __mmask16, a: __m512i, b: __m512i, c: __m512i
 #[target_feature(enable = "avx512vbmi2,avx512vl")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldvd))]
-pub fn _mm256_shldv_epi32(a: __m256i, b: __m256i, c: __m256i) -> __m256i {
-    unsafe { transmute(simd_funnel_shl(a.as_i32x8(), b.as_i32x8(), c.as_i32x8())) }
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm256_shldv_epi32(a: __m256i, b: __m256i, c: __m256i) -> __m256i {
+    unsafe {
+        transmute(simd_funnel_shl(
+            a.as_i32x8(),
+            b.as_i32x8(),
+            simd_and(c.as_i32x8(), i32x8::splat(31)),
+        ))
+    }
 }
 
 /// Concatenate packed 32-bit integers in a and b producing an intermediate 64-bit result. Shift the result left by the amount specified in the corresponding element of c, and store the upper 32-bits in dst using writemask k (elements are copied from a when the corresponding mask bit is not set).
@@ -666,7 +709,8 @@ pub fn _mm256_shldv_epi32(a: __m256i, b: __m256i, c: __m256i) -> __m256i {
 #[target_feature(enable = "avx512vbmi2,avx512vl")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldvd))]
-pub fn _mm256_mask_shldv_epi32(a: __m256i, k: __mmask8, b: __m256i, c: __m256i) -> __m256i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm256_mask_shldv_epi32(a: __m256i, k: __mmask8, b: __m256i, c: __m256i) -> __m256i {
     unsafe {
         let shf = _mm256_shldv_epi32(a, b, c).as_i32x8();
         transmute(simd_select_bitmask(k, shf, a.as_i32x8()))
@@ -680,7 +724,8 @@ pub fn _mm256_mask_shldv_epi32(a: __m256i, k: __mmask8, b: __m256i, c: __m256i) 
 #[target_feature(enable = "avx512vbmi2,avx512vl")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldvd))]
-pub fn _mm256_maskz_shldv_epi32(k: __mmask8, a: __m256i, b: __m256i, c: __m256i) -> __m256i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm256_maskz_shldv_epi32(k: __mmask8, a: __m256i, b: __m256i, c: __m256i) -> __m256i {
     unsafe {
         let shf = _mm256_shldv_epi32(a, b, c).as_i32x8();
         transmute(simd_select_bitmask(k, shf, i32x8::ZERO))
@@ -694,8 +739,15 @@ pub fn _mm256_maskz_shldv_epi32(k: __mmask8, a: __m256i, b: __m256i, c: __m256i)
 #[target_feature(enable = "avx512vbmi2,avx512vl")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldvd))]
-pub fn _mm_shldv_epi32(a: __m128i, b: __m128i, c: __m128i) -> __m128i {
-    unsafe { transmute(simd_funnel_shl(a.as_i32x4(), b.as_i32x4(), c.as_i32x4())) }
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm_shldv_epi32(a: __m128i, b: __m128i, c: __m128i) -> __m128i {
+    unsafe {
+        transmute(simd_funnel_shl(
+            a.as_i32x4(),
+            b.as_i32x4(),
+            simd_and(c.as_i32x4(), i32x4::splat(31)),
+        ))
+    }
 }
 
 /// Concatenate packed 32-bit integers in a and b producing an intermediate 64-bit result. Shift the result left by the amount specified in the corresponding element of c, and store the upper 32-bits in dst using writemask k (elements are copied from a when the corresponding mask bit is not set).
@@ -705,7 +757,8 @@ pub fn _mm_shldv_epi32(a: __m128i, b: __m128i, c: __m128i) -> __m128i {
 #[target_feature(enable = "avx512vbmi2,avx512vl")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldvd))]
-pub fn _mm_mask_shldv_epi32(a: __m128i, k: __mmask8, b: __m128i, c: __m128i) -> __m128i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm_mask_shldv_epi32(a: __m128i, k: __mmask8, b: __m128i, c: __m128i) -> __m128i {
     unsafe {
         let shf = _mm_shldv_epi32(a, b, c).as_i32x4();
         transmute(simd_select_bitmask(k, shf, a.as_i32x4()))
@@ -719,7 +772,8 @@ pub fn _mm_mask_shldv_epi32(a: __m128i, k: __mmask8, b: __m128i, c: __m128i) -> 
 #[target_feature(enable = "avx512vbmi2,avx512vl")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldvd))]
-pub fn _mm_maskz_shldv_epi32(k: __mmask8, a: __m128i, b: __m128i, c: __m128i) -> __m128i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm_maskz_shldv_epi32(k: __mmask8, a: __m128i, b: __m128i, c: __m128i) -> __m128i {
     unsafe {
         let shf = _mm_shldv_epi32(a, b, c).as_i32x4();
         transmute(simd_select_bitmask(k, shf, i32x4::ZERO))
@@ -733,8 +787,15 @@ pub fn _mm_maskz_shldv_epi32(k: __mmask8, a: __m128i, b: __m128i, c: __m128i) ->
 #[target_feature(enable = "avx512vbmi2")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldvw))]
-pub fn _mm512_shldv_epi16(a: __m512i, b: __m512i, c: __m512i) -> __m512i {
-    unsafe { transmute(simd_funnel_shl(a.as_i16x32(), b.as_i16x32(), c.as_i16x32())) }
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm512_shldv_epi16(a: __m512i, b: __m512i, c: __m512i) -> __m512i {
+    unsafe {
+        transmute(simd_funnel_shl(
+            a.as_i16x32(),
+            b.as_i16x32(),
+            simd_and(c.as_i16x32(), i16x32::splat(15)),
+        ))
+    }
 }
 
 /// Concatenate packed 16-bit integers in a and b producing an intermediate 32-bit result. Shift the result left by the amount specified in the corresponding element of c, and store the upper 16-bits in dst using writemask k (elements are copied from a when the corresponding mask bit is not set).
@@ -744,7 +805,8 @@ pub fn _mm512_shldv_epi16(a: __m512i, b: __m512i, c: __m512i) -> __m512i {
 #[target_feature(enable = "avx512vbmi2")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldvw))]
-pub fn _mm512_mask_shldv_epi16(a: __m512i, k: __mmask32, b: __m512i, c: __m512i) -> __m512i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm512_mask_shldv_epi16(a: __m512i, k: __mmask32, b: __m512i, c: __m512i) -> __m512i {
     unsafe {
         let shf = _mm512_shldv_epi16(a, b, c).as_i16x32();
         transmute(simd_select_bitmask(k, shf, a.as_i16x32()))
@@ -758,7 +820,8 @@ pub fn _mm512_mask_shldv_epi16(a: __m512i, k: __mmask32, b: __m512i, c: __m512i)
 #[target_feature(enable = "avx512vbmi2")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldvw))]
-pub fn _mm512_maskz_shldv_epi16(k: __mmask32, a: __m512i, b: __m512i, c: __m512i) -> __m512i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm512_maskz_shldv_epi16(k: __mmask32, a: __m512i, b: __m512i, c: __m512i) -> __m512i {
     unsafe {
         let shf = _mm512_shldv_epi16(a, b, c).as_i16x32();
         transmute(simd_select_bitmask(k, shf, i16x32::ZERO))
@@ -772,8 +835,15 @@ pub fn _mm512_maskz_shldv_epi16(k: __mmask32, a: __m512i, b: __m512i, c: __m512i
 #[target_feature(enable = "avx512vbmi2,avx512vl")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldvw))]
-pub fn _mm256_shldv_epi16(a: __m256i, b: __m256i, c: __m256i) -> __m256i {
-    unsafe { transmute(simd_funnel_shl(a.as_i16x16(), b.as_i16x16(), c.as_i16x16())) }
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm256_shldv_epi16(a: __m256i, b: __m256i, c: __m256i) -> __m256i {
+    unsafe {
+        transmute(simd_funnel_shl(
+            a.as_i16x16(),
+            b.as_i16x16(),
+            simd_and(c.as_i16x16(), i16x16::splat(15)),
+        ))
+    }
 }
 
 /// Concatenate packed 16-bit integers in a and b producing an intermediate 32-bit result. Shift the result left by the amount specified in the corresponding element of c, and store the upper 16-bits in dst using writemask k (elements are copied from a when the corresponding mask bit is not set).
@@ -783,7 +853,8 @@ pub fn _mm256_shldv_epi16(a: __m256i, b: __m256i, c: __m256i) -> __m256i {
 #[target_feature(enable = "avx512vbmi2,avx512vl")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldvw))]
-pub fn _mm256_mask_shldv_epi16(a: __m256i, k: __mmask16, b: __m256i, c: __m256i) -> __m256i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm256_mask_shldv_epi16(a: __m256i, k: __mmask16, b: __m256i, c: __m256i) -> __m256i {
     unsafe {
         let shf = _mm256_shldv_epi16(a, b, c).as_i16x16();
         transmute(simd_select_bitmask(k, shf, a.as_i16x16()))
@@ -797,7 +868,8 @@ pub fn _mm256_mask_shldv_epi16(a: __m256i, k: __mmask16, b: __m256i, c: __m256i)
 #[target_feature(enable = "avx512vbmi2,avx512vl")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldvw))]
-pub fn _mm256_maskz_shldv_epi16(k: __mmask16, a: __m256i, b: __m256i, c: __m256i) -> __m256i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm256_maskz_shldv_epi16(k: __mmask16, a: __m256i, b: __m256i, c: __m256i) -> __m256i {
     unsafe {
         let shf = _mm256_shldv_epi16(a, b, c).as_i16x16();
         transmute(simd_select_bitmask(k, shf, i16x16::ZERO))
@@ -811,8 +883,15 @@ pub fn _mm256_maskz_shldv_epi16(k: __mmask16, a: __m256i, b: __m256i, c: __m256i
 #[target_feature(enable = "avx512vbmi2,avx512vl")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldvw))]
-pub fn _mm_shldv_epi16(a: __m128i, b: __m128i, c: __m128i) -> __m128i {
-    unsafe { transmute(simd_funnel_shl(a.as_i16x8(), b.as_i16x8(), c.as_i16x8())) }
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm_shldv_epi16(a: __m128i, b: __m128i, c: __m128i) -> __m128i {
+    unsafe {
+        transmute(simd_funnel_shl(
+            a.as_i16x8(),
+            b.as_i16x8(),
+            simd_and(c.as_i16x8(), i16x8::splat(15)),
+        ))
+    }
 }
 
 /// Concatenate packed 16-bit integers in a and b producing an intermediate 32-bit result. Shift the result left by the amount specified in the corresponding element of c, and store the upper 16-bits in dst using writemask k (elements are copied from a when the corresponding mask bit is not set).
@@ -822,7 +901,8 @@ pub fn _mm_shldv_epi16(a: __m128i, b: __m128i, c: __m128i) -> __m128i {
 #[target_feature(enable = "avx512vbmi2,avx512vl")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldvw))]
-pub fn _mm_mask_shldv_epi16(a: __m128i, k: __mmask8, b: __m128i, c: __m128i) -> __m128i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm_mask_shldv_epi16(a: __m128i, k: __mmask8, b: __m128i, c: __m128i) -> __m128i {
     unsafe {
         let shf = _mm_shldv_epi16(a, b, c).as_i16x8();
         transmute(simd_select_bitmask(k, shf, a.as_i16x8()))
@@ -836,7 +916,8 @@ pub fn _mm_mask_shldv_epi16(a: __m128i, k: __mmask8, b: __m128i, c: __m128i) -> 
 #[target_feature(enable = "avx512vbmi2,avx512vl")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldvw))]
-pub fn _mm_maskz_shldv_epi16(k: __mmask8, a: __m128i, b: __m128i, c: __m128i) -> __m128i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm_maskz_shldv_epi16(k: __mmask8, a: __m128i, b: __m128i, c: __m128i) -> __m128i {
     unsafe {
         let shf = _mm_shldv_epi16(a, b, c).as_i16x8();
         transmute(simd_select_bitmask(k, shf, i16x8::ZERO))
@@ -850,8 +931,15 @@ pub fn _mm_maskz_shldv_epi16(k: __mmask8, a: __m128i, b: __m128i, c: __m128i) ->
 #[target_feature(enable = "avx512vbmi2")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshrdvq))]
-pub fn _mm512_shrdv_epi64(a: __m512i, b: __m512i, c: __m512i) -> __m512i {
-    unsafe { transmute(simd_funnel_shr(b.as_i64x8(), a.as_i64x8(), c.as_i64x8())) }
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm512_shrdv_epi64(a: __m512i, b: __m512i, c: __m512i) -> __m512i {
+    unsafe {
+        transmute(simd_funnel_shr(
+            b.as_i64x8(),
+            a.as_i64x8(),
+            simd_and(c.as_i64x8(), i64x8::splat(63)),
+        ))
+    }
 }
 
 /// Concatenate packed 64-bit integers in b and a producing an intermediate 128-bit result. Shift the result right by the amount specified in the corresponding element of c, and store the lower 64-bits in dst using writemask k (elements are copied from a when the corresponding mask bit is not set).
@@ -861,7 +949,8 @@ pub fn _mm512_shrdv_epi64(a: __m512i, b: __m512i, c: __m512i) -> __m512i {
 #[target_feature(enable = "avx512vbmi2")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshrdvq))]
-pub fn _mm512_mask_shrdv_epi64(a: __m512i, k: __mmask8, b: __m512i, c: __m512i) -> __m512i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm512_mask_shrdv_epi64(a: __m512i, k: __mmask8, b: __m512i, c: __m512i) -> __m512i {
     unsafe {
         let shf = _mm512_shrdv_epi64(a, b, c).as_i64x8();
         transmute(simd_select_bitmask(k, shf, a.as_i64x8()))
@@ -875,7 +964,8 @@ pub fn _mm512_mask_shrdv_epi64(a: __m512i, k: __mmask8, b: __m512i, c: __m512i) 
 #[target_feature(enable = "avx512vbmi2")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshrdvq))]
-pub fn _mm512_maskz_shrdv_epi64(k: __mmask8, a: __m512i, b: __m512i, c: __m512i) -> __m512i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm512_maskz_shrdv_epi64(k: __mmask8, a: __m512i, b: __m512i, c: __m512i) -> __m512i {
     unsafe {
         let shf = _mm512_shrdv_epi64(a, b, c).as_i64x8();
         transmute(simd_select_bitmask(k, shf, i64x8::ZERO))
@@ -889,8 +979,15 @@ pub fn _mm512_maskz_shrdv_epi64(k: __mmask8, a: __m512i, b: __m512i, c: __m512i)
 #[target_feature(enable = "avx512vbmi2,avx512vl")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshrdvq))]
-pub fn _mm256_shrdv_epi64(a: __m256i, b: __m256i, c: __m256i) -> __m256i {
-    unsafe { transmute(simd_funnel_shr(b.as_i64x4(), a.as_i64x4(), c.as_i64x4())) }
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm256_shrdv_epi64(a: __m256i, b: __m256i, c: __m256i) -> __m256i {
+    unsafe {
+        transmute(simd_funnel_shr(
+            b.as_i64x4(),
+            a.as_i64x4(),
+            simd_and(c.as_i64x4(), i64x4::splat(63)),
+        ))
+    }
 }
 
 /// Concatenate packed 64-bit integers in b and a producing an intermediate 128-bit result. Shift the result right by the amount specified in the corresponding element of c, and store the lower 64-bits in dst using writemask k (elements are copied from a when the corresponding mask bit is not set).
@@ -900,7 +997,8 @@ pub fn _mm256_shrdv_epi64(a: __m256i, b: __m256i, c: __m256i) -> __m256i {
 #[target_feature(enable = "avx512vbmi2,avx512vl")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshrdvq))]
-pub fn _mm256_mask_shrdv_epi64(a: __m256i, k: __mmask8, b: __m256i, c: __m256i) -> __m256i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm256_mask_shrdv_epi64(a: __m256i, k: __mmask8, b: __m256i, c: __m256i) -> __m256i {
     unsafe {
         let shf = _mm256_shrdv_epi64(a, b, c).as_i64x4();
         transmute(simd_select_bitmask(k, shf, a.as_i64x4()))
@@ -914,7 +1012,8 @@ pub fn _mm256_mask_shrdv_epi64(a: __m256i, k: __mmask8, b: __m256i, c: __m256i) 
 #[target_feature(enable = "avx512vbmi2,avx512vl")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshrdvq))]
-pub fn _mm256_maskz_shrdv_epi64(k: __mmask8, a: __m256i, b: __m256i, c: __m256i) -> __m256i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm256_maskz_shrdv_epi64(k: __mmask8, a: __m256i, b: __m256i, c: __m256i) -> __m256i {
     unsafe {
         let shf = _mm256_shrdv_epi64(a, b, c).as_i64x4();
         transmute(simd_select_bitmask(k, shf, i64x4::ZERO))
@@ -928,8 +1027,15 @@ pub fn _mm256_maskz_shrdv_epi64(k: __mmask8, a: __m256i, b: __m256i, c: __m256i)
 #[target_feature(enable = "avx512vbmi2,avx512vl")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshrdvq))]
-pub fn _mm_shrdv_epi64(a: __m128i, b: __m128i, c: __m128i) -> __m128i {
-    unsafe { transmute(simd_funnel_shr(b.as_i64x2(), a.as_i64x2(), c.as_i64x2())) }
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm_shrdv_epi64(a: __m128i, b: __m128i, c: __m128i) -> __m128i {
+    unsafe {
+        transmute(simd_funnel_shr(
+            b.as_i64x2(),
+            a.as_i64x2(),
+            simd_and(c.as_i64x2(), i64x2::splat(63)),
+        ))
+    }
 }
 
 /// Concatenate packed 64-bit integers in b and a producing an intermediate 128-bit result. Shift the result right by the amount specified in the corresponding element of c, and store the lower 64-bits in dst using writemask k (elements are copied from a when the corresponding mask bit is not set).
@@ -939,7 +1045,8 @@ pub fn _mm_shrdv_epi64(a: __m128i, b: __m128i, c: __m128i) -> __m128i {
 #[target_feature(enable = "avx512vbmi2,avx512vl")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshrdvq))]
-pub fn _mm_mask_shrdv_epi64(a: __m128i, k: __mmask8, b: __m128i, c: __m128i) -> __m128i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm_mask_shrdv_epi64(a: __m128i, k: __mmask8, b: __m128i, c: __m128i) -> __m128i {
     unsafe {
         let shf = _mm_shrdv_epi64(a, b, c).as_i64x2();
         transmute(simd_select_bitmask(k, shf, a.as_i64x2()))
@@ -953,7 +1060,8 @@ pub fn _mm_mask_shrdv_epi64(a: __m128i, k: __mmask8, b: __m128i, c: __m128i) -> 
 #[target_feature(enable = "avx512vbmi2,avx512vl")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshrdvq))]
-pub fn _mm_maskz_shrdv_epi64(k: __mmask8, a: __m128i, b: __m128i, c: __m128i) -> __m128i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm_maskz_shrdv_epi64(k: __mmask8, a: __m128i, b: __m128i, c: __m128i) -> __m128i {
     unsafe {
         let shf = _mm_shrdv_epi64(a, b, c).as_i64x2();
         transmute(simd_select_bitmask(k, shf, i64x2::ZERO))
@@ -967,8 +1075,15 @@ pub fn _mm_maskz_shrdv_epi64(k: __mmask8, a: __m128i, b: __m128i, c: __m128i) ->
 #[target_feature(enable = "avx512vbmi2")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshrdvd))]
-pub fn _mm512_shrdv_epi32(a: __m512i, b: __m512i, c: __m512i) -> __m512i {
-    unsafe { transmute(simd_funnel_shr(b.as_i32x16(), a.as_i32x16(), c.as_i32x16())) }
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm512_shrdv_epi32(a: __m512i, b: __m512i, c: __m512i) -> __m512i {
+    unsafe {
+        transmute(simd_funnel_shr(
+            b.as_i32x16(),
+            a.as_i32x16(),
+            simd_and(c.as_i32x16(), i32x16::splat(31)),
+        ))
+    }
 }
 
 /// Concatenate packed 32-bit integers in b and a producing an intermediate 64-bit result. Shift the result right by the amount specified in the corresponding element of c, and store the lower 32-bits in dst using writemask k (elements are copied from a when the corresponding mask bit is not set).
@@ -978,7 +1093,8 @@ pub fn _mm512_shrdv_epi32(a: __m512i, b: __m512i, c: __m512i) -> __m512i {
 #[target_feature(enable = "avx512vbmi2")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshrdvd))]
-pub fn _mm512_mask_shrdv_epi32(a: __m512i, k: __mmask16, b: __m512i, c: __m512i) -> __m512i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm512_mask_shrdv_epi32(a: __m512i, k: __mmask16, b: __m512i, c: __m512i) -> __m512i {
     unsafe {
         let shf = _mm512_shrdv_epi32(a, b, c).as_i32x16();
         transmute(simd_select_bitmask(k, shf, a.as_i32x16()))
@@ -992,7 +1108,8 @@ pub fn _mm512_mask_shrdv_epi32(a: __m512i, k: __mmask16, b: __m512i, c: __m512i)
 #[target_feature(enable = "avx512vbmi2")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshrdvd))]
-pub fn _mm512_maskz_shrdv_epi32(k: __mmask16, a: __m512i, b: __m512i, c: __m512i) -> __m512i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm512_maskz_shrdv_epi32(k: __mmask16, a: __m512i, b: __m512i, c: __m512i) -> __m512i {
     unsafe {
         let shf = _mm512_shrdv_epi32(a, b, c).as_i32x16();
         transmute(simd_select_bitmask(k, shf, i32x16::ZERO))
@@ -1006,8 +1123,15 @@ pub fn _mm512_maskz_shrdv_epi32(k: __mmask16, a: __m512i, b: __m512i, c: __m512i
 #[target_feature(enable = "avx512vbmi2,avx512vl")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshrdvd))]
-pub fn _mm256_shrdv_epi32(a: __m256i, b: __m256i, c: __m256i) -> __m256i {
-    unsafe { transmute(simd_funnel_shr(b.as_i32x8(), a.as_i32x8(), c.as_i32x8())) }
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm256_shrdv_epi32(a: __m256i, b: __m256i, c: __m256i) -> __m256i {
+    unsafe {
+        transmute(simd_funnel_shr(
+            b.as_i32x8(),
+            a.as_i32x8(),
+            simd_and(c.as_i32x8(), i32x8::splat(31)),
+        ))
+    }
 }
 
 /// Concatenate packed 32-bit integers in b and a producing an intermediate 64-bit result. Shift the result right by the amount specified in the corresponding element of c, and store the lower 32-bits in dst using writemask k (elements are copied from a when the corresponding mask bit is not set).
@@ -1017,7 +1141,8 @@ pub fn _mm256_shrdv_epi32(a: __m256i, b: __m256i, c: __m256i) -> __m256i {
 #[target_feature(enable = "avx512vbmi2,avx512vl")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshrdvd))]
-pub fn _mm256_mask_shrdv_epi32(a: __m256i, k: __mmask8, b: __m256i, c: __m256i) -> __m256i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm256_mask_shrdv_epi32(a: __m256i, k: __mmask8, b: __m256i, c: __m256i) -> __m256i {
     unsafe {
         let shf = _mm256_shrdv_epi32(a, b, c).as_i32x8();
         transmute(simd_select_bitmask(k, shf, a.as_i32x8()))
@@ -1031,7 +1156,8 @@ pub fn _mm256_mask_shrdv_epi32(a: __m256i, k: __mmask8, b: __m256i, c: __m256i) 
 #[target_feature(enable = "avx512vbmi2,avx512vl")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshrdvd))]
-pub fn _mm256_maskz_shrdv_epi32(k: __mmask8, a: __m256i, b: __m256i, c: __m256i) -> __m256i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm256_maskz_shrdv_epi32(k: __mmask8, a: __m256i, b: __m256i, c: __m256i) -> __m256i {
     unsafe {
         let shf = _mm256_shrdv_epi32(a, b, c).as_i32x8();
         transmute(simd_select_bitmask(k, shf, i32x8::ZERO))
@@ -1045,8 +1171,15 @@ pub fn _mm256_maskz_shrdv_epi32(k: __mmask8, a: __m256i, b: __m256i, c: __m256i)
 #[target_feature(enable = "avx512vbmi2,avx512vl")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshrdvd))]
-pub fn _mm_shrdv_epi32(a: __m128i, b: __m128i, c: __m128i) -> __m128i {
-    unsafe { transmute(simd_funnel_shr(b.as_i32x4(), a.as_i32x4(), c.as_i32x4())) }
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm_shrdv_epi32(a: __m128i, b: __m128i, c: __m128i) -> __m128i {
+    unsafe {
+        transmute(simd_funnel_shr(
+            b.as_i32x4(),
+            a.as_i32x4(),
+            simd_and(c.as_i32x4(), i32x4::splat(31)),
+        ))
+    }
 }
 
 /// Concatenate packed 32-bit integers in b and a producing an intermediate 64-bit result. Shift the result right by the amount specified in the corresponding element of c, and store the lower 32-bits in dst using writemask k (elements are copied from a when the corresponding mask bit is not set).
@@ -1056,7 +1189,8 @@ pub fn _mm_shrdv_epi32(a: __m128i, b: __m128i, c: __m128i) -> __m128i {
 #[target_feature(enable = "avx512vbmi2,avx512vl")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshrdvd))]
-pub fn _mm_mask_shrdv_epi32(a: __m128i, k: __mmask8, b: __m128i, c: __m128i) -> __m128i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm_mask_shrdv_epi32(a: __m128i, k: __mmask8, b: __m128i, c: __m128i) -> __m128i {
     unsafe {
         let shf = _mm_shrdv_epi32(a, b, c).as_i32x4();
         transmute(simd_select_bitmask(k, shf, a.as_i32x4()))
@@ -1070,7 +1204,8 @@ pub fn _mm_mask_shrdv_epi32(a: __m128i, k: __mmask8, b: __m128i, c: __m128i) -> 
 #[target_feature(enable = "avx512vbmi2,avx512vl")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshrdvd))]
-pub fn _mm_maskz_shrdv_epi32(k: __mmask8, a: __m128i, b: __m128i, c: __m128i) -> __m128i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm_maskz_shrdv_epi32(k: __mmask8, a: __m128i, b: __m128i, c: __m128i) -> __m128i {
     unsafe {
         let shf = _mm_shrdv_epi32(a, b, c).as_i32x4();
         transmute(simd_select_bitmask(k, shf, i32x4::ZERO))
@@ -1084,8 +1219,15 @@ pub fn _mm_maskz_shrdv_epi32(k: __mmask8, a: __m128i, b: __m128i, c: __m128i) ->
 #[target_feature(enable = "avx512vbmi2")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshrdvw))]
-pub fn _mm512_shrdv_epi16(a: __m512i, b: __m512i, c: __m512i) -> __m512i {
-    unsafe { transmute(simd_funnel_shr(b.as_i16x32(), a.as_i16x32(), c.as_i16x32())) }
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm512_shrdv_epi16(a: __m512i, b: __m512i, c: __m512i) -> __m512i {
+    unsafe {
+        transmute(simd_funnel_shr(
+            b.as_i16x32(),
+            a.as_i16x32(),
+            simd_and(c.as_i16x32(), i16x32::splat(15)),
+        ))
+    }
 }
 
 /// Concatenate packed 16-bit integers in b and a producing an intermediate 32-bit result. Shift the result right by the amount specified in the corresponding element of c, and store the lower 16-bits in dst using writemask k (elements are copied from a when the corresponding mask bit is not set).
@@ -1095,7 +1237,8 @@ pub fn _mm512_shrdv_epi16(a: __m512i, b: __m512i, c: __m512i) -> __m512i {
 #[target_feature(enable = "avx512vbmi2")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshrdvw))]
-pub fn _mm512_mask_shrdv_epi16(a: __m512i, k: __mmask32, b: __m512i, c: __m512i) -> __m512i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm512_mask_shrdv_epi16(a: __m512i, k: __mmask32, b: __m512i, c: __m512i) -> __m512i {
     unsafe {
         let shf = _mm512_shrdv_epi16(a, b, c).as_i16x32();
         transmute(simd_select_bitmask(k, shf, a.as_i16x32()))
@@ -1109,7 +1252,8 @@ pub fn _mm512_mask_shrdv_epi16(a: __m512i, k: __mmask32, b: __m512i, c: __m512i)
 #[target_feature(enable = "avx512vbmi2")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshrdvw))]
-pub fn _mm512_maskz_shrdv_epi16(k: __mmask32, a: __m512i, b: __m512i, c: __m512i) -> __m512i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm512_maskz_shrdv_epi16(k: __mmask32, a: __m512i, b: __m512i, c: __m512i) -> __m512i {
     unsafe {
         let shf = _mm512_shrdv_epi16(a, b, c).as_i16x32();
         transmute(simd_select_bitmask(k, shf, i16x32::ZERO))
@@ -1123,8 +1267,15 @@ pub fn _mm512_maskz_shrdv_epi16(k: __mmask32, a: __m512i, b: __m512i, c: __m512i
 #[target_feature(enable = "avx512vbmi2,avx512vl")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshrdvw))]
-pub fn _mm256_shrdv_epi16(a: __m256i, b: __m256i, c: __m256i) -> __m256i {
-    unsafe { transmute(simd_funnel_shr(b.as_i16x16(), a.as_i16x16(), c.as_i16x16())) }
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm256_shrdv_epi16(a: __m256i, b: __m256i, c: __m256i) -> __m256i {
+    unsafe {
+        transmute(simd_funnel_shr(
+            b.as_i16x16(),
+            a.as_i16x16(),
+            simd_and(c.as_i16x16(), i16x16::splat(15)),
+        ))
+    }
 }
 
 /// Concatenate packed 16-bit integers in b and a producing an intermediate 32-bit result. Shift the result right by the amount specified in the corresponding element of c, and store the lower 16-bits in dst using writemask k (elements are copied from a when the corresponding mask bit is not set).
@@ -1134,7 +1285,8 @@ pub fn _mm256_shrdv_epi16(a: __m256i, b: __m256i, c: __m256i) -> __m256i {
 #[target_feature(enable = "avx512vbmi2,avx512vl")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshrdvw))]
-pub fn _mm256_mask_shrdv_epi16(a: __m256i, k: __mmask16, b: __m256i, c: __m256i) -> __m256i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm256_mask_shrdv_epi16(a: __m256i, k: __mmask16, b: __m256i, c: __m256i) -> __m256i {
     unsafe {
         let shf = _mm256_shrdv_epi16(a, b, c).as_i16x16();
         transmute(simd_select_bitmask(k, shf, a.as_i16x16()))
@@ -1148,7 +1300,8 @@ pub fn _mm256_mask_shrdv_epi16(a: __m256i, k: __mmask16, b: __m256i, c: __m256i)
 #[target_feature(enable = "avx512vbmi2,avx512vl")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshrdvw))]
-pub fn _mm256_maskz_shrdv_epi16(k: __mmask16, a: __m256i, b: __m256i, c: __m256i) -> __m256i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm256_maskz_shrdv_epi16(k: __mmask16, a: __m256i, b: __m256i, c: __m256i) -> __m256i {
     unsafe {
         let shf = _mm256_shrdv_epi16(a, b, c).as_i16x16();
         transmute(simd_select_bitmask(k, shf, i16x16::ZERO))
@@ -1162,8 +1315,15 @@ pub fn _mm256_maskz_shrdv_epi16(k: __mmask16, a: __m256i, b: __m256i, c: __m256i
 #[target_feature(enable = "avx512vbmi2,avx512vl")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshrdvw))]
-pub fn _mm_shrdv_epi16(a: __m128i, b: __m128i, c: __m128i) -> __m128i {
-    unsafe { transmute(simd_funnel_shr(b.as_i16x8(), a.as_i16x8(), c.as_i16x8())) }
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm_shrdv_epi16(a: __m128i, b: __m128i, c: __m128i) -> __m128i {
+    unsafe {
+        transmute(simd_funnel_shr(
+            b.as_i16x8(),
+            a.as_i16x8(),
+            simd_and(c.as_i16x8(), i16x8::splat(15)),
+        ))
+    }
 }
 
 /// Concatenate packed 16-bit integers in b and a producing an intermediate 32-bit result. Shift the result right by the amount specified in the corresponding element of c, and store the lower 16-bits in dst using writemask k (elements are copied from a when the corresponding mask bit is not set).
@@ -1173,7 +1333,8 @@ pub fn _mm_shrdv_epi16(a: __m128i, b: __m128i, c: __m128i) -> __m128i {
 #[target_feature(enable = "avx512vbmi2,avx512vl")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshrdvw))]
-pub fn _mm_mask_shrdv_epi16(a: __m128i, k: __mmask8, b: __m128i, c: __m128i) -> __m128i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm_mask_shrdv_epi16(a: __m128i, k: __mmask8, b: __m128i, c: __m128i) -> __m128i {
     unsafe {
         let shf = _mm_shrdv_epi16(a, b, c).as_i16x8();
         transmute(simd_select_bitmask(k, shf, a.as_i16x8()))
@@ -1187,7 +1348,8 @@ pub fn _mm_mask_shrdv_epi16(a: __m128i, k: __mmask8, b: __m128i, c: __m128i) -> 
 #[target_feature(enable = "avx512vbmi2,avx512vl")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshrdvw))]
-pub fn _mm_maskz_shrdv_epi16(k: __mmask8, a: __m128i, b: __m128i, c: __m128i) -> __m128i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm_maskz_shrdv_epi16(k: __mmask8, a: __m128i, b: __m128i, c: __m128i) -> __m128i {
     unsafe {
         let shf = _mm_shrdv_epi16(a, b, c).as_i16x8();
         transmute(simd_select_bitmask(k, shf, i16x8::ZERO))
@@ -1202,7 +1364,8 @@ pub fn _mm_maskz_shrdv_epi16(k: __mmask8, a: __m128i, b: __m128i, c: __m128i) ->
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldq, IMM8 = 5))]
 #[rustc_legacy_const_generics(2)]
-pub fn _mm512_shldi_epi64<const IMM8: i32>(a: __m512i, b: __m512i) -> __m512i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm512_shldi_epi64<const IMM8: i32>(a: __m512i, b: __m512i) -> __m512i {
     static_assert_uimm_bits!(IMM8, 8);
     _mm512_shldv_epi64(a, b, _mm512_set1_epi64(IMM8 as i64))
 }
@@ -1215,7 +1378,8 @@ pub fn _mm512_shldi_epi64<const IMM8: i32>(a: __m512i, b: __m512i) -> __m512i {
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldq, IMM8 = 5))]
 #[rustc_legacy_const_generics(4)]
-pub fn _mm512_mask_shldi_epi64<const IMM8: i32>(
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm512_mask_shldi_epi64<const IMM8: i32>(
     src: __m512i,
     k: __mmask8,
     a: __m512i,
@@ -1236,7 +1400,12 @@ pub fn _mm512_mask_shldi_epi64<const IMM8: i32>(
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldq, IMM8 = 5))]
 #[rustc_legacy_const_generics(3)]
-pub fn _mm512_maskz_shldi_epi64<const IMM8: i32>(k: __mmask8, a: __m512i, b: __m512i) -> __m512i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm512_maskz_shldi_epi64<const IMM8: i32>(
+    k: __mmask8,
+    a: __m512i,
+    b: __m512i,
+) -> __m512i {
     unsafe {
         static_assert_uimm_bits!(IMM8, 8);
         let shf = _mm512_shldi_epi64::<IMM8>(a, b).as_i64x8();
@@ -1252,7 +1421,8 @@ pub fn _mm512_maskz_shldi_epi64<const IMM8: i32>(k: __mmask8, a: __m512i, b: __m
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldq, IMM8 = 5))]
 #[rustc_legacy_const_generics(2)]
-pub fn _mm256_shldi_epi64<const IMM8: i32>(a: __m256i, b: __m256i) -> __m256i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm256_shldi_epi64<const IMM8: i32>(a: __m256i, b: __m256i) -> __m256i {
     static_assert_uimm_bits!(IMM8, 8);
     _mm256_shldv_epi64(a, b, _mm256_set1_epi64x(IMM8 as i64))
 }
@@ -1265,7 +1435,8 @@ pub fn _mm256_shldi_epi64<const IMM8: i32>(a: __m256i, b: __m256i) -> __m256i {
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldq, IMM8 = 5))]
 #[rustc_legacy_const_generics(4)]
-pub fn _mm256_mask_shldi_epi64<const IMM8: i32>(
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm256_mask_shldi_epi64<const IMM8: i32>(
     src: __m256i,
     k: __mmask8,
     a: __m256i,
@@ -1286,7 +1457,12 @@ pub fn _mm256_mask_shldi_epi64<const IMM8: i32>(
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldq, IMM8 = 5))]
 #[rustc_legacy_const_generics(3)]
-pub fn _mm256_maskz_shldi_epi64<const IMM8: i32>(k: __mmask8, a: __m256i, b: __m256i) -> __m256i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm256_maskz_shldi_epi64<const IMM8: i32>(
+    k: __mmask8,
+    a: __m256i,
+    b: __m256i,
+) -> __m256i {
     unsafe {
         static_assert_uimm_bits!(IMM8, 8);
         let shf = _mm256_shldi_epi64::<IMM8>(a, b).as_i64x4();
@@ -1302,7 +1478,8 @@ pub fn _mm256_maskz_shldi_epi64<const IMM8: i32>(k: __mmask8, a: __m256i, b: __m
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldq, IMM8 = 5))]
 #[rustc_legacy_const_generics(2)]
-pub fn _mm_shldi_epi64<const IMM8: i32>(a: __m128i, b: __m128i) -> __m128i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm_shldi_epi64<const IMM8: i32>(a: __m128i, b: __m128i) -> __m128i {
     static_assert_uimm_bits!(IMM8, 8);
     _mm_shldv_epi64(a, b, _mm_set1_epi64x(IMM8 as i64))
 }
@@ -1315,7 +1492,8 @@ pub fn _mm_shldi_epi64<const IMM8: i32>(a: __m128i, b: __m128i) -> __m128i {
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldq, IMM8 = 5))]
 #[rustc_legacy_const_generics(4)]
-pub fn _mm_mask_shldi_epi64<const IMM8: i32>(
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm_mask_shldi_epi64<const IMM8: i32>(
     src: __m128i,
     k: __mmask8,
     a: __m128i,
@@ -1336,7 +1514,12 @@ pub fn _mm_mask_shldi_epi64<const IMM8: i32>(
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldq, IMM8 = 5))]
 #[rustc_legacy_const_generics(3)]
-pub fn _mm_maskz_shldi_epi64<const IMM8: i32>(k: __mmask8, a: __m128i, b: __m128i) -> __m128i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm_maskz_shldi_epi64<const IMM8: i32>(
+    k: __mmask8,
+    a: __m128i,
+    b: __m128i,
+) -> __m128i {
     unsafe {
         static_assert_uimm_bits!(IMM8, 8);
         let shf = _mm_shldi_epi64::<IMM8>(a, b).as_i64x2();
@@ -1352,7 +1535,8 @@ pub fn _mm_maskz_shldi_epi64<const IMM8: i32>(k: __mmask8, a: __m128i, b: __m128
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldd, IMM8 = 5))]
 #[rustc_legacy_const_generics(2)]
-pub fn _mm512_shldi_epi32<const IMM8: i32>(a: __m512i, b: __m512i) -> __m512i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm512_shldi_epi32<const IMM8: i32>(a: __m512i, b: __m512i) -> __m512i {
     static_assert_uimm_bits!(IMM8, 8);
     _mm512_shldv_epi32(a, b, _mm512_set1_epi32(IMM8))
 }
@@ -1365,7 +1549,8 @@ pub fn _mm512_shldi_epi32<const IMM8: i32>(a: __m512i, b: __m512i) -> __m512i {
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldd, IMM8 = 5))]
 #[rustc_legacy_const_generics(4)]
-pub fn _mm512_mask_shldi_epi32<const IMM8: i32>(
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm512_mask_shldi_epi32<const IMM8: i32>(
     src: __m512i,
     k: __mmask16,
     a: __m512i,
@@ -1386,7 +1571,12 @@ pub fn _mm512_mask_shldi_epi32<const IMM8: i32>(
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldd, IMM8 = 5))]
 #[rustc_legacy_const_generics(3)]
-pub fn _mm512_maskz_shldi_epi32<const IMM8: i32>(k: __mmask16, a: __m512i, b: __m512i) -> __m512i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm512_maskz_shldi_epi32<const IMM8: i32>(
+    k: __mmask16,
+    a: __m512i,
+    b: __m512i,
+) -> __m512i {
     unsafe {
         static_assert_uimm_bits!(IMM8, 8);
         let shf = _mm512_shldi_epi32::<IMM8>(a, b).as_i32x16();
@@ -1402,7 +1592,8 @@ pub fn _mm512_maskz_shldi_epi32<const IMM8: i32>(k: __mmask16, a: __m512i, b: __
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldd, IMM8 = 5))]
 #[rustc_legacy_const_generics(2)]
-pub fn _mm256_shldi_epi32<const IMM8: i32>(a: __m256i, b: __m256i) -> __m256i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm256_shldi_epi32<const IMM8: i32>(a: __m256i, b: __m256i) -> __m256i {
     static_assert_uimm_bits!(IMM8, 8);
     _mm256_shldv_epi32(a, b, _mm256_set1_epi32(IMM8))
 }
@@ -1415,7 +1606,8 @@ pub fn _mm256_shldi_epi32<const IMM8: i32>(a: __m256i, b: __m256i) -> __m256i {
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldd, IMM8 = 5))]
 #[rustc_legacy_const_generics(4)]
-pub fn _mm256_mask_shldi_epi32<const IMM8: i32>(
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm256_mask_shldi_epi32<const IMM8: i32>(
     src: __m256i,
     k: __mmask8,
     a: __m256i,
@@ -1436,7 +1628,12 @@ pub fn _mm256_mask_shldi_epi32<const IMM8: i32>(
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldd, IMM8 = 5))]
 #[rustc_legacy_const_generics(3)]
-pub fn _mm256_maskz_shldi_epi32<const IMM8: i32>(k: __mmask8, a: __m256i, b: __m256i) -> __m256i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm256_maskz_shldi_epi32<const IMM8: i32>(
+    k: __mmask8,
+    a: __m256i,
+    b: __m256i,
+) -> __m256i {
     unsafe {
         static_assert_uimm_bits!(IMM8, 8);
         let shf = _mm256_shldi_epi32::<IMM8>(a, b).as_i32x8();
@@ -1452,7 +1649,8 @@ pub fn _mm256_maskz_shldi_epi32<const IMM8: i32>(k: __mmask8, a: __m256i, b: __m
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldd, IMM8 = 5))]
 #[rustc_legacy_const_generics(2)]
-pub fn _mm_shldi_epi32<const IMM8: i32>(a: __m128i, b: __m128i) -> __m128i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm_shldi_epi32<const IMM8: i32>(a: __m128i, b: __m128i) -> __m128i {
     static_assert_uimm_bits!(IMM8, 8);
     _mm_shldv_epi32(a, b, _mm_set1_epi32(IMM8))
 }
@@ -1465,7 +1663,8 @@ pub fn _mm_shldi_epi32<const IMM8: i32>(a: __m128i, b: __m128i) -> __m128i {
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldd, IMM8 = 5))]
 #[rustc_legacy_const_generics(4)]
-pub fn _mm_mask_shldi_epi32<const IMM8: i32>(
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm_mask_shldi_epi32<const IMM8: i32>(
     src: __m128i,
     k: __mmask8,
     a: __m128i,
@@ -1486,7 +1685,12 @@ pub fn _mm_mask_shldi_epi32<const IMM8: i32>(
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldd, IMM8 = 5))]
 #[rustc_legacy_const_generics(3)]
-pub fn _mm_maskz_shldi_epi32<const IMM8: i32>(k: __mmask8, a: __m128i, b: __m128i) -> __m128i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm_maskz_shldi_epi32<const IMM8: i32>(
+    k: __mmask8,
+    a: __m128i,
+    b: __m128i,
+) -> __m128i {
     unsafe {
         static_assert_uimm_bits!(IMM8, 8);
         let shf = _mm_shldi_epi32::<IMM8>(a, b).as_i32x4();
@@ -1502,7 +1706,8 @@ pub fn _mm_maskz_shldi_epi32<const IMM8: i32>(k: __mmask8, a: __m128i, b: __m128
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldw, IMM8 = 5))]
 #[rustc_legacy_const_generics(2)]
-pub fn _mm512_shldi_epi16<const IMM8: i32>(a: __m512i, b: __m512i) -> __m512i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm512_shldi_epi16<const IMM8: i32>(a: __m512i, b: __m512i) -> __m512i {
     static_assert_uimm_bits!(IMM8, 8);
     _mm512_shldv_epi16(a, b, _mm512_set1_epi16(IMM8 as i16))
 }
@@ -1515,7 +1720,8 @@ pub fn _mm512_shldi_epi16<const IMM8: i32>(a: __m512i, b: __m512i) -> __m512i {
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldw, IMM8 = 5))]
 #[rustc_legacy_const_generics(4)]
-pub fn _mm512_mask_shldi_epi16<const IMM8: i32>(
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm512_mask_shldi_epi16<const IMM8: i32>(
     src: __m512i,
     k: __mmask32,
     a: __m512i,
@@ -1536,7 +1742,12 @@ pub fn _mm512_mask_shldi_epi16<const IMM8: i32>(
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldw, IMM8 = 5))]
 #[rustc_legacy_const_generics(3)]
-pub fn _mm512_maskz_shldi_epi16<const IMM8: i32>(k: __mmask32, a: __m512i, b: __m512i) -> __m512i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm512_maskz_shldi_epi16<const IMM8: i32>(
+    k: __mmask32,
+    a: __m512i,
+    b: __m512i,
+) -> __m512i {
     unsafe {
         static_assert_uimm_bits!(IMM8, 8);
         let shf = _mm512_shldi_epi16::<IMM8>(a, b).as_i16x32();
@@ -1552,7 +1763,8 @@ pub fn _mm512_maskz_shldi_epi16<const IMM8: i32>(k: __mmask32, a: __m512i, b: __
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldw, IMM8 = 5))]
 #[rustc_legacy_const_generics(2)]
-pub fn _mm256_shldi_epi16<const IMM8: i32>(a: __m256i, b: __m256i) -> __m256i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm256_shldi_epi16<const IMM8: i32>(a: __m256i, b: __m256i) -> __m256i {
     static_assert_uimm_bits!(IMM8, 8);
     _mm256_shldv_epi16(a, b, _mm256_set1_epi16(IMM8 as i16))
 }
@@ -1565,7 +1777,8 @@ pub fn _mm256_shldi_epi16<const IMM8: i32>(a: __m256i, b: __m256i) -> __m256i {
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldw, IMM8 = 5))]
 #[rustc_legacy_const_generics(4)]
-pub fn _mm256_mask_shldi_epi16<const IMM8: i32>(
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm256_mask_shldi_epi16<const IMM8: i32>(
     src: __m256i,
     k: __mmask16,
     a: __m256i,
@@ -1586,7 +1799,12 @@ pub fn _mm256_mask_shldi_epi16<const IMM8: i32>(
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldw, IMM8 = 5))]
 #[rustc_legacy_const_generics(3)]
-pub fn _mm256_maskz_shldi_epi16<const IMM8: i32>(k: __mmask16, a: __m256i, b: __m256i) -> __m256i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm256_maskz_shldi_epi16<const IMM8: i32>(
+    k: __mmask16,
+    a: __m256i,
+    b: __m256i,
+) -> __m256i {
     unsafe {
         static_assert_uimm_bits!(IMM8, 8);
         let shf = _mm256_shldi_epi16::<IMM8>(a, b).as_i16x16();
@@ -1602,7 +1820,8 @@ pub fn _mm256_maskz_shldi_epi16<const IMM8: i32>(k: __mmask16, a: __m256i, b: __
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldw, IMM8 = 5))]
 #[rustc_legacy_const_generics(2)]
-pub fn _mm_shldi_epi16<const IMM8: i32>(a: __m128i, b: __m128i) -> __m128i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm_shldi_epi16<const IMM8: i32>(a: __m128i, b: __m128i) -> __m128i {
     static_assert_uimm_bits!(IMM8, 8);
     _mm_shldv_epi16(a, b, _mm_set1_epi16(IMM8 as i16))
 }
@@ -1615,7 +1834,8 @@ pub fn _mm_shldi_epi16<const IMM8: i32>(a: __m128i, b: __m128i) -> __m128i {
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldw, IMM8 = 5))]
 #[rustc_legacy_const_generics(4)]
-pub fn _mm_mask_shldi_epi16<const IMM8: i32>(
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm_mask_shldi_epi16<const IMM8: i32>(
     src: __m128i,
     k: __mmask8,
     a: __m128i,
@@ -1636,7 +1856,12 @@ pub fn _mm_mask_shldi_epi16<const IMM8: i32>(
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldw, IMM8 = 5))]
 #[rustc_legacy_const_generics(3)]
-pub fn _mm_maskz_shldi_epi16<const IMM8: i32>(k: __mmask8, a: __m128i, b: __m128i) -> __m128i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm_maskz_shldi_epi16<const IMM8: i32>(
+    k: __mmask8,
+    a: __m128i,
+    b: __m128i,
+) -> __m128i {
     unsafe {
         static_assert_uimm_bits!(IMM8, 8);
         let shf = _mm_shldi_epi16::<IMM8>(a, b).as_i16x8();
@@ -1652,7 +1877,8 @@ pub fn _mm_maskz_shldi_epi16<const IMM8: i32>(k: __mmask8, a: __m128i, b: __m128
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldq, IMM8 = 5))] //should be vpshrdq
 #[rustc_legacy_const_generics(2)]
-pub fn _mm512_shrdi_epi64<const IMM8: i32>(a: __m512i, b: __m512i) -> __m512i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm512_shrdi_epi64<const IMM8: i32>(a: __m512i, b: __m512i) -> __m512i {
     static_assert_uimm_bits!(IMM8, 8);
     _mm512_shrdv_epi64(a, b, _mm512_set1_epi64(IMM8 as i64))
 }
@@ -1665,7 +1891,8 @@ pub fn _mm512_shrdi_epi64<const IMM8: i32>(a: __m512i, b: __m512i) -> __m512i {
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldq, IMM8 = 5))] //should be vpshrdq
 #[rustc_legacy_const_generics(4)]
-pub fn _mm512_mask_shrdi_epi64<const IMM8: i32>(
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm512_mask_shrdi_epi64<const IMM8: i32>(
     src: __m512i,
     k: __mmask8,
     a: __m512i,
@@ -1686,7 +1913,12 @@ pub fn _mm512_mask_shrdi_epi64<const IMM8: i32>(
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldq, IMM8 = 255))] //should be vpshrdq
 #[rustc_legacy_const_generics(3)]
-pub fn _mm512_maskz_shrdi_epi64<const IMM8: i32>(k: __mmask8, a: __m512i, b: __m512i) -> __m512i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm512_maskz_shrdi_epi64<const IMM8: i32>(
+    k: __mmask8,
+    a: __m512i,
+    b: __m512i,
+) -> __m512i {
     unsafe {
         static_assert_uimm_bits!(IMM8, 8);
         let shf = _mm512_shrdi_epi64::<IMM8>(a, b).as_i64x8();
@@ -1702,7 +1934,8 @@ pub fn _mm512_maskz_shrdi_epi64<const IMM8: i32>(k: __mmask8, a: __m512i, b: __m
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldq, IMM8 = 5))] //should be vpshrdq
 #[rustc_legacy_const_generics(2)]
-pub fn _mm256_shrdi_epi64<const IMM8: i32>(a: __m256i, b: __m256i) -> __m256i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm256_shrdi_epi64<const IMM8: i32>(a: __m256i, b: __m256i) -> __m256i {
     static_assert_uimm_bits!(IMM8, 8);
     _mm256_shrdv_epi64(a, b, _mm256_set1_epi64x(IMM8 as i64))
 }
@@ -1715,7 +1948,8 @@ pub fn _mm256_shrdi_epi64<const IMM8: i32>(a: __m256i, b: __m256i) -> __m256i {
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldq, IMM8 = 5))] //should be vpshrdq
 #[rustc_legacy_const_generics(4)]
-pub fn _mm256_mask_shrdi_epi64<const IMM8: i32>(
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm256_mask_shrdi_epi64<const IMM8: i32>(
     src: __m256i,
     k: __mmask8,
     a: __m256i,
@@ -1736,7 +1970,12 @@ pub fn _mm256_mask_shrdi_epi64<const IMM8: i32>(
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldq, IMM8 = 5))] //should be vpshrdq
 #[rustc_legacy_const_generics(3)]
-pub fn _mm256_maskz_shrdi_epi64<const IMM8: i32>(k: __mmask8, a: __m256i, b: __m256i) -> __m256i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm256_maskz_shrdi_epi64<const IMM8: i32>(
+    k: __mmask8,
+    a: __m256i,
+    b: __m256i,
+) -> __m256i {
     unsafe {
         static_assert_uimm_bits!(IMM8, 8);
         let shf = _mm256_shrdi_epi64::<IMM8>(a, b).as_i64x4();
@@ -1752,7 +1991,8 @@ pub fn _mm256_maskz_shrdi_epi64<const IMM8: i32>(k: __mmask8, a: __m256i, b: __m
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldq, IMM8 = 5))] //should be vpshrdq
 #[rustc_legacy_const_generics(2)]
-pub fn _mm_shrdi_epi64<const IMM8: i32>(a: __m128i, b: __m128i) -> __m128i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm_shrdi_epi64<const IMM8: i32>(a: __m128i, b: __m128i) -> __m128i {
     static_assert_uimm_bits!(IMM8, 8);
     _mm_shrdv_epi64(a, b, _mm_set1_epi64x(IMM8 as i64))
 }
@@ -1765,7 +2005,8 @@ pub fn _mm_shrdi_epi64<const IMM8: i32>(a: __m128i, b: __m128i) -> __m128i {
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldq, IMM8 = 5))] //should be vpshrdq
 #[rustc_legacy_const_generics(4)]
-pub fn _mm_mask_shrdi_epi64<const IMM8: i32>(
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm_mask_shrdi_epi64<const IMM8: i32>(
     src: __m128i,
     k: __mmask8,
     a: __m128i,
@@ -1786,7 +2027,12 @@ pub fn _mm_mask_shrdi_epi64<const IMM8: i32>(
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldq, IMM8 = 5))] //should be vpshrdq
 #[rustc_legacy_const_generics(3)]
-pub fn _mm_maskz_shrdi_epi64<const IMM8: i32>(k: __mmask8, a: __m128i, b: __m128i) -> __m128i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm_maskz_shrdi_epi64<const IMM8: i32>(
+    k: __mmask8,
+    a: __m128i,
+    b: __m128i,
+) -> __m128i {
     unsafe {
         static_assert_uimm_bits!(IMM8, 8);
         let shf = _mm_shrdi_epi64::<IMM8>(a, b).as_i64x2();
@@ -1802,7 +2048,8 @@ pub fn _mm_maskz_shrdi_epi64<const IMM8: i32>(k: __mmask8, a: __m128i, b: __m128
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldd, IMM8 = 5))] //should be vpshldd
 #[rustc_legacy_const_generics(2)]
-pub fn _mm512_shrdi_epi32<const IMM8: i32>(a: __m512i, b: __m512i) -> __m512i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm512_shrdi_epi32<const IMM8: i32>(a: __m512i, b: __m512i) -> __m512i {
     static_assert_uimm_bits!(IMM8, 8);
     _mm512_shrdv_epi32(a, b, _mm512_set1_epi32(IMM8))
 }
@@ -1815,7 +2062,8 @@ pub fn _mm512_shrdi_epi32<const IMM8: i32>(a: __m512i, b: __m512i) -> __m512i {
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldd, IMM8 = 5))] //should be vpshldd
 #[rustc_legacy_const_generics(4)]
-pub fn _mm512_mask_shrdi_epi32<const IMM8: i32>(
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm512_mask_shrdi_epi32<const IMM8: i32>(
     src: __m512i,
     k: __mmask16,
     a: __m512i,
@@ -1836,7 +2084,12 @@ pub fn _mm512_mask_shrdi_epi32<const IMM8: i32>(
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldd, IMM8 = 5))] //should be vpshldd
 #[rustc_legacy_const_generics(3)]
-pub fn _mm512_maskz_shrdi_epi32<const IMM8: i32>(k: __mmask16, a: __m512i, b: __m512i) -> __m512i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm512_maskz_shrdi_epi32<const IMM8: i32>(
+    k: __mmask16,
+    a: __m512i,
+    b: __m512i,
+) -> __m512i {
     unsafe {
         static_assert_uimm_bits!(IMM8, 8);
         let shf = _mm512_shrdi_epi32::<IMM8>(a, b).as_i32x16();
@@ -1852,7 +2105,8 @@ pub fn _mm512_maskz_shrdi_epi32<const IMM8: i32>(k: __mmask16, a: __m512i, b: __
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldd, IMM8 = 5))] //should be vpshldd
 #[rustc_legacy_const_generics(2)]
-pub fn _mm256_shrdi_epi32<const IMM8: i32>(a: __m256i, b: __m256i) -> __m256i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm256_shrdi_epi32<const IMM8: i32>(a: __m256i, b: __m256i) -> __m256i {
     static_assert_uimm_bits!(IMM8, 8);
     _mm256_shrdv_epi32(a, b, _mm256_set1_epi32(IMM8))
 }
@@ -1865,7 +2119,8 @@ pub fn _mm256_shrdi_epi32<const IMM8: i32>(a: __m256i, b: __m256i) -> __m256i {
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldd, IMM8 = 5))] //should be vpshldd
 #[rustc_legacy_const_generics(4)]
-pub fn _mm256_mask_shrdi_epi32<const IMM8: i32>(
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm256_mask_shrdi_epi32<const IMM8: i32>(
     src: __m256i,
     k: __mmask8,
     a: __m256i,
@@ -1886,7 +2141,12 @@ pub fn _mm256_mask_shrdi_epi32<const IMM8: i32>(
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldd, IMM8 = 5))] //should be vpshldd
 #[rustc_legacy_const_generics(3)]
-pub fn _mm256_maskz_shrdi_epi32<const IMM8: i32>(k: __mmask8, a: __m256i, b: __m256i) -> __m256i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm256_maskz_shrdi_epi32<const IMM8: i32>(
+    k: __mmask8,
+    a: __m256i,
+    b: __m256i,
+) -> __m256i {
     unsafe {
         static_assert_uimm_bits!(IMM8, 8);
         let shf = _mm256_shrdi_epi32::<IMM8>(a, b).as_i32x8();
@@ -1902,7 +2162,8 @@ pub fn _mm256_maskz_shrdi_epi32<const IMM8: i32>(k: __mmask8, a: __m256i, b: __m
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldd, IMM8 = 5))] //should be vpshldd
 #[rustc_legacy_const_generics(2)]
-pub fn _mm_shrdi_epi32<const IMM8: i32>(a: __m128i, b: __m128i) -> __m128i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm_shrdi_epi32<const IMM8: i32>(a: __m128i, b: __m128i) -> __m128i {
     static_assert_uimm_bits!(IMM8, 8);
     _mm_shrdv_epi32(a, b, _mm_set1_epi32(IMM8))
 }
@@ -1915,7 +2176,8 @@ pub fn _mm_shrdi_epi32<const IMM8: i32>(a: __m128i, b: __m128i) -> __m128i {
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldd, IMM8 = 5))] //should be vpshldd
 #[rustc_legacy_const_generics(4)]
-pub fn _mm_mask_shrdi_epi32<const IMM8: i32>(
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm_mask_shrdi_epi32<const IMM8: i32>(
     src: __m128i,
     k: __mmask8,
     a: __m128i,
@@ -1936,7 +2198,12 @@ pub fn _mm_mask_shrdi_epi32<const IMM8: i32>(
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldd, IMM8 = 5))] //should be vpshldd
 #[rustc_legacy_const_generics(3)]
-pub fn _mm_maskz_shrdi_epi32<const IMM8: i32>(k: __mmask8, a: __m128i, b: __m128i) -> __m128i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm_maskz_shrdi_epi32<const IMM8: i32>(
+    k: __mmask8,
+    a: __m128i,
+    b: __m128i,
+) -> __m128i {
     unsafe {
         static_assert_uimm_bits!(IMM8, 8);
         let shf = _mm_shrdi_epi32::<IMM8>(a, b).as_i32x4();
@@ -1952,7 +2219,8 @@ pub fn _mm_maskz_shrdi_epi32<const IMM8: i32>(k: __mmask8, a: __m128i, b: __m128
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldw, IMM8 = 5))] //should be vpshrdw
 #[rustc_legacy_const_generics(2)]
-pub fn _mm512_shrdi_epi16<const IMM8: i32>(a: __m512i, b: __m512i) -> __m512i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm512_shrdi_epi16<const IMM8: i32>(a: __m512i, b: __m512i) -> __m512i {
     static_assert_uimm_bits!(IMM8, 8);
     _mm512_shrdv_epi16(a, b, _mm512_set1_epi16(IMM8 as i16))
 }
@@ -1965,7 +2233,8 @@ pub fn _mm512_shrdi_epi16<const IMM8: i32>(a: __m512i, b: __m512i) -> __m512i {
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldw, IMM8 = 5))] //should be vpshrdw
 #[rustc_legacy_const_generics(4)]
-pub fn _mm512_mask_shrdi_epi16<const IMM8: i32>(
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm512_mask_shrdi_epi16<const IMM8: i32>(
     src: __m512i,
     k: __mmask32,
     a: __m512i,
@@ -1986,7 +2255,12 @@ pub fn _mm512_mask_shrdi_epi16<const IMM8: i32>(
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldw, IMM8 = 5))] //should be vpshrdw
 #[rustc_legacy_const_generics(3)]
-pub fn _mm512_maskz_shrdi_epi16<const IMM8: i32>(k: __mmask32, a: __m512i, b: __m512i) -> __m512i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm512_maskz_shrdi_epi16<const IMM8: i32>(
+    k: __mmask32,
+    a: __m512i,
+    b: __m512i,
+) -> __m512i {
     unsafe {
         static_assert_uimm_bits!(IMM8, 8);
         let shf = _mm512_shrdi_epi16::<IMM8>(a, b).as_i16x32();
@@ -2002,7 +2276,8 @@ pub fn _mm512_maskz_shrdi_epi16<const IMM8: i32>(k: __mmask32, a: __m512i, b: __
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldw, IMM8 = 5))] //should be vpshrdw
 #[rustc_legacy_const_generics(2)]
-pub fn _mm256_shrdi_epi16<const IMM8: i32>(a: __m256i, b: __m256i) -> __m256i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm256_shrdi_epi16<const IMM8: i32>(a: __m256i, b: __m256i) -> __m256i {
     static_assert_uimm_bits!(IMM8, 8);
     _mm256_shrdv_epi16(a, b, _mm256_set1_epi16(IMM8 as i16))
 }
@@ -2015,7 +2290,8 @@ pub fn _mm256_shrdi_epi16<const IMM8: i32>(a: __m256i, b: __m256i) -> __m256i {
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldw, IMM8 = 5))] //should be vpshrdw
 #[rustc_legacy_const_generics(4)]
-pub fn _mm256_mask_shrdi_epi16<const IMM8: i32>(
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm256_mask_shrdi_epi16<const IMM8: i32>(
     src: __m256i,
     k: __mmask16,
     a: __m256i,
@@ -2036,7 +2312,12 @@ pub fn _mm256_mask_shrdi_epi16<const IMM8: i32>(
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldw, IMM8 = 5))] //should be vpshrdw
 #[rustc_legacy_const_generics(3)]
-pub fn _mm256_maskz_shrdi_epi16<const IMM8: i32>(k: __mmask16, a: __m256i, b: __m256i) -> __m256i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm256_maskz_shrdi_epi16<const IMM8: i32>(
+    k: __mmask16,
+    a: __m256i,
+    b: __m256i,
+) -> __m256i {
     unsafe {
         static_assert_uimm_bits!(IMM8, 8);
         let shf = _mm256_shrdi_epi16::<IMM8>(a, b).as_i16x16();
@@ -2052,7 +2333,8 @@ pub fn _mm256_maskz_shrdi_epi16<const IMM8: i32>(k: __mmask16, a: __m256i, b: __
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldw, IMM8 = 5))] //should be vpshrdw
 #[rustc_legacy_const_generics(2)]
-pub fn _mm_shrdi_epi16<const IMM8: i32>(a: __m128i, b: __m128i) -> __m128i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm_shrdi_epi16<const IMM8: i32>(a: __m128i, b: __m128i) -> __m128i {
     static_assert_uimm_bits!(IMM8, 8);
     _mm_shrdv_epi16(a, b, _mm_set1_epi16(IMM8 as i16))
 }
@@ -2065,7 +2347,8 @@ pub fn _mm_shrdi_epi16<const IMM8: i32>(a: __m128i, b: __m128i) -> __m128i {
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldw, IMM8 = 5))] //should be vpshrdw
 #[rustc_legacy_const_generics(4)]
-pub fn _mm_mask_shrdi_epi16<const IMM8: i32>(
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm_mask_shrdi_epi16<const IMM8: i32>(
     src: __m128i,
     k: __mmask8,
     a: __m128i,
@@ -2086,7 +2369,12 @@ pub fn _mm_mask_shrdi_epi16<const IMM8: i32>(
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpshldw, IMM8 = 5))] //should be vpshrdw
 #[rustc_legacy_const_generics(3)]
-pub fn _mm_maskz_shrdi_epi16<const IMM8: i32>(k: __mmask8, a: __m128i, b: __m128i) -> __m128i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm_maskz_shrdi_epi16<const IMM8: i32>(
+    k: __mmask8,
+    a: __m128i,
+    b: __m128i,
+) -> __m128i {
     unsafe {
         static_assert_uimm_bits!(IMM8, 8);
         let shf = _mm_shrdi_epi16::<IMM8>(a, b).as_i16x8();
