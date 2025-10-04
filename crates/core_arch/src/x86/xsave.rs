@@ -167,7 +167,6 @@ mod tests {
     use stdarch_test::simd_test;
 
     #[repr(align(64))]
-    #[derive(Debug)]
     struct XsaveArea {
         data: Box<[u8]>,
     }
@@ -192,6 +191,24 @@ mod tests {
         }
     }
 
+    impl std::fmt::Debug for XsaveArea {
+        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+            let mut print = |storage: &[u8]| {
+                for row in storage.chunks(32) {
+                    for col in row {
+                        write!(f, "{col:02x}")?;
+                    }
+                    writeln!(f)?;
+                }
+                writeln!(f)
+            };
+            print(&self.data[..512])?; // legacy area
+            print(&self.data[512..576])?; // XSAVE header
+            print(&self.data[576..])?; // extended area
+            Ok(())
+        }
+    }
+
     #[simd_test(enable = "xsave")]
     #[cfg_attr(miri, ignore)] // Register saving/restoring is not supported in Miri
     unsafe fn test_xsave() {
@@ -199,9 +216,12 @@ mod tests {
         let mut a = XsaveArea::new();
         let mut b = XsaveArea::new();
 
+        println!("XSAVE are size: {}", a.data.len());
         _xsave(a.ptr(), m);
+        println!("XSAVE area:\n{a:?}");
         _xrstor(a.ptr(), m);
         _xsave(b.ptr(), m);
+        println!("XSAVE area:\n{b:?}");
     }
 
     #[simd_test(enable = "xsave")]
