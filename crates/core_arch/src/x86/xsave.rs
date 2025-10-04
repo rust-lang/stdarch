@@ -161,7 +161,7 @@ pub unsafe fn _xrstors(mem_addr: *const u8, rs_mask: u64) {
 
 #[cfg(test)]
 mod tests {
-    use std::{fmt, prelude::v1::*};
+    use std::boxed::Box;
 
     use crate::core_arch::x86::*;
     use stdarch_test::simd_test;
@@ -169,16 +169,23 @@ mod tests {
     #[repr(align(64))]
     #[derive(Debug)]
     struct XsaveArea {
-        // max size for 256-bit registers is 800 bytes:
-        // see https://software.intel.com/en-us/node/682996
-        // max size for 512-bit registers is 2560 bytes:
-        // FIXME: add source
-        data: [u8; 2560],
+        data: Box<[u8]>,
     }
 
     impl XsaveArea {
+        #[target_feature(enable = "xsave")]
         fn new() -> XsaveArea {
-            XsaveArea { data: [0; 2560] }
+            // `CPUID.(EAX=0DH,ECX=0):ECX` contains the size required to hold all supported xsave
+            // components. `EBX` contains the size required to hold all xsave components currently
+            // enabled in `XCR0`.
+            // FIXME: which one to use?
+            let CpuidResult { ecx, .. } = unsafe { __cpuid(0x0d) };
+
+            println!("XSAVE area size: {ecx}");
+
+            XsaveArea {
+                data: vec![0_u8; ecx as usize].into_boxed_slice(),
+            }
         }
         fn ptr(&mut self) -> *mut u8 {
             self.data.as_mut_ptr()
