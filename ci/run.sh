@@ -6,9 +6,9 @@ set -ex
 
 # Tests are all super fast anyway, and they fault often enough on travis that
 # having only one thread increases debuggability to be worth it.
-#export RUST_BACKTRACE=full
-#export RUST_TEST_NOCAPTURE=1
-#export RUST_TEST_THREADS=1
+export RUST_BACKTRACE=full
+export RUST_TEST_NOCAPTURE=1
+export RUST_TEST_THREADS=1
 
 export RUSTFLAGS="${RUSTFLAGS} -D warnings -Z merge-functions=disabled -Z verify-llvm-ir"
 export HOST_RUSTFLAGS="${RUSTFLAGS}"
