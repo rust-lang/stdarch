@@ -48,7 +48,8 @@ pub unsafe fn assert_eq_m128h(a: __m128h, b: __m128h) {
 // not actually an intrinsic but useful in various tests as we proted from
 // `i64x2::new` which is backwards from `_mm_set_epi64x`
 #[target_feature(enable = "sse2")]
-pub unsafe fn _mm_setr_epi64x(a: i64, b: i64) -> __m128i {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const unsafe fn _mm_setr_epi64x(a: i64, b: i64) -> __m128i {
     _mm_set_epi64x(b, a)
 }
 
@@ -118,14 +119,14 @@ mod x86_polyfill {
     use crate::intrinsics::simd::*;
 
     #[rustc_legacy_const_generics(2)]
-    pub unsafe fn _mm_insert_epi64<const INDEX: i32>(a: __m128i, val: i64) -> __m128i {
+    pub const unsafe fn _mm_insert_epi64<const INDEX: i32>(a: __m128i, val: i64) -> __m128i {
         static_assert_uimm_bits!(INDEX, 1);
         transmute(simd_insert!(a.as_i64x2(), INDEX as u32, val))
     }
 
     #[target_feature(enable = "avx2")]
     #[rustc_legacy_const_generics(2)]
-    pub unsafe fn _mm256_insert_epi64<const INDEX: i32>(a: __m256i, val: i64) -> __m256i {
+    pub const unsafe fn _mm256_insert_epi64<const INDEX: i32>(a: __m256i, val: i64) -> __m256i {
         static_assert_uimm_bits!(INDEX, 2);
         transmute(simd_insert!(a.as_i64x4(), INDEX as u32, val))
     }

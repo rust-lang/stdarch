@@ -6,7 +6,8 @@ use crate::core_arch::x86::*;
 #[inline]
 #[target_feature(enable = "avx512bw")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
-pub fn _cvtmask64_u64(a: __mmask64) -> u64 {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _cvtmask64_u64(a: __mmask64) -> u64 {
     a
 }
 
@@ -16,7 +17,8 @@ pub fn _cvtmask64_u64(a: __mmask64) -> u64 {
 #[inline]
 #[target_feature(enable = "avx512bw")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
-pub fn _cvtu64_mask64(a: u64) -> __mmask64 {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _cvtu64_mask64(a: u64) -> __mmask64 {
     a
 }
 
