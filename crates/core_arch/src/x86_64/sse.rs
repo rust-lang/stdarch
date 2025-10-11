@@ -62,7 +62,8 @@ pub fn _mm_cvttss_si64(a: __m128) -> i64 {
 #[target_feature(enable = "sse")]
 #[cfg_attr(test, assert_instr(cvtsi2ss))]
 #[stable(feature = "simd_x86", since = "1.27.0")]
-pub fn _mm_cvtsi64_ss(a: __m128, b: i64) -> __m128 {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm_cvtsi64_ss(a: __m128, b: i64) -> __m128 {
     unsafe { simd_insert!(a, 0, b as f32) }
 }
 
