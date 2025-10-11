@@ -190,6 +190,7 @@ unsafe extern "C-unwind" {
 //        reenable this attribute.
 // #[cfg_attr(test, assert_instr(throw, TAG = 0, ptr = core::ptr::null_mut()))]
 #[inline]
+#[rustc_legacy_const_generics(1)]
 #[unstable(feature = "wasm_exception_handling_intrinsics", issue = "122465")]
 // FIXME: Since this instruction unwinds, `core` built with `-C panic=unwind`
 //        cannot be linked with `-C panic=abort` programs. But that's not
