@@ -1,0 +1,14 @@
+[package]
+name = "stdarch-gen-wasm"
+version = "0.1.0"
+authors = ["Madhav Madhusoodanan <madhavmadhusoodanan@gmail.com>"]
+edition = "2024"
+
+[dependencies]
+tree-sitter = "0.24"
+tree-sitter-rust = "0.23"
+tree-sitter-c = "0.23"
+clap = { version = "4.5.45", features = ["derive"] }
+
+[build-dependencies]
+cc="*"
