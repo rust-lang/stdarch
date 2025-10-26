@@ -57,7 +57,8 @@ pub fn _mm_cvtsd_u64(a: __m128d) -> u64 {
 #[target_feature(enable = "avx512f")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vcvtsi2ss))]
-pub fn _mm_cvti64_ss(a: __m128, b: i64) -> __m128 {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm_cvti64_ss(a: __m128, b: i64) -> __m128 {
     unsafe {
         let b = b as f32;
         simd_insert!(a, 0, b)
@@ -71,7 +72,8 @@ pub fn _mm_cvti64_ss(a: __m128, b: i64) -> __m128 {
 #[target_feature(enable = "avx512f")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vcvtsi2sd))]
-pub fn _mm_cvti64_sd(a: __m128d, b: i64) -> __m128d {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm_cvti64_sd(a: __m128d, b: i64) -> __m128d {
     unsafe {
         let b = b as f64;
         simd_insert!(a, 0, b)
@@ -85,7 +87,8 @@ pub fn _mm_cvti64_sd(a: __m128d, b: i64) -> __m128d {
 #[target_feature(enable = "avx512f")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vcvtusi2ss))]
-pub fn _mm_cvtu64_ss(a: __m128, b: u64) -> __m128 {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm_cvtu64_ss(a: __m128, b: u64) -> __m128 {
     unsafe {
         let b = b as f32;
         simd_insert!(a, 0, b)
@@ -99,7 +102,8 @@ pub fn _mm_cvtu64_ss(a: __m128, b: u64) -> __m128 {
 #[target_feature(enable = "avx512f")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vcvtusi2sd))]
-pub fn _mm_cvtu64_sd(a: __m128d, b: u64) -> __m128d {
+#[rustc_const_unstable(feature = "stdarch_const_intrinsics", issue = "none")]
+pub const fn _mm_cvtu64_sd(a: __m128d, b: u64) -> __m128d {
     unsafe {
         let b = b as f64;
         simd_insert!(a, 0, b)
