@@ -69,10 +69,10 @@ case ${TARGET} in
 
     x86_64-unknown-linux-gnu*)
         TEST_CPPFLAGS="-fuse-ld=lld -I/usr/include/x86_64-linux-gnu/"
-        TEST_CXX_COMPILER="clang++"
+        TEST_CXX_COMPILER="g++"
         TEST_RUNNER="${CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_RUNNER}"
         TEST_SKIP_INTRINSICS=crates/intrinsic-test/missing_x86.txt
-        TEST_SAMPLE_INTRINSICS_PERCENTAGE=5
+        TEST_SAMPLE_INTRINSICS_PERCENTAGE=100
         ;;
     *)
         ;;
