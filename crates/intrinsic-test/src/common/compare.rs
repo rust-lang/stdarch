@@ -10,7 +10,12 @@ fn runner_command(runner: &str) -> Command {
     cmd
 }
 
-pub fn compare_outputs(intrinsic_name_list: &Vec<String>, runner: &str, target: &str) -> bool {
+pub fn compare_outputs(
+    intrinsic_name_list: &Vec<String>,
+    runner: &str,
+    target: &str,
+    profile: &str,
+) -> bool {
     let intrinsics = intrinsic_name_list
         .par_iter()
         .filter_map(|intrinsic_name| {
@@ -20,8 +25,13 @@ pub fn compare_outputs(intrinsic_name_list: &Vec<String>, runner: &str, target: 
                 .current_dir("c_programs")
                 .output();
 
+            let profile_dir = match profile {
+                "dev" => "debug",
+                _ => "release",
+            };
+
             let rust = runner_command(runner)
-                .arg(format!("./target/{target}/release/intrinsic-test-programs"))
+                .arg(format!("./target/{target}/{profile_dir}/intrinsic-test-programs"))
                 .arg(intrinsic_name)
                 .current_dir("rust_programs")
                 .output();
