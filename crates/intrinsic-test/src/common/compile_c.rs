@@ -84,10 +84,6 @@ impl CompilationCommandBuilder {
 
         cpp_compiler.args(self.extra_flags);
 
-        if let Some(target) = &self.target {
-            cpp_compiler.arg(format!("--target={target}"));
-        }
-
         CppCompilation(cpp_compiler)
     }
 }

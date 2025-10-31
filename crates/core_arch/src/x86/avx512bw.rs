@@ -10681,7 +10681,7 @@ pub fn _mm_cvtepi16_epi8(a: __m128i) -> __m128i {
 pub fn _mm_mask_cvtepi16_epi8(src: __m128i, k: __mmask8, a: __m128i) -> __m128i {
     unsafe {
         let convert = _mm_cvtepi16_epi8(a).as_i8x16();
-        let k: __mmask16 = 0b11111111_11111111 & k as __mmask16;
+        let k: __mmask16 = 0b11111111_00000000 | k as __mmask16;
         transmute(simd_select_bitmask(k, convert, src.as_i8x16()))
     }
 }
@@ -20558,6 +20558,12 @@ mod tests {
         assert_eq_m128i(r, src);
         let r = _mm_mask_cvtepi16_epi8(src, 0b11111111, a);
         let e = _mm_set_epi8(0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2);
+        assert_eq_m128i(r, e);
+
+        let src = _mm_set_epi8(1, 0, 1, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1);
+        let a = _mm_set1_epi16(3);
+        let r = _mm_mask_cvtepi16_epi8(src, 0b11011110, a);
+        let e = _mm_set_epi8(0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 1, 3, 3, 3, 3, 1);
         assert_eq_m128i(r, e);
     }
 

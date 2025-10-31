@@ -33,13 +33,17 @@ pub fn build_cpp_compilation(config: &ProcessedCli) -> Option<CppCompilation> {
             "-mavx512vbmi2",
             "-mavx512vnni",
             "-mavx512vpopcntdq",
-            "-ferror-limit=1000",
             "-std=c++23",
         ]);
 
-    if !cpp_compiler.contains("clang") {
-        command = command.add_extra_flag("-flax-vector-conversions");
-    }
+    command = if !cpp_compiler.contains("clang") {
+        command.add_extra_flags(vec!["-fmax-errors=1000", "-flax-vector-conversions"])
+    } else {
+        command.add_extra_flags(vec![
+            "-ferror-limit=1000",
+            format!("--target={}", config.target).as_str(),
+        ])
+    };
 
     let cpp_compiler = command.into_cpp_compilation();
 
