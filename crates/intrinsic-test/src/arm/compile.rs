@@ -18,9 +18,11 @@ pub fn build_cpp_compilation(config: &ProcessedCli) -> Option<CppCompilation> {
         command = command.add_arch_flags(["faminmax", "lut", "sha3"]);
     }
 
-    if !cpp_compiler.contains("clang") {
-        command = command.add_extra_flag("-flax-vector-conversions");
-    }
+    command = if !cpp_compiler.contains("clang") {
+        command.add_extra_flag("-flax-vector-conversions")
+    } else {
+        command.add_extra_flag(format!("--target={}", config.target).as_str())
+    };
 
     let mut cpp_compiler = command.into_cpp_compilation();
 
