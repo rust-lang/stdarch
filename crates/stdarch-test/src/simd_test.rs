@@ -36,7 +36,7 @@ macro_rules! simd_test {
     attr($($feat:tt),*) ($( #[$meta:meta] )* $(unsafe)? fn $name:ident () $body:block) => {
         #[allow(non_snake_case)]
         #[test]
-        $( #[$meta] )* 
+        $( #[$meta] )*
         fn $name () {
             let mut missing_features = ::std::vec::Vec::new();
             $(
