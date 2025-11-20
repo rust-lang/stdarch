@@ -5,12 +5,15 @@
 //! assertions about the disassembly of a function.
 #![deny(rust_2018_idioms)]
 #![allow(clippy::missing_docs_in_private_items, clippy::print_stdout)]
+#![feature(macro_attr)]
 
 #[macro_use]
 extern crate cfg_if;
 
+mod simd_test;
+
 pub use assert_instr_macro::*;
-pub use simd_test_macro::*;
+pub use simd_test::*;
 use std::{cmp, collections::HashSet, env, hash, hint::black_box, str, sync::LazyLock};
 
 cfg_if! {
