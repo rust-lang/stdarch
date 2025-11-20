@@ -86,7 +86,7 @@ mod tests {
         assert_eq!(out, 8);
     }
 
-    #[simd_test(enable = "adx")]
+    #[simd_test("adx")]
     fn test_addcarryx_u64() {
         let a = u64::MAX;
         let mut out = 0;

@@ -86,7 +86,7 @@ mod tests {
         assert_eq!(out, 8);
     }
 
-    #[simd_test(enable = "adx")]
+    #[simd_test("adx")]
     fn test_addcarryx_u32() {
         let a = u32::MAX;
         let mut out = 0;
@@ -116,7 +116,7 @@ mod tests {
         assert_eq!(out, 8);
     }
 
-    #[simd_test(enable = "adx")]
+    #[simd_test("adx")]
     fn test_addcarryx_u32_2() {
         let mut out = 0;
         _addcarryx_u32(1, 2, 3, &mut out);

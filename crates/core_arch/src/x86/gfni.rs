@@ -897,7 +897,7 @@ mod tests {
         _mm512_loadu_si512(black_box(pointer))
     }
 
-    #[simd_test(enable = "gfni,avx512f")]
+    #[simd_test("gfni", "avx512f")]
     unsafe fn test_mm512_gf2p8mul_epi8() {
         let (left, right, expected) = generate_byte_mul_test_data();
 
@@ -910,7 +910,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "gfni,avx512bw")]
+    #[simd_test("gfni", "avx512bw")]
     unsafe fn test_mm512_maskz_gf2p8mul_epi8() {
         let (left, right, _expected) = generate_byte_mul_test_data();
 
@@ -929,7 +929,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "gfni,avx512bw")]
+    #[simd_test("gfni", "avx512bw")]
     unsafe fn test_mm512_mask_gf2p8mul_epi8() {
         let (left, right, _expected) = generate_byte_mul_test_data();
 
@@ -947,7 +947,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "gfni,avx")]
+    #[simd_test("gfni", "avx")]
     unsafe fn test_mm256_gf2p8mul_epi8() {
         let (left, right, expected) = generate_byte_mul_test_data();
 
@@ -960,7 +960,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "gfni,avx512bw,avx512vl")]
+    #[simd_test("gfni", "avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_gf2p8mul_epi8() {
         let (left, right, _expected) = generate_byte_mul_test_data();
 
@@ -979,7 +979,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "gfni,avx512bw,avx512vl")]
+    #[simd_test("gfni", "avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_gf2p8mul_epi8() {
         let (left, right, _expected) = generate_byte_mul_test_data();
 
@@ -997,7 +997,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "gfni")]
+    #[simd_test("gfni")]
     unsafe fn test_mm_gf2p8mul_epi8() {
         let (left, right, expected) = generate_byte_mul_test_data();
 
@@ -1010,7 +1010,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "gfni,avx512bw,avx512vl")]
+    #[simd_test("gfni", "avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_gf2p8mul_epi8() {
         let (left, right, _expected) = generate_byte_mul_test_data();
 
@@ -1029,7 +1029,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "gfni,avx512bw,avx512vl")]
+    #[simd_test("gfni", "avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_gf2p8mul_epi8() {
         let (left, right, _expected) = generate_byte_mul_test_data();
 
@@ -1047,7 +1047,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "gfni,avx512f")]
+    #[simd_test("gfni", "avx512f")]
     unsafe fn test_mm512_gf2p8affine_epi64_epi8() {
         let identity: i64 = 0x01_02_04_08_10_20_40_80;
         const IDENTITY_BYTE: i32 = 0;
@@ -1081,7 +1081,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "gfni,avx512bw")]
+    #[simd_test("gfni", "avx512bw")]
     unsafe fn test_mm512_maskz_gf2p8affine_epi64_epi8() {
         const CONSTANT_BYTE: i32 = 0x63;
         let (matrices, vectors, _expected) = generate_affine_mul_test_data(CONSTANT_BYTE as u8);
@@ -1103,7 +1103,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "gfni,avx512bw")]
+    #[simd_test("gfni", "avx512bw")]
     unsafe fn test_mm512_mask_gf2p8affine_epi64_epi8() {
         const CONSTANT_BYTE: i32 = 0x63;
         let (matrices, vectors, _expected) = generate_affine_mul_test_data(CONSTANT_BYTE as u8);
@@ -1124,7 +1124,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "gfni,avx")]
+    #[simd_test("gfni", "avx")]
     unsafe fn test_mm256_gf2p8affine_epi64_epi8() {
         let identity: i64 = 0x01_02_04_08_10_20_40_80;
         const IDENTITY_BYTE: i32 = 0;
@@ -1158,7 +1158,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "gfni,avx512bw,avx512vl")]
+    #[simd_test("gfni", "avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_gf2p8affine_epi64_epi8() {
         const CONSTANT_BYTE: i32 = 0x63;
         let (matrices, vectors, _expected) = generate_affine_mul_test_data(CONSTANT_BYTE as u8);
@@ -1180,7 +1180,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "gfni,avx512bw,avx512vl")]
+    #[simd_test("gfni", "avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_gf2p8affine_epi64_epi8() {
         const CONSTANT_BYTE: i32 = 0x63;
         let (matrices, vectors, _expected) = generate_affine_mul_test_data(CONSTANT_BYTE as u8);
@@ -1201,7 +1201,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "gfni")]
+    #[simd_test("gfni")]
     unsafe fn test_mm_gf2p8affine_epi64_epi8() {
         let identity: i64 = 0x01_02_04_08_10_20_40_80;
         const IDENTITY_BYTE: i32 = 0;
@@ -1235,7 +1235,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "gfni,avx512bw,avx512vl")]
+    #[simd_test("gfni", "avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_gf2p8affine_epi64_epi8() {
         const CONSTANT_BYTE: i32 = 0x63;
         let (matrices, vectors, _expected) = generate_affine_mul_test_data(CONSTANT_BYTE as u8);
@@ -1256,7 +1256,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "gfni,avx512bw,avx512vl")]
+    #[simd_test("gfni", "avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_gf2p8affine_epi64_epi8() {
         const CONSTANT_BYTE: i32 = 0x63;
         let (matrices, vectors, _expected) = generate_affine_mul_test_data(CONSTANT_BYTE as u8);
@@ -1277,7 +1277,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "gfni,avx512f")]
+    #[simd_test("gfni", "avx512f")]
     unsafe fn test_mm512_gf2p8affineinv_epi64_epi8() {
         let identity: i64 = 0x01_02_04_08_10_20_40_80;
         const IDENTITY_BYTE: i32 = 0;
@@ -1321,7 +1321,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "gfni,avx512bw")]
+    #[simd_test("gfni", "avx512bw")]
     unsafe fn test_mm512_maskz_gf2p8affineinv_epi64_epi8() {
         const CONSTANT_BYTE: i32 = 0x63;
         let (matrices, vectors, _expected) = generate_affine_mul_test_data(CONSTANT_BYTE as u8);
@@ -1343,7 +1343,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "gfni,avx512bw")]
+    #[simd_test("gfni", "avx512bw")]
     unsafe fn test_mm512_mask_gf2p8affineinv_epi64_epi8() {
         const CONSTANT_BYTE: i32 = 0x63;
         let (matrices, vectors, _expected) = generate_affine_mul_test_data(CONSTANT_BYTE as u8);
@@ -1365,7 +1365,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "gfni,avx")]
+    #[simd_test("gfni", "avx")]
     unsafe fn test_mm256_gf2p8affineinv_epi64_epi8() {
         let identity: i64 = 0x01_02_04_08_10_20_40_80;
         const IDENTITY_BYTE: i32 = 0;
@@ -1409,7 +1409,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "gfni,avx512bw,avx512vl")]
+    #[simd_test("gfni", "avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_gf2p8affineinv_epi64_epi8() {
         const CONSTANT_BYTE: i32 = 0x63;
         let (matrices, vectors, _expected) = generate_affine_mul_test_data(CONSTANT_BYTE as u8);
@@ -1431,7 +1431,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "gfni,avx512bw,avx512vl")]
+    #[simd_test("gfni", "avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_gf2p8affineinv_epi64_epi8() {
         const CONSTANT_BYTE: i32 = 0x63;
         let (matrices, vectors, _expected) = generate_affine_mul_test_data(CONSTANT_BYTE as u8);
@@ -1453,7 +1453,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "gfni")]
+    #[simd_test("gfni")]
     unsafe fn test_mm_gf2p8affineinv_epi64_epi8() {
         let identity: i64 = 0x01_02_04_08_10_20_40_80;
         const IDENTITY_BYTE: i32 = 0;
@@ -1497,7 +1497,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "gfni,avx512bw,avx512vl")]
+    #[simd_test("gfni", "avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_gf2p8affineinv_epi64_epi8() {
         const CONSTANT_BYTE: i32 = 0x63;
         let (matrices, vectors, _expected) = generate_affine_mul_test_data(CONSTANT_BYTE as u8);
@@ -1519,7 +1519,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "gfni,avx512bw,avx512vl")]
+    #[simd_test("gfni", "avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_gf2p8affineinv_epi64_epi8() {
         const CONSTANT_BYTE: i32 = 0x63;
         let (matrices, vectors, _expected) = generate_affine_mul_test_data(CONSTANT_BYTE as u8);

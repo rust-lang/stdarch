@@ -16,7 +16,7 @@ use stdarch_test::simd_test;
 
 macro_rules! test_vsli {
     ($test_id:ident, $t:ty => $fn_id:ident ([$($a:expr),*], [$($b:expr),*], $n:expr)) => {
-        #[simd_test(enable = "neon")]
+        #[simd_test("neon")]
         #[allow(unused_assignments)]
         unsafe fn $test_id() {
             let a = [$($a as $t),*];
@@ -55,7 +55,7 @@ test_vsli!(test_vsliq_n_p16, i16 => vsliq_n_p16([3304, 44, 2300, 20046, 0, 9924,
 
 macro_rules! test_vsri {
     ($test_id:ident, $t:ty => $fn_id:ident ([$($a:expr),*], [$($b:expr),*], $n:expr)) => {
-        #[simd_test(enable = "neon")]
+        #[simd_test("neon")]
         #[allow(unused_assignments)]
         unsafe fn $test_id() {
             let a = [$($a as $t),*];

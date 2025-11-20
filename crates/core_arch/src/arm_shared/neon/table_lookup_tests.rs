@@ -20,7 +20,7 @@ macro_rules! test_vtbl {
      $(- ctrl[$ctrl_t:ident]: [$($ctrl_v:expr),*] => [$($exp_v:expr),*])|*
     ) => {
         #[cfg(target_endian = "little")]
-        #[simd_test(enable = "neon")]
+        #[simd_test("neon")]
         unsafe fn $test_name() {
             // create table as array, and transmute it to
             // arm's table type
@@ -170,7 +170,7 @@ macro_rules! test_vtbx {
      $(- ctrl[$ctrl_t:ident]: [$($ctrl_v:expr),*] => [$($exp_v:expr),*])|*
     ) => {
         #[cfg(target_endian = "little")]
-        #[simd_test(enable = "neon")]
+        #[simd_test("neon")]
         unsafe fn $test_name() {
             // create table as array, and transmute it to
             // arm's table type

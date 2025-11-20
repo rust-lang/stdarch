@@ -37,7 +37,7 @@ mod tests {
     use crate::core_arch::arch::x86_64::*;
     use stdarch_test::simd_test;
 
-    #[simd_test(enable = "sse4.1")]
+    #[simd_test("sse4.1")]
     unsafe fn test_mm_extract_epi64() {
         let a = _mm_setr_epi64x(0, 1);
         let r = _mm_extract_epi64::<1>(a);
@@ -46,7 +46,7 @@ mod tests {
         assert_eq!(r, 0);
     }
 
-    #[simd_test(enable = "sse4.1")]
+    #[simd_test("sse4.1")]
     unsafe fn test_mm_insert_epi64() {
         let a = _mm_set1_epi64x(0);
         let e = _mm_setr_epi64x(0, 32);

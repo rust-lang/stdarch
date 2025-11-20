@@ -526,7 +526,7 @@ mod tests {
 
     use crate::core_arch::x86::*;
 
-    #[simd_test(enable = "fma")]
+    #[simd_test("fma")]
     unsafe fn test_mm_fmadd_pd() {
         let a = _mm_setr_pd(1., 2.);
         let b = _mm_setr_pd(5., 3.);
@@ -535,7 +535,7 @@ mod tests {
         assert_eq_m128d(_mm_fmadd_pd(a, b, c), r);
     }
 
-    #[simd_test(enable = "fma")]
+    #[simd_test("fma")]
     unsafe fn test_mm256_fmadd_pd() {
         let a = _mm256_setr_pd(1., 2., 3., 4.);
         let b = _mm256_setr_pd(5., 3., 7., 2.);
@@ -544,7 +544,7 @@ mod tests {
         assert_eq_m256d(_mm256_fmadd_pd(a, b, c), r);
     }
 
-    #[simd_test(enable = "fma")]
+    #[simd_test("fma")]
     unsafe fn test_mm_fmadd_ps() {
         let a = _mm_setr_ps(1., 2., 3., 4.);
         let b = _mm_setr_ps(5., 3., 7., 2.);
@@ -553,7 +553,7 @@ mod tests {
         assert_eq_m128(_mm_fmadd_ps(a, b, c), r);
     }
 
-    #[simd_test(enable = "fma")]
+    #[simd_test("fma")]
     unsafe fn test_mm256_fmadd_ps() {
         let a = _mm256_setr_ps(1., 2., 3., 4., 0., 10., -1., -2.);
         let b = _mm256_setr_ps(5., 3., 7., 2., 4., -6., 0., 14.);
@@ -562,7 +562,7 @@ mod tests {
         assert_eq_m256(_mm256_fmadd_ps(a, b, c), r);
     }
 
-    #[simd_test(enable = "fma")]
+    #[simd_test("fma")]
     unsafe fn test_mm_fmadd_sd() {
         let a = _mm_setr_pd(1., 2.);
         let b = _mm_setr_pd(5., 3.);
@@ -571,7 +571,7 @@ mod tests {
         assert_eq_m128d(_mm_fmadd_sd(a, b, c), r);
     }
 
-    #[simd_test(enable = "fma")]
+    #[simd_test("fma")]
     unsafe fn test_mm_fmadd_ss() {
         let a = _mm_setr_ps(1., 2., 3., 4.);
         let b = _mm_setr_ps(5., 3., 7., 2.);
@@ -580,7 +580,7 @@ mod tests {
         assert_eq_m128(_mm_fmadd_ss(a, b, c), r);
     }
 
-    #[simd_test(enable = "fma")]
+    #[simd_test("fma")]
     unsafe fn test_mm_fmaddsub_pd() {
         let a = _mm_setr_pd(1., 2.);
         let b = _mm_setr_pd(5., 3.);
@@ -589,7 +589,7 @@ mod tests {
         assert_eq_m128d(_mm_fmaddsub_pd(a, b, c), r);
     }
 
-    #[simd_test(enable = "fma")]
+    #[simd_test("fma")]
     unsafe fn test_mm256_fmaddsub_pd() {
         let a = _mm256_setr_pd(1., 2., 3., 4.);
         let b = _mm256_setr_pd(5., 3., 7., 2.);
@@ -598,7 +598,7 @@ mod tests {
         assert_eq_m256d(_mm256_fmaddsub_pd(a, b, c), r);
     }
 
-    #[simd_test(enable = "fma")]
+    #[simd_test("fma")]
     unsafe fn test_mm_fmaddsub_ps() {
         let a = _mm_setr_ps(1., 2., 3., 4.);
         let b = _mm_setr_ps(5., 3., 7., 2.);
@@ -607,7 +607,7 @@ mod tests {
         assert_eq_m128(_mm_fmaddsub_ps(a, b, c), r);
     }
 
-    #[simd_test(enable = "fma")]
+    #[simd_test("fma")]
     unsafe fn test_mm256_fmaddsub_ps() {
         let a = _mm256_setr_ps(1., 2., 3., 4., 0., 10., -1., -2.);
         let b = _mm256_setr_ps(5., 3., 7., 2., 4., -6., 0., 14.);
@@ -616,7 +616,7 @@ mod tests {
         assert_eq_m256(_mm256_fmaddsub_ps(a, b, c), r);
     }
 
-    #[simd_test(enable = "fma")]
+    #[simd_test("fma")]
     unsafe fn test_mm_fmsub_pd() {
         let a = _mm_setr_pd(1., 2.);
         let b = _mm_setr_pd(5., 3.);
@@ -625,7 +625,7 @@ mod tests {
         assert_eq_m128d(_mm_fmsub_pd(a, b, c), r);
     }
 
-    #[simd_test(enable = "fma")]
+    #[simd_test("fma")]
     unsafe fn test_mm256_fmsub_pd() {
         let a = _mm256_setr_pd(1., 2., 3., 4.);
         let b = _mm256_setr_pd(5., 3., 7., 2.);
@@ -634,7 +634,7 @@ mod tests {
         assert_eq_m256d(_mm256_fmsub_pd(a, b, c), r);
     }
 
-    #[simd_test(enable = "fma")]
+    #[simd_test("fma")]
     unsafe fn test_mm_fmsub_ps() {
         let a = _mm_setr_ps(1., 2., 3., 4.);
         let b = _mm_setr_ps(5., 3., 7., 2.);
@@ -643,7 +643,7 @@ mod tests {
         assert_eq_m128(_mm_fmsub_ps(a, b, c), r);
     }
 
-    #[simd_test(enable = "fma")]
+    #[simd_test("fma")]
     unsafe fn test_mm256_fmsub_ps() {
         let a = _mm256_setr_ps(1., 2., 3., 4., 0., 10., -1., -2.);
         let b = _mm256_setr_ps(5., 3., 7., 2., 4., -6., 0., 14.);
@@ -652,7 +652,7 @@ mod tests {
         assert_eq_m256(_mm256_fmsub_ps(a, b, c), r);
     }
 
-    #[simd_test(enable = "fma")]
+    #[simd_test("fma")]
     unsafe fn test_mm_fmsub_sd() {
         let a = _mm_setr_pd(1., 2.);
         let b = _mm_setr_pd(5., 3.);
@@ -661,7 +661,7 @@ mod tests {
         assert_eq_m128d(_mm_fmsub_sd(a, b, c), r);
     }
 
-    #[simd_test(enable = "fma")]
+    #[simd_test("fma")]
     unsafe fn test_mm_fmsub_ss() {
         let a = _mm_setr_ps(1., 2., 3., 4.);
         let b = _mm_setr_ps(5., 3., 7., 2.);
@@ -670,7 +670,7 @@ mod tests {
         assert_eq_m128(_mm_fmsub_ss(a, b, c), r);
     }
 
-    #[simd_test(enable = "fma")]
+    #[simd_test("fma")]
     unsafe fn test_mm_fmsubadd_pd() {
         let a = _mm_setr_pd(1., 2.);
         let b = _mm_setr_pd(5., 3.);
@@ -679,7 +679,7 @@ mod tests {
         assert_eq_m128d(_mm_fmsubadd_pd(a, b, c), r);
     }
 
-    #[simd_test(enable = "fma")]
+    #[simd_test("fma")]
     unsafe fn test_mm256_fmsubadd_pd() {
         let a = _mm256_setr_pd(1., 2., 3., 4.);
         let b = _mm256_setr_pd(5., 3., 7., 2.);
@@ -688,7 +688,7 @@ mod tests {
         assert_eq_m256d(_mm256_fmsubadd_pd(a, b, c), r);
     }
 
-    #[simd_test(enable = "fma")]
+    #[simd_test("fma")]
     unsafe fn test_mm_fmsubadd_ps() {
         let a = _mm_setr_ps(1., 2., 3., 4.);
         let b = _mm_setr_ps(5., 3., 7., 2.);
@@ -697,7 +697,7 @@ mod tests {
         assert_eq_m128(_mm_fmsubadd_ps(a, b, c), r);
     }
 
-    #[simd_test(enable = "fma")]
+    #[simd_test("fma")]
     unsafe fn test_mm256_fmsubadd_ps() {
         let a = _mm256_setr_ps(1., 2., 3., 4., 0., 10., -1., -2.);
         let b = _mm256_setr_ps(5., 3., 7., 2., 4., -6., 0., 14.);
@@ -706,7 +706,7 @@ mod tests {
         assert_eq_m256(_mm256_fmsubadd_ps(a, b, c), r);
     }
 
-    #[simd_test(enable = "fma")]
+    #[simd_test("fma")]
     unsafe fn test_mm_fnmadd_pd() {
         let a = _mm_setr_pd(1., 2.);
         let b = _mm_setr_pd(5., 3.);
@@ -715,7 +715,7 @@ mod tests {
         assert_eq_m128d(_mm_fnmadd_pd(a, b, c), r);
     }
 
-    #[simd_test(enable = "fma")]
+    #[simd_test("fma")]
     unsafe fn test_mm256_fnmadd_pd() {
         let a = _mm256_setr_pd(1., 2., 3., 4.);
         let b = _mm256_setr_pd(5., 3., 7., 2.);
@@ -724,7 +724,7 @@ mod tests {
         assert_eq_m256d(_mm256_fnmadd_pd(a, b, c), r);
     }
 
-    #[simd_test(enable = "fma")]
+    #[simd_test("fma")]
     unsafe fn test_mm_fnmadd_ps() {
         let a = _mm_setr_ps(1., 2., 3., 4.);
         let b = _mm_setr_ps(5., 3., 7., 2.);
@@ -733,7 +733,7 @@ mod tests {
         assert_eq_m128(_mm_fnmadd_ps(a, b, c), r);
     }
 
-    #[simd_test(enable = "fma")]
+    #[simd_test("fma")]
     unsafe fn test_mm256_fnmadd_ps() {
         let a = _mm256_setr_ps(1., 2., 3., 4., 0., 10., -1., -2.);
         let b = _mm256_setr_ps(5., 3., 7., 2., 4., -6., 0., 14.);
@@ -742,7 +742,7 @@ mod tests {
         assert_eq_m256(_mm256_fnmadd_ps(a, b, c), r);
     }
 
-    #[simd_test(enable = "fma")]
+    #[simd_test("fma")]
     unsafe fn test_mm_fnmadd_sd() {
         let a = _mm_setr_pd(1., 2.);
         let b = _mm_setr_pd(5., 3.);
@@ -751,7 +751,7 @@ mod tests {
         assert_eq_m128d(_mm_fnmadd_sd(a, b, c), r);
     }
 
-    #[simd_test(enable = "fma")]
+    #[simd_test("fma")]
     unsafe fn test_mm_fnmadd_ss() {
         let a = _mm_setr_ps(1., 2., 3., 4.);
         let b = _mm_setr_ps(5., 3., 7., 2.);
@@ -760,7 +760,7 @@ mod tests {
         assert_eq_m128(_mm_fnmadd_ss(a, b, c), r);
     }
 
-    #[simd_test(enable = "fma")]
+    #[simd_test("fma")]
     unsafe fn test_mm_fnmsub_pd() {
         let a = _mm_setr_pd(1., 2.);
         let b = _mm_setr_pd(5., 3.);
@@ -769,7 +769,7 @@ mod tests {
         assert_eq_m128d(_mm_fnmsub_pd(a, b, c), r);
     }
 
-    #[simd_test(enable = "fma")]
+    #[simd_test("fma")]
     unsafe fn test_mm256_fnmsub_pd() {
         let a = _mm256_setr_pd(1., 2., 3., 4.);
         let b = _mm256_setr_pd(5., 3., 7., 2.);
@@ -778,7 +778,7 @@ mod tests {
         assert_eq_m256d(_mm256_fnmsub_pd(a, b, c), r);
     }
 
-    #[simd_test(enable = "fma")]
+    #[simd_test("fma")]
     unsafe fn test_mm_fnmsub_ps() {
         let a = _mm_setr_ps(1., 2., 3., 4.);
         let b = _mm_setr_ps(5., 3., 7., 2.);
@@ -787,7 +787,7 @@ mod tests {
         assert_eq_m128(_mm_fnmsub_ps(a, b, c), r);
     }
 
-    #[simd_test(enable = "fma")]
+    #[simd_test("fma")]
     unsafe fn test_mm256_fnmsub_ps() {
         let a = _mm256_setr_ps(1., 2., 3., 4., 0., 10., -1., -2.);
         let b = _mm256_setr_ps(5., 3., 7., 2., 4., -6., 0., 14.);
@@ -796,7 +796,7 @@ mod tests {
         assert_eq_m256(_mm256_fnmsub_ps(a, b, c), r);
     }
 
-    #[simd_test(enable = "fma")]
+    #[simd_test("fma")]
     unsafe fn test_mm_fnmsub_sd() {
         let a = _mm_setr_pd(1., 2.);
         let b = _mm_setr_pd(5., 3.);
@@ -805,7 +805,7 @@ mod tests {
         assert_eq_m128d(_mm_fnmsub_sd(a, b, c), r);
     }
 
-    #[simd_test(enable = "fma")]
+    #[simd_test("fma")]
     unsafe fn test_mm_fnmsub_ss() {
         let a = _mm_setr_ps(1., 2., 3., 4.);
         let b = _mm_setr_ps(5., 3., 7., 2.);

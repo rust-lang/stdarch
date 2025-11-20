@@ -580,14 +580,14 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "amx-tile")]
+    #[simd_test("amx-tile")]
     unsafe fn test_tile_loadconfig() {
         let config = __tilecfg::default();
         _tile_loadconfig(config.as_ptr());
         _tile_release();
     }
 
-    #[simd_test(enable = "amx-tile")]
+    #[simd_test("amx-tile")]
     unsafe fn test_tile_storeconfig() {
         let config = __tilecfg::new(1, 0, [32; 8], [8; 8]);
         _tile_loadconfig(config.as_ptr());
@@ -597,7 +597,7 @@ mod tests {
         assert_eq!(config, _config);
     }
 
-    #[simd_test(enable = "amx-tile")]
+    #[simd_test("amx-tile")]
     unsafe fn test_tile_zero() {
         _init_amx();
         let mut config = __tilecfg::default();
@@ -612,7 +612,7 @@ mod tests {
         assert_eq!(out, [[0; 64]; 16]);
     }
 
-    #[simd_test(enable = "amx-tile")]
+    #[simd_test("amx-tile")]
     unsafe fn test_tile_stored() {
         _init_amx();
         let mut config = __tilecfg::default();
@@ -627,7 +627,7 @@ mod tests {
         assert_eq!(out, [[0; 64]; 16]);
     }
 
-    #[simd_test(enable = "amx-tile")]
+    #[simd_test("amx-tile")]
     unsafe fn test_tile_loadd() {
         _init_amx();
         let mut config = __tilecfg::default();
@@ -644,7 +644,7 @@ mod tests {
         assert_eq!(out, [[1; 64]; 16]);
     }
 
-    #[simd_test(enable = "amx-tile")]
+    #[simd_test("amx-tile")]
     unsafe fn test_tile_stream_loadd() {
         _init_amx();
         let mut config = __tilecfg::default();
@@ -661,12 +661,12 @@ mod tests {
         assert_eq!(out, [[1; 64]; 16]);
     }
 
-    #[simd_test(enable = "amx-tile")]
+    #[simd_test("amx-tile")]
     unsafe fn test_tile_release() {
         _tile_release();
     }
 
-    #[simd_test(enable = "amx-bf16,avx512f")]
+    #[simd_test("amx-bf16", "avx512f")]
     unsafe fn test_tile_dpbf16ps() {
         _init_amx();
         let bf16_1: u16 = _mm_cvtness_sbh(1.0).to_bits();
@@ -690,7 +690,7 @@ mod tests {
         assert_eq!(res, [[64f32; 16]; 16]);
     }
 
-    #[simd_test(enable = "amx-int8")]
+    #[simd_test("amx-int8")]
     unsafe fn test_tile_dpbssd() {
         _init_amx();
         let ones = [-1_i8; 1024];
@@ -712,7 +712,7 @@ mod tests {
         assert_eq!(res, [[128_i32; 16]; 16]);
     }
 
-    #[simd_test(enable = "amx-int8")]
+    #[simd_test("amx-int8")]
     unsafe fn test_tile_dpbsud() {
         _init_amx();
         let ones = [-1_i8; 1024];
@@ -734,7 +734,7 @@ mod tests {
         assert_eq!(res, [[-128_i32; 16]; 16]);
     }
 
-    #[simd_test(enable = "amx-int8")]
+    #[simd_test("amx-int8")]
     unsafe fn test_tile_dpbusd() {
         _init_amx();
         let ones = [1_u8; 1024];
@@ -756,7 +756,7 @@ mod tests {
         assert_eq!(res, [[-128_i32; 16]; 16]);
     }
 
-    #[simd_test(enable = "amx-int8")]
+    #[simd_test("amx-int8")]
     unsafe fn test_tile_dpbuud() {
         _init_amx();
         let ones = [1_u8; 1024];
@@ -778,7 +778,7 @@ mod tests {
         assert_eq!(res, [[128_i32; 16]; 16]);
     }
 
-    #[simd_test(enable = "amx-fp16")]
+    #[simd_test("amx-fp16")]
     unsafe fn test_tile_dpfp16ps() {
         _init_amx();
         let ones = [1f16; 512];
@@ -800,7 +800,7 @@ mod tests {
         assert_eq!(res, [[64f32; 16]; 16]);
     }
 
-    #[simd_test(enable = "amx-complex")]
+    #[simd_test("amx-complex")]
     unsafe fn test_tile_cmmimfp16ps() {
         _init_amx();
         let ones = [1f16; 512];
@@ -822,7 +822,7 @@ mod tests {
         assert_eq!(res, [[64f32; 16]; 16]);
     }
 
-    #[simd_test(enable = "amx-complex")]
+    #[simd_test("amx-complex")]
     unsafe fn test_tile_cmmrlfp16ps() {
         _init_amx();
         let ones = [1f16; 512];
@@ -849,7 +849,7 @@ mod tests {
     const HF8_ONE: u8 = 0x38;
     const HF8_TWO: u8 = 0x40;
 
-    #[simd_test(enable = "amx-fp8")]
+    #[simd_test("amx-fp8")]
     unsafe fn test_tile_dpbf8ps() {
         _init_amx();
         let ones = [BF8_ONE; 1024];
@@ -871,7 +871,7 @@ mod tests {
         assert_eq!(res, [[128.0_f32; 16]; 16]);
     }
 
-    #[simd_test(enable = "amx-fp8")]
+    #[simd_test("amx-fp8")]
     unsafe fn test_tile_dpbhf8ps() {
         _init_amx();
         let ones = [BF8_ONE; 1024];
@@ -893,7 +893,7 @@ mod tests {
         assert_eq!(res, [[128.0_f32; 16]; 16]);
     }
 
-    #[simd_test(enable = "amx-fp8")]
+    #[simd_test("amx-fp8")]
     unsafe fn test_tile_dphbf8ps() {
         _init_amx();
         let ones = [HF8_ONE; 1024];
@@ -915,7 +915,7 @@ mod tests {
         assert_eq!(res, [[128.0_f32; 16]; 16]);
     }
 
-    #[simd_test(enable = "amx-fp8")]
+    #[simd_test("amx-fp8")]
     unsafe fn test_tile_dphf8ps() {
         _init_amx();
         let ones = [HF8_ONE; 1024];
@@ -937,7 +937,7 @@ mod tests {
         assert_eq!(res, [[128.0_f32; 16]; 16]);
     }
 
-    #[simd_test(enable = "amx-movrs")]
+    #[simd_test("amx-movrs")]
     unsafe fn test_tile_loaddrs() {
         _init_amx();
         let mut config = __tilecfg::default();
@@ -954,7 +954,7 @@ mod tests {
         assert_eq!(out, [[1; 64]; 16]);
     }
 
-    #[simd_test(enable = "amx-movrs")]
+    #[simd_test("amx-movrs")]
     unsafe fn test_tile_stream_loaddrs() {
         _init_amx();
         let mut config = __tilecfg::default();
@@ -971,7 +971,7 @@ mod tests {
         assert_eq!(out, [[1; 64]; 16]);
     }
 
-    #[simd_test(enable = "amx-avx512,avx10.2")]
+    #[simd_test("amx-avx512", "avx10.2")]
     unsafe fn test_tile_movrow() {
         _init_amx();
         let array: [[u8; 64]; 16] = array::from_fn(|i| [i as _; _]);
@@ -988,7 +988,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "amx-avx512,avx10.2")]
+    #[simd_test("amx-avx512", "avx10.2")]
     unsafe fn test_tile_cvtrowd2ps() {
         _init_amx();
         let array: [[u32; 16]; 16] = array::from_fn(|i| [i as _; _]);
@@ -1005,7 +1005,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "amx-avx512,avx10.2")]
+    #[simd_test("amx-avx512", "avx10.2")]
     unsafe fn test_tile_cvtrowps2phh() {
         _init_amx();
         let array: [[f32; 16]; 16] = array::from_fn(|i| [i as _; _]);
@@ -1025,7 +1025,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "amx-avx512,avx10.2")]
+    #[simd_test("amx-avx512", "avx10.2")]
     unsafe fn test_tile_cvtrowps2phl() {
         _init_amx();
         let array: [[f32; 16]; 16] = array::from_fn(|i| [i as _; _]);
@@ -1045,7 +1045,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "amx-tf32")]
+    #[simd_test("amx-tf32")]
     unsafe fn test_tile_mmultf32ps() {
         _init_amx();
         let a: [[f32; 16]; 16] = array::from_fn(|i| [i as _; _]);

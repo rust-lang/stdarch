@@ -13,7 +13,7 @@ use crate::core_arch::aarch64::*;
 use crate::core_arch::simd::*;
 use std::mem;
 use stdarch_test::simd_test;
-#[simd_test(enable = "neon")]
+#[simd_test("neon")]
 unsafe fn test_vld1_s8() {
     let a: [i8; 9] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
     let e = i8x8::new(1, 2, 3, 4, 5, 6, 7, 8);
@@ -21,7 +21,7 @@ unsafe fn test_vld1_s8() {
     assert_eq!(r, e)
 }
 
-#[simd_test(enable = "neon")]
+#[simd_test("neon")]
 unsafe fn test_vld1q_s8() {
     let a: [i8; 17] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
     let e = i8x16::new(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
@@ -29,7 +29,7 @@ unsafe fn test_vld1q_s8() {
     assert_eq!(r, e)
 }
 
-#[simd_test(enable = "neon")]
+#[simd_test("neon")]
 unsafe fn test_vld1_s16() {
     let a: [i16; 5] = [0, 1, 2, 3, 4];
     let e = i16x4::new(1, 2, 3, 4);
@@ -37,7 +37,7 @@ unsafe fn test_vld1_s16() {
     assert_eq!(r, e)
 }
 
-#[simd_test(enable = "neon")]
+#[simd_test("neon")]
 unsafe fn test_vld1q_s16() {
     let a: [i16; 9] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
     let e = i16x8::new(1, 2, 3, 4, 5, 6, 7, 8);
@@ -45,7 +45,7 @@ unsafe fn test_vld1q_s16() {
     assert_eq!(r, e)
 }
 
-#[simd_test(enable = "neon")]
+#[simd_test("neon")]
 unsafe fn test_vld1_s32() {
     let a: [i32; 3] = [0, 1, 2];
     let e = i32x2::new(1, 2);
@@ -53,7 +53,7 @@ unsafe fn test_vld1_s32() {
     assert_eq!(r, e)
 }
 
-#[simd_test(enable = "neon")]
+#[simd_test("neon")]
 unsafe fn test_vld1q_s32() {
     let a: [i32; 5] = [0, 1, 2, 3, 4];
     let e = i32x4::new(1, 2, 3, 4);
@@ -61,7 +61,7 @@ unsafe fn test_vld1q_s32() {
     assert_eq!(r, e)
 }
 
-#[simd_test(enable = "neon")]
+#[simd_test("neon")]
 unsafe fn test_vld1_s64() {
     let a: [i64; 2] = [0, 1];
     let e = i64x1::new(1);
@@ -69,7 +69,7 @@ unsafe fn test_vld1_s64() {
     assert_eq!(r, e)
 }
 
-#[simd_test(enable = "neon")]
+#[simd_test("neon")]
 unsafe fn test_vld1q_s64() {
     let a: [i64; 3] = [0, 1, 2];
     let e = i64x2::new(1, 2);
@@ -77,7 +77,7 @@ unsafe fn test_vld1q_s64() {
     assert_eq!(r, e)
 }
 
-#[simd_test(enable = "neon")]
+#[simd_test("neon")]
 unsafe fn test_vld1_u8() {
     let a: [u8; 9] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
     let e = u8x8::new(1, 2, 3, 4, 5, 6, 7, 8);
@@ -85,7 +85,7 @@ unsafe fn test_vld1_u8() {
     assert_eq!(r, e)
 }
 
-#[simd_test(enable = "neon")]
+#[simd_test("neon")]
 unsafe fn test_vld1q_u8() {
     let a: [u8; 17] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
     let e = u8x16::new(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
@@ -93,7 +93,7 @@ unsafe fn test_vld1q_u8() {
     assert_eq!(r, e)
 }
 
-#[simd_test(enable = "neon")]
+#[simd_test("neon")]
 unsafe fn test_vld1_u16() {
     let a: [u16; 5] = [0, 1, 2, 3, 4];
     let e = u16x4::new(1, 2, 3, 4);
@@ -101,7 +101,7 @@ unsafe fn test_vld1_u16() {
     assert_eq!(r, e)
 }
 
-#[simd_test(enable = "neon")]
+#[simd_test("neon")]
 unsafe fn test_vld1q_u16() {
     let a: [u16; 9] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
     let e = u16x8::new(1, 2, 3, 4, 5, 6, 7, 8);
@@ -109,7 +109,7 @@ unsafe fn test_vld1q_u16() {
     assert_eq!(r, e)
 }
 
-#[simd_test(enable = "neon")]
+#[simd_test("neon")]
 unsafe fn test_vld1_u32() {
     let a: [u32; 3] = [0, 1, 2];
     let e = u32x2::new(1, 2);
@@ -117,7 +117,7 @@ unsafe fn test_vld1_u32() {
     assert_eq!(r, e)
 }
 
-#[simd_test(enable = "neon")]
+#[simd_test("neon")]
 unsafe fn test_vld1q_u32() {
     let a: [u32; 5] = [0, 1, 2, 3, 4];
     let e = u32x4::new(1, 2, 3, 4);
@@ -125,7 +125,7 @@ unsafe fn test_vld1q_u32() {
     assert_eq!(r, e)
 }
 
-#[simd_test(enable = "neon")]
+#[simd_test("neon")]
 unsafe fn test_vld1_u64() {
     let a: [u64; 2] = [0, 1];
     let e = u64x1::new(1);
@@ -133,7 +133,7 @@ unsafe fn test_vld1_u64() {
     assert_eq!(r, e)
 }
 
-#[simd_test(enable = "neon")]
+#[simd_test("neon")]
 unsafe fn test_vld1q_u64() {
     let a: [u64; 3] = [0, 1, 2];
     let e = u64x2::new(1, 2);
@@ -141,7 +141,7 @@ unsafe fn test_vld1q_u64() {
     assert_eq!(r, e)
 }
 
-#[simd_test(enable = "neon")]
+#[simd_test("neon")]
 unsafe fn test_vld1_p8() {
     let a: [p8; 9] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
     let e = u8x8::new(1, 2, 3, 4, 5, 6, 7, 8);
@@ -149,7 +149,7 @@ unsafe fn test_vld1_p8() {
     assert_eq!(r, e)
 }
 
-#[simd_test(enable = "neon")]
+#[simd_test("neon")]
 unsafe fn test_vld1q_p8() {
     let a: [p8; 17] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
     let e = u8x16::new(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
@@ -157,7 +157,7 @@ unsafe fn test_vld1q_p8() {
     assert_eq!(r, e)
 }
 
-#[simd_test(enable = "neon")]
+#[simd_test("neon")]
 unsafe fn test_vld1_p16() {
     let a: [p16; 5] = [0, 1, 2, 3, 4];
     let e = u16x4::new(1, 2, 3, 4);
@@ -165,7 +165,7 @@ unsafe fn test_vld1_p16() {
     assert_eq!(r, e)
 }
 
-#[simd_test(enable = "neon")]
+#[simd_test("neon")]
 unsafe fn test_vld1q_p16() {
     let a: [p16; 9] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
     let e = u16x8::new(1, 2, 3, 4, 5, 6, 7, 8);
@@ -173,7 +173,7 @@ unsafe fn test_vld1q_p16() {
     assert_eq!(r, e)
 }
 
-#[simd_test(enable = "neon,aes")]
+#[simd_test("neon", "aes")]
 unsafe fn test_vld1_p64() {
     let a: [p64; 2] = [0, 1];
     let e = u64x1::new(1);
@@ -181,7 +181,7 @@ unsafe fn test_vld1_p64() {
     assert_eq!(r, e)
 }
 
-#[simd_test(enable = "neon,aes")]
+#[simd_test("neon", "aes")]
 unsafe fn test_vld1q_p64() {
     let a: [p64; 3] = [0, 1, 2];
     let e = u64x2::new(1, 2);
@@ -189,7 +189,7 @@ unsafe fn test_vld1q_p64() {
     assert_eq!(r, e)
 }
 
-#[simd_test(enable = "neon")]
+#[simd_test("neon")]
 unsafe fn test_vld1_f32() {
     let a: [f32; 3] = [0., 1., 2.];
     let e = f32x2::new(1., 2.);
@@ -197,7 +197,7 @@ unsafe fn test_vld1_f32() {
     assert_eq!(r, e)
 }
 
-#[simd_test(enable = "neon")]
+#[simd_test("neon")]
 unsafe fn test_vld1q_f32() {
     let a: [f32; 5] = [0., 1., 2., 3., 4.];
     let e = f32x4::new(1., 2., 3., 4.);
