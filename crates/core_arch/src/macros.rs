@@ -103,16 +103,28 @@ macro_rules! types {
                 unsafe { simd_shuffle!(one, one, [0; $len]) }
             }
 
+            /// Constructs a vector from an array of the same elements and length
+            ///
+            /// For now you don't *have* to use this to construct one of these
+            /// (depending on the visibility you put on the field) but it's encouraged
+            /// in case direct construction also gets banned.
+            #[inline]
+            $v const fn from_array(array: [$elem_type; $len]) -> Self {
+                // Projecting into SIMD is banned, but this is technically an
+                // `Rvalue::Aggregate`, which is not a projection.
+                $name { do_not_field_project: array }
+            }
+
             /// Returns an array reference containing the entire SIMD vector.
+            #[inline]
             $v const fn as_array(&self) -> &[$elem_type; $len] {
                 // SAFETY: this type is just an overaligned `[T; N]` with
                 // potential padding at the end, so pointer casting to a
                 // `&[T; N]` is safe.
                 //
-                // NOTE: This deliberately doesn't just use `&self.0` because it may soon be banned
+                // NOTE: This deliberately doesn't just use `&self.0` it's banned
                 // see https://github.com/rust-lang/compiler-team/issues/838
                 unsafe { &*(self as *const Self as *const [$elem_type; $len]) }
-
             }
 
             /// Returns a mutable array reference containing the entire SIMD vector.
