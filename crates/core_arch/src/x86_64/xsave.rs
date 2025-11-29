@@ -130,7 +130,7 @@ mod tests {
     use crate::core_arch::x86_64::*;
     use stdarch_test::simd_test;
 
-    #[simd_test(enable = "xsave")]
+    #[simd_test("xsave")]
     #[cfg_attr(miri, ignore)] // Register saving/restoring is not supported in Miri
     unsafe fn test_xsave64() {
         let m = 0xFFFFFFFFFFFFFFFF_u64; //< all registers
@@ -142,7 +142,7 @@ mod tests {
         _xsave64(b.ptr(), m);
     }
 
-    #[simd_test(enable = "xsave,xsaveopt")]
+    #[simd_test("xsave", "xsaveopt")]
     #[cfg_attr(miri, ignore)] // Register saving/restoring is not supported in Miri
     unsafe fn test_xsaveopt64() {
         let m = 0xFFFFFFFFFFFFFFFF_u64; //< all registers
@@ -154,7 +154,7 @@ mod tests {
         _xsaveopt64(b.ptr(), m);
     }
 
-    #[simd_test(enable = "xsave,xsavec")]
+    #[simd_test("xsave", "xsavec")]
     #[cfg_attr(miri, ignore)] // Register saving/restoring is not supported in Miri
     unsafe fn test_xsavec64() {
         let m = 0xFFFFFFFFFFFFFFFF_u64; //< all registers

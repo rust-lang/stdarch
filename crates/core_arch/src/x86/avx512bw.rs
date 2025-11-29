@@ -11749,7 +11749,7 @@ mod tests {
     use crate::hint::black_box;
     use crate::mem::{self};
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_abs_epi16() {
         let a = _mm512_set1_epi16(-1);
         let r = _mm512_abs_epi16(a);
@@ -11757,7 +11757,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_abs_epi16() {
         let a = _mm512_set1_epi16(-1);
         let r = _mm512_mask_abs_epi16(a, 0, a);
@@ -11769,7 +11769,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_abs_epi16() {
         let a = _mm512_set1_epi16(-1);
         let r = _mm512_maskz_abs_epi16(0, a);
@@ -11781,7 +11781,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_abs_epi16() {
         let a = _mm256_set1_epi16(-1);
         let r = _mm256_mask_abs_epi16(a, 0, a);
@@ -11791,7 +11791,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_abs_epi16() {
         let a = _mm256_set1_epi16(-1);
         let r = _mm256_maskz_abs_epi16(0, a);
@@ -11801,7 +11801,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_abs_epi16() {
         let a = _mm_set1_epi16(-1);
         let r = _mm_mask_abs_epi16(a, 0, a);
@@ -11811,7 +11811,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_abs_epi16() {
         let a = _mm_set1_epi16(-1);
         let r = _mm_maskz_abs_epi16(0, a);
@@ -11821,7 +11821,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_abs_epi8() {
         let a = _mm512_set1_epi8(-1);
         let r = _mm512_abs_epi8(a);
@@ -11829,7 +11829,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_abs_epi8() {
         let a = _mm512_set1_epi8(-1);
         let r = _mm512_mask_abs_epi8(a, 0, a);
@@ -11847,7 +11847,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_abs_epi8() {
         let a = _mm512_set1_epi8(-1);
         let r = _mm512_maskz_abs_epi8(0, a);
@@ -11864,7 +11864,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_abs_epi8() {
         let a = _mm256_set1_epi8(-1);
         let r = _mm256_mask_abs_epi8(a, 0, a);
@@ -11876,7 +11876,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_abs_epi8() {
         let a = _mm256_set1_epi8(-1);
         let r = _mm256_maskz_abs_epi8(0, a);
@@ -11888,7 +11888,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_abs_epi8() {
         let a = _mm_set1_epi8(-1);
         let r = _mm_mask_abs_epi8(a, 0, a);
@@ -11898,7 +11898,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_abs_epi8() {
         let a = _mm_set1_epi8(-1);
         let r = _mm_maskz_abs_epi8(0, a);
@@ -11909,7 +11909,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_add_epi16() {
         let a = _mm512_set1_epi16(1);
         let b = _mm512_set1_epi16(2);
@@ -11918,7 +11918,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_add_epi16() {
         let a = _mm512_set1_epi16(1);
         let b = _mm512_set1_epi16(2);
@@ -11931,7 +11931,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_add_epi16() {
         let a = _mm512_set1_epi16(1);
         let b = _mm512_set1_epi16(2);
@@ -11944,7 +11944,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_add_epi16() {
         let a = _mm256_set1_epi16(1);
         let b = _mm256_set1_epi16(2);
@@ -11955,7 +11955,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_add_epi16() {
         let a = _mm256_set1_epi16(1);
         let b = _mm256_set1_epi16(2);
@@ -11966,7 +11966,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_add_epi16() {
         let a = _mm_set1_epi16(1);
         let b = _mm_set1_epi16(2);
@@ -11977,7 +11977,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_add_epi16() {
         let a = _mm_set1_epi16(1);
         let b = _mm_set1_epi16(2);
@@ -11988,7 +11988,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_add_epi8() {
         let a = _mm512_set1_epi8(1);
         let b = _mm512_set1_epi8(2);
@@ -11997,7 +11997,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_add_epi8() {
         let a = _mm512_set1_epi8(1);
         let b = _mm512_set1_epi8(2);
@@ -12017,7 +12017,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_add_epi8() {
         let a = _mm512_set1_epi8(1);
         let b = _mm512_set1_epi8(2);
@@ -12036,7 +12036,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_add_epi8() {
         let a = _mm256_set1_epi8(1);
         let b = _mm256_set1_epi8(2);
@@ -12049,7 +12049,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_add_epi8() {
         let a = _mm256_set1_epi8(1);
         let b = _mm256_set1_epi8(2);
@@ -12062,7 +12062,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_add_epi8() {
         let a = _mm_set1_epi8(1);
         let b = _mm_set1_epi8(2);
@@ -12073,7 +12073,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_add_epi8() {
         let a = _mm_set1_epi8(1);
         let b = _mm_set1_epi8(2);
@@ -12084,7 +12084,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_adds_epu16() {
         let a = _mm512_set1_epi16(1);
         let b = _mm512_set1_epi16(u16::MAX as i16);
@@ -12093,7 +12093,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_adds_epu16() {
         let a = _mm512_set1_epi16(1);
         let b = _mm512_set1_epi16(u16::MAX as i16);
@@ -12106,7 +12106,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_adds_epu16() {
         let a = _mm512_set1_epi16(1);
         let b = _mm512_set1_epi16(u16::MAX as i16);
@@ -12119,7 +12119,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_adds_epu16() {
         let a = _mm256_set1_epi16(1);
         let b = _mm256_set1_epi16(u16::MAX as i16);
@@ -12131,7 +12131,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_adds_epu16() {
         let a = _mm256_set1_epi16(1);
         let b = _mm256_set1_epi16(u16::MAX as i16);
@@ -12143,7 +12143,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_adds_epu16() {
         let a = _mm_set1_epi16(1);
         let b = _mm_set1_epi16(u16::MAX as i16);
@@ -12155,7 +12155,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_adds_epu16() {
         let a = _mm_set1_epi16(1);
         let b = _mm_set1_epi16(u16::MAX as i16);
@@ -12167,7 +12167,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_adds_epu8() {
         let a = _mm512_set1_epi8(1);
         let b = _mm512_set1_epi8(u8::MAX as i8);
@@ -12176,7 +12176,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_adds_epu8() {
         let a = _mm512_set1_epi8(1);
         let b = _mm512_set1_epi8(u8::MAX as i8);
@@ -12196,7 +12196,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_adds_epu8() {
         let a = _mm512_set1_epi8(1);
         let b = _mm512_set1_epi8(u8::MAX as i8);
@@ -12215,7 +12215,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_adds_epu8() {
         let a = _mm256_set1_epi8(1);
         let b = _mm256_set1_epi8(u8::MAX as i8);
@@ -12228,7 +12228,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_adds_epu8() {
         let a = _mm256_set1_epi8(1);
         let b = _mm256_set1_epi8(u8::MAX as i8);
@@ -12241,7 +12241,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_adds_epu8() {
         let a = _mm_set1_epi8(1);
         let b = _mm_set1_epi8(u8::MAX as i8);
@@ -12253,7 +12253,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_adds_epu8() {
         let a = _mm_set1_epi8(1);
         let b = _mm_set1_epi8(u8::MAX as i8);
@@ -12265,7 +12265,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_adds_epi16() {
         let a = _mm512_set1_epi16(1);
         let b = _mm512_set1_epi16(i16::MAX);
@@ -12274,7 +12274,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_adds_epi16() {
         let a = _mm512_set1_epi16(1);
         let b = _mm512_set1_epi16(i16::MAX);
@@ -12287,7 +12287,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_adds_epi16() {
         let a = _mm512_set1_epi16(1);
         let b = _mm512_set1_epi16(i16::MAX);
@@ -12300,7 +12300,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_adds_epi16() {
         let a = _mm256_set1_epi16(1);
         let b = _mm256_set1_epi16(i16::MAX);
@@ -12312,7 +12312,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_adds_epi16() {
         let a = _mm256_set1_epi16(1);
         let b = _mm256_set1_epi16(i16::MAX);
@@ -12324,7 +12324,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_adds_epi16() {
         let a = _mm_set1_epi16(1);
         let b = _mm_set1_epi16(i16::MAX);
@@ -12335,7 +12335,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_adds_epi16() {
         let a = _mm_set1_epi16(1);
         let b = _mm_set1_epi16(i16::MAX);
@@ -12346,7 +12346,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_adds_epi8() {
         let a = _mm512_set1_epi8(1);
         let b = _mm512_set1_epi8(i8::MAX);
@@ -12355,7 +12355,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_adds_epi8() {
         let a = _mm512_set1_epi8(1);
         let b = _mm512_set1_epi8(i8::MAX);
@@ -12375,7 +12375,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_adds_epi8() {
         let a = _mm512_set1_epi8(1);
         let b = _mm512_set1_epi8(i8::MAX);
@@ -12394,7 +12394,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_adds_epi8() {
         let a = _mm256_set1_epi8(1);
         let b = _mm256_set1_epi8(i8::MAX);
@@ -12407,7 +12407,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_adds_epi8() {
         let a = _mm256_set1_epi8(1);
         let b = _mm256_set1_epi8(i8::MAX);
@@ -12420,7 +12420,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_adds_epi8() {
         let a = _mm_set1_epi8(1);
         let b = _mm_set1_epi8(i8::MAX);
@@ -12432,7 +12432,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_adds_epi8() {
         let a = _mm_set1_epi8(1);
         let b = _mm_set1_epi8(i8::MAX);
@@ -12444,7 +12444,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_sub_epi16() {
         let a = _mm512_set1_epi16(1);
         let b = _mm512_set1_epi16(2);
@@ -12453,7 +12453,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_sub_epi16() {
         let a = _mm512_set1_epi16(1);
         let b = _mm512_set1_epi16(2);
@@ -12466,7 +12466,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_sub_epi16() {
         let a = _mm512_set1_epi16(1);
         let b = _mm512_set1_epi16(2);
@@ -12479,7 +12479,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_sub_epi16() {
         let a = _mm256_set1_epi16(1);
         let b = _mm256_set1_epi16(2);
@@ -12490,7 +12490,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_sub_epi16() {
         let a = _mm256_set1_epi16(1);
         let b = _mm256_set1_epi16(2);
@@ -12501,7 +12501,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_sub_epi16() {
         let a = _mm_set1_epi16(1);
         let b = _mm_set1_epi16(2);
@@ -12512,7 +12512,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_sub_epi16() {
         let a = _mm_set1_epi16(1);
         let b = _mm_set1_epi16(2);
@@ -12523,7 +12523,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_sub_epi8() {
         let a = _mm512_set1_epi8(1);
         let b = _mm512_set1_epi8(2);
@@ -12532,7 +12532,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_sub_epi8() {
         let a = _mm512_set1_epi8(1);
         let b = _mm512_set1_epi8(2);
@@ -12552,7 +12552,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_sub_epi8() {
         let a = _mm512_set1_epi8(1);
         let b = _mm512_set1_epi8(2);
@@ -12571,7 +12571,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_sub_epi8() {
         let a = _mm256_set1_epi8(1);
         let b = _mm256_set1_epi8(2);
@@ -12584,7 +12584,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_sub_epi8() {
         let a = _mm256_set1_epi8(1);
         let b = _mm256_set1_epi8(2);
@@ -12597,7 +12597,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_sub_epi8() {
         let a = _mm_set1_epi8(1);
         let b = _mm_set1_epi8(2);
@@ -12608,7 +12608,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_sub_epi8() {
         let a = _mm_set1_epi8(1);
         let b = _mm_set1_epi8(2);
@@ -12619,7 +12619,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_subs_epu16() {
         let a = _mm512_set1_epi16(1);
         let b = _mm512_set1_epi16(u16::MAX as i16);
@@ -12628,7 +12628,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_subs_epu16() {
         let a = _mm512_set1_epi16(1);
         let b = _mm512_set1_epi16(u16::MAX as i16);
@@ -12641,7 +12641,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_subs_epu16() {
         let a = _mm512_set1_epi16(1);
         let b = _mm512_set1_epi16(u16::MAX as i16);
@@ -12654,7 +12654,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_subs_epu16() {
         let a = _mm256_set1_epi16(1);
         let b = _mm256_set1_epi16(u16::MAX as i16);
@@ -12665,7 +12665,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_subs_epu16() {
         let a = _mm256_set1_epi16(1);
         let b = _mm256_set1_epi16(u16::MAX as i16);
@@ -12676,7 +12676,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_subs_epu16() {
         let a = _mm_set1_epi16(1);
         let b = _mm_set1_epi16(u16::MAX as i16);
@@ -12687,7 +12687,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_subs_epu16() {
         let a = _mm_set1_epi16(1);
         let b = _mm_set1_epi16(u16::MAX as i16);
@@ -12698,7 +12698,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_subs_epu8() {
         let a = _mm512_set1_epi8(1);
         let b = _mm512_set1_epi8(u8::MAX as i8);
@@ -12707,7 +12707,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_subs_epu8() {
         let a = _mm512_set1_epi8(1);
         let b = _mm512_set1_epi8(u8::MAX as i8);
@@ -12727,7 +12727,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_subs_epu8() {
         let a = _mm512_set1_epi8(1);
         let b = _mm512_set1_epi8(u8::MAX as i8);
@@ -12746,7 +12746,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_subs_epu8() {
         let a = _mm256_set1_epi8(1);
         let b = _mm256_set1_epi8(u8::MAX as i8);
@@ -12759,7 +12759,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_subs_epu8() {
         let a = _mm256_set1_epi8(1);
         let b = _mm256_set1_epi8(u8::MAX as i8);
@@ -12772,7 +12772,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_subs_epu8() {
         let a = _mm_set1_epi8(1);
         let b = _mm_set1_epi8(u8::MAX as i8);
@@ -12783,7 +12783,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_subs_epu8() {
         let a = _mm_set1_epi8(1);
         let b = _mm_set1_epi8(u8::MAX as i8);
@@ -12794,7 +12794,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_subs_epi16() {
         let a = _mm512_set1_epi16(-1);
         let b = _mm512_set1_epi16(i16::MAX);
@@ -12803,7 +12803,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_subs_epi16() {
         let a = _mm512_set1_epi16(-1);
         let b = _mm512_set1_epi16(i16::MAX);
@@ -12816,7 +12816,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_subs_epi16() {
         let a = _mm512_set1_epi16(-1);
         let b = _mm512_set1_epi16(i16::MAX);
@@ -12829,7 +12829,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_subs_epi16() {
         let a = _mm256_set1_epi16(-1);
         let b = _mm256_set1_epi16(i16::MAX);
@@ -12841,7 +12841,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_subs_epi16() {
         let a = _mm256_set1_epi16(-1);
         let b = _mm256_set1_epi16(i16::MAX);
@@ -12853,7 +12853,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_subs_epi16() {
         let a = _mm_set1_epi16(-1);
         let b = _mm_set1_epi16(i16::MAX);
@@ -12864,7 +12864,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_subs_epi16() {
         let a = _mm_set1_epi16(-1);
         let b = _mm_set1_epi16(i16::MAX);
@@ -12875,7 +12875,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_subs_epi8() {
         let a = _mm512_set1_epi8(-1);
         let b = _mm512_set1_epi8(i8::MAX);
@@ -12884,7 +12884,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_subs_epi8() {
         let a = _mm512_set1_epi8(-1);
         let b = _mm512_set1_epi8(i8::MAX);
@@ -12904,7 +12904,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_subs_epi8() {
         let a = _mm512_set1_epi8(-1);
         let b = _mm512_set1_epi8(i8::MAX);
@@ -12923,7 +12923,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_subs_epi8() {
         let a = _mm256_set1_epi8(-1);
         let b = _mm256_set1_epi8(i8::MAX);
@@ -12936,7 +12936,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_subs_epi8() {
         let a = _mm256_set1_epi8(-1);
         let b = _mm256_set1_epi8(i8::MAX);
@@ -12949,7 +12949,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_subs_epi8() {
         let a = _mm_set1_epi8(-1);
         let b = _mm_set1_epi8(i8::MAX);
@@ -12961,7 +12961,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_subs_epi8() {
         let a = _mm_set1_epi8(-1);
         let b = _mm_set1_epi8(i8::MAX);
@@ -12973,7 +12973,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mulhi_epu16() {
         let a = _mm512_set1_epi16(1);
         let b = _mm512_set1_epi16(1);
@@ -12982,7 +12982,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_mulhi_epu16() {
         let a = _mm512_set1_epi16(1);
         let b = _mm512_set1_epi16(1);
@@ -12995,7 +12995,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_mulhi_epu16() {
         let a = _mm512_set1_epi16(1);
         let b = _mm512_set1_epi16(1);
@@ -13008,7 +13008,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_mulhi_epu16() {
         let a = _mm256_set1_epi16(1);
         let b = _mm256_set1_epi16(1);
@@ -13019,7 +13019,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_mulhi_epu16() {
         let a = _mm256_set1_epi16(1);
         let b = _mm256_set1_epi16(1);
@@ -13030,7 +13030,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_mulhi_epu16() {
         let a = _mm_set1_epi16(1);
         let b = _mm_set1_epi16(1);
@@ -13041,7 +13041,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_mulhi_epu16() {
         let a = _mm_set1_epi16(1);
         let b = _mm_set1_epi16(1);
@@ -13052,7 +13052,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mulhi_epi16() {
         let a = _mm512_set1_epi16(1);
         let b = _mm512_set1_epi16(1);
@@ -13061,7 +13061,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_mulhi_epi16() {
         let a = _mm512_set1_epi16(1);
         let b = _mm512_set1_epi16(1);
@@ -13074,7 +13074,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_mulhi_epi16() {
         let a = _mm512_set1_epi16(1);
         let b = _mm512_set1_epi16(1);
@@ -13087,7 +13087,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_mulhi_epi16() {
         let a = _mm256_set1_epi16(1);
         let b = _mm256_set1_epi16(1);
@@ -13098,7 +13098,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_mulhi_epi16() {
         let a = _mm256_set1_epi16(1);
         let b = _mm256_set1_epi16(1);
@@ -13109,7 +13109,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_mulhi_epi16() {
         let a = _mm_set1_epi16(1);
         let b = _mm_set1_epi16(1);
@@ -13120,7 +13120,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_mulhi_epi16() {
         let a = _mm_set1_epi16(1);
         let b = _mm_set1_epi16(1);
@@ -13131,7 +13131,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mulhrs_epi16() {
         let a = _mm512_set1_epi16(1);
         let b = _mm512_set1_epi16(1);
@@ -13140,7 +13140,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_mulhrs_epi16() {
         let a = _mm512_set1_epi16(1);
         let b = _mm512_set1_epi16(1);
@@ -13153,7 +13153,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_mulhrs_epi16() {
         let a = _mm512_set1_epi16(1);
         let b = _mm512_set1_epi16(1);
@@ -13166,7 +13166,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_mulhrs_epi16() {
         let a = _mm256_set1_epi16(1);
         let b = _mm256_set1_epi16(1);
@@ -13177,7 +13177,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_mulhrs_epi16() {
         let a = _mm256_set1_epi16(1);
         let b = _mm256_set1_epi16(1);
@@ -13188,7 +13188,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_mulhrs_epi16() {
         let a = _mm_set1_epi16(1);
         let b = _mm_set1_epi16(1);
@@ -13199,7 +13199,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_mulhrs_epi16() {
         let a = _mm_set1_epi16(1);
         let b = _mm_set1_epi16(1);
@@ -13210,7 +13210,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mullo_epi16() {
         let a = _mm512_set1_epi16(1);
         let b = _mm512_set1_epi16(1);
@@ -13219,7 +13219,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_mullo_epi16() {
         let a = _mm512_set1_epi16(1);
         let b = _mm512_set1_epi16(1);
@@ -13232,7 +13232,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_mullo_epi16() {
         let a = _mm512_set1_epi16(1);
         let b = _mm512_set1_epi16(1);
@@ -13245,7 +13245,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_mullo_epi16() {
         let a = _mm256_set1_epi16(1);
         let b = _mm256_set1_epi16(1);
@@ -13256,7 +13256,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_mullo_epi16() {
         let a = _mm256_set1_epi16(1);
         let b = _mm256_set1_epi16(1);
@@ -13267,7 +13267,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_mullo_epi16() {
         let a = _mm_set1_epi16(1);
         let b = _mm_set1_epi16(1);
@@ -13278,7 +13278,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_mullo_epi16() {
         let a = _mm_set1_epi16(1);
         let b = _mm_set1_epi16(1);
@@ -13289,7 +13289,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_max_epu16() {
         #[rustfmt::skip]
         let a = _mm512_set_epi16(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
@@ -13304,7 +13304,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_max_epu16() {
         #[rustfmt::skip]
         let a = _mm512_set_epi16(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
@@ -13321,7 +13321,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_max_epu16() {
         #[rustfmt::skip]
         let a = _mm512_set_epi16(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
@@ -13338,7 +13338,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_max_epu16() {
         let a = _mm256_set_epi16(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
         let b = _mm256_set_epi16(15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0);
@@ -13349,7 +13349,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_max_epu16() {
         let a = _mm256_set_epi16(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
         let b = _mm256_set_epi16(15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0);
@@ -13360,7 +13360,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_max_epu16() {
         let a = _mm_set_epi16(0, 1, 2, 3, 4, 5, 6, 7);
         let b = _mm_set_epi16(7, 6, 5, 4, 3, 2, 1, 0);
@@ -13371,7 +13371,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_max_epu16() {
         let a = _mm_set_epi16(0, 1, 2, 3, 4, 5, 6, 7);
         let b = _mm_set_epi16(7, 6, 5, 4, 3, 2, 1, 0);
@@ -13382,7 +13382,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_max_epu8() {
         #[rustfmt::skip]
         let a = _mm512_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
@@ -13403,7 +13403,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_max_epu8() {
         #[rustfmt::skip]
         let a = _mm512_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
@@ -13431,7 +13431,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_max_epu8() {
         #[rustfmt::skip]
         let a = _mm512_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
@@ -13458,7 +13458,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_max_epu8() {
         #[rustfmt::skip]
         let a = _mm256_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
@@ -13475,7 +13475,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_max_epu8() {
         #[rustfmt::skip]
         let a = _mm256_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
@@ -13492,7 +13492,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_max_epu8() {
         let a = _mm_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
         let b = _mm_set_epi8(15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0);
@@ -13503,7 +13503,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_max_epu8() {
         let a = _mm_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
         let b = _mm_set_epi8(15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0);
@@ -13514,7 +13514,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_max_epi16() {
         #[rustfmt::skip]
         let a = _mm512_set_epi16(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
@@ -13529,7 +13529,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_max_epi16() {
         #[rustfmt::skip]
         let a = _mm512_set_epi16(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
@@ -13546,7 +13546,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_max_epi16() {
         #[rustfmt::skip]
         let a = _mm512_set_epi16(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
@@ -13563,7 +13563,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_max_epi16() {
         let a = _mm256_set_epi16(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
         let b = _mm256_set_epi16(15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0);
@@ -13574,7 +13574,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_max_epi16() {
         let a = _mm256_set_epi16(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
         let b = _mm256_set_epi16(15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0);
@@ -13585,7 +13585,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_max_epi16() {
         let a = _mm_set_epi16(0, 1, 2, 3, 4, 5, 6, 7);
         let b = _mm_set_epi16(7, 6, 5, 4, 3, 2, 1, 0);
@@ -13596,7 +13596,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_max_epi16() {
         let a = _mm_set_epi16(0, 1, 2, 3, 4, 5, 6, 7);
         let b = _mm_set_epi16(7, 6, 5, 4, 3, 2, 1, 0);
@@ -13607,7 +13607,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_max_epi8() {
         #[rustfmt::skip]
         let a = _mm512_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
@@ -13628,7 +13628,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_max_epi8() {
         #[rustfmt::skip]
         let a = _mm512_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
@@ -13656,7 +13656,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_max_epi8() {
         #[rustfmt::skip]
         let a = _mm512_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
@@ -13683,7 +13683,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_max_epi8() {
         #[rustfmt::skip]
         let a = _mm256_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
@@ -13700,7 +13700,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_max_epi8() {
         #[rustfmt::skip]
         let a = _mm256_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
@@ -13717,7 +13717,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_max_epi8() {
         let a = _mm_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
         let b = _mm_set_epi8(15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0);
@@ -13728,7 +13728,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_max_epi8() {
         let a = _mm_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
         let b = _mm_set_epi8(15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0);
@@ -13739,7 +13739,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_min_epu16() {
         #[rustfmt::skip]
         let a = _mm512_set_epi16(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
@@ -13754,7 +13754,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_min_epu16() {
         #[rustfmt::skip]
         let a = _mm512_set_epi16(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
@@ -13771,7 +13771,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_min_epu16() {
         #[rustfmt::skip]
         let a = _mm512_set_epi16(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
@@ -13788,7 +13788,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_min_epu16() {
         let a = _mm256_set_epi16(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
         let b = _mm256_set_epi16(15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0);
@@ -13799,7 +13799,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_min_epu16() {
         let a = _mm256_set_epi16(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
         let b = _mm256_set_epi16(15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0);
@@ -13810,7 +13810,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_min_epu16() {
         let a = _mm_set_epi16(0, 1, 2, 3, 4, 5, 6, 7);
         let b = _mm_set_epi16(7, 6, 5, 4, 3, 2, 1, 0);
@@ -13821,7 +13821,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_min_epu16() {
         let a = _mm_set_epi16(0, 1, 2, 3, 4, 5, 6, 7);
         let b = _mm_set_epi16(7, 6, 5, 4, 3, 2, 1, 0);
@@ -13832,7 +13832,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_min_epu8() {
         #[rustfmt::skip]
         let a = _mm512_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
@@ -13853,7 +13853,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_min_epu8() {
         #[rustfmt::skip]
         let a = _mm512_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
@@ -13881,7 +13881,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_min_epu8() {
         #[rustfmt::skip]
         let a = _mm512_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
@@ -13908,7 +13908,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_min_epu8() {
         #[rustfmt::skip]
         let a = _mm256_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
@@ -13925,7 +13925,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_min_epu8() {
         #[rustfmt::skip]
         let a = _mm256_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
@@ -13942,7 +13942,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_min_epu8() {
         let a = _mm_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
         let b = _mm_set_epi8(15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0);
@@ -13953,7 +13953,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_min_epu8() {
         let a = _mm_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
         let b = _mm_set_epi8(15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0);
@@ -13964,7 +13964,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_min_epi16() {
         #[rustfmt::skip]
         let a = _mm512_set_epi16(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
@@ -13979,7 +13979,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_min_epi16() {
         #[rustfmt::skip]
         let a = _mm512_set_epi16(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
@@ -13996,7 +13996,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_min_epi16() {
         #[rustfmt::skip]
         let a = _mm512_set_epi16(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
@@ -14013,7 +14013,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_min_epi16() {
         let a = _mm256_set_epi16(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
         let b = _mm256_set_epi16(15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0);
@@ -14024,7 +14024,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_min_epi16() {
         let a = _mm256_set_epi16(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
         let b = _mm256_set_epi16(15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0);
@@ -14035,7 +14035,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_min_epi16() {
         let a = _mm_set_epi16(0, 1, 2, 3, 4, 5, 6, 7);
         let b = _mm_set_epi16(7, 6, 5, 4, 3, 2, 1, 0);
@@ -14046,7 +14046,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_min_epi16() {
         let a = _mm_set_epi16(0, 1, 2, 3, 4, 5, 6, 7);
         let b = _mm_set_epi16(7, 6, 5, 4, 3, 2, 1, 0);
@@ -14057,7 +14057,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_min_epi8() {
         #[rustfmt::skip]
         let a = _mm512_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
@@ -14078,7 +14078,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_min_epi8() {
         #[rustfmt::skip]
         let a = _mm512_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
@@ -14106,7 +14106,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_min_epi8() {
         #[rustfmt::skip]
         let a = _mm512_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
@@ -14133,7 +14133,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_min_epi8() {
         #[rustfmt::skip]
         let a = _mm256_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
@@ -14150,7 +14150,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_min_epi8() {
         #[rustfmt::skip]
         let a = _mm256_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
@@ -14167,7 +14167,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_min_epi8() {
         let a = _mm_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
         let b = _mm_set_epi8(15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0);
@@ -14178,7 +14178,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_min_epi8() {
         let a = _mm_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
         let b = _mm_set_epi8(15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0);
@@ -14189,7 +14189,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_cmplt_epu16_mask() {
         let a = _mm512_set1_epi16(-2);
         let b = _mm512_set1_epi16(-1);
@@ -14197,7 +14197,7 @@ mod tests {
         assert_eq!(m, 0b11111111_11111111_11111111_11111111);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_cmplt_epu16_mask() {
         let a = _mm512_set1_epi16(-2);
         let b = _mm512_set1_epi16(-1);
@@ -14206,7 +14206,7 @@ mod tests {
         assert_eq!(r, 0b01010101_01010101_01010101_01010101);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_cmplt_epu16_mask() {
         let a = _mm256_set1_epi16(-2);
         let b = _mm256_set1_epi16(-1);
@@ -14214,7 +14214,7 @@ mod tests {
         assert_eq!(m, 0b11111111_11111111);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_cmplt_epu16_mask() {
         let a = _mm256_set1_epi16(-2);
         let b = _mm256_set1_epi16(-1);
@@ -14223,7 +14223,7 @@ mod tests {
         assert_eq!(r, 0b01010101_01010101);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_cmplt_epu16_mask() {
         let a = _mm_set1_epi16(-2);
         let b = _mm_set1_epi16(-1);
@@ -14231,7 +14231,7 @@ mod tests {
         assert_eq!(m, 0b11111111);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_cmplt_epu16_mask() {
         let a = _mm_set1_epi16(-2);
         let b = _mm_set1_epi16(-1);
@@ -14240,7 +14240,7 @@ mod tests {
         assert_eq!(r, 0b01010101);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_cmplt_epu8_mask() {
         let a = _mm512_set1_epi8(-2);
         let b = _mm512_set1_epi8(-1);
@@ -14251,7 +14251,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_cmplt_epu8_mask() {
         let a = _mm512_set1_epi8(-2);
         let b = _mm512_set1_epi8(-1);
@@ -14263,7 +14263,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_cmplt_epu8_mask() {
         let a = _mm256_set1_epi8(-2);
         let b = _mm256_set1_epi8(-1);
@@ -14271,7 +14271,7 @@ mod tests {
         assert_eq!(m, 0b11111111_11111111_11111111_11111111);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_cmplt_epu8_mask() {
         let a = _mm256_set1_epi8(-2);
         let b = _mm256_set1_epi8(-1);
@@ -14280,7 +14280,7 @@ mod tests {
         assert_eq!(r, 0b01010101_01010101_01010101_01010101);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_cmplt_epu8_mask() {
         let a = _mm_set1_epi8(-2);
         let b = _mm_set1_epi8(-1);
@@ -14288,7 +14288,7 @@ mod tests {
         assert_eq!(m, 0b11111111_11111111);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_cmplt_epu8_mask() {
         let a = _mm_set1_epi8(-2);
         let b = _mm_set1_epi8(-1);
@@ -14297,7 +14297,7 @@ mod tests {
         assert_eq!(r, 0b01010101_01010101);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_cmplt_epi16_mask() {
         let a = _mm512_set1_epi16(-2);
         let b = _mm512_set1_epi16(-1);
@@ -14305,7 +14305,7 @@ mod tests {
         assert_eq!(m, 0b11111111_11111111_11111111_11111111);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_cmplt_epi16_mask() {
         let a = _mm512_set1_epi16(-2);
         let b = _mm512_set1_epi16(-1);
@@ -14314,7 +14314,7 @@ mod tests {
         assert_eq!(r, 0b01010101_01010101_01010101_01010101);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_cmplt_epi16_mask() {
         let a = _mm256_set1_epi16(-2);
         let b = _mm256_set1_epi16(-1);
@@ -14322,7 +14322,7 @@ mod tests {
         assert_eq!(m, 0b11111111_11111111);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_cmplt_epi16_mask() {
         let a = _mm256_set1_epi16(-2);
         let b = _mm256_set1_epi16(-1);
@@ -14331,7 +14331,7 @@ mod tests {
         assert_eq!(r, 0b01010101_01010101);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_cmplt_epi16_mask() {
         let a = _mm_set1_epi16(-2);
         let b = _mm_set1_epi16(-1);
@@ -14339,7 +14339,7 @@ mod tests {
         assert_eq!(m, 0b11111111);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_cmplt_epi16_mask() {
         let a = _mm_set1_epi16(-2);
         let b = _mm_set1_epi16(-1);
@@ -14348,7 +14348,7 @@ mod tests {
         assert_eq!(r, 0b01010101);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_cmplt_epi8_mask() {
         let a = _mm512_set1_epi8(-2);
         let b = _mm512_set1_epi8(-1);
@@ -14359,7 +14359,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_cmplt_epi8_mask() {
         let a = _mm512_set1_epi8(-2);
         let b = _mm512_set1_epi8(-1);
@@ -14371,7 +14371,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_cmplt_epi8_mask() {
         let a = _mm256_set1_epi8(-2);
         let b = _mm256_set1_epi8(-1);
@@ -14379,7 +14379,7 @@ mod tests {
         assert_eq!(m, 0b11111111_11111111_11111111_11111111);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_cmplt_epi8_mask() {
         let a = _mm256_set1_epi8(-2);
         let b = _mm256_set1_epi8(-1);
@@ -14388,7 +14388,7 @@ mod tests {
         assert_eq!(r, 0b01010101_01010101_01010101_01010101);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_cmplt_epi8_mask() {
         let a = _mm_set1_epi8(-2);
         let b = _mm_set1_epi8(-1);
@@ -14396,7 +14396,7 @@ mod tests {
         assert_eq!(m, 0b11111111_11111111);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_cmplt_epi8_mask() {
         let a = _mm_set1_epi8(-2);
         let b = _mm_set1_epi8(-1);
@@ -14405,7 +14405,7 @@ mod tests {
         assert_eq!(r, 0b01010101_01010101);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_cmpgt_epu16_mask() {
         let a = _mm512_set1_epi16(2);
         let b = _mm512_set1_epi16(1);
@@ -14413,7 +14413,7 @@ mod tests {
         assert_eq!(m, 0b11111111_11111111_11111111_11111111);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_cmpgt_epu16_mask() {
         let a = _mm512_set1_epi16(2);
         let b = _mm512_set1_epi16(1);
@@ -14422,7 +14422,7 @@ mod tests {
         assert_eq!(r, 0b01010101_01010101_01010101_01010101);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_cmpgt_epu16_mask() {
         let a = _mm256_set1_epi16(2);
         let b = _mm256_set1_epi16(1);
@@ -14430,7 +14430,7 @@ mod tests {
         assert_eq!(m, 0b11111111_11111111);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_cmpgt_epu16_mask() {
         let a = _mm256_set1_epi16(2);
         let b = _mm256_set1_epi16(1);
@@ -14439,7 +14439,7 @@ mod tests {
         assert_eq!(r, 0b01010101_01010101);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_cmpgt_epu16_mask() {
         let a = _mm_set1_epi16(2);
         let b = _mm_set1_epi16(1);
@@ -14447,7 +14447,7 @@ mod tests {
         assert_eq!(m, 0b11111111);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_cmpgt_epu16_mask() {
         let a = _mm_set1_epi16(2);
         let b = _mm_set1_epi16(1);
@@ -14456,7 +14456,7 @@ mod tests {
         assert_eq!(r, 0b01010101);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_cmpgt_epu8_mask() {
         let a = _mm512_set1_epi8(2);
         let b = _mm512_set1_epi8(1);
@@ -14467,7 +14467,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_cmpgt_epu8_mask() {
         let a = _mm512_set1_epi8(2);
         let b = _mm512_set1_epi8(1);
@@ -14479,7 +14479,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_cmpgt_epu8_mask() {
         let a = _mm256_set1_epi8(2);
         let b = _mm256_set1_epi8(1);
@@ -14487,7 +14487,7 @@ mod tests {
         assert_eq!(m, 0b11111111_11111111_11111111_11111111);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_cmpgt_epu8_mask() {
         let a = _mm256_set1_epi8(2);
         let b = _mm256_set1_epi8(1);
@@ -14496,7 +14496,7 @@ mod tests {
         assert_eq!(r, 0b01010101_01010101_01010101_01010101);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_cmpgt_epu8_mask() {
         let a = _mm_set1_epi8(2);
         let b = _mm_set1_epi8(1);
@@ -14504,7 +14504,7 @@ mod tests {
         assert_eq!(m, 0b11111111_11111111);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_cmpgt_epu8_mask() {
         let a = _mm_set1_epi8(2);
         let b = _mm_set1_epi8(1);
@@ -14513,7 +14513,7 @@ mod tests {
         assert_eq!(r, 0b01010101_01010101);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_cmpgt_epi16_mask() {
         let a = _mm512_set1_epi16(2);
         let b = _mm512_set1_epi16(-1);
@@ -14521,7 +14521,7 @@ mod tests {
         assert_eq!(m, 0b11111111_11111111_11111111_11111111);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_cmpgt_epi16_mask() {
         let a = _mm512_set1_epi16(2);
         let b = _mm512_set1_epi16(-1);
@@ -14530,7 +14530,7 @@ mod tests {
         assert_eq!(r, 0b01010101_01010101_01010101_01010101);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_cmpgt_epi16_mask() {
         let a = _mm256_set1_epi16(2);
         let b = _mm256_set1_epi16(-1);
@@ -14538,7 +14538,7 @@ mod tests {
         assert_eq!(m, 0b11111111_11111111);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_cmpgt_epi16_mask() {
         let a = _mm256_set1_epi16(2);
         let b = _mm256_set1_epi16(-1);
@@ -14547,7 +14547,7 @@ mod tests {
         assert_eq!(r, 0b01010101_01010101);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_cmpgt_epi16_mask() {
         let a = _mm_set1_epi16(2);
         let b = _mm_set1_epi16(-1);
@@ -14555,7 +14555,7 @@ mod tests {
         assert_eq!(m, 0b11111111);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_cmpgt_epi16_mask() {
         let a = _mm_set1_epi16(2);
         let b = _mm_set1_epi16(-1);
@@ -14564,7 +14564,7 @@ mod tests {
         assert_eq!(r, 0b01010101);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_cmpgt_epi8_mask() {
         let a = _mm512_set1_epi8(2);
         let b = _mm512_set1_epi8(-1);
@@ -14575,7 +14575,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_cmpgt_epi8_mask() {
         let a = _mm512_set1_epi8(2);
         let b = _mm512_set1_epi8(-1);
@@ -14587,7 +14587,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_cmpgt_epi8_mask() {
         let a = _mm256_set1_epi8(2);
         let b = _mm256_set1_epi8(-1);
@@ -14595,7 +14595,7 @@ mod tests {
         assert_eq!(m, 0b11111111_11111111_11111111_11111111);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_cmpgt_epi8_mask() {
         let a = _mm256_set1_epi8(2);
         let b = _mm256_set1_epi8(-1);
@@ -14604,7 +14604,7 @@ mod tests {
         assert_eq!(r, 0b01010101_01010101_01010101_01010101);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_cmpgt_epi8_mask() {
         let a = _mm_set1_epi8(2);
         let b = _mm_set1_epi8(-1);
@@ -14612,7 +14612,7 @@ mod tests {
         assert_eq!(m, 0b11111111_11111111);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_cmpgt_epi8_mask() {
         let a = _mm_set1_epi8(2);
         let b = _mm_set1_epi8(-1);
@@ -14621,7 +14621,7 @@ mod tests {
         assert_eq!(r, 0b01010101_01010101);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_cmple_epu16_mask() {
         let a = _mm512_set1_epi16(-1);
         let b = _mm512_set1_epi16(-1);
@@ -14629,7 +14629,7 @@ mod tests {
         assert_eq!(m, 0b11111111_11111111_11111111_11111111);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_cmple_epu16_mask() {
         let a = _mm512_set1_epi16(-1);
         let b = _mm512_set1_epi16(-1);
@@ -14638,7 +14638,7 @@ mod tests {
         assert_eq!(r, 0b01010101_01010101_01010101_01010101);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_cmple_epu16_mask() {
         let a = _mm256_set1_epi16(-1);
         let b = _mm256_set1_epi16(-1);
@@ -14646,7 +14646,7 @@ mod tests {
         assert_eq!(m, 0b11111111_11111111);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_cmple_epu16_mask() {
         let a = _mm256_set1_epi16(-1);
         let b = _mm256_set1_epi16(-1);
@@ -14655,7 +14655,7 @@ mod tests {
         assert_eq!(r, 0b01010101_01010101);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_cmple_epu16_mask() {
         let a = _mm_set1_epi16(-1);
         let b = _mm_set1_epi16(-1);
@@ -14663,7 +14663,7 @@ mod tests {
         assert_eq!(m, 0b11111111);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_cmple_epu16_mask() {
         let a = _mm_set1_epi16(-1);
         let b = _mm_set1_epi16(-1);
@@ -14672,7 +14672,7 @@ mod tests {
         assert_eq!(r, 0b01010101);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_cmple_epu8_mask() {
         let a = _mm512_set1_epi8(-1);
         let b = _mm512_set1_epi8(-1);
@@ -14683,7 +14683,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_cmple_epu8_mask() {
         let a = _mm512_set1_epi8(-1);
         let b = _mm512_set1_epi8(-1);
@@ -14695,7 +14695,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_cmple_epu8_mask() {
         let a = _mm256_set1_epi8(-1);
         let b = _mm256_set1_epi8(-1);
@@ -14703,7 +14703,7 @@ mod tests {
         assert_eq!(m, 0b11111111_11111111_11111111_11111111);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_cmple_epu8_mask() {
         let a = _mm256_set1_epi8(-1);
         let b = _mm256_set1_epi8(-1);
@@ -14712,7 +14712,7 @@ mod tests {
         assert_eq!(r, 0b01010101_01010101_01010101_01010101);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_cmple_epu8_mask() {
         let a = _mm_set1_epi8(-1);
         let b = _mm_set1_epi8(-1);
@@ -14720,7 +14720,7 @@ mod tests {
         assert_eq!(m, 0b11111111_11111111);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_cmple_epu8_mask() {
         let a = _mm_set1_epi8(-1);
         let b = _mm_set1_epi8(-1);
@@ -14729,7 +14729,7 @@ mod tests {
         assert_eq!(r, 0b01010101_01010101);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_cmple_epi16_mask() {
         let a = _mm512_set1_epi16(-1);
         let b = _mm512_set1_epi16(-1);
@@ -14737,7 +14737,7 @@ mod tests {
         assert_eq!(m, 0b11111111_11111111_11111111_11111111);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_cmple_epi16_mask() {
         let a = _mm512_set1_epi16(-1);
         let b = _mm512_set1_epi16(-1);
@@ -14746,7 +14746,7 @@ mod tests {
         assert_eq!(r, 0b01010101_01010101_01010101_01010101);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_cmple_epi16_mask() {
         let a = _mm256_set1_epi16(-1);
         let b = _mm256_set1_epi16(-1);
@@ -14754,7 +14754,7 @@ mod tests {
         assert_eq!(m, 0b11111111_11111111);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_cmple_epi16_mask() {
         let a = _mm256_set1_epi16(-1);
         let b = _mm256_set1_epi16(-1);
@@ -14763,7 +14763,7 @@ mod tests {
         assert_eq!(r, 0b01010101_01010101);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_cmple_epi16_mask() {
         let a = _mm_set1_epi16(-1);
         let b = _mm_set1_epi16(-1);
@@ -14771,7 +14771,7 @@ mod tests {
         assert_eq!(m, 0b11111111);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_cmple_epi16_mask() {
         let a = _mm_set1_epi16(-1);
         let b = _mm_set1_epi16(-1);
@@ -14780,7 +14780,7 @@ mod tests {
         assert_eq!(r, 0b01010101);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_cmple_epi8_mask() {
         let a = _mm512_set1_epi8(-1);
         let b = _mm512_set1_epi8(-1);
@@ -14791,7 +14791,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_cmple_epi8_mask() {
         let a = _mm512_set1_epi8(-1);
         let b = _mm512_set1_epi8(-1);
@@ -14803,7 +14803,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_cmple_epi8_mask() {
         let a = _mm256_set1_epi8(-1);
         let b = _mm256_set1_epi8(-1);
@@ -14811,7 +14811,7 @@ mod tests {
         assert_eq!(m, 0b11111111_11111111_11111111_11111111);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_cmple_epi8_mask() {
         let a = _mm256_set1_epi8(-1);
         let b = _mm256_set1_epi8(-1);
@@ -14820,7 +14820,7 @@ mod tests {
         assert_eq!(r, 0b01010101_01010101_01010101_01010101);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_cmple_epi8_mask() {
         let a = _mm_set1_epi8(-1);
         let b = _mm_set1_epi8(-1);
@@ -14828,7 +14828,7 @@ mod tests {
         assert_eq!(m, 0b11111111_11111111);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_cmple_epi8_mask() {
         let a = _mm_set1_epi8(-1);
         let b = _mm_set1_epi8(-1);
@@ -14837,7 +14837,7 @@ mod tests {
         assert_eq!(r, 0b01010101_01010101);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_cmpge_epu16_mask() {
         let a = _mm512_set1_epi16(1);
         let b = _mm512_set1_epi16(1);
@@ -14845,7 +14845,7 @@ mod tests {
         assert_eq!(m, 0b11111111_11111111_11111111_11111111);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_cmpge_epu16_mask() {
         let a = _mm512_set1_epi16(1);
         let b = _mm512_set1_epi16(1);
@@ -14854,7 +14854,7 @@ mod tests {
         assert_eq!(r, 0b01010101_01010101_01010101_01010101);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_cmpge_epu16_mask() {
         let a = _mm256_set1_epi16(1);
         let b = _mm256_set1_epi16(1);
@@ -14862,7 +14862,7 @@ mod tests {
         assert_eq!(m, 0b11111111_11111111);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_cmpge_epu16_mask() {
         let a = _mm256_set1_epi16(1);
         let b = _mm256_set1_epi16(1);
@@ -14871,7 +14871,7 @@ mod tests {
         assert_eq!(r, 0b01010101_01010101);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_cmpge_epu16_mask() {
         let a = _mm_set1_epi16(1);
         let b = _mm_set1_epi16(1);
@@ -14879,7 +14879,7 @@ mod tests {
         assert_eq!(m, 0b11111111);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_cmpge_epu16_mask() {
         let a = _mm_set1_epi16(1);
         let b = _mm_set1_epi16(1);
@@ -14888,7 +14888,7 @@ mod tests {
         assert_eq!(r, 0b01010101);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_cmpge_epu8_mask() {
         let a = _mm512_set1_epi8(1);
         let b = _mm512_set1_epi8(1);
@@ -14899,7 +14899,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_cmpge_epu8_mask() {
         let a = _mm512_set1_epi8(1);
         let b = _mm512_set1_epi8(1);
@@ -14911,7 +14911,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_cmpge_epu8_mask() {
         let a = _mm256_set1_epi8(1);
         let b = _mm256_set1_epi8(1);
@@ -14919,7 +14919,7 @@ mod tests {
         assert_eq!(m, 0b11111111_11111111_11111111_11111111);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_cmpge_epu8_mask() {
         let a = _mm256_set1_epi8(1);
         let b = _mm256_set1_epi8(1);
@@ -14928,7 +14928,7 @@ mod tests {
         assert_eq!(r, 0b01010101_01010101_01010101_01010101);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_cmpge_epu8_mask() {
         let a = _mm_set1_epi8(1);
         let b = _mm_set1_epi8(1);
@@ -14936,7 +14936,7 @@ mod tests {
         assert_eq!(m, 0b11111111_11111111);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_cmpge_epu8_mask() {
         let a = _mm_set1_epi8(1);
         let b = _mm_set1_epi8(1);
@@ -14945,7 +14945,7 @@ mod tests {
         assert_eq!(r, 0b01010101_01010101);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_cmpge_epi16_mask() {
         let a = _mm512_set1_epi16(-1);
         let b = _mm512_set1_epi16(-1);
@@ -14953,7 +14953,7 @@ mod tests {
         assert_eq!(m, 0b11111111_11111111_11111111_11111111);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_cmpge_epi16_mask() {
         let a = _mm512_set1_epi16(-1);
         let b = _mm512_set1_epi16(-1);
@@ -14962,7 +14962,7 @@ mod tests {
         assert_eq!(r, 0b01010101_01010101_01010101_01010101);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_cmpge_epi16_mask() {
         let a = _mm256_set1_epi16(-1);
         let b = _mm256_set1_epi16(-1);
@@ -14970,7 +14970,7 @@ mod tests {
         assert_eq!(m, 0b11111111_11111111);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_cmpge_epi16_mask() {
         let a = _mm256_set1_epi16(-1);
         let b = _mm256_set1_epi16(-1);
@@ -14979,7 +14979,7 @@ mod tests {
         assert_eq!(r, 0b01010101_01010101);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_cmpge_epi16_mask() {
         let a = _mm_set1_epi16(-1);
         let b = _mm_set1_epi16(-1);
@@ -14987,7 +14987,7 @@ mod tests {
         assert_eq!(m, 0b11111111);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_cmpge_epi16_mask() {
         let a = _mm_set1_epi16(-1);
         let b = _mm_set1_epi16(-1);
@@ -14996,7 +14996,7 @@ mod tests {
         assert_eq!(r, 0b01010101);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_cmpge_epi8_mask() {
         let a = _mm512_set1_epi8(-1);
         let b = _mm512_set1_epi8(-1);
@@ -15007,7 +15007,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_cmpge_epi8_mask() {
         let a = _mm512_set1_epi8(-1);
         let b = _mm512_set1_epi8(-1);
@@ -15019,7 +15019,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_cmpge_epi8_mask() {
         let a = _mm256_set1_epi8(-1);
         let b = _mm256_set1_epi8(-1);
@@ -15027,7 +15027,7 @@ mod tests {
         assert_eq!(m, 0b11111111_11111111_11111111_11111111);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_cmpge_epi8_mask() {
         let a = _mm256_set1_epi8(-1);
         let b = _mm256_set1_epi8(-1);
@@ -15036,7 +15036,7 @@ mod tests {
         assert_eq!(r, 0b01010101_01010101_01010101_01010101);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_cmpge_epi8_mask() {
         let a = _mm_set1_epi8(-1);
         let b = _mm_set1_epi8(-1);
@@ -15044,7 +15044,7 @@ mod tests {
         assert_eq!(m, 0b11111111_11111111);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_cmpge_epi8_mask() {
         let a = _mm_set1_epi8(-1);
         let b = _mm_set1_epi8(-1);
@@ -15053,7 +15053,7 @@ mod tests {
         assert_eq!(r, 0b01010101_01010101);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_cmpeq_epu16_mask() {
         let a = _mm512_set1_epi16(1);
         let b = _mm512_set1_epi16(1);
@@ -15061,7 +15061,7 @@ mod tests {
         assert_eq!(m, 0b11111111_11111111_11111111_11111111);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_cmpeq_epu16_mask() {
         let a = _mm512_set1_epi16(1);
         let b = _mm512_set1_epi16(1);
@@ -15070,7 +15070,7 @@ mod tests {
         assert_eq!(r, 0b01010101_01010101_01010101_01010101);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_cmpeq_epu16_mask() {
         let a = _mm256_set1_epi16(1);
         let b = _mm256_set1_epi16(1);
@@ -15078,7 +15078,7 @@ mod tests {
         assert_eq!(m, 0b11111111_11111111);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_cmpeq_epu16_mask() {
         let a = _mm256_set1_epi16(1);
         let b = _mm256_set1_epi16(1);
@@ -15087,7 +15087,7 @@ mod tests {
         assert_eq!(r, 0b01010101_01010101);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_cmpeq_epu16_mask() {
         let a = _mm_set1_epi16(1);
         let b = _mm_set1_epi16(1);
@@ -15095,7 +15095,7 @@ mod tests {
         assert_eq!(m, 0b11111111);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_cmpeq_epu16_mask() {
         let a = _mm_set1_epi16(1);
         let b = _mm_set1_epi16(1);
@@ -15104,7 +15104,7 @@ mod tests {
         assert_eq!(r, 0b01010101);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_cmpeq_epu8_mask() {
         let a = _mm512_set1_epi8(1);
         let b = _mm512_set1_epi8(1);
@@ -15115,7 +15115,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_cmpeq_epu8_mask() {
         let a = _mm512_set1_epi8(1);
         let b = _mm512_set1_epi8(1);
@@ -15127,7 +15127,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_cmpeq_epu8_mask() {
         let a = _mm256_set1_epi8(1);
         let b = _mm256_set1_epi8(1);
@@ -15135,7 +15135,7 @@ mod tests {
         assert_eq!(m, 0b11111111_11111111_11111111_11111111);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_cmpeq_epu8_mask() {
         let a = _mm256_set1_epi8(1);
         let b = _mm256_set1_epi8(1);
@@ -15144,7 +15144,7 @@ mod tests {
         assert_eq!(r, 0b01010101_01010101_01010101_01010101);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_cmpeq_epu8_mask() {
         let a = _mm_set1_epi8(1);
         let b = _mm_set1_epi8(1);
@@ -15152,7 +15152,7 @@ mod tests {
         assert_eq!(m, 0b11111111_11111111);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_cmpeq_epu8_mask() {
         let a = _mm_set1_epi8(1);
         let b = _mm_set1_epi8(1);
@@ -15161,7 +15161,7 @@ mod tests {
         assert_eq!(r, 0b01010101_01010101);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_cmpeq_epi16_mask() {
         let a = _mm512_set1_epi16(-1);
         let b = _mm512_set1_epi16(-1);
@@ -15169,7 +15169,7 @@ mod tests {
         assert_eq!(m, 0b11111111_11111111_11111111_11111111);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_cmpeq_epi16_mask() {
         let a = _mm512_set1_epi16(-1);
         let b = _mm512_set1_epi16(-1);
@@ -15178,7 +15178,7 @@ mod tests {
         assert_eq!(r, 0b01010101_01010101_01010101_01010101);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_cmpeq_epi16_mask() {
         let a = _mm256_set1_epi16(-1);
         let b = _mm256_set1_epi16(-1);
@@ -15186,7 +15186,7 @@ mod tests {
         assert_eq!(m, 0b11111111_11111111);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_cmpeq_epi16_mask() {
         let a = _mm256_set1_epi16(-1);
         let b = _mm256_set1_epi16(-1);
@@ -15195,7 +15195,7 @@ mod tests {
         assert_eq!(r, 0b01010101_01010101);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_cmpeq_epi16_mask() {
         let a = _mm_set1_epi16(-1);
         let b = _mm_set1_epi16(-1);
@@ -15203,7 +15203,7 @@ mod tests {
         assert_eq!(m, 0b11111111);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_cmpeq_epi16_mask() {
         let a = _mm_set1_epi16(-1);
         let b = _mm_set1_epi16(-1);
@@ -15212,7 +15212,7 @@ mod tests {
         assert_eq!(r, 0b01010101);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_cmpeq_epi8_mask() {
         let a = _mm512_set1_epi8(-1);
         let b = _mm512_set1_epi8(-1);
@@ -15223,7 +15223,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_cmpeq_epi8_mask() {
         let a = _mm512_set1_epi8(-1);
         let b = _mm512_set1_epi8(-1);
@@ -15235,7 +15235,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_cmpeq_epi8_mask() {
         let a = _mm256_set1_epi8(-1);
         let b = _mm256_set1_epi8(-1);
@@ -15243,7 +15243,7 @@ mod tests {
         assert_eq!(m, 0b11111111_11111111_11111111_11111111);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_cmpeq_epi8_mask() {
         let a = _mm256_set1_epi8(-1);
         let b = _mm256_set1_epi8(-1);
@@ -15252,7 +15252,7 @@ mod tests {
         assert_eq!(r, 0b01010101_01010101_01010101_01010101);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_cmpeq_epi8_mask() {
         let a = _mm_set1_epi8(-1);
         let b = _mm_set1_epi8(-1);
@@ -15260,7 +15260,7 @@ mod tests {
         assert_eq!(m, 0b11111111_11111111);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_cmpeq_epi8_mask() {
         let a = _mm_set1_epi8(-1);
         let b = _mm_set1_epi8(-1);
@@ -15269,7 +15269,7 @@ mod tests {
         assert_eq!(r, 0b01010101_01010101);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_cmpneq_epu16_mask() {
         let a = _mm512_set1_epi16(2);
         let b = _mm512_set1_epi16(1);
@@ -15277,7 +15277,7 @@ mod tests {
         assert_eq!(m, 0b11111111_11111111_11111111_11111111);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_cmpneq_epu16_mask() {
         let a = _mm512_set1_epi16(2);
         let b = _mm512_set1_epi16(1);
@@ -15286,7 +15286,7 @@ mod tests {
         assert_eq!(r, 0b01010101_01010101_01010101_01010101);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_cmpneq_epu16_mask() {
         let a = _mm256_set1_epi16(2);
         let b = _mm256_set1_epi16(1);
@@ -15294,7 +15294,7 @@ mod tests {
         assert_eq!(m, 0b11111111_11111111);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_cmpneq_epu16_mask() {
         let a = _mm256_set1_epi16(2);
         let b = _mm256_set1_epi16(1);
@@ -15303,7 +15303,7 @@ mod tests {
         assert_eq!(r, 0b01010101_01010101);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_cmpneq_epu16_mask() {
         let a = _mm_set1_epi16(2);
         let b = _mm_set1_epi16(1);
@@ -15311,7 +15311,7 @@ mod tests {
         assert_eq!(m, 0b11111111);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_cmpneq_epu16_mask() {
         let a = _mm_set1_epi16(2);
         let b = _mm_set1_epi16(1);
@@ -15320,7 +15320,7 @@ mod tests {
         assert_eq!(r, 0b01010101);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_cmpneq_epu8_mask() {
         let a = _mm512_set1_epi8(2);
         let b = _mm512_set1_epi8(1);
@@ -15331,7 +15331,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_cmpneq_epu8_mask() {
         let a = _mm512_set1_epi8(2);
         let b = _mm512_set1_epi8(1);
@@ -15343,7 +15343,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_cmpneq_epu8_mask() {
         let a = _mm256_set1_epi8(2);
         let b = _mm256_set1_epi8(1);
@@ -15351,7 +15351,7 @@ mod tests {
         assert_eq!(m, 0b11111111_11111111_11111111_11111111);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_cmpneq_epu8_mask() {
         let a = _mm256_set1_epi8(2);
         let b = _mm256_set1_epi8(1);
@@ -15360,7 +15360,7 @@ mod tests {
         assert_eq!(r, 0b01010101_01010101_01010101_01010101);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_cmpneq_epu8_mask() {
         let a = _mm_set1_epi8(2);
         let b = _mm_set1_epi8(1);
@@ -15368,7 +15368,7 @@ mod tests {
         assert_eq!(m, 0b11111111_11111111);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_cmpneq_epu8_mask() {
         let a = _mm_set1_epi8(2);
         let b = _mm_set1_epi8(1);
@@ -15377,7 +15377,7 @@ mod tests {
         assert_eq!(r, 0b01010101_01010101);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_cmpneq_epi16_mask() {
         let a = _mm512_set1_epi16(1);
         let b = _mm512_set1_epi16(-1);
@@ -15385,7 +15385,7 @@ mod tests {
         assert_eq!(m, 0b11111111_11111111_11111111_11111111);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_cmpneq_epi16_mask() {
         let a = _mm512_set1_epi16(1);
         let b = _mm512_set1_epi16(-1);
@@ -15394,7 +15394,7 @@ mod tests {
         assert_eq!(r, 0b01010101_01010101_01010101_01010101);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_cmpneq_epi16_mask() {
         let a = _mm256_set1_epi16(1);
         let b = _mm256_set1_epi16(-1);
@@ -15402,7 +15402,7 @@ mod tests {
         assert_eq!(m, 0b11111111_11111111);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_cmpneq_epi16_mask() {
         let a = _mm256_set1_epi16(1);
         let b = _mm256_set1_epi16(-1);
@@ -15411,7 +15411,7 @@ mod tests {
         assert_eq!(r, 0b01010101_01010101);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_cmpneq_epi16_mask() {
         let a = _mm_set1_epi16(1);
         let b = _mm_set1_epi16(-1);
@@ -15419,7 +15419,7 @@ mod tests {
         assert_eq!(m, 0b11111111);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_cmpneq_epi16_mask() {
         let a = _mm_set1_epi16(1);
         let b = _mm_set1_epi16(-1);
@@ -15428,7 +15428,7 @@ mod tests {
         assert_eq!(r, 0b01010101);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_cmpneq_epi8_mask() {
         let a = _mm512_set1_epi8(1);
         let b = _mm512_set1_epi8(-1);
@@ -15439,7 +15439,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_cmpneq_epi8_mask() {
         let a = _mm512_set1_epi8(1);
         let b = _mm512_set1_epi8(-1);
@@ -15451,7 +15451,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_cmpneq_epi8_mask() {
         let a = _mm256_set1_epi8(1);
         let b = _mm256_set1_epi8(-1);
@@ -15459,7 +15459,7 @@ mod tests {
         assert_eq!(m, 0b11111111_11111111_11111111_11111111);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_cmpneq_epi8_mask() {
         let a = _mm256_set1_epi8(1);
         let b = _mm256_set1_epi8(-1);
@@ -15468,7 +15468,7 @@ mod tests {
         assert_eq!(r, 0b01010101_01010101_01010101_01010101);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_cmpneq_epi8_mask() {
         let a = _mm_set1_epi8(1);
         let b = _mm_set1_epi8(-1);
@@ -15476,7 +15476,7 @@ mod tests {
         assert_eq!(m, 0b11111111_11111111);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_cmpneq_epi8_mask() {
         let a = _mm_set1_epi8(1);
         let b = _mm_set1_epi8(-1);
@@ -15485,7 +15485,7 @@ mod tests {
         assert_eq!(r, 0b01010101_01010101);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_cmp_epu16_mask() {
         let a = _mm512_set1_epi16(0);
         let b = _mm512_set1_epi16(1);
@@ -15493,7 +15493,7 @@ mod tests {
         assert_eq!(m, 0b11111111_11111111_11111111_11111111);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_cmp_epu16_mask() {
         let a = _mm512_set1_epi16(0);
         let b = _mm512_set1_epi16(1);
@@ -15502,7 +15502,7 @@ mod tests {
         assert_eq!(r, 0b01010101_01010101_01010101_01010101);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_cmp_epu16_mask() {
         let a = _mm256_set1_epi16(0);
         let b = _mm256_set1_epi16(1);
@@ -15510,7 +15510,7 @@ mod tests {
         assert_eq!(m, 0b11111111_11111111);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_cmp_epu16_mask() {
         let a = _mm256_set1_epi16(0);
         let b = _mm256_set1_epi16(1);
@@ -15519,7 +15519,7 @@ mod tests {
         assert_eq!(r, 0b01010101_01010101);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_cmp_epu16_mask() {
         let a = _mm_set1_epi16(0);
         let b = _mm_set1_epi16(1);
@@ -15527,7 +15527,7 @@ mod tests {
         assert_eq!(m, 0b11111111);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_cmp_epu16_mask() {
         let a = _mm_set1_epi16(0);
         let b = _mm_set1_epi16(1);
@@ -15536,7 +15536,7 @@ mod tests {
         assert_eq!(r, 0b01010101);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_cmp_epu8_mask() {
         let a = _mm512_set1_epi8(0);
         let b = _mm512_set1_epi8(1);
@@ -15547,7 +15547,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_cmp_epu8_mask() {
         let a = _mm512_set1_epi8(0);
         let b = _mm512_set1_epi8(1);
@@ -15559,7 +15559,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_cmp_epu8_mask() {
         let a = _mm256_set1_epi8(0);
         let b = _mm256_set1_epi8(1);
@@ -15567,7 +15567,7 @@ mod tests {
         assert_eq!(m, 0b11111111_11111111_11111111_11111111);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_cmp_epu8_mask() {
         let a = _mm256_set1_epi8(0);
         let b = _mm256_set1_epi8(1);
@@ -15576,7 +15576,7 @@ mod tests {
         assert_eq!(r, 0b01010101_01010101_01010101_01010101);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_cmp_epu8_mask() {
         let a = _mm_set1_epi8(0);
         let b = _mm_set1_epi8(1);
@@ -15584,7 +15584,7 @@ mod tests {
         assert_eq!(m, 0b11111111_11111111);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_cmp_epu8_mask() {
         let a = _mm_set1_epi8(0);
         let b = _mm_set1_epi8(1);
@@ -15593,7 +15593,7 @@ mod tests {
         assert_eq!(r, 0b01010101_01010101);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_cmp_epi16_mask() {
         let a = _mm512_set1_epi16(0);
         let b = _mm512_set1_epi16(1);
@@ -15601,7 +15601,7 @@ mod tests {
         assert_eq!(m, 0b11111111_11111111_11111111_11111111);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_cmp_epi16_mask() {
         let a = _mm512_set1_epi16(0);
         let b = _mm512_set1_epi16(1);
@@ -15610,7 +15610,7 @@ mod tests {
         assert_eq!(r, 0b01010101_01010101_01010101_01010101);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_cmp_epi16_mask() {
         let a = _mm256_set1_epi16(0);
         let b = _mm256_set1_epi16(1);
@@ -15618,7 +15618,7 @@ mod tests {
         assert_eq!(m, 0b11111111_11111111);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_cmp_epi16_mask() {
         let a = _mm256_set1_epi16(0);
         let b = _mm256_set1_epi16(1);
@@ -15627,7 +15627,7 @@ mod tests {
         assert_eq!(r, 0b01010101_01010101);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_cmp_epi16_mask() {
         let a = _mm_set1_epi16(0);
         let b = _mm_set1_epi16(1);
@@ -15635,7 +15635,7 @@ mod tests {
         assert_eq!(m, 0b11111111);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_cmp_epi16_mask() {
         let a = _mm_set1_epi16(0);
         let b = _mm_set1_epi16(1);
@@ -15644,7 +15644,7 @@ mod tests {
         assert_eq!(r, 0b01010101);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_cmp_epi8_mask() {
         let a = _mm512_set1_epi8(0);
         let b = _mm512_set1_epi8(1);
@@ -15655,7 +15655,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_cmp_epi8_mask() {
         let a = _mm512_set1_epi8(0);
         let b = _mm512_set1_epi8(1);
@@ -15667,7 +15667,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_cmp_epi8_mask() {
         let a = _mm256_set1_epi8(0);
         let b = _mm256_set1_epi8(1);
@@ -15675,7 +15675,7 @@ mod tests {
         assert_eq!(m, 0b11111111_11111111_11111111_11111111);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_cmp_epi8_mask() {
         let a = _mm256_set1_epi8(0);
         let b = _mm256_set1_epi8(1);
@@ -15684,7 +15684,7 @@ mod tests {
         assert_eq!(r, 0b01010101_01010101_01010101_01010101);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_cmp_epi8_mask() {
         let a = _mm_set1_epi8(0);
         let b = _mm_set1_epi8(1);
@@ -15692,7 +15692,7 @@ mod tests {
         assert_eq!(m, 0b11111111_11111111);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_cmp_epi8_mask() {
         let a = _mm_set1_epi8(0);
         let b = _mm_set1_epi8(1);
@@ -15701,91 +15701,91 @@ mod tests {
         assert_eq!(r, 0b01010101_01010101);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_reduce_add_epi16() {
         let a = _mm256_set1_epi16(1);
         let e = _mm256_reduce_add_epi16(a);
         assert_eq!(16, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_reduce_add_epi16() {
         let a = _mm256_set1_epi16(1);
         let e = _mm256_mask_reduce_add_epi16(0b11111111_00000000, a);
         assert_eq!(8, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_reduce_add_epi16() {
         let a = _mm_set1_epi16(1);
         let e = _mm_reduce_add_epi16(a);
         assert_eq!(8, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_reduce_add_epi16() {
         let a = _mm_set1_epi16(1);
         let e = _mm_mask_reduce_add_epi16(0b11110000, a);
         assert_eq!(4, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_reduce_add_epi8() {
         let a = _mm256_set1_epi8(1);
         let e = _mm256_reduce_add_epi8(a);
         assert_eq!(32, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_reduce_add_epi8() {
         let a = _mm256_set1_epi8(1);
         let e = _mm256_mask_reduce_add_epi8(0b11111111_00000000_11111111_00000000, a);
         assert_eq!(16, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_reduce_add_epi8() {
         let a = _mm_set1_epi8(1);
         let e = _mm_reduce_add_epi8(a);
         assert_eq!(16, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_reduce_add_epi8() {
         let a = _mm_set1_epi8(1);
         let e = _mm_mask_reduce_add_epi8(0b11111111_00000000, a);
         assert_eq!(8, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_reduce_and_epi16() {
         let a = _mm256_set_epi16(1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2);
         let e = _mm256_reduce_and_epi16(a);
         assert_eq!(0, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_reduce_and_epi16() {
         let a = _mm256_set_epi16(1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2);
         let e = _mm256_mask_reduce_and_epi16(0b11111111_00000000, a);
         assert_eq!(1, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_reduce_and_epi16() {
         let a = _mm_set_epi16(1, 1, 1, 1, 2, 2, 2, 2);
         let e = _mm_reduce_and_epi16(a);
         assert_eq!(0, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_reduce_and_epi16() {
         let a = _mm_set_epi16(1, 1, 1, 1, 2, 2, 2, 2);
         let e = _mm_mask_reduce_and_epi16(0b11110000, a);
         assert_eq!(1, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_reduce_and_epi8() {
         let a = _mm256_set_epi8(
             1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2,
@@ -15795,7 +15795,7 @@ mod tests {
         assert_eq!(0, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_reduce_and_epi8() {
         let a = _mm256_set_epi8(
             1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2,
@@ -15805,49 +15805,49 @@ mod tests {
         assert_eq!(1, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_reduce_and_epi8() {
         let a = _mm_set_epi8(1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2);
         let e = _mm_reduce_and_epi8(a);
         assert_eq!(0, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_reduce_and_epi8() {
         let a = _mm_set_epi8(1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2);
         let e = _mm_mask_reduce_and_epi8(0b11111111_00000000, a);
         assert_eq!(1, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_reduce_mul_epi16() {
         let a = _mm256_set_epi16(2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1);
         let e = _mm256_reduce_mul_epi16(a);
         assert_eq!(256, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_reduce_mul_epi16() {
         let a = _mm256_set_epi16(1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2);
         let e = _mm256_mask_reduce_mul_epi16(0b11111111_00000000, a);
         assert_eq!(1, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_reduce_mul_epi16() {
         let a = _mm_set_epi16(2, 2, 2, 2, 1, 1, 1, 1);
         let e = _mm_reduce_mul_epi16(a);
         assert_eq!(16, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_reduce_mul_epi16() {
         let a = _mm_set_epi16(1, 1, 1, 1, 2, 2, 2, 2);
         let e = _mm_mask_reduce_mul_epi16(0b11110000, a);
         assert_eq!(1, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_reduce_mul_epi8() {
         let a = _mm256_set_epi8(
             1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -15857,7 +15857,7 @@ mod tests {
         assert_eq!(64, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_reduce_mul_epi8() {
         let a = _mm256_set_epi8(
             1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -15867,49 +15867,49 @@ mod tests {
         assert_eq!(1, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_reduce_mul_epi8() {
         let a = _mm_set_epi8(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2);
         let e = _mm_reduce_mul_epi8(a);
         assert_eq!(8, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_reduce_mul_epi8() {
         let a = _mm_set_epi8(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2);
         let e = _mm_mask_reduce_mul_epi8(0b11111111_00000000, a);
         assert_eq!(1, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_reduce_max_epi16() {
         let a = _mm256_set_epi16(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
         let e: i16 = _mm256_reduce_max_epi16(a);
         assert_eq!(15, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_reduce_max_epi16() {
         let a = _mm256_set_epi16(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
         let e: i16 = _mm256_mask_reduce_max_epi16(0b11111111_00000000, a);
         assert_eq!(7, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_reduce_max_epi16() {
         let a = _mm_set_epi16(0, 1, 2, 3, 4, 5, 6, 7);
         let e: i16 = _mm_reduce_max_epi16(a);
         assert_eq!(7, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_reduce_max_epi16() {
         let a = _mm_set_epi16(0, 1, 2, 3, 4, 5, 6, 7);
         let e: i16 = _mm_mask_reduce_max_epi16(0b11110000, a);
         assert_eq!(3, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_reduce_max_epi8() {
         let a = _mm256_set_epi8(
             0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
@@ -15919,7 +15919,7 @@ mod tests {
         assert_eq!(31, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_reduce_max_epi8() {
         let a = _mm256_set_epi8(
             0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
@@ -15929,49 +15929,49 @@ mod tests {
         assert_eq!(15, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_reduce_max_epi8() {
         let a = _mm_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
         let e: i8 = _mm_reduce_max_epi8(a);
         assert_eq!(15, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_reduce_max_epi8() {
         let a = _mm_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
         let e: i8 = _mm_mask_reduce_max_epi8(0b11111111_00000000, a);
         assert_eq!(7, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_reduce_max_epu16() {
         let a = _mm256_set_epi16(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
         let e: u16 = _mm256_reduce_max_epu16(a);
         assert_eq!(15, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_reduce_max_epu16() {
         let a = _mm256_set_epi16(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
         let e: u16 = _mm256_mask_reduce_max_epu16(0b11111111_00000000, a);
         assert_eq!(7, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_reduce_max_epu16() {
         let a = _mm_set_epi16(0, 1, 2, 3, 4, 5, 6, 7);
         let e: u16 = _mm_reduce_max_epu16(a);
         assert_eq!(7, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_reduce_max_epu16() {
         let a = _mm_set_epi16(0, 1, 2, 3, 4, 5, 6, 7);
         let e: u16 = _mm_mask_reduce_max_epu16(0b11110000, a);
         assert_eq!(3, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_reduce_max_epu8() {
         let a = _mm256_set_epi8(
             0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
@@ -15981,7 +15981,7 @@ mod tests {
         assert_eq!(31, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_reduce_max_epu8() {
         let a = _mm256_set_epi8(
             0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
@@ -15991,49 +15991,49 @@ mod tests {
         assert_eq!(15, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_reduce_max_epu8() {
         let a = _mm_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
         let e: u8 = _mm_reduce_max_epu8(a);
         assert_eq!(15, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_reduce_max_epu8() {
         let a = _mm_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
         let e: u8 = _mm_mask_reduce_max_epu8(0b11111111_00000000, a);
         assert_eq!(7, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_reduce_min_epi16() {
         let a = _mm256_set_epi16(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
         let e: i16 = _mm256_reduce_min_epi16(a);
         assert_eq!(0, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_reduce_min_epi16() {
         let a = _mm256_set_epi16(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
         let e: i16 = _mm256_mask_reduce_min_epi16(0b11111111_00000000, a);
         assert_eq!(0, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_reduce_min_epi16() {
         let a = _mm_set_epi16(0, 1, 2, 3, 4, 5, 6, 7);
         let e: i16 = _mm_reduce_min_epi16(a);
         assert_eq!(0, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_reduce_min_epi16() {
         let a = _mm_set_epi16(0, 1, 2, 3, 4, 5, 6, 7);
         let e: i16 = _mm_mask_reduce_min_epi16(0b11110000, a);
         assert_eq!(0, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_reduce_min_epi8() {
         let a = _mm256_set_epi8(
             0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
@@ -16043,7 +16043,7 @@ mod tests {
         assert_eq!(0, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_reduce_min_epi8() {
         let a = _mm256_set_epi8(
             0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
@@ -16053,49 +16053,49 @@ mod tests {
         assert_eq!(0, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_reduce_min_epi8() {
         let a = _mm_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
         let e: i8 = _mm_reduce_min_epi8(a);
         assert_eq!(0, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_reduce_min_epi8() {
         let a = _mm_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
         let e: i8 = _mm_mask_reduce_min_epi8(0b11111111_00000000, a);
         assert_eq!(0, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_reduce_min_epu16() {
         let a = _mm256_set_epi16(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
         let e: u16 = _mm256_reduce_min_epu16(a);
         assert_eq!(0, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_reduce_min_epu16() {
         let a = _mm256_set_epi16(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
         let e: u16 = _mm256_mask_reduce_min_epu16(0b11111111_00000000, a);
         assert_eq!(0, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_reduce_min_epu16() {
         let a = _mm_set_epi16(0, 1, 2, 3, 4, 5, 6, 7);
         let e: u16 = _mm_reduce_min_epu16(a);
         assert_eq!(0, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_reduce_min_epu16() {
         let a = _mm_set_epi16(0, 1, 2, 3, 4, 5, 6, 7);
         let e: u16 = _mm_mask_reduce_min_epu16(0b11110000, a);
         assert_eq!(0, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_reduce_min_epu8() {
         let a = _mm256_set_epi8(
             0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
@@ -16105,7 +16105,7 @@ mod tests {
         assert_eq!(0, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_reduce_min_epu8() {
         let a = _mm256_set_epi8(
             0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
@@ -16115,49 +16115,49 @@ mod tests {
         assert_eq!(0, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_reduce_min_epu8() {
         let a = _mm_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
         let e: u8 = _mm_reduce_min_epu8(a);
         assert_eq!(0, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_reduce_min_epu8() {
         let a = _mm_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
         let e: u8 = _mm_mask_reduce_min_epu8(0b11111111_00000000, a);
         assert_eq!(0, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_reduce_or_epi16() {
         let a = _mm256_set_epi16(1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2);
         let e = _mm256_reduce_or_epi16(a);
         assert_eq!(3, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_reduce_or_epi16() {
         let a = _mm256_set_epi16(1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2);
         let e = _mm256_mask_reduce_or_epi16(0b11111111_00000000, a);
         assert_eq!(1, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_reduce_or_epi16() {
         let a = _mm_set_epi16(1, 1, 1, 1, 2, 2, 2, 2);
         let e = _mm_reduce_or_epi16(a);
         assert_eq!(3, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_reduce_or_epi16() {
         let a = _mm_set_epi16(1, 1, 1, 1, 2, 2, 2, 2);
         let e = _mm_mask_reduce_or_epi16(0b11110000, a);
         assert_eq!(1, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_reduce_or_epi8() {
         let a = _mm256_set_epi8(
             1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2,
@@ -16167,7 +16167,7 @@ mod tests {
         assert_eq!(3, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_reduce_or_epi8() {
         let a = _mm256_set_epi8(
             1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2,
@@ -16177,21 +16177,21 @@ mod tests {
         assert_eq!(1, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_reduce_or_epi8() {
         let a = _mm_set_epi8(1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2);
         let e = _mm_reduce_or_epi8(a);
         assert_eq!(3, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_reduce_or_epi8() {
         let a = _mm_set_epi8(1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2);
         let e = _mm_mask_reduce_or_epi8(0b11111111_00000000, a);
         assert_eq!(1, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_loadu_epi16() {
         #[rustfmt::skip]
         let a: [i16; 32] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
@@ -16201,7 +16201,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_loadu_epi16() {
         let a: [i16; 16] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
         let r = _mm256_loadu_epi16(&a[0]);
@@ -16209,7 +16209,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_loadu_epi16() {
         let a: [i16; 8] = [1, 2, 3, 4, 5, 6, 7, 8];
         let r = _mm_loadu_epi16(&a[0]);
@@ -16217,7 +16217,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_loadu_epi8() {
         #[rustfmt::skip]
         let a: [i8; 64] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32,
@@ -16229,7 +16229,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_loadu_epi8() {
         #[rustfmt::skip]
         let a: [i8; 32] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
@@ -16239,7 +16239,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_loadu_epi8() {
         let a: [i8; 16] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
         let r = _mm_loadu_epi8(&a[0]);
@@ -16247,7 +16247,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_storeu_epi16() {
         let a = _mm512_set1_epi16(9);
         let mut r = _mm512_undefined_epi32();
@@ -16255,7 +16255,7 @@ mod tests {
         assert_eq_m512i(r, a);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_storeu_epi16() {
         let a = _mm256_set1_epi16(9);
         let mut r = _mm256_set1_epi32(0);
@@ -16263,7 +16263,7 @@ mod tests {
         assert_eq_m256i(r, a);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_storeu_epi16() {
         let a = _mm_set1_epi16(9);
         let mut r = _mm_set1_epi32(0);
@@ -16271,7 +16271,7 @@ mod tests {
         assert_eq_m128i(r, a);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_storeu_epi8() {
         let a = _mm512_set1_epi8(9);
         let mut r = _mm512_undefined_epi32();
@@ -16279,7 +16279,7 @@ mod tests {
         assert_eq_m512i(r, a);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_storeu_epi8() {
         let a = _mm256_set1_epi8(9);
         let mut r = _mm256_set1_epi32(0);
@@ -16287,7 +16287,7 @@ mod tests {
         assert_eq_m256i(r, a);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_storeu_epi8() {
         let a = _mm_set1_epi8(9);
         let mut r = _mm_set1_epi32(0);
@@ -16295,7 +16295,7 @@ mod tests {
         assert_eq_m128i(r, a);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_loadu_epi16() {
         let src = _mm512_set1_epi16(42);
         let a = &[
@@ -16313,7 +16313,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_loadu_epi16() {
         let a = &[
             1_i16, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
@@ -16330,7 +16330,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_storeu_epi16() {
         let mut r = [42_i16; 32];
         let a = &[
@@ -16348,7 +16348,7 @@ mod tests {
         assert_eq_m512i(_mm512_loadu_epi16(r.as_ptr()), e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_loadu_epi8() {
         let src = _mm512_set1_epi8(42);
         let a = &[
@@ -16368,7 +16368,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_loadu_epi8() {
         let a = &[
             1_i8, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
@@ -16387,7 +16387,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_storeu_epi8() {
         let mut r = [42_i8; 64];
         let a = &[
@@ -16407,7 +16407,7 @@ mod tests {
         assert_eq_m512i(_mm512_loadu_epi8(r.as_ptr()), e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_loadu_epi16() {
         let src = _mm256_set1_epi16(42);
         let a = &[1_i16, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
@@ -16421,7 +16421,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_loadu_epi16() {
         let a = &[1_i16, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
         let p = a.as_ptr();
@@ -16432,7 +16432,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_storeu_epi16() {
         let mut r = [42_i16; 16];
         let a = &[1_i16, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
@@ -16446,7 +16446,7 @@ mod tests {
         assert_eq_m256i(_mm256_loadu_epi16(r.as_ptr()), e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_loadu_epi8() {
         let src = _mm256_set1_epi8(42);
         let a = &[
@@ -16464,7 +16464,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_loadu_epi8() {
         let a = &[
             1_i8, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
@@ -16481,7 +16481,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_storeu_epi8() {
         let mut r = [42_i8; 32];
         let a = &[
@@ -16499,7 +16499,7 @@ mod tests {
         assert_eq_m256i(_mm256_loadu_epi8(r.as_ptr()), e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_loadu_epi16() {
         let src = _mm_set1_epi16(42);
         let a = &[1_i16, 2, 3, 4, 5, 6, 7, 8];
@@ -16511,7 +16511,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_loadu_epi16() {
         let a = &[1_i16, 2, 3, 4, 5, 6, 7, 8];
         let p = a.as_ptr();
@@ -16522,7 +16522,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_storeu_epi16() {
         let mut r = [42_i16; 8];
         let a = &[1_i16, 2, 3, 4, 5, 6, 7, 8];
@@ -16534,7 +16534,7 @@ mod tests {
         assert_eq_m128i(_mm_loadu_epi16(r.as_ptr()), e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_loadu_epi8() {
         let src = _mm_set1_epi8(42);
         let a = &[1_i8, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
@@ -16548,7 +16548,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_loadu_epi8() {
         let a = &[1_i8, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
         let p = a.as_ptr();
@@ -16559,7 +16559,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_storeu_epi8() {
         let mut r = [42_i8; 16];
         let a = &[1_i8, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
@@ -16573,7 +16573,7 @@ mod tests {
         assert_eq_m128i(_mm_loadu_epi8(r.as_ptr()), e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_madd_epi16() {
         let a = _mm512_set1_epi16(1);
         let b = _mm512_set1_epi16(1);
@@ -16582,7 +16582,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_madd_epi16() {
         let a = _mm512_set1_epi16(1);
         let b = _mm512_set1_epi16(1);
@@ -16610,7 +16610,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_madd_epi16() {
         let a = _mm512_set1_epi16(1);
         let b = _mm512_set1_epi16(1);
@@ -16621,7 +16621,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_madd_epi16() {
         let a = _mm256_set1_epi16(1);
         let b = _mm256_set1_epi16(1);
@@ -16641,7 +16641,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_madd_epi16() {
         let a = _mm256_set1_epi16(1);
         let b = _mm256_set1_epi16(1);
@@ -16652,7 +16652,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_madd_epi16() {
         let a = _mm_set1_epi16(1);
         let b = _mm_set1_epi16(1);
@@ -16663,7 +16663,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_madd_epi16() {
         let a = _mm_set1_epi16(1);
         let b = _mm_set1_epi16(1);
@@ -16674,7 +16674,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maddubs_epi16() {
         let a = _mm512_set1_epi8(1);
         let b = _mm512_set1_epi8(1);
@@ -16683,7 +16683,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_maddubs_epi16() {
         let a = _mm512_set1_epi8(1);
         let b = _mm512_set1_epi8(1);
@@ -16697,7 +16697,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_maddubs_epi16() {
         let a = _mm512_set1_epi8(1);
         let b = _mm512_set1_epi8(1);
@@ -16710,7 +16710,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_maddubs_epi16() {
         let a = _mm256_set1_epi8(1);
         let b = _mm256_set1_epi8(1);
@@ -16722,7 +16722,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_maddubs_epi16() {
         let a = _mm256_set1_epi8(1);
         let b = _mm256_set1_epi8(1);
@@ -16733,7 +16733,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_maddubs_epi16() {
         let a = _mm_set1_epi8(1);
         let b = _mm_set1_epi8(1);
@@ -16745,7 +16745,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_maddubs_epi16() {
         let a = _mm_set1_epi8(1);
         let b = _mm_set1_epi8(1);
@@ -16756,7 +16756,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_packs_epi32() {
         let a = _mm512_set1_epi32(i32::MAX);
         let b = _mm512_set1_epi32(1);
@@ -16767,7 +16767,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_packs_epi32() {
         let a = _mm512_set1_epi32(i32::MAX);
         let b = _mm512_set1_epi32(1 << 16 | 1);
@@ -16780,7 +16780,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_packs_epi32() {
         let a = _mm512_set1_epi32(i32::MAX);
         let b = _mm512_set1_epi32(1);
@@ -16793,7 +16793,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_packs_epi32() {
         let a = _mm256_set1_epi32(i32::MAX);
         let b = _mm256_set1_epi32(1 << 16 | 1);
@@ -16805,7 +16805,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_packs_epi32() {
         let a = _mm256_set1_epi32(i32::MAX);
         let b = _mm256_set1_epi32(1);
@@ -16817,7 +16817,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_packs_epi32() {
         let a = _mm_set1_epi32(i32::MAX);
         let b = _mm_set1_epi32(1 << 16 | 1);
@@ -16828,7 +16828,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_packs_epi32() {
         let a = _mm_set1_epi32(i32::MAX);
         let b = _mm_set1_epi32(1);
@@ -16839,7 +16839,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_packs_epi16() {
         let a = _mm512_set1_epi16(i16::MAX);
         let b = _mm512_set1_epi16(1);
@@ -16852,7 +16852,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_packs_epi16() {
         let a = _mm512_set1_epi16(i16::MAX);
         let b = _mm512_set1_epi16(1 << 8 | 1);
@@ -16872,7 +16872,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_packs_epi16() {
         let a = _mm512_set1_epi16(i16::MAX);
         let b = _mm512_set1_epi16(1);
@@ -16891,7 +16891,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_packs_epi16() {
         let a = _mm256_set1_epi16(i16::MAX);
         let b = _mm256_set1_epi16(1 << 8 | 1);
@@ -16904,7 +16904,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_packs_epi16() {
         let a = _mm256_set1_epi16(i16::MAX);
         let b = _mm256_set1_epi16(1);
@@ -16917,7 +16917,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_packs_epi16() {
         let a = _mm_set1_epi16(i16::MAX);
         let b = _mm_set1_epi16(1 << 8 | 1);
@@ -16929,7 +16929,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_packs_epi16() {
         let a = _mm_set1_epi16(i16::MAX);
         let b = _mm_set1_epi16(1);
@@ -16941,7 +16941,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_packus_epi32() {
         let a = _mm512_set1_epi32(-1);
         let b = _mm512_set1_epi32(1);
@@ -16952,7 +16952,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_packus_epi32() {
         let a = _mm512_set1_epi32(-1);
         let b = _mm512_set1_epi32(1 << 16 | 1);
@@ -16965,7 +16965,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_packus_epi32() {
         let a = _mm512_set1_epi32(-1);
         let b = _mm512_set1_epi32(1);
@@ -16978,7 +16978,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_packus_epi32() {
         let a = _mm256_set1_epi32(-1);
         let b = _mm256_set1_epi32(1 << 16 | 1);
@@ -16989,7 +16989,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_packus_epi32() {
         let a = _mm256_set1_epi32(-1);
         let b = _mm256_set1_epi32(1);
@@ -17000,7 +17000,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_packus_epi32() {
         let a = _mm_set1_epi32(-1);
         let b = _mm_set1_epi32(1 << 16 | 1);
@@ -17011,7 +17011,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_packus_epi32() {
         let a = _mm_set1_epi32(-1);
         let b = _mm_set1_epi32(1);
@@ -17022,7 +17022,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_packus_epi16() {
         let a = _mm512_set1_epi16(-1);
         let b = _mm512_set1_epi16(1);
@@ -17035,7 +17035,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_packus_epi16() {
         let a = _mm512_set1_epi16(-1);
         let b = _mm512_set1_epi16(1 << 8 | 1);
@@ -17055,7 +17055,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_packus_epi16() {
         let a = _mm512_set1_epi16(-1);
         let b = _mm512_set1_epi16(1);
@@ -17074,7 +17074,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_packus_epi16() {
         let a = _mm256_set1_epi16(-1);
         let b = _mm256_set1_epi16(1 << 8 | 1);
@@ -17087,7 +17087,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_packus_epi16() {
         let a = _mm256_set1_epi16(-1);
         let b = _mm256_set1_epi16(1);
@@ -17100,7 +17100,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_packus_epi16() {
         let a = _mm_set1_epi16(-1);
         let b = _mm_set1_epi16(1 << 8 | 1);
@@ -17111,7 +17111,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_packus_epi16() {
         let a = _mm_set1_epi16(-1);
         let b = _mm_set1_epi16(1);
@@ -17122,7 +17122,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_avg_epu16() {
         let a = _mm512_set1_epi16(1);
         let b = _mm512_set1_epi16(1);
@@ -17131,7 +17131,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_avg_epu16() {
         let a = _mm512_set1_epi16(1);
         let b = _mm512_set1_epi16(1);
@@ -17144,7 +17144,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_avg_epu16() {
         let a = _mm512_set1_epi16(1);
         let b = _mm512_set1_epi16(1);
@@ -17157,7 +17157,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_avg_epu16() {
         let a = _mm256_set1_epi16(1);
         let b = _mm256_set1_epi16(1);
@@ -17168,7 +17168,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_avg_epu16() {
         let a = _mm256_set1_epi16(1);
         let b = _mm256_set1_epi16(1);
@@ -17179,7 +17179,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_avg_epu16() {
         let a = _mm_set1_epi16(1);
         let b = _mm_set1_epi16(1);
@@ -17190,7 +17190,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_avg_epu16() {
         let a = _mm_set1_epi16(1);
         let b = _mm_set1_epi16(1);
@@ -17201,7 +17201,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_avg_epu8() {
         let a = _mm512_set1_epi8(1);
         let b = _mm512_set1_epi8(1);
@@ -17210,7 +17210,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_avg_epu8() {
         let a = _mm512_set1_epi8(1);
         let b = _mm512_set1_epi8(1);
@@ -17230,7 +17230,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_avg_epu8() {
         let a = _mm512_set1_epi8(1);
         let b = _mm512_set1_epi8(1);
@@ -17249,7 +17249,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_avg_epu8() {
         let a = _mm256_set1_epi8(1);
         let b = _mm256_set1_epi8(1);
@@ -17262,7 +17262,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_avg_epu8() {
         let a = _mm256_set1_epi8(1);
         let b = _mm256_set1_epi8(1);
@@ -17275,7 +17275,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_avg_epu8() {
         let a = _mm_set1_epi8(1);
         let b = _mm_set1_epi8(1);
@@ -17286,7 +17286,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_avg_epu8() {
         let a = _mm_set1_epi8(1);
         let b = _mm_set1_epi8(1);
@@ -17297,7 +17297,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_sll_epi16() {
         let a = _mm512_set1_epi16(1 << 15);
         let count = _mm_set1_epi16(2);
@@ -17306,7 +17306,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_sll_epi16() {
         let a = _mm512_set1_epi16(1 << 15);
         let count = _mm_set1_epi16(2);
@@ -17317,7 +17317,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_sll_epi16() {
         let a = _mm512_set1_epi16(1 << 15);
         let count = _mm_set1_epi16(2);
@@ -17328,7 +17328,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_sll_epi16() {
         let a = _mm256_set1_epi16(1 << 15);
         let count = _mm_set1_epi16(2);
@@ -17339,7 +17339,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_sll_epi16() {
         let a = _mm256_set1_epi16(1 << 15);
         let count = _mm_set1_epi16(2);
@@ -17350,7 +17350,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_sll_epi16() {
         let a = _mm_set1_epi16(1 << 15);
         let count = _mm_set1_epi16(2);
@@ -17361,7 +17361,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_sll_epi16() {
         let a = _mm_set1_epi16(1 << 15);
         let count = _mm_set1_epi16(2);
@@ -17372,7 +17372,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_slli_epi16() {
         let a = _mm512_set1_epi16(1 << 15);
         let r = _mm512_slli_epi16::<1>(a);
@@ -17380,7 +17380,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_slli_epi16() {
         let a = _mm512_set1_epi16(1 << 15);
         let r = _mm512_mask_slli_epi16::<1>(a, 0, a);
@@ -17390,7 +17390,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_slli_epi16() {
         let a = _mm512_set1_epi16(1 << 15);
         let r = _mm512_maskz_slli_epi16::<1>(0, a);
@@ -17400,7 +17400,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_slli_epi16() {
         let a = _mm256_set1_epi16(1 << 15);
         let r = _mm256_mask_slli_epi16::<1>(a, 0, a);
@@ -17410,7 +17410,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_slli_epi16() {
         let a = _mm256_set1_epi16(1 << 15);
         let r = _mm256_maskz_slli_epi16::<1>(0, a);
@@ -17420,7 +17420,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_slli_epi16() {
         let a = _mm_set1_epi16(1 << 15);
         let r = _mm_mask_slli_epi16::<1>(a, 0, a);
@@ -17430,7 +17430,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_slli_epi16() {
         let a = _mm_set1_epi16(1 << 15);
         let r = _mm_maskz_slli_epi16::<1>(0, a);
@@ -17440,7 +17440,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_sllv_epi16() {
         let a = _mm512_set1_epi16(1 << 15);
         let count = _mm512_set1_epi16(2);
@@ -17449,7 +17449,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_sllv_epi16() {
         let a = _mm512_set1_epi16(1 << 15);
         let count = _mm512_set1_epi16(2);
@@ -17460,7 +17460,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_sllv_epi16() {
         let a = _mm512_set1_epi16(1 << 15);
         let count = _mm512_set1_epi16(2);
@@ -17471,7 +17471,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_sllv_epi16() {
         let a = _mm256_set1_epi16(1 << 15);
         let count = _mm256_set1_epi16(2);
@@ -17480,7 +17480,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_sllv_epi16() {
         let a = _mm256_set1_epi16(1 << 15);
         let count = _mm256_set1_epi16(2);
@@ -17491,7 +17491,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_sllv_epi16() {
         let a = _mm256_set1_epi16(1 << 15);
         let count = _mm256_set1_epi16(2);
@@ -17502,7 +17502,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_sllv_epi16() {
         let a = _mm_set1_epi16(1 << 15);
         let count = _mm_set1_epi16(2);
@@ -17511,7 +17511,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_sllv_epi16() {
         let a = _mm_set1_epi16(1 << 15);
         let count = _mm_set1_epi16(2);
@@ -17522,7 +17522,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_sllv_epi16() {
         let a = _mm_set1_epi16(1 << 15);
         let count = _mm_set1_epi16(2);
@@ -17533,7 +17533,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_srl_epi16() {
         let a = _mm512_set1_epi16(1 << 1);
         let count = _mm_set1_epi16(2);
@@ -17542,7 +17542,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_srl_epi16() {
         let a = _mm512_set1_epi16(1 << 1);
         let count = _mm_set1_epi16(2);
@@ -17553,7 +17553,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_srl_epi16() {
         let a = _mm512_set1_epi16(1 << 1);
         let count = _mm_set1_epi16(2);
@@ -17564,7 +17564,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_srl_epi16() {
         let a = _mm256_set1_epi16(1 << 1);
         let count = _mm_set1_epi16(2);
@@ -17575,7 +17575,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_srl_epi16() {
         let a = _mm256_set1_epi16(1 << 1);
         let count = _mm_set1_epi16(2);
@@ -17586,7 +17586,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_srl_epi16() {
         let a = _mm_set1_epi16(1 << 1);
         let count = _mm_set1_epi16(2);
@@ -17597,7 +17597,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_srl_epi16() {
         let a = _mm_set1_epi16(1 << 1);
         let count = _mm_set1_epi16(2);
@@ -17608,7 +17608,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_srli_epi16() {
         let a = _mm512_set1_epi16(1 << 1);
         let r = _mm512_srli_epi16::<2>(a);
@@ -17616,7 +17616,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_srli_epi16() {
         let a = _mm512_set1_epi16(1 << 1);
         let r = _mm512_mask_srli_epi16::<2>(a, 0, a);
@@ -17626,7 +17626,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_srli_epi16() {
         let a = _mm512_set1_epi16(1 << 1);
         let r = _mm512_maskz_srli_epi16::<2>(0, a);
@@ -17636,7 +17636,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_srli_epi16() {
         let a = _mm256_set1_epi16(1 << 1);
         let r = _mm256_mask_srli_epi16::<2>(a, 0, a);
@@ -17646,7 +17646,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_srli_epi16() {
         let a = _mm256_set1_epi16(1 << 1);
         let r = _mm256_maskz_srli_epi16::<2>(0, a);
@@ -17656,7 +17656,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_srli_epi16() {
         let a = _mm_set1_epi16(1 << 1);
         let r = _mm_mask_srli_epi16::<2>(a, 0, a);
@@ -17666,7 +17666,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_srli_epi16() {
         let a = _mm_set1_epi16(1 << 1);
         let r = _mm_maskz_srli_epi16::<2>(0, a);
@@ -17676,7 +17676,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_srlv_epi16() {
         let a = _mm512_set1_epi16(1 << 1);
         let count = _mm512_set1_epi16(2);
@@ -17685,7 +17685,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_srlv_epi16() {
         let a = _mm512_set1_epi16(1 << 1);
         let count = _mm512_set1_epi16(2);
@@ -17696,7 +17696,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_srlv_epi16() {
         let a = _mm512_set1_epi16(1 << 1);
         let count = _mm512_set1_epi16(2);
@@ -17707,7 +17707,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_srlv_epi16() {
         let a = _mm256_set1_epi16(1 << 1);
         let count = _mm256_set1_epi16(2);
@@ -17716,7 +17716,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_srlv_epi16() {
         let a = _mm256_set1_epi16(1 << 1);
         let count = _mm256_set1_epi16(2);
@@ -17727,7 +17727,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_srlv_epi16() {
         let a = _mm256_set1_epi16(1 << 1);
         let count = _mm256_set1_epi16(2);
@@ -17738,7 +17738,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_srlv_epi16() {
         let a = _mm_set1_epi16(1 << 1);
         let count = _mm_set1_epi16(2);
@@ -17747,7 +17747,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_srlv_epi16() {
         let a = _mm_set1_epi16(1 << 1);
         let count = _mm_set1_epi16(2);
@@ -17758,7 +17758,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_srlv_epi16() {
         let a = _mm_set1_epi16(1 << 1);
         let count = _mm_set1_epi16(2);
@@ -17769,7 +17769,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_sra_epi16() {
         let a = _mm512_set1_epi16(8);
         let count = _mm_set1_epi16(1);
@@ -17778,7 +17778,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_sra_epi16() {
         let a = _mm512_set1_epi16(8);
         let count = _mm_set1_epi16(1);
@@ -17789,7 +17789,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_sra_epi16() {
         let a = _mm512_set1_epi16(8);
         let count = _mm_set1_epi16(1);
@@ -17800,7 +17800,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_sra_epi16() {
         let a = _mm256_set1_epi16(8);
         let count = _mm_set1_epi16(1);
@@ -17811,7 +17811,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_sra_epi16() {
         let a = _mm256_set1_epi16(8);
         let count = _mm_set1_epi16(1);
@@ -17822,7 +17822,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_sra_epi16() {
         let a = _mm_set1_epi16(8);
         let count = _mm_set1_epi16(1);
@@ -17833,7 +17833,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_sra_epi16() {
         let a = _mm_set1_epi16(8);
         let count = _mm_set1_epi16(1);
@@ -17844,7 +17844,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_srai_epi16() {
         let a = _mm512_set1_epi16(8);
         let r = _mm512_srai_epi16::<2>(a);
@@ -17852,7 +17852,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_srai_epi16() {
         let a = _mm512_set1_epi16(8);
         let r = _mm512_mask_srai_epi16::<2>(a, 0, a);
@@ -17862,7 +17862,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_srai_epi16() {
         let a = _mm512_set1_epi16(8);
         let r = _mm512_maskz_srai_epi16::<2>(0, a);
@@ -17872,7 +17872,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_srai_epi16() {
         let a = _mm256_set1_epi16(8);
         let r = _mm256_mask_srai_epi16::<2>(a, 0, a);
@@ -17882,7 +17882,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_srai_epi16() {
         let a = _mm256_set1_epi16(8);
         let r = _mm256_maskz_srai_epi16::<2>(0, a);
@@ -17892,7 +17892,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_srai_epi16() {
         let a = _mm_set1_epi16(8);
         let r = _mm_mask_srai_epi16::<2>(a, 0, a);
@@ -17902,7 +17902,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_srai_epi16() {
         let a = _mm_set1_epi16(8);
         let r = _mm_maskz_srai_epi16::<2>(0, a);
@@ -17912,7 +17912,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_srav_epi16() {
         let a = _mm512_set1_epi16(8);
         let count = _mm512_set1_epi16(2);
@@ -17921,7 +17921,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_srav_epi16() {
         let a = _mm512_set1_epi16(8);
         let count = _mm512_set1_epi16(2);
@@ -17932,7 +17932,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_srav_epi16() {
         let a = _mm512_set1_epi16(8);
         let count = _mm512_set1_epi16(2);
@@ -17943,7 +17943,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_srav_epi16() {
         let a = _mm256_set1_epi16(8);
         let count = _mm256_set1_epi16(2);
@@ -17952,7 +17952,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_srav_epi16() {
         let a = _mm256_set1_epi16(8);
         let count = _mm256_set1_epi16(2);
@@ -17963,7 +17963,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_srav_epi16() {
         let a = _mm256_set1_epi16(8);
         let count = _mm256_set1_epi16(2);
@@ -17974,7 +17974,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_srav_epi16() {
         let a = _mm_set1_epi16(8);
         let count = _mm_set1_epi16(2);
@@ -17983,7 +17983,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_srav_epi16() {
         let a = _mm_set1_epi16(8);
         let count = _mm_set1_epi16(2);
@@ -17994,7 +17994,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_srav_epi16() {
         let a = _mm_set1_epi16(8);
         let count = _mm_set1_epi16(2);
@@ -18005,7 +18005,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_permutex2var_epi16() {
         #[rustfmt::skip]
         let a = _mm512_set_epi16(0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15,
@@ -18023,7 +18023,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_permutex2var_epi16() {
         #[rustfmt::skip]
         let a = _mm512_set_epi16(0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15,
@@ -18043,7 +18043,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_permutex2var_epi16() {
         #[rustfmt::skip]
         let a = _mm512_set_epi16(0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15,
@@ -18063,7 +18063,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask2_permutex2var_epi16() {
         #[rustfmt::skip]
         let a = _mm512_set_epi16(0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15,
@@ -18083,7 +18083,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_permutex2var_epi16() {
         let a = _mm256_set_epi16(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
         #[rustfmt::skip]
@@ -18096,7 +18096,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_permutex2var_epi16() {
         let a = _mm256_set_epi16(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
         #[rustfmt::skip]
@@ -18111,7 +18111,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_permutex2var_epi16() {
         let a = _mm256_set_epi16(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
         #[rustfmt::skip]
@@ -18126,7 +18126,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask2_permutex2var_epi16() {
         let a = _mm256_set_epi16(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
         #[rustfmt::skip]
@@ -18142,7 +18142,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_permutex2var_epi16() {
         let a = _mm_set_epi16(0, 1, 2, 3, 4, 5, 6, 7);
         let idx = _mm_set_epi16(1, 1 << 3, 2, 1 << 3, 3, 1 << 3, 4, 1 << 3);
@@ -18152,7 +18152,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_permutex2var_epi16() {
         let a = _mm_set_epi16(0, 1, 2, 3, 4, 5, 6, 7);
         let idx = _mm_set_epi16(1, 1 << 3, 2, 1 << 3, 3, 1 << 3, 4, 1 << 3);
@@ -18164,7 +18164,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_permutex2var_epi16() {
         let a = _mm_set_epi16(0, 1, 2, 3, 4, 5, 6, 7);
         let idx = _mm_set_epi16(1, 1 << 3, 2, 1 << 3, 3, 1 << 3, 4, 1 << 3);
@@ -18176,7 +18176,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask2_permutex2var_epi16() {
         let a = _mm_set_epi16(0, 1, 2, 3, 4, 5, 6, 7);
         let idx = _mm_set_epi16(1, 1 << 3, 2, 1 << 3, 3, 1 << 3, 4, 1 << 3);
@@ -18188,7 +18188,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_permutexvar_epi16() {
         let idx = _mm512_set1_epi16(1);
         #[rustfmt::skip]
@@ -18199,7 +18199,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_permutexvar_epi16() {
         let idx = _mm512_set1_epi16(1);
         #[rustfmt::skip]
@@ -18212,7 +18212,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_permutexvar_epi16() {
         let idx = _mm512_set1_epi16(1);
         #[rustfmt::skip]
@@ -18225,7 +18225,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_permutexvar_epi16() {
         let idx = _mm256_set1_epi16(1);
         let a = _mm256_set_epi16(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
@@ -18234,7 +18234,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_permutexvar_epi16() {
         let idx = _mm256_set1_epi16(1);
         let a = _mm256_set_epi16(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
@@ -18245,7 +18245,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_permutexvar_epi16() {
         let idx = _mm256_set1_epi16(1);
         let a = _mm256_set_epi16(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
@@ -18256,7 +18256,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_permutexvar_epi16() {
         let idx = _mm_set1_epi16(1);
         let a = _mm_set_epi16(0, 1, 2, 3, 4, 5, 6, 7);
@@ -18265,7 +18265,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_permutexvar_epi16() {
         let idx = _mm_set1_epi16(1);
         let a = _mm_set_epi16(0, 1, 2, 3, 4, 5, 6, 7);
@@ -18276,7 +18276,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_permutexvar_epi16() {
         let idx = _mm_set1_epi16(1);
         let a = _mm_set_epi16(0, 1, 2, 3, 4, 5, 6, 7);
@@ -18287,7 +18287,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_blend_epi16() {
         let a = _mm512_set1_epi16(1);
         let b = _mm512_set1_epi16(2);
@@ -18298,7 +18298,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_blend_epi16() {
         let a = _mm256_set1_epi16(1);
         let b = _mm256_set1_epi16(2);
@@ -18307,7 +18307,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_blend_epi16() {
         let a = _mm_set1_epi16(1);
         let b = _mm_set1_epi16(2);
@@ -18316,7 +18316,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_blend_epi8() {
         let a = _mm512_set1_epi8(1);
         let b = _mm512_set1_epi8(2);
@@ -18333,7 +18333,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_blend_epi8() {
         let a = _mm256_set1_epi8(1);
         let b = _mm256_set1_epi8(2);
@@ -18344,7 +18344,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_blend_epi8() {
         let a = _mm_set1_epi8(1);
         let b = _mm_set1_epi8(2);
@@ -18353,7 +18353,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_broadcastw_epi16() {
         let a = _mm_set_epi16(17, 18, 19, 20, 21, 22, 23, 24);
         let r = _mm512_broadcastw_epi16(a);
@@ -18361,7 +18361,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_broadcastw_epi16() {
         let src = _mm512_set1_epi16(1);
         let a = _mm_set_epi16(17, 18, 19, 20, 21, 22, 23, 24);
@@ -18372,7 +18372,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_broadcastw_epi16() {
         let a = _mm_set_epi16(17, 18, 19, 20, 21, 22, 23, 24);
         let r = _mm512_maskz_broadcastw_epi16(0, a);
@@ -18382,7 +18382,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_broadcastw_epi16() {
         let src = _mm256_set1_epi16(1);
         let a = _mm_set_epi16(17, 18, 19, 20, 21, 22, 23, 24);
@@ -18393,7 +18393,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_broadcastw_epi16() {
         let a = _mm_set_epi16(17, 18, 19, 20, 21, 22, 23, 24);
         let r = _mm256_maskz_broadcastw_epi16(0, a);
@@ -18403,7 +18403,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_broadcastw_epi16() {
         let src = _mm_set1_epi16(1);
         let a = _mm_set_epi16(17, 18, 19, 20, 21, 22, 23, 24);
@@ -18414,7 +18414,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_broadcastw_epi16() {
         let a = _mm_set_epi16(17, 18, 19, 20, 21, 22, 23, 24);
         let r = _mm_maskz_broadcastw_epi16(0, a);
@@ -18424,7 +18424,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_broadcastb_epi8() {
         let a = _mm_set_epi8(
             17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32,
@@ -18434,7 +18434,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_broadcastb_epi8() {
         let src = _mm512_set1_epi8(1);
         let a = _mm_set_epi8(
@@ -18451,7 +18451,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_broadcastb_epi8() {
         let a = _mm_set_epi8(
             17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32,
@@ -18466,7 +18466,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_broadcastb_epi8() {
         let src = _mm256_set1_epi8(1);
         let a = _mm_set_epi8(
@@ -18479,7 +18479,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_broadcastb_epi8() {
         let a = _mm_set_epi8(
             17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32,
@@ -18491,7 +18491,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_broadcastb_epi8() {
         let src = _mm_set1_epi8(1);
         let a = _mm_set_epi8(
@@ -18504,7 +18504,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_broadcastb_epi8() {
         let a = _mm_set_epi8(
             17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32,
@@ -18516,7 +18516,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_unpackhi_epi16() {
         #[rustfmt::skip]
         let a = _mm512_set_epi16(1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15, 16,
@@ -18531,7 +18531,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_unpackhi_epi16() {
         #[rustfmt::skip]
         let a = _mm512_set_epi16(1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15, 16,
@@ -18548,7 +18548,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_unpackhi_epi16() {
         #[rustfmt::skip]
         let a = _mm512_set_epi16(1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15, 16,
@@ -18565,7 +18565,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_unpackhi_epi16() {
         let a = _mm256_set_epi16(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
         let b = _mm256_set_epi16(
@@ -18578,7 +18578,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_unpackhi_epi16() {
         let a = _mm256_set_epi16(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
         let b = _mm256_set_epi16(
@@ -18591,7 +18591,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_unpackhi_epi16() {
         let a = _mm_set_epi16(1, 2, 3, 4, 5, 6, 7, 8);
         let b = _mm_set_epi16(33, 34, 35, 36, 37, 38, 39, 40);
@@ -18602,7 +18602,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_unpackhi_epi16() {
         let a = _mm_set_epi16(1, 2, 3, 4, 5, 6, 7, 8);
         let b = _mm_set_epi16(33, 34, 35, 36, 37, 38, 39, 40);
@@ -18613,7 +18613,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_unpackhi_epi8() {
         #[rustfmt::skip]
         let a = _mm512_set_epi8(1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15, 16,
@@ -18634,7 +18634,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_unpackhi_epi8() {
         #[rustfmt::skip]
         let a = _mm512_set_epi8(1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15, 16,
@@ -18662,7 +18662,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_unpackhi_epi8() {
         #[rustfmt::skip]
         let a = _mm512_set_epi8(1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15, 16,
@@ -18689,7 +18689,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_unpackhi_epi8() {
         #[rustfmt::skip]
         let a = _mm256_set_epi8(1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15, 16,
@@ -18706,7 +18706,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_unpackhi_epi8() {
         #[rustfmt::skip]
         let a = _mm256_set_epi8(1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15, 16,
@@ -18723,7 +18723,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_unpackhi_epi8() {
         let a = _mm_set_epi8(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
         let b = _mm_set_epi8(
@@ -18736,7 +18736,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_unpackhi_epi8() {
         let a = _mm_set_epi8(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
         let b = _mm_set_epi8(
@@ -18749,7 +18749,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_unpacklo_epi16() {
         #[rustfmt::skip]
         let a = _mm512_set_epi16(1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15, 16,
@@ -18764,7 +18764,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_unpacklo_epi16() {
         #[rustfmt::skip]
         let a = _mm512_set_epi16(1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15, 16,
@@ -18781,7 +18781,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_unpacklo_epi16() {
         #[rustfmt::skip]
         let a = _mm512_set_epi16(1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15, 16,
@@ -18798,7 +18798,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_unpacklo_epi16() {
         let a = _mm256_set_epi16(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
         let b = _mm256_set_epi16(
@@ -18811,7 +18811,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_unpacklo_epi16() {
         let a = _mm256_set_epi16(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
         let b = _mm256_set_epi16(
@@ -18824,7 +18824,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_unpacklo_epi16() {
         let a = _mm_set_epi16(1, 2, 3, 4, 5, 6, 7, 8);
         let b = _mm_set_epi16(33, 34, 35, 36, 37, 38, 39, 40);
@@ -18835,7 +18835,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_unpacklo_epi16() {
         let a = _mm_set_epi16(1, 2, 3, 4, 5, 6, 7, 8);
         let b = _mm_set_epi16(33, 34, 35, 36, 37, 38, 39, 40);
@@ -18846,7 +18846,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_unpacklo_epi8() {
         #[rustfmt::skip]
         let a = _mm512_set_epi8(1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15, 16,
@@ -18867,7 +18867,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_unpacklo_epi8() {
         #[rustfmt::skip]
         let a = _mm512_set_epi8(1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15, 16,
@@ -18895,7 +18895,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_unpacklo_epi8() {
         #[rustfmt::skip]
         let a = _mm512_set_epi8(1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15, 16,
@@ -18922,7 +18922,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_unpacklo_epi8() {
         #[rustfmt::skip]
         let a = _mm256_set_epi8(1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15, 16,
@@ -18939,7 +18939,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_unpacklo_epi8() {
         #[rustfmt::skip]
         let a = _mm256_set_epi8(1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15, 16,
@@ -18956,7 +18956,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_unpacklo_epi8() {
         let a = _mm_set_epi8(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
         let b = _mm_set_epi8(
@@ -18971,7 +18971,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_unpacklo_epi8() {
         let a = _mm_set_epi8(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
         let b = _mm_set_epi8(
@@ -18986,7 +18986,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_mov_epi16() {
         let src = _mm512_set1_epi16(1);
         let a = _mm512_set1_epi16(2);
@@ -18996,7 +18996,7 @@ mod tests {
         assert_eq_m512i(r, a);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_mov_epi16() {
         let a = _mm512_set1_epi16(2);
         let r = _mm512_maskz_mov_epi16(0, a);
@@ -19005,7 +19005,7 @@ mod tests {
         assert_eq_m512i(r, a);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_mov_epi16() {
         let src = _mm256_set1_epi16(1);
         let a = _mm256_set1_epi16(2);
@@ -19015,7 +19015,7 @@ mod tests {
         assert_eq_m256i(r, a);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_mov_epi16() {
         let a = _mm256_set1_epi16(2);
         let r = _mm256_maskz_mov_epi16(0, a);
@@ -19024,7 +19024,7 @@ mod tests {
         assert_eq_m256i(r, a);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_mov_epi16() {
         let src = _mm_set1_epi16(1);
         let a = _mm_set1_epi16(2);
@@ -19034,7 +19034,7 @@ mod tests {
         assert_eq_m128i(r, a);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_mov_epi16() {
         let a = _mm_set1_epi16(2);
         let r = _mm_maskz_mov_epi16(0, a);
@@ -19043,7 +19043,7 @@ mod tests {
         assert_eq_m128i(r, a);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_mov_epi8() {
         let src = _mm512_set1_epi8(1);
         let a = _mm512_set1_epi8(2);
@@ -19057,7 +19057,7 @@ mod tests {
         assert_eq_m512i(r, a);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_mov_epi8() {
         let a = _mm512_set1_epi8(2);
         let r = _mm512_maskz_mov_epi8(0, a);
@@ -19069,7 +19069,7 @@ mod tests {
         assert_eq_m512i(r, a);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_mov_epi8() {
         let src = _mm256_set1_epi8(1);
         let a = _mm256_set1_epi8(2);
@@ -19079,7 +19079,7 @@ mod tests {
         assert_eq_m256i(r, a);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_mov_epi8() {
         let a = _mm256_set1_epi8(2);
         let r = _mm256_maskz_mov_epi8(0, a);
@@ -19088,7 +19088,7 @@ mod tests {
         assert_eq_m256i(r, a);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_mov_epi8() {
         let src = _mm_set1_epi8(1);
         let a = _mm_set1_epi8(2);
@@ -19098,7 +19098,7 @@ mod tests {
         assert_eq_m128i(r, a);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_mov_epi8() {
         let a = _mm_set1_epi8(2);
         let r = _mm_maskz_mov_epi8(0, a);
@@ -19107,7 +19107,7 @@ mod tests {
         assert_eq_m128i(r, a);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_set1_epi16() {
         let src = _mm512_set1_epi16(2);
         let a: i16 = 11;
@@ -19118,7 +19118,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_set1_epi16() {
         let a: i16 = 11;
         let r = _mm512_maskz_set1_epi16(0, a);
@@ -19128,7 +19128,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_set1_epi16() {
         let src = _mm256_set1_epi16(2);
         let a: i16 = 11;
@@ -19139,7 +19139,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_set1_epi16() {
         let a: i16 = 11;
         let r = _mm256_maskz_set1_epi16(0, a);
@@ -19149,7 +19149,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_set1_epi16() {
         let src = _mm_set1_epi16(2);
         let a: i16 = 11;
@@ -19160,7 +19160,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_set1_epi16() {
         let a: i16 = 11;
         let r = _mm_maskz_set1_epi16(0, a);
@@ -19170,7 +19170,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_set1_epi8() {
         let src = _mm512_set1_epi8(2);
         let a: i8 = 11;
@@ -19185,7 +19185,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_set1_epi8() {
         let a: i8 = 11;
         let r = _mm512_maskz_set1_epi8(0, a);
@@ -19198,7 +19198,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_set1_epi8() {
         let src = _mm256_set1_epi8(2);
         let a: i8 = 11;
@@ -19209,7 +19209,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_set1_epi8() {
         let a: i8 = 11;
         let r = _mm256_maskz_set1_epi8(0, a);
@@ -19219,7 +19219,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_set1_epi8() {
         let src = _mm_set1_epi8(2);
         let a: i8 = 11;
@@ -19230,7 +19230,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_set1_epi8() {
         let a: i8 = 11;
         let r = _mm_maskz_set1_epi8(0, a);
@@ -19240,7 +19240,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_shufflelo_epi16() {
         #[rustfmt::skip]
         let a = _mm512_set_epi16(
@@ -19256,7 +19256,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_shufflelo_epi16() {
         #[rustfmt::skip]
         let a = _mm512_set_epi16(
@@ -19278,7 +19278,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_shufflelo_epi16() {
         #[rustfmt::skip]
         let a = _mm512_set_epi16(
@@ -19297,7 +19297,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_shufflelo_epi16() {
         let a = _mm256_set_epi16(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
         let r = _mm256_mask_shufflelo_epi16::<0b00_01_01_11>(a, 0, a);
@@ -19307,7 +19307,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_shufflelo_epi16() {
         let a = _mm256_set_epi16(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
         let r = _mm256_maskz_shufflelo_epi16::<0b00_01_01_11>(0, a);
@@ -19317,7 +19317,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_shufflelo_epi16() {
         let a = _mm_set_epi16(0, 1, 2, 3, 4, 5, 6, 7);
         let r = _mm_mask_shufflelo_epi16::<0b00_01_01_11>(a, 0, a);
@@ -19327,7 +19327,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_shufflelo_epi16() {
         let a = _mm_set_epi16(0, 1, 2, 3, 4, 5, 6, 7);
         let r = _mm_maskz_shufflelo_epi16::<0b00_01_01_11>(0, a);
@@ -19337,7 +19337,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_shufflehi_epi16() {
         #[rustfmt::skip]
         let a = _mm512_set_epi16(
@@ -19353,7 +19353,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_shufflehi_epi16() {
         #[rustfmt::skip]
         let a = _mm512_set_epi16(
@@ -19375,7 +19375,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_shufflehi_epi16() {
         #[rustfmt::skip]
         let a = _mm512_set_epi16(
@@ -19394,7 +19394,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_shufflehi_epi16() {
         let a = _mm256_set_epi16(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
         let r = _mm256_mask_shufflehi_epi16::<0b00_01_01_11>(a, 0, a);
@@ -19404,7 +19404,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_shufflehi_epi16() {
         let a = _mm256_set_epi16(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
         let r = _mm256_maskz_shufflehi_epi16::<0b00_01_01_11>(0, a);
@@ -19414,7 +19414,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_shufflehi_epi16() {
         let a = _mm_set_epi16(0, 1, 2, 3, 4, 5, 6, 7);
         let r = _mm_mask_shufflehi_epi16::<0b00_01_01_11>(a, 0, a);
@@ -19424,7 +19424,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_shufflehi_epi16() {
         let a = _mm_set_epi16(0, 1, 2, 3, 4, 5, 6, 7);
         let r = _mm_maskz_shufflehi_epi16::<0b00_01_01_11>(0, a);
@@ -19434,7 +19434,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_shuffle_epi8() {
         #[rustfmt::skip]
         let a = _mm512_set_epi8(0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15,
@@ -19451,7 +19451,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_shuffle_epi8() {
         #[rustfmt::skip]
         let a = _mm512_set_epi8(0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15,
@@ -19475,7 +19475,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_shuffle_epi8() {
         #[rustfmt::skip]
         let a = _mm512_set_epi8(0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15,
@@ -19498,7 +19498,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_shuffle_epi8() {
         #[rustfmt::skip]
         let a = _mm256_set_epi8(0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15,
@@ -19513,7 +19513,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_shuffle_epi8() {
         #[rustfmt::skip]
         let a = _mm256_set_epi8(0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15,
@@ -19528,7 +19528,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_shuffle_epi8() {
         let a = _mm_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
         let b = _mm_set1_epi8(1);
@@ -19541,7 +19541,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_shuffle_epi8() {
         #[rustfmt::skip]
         let a = _mm_set_epi8(0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15);
@@ -19555,7 +19555,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_test_epi16_mask() {
         let a = _mm512_set1_epi16(1 << 0);
         let b = _mm512_set1_epi16(1 << 0 | 1 << 1);
@@ -19564,7 +19564,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_test_epi16_mask() {
         let a = _mm512_set1_epi16(1 << 0);
         let b = _mm512_set1_epi16(1 << 0 | 1 << 1);
@@ -19575,7 +19575,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_test_epi16_mask() {
         let a = _mm256_set1_epi16(1 << 0);
         let b = _mm256_set1_epi16(1 << 0 | 1 << 1);
@@ -19584,7 +19584,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_test_epi16_mask() {
         let a = _mm256_set1_epi16(1 << 0);
         let b = _mm256_set1_epi16(1 << 0 | 1 << 1);
@@ -19595,7 +19595,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_test_epi16_mask() {
         let a = _mm_set1_epi16(1 << 0);
         let b = _mm_set1_epi16(1 << 0 | 1 << 1);
@@ -19604,7 +19604,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_test_epi16_mask() {
         let a = _mm_set1_epi16(1 << 0);
         let b = _mm_set1_epi16(1 << 0 | 1 << 1);
@@ -19615,7 +19615,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_test_epi8_mask() {
         let a = _mm512_set1_epi8(1 << 0);
         let b = _mm512_set1_epi8(1 << 0 | 1 << 1);
@@ -19625,7 +19625,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_test_epi8_mask() {
         let a = _mm512_set1_epi8(1 << 0);
         let b = _mm512_set1_epi8(1 << 0 | 1 << 1);
@@ -19641,7 +19641,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_test_epi8_mask() {
         let a = _mm256_set1_epi8(1 << 0);
         let b = _mm256_set1_epi8(1 << 0 | 1 << 1);
@@ -19650,7 +19650,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_test_epi8_mask() {
         let a = _mm256_set1_epi8(1 << 0);
         let b = _mm256_set1_epi8(1 << 0 | 1 << 1);
@@ -19661,7 +19661,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_test_epi8_mask() {
         let a = _mm_set1_epi8(1 << 0);
         let b = _mm_set1_epi8(1 << 0 | 1 << 1);
@@ -19670,7 +19670,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_test_epi8_mask() {
         let a = _mm_set1_epi8(1 << 0);
         let b = _mm_set1_epi8(1 << 0 | 1 << 1);
@@ -19681,7 +19681,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_testn_epi16_mask() {
         let a = _mm512_set1_epi16(1 << 0);
         let b = _mm512_set1_epi16(1 << 0 | 1 << 1);
@@ -19690,7 +19690,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_testn_epi16_mask() {
         let a = _mm512_set1_epi16(1 << 0);
         let b = _mm512_set1_epi16(1 << 0 | 1 << 1);
@@ -19701,7 +19701,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_testn_epi16_mask() {
         let a = _mm256_set1_epi16(1 << 0);
         let b = _mm256_set1_epi16(1 << 0 | 1 << 1);
@@ -19710,7 +19710,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_testn_epi16_mask() {
         let a = _mm256_set1_epi16(1 << 0);
         let b = _mm256_set1_epi16(1 << 0 | 1 << 1);
@@ -19721,7 +19721,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_testn_epi16_mask() {
         let a = _mm_set1_epi16(1 << 0);
         let b = _mm_set1_epi16(1 << 0 | 1 << 1);
@@ -19730,7 +19730,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_testn_epi16_mask() {
         let a = _mm_set1_epi16(1 << 0);
         let b = _mm_set1_epi16(1 << 0 | 1 << 1);
@@ -19741,7 +19741,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_testn_epi8_mask() {
         let a = _mm512_set1_epi8(1 << 0);
         let b = _mm512_set1_epi8(1 << 0 | 1 << 1);
@@ -19751,7 +19751,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_testn_epi8_mask() {
         let a = _mm512_set1_epi8(1 << 0);
         let b = _mm512_set1_epi8(1 << 0 | 1 << 1);
@@ -19767,7 +19767,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_testn_epi8_mask() {
         let a = _mm256_set1_epi8(1 << 0);
         let b = _mm256_set1_epi8(1 << 0 | 1 << 1);
@@ -19776,7 +19776,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_testn_epi8_mask() {
         let a = _mm256_set1_epi8(1 << 0);
         let b = _mm256_set1_epi8(1 << 0 | 1 << 1);
@@ -19787,7 +19787,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_testn_epi8_mask() {
         let a = _mm_set1_epi8(1 << 0);
         let b = _mm_set1_epi8(1 << 0 | 1 << 1);
@@ -19796,7 +19796,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_testn_epi8_mask() {
         let a = _mm_set1_epi8(1 << 0);
         let b = _mm_set1_epi8(1 << 0 | 1 << 1);
@@ -19807,7 +19807,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_store_mask64() {
         let a: __mmask64 =
             0b11111111_00000000_11111111_00000000_11111111_00000000_11111111_00000000;
@@ -19816,7 +19816,7 @@ mod tests {
         assert_eq!(r, a);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_store_mask32() {
         let a: __mmask32 = 0b11111111_00000000_11111111_00000000;
         let mut r = 0;
@@ -19824,7 +19824,7 @@ mod tests {
         assert_eq!(r, a);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_load_mask64() {
         let p: __mmask64 =
             0b11111111_00000000_11111111_00000000_11111111_00000000_11111111_00000000;
@@ -19834,7 +19834,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_load_mask32() {
         let p: __mmask32 = 0b11111111_00000000_11111111_00000000;
         let r = _load_mask32(&p);
@@ -19842,7 +19842,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_sad_epu8() {
         let a = _mm512_set1_epi8(2);
         let b = _mm512_set1_epi8(4);
@@ -19851,7 +19851,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_dbsad_epu8() {
         let a = _mm512_set1_epi8(2);
         let b = _mm512_set1_epi8(4);
@@ -19860,7 +19860,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_dbsad_epu8() {
         let src = _mm512_set1_epi16(1);
         let a = _mm512_set1_epi8(2);
@@ -19872,7 +19872,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_dbsad_epu8() {
         let a = _mm512_set1_epi8(2);
         let b = _mm512_set1_epi8(4);
@@ -19883,7 +19883,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_dbsad_epu8() {
         let a = _mm256_set1_epi8(2);
         let b = _mm256_set1_epi8(4);
@@ -19892,7 +19892,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_dbsad_epu8() {
         let src = _mm256_set1_epi16(1);
         let a = _mm256_set1_epi8(2);
@@ -19904,7 +19904,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_dbsad_epu8() {
         let a = _mm256_set1_epi8(2);
         let b = _mm256_set1_epi8(4);
@@ -19915,7 +19915,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_dbsad_epu8() {
         let a = _mm_set1_epi8(2);
         let b = _mm_set1_epi8(4);
@@ -19924,7 +19924,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_dbsad_epu8() {
         let src = _mm_set1_epi16(1);
         let a = _mm_set1_epi8(2);
@@ -19936,7 +19936,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_dbsad_epu8() {
         let a = _mm_set1_epi8(2);
         let b = _mm_set1_epi8(4);
@@ -19947,7 +19947,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_movepi16_mask() {
         let a = _mm512_set1_epi16(1 << 15);
         let r = _mm512_movepi16_mask(a);
@@ -19955,7 +19955,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_movepi16_mask() {
         let a = _mm256_set1_epi16(1 << 15);
         let r = _mm256_movepi16_mask(a);
@@ -19963,7 +19963,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_movepi16_mask() {
         let a = _mm_set1_epi16(1 << 15);
         let r = _mm_movepi16_mask(a);
@@ -19971,7 +19971,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_movepi8_mask() {
         let a = _mm512_set1_epi8(1 << 7);
         let r = _mm512_movepi8_mask(a);
@@ -19980,7 +19980,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_movepi8_mask() {
         let a = _mm256_set1_epi8(1 << 7);
         let r = _mm256_movepi8_mask(a);
@@ -19988,7 +19988,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_movepi8_mask() {
         let a = _mm_set1_epi8(1 << 7);
         let r = _mm_movepi8_mask(a);
@@ -19996,7 +19996,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_movm_epi16() {
         let a: __mmask32 = 0b11111111_11111111_11111111_11111111;
         let r = _mm512_movm_epi16(a);
@@ -20021,7 +20021,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_movm_epi16() {
         let a: __mmask16 = 0b11111111_11111111;
         let r = _mm256_movm_epi16(a);
@@ -20046,7 +20046,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_movm_epi16() {
         let a: __mmask8 = 0b11111111;
         let r = _mm_movm_epi16(a);
@@ -20071,7 +20071,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_movm_epi8() {
         let a: __mmask64 =
             0b11111111_11111111_11111111_11111111_11111111_11111111_11111111_11111111;
@@ -20081,7 +20081,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_movm_epi8() {
         let a: __mmask32 = 0b11111111_11111111_11111111_11111111;
         let r = _mm256_movm_epi8(a);
@@ -20090,7 +20090,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_movm_epi8() {
         let a: __mmask16 = 0b11111111_11111111;
         let r = _mm_movm_epi8(a);
@@ -20099,7 +20099,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_cvtmask32_u32() {
         let a: __mmask32 = 0b11001100_00110011_01100110_10011001;
         let r = _cvtmask32_u32(a);
@@ -20107,7 +20107,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_cvtu32_mask32() {
         let a: u32 = 0b11001100_00110011_01100110_10011001;
         let r = _cvtu32_mask32(a);
@@ -20115,7 +20115,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_kadd_mask32() {
         let a: __mmask32 = 11;
         let b: __mmask32 = 22;
@@ -20124,7 +20124,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_kadd_mask64() {
         let a: __mmask64 = 11;
         let b: __mmask64 = 22;
@@ -20133,7 +20133,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_kand_mask32() {
         let a: __mmask32 = 0b11001100_00110011_11001100_00110011;
         let b: __mmask32 = 0b11001100_00110011_11001100_00110011;
@@ -20142,7 +20142,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_kand_mask64() {
         let a: __mmask64 =
             0b11001100_00110011_11001100_00110011_11001100_00110011_11001100_00110011;
@@ -20154,7 +20154,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_knot_mask32() {
         let a: __mmask32 = 0b11001100_00110011_11001100_00110011;
         let r = _knot_mask32(a);
@@ -20162,7 +20162,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_knot_mask64() {
         let a: __mmask64 =
             0b11001100_00110011_11001100_00110011_11001100_00110011_11001100_00110011;
@@ -20172,7 +20172,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_kandn_mask32() {
         let a: __mmask32 = 0b11001100_00110011_11001100_00110011;
         let b: __mmask32 = 0b11001100_00110011_11001100_00110011;
@@ -20181,7 +20181,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_kandn_mask64() {
         let a: __mmask64 =
             0b11001100_00110011_11001100_00110011_11001100_00110011_11001100_00110011;
@@ -20193,7 +20193,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_kor_mask32() {
         let a: __mmask32 = 0b00110011_11001100_00110011_11001100;
         let b: __mmask32 = 0b11001100_00110011_11001100_00110011;
@@ -20202,7 +20202,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_kor_mask64() {
         let a: __mmask64 =
             0b00110011_11001100_00110011_11001100_00110011_11001100_00110011_11001100;
@@ -20214,7 +20214,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_kxor_mask32() {
         let a: __mmask32 = 0b00110011_11001100_00110011_11001100;
         let b: __mmask32 = 0b11001100_00110011_11001100_00110011;
@@ -20223,7 +20223,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_kxor_mask64() {
         let a: __mmask64 =
             0b00110011_11001100_00110011_11001100_00110011_11001100_00110011_11001100;
@@ -20235,7 +20235,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_kxnor_mask32() {
         let a: __mmask32 = 0b00110011_11001100_00110011_11001100;
         let b: __mmask32 = 0b11001100_00110011_11001100_00110011;
@@ -20244,7 +20244,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_kxnor_mask64() {
         let a: __mmask64 =
             0b00110011_11001100_00110011_11001100_00110011_11001100_00110011_11001100;
@@ -20256,7 +20256,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_kortest_mask32_u8() {
         let a: __mmask32 = 0b0110100101101001_0110100101101001;
         let b: __mmask32 = 0b1011011010110110_1011011010110110;
@@ -20266,7 +20266,7 @@ mod tests {
         assert_eq!(all_ones, 1);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_kortest_mask64_u8() {
         let a: __mmask64 = 0b0110100101101001_0110100101101001;
         let b: __mmask64 = 0b1011011010110110_1011011010110110;
@@ -20276,7 +20276,7 @@ mod tests {
         assert_eq!(all_ones, 0);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_kortestc_mask32_u8() {
         let a: __mmask32 = 0b0110100101101001_0110100101101001;
         let b: __mmask32 = 0b1011011010110110_1011011010110110;
@@ -20284,7 +20284,7 @@ mod tests {
         assert_eq!(r, 1);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_kortestc_mask64_u8() {
         let a: __mmask64 = 0b0110100101101001_0110100101101001;
         let b: __mmask64 = 0b1011011010110110_1011011010110110;
@@ -20292,7 +20292,7 @@ mod tests {
         assert_eq!(r, 0);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_kortestz_mask32_u8() {
         let a: __mmask32 = 0b0110100101101001_0110100101101001;
         let b: __mmask32 = 0b1011011010110110_1011011010110110;
@@ -20300,7 +20300,7 @@ mod tests {
         assert_eq!(r, 0);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_kortestz_mask64_u8() {
         let a: __mmask64 = 0b0110100101101001_0110100101101001;
         let b: __mmask64 = 0b1011011010110110_1011011010110110;
@@ -20308,7 +20308,7 @@ mod tests {
         assert_eq!(r, 0);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_kshiftli_mask32() {
         let a: __mmask32 = 0b0110100101101001_0110100101101001;
         let r = _kshiftli_mask32::<3>(a);
@@ -20328,7 +20328,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_kshiftli_mask64() {
         let a: __mmask64 = 0b0110100101101001_0110100101101001;
         let r = _kshiftli_mask64::<3>(a);
@@ -20348,7 +20348,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_kshiftri_mask32() {
         let a: __mmask32 = 0b1010100101101001_0110100101101001;
         let r = _kshiftri_mask32::<3>(a);
@@ -20368,7 +20368,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_kshiftri_mask64() {
         let a: __mmask64 = 0b1010100101101001011_0100101101001000;
         let r = _kshiftri_mask64::<3>(a);
@@ -20392,7 +20392,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_ktest_mask32_u8() {
         let a: __mmask32 = 0b0110100100111100_0110100100111100;
         let b: __mmask32 = 0b1001011011000011_1001011011000011;
@@ -20402,7 +20402,7 @@ mod tests {
         assert_eq!(and_not, 0);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_ktestc_mask32_u8() {
         let a: __mmask32 = 0b0110100100111100_0110100100111100;
         let b: __mmask32 = 0b1001011011000011_1001011011000011;
@@ -20410,7 +20410,7 @@ mod tests {
         assert_eq!(r, 0);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_ktestz_mask32_u8() {
         let a: __mmask32 = 0b0110100100111100_0110100100111100;
         let b: __mmask32 = 0b1001011011000011_1001011011000011;
@@ -20418,7 +20418,7 @@ mod tests {
         assert_eq!(r, 1);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_ktest_mask64_u8() {
         let a: __mmask64 = 0b0110100100111100_0110100100111100;
         let b: __mmask64 = 0b1001011011000011_1001011011000011;
@@ -20428,7 +20428,7 @@ mod tests {
         assert_eq!(and_not, 0);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_ktestc_mask64_u8() {
         let a: __mmask64 = 0b0110100100111100_0110100100111100;
         let b: __mmask64 = 0b1001011011000011_1001011011000011;
@@ -20436,7 +20436,7 @@ mod tests {
         assert_eq!(r, 0);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_ktestz_mask64_u8() {
         let a: __mmask64 = 0b0110100100111100_0110100100111100;
         let b: __mmask64 = 0b1001011011000011_1001011011000011;
@@ -20444,7 +20444,7 @@ mod tests {
         assert_eq!(r, 1);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_kunpackw() {
         let a: u32 = 0x00110011;
         let b: u32 = 0x00001011;
@@ -20453,7 +20453,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_kunpackd() {
         let a: u64 = 0x11001100_00110011;
         let b: u64 = 0x00101110_00001011;
@@ -20462,7 +20462,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_cvtepi16_epi8() {
         let a = _mm512_set1_epi16(2);
         let r = _mm512_cvtepi16_epi8(a);
@@ -20470,7 +20470,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_cvtepi16_epi8() {
         let src = _mm256_set1_epi8(1);
         let a = _mm512_set1_epi16(2);
@@ -20481,7 +20481,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_cvtepi16_epi8() {
         let a = _mm512_set1_epi16(2);
         let r = _mm512_maskz_cvtepi16_epi8(0, a);
@@ -20491,7 +20491,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_cvtepi16_epi8() {
         let a = _mm256_set1_epi16(2);
         let r = _mm256_cvtepi16_epi8(a);
@@ -20499,7 +20499,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_cvtepi16_epi8() {
         let src = _mm_set1_epi8(1);
         let a = _mm256_set1_epi16(2);
@@ -20510,7 +20510,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_cvtepi16_epi8() {
         let a = _mm256_set1_epi16(2);
         let r = _mm256_maskz_cvtepi16_epi8(0, a);
@@ -20520,7 +20520,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_cvtepi16_epi8() {
         let a = _mm_set1_epi16(2);
         let r = _mm_cvtepi16_epi8(a);
@@ -20528,7 +20528,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_cvtepi16_epi8() {
         let src = _mm_set_epi8(0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1);
         let a = _mm_set1_epi16(2);
@@ -20539,7 +20539,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_cvtepi16_epi8() {
         let a = _mm_set1_epi16(2);
         let r = _mm_maskz_cvtepi16_epi8(0, a);
@@ -20549,7 +20549,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_cvtsepi16_epi8() {
         let a = _mm512_set1_epi16(i16::MAX);
         let r = _mm512_cvtsepi16_epi8(a);
@@ -20557,7 +20557,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_cvtsepi16_epi8() {
         let src = _mm256_set1_epi8(1);
         let a = _mm512_set1_epi16(i16::MAX);
@@ -20568,7 +20568,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_cvtsepi16_epi8() {
         let a = _mm256_set1_epi16(i16::MAX);
         let r = _mm256_cvtsepi16_epi8(a);
@@ -20576,7 +20576,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_cvtsepi16_epi8() {
         let src = _mm_set1_epi8(1);
         let a = _mm256_set1_epi16(i16::MAX);
@@ -20587,7 +20587,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_cvtsepi16_epi8() {
         let a = _mm256_set1_epi16(i16::MAX);
         let r = _mm256_maskz_cvtsepi16_epi8(0, a);
@@ -20597,7 +20597,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_cvtsepi16_epi8() {
         let a = _mm_set1_epi16(i16::MAX);
         let r = _mm_cvtsepi16_epi8(a);
@@ -20606,7 +20606,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_cvtsepi16_epi8() {
         let src = _mm_set_epi8(0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1);
         let a = _mm_set1_epi16(i16::MAX);
@@ -20618,7 +20618,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_cvtsepi16_epi8() {
         let a = _mm_set1_epi16(i16::MAX);
         let r = _mm_maskz_cvtsepi16_epi8(0, a);
@@ -20629,7 +20629,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_cvtsepi16_epi8() {
         let a = _mm512_set1_epi16(i16::MAX);
         let r = _mm512_maskz_cvtsepi16_epi8(0, a);
@@ -20639,7 +20639,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_cvtusepi16_epi8() {
         let a = _mm512_set1_epi16(i16::MIN);
         let r = _mm512_cvtusepi16_epi8(a);
@@ -20647,7 +20647,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_cvtusepi16_epi8() {
         let src = _mm256_set1_epi8(1);
         let a = _mm512_set1_epi16(i16::MIN);
@@ -20658,7 +20658,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_cvtusepi16_epi8() {
         let a = _mm512_set1_epi16(i16::MIN);
         let r = _mm512_maskz_cvtusepi16_epi8(0, a);
@@ -20668,7 +20668,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_cvtusepi16_epi8() {
         let a = _mm256_set1_epi16(i16::MIN);
         let r = _mm256_cvtusepi16_epi8(a);
@@ -20676,7 +20676,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_cvtusepi16_epi8() {
         let src = _mm_set1_epi8(1);
         let a = _mm256_set1_epi16(i16::MIN);
@@ -20687,7 +20687,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_cvtusepi16_epi8() {
         let a = _mm256_set1_epi16(i16::MIN);
         let r = _mm256_maskz_cvtusepi16_epi8(0, a);
@@ -20697,7 +20697,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_cvtusepi16_epi8() {
         let a = _mm_set1_epi16(i16::MIN);
         let r = _mm_cvtusepi16_epi8(a);
@@ -20705,7 +20705,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_cvtusepi16_epi8() {
         let src = _mm_set_epi8(0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1);
         let a = _mm_set1_epi16(i16::MIN);
@@ -20716,7 +20716,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_cvtusepi16_epi8() {
         let a = _mm_set1_epi16(i16::MIN);
         let r = _mm_maskz_cvtusepi16_epi8(0, a);
@@ -20726,7 +20726,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_cvtepi8_epi16() {
         let a = _mm256_set1_epi8(2);
         let r = _mm512_cvtepi8_epi16(a);
@@ -20734,7 +20734,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_cvtepi8_epi16() {
         let src = _mm512_set1_epi16(1);
         let a = _mm256_set1_epi8(2);
@@ -20745,7 +20745,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_cvtepi8_epi16() {
         let a = _mm256_set1_epi8(2);
         let r = _mm512_maskz_cvtepi8_epi16(0, a);
@@ -20755,7 +20755,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_cvtepi8_epi16() {
         let src = _mm256_set1_epi16(1);
         let a = _mm_set1_epi8(2);
@@ -20766,7 +20766,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_cvtepi8_epi16() {
         let a = _mm_set1_epi8(2);
         let r = _mm256_maskz_cvtepi8_epi16(0, a);
@@ -20776,7 +20776,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_cvtepi8_epi16() {
         let src = _mm_set1_epi16(1);
         let a = _mm_set1_epi8(2);
@@ -20787,7 +20787,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_cvtepi8_epi16() {
         let a = _mm_set1_epi8(2);
         let r = _mm_maskz_cvtepi8_epi16(0, a);
@@ -20797,7 +20797,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_cvtepu8_epi16() {
         let a = _mm256_set1_epi8(2);
         let r = _mm512_cvtepu8_epi16(a);
@@ -20805,7 +20805,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_cvtepu8_epi16() {
         let src = _mm512_set1_epi16(1);
         let a = _mm256_set1_epi8(2);
@@ -20816,7 +20816,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_cvtepu8_epi16() {
         let a = _mm256_set1_epi8(2);
         let r = _mm512_maskz_cvtepu8_epi16(0, a);
@@ -20826,7 +20826,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_cvtepu8_epi16() {
         let src = _mm256_set1_epi16(1);
         let a = _mm_set1_epi8(2);
@@ -20837,7 +20837,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_cvtepu8_epi16() {
         let a = _mm_set1_epi8(2);
         let r = _mm256_maskz_cvtepu8_epi16(0, a);
@@ -20847,7 +20847,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_cvtepu8_epi16() {
         let src = _mm_set1_epi16(1);
         let a = _mm_set1_epi8(2);
@@ -20858,7 +20858,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_cvtepu8_epi16() {
         let a = _mm_set1_epi8(2);
         let r = _mm_maskz_cvtepu8_epi16(0, a);
@@ -20868,7 +20868,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_bslli_epi128() {
         #[rustfmt::skip]
         let a = _mm512_set_epi8(
@@ -20888,7 +20888,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_bsrli_epi128() {
         #[rustfmt::skip]
         let a = _mm512_set_epi8(
@@ -20908,7 +20908,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_alignr_epi8() {
         #[rustfmt::skip]
         let a = _mm512_set_epi8(
@@ -20929,7 +20929,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_alignr_epi8() {
         #[rustfmt::skip]
         let a = _mm512_set_epi8(
@@ -20957,7 +20957,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_maskz_alignr_epi8() {
         #[rustfmt::skip]
         let a = _mm512_set_epi8(
@@ -20984,7 +20984,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_alignr_epi8() {
         #[rustfmt::skip]
         let a = _mm256_set_epi8(
@@ -21003,7 +21003,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_maskz_alignr_epi8() {
         #[rustfmt::skip]
         let a = _mm256_set_epi8(
@@ -21022,7 +21022,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_alignr_epi8() {
         let a = _mm_set_epi8(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0);
         let b = _mm_set1_epi8(1);
@@ -21033,7 +21033,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_maskz_alignr_epi8() {
         let a = _mm_set_epi8(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0);
         let b = _mm_set1_epi8(1);
@@ -21044,7 +21044,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_cvtsepi16_storeu_epi8() {
         let a = _mm512_set1_epi16(i16::MAX);
         let mut r = _mm256_undefined_si256();
@@ -21057,7 +21057,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_cvtsepi16_storeu_epi8() {
         let a = _mm256_set1_epi16(i16::MAX);
         let mut r = _mm_undefined_si128();
@@ -21066,7 +21066,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_cvtsepi16_storeu_epi8() {
         let a = _mm_set1_epi16(i16::MAX);
         let mut r = _mm_set1_epi8(0);
@@ -21079,7 +21079,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_cvtepi16_storeu_epi8() {
         let a = _mm512_set1_epi16(8);
         let mut r = _mm256_undefined_si256();
@@ -21092,7 +21092,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_cvtepi16_storeu_epi8() {
         let a = _mm256_set1_epi16(8);
         let mut r = _mm_undefined_si128();
@@ -21101,7 +21101,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_cvtepi16_storeu_epi8() {
         let a = _mm_set1_epi16(8);
         let mut r = _mm_set1_epi8(0);
@@ -21110,7 +21110,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_mm512_mask_cvtusepi16_storeu_epi8() {
         let a = _mm512_set1_epi16(i16::MAX);
         let mut r = _mm256_undefined_si256();
@@ -21123,7 +21123,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm256_mask_cvtusepi16_storeu_epi8() {
         let a = _mm256_set1_epi16(i16::MAX);
         let mut r = _mm_undefined_si128();
@@ -21132,7 +21132,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx512bw,avx512vl")]
+    #[simd_test("avx512bw", "avx512vl")]
     unsafe fn test_mm_mask_cvtusepi16_storeu_epi8() {
         let a = _mm_set1_epi16(i16::MAX);
         let mut r = _mm_set1_epi8(0);

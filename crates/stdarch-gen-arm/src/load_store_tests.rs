@@ -364,7 +364,7 @@ fn generate_single_test(
         quote!()
     };
 
-    let feats = load.target_features.join(",");
+    let feats = &load.target_features;
 
     if let Some(store) = store {
         let data_init = if *tuple_len == 1 {
@@ -415,7 +415,7 @@ fn generate_single_test(
         };
 
         Ok(quote! {
-            #[simd_test(enable = #feats)]
+            #[simd_test(#( #feats ),*)]
             unsafe fn #test_name() {
                 #octaword_guard
                 #length_call
@@ -458,7 +458,7 @@ fn generate_single_test(
             }
         };
         Ok(quote! {
-            #[simd_test(enable = #feats)]
+            #[simd_test(#( #feats ),*)]
             unsafe fn #test_name() {
                 #octaword_guard
                 #bases_load
@@ -804,7 +804,7 @@ fn assert_vector_matches_u64(vector: svuint64_t, expected: svuint64_t) {{
     )
 });
 
-const MANUAL_TESTS: &str = "#[simd_test(enable = \"sve\")]
+const MANUAL_TESTS: &str = "#[simd_test(\"sve\")]
 unsafe fn test_ffr() {
     svsetffr();
     let ffr = svrdffr();

@@ -27,7 +27,7 @@ mod tests {
 
     use crate::core_arch::{x86::*, x86_64::*};
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_cvtmask64_u64() {
         let a: __mmask64 = 0b11001100_00110011_01100110_10011001;
         let r = _cvtmask64_u64(a);
@@ -35,7 +35,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "avx512bw")]
+    #[simd_test("avx512bw")]
     unsafe fn test_cvtu64_mask64() {
         let a: u64 = 0b11001100_00110011_01100110_10011001;
         let r = _cvtu64_mask64(a);

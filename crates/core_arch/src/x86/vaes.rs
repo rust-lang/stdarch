@@ -195,7 +195,7 @@ mod tests {
         setup_state_key(_mm512_broadcast_i32x4)
     }
 
-    #[simd_test(enable = "vaes,avx512vl")]
+    #[simd_test("vaes", "avx512vl")]
     unsafe fn test_mm256_aesdec_epi128() {
         // Constants taken from https://msdn.microsoft.com/en-us/library/cc664949.aspx.
         let (a, k) = setup_state_key_256();
@@ -207,7 +207,7 @@ mod tests {
         helper_for_256_vaes(_mm_aesdec_si128, _mm256_aesdec_epi128);
     }
 
-    #[simd_test(enable = "vaes,avx512vl")]
+    #[simd_test("vaes", "avx512vl")]
     unsafe fn test_mm256_aesdeclast_epi128() {
         // Constants taken from https://msdn.microsoft.com/en-us/library/cc714178.aspx.
         let (a, k) = setup_state_key_256();
@@ -219,7 +219,7 @@ mod tests {
         helper_for_256_vaes(_mm_aesdeclast_si128, _mm256_aesdeclast_epi128);
     }
 
-    #[simd_test(enable = "vaes,avx512vl")]
+    #[simd_test("vaes", "avx512vl")]
     unsafe fn test_mm256_aesenc_epi128() {
         // Constants taken from https://msdn.microsoft.com/en-us/library/cc664810.aspx.
         // they are repeated appropriately
@@ -232,7 +232,7 @@ mod tests {
         helper_for_256_vaes(_mm_aesenc_si128, _mm256_aesenc_epi128);
     }
 
-    #[simd_test(enable = "vaes,avx512vl")]
+    #[simd_test("vaes", "avx512vl")]
     unsafe fn test_mm256_aesenclast_epi128() {
         // Constants taken from https://msdn.microsoft.com/en-us/library/cc714136.aspx.
         let (a, k) = setup_state_key_256();
@@ -290,7 +290,7 @@ mod tests {
         assert_eq_m128i(_mm512_extracti32x4_epi32::<3>(r), e_decomp[3]);
     }
 
-    #[simd_test(enable = "vaes,avx512f")]
+    #[simd_test("vaes", "avx512f")]
     unsafe fn test_mm512_aesdec_epi128() {
         // Constants taken from https://msdn.microsoft.com/en-us/library/cc664949.aspx.
         let (a, k) = setup_state_key_512();
@@ -302,7 +302,7 @@ mod tests {
         helper_for_512_vaes(_mm_aesdec_si128, _mm512_aesdec_epi128);
     }
 
-    #[simd_test(enable = "vaes,avx512f")]
+    #[simd_test("vaes", "avx512f")]
     unsafe fn test_mm512_aesdeclast_epi128() {
         // Constants taken from https://msdn.microsoft.com/en-us/library/cc714178.aspx.
         let (a, k) = setup_state_key_512();
@@ -314,7 +314,7 @@ mod tests {
         helper_for_512_vaes(_mm_aesdeclast_si128, _mm512_aesdeclast_epi128);
     }
 
-    #[simd_test(enable = "vaes,avx512f")]
+    #[simd_test("vaes", "avx512f")]
     unsafe fn test_mm512_aesenc_epi128() {
         // Constants taken from https://msdn.microsoft.com/en-us/library/cc664810.aspx.
         let (a, k) = setup_state_key_512();
@@ -326,7 +326,7 @@ mod tests {
         helper_for_512_vaes(_mm_aesenc_si128, _mm512_aesenc_epi128);
     }
 
-    #[simd_test(enable = "vaes,avx512f")]
+    #[simd_test("vaes", "avx512f")]
     unsafe fn test_mm512_aesenclast_epi128() {
         // Constants taken from https://msdn.microsoft.com/en-us/library/cc714136.aspx.
         let (a, k) = setup_state_key_512();

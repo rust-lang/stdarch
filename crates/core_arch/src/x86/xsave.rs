@@ -195,7 +195,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "xsave")]
+    #[simd_test("xsave")]
     #[cfg_attr(miri, ignore)] // Register saving/restoring is not supported in Miri
     unsafe fn test_xsave() {
         let m = 0xFFFFFFFFFFFFFFFF_u64; //< all registers
@@ -207,7 +207,7 @@ mod tests {
         _xsave(b.ptr(), m);
     }
 
-    #[simd_test(enable = "xsave")]
+    #[simd_test("xsave")]
     #[cfg_attr(miri, ignore)] // Register saving/restoring is not supported in Miri
     unsafe fn test_xgetbv() {
         let xcr_n: u32 = _XCR_XFEATURE_ENABLED_MASK;
@@ -217,7 +217,7 @@ mod tests {
         assert_eq!(xcr, xcr_cpy);
     }
 
-    #[simd_test(enable = "xsave,xsaveopt")]
+    #[simd_test("xsave", "xsaveopt")]
     #[cfg_attr(miri, ignore)] // Register saving/restoring is not supported in Miri
     unsafe fn test_xsaveopt() {
         let m = 0xFFFFFFFFFFFFFFFF_u64; //< all registers
@@ -229,7 +229,7 @@ mod tests {
         _xsaveopt(b.ptr(), m);
     }
 
-    #[simd_test(enable = "xsave,xsavec")]
+    #[simd_test("xsave", "xsavec")]
     #[cfg_attr(miri, ignore)] // Register saving/restoring is not supported in Miri
     unsafe fn test_xsavec() {
         let m = 0xFFFFFFFFFFFFFFFF_u64; //< all registers

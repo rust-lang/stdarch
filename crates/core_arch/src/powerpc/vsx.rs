@@ -220,7 +220,7 @@ mod tests {
 
     macro_rules! test_vec_xxpermdi {
         {$name:ident, $shorttype:ident, $longtype:ident, [$($a:expr),+], [$($b:expr),+], [$($c:expr),+], [$($d:expr),+]} => {
-            #[simd_test(enable = "vsx")]
+            #[simd_test("vsx")]
             unsafe fn $name() {
                 let a: $longtype = transmute($shorttype::new($($a),+, $($b),+));
                 let b = transmute($shorttype::new($($c),+, $($d),+));

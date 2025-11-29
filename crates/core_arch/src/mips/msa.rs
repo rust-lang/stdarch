@@ -9190,7 +9190,7 @@ mod tests {
     use std::{f32, f64};
     use stdarch_test::simd_test;
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_add_a_b() {
         #[rustfmt::skip]
         let a = i8x16::new(
@@ -9220,7 +9220,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_add_a_h() {
         #[rustfmt::skip]
         let a = i16x8::new(1, 2, 3, 4, 1, 2, 3, 4);
@@ -9235,7 +9235,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_add_a_w() {
         #[rustfmt::skip]
         let a = i32x4::new(1, 2, 3, 4);
@@ -9250,7 +9250,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_add_a_d() {
         #[rustfmt::skip]
         let a = i64x2::new(1, 2);
@@ -9265,7 +9265,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_adds_a_b() {
         #[rustfmt::skip]
         let a = i8x16::new(
@@ -9295,7 +9295,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_adds_a_h() {
         #[rustfmt::skip]
         let a = i16x8::new(
@@ -9316,7 +9316,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_adds_a_w() {
         #[rustfmt::skip]
         let a = i32x4::new(100, i32::MAX, 100, i32::MAX);
@@ -9331,7 +9331,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_adds_a_d() {
         #[rustfmt::skip]
         let a = i64x2::new(100, i64::MAX);
@@ -9346,7 +9346,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_adds_s_b() {
         #[rustfmt::skip]
         let a = i8x16::new(
@@ -9376,7 +9376,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_adds_s_h() {
         #[rustfmt::skip]
         let a = i16x8::new(
@@ -9397,7 +9397,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_adds_s_w() {
         #[rustfmt::skip]
         let a = i32x4::new(100, i32::MAX, 100, i32::MIN);
@@ -9412,7 +9412,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_adds_s_d() {
         #[rustfmt::skip]
         let a = i64x2::new(100, i64::MIN);
@@ -9427,7 +9427,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_adds_u_b() {
         #[rustfmt::skip]
         let a = u8x16::new(
@@ -9457,7 +9457,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_adds_u_h() {
         #[rustfmt::skip]
         let a = u16x8::new(
@@ -9478,7 +9478,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_adds_u_w() {
         #[rustfmt::skip]
         let a = u32x4::new(100, u32::MAX, 100, u32::MAX);
@@ -9493,7 +9493,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_adds_u_d() {
         #[rustfmt::skip]
         let a = u64x2::new(100, u64::MAX);
@@ -9508,7 +9508,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_addv_b() {
         #[rustfmt::skip]
         let a = i8x16::new(
@@ -9538,7 +9538,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_addv_h() {
         #[rustfmt::skip]
         let a = i16x8::new(
@@ -9556,7 +9556,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_addv_w() {
         #[rustfmt::skip]
         let a = i32x4::new(100, i32::MAX, 100, i32::MIN);
@@ -9571,7 +9571,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_addv_d() {
         #[rustfmt::skip]
         let a = i64x2::new(100, i64::MIN);
@@ -9586,7 +9586,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_addvi_b() {
         #[rustfmt::skip]
         let a = i8x16::new(
@@ -9606,7 +9606,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_addvi_b(mem::transmute(a), 67)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_addvi_h() {
         #[rustfmt::skip]
         let a = i16x8::new(
@@ -9622,7 +9622,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_addvi_h(mem::transmute(a), 67)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_addvi_w() {
         #[rustfmt::skip]
         let a = i32x4::new(100, i32::MAX, 100, i32::MIN);
@@ -9632,7 +9632,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_addvi_w(mem::transmute(a), 67)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_addvi_d() {
         #[rustfmt::skip]
         let a = i64x2::new(100, i64::MIN);
@@ -9642,7 +9642,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_addvi_d(mem::transmute(a), 17)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_and_v() {
         #[rustfmt::skip]
         let a = u8x16::new(
@@ -9672,7 +9672,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_andi_b() {
         #[rustfmt::skip]
         let a = u8x16::new(
@@ -9692,7 +9692,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_andi_b(mem::transmute(a), 5)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_asub_s_b() {
         #[rustfmt::skip]
         let a = i8x16::new(
@@ -9722,7 +9722,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_asub_s_h() {
         #[rustfmt::skip]
         let a = i16x8::new(-1, -2, -3, -4, -1, -2, -3, -4);
@@ -9737,7 +9737,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_asub_s_w() {
         #[rustfmt::skip]
         let a = i32x4::new(-1, -2, -3, -4);
@@ -9752,7 +9752,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_asub_s_d() {
         #[rustfmt::skip]
         let a = i64x2::new(-1, -2);
@@ -9767,7 +9767,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_asub_u_b() {
         #[rustfmt::skip]
         let a = u8x16::new(
@@ -9797,7 +9797,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_asub_u_h() {
         #[rustfmt::skip]
         let a = u16x8::new(1, 2, 3, 4, 1, 2, 3, 4);
@@ -9812,7 +9812,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_asub_u_w() {
         #[rustfmt::skip]
         let a = u32x4::new(1, 2, 3, 4);
@@ -9827,7 +9827,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_asub_u_d() {
         #[rustfmt::skip]
         let a = u64x2::new(1, 2);
@@ -9842,7 +9842,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_ave_s_b() {
         #[rustfmt::skip]
         let a = i8x16::new(
@@ -9872,7 +9872,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_ave_s_h() {
         #[rustfmt::skip]
         let a = i16x8::new(-1, -2, -3, -4, -1, -2, -3, -4);
@@ -9887,7 +9887,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_ave_s_w() {
         #[rustfmt::skip]
         let a = i32x4::new(-1, -2, -3, -4);
@@ -9902,7 +9902,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_ave_s_d() {
         #[rustfmt::skip]
         let a = i64x2::new(-1, -2);
@@ -9917,7 +9917,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_ave_u_b() {
         #[rustfmt::skip]
         let a = u8x16::new(
@@ -9947,7 +9947,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_ave_u_h() {
         #[rustfmt::skip]
         let a = u16x8::new(1, 2, 3, 4, 1, 2, 3, 4);
@@ -9962,7 +9962,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_ave_u_w() {
         #[rustfmt::skip]
         let a = u32x4::new(1, 2, 3, 4);
@@ -9977,7 +9977,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_ave_u_d() {
         #[rustfmt::skip]
         let a = u64x2::new(1, 2);
@@ -9992,7 +9992,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_aver_s_b() {
         #[rustfmt::skip]
         let a = i8x16::new(
@@ -10022,7 +10022,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_aver_s_h() {
         #[rustfmt::skip]
         let a = i16x8::new(-1, -2, 3, -4, -1, -2, 3, -4);
@@ -10037,7 +10037,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_aver_s_w() {
         #[rustfmt::skip]
         let a = i32x4::new(-1, -2, 3, -4);
@@ -10052,7 +10052,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_aver_s_d() {
         #[rustfmt::skip]
         let a = i64x2::new(-1, -2);
@@ -10067,7 +10067,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_aver_u_b() {
         #[rustfmt::skip]
         let a = u8x16::new(
@@ -10097,7 +10097,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_aver_u_h() {
         #[rustfmt::skip]
         let a = u16x8::new(1, 2, 3, 4, 1, 2, 3, 4);
@@ -10112,7 +10112,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_aver_u_w() {
         #[rustfmt::skip]
         let a = u32x4::new(1, 2, 3, 4);
@@ -10127,7 +10127,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_aver_u_d() {
         #[rustfmt::skip]
         let a = u64x2::new(1, 2);
@@ -10142,7 +10142,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_bclr_b() {
         #[rustfmt::skip]
         let a = u8x16::new(
@@ -10172,7 +10172,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_bclr_h() {
         #[rustfmt::skip]
         let a = u16x8::new(255, 155, 55, 1, 255, 155, 55, 1);
@@ -10187,7 +10187,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_bclr_w() {
         #[rustfmt::skip]
         let a = u32x4::new(255, 155, 55, 1);
@@ -10202,7 +10202,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_bclr_d() {
         #[rustfmt::skip]
         let a = u64x2::new(255, 155);
@@ -10217,7 +10217,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_bclri_b() {
         #[rustfmt::skip]
         let a = u8x16::new(
@@ -10237,7 +10237,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_bclri_b(mem::transmute(a), 3)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_bclri_h() {
         #[rustfmt::skip]
         let a = u16x8::new(2155, 1155, 155, 1, 2155, 1155, 155, 1);
@@ -10247,7 +10247,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_bclri_h(mem::transmute(a), 11)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_bclri_w() {
         #[rustfmt::skip]
         let a = u32x4::new(211111155, 111111155, 11111155, 1);
@@ -10257,7 +10257,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_bclri_w(mem::transmute(a), 23)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_bclri_d() {
         #[rustfmt::skip]
         let a = u64x2::new(211111111155, 11111111111111155);
@@ -10267,7 +10267,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_bclri_d(mem::transmute(a), 37)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_binsl_b() {
         #[rustfmt::skip]
         let a = u8x16::new(
@@ -10308,7 +10308,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_binsl_h() {
         #[rustfmt::skip]
         let a = u16x8::new(
@@ -10341,7 +10341,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_binsl_w() {
         #[rustfmt::skip]
         let a = u32x4::new(2147483647, 536870912, 67108864, 8388608);
@@ -10362,7 +10362,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_binsl_d() {
         #[rustfmt::skip]
         let a = u64x2::new(8006399338, 2882303762);
@@ -10383,7 +10383,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_binsli_b() {
         #[rustfmt::skip]
         let a = u8x16::new(
@@ -10413,7 +10413,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_binsli_h() {
         #[rustfmt::skip]
         let a = u16x8::new(
@@ -10437,7 +10437,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_binsli_w() {
         #[rustfmt::skip]
         let a = u32x4::new(2147483647, 536870912, 67108864, 8388608);
@@ -10452,7 +10452,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_binsli_d() {
         #[rustfmt::skip]
         let a = u64x2::new(8006399338, 2882303762);
@@ -10467,7 +10467,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_binsr_b() {
         #[rustfmt::skip]
         let a = u8x16::new(
@@ -10508,7 +10508,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_binsr_h() {
         #[rustfmt::skip]
         let a = u16x8::new(
@@ -10541,7 +10541,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_binsr_w() {
         #[rustfmt::skip]
         let a = u32x4::new(2147483647, 536870912, 67108864, 8388608);
@@ -10562,7 +10562,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_binsr_d() {
         #[rustfmt::skip]
         let a = u64x2::new(8006399338, 2882303762);
@@ -10583,7 +10583,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_binsri_b() {
         #[rustfmt::skip]
         let a = u8x16::new(
@@ -10613,7 +10613,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_binsri_h() {
         #[rustfmt::skip]
         let a = u16x8::new(
@@ -10637,7 +10637,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_binsri_w() {
         #[rustfmt::skip]
         let a = u32x4::new(2147483647, 536870912, 67108864, 8388608);
@@ -10652,7 +10652,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_binsri_d() {
         #[rustfmt::skip]
         let a = u64x2::new(8006399338, 2882303762);
@@ -10667,7 +10667,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_bmnz_v() {
         #[rustfmt::skip]
         let a = u8x16::new(
@@ -10708,7 +10708,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_bmnzi_b() {
         #[rustfmt::skip]
         let a = u8x16::new(
@@ -10738,7 +10738,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_bmz_v() {
         #[rustfmt::skip]
         let a = u8x16::new(
@@ -10779,7 +10779,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_bmzi_b() {
         #[rustfmt::skip]
         let a = u8x16::new(
@@ -10809,7 +10809,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_bneg_b() {
         #[rustfmt::skip]
         let a = u8x16::new(
@@ -10839,7 +10839,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_bneg_h() {
         #[rustfmt::skip]
         let a = u16x8::new(255, 155, 55, 1, 255, 155, 55, 1);
@@ -10854,7 +10854,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_bneg_w() {
         #[rustfmt::skip]
         let a = u32x4::new(255, 155, 55, 1);
@@ -10869,7 +10869,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_bneg_d() {
         #[rustfmt::skip]
         let a = u64x2::new(255, 155);
@@ -10884,7 +10884,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_bnegi_b() {
         #[rustfmt::skip]
         let a = u8x16::new(
@@ -10904,7 +10904,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_bnegi_b(mem::transmute(a), 4)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_bnegi_h() {
         #[rustfmt::skip]
         let a = u16x8::new(
@@ -10920,7 +10920,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_bnegi_h(mem::transmute(a), 11)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_bnegi_w() {
         #[rustfmt::skip]
         let a = u32x4::new(100, 2147483647, 100, 2147483648);
@@ -10930,7 +10930,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_bnegi_w(mem::transmute(a), 24)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_bnegi_d() {
         #[rustfmt::skip]
         let a = u64x2::new(100, 9223372036854775808);
@@ -10940,7 +10940,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_bnegi_d(mem::transmute(a), 42)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_bnz_b() {
         #[rustfmt::skip]
         let a = u8x16::new(
@@ -10954,7 +10954,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_bnz_b(mem::transmute(a))));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_bnz_h() {
         #[rustfmt::skip]
         let a = u16x8::new(
@@ -10966,7 +10966,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_bnz_h(mem::transmute(a))));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_bnz_w() {
         #[rustfmt::skip]
         let a = u32x4::new(100, 2147483647, 0, 2147483648);
@@ -10975,7 +10975,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_bnz_w(mem::transmute(a))));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_bnz_d() {
         #[rustfmt::skip]
         let a = u64x2::new(100, 9223372036854775808);
@@ -10985,7 +10985,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_bnz_d(mem::transmute(a))));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_bnz_v() {
         #[rustfmt::skip]
         let a = u8x16::new(
@@ -10999,7 +10999,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_bnz_v(mem::transmute(a))));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_bsel_v() {
         #[rustfmt::skip]
         let a = u8x16::new(
@@ -11040,7 +11040,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_bseli_b() {
         #[rustfmt::skip]
         let a = u8x16::new(
@@ -11070,7 +11070,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_bset_b() {
         #[rustfmt::skip]
         let a = u8x16::new(
@@ -11100,7 +11100,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_bset_h() {
         #[rustfmt::skip]
         let a = u16x8::new(255, 155, 55, 1, 255, 155, 55, 1);
@@ -11115,7 +11115,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_bset_w() {
         #[rustfmt::skip]
         let a = u32x4::new(255, 155, 55, 1);
@@ -11130,7 +11130,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_bset_d() {
         #[rustfmt::skip]
         let a = u64x2::new(255, 155);
@@ -11145,7 +11145,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_bseti_b() {
         #[rustfmt::skip]
         let a = u8x16::new(
@@ -11165,7 +11165,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_bseti_b(mem::transmute(a), 2)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_bseti_h() {
         #[rustfmt::skip]
         let a = u16x8::new(255, 155, 55, 1, 255, 155, 55, 1);
@@ -11175,7 +11175,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_bseti_h(mem::transmute(a), 2)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_bseti_w() {
         #[rustfmt::skip]
         let a = u32x4::new(255, 155, 55, 1);
@@ -11185,7 +11185,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_bseti_w(mem::transmute(a), 2)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_bseti_d() {
         #[rustfmt::skip]
         let a = u64x2::new(255, 155);
@@ -11195,7 +11195,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_bseti_d(mem::transmute(a), 2)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_bz_b() {
         #[rustfmt::skip]
         let a = u8x16::new(
@@ -11209,7 +11209,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_bz_b(mem::transmute(a))));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_bz_h() {
         #[rustfmt::skip]
         let a = u16x8::new(0, 0, 0, 0, 0, 0, 0, 0);
@@ -11218,7 +11218,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_bz_h(mem::transmute(a))));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_bz_w() {
         #[rustfmt::skip]
         let a = u32x4::new(255, 0, 55, 1);
@@ -11227,7 +11227,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_bz_w(mem::transmute(a))));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_bz_d() {
         #[rustfmt::skip]
         let a = u64x2::new(255, 0);
@@ -11236,7 +11236,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_bz_d(mem::transmute(a))));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_bz_v() {
         #[rustfmt::skip]
         let a = u8x16::new(
@@ -11250,7 +11250,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_bz_v(mem::transmute(a))));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_ceq_b() {
         #[rustfmt::skip]
         let a = i8x16::new(
@@ -11280,7 +11280,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_ceq_h() {
         #[rustfmt::skip]
         let a = i16x8::new(255, 155, 55, 1, 255, 155, 55, 1);
@@ -11295,7 +11295,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_ceq_w() {
         #[rustfmt::skip]
         let a = i32x4::new(255, 155, 55, 1);
@@ -11310,7 +11310,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_ceq_d() {
         #[rustfmt::skip]
         let a = i64x2::new(255, 155);
@@ -11325,7 +11325,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_ceqi_b() {
         #[rustfmt::skip]
         let a = i8x16::new(
@@ -11345,7 +11345,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_ceqi_b(mem::transmute(a), -4)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_ceqi_h() {
         #[rustfmt::skip]
         let a = i16x8::new(
@@ -11358,7 +11358,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_ceqi_h(mem::transmute(a), -11)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_ceqi_w() {
         #[rustfmt::skip]
         let a = i32x4::new(1, 3, 5, -3);
@@ -11371,7 +11371,7 @@ mod tests {
     // FIXME: https://reviews.llvm.org/D59884
     // If target type is i64, negative immediate loses the sign
     // Test passes if 4294967293 is used instead -3 in vector `a`
-    // #[simd_test(enable = "msa")]
+    // #[simd_test("msa")]
     // unsafe fn test_msa_ceqi_d() {
     //     #[rustfmt::skip]
     //     let a = i64x2::new(-3, 2);
@@ -11382,14 +11382,14 @@ mod tests {
     // }
 
     // Can not be tested in user mode
-    // #[simd_test(enable = "msa")]
+    // #[simd_test("msa")]
     // unsafe fn test_msa_cfcmsa() {
     //     let r = 5;
 
     //     assert_eq!(r, mem::transmute(__msa_cfcmsa(5));
     // }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_cle_s_b() {
         #[rustfmt::skip]
         let a = i8x16::new(
@@ -11419,7 +11419,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_cle_s_h() {
         #[rustfmt::skip]
         let a = i16x8::new(255, 155, 55, 2, 255, 155, 55, 2);
@@ -11434,7 +11434,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_cle_s_w() {
         #[rustfmt::skip]
         let a = i32x4::new(255, 155, 55, 2);
@@ -11449,7 +11449,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_cle_s_d() {
         #[rustfmt::skip]
         let a = i64x2::new(255, 155);
@@ -11464,7 +11464,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_cle_u_b() {
         #[rustfmt::skip]
         let a = u8x16::new(
@@ -11489,7 +11489,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_cle_u_h() {
         #[rustfmt::skip]
         let a = u16x8::new(
@@ -11510,7 +11510,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_cle_u_w() {
         #[rustfmt::skip]
         let a = u32x4::new(u32::MAX, 155, 55, 2);
@@ -11525,7 +11525,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_cle_u_d() {
         #[rustfmt::skip]
         let a = u64x2::new(u64::MAX, 155);
@@ -11540,7 +11540,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_clei_s_b() {
         #[rustfmt::skip]
         let a = i8x16::new(
@@ -11555,7 +11555,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_clei_s_b(mem::transmute(a), -2)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_clei_s_h() {
         #[rustfmt::skip]
         let a = i16x8::new(
@@ -11568,7 +11568,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_clei_s_h(mem::transmute(a), -1)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_clei_s_w() {
         #[rustfmt::skip]
         let a = i32x4::new(100, 2147483647, 6, 2147483647);
@@ -11581,7 +11581,7 @@ mod tests {
     // FIXME: https://reviews.llvm.org/D59884
     // If target type is i64, negative immediate loses the sign
     // -3 is represented as 4294967293
-    // #[simd_test(enable = "msa")]
+    // #[simd_test("msa")]
     // unsafe fn test_msa_clei_s_d() {
     //     #[rustfmt::skip]
     //     let a = i64x2::new(-3, 11);
@@ -11591,7 +11591,7 @@ mod tests {
     //     assert_eq!(r, mem::transmute(__msa_clei_s_d(mem::transmute(a), -3)));
     // }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_clei_u_b() {
         #[rustfmt::skip]
         let a = u8x16::new(
@@ -11611,7 +11611,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_clei_u_b(mem::transmute(a), 25)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_clei_u_h() {
         #[rustfmt::skip]
         let a = u16x8::new(
@@ -11624,7 +11624,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_clei_u_h(mem::transmute(a), 25)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_clei_u_w() {
         #[rustfmt::skip]
         let a = u32x4::new(25, 32, 25, 32);
@@ -11634,7 +11634,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_clei_u_w(mem::transmute(a), 31)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_clei_u_d() {
         #[rustfmt::skip]
         let a = u64x2::new(10, 26);
@@ -11644,7 +11644,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_clei_u_d(mem::transmute(a), 25)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_clt_s_b() {
         #[rustfmt::skip]
         let a = i8x16::new(
@@ -11674,7 +11674,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_clt_s_h() {
         #[rustfmt::skip]
         let a = i16x8::new(-255, 155, 55, 2, -255, 155, 55, 2);
@@ -11689,7 +11689,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_clt_s_w() {
         #[rustfmt::skip]
         let a = i32x4::new(-255, 155, 55, 2);
@@ -11704,7 +11704,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_clt_s_d() {
         #[rustfmt::skip]
         let a = i64x2::new(-255, 155);
@@ -11719,7 +11719,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_clt_u_b() {
         #[rustfmt::skip]
         let a = u8x16::new(
@@ -11749,7 +11749,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_clt_u_h() {
         #[rustfmt::skip]
         let a = u16x8::new(255, 155, 55, 2, 255, 155, 55, 2);
@@ -11764,7 +11764,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_clt_u_w() {
         #[rustfmt::skip]
         let a = u32x4::new(255, 155, 55, 2);
@@ -11779,7 +11779,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_clt_u_d() {
         #[rustfmt::skip]
         let a = u64x2::new(255, 155);
@@ -11794,7 +11794,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_clti_s_b() {
         #[rustfmt::skip]
         let a = i8x16::new(
@@ -11814,7 +11814,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_clti_s_b(mem::transmute(a), -5)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_clti_s_h() {
         #[rustfmt::skip]
         let a = i16x8::new(
@@ -11827,7 +11827,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_clti_s_h(mem::transmute(a), 15)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_clti_s_w() {
         #[rustfmt::skip]
         let a = i32x4::new(-15, 2147483647, -15, 2147483647);
@@ -11840,7 +11840,7 @@ mod tests {
     // FIXME: https://reviews.llvm.org/D59884
     // If target type is i64, negative immediate loses the sign
     // -3 is represented as 4294967293
-    // #[simd_test(enable = "msa")]
+    // #[simd_test("msa")]
     // unsafe fn test_msa_clti_s_d() {
     //     #[rustfmt::skip]
     //     let a = i64x2::new(-5, -2);
@@ -11850,7 +11850,7 @@ mod tests {
     //     assert_eq!(r, mem::transmute(__msa_clti_s_d(mem::transmute(a), -3)));
     // }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_clti_u_b() {
         #[rustfmt::skip]
         let a = u8x16::new(
@@ -11870,7 +11870,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_clti_u_b(mem::transmute(a), 50)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_clti_u_h() {
         #[rustfmt::skip]
         let a = u16x8::new(
@@ -11883,7 +11883,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_clti_u_h(mem::transmute(a), 30)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_clti_u_w() {
         #[rustfmt::skip]
         let a = u32x4::new(100, 2147483647, 100, 2147483647);
@@ -11893,7 +11893,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_clti_u_w(mem::transmute(a), 10)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_clti_u_d() {
         #[rustfmt::skip]
         let a = u64x2::new(1, 9223372036854775807);
@@ -11903,7 +11903,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_clti_u_d(mem::transmute(a), 10)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_copy_s_b() {
         #[rustfmt::skip]
         let a = i8x16::new(
@@ -11918,7 +11918,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_copy_s_b(mem::transmute(a), 12)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_copy_s_h() {
         #[rustfmt::skip]
         let a = i16x8::new(
@@ -11931,7 +11931,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_copy_s_h(mem::transmute(a), 4)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_copy_s_w() {
         #[rustfmt::skip]
         let a = i32x4::new(100, 2147483647, 5, -2147483647);
@@ -11940,7 +11940,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_copy_s_w(mem::transmute(a), 1)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_copy_s_d() {
         #[rustfmt::skip]
         let a = i64x2::new(3, 9223372036854775807);
@@ -11950,7 +11950,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_copy_s_d(mem::transmute(a), 1)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_copy_u_b() {
         #[rustfmt::skip]
         let a = i8x16::new(
@@ -11965,7 +11965,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_copy_u_b(mem::transmute(a), 12)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_copy_u_h() {
         #[rustfmt::skip]
         let a = i16x8::new(
@@ -11978,7 +11978,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_copy_u_h(mem::transmute(a), 4)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_copy_u_w() {
         #[rustfmt::skip]
         let a = i32x4::new(100, 2147483647, 5, 2147483647);
@@ -11988,7 +11988,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_copy_u_w(mem::transmute(a), 1)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_copy_u_d() {
         #[rustfmt::skip]
         let a = i64x2::new(3, i64::MAX);
@@ -11999,11 +11999,11 @@ mod tests {
     }
 
     // Can not be tested in user mode
-    // #[simd_test(enable = "msa")]
+    // #[simd_test("msa")]
     // unsafe fn test_msa_ctcmsa() {
     // }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_div_s_b() {
         #[rustfmt::skip]
         let a = i8x16::new(
@@ -12033,7 +12033,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_div_s_h() {
         #[rustfmt::skip]
         let a = i16x8::new(-6, -7, -8, -9, 6, 7, 8, 9);
@@ -12048,7 +12048,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_div_s_w() {
         #[rustfmt::skip]
         let a = i32x4::new(-6, -7, 8, 9);
@@ -12063,7 +12063,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_div_s_d() {
         #[rustfmt::skip]
         let a = i64x2::new(-6, 7);
@@ -12078,7 +12078,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_div_u_b() {
         #[rustfmt::skip]
         let a = u8x16::new(
@@ -12108,7 +12108,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_div_u_h() {
         #[rustfmt::skip]
         let a = u16x8::new(6, 7, 8, 9, 6, 7, 8, 9);
@@ -12123,7 +12123,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_div_u_w() {
         #[rustfmt::skip]
         let a = u32x4::new(6, 7, 8, 9);
@@ -12138,7 +12138,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_div_u_d() {
         #[rustfmt::skip]
         let a = u64x2::new(6, 7);
@@ -12153,7 +12153,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_dotp_s_h() {
         #[rustfmt::skip]
         let a = i8x16::new(
@@ -12178,7 +12178,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_dotp_s_w() {
         #[rustfmt::skip]
         let a = i16x8::new(-1, -2, -3, -4, -1, -2, -3, 4);
@@ -12193,7 +12193,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_dotp_s_d() {
         #[rustfmt::skip]
         let a = i32x4::new(-1, -2, -3, 4);
@@ -12208,7 +12208,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_dotp_u_h() {
         #[rustfmt::skip]
         let a = u8x16::new(
@@ -12233,7 +12233,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_dotp_u_w() {
         #[rustfmt::skip]
         let a = u16x8::new(1, 2, 3, 4, 1, 2, 3, 4);
@@ -12248,7 +12248,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_dotp_u_d() {
         #[rustfmt::skip]
         let a = u32x4::new(1, 2, 3, 4);
@@ -12263,7 +12263,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_dpadd_s_h() {
         #[rustfmt::skip]
         let a = i16x8::new(-1, -2, -3, -4, -1, -2, -3, 4);
@@ -12294,7 +12294,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_dpadd_s_w() {
         #[rustfmt::skip]
         let a = i32x4::new(-1, -2, -3, -4);
@@ -12321,7 +12321,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_dpadd_s_d() {
         #[rustfmt::skip]
         let a = i64x2::new(-1, -2);
@@ -12342,7 +12342,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_dpadd_u_h() {
         #[rustfmt::skip]
         let a = u16x8::new(1, 2, 3, 4, 1, 2, 3, 4);
@@ -12373,7 +12373,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_dpadd_u_w() {
         #[rustfmt::skip]
         let a = u32x4::new(1, 2, 3, 4);
@@ -12400,7 +12400,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_dpadd_u_d() {
         #[rustfmt::skip]
         let a = u64x2::new(1, 2);
@@ -12421,7 +12421,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_dpsub_s_h() {
         #[rustfmt::skip]
         let a = i16x8::new(-1, -2, -3, -4, -1, -2, -3, 4);
@@ -12452,7 +12452,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_dpsub_s_w() {
         #[rustfmt::skip]
         let a = i32x4::new(-1, -2, -3, -4);
@@ -12479,7 +12479,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_dpsub_s_d() {
         #[rustfmt::skip]
         let a = i64x2::new(-1, -2);
@@ -12500,7 +12500,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_dpsub_u_h() {
         #[rustfmt::skip]
         let a = i16x8::new(1, -2, 3, -4, -1, 2,-3, 4);
@@ -12531,7 +12531,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_dpsub_u_w() {
         #[rustfmt::skip]
         let a = i32x4::new(1, -2, 3, -4);
@@ -12558,7 +12558,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_dpsub_u_d() {
         #[rustfmt::skip]
         let a = i64x2::new(1, -2);
@@ -12579,7 +12579,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fadd_w() {
         #[rustfmt::skip]
         let a = f32x4::new(1.1, -2.2, 3.3, -4.4);
@@ -12594,7 +12594,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fadd_d() {
         #[rustfmt::skip]
         let a = f64x2::new(1.1, -2.2);
@@ -12611,7 +12611,7 @@ mod tests {
 
     // Only observed beahiour should be SIGFPE signal
     // Can not be tested
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fcaf_w() {
         #[rustfmt::skip]
         let a = f32x4::new(1.1, -2.2, 3.3, -4.4);
@@ -12628,7 +12628,7 @@ mod tests {
 
     // Only observed beahiour should be SIGFPE signal
     // Can not be tested
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fcaf_d() {
         #[rustfmt::skip]
         let a = f64x2::new(1.1, -2.2);
@@ -12643,7 +12643,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fceq_w() {
         #[rustfmt::skip]
         let a = f32x4::new(1.1, -2.2, 3.3, f32::NAN);
@@ -12658,7 +12658,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fceq_d() {
         #[rustfmt::skip]
         let a = f64x2::new(1.1, -2.2);
@@ -12673,7 +12673,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fclass_w() {
         #[rustfmt::skip]
         let a = f32x4::new(1.1, -2.2, 3.3, f32::NAN);
@@ -12683,7 +12683,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_fclass_w(mem::transmute(a))));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fclass_d() {
         #[rustfmt::skip]
         let a = f64x2::new(1.1, -2.2);
@@ -12693,7 +12693,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_fclass_d(mem::transmute(a))));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fcle_w() {
         #[rustfmt::skip]
         let a = f32x4::new(1.1, -2.2, 3.3, f32::NAN);
@@ -12708,7 +12708,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fcle_d() {
         #[rustfmt::skip]
         let a = f64x2::new(1.1, -2.2);
@@ -12723,7 +12723,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fclt_w() {
         #[rustfmt::skip]
         let a = f32x4::new(1.1, -2.2, 3.3, f32::NAN);
@@ -12738,7 +12738,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fclt_d() {
         #[rustfmt::skip]
         let a = f64x2::new(1.1, -2.2);
@@ -12753,7 +12753,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fcne_w() {
         #[rustfmt::skip]
         let a = f32x4::new(1.1, -2.2, 3.3, f32::NAN);
@@ -12768,7 +12768,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fcne_d() {
         #[rustfmt::skip]
         let a = f64x2::new(1.1, -2.2);
@@ -12783,7 +12783,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fcor_w() {
         #[rustfmt::skip]
         let a = f32x4::new(1.1, -2.2, 3.3, f32::NAN);
@@ -12798,7 +12798,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fcor_d() {
         #[rustfmt::skip]
         let a = f64x2::new(1.1, f64::NAN);
@@ -12813,7 +12813,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fcueq_w() {
         #[rustfmt::skip]
         let a = f32x4::new(1.1, -2.2, 3.3, f32::NAN);
@@ -12828,7 +12828,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fcueq_d() {
         #[rustfmt::skip]
         let a = f64x2::new(1.1, f64::NAN);
@@ -12843,7 +12843,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fcule_w() {
         #[rustfmt::skip]
         let a = f32x4::new(1.1, -2.2, 3.3, f32::NAN);
@@ -12858,7 +12858,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fcule_d() {
         #[rustfmt::skip]
         let a = f64x2::new(1.1, f64::NAN);
@@ -12873,7 +12873,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fcult_w() {
         #[rustfmt::skip]
         let a = f32x4::new(1.1, -2.2, 3.3, f32::NAN);
@@ -12888,7 +12888,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fcult_d() {
         #[rustfmt::skip]
         let a = f64x2::new(1.1, f64::NAN);
@@ -12903,7 +12903,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fcun_w() {
         #[rustfmt::skip]
         let a = f32x4::new(1.1, -2.2, 3.3, f32::NAN);
@@ -12918,7 +12918,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fcun_d() {
         #[rustfmt::skip]
         let a = f64x2::new(1.1, f64::NAN);
@@ -12933,7 +12933,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fcune_w() {
         #[rustfmt::skip]
         let a = f32x4::new(1.1, -2.2, 3.3, f32::NAN);
@@ -12948,7 +12948,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fcune_d() {
         #[rustfmt::skip]
         let a = f64x2::new(1.1, f64::NAN);
@@ -12963,7 +12963,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fdiv_w() {
         #[rustfmt::skip]
         let a = f32x4::new(5.25, -20.2, 333.333, -425.0);
@@ -12978,7 +12978,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fdiv_d() {
         #[rustfmt::skip]
         let a = f64x2::new(1111.11, -222222.2);
@@ -12994,7 +12994,7 @@ mod tests {
     }
 
     /*// FIXME: 16-bit floats
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fexdo_h() {
         #[rustfmt::skip]
         let a = f32x4::new(20.5, 2.3, 4.5, 5.4);
@@ -13005,7 +13005,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_fexdo_h(mem::transmute(a), mem::transmute(b))));
     }*/
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fexdo_w() {
         #[rustfmt::skip]
         let a = f64x2::new(2000005.5, 2.3);
@@ -13023,7 +13023,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fexp2_w() {
         #[rustfmt::skip]
         let a = f32x4::new(1.1, -2.2, 3.3, -4.4);
@@ -13038,7 +13038,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fexp2_d() {
         #[rustfmt::skip]
         let a = f64x2::new(1.1, -2.2);
@@ -13054,7 +13054,7 @@ mod tests {
     }
 
     // FIXME: 16-bit floats
-    // #[simd_test(enable = "msa")]
+    // #[simd_test("msa")]
     // unsafe fn test_msa_fexupl_w() {
     //     #[rustfmt::skip]
     //     let a = f16x8(1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5);
@@ -13064,7 +13064,7 @@ mod tests {
     //     assert_eq!(r, mem::transmute(__msa_fexupl_w(mem::transmute(a))));
     // }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fexupl_d() {
         #[rustfmt::skip]
         let a = f32x4::new(5.5, 6.5, 7.5, 8.5);
@@ -13075,7 +13075,7 @@ mod tests {
     }
 
     // FIXME: 16-bit floats
-    //     #[simd_test(enable = "msa")]
+    //     #[simd_test("msa")]
     // unsafe fn test_msa_fexupr_w() {
     //     #[rustfmt::skip]
     //     let a = f16x8(1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5);
@@ -13085,7 +13085,7 @@ mod tests {
     //     assert_eq!(r, mem::transmute(__msa_fexupr_w(mem::transmute(a))));
     // }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fexupr_d() {
         #[rustfmt::skip]
         let a = f32x4::new(5.5, 6.5, 7.5, 8.5);
@@ -13095,7 +13095,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_fexupr_d(mem::transmute(a))));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_ffint_s_w() {
         #[rustfmt::skip]
         let a = i32x4::new(-1, 2, -3, 4);
@@ -13105,7 +13105,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_ffint_s_w(mem::transmute(a))));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_ffint_s_d() {
         #[rustfmt::skip]
         let a = i64x2::new(-1, 2);
@@ -13115,7 +13115,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_ffint_s_d(mem::transmute(a))));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_ffint_u_w() {
         #[rustfmt::skip]
         let a = u32x4::new(1, 2, 3, 4);
@@ -13125,7 +13125,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_ffint_u_w(mem::transmute(a))));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_ffint_u_d() {
         #[rustfmt::skip]
         let a = u64x2::new(1, 2);
@@ -13135,7 +13135,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_ffint_u_d(mem::transmute(a))));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_ffql_w() {
         #[rustfmt::skip]
         let a = i16x8::new(11, 25, 33, 47, 11, 25, 33, 47);
@@ -13148,7 +13148,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_ffql_w(mem::transmute(a))));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_ffql_d() {
         #[rustfmt::skip]
         let a = i32x4::new(1111, 2222, 3333, 4444);
@@ -13161,7 +13161,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_ffql_d(mem::transmute(a))));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_ffqr_w() {
         #[rustfmt::skip]
         let a = i16x8::new(12, 26, 34, 48, 11, 25, 33, 47);
@@ -13174,7 +13174,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_ffqr_w(mem::transmute(a))));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_ffqr_d() {
         #[rustfmt::skip]
         let a = i32x4::new(1111, 2555, 3333, 475);
@@ -13187,7 +13187,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_ffqr_d(mem::transmute(a))));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fill_b() {
         #[rustfmt::skip]
         let r = i8x16::new(
@@ -13200,7 +13200,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_fill_b(2)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fill_h() {
         #[rustfmt::skip]
         let r = i16x8::new(2, 2, 2, 2, 2, 2, 2, 2);
@@ -13208,7 +13208,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_fill_h(2)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fill_w() {
         #[rustfmt::skip]
         let r = i32x4::new(2, 2, 2, 2);
@@ -13216,7 +13216,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_fill_w(2)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fill_d() {
         #[rustfmt::skip]
         let r = i64x2::new(2, 2);
@@ -13224,7 +13224,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_fill_d(2)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_flog2_w() {
         #[rustfmt::skip]
         let a = f32x4::new(8.0, 16.0, 32.0, 64.0);
@@ -13234,7 +13234,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_flog2_w(mem::transmute(a))));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_flog2_d() {
         #[rustfmt::skip]
         let a = f64x2::new(8.0, 16.0);
@@ -13244,7 +13244,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_flog2_d(mem::transmute(a))));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fmadd_w() {
         #[rustfmt::skip]
         let a = f32x4::new(1.0, 2.0, 3.0, 4.0);
@@ -13265,7 +13265,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fmadd_d() {
         #[rustfmt::skip]
         let a = f64x2::new(1.0, 2.0);
@@ -13286,7 +13286,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fmax_w() {
         #[rustfmt::skip]
         let a = f32x4::new(1.0, -6.0, 7.0, 8.0);
@@ -13301,7 +13301,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fmax_d() {
         #[rustfmt::skip]
         let a = f64x2::new(1.0, 4.0);
@@ -13316,7 +13316,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fmax_a_w() {
         #[rustfmt::skip]
         let a = f32x4::new(1.0, -6.0, -7.0, -8.0);
@@ -13331,7 +13331,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fmax_a_d() {
         #[rustfmt::skip]
         let a = f64x2::new(1.0, -4.0);
@@ -13346,7 +13346,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fmin_w() {
         #[rustfmt::skip]
         let a = f32x4::new(1.0, -6.0, 7.0, 8.0);
@@ -13361,7 +13361,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fmin_d() {
         #[rustfmt::skip]
         let a = f64x2::new(1.0, 4.0);
@@ -13376,7 +13376,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fmin_a_w() {
         #[rustfmt::skip]
         let a = f32x4::new(1.0, -6.0, -7.0, -8.0);
@@ -13391,7 +13391,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fmin_a_d() {
         #[rustfmt::skip]
         let a = f64x2::new(1.0, -4.0);
@@ -13406,7 +13406,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fmsub_w() {
         #[rustfmt::skip]
         let a = f32x4::new(1.0, 2.0, 3.0, 4.0);
@@ -13427,7 +13427,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fmsub_d() {
         #[rustfmt::skip]
         let a = f64x2::new(1.0, 2.0);
@@ -13448,7 +13448,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fmul_w() {
         #[rustfmt::skip]
         let a = f32x4::new(1.1, -2.2, 3.3, 4.4);
@@ -13463,7 +13463,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fmul_d() {
         #[rustfmt::skip]
         let a = f64x2::new(1.1, -2.2);
@@ -13478,7 +13478,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_frint_w() {
         #[rustfmt::skip]
         let a = f32x4::new(2.6, -2.7, 1.3, -1.7);
@@ -13488,7 +13488,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_frint_w(mem::transmute(a))));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_frint_d() {
         #[rustfmt::skip]
         let a = f64x2::new(2.6, 1.3);
@@ -13498,7 +13498,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_frint_d(mem::transmute(a))));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_frcp_w() {
         #[rustfmt::skip]
         let a = f32x4::new(2.6, -2.7, 1.3, -1.7);
@@ -13511,7 +13511,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_frcp_w(mem::transmute(a))));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_frcp_d() {
         #[rustfmt::skip]
         let a = f64x2::new(2.6, 1.3);
@@ -13521,7 +13521,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_frcp_d(mem::transmute(a))));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_frsqrt_w() {
         #[rustfmt::skip]
         let a = f32x4::new(2.6, 2.7, 1.3, 1.7);
@@ -13534,7 +13534,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_frsqrt_w(mem::transmute(a))));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_frsqrt_d() {
         #[rustfmt::skip]
         let a = f64x2::new(2.6, 1.3);
@@ -13544,7 +13544,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_frsqrt_d(mem::transmute(a))));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fsaf_w() {
         #[rustfmt::skip]
         let a = f32x4::new(-5.5, 5.5, 5.5, 5.5);
@@ -13559,7 +13559,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fsaf_d() {
         #[rustfmt::skip]
         let a = f64x2::new(-125.5, 5.5);
@@ -13574,7 +13574,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fseq_w() {
         #[rustfmt::skip]
         let a = f32x4::new(-5.5, -3.3, f32::NAN, f32::NAN);
@@ -13589,7 +13589,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fseq_d() {
         #[rustfmt::skip]
         let a = f64x2::new(-125.5, 5.5);
@@ -13604,7 +13604,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fsle_w() {
         #[rustfmt::skip]
         let a = f32x4::new(5.5, 5.5, 5.5, f32::NAN);
@@ -13619,7 +13619,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fsle_d() {
         #[rustfmt::skip]
         let a = f64x2::new(-125.5, 5.5);
@@ -13634,7 +13634,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fslt_w() {
         #[rustfmt::skip]
         let a = f32x4::new(-5.5, 5.5, 5.5, 5.5);
@@ -13649,7 +13649,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fslt_d() {
         #[rustfmt::skip]
         let a = f64x2::new(-125.5, 5.5);
@@ -13664,7 +13664,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fsne_w() {
         #[rustfmt::skip]
         let a = f32x4::new(-5.5, 5.5, 5.5, 5.5);
@@ -13679,7 +13679,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fsne_d() {
         #[rustfmt::skip]
         let a = f64x2::new(-125.5, 5.5);
@@ -13694,7 +13694,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fsor_w() {
         #[rustfmt::skip]
         let a = f32x4::new(-5.5, f32::NAN, 5.5, 5.5);
@@ -13709,7 +13709,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fsor_d() {
         #[rustfmt::skip]
         let a = f64x2::new(-125.5, 5.5);
@@ -13724,7 +13724,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fsqrt_w() {
         #[rustfmt::skip]
         let a = f32x4::new(9.0, 81.0, 1089.0, 10000.0);
@@ -13734,7 +13734,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_fsqrt_w(mem::transmute(a))));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fsqrt_d() {
         #[rustfmt::skip]
         let a = f64x2::new(81.0, 10000.0);
@@ -13744,7 +13744,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_fsqrt_d(mem::transmute(a))));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fsub_w() {
         #[rustfmt::skip]
         let a = f32x4::new(5.5, 6.5, 7.5, 8.5);
@@ -13759,7 +13759,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fsub_d() {
         #[rustfmt::skip]
         let a = f64x2::new(555.5, 55.5);
@@ -13774,7 +13774,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fsueq_w() {
         #[rustfmt::skip]
         let a = f32x4::new(5.5, f32::NAN, 5.5, 5.5);
@@ -13789,7 +13789,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fsueq_d() {
         #[rustfmt::skip]
         let a = f64x2::new(-5.5, 5.5);
@@ -13804,7 +13804,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fsule_w() {
         #[rustfmt::skip]
         let a = f32x4::new(5.7, 5.8, 5.9, f32::NAN);
@@ -13819,7 +13819,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fsule_d() {
         #[rustfmt::skip]
         let a = f64x2::new(5.5, 5.5);
@@ -13834,7 +13834,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fsult_w() {
         #[rustfmt::skip]
         let a = f32x4::new(5.5, 5.5, 5.5, 5.5);
@@ -13849,7 +13849,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fsult_d() {
         #[rustfmt::skip]
         let a = f64x2::new(5.5, f64::NAN);
@@ -13864,7 +13864,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fsun_w() {
         #[rustfmt::skip]
         let a = f32x4::new(5.5, 5.5, f32::NAN, 5.5);
@@ -13879,7 +13879,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fsun_d() {
         #[rustfmt::skip]
         let a = f64x2::new(5.5, f64::NAN);
@@ -13894,7 +13894,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fsune_w() {
         #[rustfmt::skip]
         let a = f32x4::new(5.5, 5.5, f32::NAN, 5.5);
@@ -13909,7 +13909,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_fsune_d() {
         #[rustfmt::skip]
         let a = f64x2::new(5.5, f64::NAN);
@@ -13924,7 +13924,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_ftint_s_w() {
         #[rustfmt::skip]
         let a = f32x4::new(-5.5, 75.6, -1000.7, 1219.3);
@@ -13934,7 +13934,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_ftint_s_w(mem::transmute(a))));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_ftint_s_d() {
         #[rustfmt::skip]
         let a = f64x2::new(-5.5, 25656.4);
@@ -13944,7 +13944,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_ftint_s_d(mem::transmute(a))));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_ftint_u_w() {
         #[rustfmt::skip]
         let a = f32x4::new(-5.5, 75.6, -1000.7, 1219.3);
@@ -13954,7 +13954,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_ftint_u_w(mem::transmute(a))));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_ftint_u_d() {
         #[rustfmt::skip]
         let a = f64x2::new(5.5, -25656.4);
@@ -13964,7 +13964,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_ftint_u_d(mem::transmute(a))));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_ftq_h() {
         #[rustfmt::skip]
         let a = f32x4::new(0.00001, 0.0002, 0.00001, -0.0002);
@@ -13979,7 +13979,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_ftq_w() {
         #[rustfmt::skip]
         let a = f64x2::new(0.00001, -0.0002);
@@ -13994,7 +13994,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_ftrunc_s_w() {
         #[rustfmt::skip]
         let a = f32x4::new(-5.5, 75.6, -1000.7, 1219.3);
@@ -14004,7 +14004,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_ftrunc_s_w(mem::transmute(a))));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_ftrunc_s_d() {
         #[rustfmt::skip]
         let a = f64x2::new(-5.5, 25656.4);
@@ -14014,7 +14014,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_ftrunc_s_d(mem::transmute(a))));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_ftrunc_u_w() {
         #[rustfmt::skip]
         let a = f32x4::new(-5.5, 75.6, -1000.7, 1219.3);
@@ -14024,7 +14024,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_ftrunc_u_w(mem::transmute(a))));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_ftrunc_u_d() {
         #[rustfmt::skip]
         let a = f64x2::new(5.5, -25656.4);
@@ -14034,7 +14034,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_ftrunc_u_d(mem::transmute(a))));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_hadd_s_h() {
         #[rustfmt::skip]
         let a = i8x16::new(
@@ -14059,7 +14059,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_hadd_s_w() {
         #[rustfmt::skip]
         let a = i16x8::new(
@@ -14080,7 +14080,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_hadd_s_d() {
         #[rustfmt::skip]
         let a = i32x4::new(1, -2, 3, -4);
@@ -14095,7 +14095,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_hadd_u_h() {
         #[rustfmt::skip]
         let a = u8x16::new(
@@ -14120,7 +14120,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_hadd_u_w() {
         #[rustfmt::skip]
         let a = u16x8::new(
@@ -14141,7 +14141,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_hadd_u_d() {
         #[rustfmt::skip]
         let a = u32x4::new(1, 2, 3, 4);
@@ -14156,7 +14156,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_hsub_s_h() {
         #[rustfmt::skip]
         let a = i8x16::new(
@@ -14181,7 +14181,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_hsub_s_w() {
         #[rustfmt::skip]
         let a = i16x8::new(
@@ -14202,7 +14202,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_hsub_s_d() {
         #[rustfmt::skip]
         let a = i32x4::new(1, -2, 3, -4);
@@ -14217,7 +14217,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_hsub_u_h() {
         #[rustfmt::skip]
         let a = u8x16::new(
@@ -14242,7 +14242,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_hsub_u_w() {
         #[rustfmt::skip]
         let a = u16x8::new(
@@ -14263,7 +14263,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_hsub_u_d() {
         #[rustfmt::skip]
         let a = u32x4::new(1, 2, 3, 4);
@@ -14278,7 +14278,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_ilvev_b() {
         #[rustfmt::skip]
         let a = i8x16::new(
@@ -14308,7 +14308,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_ilvev_h() {
         #[rustfmt::skip]
         let a = i16x8::new(
@@ -14329,7 +14329,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_ilvev_w() {
         #[rustfmt::skip]
         let a = i32x4::new(1, 2, 3, 4);
@@ -14344,7 +14344,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_ilvev_d() {
         #[rustfmt::skip]
         let a = i64x2::new(1, 2);
@@ -14359,7 +14359,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_ilvl_b() {
         #[rustfmt::skip]
         let a = i8x16::new(
@@ -14389,7 +14389,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_ilvl_h() {
         #[rustfmt::skip]
         let a = i16x8::new(
@@ -14410,7 +14410,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_ilvl_w() {
         #[rustfmt::skip]
         let a = i32x4::new(1, 2, 3, 4);
@@ -14425,7 +14425,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_ilvl_d() {
         #[rustfmt::skip]
         let a = i64x2::new(1, 2);
@@ -14440,7 +14440,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_ilvod_b() {
         #[rustfmt::skip]
         let a = i8x16::new(
@@ -14470,7 +14470,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_ilvod_h() {
         #[rustfmt::skip]
         let a = i16x8::new(
@@ -14491,7 +14491,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_ilvod_w() {
         #[rustfmt::skip]
         let a = i32x4::new(1, 2, 3, 4);
@@ -14506,7 +14506,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_ilvod_d() {
         #[rustfmt::skip]
         let a = i64x2::new(1, 2);
@@ -14521,7 +14521,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_ilvr_b() {
         #[rustfmt::skip]
         let a = i8x16::new(
@@ -14551,7 +14551,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_ilvr_h() {
         #[rustfmt::skip]
         let a = i16x8::new(
@@ -14572,7 +14572,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_ilvr_w() {
         #[rustfmt::skip]
         let a = i32x4::new(1, 2, 3, 4);
@@ -14587,7 +14587,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_ilvr_d() {
         #[rustfmt::skip]
         let a = i64x2::new(1, 2);
@@ -14602,7 +14602,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_insert_b() {
         #[rustfmt::skip]
         let a = i8x16::new(
@@ -14622,7 +14622,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_insert_b(mem::transmute(a), 12, 5)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_insert_h() {
         #[rustfmt::skip]
         let a = i16x8::new(
@@ -14638,7 +14638,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_insert_h(mem::transmute(a), 4, 5)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_insert_w() {
         #[rustfmt::skip]
         let a = i32x4::new(100, 2147483647, 5, -2147483647);
@@ -14648,7 +14648,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_insert_w(mem::transmute(a), 1, 7)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_insert_d() {
         #[rustfmt::skip]
         let a = i64x2::new(3, i64::MAX);
@@ -14658,7 +14658,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_insert_d(mem::transmute(a), 1, 100)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_insve_b() {
         #[rustfmt::skip]
         let a = i8x16::new(
@@ -14688,7 +14688,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_insve_h() {
         #[rustfmt::skip]
         let a = i16x8::new(
@@ -14712,7 +14712,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_insve_w() {
         #[rustfmt::skip]
         let a = i32x4::new(100, 2147483647, 5, -2147483647);
@@ -14727,7 +14727,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_insve_d() {
         #[rustfmt::skip]
         let a = i64x2::new(3, i64::MAX);
@@ -14742,7 +14742,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_ld_b() {
         #[rustfmt::skip]
         let mut a : [i8; 32] = [
@@ -14763,7 +14763,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_ld_b(p, 9)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_ld_h() {
         #[rustfmt::skip]
         let mut a : [i16; 16] = [
@@ -14777,7 +14777,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_ld_h(p, -2)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_ld_w() {
         #[rustfmt::skip]
         let mut a : [i32; 8] = [0, 1, 2, 3, 4, 5, 6, 7];
@@ -14788,7 +14788,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_ld_w(p, -4)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_ld_d() {
         #[rustfmt::skip]
         let mut a : [i64; 8] = [0, 1, 2, 3, 4, 5, 6, 7];
@@ -14799,7 +14799,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_ld_d(p, -32)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_ldi_b() {
         #[rustfmt::skip]
         let r = i8x16::new(
@@ -14812,7 +14812,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_ldi_b(-20)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_ldi_h() {
         #[rustfmt::skip]
         let r = i16x8::new(
@@ -14823,7 +14823,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_ldi_h(255)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_ldi_w() {
         #[rustfmt::skip]
         let r = i32x4::new(-509, -509, -509, -509);
@@ -14834,14 +14834,14 @@ mod tests {
     // FIXME: https://reviews.llvm.org/D59884
     // If target type is i64, negative immediate loses the sign
     // Test passes if 4294967185 is used instead -111 in vector `r`
-    // #[simd_test(enable = "msa")]
+    // #[simd_test("msa")]
     // unsafe fn test_msa_ldi_d() {
     //     let r = i64x2::new(-111, -111);
 
     //     assert_eq!(r, mem::transmute(__msa_ldi_d(-111)));
     // }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_madd_q_h() {
         #[rustfmt::skip]
         let a = i16x8::new(
@@ -14871,7 +14871,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_madd_q_w() {
         #[rustfmt::skip]
         let a = i32x4::new(i32::MAX, i32::MIN, 1, 2);
@@ -14892,7 +14892,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_maddr_q_h() {
         #[rustfmt::skip]
         let a = i16x8::new(
@@ -14922,7 +14922,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_maddr_q_w() {
         #[rustfmt::skip]
         let a = i32x4::new(i32::MAX, i32::MIN, 1, 2);
@@ -14943,7 +14943,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_maddv_b() {
         #[rustfmt::skip]
         let a = i8x16::new(
@@ -14984,7 +14984,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_maddv_h() {
         #[rustfmt::skip]
         let a = i16x8::new(1, 2, 3, 4, 1, 2, 3, 4);
@@ -15005,7 +15005,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_maddv_w() {
         #[rustfmt::skip]
         let a = i32x4::new(1, 2, 1, 2);
@@ -15026,7 +15026,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_maddv_d() {
         #[rustfmt::skip]
         let a = i64x2::new(1, 2);
@@ -15047,7 +15047,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_max_a_b() {
         #[rustfmt::skip]
         let a = i8x16::new(
@@ -15077,7 +15077,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_max_a_h() {
         #[rustfmt::skip]
         let a = i16x8::new(1, -2, 3, -4, 1, -2, 3, -4);
@@ -15092,7 +15092,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_max_a_w() {
         #[rustfmt::skip]
         let a = i32x4::new(1, -2, 3, -4);
@@ -15107,7 +15107,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_max_a_d() {
         #[rustfmt::skip]
         let a = i64x2::new(-1, 2);
@@ -15122,7 +15122,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_max_s_b() {
         #[rustfmt::skip]
         let a = i8x16::new(
@@ -15152,7 +15152,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_max_s_h() {
         #[rustfmt::skip]
         let a = i16x8::new(1, -2, 3, -4, 1, -2, 3, -4);
@@ -15167,7 +15167,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_max_s_w() {
         #[rustfmt::skip]
         let a = i32x4::new(1, -2, 3, -4);
@@ -15182,7 +15182,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_max_s_d() {
         #[rustfmt::skip]
         let a = i64x2::new(-1, 2);
@@ -15197,7 +15197,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_max_u_b() {
         #[rustfmt::skip]
         let a = u8x16::new(
@@ -15227,7 +15227,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_max_u_h() {
         #[rustfmt::skip]
         let a = u16x8::new(1, 2, 3, 4, 1, 2, 3, 4);
@@ -15242,7 +15242,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_max_u_w() {
         #[rustfmt::skip]
         let a = u32x4::new(1, 2, 3, 4);
@@ -15257,7 +15257,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_max_u_d() {
         #[rustfmt::skip]
         let a = u64x2::new(1, 2);
@@ -15272,7 +15272,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_maxi_s_b() {
         #[rustfmt::skip]
         let a = i8x16::new(
@@ -15292,7 +15292,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_maxi_s_b(mem::transmute(a), -16)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_maxi_s_h() {
         #[rustfmt::skip]
         let a = i16x8::new(1, 3, -60, -8, 1, 3, -6, -8);
@@ -15302,7 +15302,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_maxi_s_h(mem::transmute(a), 15)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_maxi_s_w() {
         #[rustfmt::skip]
         let a = i32x4::new(1, 3, -6, -8);
@@ -15315,7 +15315,7 @@ mod tests {
     // FIXME: https://reviews.llvm.org/D59884
     // If target type is i64, negative immediate loses the sign
     // Test passes if 4294967293 is used instead -3 in vector `r`
-    // #[simd_test(enable = "msa")]
+    // #[simd_test("msa")]
     // unsafe fn test_msa_maxi_s_d() {
     //     #[rustfmt::skip]
     //     let a = i64x2::new(1, -8);
@@ -15325,7 +15325,7 @@ mod tests {
     //     assert_eq!(r, mem::transmute(__msa_maxi_s_d(mem::transmute(a), -3)));
     // }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_maxi_u_b() {
         #[rustfmt::skip]
         let a = u8x16::new(
@@ -15345,7 +15345,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_maxi_u_b(mem::transmute(a), 5)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_maxi_u_h() {
         #[rustfmt::skip]
         let a = u16x8::new(1, 3, 6, 8, 1, 3, 6, 8);
@@ -15355,7 +15355,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_maxi_u_h(mem::transmute(a), 5)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_maxi_u_w() {
         #[rustfmt::skip]
         let a = u32x4::new(1, 3, 6, 8);
@@ -15365,7 +15365,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_maxi_u_w(mem::transmute(a), 5)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_maxi_u_d() {
         #[rustfmt::skip]
         let a = u64x2::new(1, 8);
@@ -15375,7 +15375,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_maxi_u_d(mem::transmute(a), 5)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_min_a_b() {
         #[rustfmt::skip]
         let a = i8x16::new(
@@ -15405,7 +15405,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_min_a_h() {
         #[rustfmt::skip]
         let a = i16x8::new(1, -2, 3, -4, 1, -2, 3, -4);
@@ -15420,7 +15420,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_min_a_w() {
         #[rustfmt::skip]
         let a = i32x4::new(1, -2, 3, -4);
@@ -15435,7 +15435,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_min_a_d() {
         #[rustfmt::skip]
         let a = i64x2::new(-1, 2);
@@ -15450,7 +15450,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_min_s_b() {
         #[rustfmt::skip]
         let a = i8x16::new(
@@ -15480,7 +15480,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_min_s_h() {
         #[rustfmt::skip]
         let a = i16x8::new(1, -2, 3, -4, 1, -2, 3, -4);
@@ -15495,7 +15495,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_min_s_w() {
         #[rustfmt::skip]
         let a = i32x4::new(1, -2, 3, -4);
@@ -15510,7 +15510,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_min_s_d() {
         #[rustfmt::skip]
         let a = i64x2::new(-1, 2);
@@ -15525,7 +15525,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_mini_s_b() {
         #[rustfmt::skip]
         let a = i8x16::new(
@@ -15545,7 +15545,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_mini_s_b(mem::transmute(a), -10)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_mini_s_h() {
         #[rustfmt::skip]
         let a = i16x8::new(1, -2, 3, -4, 1, -2, 3, -4);
@@ -15555,7 +15555,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_mini_s_h(mem::transmute(a), -3)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_mini_s_w() {
         #[rustfmt::skip]
         let a = i32x4::new(1, -2, 3, -4);
@@ -15568,7 +15568,7 @@ mod tests {
     // FIXME: https://reviews.llvm.org/D59884
     // If target type is i64, negative immediate loses the sign
     // -3 is represented as 4294967293
-    // #[simd_test(enable = "msa")]
+    // #[simd_test("msa")]
     // unsafe fn test_msa_mini_s_d() {
     //     #[rustfmt::skip]
     //     let a = i64x2::new(-3, 2);
@@ -15578,7 +15578,7 @@ mod tests {
     //     assert_eq!(r, mem::transmute(__msa_mini_s_d(mem::transmute(a), -3)));
     // }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_min_u_b() {
         #[rustfmt::skip]
         let a = u8x16::new(
@@ -15608,7 +15608,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_min_u_h() {
         #[rustfmt::skip]
         let a = u16x8::new(1, 2, 3, 4, 1, 2, 3, 4);
@@ -15623,7 +15623,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_min_u_w() {
         #[rustfmt::skip]
         let a = u32x4::new(1, 2, 3, 4);
@@ -15638,7 +15638,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_min_u_d() {
         #[rustfmt::skip]
         let a = u64x2::new(1, 2);
@@ -15653,7 +15653,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_mini_u_b() {
         #[rustfmt::skip]
         let a = u8x16::new(
@@ -15673,7 +15673,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_mini_u_b(mem::transmute(a), 5)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_mini_u_h() {
         #[rustfmt::skip]
         let a = u16x8::new(1, 3, 6, 8, 1, 3, 6, 8);
@@ -15683,7 +15683,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_mini_u_h(mem::transmute(a), 5)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_mini_u_w() {
         #[rustfmt::skip]
         let a = u32x4::new(1, 3, 6, 8);
@@ -15693,7 +15693,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_mini_u_w(mem::transmute(a), 5)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_mini_u_d() {
         #[rustfmt::skip]
         let a = u64x2::new(1, 8);
@@ -15703,7 +15703,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_mini_u_d(mem::transmute(a), 5)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_mod_s_b() {
         #[rustfmt::skip]
         let a = i8x16::new(
@@ -15733,7 +15733,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_mod_s_h() {
         #[rustfmt::skip]
         let a = i16x8::new(-6, 7, -8, 9, -6, 7, -8, 9);
@@ -15748,7 +15748,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_mod_s_w() {
         #[rustfmt::skip]
         let a = i32x4::new(6, 7, 8, 9);
@@ -15763,7 +15763,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_mod_s_d() {
         #[rustfmt::skip]
         let a = i64x2::new(6, -7);
@@ -15778,7 +15778,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_mod_u_b() {
         #[rustfmt::skip]
         let a = u8x16::new(
@@ -15808,7 +15808,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_mod_u_h() {
         #[rustfmt::skip]
         let a = u16x8::new(6, 7, 8, 9, 6, 7, 8, 9);
@@ -15823,7 +15823,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_mod_u_w() {
         #[rustfmt::skip]
         let a = u32x4::new(6, 7, 8, 9);
@@ -15838,7 +15838,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_mod_u_d() {
         #[rustfmt::skip]
         let a = u64x2::new(6, 7);
@@ -15853,7 +15853,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_move_v() {
         #[rustfmt::skip]
         let a = i8x16::new(
@@ -15873,7 +15873,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_move_v(mem::transmute(a))));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_msub_q_h() {
         #[rustfmt::skip]
         let a = i16x8::new(
@@ -15903,7 +15903,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_msub_q_w() {
         #[rustfmt::skip]
         let a = i32x4::new(2147483647, -2147483647, 1, 2);
@@ -15924,7 +15924,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_msubr_q_h() {
         #[rustfmt::skip]
         let a = i16x8::new(
@@ -15954,7 +15954,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_msubr_q_w() {
         #[rustfmt::skip]
         let a = i32x4::new(i32::MAX, -2147483647, 1, 2);
@@ -15975,7 +15975,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_msubv_b() {
         #[rustfmt::skip]
         let a = i8x16::new(
@@ -16016,7 +16016,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_msubv_h() {
         #[rustfmt::skip]
         let a = i16x8::new(1, 2, 3, 4, 1, 2, 3, 4);
@@ -16037,7 +16037,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_msubv_w() {
         #[rustfmt::skip]
         let a = i32x4::new(1, 2, 1, 2);
@@ -16058,7 +16058,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_msubv_d() {
         #[rustfmt::skip]
         let a = i64x2::new(1, 2);
@@ -16079,7 +16079,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_mul_q_h() {
         #[rustfmt::skip]
         let a = i16x8::new(
@@ -16100,7 +16100,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_mul_q_w() {
         #[rustfmt::skip]
         let a = i32x4::new(
@@ -16118,7 +16118,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_mulr_q_h() {
         #[rustfmt::skip]
         let a = i16x8::new(
@@ -16139,7 +16139,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_mulr_q_w() {
         #[rustfmt::skip]
         let a = i32x4::new(
@@ -16157,7 +16157,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_mulv_b() {
         #[rustfmt::skip]
         let a = i8x16::new(
@@ -16187,7 +16187,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_mulv_h() {
         #[rustfmt::skip]
         let a = i16x8::new(
@@ -16208,7 +16208,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_mulv_w() {
         #[rustfmt::skip]
         let a = i32x4::new(1, 2, 3, 4);
@@ -16223,7 +16223,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_mulv_d() {
         #[rustfmt::skip]
         let a = i64x2::new(1, 2);
@@ -16238,7 +16238,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_nloc_b() {
         #[rustfmt::skip]
         let a = i8x16::new(
@@ -16258,7 +16258,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_nloc_b(mem::transmute(a))));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_nloc_h() {
         #[rustfmt::skip]
         let a = i16x8::new(
@@ -16271,7 +16271,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_nloc_h(mem::transmute(a))));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_nloc_w() {
         #[rustfmt::skip]
         let a = i32x4::new(
@@ -16284,7 +16284,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_nloc_w(mem::transmute(a))));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_nloc_d() {
         #[rustfmt::skip]
         let a = i64x2::new(i64::MIN, i64::MAX);
@@ -16294,7 +16294,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_nloc_d(mem::transmute(a))));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_nlzc_b() {
         #[rustfmt::skip]
         let a = i8x16::new(
@@ -16314,7 +16314,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_nlzc_b(mem::transmute(a))));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_nlzc_h() {
         #[rustfmt::skip]
         let a = i16x8::new(
@@ -16327,7 +16327,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_nlzc_h(mem::transmute(a))));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_nlzc_w() {
         #[rustfmt::skip]
         let a = i32x4::new(1, 2, 3, 4);
@@ -16337,7 +16337,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_nlzc_w(mem::transmute(a))));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_nlzc_d() {
         #[rustfmt::skip]
         let a = i64x2::new(1, 2);
@@ -16347,7 +16347,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_nlzc_d(mem::transmute(a))));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_nor_v() {
         #[rustfmt::skip]
         let a = u8x16::new(
@@ -16377,7 +16377,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_nori_b() {
         #[rustfmt::skip]
         let a = u8x16::new(
@@ -16397,7 +16397,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_nori_b(mem::transmute(a), 4)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_or_v() {
         #[rustfmt::skip]
         let a = u8x16::new(
@@ -16427,7 +16427,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_ori_b() {
         #[rustfmt::skip]
         let a = u8x16::new(
@@ -16447,7 +16447,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_ori_b(mem::transmute(a), 4)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_pckev_b() {
         #[rustfmt::skip]
         let a = i8x16::new(
@@ -16477,7 +16477,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_pckev_h() {
         #[rustfmt::skip]
         let a = i16x8::new(1, 2, 3, 4, 1, 2, 3, 4);
@@ -16492,7 +16492,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_pckev_w() {
         #[rustfmt::skip]
         let a = i32x4::new(1, 2, 3, 4);
@@ -16507,7 +16507,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_pckev_d() {
         #[rustfmt::skip]
         let a = i64x2::new(1, 2);
@@ -16522,7 +16522,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_pckod_b() {
         #[rustfmt::skip]
         let a = i8x16::new(
@@ -16552,7 +16552,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_pckod_h() {
         #[rustfmt::skip]
         let a = i16x8::new(1, 2, 3, 4, 1, 2, 3, 4);
@@ -16567,7 +16567,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_pckod_w() {
         #[rustfmt::skip]
         let a = i32x4::new(1, 2, 3, 4);
@@ -16582,7 +16582,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_pckod_d() {
         #[rustfmt::skip]
         let a = i64x2::new(1, 2);
@@ -16597,7 +16597,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_pcnt_b() {
         #[rustfmt::skip]
         let a = i8x16::new(
@@ -16617,7 +16617,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_pcnt_b(mem::transmute(a))));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_pcnt_h() {
         #[rustfmt::skip]
         let a = i16x8::new(
@@ -16630,7 +16630,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_pcnt_h(mem::transmute(a))));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_pcnt_w() {
         #[rustfmt::skip]
         let a = i32x4::new(
@@ -16643,7 +16643,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_pcnt_w(mem::transmute(a))));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_pcnt_d() {
         #[rustfmt::skip]
         let a = i64x2::new(-2147483648, 2147483647);
@@ -16653,7 +16653,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_pcnt_d(mem::transmute(a))));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_sat_s_b() {
         #[rustfmt::skip]
         let a = i8x16::new(
@@ -16673,7 +16673,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_sat_s_b(mem::transmute(a), 2)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_sat_s_h() {
         #[rustfmt::skip]
         let a = i16x8::new(
@@ -16686,7 +16686,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_sat_s_h(mem::transmute(a), 7)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_sat_s_w() {
         #[rustfmt::skip]
         let a = i32x4::new(i32::MAX, 111111155, i32::MAX, 1);
@@ -16696,7 +16696,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_sat_s_w(mem::transmute(a), 17)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_sat_s_d() {
         #[rustfmt::skip]
         let a = i64x2::new(i64::MAX, 1);
@@ -16706,7 +16706,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_sat_s_d(mem::transmute(a), 37)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_sat_u_b() {
         #[rustfmt::skip]
         let a = u8x16::new(
@@ -16726,7 +16726,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_sat_u_b(mem::transmute(a), 2)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_sat_u_h() {
         #[rustfmt::skip]
         let a = u16x8::new(
@@ -16739,7 +16739,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_sat_u_h(mem::transmute(a), 7)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_sat_u_w() {
         #[rustfmt::skip]
         let a = u32x4::new(u32::MAX, 111111155, u32::MAX, 1);
@@ -16749,7 +16749,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_sat_u_w(mem::transmute(a), 17)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_sat_u_d() {
         #[rustfmt::skip]
         let a = u64x2::new(u64::MAX, 1);
@@ -16759,7 +16759,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_sat_u_d(mem::transmute(a), 37)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_shf_b() {
         #[rustfmt::skip]
         let a = i8x16::new(
@@ -16779,7 +16779,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_shf_b(mem::transmute(a), 120)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_shf_h() {
         #[rustfmt::skip]
         let a = i16x8::new(
@@ -16792,7 +16792,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_shf_h(mem::transmute(a), 156)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_shf_w() {
         #[rustfmt::skip]
         let a = i32x4::new(1, 2, 3, 4);
@@ -16802,7 +16802,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_shf_w(mem::transmute(a), 216)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_sld_b() {
         #[rustfmt::skip]
         let a = i8x16::new(
@@ -16832,7 +16832,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_sld_h() {
         #[rustfmt::skip]
         let a = i16x8::new(0, 1, 2, 3, 4, 5, 6, 7);
@@ -16847,7 +16847,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_sld_w() {
         #[rustfmt::skip]
         let a = i32x4::new(0, 1, 2, 3);
@@ -16862,7 +16862,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_sld_d() {
         #[rustfmt::skip]
         let a = i64x2::new(0, 1);
@@ -16877,7 +16877,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_sldi_b() {
         #[rustfmt::skip]
         let a = i8x16::new(
@@ -16907,7 +16907,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_sldi_h() {
         #[rustfmt::skip]
         let a = i16x8::new(0, 1, 2, 3, 4, 5, 6, 7);
@@ -16922,7 +16922,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_sldi_w() {
         #[rustfmt::skip]
         let a = i32x4::new(0, 1, 2, 3);
@@ -16937,7 +16937,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_sldi_d() {
         #[rustfmt::skip]
         let a = i64x2::new(0, 1);
@@ -16952,7 +16952,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_sll_b() {
         #[rustfmt::skip]
         let a = i8x16::new(
@@ -16982,7 +16982,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_sll_h() {
         #[rustfmt::skip]
         let a = i16x8::new(1, 2, 3, 4, 1, 2, 3, 4);
@@ -16997,7 +16997,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_sll_w() {
         #[rustfmt::skip]
         let a = i32x4::new(1, 2, 3, 4);
@@ -17012,7 +17012,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_sll_d() {
         #[rustfmt::skip]
         let a = i64x2::new(1, 2);
@@ -17027,7 +17027,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_slli_b() {
         #[rustfmt::skip]
         let a = i8x16::new(
@@ -17047,7 +17047,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_slli_b(mem::transmute(a), 2)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_slli_h() {
         #[rustfmt::skip]
         let a = i16x8::new(
@@ -17060,7 +17060,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_slli_h(mem::transmute(a), 2)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_slli_w() {
         #[rustfmt::skip]
         let a = i32x4::new(1, 2, 3, 4);
@@ -17070,7 +17070,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_slli_w(mem::transmute(a), 2)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_slli_d() {
         #[rustfmt::skip]
         let a = i64x2::new(1, 2);
@@ -17080,7 +17080,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_slli_d(mem::transmute(a), 1)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_splat_b() {
         #[rustfmt::skip]
         let a = i8x16::new(
@@ -17100,7 +17100,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_splat_b(mem::transmute(a), 3)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_splat_h() {
         #[rustfmt::skip]
         let a = i16x8::new(
@@ -17113,7 +17113,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_splat_h(mem::transmute(a), 3)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_splat_w() {
         #[rustfmt::skip]
         let a = i32x4::new(1, 2, 3, 4);
@@ -17123,7 +17123,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_splat_w(mem::transmute(a), 3)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_splat_d() {
         #[rustfmt::skip]
         let a = i64x2::new(1, 2);
@@ -17133,7 +17133,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_splat_d(mem::transmute(a), 3)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_splati_b() {
         #[rustfmt::skip]
         let a = i8x16::new(
@@ -17153,7 +17153,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_splati_b(mem::transmute(a), 2)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_splati_h() {
         #[rustfmt::skip]
         let a = i16x8::new(
@@ -17166,7 +17166,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_splati_h(mem::transmute(a), 2)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_splati_w() {
         #[rustfmt::skip]
         let a = i32x4::new(1, 2, 3, 4);
@@ -17176,7 +17176,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_splati_w(mem::transmute(a), 2)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_splati_d() {
         #[rustfmt::skip]
         let a = i64x2::new(1, 2);
@@ -17186,7 +17186,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_splati_d(mem::transmute(a), 1)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_sra_b() {
         #[rustfmt::skip]
         let a = i8x16::new(
@@ -17216,7 +17216,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_sra_h() {
         #[rustfmt::skip]
         let a = i16x8::new(
@@ -17240,7 +17240,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_sra_w() {
         #[rustfmt::skip]
         let a = i32x4::new(i32::MIN, -1073741824, 1, 2);
@@ -17255,7 +17255,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_sra_d() {
         #[rustfmt::skip]
         let a = i64x2::new(i64::MIN, i64::MAX);
@@ -17270,7 +17270,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_srai_b() {
         #[rustfmt::skip]
         let a = i8x16::new(
@@ -17290,7 +17290,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_srai_b(mem::transmute(a), 2)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_srai_h() {
         #[rustfmt::skip]
         let a = i16x8::new(
@@ -17303,7 +17303,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_srai_h(mem::transmute(a), 2)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_srai_w() {
         #[rustfmt::skip]
         let a = i32x4::new(i32::MAX, 125, 55, 1);
@@ -17312,7 +17312,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_srai_w(mem::transmute(a), 2)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_srai_d() {
         #[rustfmt::skip]
         let a = i64x2::new(i64::MAX, 55);
@@ -17322,7 +17322,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_srai_d(mem::transmute(a), 2)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_srar_b() {
         #[rustfmt::skip]
         let a = i8x16::new(
@@ -17352,7 +17352,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_srar_h() {
         #[rustfmt::skip]
         let a = i16x8::new(
@@ -17376,7 +17376,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_srar_w() {
         #[rustfmt::skip]
         let a = i32x4::new(i32::MIN, -1073741824, 100, 50);
@@ -17391,7 +17391,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_srar_d() {
         #[rustfmt::skip]
         let a = i64x2::new(i64::MIN, i64::MAX);
@@ -17406,7 +17406,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_srari_b() {
         #[rustfmt::skip]
         let a = i8x16::new(
@@ -17426,7 +17426,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_srari_b(mem::transmute(a), 2)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_srari_h() {
         #[rustfmt::skip]
         let a = i16x8::new(2155, 1155, 155, 1, 2155, 1155, 155, 1);
@@ -17436,7 +17436,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_srari_h(mem::transmute(a), 2)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_srari_w() {
         #[rustfmt::skip]
         let a = i32x4::new(211111155, 111111155, 11111155, 1);
@@ -17446,7 +17446,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_srari_w(mem::transmute(a), 2)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_srari_d() {
         #[rustfmt::skip]
         let a = i64x2::new(211111111155, 111111111155);
@@ -17456,7 +17456,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_srari_d(mem::transmute(a), 2)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_srl_b() {
         #[rustfmt::skip]
         let a = i8x16::new(
@@ -17486,7 +17486,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_srl_h() {
         #[rustfmt::skip]
         let a = i16x8::new(
@@ -17507,7 +17507,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_srl_w() {
         #[rustfmt::skip]
         let a = i32x4::new(i32::MIN, -1073741824, 1, 2);
@@ -17522,7 +17522,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_srl_d() {
         #[rustfmt::skip]
         let a = i64x2::new(i64::MIN, i64::MAX);
@@ -17537,7 +17537,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_srli_b() {
         #[rustfmt::skip]
         let a = i8x16::new(
@@ -17557,7 +17557,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_srli_b(mem::transmute(a), 2)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_srli_h() {
         #[rustfmt::skip]
         let a = i16x8::new(
@@ -17573,7 +17573,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_srli_h(mem::transmute(a), 2)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_srli_w() {
         #[rustfmt::skip]
         let a = i32x4::new(100, i32::MAX, 100, i32::MAX);
@@ -17583,7 +17583,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_srli_w(mem::transmute(a), 2)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_srli_d() {
         #[rustfmt::skip]
         let a = i64x2::new(100, i64::MAX);
@@ -17593,7 +17593,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_srli_d(mem::transmute(a), 1)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_srlr_b() {
         #[rustfmt::skip]
         let a = i8x16::new(
@@ -17623,7 +17623,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_srlr_h() {
         #[rustfmt::skip]
         let a = i16x8::new(
@@ -17644,7 +17644,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_srlr_w() {
         #[rustfmt::skip]
         let a = i32x4::new(i32::MIN, -1073741824, 1, 2);
@@ -17658,7 +17658,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_srlr_d() {
         #[rustfmt::skip]
         let a = i64x2::new(i64::MIN, i64::MAX);
@@ -17673,7 +17673,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_srlri_b() {
         #[rustfmt::skip]
         let a = i8x16::new(
@@ -17693,7 +17693,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_srlri_b(mem::transmute(a), 2)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_srlri_h() {
         #[rustfmt::skip]
         let a = i16x8::new(
@@ -17705,7 +17705,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_srlri_h(mem::transmute(a), 2)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_srlri_w() {
         #[rustfmt::skip]
         let a = i32x4::new(100, 150, 200, i32::MAX);
@@ -17715,7 +17715,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_srlri_w(mem::transmute(a), 2)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_srlri_d() {
         #[rustfmt::skip]
         let a = i64x2::new(100, i64::MAX);
@@ -17725,7 +17725,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_srlri_d(mem::transmute(a), 1)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_st_b() {
         #[rustfmt::skip]
         let a = i8x16::new(
@@ -17752,7 +17752,7 @@ mod tests {
         assert_eq!(arr, r);
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_st_h() {
         #[rustfmt::skip]
         let a = i16x8::new(13, 14, 15, 16, 17, 18, 19, 20);
@@ -17763,7 +17763,7 @@ mod tests {
         assert_eq!(arr, r);
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_st_w() {
         #[rustfmt::skip]
         let a = i32x4::new(13, 14, 15, 16);
@@ -17774,7 +17774,7 @@ mod tests {
         assert_eq!(arr, r);
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_st_d() {
         #[rustfmt::skip]
         let a = i64x2::new(13, 14);
@@ -17785,7 +17785,7 @@ mod tests {
         assert_eq!(arr, r);
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_subs_s_b() {
         #[rustfmt::skip]
         let a = i8x16::new(
@@ -17815,7 +17815,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_subs_s_h() {
         #[rustfmt::skip]
         let a = i16x8::new(
@@ -17836,7 +17836,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_subs_s_w() {
         #[rustfmt::skip]
         let a = i32x4::new(i32::MIN, -2, -3, -4);
@@ -17851,7 +17851,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_subs_s_d() {
         #[rustfmt::skip]
         let a = i64x2::new(i64::MIN, -2);
@@ -17866,7 +17866,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_subs_u_b() {
         #[rustfmt::skip]
         let a = u8x16::new(
@@ -17896,7 +17896,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_subs_u_h() {
         #[rustfmt::skip]
         let a = u16x8::new(
@@ -17914,7 +17914,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_subs_u_w() {
         #[rustfmt::skip]
         let a = u32x4::new(u32::MAX, 2, 3, 4);
@@ -17929,7 +17929,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_subs_u_d() {
         #[rustfmt::skip]
         let a = u64x2::new(u64::MAX, 2);
@@ -17944,7 +17944,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_subsus_u_b() {
         #[rustfmt::skip]
         let a = u8x16::new(
@@ -17974,7 +17974,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_subsus_u_h() {
         #[rustfmt::skip]
         let a = u16x8::new(
@@ -17992,7 +17992,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_subsus_u_w() {
         #[rustfmt::skip]
         let a = u32x4::new(u32::MAX, 2, 3, 4);
@@ -18007,7 +18007,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_subsus_u_d() {
         #[rustfmt::skip]
         let a = u64x2::new(u64::MAX, 2);
@@ -18022,7 +18022,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_subsuu_s_b() {
         #[rustfmt::skip]
         let a = u8x16::new(
@@ -18052,7 +18052,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_subsuu_s_h() {
         #[rustfmt::skip]
         let a = u16x8::new(
@@ -18070,7 +18070,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_subsuu_s_w() {
         #[rustfmt::skip]
         let a = u32x4::new(u32::MAX, 2, 3, 4);
@@ -18085,7 +18085,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_subsuu_s_d() {
         #[rustfmt::skip]
         let a = u64x2::new(u64::MAX, 2);
@@ -18100,7 +18100,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_subv_b() {
         #[rustfmt::skip]
         let a = i8x16::new(
@@ -18130,7 +18130,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_subv_h() {
         #[rustfmt::skip]
         let a = i16x8::new(
@@ -18148,7 +18148,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_subv_w() {
         #[rustfmt::skip]
         let a = i32x4::new(i32::MIN, -2, -3, -4);
@@ -18163,7 +18163,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_subv_d() {
         #[rustfmt::skip]
         let a = i64x2::new(i64::MAX, -2);
@@ -18178,7 +18178,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_subvi_b() {
         #[rustfmt::skip]
         let a = i8x16::new(
@@ -18198,7 +18198,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_subvi_b(mem::transmute(a), 5)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_subvi_h() {
         #[rustfmt::skip]
         let a = i16x8::new(
@@ -18214,7 +18214,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_subvi_h(mem::transmute(a), 5)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_subvi_w() {
         #[rustfmt::skip]
         let a = i32x4::new(100, 150, 200, i32::MAX);
@@ -18224,7 +18224,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_subvi_w(mem::transmute(a), 5)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_subvi_d() {
         #[rustfmt::skip]
         let a = i64x2::new(100, i64::MAX);
@@ -18234,7 +18234,7 @@ mod tests {
         assert_eq!(r, mem::transmute(__msa_subvi_d(mem::transmute(a), 5)));
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_vshf_b() {
         #[rustfmt::skip]
         let a = i8x16::new(
@@ -18275,7 +18275,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_vshf_h() {
         #[rustfmt::skip]
         let a = i16x8::new(
@@ -18304,7 +18304,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_vshf_w() {
         #[rustfmt::skip]
         let a = i32x4::new(1, 2, 3, 4);
@@ -18325,7 +18325,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_vshf_d() {
         #[rustfmt::skip]
         let a = i64x2::new(1, 2);
@@ -18346,7 +18346,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_xor_v() {
         #[rustfmt::skip]
         let a = u8x16::new(
@@ -18376,7 +18376,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "msa")]
+    #[simd_test("msa")]
     unsafe fn test_msa_xori_b() {
         #[rustfmt::skip]
         let a = u8x16::new(
