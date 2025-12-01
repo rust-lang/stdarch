@@ -2045,7 +2045,7 @@ mod tests {
 
     const NAN: f32 = f32::NAN;
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_add_ps() {
         let a = _mm_setr_ps(-1.0, 5.0, 0.0, -10.0);
         let b = _mm_setr_ps(-100.0, 20.0, 0.0, -5.0);
@@ -2053,7 +2053,7 @@ mod tests {
         assert_eq_m128(r, _mm_setr_ps(-101.0, 25.0, 0.0, -15.0));
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_add_ss() {
         let a = _mm_set_ps(-1.0, 5.0, 0.0, -10.0);
         let b = _mm_set_ps(-100.0, 20.0, 0.0, -5.0);
@@ -2061,7 +2061,7 @@ mod tests {
         assert_eq_m128(r, _mm_set_ps(-1.0, 5.0, 0.0, -15.0));
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_sub_ps() {
         let a = _mm_setr_ps(-1.0, 5.0, 0.0, -10.0);
         let b = _mm_setr_ps(-100.0, 20.0, 0.0, -5.0);
@@ -2069,7 +2069,7 @@ mod tests {
         assert_eq_m128(r, _mm_setr_ps(99.0, -15.0, 0.0, -5.0));
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_sub_ss() {
         let a = _mm_setr_ps(-1.0, 5.0, 0.0, -10.0);
         let b = _mm_setr_ps(-100.0, 20.0, 0.0, -5.0);
@@ -2077,7 +2077,7 @@ mod tests {
         assert_eq_m128(r, _mm_setr_ps(99.0, 5.0, 0.0, -10.0));
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_mul_ps() {
         let a = _mm_setr_ps(-1.0, 5.0, 0.0, -10.0);
         let b = _mm_setr_ps(-100.0, 20.0, 0.0, -5.0);
@@ -2085,7 +2085,7 @@ mod tests {
         assert_eq_m128(r, _mm_setr_ps(100.0, 100.0, 0.0, 50.0));
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_mul_ss() {
         let a = _mm_setr_ps(-1.0, 5.0, 0.0, -10.0);
         let b = _mm_setr_ps(-100.0, 20.0, 0.0, -5.0);
@@ -2093,7 +2093,7 @@ mod tests {
         assert_eq_m128(r, _mm_setr_ps(100.0, 5.0, 0.0, -10.0));
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_div_ps() {
         let a = _mm_setr_ps(-1.0, 5.0, 2.0, -10.0);
         let b = _mm_setr_ps(-100.0, 20.0, 0.2, -5.0);
@@ -2101,7 +2101,7 @@ mod tests {
         assert_eq_m128(r, _mm_setr_ps(0.01, 0.25, 10.0, 2.0));
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_div_ss() {
         let a = _mm_setr_ps(-1.0, 5.0, 0.0, -10.0);
         let b = _mm_setr_ps(-100.0, 20.0, 0.0, -5.0);
@@ -2109,7 +2109,7 @@ mod tests {
         assert_eq_m128(r, _mm_setr_ps(0.01, 5.0, 0.0, -10.0));
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_sqrt_ss() {
         let a = _mm_setr_ps(4.0, 13.0, 16.0, 100.0);
         let r = _mm_sqrt_ss(a);
@@ -2117,7 +2117,7 @@ mod tests {
         assert_eq_m128(r, e);
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_sqrt_ps() {
         let a = _mm_setr_ps(4.0, 13.0, 16.0, 100.0);
         let r = _mm_sqrt_ps(a);
@@ -2125,7 +2125,7 @@ mod tests {
         assert_eq_m128(r, e);
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_rcp_ss() {
         let a = _mm_setr_ps(4.0, 13.0, 16.0, 100.0);
         let r = _mm_rcp_ss(a);
@@ -2137,7 +2137,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_rcp_ps() {
         let a = _mm_setr_ps(4.0, 13.0, 16.0, 100.0);
         let r = _mm_rcp_ps(a);
@@ -2148,7 +2148,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_rsqrt_ss() {
         let a = _mm_setr_ps(4.0, 13.0, 16.0, 100.0);
         let r = _mm_rsqrt_ss(a);
@@ -2159,7 +2159,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_rsqrt_ps() {
         let a = _mm_setr_ps(4.0, 13.0, 16.0, 100.0);
         let r = _mm_rsqrt_ps(a);
@@ -2170,7 +2170,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_min_ss() {
         let a = _mm_setr_ps(-1.0, 5.0, 0.0, -10.0);
         let b = _mm_setr_ps(-100.0, 20.0, 0.0, -5.0);
@@ -2178,7 +2178,7 @@ mod tests {
         assert_eq_m128(r, _mm_setr_ps(-100.0, 5.0, 0.0, -10.0));
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_min_ps() {
         let a = _mm_setr_ps(-1.0, 5.0, 0.0, -10.0);
         let b = _mm_setr_ps(-100.0, 20.0, 0.0, -5.0);
@@ -2201,7 +2201,7 @@ mod tests {
         assert_ne!(a, b); // sanity check that -0.0 is actually present
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_max_ss() {
         let a = _mm_setr_ps(-1.0, 5.0, 0.0, -10.0);
         let b = _mm_setr_ps(-100.0, 20.0, 0.0, -5.0);
@@ -2209,7 +2209,7 @@ mod tests {
         assert_eq_m128(r, _mm_setr_ps(-1.0, 5.0, 0.0, -10.0));
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_max_ps() {
         let a = _mm_setr_ps(-1.0, 5.0, 0.0, -10.0);
         let b = _mm_setr_ps(-100.0, 20.0, 0.0, -5.0);
@@ -2228,7 +2228,7 @@ mod tests {
         assert_ne!(a, b); // sanity check that -0.0 is actually present
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_and_ps() {
         let a = transmute(u32x4::splat(0b0011));
         let b = transmute(u32x4::splat(0b0101));
@@ -2237,7 +2237,7 @@ mod tests {
         assert_eq_m128(r, e);
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_andnot_ps() {
         let a = transmute(u32x4::splat(0b0011));
         let b = transmute(u32x4::splat(0b0101));
@@ -2246,7 +2246,7 @@ mod tests {
         assert_eq_m128(r, e);
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_or_ps() {
         let a = transmute(u32x4::splat(0b0011));
         let b = transmute(u32x4::splat(0b0101));
@@ -2255,7 +2255,7 @@ mod tests {
         assert_eq_m128(r, e);
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_xor_ps() {
         let a = transmute(u32x4::splat(0b0011));
         let b = transmute(u32x4::splat(0b0101));
@@ -2264,7 +2264,7 @@ mod tests {
         assert_eq_m128(r, e);
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_cmpeq_ss() {
         let a = _mm_setr_ps(1.0, 2.0, 3.0, 4.0);
         let b = _mm_setr_ps(-1.0, 5.0, 6.0, 7.0);
@@ -2278,7 +2278,7 @@ mod tests {
         assert_eq!(r2, e2);
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_cmplt_ss() {
         let a = _mm_setr_ps(1.0, 2.0, 3.0, 4.0);
         let b = _mm_setr_ps(0.0, 5.0, 6.0, 7.0);
@@ -2302,7 +2302,7 @@ mod tests {
         assert_eq!(rd, ed);
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_cmple_ss() {
         let a = _mm_setr_ps(1.0, 2.0, 3.0, 4.0);
         let b = _mm_setr_ps(0.0, 5.0, 6.0, 7.0);
@@ -2326,7 +2326,7 @@ mod tests {
         assert_eq!(rd, ed);
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_cmpgt_ss() {
         let a = _mm_setr_ps(1.0, 2.0, 3.0, 4.0);
         let b = _mm_setr_ps(0.0, 5.0, 6.0, 7.0);
@@ -2350,7 +2350,7 @@ mod tests {
         assert_eq!(rd, ed);
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_cmpge_ss() {
         let a = _mm_setr_ps(1.0, 2.0, 3.0, 4.0);
         let b = _mm_setr_ps(0.0, 5.0, 6.0, 7.0);
@@ -2374,7 +2374,7 @@ mod tests {
         assert_eq!(rd, ed);
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_cmpneq_ss() {
         let a = _mm_setr_ps(1.0, 2.0, 3.0, 4.0);
         let b = _mm_setr_ps(0.0, 5.0, 6.0, 7.0);
@@ -2398,7 +2398,7 @@ mod tests {
         assert_eq!(rd, ed);
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_cmpnlt_ss() {
         // TODO: this test is exactly the same as for `_mm_cmpge_ss`, but there
         // must be a difference. It may have to do with behavior in the
@@ -2427,7 +2427,7 @@ mod tests {
         assert_eq!(rd, ed);
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_cmpnle_ss() {
         // TODO: this test is exactly the same as for `_mm_cmpgt_ss`, but there
         // must be a difference. It may have to do with behavior in the
@@ -2456,7 +2456,7 @@ mod tests {
         assert_eq!(rd, ed);
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_cmpngt_ss() {
         // TODO: this test is exactly the same as for `_mm_cmple_ss`, but there
         // must be a difference. It may have to do with behavior in the
@@ -2485,7 +2485,7 @@ mod tests {
         assert_eq!(rd, ed);
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_cmpnge_ss() {
         // TODO: this test is exactly the same as for `_mm_cmplt_ss`, but there
         // must be a difference. It may have to do with behavior in the
@@ -2514,7 +2514,7 @@ mod tests {
         assert_eq!(rd, ed);
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_cmpord_ss() {
         let a = _mm_setr_ps(1.0, 2.0, 3.0, 4.0);
         let b = _mm_setr_ps(0.0, 5.0, 6.0, 7.0);
@@ -2538,7 +2538,7 @@ mod tests {
         assert_eq!(rd, ed);
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_cmpunord_ss() {
         let a = _mm_setr_ps(1.0, 2.0, 3.0, 4.0);
         let b = _mm_setr_ps(0.0, 5.0, 6.0, 7.0);
@@ -2562,7 +2562,7 @@ mod tests {
         assert_eq!(rd, ed);
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_cmpeq_ps() {
         let a = _mm_setr_ps(10.0, 50.0, 1.0, NAN);
         let b = _mm_setr_ps(15.0, 20.0, 1.0, NAN);
@@ -2574,7 +2574,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_cmplt_ps() {
         let a = _mm_setr_ps(10.0, 50.0, 1.0, NAN);
         let b = _mm_setr_ps(15.0, 20.0, 1.0, NAN);
@@ -2586,7 +2586,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_cmple_ps() {
         let a = _mm_setr_ps(10.0, 50.0, 1.0, 4.0);
         let b = _mm_setr_ps(15.0, 20.0, 1.0, NAN);
@@ -2598,7 +2598,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_cmpgt_ps() {
         let a = _mm_setr_ps(10.0, 50.0, 1.0, NAN);
         let b = _mm_setr_ps(15.0, 20.0, 1.0, 42.0);
@@ -2610,7 +2610,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_cmpge_ps() {
         let a = _mm_setr_ps(10.0, 50.0, 1.0, NAN);
         let b = _mm_setr_ps(15.0, 20.0, 1.0, 42.0);
@@ -2622,7 +2622,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_cmpneq_ps() {
         let a = _mm_setr_ps(10.0, 50.0, 1.0, NAN);
         let b = _mm_setr_ps(15.0, 20.0, 1.0, NAN);
@@ -2634,7 +2634,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_cmpnlt_ps() {
         let a = _mm_setr_ps(10.0, 50.0, 1.0, NAN);
         let b = _mm_setr_ps(15.0, 20.0, 1.0, 5.0);
@@ -2646,7 +2646,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_cmpnle_ps() {
         let a = _mm_setr_ps(10.0, 50.0, 1.0, NAN);
         let b = _mm_setr_ps(15.0, 20.0, 1.0, 5.0);
@@ -2658,7 +2658,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_cmpngt_ps() {
         let a = _mm_setr_ps(10.0, 50.0, 1.0, NAN);
         let b = _mm_setr_ps(15.0, 20.0, 1.0, 5.0);
@@ -2670,7 +2670,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_cmpnge_ps() {
         let a = _mm_setr_ps(10.0, 50.0, 1.0, NAN);
         let b = _mm_setr_ps(15.0, 20.0, 1.0, 5.0);
@@ -2682,7 +2682,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_cmpord_ps() {
         let a = _mm_setr_ps(10.0, 50.0, NAN, NAN);
         let b = _mm_setr_ps(15.0, NAN, 1.0, NAN);
@@ -2694,7 +2694,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_cmpunord_ps() {
         let a = _mm_setr_ps(10.0, 50.0, NAN, NAN);
         let b = _mm_setr_ps(15.0, NAN, 1.0, NAN);
@@ -2706,7 +2706,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_comieq_ss() {
         let aa = &[3.0f32, 12.0, 23.0, NAN];
         let bb = &[3.0f32, 47.5, 1.5, NAN];
@@ -2727,7 +2727,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_comilt_ss() {
         let aa = &[3.0f32, 12.0, 23.0, NAN];
         let bb = &[3.0f32, 47.5, 1.5, NAN];
@@ -2748,7 +2748,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_comile_ss() {
         let aa = &[3.0f32, 12.0, 23.0, NAN];
         let bb = &[3.0f32, 47.5, 1.5, NAN];
@@ -2769,7 +2769,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_comigt_ss() {
         let aa = &[3.0f32, 12.0, 23.0, NAN];
         let bb = &[3.0f32, 47.5, 1.5, NAN];
@@ -2790,7 +2790,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_comineq_ss() {
         let aa = &[3.0f32, 12.0, 23.0, NAN];
         let bb = &[3.0f32, 47.5, 1.5, NAN];
@@ -2811,7 +2811,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_ucomieq_ss() {
         let aa = &[3.0f32, 12.0, 23.0, NAN];
         let bb = &[3.0f32, 47.5, 1.5, NAN];
@@ -2832,7 +2832,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_ucomilt_ss() {
         let aa = &[3.0f32, 12.0, 23.0, NAN];
         let bb = &[3.0f32, 47.5, 1.5, NAN];
@@ -2853,7 +2853,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_ucomile_ss() {
         let aa = &[3.0f32, 12.0, 23.0, NAN];
         let bb = &[3.0f32, 47.5, 1.5, NAN];
@@ -2874,7 +2874,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_ucomigt_ss() {
         let aa = &[3.0f32, 12.0, 23.0, NAN];
         let bb = &[3.0f32, 47.5, 1.5, NAN];
@@ -2895,7 +2895,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_ucomige_ss() {
         let aa = &[3.0f32, 12.0, 23.0, NAN];
         let bb = &[3.0f32, 47.5, 1.5, NAN];
@@ -2916,7 +2916,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_ucomineq_ss() {
         let aa = &[3.0f32, 12.0, 23.0, NAN];
         let bb = &[3.0f32, 47.5, 1.5, NAN];
@@ -2937,7 +2937,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_cvtss_si32() {
         let inputs = &[42.0f32, -3.1, 4.0e10, 4.0e-20, NAN, 2147483500.1];
         let result = &[42i32, -3, i32::MIN, 0, i32::MIN, 2147483520];
@@ -2953,7 +2953,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_cvttss_si32() {
         let inputs = &[
             (42.0f32, 42i32),
@@ -2978,7 +2978,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_cvtsi32_ss() {
         let inputs = &[
             (4555i32, 4555.0f32),
@@ -2995,19 +2995,19 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_cvtss_f32() {
         let a = _mm_setr_ps(312.0134, 5.0, 6.0, 7.0);
         assert_eq!(_mm_cvtss_f32(a), 312.0134);
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_set_ss() {
         let r = _mm_set_ss(black_box(4.25));
         assert_eq_m128(r, _mm_setr_ps(4.25, 0.0, 0.0, 0.0));
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_set1_ps() {
         let r1 = _mm_set1_ps(black_box(4.25));
         let r2 = _mm_set_ps1(black_box(4.25));
@@ -3021,7 +3021,7 @@ mod tests {
         assert_eq!(get_m128(r2, 3), 4.25);
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_set_ps() {
         let r = _mm_set_ps(
             black_box(1.0),
@@ -3035,7 +3035,7 @@ mod tests {
         assert_eq!(get_m128(r, 3), 1.0);
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_setr_ps() {
         let r = _mm_setr_ps(
             black_box(1.0),
@@ -3046,7 +3046,7 @@ mod tests {
         assert_eq_m128(r, _mm_setr_ps(1.0, 2.0, 3.0, 4.0));
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_setzero_ps() {
         let r = *black_box(&_mm_setzero_ps());
         assert_eq_m128(r, _mm_set1_ps(0.0));
@@ -3060,7 +3060,7 @@ mod tests {
         assert_eq!(_MM_SHUFFLE(1, 2, 2, 1), 0b01_10_10_01);
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_shuffle_ps() {
         let a = _mm_setr_ps(1.0, 2.0, 3.0, 4.0);
         let b = _mm_setr_ps(5.0, 6.0, 7.0, 8.0);
@@ -3068,7 +3068,7 @@ mod tests {
         assert_eq_m128(r, _mm_setr_ps(4.0, 2.0, 6.0, 5.0));
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_unpackhi_ps() {
         let a = _mm_setr_ps(1.0, 2.0, 3.0, 4.0);
         let b = _mm_setr_ps(5.0, 6.0, 7.0, 8.0);
@@ -3076,7 +3076,7 @@ mod tests {
         assert_eq_m128(r, _mm_setr_ps(3.0, 7.0, 4.0, 8.0));
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_unpacklo_ps() {
         let a = _mm_setr_ps(1.0, 2.0, 3.0, 4.0);
         let b = _mm_setr_ps(5.0, 6.0, 7.0, 8.0);
@@ -3084,7 +3084,7 @@ mod tests {
         assert_eq_m128(r, _mm_setr_ps(1.0, 5.0, 2.0, 6.0));
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_movehl_ps() {
         let a = _mm_setr_ps(1.0, 2.0, 3.0, 4.0);
         let b = _mm_setr_ps(5.0, 6.0, 7.0, 8.0);
@@ -3092,7 +3092,7 @@ mod tests {
         assert_eq_m128(r, _mm_setr_ps(7.0, 8.0, 3.0, 4.0));
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_movelh_ps() {
         let a = _mm_setr_ps(1.0, 2.0, 3.0, 4.0);
         let b = _mm_setr_ps(5.0, 6.0, 7.0, 8.0);
@@ -3100,21 +3100,21 @@ mod tests {
         assert_eq_m128(r, _mm_setr_ps(1.0, 2.0, 5.0, 6.0));
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_load_ss() {
         let a = 42.0f32;
         let r = _mm_load_ss(ptr::addr_of!(a));
         assert_eq_m128(r, _mm_setr_ps(42.0, 0.0, 0.0, 0.0));
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_load1_ps() {
         let a = 42.0f32;
         let r = _mm_load1_ps(ptr::addr_of!(a));
         assert_eq_m128(r, _mm_setr_ps(42.0, 42.0, 42.0, 42.0));
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_load_ps() {
         let vals = &[1.0f32, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0];
 
@@ -3136,7 +3136,7 @@ mod tests {
         assert_eq_m128(r, e);
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_loadu_ps() {
         let vals = &[1.0f32, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0];
         let p = vals.as_ptr().add(3);
@@ -3144,7 +3144,7 @@ mod tests {
         assert_eq_m128(r, _mm_setr_ps(4.0, 5.0, 6.0, 7.0));
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_loadr_ps() {
         let vals = &[1.0f32, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0];
 
@@ -3166,7 +3166,7 @@ mod tests {
         assert_eq_m128(r, e);
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_store_ss() {
         let mut vals = [0.0f32; 8];
         let a = _mm_setr_ps(1.0, 2.0, 3.0, 4.0);
@@ -3177,7 +3177,7 @@ mod tests {
         assert_eq!(vals[2], 0.0);
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_store1_ps() {
         let mut vals = [0.0f32; 8];
         let a = _mm_setr_ps(1.0, 2.0, 3.0, 4.0);
@@ -3202,7 +3202,7 @@ mod tests {
         assert_eq!(vals[ofs + 4], 0.0);
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_store_ps() {
         let mut vals = [0.0f32; 8];
         let a = _mm_setr_ps(1.0, 2.0, 3.0, 4.0);
@@ -3228,7 +3228,7 @@ mod tests {
         assert_eq!(vals[ofs + 4], 0.0);
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_storer_ps() {
         let mut vals = [0.0f32; 8];
         let a = _mm_setr_ps(1.0, 2.0, 3.0, 4.0);
@@ -3254,7 +3254,7 @@ mod tests {
         assert_eq!(vals[ofs + 4], 0.0);
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_storeu_ps() {
         let mut vals = [0.0f32; 8];
         let a = _mm_setr_ps(1.0, 2.0, 3.0, 4.0);
@@ -3280,7 +3280,7 @@ mod tests {
         assert_eq!(vals[ofs + 4], 0.0);
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_move_ss() {
         let a = _mm_setr_ps(1.0, 2.0, 3.0, 4.0);
         let b = _mm_setr_ps(5.0, 6.0, 7.0, 8.0);
@@ -3290,7 +3290,7 @@ mod tests {
         assert_eq_m128(e, r);
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_movemask_ps() {
         let r = _mm_movemask_ps(_mm_setr_ps(-1.0, 5.0, -5.0, 0.0));
         assert_eq!(r, 0b0101);
@@ -3299,14 +3299,14 @@ mod tests {
         assert_eq!(r, 0b0111);
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     // Miri cannot support this until it is clear how it fits in the Rust memory model
     #[cfg_attr(miri, ignore)]
     unsafe fn test_mm_sfence() {
         _mm_sfence();
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_MM_TRANSPOSE4_PS() {
         let mut a = _mm_setr_ps(1.0, 2.0, 3.0, 4.0);
         let mut b = _mm_setr_ps(5.0, 6.0, 7.0, 8.0);
@@ -3326,7 +3326,7 @@ mod tests {
         pub data: [f32; 4],
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     // Miri cannot support this until it is clear how it fits in the Rust memory model
     // (non-temporal store)
     #[cfg_attr(miri, ignore)]

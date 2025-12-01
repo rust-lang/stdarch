@@ -241,7 +241,7 @@ mod tests {
     const BF16_SEVEN: u16 = 0b0_10000001_1100000;
     const BF16_EIGHT: u16 = 0b0_10000010_0000000;
 
-    #[simd_test(enable = "avxneconvert")]
+    #[simd_test("avxneconvert")]
     unsafe fn test_mm_bcstnebf16_ps() {
         let a = bf16::from_bits(BF16_ONE);
         let r = _mm_bcstnebf16_ps(addr_of!(a));
@@ -249,7 +249,7 @@ mod tests {
         assert_eq_m128(r, e);
     }
 
-    #[simd_test(enable = "avxneconvert")]
+    #[simd_test("avxneconvert")]
     unsafe fn test_mm256_bcstnebf16_ps() {
         let a = bf16::from_bits(BF16_ONE);
         let r = _mm256_bcstnebf16_ps(addr_of!(a));
@@ -257,7 +257,7 @@ mod tests {
         assert_eq_m256(r, e);
     }
 
-    #[simd_test(enable = "avxneconvert")]
+    #[simd_test("avxneconvert")]
     unsafe fn test_mm_bcstnesh_ps() {
         let a = 1.0_f16;
         let r = _mm_bcstnesh_ps(addr_of!(a));
@@ -265,7 +265,7 @@ mod tests {
         assert_eq_m128(r, e);
     }
 
-    #[simd_test(enable = "avxneconvert")]
+    #[simd_test("avxneconvert")]
     unsafe fn test_mm256_bcstnesh_ps() {
         let a = 1.0_f16;
         let r = _mm256_bcstnesh_ps(addr_of!(a));
@@ -273,7 +273,7 @@ mod tests {
         assert_eq_m256(r, e);
     }
 
-    #[simd_test(enable = "avxneconvert")]
+    #[simd_test("avxneconvert")]
     unsafe fn test_mm_cvtneebf16_ps() {
         let a = __m128bh([
             BF16_ONE, BF16_TWO, BF16_THREE, BF16_FOUR, BF16_FIVE, BF16_SIX, BF16_SEVEN, BF16_EIGHT,
@@ -283,7 +283,7 @@ mod tests {
         assert_eq_m128(r, e);
     }
 
-    #[simd_test(enable = "avxneconvert")]
+    #[simd_test("avxneconvert")]
     unsafe fn test_mm256_cvtneebf16_ps() {
         let a = __m256bh([
             BF16_ONE, BF16_TWO, BF16_THREE, BF16_FOUR, BF16_FIVE, BF16_SIX, BF16_SEVEN, BF16_EIGHT,
@@ -294,7 +294,7 @@ mod tests {
         assert_eq_m256(r, e);
     }
 
-    #[simd_test(enable = "avxneconvert")]
+    #[simd_test("avxneconvert")]
     unsafe fn test_mm_cvtneeph_ps() {
         let a = __m128h([1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0]);
         let r = _mm_cvtneeph_ps(addr_of!(a));
@@ -302,7 +302,7 @@ mod tests {
         assert_eq_m128(r, e);
     }
 
-    #[simd_test(enable = "avxneconvert")]
+    #[simd_test("avxneconvert")]
     unsafe fn test_mm256_cvtneeph_ps() {
         let a = __m256h([
             1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0,
@@ -312,7 +312,7 @@ mod tests {
         assert_eq_m256(r, e);
     }
 
-    #[simd_test(enable = "avxneconvert")]
+    #[simd_test("avxneconvert")]
     unsafe fn test_mm_cvtneobf16_ps() {
         let a = __m128bh([
             BF16_ONE, BF16_TWO, BF16_THREE, BF16_FOUR, BF16_FIVE, BF16_SIX, BF16_SEVEN, BF16_EIGHT,
@@ -322,7 +322,7 @@ mod tests {
         assert_eq_m128(r, e);
     }
 
-    #[simd_test(enable = "avxneconvert")]
+    #[simd_test("avxneconvert")]
     unsafe fn test_mm256_cvtneobf16_ps() {
         let a = __m256bh([
             BF16_ONE, BF16_TWO, BF16_THREE, BF16_FOUR, BF16_FIVE, BF16_SIX, BF16_SEVEN, BF16_EIGHT,
@@ -333,7 +333,7 @@ mod tests {
         assert_eq_m256(r, e);
     }
 
-    #[simd_test(enable = "avxneconvert")]
+    #[simd_test("avxneconvert")]
     unsafe fn test_mm_cvtneoph_ps() {
         let a = __m128h([1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0]);
         let r = _mm_cvtneoph_ps(addr_of!(a));
@@ -341,7 +341,7 @@ mod tests {
         assert_eq_m128(r, e);
     }
 
-    #[simd_test(enable = "avxneconvert")]
+    #[simd_test("avxneconvert")]
     unsafe fn test_mm256_cvtneoph_ps() {
         let a = __m256h([
             1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0,
@@ -351,7 +351,7 @@ mod tests {
         assert_eq_m256(r, e);
     }
 
-    #[simd_test(enable = "avxneconvert")]
+    #[simd_test("avxneconvert")]
     unsafe fn test_mm_cvtneps_avx_pbh() {
         let a = _mm_setr_ps(1., 2., 3., 4.);
         let r: u16x4 = transmute_copy(&_mm_cvtneps_avx_pbh(a));
@@ -359,7 +359,7 @@ mod tests {
         assert_eq!(r, e);
     }
 
-    #[simd_test(enable = "avxneconvert")]
+    #[simd_test("avxneconvert")]
     unsafe fn test_mm256_cvtneps_avx_pbh() {
         let a = _mm256_setr_ps(1., 2., 3., 4., 5., 6., 7., 8.);
         let r: u16x8 = transmute(_mm256_cvtneps_avx_pbh(a));

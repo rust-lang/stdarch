@@ -71,7 +71,7 @@ mod tests {
     use crate::core_arch::arch::x86_64::*;
     use stdarch_test::simd_test;
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_cvtss_si64() {
         let inputs = &[
             (42.0f32, 42i64),
@@ -95,7 +95,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_cvttss_si64() {
         let inputs = &[
             (42.0f32, 42i64),
@@ -122,7 +122,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "sse")]
+    #[simd_test("sse")]
     unsafe fn test_mm_cvtsi64_ss() {
         let inputs = &[
             (4555i64, 4555.0f32),

@@ -5942,7 +5942,7 @@ mod tests {
 
     macro_rules! test_vec_1 {
         { $name: ident, $fn:ident, f32x4, [$($a:expr),+], ~[$($d:expr),+] } => {
-            #[simd_test(enable = "vector")]
+            #[simd_test("vector")]
             unsafe fn $name() {
                 let a: vector_float = transmute(f32x4::new($($a),+));
 
@@ -5956,7 +5956,7 @@ mod tests {
             test_vec_1! { $name, $fn, $ty -> $ty, [$($a),+], [$($d),+] }
         };
         { $name: ident, $fn:ident, $ty: ident -> $ty_out: ident, [$($a:expr),+], [$($d:expr),+] } => {
-            #[simd_test(enable = "vector")]
+            #[simd_test("vector")]
             unsafe fn $name() {
                 let a: s_t_l!($ty) = transmute($ty::new($($a),+));
 
@@ -5975,7 +5975,7 @@ mod tests {
             test_vec_2! { $name, $fn, $ty, $ty -> $ty, [$($a),+], [$($b),+], [$($d),+] }
          };
         { $name: ident, $fn:ident, $ty1: ident, $ty2: ident -> $ty_out: ident, [$($a:expr),+], [$($b:expr),+], [$($d:expr),+] } => {
-            #[simd_test(enable = "vector")]
+            #[simd_test("vector")]
             unsafe fn $name() {
                 let a: s_t_l!($ty1) = transmute($ty1::new($($a),+));
                 let b: s_t_l!($ty2) = transmute($ty2::new($($b),+));
@@ -5986,7 +5986,7 @@ mod tests {
             }
          };
          { $name: ident, $fn:ident, $ty: ident -> $ty_out: ident, [$($a:expr),+], [$($b:expr),+], $d:expr } => {
-            #[simd_test(enable = "vector")]
+            #[simd_test("vector")]
             unsafe fn $name() {
                 let a: s_t_l!($ty) = transmute($ty::new($($a),+));
                 let b: s_t_l!($ty) = transmute($ty::new($($b),+));
@@ -5997,7 +5997,7 @@ mod tests {
          }
    }
 
-    #[simd_test(enable = "vector")]
+    #[simd_test("vector")]
     unsafe fn vec_add_i32x4_i32x4() {
         let x = i32x4::new(1, 2, 3, 4);
         let y = i32x4::new(4, 3, 2, 1);
@@ -6121,7 +6121,7 @@ mod tests {
 
     macro_rules! test_vec_abs {
         { $name: ident, $ty: ident, $a: expr, $d: expr } => {
-            #[simd_test(enable = "vector")]
+            #[simd_test("vector")]
             unsafe fn $name() {
                 let a: s_t_l!($ty) = vec_splats($a);
                 let a: s_t_l!($ty) = vec_abs(a);
@@ -6312,7 +6312,7 @@ mod tests {
         {$name:ident,
          $shorttype:ident, $longtype:ident,
          [$($a:expr),+], [$($b:expr),+], [$($c:expr),+], [$($d:expr),+]} => {
-            #[simd_test(enable = "vector")]
+            #[simd_test("vector")]
             unsafe fn $name() {
                 let a: $longtype = transmute($shorttype::new($($a),+));
                 let b: $longtype = transmute($shorttype::new($($b),+));
@@ -6447,7 +6447,7 @@ mod tests {
         [0, 8, 0, 0]
     }
 
-    #[simd_test(enable = "vector")]
+    #[simd_test("vector")]
     fn test_vec_find_any_eq_cc() {
         let a = vector_unsigned_int([1, 2, 3, 4]);
         let b = vector_unsigned_int([5, 3, 7, 8]);
@@ -6463,7 +6463,7 @@ mod tests {
         assert_eq!(d.as_array(), &[0, 0, 0, 0]);
     }
 
-    #[simd_test(enable = "vector")]
+    #[simd_test("vector")]
     fn test_vec_find_any_ne_cc() {
         let a = vector_unsigned_int([1, 2, 3, 4]);
         let b = vector_unsigned_int([5, 3, 7, 8]);
@@ -6479,7 +6479,7 @@ mod tests {
         assert_eq!(d.as_array(), &[0, 0, 0, 0]);
     }
 
-    #[simd_test(enable = "vector")]
+    #[simd_test("vector")]
     fn test_vec_find_any_eq_idx_cc() {
         let a = vector_unsigned_int([1, 2, 3, 4]);
         let b = vector_unsigned_int([5, 3, 7, 8]);
@@ -6495,7 +6495,7 @@ mod tests {
         assert_eq!(d.as_array(), &[0, 16, 0, 0]);
     }
 
-    #[simd_test(enable = "vector")]
+    #[simd_test("vector")]
     fn test_vec_find_any_ne_idx_cc() {
         let a = vector_unsigned_int([5, 2, 3, 4]);
         let b = vector_unsigned_int([5, 3, 7, 8]);
@@ -6511,7 +6511,7 @@ mod tests {
         assert_eq!(d.as_array(), &[0, 16, 0, 0]);
     }
 
-    #[simd_test(enable = "vector")]
+    #[simd_test("vector")]
     fn test_vec_find_any_eq_or_0_idx_cc() {
         // if no element of a matches any element of b with an equal value, and there is at least one element from a with a value of 0
         let a = vector_unsigned_int([0, 1, 2, 3]);
@@ -6542,7 +6542,7 @@ mod tests {
         assert_eq!(d.as_array(), &[0, 16, 0, 0]);
     }
 
-    #[simd_test(enable = "vector")]
+    #[simd_test("vector")]
     fn test_vec_find_any_ne_or_0_idx_cc() {
         // if no element of a matches any element of b with a not equal value, and there is at least one element from a with a value of 0.
         let a = vector_unsigned_int([0, 1, 2, 3]);
@@ -6573,7 +6573,7 @@ mod tests {
         assert_eq!(d.as_array(), &[0, 16, 0, 0]);
     }
 
-    #[simd_test(enable = "vector")]
+    #[simd_test("vector")]
     fn test_vector_load() {
         let expected = [0xAAAA_AAAA, 0xBBBB_BBBB, 0xCCCC_CCCC, 0xDDDD_DDDD];
 
@@ -6609,7 +6609,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "vector")]
+    #[simd_test("vector")]
     fn test_vector_store() {
         let vec = vector_unsigned_int([0xAAAA_AAAA, 0xBBBB_BBBB, 0xCCCC_CCCC, 0xDDDD_DDDD]);
 
@@ -6647,7 +6647,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "vector")]
+    #[simd_test("vector")]
     fn test_vector_lcbb() {
         #[repr(align(64))]
         struct Align64<T>(T);
@@ -6730,7 +6730,7 @@ mod tests {
         [0xF1, 0xF4, 0xD2, 0xCB, 0xC1, 0xB0, 0xAA, 0xA8, 0xB5, 0xB8, 0xAD, 0xB2, 0x88, 0x65, 0x62, 0x5E]
     }
 
-    #[simd_test(enable = "vector")]
+    #[simd_test("vector")]
     fn test_vec_addc_u128() {
         unsafe {
             let a = u128::MAX;
@@ -6749,7 +6749,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "vector")]
+    #[simd_test("vector")]
     fn test_vec_subc_u128() {
         unsafe {
             let a = 0u128;
@@ -6816,7 +6816,7 @@ mod tests {
         [0, 0, 0x2B3C1234, 0x3781D244]
     }
 
-    #[simd_test(enable = "vector")]
+    #[simd_test("vector")]
     fn test_vec_gfmsum_128() {
         let a = vector_unsigned_long_long([1, 2]);
         let b = vector_unsigned_long_long([3, 4]);
@@ -6831,7 +6831,7 @@ mod tests {
         assert_eq!(d, 0xE000E000E000E000E000E000E000E);
     }
 
-    #[simd_test(enable = "vector-enhancements-1")]
+    #[simd_test("vector-enhancements-1")]
     fn test_vec_bperm_u128() {
         let a = vector_unsigned_char([65, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]);
         let b = vector_unsigned_char([
@@ -6841,7 +6841,7 @@ mod tests {
         assert_eq!(d.as_array(), &[0xF00, 0]);
     }
 
-    #[simd_test(enable = "vector")]
+    #[simd_test("vector")]
     fn test_vec_sel() {
         let a = vector_signed_int([1, 2, 3, 4]);
         let b = vector_signed_int([5, 6, 7, 8]);
@@ -6855,7 +6855,7 @@ mod tests {
         assert_eq!(d.as_array(), &[5, 2, 7, 4]);
     }
 
-    #[simd_test(enable = "vector")]
+    #[simd_test("vector")]
     fn test_vec_gather_element() {
         let a1: [u32; 10] = [10, 11, 12, 13, 14, 15, 16, 17, 18, 19];
         let a2: [u32; 10] = [20, 21, 22, 23, 24, 25, 26, 27, 28, 29];
@@ -6879,7 +6879,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "vector")]
+    #[simd_test("vector")]
     fn test_vec_fp_test_data_class() {
         let mut cc = 42;
 
@@ -6914,7 +6914,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "vector")]
+    #[simd_test("vector")]
     fn test_vec_fp_any_all_nan_numeric() {
         unsafe {
             assert_eq!(
@@ -6966,7 +6966,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "vector")]
+    #[simd_test("vector")]
     fn test_vec_test_mask() {
         unsafe {
             let v = vector_unsigned_long_long([0xFF00FF00FF00FF00; 2]);
@@ -6987,7 +6987,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "vector-enhancements-2")]
+    #[simd_test("vector-enhancements-2")]
     fn test_vec_search_string_cc() {
         unsafe {
             let b = vector_unsigned_char(*b"ABCD------------");
@@ -7020,7 +7020,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "vector-enhancements-2")]
+    #[simd_test("vector-enhancements-2")]
     fn test_vec_search_string_until_zero_cc() {
         unsafe {
             let b = vector_unsigned_char(*b"ABCD\0\0\0\0\0\0\0\0\0\0\0\0");
@@ -7053,7 +7053,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "vector")]
+    #[simd_test("vector")]
     fn test_vec_doublee() {
         unsafe {
             let v = vector_float([1.0, 2.0, 3.0, 4.0]);
@@ -7066,7 +7066,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "vector")]
+    #[simd_test("vector")]
     fn test_vec_floate() {
         // NOTE: indices 1 and 3 can have an arbitrary value. With the C version
         // these are poison values, our version initializes the memory but its
@@ -7089,7 +7089,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "vector")]
+    #[simd_test("vector")]
     fn test_vec_extend_s64() {
         unsafe {
             let v = vector_signed_char([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]);
@@ -7103,7 +7103,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "vector")]
+    #[simd_test("vector")]
     fn test_vec_signed() {
         unsafe {
             let v = vector_float([1.0, 2.5, -2.5, -0.0]);
@@ -7114,7 +7114,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "vector")]
+    #[simd_test("vector")]
     fn test_vec_unsigned() {
         // NOTE: converting a negative floating point value is UB!
         unsafe {
@@ -7126,7 +7126,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "vector")]
+    #[simd_test("vector")]
     fn test_vec_cp_until_zero() {
         unsafe {
             let v = vector_signed_int([1, 2, 3, 4]);
@@ -7139,7 +7139,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "vector")]
+    #[simd_test("vector")]
     fn test_vec_cp_until_zero_cc() {
         unsafe {
             let v = vector_signed_int([1, 2, 3, 4]);
@@ -7154,7 +7154,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "vector-enhancements-1")]
+    #[simd_test("vector-enhancements-1")]
     fn test_vec_msum_u128() {
         let a = vector_unsigned_long_long([1, 2]);
         let b = vector_unsigned_long_long([3, 4]);
@@ -7176,7 +7176,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "vector")]
+    #[simd_test("vector")]
     fn test_vec_sld() {
         let a = vector_unsigned_long_long([0xAAAAAAAAAAAAAAAA, 0xAAAAAAAAAAAAAAAA]);
         let b = vector_unsigned_long_long([0xBBBBBBBBBBBBBBBB, 0xBBBBBBBBBBBBBBBB]);
@@ -7187,7 +7187,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "vector")]
+    #[simd_test("vector")]
     fn test_vec_sldw() {
         let a = vector_unsigned_long_long([0xAAAAAAAAAAAAAAAA, 0xAAAAAAAAAAAAAAAA]);
         let b = vector_unsigned_long_long([0xBBBBBBBBBBBBBBBB, 0xBBBBBBBBBBBBBBBB]);
@@ -7198,7 +7198,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "vector-enhancements-2")]
+    #[simd_test("vector-enhancements-2")]
     fn test_vec_sldb() {
         let a = vector_unsigned_long_long([0xAAAAAAAAAAAAAAAA, 0xAAAAAAAAAAAAAAAA]);
         let b = vector_unsigned_long_long([0xBBBBBBBBBBBBBBBB, 0xBBBBBBBBBBBBBBBB]);
@@ -7209,7 +7209,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "vector-enhancements-2")]
+    #[simd_test("vector-enhancements-2")]
     fn test_vec_srdb() {
         let a = vector_unsigned_long_long([0xAAAAAAAAAAAAAAAA, 0xAAAAAAAAAAAAAAAA]);
         let b = vector_unsigned_long_long([0xBBBBBBBBBBBBBBBB, 0xBBBBBBBBBBBBBBBB]);
@@ -7224,7 +7224,7 @@ mod tests {
     const LT: u32 = 0x40000000;
     const EQ: u32 = 0x80000000;
 
-    #[simd_test(enable = "vector")]
+    #[simd_test("vector")]
     fn test_vec_cmprg() {
         let a = vector_unsigned_int([11, 22, 33, 44]);
         let b = vector_unsigned_int([10, 20, 30, 40]);
@@ -7245,7 +7245,7 @@ mod tests {
         assert_eq!(d.as_array(), &[!0, 0, 0, !0]);
     }
 
-    #[simd_test(enable = "vector")]
+    #[simd_test("vector")]
     fn test_vec_cmpnrg() {
         let a = vector_unsigned_int([11, 22, 33, 44]);
         let b = vector_unsigned_int([10, 20, 30, 40]);
@@ -7266,7 +7266,7 @@ mod tests {
         assert_eq!(d.as_array(), &[0, !0, !0, 0]);
     }
 
-    #[simd_test(enable = "vector")]
+    #[simd_test("vector")]
     fn test_vec_cmprg_idx() {
         let a = vector_unsigned_int([1, 11, 22, 33]);
         let b = vector_unsigned_int([10, 20, 30, 40]);
@@ -7276,7 +7276,7 @@ mod tests {
         assert_eq!(d.as_array(), &[0, 4, 0, 0]);
     }
 
-    #[simd_test(enable = "vector")]
+    #[simd_test("vector")]
     fn test_vec_cmpnrg_idx() {
         let a = vector_unsigned_int([1, 11, 22, 33]);
         let b = vector_unsigned_int([10, 20, 30, 40]);
@@ -7286,7 +7286,7 @@ mod tests {
         assert_eq!(d.as_array(), &[0, 0, 0, 0]);
     }
 
-    #[simd_test(enable = "vector")]
+    #[simd_test("vector")]
     fn test_vec_cmprg_or_0_idx() {
         let a = vector_unsigned_int([1, 0, 22, 33]);
         let b = vector_unsigned_int([10, 20, 30, 40]);
@@ -7296,7 +7296,7 @@ mod tests {
         assert_eq!(d.as_array(), &[0, 4, 0, 0]);
     }
 
-    #[simd_test(enable = "vector")]
+    #[simd_test("vector")]
     fn test_vec_cmpnrg_or_0_idx() {
         let a = vector_unsigned_int([11, 33, 0, 22]);
         let b = vector_unsigned_int([10, 20, 30, 40]);
@@ -7342,7 +7342,7 @@ mod tests {
         [0, !0, !0, !0]
     }
 
-    #[simd_test(enable = "vector")]
+    #[simd_test("vector")]
     fn test_vec_meadd() {
         let a = vector_unsigned_short([1, 0, 2, 0, 3, 0, 4, 0]);
         let b = vector_unsigned_short([5, 0, 6, 0, 7, 0, 8, 0]);
@@ -7359,7 +7359,7 @@ mod tests {
         assert_eq!(d.as_array(), &[7, 10, 23, 30]);
     }
 
-    #[simd_test(enable = "vector")]
+    #[simd_test("vector")]
     fn test_vec_moadd() {
         let a = vector_unsigned_short([0, 1, 0, 2, 0, 3, 0, 4]);
         let b = vector_unsigned_short([0, 5, 0, 6, 0, 7, 0, 8]);
@@ -7376,7 +7376,7 @@ mod tests {
         assert_eq!(d.as_array(), &[7, 10, 23, 30]);
     }
 
-    #[simd_test(enable = "vector")]
+    #[simd_test("vector")]
     fn test_vec_mhadd() {
         let a = vector_unsigned_int([1, 2, 3, 4]);
         let b = vector_unsigned_int([5, 6, 7, 8]);
@@ -7393,7 +7393,7 @@ mod tests {
         assert_eq!(d.as_array(), &[-1, -1, -1, -1]);
     }
 
-    #[simd_test(enable = "vector")]
+    #[simd_test("vector")]
     fn test_vec_mladd() {
         let a = vector_unsigned_int([1, 2, 3, 4]);
         let b = vector_unsigned_int([5, 6, 7, 8]);
@@ -7410,7 +7410,7 @@ mod tests {
         assert_eq!(d.as_array(), &[-3, -10, -19, -30]);
     }
 
-    #[simd_test(enable = "vector")]
+    #[simd_test("vector")]
     fn test_vec_extract() {
         let v = vector_unsigned_int([1, 2, 3, 4]);
 
@@ -7418,7 +7418,7 @@ mod tests {
         assert_eq!(unsafe { vec_extract(v, 4 + 2) }, 3);
     }
 
-    #[simd_test(enable = "vector")]
+    #[simd_test("vector")]
     fn test_vec_insert() {
         let mut v = vector_unsigned_int([1, 2, 3, 4]);
 
@@ -7429,13 +7429,13 @@ mod tests {
         assert_eq!(v.as_array(), &[1, 42, 64, 4]);
     }
 
-    #[simd_test(enable = "vector")]
+    #[simd_test("vector")]
     fn test_vec_promote() {
         let v: vector_unsigned_int = unsafe { vec_promote(42, 1).assume_init() };
         assert_eq!(v.as_array(), &[0, 42, 0, 0]);
     }
 
-    #[simd_test(enable = "vector")]
+    #[simd_test("vector")]
     fn test_vec_insert_and_zero() {
         let v = unsafe { vec_insert_and_zero::<vector_unsigned_int>(&42u32) };
         assert_eq!(v.as_array(), vector_unsigned_int([0, 42, 0, 0]).as_array());

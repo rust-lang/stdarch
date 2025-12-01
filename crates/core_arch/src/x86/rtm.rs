@@ -119,7 +119,7 @@ mod tests {
 
     use crate::core_arch::x86::*;
 
-    #[simd_test(enable = "rtm")]
+    #[simd_test("rtm")]
     unsafe fn test_xbegin() {
         let mut x = 0;
         for _ in 0..10 {
@@ -134,7 +134,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "rtm")]
+    #[simd_test("rtm")]
     unsafe fn test_xabort() {
         const ABORT_CODE: u32 = 42;
         // aborting outside a transactional region does nothing
@@ -154,7 +154,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "rtm")]
+    #[simd_test("rtm")]
     unsafe fn test_xtest() {
         assert_eq!(_xtest(), 0);
 

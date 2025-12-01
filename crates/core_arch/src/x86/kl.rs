@@ -370,17 +370,17 @@ mod tests {
         handle
     }
 
-    #[simd_test(enable = "kl")]
+    #[simd_test("kl")]
     unsafe fn test_mm_encodekey128_u32() {
         encodekey128();
     }
 
-    #[simd_test(enable = "kl")]
+    #[simd_test("kl")]
     unsafe fn test_mm_encodekey256_u32() {
         encodekey256();
     }
 
-    #[simd_test(enable = "kl")]
+    #[simd_test("kl")]
     unsafe fn test_mm_aesenc128kl_u8() {
         let mut buffer = _mm_setzero_si128();
         let key = encodekey128();
@@ -397,7 +397,7 @@ mod tests {
         assert_eq_m128i(buffer, _mm_setzero_si128());
     }
 
-    #[simd_test(enable = "kl")]
+    #[simd_test("kl")]
     unsafe fn test_mm_aesdec128kl_u8() {
         let mut buffer = _mm_setzero_si128();
         let key = encodekey128();
@@ -414,7 +414,7 @@ mod tests {
         assert_eq_m128i(buffer, _mm_setzero_si128());
     }
 
-    #[simd_test(enable = "kl")]
+    #[simd_test("kl")]
     unsafe fn test_mm_aesenc256kl_u8() {
         let mut buffer = _mm_setzero_si128();
         let key = encodekey256();
@@ -431,7 +431,7 @@ mod tests {
         assert_eq_m128i(buffer, _mm_setzero_si128());
     }
 
-    #[simd_test(enable = "kl")]
+    #[simd_test("kl")]
     unsafe fn test_mm_aesdec256kl_u8() {
         let mut buffer = _mm_setzero_si128();
         let key = encodekey256();
@@ -448,7 +448,7 @@ mod tests {
         assert_eq_m128i(buffer, _mm_setzero_si128());
     }
 
-    #[simd_test(enable = "widekl")]
+    #[simd_test("widekl")]
     unsafe fn test_mm_aesencwide128kl_u8() {
         let mut buffer = [_mm_setzero_si128(); 8];
         let key = encodekey128();
@@ -467,7 +467,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "widekl")]
+    #[simd_test("widekl")]
     unsafe fn test_mm_aesdecwide128kl_u8() {
         let mut buffer = [_mm_setzero_si128(); 8];
         let key = encodekey128();
@@ -486,7 +486,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "widekl")]
+    #[simd_test("widekl")]
     unsafe fn test_mm_aesencwide256kl_u8() {
         let mut buffer = [_mm_setzero_si128(); 8];
         let key = encodekey256();
@@ -505,7 +505,7 @@ mod tests {
         }
     }
 
-    #[simd_test(enable = "widekl")]
+    #[simd_test("widekl")]
     unsafe fn test_mm_aesdecwide256kl_u8() {
         let mut buffer = [_mm_setzero_si128(); 8];
         let key = encodekey256();

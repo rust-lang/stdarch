@@ -53,20 +53,19 @@ impl TargetFeature {
     }
 
     /// A string for use with `#[target_feature(...)]`.
-    fn as_target_feature_arg(&self, ins: &str) -> String {
+    fn as_target_feature_arg(&self, ins: &str) -> Vec<&'static str> {
         let vec = match *self {
             // Features included with LoongArch64 LSX and LASX.
             Self::Lsx => "lsx",
             Self::Lasx => "lasx",
         };
-        let frecipe = match ins {
+        match ins {
             "lsx_vfrecipe_s" | "lsx_vfrecipe_d" | "lsx_vfrsqrte_s" | "lsx_vfrsqrte_d"
             | "lasx_xvfrecipe_s" | "lasx_xvfrecipe_d" | "lasx_xvfrsqrte_s" | "lasx_xvfrsqrte_d" => {
-                ",frecipe"
+                vec![vec, "frecipe"]
             }
-            _ => "",
-        };
-        format!("{vec}{frecipe}")
+            _ => vec![vec],
+        }
     }
 
     fn attr(name: &str, value: impl fmt::Display) -> String {
@@ -77,7 +76,7 @@ impl TargetFeature {
     fn to_target_feature_attr(self, ins: &str) -> Lines {
         Lines::single(Self::attr(
             "target_feature",
-            self.as_target_feature_arg(ins),
+            self.as_target_feature_arg(ins).join(","),
         ))
     }
 
@@ -1561,7 +1560,7 @@ fn gen_test_body(
             r#"
 static void {current_name}(void)
 {{
-    printf("\n#[simd_test(enable = \"{}\")]\n");
+    printf("\n#[simd_test(\"{}\")]\n");
     printf("unsafe fn test_{current_name}() {{\n");
 {fn_inputs}
 {fn_output}
@@ -1571,7 +1570,7 @@ static void {current_name}(void)
     printf("}}\n");
 }}
 "#,
-            target.as_target_feature_arg(current_name)
+            target.as_target_feature_arg(current_name).join("\", \"")
         )
     };
     let call_function = format!("    {current_name}();\n");

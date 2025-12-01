@@ -150,7 +150,7 @@ mod tests {
     use crate::core_arch::x86::*;
     use stdarch_test::simd_test;
 
-    #[simd_test(enable = "sse4a")]
+    #[simd_test("sse4a")]
     unsafe fn test_mm_extract_si64() {
         let b = 0b0110_0000_0000_i64;
         //        ^^^^ bit range extracted
@@ -163,7 +163,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "sse4a")]
+    #[simd_test("sse4a")]
     unsafe fn test_mm_extracti_si64() {
         let a = _mm_setr_epi64x(0x0123456789abcdef, 0);
         let r = _mm_extracti_si64::<8, 8>(a);
@@ -171,7 +171,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "sse4a")]
+    #[simd_test("sse4a")]
     unsafe fn test_mm_insert_si64() {
         let i = 0b0110_i64;
         //        ^^^^ bit range inserted
@@ -188,7 +188,7 @@ mod tests {
         assert_eq_m128i(r, expected);
     }
 
-    #[simd_test(enable = "sse4a")]
+    #[simd_test("sse4a")]
     unsafe fn test_mm_inserti_si64() {
         let a = _mm_setr_epi64x(0x0123456789abcdef, 0);
         let b = _mm_setr_epi64x(0x0011223344556677, 0);
@@ -202,7 +202,7 @@ mod tests {
         data: [f64; 2],
     }
 
-    #[simd_test(enable = "sse4a")]
+    #[simd_test("sse4a")]
     // Miri cannot support this until it is clear how it fits in the Rust memory model
     // (non-temporal store)
     #[cfg_attr(miri, ignore)]
@@ -228,7 +228,7 @@ mod tests {
         data: [f32; 4],
     }
 
-    #[simd_test(enable = "sse4a")]
+    #[simd_test("sse4a")]
     // Miri cannot support this until it is clear how it fits in the Rust memory model
     // (non-temporal store)
     #[cfg_attr(miri, ignore)]

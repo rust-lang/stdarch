@@ -206,7 +206,7 @@ mod tests {
         unroll! {assert_eq_m128i(_mm256_extracti128_si256::<2>(r),e_decomp[2]);}
     }
 
-    #[simd_test(enable = "vpclmulqdq,avx512f")]
+    #[simd_test("vpclmulqdq", "avx512f")]
     unsafe fn test_mm512_clmulepi64_epi128() {
         verify_kat_pclmul!(
             _mm512_broadcast_i32x4,
@@ -232,7 +232,7 @@ mod tests {
         );
     }
 
-    #[simd_test(enable = "vpclmulqdq,avx512vl")]
+    #[simd_test("vpclmulqdq", "avx512vl")]
     unsafe fn test_mm256_clmulepi64_epi128() {
         verify_kat_pclmul!(
             _mm256_broadcastsi128_si256,
