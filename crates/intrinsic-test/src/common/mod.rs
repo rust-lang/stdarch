@@ -52,7 +52,7 @@ where
     fn cpp_compilation(&self) -> Option<CppCompilation>;
 
     fn build_c_file(&self) -> bool {
-        let (chunk_size, chunk_count) = manual_chunk(self.intrinsics().len(), 270);
+        let (chunk_size, chunk_count) = manual_chunk(self.intrinsics().len(), 50);
 
         let cpp_compiler_wrapped = self.cpp_compilation();
 
