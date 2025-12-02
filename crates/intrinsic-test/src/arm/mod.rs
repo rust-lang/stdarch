@@ -18,6 +18,9 @@ pub struct ArmArchitectureTest {
     cli_options: ProcessedCli,
 }
 
+unsafe impl Send for ArmArchitectureTest {}
+unsafe impl Sync for ArmArchitectureTest {}
+
 impl SupportedArchitectureTest for ArmArchitectureTest {
     type IntrinsicImpl = ArmIntrinsicType;
 

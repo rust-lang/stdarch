@@ -9,7 +9,7 @@ pub fn build_cpp_compilation(config: &ProcessedCli) -> Option<CppCompilation> {
         .add_arch_flags(["icelake-client"])
         .set_compiler(cpp_compiler)
         .set_target(&config.target)
-        .set_opt_level("2")
+        .set_opt_level("1")
         .set_cxx_toolchain_dir(config.cxx_toolchain_dir.as_deref())
         .set_project_root("c_programs")
         .add_extra_flags(vec![

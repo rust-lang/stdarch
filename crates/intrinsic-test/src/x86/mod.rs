@@ -18,6 +18,9 @@ pub struct X86ArchitectureTest {
     cli_options: ProcessedCli,
 }
 
+unsafe impl Send for X86ArchitectureTest {}
+unsafe impl Sync for X86ArchitectureTest {}
+
 impl SupportedArchitectureTest for X86ArchitectureTest {
     type IntrinsicImpl = X86IntrinsicType;
 

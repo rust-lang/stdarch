@@ -39,6 +39,7 @@ fn write_cargo_toml_header(w: &mut impl std::io::Write, name: &str) -> std::io::
 pub fn write_bin_cargo_toml(
     w: &mut impl std::io::Write,
     module_count: usize,
+    binary_count: usize,
 ) -> std::io::Result<()> {
     write_cargo_toml_header(w, "intrinsic-test-programs")?;
 
@@ -47,6 +48,12 @@ pub fn write_bin_cargo_toml(
 
     for i in 0..module_count {
         writeln!(w, "mod_{i} = {{ path = \"mod_{i}/\" }}")?;
+    }
+
+    for i in 0..binary_count {
+        writeln!(w, "\n[[bin]]")?;
+        writeln!(w, "name = \"intrinsic-test-programs-{i}\"")?;
+        writeln!(w, "path = \"src/main_{i}.rs\"")?;
     }
 
     Ok(())
