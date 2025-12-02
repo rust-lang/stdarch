@@ -17,7 +17,7 @@ pub fn compare_outputs(intrinsic_name_list: &Vec<String>, runner: &str, target: 
         .into_par_iter()
         .map(|i| {
             runner_command(runner)
-                .arg(format!("./intrinsic-test-programs_{i}"))
+                .arg(format!("./intrinsic-test-programs-{i}"))
                 .current_dir("c_programs")
                 .output()
         })

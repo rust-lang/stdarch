@@ -145,8 +145,10 @@ where
                     return output;
                 })
                 .inspect(|output| {
+                    trace!("{output:?}");
                     assert!(output.is_ok(), "{output:?}");
                     if let Ok(out) = &output {
+                        trace!("{:?}", out.status.success());
                         assert!(out.status.success(), "{output:?}")
                     }
                 })

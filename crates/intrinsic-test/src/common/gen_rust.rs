@@ -51,8 +51,8 @@ pub fn write_bin_cargo_toml(
     }
 
     for i in 0..binary_count {
-        writeln!(w, "[[bin]]")?;
-        writeln!(w, "name = \"intrinsic-test-programs_{i}\"")?;
+        writeln!(w, "\n[[bin]]")?;
+        writeln!(w, "name = \"intrinsic-test-programs-{i}\"")?;
         writeln!(w, "path = \"src/main_{i}.rs\"")?;
     }
 
