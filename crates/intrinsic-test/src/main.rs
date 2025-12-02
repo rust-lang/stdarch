@@ -25,13 +25,22 @@ fn main() {
     }
 }
 
-fn run(test_environment: impl SupportedArchitectureTest) {
-    info!("building C binaries");
-    if !test_environment.build_c_file() {
+fn run(test_environment: impl SupportedArchitectureTest + Sync) {
+    let (c_output, rust_output) = rayon::join(
+        || {
+            info!("building C binaries");
+            test_environment.build_c_file()
+        },
+        || {
+            info!("building Rust binaries");
+            test_environment.build_rust_file()
+        },
+    );
+
+    if !c_output {
         std::process::exit(2);
     }
-    info!("building Rust binaries");
-    if !test_environment.build_rust_file() {
+    if !rust_output {
         std::process::exit(3);
     }
     info!("Running binaries");
