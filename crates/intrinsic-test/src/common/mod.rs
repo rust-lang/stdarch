@@ -29,7 +29,10 @@ pub mod values;
 
 /// Architectures must support this trait
 /// to be successfully tested.
-pub trait SupportedArchitectureTest {
+pub trait SupportedArchitectureTest
+where
+    Self: Sync + Send,
+{
     type IntrinsicImpl: IntrinsicTypeDefinition + Sync;
 
     fn cli_options(&self) -> &ProcessedCli;
@@ -95,55 +98,88 @@ pub trait SupportedArchitectureTest {
             .collect::<Result<(), String>>()
             .unwrap();
 
-        let mut file = File::create("c_programs/main.cpp").unwrap();
-        write_main_cpp(
-            &mut file,
-            Self::PLATFORM_C_DEFINITIONS,
-            Self::PLATFORM_C_HEADERS,
-            self.intrinsics().iter().map(|i| i.name.as_str()),
-        )
-        .unwrap();
+        let (auto_chunk_size, auto_chunk_count) = auto_chunk(self.intrinsics().len());
 
-        // This is done because `cpp_compiler_wrapped` is None when
-        // the --generate-only flag is passed
+        self.intrinsics()
+            .par_chunks(auto_chunk_size)
+            .enumerate()
+            .map(|(i, chunk)| {
+                let mut file = File::create(format!("c_programs/main_{i}.cpp")).unwrap();
+                write_main_cpp(
+                    &mut file,
+                    Self::PLATFORM_C_DEFINITIONS,
+                    Self::PLATFORM_C_HEADERS,
+                    chunk.iter().map(|i| i.name.as_str()),
+                )
+            })
+            .collect::<Result<(), std::io::Error>>()
+            .unwrap();
+
         if let Some(cpp_compiler) = cpp_compiler_wrapped.as_ref() {
-            // compile this cpp file into a .o file
-            trace!("compiling main.cpp");
-            let output = cpp_compiler
-                .compile_object_file("main.cpp", "intrinsic-test-programs.o")
-                .unwrap();
-            assert!(output.status.success(), "{output:?}");
+            (0..auto_chunk_count)
+                .into_par_iter()
+                .map(|index| {
+                    // This is done because `cpp_compiler_wrapped` is None when
+                    // the --generate-only flag is passed
+                    // compile this cpp file into a .o file
+                    trace!("compiling main_{index}.cpp");
+                    let output = cpp_compiler.compile_object_file(
+                        format!("main_{index}.cpp").as_str(),
+                        format!("main_{index}.o").as_str(),
+                    );
 
-            let object_files = (0..chunk_count)
-                .map(|i| format!("mod_{i}.o"))
-                .chain(["intrinsic-test-programs.o".to_owned()]);
+                    if output.is_err() {
+                        return output;
+                    };
 
-            let output = cpp_compiler
-                .link_executable(object_files, "intrinsic-test-programs")
-                .unwrap();
-            assert!(output.status.success(), "{output:?}");
+                    let object_files = (0..chunk_count)
+                        .map(|i| format!("mod_{i}.o"))
+                        .chain([format!("main_{index}.o").to_owned()]);
+
+                    let output = cpp_compiler.link_executable(
+                        object_files,
+                        format!("intrinsic-test-programs-{index}").as_str(),
+                    );
+                    trace!("finished compiling main_{index}.cpp");
+
+                    return output;
+                })
+                .inspect(|output| {
+                    assert!(output.is_ok(), "{output:?}");
+                    if let Ok(out) = &output {
+                        assert!(out.status.success(), "{output:?}")
+                    }
+                })
+                .all(|output| output.is_ok())
+        } else {
+            true
         }
-
-        true
     }
 
     fn build_rust_file(&self) -> bool {
         std::fs::create_dir_all("rust_programs/src").unwrap();
 
         let (chunk_size, chunk_count) = manual_chunk(self.intrinsics().len(), 400);
+        let (auto_chunk_size, auto_chunk_count) = auto_chunk(self.intrinsics().len());
 
         let mut cargo = File::create("rust_programs/Cargo.toml").unwrap();
-        write_bin_cargo_toml(&mut cargo, chunk_count).unwrap();
+        write_bin_cargo_toml(&mut cargo, chunk_count, auto_chunk_count).unwrap();
 
-        let mut main_rs = File::create("rust_programs/src/main.rs").unwrap();
-        write_main_rs(
-            &mut main_rs,
-            chunk_count,
-            Self::PLATFORM_RUST_CFGS,
-            "",
-            self.intrinsics().iter().map(|i| i.name.as_str()),
-        )
-        .unwrap();
+        self.intrinsics()
+            .par_chunks(auto_chunk_size)
+            .enumerate()
+            .map(|(i, chunk)| {
+                let mut main_rs = File::create(format!("rust_programs/src/main_{i}.rs")).unwrap();
+                write_main_rs(
+                    &mut main_rs,
+                    chunk_count,
+                    Self::PLATFORM_RUST_CFGS,
+                    "",
+                    chunk.iter().map(|i| i.name.as_str()),
+                )
+            })
+            .collect::<Result<(), std::io::Error>>()
+            .unwrap();
 
         let target = &self.cli_options().target;
         let toolchain = self.cli_options().toolchain.as_deref();
@@ -200,12 +236,12 @@ pub trait SupportedArchitectureTest {
     }
 }
 
-// pub fn chunk_info(intrinsic_count: usize) -> (usize, usize) {
-//     let available_parallelism = std::thread::available_parallelism().unwrap().get();
-//     let chunk_size = intrinsic_count.div_ceil(Ord::min(available_parallelism, intrinsic_count));
+pub fn auto_chunk(intrinsic_count: usize) -> (usize, usize) {
+    let available_parallelism = std::thread::available_parallelism().unwrap().get();
+    let chunk_size = intrinsic_count.div_ceil(Ord::min(available_parallelism, intrinsic_count));
 
-//     (chunk_size, intrinsic_count.div_ceil(chunk_size))
-// }
+    (chunk_size, intrinsic_count.div_ceil(chunk_size))
+}
 
 pub fn manual_chunk(intrinsic_count: usize, chunk_size: usize) -> (usize, usize) {
     (chunk_size, intrinsic_count.div_ceil(chunk_size))

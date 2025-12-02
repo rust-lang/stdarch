@@ -12,50 +12,71 @@ fn runner_command(runner: &str) -> Command {
 }
 
 pub fn compare_outputs(intrinsic_name_list: &Vec<String>, runner: &str, target: &str) -> bool {
-    let (c, rust) = rayon::join(
-        || {
+    let available_parallelism = std::thread::available_parallelism().unwrap().get();
+    let c_outputs = (0..available_parallelism)
+        .into_par_iter()
+        .map(|i| {
             runner_command(runner)
-                .arg("./intrinsic-test-programs")
+                .arg(format!("./intrinsic-test-programs_{i}"))
                 .current_dir("c_programs")
                 .output()
-        },
-        || {
+        })
+        .collect::<Vec<_>>();
+
+    let rust_outputs = (0..available_parallelism)
+        .into_par_iter()
+        .map(|i| {
             runner_command(runner)
-                .arg(format!("./target/{target}/release/intrinsic-test-programs"))
+                .arg(format!(
+                    "./target/{target}/release/intrinsic-test-programs-{i}"
+                ))
                 .current_dir("rust_programs")
                 .output()
-        },
-    );
-    let (c, rust) = match (c, rust) {
-        (Ok(c), Ok(rust)) => (c, rust),
+        })
+        .collect::<Vec<_>>();
+
+    let c_error = c_outputs.iter().filter(|elem| elem.is_err()).next();
+    let rust_error = rust_outputs.iter().filter(|elem| elem.is_err()).next();
+    match (c_error, rust_error) {
+        (None, None) => (),
         failure => panic!("Failed to run: {failure:#?}"),
     };
 
-    if !c.status.success() {
-        error!(
-            "Failed to run C program.\nstdout: {stdout}\nstderr: {stderr}",
-            stdout = std::str::from_utf8(&c.stdout).unwrap_or(""),
-            stderr = std::str::from_utf8(&c.stderr).unwrap_or(""),
-        );
-    }
+    let c_stdout = c_outputs
+        .into_iter()
+        .map(|c_elem| {
+            let c = c_elem.unwrap();
+            let c_stdout = std::str::from_utf8(&c.stdout).unwrap_or("").to_string();
+            if !c.status.success() {
+                error!(
+                    "Failed to run C program.\nstdout: {c_stdout}\nstderr: {stderr}",
+                    stderr = std::str::from_utf8(&c.stderr).unwrap_or(""),
+                );
+            }
+            c_stdout
+        })
+        .collect_vec()
+        .join("\n");
 
-    if !rust.status.success() {
-        error!(
-            "Failed to run Rust program.\nstdout: {stdout}\nstderr: {stderr}",
-            stdout = std::str::from_utf8(&rust.stdout).unwrap_or(""),
-            stderr = std::str::from_utf8(&rust.stderr).unwrap_or(""),
-        );
-    }
+    let rust_stdout = rust_outputs
+        .into_iter()
+        .map(|rust_elem| {
+            let rust = rust_elem.unwrap();
+            let rust_stdout = std::str::from_utf8(&rust.stdout).unwrap_or("").to_string();
+            if !rust.status.success() {
+                error!(
+                    "Failed to run Rust program.\nstdout: {rust_stdout}\nstderr: {stderr}",
+                    stderr = std::str::from_utf8(&rust.stderr).unwrap_or(""),
+                );
+            }
+            rust_stdout
+        })
+        .collect_vec()
+        .join("\n");
 
     info!("Completed running C++ and Rust test binaries");
-    let c = std::str::from_utf8(&c.stdout)
-        .unwrap()
-        .to_lowercase()
-        .replace("-nan", "nan");
-    let rust = std::str::from_utf8(&rust.stdout)
-        .unwrap()
-        .to_lowercase()
-        .replace("-nan", "nan");
+    let c = c_stdout.to_lowercase().replace("-nan", "nan");
+    let rust = rust_stdout.to_lowercase().replace("-nan", "nan");
 
     let c_output_map = c
         .split(INTRINSIC_DELIMITER)
