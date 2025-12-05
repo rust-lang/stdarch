@@ -42,12 +42,18 @@ pub mod arch {
 
     /// Platform-specific intrinsics for the `x86_64` platform.
     ///
-    /// See the [module documentation](../index.html) for more details.
+    /// See the [module documentation](../index.html) for more details
+    /// and the [`x86`] module for common instrinsics.
     #[cfg(any(target_arch = "x86_64", doc))]
     #[doc(cfg(target_arch = "x86_64"))]
     #[stable(feature = "simd_x86", since = "1.27.0")]
     pub mod x86_64 {
         #[stable(feature = "simd_x86", since = "1.27.0")]
+        #[doc(no_inline)]
+        #[cfg(doc)]
+        pub use super::x86::*;
+        #[stable(feature = "simd_x86", since = "1.27.0")]
+        #[cfg(not(doc))]
         pub use crate::core_arch::x86::*;
         #[stable(feature = "simd_x86", since = "1.27.0")]
         pub use crate::core_arch::x86_64::*;
