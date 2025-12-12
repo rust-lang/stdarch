@@ -2,6 +2,7 @@
 #![allow(improper_ctypes_definitions)]
 #![allow(dead_code)]
 #![allow(unused_features)]
+#![allow(inline_always_mismatching_target_features)]
 #![allow(internal_features)]
 #![allow(unsafe_op_in_unsafe_fn)]
 #![deny(rust_2018_idioms)]
@@ -32,6 +33,7 @@
     x86_amx_intrinsics,
     f16,
     aarch64_unstable_target_feature,
+    target_feature_inline_always,
     bigint_helper_methods,
     funnel_shifts,
     avx10_target_feature,
