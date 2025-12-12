@@ -2,6 +2,7 @@
 #![allow(improper_ctypes_definitions)]
 #![allow(dead_code)]
 #![allow(unused_features)]
+#![allow(inline_always_mismatching_target_features)]
 #![allow(internal_features)]
 #![allow(unsafe_op_in_unsafe_fn)]
 #![deny(rust_2018_idioms)]
