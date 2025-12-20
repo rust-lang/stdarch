@@ -747,6 +747,9 @@ mod vpclmulqdq;
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 pub use self::vpclmulqdq::*;
 
+mod avx512vp2intersect;
+pub use self::avx512vp2intersect::*;
+
 mod bt;
 #[stable(feature = "simd_x86_bittest", since = "1.55.0")]
 pub use self::bt::*;
