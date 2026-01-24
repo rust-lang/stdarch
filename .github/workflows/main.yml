@@ -209,6 +209,9 @@ jobs:
           norun: true
 
     steps:
+    - name: Disable Spotlight indexing
+      if: runner.os == 'macOS'
+      run : sudo mdutil -a -i off &
     - uses: actions/checkout@v4
     - name: Install Rust
       run: |
