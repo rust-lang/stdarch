@@ -101,9 +101,9 @@ jobs:
 
         # macOS targets
         - tuple: x86_64-apple-darwin
-          os: macos-15-large
+          os: macos-15-intel
         - tuple: x86_64-apple-ios-macabi
-          os: macos-15-large
+          os: macos-15-intel
         - tuple: aarch64-apple-darwin
           os: macos-15
         - tuple: aarch64-apple-ios-macabi
@@ -209,6 +209,9 @@ jobs:
           norun: true
 
     steps:
+    - name: Disable Spotlight indexing
+      if: runner.os == 'macOS'
+      run : sudo mdutil -a -i off &
     - uses: actions/checkout@v4
     - name: Install Rust
       run: |
