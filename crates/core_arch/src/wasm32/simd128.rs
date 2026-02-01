@@ -89,10 +89,6 @@ unsafe extern "unadjusted" {
     #[link_name = "llvm.wasm.avgr.unsigned.v16i8"]
     fn llvm_avgr_u_i8x16(a: simd::i8x16, b: simd::i8x16) -> simd::i8x16;
 
-    #[link_name = "llvm.wasm.extadd.pairwise.signed.v8i16"]
-    fn llvm_i16x8_extadd_pairwise_i8x16_s(x: simd::i8x16) -> simd::i16x8;
-    #[link_name = "llvm.wasm.extadd.pairwise.unsigned.v8i16"]
-    fn llvm_i16x8_extadd_pairwise_i8x16_u(x: simd::i8x16) -> simd::i16x8;
     #[link_name = "llvm.wasm.q15mulr.sat.signed"]
     fn llvm_q15mulr(a: simd::i16x8, b: simd::i16x8) -> simd::i16x8;
     #[link_name = "llvm.wasm.alltrue.v8i16"]
@@ -102,10 +98,6 @@ unsafe extern "unadjusted" {
     #[link_name = "llvm.wasm.avgr.unsigned.v8i16"]
     fn llvm_avgr_u_i16x8(a: simd::i16x8, b: simd::i16x8) -> simd::i16x8;
 
-    #[link_name = "llvm.wasm.extadd.pairwise.signed.v4i32"]
-    fn llvm_i32x4_extadd_pairwise_i16x8_s(x: simd::i16x8) -> simd::i32x4;
-    #[link_name = "llvm.wasm.extadd.pairwise.unsigned.v4i32"]
-    fn llvm_i32x4_extadd_pairwise_i16x8_u(x: simd::i16x8) -> simd::i32x4;
     #[link_name = "llvm.wasm.alltrue.v4i32"]
     fn llvm_i32x4_all_true(x: simd::i32x4) -> i32;
     #[link_name = "llvm.wasm.bitmask.v4i32"]
@@ -2528,7 +2520,17 @@ pub fn u8x16_avgr(a: v128, b: v128) -> v128 {
 #[doc(alias("i16x8.extadd_pairwise_i8x16_s"))]
 #[stable(feature = "wasm_simd", since = "1.54.0")]
 pub fn i16x8_extadd_pairwise_i8x16(a: v128) -> v128 {
-    unsafe { llvm_i16x8_extadd_pairwise_i8x16_s(a.as_i8x16()).v128() }
+    let a = a.as_i8x16();
+
+    unsafe {
+        let even: simd::i8x8 = simd_shuffle!(a, a, [0, 2, 4, 6, 8, 10, 12, 14]);
+        let odd: simd::i8x8 = simd_shuffle!(a, a, [1, 3, 5, 7, 9, 11, 13, 15]);
+
+        let even_ext: simd::i16x8 = simd_cast(even);
+        let odd_ext: simd::i16x8 = simd_cast(odd);
+
+        simd_add(even_ext, odd_ext).v128()
+    }
 }
 
 /// Integer extended pairwise addition producing extended results
@@ -2539,7 +2541,17 @@ pub fn i16x8_extadd_pairwise_i8x16(a: v128) -> v128 {
 #[doc(alias("i16x8.extadd_pairwise_i8x16_u"))]
 #[stable(feature = "wasm_simd", since = "1.54.0")]
 pub fn i16x8_extadd_pairwise_u8x16(a: v128) -> v128 {
-    unsafe { llvm_i16x8_extadd_pairwise_i8x16_u(a.as_i8x16()).v128() }
+    let a = a.as_u8x16();
+
+    unsafe {
+        let even: simd::u8x8 = simd_shuffle!(a, a, [0, 2, 4, 6, 8, 10, 12, 14]);
+        let odd: simd::u8x8 = simd_shuffle!(a, a, [1, 3, 5, 7, 9, 11, 13, 15]);
+
+        let even_ext: simd::u16x8 = simd_cast(even);
+        let odd_ext: simd::u16x8 = simd_cast(odd);
+
+        simd_add(even_ext, odd_ext).v128()
+    }
 }
 
 #[stable(feature = "wasm_simd", since = "1.54.0")]
@@ -3046,7 +3058,17 @@ pub use i16x8_extmul_high_u8x16 as u16x8_extmul_high_u8x16;
 #[doc(alias("i32x4.extadd_pairwise_i16x8_s"))]
 #[stable(feature = "wasm_simd", since = "1.54.0")]
 pub fn i32x4_extadd_pairwise_i16x8(a: v128) -> v128 {
-    unsafe { llvm_i32x4_extadd_pairwise_i16x8_s(a.as_i16x8()).v128() }
+    let a = a.as_i16x8();
+
+    unsafe {
+        let even: simd::i16x4 = simd_shuffle!(a, a, [0, 2, 4, 6]);
+        let odd: simd::i16x4 = simd_shuffle!(a, a, [1, 3, 5, 7]);
+
+        let even_ext: simd::i32x4 = simd_cast(even);
+        let odd_ext: simd::i32x4 = simd_cast(odd);
+
+        simd_add(even_ext, odd_ext).v128()
+    }
 }
 
 /// Integer extended pairwise addition producing extended results
@@ -3057,7 +3079,17 @@ pub fn i32x4_extadd_pairwise_i16x8(a: v128) -> v128 {
 #[target_feature(enable = "simd128")]
 #[stable(feature = "wasm_simd", since = "1.54.0")]
 pub fn i32x4_extadd_pairwise_u16x8(a: v128) -> v128 {
-    unsafe { llvm_i32x4_extadd_pairwise_i16x8_u(a.as_i16x8()).v128() }
+    let a = a.as_u16x8();
+
+    unsafe {
+        let even: simd::u16x4 = simd_shuffle!(a, a, [0, 2, 4, 6]);
+        let odd: simd::u16x4 = simd_shuffle!(a, a, [1, 3, 5, 7]);
+
+        let even_ext: simd::u32x4 = simd_cast(even);
+        let odd_ext: simd::u32x4 = simd_cast(odd);
+
+        simd_add(even_ext, odd_ext).v128()
+    }
 }
 
 #[stable(feature = "wasm_simd", since = "1.54.0")]
