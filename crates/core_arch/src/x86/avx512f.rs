@@ -20735,7 +20735,8 @@ pub fn _mm256_maskz_sll_epi32(k: __mmask8, a: __m256i, count: __m128i) -> __m256
 #[target_feature(enable = "avx512f,avx512vl")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpslld))]
-pub fn _mm_mask_sll_epi32(src: __m128i, k: __mmask8, a: __m128i, count: __m128i) -> __m128i {
+#[rustc_const_unstable(feature = "stdarch_const_x86", issue = "149298")]
+pub const fn _mm_mask_sll_epi32(src: __m128i, k: __mmask8, a: __m128i, count: __m128i) -> __m128i {
     unsafe {
         let shf = _mm_sll_epi32(a, count).as_i32x4();
         transmute(simd_select_bitmask(k, shf, src.as_i32x4()))
@@ -20749,7 +20750,8 @@ pub fn _mm_mask_sll_epi32(src: __m128i, k: __mmask8, a: __m128i, count: __m128i)
 #[target_feature(enable = "avx512f,avx512vl")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpslld))]
-pub fn _mm_maskz_sll_epi32(k: __mmask8, a: __m128i, count: __m128i) -> __m128i {
+#[rustc_const_unstable(feature = "stdarch_const_x86", issue = "149298")]
+pub const fn _mm_maskz_sll_epi32(k: __mmask8, a: __m128i, count: __m128i) -> __m128i {
     unsafe {
         let shf = _mm_sll_epi32(a, count).as_i32x4();
         transmute(simd_select_bitmask(k, shf, i32x4::ZERO))
@@ -20846,7 +20848,8 @@ pub fn _mm256_maskz_srl_epi32(k: __mmask8, a: __m256i, count: __m128i) -> __m256
 #[target_feature(enable = "avx512f,avx512vl")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpsrld))]
-pub fn _mm_mask_srl_epi32(src: __m128i, k: __mmask8, a: __m128i, count: __m128i) -> __m128i {
+#[rustc_const_unstable(feature = "stdarch_const_x86", issue = "149298")]
+pub const fn _mm_mask_srl_epi32(src: __m128i, k: __mmask8, a: __m128i, count: __m128i) -> __m128i {
     unsafe {
         let shf = _mm_srl_epi32(a, count).as_i32x4();
         transmute(simd_select_bitmask(k, shf, src.as_i32x4()))
@@ -20860,7 +20863,8 @@ pub fn _mm_mask_srl_epi32(src: __m128i, k: __mmask8, a: __m128i, count: __m128i)
 #[target_feature(enable = "avx512f,avx512vl")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpsrld))]
-pub fn _mm_maskz_srl_epi32(k: __mmask8, a: __m128i, count: __m128i) -> __m128i {
+#[rustc_const_unstable(feature = "stdarch_const_x86", issue = "149298")]
+pub const fn _mm_maskz_srl_epi32(k: __mmask8, a: __m128i, count: __m128i) -> __m128i {
     unsafe {
         let shf = _mm_srl_epi32(a, count).as_i32x4();
         transmute(simd_select_bitmask(k, shf, i32x4::ZERO))
@@ -20957,7 +20961,8 @@ pub fn _mm256_maskz_sll_epi64(k: __mmask8, a: __m256i, count: __m128i) -> __m256
 #[target_feature(enable = "avx512f,avx512vl")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpsllq))]
-pub fn _mm_mask_sll_epi64(src: __m128i, k: __mmask8, a: __m128i, count: __m128i) -> __m128i {
+#[rustc_const_unstable(feature = "stdarch_const_x86", issue = "149298")]
+pub const fn _mm_mask_sll_epi64(src: __m128i, k: __mmask8, a: __m128i, count: __m128i) -> __m128i {
     unsafe {
         let shf = _mm_sll_epi64(a, count).as_i64x2();
         transmute(simd_select_bitmask(k, shf, src.as_i64x2()))
@@ -20971,7 +20976,8 @@ pub fn _mm_mask_sll_epi64(src: __m128i, k: __mmask8, a: __m128i, count: __m128i)
 #[target_feature(enable = "avx512f,avx512vl")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpsllq))]
-pub fn _mm_maskz_sll_epi64(k: __mmask8, a: __m128i, count: __m128i) -> __m128i {
+#[rustc_const_unstable(feature = "stdarch_const_x86", issue = "149298")]
+pub const fn _mm_maskz_sll_epi64(k: __mmask8, a: __m128i, count: __m128i) -> __m128i {
     unsafe {
         let shf = _mm_sll_epi64(a, count).as_i64x2();
         transmute(simd_select_bitmask(k, shf, i64x2::ZERO))
@@ -21068,7 +21074,8 @@ pub fn _mm256_maskz_srl_epi64(k: __mmask8, a: __m256i, count: __m128i) -> __m256
 #[target_feature(enable = "avx512f,avx512vl")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpsrlq))]
-pub fn _mm_mask_srl_epi64(src: __m128i, k: __mmask8, a: __m128i, count: __m128i) -> __m128i {
+#[rustc_const_unstable(feature = "stdarch_const_x86", issue = "149298")]
+pub const fn _mm_mask_srl_epi64(src: __m128i, k: __mmask8, a: __m128i, count: __m128i) -> __m128i {
     unsafe {
         let shf = _mm_srl_epi64(a, count).as_i64x2();
         transmute(simd_select_bitmask(k, shf, src.as_i64x2()))
@@ -21082,7 +21089,8 @@ pub fn _mm_mask_srl_epi64(src: __m128i, k: __mmask8, a: __m128i, count: __m128i)
 #[target_feature(enable = "avx512f,avx512vl")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpsrlq))]
-pub fn _mm_maskz_srl_epi64(k: __mmask8, a: __m128i, count: __m128i) -> __m128i {
+#[rustc_const_unstable(feature = "stdarch_const_x86", issue = "149298")]
+pub const fn _mm_maskz_srl_epi64(k: __mmask8, a: __m128i, count: __m128i) -> __m128i {
     unsafe {
         let shf = _mm_srl_epi64(a, count).as_i64x2();
         transmute(simd_select_bitmask(k, shf, i64x2::ZERO))
@@ -21175,7 +21183,8 @@ pub fn _mm256_maskz_sra_epi32(k: __mmask8, a: __m256i, count: __m128i) -> __m256
 #[target_feature(enable = "avx512f,avx512vl")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpsrad))]
-pub fn _mm_mask_sra_epi32(src: __m128i, k: __mmask8, a: __m128i, count: __m128i) -> __m128i {
+#[rustc_const_unstable(feature = "stdarch_const_x86", issue = "149298")]
+pub const fn _mm_mask_sra_epi32(src: __m128i, k: __mmask8, a: __m128i, count: __m128i) -> __m128i {
     unsafe {
         let shf = _mm_sra_epi32(a, count).as_i32x4();
         transmute(simd_select_bitmask(k, shf, src.as_i32x4()))
@@ -21189,7 +21198,8 @@ pub fn _mm_mask_sra_epi32(src: __m128i, k: __mmask8, a: __m128i, count: __m128i)
 #[target_feature(enable = "avx512f,avx512vl")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpsrad))]
-pub fn _mm_maskz_sra_epi32(k: __mmask8, a: __m128i, count: __m128i) -> __m128i {
+#[rustc_const_unstable(feature = "stdarch_const_x86", issue = "149298")]
+pub const fn _mm_maskz_sra_epi32(k: __mmask8, a: __m128i, count: __m128i) -> __m128i {
     unsafe {
         let shf = _mm_sra_epi32(a, count).as_i32x4();
         transmute(simd_select_bitmask(k, shf, i32x4::ZERO))
@@ -54820,7 +54830,7 @@ mod tests {
     }
 
     #[simd_test(enable = "avx512f,avx512vl")]
-    fn test_mm_mask_sll_epi32() {
+    const fn test_mm_mask_sll_epi32() {
         let a = _mm_set_epi32(1 << 13, 0, 0, 0);
         let count = _mm_set_epi32(0, 0, 0, 1);
         let r = _mm_mask_sll_epi32(a, 0, a, count);
@@ -54831,7 +54841,7 @@ mod tests {
     }
 
     #[simd_test(enable = "avx512f,avx512vl")]
-    fn test_mm_maskz_sll_epi32() {
+    const fn test_mm_maskz_sll_epi32() {
         let a = _mm_set_epi32(1 << 13, 0, 0, 0);
         let count = _mm_set_epi32(0, 0, 0, 1);
         let r = _mm_maskz_sll_epi32(0, a, count);
@@ -54913,7 +54923,7 @@ mod tests {
     }
 
     #[simd_test(enable = "avx512f,avx512vl")]
-    fn test_mm_mask_srl_epi32() {
+    const fn test_mm_mask_srl_epi32() {
         let a = _mm_set_epi32(1 << 5, 0, 0, 0);
         let count = _mm_set_epi32(0, 0, 0, 1);
         let r = _mm_mask_srl_epi32(a, 0, a, count);
@@ -54924,7 +54934,7 @@ mod tests {
     }
 
     #[simd_test(enable = "avx512f,avx512vl")]
-    fn test_mm_maskz_srl_epi32() {
+    const fn test_mm_maskz_srl_epi32() {
         let a = _mm_set_epi32(1 << 5, 0, 0, 0);
         let count = _mm_set_epi32(0, 0, 0, 1);
         let r = _mm_maskz_srl_epi32(0, a, count);
@@ -54988,7 +54998,7 @@ mod tests {
     }
 
     #[simd_test(enable = "avx512f,avx512vl")]
-    fn test_mm_mask_sra_epi32() {
+    const fn test_mm_mask_sra_epi32() {
         let a = _mm_set_epi32(1 << 5, 0, 0, 0);
         let count = _mm_set_epi32(0, 0, 0, 1);
         let r = _mm_mask_sra_epi32(a, 0, a, count);
@@ -54999,7 +55009,7 @@ mod tests {
     }
 
     #[simd_test(enable = "avx512f,avx512vl")]
-    fn test_mm_maskz_sra_epi32() {
+    const fn test_mm_maskz_sra_epi32() {
         let a = _mm_set_epi32(1 << 5, 0, 0, 0);
         let count = _mm_set_epi32(0, 0, 0, 1);
         let r = _mm_maskz_sra_epi32(0, a, count);
