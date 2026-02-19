@@ -9279,7 +9279,7 @@ mod tests {
     }
 
     #[simd_test(enable = "avx512f,avx512vl")]
-    fn test_mm256_mask_sll_epi64() {
+    const fn test_mm256_mask_sll_epi64() {
         let a = _mm256_set_epi64x(1 << 63, 1 << 32, 1 << 32, 1 << 32);
         let count = _mm_set_epi64x(0, 1);
         let r = _mm256_mask_sll_epi64(a, 0, a, count);
@@ -9290,7 +9290,7 @@ mod tests {
     }
 
     #[simd_test(enable = "avx512f,avx512vl")]
-    fn test_mm256_maskz_sll_epi64() {
+    const fn test_mm256_maskz_sll_epi64() {
         let a = _mm256_set_epi64x(1 << 63, 1 << 32, 1 << 32, 1 << 32);
         let count = _mm_set_epi64x(0, 1);
         let r = _mm256_maskz_sll_epi64(0, a, count);
@@ -9374,7 +9374,7 @@ mod tests {
     }
 
     #[simd_test(enable = "avx512f,avx512vl")]
-    fn test_mm256_mask_srl_epi64() {
+    const fn test_mm256_mask_srl_epi64() {
         let a = _mm256_set_epi64x(1 << 5, 0, 0, 0);
         let count = _mm_set_epi64x(0, 1);
         let r = _mm256_mask_srl_epi64(a, 0, a, count);
@@ -9385,7 +9385,7 @@ mod tests {
     }
 
     #[simd_test(enable = "avx512f,avx512vl")]
-    fn test_mm256_maskz_srl_epi64() {
+    const fn test_mm256_maskz_srl_epi64() {
         let a = _mm256_set_epi64x(1 << 5, 0, 0, 0);
         let count = _mm_set_epi64x(0, 1);
         let r = _mm256_maskz_srl_epi64(0, a, count);
