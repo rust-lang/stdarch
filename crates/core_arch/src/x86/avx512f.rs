@@ -35470,7 +35470,9 @@ pub unsafe fn _mm512_mask_cvtepi32_storeu_epi16(mem_addr: *mut i16, k: __mmask16
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpmovdw))]
 pub unsafe fn _mm256_mask_cvtepi32_storeu_epi16(mem_addr: *mut i16, k: __mmask8, a: __m256i) {
-    vpmovdwmem256(mem_addr.cast(), a.as_i32x8(), k);
+    let mask = simd_select_bitmask(k, i32x8::splat(!0), i32x8::ZERO);
+    let truncated: i16x8 = simd_cast(a.as_i32x8());
+    simd_masked_store!(SimdAlign::Unaligned, mask, mem_addr, truncated);
 }
 
 /// Convert packed 32-bit integers in a to packed 16-bit integers with truncation, and store the active results (those with their respective bit set in writemask k) to unaligned memory at base_addr.
@@ -35481,7 +35483,9 @@ pub unsafe fn _mm256_mask_cvtepi32_storeu_epi16(mem_addr: *mut i16, k: __mmask8,
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpmovdw))]
 pub unsafe fn _mm_mask_cvtepi32_storeu_epi16(mem_addr: *mut i16, k: __mmask8, a: __m128i) {
-    vpmovdwmem128(mem_addr.cast(), a.as_i32x4(), k);
+    let mask = simd_select_bitmask(k, i32x4::splat(!0), i32x4::ZERO);
+    let truncated: i16x4 = simd_cast(a.as_i32x4());
+    simd_masked_store!(SimdAlign::Unaligned, mask, mem_addr, truncated);
 }
 
 /// Convert packed signed 32-bit integers in a to packed 16-bit integers with signed saturation, and store the active results (those with their respective bit set in writemask k) to unaligned memory at base_addr.
@@ -35569,7 +35573,9 @@ pub unsafe fn _mm512_mask_cvtepi32_storeu_epi8(mem_addr: *mut i8, k: __mmask16, 
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpmovdb))]
 pub unsafe fn _mm256_mask_cvtepi32_storeu_epi8(mem_addr: *mut i8, k: __mmask8, a: __m256i) {
-    vpmovdbmem256(mem_addr, a.as_i32x8(), k);
+    let mask = simd_select_bitmask(k, i32x8::splat(!0), i32x8::ZERO);
+    let truncated: i8x8 = simd_cast(a.as_i32x8());
+    simd_masked_store!(SimdAlign::Unaligned, mask, mem_addr, truncated);
 }
 
 /// Convert packed 32-bit integers in a to packed 8-bit integers with truncation, and store the active results (those with their respective bit set in writemask k) to unaligned memory at base_addr.
@@ -35580,7 +35586,9 @@ pub unsafe fn _mm256_mask_cvtepi32_storeu_epi8(mem_addr: *mut i8, k: __mmask8, a
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpmovdb))]
 pub unsafe fn _mm_mask_cvtepi32_storeu_epi8(mem_addr: *mut i8, k: __mmask8, a: __m128i) {
-    vpmovdbmem128(mem_addr, a.as_i32x4(), k);
+    let mask = simd_select_bitmask(k, i32x4::splat(!0), i32x4::ZERO);
+    let truncated: i8x4 = simd_cast(a.as_i32x4());
+    simd_masked_store!(SimdAlign::Unaligned, mask, mem_addr, truncated);
 }
 
 /// Convert packed signed 32-bit integers in a to packed 8-bit integers with signed saturation, and store the active results (those with their respective bit set in writemask k) to unaligned memory at base_addr.
@@ -35657,7 +35665,9 @@ pub unsafe fn _mm_mask_cvtusepi32_storeu_epi8(mem_addr: *mut i8, k: __mmask8, a:
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpmovqw))]
 pub unsafe fn _mm512_mask_cvtepi64_storeu_epi16(mem_addr: *mut i16, k: __mmask8, a: __m512i) {
-    vpmovqwmem(mem_addr.cast(), a.as_i64x8(), k);
+    let mask = simd_select_bitmask(k, i64x8::splat(!0), i64x8::ZERO);
+    let truncated: i16x8 = simd_cast(a.as_i64x8());
+    simd_masked_store!(SimdAlign::Unaligned, mask, mem_addr, truncated);
 }
 
 /// Convert packed 64-bit integers in a to packed 16-bit integers with truncation, and store the active results (those with their respective bit set in writemask k) to unaligned memory at base_addr.
@@ -35668,7 +35678,9 @@ pub unsafe fn _mm512_mask_cvtepi64_storeu_epi16(mem_addr: *mut i16, k: __mmask8,
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpmovqw))]
 pub unsafe fn _mm256_mask_cvtepi64_storeu_epi16(mem_addr: *mut i16, k: __mmask8, a: __m256i) {
-    vpmovqwmem256(mem_addr.cast(), a.as_i64x4(), k);
+    let mask = simd_select_bitmask(k, i64x4::splat(!0), i64x4::ZERO);
+    let truncated: i16x4 = simd_cast(a.as_i64x4());
+    simd_masked_store!(SimdAlign::Unaligned, mask, mem_addr, truncated);
 }
 
 /// Convert packed 64-bit integers in a to packed 16-bit integers with truncation, and store the active results (those with their respective bit set in writemask k) to unaligned memory at base_addr.
@@ -35679,7 +35691,9 @@ pub unsafe fn _mm256_mask_cvtepi64_storeu_epi16(mem_addr: *mut i16, k: __mmask8,
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpmovqw))]
 pub unsafe fn _mm_mask_cvtepi64_storeu_epi16(mem_addr: *mut i16, k: __mmask8, a: __m128i) {
-    vpmovqwmem128(mem_addr.cast(), a.as_i64x2(), k);
+    let mask = simd_select_bitmask(k, i64x2::splat(!0), i64x2::ZERO);
+    let truncated: i16x2 = simd_cast(a.as_i64x2());
+    simd_masked_store!(SimdAlign::Unaligned, mask, mem_addr, truncated);
 }
 
 /// Convert packed signed 64-bit integers in a to packed 16-bit integers with signed saturation, and store the active results (those with their respective bit set in writemask k) to unaligned memory at base_addr.
@@ -35756,7 +35770,9 @@ pub unsafe fn _mm_mask_cvtusepi64_storeu_epi16(mem_addr: *mut i16, k: __mmask8, 
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpmovqb))]
 pub unsafe fn _mm512_mask_cvtepi64_storeu_epi8(mem_addr: *mut i8, k: __mmask8, a: __m512i) {
-    vpmovqbmem(mem_addr, a.as_i64x8(), k);
+    let mask = simd_select_bitmask(k, i64x8::splat(!0), i64x8::ZERO);
+    let truncated: i8x8 = simd_cast(a.as_i64x8());
+    simd_masked_store!(SimdAlign::Unaligned, mask, mem_addr, truncated);
 }
 
 /// Convert packed 64-bit integers in a to packed 8-bit integers with truncation, and store the active results (those with their respective bit set in writemask k) to unaligned memory at base_addr.
@@ -35767,7 +35783,9 @@ pub unsafe fn _mm512_mask_cvtepi64_storeu_epi8(mem_addr: *mut i8, k: __mmask8, a
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpmovqb))]
 pub unsafe fn _mm256_mask_cvtepi64_storeu_epi8(mem_addr: *mut i8, k: __mmask8, a: __m256i) {
-    vpmovqbmem256(mem_addr, a.as_i64x4(), k);
+    let mask = simd_select_bitmask(k, i64x4::splat(!0), i64x4::ZERO);
+    let truncated: i8x4 = simd_cast(a.as_i64x4());
+    simd_masked_store!(SimdAlign::Unaligned, mask, mem_addr, truncated);
 }
 
 /// Convert packed 64-bit integers in a to packed 8-bit integers with truncation, and store the active results (those with their respective bit set in writemask k) to unaligned memory at base_addr.
@@ -35778,7 +35796,9 @@ pub unsafe fn _mm256_mask_cvtepi64_storeu_epi8(mem_addr: *mut i8, k: __mmask8, a
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpmovqb))]
 pub unsafe fn _mm_mask_cvtepi64_storeu_epi8(mem_addr: *mut i8, k: __mmask8, a: __m128i) {
-    vpmovqbmem128(mem_addr, a.as_i64x2(), k);
+    let mask = simd_select_bitmask(k, i64x2::splat(!0), i64x2::ZERO);
+    let truncated: i8x2 = simd_cast(a.as_i64x2());
+    simd_masked_store!(SimdAlign::Unaligned, mask, mem_addr, truncated);
 }
 
 /// Convert packed signed 64-bit integers in a to packed 8-bit integers with signed saturation, and store the active results (those with their respective bit set in writemask k) to unaligned memory at base_addr.
@@ -35855,7 +35875,9 @@ pub unsafe fn _mm_mask_cvtusepi64_storeu_epi8(mem_addr: *mut i8, k: __mmask8, a:
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpmovqd))]
 pub unsafe fn _mm512_mask_cvtepi64_storeu_epi32(mem_addr: *mut i32, k: __mmask8, a: __m512i) {
-    vpmovqdmem(mem_addr.cast(), a.as_i64x8(), k);
+    let mask = simd_select_bitmask(k, i64x8::splat(!0), i64x8::ZERO);
+    let truncated: i32x8 = simd_cast(a.as_i64x8());
+    simd_masked_store!(SimdAlign::Unaligned, mask, mem_addr, truncated);
 }
 
 ///Convert packed 64-bit integers in a to packed 32-bit integers with truncation, and store the active results (those with their respective bit set in writemask k) to unaligned memory at base_addr.
@@ -35866,7 +35888,9 @@ pub unsafe fn _mm512_mask_cvtepi64_storeu_epi32(mem_addr: *mut i32, k: __mmask8,
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpmovqd))]
 pub unsafe fn _mm256_mask_cvtepi64_storeu_epi32(mem_addr: *mut i32, k: __mmask8, a: __m256i) {
-    vpmovqdmem256(mem_addr.cast(), a.as_i64x4(), k);
+    let mask = simd_select_bitmask(k, i64x4::splat(!0), i64x4::ZERO);
+    let truncated: i32x4 = simd_cast(a.as_i64x4());
+    simd_masked_store!(SimdAlign::Unaligned, mask, mem_addr, truncated);
 }
 
 ///Convert packed 64-bit integers in a to packed 32-bit integers with truncation, and store the active results (those with their respective bit set in writemask k) to unaligned memory at base_addr.
@@ -35877,7 +35901,9 @@ pub unsafe fn _mm256_mask_cvtepi64_storeu_epi32(mem_addr: *mut i32, k: __mmask8,
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vpmovqd))]
 pub unsafe fn _mm_mask_cvtepi64_storeu_epi32(mem_addr: *mut i32, k: __mmask8, a: __m128i) {
-    vpmovqdmem128(mem_addr.cast(), a.as_i64x2(), k);
+    let mask = simd_select_bitmask(k, i64x2::splat(!0), i64x2::ZERO);
+    let truncated: i32x2 = simd_cast(a.as_i64x2());
+    simd_masked_store!(SimdAlign::Unaligned, mask, mem_addr, truncated);
 }
 
 /// Convert packed signed 64-bit integers in a to packed 32-bit integers with signed saturation, and store the active results (those with their respective bit set in writemask k) to unaligned memory at base_addr.
@@ -44476,10 +44502,6 @@ unsafe extern "C" {
 
     #[link_name = "llvm.x86.avx512.mask.pmov.dw.mem.512"]
     fn vpmovdwmem(mem_addr: *mut i8, a: i32x16, mask: u16);
-    #[link_name = "llvm.x86.avx512.mask.pmov.dw.mem.256"]
-    fn vpmovdwmem256(mem_addr: *mut i8, a: i32x8, mask: u8);
-    #[link_name = "llvm.x86.avx512.mask.pmov.dw.mem.128"]
-    fn vpmovdwmem128(mem_addr: *mut i8, a: i32x4, mask: u8);
 
     #[link_name = "llvm.x86.avx512.mask.pmovs.dw.mem.512"]
     fn vpmovsdwmem(mem_addr: *mut i8, a: i32x16, mask: u16);
@@ -44497,10 +44519,6 @@ unsafe extern "C" {
 
     #[link_name = "llvm.x86.avx512.mask.pmov.db.mem.512"]
     fn vpmovdbmem(mem_addr: *mut i8, a: i32x16, mask: u16);
-    #[link_name = "llvm.x86.avx512.mask.pmov.db.mem.256"]
-    fn vpmovdbmem256(mem_addr: *mut i8, a: i32x8, mask: u8);
-    #[link_name = "llvm.x86.avx512.mask.pmov.db.mem.128"]
-    fn vpmovdbmem128(mem_addr: *mut i8, a: i32x4, mask: u8);
 
     #[link_name = "llvm.x86.avx512.mask.pmovs.db.mem.512"]
     fn vpmovsdbmem(mem_addr: *mut i8, a: i32x16, mask: u16);
@@ -44516,13 +44534,6 @@ unsafe extern "C" {
     #[link_name = "llvm.x86.avx512.mask.pmovus.db.mem.128"]
     fn vpmovusdbmem128(mem_addr: *mut i8, a: i32x4, mask: u8);
 
-    #[link_name = "llvm.x86.avx512.mask.pmov.qw.mem.512"]
-    fn vpmovqwmem(mem_addr: *mut i8, a: i64x8, mask: u8);
-    #[link_name = "llvm.x86.avx512.mask.pmov.qw.mem.256"]
-    fn vpmovqwmem256(mem_addr: *mut i8, a: i64x4, mask: u8);
-    #[link_name = "llvm.x86.avx512.mask.pmov.qw.mem.128"]
-    fn vpmovqwmem128(mem_addr: *mut i8, a: i64x2, mask: u8);
-
     #[link_name = "llvm.x86.avx512.mask.pmovs.qw.mem.512"]
     fn vpmovsqwmem(mem_addr: *mut i8, a: i64x8, mask: u8);
     #[link_name = "llvm.x86.avx512.mask.pmovs.qw.mem.256"]
@@ -44537,13 +44548,6 @@ unsafe extern "C" {
     #[link_name = "llvm.x86.avx512.mask.pmovus.qw.mem.128"]
     fn vpmovusqwmem128(mem_addr: *mut i8, a: i64x2, mask: u8);
 
-    #[link_name = "llvm.x86.avx512.mask.pmov.qb.mem.512"]
-    fn vpmovqbmem(mem_addr: *mut i8, a: i64x8, mask: u8);
-    #[link_name = "llvm.x86.avx512.mask.pmov.qb.mem.256"]
-    fn vpmovqbmem256(mem_addr: *mut i8, a: i64x4, mask: u8);
-    #[link_name = "llvm.x86.avx512.mask.pmov.qb.mem.128"]
-    fn vpmovqbmem128(mem_addr: *mut i8, a: i64x2, mask: u8);
-
     #[link_name = "llvm.x86.avx512.mask.pmovs.qb.mem.512"]
     fn vpmovsqbmem(mem_addr: *mut i8, a: i64x8, mask: u8);
     #[link_name = "llvm.x86.avx512.mask.pmovs.qb.mem.256"]
@@ -44557,13 +44561,6 @@ unsafe extern "C" {
     fn vpmovusqbmem256(mem_addr: *mut i8, a: i64x4, mask: u8);
     #[link_name = "llvm.x86.avx512.mask.pmovus.qb.mem.128"]
     fn vpmovusqbmem128(mem_addr: *mut i8, a: i64x2, mask: u8);
-
-    #[link_name = "llvm.x86.avx512.mask.pmov.qd.mem.512"]
-    fn vpmovqdmem(mem_addr: *mut i8, a: i64x8, mask: u8);
-    #[link_name = "llvm.x86.avx512.mask.pmov.qd.mem.256"]
-    fn vpmovqdmem256(mem_addr: *mut i8, a: i64x4, mask: u8);
-    #[link_name = "llvm.x86.avx512.mask.pmov.qd.mem.128"]
-    fn vpmovqdmem128(mem_addr: *mut i8, a: i64x2, mask: u8);
 
     #[link_name = "llvm.x86.avx512.mask.pmovs.qd.mem.512"]
     fn vpmovsqdmem(mem_addr: *mut i8, a: i64x8, mask: u8);
