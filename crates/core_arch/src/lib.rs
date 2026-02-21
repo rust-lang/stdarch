@@ -21,6 +21,7 @@
     riscv_target_feature,
     arm_target_feature,
     mips_target_feature,
+    nvptx_target_feature,
     powerpc_target_feature,
     loongarch_target_feature,
     hexagon_target_feature,
