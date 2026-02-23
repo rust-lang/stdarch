@@ -148,12 +148,12 @@ pub unsafe fn sfence_vma_all() {
 ///
 /// This instruction invalidates any address-translation cache entries that an
 /// `SFENCE.VMA` instruction with the same values of `vaddr` and `asid` would invalidate.
+#[target_feature(enable = "svinval")]
 #[inline]
 #[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
 pub unsafe fn sinval_vma(vaddr: usize, asid: usize) {
-    // asm!("sinval.vma {}, {}", in(reg) vaddr, in(reg) asid, options(nostack, preserves_flags));
     asm!(
-        ".insn r 0x73, 0, 0x0B, x0, {}, {}",
+        "sinval.vma {}, {}",
         in(reg) vaddr,
         in(reg) asid,
         options(nostack, preserves_flags)
@@ -164,11 +164,12 @@ pub unsafe fn sinval_vma(vaddr: usize, asid: usize) {
 ///
 /// This instruction invalidates any address-translation cache entries that an
 /// `SFENCE.VMA` instruction with the same values of `vaddr` and `asid` would invalidate.
+#[target_feature(enable = "svinval")]
 #[inline]
 #[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
 pub unsafe fn sinval_vma_vaddr(vaddr: usize) {
     asm!(
-        ".insn r 0x73, 0, 0x0B, x0, {}, x0",
+        "sinval.vma {}, zero",
         in(reg) vaddr,
         options(nostack, preserves_flags)
     );
@@ -178,11 +179,12 @@ pub unsafe fn sinval_vma_vaddr(vaddr: usize) {
 ///
 /// This instruction invalidates any address-translation cache entries that an
 /// `SFENCE.VMA` instruction with the same values of `vaddr` and `asid` would invalidate.
+#[target_feature(enable = "svinval")]
 #[inline]
 #[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
 pub unsafe fn sinval_vma_asid(asid: usize) {
     asm!(
-        ".insn r 0x73, 0, 0x0B, x0, x0, {}",
+        "sinval.vma zero, {}",
         in(reg) asid,
         options(nostack, preserves_flags)
     );
@@ -192,41 +194,33 @@ pub unsafe fn sinval_vma_asid(asid: usize) {
 ///
 /// This instruction invalidates any address-translation cache entries that an
 /// `SFENCE.VMA` instruction with the same values of `vaddr` and `asid` would invalidate.
+#[target_feature(enable = "svinval")]
 #[inline]
 #[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
 pub unsafe fn sinval_vma_all() {
-    asm!(
-        ".insn r 0x73, 0, 0x0B, x0, x0, x0",
-        options(nostack, preserves_flags)
-    );
+    asm!("sinval.vma zero, zero", options(nostack, preserves_flags));
 }
 
 /// Generates the `SFENCE.W.INVAL` instruction
 ///
 /// This instruction guarantees that any previous stores already visible to the current RISC-V hart
 /// are ordered before subsequent `SINVAL.VMA` instructions executed by the same hart.
+#[target_feature(enable = "svinval")]
 #[inline]
 #[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
 pub unsafe fn sfence_w_inval() {
-    // asm!("sfence.w.inval", options(nostack, preserves_flags));
-    asm!(
-        ".insn i 0x73, 0, x0, x0, 0x180",
-        options(nostack, preserves_flags)
-    );
+    asm!("sfence.w.inval", options(nostack, preserves_flags));
 }
 
 /// Generates the `SFENCE.INVAL.IR` instruction
 ///
 /// This instruction guarantees that any previous SINVAL.VMA instructions executed by the current hart
 /// are ordered before subsequent implicit references by that hart to the memory-management data structures.
+#[target_feature(enable = "svinval")]
 #[inline]
 #[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
 pub unsafe fn sfence_inval_ir() {
-    // asm!("sfence.inval.ir", options(nostack, preserves_flags));
-    asm!(
-        ".insn i 0x73, 0, x0, x0, 0x181",
-        options(nostack, preserves_flags)
-    );
+    asm!("sfence.inval.ir", options(nostack, preserves_flags));
 }
 
 /// Loads virtual machine memory by signed byte integer
@@ -237,12 +231,13 @@ pub unsafe fn sfence_inval_ir() {
 ///
 /// This function is unsafe for it accesses the virtual supervisor or user via a `HLV.B`
 /// instruction which is effectively a dereference to any memory address.
+#[target_feature(enable = "h")]
 #[inline]
 #[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
 pub unsafe fn hlv_b(src: *const i8) -> i8 {
     let value: i8;
     asm!(
-        ".insn i 0x73, 0x4, {}, {}, 0x600",
+        "hlv.b {}, 0({})",
         lateout(reg) value,
         in(reg) src,
         options(readonly, nostack, preserves_flags)
@@ -258,12 +253,13 @@ pub unsafe fn hlv_b(src: *const i8) -> i8 {
 ///
 /// This function is unsafe for it accesses the virtual supervisor or user via a `HLV.BU`
 /// instruction which is effectively a dereference to any memory address.
+#[target_feature(enable = "h")]
 #[inline]
 #[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
 pub unsafe fn hlv_bu(src: *const u8) -> u8 {
     let value: u8;
     asm!(
-        ".insn i 0x73, 0x4, {}, {}, 0x601",
+        "hlv.bu {}, 0({})",
         lateout(reg) value,
         in(reg) src,
         options(readonly, nostack, preserves_flags)
@@ -279,12 +275,13 @@ pub unsafe fn hlv_bu(src: *const u8) -> u8 {
 ///
 /// This function is unsafe for it accesses the virtual supervisor or user via a `HLV.H`
 /// instruction which is effectively a dereference to any memory address.
+#[target_feature(enable = "h")]
 #[inline]
 #[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
 pub unsafe fn hlv_h(src: *const i16) -> i16 {
     let value: i16;
     asm!(
-        ".insn i 0x73, 0x4, {}, {}, 0x640",
+        "hlv.h {}, 0({})",
         lateout(reg) value,
         in(reg) src,
         options(readonly, nostack, preserves_flags)
@@ -300,12 +297,13 @@ pub unsafe fn hlv_h(src: *const i16) -> i16 {
 ///
 /// This function is unsafe for it accesses the virtual supervisor or user via a `HLV.HU`
 /// instruction which is effectively a dereference to any memory address.
+#[target_feature(enable = "h")]
 #[inline]
 #[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
 pub unsafe fn hlv_hu(src: *const u16) -> u16 {
     let value: u16;
     asm!(
-        ".insn i 0x73, 0x4, {}, {}, 0x641",
+        "hlv.hu {}, 0({})",
         lateout(reg) value,
         in(reg) src,
         options(readonly, nostack, preserves_flags)
@@ -321,12 +319,13 @@ pub unsafe fn hlv_hu(src: *const u16) -> u16 {
 ///
 /// This function is unsafe for it accesses the virtual supervisor or user via a `HLVX.HU`
 /// instruction which is effectively a dereference to any memory address.
+#[target_feature(enable = "h")]
 #[inline]
 #[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
 pub unsafe fn hlvx_hu(src: *const u16) -> u16 {
     let insn: u16;
     asm!(
-        ".insn i 0x73, 0x4, {}, {}, 0x643",
+        "hlvx.hu {}, 0({})",
         lateout(reg) insn,
         in(reg) src,
         options(readonly, nostack, preserves_flags)
@@ -342,12 +341,13 @@ pub unsafe fn hlvx_hu(src: *const u16) -> u16 {
 ///
 /// This function is unsafe for it accesses the virtual supervisor or user via a `HLV.W`
 /// instruction which is effectively a dereference to any memory address.
+#[target_feature(enable = "h")]
 #[inline]
 #[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
 pub unsafe fn hlv_w(src: *const i32) -> i32 {
     let value: i32;
     asm!(
-        ".insn i 0x73, 0x4, {}, {}, 0x680",
+        "hlv.w {}, 0({})",
         lateout(reg) value,
         in(reg) src,
         options(readonly, nostack, preserves_flags)
@@ -363,12 +363,13 @@ pub unsafe fn hlv_w(src: *const i32) -> i32 {
 ///
 /// This function is unsafe for it accesses the virtual supervisor or user via a `HLVX.WU`
 /// instruction which is effectively a dereference to any memory address.
+#[target_feature(enable = "h")]
 #[inline]
 #[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
 pub unsafe fn hlvx_wu(src: *const u32) -> u32 {
     let insn: u32;
     asm!(
-        ".insn i 0x73, 0x4, {}, {}, 0x683",
+        "hlvx.wu {}, 0({})",
         lateout(reg) insn,
         in(reg) src,
         options(readonly, nostack, preserves_flags)
@@ -384,11 +385,12 @@ pub unsafe fn hlvx_wu(src: *const u32) -> u32 {
 ///
 /// This function is unsafe for it accesses the virtual supervisor or user via a `HSV.B`
 /// instruction which is effectively a dereference to any memory address.
+#[target_feature(enable = "h")]
 #[inline]
 #[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
 pub unsafe fn hsv_b(dst: *mut i8, src: i8) {
     asm!(
-        ".insn r 0x73, 0x4, 0x31, x0, {}, {}",
+        "hsv.b {}, 0({})",
         in(reg) dst,
         in(reg) src,
         options(nostack, preserves_flags)
@@ -403,11 +405,12 @@ pub unsafe fn hsv_b(dst: *mut i8, src: i8) {
 ///
 /// This function is unsafe for it accesses the virtual supervisor or user via a `HSV.H`
 /// instruction which is effectively a dereference to any memory address.
+#[target_feature(enable = "h")]
 #[inline]
 #[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
 pub unsafe fn hsv_h(dst: *mut i16, src: i16) {
     asm!(
-        ".insn r 0x73, 0x4, 0x33, x0, {}, {}",
+        "hsv.h {}, 0({})",
         in(reg) dst,
         in(reg) src,
         options(nostack, preserves_flags)
@@ -422,11 +425,12 @@ pub unsafe fn hsv_h(dst: *mut i16, src: i16) {
 ///
 /// This function is unsafe for it accesses the virtual supervisor or user via a `HSV.W`
 /// instruction which is effectively a dereference to any memory address.
+#[target_feature(enable = "h")]
 #[inline]
 #[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
 pub unsafe fn hsv_w(dst: *mut i32, src: i32) {
     asm!(
-        ".insn r 0x73, 0x4, 0x35, x0, {}, {}",
+        "hsv.w {}, 0({})",
         in(reg) dst,
         in(reg) src,
         options(nostack, preserves_flags)
@@ -441,12 +445,12 @@ pub unsafe fn hsv_w(dst: *mut i32, src: i32) {
 /// - execute when `hgatp.VMID` has the same setting as it did when `HFENCE.VVMA` executed.
 ///
 /// This fence specifies a single guest virtual address, and a single guest address-space identifier.
+#[target_feature(enable = "h")]
 #[inline]
 #[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
 pub unsafe fn hfence_vvma(vaddr: usize, asid: usize) {
-    // asm!("hfence.vvma {}, {}", in(reg) vaddr, in(reg) asid, options(nostack, preserves_flags));
     asm!(
-        ".insn r 0x73, 0, 0x11, x0, {}, {}",
+        "hfence.vvma {}, {}",
         in(reg) vaddr,
         in(reg) asid,
         options(nostack, preserves_flags)
@@ -461,11 +465,12 @@ pub unsafe fn hfence_vvma(vaddr: usize, asid: usize) {
 /// - execute when `hgatp.VMID` has the same setting as it did when `HFENCE.VVMA` executed.
 ///
 /// This fence specifies a single guest virtual address.
+#[target_feature(enable = "h")]
 #[inline]
 #[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
 pub unsafe fn hfence_vvma_vaddr(vaddr: usize) {
     asm!(
-        ".insn r 0x73, 0, 0x11, x0, {}, x0",
+        "hfence.vvma {}",
         in(reg) vaddr,
         options(nostack, preserves_flags)
     );
@@ -479,11 +484,12 @@ pub unsafe fn hfence_vvma_vaddr(vaddr: usize) {
 /// - execute when `hgatp.VMID` has the same setting as it did when `HFENCE.VVMA` executed.
 ///
 /// This fence specifies a single guest address-space identifier.
+#[target_feature(enable = "h")]
 #[inline]
 #[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
 pub unsafe fn hfence_vvma_asid(asid: usize) {
     asm!(
-        ".insn r 0x73, 0, 0x11, x0, x0, {}",
+        "hfence.vvma zero, {}",
         in(reg) asid,
         options(nostack, preserves_flags)
     );
@@ -497,13 +503,11 @@ pub unsafe fn hfence_vvma_asid(asid: usize) {
 /// - execute when `hgatp.VMID` has the same setting as it did when `HFENCE.VVMA` executed.
 ///
 /// This fence applies to any guest address spaces and guest virtual addresses.
+#[target_feature(enable = "h")]
 #[inline]
 #[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
 pub unsafe fn hfence_vvma_all() {
-    asm!(
-        ".insn r 0x73, 0, 0x11, x0, x0, x0",
-        options(nostack, preserves_flags)
-    );
+    asm!("hfence.vvma", options(nostack, preserves_flags));
 }
 
 /// Hypervisor memory management fence for guest physical address and virtual machine
@@ -513,12 +517,12 @@ pub unsafe fn hfence_vvma_all() {
 ///
 /// This fence specifies a single guest physical address, **shifted right by 2 bits**, and a single virtual machine
 /// by virtual machine identifier (VMID).
+#[target_feature(enable = "h")]
 #[inline]
 #[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
 pub unsafe fn hfence_gvma(gaddr: usize, vmid: usize) {
-    // asm!("hfence.gvma {}, {}", in(reg) gaddr, in(reg) vmid, options(nostack, preserves_flags));
     asm!(
-        ".insn r 0x73, 0, 0x31, x0, {}, {}",
+        "hfence.gvma {}, {}",
         in(reg) gaddr,
         in(reg) vmid,
         options(nostack, preserves_flags)
@@ -531,11 +535,12 @@ pub unsafe fn hfence_gvma(gaddr: usize, vmid: usize) {
 /// by that hart done for G-stage address translation for instructions that follow the HFENCE.GVMA.
 ///
 /// This fence specifies a single guest physical address; **the physical address should be shifted right by 2 bits**.
+#[target_feature(enable = "h")]
 #[inline]
 #[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
 pub unsafe fn hfence_gvma_gaddr(gaddr: usize) {
     asm!(
-        ".insn r 0x73, 0, 0x31, x0, {}, x0",
+        "hfence.gvma {}",
         in(reg) gaddr,
         options(nostack, preserves_flags)
     );
@@ -547,11 +552,12 @@ pub unsafe fn hfence_gvma_gaddr(gaddr: usize) {
 /// by that hart done for G-stage address translation for instructions that follow the HFENCE.GVMA.
 ///
 /// This fence specifies a single virtual machine by virtual machine identifier (VMID).
+#[target_feature(enable = "h")]
 #[inline]
 #[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
 pub unsafe fn hfence_gvma_vmid(vmid: usize) {
     asm!(
-        ".insn r 0x73, 0, 0x31, x0, x0, {}",
+        "hfence.gvma zero, {}",
         in(reg) vmid,
         options(nostack, preserves_flags)
     );
@@ -563,13 +569,11 @@ pub unsafe fn hfence_gvma_vmid(vmid: usize) {
 /// by that hart done for G-stage address translation for instructions that follow the HFENCE.GVMA.
 ///
 /// This fence specifies all guest physical addresses and all virtual machines.
+#[target_feature(enable = "h")]
 #[inline]
 #[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
 pub unsafe fn hfence_gvma_all() {
-    asm!(
-        ".insn r 0x73, 0, 0x31, x0, x0, x0",
-        options(nostack, preserves_flags)
-    );
+    asm!("hfence.gvma", options(nostack, preserves_flags));
 }
 
 /// Invalidate hypervisor translation cache for given guest virtual address and guest address space
@@ -578,12 +582,12 @@ pub unsafe fn hfence_gvma_all() {
 /// `HFENCE.VVMA` instruction with the same values of `vaddr` and `asid` would invalidate.
 ///
 /// This fence specifies a single guest virtual address, and a single guest address-space identifier.
+#[target_feature(enable = "h", enable = "svinval")]
 #[inline]
 #[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
 pub unsafe fn hinval_vvma(vaddr: usize, asid: usize) {
-    // asm!("hinval.vvma {}, {}", in(reg) vaddr, in(reg) asid, options(nostack, preserves_flags));
     asm!(
-        ".insn r 0x73, 0, 0x13, x0, {}, {}",
+        "hinval.vvma {}, {}",
         in(reg) vaddr,
         in(reg) asid,
         options(nostack, preserves_flags)
@@ -596,11 +600,12 @@ pub unsafe fn hinval_vvma(vaddr: usize, asid: usize) {
 /// `HFENCE.VVMA` instruction with the same values of `vaddr` and `asid` would invalidate.
 ///
 /// This fence specifies a single guest virtual address.
+#[target_feature(enable = "h", enable = "svinval")]
 #[inline]
 #[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
 pub unsafe fn hinval_vvma_vaddr(vaddr: usize) {
     asm!(
-        ".insn r 0x73, 0, 0x13, x0, {}, x0",
+        "hinval.vvma {}, zero",
         in(reg) vaddr,
         options(nostack, preserves_flags)
     );
@@ -612,11 +617,12 @@ pub unsafe fn hinval_vvma_vaddr(vaddr: usize) {
 /// `HFENCE.VVMA` instruction with the same values of `vaddr` and `asid` would invalidate.
 ///
 /// This fence specifies a single guest address-space identifier.
+#[target_feature(enable = "h", enable = "svinval")]
 #[inline]
 #[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
 pub unsafe fn hinval_vvma_asid(asid: usize) {
     asm!(
-        ".insn r 0x73, 0, 0x13, x0, x0, {}",
+        "hinval.vvma zero, {}",
         in(reg) asid,
         options(nostack, preserves_flags)
     );
@@ -628,13 +634,11 @@ pub unsafe fn hinval_vvma_asid(asid: usize) {
 /// `HFENCE.VVMA` instruction with the same values of `vaddr` and `asid` would invalidate.
 ///
 /// This fence applies to any guest address spaces and guest virtual addresses.
+#[target_feature(enable = "h", enable = "svinval")]
 #[inline]
 #[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
 pub unsafe fn hinval_vvma_all() {
-    asm!(
-        ".insn r 0x73, 0, 0x13, x0, x0, x0",
-        options(nostack, preserves_flags)
-    );
+    asm!("hinval.vvma zero, zero", options(nostack, preserves_flags));
 }
 
 /// Invalidate hypervisor translation cache for guest physical address and virtual machine
@@ -644,12 +648,12 @@ pub unsafe fn hinval_vvma_all() {
 ///
 /// This fence specifies a single guest physical address, **shifted right by 2 bits**, and a single virtual machine
 /// by virtual machine identifier (VMID).
+#[target_feature(enable = "h", enable = "svinval")]
 #[inline]
 #[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
 pub unsafe fn hinval_gvma(gaddr: usize, vmid: usize) {
-    // asm!("hinval.gvma {}, {}", in(reg) gaddr, in(reg) vmid, options(nostack, preserves_flags));
     asm!(
-        ".insn r 0x73, 0, 0x33, x0, {}, {}",
+        "hinval.gvma {}, {}",
         in(reg) gaddr,
         in(reg) vmid,
         options(nostack, preserves_flags)
@@ -662,11 +666,12 @@ pub unsafe fn hinval_gvma(gaddr: usize, vmid: usize) {
 /// `HFENCE.GVMA` instruction with the same values of `gaddr` and `vmid` would invalidate.
 ///
 /// This fence specifies a single guest physical address; **the physical address should be shifted right by 2 bits**.
+#[target_feature(enable = "h", enable = "svinval")]
 #[inline]
 #[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
 pub unsafe fn hinval_gvma_gaddr(gaddr: usize) {
     asm!(
-        ".insn r 0x73, 0, 0x33, x0, {}, x0",
+        "hinval.gvma {}, zero",
         in(reg) gaddr,
         options(nostack, preserves_flags)
     );
@@ -678,11 +683,12 @@ pub unsafe fn hinval_gvma_gaddr(gaddr: usize) {
 /// `HFENCE.GVMA` instruction with the same values of `gaddr` and `vmid` would invalidate.
 ///
 /// This fence specifies a single virtual machine by virtual machine identifier (VMID).
+#[target_feature(enable = "h", enable = "svinval")]
 #[inline]
 #[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
 pub unsafe fn hinval_gvma_vmid(vmid: usize) {
     asm!(
-        ".insn r 0x73, 0, 0x33, x0, x0, {}",
+        "hinval.gvma zero, {}",
         in(reg) vmid,
         options(nostack, preserves_flags)
     );
@@ -694,13 +700,11 @@ pub unsafe fn hinval_gvma_vmid(vmid: usize) {
 /// `HFENCE.GVMA` instruction with the same values of `gaddr` and `vmid` would invalidate.
 ///
 /// This fence specifies all guest physical addresses and all virtual machines.
+#[target_feature(enable = "h", enable = "svinval")]
 #[inline]
 #[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
 pub unsafe fn hinval_gvma_all() {
-    asm!(
-        ".insn r 0x73, 0, 0x33, x0, x0, x0",
-        options(nostack, preserves_flags)
-    );
+    asm!("hinval.gvma zero, zero", options(nostack, preserves_flags));
 }
 
 /// Reads the floating-point rounding mode register `frm`
