@@ -110,8 +110,6 @@ unsafe extern "unadjusted" {
     fn llvm_i32x4_all_true(x: simd::i32x4) -> i32;
     #[link_name = "llvm.wasm.bitmask.v4i32"]
     fn llvm_bitmask_i32x4(a: simd::i32x4) -> i32;
-    #[link_name = "llvm.wasm.dot"]
-    fn llvm_i32x4_dot_i16x8_s(a: simd::i16x8, b: simd::i16x8) -> simd::i32x4;
 
     #[link_name = "llvm.wasm.alltrue.v2i64"]
     fn llvm_i64x2_all_true(x: simd::i64x2) -> i32;
@@ -3342,7 +3340,14 @@ pub fn u32x4_max(a: v128, b: v128) -> v128 {
 #[doc(alias("i32x4.dot_i16x8_s"))]
 #[stable(feature = "wasm_simd", since = "1.54.0")]
 pub fn i32x4_dot_i16x8(a: v128, b: v128) -> v128 {
-    unsafe { llvm_i32x4_dot_i16x8_s(a.as_i16x8(), b.as_i16x8()).v128() }
+    unsafe {
+        let prod: simd::i32x8 = simd_mul(simd_cast(a.as_i16x8()), simd_cast(b.as_i16x8()));
+
+        let evens: simd::i32x4 = simd_shuffle!(prod, prod, [0, 2, 4, 6]);
+        let odds: simd::i32x4 = simd_shuffle!(prod, prod, [1, 3, 5, 7]);
+
+        simd_add(evens, odds).v128()
+    }
 }
 
 /// Lane-wise integer extended multiplication producing twice wider result than
