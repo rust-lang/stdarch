@@ -577,8 +577,17 @@ pub const fn _mm_slli_epi16<const IMM8: i32>(a: __m128i) -> __m128i {
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(psllw))]
 #[stable(feature = "simd_x86", since = "1.27.0")]
-pub fn _mm_sll_epi16(a: __m128i, count: __m128i) -> __m128i {
-    unsafe { transmute(psllw(a.as_i16x8(), count.as_i16x8())) }
+#[rustc_const_unstable(feature = "stdarch_const_x86", issue = "149298")]
+pub const fn _mm_sll_epi16(a: __m128i, count: __m128i) -> __m128i {
+    let shift = count.as_u64x2().as_array()[0];
+    unsafe {
+        if shift >= 16 {
+            _mm_setzero_si128()
+        } else {
+            // SAFETY: We checked above that the shift is less than 16 bits.
+            simd_shl(a.as_u16x8(), u16x8::splat(shift as u16)).as_m128i()
+        }
+    }
 }
 
 /// Shifts packed 32-bit integers in `a` left by `IMM8` while shifting in zeros.
@@ -609,8 +618,17 @@ pub const fn _mm_slli_epi32<const IMM8: i32>(a: __m128i) -> __m128i {
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(pslld))]
 #[stable(feature = "simd_x86", since = "1.27.0")]
-pub fn _mm_sll_epi32(a: __m128i, count: __m128i) -> __m128i {
-    unsafe { transmute(pslld(a.as_i32x4(), count.as_i32x4())) }
+#[rustc_const_unstable(feature = "stdarch_const_x86", issue = "149298")]
+pub const fn _mm_sll_epi32(a: __m128i, count: __m128i) -> __m128i {
+    let shift = count.as_u64x2().as_array()[0];
+    unsafe {
+        if shift >= 32 {
+            _mm_setzero_si128()
+        } else {
+            // SAFETY: We checked above that the shift is less than 32 bits.
+            simd_shl(a.as_u32x4(), u32x4::splat(shift as u32)).as_m128i()
+        }
+    }
 }
 
 /// Shifts packed 64-bit integers in `a` left by `IMM8` while shifting in zeros.
@@ -641,8 +659,17 @@ pub const fn _mm_slli_epi64<const IMM8: i32>(a: __m128i) -> __m128i {
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(psllq))]
 #[stable(feature = "simd_x86", since = "1.27.0")]
-pub fn _mm_sll_epi64(a: __m128i, count: __m128i) -> __m128i {
-    unsafe { transmute(psllq(a.as_i64x2(), count.as_i64x2())) }
+#[rustc_const_unstable(feature = "stdarch_const_x86", issue = "149298")]
+pub const fn _mm_sll_epi64(a: __m128i, count: __m128i) -> __m128i {
+    let shift = count.as_u64x2().as_array()[0];
+    unsafe {
+        if shift >= 64 {
+            _mm_setzero_si128()
+        } else {
+            // SAFETY: We checked above that the shift is less than 64 bits.
+            simd_shl(a.as_u64x2(), u64x2::splat(shift as u64)).as_m128i()
+        }
+    }
 }
 
 /// Shifts packed 16-bit integers in `a` right by `IMM8` while shifting in sign
@@ -668,8 +695,13 @@ pub const fn _mm_srai_epi16<const IMM8: i32>(a: __m128i) -> __m128i {
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(psraw))]
 #[stable(feature = "simd_x86", since = "1.27.0")]
-pub fn _mm_sra_epi16(a: __m128i, count: __m128i) -> __m128i {
-    unsafe { transmute(psraw(a.as_i16x8(), count.as_i16x8())) }
+#[rustc_const_unstable(feature = "stdarch_const_x86", issue = "149298")]
+pub const fn _mm_sra_epi16(a: __m128i, count: __m128i) -> __m128i {
+    let shift = count.as_u64x2().as_array()[0].min(15);
+    unsafe {
+        // SAFETY: We checked above that the shift is less than 16 bits.
+        simd_shr(a.as_i16x8(), i16x8::splat(shift as i16)).as_m128i()
+    }
 }
 
 /// Shifts packed 32-bit integers in `a` right by `IMM8` while shifting in sign
@@ -695,8 +727,13 @@ pub const fn _mm_srai_epi32<const IMM8: i32>(a: __m128i) -> __m128i {
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(psrad))]
 #[stable(feature = "simd_x86", since = "1.27.0")]
-pub fn _mm_sra_epi32(a: __m128i, count: __m128i) -> __m128i {
-    unsafe { transmute(psrad(a.as_i32x4(), count.as_i32x4())) }
+#[rustc_const_unstable(feature = "stdarch_const_x86", issue = "149298")]
+pub const fn _mm_sra_epi32(a: __m128i, count: __m128i) -> __m128i {
+    let shift = count.as_u64x2().as_array()[0].min(31);
+    unsafe {
+        // SAFETY: We checked above that the shift is less than 32 bits.
+        simd_shr(a.as_i32x4(), i32x4::splat(shift as i32)).as_m128i()
+    }
 }
 
 /// Shifts `a` right by `IMM8` bytes while shifting in zeros.
@@ -780,8 +817,17 @@ pub const fn _mm_srli_epi16<const IMM8: i32>(a: __m128i) -> __m128i {
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(psrlw))]
 #[stable(feature = "simd_x86", since = "1.27.0")]
-pub fn _mm_srl_epi16(a: __m128i, count: __m128i) -> __m128i {
-    unsafe { transmute(psrlw(a.as_i16x8(), count.as_i16x8())) }
+#[rustc_const_unstable(feature = "stdarch_const_x86", issue = "149298")]
+pub const fn _mm_srl_epi16(a: __m128i, count: __m128i) -> __m128i {
+    let shift = count.as_u64x2().as_array()[0];
+    unsafe {
+        if shift >= 16 {
+            _mm_setzero_si128()
+        } else {
+            // SAFETY: We checked above that the shift is less than 16 bits.
+            simd_shr(a.as_u16x8(), u16x8::splat(shift as u16)).as_m128i()
+        }
+    }
 }
 
 /// Shifts packed 32-bit integers in `a` right by `IMM8` while shifting in
@@ -813,8 +859,17 @@ pub const fn _mm_srli_epi32<const IMM8: i32>(a: __m128i) -> __m128i {
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(psrld))]
 #[stable(feature = "simd_x86", since = "1.27.0")]
-pub fn _mm_srl_epi32(a: __m128i, count: __m128i) -> __m128i {
-    unsafe { transmute(psrld(a.as_i32x4(), count.as_i32x4())) }
+#[rustc_const_unstable(feature = "stdarch_const_x86", issue = "149298")]
+pub const fn _mm_srl_epi32(a: __m128i, count: __m128i) -> __m128i {
+    let shift = count.as_u64x2().as_array()[0];
+    unsafe {
+        if shift >= 32 {
+            _mm_setzero_si128()
+        } else {
+            // SAFETY: We checked above that the shift is less than 32 bits.
+            simd_shr(a.as_u32x4(), u32x4::splat(shift as u32)).as_m128i()
+        }
+    }
 }
 
 /// Shifts packed 64-bit integers in `a` right by `IMM8` while shifting in
@@ -846,8 +901,17 @@ pub const fn _mm_srli_epi64<const IMM8: i32>(a: __m128i) -> __m128i {
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(psrlq))]
 #[stable(feature = "simd_x86", since = "1.27.0")]
-pub fn _mm_srl_epi64(a: __m128i, count: __m128i) -> __m128i {
-    unsafe { transmute(psrlq(a.as_i64x2(), count.as_i64x2())) }
+#[rustc_const_unstable(feature = "stdarch_const_x86", issue = "149298")]
+pub const fn _mm_srl_epi64(a: __m128i, count: __m128i) -> __m128i {
+    let shift = count.as_u64x2().as_array()[0];
+    unsafe {
+        if shift >= 64 {
+            _mm_setzero_si128()
+        } else {
+            // SAFETY: We checked above that the shift is less than 64 bits.
+            simd_shr(a.as_u64x2(), u64x2::splat(shift as u64)).as_m128i()
+        }
+    }
 }
 
 /// Computes the bitwise AND of 128 bits (representing integer data) in `a` and
@@ -3249,22 +3313,6 @@ unsafe extern "C" {
     fn pmaddwd(a: i16x8, b: i16x8) -> i32x4;
     #[link_name = "llvm.x86.sse2.psad.bw"]
     fn psadbw(a: u8x16, b: u8x16) -> u64x2;
-    #[link_name = "llvm.x86.sse2.psll.w"]
-    fn psllw(a: i16x8, count: i16x8) -> i16x8;
-    #[link_name = "llvm.x86.sse2.psll.d"]
-    fn pslld(a: i32x4, count: i32x4) -> i32x4;
-    #[link_name = "llvm.x86.sse2.psll.q"]
-    fn psllq(a: i64x2, count: i64x2) -> i64x2;
-    #[link_name = "llvm.x86.sse2.psra.w"]
-    fn psraw(a: i16x8, count: i16x8) -> i16x8;
-    #[link_name = "llvm.x86.sse2.psra.d"]
-    fn psrad(a: i32x4, count: i32x4) -> i32x4;
-    #[link_name = "llvm.x86.sse2.psrl.w"]
-    fn psrlw(a: i16x8, count: i16x8) -> i16x8;
-    #[link_name = "llvm.x86.sse2.psrl.d"]
-    fn psrld(a: i32x4, count: i32x4) -> i32x4;
-    #[link_name = "llvm.x86.sse2.psrl.q"]
-    fn psrlq(a: i64x2, count: i64x2) -> i64x2;
     #[link_name = "llvm.x86.sse2.cvtps2dq"]
     fn cvtps2dq(a: __m128) -> i32x4;
     #[link_name = "llvm.x86.sse2.maskmov.dqu"]
@@ -3773,7 +3821,7 @@ mod tests {
     }
 
     #[simd_test(enable = "sse2")]
-    fn test_mm_sll_epi16() {
+    const fn test_mm_sll_epi16() {
         let a = _mm_setr_epi16(0xCC, -0xCC, 0xDD, -0xDD, 0xEE, -0xEE, 0xFF, -0xFF);
         let r = _mm_sll_epi16(a, _mm_set_epi64x(0, 4));
         assert_eq_m128i(
@@ -3798,7 +3846,7 @@ mod tests {
     }
 
     #[simd_test(enable = "sse2")]
-    fn test_mm_sll_epi32() {
+    const fn test_mm_sll_epi32() {
         let a = _mm_setr_epi32(0xEEEE, -0xEEEE, 0xFFFF, -0xFFFF);
         let r = _mm_sll_epi32(a, _mm_set_epi64x(0, 4));
         assert_eq_m128i(r, _mm_setr_epi32(0xEEEE0, -0xEEEE0, 0xFFFF0, -0xFFFF0));
@@ -3820,7 +3868,7 @@ mod tests {
     }
 
     #[simd_test(enable = "sse2")]
-    fn test_mm_sll_epi64() {
+    const fn test_mm_sll_epi64() {
         let a = _mm_set_epi64x(0xFFFFFFFF, -0xFFFFFFFF);
         let r = _mm_sll_epi64(a, _mm_set_epi64x(0, 4));
         assert_eq_m128i(r, _mm_set_epi64x(0xFFFFFFFF0, -0xFFFFFFFF0));
@@ -3845,7 +3893,7 @@ mod tests {
     }
 
     #[simd_test(enable = "sse2")]
-    fn test_mm_sra_epi16() {
+    const fn test_mm_sra_epi16() {
         let a = _mm_setr_epi16(0xCC, -0xCC, 0xDD, -0xDD, 0xEE, -0xEE, 0xFF, -0xFF);
         let r = _mm_sra_epi16(a, _mm_set_epi64x(0, 4));
         assert_eq_m128i(
@@ -3870,7 +3918,7 @@ mod tests {
     }
 
     #[simd_test(enable = "sse2")]
-    fn test_mm_sra_epi32() {
+    const fn test_mm_sra_epi32() {
         let a = _mm_setr_epi32(0xEEEE, -0xEEEE, 0xFFFF, -0xFFFF);
         let r = _mm_sra_epi32(a, _mm_set_epi64x(0, 4));
         assert_eq_m128i(r, _mm_setr_epi32(0xEEE, -0xEEF, 0xFFF, -0x1000));
@@ -3924,7 +3972,7 @@ mod tests {
     }
 
     #[simd_test(enable = "sse2")]
-    fn test_mm_srl_epi16() {
+    const fn test_mm_srl_epi16() {
         let a = _mm_setr_epi16(0xCC, -0xCC, 0xDD, -0xDD, 0xEE, -0xEE, 0xFF, -0xFF);
         let r = _mm_srl_epi16(a, _mm_set_epi64x(0, 4));
         assert_eq_m128i(
@@ -3949,7 +3997,7 @@ mod tests {
     }
 
     #[simd_test(enable = "sse2")]
-    fn test_mm_srl_epi32() {
+    const fn test_mm_srl_epi32() {
         let a = _mm_setr_epi32(0xEEEE, -0xEEEE, 0xFFFF, -0xFFFF);
         let r = _mm_srl_epi32(a, _mm_set_epi64x(0, 4));
         assert_eq_m128i(r, _mm_setr_epi32(0xEEE, 0xFFFF111, 0xFFF, 0xFFFF000));
@@ -3971,7 +4019,7 @@ mod tests {
     }
 
     #[simd_test(enable = "sse2")]
-    fn test_mm_srl_epi64() {
+    const fn test_mm_srl_epi64() {
         let a = _mm_set_epi64x(0xFFFFFFFF, -0xFFFFFFFF);
         let r = _mm_srl_epi64(a, _mm_set_epi64x(0, 4));
         assert_eq_m128i(r, _mm_set_epi64x(0xFFFFFFF, 0xFFFFFFFF0000000));
