@@ -2849,6 +2849,1065 @@ pub fn _mm512_maskz_cvtts_roundps_epu64<const SAE: i32>(k: __mmask8, a: __m256) 
     _mm512_mask_cvtts_roundps_epu64::<SAE>(_mm512_setzero_si512(), k, a)
 }
 
+/// Performs a min/max comparison between packed double-precision (64-bit) floating-point
+/// elements in `a` and `b` based on the control in `IMM8`.
+///
+/// -------------------------------------------------------------------------------------------------------------------------------
+/// |`IMM8[4]`|`IMM8[1:0]`|        Operation        |         Description                                                         |
+/// |:-------:|:---------:|:-----------------------:|:----------------------------------------------------------------------------|
+/// |    0    |    00     |         Minimum         | `a` if `a<=b`, `b` if `b<a`, and qNan if either operand is NaN              |
+/// |    0    |    01     |         Maximum         | `a` if `a>=b`, `b` if `b>a`, and qNan if either operand is NaN              |
+/// |    0    |    10     |     MinimumMagnitude    | `a` if `\|a\|<\|b\|`, `b` if `\|b\|<\|a\|`, otherwise `Minimum(a, b)`       |
+/// |    0    |    11     |     MaximumMagnitude    | `a` if `\|a\|>\|b\|`, `b` if `\|b\|>\|a\|`, otherwise `Maximum(a, b)`       |
+/// |    1    |    00     |       MinimumNumber     | `a` if `a<=b`, `b` if `b<a`. If only one operand is NaN, the other one is returned. If both operands are NaNs, a qNaN is returned |
+/// |    1    |    01     |       MaximumNumber     | `a` if `a>=b`, `b` if `b>a`. If only one operand is NaN, the other one is returned. If both operands are NaNs, a qNaN is returned |
+/// |    1    |    10     |  MinimumMagnitudeNumber | `a` if `\|a\|<\|b\|`, `b` if `\|b\|<\|x\|`, otherwise `MinimumNumber(a, b)` |
+/// |    1    |    10     |  MaximumMagnitudeNumber | `a` if `\|a\|>\|b\|`, `b` if `\|b\|>\|x\|`, otherwise `MaximumNumber(a, b)` |
+/// -------------------------------------------------------------------------------------------------------------------------------
+///
+/// The sign of the output is decided using `IMM[3:2]`
+///
+/// ---------------------------------------------
+/// |`IMM8[3:2]`|              Sign             |
+/// |:---------:|:-----------------------------:|
+/// |     00    | Use sign of the first operand |
+/// |     01    | Preserve sign of the result   |
+/// |     10    | Set sign to +ve               |
+/// |     11    | Set sign to -ve               |
+/// ---------------------------------------------
+///
+/// For more details, including behaviour for NaNs and denormals, refer to the [AVX10.2 Spec].
+///
+/// [AVX10.2 Spec]: https://www.intel.com/content/www/us/en/content-details/913918/intel-advanced-vector-extensions-10-2-intel-avx10-2-architecture-specification.html
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vminmaxpd, IMM8 = 0)
+)]
+pub fn _mm_minmax_pd<const IMM8: i32>(a: __m128d, b: __m128d) -> __m128d {
+    _mm_mask_minmax_pd::<IMM8>(_mm_undefined_pd(), !0, a, b)
+}
+
+/// Performs a min/max comparison between packed double-precision (64-bit) floating-point
+/// elements in `a` and `b` based on the control in `IMM8`, and stores the results in `dst` using
+/// writemask `k` (elements are copied from src when the corresponding mask bit is not set).
+/// For more details, see [`_mm_minmax_pd`].
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vminmaxpd, IMM8 = 0)
+)]
+pub fn _mm_mask_minmax_pd<const IMM8: i32>(
+    src: __m128d,
+    k: __mmask8,
+    a: __m128d,
+    b: __m128d,
+) -> __m128d {
+    static_assert_uimm_bits!(IMM8, 8);
+    unsafe { vminmaxpd128(a.as_f64x2(), b.as_f64x2(), IMM8, src.as_f64x2(), k as u8).as_m128d() }
+}
+
+/// Performs a min/max comparison between packed double-precision (64-bit) floating-point
+/// elements in `a` and `b` based on the control in `IMM8`, and stores the results in `dst` using
+/// zeromask `k` (elements are zeroed out when the corresponding mask bit is not set).
+/// For more details, see [`_mm_minmax_pd`].
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vminmaxpd, IMM8 = 0)
+)]
+pub fn _mm_maskz_minmax_pd<const IMM8: i32>(k: __mmask8, a: __m128d, b: __m128d) -> __m128d {
+    _mm_mask_minmax_pd::<IMM8>(_mm_setzero_pd(), k, a, b)
+}
+
+/// Performs a min/max comparison between packed double-precision (64-bit) floating-point
+/// elements in `a` and `b` based on the control in `IMM8`.
+/// For more details, see [`_mm_minmax_pd`].
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vminmaxpd, IMM8 = 0)
+)]
+pub fn _mm256_minmax_pd<const IMM8: i32>(a: __m256d, b: __m256d) -> __m256d {
+    _mm256_mask_minmax_pd::<IMM8>(_mm256_undefined_pd(), !0, a, b)
+}
+
+/// Performs a min/max comparison between packed double-precision (64-bit) floating-point
+/// elements in `a` and `b` based on the control in `IMM8`, and stores the results in `dst` using
+/// writemask `k` (elements are copied from src when the corresponding mask bit is not set).
+/// For more details, see [`_mm_minmax_pd`].
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vminmaxpd, IMM8 = 0)
+)]
+pub fn _mm256_mask_minmax_pd<const IMM8: i32>(
+    src: __m256d,
+    k: __mmask8,
+    a: __m256d,
+    b: __m256d,
+) -> __m256d {
+    static_assert_uimm_bits!(IMM8, 8);
+    unsafe { vminmaxpd256(a.as_f64x4(), b.as_f64x4(), IMM8, src.as_f64x4(), k as u8).as_m256d() }
+}
+
+/// Performs a min/max comparison between packed double-precision (64-bit) floating-point
+/// elements in `a` and `b` based on the control in `IMM8`, and stores the results in `dst` using
+/// zeromask `k` (elements are zeroed out when the corresponding mask bit is not set).
+/// For more details, see [`_mm_minmax_pd`].
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vminmaxpd, IMM8 = 0)
+)]
+pub fn _mm256_maskz_minmax_pd<const IMM8: i32>(k: __mmask8, a: __m256d, b: __m256d) -> __m256d {
+    _mm256_mask_minmax_pd::<IMM8>(_mm256_setzero_pd(), k, a, b)
+}
+
+/// Performs a min/max comparison between packed double-precision (64-bit) floating-point
+/// elements in `a` and `b` based on the control in `IMM8`.
+/// For more details, see [`_mm_minmax_pd`].
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vminmaxpd, IMM8 = 0)
+)]
+pub fn _mm512_minmax_pd<const IMM8: i32>(a: __m512d, b: __m512d) -> __m512d {
+    _mm512_mask_minmax_pd::<IMM8>(_mm512_undefined_pd(), !0, a, b)
+}
+
+/// Performs a min/max comparison between packed double-precision (64-bit) floating-point
+/// elements in `a` and `b` based on the control in `IMM8`, and stores the results in `dst` using
+/// writemask `k` (elements are copied from src when the corresponding mask bit is not set).
+/// For more details, see [`_mm_minmax_pd`].
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vminmaxpd, IMM8 = 0)
+)]
+pub fn _mm512_mask_minmax_pd<const IMM8: i32>(
+    src: __m512d,
+    k: __mmask8,
+    a: __m512d,
+    b: __m512d,
+) -> __m512d {
+    _mm512_mask_minmax_round_pd::<IMM8, _MM_FROUND_CUR_DIRECTION>(src, k, a, b)
+}
+
+/// Performs a min/max comparison between packed double-precision (64-bit) floating-point
+/// elements in `a` and `b` based on the control in `IMM8`, and stores the results in `dst` using
+/// zeromask `k` (elements are zeroed out when the corresponding mask bit is not set).
+/// For more details, see [`_mm_minmax_pd`].
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vminmaxpd, IMM8 = 0)
+)]
+pub fn _mm512_maskz_minmax_pd<const IMM8: i32>(k: __mmask8, a: __m512d, b: __m512d) -> __m512d {
+    _mm512_mask_minmax_pd::<IMM8>(_mm512_setzero_pd(), k, a, b)
+}
+
+/// Performs a min/max comparison between packed double-precision (64-bit) floating-point
+/// elements in `a` and `b` based on the control in `IMM8`.
+/// Exceptions can be suppressed by passing [`_MM_FROUND_NO_EXC`]` in the SAE parameter.
+/// For more details, see [`_mm_minmax_pd`].
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vminmaxpd, IMM8 = 0, SAE = 8)
+)]
+pub fn _mm512_minmax_round_pd<const IMM8: i32, const SAE: i32>(a: __m512d, b: __m512d) -> __m512d {
+    _mm512_mask_minmax_round_pd::<IMM8, SAE>(_mm512_undefined_pd(), !0, a, b)
+}
+
+/// Performs a min/max comparison between packed double-precision (64-bit) floating-point
+/// elements in `a` and `b` based on the control in `IMM8`, and stores the results in `dst` using
+/// writemask `k` (elements are copied from src when the corresponding mask bit is not set).
+/// Exceptions can be suppressed by passing [`_MM_FROUND_NO_EXC`]` in the SAE parameter.
+/// For more details, see [`_mm_minmax_pd`].
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vminmaxpd, IMM8 = 0, SAE = 8)
+)]
+pub fn _mm512_mask_minmax_round_pd<const IMM8: i32, const SAE: i32>(
+    src: __m512d,
+    k: __mmask8,
+    a: __m512d,
+    b: __m512d,
+) -> __m512d {
+    static_assert_uimm_bits!(IMM8, 8);
+    static_assert_sae!(SAE);
+    unsafe {
+        vminmaxpd512(
+            a.as_f64x8(),
+            b.as_f64x8(),
+            IMM8,
+            src.as_f64x8(),
+            k as u8,
+            SAE,
+        )
+        .as_m512d()
+    }
+}
+
+/// Performs a min/max comparison between packed double-precision (64-bit) floating-point
+/// elements in `a` and `b` based on the control in `IMM8`, and stores the results in `dst` using
+/// zeromask `k` (elements are zeroed out when the corresponding mask bit is not set).
+/// Exceptions can be suppressed by passing [`_MM_FROUND_NO_EXC`]` in the SAE parameter.
+/// For more details, see [`_mm_minmax_pd`].
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vminmaxpd, IMM8 = 0, SAE = 8)
+)]
+pub fn _mm512_maskz_minmax_round_pd<const IMM8: i32, const SAE: i32>(
+    k: __mmask8,
+    a: __m512d,
+    b: __m512d,
+) -> __m512d {
+    _mm512_mask_minmax_round_pd::<IMM8, SAE>(_mm512_setzero_pd(), k, a, b)
+}
+
+/// Performs a min/max comparison between packed single-precision (32-bit) floating-point
+/// elements in `a` and `b` based on the control in `IMM8`.
+/// For more details, see [`_mm_minmax_pd`].
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vminmaxps, IMM8 = 0)
+)]
+pub fn _mm_minmax_ps<const IMM8: i32>(a: __m128, b: __m128) -> __m128 {
+    _mm_mask_minmax_ps::<IMM8>(_mm_undefined_ps(), !0, a, b)
+}
+
+/// Performs a min/max comparison between packed single-precision (32-bit) floating-point
+/// elements in `a` and `b` based on the control in `IMM8`, and stores the results in `dst` using
+/// writemask `k` (elements are copied from src when the corresponding mask bit is not set).
+/// For more details, see [`_mm_minmax_pd`].
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vminmaxps, IMM8 = 0)
+)]
+pub fn _mm_mask_minmax_ps<const IMM8: i32>(
+    src: __m128,
+    k: __mmask8,
+    a: __m128,
+    b: __m128,
+) -> __m128 {
+    static_assert_uimm_bits!(IMM8, 8);
+    unsafe { vminmaxps128(a.as_f32x4(), b.as_f32x4(), IMM8, src.as_f32x4(), k as u8).as_m128() }
+}
+
+/// Performs a min/max comparison between packed single-precision (32-bit) floating-point
+/// elements in `a` and `b` based on the control in `IMM8`, and stores the results in `dst` using
+/// zeromask `k` (elements are zeroed out when the corresponding mask bit is not set).
+/// For more details, see [`_mm_minmax_pd`].
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vminmaxps, IMM8 = 0)
+)]
+pub fn _mm_maskz_minmax_ps<const IMM8: i32>(k: __mmask8, a: __m128, b: __m128) -> __m128 {
+    _mm_mask_minmax_ps::<IMM8>(_mm_setzero_ps(), k, a, b)
+}
+
+/// Performs a min/max comparison between packed single-precision (32-bit) floating-point
+/// elements in `a` and `b` based on the control in `IMM8`.
+/// For more details, see [`_mm_minmax_pd`].
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vminmaxps, IMM8 = 0)
+)]
+pub fn _mm256_minmax_ps<const IMM8: i32>(a: __m256, b: __m256) -> __m256 {
+    _mm256_mask_minmax_ps::<IMM8>(_mm256_undefined_ps(), !0, a, b)
+}
+
+/// Performs a min/max comparison between packed single-precision (32-bit) floating-point
+/// elements in `a` and `b` based on the control in `IMM8`, and stores the results in `dst` using
+/// writemask `k` (elements are copied from src when the corresponding mask bit is not set).
+/// For more details, see [`_mm_minmax_pd`].
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vminmaxps, IMM8 = 0)
+)]
+pub fn _mm256_mask_minmax_ps<const IMM8: i32>(
+    src: __m256,
+    k: __mmask8,
+    a: __m256,
+    b: __m256,
+) -> __m256 {
+    static_assert_uimm_bits!(IMM8, 8);
+    unsafe { vminmaxps256(a.as_f32x8(), b.as_f32x8(), IMM8, src.as_f32x8(), k as u8).as_m256() }
+}
+
+/// Performs a min/max comparison between packed single-precision (32-bit) floating-point
+/// elements in `a` and `b` based on the control in `IMM8`, and stores the results in `dst` using
+/// zeromask `k` (elements are zeroed out when the corresponding mask bit is not set).
+/// For more details, see [`_mm_minmax_pd`].
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vminmaxps, IMM8 = 0)
+)]
+pub fn _mm256_maskz_minmax_ps<const IMM8: i32>(k: __mmask8, a: __m256, b: __m256) -> __m256 {
+    _mm256_mask_minmax_ps::<IMM8>(_mm256_setzero_ps(), k, a, b)
+}
+
+/// Performs a min/max comparison between packed single-precision (32-bit) floating-point
+/// elements in `a` and `b` based on the control in `IMM8`.
+/// For more details, see [`_mm_minmax_pd`].
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vminmaxps, IMM8 = 0)
+)]
+pub fn _mm512_minmax_ps<const IMM8: i32>(a: __m512, b: __m512) -> __m512 {
+    _mm512_mask_minmax_ps::<IMM8>(_mm512_undefined_ps(), !0, a, b)
+}
+
+/// Performs a min/max comparison between packed single-precision (32-bit) floating-point
+/// elements in `a` and `b` based on the control in `IMM8`, and stores the results in `dst` using
+/// writemask `k` (elements are copied from src when the corresponding mask bit is not set).
+/// For more details, see [`_mm_minmax_pd`].
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vminmaxps, IMM8 = 0)
+)]
+pub fn _mm512_mask_minmax_ps<const IMM8: i32>(
+    src: __m512,
+    k: __mmask16,
+    a: __m512,
+    b: __m512,
+) -> __m512 {
+    _mm512_mask_minmax_round_ps::<IMM8, _MM_FROUND_CUR_DIRECTION>(src, k, a, b)
+}
+
+/// Performs a min/max comparison between packed single-precision (32-bit) floating-point
+/// elements in `a` and `b` based on the control in `IMM8`, and stores the results in `dst` using
+/// zeromask `k` (elements are zeroed out when the corresponding mask bit is not set).
+/// For more details, see [`_mm_minmax_pd`].
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vminmaxps, IMM8 = 0)
+)]
+pub fn _mm512_maskz_minmax_ps<const IMM8: i32>(k: __mmask16, a: __m512, b: __m512) -> __m512 {
+    _mm512_mask_minmax_ps::<IMM8>(_mm512_setzero_ps(), k, a, b)
+}
+
+/// Performs a min/max comparison between packed single-precision (32-bit) floating-point
+/// elements in `a` and `b` based on the control in `IMM8`.
+/// Exceptions can be suppressed by passing [`_MM_FROUND_NO_EXC`]` in the SAE parameter.
+/// For more details, see [`_mm_minmax_pd`].
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vminmaxps, IMM8 = 0, SAE = 8)
+)]
+pub fn _mm512_minmax_round_ps<const IMM8: i32, const SAE: i32>(a: __m512, b: __m512) -> __m512 {
+    _mm512_mask_minmax_round_ps::<IMM8, SAE>(_mm512_undefined_ps(), !0, a, b)
+}
+
+/// Performs a min/max comparison between packed single-precision (32-bit) floating-point
+/// elements in `a` and `b` based on the control in `IMM8`, and stores the results in `dst` using
+/// writemask `k` (elements are copied from src when the corresponding mask bit is not set).
+/// Exceptions can be suppressed by passing [`_MM_FROUND_NO_EXC`]` in the SAE parameter.
+/// For more details, see [`_mm_minmax_pd`].
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vminmaxps, IMM8 = 0, SAE = 8)
+)]
+pub fn _mm512_mask_minmax_round_ps<const IMM8: i32, const SAE: i32>(
+    src: __m512,
+    k: __mmask16,
+    a: __m512,
+    b: __m512,
+) -> __m512 {
+    static_assert_uimm_bits!(IMM8, 8);
+    static_assert_sae!(SAE);
+    unsafe {
+        vminmaxps512(
+            a.as_f32x16(),
+            b.as_f32x16(),
+            IMM8,
+            src.as_f32x16(),
+            k as u16,
+            SAE,
+        )
+        .as_m512()
+    }
+}
+
+/// Performs a min/max comparison between packed single-precision (32-bit) floating-point
+/// elements in `a` and `b` based on the control in `IMM8`, and stores the results in `dst` using
+/// zeromask `k` (elements are zeroed out when the corresponding mask bit is not set).
+/// Exceptions can be suppressed by passing [`_MM_FROUND_NO_EXC`]` in the SAE parameter.
+/// For more details, see [`_mm_minmax_pd`].
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vminmaxps, IMM8 = 0, SAE = 8)
+)]
+pub fn _mm512_maskz_minmax_round_ps<const IMM8: i32, const SAE: i32>(
+    k: __mmask16,
+    a: __m512,
+    b: __m512,
+) -> __m512 {
+    _mm512_mask_minmax_round_ps::<IMM8, SAE>(_mm512_setzero_ps(), k, a, b)
+}
+
+/// Performs a min/max comparison between packed half-precision (16-bit) floating-point
+/// elements in `a` and `b` based on the control in `IMM8`.
+/// For more details, see [`_mm_minmax_pd`].
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vminmaxph, IMM8 = 0)
+)]
+pub fn _mm_minmax_ph<const IMM8: i32>(a: __m128h, b: __m128h) -> __m128h {
+    _mm_mask_minmax_ph::<IMM8>(_mm_undefined_ph(), !0, a, b)
+}
+
+/// Performs a min/max comparison between packed half-precision (16-bit) floating-point
+/// elements in `a` and `b` based on the control in `IMM8`. and stores the results in `dst` using
+/// writemask `k` (elements are copied from src when the corresponding mask bit is not set).
+/// For more details, see [`_mm_minmax_pd`].
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vminmaxph, IMM8 = 0)
+)]
+pub fn _mm_mask_minmax_ph<const IMM8: i32>(
+    src: __m128h,
+    k: __mmask8,
+    a: __m128h,
+    b: __m128h,
+) -> __m128h {
+    static_assert_uimm_bits!(IMM8, 8);
+    unsafe { vminmaxph128(a.as_f16x8(), b.as_f16x8(), IMM8, src.as_f16x8(), k as u8).as_m128h() }
+}
+
+/// Performs a min/max comparison between packed half-precision (16-bit) floating-point
+/// elements in `a` and `b` based on the control in `IMM8`. and stores the results in `dst` using
+/// zeromask `k` (elements are zeroed out when the corresponding mask bit is not set).
+/// For more details, see [`_mm_minmax_pd`].
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vminmaxph, IMM8 = 0)
+)]
+pub fn _mm_maskz_minmax_ph<const IMM8: i32>(k: __mmask8, a: __m128h, b: __m128h) -> __m128h {
+    _mm_mask_minmax_ph::<IMM8>(_mm_setzero_ph(), k, a, b)
+}
+
+/// Performs a min/max comparison between packed half-precision (16-bit) floating-point
+/// elements in `a` and `b` based on the control in `IMM8`.
+/// For more details, see [`_mm_minmax_pd`].
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vminmaxph, IMM8 = 0)
+)]
+pub fn _mm256_minmax_ph<const IMM8: i32>(a: __m256h, b: __m256h) -> __m256h {
+    _mm256_mask_minmax_ph::<IMM8>(_mm256_undefined_ph(), !0, a, b)
+}
+
+/// Performs a min/max comparison between packed half-precision (16-bit) floating-point
+/// elements in `a` and `b` based on the control in `IMM8`. and stores the results in `dst` using
+/// writemask `k` (elements are copied from src when the corresponding mask bit is not set).
+/// For more details, see [`_mm_minmax_pd`].
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vminmaxph, IMM8 = 0)
+)]
+pub fn _mm256_mask_minmax_ph<const IMM8: i32>(
+    src: __m256h,
+    k: __mmask16,
+    a: __m256h,
+    b: __m256h,
+) -> __m256h {
+    static_assert_uimm_bits!(IMM8, 8);
+    unsafe {
+        vminmaxph256(
+            a.as_f16x16(),
+            b.as_f16x16(),
+            IMM8,
+            src.as_f16x16(),
+            k as u16,
+        )
+        .as_m256h()
+    }
+}
+
+/// Performs a min/max comparison between packed half-precision (16-bit) floating-point
+/// elements in `a` and `b` based on the control in `IMM8`. and stores the results in `dst` using
+/// zeromask `k` (elements are zeroed out when the corresponding mask bit is not set).
+/// For more details, see [`_mm_minmax_pd`].
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vminmaxph, IMM8 = 0)
+)]
+pub fn _mm256_maskz_minmax_ph<const IMM8: i32>(k: __mmask16, a: __m256h, b: __m256h) -> __m256h {
+    _mm256_mask_minmax_ph::<IMM8>(_mm256_setzero_ph(), k, a, b)
+}
+
+/// Performs a min/max comparison between packed half-precision (16-bit) floating-point
+/// elements in `a` and `b` based on the control in `IMM8`.
+/// For more details, see [`_mm_minmax_pd`].
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vminmaxph, IMM8 = 0)
+)]
+pub fn _mm512_minmax_ph<const IMM8: i32>(a: __m512h, b: __m512h) -> __m512h {
+    _mm512_mask_minmax_ph::<IMM8>(_mm512_undefined_ph(), !0, a, b)
+}
+
+/// Performs a min/max comparison between packed half-precision (16-bit) floating-point
+/// elements in `a` and `b` based on the control in `IMM8`. and stores the results in `dst` using
+/// writemask `k` (elements are copied from src when the corresponding mask bit is not set).
+/// For more details, see [`_mm_minmax_pd`].
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vminmaxph, IMM8 = 0)
+)]
+pub fn _mm512_mask_minmax_ph<const IMM8: i32>(
+    src: __m512h,
+    k: __mmask32,
+    a: __m512h,
+    b: __m512h,
+) -> __m512h {
+    _mm512_mask_minmax_round_ph::<IMM8, _MM_FROUND_CUR_DIRECTION>(src, k, a, b)
+}
+
+/// Performs a min/max comparison between packed half-precision (16-bit) floating-point
+/// elements in `a` and `b` based on the control in `IMM8`. and stores the results in `dst` using
+/// zeromask `k` (elements are zeroed out when the corresponding mask bit is not set).
+/// For more details, see [`_mm_minmax_pd`].
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vminmaxph, IMM8 = 0)
+)]
+pub fn _mm512_maskz_minmax_ph<const IMM8: i32>(k: __mmask32, a: __m512h, b: __m512h) -> __m512h {
+    _mm512_mask_minmax_ph::<IMM8>(_mm512_setzero_ph(), k, a, b)
+}
+
+/// Performs a min/max comparison between packed half-precision (16-bit) floating-point
+/// elements in `a` and `b` based on the control in `IMM8`.
+/// Exceptions can be suppressed by passing [`_MM_FROUND_NO_EXC`]` in the SAE parameter.
+/// For more details, see [`_mm_minmax_pd`].
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vminmaxph, IMM8 = 0, SAE = 8)
+)]
+pub fn _mm512_minmax_round_ph<const IMM8: i32, const SAE: i32>(a: __m512h, b: __m512h) -> __m512h {
+    _mm512_mask_minmax_round_ph::<IMM8, SAE>(_mm512_undefined_ph(), !0, a, b)
+}
+
+/// Performs a min/max comparison between packed half-precision (16-bit) floating-point
+/// elements in `a` and `b` based on the control in `IMM8`. and stores the results in `dst` using
+/// writemask `k` (elements are copied from src when the corresponding mask bit is not set).
+/// Exceptions can be suppressed by passing [`_MM_FROUND_NO_EXC`]` in the SAE parameter.
+/// For more details, see [`_mm_minmax_pd`].
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vminmaxph, IMM8 = 0, SAE = 8)
+)]
+pub fn _mm512_mask_minmax_round_ph<const IMM8: i32, const SAE: i32>(
+    src: __m512h,
+    k: __mmask32,
+    a: __m512h,
+    b: __m512h,
+) -> __m512h {
+    static_assert_uimm_bits!(IMM8, 8);
+    static_assert_sae!(SAE);
+    unsafe {
+        vminmaxph512(
+            a.as_f16x32(),
+            b.as_f16x32(),
+            IMM8,
+            src.as_f16x32(),
+            k as u32,
+            SAE,
+        )
+        .as_m512h()
+    }
+}
+
+/// Performs a min/max comparison between packed half-precision (16-bit) floating-point
+/// elements in `a` and `b` based on the control in `IMM8`. and stores the results in `dst` using
+/// zeromask `k` (elements are zeroed out when the corresponding mask bit is not set).
+/// Exceptions can be suppressed by passing [`_MM_FROUND_NO_EXC`]` in the SAE parameter.
+/// For more details, see [`_mm_minmax_pd`].
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vminmaxph, IMM8 = 0, SAE = 8)
+)]
+pub fn _mm512_maskz_minmax_round_ph<const IMM8: i32, const SAE: i32>(
+    k: __mmask32,
+    a: __m512h,
+    b: __m512h,
+) -> __m512h {
+    _mm512_mask_minmax_round_ph::<IMM8, SAE>(_mm512_setzero_ph(), k, a, b)
+}
+
+/// Performs a min/max comparison between the lower double-precision (64-bit) floating-point
+/// elements in `a` and `b` based on the control in `IMM8`, and copy the upper element from
+/// `a` to the upper element of `dst`.
+/// For more details, see [`_mm_minmax_pd`].
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vminmaxsd, IMM8 = 0)
+)]
+pub fn _mm_minmax_sd<const IMM8: i32>(a: __m128d, b: __m128d) -> __m128d {
+    _mm_mask_minmax_sd::<IMM8>(_mm_undefined_pd(), !0, a, b)
+}
+
+/// Performs a min/max comparison between the lower double-precision (64-bit) floating-point
+/// elements in `a` and `b` based on the control in `IMM8`, and stores the results in `dst` using
+/// writemask `k` (elements are copied from src when the corresponding mask bit is not set), and
+/// copy the upper element from `a` to the upper element of `dst`.
+///
+/// For more details, see [`_mm_minmax_pd`].
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vminmaxsd, IMM8 = 0)
+)]
+pub fn _mm_mask_minmax_sd<const IMM8: i32>(
+    src: __m128d,
+    k: __mmask8,
+    a: __m128d,
+    b: __m128d,
+) -> __m128d {
+    _mm_mask_minmax_round_sd::<IMM8, _MM_FROUND_CUR_DIRECTION>(src, k, a, b)
+}
+
+/// Performs a min/max comparison between the lower double-precision (64-bit) floating-point
+/// elements in `a` and `b` based on the control in `IMM8`, and stores the results in `dst`
+/// using zeromask `k` (elements are zeroed out when the corresponding mask bit is not set), and
+/// copy the upper element from `a` to the upper element of `dst`.
+///
+/// For more details, see [`_mm_minmax_pd`].
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vminmaxsd, IMM8 = 0)
+)]
+pub fn _mm_maskz_minmax_sd<const IMM8: i32>(k: __mmask8, a: __m128d, b: __m128d) -> __m128d {
+    _mm_mask_minmax_sd::<IMM8>(_mm_setzero_pd(), k, a, b)
+}
+
+/// Performs a min/max comparison between the lower double-precision (64-bit) floating-point
+/// elements in `a` and `b` based on the control in `IMM8`, and stores the results in `dst` using
+/// zeromask `k` (elements are zeroed out when the corresponding mask bit is not set), and copy
+/// the upper element from `a` to the upper element of `dst`.
+/// Exceptions can be suppressed by passing [`_MM_FROUND_NO_EXC`]` in the SAE parameter.
+/// For more details, see [`_mm_minmax_pd`].
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vminmaxsd, IMM8 = 0, SAE = 8)
+)]
+pub fn _mm_minmax_round_sd<const IMM8: i32, const SAE: i32>(a: __m128d, b: __m128d) -> __m128d {
+    _mm_mask_minmax_round_sd::<IMM8, SAE>(_mm_undefined_pd(), !0, a, b)
+}
+
+/// Performs a min/max comparison between the lower double-precision (64-bit) floating-point
+/// elements in `a` and `b` based on the control in `IMM8`, and stores the results in `dst` using
+/// writemask `k` (elements are copied from src when the corresponding mask bit is not set), and
+/// copy the upper element from `a` to the upper element of `dst`.
+/// Exceptions can be suppressed by passing [`_MM_FROUND_NO_EXC`]` in the SAE parameter.
+/// For more details, see [`_mm_minmax_pd`].
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vminmaxsd, IMM8 = 0, SAE = 8)
+)]
+pub fn _mm_mask_minmax_round_sd<const IMM8: i32, const SAE: i32>(
+    src: __m128d,
+    k: __mmask8,
+    a: __m128d,
+    b: __m128d,
+) -> __m128d {
+    static_assert_uimm_bits!(IMM8, 8);
+    static_assert_sae!(SAE);
+    unsafe {
+        vminmaxsd(
+            a.as_f64x2(),
+            b.as_f64x2(),
+            IMM8,
+            src.as_f64x2(),
+            k as u8,
+            SAE,
+        )
+        .as_m128d()
+    }
+}
+
+/// Performs a min/max comparison between the lower double-precision (64-bit) floating-point
+/// elements in `a` and `b` based on the control in `IMM8`, and stores the results in `dst` using
+/// zeromask `k` (elements are zeroed out when the corresponding mask bit is not set), and
+/// copy the upper element from `a` to the upper element of `dst`.
+/// Exceptions can be suppressed by passing [`_MM_FROUND_NO_EXC`]` in the SAE parameter.
+/// For more details, see [`_mm_minmax_pd`].
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vminmaxsd, IMM8 = 0, SAE = 8)
+)]
+pub fn _mm_maskz_minmax_round_sd<const IMM8: i32, const SAE: i32>(
+    k: __mmask8,
+    a: __m128d,
+    b: __m128d,
+) -> __m128d {
+    _mm_mask_minmax_round_sd::<IMM8, SAE>(_mm_setzero_pd(), k, a, b)
+}
+
+/// Performs a min/max comparison between the lower single-precision (32-bit) floating-point
+/// elements in `a` and `b` based on the control in `IMM8`, and copy the upper 3 packed elements
+/// from `a` to the upper elements of `dst`.
+/// For more details, see [`_mm_minmax_pd`].
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vminmaxss, IMM8 = 0)
+)]
+pub fn _mm_minmax_ss<const IMM8: i32>(a: __m128, b: __m128) -> __m128 {
+    _mm_mask_minmax_ss::<IMM8>(_mm_undefined_ps(), !0, a, b)
+}
+
+/// Performs a min/max comparison between the lower single-precision (32-bit) floating-point
+/// elements in `a` and `b` based on the control in `IMM8`, and stores the results in `dst` using
+/// writemask `k` (elements are copied from src when the corresponding mask bit is not set), and
+/// copy the upper 3 packed elements from `a` to the upper elements of `dst`.
+/// For more details, see [`_mm_minmax_pd`].
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vminmaxss, IMM8 = 0)
+)]
+pub fn _mm_mask_minmax_ss<const IMM8: i32>(
+    src: __m128,
+    k: __mmask8,
+    a: __m128,
+    b: __m128,
+) -> __m128 {
+    _mm_mask_minmax_round_ss::<IMM8, _MM_FROUND_CUR_DIRECTION>(src, k, a, b)
+}
+
+/// Performs a min/max comparison between the lower single-precision (32-bit) floating-point
+/// elements in `a` and `b` based on the control in `IMM8`, and stores the results in `dst` using
+/// zeromask `k` (elements are zeroed out when the corresponding mask bit is not set), and copy
+/// the upper 3 packed elements from `a` to the upper elements of `dst`.
+/// For more details, see [`_mm_minmax_pd`].
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vminmaxss, IMM8 = 0)
+)]
+pub fn _mm_maskz_minmax_ss<const IMM8: i32>(k: __mmask8, a: __m128, b: __m128) -> __m128 {
+    _mm_mask_minmax_ss::<IMM8>(_mm_setzero_ps(), k, a, b)
+}
+
+/// Performs a min/max comparison between the lower single-precision (32-bit) floating-point
+/// elements in `a` and `b` based on the control in `IMM8`, and copy the upper 3 packed elements
+/// from `a` to the upper elements of `dst`.
+/// Exceptions can be suppressed by passing [`_MM_FROUND_NO_EXC`]` in the SAE parameter.
+/// For more details, see [`_mm_minmax_pd`].
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vminmaxss, IMM8 = 0, SAE = 8)
+)]
+pub fn _mm_minmax_round_ss<const IMM8: i32, const SAE: i32>(a: __m128, b: __m128) -> __m128 {
+    _mm_mask_minmax_round_ss::<IMM8, SAE>(_mm_undefined_ps(), !0, a, b)
+}
+
+/// Performs a min/max comparison between the lower single-precision (32-bit) floating-point
+/// elements in `a` and `b` based on the control in `IMM8`, and stores the results in `dst` using
+/// writemask `k` (elements are copied from src when the corresponding mask bit is not set), and
+/// copy the upper 3 packed elements from `a` to the upper elements of `dst`.
+/// Exceptions can be suppressed by passing [`_MM_FROUND_NO_EXC`]` in the SAE parameter.
+/// For more details, see [`_mm_minmax_pd`].
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vminmaxss, IMM8 = 0, SAE = 8)
+)]
+pub fn _mm_mask_minmax_round_ss<const IMM8: i32, const SAE: i32>(
+    src: __m128,
+    k: __mmask8,
+    a: __m128,
+    b: __m128,
+) -> __m128 {
+    static_assert_uimm_bits!(IMM8, 8);
+    static_assert_sae!(SAE);
+    unsafe {
+        vminmaxss(
+            a.as_f32x4(),
+            b.as_f32x4(),
+            IMM8,
+            src.as_f32x4(),
+            k as u8,
+            SAE,
+        )
+        .as_m128()
+    }
+}
+
+/// Performs a min/max comparison between the lower single-precision (32-bit) floating-point
+/// elements in `a` and `b` based on the control in `IMM8`, and stores the results in `dst` using
+/// zeromask `k` (elements are zeroed out when the corresponding mask bit is not set), and copy
+/// the upper 3 packed elements from `a` to the upper elements of `dst`.
+/// Exceptions can be suppressed by passing [`_MM_FROUND_NO_EXC`]` in the SAE parameter.
+/// For more details, see [`_mm_minmax_pd`].
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vminmaxss, IMM8 = 0, SAE = 8)
+)]
+pub fn _mm_maskz_minmax_round_ss<const IMM8: i32, const SAE: i32>(
+    k: __mmask8,
+    a: __m128,
+    b: __m128,
+) -> __m128 {
+    _mm_mask_minmax_round_ss::<IMM8, SAE>(_mm_setzero_ps(), k, a, b)
+}
+
+/// Performs a min/max comparison between packed half-precision (16-bit) floating-point
+/// elements in `a` and `b` based on the control in `IMM8`, and copy the upper 7 packed
+/// elements from `a` to the upper elements of `dst`.
+/// For more details, see [`_mm_minmax_pd`].
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vminmaxsh, IMM8 = 0)
+)]
+pub fn _mm_minmax_sh<const IMM8: i32>(a: __m128h, b: __m128h) -> __m128h {
+    _mm_mask_minmax_sh::<IMM8>(_mm_undefined_ph(), !0, a, b)
+}
+
+/// Performs a min/max comparison between packed half-precision (16-bit) floating-point
+/// elements in `a` and `b` based on the control in `IMM8`, and stores the results in `dst` using
+/// writemask `k` (elements are copied from src when the corresponding mask bit is not set), and
+/// copy the upper 7 packed elements from `a` to the upper elements of `dst`.
+/// For more details, see [`_mm_minmax_pd`].
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vminmaxsh, IMM8 = 0)
+)]
+pub fn _mm_mask_minmax_sh<const IMM8: i32>(
+    src: __m128h,
+    k: __mmask8,
+    a: __m128h,
+    b: __m128h,
+) -> __m128h {
+    _mm_mask_minmax_round_sh::<IMM8, _MM_FROUND_CUR_DIRECTION>(src, k, a, b)
+}
+
+/// Performs a min/max comparison between packed half-precision (16-bit) floating-point
+/// elements in `a` and `b` based on the control in `IMM8`, and stores the results in `dst` using
+/// zeromask `k` (elements are zeroed out when the corresponding mask bit is not set), and copy
+/// the upper 7 packed elements from `a` to the upper elements of `dst`.
+/// For more details, see [`_mm_minmax_pd`].
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vminmaxsh, IMM8 = 0)
+)]
+pub fn _mm_maskz_minmax_sh<const IMM8: i32>(k: __mmask8, a: __m128h, b: __m128h) -> __m128h {
+    _mm_mask_minmax_sh::<IMM8>(_mm_setzero_ph(), k, a, b)
+}
+
+/// Performs a min/max comparison between packed half-precision (16-bit) floating-point
+/// elements in `a` and `b` based on the control in `IMM8`, and copy the upper 7 packed
+/// elements from `a` to the upper elements of `dst`.
+/// Exceptions can be suppressed by passing [`_MM_FROUND_NO_EXC`]` in the SAE parameter.
+/// For more details, see [`_mm_minmax_pd`].
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vminmaxsh, IMM8 = 0, SAE = 8)
+)]
+pub fn _mm_minmax_round_sh<const IMM8: i32, const SAE: i32>(a: __m128h, b: __m128h) -> __m128h {
+    _mm_mask_minmax_round_sh::<IMM8, SAE>(_mm_undefined_ph(), !0, a, b)
+}
+
+/// Performs a min/max comparison between packed half-precision (16-bit) floating-point
+/// elements in `a` and `b` based on the control in `IMM8`, and stores the results in `dst` using
+/// writemask `k` (elements are copied from src when the corresponding mask bit is not set), and
+/// copy the upper 7 packed elements from `a` to the upper elements of `dst`.
+/// Exceptions can be suppressed by passing [`_MM_FROUND_NO_EXC`]` in the SAE parameter.
+/// For more details, see [`_mm_minmax_pd`].
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vminmaxsh, IMM8 = 0, SAE = 8)
+)]
+pub fn _mm_mask_minmax_round_sh<const IMM8: i32, const SAE: i32>(
+    src: __m128h,
+    k: __mmask8,
+    a: __m128h,
+    b: __m128h,
+) -> __m128h {
+    static_assert_uimm_bits!(IMM8, 8);
+    static_assert_sae!(SAE);
+    unsafe {
+        vminmaxsh(
+            a.as_f16x8(),
+            b.as_f16x8(),
+            IMM8,
+            src.as_f16x8(),
+            k as u8,
+            SAE,
+        )
+        .as_m128h()
+    }
+}
+
+/// Performs a min/max comparison between packed half-precision (16-bit) floating-point
+/// elements in `a` and `b` based on the control in `IMM8`, and stores the results in `dst` using
+/// zeromask `k` (elements are zeroed out when the corresponding mask bit is not set), and copy
+/// the upper 7 packed elements from `a` to the upper elements of `dst`.
+/// Exceptions can be suppressed by passing [`_MM_FROUND_NO_EXC`]` in the SAE parameter.
+/// For more details, see [`_mm_minmax_pd`].
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vminmaxsh, IMM8 = 0, SAE = 8)
+)]
+pub fn _mm_maskz_minmax_round_sh<const IMM8: i32, const SAE: i32>(
+    k: __mmask8,
+    a: __m128h,
+    b: __m128h,
+) -> __m128h {
+    _mm_mask_minmax_round_sh::<IMM8, SAE>(_mm_setzero_ph(), k, a, b)
+}
+
 #[allow(improper_ctypes)]
 unsafe extern "unadjusted" {
     #[link_name = "llvm.x86.avx10.vmpsadbw.512"]
@@ -2952,6 +4011,34 @@ unsafe extern "unadjusted" {
     fn vcvttps2uqqs_256(a: f32x4, src: u64x4, mask: u8) -> u64x4;
     #[link_name = "llvm.x86.avx10.mask.vcvttps2uqqs.round.512"]
     fn vcvttps2uqqs_512(a: f32x8, src: u64x8, mask: u8, sae: i32) -> u64x8;
+
+    #[link_name = "llvm.x86.avx10.mask.vminmaxpd128"]
+    fn vminmaxpd128(a: f64x2, b: f64x2, imm8: i32, src: f64x2, k: u8) -> f64x2;
+    #[link_name = "llvm.x86.avx10.mask.vminmaxpd256"]
+    fn vminmaxpd256(a: f64x4, b: f64x4, imm8: i32, src: f64x4, k: u8) -> f64x4;
+    #[link_name = "llvm.x86.avx10.mask.vminmaxpd.round"]
+    fn vminmaxpd512(a: f64x8, b: f64x8, imm8: i32, src: f64x8, k: u8, sae: i32) -> f64x8;
+
+    #[link_name = "llvm.x86.avx10.mask.vminmaxps128"]
+    fn vminmaxps128(a: f32x4, b: f32x4, imm8: i32, src: f32x4, k: u8) -> f32x4;
+    #[link_name = "llvm.x86.avx10.mask.vminmaxps256"]
+    fn vminmaxps256(a: f32x8, b: f32x8, imm8: i32, src: f32x8, k: u8) -> f32x8;
+    #[link_name = "llvm.x86.avx10.mask.vminmaxps.round"]
+    fn vminmaxps512(a: f32x16, b: f32x16, imm8: i32, src: f32x16, k: u16, sae: i32) -> f32x16;
+
+    #[link_name = "llvm.x86.avx10.mask.vminmaxph128"]
+    fn vminmaxph128(a: f16x8, b: f16x8, imm8: i32, src: f16x8, k: u8) -> f16x8;
+    #[link_name = "llvm.x86.avx10.mask.vminmaxph256"]
+    fn vminmaxph256(a: f16x16, b: f16x16, imm8: i32, src: f16x16, k: u16) -> f16x16;
+    #[link_name = "llvm.x86.avx10.mask.vminmaxph.round"]
+    fn vminmaxph512(a: f16x32, b: f16x32, imm8: i32, src: f16x32, k: u32, sae: i32) -> f16x32;
+
+    #[link_name = "llvm.x86.avx10.mask.vminmaxsd.round"]
+    fn vminmaxsd(a: f64x2, b: f64x2, imm8: i32, src: f64x2, k: u8, sae: i32) -> f64x2;
+    #[link_name = "llvm.x86.avx10.mask.vminmaxss.round"]
+    fn vminmaxss(a: f32x4, b: f32x4, imm8: i32, src: f32x4, k: u8, sae: i32) -> f32x4;
+    #[link_name = "llvm.x86.avx10.mask.vminmaxsh.round"]
+    fn vminmaxsh(a: f16x8, b: f16x8, imm8: i32, src: f16x8, k: u8, sae: i32) -> f16x8;
 }
 
 #[cfg(test)]
@@ -5063,5 +6150,1058 @@ mod tests {
         let r = _mm512_maskz_cvtts_roundps_epu64::<_MM_FROUND_NO_EXC>(0b00001111, a);
         let expected = _mm512_setr_epi64(636, 637, 638, 639, 0, 0, 0, 0);
         assert_eq_m512i(r, expected);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm_minmax_pd() {
+        let a = _mm_setr_pd(1.0, 2.0);
+        let b = _mm_setr_pd(3.0, 0.0);
+
+        let r = _mm_minmax_pd::<0>(a, b);
+        let e = _mm_setr_pd(1.0, 0.0);
+        assert_eq_m128d(r, e);
+
+        let r = _mm_minmax_pd::<1>(a, b);
+        let e = _mm_setr_pd(3.0, 2.0);
+        assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm_mask_minmax_pd() {
+        let a = _mm_setr_pd(1.0, 2.0);
+        let b = _mm_setr_pd(3.0, 0.0);
+        let src = _mm_setr_pd(20.0, 30.0);
+
+        let r = _mm_mask_minmax_pd::<0>(src, 0b01, a, b);
+        let e = _mm_setr_pd(1.0, 30.0);
+        assert_eq_m128d(r, e);
+
+        let r = _mm_mask_minmax_pd::<1>(src, 0b01, a, b);
+        let e = _mm_setr_pd(3.0, 30.0);
+        assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm_maskz_minmax_pd() {
+        let a = _mm_setr_pd(1.0, 2.0);
+        let b = _mm_setr_pd(3.0, 0.0);
+
+        let r = _mm_maskz_minmax_pd::<0>(0b01, a, b);
+        let e = _mm_setr_pd(1.0, 0.0);
+        assert_eq_m128d(r, e);
+
+        let r = _mm_maskz_minmax_pd::<1>(0b01, a, b);
+        let e = _mm_setr_pd(3.0, 0.0);
+        assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm256_minmax_pd() {
+        let a = _mm256_setr_pd(1.0, 2.0, 3.0, 4.0);
+        let b = _mm256_setr_pd(5.0, 6.0, 7.0, 8.0);
+
+        let r = _mm256_minmax_pd::<0>(a, b);
+        let e = _mm256_setr_pd(1.0, 2.0, 3.0, 4.0);
+        assert_eq_m256d(r, e);
+
+        let r = _mm256_minmax_pd::<1>(a, b);
+        let e = _mm256_setr_pd(5.0, 6.0, 7.0, 8.0);
+        assert_eq_m256d(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm256_mask_minmax_pd() {
+        let a = _mm256_setr_pd(1.0, 2.0, 3.0, 4.0);
+        let b = _mm256_setr_pd(5.0, 6.0, 7.0, 8.0);
+        let src = _mm256_setr_pd(20.0, 30.0, 40.0, 50.0);
+
+        let r = _mm256_mask_minmax_pd::<0>(src, 0b0101, a, b);
+        let e = _mm256_setr_pd(1.0, 30.0, 3.0, 50.0);
+        assert_eq_m256d(r, e);
+
+        let r = _mm256_mask_minmax_pd::<1>(src, 0b0101, a, b);
+        let e = _mm256_setr_pd(5.0, 30.0, 7.0, 50.0);
+        assert_eq_m256d(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm256_maskz_minmax_pd() {
+        let a = _mm256_setr_pd(1.0, 2.0, 3.0, 4.0);
+        let b = _mm256_setr_pd(5.0, 6.0, 7.0, 8.0);
+
+        let r = _mm256_maskz_minmax_pd::<0>(0b0101, a, b);
+        let e = _mm256_setr_pd(1.0, 0.0, 3.0, 0.0);
+        assert_eq_m256d(r, e);
+
+        let r = _mm256_maskz_minmax_pd::<1>(0b0101, a, b);
+        let e = _mm256_setr_pd(5.0, 0.0, 7.0, 0.0);
+        assert_eq_m256d(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_minmax_pd() {
+        let a = _mm512_setr_pd(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0);
+        let b = _mm512_setr_pd(9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0);
+
+        let r = _mm512_minmax_pd::<0>(a, b);
+        let e = _mm512_setr_pd(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0);
+        assert_eq_m512d(r, e);
+
+        let r = _mm512_minmax_pd::<1>(a, b);
+        let e = _mm512_setr_pd(9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0);
+        assert_eq_m512d(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_mask_minmax_pd() {
+        let a = _mm512_setr_pd(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0);
+        let b = _mm512_setr_pd(9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0);
+        let src = _mm512_setr_pd(20.0, 30.0, 40.0, 50.0, 60.0, 70.0, 80.0, 90.0);
+
+        let r = _mm512_mask_minmax_pd::<0>(src, 0b01010101, a, b);
+        let e = _mm512_setr_pd(1.0, 30.0, 3.0, 50.0, 5.0, 70.0, 7.0, 90.0);
+        assert_eq_m512d(r, e);
+
+        let r = _mm512_mask_minmax_pd::<1>(src, 0b01010101, a, b);
+        let e = _mm512_setr_pd(9.0, 30.0, 11.0, 50.0, 13.0, 70.0, 15.0, 90.0);
+        assert_eq_m512d(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_maskz_minmax_pd() {
+        let a = _mm512_setr_pd(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0);
+        let b = _mm512_setr_pd(9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0);
+
+        let r = _mm512_maskz_minmax_pd::<0>(0b01010101, a, b);
+        let e = _mm512_setr_pd(1.0, 0.0, 3.0, 0.0, 5.0, 0.0, 7.0, 0.0);
+        assert_eq_m512d(r, e);
+
+        let r = _mm512_maskz_minmax_pd::<1>(0b01010101, a, b);
+        let e = _mm512_setr_pd(9.0, 0.0, 11.0, 0.0, 13.0, 0.0, 15.0, 0.0);
+        assert_eq_m512d(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_minmax_round_pd() {
+        let a = _mm512_setr_pd(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0);
+        let b = _mm512_setr_pd(9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0);
+
+        let r = _mm512_minmax_round_pd::<0, _MM_FROUND_NO_EXC>(a, b);
+        let e = _mm512_setr_pd(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0);
+        assert_eq_m512d(r, e);
+
+        let r = _mm512_minmax_round_pd::<1, _MM_FROUND_NO_EXC>(a, b);
+        let e = _mm512_setr_pd(9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0);
+        assert_eq_m512d(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_mask_minmax_round_pd() {
+        let a = _mm512_setr_pd(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0);
+        let b = _mm512_setr_pd(9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0);
+        let src = _mm512_setr_pd(20.0, 30.0, 40.0, 50.0, 60.0, 70.0, 80.0, 90.0);
+
+        let r = _mm512_mask_minmax_round_pd::<0, _MM_FROUND_NO_EXC>(src, 0b01010101, a, b);
+        let e = _mm512_setr_pd(1.0, 30.0, 3.0, 50.0, 5.0, 70.0, 7.0, 90.0);
+        assert_eq_m512d(r, e);
+
+        let r = _mm512_mask_minmax_round_pd::<1, _MM_FROUND_NO_EXC>(src, 0b01010101, a, b);
+        let e = _mm512_setr_pd(9.0, 30.0, 11.0, 50.0, 13.0, 70.0, 15.0, 90.0);
+        assert_eq_m512d(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_maskz_minmax_round_pd() {
+        let a = _mm512_setr_pd(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0);
+        let b = _mm512_setr_pd(9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0);
+
+        let r = _mm512_maskz_minmax_round_pd::<0, _MM_FROUND_NO_EXC>(0b01010101, a, b);
+        let e = _mm512_setr_pd(1.0, 0.0, 3.0, 0.0, 5.0, 0.0, 7.0, 0.0);
+        assert_eq_m512d(r, e);
+
+        let r = _mm512_maskz_minmax_round_pd::<1, _MM_FROUND_NO_EXC>(0b01010101, a, b);
+        let e = _mm512_setr_pd(9.0, 0.0, 11.0, 0.0, 13.0, 0.0, 15.0, 0.0);
+        assert_eq_m512d(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm_minmax_ps() {
+        let a = _mm_setr_ps(1.0, 2.0, 3.0, 4.0);
+        let b = _mm_setr_ps(5.0, 6.0, 7.0, 8.0);
+
+        let r = _mm_minmax_ps::<0>(a, b);
+        let e = _mm_setr_ps(1.0, 2.0, 3.0, 4.0);
+        assert_eq_m128(r, e);
+
+        let r = _mm_minmax_ps::<1>(a, b);
+        let e = _mm_setr_ps(5.0, 6.0, 7.0, 8.0);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm_mask_minmax_ps() {
+        let a = _mm_setr_ps(1.0, 2.0, 3.0, 4.0);
+        let b = _mm_setr_ps(5.0, 6.0, 7.0, 8.0);
+        let src = _mm_setr_ps(20.0, 30.0, 40.0, 50.0);
+
+        let r = _mm_mask_minmax_ps::<0>(src, 0b0101, a, b);
+        let e = _mm_setr_ps(1.0, 30.0, 3.0, 50.0);
+        assert_eq_m128(r, e);
+
+        let r = _mm_mask_minmax_ps::<1>(src, 0b0101, a, b);
+        let e = _mm_setr_ps(5.0, 30.0, 7.0, 50.0);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm_maskz_minmax_ps() {
+        let a = _mm_setr_ps(1.0, 2.0, 3.0, 4.0);
+        let b = _mm_setr_ps(5.0, 6.0, 7.0, 8.0);
+
+        let r = _mm_maskz_minmax_ps::<0>(0b0101, a, b);
+        let e = _mm_setr_ps(1.0, 0.0, 3.0, 0.0);
+        assert_eq_m128(r, e);
+
+        let r = _mm_maskz_minmax_ps::<1>(0b0101, a, b);
+        let e = _mm_setr_ps(5.0, 0.0, 7.0, 0.0);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm256_minmax_ps() {
+        let a = _mm256_setr_ps(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0);
+        let b = _mm256_setr_ps(9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0);
+
+        let r = _mm256_minmax_ps::<0>(a, b);
+        let e = _mm256_setr_ps(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0);
+        assert_eq_m256(r, e);
+
+        let r = _mm256_minmax_ps::<1>(a, b);
+        let e = _mm256_setr_ps(9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0);
+        assert_eq_m256(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm256_mask_minmax_ps() {
+        let a = _mm256_setr_ps(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0);
+        let b = _mm256_setr_ps(9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0);
+        let src = _mm256_setr_ps(20.0, 30.0, 40.0, 50.0, 60.0, 70.0, 80.0, 90.0);
+
+        let r = _mm256_mask_minmax_ps::<0>(src, 0b01010101, a, b);
+        let e = _mm256_setr_ps(1.0, 30.0, 3.0, 50.0, 5.0, 70.0, 7.0, 90.0);
+        assert_eq_m256(r, e);
+
+        let r = _mm256_mask_minmax_ps::<1>(src, 0b01010101, a, b);
+        let e = _mm256_setr_ps(9.0, 30.0, 11.0, 50.0, 13.0, 70.0, 15.0, 90.0);
+        assert_eq_m256(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm256_maskz_minmax_ps() {
+        let a = _mm256_setr_ps(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0);
+        let b = _mm256_setr_ps(9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0);
+
+        let r = _mm256_maskz_minmax_ps::<0>(0b01010101, a, b);
+        let e = _mm256_setr_ps(1.0, 0.0, 3.0, 0.0, 5.0, 0.0, 7.0, 0.0);
+        assert_eq_m256(r, e);
+
+        let r = _mm256_maskz_minmax_ps::<1>(0b01010101, a, b);
+        let e = _mm256_setr_ps(9.0, 0.0, 11.0, 0.0, 13.0, 0.0, 15.0, 0.0);
+        assert_eq_m256(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_minmax_ps() {
+        let a = _mm512_setr_ps(
+            1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0,
+        );
+        let b = _mm512_setr_ps(
+            17.0, 18.0, 19.0, 20.0, 21.0, 22.0, 23.0, 24.0, 25.0, 26.0, 27.0, 28.0, 29.0, 30.0,
+            31.0, 32.0,
+        );
+
+        let r = _mm512_minmax_ps::<0>(a, b);
+        let e = _mm512_setr_ps(
+            1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0,
+        );
+        assert_eq_m512(r, e);
+
+        let r = _mm512_minmax_ps::<1>(a, b);
+        let e = _mm512_setr_ps(
+            17.0, 18.0, 19.0, 20.0, 21.0, 22.0, 23.0, 24.0, 25.0, 26.0, 27.0, 28.0, 29.0, 30.0,
+            31.0, 32.0,
+        );
+        assert_eq_m512(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_mask_minmax_ps() {
+        let a = _mm512_setr_ps(
+            1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0,
+        );
+        let b = _mm512_setr_ps(
+            17.0, 18.0, 19.0, 20.0, 21.0, 22.0, 23.0, 24.0, 25.0, 26.0, 27.0, 28.0, 29.0, 30.0,
+            31.0, 32.0,
+        );
+        let src = _mm512_setr_ps(
+            20.0, 30.0, 40.0, 50.0, 60.0, 70.0, 80.0, 90.0, 100.0, 110.0, 120.0, 130.0, 140.0,
+            150.0, 160.0, 170.0,
+        );
+
+        let r = _mm512_mask_minmax_ps::<0>(src, 0b0101010101010101, a, b);
+        let e = _mm512_setr_ps(
+            1.0, 30.0, 3.0, 50.0, 5.0, 70.0, 7.0, 90.0, 9.0, 110.0, 11.0, 130.0, 13.0, 150.0, 15.0,
+            170.0,
+        );
+        assert_eq_m512(r, e);
+
+        let r = _mm512_mask_minmax_ps::<1>(src, 0b0101010101010101, a, b);
+        let e = _mm512_setr_ps(
+            17.0, 30.0, 19.0, 50.0, 21.0, 70.0, 23.0, 90.0, 25.0, 110.0, 27.0, 130.0, 29.0, 150.0,
+            31.0, 170.0,
+        );
+        assert_eq_m512(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_maskz_minmax_ps() {
+        let a = _mm512_setr_ps(
+            1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0,
+        );
+        let b = _mm512_setr_ps(
+            17.0, 18.0, 19.0, 20.0, 21.0, 22.0, 23.0, 24.0, 25.0, 26.0, 27.0, 28.0, 29.0, 30.0,
+            31.0, 32.0,
+        );
+
+        let r = _mm512_maskz_minmax_ps::<0>(0b0101010101010101, a, b);
+        let e = _mm512_setr_ps(
+            1.0, 0.0, 3.0, 0.0, 5.0, 0.0, 7.0, 0.0, 9.0, 0.0, 11.0, 0.0, 13.0, 0.0, 15.0, 0.0,
+        );
+        assert_eq_m512(r, e);
+
+        let r = _mm512_maskz_minmax_ps::<1>(0b0101010101010101, a, b);
+        let e = _mm512_setr_ps(
+            17.0, 0.0, 19.0, 0.0, 21.0, 0.0, 23.0, 0.0, 25.0, 0.0, 27.0, 0.0, 29.0, 0.0, 31.0, 0.0,
+        );
+        assert_eq_m512(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_minmax_round_ps() {
+        let a = _mm512_setr_ps(
+            1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0,
+        );
+        let b = _mm512_setr_ps(
+            17.0, 18.0, 19.0, 20.0, 21.0, 22.0, 23.0, 24.0, 25.0, 26.0, 27.0, 28.0, 29.0, 30.0,
+            31.0, 32.0,
+        );
+
+        let r = _mm512_minmax_round_ps::<0, _MM_FROUND_NO_EXC>(a, b);
+        let e = _mm512_setr_ps(
+            1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0,
+        );
+        assert_eq_m512(r, e);
+
+        let r = _mm512_minmax_round_ps::<1, _MM_FROUND_NO_EXC>(a, b);
+        let e = _mm512_setr_ps(
+            17.0, 18.0, 19.0, 20.0, 21.0, 22.0, 23.0, 24.0, 25.0, 26.0, 27.0, 28.0, 29.0, 30.0,
+            31.0, 32.0,
+        );
+        assert_eq_m512(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_mask_minmax_round_ps() {
+        let a = _mm512_setr_ps(
+            1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0,
+        );
+        let b = _mm512_setr_ps(
+            17.0, 18.0, 19.0, 20.0, 21.0, 22.0, 23.0, 24.0, 25.0, 26.0, 27.0, 28.0, 29.0, 30.0,
+            31.0, 32.0,
+        );
+        let src = _mm512_setr_ps(
+            20.0, 30.0, 40.0, 50.0, 60.0, 70.0, 80.0, 90.0, 100.0, 110.0, 120.0, 130.0, 140.0,
+            150.0, 160.0, 170.0,
+        );
+
+        let r = _mm512_mask_minmax_round_ps::<0, _MM_FROUND_NO_EXC>(src, 0b0101010101010101, a, b);
+        let e = _mm512_setr_ps(
+            1.0, 30.0, 3.0, 50.0, 5.0, 70.0, 7.0, 90.0, 9.0, 110.0, 11.0, 130.0, 13.0, 150.0, 15.0,
+            170.0,
+        );
+        assert_eq_m512(r, e);
+
+        let r = _mm512_mask_minmax_round_ps::<1, _MM_FROUND_NO_EXC>(src, 0b0101010101010101, a, b);
+        let e = _mm512_setr_ps(
+            17.0, 30.0, 19.0, 50.0, 21.0, 70.0, 23.0, 90.0, 25.0, 110.0, 27.0, 130.0, 29.0, 150.0,
+            31.0, 170.0,
+        );
+        assert_eq_m512(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_maskz_minmax_round_ps() {
+        let a = _mm512_setr_ps(
+            1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0,
+        );
+        let b = _mm512_setr_ps(
+            17.0, 18.0, 19.0, 20.0, 21.0, 22.0, 23.0, 24.0, 25.0, 26.0, 27.0, 28.0, 29.0, 30.0,
+            31.0, 32.0,
+        );
+
+        let r = _mm512_maskz_minmax_round_ps::<0, _MM_FROUND_NO_EXC>(0b0101010101010101, a, b);
+        let e = _mm512_setr_ps(
+            1.0, 0.0, 3.0, 0.0, 5.0, 0.0, 7.0, 0.0, 9.0, 0.0, 11.0, 0.0, 13.0, 0.0, 15.0, 0.0,
+        );
+        assert_eq_m512(r, e);
+
+        let r = _mm512_maskz_minmax_round_ps::<1, _MM_FROUND_NO_EXC>(0b0101010101010101, a, b);
+        let e = _mm512_setr_ps(
+            17.0, 0.0, 19.0, 0.0, 21.0, 0.0, 23.0, 0.0, 25.0, 0.0, 27.0, 0.0, 29.0, 0.0, 31.0, 0.0,
+        );
+        assert_eq_m512(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm_minmax_ph() {
+        let a = _mm_setr_ph(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0);
+        let b = _mm_setr_ph(9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0);
+
+        let r = _mm_minmax_ph::<0>(a, b);
+        let e = _mm_setr_ph(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0);
+        assert_eq_m128h(r, e);
+
+        let r = _mm_minmax_ph::<1>(a, b);
+        let e = _mm_setr_ph(9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0);
+        assert_eq_m128h(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm_mask_minmax_ph() {
+        let a = _mm_setr_ph(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0);
+        let b = _mm_setr_ph(9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0);
+        let src = _mm_setr_ph(20.0, 30.0, 40.0, 50.0, 60.0, 70.0, 80.0, 90.0);
+
+        let r = _mm_mask_minmax_ph::<0>(src, 0b01010101, a, b);
+        let e = _mm_setr_ph(1.0, 30.0, 3.0, 50.0, 5.0, 70.0, 7.0, 90.0);
+        assert_eq_m128h(r, e);
+
+        let r = _mm_mask_minmax_ph::<1>(src, 0b01010101, a, b);
+        let e = _mm_setr_ph(9.0, 30.0, 11.0, 50.0, 13.0, 70.0, 15.0, 90.0);
+        assert_eq_m128h(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm_maskz_minmax_ph() {
+        let a = _mm_setr_ph(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0);
+        let b = _mm_setr_ph(9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0);
+
+        let r = _mm_maskz_minmax_ph::<0>(0b01010101, a, b);
+        let e = _mm_setr_ph(1.0, 0.0, 3.0, 0.0, 5.0, 0.0, 7.0, 0.0);
+        assert_eq_m128h(r, e);
+
+        let r = _mm_maskz_minmax_ph::<1>(0b01010101, a, b);
+        let e = _mm_setr_ph(9.0, 0.0, 11.0, 0.0, 13.0, 0.0, 15.0, 0.0);
+        assert_eq_m128h(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm256_minmax_ph() {
+        let a = _mm256_setr_ph(
+            1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0,
+        );
+        let b = _mm256_setr_ph(
+            17.0, 18.0, 19.0, 20.0, 21.0, 22.0, 23.0, 24.0, 25.0, 26.0, 27.0, 28.0, 29.0, 30.0,
+            31.0, 32.0,
+        );
+
+        let r = _mm256_minmax_ph::<0>(a, b);
+        let e = _mm256_setr_ph(
+            1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0,
+        );
+        assert_eq_m256h(r, e);
+
+        let r = _mm256_minmax_ph::<1>(a, b);
+        let e = _mm256_setr_ph(
+            17.0, 18.0, 19.0, 20.0, 21.0, 22.0, 23.0, 24.0, 25.0, 26.0, 27.0, 28.0, 29.0, 30.0,
+            31.0, 32.0,
+        );
+        assert_eq_m256h(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm256_mask_minmax_ph() {
+        let a = _mm256_setr_ph(
+            1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0,
+        );
+        let b = _mm256_setr_ph(
+            17.0, 18.0, 19.0, 20.0, 21.0, 22.0, 23.0, 24.0, 25.0, 26.0, 27.0, 28.0, 29.0, 30.0,
+            31.0, 32.0,
+        );
+        let src = _mm256_setr_ph(
+            20.0, 30.0, 40.0, 50.0, 60.0, 70.0, 80.0, 90.0, 100.0, 110.0, 120.0, 130.0, 140.0,
+            150.0, 160.0, 170.0,
+        );
+
+        let r = _mm256_mask_minmax_ph::<0>(src, 0b0101010101010101, a, b);
+        let e = _mm256_setr_ph(
+            1.0, 30.0, 3.0, 50.0, 5.0, 70.0, 7.0, 90.0, 9.0, 110.0, 11.0, 130.0, 13.0, 150.0, 15.0,
+            170.0,
+        );
+        assert_eq_m256h(r, e);
+
+        let r = _mm256_mask_minmax_ph::<1>(src, 0b0101010101010101, a, b);
+        let e = _mm256_setr_ph(
+            17.0, 30.0, 19.0, 50.0, 21.0, 70.0, 23.0, 90.0, 25.0, 110.0, 27.0, 130.0, 29.0, 150.0,
+            31.0, 170.0,
+        );
+        assert_eq_m256h(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm256_maskz_minmax_ph() {
+        let a = _mm256_setr_ph(
+            1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0,
+        );
+        let b = _mm256_setr_ph(
+            17.0, 18.0, 19.0, 20.0, 21.0, 22.0, 23.0, 24.0, 25.0, 26.0, 27.0, 28.0, 29.0, 30.0,
+            31.0, 32.0,
+        );
+
+        let r = _mm256_maskz_minmax_ph::<0>(0b0101010101010101, a, b);
+        let e = _mm256_setr_ph(
+            1.0, 0.0, 3.0, 0.0, 5.0, 0.0, 7.0, 0.0, 9.0, 0.0, 11.0, 0.0, 13.0, 0.0, 15.0, 0.0,
+        );
+        assert_eq_m256h(r, e);
+
+        let r = _mm256_maskz_minmax_ph::<1>(0b0101010101010101, a, b);
+        let e = _mm256_setr_ph(
+            17.0, 0.0, 19.0, 0.0, 21.0, 0.0, 23.0, 0.0, 25.0, 0.0, 27.0, 0.0, 29.0, 0.0, 31.0, 0.0,
+        );
+        assert_eq_m256h(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_minmax_ph() {
+        let a = _mm512_setr_ph(
+            1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0,
+            17.0, 18.0, 19.0, 20.0, 21.0, 22.0, 23.0, 24.0, 25.0, 26.0, 27.0, 28.0, 29.0, 30.0,
+            31.0, 32.0,
+        );
+        let b = _mm512_setr_ph(
+            33.0, 34.0, 35.0, 36.0, 37.0, 38.0, 39.0, 40.0, 41.0, 42.0, 43.0, 44.0, 45.0, 46.0,
+            47.0, 48.0, 49.0, 50.0, 51.0, 52.0, 53.0, 54.0, 55.0, 56.0, 57.0, 58.0, 59.0, 60.0,
+            61.0, 62.0, 63.0, 64.0,
+        );
+
+        let r = _mm512_minmax_ph::<0>(a, b);
+        let e = _mm512_setr_ph(
+            1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0,
+            17.0, 18.0, 19.0, 20.0, 21.0, 22.0, 23.0, 24.0, 25.0, 26.0, 27.0, 28.0, 29.0, 30.0,
+            31.0, 32.0,
+        );
+        assert_eq_m512h(r, e);
+
+        let r = _mm512_minmax_ph::<1>(a, b);
+        let e = _mm512_setr_ph(
+            33.0, 34.0, 35.0, 36.0, 37.0, 38.0, 39.0, 40.0, 41.0, 42.0, 43.0, 44.0, 45.0, 46.0,
+            47.0, 48.0, 49.0, 50.0, 51.0, 52.0, 53.0, 54.0, 55.0, 56.0, 57.0, 58.0, 59.0, 60.0,
+            61.0, 62.0, 63.0, 64.0,
+        );
+        assert_eq_m512h(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_mask_minmax_ph() {
+        let a = _mm512_setr_ph(
+            1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0,
+            17.0, 18.0, 19.0, 20.0, 21.0, 22.0, 23.0, 24.0, 25.0, 26.0, 27.0, 28.0, 29.0, 30.0,
+            31.0, 32.0,
+        );
+        let b = _mm512_setr_ph(
+            33.0, 34.0, 35.0, 36.0, 37.0, 38.0, 39.0, 40.0, 41.0, 42.0, 43.0, 44.0, 45.0, 46.0,
+            47.0, 48.0, 49.0, 50.0, 51.0, 52.0, 53.0, 54.0, 55.0, 56.0, 57.0, 58.0, 59.0, 60.0,
+            61.0, 62.0, 63.0, 64.0,
+        );
+        let src = _mm512_setr_ph(
+            65.0, 66.0, 67.0, 68.0, 69.0, 70.0, 71.0, 72.0, 73.0, 74.0, 75.0, 76.0, 77.0, 78.0,
+            79.0, 80.0, 81.0, 82.0, 83.0, 84.0, 85.0, 86.0, 87.0, 88.0, 89.0, 90.0, 91.0, 92.0,
+            93.0, 94.0, 95.0, 96.0,
+        );
+
+        let r = _mm512_mask_minmax_ph::<0>(src, 0b01010101010101010101010101010101, a, b);
+        let e = _mm512_setr_ph(
+            1.0, 66.0, 3.0, 68.0, 5.0, 70.0, 7.0, 72.0, 9.0, 74.0, 11.0, 76.0, 13.0, 78.0, 15.0,
+            80.0, 17.0, 82.0, 19.0, 84.0, 21.0, 86.0, 23.0, 88.0, 25.0, 90.0, 27.0, 92.0, 29.0,
+            94.0, 31.0, 96.0,
+        );
+        assert_eq_m512h(r, e);
+
+        let r = _mm512_mask_minmax_ph::<1>(src, 0b01010101010101010101010101010101, a, b);
+        let e = _mm512_setr_ph(
+            33.0, 66.0, 35.0, 68.0, 37.0, 70.0, 39.0, 72.0, 41.0, 74.0, 43.0, 76.0, 45.0, 78.0,
+            47.0, 80.0, 49.0, 82.0, 51.0, 84.0, 53.0, 86.0, 55.0, 88.0, 57.0, 90.0, 59.0, 92.0,
+            61.0, 94.0, 63.0, 96.0,
+        );
+        assert_eq_m512h(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_maskz_minmax_ph() {
+        let a = _mm512_setr_ph(
+            1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0,
+            17.0, 18.0, 19.0, 20.0, 21.0, 22.0, 23.0, 24.0, 25.0, 26.0, 27.0, 28.0, 29.0, 30.0,
+            31.0, 32.0,
+        );
+        let b = _mm512_setr_ph(
+            33.0, 34.0, 35.0, 36.0, 37.0, 38.0, 39.0, 40.0, 41.0, 42.0, 43.0, 44.0, 45.0, 46.0,
+            47.0, 48.0, 49.0, 50.0, 51.0, 52.0, 53.0, 54.0, 55.0, 56.0, 57.0, 58.0, 59.0, 60.0,
+            61.0, 62.0, 63.0, 64.0,
+        );
+
+        let r = _mm512_maskz_minmax_ph::<0>(0b01010101010101010101010101010101, a, b);
+        let e = _mm512_setr_ph(
+            1.0, 0.0, 3.0, 0.0, 5.0, 0.0, 7.0, 0.0, 9.0, 0.0, 11.0, 0.0, 13.0, 0.0, 15.0, 0.0,
+            17.0, 0.0, 19.0, 0.0, 21.0, 0.0, 23.0, 0.0, 25.0, 0.0, 27.0, 0.0, 29.0, 0.0, 31.0, 0.0,
+        );
+        assert_eq_m512h(r, e);
+
+        let r = _mm512_maskz_minmax_ph::<1>(0b01010101010101010101010101010101, a, b);
+        let e = _mm512_setr_ph(
+            33.0, 0.0, 35.0, 0.0, 37.0, 0.0, 39.0, 0.0, 41.0, 0.0, 43.0, 0.0, 45.0, 0.0, 47.0, 0.0,
+            49.0, 0.0, 51.0, 0.0, 53.0, 0.0, 55.0, 0.0, 57.0, 0.0, 59.0, 0.0, 61.0, 0.0, 63.0, 0.0,
+        );
+        assert_eq_m512h(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_minmax_round_ph() {
+        let a = _mm512_setr_ph(
+            1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0,
+            17.0, 18.0, 19.0, 20.0, 21.0, 22.0, 23.0, 24.0, 25.0, 26.0, 27.0, 28.0, 29.0, 30.0,
+            31.0, 32.0,
+        );
+        let b = _mm512_setr_ph(
+            33.0, 34.0, 35.0, 36.0, 37.0, 38.0, 39.0, 40.0, 41.0, 42.0, 43.0, 44.0, 45.0, 46.0,
+            47.0, 48.0, 49.0, 50.0, 51.0, 52.0, 53.0, 54.0, 55.0, 56.0, 57.0, 58.0, 59.0, 60.0,
+            61.0, 62.0, 63.0, 64.0,
+        );
+
+        let r = _mm512_minmax_round_ph::<0, _MM_FROUND_NO_EXC>(a, b);
+        let e = _mm512_setr_ph(
+            1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0,
+            17.0, 18.0, 19.0, 20.0, 21.0, 22.0, 23.0, 24.0, 25.0, 26.0, 27.0, 28.0, 29.0, 30.0,
+            31.0, 32.0,
+        );
+        assert_eq_m512h(r, e);
+
+        let r = _mm512_minmax_round_ph::<1, _MM_FROUND_NO_EXC>(a, b);
+        let e = _mm512_setr_ph(
+            33.0, 34.0, 35.0, 36.0, 37.0, 38.0, 39.0, 40.0, 41.0, 42.0, 43.0, 44.0, 45.0, 46.0,
+            47.0, 48.0, 49.0, 50.0, 51.0, 52.0, 53.0, 54.0, 55.0, 56.0, 57.0, 58.0, 59.0, 60.0,
+            61.0, 62.0, 63.0, 64.0,
+        );
+        assert_eq_m512h(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_mask_minmax_round_ph() {
+        let a = _mm512_setr_ph(
+            1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0,
+            17.0, 18.0, 19.0, 20.0, 21.0, 22.0, 23.0, 24.0, 25.0, 26.0, 27.0, 28.0, 29.0, 30.0,
+            31.0, 32.0,
+        );
+        let b = _mm512_setr_ph(
+            33.0, 34.0, 35.0, 36.0, 37.0, 38.0, 39.0, 40.0, 41.0, 42.0, 43.0, 44.0, 45.0, 46.0,
+            47.0, 48.0, 49.0, 50.0, 51.0, 52.0, 53.0, 54.0, 55.0, 56.0, 57.0, 58.0, 59.0, 60.0,
+            61.0, 62.0, 63.0, 64.0,
+        );
+        let src = _mm512_setr_ph(
+            65.0, 66.0, 67.0, 68.0, 69.0, 70.0, 71.0, 72.0, 73.0, 74.0, 75.0, 76.0, 77.0, 78.0,
+            79.0, 80.0, 81.0, 82.0, 83.0, 84.0, 85.0, 86.0, 87.0, 88.0, 89.0, 90.0, 91.0, 92.0,
+            93.0, 94.0, 95.0, 96.0,
+        );
+
+        let r = _mm512_mask_minmax_round_ph::<0, _MM_FROUND_NO_EXC>(
+            src,
+            0b01010101010101010101010101010101,
+            a,
+            b,
+        );
+        let e = _mm512_setr_ph(
+            1.0, 66.0, 3.0, 68.0, 5.0, 70.0, 7.0, 72.0, 9.0, 74.0, 11.0, 76.0, 13.0, 78.0, 15.0,
+            80.0, 17.0, 82.0, 19.0, 84.0, 21.0, 86.0, 23.0, 88.0, 25.0, 90.0, 27.0, 92.0, 29.0,
+            94.0, 31.0, 96.0,
+        );
+        assert_eq_m512h(r, e);
+
+        let r = _mm512_mask_minmax_round_ph::<1, _MM_FROUND_NO_EXC>(
+            src,
+            0b01010101010101010101010101010101,
+            a,
+            b,
+        );
+        let e = _mm512_setr_ph(
+            33.0, 66.0, 35.0, 68.0, 37.0, 70.0, 39.0, 72.0, 41.0, 74.0, 43.0, 76.0, 45.0, 78.0,
+            47.0, 80.0, 49.0, 82.0, 51.0, 84.0, 53.0, 86.0, 55.0, 88.0, 57.0, 90.0, 59.0, 92.0,
+            61.0, 94.0, 63.0, 96.0,
+        );
+        assert_eq_m512h(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_maskz_minmax_round_ph() {
+        let a = _mm512_setr_ph(
+            1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0,
+            17.0, 18.0, 19.0, 20.0, 21.0, 22.0, 23.0, 24.0, 25.0, 26.0, 27.0, 28.0, 29.0, 30.0,
+            31.0, 32.0,
+        );
+        let b = _mm512_setr_ph(
+            33.0, 34.0, 35.0, 36.0, 37.0, 38.0, 39.0, 40.0, 41.0, 42.0, 43.0, 44.0, 45.0, 46.0,
+            47.0, 48.0, 49.0, 50.0, 51.0, 52.0, 53.0, 54.0, 55.0, 56.0, 57.0, 58.0, 59.0, 60.0,
+            61.0, 62.0, 63.0, 64.0,
+        );
+
+        let r = _mm512_maskz_minmax_round_ph::<0, _MM_FROUND_NO_EXC>(
+            0b01010101010101010101010101010101,
+            a,
+            b,
+        );
+        let e = _mm512_setr_ph(
+            1.0, 0.0, 3.0, 0.0, 5.0, 0.0, 7.0, 0.0, 9.0, 0.0, 11.0, 0.0, 13.0, 0.0, 15.0, 0.0,
+            17.0, 0.0, 19.0, 0.0, 21.0, 0.0, 23.0, 0.0, 25.0, 0.0, 27.0, 0.0, 29.0, 0.0, 31.0, 0.0,
+        );
+        assert_eq_m512h(r, e);
+
+        let r = _mm512_maskz_minmax_round_ph::<1, _MM_FROUND_NO_EXC>(
+            0b01010101010101010101010101010101,
+            a,
+            b,
+        );
+        let e = _mm512_setr_ph(
+            33.0, 0.0, 35.0, 0.0, 37.0, 0.0, 39.0, 0.0, 41.0, 0.0, 43.0, 0.0, 45.0, 0.0, 47.0, 0.0,
+            49.0, 0.0, 51.0, 0.0, 53.0, 0.0, 55.0, 0.0, 57.0, 0.0, 59.0, 0.0, 61.0, 0.0, 63.0, 0.0,
+        );
+        assert_eq_m512h(r, e);
+    }
+
+    // FIXME: the following tests do not pass due to a LLVM miscompilation bug. See llvm/llvm-project#184245
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm_minmax_sd() {
+        let a = _mm_setr_pd(1.0, 2.0);
+        let b = _mm_setr_pd(3.0, 4.0);
+
+        let r = _mm_minmax_sd::<0>(a, b);
+        let e = _mm_setr_pd(1.0, 2.0);
+        assert_eq_m128d(r, e);
+
+        let r = _mm_minmax_sd::<1>(a, b);
+        let e = _mm_setr_pd(3.0, 2.0);
+        assert_eq_m128d(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm_mask_minmax_sd() {
+        let a = _mm_setr_pd(1.0, 2.0);
+        let b = _mm_setr_pd(3.0, 4.0);
+        let src = _mm_setr_pd(20.0, 30.0);
+
+        let r = _mm_mask_minmax_sd::<0>(src, 1, a, b);
+        let e = _mm_setr_pd(1.0, 2.0);
+        assert_eq_m128d(r, e);
+
+        let r = _mm_mask_minmax_sd::<0>(src, 0, a, b);
+        let e = _mm_setr_pd(20.0, 2.0);
+        assert_eq_m128d(r, e);
+
+        let r = _mm_mask_minmax_sd::<1>(src, 1, a, b);
+        let e = _mm_setr_pd(3.0, 2.0);
+        assert_eq_m128d(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm_maskz_minmax_sd() {
+        let a = _mm_setr_pd(1.0, 2.0);
+        let b = _mm_setr_pd(3.0, 4.0);
+
+        let r = _mm_maskz_minmax_sd::<0>(1, a, b);
+        let e = _mm_setr_pd(1.0, 2.0);
+        assert_eq_m128d(r, e);
+
+        let r = _mm_maskz_minmax_sd::<0>(0, a, b);
+        let e = _mm_setr_pd(0.0, 2.0);
+        assert_eq_m128d(r, e);
+
+        let r = _mm_maskz_minmax_sd::<1>(1, a, b);
+        let e = _mm_setr_pd(3.0, 2.0);
+        assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm_minmax_round_sd() {
+        let a = _mm_setr_pd(1.0, 2.0);
+        let b = _mm_setr_pd(3.0, 4.0);
+
+        let r = _mm_minmax_round_sd::<0, _MM_FROUND_NO_EXC>(a, b);
+        let e = _mm_setr_pd(1.0, 2.0);
+        assert_eq_m128d(r, e);
+
+        let r = _mm_minmax_round_sd::<1, _MM_FROUND_NO_EXC>(a, b);
+        let e = _mm_setr_pd(3.0, 2.0);
+        assert_eq_m128d(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm_mask_minmax_round_sd() {
+        let a = _mm_setr_pd(1.0, 2.0);
+        let b = _mm_setr_pd(3.0, 4.0);
+        let src = _mm_setr_pd(20.0, 30.0);
+
+        let r = _mm_mask_minmax_round_sd::<0, _MM_FROUND_NO_EXC>(src, 1, a, b);
+        let e = _mm_setr_pd(1.0, 2.0);
+        assert_eq_m128d(r, e);
+
+        let r = _mm_mask_minmax_round_sd::<0, _MM_FROUND_NO_EXC>(src, 0, a, b);
+        let e = _mm_setr_pd(20.0, 2.0);
+        assert_eq_m128d(r, e);
+
+        let r = _mm_mask_minmax_round_sd::<1, _MM_FROUND_NO_EXC>(src, 1, a, b);
+        let e = _mm_setr_pd(3.0, 2.0);
+        assert_eq_m128d(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm_maskz_minmax_round_sd() {
+        let a = _mm_setr_pd(1.0, 2.0);
+        let b = _mm_setr_pd(3.0, 4.0);
+
+        let r = _mm_maskz_minmax_round_sd::<0, _MM_FROUND_NO_EXC>(1, a, b);
+        let e = _mm_setr_pd(1.0, 2.0);
+        assert_eq_m128d(r, e);
+
+        let r = _mm_maskz_minmax_round_sd::<0, _MM_FROUND_NO_EXC>(0, a, b);
+        let e = _mm_setr_pd(0.0, 2.0);
+        assert_eq_m128d(r, e);
+
+        let r = _mm_maskz_minmax_round_sd::<1, _MM_FROUND_NO_EXC>(1, a, b);
+        let e = _mm_setr_pd(3.0, 2.0);
+        assert_eq_m128d(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm_minmax_ss() {
+        let a = _mm_setr_ps(1.0, 2.0, 3.0, 4.0);
+        let b = _mm_setr_ps(5.0, 6.0, 7.0, 8.0);
+
+        let r = _mm_minmax_ss::<0>(a, b);
+        let e = _mm_setr_ps(1.0, 2.0, 3.0, 4.0);
+        assert_eq_m128(r, e);
+
+        let r = _mm_minmax_ss::<1>(a, b);
+        let e = _mm_setr_ps(5.0, 2.0, 3.0, 4.0);
+        assert_eq_m128(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm_mask_minmax_ss() {
+        let a = _mm_setr_ps(1.0, 2.0, 3.0, 4.0);
+        let b = _mm_setr_ps(5.0, 6.0, 7.0, 8.0);
+        let src = _mm_setr_ps(20.0, 30.0, 40.0, 50.0);
+
+        let r = _mm_mask_minmax_ss::<0>(src, 1, a, b);
+        let e = _mm_setr_ps(1.0, 2.0, 3.0, 4.0);
+        assert_eq_m128(r, e);
+
+        let r = _mm_mask_minmax_ss::<0>(src, 0, a, b);
+        let e = _mm_setr_ps(20.0, 2.0, 3.0, 4.0);
+        assert_eq_m128(r, e);
+
+        let r = _mm_mask_minmax_ss::<1>(src, 1, a, b);
+        let e = _mm_setr_ps(5.0, 2.0, 3.0, 4.0);
+        assert_eq_m128(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm_maskz_minmax_ss() {
+        let a = _mm_setr_ps(1.0, 2.0, 3.0, 4.0);
+        let b = _mm_setr_ps(5.0, 6.0, 7.0, 8.0);
+
+        let r = _mm_maskz_minmax_ss::<0>(1, a, b);
+        let e = _mm_setr_ps(1.0, 2.0, 3.0, 4.0);
+        assert_eq_m128(r, e);
+
+        let r = _mm_maskz_minmax_ss::<0>(0, a, b);
+        let e = _mm_setr_ps(0.0, 2.0, 3.0, 4.0);
+        assert_eq_m128(r, e);
+
+        let r = _mm_maskz_minmax_ss::<1>(1, a, b);
+        let e = _mm_setr_ps(5.0, 2.0, 3.0, 4.0);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm_minmax_round_ss() {
+        let a = _mm_setr_ps(1.0, 2.0, 3.0, 4.0);
+        let b = _mm_setr_ps(5.0, 6.0, 7.0, 8.0);
+
+        let r = _mm_minmax_round_ss::<0, _MM_FROUND_NO_EXC>(a, b);
+        let e = _mm_setr_ps(1.0, 2.0, 3.0, 4.0);
+        assert_eq_m128(r, e);
+
+        let r = _mm_minmax_round_ss::<1, _MM_FROUND_NO_EXC>(a, b);
+        let e = _mm_setr_ps(5.0, 2.0, 3.0, 4.0);
+        assert_eq_m128(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm_mask_minmax_round_ss() {
+        let a = _mm_setr_ps(1.0, 2.0, 3.0, 4.0);
+        let b = _mm_setr_ps(5.0, 6.0, 7.0, 8.0);
+        let src = _mm_setr_ps(20.0, 30.0, 40.0, 50.0);
+
+        let r = _mm_mask_minmax_round_ss::<0, _MM_FROUND_NO_EXC>(src, 1, a, b);
+        let e = _mm_setr_ps(1.0, 2.0, 3.0, 4.0);
+        assert_eq_m128(r, e);
+
+        let r = _mm_mask_minmax_round_ss::<0, _MM_FROUND_NO_EXC>(src, 0, a, b);
+        let e = _mm_setr_ps(20.0, 2.0, 3.0, 4.0);
+        assert_eq_m128(r, e);
+
+        let r = _mm_mask_minmax_round_ss::<1, _MM_FROUND_NO_EXC>(src, 1, a, b);
+        let e = _mm_setr_ps(5.0, 2.0, 3.0, 4.0);
+        assert_eq_m128(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm_maskz_minmax_round_ss() {
+        let a = _mm_setr_ps(1.0, 2.0, 3.0, 4.0);
+        let b = _mm_setr_ps(5.0, 6.0, 7.0, 8.0);
+
+        let r = _mm_maskz_minmax_round_ss::<0, _MM_FROUND_NO_EXC>(1, a, b);
+        let e = _mm_setr_ps(1.0, 2.0, 3.0, 4.0);
+        assert_eq_m128(r, e);
+
+        let r = _mm_maskz_minmax_round_ss::<0, _MM_FROUND_NO_EXC>(0, a, b);
+        let e = _mm_setr_ps(0.0, 2.0, 3.0, 4.0);
+        assert_eq_m128(r, e);
+
+        let r = _mm_maskz_minmax_round_ss::<1, _MM_FROUND_NO_EXC>(1, a, b);
+        let e = _mm_setr_ps(5.0, 2.0, 3.0, 4.0);
+        assert_eq_m128(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm_minmax_sh() {
+        let a = _mm_setr_ph(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0);
+        let b = _mm_setr_ph(9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0);
+
+        let r = _mm_minmax_sh::<0>(a, b);
+        let e = _mm_setr_ph(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0);
+        assert_eq_m128h(r, e);
+
+        let r = _mm_minmax_sh::<1>(a, b);
+        let e = _mm_setr_ph(9.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0);
+        assert_eq_m128h(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm_mask_minmax_sh() {
+        let a = _mm_setr_ph(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0);
+        let b = _mm_setr_ph(9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0);
+        let src = _mm_setr_ph(20.0, 30.0, 40.0, 50.0, 60.0, 70.0, 80.0, 90.0);
+
+        let r = _mm_mask_minmax_sh::<0>(src, 1, a, b);
+        let e = _mm_setr_ph(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0);
+        assert_eq_m128h(r, e);
+
+        let r = _mm_mask_minmax_sh::<0>(src, 0, a, b);
+        let e = _mm_setr_ph(20.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0);
+        assert_eq_m128h(r, e);
+
+        let r = _mm_mask_minmax_sh::<1>(src, 1, a, b);
+        let e = _mm_setr_ph(9.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0);
+        assert_eq_m128h(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm_maskz_minmax_sh() {
+        let a = _mm_setr_ph(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0);
+        let b = _mm_setr_ph(9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0);
+
+        let r = _mm_maskz_minmax_sh::<0>(1, a, b);
+        let e = _mm_setr_ph(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0);
+        assert_eq_m128h(r, e);
+
+        let r = _mm_maskz_minmax_sh::<0>(0, a, b);
+        let e = _mm_setr_ph(0.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0);
+        assert_eq_m128h(r, e);
+
+        let r = _mm_maskz_minmax_sh::<1>(1, a, b);
+        let e = _mm_setr_ph(9.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0);
+        assert_eq_m128h(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm_minmax_round_sh() {
+        let a = _mm_setr_ph(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0);
+        let b = _mm_setr_ph(9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0);
+
+        let r = _mm_minmax_round_sh::<0, _MM_FROUND_NO_EXC>(a, b);
+        let e = _mm_setr_ph(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0);
+        assert_eq_m128h(r, e);
+
+        let r = _mm_minmax_round_sh::<1, _MM_FROUND_NO_EXC>(a, b);
+        let e = _mm_setr_ph(9.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0);
+        assert_eq_m128h(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm_mask_minmax_round_sh() {
+        let a = _mm_setr_ph(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0);
+        let b = _mm_setr_ph(9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0);
+        let src = _mm_setr_ph(20.0, 30.0, 40.0, 50.0, 60.0, 70.0, 80.0, 90.0);
+
+        let r = _mm_mask_minmax_round_sh::<0, _MM_FROUND_NO_EXC>(src, 1, a, b);
+        let e = _mm_setr_ph(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0);
+        assert_eq_m128h(r, e);
+
+        let r = _mm_mask_minmax_round_sh::<0, _MM_FROUND_NO_EXC>(src, 0, a, b);
+        let e = _mm_setr_ph(20.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0);
+        assert_eq_m128h(r, e);
+
+        let r = _mm_mask_minmax_round_sh::<1, _MM_FROUND_NO_EXC>(src, 1, a, b);
+        let e = _mm_setr_ph(9.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0);
+        assert_eq_m128h(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm_maskz_minmax_round_sh() {
+        let a = _mm_setr_ph(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0);
+        let b = _mm_setr_ph(9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0);
+
+        let r = _mm_maskz_minmax_round_sh::<0, _MM_FROUND_NO_EXC>(1, a, b);
+        let e = _mm_setr_ph(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0);
+        assert_eq_m128h(r, e);
+
+        let r = _mm_maskz_minmax_round_sh::<0, _MM_FROUND_NO_EXC>(0, a, b);
+        let e = _mm_setr_ph(0.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0);
+        assert_eq_m128h(r, e);
+
+        let r = _mm_maskz_minmax_round_sh::<1, _MM_FROUND_NO_EXC>(1, a, b);
+        let e = _mm_setr_ph(9.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0);
+        assert_eq_m128h(r, e);
     }
 }
