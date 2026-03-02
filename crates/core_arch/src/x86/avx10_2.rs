@@ -373,7 +373,7 @@ pub fn _mm512_maskz_dpph_ps(k: __mmask16, src: __m512, a: __m512h, b: __m512h) -
 /// corresponding 32-bit integer in src, and store the packed 32-bit results in dst using writemask `k`
 /// (elements are copied from src when the corresponding mask bit is not set)
 #[inline]
-#[target_feature(enable = "avx10.2")]
+#[target_feature(enable = "avx10.2,avxvnniint8")]
 #[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
 #[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vpdpbssd))]
 pub fn _mm_mask_dpbssd_epi32(src: __m128i, k: __mmask8, a: __m128i, b: __m128i) -> __m128i {
@@ -387,7 +387,7 @@ pub fn _mm_mask_dpbssd_epi32(src: __m128i, k: __mmask8, a: __m128i, b: __m128i) 
 /// corresponding 32-bit integer in src, and store the packed 32-bit results in dst using zeromask `k`
 /// (elements are zeroed out when the corresponding mask bit is not set)
 #[inline]
-#[target_feature(enable = "avx10.2")]
+#[target_feature(enable = "avx10.2,avxvnniint8")]
 #[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
 #[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vpdpbssd))]
 pub fn _mm_maskz_dpbssd_epi32(k: __mmask8, src: __m128i, a: __m128i, b: __m128i) -> __m128i {
@@ -401,7 +401,7 @@ pub fn _mm_maskz_dpbssd_epi32(k: __mmask8, src: __m128i, a: __m128i, b: __m128i)
 /// corresponding 32-bit integer in src, and store the packed 32-bit results in dst using writemask `k`
 /// (elements are copied from src when the corresponding mask bit is not set)
 #[inline]
-#[target_feature(enable = "avx10.2")]
+#[target_feature(enable = "avx10.2,avxvnniint8")]
 #[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
 #[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vpdpbssd))]
 pub fn _mm256_mask_dpbssd_epi32(src: __m256i, k: __mmask8, a: __m256i, b: __m256i) -> __m256i {
@@ -415,7 +415,7 @@ pub fn _mm256_mask_dpbssd_epi32(src: __m256i, k: __mmask8, a: __m256i, b: __m256
 /// corresponding 32-bit integer in src, and store the packed 32-bit results in dst using zeromask `k`
 /// (elements are zeroed out when the corresponding mask bit is not set)
 #[inline]
-#[target_feature(enable = "avx10.2")]
+#[target_feature(enable = "avx10.2,avxvnniint8")]
 #[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
 #[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vpdpbssd))]
 pub fn _mm256_maskz_dpbssd_epi32(k: __mmask8, src: __m256i, a: __m256i, b: __m256i) -> __m256i {
@@ -473,7 +473,7 @@ pub fn _mm512_maskz_dpbssd_epi32(k: __mmask16, src: __m512i, a: __m512i, b: __m5
 /// corresponding 32-bit integer in src with signed saturation, and store the packed 32-bit results
 /// in dst using writemask `k` (elements are copied from src when the corresponding mask bit is not set)
 #[inline]
-#[target_feature(enable = "avx10.2")]
+#[target_feature(enable = "avx10.2,avxvnniint8")]
 #[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
 #[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vpdpbssds))]
 pub fn _mm_mask_dpbssds_epi32(src: __m128i, k: __mmask8, a: __m128i, b: __m128i) -> __m128i {
@@ -487,7 +487,7 @@ pub fn _mm_mask_dpbssds_epi32(src: __m128i, k: __mmask8, a: __m128i, b: __m128i)
 /// corresponding 32-bit integer in src with signed saturation, and store the packed 32-bit results
 /// in dst using zeromask `k` (elements are zeroed out when the corresponding mask bit is not set)
 #[inline]
-#[target_feature(enable = "avx10.2")]
+#[target_feature(enable = "avx10.2,avxvnniint8")]
 #[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
 #[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vpdpbssds))]
 pub fn _mm_maskz_dpbssds_epi32(k: __mmask8, src: __m128i, a: __m128i, b: __m128i) -> __m128i {
@@ -501,7 +501,7 @@ pub fn _mm_maskz_dpbssds_epi32(k: __mmask8, src: __m128i, a: __m128i, b: __m128i
 /// corresponding 32-bit integer in src with signed saturation, and store the packed 32-bit results
 /// in dst using writemask `k` (elements are copied from src when the corresponding mask bit is not set)
 #[inline]
-#[target_feature(enable = "avx10.2")]
+#[target_feature(enable = "avx10.2,avxvnniint8")]
 #[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
 #[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vpdpbssds))]
 pub fn _mm256_mask_dpbssds_epi32(src: __m256i, k: __mmask8, a: __m256i, b: __m256i) -> __m256i {
@@ -520,7 +520,7 @@ pub fn _mm256_mask_dpbssds_epi32(src: __m256i, k: __mmask8, a: __m256i, b: __m25
 /// corresponding 32-bit integer in src with signed saturation, and store the packed 32-bit results
 /// in dst using zeromask `k` (elements are zeroed out when the corresponding mask bit is not set)
 #[inline]
-#[target_feature(enable = "avx10.2")]
+#[target_feature(enable = "avx10.2,avxvnniint8")]
 #[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
 #[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vpdpbssds))]
 pub fn _mm256_maskz_dpbssds_epi32(k: __mmask8, src: __m256i, a: __m256i, b: __m256i) -> __m256i {
@@ -579,7 +579,7 @@ pub fn _mm512_maskz_dpbssds_epi32(k: __mmask16, src: __m512i, a: __m512i, b: __m
 /// corresponding 32-bit integer in src, and store the packed 32-bit results in dst using writemask `k`
 /// (elements are copied from src when the corresponding mask bit is not set)
 #[inline]
-#[target_feature(enable = "avx10.2")]
+#[target_feature(enable = "avx10.2,avxvnniint8")]
 #[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
 #[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vpdpbsud))]
 pub fn _mm_mask_dpbsud_epi32(src: __m128i, k: __mmask8, a: __m128i, b: __m128i) -> __m128i {
@@ -593,7 +593,7 @@ pub fn _mm_mask_dpbsud_epi32(src: __m128i, k: __mmask8, a: __m128i, b: __m128i) 
 /// corresponding 32-bit integer in src, and store the packed 32-bit results in dst using zeromask `k`
 /// (elements are zeroed out when the corresponding mask bit is not set)
 #[inline]
-#[target_feature(enable = "avx10.2")]
+#[target_feature(enable = "avx10.2,avxvnniint8")]
 #[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
 #[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vpdpbsud))]
 pub fn _mm_maskz_dpbsud_epi32(k: __mmask8, src: __m128i, a: __m128i, b: __m128i) -> __m128i {
@@ -607,7 +607,7 @@ pub fn _mm_maskz_dpbsud_epi32(k: __mmask8, src: __m128i, a: __m128i, b: __m128i)
 /// corresponding 32-bit integer in src, and store the packed 32-bit results in dst using writemask `k`
 /// (elements are copied from src when the corresponding mask bit is not set)
 #[inline]
-#[target_feature(enable = "avx10.2")]
+#[target_feature(enable = "avx10.2,avxvnniint8")]
 #[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
 #[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vpdpbsud))]
 pub fn _mm256_mask_dpbsud_epi32(src: __m256i, k: __mmask8, a: __m256i, b: __m256i) -> __m256i {
@@ -621,7 +621,7 @@ pub fn _mm256_mask_dpbsud_epi32(src: __m256i, k: __mmask8, a: __m256i, b: __m256
 /// corresponding 32-bit integer in src, and store the packed 32-bit results in dst using zeromask `k`
 /// (elements are zeroed out when the corresponding mask bit is not set)
 #[inline]
-#[target_feature(enable = "avx10.2")]
+#[target_feature(enable = "avx10.2,avxvnniint8")]
 #[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
 #[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vpdpbsud))]
 pub fn _mm256_maskz_dpbsud_epi32(k: __mmask8, src: __m256i, a: __m256i, b: __m256i) -> __m256i {
@@ -679,7 +679,7 @@ pub fn _mm512_maskz_dpbsud_epi32(k: __mmask16, src: __m512i, a: __m512i, b: __m5
 /// corresponding 32-bit integer in src with signed saturation, and store the packed 32-bit results
 /// in dst using writemask `k` (elements are copied from src when the corresponding mask bit is not set)
 #[inline]
-#[target_feature(enable = "avx10.2")]
+#[target_feature(enable = "avx10.2,avxvnniint8")]
 #[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
 #[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vpdpbsuds))]
 pub fn _mm_mask_dpbsuds_epi32(src: __m128i, k: __mmask8, a: __m128i, b: __m128i) -> __m128i {
@@ -693,7 +693,7 @@ pub fn _mm_mask_dpbsuds_epi32(src: __m128i, k: __mmask8, a: __m128i, b: __m128i)
 /// corresponding 32-bit integer in src with signed saturation, and store the packed 32-bit results
 /// in dst using zeromask `k` (elements are zeroed out when the corresponding mask bit is not set)
 #[inline]
-#[target_feature(enable = "avx10.2")]
+#[target_feature(enable = "avx10.2,avxvnniint8")]
 #[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
 #[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vpdpbsuds))]
 pub fn _mm_maskz_dpbsuds_epi32(k: __mmask8, src: __m128i, a: __m128i, b: __m128i) -> __m128i {
@@ -707,7 +707,7 @@ pub fn _mm_maskz_dpbsuds_epi32(k: __mmask8, src: __m128i, a: __m128i, b: __m128i
 /// corresponding 32-bit integer in src with signed saturation, and store the packed 32-bit results
 /// in dst using writemask `k` (elements are copied from src when the corresponding mask bit is not set)
 #[inline]
-#[target_feature(enable = "avx10.2")]
+#[target_feature(enable = "avx10.2,avxvnniint8")]
 #[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
 #[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vpdpbsuds))]
 pub fn _mm256_mask_dpbsuds_epi32(src: __m256i, k: __mmask8, a: __m256i, b: __m256i) -> __m256i {
@@ -726,7 +726,7 @@ pub fn _mm256_mask_dpbsuds_epi32(src: __m256i, k: __mmask8, a: __m256i, b: __m25
 /// corresponding 32-bit integer in src with signed saturation, and store the packed 32-bit results
 /// in dst using zeromask `k` (elements are zeroed out when the corresponding mask bit is not set)
 #[inline]
-#[target_feature(enable = "avx10.2")]
+#[target_feature(enable = "avx10.2,avxvnniint8")]
 #[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
 #[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vpdpbsuds))]
 pub fn _mm256_maskz_dpbsuds_epi32(k: __mmask8, src: __m256i, a: __m256i, b: __m256i) -> __m256i {
@@ -785,7 +785,7 @@ pub fn _mm512_maskz_dpbsuds_epi32(k: __mmask16, src: __m512i, a: __m512i, b: __m
 /// corresponding 32-bit integer in src, and store the packed 32-bit results in dst using writemask `k`
 /// (elements are copied from src when the corresponding mask bit is not set)
 #[inline]
-#[target_feature(enable = "avx10.2")]
+#[target_feature(enable = "avx10.2,avxvnniint8")]
 #[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
 #[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vpdpbuud))]
 pub fn _mm_mask_dpbuud_epi32(src: __m128i, k: __mmask8, a: __m128i, b: __m128i) -> __m128i {
@@ -799,7 +799,7 @@ pub fn _mm_mask_dpbuud_epi32(src: __m128i, k: __mmask8, a: __m128i, b: __m128i) 
 /// corresponding 32-bit integer in src, and store the packed 32-bit results in dst using zeromask `k`
 /// (elements are zeroed out when the corresponding mask bit is not set)
 #[inline]
-#[target_feature(enable = "avx10.2")]
+#[target_feature(enable = "avx10.2,avxvnniint8")]
 #[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
 #[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vpdpbuud))]
 pub fn _mm_maskz_dpbuud_epi32(k: __mmask8, src: __m128i, a: __m128i, b: __m128i) -> __m128i {
@@ -813,7 +813,7 @@ pub fn _mm_maskz_dpbuud_epi32(k: __mmask8, src: __m128i, a: __m128i, b: __m128i)
 /// corresponding 32-bit integer in src, and store the packed 32-bit results in dst using writemask `k`
 /// (elements are copied from src when the corresponding mask bit is not set)
 #[inline]
-#[target_feature(enable = "avx10.2")]
+#[target_feature(enable = "avx10.2,avxvnniint8")]
 #[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
 #[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vpdpbuud))]
 pub fn _mm256_mask_dpbuud_epi32(src: __m256i, k: __mmask8, a: __m256i, b: __m256i) -> __m256i {
@@ -827,7 +827,7 @@ pub fn _mm256_mask_dpbuud_epi32(src: __m256i, k: __mmask8, a: __m256i, b: __m256
 /// corresponding 32-bit integer in src, and store the packed 32-bit results in dst using zeromask `k`
 /// (elements are zeroed out when the corresponding mask bit is not set)
 #[inline]
-#[target_feature(enable = "avx10.2")]
+#[target_feature(enable = "avx10.2,avxvnniint8")]
 #[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
 #[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vpdpbuud))]
 pub fn _mm256_maskz_dpbuud_epi32(k: __mmask8, src: __m256i, a: __m256i, b: __m256i) -> __m256i {
@@ -885,7 +885,7 @@ pub fn _mm512_maskz_dpbuud_epi32(k: __mmask16, src: __m512i, a: __m512i, b: __m5
 /// corresponding 32-bit integer in src with signed saturation, and store the packed 32-bit results
 /// in dst using writemask `k` (elements are copied from src when the corresponding mask bit is not set)
 #[inline]
-#[target_feature(enable = "avx10.2")]
+#[target_feature(enable = "avx10.2,avxvnniint8")]
 #[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
 #[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vpdpbuuds))]
 pub fn _mm_mask_dpbuuds_epi32(src: __m128i, k: __mmask8, a: __m128i, b: __m128i) -> __m128i {
@@ -899,7 +899,7 @@ pub fn _mm_mask_dpbuuds_epi32(src: __m128i, k: __mmask8, a: __m128i, b: __m128i)
 /// corresponding 32-bit integer in src with signed saturation, and store the packed 32-bit results
 /// in dst using zeromask `k` (elements are zeroed out when the corresponding mask bit is not set)
 #[inline]
-#[target_feature(enable = "avx10.2")]
+#[target_feature(enable = "avx10.2,avxvnniint8")]
 #[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
 #[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vpdpbuuds))]
 pub fn _mm_maskz_dpbuuds_epi32(k: __mmask8, src: __m128i, a: __m128i, b: __m128i) -> __m128i {
@@ -913,7 +913,7 @@ pub fn _mm_maskz_dpbuuds_epi32(k: __mmask8, src: __m128i, a: __m128i, b: __m128i
 /// corresponding 32-bit integer in src with signed saturation, and store the packed 32-bit results
 /// in dst using writemask `k` (elements are copied from src when the corresponding mask bit is not set)
 #[inline]
-#[target_feature(enable = "avx10.2")]
+#[target_feature(enable = "avx10.2,avxvnniint8")]
 #[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
 #[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vpdpbuuds))]
 pub fn _mm256_mask_dpbuuds_epi32(src: __m256i, k: __mmask8, a: __m256i, b: __m256i) -> __m256i {
@@ -932,7 +932,7 @@ pub fn _mm256_mask_dpbuuds_epi32(src: __m256i, k: __mmask8, a: __m256i, b: __m25
 /// corresponding 32-bit integer in src with signed saturation, and store the packed 32-bit results
 /// in dst using zeromask `k` (elements are zeroed out when the corresponding mask bit is not set)
 #[inline]
-#[target_feature(enable = "avx10.2")]
+#[target_feature(enable = "avx10.2,avxvnniint8")]
 #[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
 #[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vpdpbuuds))]
 pub fn _mm256_maskz_dpbuuds_epi32(k: __mmask8, src: __m256i, a: __m256i, b: __m256i) -> __m256i {
@@ -991,7 +991,7 @@ pub fn _mm512_maskz_dpbuuds_epi32(k: __mmask16, src: __m512i, a: __m512i, b: __m
 /// corresponding 32-bit integer in src, and store the packed 32-bit results in dst using writemask `k`
 /// (elements are copied from src when the corresponding mask bit is not set)
 #[inline]
-#[target_feature(enable = "avx10.2")]
+#[target_feature(enable = "avx10.2,avxvnniint16")]
 #[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
 #[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vpdpwsud))]
 pub fn _mm_mask_dpwsud_epi32(src: __m128i, k: __mmask8, a: __m128i, b: __m128i) -> __m128i {
@@ -1005,7 +1005,7 @@ pub fn _mm_mask_dpwsud_epi32(src: __m128i, k: __mmask8, a: __m128i, b: __m128i) 
 /// corresponding 32-bit integer in src, and store the packed 32-bit results in dst using zeromask `k`
 /// (elements are zeroed out when the corresponding mask bit is not set)
 #[inline]
-#[target_feature(enable = "avx10.2")]
+#[target_feature(enable = "avx10.2,avxvnniint16")]
 #[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
 #[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vpdpwsud))]
 pub fn _mm_maskz_dpwsud_epi32(k: __mmask8, src: __m128i, a: __m128i, b: __m128i) -> __m128i {
@@ -1019,7 +1019,7 @@ pub fn _mm_maskz_dpwsud_epi32(k: __mmask8, src: __m128i, a: __m128i, b: __m128i)
 /// corresponding 32-bit integer in src, and store the packed 32-bit results in dst using writemask `k`
 /// (elements are copied from src when the corresponding mask bit is not set)
 #[inline]
-#[target_feature(enable = "avx10.2")]
+#[target_feature(enable = "avx10.2,avxvnniint16")]
 #[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
 #[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vpdpwsud))]
 pub fn _mm256_mask_dpwsud_epi32(src: __m256i, k: __mmask8, a: __m256i, b: __m256i) -> __m256i {
@@ -1033,7 +1033,7 @@ pub fn _mm256_mask_dpwsud_epi32(src: __m256i, k: __mmask8, a: __m256i, b: __m256
 /// corresponding 32-bit integer in src, and store the packed 32-bit results in dst using zeromask `k`
 /// (elements are zeroed out when the corresponding mask bit is not set)
 #[inline]
-#[target_feature(enable = "avx10.2")]
+#[target_feature(enable = "avx10.2,avxvnniint16")]
 #[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
 #[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vpdpwsud))]
 pub fn _mm256_maskz_dpwsud_epi32(k: __mmask8, src: __m256i, a: __m256i, b: __m256i) -> __m256i {
@@ -1091,7 +1091,7 @@ pub fn _mm512_maskz_dpwsud_epi32(k: __mmask16, src: __m512i, a: __m512i, b: __m5
 /// corresponding 32-bit integer in src with signed saturation, and store the packed 32-bit results
 /// in dst using writemask `k` (elements are copied from src when the corresponding mask bit is not set)
 #[inline]
-#[target_feature(enable = "avx10.2")]
+#[target_feature(enable = "avx10.2,avxvnniint16")]
 #[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
 #[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vpdpwsuds))]
 pub fn _mm_mask_dpwsuds_epi32(src: __m128i, k: __mmask8, a: __m128i, b: __m128i) -> __m128i {
@@ -1105,7 +1105,7 @@ pub fn _mm_mask_dpwsuds_epi32(src: __m128i, k: __mmask8, a: __m128i, b: __m128i)
 /// corresponding 32-bit integer in src with signed saturation, and store the packed 32-bit results
 /// in dst using zeromask `k` (elements are zeroed out when the corresponding mask bit is not set)
 #[inline]
-#[target_feature(enable = "avx10.2")]
+#[target_feature(enable = "avx10.2,avxvnniint16")]
 #[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
 #[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vpdpwsuds))]
 pub fn _mm_maskz_dpwsuds_epi32(k: __mmask8, src: __m128i, a: __m128i, b: __m128i) -> __m128i {
@@ -1119,7 +1119,7 @@ pub fn _mm_maskz_dpwsuds_epi32(k: __mmask8, src: __m128i, a: __m128i, b: __m128i
 /// corresponding 32-bit integer in src with signed saturation, and store the packed 32-bit results
 /// in dst using writemask `k` (elements are copied from src when the corresponding mask bit is not set)
 #[inline]
-#[target_feature(enable = "avx10.2")]
+#[target_feature(enable = "avx10.2,avxvnniint16")]
 #[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
 #[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vpdpwsuds))]
 pub fn _mm256_mask_dpwsuds_epi32(src: __m256i, k: __mmask8, a: __m256i, b: __m256i) -> __m256i {
@@ -1138,7 +1138,7 @@ pub fn _mm256_mask_dpwsuds_epi32(src: __m256i, k: __mmask8, a: __m256i, b: __m25
 /// corresponding 32-bit integer in src with signed saturation, and store the packed 32-bit results
 /// in dst using zeromask `k` (elements are zeroed out when the corresponding mask bit is not set)
 #[inline]
-#[target_feature(enable = "avx10.2")]
+#[target_feature(enable = "avx10.2,avxvnniint16")]
 #[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
 #[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vpdpwsuds))]
 pub fn _mm256_maskz_dpwsuds_epi32(k: __mmask8, src: __m256i, a: __m256i, b: __m256i) -> __m256i {
@@ -1197,7 +1197,7 @@ pub fn _mm512_maskz_dpwsuds_epi32(k: __mmask16, src: __m512i, a: __m512i, b: __m
 /// corresponding 32-bit integer in src, and store the packed 32-bit results in dst using writemask `k`
 /// (elements are copied from src when the corresponding mask bit is not set)
 #[inline]
-#[target_feature(enable = "avx10.2")]
+#[target_feature(enable = "avx10.2,avxvnniint16")]
 #[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
 #[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vpdpwusd))]
 pub fn _mm_mask_dpwusd_epi32(src: __m128i, k: __mmask8, a: __m128i, b: __m128i) -> __m128i {
@@ -1211,7 +1211,7 @@ pub fn _mm_mask_dpwusd_epi32(src: __m128i, k: __mmask8, a: __m128i, b: __m128i) 
 /// corresponding 32-bit integer in src, and store the packed 32-bit results in dst using zeromask `k`
 /// (elements are zeroed out when the corresponding mask bit is not set)
 #[inline]
-#[target_feature(enable = "avx10.2")]
+#[target_feature(enable = "avx10.2,avxvnniint16")]
 #[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
 #[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vpdpwusd))]
 pub fn _mm_maskz_dpwusd_epi32(k: __mmask8, src: __m128i, a: __m128i, b: __m128i) -> __m128i {
@@ -1225,7 +1225,7 @@ pub fn _mm_maskz_dpwusd_epi32(k: __mmask8, src: __m128i, a: __m128i, b: __m128i)
 /// corresponding 32-bit integer in src, and store the packed 32-bit results in dst using writemask `k`
 /// (elements are copied from src when the corresponding mask bit is not set)
 #[inline]
-#[target_feature(enable = "avx10.2")]
+#[target_feature(enable = "avx10.2,avxvnniint16")]
 #[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
 #[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vpdpwusd))]
 pub fn _mm256_mask_dpwusd_epi32(src: __m256i, k: __mmask8, a: __m256i, b: __m256i) -> __m256i {
@@ -1239,7 +1239,7 @@ pub fn _mm256_mask_dpwusd_epi32(src: __m256i, k: __mmask8, a: __m256i, b: __m256
 /// corresponding 32-bit integer in src, and store the packed 32-bit results in dst using zeromask `k`
 /// (elements are zeroed out when the corresponding mask bit is not set)
 #[inline]
-#[target_feature(enable = "avx10.2")]
+#[target_feature(enable = "avx10.2,avxvnniint16")]
 #[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
 #[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vpdpwusd))]
 pub fn _mm256_maskz_dpwusd_epi32(k: __mmask8, src: __m256i, a: __m256i, b: __m256i) -> __m256i {
@@ -1297,7 +1297,7 @@ pub fn _mm512_maskz_dpwusd_epi32(k: __mmask16, src: __m512i, a: __m512i, b: __m5
 /// corresponding 32-bit integer in src with signed saturation, and store the packed 32-bit results
 /// in dst using writemask `k` (elements are copied from src when the corresponding mask bit is not set)
 #[inline]
-#[target_feature(enable = "avx10.2")]
+#[target_feature(enable = "avx10.2,avxvnniint16")]
 #[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
 #[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vpdpwusds))]
 pub fn _mm_mask_dpwusds_epi32(src: __m128i, k: __mmask8, a: __m128i, b: __m128i) -> __m128i {
@@ -1311,7 +1311,7 @@ pub fn _mm_mask_dpwusds_epi32(src: __m128i, k: __mmask8, a: __m128i, b: __m128i)
 /// corresponding 32-bit integer in src with signed saturation, and store the packed 32-bit results
 /// in dst using zeromask `k` (elements are zeroed out when the corresponding mask bit is not set)
 #[inline]
-#[target_feature(enable = "avx10.2")]
+#[target_feature(enable = "avx10.2,avxvnniint16")]
 #[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
 #[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vpdpwusds))]
 pub fn _mm_maskz_dpwusds_epi32(k: __mmask8, src: __m128i, a: __m128i, b: __m128i) -> __m128i {
@@ -1325,7 +1325,7 @@ pub fn _mm_maskz_dpwusds_epi32(k: __mmask8, src: __m128i, a: __m128i, b: __m128i
 /// corresponding 32-bit integer in src with signed saturation, and store the packed 32-bit results
 /// in dst using writemask `k` (elements are copied from src when the corresponding mask bit is not set)
 #[inline]
-#[target_feature(enable = "avx10.2")]
+#[target_feature(enable = "avx10.2,avxvnniint16")]
 #[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
 #[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vpdpwusds))]
 pub fn _mm256_mask_dpwusds_epi32(src: __m256i, k: __mmask8, a: __m256i, b: __m256i) -> __m256i {
@@ -1344,7 +1344,7 @@ pub fn _mm256_mask_dpwusds_epi32(src: __m256i, k: __mmask8, a: __m256i, b: __m25
 /// corresponding 32-bit integer in src with signed saturation, and store the packed 32-bit results
 /// in dst using zeromask `k` (elements are zeroed out when the corresponding mask bit is not set)
 #[inline]
-#[target_feature(enable = "avx10.2")]
+#[target_feature(enable = "avx10.2,avxvnniint16")]
 #[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
 #[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vpdpwusds))]
 pub fn _mm256_maskz_dpwusds_epi32(k: __mmask8, src: __m256i, a: __m256i, b: __m256i) -> __m256i {
@@ -1403,7 +1403,7 @@ pub fn _mm512_maskz_dpwusds_epi32(k: __mmask16, src: __m512i, a: __m512i, b: __m
 /// corresponding 32-bit integer in src, and store the packed 32-bit results in dst using writemask `k`
 /// (elements are copied from src when the corresponding mask bit is not set)
 #[inline]
-#[target_feature(enable = "avx10.2")]
+#[target_feature(enable = "avx10.2,avxvnniint16")]
 #[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
 #[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vpdpwuud))]
 pub fn _mm_mask_dpwuud_epi32(src: __m128i, k: __mmask8, a: __m128i, b: __m128i) -> __m128i {
@@ -1417,7 +1417,7 @@ pub fn _mm_mask_dpwuud_epi32(src: __m128i, k: __mmask8, a: __m128i, b: __m128i) 
 /// corresponding 32-bit integer in src, and store the packed 32-bit results in dst using zeromask `k`
 /// (elements are zeroed out when the corresponding mask bit is not set)
 #[inline]
-#[target_feature(enable = "avx10.2")]
+#[target_feature(enable = "avx10.2,avxvnniint16")]
 #[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
 #[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vpdpwuud))]
 pub fn _mm_maskz_dpwuud_epi32(k: __mmask8, src: __m128i, a: __m128i, b: __m128i) -> __m128i {
@@ -1431,7 +1431,7 @@ pub fn _mm_maskz_dpwuud_epi32(k: __mmask8, src: __m128i, a: __m128i, b: __m128i)
 /// corresponding 32-bit integer in src, and store the packed 32-bit results in dst using writemask `k`
 /// (elements are copied from src when the corresponding mask bit is not set)
 #[inline]
-#[target_feature(enable = "avx10.2")]
+#[target_feature(enable = "avx10.2,avxvnniint16")]
 #[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
 #[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vpdpwuud))]
 pub fn _mm256_mask_dpwuud_epi32(src: __m256i, k: __mmask8, a: __m256i, b: __m256i) -> __m256i {
@@ -1445,7 +1445,7 @@ pub fn _mm256_mask_dpwuud_epi32(src: __m256i, k: __mmask8, a: __m256i, b: __m256
 /// corresponding 32-bit integer in src, and store the packed 32-bit results in dst using zeromask `k`
 /// (elements are zeroed out when the corresponding mask bit is not set)
 #[inline]
-#[target_feature(enable = "avx10.2")]
+#[target_feature(enable = "avx10.2,avxvnniint16")]
 #[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
 #[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vpdpwuud))]
 pub fn _mm256_maskz_dpwuud_epi32(k: __mmask8, src: __m256i, a: __m256i, b: __m256i) -> __m256i {
@@ -1503,7 +1503,7 @@ pub fn _mm512_maskz_dpwuud_epi32(k: __mmask16, src: __m512i, a: __m512i, b: __m5
 /// corresponding 32-bit integer in src with signed saturation, and store the packed 32-bit results
 /// in dst using writemask `k` (elements are copied from src when the corresponding mask bit is not set)
 #[inline]
-#[target_feature(enable = "avx10.2")]
+#[target_feature(enable = "avx10.2,avxvnniint16")]
 #[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
 #[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vpdpwuuds))]
 pub fn _mm_mask_dpwuuds_epi32(src: __m128i, k: __mmask8, a: __m128i, b: __m128i) -> __m128i {
@@ -1517,7 +1517,7 @@ pub fn _mm_mask_dpwuuds_epi32(src: __m128i, k: __mmask8, a: __m128i, b: __m128i)
 /// corresponding 32-bit integer in src with signed saturation, and store the packed 32-bit results
 /// in dst using zeromask `k` (elements are zeroed out when the corresponding mask bit is not set)
 #[inline]
-#[target_feature(enable = "avx10.2")]
+#[target_feature(enable = "avx10.2,avxvnniint16")]
 #[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
 #[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vpdpwuuds))]
 pub fn _mm_maskz_dpwuuds_epi32(k: __mmask8, src: __m128i, a: __m128i, b: __m128i) -> __m128i {
@@ -1531,7 +1531,7 @@ pub fn _mm_maskz_dpwuuds_epi32(k: __mmask8, src: __m128i, a: __m128i, b: __m128i
 /// corresponding 32-bit integer in src with signed saturation, and store the packed 32-bit results
 /// in dst using writemask `k` (elements are copied from src when the corresponding mask bit is not set)
 #[inline]
-#[target_feature(enable = "avx10.2")]
+#[target_feature(enable = "avx10.2,avxvnniint16")]
 #[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
 #[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vpdpwuuds))]
 pub fn _mm256_mask_dpwuuds_epi32(src: __m256i, k: __mmask8, a: __m256i, b: __m256i) -> __m256i {
@@ -1550,7 +1550,7 @@ pub fn _mm256_mask_dpwuuds_epi32(src: __m256i, k: __mmask8, a: __m256i, b: __m25
 /// corresponding 32-bit integer in src with signed saturation, and store the packed 32-bit results
 /// in dst using zeromask `k` (elements are zeroed out when the corresponding mask bit is not set)
 #[inline]
-#[target_feature(enable = "avx10.2")]
+#[target_feature(enable = "avx10.2,avxvnniint16")]
 #[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
 #[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vpdpwuuds))]
 pub fn _mm256_maskz_dpwuuds_epi32(k: __mmask8, src: __m256i, a: __m256i, b: __m256i) -> __m256i {
@@ -1860,7 +1860,7 @@ mod tests {
         assert_eq_m512(r, e);
     }
 
-    #[simd_test(enable = "avx10.2")]
+    #[simd_test(enable = "avx10.2,avxvnniint8")]
     fn test_mm_mask_dpbssd_epi32() {
         let src = _mm_setr_epi32(1, 2, 3, 4);
         let a = _mm_set1_epi8(10);
@@ -1871,7 +1871,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx10.2")]
+    #[simd_test(enable = "avx10.2,avxvnniint8")]
     fn test_mm_maskz_dpbssd_epi32() {
         let src = _mm_setr_epi32(1, 2, 3, 4);
         let a = _mm_set1_epi8(10);
@@ -1882,7 +1882,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx10.2")]
+    #[simd_test(enable = "avx10.2,avxvnniint8")]
     fn test_mm256_mask_dpbssd_epi32() {
         let src = _mm256_setr_epi32(1, 2, 3, 4, 5, 6, 7, 8);
         let a = _mm256_set1_epi8(10);
@@ -1893,7 +1893,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx10.2")]
+    #[simd_test(enable = "avx10.2,avxvnniint8")]
     fn test_mm256_maskz_dpbssd_epi32() {
         let src = _mm256_setr_epi32(1, 2, 3, 4, 5, 6, 7, 8);
         let a = _mm256_set1_epi8(10);
@@ -1942,7 +1942,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx10.2")]
+    #[simd_test(enable = "avx10.2,avxvnniint8")]
     fn test_mm_mask_dpbssds_epi32() {
         let src = _mm_setr_epi32(1, 2, 3, 4);
         let a = _mm_set1_epi8(10);
@@ -1953,7 +1953,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx10.2")]
+    #[simd_test(enable = "avx10.2,avxvnniint8")]
     fn test_mm_maskz_dpbssds_epi32() {
         let src = _mm_setr_epi32(1, 2, 3, 4);
         let a = _mm_set1_epi8(10);
@@ -1964,7 +1964,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx10.2")]
+    #[simd_test(enable = "avx10.2,avxvnniint8")]
     fn test_mm256_mask_dpbssds_epi32() {
         let src = _mm256_setr_epi32(1, 2, 3, 4, 5, 6, 7, 8);
         let a = _mm256_set1_epi8(10);
@@ -1975,7 +1975,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx10.2")]
+    #[simd_test(enable = "avx10.2,avxvnniint8")]
     fn test_mm256_maskz_dpbssds_epi32() {
         let src = _mm256_setr_epi32(1, 2, 3, 4, 5, 6, 7, 8);
         let a = _mm256_set1_epi8(10);
@@ -2024,7 +2024,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx10.2")]
+    #[simd_test(enable = "avx10.2,avxvnniint8")]
     fn test_mm_mask_dpbsud_epi32() {
         let src = _mm_setr_epi32(1, 2, 3, 4);
         let a = _mm_set1_epi8(10);
@@ -2035,7 +2035,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx10.2")]
+    #[simd_test(enable = "avx10.2,avxvnniint8")]
     fn test_mm_maskz_dpbsud_epi32() {
         let src = _mm_setr_epi32(1, 2, 3, 4);
         let a = _mm_set1_epi8(10);
@@ -2046,7 +2046,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx10.2")]
+    #[simd_test(enable = "avx10.2,avxvnniint8")]
     fn test_mm256_mask_dpbsud_epi32() {
         let src = _mm256_setr_epi32(1, 2, 3, 4, 5, 6, 7, 8);
         let a = _mm256_set1_epi8(10);
@@ -2057,7 +2057,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx10.2")]
+    #[simd_test(enable = "avx10.2,avxvnniint8")]
     fn test_mm256_maskz_dpbsud_epi32() {
         let src = _mm256_setr_epi32(1, 2, 3, 4, 5, 6, 7, 8);
         let a = _mm256_set1_epi8(10);
@@ -2106,7 +2106,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx10.2")]
+    #[simd_test(enable = "avx10.2,avxvnniint8")]
     fn test_mm_mask_dpbsuds_epi32() {
         let src = _mm_setr_epi32(1, 2, 3, 4);
         let a = _mm_set1_epi8(10);
@@ -2117,7 +2117,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx10.2")]
+    #[simd_test(enable = "avx10.2,avxvnniint8")]
     fn test_mm_maskz_dpbsuds_epi32() {
         let src = _mm_setr_epi32(1, 2, 3, 4);
         let a = _mm_set1_epi8(10);
@@ -2128,7 +2128,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx10.2")]
+    #[simd_test(enable = "avx10.2,avxvnniint8")]
     fn test_mm256_mask_dpbsuds_epi32() {
         let src = _mm256_setr_epi32(1, 2, 3, 4, 5, 6, 7, 8);
         let a = _mm256_set1_epi8(10);
@@ -2139,7 +2139,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx10.2")]
+    #[simd_test(enable = "avx10.2,avxvnniint8")]
     fn test_mm256_maskz_dpbsuds_epi32() {
         let src = _mm256_setr_epi32(1, 2, 3, 4, 5, 6, 7, 8);
         let a = _mm256_set1_epi8(10);
@@ -2188,7 +2188,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx10.2")]
+    #[simd_test(enable = "avx10.2,avxvnniint8")]
     fn test_mm_mask_dpbuud_epi32() {
         let src = _mm_setr_epi32(1, 2, 3, 4);
         let a = _mm_set1_epi8(10);
@@ -2199,7 +2199,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx10.2")]
+    #[simd_test(enable = "avx10.2,avxvnniint8")]
     fn test_mm_maskz_dpbuud_epi32() {
         let src = _mm_setr_epi32(1, 2, 3, 4);
         let a = _mm_set1_epi8(10);
@@ -2210,7 +2210,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx10.2")]
+    #[simd_test(enable = "avx10.2,avxvnniint8")]
     fn test_mm256_mask_dpbuud_epi32() {
         let src = _mm256_setr_epi32(1, 2, 3, 4, 5, 6, 7, 8);
         let a = _mm256_set1_epi8(10);
@@ -2221,7 +2221,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx10.2")]
+    #[simd_test(enable = "avx10.2,avxvnniint8")]
     fn test_mm256_maskz_dpbuud_epi32() {
         let src = _mm256_setr_epi32(1, 2, 3, 4, 5, 6, 7, 8);
         let a = _mm256_set1_epi8(10);
@@ -2270,7 +2270,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx10.2")]
+    #[simd_test(enable = "avx10.2,avxvnniint8")]
     fn test_mm_mask_dpbuuds_epi32() {
         let src = _mm_setr_epi32(1, 2, 3, 4);
         let a = _mm_set1_epi8(10);
@@ -2281,7 +2281,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx10.2")]
+    #[simd_test(enable = "avx10.2,avxvnniint8")]
     fn test_mm_maskz_dpbuuds_epi32() {
         let src = _mm_setr_epi32(1, 2, 3, 4);
         let a = _mm_set1_epi8(10);
@@ -2292,7 +2292,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx10.2")]
+    #[simd_test(enable = "avx10.2,avxvnniint8")]
     fn test_mm256_mask_dpbuuds_epi32() {
         let src = _mm256_setr_epi32(1, 2, 3, 4, 5, 6, 7, 8);
         let a = _mm256_set1_epi8(10);
@@ -2303,7 +2303,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx10.2")]
+    #[simd_test(enable = "avx10.2,avxvnniint8")]
     fn test_mm256_maskz_dpbuuds_epi32() {
         let src = _mm256_setr_epi32(1, 2, 3, 4, 5, 6, 7, 8);
         let a = _mm256_set1_epi8(10);
@@ -2352,7 +2352,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx10.2")]
+    #[simd_test(enable = "avx10.2,avxvnniint16")]
     fn test_mm_mask_dpwsud_epi32() {
         let src = _mm_setr_epi32(1, 2, 3, 4);
         let a = _mm_set1_epi16(10);
@@ -2363,7 +2363,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx10.2")]
+    #[simd_test(enable = "avx10.2,avxvnniint16")]
     fn test_mm_maskz_dpwsud_epi32() {
         let src = _mm_setr_epi32(1, 2, 3, 4);
         let a = _mm_set1_epi16(10);
@@ -2374,7 +2374,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx10.2")]
+    #[simd_test(enable = "avx10.2,avxvnniint16")]
     fn test_mm256_mask_dpwsud_epi32() {
         let src = _mm256_setr_epi32(1, 2, 3, 4, 5, 6, 7, 8);
         let a = _mm256_set1_epi16(10);
@@ -2385,7 +2385,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx10.2")]
+    #[simd_test(enable = "avx10.2,avxvnniint16")]
     fn test_mm256_maskz_dpwsud_epi32() {
         let src = _mm256_setr_epi32(1, 2, 3, 4, 5, 6, 7, 8);
         let a = _mm256_set1_epi16(10);
@@ -2434,7 +2434,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx10.2")]
+    #[simd_test(enable = "avx10.2,avxvnniint16")]
     fn test_mm_mask_dpwsuds_epi32() {
         let src = _mm_setr_epi32(1, 2, 3, 4);
         let a = _mm_set1_epi16(10);
@@ -2445,7 +2445,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx10.2")]
+    #[simd_test(enable = "avx10.2,avxvnniint16")]
     fn test_mm_maskz_dpwsuds_epi32() {
         let src = _mm_setr_epi32(1, 2, 3, 4);
         let a = _mm_set1_epi16(10);
@@ -2456,7 +2456,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx10.2")]
+    #[simd_test(enable = "avx10.2,avxvnniint16")]
     fn test_mm256_mask_dpwsuds_epi32() {
         let src = _mm256_setr_epi32(1, 2, 3, 4, 5, 6, 7, 8);
         let a = _mm256_set1_epi16(10);
@@ -2467,7 +2467,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx10.2")]
+    #[simd_test(enable = "avx10.2,avxvnniint16")]
     fn test_mm256_maskz_dpwsuds_epi32() {
         let src = _mm256_setr_epi32(1, 2, 3, 4, 5, 6, 7, 8);
         let a = _mm256_set1_epi16(10);
@@ -2516,7 +2516,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx10.2")]
+    #[simd_test(enable = "avx10.2,avxvnniint16")]
     fn test_mm_mask_dpwusd_epi32() {
         let src = _mm_setr_epi32(1, 2, 3, 4);
         let a = _mm_set1_epi16(10);
@@ -2527,7 +2527,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx10.2")]
+    #[simd_test(enable = "avx10.2,avxvnniint16")]
     fn test_mm_maskz_dpwusd_epi32() {
         let src = _mm_setr_epi32(1, 2, 3, 4);
         let a = _mm_set1_epi16(10);
@@ -2538,7 +2538,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx10.2")]
+    #[simd_test(enable = "avx10.2,avxvnniint16")]
     fn test_mm256_mask_dpwusd_epi32() {
         let src = _mm256_setr_epi32(1, 2, 3, 4, 5, 6, 7, 8);
         let a = _mm256_set1_epi16(10);
@@ -2549,7 +2549,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx10.2")]
+    #[simd_test(enable = "avx10.2,avxvnniint16")]
     fn test_mm256_maskz_dpwusd_epi32() {
         let src = _mm256_setr_epi32(1, 2, 3, 4, 5, 6, 7, 8);
         let a = _mm256_set1_epi16(10);
@@ -2598,7 +2598,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx10.2")]
+    #[simd_test(enable = "avx10.2,avxvnniint16")]
     fn test_mm_mask_dpwusds_epi32() {
         let src = _mm_setr_epi32(1, 2, 3, 4);
         let a = _mm_set1_epi16(10);
@@ -2609,7 +2609,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx10.2")]
+    #[simd_test(enable = "avx10.2,avxvnniint16")]
     fn test_mm_maskz_dpwusds_epi32() {
         let src = _mm_setr_epi32(1, 2, 3, 4);
         let a = _mm_set1_epi16(10);
@@ -2620,7 +2620,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx10.2")]
+    #[simd_test(enable = "avx10.2,avxvnniint16")]
     fn test_mm256_mask_dpwusds_epi32() {
         let src = _mm256_setr_epi32(1, 2, 3, 4, 5, 6, 7, 8);
         let a = _mm256_set1_epi16(10);
@@ -2631,7 +2631,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx10.2")]
+    #[simd_test(enable = "avx10.2,avxvnniint16")]
     fn test_mm256_maskz_dpwusds_epi32() {
         let src = _mm256_setr_epi32(1, 2, 3, 4, 5, 6, 7, 8);
         let a = _mm256_set1_epi16(10);
@@ -2680,7 +2680,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx10.2")]
+    #[simd_test(enable = "avx10.2,avxvnniint16")]
     fn test_mm_mask_dpwuud_epi32() {
         let src = _mm_setr_epi32(1, 2, 3, 4);
         let a = _mm_set1_epi16(10);
@@ -2691,7 +2691,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx10.2")]
+    #[simd_test(enable = "avx10.2,avxvnniint16")]
     fn test_mm_maskz_dpwuud_epi32() {
         let src = _mm_setr_epi32(1, 2, 3, 4);
         let a = _mm_set1_epi16(10);
@@ -2702,7 +2702,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx10.2")]
+    #[simd_test(enable = "avx10.2,avxvnniint16")]
     fn test_mm256_mask_dpwuud_epi32() {
         let src = _mm256_setr_epi32(1, 2, 3, 4, 5, 6, 7, 8);
         let a = _mm256_set1_epi16(10);
@@ -2713,7 +2713,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx10.2")]
+    #[simd_test(enable = "avx10.2,avxvnniint16")]
     fn test_mm256_maskz_dpwuud_epi32() {
         let src = _mm256_setr_epi32(1, 2, 3, 4, 5, 6, 7, 8);
         let a = _mm256_set1_epi16(10);
@@ -2762,7 +2762,7 @@ mod tests {
         assert_eq_m512i(r, e);
     }
 
-    #[simd_test(enable = "avx10.2")]
+    #[simd_test(enable = "avx10.2,avxvnniint16")]
     fn test_mm_mask_dpwuuds_epi32() {
         let src = _mm_setr_epi32(1, 2, 3, 4);
         let a = _mm_set1_epi16(10);
@@ -2773,7 +2773,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx10.2")]
+    #[simd_test(enable = "avx10.2,avxvnniint16")]
     fn test_mm_maskz_dpwuuds_epi32() {
         let src = _mm_setr_epi32(1, 2, 3, 4);
         let a = _mm_set1_epi16(10);
@@ -2784,7 +2784,7 @@ mod tests {
         assert_eq_m128i(r, e);
     }
 
-    #[simd_test(enable = "avx10.2")]
+    #[simd_test(enable = "avx10.2,avxvnniint16")]
     fn test_mm256_mask_dpwuuds_epi32() {
         let src = _mm256_setr_epi32(1, 2, 3, 4, 5, 6, 7, 8);
         let a = _mm256_set1_epi16(10);
@@ -2795,7 +2795,7 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    #[simd_test(enable = "avx10.2")]
+    #[simd_test(enable = "avx10.2,avxvnniint16")]
     fn test_mm256_maskz_dpwuuds_epi32() {
         let src = _mm256_setr_epi32(1, 2, 3, 4, 5, 6, 7, 8);
         let a = _mm256_set1_epi16(10);
