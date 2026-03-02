@@ -3908,6 +3908,1333 @@ pub fn _mm_maskz_minmax_round_sh<const IMM8: i32, const SAE: i32>(
     _mm_mask_minmax_round_sh::<IMM8, SAE>(_mm_setzero_ph(), k, a, b)
 }
 
+/// Converts packed half-precision (16-bit) floating-point elements in `a` to signed 8-bit integers
+/// using saturation (`NaN` is converted to zero), and store them in the lower bits of corresponding
+/// 16-bit packed element `dst` and zeroing out the upper 8 bits.
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtph2ibs))]
+pub fn _mm_ipcvts_ph_epi8(a: __m128h) -> __m128i {
+    _mm_mask_ipcvts_ph_epi8(_mm_undefined_si128(), !0, a)
+}
+
+/// Converts packed half-precision (16-bit) floating-point elements in `a` to signed 8-bit integers
+/// using saturation (`NaN` is converted to zero), and store them in the lower bits of corresponding
+/// 16-bit packed element `dst` and zeroing the upper 8 bits, using writemask `k` (elements are copied
+/// from `src` when the corresponding mask bit is not set)
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtph2ibs))]
+pub fn _mm_mask_ipcvts_ph_epi8(src: __m128i, k: __mmask8, a: __m128h) -> __m128i {
+    unsafe { vcvtph2ibs128(a.as_f16x8(), src.as_i16x8(), k).as_m128i() }
+}
+
+/// Converts packed half-precision (16-bit) floating-point elements in `a` to signed 8-bit integers
+/// using saturation (`NaN` is converted to zero), and store them in the lower bits of corresponding
+/// 16-bit packed element `dst` and zeroing the upper 8 bits, using zeromask `k` (elements are zeroed
+/// out when the corresponding mask bit is not set)
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtph2ibs))]
+pub fn _mm_maskz_ipcvts_ph_epi8(k: __mmask8, a: __m128h) -> __m128i {
+    _mm_mask_ipcvts_ph_epi8(_mm_setzero_si128(), k, a)
+}
+
+/// Converts packed half-precision (16-bit) floating-point elements in `a` to signed 8-bit integers
+/// using saturation (`NaN` is converted to zero), and store them in the lower bits of corresponding
+/// 16-bit packed element `dst` and zeroing out the upper 8 bits.
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtph2ibs))]
+pub fn _mm256_ipcvts_ph_epi8(a: __m256h) -> __m256i {
+    _mm256_mask_ipcvts_ph_epi8(_mm256_undefined_si256(), !0, a)
+}
+
+/// Converts packed half-precision (16-bit) floating-point elements in `a` to signed 8-bit integers
+/// using saturation (`NaN` is converted to zero), and store them in the lower bits of corresponding
+/// 16-bit packed element `dst` and zeroing the upper 8 bits, using writemask `k` (elements are copied
+/// from `src` when the corresponding mask bit is not set)
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtph2ibs))]
+pub fn _mm256_mask_ipcvts_ph_epi8(src: __m256i, k: __mmask16, a: __m256h) -> __m256i {
+    unsafe { vcvtph2ibs256(a.as_f16x16(), src.as_i16x16(), k).as_m256i() }
+}
+
+/// Converts packed half-precision (16-bit) floating-point elements in `a` to signed 8-bit integers
+/// using saturation (`NaN` is converted to zero), and store them in the lower bits of corresponding
+/// 16-bit packed element `dst` and zeroing the upper 8 bits, using zeromask `k` (elements are zeroed
+/// out when the corresponding mask bit is not set)
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtph2ibs))]
+pub fn _mm256_maskz_ipcvts_ph_epi8(k: __mmask16, a: __m256h) -> __m256i {
+    _mm256_mask_ipcvts_ph_epi8(_mm256_setzero_si256(), k, a)
+}
+
+/// Converts packed half-precision (16-bit) floating-point elements in `a` to signed 8-bit integers
+/// using saturation (`NaN` is converted to zero), and store them in the lower bits of corresponding
+/// 16-bit packed element `dst` and zeroing out the upper 8 bits.
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtph2ibs))]
+pub fn _mm512_ipcvts_ph_epi8(a: __m512h) -> __m512i {
+    _mm512_mask_ipcvts_ph_epi8(_mm512_undefined_epi32(), !0, a)
+}
+
+/// Converts packed half-precision (16-bit) floating-point elements in `a` to signed 8-bit integers
+/// using saturation (`NaN` is converted to zero), and store them in the lower bits of corresponding
+/// 16-bit packed element `dst` and zeroing the upper 8 bits, using writemask `k` (elements are copied
+/// from `src` when the corresponding mask bit is not set)
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtph2ibs))]
+pub fn _mm512_mask_ipcvts_ph_epi8(src: __m512i, k: __mmask32, a: __m512h) -> __m512i {
+    _mm512_mask_ipcvts_roundph_epi8::<_MM_FROUND_CUR_DIRECTION>(src, k, a)
+}
+
+/// Converts packed half-precision (16-bit) floating-point elements in `a` to signed 8-bit integers
+/// using saturation (`NaN` is converted to zero), and store them in the lower bits of corresponding
+/// 16-bit packed element `dst` and zeroing the upper 8 bits, using zeromask `k` (elements are zeroed
+/// out when the corresponding mask bit is not set)
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtph2ibs))]
+pub fn _mm512_maskz_ipcvts_ph_epi8(k: __mmask32, a: __m512h) -> __m512i {
+    _mm512_mask_ipcvts_ph_epi8(_mm512_setzero_si512(), k, a)
+}
+
+/// Converts packed half-precision (16-bit) floating-point elements in `a` to signed 8-bit integers
+/// using saturation (`NaN` is converted to zero), and store them in the lower bits of corresponding
+/// 16-bit packed element `dst` and zeroing out the upper 8 bits.
+///
+/// Rounding is done according to the `ROUNDING` parameter, which can be one of:
+/// * [`_MM_FROUND_TO_NEAREST_INT`] | [`_MM_FROUND_NO_EXC`] : round to nearest and suppress exceptions
+/// * [`_MM_FROUND_TO_NEG_INF`] | [`_MM_FROUND_NO_EXC`] : round down and suppress exceptions
+/// * [`_MM_FROUND_TO_POS_INF`] | [`_MM_FROUND_NO_EXC`] : round up and suppress exceptions
+/// * [`_MM_FROUND_TO_ZERO`] | [`_MM_FROUND_NO_EXC`] : truncate and suppress exceptions
+/// * [`_MM_FROUND_CUR_DIRECTION`] : use `MXCSR.RC` - see [`_MM_SET_ROUNDING_MODE`]
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vcvtph2ibs, ROUNDING = 8)
+)]
+pub fn _mm512_ipcvts_roundph_epi8<const ROUNDING: i32>(a: __m512h) -> __m512i {
+    _mm512_mask_ipcvts_roundph_epi8::<ROUNDING>(_mm512_undefined_epi32(), !0, a)
+}
+
+/// Converts packed half-precision (16-bit) floating-point elements in `a` to signed 8-bit integers
+/// using saturation (`NaN` is converted to zero), and store them in the lower bits of corresponding
+/// 16-bit packed element `dst` and zeroing the upper 8 bits, using writemask `k` (elements are copied
+/// from `src` when the corresponding mask bit is not set).
+///
+/// Rounding is done according to the `ROUNDING` parameter, which can be one of:
+/// * [`_MM_FROUND_TO_NEAREST_INT`] | [`_MM_FROUND_NO_EXC`] : round to nearest and suppress exceptions
+/// * [`_MM_FROUND_TO_NEG_INF`] | [`_MM_FROUND_NO_EXC`] : round down and suppress exceptions
+/// * [`_MM_FROUND_TO_POS_INF`] | [`_MM_FROUND_NO_EXC`] : round up and suppress exceptions
+/// * [`_MM_FROUND_TO_ZERO`] | [`_MM_FROUND_NO_EXC`] : truncate and suppress exceptions
+/// * [`_MM_FROUND_CUR_DIRECTION`] : use `MXCSR.RC` - see [`_MM_SET_ROUNDING_MODE`]
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vcvtph2ibs, ROUNDING = 8)
+)]
+pub fn _mm512_mask_ipcvts_roundph_epi8<const ROUNDING: i32>(
+    src: __m512i,
+    k: __mmask32,
+    a: __m512h,
+) -> __m512i {
+    static_assert_rounding!(ROUNDING);
+    unsafe { vcvtph2ibs512(a.as_f16x32(), src.as_i16x32(), k, ROUNDING).as_m512i() }
+}
+
+/// Converts packed half-precision (16-bit) floating-point elements in `a` to signed 8-bit integers
+/// using saturation (`NaN` is converted to zero), and store them in the lower bits of corresponding
+/// 16-bit packed element `dst` and zeroing the upper 8 bits, using zeromask `k` (elements are zeroed
+/// out when the corresponding mask bit is not set).
+///
+/// Rounding is done according to the `ROUNDING` parameter, which can be one of:
+/// * [`_MM_FROUND_TO_NEAREST_INT`] | [`_MM_FROUND_NO_EXC`] : round to nearest and suppress exceptions
+/// * [`_MM_FROUND_TO_NEG_INF`] | [`_MM_FROUND_NO_EXC`] : round down and suppress exceptions
+/// * [`_MM_FROUND_TO_POS_INF`] | [`_MM_FROUND_NO_EXC`] : round up and suppress exceptions
+/// * [`_MM_FROUND_TO_ZERO`] | [`_MM_FROUND_NO_EXC`] : truncate and suppress exceptions
+/// * [`_MM_FROUND_CUR_DIRECTION`] : use `MXCSR.RC` - see [`_MM_SET_ROUNDING_MODE`]
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vcvtph2ibs, ROUNDING = 8)
+)]
+pub fn _mm512_maskz_ipcvts_roundph_epi8<const ROUNDING: i32>(k: __mmask32, a: __m512h) -> __m512i {
+    _mm512_mask_ipcvts_roundph_epi8::<ROUNDING>(_mm512_setzero_si512(), k, a)
+}
+
+/// Converts packed half-precision (16-bit) floating-point elements in `a` to unsigned 8-bit integers
+/// using saturation (`NaN` is converted to zero), and store them in the lower bits of corresponding
+/// 16-bit packed element `dst` and zeroing out the upper 8 bits.
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtph2iubs))]
+pub fn _mm_ipcvts_ph_epu8(a: __m128h) -> __m128i {
+    _mm_mask_ipcvts_ph_epu8(_mm_undefined_si128(), !0, a)
+}
+
+/// Converts packed half-precision (16-bit) floating-point elements in `a` to unsigned 8-bit integers
+/// using saturation (`NaN` is converted to zero), and store them in the lower bits of corresponding
+/// 16-bit packed element `dst` and zeroing the upper 8 bits, using writemask `k` (elements are copied
+/// from `src` when the corresponding mask bit is not set)
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtph2iubs))]
+pub fn _mm_mask_ipcvts_ph_epu8(src: __m128i, k: __mmask8, a: __m128h) -> __m128i {
+    unsafe { vcvtph2iubs128(a.as_f16x8(), src.as_u16x8(), k).as_m128i() }
+}
+
+/// Converts packed half-precision (16-bit) floating-point elements in `a` to unsigned 8-bit integers
+/// using saturation (`NaN` is converted to zero), and store them in the lower bits of corresponding
+/// 16-bit packed element `dst` and zeroing the upper 8 bits, using zeromask `k` (elements are zeroed
+/// out when the corresponding mask bit is not set)
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtph2iubs))]
+pub fn _mm_maskz_ipcvts_ph_epu8(k: __mmask8, a: __m128h) -> __m128i {
+    _mm_mask_ipcvts_ph_epu8(_mm_setzero_si128(), k, a)
+}
+
+/// Converts packed half-precision (16-bit) floating-point elements in `a` to unsigned 8-bit integers
+/// using saturation (`NaN` is converted to zero), and store them in the lower bits of corresponding
+/// 16-bit packed element `dst` and zeroing out the upper 8 bits.
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtph2iubs))]
+pub fn _mm256_ipcvts_ph_epu8(a: __m256h) -> __m256i {
+    _mm256_mask_ipcvts_ph_epu8(_mm256_undefined_si256(), !0, a)
+}
+
+/// Converts packed half-precision (16-bit) floating-point elements in `a` to unsigned 8-bit integers
+/// using saturation (`NaN` is converted to zero), and store them in the lower bits of corresponding
+/// 16-bit packed element `dst` and zeroing the upper 8 bits, using writemask `k` (elements are copied
+/// from `src` when the corresponding mask bit is not set)
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtph2iubs))]
+pub fn _mm256_mask_ipcvts_ph_epu8(src: __m256i, k: __mmask16, a: __m256h) -> __m256i {
+    unsafe { vcvtph2iubs256(a.as_f16x16(), src.as_u16x16(), k).as_m256i() }
+}
+
+/// Converts packed half-precision (16-bit) floating-point elements in `a` to unsigned 8-bit integers
+/// using saturation (`NaN` is converted to zero), and store them in the lower bits of corresponding
+/// 16-bit packed element `dst` and zeroing the upper 8 bits, using zeromask `k` (elements are zeroed
+/// out when the corresponding mask bit is not set)
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtph2iubs))]
+pub fn _mm256_maskz_ipcvts_ph_epu8(k: __mmask16, a: __m256h) -> __m256i {
+    _mm256_mask_ipcvts_ph_epu8(_mm256_setzero_si256(), k, a)
+}
+
+/// Converts packed half-precision (16-bit) floating-point elements in `a` to unsigned 8-bit integers
+/// using saturation (`NaN` is converted to zero), and store them in the lower bits of corresponding
+/// 16-bit packed element `dst` and zeroing out the upper 8 bits.
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtph2iubs))]
+pub fn _mm512_ipcvts_ph_epu8(a: __m512h) -> __m512i {
+    _mm512_mask_ipcvts_ph_epu8(_mm512_undefined_epi32(), !0, a)
+}
+
+/// Converts packed half-precision (16-bit) floating-point elements in `a` to unsigned 8-bit integers
+/// using saturation (`NaN` is converted to zero), and store them in the lower bits of corresponding
+/// 16-bit packed element `dst` and zeroing the upper 8 bits, using writemask `k` (elements are copied
+/// from `src` when the corresponding mask bit is not set)
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtph2iubs))]
+pub fn _mm512_mask_ipcvts_ph_epu8(src: __m512i, k: __mmask32, a: __m512h) -> __m512i {
+    _mm512_mask_ipcvts_roundph_epu8::<_MM_FROUND_CUR_DIRECTION>(src, k, a)
+}
+
+/// Converts packed half-precision (16-bit) floating-point elements in `a` to unsigned 8-bit integers
+/// using saturation (`NaN` is converted to zero), and store them in the lower bits of corresponding
+/// 16-bit packed element `dst` and zeroing the upper 8 bits, using zeromask `k` (elements are zeroed
+/// out when the corresponding mask bit is not set)
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtph2iubs))]
+pub fn _mm512_maskz_ipcvts_ph_epu8(k: __mmask32, a: __m512h) -> __m512i {
+    _mm512_mask_ipcvts_ph_epu8(_mm512_setzero_si512(), k, a)
+}
+
+/// Converts packed half-precision (16-bit) floating-point elements in `a` to unsigned 8-bit integers
+/// using saturation (`NaN` is converted to zero), and store them in the lower bits of corresponding
+/// 16-bit packed element `dst` and zeroing out the upper 8 bits.
+///
+/// Rounding is done according to the `ROUNDING` parameter, which can be one of:
+/// * [`_MM_FROUND_TO_NEAREST_INT`] | [`_MM_FROUND_NO_EXC`] : round to nearest and suppress exceptions
+/// * [`_MM_FROUND_TO_NEG_INF`] | [`_MM_FROUND_NO_EXC`] : round down and suppress exceptions
+/// * [`_MM_FROUND_TO_POS_INF`] | [`_MM_FROUND_NO_EXC`] : round up and suppress exceptions
+/// * [`_MM_FROUND_TO_ZERO`] | [`_MM_FROUND_NO_EXC`] : truncate and suppress exceptions
+/// * [`_MM_FROUND_CUR_DIRECTION`] : use `MXCSR.RC` - see [`_MM_SET_ROUNDING_MODE`]
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vcvtph2iubs, ROUNDING = 8)
+)]
+pub fn _mm512_ipcvts_roundph_epu8<const ROUNDING: i32>(a: __m512h) -> __m512i {
+    _mm512_mask_ipcvts_roundph_epu8::<ROUNDING>(_mm512_undefined_epi32(), !0, a)
+}
+
+/// Converts packed half-precision (16-bit) floating-point elements in `a` to unsigned 8-bit integers
+/// using saturation (`NaN` is converted to zero), and store them in the lower bits of corresponding
+/// 16-bit packed element `dst` and zeroing the upper 8 bits, using writemask `k` (elements are copied
+/// from `src` when the corresponding mask bit is not set).
+///
+/// Rounding is done according to the `ROUNDING` parameter, which can be one of:
+/// * [`_MM_FROUND_TO_NEAREST_INT`] | [`_MM_FROUND_NO_EXC`] : round to nearest and suppress exceptions
+/// * [`_MM_FROUND_TO_NEG_INF`] | [`_MM_FROUND_NO_EXC`] : round down and suppress exceptions
+/// * [`_MM_FROUND_TO_POS_INF`] | [`_MM_FROUND_NO_EXC`] : round up and suppress exceptions
+/// * [`_MM_FROUND_TO_ZERO`] | [`_MM_FROUND_NO_EXC`] : truncate and suppress exceptions
+/// * [`_MM_FROUND_CUR_DIRECTION`] : use `MXCSR.RC` - see [`_MM_SET_ROUNDING_MODE`]
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vcvtph2iubs, ROUNDING = 8)
+)]
+pub fn _mm512_mask_ipcvts_roundph_epu8<const ROUNDING: i32>(
+    src: __m512i,
+    k: __mmask32,
+    a: __m512h,
+) -> __m512i {
+    static_assert_rounding!(ROUNDING);
+    unsafe { vcvtph2iubs512(a.as_f16x32(), src.as_u16x32(), k, ROUNDING).as_m512i() }
+}
+
+/// Converts packed half-precision (16-bit) floating-point elements in `a` to unsigned 8-bit integers
+/// using saturation (`NaN` is converted to zero), and store them in the lower bits of corresponding
+/// 16-bit packed element `dst` and zeroing the upper 8 bits, using zeromask `k` (elements are zeroed
+/// out when the corresponding mask bit is not set).
+///
+/// Rounding is done according to the `ROUNDING` parameter, which can be one of:
+/// * [`_MM_FROUND_TO_NEAREST_INT`] | [`_MM_FROUND_NO_EXC`] : round to nearest and suppress exceptions
+/// * [`_MM_FROUND_TO_NEG_INF`] | [`_MM_FROUND_NO_EXC`] : round down and suppress exceptions
+/// * [`_MM_FROUND_TO_POS_INF`] | [`_MM_FROUND_NO_EXC`] : round up and suppress exceptions
+/// * [`_MM_FROUND_TO_ZERO`] | [`_MM_FROUND_NO_EXC`] : truncate and suppress exceptions
+/// * [`_MM_FROUND_CUR_DIRECTION`] : use `MXCSR.RC` - see [`_MM_SET_ROUNDING_MODE`]
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vcvtph2iubs, ROUNDING = 8)
+)]
+pub fn _mm512_maskz_ipcvts_roundph_epu8<const ROUNDING: i32>(k: __mmask32, a: __m512h) -> __m512i {
+    _mm512_mask_ipcvts_roundph_epu8::<ROUNDING>(_mm512_setzero_si512(), k, a)
+}
+
+/// Converts packed single-precision (32-bit) floating-point elements in `a` to signed 8-bit integers
+/// using saturation (`NaN` is converted to zero), and store them in the lower bits of corresponding
+/// 32-bit packed element `dst` and zeroing out the upper 24 bits.
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtps2ibs))]
+pub fn _mm_ipcvts_ps_epi8(a: __m128) -> __m128i {
+    _mm_mask_ipcvts_ps_epi8(_mm_undefined_si128(), !0, a)
+}
+
+/// Converts packed single-precision (32-bit) floating-point elements in `a` to signed 8-bit integers
+/// using saturation (`NaN` is converted to zero), and store them in the lower bits of corresponding
+/// 32-bit packed element `dst` and zeroing the upper 24 bits, using writemask `k` (elements are copied
+/// from `src` when the corresponding mask bit is not set).
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtps2ibs))]
+pub fn _mm_mask_ipcvts_ps_epi8(src: __m128i, k: __mmask8, a: __m128) -> __m128i {
+    unsafe { vcvtps2ibs128(a.as_f32x4(), src.as_i32x4(), k).as_m128i() }
+}
+
+/// Converts packed single-precision (32-bit) floating-point elements in `a` to signed 8-bit integers
+/// using saturation (`NaN` is converted to zero), and store them in the lower bits of corresponding
+/// 32-bit packed element `dst` and zeroing the upper 24 bits, using zeromask `k` (elements are zeroed
+/// out when the corresponding mask bit is not set).
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtps2ibs))]
+pub fn _mm_maskz_ipcvts_ps_epi8(k: __mmask8, a: __m128) -> __m128i {
+    _mm_mask_ipcvts_ps_epi8(_mm_setzero_si128(), k, a)
+}
+
+/// Converts packed single-precision (32-bit) floating-point elements in `a` to signed 8-bit integers
+/// using saturation (`NaN` is converted to zero), and store them in the lower bits of corresponding
+/// 32-bit packed element `dst` and zeroing out the upper 24 bits.
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtps2ibs))]
+pub fn _mm256_ipcvts_ps_epi8(a: __m256) -> __m256i {
+    _mm256_mask_ipcvts_ps_epi8(_mm256_undefined_si256(), !0, a)
+}
+
+/// Converts packed single-precision (32-bit) floating-point elements in `a` to signed 8-bit integers
+/// using saturation (`NaN` is converted to zero), and store them in the lower bits of corresponding
+/// 32-bit packed element `dst` and zeroing the upper 24 bits, using writemask `k` (elements are copied
+/// from `src` when the corresponding mask bit is not set).
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtps2ibs))]
+pub fn _mm256_mask_ipcvts_ps_epi8(src: __m256i, k: __mmask8, a: __m256) -> __m256i {
+    unsafe { vcvtps2ibs256(a.as_f32x8(), src.as_i32x8(), k).as_m256i() }
+}
+
+/// Converts packed single-precision (32-bit) floating-point elements in `a` to signed 8-bit integers
+/// using saturation (`NaN` is converted to zero), and store them in the lower bits of corresponding
+/// 32-bit packed element `dst` and zeroing the upper 24 bits, using zeromask `k` (elements are zeroed
+/// out when the corresponding mask bit is not set).
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtps2ibs))]
+pub fn _mm256_maskz_ipcvts_ps_epi8(k: __mmask8, a: __m256) -> __m256i {
+    _mm256_mask_ipcvts_ps_epi8(_mm256_setzero_si256(), k, a)
+}
+
+/// Converts packed single-precision (32-bit) floating-point elements in `a` to signed 8-bit integers
+/// using saturation (`NaN` is converted to zero), and store them in the lower bits of corresponding
+/// 32-bit packed element `dst` and zeroing the upper 24 bits.
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtps2ibs))]
+pub fn _mm512_ipcvts_ps_epi8(a: __m512) -> __m512i {
+    _mm512_mask_ipcvts_ps_epi8(_mm512_undefined_epi32(), !0, a)
+}
+
+/// Converts packed single-precision (32-bit) floating-point elements in `a` to signed 8-bit integers
+/// using saturation (`NaN` is converted to zero), and store them in the lower bits of corresponding
+/// 32-bit packed element `dst` and zeroing the upper 24 bits, using writemask `k` (elements are copied
+/// from `src` when the corresponding mask bit is not set).
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtps2ibs))]
+pub fn _mm512_mask_ipcvts_ps_epi8(src: __m512i, k: __mmask16, a: __m512) -> __m512i {
+    _mm512_mask_ipcvts_roundps_epi8::<_MM_FROUND_CUR_DIRECTION>(src, k, a)
+}
+
+/// Converts packed single-precision (32-bit) floating-point elements in `a` to signed 8-bit integers
+/// using saturation (`NaN` is converted to zero), and store them in the lower bits of corresponding
+/// 32-bit packed element `dst` and zeroing the upper 24 bits, using zeromask `k` (elements are zeroed
+/// out when the corresponding mask bit is not set).
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtps2ibs))]
+pub fn _mm512_maskz_ipcvts_ps_epi8(k: __mmask16, a: __m512) -> __m512i {
+    _mm512_mask_ipcvts_ps_epi8(_mm512_setzero_si512(), k, a)
+}
+
+/// Converts packed single-precision (32-bit) floating-point elements in `a` to signed 8-bit integers
+/// using saturation (`NaN` is converted to zero), and store them in the lower bits of corresponding
+/// 32-bit packed element `dst` and zeroing the upper 24 bits.
+///
+/// Rounding is done according to the `ROUNDING` parameter, which can be one of:
+/// * [`_MM_FROUND_TO_NEAREST_INT`] | [`_MM_FROUND_NO_EXC`] : round to nearest and suppress exceptions
+/// * [`_MM_FROUND_TO_NEG_INF`] | [`_MM_FROUND_NO_EXC`] : round down and suppress exceptions
+/// * [`_MM_FROUND_TO_POS_INF`] | [`_MM_FROUND_NO_EXC`] : round up and suppress exceptions
+/// * [`_MM_FROUND_TO_ZERO`] | [`_MM_FROUND_NO_EXC`] : truncate and suppress exceptions
+/// * [`_MM_FROUND_CUR_DIRECTION`] : use `MXCSR.RC` - see [`_MM_SET_ROUNDING_MODE`]
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vcvtps2ibs, ROUNDING = 8)
+)]
+pub fn _mm512_ipcvts_roundps_epi8<const ROUNDING: i32>(a: __m512) -> __m512i {
+    _mm512_mask_ipcvts_roundps_epi8::<ROUNDING>(_mm512_undefined_epi32(), !0, a)
+}
+
+/// Converts packed single-precision (32-bit) floating-point elements in `a` to signed 8-bit integers
+/// using saturation (`NaN` is converted to zero), and store them in the lower bits of corresponding
+/// 32-bit packed element `dst` and zeroing the upper 24 bits, using writemask `k` (elements are copied
+/// from `src` when the corresponding mask bit is not set).
+///
+/// Rounding is done according to the `ROUNDING` parameter, which can be one of:
+/// * [`_MM_FROUND_TO_NEAREST_INT`] | [`_MM_FROUND_NO_EXC`] : round to nearest and suppress exceptions
+/// * [`_MM_FROUND_TO_NEG_INF`] | [`_MM_FROUND_NO_EXC`] : round down and suppress exceptions
+/// * [`_MM_FROUND_TO_POS_INF`] | [`_MM_FROUND_NO_EXC`] : round up and suppress exceptions
+/// * [`_MM_FROUND_TO_ZERO`] | [`_MM_FROUND_NO_EXC`] : truncate and suppress exceptions
+/// * [`_MM_FROUND_CUR_DIRECTION`] : use `MXCSR.RC` - see [`_MM_SET_ROUNDING_MODE`]
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vcvtps2ibs, ROUNDING = 8)
+)]
+pub fn _mm512_mask_ipcvts_roundps_epi8<const ROUNDING: i32>(
+    src: __m512i,
+    k: __mmask16,
+    a: __m512,
+) -> __m512i {
+    static_assert_rounding!(ROUNDING);
+    unsafe { vcvtps2ibs512(a.as_f32x16(), src.as_i32x16(), k, ROUNDING).as_m512i() }
+}
+
+/// Converts packed single-precision (32-bit) floating-point elements in `a` to signed 8-bit integers
+/// using saturation (`NaN` is converted to zero), and store them in the lower bits of corresponding
+/// 32-bit packed element `dst` and zeroing the upper 24 bits, using zeromask `k` (elements are zeroed
+/// out when the corresponding mask bit is not set).
+///
+/// Rounding is done according to the `ROUNDING` parameter, which can be one of:
+/// * [`_MM_FROUND_TO_NEAREST_INT`] | [`_MM_FROUND_NO_EXC`] : round to nearest and suppress exceptions
+/// * [`_MM_FROUND_TO_NEG_INF`] | [`_MM_FROUND_NO_EXC`] : round down and suppress exceptions
+/// * [`_MM_FROUND_TO_POS_INF`] | [`_MM_FROUND_NO_EXC`] : round up and suppress exceptions
+/// * [`_MM_FROUND_TO_ZERO`] | [`_MM_FROUND_NO_EXC`] : truncate and suppress exceptions
+/// * [`_MM_FROUND_CUR_DIRECTION`] : use `MXCSR.RC` - see [`_MM_SET_ROUNDING_MODE`]
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vcvtps2ibs, ROUNDING = 8)
+)]
+pub fn _mm512_maskz_ipcvts_roundps_epi8<const ROUNDING: i32>(k: __mmask16, a: __m512) -> __m512i {
+    _mm512_mask_ipcvts_roundps_epi8::<ROUNDING>(_mm512_setzero_si512(), k, a)
+}
+
+/// Converts packed single-precision (32-bit) floating-point elements in `a` to unsigned 8-bit integers
+/// using saturation (`NaN` is converted to zero), and store them in the lower bits of corresponding
+/// 32-bit packed element `dst` and zeroing out the upper 24 bits.
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtps2iubs))]
+pub fn _mm_ipcvts_ps_epu8(a: __m128) -> __m128i {
+    _mm_mask_ipcvts_ps_epu8(_mm_undefined_si128(), !0, a)
+}
+
+/// Converts packed single-precision (32-bit) floating-point elements in `a` to unsigned 8-bit integers
+/// using saturation (`NaN` is converted to zero), and store them in the lower bits of corresponding
+/// 32-bit packed element `dst` and zeroing the upper 24 bits, using writemask `k` (elements are copied
+/// from `src` when the corresponding mask bit is not set).
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtps2iubs))]
+pub fn _mm_mask_ipcvts_ps_epu8(src: __m128i, k: __mmask8, a: __m128) -> __m128i {
+    unsafe { vcvtps2iubs128(a.as_f32x4(), src.as_u32x4(), k).as_m128i() }
+}
+
+/// Converts packed single-precision (32-bit) floating-point elements in `a` to unsigned 8-bit integers
+/// using saturation (`NaN` is converted to zero), and store them in the lower bits of corresponding
+/// 32-bit packed element `dst` and zeroing the upper 24 bits, using zeromask `k` (elements are zeroed
+/// out when the corresponding mask bit is not set).
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtps2iubs))]
+pub fn _mm_maskz_ipcvts_ps_epu8(k: __mmask8, a: __m128) -> __m128i {
+    _mm_mask_ipcvts_ps_epu8(_mm_setzero_si128(), k, a)
+}
+
+/// Converts packed single-precision (32-bit) floating-point elements in `a` to unsigned 8-bit integers
+/// using saturation (`NaN` is converted to zero), and store them in the lower bits of corresponding
+/// 32-bit packed element `dst` and zeroing the upper 24 bits.
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtps2iubs))]
+pub fn _mm256_ipcvts_ps_epu8(a: __m256) -> __m256i {
+    _mm256_mask_ipcvts_ps_epu8(_mm256_undefined_si256(), !0, a)
+}
+
+/// Converts packed single-precision (32-bit) floating-point elements in `a` to unsigned 8-bit integers
+/// using saturation (`NaN` is converted to zero), and store them in the lower bits of corresponding
+/// 32-bit packed element `dst` and zeroing the upper 24 bits, using writemask `k` (elements are copied
+/// from `src` when the corresponding mask bit is not set).
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtps2iubs))]
+pub fn _mm256_mask_ipcvts_ps_epu8(src: __m256i, k: __mmask8, a: __m256) -> __m256i {
+    unsafe { vcvtps2iubs256(a.as_f32x8(), src.as_u32x8(), k).as_m256i() }
+}
+
+/// Converts packed single-precision (32-bit) floating-point elements in `a` to unsigned 8-bit integers
+/// using saturation (`NaN` is converted to zero), and store them in the lower bits of corresponding
+/// 32-bit packed element `dst` and zeroing the upper 24 bits, using zeromask `k` (elements are zeroed
+/// out when the corresponding mask bit is not set).
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtps2iubs))]
+pub fn _mm256_maskz_ipcvts_ps_epu8(k: __mmask8, a: __m256) -> __m256i {
+    _mm256_mask_ipcvts_ps_epu8(_mm256_setzero_si256(), k, a)
+}
+
+/// Converts packed single-precision (32-bit) floating-point elements in `a` to unsigned 8-bit integers
+/// using saturation (`NaN` is converted to zero), and store them in the lower bits of corresponding
+/// 32-bit packed element `dst` and zeroing the upper 24 bits.
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtps2iubs))]
+pub fn _mm512_ipcvts_ps_epu8(a: __m512) -> __m512i {
+    _mm512_mask_ipcvts_ps_epu8(_mm512_undefined_epi32(), !0, a)
+}
+
+/// Converts packed single-precision (32-bit) floating-point elements in `a` to unsigned 8-bit integers
+/// using saturation (`NaN` is converted to zero), and store them in the lower bits of corresponding
+/// 32-bit packed element `dst` and zeroing the upper 24 bits, using writemask `k` (elements are copied
+/// from `src` when the corresponding mask bit is not set).
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtps2iubs))]
+pub fn _mm512_mask_ipcvts_ps_epu8(src: __m512i, k: __mmask16, a: __m512) -> __m512i {
+    _mm512_mask_ipcvts_roundps_epu8::<_MM_FROUND_CUR_DIRECTION>(src, k, a)
+}
+
+/// Converts packed single-precision (32-bit) floating-point elements in `a` to unsigned 8-bit integers
+/// using saturation (`NaN` is converted to zero), and store them in the lower bits of corresponding
+/// 32-bit packed element `dst` and zeroing the upper 24 bits, using zeromask `k` (elements are zeroed
+/// out when the corresponding mask bit is not set).
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtps2iubs))]
+pub fn _mm512_maskz_ipcvts_ps_epu8(k: __mmask16, a: __m512) -> __m512i {
+    _mm512_mask_ipcvts_ps_epu8(_mm512_setzero_si512(), k, a)
+}
+
+/// Converts packed single-precision (32-bit) floating-point elements in `a` to unsigned 8-bit integers
+/// using saturation (`NaN` is converted to zero), and store them in the lower bits of corresponding
+/// 32-bit packed element `dst` and zeroing the upper 24 bits.
+///
+/// Rounding is done according to the `ROUNDING` parameter, which can be one of:
+/// * [`_MM_FROUND_TO_NEAREST_INT`] | [`_MM_FROUND_NO_EXC`] : round to nearest and suppress exceptions
+/// * [`_MM_FROUND_TO_NEG_INF`] | [`_MM_FROUND_NO_EXC`] : round down and suppress exceptions
+/// * [`_MM_FROUND_TO_POS_INF`] | [`_MM_FROUND_NO_EXC`] : round up and suppress exceptions
+/// * [`_MM_FROUND_TO_ZERO`] | [`_MM_FROUND_NO_EXC`] : truncate and suppress exceptions
+/// * [`_MM_FROUND_CUR_DIRECTION`] : use `MXCSR.RC` - see [`_MM_SET_ROUNDING_MODE`]
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vcvtps2iubs, ROUNDING = 8)
+)]
+pub fn _mm512_ipcvts_roundps_epu8<const ROUNDING: i32>(a: __m512) -> __m512i {
+    _mm512_mask_ipcvts_roundps_epu8::<ROUNDING>(_mm512_undefined_epi32(), !0, a)
+}
+
+/// Converts packed single-precision (32-bit) floating-point elements in `a` to unsigned 8-bit integers
+/// using saturation (`NaN` is converted to zero), and store them in the lower bits of corresponding
+/// 32-bit packed element `dst` and zeroing the upper 24 bits, using writemask `k` (elements are copied
+/// from `src` when the corresponding mask bit is not set).
+///
+/// Rounding is done according to the `ROUNDING` parameter, which can be one of:
+/// * [`_MM_FROUND_TO_NEAREST_INT`] | [`_MM_FROUND_NO_EXC`] : round to nearest and suppress exceptions
+/// * [`_MM_FROUND_TO_NEG_INF`] | [`_MM_FROUND_NO_EXC`] : round down and suppress exceptions
+/// * [`_MM_FROUND_TO_POS_INF`] | [`_MM_FROUND_NO_EXC`] : round up and suppress exceptions
+/// * [`_MM_FROUND_TO_ZERO`] | [`_MM_FROUND_NO_EXC`] : truncate and suppress exceptions
+/// * [`_MM_FROUND_CUR_DIRECTION`] : use `MXCSR.RC` - see [`_MM_SET_ROUNDING_MODE`]
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vcvtps2iubs, ROUNDING = 8)
+)]
+pub fn _mm512_mask_ipcvts_roundps_epu8<const ROUNDING: i32>(
+    src: __m512i,
+    k: __mmask16,
+    a: __m512,
+) -> __m512i {
+    static_assert_rounding!(ROUNDING);
+    unsafe { vcvtps2iubs512(a.as_f32x16(), src.as_u32x16(), k, ROUNDING).as_m512i() }
+}
+
+/// Converts packed single-precision (32-bit) floating-point elements in `a` to unsigned 8-bit integers
+/// using saturation (`NaN` is converted to zero), and store them in the lower bits of corresponding
+/// 32-bit packed element `dst` and zeroing the upper 24 bits, using zeromask `k` (elements are zeroed
+/// out when the corresponding mask bit is not set).
+///
+/// Rounding is done according to the `ROUNDING` parameter, which can be one of:
+/// * [`_MM_FROUND_TO_NEAREST_INT`] | [`_MM_FROUND_NO_EXC`] : round to nearest and suppress exceptions
+/// * [`_MM_FROUND_TO_NEG_INF`] | [`_MM_FROUND_NO_EXC`] : round down and suppress exceptions
+/// * [`_MM_FROUND_TO_POS_INF`] | [`_MM_FROUND_NO_EXC`] : round up and suppress exceptions
+/// * [`_MM_FROUND_TO_ZERO`] | [`_MM_FROUND_NO_EXC`] : truncate and suppress exceptions
+/// * [`_MM_FROUND_CUR_DIRECTION`] : use `MXCSR.RC` - see [`_MM_SET_ROUNDING_MODE`]
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vcvtps2iubs, ROUNDING = 8)
+)]
+pub fn _mm512_maskz_ipcvts_roundps_epu8<const ROUNDING: i32>(k: __mmask16, a: __m512) -> __m512i {
+    _mm512_mask_ipcvts_roundps_epu8::<ROUNDING>(_mm512_setzero_si512(), k, a)
+}
+
+/// Converts packed half-precision (16-bit) floating-point elements in `a` to signed 8-bit integers
+/// using saturation and truncation (`NaN` is converted to zero), and store them in the lower bits of
+/// corresponding 16-bit packed element `dst` and zeroing out the upper 8 bits.
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvttph2ibs))]
+pub fn _mm_ipcvtts_ph_epi8(a: __m128h) -> __m128i {
+    _mm_mask_ipcvtts_ph_epi8(_mm_undefined_si128(), !0, a)
+}
+
+/// Converts packed half-precision (16-bit) floating-point elements in `a` to signed 8-bit integers
+/// using saturation and truncation (`NaN` is converted to zero), and store them in the lower bits of
+/// corresponding 16-bit packed element `dst` and zeroing the upper 8 bits, using writemask `k` (elements are copied
+/// from `src` when the corresponding mask bit is not set).
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvttph2ibs))]
+pub fn _mm_mask_ipcvtts_ph_epi8(src: __m128i, k: __mmask8, a: __m128h) -> __m128i {
+    unsafe { vcvttph2ibs128(a.as_f16x8(), src.as_i16x8(), k).as_m128i() }
+}
+
+/// Converts packed half-precision (16-bit) floating-point elements in `a` to signed 8-bit integers
+/// using saturation and truncation (`NaN` is converted to zero), and store them in the lower bits of
+/// corresponding 16-bit packed element `dst` and zeroing the upper 8 bits, using zeromask `k` (elements are zeroed
+/// out when the corresponding mask bit is not set).
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvttph2ibs))]
+pub fn _mm_maskz_ipcvtts_ph_epi8(k: __mmask8, a: __m128h) -> __m128i {
+    _mm_mask_ipcvtts_ph_epi8(_mm_setzero_si128(), k, a)
+}
+
+/// Converts packed half-precision (16-bit) floating-point elements in `a` to signed 8-bit integers
+/// using saturation and truncation (`NaN` is converted to zero), and store them in the lower bits of
+/// corresponding 16-bit packed element `dst` and zeroing the upper 8 bits.
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvttph2ibs))]
+pub fn _mm256_ipcvtts_ph_epi8(a: __m256h) -> __m256i {
+    _mm256_mask_ipcvtts_ph_epi8(_mm256_undefined_si256(), !0, a)
+}
+
+/// Converts packed half-precision (16-bit) floating-point elements in `a` to signed 8-bit integers
+/// using saturation and truncation (`NaN` is converted to zero), and store them in the lower bits of
+/// corresponding 16-bit packed element `dst` and zeroing the upper 8 bits, using writemask `k` (elements are copied
+/// from `src` when the corresponding mask bit is not set).
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvttph2ibs))]
+pub fn _mm256_mask_ipcvtts_ph_epi8(src: __m256i, k: __mmask16, a: __m256h) -> __m256i {
+    unsafe { vcvttph2ibs256(a.as_f16x16(), src.as_i16x16(), k).as_m256i() }
+}
+
+/// Converts packed half-precision (16-bit) floating-point elements in `a` to signed 8-bit integers
+/// using saturation and truncation (`NaN` is converted to zero), and store them in the lower bits of
+/// corresponding 16-bit packed element `dst` and zeroing the upper 8 bits, using zeromask `k` (elements are zeroed
+/// out when the corresponding mask bit is not set).
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvttph2ibs))]
+pub fn _mm256_maskz_ipcvtts_ph_epi8(k: __mmask16, a: __m256h) -> __m256i {
+    _mm256_mask_ipcvtts_ph_epi8(_mm256_setzero_si256(), k, a)
+}
+
+/// Converts packed half-precision (16-bit) floating-point elements in `a` to signed 8-bit integers
+/// using saturation and truncation (`NaN` is converted to zero), and store them in the lower bits of
+/// corresponding 16-bit packed element `dst` and zeroing the upper 8 bits.
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvttph2ibs))]
+pub fn _mm512_ipcvtts_ph_epi8(a: __m512h) -> __m512i {
+    _mm512_mask_ipcvtts_ph_epi8(_mm512_undefined_epi32(), !0, a)
+}
+
+/// Converts packed half-precision (16-bit) floating-point elements in `a` to signed 8-bit integers
+/// using saturation and truncation (`NaN` is converted to zero), and store them in the lower bits of
+/// corresponding 16-bit packed element `dst` and zeroing the upper 8 bits, using writemask `k` (elements are copied
+/// from `src` when the corresponding mask bit is not set).
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvttph2ibs))]
+pub fn _mm512_mask_ipcvtts_ph_epi8(src: __m512i, k: __mmask32, a: __m512h) -> __m512i {
+    _mm512_mask_ipcvtts_roundph_epi8::<_MM_FROUND_CUR_DIRECTION>(src, k, a)
+}
+
+/// Converts packed half-precision (16-bit) floating-point elements in `a` to signed 8-bit integers
+/// using saturation and truncation (`NaN` is converted to zero), and store them in the lower bits of
+/// corresponding 16-bit packed element `dst` and zeroing the upper 8 bits, using zeromask `k` (elements are zeroed
+/// out when the corresponding mask bit is not set).
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvttph2ibs))]
+pub fn _mm512_maskz_ipcvtts_ph_epi8(k: __mmask32, a: __m512h) -> __m512i {
+    _mm512_mask_ipcvtts_ph_epi8(_mm512_setzero_si512(), k, a)
+}
+
+/// Converts packed half-precision (16-bit) floating-point elements in `a` to signed 8-bit integers
+/// using saturation and truncation (`NaN` is converted to zero), and store them in the lower bits of
+/// corresponding 16-bit packed element `dst` and zeroing the upper 8 bits.
+/// Exceptions can be suppressed by passing [`_MM_FROUND_NO_EXC`]` in the `SAE` parameter.
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vcvttph2ibs, SAE = 8)
+)]
+pub fn _mm512_ipcvtts_roundph_epi8<const SAE: i32>(a: __m512h) -> __m512i {
+    _mm512_mask_ipcvtts_roundph_epi8::<SAE>(_mm512_undefined_epi32(), !0, a)
+}
+
+/// Converts packed half-precision (16-bit) floating-point elements in `a` to signed 8-bit integers
+/// using saturation and truncation (`NaN` is converted to zero), and store them in the lower bits of
+/// corresponding 16-bit packed element `dst` and zeroing the upper 8 bits, using writemask `k` (elements are copied
+/// from `src` when the corresponding mask bit is not set).
+/// Exceptions can be suppressed by passing [`_MM_FROUND_NO_EXC`]` in the `SAE` parameter.
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vcvttph2ibs, SAE = 8)
+)]
+pub fn _mm512_mask_ipcvtts_roundph_epi8<const SAE: i32>(
+    src: __m512i,
+    k: __mmask32,
+    a: __m512h,
+) -> __m512i {
+    static_assert_sae!(SAE);
+    unsafe { vcvttph2ibs512(a.as_f16x32(), src.as_i16x32(), k, SAE).as_m512i() }
+}
+/// Converts packed half-precision (16-bit) floating-point elements in `a` to signed 8-bit integers
+/// using saturation and truncation (`NaN` is converted to zero), and store them in the lower bits of
+/// corresponding 16-bit packed element `dst` and zeroing the upper 8 bits, using zeromask `k` (elements are zeroed
+/// out when the corresponding mask bit is not set).
+/// Exceptions can be suppressed by passing [`_MM_FROUND_NO_EXC`]` in the `SAE` parameter.
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vcvttph2ibs, SAE = 8)
+)]
+pub fn _mm512_maskz_ipcvtts_roundph_epi8<const SAE: i32>(k: __mmask32, a: __m512h) -> __m512i {
+    _mm512_mask_ipcvtts_roundph_epi8::<SAE>(_mm512_setzero_si512(), k, a)
+}
+
+/// Converts packed half-precision (16-bit) floating-point elements in `a` to unsigned 8-bit integers
+/// using saturation and truncation (`NaN` is converted to zero), and store them in the lower bits of
+/// corresponding 16-bit packed element `dst` and zeroing the upper 8 bits.
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvttph2iubs))]
+pub fn _mm_ipcvtts_ph_epu8(a: __m128h) -> __m128i {
+    _mm_mask_ipcvtts_ph_epu8(_mm_undefined_si128(), !0, a)
+}
+
+/// Converts packed half-precision (16-bit) floating-point elements in `a` to unsigned 8-bit integers
+/// using saturation and truncation (`NaN` is converted to zero), and store them in the lower bits of
+/// corresponding 16-bit packed element `dst` and zeroing the upper 8 bits, using writemask `k` (elements are copied
+/// from `src` when the corresponding mask bit is not set).
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvttph2iubs))]
+pub fn _mm_mask_ipcvtts_ph_epu8(src: __m128i, k: __mmask8, a: __m128h) -> __m128i {
+    unsafe { vcvttph2iubs128(a.as_f16x8(), src.as_u16x8(), k).as_m128i() }
+}
+
+/// Converts packed half-precision (16-bit) floating-point elements in `a` to unsigned 8-bit integers
+/// using saturation and truncation (`NaN` is converted to zero), and store them in the lower bits of
+/// corresponding 16-bit packed element `dst` and zeroing the upper 8 bits, using zeromask `k` (elements are zeroed
+/// out when the corresponding mask bit is not set).
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvttph2iubs))]
+pub fn _mm_maskz_ipcvtts_ph_epu8(k: __mmask8, a: __m128h) -> __m128i {
+    _mm_mask_ipcvtts_ph_epu8(_mm_setzero_si128(), k, a)
+}
+
+/// Converts packed half-precision (16-bit) floating-point elements in `a` to unsigned 8-bit integers
+/// using saturation and truncation (`NaN` is converted to zero), and store them in the lower bits of
+/// corresponding 16-bit packed element `dst` and zeroing the upper 8 bits.
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvttph2iubs))]
+pub fn _mm256_ipcvtts_ph_epu8(a: __m256h) -> __m256i {
+    _mm256_mask_ipcvtts_ph_epu8(_mm256_undefined_si256(), !0, a)
+}
+
+/// Converts packed half-precision (16-bit) floating-point elements in `a` to unsigned 8-bit integers
+/// using saturation and truncation (`NaN` is converted to zero), and store them in the lower bits of
+/// corresponding 16-bit packed element `dst` and zeroing the upper 8 bits, using writemask `k` (elements are copied
+/// from `src` when the corresponding mask bit is not set).
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvttph2iubs))]
+pub fn _mm256_mask_ipcvtts_ph_epu8(src: __m256i, k: __mmask16, a: __m256h) -> __m256i {
+    unsafe { vcvttph2iubs256(a.as_f16x16(), src.as_u16x16(), k).as_m256i() }
+}
+
+/// Converts packed half-precision (16-bit) floating-point elements in `a` to unsigned 8-bit integers
+/// using saturation and truncation (`NaN` is converted to zero), and store them in the lower bits of
+/// corresponding 16-bit packed element `dst` and zeroing the upper 8 bits, using zeromask `k` (elements are zeroed
+/// out when the corresponding mask bit is not set).
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvttph2iubs))]
+pub fn _mm256_maskz_ipcvtts_ph_epu8(k: __mmask16, a: __m256h) -> __m256i {
+    _mm256_mask_ipcvtts_ph_epu8(_mm256_setzero_si256(), k, a)
+}
+
+/// Converts packed half-precision (16-bit) floating-point elements in `a` to unsigned 8-bit integers
+/// using saturation and truncation (`NaN` is converted to zero), and store them in the lower bits of
+/// corresponding 16-bit packed element `dst` and zeroing the upper 8 bits.
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvttph2iubs))]
+pub fn _mm512_ipcvtts_ph_epu8(a: __m512h) -> __m512i {
+    _mm512_mask_ipcvtts_ph_epu8(_mm512_undefined_epi32(), !0, a)
+}
+
+/// Converts packed half-precision (16-bit) floating-point elements in `a` to unsigned 8-bit integers
+/// using saturation and truncation (`NaN` is converted to zero), and store them in the lower bits of
+/// corresponding 16-bit packed element `dst` and zeroing the upper 8 bits, using writemask `k` (elements are copied
+/// from `src` when the corresponding mask bit is not set).
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvttph2iubs))]
+pub fn _mm512_mask_ipcvtts_ph_epu8(src: __m512i, k: __mmask32, a: __m512h) -> __m512i {
+    _mm512_mask_ipcvtts_roundph_epu8::<_MM_FROUND_CUR_DIRECTION>(src, k, a)
+}
+
+/// Converts packed half-precision (16-bit) floating-point elements in `a` to unsigned 8-bit integers
+/// using saturation and truncation (`NaN` is converted to zero), and store them in the lower bits of
+/// corresponding 16-bit packed element `dst` and zeroing the upper 8 bits, using zeromask `k` (elements are zeroed
+/// out when the corresponding mask bit is not set).
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvttph2iubs))]
+pub fn _mm512_maskz_ipcvtts_ph_epu8(k: __mmask32, a: __m512h) -> __m512i {
+    _mm512_mask_ipcvtts_ph_epu8(_mm512_setzero_si512(), k, a)
+}
+
+/// Converts packed half-precision (16-bit) floating-point elements in `a` to unsigned 8-bit integers
+/// using saturation and truncation (`NaN` is converted to zero), and store them in the lower bits of
+/// corresponding 16-bit packed element `dst` and zeroing the upper 8 bits.
+/// Exceptions can be suppressed by passing [`_MM_FROUND_NO_EXC`]` in the `SAE` parameter.
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vcvttph2iubs, SAE = 8)
+)]
+pub fn _mm512_ipcvtts_roundph_epu8<const SAE: i32>(a: __m512h) -> __m512i {
+    _mm512_mask_ipcvtts_roundph_epu8::<SAE>(_mm512_undefined_epi32(), !0, a)
+}
+
+/// Converts packed half-precision (16-bit) floating-point elements in `a` to unsigned 8-bit integers
+/// using saturation and truncation (`NaN` is converted to zero), and store them in the lower bits of
+/// corresponding 16-bit packed element `dst` and zeroing the upper 8 bits, using writemask `k` (elements are copied
+/// from `src` when the corresponding mask bit is not set).
+/// Exceptions can be suppressed by passing [`_MM_FROUND_NO_EXC`]` in the `SAE` parameter.
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vcvttph2iubs, SAE = 8)
+)]
+pub fn _mm512_mask_ipcvtts_roundph_epu8<const SAE: i32>(
+    src: __m512i,
+    k: __mmask32,
+    a: __m512h,
+) -> __m512i {
+    static_assert_sae!(SAE);
+    unsafe { vcvttph2iubs512(a.as_f16x32(), src.as_u16x32(), k, SAE).as_m512i() }
+}
+
+/// Converts packed half-precision (16-bit) floating-point elements in `a` to unsigned 8-bit integers
+/// using saturation and truncation (`NaN` is converted to zero), and store them in the lower bits of
+/// corresponding 16-bit packed element `dst` and zeroing the upper 8 bits, using zeromask `k` (elements are zeroed
+/// out when the corresponding mask bit is not set).
+/// Exceptions can be suppressed by passing [`_MM_FROUND_NO_EXC`]` in the `SAE` parameter.
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vcvttph2iubs, SAE = 8)
+)]
+pub fn _mm512_maskz_ipcvtts_roundph_epu8<const SAE: i32>(k: __mmask32, a: __m512h) -> __m512i {
+    _mm512_mask_ipcvtts_roundph_epu8::<SAE>(_mm512_setzero_si512(), k, a)
+}
+
+/// Converts packed single-precision (32-bit) floating-point elements in `a` to signed 8-bit integers
+/// using saturation and truncation (`NaN` is converted to zero), and store them in the lower bits of
+/// corresponding 16-bit packed element `dst` and zeroing the upper 8 bits.
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvttps2ibs))]
+pub fn _mm_ipcvtts_ps_epi8(a: __m128) -> __m128i {
+    _mm_mask_ipcvtts_ps_epi8(_mm_undefined_si128(), !0, a)
+}
+
+/// Converts packed single-precision (32-bit) floating-point elements in `a` to signed 8-bit integers
+/// using saturation and truncation (`NaN` is converted to zero), and store them in the lower bits of
+/// corresponding 32-bit packed element `dst` and zeroing the upper 24 bits, using writemask `k` (elements are copied
+/// from `src` when the corresponding mask bit is not set).
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvttps2ibs))]
+pub fn _mm_mask_ipcvtts_ps_epi8(src: __m128i, k: __mmask8, a: __m128) -> __m128i {
+    unsafe { vcvttps2ibs128(a.as_f32x4(), src.as_i32x4(), k).as_m128i() }
+}
+
+/// Converts packed single-precision (32-bit) floating-point elements in `a` to signed 8-bit integers
+/// using saturation and truncation (`NaN` is converted to zero), and store them in the lower bits of
+/// corresponding 32-bit packed element `dst` and zeroing the upper 24 bits, using zeromask `k` (elements are zeroed
+/// out when the corresponding mask bit is not set).
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvttps2ibs))]
+pub fn _mm_maskz_ipcvtts_ps_epi8(k: __mmask8, a: __m128) -> __m128i {
+    _mm_mask_ipcvtts_ps_epi8(_mm_setzero_si128(), k, a)
+}
+
+/// Converts packed single-precision (32-bit) floating-point elements in `a` to signed 8-bit integers
+/// using saturation and truncation (`NaN` is converted to zero), and store them in the lower bits of
+/// corresponding 32-bit packed element `dst` and zeroing the upper 24 bits.
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvttps2ibs))]
+pub fn _mm256_ipcvtts_ps_epi8(a: __m256) -> __m256i {
+    _mm256_mask_ipcvtts_ps_epi8(_mm256_undefined_si256(), !0, a)
+}
+
+/// Converts packed single-precision (32-bit) floating-point elements in `a` to signed 8-bit integers
+/// using saturation and truncation (`NaN` is converted to zero), and store them in the lower bits of
+/// corresponding 32-bit packed element `dst` and zeroing the upper 24 bits, using writemask `k` (elements are copied
+/// from `src` when the corresponding mask bit is not set).
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvttps2ibs))]
+pub fn _mm256_mask_ipcvtts_ps_epi8(src: __m256i, k: __mmask8, a: __m256) -> __m256i {
+    unsafe { vcvttps2ibs256(a.as_f32x8(), src.as_i32x8(), k).as_m256i() }
+}
+
+/// Converts packed single-precision (32-bit) floating-point elements in `a` to signed 8-bit integers
+/// using saturation and truncation (`NaN` is converted to zero), and store them in the lower bits of
+/// corresponding 32-bit packed element `dst` and zeroing the upper 24 bits, using zeromask `k` (elements are zeroed
+/// out when the corresponding mask bit is not set).
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvttps2ibs))]
+pub fn _mm256_maskz_ipcvtts_ps_epi8(k: __mmask8, a: __m256) -> __m256i {
+    _mm256_mask_ipcvtts_ps_epi8(_mm256_setzero_si256(), k, a)
+}
+
+/// Converts packed single-precision (32-bit) floating-point elements in `a` to signed 8-bit integers
+/// using saturation and truncation (`NaN` is converted to zero), and store them in the lower bits of
+/// corresponding 32-bit packed element `dst` and zeroing the upper 24 bits.
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvttps2ibs))]
+pub fn _mm512_ipcvtts_ps_epi8(a: __m512) -> __m512i {
+    _mm512_mask_ipcvtts_ps_epi8(_mm512_undefined_epi32(), !0, a)
+}
+
+/// Converts packed single-precision (32-bit) floating-point elements in `a` to signed 8-bit integers
+/// using saturation and truncation (`NaN` is converted to zero), and store them in the lower bits of
+/// corresponding 32-bit packed element `dst` and zeroing the upper 24 bits, using writemask `k` (elements are copied
+/// from `src` when the corresponding mask bit is not set).
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvttps2ibs))]
+pub fn _mm512_mask_ipcvtts_ps_epi8(src: __m512i, k: __mmask16, a: __m512) -> __m512i {
+    _mm512_mask_ipcvtts_roundps_epi8::<_MM_FROUND_CUR_DIRECTION>(src, k, a)
+}
+
+/// Converts packed single-precision (32-bit) floating-point elements in `a` to signed 8-bit integers
+/// using saturation and truncation (`NaN` is converted to zero), and store them in the lower bits of
+/// corresponding 32-bit packed element `dst` and zeroing the upper 24 bits, using zeromask `k` (elements are zeroed
+/// out when the corresponding mask bit is not set).
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvttps2ibs))]
+pub fn _mm512_maskz_ipcvtts_ps_epi8(k: __mmask16, a: __m512) -> __m512i {
+    _mm512_mask_ipcvtts_ps_epi8(_mm512_setzero_si512(), k, a)
+}
+
+/// Converts packed single-precision (32-bit) floating-point elements in `a` to signed 8-bit integers
+/// using saturation and truncation (`NaN` is converted to zero), and store them in the lower bits of
+/// corresponding 32-bit packed element `dst` and zeroing the upper 24 bits.
+/// Exceptions can be suppressed by passing [`_MM_FROUND_NO_EXC`]` in the `SAE` parameter.
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vcvttps2ibs, SAE = 8)
+)]
+pub fn _mm512_ipcvtts_roundps_epi8<const SAE: i32>(a: __m512) -> __m512i {
+    _mm512_mask_ipcvtts_roundps_epi8::<SAE>(_mm512_undefined_epi32(), !0, a)
+}
+
+/// Converts packed single-precision (32-bit) floating-point elements in `a` to signed 8-bit integers
+/// using saturation and truncation (`NaN` is converted to zero), and store them in the lower bits of
+/// corresponding 32-bit packed element `dst` and zeroing the upper 24 bits, using writemask `k` (elements are copied
+/// from `src` when the corresponding mask bit is not set).
+/// Exceptions can be suppressed by passing [`_MM_FROUND_NO_EXC`]` in the `SAE` parameter.
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vcvttps2ibs, SAE = 8)
+)]
+pub fn _mm512_mask_ipcvtts_roundps_epi8<const SAE: i32>(
+    src: __m512i,
+    k: __mmask16,
+    a: __m512,
+) -> __m512i {
+    static_assert_sae!(SAE);
+    unsafe { vcvttps2ibs512(a.as_f32x16(), src.as_i32x16(), k, SAE).as_m512i() }
+}
+
+/// Converts packed single-precision (32-bit) floating-point elements in `a` to signed 8-bit integers
+/// using saturation and truncation (`NaN` is converted to zero), and store them in the lower bits of
+/// corresponding 32-bit packed element `dst` and zeroing the upper 24 bits, using zeromask `k` (elements are zeroed
+/// out when the corresponding mask bit is not set).
+/// Exceptions can be suppressed by passing [`_MM_FROUND_NO_EXC`]` in the `SAE` parameter.
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vcvttps2ibs, SAE = 8)
+)]
+pub fn _mm512_maskz_ipcvtts_roundps_epi8<const SAE: i32>(k: __mmask16, a: __m512) -> __m512i {
+    _mm512_mask_ipcvtts_roundps_epi8::<SAE>(_mm512_setzero_si512(), k, a)
+}
+
+/// Converts packed single-precision (32-bit) floating-point elements in `a` to unsigned 8-bit integers
+/// using saturation and truncation (`NaN` is converted to zero), and store them in the lower bits of
+/// corresponding 32-bit packed element `dst` and zeroing the upper 24 bits.
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvttps2iubs))]
+pub fn _mm_ipcvtts_ps_epu8(a: __m128) -> __m128i {
+    _mm_mask_ipcvtts_ps_epu8(_mm_undefined_si128(), !0, a)
+}
+
+/// Converts packed single-precision (32-bit) floating-point elements in `a` to unsigned 8-bit integers
+/// using saturation and truncation (`NaN` is converted to zero), and store them in the lower bits of
+/// corresponding 32-bit packed element `dst` and zeroing the upper 24 bits, using writemask `k` (elements are copied
+/// from `src` when the corresponding mask bit is not set).
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvttps2iubs))]
+pub fn _mm_mask_ipcvtts_ps_epu8(src: __m128i, k: __mmask8, a: __m128) -> __m128i {
+    unsafe { vcvttps2iubs128(a.as_f32x4(), src.as_u32x4(), k).as_m128i() }
+}
+
+/// Converts packed single-precision (32-bit) floating-point elements in `a` to unsigned 8-bit integers
+/// using saturation and truncation (`NaN` is converted to zero), and store them in the lower bits of
+/// corresponding 32-bit packed element `dst` and zeroing the upper 24 bits, using zeromask `k` (elements are zeroed
+/// out when the corresponding mask bit is not set).
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvttps2iubs))]
+pub fn _mm_maskz_ipcvtts_ps_epu8(k: __mmask8, a: __m128) -> __m128i {
+    _mm_mask_ipcvtts_ps_epu8(_mm_setzero_si128(), k, a)
+}
+
+/// Converts packed single-precision (32-bit) floating-point elements in `a` to unsigned 8-bit integers
+/// using saturation and truncation (`NaN` is converted to zero), and store them in the lower bits of
+/// corresponding 32-bit packed element `dst` and zeroing the upper 24 bits.
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvttps2iubs))]
+pub fn _mm256_ipcvtts_ps_epu8(a: __m256) -> __m256i {
+    _mm256_mask_ipcvtts_ps_epu8(_mm256_undefined_si256(), !0, a)
+}
+
+/// Converts packed single-precision (32-bit) floating-point elements in `a` to unsigned 8-bit integers
+/// using saturation and truncation (`NaN` is converted to zero), and store them in the lower bits of
+/// corresponding 32-bit packed element `dst` and zeroing the upper 24 bits, using writemask `k` (elements are copied
+/// from `src` when the corresponding mask bit is not set).
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvttps2iubs))]
+pub fn _mm256_mask_ipcvtts_ps_epu8(src: __m256i, k: __mmask8, a: __m256) -> __m256i {
+    unsafe { vcvttps2iubs256(a.as_f32x8(), src.as_u32x8(), k).as_m256i() }
+}
+
+/// Converts packed single-precision (32-bit) floating-point elements in `a` to unsigned 8-bit integers
+/// using saturation and truncation (`NaN` is converted to zero), and store them in the lower bits of
+/// corresponding 32-bit packed element `dst` and zeroing the upper 24 bits, using zeromask `k` (elements are zeroed
+/// out when the corresponding mask bit is not set).
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvttps2iubs))]
+pub fn _mm256_maskz_ipcvtts_ps_epu8(k: __mmask8, a: __m256) -> __m256i {
+    _mm256_mask_ipcvtts_ps_epu8(_mm256_setzero_si256(), k, a)
+}
+
+/// Converts packed single-precision (32-bit) floating-point elements in `a` to unsigned 8-bit integers
+/// using saturation and truncation (`NaN` is converted to zero), and store them in the lower bits of
+/// corresponding 32-bit packed element `dst` and zeroing the upper 24 bits.
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvttps2iubs))]
+pub fn _mm512_ipcvtts_ps_epu8(a: __m512) -> __m512i {
+    _mm512_mask_ipcvtts_ps_epu8(_mm512_undefined_epi32(), !0, a)
+}
+
+/// Converts packed single-precision (32-bit) floating-point elements in `a` to unsigned 8-bit integers
+/// using saturation and truncation (`NaN` is converted to zero), and store them in the lower bits of
+/// corresponding 32-bit packed element `dst` and zeroing the upper 24 bits, using writemask `k` (elements are copied
+/// from `src` when the corresponding mask bit is not set).
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvttps2iubs))]
+pub fn _mm512_mask_ipcvtts_ps_epu8(src: __m512i, k: __mmask16, a: __m512) -> __m512i {
+    _mm512_mask_ipcvtts_roundps_epu8::<_MM_FROUND_CUR_DIRECTION>(src, k, a)
+}
+
+/// Converts packed single-precision (32-bit) floating-point elements in `a` to unsigned 8-bit integers
+/// using saturation and truncation (`NaN` is converted to zero), and store them in the lower bits of
+/// corresponding 32-bit packed element `dst` and zeroing the upper 24 bits, using zeromask `k` (elements are zeroed
+/// out when the corresponding mask bit is not set).
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvttps2iubs))]
+pub fn _mm512_maskz_ipcvtts_ps_epu8(k: __mmask16, a: __m512) -> __m512i {
+    _mm512_mask_ipcvtts_ps_epu8(_mm512_setzero_si512(), k, a)
+}
+
+/// Converts packed single-precision (32-bit) floating-point elements in `a` to unsigned 8-bit integers
+/// using saturation and truncation (`NaN` is converted to zero), and store them in the lower bits of
+/// corresponding 32-bit packed element `dst` and zeroing the upper 24 bits.
+/// Exceptions can be suppressed by passing [`_MM_FROUND_NO_EXC`]` in the `SAE` parameter.
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vcvttps2iubs, SAE = 8)
+)]
+pub fn _mm512_ipcvtts_roundps_epu8<const SAE: i32>(a: __m512) -> __m512i {
+    _mm512_mask_ipcvtts_roundps_epu8::<SAE>(_mm512_undefined_epi32(), !0, a)
+}
+
+/// Converts packed single-precision (32-bit) floating-point elements in `a` to unsigned 8-bit integers
+/// using saturation and truncation (`NaN` is converted to zero), and store them in the lower bits of
+/// corresponding 32-bit packed element `dst` and zeroing the upper 24 bits, using writemask `k` (elements are copied
+/// from `src` when the corresponding mask bit is not set).
+/// Exceptions can be suppressed by passing [`_MM_FROUND_NO_EXC`]` in the `SAE` parameter.
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vcvttps2iubs, SAE = 8)
+)]
+pub fn _mm512_mask_ipcvtts_roundps_epu8<const SAE: i32>(
+    src: __m512i,
+    k: __mmask16,
+    a: __m512,
+) -> __m512i {
+    static_assert_sae!(SAE);
+    unsafe { vcvttps2iubs512(a.as_f32x16(), src.as_u32x16(), k, SAE).as_m512i() }
+}
+
+/// Converts packed single-precision (32-bit) floating-point elements in `a` to unsigned 8-bit integers
+/// using saturation and truncation (`NaN` is converted to zero), and store them in the lower bits of
+/// corresponding 32-bit packed element `dst` and zeroing the upper 24 bits, using zeromask `k` (elements are zeroed
+/// out when the corresponding mask bit is not set).
+/// Exceptions can be suppressed by passing [`_MM_FROUND_NO_EXC`]` in the `SAE` parameter.
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(
+    all(test, not(target_vendor = "apple")),
+    assert_instr(vcvttps2iubs, SAE = 8)
+)]
+pub fn _mm512_maskz_ipcvtts_roundps_epu8<const SAE: i32>(k: __mmask16, a: __m512) -> __m512i {
+    _mm512_mask_ipcvtts_roundps_epu8::<SAE>(_mm512_setzero_si512(), k, a)
+}
+
 #[allow(improper_ctypes)]
 unsafe extern "unadjusted" {
     #[link_name = "llvm.x86.avx10.vmpsadbw.512"]
@@ -4039,6 +5366,62 @@ unsafe extern "unadjusted" {
     fn vminmaxss(a: f32x4, b: f32x4, imm8: i32, src: f32x4, k: u8, sae: i32) -> f32x4;
     #[link_name = "llvm.x86.avx10.mask.vminmaxsh.round"]
     fn vminmaxsh(a: f16x8, b: f16x8, imm8: i32, src: f16x8, k: u8, sae: i32) -> f16x8;
+
+    #[link_name = "llvm.x86.avx10.mask.vcvtph2ibs128"]
+    fn vcvtph2ibs128(a: f16x8, src: i16x8, mask: u8) -> i16x8;
+    #[link_name = "llvm.x86.avx10.mask.vcvtph2ibs256"]
+    fn vcvtph2ibs256(a: f16x16, src: i16x16, mask: u16) -> i16x16;
+    #[link_name = "llvm.x86.avx10.mask.vcvtph2ibs512"]
+    fn vcvtph2ibs512(a: f16x32, src: i16x32, mask: u32, rounding: i32) -> i16x32;
+
+    #[link_name = "llvm.x86.avx10.mask.vcvtph2iubs128"]
+    fn vcvtph2iubs128(a: f16x8, src: u16x8, mask: u8) -> u16x8;
+    #[link_name = "llvm.x86.avx10.mask.vcvtph2iubs256"]
+    fn vcvtph2iubs256(a: f16x16, src: u16x16, mask: u16) -> u16x16;
+    #[link_name = "llvm.x86.avx10.mask.vcvtph2iubs512"]
+    fn vcvtph2iubs512(a: f16x32, src: u16x32, mask: u32, rounding: i32) -> u16x32;
+
+    #[link_name = "llvm.x86.avx10.mask.vcvtps2ibs128"]
+    fn vcvtps2ibs128(a: f32x4, src: i32x4, mask: u8) -> i32x4;
+    #[link_name = "llvm.x86.avx10.mask.vcvtps2ibs256"]
+    fn vcvtps2ibs256(a: f32x8, src: i32x8, mask: u8) -> i32x8;
+    #[link_name = "llvm.x86.avx10.mask.vcvtps2ibs512"]
+    fn vcvtps2ibs512(a: f32x16, src: i32x16, mask: u16, rounding: i32) -> i32x16;
+
+    #[link_name = "llvm.x86.avx10.mask.vcvtps2iubs128"]
+    fn vcvtps2iubs128(a: f32x4, src: u32x4, mask: u8) -> u32x4;
+    #[link_name = "llvm.x86.avx10.mask.vcvtps2iubs256"]
+    fn vcvtps2iubs256(a: f32x8, src: u32x8, mask: u8) -> u32x8;
+    #[link_name = "llvm.x86.avx10.mask.vcvtps2iubs512"]
+    fn vcvtps2iubs512(a: f32x16, src: u32x16, mask: u16, rounding: i32) -> u32x16;
+
+    #[link_name = "llvm.x86.avx10.mask.vcvttph2ibs128"]
+    fn vcvttph2ibs128(a: f16x8, src: i16x8, mask: u8) -> i16x8;
+    #[link_name = "llvm.x86.avx10.mask.vcvttph2ibs256"]
+    fn vcvttph2ibs256(a: f16x16, src: i16x16, mask: u16) -> i16x16;
+    #[link_name = "llvm.x86.avx10.mask.vcvttph2ibs512"]
+    fn vcvttph2ibs512(a: f16x32, src: i16x32, mask: u32, sae: i32) -> i16x32;
+
+    #[link_name = "llvm.x86.avx10.mask.vcvttph2iubs128"]
+    fn vcvttph2iubs128(a: f16x8, src: u16x8, mask: u8) -> u16x8;
+    #[link_name = "llvm.x86.avx10.mask.vcvttph2iubs256"]
+    fn vcvttph2iubs256(a: f16x16, src: u16x16, mask: u16) -> u16x16;
+    #[link_name = "llvm.x86.avx10.mask.vcvttph2iubs512"]
+    fn vcvttph2iubs512(a: f16x32, src: u16x32, mask: u32, sae: i32) -> u16x32;
+
+    #[link_name = "llvm.x86.avx10.mask.vcvttps2ibs128"]
+    fn vcvttps2ibs128(a: f32x4, src: i32x4, mask: u8) -> i32x4;
+    #[link_name = "llvm.x86.avx10.mask.vcvttps2ibs256"]
+    fn vcvttps2ibs256(a: f32x8, src: i32x8, mask: u8) -> i32x8;
+    #[link_name = "llvm.x86.avx10.mask.vcvttps2ibs512"]
+    fn vcvttps2ibs512(a: f32x16, src: i32x16, mask: u16, sae: i32) -> i32x16;
+
+    #[link_name = "llvm.x86.avx10.mask.vcvttps2iubs128"]
+    fn vcvttps2iubs128(a: f32x4, src: u32x4, mask: u8) -> u32x4;
+    #[link_name = "llvm.x86.avx10.mask.vcvttps2iubs256"]
+    fn vcvttps2iubs256(a: f32x8, src: u32x8, mask: u8) -> u32x8;
+    #[link_name = "llvm.x86.avx10.mask.vcvttps2iubs512"]
+    fn vcvttps2iubs512(a: f32x16, src: u32x16, mask: u16, sae: i32) -> u32x16;
 }
 
 #[cfg(test)]
@@ -7203,5 +8586,1310 @@ mod tests {
         let r = _mm_maskz_minmax_round_sh::<1, _MM_FROUND_NO_EXC>(1, a, b);
         let e = _mm_setr_ph(9.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0);
         assert_eq_m128h(r, e);
+    }
+
+    // Small helpers to create expected vectors without having to cast every element in the test cases.
+
+    #[inline]
+    #[target_feature(enable = "sse2")]
+    fn _mm_setb_epi16(e7: i8, e6: i8, e5: i8, e4: i8, e3: i8, e2: i8, e1: i8, e0: i8) -> __m128i {
+        _mm_set_epi16(
+            e7 as u8 as i16,
+            e6 as u8 as i16,
+            e5 as u8 as i16,
+            e4 as u8 as i16,
+            e3 as u8 as i16,
+            e2 as u8 as i16,
+            e1 as u8 as i16,
+            e0 as u8 as i16,
+        )
+    }
+
+    #[inline]
+    #[target_feature(enable = "avx")]
+    fn _mm256_setb_epi16(
+        e00: i8,
+        e01: i8,
+        e02: i8,
+        e03: i8,
+        e04: i8,
+        e05: i8,
+        e06: i8,
+        e07: i8,
+        e08: i8,
+        e09: i8,
+        e10: i8,
+        e11: i8,
+        e12: i8,
+        e13: i8,
+        e14: i8,
+        e15: i8,
+    ) -> __m256i {
+        _mm256_set_epi16(
+            e00 as u8 as i16,
+            e01 as u8 as i16,
+            e02 as u8 as i16,
+            e03 as u8 as i16,
+            e04 as u8 as i16,
+            e05 as u8 as i16,
+            e06 as u8 as i16,
+            e07 as u8 as i16,
+            e08 as u8 as i16,
+            e09 as u8 as i16,
+            e10 as u8 as i16,
+            e11 as u8 as i16,
+            e12 as u8 as i16,
+            e13 as u8 as i16,
+            e14 as u8 as i16,
+            e15 as u8 as i16,
+        )
+    }
+
+    #[inline]
+    #[target_feature(enable = "avx512f")]
+    fn _mm512_setb_epi16(
+        e31: i8,
+        e30: i8,
+        e29: i8,
+        e28: i8,
+        e27: i8,
+        e26: i8,
+        e25: i8,
+        e24: i8,
+        e23: i8,
+        e22: i8,
+        e21: i8,
+        e20: i8,
+        e19: i8,
+        e18: i8,
+        e17: i8,
+        e16: i8,
+        e15: i8,
+        e14: i8,
+        e13: i8,
+        e12: i8,
+        e11: i8,
+        e10: i8,
+        e09: i8,
+        e08: i8,
+        e07: i8,
+        e06: i8,
+        e05: i8,
+        e04: i8,
+        e03: i8,
+        e02: i8,
+        e01: i8,
+        e00: i8,
+    ) -> __m512i {
+        _mm512_set_epi16(
+            e31 as u8 as i16,
+            e30 as u8 as i16,
+            e29 as u8 as i16,
+            e28 as u8 as i16,
+            e27 as u8 as i16,
+            e26 as u8 as i16,
+            e25 as u8 as i16,
+            e24 as u8 as i16,
+            e23 as u8 as i16,
+            e22 as u8 as i16,
+            e21 as u8 as i16,
+            e20 as u8 as i16,
+            e19 as u8 as i16,
+            e18 as u8 as i16,
+            e17 as u8 as i16,
+            e16 as u8 as i16,
+            e15 as u8 as i16,
+            e14 as u8 as i16,
+            e13 as u8 as i16,
+            e12 as u8 as i16,
+            e11 as u8 as i16,
+            e10 as u8 as i16,
+            e09 as u8 as i16,
+            e08 as u8 as i16,
+            e07 as u8 as i16,
+            e06 as u8 as i16,
+            e05 as u8 as i16,
+            e04 as u8 as i16,
+            e03 as u8 as i16,
+            e02 as u8 as i16,
+            e01 as u8 as i16,
+            e00 as u8 as i16,
+        )
+    }
+
+    #[inline]
+    #[target_feature(enable = "sse2")]
+    fn _mm_setb_epi32(e3: i8, e2: i8, e1: i8, e0: i8) -> __m128i {
+        _mm_set_epi32(
+            e3 as u8 as i32,
+            e2 as u8 as i32,
+            e1 as u8 as i32,
+            e0 as u8 as i32,
+        )
+    }
+
+    #[inline]
+    #[target_feature(enable = "avx")]
+    fn _mm256_setb_epi32(
+        e00: i8,
+        e01: i8,
+        e02: i8,
+        e03: i8,
+        e04: i8,
+        e05: i8,
+        e06: i8,
+        e07: i8,
+    ) -> __m256i {
+        _mm256_set_epi32(
+            e00 as u8 as i32,
+            e01 as u8 as i32,
+            e02 as u8 as i32,
+            e03 as u8 as i32,
+            e04 as u8 as i32,
+            e05 as u8 as i32,
+            e06 as u8 as i32,
+            e07 as u8 as i32,
+        )
+    }
+
+    #[inline]
+    #[target_feature(enable = "avx512f")]
+    fn _mm512_setb_epi32(
+        e15: i8,
+        e14: i8,
+        e13: i8,
+        e12: i8,
+        e11: i8,
+        e10: i8,
+        e09: i8,
+        e08: i8,
+        e07: i8,
+        e06: i8,
+        e05: i8,
+        e04: i8,
+        e03: i8,
+        e02: i8,
+        e01: i8,
+        e00: i8,
+    ) -> __m512i {
+        _mm512_set_epi32(
+            e15 as u8 as i32,
+            e14 as u8 as i32,
+            e13 as u8 as i32,
+            e12 as u8 as i32,
+            e11 as u8 as i32,
+            e10 as u8 as i32,
+            e09 as u8 as i32,
+            e08 as u8 as i32,
+            e07 as u8 as i32,
+            e06 as u8 as i32,
+            e05 as u8 as i32,
+            e04 as u8 as i32,
+            e03 as u8 as i32,
+            e02 as u8 as i32,
+            e01 as u8 as i32,
+            e00 as u8 as i32,
+        )
+    }
+
+    #[inline]
+    #[target_feature(enable = "avx512fp16")]
+    fn _mm256_set1_m128h(a: __m128h) -> __m256h {
+        unsafe { simd_shuffle!(a, a, [0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7]) }
+    }
+
+    #[inline]
+    #[target_feature(enable = "avx512fp16")]
+    fn _mm512_set1_m128h(a: __m128h) -> __m512h {
+        unsafe {
+            simd_shuffle!(
+                a,
+                a,
+                [
+                    0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7, 0, 1,
+                    2, 3, 4, 5, 6, 7
+                ]
+            )
+        }
+    }
+
+    #[inline]
+    #[target_feature(enable = "avx512f")]
+    fn _mm512_set1_m256(a: __m256) -> __m512 {
+        unsafe { simd_shuffle!(a, a, [0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7]) }
+    }
+
+    // FIXME: the following tests do not pass due to a LLVM miscompilation bug. See llvm/llvm-project#184251
+
+    const CVTPH2IBS_INPUT: __m128h =
+        unsafe { _mm_set_ph(1.0, -2.5, 127.0, 128.0, -128.0, 255.0, 0.0, f16::NAN) };
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm_ipcvts_ph_epi8() {
+        let a = CVTPH2IBS_INPUT;
+        let r = _mm_ipcvts_ph_epi8(a);
+        let e = _mm_setb_epi16(1, -2, 127, 127, -128, 127, 0, 0);
+        assert_eq_m128i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm_mask_ipcvts_ph_epi8() {
+        let a = CVTPH2IBS_INPUT;
+        let src = _mm_set_epi16(10, 20, 30, 40, 50, 60, 70, 80);
+        let r = _mm_mask_ipcvts_ph_epi8(src, 0b01010101, a);
+        let e = _mm_setb_epi16(10, -2, 30, 127, 50, 127, 70, 0);
+        assert_eq_m128i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm_maskz_ipcvts_ph_epi8() {
+        let a = CVTPH2IBS_INPUT;
+        let r = _mm_maskz_ipcvts_ph_epi8(0b01010101, a);
+        let e = _mm_setb_epi16(0, -2, 0, 127, 0, 127, 0, 0);
+        assert_eq_m128i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm256_ipcvts_ph_epi8() {
+        let a = _mm256_set1_m128h(CVTPH2IBS_INPUT);
+        let r = _mm256_ipcvts_ph_epi8(a);
+        let e = _mm256_setb_epi16(
+            1, -2, 127, 127, -128, 127, 0, 0, 1, -2, 127, 127, -128, 127, 0, 0,
+        );
+        assert_eq_m256i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm256_mask_ipcvts_ph_epi8() {
+        let a = _mm256_set1_m128h(CVTPH2IBS_INPUT);
+        let src = _mm256_set_epi16(
+            10, 20, 30, 40, 50, 60, 70, 80, 15, 25, 35, 45, 55, 65, 75, 85,
+        );
+        let r = _mm256_mask_ipcvts_ph_epi8(src, 0b0101010101010101, a);
+        let e = _mm256_setb_epi16(
+            10, -2, 30, 127, 50, 127, 70, 0, 15, -2, 35, 127, 55, 127, 75, 0,
+        );
+        assert_eq_m256i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm256_maskz_ipcvts_ph_epi8() {
+        let a = _mm256_set1_m128h(CVTPH2IBS_INPUT);
+        let r = _mm256_maskz_ipcvts_ph_epi8(0b0101010101010101, a);
+        let e = _mm256_setb_epi16(0, -2, 0, 127, 0, 127, 0, 0, 0, -2, 0, 127, 0, 127, 0, 0);
+        assert_eq_m256i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_ipcvts_ph_epi8() {
+        let a = _mm512_set1_m128h(CVTPH2IBS_INPUT);
+        let r = _mm512_ipcvts_ph_epi8(a);
+        let e = _mm512_setb_epi16(
+            1, -2, 127, 127, -128, 127, 0, 0, 1, -2, 127, 127, -128, 127, 0, 0, 1, -2, 127, 127,
+            -128, 127, 0, 0, 1, -2, 127, 127, -128, 127, 0, 0,
+        );
+        assert_eq_m512i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_mask_ipcvts_ph_epi8() {
+        let a = _mm512_set1_m128h(CVTPH2IBS_INPUT);
+        let src = _mm512_set_epi16(
+            10, 20, 30, 40, 50, 60, 70, 80, 15, 25, 35, 45, 55, 65, 75, 85, 80, 70, 60, 50, 40, 30,
+            20, 10, 85, 75, 65, 55, 45, 35, 25, 15,
+        );
+        let r = _mm512_mask_ipcvts_ph_epi8(src, 0b01010101010101010101010101010101, a);
+        let e = _mm512_setb_epi16(
+            10, -2, 30, 127, 50, 127, 70, 0, 15, -2, 35, 127, 55, 127, 75, 0, 80, -2, 60, 127, 40,
+            127, 20, 0, 85, -2, 65, 127, 45, 127, 25, 0,
+        );
+        assert_eq_m512i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_maskz_ipcvts_ph_epi8() {
+        let a = _mm512_set1_m128h(CVTPH2IBS_INPUT);
+        let r = _mm512_maskz_ipcvts_ph_epi8(0b01010101010101010101010101010101, a);
+        let e = _mm512_setb_epi16(
+            0, -2, 0, 127, 0, 127, 0, 0, 0, -2, 0, 127, 0, 127, 0, 0, 0, -2, 0, 127, 0, 127, 0, 0,
+            0, -2, 0, 127, 0, 127, 0, 0,
+        );
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_ipcvts_roundph_epi8() {
+        let a = _mm512_set1_m128h(CVTPH2IBS_INPUT);
+        let r = _mm512_ipcvts_roundph_epi8::<{ _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC }>(a);
+        let e = _mm512_setb_epi16(
+            1, -2, 127, 127, -128, 127, 0, 0, 1, -2, 127, 127, -128, 127, 0, 0, 1, -2, 127, 127,
+            -128, 127, 0, 0, 1, -2, 127, 127, -128, 127, 0, 0,
+        );
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_mask_ipcvts_roundph_epi8() {
+        let a = _mm512_set1_m128h(CVTPH2IBS_INPUT);
+        let src = _mm512_set_epi16(
+            10, 20, 30, 40, 50, 60, 70, 80, 15, 25, 35, 45, 55, 65, 75, 85, 80, 70, 60, 50, 40, 30,
+            20, 10, 85, 75, 65, 55, 45, 35, 25, 15,
+        );
+        let r = _mm512_mask_ipcvts_roundph_epi8::<{ _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC }>(
+            src,
+            0b01010101010101010101010101010101,
+            a,
+        );
+        let e = _mm512_setb_epi16(
+            10, -2, 30, 127, 50, 127, 70, 0, 15, -2, 35, 127, 55, 127, 75, 0, 80, -2, 60, 127, 40,
+            127, 20, 0, 85, -2, 65, 127, 45, 127, 25, 0,
+        );
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_maskz_ipcvts_roundph_epi8() {
+        let a = _mm512_set1_m128h(CVTPH2IBS_INPUT);
+        let r = _mm512_maskz_ipcvts_roundph_epi8::<{ _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC }>(
+            0b01010101010101010101010101010101,
+            a,
+        );
+        let e = _mm512_setb_epi16(
+            0, -2, 0, 127, 0, 127, 0, 0, 0, -2, 0, 127, 0, 127, 0, 0, 0, -2, 0, 127, 0, 127, 0, 0,
+            0, -2, 0, 127, 0, 127, 0, 0,
+        );
+        assert_eq_m512i(r, e);
+    }
+
+    const CVTPH2IUBS_INPUT: __m128h =
+        unsafe { _mm_set_ph(1.0, -2.5, 255.0, 256.0, -256.0, 511.0, 0.0, f16::NAN) };
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm_ipcvts_ph_epu8() {
+        let a = CVTPH2IUBS_INPUT;
+        let r = _mm_ipcvts_ph_epu8(a);
+        let e = _mm_setb_epi16(1, 0, -1, -1, 0, -1, 0, 0);
+        assert_eq_m128i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm_mask_ipcvts_ph_epu8() {
+        let a = CVTPH2IUBS_INPUT;
+        let src = _mm_set_epi16(10, 20, 30, 40, 50, 60, 70, 80);
+        let r = _mm_mask_ipcvts_ph_epu8(src, 0b01010101, a);
+        let e = _mm_setb_epi16(10, 0, 30, -1, 50, -1, 70, 0);
+        assert_eq_m128i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm_maskz_ipcvts_ph_epu8() {
+        let a = CVTPH2IUBS_INPUT;
+        let r = _mm_maskz_ipcvts_ph_epu8(0b01010101, a);
+        let e = _mm_setb_epi16(0, 0, 0, -1, 0, -1, 0, 0);
+        assert_eq_m128i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm256_ipcvts_ph_epu8() {
+        let a = _mm256_set1_m128h(CVTPH2IUBS_INPUT);
+        let r = _mm256_ipcvts_ph_epu8(a);
+        let e = _mm256_setb_epi16(1, 0, -1, -1, 0, -1, 0, 0, 1, 0, -1, -1, 0, -1, 0, 0);
+        assert_eq_m256i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm256_mask_ipcvts_ph_epu8() {
+        let a = _mm256_set1_m128h(CVTPH2IUBS_INPUT);
+        let src = _mm256_set_epi16(
+            10, 20, 30, 40, 50, 60, 70, 80, 15, 25, 35, 45, 55, 65, 75, 85,
+        );
+        let r = _mm256_mask_ipcvts_ph_epu8(src, 0b0101010101010101, a);
+        let e = _mm256_setb_epi16(10, 0, 30, -1, 50, -1, 70, 0, 15, 0, 35, -1, 55, -1, 75, 0);
+        assert_eq_m256i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm256_maskz_ipcvts_ph_epu8() {
+        let a = _mm256_set1_m128h(CVTPH2IUBS_INPUT);
+        let r = _mm256_maskz_ipcvts_ph_epu8(0b0101010101010101, a);
+        let e = _mm256_setb_epi16(0, 0, 0, -1, 0, -1, 0, 0, 0, 0, 0, -1, 0, -1, 0, 0);
+        assert_eq_m256i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_ipcvts_ph_epu8() {
+        let a = _mm512_set1_m128h(CVTPH2IUBS_INPUT);
+        let r = _mm512_ipcvts_ph_epu8(a);
+        let e = _mm512_setb_epi16(
+            1, 0, -1, -1, 0, -1, 0, 0, 1, 0, -1, -1, 0, -1, 0, 0, 1, 0, -1, -1, 0, -1, 0, 0, 1, 0,
+            -1, -1, 0, -1, 0, 0,
+        );
+        assert_eq_m512i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_mask_ipcvts_ph_epu8() {
+        let a = _mm512_set1_m128h(CVTPH2IUBS_INPUT);
+        let src = _mm512_set_epi16(
+            10, 20, 30, 40, 50, 60, 70, 80, 15, 25, 35, 45, 55, 65, 75, 85, 80, 70, 60, 50, 40, 30,
+            20, 10, 85, 75, 65, 55, 45, 35, 25, 15,
+        );
+        let r = _mm512_mask_ipcvts_ph_epu8(src, 0b01010101010101010101010101010101, a);
+        let e = _mm512_setb_epi16(
+            10, 0, 30, -1, 50, -1, 70, 0, 15, 0, 35, -1, 55, -1, 75, 0, 80, 0, 60, -1, 40, -1, 20,
+            0, 85, 0, 65, -1, 45, -1, 25, 0,
+        );
+        assert_eq_m512i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_maskz_ipcvts_ph_epu8() {
+        let a = _mm512_set1_m128h(CVTPH2IUBS_INPUT);
+        let r = _mm512_maskz_ipcvts_ph_epu8(0b01010101010101010101010101010101, a);
+        let e = _mm512_setb_epi16(
+            0, 0, 0, -1, 0, -1, 0, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, 0,
+            -1, 0, -1, 0, 0,
+        );
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_ipcvts_roundph_epu8() {
+        let a = _mm512_set1_m128h(CVTPH2IUBS_INPUT);
+        let r = _mm512_ipcvts_roundph_epu8::<{ _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC }>(a);
+        let e = _mm512_setb_epi16(
+            1, 0, -1, -1, 0, -1, 0, 0, 1, 0, -1, -1, 0, -1, 0, 0, 1, 0, -1, -1, 0, -1, 0, 0, 1, 0,
+            -1, -1, 0, -1, 0, 0,
+        );
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_mask_ipcvts_roundph_epu8() {
+        let a = _mm512_set1_m128h(CVTPH2IUBS_INPUT);
+        let src = _mm512_set_epi16(
+            10, 20, 30, 40, 50, 60, 70, 80, 15, 25, 35, 45, 55, 65, 75, 85, 80, 70, 60, 50, 40, 30,
+            20, 10, 85, 75, 65, 55, 45, 35, 25, 15,
+        );
+        let r = _mm512_mask_ipcvts_roundph_epu8::<{ _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC }>(
+            src,
+            0b01010101010101010101010101010101,
+            a,
+        );
+        let e = _mm512_setb_epi16(
+            10, 0, 30, -1, 50, -1, 70, 0, 15, 0, 35, -1, 55, -1, 75, 0, 80, 0, 60, -1, 40, -1, 20,
+            0, 85, 0, 65, -1, 45, -1, 25, 0,
+        );
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_maskz_ipcvts_roundph_epu8() {
+        let a = _mm512_set1_m128h(CVTPH2IUBS_INPUT);
+        let r = _mm512_maskz_ipcvts_roundph_epu8::<{ _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC }>(
+            0b01010101010101010101010101010101,
+            a,
+        );
+        let e = _mm512_setb_epi16(
+            0, 0, 0, -1, 0, -1, 0, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, 0,
+            -1, 0, -1, 0, 0,
+        );
+        assert_eq_m512i(r, e);
+    }
+
+    const CVTPS2IBS128_INPUT: __m128 = unsafe { _mm_set_ps(1.0, -2.5, 127.0, 128.0) };
+    const CVTPS2IBS_INPUT: __m256 =
+        unsafe { _mm256_set_ps(1.0, -2.5, 127.0, 128.0, -128.0, 255.0, 0.0, f32::NAN) };
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm_ipcvts_ps_epi8() {
+        let a = CVTPS2IBS128_INPUT;
+        let r = _mm_ipcvts_ps_epi8(a);
+        let e = _mm_setb_epi32(1, -2, 127, 127);
+        assert_eq_m128i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm_mask_ipcvts_ps_epi8() {
+        let a = CVTPS2IBS128_INPUT;
+        let src = _mm_set_epi32(10, 20, 30, 40);
+        let r = _mm_mask_ipcvts_ps_epi8(src, 0b0101, a);
+        let e = _mm_setb_epi32(10, -2, 30, 127);
+        assert_eq_m128i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm_maskz_ipcvts_ps_epi8() {
+        let a = CVTPS2IBS128_INPUT;
+        let r = _mm_maskz_ipcvts_ps_epi8(0b0101, a);
+        let e = _mm_setb_epi32(0, -2, 0, 127);
+        assert_eq_m128i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm256_ipcvts_ps_epi8() {
+        let a = CVTPS2IBS_INPUT;
+        let r = _mm256_ipcvts_ps_epi8(a);
+        let e = _mm256_setb_epi32(1, -2, 127, 127, -128, 127, 0, 0);
+        assert_eq_m256i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm256_mask_ipcvts_ps_epi8() {
+        let a = CVTPS2IBS_INPUT;
+        let src = _mm256_set_epi32(10, 20, 30, 40, 50, 60, 70, 80);
+        let r = _mm256_mask_ipcvts_ps_epi8(src, 0b01010101, a);
+        let e = _mm256_setb_epi32(10, -2, 30, 127, 50, 127, 70, 0);
+        assert_eq_m256i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm256_maskz_ipcvts_ps_epi8() {
+        let a = CVTPS2IBS_INPUT;
+        let r = _mm256_maskz_ipcvts_ps_epi8(0b01010101, a);
+        let e = _mm256_setb_epi32(0, -2, 0, 127, 0, 127, 0, 0);
+        assert_eq_m256i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_ipcvts_ps_epi8() {
+        let a = _mm512_set1_m256(CVTPS2IBS_INPUT);
+        let r = _mm512_ipcvts_ps_epi8(a);
+        let e = _mm512_setb_epi32(
+            1, -2, 127, 127, -128, 127, 0, 0, 1, -2, 127, 127, -128, 127, 0, 0,
+        );
+        assert_eq_m512i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_mask_ipcvts_ps_epi8() {
+        let a = _mm512_set1_m256(CVTPS2IBS_INPUT);
+        let src = _mm512_set_epi32(
+            10, 20, 30, 40, 50, 60, 70, 80, 15, 25, 35, 45, 55, 65, 75, 85,
+        );
+        let r = _mm512_mask_ipcvts_ps_epi8(src, 0b0101010101010101, a);
+        let e = _mm512_setb_epi32(
+            10, -2, 30, 127, 50, 127, 70, 0, 15, -2, 35, 127, 55, 127, 75, 0,
+        );
+        assert_eq_m512i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_maskz_ipcvts_ps_epi8() {
+        let a = _mm512_set1_m256(CVTPS2IBS_INPUT);
+        let r = _mm512_maskz_ipcvts_ps_epi8(0b0101010101010101, a);
+        let e = _mm512_setb_epi32(0, -2, 0, 127, 0, 127, 0, 0, 0, -2, 0, 127, 0, 127, 0, 0);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_ipcvts_roundps_epi8() {
+        let a = _mm512_set1_m256(CVTPS2IBS_INPUT);
+        let r = _mm512_ipcvts_roundps_epi8::<{ _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC }>(a);
+        let e = _mm512_setb_epi32(
+            1, -2, 127, 127, -128, 127, 0, 0, 1, -2, 127, 127, -128, 127, 0, 0,
+        );
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_mask_ipcvts_roundps_epi8() {
+        let a = _mm512_set1_m256(CVTPS2IBS_INPUT);
+        let src = _mm512_set_epi32(
+            10, 20, 30, 40, 50, 60, 70, 80, 15, 25, 35, 45, 55, 65, 75, 85,
+        );
+        let r = _mm512_mask_ipcvts_roundps_epi8::<{ _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC }>(
+            src,
+            0b0101010101010101,
+            a,
+        );
+        let e = _mm512_setb_epi32(
+            10, -2, 30, 127, 50, 127, 70, 0, 15, -2, 35, 127, 55, 127, 75, 0,
+        );
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_maskz_ipcvts_roundps_epi8() {
+        let a = _mm512_set1_m256(CVTPS2IBS_INPUT);
+        let r = _mm512_maskz_ipcvts_roundps_epi8::<{ _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC }>(
+            0b0101010101010101,
+            a,
+        );
+        let e = _mm512_setb_epi32(0, -2, 0, 127, 0, 127, 0, 0, 0, -2, 0, 127, 0, 127, 0, 0);
+        assert_eq_m512i(r, e);
+    }
+
+    const CVTPS2IUBS128_INPUT: __m128 = unsafe { _mm_set_ps(1.0, -2.5, 255.0, 256.0) };
+    const CVTPS2IUBS_INPUT: __m256 =
+        unsafe { _mm256_set_ps(1.0, -2.5, 255.0, 256.0, -256.0, 511.0, 0.0, f32::NAN) };
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm_ipcvts_ps_epu8() {
+        let a = CVTPS2IUBS128_INPUT;
+        let r = _mm_ipcvts_ps_epu8(a);
+        let e = _mm_setb_epi32(1, 0, -1, -1);
+        assert_eq_m128i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm_mask_ipcvts_ps_epu8() {
+        let a = CVTPS2IUBS128_INPUT;
+        let src = _mm_set_epi32(10, 20, 30, 40);
+        let r = _mm_mask_ipcvts_ps_epu8(src, 0b0101, a);
+        let e = _mm_setb_epi32(10, 0, 30, -1);
+        assert_eq_m128i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm_maskz_ipcvts_ps_epu8() {
+        let a = CVTPS2IUBS128_INPUT;
+        let r = _mm_maskz_ipcvts_ps_epu8(0b0101, a);
+        let e = _mm_setb_epi32(0, 0, 0, -1);
+        assert_eq_m128i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm256_ipcvts_ps_epu8() {
+        let a = CVTPS2IUBS_INPUT;
+        let r = _mm256_ipcvts_ps_epu8(a);
+        let e = _mm256_setb_epi32(1, 0, -1, -1, 0, -1, 0, 0);
+        assert_eq_m256i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm256_mask_ipcvts_ps_epu8() {
+        let a = CVTPS2IUBS_INPUT;
+        let src = _mm256_set_epi32(10, 20, 30, 40, 50, 60, 70, 80);
+        let r = _mm256_mask_ipcvts_ps_epu8(src, 0b01010101, a);
+        let e = _mm256_setb_epi32(10, 0, 30, -1, 50, -1, 70, 0);
+        assert_eq_m256i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm256_maskz_ipcvts_ps_epu8() {
+        let a = CVTPS2IUBS_INPUT;
+        let r = _mm256_maskz_ipcvts_ps_epu8(0b01010101, a);
+        let e = _mm256_setb_epi32(0, 0, 0, -1, 0, -1, 0, 0);
+        assert_eq_m256i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_ipcvts_ps_epu8() {
+        let a = _mm512_set1_m256(CVTPS2IUBS_INPUT);
+        let r = _mm512_ipcvts_ps_epu8(a);
+        let e = _mm512_setb_epi32(1, 0, -1, -1, 0, -1, 0, 0, 1, 0, -1, -1, 0, -1, 0, 0);
+        assert_eq_m512i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_mask_ipcvts_ps_epu8() {
+        let a = _mm512_set1_m256(CVTPS2IUBS_INPUT);
+        let src = _mm512_set_epi32(
+            10, 20, 30, 40, 50, 60, 70, 80, 15, 25, 35, 45, 55, 65, 75, 85,
+        );
+        let r = _mm512_mask_ipcvts_ps_epu8(src, 0b0101010101010101, a);
+        let e = _mm512_setb_epi32(10, 0, 30, -1, 50, -1, 70, 0, 15, 0, 35, -1, 55, -1, 75, 0);
+        assert_eq_m512i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_maskz_ipcvts_ps_epu8() {
+        let a = _mm512_set1_m256(CVTPS2IUBS_INPUT);
+        let r = _mm512_maskz_ipcvts_ps_epu8(0b0101010101010101, a);
+        let e = _mm512_setb_epi32(0, 0, 0, -1, 0, -1, 0, 0, 0, 0, 0, -1, 0, -1, 0, 0);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_ipcvts_roundps_epu8() {
+        let a = _mm512_set1_m256(CVTPS2IUBS_INPUT);
+        let r = _mm512_ipcvts_roundps_epu8::<{ _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC }>(a);
+        let e = _mm512_setb_epi32(1, 0, -1, -1, 0, -1, 0, 0, 1, 0, -1, -1, 0, -1, 0, 0);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_mask_ipcvts_roundps_epu8() {
+        let a = _mm512_set1_m256(CVTPS2IUBS_INPUT);
+        let src = _mm512_set_epi32(
+            10, 20, 30, 40, 50, 60, 70, 80, 15, 25, 35, 45, 55, 65, 75, 85,
+        );
+        let r = _mm512_mask_ipcvts_roundps_epu8::<{ _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC }>(
+            src,
+            0b0101010101010101,
+            a,
+        );
+        let e = _mm512_setb_epi32(10, 0, 30, -1, 50, -1, 70, 0, 15, 0, 35, -1, 55, -1, 75, 0);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_maskz_ipcvts_roundps_epu8() {
+        let a = _mm512_set1_m256(CVTPS2IUBS_INPUT);
+        let r = _mm512_maskz_ipcvts_roundps_epu8::<{ _MM_FROUND_TO_NEAREST_INT | _MM_FROUND_NO_EXC }>(
+            0b0101010101010101,
+            a,
+        );
+        let e = _mm512_setb_epi32(0, 0, 0, -1, 0, -1, 0, 0, 0, 0, 0, -1, 0, -1, 0, 0);
+        assert_eq_m512i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm_ipcvtts_ph_epi8() {
+        let a = CVTPH2IBS_INPUT;
+        let r = _mm_ipcvtts_ph_epi8(a);
+        let e = _mm_setb_epi16(1, -2, 127, 127, -128, 127, 0, 0);
+        assert_eq_m128i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm_mask_ipcvtts_ph_epi8() {
+        let a = CVTPH2IBS_INPUT;
+        let src = _mm_set_epi16(10, 20, 30, 40, 50, 60, 70, 80);
+        let r = _mm_mask_ipcvtts_ph_epi8(src, 0b01010101, a);
+        let e = _mm_setb_epi16(10, -2, 30, 127, 50, 127, 70, 0);
+        assert_eq_m128i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm_maskz_ipcvtts_ph_epi8() {
+        let a = CVTPH2IBS_INPUT;
+        let r = _mm_maskz_ipcvtts_ph_epi8(0b01010101, a);
+        let e = _mm_setb_epi16(0, -2, 0, 127, 0, 127, 0, 0);
+        assert_eq_m128i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm256_ipcvtts_ph_epi8() {
+        let a = _mm256_set1_m128h(CVTPH2IBS_INPUT);
+        let r = _mm256_ipcvtts_ph_epi8(a);
+        let e = _mm256_setb_epi16(
+            1, -2, 127, 127, -128, 127, 0, 0, 1, -2, 127, 127, -128, 127, 0, 0,
+        );
+        assert_eq_m256i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm256_mask_ipcvtts_ph_epi8() {
+        let a = _mm256_set1_m128h(CVTPH2IBS_INPUT);
+        let src = _mm256_set_epi16(
+            10, 20, 30, 40, 50, 60, 70, 80, 15, 25, 35, 45, 55, 65, 75, 85,
+        );
+        let r = _mm256_mask_ipcvtts_ph_epi8(src, 0b0101010101010101, a);
+        let e = _mm256_setb_epi16(
+            10, -2, 30, 127, 50, 127, 70, 0, 15, -2, 35, 127, 55, 127, 75, 0,
+        );
+        assert_eq_m256i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm256_maskz_ipcvtts_ph_epi8() {
+        let a = _mm256_set1_m128h(CVTPH2IBS_INPUT);
+        let r = _mm256_maskz_ipcvtts_ph_epi8(0b0101010101010101, a);
+        let e = _mm256_setb_epi16(0, -2, 0, 127, 0, 127, 0, 0, 0, -2, 0, 127, 0, 127, 0, 0);
+        assert_eq_m256i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_ipcvtts_ph_epi8() {
+        let a = _mm512_set1_m128h(CVTPH2IBS_INPUT);
+        let r = _mm512_ipcvtts_ph_epi8(a);
+        let e = _mm512_setb_epi16(
+            1, -2, 127, 127, -128, 127, 0, 0, 1, -2, 127, 127, -128, 127, 0, 0, 1, -2, 127, 127,
+            -128, 127, 0, 0, 1, -2, 127, 127, -128, 127, 0, 0,
+        );
+        assert_eq_m512i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_mask_ipcvtts_ph_epi8() {
+        let a = _mm512_set1_m128h(CVTPH2IBS_INPUT);
+        let src = _mm512_set_epi16(
+            10, 20, 30, 40, 50, 60, 70, 80, 15, 25, 35, 45, 55, 65, 75, 85, 80, 70, 60, 50, 40, 30,
+            20, 10, 85, 75, 65, 55, 45, 35, 25, 15,
+        );
+        let r = _mm512_mask_ipcvtts_ph_epi8(src, 0b01010101010101010101010101010101, a);
+        let e = _mm512_setb_epi16(
+            10, -2, 30, 127, 50, 127, 70, 0, 15, -2, 35, 127, 55, 127, 75, 0, 80, -2, 60, 127, 40,
+            127, 20, 0, 85, -2, 65, 127, 45, 127, 25, 0,
+        );
+        assert_eq_m512i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_maskz_ipcvtts_ph_epi8() {
+        let a = _mm512_set1_m128h(CVTPH2IBS_INPUT);
+        let r = _mm512_maskz_ipcvtts_ph_epi8(0b01010101010101010101010101010101, a);
+        let e = _mm512_setb_epi16(
+            0, -2, 0, 127, 0, 127, 0, 0, 0, -2, 0, 127, 0, 127, 0, 0, 0, -2, 0, 127, 0, 127, 0, 0,
+            0, -2, 0, 127, 0, 127, 0, 0,
+        );
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_ipcvtts_roundph_epi8() {
+        let a = _mm512_set1_m128h(CVTPH2IBS_INPUT);
+        let r = _mm512_ipcvtts_roundph_epi8::<_MM_FROUND_NO_EXC>(a);
+        let e = _mm512_setb_epi16(
+            1, -2, 127, 127, -128, 127, 0, 0, 1, -2, 127, 127, -128, 127, 0, 0, 1, -2, 127, 127,
+            -128, 127, 0, 0, 1, -2, 127, 127, -128, 127, 0, 0,
+        );
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_mask_ipcvtts_roundph_epi8() {
+        let a = _mm512_set1_m128h(CVTPH2IBS_INPUT);
+        let src = _mm512_set_epi16(
+            10, 20, 30, 40, 50, 60, 70, 80, 15, 25, 35, 45, 55, 65, 75, 85, 80, 70, 60, 50, 40, 30,
+            20, 10, 85, 75, 65, 55, 45, 35, 25, 15,
+        );
+        let r = _mm512_mask_ipcvtts_roundph_epi8::<_MM_FROUND_NO_EXC>(
+            src,
+            0b01010101010101010101010101010101,
+            a,
+        );
+        let e = _mm512_setb_epi16(
+            10, -2, 30, 127, 50, 127, 70, 0, 15, -2, 35, 127, 55, 127, 75, 0, 80, -2, 60, 127, 40,
+            127, 20, 0, 85, -2, 65, 127, 45, 127, 25, 0,
+        );
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_maskz_ipcvtts_roundph_epi8() {
+        let a = _mm512_set1_m128h(CVTPH2IBS_INPUT);
+        let r = _mm512_maskz_ipcvtts_roundph_epi8::<_MM_FROUND_NO_EXC>(
+            0b01010101010101010101010101010101,
+            a,
+        );
+        let e = _mm512_setb_epi16(
+            0, -2, 0, 127, 0, 127, 0, 0, 0, -2, 0, 127, 0, 127, 0, 0, 0, -2, 0, 127, 0, 127, 0, 0,
+            0, -2, 0, 127, 0, 127, 0, 0,
+        );
+        assert_eq_m512i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm_ipcvtts_ph_epu8() {
+        let a = CVTPH2IUBS_INPUT;
+        let r = _mm_ipcvtts_ph_epu8(a);
+        let e = _mm_setb_epi16(1, 0, -1, -1, 0, -1, 0, 0);
+        assert_eq_m128i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm_mask_ipcvtts_ph_epu8() {
+        let a = CVTPH2IUBS_INPUT;
+        let src = _mm_set_epi16(10, 20, 30, 40, 50, 60, 70, 80);
+        let r = _mm_mask_ipcvtts_ph_epu8(src, 0b01010101, a);
+        let e = _mm_setb_epi16(10, 0, 30, -1, 50, -1, 70, 0);
+        assert_eq_m128i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm_maskz_ipcvtts_ph_epu8() {
+        let a = CVTPH2IUBS_INPUT;
+        let r = _mm_maskz_ipcvtts_ph_epu8(0b01010101, a);
+        let e = _mm_setb_epi16(0, 0, 0, -1, 0, -1, 0, 0);
+        assert_eq_m128i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm256_ipcvtts_ph_epu8() {
+        let a = _mm256_set1_m128h(CVTPH2IUBS_INPUT);
+        let r = _mm256_ipcvtts_ph_epu8(a);
+        let e = _mm256_setb_epi16(1, 0, -1, -1, 0, -1, 0, 0, 1, 0, -1, -1, 0, -1, 0, 0);
+        assert_eq_m256i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm256_mask_ipcvtts_ph_epu8() {
+        let a = _mm256_set1_m128h(CVTPH2IUBS_INPUT);
+        let src = _mm256_set_epi16(
+            10, 20, 30, 40, 50, 60, 70, 80, 15, 25, 35, 45, 55, 65, 75, 85,
+        );
+        let r = _mm256_mask_ipcvtts_ph_epu8(src, 0b0101010101010101, a);
+        let e = _mm256_setb_epi16(10, 0, 30, -1, 50, -1, 70, 0, 15, 0, 35, -1, 55, -1, 75, 0);
+        assert_eq_m256i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm256_maskz_ipcvtts_ph_epu8() {
+        let a = _mm256_set1_m128h(CVTPH2IUBS_INPUT);
+        let r = _mm256_maskz_ipcvtts_ph_epu8(0b0101010101010101, a);
+        let e = _mm256_setb_epi16(0, 0, 0, -1, 0, -1, 0, 0, 0, 0, 0, -1, 0, -1, 0, 0);
+        assert_eq_m256i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_ipcvtts_ph_epu8() {
+        let a = _mm512_set1_m128h(CVTPH2IUBS_INPUT);
+        let r = _mm512_ipcvtts_ph_epu8(a);
+        let e = _mm512_setb_epi16(
+            1, 0, -1, -1, 0, -1, 0, 0, 1, 0, -1, -1, 0, -1, 0, 0, 1, 0, -1, -1, 0, -1, 0, 0, 1, 0,
+            -1, -1, 0, -1, 0, 0,
+        );
+        assert_eq_m512i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_mask_ipcvtts_ph_epu8() {
+        let a = _mm512_set1_m128h(CVTPH2IUBS_INPUT);
+        let src = _mm512_set_epi16(
+            10, 20, 30, 40, 50, 60, 70, 80, 15, 25, 35, 45, 55, 65, 75, 85, 80, 70, 60, 50, 40, 30,
+            20, 10, 85, 75, 65, 55, 45, 35, 25, 15,
+        );
+        let r = _mm512_mask_ipcvtts_ph_epu8(src, 0b01010101010101010101010101010101, a);
+        let e = _mm512_setb_epi16(
+            10, 0, 30, -1, 50, -1, 70, 0, 15, 0, 35, -1, 55, -1, 75, 0, 80, 0, 60, -1, 40, -1, 20,
+            0, 85, 0, 65, -1, 45, -1, 25, 0,
+        );
+        assert_eq_m512i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_maskz_ipcvtts_ph_epu8() {
+        let a = _mm512_set1_m128h(CVTPH2IUBS_INPUT);
+        let r = _mm512_maskz_ipcvtts_ph_epu8(0b01010101010101010101010101010101, a);
+        let e = _mm512_setb_epi16(
+            0, 0, 0, -1, 0, -1, 0, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, 0,
+            -1, 0, -1, 0, 0,
+        );
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_ipcvtts_roundph_epu8() {
+        let a = _mm512_set1_m128h(CVTPH2IUBS_INPUT);
+        let r = _mm512_ipcvtts_roundph_epu8::<_MM_FROUND_NO_EXC>(a);
+        let e = _mm512_setb_epi16(
+            1, 0, -1, -1, 0, -1, 0, 0, 1, 0, -1, -1, 0, -1, 0, 0, 1, 0, -1, -1, 0, -1, 0, 0, 1, 0,
+            -1, -1, 0, -1, 0, 0,
+        );
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_mask_ipcvtts_roundph_epu8() {
+        let a = _mm512_set1_m128h(CVTPH2IUBS_INPUT);
+        let src = _mm512_set_epi16(
+            10, 20, 30, 40, 50, 60, 70, 80, 15, 25, 35, 45, 55, 65, 75, 85, 80, 70, 60, 50, 40, 30,
+            20, 10, 85, 75, 65, 55, 45, 35, 25, 15,
+        );
+        let r = _mm512_mask_ipcvtts_roundph_epu8::<_MM_FROUND_NO_EXC>(
+            src,
+            0b01010101010101010101010101010101,
+            a,
+        );
+        let e = _mm512_setb_epi16(
+            10, 0, 30, -1, 50, -1, 70, 0, 15, 0, 35, -1, 55, -1, 75, 0, 80, 0, 60, -1, 40, -1, 20,
+            0, 85, 0, 65, -1, 45, -1, 25, 0,
+        );
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_maskz_ipcvtts_roundph_epu8() {
+        let a = _mm512_set1_m128h(CVTPH2IUBS_INPUT);
+        let r = _mm512_maskz_ipcvtts_roundph_epu8::<_MM_FROUND_NO_EXC>(
+            0b01010101010101010101010101010101,
+            a,
+        );
+        let e = _mm512_setb_epi16(
+            0, 0, 0, -1, 0, -1, 0, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, 0,
+            -1, 0, -1, 0, 0,
+        );
+        assert_eq_m512i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm_ipcvtts_ps_epi8() {
+        let a = CVTPS2IBS128_INPUT;
+        let r = _mm_ipcvtts_ps_epi8(a);
+        let e = _mm_setb_epi32(1, -2, 127, 127);
+        assert_eq_m128i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm_mask_ipcvtts_ps_epi8() {
+        let a = CVTPS2IBS128_INPUT;
+        let src = _mm_set_epi32(10, 20, 30, 40);
+        let r = _mm_mask_ipcvtts_ps_epi8(src, 0b0101, a);
+        let e = _mm_setb_epi32(10, -2, 30, 127);
+        assert_eq_m128i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm_maskz_ipcvtts_ps_epi8() {
+        let a = CVTPS2IBS128_INPUT;
+        let r = _mm_maskz_ipcvtts_ps_epi8(0b0101, a);
+        let e = _mm_setb_epi32(0, -2, 0, 127);
+        assert_eq_m128i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm256_ipcvtts_ps_epi8() {
+        let a = CVTPS2IBS_INPUT;
+        let r = _mm256_ipcvtts_ps_epi8(a);
+        let e = _mm256_setb_epi32(1, -2, 127, 127, -128, 127, 0, 0);
+        assert_eq_m256i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm256_mask_ipcvtts_ps_epi8() {
+        let a = CVTPS2IBS_INPUT;
+        let src = _mm256_set_epi32(10, 20, 30, 40, 50, 60, 70, 80);
+        let r = _mm256_mask_ipcvtts_ps_epi8(src, 0b01010101, a);
+        let e = _mm256_setb_epi32(10, -2, 30, 127, 50, 127, 70, 0);
+        assert_eq_m256i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm256_maskz_ipcvtts_ps_epi8() {
+        let a = CVTPS2IBS_INPUT;
+        let r = _mm256_maskz_ipcvtts_ps_epi8(0b01010101, a);
+        let e = _mm256_setb_epi32(0, -2, 0, 127, 0, 127, 0, 0);
+        assert_eq_m256i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_ipcvtts_ps_epi8() {
+        let a = _mm512_set1_m256(CVTPS2IBS_INPUT);
+        let r = _mm512_ipcvtts_ps_epi8(a);
+        let e = _mm512_setb_epi32(
+            1, -2, 127, 127, -128, 127, 0, 0, 1, -2, 127, 127, -128, 127, 0, 0,
+        );
+        assert_eq_m512i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_mask_ipcvtts_ps_epi8() {
+        let a = _mm512_set1_m256(CVTPS2IBS_INPUT);
+        let src = _mm512_set_epi32(
+            10, 20, 30, 40, 50, 60, 70, 80, 15, 25, 35, 45, 55, 65, 75, 85,
+        );
+        let r = _mm512_mask_ipcvtts_ps_epi8(src, 0b0101010101010101, a);
+        let e = _mm512_setb_epi32(
+            10, -2, 30, 127, 50, 127, 70, 0, 15, -2, 35, 127, 55, 127, 75, 0,
+        );
+        assert_eq_m512i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_maskz_ipcvtts_ps_epi8() {
+        let a = _mm512_set1_m256(CVTPS2IBS_INPUT);
+        let r = _mm512_maskz_ipcvtts_ps_epi8(0b0101010101010101, a);
+        let e = _mm512_setb_epi32(0, -2, 0, 127, 0, 127, 0, 0, 0, -2, 0, 127, 0, 127, 0, 0);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_ipcvtts_roundps_epi8() {
+        let a = _mm512_set1_m256(CVTPS2IBS_INPUT);
+        let r = _mm512_ipcvtts_roundps_epi8::<_MM_FROUND_NO_EXC>(a);
+        let e = _mm512_setb_epi32(
+            1, -2, 127, 127, -128, 127, 0, 0, 1, -2, 127, 127, -128, 127, 0, 0,
+        );
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_mask_ipcvtts_roundps_epi8() {
+        let a = _mm512_set1_m256(CVTPS2IBS_INPUT);
+        let src = _mm512_set_epi32(
+            10, 20, 30, 40, 50, 60, 70, 80, 15, 25, 35, 45, 55, 65, 75, 85,
+        );
+        let r = _mm512_mask_ipcvtts_roundps_epi8::<_MM_FROUND_NO_EXC>(src, 0b0101010101010101, a);
+        let e = _mm512_setb_epi32(
+            10, -2, 30, 127, 50, 127, 70, 0, 15, -2, 35, 127, 55, 127, 75, 0,
+        );
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_maskz_ipcvtts_roundps_epi8() {
+        let a = _mm512_set1_m256(CVTPS2IBS_INPUT);
+        let r = _mm512_maskz_ipcvtts_roundps_epi8::<_MM_FROUND_NO_EXC>(0b0101010101010101, a);
+        let e = _mm512_setb_epi32(0, -2, 0, 127, 0, 127, 0, 0, 0, -2, 0, 127, 0, 127, 0, 0);
+        assert_eq_m512i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm_ipcvtts_ps_epu8() {
+        let a = CVTPS2IUBS128_INPUT;
+        let r = _mm_ipcvtts_ps_epu8(a);
+        let e = _mm_setb_epi32(1, 0, -1, -1);
+        assert_eq_m128i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm_mask_ipcvtts_ps_epu8() {
+        let a = CVTPS2IUBS128_INPUT;
+        let src = _mm_set_epi32(10, 20, 30, 40);
+        let r = _mm_mask_ipcvtts_ps_epu8(src, 0b0101, a);
+        let e = _mm_setb_epi32(10, 0, 30, -1);
+        assert_eq_m128i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm_maskz_ipcvtts_ps_epu8() {
+        let a = CVTPS2IUBS128_INPUT;
+        let r = _mm_maskz_ipcvtts_ps_epu8(0b0101, a);
+        let e = _mm_setb_epi32(0, 0, 0, -1);
+        assert_eq_m128i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm256_ipcvtts_ps_epu8() {
+        let a = CVTPS2IUBS_INPUT;
+        let r = _mm256_ipcvtts_ps_epu8(a);
+        let e = _mm256_setb_epi32(1, 0, -1, -1, 0, -1, 0, 0);
+        assert_eq_m256i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm256_mask_ipcvtts_ps_epu8() {
+        let a = CVTPS2IUBS_INPUT;
+        let src = _mm256_set_epi32(10, 20, 30, 40, 50, 60, 70, 80);
+        let r = _mm256_mask_ipcvtts_ps_epu8(src, 0b01010101, a);
+        let e = _mm256_setb_epi32(10, 0, 30, -1, 50, -1, 70, 0);
+        assert_eq_m256i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm256_maskz_ipcvtts_ps_epu8() {
+        let a = CVTPS2IUBS_INPUT;
+        let r = _mm256_maskz_ipcvtts_ps_epu8(0b01010101, a);
+        let e = _mm256_setb_epi32(0, 0, 0, -1, 0, -1, 0, 0);
+        assert_eq_m256i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_ipcvtts_ps_epu8() {
+        let a = _mm512_set1_m256(CVTPS2IUBS_INPUT);
+        let r = _mm512_ipcvtts_ps_epu8(a);
+        let e = _mm512_setb_epi32(1, 0, -1, -1, 0, -1, 0, 0, 1, 0, -1, -1, 0, -1, 0, 0);
+        assert_eq_m512i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_mask_ipcvtts_ps_epu8() {
+        let a = _mm512_set1_m256(CVTPS2IUBS_INPUT);
+        let src = _mm512_set_epi32(
+            10, 20, 30, 40, 50, 60, 70, 80, 15, 25, 35, 45, 55, 65, 75, 85,
+        );
+        let r = _mm512_mask_ipcvtts_ps_epu8(src, 0b0101010101010101, a);
+        let e = _mm512_setb_epi32(10, 0, 30, -1, 50, -1, 70, 0, 15, 0, 35, -1, 55, -1, 75, 0);
+        assert_eq_m512i(r, e);
+    }
+
+    #[ignore]
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_maskz_ipcvtts_ps_epu8() {
+        let a = _mm512_set1_m256(CVTPS2IUBS_INPUT);
+        let r = _mm512_maskz_ipcvtts_ps_epu8(0b0101010101010101, a);
+        let e = _mm512_setb_epi32(0, 0, 0, -1, 0, -1, 0, 0, 0, 0, 0, -1, 0, -1, 0, 0);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_ipcvtts_roundps_epu8() {
+        let a = _mm512_set1_m256(CVTPS2IUBS_INPUT);
+        let r = _mm512_ipcvtts_roundps_epu8::<_MM_FROUND_NO_EXC>(a);
+        let e = _mm512_setb_epi32(1, 0, -1, -1, 0, -1, 0, 0, 1, 0, -1, -1, 0, -1, 0, 0);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_mask_ipcvtts_roundps_epu8() {
+        let a = _mm512_set1_m256(CVTPS2IUBS_INPUT);
+        let src = _mm512_set_epi32(
+            10, 20, 30, 40, 50, 60, 70, 80, 15, 25, 35, 45, 55, 65, 75, 85,
+        );
+        let r = _mm512_mask_ipcvtts_roundps_epu8::<_MM_FROUND_NO_EXC>(src, 0b0101010101010101, a);
+        let e = _mm512_setb_epi32(10, 0, 30, -1, 50, -1, 70, 0, 15, 0, 35, -1, 55, -1, 75, 0);
+        assert_eq_m512i(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_maskz_ipcvtts_roundps_epu8() {
+        let a = _mm512_set1_m256(CVTPS2IUBS_INPUT);
+        let r = _mm512_maskz_ipcvtts_roundps_epu8::<_MM_FROUND_NO_EXC>(0b0101010101010101, a);
+        let e = _mm512_setb_epi32(0, 0, 0, -1, 0, -1, 0, 0, 0, 0, 0, -1, 0, -1, 0, 0);
+        assert_eq_m512i(r, e);
     }
 }
