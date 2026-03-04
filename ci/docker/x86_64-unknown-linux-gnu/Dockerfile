@@ -31,7 +31,7 @@ ENV GCC_PATH="gcc"
 ENV ICX_PATH="/opt/intel/oneapi/compiler/2026.0/bin/icx"
 
 ENV CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_RUNNER="/intel-sde/sde64 \
-            -cpuid-in /checkout/ci/docker/x86_64-unknown-linux-gnu/cpuid.def \
+            -cpuid-in /checkout/ci/cpuid.def \
             -rtm-mode full -tsx --"
 # SDE doesn't support AMD extensions
 # FIXME: find a way to test these

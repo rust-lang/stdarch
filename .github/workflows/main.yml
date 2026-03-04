@@ -177,6 +177,10 @@ jobs:
             os: ubuntu-latest
           test_everything: true
         - target:
+            tuple: i686-unknown-linux-gnu
+            os: ubuntu-latest
+          test_everything: true
+        - target:
             tuple: x86_64-unknown-linux-gnu
             os: ubuntu-latest
           test_everything: true
