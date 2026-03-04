@@ -5403,6 +5403,444 @@ pub fn _mm512_maskz_cvtx_round2ps_ph<const ROUNDING: i32>(
     _mm512_mask_cvtx_round2ps_ph::<ROUNDING>(_mm512_setzero_ph(), k, a, b)
 }
 
+/// Converts packed half-precision (16-bit) floating-point elements in `b` to packed BF8 (8-bit
+/// E5M2) floating-point elements using unsigned bias values from the lower 8 bits of the
+/// corresponding packed 16-bit element of `a`, and stores the results in `dst`. The upper 64 bits
+/// of `dst` are zeroed out.
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtbiasph2bf8))]
+pub fn _mm_cvtbiasph_bf8(a: __m128i, b: __m128h) -> __m128i {
+    _mm_mask_cvtbiasph_bf8(_mm_undefined_si128(), !0, a, b)
+}
+
+/// Converts packed half-precision (16-bit) floating-point elements in `b` to packed BF8 (8-bit E5M2)
+/// floating-point elements using unsigned bias values from the lower 8 bits of the
+/// corresponding packed 16-bit element of `a`, and stores the results in `dst` using writemask `k`
+/// (elements are copied from `src` when the corresponding mask bit is not set). The upper 64 bits
+/// of `dst` are zeroed out.
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtbiasph2bf8))]
+pub fn _mm_mask_cvtbiasph_bf8(src: __m128i, k: __mmask8, a: __m128i, b: __m128h) -> __m128i {
+    unsafe { vcvtbiasph2bf8128(a.as_u8x16(), b.as_f16x8(), src.as_u8x16(), k).as_m128i() }
+}
+
+/// Converts packed half-precision (16-bit) floating-point elements in `b` to packed BF8 (8-bit
+/// E5M2) floating-point elements using unsigned bias values from the lower 8 bits of the
+/// corresponding packed 16-bit element of `a`, and stores the results in `dst` using zeromask `k`
+/// (elements are zeroed out when the corresponding mask bit is not set). The upper 64 bits of
+/// `dst` are zeroed out.
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtbiasph2bf8))]
+pub fn _mm_maskz_cvtbiasph_bf8(k: __mmask8, a: __m128i, b: __m128h) -> __m128i {
+    _mm_mask_cvtbiasph_bf8(_mm_setzero_si128(), k, a, b)
+}
+
+/// Converts packed half-precision (16-bit) floating-point elements in `b` to packed BF8 (8-bit
+/// E5M2) floating-point elements using unsigned bias values from the lower 8 bits of the
+/// corresponding packed 16-bit element of `a`, and stores the results in `dst`.
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtbiasph2bf8))]
+pub fn _mm256_cvtbiasph_bf8(a: __m256i, b: __m256h) -> __m128i {
+    _mm256_mask_cvtbiasph_bf8(_mm_undefined_si128(), !0, a, b)
+}
+
+/// Converts packed half-precision (16-bit) floating-point elements in `b` to packed BF8 (8-bit E5M2)
+/// floating-point elements using unsigned bias values from the lower 8 bits of the
+/// corresponding packed 16-bit element of `a`, and stores the results in `dst` using writemask `k`
+/// (elements are copied from `src` when the corresponding mask bit is not set).
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtbiasph2bf8))]
+pub fn _mm256_mask_cvtbiasph_bf8(src: __m128i, k: __mmask16, a: __m256i, b: __m256h) -> __m128i {
+    unsafe { vcvtbiasph2bf8256(a.as_u8x32(), b.as_f16x16(), src.as_u8x16(), k).as_m128i() }
+}
+
+/// Converts packed half-precision (16-bit) floating-point elements in `b` to packed BF8 (8-bit
+/// E5M2) floating-point elements using unsigned bias values from the lower 8 bits of the
+/// corresponding packed 16-bit element of `a`, and stores the results in `dst` using zeromask `k`
+/// (elements are zeroed out when the corresponding mask bit is not set).
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtbiasph2bf8))]
+pub fn _mm256_maskz_cvtbiasph_bf8(k: __mmask16, a: __m256i, b: __m256h) -> __m128i {
+    _mm256_mask_cvtbiasph_bf8(_mm_setzero_si128(), k, a, b)
+}
+
+/// Converts packed half-precision (16-bit) floating-point elements in `b` to packed BF8 (8-bit
+/// E5M2) floating-point elements using unsigned bias values from the lower 8 bits of the
+/// corresponding packed 16-bit element of `a`, and stores the results in `dst`.
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtbiasph2bf8))]
+pub fn _mm512_cvtbiasph_bf8(a: __m512i, b: __m512h) -> __m256i {
+    _mm512_mask_cvtbiasph_bf8(_mm256_undefined_si256(), !0, a, b)
+}
+
+/// Converts packed half-precision (16-bit) floating-point elements in `b` to packed BF8 (8-bit E5M2)
+/// floating-point elements using unsigned bias values from the lower 8 bits of the
+/// corresponding packed 16-bit element of `a`, and stores the results in `dst` using writemask `k`
+/// (elements are copied from `src` when the corresponding mask bit is not set).
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtbiasph2bf8))]
+pub fn _mm512_mask_cvtbiasph_bf8(src: __m256i, k: __mmask32, a: __m512i, b: __m512h) -> __m256i {
+    unsafe { vcvtbiasph2bf8512(a.as_u8x64(), b.as_f16x32(), src.as_u8x32(), k).as_m256i() }
+}
+
+/// Converts packed half-precision (16-bit) floating-point elements in `b` to packed BF8 (8-bit
+/// E5M2) floating-point elements using unsigned bias values from the lower 8 bits of the
+/// corresponding packed 16-bit element of `a`, and stores the results in `dst` using zeromask `k`
+/// (elements are zeroed out when the corresponding mask bit is not set).
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtbiasph2bf8))]
+pub fn _mm512_maskz_cvtbiasph_bf8(k: __mmask32, a: __m512i, b: __m512h) -> __m256i {
+    _mm512_mask_cvtbiasph_bf8(_mm256_setzero_si256(), k, a, b)
+}
+
+/// Performs a saturating conversion from packed half-precision (16-bit) floating-point elements in
+/// `b` to packed BF8 (8-bit E5M2) floating-point elements, using unsigned bias values from the
+/// lower 8 bits of the corresponding packed 16-bit element of `a`, and stores the results in `dst`.
+/// The upper 64 bits of `dst` are zeroed out.
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtbiasph2bf8s))]
+pub fn _mm_cvts_biasph_bf8(a: __m128i, b: __m128h) -> __m128i {
+    _mm_mask_cvts_biasph_bf8(_mm_undefined_si128(), !0, a, b)
+}
+
+/// Performs a saturating conversion from packed half-precision (16-bit) floating-point elements in
+/// `b` to packed BF8 (8-bit E5M2) floating-point elements, using unsigned bias values from the
+/// lower 8 bits of the corresponding packed 16-bit element of `a`, and stores the results in `dst `
+/// using writemask `k` (elements are copied from `src` when the corresponding mask bit is not set).
+/// The upper 64 bits of `dst` are zeroed out.
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtbiasph2bf8s))]
+pub fn _mm_mask_cvts_biasph_bf8(src: __m128i, k: __mmask8, a: __m128i, b: __m128h) -> __m128i {
+    unsafe { vcvtbiasph2bf8s128(a.as_u8x16(), b.as_f16x8(), src.as_u8x16(), k).as_m128i() }
+}
+
+/// Performs a saturating conversion from packed half-precision (16-bit) floating-point elements in
+/// `b` to packed BF8 (8-bit E5M2) floating-point elements, using unsigned bias values from the
+/// lower 8 bits of the corresponding packed 16-bit element of `a`, and stores the results in `dst `
+/// using zeromask `k` (elements are zeroed out when the corresponding mask bit is not set).
+/// The upper 64 bits of `dst` are zeroed out.
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtbiasph2bf8s))]
+pub fn _mm_maskz_cvts_biasph_bf8(k: __mmask8, a: __m128i, b: __m128h) -> __m128i {
+    _mm_mask_cvts_biasph_bf8(_mm_setzero_si128(), k, a, b)
+}
+
+/// Performs a saturating conversion from packed half-precision (16-bit) floating-point elements in
+/// `b` to packed BF8 (8-bit E5M2) floating-point elements, using unsigned bias values from the
+/// lower 8 bits of the corresponding packed 16-bit element of `a`, and stores the results in `dst`.
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtbiasph2bf8s))]
+pub fn _mm256_cvts_biasph_bf8(a: __m256i, b: __m256h) -> __m128i {
+    _mm256_mask_cvts_biasph_bf8(_mm_undefined_si128(), !0, a, b)
+}
+
+/// Performs a saturating conversion from packed half-precision (16-bit) floating-point elements in
+/// `b` to packed BF8 (8-bit E5M2) floating-point elements, using unsigned bias values from the
+/// lower 8 bits of the corresponding packed 16-bit element of `a`, and stores the results in `dst `
+/// using writemask `k` (elements are copied from `src` when the corresponding mask bit is not set).
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtbiasph2bf8s))]
+pub fn _mm256_mask_cvts_biasph_bf8(src: __m128i, k: __mmask16, a: __m256i, b: __m256h) -> __m128i {
+    unsafe { vcvtbiasph2bf8s256(a.as_u8x32(), b.as_f16x16(), src.as_u8x16(), k).as_m128i() }
+}
+
+/// Performs a saturating conversion from packed half-precision (16-bit) floating-point elements in
+/// `b` to packed BF8 (8-bit E5M2) floating-point elements, using unsigned bias values from the
+/// lower 8 bits of the corresponding packed 16-bit element of `a`, and stores the results in `dst `
+/// using zeromask `k` (elements are zeroed out when the corresponding mask bit is not set).
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtbiasph2bf8s))]
+pub fn _mm256_maskz_cvts_biasph_bf8(k: __mmask16, a: __m256i, b: __m256h) -> __m128i {
+    _mm256_mask_cvts_biasph_bf8(_mm_setzero_si128(), k, a, b)
+}
+
+/// Performs a saturating conversion from packed half-precision (16-bit) floating-point elements in
+/// `b` to packed BF8 (8-bit E5M2) floating-point elements, using unsigned bias values from the
+/// lower 8 bits of the corresponding packed 16-bit element of `a`, and stores the results in `dst`.
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtbiasph2bf8s))]
+pub fn _mm512_cvts_biasph_bf8(a: __m512i, b: __m512h) -> __m256i {
+    _mm512_mask_cvts_biasph_bf8(_mm256_undefined_si256(), !0, a, b)
+}
+
+/// Performs a saturating conversion from packed half-precision (16-bit) floating-point elements in
+/// `b` to packed BF8 (8-bit E5M2) floating-point elements, using unsigned bias values from the
+/// lower 8 bits of the corresponding packed 16-bit element of `a`, and stores the results in `dst `
+/// using writemask `k` (elements are copied from `src` when the corresponding mask bit is not set).
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtbiasph2bf8s))]
+pub fn _mm512_mask_cvts_biasph_bf8(src: __m256i, k: __mmask32, a: __m512i, b: __m512h) -> __m256i {
+    unsafe { vcvtbiasph2bf8s512(a.as_u8x64(), b.as_f16x32(), src.as_u8x32(), k).as_m256i() }
+}
+
+/// Performs a saturating conversion from packed half-precision (16-bit) floating-point elements in
+/// `b` to packed BF8 (8-bit E5M2) floating-point elements, using unsigned bias values from the
+/// lower 8 bits of the corresponding packed 16-bit element of `a`, and stores the results in `dst `
+/// using zeromask `k` (elements are zeroed out when the corresponding mask bit is not set).
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtbiasph2bf8s))]
+pub fn _mm512_maskz_cvts_biasph_bf8(k: __mmask32, a: __m512i, b: __m512h) -> __m256i {
+    _mm512_mask_cvts_biasph_bf8(_mm256_setzero_si256(), k, a, b)
+}
+
+/// Converts packed half-precision (16-bit) floating-point elements in `b` to packed HF8 (8-bit
+/// E4M3) floating-point elements using unsigned bias values from the lower 8 bits of the
+/// corresponding packed 16-bit element of `a` (infinity is converted to `NaN`), and stores the
+/// results in `dst`. The upper 64 bits of `dst` are zeroed out.
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtbiasph2hf8))]
+pub fn _mm_cvtbiasph_hf8(a: __m128i, b: __m128h) -> __m128i {
+    _mm_mask_cvtbiasph_hf8(_mm_undefined_si128(), !0, a, b)
+}
+
+/// Converts packed half-precision (16-bit) floating-point elements in `b` to packed HF8 (8-bit
+/// E4M3) floating-point elements using unsigned bias values from the lower 8 bits of the
+/// corresponding packed 16-bit element of `a` (infinity is converted to `NaN`), and stores the
+/// results in `dst` using writemask `k` (elements are copied from `src` when the corresponding
+/// mask bit is not set). The upper 64 bits of `dst` are zeroed out.
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtbiasph2hf8))]
+pub fn _mm_mask_cvtbiasph_hf8(src: __m128i, k: __mmask8, a: __m128i, b: __m128h) -> __m128i {
+    unsafe { vcvtbiasph2hf8128(a.as_u8x16(), b.as_f16x8(), src.as_u8x16(), k).as_m128i() }
+}
+
+/// Converts packed half-precision (16-bit) floating-point elements in `b` to packed HF8 (8-bit
+/// E4M3) floating-point elements using unsigned bias values from the lower 8 bits of the
+/// corresponding packed 16-bit element of `a` (infinity is converted to `NaN`), and stores the
+/// results in `dst` using zeromask `k` (elements are zeroed out when the corresponding mask bit
+/// is not set). The upper 64 bits of `dst` are zeroed out.
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtbiasph2hf8))]
+pub fn _mm_maskz_cvtbiasph_hf8(k: __mmask8, a: __m128i, b: __m128h) -> __m128i {
+    _mm_mask_cvtbiasph_hf8(_mm_setzero_si128(), k, a, b)
+}
+
+/// Converts packed half-precision (16-bit) floating-point elements in `b` to packed HF8 (8-bit
+/// E4M3) floating-point elements using unsigned bias values from the lower 8 bits of the
+/// corresponding packed 16-bit element of `a` (infinity is converted to `NaN`), and stores the
+/// results in `dst`.
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtbiasph2hf8))]
+pub fn _mm256_cvtbiasph_hf8(a: __m256i, b: __m256h) -> __m128i {
+    _mm256_mask_cvtbiasph_hf8(_mm_undefined_si128(), !0, a, b)
+}
+
+/// Converts packed half-precision (16-bit) floating-point elements in `b` to packed HF8 (8-bit
+/// E4M3) floating-point elements using unsigned bias values from the lower 8 bits of the
+/// corresponding packed 16-bit element of `a` (infinity is converted to `NaN`), and stores the
+/// results in `dst` using writemask `k` (elements are copied from `src` when the corresponding
+/// mask bit is not set).
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtbiasph2hf8))]
+pub fn _mm256_mask_cvtbiasph_hf8(src: __m128i, k: __mmask16, a: __m256i, b: __m256h) -> __m128i {
+    unsafe { vcvtbiasph2hf8256(a.as_u8x32(), b.as_f16x16(), src.as_u8x16(), k).as_m128i() }
+}
+
+/// Converts packed half-precision (16-bit) floating-point elements in `b` to packed HF8 (8-bit
+/// E4M3) floating-point elements using unsigned bias values from the lower 8 bits of the
+/// corresponding packed 16-bit element of `a` (infinity is converted to `NaN`), and stores the
+/// results in `dst` using zeromask `k` (elements are zeroed out when the corresponding mask bit
+/// is not set).
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtbiasph2hf8))]
+pub fn _mm256_maskz_cvtbiasph_hf8(k: __mmask16, a: __m256i, b: __m256h) -> __m128i {
+    _mm256_mask_cvtbiasph_hf8(_mm_setzero_si128(), k, a, b)
+}
+
+/// Converts packed half-precision (16-bit) floating-point elements in `b` to packed HF8 (8-bit
+/// E4M3) floating-point elements using unsigned bias values from the lower 8 bits of the
+/// corresponding packed 16-bit element of `a` (infinity is converted to `NaN`), and stores the
+/// results in `dst`.
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtbiasph2hf8))]
+pub fn _mm512_cvtbiasph_hf8(a: __m512i, b: __m512h) -> __m256i {
+    _mm512_mask_cvtbiasph_hf8(_mm256_undefined_si256(), !0, a, b)
+}
+
+/// Converts packed half-precision (16-bit) floating-point elements in `b` to packed HF8 (8-bit
+/// E4M3) floating-point elements using unsigned bias values from the lower 8 bits of the
+/// corresponding packed 16-bit element of `a` (infinity is converted to `NaN`), and stores the
+/// results in `dst` using writemask `k` (elements are copied from `src` when the corresponding
+/// mask bit is not set).
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtbiasph2hf8))]
+pub fn _mm512_mask_cvtbiasph_hf8(src: __m256i, k: __mmask32, a: __m512i, b: __m512h) -> __m256i {
+    unsafe { vcvtbiasph2hf8512(a.as_u8x64(), b.as_f16x32(), src.as_u8x32(), k).as_m256i() }
+}
+
+/// Converts packed half-precision (16-bit) floating-point elements in `b` to packed HF8 (8-bit
+/// E4M3) floating-point elements using unsigned bias values from the lower 8 bits of the
+/// corresponding packed 16-bit element of `a` (infinity is converted to `NaN`), and stores the
+/// results in `dst` using zeromask `k` (elements are zeroed out when the corresponding mask bit
+/// is not set).
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtbiasph2hf8))]
+pub fn _mm512_maskz_cvtbiasph_hf8(k: __mmask32, a: __m512i, b: __m512h) -> __m256i {
+    _mm512_mask_cvtbiasph_hf8(_mm256_setzero_si256(), k, a, b)
+}
+
+/// Performs a saturating conversion from packed half-precision (16-bit) floating-point elements in
+/// `b` to packed HF8 (8-bit E4M3) floating-point elements, using unsigned bias values from the
+/// lower 8 bits of the corresponding packed 16-bit element of `a`, and stores the results in `dst`.
+/// The upper 64 bits of `dst` are zeroed out.
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtbiasph2hf8s))]
+pub fn _mm_cvts_biasph_hf8(a: __m128i, b: __m128h) -> __m128i {
+    _mm_mask_cvts_biasph_hf8(_mm_undefined_si128(), !0, a, b)
+}
+
+/// Performs a saturating conversion from packed half-precision (16-bit) floating-point elements in
+/// `b` to packed HF8 (8-bit E4M3) floating-point elements, using unsigned bias values from the
+/// lower 8 bits of the corresponding packed 16-bit element of `a`, and stores the results in `dst`
+/// using writemask `k` (elements are copied from `src` when the corresponding mask bit is not set).
+/// The upper 64 bits of `dst` are zeroed out.
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtbiasph2hf8s))]
+pub fn _mm_mask_cvts_biasph_hf8(src: __m128i, k: __mmask8, a: __m128i, b: __m128h) -> __m128i {
+    unsafe { vcvtbiasph2hf8s128(a.as_u8x16(), b.as_f16x8(), src.as_u8x16(), k).as_m128i() }
+}
+
+/// Performs a saturating conversion from packed half-precision (16-bit) floating-point elements in
+/// `b` to packed HF8 (8-bit E4M3) floating-point elements, using unsigned bias values from the
+/// lower 8 bits of the corresponding packed 16-bit element of `a`, and stores the results in `dst`
+/// using zeromask `k` (elements are zeroed out when the corresponding mask bit is not set).
+/// The upper 64 bits of `dst` are zeroed out.
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtbiasph2hf8s))]
+pub fn _mm_maskz_cvts_biasph_hf8(k: __mmask8, a: __m128i, b: __m128h) -> __m128i {
+    _mm_mask_cvts_biasph_hf8(_mm_setzero_si128(), k, a, b)
+}
+
+/// Performs a saturating conversion from packed half-precision (16-bit) floating-point elements in
+/// `b` to packed HF8 (8-bit E4M3) floating-point elements, using unsigned bias values from the
+/// lower 8 bits of the corresponding packed 16-bit element of `a`, and stores the results in `dst`.
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtbiasph2hf8s))]
+pub fn _mm256_cvts_biasph_hf8(a: __m256i, b: __m256h) -> __m128i {
+    _mm256_mask_cvts_biasph_hf8(_mm_undefined_si128(), !0, a, b)
+}
+
+/// Performs a saturating conversion from packed half-precision (16-bit) floating-point elements in
+/// `b` to packed HF8 (8-bit E4M3) floating-point elements, using unsigned bias values from the
+/// lower 8 bits of the corresponding packed 16-bit element of `a`, and stores the results in `dst`
+/// using writemask `k` (elements are copied from `src` when the corresponding mask bit is not set).
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtbiasph2hf8s))]
+pub fn _mm256_mask_cvts_biasph_hf8(src: __m128i, k: __mmask16, a: __m256i, b: __m256h) -> __m128i {
+    unsafe { vcvtbiasph2hf8s256(a.as_u8x32(), b.as_f16x16(), src.as_u8x16(), k).as_m128i() }
+}
+
+/// Performs a saturating conversion from packed half-precision (16-bit) floating-point elements in
+/// `b` to packed HF8 (8-bit E4M3) floating-point elements, using unsigned bias values from the
+/// lower 8 bits of the corresponding packed 16-bit element of `a`, and stores the results in `dst`
+/// using zeromask `k` (elements are zeroed out when the corresponding mask bit is not set).
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtbiasph2hf8s))]
+pub fn _mm256_maskz_cvts_biasph_hf8(k: __mmask16, a: __m256i, b: __m256h) -> __m128i {
+    _mm256_mask_cvts_biasph_hf8(_mm_setzero_si128(), k, a, b)
+}
+
+/// Performs a saturating conversion from packed half-precision (16-bit) floating-point elements in
+/// `b` to packed HF8 (8-bit E4M3) floating-point elements, using unsigned bias values from the
+/// lower 8 bits of the corresponding packed 16-bit element of `a`, and stores the results in `dst`.
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtbiasph2hf8s))]
+pub fn _mm512_cvts_biasph_hf8(a: __m512i, b: __m512h) -> __m256i {
+    _mm512_mask_cvts_biasph_hf8(_mm256_undefined_si256(), !0, a, b)
+}
+
+/// Performs a saturating conversion from packed half-precision (16-bit) floating-point elements in
+/// `b` to packed HF8 (8-bit E4M3) floating-point elements, using unsigned bias values from the
+/// lower 8 bits of the corresponding packed 16-bit element of `a`, and stores the results in `dst`
+/// using writemask `k` (elements are copied from `src` when the corresponding mask bit is not set).
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtbiasph2hf8s))]
+pub fn _mm512_mask_cvts_biasph_hf8(src: __m256i, k: __mmask32, a: __m512i, b: __m512h) -> __m256i {
+    unsafe { vcvtbiasph2hf8s512(a.as_u8x64(), b.as_f16x32(), src.as_u8x32(), k).as_m256i() }
+}
+
+/// Performs a saturating conversion from packed half-precision (16-bit) floating-point elements in
+/// `b` to packed HF8 (8-bit E4M3) floating-point elements, using unsigned bias values from the
+/// lower 8 bits of the corresponding packed 16-bit element of `a`, and stores the results in `dst`
+/// using zeromask `k` (elements are zeroed out when the corresponding mask bit is not set).
+#[inline]
+#[target_feature(enable = "avx10.2")]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vcvtbiasph2hf8s))]
+pub fn _mm512_maskz_cvts_biasph_hf8(k: __mmask32, a: __m512i, b: __m512h) -> __m256i {
+    _mm512_mask_cvts_biasph_hf8(_mm256_setzero_si256(), k, a, b)
+}
+
 #[allow(improper_ctypes)]
 unsafe extern "unadjusted" {
     #[link_name = "llvm.x86.avx10.vmpsadbw.512"]
@@ -5597,6 +6035,34 @@ unsafe extern "unadjusted" {
     fn vcvt2ps2phx256(a: f32x8, b: f32x8, src: f16x16, mask: u16) -> f16x16;
     #[link_name = "llvm.x86.avx10.mask.vcvt2ps2phx.512"]
     fn vcvt2ps2phx512(a: f32x16, b: f32x16, src: f16x32, mask: u32, rounding: i32) -> f16x32;
+
+    #[link_name = "llvm.x86.avx10.mask.vcvtbiasph2bf8128"]
+    fn vcvtbiasph2bf8128(a: u8x16, b: f16x8, src: u8x16, mask: u8) -> u8x16;
+    #[link_name = "llvm.x86.avx10.mask.vcvtbiasph2bf8256"]
+    fn vcvtbiasph2bf8256(a: u8x32, b: f16x16, src: u8x16, mask: u16) -> u8x16;
+    #[link_name = "llvm.x86.avx10.mask.vcvtbiasph2bf8512"]
+    fn vcvtbiasph2bf8512(a: u8x64, b: f16x32, src: u8x32, mask: u32) -> u8x32;
+
+    #[link_name = "llvm.x86.avx10.mask.vcvtbiasph2bf8s128"]
+    fn vcvtbiasph2bf8s128(a: u8x16, b: f16x8, src: u8x16, mask: u8) -> u8x16;
+    #[link_name = "llvm.x86.avx10.mask.vcvtbiasph2bf8s256"]
+    fn vcvtbiasph2bf8s256(a: u8x32, b: f16x16, src: u8x16, mask: u16) -> u8x16;
+    #[link_name = "llvm.x86.avx10.mask.vcvtbiasph2bf8s512"]
+    fn vcvtbiasph2bf8s512(a: u8x64, b: f16x32, src: u8x32, mask: u32) -> u8x32;
+
+    #[link_name = "llvm.x86.avx10.mask.vcvtbiasph2hf8128"]
+    fn vcvtbiasph2hf8128(a: u8x16, b: f16x8, src: u8x16, mask: u8) -> u8x16;
+    #[link_name = "llvm.x86.avx10.mask.vcvtbiasph2hf8256"]
+    fn vcvtbiasph2hf8256(a: u8x32, b: f16x16, src: u8x16, mask: u16) -> u8x16;
+    #[link_name = "llvm.x86.avx10.mask.vcvtbiasph2hf8512"]
+    fn vcvtbiasph2hf8512(a: u8x64, b: f16x32, src: u8x32, mask: u32) -> u8x32;
+
+    #[link_name = "llvm.x86.avx10.mask.vcvtbiasph2hf8s128"]
+    fn vcvtbiasph2hf8s128(a: u8x16, b: f16x8, src: u8x16, mask: u8) -> u8x16;
+    #[link_name = "llvm.x86.avx10.mask.vcvtbiasph2hf8s256"]
+    fn vcvtbiasph2hf8s256(a: u8x32, b: f16x16, src: u8x16, mask: u16) -> u8x16;
+    #[link_name = "llvm.x86.avx10.mask.vcvtbiasph2hf8s512"]
+    fn vcvtbiasph2hf8s512(a: u8x64, b: f16x32, src: u8x32, mask: u32) -> u8x32;
 }
 
 #[cfg(test)]
@@ -10257,5 +10723,784 @@ mod tests {
             0.0, 18.0, 0.0, 20.0, 0.0, 22.0, 0.0, 24.0, 0.0, 26.0, 0.0, 28.0, 0.0, 30.0, 0.0, 32.0,
         );
         assert_eq_m512h(r, e);
+    }
+
+    const BF8_M0: i8 = 0x80_u8 as i8;
+    const BF8_1: i8 = 0x3c;
+    const BF8_1P25: i8 = 0x3d;
+    const BF8_M1: i8 = 0xbc_u8 as i8;
+    const BF8_M1P25: i8 = 0xbd_u8 as i8;
+    const BF8_INF: i8 = 0x7c;
+    const BF8_MAX: i8 = 0x7b;
+    const BF8_MIN: i8 = 0x04;
+
+    const BF8_INPUT: __m128h =
+        unsafe { _mm_set_ph(-0.0, 1.0, 1.2, -1.1, 1.125, -1.125, 61440.0, f16::INFINITY) };
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm_cvtbiasph_bf8() {
+        let b = BF8_INPUT;
+
+        let a = _mm_set1_epi16(0);
+        let r = _mm_cvtbiasph_bf8(a, b);
+        let e = _mm_set_epi8(
+            0, 0, 0, 0, 0, 0, 0, 0, BF8_M0, BF8_1, BF8_1, BF8_M1, BF8_1, BF8_M1, BF8_MAX, BF8_INF,
+        );
+        assert_eq_m128i(r, e);
+
+        let a = _mm_set1_epi16(255);
+        let r = _mm_cvtbiasph_bf8(a, b);
+        let e = _mm_set_epi8(
+            0, 0, 0, 0, 0, 0, 0, 0, BF8_M0, BF8_1, BF8_1P25, BF8_M1P25, BF8_1P25, BF8_M1P25,
+            BF8_INF, BF8_INF,
+        );
+        assert_eq_m128i(r, e);
+
+        let a = _mm_set1_epi16(127);
+        let r = _mm_cvtbiasph_bf8(a, b);
+        let e = _mm_set_epi8(
+            0, 0, 0, 0, 0, 0, 0, 0, BF8_M0, BF8_1, BF8_1P25, BF8_M1, BF8_1, BF8_M1, BF8_MAX,
+            BF8_INF,
+        );
+        assert_eq_m128i(r, e);
+
+        let a = _mm_set1_epi16(128);
+        let r = _mm_cvtbiasph_bf8(a, b);
+        let e = _mm_set_epi8(
+            0, 0, 0, 0, 0, 0, 0, 0, BF8_M0, BF8_1, BF8_1P25, BF8_M1, BF8_1P25, BF8_M1P25, BF8_INF,
+            BF8_INF,
+        );
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm_mask_cvtbiasph_bf8() {
+        let b = BF8_INPUT;
+        let src = _mm_set1_epi8(0x7f);
+
+        let a = _mm_set1_epi16(0);
+        let r = _mm_mask_cvtbiasph_bf8(src, 0b01010101, a, b);
+        let e = _mm_set_epi8(
+            0, 0, 0, 0, 0, 0, 0, 0, 0x7f, BF8_1, 0x7f, BF8_M1, 0x7f, BF8_M1, 0x7f, BF8_INF,
+        );
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm_maskz_cvtbiasph_bf8() {
+        let b = BF8_INPUT;
+
+        let a = _mm_set1_epi16(0);
+        let r = _mm_maskz_cvtbiasph_bf8(0b01010101, a, b);
+        let e = _mm_set_epi8(
+            0, 0, 0, 0, 0, 0, 0, 0, 0, BF8_1, 0, BF8_M1, 0, BF8_M1, 0, BF8_INF,
+        );
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm256_cvtbiasph_bf8() {
+        let b = _mm256_set1_m128h(BF8_INPUT);
+
+        let a = _mm256_set1_epi16(0);
+        let r = _mm256_cvtbiasph_bf8(a, b);
+        let e = _mm_set_epi8(
+            BF8_M0, BF8_1, BF8_1, BF8_M1, BF8_1, BF8_M1, BF8_MAX, BF8_INF, BF8_M0, BF8_1, BF8_1,
+            BF8_M1, BF8_1, BF8_M1, BF8_MAX, BF8_INF,
+        );
+        assert_eq_m128i(r, e);
+
+        let a = _mm256_set1_epi16(255);
+        let r = _mm256_cvtbiasph_bf8(a, b);
+        let e = _mm_set_epi8(
+            BF8_M0, BF8_1, BF8_1P25, BF8_M1P25, BF8_1P25, BF8_M1P25, BF8_INF, BF8_INF, BF8_M0,
+            BF8_1, BF8_1P25, BF8_M1P25, BF8_1P25, BF8_M1P25, BF8_INF, BF8_INF,
+        );
+        assert_eq_m128i(r, e);
+
+        let a = _mm256_set1_epi16(127);
+        let r = _mm256_cvtbiasph_bf8(a, b);
+        let e = _mm_set_epi8(
+            BF8_M0, BF8_1, BF8_1P25, BF8_M1, BF8_1, BF8_M1, BF8_MAX, BF8_INF, BF8_M0, BF8_1,
+            BF8_1P25, BF8_M1, BF8_1, BF8_M1, BF8_MAX, BF8_INF,
+        );
+        assert_eq_m128i(r, e);
+
+        let a = _mm256_set1_epi16(128);
+        let r = _mm256_cvtbiasph_bf8(a, b);
+        let e = _mm_set_epi8(
+            BF8_M0, BF8_1, BF8_1P25, BF8_M1, BF8_1P25, BF8_M1P25, BF8_INF, BF8_INF, BF8_M0, BF8_1,
+            BF8_1P25, BF8_M1, BF8_1P25, BF8_M1P25, BF8_INF, BF8_INF,
+        );
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm256_mask_cvtbiasph_bf8() {
+        let b = _mm256_set1_m128h(BF8_INPUT);
+        let src = _mm_set1_epi8(0x7f);
+
+        let a = _mm256_set1_epi16(0);
+        let r = _mm256_mask_cvtbiasph_bf8(src, 0b0101010101010101, a, b);
+        let e = _mm_set_epi8(
+            0x7f, BF8_1, 0x7f, BF8_M1, 0x7f, BF8_M1, 0x7f, BF8_INF, 0x7f, BF8_1, 0x7f, BF8_M1,
+            0x7f, BF8_M1, 0x7f, BF8_INF,
+        );
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm256_maskz_cvtbiasph_bf8() {
+        let b = _mm256_set1_m128h(BF8_INPUT);
+
+        let a = _mm256_set1_epi16(0);
+        let r = _mm256_maskz_cvtbiasph_bf8(0b0101010101010101, a, b);
+        let e = _mm_set_epi8(
+            0, BF8_1, 0, BF8_M1, 0, BF8_M1, 0, BF8_INF, 0, BF8_1, 0, BF8_M1, 0, BF8_M1, 0, BF8_INF,
+        );
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_cvtbiasph_bf8() {
+        let b = _mm512_set1_m128h(BF8_INPUT);
+
+        let a = _mm512_set1_epi16(0);
+        let r = _mm512_cvtbiasph_bf8(a, b);
+        let e = _mm256_set_epi8(
+            BF8_M0, BF8_1, BF8_1, BF8_M1, BF8_1, BF8_M1, BF8_MAX, BF8_INF, BF8_M0, BF8_1, BF8_1,
+            BF8_M1, BF8_1, BF8_M1, BF8_MAX, BF8_INF, BF8_M0, BF8_1, BF8_1, BF8_M1, BF8_1, BF8_M1,
+            BF8_MAX, BF8_INF, BF8_M0, BF8_1, BF8_1, BF8_M1, BF8_1, BF8_M1, BF8_MAX, BF8_INF,
+        );
+        assert_eq_m256i(r, e);
+
+        let a = _mm512_set1_epi16(255);
+        let r = _mm512_cvtbiasph_bf8(a, b);
+        let e = _mm256_set_epi8(
+            BF8_M0, BF8_1, BF8_1P25, BF8_M1P25, BF8_1P25, BF8_M1P25, BF8_INF, BF8_INF, BF8_M0,
+            BF8_1, BF8_1P25, BF8_M1P25, BF8_1P25, BF8_M1P25, BF8_INF, BF8_INF, BF8_M0, BF8_1,
+            BF8_1P25, BF8_M1P25, BF8_1P25, BF8_M1P25, BF8_INF, BF8_INF, BF8_M0, BF8_1, BF8_1P25,
+            BF8_M1P25, BF8_1P25, BF8_M1P25, BF8_INF, BF8_INF,
+        );
+        assert_eq_m256i(r, e);
+
+        let a = _mm512_set1_epi16(127);
+        let r = _mm512_cvtbiasph_bf8(a, b);
+        let e = _mm256_set_epi8(
+            BF8_M0, BF8_1, BF8_1P25, BF8_M1, BF8_1, BF8_M1, BF8_MAX, BF8_INF, BF8_M0, BF8_1,
+            BF8_1P25, BF8_M1, BF8_1, BF8_M1, BF8_MAX, BF8_INF, BF8_M0, BF8_1, BF8_1P25, BF8_M1,
+            BF8_1, BF8_M1, BF8_MAX, BF8_INF, BF8_M0, BF8_1, BF8_1P25, BF8_M1, BF8_1, BF8_M1,
+            BF8_MAX, BF8_INF,
+        );
+        assert_eq_m256i(r, e);
+
+        let a = _mm512_set1_epi16(128);
+        let r = _mm512_cvtbiasph_bf8(a, b);
+        let e = _mm256_set_epi8(
+            BF8_M0, BF8_1, BF8_1P25, BF8_M1, BF8_1P25, BF8_M1P25, BF8_INF, BF8_INF, BF8_M0, BF8_1,
+            BF8_1P25, BF8_M1, BF8_1P25, BF8_M1P25, BF8_INF, BF8_INF, BF8_M0, BF8_1, BF8_1P25,
+            BF8_M1, BF8_1P25, BF8_M1P25, BF8_INF, BF8_INF, BF8_M0, BF8_1, BF8_1P25, BF8_M1,
+            BF8_1P25, BF8_M1P25, BF8_INF, BF8_INF,
+        );
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_mask_cvtbiasph_bf8() {
+        let b = _mm512_set1_m128h(BF8_INPUT);
+        let src = _mm256_set1_epi8(0x7f);
+
+        let a = _mm512_set1_epi16(0);
+        let r = _mm512_mask_cvtbiasph_bf8(src, 0b01010101010101010101010101010101, a, b);
+        let e = _mm256_set_epi8(
+            0x7f, BF8_1, 0x7f, BF8_M1, 0x7f, BF8_M1, 0x7f, BF8_INF, 0x7f, BF8_1, 0x7f, BF8_M1,
+            0x7f, BF8_M1, 0x7f, BF8_INF, 0x7f, BF8_1, 0x7f, BF8_M1, 0x7f, BF8_M1, 0x7f, BF8_INF,
+            0x7f, BF8_1, 0x7f, BF8_M1, 0x7f, BF8_M1, 0x7f, BF8_INF,
+        );
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_maskz_cvtbiasph_bf8() {
+        let b = _mm512_set1_m128h(BF8_INPUT);
+
+        let a = _mm512_set1_epi16(0);
+        let r = _mm512_maskz_cvtbiasph_bf8(0b01010101010101010101010101010101, a, b);
+        let e = _mm256_set_epi8(
+            0, BF8_1, 0, BF8_M1, 0, BF8_M1, 0, BF8_INF, 0, BF8_1, 0, BF8_M1, 0, BF8_M1, 0, BF8_INF,
+            0, BF8_1, 0, BF8_M1, 0, BF8_M1, 0, BF8_INF, 0, BF8_1, 0, BF8_M1, 0, BF8_M1, 0, BF8_INF,
+        );
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm_cvts_biasph_bf8() {
+        let b = BF8_INPUT;
+
+        let a = _mm_set1_epi16(0);
+        let r = _mm_cvts_biasph_bf8(a, b);
+        let e = _mm_set_epi8(
+            0, 0, 0, 0, 0, 0, 0, 0, BF8_M0, BF8_1, BF8_1, BF8_M1, BF8_1, BF8_M1, BF8_MAX, BF8_MAX,
+        );
+        assert_eq_m128i(r, e);
+
+        let a = _mm_set1_epi16(255);
+        let r = _mm_cvts_biasph_bf8(a, b);
+        let e = _mm_set_epi8(
+            0, 0, 0, 0, 0, 0, 0, 0, BF8_M0, BF8_1, BF8_1P25, BF8_M1P25, BF8_1P25, BF8_M1P25,
+            BF8_MAX, BF8_MAX,
+        );
+        assert_eq_m128i(r, e);
+
+        let a = _mm_set1_epi16(127);
+        let r = _mm_cvts_biasph_bf8(a, b);
+        let e = _mm_set_epi8(
+            0, 0, 0, 0, 0, 0, 0, 0, BF8_M0, BF8_1, BF8_1P25, BF8_M1, BF8_1, BF8_M1, BF8_MAX,
+            BF8_MAX,
+        );
+        assert_eq_m128i(r, e);
+
+        let a = _mm_set1_epi16(128);
+        let r = _mm_cvts_biasph_bf8(a, b);
+        let e = _mm_set_epi8(
+            0, 0, 0, 0, 0, 0, 0, 0, BF8_M0, BF8_1, BF8_1P25, BF8_M1, BF8_1P25, BF8_M1P25, BF8_MAX,
+            BF8_MAX,
+        );
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm_mask_cvts_biasph_bf8() {
+        let b = BF8_INPUT;
+        let src = _mm_set1_epi8(0x7f);
+
+        let a = _mm_set1_epi16(0);
+        let r = _mm_mask_cvts_biasph_bf8(src, 0b01010101, a, b);
+        let e = _mm_set_epi8(
+            0, 0, 0, 0, 0, 0, 0, 0, 0x7f, BF8_1, 0x7f, BF8_M1, 0x7f, BF8_M1, 0x7f, BF8_MAX,
+        );
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm_maskz_cvts_biasph_bf8() {
+        let b = BF8_INPUT;
+
+        let a = _mm_set1_epi16(0);
+        let r = _mm_maskz_cvts_biasph_bf8(0b01010101, a, b);
+        let e = _mm_set_epi8(
+            0, 0, 0, 0, 0, 0, 0, 0, 0, BF8_1, 0, BF8_M1, 0, BF8_M1, 0, BF8_MAX,
+        );
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm256_cvts_biasph_bf8() {
+        let b = _mm256_set1_m128h(BF8_INPUT);
+
+        let a = _mm256_set1_epi16(0);
+        let r = _mm256_cvts_biasph_bf8(a, b);
+        let e = _mm_set_epi8(
+            BF8_M0, BF8_1, BF8_1, BF8_M1, BF8_1, BF8_M1, BF8_MAX, BF8_MAX, BF8_M0, BF8_1, BF8_1,
+            BF8_M1, BF8_1, BF8_M1, BF8_MAX, BF8_MAX,
+        );
+        assert_eq_m128i(r, e);
+
+        let a = _mm256_set1_epi16(255);
+        let r = _mm256_cvts_biasph_bf8(a, b);
+        let e = _mm_set_epi8(
+            BF8_M0, BF8_1, BF8_1P25, BF8_M1P25, BF8_1P25, BF8_M1P25, BF8_MAX, BF8_MAX, BF8_M0,
+            BF8_1, BF8_1P25, BF8_M1P25, BF8_1P25, BF8_M1P25, BF8_MAX, BF8_MAX,
+        );
+        assert_eq_m128i(r, e);
+
+        let a = _mm256_set1_epi16(127);
+        let r = _mm256_cvts_biasph_bf8(a, b);
+        let e = _mm_set_epi8(
+            BF8_M0, BF8_1, BF8_1P25, BF8_M1, BF8_1, BF8_M1, BF8_MAX, BF8_MAX, BF8_M0, BF8_1,
+            BF8_1P25, BF8_M1, BF8_1, BF8_M1, BF8_MAX, BF8_MAX,
+        );
+        assert_eq_m128i(r, e);
+
+        let a = _mm256_set1_epi16(128);
+        let r = _mm256_cvts_biasph_bf8(a, b);
+        let e = _mm_set_epi8(
+            BF8_M0, BF8_1, BF8_1P25, BF8_M1, BF8_1P25, BF8_M1P25, BF8_MAX, BF8_MAX, BF8_M0, BF8_1,
+            BF8_1P25, BF8_M1, BF8_1P25, BF8_M1P25, BF8_MAX, BF8_MAX,
+        );
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm256_mask_cvts_biasph_bf8() {
+        let b = _mm256_set1_m128h(BF8_INPUT);
+        let src = _mm_set1_epi8(0x7f);
+
+        let a = _mm256_set1_epi16(0);
+        let r = _mm256_mask_cvts_biasph_bf8(src, 0b0101010101010101, a, b);
+        let e = _mm_set_epi8(
+            0x7f, BF8_1, 0x7f, BF8_M1, 0x7f, BF8_M1, 0x7f, BF8_MAX, 0x7f, BF8_1, 0x7f, BF8_M1,
+            0x7f, BF8_M1, 0x7f, BF8_MAX,
+        );
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm256_maskz_cvts_biasph_bf8() {
+        let b = _mm256_set1_m128h(BF8_INPUT);
+
+        let a = _mm256_set1_epi16(0);
+        let r = _mm256_maskz_cvts_biasph_bf8(0b0101010101010101, a, b);
+        let e = _mm_set_epi8(
+            0, BF8_1, 0, BF8_M1, 0, BF8_M1, 0, BF8_MAX, 0, BF8_1, 0, BF8_M1, 0, BF8_M1, 0, BF8_MAX,
+        );
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_cvts_biasph_bf8() {
+        let b = _mm512_set1_m128h(BF8_INPUT);
+
+        let a = _mm512_set1_epi16(0);
+        let r = _mm512_cvts_biasph_bf8(a, b);
+        let e = _mm256_set_epi8(
+            BF8_M0, BF8_1, BF8_1, BF8_M1, BF8_1, BF8_M1, BF8_MAX, BF8_MAX, BF8_M0, BF8_1, BF8_1,
+            BF8_M1, BF8_1, BF8_M1, BF8_MAX, BF8_MAX, BF8_M0, BF8_1, BF8_1, BF8_M1, BF8_1, BF8_M1,
+            BF8_MAX, BF8_MAX, BF8_M0, BF8_1, BF8_1, BF8_M1, BF8_1, BF8_M1, BF8_MAX, BF8_MAX,
+        );
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_mask_cvts_biasph_bf8() {
+        let b = _mm512_set1_m128h(BF8_INPUT);
+        let src = _mm256_set1_epi8(0x7f);
+
+        let a = _mm512_set1_epi16(0);
+        let r = _mm512_mask_cvts_biasph_bf8(src, 0b01010101010101010101010101010101, a, b);
+        let e = _mm256_set_epi8(
+            0x7f, BF8_1, 0x7f, BF8_M1, 0x7f, BF8_M1, 0x7f, BF8_MAX, 0x7f, BF8_1, 0x7f, BF8_M1,
+            0x7f, BF8_M1, 0x7f, BF8_MAX, 0x7f, BF8_1, 0x7f, BF8_M1, 0x7f, BF8_M1, 0x7f, BF8_MAX,
+            0x7f, BF8_1, 0x7f, BF8_M1, 0x7f, BF8_M1, 0x7f, BF8_MAX,
+        );
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_maskz_cvts_biasph_bf8() {
+        let b = _mm512_set1_m128h(BF8_INPUT);
+
+        let a = _mm512_set1_epi16(0);
+        let r = _mm512_maskz_cvts_biasph_bf8(0b01010101010101010101010101010101, a, b);
+        let e = _mm256_set_epi8(
+            0, BF8_1, 0, BF8_M1, 0, BF8_M1, 0, BF8_MAX, 0, BF8_1, 0, BF8_M1, 0, BF8_M1, 0, BF8_MAX,
+            0, BF8_1, 0, BF8_M1, 0, BF8_M1, 0, BF8_MAX, 0, BF8_1, 0, BF8_M1, 0, BF8_M1, 0, BF8_MAX,
+        );
+        assert_eq_m256i(r, e);
+    }
+
+    const HF8_M0: i8 = 0x80_u8 as i8;
+    const HF8_1: i8 = 0x38;
+    const HF8_1P125: i8 = 0x39;
+    const HF8_M1: i8 = 0xb8_u8 as i8;
+    const HF8_M1P125: i8 = 0xb9_u8 as i8;
+    const HF8_NAN: i8 = 0x7f;
+    const HF8_MAX: i8 = 0x7e;
+    const HF8_MIN: i8 = 0x08;
+    const HF8_MIN_DEN: i8 = 0x01;
+
+    const HF8_INPUT: __m128h =
+        unsafe { _mm_set_ph(-0.0, 1.0, 1.1, -1.05, 1.0625, -1.0625, 464.0, f16::INFINITY) };
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm_cvtbiasph_hf8() {
+        let b = HF8_INPUT;
+
+        let a = _mm_set1_epi16(0);
+        let r = _mm_cvtbiasph_hf8(a, b);
+        let e = _mm_set_epi8(
+            0, 0, 0, 0, 0, 0, 0, 0, HF8_M0, HF8_1, HF8_1, HF8_M1, HF8_1, HF8_M1, HF8_MAX, HF8_NAN,
+        );
+        assert_eq_m128i(r, e);
+
+        let a = _mm_set1_epi16(255);
+        let r = _mm_cvtbiasph_hf8(a, b);
+        let e = _mm_set_epi8(
+            0, 0, 0, 0, 0, 0, 0, 0, HF8_M0, HF8_1, HF8_1P125, HF8_M1P125, HF8_1P125, HF8_M1P125,
+            HF8_NAN, HF8_NAN,
+        );
+        assert_eq_m128i(r, e);
+
+        let a = _mm_set1_epi16(127);
+        let r = _mm_cvtbiasph_hf8(a, b);
+        let e = _mm_set_epi8(
+            0, 0, 0, 0, 0, 0, 0, 0, HF8_M0, HF8_1, HF8_1P125, HF8_M1, HF8_1, HF8_M1, HF8_MAX,
+            HF8_NAN,
+        );
+        assert_eq_m128i(r, e);
+
+        let a = _mm_set1_epi16(128);
+        let r = _mm_cvtbiasph_hf8(a, b);
+        let e = _mm_set_epi8(
+            0, 0, 0, 0, 0, 0, 0, 0, HF8_M0, HF8_1, HF8_1P125, HF8_M1, HF8_1P125, HF8_M1P125,
+            HF8_NAN, HF8_NAN,
+        );
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm_mask_cvtbiasph_hf8() {
+        let b = HF8_INPUT;
+        let src = _mm_set1_epi8(0x7f);
+
+        let a = _mm_set1_epi16(0);
+        let r = _mm_mask_cvtbiasph_hf8(src, 0b01010101, a, b);
+        let e = _mm_set_epi8(
+            0, 0, 0, 0, 0, 0, 0, 0, 0x7f, HF8_1, 0x7f, HF8_M1, 0x7f, HF8_M1, 0x7f, HF8_NAN,
+        );
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm_maskz_cvtbiasph_hf8() {
+        let b = HF8_INPUT;
+
+        let a = _mm_set1_epi16(0);
+        let r = _mm_maskz_cvtbiasph_hf8(0b01010101, a, b);
+        let e = _mm_set_epi8(
+            0, 0, 0, 0, 0, 0, 0, 0, 0, HF8_1, 0, HF8_M1, 0, HF8_M1, 0, HF8_NAN,
+        );
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm256_cvtbiasph_hf8() {
+        let b = _mm256_set1_m128h(HF8_INPUT);
+
+        let a = _mm256_set1_epi16(0);
+        let r = _mm256_cvtbiasph_hf8(a, b);
+        let e = _mm_set_epi8(
+            HF8_M0, HF8_1, HF8_1, HF8_M1, HF8_1, HF8_M1, HF8_MAX, HF8_NAN, HF8_M0, HF8_1, HF8_1,
+            HF8_M1, HF8_1, HF8_M1, HF8_MAX, HF8_NAN,
+        );
+        assert_eq_m128i(r, e);
+
+        let a = _mm256_set1_epi16(255);
+        let r = _mm256_cvtbiasph_hf8(a, b);
+        let e = _mm_set_epi8(
+            HF8_M0, HF8_1, HF8_1P125, HF8_M1P125, HF8_1P125, HF8_M1P125, HF8_NAN, HF8_NAN, HF8_M0,
+            HF8_1, HF8_1P125, HF8_M1P125, HF8_1P125, HF8_M1P125, HF8_NAN, HF8_NAN,
+        );
+        assert_eq_m128i(r, e);
+
+        let a = _mm256_set1_epi16(127);
+        let r = _mm256_cvtbiasph_hf8(a, b);
+        let e = _mm_set_epi8(
+            HF8_M0, HF8_1, HF8_1P125, HF8_M1, HF8_1, HF8_M1, HF8_MAX, HF8_NAN, HF8_M0, HF8_1,
+            HF8_1P125, HF8_M1, HF8_1, HF8_M1, HF8_MAX, HF8_NAN,
+        );
+        assert_eq_m128i(r, e);
+
+        let a = _mm256_set1_epi16(128);
+        let r = _mm256_cvtbiasph_hf8(a, b);
+        let e = _mm_set_epi8(
+            HF8_M0, HF8_1, HF8_1P125, HF8_M1, HF8_1P125, HF8_M1P125, HF8_NAN, HF8_NAN, HF8_M0,
+            HF8_1, HF8_1P125, HF8_M1, HF8_1P125, HF8_M1P125, HF8_NAN, HF8_NAN,
+        );
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm256_mask_cvtbiasph_hf8() {
+        let b = _mm256_set1_m128h(HF8_INPUT);
+        let src = _mm_set1_epi8(0x7f);
+
+        let a = _mm256_set1_epi16(0);
+        let r = _mm256_mask_cvtbiasph_hf8(src, 0b0101010101010101, a, b);
+        let e = _mm_set_epi8(
+            0x7f, HF8_1, 0x7f, HF8_M1, 0x7f, HF8_M1, 0x7f, HF8_NAN, 0x7f, HF8_1, 0x7f, HF8_M1,
+            0x7f, HF8_M1, 0x7f, HF8_NAN,
+        );
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm256_maskz_cvtbiasph_hf8() {
+        let b = _mm256_set1_m128h(HF8_INPUT);
+
+        let a = _mm256_set1_epi16(0);
+        let r = _mm256_maskz_cvtbiasph_hf8(0b0101010101010101, a, b);
+        let e = _mm_set_epi8(
+            0, HF8_1, 0, HF8_M1, 0, HF8_M1, 0, HF8_NAN, 0, HF8_1, 0, HF8_M1, 0, HF8_M1, 0, HF8_NAN,
+        );
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_cvtbiasph_hf8() {
+        let b = _mm512_set1_m128h(HF8_INPUT);
+
+        let a = _mm512_set1_epi16(0);
+        let r = _mm512_cvtbiasph_hf8(a, b);
+        let e = _mm256_set_epi8(
+            HF8_M0, HF8_1, HF8_1, HF8_M1, HF8_1, HF8_M1, HF8_MAX, HF8_NAN, HF8_M0, HF8_1, HF8_1,
+            HF8_M1, HF8_1, HF8_M1, HF8_MAX, HF8_NAN, HF8_M0, HF8_1, HF8_1, HF8_M1, HF8_1, HF8_M1,
+            HF8_MAX, HF8_NAN, HF8_M0, HF8_1, HF8_1, HF8_M1, HF8_1, HF8_M1, HF8_MAX, HF8_NAN,
+        );
+        assert_eq_m256i(r, e);
+
+        let a = _mm512_set1_epi16(255);
+        let r = _mm512_cvtbiasph_hf8(a, b);
+        let e = _mm256_set_epi8(
+            HF8_M0, HF8_1, HF8_1P125, HF8_M1P125, HF8_1P125, HF8_M1P125, HF8_NAN, HF8_NAN, HF8_M0,
+            HF8_1, HF8_1P125, HF8_M1P125, HF8_1P125, HF8_M1P125, HF8_NAN, HF8_NAN, HF8_M0, HF8_1,
+            HF8_1P125, HF8_M1P125, HF8_1P125, HF8_M1P125, HF8_NAN, HF8_NAN, HF8_M0, HF8_1,
+            HF8_1P125, HF8_M1P125, HF8_1P125, HF8_M1P125, HF8_NAN, HF8_NAN,
+        );
+        assert_eq_m256i(r, e);
+
+        let a = _mm512_set1_epi16(127);
+        let r = _mm512_cvtbiasph_hf8(a, b);
+        let e = _mm256_set_epi8(
+            HF8_M0, HF8_1, HF8_1P125, HF8_M1, HF8_1, HF8_M1, HF8_MAX, HF8_NAN, HF8_M0, HF8_1,
+            HF8_1P125, HF8_M1, HF8_1, HF8_M1, HF8_MAX, HF8_NAN, HF8_M0, HF8_1, HF8_1P125, HF8_M1,
+            HF8_1, HF8_M1, HF8_MAX, HF8_NAN, HF8_M0, HF8_1, HF8_1P125, HF8_M1, HF8_1, HF8_M1,
+            HF8_MAX, HF8_NAN,
+        );
+        assert_eq_m256i(r, e);
+
+        let a = _mm512_set1_epi16(128);
+        let r = _mm512_cvtbiasph_hf8(a, b);
+        let e = _mm256_set_epi8(
+            HF8_M0, HF8_1, HF8_1P125, HF8_M1, HF8_1P125, HF8_M1P125, HF8_NAN, HF8_NAN, HF8_M0,
+            HF8_1, HF8_1P125, HF8_M1, HF8_1P125, HF8_M1P125, HF8_NAN, HF8_NAN, HF8_M0, HF8_1,
+            HF8_1P125, HF8_M1, HF8_1P125, HF8_M1P125, HF8_NAN, HF8_NAN, HF8_M0, HF8_1, HF8_1P125,
+            HF8_M1, HF8_1P125, HF8_M1P125, HF8_NAN, HF8_NAN,
+        );
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_mask_cvtbiasph_hf8() {
+        let b = _mm512_set1_m128h(HF8_INPUT);
+        let src = _mm256_set1_epi8(0x7f);
+
+        let a = _mm512_set1_epi16(0);
+        let r = _mm512_mask_cvtbiasph_hf8(src, 0b01010101010101010101010101010101, a, b);
+        let e = _mm256_set_epi8(
+            0x7f, HF8_1, 0x7f, HF8_M1, 0x7f, HF8_M1, 0x7f, HF8_NAN, 0x7f, HF8_1, 0x7f, HF8_M1,
+            0x7f, HF8_M1, 0x7f, HF8_NAN, 0x7f, HF8_1, 0x7f, HF8_M1, 0x7f, HF8_M1, 0x7f, HF8_NAN,
+            0x7f, HF8_1, 0x7f, HF8_M1, 0x7f, HF8_M1, 0x7f, HF8_NAN,
+        );
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_maskz_cvtbiasph_hf8() {
+        let b = _mm512_set1_m128h(HF8_INPUT);
+
+        let a = _mm512_set1_epi16(0);
+        let r = _mm512_maskz_cvtbiasph_hf8(0b01010101010101010101010101010101, a, b);
+        let e = _mm256_set_epi8(
+            0, HF8_1, 0, HF8_M1, 0, HF8_M1, 0, HF8_NAN, 0, HF8_1, 0, HF8_M1, 0, HF8_M1, 0, HF8_NAN,
+            0, HF8_1, 0, HF8_M1, 0, HF8_M1, 0, HF8_NAN, 0, HF8_1, 0, HF8_M1, 0, HF8_M1, 0, HF8_NAN,
+        );
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm_cvts_biasph_hf8() {
+        let b = HF8_INPUT;
+
+        let a = _mm_set1_epi16(0);
+        let r = _mm_cvts_biasph_hf8(a, b);
+        let e = _mm_set_epi8(
+            0, 0, 0, 0, 0, 0, 0, 0, HF8_M0, HF8_1, HF8_1, HF8_M1, HF8_1, HF8_M1, HF8_MAX, HF8_MAX,
+        );
+        assert_eq_m128i(r, e);
+
+        let a = _mm_set1_epi16(255);
+        let r = _mm_cvts_biasph_hf8(a, b);
+        let e = _mm_set_epi8(
+            0, 0, 0, 0, 0, 0, 0, 0, HF8_M0, HF8_1, HF8_1P125, HF8_M1P125, HF8_1P125, HF8_M1P125,
+            HF8_MAX, HF8_MAX,
+        );
+        assert_eq_m128i(r, e);
+
+        let a = _mm_set1_epi16(127);
+        let r = _mm_cvts_biasph_hf8(a, b);
+        let e = _mm_set_epi8(
+            0, 0, 0, 0, 0, 0, 0, 0, HF8_M0, HF8_1, HF8_1P125, HF8_M1, HF8_1, HF8_M1, HF8_MAX,
+            HF8_MAX,
+        );
+        assert_eq_m128i(r, e);
+
+        let a = _mm_set1_epi16(128);
+        let r = _mm_cvts_biasph_hf8(a, b);
+        let e = _mm_set_epi8(
+            0, 0, 0, 0, 0, 0, 0, 0, HF8_M0, HF8_1, HF8_1P125, HF8_M1, HF8_1P125, HF8_M1P125,
+            HF8_MAX, HF8_MAX,
+        );
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm_mask_cvts_biasph_hf8() {
+        let b = HF8_INPUT;
+        let src = _mm_set1_epi8(0x7f);
+
+        let a = _mm_set1_epi16(0);
+        let r = _mm_mask_cvts_biasph_hf8(src, 0b01010101, a, b);
+        let e = _mm_set_epi8(
+            0, 0, 0, 0, 0, 0, 0, 0, 0x7f, HF8_1, 0x7f, HF8_M1, 0x7f, HF8_M1, 0x7f, HF8_MAX,
+        );
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm_maskz_cvts_biasph_hf8() {
+        let b = HF8_INPUT;
+
+        let a = _mm_set1_epi16(0);
+        let r = _mm_maskz_cvts_biasph_hf8(0b01010101, a, b);
+        let e = _mm_set_epi8(
+            0, 0, 0, 0, 0, 0, 0, 0, 0, HF8_1, 0, HF8_M1, 0, HF8_M1, 0, HF8_MAX,
+        );
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm256_cvts_biasph_hf8() {
+        let b = _mm256_set1_m128h(HF8_INPUT);
+
+        let a = _mm256_set1_epi16(0);
+        let r = _mm256_cvts_biasph_hf8(a, b);
+        let e = _mm_set_epi8(
+            HF8_M0, HF8_1, HF8_1, HF8_M1, HF8_1, HF8_M1, HF8_MAX, HF8_MAX, HF8_M0, HF8_1, HF8_1,
+            HF8_M1, HF8_1, HF8_M1, HF8_MAX, HF8_MAX,
+        );
+        assert_eq_m128i(r, e);
+
+        let a = _mm256_set1_epi16(255);
+        let r = _mm256_cvts_biasph_hf8(a, b);
+        let e = _mm_set_epi8(
+            HF8_M0, HF8_1, HF8_1P125, HF8_M1P125, HF8_1P125, HF8_M1P125, HF8_MAX, HF8_MAX, HF8_M0,
+            HF8_1, HF8_1P125, HF8_M1P125, HF8_1P125, HF8_M1P125, HF8_MAX, HF8_MAX,
+        );
+        assert_eq_m128i(r, e);
+
+        let a = _mm256_set1_epi16(127);
+        let r = _mm256_cvts_biasph_hf8(a, b);
+        let e = _mm_set_epi8(
+            HF8_M0, HF8_1, HF8_1P125, HF8_M1, HF8_1, HF8_M1, HF8_MAX, HF8_MAX, HF8_M0, HF8_1,
+            HF8_1P125, HF8_M1, HF8_1, HF8_M1, HF8_MAX, HF8_MAX,
+        );
+        assert_eq_m128i(r, e);
+
+        let a = _mm256_set1_epi16(128);
+        let r = _mm256_cvts_biasph_hf8(a, b);
+        let e = _mm_set_epi8(
+            HF8_M0, HF8_1, HF8_1P125, HF8_M1, HF8_1P125, HF8_M1P125, HF8_MAX, HF8_MAX, HF8_M0,
+            HF8_1, HF8_1P125, HF8_M1, HF8_1P125, HF8_M1P125, HF8_MAX, HF8_MAX,
+        );
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm256_mask_cvts_biasph_hf8() {
+        let b = _mm256_set1_m128h(HF8_INPUT);
+        let src = _mm_set1_epi8(0x7f);
+
+        let a = _mm256_set1_epi16(0);
+        let r = _mm256_mask_cvts_biasph_hf8(src, 0b0101010101010101, a, b);
+        let e = _mm_set_epi8(
+            0x7f, HF8_1, 0x7f, HF8_M1, 0x7f, HF8_M1, 0x7f, HF8_MAX, 0x7f, HF8_1, 0x7f, HF8_M1,
+            0x7f, HF8_M1, 0x7f, HF8_MAX,
+        );
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm256_maskz_cvts_biasph_hf8() {
+        let b = _mm256_set1_m128h(HF8_INPUT);
+
+        let a = _mm256_set1_epi16(0);
+        let r = _mm256_maskz_cvts_biasph_hf8(0b0101010101010101, a, b);
+        let e = _mm_set_epi8(
+            0, HF8_1, 0, HF8_M1, 0, HF8_M1, 0, HF8_MAX, 0, HF8_1, 0, HF8_M1, 0, HF8_M1, 0, HF8_MAX,
+        );
+        assert_eq_m128i(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_cvts_biasph_hf8() {
+        let b = _mm512_set1_m128h(HF8_INPUT);
+
+        let a = _mm512_set1_epi16(0);
+        let r = _mm512_cvts_biasph_hf8(a, b);
+        let e = _mm256_set_epi8(
+            HF8_M0, HF8_1, HF8_1, HF8_M1, HF8_1, HF8_M1, HF8_MAX, HF8_MAX, HF8_M0, HF8_1, HF8_1,
+            HF8_M1, HF8_1, HF8_M1, HF8_MAX, HF8_MAX, HF8_M0, HF8_1, HF8_1, HF8_M1, HF8_1, HF8_M1,
+            HF8_MAX, HF8_MAX, HF8_M0, HF8_1, HF8_1, HF8_M1, HF8_1, HF8_M1, HF8_MAX, HF8_MAX,
+        );
+        assert_eq_m256i(r, e);
+
+        let a = _mm512_set1_epi16(255);
+        let r = _mm512_cvts_biasph_hf8(a, b);
+        let e = _mm256_set_epi8(
+            HF8_M0, HF8_1, HF8_1P125, HF8_M1P125, HF8_1P125, HF8_M1P125, HF8_MAX, HF8_MAX, HF8_M0,
+            HF8_1, HF8_1P125, HF8_M1P125, HF8_1P125, HF8_M1P125, HF8_MAX, HF8_MAX, HF8_M0, HF8_1,
+            HF8_1P125, HF8_M1P125, HF8_1P125, HF8_M1P125, HF8_MAX, HF8_MAX, HF8_M0, HF8_1,
+            HF8_1P125, HF8_M1P125, HF8_1P125, HF8_M1P125, HF8_MAX, HF8_MAX,
+        );
+        assert_eq_m256i(r, e);
+
+        let a = _mm512_set1_epi16(127);
+        let r = _mm512_cvts_biasph_hf8(a, b);
+        let e = _mm256_set_epi8(
+            HF8_M0, HF8_1, HF8_1P125, HF8_M1, HF8_1, HF8_M1, HF8_MAX, HF8_MAX, HF8_M0, HF8_1,
+            HF8_1P125, HF8_M1, HF8_1, HF8_M1, HF8_MAX, HF8_MAX, HF8_M0, HF8_1, HF8_1P125, HF8_M1,
+            HF8_1, HF8_M1, HF8_MAX, HF8_MAX, HF8_M0, HF8_1, HF8_1P125, HF8_M1, HF8_1, HF8_M1,
+            HF8_MAX, HF8_MAX,
+        );
+        assert_eq_m256i(r, e);
+
+        let a = _mm512_set1_epi16(128);
+        let r = _mm512_cvts_biasph_hf8(a, b);
+        let e = _mm256_set_epi8(
+            HF8_M0, HF8_1, HF8_1P125, HF8_M1, HF8_1P125, HF8_M1P125, HF8_MAX, HF8_MAX, HF8_M0,
+            HF8_1, HF8_1P125, HF8_M1, HF8_1P125, HF8_M1P125, HF8_MAX, HF8_MAX, HF8_M0, HF8_1,
+            HF8_1P125, HF8_M1, HF8_1P125, HF8_M1P125, HF8_MAX, HF8_MAX, HF8_M0, HF8_1, HF8_1P125,
+            HF8_M1, HF8_1P125, HF8_M1P125, HF8_MAX, HF8_MAX,
+        );
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_mask_cvts_biasph_hf8() {
+        let b = _mm512_set1_m128h(HF8_INPUT);
+        let src = _mm256_set1_epi8(0x7f);
+
+        let a = _mm512_set1_epi16(0);
+        let r = _mm512_mask_cvts_biasph_hf8(src, 0b01010101010101010101010101010101, a, b);
+        let e = _mm256_set_epi8(
+            0x7f, HF8_1, 0x7f, HF8_M1, 0x7f, HF8_M1, 0x7f, HF8_MAX, 0x7f, HF8_1, 0x7f, HF8_M1,
+            0x7f, HF8_M1, 0x7f, HF8_MAX, 0x7f, HF8_1, 0x7f, HF8_M1, 0x7f, HF8_M1, 0x7f, HF8_MAX,
+            0x7f, HF8_1, 0x7f, HF8_M1, 0x7f, HF8_M1, 0x7f, HF8_MAX,
+        );
+        assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "avx10.2")]
+    fn test_mm512_maskz_cvts_biasph_hf8() {
+        let b = _mm512_set1_m128h(HF8_INPUT);
+
+        let a = _mm512_set1_epi16(0);
+        let r = _mm512_maskz_cvts_biasph_hf8(0b01010101010101010101010101010101, a, b);
+        let e = _mm256_set_epi8(
+            0, HF8_1, 0, HF8_M1, 0, HF8_M1, 0, HF8_MAX, 0, HF8_1, 0, HF8_M1, 0, HF8_M1, 0, HF8_MAX,
+            0, HF8_1, 0, HF8_M1, 0, HF8_M1, 0, HF8_MAX, 0, HF8_1, 0, HF8_M1, 0, HF8_M1, 0, HF8_MAX,
+        );
+        assert_eq_m256i(r, e);
     }
 }
