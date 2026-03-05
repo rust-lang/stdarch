@@ -32,10 +32,14 @@ unsafe extern "C" {
     fn vsm4key4128(a: i32x4, b: i32x4) -> i32x4;
     #[link_name = "llvm.x86.vsm4key4256"]
     fn vsm4key4256(a: i32x8, b: i32x8) -> i32x8;
+    #[link_name = "llvm.x86.vsm4key4512"]
+    fn vsm4key4512(a: i32x16, b: i32x16) -> i32x16;
     #[link_name = "llvm.x86.vsm4rnds4128"]
     fn vsm4rnds4128(a: i32x4, b: i32x4) -> i32x4;
     #[link_name = "llvm.x86.vsm4rnds4256"]
     fn vsm4rnds4256(a: i32x8, b: i32x8) -> i32x8;
+    #[link_name = "llvm.x86.vsm4rnds4512"]
+    fn vsm4rnds4512(a: i32x16, b: i32x16) -> i32x16;
 }
 
 #[cfg(test)]
@@ -252,6 +256,16 @@ pub fn _mm256_sm4key4_epi32(a: __m256i, b: __m256i) -> __m256i {
     unsafe { transmute(vsm4key4256(a.as_i32x8(), b.as_i32x8())) }
 }
 
+/// This intrinsic performs four rounds of SM4 key expansion. The intrinsic operates on independent
+/// 128-bit lanes. The calculated results are stored in dst.
+#[inline]
+#[target_feature(enable = "sm4,avx10.2")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vsm4key4))]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+pub fn _mm512_sm4key4_epi32(a: __m512i, b: __m512i) -> __m512i {
+    unsafe { vsm4key4512(a.as_i32x16(), b.as_i32x16()).as_m512i() }
+}
+
 /// This intrinsic performs four rounds of SM4 encryption. The intrinsic operates on independent
 /// 128-bit lanes. The calculated results are stored in dst.
 ///
@@ -274,6 +288,16 @@ pub fn _mm_sm4rnds4_epi32(a: __m128i, b: __m128i) -> __m128i {
 #[stable(feature = "sha512_sm_x86", since = "1.89.0")]
 pub fn _mm256_sm4rnds4_epi32(a: __m256i, b: __m256i) -> __m256i {
     unsafe { transmute(vsm4rnds4256(a.as_i32x8(), b.as_i32x8())) }
+}
+
+/// This intrinsic performs four rounds of SM4 encryption. The intrinsic operates on independent
+/// 128-bit lanes. The calculated results are stored in dst.
+#[inline]
+#[target_feature(enable = "sm4,avx10.2")]
+#[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(vsm4rnds4))]
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+pub fn _mm512_sm4rnds4_epi32(a: __m512i, b: __m512i) -> __m512i {
+    unsafe { vsm4rnds4512(a.as_i32x16(), b.as_i32x16()).as_m512i() }
 }
 
 #[cfg(test)]
@@ -475,10 +499,12 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
-    static DATA_32: [u32; 16] = [
+    static DATA_32: [u32; 32] = [
         0x00112233, 0x44556677, 0x8899aabb, 0xccddeeff, 0xffeeddcc, 0xbbaa9988, 0x77665544,
         0x33221100, 0x01234567, 0x89abcdef, 0xfedcba98, 0x76543210, 0x02468ace, 0x13579bdf,
-        0xfdb97531, 0xeca86420,
+        0xfdb97531, 0xeca86420, 0x048c159d, 0x26ae37bf, 0xfb73ea62, 0xd951c840, 0xabcdef01,
+        0x23456789, 0x0fedcba9, 0x87654321, 0x10fedcba, 0x98765432, 0x1fdb9753, 0xeca86420,
+        0x048c159d, 0x26ae37bf, 0xfb73ea62, 0xd951c840,
     ];
 
     #[simd_test(enable = "sm3,avx")]
@@ -685,6 +711,31 @@ mod tests {
         assert_eq_m256i(r, e);
     }
 
+    #[inline]
+    #[target_feature(enable = "avx512f")]
+    fn _mm512_set_m256i(lo: __m256i, hi: __m256i) -> __m512i {
+        unsafe { simd_shuffle!(lo, hi, [0, 1, 2, 3, 4, 5, 6, 7]) }
+    }
+
+    #[simd_test(enable = "sm4,avx10.2")]
+    fn test_mm512_sm4key4_epi32() {
+        let a_low = unsafe { _mm256_loadu_si256(DATA_32.as_ptr().cast()) };
+        let a_high = unsafe { _mm256_loadu_si256(DATA_32[8..].as_ptr().cast()) };
+        let b_low = unsafe { _mm256_loadu_si256(DATA_32[16..].as_ptr().cast()) };
+        let b_high = unsafe { _mm256_loadu_si256(DATA_32[24..].as_ptr().cast()) };
+
+        let a = _mm512_set_m256i(a_high, a_low);
+        let b = _mm512_set_m256i(b_high, b_low);
+
+        let r = _mm512_sm4key4_epi32(a, b);
+
+        let e_low = _mm256_sm4key4_epi32(a_low, b_low);
+        let e_high = _mm256_sm4key4_epi32(a_high, b_high);
+        let e = _mm512_set_m256i(e_high, e_low);
+
+        assert_eq_m512i(r, e);
+    }
+
     #[simd_test(enable = "sm4,avx")]
     fn test_mm_sm4rnds4_epi32() {
         fn l_rnd(x: u32) -> u32 {
@@ -728,5 +779,24 @@ mod tests {
         let e = _mm256_set_m128i(e_high, e_low);
 
         assert_eq_m256i(r, e);
+    }
+
+    #[simd_test(enable = "sm4,avx10.2")]
+    fn test_mm512_sm4rnds4_epi32() {
+        let a_low = unsafe { _mm256_loadu_si256(DATA_32.as_ptr().cast()) };
+        let a_high = unsafe { _mm256_loadu_si256(DATA_32[8..].as_ptr().cast()) };
+        let b_low = unsafe { _mm256_loadu_si256(DATA_32[16..].as_ptr().cast()) };
+        let b_high = unsafe { _mm256_loadu_si256(DATA_32[24..].as_ptr().cast()) };
+
+        let a = _mm512_set_m256i(a_high, a_low);
+        let b = _mm512_set_m256i(b_high, b_low);
+
+        let r = _mm512_sm4rnds4_epi32(a, b);
+
+        let e_low = _mm256_sm4rnds4_epi32(a_low, b_low);
+        let e_high = _mm256_sm4rnds4_epi32(a_high, b_high);
+        let e = _mm512_set_m256i(e_high, e_low);
+
+        assert_eq_m512i(r, e);
     }
 }
