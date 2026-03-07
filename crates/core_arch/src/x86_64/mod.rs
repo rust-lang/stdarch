@@ -85,3 +85,7 @@ pub use self::amx::*;
 mod movrs;
 #[unstable(feature = "movrs_target_feature", issue = "137976")]
 pub use self::movrs::*;
+
+mod avx10_2;
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+pub use self::avx10_2::*;
