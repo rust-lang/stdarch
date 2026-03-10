@@ -3,7 +3,6 @@ pub const NOTICE: &str = "\
 // test are derived from an XML specification, published under the same license as the
 // `intrinsic-test` crate.\n";
 
-// Format f16 values (and vectors containing them) in a way that is consistent with C.
 pub const PLATFORM_RUST_DEFINITIONS: &str = r#"
 use core_arch::arch::x86_64::*;
 
