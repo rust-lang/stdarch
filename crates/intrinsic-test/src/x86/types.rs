@@ -24,6 +24,14 @@ impl IntrinsicTypeDefinition for X86IntrinsicType {
             .replace("const ", "")
     }
 
+    fn rust_type(&self) -> String {
+        if self.is_simd() {
+            self.param.type_data.clone()
+        } else {
+            format!("{}{}", self.kind.rust_prefix(), self.inner_size())
+        }
+    }
+
     /// Determines the load function for this type.
     fn get_load_function(&self, _language: Language) -> String {
         let type_value = self.param.type_data.clone();
@@ -105,23 +113,6 @@ impl IntrinsicTypeDefinition for X86IntrinsicType {
             self.inner_size()
         };
         format!("{prefix}{bits}")
-    }
-
-    fn print_result_rust(&self) -> String {
-        let return_value = match self.kind() {
-            // `_mm{256}_cvtps_ph` has return type __m128i but contains f16 values
-            TypeKind::Float if self.param.type_data == "__m128i" => {
-                "format_args!(\"{:.150?}\", debug_as::<_, f16>(__return_value))".to_string()
-            }
-            TypeKind::Int(_)
-                if ["__m128i", "__m256i", "__m512i"].contains(&self.param.type_data.as_str()) =>
-            {
-                format!("debug_as::<_, u{}>(__return_value)", self.inner_size())
-            }
-            _ => "format_args!(\"{__return_value:.150?}\")".to_string(),
-        };
-
-        return_value
     }
 }
 
