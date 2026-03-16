@@ -5,7 +5,6 @@ use std::str::FromStr;
 
 use itertools::Itertools as _;
 
-use super::cli::Language;
 use super::indentation::Indentation;
 use super::values::value_for_array;
 
@@ -252,7 +251,7 @@ impl IntrinsicType {
 pub trait IntrinsicTypeDefinition: Deref<Target = IntrinsicType> {
     /// Determines the load function for this type.
     /// can be implemented in an `impl` block
-    fn get_load_function(&self, _language: Language) -> String;
+    fn get_load_function(&self) -> String;
 
     /// Gets a string containing the typename for this type in C format.
     /// can be directly defined in `impl` blocks

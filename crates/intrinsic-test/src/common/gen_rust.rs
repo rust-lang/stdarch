@@ -269,7 +269,7 @@ pub fn write_build_rs(
     i: usize,
     arch_flags: &[&str],
 ) -> std::io::Result<()> {
-    const COMMON_FLAGS: &[&str] = &["-ffp-contract=off", "-Wno-narrowing", "-fuse-ld=lld"];
+    const COMMON_FLAGS: &[&str] = &["-ffp-contract=off", "-Wno-narrowing"];
 
     write!(
         w,

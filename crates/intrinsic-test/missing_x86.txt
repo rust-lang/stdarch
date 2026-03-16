@@ -52,8 +52,19 @@ _mm_sm3rnds2_epi32
 _xgetbv
 
 # top bits are undefined, unclear how to test these
+_mm256_castph128_ph256
+_mm256_castps128_ps256
+_mm256_castpd128_pd256
 _mm256_castsi128_si256
+
+_mm512_castph128_ph512
+_mm512_castps128_ps512
+_mm512_castpd128_pd512
 _mm512_castsi128_si512
+
+_mm512_castph256_ph512
+_mm512_castps256_ps512
+_mm512_castpd256_pd512
 _mm512_castsi256_si512
 
 # Clang bug

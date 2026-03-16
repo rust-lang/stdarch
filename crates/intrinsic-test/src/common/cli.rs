@@ -1,12 +1,6 @@
 use itertools::Itertools;
 use std::path::PathBuf;
 
-#[derive(Debug, PartialEq)]
-pub enum Language {
-    Rust,
-    C,
-}
-
 /// Intrinsic test tool
 #[derive(clap::Parser)]
 #[command(

@@ -1,6 +1,5 @@
 use itertools::Itertools;
 
-use super::cli::Language;
 use super::constraint::Constraint;
 use super::indentation::Indentation;
 use super::intrinsic_helpers::IntrinsicTypeDefinition;
@@ -171,7 +170,7 @@ where
             .filter(|&arg| !arg.has_constraint())
             .map(|arg| {
                 let load = if arg.is_simd() {
-                    arg.ty.get_load_function(Language::Rust)
+                    arg.ty.get_load_function()
                 } else {
                     "*".to_string()
                 };
