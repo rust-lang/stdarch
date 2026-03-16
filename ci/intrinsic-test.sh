@@ -12,7 +12,7 @@ echo "PROFILE=${PROFILE}"
 
 INTRINSIC_TEST="--manifest-path=crates/intrinsic-test/Cargo.toml"
 
-export CC="clang"
+export CC="/llvm/bin/clang"
 
 case ${TARGET} in
     aarch64_be*)
@@ -67,4 +67,4 @@ case ${TARGET} in
         ;;
 esac
 
-cargo test --manifest-path=rust_programs/Cargo.toml --target "${TARGET}" --profile "${PROFILE}"
+cargo test --manifest-path=rust_programs/Cargo.toml --target "${TARGET}" --profile "${PROFILE}" --no-fail-fast

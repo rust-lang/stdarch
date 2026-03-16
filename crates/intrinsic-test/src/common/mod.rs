@@ -105,6 +105,6 @@ pub trait SupportedArchitectureTest {
 }
 
 pub fn manual_chunk(intrinsic_count: usize) -> (usize, usize) {
-    let ncores = std::thread::available_parallelism().unwrap();
-    (intrinsic_count / ncores, ncores.into())
+    let ncores = std::thread::available_parallelism().unwrap().into();
+    (intrinsic_count.div_ceil(ncores), ncores)
 }

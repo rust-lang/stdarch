@@ -62,6 +62,7 @@ impl SupportedArchitectureTest for X86ArchitectureTest {
             "-mgfni",
             "-mvaes",
             "-mvpclmulqdq",
+            "-mlzcnt",
         ]
     }
 

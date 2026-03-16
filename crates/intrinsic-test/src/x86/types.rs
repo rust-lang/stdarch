@@ -3,7 +3,6 @@ use std::str::FromStr;
 use itertools::Itertools;
 
 use super::intrinsic::X86IntrinsicType;
-use crate::common::cli::Language;
 use crate::common::intrinsic_helpers::{IntrinsicType, IntrinsicTypeDefinition, Sign, TypeKind};
 use crate::x86::xml_parser::Parameter;
 
@@ -33,7 +32,7 @@ impl IntrinsicTypeDefinition for X86IntrinsicType {
     }
 
     /// Determines the load function for this type.
-    fn get_load_function(&self, _language: Language) -> String {
+    fn get_load_function(&self) -> String {
         let type_value = self.param.type_data.clone();
         if type_value.len() == 0 {
             unimplemented!("the value for key 'type' is not present!");

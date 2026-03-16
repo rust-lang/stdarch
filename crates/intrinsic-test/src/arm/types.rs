@@ -1,5 +1,4 @@
 use super::intrinsic::ArmIntrinsicType;
-use crate::common::cli::Language;
 use crate::common::intrinsic_helpers::{IntrinsicType, IntrinsicTypeDefinition, Sign, TypeKind};
 
 impl IntrinsicTypeDefinition for ArmIntrinsicType {
@@ -36,7 +35,7 @@ impl IntrinsicTypeDefinition for ArmIntrinsicType {
     }
 
     /// Determines the load function for this type.
-    fn get_load_function(&self, language: Language) -> String {
+    fn get_load_function(&self) -> String {
         if let IntrinsicType {
             kind: k,
             bit_len: Some(bl),
@@ -51,16 +50,13 @@ impl IntrinsicTypeDefinition for ArmIntrinsicType {
                 ""
             };
 
-            let choose_workaround = language == Language::C && self.target.contains("v7");
             format!(
                 "vld{len}{quad}_{type}{size}",
                 type = match k {
                     TypeKind::Int(Sign::Unsigned) => "u",
                     TypeKind::Int(Sign::Signed) => "s",
                     TypeKind::Float => "f",
-                    // The ACLE doesn't support 64-bit polynomial loads on Armv7
-                    // if armv7 and bl == 64, use "s", else "p"
-                    TypeKind::Poly => if choose_workaround && *bl == 64 {"s"} else {"p"},
+                    TypeKind::Poly => "p",
                     x => todo!("get_load_function TypeKind: {x:#?}"),
                 },
                 size = bl,
