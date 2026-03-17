@@ -88,8 +88,8 @@ where
     pub fn as_non_imm_arglist_c(&self) -> String {
         self.iter()
             .filter(|arg| !arg.has_constraint())
-            .format_with(", ", |arg, fmt| {
-                fmt(&format_args!("{} {}", arg.to_c_type(), arg.name))
+            .format_with("", |arg, fmt| {
+                fmt(&format_args!(", const {}* {}", arg.to_c_type(), arg.name))
             })
             .to_string()
     }
@@ -97,8 +97,12 @@ where
     pub fn as_non_imm_arglist_rust(&self) -> String {
         self.iter()
             .filter(|arg| !arg.has_constraint())
-            .format_with(", ", |arg, fmt| {
-                fmt(&format_args!("{}: {}", arg.name, arg.ty.rust_type()))
+            .format_with("", |arg, fmt| {
+                fmt(&format_args!(
+                    ", {}: *const {}",
+                    arg.name,
+                    arg.ty.rust_type()
+                ))
             })
             .to_string()
     }
@@ -110,6 +114,7 @@ where
                 if arg.has_constraint() {
                     fmt(&imm_args.next().unwrap())
                 } else {
+                    fmt(&"*")?;
                     fmt(&arg.name)
                 }
             })
@@ -123,6 +128,13 @@ where
             .filter(|a| !a.has_constraint())
             .map(|arg| arg.generate_name() + " as _")
             .join(", ")
+    }
+
+    pub fn as_c_call_param_rust(&self) -> String {
+        self.iter()
+            .filter(|a| !a.has_constraint())
+            .map(|arg| format!(", &raw const {} as _", arg.generate_name()))
+            .join("")
     }
 
     /// Creates a line for each argument that initializes an array for Rust from which `loads` argument

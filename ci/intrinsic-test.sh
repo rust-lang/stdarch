@@ -57,14 +57,4 @@ case "${TARGET}" in
         ;;
 esac
 
-case ${TARGET} in
-    # FIXME: currently this needs enabling because the test functions don't have any `target_feature`attribute
-    x86_64-*)
-        export RUSTFLAGS="${RUSTFLAGS} -Ctarget-feature=+avx512f"
-        ;;
-    armv7-* | aarch64*)
-        export RUSTFLAGS="${RUSTFLAGS} -Ctarget-feature=+neon"
-        ;;
-esac
-
 cargo test --manifest-path=rust_programs/Cargo.toml --target "${TARGET}" --profile "${PROFILE}" --no-fail-fast
