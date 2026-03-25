@@ -13,7 +13,7 @@ RUN mkdir intel-sde
 RUN tar -xJf sde.tar.xz --strip-components=1 -C intel-sde
 ENV CARGO_TARGET_I686_UNKNOWN_LINUX_GNU_RUNNER="/intel-sde/sde \
             -cpuid-in /checkout/ci/cpuid.def \
-            -rtm-mode full -tsx --"
+            -pin-log-file /checkout/target/pin-log.txt --"
 # SDE doesn't support AMD extensions
 # FIXME: find a way to test these
 ENV STDARCH_TEST_SKIP_FEATURE="sse4a,tbm,xop"

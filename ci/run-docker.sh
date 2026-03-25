@@ -19,6 +19,8 @@ run() {
     # Prevent `Read-only file system (os error 30)`.
     cargo generate-lockfile
 
+    echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
+
     echo "Building docker container for TARGET=${1}"
     docker build -t stdarch -f "ci/docker/${1}/Dockerfile" ci/
     mkdir -p target c_programs rust_programs
