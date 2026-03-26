@@ -16,7 +16,7 @@ RUN wget http://ci-mirrors.rust-lang.org/stdarch/sde-external-10.5.0-2026-01-13-
 RUN mkdir intel-sde
 RUN tar -xJf sde.tar.xz --strip-components=1 -C intel-sde
 ENV CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_RUNNER="/intel-sde/sde64 \
-            -cpuid-in /checkout/ci/docker/x86_64-unknown-linux-gnu/cpuid.def \
+            -cpuid-in /checkout/ci/cpuid.def \
             -rtm-mode full -tsx --"
 # SDE doesn't support AMD extensions
 # FIXME: find a way to test these
