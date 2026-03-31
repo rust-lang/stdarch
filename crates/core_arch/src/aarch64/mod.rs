@@ -29,6 +29,10 @@ mod prefetch;
 #[unstable(feature = "stdarch_aarch64_prefetch", issue = "117217")]
 pub use self::prefetch::*;
 
+mod sve;
+#[unstable(feature = "stdarch_aarch64_sve", issue = "none")]
+pub use self::sve::*;
+
 #[stable(feature = "neon_intrinsics", since = "1.59.0")]
 pub use super::arm_shared::*;
 
