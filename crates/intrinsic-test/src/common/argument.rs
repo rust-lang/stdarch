@@ -175,9 +175,10 @@ where
     pub fn load_values_c(&self, indentation: Indentation) -> String {
         self.iter()
             .filter(|&arg| !arg.has_constraint())
-            .map(|arg| {
+            .enumerate()
+            .map(|(idx, arg)| {
                 format!(
-                    "{indentation}{ty} {name} = cast<{ty}>({load}(&{name}_vals[i]));\n",
+                    "{indentation}{ty} {name} = cast<{ty}>({load}(&{name}_vals[i+{idx}]));\n",
                     ty = arg.to_c_type(),
                     name = arg.generate_name(),
                     load = if arg.is_simd() {
@@ -196,7 +197,8 @@ where
     pub fn load_values_rust(&self, indentation: Indentation) -> String {
         self.iter()
             .filter(|&arg| !arg.has_constraint())
-            .map(|arg| {
+            .enumerate()
+            .map(|(idx, arg)| {
                 let load = if arg.is_simd() {
                     arg.ty.get_load_function(Language::Rust)
                 } else {
@@ -204,7 +206,7 @@ where
                 };
                 let typecast = if load.len() > 2 { "as _" } else { "" };
                 format!(
-                    "{indentation}let {name} = {load}({vals_name}.as_ptr().offset(i){typecast});\n",
+                    "{indentation}let {name} = {load}({vals_name}.as_ptr().offset(i+{idx}){typecast});\n",
                     name = arg.generate_name(),
                     vals_name = arg.rust_vals_array_name(),
                 )

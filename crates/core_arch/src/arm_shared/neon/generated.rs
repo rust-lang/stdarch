@@ -33834,7 +33834,6 @@ pub fn vpadd_s32(a: int32x2_t, b: int32x2_t) -> int32x2_t {
 #[doc = "Add pairwise."]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vpadd_u8)"]
 #[inline(always)]
-#[cfg(target_endian = "little")]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(vpadd))]
@@ -33854,36 +33853,8 @@ pub fn vpadd_u8(a: uint8x8_t, b: uint8x8_t) -> uint8x8_t {
     unsafe { transmute(vpadd_s8(transmute(a), transmute(b))) }
 }
 #[doc = "Add pairwise."]
-#[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vpadd_u8)"]
-#[inline(always)]
-#[cfg(target_endian = "big")]
-#[target_feature(enable = "neon")]
-#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vpadd))]
-#[cfg_attr(
-    all(test, any(target_arch = "aarch64", target_arch = "arm64ec")),
-    assert_instr(addp)
-)]
-#[cfg_attr(
-    not(target_arch = "arm"),
-    stable(feature = "neon_intrinsics", since = "1.59.0")
-)]
-#[cfg_attr(
-    target_arch = "arm",
-    unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
-)]
-pub fn vpadd_u8(a: uint8x8_t, b: uint8x8_t) -> uint8x8_t {
-    let a: uint8x8_t = unsafe { simd_shuffle!(a, a, [7, 6, 5, 4, 3, 2, 1, 0]) };
-    let b: uint8x8_t = unsafe { simd_shuffle!(b, b, [7, 6, 5, 4, 3, 2, 1, 0]) };
-    unsafe {
-        let ret_val: uint8x8_t = transmute(vpadd_s8(transmute(a), transmute(b)));
-        simd_shuffle!(ret_val, ret_val, [7, 6, 5, 4, 3, 2, 1, 0])
-    }
-}
-#[doc = "Add pairwise."]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vpadd_u16)"]
 #[inline(always)]
-#[cfg(target_endian = "little")]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(vpadd))]
@@ -33903,36 +33874,8 @@ pub fn vpadd_u16(a: uint16x4_t, b: uint16x4_t) -> uint16x4_t {
     unsafe { transmute(vpadd_s16(transmute(a), transmute(b))) }
 }
 #[doc = "Add pairwise."]
-#[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vpadd_u16)"]
-#[inline(always)]
-#[cfg(target_endian = "big")]
-#[target_feature(enable = "neon")]
-#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vpadd))]
-#[cfg_attr(
-    all(test, any(target_arch = "aarch64", target_arch = "arm64ec")),
-    assert_instr(addp)
-)]
-#[cfg_attr(
-    not(target_arch = "arm"),
-    stable(feature = "neon_intrinsics", since = "1.59.0")
-)]
-#[cfg_attr(
-    target_arch = "arm",
-    unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
-)]
-pub fn vpadd_u16(a: uint16x4_t, b: uint16x4_t) -> uint16x4_t {
-    let a: uint16x4_t = unsafe { simd_shuffle!(a, a, [3, 2, 1, 0]) };
-    let b: uint16x4_t = unsafe { simd_shuffle!(b, b, [3, 2, 1, 0]) };
-    unsafe {
-        let ret_val: uint16x4_t = transmute(vpadd_s16(transmute(a), transmute(b)));
-        simd_shuffle!(ret_val, ret_val, [3, 2, 1, 0])
-    }
-}
-#[doc = "Add pairwise."]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vpadd_u32)"]
 #[inline(always)]
-#[cfg(target_endian = "little")]
 #[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(vpadd))]
@@ -33950,33 +33893,6 @@ pub fn vpadd_u16(a: uint16x4_t, b: uint16x4_t) -> uint16x4_t {
 )]
 pub fn vpadd_u32(a: uint32x2_t, b: uint32x2_t) -> uint32x2_t {
     unsafe { transmute(vpadd_s32(transmute(a), transmute(b))) }
-}
-#[doc = "Add pairwise."]
-#[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vpadd_u32)"]
-#[inline(always)]
-#[cfg(target_endian = "big")]
-#[target_feature(enable = "neon")]
-#[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
-#[cfg_attr(all(test, target_arch = "arm"), assert_instr(vpadd))]
-#[cfg_attr(
-    all(test, any(target_arch = "aarch64", target_arch = "arm64ec")),
-    assert_instr(addp)
-)]
-#[cfg_attr(
-    not(target_arch = "arm"),
-    stable(feature = "neon_intrinsics", since = "1.59.0")
-)]
-#[cfg_attr(
-    target_arch = "arm",
-    unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")
-)]
-pub fn vpadd_u32(a: uint32x2_t, b: uint32x2_t) -> uint32x2_t {
-    let a: uint32x2_t = unsafe { simd_shuffle!(a, a, [1, 0]) };
-    let b: uint32x2_t = unsafe { simd_shuffle!(b, b, [1, 0]) };
-    unsafe {
-        let ret_val: uint32x2_t = transmute(vpadd_s32(transmute(a), transmute(b)));
-        simd_shuffle!(ret_val, ret_val, [1, 0])
-    }
 }
 #[doc = "Signed Add and Accumulate Long Pairwise."]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vpaddl_s8)"]
