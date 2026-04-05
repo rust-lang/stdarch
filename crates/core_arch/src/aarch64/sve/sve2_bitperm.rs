@@ -329,7 +329,11 @@ mod tests {
         let selected = scalar_bext(data, mask);
         let not_selected = scalar_bext(data, !mask);
         let shift = mask.count_ones();
-        if shift >= 64 { selected } else { selected | (not_selected << shift) }
+        if shift >= 64 {
+            selected
+        } else {
+            selected | (not_selected << shift)
+        }
     }
 
     // --- Correctness of reference implementations ---
@@ -356,7 +360,11 @@ mod tests {
         // Exhaustive roundtrip for all 8-bit values
         for mask in 0u8..=255 {
             let popcount = mask.count_ones();
-            let max_data = if popcount >= 8 { 255u64 } else { (1u64 << popcount) - 1 };
+            let max_data = if popcount >= 8 {
+                255u64
+            } else {
+                (1u64 << popcount) - 1
+            };
             for data in 0..=max_data.min(255) {
                 let deposited = scalar_bdep(data, mask as u64) as u8;
                 let extracted = scalar_bext(deposited as u64, mask as u64) as u8;
