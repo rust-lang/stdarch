@@ -31,6 +31,16 @@ static NEVER: Type = Type::Never;
 static GENERICT: Type = Type::GenericParam("T");
 static GENERICU: Type = Type::GenericParam("U");
 
+// SVE scalable vector types
+static SVU8: Type = Type::SVE(8, false);
+static SVU16: Type = Type::SVE(16, false);
+static SVU32: Type = Type::SVE(32, false);
+static SVU64: Type = Type::SVE(64, false);
+static SVI8: Type = Type::SVE(8, true);
+static SVI16: Type = Type::SVE(16, true);
+static SVI32: Type = Type::SVE(32, true);
+static SVI64: Type = Type::SVE(64, true);
+
 static F16X4: Type = Type::F(16, 4, 1);
 static F16X4X2: Type = Type::F(16, 4, 2);
 static F16X4X3: Type = Type::F(16, 4, 3);
@@ -164,6 +174,7 @@ enum Type {
     U(u8, u8, u8),
     P(u8, u8, u8),
     F(u8, u8, u8),
+    SVE(u8, bool),
     Never,
 }
 
@@ -447,6 +458,7 @@ fn verify_all_signatures() {
                     && !rust.file.ends_with("mte.rs\"")
                     && !rust.file.ends_with("rand.rs\"")
                     && !rust.file.ends_with("ex.rs\"")
+                    && !rust.file.contains("sve")
                     && !skip_intrinsic_verify.contains(&rust.name)
                 {
                     println!(

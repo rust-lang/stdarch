@@ -29,7 +29,11 @@ mod prefetch;
 #[unstable(feature = "stdarch_aarch64_prefetch", issue = "117217")]
 pub use self::prefetch::*;
 
+// SVE scalable vector types require `#[rustc_scalable_vector]` which is only
+// supported on aarch64/arm64ec  -- exclude from doc builds on other architectures.
+#[cfg(any(target_arch = "aarch64", target_arch = "arm64ec"))]
 mod sve;
+#[cfg(any(target_arch = "aarch64", target_arch = "arm64ec"))]
 #[unstable(feature = "stdarch_aarch64_sve", issue = "none")]
 pub use self::sve::*;
 

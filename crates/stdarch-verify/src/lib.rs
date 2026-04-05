@@ -347,6 +347,16 @@ fn to_type(t: &syn::Type) -> proc_macro2::TokenStream {
             "v4f32" => quote! { &v4f32 },
             "v2f64" => quote! { &v2f64 },
 
+            // SVE scalable vector types
+            "svuint8_t" => quote! { &SVU8 },
+            "svuint16_t" => quote! { &SVU16 },
+            "svuint32_t" => quote! { &SVU32 },
+            "svuint64_t" => quote! { &SVU64 },
+            "svint8_t" => quote! { &SVI8 },
+            "svint16_t" => quote! { &SVI16 },
+            "svint32_t" => quote! { &SVI32 },
+            "svint64_t" => quote! { &SVI64 },
+
             // Generic types
             "T" => quote! { &GENERICT },
             "U" => quote! { &GENERICU },
