@@ -16242,7 +16242,7 @@ pub fn _mm512_maskz_cvttps_epi32(k: __mmask16, a: __m512) -> __m512i {
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vcvttps2dq))]
 pub fn _mm256_mask_cvttps_epi32(src: __m256i, k: __mmask8, a: __m256) -> __m256i {
-    unsafe { transmute(vcvttps2dq256(a.as_f32x8(), src.as_i32x8(), k)) }
+    unsafe { simd_select_bitmask(k, _mm256_cvttps_epi32(a).as_i32x8(), src.as_i32x8()).as_m256i() }
 }
 
 /// Convert packed single-precision (32-bit) floating-point elements in a to packed 32-bit integers with truncation, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
@@ -16253,7 +16253,7 @@ pub fn _mm256_mask_cvttps_epi32(src: __m256i, k: __mmask8, a: __m256) -> __m256i
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vcvttps2dq))]
 pub fn _mm256_maskz_cvttps_epi32(k: __mmask8, a: __m256) -> __m256i {
-    unsafe { transmute(vcvttps2dq256(a.as_f32x8(), i32x8::ZERO, k)) }
+    _mm256_mask_cvttps_epi32(_mm256_setzero_si256(), k, a)
 }
 
 /// Convert packed single-precision (32-bit) floating-point elements in a to packed 32-bit integers with truncation, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
@@ -16264,7 +16264,7 @@ pub fn _mm256_maskz_cvttps_epi32(k: __mmask8, a: __m256) -> __m256i {
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vcvttps2dq))]
 pub fn _mm_mask_cvttps_epi32(src: __m128i, k: __mmask8, a: __m128) -> __m128i {
-    unsafe { transmute(vcvttps2dq128(a.as_f32x4(), src.as_i32x4(), k)) }
+    unsafe { simd_select_bitmask(k, _mm_cvttps_epi32(a).as_i32x4(), src.as_i32x4()).as_m128i() }
 }
 
 /// Convert packed single-precision (32-bit) floating-point elements in a to packed 32-bit integers with truncation, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
@@ -16275,7 +16275,7 @@ pub fn _mm_mask_cvttps_epi32(src: __m128i, k: __mmask8, a: __m128) -> __m128i {
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vcvttps2dq))]
 pub fn _mm_maskz_cvttps_epi32(k: __mmask8, a: __m128) -> __m128i {
-    unsafe { transmute(vcvttps2dq128(a.as_f32x4(), i32x4::ZERO, k)) }
+    _mm_mask_cvttps_epi32(_mm_setzero_si128(), k, a)
 }
 
 /// Convert packed single-precision (32-bit) floating-point elements in a to packed unsigned 32-bit integers with truncation, and store the results in dst.
@@ -16478,7 +16478,7 @@ pub fn _mm512_maskz_cvttpd_epi32(k: __mmask8, a: __m512d) -> __m256i {
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vcvttpd2dq))]
 pub fn _mm256_mask_cvttpd_epi32(src: __m128i, k: __mmask8, a: __m256d) -> __m128i {
-    unsafe { transmute(vcvttpd2dq256(a.as_f64x4(), src.as_i32x4(), k)) }
+    unsafe { simd_select_bitmask(k, _mm256_cvttpd_epi32(a).as_i32x4(), src.as_i32x4()).as_m128i() }
 }
 
 /// Convert packed double-precision (64-bit) floating-point elements in a to packed 32-bit integers with truncation, and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).
@@ -16489,7 +16489,7 @@ pub fn _mm256_mask_cvttpd_epi32(src: __m128i, k: __mmask8, a: __m256d) -> __m128
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 #[cfg_attr(test, assert_instr(vcvttpd2dq))]
 pub fn _mm256_maskz_cvttpd_epi32(k: __mmask8, a: __m256d) -> __m128i {
-    unsafe { transmute(vcvttpd2dq256(a.as_f64x4(), i32x4::ZERO, k)) }
+    _mm256_mask_cvttpd_epi32(_mm_setzero_si128(), k, a)
 }
 
 /// Convert packed double-precision (64-bit) floating-point elements in a to packed 32-bit integers with truncation, and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).
@@ -44430,10 +44430,6 @@ unsafe extern "C" {
 
     #[link_name = "llvm.x86.avx512.mask.cvttps2dq.512"]
     fn vcvttps2dq(a: f32x16, src: i32x16, mask: u16, rounding: i32) -> i32x16;
-    #[link_name = "llvm.x86.avx512.mask.cvttps2dq.256"]
-    fn vcvttps2dq256(a: f32x8, src: i32x8, mask: u8) -> i32x8;
-    #[link_name = "llvm.x86.avx512.mask.cvttps2dq.128"]
-    fn vcvttps2dq128(a: f32x4, src: i32x4, mask: u8) -> i32x4;
 
     #[link_name = "llvm.x86.avx512.mask.cvttps2udq.512"]
     fn vcvttps2udq(a: f32x16, src: u32x16, mask: u16, rounding: i32) -> u32x16;
@@ -44444,8 +44440,6 @@ unsafe extern "C" {
 
     #[link_name = "llvm.x86.avx512.mask.cvttpd2dq.512"]
     fn vcvttpd2dq(a: f64x8, src: i32x8, mask: u8, rounding: i32) -> i32x8;
-    #[link_name = "llvm.x86.avx512.mask.cvttpd2dq.256"]
-    fn vcvttpd2dq256(a: f64x4, src: i32x4, mask: u8) -> i32x4;
     #[link_name = "llvm.x86.avx512.mask.cvttpd2dq.128"]
     fn vcvttpd2dq128(a: f64x2, src: i32x4, mask: u8) -> i32x4;
 
