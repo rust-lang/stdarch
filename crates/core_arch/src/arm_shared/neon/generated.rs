@@ -66108,7 +66108,7 @@ pub unsafe fn vst2_lane_f16<const LANE: i32>(a: *mut f16, b: float16x4x2_t) {
 #[unstable(feature = "stdarch_neon_f16", issue = "136306")]
 #[cfg(not(target_arch = "arm64ec"))]
 pub unsafe fn vst2q_lane_f16<const LANE: i32>(a: *mut f16, b: float16x8x2_t) {
-    static_assert_uimm_bits!(LANE, 1);
+    static_assert_uimm_bits!(LANE, 3);
     unsafe extern "unadjusted" {
         #[cfg_attr(target_arch = "arm", link_name = "llvm.arm.neon.vst2lane.p0.v8f16")]
         fn _vst2q_lane_f16(ptr: *mut i8, a: float16x8_t, b: float16x8_t, n: i32, size: i32);

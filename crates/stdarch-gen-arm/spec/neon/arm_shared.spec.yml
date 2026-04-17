@@ -5368,7 +5368,7 @@ intrinsics:
       unsafe: [neon]
     types:
       - [f16, float16x4x2_t, '2', float16x4_t, '2']
-      - [f16, float16x8x2_t, '1', float16x8_t, '2']
+      - [f16, float16x8x2_t, '3', float16x8_t, '2']
     compose:
       - FnCall: [static_assert_uimm_bits!, [LANE, "{type[2]}"]]
       - LLVMLink:

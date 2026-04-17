@@ -3822,7 +3822,7 @@ intrinsics:
     safety:
       unsafe: [neon]
     types:
-      - ['*const i8', int8x16x3_t, int8x16_t, i8, '3']
+      - ['*const i8', int8x16x3_t, int8x16_t, i8, '4']
       - ['*const i64', int64x2x3_t, int64x2_t, i64, '1']
     compose:
       - FnCall: [static_assert_uimm_bits!, [LANE, '{type[4]}']]
@@ -4246,7 +4246,7 @@ intrinsics:
     safety:
       unsafe: [neon]
     types:
-      - ['*const i8', int8x16x4_t, int8x16_t, i8, '3']
+      - ['*const i8', int8x16x4_t, int8x16_t, i8, '4']
       - ['*const i64', int64x2x4_t, int64x2_t, i64, '1']
       - ['*const f64', float64x2x4_t, float64x2_t, f64, '1']
     compose:
