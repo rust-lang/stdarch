@@ -11741,14 +11741,7 @@ pub unsafe fn vld2q_dup_u64(a: *const u64) -> uint64x2x2_t {
 #[stable(feature = "neon_intrinsics", since = "1.59.0")]
 #[cfg_attr(test, assert_instr(ld2))]
 pub unsafe fn vld2q_f64(a: *const f64) -> float64x2x2_t {
-    unsafe extern "unadjusted" {
-        #[cfg_attr(
-            any(target_arch = "aarch64", target_arch = "arm64ec"),
-            link_name = "llvm.aarch64.neon.ld2.v2f64.p0"
-        )]
-        fn _vld2q_f64(ptr: *const float64x2_t) -> float64x2x2_t;
-    }
-    _vld2q_f64(a as _)
+    crate::core_arch::macros::deinterleaving_load!(f64, 2, 2, a)
 }
 #[doc = "Load multiple 2-element structures to two registers"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vld2q_s64)"]
@@ -11759,14 +11752,7 @@ pub unsafe fn vld2q_f64(a: *const f64) -> float64x2x2_t {
 #[stable(feature = "neon_intrinsics", since = "1.59.0")]
 #[cfg_attr(test, assert_instr(ld2))]
 pub unsafe fn vld2q_s64(a: *const i64) -> int64x2x2_t {
-    unsafe extern "unadjusted" {
-        #[cfg_attr(
-            any(target_arch = "aarch64", target_arch = "arm64ec"),
-            link_name = "llvm.aarch64.neon.ld2.v2i64.p0"
-        )]
-        fn _vld2q_s64(ptr: *const int64x2_t) -> int64x2x2_t;
-    }
-    _vld2q_s64(a as _)
+    crate::core_arch::macros::deinterleaving_load!(i64, 2, 2, a)
 }
 #[doc = "Load multiple 2-element structures to two registers"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vld2q_lane_f64)"]

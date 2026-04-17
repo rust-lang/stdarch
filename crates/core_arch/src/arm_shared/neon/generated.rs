@@ -19597,14 +19597,7 @@ pub unsafe fn vld2q_f16(a: *const f16) -> float16x8x2_t {
 #[unstable(feature = "stdarch_neon_f16", issue = "136306")]
 #[cfg(not(target_arch = "arm64ec"))]
 pub unsafe fn vld2_f16(a: *const f16) -> float16x4x2_t {
-    unsafe extern "unadjusted" {
-        #[cfg_attr(
-            any(target_arch = "aarch64", target_arch = "arm64ec"),
-            link_name = "llvm.aarch64.neon.ld2.v4f16.p0"
-        )]
-        fn _vld2_f16(ptr: *const f16) -> float16x4x2_t;
-    }
-    _vld2_f16(a as _)
+    crate::core_arch::macros::deinterleaving_load!(f16, 4, 2, a)
 }
 #[doc = "Load single 2-element structure and replicate to all lanes of two registers"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vld2q_f16)"]
@@ -19621,14 +19614,7 @@ pub unsafe fn vld2_f16(a: *const f16) -> float16x4x2_t {
 #[unstable(feature = "stdarch_neon_f16", issue = "136306")]
 #[cfg(not(target_arch = "arm64ec"))]
 pub unsafe fn vld2q_f16(a: *const f16) -> float16x8x2_t {
-    unsafe extern "unadjusted" {
-        #[cfg_attr(
-            any(target_arch = "aarch64", target_arch = "arm64ec"),
-            link_name = "llvm.aarch64.neon.ld2.v8f16.p0"
-        )]
-        fn _vld2q_f16(ptr: *const f16) -> float16x8x2_t;
-    }
-    _vld2q_f16(a as _)
+    crate::core_arch::macros::deinterleaving_load!(f16, 8, 2, a)
 }
 #[doc = "Load multiple 2-element structures to two registers"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vld2_f32)"]
@@ -19768,14 +19754,7 @@ pub unsafe fn vld2q_s32(a: *const i32) -> int32x4x2_t {
 #[stable(feature = "neon_intrinsics", since = "1.59.0")]
 #[cfg_attr(test, assert_instr(ld2))]
 pub unsafe fn vld2_f32(a: *const f32) -> float32x2x2_t {
-    unsafe extern "unadjusted" {
-        #[cfg_attr(
-            any(target_arch = "aarch64", target_arch = "arm64ec"),
-            link_name = "llvm.aarch64.neon.ld2.v2f32.p0"
-        )]
-        fn _vld2_f32(ptr: *const float32x2_t) -> float32x2x2_t;
-    }
-    _vld2_f32(a as _)
+    crate::core_arch::macros::deinterleaving_load!(f32, 2, 2, a)
 }
 #[doc = "Load multiple 2-element structures to two registers"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vld2q_f32)"]
@@ -19787,14 +19766,7 @@ pub unsafe fn vld2_f32(a: *const f32) -> float32x2x2_t {
 #[stable(feature = "neon_intrinsics", since = "1.59.0")]
 #[cfg_attr(test, assert_instr(ld2))]
 pub unsafe fn vld2q_f32(a: *const f32) -> float32x4x2_t {
-    unsafe extern "unadjusted" {
-        #[cfg_attr(
-            any(target_arch = "aarch64", target_arch = "arm64ec"),
-            link_name = "llvm.aarch64.neon.ld2.v4f32.p0"
-        )]
-        fn _vld2q_f32(ptr: *const float32x4_t) -> float32x4x2_t;
-    }
-    _vld2q_f32(a as _)
+    crate::core_arch::macros::deinterleaving_load!(f32, 4, 2, a)
 }
 #[doc = "Load multiple 2-element structures to two registers"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vld2_s8)"]
@@ -19806,14 +19778,7 @@ pub unsafe fn vld2q_f32(a: *const f32) -> float32x4x2_t {
 #[stable(feature = "neon_intrinsics", since = "1.59.0")]
 #[cfg_attr(test, assert_instr(ld2))]
 pub unsafe fn vld2_s8(a: *const i8) -> int8x8x2_t {
-    unsafe extern "unadjusted" {
-        #[cfg_attr(
-            any(target_arch = "aarch64", target_arch = "arm64ec"),
-            link_name = "llvm.aarch64.neon.ld2.v8i8.p0"
-        )]
-        fn _vld2_s8(ptr: *const int8x8_t) -> int8x8x2_t;
-    }
-    _vld2_s8(a as _)
+    crate::core_arch::macros::deinterleaving_load!(i8, 8, 2, a)
 }
 #[doc = "Load multiple 2-element structures to two registers"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vld2q_s8)"]
@@ -19825,14 +19790,7 @@ pub unsafe fn vld2_s8(a: *const i8) -> int8x8x2_t {
 #[stable(feature = "neon_intrinsics", since = "1.59.0")]
 #[cfg_attr(test, assert_instr(ld2))]
 pub unsafe fn vld2q_s8(a: *const i8) -> int8x16x2_t {
-    unsafe extern "unadjusted" {
-        #[cfg_attr(
-            any(target_arch = "aarch64", target_arch = "arm64ec"),
-            link_name = "llvm.aarch64.neon.ld2.v16i8.p0"
-        )]
-        fn _vld2q_s8(ptr: *const int8x16_t) -> int8x16x2_t;
-    }
-    _vld2q_s8(a as _)
+    crate::core_arch::macros::deinterleaving_load!(i8, 16, 2, a)
 }
 #[doc = "Load multiple 2-element structures to two registers"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vld2_s16)"]
@@ -19844,14 +19802,7 @@ pub unsafe fn vld2q_s8(a: *const i8) -> int8x16x2_t {
 #[stable(feature = "neon_intrinsics", since = "1.59.0")]
 #[cfg_attr(test, assert_instr(ld2))]
 pub unsafe fn vld2_s16(a: *const i16) -> int16x4x2_t {
-    unsafe extern "unadjusted" {
-        #[cfg_attr(
-            any(target_arch = "aarch64", target_arch = "arm64ec"),
-            link_name = "llvm.aarch64.neon.ld2.v4i16.p0"
-        )]
-        fn _vld2_s16(ptr: *const int16x4_t) -> int16x4x2_t;
-    }
-    _vld2_s16(a as _)
+    crate::core_arch::macros::deinterleaving_load!(i16, 4, 2, a)
 }
 #[doc = "Load multiple 2-element structures to two registers"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vld2q_s16)"]
@@ -19863,14 +19814,7 @@ pub unsafe fn vld2_s16(a: *const i16) -> int16x4x2_t {
 #[stable(feature = "neon_intrinsics", since = "1.59.0")]
 #[cfg_attr(test, assert_instr(ld2))]
 pub unsafe fn vld2q_s16(a: *const i16) -> int16x8x2_t {
-    unsafe extern "unadjusted" {
-        #[cfg_attr(
-            any(target_arch = "aarch64", target_arch = "arm64ec"),
-            link_name = "llvm.aarch64.neon.ld2.v8i16.p0"
-        )]
-        fn _vld2q_s16(ptr: *const int16x8_t) -> int16x8x2_t;
-    }
-    _vld2q_s16(a as _)
+    crate::core_arch::macros::deinterleaving_load!(i16, 8, 2, a)
 }
 #[doc = "Load multiple 2-element structures to two registers"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vld2_s32)"]
@@ -19882,14 +19826,7 @@ pub unsafe fn vld2q_s16(a: *const i16) -> int16x8x2_t {
 #[stable(feature = "neon_intrinsics", since = "1.59.0")]
 #[cfg_attr(test, assert_instr(ld2))]
 pub unsafe fn vld2_s32(a: *const i32) -> int32x2x2_t {
-    unsafe extern "unadjusted" {
-        #[cfg_attr(
-            any(target_arch = "aarch64", target_arch = "arm64ec"),
-            link_name = "llvm.aarch64.neon.ld2.v2i32.p0"
-        )]
-        fn _vld2_s32(ptr: *const int32x2_t) -> int32x2x2_t;
-    }
-    _vld2_s32(a as _)
+    crate::core_arch::macros::deinterleaving_load!(i32, 2, 2, a)
 }
 #[doc = "Load multiple 2-element structures to two registers"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vld2q_s32)"]
@@ -19901,14 +19838,7 @@ pub unsafe fn vld2_s32(a: *const i32) -> int32x2x2_t {
 #[stable(feature = "neon_intrinsics", since = "1.59.0")]
 #[cfg_attr(test, assert_instr(ld2))]
 pub unsafe fn vld2q_s32(a: *const i32) -> int32x4x2_t {
-    unsafe extern "unadjusted" {
-        #[cfg_attr(
-            any(target_arch = "aarch64", target_arch = "arm64ec"),
-            link_name = "llvm.aarch64.neon.ld2.v4i32.p0"
-        )]
-        fn _vld2q_s32(ptr: *const int32x4_t) -> int32x4x2_t;
-    }
-    _vld2q_s32(a as _)
+    crate::core_arch::macros::deinterleaving_load!(i32, 4, 2, a)
 }
 #[doc = "Load multiple 2-element structures to two registers"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vld2_lane_f16)"]
@@ -20580,14 +20510,7 @@ pub unsafe fn vld2_s64(a: *const i64) -> int64x1x2_t {
 #[stable(feature = "neon_intrinsics", since = "1.59.0")]
 #[cfg_attr(test, assert_instr(nop))]
 pub unsafe fn vld2_s64(a: *const i64) -> int64x1x2_t {
-    unsafe extern "unadjusted" {
-        #[cfg_attr(
-            any(target_arch = "aarch64", target_arch = "arm64ec"),
-            link_name = "llvm.aarch64.neon.ld2.v1i64.p0"
-        )]
-        fn _vld2_s64(ptr: *const int64x1_t) -> int64x1x2_t;
-    }
-    _vld2_s64(a as _)
+    crate::core_arch::macros::deinterleaving_load!(i64, 1, 2, a)
 }
 #[doc = "Load multiple 2-element structures to two registers"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vld2_u64)"]

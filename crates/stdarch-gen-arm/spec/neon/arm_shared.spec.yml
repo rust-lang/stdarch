@@ -2922,25 +2922,16 @@ intrinsics:
     safety:
       unsafe: [neon]
     types:
-      - ["*const i8", int8x8x2_t, i8, int8x8_t]
-      - ["*const i16", int16x4x2_t, i16, int16x4_t]
-      - ["*const i32", int32x2x2_t, i32, int32x2_t]
-      - ["*const i8", int8x16x2_t, i8, int8x16_t]
-      - ["*const i16", int16x8x2_t, i16, int16x8_t]
-      - ["*const i32", int32x4x2_t, i32, int32x4_t]
-      - ["*const f32", float32x2x2_t, f32, float32x2_t]
-      - ["*const f32", float32x4x2_t, f32, float32x4_t]
+      - ["*const i8", int8x8x2_t, i8, "8"]
+      - ["*const i16", int16x4x2_t, i16, "4"]
+      - ["*const i32", int32x2x2_t, i32, "2"]
+      - ["*const i8", int8x16x2_t, i8, "16"]
+      - ["*const i16", int16x8x2_t, i16, "8"]
+      - ["*const i32", int32x4x2_t, i32, "4"]
+      - ["*const f32", float32x2x2_t, f32, "2"]
+      - ["*const f32", float32x4x2_t, f32, "4"]
     compose:
-      - LLVMLink:
-          name: "vld2.{neon_type[1]}"
-          arguments:
-            - "ptr: *const {neon_type[3]}"
-          links:
-            - link: "llvm.aarch64.neon.ld2.v{neon_type[1].lane}{type[2]}.p0"
-              arch: aarch64,arm64ec
-      - FnCall:
-          - "_vld2{neon_type[1].nox}"
-          - - "a as _"
+      - FnCall: ["crate::core_arch::macros::deinterleaving_load!", [{ Type: "{type[2]}" }, "{type[3]}", "2", a], [], true]
 
   - name: "vld2{neon_type[1].nox}"
     doc: Load multiple 2-element structures to two registers
@@ -2953,18 +2944,9 @@ intrinsics:
     safety:
       unsafe: [neon]
     types:
-      - ["*const i64", int64x1x2_t, i64, int64x1_t]
+      - ["*const i64", int64x1x2_t, i64, "1"]
     compose:
-      - LLVMLink:
-          name: "vld2.{neon_type[1]}"
-          arguments:
-            - "ptr: *const {neon_type[3]}"
-          links:
-            - link: "llvm.aarch64.neon.ld2.v{neon_type[1].lane}{type[2]}.p0"
-              arch: aarch64,arm64ec
-      - FnCall:
-          - "_vld2{neon_type[1].nox}"
-          - - "a as _"
+      - FnCall: ["crate::core_arch::macros::deinterleaving_load!", [{ Type: "{type[2]}" }, "{type[3]}", "2", a], [], true]
 
   - name: "vld2{neon_type[1].nox}"
     doc: Load multiple 2-element structures to two registers
@@ -3468,19 +3450,10 @@ intrinsics:
     safety:
       unsafe: [neon]
     types:
-      - ["*const f16", float16x4x2_t, f16]
-      - ["*const f16", float16x8x2_t, f16]
+      - ["*const f16", float16x4x2_t, f16, "4"]
+      - ["*const f16", float16x8x2_t, f16, "8"]
     compose:
-      - LLVMLink:
-          name: "vld2.{neon_type[1]}"
-          arguments:
-            - "ptr: {type[0]}"
-          links:
-            - link: "llvm.aarch64.neon.ld2.v{neon_type[1].lane}{type[2]}.p0"
-              arch: aarch64,arm64ec
-      - FnCall:
-          - "_vld2{neon_type[1].nox}"
-          - - "a as _"
+      - FnCall: ["crate::core_arch::macros::deinterleaving_load!", [{ Type: "{type[2]}" }, "{type[3]}", "2", a], [], true]
 
   - name: "vld2{neon_type[1].dup_nox}"
     doc: Load single 2-element structure and replicate to all lanes of two registers
