@@ -13298,6 +13298,7 @@ intrinsics:
     doc: "Add pairwise."
     arguments: ["a: {neon_type[0]}", "b: {neon_type[0]}"]
     return_type: "{neon_type[0]}"
+    big_endian_inverse: false
     attr:
       - *neon-v7
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, [vpadd]]}]]
