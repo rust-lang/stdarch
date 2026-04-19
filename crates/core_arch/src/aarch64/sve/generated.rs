@@ -9799,7 +9799,7 @@ pub fn svdupq_n_f32(x0: f32, x1: f32, x2: f32, x3: f32) -> svfloat32_t {
     unsafe extern "unadjusted" {
         #[cfg_attr(
             target_arch = "aarch64",
-            link_name = "llvm.experimental.vector.insert.nxv4f32.v4f32"
+            link_name = "llvm.vector.insert.nxv4f32.v4f32"
         )]
         fn _svdupq_n_f32(op0: svfloat32_t, op1: float32x4_t, idx: i64) -> svfloat32_t;
     }
@@ -9817,7 +9817,7 @@ pub fn svdupq_n_s32(x0: i32, x1: i32, x2: i32, x3: i32) -> svint32_t {
     unsafe extern "unadjusted" {
         #[cfg_attr(
             target_arch = "aarch64",
-            link_name = "llvm.experimental.vector.insert.nxv4i32.v4i32"
+            link_name = "llvm.vector.insert.nxv4i32.v4i32"
         )]
         fn _svdupq_n_s32(op0: svint32_t, op1: int32x4_t, idx: i64) -> svint32_t;
     }
@@ -9851,7 +9851,7 @@ pub fn svdupq_n_f64(x0: f64, x1: f64) -> svfloat64_t {
     unsafe extern "unadjusted" {
         #[cfg_attr(
             target_arch = "aarch64",
-            link_name = "llvm.experimental.vector.insert.nxv2f64.v2f64"
+            link_name = "llvm.vector.insert.nxv2f64.v2f64"
         )]
         fn _svdupq_n_f64(op0: svfloat64_t, op1: float64x2_t, idx: i64) -> svfloat64_t;
     }
@@ -9869,7 +9869,7 @@ pub fn svdupq_n_s64(x0: i64, x1: i64) -> svint64_t {
     unsafe extern "unadjusted" {
         #[cfg_attr(
             target_arch = "aarch64",
-            link_name = "llvm.experimental.vector.insert.nxv2i64.v2i64"
+            link_name = "llvm.vector.insert.nxv2i64.v2i64"
         )]
         fn _svdupq_n_s64(op0: svint64_t, op1: int64x2_t, idx: i64) -> svint64_t;
     }
@@ -9904,7 +9904,7 @@ pub fn svdupq_n_s16(
     unsafe extern "unadjusted" {
         #[cfg_attr(
             target_arch = "aarch64",
-            link_name = "llvm.experimental.vector.insert.nxv8i16.v8i16"
+            link_name = "llvm.vector.insert.nxv8i16.v8i16"
         )]
         fn _svdupq_n_s16(op0: svint16_t, op1: int16x8_t, idx: i64) -> svint16_t;
     }
@@ -9972,7 +9972,7 @@ pub fn svdupq_n_s8(
     unsafe extern "unadjusted" {
         #[cfg_attr(
             target_arch = "aarch64",
-            link_name = "llvm.experimental.vector.insert.nxv16i8.v16i8"
+            link_name = "llvm.vector.insert.nxv16i8.v16i8"
         )]
         fn _svdupq_n_s8(op0: svint8_t, op1: int8x16_t, idx: i64) -> svint8_t;
     }
@@ -35208,7 +35208,7 @@ pub fn svreinterpret_u64_u64(op: svuint64_t) -> svuint64_t {
 #[cfg_attr(test, assert_instr(rev))]
 pub fn svrev_b8(op: svbool_t) -> svbool_t {
     unsafe extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.sve.rev.nxv16i1")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.vector.reverse.nxv16i1")]
         fn _svrev_b8(op: svbool_t) -> svbool_t;
     }
     unsafe { _svrev_b8(op) }
@@ -35221,7 +35221,7 @@ pub fn svrev_b8(op: svbool_t) -> svbool_t {
 #[cfg_attr(test, assert_instr(rev))]
 pub fn svrev_b16(op: svbool_t) -> svbool_t {
     unsafe extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.sve.rev.nxv8i1")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.vector.reverse.nxv8i1")]
         fn _svrev_b16(op: svbool8_t) -> svbool8_t;
     }
     unsafe { _svrev_b16(op.sve_into()).sve_into() }
@@ -35234,7 +35234,7 @@ pub fn svrev_b16(op: svbool_t) -> svbool_t {
 #[cfg_attr(test, assert_instr(rev))]
 pub fn svrev_b32(op: svbool_t) -> svbool_t {
     unsafe extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.sve.rev.nxv4i1")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.vector.reverse.nxv4i1")]
         fn _svrev_b32(op: svbool4_t) -> svbool4_t;
     }
     unsafe { _svrev_b32(op.sve_into()).sve_into() }
@@ -35247,7 +35247,7 @@ pub fn svrev_b32(op: svbool_t) -> svbool_t {
 #[cfg_attr(test, assert_instr(rev))]
 pub fn svrev_b64(op: svbool_t) -> svbool_t {
     unsafe extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.sve.rev.nxv2i1")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.vector.reverse.nxv2i1")]
         fn _svrev_b64(op: svbool2_t) -> svbool2_t;
     }
     unsafe { _svrev_b64(op.sve_into()).sve_into() }
@@ -35260,7 +35260,7 @@ pub fn svrev_b64(op: svbool_t) -> svbool_t {
 #[cfg_attr(test, assert_instr(rev))]
 pub fn svrev_f32(op: svfloat32_t) -> svfloat32_t {
     unsafe extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.sve.rev.nxv4f32")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.vector.reverse.nxv4f32")]
         fn _svrev_f32(op: svfloat32_t) -> svfloat32_t;
     }
     unsafe { _svrev_f32(op) }
@@ -35273,7 +35273,7 @@ pub fn svrev_f32(op: svfloat32_t) -> svfloat32_t {
 #[cfg_attr(test, assert_instr(rev))]
 pub fn svrev_f64(op: svfloat64_t) -> svfloat64_t {
     unsafe extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.sve.rev.nxv2f64")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.vector.reverse.nxv2f64")]
         fn _svrev_f64(op: svfloat64_t) -> svfloat64_t;
     }
     unsafe { _svrev_f64(op) }
@@ -35286,7 +35286,7 @@ pub fn svrev_f64(op: svfloat64_t) -> svfloat64_t {
 #[cfg_attr(test, assert_instr(rev))]
 pub fn svrev_s8(op: svint8_t) -> svint8_t {
     unsafe extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.sve.rev.nxv16i8")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.vector.reverse.nxv16i8")]
         fn _svrev_s8(op: svint8_t) -> svint8_t;
     }
     unsafe { _svrev_s8(op) }
@@ -35299,7 +35299,7 @@ pub fn svrev_s8(op: svint8_t) -> svint8_t {
 #[cfg_attr(test, assert_instr(rev))]
 pub fn svrev_s16(op: svint16_t) -> svint16_t {
     unsafe extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.sve.rev.nxv8i16")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.vector.reverse.nxv8i16")]
         fn _svrev_s16(op: svint16_t) -> svint16_t;
     }
     unsafe { _svrev_s16(op) }
@@ -35312,7 +35312,7 @@ pub fn svrev_s16(op: svint16_t) -> svint16_t {
 #[cfg_attr(test, assert_instr(rev))]
 pub fn svrev_s32(op: svint32_t) -> svint32_t {
     unsafe extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.sve.rev.nxv4i32")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.vector.reverse.nxv4i32")]
         fn _svrev_s32(op: svint32_t) -> svint32_t;
     }
     unsafe { _svrev_s32(op) }
@@ -35325,7 +35325,7 @@ pub fn svrev_s32(op: svint32_t) -> svint32_t {
 #[cfg_attr(test, assert_instr(rev))]
 pub fn svrev_s64(op: svint64_t) -> svint64_t {
     unsafe extern "unadjusted" {
-        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.aarch64.sve.rev.nxv2i64")]
+        #[cfg_attr(target_arch = "aarch64", link_name = "llvm.vector.reverse.nxv2i64")]
         fn _svrev_s64(op: svint64_t) -> svint64_t;
     }
     unsafe { _svrev_s64(op) }
