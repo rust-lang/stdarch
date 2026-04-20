@@ -14270,3 +14270,21 @@ intrinsics:
           links:
             - link: "llvm.aarch64.fjcvtzs"
               arch: aarch64,arm64ec
+
+  # FIXME(arm-maintainers): ported from `aarch64/mod.rs`, should this be in `arm_shared`?
+  - name: "{type[0]}"
+    doc: "Duplicate vector element to vector or scalar"
+    arguments: ["a: {type[1]}"]
+    return_type: "{neon_type[2]}"
+    attr:
+      - *neon-stable
+    assert_instr: ['{type[3]}']
+    big_endian_inverse: true
+    safety: safe
+    types:
+      - ['vget_high_p64', 'poly64x2_t', 'poly64x1_t', 'ext', 'transmute(u64x1::new(simd_extract!(a, 1)))']
+      - ['vget_low_p64', 'poly64x2_t', 'poly64x1_t', 'nop', 'transmute(u64x1::new(simd_extract!(a, 0)))']
+      - ['vget_high_f64', 'float64x2_t', 'float64x1_t', 'ext', 'float64x1_t([simd_extract!(a, 1)])']
+      - ['vget_low_f64', 'float64x2_t', 'float64x1_t', 'nop', 'float64x1_t([simd_extract!(a, 0)])']
+    compose:
+      - Identifier: ['{type[4]}', UnsafeSymbol]
