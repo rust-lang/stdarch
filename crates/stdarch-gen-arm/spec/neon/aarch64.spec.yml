@@ -14272,6 +14272,21 @@ intrinsics:
               arch: aarch64,arm64ec
 
   # FIXME(arm-maintainers): ported from `aarch64/mod.rs`, should this be in `arm_shared`?
+  - name: "vcombine{neon_type[0].noq}"
+    doc: Join two smaller vectors into a single larger vector
+    arguments: ["a: {neon_type[0]}", "b: {neon_type[0]}"]
+    return_type: "{neon_type[1]}"
+    attr:
+      - *neon-stable
+    assert_instr: [mov]
+    big_endian_inverse: true
+    safety: safe
+    types:
+      - [float64x1_t, float64x2_t, '[0, 1]']
+    compose:
+      - FnCall: [simd_shuffle!, [a, b, '{type[2]}']]
+
+  # FIXME(arm-maintainers): ported from `aarch64/mod.rs`, should this be in `arm_shared`?
   - name: "{type[0]}"
     doc: "Duplicate vector element to vector or scalar"
     arguments: ["a: {type[1]}"]
