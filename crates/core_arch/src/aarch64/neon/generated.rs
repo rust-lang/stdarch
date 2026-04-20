@@ -250,24 +250,12 @@ pub fn vabdl_high_s8(a: int8x16_t, b: int8x16_t) -> int16x8_t {
     }
 }
 #[doc = "Unsigned Absolute difference Long"]
-#[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vabdl_high_u8)"]
-#[inline(always)]
-#[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(uabdl2))]
-#[stable(feature = "neon_intrinsics", since = "1.59.0")]
-pub fn vabdl_high_u8(a: uint8x16_t, b: uint8x16_t) -> uint16x8_t {
-    unsafe {
-        let c: uint8x8_t = simd_shuffle!(a, a, [8, 9, 10, 11, 12, 13, 14, 15]);
-        let d: uint8x8_t = simd_shuffle!(b, b, [8, 9, 10, 11, 12, 13, 14, 15]);
-        simd_cast(vabd_u8(c, d))
-    }
-}
-#[doc = "Unsigned Absolute difference Long"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vabdl_high_u16)"]
 #[inline(always)]
+#[cfg(target_endian = "little")]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(uabdl2))]
 #[stable(feature = "neon_intrinsics", since = "1.59.0")]
+#[cfg_attr(test, assert_instr(uabdl2))]
 pub fn vabdl_high_u16(a: uint16x8_t, b: uint16x8_t) -> uint32x4_t {
     unsafe {
         let c: uint16x4_t = simd_shuffle!(a, a, [4, 5, 6, 7]);
@@ -276,16 +264,84 @@ pub fn vabdl_high_u16(a: uint16x8_t, b: uint16x8_t) -> uint32x4_t {
     }
 }
 #[doc = "Unsigned Absolute difference Long"]
+#[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vabdl_high_u16)"]
+#[inline(always)]
+#[cfg(target_endian = "big")]
+#[target_feature(enable = "neon")]
+#[stable(feature = "neon_intrinsics", since = "1.59.0")]
+#[cfg_attr(test, assert_instr(uabdl2))]
+pub fn vabdl_high_u16(a: uint16x8_t, b: uint16x8_t) -> uint32x4_t {
+    unsafe {
+        let a: uint16x8_t = simd_shuffle!(a, a, [7, 6, 5, 4, 3, 2, 1, 0]);
+        let b: uint16x8_t = simd_shuffle!(b, b, [7, 6, 5, 4, 3, 2, 1, 0]);
+        let c: uint16x4_t = simd_shuffle!(a, a, [4, 5, 6, 7]);
+        let d: uint16x4_t = simd_shuffle!(b, b, [4, 5, 6, 7]);
+        let ret_val: uint32x4_t = simd_cast(vabd_u16(c, d));
+        simd_shuffle!(ret_val, ret_val, [3, 2, 1, 0])
+    }
+}
+#[doc = "Unsigned Absolute difference Long"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vabdl_high_u32)"]
 #[inline(always)]
+#[cfg(target_endian = "little")]
 #[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(uabdl2))]
 #[stable(feature = "neon_intrinsics", since = "1.59.0")]
+#[cfg_attr(test, assert_instr(uabdl2))]
 pub fn vabdl_high_u32(a: uint32x4_t, b: uint32x4_t) -> uint64x2_t {
     unsafe {
         let c: uint32x2_t = simd_shuffle!(a, a, [2, 3]);
         let d: uint32x2_t = simd_shuffle!(b, b, [2, 3]);
         simd_cast(vabd_u32(c, d))
+    }
+}
+#[doc = "Unsigned Absolute difference Long"]
+#[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vabdl_high_u32)"]
+#[inline(always)]
+#[cfg(target_endian = "big")]
+#[target_feature(enable = "neon")]
+#[stable(feature = "neon_intrinsics", since = "1.59.0")]
+#[cfg_attr(test, assert_instr(uabdl2))]
+pub fn vabdl_high_u32(a: uint32x4_t, b: uint32x4_t) -> uint64x2_t {
+    unsafe {
+        let a: uint32x4_t = simd_shuffle!(a, a, [3, 2, 1, 0]);
+        let b: uint32x4_t = simd_shuffle!(b, b, [3, 2, 1, 0]);
+        let c: uint32x2_t = simd_shuffle!(a, a, [2, 3]);
+        let d: uint32x2_t = simd_shuffle!(b, b, [2, 3]);
+        let ret_val: uint64x2_t = simd_cast(vabd_u32(c, d));
+        simd_shuffle!(ret_val, ret_val, [1, 0])
+    }
+}
+#[doc = "Unsigned Absolute difference Long"]
+#[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vabdl_high_u8)"]
+#[inline(always)]
+#[cfg(target_endian = "little")]
+#[target_feature(enable = "neon")]
+#[stable(feature = "neon_intrinsics", since = "1.59.0")]
+#[cfg_attr(test, assert_instr(uabdl2))]
+pub fn vabdl_high_u8(a: uint8x16_t, b: uint8x16_t) -> uint16x8_t {
+    unsafe {
+        let c: uint8x8_t = simd_shuffle!(a, a, [8, 9, 10, 11, 12, 13, 14, 15]);
+        let d: uint8x8_t = simd_shuffle!(b, b, [8, 9, 10, 11, 12, 13, 14, 15]);
+        simd_cast(vabd_u8(c, d))
+    }
+}
+#[doc = "Unsigned Absolute difference Long"]
+#[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vabdl_high_u8)"]
+#[inline(always)]
+#[cfg(target_endian = "big")]
+#[target_feature(enable = "neon")]
+#[stable(feature = "neon_intrinsics", since = "1.59.0")]
+#[cfg_attr(test, assert_instr(uabdl2))]
+pub fn vabdl_high_u8(a: uint8x16_t, b: uint8x16_t) -> uint16x8_t {
+    unsafe {
+        let a: uint8x16_t =
+            simd_shuffle!(a, a, [15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0]);
+        let b: uint8x16_t =
+            simd_shuffle!(b, b, [15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0]);
+        let c: uint8x8_t = simd_shuffle!(a, a, [8, 9, 10, 11, 12, 13, 14, 15]);
+        let d: uint8x8_t = simd_shuffle!(b, b, [8, 9, 10, 11, 12, 13, 14, 15]);
+        let ret_val: uint16x8_t = simd_cast(vabd_u8(c, d));
+        simd_shuffle!(ret_val, ret_val, [7, 6, 5, 4, 3, 2, 1, 0])
     }
 }
 #[doc = "Floating-point absolute value"]
