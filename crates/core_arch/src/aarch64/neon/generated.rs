@@ -11519,6 +11519,33 @@ pub fn vget_low_p64(a: poly64x2_t) -> poly64x1_t {
         transmute(u64x1::new(simd_extract!(a, 0)))
     }
 }
+#[doc = "Duplicate vector element to vector or scalar"]
+#[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vgetq_lane_f64)"]
+#[inline(always)]
+#[cfg(target_endian = "little")]
+#[target_feature(enable = "neon")]
+#[stable(feature = "neon_intrinsics", since = "1.59.0")]
+#[rustc_legacy_const_generics(1)]
+#[cfg_attr(test, assert_instr(nop, IMM5 = 0))]
+pub fn vgetq_lane_f64<const IMM5: i32>(a: float64x2_t) -> f64 {
+    static_assert_uimm_bits!(IMM5, 1);
+    unsafe { simd_extract!(a, IMM5 as u32) }
+}
+#[doc = "Duplicate vector element to vector or scalar"]
+#[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vgetq_lane_f64)"]
+#[inline(always)]
+#[cfg(target_endian = "big")]
+#[target_feature(enable = "neon")]
+#[stable(feature = "neon_intrinsics", since = "1.59.0")]
+#[rustc_legacy_const_generics(1)]
+#[cfg_attr(test, assert_instr(nop, IMM5 = 0))]
+pub fn vgetq_lane_f64<const IMM5: i32>(a: float64x2_t) -> f64 {
+    static_assert_uimm_bits!(IMM5, 1);
+    unsafe {
+        let a: float64x2_t = simd_shuffle!(a, a, [1, 0]);
+        simd_extract!(a, IMM5 as u32)
+    }
+}
 #[doc = "Load multiple single-element structures to one, two, three, or four registers"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vld1_f16)"]
 #[doc = "## Safety"]

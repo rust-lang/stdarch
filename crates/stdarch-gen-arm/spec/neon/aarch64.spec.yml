@@ -14288,3 +14288,21 @@ intrinsics:
       - ['vget_low_f64', 'float64x2_t', 'float64x1_t', 'nop', 'float64x1_t([simd_extract!(a, 0)])']
     compose:
       - Identifier: ['{type[4]}', UnsafeSymbol]
+
+  # FIXME(arm-maintainers): ported from `aarch64/mod.rs`, should this be in `arm_shared`?
+  - name: "vgetq_lane_{type[1]}"
+    doc: "Duplicate vector element to vector or scalar"
+    arguments: ["a: {type[0]}"]
+    return_type: "{type[1]}"
+    attr:
+      - *neon-stable
+      - FnCall: [rustc_legacy_const_generics, ['1']]
+    assert_instr: [['nop', 'IMM5 = 0']]
+    big_endian_inverse: true
+    safety: safe
+    static_defs: ["const IMM5: i32"]
+    types:
+      - ['float64x2_t', 'f64']
+    compose:
+      - FnCall: [static_assert_uimm_bits!, [IMM5, "1"]]
+      - FnCall: ['simd_extract!', [a, 'IMM5 as u32'], [] , true]
