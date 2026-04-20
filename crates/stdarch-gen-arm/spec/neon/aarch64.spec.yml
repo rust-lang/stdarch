@@ -10575,12 +10575,28 @@ intrinsics:
       - FnCall: [rustc_legacy_const_generics, ['3']]
       - *neon-stable
     static_defs: ['const LANE: i32']
+    big_endian_inverse: false
     safety: safe
     types:
       - ["f32", float32x2_t, "s_lane_f32"]
       - ["f32", float32x4_t, "s_laneq_f32"]
-      - ["f64", float64x1_t, "d_lane_f64"]
       - ["f64", float64x2_t, "d_laneq_f64"]
+    compose:
+      - FnCall: ["vfma{type[2]}::<LANE>", ['a', '-b', 'c']]
+
+  - name: "vfms{type[2]}"
+    doc: "Floating-point fused multiply-subtract to accumulator"
+    arguments: ["a: {type[0]}", "b: {type[0]}", "c: {neon_type[1]}"]
+    return_type: "{type[0]}"
+    attr:
+      - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [fmsub, 'LANE = 0']]}]]
+      - FnCall: [rustc_legacy_const_generics, ['3']]
+      - *neon-stable
+    static_defs: ['const LANE: i32']
+    big_endian_inverse: true
+    safety: safe
+    types:
+      - ["f64", float64x1_t, "d_lane_f64"]
     compose:
       - FnCall: ["vfma{type[2]}::<LANE>", ['a', '-b', 'c']]
 

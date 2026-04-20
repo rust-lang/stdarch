@@ -11334,6 +11334,16 @@ pub fn vfmsq_n_f16(a: float16x8_t, b: float16x8_t, c: f16) -> float16x8_t {
 pub fn vfms_n_f64(a: float64x1_t, b: float64x1_t, c: f64) -> float64x1_t {
     vfms_f64(a, b, vdup_n_f64(c))
 }
+#[doc = "Floating-point fused multiply-subtract to accumulator"]
+#[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vfmsd_lane_f64)"]
+#[inline(always)]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(fmsub, LANE = 0))]
+#[rustc_legacy_const_generics(3)]
+#[stable(feature = "neon_intrinsics", since = "1.59.0")]
+pub fn vfmsd_lane_f64<const LANE: i32>(a: f64, b: f64, c: float64x1_t) -> f64 {
+    vfmad_lane_f64::<LANE>(a, -b, c)
+}
 #[doc = "Floating-point fused multiply-subtract from accumulator"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vfmsh_f16)"]
 #[inline(always)]
@@ -11429,16 +11439,6 @@ pub fn vfmss_lane_f32<const LANE: i32>(a: f32, b: f32, c: float32x2_t) -> f32 {
 #[stable(feature = "neon_intrinsics", since = "1.59.0")]
 pub fn vfmss_laneq_f32<const LANE: i32>(a: f32, b: f32, c: float32x4_t) -> f32 {
     vfmas_laneq_f32::<LANE>(a, -b, c)
-}
-#[doc = "Floating-point fused multiply-subtract to accumulator"]
-#[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vfmsd_lane_f64)"]
-#[inline(always)]
-#[target_feature(enable = "neon")]
-#[cfg_attr(test, assert_instr(fmsub, LANE = 0))]
-#[rustc_legacy_const_generics(3)]
-#[stable(feature = "neon_intrinsics", since = "1.59.0")]
-pub fn vfmsd_lane_f64<const LANE: i32>(a: f64, b: f64, c: float64x1_t) -> f64 {
-    vfmad_lane_f64::<LANE>(a, -b, c)
 }
 #[doc = "Floating-point fused multiply-subtract to accumulator"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vfmsd_laneq_f64)"]
