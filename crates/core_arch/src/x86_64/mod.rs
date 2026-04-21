@@ -12,8 +12,8 @@ type Tile = crate::core_arch::simd::Simd<u8, 1024>;
 #[allow(non_camel_case_types)]
 #[unstable(feature = "x86_amx_intrinsics", issue = "126622")]
 pub struct __tile1024i {
-    rows: u16,
-    cols: u16,
+    pub rows: u16,
+    pub cols: u16,
     tile: Tile,
 }
 

@@ -4,11 +4,30 @@ use crate::core_arch::{simd::*, x86::*};
 #[cfg(test)]
 use stdarch_test::assert_instr;
 
-/// Load tile configuration from a 64-byte memory location specified by mem_addr.
+/// Load tile configuration from a 64-byte memory location specified by `mem_addr`.
 /// The tile configuration format is specified below, and includes the tile type pallette,
 /// the number of bytes per row, and the number of rows. If the specified pallette_id is zero,
 /// that signifies the init state for both the tile config and the tile data, and the tiles are zeroed.
 /// Any invalid configurations will result in #GP fault.
+///
+/// ```intel
+/// //	format of memory payload. each field is a byte.
+///		 0: palette
+///		 1: start_row
+///	  2-15: reserved, must be zero
+///	 16-17: tile0.colsb
+///	 18-19: tile1.colsb
+///	 20-21: tile2.colsb
+///			...
+///	 30-31: tile7.colsb
+///	 32-47: reserved, must be zero
+///		48: tile0.rows
+///		49: tile1.rows
+///		50: tile2.rows
+///			 ...
+///		55: tile7.rows
+///	 56-63: reserved, must be zero
+/// ```
 ///
 /// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=_tile_loadconfig&ig_expand=6875)
 #[inline]
@@ -19,8 +38,8 @@ pub unsafe fn _tile_loadconfig(mem_addr: *const u8) {
     ldtilecfg(mem_addr);
 }
 
-/// Stores the current tile configuration to a 64-byte memory location specified by mem_addr.
-/// The tile configuration format is specified below, and includes the tile type pallette,
+/// Stores the current tile configuration to a 64-byte memory location specified by `mem_addr`.
+/// The tile configuration format is as specified in [`_tile_loadconfig`], and includes the tile type pallette,
 /// the number of bytes per row, and the number of rows. If tiles are not configured, all zeroes will be stored to memory.
 ///
 /// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=_tile_storeconfig&ig_expand=6879)
@@ -32,7 +51,7 @@ pub unsafe fn _tile_storeconfig(mem_addr: *mut u8) {
     sttilecfg(mem_addr);
 }
 
-/// Load tile rows from memory specifieid by base address and stride into destination tile dst using the tile configuration previously configured via _tile_loadconfig.
+/// Load tile rows from memory specified by base address and stride into destination tile dst using the tile configuration previously configured via [`_tile_loadconfig`].
 ///
 /// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=_tile_loadd&ig_expand=6877)
 #[inline]
@@ -42,10 +61,11 @@ pub unsafe fn _tile_storeconfig(mem_addr: *mut u8) {
 #[unstable(feature = "x86_amx_intrinsics", issue = "126622")]
 pub unsafe fn _tile_loadd<const DST: i32>(base: *const u8, stride: usize) {
     static_assert_uimm_bits!(DST, 3);
-    tileloadd64(DST as i8, base, stride);
+    tileloadd64(DST as i8, base, stride as u64);
 }
 
-/// Load tile rows from memory specifieid by base address and stride into destination tile dst using the tile configuration previously configured via _tile_loadconfig.
+/// Load tile rows from memory specified by base address and stride into destination tile dst. The shape
+/// of the tile is specified in the struct of [`__tile1024i`]. The register of the tile is allocated by the compiler.
 ///
 /// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=__tile_loadd&ig_expand=6877)
 #[inline]
@@ -67,7 +87,7 @@ pub unsafe fn _tile_release() {
     tilerelease();
 }
 
-/// Store the tile specified by src to memory specifieid by base address and stride using the tile configuration previously configured via _tile_loadconfig.
+/// Store the tile specified by src to memory specified by base address and stride using the tile configuration previously configured via [`_tile_loadconfig`].
 ///
 /// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=_tile_stored&ig_expand=6881)
 #[inline]
@@ -77,10 +97,11 @@ pub unsafe fn _tile_release() {
 #[unstable(feature = "x86_amx_intrinsics", issue = "126622")]
 pub unsafe fn _tile_stored<const DST: i32>(base: *mut u8, stride: usize) {
     static_assert_uimm_bits!(DST, 3);
-    tilestored64(DST as i8, base, stride);
+    tilestored64(DST as i8, base, stride as u64);
 }
 
-/// Store the tile specified by src to memory specifieid by base address and stride using the tile configuration previously configured via _tile_loadconfig.
+/// Store the tile specified by src to memory specified by base address and stride. The shape of the tile
+/// is specified in the struct of [`__tile1024i`]. The register of the tile is allocated by the compiler.
 ///
 /// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=__tile_stored&ig_expand=6881)
 #[inline]
@@ -91,8 +112,8 @@ pub unsafe fn __tile_stored(base: *mut u8, stride: usize, src: __tile1024i) {
     tilestored64_internal(src.rows, src.cols, base, stride as u64, src.tile);
 }
 
-/// Load tile rows from memory specifieid by base address and stride into destination tile dst using the tile configuration
-/// previously configured via _tile_loadconfig. This intrinsic provides a hint to the implementation that the data will
+/// Load tile rows from memory specified by base address and stride into destination tile dst using the tile configuration
+/// previously configured via [`_tile_loadconfig`]. This intrinsic provides a hint to the implementation that the data will
 /// likely not be reused in the near future and the data caching can be optimized accordingly.
 ///
 /// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=_tile_stream_loadd&ig_expand=6883)
@@ -103,12 +124,13 @@ pub unsafe fn __tile_stored(base: *mut u8, stride: usize, src: __tile1024i) {
 #[unstable(feature = "x86_amx_intrinsics", issue = "126622")]
 pub unsafe fn _tile_stream_loadd<const DST: i32>(base: *const u8, stride: usize) {
     static_assert_uimm_bits!(DST, 3);
-    tileloaddt164(DST as i8, base, stride);
+    tileloaddt164(DST as i8, base, stride as u64);
 }
 
-/// Load tile rows from memory specifieid by base address and stride into destination tile dst using the tile configuration
-/// previously configured via _tile_loadconfig. This intrinsic provides a hint to the implementation that the data will
-/// likely not be reused in the near future and the data caching can be optimized accordingly.
+/// Load tile rows from memory specified by base address and stride into destination tile dst. The shape
+/// of the tile is specified in the struct of [`__tile1024i`]. The register of the tile is allocated by the compiler.
+/// This intrinsic provides a hint to the implementation that the data will likely not be reused in the
+/// near future and the data caching can be optimized accordingly.
 ///
 /// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=__tile_stream_loadd&ig_expand=6883)
 #[inline]
@@ -119,7 +141,7 @@ pub unsafe fn __tile_stream_loadd(dst: *mut __tile1024i, base: *const u8, stride
     (*dst).tile = tileloaddt164_internal((*dst).rows, (*dst).cols, base, stride as u64);
 }
 
-/// Zero the tile specified by tdest.
+/// Zero the tile specified by `tdest`.
 ///
 /// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=_tile_zero&ig_expand=6885)
 #[inline]
@@ -132,7 +154,8 @@ pub unsafe fn _tile_zero<const DST: i32>() {
     tilezero(DST as i8);
 }
 
-/// Zero the tile specified by dst.
+/// Zero the tile specified by `dst`. The shape of the tile is specified in the struct of [`__tile1024i`].
+/// The register of the tile is allocated by the compiler.
 ///
 /// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=__tile_zero&ig_expand=6885)
 #[inline]
@@ -162,7 +185,8 @@ pub unsafe fn _tile_dpbf16ps<const DST: i32, const A: i32, const B: i32>() {
 
 /// Compute dot-product of FP16 (16-bit) floating-point pairs in tiles a and b,
 /// accumulating the intermediate single-precision (32-bit) floating-point elements
-/// with elements in dst, and store the 32-bit result back to tile dst.
+/// with elements in dst, and store the 32-bit result back to tile dst. The shape of the tile
+/// is specified in the struct of [`__tile1024i`]. The register of the tile is allocated by the compiler.
 ///
 /// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=__tile_dpbf16ps&ig_expand=6864)
 #[inline]
@@ -195,6 +219,7 @@ pub unsafe fn _tile_dpbssd<const DST: i32, const A: i32, const B: i32>() {
 /// Multiply groups of 4 adjacent pairs of signed 8-bit integers in a with corresponding
 /// signed 8-bit integers in b, producing 4 intermediate 32-bit results.
 /// Sum these 4 results with the corresponding 32-bit integer in dst, and store the 32-bit result back to tile dst.
+/// The shape of the tile is specified in the struct of [`__tile1024i`]. The register of the tile is allocated by the compiler.
 ///
 /// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=__tile_dpbssd&ig_expand=6866)
 #[inline]
@@ -227,6 +252,7 @@ pub unsafe fn _tile_dpbsud<const DST: i32, const A: i32, const B: i32>() {
 /// Multiply groups of 4 adjacent pairs of signed 8-bit integers in a with corresponding
 /// unsigned 8-bit integers in b, producing 4 intermediate 32-bit results.
 /// Sum these 4 results with the corresponding 32-bit integer in dst, and store the 32-bit result back to tile dst.
+/// The shape of the tile is specified in the struct of [`__tile1024i`]. The register of the tile is allocated by the compiler.
 ///
 /// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=__tile_dpbsud&ig_expand=6868)
 #[inline]
@@ -259,6 +285,7 @@ pub unsafe fn _tile_dpbusd<const DST: i32, const A: i32, const B: i32>() {
 /// Multiply groups of 4 adjacent pairs of unsigned 8-bit integers in a with corresponding
 /// signed 8-bit integers in b, producing 4 intermediate 32-bit results.
 /// Sum these 4 results with the corresponding 32-bit integer in dst, and store the 32-bit result back to tile dst.
+/// The shape of the tile is specified in the struct of [`__tile1024i`]. The register of the tile is allocated by the compiler.
 ///
 /// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=__tile_dpbusd&ig_expand=6870)
 #[inline]
@@ -291,6 +318,7 @@ pub unsafe fn _tile_dpbuud<const DST: i32, const A: i32, const B: i32>() {
 /// Multiply groups of 4 adjacent pairs of unsigned 8-bit integers in a with corresponding
 /// unsigned 8-bit integers in b, producing 4 intermediate 32-bit results.
 /// Sum these 4 results with the corresponding 32-bit integer in dst, and store the 32-bit result back to tile dst.
+/// The shape of the tile is specified in the struct of [`__tile1024i`]. The register of the tile is allocated by the compiler.
 ///
 /// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=__tile_dpbuud&ig_expand=6872)
 #[inline]
@@ -321,6 +349,7 @@ pub unsafe fn _tile_dpfp16ps<const DST: i32, const A: i32, const B: i32>() {
 /// Compute dot-product of FP16 (16-bit) floating-point pairs in tiles a and b,
 /// accumulating the intermediate single-precision (32-bit) floating-point elements
 ///  with elements in dst, and store the 32-bit result back to tile dst.
+/// The shape of the tile is specified in the struct of [`__tile1024i`]. The register of the tile is allocated by the compiler.
 ///
 /// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=__tile_dpfp16ps&ig_expand=6874)
 #[inline]
@@ -359,6 +388,7 @@ pub unsafe fn _tile_cmmimfp16ps<const DST: i32, const A: i32, const B: i32>() {
 /// The imaginary part of the a element is multiplied with the real part of the corresponding b element, and the real part of
 /// the a element is multiplied with the imaginary part of the corresponding b elements. The two accumulated results are added,
 /// and then accumulated into the corresponding row and column of dst.
+/// The shape of the tile is specified in the struct of [`__tile1024i`]. The register of the tile is allocated by the compiler.
 ///
 /// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=__tile_cmmimfp16ps&ig_expand=6860)
 #[inline]
@@ -397,6 +427,7 @@ pub unsafe fn _tile_cmmrlfp16ps<const DST: i32, const A: i32, const B: i32>() {
 /// The real part of the a element is multiplied with the real part of the corresponding b element, and the negated imaginary part of
 /// the a element is multiplied with the imaginary part of the corresponding b elements.
 /// The two accumulated results are added, and then accumulated into the corresponding row and column of dst.
+/// The shape of the tile is specified in the struct of [`__tile1024i`]. The register of the tile is allocated by the compiler.
 ///
 /// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=__tile_cmmrlfp16ps&ig_expand=6862)
 #[inline]
@@ -430,6 +461,7 @@ pub unsafe fn _tile_dpbf8ps<const DST: i32, const A: i32, const B: i32>() {
 /// floating-point elements in tile b, accumulating the intermediate single-precision
 /// (32-bit) floating-point elements with elements in dst, and store the 32-bit result
 /// back to tile dst.
+/// The shape of the tile is specified in the struct of [`__tile1024i`]. The register of the tile is allocated by the compiler.
 #[inline]
 #[target_feature(enable = "amx-fp8")]
 #[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(tdpbf8ps))]
@@ -461,6 +493,7 @@ pub unsafe fn _tile_dpbhf8ps<const DST: i32, const A: i32, const B: i32>() {
 /// (8-bit E4M3) floating-point elements in tile b, accumulating the intermediate single-precision
 /// (32-bit) floating-point elements with elements in dst, and store the 32-bit result
 /// back to tile dst.
+/// The shape of the tile is specified in the struct of [`__tile1024i`]. The register of the tile is allocated by the compiler.
 #[inline]
 #[target_feature(enable = "amx-fp8")]
 #[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(tdpbhf8ps))]
@@ -492,6 +525,7 @@ pub unsafe fn _tile_dphbf8ps<const DST: i32, const A: i32, const B: i32>() {
 /// (8-bit E5M2) floating-point elements in tile b, accumulating the intermediate single-precision
 /// (32-bit) floating-point elements with elements in dst, and store the 32-bit result
 /// back to tile dst.
+/// The shape of the tile is specified in the struct of [`__tile1024i`]. The register of the tile is allocated by the compiler.
 #[inline]
 #[target_feature(enable = "amx-fp8")]
 #[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(tdphbf8ps))]
@@ -523,6 +557,7 @@ pub unsafe fn _tile_dphf8ps<const DST: i32, const A: i32, const B: i32>() {
 /// floating-point elements in tile b, accumulating the intermediate single-precision
 /// (32-bit) floating-point elements with elements in dst, and store the 32-bit result
 /// back to tile dst.
+/// The shape of the tile is specified in the struct of [`__tile1024i`]. The register of the tile is allocated by the compiler.
 #[inline]
 #[target_feature(enable = "amx-fp8")]
 #[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(tdphf8ps))]
@@ -532,7 +567,7 @@ pub unsafe fn __tile_dphf8ps(dst: *mut __tile1024i, a: __tile1024i, b: __tile102
 }
 
 /// Load tile rows from memory specified by base address and stride into destination tile dst
-/// using the tile configuration previously configured via _tile_loadconfig.
+/// using the tile configuration previously configured via [`_tile_loadconfig`].
 /// Additionally, this intrinsic indicates the source memory location is likely to become
 /// read-shared by multiple processors, i.e., read in the future by at least one other processor
 /// before it is written, assuming it is ever written in the future.
@@ -546,11 +581,11 @@ pub unsafe fn __tile_dphf8ps(dst: *mut __tile1024i, a: __tile1024i, b: __tile102
 #[unstable(feature = "x86_amx_intrinsics", issue = "126622")]
 pub unsafe fn _tile_loaddrs<const DST: i32>(base: *const u8, stride: usize) {
     static_assert_uimm_bits!(DST, 3);
-    tileloaddrs64(DST as i8, base, stride);
+    tileloaddrs64(DST as i8, base, stride as u64);
 }
 
-/// Load tile rows from memory specified by base address and stride into destination tile dst
-/// using the tile configuration previously configured via _tile_loadconfig.
+/// Load tile rows from memory specified by base address and stride into destination tile dst.
+/// The shape of the tile is specified in the struct of [`__tile1024i`]. The register of the tile is allocated by the compiler.
 /// Additionally, this intrinsic indicates the source memory location is likely to become
 /// read-shared by multiple processors, i.e., read in the future by at least one other processor
 /// before it is written, assuming it is ever written in the future.
@@ -563,7 +598,7 @@ pub unsafe fn __tile_loaddrs(dst: *mut __tile1024i, base: *const u8, stride: usi
 }
 
 /// Load tile rows from memory specified by base address and stride into destination tile dst
-/// using the tile configuration previously configured via _tile_loadconfig.
+/// using the tile configuration previously configured via [`_tile_loadconfig`].
 /// Provides a hint to the implementation that the data would be reused but does not need
 /// to be resident in the nearest cache levels.
 /// Additionally, this intrinsic indicates the source memory location is likely to become
@@ -579,11 +614,11 @@ pub unsafe fn __tile_loaddrs(dst: *mut __tile1024i, base: *const u8, stride: usi
 #[unstable(feature = "x86_amx_intrinsics", issue = "126622")]
 pub unsafe fn _tile_stream_loaddrs<const DST: i32>(base: *const u8, stride: usize) {
     static_assert_uimm_bits!(DST, 3);
-    tileloaddrst164(DST as i8, base, stride);
+    tileloaddrst164(DST as i8, base, stride as u64);
 }
 
-/// Load tile rows from memory specified by base address and stride into destination tile dst
-/// using the tile configuration previously configured via _tile_loadconfig.
+/// Load tile rows from memory specified by base address and stride into destination tile dst.
+/// The shape of the tile is specified in the struct of [`__tile1024i`]. The register of the tile is allocated by the compiler.
 /// Provides a hint to the implementation that the data would be reused but does not need
 /// to be resident in the nearest cache levels.
 /// Additionally, this intrinsic indicates the source memory location is likely to become
@@ -632,6 +667,7 @@ pub unsafe fn _tile_mmultf32ps<const DST: i32, const A: i32, const B: i32>() {
 /// rounding mode.
 /// Output FP32 denormals are always flushed to zero, input single precision denormals are always
 /// handled and *not* treated as zero.
+/// The shape of the tile is specified in the struct of [`__tile1024i`]. The register of the tile is allocated by the compiler.
 #[inline]
 #[target_feature(enable = "amx-tf32")]
 #[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(tmmultf32ps))]
@@ -673,6 +709,7 @@ pub unsafe fn _tile_cvtrowd2psi<const TILE: i32, const ROW: i32>() -> __m512 {
 
 /// Moves a row from a tile register to a zmm register, converting the packed 32-bit signed integer
 /// elements to packed single-precision (32-bit) floating-point elements.
+/// The shape of the tile is specified in the struct of [`__tile1024i`]. The register of the tile is allocated by the compiler.
 #[inline]
 #[target_feature(enable = "amx-avx512,avx10.2")]
 #[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(tcvtrowd2ps))]
@@ -717,6 +754,7 @@ pub unsafe fn _tile_cvtrowps2phhi<const TILE: i32, const ROW: i32>() -> __m512h 
 /// Moves a row from a tile register to a zmm register, converting the packed single-precision (32-bit)
 /// floating-point elements to packed half-precision (16-bit) floating-point elements. The resulting
 /// 16-bit elements are placed in the high 16-bits within each 32-bit element of the returned vector.
+/// The shape of the tile is specified in the struct of [`__tile1024i`]. The register of the tile is allocated by the compiler.
 #[inline]
 #[target_feature(enable = "amx-avx512,avx10.2")]
 #[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(tcvtrowps2phh))]
@@ -761,6 +799,7 @@ pub unsafe fn _tile_cvtrowps2phli<const TILE: i32, const ROW: i32>() -> __m512h 
 /// Moves a row from a tile register to a zmm register, converting the packed single-precision (32-bit)
 /// floating-point elements to packed half-precision (16-bit) floating-point elements. The resulting
 /// 16-bit elements are placed in the low 16-bits within each 32-bit element of the returned vector.
+/// The shape of the tile is specified in the struct of [`__tile1024i`]. The register of the tile is allocated by the compiler.
 #[inline]
 #[target_feature(enable = "amx-avx512,avx10.2")]
 #[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(tcvtrowps2phl))]
@@ -805,6 +844,7 @@ pub unsafe fn _tile_cvtrowps2bf16hi<const TILE: i32, const ROW: i32>() -> __m512
 /// Moves a row from a tile register to a zmm register, converting the packed single-precision (32-bit)
 /// floating-point elements to packed BF16 (16-bit) floating-point elements. The resulting
 /// 16-bit elements are placed in the high 16-bits within each 32-bit element of the returned vector.
+/// The shape of the tile is specified in the struct of [`__tile1024i`]. The register of the tile is allocated by the compiler.
 #[inline]
 #[target_feature(enable = "amx-avx512,avx10.2")]
 #[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(tcvtrowps2bf16h))]
@@ -849,6 +889,7 @@ pub unsafe fn _tile_cvtrowps2bf16li<const TILE: i32, const ROW: i32>() -> __m512
 /// Moves a row from a tile register to a zmm register, converting the packed single-precision (32-bit)
 /// floating-point elements to packed BF16 (16-bit) floating-point elements. The resulting
 /// 16-bit elements are placed in the low 16-bits within each 32-bit element of the returned vector.
+/// The shape of the tile is specified in the struct of [`__tile1024i`]. The register of the tile is allocated by the compiler.
 #[inline]
 #[target_feature(enable = "amx-avx512,avx10.2")]
 #[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(tcvtrowps2bf16l))]
@@ -887,6 +928,7 @@ pub unsafe fn _tile_movrowi<const TILE: i32, const ROW: i32>() -> __m512i {
 }
 
 /// Moves one row of tile data into a zmm vector register
+/// The shape of the tile is specified in the struct of [`__tile1024i`]. The register of the tile is allocated by the compiler.
 #[inline]
 #[target_feature(enable = "amx-avx512,avx10.2")]
 #[cfg_attr(all(test, not(target_vendor = "apple")), assert_instr(tilemovrow))]
@@ -903,20 +945,20 @@ unsafe extern "unadjusted" {
     fn sttilecfg(mem_addr: *mut u8);
 
     #[link_name = "llvm.x86.tileloadd64"]
-    fn tileloadd64(dst: i8, base: *const u8, stride: usize);
+    fn tileloadd64(dst: i8, base: *const u8, stride: u64);
     #[link_name = "llvm.x86.tileloadd64.internal"]
     fn tileloadd64_internal(rows: u16, cols: u16, base: *const u8, stride: u64) -> Tile;
 
     #[link_name = "llvm.x86.tileloaddt164"]
-    fn tileloaddt164(dst: i8, base: *const u8, stride: usize);
+    fn tileloaddt164(dst: i8, base: *const u8, stride: u64);
     #[link_name = "llvm.x86.tileloaddt164.internal"]
     fn tileloaddt164_internal(rows: u16, cols: u16, base: *const u8, stride: u64) -> Tile;
-    
+
     #[link_name = "llvm.x86.tilerelease"]
     fn tilerelease();
 
     #[link_name = "llvm.x86.tilestored64"]
-    fn tilestored64(dst: i8, base: *mut u8, stride: usize);
+    fn tilestored64(dst: i8, base: *mut u8, stride: u64);
     #[link_name = "llvm.x86.tilestored64.internal"]
     fn tilestored64_internal(rows: u16, cols: u16, base: *mut u8, stride: u64, src: Tile);
 
@@ -986,12 +1028,12 @@ unsafe extern "unadjusted" {
     fn tdphf8ps_internal(m: u16, n: u16, k: u16, dst: Tile, a: Tile, b: Tile) -> Tile;
 
     #[link_name = "llvm.x86.tileloaddrs64"]
-    fn tileloaddrs64(dst: i8, base: *const u8, stride: usize);
+    fn tileloaddrs64(dst: i8, base: *const u8, stride: u64);
     #[link_name = "llvm.x86.tileloaddrs64.internal"]
     fn tileloaddrs64_internal(rows: u16, cols: u16, base: *const u8, stride: u64) -> Tile;
 
     #[link_name = "llvm.x86.tileloaddrst164"]
-    fn tileloaddrst164(dst: i8, base: *const u8, stride: usize);
+    fn tileloaddrst164(dst: i8, base: *const u8, stride: u64);
     #[link_name = "llvm.x86.tileloaddrst164.internal"]
     fn tileloaddrst164_internal(rows: u16, cols: u16, base: *const u8, stride: u64) -> Tile;
 
@@ -1048,7 +1090,7 @@ mod tests {
     use crate::core_arch::x86::_mm_cvtness_sbh;
     use crate::core_arch::x86_64::*;
     use core::array;
-    use core::mem::{MaybeUninit, transmute};
+    use core::mem::MaybeUninit;
     use stdarch_test::simd_test;
     #[cfg(target_os = "linux")]
     use syscalls::{Sysno, syscall};
@@ -1101,19 +1143,23 @@ mod tests {
     #[cfg(target_os = "linux")]
     #[target_feature(enable = "amx-tile")]
     #[inline]
-    unsafe fn _init_amx() {
+    fn _init_amx() {
         let mut ret: usize;
         let mut xfeatures: usize = 0;
-        ret = syscall!(Sysno::arch_prctl, 0x1022, &mut xfeatures as *mut usize)
-            .expect("arch_prctl ARCH_GET_XCOMP_PERM syscall failed");
+        ret = unsafe {
+            syscall!(Sysno::arch_prctl, 0x1022, &raw mut xfeatures)
+                .expect("arch_prctl ARCH_GET_XCOMP_PERM syscall failed")
+        };
         if ret != 0 {
             panic!("Failed to get XFEATURES");
         } else {
             match 0b11 & (xfeatures >> 17) {
                 0 => panic!("AMX is not available"),
                 1 => {
-                    ret = syscall!(Sysno::arch_prctl, 0x1023, 18)
-                        .expect("arch_prctl ARCH_REQ_XCOMP_PERM syscall failed");
+                    ret = unsafe {
+                        syscall!(Sysno::arch_prctl, 0x1023, 18)
+                            .expect("arch_prctl ARCH_REQ_XCOMP_PERM syscall failed")
+                    };
                     if ret != 0 {
                         panic!("Failed to enable AMX");
                     }
@@ -1168,7 +1214,7 @@ mod tests {
             _tile_loadconfig(config.as_ptr());
             _tile_zero::<0>();
             let mut out = [[1_i8; 64]; 16];
-            _tile_stored::<0>(&mut out as *mut [i8; 64] as *mut u8, 64);
+            _tile_stored::<0>(out.as_mut_ptr().cast(), 64);
             _tile_release();
             assert_eq!(out, [[0; 64]; 16]);
         }
@@ -1199,7 +1245,7 @@ mod tests {
             _tile_loadconfig(config.as_ptr());
             _tile_zero::<0>();
             let mut out = [[1_i8; 64]; 16];
-            _tile_stored::<0>(&mut out as *mut [i8; 64] as *mut u8, 64);
+            _tile_stored::<0>(out.as_mut_ptr().cast(), 64);
             _tile_release();
             assert_eq!(out, [[0; 64]; 16]);
         }
@@ -1230,9 +1276,9 @@ mod tests {
             _tile_loadconfig(config.as_ptr());
             _tile_zero::<0>();
             let mat = [1_i8; 1024];
-            _tile_loadd::<0>(&mat as *const i8 as *const u8, 64);
+            _tile_loadd::<0>(mat.as_ptr().cast(), 64);
             let mut out = [[0_i8; 64]; 16];
-            _tile_stored::<0>(&mut out as *mut [i8; 64] as *mut u8, 64);
+            _tile_stored::<0>(out.as_mut_ptr().cast(), 64);
             _tile_release();
             assert_eq!(out, [[1; 64]; 16]);
         }
@@ -1265,9 +1311,9 @@ mod tests {
             _tile_loadconfig(config.as_ptr());
             _tile_zero::<0>();
             let mat = [1_i8; 1024];
-            _tile_stream_loadd::<0>(&mat as *const i8 as *const u8, 64);
+            _tile_stream_loadd::<0>(mat.as_ptr().cast(), 64);
             let mut out = [[0_i8; 64]; 16];
-            _tile_stored::<0>(&mut out as *mut [i8; 64] as *mut u8, 64);
+            _tile_stored::<0>(out.as_mut_ptr().cast(), 64);
             _tile_release();
             assert_eq!(out, [[1; 64]; 16]);
         }
@@ -1303,8 +1349,8 @@ mod tests {
     fn test_tile_dpbf16ps() {
         unsafe {
             _init_amx();
-            let ones: [u8; 1024] = transmute([BF16_1; 512]);
-            let twos: [u8; 1024] = transmute([BF16_2; 512]);
+            let ones = [BF16_1; 512];
+            let twos = [BF16_2; 512];
             let mut res = [[0f32; 16]; 16];
             let mut config = __tilecfg::default();
             config.palette = 1;
@@ -1314,10 +1360,10 @@ mod tests {
             });
             _tile_loadconfig(config.as_ptr());
             _tile_zero::<0>();
-            _tile_loadd::<1>(&ones as *const u8, 64);
-            _tile_loadd::<2>(&twos as *const u8, 64);
+            _tile_loadd::<1>(ones.as_ptr().cast(), 64);
+            _tile_loadd::<2>(twos.as_ptr().cast(), 64);
             _tile_dpbf16ps::<0, 1, 2>();
-            _tile_stored::<0>(&mut res as *mut [f32; 16] as *mut u8, 64);
+            _tile_stored::<0>(res.as_mut_ptr().cast(), 64);
             _tile_release();
             assert_eq!(res, [[64f32; 16]; 16]);
         }
@@ -1359,10 +1405,10 @@ mod tests {
             });
             _tile_loadconfig(config.as_ptr());
             _tile_zero::<0>();
-            _tile_loadd::<1>(&ones as *const i8 as *const u8, 64);
-            _tile_loadd::<2>(&twos as *const i8 as *const u8, 64);
+            _tile_loadd::<1>(ones.as_ptr().cast(), 64);
+            _tile_loadd::<2>(twos.as_ptr().cast(), 64);
             _tile_dpbssd::<0, 1, 2>();
-            _tile_stored::<0>(&mut res as *mut [i32; 16] as *mut u8, 64);
+            _tile_stored::<0>(res.as_mut_ptr().cast(), 64);
             _tile_release();
             assert_eq!(res, [[128_i32; 16]; 16]);
         }
@@ -1404,10 +1450,10 @@ mod tests {
             });
             _tile_loadconfig(config.as_ptr());
             _tile_zero::<0>();
-            _tile_loadd::<1>(&ones as *const i8 as *const u8, 64);
-            _tile_loadd::<2>(&twos as *const u8, 64);
+            _tile_loadd::<1>(ones.as_ptr().cast(), 64);
+            _tile_loadd::<2>(twos.as_ptr(), 64);
             _tile_dpbsud::<0, 1, 2>();
-            _tile_stored::<0>(&mut res as *mut [i32; 16] as *mut u8, 64);
+            _tile_stored::<0>(res.as_mut_ptr().cast(), 64);
             _tile_release();
             assert_eq!(res, [[-128_i32; 16]; 16]);
         }
@@ -1449,10 +1495,10 @@ mod tests {
             });
             _tile_loadconfig(config.as_ptr());
             _tile_zero::<0>();
-            _tile_loadd::<1>(&ones as *const u8, 64);
-            _tile_loadd::<2>(&twos as *const i8 as *const u8, 64);
+            _tile_loadd::<1>(ones.as_ptr(), 64);
+            _tile_loadd::<2>(twos.as_ptr().cast(), 64);
             _tile_dpbusd::<0, 1, 2>();
-            _tile_stored::<0>(&mut res as *mut [i32; 16] as *mut u8, 64);
+            _tile_stored::<0>(res.as_mut_ptr().cast(), 64);
             _tile_release();
             assert_eq!(res, [[-128_i32; 16]; 16]);
         }
@@ -1494,10 +1540,10 @@ mod tests {
             });
             _tile_loadconfig(config.as_ptr());
             _tile_zero::<0>();
-            _tile_loadd::<1>(&ones as *const u8, 64);
-            _tile_loadd::<2>(&twos as *const u8, 64);
+            _tile_loadd::<1>(ones.as_ptr(), 64);
+            _tile_loadd::<2>(twos.as_ptr(), 64);
             _tile_dpbuud::<0, 1, 2>();
-            _tile_stored::<0>(&mut res as *mut [i32; 16] as *mut u8, 64);
+            _tile_stored::<0>(res.as_mut_ptr().cast(), 64);
             _tile_release();
             assert_eq!(res, [[128_i32; 16]; 16]);
         }
@@ -1539,10 +1585,10 @@ mod tests {
             });
             _tile_loadconfig(config.as_ptr());
             _tile_zero::<0>();
-            _tile_loadd::<1>(&ones as *const f16 as *const u8, 64);
-            _tile_loadd::<2>(&twos as *const f16 as *const u8, 64);
+            _tile_loadd::<1>(ones.as_ptr().cast(), 64);
+            _tile_loadd::<2>(twos.as_ptr().cast(), 64);
             _tile_dpfp16ps::<0, 1, 2>();
-            _tile_stored::<0>(&mut res as *mut [f32; 16] as *mut u8, 64);
+            _tile_stored::<0>(res.as_mut_ptr().cast(), 64);
             _tile_release();
             assert_eq!(res, [[64f32; 16]; 16]);
         }
@@ -1584,10 +1630,10 @@ mod tests {
             });
             _tile_loadconfig(config.as_ptr());
             _tile_zero::<0>();
-            _tile_loadd::<1>(&ones as *const f16 as *const u8, 64);
-            _tile_loadd::<2>(&twos as *const f16 as *const u8, 64);
+            _tile_loadd::<1>(ones.as_ptr().cast(), 64);
+            _tile_loadd::<2>(twos.as_ptr().cast(), 64);
             _tile_cmmimfp16ps::<0, 1, 2>();
-            _tile_stored::<0>(&mut res as *mut [f32; 16] as *mut u8, 64);
+            _tile_stored::<0>(res.as_mut_ptr().cast(), 64);
             _tile_release();
             assert_eq!(res, [[64f32; 16]; 16]);
         }
@@ -1629,10 +1675,10 @@ mod tests {
             });
             _tile_loadconfig(config.as_ptr());
             _tile_zero::<0>();
-            _tile_loadd::<1>(&ones as *const f16 as *const u8, 64);
-            _tile_loadd::<2>(&twos as *const f16 as *const u8, 64);
+            _tile_loadd::<1>(ones.as_ptr().cast(), 64);
+            _tile_loadd::<2>(twos.as_ptr().cast(), 64);
             _tile_cmmrlfp16ps::<0, 1, 2>();
-            _tile_stored::<0>(&mut res as *mut [f32; 16] as *mut u8, 64);
+            _tile_stored::<0>(res.as_mut_ptr().cast(), 64);
             _tile_release();
             assert_eq!(res, [[0f32; 16]; 16]);
         }
@@ -1679,8 +1725,8 @@ mod tests {
             });
             _tile_loadconfig(config.as_ptr());
             _tile_zero::<0>();
-            _tile_loadd::<1>(&ones as *const u8, 64);
-            _tile_loadd::<2>(&twos as *const u8, 64);
+            _tile_loadd::<1>(ones.as_ptr(), 64);
+            _tile_loadd::<2>(twos.as_ptr(), 64);
             _tile_dpbf8ps::<0, 1, 2>();
             _tile_stored::<0>(res.as_mut_ptr().cast(), 64);
             _tile_release();
@@ -1724,8 +1770,8 @@ mod tests {
             });
             _tile_loadconfig(config.as_ptr());
             _tile_zero::<0>();
-            _tile_loadd::<1>(&ones as *const u8, 64);
-            _tile_loadd::<2>(&twos as *const u8, 64);
+            _tile_loadd::<1>(ones.as_ptr(), 64);
+            _tile_loadd::<2>(twos.as_ptr(), 64);
             _tile_dpbhf8ps::<0, 1, 2>();
             _tile_stored::<0>(res.as_mut_ptr().cast(), 64);
             _tile_release();
@@ -1769,8 +1815,8 @@ mod tests {
             });
             _tile_loadconfig(config.as_ptr());
             _tile_zero::<0>();
-            _tile_loadd::<1>(&ones as *const u8, 64);
-            _tile_loadd::<2>(&twos as *const u8, 64);
+            _tile_loadd::<1>(ones.as_ptr(), 64);
+            _tile_loadd::<2>(twos.as_ptr(), 64);
             _tile_dphbf8ps::<0, 1, 2>();
             _tile_stored::<0>(res.as_mut_ptr().cast(), 64);
             _tile_release();
@@ -1814,8 +1860,8 @@ mod tests {
             });
             _tile_loadconfig(config.as_ptr());
             _tile_zero::<0>();
-            _tile_loadd::<1>(&ones as *const u8, 64);
-            _tile_loadd::<2>(&twos as *const u8, 64);
+            _tile_loadd::<1>(ones.as_ptr(), 64);
+            _tile_loadd::<2>(twos.as_ptr(), 64);
             _tile_dphf8ps::<0, 1, 2>();
             _tile_stored::<0>(res.as_mut_ptr().cast(), 64);
             _tile_release();
@@ -1855,9 +1901,9 @@ mod tests {
             _tile_loadconfig(config.as_ptr());
             _tile_zero::<0>();
             let mat = [1_i8; 1024];
-            _tile_loaddrs::<0>(&mat as *const i8 as *const u8, 64);
+            _tile_loaddrs::<0>(mat.as_ptr().cast(), 64);
             let mut out = [[0_i8; 64]; 16];
-            _tile_stored::<0>(&mut out as *mut [i8; 64] as *mut u8, 64);
+            _tile_stored::<0>(out.as_mut_ptr().cast(), 64);
             _tile_release();
             assert_eq!(out, [[1; 64]; 16]);
         }
@@ -1890,9 +1936,9 @@ mod tests {
             _tile_loadconfig(config.as_ptr());
             _tile_zero::<0>();
             let mat = [1_i8; 1024];
-            _tile_stream_loaddrs::<0>(&mat as *const i8 as *const u8, 64);
+            _tile_stream_loaddrs::<0>(mat.as_ptr().cast(), 64);
             let mut out = [[0_i8; 64]; 16];
-            _tile_stored::<0>(&mut out as *mut [i8; 64] as *mut u8, 64);
+            _tile_stored::<0>(out.as_mut_ptr().cast(), 64);
             _tile_release();
             assert_eq!(out, [[1; 64]; 16]);
         }
