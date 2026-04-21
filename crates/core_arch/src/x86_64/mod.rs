@@ -3,6 +3,20 @@
 #[macro_use]
 mod macros;
 
+// Any 1024-byte vector should work
+type Tile = crate::core_arch::simd::Simd<u8, 1024>;
+
+/// A tile register, used by AMX instructions.
+// TODO: add more docs
+#[derive(Copy, Clone, Debug)]
+#[allow(non_camel_case_types)]
+#[unstable(feature = "x86_amx_intrinsics", issue = "126622")]
+pub struct __tile1024i {
+    rows: u16,
+    cols: u16,
+    tile: Tile,
+}
+
 mod fxsr;
 #[stable(feature = "simd_x86", since = "1.27.0")]
 pub use self::fxsr::*;
