@@ -252,7 +252,7 @@ pub unsafe fn _tile_cmmrlfp16ps<const DST: i32, const A: i32, const B: i32>() {
 #[rustc_legacy_const_generics(0, 1, 2)]
 #[target_feature(enable = "amx-fp8")]
 #[cfg_attr(
-    all(test, any(target_os = "linux", target_env = "msvc")),
+    all(test, not(target_vendor = "apple")),
     assert_instr(tdpbf8ps, DST = 0, A = 1, B = 2)
 )]
 #[unstable(feature = "x86_amx_intrinsics", issue = "126622")]
@@ -271,7 +271,7 @@ pub unsafe fn _tile_dpbf8ps<const DST: i32, const A: i32, const B: i32>() {
 #[rustc_legacy_const_generics(0, 1, 2)]
 #[target_feature(enable = "amx-fp8")]
 #[cfg_attr(
-    all(test, any(target_os = "linux", target_env = "msvc")),
+    all(test, not(target_vendor = "apple")),
     assert_instr(tdpbhf8ps, DST = 0, A = 1, B = 2)
 )]
 #[unstable(feature = "x86_amx_intrinsics", issue = "126622")]
@@ -290,7 +290,7 @@ pub unsafe fn _tile_dpbhf8ps<const DST: i32, const A: i32, const B: i32>() {
 #[rustc_legacy_const_generics(0, 1, 2)]
 #[target_feature(enable = "amx-fp8")]
 #[cfg_attr(
-    all(test, any(target_os = "linux", target_env = "msvc")),
+    all(test, not(target_vendor = "apple")),
     assert_instr(tdphbf8ps, DST = 0, A = 1, B = 2)
 )]
 #[unstable(feature = "x86_amx_intrinsics", issue = "126622")]
@@ -309,7 +309,7 @@ pub unsafe fn _tile_dphbf8ps<const DST: i32, const A: i32, const B: i32>() {
 #[rustc_legacy_const_generics(0, 1, 2)]
 #[target_feature(enable = "amx-fp8")]
 #[cfg_attr(
-    all(test, any(target_os = "linux", target_env = "msvc")),
+    all(test, not(target_vendor = "apple")),
     assert_instr(tdphf8ps, DST = 0, A = 1, B = 2)
 )]
 #[unstable(feature = "x86_amx_intrinsics", issue = "126622")]
@@ -329,7 +329,7 @@ pub unsafe fn _tile_dphf8ps<const DST: i32, const A: i32, const B: i32>() {
 #[rustc_legacy_const_generics(0)]
 #[target_feature(enable = "amx-movrs")]
 #[cfg_attr(
-    all(test, any(target_os = "linux", target_env = "msvc")),
+    all(test, not(target_vendor = "apple")),
     assert_instr(tileloaddrs, DST = 0)
 )]
 #[unstable(feature = "x86_amx_intrinsics", issue = "126622")]
@@ -349,7 +349,7 @@ pub unsafe fn _tile_loaddrs<const DST: i32>(base: *const u8, stride: usize) {
 #[rustc_legacy_const_generics(0)]
 #[target_feature(enable = "amx-movrs")]
 #[cfg_attr(
-    all(test, any(target_os = "linux", target_env = "msvc")),
+    all(test, not(target_vendor = "apple")),
     assert_instr(tileloaddrst1, DST = 0)
 )]
 #[unstable(feature = "x86_amx_intrinsics", issue = "126622")]
@@ -372,7 +372,7 @@ pub unsafe fn _tile_stream_loaddrs<const DST: i32>(base: *const u8, stride: usiz
 #[rustc_legacy_const_generics(0, 1, 2)]
 #[target_feature(enable = "amx-tf32")]
 #[cfg_attr(
-    all(test, any(target_os = "linux", target_env = "msvc")),
+    all(test, not(target_vendor = "apple")),
     assert_instr(tmmultf32ps, DST = 0, A = 1, B = 2)
 )]
 #[unstable(feature = "x86_amx_intrinsics", issue = "126622")]
@@ -389,7 +389,7 @@ pub unsafe fn _tile_mmultf32ps<const DST: i32, const A: i32, const B: i32>() {
 #[rustc_legacy_const_generics(0)]
 #[target_feature(enable = "amx-avx512,avx10.2")]
 #[cfg_attr(
-    all(test, any(target_os = "linux", target_env = "msvc")),
+    all(test, not(target_vendor = "apple")),
     assert_instr(tcvtrowd2ps, TILE = 0)
 )]
 #[unstable(feature = "x86_amx_intrinsics", issue = "126622")]
@@ -404,7 +404,7 @@ pub unsafe fn _tile_cvtrowd2ps<const TILE: i32>(row: u32) -> __m512 {
 #[rustc_legacy_const_generics(0, 1)]
 #[target_feature(enable = "amx-avx512,avx10.2")]
 #[cfg_attr(
-    all(test, any(target_os = "linux", target_env = "msvc")),
+    all(test, not(target_vendor = "apple")),
     assert_instr(tcvtrowd2ps, TILE = 0, ROW = 0)
 )]
 #[unstable(feature = "x86_amx_intrinsics", issue = "126622")]
@@ -421,7 +421,7 @@ pub unsafe fn _tile_cvtrowd2psi<const TILE: i32, const ROW: i32>() -> __m512 {
 #[rustc_legacy_const_generics(0)]
 #[target_feature(enable = "amx-avx512,avx10.2")]
 #[cfg_attr(
-    all(test, any(target_os = "linux", target_env = "msvc")),
+    all(test, not(target_vendor = "apple")),
     assert_instr(tcvtrowps2phh, TILE = 0)
 )]
 #[unstable(feature = "x86_amx_intrinsics", issue = "126622")]
@@ -437,7 +437,7 @@ pub unsafe fn _tile_cvtrowps2phh<const TILE: i32>(row: u32) -> __m512h {
 #[rustc_legacy_const_generics(0, 1)]
 #[target_feature(enable = "amx-avx512,avx10.2")]
 #[cfg_attr(
-    all(test, any(target_os = "linux", target_env = "msvc")),
+    all(test, not(target_vendor = "apple")),
     assert_instr(tcvtrowps2phh, TILE = 0, ROW = 0)
 )]
 #[unstable(feature = "x86_amx_intrinsics", issue = "126622")]
@@ -454,7 +454,7 @@ pub unsafe fn _tile_cvtrowps2phhi<const TILE: i32, const ROW: i32>() -> __m512h 
 #[rustc_legacy_const_generics(0)]
 #[target_feature(enable = "amx-avx512,avx10.2")]
 #[cfg_attr(
-    all(test, any(target_os = "linux", target_env = "msvc")),
+    all(test, not(target_vendor = "apple")),
     assert_instr(tcvtrowps2phl, TILE = 0)
 )]
 #[unstable(feature = "x86_amx_intrinsics", issue = "126622")]
@@ -470,7 +470,7 @@ pub unsafe fn _tile_cvtrowps2phl<const TILE: i32>(row: u32) -> __m512h {
 #[rustc_legacy_const_generics(0, 1)]
 #[target_feature(enable = "amx-avx512,avx10.2")]
 #[cfg_attr(
-    all(test, any(target_os = "linux", target_env = "msvc")),
+    all(test, not(target_vendor = "apple")),
     assert_instr(tcvtrowps2phl, TILE = 0, ROW = 0)
 )]
 #[unstable(feature = "x86_amx_intrinsics", issue = "126622")]
@@ -487,7 +487,7 @@ pub unsafe fn _tile_cvtrowps2phli<const TILE: i32, const ROW: i32>() -> __m512h 
 #[rustc_legacy_const_generics(0)]
 #[target_feature(enable = "amx-avx512,avx10.2")]
 #[cfg_attr(
-    all(test, any(target_os = "linux", target_env = "msvc")),
+    all(test, not(target_vendor = "apple")),
     assert_instr(tcvtrowps2bf16h, TILE = 0)
 )]
 #[unstable(feature = "x86_amx_intrinsics", issue = "126622")]
@@ -503,7 +503,7 @@ pub unsafe fn _tile_cvtrowps2bf16h<const TILE: i32>(row: u32) -> __m512bh {
 #[rustc_legacy_const_generics(0, 1)]
 #[target_feature(enable = "amx-avx512,avx10.2")]
 #[cfg_attr(
-    all(test, any(target_os = "linux", target_env = "msvc")),
+    all(test, not(target_vendor = "apple")),
     assert_instr(tcvtrowps2bf16h, TILE = 0, ROW = 0)
 )]
 #[unstable(feature = "x86_amx_intrinsics", issue = "126622")]
@@ -520,7 +520,7 @@ pub unsafe fn _tile_cvtrowps2bf16hi<const TILE: i32, const ROW: i32>() -> __m512
 #[rustc_legacy_const_generics(0)]
 #[target_feature(enable = "amx-avx512,avx10.2")]
 #[cfg_attr(
-    all(test, any(target_os = "linux", target_env = "msvc")),
+    all(test, not(target_vendor = "apple")),
     assert_instr(tcvtrowps2bf16l, TILE = 0)
 )]
 #[unstable(feature = "x86_amx_intrinsics", issue = "126622")]
@@ -536,7 +536,7 @@ pub unsafe fn _tile_cvtrowps2bf16l<const TILE: i32>(row: u32) -> __m512bh {
 #[rustc_legacy_const_generics(0, 1)]
 #[target_feature(enable = "amx-avx512,avx10.2")]
 #[cfg_attr(
-    all(test, any(target_os = "linux", target_env = "msvc")),
+    all(test, not(target_vendor = "apple")),
     assert_instr(tcvtrowps2bf16l, TILE = 0, ROW = 0)
 )]
 #[unstable(feature = "x86_amx_intrinsics", issue = "126622")]
@@ -551,7 +551,7 @@ pub unsafe fn _tile_cvtrowps2bf16li<const TILE: i32, const ROW: i32>() -> __m512
 #[rustc_legacy_const_generics(0)]
 #[target_feature(enable = "amx-avx512,avx10.2")]
 #[cfg_attr(
-    all(test, any(target_os = "linux", target_env = "msvc")),
+    all(test, not(target_vendor = "apple")),
     assert_instr(tilemovrow, TILE = 0)
 )]
 #[unstable(feature = "x86_amx_intrinsics", issue = "126622")]
@@ -565,7 +565,7 @@ pub unsafe fn _tile_movrow<const TILE: i32>(row: u32) -> __m512i {
 #[rustc_legacy_const_generics(0, 1)]
 #[target_feature(enable = "amx-avx512,avx10.2")]
 #[cfg_attr(
-    all(test, any(target_os = "linux", target_env = "msvc")),
+    all(test, not(target_vendor = "apple")),
     assert_instr(tilemovrow, TILE = 0, ROW = 0)
 )]
 #[unstable(feature = "x86_amx_intrinsics", issue = "126622")]
