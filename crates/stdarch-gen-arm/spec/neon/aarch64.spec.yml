@@ -3674,19 +3674,10 @@ intrinsics:
     safety:
       unsafe: [neon]
     types:
-      - ["*const f64", float64x2x2_t, f64, float64x2_t]
-      - ["*const i64", int64x2x2_t, i64, int64x2_t]
+      - ["*const f64", float64x2x2_t, f64, "2"]
+      - ["*const i64", int64x2x2_t, i64, "2"]
     compose:
-      - LLVMLink:
-          name: "vld2.{neon_type[1]}"
-          arguments:
-            - "ptr: *const {neon_type[3]}"
-          links:
-            - link: "llvm.aarch64.neon.ld2.v{neon_type[1].lane}{type[2]}.p0"
-              arch: aarch64,arm64ec
-      - FnCall:
-          - "_vld2{neon_type[1].nox}"
-          - - "a as _"
+      - FnCall: ["crate::core_arch::macros::deinterleaving_load!", [{ Type: "{type[2]}" }, "{type[3]}", "2", a], [], true]
 
   - name: "vld2{neon_type[1].nox}"
     doc: Load multiple 2-element structures to two registers
