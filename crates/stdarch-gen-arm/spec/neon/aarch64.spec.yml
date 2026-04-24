@@ -4459,7 +4459,8 @@ intrinsics:
     doc: "Store-Release a single-element structure from one lane of one register."
     arguments: ["ptr: {type[0]}", "val: {neon_type[1]}"]
     static_defs: ["const LANE: i32"]
-    safety: safe
+    safety:
+      unsafe: [neon]
     attr:
       - FnCall: [target_feature, ['enable = "neon,rcpc3"']]
       - FnCall: [cfg_attr, [{FnCall: [all, [test, {FnCall: [not, ['target_env= "msvc"']]}]]}, {FnCall: [assert_instr, [stl1, 'LANE = 0']]}]]
@@ -4488,7 +4489,8 @@ intrinsics:
     doc: "Store-Release a single-element structure from one lane of one register."
     arguments: ["ptr: {type[0]}", "val: {neon_type[1]}"]
     static_defs: ["const LANE: i32"]
-    safety: safe
+    safety:
+      unsafe: [neon]
     attr:
       - FnCall: [target_feature, ['enable = "neon,rcpc3"']]
       - FnCall: [cfg_attr, [{FnCall: [all, [test, {FnCall: [not, ['target_env= "msvc"']]}]]}, {FnCall: [assert_instr, [stl1, 'LANE = 0']]}]]
