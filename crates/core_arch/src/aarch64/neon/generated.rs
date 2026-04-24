@@ -25421,107 +25421,119 @@ pub unsafe fn vst4q_u64(a: *mut u64, b: uint64x2x4_t) {
 }
 #[doc = "Store-Release a single-element structure from one lane of one register."]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vstl1_lane_f64)"]
+#[doc = "## Safety"]
+#[doc = "  * Neon intrinsic unsafe"]
 #[inline(always)]
 #[target_feature(enable = "neon,rcpc3")]
 #[cfg_attr(all(test, not(target_env = "msvc")), assert_instr(stl1, LANE = 0))]
 #[rustc_legacy_const_generics(2)]
 #[unstable(feature = "stdarch_neon_feat_lrcpc3", issue = "none")]
 #[cfg(target_has_atomic = "64")]
-pub fn vstl1_lane_f64<const LANE: i32>(ptr: *mut f64, val: float64x1_t) {
+pub unsafe fn vstl1_lane_f64<const LANE: i32>(ptr: *mut f64, val: float64x1_t) {
     static_assert!(LANE == 0);
-    unsafe { vstl1_lane_s64::<LANE>(ptr as *mut i64, transmute(val)) }
+    vstl1_lane_s64::<LANE>(ptr as *mut i64, transmute(val))
 }
 #[doc = "Store-Release a single-element structure from one lane of one register."]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vstl1q_lane_f64)"]
+#[doc = "## Safety"]
+#[doc = "  * Neon intrinsic unsafe"]
 #[inline(always)]
 #[target_feature(enable = "neon,rcpc3")]
 #[cfg_attr(all(test, not(target_env = "msvc")), assert_instr(stl1, LANE = 0))]
 #[rustc_legacy_const_generics(2)]
 #[unstable(feature = "stdarch_neon_feat_lrcpc3", issue = "none")]
 #[cfg(target_has_atomic = "64")]
-pub fn vstl1q_lane_f64<const LANE: i32>(ptr: *mut f64, val: float64x2_t) {
+pub unsafe fn vstl1q_lane_f64<const LANE: i32>(ptr: *mut f64, val: float64x2_t) {
     static_assert_uimm_bits!(LANE, 1);
-    unsafe { vstl1q_lane_s64::<LANE>(ptr as *mut i64, transmute(val)) }
+    vstl1q_lane_s64::<LANE>(ptr as *mut i64, transmute(val))
 }
 #[doc = "Store-Release a single-element structure from one lane of one register."]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vstl1_lane_u64)"]
+#[doc = "## Safety"]
+#[doc = "  * Neon intrinsic unsafe"]
 #[inline(always)]
 #[target_feature(enable = "neon,rcpc3")]
 #[cfg_attr(all(test, not(target_env = "msvc")), assert_instr(stl1, LANE = 0))]
 #[rustc_legacy_const_generics(2)]
 #[unstable(feature = "stdarch_neon_feat_lrcpc3", issue = "none")]
 #[cfg(target_has_atomic = "64")]
-pub fn vstl1_lane_u64<const LANE: i32>(ptr: *mut u64, val: uint64x1_t) {
+pub unsafe fn vstl1_lane_u64<const LANE: i32>(ptr: *mut u64, val: uint64x1_t) {
     static_assert!(LANE == 0);
-    unsafe { vstl1_lane_s64::<LANE>(ptr as *mut i64, transmute(val)) }
+    vstl1_lane_s64::<LANE>(ptr as *mut i64, transmute(val))
 }
 #[doc = "Store-Release a single-element structure from one lane of one register."]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vstl1q_lane_u64)"]
+#[doc = "## Safety"]
+#[doc = "  * Neon intrinsic unsafe"]
 #[inline(always)]
 #[target_feature(enable = "neon,rcpc3")]
 #[cfg_attr(all(test, not(target_env = "msvc")), assert_instr(stl1, LANE = 0))]
 #[rustc_legacy_const_generics(2)]
 #[unstable(feature = "stdarch_neon_feat_lrcpc3", issue = "none")]
 #[cfg(target_has_atomic = "64")]
-pub fn vstl1q_lane_u64<const LANE: i32>(ptr: *mut u64, val: uint64x2_t) {
+pub unsafe fn vstl1q_lane_u64<const LANE: i32>(ptr: *mut u64, val: uint64x2_t) {
     static_assert_uimm_bits!(LANE, 1);
-    unsafe { vstl1q_lane_s64::<LANE>(ptr as *mut i64, transmute(val)) }
+    vstl1q_lane_s64::<LANE>(ptr as *mut i64, transmute(val))
 }
 #[doc = "Store-Release a single-element structure from one lane of one register."]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vstl1_lane_p64)"]
+#[doc = "## Safety"]
+#[doc = "  * Neon intrinsic unsafe"]
 #[inline(always)]
 #[target_feature(enable = "neon,rcpc3")]
 #[cfg_attr(all(test, not(target_env = "msvc")), assert_instr(stl1, LANE = 0))]
 #[rustc_legacy_const_generics(2)]
 #[unstable(feature = "stdarch_neon_feat_lrcpc3", issue = "none")]
 #[cfg(target_has_atomic = "64")]
-pub fn vstl1_lane_p64<const LANE: i32>(ptr: *mut p64, val: poly64x1_t) {
+pub unsafe fn vstl1_lane_p64<const LANE: i32>(ptr: *mut p64, val: poly64x1_t) {
     static_assert!(LANE == 0);
-    unsafe { vstl1_lane_s64::<LANE>(ptr as *mut i64, transmute(val)) }
+    vstl1_lane_s64::<LANE>(ptr as *mut i64, transmute(val))
 }
 #[doc = "Store-Release a single-element structure from one lane of one register."]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vstl1q_lane_p64)"]
+#[doc = "## Safety"]
+#[doc = "  * Neon intrinsic unsafe"]
 #[inline(always)]
 #[target_feature(enable = "neon,rcpc3")]
 #[cfg_attr(all(test, not(target_env = "msvc")), assert_instr(stl1, LANE = 0))]
 #[rustc_legacy_const_generics(2)]
 #[unstable(feature = "stdarch_neon_feat_lrcpc3", issue = "none")]
 #[cfg(target_has_atomic = "64")]
-pub fn vstl1q_lane_p64<const LANE: i32>(ptr: *mut p64, val: poly64x2_t) {
+pub unsafe fn vstl1q_lane_p64<const LANE: i32>(ptr: *mut p64, val: poly64x2_t) {
     static_assert_uimm_bits!(LANE, 1);
-    unsafe { vstl1q_lane_s64::<LANE>(ptr as *mut i64, transmute(val)) }
+    vstl1q_lane_s64::<LANE>(ptr as *mut i64, transmute(val))
 }
 #[doc = "Store-Release a single-element structure from one lane of one register."]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vstl1_lane_s64)"]
+#[doc = "## Safety"]
+#[doc = "  * Neon intrinsic unsafe"]
 #[inline(always)]
 #[target_feature(enable = "neon,rcpc3")]
 #[cfg_attr(all(test, not(target_env = "msvc")), assert_instr(stl1, LANE = 0))]
 #[rustc_legacy_const_generics(2)]
 #[unstable(feature = "stdarch_neon_feat_lrcpc3", issue = "none")]
 #[cfg(target_has_atomic = "64")]
-pub fn vstl1_lane_s64<const LANE: i32>(ptr: *mut i64, val: int64x1_t) {
+pub unsafe fn vstl1_lane_s64<const LANE: i32>(ptr: *mut i64, val: int64x1_t) {
     static_assert!(LANE == 0);
     let atomic_dst = ptr as *mut crate::sync::atomic::AtomicI64;
-    unsafe {
-        let lane: i64 = simd_extract!(val, LANE as u32);
-        (*atomic_dst).store(transmute(lane), crate::sync::atomic::Ordering::Release)
-    }
+    let lane: i64 = simd_extract!(val, LANE as u32);
+    (*atomic_dst).store(transmute(lane), crate::sync::atomic::Ordering::Release)
 }
 #[doc = "Store-Release a single-element structure from one lane of one register."]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vstl1q_lane_s64)"]
+#[doc = "## Safety"]
+#[doc = "  * Neon intrinsic unsafe"]
 #[inline(always)]
 #[target_feature(enable = "neon,rcpc3")]
 #[cfg_attr(all(test, not(target_env = "msvc")), assert_instr(stl1, LANE = 0))]
 #[rustc_legacy_const_generics(2)]
 #[unstable(feature = "stdarch_neon_feat_lrcpc3", issue = "none")]
 #[cfg(target_has_atomic = "64")]
-pub fn vstl1q_lane_s64<const LANE: i32>(ptr: *mut i64, val: int64x2_t) {
+pub unsafe fn vstl1q_lane_s64<const LANE: i32>(ptr: *mut i64, val: int64x2_t) {
     static_assert_uimm_bits!(LANE, 1);
     let atomic_dst = ptr as *mut crate::sync::atomic::AtomicI64;
-    unsafe {
-        let lane: i64 = simd_extract!(val, LANE as u32);
-        (*atomic_dst).store(transmute(lane), crate::sync::atomic::Ordering::Release)
-    }
+    let lane: i64 = simd_extract!(val, LANE as u32);
+    (*atomic_dst).store(transmute(lane), crate::sync::atomic::Ordering::Release)
 }
 #[doc = "Subtract"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vsub_f64)"]
