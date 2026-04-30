@@ -1191,9 +1191,10 @@ impl Intrinsic {
                      * re-assigning each tuple however those generated calls do
                      * not make the parent function return. So we add the return
                      * value here */
-                    variant
-                        .big_endian_compose
-                        .push(create_symbol_identifier(&ret_val_name));
+                    variant.big_endian_compose.push(create_symbol_identifier(
+                        &ret_val_name,
+                        IdentifierType::Symbol,
+                    ));
                 }
             }
         }
