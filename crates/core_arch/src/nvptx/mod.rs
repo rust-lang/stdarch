@@ -20,8 +20,8 @@ pub use packed::*;
 
 #[allow(improper_ctypes)]
 unsafe extern "C" {
-    #[link_name = "llvm.nvvm.barrier0"]
-    fn syncthreads() -> ();
+    #[link_name = "llvm.nvvm.barrier.sync"]
+    fn barrier_sync(_: u32) -> ();
     #[link_name = "llvm.nvvm.read.ptx.sreg.ntid.x"]
     fn block_dim_x() -> u32;
     #[link_name = "llvm.nvvm.read.ptx.sreg.ntid.y"]
@@ -49,10 +49,52 @@ unsafe extern "C" {
 }
 
 /// Synchronizes all threads in the block.
+///
+/// The argument `a` is a logical barrier resource with value `0` through `15`.
+///
+/// This does not require textual alignment, so the following code is valid.
+///
+/// ```
+/// if tid % 2 == 0 {
+///     shared[tid] *= 2;
+///     _barrier_sync(0);
+///     myval += shared[tid + 1];
+/// } else {
+///     shared[tid] *= 4;
+///     _barrier_sync(0);
+/// }
+/// ```
+///
+/// This intrinsic has different execution semantics prior to `sm_70`, and thus
+/// it requires the `sm_70` target feature for correct behavior. The instruction
+/// was introduced in PTX 6.0, so its use has a compile-time dependency on the
+/// `ptx60` target feature.
+///
+/// TODO: The more restrictive "aligned" semantics of
+/// `llvm.nvvm.barrier.sync.aligned` are [currently
+/// miscompiled](https://github.com/rust-lang/rust/issues/137086) due to MIR
+/// JumpThreading and lack of `convergent` attribute propagated to LLVM. Once
+/// resolved, a `_barrier_sync_aligned` intrinsic can be exposed at all target
+/// features.
+///
 #[inline]
+#[cfg(target_feature = "ptx60")]
+#[target_feature(enable = "sm_70", enable = "ptx60")]
 #[unstable(feature = "stdarch_nvptx", issue = "111199")]
+pub unsafe fn _barrier_sync(a: u32) -> () {
+    barrier_sync(a)
+}
+
+/// Synchronizes all threads in the block.
+///
+/// Deprecated alias for [`_barrier_sync`].
+#[inline]
+#[cfg(target_feature = "ptx60")]
+#[target_feature(enable = "sm_70", enable = "ptx60")]
+#[unstable(feature = "stdarch_nvptx", issue = "111199")]
+#[deprecated(since = "1.88.0", note = "use _barrier_sync(0)")]
 pub unsafe fn _syncthreads() -> () {
-    syncthreads()
+    _barrier_sync(0)
 }
 
 /// x-th thread-block dimension.
