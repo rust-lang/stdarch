@@ -618,7 +618,7 @@ fn gen_bind_body(
     let function = if !rustc_legacy_const_generics.is_empty() {
         format!(
             r#"
-#[inline(always)]{target_feature}
+#[inline]{target_feature}
 #[{rustc_legacy_const_generics}]
 #[unstable(feature = "stdarch_loongarch", issue = "117427")]
 {fn_decl}{{
@@ -630,7 +630,7 @@ fn gen_bind_body(
     } else {
         format!(
             r#"
-#[inline(always)]{target_feature}
+#[inline]{target_feature}
 #[unstable(feature = "stdarch_loongarch", issue = "117427")]
 {fn_decl}{{
     {call_params}
