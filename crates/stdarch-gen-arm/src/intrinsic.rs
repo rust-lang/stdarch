@@ -1741,7 +1741,7 @@ fn create_tokens(intrinsic: &Intrinsic, endianness: Endianness, tokens: &mut Tok
         );
     }
 
-    tokens.append_all(quote! { #[inline(always)] });
+    tokens.append_all(quote! { #[inline] });
 
     match endianness {
         Endianness::Little => tokens.append_all(quote! { #[cfg(target_endian = "little")] }),
