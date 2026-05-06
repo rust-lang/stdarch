@@ -121,7 +121,7 @@ pub(super) const unsafe fn simd_splat<T: Copy + const SimdExt>(a: i64) -> T {
 
 macro_rules! impl_vv {
     ($ft:literal, $name:ident, $op:path, $oty:ty, $ity:ty) => {
-        #[inline(always)]
+        #[inline]
         #[target_feature(enable = $ft)]
         #[unstable(feature = "stdarch_loongarch", issue = "117427")]
         pub fn $name(a: $oty) -> $oty {
@@ -138,7 +138,7 @@ pub(super) use impl_vv;
 
 macro_rules! impl_gv {
     ($ft:literal, $name:ident, $op:path, $oty:ty, $ity:ident, $gty:ty) => {
-        #[inline(always)]
+        #[inline]
         #[target_feature(enable = $ft)]
         #[unstable(feature = "stdarch_loongarch", issue = "117427")]
         pub fn $name(a: $gty) -> $oty {
@@ -154,7 +154,7 @@ pub(super) use impl_gv;
 
 macro_rules! impl_sv {
     ($ft:literal, $name:ident, $op:path, $oty:ty, $ity:ident, $ibs:expr) => {
-        #[inline(always)]
+        #[inline]
         #[target_feature(enable = $ft)]
         #[rustc_legacy_const_generics(0)]
         #[unstable(feature = "stdarch_loongarch", issue = "117427")]
@@ -172,7 +172,7 @@ pub(super) use impl_sv;
 
 macro_rules! impl_vvv {
     ($ft:literal, $name:ident, $op:path, $oty:ty, $ity:ty) => {
-        #[inline(always)]
+        #[inline]
         #[target_feature(enable = $ft)]
         #[unstable(feature = "stdarch_loongarch", issue = "117427")]
         pub fn $name(a: $oty, b: $oty) -> $oty {
@@ -190,7 +190,7 @@ pub(super) use impl_vvv;
 
 macro_rules! impl_vuv {
     ($ft:literal, $name:ident, $op:path, $oty:ty, $ity:ident) => {
-        #[inline(always)]
+        #[inline]
         #[target_feature(enable = $ft)]
         #[rustc_legacy_const_generics(1)]
         #[unstable(feature = "stdarch_loongarch", issue = "117427")]
@@ -205,7 +205,7 @@ macro_rules! impl_vuv {
         }
     };
     ($ft:literal, $name:ident, $op:path, $oty:ty, $ity:ident, $ibs:expr) => {
-        #[inline(always)]
+        #[inline]
         #[target_feature(enable = $ft)]
         #[rustc_legacy_const_generics(1)]
         #[unstable(feature = "stdarch_loongarch", issue = "117427")]
@@ -225,7 +225,7 @@ pub(super) use impl_vuv;
 
 macro_rules! impl_vug {
     ($ft:literal, $name:ident, $op:path, $oty:ty, $ity:ident, $gty:ty, $ibs:expr) => {
-        #[inline(always)]
+        #[inline]
         #[target_feature(enable = $ft)]
         #[rustc_legacy_const_generics(1)]
         #[unstable(feature = "stdarch_loongarch", issue = "117427")]
@@ -244,7 +244,7 @@ pub(super) use impl_vug;
 
 macro_rules! impl_vsv {
     ($ft:literal, $name:ident, $op:path, $oty:ty, $ity:ident, $ibs:expr) => {
-        #[inline(always)]
+        #[inline]
         #[target_feature(enable = $ft)]
         #[rustc_legacy_const_generics(1)]
         #[unstable(feature = "stdarch_loongarch", issue = "117427")]
@@ -264,7 +264,7 @@ pub(super) use impl_vsv;
 
 macro_rules! impl_vvvv {
     ($ft:literal, $name:ident, $op:path, $oty:ty, $ity:ty) => {
-        #[inline(always)]
+        #[inline]
         #[target_feature(enable = $ft)]
         #[unstable(feature = "stdarch_loongarch", issue = "117427")]
         pub fn $name(a: $oty, b: $oty, c: $oty) -> $oty {
@@ -283,7 +283,7 @@ pub(super) use impl_vvvv;
 
 macro_rules! impl_vugv {
     ($ft:literal, $name:ident, $op:path, $oty:ty, $ity:ident, $gty:ty, $ibs:expr) => {
-        #[inline(always)]
+        #[inline]
         #[target_feature(enable = $ft)]
         #[rustc_legacy_const_generics(1)]
         #[unstable(feature = "stdarch_loongarch", issue = "117427")]
