@@ -42633,7 +42633,7 @@ pub fn _mm_mask3_fnmsub_round_sd<const ROUNDING: i32>(
     }
 }
 
-/// Fix up the lower single-precision (32-bit) floating-point elements in a and b using the lower 32-bit integer in c, store the result in the lower element of dst, and copy the upper 3 packed elements from a to the upper elements of dst. imm8 is used to set the required flags reporting.
+/// Fix up the lower single-precision (32-bit) floating-point elements in a and b using the lower 32-bit integer in c, store the result in the lower element of dst, and copy the upper 3 packed elements from b to the upper elements of dst. imm8 is used to set the required flags reporting.
 ///
 /// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=mm_fixupimm_ss&expand=2517)
 #[inline]
@@ -42649,12 +42649,12 @@ pub fn _mm_fixupimm_ss<const IMM8: i32>(a: __m128, b: __m128, c: __m128i) -> __m
         let c = c.as_i32x4();
         let r = vfixupimmss(a, b, c, IMM8, 0b11111111, _MM_FROUND_CUR_DIRECTION);
         let fixupimm: f32 = simd_extract!(r, 0);
-        let r = simd_insert!(a, 0, fixupimm);
+        let r = simd_insert!(b, 0, fixupimm);
         transmute(r)
     }
 }
 
-/// Fix up the lower single-precision (32-bit) floating-point elements in a and b using the lower 32-bit integer in c, store the result in the lower element of dst using writemask k (the element is copied from a when mask bit 0 is not set), and copy the upper 3 packed elements from a to the upper elements of dst. imm8 is used to set the required flags reporting.
+/// Fix up the lower single-precision (32-bit) floating-point elements in a and b using the lower 32-bit integer in c, store the result in the lower element of dst using writemask k (the element is copied from a when mask bit 0 is not set), and copy the upper 3 packed elements from b to the upper elements of dst. imm8 is used to set the required flags reporting.
 ///
 /// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=mm_mask_fixupimm_ss&expand=2518)
 #[inline]
@@ -42675,12 +42675,12 @@ pub fn _mm_mask_fixupimm_ss<const IMM8: i32>(
         let c = c.as_i32x4();
         let fixupimm = vfixupimmss(a, b, c, IMM8, k, _MM_FROUND_CUR_DIRECTION);
         let fixupimm: f32 = simd_extract!(fixupimm, 0);
-        let r = simd_insert!(a, 0, fixupimm);
+        let r = simd_insert!(b, 0, fixupimm);
         transmute(r)
     }
 }
 
-/// Fix up the lower single-precision (32-bit) floating-point elements in a and b using the lower 32-bit integer in c, store the result in the lower element of dst using zeromask k (the element is zeroed out when mask bit 0 is not set), and copy the upper 3 packed elements from a to the upper elements of dst. imm8 is used to set the required flags reporting.
+/// Fix up the lower single-precision (32-bit) floating-point elements in a and b using the lower 32-bit integer in c, store the result in the lower element of dst using zeromask k (the element is zeroed out when mask bit 0 is not set), and copy the upper 3 packed elements from b to the upper elements of dst. imm8 is used to set the required flags reporting.
 ///
 /// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=mm_maskz_fixupimm_ss&expand=2519)
 #[inline]
@@ -42701,12 +42701,12 @@ pub fn _mm_maskz_fixupimm_ss<const IMM8: i32>(
         let c = c.as_i32x4();
         let fixupimm = vfixupimmssz(a, b, c, IMM8, k, _MM_FROUND_CUR_DIRECTION);
         let fixupimm: f32 = simd_extract!(fixupimm, 0);
-        let r = simd_insert!(a, 0, fixupimm);
+        let r = simd_insert!(b, 0, fixupimm);
         transmute(r)
     }
 }
 
-/// Fix up the lower double-precision (64-bit) floating-point elements in a and b using the lower 64-bit integer in c, store the result in the lower element of dst, and copy the upper element from a to the upper element of dst. imm8 is used to set the required flags reporting.
+/// Fix up the lower double-precision (64-bit) floating-point elements in a and b using the lower 64-bit integer in c, store the result in the lower element of dst, and copy the upper element from b to the upper element of dst. imm8 is used to set the required flags reporting.
 ///
 /// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=mm_fixupimm_sd&expand=2514)
 #[inline]
@@ -42722,12 +42722,12 @@ pub fn _mm_fixupimm_sd<const IMM8: i32>(a: __m128d, b: __m128d, c: __m128i) -> _
         let c = c.as_i64x2();
         let fixupimm = vfixupimmsd(a, b, c, IMM8, 0b11111111, _MM_FROUND_CUR_DIRECTION);
         let fixupimm: f64 = simd_extract!(fixupimm, 0);
-        let r = simd_insert!(a, 0, fixupimm);
+        let r = simd_insert!(b, 0, fixupimm);
         transmute(r)
     }
 }
 
-/// Fix up the lower double-precision (64-bit) floating-point elements in a and b using the lower 64-bit integer in c, store the result in the lower element of dst using writemask k (the element is copied from a when mask bit 0 is not set), and copy the upper element from a to the upper element of dst. imm8 is used to set the required flags reporting.
+/// Fix up the lower double-precision (64-bit) floating-point elements in a and b using the lower 64-bit integer in c, store the result in the lower element of dst using writemask k (the element is copied from a when mask bit 0 is not set), and copy the upper element from b to the upper element of dst. imm8 is used to set the required flags reporting.
 ///
 /// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=mm_mask_fixupimm_sd&expand=2515)
 #[inline]
@@ -42748,12 +42748,12 @@ pub fn _mm_mask_fixupimm_sd<const IMM8: i32>(
         let c = c.as_i64x2();
         let fixupimm = vfixupimmsd(a, b, c, IMM8, k, _MM_FROUND_CUR_DIRECTION);
         let fixupimm: f64 = simd_extract!(fixupimm, 0);
-        let r = simd_insert!(a, 0, fixupimm);
+        let r = simd_insert!(b, 0, fixupimm);
         transmute(r)
     }
 }
 
-/// Fix up the lower double-precision (64-bit) floating-point elements in a and b using the lower 64-bit integer in c, store the result in the lower element of dst using zeromask k (the element is zeroed out when mask bit 0 is not set), and copy the upper element from a to the upper element of dst. imm8 is used to set the required flags reporting.
+/// Fix up the lower double-precision (64-bit) floating-point elements in a and b using the lower 64-bit integer in c, store the result in the lower element of dst using zeromask k (the element is zeroed out when mask bit 0 is not set), and copy the upper element from b to the upper element of dst. imm8 is used to set the required flags reporting.
 ///
 /// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=mm_maskz_fixupimm_sd&expand=2516)
 #[inline]
@@ -42774,12 +42774,12 @@ pub fn _mm_maskz_fixupimm_sd<const IMM8: i32>(
         let c = c.as_i64x2();
         let fixupimm = vfixupimmsdz(a, b, c, IMM8, k, _MM_FROUND_CUR_DIRECTION);
         let fixupimm: f64 = simd_extract!(fixupimm, 0);
-        let r = simd_insert!(a, 0, fixupimm);
+        let r = simd_insert!(b, 0, fixupimm);
         transmute(r)
     }
 }
 
-/// Fix up the lower single-precision (32-bit) floating-point elements in a and b using the lower 32-bit integer in c, store the result in the lower element of dst, and copy the upper 3 packed elements from a to the upper elements of dst. imm8 is used to set the required flags reporting.\
+/// Fix up the lower single-precision (32-bit) floating-point elements in a and b using the lower 32-bit integer in c, store the result in the lower element of dst, and copy the upper 3 packed elements from b to the upper elements of dst. imm8 is used to set the required flags reporting.\
 /// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
 ///
 /// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=mm_fixupimm_round_ss&expand=2511)
@@ -42801,12 +42801,12 @@ pub fn _mm_fixupimm_round_ss<const IMM8: i32, const SAE: i32>(
         let c = c.as_i32x4();
         let r = vfixupimmss(a, b, c, IMM8, 0b11111111, SAE);
         let fixupimm: f32 = simd_extract!(r, 0);
-        let r = simd_insert!(a, 0, fixupimm);
+        let r = simd_insert!(b, 0, fixupimm);
         transmute(r)
     }
 }
 
-/// Fix up the lower single-precision (32-bit) floating-point elements in a and b using the lower 32-bit integer in c, store the result in the lower element of dst using writemask k (the element is copied from a when mask bit 0 is not set), and copy the upper 3 packed elements from a to the upper elements of dst. imm8 is used to set the required flags reporting.\
+/// Fix up the lower single-precision (32-bit) floating-point elements in a and b using the lower 32-bit integer in c, store the result in the lower element of dst using writemask k (the element is copied from a when mask bit 0 is not set), and copy the upper 3 packed elements from b to the upper elements of dst. imm8 is used to set the required flags reporting.\
 /// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
 ///
 /// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=mm_mask_fixupimm_round_ss&expand=2512)
@@ -42829,12 +42829,12 @@ pub fn _mm_mask_fixupimm_round_ss<const IMM8: i32, const SAE: i32>(
         let c = c.as_i32x4();
         let r = vfixupimmss(a, b, c, IMM8, k, SAE);
         let fixupimm: f32 = simd_extract!(r, 0);
-        let r = simd_insert!(a, 0, fixupimm);
+        let r = simd_insert!(b, 0, fixupimm);
         transmute(r)
     }
 }
 
-/// Fix up the lower single-precision (32-bit) floating-point elements in a and b using the lower 32-bit integer in c, store the result in the lower element of dst using zeromask k (the element is zeroed out when mask bit 0 is not set), and copy the upper 3 packed elements from a to the upper elements of dst. imm8 is used to set the required flags reporting.\
+/// Fix up the lower single-precision (32-bit) floating-point elements in a and b using the lower 32-bit integer in c, store the result in the lower element of dst using zeromask k (the element is zeroed out when mask bit 0 is not set), and copy the upper 3 packed elements from b to the upper elements of dst. imm8 is used to set the required flags reporting.\
 /// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
 ///
 /// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=mm_maskz_fixupimm_round_ss&expand=2513)
@@ -42857,12 +42857,12 @@ pub fn _mm_maskz_fixupimm_round_ss<const IMM8: i32, const SAE: i32>(
         let c = c.as_i32x4();
         let r = vfixupimmssz(a, b, c, IMM8, k, SAE);
         let fixupimm: f32 = simd_extract!(r, 0);
-        let r = simd_insert!(a, 0, fixupimm);
+        let r = simd_insert!(b, 0, fixupimm);
         transmute(r)
     }
 }
 
-/// Fix up the lower double-precision (64-bit) floating-point elements in a and b using the lower 64-bit integer in c, store the result in the lower element of dst, and copy the upper element from a to the upper element of dst. imm8 is used to set the required flags reporting.\
+/// Fix up the lower double-precision (64-bit) floating-point elements in a and b using the lower 64-bit integer in c, store the result in the lower element of dst, and copy the upper element from b to the upper element of dst. imm8 is used to set the required flags reporting.\
 /// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
 ///
 /// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=mm_fixupimm_round_sd&expand=2508)
@@ -42884,12 +42884,12 @@ pub fn _mm_fixupimm_round_sd<const IMM8: i32, const SAE: i32>(
         let c = c.as_i64x2();
         let r = vfixupimmsd(a, b, c, IMM8, 0b11111111, SAE);
         let fixupimm: f64 = simd_extract!(r, 0);
-        let r = simd_insert!(a, 0, fixupimm);
+        let r = simd_insert!(b, 0, fixupimm);
         transmute(r)
     }
 }
 
-/// Fix up the lower double-precision (64-bit) floating-point elements in a and b using the lower 64-bit integer in c, store the result in the lower element of dst using writemask k (the element is copied from a when mask bit 0 is not set), and copy the upper element from a to the upper element of dst. imm8 is used to set the required flags reporting.\
+/// Fix up the lower double-precision (64-bit) floating-point elements in a and b using the lower 64-bit integer in c, store the result in the lower element of dst using writemask k (the element is copied from a when mask bit 0 is not set), and copy the upper element from b to the upper element of dst. imm8 is used to set the required flags reporting.\
 /// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
 ///
 /// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=mm_mask_fixupimm_round_sd&expand=2509)
@@ -42912,12 +42912,12 @@ pub fn _mm_mask_fixupimm_round_sd<const IMM8: i32, const SAE: i32>(
         let c = c.as_i64x2();
         let r = vfixupimmsd(a, b, c, IMM8, k, SAE);
         let fixupimm: f64 = simd_extract!(r, 0);
-        let r = simd_insert!(a, 0, fixupimm);
+        let r = simd_insert!(b, 0, fixupimm);
         transmute(r)
     }
 }
 
-/// Fix up the lower double-precision (64-bit) floating-point elements in a and b using the lower 64-bit integer in c, store the result in the lower element of dst using zeromask k (the element is zeroed out when mask bit 0 is not set), and copy the upper element from a to the upper element of dst. imm8 is used to set the required flags reporting.\
+/// Fix up the lower double-precision (64-bit) floating-point elements in a and b using the lower 64-bit integer in c, store the result in the lower element of dst using zeromask k (the element is zeroed out when mask bit 0 is not set), and copy the upper element from b to the upper element of dst. imm8 is used to set the required flags reporting.\
 /// Exceptions can be suppressed by passing _MM_FROUND_NO_EXC in the sae parameter.
 ///
 /// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=mm_maskz_fixupimm_round_sd&expand=2510)
@@ -42940,7 +42940,7 @@ pub fn _mm_maskz_fixupimm_round_sd<const IMM8: i32, const SAE: i32>(
         let c = c.as_i64x2();
         let r = vfixupimmsdz(a, b, c, IMM8, k, SAE);
         let fixupimm: f64 = simd_extract!(r, 0);
-        let r = simd_insert!(a, 0, fixupimm);
+        let r = simd_insert!(b, 0, fixupimm);
         transmute(r)
     }
 }
@@ -61830,7 +61830,7 @@ mod tests {
         let b = _mm_set1_ps(f32::MAX);
         let c = _mm_set1_epi32(i32::MAX);
         let r = _mm_fixupimm_ss::<5>(a, b, c);
-        let e = _mm_set_ps(0., 0., 0., -0.0);
+        let e = _mm_set_ps(f32::MAX, f32::MAX, f32::MAX, -0.0);
         assert_eq_m128(r, e);
     }
 
@@ -61840,7 +61840,7 @@ mod tests {
         let b = _mm_set1_ps(f32::MAX);
         let c = _mm_set1_epi32(i32::MAX);
         let r = _mm_mask_fixupimm_ss::<5>(a, 0b11111111, b, c);
-        let e = _mm_set_ps(0., 0., 0., -0.0);
+        let e = _mm_set_ps(f32::MAX, f32::MAX, f32::MAX, -0.0);
         assert_eq_m128(r, e);
     }
 
@@ -61850,10 +61850,10 @@ mod tests {
         let b = _mm_set1_ps(f32::MAX);
         let c = _mm_set1_epi32(i32::MAX);
         let r = _mm_maskz_fixupimm_ss::<5>(0b00000000, a, b, c);
-        let e = _mm_set_ps(0., 0., 0., 0.0);
+        let e = _mm_set_ps(f32::MAX, f32::MAX, f32::MAX, 0.0);
         assert_eq_m128(r, e);
         let r = _mm_maskz_fixupimm_ss::<5>(0b11111111, a, b, c);
-        let e = _mm_set_ps(0., 0., 0., -0.0);
+        let e = _mm_set_ps(f32::MAX, f32::MAX, f32::MAX, -0.0);
         assert_eq_m128(r, e);
     }
 
@@ -61863,7 +61863,7 @@ mod tests {
         let b = _mm_set1_pd(f64::MAX);
         let c = _mm_set1_epi64x(i32::MAX as i64);
         let r = _mm_fixupimm_sd::<5>(a, b, c);
-        let e = _mm_set_pd(0., -0.0);
+        let e = _mm_set_pd(f64::MAX, -0.0);
         assert_eq_m128d(r, e);
     }
 
@@ -61873,7 +61873,7 @@ mod tests {
         let b = _mm_set1_pd(f64::MAX);
         let c = _mm_set1_epi64x(i32::MAX as i64);
         let r = _mm_mask_fixupimm_sd::<5>(a, 0b11111111, b, c);
-        let e = _mm_set_pd(0., -0.0);
+        let e = _mm_set_pd(f64::MAX, -0.0);
         assert_eq_m128d(r, e);
     }
 
@@ -61883,10 +61883,10 @@ mod tests {
         let b = _mm_set1_pd(f64::MAX);
         let c = _mm_set1_epi64x(i32::MAX as i64);
         let r = _mm_maskz_fixupimm_sd::<5>(0b00000000, a, b, c);
-        let e = _mm_set_pd(0., 0.0);
+        let e = _mm_set_pd(f64::MAX, 0.0);
         assert_eq_m128d(r, e);
         let r = _mm_maskz_fixupimm_sd::<5>(0b11111111, a, b, c);
-        let e = _mm_set_pd(0., -0.0);
+        let e = _mm_set_pd(f64::MAX, -0.0);
         assert_eq_m128d(r, e);
     }
 
@@ -61896,7 +61896,7 @@ mod tests {
         let b = _mm_set1_ps(f32::MAX);
         let c = _mm_set1_epi32(i32::MAX);
         let r = _mm_fixupimm_round_ss::<5, _MM_FROUND_CUR_DIRECTION>(a, b, c);
-        let e = _mm_set_ps(1., 0., 0., -0.0);
+        let e = _mm_set_ps(f32::MAX, f32::MAX, f32::MAX, -0.0);
         assert_eq_m128(r, e);
     }
 
@@ -61906,7 +61906,7 @@ mod tests {
         let b = _mm_set1_ps(f32::MAX);
         let c = _mm_set1_epi32(i32::MAX);
         let r = _mm_mask_fixupimm_round_ss::<5, _MM_FROUND_CUR_DIRECTION>(a, 0b11111111, b, c);
-        let e = _mm_set_ps(0., 0., 0., -0.0);
+        let e = _mm_set_ps(f32::MAX, f32::MAX, f32::MAX, -0.0);
         assert_eq_m128(r, e);
     }
 
@@ -61916,10 +61916,10 @@ mod tests {
         let b = _mm_set1_ps(f32::MAX);
         let c = _mm_set1_epi32(i32::MAX);
         let r = _mm_maskz_fixupimm_round_ss::<5, _MM_FROUND_CUR_DIRECTION>(0b00000000, a, b, c);
-        let e = _mm_set_ps(0., 0., 0., 0.0);
+        let e = _mm_set_ps(f32::MAX, f32::MAX, f32::MAX, 0.0);
         assert_eq_m128(r, e);
         let r = _mm_maskz_fixupimm_round_ss::<5, _MM_FROUND_CUR_DIRECTION>(0b11111111, a, b, c);
-        let e = _mm_set_ps(0., 0., 0., -0.0);
+        let e = _mm_set_ps(f32::MAX, f32::MAX, f32::MAX, -0.0);
         assert_eq_m128(r, e);
     }
 
@@ -61929,7 +61929,7 @@ mod tests {
         let b = _mm_set1_pd(f64::MAX);
         let c = _mm_set1_epi64x(i32::MAX as i64);
         let r = _mm_fixupimm_round_sd::<5, _MM_FROUND_CUR_DIRECTION>(a, b, c);
-        let e = _mm_set_pd(0., -0.0);
+        let e = _mm_set_pd(f64::MAX, -0.0);
         assert_eq_m128d(r, e);
     }
 
@@ -61939,7 +61939,7 @@ mod tests {
         let b = _mm_set1_pd(f64::MAX);
         let c = _mm_set1_epi64x(i32::MAX as i64);
         let r = _mm_mask_fixupimm_round_sd::<5, _MM_FROUND_CUR_DIRECTION>(a, 0b11111111, b, c);
-        let e = _mm_set_pd(0., -0.0);
+        let e = _mm_set_pd(f64::MAX, -0.0);
         assert_eq_m128d(r, e);
     }
 
@@ -61949,10 +61949,10 @@ mod tests {
         let b = _mm_set1_pd(f64::MAX);
         let c = _mm_set1_epi64x(i32::MAX as i64);
         let r = _mm_maskz_fixupimm_round_sd::<5, _MM_FROUND_CUR_DIRECTION>(0b00000000, a, b, c);
-        let e = _mm_set_pd(0., 0.0);
+        let e = _mm_set_pd(f64::MAX, 0.0);
         assert_eq_m128d(r, e);
         let r = _mm_maskz_fixupimm_round_sd::<5, _MM_FROUND_CUR_DIRECTION>(0b11111111, a, b, c);
-        let e = _mm_set_pd(0., -0.0);
+        let e = _mm_set_pd(f64::MAX, -0.0);
         assert_eq_m128d(r, e);
     }
 
