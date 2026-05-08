@@ -35104,114 +35104,6 @@
     ]
   },
   {
-    "SIMD_ISA": "SVE2",
-    "name": "svcntp_c16",
-    "arguments": [
-      "svcount_t pnn",
-      "uint64_t vl"
-    ],
-    "return_type": {
-      "value": "uint64_t"
-    },
-    "Arguments_Preparation": {
-      "pnn": {
-        "register": "PNreg1.H"
-      },
-      "vl": {
-        "immediate": "<VL>"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "CNTP"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svcntp_c32",
-    "arguments": [
-      "svcount_t pnn",
-      "uint64_t vl"
-    ],
-    "return_type": {
-      "value": "uint64_t"
-    },
-    "Arguments_Preparation": {
-      "pnn": {
-        "register": "PNreg1.S"
-      },
-      "vl": {
-        "immediate": "<VL>"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "CNTP"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svcntp_c64",
-    "arguments": [
-      "svcount_t pnn",
-      "uint64_t vl"
-    ],
-    "return_type": {
-      "value": "uint64_t"
-    },
-    "Arguments_Preparation": {
-      "pnn": {
-        "register": "PNreg1.D"
-      },
-      "vl": {
-        "immediate": "<VL>"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "CNTP"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svcntp_c8",
-    "arguments": [
-      "svcount_t pnn",
-      "uint64_t vl"
-    ],
-    "return_type": {
-      "value": "uint64_t"
-    },
-    "Arguments_Preparation": {
-      "pnn": {
-        "register": "PNreg1.B"
-      },
-      "vl": {
-        "immediate": "<VL>"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "CNTP"
-      ]
-    ]
-  },
-  {
     "SIMD_ISA": "SVE",
     "name": "svcntw",
     "arguments": [],
@@ -35407,20 +35299,6 @@
       [
         "COMPACT"
       ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svcreate2[_b]",
-    "arguments": [
-      "svbool_t x",
-      "svbool_t y"
-    ],
-    "return_type": {
-      "value": "svboolx2_t"
-    },
-    "Architectures": [
-      "A64"
     ]
   },
   {
@@ -35737,22 +35615,6 @@
     ],
     "return_type": {
       "value": "svuint8x3_t"
-    },
-    "Architectures": [
-      "A64"
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svcreate4[_b]",
-    "arguments": [
-      "svbool_t x",
-      "svbool_t y",
-      "svbool_t z",
-      "svbool_t w"
-    ],
-    "return_type": {
-      "value": "svboolx4_t"
     },
     "Architectures": [
       "A64"
@@ -51306,20 +51168,6 @@
     ]
   },
   {
-    "SIMD_ISA": "SVE2",
-    "name": "svget2[_b]",
-    "arguments": [
-      "svboolx2_t tuple",
-      "uint64_t imm_index"
-    ],
-    "return_type": {
-      "value": "svbool_t"
-    },
-    "Architectures": [
-      "A64"
-    ]
-  },
-  {
     "SIMD_ISA": "SVE",
     "name": "svget2[_f16]",
     "arguments": [
@@ -51622,20 +51470,6 @@
     ],
     "return_type": {
       "value": "svuint8_t"
-    },
-    "Architectures": [
-      "A64"
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svget4[_b]",
-    "arguments": [
-      "svboolx4_t tuple",
-      "uint64_t imm_index"
-    ],
-    "return_type": {
-      "value": "svbool_t"
     },
     "Architectures": [
       "A64"
@@ -58514,60 +58348,6 @@
     ]
   },
   {
-    "SIMD_ISA": "SVE2",
-    "name": "svld1[_f16]_x2",
-    "arguments": [
-      "svcount_t png",
-      "float16_t const * rn"
-    ],
-    "return_type": {
-      "value": "svfloat16x2_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "LD1H"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svld1[_f16]_x4",
-    "arguments": [
-      "svcount_t png",
-      "float16_t const * rn"
-    ],
-    "return_type": {
-      "value": "svfloat16x4_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "LD1H"
-      ]
-    ]
-  },
-  {
     "SIMD_ISA": "SVE",
     "name": "svld1[_f32]",
     "arguments": [
@@ -58592,60 +58372,6 @@
       [
         "LD1W"
       ],
-      [
-        "LD1W"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svld1[_f32]_x2",
-    "arguments": [
-      "svcount_t png",
-      "float32_t const * rn"
-    ],
-    "return_type": {
-      "value": "svfloat32x2_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "LD1W"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svld1[_f32]_x4",
-    "arguments": [
-      "svcount_t png",
-      "float32_t const * rn"
-    ],
-    "return_type": {
-      "value": "svfloat32x4_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
       [
         "LD1W"
       ]
@@ -58682,60 +58408,6 @@
     ]
   },
   {
-    "SIMD_ISA": "SVE2",
-    "name": "svld1[_f64]_x2",
-    "arguments": [
-      "svcount_t png",
-      "float64_t const * rn"
-    ],
-    "return_type": {
-      "value": "svfloat64x2_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "LD1D"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svld1[_f64]_x4",
-    "arguments": [
-      "svcount_t png",
-      "float64_t const * rn"
-    ],
-    "return_type": {
-      "value": "svfloat64x4_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "LD1D"
-      ]
-    ]
-  },
-  {
     "SIMD_ISA": "SVE",
     "name": "svld1[_s16]",
     "arguments": [
@@ -58760,60 +58432,6 @@
       [
         "LD1H"
       ],
-      [
-        "LD1H"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svld1[_s16]_x2",
-    "arguments": [
-      "svcount_t png",
-      "int16_t const * rn"
-    ],
-    "return_type": {
-      "value": "svint16x2_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "LD1H"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svld1[_s16]_x4",
-    "arguments": [
-      "svcount_t png",
-      "int16_t const * rn"
-    ],
-    "return_type": {
-      "value": "svint16x4_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
       [
         "LD1H"
       ]
@@ -58850,60 +58468,6 @@
     ]
   },
   {
-    "SIMD_ISA": "SVE2",
-    "name": "svld1[_s32]_x2",
-    "arguments": [
-      "svcount_t png",
-      "int32_t const * rn"
-    ],
-    "return_type": {
-      "value": "svint32x2_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "LD1W"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svld1[_s32]_x4",
-    "arguments": [
-      "svcount_t png",
-      "int32_t const * rn"
-    ],
-    "return_type": {
-      "value": "svint32x4_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "LD1W"
-      ]
-    ]
-  },
-  {
     "SIMD_ISA": "SVE",
     "name": "svld1[_s64]",
     "arguments": [
@@ -58928,60 +58492,6 @@
       [
         "LD1D"
       ],
-      [
-        "LD1D"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svld1[_s64]_x2",
-    "arguments": [
-      "svcount_t png",
-      "int64_t const * rn"
-    ],
-    "return_type": {
-      "value": "svint64x2_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "LD1D"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svld1[_s64]_x4",
-    "arguments": [
-      "svcount_t png",
-      "int64_t const * rn"
-    ],
-    "return_type": {
-      "value": "svint64x4_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
       [
         "LD1D"
       ]
@@ -59018,60 +58528,6 @@
     ]
   },
   {
-    "SIMD_ISA": "SVE2",
-    "name": "svld1[_s8]_x2",
-    "arguments": [
-      "svcount_t png",
-      "int8_t const * rn"
-    ],
-    "return_type": {
-      "value": "svint8x2_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "LD1B"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svld1[_s8]_x4",
-    "arguments": [
-      "svcount_t png",
-      "int8_t const * rn"
-    ],
-    "return_type": {
-      "value": "svint8x4_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "LD1B"
-      ]
-    ]
-  },
-  {
     "SIMD_ISA": "SVE",
     "name": "svld1[_u16]",
     "arguments": [
@@ -59096,60 +58552,6 @@
       [
         "LD1H"
       ],
-      [
-        "LD1H"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svld1[_u16]_x2",
-    "arguments": [
-      "svcount_t png",
-      "uint16_t const * rn"
-    ],
-    "return_type": {
-      "value": "svuint16x2_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "LD1H"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svld1[_u16]_x4",
-    "arguments": [
-      "svcount_t png",
-      "uint16_t const * rn"
-    ],
-    "return_type": {
-      "value": "svuint16x4_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
       [
         "LD1H"
       ]
@@ -59186,60 +58588,6 @@
     ]
   },
   {
-    "SIMD_ISA": "SVE2",
-    "name": "svld1[_u32]_x2",
-    "arguments": [
-      "svcount_t png",
-      "uint32_t const * rn"
-    ],
-    "return_type": {
-      "value": "svuint32x2_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "LD1W"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svld1[_u32]_x4",
-    "arguments": [
-      "svcount_t png",
-      "uint32_t const * rn"
-    ],
-    "return_type": {
-      "value": "svuint32x4_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "LD1W"
-      ]
-    ]
-  },
-  {
     "SIMD_ISA": "SVE",
     "name": "svld1[_u64]",
     "arguments": [
@@ -59270,60 +58618,6 @@
     ]
   },
   {
-    "SIMD_ISA": "SVE2",
-    "name": "svld1[_u64]_x2",
-    "arguments": [
-      "svcount_t png",
-      "uint64_t const * rn"
-    ],
-    "return_type": {
-      "value": "svuint64x2_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "LD1D"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svld1[_u64]_x4",
-    "arguments": [
-      "svcount_t png",
-      "uint64_t const * rn"
-    ],
-    "return_type": {
-      "value": "svuint64x4_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "LD1D"
-      ]
-    ]
-  },
-  {
     "SIMD_ISA": "SVE",
     "name": "svld1[_u8]",
     "arguments": [
@@ -59348,60 +58642,6 @@
       [
         "LD1B"
       ],
-      [
-        "LD1B"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svld1[_u8]_x2",
-    "arguments": [
-      "svcount_t png",
-      "uint8_t const * rn"
-    ],
-    "return_type": {
-      "value": "svuint8x2_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "LD1B"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svld1[_u8]_x4",
-    "arguments": [
-      "svcount_t png",
-      "uint8_t const * rn"
-    ],
-    "return_type": {
-      "value": "svuint8x4_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
       [
         "LD1B"
       ]
@@ -60756,72 +59996,6 @@
     ]
   },
   {
-    "SIMD_ISA": "SVE2",
-    "name": "svld1_vnum[_f16]_x2",
-    "arguments": [
-      "svcount_t png",
-      "float16_t const * rn",
-      "int64_t vnum"
-    ],
-    "return_type": {
-      "value": "svfloat16x2_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
-        "LD1H"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svld1_vnum[_f16]_x4",
-    "arguments": [
-      "svcount_t png",
-      "float16_t const * rn",
-      "int64_t vnum"
-    ],
-    "return_type": {
-      "value": "svfloat16x4_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
-        "LD1H"
-      ]
-    ]
-  },
-  {
     "SIMD_ISA": "SVE",
     "name": "svld1_vnum[_f32]",
     "arguments": [
@@ -60851,72 +60025,6 @@
         "LD1W"
       ],
       [
-        "LD1W"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svld1_vnum[_f32]_x2",
-    "arguments": [
-      "svcount_t png",
-      "float32_t const * rn",
-      "int64_t vnum"
-    ],
-    "return_type": {
-      "value": "svfloat32x2_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
-        "LD1W"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svld1_vnum[_f32]_x4",
-    "arguments": [
-      "svcount_t png",
-      "float32_t const * rn",
-      "int64_t vnum"
-    ],
-    "return_type": {
-      "value": "svfloat32x4_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
         "LD1W"
       ]
     ]
@@ -60956,72 +60064,6 @@
     ]
   },
   {
-    "SIMD_ISA": "SVE2",
-    "name": "svld1_vnum[_f64]_x2",
-    "arguments": [
-      "svcount_t png",
-      "float64_t const * rn",
-      "int64_t vnum"
-    ],
-    "return_type": {
-      "value": "svfloat64x2_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
-        "LD1D"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svld1_vnum[_f64]_x4",
-    "arguments": [
-      "svcount_t png",
-      "float64_t const * rn",
-      "int64_t vnum"
-    ],
-    "return_type": {
-      "value": "svfloat64x4_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
-        "LD1D"
-      ]
-    ]
-  },
-  {
     "SIMD_ISA": "SVE",
     "name": "svld1_vnum[_s16]",
     "arguments": [
@@ -61051,72 +60093,6 @@
         "LD1H"
       ],
       [
-        "LD1H"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svld1_vnum[_s16]_x2",
-    "arguments": [
-      "svcount_t png",
-      "int16_t const * rn",
-      "int64_t vnum"
-    ],
-    "return_type": {
-      "value": "svint16x2_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
-        "LD1H"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svld1_vnum[_s16]_x4",
-    "arguments": [
-      "svcount_t png",
-      "int16_t const * rn",
-      "int64_t vnum"
-    ],
-    "return_type": {
-      "value": "svint16x4_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
         "LD1H"
       ]
     ]
@@ -61156,72 +60132,6 @@
     ]
   },
   {
-    "SIMD_ISA": "SVE2",
-    "name": "svld1_vnum[_s32]_x2",
-    "arguments": [
-      "svcount_t png",
-      "int32_t const * rn",
-      "int64_t vnum"
-    ],
-    "return_type": {
-      "value": "svint32x2_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
-        "LD1W"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svld1_vnum[_s32]_x4",
-    "arguments": [
-      "svcount_t png",
-      "int32_t const * rn",
-      "int64_t vnum"
-    ],
-    "return_type": {
-      "value": "svint32x4_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
-        "LD1W"
-      ]
-    ]
-  },
-  {
     "SIMD_ISA": "SVE",
     "name": "svld1_vnum[_s64]",
     "arguments": [
@@ -61251,72 +60161,6 @@
         "LD1D"
       ],
       [
-        "LD1D"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svld1_vnum[_s64]_x2",
-    "arguments": [
-      "svcount_t png",
-      "int64_t const * rn",
-      "int64_t vnum"
-    ],
-    "return_type": {
-      "value": "svint64x2_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
-        "LD1D"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svld1_vnum[_s64]_x4",
-    "arguments": [
-      "svcount_t png",
-      "int64_t const * rn",
-      "int64_t vnum"
-    ],
-    "return_type": {
-      "value": "svint64x4_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
         "LD1D"
       ]
     ]
@@ -61356,72 +60200,6 @@
     ]
   },
   {
-    "SIMD_ISA": "SVE2",
-    "name": "svld1_vnum[_s8]_x2",
-    "arguments": [
-      "svcount_t png",
-      "int8_t const * rn",
-      "int64_t vnum"
-    ],
-    "return_type": {
-      "value": "svint8x2_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MUL",
-        "LD1B"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svld1_vnum[_s8]_x4",
-    "arguments": [
-      "svcount_t png",
-      "int8_t const * rn",
-      "int64_t vnum"
-    ],
-    "return_type": {
-      "value": "svint8x4_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MUL",
-        "LD1B"
-      ]
-    ]
-  },
-  {
     "SIMD_ISA": "SVE",
     "name": "svld1_vnum[_u16]",
     "arguments": [
@@ -61451,72 +60229,6 @@
         "LD1H"
       ],
       [
-        "LD1H"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svld1_vnum[_u16]_x2",
-    "arguments": [
-      "svcount_t png",
-      "uint16_t const * rn",
-      "int64_t vnum"
-    ],
-    "return_type": {
-      "value": "svuint16x2_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
-        "LD1H"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svld1_vnum[_u16]_x4",
-    "arguments": [
-      "svcount_t png",
-      "uint16_t const * rn",
-      "int64_t vnum"
-    ],
-    "return_type": {
-      "value": "svuint16x4_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
         "LD1H"
       ]
     ]
@@ -61556,72 +60268,6 @@
     ]
   },
   {
-    "SIMD_ISA": "SVE2",
-    "name": "svld1_vnum[_u32]_x2",
-    "arguments": [
-      "svcount_t png",
-      "uint32_t const * rn",
-      "int64_t vnum"
-    ],
-    "return_type": {
-      "value": "svuint32x2_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
-        "LD1W"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svld1_vnum[_u32]_x4",
-    "arguments": [
-      "svcount_t png",
-      "uint32_t const * rn",
-      "int64_t vnum"
-    ],
-    "return_type": {
-      "value": "svuint32x4_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
-        "LD1W"
-      ]
-    ]
-  },
-  {
     "SIMD_ISA": "SVE",
     "name": "svld1_vnum[_u64]",
     "arguments": [
@@ -61656,72 +60302,6 @@
     ]
   },
   {
-    "SIMD_ISA": "SVE2",
-    "name": "svld1_vnum[_u64]_x2",
-    "arguments": [
-      "svcount_t png",
-      "uint64_t const * rn",
-      "int64_t vnum"
-    ],
-    "return_type": {
-      "value": "svuint64x2_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
-        "LD1D"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svld1_vnum[_u64]_x4",
-    "arguments": [
-      "svcount_t png",
-      "uint64_t const * rn",
-      "int64_t vnum"
-    ],
-    "return_type": {
-      "value": "svuint64x4_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
-        "LD1D"
-      ]
-    ]
-  },
-  {
     "SIMD_ISA": "SVE",
     "name": "svld1_vnum[_u8]",
     "arguments": [
@@ -61751,72 +60331,6 @@
         "LD1B"
       ],
       [
-        "LD1B"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svld1_vnum[_u8]_x2",
-    "arguments": [
-      "svcount_t png",
-      "uint8_t const * rn",
-      "int64_t vnum"
-    ],
-    "return_type": {
-      "value": "svuint8x2_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MUL",
-        "LD1B"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svld1_vnum[_u8]_x4",
-    "arguments": [
-      "svcount_t png",
-      "uint8_t const * rn",
-      "int64_t vnum"
-    ],
-    "return_type": {
-      "value": "svuint8x4_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MUL",
         "LD1B"
       ]
     ]
@@ -79034,60 +77548,6 @@
     ]
   },
   {
-    "SIMD_ISA": "SVE2",
-    "name": "svldnt1[_f16]_x2",
-    "arguments": [
-      "svcount_t png",
-      "float16_t const * rn"
-    ],
-    "return_type": {
-      "value": "svfloat16x2_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "LDNT1H"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svldnt1[_f16]_x4",
-    "arguments": [
-      "svcount_t png",
-      "float16_t const * rn"
-    ],
-    "return_type": {
-      "value": "svfloat16x4_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "LDNT1H"
-      ]
-    ]
-  },
-  {
     "SIMD_ISA": "SVE",
     "name": "svldnt1[_f32]",
     "arguments": [
@@ -79112,60 +77572,6 @@
       [
         "LDNT1W"
       ],
-      [
-        "LDNT1W"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svldnt1[_f32]_x2",
-    "arguments": [
-      "svcount_t png",
-      "float32_t const * rn"
-    ],
-    "return_type": {
-      "value": "svfloat32x2_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "LDNT1W"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svldnt1[_f32]_x4",
-    "arguments": [
-      "svcount_t png",
-      "float32_t const * rn"
-    ],
-    "return_type": {
-      "value": "svfloat32x4_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
       [
         "LDNT1W"
       ]
@@ -79202,60 +77608,6 @@
     ]
   },
   {
-    "SIMD_ISA": "SVE2",
-    "name": "svldnt1[_f64]_x2",
-    "arguments": [
-      "svcount_t png",
-      "float64_t const * rn"
-    ],
-    "return_type": {
-      "value": "svfloat64x2_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "LDNT1D"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svldnt1[_f64]_x4",
-    "arguments": [
-      "svcount_t png",
-      "float64_t const * rn"
-    ],
-    "return_type": {
-      "value": "svfloat64x4_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "LDNT1D"
-      ]
-    ]
-  },
-  {
     "SIMD_ISA": "SVE",
     "name": "svldnt1[_s16]",
     "arguments": [
@@ -79280,60 +77632,6 @@
       [
         "LDNT1H"
       ],
-      [
-        "LDNT1H"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svldnt1[_s16]_x2",
-    "arguments": [
-      "svcount_t png",
-      "int16_t const * rn"
-    ],
-    "return_type": {
-      "value": "svint16x2_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "LDNT1H"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svldnt1[_s16]_x4",
-    "arguments": [
-      "svcount_t png",
-      "int16_t const * rn"
-    ],
-    "return_type": {
-      "value": "svint16x4_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
       [
         "LDNT1H"
       ]
@@ -79370,60 +77668,6 @@
     ]
   },
   {
-    "SIMD_ISA": "SVE2",
-    "name": "svldnt1[_s32]_x2",
-    "arguments": [
-      "svcount_t png",
-      "int32_t const * rn"
-    ],
-    "return_type": {
-      "value": "svint32x2_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "LDNT1W"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svldnt1[_s32]_x4",
-    "arguments": [
-      "svcount_t png",
-      "int32_t const * rn"
-    ],
-    "return_type": {
-      "value": "svint32x4_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "LDNT1W"
-      ]
-    ]
-  },
-  {
     "SIMD_ISA": "SVE",
     "name": "svldnt1[_s64]",
     "arguments": [
@@ -79448,60 +77692,6 @@
       [
         "LDNT1D"
       ],
-      [
-        "LDNT1D"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svldnt1[_s64]_x2",
-    "arguments": [
-      "svcount_t png",
-      "int64_t const * rn"
-    ],
-    "return_type": {
-      "value": "svint64x2_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "LDNT1D"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svldnt1[_s64]_x4",
-    "arguments": [
-      "svcount_t png",
-      "int64_t const * rn"
-    ],
-    "return_type": {
-      "value": "svint64x4_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
       [
         "LDNT1D"
       ]
@@ -79538,60 +77728,6 @@
     ]
   },
   {
-    "SIMD_ISA": "SVE2",
-    "name": "svldnt1[_s8]_x2",
-    "arguments": [
-      "svcount_t png",
-      "int8_t const * rn"
-    ],
-    "return_type": {
-      "value": "svint8x2_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "LDNT1B"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svldnt1[_s8]_x4",
-    "arguments": [
-      "svcount_t png",
-      "int8_t const * rn"
-    ],
-    "return_type": {
-      "value": "svint8x4_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "LDNT1B"
-      ]
-    ]
-  },
-  {
     "SIMD_ISA": "SVE",
     "name": "svldnt1[_u16]",
     "arguments": [
@@ -79616,60 +77752,6 @@
       [
         "LDNT1H"
       ],
-      [
-        "LDNT1H"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svldnt1[_u16]_x2",
-    "arguments": [
-      "svcount_t png",
-      "uint16_t const * rn"
-    ],
-    "return_type": {
-      "value": "svuint16x2_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "LDNT1H"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svldnt1[_u16]_x4",
-    "arguments": [
-      "svcount_t png",
-      "uint16_t const * rn"
-    ],
-    "return_type": {
-      "value": "svuint16x4_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
       [
         "LDNT1H"
       ]
@@ -79706,60 +77788,6 @@
     ]
   },
   {
-    "SIMD_ISA": "SVE2",
-    "name": "svldnt1[_u32]_x2",
-    "arguments": [
-      "svcount_t png",
-      "uint32_t const * rn"
-    ],
-    "return_type": {
-      "value": "svuint32x2_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "LDNT1W"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svldnt1[_u32]_x4",
-    "arguments": [
-      "svcount_t png",
-      "uint32_t const * rn"
-    ],
-    "return_type": {
-      "value": "svuint32x4_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "LDNT1W"
-      ]
-    ]
-  },
-  {
     "SIMD_ISA": "SVE",
     "name": "svldnt1[_u64]",
     "arguments": [
@@ -79790,60 +77818,6 @@
     ]
   },
   {
-    "SIMD_ISA": "SVE2",
-    "name": "svldnt1[_u64]_x2",
-    "arguments": [
-      "svcount_t png",
-      "uint64_t const * rn"
-    ],
-    "return_type": {
-      "value": "svuint64x2_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "LDNT1D"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svldnt1[_u64]_x4",
-    "arguments": [
-      "svcount_t png",
-      "uint64_t const * rn"
-    ],
-    "return_type": {
-      "value": "svuint64x4_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "LDNT1D"
-      ]
-    ]
-  },
-  {
     "SIMD_ISA": "SVE",
     "name": "svldnt1[_u8]",
     "arguments": [
@@ -79868,60 +77842,6 @@
       [
         "LDNT1B"
       ],
-      [
-        "LDNT1B"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svldnt1[_u8]_x2",
-    "arguments": [
-      "svcount_t png",
-      "uint8_t const * rn"
-    ],
-    "return_type": {
-      "value": "svuint8x2_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "LDNT1B"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svldnt1[_u8]_x4",
-    "arguments": [
-      "svcount_t png",
-      "uint8_t const * rn"
-    ],
-    "return_type": {
-      "value": "svuint8x4_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
       [
         "LDNT1B"
       ]
@@ -80961,72 +78881,6 @@
     ]
   },
   {
-    "SIMD_ISA": "SVE2",
-    "name": "svldnt1_vnum[_f16]_x2",
-    "arguments": [
-      "svcount_t png",
-      "float16_t const * rn",
-      "int64_t vnum"
-    ],
-    "return_type": {
-      "value": "svfloat16x2_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
-        "LDNT1H"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svldnt1_vnum[_f16]_x4",
-    "arguments": [
-      "svcount_t png",
-      "float16_t const * rn",
-      "int64_t vnum"
-    ],
-    "return_type": {
-      "value": "svfloat16x4_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
-        "LDNT1H"
-      ]
-    ]
-  },
-  {
     "SIMD_ISA": "SVE",
     "name": "svldnt1_vnum[_f32]",
     "arguments": [
@@ -81056,72 +78910,6 @@
         "LDNT1W"
       ],
       [
-        "LDNT1W"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svldnt1_vnum[_f32]_x2",
-    "arguments": [
-      "svcount_t png",
-      "float32_t const * rn",
-      "int64_t vnum"
-    ],
-    "return_type": {
-      "value": "svfloat32x2_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
-        "LDNT1W"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svldnt1_vnum[_f32]_x4",
-    "arguments": [
-      "svcount_t png",
-      "float32_t const * rn",
-      "int64_t vnum"
-    ],
-    "return_type": {
-      "value": "svfloat32x4_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
         "LDNT1W"
       ]
     ]
@@ -81161,72 +78949,6 @@
     ]
   },
   {
-    "SIMD_ISA": "SVE2",
-    "name": "svldnt1_vnum[_f64]_x2",
-    "arguments": [
-      "svcount_t png",
-      "float64_t const * rn",
-      "int64_t vnum"
-    ],
-    "return_type": {
-      "value": "svfloat64x2_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
-        "LDNT1D"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svldnt1_vnum[_f64]_x4",
-    "arguments": [
-      "svcount_t png",
-      "float64_t const * rn",
-      "int64_t vnum"
-    ],
-    "return_type": {
-      "value": "svfloat64x4_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
-        "LDNT1D"
-      ]
-    ]
-  },
-  {
     "SIMD_ISA": "SVE",
     "name": "svldnt1_vnum[_s16]",
     "arguments": [
@@ -81256,72 +78978,6 @@
         "LDNT1H"
       ],
       [
-        "LDNT1H"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svldnt1_vnum[_s16]_x2",
-    "arguments": [
-      "svcount_t png",
-      "int16_t const * rn",
-      "int64_t vnum"
-    ],
-    "return_type": {
-      "value": "svint16x2_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
-        "LDNT1H"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svldnt1_vnum[_s16]_x4",
-    "arguments": [
-      "svcount_t png",
-      "int16_t const * rn",
-      "int64_t vnum"
-    ],
-    "return_type": {
-      "value": "svint16x4_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
         "LDNT1H"
       ]
     ]
@@ -81361,72 +79017,6 @@
     ]
   },
   {
-    "SIMD_ISA": "SVE2",
-    "name": "svldnt1_vnum[_s32]_x2",
-    "arguments": [
-      "svcount_t png",
-      "int32_t const * rn",
-      "int64_t vnum"
-    ],
-    "return_type": {
-      "value": "svint32x2_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
-        "LDNT1W"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svldnt1_vnum[_s32]_x4",
-    "arguments": [
-      "svcount_t png",
-      "int32_t const * rn",
-      "int64_t vnum"
-    ],
-    "return_type": {
-      "value": "svint32x4_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
-        "LDNT1W"
-      ]
-    ]
-  },
-  {
     "SIMD_ISA": "SVE",
     "name": "svldnt1_vnum[_s64]",
     "arguments": [
@@ -81456,72 +79046,6 @@
         "LDNT1D"
       ],
       [
-        "LDNT1D"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svldnt1_vnum[_s64]_x2",
-    "arguments": [
-      "svcount_t png",
-      "int64_t const * rn",
-      "int64_t vnum"
-    ],
-    "return_type": {
-      "value": "svint64x2_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
-        "LDNT1D"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svldnt1_vnum[_s64]_x4",
-    "arguments": [
-      "svcount_t png",
-      "int64_t const * rn",
-      "int64_t vnum"
-    ],
-    "return_type": {
-      "value": "svint64x4_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
         "LDNT1D"
       ]
     ]
@@ -81561,72 +79085,6 @@
     ]
   },
   {
-    "SIMD_ISA": "SVE2",
-    "name": "svldnt1_vnum[_s8]_x2",
-    "arguments": [
-      "svcount_t png",
-      "int8_t const * rn",
-      "int64_t vnum"
-    ],
-    "return_type": {
-      "value": "svint8x2_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MUL",
-        "LDNT1B"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svldnt1_vnum[_s8]_x4",
-    "arguments": [
-      "svcount_t png",
-      "int8_t const * rn",
-      "int64_t vnum"
-    ],
-    "return_type": {
-      "value": "svint8x4_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MUL",
-        "LDNT1B"
-      ]
-    ]
-  },
-  {
     "SIMD_ISA": "SVE",
     "name": "svldnt1_vnum[_u16]",
     "arguments": [
@@ -81656,72 +79114,6 @@
         "LDNT1H"
       ],
       [
-        "LDNT1H"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svldnt1_vnum[_u16]_x2",
-    "arguments": [
-      "svcount_t png",
-      "uint16_t const * rn",
-      "int64_t vnum"
-    ],
-    "return_type": {
-      "value": "svuint16x2_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
-        "LDNT1H"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svldnt1_vnum[_u16]_x4",
-    "arguments": [
-      "svcount_t png",
-      "uint16_t const * rn",
-      "int64_t vnum"
-    ],
-    "return_type": {
-      "value": "svuint16x4_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
         "LDNT1H"
       ]
     ]
@@ -81761,72 +79153,6 @@
     ]
   },
   {
-    "SIMD_ISA": "SVE2",
-    "name": "svldnt1_vnum[_u32]_x2",
-    "arguments": [
-      "svcount_t png",
-      "uint32_t const * rn",
-      "int64_t vnum"
-    ],
-    "return_type": {
-      "value": "svuint32x2_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
-        "LDNT1W"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svldnt1_vnum[_u32]_x4",
-    "arguments": [
-      "svcount_t png",
-      "uint32_t const * rn",
-      "int64_t vnum"
-    ],
-    "return_type": {
-      "value": "svuint32x4_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
-        "LDNT1W"
-      ]
-    ]
-  },
-  {
     "SIMD_ISA": "SVE",
     "name": "svldnt1_vnum[_u64]",
     "arguments": [
@@ -81861,72 +79187,6 @@
     ]
   },
   {
-    "SIMD_ISA": "SVE2",
-    "name": "svldnt1_vnum[_u64]_x2",
-    "arguments": [
-      "svcount_t png",
-      "uint64_t const * rn",
-      "int64_t vnum"
-    ],
-    "return_type": {
-      "value": "svuint64x2_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
-        "LDNT1D"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svldnt1_vnum[_u64]_x4",
-    "arguments": [
-      "svcount_t png",
-      "uint64_t const * rn",
-      "int64_t vnum"
-    ],
-    "return_type": {
-      "value": "svuint64x4_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
-        "LDNT1D"
-      ]
-    ]
-  },
-  {
     "SIMD_ISA": "SVE",
     "name": "svldnt1_vnum[_u8]",
     "arguments": [
@@ -81956,72 +79216,6 @@
         "LDNT1B"
       ],
       [
-        "LDNT1B"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svldnt1_vnum[_u8]_x2",
-    "arguments": [
-      "svcount_t png",
-      "uint8_t const * rn",
-      "int64_t vnum"
-    ],
-    "return_type": {
-      "value": "svuint8x2_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MUL",
-        "LDNT1B"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svldnt1_vnum[_u8]_x4",
-    "arguments": [
-      "svcount_t png",
-      "uint8_t const * rn",
-      "int64_t vnum"
-    ],
-    "return_type": {
-      "value": "svuint8x4_t"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MUL",
         "LDNT1B"
       ]
     ]
@@ -127682,244 +124876,11 @@
     ]
   },
   {
-    "SIMD_ISA": "SVE2",
-    "name": "svpext_lane_c16",
-    "arguments": [
-      "svcount_t pnn",
-      "uint64_t imm"
-    ],
-    "return_type": {
-      "value": "svbool_t"
-    },
-    "Arguments_Preparation": {
-      "imm": {
-        "immediate": "imm1"
-      },
-      "pnn": {
-        "register": "PNreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "PEXT"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svpext_lane_c16_x2",
-    "arguments": [
-      "svcount_t pnn",
-      "uint64_t imm"
-    ],
-    "return_type": {
-      "value": "svboolx2_t"
-    },
-    "Arguments_Preparation": {
-      "imm": {
-        "immediate": "imm1"
-      },
-      "pnn": {
-        "register": "PNreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "PEXT"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svpext_lane_c32",
-    "arguments": [
-      "svcount_t pnn",
-      "uint64_t imm"
-    ],
-    "return_type": {
-      "value": "svbool_t"
-    },
-    "Arguments_Preparation": {
-      "imm": {
-        "immediate": "imm1"
-      },
-      "pnn": {
-        "register": "PNreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "PEXT"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svpext_lane_c32_x2",
-    "arguments": [
-      "svcount_t pnn",
-      "uint64_t imm"
-    ],
-    "return_type": {
-      "value": "svboolx2_t"
-    },
-    "Arguments_Preparation": {
-      "imm": {
-        "immediate": "imm1"
-      },
-      "pnn": {
-        "register": "PNreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "PEXT"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svpext_lane_c64",
-    "arguments": [
-      "svcount_t pnn",
-      "uint64_t imm"
-    ],
-    "return_type": {
-      "value": "svbool_t"
-    },
-    "Arguments_Preparation": {
-      "imm": {
-        "immediate": "imm1"
-      },
-      "pnn": {
-        "register": "PNreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "PEXT"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svpext_lane_c64_x2",
-    "arguments": [
-      "svcount_t pnn",
-      "uint64_t imm"
-    ],
-    "return_type": {
-      "value": "svboolx2_t"
-    },
-    "Arguments_Preparation": {
-      "imm": {
-        "immediate": "imm1"
-      },
-      "pnn": {
-        "register": "PNreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "PEXT"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svpext_lane_c8",
-    "arguments": [
-      "svcount_t pnn",
-      "uint64_t imm"
-    ],
-    "return_type": {
-      "value": "svbool_t"
-    },
-    "Arguments_Preparation": {
-      "imm": {
-        "immediate": "imm1"
-      },
-      "pnn": {
-        "register": "PNreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "PEXT"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svpext_lane_c8_x2",
-    "arguments": [
-      "svcount_t pnn",
-      "uint64_t imm"
-    ],
-    "return_type": {
-      "value": "svboolx2_t"
-    },
-    "Arguments_Preparation": {
-      "imm": {
-        "immediate": "imm1"
-      },
-      "pnn": {
-        "register": "PNreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "PEXT"
-      ]
-    ]
-  },
-  {
     "SIMD_ISA": "SVE",
     "name": "svpfalse[_b]",
     "arguments": [],
     "return_type": {
       "value": "svbool_t"
-    },
-    "Arguments_Preparation": {},
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "PFALSE"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svpfalse_c",
-    "arguments": [],
-    "return_type": {
-      "value": "svcount_t"
     },
     "Arguments_Preparation": {},
     "Architectures": [
@@ -130065,130 +127026,6 @@
     ]
   },
   {
-    "SIMD_ISA": "SVE2",
-    "name": "svpsel_lane_c16",
-    "arguments": [
-      "svcount_t pn",
-      "svbool_t pm",
-      "uint32_t idx"
-    ],
-    "return_type": {
-      "value": "svcount_t"
-    },
-    "Arguments_Preparation": {
-      "idx": {
-        "index": "[Wreg1, imm1]"
-      },
-      "pm": {
-        "register": "Preg3"
-      },
-      "pn": {
-        "register": "Preg2"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "PSEL"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svpsel_lane_c32",
-    "arguments": [
-      "svcount_t pn",
-      "svbool_t pm",
-      "uint32_t idx"
-    ],
-    "return_type": {
-      "value": "svcount_t"
-    },
-    "Arguments_Preparation": {
-      "idx": {
-        "index": "[Wreg1, imm1]"
-      },
-      "pm": {
-        "register": "Preg3"
-      },
-      "pn": {
-        "register": "Preg2"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "PSEL"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svpsel_lane_c64",
-    "arguments": [
-      "svcount_t pn",
-      "svbool_t pm",
-      "uint32_t idx"
-    ],
-    "return_type": {
-      "value": "svcount_t"
-    },
-    "Arguments_Preparation": {
-      "idx": {
-        "index": "[Wreg1, imm1]"
-      },
-      "pm": {
-        "register": "Preg3"
-      },
-      "pn": {
-        "register": "Preg2"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "PSEL"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svpsel_lane_c8",
-    "arguments": [
-      "svcount_t pn",
-      "svbool_t pm",
-      "uint32_t idx"
-    ],
-    "return_type": {
-      "value": "svcount_t"
-    },
-    "Arguments_Preparation": {
-      "idx": {
-        "index": "[Wreg1, imm1]"
-      },
-      "pm": {
-        "register": "Preg3"
-      },
-      "pn": {
-        "register": "Preg2"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "PSEL"
-      ]
-    ]
-  },
-  {
     "SIMD_ISA": "SVE",
     "name": "svptest_any",
     "arguments": [
@@ -130287,74 +127124,6 @@
     "arguments": [],
     "return_type": {
       "value": "svbool_t"
-    },
-    "Arguments_Preparation": {},
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "PTRUE"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svptrue_c16",
-    "arguments": [],
-    "return_type": {
-      "value": "svcount_t"
-    },
-    "Arguments_Preparation": {},
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "PTRUE"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svptrue_c32",
-    "arguments": [],
-    "return_type": {
-      "value": "svcount_t"
-    },
-    "Arguments_Preparation": {},
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "PTRUE"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svptrue_c64",
-    "arguments": [],
-    "return_type": {
-      "value": "svcount_t"
-    },
-    "Arguments_Preparation": {},
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "PTRUE"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svptrue_c8",
-    "arguments": [],
-    "return_type": {
-      "value": "svcount_t"
     },
     "Arguments_Preparation": {},
     "Architectures": [
@@ -152949,32 +149718,6 @@
     ]
   },
   {
-    "SIMD_ISA": "SVE2",
-    "name": "svreinterpret[_b]",
-    "arguments": [
-      "svcount_t count"
-    ],
-    "return_type": {
-      "value": "svbool_t"
-    },
-    "Architectures": [
-      "A64"
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svreinterpret[_c]",
-    "arguments": [
-      "svbool_t pg"
-    ],
-    "return_type": {
-      "value": "svcount_t"
-    },
-    "Architectures": [
-      "A64"
-    ]
-  },
-  {
     "SIMD_ISA": "SVE",
     "name": "svreinterpret_f16[_f16]",
     "arguments": [
@@ -166249,21 +162992,6 @@
     ]
   },
   {
-    "SIMD_ISA": "SVE2",
-    "name": "svset2[_b]",
-    "arguments": [
-      "svboolx2_t tuple",
-      "uint64_t imm_index",
-      "svbool_t x"
-    ],
-    "return_type": {
-      "value": "svboolx2_t"
-    },
-    "Architectures": [
-      "A64"
-    ]
-  },
-  {
     "SIMD_ISA": "SVE",
     "name": "svset2[_f16]",
     "arguments": [
@@ -166588,21 +163316,6 @@
     ],
     "return_type": {
       "value": "svuint8x3_t"
-    },
-    "Architectures": [
-      "A64"
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svset4[_b]",
-    "arguments": [
-      "svboolx4_t tuple",
-      "uint64_t imm_index",
-      "svbool_t x"
-    ],
-    "return_type": {
-      "value": "svboolx4_t"
     },
     "Architectures": [
       "A64"
@@ -169854,68 +166567,6 @@
     ]
   },
   {
-    "SIMD_ISA": "SVE2",
-    "name": "svst1[_f16_x2]",
-    "arguments": [
-      "svcount_t png",
-      "float16_t * rn",
-      "svfloat16x2_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.H, Zreg2.H }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "ST1H"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svst1[_f16_x4]",
-    "arguments": [
-      "svcount_t png",
-      "float16_t * rn",
-      "svfloat16x4_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.H - Zreg2.H }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "ST1H"
-      ]
-    ]
-  },
-  {
     "SIMD_ISA": "SVE",
     "name": "svst1[_f32]",
     "arguments": [
@@ -169944,68 +166595,6 @@
       [
         "ST1W"
       ],
-      [
-        "ST1W"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svst1[_f32_x2]",
-    "arguments": [
-      "svcount_t png",
-      "float32_t * rn",
-      "svfloat32x2_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.S, Zreg2.S }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "ST1W"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svst1[_f32_x4]",
-    "arguments": [
-      "svcount_t png",
-      "float32_t * rn",
-      "svfloat32x4_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.S - Zreg2.S }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
       [
         "ST1W"
       ]
@@ -170046,68 +166635,6 @@
     ]
   },
   {
-    "SIMD_ISA": "SVE2",
-    "name": "svst1[_f64_x2]",
-    "arguments": [
-      "svcount_t png",
-      "float64_t * rn",
-      "svfloat64x2_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.D, Zreg2.D }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "ST1D"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svst1[_f64_x4]",
-    "arguments": [
-      "svcount_t png",
-      "float64_t * rn",
-      "svfloat64x4_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.D - Zreg2.D }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "ST1D"
-      ]
-    ]
-  },
-  {
     "SIMD_ISA": "SVE",
     "name": "svst1[_s16]",
     "arguments": [
@@ -170136,68 +166663,6 @@
       [
         "ST1H"
       ],
-      [
-        "ST1H"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svst1[_s16_x2]",
-    "arguments": [
-      "svcount_t png",
-      "int16_t * rn",
-      "svint16x2_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.H, Zreg2.H }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "ST1H"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svst1[_s16_x4]",
-    "arguments": [
-      "svcount_t png",
-      "int16_t * rn",
-      "svint16x4_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.H - Zreg2.H }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
       [
         "ST1H"
       ]
@@ -170238,68 +166703,6 @@
     ]
   },
   {
-    "SIMD_ISA": "SVE2",
-    "name": "svst1[_s32_x2]",
-    "arguments": [
-      "svcount_t png",
-      "int32_t * rn",
-      "svint32x2_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.S, Zreg2.S }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "ST1W"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svst1[_s32_x4]",
-    "arguments": [
-      "svcount_t png",
-      "int32_t * rn",
-      "svint32x4_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.S - Zreg2.S }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "ST1W"
-      ]
-    ]
-  },
-  {
     "SIMD_ISA": "SVE",
     "name": "svst1[_s64]",
     "arguments": [
@@ -170328,68 +166731,6 @@
       [
         "ST1D"
       ],
-      [
-        "ST1D"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svst1[_s64_x2]",
-    "arguments": [
-      "svcount_t png",
-      "int64_t * rn",
-      "svint64x2_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.D, Zreg2.D }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "ST1D"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svst1[_s64_x4]",
-    "arguments": [
-      "svcount_t png",
-      "int64_t * rn",
-      "svint64x4_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.D - Zreg2.D }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
       [
         "ST1D"
       ]
@@ -170430,68 +166771,6 @@
     ]
   },
   {
-    "SIMD_ISA": "SVE2",
-    "name": "svst1[_s8_x2]",
-    "arguments": [
-      "svcount_t png",
-      "int8_t * rn",
-      "svint8x2_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.B, Zreg2.B }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "ST1B"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svst1[_s8_x4]",
-    "arguments": [
-      "svcount_t png",
-      "int8_t * rn",
-      "svint8x4_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.B - Zreg2.B }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "ST1B"
-      ]
-    ]
-  },
-  {
     "SIMD_ISA": "SVE",
     "name": "svst1[_u16]",
     "arguments": [
@@ -170520,68 +166799,6 @@
       [
         "ST1H"
       ],
-      [
-        "ST1H"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svst1[_u16_x2]",
-    "arguments": [
-      "svcount_t png",
-      "uint16_t * rn",
-      "svuint16x2_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.H, Zreg2.H }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "ST1H"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svst1[_u16_x4]",
-    "arguments": [
-      "svcount_t png",
-      "uint16_t * rn",
-      "svuint16x4_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.H - Zreg2.H }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
       [
         "ST1H"
       ]
@@ -170622,68 +166839,6 @@
     ]
   },
   {
-    "SIMD_ISA": "SVE2",
-    "name": "svst1[_u32_x2]",
-    "arguments": [
-      "svcount_t png",
-      "uint32_t * rn",
-      "svuint32x2_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.S, Zreg2.S }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "ST1W"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svst1[_u32_x4]",
-    "arguments": [
-      "svcount_t png",
-      "uint32_t * rn",
-      "svuint32x4_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.S - Zreg2.S }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "ST1W"
-      ]
-    ]
-  },
-  {
     "SIMD_ISA": "SVE",
     "name": "svst1[_u64]",
     "arguments": [
@@ -170718,68 +166873,6 @@
     ]
   },
   {
-    "SIMD_ISA": "SVE2",
-    "name": "svst1[_u64_x2]",
-    "arguments": [
-      "svcount_t png",
-      "uint64_t * rn",
-      "svuint64x2_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.D, Zreg2.D }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "ST1D"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svst1[_u64_x4]",
-    "arguments": [
-      "svcount_t png",
-      "uint64_t * rn",
-      "svuint64x4_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.D - Zreg2.D }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "ST1D"
-      ]
-    ]
-  },
-  {
     "SIMD_ISA": "SVE",
     "name": "svst1[_u8]",
     "arguments": [
@@ -170808,68 +166901,6 @@
       [
         "ST1B"
       ],
-      [
-        "ST1B"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svst1[_u8_x2]",
-    "arguments": [
-      "svcount_t png",
-      "uint8_t * rn",
-      "svuint8x2_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.B, Zreg2.B }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "ST1B"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svst1[_u8_x4]",
-    "arguments": [
-      "svcount_t png",
-      "uint8_t * rn",
-      "svuint8x4_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.B - Zreg2.B }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
       [
         "ST1B"
       ]
@@ -172396,80 +168427,6 @@
     ]
   },
   {
-    "SIMD_ISA": "SVE2",
-    "name": "svst1_vnum[_f16_x2]",
-    "arguments": [
-      "svcount_t png",
-      "float16_t * rn",
-      "int64_t vnum",
-      "svfloat16x2_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.H, Zreg2.H }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
-        "ST1H"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svst1_vnum[_f16_x4]",
-    "arguments": [
-      "svcount_t png",
-      "float16_t * rn",
-      "int64_t vnum",
-      "svfloat16x4_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.H - Zreg2.H }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
-        "ST1H"
-      ]
-    ]
-  },
-  {
     "SIMD_ISA": "SVE",
     "name": "svst1_vnum[_f32]",
     "arguments": [
@@ -172503,80 +168460,6 @@
         "ST1W"
       ],
       [
-        "ST1W"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svst1_vnum[_f32_x2]",
-    "arguments": [
-      "svcount_t png",
-      "float32_t * rn",
-      "int64_t vnum",
-      "svfloat32x2_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.S, Zreg2.S }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
-        "ST1W"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svst1_vnum[_f32_x4]",
-    "arguments": [
-      "svcount_t png",
-      "float32_t * rn",
-      "int64_t vnum",
-      "svfloat32x4_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.S - Zreg2.S }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
         "ST1W"
       ]
     ]
@@ -172620,80 +168503,6 @@
     ]
   },
   {
-    "SIMD_ISA": "SVE2",
-    "name": "svst1_vnum[_f64_x2]",
-    "arguments": [
-      "svcount_t png",
-      "float64_t * rn",
-      "int64_t vnum",
-      "svfloat64x2_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.D, Zreg2.D }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
-        "ST1D"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svst1_vnum[_f64_x4]",
-    "arguments": [
-      "svcount_t png",
-      "float64_t * rn",
-      "int64_t vnum",
-      "svfloat64x4_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.D - Zreg2.D }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
-        "ST1D"
-      ]
-    ]
-  },
-  {
     "SIMD_ISA": "SVE",
     "name": "svst1_vnum[_s16]",
     "arguments": [
@@ -172727,80 +168536,6 @@
         "ST1H"
       ],
       [
-        "ST1H"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svst1_vnum[_s16_x2]",
-    "arguments": [
-      "svcount_t png",
-      "int16_t * rn",
-      "int64_t vnum",
-      "svint16x2_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.H, Zreg2.H }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
-        "ST1H"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svst1_vnum[_s16_x4]",
-    "arguments": [
-      "svcount_t png",
-      "int16_t * rn",
-      "int64_t vnum",
-      "svint16x4_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.H - Zreg2.H }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
         "ST1H"
       ]
     ]
@@ -172844,80 +168579,6 @@
     ]
   },
   {
-    "SIMD_ISA": "SVE2",
-    "name": "svst1_vnum[_s32_x2]",
-    "arguments": [
-      "svcount_t png",
-      "int32_t * rn",
-      "int64_t vnum",
-      "svint32x2_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.S, Zreg2.S }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
-        "ST1W"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svst1_vnum[_s32_x4]",
-    "arguments": [
-      "svcount_t png",
-      "int32_t * rn",
-      "int64_t vnum",
-      "svint32x4_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.S - Zreg2.S }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
-        "ST1W"
-      ]
-    ]
-  },
-  {
     "SIMD_ISA": "SVE",
     "name": "svst1_vnum[_s64]",
     "arguments": [
@@ -172951,80 +168612,6 @@
         "ST1D"
       ],
       [
-        "ST1D"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svst1_vnum[_s64_x2]",
-    "arguments": [
-      "svcount_t png",
-      "int64_t * rn",
-      "int64_t vnum",
-      "svint64x2_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.D, Zreg2.D }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
-        "ST1D"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svst1_vnum[_s64_x4]",
-    "arguments": [
-      "svcount_t png",
-      "int64_t * rn",
-      "int64_t vnum",
-      "svint64x4_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.D - Zreg2.D }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
         "ST1D"
       ]
     ]
@@ -173068,80 +168655,6 @@
     ]
   },
   {
-    "SIMD_ISA": "SVE2",
-    "name": "svst1_vnum[_s8_x2]",
-    "arguments": [
-      "svcount_t png",
-      "int8_t * rn",
-      "int64_t vnum",
-      "svint8x2_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.B, Zreg2.B }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
-        "ST1B"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svst1_vnum[_s8_x4]",
-    "arguments": [
-      "svcount_t png",
-      "int8_t * rn",
-      "int64_t vnum",
-      "svint8x4_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.B - Zreg2.B }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
-        "ST1B"
-      ]
-    ]
-  },
-  {
     "SIMD_ISA": "SVE",
     "name": "svst1_vnum[_u16]",
     "arguments": [
@@ -173175,80 +168688,6 @@
         "ST1H"
       ],
       [
-        "ST1H"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svst1_vnum[_u16_x2]",
-    "arguments": [
-      "svcount_t png",
-      "uint16_t * rn",
-      "int64_t vnum",
-      "svuint16x2_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.H, Zreg2.H }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
-        "ST1H"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svst1_vnum[_u16_x4]",
-    "arguments": [
-      "svcount_t png",
-      "uint16_t * rn",
-      "int64_t vnum",
-      "svuint16x4_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.H - Zreg2.H }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
         "ST1H"
       ]
     ]
@@ -173292,80 +168731,6 @@
     ]
   },
   {
-    "SIMD_ISA": "SVE2",
-    "name": "svst1_vnum[_u32_x2]",
-    "arguments": [
-      "svcount_t png",
-      "uint32_t * rn",
-      "int64_t vnum",
-      "svuint32x2_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.S, Zreg2.S }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
-        "ST1W"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svst1_vnum[_u32_x4]",
-    "arguments": [
-      "svcount_t png",
-      "uint32_t * rn",
-      "int64_t vnum",
-      "svuint32x4_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.S - Zreg2.S }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
-        "ST1W"
-      ]
-    ]
-  },
-  {
     "SIMD_ISA": "SVE",
     "name": "svst1_vnum[_u64]",
     "arguments": [
@@ -173404,80 +168769,6 @@
     ]
   },
   {
-    "SIMD_ISA": "SVE2",
-    "name": "svst1_vnum[_u64_x2]",
-    "arguments": [
-      "svcount_t png",
-      "uint64_t * rn",
-      "int64_t vnum",
-      "svuint64x2_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.D, Zreg2.D }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
-        "ST1D"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svst1_vnum[_u64_x4]",
-    "arguments": [
-      "svcount_t png",
-      "uint64_t * rn",
-      "int64_t vnum",
-      "svuint64x4_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.D - Zreg2.D }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
-        "ST1D"
-      ]
-    ]
-  },
-  {
     "SIMD_ISA": "SVE",
     "name": "svst1_vnum[_u8]",
     "arguments": [
@@ -173511,80 +168802,6 @@
         "ST1B"
       ],
       [
-        "ST1B"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svst1_vnum[_u8_x2]",
-    "arguments": [
-      "svcount_t png",
-      "uint8_t * rn",
-      "int64_t vnum",
-      "svuint8x2_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.B, Zreg2.B }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
-        "ST1B"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svst1_vnum[_u8_x4]",
-    "arguments": [
-      "svcount_t png",
-      "uint8_t * rn",
-      "int64_t vnum",
-      "svuint8x4_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.B - Zreg2.B }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
         "ST1B"
       ]
     ]
@@ -178902,68 +174119,6 @@
     ]
   },
   {
-    "SIMD_ISA": "SVE2",
-    "name": "svstnt1[_f16_x2]",
-    "arguments": [
-      "svcount_t png",
-      "float16_t * rn",
-      "svfloat16x2_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.H, Zreg2.H }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "STNT1H"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svstnt1[_f16_x4]",
-    "arguments": [
-      "svcount_t png",
-      "float16_t * rn",
-      "svfloat16x4_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.H - Zreg2.H }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "STNT1H"
-      ]
-    ]
-  },
-  {
     "SIMD_ISA": "SVE",
     "name": "svstnt1[_f32]",
     "arguments": [
@@ -178992,68 +174147,6 @@
       [
         "STNT1W"
       ],
-      [
-        "STNT1W"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svstnt1[_f32_x2]",
-    "arguments": [
-      "svcount_t png",
-      "float32_t * rn",
-      "svfloat32x2_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.S, Zreg2.S }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "STNT1W"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svstnt1[_f32_x4]",
-    "arguments": [
-      "svcount_t png",
-      "float32_t * rn",
-      "svfloat32x4_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.S - Zreg2.S }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
       [
         "STNT1W"
       ]
@@ -179094,68 +174187,6 @@
     ]
   },
   {
-    "SIMD_ISA": "SVE2",
-    "name": "svstnt1[_f64_x2]",
-    "arguments": [
-      "svcount_t png",
-      "float64_t * rn",
-      "svfloat64x2_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.D, Zreg2.D }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "STNT1D"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svstnt1[_f64_x4]",
-    "arguments": [
-      "svcount_t png",
-      "float64_t * rn",
-      "svfloat64x4_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.D - Zreg2.D }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "STNT1D"
-      ]
-    ]
-  },
-  {
     "SIMD_ISA": "SVE",
     "name": "svstnt1[_s16]",
     "arguments": [
@@ -179184,68 +174215,6 @@
       [
         "STNT1H"
       ],
-      [
-        "STNT1H"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svstnt1[_s16_x2]",
-    "arguments": [
-      "svcount_t png",
-      "int16_t * rn",
-      "svint16x2_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.H, Zreg2.H }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "STNT1H"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svstnt1[_s16_x4]",
-    "arguments": [
-      "svcount_t png",
-      "int16_t * rn",
-      "svint16x4_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.H - Zreg2.H }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
       [
         "STNT1H"
       ]
@@ -179286,68 +174255,6 @@
     ]
   },
   {
-    "SIMD_ISA": "SVE2",
-    "name": "svstnt1[_s32_x2]",
-    "arguments": [
-      "svcount_t png",
-      "int32_t * rn",
-      "svint32x2_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.S, Zreg2.S }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "STNT1W"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svstnt1[_s32_x4]",
-    "arguments": [
-      "svcount_t png",
-      "int32_t * rn",
-      "svint32x4_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.S - Zreg2.S }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "STNT1W"
-      ]
-    ]
-  },
-  {
     "SIMD_ISA": "SVE",
     "name": "svstnt1[_s64]",
     "arguments": [
@@ -179376,68 +174283,6 @@
       [
         "STNT1D"
       ],
-      [
-        "STNT1D"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svstnt1[_s64_x2]",
-    "arguments": [
-      "svcount_t png",
-      "int64_t * rn",
-      "svint64x2_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.D, Zreg2.D }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "STNT1D"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svstnt1[_s64_x4]",
-    "arguments": [
-      "svcount_t png",
-      "int64_t * rn",
-      "svint64x4_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.D - Zreg2.D }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
       [
         "STNT1D"
       ]
@@ -179478,68 +174323,6 @@
     ]
   },
   {
-    "SIMD_ISA": "SVE2",
-    "name": "svstnt1[_s8_x2]",
-    "arguments": [
-      "svcount_t png",
-      "int8_t * rn",
-      "svint8x2_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.B, Zreg2.B }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "STNT1B"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svstnt1[_s8_x4]",
-    "arguments": [
-      "svcount_t png",
-      "int8_t * rn",
-      "svint8x4_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.B - Zreg2.B }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "STNT1B"
-      ]
-    ]
-  },
-  {
     "SIMD_ISA": "SVE",
     "name": "svstnt1[_u16]",
     "arguments": [
@@ -179568,68 +174351,6 @@
       [
         "STNT1H"
       ],
-      [
-        "STNT1H"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svstnt1[_u16_x2]",
-    "arguments": [
-      "svcount_t png",
-      "uint16_t * rn",
-      "svuint16x2_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.H, Zreg2.H }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "STNT1H"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svstnt1[_u16_x4]",
-    "arguments": [
-      "svcount_t png",
-      "uint16_t * rn",
-      "svuint16x4_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.H - Zreg2.H }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
       [
         "STNT1H"
       ]
@@ -179670,68 +174391,6 @@
     ]
   },
   {
-    "SIMD_ISA": "SVE2",
-    "name": "svstnt1[_u32_x2]",
-    "arguments": [
-      "svcount_t png",
-      "uint32_t * rn",
-      "svuint32x2_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.S, Zreg2.S }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "STNT1W"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svstnt1[_u32_x4]",
-    "arguments": [
-      "svcount_t png",
-      "uint32_t * rn",
-      "svuint32x4_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.S - Zreg2.S }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "STNT1W"
-      ]
-    ]
-  },
-  {
     "SIMD_ISA": "SVE",
     "name": "svstnt1[_u64]",
     "arguments": [
@@ -179766,68 +174425,6 @@
     ]
   },
   {
-    "SIMD_ISA": "SVE2",
-    "name": "svstnt1[_u64_x2]",
-    "arguments": [
-      "svcount_t png",
-      "uint64_t * rn",
-      "svuint64x2_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.D, Zreg2.D }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "STNT1D"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svstnt1[_u64_x4]",
-    "arguments": [
-      "svcount_t png",
-      "uint64_t * rn",
-      "svuint64x4_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.D - Zreg2.D }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "STNT1D"
-      ]
-    ]
-  },
-  {
     "SIMD_ISA": "SVE",
     "name": "svstnt1[_u8]",
     "arguments": [
@@ -179856,68 +174453,6 @@
       [
         "STNT1B"
       ],
-      [
-        "STNT1B"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svstnt1[_u8_x2]",
-    "arguments": [
-      "svcount_t png",
-      "uint8_t * rn",
-      "svuint8x2_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.B, Zreg2.B }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "STNT1B"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svstnt1[_u8_x4]",
-    "arguments": [
-      "svcount_t png",
-      "uint8_t * rn",
-      "svuint8x4_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.B - Zreg2.B }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
       [
         "STNT1B"
       ]
@@ -181093,80 +175628,6 @@
     ]
   },
   {
-    "SIMD_ISA": "SVE2",
-    "name": "svstnt1_vnum[_f16_x2]",
-    "arguments": [
-      "svcount_t png",
-      "float16_t * rn",
-      "int64_t vnum",
-      "svfloat16x2_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.H, Zreg2.H }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
-        "STNT1H"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svstnt1_vnum[_f16_x4]",
-    "arguments": [
-      "svcount_t png",
-      "float16_t * rn",
-      "int64_t vnum",
-      "svfloat16x4_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.H - Zreg2.H }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
-        "STNT1H"
-      ]
-    ]
-  },
-  {
     "SIMD_ISA": "SVE",
     "name": "svstnt1_vnum[_f32]",
     "arguments": [
@@ -181200,80 +175661,6 @@
         "STNT1W"
       ],
       [
-        "STNT1W"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svstnt1_vnum[_f32_x2]",
-    "arguments": [
-      "svcount_t png",
-      "float32_t * rn",
-      "int64_t vnum",
-      "svfloat32x2_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.S, Zreg2.S }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
-        "STNT1W"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svstnt1_vnum[_f32_x4]",
-    "arguments": [
-      "svcount_t png",
-      "float32_t * rn",
-      "int64_t vnum",
-      "svfloat32x4_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.S - Zreg2.S }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
         "STNT1W"
       ]
     ]
@@ -181317,80 +175704,6 @@
     ]
   },
   {
-    "SIMD_ISA": "SVE2",
-    "name": "svstnt1_vnum[_f64_x2]",
-    "arguments": [
-      "svcount_t png",
-      "float64_t * rn",
-      "int64_t vnum",
-      "svfloat64x2_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.D, Zreg2.D }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
-        "STNT1D"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svstnt1_vnum[_f64_x4]",
-    "arguments": [
-      "svcount_t png",
-      "float64_t * rn",
-      "int64_t vnum",
-      "svfloat64x4_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.D - Zreg2.D }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
-        "STNT1D"
-      ]
-    ]
-  },
-  {
     "SIMD_ISA": "SVE",
     "name": "svstnt1_vnum[_s16]",
     "arguments": [
@@ -181424,80 +175737,6 @@
         "STNT1H"
       ],
       [
-        "STNT1H"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svstnt1_vnum[_s16_x2]",
-    "arguments": [
-      "svcount_t png",
-      "int16_t * rn",
-      "int64_t vnum",
-      "svint16x2_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.H, Zreg2.H }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
-        "STNT1H"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svstnt1_vnum[_s16_x4]",
-    "arguments": [
-      "svcount_t png",
-      "int16_t * rn",
-      "int64_t vnum",
-      "svint16x4_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.H - Zreg2.H }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
         "STNT1H"
       ]
     ]
@@ -181541,80 +175780,6 @@
     ]
   },
   {
-    "SIMD_ISA": "SVE2",
-    "name": "svstnt1_vnum[_s32_x2]",
-    "arguments": [
-      "svcount_t png",
-      "int32_t * rn",
-      "int64_t vnum",
-      "svint32x2_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.S, Zreg2.S }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
-        "STNT1W"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svstnt1_vnum[_s32_x4]",
-    "arguments": [
-      "svcount_t png",
-      "int32_t * rn",
-      "int64_t vnum",
-      "svint32x4_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.S - Zreg2.S }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
-        "STNT1W"
-      ]
-    ]
-  },
-  {
     "SIMD_ISA": "SVE",
     "name": "svstnt1_vnum[_s64]",
     "arguments": [
@@ -181648,80 +175813,6 @@
         "STNT1D"
       ],
       [
-        "STNT1D"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svstnt1_vnum[_s64_x2]",
-    "arguments": [
-      "svcount_t png",
-      "int64_t * rn",
-      "int64_t vnum",
-      "svint64x2_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.D, Zreg2.D }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
-        "STNT1D"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svstnt1_vnum[_s64_x4]",
-    "arguments": [
-      "svcount_t png",
-      "int64_t * rn",
-      "int64_t vnum",
-      "svint64x4_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.D - Zreg2.D }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
         "STNT1D"
       ]
     ]
@@ -181765,80 +175856,6 @@
     ]
   },
   {
-    "SIMD_ISA": "SVE2",
-    "name": "svstnt1_vnum[_s8_x2]",
-    "arguments": [
-      "svcount_t png",
-      "int8_t * rn",
-      "int64_t vnum",
-      "svint8x2_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.B, Zreg2.B }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
-        "STNT1B"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svstnt1_vnum[_s8_x4]",
-    "arguments": [
-      "svcount_t png",
-      "int8_t * rn",
-      "int64_t vnum",
-      "svint8x4_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.B - Zreg2.B }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
-        "STNT1B"
-      ]
-    ]
-  },
-  {
     "SIMD_ISA": "SVE",
     "name": "svstnt1_vnum[_u16]",
     "arguments": [
@@ -181872,80 +175889,6 @@
         "STNT1H"
       ],
       [
-        "STNT1H"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svstnt1_vnum[_u16_x2]",
-    "arguments": [
-      "svcount_t png",
-      "uint16_t * rn",
-      "int64_t vnum",
-      "svuint16x2_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.H, Zreg2.H }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
-        "STNT1H"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svstnt1_vnum[_u16_x4]",
-    "arguments": [
-      "svcount_t png",
-      "uint16_t * rn",
-      "int64_t vnum",
-      "svuint16x4_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.H - Zreg2.H }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
         "STNT1H"
       ]
     ]
@@ -181989,80 +175932,6 @@
     ]
   },
   {
-    "SIMD_ISA": "SVE2",
-    "name": "svstnt1_vnum[_u32_x2]",
-    "arguments": [
-      "svcount_t png",
-      "uint32_t * rn",
-      "int64_t vnum",
-      "svuint32x2_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.S, Zreg2.S }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
-        "STNT1W"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svstnt1_vnum[_u32_x4]",
-    "arguments": [
-      "svcount_t png",
-      "uint32_t * rn",
-      "int64_t vnum",
-      "svuint32x4_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.S - Zreg2.S }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
-        "STNT1W"
-      ]
-    ]
-  },
-  {
     "SIMD_ISA": "SVE",
     "name": "svstnt1_vnum[_u64]",
     "arguments": [
@@ -182101,80 +175970,6 @@
     ]
   },
   {
-    "SIMD_ISA": "SVE2",
-    "name": "svstnt1_vnum[_u64_x2]",
-    "arguments": [
-      "svcount_t png",
-      "uint64_t * rn",
-      "int64_t vnum",
-      "svuint64x2_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.D, Zreg2.D }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
-        "STNT1D"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svstnt1_vnum[_u64_x4]",
-    "arguments": [
-      "svcount_t png",
-      "uint64_t * rn",
-      "int64_t vnum",
-      "svuint64x4_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.D - Zreg2.D }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
-        "STNT1D"
-      ]
-    ]
-  },
-  {
     "SIMD_ISA": "SVE",
     "name": "svstnt1_vnum[_u8]",
     "arguments": [
@@ -182208,80 +176003,6 @@
         "STNT1B"
       ],
       [
-        "STNT1B"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svstnt1_vnum[_u8_x2]",
-    "arguments": [
-      "svcount_t png",
-      "uint8_t * rn",
-      "int64_t vnum",
-      "svuint8x2_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.B, Zreg2.B }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
-        "STNT1B"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svstnt1_vnum[_u8_x4]",
-    "arguments": [
-      "svcount_t png",
-      "uint8_t * rn",
-      "int64_t vnum",
-      "svuint8x4_t zt"
-    ],
-    "return_type": {
-      "value": "void"
-    },
-    "Arguments_Preparation": {
-      "png": {
-        "register": "PNreg1"
-      },
-      "rn": {
-        "register": "Xreg2"
-      },
-      "vnum": {
-        "register": "Xreg3"
-      },
-      "zt": {
-        "Z multi-vector": "{ Zreg1.B - Zreg2.B }"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "RDVL",
-        "MADD",
         "STNT1B"
       ]
     ]
@@ -193970,17 +187691,6 @@
     ]
   },
   {
-    "SIMD_ISA": "SVE2",
-    "name": "svundef2_b",
-    "arguments": [],
-    "return_type": {
-      "value": "svboolx2_t"
-    },
-    "Architectures": [
-      "A64"
-    ]
-  },
-  {
     "SIMD_ISA": "SVE",
     "name": "svundef2_f16",
     "arguments": [],
@@ -194217,17 +187927,6 @@
     "arguments": [],
     "return_type": {
       "value": "svuint8x3_t"
-    },
-    "Architectures": [
-      "A64"
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svundef4_b",
-    "arguments": [],
-    "return_type": {
-      "value": "svboolx4_t"
     },
     "Architectures": [
       "A64"
@@ -197214,33 +190913,6 @@
   },
   {
     "SIMD_ISA": "SVE2",
-    "name": "svwhilege_b16[_s64]_x2",
-    "arguments": [
-      "int64_t rn",
-      "int64_t rm"
-    ],
-    "return_type": {
-      "value": "svboolx2_t"
-    },
-    "Arguments_Preparation": {
-      "rm": {
-        "register": "Xreg2"
-      },
-      "rn": {
-        "register": "Xreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "WHILEGE"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
     "name": "svwhilege_b16[_u32]",
     "arguments": [
       "uint32_t op1",
@@ -197282,33 +190954,6 @@
       },
       "op2": {
         "register": "Xop2"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "WHILEHS"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svwhilege_b16[_u64]_x2",
-    "arguments": [
-      "uint64_t rn",
-      "uint64_t rm"
-    ],
-    "return_type": {
-      "value": "svboolx2_t"
-    },
-    "Arguments_Preparation": {
-      "rm": {
-        "register": "Xreg2"
-      },
-      "rn": {
-        "register": "Xreg1"
       }
     },
     "Architectures": [
@@ -197376,33 +191021,6 @@
   },
   {
     "SIMD_ISA": "SVE2",
-    "name": "svwhilege_b32[_s64]_x2",
-    "arguments": [
-      "int64_t rn",
-      "int64_t rm"
-    ],
-    "return_type": {
-      "value": "svboolx2_t"
-    },
-    "Arguments_Preparation": {
-      "rm": {
-        "register": "Xreg2"
-      },
-      "rn": {
-        "register": "Xreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "WHILEGE"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
     "name": "svwhilege_b32[_u32]",
     "arguments": [
       "uint32_t op1",
@@ -197444,33 +191062,6 @@
       },
       "op2": {
         "register": "Xop2"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "WHILEHS"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svwhilege_b32[_u64]_x2",
-    "arguments": [
-      "uint64_t rn",
-      "uint64_t rm"
-    ],
-    "return_type": {
-      "value": "svboolx2_t"
-    },
-    "Arguments_Preparation": {
-      "rm": {
-        "register": "Xreg2"
-      },
-      "rn": {
-        "register": "Xreg1"
       }
     },
     "Architectures": [
@@ -197538,33 +191129,6 @@
   },
   {
     "SIMD_ISA": "SVE2",
-    "name": "svwhilege_b64[_s64]_x2",
-    "arguments": [
-      "int64_t rn",
-      "int64_t rm"
-    ],
-    "return_type": {
-      "value": "svboolx2_t"
-    },
-    "Arguments_Preparation": {
-      "rm": {
-        "register": "Xreg2"
-      },
-      "rn": {
-        "register": "Xreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "WHILEGE"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
     "name": "svwhilege_b64[_u32]",
     "arguments": [
       "uint32_t op1",
@@ -197606,33 +191170,6 @@
       },
       "op2": {
         "register": "Xop2"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "WHILEHS"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svwhilege_b64[_u64]_x2",
-    "arguments": [
-      "uint64_t rn",
-      "uint64_t rm"
-    ],
-    "return_type": {
-      "value": "svboolx2_t"
-    },
-    "Arguments_Preparation": {
-      "rm": {
-        "register": "Xreg2"
-      },
-      "rn": {
-        "register": "Xreg1"
       }
     },
     "Architectures": [
@@ -197700,33 +191237,6 @@
   },
   {
     "SIMD_ISA": "SVE2",
-    "name": "svwhilege_b8[_s64]_x2",
-    "arguments": [
-      "int64_t rn",
-      "int64_t rm"
-    ],
-    "return_type": {
-      "value": "svboolx2_t"
-    },
-    "Arguments_Preparation": {
-      "rm": {
-        "register": "Xreg2"
-      },
-      "rn": {
-        "register": "Xreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "WHILEGE"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
     "name": "svwhilege_b8[_u32]",
     "arguments": [
       "uint32_t op1",
@@ -197768,281 +191278,6 @@
       },
       "op2": {
         "register": "Xop2"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "WHILEHS"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svwhilege_b8[_u64]_x2",
-    "arguments": [
-      "uint64_t rn",
-      "uint64_t rm"
-    ],
-    "return_type": {
-      "value": "svboolx2_t"
-    },
-    "Arguments_Preparation": {
-      "rm": {
-        "register": "Xreg2"
-      },
-      "rn": {
-        "register": "Xreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "WHILEHS"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svwhilege_c16[_s64]",
-    "arguments": [
-      "int64_t rn",
-      "int64_t rm",
-      "uint64_t vl"
-    ],
-    "return_type": {
-      "value": "svcount_t"
-    },
-    "Arguments_Preparation": {
-      "rm": {
-        "register": "Xreg2"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "vl": {
-        "immediate": "<VL>"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "WHILEGE"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svwhilege_c16[_u64]",
-    "arguments": [
-      "uint64_t rn",
-      "uint64_t rm",
-      "uint64_t vl"
-    ],
-    "return_type": {
-      "value": "svcount_t"
-    },
-    "Arguments_Preparation": {
-      "rm": {
-        "register": "Xreg2"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "vl": {
-        "immediate": "<VL>"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "WHILEHS"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svwhilege_c32[_s64]",
-    "arguments": [
-      "int64_t rn",
-      "int64_t rm",
-      "uint64_t vl"
-    ],
-    "return_type": {
-      "value": "svcount_t"
-    },
-    "Arguments_Preparation": {
-      "rm": {
-        "register": "Xreg2"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "vl": {
-        "immediate": "<VL>"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "WHILEGE"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svwhilege_c32[_u64]",
-    "arguments": [
-      "uint64_t rn",
-      "uint64_t rm",
-      "uint64_t vl"
-    ],
-    "return_type": {
-      "value": "svcount_t"
-    },
-    "Arguments_Preparation": {
-      "rm": {
-        "register": "Xreg2"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "vl": {
-        "immediate": "<VL>"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "WHILEHS"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svwhilege_c64[_s64]",
-    "arguments": [
-      "int64_t rn",
-      "int64_t rm",
-      "uint64_t vl"
-    ],
-    "return_type": {
-      "value": "svcount_t"
-    },
-    "Arguments_Preparation": {
-      "rm": {
-        "register": "Xreg2"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "vl": {
-        "immediate": "<VL>"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "WHILEGE"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svwhilege_c64[_u64]",
-    "arguments": [
-      "uint64_t rn",
-      "uint64_t rm",
-      "uint64_t vl"
-    ],
-    "return_type": {
-      "value": "svcount_t"
-    },
-    "Arguments_Preparation": {
-      "rm": {
-        "register": "Xreg2"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "vl": {
-        "immediate": "<VL>"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "WHILEHS"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svwhilege_c8[_s64]",
-    "arguments": [
-      "int64_t rn",
-      "int64_t rm",
-      "uint64_t vl"
-    ],
-    "return_type": {
-      "value": "svcount_t"
-    },
-    "Arguments_Preparation": {
-      "rm": {
-        "register": "Xreg2"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "vl": {
-        "immediate": "<VL>"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "WHILEGE"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svwhilege_c8[_u64]",
-    "arguments": [
-      "uint64_t rn",
-      "uint64_t rm",
-      "uint64_t vl"
-    ],
-    "return_type": {
-      "value": "svcount_t"
-    },
-    "Arguments_Preparation": {
-      "rm": {
-        "register": "Xreg2"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "vl": {
-        "immediate": "<VL>"
       }
     },
     "Architectures": [
@@ -198110,33 +191345,6 @@
   },
   {
     "SIMD_ISA": "SVE2",
-    "name": "svwhilegt_b16[_s64]_x2",
-    "arguments": [
-      "int64_t rn",
-      "int64_t rm"
-    ],
-    "return_type": {
-      "value": "svboolx2_t"
-    },
-    "Arguments_Preparation": {
-      "rm": {
-        "register": "Xreg2"
-      },
-      "rn": {
-        "register": "Xreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "WHILEGT"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
     "name": "svwhilegt_b16[_u32]",
     "arguments": [
       "uint32_t op1",
@@ -198178,33 +191386,6 @@
       },
       "op2": {
         "register": "Xop2"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "WHILEHI"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svwhilegt_b16[_u64]_x2",
-    "arguments": [
-      "uint64_t rn",
-      "uint64_t rm"
-    ],
-    "return_type": {
-      "value": "svboolx2_t"
-    },
-    "Arguments_Preparation": {
-      "rm": {
-        "register": "Xreg2"
-      },
-      "rn": {
-        "register": "Xreg1"
       }
     },
     "Architectures": [
@@ -198272,33 +191453,6 @@
   },
   {
     "SIMD_ISA": "SVE2",
-    "name": "svwhilegt_b32[_s64]_x2",
-    "arguments": [
-      "int64_t rn",
-      "int64_t rm"
-    ],
-    "return_type": {
-      "value": "svboolx2_t"
-    },
-    "Arguments_Preparation": {
-      "rm": {
-        "register": "Xreg2"
-      },
-      "rn": {
-        "register": "Xreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "WHILEGT"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
     "name": "svwhilegt_b32[_u32]",
     "arguments": [
       "uint32_t op1",
@@ -198340,33 +191494,6 @@
       },
       "op2": {
         "register": "Xop2"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "WHILEHI"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svwhilegt_b32[_u64]_x2",
-    "arguments": [
-      "uint64_t rn",
-      "uint64_t rm"
-    ],
-    "return_type": {
-      "value": "svboolx2_t"
-    },
-    "Arguments_Preparation": {
-      "rm": {
-        "register": "Xreg2"
-      },
-      "rn": {
-        "register": "Xreg1"
       }
     },
     "Architectures": [
@@ -198434,33 +191561,6 @@
   },
   {
     "SIMD_ISA": "SVE2",
-    "name": "svwhilegt_b64[_s64]_x2",
-    "arguments": [
-      "int64_t rn",
-      "int64_t rm"
-    ],
-    "return_type": {
-      "value": "svboolx2_t"
-    },
-    "Arguments_Preparation": {
-      "rm": {
-        "register": "Xreg2"
-      },
-      "rn": {
-        "register": "Xreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "WHILEGT"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
     "name": "svwhilegt_b64[_u32]",
     "arguments": [
       "uint32_t op1",
@@ -198502,33 +191602,6 @@
       },
       "op2": {
         "register": "Xop2"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "WHILEHI"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svwhilegt_b64[_u64]_x2",
-    "arguments": [
-      "uint64_t rn",
-      "uint64_t rm"
-    ],
-    "return_type": {
-      "value": "svboolx2_t"
-    },
-    "Arguments_Preparation": {
-      "rm": {
-        "register": "Xreg2"
-      },
-      "rn": {
-        "register": "Xreg1"
       }
     },
     "Architectures": [
@@ -198596,33 +191669,6 @@
   },
   {
     "SIMD_ISA": "SVE2",
-    "name": "svwhilegt_b8[_s64]_x2",
-    "arguments": [
-      "int64_t rn",
-      "int64_t rm"
-    ],
-    "return_type": {
-      "value": "svboolx2_t"
-    },
-    "Arguments_Preparation": {
-      "rm": {
-        "register": "Xreg2"
-      },
-      "rn": {
-        "register": "Xreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "WHILEGT"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
     "name": "svwhilegt_b8[_u32]",
     "arguments": [
       "uint32_t op1",
@@ -198664,281 +191710,6 @@
       },
       "op2": {
         "register": "Xop2"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "WHILEHI"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svwhilegt_b8[_u64]_x2",
-    "arguments": [
-      "uint64_t rn",
-      "uint64_t rm"
-    ],
-    "return_type": {
-      "value": "svboolx2_t"
-    },
-    "Arguments_Preparation": {
-      "rm": {
-        "register": "Xreg2"
-      },
-      "rn": {
-        "register": "Xreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "WHILEHI"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svwhilegt_c16[_s64]",
-    "arguments": [
-      "int64_t rn",
-      "int64_t rm",
-      "uint64_t vl"
-    ],
-    "return_type": {
-      "value": "svcount_t"
-    },
-    "Arguments_Preparation": {
-      "rm": {
-        "register": "Xreg2"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "vl": {
-        "immediate": "<VL>"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "WHILEGT"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svwhilegt_c16[_u64]",
-    "arguments": [
-      "uint64_t rn",
-      "uint64_t rm",
-      "uint64_t vl"
-    ],
-    "return_type": {
-      "value": "svcount_t"
-    },
-    "Arguments_Preparation": {
-      "rm": {
-        "register": "Xreg2"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "vl": {
-        "immediate": "<VL>"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "WHILEHI"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svwhilegt_c32[_s64]",
-    "arguments": [
-      "int64_t rn",
-      "int64_t rm",
-      "uint64_t vl"
-    ],
-    "return_type": {
-      "value": "svcount_t"
-    },
-    "Arguments_Preparation": {
-      "rm": {
-        "register": "Xreg2"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "vl": {
-        "immediate": "<VL>"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "WHILEGT"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svwhilegt_c32[_u64]",
-    "arguments": [
-      "uint64_t rn",
-      "uint64_t rm",
-      "uint64_t vl"
-    ],
-    "return_type": {
-      "value": "svcount_t"
-    },
-    "Arguments_Preparation": {
-      "rm": {
-        "register": "Xreg2"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "vl": {
-        "immediate": "<VL>"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "WHILEHI"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svwhilegt_c64[_s64]",
-    "arguments": [
-      "int64_t rn",
-      "int64_t rm",
-      "uint64_t vl"
-    ],
-    "return_type": {
-      "value": "svcount_t"
-    },
-    "Arguments_Preparation": {
-      "rm": {
-        "register": "Xreg2"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "vl": {
-        "immediate": "<VL>"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "WHILEGT"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svwhilegt_c64[_u64]",
-    "arguments": [
-      "uint64_t rn",
-      "uint64_t rm",
-      "uint64_t vl"
-    ],
-    "return_type": {
-      "value": "svcount_t"
-    },
-    "Arguments_Preparation": {
-      "rm": {
-        "register": "Xreg2"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "vl": {
-        "immediate": "<VL>"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "WHILEHI"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svwhilegt_c8[_s64]",
-    "arguments": [
-      "int64_t rn",
-      "int64_t rm",
-      "uint64_t vl"
-    ],
-    "return_type": {
-      "value": "svcount_t"
-    },
-    "Arguments_Preparation": {
-      "rm": {
-        "register": "Xreg2"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "vl": {
-        "immediate": "<VL>"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "WHILEGT"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svwhilegt_c8[_u64]",
-    "arguments": [
-      "uint64_t rn",
-      "uint64_t rm",
-      "uint64_t vl"
-    ],
-    "return_type": {
-      "value": "svcount_t"
-    },
-    "Arguments_Preparation": {
-      "rm": {
-        "register": "Xreg2"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "vl": {
-        "immediate": "<VL>"
       }
     },
     "Architectures": [
@@ -199005,33 +191776,6 @@
     ]
   },
   {
-    "SIMD_ISA": "SVE2",
-    "name": "svwhilele_b16[_s64]_x2",
-    "arguments": [
-      "int64_t rn",
-      "int64_t rm"
-    ],
-    "return_type": {
-      "value": "svboolx2_t"
-    },
-    "Arguments_Preparation": {
-      "rm": {
-        "register": "Xreg2"
-      },
-      "rn": {
-        "register": "Xreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "WHILELE"
-      ]
-    ]
-  },
-  {
     "SIMD_ISA": "SVE",
     "name": "svwhilele_b16[_u32]",
     "arguments": [
@@ -199074,33 +191818,6 @@
       },
       "op2": {
         "register": "Xop2"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "WHILELS"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svwhilele_b16[_u64]_x2",
-    "arguments": [
-      "uint64_t rn",
-      "uint64_t rm"
-    ],
-    "return_type": {
-      "value": "svboolx2_t"
-    },
-    "Arguments_Preparation": {
-      "rm": {
-        "register": "Xreg2"
-      },
-      "rn": {
-        "register": "Xreg1"
       }
     },
     "Architectures": [
@@ -199167,33 +191884,6 @@
     ]
   },
   {
-    "SIMD_ISA": "SVE2",
-    "name": "svwhilele_b32[_s64]_x2",
-    "arguments": [
-      "int64_t rn",
-      "int64_t rm"
-    ],
-    "return_type": {
-      "value": "svboolx2_t"
-    },
-    "Arguments_Preparation": {
-      "rm": {
-        "register": "Xreg2"
-      },
-      "rn": {
-        "register": "Xreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "WHILELE"
-      ]
-    ]
-  },
-  {
     "SIMD_ISA": "SVE",
     "name": "svwhilele_b32[_u32]",
     "arguments": [
@@ -199236,33 +191926,6 @@
       },
       "op2": {
         "register": "Xop2"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "WHILELS"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svwhilele_b32[_u64]_x2",
-    "arguments": [
-      "uint64_t rn",
-      "uint64_t rm"
-    ],
-    "return_type": {
-      "value": "svboolx2_t"
-    },
-    "Arguments_Preparation": {
-      "rm": {
-        "register": "Xreg2"
-      },
-      "rn": {
-        "register": "Xreg1"
       }
     },
     "Architectures": [
@@ -199329,33 +191992,6 @@
     ]
   },
   {
-    "SIMD_ISA": "SVE2",
-    "name": "svwhilele_b64[_s64]_x2",
-    "arguments": [
-      "int64_t rn",
-      "int64_t rm"
-    ],
-    "return_type": {
-      "value": "svboolx2_t"
-    },
-    "Arguments_Preparation": {
-      "rm": {
-        "register": "Xreg2"
-      },
-      "rn": {
-        "register": "Xreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "WHILELE"
-      ]
-    ]
-  },
-  {
     "SIMD_ISA": "SVE",
     "name": "svwhilele_b64[_u32]",
     "arguments": [
@@ -199398,33 +192034,6 @@
       },
       "op2": {
         "register": "Xop2"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "WHILELS"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svwhilele_b64[_u64]_x2",
-    "arguments": [
-      "uint64_t rn",
-      "uint64_t rm"
-    ],
-    "return_type": {
-      "value": "svboolx2_t"
-    },
-    "Arguments_Preparation": {
-      "rm": {
-        "register": "Xreg2"
-      },
-      "rn": {
-        "register": "Xreg1"
       }
     },
     "Architectures": [
@@ -199491,33 +192100,6 @@
     ]
   },
   {
-    "SIMD_ISA": "SVE2",
-    "name": "svwhilele_b8[_s64]_x2",
-    "arguments": [
-      "int64_t rn",
-      "int64_t rm"
-    ],
-    "return_type": {
-      "value": "svboolx2_t"
-    },
-    "Arguments_Preparation": {
-      "rm": {
-        "register": "Xreg2"
-      },
-      "rn": {
-        "register": "Xreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "WHILELE"
-      ]
-    ]
-  },
-  {
     "SIMD_ISA": "SVE",
     "name": "svwhilele_b8[_u32]",
     "arguments": [
@@ -199560,281 +192142,6 @@
       },
       "op2": {
         "register": "Xop2"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "WHILELS"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svwhilele_b8[_u64]_x2",
-    "arguments": [
-      "uint64_t rn",
-      "uint64_t rm"
-    ],
-    "return_type": {
-      "value": "svboolx2_t"
-    },
-    "Arguments_Preparation": {
-      "rm": {
-        "register": "Xreg2"
-      },
-      "rn": {
-        "register": "Xreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "WHILELS"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svwhilele_c16[_s64]",
-    "arguments": [
-      "int64_t rn",
-      "int64_t rm",
-      "uint64_t vl"
-    ],
-    "return_type": {
-      "value": "svcount_t"
-    },
-    "Arguments_Preparation": {
-      "rm": {
-        "register": "Xreg2"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "vl": {
-        "immediate": "<VL>"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "WHILELE"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svwhilele_c16[_u64]",
-    "arguments": [
-      "uint64_t rn",
-      "uint64_t rm",
-      "uint64_t vl"
-    ],
-    "return_type": {
-      "value": "svcount_t"
-    },
-    "Arguments_Preparation": {
-      "rm": {
-        "register": "Xreg2"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "vl": {
-        "immediate": "<VL>"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "WHILELS"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svwhilele_c32[_s64]",
-    "arguments": [
-      "int64_t rn",
-      "int64_t rm",
-      "uint64_t vl"
-    ],
-    "return_type": {
-      "value": "svcount_t"
-    },
-    "Arguments_Preparation": {
-      "rm": {
-        "register": "Xreg2"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "vl": {
-        "immediate": "<VL>"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "WHILELE"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svwhilele_c32[_u64]",
-    "arguments": [
-      "uint64_t rn",
-      "uint64_t rm",
-      "uint64_t vl"
-    ],
-    "return_type": {
-      "value": "svcount_t"
-    },
-    "Arguments_Preparation": {
-      "rm": {
-        "register": "Xreg2"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "vl": {
-        "immediate": "<VL>"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "WHILELS"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svwhilele_c64[_s64]",
-    "arguments": [
-      "int64_t rn",
-      "int64_t rm",
-      "uint64_t vl"
-    ],
-    "return_type": {
-      "value": "svcount_t"
-    },
-    "Arguments_Preparation": {
-      "rm": {
-        "register": "Xreg2"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "vl": {
-        "immediate": "<VL>"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "WHILELE"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svwhilele_c64[_u64]",
-    "arguments": [
-      "uint64_t rn",
-      "uint64_t rm",
-      "uint64_t vl"
-    ],
-    "return_type": {
-      "value": "svcount_t"
-    },
-    "Arguments_Preparation": {
-      "rm": {
-        "register": "Xreg2"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "vl": {
-        "immediate": "<VL>"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "WHILELS"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svwhilele_c8[_s64]",
-    "arguments": [
-      "int64_t rn",
-      "int64_t rm",
-      "uint64_t vl"
-    ],
-    "return_type": {
-      "value": "svcount_t"
-    },
-    "Arguments_Preparation": {
-      "rm": {
-        "register": "Xreg2"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "vl": {
-        "immediate": "<VL>"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "WHILELE"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svwhilele_c8[_u64]",
-    "arguments": [
-      "uint64_t rn",
-      "uint64_t rm",
-      "uint64_t vl"
-    ],
-    "return_type": {
-      "value": "svcount_t"
-    },
-    "Arguments_Preparation": {
-      "rm": {
-        "register": "Xreg2"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "vl": {
-        "immediate": "<VL>"
       }
     },
     "Architectures": [
@@ -199901,33 +192208,6 @@
     ]
   },
   {
-    "SIMD_ISA": "SVE2",
-    "name": "svwhilelt_b16[_s64]_x2",
-    "arguments": [
-      "int64_t rn",
-      "int64_t rm"
-    ],
-    "return_type": {
-      "value": "svboolx2_t"
-    },
-    "Arguments_Preparation": {
-      "rm": {
-        "register": "Xreg2"
-      },
-      "rn": {
-        "register": "Xreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "WHILELT"
-      ]
-    ]
-  },
-  {
     "SIMD_ISA": "SVE",
     "name": "svwhilelt_b16[_u32]",
     "arguments": [
@@ -199970,33 +192250,6 @@
       },
       "op2": {
         "register": "Xop2"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "WHILELO"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svwhilelt_b16[_u64]_x2",
-    "arguments": [
-      "uint64_t rn",
-      "uint64_t rm"
-    ],
-    "return_type": {
-      "value": "svboolx2_t"
-    },
-    "Arguments_Preparation": {
-      "rm": {
-        "register": "Xreg2"
-      },
-      "rn": {
-        "register": "Xreg1"
       }
     },
     "Architectures": [
@@ -200063,33 +192316,6 @@
     ]
   },
   {
-    "SIMD_ISA": "SVE2",
-    "name": "svwhilelt_b32[_s64]_x2",
-    "arguments": [
-      "int64_t rn",
-      "int64_t rm"
-    ],
-    "return_type": {
-      "value": "svboolx2_t"
-    },
-    "Arguments_Preparation": {
-      "rm": {
-        "register": "Xreg2"
-      },
-      "rn": {
-        "register": "Xreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "WHILELT"
-      ]
-    ]
-  },
-  {
     "SIMD_ISA": "SVE",
     "name": "svwhilelt_b32[_u32]",
     "arguments": [
@@ -200132,33 +192358,6 @@
       },
       "op2": {
         "register": "Xop2"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "WHILELO"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svwhilelt_b32[_u64]_x2",
-    "arguments": [
-      "uint64_t rn",
-      "uint64_t rm"
-    ],
-    "return_type": {
-      "value": "svboolx2_t"
-    },
-    "Arguments_Preparation": {
-      "rm": {
-        "register": "Xreg2"
-      },
-      "rn": {
-        "register": "Xreg1"
       }
     },
     "Architectures": [
@@ -200225,33 +192424,6 @@
     ]
   },
   {
-    "SIMD_ISA": "SVE2",
-    "name": "svwhilelt_b64[_s64]_x2",
-    "arguments": [
-      "int64_t rn",
-      "int64_t rm"
-    ],
-    "return_type": {
-      "value": "svboolx2_t"
-    },
-    "Arguments_Preparation": {
-      "rm": {
-        "register": "Xreg2"
-      },
-      "rn": {
-        "register": "Xreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "WHILELT"
-      ]
-    ]
-  },
-  {
     "SIMD_ISA": "SVE",
     "name": "svwhilelt_b64[_u32]",
     "arguments": [
@@ -200294,33 +192466,6 @@
       },
       "op2": {
         "register": "Xop2"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "WHILELO"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svwhilelt_b64[_u64]_x2",
-    "arguments": [
-      "uint64_t rn",
-      "uint64_t rm"
-    ],
-    "return_type": {
-      "value": "svboolx2_t"
-    },
-    "Arguments_Preparation": {
-      "rm": {
-        "register": "Xreg2"
-      },
-      "rn": {
-        "register": "Xreg1"
       }
     },
     "Architectures": [
@@ -200387,33 +192532,6 @@
     ]
   },
   {
-    "SIMD_ISA": "SVE2",
-    "name": "svwhilelt_b8[_s64]_x2",
-    "arguments": [
-      "int64_t rn",
-      "int64_t rm"
-    ],
-    "return_type": {
-      "value": "svboolx2_t"
-    },
-    "Arguments_Preparation": {
-      "rm": {
-        "register": "Xreg2"
-      },
-      "rn": {
-        "register": "Xreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "WHILELT"
-      ]
-    ]
-  },
-  {
     "SIMD_ISA": "SVE",
     "name": "svwhilelt_b8[_u32]",
     "arguments": [
@@ -200456,281 +192574,6 @@
       },
       "op2": {
         "register": "Xop2"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "WHILELO"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svwhilelt_b8[_u64]_x2",
-    "arguments": [
-      "uint64_t rn",
-      "uint64_t rm"
-    ],
-    "return_type": {
-      "value": "svboolx2_t"
-    },
-    "Arguments_Preparation": {
-      "rm": {
-        "register": "Xreg2"
-      },
-      "rn": {
-        "register": "Xreg1"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "WHILELO"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svwhilelt_c16[_s64]",
-    "arguments": [
-      "int64_t rn",
-      "int64_t rm",
-      "uint64_t vl"
-    ],
-    "return_type": {
-      "value": "svcount_t"
-    },
-    "Arguments_Preparation": {
-      "rm": {
-        "register": "Xreg2"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "vl": {
-        "immediate": "<VL>"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "WHILELT"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svwhilelt_c16[_u64]",
-    "arguments": [
-      "uint64_t rn",
-      "uint64_t rm",
-      "uint64_t vl"
-    ],
-    "return_type": {
-      "value": "svcount_t"
-    },
-    "Arguments_Preparation": {
-      "rm": {
-        "register": "Xreg2"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "vl": {
-        "immediate": "<VL>"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "WHILELO"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svwhilelt_c32[_s64]",
-    "arguments": [
-      "int64_t rn",
-      "int64_t rm",
-      "uint64_t vl"
-    ],
-    "return_type": {
-      "value": "svcount_t"
-    },
-    "Arguments_Preparation": {
-      "rm": {
-        "register": "Xreg2"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "vl": {
-        "immediate": "<VL>"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "WHILELT"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svwhilelt_c32[_u64]",
-    "arguments": [
-      "uint64_t rn",
-      "uint64_t rm",
-      "uint64_t vl"
-    ],
-    "return_type": {
-      "value": "svcount_t"
-    },
-    "Arguments_Preparation": {
-      "rm": {
-        "register": "Xreg2"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "vl": {
-        "immediate": "<VL>"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "WHILELO"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svwhilelt_c64[_s64]",
-    "arguments": [
-      "int64_t rn",
-      "int64_t rm",
-      "uint64_t vl"
-    ],
-    "return_type": {
-      "value": "svcount_t"
-    },
-    "Arguments_Preparation": {
-      "rm": {
-        "register": "Xreg2"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "vl": {
-        "immediate": "<VL>"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "WHILELT"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svwhilelt_c64[_u64]",
-    "arguments": [
-      "uint64_t rn",
-      "uint64_t rm",
-      "uint64_t vl"
-    ],
-    "return_type": {
-      "value": "svcount_t"
-    },
-    "Arguments_Preparation": {
-      "rm": {
-        "register": "Xreg2"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "vl": {
-        "immediate": "<VL>"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "WHILELO"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svwhilelt_c8[_s64]",
-    "arguments": [
-      "int64_t rn",
-      "int64_t rm",
-      "uint64_t vl"
-    ],
-    "return_type": {
-      "value": "svcount_t"
-    },
-    "Arguments_Preparation": {
-      "rm": {
-        "register": "Xreg2"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "vl": {
-        "immediate": "<VL>"
-      }
-    },
-    "Architectures": [
-      "A64"
-    ],
-    "instructions": [
-      [
-        "WHILELT"
-      ]
-    ]
-  },
-  {
-    "SIMD_ISA": "SVE2",
-    "name": "svwhilelt_c8[_u64]",
-    "arguments": [
-      "uint64_t rn",
-      "uint64_t rm",
-      "uint64_t vl"
-    ],
-    "return_type": {
-      "value": "svcount_t"
-    },
-    "Arguments_Preparation": {
-      "rm": {
-        "register": "Xreg2"
-      },
-      "rn": {
-        "register": "Xreg1"
-      },
-      "vl": {
-        "immediate": "<VL>"
       }
     },
     "Architectures": [
@@ -224066,6 +215909,29 @@
   },
   {
     "SIMD_ISA": "Neon",
+    "name": "vcvtad_s32_f64",
+    "arguments": [
+      "float64_t a"
+    ],
+    "return_type": {
+      "value": "int32_t"
+    },
+    "Arguments_Preparation": {
+      "a": {
+        "register": "Dn"
+      }
+    },
+    "Architectures": [
+      "A64"
+    ],
+    "instructions": [
+      [
+        "FCVTAS"
+      ]
+    ]
+  },
+  {
+    "SIMD_ISA": "Neon",
     "name": "vcvtad_s64_f64",
     "arguments": [
       "float64_t a"
@@ -224084,6 +215950,29 @@
     "instructions": [
       [
         "FCVTAS"
+      ]
+    ]
+  },
+  {
+    "SIMD_ISA": "Neon",
+    "name": "vcvtad_u32_f64",
+    "arguments": [
+      "float64_t a"
+    ],
+    "return_type": {
+      "value": "uint32_t"
+    },
+    "Arguments_Preparation": {
+      "a": {
+        "register": "Dn"
+      }
+    },
+    "Architectures": [
+      "A64"
+    ],
+    "instructions": [
+      [
+        "FCVTAU"
       ]
     ]
   },
@@ -224415,12 +216304,58 @@
   },
   {
     "SIMD_ISA": "Neon",
+    "name": "vcvtas_s64_f32",
+    "arguments": [
+      "float32_t a"
+    ],
+    "return_type": {
+      "value": "int64_t"
+    },
+    "Arguments_Preparation": {
+      "a": {
+        "register": "Sn"
+      }
+    },
+    "Architectures": [
+      "A64"
+    ],
+    "instructions": [
+      [
+        "FCVTAS"
+      ]
+    ]
+  },
+  {
+    "SIMD_ISA": "Neon",
     "name": "vcvtas_u32_f32",
     "arguments": [
       "float32_t a"
     ],
     "return_type": {
       "value": "uint32_t"
+    },
+    "Arguments_Preparation": {
+      "a": {
+        "register": "Sn"
+      }
+    },
+    "Architectures": [
+      "A64"
+    ],
+    "instructions": [
+      [
+        "FCVTAU"
+      ]
+    ]
+  },
+  {
+    "SIMD_ISA": "Neon",
+    "name": "vcvtas_u64_f32",
+    "arguments": [
+      "float32_t a"
+    ],
+    "return_type": {
+      "value": "uint64_t"
     },
     "Arguments_Preparation": {
       "a": {
@@ -224596,6 +216531,29 @@
   },
   {
     "SIMD_ISA": "Neon",
+    "name": "vcvtd_s32_f64",
+    "arguments": [
+      "float64_t a"
+    ],
+    "return_type": {
+      "value": "int32_t"
+    },
+    "Arguments_Preparation": {
+      "a": {
+        "register": "Dn"
+      }
+    },
+    "Architectures": [
+      "A64"
+    ],
+    "instructions": [
+      [
+        "FCVTZS"
+      ]
+    ]
+  },
+  {
+    "SIMD_ISA": "Neon",
     "name": "vcvtd_s64_f64",
     "arguments": [
       "float64_t a"
@@ -224614,6 +216572,29 @@
     "instructions": [
       [
         "FCVTZS"
+      ]
+    ]
+  },
+  {
+    "SIMD_ISA": "Neon",
+    "name": "vcvtd_u32_f64",
+    "arguments": [
+      "float64_t a"
+    ],
+    "return_type": {
+      "value": "uint32_t"
+    },
+    "Arguments_Preparation": {
+      "a": {
+        "register": "Dn"
+      }
+    },
+    "Architectures": [
+      "A64"
+    ],
+    "instructions": [
+      [
+        "FCVTZU"
       ]
     ]
   },
@@ -225402,6 +217383,29 @@
   },
   {
     "SIMD_ISA": "Neon",
+    "name": "vcvtmd_s32_f64",
+    "arguments": [
+      "float64_t a"
+    ],
+    "return_type": {
+      "value": "int32_t"
+    },
+    "Arguments_Preparation": {
+      "a": {
+        "register": "Dn"
+      }
+    },
+    "Architectures": [
+      "A64"
+    ],
+    "instructions": [
+      [
+        "FCVTMS"
+      ]
+    ]
+  },
+  {
+    "SIMD_ISA": "Neon",
     "name": "vcvtmd_s64_f64",
     "arguments": [
       "float64_t a"
@@ -225420,6 +217424,29 @@
     "instructions": [
       [
         "FCVTMS"
+      ]
+    ]
+  },
+  {
+    "SIMD_ISA": "Neon",
+    "name": "vcvtmd_u32_f64",
+    "arguments": [
+      "float64_t a"
+    ],
+    "return_type": {
+      "value": "uint32_t"
+    },
+    "Arguments_Preparation": {
+      "a": {
+        "register": "Dn"
+      }
+    },
+    "Architectures": [
+      "A64"
+    ],
+    "instructions": [
+      [
+        "FCVTMU"
       ]
     ]
   },
@@ -225751,12 +217778,58 @@
   },
   {
     "SIMD_ISA": "Neon",
+    "name": "vcvtms_s64_f32",
+    "arguments": [
+      "float32_t a"
+    ],
+    "return_type": {
+      "value": "int64_t"
+    },
+    "Arguments_Preparation": {
+      "a": {
+        "register": "Sn"
+      }
+    },
+    "Architectures": [
+      "A64"
+    ],
+    "instructions": [
+      [
+        "FCVTMS"
+      ]
+    ]
+  },
+  {
+    "SIMD_ISA": "Neon",
     "name": "vcvtms_u32_f32",
     "arguments": [
       "float32_t a"
     ],
     "return_type": {
       "value": "uint32_t"
+    },
+    "Arguments_Preparation": {
+      "a": {
+        "register": "Sn"
+      }
+    },
+    "Architectures": [
+      "A64"
+    ],
+    "instructions": [
+      [
+        "FCVTMU"
+      ]
+    ]
+  },
+  {
+    "SIMD_ISA": "Neon",
+    "name": "vcvtms_u64_f32",
+    "arguments": [
+      "float32_t a"
+    ],
+    "return_type": {
+      "value": "uint64_t"
     },
     "Arguments_Preparation": {
       "a": {
@@ -225916,6 +217989,29 @@
   },
   {
     "SIMD_ISA": "Neon",
+    "name": "vcvtnd_s32_f64",
+    "arguments": [
+      "float64_t a"
+    ],
+    "return_type": {
+      "value": "int32_t"
+    },
+    "Arguments_Preparation": {
+      "a": {
+        "register": "Dn"
+      }
+    },
+    "Architectures": [
+      "A64"
+    ],
+    "instructions": [
+      [
+        "FCVTNS"
+      ]
+    ]
+  },
+  {
+    "SIMD_ISA": "Neon",
     "name": "vcvtnd_s64_f64",
     "arguments": [
       "float64_t a"
@@ -225934,6 +218030,29 @@
     "instructions": [
       [
         "FCVTNS"
+      ]
+    ]
+  },
+  {
+    "SIMD_ISA": "Neon",
+    "name": "vcvtnd_u32_f64",
+    "arguments": [
+      "float64_t a"
+    ],
+    "return_type": {
+      "value": "uint32_t"
+    },
+    "Arguments_Preparation": {
+      "a": {
+        "register": "Dn"
+      }
+    },
+    "Architectures": [
+      "A64"
+    ],
+    "instructions": [
+      [
+        "FCVTNU"
       ]
     ]
   },
@@ -226265,12 +218384,58 @@
   },
   {
     "SIMD_ISA": "Neon",
+    "name": "vcvtns_s64_f32",
+    "arguments": [
+      "float32_t a"
+    ],
+    "return_type": {
+      "value": "int64_t"
+    },
+    "Arguments_Preparation": {
+      "a": {
+        "register": "Sn"
+      }
+    },
+    "Architectures": [
+      "A64"
+    ],
+    "instructions": [
+      [
+        "FCVTNS"
+      ]
+    ]
+  },
+  {
+    "SIMD_ISA": "Neon",
     "name": "vcvtns_u32_f32",
     "arguments": [
       "float32_t a"
     ],
     "return_type": {
       "value": "uint32_t"
+    },
+    "Arguments_Preparation": {
+      "a": {
+        "register": "Sn"
+      }
+    },
+    "Architectures": [
+      "A64"
+    ],
+    "instructions": [
+      [
+        "FCVTNU"
+      ]
+    ]
+  },
+  {
+    "SIMD_ISA": "Neon",
+    "name": "vcvtns_u64_f32",
+    "arguments": [
+      "float32_t a"
+    ],
+    "return_type": {
+      "value": "uint64_t"
     },
     "Arguments_Preparation": {
       "a": {
@@ -226430,6 +218595,29 @@
   },
   {
     "SIMD_ISA": "Neon",
+    "name": "vcvtpd_s32_f64",
+    "arguments": [
+      "float64_t a"
+    ],
+    "return_type": {
+      "value": "int32_t"
+    },
+    "Arguments_Preparation": {
+      "a": {
+        "register": "Dn"
+      }
+    },
+    "Architectures": [
+      "A64"
+    ],
+    "instructions": [
+      [
+        "FCVTPS"
+      ]
+    ]
+  },
+  {
+    "SIMD_ISA": "Neon",
     "name": "vcvtpd_s64_f64",
     "arguments": [
       "float64_t a"
@@ -226448,6 +218636,29 @@
     "instructions": [
       [
         "FCVTPS"
+      ]
+    ]
+  },
+  {
+    "SIMD_ISA": "Neon",
+    "name": "vcvtpd_u32_f64",
+    "arguments": [
+      "float64_t a"
+    ],
+    "return_type": {
+      "value": "uint32_t"
+    },
+    "Arguments_Preparation": {
+      "a": {
+        "register": "Dn"
+      }
+    },
+    "Architectures": [
+      "A64"
+    ],
+    "instructions": [
+      [
+        "FCVTPU"
       ]
     ]
   },
@@ -226779,12 +218990,58 @@
   },
   {
     "SIMD_ISA": "Neon",
+    "name": "vcvtps_s64_f32",
+    "arguments": [
+      "float32_t a"
+    ],
+    "return_type": {
+      "value": "int64_t"
+    },
+    "Arguments_Preparation": {
+      "a": {
+        "register": "Sn"
+      }
+    },
+    "Architectures": [
+      "A64"
+    ],
+    "instructions": [
+      [
+        "FCVTPS"
+      ]
+    ]
+  },
+  {
+    "SIMD_ISA": "Neon",
     "name": "vcvtps_u32_f32",
     "arguments": [
       "float32_t a"
     ],
     "return_type": {
       "value": "uint32_t"
+    },
+    "Arguments_Preparation": {
+      "a": {
+        "register": "Sn"
+      }
+    },
+    "Architectures": [
+      "A64"
+    ],
+    "instructions": [
+      [
+        "FCVTPU"
+      ]
+    ]
+  },
+  {
+    "SIMD_ISA": "Neon",
+    "name": "vcvtps_u64_f32",
+    "arguments": [
+      "float32_t a"
+    ],
+    "return_type": {
+      "value": "uint64_t"
     },
     "Arguments_Preparation": {
       "a": {
@@ -227619,12 +219876,58 @@
   },
   {
     "SIMD_ISA": "Neon",
+    "name": "vcvts_s64_f32",
+    "arguments": [
+      "float32_t a"
+    ],
+    "return_type": {
+      "value": "int64_t"
+    },
+    "Arguments_Preparation": {
+      "a": {
+        "register": "Sn"
+      }
+    },
+    "Architectures": [
+      "A64"
+    ],
+    "instructions": [
+      [
+        "FCVTZS"
+      ]
+    ]
+  },
+  {
+    "SIMD_ISA": "Neon",
     "name": "vcvts_u32_f32",
     "arguments": [
       "float32_t a"
     ],
     "return_type": {
       "value": "uint32_t"
+    },
+    "Arguments_Preparation": {
+      "a": {
+        "register": "Sn"
+      }
+    },
+    "Architectures": [
+      "A64"
+    ],
+    "instructions": [
+      [
+        "FCVTZU"
+      ]
+    ]
+  },
+  {
+    "SIMD_ISA": "Neon",
+    "name": "vcvts_u64_f32",
+    "arguments": [
+      "float32_t a"
+    ],
+    "return_type": {
+      "value": "uint64_t"
     },
     "Arguments_Preparation": {
       "a": {
@@ -228005,6 +220308,7 @@
       }
     },
     "Architectures": [
+      "A32",
       "A64"
     ],
     "instructions": [
@@ -228041,6 +220345,7 @@
       }
     },
     "Architectures": [
+      "A32",
       "A64"
     ],
     "instructions": [
@@ -228215,6 +220520,7 @@
       }
     },
     "Architectures": [
+      "A32",
       "A64"
     ],
     "instructions": [
@@ -228251,6 +220557,7 @@
       }
     },
     "Architectures": [
+      "A32",
       "A64"
     ],
     "instructions": [
@@ -318819,6 +311126,7 @@
       }
     },
     "Architectures": [
+      "A32",
       "A64"
     ],
     "instructions": [
@@ -318855,6 +311163,7 @@
       }
     },
     "Architectures": [
+      "A32",
       "A64"
     ],
     "instructions": [
@@ -318891,6 +311200,7 @@
       }
     },
     "Architectures": [
+      "A32",
       "A64"
     ],
     "instructions": [
@@ -322606,6 +314916,7 @@
       }
     },
     "Architectures": [
+      "A32",
       "A64"
     ],
     "instructions": [
@@ -322711,6 +315022,7 @@
       }
     },
     "Architectures": [
+      "A32",
       "A64"
     ],
     "instructions": [
