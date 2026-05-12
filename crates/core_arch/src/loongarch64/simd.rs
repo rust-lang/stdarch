@@ -73,6 +73,25 @@ pub(super) const unsafe fn simd_andn<T: Copy + const SimdExt>(a: T, b: T) -> T {
 
 #[inline(always)]
 #[rustc_const_unstable(feature = "stdarch_const_helpers", issue = "none")]
+pub(crate) const unsafe fn simd_avg<T: Copy + const SimdExt>(a: T, b: T) -> T {
+    is::simd_add(
+        is::simd_and(a, b),
+        is::simd_shr(is::simd_xor(a, b), ls::simd_splat(1)),
+    )
+}
+
+#[inline(always)]
+#[rustc_const_unstable(feature = "stdarch_const_helpers", issue = "none")]
+pub(crate) const unsafe fn simd_avgr<T: Copy + const SimdExt>(a: T, b: T) -> T {
+    let o: T = ls::simd_splat(1);
+    is::simd_add(
+        is::simd_and(a, b),
+        is::simd_shr(is::simd_add(is::simd_xor(a, b), o), o),
+    )
+}
+
+#[inline(always)]
+#[rustc_const_unstable(feature = "stdarch_const_helpers", issue = "none")]
 pub(super) const unsafe fn simd_bitclr<T: Copy + const SimdExt>(a: T, b: T) -> T {
     ls::simd_andn(ls::simd_shl(ls::simd_splat(1), b), a)
 }
