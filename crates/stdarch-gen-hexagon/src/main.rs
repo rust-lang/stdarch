@@ -21,6 +21,7 @@ use std::collections::{HashMap, HashSet};
 use std::fs::File;
 use std::io::Write;
 use std::path::Path;
+use stdarch_gen_common::{run, Mode};
 
 /// Mappings from HVX intrinsics to architecture-independent SIMD intrinsics.
 /// These intrinsics have equivalent semantics and can be lowered to the generic form.
@@ -1695,19 +1696,25 @@ fn main() -> Result<(), String> {
         .nth(1)
         .map(std::path::PathBuf::from)
         .unwrap_or_else(|| crate_dir.join("../core_arch/src/hexagon"));
-    std::fs::create_dir_all(&hexagon_dir).map_err(|e| e.to_string())?;
 
-    // Generate v64.rs (64-byte vector mode)
-    let v64_path = hexagon_dir.join("v64.rs");
-    println!("\nStep 3: Generating v64.rs (64-byte mode)...");
-    generate_module_file(&intrinsics, &v64_path, VectorMode::V64)?;
-    println!("  Output: {}", v64_path.display());
+    let mode = Mode::from_env();
+    println!("\nStep 3: Generating v64.rs and v128.rs (mode: {mode:?})...");
+    run(
+        &hexagon_dir,
+        &["v64.rs", "v128.rs"],
+        mode,
+        |out_dir| -> Result<(), String> {
+            let v64_path = out_dir.join("v64.rs");
+            generate_module_file(&intrinsics, &v64_path, VectorMode::V64)?;
+            println!("  Output: {}", v64_path.display());
 
-    // Generate v128.rs (128-byte vector mode)
-    let v128_path = hexagon_dir.join("v128.rs");
-    println!("\nStep 4: Generating v128.rs (128-byte mode)...");
-    generate_module_file(&intrinsics, &v128_path, VectorMode::V128)?;
-    println!("  Output: {}", v128_path.display());
+            let v128_path = out_dir.join("v128.rs");
+            generate_module_file(&intrinsics, &v128_path, VectorMode::V128)?;
+            println!("  Output: {}", v128_path.display());
+            Ok(())
+        },
+    )
+    .map_err(|e| e.to_string())?;
 
     println!("\n=== Results ===");
     println!(
