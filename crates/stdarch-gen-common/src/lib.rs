@@ -6,14 +6,36 @@ use std::fs;
 use std::io;
 use std::path::{Path, PathBuf};
 
+// Controls what `run` does with the generator's output.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Mode {
+    // Write the generator's output directly into the target directory.
+    //
+    // This is the default for standalone runs. The owned list is not consulted
+    // whatever the generator emits lands on disk as-is.
     Write,
+    // Verify that the committed tree matches the generator's output.
+    //
+    // Runs the generator into a temp directory, then compares each path
+    // in the owned list. Returns an error on the first mismatch.
     Check,
+    // Update the committed tree to match the generator's output.
+    //
+    // Runs the generator into a temp directory and copies each path in
+    // the owned list into the committed tree. Files that exist in the
+    // committed tree but are not in the owned list are left untouched, so
+    // hand-written code can live alongside generated code in the same
+    // directory.
     Bless,
 }
 
 impl Mode {
+    // Read the mode from the `STDARCH_GEN_MODE` environment variable.
+    //
+    // Recognized values:
+    // - `"check"` → [`Mode::Check`]
+    // - `"bless"` → [`Mode::Bless`]
+    // - anything else, including unset → [`Mode::Write`]
     pub fn from_env() -> Self {
         match std::env::var("STDARCH_GEN_MODE").as_deref() {
             Ok("check") => Mode::Check,
@@ -32,9 +54,18 @@ pub enum Error {
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum MismatchKind {
+    // Owned file produced by the generator but absent from the committed tree.
+    // Means the committed tree needs to be regenerated.
     MissingInCommitted,
+    // Owned file present in the committed tree but the generator no longer
+    // produces it. The file must be removed from the committed tree and
+    // the owned list.
     ExtraInCommitted,
+    // Owned file exists on both sides but contents differ.
     ContentsDiffer,
+    // In Bless mode the owned list claims this path but the generator
+    // did not produce it. Indicates a stale owned list .
+    // Blessing cannot proceed because there is nothing to copy.
     MissingFromGenerated,
 }
 
@@ -79,8 +110,28 @@ impl From<io::Error> for Error {
 
 pub type Result<T> = std::result::Result<T, Error>;
 
-// owned is the list of relative paths the generator manages. Files in
-// committed not listed here are left untouched by Bless and ignored by Check.
+// Run a generator under the chosen `mode`, reconciling its output with `committed`.
+//
+// Arguments:
+// - `committed` — the directory holding the in-tree (committed) source files.
+// - `owned` — relative paths within `committed` that the generator manages.
+//   Anything in `committed` not listed here is treated as hand-written and is
+//   left untouched by `Bless` and ignored by `Check`. The slice allows a
+//   generator-managed file  to coexist with hand-written files in the same
+//   directory.
+// - `mode` — what to do with the generator's output.
+// - `generate` — closure that writes the generator's output into the
+//   directory it is given. Its error is wrapped in [`Error::Generator`].
+//
+// Behavior per mode:
+// - [`Mode::Write`]: invokes `generate(committed)` directly. Owned list is
+//   not consulted.
+// - [`Mode::Check`]: runs the generator into a temp dir and compares each
+//   path in `owned` against the committed copy. First mismatch returns an
+//   [`Error::Mismatch`].
+// - [`Mode::Bless`]: runs the generator into a temp dir and copies each
+//   path in `owned` into `committed`. Errors if any owned path was not
+//   produced by the generator.
 pub fn run<F, E>(committed: &Path, owned: &[&str], mode: Mode, generate: F) -> Result<()>
 where
     F: FnOnce(&Path) -> std::result::Result<(), E>,
