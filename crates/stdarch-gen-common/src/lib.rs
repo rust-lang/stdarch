@@ -6,36 +6,35 @@ use std::fs;
 use std::io;
 use std::path::{Path, PathBuf};
 
-// Controls what `run` does with the generator's output.
+/// Controls what `run` does with the generator's output.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Mode {
-    // Write the generator's output directly into the target directory.
-    //
-    // This is the default for standalone runs. The owned list is not consulted
-    // whatever the generator emits lands on disk as-is.
+    /// Write the generator's output directly into `committed`.
+    ///
+    /// This is the default for standalone runs. `owned` is not consulted
+    /// whatever the generator emits lands on disk as-is.
     Write,
-    // Verify that the committed tree matches the generator's output.
-    //
-    // Runs the generator into a temp directory, then compares each path
-    // in the owned list. Returns an error on the first mismatch.
+    /// Verify that the `committed` matches the generator's output for `owned`.
+    ///
+    /// Runs the generator into a temp directory, then compares the produced file
+    /// against the committed copy. Returns an error on the first mismatch.
     Check,
-    // Update the committed tree to match the generator's output.
-    //
-    // Runs the generator into a temp directory and copies each path in
-    // the owned list into the committed tree. Files that exist in the
-    // committed tree but are not in the owned list are left untouched, so
-    // hand-written code can live alongside generated code in the same
-    // directory.
+    /// Update the `committed` to match the generator's output for `owned`.
+    ///
+    /// Runs the generator into a temp directory and copies the produced file
+    /// into `committed`. If the generator no longer produces `owned`, the
+    /// committed copy is deleted. Files in `committed` that are not `owned`
+    /// are left untouched.
     Bless,
 }
 
 impl Mode {
-    // Read the mode from the `STDARCH_GEN_MODE` environment variable.
-    //
-    // Recognized values:
-    // - `"check"` → [`Mode::Check`]
-    // - `"bless"` → [`Mode::Bless`]
-    // - anything else, including unset → [`Mode::Write`]
+    /// Read the mode from the `STDARCH_GEN_MODE` environment variable.
+    ///
+    /// Recognized values:
+    /// - `"check"` → [`Mode::Check`]
+    /// - `"bless"` → [`Mode::Bless`]
+    /// - anything else, including unset → [`Mode::Write`]
     pub fn from_env() -> Self {
         match std::env::var("STDARCH_GEN_MODE").as_deref() {
             Ok("check") => Mode::Check,
@@ -54,19 +53,14 @@ pub enum Error {
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum MismatchKind {
-    // Owned file produced by the generator but absent from the committed tree.
-    // Means the committed tree needs to be regenerated.
+    /// Owned file produced by the generator but absent from the `committed`.
+    /// Means the `committed` needs to be regenerated.
     MissingInCommitted,
-    // Owned file present in the committed tree but the generator no longer
-    // produces it. The file must be removed from the committed tree and
-    // the owned list.
+    /// Owned file present in the `committed` but the generator no longer
+    /// produces it. The file must be removed from the `committed` .
     ExtraInCommitted,
-    // Owned file exists on both sides but contents differ.
+    /// Owned file exists on both sides but contents differ.
     ContentsDiffer,
-    // In Bless mode the owned list claims this path but the generator
-    // did not produce it. Indicates a stale owned list .
-    // Blessing cannot proceed because there is nothing to copy.
-    MissingFromGenerated,
 }
 
 impl fmt::Display for Error {
@@ -81,11 +75,6 @@ impl fmt::Display for Error {
                     write!(f, "{}: committed but no longer generated", path.display())
                 }
                 MismatchKind::ContentsDiffer => write!(f, "{}: contents differ", path.display()),
-                MismatchKind::MissingFromGenerated => write!(
-                    f,
-                    "{}: declared owned but generator did not produce it",
-                    path.display()
-                ),
             },
             Error::Generator(e) => write!(f, "generator failed: {e}"),
         }
@@ -110,29 +99,27 @@ impl From<io::Error> for Error {
 
 pub type Result<T> = std::result::Result<T, Error>;
 
-// Run a generator under the chosen `mode`, reconciling its output with `committed`.
-//
-// Arguments:
-// - `committed` — the directory holding the in-tree (committed) source files.
-// - `owned` — relative paths within `committed` that the generator manages.
-//   Anything in `committed` not listed here is treated as hand-written and is
-//   left untouched by `Bless` and ignored by `Check`. The slice allows a
-//   generator-managed file  to coexist with hand-written files in the same
-//   directory.
-// - `mode` — what to do with the generator's output.
-// - `generate` — closure that writes the generator's output into the
-//   directory it is given. Its error is wrapped in [`Error::Generator`].
-//
-// Behavior per mode:
-// - [`Mode::Write`]: invokes `generate(committed)` directly. Owned list is
-//   not consulted.
-// - [`Mode::Check`]: runs the generator into a temp dir and compares each
-//   path in `owned` against the committed copy. First mismatch returns an
-//   [`Error::Mismatch`].
-// - [`Mode::Bless`]: runs the generator into a temp dir and copies each
-//   path in `owned` into `committed`. Errors if any owned path was not
-//   produced by the generator.
-pub fn run<F, E>(committed: &Path, owned: &[&str], mode: Mode, generate: F) -> Result<()>
+/// Run a generator under the chosen `mode`, reconciling its output with `committed`.
+///
+/// Arguments:
+/// - `committed` — the directory holding the in-tree (committed) source files.
+/// - `owned` — the file inside `committed` that the generator produces.
+///   Anything else in `committed` is treated as hand-written and is
+///   left untouched by `Bless` and ignored by `Check`. So generated files
+///   coexist with hand-written files in the same  directory.
+/// - `mode` — what to do with the generator's output.
+/// - `generate` — closure that writes the generator's output into the
+///   directory it is given. Its error is wrapped in [`Error::Generator`].
+///
+/// Behavior per mode:
+/// - [`Mode::Write`]: invokes `generate(committed)` directly. owned is
+///   not consulted.
+/// - [`Mode::Check`]: runs the generator into a temp dir and compares
+///   `owned` against the committed copy. Mismatch returns [`Error::Mismatch`].
+/// - [`Mode::Bless`]:  runs the generator into a temp dir and copies `owned`
+///   into `committed`, or removes `committed`'s copy if the generator no
+///   longer produces it.
+pub fn run<F, E>(committed: &Path, owned: &str, mode: Mode, generate: F) -> Result<()>
 where
     F: FnOnce(&Path) -> std::result::Result<(), E>,
     E: Into<Box<dyn StdError + Send + Sync>>,
@@ -155,61 +142,50 @@ where
     }
 }
 
-fn compare(generated: &Path, committed: &Path, owned: &[&str]) -> Result<()> {
-    for rel in owned {
-        let rel_path = PathBuf::from(rel);
-        let gen_path = generated.join(&rel_path);
-        let comm_path = committed.join(&rel_path);
-        match (gen_path.exists(), comm_path.exists()) {
-            (true, false) => {
-                return Err(Error::Mismatch {
+fn compare(generated: &Path, committed: &Path, owned: &str) -> Result<()> {
+    let rel_path = PathBuf::from(owned);
+    let gen_path = generated.join(&rel_path);
+    let comm_path = committed.join(&rel_path);
+    match (gen_path.exists(), comm_path.exists()) {
+        (true, false) => Err(Error::Mismatch {
+            path: rel_path,
+            kind: MismatchKind::MissingInCommitted,
+        }),
+        (false, true) => Err(Error::Mismatch {
+            path: rel_path,
+            kind: MismatchKind::ExtraInCommitted,
+        }),
+        (false, false) => Ok(()),
+        (true, true) => {
+            if fs::read(&gen_path)? != fs::read(&comm_path)? {
+                Err(Error::Mismatch {
                     path: rel_path,
-                    kind: MismatchKind::MissingInCommitted,
-                });
-            }
-            (false, true) => {
-                return Err(Error::Mismatch {
-                    path: rel_path,
-                    kind: MismatchKind::ExtraInCommitted,
-                });
-            }
-            (false, false) => continue,
-            (true, true) => {
-                let g = fs::read(&gen_path)?;
-                let c = fs::read(&comm_path)?;
-                if g != c {
-                    return Err(Error::Mismatch {
-                        path: rel_path,
-                        kind: MismatchKind::ContentsDiffer,
-                    });
-                }
+                    kind: MismatchKind::ContentsDiffer,
+                })
+            } else {
+                Ok(())
             }
         }
     }
-    Ok(())
 }
 
-fn apply_bless(scratch: &Path, committed: &Path, owned: &[&str]) -> Result<()> {
+fn apply_bless(scratch: &Path, committed: &Path, owned: &str) -> Result<()> {
     fs::create_dir_all(committed)?;
-    for rel in owned {
-        let rel_path = PathBuf::from(rel);
-        let from = scratch.join(&rel_path);
-        if !from.exists() {
-            return Err(Error::Mismatch {
-                path: rel_path,
-                kind: MismatchKind::MissingFromGenerated,
-            });
-        }
-        let to = committed.join(&rel_path);
+    let rel_path = PathBuf::from(owned);
+    let from = scratch.join(&rel_path);
+    let to = committed.join(&rel_path);
+    if from.exists() {
         if let Some(parent) = to.parent() {
             fs::create_dir_all(parent)?;
         }
         fs::copy(&from, &to)?;
+    } else if to.exists() {
+        fs::remove_file(&to)?;
     }
     Ok(())
 }
 
-#[cfg(test)]
+#[cfg(all(test, not(target_os = "ios")))]
 mod tests {
     use super::*;
 
@@ -226,7 +202,7 @@ mod tests {
         let committed = tmp.path().join("c");
         run(
             &committed,
-            &["a.txt"],
+            "a.txt",
             Mode::Write,
             |out| -> std::result::Result<(), io::Error> {
                 write(&out.join("a.txt"), b"hi");
@@ -244,7 +220,7 @@ mod tests {
         write(&committed.join("a.txt"), b"hi");
         run(
             &committed,
-            &["a.txt"],
+            "a.txt",
             Mode::Check,
             |out| -> std::result::Result<(), io::Error> {
                 write(&out.join("a.txt"), b"hi");
@@ -261,7 +237,7 @@ mod tests {
         write(&committed.join("a.txt"), b"hi");
         let e = run(
             &committed,
-            &["a.txt"],
+            "a.txt",
             Mode::Check,
             |out| -> std::result::Result<(), io::Error> {
                 write(&out.join("a.txt"), b"HI");
@@ -286,7 +262,7 @@ mod tests {
         write(&committed.join("a.txt"), b"hi");
         run(
             &committed,
-            &["a.txt"],
+            "a.txt",
             Mode::Check,
             |out| -> std::result::Result<(), io::Error> {
                 write(&out.join("a.txt"), b"hi");
@@ -303,7 +279,7 @@ mod tests {
         write(&committed.join("a.txt"), b"hi");
         let e = run(
             &committed,
-            &["a.txt"],
+            "a.txt",
             Mode::Check,
             |_| -> std::result::Result<(), io::Error> { Ok(()) },
         )
@@ -325,7 +301,7 @@ mod tests {
         write(&committed.join("old.txt"), b"old");
         run(
             &committed,
-            &["new.txt"],
+            "new.txt",
             Mode::Bless,
             |out| -> std::result::Result<(), io::Error> {
                 write(&out.join("new.txt"), b"new");
@@ -336,25 +312,5 @@ mod tests {
         assert_eq!(fs::read(committed.join("mod.rs")).unwrap(), b"hand-written");
         assert_eq!(fs::read(committed.join("old.txt")).unwrap(), b"old");
         assert_eq!(fs::read(committed.join("new.txt")).unwrap(), b"new");
-    }
-
-    #[test]
-    fn bless_fails_when_generator_drops_owned_file() {
-        let tmp = tempfile::tempdir().unwrap();
-        let committed = tmp.path().join("c");
-        let e = run(
-            &committed,
-            &["a.txt"],
-            Mode::Bless,
-            |_| -> std::result::Result<(), io::Error> { Ok(()) },
-        )
-        .unwrap_err();
-        assert!(matches!(
-            e,
-            Error::Mismatch {
-                kind: MismatchKind::MissingFromGenerated,
-                ..
-            }
-        ));
     }
 }
