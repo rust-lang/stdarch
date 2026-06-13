@@ -2762,7 +2762,6 @@ intrinsics:
     arguments: ["a: {type[0]}"]
     return_type: "{neon_type[1]}"
     attr:
-      - *neon-aes
       - *neon-v8
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, [nop]]}]]
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [ld]]}]]
@@ -2789,7 +2788,6 @@ intrinsics:
     arguments: ["a: {type[0]}"]
     return_type: "{neon_type[1]}"
     attr:
-      - *neon-aes
       - *neon-v8
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, [vld]]}]]
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [ld]]}]]
@@ -3051,7 +3049,6 @@ intrinsics:
     arguments: ["a: {type[0]}"]
     return_type: "{neon_type[1]}"
     attr:
-      - *neon-aes
       - *neon-v8
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, [nop]]}]]
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [nop]]}]]
@@ -3397,7 +3394,6 @@ intrinsics:
     arguments: ["a: {type[0]}"]
     return_type: "{neon_type[1]}"
     attr:
-      - *neon-aes
       - *neon-v8
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, [nop]]}]]
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [ld2r]]}]]
@@ -4195,7 +4191,6 @@ intrinsics:
     arguments: ["a: {type[0]}"]
     return_type: "{neon_type[1]}"
     attr:
-      - *neon-aes
       - *neon-v8
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, [nop]]}]]
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [nop]]}]]
@@ -4351,7 +4346,6 @@ intrinsics:
     arguments: ["a: {type[0]}"]
     return_type: "{neon_type[1]}"
     attr:
-      - *neon-aes
       - *neon-v8
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, [nop]]}]]
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [ld3r]]}]]
@@ -4563,9 +4557,6 @@ intrinsics:
     return_type: "{neon_type[1]}"
     attr:
       - *neon-v8
-      - FnCall:
-          - target_feature
-          - - 'enable = "neon,aes"'
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, [nop]]}]]
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [nop]]}]]
       - *neon-not-arm-stable
@@ -4684,9 +4675,6 @@ intrinsics:
       unsafe: [neon]
     attr:
       - *neon-v8
-      - FnCall:
-          - target_feature
-          - - 'enable = "neon,aes"'
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, [nop, 'LANE = 0']]}]]
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [nop, 'LANE = 0']]}]]
       - FnCall: [rustc_legacy_const_generics, ["2"]]
@@ -4709,9 +4697,6 @@ intrinsics:
       unsafe: [neon]
     attr:
       - *neon-v8
-      - FnCall:
-          - target_feature
-          - - 'enable = "neon,aes"'
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, [nop, 'LANE = 0']]}]]
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [nop, 'LANE = 0']]}]]
       - FnCall: [rustc_legacy_const_generics, ["2"]]
@@ -5043,7 +5028,6 @@ intrinsics:
     arguments: ["a: *mut {type[0]}", "b: {neon_type[1]}"]
     attr:
       - *neon-v8
-      - *neon-aes
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, [nop]]}]]
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [nop]]}]]
       - *neon-not-arm-stable
@@ -5426,7 +5410,6 @@ intrinsics:
     arguments: ["a: *mut {type[0]}", "b: {neon_type[1]}"]
     attr:
       - *neon-v8
-      - *neon-aes
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, [nop]]}]]
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [nop]]}]]
       - *neon-not-arm-stable
@@ -5775,7 +5758,6 @@ intrinsics:
     arguments: ["a: *mut {type[0]}", "b: {neon_type[1]}"]
     attr:
       - *neon-v8
-      - *neon-aes
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, [nop]]}]]
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [nop]]}]]
       - *neon-not-arm-stable
@@ -8492,7 +8474,6 @@ intrinsics:
     arguments: ["a: {type[0]}"]
     return_type: "{type[1]}"
     attr:
-      - *neon-aes
       - *neon-v8
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, [nop]]}]]
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [nop]]}]]
@@ -9255,7 +9236,6 @@ intrinsics:
     arguments: ["a: {type[0]}"]
     return_type: "{neon_type[1]}"
     attr:
-      - *neon-aes
       - *neon-v8
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, [nop]]}]]
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [nop]]}]]
@@ -9356,7 +9336,6 @@ intrinsics:
     arguments: ["a: {type[0]}", "b: {neon_type[1]}"]
     return_type: "{neon_type[1]}"
     attr:
-      - *neon-aes
       - *neon-v8
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, [nop, 'LANE = 0']]}]]
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [nop, 'LANE = 0']]}]]
@@ -9377,7 +9356,6 @@ intrinsics:
     arguments: ["a: {type[0]}", "b: {neon_type[1]}"]
     return_type: "{neon_type[1]}"
     attr:
-      - *neon-aes
       - *neon-v8
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, [nop, 'LANE = 0']]}]]
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [nop, 'LANE = 0']]}]]
@@ -10166,7 +10144,6 @@ intrinsics:
     doc: "Store multiple single-element structures to one, two, three, or four registers"
     arguments: ["a: {type[0]}", "b: {neon_type[1]}"]
     attr:
-      - *neon-aes
       - *neon-v8
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, [vst1]]}]]
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [st1]]}]]
@@ -10186,7 +10163,6 @@ intrinsics:
     doc: "Store multiple single-element structures to one, two, three, or four registers"
     arguments: ["a: {type[0]}", "b: {neon_type[1]}"]
     attr:
-      - *neon-aes
       - *neon-v8
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, [nop]]}]]
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [st1]]}]]
@@ -11908,7 +11884,6 @@ intrinsics:
     arguments: ["a: {type[0]}"]
     return_type: "{neon_type[1]}"
     attr:
-      - *neon-aes
       - *neon-v8
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, [nop]]}]]
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [ld4r]]}]]
@@ -12035,7 +12010,7 @@ intrinsics:
       - ['*const p8',  poly8x16_t,  '"vld1.8"',  'neon,v7',  'crate::mem::align_of::<p8>()',  'q_v16i8']
       - ['*const p16', poly16x4_t,  '"vld1.16"', 'neon,v7',  'crate::mem::align_of::<p16>()', '_v4i16' ]
       - ['*const p16', poly16x8_t,  '"vld1.16"', 'neon,v7',  'crate::mem::align_of::<p16>()', 'q_v8i16']
-      - ['*const p64', poly64x2_t,  '"vld1.64"', 'neon,aes', 'crate::mem::align_of::<p64>()', 'q_v2i64']
+      - ['*const p64', poly64x2_t,  '"vld1.64"', 'neon,v7',  'crate::mem::align_of::<p64>()', 'q_v2i64']
       - ['*const f32', float32x2_t, 'vldr',      'neon,v7',  'crate::mem::align_of::<f32>()', '_v2f32' ]
       - ['*const f32', float32x4_t, '"vld1.32"', 'neon,v7',  'crate::mem::align_of::<f32>()', 'q_v4f32']
     compose:
@@ -12082,7 +12057,6 @@ intrinsics:
       unsafe: [neon]
     attr:
       - *target-is-arm
-      - *neon-aes
       - *neon-arm-unstable
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, ['vldr']]}]]
     types:
@@ -14315,7 +14289,6 @@ intrinsics:
     arguments: ["ptr: {type[1]}", "src: {neon_type[2]}"]
     return_type: "{neon_type[2]}"
     attr:
-      - *neon-aes
       - *neon-v7
       - FnCall: [rustc_legacy_const_generics, ['2']]
       - FnCall: [cfg_attr, [*test-is-arm, { FnCall: [assert_instr, ["{type[3]}", 'LANE = {type[4]}']] }  ]]
@@ -14356,7 +14329,6 @@ intrinsics:
     arguments: ["ptr: {type[1]}"]
     return_type: "{neon_type[2]}"
     attr:
-      - *neon-aes
       - *neon-v7
       - FnCall: [cfg_attr, [*test-is-arm, { FnCall: [assert_instr, ["{type[3]}"]] }  ]]
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, { FnCall: [assert_instr, ['{type[4]}']]}] ]
@@ -14375,7 +14347,6 @@ intrinsics:
     arguments: ["ptr: {type[1]}"]
     return_type: "{neon_type[2]}"
     attr:
-      - *neon-aes
       - *neon-v7
       - FnCall: [cfg_attr, [*test-is-arm, { FnCall: [assert_instr, ["{type[3]}"]] }  ]]
       - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, { FnCall: [assert_instr, ['{type[4]}']]}] ]

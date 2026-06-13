@@ -3391,7 +3391,6 @@ intrinsics:
     arguments: ["a: {type[0]}", "b: {neon_type[1]}"]
     return_type: "{neon_type[1]}"
     attr:
-      - *neon-aes
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [ld2, 'LANE = 0']]}]]
       - FnCall: [rustc_legacy_const_generics, ["2"]]
       - *neon-stable
@@ -3445,7 +3444,6 @@ intrinsics:
     arguments: ["a: {type[0]}", "b: {neon_type[1]}"]
     return_type: "{neon_type[1]}"
     attr:
-      - *neon-aes
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [ld2, 'LANE = 0']]}]]
       - FnCall: [rustc_legacy_const_generics, ["2"]]
       - *neon-stable
@@ -3527,7 +3525,6 @@ intrinsics:
     arguments: ["a: {type[0]}"]
     return_type: "{neon_type[1]}"
     attr:
-      - *neon-aes
       - *neon-stable
     assert_instr: [ld2]
     safety:
@@ -3591,7 +3588,6 @@ intrinsics:
     arguments: ["a: {type[0]}"]
     return_type: "{type[1]}"
     attr:
-      - *neon-aes
       - *neon-stable
     assert_instr: [ld2r]
     safety:
@@ -3777,7 +3773,6 @@ intrinsics:
     arguments: ["a: {type[0]}", "b: {neon_type[1]}"]
     return_type: "{neon_type[1]}"
     attr:
-      - *neon-aes
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [ld3, 'LANE = 0']]}]]
       - FnCall: [rustc_legacy_const_generics, ["2"]]
       - *neon-stable
@@ -3801,7 +3796,6 @@ intrinsics:
     arguments: ["a: {type[0]}", "b: {neon_type[1]}"]
     return_type: "{neon_type[1]}"
     attr:
-      - *neon-aes
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [ld3, 'LANE = 0']]}]]
       - FnCall: [rustc_legacy_const_generics, ["2"]]
       - *neon-stable
@@ -3876,7 +3870,6 @@ intrinsics:
     arguments: ["a: {type[0]}"]
     return_type: "{neon_type[1]}"
     attr:
-      - *neon-aes
       - *neon-stable
     safety:
       unsafe: [neon]
@@ -3938,7 +3931,6 @@ intrinsics:
     arguments: ["a: {type[0]}"]
     return_type: "{neon_type[1]}"
     attr:
-      - *neon-aes
       - *neon-stable
     assert_instr: [ld3r]
     safety:
@@ -4014,7 +4006,6 @@ intrinsics:
     return_type: "{neon_type[1]}"
     attr:
       - *neon-stable
-      - *neon-aes
     assert_instr: [ld4]
     safety:
       unsafe: [neon]
@@ -4122,7 +4113,6 @@ intrinsics:
     arguments: ["a: {type[0]}", "b: {neon_type[1]}"]
     return_type: "{neon_type[1]}"
     attr:
-      - *neon-aes
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [ld4, 'LANE = 0']]}]]
       - FnCall: [rustc_legacy_const_generics, ["2"]]
       - *neon-stable
@@ -4169,9 +4159,6 @@ intrinsics:
     arguments: ["a: {type[0]}", "b: {neon_type[1]}"]
     return_type: "{neon_type[1]}"
     attr:
-      - FnCall:
-          - target_feature
-          - - 'enable = "neon,aes"'
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [ld4, 'LANE = 0']]}]]
       - FnCall: [rustc_legacy_const_generics, ["2"]]
       - *neon-stable
@@ -4487,7 +4474,6 @@ intrinsics:
     doc: "Store multiple 2-element structures from two registers"
     arguments: ["a: *mut {type[0]}", "b: {neon_type[1]}"]
     attr:
-      - *neon-aes
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [st2, 'LANE = 0']]}]]
       - FnCall: [rustc_legacy_const_generics, ["2"]]
       - *neon-stable
@@ -4507,7 +4493,6 @@ intrinsics:
     doc: "Store multiple 2-element structures from two registers"
     arguments: ["a: *mut {type[0]}", "b: {neon_type[1]}"]
     attr:
-      - *neon-aes
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [st2, 'LANE = 0']]}]]
       - FnCall: [rustc_legacy_const_generics, ["2"]]
       - *neon-stable
@@ -4527,7 +4512,6 @@ intrinsics:
     doc: "Store multiple 2-element structures from two registers"
     arguments: ["a: *mut {type[0]}", "b: {neon_type[1]}"]
     attr:
-      - *neon-aes
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [st2]]}]]
       - *neon-stable
     safety:
@@ -4557,7 +4541,6 @@ intrinsics:
     arguments: ["a: *mut {type[0]}", "b: {neon_type[1]}"]
     attr:
       - *neon-stable
-      - *neon-aes
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [st3, 'LANE = 0']]}]]
       - FnCall: [rustc_legacy_const_generics, ['2']]
     static_defs: ['const LANE: i32']
@@ -4577,7 +4560,6 @@ intrinsics:
     arguments: ["a: *mut {type[0]}", "b: {neon_type[1]}"]
     attr:
       - *neon-stable
-      - *neon-aes
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [st3, 'LANE = 0']]}]]
       - FnCall: [rustc_legacy_const_generics, ['2']]
     static_defs: ['const LANE: i32']
@@ -4597,7 +4579,6 @@ intrinsics:
     arguments: ["a: *mut {type[0]}", "b: {neon_type[1]}"]
     attr:
       - *neon-stable
-      - *neon-aes
     assert_instr: [st3]
     safety:
       unsafe: [neon]
@@ -4751,7 +4732,6 @@ intrinsics:
     arguments: ["a: *mut {type[0]}", "b: {neon_type[1]}"]
     attr:
       - *neon-stable
-      - *neon-aes
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [st4, 'LANE = 0']]}]]
       - FnCall: [rustc_legacy_const_generics, ['2']]
     static_defs: ['const LANE: i32']
@@ -4771,7 +4751,6 @@ intrinsics:
     arguments: ["a: *mut {type[0]}", "b: {neon_type[1]}"]
     attr:
       - *neon-stable
-      - *neon-aes
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [st4, 'LANE = 0']]}]]
       - FnCall: [rustc_legacy_const_generics, ['2']]
     static_defs: ['const LANE: i32']
@@ -4791,7 +4770,6 @@ intrinsics:
     arguments: ["a: *mut {type[0]}", "b: {neon_type[1]}"]
     attr:
       - *neon-stable
-      - *neon-aes
     assert_instr: [st4]
     safety:
       unsafe: [neon]
@@ -5002,6 +4980,7 @@ intrinsics:
     arguments: ["a: {neon_type[0]}", "b: {neon_type[0]}"]
     return_type: "{neon_type[1]}"
     attr:
+      - *neon-aes
       - *neon-stable
       - FnCall: [cfg_attr, [*all-test-little-endian, {FnCall: [assert_instr, [pmull2]]}]]
     safety: safe
@@ -11916,7 +11895,6 @@ intrinsics:
     arguments: ["a: {type[0]}"]
     return_type: "{neon_type[1]}"
     attr:
-      - FnCall: [target_feature, ['enable = "neon,aes"']]
       - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [ld4r]]}]]
       - *neon-stable
     safety:
@@ -12788,8 +12766,8 @@ intrinsics:
       - ['*const p8', poly8x16_t, "neon"]
       - ['*const p16', poly16x4_t, "neon"]
       - ['*const p16', poly16x8_t, "neon"]
-      - ['*const p64', poly64x1_t, "neon,aes"]
-      - ['*const p64', poly64x2_t, "neon,aes"]
+      - ['*const p64', poly64x1_t, "neon"]
+      - ['*const p64', poly64x2_t, "neon"]
       - ['*const f32', float32x2_t, "neon"]
       - ['*const f32', float32x4_t, "neon"]
       - ['*const f64', float64x1_t, "neon"]
@@ -12855,8 +12833,8 @@ intrinsics:
       - ['*mut p8', poly8x16_t, "neon"]
       - ['*mut p16', poly16x4_t, "neon"]
       - ['*mut p16', poly16x8_t, "neon"]
-      - ['*mut p64', poly64x1_t, "neon,aes"]
-      - ['*mut p64', poly64x2_t, "neon,aes"]
+      - ['*mut p64', poly64x1_t, "neon"]
+      - ['*mut p64', poly64x2_t, "neon"]
       - ['*mut f32', float32x2_t, "neon"]
       - ['*mut f32', float32x4_t, "neon"]
       - ['*mut f64', float64x1_t, "neon"]
@@ -13488,8 +13466,8 @@ intrinsics:
       - [poly8x16_t, int8x16_t, 'static_assert_uimm_bits!', 'N, 3', "neon"]
       - [poly16x4_t, int16x4_t, 'static_assert_uimm_bits!', 'N, 4', "neon"]
       - [poly16x8_t, int16x8_t, 'static_assert_uimm_bits!', 'N, 4', "neon"]
-      - [poly64x1_t, int64x1_t, 'static_assert!', 'N >= 0 && N <= 63', "neon,aes"]
-      - [poly64x2_t, int64x2_t, 'static_assert!', 'N >= 0 && N <= 63', "neon,aes"]
+      - [poly64x1_t, int64x1_t, 'static_assert!', 'N >= 0 && N <= 63', "neon"]
+      - [poly64x2_t, int64x2_t, 'static_assert!', 'N >= 0 && N <= 63', "neon"]
     compose:
       - FnCall: ['{type[2]}', ['{type[3]}']]
       - FnCall:
@@ -13550,8 +13528,8 @@ intrinsics:
       - [poly8x16_t, int8x16_t, 'N >= 1 && N <= 8', "neon"]
       - [poly16x4_t, int16x4_t, 'N >= 1 && N <= 16', "neon"]
       - [poly16x8_t, int16x8_t, 'N >= 1 && N <= 16', "neon"]
-      - [poly64x1_t, int64x1_t, 'N >= 1 && N <= 64', "neon,aes"]
-      - [poly64x2_t, int64x2_t, 'N >= 1 && N <= 64', "neon,aes"]
+      - [poly64x1_t, int64x1_t, 'N >= 1 && N <= 64', "neon"]
+      - [poly64x2_t, int64x2_t, 'N >= 1 && N <= 64', "neon"]
     compose:
       - FnCall: ['static_assert!', ['{type[2]}']]
       - FnCall:
