@@ -786,3 +786,7 @@ pub use self::movrs::*;
 mod avx512vp2intersect;
 #[unstable(feature = "stdarch_x86_avx512vp2intersect", issue = "111137")]
 pub use self::avx512vp2intersect::*;
+
+mod avx10_2;
+#[unstable(feature = "stdarch_x86_avx10_2", issue = "153417")]
+pub use self::avx10_2::*;
