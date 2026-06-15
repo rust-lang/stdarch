@@ -411,7 +411,7 @@ unsafe extern "unadjusted" {
 }
 
 #[macro_use]
-mod sealed {
+pub(crate) mod sealed {
     use super::*;
 
     #[unstable(feature = "stdarch_powerpc", issue = "111145")]
