@@ -274,6 +274,25 @@ macro_rules! t_b {
     };
 }
 
+macro_rules! impl_vec_sld {
+    ($($ty:ident),+) => { $(
+        #[unstable(feature = "stdarch_powerpc", issue = "111145")]
+        impl VectorSld for $ty {
+            #[inline]
+            #[target_feature(enable = "altivec")]
+            unsafe fn vec_sld<const UIMM4: i32>(self, b: Self) -> Self {
+                transmute(vsldoi::<UIMM4>(transmute(self), transmute(b)))
+            }
+            #[inline]
+            #[target_feature(enable = "vsx")]
+            unsafe fn vec_sldw<const UIMM2: i32>(self, b: Self) -> Self {
+                transmute(xxsldwi::<UIMM2>(transmute(self), transmute(b)))
+            }
+       }
+    )+ };
+}
+
+pub(crate) use impl_vec_sld;
 pub(crate) use impl_vec_trait;
 pub(crate) use s_t_l;
 pub(crate) use t_b;

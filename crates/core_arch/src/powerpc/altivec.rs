@@ -411,7 +411,7 @@ unsafe extern "unadjusted" {
 }
 
 #[macro_use]
-mod sealed {
+pub(crate) mod sealed {
     use super::*;
 
     #[unstable(feature = "stdarch_powerpc", issue = "111145")]
@@ -3030,7 +3030,7 @@ mod sealed {
     #[inline]
     #[target_feature(enable = "altivec")]
     #[cfg_attr(test, assert_instr(vsldoi, UIMM4 = 1))]
-    unsafe fn vsldoi<const UIMM4: i32>(
+    pub(crate) unsafe fn vsldoi<const UIMM4: i32>(
         a: vector_unsigned_char,
         b: vector_unsigned_char,
     ) -> vector_unsigned_char {
@@ -3082,9 +3082,9 @@ mod sealed {
 
     // TODO: collapse the two once generic_const_exprs are usable.
     #[inline]
-    #[target_feature(enable = "altivec")]
+    #[target_feature(enable = "vsx")]
     #[cfg_attr(test, assert_instr(xxsldwi, UIMM2 = 1))]
-    unsafe fn xxsldwi<const UIMM2: i32>(
+    pub(crate) unsafe fn xxsldwi<const UIMM2: i32>(
         a: vector_unsigned_char,
         b: vector_unsigned_char,
     ) -> vector_unsigned_char {
@@ -3132,24 +3132,6 @@ mod sealed {
             );
             vec_perm(a, b, transmute(perm))
         }
-    }
-
-    macro_rules! impl_vec_sld {
-        ($($ty:ident),+) => { $(
-            #[unstable(feature = "stdarch_powerpc", issue = "111145")]
-            impl VectorSld for $ty {
-                #[inline]
-                #[target_feature(enable = "altivec")]
-                unsafe fn vec_sld<const UIMM4: i32>(self, b: Self) -> Self {
-                    transmute(vsldoi::<UIMM4>(transmute(self), transmute(b)))
-                }
-                #[inline]
-                #[target_feature(enable = "altivec")]
-                unsafe fn vec_sldw<const UIMM2: i32>(self, b: Self) -> Self {
-                    transmute(xxsldwi::<UIMM2>(transmute(self), transmute(b)))
-                }
-           }
-        )+ };
     }
 
     impl_vec_sld! { vector_bool_char, vector_signed_char, vector_unsigned_char }
