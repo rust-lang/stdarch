@@ -10,7 +10,7 @@
 
 use crate::core_arch::powerpc::*;
 use crate::core_arch::simd::*;
-use crate::intrinsics::simd::{simd_add, simd_sub};
+use crate::intrinsics::simd::{simd_add, simd_mul, simd_sub};
 
 #[cfg(test)]
 use stdarch_test::assert_instr;
@@ -192,6 +192,16 @@ mod sealed {
     ) -> vector_double {
         simd_sub(a, b)
     }
+
+    #[inline]
+    #[target_feature(enable = "vsx")]
+    #[cfg_attr(test, assert_instr(xvmuldp))]
+    pub(crate) unsafe fn vec_mul_double_double(
+        a: vector_double,
+        b: vector_double,
+    ) -> vector_double {
+        simd_mul(a, b)
+    }
 }
 
 // Implement AltiVec's VectorAdd trait for vector_double to enable vec_add support
@@ -213,6 +223,16 @@ impl crate::core_arch::powerpc::altivec::sealed::VectorSub<vector_double> for ve
     #[target_feature(enable = "vsx")]
     unsafe fn vec_sub(self, other: vector_double) -> Self::Result {
         sealed::vec_sub_double_double(self, other)
+    }
+}
+
+// Implement AltiVec's VectorMul trait for vector_double to enable vec_mul support.
+#[unstable(feature = "stdarch_powerpc", issue = "111145")]
+impl crate::core_arch::powerpc::altivec::sealed::VectorMul for vector_double {
+    #[inline]
+    #[target_feature(enable = "vsx")]
+    unsafe fn vec_mul(self, b: Self) -> Self {
+        sealed::vec_mul_double_double(self, b)
     }
 }
 
@@ -317,6 +337,17 @@ mod tests {
 
         unsafe {
             assert_eq!(f64x2::from(vec_sub(a, b)), f64x2::from(expected));
+        }
+    }
+
+    #[simd_test(enable = "vsx")]
+    fn test_vec_mul_f64x2_f64x2() {
+        let a = vector_double::from(f64x2::from_array([2.0, 3.0]));
+        let b = vector_double::from(f64x2::from_array([4.0, 5.0]));
+        let expected = vector_double::from(f64x2::from_array([8.0, 15.0]));
+
+        unsafe {
+            assert_eq!(f64x2::from(vec_mul(a, b)), f64x2::from(expected));
         }
     }
 }
