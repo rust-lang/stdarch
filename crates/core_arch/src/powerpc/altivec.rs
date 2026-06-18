@@ -849,7 +849,7 @@ pub(crate) mod sealed {
         #[inline]
         #[target_feature(enable = "altivec")]
         #[cfg_attr(all(test, not(target_feature = "vsx")), assert_instr(vcmpgefp))]
-        #[cfg_attr(all(test, target_feature = "vsx"), assert_instr(xvcmpgesp))]
+        #[cfg_attr(all(test, target_feature = "power8-vector"), assert_instr(xvcmpgesp))]
         unsafe fn vec_cmpge(self, b: vector_float) -> Self::Result {
             let result: m32x4 = simd_ge(self, b);
             transmute(result)

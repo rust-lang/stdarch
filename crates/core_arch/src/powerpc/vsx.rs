@@ -177,13 +177,12 @@ mod sealed {
 // Macro to implement VectorCmp* traits for vector types.
 macro_rules! impl_vsx_cmp {
     ($trait_name:ident, $method_name:ident, $simd_op:ident, $vec_ty:ident, $result_ty:ident, $mask_ty:ident, $instr:ident) => {
-        #[cfg(target_feature = "vsx")]
         #[unstable(feature = "stdarch_powerpc", issue = "111145")]
         impl crate::core_arch::powerpc::altivec::sealed::$trait_name<$vec_ty> for $vec_ty {
             type Result = $result_ty;
             #[inline]
             #[target_feature(enable = "vsx")]
-            #[cfg_attr(test, assert_instr($instr))]
+            #[cfg_attr(all(test, target_feature = "power8-vector"), assert_instr($instr))]
             unsafe fn $method_name(self, b: $vec_ty) -> Self::Result {
                 let result: $mask_ty = $simd_op(self, b);
                 transmute(result)
