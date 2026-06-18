@@ -192,12 +192,51 @@ macro_rules! impl_vsx_cmp {
     };
 }
 
-impl_vsx_cmp!(VectorCmpEq, vec_cmpeq, simd_eq, vector_float, vector_bool_int, m32x4, xvcmpeqsp);
-impl_vsx_cmp!(VectorCmpEq, vec_cmpeq, simd_eq, vector_double, vector_bool_long, m64x2, xvcmpeqdp);
-impl_vsx_cmp!(VectorCmpGt, vec_cmpgt, simd_gt, vector_float, vector_bool_int, m32x4, xvcmpgtsp);
-impl_vsx_cmp!(VectorCmpGt, vec_cmpgt, simd_gt, vector_double, vector_bool_long, m64x2, xvcmpgtdp);
-impl_vsx_cmp!(VectorCmpGe, vec_cmpge, simd_ge, vector_float, vector_bool_int, m32x4, xvcmpgesp);
-impl_vsx_cmp!(VectorCmpGe, vec_cmpge, simd_ge, vector_double, vector_bool_long, m64x2, xvcmpgedp);
+impl_vsx_cmp!(
+    VectorCmpEq,
+    vec_cmpeq,
+    simd_eq,
+    vector_float,
+    vector_bool_int,
+    m32x4,
+    xvcmpeqsp
+);
+impl_vsx_cmp!(
+    VectorCmpEq,
+    vec_cmpeq,
+    simd_eq,
+    vector_double,
+    vector_bool_long,
+    m64x2,
+    xvcmpeqdp
+);
+impl_vsx_cmp!(
+    VectorCmpGt,
+    vec_cmpgt,
+    simd_gt,
+    vector_float,
+    vector_bool_int,
+    m32x4,
+    xvcmpgtsp
+);
+impl_vsx_cmp!(
+    VectorCmpGt,
+    vec_cmpgt,
+    simd_gt,
+    vector_double,
+    vector_bool_long,
+    m64x2,
+    xvcmpgtdp
+);
+impl_vsx_cmp!(
+    VectorCmpGe,
+    vec_cmpge,
+    simd_ge,
+    vector_double,
+    vector_bool_long,
+    m64x2,
+    xvcmpgedp
+);
 
 /// Vector permute.
 #[inline]

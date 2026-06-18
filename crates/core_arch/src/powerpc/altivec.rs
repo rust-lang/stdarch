@@ -842,21 +842,21 @@ pub(crate) mod sealed {
         unsafe fn vec_cmpge(self, b: Other) -> Self::Result;
     }
 
-    test_impl! { vec_vcmpgefp(a: vector_float, b: vector_float) -> vector_bool_int [ vcmpgefp, vcmpgefp ] }
-
-    // Implement VectorCmpGe trait for vector_float using vcmpgefp (AltiVec)
-    // This is overridden by vsx.rs when VSX is available
-    #[cfg(not(target_feature = "vsx"))]
+    // Implement VectorCmpGe trait for vector_float using simd_ge
     #[unstable(feature = "stdarch_powerpc", issue = "111145")]
     impl VectorCmpGe<vector_float> for vector_float {
         type Result = vector_bool_int;
         #[inline]
         #[target_feature(enable = "altivec")]
+        #[cfg_attr(all(test, not(target_feature = "vsx")), assert_instr(vcmpgefp))]
+        #[cfg_attr(all(test, target_feature = "vsx"), assert_instr(xvcmpgesp))]
         unsafe fn vec_cmpge(self, b: vector_float) -> Self::Result {
-            vec_vcmpgefp(self, b)
+            let result: m32x4 = simd_ge(self, b);
+            transmute(result)
         }
     }
 
+    test_impl! { vec_vcmpgefp(a: vector_float, b: vector_float) -> vector_bool_int [ vcmpgefp, vcmpgefp ] }
     test_impl! { vec_vcmpequb(a: vector_unsigned_char, b: vector_unsigned_char) -> vector_bool_char [ vcmpequb, vcmpequb ] }
     test_impl! { vec_vcmpequh(a: vector_unsigned_short, b: vector_unsigned_short) -> vector_bool_short [ vcmpequh, vcmpequh ] }
     test_impl! { vec_vcmpequw(a: vector_unsigned_int, b: vector_unsigned_int) -> vector_bool_int [ vcmpequw, vcmpequw ] }
