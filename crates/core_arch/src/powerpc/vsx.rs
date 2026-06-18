@@ -179,14 +179,14 @@ mod sealed {
 
     #[inline]
     #[target_feature(enable = "vsx")]
-    #[cfg_attr(test, assert_instr(xvmindp))]
+    #[cfg_attr(all(test, target_feature = "power8-vector"), assert_instr(xvmindp))]
     unsafe fn vec_xvmindp(a: vector_double, b: vector_double) -> vector_double {
         xvmindp(a, b)
     }
 
     #[inline]
     #[target_feature(enable = "vsx")]
-    #[cfg_attr(test, assert_instr(xvmaxdp))]
+    #[cfg_attr(all(test, target_feature = "power8-vector"), assert_instr(xvmaxdp))]
     unsafe fn vec_xvmaxdp(a: vector_double, b: vector_double) -> vector_double {
         xvmaxdp(a, b)
     }
