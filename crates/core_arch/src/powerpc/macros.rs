@@ -180,6 +180,9 @@ macro_rules! t_t_l {
     (f32) => {
         vector_float
     };
+    (f64) => {
+        vector_double
+    };
 }
 
 macro_rules! t_t_s {
@@ -292,8 +295,45 @@ macro_rules! impl_vec_sld {
     )+ };
 }
 
+macro_rules! impl_vec_xl {
+    ($fun:ident $notpwr9:ident / $pwr9:ident $ty:ident) => {
+        #[inline]
+        #[target_feature(enable = "vsx")]
+        #[unstable(feature = "stdarch_powerpc", issue = "111145")]
+        #[cfg_attr(
+            all(test, not(target_feature = "power9-altivec")),
+            assert_instr($notpwr9)
+        )]
+        #[cfg_attr(all(test, target_feature = "power9-altivec"), assert_instr($pwr9))]
+        pub unsafe fn $fun(a: isize, b: *const $ty) -> t_t_l!($ty) {
+            let addr = (b as *const u8).offset(a);
+
+            let mut r = mem::MaybeUninit::uninit();
+
+            crate::ptr::copy_nonoverlapping(
+                addr,
+                r.as_mut_ptr() as *mut u8,
+                mem::size_of::<t_t_l!($ty)>(),
+            );
+
+            r.assume_init()
+        }
+
+        #[unstable(feature = "stdarch_powerpc", issue = "111145")]
+        impl VectorXl for *const $ty {
+            type Result = t_t_l!($ty);
+            #[inline]
+            #[target_feature(enable = "vsx")]
+            unsafe fn vec_xl(self, a: isize) -> Self::Result {
+                $fun(a, self)
+            }
+        }
+    };
+}
+
 pub(crate) use impl_vec_sld;
 pub(crate) use impl_vec_trait;
+pub(crate) use impl_vec_xl;
 pub(crate) use s_t_l;
 pub(crate) use t_b;
 pub(crate) use t_t_l;
