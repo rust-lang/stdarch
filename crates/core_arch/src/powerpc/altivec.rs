@@ -411,7 +411,7 @@ unsafe extern "unadjusted" {
 }
 
 #[macro_use]
-mod sealed {
+pub(crate) mod sealed {
     use super::*;
 
     #[unstable(feature = "stdarch_powerpc", issue = "111145")]
@@ -836,7 +836,26 @@ mod sealed {
 
     impl_vec_cmp! { [VectorCmpGt vec_cmpgt] ( vec_vcmpgtub, vec_vcmpgtsb, vec_vcmpgtuh, vec_vcmpgtsh, vec_vcmpgtuw, vec_vcmpgtsw ) }
 
+    #[unstable(feature = "stdarch_powerpc", issue = "111145")]
+    pub trait VectorCmpGe<Other> {
+        type Result;
+        unsafe fn vec_cmpge(self, b: Other) -> Self::Result;
+    }
+
     test_impl! { vec_vcmpgefp(a: vector_float, b: vector_float) -> vector_bool_int [ vcmpgefp, vcmpgefp ] }
+
+    // Implement VectorCmpGe trait for vector_float using vcmpgefp (AltiVec)
+    // This is overridden by vsx.rs when VSX is available
+    #[cfg(not(target_feature = "vsx"))]
+    #[unstable(feature = "stdarch_powerpc", issue = "111145")]
+    impl VectorCmpGe<vector_float> for vector_float {
+        type Result = vector_bool_int;
+        #[inline]
+        #[target_feature(enable = "altivec")]
+        unsafe fn vec_cmpge(self, b: vector_float) -> Self::Result {
+            vec_vcmpgefp(self, b)
+        }
+    }
 
     test_impl! { vec_vcmpequb(a: vector_unsigned_char, b: vector_unsigned_char) -> vector_bool_char [ vcmpequb, vcmpequb ] }
     test_impl! { vec_vcmpequh(a: vector_unsigned_short, b: vector_unsigned_short) -> vector_bool_short [ vcmpequh, vcmpequh ] }
@@ -3779,8 +3798,11 @@ where
 #[inline]
 #[target_feature(enable = "altivec")]
 #[unstable(feature = "stdarch_powerpc", issue = "111145")]
-pub unsafe fn vec_cmpge(a: vector_float, b: vector_float) -> vector_bool_int {
-    sealed::vec_vcmpgefp(a, b)
+pub unsafe fn vec_cmpge<T, U>(a: T, b: U) -> <T as sealed::VectorCmpGe<U>>::Result
+where
+    T: sealed::VectorCmpGe<U>,
+{
+    a.vec_cmpge(b)
 }
 
 /// Vector cmpeq.
