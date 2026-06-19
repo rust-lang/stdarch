@@ -837,7 +837,6 @@ pub(crate) mod sealed {
     impl_vec_cmp! { [VectorCmpGt vec_cmpgt] ( vec_vcmpgtub, vec_vcmpgtsb, vec_vcmpgtuh, vec_vcmpgtsh, vec_vcmpgtuw, vec_vcmpgtsw ) }
 
     test_impl! { vec_vcmpgefp(a: vector_float, b: vector_float) -> vector_bool_int [ vcmpgefp, vcmpgefp ] }
-
     test_impl! { vec_vcmpequb(a: vector_unsigned_char, b: vector_unsigned_char) -> vector_bool_char [ vcmpequb, vcmpequb ] }
     test_impl! { vec_vcmpequh(a: vector_unsigned_short, b: vector_unsigned_short) -> vector_bool_short [ vcmpequh, vcmpequh ] }
     test_impl! { vec_vcmpequw(a: vector_unsigned_int, b: vector_unsigned_int) -> vector_bool_int [ vcmpequw, vcmpequw ] }
@@ -2416,7 +2415,8 @@ pub(crate) mod sealed {
 
     #[inline]
     #[target_feature(enable = "altivec")]
-    #[cfg_attr(test, assert_instr(xvaddsp))]
+    #[cfg_attr(all(test, not(target_feature = "vsx")), assert_instr(vaddfp))]
+    #[cfg_attr(all(test, target_feature = "vsx"), assert_instr(xvaddsp))]
     pub unsafe fn vec_add_float_float(a: vector_float, b: vector_float) -> vector_float {
         simd_add(a, b)
     }

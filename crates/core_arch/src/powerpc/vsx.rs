@@ -183,6 +183,17 @@ mod sealed {
         simd_add(a, b)
     }
 
+    // Implement AltiVec's VectorAdd trait for vector_double to enable vec_add support
+    #[unstable(feature = "stdarch_powerpc", issue = "111145")]
+    impl crate::core_arch::powerpc::altivec::sealed::VectorAdd<vector_double> for vector_double {
+        type Result = vector_double;
+        #[inline]
+        #[target_feature(enable = "vsx")]
+        unsafe fn vec_add(self, other: vector_double) -> Self::Result {
+            vec_add_double_double(self, other)
+        }
+    }
+
     #[inline]
     #[target_feature(enable = "vsx")]
     #[cfg_attr(test, assert_instr(xvsubdp))]
@@ -191,6 +202,17 @@ mod sealed {
         b: vector_double,
     ) -> vector_double {
         simd_sub(a, b)
+    }
+
+    // Implement AltiVec's VectorSub trait for vector_double to enable vec_sub support
+    #[unstable(feature = "stdarch_powerpc", issue = "111145")]
+    impl crate::core_arch::powerpc::altivec::sealed::VectorSub<vector_double> for vector_double {
+        type Result = vector_double;
+        #[inline]
+        #[target_feature(enable = "vsx")]
+        unsafe fn vec_sub(self, other: vector_double) -> Self::Result {
+            vec_sub_double_double(self, other)
+        }
     }
 
     #[inline]
@@ -202,37 +224,15 @@ mod sealed {
     ) -> vector_double {
         simd_mul(a, b)
     }
-}
 
-// Implement AltiVec's VectorAdd trait for vector_double to enable vec_add support
-#[unstable(feature = "stdarch_powerpc", issue = "111145")]
-impl crate::core_arch::powerpc::altivec::sealed::VectorAdd<vector_double> for vector_double {
-    type Result = vector_double;
-    #[inline]
-    #[target_feature(enable = "vsx")]
-    unsafe fn vec_add(self, other: vector_double) -> Self::Result {
-        sealed::vec_add_double_double(self, other)
-    }
-}
-
-// Implement AltiVec's VectorSub trait for vector_double to enable vec_sub support
-#[unstable(feature = "stdarch_powerpc", issue = "111145")]
-impl crate::core_arch::powerpc::altivec::sealed::VectorSub<vector_double> for vector_double {
-    type Result = vector_double;
-    #[inline]
-    #[target_feature(enable = "vsx")]
-    unsafe fn vec_sub(self, other: vector_double) -> Self::Result {
-        sealed::vec_sub_double_double(self, other)
-    }
-}
-
-// Implement AltiVec's VectorMul trait for vector_double to enable vec_mul support.
-#[unstable(feature = "stdarch_powerpc", issue = "111145")]
-impl crate::core_arch::powerpc::altivec::sealed::VectorMul for vector_double {
-    #[inline]
-    #[target_feature(enable = "vsx")]
-    unsafe fn vec_mul(self, b: Self) -> Self {
-        sealed::vec_mul_double_double(self, b)
+    // Implement AltiVec's VectorMul trait for vector_double to enable vec_mul support.
+    #[unstable(feature = "stdarch_powerpc", issue = "111145")]
+    impl crate::core_arch::powerpc::altivec::sealed::VectorMul for vector_double {
+        #[inline]
+        #[target_feature(enable = "vsx")]
+        unsafe fn vec_mul(self, b: Self) -> Self {
+            vec_mul_double_double(self, b)
+        }
     }
 }
 
