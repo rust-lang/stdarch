@@ -328,6 +328,10 @@ impl_vv!("lasx", lasx_xvneg_w, is::simd_neg, m256i, i32x8);
 impl_vv!("lasx", lasx_xvneg_d, is::simd_neg, m256i, i64x4);
 impl_vv!("lasx", lasx_xvfsqrt_s, is::simd_fsqrt, m256, f32x8);
 impl_vv!("lasx", lasx_xvfsqrt_d, is::simd_fsqrt, m256d, f64x4);
+impl_vv!("lasx", lasx_xvfrsqrt_s, ls::simd_frsqrt_s, m256, f32x8);
+impl_vv!("lasx", lasx_xvfrsqrt_d, ls::simd_frsqrt_d, m256d, f64x4);
+impl_vv!("lasx", lasx_xvfrecip_s, ls::simd_frecip_s, m256, f32x8);
+impl_vv!("lasx", lasx_xvfrecip_d, ls::simd_frecip_d, m256d, f64x4);
 impl_vv!("lasx", lasx_xvreplve0_b, simd_replve0_b, m256i, i8x32);
 impl_vv!("lasx", lasx_xvreplve0_h, simd_replve0_h, m256i, i16x16);
 impl_vv!("lasx", lasx_xvreplve0_w, simd_replve0_w, m256i, i32x8);
@@ -338,6 +342,10 @@ impl_gv!("lasx", lasx_xvreplgr2vr_b, ls::simd_splat, m256i, i8x32, i32);
 impl_gv!("lasx", lasx_xvreplgr2vr_h, ls::simd_splat, m256i, i16x16, i32);
 impl_gv!("lasx", lasx_xvreplgr2vr_w, ls::simd_splat, m256i, i32x8, i32);
 impl_gv!("lasx", lasx_xvreplgr2vr_d, ls::simd_splat, m256i, i64x4, i64);
+
+impl_ggv!("lasx", lasx_xvldx, simd_ldx, m256i, i8x32, *const i8, i64, unsafe);
+
+impl_gsv!("lasx", lasx_xvld, simd_ld, m256i, i8x32, *const i8, 12, const, unsafe);
 
 impl_sv!("lasx", lasx_xvrepli_b, ls::simd_splat, m256i, i8x32, 10);
 impl_sv!("lasx", lasx_xvrepli_h, ls::simd_splat, m256i, i16x16, 10);
@@ -434,6 +442,10 @@ impl_vvv!("lasx", lasx_xvsrl_b, ls::simd_shr, m256i, u8x32);
 impl_vvv!("lasx", lasx_xvsrl_h, ls::simd_shr, m256i, u16x16);
 impl_vvv!("lasx", lasx_xvsrl_w, ls::simd_shr, m256i, u32x8);
 impl_vvv!("lasx", lasx_xvsrl_d, ls::simd_shr, m256i, u64x4);
+impl_vvv!("lasx", lasx_xvrotr_b, ls::simd_rotr, m256i, u8x32);
+impl_vvv!("lasx", lasx_xvrotr_h, ls::simd_rotr, m256i, u16x16);
+impl_vvv!("lasx", lasx_xvrotr_w, ls::simd_rotr, m256i, u32x8);
+impl_vvv!("lasx", lasx_xvrotr_d, ls::simd_rotr, m256i, u64x4);
 impl_vvv!("lasx", lasx_xvbitclr_b, ls::simd_bitclr, m256i, u8x32);
 impl_vvv!("lasx", lasx_xvbitclr_h, ls::simd_bitclr, m256i, u16x16);
 impl_vvv!("lasx", lasx_xvbitclr_w, ls::simd_bitclr, m256i, u32x8);
@@ -499,6 +511,10 @@ impl_vvv!("lasx", lasx_xvpackod_h, simd_packod_h, m256i, i16x16);
 impl_vvv!("lasx", lasx_xvpackod_w, simd_packod_w, m256i, i32x8);
 impl_vvv!("lasx", lasx_xvpackod_d, simd_packod_d, m256i, i64x4);
 
+impl_vgg!("lasx", lasx_xvstx, simd_stx, m256i, i8x32, *mut i8, i64, unsafe);
+
+impl_vgs!("lasx", lasx_xvst, simd_st, m256i, i8x32, *mut i8, 12, const, unsafe);
+
 impl_vuv!("lasx", lasx_xvslli_b, is::simd_shl, m256i, i8x32);
 impl_vuv!("lasx", lasx_xvslli_h, is::simd_shl, m256i, i16x16);
 impl_vuv!("lasx", lasx_xvslli_w, is::simd_shl, m256i, i32x8);
@@ -511,6 +527,10 @@ impl_vuv!("lasx", lasx_xvsrli_b, is::simd_shr, m256i, u8x32);
 impl_vuv!("lasx", lasx_xvsrli_h, is::simd_shr, m256i, u16x16);
 impl_vuv!("lasx", lasx_xvsrli_w, is::simd_shr, m256i, u32x8);
 impl_vuv!("lasx", lasx_xvsrli_d, is::simd_shr, m256i, u64x4);
+impl_vuv!("lasx", lasx_xvrotri_b, ls::simd_rotr, m256i, u8x32);
+impl_vuv!("lasx", lasx_xvrotri_h, ls::simd_rotr, m256i, u16x16);
+impl_vuv!("lasx", lasx_xvrotri_w, ls::simd_rotr, m256i, u32x8);
+impl_vuv!("lasx", lasx_xvrotri_d, ls::simd_rotr, m256i, u64x4);
 impl_vuv!("lasx", lasx_xvaddi_bu, is::simd_add, m256i, u8x32, 5);
 impl_vuv!("lasx", lasx_xvaddi_hu, is::simd_add, m256i, u16x16, 5);
 impl_vuv!("lasx", lasx_xvaddi_wu, is::simd_add, m256i, u32x8, 5);
