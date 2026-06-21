@@ -12767,6 +12767,7 @@ intrinsics:
       - *neon-stable
     safety:
       unsafe: [neon]
+    big_endian_inverse: true
     types:
       - ['*const i8', int8x8_t, "neon"]
       - ['*const i8', int8x16_t, "neon"]
@@ -12813,6 +12814,7 @@ intrinsics:
       - *target-not-arm64ec
     safety:
       unsafe: [neon]
+    big_endian_inverse: true
     types:
       - ['*const f16', float16x4_t, "neon,fp16"]
       - ['*const f16', float16x8_t, "neon,fp16"]
@@ -12834,6 +12836,7 @@ intrinsics:
       - *neon-stable
     safety:
       unsafe: [neon]
+    big_endian_inverse: true
     types:
       - ['*mut i8', int8x8_t, "neon"]
       - ['*mut i8', int8x16_t, "neon"]
@@ -12881,6 +12884,7 @@ intrinsics:
       - *target-not-arm64ec
     safety:
       unsafe: [neon]
+    big_endian_inverse: true
     types:
       - ['*mut f16', float16x4_t, "neon,fp16"]
       - ['*mut f16', float16x8_t, "neon,fp16"]
