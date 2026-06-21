@@ -59,6 +59,11 @@ unsafe extern "unadjusted" {
         b: vector_signed_int,
         c: vector_unsigned_char,
     ) -> vector_signed_int;
+
+    #[link_name = "llvm.ppc.vsx.xvmaxdp"]
+    fn xvmaxdp(a: vector_double, b: vector_double) -> vector_double;
+    #[link_name = "llvm.ppc.vsx.xvmindp"]
+    fn xvmindp(a: vector_double, b: vector_double) -> vector_double;
 }
 
 mod sealed {
@@ -171,6 +176,40 @@ mod sealed {
     vec_mergeeo! { vector_unsigned_int, mergee, mergeo }
     vec_mergeeo! { vector_bool_int, mergee, mergeo }
     vec_mergeeo! { vector_float, mergee, mergeo }
+
+    #[inline]
+    #[target_feature(enable = "vsx")]
+    #[cfg_attr(all(test, target_feature = "power8-vector"), assert_instr(xvmindp))]
+    unsafe fn vec_xvmindp(a: vector_double, b: vector_double) -> vector_double {
+        xvmindp(a, b)
+    }
+
+    #[inline]
+    #[target_feature(enable = "vsx")]
+    #[cfg_attr(all(test, target_feature = "power8-vector"), assert_instr(xvmaxdp))]
+    unsafe fn vec_xvmaxdp(a: vector_double, b: vector_double) -> vector_double {
+        xvmaxdp(a, b)
+    }
+
+    #[unstable(feature = "stdarch_powerpc", issue = "111145")]
+    impl super::altivec::sealed::VectorMin<vector_double> for vector_double {
+        type Result = vector_double;
+        #[inline]
+        #[target_feature(enable = "vsx")]
+        unsafe fn vec_min(self, b: vector_double) -> Self::Result {
+            vec_xvmindp(self, b)
+        }
+    }
+
+    #[unstable(feature = "stdarch_powerpc", issue = "111145")]
+    impl super::altivec::sealed::VectorMax<vector_double> for vector_double {
+        type Result = vector_double;
+        #[inline]
+        #[target_feature(enable = "vsx")]
+        unsafe fn vec_max(self, b: vector_double) -> Self::Result {
+            vec_xvmaxdp(self, b)
+        }
+    }
 }
 
 /// Vector permute.
@@ -234,6 +273,8 @@ mod tests {
     use crate::mem::transmute;
     use stdarch_test::simd_test;
 
+    use super::super::macros::*;
+
     macro_rules! test_vec_xxpermdi {
         {$name:ident, $shorttype:ident, $longtype:ident, [$($a:expr),+], [$($b:expr),+], [$($c:expr),+], [$($d:expr),+]} => {
             #[simd_test(enable = "vsx")]
@@ -255,4 +296,7 @@ mod tests {
     test_vec_xxpermdi! {test_vec_xxpermdi_i64x2, i64x2, vector_signed_long, [0], [-1], [2], [-3]}
     test_vec_xxpermdi! {test_vec_xxpermdi_m64x2, m64x2, vector_bool_long, [false], [true], [false], [true]}
     test_vec_xxpermdi! {test_vec_xxpermdi_f64x2, f64x2, vector_double, [0.0], [1.0], [2.0], [3.0]}
+
+    test_vec_min! { test_vec_min_f64x2, f64x2, [-1.0, 0.0], [2.0, 1.0], [-1.0, 0.0] }
+    test_vec_max! { test_vec_max_f64x2, f64x2, [-1.0, 0.0], [2.0, 1.0], [2.0, 1.0] }
 }
