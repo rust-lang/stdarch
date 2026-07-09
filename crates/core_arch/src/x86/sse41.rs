@@ -1170,14 +1170,7 @@ pub fn _mm_test_mix_ones_zeros(a: __m128i, mask: __m128i) -> i32 {
 #[cfg_attr(test, assert_instr(movntdqa))]
 #[stable(feature = "simd_x86_updates", since = "1.82.0")]
 pub unsafe fn _mm_stream_load_si128(mem_addr: *const __m128i) -> __m128i {
-    let dst: __m128i;
-    crate::arch::asm!(
-        vpl!("movntdqa {a}"),
-        a = out(xmm_reg) dst,
-        p = in(reg) mem_addr,
-        options(pure, readonly, nostack, preserves_flags),
-    );
-    dst
+    intrinsics::nontemporal_load(mem_addr)
 }
 
 #[allow(improper_ctypes)]
