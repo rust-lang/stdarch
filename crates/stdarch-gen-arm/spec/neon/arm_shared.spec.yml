@@ -2868,7 +2868,7 @@ intrinsics:
       - ["*const f16", float16x8_t, 'q_lane', '3']
     compose:
       - FnCall: [static_assert_uimm_bits!, [LANE, '{type[3]}']]
-      - FnCall: [simd_insert!, [src, "LANE as u32", "*ptr"]]
+      - FnCall: [simd_insert!, [src, "LANE as u32", {MethodCall: [ptr, read_unaligned, []]}]]
 
   - name: "vld1{type[2]}_{neon_type[1]}"
     doc: "Load one single-element structure and replicate to all lanes of one register"
@@ -14320,7 +14320,7 @@ intrinsics:
       - ['vld1q_lane_u64', '*const u64', 'uint64x2_t', 'vldr', '1', 'ld1', 'static_assert_uimm_bits!', 'LANE, 1']
     compose:
       - FnCall: ["{type[6]}", ["{type[7]}"]]
-      - FnCall: [simd_insert!, [src, 'LANE as u32', '*ptr']]
+      - FnCall: [simd_insert!, [src, 'LANE as u32', {MethodCall: [ptr, read_unaligned, []]}]]
 
   - name: "{type[0]}"
     doc: "Load one single-element structure to one lane of one register."
@@ -14342,7 +14342,7 @@ intrinsics:
       - ['vld1q_lane_p64', '*const p64', 'poly64x2_t', 'vldr', '1', 'ld1', 'static_assert_uimm_bits!', 'LANE, 1']
     compose:
       - FnCall: ["{type[6]}", ["{type[7]}"]]
-      - FnCall: [simd_insert!, [src, 'LANE as u32', '*ptr']]
+      - FnCall: [simd_insert!, [src, 'LANE as u32', {MethodCall: [ptr, read_unaligned, []]}]]
 
   - name: "{type[0]}"
     doc: "Load one single-element structure and Replicate to all lanes (of one register)."
@@ -14448,7 +14448,7 @@ intrinsics:
     compose:
       - FnCall:
           - transmute
-          - - FnCall: ['{type[5]}', ["*ptr"]]
+          - - FnCall: ['{type[5]}', [{MethodCall: [ptr, read_unaligned, []]}]]
 
   - name: "{type[0]}"
     doc: "Absolute difference and accumulate (64-bit)"
