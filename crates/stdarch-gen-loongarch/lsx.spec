@@ -884,41 +884,49 @@ asm-fmts = vd, vj, ui5
 data-types = V2DI, UV2DI, UQI
 
 /// lsx_vsat_b
+impl = portable
 name = lsx_vsat_b
 asm-fmts = vd, vj, ui3
 data-types = V16QI, V16QI, UQI
 
 /// lsx_vsat_h
+impl = portable
 name = lsx_vsat_h
 asm-fmts = vd, vj, ui4
 data-types = V8HI, V8HI, UQI
 
 /// lsx_vsat_w
+impl = portable
 name = lsx_vsat_w
 asm-fmts = vd, vj, ui5
 data-types = V4SI, V4SI, UQI
 
 /// lsx_vsat_d
+impl = portable
 name = lsx_vsat_d
 asm-fmts = vd, vj, ui6
 data-types = V2DI, V2DI, UQI
 
 /// lsx_vsat_bu
+impl = portable
 name = lsx_vsat_bu
 asm-fmts = vd, vj, ui3
 data-types = UV16QI, UV16QI, UQI
 
 /// lsx_vsat_hu
+impl = portable
 name = lsx_vsat_hu
 asm-fmts = vd, vj, ui4
 data-types = UV8HI, UV8HI, UQI
 
 /// lsx_vsat_wu
+impl = portable
 name = lsx_vsat_wu
 asm-fmts = vd, vj, ui5
 data-types = UV4SI, UV4SI, UQI
 
 /// lsx_vsat_du
+impl = portable
 name = lsx_vsat_du
 asm-fmts = vd, vj, ui6
 data-types = UV2DI, UV2DI, UQI

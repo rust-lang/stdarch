@@ -884,41 +884,49 @@ asm-fmts = xd, xj, ui5
 data-types = V4DI, UV4DI, UQI
 
 /// lasx_xvsat_b
+impl = portable
 name = lasx_xvsat_b
 asm-fmts = xd, xj, ui3
 data-types = V32QI, V32QI, UQI
 
 /// lasx_xvsat_h
+impl = portable
 name = lasx_xvsat_h
 asm-fmts = xd, xj, ui4
 data-types = V16HI, V16HI, UQI
 
 /// lasx_xvsat_w
+impl = portable
 name = lasx_xvsat_w
 asm-fmts = xd, xj, ui5
 data-types = V8SI, V8SI, UQI
 
 /// lasx_xvsat_d
+impl = portable
 name = lasx_xvsat_d
 asm-fmts = xd, xj, ui6
 data-types = V4DI, V4DI, UQI
 
 /// lasx_xvsat_bu
+impl = portable
 name = lasx_xvsat_bu
 asm-fmts = xd, xj, ui3
 data-types = UV32QI, UV32QI, UQI
 
 /// lasx_xvsat_hu
+impl = portable
 name = lasx_xvsat_hu
 asm-fmts = xd, xj, ui4
 data-types = UV16HI, UV16HI, UQI
 
 /// lasx_xvsat_wu
+impl = portable
 name = lasx_xvsat_wu
 asm-fmts = xd, xj, ui5
 data-types = UV8SI, UV8SI, UQI
 
 /// lasx_xvsat_du
+impl = portable
 name = lasx_xvsat_du
 asm-fmts = xd, xj, ui6
 data-types = UV4DI, UV4DI, UQI

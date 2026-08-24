@@ -75,22 +75,6 @@ unsafe extern "unadjusted" {
     fn __lasx_xvsubi_wu(a: __v8i32, b: u32) -> __v8i32;
     #[link_name = "llvm.loongarch.lasx.xvsubi.du"]
     fn __lasx_xvsubi_du(a: __v4i64, b: u32) -> __v4i64;
-    #[link_name = "llvm.loongarch.lasx.xvsat.b"]
-    fn __lasx_xvsat_b(a: __v32i8, b: u32) -> __v32i8;
-    #[link_name = "llvm.loongarch.lasx.xvsat.h"]
-    fn __lasx_xvsat_h(a: __v16i16, b: u32) -> __v16i16;
-    #[link_name = "llvm.loongarch.lasx.xvsat.w"]
-    fn __lasx_xvsat_w(a: __v8i32, b: u32) -> __v8i32;
-    #[link_name = "llvm.loongarch.lasx.xvsat.d"]
-    fn __lasx_xvsat_d(a: __v4i64, b: u32) -> __v4i64;
-    #[link_name = "llvm.loongarch.lasx.xvsat.bu"]
-    fn __lasx_xvsat_bu(a: __v32u8, b: u32) -> __v32u8;
-    #[link_name = "llvm.loongarch.lasx.xvsat.hu"]
-    fn __lasx_xvsat_hu(a: __v16u16, b: u32) -> __v16u16;
-    #[link_name = "llvm.loongarch.lasx.xvsat.wu"]
-    fn __lasx_xvsat_wu(a: __v8u32, b: u32) -> __v8u32;
-    #[link_name = "llvm.loongarch.lasx.xvsat.du"]
-    fn __lasx_xvsat_du(a: __v4u64, b: u32) -> __v4u64;
     #[link_name = "llvm.loongarch.lasx.xvavg.b"]
     fn __lasx_xvavg_b(a: __v32i8, b: __v32i8) -> __v32i8;
     #[link_name = "llvm.loongarch.lasx.xvavg.h"]
@@ -1209,78 +1193,6 @@ pub fn lasx_xvsubi_wu<const IMM5: u32>(a: m256i) -> m256i {
 pub fn lasx_xvsubi_du<const IMM5: u32>(a: m256i) -> m256i {
     static_assert_uimm_bits!(IMM5, 5);
     unsafe { transmute(__lasx_xvsubi_du(transmute(a), IMM5)) }
-}
-
-#[inline]
-#[target_feature(enable = "lasx")]
-#[rustc_legacy_const_generics(1)]
-#[unstable(feature = "stdarch_loongarch", issue = "117427")]
-pub fn lasx_xvsat_b<const IMM3: u32>(a: m256i) -> m256i {
-    static_assert_uimm_bits!(IMM3, 3);
-    unsafe { transmute(__lasx_xvsat_b(transmute(a), IMM3)) }
-}
-
-#[inline]
-#[target_feature(enable = "lasx")]
-#[rustc_legacy_const_generics(1)]
-#[unstable(feature = "stdarch_loongarch", issue = "117427")]
-pub fn lasx_xvsat_h<const IMM4: u32>(a: m256i) -> m256i {
-    static_assert_uimm_bits!(IMM4, 4);
-    unsafe { transmute(__lasx_xvsat_h(transmute(a), IMM4)) }
-}
-
-#[inline]
-#[target_feature(enable = "lasx")]
-#[rustc_legacy_const_generics(1)]
-#[unstable(feature = "stdarch_loongarch", issue = "117427")]
-pub fn lasx_xvsat_w<const IMM5: u32>(a: m256i) -> m256i {
-    static_assert_uimm_bits!(IMM5, 5);
-    unsafe { transmute(__lasx_xvsat_w(transmute(a), IMM5)) }
-}
-
-#[inline]
-#[target_feature(enable = "lasx")]
-#[rustc_legacy_const_generics(1)]
-#[unstable(feature = "stdarch_loongarch", issue = "117427")]
-pub fn lasx_xvsat_d<const IMM6: u32>(a: m256i) -> m256i {
-    static_assert_uimm_bits!(IMM6, 6);
-    unsafe { transmute(__lasx_xvsat_d(transmute(a), IMM6)) }
-}
-
-#[inline]
-#[target_feature(enable = "lasx")]
-#[rustc_legacy_const_generics(1)]
-#[unstable(feature = "stdarch_loongarch", issue = "117427")]
-pub fn lasx_xvsat_bu<const IMM3: u32>(a: m256i) -> m256i {
-    static_assert_uimm_bits!(IMM3, 3);
-    unsafe { transmute(__lasx_xvsat_bu(transmute(a), IMM3)) }
-}
-
-#[inline]
-#[target_feature(enable = "lasx")]
-#[rustc_legacy_const_generics(1)]
-#[unstable(feature = "stdarch_loongarch", issue = "117427")]
-pub fn lasx_xvsat_hu<const IMM4: u32>(a: m256i) -> m256i {
-    static_assert_uimm_bits!(IMM4, 4);
-    unsafe { transmute(__lasx_xvsat_hu(transmute(a), IMM4)) }
-}
-
-#[inline]
-#[target_feature(enable = "lasx")]
-#[rustc_legacy_const_generics(1)]
-#[unstable(feature = "stdarch_loongarch", issue = "117427")]
-pub fn lasx_xvsat_wu<const IMM5: u32>(a: m256i) -> m256i {
-    static_assert_uimm_bits!(IMM5, 5);
-    unsafe { transmute(__lasx_xvsat_wu(transmute(a), IMM5)) }
-}
-
-#[inline]
-#[target_feature(enable = "lasx")]
-#[rustc_legacy_const_generics(1)]
-#[unstable(feature = "stdarch_loongarch", issue = "117427")]
-pub fn lasx_xvsat_du<const IMM6: u32>(a: m256i) -> m256i {
-    static_assert_uimm_bits!(IMM6, 6);
-    unsafe { transmute(__lasx_xvsat_du(transmute(a), IMM6)) }
 }
 
 #[inline]

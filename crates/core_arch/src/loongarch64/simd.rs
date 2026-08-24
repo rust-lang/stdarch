@@ -1,5 +1,6 @@
 //! LoongArch64 SIMD helpers
 
+use crate::core_arch::simd::*;
 use crate::intrinsics::simd::*;
 
 // Internal extension trait for concrete `Simd<T, N>` types.
@@ -302,6 +303,32 @@ pub(super) const unsafe fn simd_ext_st<const I: i32, T: Copy>(a: T, b: *mut i8) 
 pub(super) const unsafe fn simd_ext_stx<T: Copy>(a: T, b: *mut i8, c: i64) {
     let b = b.offset(c as isize) as *mut T;
     core::ptr::write_unaligned(b, a);
+}
+
+#[inline(always)]
+#[rustc_const_unstable(feature = "stdarch_const_helpers", issue = "none")]
+pub(super) const unsafe fn simd_ext_sat_signed<T: Copy + const SimdExt>(a: T, imm: u32) -> T {
+    let bits = (size_of::<T::Elem>() * 8) as u32;
+    if imm >= bits - 1 {
+        return a;
+    }
+    let min_val = -(1i64 << imm);
+    let max_val = (1i64 << imm) - 1;
+    simd_imax(
+        simd_imin(a, simd_ext_splat(max_val)),
+        simd_ext_splat(min_val),
+    )
+}
+
+#[inline(always)]
+#[rustc_const_unstable(feature = "stdarch_const_helpers", issue = "none")]
+pub(super) const unsafe fn simd_ext_sat_unsigned<T: Copy + const SimdExt>(a: T, imm: u32) -> T {
+    let bits = (size_of::<T::Elem>() * 8) as u32;
+    if imm >= bits - 1 {
+        return a;
+    }
+    let max_val = (1i64 << (imm + 1)) - 1;
+    simd_imax(simd_imin(a, simd_ext_splat(max_val)), simd_ext_splat(0))
 }
 
 macro_rules! impl_vv {

@@ -896,6 +896,80 @@ impl_vvvv!("lasx", lasx_xvfnmsub_d, simd_ext_fnmsub, m256d, f64x4);
 impl_vugv!("lasx", lasx_xvinsgr2vr_w, simd_insert, m256i, i32x8, i32, 3);
 impl_vugv!("lasx", lasx_xvinsgr2vr_d, simd_insert, m256i, i64x4, i64, 2);
 
+// VSAT — signed saturation
+#[inline]
+#[target_feature(enable = "lasx")]
+#[rustc_legacy_const_generics(1)]
+#[unstable(feature = "stdarch_loongarch", issue = "117427")]
+pub fn lasx_xvsat_b<const IMM: u32>(a: m256i) -> m256i {
+    static_assert_uimm_bits!(IMM, 3);
+    unsafe { transmute(simd_ext_sat_signed(transmute::<m256i, i8x32>(a), IMM)) }
+}
+
+#[inline]
+#[target_feature(enable = "lasx")]
+#[rustc_legacy_const_generics(1)]
+#[unstable(feature = "stdarch_loongarch", issue = "117427")]
+pub fn lasx_xvsat_h<const IMM: u32>(a: m256i) -> m256i {
+    static_assert_uimm_bits!(IMM, 4);
+    unsafe { transmute(simd_ext_sat_signed(transmute::<m256i, i16x16>(a), IMM)) }
+}
+
+#[inline]
+#[target_feature(enable = "lasx")]
+#[rustc_legacy_const_generics(1)]
+#[unstable(feature = "stdarch_loongarch", issue = "117427")]
+pub fn lasx_xvsat_w<const IMM: u32>(a: m256i) -> m256i {
+    static_assert_uimm_bits!(IMM, 5);
+    unsafe { transmute(simd_ext_sat_signed(transmute::<m256i, i32x8>(a), IMM)) }
+}
+
+#[inline]
+#[target_feature(enable = "lasx")]
+#[rustc_legacy_const_generics(1)]
+#[unstable(feature = "stdarch_loongarch", issue = "117427")]
+pub fn lasx_xvsat_d<const IMM: u32>(a: m256i) -> m256i {
+    static_assert_uimm_bits!(IMM, 6);
+    unsafe { transmute(simd_ext_sat_signed(transmute::<m256i, i64x4>(a), IMM)) }
+}
+
+// VSATU — unsigned saturation
+#[inline]
+#[target_feature(enable = "lasx")]
+#[rustc_legacy_const_generics(1)]
+#[unstable(feature = "stdarch_loongarch", issue = "117427")]
+pub fn lasx_xvsat_bu<const IMM: u32>(a: m256i) -> m256i {
+    static_assert_uimm_bits!(IMM, 3);
+    unsafe { transmute(simd_ext_sat_unsigned(transmute::<m256i, u8x32>(a), IMM)) }
+}
+
+#[inline]
+#[target_feature(enable = "lasx")]
+#[rustc_legacy_const_generics(1)]
+#[unstable(feature = "stdarch_loongarch", issue = "117427")]
+pub fn lasx_xvsat_hu<const IMM: u32>(a: m256i) -> m256i {
+    static_assert_uimm_bits!(IMM, 4);
+    unsafe { transmute(simd_ext_sat_unsigned(transmute::<m256i, u16x16>(a), IMM)) }
+}
+
+#[inline]
+#[target_feature(enable = "lasx")]
+#[rustc_legacy_const_generics(1)]
+#[unstable(feature = "stdarch_loongarch", issue = "117427")]
+pub fn lasx_xvsat_wu<const IMM: u32>(a: m256i) -> m256i {
+    static_assert_uimm_bits!(IMM, 5);
+    unsafe { transmute(simd_ext_sat_unsigned(transmute::<m256i, u32x8>(a), IMM)) }
+}
+
+#[inline]
+#[target_feature(enable = "lasx")]
+#[rustc_legacy_const_generics(1)]
+#[unstable(feature = "stdarch_loongarch", issue = "117427")]
+pub fn lasx_xvsat_du<const IMM: u32>(a: m256i) -> m256i {
+    static_assert_uimm_bits!(IMM, 6);
+    unsafe { transmute(simd_ext_sat_unsigned(transmute::<m256i, u64x4>(a), IMM)) }
+}
+
 #[cfg(test)]
 mod tests {
     use crate::{

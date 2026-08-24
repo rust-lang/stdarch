@@ -75,22 +75,6 @@ unsafe extern "unadjusted" {
     fn __lsx_vsubi_wu(a: __v4i32, b: u32) -> __v4i32;
     #[link_name = "llvm.loongarch.lsx.vsubi.du"]
     fn __lsx_vsubi_du(a: __v2i64, b: u32) -> __v2i64;
-    #[link_name = "llvm.loongarch.lsx.vsat.b"]
-    fn __lsx_vsat_b(a: __v16i8, b: u32) -> __v16i8;
-    #[link_name = "llvm.loongarch.lsx.vsat.h"]
-    fn __lsx_vsat_h(a: __v8i16, b: u32) -> __v8i16;
-    #[link_name = "llvm.loongarch.lsx.vsat.w"]
-    fn __lsx_vsat_w(a: __v4i32, b: u32) -> __v4i32;
-    #[link_name = "llvm.loongarch.lsx.vsat.d"]
-    fn __lsx_vsat_d(a: __v2i64, b: u32) -> __v2i64;
-    #[link_name = "llvm.loongarch.lsx.vsat.bu"]
-    fn __lsx_vsat_bu(a: __v16u8, b: u32) -> __v16u8;
-    #[link_name = "llvm.loongarch.lsx.vsat.hu"]
-    fn __lsx_vsat_hu(a: __v8u16, b: u32) -> __v8u16;
-    #[link_name = "llvm.loongarch.lsx.vsat.wu"]
-    fn __lsx_vsat_wu(a: __v4u32, b: u32) -> __v4u32;
-    #[link_name = "llvm.loongarch.lsx.vsat.du"]
-    fn __lsx_vsat_du(a: __v2u64, b: u32) -> __v2u64;
     #[link_name = "llvm.loongarch.lsx.vavg.b"]
     fn __lsx_vavg_b(a: __v16i8, b: __v16i8) -> __v16i8;
     #[link_name = "llvm.loongarch.lsx.vavg.h"]
@@ -1129,78 +1113,6 @@ pub fn lsx_vsubi_wu<const IMM5: u32>(a: m128i) -> m128i {
 pub fn lsx_vsubi_du<const IMM5: u32>(a: m128i) -> m128i {
     static_assert_uimm_bits!(IMM5, 5);
     unsafe { transmute(__lsx_vsubi_du(transmute(a), IMM5)) }
-}
-
-#[inline]
-#[target_feature(enable = "lsx")]
-#[rustc_legacy_const_generics(1)]
-#[unstable(feature = "stdarch_loongarch", issue = "117427")]
-pub fn lsx_vsat_b<const IMM3: u32>(a: m128i) -> m128i {
-    static_assert_uimm_bits!(IMM3, 3);
-    unsafe { transmute(__lsx_vsat_b(transmute(a), IMM3)) }
-}
-
-#[inline]
-#[target_feature(enable = "lsx")]
-#[rustc_legacy_const_generics(1)]
-#[unstable(feature = "stdarch_loongarch", issue = "117427")]
-pub fn lsx_vsat_h<const IMM4: u32>(a: m128i) -> m128i {
-    static_assert_uimm_bits!(IMM4, 4);
-    unsafe { transmute(__lsx_vsat_h(transmute(a), IMM4)) }
-}
-
-#[inline]
-#[target_feature(enable = "lsx")]
-#[rustc_legacy_const_generics(1)]
-#[unstable(feature = "stdarch_loongarch", issue = "117427")]
-pub fn lsx_vsat_w<const IMM5: u32>(a: m128i) -> m128i {
-    static_assert_uimm_bits!(IMM5, 5);
-    unsafe { transmute(__lsx_vsat_w(transmute(a), IMM5)) }
-}
-
-#[inline]
-#[target_feature(enable = "lsx")]
-#[rustc_legacy_const_generics(1)]
-#[unstable(feature = "stdarch_loongarch", issue = "117427")]
-pub fn lsx_vsat_d<const IMM6: u32>(a: m128i) -> m128i {
-    static_assert_uimm_bits!(IMM6, 6);
-    unsafe { transmute(__lsx_vsat_d(transmute(a), IMM6)) }
-}
-
-#[inline]
-#[target_feature(enable = "lsx")]
-#[rustc_legacy_const_generics(1)]
-#[unstable(feature = "stdarch_loongarch", issue = "117427")]
-pub fn lsx_vsat_bu<const IMM3: u32>(a: m128i) -> m128i {
-    static_assert_uimm_bits!(IMM3, 3);
-    unsafe { transmute(__lsx_vsat_bu(transmute(a), IMM3)) }
-}
-
-#[inline]
-#[target_feature(enable = "lsx")]
-#[rustc_legacy_const_generics(1)]
-#[unstable(feature = "stdarch_loongarch", issue = "117427")]
-pub fn lsx_vsat_hu<const IMM4: u32>(a: m128i) -> m128i {
-    static_assert_uimm_bits!(IMM4, 4);
-    unsafe { transmute(__lsx_vsat_hu(transmute(a), IMM4)) }
-}
-
-#[inline]
-#[target_feature(enable = "lsx")]
-#[rustc_legacy_const_generics(1)]
-#[unstable(feature = "stdarch_loongarch", issue = "117427")]
-pub fn lsx_vsat_wu<const IMM5: u32>(a: m128i) -> m128i {
-    static_assert_uimm_bits!(IMM5, 5);
-    unsafe { transmute(__lsx_vsat_wu(transmute(a), IMM5)) }
-}
-
-#[inline]
-#[target_feature(enable = "lsx")]
-#[rustc_legacy_const_generics(1)]
-#[unstable(feature = "stdarch_loongarch", issue = "117427")]
-pub fn lsx_vsat_du<const IMM6: u32>(a: m128i) -> m128i {
-    static_assert_uimm_bits!(IMM6, 6);
-    unsafe { transmute(__lsx_vsat_du(transmute(a), IMM6)) }
 }
 
 #[inline]

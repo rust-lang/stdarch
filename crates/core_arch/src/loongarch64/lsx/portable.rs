@@ -574,6 +574,73 @@ impl_vugv!("lsx", lsx_vinsgr2vr_h, simd_insert, m128i, i16x8, i32, 3);
 impl_vugv!("lsx", lsx_vinsgr2vr_w, simd_insert, m128i, i32x4, i32, 2);
 impl_vugv!("lsx", lsx_vinsgr2vr_d, simd_insert, m128i, i64x2, i64, 1);
 
+// VSAT — signed saturation to IMM+1 bits
+#[inline]
+#[target_feature(enable = "lsx")]
+#[unstable(feature = "stdarch_loongarch", issue = "117427")]
+pub fn lsx_vsat_b<const IMM: u32>(a: m128i) -> m128i {
+    static_assert_uimm_bits!(IMM, 3);
+    unsafe { transmute(simd_ext_sat_signed(transmute::<m128i, i8x16>(a), IMM)) }
+}
+
+#[inline]
+#[target_feature(enable = "lsx")]
+#[rustc_legacy_const_generics(1)]
+#[unstable(feature = "stdarch_loongarch", issue = "117427")]
+pub fn lsx_vsat_h<const IMM: u32>(a: m128i) -> m128i {
+    static_assert_uimm_bits!(IMM, 4);
+    unsafe { transmute(simd_ext_sat_signed(transmute::<m128i, i16x8>(a), IMM)) }
+}
+
+#[inline]
+#[target_feature(enable = "lsx")]
+#[unstable(feature = "stdarch_loongarch", issue = "117427")]
+pub fn lsx_vsat_w<const IMM: u32>(a: m128i) -> m128i {
+    static_assert_uimm_bits!(IMM, 5);
+    unsafe { transmute(simd_ext_sat_signed(transmute::<m128i, i32x4>(a), IMM)) }
+}
+
+#[inline]
+#[target_feature(enable = "lsx")]
+#[unstable(feature = "stdarch_loongarch", issue = "117427")]
+pub fn lsx_vsat_d<const IMM: u32>(a: m128i) -> m128i {
+    static_assert_uimm_bits!(IMM, 6);
+    unsafe { transmute(simd_ext_sat_signed(transmute::<m128i, i64x2>(a), IMM)) }
+}
+
+// VSATU — unsigned saturation to IMM+1 bits
+#[inline]
+#[target_feature(enable = "lsx")]
+#[unstable(feature = "stdarch_loongarch", issue = "117427")]
+pub fn lsx_vsat_bu<const IMM: u32>(a: m128i) -> m128i {
+    static_assert_uimm_bits!(IMM, 3);
+    unsafe { transmute(simd_ext_sat_unsigned(transmute::<m128i, u8x16>(a), IMM)) }
+}
+
+#[inline]
+#[target_feature(enable = "lsx")]
+#[unstable(feature = "stdarch_loongarch", issue = "117427")]
+pub fn lsx_vsat_hu<const IMM: u32>(a: m128i) -> m128i {
+    static_assert_uimm_bits!(IMM, 4);
+    unsafe { transmute(simd_ext_sat_unsigned(transmute::<m128i, u16x8>(a), IMM)) }
+}
+
+#[inline]
+#[target_feature(enable = "lsx")]
+#[unstable(feature = "stdarch_loongarch", issue = "117427")]
+pub fn lsx_vsat_wu<const IMM: u32>(a: m128i) -> m128i {
+    static_assert_uimm_bits!(IMM, 5);
+    unsafe { transmute(simd_ext_sat_unsigned(transmute::<m128i, u32x4>(a), IMM)) }
+}
+
+#[inline]
+#[target_feature(enable = "lsx")]
+#[unstable(feature = "stdarch_loongarch", issue = "117427")]
+pub fn lsx_vsat_du<const IMM: u32>(a: m128i) -> m128i {
+    static_assert_uimm_bits!(IMM, 6);
+    unsafe { transmute(simd_ext_sat_unsigned(transmute::<m128i, u64x2>(a), IMM)) }
+}
+
 #[cfg(test)]
 mod tests {
     use crate::{
