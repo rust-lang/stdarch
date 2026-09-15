@@ -8,5 +8,4 @@ edition = "2024"
 
 [dependencies]
 clap = { version = "4", features = ["derive", "env"] }
-rand = "0.9.3"
 stdarch-gen-common = { path = "../stdarch-gen-common" }
