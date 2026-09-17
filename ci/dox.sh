@@ -6,9 +6,9 @@
 
 set -ex
 
-export RUSTDOCFLAGS="-D warnings"
-
 dox() {
+  export RUSTDOCFLAGS="-D warnings"
+
   if [ "$CI" != "" ]; then
     rustup target add "${1}" || true
   fi
