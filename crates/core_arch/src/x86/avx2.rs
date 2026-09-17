@@ -3226,14 +3226,7 @@ pub fn _mm256_srlv_epi64(a: __m256i, count: __m256i) -> __m256i {
 #[cfg_attr(test, assert_instr(vmovntdqa))]
 #[stable(feature = "simd_x86_updates", since = "1.82.0")]
 pub unsafe fn _mm256_stream_load_si256(mem_addr: *const __m256i) -> __m256i {
-    let dst: __m256i;
-    crate::arch::asm!(
-        vpl!("vmovntdqa {a}"),
-        a = out(ymm_reg) dst,
-        p = in(reg) mem_addr,
-        options(pure, readonly, nostack, preserves_flags),
-    );
-    dst
+    intrinsics::nontemporal_load(mem_addr)
 }
 
 /// Subtract packed 16-bit integers in `b` from packed 16-bit integers in `a`
