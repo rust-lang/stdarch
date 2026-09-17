@@ -10,6 +10,7 @@
 
 use crate::core_arch::powerpc::*;
 use crate::core_arch::simd::*;
+use crate::intrinsics::simd::*;
 
 #[cfg(test)]
 use stdarch_test::assert_instr;
@@ -173,6 +174,69 @@ mod sealed {
     vec_mergeeo! { vector_float, mergee, mergeo }
 }
 
+// Macro to implement VectorCmp* traits for vector types.
+macro_rules! impl_vsx_cmp {
+    ($trait_name:ident, $method_name:ident, $simd_op:ident, $vec_ty:ident, $result_ty:ident, $mask_ty:ident, $instr:ident) => {
+        #[unstable(feature = "stdarch_powerpc", issue = "111145")]
+        impl crate::core_arch::powerpc::altivec::sealed::$trait_name<$vec_ty> for $vec_ty {
+            type Result = $result_ty;
+            #[inline]
+            #[target_feature(enable = "vsx")]
+            #[cfg_attr(all(test, target_feature = "power8-vector"), assert_instr($instr))]
+            unsafe fn $method_name(self, b: $vec_ty) -> Self::Result {
+                let result: $mask_ty = $simd_op(self, b);
+                transmute(result)
+            }
+        }
+    };
+}
+
+impl_vsx_cmp!(
+    VectorCmpEq,
+    vec_cmpeq,
+    simd_eq,
+    vector_float,
+    vector_bool_int,
+    m32x4,
+    xvcmpeqsp
+);
+impl_vsx_cmp!(
+    VectorCmpEq,
+    vec_cmpeq,
+    simd_eq,
+    vector_double,
+    vector_bool_long,
+    m64x2,
+    xvcmpeqdp
+);
+impl_vsx_cmp!(
+    VectorCmpGt,
+    vec_cmpgt,
+    simd_gt,
+    vector_float,
+    vector_bool_int,
+    m32x4,
+    xvcmpgtsp
+);
+impl_vsx_cmp!(
+    VectorCmpGt,
+    vec_cmpgt,
+    simd_gt,
+    vector_double,
+    vector_bool_long,
+    m64x2,
+    xvcmpgtdp
+);
+impl_vsx_cmp!(
+    VectorCmpGe,
+    vec_cmpge,
+    simd_ge,
+    vector_double,
+    vector_bool_long,
+    m64x2,
+    xvcmpgedp
+);
+
 /// Vector permute.
 #[inline]
 #[target_feature(enable = "vsx")]
@@ -255,4 +319,98 @@ mod tests {
     test_vec_xxpermdi! {test_vec_xxpermdi_i64x2, i64x2, vector_signed_long, [0], [-1], [2], [-3]}
     test_vec_xxpermdi! {test_vec_xxpermdi_m64x2, m64x2, vector_bool_long, [false], [true], [false], [true]}
     test_vec_xxpermdi! {test_vec_xxpermdi_f64x2, f64x2, vector_double, [0.0], [1.0], [2.0], [3.0]}
+
+    #[simd_test(enable = "vsx")]
+    fn test_vec_cmpeq_f32x4() {
+        let a = vector_float::from(f32x4::from_array([1.0, 2.0, 3.0, 4.0]));
+        let b = vector_float::from(f32x4::from_array([1.0, 3.0, 3.0, 5.0]));
+
+        unsafe {
+            let result: vector_bool_int = vec_cmpeq(a, b);
+            // Elements 0 and 2 are equal, elements 1 and 3 are not equal.
+            // Equal elements should have all bits set (-1), non-equal should be 0.
+            let result_i32: i32x4 = transmute(result);
+            assert_eq!(result_i32.as_array()[0], -1i32);
+            assert_eq!(result_i32.as_array()[1], 0i32);
+            assert_eq!(result_i32.as_array()[2], -1i32);
+            assert_eq!(result_i32.as_array()[3], 0i32);
+        }
+    }
+
+    #[simd_test(enable = "vsx")]
+    fn test_vec_cmpeq_f64x2() {
+        let a = vector_double::from(f64x2::from_array([1.0, 2.0]));
+        let b = vector_double::from(f64x2::from_array([1.0, 3.0]));
+
+        unsafe {
+            let result: vector_bool_long = vec_cmpeq(a, b);
+            // First element equal (1.0 == 1.0), second not equal (2.0 != 3.0).
+            // Equal elements should have all bits set (-1), non-equal should be 0.
+            let result_i64: i64x2 = transmute(result);
+            assert_eq!(result_i64.as_array()[0], -1i64);
+            assert_eq!(result_i64.as_array()[1], 0i64);
+        }
+    }
+
+    #[simd_test(enable = "vsx")]
+    fn test_vec_cmpgt_f32x4() {
+        let a = vector_float::from(f32x4::from_array([1.0, 2.0, 3.0, 4.0]));
+        let b = vector_float::from(f32x4::from_array([0.0, 3.0, 3.0, 5.0]));
+
+        unsafe {
+            let result: vector_bool_int = vec_cmpgt(a, b);
+            // Element 0: 1.0 > 0.0 (true), Element 1: 2.0 > 3.0 (false)
+            // Element 2: 3.0 > 3.0 (false), Element 3: 4.0 > 5.0 (false)
+            let result_i32: i32x4 = transmute(result);
+            assert_eq!(result_i32.as_array()[0], -1i32);
+            assert_eq!(result_i32.as_array()[1], 0i32);
+            assert_eq!(result_i32.as_array()[2], 0i32);
+            assert_eq!(result_i32.as_array()[3], 0i32);
+        }
+    }
+
+    #[simd_test(enable = "vsx")]
+    fn test_vec_cmpgt_f64x2() {
+        let a = vector_double::from(f64x2::from_array([2.0, 1.0]));
+        let b = vector_double::from(f64x2::from_array([1.0, 3.0]));
+
+        unsafe {
+            let result: vector_bool_long = vec_cmpgt(a, b);
+            // First element: 2.0 > 1.0 (true), second: 1.0 > 3.0 (false)
+            let result_i64: i64x2 = transmute(result);
+            assert_eq!(result_i64.as_array()[0], -1i64);
+            assert_eq!(result_i64.as_array()[1], 0i64);
+        }
+    }
+
+    #[simd_test(enable = "vsx")]
+    fn test_vec_cmpge_f32x4() {
+        let a = vector_float::from(f32x4::from_array([1.0, 2.0, 3.0, 4.0]));
+        let b = vector_float::from(f32x4::from_array([0.0, 3.0, 3.0, 5.0]));
+
+        unsafe {
+            let result: vector_bool_int = vec_cmpge(a, b);
+            // Element 0: 1.0 >= 0.0 (true), Element 1: 2.0 >= 3.0 (false)
+            // Element 2: 3.0 >= 3.0 (true), Element 3: 4.0 >= 5.0 (false)
+            let result_i32: i32x4 = transmute(result);
+            assert_eq!(result_i32.as_array()[0], -1i32);
+            assert_eq!(result_i32.as_array()[1], 0i32);
+            assert_eq!(result_i32.as_array()[2], -1i32);
+            assert_eq!(result_i32.as_array()[3], 0i32);
+        }
+    }
+
+    #[simd_test(enable = "vsx")]
+    fn test_vec_cmpge_f64x2() {
+        let a = vector_double::from(f64x2::from_array([2.0, 3.0]));
+        let b = vector_double::from(f64x2::from_array([1.0, 3.0]));
+
+        unsafe {
+            let result: vector_bool_long = vec_cmpge(a, b);
+            // First element: 2.0 >= 1.0 (true), second: 3.0 >= 3.0 (true)
+            let result_i64: i64x2 = transmute(result);
+            assert_eq!(result_i64.as_array()[0], -1i64);
+            assert_eq!(result_i64.as_array()[1], -1i64);
+        }
+    }
 }
