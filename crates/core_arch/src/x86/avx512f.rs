@@ -31043,14 +31043,7 @@ pub unsafe fn _mm512_stream_si512(mem_addr: *mut __m512i, a: __m512i) {
 #[target_feature(enable = "avx512f")]
 #[stable(feature = "stdarch_x86_avx512", since = "1.89")]
 pub unsafe fn _mm512_stream_load_si512(mem_addr: *const __m512i) -> __m512i {
-    let dst: __m512i;
-    crate::arch::asm!(
-        vpl!("vmovntdqa {a}"),
-        a = out(zmm_reg) dst,
-        p = in(reg) mem_addr,
-        options(pure, readonly, nostack, preserves_flags),
-    );
-    dst
+    intrinsics::nontemporal_load(mem_addr)
 }
 
 /// Sets packed 32-bit integers in `dst` with the supplied values.
