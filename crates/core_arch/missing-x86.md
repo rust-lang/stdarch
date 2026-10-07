@@ -96,19 +96,6 @@
 </p></details>
 
 
-<details><summary>["MOVDIR64B"]</summary><p>
-
-  * [ ] [`_movdir64b`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_movdir64b)
-</p></details>
-
-
-<details><summary>["MOVDIRI"]</summary><p>
-
-  * [ ] [`_directstoreu_u32`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_directstoreu_u32)
-  * [ ] [`_directstoreu_u64`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_directstoreu_u64)
-</p></details>
-
-
 <details><summary>["PCONFIG"]</summary><p>
 
   * [ ] [`_pconfig_u32`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_pconfig_u32)
