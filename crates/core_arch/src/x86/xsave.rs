@@ -34,6 +34,13 @@ unsafe extern "llvm-intrinsic" {
 /// Intel® 64 and IA-32 Architectures Software Developer’s Manual, Volume 1.
 ///
 /// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=_xsave)
+///
+/// # Safety
+///
+/// `mem_addr` must be valid for writes of the whole `XSAVE` area
+/// required by `save_mask` and `XCR0` (at least 512 bytes plus the
+/// enabled extended region, see the referenced Intel SDM section)
+/// and must be 64-byte aligned.
 #[inline]
 #[target_feature(enable = "xsave")]
 #[cfg_attr(test, assert_instr(xsave))]
@@ -50,6 +57,15 @@ pub unsafe fn _xsave(mem_addr: *mut u8, save_mask: u64) {
 /// boundary.
 ///
 /// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=_xrstor)
+///
+/// # Safety
+///
+/// `mem_addr` must be valid for reads of the whole `XSAVE` area it
+/// describes and must be 64-byte aligned.
+///
+/// The memory must contain a valid `XSAVE` area produced by a prior
+/// save (or otherwise matching the format in the referenced Intel
+/// SDM section); restoring reserved or malformed state raises a #GP.
 #[inline]
 #[target_feature(enable = "xsave")]
 #[cfg_attr(test, assert_instr(xrstor))]
@@ -70,6 +86,12 @@ pub const _XCR_XFEATURE_ENABLED_MASK: u32 = 0;
 /// Currently only `XFEATURE_ENABLED_MASK` `XCR` is supported.
 ///
 /// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=_xsetbv)
+///
+/// # Safety
+///
+/// `a` must identify a supported extended control register
+/// (currently only `XCR0`), and `val` must be a legal value for
+/// that register (setting reserved bits raises a #GP).
 #[inline]
 #[target_feature(enable = "xsave")]
 #[cfg_attr(test, assert_instr(xsetbv))]
@@ -82,6 +104,12 @@ pub unsafe fn _xsetbv(a: u32, val: u64) {
 /// specified in `xcr_no`.
 ///
 /// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=_xgetbv)
+///
+/// # Safety
+///
+/// `xcr_no` must identify a supported extended control register
+/// (currently only `XCR0`); reading an unsupported register raises
+/// a #GP.
 #[inline]
 #[target_feature(enable = "xsave")]
 #[cfg_attr(test, assert_instr(xgetbv))]
@@ -99,6 +127,13 @@ pub unsafe fn _xgetbv(xcr_no: u32) -> u64 {
 /// be equal to or better than using the `XSAVE` instruction.
 ///
 /// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=_xsaveopt)
+///
+/// # Safety
+///
+/// `mem_addr` must be valid for writes of the whole `XSAVE` area
+/// required by `save_mask` and `XCR0` (at least 512 bytes plus the
+/// enabled extended region, see the referenced Intel SDM section)
+/// and must be 64-byte aligned.
 #[inline]
 #[target_feature(enable = "xsave,xsaveopt")]
 #[cfg_attr(test, assert_instr(xsaveopt))]
@@ -115,6 +150,13 @@ pub unsafe fn _xsaveopt(mem_addr: *mut u8, save_mask: u64) {
 /// and `XCR0`. `mem_addr` must be aligned on a 64-byte boundary.
 ///
 /// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=_xsavec)
+///
+/// # Safety
+///
+/// `mem_addr` must be valid for writes of the whole `XSAVE` area
+/// required by `save_mask` and `XCR0` (at least 512 bytes plus the
+/// enabled extended region, see the referenced Intel SDM section)
+/// and must be 64-byte aligned.
 #[inline]
 #[target_feature(enable = "xsave,xsavec")]
 #[cfg_attr(test, assert_instr(xsavec))]
@@ -132,6 +174,13 @@ pub unsafe fn _xsavec(mem_addr: *mut u8, save_mask: u64) {
 /// and `XCR0`. `mem_addr` must be aligned on a 64-byte boundary.
 ///
 /// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=_xsaves)
+///
+/// # Safety
+///
+/// `mem_addr` must be valid for writes of the whole `XSAVE` area
+/// required by `save_mask` and `XCR0` (at least 512 bytes plus the
+/// enabled extended region, see the referenced Intel SDM section)
+/// and must be 64-byte aligned.
 #[inline]
 #[target_feature(enable = "xsave,xsaves")]
 #[cfg_attr(test, assert_instr(xsaves))]
@@ -151,6 +200,15 @@ pub unsafe fn _xsaves(mem_addr: *mut u8, save_mask: u64) {
 /// boundary.
 ///
 /// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=_xrstors)
+///
+/// # Safety
+///
+/// `mem_addr` must be valid for reads of the whole `XSAVE` area it
+/// describes and must be 64-byte aligned.
+///
+/// The memory must contain a valid `XSAVE` area produced by a prior
+/// save (or otherwise matching the format in the referenced Intel
+/// SDM section); restoring reserved or malformed state raises a #GP.
 #[inline]
 #[target_feature(enable = "xsave,xsaves")]
 #[cfg_attr(test, assert_instr(xrstors))]

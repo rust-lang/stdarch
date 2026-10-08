@@ -21,6 +21,13 @@ macro_rules! bt {
 /// Returns the bit in position `b` of the memory addressed by `p`.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_bittest)
+///
+/// # Safety
+///
+/// `p` must be valid for reads. `b` is a signed bit index: when it
+/// falls outside the pointed-to integer, the instruction accesses
+/// the word at `p + (b / bits) * (bits / 8)`, and that address must
+/// be valid for reads as well.
 #[inline]
 #[cfg_attr(test, assert_instr(bt))]
 #[stable(feature = "simd_x86_bittest", since = "1.55.0")]
@@ -40,6 +47,13 @@ pub unsafe fn _bittest(p: *const i32, b: i32) -> u8 {
 /// Returns the bit in position `b` of the memory addressed by `p`, then sets the bit to `1`.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_bittestandset)
+///
+/// # Safety
+///
+/// `p` must be valid for reads and writes. `b` is a signed bit
+/// index: when it falls outside the pointed-to integer, the
+/// instruction accesses the word at `p + (b / bits) * (bits / 8)`,
+/// and that address must be valid for read-modify-write as well.
 #[inline]
 #[cfg_attr(test, assert_instr(bts))]
 #[stable(feature = "simd_x86_bittest", since = "1.55.0")]
@@ -59,6 +73,13 @@ pub unsafe fn _bittestandset(p: *mut i32, b: i32) -> u8 {
 /// Returns the bit in position `b` of the memory addressed by `p`, then resets that bit to `0`.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_bittestandreset)
+///
+/// # Safety
+///
+/// `p` must be valid for reads and writes. `b` is a signed bit
+/// index: when it falls outside the pointed-to integer, the
+/// instruction accesses the word at `p + (b / bits) * (bits / 8)`,
+/// and that address must be valid for read-modify-write as well.
 #[inline]
 #[cfg_attr(test, assert_instr(btr))]
 #[stable(feature = "simd_x86_bittest", since = "1.55.0")]
@@ -78,6 +99,13 @@ pub unsafe fn _bittestandreset(p: *mut i32, b: i32) -> u8 {
 /// Returns the bit in position `b` of the memory addressed by `p`, then inverts that bit.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_bittestandcomplement)
+///
+/// # Safety
+///
+/// `p` must be valid for reads and writes. `b` is a signed bit
+/// index: when it falls outside the pointed-to integer, the
+/// instruction accesses the word at `p + (b / bits) * (bits / 8)`,
+/// and that address must be valid for read-modify-write as well.
 #[inline]
 #[cfg_attr(test, assert_instr(btc))]
 #[stable(feature = "simd_x86_bittest", since = "1.55.0")]
