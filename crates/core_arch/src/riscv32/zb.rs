@@ -39,7 +39,7 @@ unsafe extern "llvm-intrinsic" {
 /// Version: v1.0.1
 ///
 /// Section: 3.47
-#[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
+#[stable(feature = "riscv_zb_intrinsics", since = "CURRENT_RUSTC_VERSION")]
 #[target_feature(enable = "zbkx")]
 #[cfg_attr(test, assert_instr(xperm8))]
 #[inline]
@@ -59,7 +59,7 @@ pub fn xperm8(rs1: u32, rs2: u32) -> u32 {
 /// Version: v1.0.1
 ///
 /// Section: 3.48
-#[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
+#[stable(feature = "riscv_zb_intrinsics", since = "CURRENT_RUSTC_VERSION")]
 #[target_feature(enable = "zbkx")]
 #[cfg_attr(test, assert_instr(xperm4))]
 #[inline]
@@ -78,7 +78,7 @@ pub fn xperm4(rs1: u32, rs2: u32) -> u32 {
 /// Version: v1.0.0
 ///
 /// Section: 2.24
-#[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
+#[stable(feature = "riscv_zb_intrinsics", since = "CURRENT_RUSTC_VERSION")]
 #[target_feature(enable = "zbb")]
 #[cfg_attr(test, assert_instr(orc.b))]
 #[inline]
@@ -95,7 +95,7 @@ pub fn orc_b(rs: u32) -> u32 {
 /// Version: v1.0.0
 ///
 /// Section: 2.11
-#[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
+#[stable(feature = "riscv_zb_intrinsics", since = "CURRENT_RUSTC_VERSION")]
 #[target_feature(enable = "zbkc")]
 #[cfg_attr(test, assert_instr(clmul))]
 #[inline]
@@ -112,7 +112,7 @@ pub fn clmul(rs1: u32, rs2: u32) -> u32 {
 /// Version: v1.0.0
 ///
 /// Section: 2.12
-#[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
+#[stable(feature = "riscv_zb_intrinsics", since = "CURRENT_RUSTC_VERSION")]
 #[target_feature(enable = "zbkc")]
 #[cfg_attr(test, assert_instr(clmulh))]
 #[inline]
@@ -129,7 +129,7 @@ pub fn clmulh(rs1: u32, rs2: u32) -> u32 {
 /// Version: v1.0.0
 ///
 /// Section: 2.13
-#[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
+#[stable(feature = "riscv_zb_intrinsics", since = "CURRENT_RUSTC_VERSION")]
 #[target_feature(enable = "zbc")]
 #[cfg_attr(test, assert_instr(clmulr))]
 #[inline]
@@ -154,7 +154,7 @@ pub fn clmulr(rs1: u32, rs2: u32) -> u32 {
 // See #1464
 // #[cfg_attr(test, assert_instr(zip))]
 #[inline]
-#[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
+#[stable(feature = "riscv_zb_intrinsics", since = "CURRENT_RUSTC_VERSION")]
 pub fn zip(rs: u32) -> u32 {
     unsafe { _zip(rs as i32) as u32 }
 }
@@ -173,7 +173,7 @@ pub fn zip(rs: u32) -> u32 {
 #[target_feature(enable = "zbkb")]
 #[cfg_attr(test, assert_instr(unzip))]
 #[inline]
-#[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
+#[stable(feature = "riscv_zb_intrinsics", issue = "CURRENT_RUSTC_VERSION")]
 pub fn unzip(rs: u32) -> u32 {
     unsafe { _unzip(rs as i32) as u32 }
 }

@@ -3,8 +3,8 @@
 mod zb;
 mod zk;
 
-#[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
+#[stable(feature = "riscv_zb_intrinsics", since = "CURRENT_RUSTC_VERSION")]
 pub use zb::*;
 
-#[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
+#[stable(feature = "riscv_zk_intrinsics", since = "CURRENT_RUSTC_VERSION")]
 pub use zk::*;

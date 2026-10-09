@@ -33,7 +33,7 @@ unsafe extern "llvm-intrinsic" {
 /// Version: v1.0.1
 ///
 /// Section: 3.47
-#[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
+#[stable(feature = "riscv_zb_intrinsics", since = "CURRENT_RUSTC_VERSION")]
 #[target_feature(enable = "zbkx")]
 #[cfg_attr(test, assert_instr(xperm8))]
 #[inline]
@@ -53,7 +53,7 @@ pub fn xperm8(rs1: u64, rs2: u64) -> u64 {
 /// Version: v1.0.1
 ///
 /// Section: 3.48
-#[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
+#[stable(feature = "riscv_zb_intrinsics", since = "CURRENT_RUSTC_VERSION")]
 #[target_feature(enable = "zbkx")]
 #[cfg_attr(test, assert_instr(xperm4))]
 #[inline]
@@ -72,7 +72,7 @@ pub fn xperm4(rs1: u64, rs2: u64) -> u64 {
 /// Version: v1.0.0
 ///
 /// Section: 2.24
-#[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
+#[stable(feature = "riscv_zb_intrinsics", since = "CURRENT_RUSTC_VERSION")]
 #[target_feature(enable = "zbb")]
 #[cfg_attr(test, assert_instr(orc.b))]
 #[inline]
@@ -89,7 +89,7 @@ pub fn orc_b(rs: u64) -> u64 {
 /// Version: v1.0.0
 ///
 /// Section: 2.11
-#[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
+#[stable(feature = "riscv_zb_intrinsics", since = "CURRENT_RUSTC_VERSION")]
 #[target_feature(enable = "zbkc")]
 #[cfg_attr(test, assert_instr(clmul))]
 #[inline]
@@ -106,7 +106,7 @@ pub fn clmul(rs1: u64, rs2: u64) -> u64 {
 /// Version: v1.0.0
 ///
 /// Section: 2.12
-#[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
+#[stable(feature = "riscv_zb_intrinsics", since = "CURRENT_RUSTC_VERSION")]
 #[target_feature(enable = "zbkc")]
 #[cfg_attr(test, assert_instr(clmulh))]
 #[inline]
@@ -123,7 +123,7 @@ pub fn clmulh(rs1: u64, rs2: u64) -> u64 {
 /// Version: v1.0.0
 ///
 /// Section: 2.13
-#[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
+#[stable(feature = "riscv_zb_intrinsics", since = "CURRENT_RUSTC_VERSION")]
 #[target_feature(enable = "zbc")]
 #[cfg_attr(test, assert_instr(clmulr))]
 #[inline]
