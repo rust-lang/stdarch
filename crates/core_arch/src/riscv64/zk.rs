@@ -47,7 +47,7 @@ unsafe extern "llvm-intrinsic" {
 #[target_feature(enable = "zkne")]
 #[cfg_attr(test, assert_instr(aes64es))]
 #[inline]
-#[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
+#[stable(feature = "riscv_zk_intrinsics", since = "CURRENT_RUSTC_VERSION")]
 pub fn aes64es(rs1: u64, rs2: u64) -> u64 {
     unsafe { _aes64es(rs1 as i64, rs2 as i64) as u64 }
 }
@@ -67,7 +67,7 @@ pub fn aes64es(rs1: u64, rs2: u64) -> u64 {
 #[target_feature(enable = "zkne")]
 #[cfg_attr(test, assert_instr(aes64esm))]
 #[inline]
-#[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
+#[stable(feature = "riscv_zk_intrinsics", since = "CURRENT_RUSTC_VERSION")]
 pub fn aes64esm(rs1: u64, rs2: u64) -> u64 {
     unsafe { _aes64esm(rs1 as i64, rs2 as i64) as u64 }
 }
@@ -87,7 +87,7 @@ pub fn aes64esm(rs1: u64, rs2: u64) -> u64 {
 #[target_feature(enable = "zknd")]
 #[cfg_attr(test, assert_instr(aes64ds))]
 #[inline]
-#[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
+#[stable(feature = "riscv_zk_intrinsics", since = "CURRENT_RUSTC_VERSION")]
 pub fn aes64ds(rs1: u64, rs2: u64) -> u64 {
     unsafe { _aes64ds(rs1 as i64, rs2 as i64) as u64 }
 }
@@ -107,7 +107,7 @@ pub fn aes64ds(rs1: u64, rs2: u64) -> u64 {
 #[target_feature(enable = "zknd")]
 #[cfg_attr(test, assert_instr(aes64dsm))]
 #[inline]
-#[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
+#[stable(feature = "riscv_zk_intrinsics", since = "CURRENT_RUSTC_VERSION")]
 pub fn aes64dsm(rs1: u64, rs2: u64) -> u64 {
     unsafe { _aes64dsm(rs1 as i64, rs2 as i64) as u64 }
 }
@@ -132,7 +132,7 @@ pub fn aes64dsm(rs1: u64, rs2: u64) -> u64 {
 #[target_feature(enable = "zkne_or_zknd")]
 #[rustc_legacy_const_generics(1)]
 #[inline]
-#[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
+#[stable(feature = "riscv_zk_intrinsics", since = "CURRENT_RUSTC_VERSION")]
 pub fn aes64ks1i<const RNUM: u8>(rs1: u64) -> u64 {
     static_assert!(RNUM <= 10);
     unsafe {
@@ -164,7 +164,7 @@ pub fn aes64ks1i<const RNUM: u8>(rs1: u64) -> u64 {
 /// Section: 3.11
 #[target_feature(enable = "zkne_or_zknd")]
 #[inline]
-#[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
+#[stable(feature = "riscv_zk_intrinsics", since = "CURRENT_RUSTC_VERSION")]
 pub fn aes64ks2(rs1: u64, rs2: u64) -> u64 {
     unsafe {
         let rd: u64;
@@ -198,7 +198,7 @@ pub fn aes64ks2(rs1: u64, rs2: u64) -> u64 {
 #[target_feature(enable = "zknd")]
 #[cfg_attr(test, assert_instr(aes64im))]
 #[inline]
-#[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
+#[stable(feature = "riscv_zk_intrinsics", since = "CURRENT_RUSTC_VERSION")]
 pub fn aes64im(rs1: u64) -> u64 {
     unsafe { _aes64im(rs1 as i64) as u64 }
 }
@@ -218,7 +218,7 @@ pub fn aes64im(rs1: u64) -> u64 {
 #[target_feature(enable = "zknh")]
 #[cfg_attr(test, assert_instr(sha512sig0))]
 #[inline]
-#[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
+#[stable(feature = "riscv_zk_intrinsics", since = "CURRENT_RUSTC_VERSION")]
 pub fn sha512sig0(rs1: u64) -> u64 {
     unsafe { _sha512sig0(rs1 as i64) as u64 }
 }
@@ -238,7 +238,7 @@ pub fn sha512sig0(rs1: u64) -> u64 {
 #[target_feature(enable = "zknh")]
 #[cfg_attr(test, assert_instr(sha512sig1))]
 #[inline]
-#[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
+#[stable(feature = "riscv_zk_intrinsics", since = "CURRENT_RUSTC_VERSION")]
 pub fn sha512sig1(rs1: u64) -> u64 {
     unsafe { _sha512sig1(rs1 as i64) as u64 }
 }
@@ -258,7 +258,7 @@ pub fn sha512sig1(rs1: u64) -> u64 {
 #[target_feature(enable = "zknh")]
 #[cfg_attr(test, assert_instr(sha512sum0))]
 #[inline]
-#[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
+#[stable(feature = "riscv_zk_intrinsics", since = "CURRENT_RUSTC_VERSION")]
 pub fn sha512sum0(rs1: u64) -> u64 {
     unsafe { _sha512sum0(rs1 as i64) as u64 }
 }
@@ -278,7 +278,7 @@ pub fn sha512sum0(rs1: u64) -> u64 {
 #[target_feature(enable = "zknh")]
 #[cfg_attr(test, assert_instr(sha512sum1))]
 #[inline]
-#[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
+#[stable(feature = "riscv_zk_intrinsics", since = "CURRENT_RUSTC_VERSION")]
 pub fn sha512sum1(rs1: u64) -> u64 {
     unsafe { _sha512sum1(rs1 as i64) as u64 }
 }
