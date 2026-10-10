@@ -25,14 +25,11 @@
 //! single inline assembly block and make sure to restore the original rounding mode before the end
 //! of the block.
 mod p;
-mod zb;
 mod zk;
 
 #[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
 pub use p::*;
-#[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
-pub use zb::*;
-#[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
+#[stable(feature = "riscv_zk_intrinsics", since = "CURRENT_RUSTC_VERSION")]
 pub use zk::*;
 
 use crate::arch::asm;
