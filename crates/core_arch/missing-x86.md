@@ -99,13 +99,16 @@
 <details><summary>["MOVDIR64B"]</summary><p>
 
   * [ ] [`_movdir64b`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_movdir64b)
+    (note that this has AM-breaking semantics so adding it requires a lot of care, if it is possible at all)
 </p></details>
 
 
 <details><summary>["MOVDIRI"]</summary><p>
 
   * [ ] [`_directstoreu_u32`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_directstoreu_u32)
+    (note that this has AM-breaking semantics so adding it requires a lot of care, if it is possible at all)
   * [ ] [`_directstoreu_u64`](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_directstoreu_u64)
+    (note that this has AM-breaking semantics so adding it requires a lot of care, if it is possible at all)
 </p></details>
 
 
