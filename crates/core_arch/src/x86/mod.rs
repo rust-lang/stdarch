@@ -702,6 +702,14 @@ mod clflushopt;
 #[unstable(feature = "simd_x86_clflushopt", issue = "157096")]
 pub use self::clflushopt::*;
 
+mod movdir64b;
+#[unstable(feature = "simd_x86_movdir64b", issue = "163741")]
+pub use self::movdir64b::*;
+
+mod movdiri;
+#[unstable(feature = "simd_x86_movdiri", issue = "163741")]
+pub use self::movdiri::*;
+
 #[cfg(test)]
 use stdarch_test::assert_instr;
 
