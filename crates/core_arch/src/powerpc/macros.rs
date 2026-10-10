@@ -154,6 +154,9 @@ macro_rules! s_t_l {
     (f32x4) => {
         vector_float
     };
+    (f64x2) => {
+        vector_double
+    };
 }
 
 macro_rules! t_t_l {
@@ -274,6 +277,36 @@ macro_rules! t_b {
     };
 }
 
+#[cfg(test)]
+macro_rules! test_vec_min {
+    { $name: ident, $ty: ident, [$($a:expr),+], [$($b:expr),+], [$($d:expr),+] } => {
+        #[simd_test(enable = "altivec")]
+        fn $name() {
+            let a: s_t_l!($ty) = $ty::new($($a),+).into();
+            let b: s_t_l!($ty) = $ty::new($($b),+).into();
+
+            let d = $ty::new($($d),+);
+            let r = $ty::from(unsafe { vec_min(a, b) });
+            assert_eq!(d, r);
+        }
+     }
+}
+
+#[cfg(test)]
+macro_rules! test_vec_max {
+    { $name: ident, $ty: ident, [$($a:expr),+], [$($b:expr),+], [$($d:expr),+] } => {
+        #[simd_test(enable = "altivec")]
+        fn $name() {
+            let a: s_t_l!($ty) = $ty::new($($a),+).into();
+            let b: s_t_l!($ty) = $ty::new($($b),+).into();
+
+            let d = $ty::new($($d),+);
+            let r = $ty::from(unsafe { vec_max(a, b) });
+            assert_eq!(d, r);
+        }
+     }
+}
+
 pub(crate) use impl_vec_trait;
 pub(crate) use s_t_l;
 pub(crate) use t_b;
@@ -281,3 +314,7 @@ pub(crate) use t_t_l;
 pub(crate) use t_t_s;
 pub(crate) use t_u;
 pub(crate) use test_impl;
+#[cfg(test)]
+pub(crate) use test_vec_max;
+#[cfg(test)]
+pub(crate) use test_vec_min;
