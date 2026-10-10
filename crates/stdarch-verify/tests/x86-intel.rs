@@ -314,7 +314,7 @@ fn verify_all_signatures() {
             }
 
             // FIXME: these have not been added to Intrinsics Guide yet
-            if ["amx-avx512", "amx-fp8", "amx-movrs", "movrs"]
+            if ["amx-avx512", "amx-fp8", "amx-movrs", "movrs", "avx10.2"]
                 .iter()
                 .any(|f| feature.contains(f))
             {
