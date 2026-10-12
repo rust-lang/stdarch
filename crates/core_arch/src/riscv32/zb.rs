@@ -19,6 +19,12 @@ unsafe extern "llvm-intrinsic" {
 
     #[link_name = "llvm.riscv.clmulr.i32"]
     fn _clmulr(rs1: i32, rs2: i32) -> i32;
+
+    #[link_name = "llvm.riscv.zip.i32"]
+    fn _zip(rs1: i32) -> i32;
+
+    #[link_name = "llvm.riscv.unzip.i32"]
+    fn _unzip(rs1: i32) -> i32;
 }
 
 /// Byte-wise lookup of indices into a vector in registers.
@@ -129,4 +135,45 @@ pub fn clmulh(rs1: u32, rs2: u32) -> u32 {
 #[inline]
 pub fn clmulr(rs1: u32, rs2: u32) -> u32 {
     unsafe { _clmulr(rs1 as i32, rs2 as i32) as u32 }
+}
+
+/// Place upper/lower halves of the source register into odd/even bits of the destination
+/// respectivley.
+///
+/// This instruction places bits in the low half of the source register into the even bit
+/// positions of the destination, and bits in the high half of the source register into the odd
+/// bit positions of the destination. It is the inverse of the unzip instruction. This
+/// instruction is available only on RV32.
+///
+/// Source: RISC-V Cryptography Extensions Volume I: Scalar & Entropy Source Instructions
+///
+/// Version: v1.0.1
+///
+/// Section: 3.49
+#[target_feature(enable = "zbkb")]
+// See #1464
+// #[cfg_attr(test, assert_instr(zip))]
+#[inline]
+#[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
+pub fn zip(rs: u32) -> u32 {
+    unsafe { _zip(rs as i32) as u32 }
+}
+
+/// Place odd and even bits of the source word into upper/lower halves of the destination.
+///
+/// This instruction places the even bits of the source register into the low half of the
+/// destination, and the odd bits of the source into the high bits of the destination. It is
+/// the inverse of the zip instruction. This instruction is available only on RV32.
+///
+/// Source: RISC-V Cryptography Extensions Volume I: Scalar & Entropy Source Instructions
+///
+/// Version: v1.0.1
+///
+/// Section: 3.45
+#[target_feature(enable = "zbkb")]
+#[cfg_attr(test, assert_instr(unzip))]
+#[inline]
+#[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
+pub fn unzip(rs: u32) -> u32 {
+    unsafe { _unzip(rs as i32) as u32 }
 }
