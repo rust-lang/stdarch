@@ -52,8 +52,7 @@ unsafe extern "llvm-intrinsic" {
 /// used.
 #[target_feature(enable = "zkne")]
 #[rustc_legacy_const_generics(2)]
-// See #1464
-// #[cfg_attr(test, assert_instr(aes32esi, BS = 0))]
+#[cfg_attr(test, assert_instr(aes32esi, BS = 0))]
 #[inline]
 #[stable(feature = "riscv_zk_intrinsics", since = "CURRENT_RUSTC_VERSION")]
 pub fn aes32esi<const BS: u8>(rs1: u32, rs2: u32) -> u32 {
@@ -81,8 +80,7 @@ pub fn aes32esi<const BS: u8>(rs1: u32, rs2: u32) -> u32 {
 /// used.
 #[target_feature(enable = "zkne")]
 #[rustc_legacy_const_generics(2)]
-// See #1464
-// #[cfg_attr(test, assert_instr(aes32esmi, BS = 0))]
+#[cfg_attr(test, assert_instr(aes32esmi, BS = 0))]
 #[inline]
 #[stable(feature = "riscv_zk_intrinsics", since = "CURRENT_RUSTC_VERSION")]
 pub fn aes32esmi<const BS: u8>(rs1: u32, rs2: u32) -> u32 {
@@ -109,8 +107,7 @@ pub fn aes32esmi<const BS: u8>(rs1: u32, rs2: u32) -> u32 {
 /// used.
 #[target_feature(enable = "zknd")]
 #[rustc_legacy_const_generics(2)]
-// See #1464
-// #[cfg_attr(test, assert_instr(aes32dsi, BS = 0))]
+#[cfg_attr(test, assert_instr(aes32dsi, BS = 0))]
 #[inline]
 #[stable(feature = "riscv_zk_intrinsics", since = "CURRENT_RUSTC_VERSION")]
 pub fn aes32dsi<const BS: u8>(rs1: u32, rs2: u32) -> u32 {
@@ -138,8 +135,7 @@ pub fn aes32dsi<const BS: u8>(rs1: u32, rs2: u32) -> u32 {
 /// used.
 #[target_feature(enable = "zknd")]
 #[rustc_legacy_const_generics(2)]
-// See #1464
-// #[cfg_attr(test, assert_instr(aes32dsmi, BS = 0))]
+#[cfg_attr(test, assert_instr(aes32dsmi, BS = 0))]
 #[inline]
 #[stable(feature = "riscv_zk_intrinsics", since = "CURRENT_RUSTC_VERSION")]
 pub fn aes32dsmi<const BS: u8>(rs1: u32, rs2: u32) -> u32 {
@@ -163,8 +159,7 @@ pub fn aes32dsmi<const BS: u8>(rs1: u32, rs2: u32) -> u32 {
 ///
 /// Section: 3.31
 #[target_feature(enable = "zknh")]
-// See #1464
-// #[cfg_attr(test, assert_instr(sha512sig0h))]
+#[cfg_attr(test, assert_instr(sha512sig0h))]
 #[inline]
 #[stable(feature = "riscv_zk_intrinsics", since = "CURRENT_RUSTC_VERSION")]
 pub fn sha512sig0h(rs1: u32, rs2: u32) -> u32 {
@@ -186,8 +181,7 @@ pub fn sha512sig0h(rs1: u32, rs2: u32) -> u32 {
 ///
 /// Section: 3.32
 #[target_feature(enable = "zknh")]
-// See #1464
-// #[cfg_attr(test, assert_instr(sha512sig0l))]
+#[cfg_attr(test, assert_instr(sha512sig0l))]
 #[inline]
 #[stable(feature = "riscv_zk_intrinsics", since = "CURRENT_RUSTC_VERSION")]
 pub fn sha512sig0l(rs1: u32, rs2: u32) -> u32 {
@@ -209,8 +203,7 @@ pub fn sha512sig0l(rs1: u32, rs2: u32) -> u32 {
 ///
 /// Section: 3.33
 #[target_feature(enable = "zknh")]
-// See #1464
-// #[cfg_attr(test, assert_instr(sha512sig1h))]
+#[cfg_attr(test, assert_instr(sha512sig1h))]
 #[inline]
 #[stable(feature = "riscv_zk_intrinsics", since = "CURRENT_RUSTC_VERSION")]
 pub fn sha512sig1h(rs1: u32, rs2: u32) -> u32 {
@@ -253,8 +246,7 @@ pub fn sha512sig1l(rs1: u32, rs2: u32) -> u32 {
 ///
 /// Section: 3.35
 #[target_feature(enable = "zknh")]
-// See #1464
-// #[cfg_attr(test, assert_instr(sha512sum0r))]
+#[cfg_attr(test, assert_instr(sha512sum0r))]
 #[inline]
 #[stable(feature = "riscv_zk_intrinsics", since = "CURRENT_RUSTC_VERSION")]
 pub fn sha512sum0r(rs1: u32, rs2: u32) -> u32 {
@@ -275,8 +267,7 @@ pub fn sha512sum0r(rs1: u32, rs2: u32) -> u32 {
 ///
 /// Section: 3.36
 #[target_feature(enable = "zknh")]
-// See #1464
-// #[cfg_attr(test, assert_instr(sha512sum1r))]
+#[cfg_attr(test, assert_instr(sha512sum1r))]
 #[inline]
 #[stable(feature = "riscv_zk_intrinsics", since = "CURRENT_RUSTC_VERSION")]
 pub fn sha512sum1r(rs1: u32, rs2: u32) -> u32 {

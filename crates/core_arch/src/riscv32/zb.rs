@@ -151,8 +151,7 @@ pub fn clmulr(rs1: u32, rs2: u32) -> u32 {
 ///
 /// Section: 3.49
 #[target_feature(enable = "zbkb")]
-// See #1464
-// #[cfg_attr(test, assert_instr(zip))]
+#[cfg_attr(test, assert_instr(zip))]
 #[inline]
 #[stable(feature = "riscv_zb_intrinsics", since = "CURRENT_RUSTC_VERSION")]
 pub fn zip(rs: u32) -> u32 {
@@ -173,7 +172,7 @@ pub fn zip(rs: u32) -> u32 {
 #[target_feature(enable = "zbkb")]
 #[cfg_attr(test, assert_instr(unzip))]
 #[inline]
-#[stable(feature = "riscv_zb_intrinsics", issue = "CURRENT_RUSTC_VERSION")]
+#[stable(feature = "riscv_zb_intrinsics", since = "CURRENT_RUSTC_VERSION")]
 pub fn unzip(rs: u32) -> u32 {
     unsafe { _unzip(rs as i32) as u32 }
 }
