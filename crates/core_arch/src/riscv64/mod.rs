@@ -4,10 +4,10 @@ use crate::arch::asm;
 mod zb;
 mod zk;
 
-#[stable(feature = "riscv_zb_intrinsics", since = "CURRENT_RUSTC_VERSION")]
+#[stable(feature = "stdarch_riscv_zb", since = "CURRENT_RUSTC_VERSION")]
 pub use zb::*;
 
-#[stable(feature = "riscv_zk_intrinsics", since = "CURRENT_RUSTC_VERSION")]
+#[stable(feature = "stdarch_riscv_zk", since = "CURRENT_RUSTC_VERSION")]
 pub use zk::*;
 
 /// Loads virtual machine memory by unsigned word integer
