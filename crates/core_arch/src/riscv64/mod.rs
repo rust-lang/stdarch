@@ -1,9 +1,13 @@
 //! RISC-V RV64 specific intrinsics
 use crate::arch::asm;
 
+mod zb;
 mod zk;
 
-#[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
+#[stable(feature = "stdarch_riscv_zb", since = "CURRENT_RUSTC_VERSION")]
+pub use zb::*;
+
+#[stable(feature = "stdarch_riscv_zk", since = "CURRENT_RUSTC_VERSION")]
 pub use zk::*;
 
 /// Loads virtual machine memory by unsigned word integer

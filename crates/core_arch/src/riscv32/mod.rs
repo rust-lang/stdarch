@@ -1,6 +1,10 @@
 //! RISC-V RV32 specific intrinsics
 
+mod zb;
 mod zk;
 
-#[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
+#[stable(feature = "stdarch_riscv_zb", since = "CURRENT_RUSTC_VERSION")]
+pub use zb::*;
+
+#[stable(feature = "stdarch_riscv_zk", since = "CURRENT_RUSTC_VERSION")]
 pub use zk::*;
