@@ -21,6 +21,11 @@ macro_rules! bt {
 /// Returns the bit in position `b` of the memory addressed by `p`.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_bittest)
+///
+/// # Safety
+///
+/// - `p` must be valid for reads of 4 bytes.
+/// - `b` must be in the range `0..=31`.
 #[inline]
 #[cfg_attr(test, assert_instr(bt))]
 #[stable(feature = "simd_x86_bittest", since = "1.55.0")]
@@ -40,6 +45,11 @@ pub unsafe fn _bittest(p: *const i32, b: i32) -> u8 {
 /// Returns the bit in position `b` of the memory addressed by `p`, then sets the bit to `1`.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_bittestandset)
+///
+/// # Safety
+///
+/// - `p` must be valid for reads and writes of 4 bytes.
+/// - `b` must be in the range `0..=31`.
 #[inline]
 #[cfg_attr(test, assert_instr(bts))]
 #[stable(feature = "simd_x86_bittest", since = "1.55.0")]
@@ -59,6 +69,11 @@ pub unsafe fn _bittestandset(p: *mut i32, b: i32) -> u8 {
 /// Returns the bit in position `b` of the memory addressed by `p`, then resets that bit to `0`.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_bittestandreset)
+///
+/// # Safety
+///
+/// - `p` must be valid for reads and writes of 4 bytes.
+/// - `b` must be in the range `0..=31`.
 #[inline]
 #[cfg_attr(test, assert_instr(btr))]
 #[stable(feature = "simd_x86_bittest", since = "1.55.0")]
@@ -78,6 +93,11 @@ pub unsafe fn _bittestandreset(p: *mut i32, b: i32) -> u8 {
 /// Returns the bit in position `b` of the memory addressed by `p`, then inverts that bit.
 ///
 /// [Intel's documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_bittestandcomplement)
+///
+/// # Safety
+///
+/// - `p` must be valid for reads and writes of 4 bytes.
+/// - `b` must be in the range `0..=31`.
 #[inline]
 #[cfg_attr(test, assert_instr(btc))]
 #[stable(feature = "simd_x86_bittest", since = "1.55.0")]
