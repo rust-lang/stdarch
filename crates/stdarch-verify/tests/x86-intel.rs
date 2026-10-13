@@ -675,15 +675,22 @@ fn pointed_type(intrinsic: &Intrinsic) -> Result<Type, String> {
             || intrinsic.cpuid.iter().any(|cpuid| {
                 matches!(
                     &**cpuid,
-                    "KEYLOCKER" | "KEYLOCKER_WIDE" | "XSAVE" | "FXSR" | "CLFLUSHOPT"
+                    "KEYLOCKER" | "KEYLOCKER_WIDE" | "XSAVE" | "FXSR" | "CLFLUSHOPT" | "MOVDIR64B"
                 )
             })
         {
-            // AMX, KEYLOCKER, XSAVE and CLFLUSHOPT intrinsics should take `*u8`
+            // AMX, KEYLOCKER, XSAVE, CLFLUSHOPT and MOVDIR64B intrinsics should take `*u8`
             U8
         } else if intrinsic.name == "_mm_clflush" {
             // Just a false match in the following logic
             U8
+        } else if intrinsic.cpuid.iter().any(|cpuid| cpuid == "MOVDIRI") {
+            // `_directstoreu_u32`/`_directstoreu_u64` store the integer type in their name
+            if intrinsic.name.ends_with("u32") {
+                U32
+            } else {
+                U64
+            }
         } else if ["_mm_storeu_si", "_mm_loadu_si"]
             .iter()
             .any(|x| intrinsic.name.starts_with(x))
