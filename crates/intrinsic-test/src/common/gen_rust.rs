@@ -31,6 +31,20 @@ macro_rules! wrap_partialeq {
 }
 
 wrap_partialeq!(NanEqF16(f16), NanEqF32(f32), NanEqF64(f64));
+
+#[derive(Debug, Copy, Clone)]
+#[repr(transparent)]
+pub struct NanEqBF16(f16b);
+
+impl PartialEq for NanEqBF16 {
+    fn eq(&self, other: &Self) -> bool {
+        let a = f32::from(self.0);
+        let b = f32::from(other.0);
+        a == b || (a.is_nan() && b.is_nan())
+    }
+}
+
+impl Eq for NanEqBF16 {}
 "#;
 
 /// Run rustfmt on the generated source code

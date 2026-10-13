@@ -39,6 +39,10 @@ impl TypeDefinition for ArmType {
     }
 
     fn rust_type(&self) -> String {
+        if self.kind() == TypeKind::BFloat && self.simd_len.is_none() && self.vec_len.is_none() {
+            return "f16b".to_string();
+        }
+
         let rust_prefix = self.kind.rust_prefix();
         let c_prefix = self.kind.c_prefix();
 
@@ -109,6 +113,19 @@ impl TypeDefinition for ArmType {
     }
 
     fn comparison_function(&self) -> String {
+        if self.kind() == TypeKind::BFloat {
+            let lanes = self.num_lanes().expect_fixed() * self.num_vectors();
+            return format!(
+                r#"
+assert_eq!(
+    std::mem::transmute::<_, [NanEqBF16; {lanes}]>(__rust_return_value),
+    std::mem::transmute::<_, [NanEqBF16; {lanes}]>(__c_return_value),
+    "{{id}}"
+);
+"#,
+            );
+        }
+
         if let SimdLen::Fixed(num_lanes) = self.num_lanes() {
             return default_fixed_vector_comparison(self, num_lanes);
         }

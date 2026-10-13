@@ -79,6 +79,7 @@ impl TypeKind {
     pub fn c_prefix(&self) -> &str {
         match self {
             Self::Bool => "bool",
+            Self::BFloat => "bfloat",
             Self::Float => "float",
             Self::Int(Sign::Signed) => "int",
             Self::Int(Sign::Unsigned) => "uint",
