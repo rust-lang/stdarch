@@ -14288,13 +14288,14 @@ intrinsics:
     compose:
       - FnCall: [transmute, [FnCall: ['{type[4]}::<LANE1, LANE2>', [FnCall: [transmute, [a]], FnCall: [transmute, [b]]]]]]
 
+  # MSVC's dumpbin prints raw opcodes for BF16 LUT instructions.
   - name: "vluti2{neon_type[0].lane_nox}"
     doc: "Lookup table read with 2-bit indices"
     arguments: ["a: {neon_type[0]}", "b: {neon_type[1]}"]
     return_type: "bfloat16x8_t"
     attr:
       - FnCall: [target_feature, ['enable = "neon,lut,bf16"']]
-      - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [luti2, 'LANE = 1']]}]]
+      - FnCall: [cfg_attr, [*msvc-disabled, {FnCall: [assert_instr, [luti2, 'LANE = 1']]}]]
       - FnCall: [rustc_legacy_const_generics, ['2']]
       - *cfg-reliable-bf16
       - *doc-cfg-reliable-bf16
@@ -14324,7 +14325,7 @@ intrinsics:
     return_type: "bfloat16x8_t"
     attr:
       - FnCall: [target_feature, ['enable = "neon,lut,bf16"']]
-      - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [luti2, 'LANE = 1']]}]]
+      - FnCall: [cfg_attr, [*msvc-disabled, {FnCall: [assert_instr, [luti2, 'LANE = 1']]}]]
       - FnCall: [rustc_legacy_const_generics, ['2']]
       - *cfg-reliable-bf16
       - *doc-cfg-reliable-bf16
@@ -14354,7 +14355,7 @@ intrinsics:
     return_type: "bfloat16x8_t"
     attr:
       - FnCall: [target_feature, ['enable = "neon,lut,bf16"']]
-      - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [luti4, 'LANE = 0']]}]]
+      - FnCall: [cfg_attr, [*msvc-disabled, {FnCall: [assert_instr, [luti4, 'LANE = 0']]}]]
       - FnCall: [rustc_legacy_const_generics, ['2']]
       - *cfg-reliable-bf16
       - *doc-cfg-reliable-bf16
@@ -14384,7 +14385,7 @@ intrinsics:
     return_type: "bfloat16x8_t"
     attr:
       - FnCall: [target_feature, ['enable = "neon,lut,bf16"']]
-      - FnCall: [cfg_attr, [test, {FnCall: [assert_instr, [luti4, 'LANE = 0']]}]]
+      - FnCall: [cfg_attr, [*msvc-disabled, {FnCall: [assert_instr, [luti4, 'LANE = 0']]}]]
       - FnCall: [rustc_legacy_const_generics, ['2']]
       - *cfg-reliable-bf16
       - *doc-cfg-reliable-bf16

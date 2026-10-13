@@ -55,6 +55,10 @@ not-arm: &not-arm
 neon-target-aarch64-arm64ec: &neon-target-aarch64-arm64ec
   FnCall: [all, [test, {FnCall: [any, ['target_arch = "aarch64"', 'target_arch = "arm64ec"']]}]]
 
+# MSVC's dumpbin prints raw opcodes for these BF16 instructions.
+neon-target-aarch64-arm64ec-no-msvc: &neon-target-aarch64-arm64ec-no-msvc
+  FnCall: [all, [test, {FnCall: [any, ['target_arch = "aarch64"', 'target_arch = "arm64ec"']]}, {FnCall: [not, ['target_env = "msvc"']]}]]
+
 neon-target-aarch64-le: &neon-target-aarch64-le
   FnCall: [all, [test, 'target_arch = "aarch64"', 'target_endian = "little"', {FnCall: [not, [windows]]}]]
 
@@ -15368,7 +15372,7 @@ intrinsics:
       - *neon-unstable-bf16
       - *neon-cfg-arm-unstable
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, ['"vdot.bf16"']]}]]
-      - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [bfdot]]}]]
+      - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec-no-msvc, {FnCall: [assert_instr, [bfdot]]}]]
     safety: safe
     types:
       - [float32x2_t, bfloat16x4_t, bfloat16x4_t]
@@ -15394,7 +15398,7 @@ intrinsics:
       - *neon-unstable-bf16
       - *neon-cfg-arm-unstable
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, ['"vdot.bf16"', 'LANE = 0']]}]]
-      - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [bfdot, 'LANE = 0']]}]]
+      - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec-no-msvc, {FnCall: [assert_instr, [bfdot, 'LANE = 0']]}]]
     safety: safe
     static_defs: ['const LANE: i32']
     types:
@@ -15418,7 +15422,7 @@ intrinsics:
       - *neon-unstable-bf16
       - *neon-cfg-arm-unstable
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, ['"vdot.bf16"', 'LANE = 0']]}]]
-      - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [bfdot, 'LANE = 0']]}]]
+      - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec-no-msvc, {FnCall: [assert_instr, [bfdot, 'LANE = 0']]}]]
     safety: safe
     static_defs: ['const LANE: i32']
     types:
@@ -15443,7 +15447,7 @@ intrinsics:
       - *neon-unstable-bf16
       - *neon-cfg-arm-unstable
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, ['"vfmab.bf16"']]}]]
-      - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [bfmlalb]]}]]
+      - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec-no-msvc, {FnCall: [assert_instr, [bfmlalb]]}]]
     safety: safe
     types:
       - [float32x4_t, bfloat16x8_t, bfloat16x8_t]
@@ -15469,7 +15473,7 @@ intrinsics:
       - *neon-unstable-bf16
       - *neon-cfg-arm-unstable
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, ['"vfmab.bf16"', 'LANE = 0']]}]]
-      - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [bfmlalb, 'LANE = 0']]}]]
+      - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec-no-msvc, {FnCall: [assert_instr, [bfmlalb, 'LANE = 0']]}]]
     safety: safe
     static_defs: ['const LANE: i32']
     types:
@@ -15491,7 +15495,7 @@ intrinsics:
       - *neon-unstable-bf16
       - *neon-cfg-arm-unstable
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, ['"vfmab.bf16"', 'LANE = 0']]}]]
-      - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [bfmlalb, 'LANE = 0']]}]]
+      - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec-no-msvc, {FnCall: [assert_instr, [bfmlalb, 'LANE = 0']]}]]
     safety: safe
     static_defs: ['const LANE: i32']
     types:
@@ -15514,7 +15518,7 @@ intrinsics:
       - *neon-unstable-bf16
       - *neon-cfg-arm-unstable
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, ['"vfmat.bf16"']]}]]
-      - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [bfmlalt]]}]]
+      - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec-no-msvc, {FnCall: [assert_instr, [bfmlalt]]}]]
     safety: safe
     types:
       - [float32x4_t, bfloat16x8_t, bfloat16x8_t]
@@ -15540,7 +15544,7 @@ intrinsics:
       - *neon-unstable-bf16
       - *neon-cfg-arm-unstable
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, ['"vfmat.bf16"', 'LANE = 0']]}]]
-      - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [bfmlalt, 'LANE = 0']]}]]
+      - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec-no-msvc, {FnCall: [assert_instr, [bfmlalt, 'LANE = 0']]}]]
     safety: safe
     static_defs: ['const LANE: i32']
     types:
@@ -15562,7 +15566,7 @@ intrinsics:
       - *neon-unstable-bf16
       - *neon-cfg-arm-unstable
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, ['"vfmat.bf16"', 'LANE = 0']]}]]
-      - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [bfmlalt, 'LANE = 0']]}]]
+      - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec-no-msvc, {FnCall: [assert_instr, [bfmlalt, 'LANE = 0']]}]]
     safety: safe
     static_defs: ['const LANE: i32']
     types:
@@ -15585,7 +15589,7 @@ intrinsics:
       - *neon-unstable-bf16
       - *neon-cfg-arm-unstable
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, ['"vmmla.bf16"']]}]]
-      - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [bfmmla]]}]]
+      - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec-no-msvc, {FnCall: [assert_instr, [bfmmla]]}]]
     safety: safe
     types:
       - [float32x4_t, bfloat16x8_t, bfloat16x8_t]
@@ -15729,7 +15733,7 @@ intrinsics:
       - *neon-unstable-bf16
       - *neon-cfg-arm-unstable
       - FnCall: [cfg_attr, [*test-is-arm, {FnCall: [assert_instr, ['"vcvtb.bf16.f32"']]}]]
-      - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec, {FnCall: [assert_instr, [bfcvt]]}]]
+      - FnCall: [cfg_attr, [*neon-target-aarch64-arm64ec-no-msvc, {FnCall: [assert_instr, [bfcvt]]}]]
     safety: safe
     types:
       - [float32_t, bfloat16_t]

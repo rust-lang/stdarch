@@ -3770,7 +3770,11 @@ pub fn vandq_u64(a: uint64x2_t, b: uint64x2_t) -> uint64x2_t {
 )]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vdot.bf16"))]
 #[cfg_attr(
-    all(test, any(target_arch = "aarch64", target_arch = "arm64ec")),
+    all(
+        test,
+        any(target_arch = "aarch64", target_arch = "arm64ec"),
+        not(target_env = "msvc")
+    ),
     assert_instr(bfdot)
 )]
 pub fn vbfdot_f32(a: float32x2_t, b: bfloat16x4_t, c: bfloat16x4_t) -> float32x2_t {
@@ -3801,7 +3805,11 @@ pub fn vbfdot_f32(a: float32x2_t, b: bfloat16x4_t, c: bfloat16x4_t) -> float32x2
 )]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vdot.bf16"))]
 #[cfg_attr(
-    all(test, any(target_arch = "aarch64", target_arch = "arm64ec")),
+    all(
+        test,
+        any(target_arch = "aarch64", target_arch = "arm64ec"),
+        not(target_env = "msvc")
+    ),
     assert_instr(bfdot)
 )]
 pub fn vbfdotq_f32(a: float32x4_t, b: bfloat16x8_t, c: bfloat16x8_t) -> float32x4_t {
@@ -3832,7 +3840,11 @@ pub fn vbfdotq_f32(a: float32x4_t, b: bfloat16x8_t, c: bfloat16x8_t) -> float32x
 )]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vdot.bf16", LANE = 0))]
 #[cfg_attr(
-    all(test, any(target_arch = "aarch64", target_arch = "arm64ec")),
+    all(
+        test,
+        any(target_arch = "aarch64", target_arch = "arm64ec"),
+        not(target_env = "msvc")
+    ),
     assert_instr(bfdot, LANE = 0)
 )]
 pub fn vbfdot_lane_f32<const LANE: i32>(
@@ -3864,7 +3876,11 @@ pub fn vbfdot_lane_f32<const LANE: i32>(
 )]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vdot.bf16", LANE = 0))]
 #[cfg_attr(
-    all(test, any(target_arch = "aarch64", target_arch = "arm64ec")),
+    all(
+        test,
+        any(target_arch = "aarch64", target_arch = "arm64ec"),
+        not(target_env = "msvc")
+    ),
     assert_instr(bfdot, LANE = 0)
 )]
 pub fn vbfdotq_lane_f32<const LANE: i32>(
@@ -3896,7 +3912,11 @@ pub fn vbfdotq_lane_f32<const LANE: i32>(
 )]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vdot.bf16", LANE = 0))]
 #[cfg_attr(
-    all(test, any(target_arch = "aarch64", target_arch = "arm64ec")),
+    all(
+        test,
+        any(target_arch = "aarch64", target_arch = "arm64ec"),
+        not(target_env = "msvc")
+    ),
     assert_instr(bfdot, LANE = 0)
 )]
 pub fn vbfdot_laneq_f32<const LANE: i32>(
@@ -3928,7 +3948,11 @@ pub fn vbfdot_laneq_f32<const LANE: i32>(
 )]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vdot.bf16", LANE = 0))]
 #[cfg_attr(
-    all(test, any(target_arch = "aarch64", target_arch = "arm64ec")),
+    all(
+        test,
+        any(target_arch = "aarch64", target_arch = "arm64ec"),
+        not(target_env = "msvc")
+    ),
     assert_instr(bfdot, LANE = 0)
 )]
 pub fn vbfdotq_laneq_f32<const LANE: i32>(
@@ -3961,7 +3985,11 @@ pub fn vbfdotq_laneq_f32<const LANE: i32>(
 )]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vfmab.bf16"))]
 #[cfg_attr(
-    all(test, any(target_arch = "aarch64", target_arch = "arm64ec")),
+    all(
+        test,
+        any(target_arch = "aarch64", target_arch = "arm64ec"),
+        not(target_env = "msvc")
+    ),
     assert_instr(bfmlalb)
 )]
 pub fn vbfmlalbq_f32(a: float32x4_t, b: bfloat16x8_t, c: bfloat16x8_t) -> float32x4_t {
@@ -3993,7 +4021,11 @@ pub fn vbfmlalbq_f32(a: float32x4_t, b: bfloat16x8_t, c: bfloat16x8_t) -> float3
 )]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vfmab.bf16"))]
 #[cfg_attr(
-    all(test, any(target_arch = "aarch64", target_arch = "arm64ec")),
+    all(
+        test,
+        any(target_arch = "aarch64", target_arch = "arm64ec"),
+        not(target_env = "msvc")
+    ),
     assert_instr(bfmlalb)
 )]
 pub fn vbfmlalbq_f32(a: float32x4_t, b: bfloat16x8_t, c: bfloat16x8_t) -> float32x4_t {
@@ -4030,7 +4062,11 @@ pub fn vbfmlalbq_f32(a: float32x4_t, b: bfloat16x8_t, c: bfloat16x8_t) -> float3
 )]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vfmab.bf16", LANE = 0))]
 #[cfg_attr(
-    all(test, any(target_arch = "aarch64", target_arch = "arm64ec")),
+    all(
+        test,
+        any(target_arch = "aarch64", target_arch = "arm64ec"),
+        not(target_env = "msvc")
+    ),
     assert_instr(bfmlalb, LANE = 0)
 )]
 pub fn vbfmlalbq_lane_f32<const LANE: i32>(
@@ -4061,7 +4097,11 @@ pub fn vbfmlalbq_lane_f32<const LANE: i32>(
 )]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vfmab.bf16", LANE = 0))]
 #[cfg_attr(
-    all(test, any(target_arch = "aarch64", target_arch = "arm64ec")),
+    all(
+        test,
+        any(target_arch = "aarch64", target_arch = "arm64ec"),
+        not(target_env = "msvc")
+    ),
     assert_instr(bfmlalb, LANE = 0)
 )]
 pub fn vbfmlalbq_laneq_f32<const LANE: i32>(
@@ -4093,7 +4133,11 @@ pub fn vbfmlalbq_laneq_f32<const LANE: i32>(
 )]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vfmat.bf16"))]
 #[cfg_attr(
-    all(test, any(target_arch = "aarch64", target_arch = "arm64ec")),
+    all(
+        test,
+        any(target_arch = "aarch64", target_arch = "arm64ec"),
+        not(target_env = "msvc")
+    ),
     assert_instr(bfmlalt)
 )]
 pub fn vbfmlaltq_f32(a: float32x4_t, b: bfloat16x8_t, c: bfloat16x8_t) -> float32x4_t {
@@ -4125,7 +4169,11 @@ pub fn vbfmlaltq_f32(a: float32x4_t, b: bfloat16x8_t, c: bfloat16x8_t) -> float3
 )]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vfmat.bf16"))]
 #[cfg_attr(
-    all(test, any(target_arch = "aarch64", target_arch = "arm64ec")),
+    all(
+        test,
+        any(target_arch = "aarch64", target_arch = "arm64ec"),
+        not(target_env = "msvc")
+    ),
     assert_instr(bfmlalt)
 )]
 pub fn vbfmlaltq_f32(a: float32x4_t, b: bfloat16x8_t, c: bfloat16x8_t) -> float32x4_t {
@@ -4162,7 +4210,11 @@ pub fn vbfmlaltq_f32(a: float32x4_t, b: bfloat16x8_t, c: bfloat16x8_t) -> float3
 )]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vfmat.bf16", LANE = 0))]
 #[cfg_attr(
-    all(test, any(target_arch = "aarch64", target_arch = "arm64ec")),
+    all(
+        test,
+        any(target_arch = "aarch64", target_arch = "arm64ec"),
+        not(target_env = "msvc")
+    ),
     assert_instr(bfmlalt, LANE = 0)
 )]
 pub fn vbfmlaltq_lane_f32<const LANE: i32>(
@@ -4193,7 +4245,11 @@ pub fn vbfmlaltq_lane_f32<const LANE: i32>(
 )]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vfmat.bf16", LANE = 0))]
 #[cfg_attr(
-    all(test, any(target_arch = "aarch64", target_arch = "arm64ec")),
+    all(
+        test,
+        any(target_arch = "aarch64", target_arch = "arm64ec"),
+        not(target_env = "msvc")
+    ),
     assert_instr(bfmlalt, LANE = 0)
 )]
 pub fn vbfmlaltq_laneq_f32<const LANE: i32>(
@@ -4225,7 +4281,11 @@ pub fn vbfmlaltq_laneq_f32<const LANE: i32>(
 )]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vmmla.bf16"))]
 #[cfg_attr(
-    all(test, any(target_arch = "aarch64", target_arch = "arm64ec")),
+    all(
+        test,
+        any(target_arch = "aarch64", target_arch = "arm64ec"),
+        not(target_env = "msvc")
+    ),
     assert_instr(bfmmla)
 )]
 pub fn vbfmmlaq_f32(a: float32x4_t, b: bfloat16x8_t, c: bfloat16x8_t) -> float32x4_t {
@@ -4257,7 +4317,11 @@ pub fn vbfmmlaq_f32(a: float32x4_t, b: bfloat16x8_t, c: bfloat16x8_t) -> float32
 )]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vmmla.bf16"))]
 #[cfg_attr(
-    all(test, any(target_arch = "aarch64", target_arch = "arm64ec")),
+    all(
+        test,
+        any(target_arch = "aarch64", target_arch = "arm64ec"),
+        not(target_env = "msvc")
+    ),
     assert_instr(bfmmla)
 )]
 pub fn vbfmmlaq_f32(a: float32x4_t, b: bfloat16x8_t, c: bfloat16x8_t) -> float32x4_t {
@@ -10294,7 +10358,11 @@ pub fn vcvtah_f32_bf16(a: bfloat16_t) -> f32 {
 )]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vcvtb.bf16.f32"))]
 #[cfg_attr(
-    all(test, any(target_arch = "aarch64", target_arch = "arm64ec")),
+    all(
+        test,
+        any(target_arch = "aarch64", target_arch = "arm64ec"),
+        not(target_env = "msvc")
+    ),
     assert_instr(bfcvt)
 )]
 pub fn vcvth_bf16_f32(a: f32) -> bfloat16_t {
