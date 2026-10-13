@@ -39,7 +39,9 @@
     maybe_uninit_as_bytes,
     movrs_target_feature,
     clflushopt_target_feature,
-    min_adt_const_params
+    min_adt_const_params,
+    f16b,
+    cfg_target_has_reliable_f16b
 )]
 #![cfg_attr(
     test,
