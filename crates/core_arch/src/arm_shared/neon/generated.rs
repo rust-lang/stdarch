@@ -8560,7 +8560,7 @@ pub fn vcreate_p16(a: u64) -> poly16x4_t {
 #[doc = "Insert vector element from another vector element"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vcreate_p64)"]
 #[inline]
-#[target_feature(enable = "neon,aes")]
+#[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v8"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(
@@ -18723,7 +18723,7 @@ pub unsafe fn vld1q_dup_u8(ptr: *const u8) -> uint8x16_t {
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
-#[target_feature(enable = "neon,aes")]
+#[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(vldr))]
 #[cfg_attr(
@@ -19144,7 +19144,7 @@ pub unsafe fn vld1q_p16(ptr: *const p16) -> poly16x8_t {
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
 #[cfg(target_arch = "arm")]
-#[target_feature(enable = "neon,aes")]
+#[target_feature(enable = "neon,v7")]
 #[unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vld1.64"))]
 pub unsafe fn vld1q_p64(ptr: *const p64) -> poly64x2_t {
@@ -19884,7 +19884,7 @@ pub unsafe fn vld1q_lane_u8<const LANE: i32>(ptr: *const u8, src: uint8x16_t) ->
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
-#[target_feature(enable = "neon,aes")]
+#[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[rustc_legacy_const_generics(2)]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vld1.8", LANE = 0))]
@@ -19909,7 +19909,7 @@ pub unsafe fn vld1_lane_p64<const LANE: i32>(ptr: *const p64, src: poly64x1_t) -
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
-#[target_feature(enable = "neon,aes")]
+#[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[rustc_legacy_const_generics(2)]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vld1.8", LANE = 1))]
@@ -19934,8 +19934,8 @@ pub unsafe fn vld1q_lane_p64<const LANE: i32>(ptr: *const p64, src: poly64x2_t) 
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
+#[target_feature(enable = "neon")]
 #[cfg(target_arch = "arm")]
-#[target_feature(enable = "neon,aes")]
 #[unstable(feature = "stdarch_arm_neon_intrinsics", issue = "111800")]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(vldr))]
 pub unsafe fn vld1_p64(ptr: *const p64) -> poly64x1_t {
@@ -19952,7 +19952,7 @@ pub unsafe fn vld1_p64(ptr: *const p64) -> poly64x1_t {
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
-#[target_feature(enable = "neon,aes")]
+#[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v8"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(vld))]
 #[cfg_attr(
@@ -19975,7 +19975,7 @@ pub unsafe fn vld1_p64_x2(a: *const p64) -> poly64x1x2_t {
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
-#[target_feature(enable = "neon,aes")]
+#[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v8"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(
@@ -19998,7 +19998,7 @@ pub unsafe fn vld1_p64_x3(a: *const p64) -> poly64x1x3_t {
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
-#[target_feature(enable = "neon,aes")]
+#[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v8"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(
@@ -20021,7 +20021,7 @@ pub unsafe fn vld1_p64_x4(a: *const p64) -> poly64x1x4_t {
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
-#[target_feature(enable = "neon,aes")]
+#[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v8"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(
@@ -20044,7 +20044,7 @@ pub unsafe fn vld1q_p64_x2(a: *const p64) -> poly64x2x2_t {
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
-#[target_feature(enable = "neon,aes")]
+#[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v8"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(
@@ -20067,7 +20067,7 @@ pub unsafe fn vld1q_p64_x3(a: *const p64) -> poly64x2x3_t {
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
-#[target_feature(enable = "neon,aes")]
+#[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v8"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(
@@ -21732,7 +21732,7 @@ unsafe fn vld1q_v8f16(a: *const i8, b: i32) -> float16x8_t {
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
-#[target_feature(enable = "neon,aes")]
+#[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v7"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr("vld1.8"))]
 #[cfg_attr(
@@ -22122,7 +22122,7 @@ pub unsafe fn vld2q_dup_s32(a: *const i32) -> int32x4x2_t {
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
-#[target_feature(enable = "neon,aes")]
+#[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v8"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(
@@ -23420,7 +23420,7 @@ pub unsafe fn vld2q_lane_p16<const LANE: i32>(a: *const p16, b: poly16x8x2_t) ->
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
-#[target_feature(enable = "neon,aes")]
+#[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v8"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(
@@ -24116,7 +24116,7 @@ pub unsafe fn vld3q_dup_s32(a: *const i32) -> int32x4x3_t {
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
-#[target_feature(enable = "neon,aes")]
+#[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v8"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(
@@ -25361,7 +25361,7 @@ pub unsafe fn vld3q_lane_p16<const LANE: i32>(a: *const p16, b: poly16x8x3_t) ->
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
-#[target_feature(enable = "neon,aes")]
+#[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v8"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(
@@ -26071,7 +26071,7 @@ pub unsafe fn vld4_dup_s64(a: *const i64) -> int64x1x4_t {
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
-#[target_feature(enable = "neon,aes")]
+#[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v8"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(
@@ -27353,8 +27353,8 @@ pub unsafe fn vld4q_lane_p16<const LANE: i32>(a: *const p16, b: poly16x8x4_t) ->
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
+#[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v8"))]
-#[target_feature(enable = "neon,aes")]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(
     all(test, any(target_arch = "aarch64", target_arch = "arm64ec")),
@@ -48910,7 +48910,7 @@ pub fn vreinterpretq_p16_p64(a: poly64x2_t) -> poly16x8_t {
 #[doc = "Vector reinterpret cast operation"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vreinterpretq_s8_p128)"]
 #[inline]
-#[target_feature(enable = "neon,aes")]
+#[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v8"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(
@@ -48931,7 +48931,7 @@ pub fn vreinterpretq_s8_p128(a: p128) -> int8x16_t {
 #[doc = "Vector reinterpret cast operation"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vreinterpretq_s16_p128)"]
 #[inline]
-#[target_feature(enable = "neon,aes")]
+#[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v8"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(
@@ -48952,7 +48952,7 @@ pub fn vreinterpretq_s16_p128(a: p128) -> int16x8_t {
 #[doc = "Vector reinterpret cast operation"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vreinterpretq_s32_p128)"]
 #[inline]
-#[target_feature(enable = "neon,aes")]
+#[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v8"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(
@@ -48973,7 +48973,7 @@ pub fn vreinterpretq_s32_p128(a: p128) -> int32x4_t {
 #[doc = "Vector reinterpret cast operation"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vreinterpretq_s64_p128)"]
 #[inline]
-#[target_feature(enable = "neon,aes")]
+#[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v8"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(
@@ -48994,7 +48994,7 @@ pub fn vreinterpretq_s64_p128(a: p128) -> int64x2_t {
 #[doc = "Vector reinterpret cast operation"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vreinterpretq_u8_p128)"]
 #[inline]
-#[target_feature(enable = "neon,aes")]
+#[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v8"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(
@@ -49015,7 +49015,7 @@ pub fn vreinterpretq_u8_p128(a: p128) -> uint8x16_t {
 #[doc = "Vector reinterpret cast operation"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vreinterpretq_u16_p128)"]
 #[inline]
-#[target_feature(enable = "neon,aes")]
+#[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v8"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(
@@ -49036,7 +49036,7 @@ pub fn vreinterpretq_u16_p128(a: p128) -> uint16x8_t {
 #[doc = "Vector reinterpret cast operation"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vreinterpretq_u32_p128)"]
 #[inline]
-#[target_feature(enable = "neon,aes")]
+#[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v8"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(
@@ -49057,7 +49057,7 @@ pub fn vreinterpretq_u32_p128(a: p128) -> uint32x4_t {
 #[doc = "Vector reinterpret cast operation"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vreinterpretq_u64_p128)"]
 #[inline]
-#[target_feature(enable = "neon,aes")]
+#[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v8"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(
@@ -49078,7 +49078,7 @@ pub fn vreinterpretq_u64_p128(a: p128) -> uint64x2_t {
 #[doc = "Vector reinterpret cast operation"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vreinterpretq_p8_p128)"]
 #[inline]
-#[target_feature(enable = "neon,aes")]
+#[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v8"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(
@@ -49099,7 +49099,7 @@ pub fn vreinterpretq_p8_p128(a: p128) -> poly8x16_t {
 #[doc = "Vector reinterpret cast operation"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vreinterpretq_p16_p128)"]
 #[inline]
-#[target_feature(enable = "neon,aes")]
+#[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v8"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(
@@ -49120,7 +49120,7 @@ pub fn vreinterpretq_p16_p128(a: p128) -> poly16x8_t {
 #[doc = "Vector reinterpret cast operation"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vreinterpretq_p64_p128)"]
 #[inline]
-#[target_feature(enable = "neon,aes")]
+#[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v8"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(
@@ -49141,7 +49141,7 @@ pub fn vreinterpretq_p64_p128(a: p128) -> poly64x2_t {
 #[doc = "Vector reinterpret cast operation"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vreinterpretq_p128_p64)"]
 #[inline]
-#[target_feature(enable = "neon,aes")]
+#[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v8"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(
@@ -54459,7 +54459,7 @@ pub fn vsetq_lane_p16<const LANE: i32>(a: p16, b: poly16x8_t) -> poly16x8_t {
 #[doc = "Insert vector element from another vector element"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vset_lane_p64)"]
 #[inline]
-#[target_feature(enable = "neon,aes")]
+#[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v8"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop, LANE = 0))]
 #[cfg_attr(
@@ -54529,7 +54529,7 @@ pub fn vset_lane_u64<const LANE: i32>(a: u64, b: uint64x1_t) -> uint64x1_t {
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vsetq_lane_p64)"]
 #[inline]
 #[cfg(target_endian = "little")]
-#[target_feature(enable = "neon,aes")]
+#[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v8"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop, LANE = 0))]
 #[cfg_attr(
@@ -54553,7 +54553,7 @@ pub fn vsetq_lane_p64<const LANE: i32>(a: p64, b: poly64x2_t) -> poly64x2_t {
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vsetq_lane_p64)"]
 #[inline]
 #[cfg(target_endian = "big")]
-#[target_feature(enable = "neon,aes")]
+#[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v8"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop, LANE = 0))]
 #[cfg_attr(
@@ -59106,8 +59106,8 @@ pub unsafe fn vst1q_lane_p16<const LANE: i32>(a: *mut p16, b: poly16x8_t) {
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
+#[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v8"))]
-#[target_feature(enable = "neon,aes")]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop, LANE = 0))]
 #[cfg_attr(
     all(test, any(target_arch = "aarch64", target_arch = "arm64ec")),
@@ -59181,7 +59181,7 @@ pub unsafe fn vst1_lane_u64<const LANE: i32>(a: *mut u64, b: uint64x1_t) {
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
-#[target_feature(enable = "neon,aes")]
+#[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v8"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(vst1))]
 #[cfg_attr(
@@ -59204,7 +59204,7 @@ pub unsafe fn vst1_p64_x2(a: *mut p64, b: poly64x1x2_t) {
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
-#[target_feature(enable = "neon,aes")]
+#[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v8"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(
@@ -59227,7 +59227,7 @@ pub unsafe fn vst1_p64_x3(a: *mut p64, b: poly64x1x3_t) {
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
-#[target_feature(enable = "neon,aes")]
+#[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v8"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(
@@ -59250,7 +59250,7 @@ pub unsafe fn vst1_p64_x4(a: *mut p64, b: poly64x1x4_t) {
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
-#[target_feature(enable = "neon,aes")]
+#[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v8"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(
@@ -59273,7 +59273,7 @@ pub unsafe fn vst1q_p64_x2(a: *mut p64, b: poly64x2x2_t) {
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
-#[target_feature(enable = "neon,aes")]
+#[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v8"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(
@@ -59296,7 +59296,7 @@ pub unsafe fn vst1q_p64_x3(a: *mut p64, b: poly64x2x3_t) {
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
-#[target_feature(enable = "neon,aes")]
+#[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v8"))]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(
@@ -61163,8 +61163,8 @@ unsafe fn vst1q_v8f16(addr: *const i8, val: float16x8_t, align: i32) {
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
+#[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v8"))]
-#[target_feature(enable = "neon,aes")]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop, LANE = 0))]
 #[cfg_attr(
     all(test, any(target_arch = "aarch64", target_arch = "arm64ec")),
@@ -62053,8 +62053,8 @@ pub unsafe fn vst2q_lane_p16<const LANE: i32>(a: *mut p16, b: poly16x8x2_t) {
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
+#[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v8"))]
-#[target_feature(enable = "neon,aes")]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(
     all(test, any(target_arch = "aarch64", target_arch = "arm64ec")),
@@ -63242,8 +63242,8 @@ pub unsafe fn vst3q_lane_p16<const LANE: i32>(a: *mut p16, b: poly16x8x3_t) {
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
+#[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v8"))]
-#[target_feature(enable = "neon,aes")]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(
     all(test, any(target_arch = "aarch64", target_arch = "arm64ec")),
@@ -64598,8 +64598,8 @@ pub unsafe fn vst4q_lane_p16<const LANE: i32>(a: *mut p16, b: poly16x8x4_t) {
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
+#[target_feature(enable = "neon")]
 #[cfg_attr(target_arch = "arm", target_feature(enable = "v8"))]
-#[target_feature(enable = "neon,aes")]
 #[cfg_attr(all(test, target_arch = "arm"), assert_instr(nop))]
 #[cfg_attr(
     all(test, any(target_arch = "aarch64", target_arch = "arm64ec")),
