@@ -3,22 +3,22 @@ use stdarch_test::assert_instr;
 
 unsafe extern "llvm-intrinsic" {
     #[link_name = "llvm.riscv.xperm8.i64"]
-    fn _xperm8(rs1: i64, rs2: i64) -> i64;
+    fn _xperm8_64(rs1: i64, rs2: i64) -> i64;
 
     #[link_name = "llvm.riscv.xperm4.i64"]
-    fn _xperm4(rs1: i64, rs2: i64) -> i64;
+    fn _xperm4_64(rs1: i64, rs2: i64) -> i64;
 
     #[link_name = "llvm.riscv.orc.b.i64"]
-    fn _orc_b(rs: i64) -> i64;
+    fn _orc_b_64(rs: i64) -> i64;
 
     #[link_name = "llvm.riscv.clmul.i64"]
-    fn _clmul(rs1: i64, rs2: i64) -> i64;
+    fn _clmul_64(rs1: i64, rs2: i64) -> i64;
 
     #[link_name = "llvm.riscv.clmulh.i64"]
-    fn _clmulh(rs1: i64, rs2: i64) -> i64;
+    fn _clmulh_64(rs1: i64, rs2: i64) -> i64;
 
     #[link_name = "llvm.riscv.clmulr.i64"]
-    fn _clmulr(rs1: i64, rs2: i64) -> i64;
+    fn _clmulr_64(rs1: i64, rs2: i64) -> i64;
 }
 
 /// Byte-wise lookup of indices into a vector in registers.
@@ -37,8 +37,8 @@ unsafe extern "llvm-intrinsic" {
 #[target_feature(enable = "zbkx")]
 #[cfg_attr(test, assert_instr(xperm8))]
 #[inline]
-pub fn xperm8(rs1: u64, rs2: u64) -> u64 {
-    unsafe { _xperm8(rs1 as i64, rs2 as i64) as u64 }
+pub fn xperm8_64(rs1: u64, rs2: u64) -> u64 {
+    unsafe { _xperm8_64(rs1 as i64, rs2 as i64) as u64 }
 }
 
 /// Nibble-wise lookup of indices into a vector.
@@ -57,8 +57,8 @@ pub fn xperm8(rs1: u64, rs2: u64) -> u64 {
 #[target_feature(enable = "zbkx")]
 #[cfg_attr(test, assert_instr(xperm4))]
 #[inline]
-pub fn xperm4(rs1: u64, rs2: u64) -> u64 {
-    unsafe { _xperm4(rs1 as i64, rs2 as i64) as u64 }
+pub fn xperm4_64(rs1: u64, rs2: u64) -> u64 {
+    unsafe { _xperm4_64(rs1 as i64, rs2 as i64) as u64 }
 }
 
 /// Bitwise OR-Combine, byte granule
@@ -76,8 +76,8 @@ pub fn xperm4(rs1: u64, rs2: u64) -> u64 {
 #[target_feature(enable = "zbb")]
 #[cfg_attr(test, assert_instr(orc.b))]
 #[inline]
-pub fn orc_b(rs: u64) -> u64 {
-    unsafe { _orc_b(rs as i64) as u64 }
+pub fn orc_b_64(rs: u64) -> u64 {
+    unsafe { _orc_b_64(rs as i64) as u64 }
 }
 
 /// Carry-less multiply (low-part)
@@ -93,8 +93,8 @@ pub fn orc_b(rs: u64) -> u64 {
 #[target_feature(enable = "zbkc")]
 #[cfg_attr(test, assert_instr(clmul))]
 #[inline]
-pub fn clmul(rs1: u64, rs2: u64) -> u64 {
-    unsafe { _clmul(rs1 as i64, rs2 as i64) as u64 }
+pub fn clmul_64(rs1: u64, rs2: u64) -> u64 {
+    unsafe { _clmul_64(rs1 as i64, rs2 as i64) as u64 }
 }
 
 /// Carry-less multiply (high-part)
@@ -110,8 +110,8 @@ pub fn clmul(rs1: u64, rs2: u64) -> u64 {
 #[target_feature(enable = "zbkc")]
 #[cfg_attr(test, assert_instr(clmulh))]
 #[inline]
-pub fn clmulh(rs1: u64, rs2: u64) -> u64 {
-    unsafe { _clmulh(rs1 as i64, rs2 as i64) as u64 }
+pub fn clmulh_64(rs1: u64, rs2: u64) -> u64 {
+    unsafe { _clmulh_64(rs1 as i64, rs2 as i64) as u64 }
 }
 
 /// Carry-less multiply (reversed)
@@ -127,6 +127,6 @@ pub fn clmulh(rs1: u64, rs2: u64) -> u64 {
 #[target_feature(enable = "zbc")]
 #[cfg_attr(test, assert_instr(clmulr))]
 #[inline]
-pub fn clmulr(rs1: u64, rs2: u64) -> u64 {
-    unsafe { _clmulr(rs1 as i64, rs2 as i64) as u64 }
+pub fn clmulr_64(rs1: u64, rs2: u64) -> u64 {
+    unsafe { _clmulr_64(rs1 as i64, rs2 as i64) as u64 }
 }
