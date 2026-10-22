@@ -119,6 +119,10 @@ mod amx;
 #[unstable(feature = "x86_amx_intrinsics", issue = "126622")]
 pub use self::amx::*;
 
+mod movdiri;
+#[unstable(feature = "simd_x86_movdiri", issue = "163741")]
+pub use self::movdiri::*;
+
 mod movrs;
 #[unstable(feature = "movrs_target_feature", issue = "137976")]
 pub use self::movrs::*;

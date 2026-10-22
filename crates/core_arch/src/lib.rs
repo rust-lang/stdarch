@@ -39,6 +39,8 @@
     maybe_uninit_as_bytes,
     movrs_target_feature,
     clflushopt_target_feature,
+    movdir64b_target_feature,
+    movdiri_target_feature,
     min_adt_const_params
 )]
 #![cfg_attr(
