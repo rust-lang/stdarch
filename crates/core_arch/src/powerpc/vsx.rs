@@ -8,13 +8,14 @@
 
 #![allow(non_camel_case_types)]
 
+use super::macros::*;
 use crate::core_arch::powerpc::*;
 use crate::core_arch::simd::*;
 
 #[cfg(test)]
 use stdarch_test::assert_instr;
 
-use crate::mem::transmute;
+use crate::mem::{self, transmute};
 
 types! {
     #![unstable(feature = "stdarch_powerpc", issue = "111145")]
@@ -171,6 +172,14 @@ mod sealed {
     vec_mergeeo! { vector_unsigned_int, mergee, mergeo }
     vec_mergeeo! { vector_bool_int, mergee, mergeo }
     vec_mergeeo! { vector_float, mergee, mergeo }
+
+    // Implement vec_xl for f64 (vector_double).
+    use crate::core_arch::powerpc::altivec::sealed::VectorXl;
+    impl_vec_xl! { vec_xl_f64 lxvd2x / lxv f64 }
+
+    // Implement vec_sld for vector_double.
+    use crate::core_arch::powerpc::altivec::sealed::{VectorSld, vsldoi, xxsldwi};
+    impl_vec_sld! { vector_double }
 }
 
 /// Vector permute.
@@ -255,4 +264,75 @@ mod tests {
     test_vec_xxpermdi! {test_vec_xxpermdi_i64x2, i64x2, vector_signed_long, [0], [-1], [2], [-3]}
     test_vec_xxpermdi! {test_vec_xxpermdi_m64x2, m64x2, vector_bool_long, [false], [true], [false], [true]}
     test_vec_xxpermdi! {test_vec_xxpermdi_f64x2, f64x2, vector_double, [0.0], [1.0], [2.0], [3.0]}
+
+    #[simd_test(enable = "altivec")]
+    fn test_vec_sld_f64x2() {
+        use crate::core_arch::powerpc::altivec::sealed::VectorSld;
+
+        let a = vector_double::from(f64x2::from_array([1.0, 2.0]));
+        let b = vector_double::from(f64x2::from_array([3.0, 4.0]));
+
+        // Shift left by 8 bytes (1 f64 element).
+        // On little-endian: shifts right in memory, result is [b[1], a[0]] = [4.0, 1.0].
+        // On big-endian: shifts left in memory, result is [a[1], b[0]] = [2.0, 3.0].
+        unsafe {
+            let result: f64x2 = transmute(a.vec_sld::<8>(b));
+            #[cfg(target_endian = "little")]
+            let expected = f64x2::from_array([4.0, 1.0]);
+            #[cfg(target_endian = "big")]
+            let expected = f64x2::from_array([2.0, 3.0]);
+            assert_eq!(result, expected);
+        }
+    }
+
+    #[simd_test(enable = "vsx")]
+    fn test_vec_sldw_f64x2() {
+        use crate::core_arch::powerpc::altivec::sealed::VectorSld;
+
+        let a = vector_double::from(f64x2::from_array([1.0, 2.0]));
+        let b = vector_double::from(f64x2::from_array([3.0, 4.0]));
+
+        // Shift left by 1 word (4 bytes).
+        // vec_sldw shifts by words (4-byte units), so UIMM2=1 means shift by 4 bytes
+        // whic is equivalent to vec_sld with UIMM4=4.
+        unsafe {
+            let result: f64x2 = transmute(a.vec_sldw::<1>(b));
+            // Shifting by 4 bytes (half of an f64) will mix the high/low parts.
+            // On little-endian: shifts right in memory, result is [b[1], a[0]] but with 4-byte shift.
+            // On big-endian: shifts left in memory, result is [a[1], b[0]] but with 4-byte shift.
+            // Since we're shifting by 4 bytes (half an f64), the result will have mixed bits.
+            // Verify using vec_sld with the same shift amount for comparison.
+            let expected: f64x2 = transmute(a.vec_sld::<4>(b));
+            assert_eq!(result, expected);
+        }
+    }
+
+    #[simd_test(enable = "vsx")]
+    fn test_vec_xl_f64() {
+        let pat = [1.0f64, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0];
+
+        // Test loading from aligned offset 0
+        unsafe {
+            let result = vec_xl(0, pat.as_ptr());
+            let result_f64: f64x2 = transmute(result);
+            assert_eq!(result_f64.as_array()[0], 1.0);
+            assert_eq!(result_f64.as_array()[1], 2.0);
+        }
+
+        // Test loading from offset 16 (2 f64 elements = 16 bytes)
+        unsafe {
+            let result = vec_xl(16, pat.as_ptr());
+            let result_f64: f64x2 = transmute(result);
+            assert_eq!(result_f64.as_array()[0], 3.0);
+            assert_eq!(result_f64.as_array()[1], 4.0);
+        }
+
+        // Test loading from offset 32 (4 f64 elements = 32 bytes)
+        unsafe {
+            let result = vec_xl(32, pat.as_ptr());
+            let result_f64: f64x2 = transmute(result);
+            assert_eq!(result_f64.as_array()[0], 5.0);
+            assert_eq!(result_f64.as_array()[1], 6.0);
+        }
+    }
 }
