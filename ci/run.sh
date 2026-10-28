@@ -113,7 +113,7 @@ case ${TARGET} in
     #    cargo_test 
 	  #    ;;
     mips64*)
-        export RUSTFLAGS="${RUSTFLAGS} -C target-feature=+msa"
+        export RUSTFLAGS="${RUSTFLAGS} -C target-cpu=mips64r5 -C target-feature=+msa"
         cargo_test 
 	      ;;
     s390x*)
