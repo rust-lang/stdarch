@@ -4,12 +4,14 @@ extern crate log;
 mod arm;
 mod common;
 mod loongarch;
+mod riscv;
 mod x86;
 
 use arm::Arm;
 use common::SupportedArchitecture;
 use common::cli::{Cli, ProcessedCli};
 use loongarch::LoongArch;
+use riscv::Riscv;
 use x86::X86;
 
 fn main() {
@@ -28,6 +30,8 @@ fn main() {
             LoongArch::create(&processed_cli_options),
             processed_cli_options,
         )
+    } else if processed_cli_options.target.starts_with("riscv") {
+        run(Riscv::create(&processed_cli_options), processed_cli_options);
     } else {
         unimplemented!("Unsupported target {}", processed_cli_options.target)
     }

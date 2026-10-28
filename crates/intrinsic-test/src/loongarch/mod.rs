@@ -42,7 +42,7 @@ impl SupportedArchitecture for LoongArch {
         if self
             .intrinsics
             .iter()
-            .any(|intrinsic| intrinsic.extension == "LASX")
+            .any(|intrinsic| intrinsic.extensions[0] == "LASX")
         {
             flags.push("-mlasx");
         }

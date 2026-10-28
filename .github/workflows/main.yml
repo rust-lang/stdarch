@@ -283,11 +283,15 @@ jobs:
           - aarch64_be-unknown-linux-gnu
           - armv7-unknown-linux-gnueabihf
           - loongarch64-unknown-linux-gnu
+          - riscv64gc-unknown-linux-gnu
+          - riscv32gc-unknown-linux-gnu
           - x86_64-unknown-linux-gnu
         profile: [dev, release]
         cc: [clang, gcc]
         include:
           - target: aarch64_be-unknown-linux-gnu
+            build_std: true
+          - target: riscv32gc-unknown-linux-gnu
             build_std: true
           - target: x86_64-unknown-linux-gnu
             cc: icx
