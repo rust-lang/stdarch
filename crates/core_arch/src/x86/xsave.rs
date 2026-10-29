@@ -50,6 +50,16 @@ pub unsafe fn _xsave(mem_addr: *mut u8, save_mask: u64) {
 /// boundary.
 ///
 /// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=_xrstor)
+///
+/// # Safety
+///
+/// - `mem_addr` must be valid for reads of the whole `XSAVE` area it
+///   describes.
+/// - `mem_addr` must be 64-byte aligned.
+///
+/// The `XSAVE` area is the state image format that the `xsave` family
+/// writes and `xrstor` reads; the memory must hold one produced by a
+/// prior save.
 #[inline]
 #[target_feature(enable = "xsave")]
 #[cfg_attr(test, assert_instr(xrstor))]
@@ -151,6 +161,16 @@ pub unsafe fn _xsaves(mem_addr: *mut u8, save_mask: u64) {
 /// boundary.
 ///
 /// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=_xrstors)
+///
+/// # Safety
+///
+/// - `mem_addr` must be valid for reads of the whole `XSAVE` area it
+///   describes.
+/// - `mem_addr` must be 64-byte aligned.
+///
+/// The `XSAVE` area is the state image format that the `xsave` family
+/// writes and `xrstor` reads; the memory must hold one produced by a
+/// prior save.
 #[inline]
 #[target_feature(enable = "xsave,xsaves")]
 #[cfg_attr(test, assert_instr(xrstors))]
