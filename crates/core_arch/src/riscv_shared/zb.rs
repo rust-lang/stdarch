@@ -20,7 +20,7 @@ unsafe extern "llvm-intrinsic" {
 /// Version: v1.0.0
 ///
 /// Section: 2.24
-#[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
+#[stable(feature = "stdarch_riscv_zb", since = "CURRENT_RUSTC_VERSION")]
 #[target_feature(enable = "zbb")]
 #[cfg_attr(test, assert_instr(orc.b))]
 #[inline]
@@ -37,7 +37,7 @@ pub fn orc_b_32(rs: u32) -> u32 {
 /// Version: v1.0.0
 ///
 /// Section: 2.11
-#[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
+#[stable(feature = "stdarch_riscv_zb", since = "CURRENT_RUSTC_VERSION")]
 #[target_feature(enable = "zbkc")]
 #[cfg_attr(test, assert_instr(clmul))]
 #[inline]
