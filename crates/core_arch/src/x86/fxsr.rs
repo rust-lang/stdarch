@@ -23,6 +23,11 @@ unsafe extern "llvm-intrinsic" {
 /// [fxrstor]: http://www.felixcloutier.com/x86/FXRSTOR.html
 ///
 /// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=_fxsave)
+///
+/// # Safety
+///
+/// - `mem_addr` must be valid for writes of 512 bytes.
+/// - `mem_addr` must be 16-byte aligned.
 #[inline]
 #[target_feature(enable = "fxsr")]
 #[cfg_attr(test, assert_instr(fxsave))]
@@ -47,6 +52,15 @@ pub unsafe fn _fxsave(mem_addr: *mut u8) {
 /// [fxrstor]: http://www.felixcloutier.com/x86/FXRSTOR.html
 ///
 /// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=_fxrstor)
+///
+/// # Safety
+///
+/// - `mem_addr` must be valid for reads of 512 bytes.
+/// - `mem_addr` must be 16-byte aligned.
+///
+/// The 512 bytes at `mem_addr` must form a valid `FXSAVE`-format image,
+/// e.g. one written by a prior `_fxsave`/`_fxsave64`. In particular the
+/// `MXCSR` portion must hold a value legal for `FXRSTOR`.
 #[inline]
 #[target_feature(enable = "fxsr")]
 #[cfg_attr(test, assert_instr(fxrstor))]
