@@ -41,6 +41,7 @@ jobs:
     runs-on: ${{ matrix.target.os }}
     continue-on-error: ${{ matrix.target.tuple == 'riscv32gc-unknown-linux-gnu' }}
     strategy:
+      fail-fast: false
       matrix:
         profile:
           - dev
