@@ -83,9 +83,11 @@ pub mod arch {
     /// See the [module documentation](../index.html) for more details.
     #[cfg(any(target_arch = "riscv32", doc))]
     #[doc(cfg(any(target_arch = "riscv32")))]
-    #[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
+    #[stable(feature = "stdarch_riscv", since = "CURRENT_RUSTC_VERSION")]
     pub mod riscv32 {
+        #[stable(feature = "stdarch_riscv", since = "CURRENT_RUSTC_VERSION")]
         pub use crate::core_arch::riscv_shared::*;
+        #[stable(feature = "stdarch_riscv", since = "CURRENT_RUSTC_VERSION")]
         pub use crate::core_arch::riscv32::*;
     }
 
@@ -94,12 +96,14 @@ pub mod arch {
     /// See the [module documentation](../index.html) for more details.
     #[cfg(any(target_arch = "riscv64", doc))]
     #[doc(cfg(any(target_arch = "riscv64")))]
-    #[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
+    #[stable(feature = "stdarch_riscv", since = "CURRENT_RUSTC_VERSION")]
     pub mod riscv64 {
+        #[stable(feature = "stdarch_riscv", since = "CURRENT_RUSTC_VERSION")]
         pub use crate::core_arch::riscv64::*;
         // RISC-V RV64 supports all RV32 instructions as well in current specifications (2022-01-05).
         // Module `riscv_shared` includes instructions available under all RISC-V platforms,
         // i.e. RISC-V RV32 instructions.
+        #[stable(feature = "stdarch_riscv", since = "CURRENT_RUSTC_VERSION")]
         pub use crate::core_arch::riscv_shared::*;
     }
 
