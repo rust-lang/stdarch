@@ -70,6 +70,17 @@ pub const _XCR_XFEATURE_ENABLED_MASK: u32 = 0;
 /// Currently only `XFEATURE_ENABLED_MASK` `XCR` is supported.
 ///
 /// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=_xsetbv)
+///
+/// # Safety
+///
+/// - `a` must identify `XCR0`.
+/// - `val` must be a legal value for `XCR0`.
+///
+/// `XCR0` is the extended control register that records which processor
+/// state features are enabled. A legal value has bit 0 set. A feature
+/// bit may only be set when its dependency is enabled: SSE requires
+/// x87, and AVX requires SSE. Reserved bits must be zero. See Intel
+/// SDM Volume 3, Section 2.5, "Extended Control Registers".
 #[inline]
 #[target_feature(enable = "xsave")]
 #[cfg_attr(test, assert_instr(xsetbv))]
@@ -82,6 +93,13 @@ pub unsafe fn _xsetbv(a: u32, val: u64) {
 /// specified in `xcr_no`.
 ///
 /// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=_xgetbv)
+///
+/// # Safety
+///
+/// - `xcr_no` must identify `XCR0`.
+///
+/// `XCR0` is the extended control register that records which processor
+/// state features are enabled.
 #[inline]
 #[target_feature(enable = "xsave")]
 #[cfg_attr(test, assert_instr(xgetbv))]
