@@ -27,10 +27,16 @@ unsafe extern "llvm-intrinsic" {
 /// The returned pointer contains a copy of the `src` address, but with a
 /// randomly generated logical tag, excluding any specified by `mask`.
 ///
-/// SAFETY: The pointer provided by this intrinsic will be invalid until the memory
-/// has been appropriately tagged with `__arm_mte_set_tag`. If using that intrinsic
-/// on the provided pointer is itself invalid, then it will be permanently invalid
-/// and Undefined Behavior to dereference it.
+/// This intrinsic does not access memory or change allocation tags.
+/// The allocation tag can be changed using [`__arm_mte_set_tag`],
+/// provided that function's safety requirements are satisfied.
+///
+/// If the returned pointer's logical tag does not match the allocation
+/// tag of the memory, then it is invalid and Undefined Behavior to dereference it.
+///
+/// # Safety
+///
+/// The current platform must support the `mte` target feature.
 #[inline]
 #[target_feature(enable = "mte")]
 #[unstable(feature = "stdarch_aarch64_mte", issue = "129010")]
@@ -46,11 +52,21 @@ pub unsafe fn __arm_mte_create_random_tag<T>(src: *const T, mask: u64) -> *const
 /// Adds offset to the logical address tag in `src`, wrapping if the result is
 /// outside of the valid 16 tags.
 ///
-/// SAFETY: See `__arm_mte_create_random_tag`.
+/// This intrinsic does not access memory or change allocation tags.
+/// The allocation tag can be changed using [`__arm_mte_set_tag`],
+/// provided that function's safety requirements are satisfied.
+///
+/// If the returned pointer's logical tag does not match the allocation
+/// tag of the memory, then it is invalid and Undefined Behavior to dereference it.
+///
+/// # Safety
+///
+/// The current platform must support the `mte` target feature.
 #[inline]
 #[target_feature(enable = "mte")]
 #[unstable(feature = "stdarch_aarch64_mte", issue = "129010")]
 pub unsafe fn __arm_mte_increment_tag<const OFFSET: i64, T>(src: *const T) -> *const T {
+    static_assert_uimm_bits!(OFFSET, 4);
     addg_(src as *const (), OFFSET) as *const T
 }
 
@@ -62,6 +78,12 @@ pub unsafe fn __arm_mte_increment_tag<const OFFSET: i64, T>(src: *const T) -> *c
 ///
 /// Adds the logical tag stored in `src` to the set in `excluded`, and returns
 /// the result.
+///
+/// This intrinsic does not access memory or change allocation tags.
+///
+/// # Safety
+///
+/// The current platform must support the `mte` target feature.
 #[inline]
 #[target_feature(enable = "mte")]
 #[unstable(feature = "stdarch_aarch64_mte", issue = "129010")]
@@ -74,8 +96,14 @@ pub unsafe fn __arm_mte_exclude_tag<T>(src: *const T, excluded: u64) -> u64 {
 /// `tag_address`: A pointer containing an address and a logical tag, which
 ///                must be 16-byte aligned.
 ///
-/// SAFETY: `tag_address` must be 16-byte aligned. The tag will apply to the
-/// entire 16-byte memory granule.
+/// This changes only the allocation tag. The size of `T` does not
+/// affect the size of the tagged region.
+///
+/// # Safety
+///
+/// * The current platform must support the `mte` target feature.
+/// * `tag_address` must be 16-byte aligned. The tag will apply to the
+///   entire 16-byte memory granule.
 #[inline]
 #[target_feature(enable = "mte")]
 #[unstable(feature = "stdarch_aarch64_mte", issue = "129010")]
@@ -88,6 +116,12 @@ pub unsafe fn __arm_mte_set_tag<T>(tag_address: *const T) {
 ///
 /// `address`: A pointer containing an address from which allocation tag memory
 ///            is read. This does not need to be 16-byte aligned.
+///
+/// # Safety
+///
+/// * The current platform must support the `mte` target feature.
+/// * The address part of `address` must identify memory whose allocation
+///   tag will be read.
 #[inline]
 #[target_feature(enable = "mte")]
 #[unstable(feature = "stdarch_aarch64_mte", issue = "129010")]
@@ -97,6 +131,10 @@ pub unsafe fn __arm_mte_get_tag<T>(address: *const T) -> *const T {
 
 /// Calculate the difference between the address parts of two pointers, ignoring
 /// the tags, and sign-extending the result.
+///
+/// # Safety
+///
+/// The current platform must support the `mte` target feature.
 #[inline]
 #[target_feature(enable = "mte")]
 #[unstable(feature = "stdarch_aarch64_mte", issue = "129010")]
