@@ -31,6 +31,19 @@ unsafe extern "llvm-intrinsic" {
 /// Intel® 64 and IA-32 Architectures Software Developer’s Manual, Volume 1.
 ///
 /// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=_xsave64)
+///
+/// # Safety
+///
+/// - `mem_addr` must be valid for writes of the whole `XSAVE` area that
+///   `save_mask` and `XCR0` require.
+/// - `mem_addr` must be 64-byte aligned.
+///
+/// The saved features are the ones requested in `save_mask` and also
+/// enabled in `XCR0`, the extended control register that records which
+/// processor state features are enabled. The area is at least 512 bytes,
+/// plus an extended region for every additional enabled feature.
+///
+
 #[inline]
 #[target_feature(enable = "xsave")]
 #[cfg_attr(test, assert_instr(xsave64))]
@@ -64,6 +77,19 @@ pub unsafe fn _xrstor64(mem_addr: *const u8, rs_mask: u64) {
 /// be equal to or better than using the `XSAVE64` instruction.
 ///
 /// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=_xsaveopt64)
+///
+/// # Safety
+///
+/// - `mem_addr` must be valid for writes of the whole `XSAVE` area that
+///   `save_mask` and `XCR0` require.
+/// - `mem_addr` must be 64-byte aligned.
+///
+/// The saved features are the ones requested in `save_mask` and also
+/// enabled in `XCR0`, the extended control register that records which
+/// processor state features are enabled. The area is at least 512 bytes,
+/// plus an extended region for every additional enabled feature.
+///
+
 #[inline]
 #[target_feature(enable = "xsave,xsaveopt")]
 #[cfg_attr(test, assert_instr(xsaveopt64))]
@@ -80,6 +106,19 @@ pub unsafe fn _xsaveopt64(mem_addr: *mut u8, save_mask: u64) {
 /// and `XCR0`. `mem_addr` must be aligned on a 64-byte boundary.
 ///
 /// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=_xsavec64)
+///
+/// # Safety
+///
+/// - `mem_addr` must be valid for writes of the whole `XSAVE` area that
+///   `save_mask` and `XCR0` require.
+/// - `mem_addr` must be 64-byte aligned.
+///
+/// The saved features are the ones requested in `save_mask` and also
+/// enabled in `XCR0`, the extended control register that records which
+/// processor state features are enabled. The area is at least 512 bytes,
+/// plus an extended region for every additional enabled feature.
+///
+
 #[inline]
 #[target_feature(enable = "xsave,xsavec")]
 #[cfg_attr(test, assert_instr(xsavec64))]
@@ -97,6 +136,19 @@ pub unsafe fn _xsavec64(mem_addr: *mut u8, save_mask: u64) {
 /// and `XCR0`. `mem_addr` must be aligned on a 64-byte boundary.
 ///
 /// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=_xsaves64)
+///
+/// # Safety
+///
+/// - `mem_addr` must be valid for writes of the whole `XSAVE` area that
+///   `save_mask` and `XCR0` require.
+/// - `mem_addr` must be 64-byte aligned.
+///
+/// The saved features are the ones requested in `save_mask` and also
+/// enabled in `XCR0`, the extended control register that records which
+/// processor state features are enabled. The area is at least 512 bytes,
+/// plus an extended region for every additional enabled feature.
+///
+
 #[inline]
 #[target_feature(enable = "xsave,xsaves")]
 #[cfg_attr(test, assert_instr(xsaves64))]
