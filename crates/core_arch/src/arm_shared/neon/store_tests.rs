@@ -13,10 +13,21 @@ use crate::core_arch::aarch64::*;
 use crate::core_arch::simd::*;
 use stdarch_test::simd_test;
 
+fn reverse_on_be<T, const N: usize>(arr: [T; N]) -> [T; N] {
+    cfg_select! {
+        target_endian = "big" => {
+            let mut arr = arr;
+            arr.reverse();
+            arr
+        }
+        target_endian = "little" => arr,
+    }
+}
+
 #[simd_test(enable = "neon")]
 fn test_vst1_s8() {
     let mut vals = [0_i8; 9];
-    let a = i8x8::new(1, 2, 3, 4, 5, 6, 7, 8);
+    let a = i8x8::from_array(reverse_on_be([1, 2, 3, 4, 5, 6, 7, 8]));
 
     unsafe {
         vst1_s8(vals[1..].as_mut_ptr(), a.into());
@@ -36,7 +47,9 @@ fn test_vst1_s8() {
 #[simd_test(enable = "neon")]
 fn test_vst1q_s8() {
     let mut vals = [0_i8; 17];
-    let a = i8x16::new(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
+    let a = i8x16::from_array(reverse_on_be([
+        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
+    ]));
 
     unsafe {
         vst1q_s8(vals[1..].as_mut_ptr(), a.into());
@@ -64,7 +77,7 @@ fn test_vst1q_s8() {
 #[simd_test(enable = "neon")]
 fn test_vst1_s16() {
     let mut vals = [0_i16; 5];
-    let a = i16x4::new(1, 2, 3, 4);
+    let a = i16x4::from_array(reverse_on_be([1, 2, 3, 4]));
 
     unsafe {
         vst1_s16(vals[1..].as_mut_ptr(), a.into());
@@ -80,7 +93,7 @@ fn test_vst1_s16() {
 #[simd_test(enable = "neon")]
 fn test_vst1q_s16() {
     let mut vals = [0_i16; 9];
-    let a = i16x8::new(1, 2, 3, 4, 5, 6, 7, 8);
+    let a = i16x8::from_array(reverse_on_be([1, 2, 3, 4, 5, 6, 7, 8]));
 
     unsafe {
         vst1q_s16(vals[1..].as_mut_ptr(), a.into());
@@ -100,7 +113,7 @@ fn test_vst1q_s16() {
 #[simd_test(enable = "neon")]
 fn test_vst1_s32() {
     let mut vals = [0_i32; 3];
-    let a = i32x2::new(1, 2);
+    let a = i32x2::from_array(reverse_on_be([1, 2]));
 
     unsafe {
         vst1_s32(vals[1..].as_mut_ptr(), a.into());
@@ -114,7 +127,7 @@ fn test_vst1_s32() {
 #[simd_test(enable = "neon")]
 fn test_vst1q_s32() {
     let mut vals = [0_i32; 5];
-    let a = i32x4::new(1, 2, 3, 4);
+    let a = i32x4::from_array(reverse_on_be([1, 2, 3, 4]));
 
     unsafe {
         vst1q_s32(vals[1..].as_mut_ptr(), a.into());
@@ -130,7 +143,7 @@ fn test_vst1q_s32() {
 #[simd_test(enable = "neon")]
 fn test_vst1_s64() {
     let mut vals = [0_i64; 2];
-    let a = i64x1::new(1);
+    let a = i64x1::from_array(reverse_on_be([1]));
 
     unsafe {
         vst1_s64(vals[1..].as_mut_ptr(), a.into());
@@ -143,7 +156,7 @@ fn test_vst1_s64() {
 #[simd_test(enable = "neon")]
 fn test_vst1q_s64() {
     let mut vals = [0_i64; 3];
-    let a = i64x2::new(1, 2);
+    let a = i64x2::from_array(reverse_on_be([1, 2]));
 
     unsafe {
         vst1q_s64(vals[1..].as_mut_ptr(), a.into());
@@ -157,7 +170,7 @@ fn test_vst1q_s64() {
 #[simd_test(enable = "neon")]
 fn test_vst1_u8() {
     let mut vals = [0_u8; 9];
-    let a = u8x8::new(1, 2, 3, 4, 5, 6, 7, 8);
+    let a = u8x8::from_array(reverse_on_be([1, 2, 3, 4, 5, 6, 7, 8]));
 
     unsafe {
         vst1_u8(vals[1..].as_mut_ptr(), a.into());
@@ -177,7 +190,9 @@ fn test_vst1_u8() {
 #[simd_test(enable = "neon")]
 fn test_vst1q_u8() {
     let mut vals = [0_u8; 17];
-    let a = u8x16::new(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
+    let a = u8x16::from_array(reverse_on_be([
+        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
+    ]));
 
     unsafe {
         vst1q_u8(vals[1..].as_mut_ptr(), a.into());
@@ -205,7 +220,7 @@ fn test_vst1q_u8() {
 #[simd_test(enable = "neon")]
 fn test_vst1_u16() {
     let mut vals = [0_u16; 5];
-    let a = u16x4::new(1, 2, 3, 4);
+    let a = u16x4::from_array(reverse_on_be([1, 2, 3, 4]));
 
     unsafe {
         vst1_u16(vals[1..].as_mut_ptr(), a.into());
@@ -221,7 +236,7 @@ fn test_vst1_u16() {
 #[simd_test(enable = "neon")]
 fn test_vst1q_u16() {
     let mut vals = [0_u16; 9];
-    let a = u16x8::new(1, 2, 3, 4, 5, 6, 7, 8);
+    let a = u16x8::from_array(reverse_on_be([1, 2, 3, 4, 5, 6, 7, 8]));
 
     unsafe {
         vst1q_u16(vals[1..].as_mut_ptr(), a.into());
@@ -241,7 +256,7 @@ fn test_vst1q_u16() {
 #[simd_test(enable = "neon")]
 fn test_vst1_u32() {
     let mut vals = [0_u32; 3];
-    let a = u32x2::new(1, 2);
+    let a = u32x2::from_array(reverse_on_be([1, 2]));
 
     unsafe {
         vst1_u32(vals[1..].as_mut_ptr(), a.into());
@@ -255,7 +270,7 @@ fn test_vst1_u32() {
 #[simd_test(enable = "neon")]
 fn test_vst1q_u32() {
     let mut vals = [0_u32; 5];
-    let a = u32x4::new(1, 2, 3, 4);
+    let a = u32x4::from_array(reverse_on_be([1, 2, 3, 4]));
 
     unsafe {
         vst1q_u32(vals[1..].as_mut_ptr(), a.into());
@@ -271,7 +286,7 @@ fn test_vst1q_u32() {
 #[simd_test(enable = "neon")]
 fn test_vst1_u64() {
     let mut vals = [0_u64; 2];
-    let a = u64x1::new(1);
+    let a = u64x1::from_array(reverse_on_be([1]));
 
     unsafe {
         vst1_u64(vals[1..].as_mut_ptr(), a.into());
@@ -284,7 +299,7 @@ fn test_vst1_u64() {
 #[simd_test(enable = "neon")]
 fn test_vst1q_u64() {
     let mut vals = [0_u64; 3];
-    let a = u64x2::new(1, 2);
+    let a = u64x2::from_array(reverse_on_be([1, 2]));
 
     unsafe {
         vst1q_u64(vals[1..].as_mut_ptr(), a.into());
@@ -298,7 +313,7 @@ fn test_vst1q_u64() {
 #[simd_test(enable = "neon")]
 fn test_vst1_p8() {
     let mut vals = [0_u8; 9];
-    let a = u8x8::new(1, 2, 3, 4, 5, 6, 7, 8);
+    let a = u8x8::from_array(reverse_on_be([1, 2, 3, 4, 5, 6, 7, 8]));
 
     unsafe {
         vst1_p8(vals[1..].as_mut_ptr(), a.into());
@@ -318,7 +333,9 @@ fn test_vst1_p8() {
 #[simd_test(enable = "neon")]
 fn test_vst1q_p8() {
     let mut vals = [0_u8; 17];
-    let a = u8x16::new(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
+    let a = u8x16::from_array(reverse_on_be([
+        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
+    ]));
 
     unsafe {
         vst1q_p8(vals[1..].as_mut_ptr(), a.into());
@@ -346,7 +363,7 @@ fn test_vst1q_p8() {
 #[simd_test(enable = "neon")]
 fn test_vst1_p16() {
     let mut vals = [0_u16; 5];
-    let a = u16x4::new(1, 2, 3, 4);
+    let a = u16x4::from_array(reverse_on_be([1, 2, 3, 4]));
 
     unsafe {
         vst1_p16(vals[1..].as_mut_ptr(), a.into());
@@ -362,7 +379,7 @@ fn test_vst1_p16() {
 #[simd_test(enable = "neon")]
 fn test_vst1q_p16() {
     let mut vals = [0_u16; 9];
-    let a = u16x8::new(1, 2, 3, 4, 5, 6, 7, 8);
+    let a = u16x8::from_array(reverse_on_be([1, 2, 3, 4, 5, 6, 7, 8]));
 
     unsafe {
         vst1q_p16(vals[1..].as_mut_ptr(), a.into());
@@ -382,7 +399,7 @@ fn test_vst1q_p16() {
 #[simd_test(enable = "neon,aes")]
 fn test_vst1_p64() {
     let mut vals = [0_u64; 2];
-    let a = u64x1::new(1);
+    let a = u64x1::from_array(reverse_on_be([1]));
 
     unsafe {
         vst1_p64(vals[1..].as_mut_ptr(), a.into());
@@ -395,7 +412,7 @@ fn test_vst1_p64() {
 #[simd_test(enable = "neon,aes")]
 fn test_vst1q_p64() {
     let mut vals = [0_u64; 3];
-    let a = u64x2::new(1, 2);
+    let a = u64x2::from_array(reverse_on_be([1, 2]));
 
     unsafe {
         vst1q_p64(vals[1..].as_mut_ptr(), a.into());
@@ -410,7 +427,7 @@ fn test_vst1q_p64() {
 #[simd_test(enable = "neon,fp16")]
 fn test_vst1_f16() {
     let mut vals = [0_f16; 5];
-    let a = f16x4::new(1., 2., 3., 4.);
+    let a = f16x4::from_array(reverse_on_be([1., 2., 3., 4.]));
 
     unsafe {
         vst1_f16(vals[1..].as_mut_ptr(), a.into());
@@ -427,7 +444,7 @@ fn test_vst1_f16() {
 #[simd_test(enable = "neon,fp16")]
 fn test_vst1q_f16() {
     let mut vals = [0_f16; 9];
-    let a = f16x8::new(1., 2., 3., 4., 5., 6., 7., 8.);
+    let a = f16x8::from_array(reverse_on_be([1., 2., 3., 4., 5., 6., 7., 8.]));
 
     unsafe {
         vst1q_f16(vals[1..].as_mut_ptr(), a.into());
@@ -447,7 +464,7 @@ fn test_vst1q_f16() {
 #[simd_test(enable = "neon")]
 fn test_vst1_f32() {
     let mut vals = [0_f32; 3];
-    let a = f32x2::new(1., 2.);
+    let a = f32x2::from_array(reverse_on_be([1., 2.]));
 
     unsafe {
         vst1_f32(vals[1..].as_mut_ptr(), a.into());
@@ -461,7 +478,7 @@ fn test_vst1_f32() {
 #[simd_test(enable = "neon")]
 fn test_vst1q_f32() {
     let mut vals = [0_f32; 5];
-    let a = f32x4::new(1., 2., 3., 4.);
+    let a = f32x4::from_array(reverse_on_be([1., 2., 3., 4.]));
 
     unsafe {
         vst1q_f32(vals[1..].as_mut_ptr(), a.into());

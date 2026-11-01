@@ -9984,6 +9984,7 @@ pub fn vgetq_lane_f64<const IMM5: i32>(a: float64x2_t) -> f64 {
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
+#[cfg(target_endian = "little")]
 #[target_feature(enable = "neon,fp16")]
 #[cfg_attr(test, assert_instr(ldr))]
 #[unstable(feature = "stdarch_neon_f16", issue = "136306")]
@@ -9992,10 +9993,25 @@ pub unsafe fn vld1_f16(ptr: *const f16) -> float16x4_t {
     crate::ptr::read_unaligned(ptr.cast())
 }
 #[doc = "Load multiple single-element structures to one, two, three, or four registers"]
+#[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vld1_f16)"]
+#[doc = "## Safety"]
+#[doc = "  * Neon intrinsic unsafe"]
+#[inline]
+#[cfg(target_endian = "big")]
+#[target_feature(enable = "neon,fp16")]
+#[cfg_attr(test, assert_instr(ldr))]
+#[unstable(feature = "stdarch_neon_f16", issue = "136306")]
+#[cfg(not(target_arch = "arm64ec"))]
+pub unsafe fn vld1_f16(ptr: *const f16) -> float16x4_t {
+    let ret_val: float16x4_t = crate::ptr::read_unaligned(ptr.cast());
+    simd_shuffle!(ret_val, ret_val, [3, 2, 1, 0])
+}
+#[doc = "Load multiple single-element structures to one, two, three, or four registers"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vld1q_f16)"]
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
+#[cfg(target_endian = "little")]
 #[target_feature(enable = "neon,fp16")]
 #[cfg_attr(test, assert_instr(ldr))]
 #[unstable(feature = "stdarch_neon_f16", issue = "136306")]
@@ -10004,10 +10020,25 @@ pub unsafe fn vld1q_f16(ptr: *const f16) -> float16x8_t {
     crate::ptr::read_unaligned(ptr.cast())
 }
 #[doc = "Load multiple single-element structures to one, two, three, or four registers"]
+#[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vld1q_f16)"]
+#[doc = "## Safety"]
+#[doc = "  * Neon intrinsic unsafe"]
+#[inline]
+#[cfg(target_endian = "big")]
+#[target_feature(enable = "neon,fp16")]
+#[cfg_attr(test, assert_instr(ldr))]
+#[unstable(feature = "stdarch_neon_f16", issue = "136306")]
+#[cfg(not(target_arch = "arm64ec"))]
+pub unsafe fn vld1q_f16(ptr: *const f16) -> float16x8_t {
+    let ret_val: float16x8_t = crate::ptr::read_unaligned(ptr.cast());
+    simd_shuffle!(ret_val, ret_val, [7, 6, 5, 4, 3, 2, 1, 0])
+}
+#[doc = "Load multiple single-element structures to one, two, three, or four registers"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vld1_f32)"]
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
+#[cfg(target_endian = "little")]
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 #[stable(feature = "neon_intrinsics", since = "1.59.0")]
@@ -10015,15 +10046,42 @@ pub unsafe fn vld1_f32(ptr: *const f32) -> float32x2_t {
     crate::ptr::read_unaligned(ptr.cast())
 }
 #[doc = "Load multiple single-element structures to one, two, three, or four registers"]
+#[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vld1_f32)"]
+#[doc = "## Safety"]
+#[doc = "  * Neon intrinsic unsafe"]
+#[inline]
+#[cfg(target_endian = "big")]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(ldr))]
+#[stable(feature = "neon_intrinsics", since = "1.59.0")]
+pub unsafe fn vld1_f32(ptr: *const f32) -> float32x2_t {
+    let ret_val: float32x2_t = crate::ptr::read_unaligned(ptr.cast());
+    simd_shuffle!(ret_val, ret_val, [1, 0])
+}
+#[doc = "Load multiple single-element structures to one, two, three, or four registers"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vld1q_f32)"]
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
+#[cfg(target_endian = "little")]
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 #[stable(feature = "neon_intrinsics", since = "1.59.0")]
 pub unsafe fn vld1q_f32(ptr: *const f32) -> float32x4_t {
     crate::ptr::read_unaligned(ptr.cast())
+}
+#[doc = "Load multiple single-element structures to one, two, three, or four registers"]
+#[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vld1q_f32)"]
+#[doc = "## Safety"]
+#[doc = "  * Neon intrinsic unsafe"]
+#[inline]
+#[cfg(target_endian = "big")]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(ldr))]
+#[stable(feature = "neon_intrinsics", since = "1.59.0")]
+pub unsafe fn vld1q_f32(ptr: *const f32) -> float32x4_t {
+    let ret_val: float32x4_t = crate::ptr::read_unaligned(ptr.cast());
+    simd_shuffle!(ret_val, ret_val, [3, 2, 1, 0])
 }
 #[doc = "Load multiple single-element structures to one, two, three, or four registers"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vld1_f64)"]
@@ -10041,6 +10099,7 @@ pub unsafe fn vld1_f64(ptr: *const f64) -> float64x1_t {
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
+#[cfg(target_endian = "little")]
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 #[stable(feature = "neon_intrinsics", since = "1.59.0")]
@@ -10048,10 +10107,24 @@ pub unsafe fn vld1q_f64(ptr: *const f64) -> float64x2_t {
     crate::ptr::read_unaligned(ptr.cast())
 }
 #[doc = "Load multiple single-element structures to one, two, three, or four registers"]
+#[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vld1q_f64)"]
+#[doc = "## Safety"]
+#[doc = "  * Neon intrinsic unsafe"]
+#[inline]
+#[cfg(target_endian = "big")]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(ldr))]
+#[stable(feature = "neon_intrinsics", since = "1.59.0")]
+pub unsafe fn vld1q_f64(ptr: *const f64) -> float64x2_t {
+    let ret_val: float64x2_t = crate::ptr::read_unaligned(ptr.cast());
+    simd_shuffle!(ret_val, ret_val, [1, 0])
+}
+#[doc = "Load multiple single-element structures to one, two, three, or four registers"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vld1_s8)"]
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
+#[cfg(target_endian = "little")]
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 #[stable(feature = "neon_intrinsics", since = "1.59.0")]
@@ -10059,10 +10132,24 @@ pub unsafe fn vld1_s8(ptr: *const i8) -> int8x8_t {
     crate::ptr::read_unaligned(ptr.cast())
 }
 #[doc = "Load multiple single-element structures to one, two, three, or four registers"]
+#[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vld1_s8)"]
+#[doc = "## Safety"]
+#[doc = "  * Neon intrinsic unsafe"]
+#[inline]
+#[cfg(target_endian = "big")]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(ldr))]
+#[stable(feature = "neon_intrinsics", since = "1.59.0")]
+pub unsafe fn vld1_s8(ptr: *const i8) -> int8x8_t {
+    let ret_val: int8x8_t = crate::ptr::read_unaligned(ptr.cast());
+    simd_shuffle!(ret_val, ret_val, [7, 6, 5, 4, 3, 2, 1, 0])
+}
+#[doc = "Load multiple single-element structures to one, two, three, or four registers"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vld1q_s8)"]
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
+#[cfg(target_endian = "little")]
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 #[stable(feature = "neon_intrinsics", since = "1.59.0")]
@@ -10070,10 +10157,28 @@ pub unsafe fn vld1q_s8(ptr: *const i8) -> int8x16_t {
     crate::ptr::read_unaligned(ptr.cast())
 }
 #[doc = "Load multiple single-element structures to one, two, three, or four registers"]
+#[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vld1q_s8)"]
+#[doc = "## Safety"]
+#[doc = "  * Neon intrinsic unsafe"]
+#[inline]
+#[cfg(target_endian = "big")]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(ldr))]
+#[stable(feature = "neon_intrinsics", since = "1.59.0")]
+pub unsafe fn vld1q_s8(ptr: *const i8) -> int8x16_t {
+    let ret_val: int8x16_t = crate::ptr::read_unaligned(ptr.cast());
+    simd_shuffle!(
+        ret_val,
+        ret_val,
+        [15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
+    )
+}
+#[doc = "Load multiple single-element structures to one, two, three, or four registers"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vld1_s16)"]
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
+#[cfg(target_endian = "little")]
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 #[stable(feature = "neon_intrinsics", since = "1.59.0")]
@@ -10081,10 +10186,24 @@ pub unsafe fn vld1_s16(ptr: *const i16) -> int16x4_t {
     crate::ptr::read_unaligned(ptr.cast())
 }
 #[doc = "Load multiple single-element structures to one, two, three, or four registers"]
+#[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vld1_s16)"]
+#[doc = "## Safety"]
+#[doc = "  * Neon intrinsic unsafe"]
+#[inline]
+#[cfg(target_endian = "big")]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(ldr))]
+#[stable(feature = "neon_intrinsics", since = "1.59.0")]
+pub unsafe fn vld1_s16(ptr: *const i16) -> int16x4_t {
+    let ret_val: int16x4_t = crate::ptr::read_unaligned(ptr.cast());
+    simd_shuffle!(ret_val, ret_val, [3, 2, 1, 0])
+}
+#[doc = "Load multiple single-element structures to one, two, three, or four registers"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vld1q_s16)"]
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
+#[cfg(target_endian = "little")]
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 #[stable(feature = "neon_intrinsics", since = "1.59.0")]
@@ -10092,10 +10211,24 @@ pub unsafe fn vld1q_s16(ptr: *const i16) -> int16x8_t {
     crate::ptr::read_unaligned(ptr.cast())
 }
 #[doc = "Load multiple single-element structures to one, two, three, or four registers"]
+#[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vld1q_s16)"]
+#[doc = "## Safety"]
+#[doc = "  * Neon intrinsic unsafe"]
+#[inline]
+#[cfg(target_endian = "big")]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(ldr))]
+#[stable(feature = "neon_intrinsics", since = "1.59.0")]
+pub unsafe fn vld1q_s16(ptr: *const i16) -> int16x8_t {
+    let ret_val: int16x8_t = crate::ptr::read_unaligned(ptr.cast());
+    simd_shuffle!(ret_val, ret_val, [7, 6, 5, 4, 3, 2, 1, 0])
+}
+#[doc = "Load multiple single-element structures to one, two, three, or four registers"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vld1_s32)"]
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
+#[cfg(target_endian = "little")]
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 #[stable(feature = "neon_intrinsics", since = "1.59.0")]
@@ -10103,15 +10236,42 @@ pub unsafe fn vld1_s32(ptr: *const i32) -> int32x2_t {
     crate::ptr::read_unaligned(ptr.cast())
 }
 #[doc = "Load multiple single-element structures to one, two, three, or four registers"]
+#[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vld1_s32)"]
+#[doc = "## Safety"]
+#[doc = "  * Neon intrinsic unsafe"]
+#[inline]
+#[cfg(target_endian = "big")]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(ldr))]
+#[stable(feature = "neon_intrinsics", since = "1.59.0")]
+pub unsafe fn vld1_s32(ptr: *const i32) -> int32x2_t {
+    let ret_val: int32x2_t = crate::ptr::read_unaligned(ptr.cast());
+    simd_shuffle!(ret_val, ret_val, [1, 0])
+}
+#[doc = "Load multiple single-element structures to one, two, three, or four registers"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vld1q_s32)"]
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
+#[cfg(target_endian = "little")]
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 #[stable(feature = "neon_intrinsics", since = "1.59.0")]
 pub unsafe fn vld1q_s32(ptr: *const i32) -> int32x4_t {
     crate::ptr::read_unaligned(ptr.cast())
+}
+#[doc = "Load multiple single-element structures to one, two, three, or four registers"]
+#[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vld1q_s32)"]
+#[doc = "## Safety"]
+#[doc = "  * Neon intrinsic unsafe"]
+#[inline]
+#[cfg(target_endian = "big")]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(ldr))]
+#[stable(feature = "neon_intrinsics", since = "1.59.0")]
+pub unsafe fn vld1q_s32(ptr: *const i32) -> int32x4_t {
+    let ret_val: int32x4_t = crate::ptr::read_unaligned(ptr.cast());
+    simd_shuffle!(ret_val, ret_val, [3, 2, 1, 0])
 }
 #[doc = "Load multiple single-element structures to one, two, three, or four registers"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vld1_s64)"]
@@ -10129,6 +10289,7 @@ pub unsafe fn vld1_s64(ptr: *const i64) -> int64x1_t {
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
+#[cfg(target_endian = "little")]
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 #[stable(feature = "neon_intrinsics", since = "1.59.0")]
@@ -10136,10 +10297,24 @@ pub unsafe fn vld1q_s64(ptr: *const i64) -> int64x2_t {
     crate::ptr::read_unaligned(ptr.cast())
 }
 #[doc = "Load multiple single-element structures to one, two, three, or four registers"]
+#[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vld1q_s64)"]
+#[doc = "## Safety"]
+#[doc = "  * Neon intrinsic unsafe"]
+#[inline]
+#[cfg(target_endian = "big")]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(ldr))]
+#[stable(feature = "neon_intrinsics", since = "1.59.0")]
+pub unsafe fn vld1q_s64(ptr: *const i64) -> int64x2_t {
+    let ret_val: int64x2_t = crate::ptr::read_unaligned(ptr.cast());
+    simd_shuffle!(ret_val, ret_val, [1, 0])
+}
+#[doc = "Load multiple single-element structures to one, two, three, or four registers"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vld1_u8)"]
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
+#[cfg(target_endian = "little")]
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 #[stable(feature = "neon_intrinsics", since = "1.59.0")]
@@ -10147,10 +10322,24 @@ pub unsafe fn vld1_u8(ptr: *const u8) -> uint8x8_t {
     crate::ptr::read_unaligned(ptr.cast())
 }
 #[doc = "Load multiple single-element structures to one, two, three, or four registers"]
+#[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vld1_u8)"]
+#[doc = "## Safety"]
+#[doc = "  * Neon intrinsic unsafe"]
+#[inline]
+#[cfg(target_endian = "big")]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(ldr))]
+#[stable(feature = "neon_intrinsics", since = "1.59.0")]
+pub unsafe fn vld1_u8(ptr: *const u8) -> uint8x8_t {
+    let ret_val: uint8x8_t = crate::ptr::read_unaligned(ptr.cast());
+    simd_shuffle!(ret_val, ret_val, [7, 6, 5, 4, 3, 2, 1, 0])
+}
+#[doc = "Load multiple single-element structures to one, two, three, or four registers"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vld1q_u8)"]
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
+#[cfg(target_endian = "little")]
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 #[stable(feature = "neon_intrinsics", since = "1.59.0")]
@@ -10158,10 +10347,28 @@ pub unsafe fn vld1q_u8(ptr: *const u8) -> uint8x16_t {
     crate::ptr::read_unaligned(ptr.cast())
 }
 #[doc = "Load multiple single-element structures to one, two, three, or four registers"]
+#[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vld1q_u8)"]
+#[doc = "## Safety"]
+#[doc = "  * Neon intrinsic unsafe"]
+#[inline]
+#[cfg(target_endian = "big")]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(ldr))]
+#[stable(feature = "neon_intrinsics", since = "1.59.0")]
+pub unsafe fn vld1q_u8(ptr: *const u8) -> uint8x16_t {
+    let ret_val: uint8x16_t = crate::ptr::read_unaligned(ptr.cast());
+    simd_shuffle!(
+        ret_val,
+        ret_val,
+        [15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
+    )
+}
+#[doc = "Load multiple single-element structures to one, two, three, or four registers"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vld1_u16)"]
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
+#[cfg(target_endian = "little")]
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 #[stable(feature = "neon_intrinsics", since = "1.59.0")]
@@ -10169,10 +10376,24 @@ pub unsafe fn vld1_u16(ptr: *const u16) -> uint16x4_t {
     crate::ptr::read_unaligned(ptr.cast())
 }
 #[doc = "Load multiple single-element structures to one, two, three, or four registers"]
+#[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vld1_u16)"]
+#[doc = "## Safety"]
+#[doc = "  * Neon intrinsic unsafe"]
+#[inline]
+#[cfg(target_endian = "big")]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(ldr))]
+#[stable(feature = "neon_intrinsics", since = "1.59.0")]
+pub unsafe fn vld1_u16(ptr: *const u16) -> uint16x4_t {
+    let ret_val: uint16x4_t = crate::ptr::read_unaligned(ptr.cast());
+    simd_shuffle!(ret_val, ret_val, [3, 2, 1, 0])
+}
+#[doc = "Load multiple single-element structures to one, two, three, or four registers"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vld1q_u16)"]
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
+#[cfg(target_endian = "little")]
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 #[stable(feature = "neon_intrinsics", since = "1.59.0")]
@@ -10180,10 +10401,24 @@ pub unsafe fn vld1q_u16(ptr: *const u16) -> uint16x8_t {
     crate::ptr::read_unaligned(ptr.cast())
 }
 #[doc = "Load multiple single-element structures to one, two, three, or four registers"]
+#[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vld1q_u16)"]
+#[doc = "## Safety"]
+#[doc = "  * Neon intrinsic unsafe"]
+#[inline]
+#[cfg(target_endian = "big")]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(ldr))]
+#[stable(feature = "neon_intrinsics", since = "1.59.0")]
+pub unsafe fn vld1q_u16(ptr: *const u16) -> uint16x8_t {
+    let ret_val: uint16x8_t = crate::ptr::read_unaligned(ptr.cast());
+    simd_shuffle!(ret_val, ret_val, [7, 6, 5, 4, 3, 2, 1, 0])
+}
+#[doc = "Load multiple single-element structures to one, two, three, or four registers"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vld1_u32)"]
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
+#[cfg(target_endian = "little")]
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 #[stable(feature = "neon_intrinsics", since = "1.59.0")]
@@ -10191,15 +10426,42 @@ pub unsafe fn vld1_u32(ptr: *const u32) -> uint32x2_t {
     crate::ptr::read_unaligned(ptr.cast())
 }
 #[doc = "Load multiple single-element structures to one, two, three, or four registers"]
+#[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vld1_u32)"]
+#[doc = "## Safety"]
+#[doc = "  * Neon intrinsic unsafe"]
+#[inline]
+#[cfg(target_endian = "big")]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(ldr))]
+#[stable(feature = "neon_intrinsics", since = "1.59.0")]
+pub unsafe fn vld1_u32(ptr: *const u32) -> uint32x2_t {
+    let ret_val: uint32x2_t = crate::ptr::read_unaligned(ptr.cast());
+    simd_shuffle!(ret_val, ret_val, [1, 0])
+}
+#[doc = "Load multiple single-element structures to one, two, three, or four registers"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vld1q_u32)"]
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
+#[cfg(target_endian = "little")]
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 #[stable(feature = "neon_intrinsics", since = "1.59.0")]
 pub unsafe fn vld1q_u32(ptr: *const u32) -> uint32x4_t {
     crate::ptr::read_unaligned(ptr.cast())
+}
+#[doc = "Load multiple single-element structures to one, two, three, or four registers"]
+#[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vld1q_u32)"]
+#[doc = "## Safety"]
+#[doc = "  * Neon intrinsic unsafe"]
+#[inline]
+#[cfg(target_endian = "big")]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(ldr))]
+#[stable(feature = "neon_intrinsics", since = "1.59.0")]
+pub unsafe fn vld1q_u32(ptr: *const u32) -> uint32x4_t {
+    let ret_val: uint32x4_t = crate::ptr::read_unaligned(ptr.cast());
+    simd_shuffle!(ret_val, ret_val, [3, 2, 1, 0])
 }
 #[doc = "Load multiple single-element structures to one, two, three, or four registers"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vld1_u64)"]
@@ -10217,6 +10479,7 @@ pub unsafe fn vld1_u64(ptr: *const u64) -> uint64x1_t {
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
+#[cfg(target_endian = "little")]
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 #[stable(feature = "neon_intrinsics", since = "1.59.0")]
@@ -10224,10 +10487,24 @@ pub unsafe fn vld1q_u64(ptr: *const u64) -> uint64x2_t {
     crate::ptr::read_unaligned(ptr.cast())
 }
 #[doc = "Load multiple single-element structures to one, two, three, or four registers"]
+#[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vld1q_u64)"]
+#[doc = "## Safety"]
+#[doc = "  * Neon intrinsic unsafe"]
+#[inline]
+#[cfg(target_endian = "big")]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(ldr))]
+#[stable(feature = "neon_intrinsics", since = "1.59.0")]
+pub unsafe fn vld1q_u64(ptr: *const u64) -> uint64x2_t {
+    let ret_val: uint64x2_t = crate::ptr::read_unaligned(ptr.cast());
+    simd_shuffle!(ret_val, ret_val, [1, 0])
+}
+#[doc = "Load multiple single-element structures to one, two, three, or four registers"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vld1_p8)"]
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
+#[cfg(target_endian = "little")]
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 #[stable(feature = "neon_intrinsics", since = "1.59.0")]
@@ -10235,10 +10512,24 @@ pub unsafe fn vld1_p8(ptr: *const p8) -> poly8x8_t {
     crate::ptr::read_unaligned(ptr.cast())
 }
 #[doc = "Load multiple single-element structures to one, two, three, or four registers"]
+#[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vld1_p8)"]
+#[doc = "## Safety"]
+#[doc = "  * Neon intrinsic unsafe"]
+#[inline]
+#[cfg(target_endian = "big")]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(ldr))]
+#[stable(feature = "neon_intrinsics", since = "1.59.0")]
+pub unsafe fn vld1_p8(ptr: *const p8) -> poly8x8_t {
+    let ret_val: poly8x8_t = crate::ptr::read_unaligned(ptr.cast());
+    simd_shuffle!(ret_val, ret_val, [7, 6, 5, 4, 3, 2, 1, 0])
+}
+#[doc = "Load multiple single-element structures to one, two, three, or four registers"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vld1q_p8)"]
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
+#[cfg(target_endian = "little")]
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 #[stable(feature = "neon_intrinsics", since = "1.59.0")]
@@ -10246,10 +10537,28 @@ pub unsafe fn vld1q_p8(ptr: *const p8) -> poly8x16_t {
     crate::ptr::read_unaligned(ptr.cast())
 }
 #[doc = "Load multiple single-element structures to one, two, three, or four registers"]
+#[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vld1q_p8)"]
+#[doc = "## Safety"]
+#[doc = "  * Neon intrinsic unsafe"]
+#[inline]
+#[cfg(target_endian = "big")]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(ldr))]
+#[stable(feature = "neon_intrinsics", since = "1.59.0")]
+pub unsafe fn vld1q_p8(ptr: *const p8) -> poly8x16_t {
+    let ret_val: poly8x16_t = crate::ptr::read_unaligned(ptr.cast());
+    simd_shuffle!(
+        ret_val,
+        ret_val,
+        [15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
+    )
+}
+#[doc = "Load multiple single-element structures to one, two, three, or four registers"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vld1_p16)"]
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
+#[cfg(target_endian = "little")]
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 #[stable(feature = "neon_intrinsics", since = "1.59.0")]
@@ -10257,15 +10566,42 @@ pub unsafe fn vld1_p16(ptr: *const p16) -> poly16x4_t {
     crate::ptr::read_unaligned(ptr.cast())
 }
 #[doc = "Load multiple single-element structures to one, two, three, or four registers"]
+#[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vld1_p16)"]
+#[doc = "## Safety"]
+#[doc = "  * Neon intrinsic unsafe"]
+#[inline]
+#[cfg(target_endian = "big")]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(ldr))]
+#[stable(feature = "neon_intrinsics", since = "1.59.0")]
+pub unsafe fn vld1_p16(ptr: *const p16) -> poly16x4_t {
+    let ret_val: poly16x4_t = crate::ptr::read_unaligned(ptr.cast());
+    simd_shuffle!(ret_val, ret_val, [3, 2, 1, 0])
+}
+#[doc = "Load multiple single-element structures to one, two, three, or four registers"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vld1q_p16)"]
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
+#[cfg(target_endian = "little")]
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(ldr))]
 #[stable(feature = "neon_intrinsics", since = "1.59.0")]
 pub unsafe fn vld1q_p16(ptr: *const p16) -> poly16x8_t {
     crate::ptr::read_unaligned(ptr.cast())
+}
+#[doc = "Load multiple single-element structures to one, two, three, or four registers"]
+#[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vld1q_p16)"]
+#[doc = "## Safety"]
+#[doc = "  * Neon intrinsic unsafe"]
+#[inline]
+#[cfg(target_endian = "big")]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(ldr))]
+#[stable(feature = "neon_intrinsics", since = "1.59.0")]
+pub unsafe fn vld1q_p16(ptr: *const p16) -> poly16x8_t {
+    let ret_val: poly16x8_t = crate::ptr::read_unaligned(ptr.cast());
+    simd_shuffle!(ret_val, ret_val, [7, 6, 5, 4, 3, 2, 1, 0])
 }
 #[doc = "Load multiple single-element structures to one, two, three, or four registers"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vld1_p64)"]
@@ -10283,11 +10619,25 @@ pub unsafe fn vld1_p64(ptr: *const p64) -> poly64x1_t {
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
+#[cfg(target_endian = "little")]
 #[target_feature(enable = "neon,aes")]
 #[cfg_attr(test, assert_instr(ldr))]
 #[stable(feature = "neon_intrinsics", since = "1.59.0")]
 pub unsafe fn vld1q_p64(ptr: *const p64) -> poly64x2_t {
     crate::ptr::read_unaligned(ptr.cast())
+}
+#[doc = "Load multiple single-element structures to one, two, three, or four registers"]
+#[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vld1q_p64)"]
+#[doc = "## Safety"]
+#[doc = "  * Neon intrinsic unsafe"]
+#[inline]
+#[cfg(target_endian = "big")]
+#[target_feature(enable = "neon,aes")]
+#[cfg_attr(test, assert_instr(ldr))]
+#[stable(feature = "neon_intrinsics", since = "1.59.0")]
+pub unsafe fn vld1q_p64(ptr: *const p64) -> poly64x2_t {
+    let ret_val: poly64x2_t = crate::ptr::read_unaligned(ptr.cast());
+    simd_shuffle!(ret_val, ret_val, [1, 0])
 }
 #[doc = "Load multiple single-element structures to one, two, three, or four registers"]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vld1_f64_x2)"]
@@ -24873,6 +25223,7 @@ pub fn vsrid_n_u64<const N: i32>(a: u64, b: u64) -> u64 {
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
+#[cfg(target_endian = "little")]
 #[target_feature(enable = "neon,fp16")]
 #[cfg_attr(test, assert_instr(str))]
 #[allow(clippy::cast_ptr_alignment)]
@@ -24882,10 +25233,26 @@ pub unsafe fn vst1_f16(ptr: *mut f16, a: float16x4_t) {
     crate::ptr::write_unaligned(ptr.cast(), a)
 }
 #[doc = "Store multiple single-element structures from one, two, three, or four registers."]
+#[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vst1_f16)"]
+#[doc = "## Safety"]
+#[doc = "  * Neon intrinsic unsafe"]
+#[inline]
+#[cfg(target_endian = "big")]
+#[target_feature(enable = "neon,fp16")]
+#[cfg_attr(test, assert_instr(str))]
+#[allow(clippy::cast_ptr_alignment)]
+#[unstable(feature = "stdarch_neon_f16", issue = "136306")]
+#[cfg(not(target_arch = "arm64ec"))]
+pub unsafe fn vst1_f16(ptr: *mut f16, a: float16x4_t) {
+    let a: float16x4_t = simd_shuffle!(a, a, [3, 2, 1, 0]);
+    crate::ptr::write_unaligned(ptr.cast(), a)
+}
+#[doc = "Store multiple single-element structures from one, two, three, or four registers."]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vst1q_f16)"]
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
+#[cfg(target_endian = "little")]
 #[target_feature(enable = "neon,fp16")]
 #[cfg_attr(test, assert_instr(str))]
 #[allow(clippy::cast_ptr_alignment)]
@@ -24895,10 +25262,26 @@ pub unsafe fn vst1q_f16(ptr: *mut f16, a: float16x8_t) {
     crate::ptr::write_unaligned(ptr.cast(), a)
 }
 #[doc = "Store multiple single-element structures from one, two, three, or four registers."]
+#[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vst1q_f16)"]
+#[doc = "## Safety"]
+#[doc = "  * Neon intrinsic unsafe"]
+#[inline]
+#[cfg(target_endian = "big")]
+#[target_feature(enable = "neon,fp16")]
+#[cfg_attr(test, assert_instr(str))]
+#[allow(clippy::cast_ptr_alignment)]
+#[unstable(feature = "stdarch_neon_f16", issue = "136306")]
+#[cfg(not(target_arch = "arm64ec"))]
+pub unsafe fn vst1q_f16(ptr: *mut f16, a: float16x8_t) {
+    let a: float16x8_t = simd_shuffle!(a, a, [7, 6, 5, 4, 3, 2, 1, 0]);
+    crate::ptr::write_unaligned(ptr.cast(), a)
+}
+#[doc = "Store multiple single-element structures from one, two, three, or four registers."]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vst1_f32)"]
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
+#[cfg(target_endian = "little")]
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(str))]
 #[allow(clippy::cast_ptr_alignment)]
@@ -24907,15 +25290,44 @@ pub unsafe fn vst1_f32(ptr: *mut f32, a: float32x2_t) {
     crate::ptr::write_unaligned(ptr.cast(), a)
 }
 #[doc = "Store multiple single-element structures from one, two, three, or four registers."]
+#[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vst1_f32)"]
+#[doc = "## Safety"]
+#[doc = "  * Neon intrinsic unsafe"]
+#[inline]
+#[cfg(target_endian = "big")]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(str))]
+#[allow(clippy::cast_ptr_alignment)]
+#[stable(feature = "neon_intrinsics", since = "1.59.0")]
+pub unsafe fn vst1_f32(ptr: *mut f32, a: float32x2_t) {
+    let a: float32x2_t = simd_shuffle!(a, a, [1, 0]);
+    crate::ptr::write_unaligned(ptr.cast(), a)
+}
+#[doc = "Store multiple single-element structures from one, two, three, or four registers."]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vst1q_f32)"]
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
+#[cfg(target_endian = "little")]
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(str))]
 #[allow(clippy::cast_ptr_alignment)]
 #[stable(feature = "neon_intrinsics", since = "1.59.0")]
 pub unsafe fn vst1q_f32(ptr: *mut f32, a: float32x4_t) {
+    crate::ptr::write_unaligned(ptr.cast(), a)
+}
+#[doc = "Store multiple single-element structures from one, two, three, or four registers."]
+#[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vst1q_f32)"]
+#[doc = "## Safety"]
+#[doc = "  * Neon intrinsic unsafe"]
+#[inline]
+#[cfg(target_endian = "big")]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(str))]
+#[allow(clippy::cast_ptr_alignment)]
+#[stable(feature = "neon_intrinsics", since = "1.59.0")]
+pub unsafe fn vst1q_f32(ptr: *mut f32, a: float32x4_t) {
+    let a: float32x4_t = simd_shuffle!(a, a, [3, 2, 1, 0]);
     crate::ptr::write_unaligned(ptr.cast(), a)
 }
 #[doc = "Store multiple single-element structures from one, two, three, or four registers."]
@@ -24935,6 +25347,7 @@ pub unsafe fn vst1_f64(ptr: *mut f64, a: float64x1_t) {
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
+#[cfg(target_endian = "little")]
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(str))]
 #[allow(clippy::cast_ptr_alignment)]
@@ -24943,10 +25356,25 @@ pub unsafe fn vst1q_f64(ptr: *mut f64, a: float64x2_t) {
     crate::ptr::write_unaligned(ptr.cast(), a)
 }
 #[doc = "Store multiple single-element structures from one, two, three, or four registers."]
+#[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vst1q_f64)"]
+#[doc = "## Safety"]
+#[doc = "  * Neon intrinsic unsafe"]
+#[inline]
+#[cfg(target_endian = "big")]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(str))]
+#[allow(clippy::cast_ptr_alignment)]
+#[stable(feature = "neon_intrinsics", since = "1.59.0")]
+pub unsafe fn vst1q_f64(ptr: *mut f64, a: float64x2_t) {
+    let a: float64x2_t = simd_shuffle!(a, a, [1, 0]);
+    crate::ptr::write_unaligned(ptr.cast(), a)
+}
+#[doc = "Store multiple single-element structures from one, two, three, or four registers."]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vst1_s8)"]
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
+#[cfg(target_endian = "little")]
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(str))]
 #[allow(clippy::cast_ptr_alignment)]
@@ -24955,10 +25383,25 @@ pub unsafe fn vst1_s8(ptr: *mut i8, a: int8x8_t) {
     crate::ptr::write_unaligned(ptr.cast(), a)
 }
 #[doc = "Store multiple single-element structures from one, two, three, or four registers."]
+#[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vst1_s8)"]
+#[doc = "## Safety"]
+#[doc = "  * Neon intrinsic unsafe"]
+#[inline]
+#[cfg(target_endian = "big")]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(str))]
+#[allow(clippy::cast_ptr_alignment)]
+#[stable(feature = "neon_intrinsics", since = "1.59.0")]
+pub unsafe fn vst1_s8(ptr: *mut i8, a: int8x8_t) {
+    let a: int8x8_t = simd_shuffle!(a, a, [7, 6, 5, 4, 3, 2, 1, 0]);
+    crate::ptr::write_unaligned(ptr.cast(), a)
+}
+#[doc = "Store multiple single-element structures from one, two, three, or four registers."]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vst1q_s8)"]
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
+#[cfg(target_endian = "little")]
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(str))]
 #[allow(clippy::cast_ptr_alignment)]
@@ -24967,10 +25410,25 @@ pub unsafe fn vst1q_s8(ptr: *mut i8, a: int8x16_t) {
     crate::ptr::write_unaligned(ptr.cast(), a)
 }
 #[doc = "Store multiple single-element structures from one, two, three, or four registers."]
+#[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vst1q_s8)"]
+#[doc = "## Safety"]
+#[doc = "  * Neon intrinsic unsafe"]
+#[inline]
+#[cfg(target_endian = "big")]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(str))]
+#[allow(clippy::cast_ptr_alignment)]
+#[stable(feature = "neon_intrinsics", since = "1.59.0")]
+pub unsafe fn vst1q_s8(ptr: *mut i8, a: int8x16_t) {
+    let a: int8x16_t = simd_shuffle!(a, a, [15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0]);
+    crate::ptr::write_unaligned(ptr.cast(), a)
+}
+#[doc = "Store multiple single-element structures from one, two, three, or four registers."]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vst1_s16)"]
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
+#[cfg(target_endian = "little")]
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(str))]
 #[allow(clippy::cast_ptr_alignment)]
@@ -24979,10 +25437,25 @@ pub unsafe fn vst1_s16(ptr: *mut i16, a: int16x4_t) {
     crate::ptr::write_unaligned(ptr.cast(), a)
 }
 #[doc = "Store multiple single-element structures from one, two, three, or four registers."]
+#[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vst1_s16)"]
+#[doc = "## Safety"]
+#[doc = "  * Neon intrinsic unsafe"]
+#[inline]
+#[cfg(target_endian = "big")]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(str))]
+#[allow(clippy::cast_ptr_alignment)]
+#[stable(feature = "neon_intrinsics", since = "1.59.0")]
+pub unsafe fn vst1_s16(ptr: *mut i16, a: int16x4_t) {
+    let a: int16x4_t = simd_shuffle!(a, a, [3, 2, 1, 0]);
+    crate::ptr::write_unaligned(ptr.cast(), a)
+}
+#[doc = "Store multiple single-element structures from one, two, three, or four registers."]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vst1q_s16)"]
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
+#[cfg(target_endian = "little")]
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(str))]
 #[allow(clippy::cast_ptr_alignment)]
@@ -24991,10 +25464,25 @@ pub unsafe fn vst1q_s16(ptr: *mut i16, a: int16x8_t) {
     crate::ptr::write_unaligned(ptr.cast(), a)
 }
 #[doc = "Store multiple single-element structures from one, two, three, or four registers."]
+#[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vst1q_s16)"]
+#[doc = "## Safety"]
+#[doc = "  * Neon intrinsic unsafe"]
+#[inline]
+#[cfg(target_endian = "big")]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(str))]
+#[allow(clippy::cast_ptr_alignment)]
+#[stable(feature = "neon_intrinsics", since = "1.59.0")]
+pub unsafe fn vst1q_s16(ptr: *mut i16, a: int16x8_t) {
+    let a: int16x8_t = simd_shuffle!(a, a, [7, 6, 5, 4, 3, 2, 1, 0]);
+    crate::ptr::write_unaligned(ptr.cast(), a)
+}
+#[doc = "Store multiple single-element structures from one, two, three, or four registers."]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vst1_s32)"]
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
+#[cfg(target_endian = "little")]
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(str))]
 #[allow(clippy::cast_ptr_alignment)]
@@ -25003,15 +25491,44 @@ pub unsafe fn vst1_s32(ptr: *mut i32, a: int32x2_t) {
     crate::ptr::write_unaligned(ptr.cast(), a)
 }
 #[doc = "Store multiple single-element structures from one, two, three, or four registers."]
+#[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vst1_s32)"]
+#[doc = "## Safety"]
+#[doc = "  * Neon intrinsic unsafe"]
+#[inline]
+#[cfg(target_endian = "big")]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(str))]
+#[allow(clippy::cast_ptr_alignment)]
+#[stable(feature = "neon_intrinsics", since = "1.59.0")]
+pub unsafe fn vst1_s32(ptr: *mut i32, a: int32x2_t) {
+    let a: int32x2_t = simd_shuffle!(a, a, [1, 0]);
+    crate::ptr::write_unaligned(ptr.cast(), a)
+}
+#[doc = "Store multiple single-element structures from one, two, three, or four registers."]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vst1q_s32)"]
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
+#[cfg(target_endian = "little")]
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(str))]
 #[allow(clippy::cast_ptr_alignment)]
 #[stable(feature = "neon_intrinsics", since = "1.59.0")]
 pub unsafe fn vst1q_s32(ptr: *mut i32, a: int32x4_t) {
+    crate::ptr::write_unaligned(ptr.cast(), a)
+}
+#[doc = "Store multiple single-element structures from one, two, three, or four registers."]
+#[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vst1q_s32)"]
+#[doc = "## Safety"]
+#[doc = "  * Neon intrinsic unsafe"]
+#[inline]
+#[cfg(target_endian = "big")]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(str))]
+#[allow(clippy::cast_ptr_alignment)]
+#[stable(feature = "neon_intrinsics", since = "1.59.0")]
+pub unsafe fn vst1q_s32(ptr: *mut i32, a: int32x4_t) {
+    let a: int32x4_t = simd_shuffle!(a, a, [3, 2, 1, 0]);
     crate::ptr::write_unaligned(ptr.cast(), a)
 }
 #[doc = "Store multiple single-element structures from one, two, three, or four registers."]
@@ -25031,6 +25548,7 @@ pub unsafe fn vst1_s64(ptr: *mut i64, a: int64x1_t) {
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
+#[cfg(target_endian = "little")]
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(str))]
 #[allow(clippy::cast_ptr_alignment)]
@@ -25039,10 +25557,25 @@ pub unsafe fn vst1q_s64(ptr: *mut i64, a: int64x2_t) {
     crate::ptr::write_unaligned(ptr.cast(), a)
 }
 #[doc = "Store multiple single-element structures from one, two, three, or four registers."]
+#[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vst1q_s64)"]
+#[doc = "## Safety"]
+#[doc = "  * Neon intrinsic unsafe"]
+#[inline]
+#[cfg(target_endian = "big")]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(str))]
+#[allow(clippy::cast_ptr_alignment)]
+#[stable(feature = "neon_intrinsics", since = "1.59.0")]
+pub unsafe fn vst1q_s64(ptr: *mut i64, a: int64x2_t) {
+    let a: int64x2_t = simd_shuffle!(a, a, [1, 0]);
+    crate::ptr::write_unaligned(ptr.cast(), a)
+}
+#[doc = "Store multiple single-element structures from one, two, three, or four registers."]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vst1_u8)"]
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
+#[cfg(target_endian = "little")]
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(str))]
 #[allow(clippy::cast_ptr_alignment)]
@@ -25051,10 +25584,25 @@ pub unsafe fn vst1_u8(ptr: *mut u8, a: uint8x8_t) {
     crate::ptr::write_unaligned(ptr.cast(), a)
 }
 #[doc = "Store multiple single-element structures from one, two, three, or four registers."]
+#[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vst1_u8)"]
+#[doc = "## Safety"]
+#[doc = "  * Neon intrinsic unsafe"]
+#[inline]
+#[cfg(target_endian = "big")]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(str))]
+#[allow(clippy::cast_ptr_alignment)]
+#[stable(feature = "neon_intrinsics", since = "1.59.0")]
+pub unsafe fn vst1_u8(ptr: *mut u8, a: uint8x8_t) {
+    let a: uint8x8_t = simd_shuffle!(a, a, [7, 6, 5, 4, 3, 2, 1, 0]);
+    crate::ptr::write_unaligned(ptr.cast(), a)
+}
+#[doc = "Store multiple single-element structures from one, two, three, or four registers."]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vst1q_u8)"]
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
+#[cfg(target_endian = "little")]
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(str))]
 #[allow(clippy::cast_ptr_alignment)]
@@ -25063,10 +25611,25 @@ pub unsafe fn vst1q_u8(ptr: *mut u8, a: uint8x16_t) {
     crate::ptr::write_unaligned(ptr.cast(), a)
 }
 #[doc = "Store multiple single-element structures from one, two, three, or four registers."]
+#[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vst1q_u8)"]
+#[doc = "## Safety"]
+#[doc = "  * Neon intrinsic unsafe"]
+#[inline]
+#[cfg(target_endian = "big")]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(str))]
+#[allow(clippy::cast_ptr_alignment)]
+#[stable(feature = "neon_intrinsics", since = "1.59.0")]
+pub unsafe fn vst1q_u8(ptr: *mut u8, a: uint8x16_t) {
+    let a: uint8x16_t = simd_shuffle!(a, a, [15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0]);
+    crate::ptr::write_unaligned(ptr.cast(), a)
+}
+#[doc = "Store multiple single-element structures from one, two, three, or four registers."]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vst1_u16)"]
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
+#[cfg(target_endian = "little")]
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(str))]
 #[allow(clippy::cast_ptr_alignment)]
@@ -25075,10 +25638,25 @@ pub unsafe fn vst1_u16(ptr: *mut u16, a: uint16x4_t) {
     crate::ptr::write_unaligned(ptr.cast(), a)
 }
 #[doc = "Store multiple single-element structures from one, two, three, or four registers."]
+#[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vst1_u16)"]
+#[doc = "## Safety"]
+#[doc = "  * Neon intrinsic unsafe"]
+#[inline]
+#[cfg(target_endian = "big")]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(str))]
+#[allow(clippy::cast_ptr_alignment)]
+#[stable(feature = "neon_intrinsics", since = "1.59.0")]
+pub unsafe fn vst1_u16(ptr: *mut u16, a: uint16x4_t) {
+    let a: uint16x4_t = simd_shuffle!(a, a, [3, 2, 1, 0]);
+    crate::ptr::write_unaligned(ptr.cast(), a)
+}
+#[doc = "Store multiple single-element structures from one, two, three, or four registers."]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vst1q_u16)"]
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
+#[cfg(target_endian = "little")]
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(str))]
 #[allow(clippy::cast_ptr_alignment)]
@@ -25087,10 +25665,25 @@ pub unsafe fn vst1q_u16(ptr: *mut u16, a: uint16x8_t) {
     crate::ptr::write_unaligned(ptr.cast(), a)
 }
 #[doc = "Store multiple single-element structures from one, two, three, or four registers."]
+#[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vst1q_u16)"]
+#[doc = "## Safety"]
+#[doc = "  * Neon intrinsic unsafe"]
+#[inline]
+#[cfg(target_endian = "big")]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(str))]
+#[allow(clippy::cast_ptr_alignment)]
+#[stable(feature = "neon_intrinsics", since = "1.59.0")]
+pub unsafe fn vst1q_u16(ptr: *mut u16, a: uint16x8_t) {
+    let a: uint16x8_t = simd_shuffle!(a, a, [7, 6, 5, 4, 3, 2, 1, 0]);
+    crate::ptr::write_unaligned(ptr.cast(), a)
+}
+#[doc = "Store multiple single-element structures from one, two, three, or four registers."]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vst1_u32)"]
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
+#[cfg(target_endian = "little")]
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(str))]
 #[allow(clippy::cast_ptr_alignment)]
@@ -25099,15 +25692,44 @@ pub unsafe fn vst1_u32(ptr: *mut u32, a: uint32x2_t) {
     crate::ptr::write_unaligned(ptr.cast(), a)
 }
 #[doc = "Store multiple single-element structures from one, two, three, or four registers."]
+#[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vst1_u32)"]
+#[doc = "## Safety"]
+#[doc = "  * Neon intrinsic unsafe"]
+#[inline]
+#[cfg(target_endian = "big")]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(str))]
+#[allow(clippy::cast_ptr_alignment)]
+#[stable(feature = "neon_intrinsics", since = "1.59.0")]
+pub unsafe fn vst1_u32(ptr: *mut u32, a: uint32x2_t) {
+    let a: uint32x2_t = simd_shuffle!(a, a, [1, 0]);
+    crate::ptr::write_unaligned(ptr.cast(), a)
+}
+#[doc = "Store multiple single-element structures from one, two, three, or four registers."]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vst1q_u32)"]
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
+#[cfg(target_endian = "little")]
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(str))]
 #[allow(clippy::cast_ptr_alignment)]
 #[stable(feature = "neon_intrinsics", since = "1.59.0")]
 pub unsafe fn vst1q_u32(ptr: *mut u32, a: uint32x4_t) {
+    crate::ptr::write_unaligned(ptr.cast(), a)
+}
+#[doc = "Store multiple single-element structures from one, two, three, or four registers."]
+#[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vst1q_u32)"]
+#[doc = "## Safety"]
+#[doc = "  * Neon intrinsic unsafe"]
+#[inline]
+#[cfg(target_endian = "big")]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(str))]
+#[allow(clippy::cast_ptr_alignment)]
+#[stable(feature = "neon_intrinsics", since = "1.59.0")]
+pub unsafe fn vst1q_u32(ptr: *mut u32, a: uint32x4_t) {
+    let a: uint32x4_t = simd_shuffle!(a, a, [3, 2, 1, 0]);
     crate::ptr::write_unaligned(ptr.cast(), a)
 }
 #[doc = "Store multiple single-element structures from one, two, three, or four registers."]
@@ -25127,6 +25749,7 @@ pub unsafe fn vst1_u64(ptr: *mut u64, a: uint64x1_t) {
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
+#[cfg(target_endian = "little")]
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(str))]
 #[allow(clippy::cast_ptr_alignment)]
@@ -25135,10 +25758,25 @@ pub unsafe fn vst1q_u64(ptr: *mut u64, a: uint64x2_t) {
     crate::ptr::write_unaligned(ptr.cast(), a)
 }
 #[doc = "Store multiple single-element structures from one, two, three, or four registers."]
+#[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vst1q_u64)"]
+#[doc = "## Safety"]
+#[doc = "  * Neon intrinsic unsafe"]
+#[inline]
+#[cfg(target_endian = "big")]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(str))]
+#[allow(clippy::cast_ptr_alignment)]
+#[stable(feature = "neon_intrinsics", since = "1.59.0")]
+pub unsafe fn vst1q_u64(ptr: *mut u64, a: uint64x2_t) {
+    let a: uint64x2_t = simd_shuffle!(a, a, [1, 0]);
+    crate::ptr::write_unaligned(ptr.cast(), a)
+}
+#[doc = "Store multiple single-element structures from one, two, three, or four registers."]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vst1_p8)"]
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
+#[cfg(target_endian = "little")]
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(str))]
 #[allow(clippy::cast_ptr_alignment)]
@@ -25147,10 +25785,25 @@ pub unsafe fn vst1_p8(ptr: *mut p8, a: poly8x8_t) {
     crate::ptr::write_unaligned(ptr.cast(), a)
 }
 #[doc = "Store multiple single-element structures from one, two, three, or four registers."]
+#[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vst1_p8)"]
+#[doc = "## Safety"]
+#[doc = "  * Neon intrinsic unsafe"]
+#[inline]
+#[cfg(target_endian = "big")]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(str))]
+#[allow(clippy::cast_ptr_alignment)]
+#[stable(feature = "neon_intrinsics", since = "1.59.0")]
+pub unsafe fn vst1_p8(ptr: *mut p8, a: poly8x8_t) {
+    let a: poly8x8_t = simd_shuffle!(a, a, [7, 6, 5, 4, 3, 2, 1, 0]);
+    crate::ptr::write_unaligned(ptr.cast(), a)
+}
+#[doc = "Store multiple single-element structures from one, two, three, or four registers."]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vst1q_p8)"]
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
+#[cfg(target_endian = "little")]
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(str))]
 #[allow(clippy::cast_ptr_alignment)]
@@ -25159,10 +25812,25 @@ pub unsafe fn vst1q_p8(ptr: *mut p8, a: poly8x16_t) {
     crate::ptr::write_unaligned(ptr.cast(), a)
 }
 #[doc = "Store multiple single-element structures from one, two, three, or four registers."]
+#[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vst1q_p8)"]
+#[doc = "## Safety"]
+#[doc = "  * Neon intrinsic unsafe"]
+#[inline]
+#[cfg(target_endian = "big")]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(str))]
+#[allow(clippy::cast_ptr_alignment)]
+#[stable(feature = "neon_intrinsics", since = "1.59.0")]
+pub unsafe fn vst1q_p8(ptr: *mut p8, a: poly8x16_t) {
+    let a: poly8x16_t = simd_shuffle!(a, a, [15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0]);
+    crate::ptr::write_unaligned(ptr.cast(), a)
+}
+#[doc = "Store multiple single-element structures from one, two, three, or four registers."]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vst1_p16)"]
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
+#[cfg(target_endian = "little")]
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(str))]
 #[allow(clippy::cast_ptr_alignment)]
@@ -25171,15 +25839,44 @@ pub unsafe fn vst1_p16(ptr: *mut p16, a: poly16x4_t) {
     crate::ptr::write_unaligned(ptr.cast(), a)
 }
 #[doc = "Store multiple single-element structures from one, two, three, or four registers."]
+#[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vst1_p16)"]
+#[doc = "## Safety"]
+#[doc = "  * Neon intrinsic unsafe"]
+#[inline]
+#[cfg(target_endian = "big")]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(str))]
+#[allow(clippy::cast_ptr_alignment)]
+#[stable(feature = "neon_intrinsics", since = "1.59.0")]
+pub unsafe fn vst1_p16(ptr: *mut p16, a: poly16x4_t) {
+    let a: poly16x4_t = simd_shuffle!(a, a, [3, 2, 1, 0]);
+    crate::ptr::write_unaligned(ptr.cast(), a)
+}
+#[doc = "Store multiple single-element structures from one, two, three, or four registers."]
 #[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vst1q_p16)"]
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
+#[cfg(target_endian = "little")]
 #[target_feature(enable = "neon")]
 #[cfg_attr(test, assert_instr(str))]
 #[allow(clippy::cast_ptr_alignment)]
 #[stable(feature = "neon_intrinsics", since = "1.59.0")]
 pub unsafe fn vst1q_p16(ptr: *mut p16, a: poly16x8_t) {
+    crate::ptr::write_unaligned(ptr.cast(), a)
+}
+#[doc = "Store multiple single-element structures from one, two, three, or four registers."]
+#[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vst1q_p16)"]
+#[doc = "## Safety"]
+#[doc = "  * Neon intrinsic unsafe"]
+#[inline]
+#[cfg(target_endian = "big")]
+#[target_feature(enable = "neon")]
+#[cfg_attr(test, assert_instr(str))]
+#[allow(clippy::cast_ptr_alignment)]
+#[stable(feature = "neon_intrinsics", since = "1.59.0")]
+pub unsafe fn vst1q_p16(ptr: *mut p16, a: poly16x8_t) {
+    let a: poly16x8_t = simd_shuffle!(a, a, [7, 6, 5, 4, 3, 2, 1, 0]);
     crate::ptr::write_unaligned(ptr.cast(), a)
 }
 #[doc = "Store multiple single-element structures from one, two, three, or four registers."]
@@ -25199,11 +25896,26 @@ pub unsafe fn vst1_p64(ptr: *mut p64, a: poly64x1_t) {
 #[doc = "## Safety"]
 #[doc = "  * Neon intrinsic unsafe"]
 #[inline]
+#[cfg(target_endian = "little")]
 #[target_feature(enable = "neon,aes")]
 #[cfg_attr(test, assert_instr(str))]
 #[allow(clippy::cast_ptr_alignment)]
 #[stable(feature = "neon_intrinsics", since = "1.59.0")]
 pub unsafe fn vst1q_p64(ptr: *mut p64, a: poly64x2_t) {
+    crate::ptr::write_unaligned(ptr.cast(), a)
+}
+#[doc = "Store multiple single-element structures from one, two, three, or four registers."]
+#[doc = "[Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vst1q_p64)"]
+#[doc = "## Safety"]
+#[doc = "  * Neon intrinsic unsafe"]
+#[inline]
+#[cfg(target_endian = "big")]
+#[target_feature(enable = "neon,aes")]
+#[cfg_attr(test, assert_instr(str))]
+#[allow(clippy::cast_ptr_alignment)]
+#[stable(feature = "neon_intrinsics", since = "1.59.0")]
+pub unsafe fn vst1q_p64(ptr: *mut p64, a: poly64x2_t) {
+    let a: poly64x2_t = simd_shuffle!(a, a, [1, 0]);
     crate::ptr::write_unaligned(ptr.cast(), a)
 }
 #[doc = "Store multiple single-element structures to one, two, three, or four registers"]

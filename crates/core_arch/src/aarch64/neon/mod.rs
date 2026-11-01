@@ -424,6 +424,17 @@ mod tests {
     use crate::core_arch::{aarch64::neon::*, aarch64::*, simd::*};
     use stdarch_test::simd_test;
 
+    fn reverse_on_be<T, const N: usize>(arr: [T; N]) -> [T; N] {
+        cfg_select! {
+            target_endian = "big" => {
+                let mut arr = arr;
+                arr.reverse();
+                arr
+            }
+            target_endian = "little" => arr,
+        }
+    }
+
     #[simd_test(enable = "neon")]
     fn test_vadd_f64() {
         let a = f64x1::from_array([1.]);
@@ -704,7 +715,7 @@ mod tests {
     #[simd_test(enable = "neon")]
     fn test_vld1q_f64() {
         let a: [f64; 3] = [0., 1., 2.];
-        let e = f64x2::new(1., 2.);
+        let e = f64x2::from_array(reverse_on_be([1., 2.]));
         let r = unsafe { f64x2::from(vld1q_f64(a[1..].as_ptr())) };
         assert_eq!(r, e)
     }
@@ -759,7 +770,7 @@ mod tests {
     #[simd_test(enable = "neon")]
     fn test_vst1q_f64() {
         let mut vals = [0_f64; 3];
-        let a = f64x2::new(1., 2.);
+        let a = f64x2::from_array(reverse_on_be([1., 2.]));
 
         unsafe {
             vst1q_f64(vals[1..].as_mut_ptr(), a.into());
@@ -768,6 +779,32 @@ mod tests {
         assert_eq!(vals[0], 0.);
         assert_eq!(vals[1], 1.);
         assert_eq!(vals[2], 2.);
+    }
+
+    #[simd_test(enable = "neon")]
+    fn test_vpminq_u8() {
+        unsafe {
+            let a = vld1q_u8([1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8].as_ptr());
+            let b = vld1q_u8([0, 3, 2, 5, 4, 7, 6, 9, 0, 3, 2, 5, 4, 7, 6, 9].as_ptr());
+            let e = [1, 3, 5, 7, 1, 3, 5, 7, 0, 2, 4, 6, 0, 2, 4, 6];
+            let mut r = [0; 16];
+            let res = vpminq_u8(a, b);
+            vst1q_u8(r.as_mut_ptr(), res);
+            assert_eq!(r, e);
+        }
+    }
+
+    #[simd_test(enable = "neon")]
+    fn test_vpmaxq_u8() {
+        unsafe {
+            let a = vld1q_u8([1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8].as_ptr());
+            let b = vld1q_u8([0, 3, 2, 5, 4, 7, 6, 9, 0, 3, 2, 5, 4, 7, 6, 9].as_ptr());
+            let e = [2, 4, 6, 8, 2, 4, 6, 8, 3, 5, 7, 9, 3, 5, 7, 9];
+            let mut r = [0; 16];
+            let res = vpmaxq_u8(a, b);
+            vst1q_u8(r.as_mut_ptr(), res);
+            assert_eq!(r, e);
+        }
     }
 
     macro_rules! wide_store_load_roundtrip {
