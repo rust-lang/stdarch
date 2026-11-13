@@ -41,6 +41,7 @@ jobs:
     runs-on: ${{ matrix.target.os }}
     continue-on-error: ${{ matrix.target.tuple == 'riscv32gc-unknown-linux-gnu' }}
     strategy:
+      fail-fast: false
       matrix:
         profile:
           - dev
@@ -277,6 +278,7 @@ jobs:
     name: Intrinsic Test
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         target:
           - aarch64-unknown-linux-gnu
