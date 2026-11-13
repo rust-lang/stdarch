@@ -24,6 +24,7 @@ use stdarch_test::assert_instr;
 ///		48: tile0.rows
 ///		49: tile1.rows
 ///		50: tile2.rows
+///
 ///			 ...
 ///		55: tile7.rows
 ///	 56-63: reserved, must be zero
@@ -396,7 +397,14 @@ pub unsafe fn _tile_cmmimfp16ps<const DST: i32, const A: i32, const B: i32>() {
 #[cfg_attr(test, assert_instr(tcmmimfp16ps))]
 #[unstable(feature = "x86_amx_intrinsics", issue = "126622")]
 pub unsafe fn __tile_cmmimfp16ps(dst: *mut __tile1024i, a: __tile1024i, b: __tile1024i) {
-    (*dst).tile = tcmmimfp16ps_internal(a.rows, b.colsb, a.colsb, (*dst).tile, a.tile, b.tile);
+    (*dst).tile = tcmmimfp16ps_internal(
+        (*dst).rows,
+        (*dst).colsb,
+        a.colsb,
+        (*dst).tile,
+        a.tile,
+        b.tile,
+    );
 }
 
 /// Perform matrix multiplication of two tiles containing complex elements and accumulate the results into a packed single precision tile.
