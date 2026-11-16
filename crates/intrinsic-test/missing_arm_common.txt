@@ -28,6 +28,8 @@ vmovn_high_s64
 vmovn_high_u16
 vmovn_high_u32
 vmovn_high_u64
+vmov_n_p64
+vmovq_n_p64
 vmull_high_p64
 vmull_p64
 vreinterpret_p16_p64
@@ -83,6 +85,9 @@ vreinterpret_u16_p64
 vreinterpret_u32_p64
 vreinterpret_u64_p64
 vreinterpret_u8_p64
+vreinterpret_p64_s64
+vreinterpret_f32_p64
+vreinterpretq_f32_p64
 vrndn_f64
 vrndnq_f64
 vset_lane_p64

@@ -2,7 +2,7 @@ mod intrinsic;
 mod json_parser;
 mod types;
 
-use crate::common::argument::Argument;
+use crate::common::argument::{Argument, ArgumentList};
 use crate::common::cli::{CcArgStyle, ProcessedCli};
 use crate::common::intrinsic::Intrinsic;
 use crate::common::intrinsic_helpers::{SimdLen, TypeDefinition, TypeKind};
@@ -13,6 +13,23 @@ use json_parser::get_intrinsics;
 
 #[derive(PartialEq)]
 pub struct Arm(Vec<Intrinsic<Arm>>);
+
+#[inline]
+fn has_sve_arg(args: &ArgumentList<Arm>) -> bool {
+    args.iter()
+        .any(|arg| arg.ty.num_lanes() == SimdLen::Scalable)
+}
+
+#[inline]
+fn has_arg_with_base_type(args: &ArgumentList<Arm>, kind: TypeKind, bit_cnt: u32) -> bool {
+    args.iter()
+        .any(|a| a.ty.kind() == kind && a.ty.bit_len == Some(bit_cnt))
+}
+
+#[inline]
+fn has_sve_retval(ty: &ArmType, kind: TypeKind, bit_cnt: u32) -> bool {
+    ty.kind() == kind && ty.bit_len == Some(bit_cnt) && ty.num_lanes() == SimdLen::Scalable
+}
 
 impl SupportedArchitecture for Arm {
     type Type = ArmType;
@@ -72,22 +89,16 @@ impl SupportedArchitecture for Arm {
             .filter(|i| i.results.kind() != TypeKind::Void)
             // Skip SVE intrinsics that have `f16` - not yet implemented!
             .filter(|i| {
-                let has_f16_arg = i
-                    .arguments
-                    .iter()
-                    .any(|a| a.ty.kind() == TypeKind::Float && a.ty.bit_len == Some(16));
-                let has_sve_arg = i
-                    .arguments
-                    .iter()
-                    .any(|a| a.ty.num_lanes() == SimdLen::Scalable);
-                !(has_f16_arg && has_sve_arg)
+                !(has_arg_with_base_type(&i.arguments, TypeKind::Float, 16)
+                    && has_sve_arg(&i.arguments))
             })
+            .filter(|i| !has_sve_retval(&i.results, TypeKind::Float, 16))
+            // Skip SVE bf16 intrinsics, not yet implemented.
             .filter(|i| {
-                let has_f16_ret =
-                    i.results.kind() == TypeKind::Float && i.results.bit_len == Some(16);
-                let has_sve_ret = i.results.num_lanes() == SimdLen::Scalable;
-                !(has_f16_ret && has_sve_ret)
+                !(has_arg_with_base_type(&i.arguments, TypeKind::BFloat, 16)
+                    && has_sve_arg(&i.arguments))
             })
+            .filter(|i| !has_sve_retval(&i.results, TypeKind::BFloat, 16))
             // Skip `svqcvtn{u,}n*_x2` intrinsics - not yet implemented!
             .filter(|i| !(i.name.starts_with("svqcvtn") && i.name.ends_with("_x2")))
             // Skip `svqrshr{u,}n*_x2` intrinsics - not yet implemented!
