@@ -85,3 +85,11 @@ vcvtns_s64_f32
 vcvtns_u64_f32
 vcvtps_s64_f32
 vcvtps_u64_f32
+vmmlaq_f16
+vdot_f32_f16
+vdot_lane_f32_f16
+vdot_laneq_f32_f16
+vdotq_f32_f16
+vdotq_lane_f32_f16
+vdotq_laneq_f32_f16
+vmmlaq_f32_f16
