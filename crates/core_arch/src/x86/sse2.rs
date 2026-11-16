@@ -1313,13 +1313,7 @@ pub const unsafe fn _mm_load_si128(mem_addr: *const __m128i) -> __m128i {
 #[stable(feature = "simd_x86", since = "1.27.0")]
 #[rustc_const_unstable(feature = "stdarch_const_x86", issue = "149298")]
 pub const unsafe fn _mm_loadu_si128(mem_addr: *const __m128i) -> __m128i {
-    let mut dst: __m128i = _mm_undefined_si128();
-    ptr::copy_nonoverlapping(
-        mem_addr as *const u8,
-        ptr::addr_of_mut!(dst) as *mut u8,
-        mem::size_of::<__m128i>(),
-    );
-    dst
+    mem_addr.read_unaligned()
 }
 
 /// Conditionally store 8-bit integer elements from `a` into memory using
@@ -1391,7 +1385,8 @@ pub const unsafe fn _mm_storeu_si128(mem_addr: *mut __m128i, a: __m128i) {
 #[stable(feature = "simd_x86", since = "1.27.0")]
 #[rustc_const_unstable(feature = "stdarch_const_x86", issue = "149298")]
 pub const unsafe fn _mm_storel_epi64(mem_addr: *mut __m128i, a: __m128i) {
-    ptr::copy_nonoverlapping(ptr::addr_of!(a) as *const u8, mem_addr as *mut u8, 8);
+    let a = simd_extract!(a.as_u64x2(), 0, u64);
+    mem_addr.cast::<u64>().write_unaligned(a);
 }
 
 /// Stores a 128-bit integer vector to a 128-bit aligned memory location.
@@ -2940,15 +2935,10 @@ pub const unsafe fn _mm_loadr_pd(mem_addr: *const f64) -> __m128d {
 #[target_feature(enable = "sse2")]
 #[cfg_attr(test, assert_instr(movups))]
 #[stable(feature = "simd_x86", since = "1.27.0")]
+#[allow(clippy::cast_ptr_alignment)]
 #[rustc_const_unstable(feature = "stdarch_const_x86", issue = "149298")]
 pub const unsafe fn _mm_loadu_pd(mem_addr: *const f64) -> __m128d {
-    let mut dst = _mm_undefined_pd();
-    ptr::copy_nonoverlapping(
-        mem_addr as *const u8,
-        ptr::addr_of_mut!(dst) as *mut u8,
-        mem::size_of::<__m128d>(),
-    );
-    dst
+    mem_addr.cast::<__m128d>().read_unaligned()
 }
 
 /// Loads unaligned 16-bits of integer data from memory into new vector.
