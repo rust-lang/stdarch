@@ -593,6 +593,10 @@ impl_vavgr!("lsx", lsx_vavgr_hu, m128i, u16x8, u32x8);
 impl_vavgr!("lsx", lsx_vavgr_wu, m128i, u32x4, u64x4);
 impl_vavgr!("lsx", lsx_vavgr_du, m128i, u64x2, u128x2);
 
+impl_vv_v!("lsx", lsx_vhaddw_h_b, simd_ext_haddw, m128i, i8x16, m128i, i8x16, m128i, i16x8);
+impl_vv_v!("lsx", lsx_vhaddw_w_h, simd_ext_haddw, m128i, i16x8, m128i, i16x8, m128i, i32x4);
+impl_vv_v!("lsx", lsx_vhsubw_h_b, simd_ext_hsubw, m128i, i8x16, m128i, i8x16, m128i, i16x8);
+impl_vv_v!("lsx", lsx_vhsubw_w_h, simd_ext_hsubw, m128i, i16x8, m128i, i16x8, m128i, i32x4);
 impl_vv_v!("lsx", lsx_vfcmp_ceq_s, simd_eq, m128, f32x4, m128, f32x4, m128i, i32x4);
 impl_vv_v!("lsx", lsx_vfcmp_cle_s, simd_le, m128, f32x4, m128, f32x4, m128i, i32x4);
 impl_vv_v!("lsx", lsx_vfcmp_clt_s, simd_lt, m128, f32x4, m128, f32x4, m128i, i32x4);

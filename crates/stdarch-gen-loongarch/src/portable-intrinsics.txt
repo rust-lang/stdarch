@@ -131,6 +131,10 @@ lsx_vmsub_b
 lsx_vmsub_h
 lsx_vmsub_w
 lsx_vmsub_d
+lsx_vhaddw_h_b
+lsx_vhaddw_w_h
+lsx_vhsubw_h_b
+lsx_vhsubw_w_h
 lsx_vand_v
 lsx_vandi_b
 lsx_vor_v
@@ -482,6 +486,10 @@ lasx_xvmsub_b
 lasx_xvmsub_h
 lasx_xvmsub_w
 lasx_xvmsub_d
+lasx_xvhaddw_h_b
+lasx_xvhaddw_w_h
+lasx_xvhsubw_h_b
+lasx_xvhsubw_w_h
 lasx_xvand_v
 lasx_xvandi_b
 lasx_xvor_v

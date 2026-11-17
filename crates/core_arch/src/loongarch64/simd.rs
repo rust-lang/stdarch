@@ -1,5 +1,6 @@
 //! LoongArch64 SIMD helpers
 
+use crate::core_arch::simd::{Simd, SimdElement};
 use crate::intrinsics::simd::*;
 
 // Internal extension trait for concrete `Simd<T, N>` types.
@@ -315,6 +316,56 @@ pub(super) const unsafe fn simd_ext_stx<T: Copy>(a: T, b: *mut i8, c: i64) {
     let b = b.offset(c as isize) as *mut T;
     core::ptr::write_unaligned(b, a);
 }
+
+pub(super) const fn idx_step2<const N: usize>(o: usize) -> [u32; N] {
+    let mut r = [0; N];
+    let mut i = 0;
+    while i < N {
+        r[i] = (2 * i + o) as u32;
+        i += 1;
+    }
+    r
+}
+
+#[inline(always)]
+#[rustc_const_unstable(feature = "stdarch_const_helpers", issue = "none")]
+const unsafe fn simd_ext_ev<E: SimdElement, F: SimdElement, const N: usize, const H: usize>(
+    a: Simd<E, N>,
+) -> Simd<F, H> {
+    let r: Simd<E, H> = simd_shuffle!(a, a, idx_step2::<H>(0));
+    simd_as(r)
+}
+
+#[inline(always)]
+#[rustc_const_unstable(feature = "stdarch_const_helpers", issue = "none")]
+const unsafe fn simd_ext_od<E: SimdElement, F: SimdElement, const N: usize, const H: usize>(
+    a: Simd<E, N>,
+) -> Simd<F, H> {
+    let r: Simd<E, H> = simd_shuffle!(a, a, idx_step2::<H>(1));
+    simd_as(r)
+}
+
+macro_rules! impl_widen_op {
+    ($name:ident, $op:ident, $fa:ident, $fb:ident) => {
+        #[inline(always)]
+        #[rustc_const_unstable(feature = "stdarch_const_helpers", issue = "none")]
+        pub(super) const unsafe fn $name<
+            A: SimdElement,
+            B: SimdElement,
+            R: SimdElement,
+            const N: usize,
+            const H: usize,
+        >(
+            a: Simd<A, N>,
+            b: Simd<B, N>,
+        ) -> Simd<R, H> {
+            $op($fa::<A, R, N, H>(a), $fb::<B, R, N, H>(b))
+        }
+    };
+}
+
+impl_widen_op!(simd_ext_haddw, simd_add, simd_ext_od, simd_ext_ev);
+impl_widen_op!(simd_ext_hsubw, simd_sub, simd_ext_od, simd_ext_ev);
 
 #[inline(always)]
 #[rustc_const_unstable(feature = "stdarch_const_helpers", issue = "none")]

@@ -1324,11 +1324,13 @@ asm-fmts = vd, vj, vk
 data-types = UV2DI, UV2DI, UV2DI
 
 /// lsx_vhaddw_h_b
+impl = portable
 name = lsx_vhaddw_h_b
 asm-fmts = vd, vj, vk
 data-types = V8HI, V16QI, V16QI
 
 /// lsx_vhaddw_w_h
+impl = portable
 name = lsx_vhaddw_w_h
 asm-fmts = vd, vj, vk
 data-types = V4SI, V8HI, V8HI
@@ -1354,11 +1356,13 @@ asm-fmts = vd, vj, vk
 data-types = UV2DI, UV4SI, UV4SI
 
 /// lsx_vhsubw_h_b
+impl = portable
 name = lsx_vhsubw_h_b
 asm-fmts = vd, vj, vk
 data-types = V8HI, V16QI, V16QI
 
 /// lsx_vhsubw_w_h
+impl = portable
 name = lsx_vhsubw_w_h
 asm-fmts = vd, vj, vk
 data-types = V4SI, V8HI, V8HI
