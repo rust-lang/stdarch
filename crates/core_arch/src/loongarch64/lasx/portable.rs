@@ -588,6 +588,38 @@ pub(super) const unsafe fn simd_ext_bsrl<const I: u32, T: Copy + const SimdExt>(
     }
 }
 
+#[inline(always)]
+#[rustc_const_unstable(feature = "stdarch_const_helpers", issue = "none")]
+const unsafe fn simd_ext_concat_128(a: i64x2, b: i64x2) -> i64x4 {
+    simd_shuffle!(a, b, [0, 1, 2, 3])
+}
+
+#[inline(always)]
+#[rustc_const_unstable(feature = "stdarch_const_helpers", issue = "none")]
+const unsafe fn simd_ext_extract_128_lo(a: i64x4) -> i64x2 {
+    simd_shuffle!(a, a, [0, 1])
+}
+
+#[inline(always)]
+#[rustc_const_unstable(feature = "stdarch_const_helpers", issue = "none")]
+const unsafe fn simd_ext_extract_128_hi(a: i64x4) -> i64x2 {
+    simd_shuffle!(a, a, [2, 3])
+}
+
+#[inline(always)]
+#[rustc_const_unstable(feature = "stdarch_const_helpers", issue = "none")]
+const unsafe fn simd_ext_insert_128_lo(a: i64x4, b: i64x2) -> i64x4 {
+    let b: i64x4 = simd_shuffle!(b, b, [0, 1, 0, 1]);
+    simd_shuffle!(a, b, [4, 5, 2, 3])
+}
+
+#[inline(always)]
+#[rustc_const_unstable(feature = "stdarch_const_helpers", issue = "none")]
+const unsafe fn simd_ext_insert_128_hi(a: i64x4, b: i64x2) -> i64x4 {
+    let b: i64x4 = simd_shuffle!(b, b, [0, 1, 0, 1]);
+    simd_shuffle!(a, b, [0, 1, 4, 5])
+}
+
 const fn idx_insve0<const N: usize>(imm: u32) -> [u32; N] {
     let mut r = [0; N];
     let mut i = 0;
@@ -997,6 +1029,15 @@ impl_vv_v!("lasx", lasx_xvfcmp_cule_d, simd_ext_fcmp_cule, m256d, f64x4, m256d, 
 impl_vv_v!("lasx", lasx_xvfcmp_cult_d, simd_ext_fcmp_cult, m256d, f64x4, m256d, f64x4, m256i, i64x4);
 impl_vv_v!("lasx", lasx_xvfcmp_cun_d, simd_ext_fcmp_cun, m256d, f64x4, m256d, f64x4, m256i, i64x4);
 impl_vv_v!("lasx", lasx_xvfcmp_cune_d, simd_ne, m256d, f64x4, m256d, f64x4, m256i, i64x4);
+impl_vv_v!("lasx", lasx_concat_128, simd_ext_concat_128, m128i, i64x2, m128i, i64x2, m256i, i64x4);
+impl_vv_v!("lasx", lasx_insert_128_lo, simd_ext_insert_128_lo, m256i, i64x4, m128i, i64x2, m256i, i64x4);
+impl_vv_v!("lasx", lasx_insert_128_hi, simd_ext_insert_128_hi, m256i, i64x4, m128i, i64x2, m256i, i64x4);
+impl_vv_v!("lasx", lasx_concat_128_s, simd_ext_concat_128, m128, i64x2, m128, i64x2, m256, i64x4);
+impl_vv_v!("lasx", lasx_insert_128_lo_s, simd_ext_insert_128_lo, m256, i64x4, m128, i64x2, m256, i64x4);
+impl_vv_v!("lasx", lasx_insert_128_hi_s, simd_ext_insert_128_hi, m256, i64x4, m128, i64x2, m256, i64x4);
+impl_vv_v!("lasx", lasx_concat_128_d, simd_ext_concat_128, m128d, i64x2, m128d, i64x2, m256d, i64x4);
+impl_vv_v!("lasx", lasx_insert_128_lo_d, simd_ext_insert_128_lo, m256d, i64x4, m128d, i64x2, m256d, i64x4);
+impl_vv_v!("lasx", lasx_insert_128_hi_d, simd_ext_insert_128_hi, m256d, i64x4, m128d, i64x2, m256d, i64x4);
 
 impl_v_v!("lasx", lasx_xvexth_h_b, simd_ext_exth, m256i, i8x32, m256i, i16x16);
 impl_v_v!("lasx", lasx_xvexth_hu_bu, simd_ext_exth, m256i, u8x32, m256i, u16x16);
@@ -1020,6 +1061,12 @@ impl_v_v!("lasx", lasx_xvffint_s_w, simd_as, m256i, i32x8, m256, f32x8);
 impl_v_v!("lasx", lasx_xvffint_s_wu, simd_as, m256i, u32x8, m256, f32x8);
 impl_v_v!("lasx", lasx_xvffint_d_l, simd_as, m256i, i64x4, m256d, f64x4);
 impl_v_v!("lasx", lasx_xvffint_d_lu, simd_as, m256i, u64x4, m256d, f64x4);
+impl_v_v!("lasx", lasx_extract_128_lo, simd_ext_extract_128_lo, m256i, i64x4, m128i, i64x2);
+impl_v_v!("lasx", lasx_extract_128_hi, simd_ext_extract_128_hi, m256i, i64x4, m128i, i64x2);
+impl_v_v!("lasx", lasx_extract_128_lo_s, simd_ext_extract_128_lo, m256, i64x4, m128, i64x2);
+impl_v_v!("lasx", lasx_extract_128_hi_s, simd_ext_extract_128_hi, m256, i64x4, m128, i64x2);
+impl_v_v!("lasx", lasx_extract_128_lo_d, simd_ext_extract_128_lo, m256d, i64x4, m128d, i64x2);
+impl_v_v!("lasx", lasx_extract_128_hi_d, simd_ext_extract_128_hi, m256d, i64x4, m128d, i64x2);
 
 impl_vu_v!("lasx", lasx_xvsllwil_h_b, simd_ext_sllwil, m256i, i8x32, m256i, i16x16, 3);
 impl_vu_v!("lasx", lasx_xvsllwil_hu_bu, simd_ext_sllwil, m256i, u8x32, m256i, u16x16, 3);

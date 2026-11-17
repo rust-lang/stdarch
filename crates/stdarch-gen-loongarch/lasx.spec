@@ -4106,76 +4106,91 @@ asm-fmts = xd, vj
 data-types = V4DI, V2DI
 
 /// lasx_concat_128_s
+impl = portable
 name = lasx_concat_128_s
 asm-fmts = xd, vj, vk
 data-types = V8SF, V4SF, V4SF
 
 /// lasx_concat_128_d
+impl = portable
 name = lasx_concat_128_d
 asm-fmts = xd, vj, vk
 data-types = V4DF, V2DF, V2DF
 
 /// lasx_concat_128
+impl = portable
 name = lasx_concat_128
 asm-fmts = xd, vj, vk
 data-types = V4DI, V2DI, V2DI
 
 /// lasx_extract_128_lo_s
+impl = portable
 name = lasx_extract_128_lo_s
 asm-fmts = vd, xj
 data-types = V4SF, V8SF
 
 /// lasx_extract_128_hi_s
+impl = portable
 name = lasx_extract_128_hi_s
 asm-fmts = vd, xj
 data-types = V4SF, V8SF
 
 /// lasx_extract_128_lo_d
+impl = portable
 name = lasx_extract_128_lo_d
 asm-fmts = vd, xj
 data-types = V2DF, V4DF
 
 /// lasx_extract_128_hi_d
+impl = portable
 name = lasx_extract_128_hi_d
 asm-fmts = vd, xj
 data-types = V2DF, V4DF
 
 /// lasx_extract_128_lo
+impl = portable
 name = lasx_extract_128_lo
 asm-fmts = vd, xj
 data-types = V2DI, V4DI
 
 /// lasx_extract_128_hi
+impl = portable
 name = lasx_extract_128_hi
 asm-fmts = vd, xj
 data-types = V2DI, V4DI
 
 /// lasx_insert_128_lo_s
+impl = portable
 name = lasx_insert_128_lo_s
 asm-fmts = xd, xj, vk
 data-types = V8SF, V8SF, V4SF
 
 /// lasx_insert_128_hi_s
+impl = portable
 name = lasx_insert_128_hi_s
 asm-fmts = xd, xj, vk
 data-types = V8SF, V8SF, V4SF
 
 /// lasx_insert_128_lo_d
+impl = portable
 name = lasx_insert_128_lo_d
 asm-fmts = xd, xj, vk
 data-types = V4DF, V4DF, V2DF
 
 /// lasx_insert_128_hi_d
+impl = portable
 name = lasx_insert_128_hi_d
 asm-fmts = xd, xj, vk
 data-types = V4DF, V4DF, V2DF
 
 /// lasx_insert_128_lo
+impl = portable
 name = lasx_insert_128_lo
 asm-fmts = xd, xj, vk
 data-types = V4DI, V4DI, V2DI
 
 /// lasx_insert_128_hi
+impl = portable
 name = lasx_insert_128_hi
 asm-fmts = xd, xj, vk
 data-types = V4DI, V4DI, V2DI
