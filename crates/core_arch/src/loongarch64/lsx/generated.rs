@@ -43,30 +43,6 @@ unsafe extern "llvm-intrinsic" {
     fn __lsx_vsrlri_w(a: __v4i32, b: u32) -> __v4i32;
     #[link_name = "llvm.loongarch.lsx.vsrlri.d"]
     fn __lsx_vsrlri_d(a: __v2i64, b: u32) -> __v2i64;
-    #[link_name = "llvm.loongarch.lsx.vbitclri.b"]
-    fn __lsx_vbitclri_b(a: __v16u8, b: u32) -> __v16u8;
-    #[link_name = "llvm.loongarch.lsx.vbitclri.h"]
-    fn __lsx_vbitclri_h(a: __v8u16, b: u32) -> __v8u16;
-    #[link_name = "llvm.loongarch.lsx.vbitclri.w"]
-    fn __lsx_vbitclri_w(a: __v4u32, b: u32) -> __v4u32;
-    #[link_name = "llvm.loongarch.lsx.vbitclri.d"]
-    fn __lsx_vbitclri_d(a: __v2u64, b: u32) -> __v2u64;
-    #[link_name = "llvm.loongarch.lsx.vbitseti.b"]
-    fn __lsx_vbitseti_b(a: __v16u8, b: u32) -> __v16u8;
-    #[link_name = "llvm.loongarch.lsx.vbitseti.h"]
-    fn __lsx_vbitseti_h(a: __v8u16, b: u32) -> __v8u16;
-    #[link_name = "llvm.loongarch.lsx.vbitseti.w"]
-    fn __lsx_vbitseti_w(a: __v4u32, b: u32) -> __v4u32;
-    #[link_name = "llvm.loongarch.lsx.vbitseti.d"]
-    fn __lsx_vbitseti_d(a: __v2u64, b: u32) -> __v2u64;
-    #[link_name = "llvm.loongarch.lsx.vbitrevi.b"]
-    fn __lsx_vbitrevi_b(a: __v16u8, b: u32) -> __v16u8;
-    #[link_name = "llvm.loongarch.lsx.vbitrevi.h"]
-    fn __lsx_vbitrevi_h(a: __v8u16, b: u32) -> __v8u16;
-    #[link_name = "llvm.loongarch.lsx.vbitrevi.w"]
-    fn __lsx_vbitrevi_w(a: __v4u32, b: u32) -> __v4u32;
-    #[link_name = "llvm.loongarch.lsx.vbitrevi.d"]
-    fn __lsx_vbitrevi_d(a: __v2u64, b: u32) -> __v2u64;
     #[link_name = "llvm.loongarch.lsx.vsubi.bu"]
     fn __lsx_vsubi_bu(a: __v16i8, b: u32) -> __v16i8;
     #[link_name = "llvm.loongarch.lsx.vsubi.hu"]
@@ -969,102 +945,6 @@ pub fn lsx_vsrlri_w<const IMM5: u32>(a: m128i) -> m128i {
 pub fn lsx_vsrlri_d<const IMM6: u32>(a: m128i) -> m128i {
     static_assert_uimm_bits!(IMM6, 6);
     unsafe { transmute(__lsx_vsrlri_d(transmute(a), IMM6)) }
-}
-
-#[inline]
-#[target_feature(enable = "lsx")]
-#[stable(feature = "stdarch_loongarch_simd", since = "1.101.0")]
-pub fn lsx_vbitclri_b<const IMM3: u32>(a: m128i) -> m128i {
-    static_assert_uimm_bits!(IMM3, 3);
-    unsafe { transmute(__lsx_vbitclri_b(transmute(a), IMM3)) }
-}
-
-#[inline]
-#[target_feature(enable = "lsx")]
-#[stable(feature = "stdarch_loongarch_simd", since = "1.101.0")]
-pub fn lsx_vbitclri_h<const IMM4: u32>(a: m128i) -> m128i {
-    static_assert_uimm_bits!(IMM4, 4);
-    unsafe { transmute(__lsx_vbitclri_h(transmute(a), IMM4)) }
-}
-
-#[inline]
-#[target_feature(enable = "lsx")]
-#[stable(feature = "stdarch_loongarch_simd", since = "1.101.0")]
-pub fn lsx_vbitclri_w<const IMM5: u32>(a: m128i) -> m128i {
-    static_assert_uimm_bits!(IMM5, 5);
-    unsafe { transmute(__lsx_vbitclri_w(transmute(a), IMM5)) }
-}
-
-#[inline]
-#[target_feature(enable = "lsx")]
-#[stable(feature = "stdarch_loongarch_simd", since = "1.101.0")]
-pub fn lsx_vbitclri_d<const IMM6: u32>(a: m128i) -> m128i {
-    static_assert_uimm_bits!(IMM6, 6);
-    unsafe { transmute(__lsx_vbitclri_d(transmute(a), IMM6)) }
-}
-
-#[inline]
-#[target_feature(enable = "lsx")]
-#[stable(feature = "stdarch_loongarch_simd", since = "1.101.0")]
-pub fn lsx_vbitseti_b<const IMM3: u32>(a: m128i) -> m128i {
-    static_assert_uimm_bits!(IMM3, 3);
-    unsafe { transmute(__lsx_vbitseti_b(transmute(a), IMM3)) }
-}
-
-#[inline]
-#[target_feature(enable = "lsx")]
-#[stable(feature = "stdarch_loongarch_simd", since = "1.101.0")]
-pub fn lsx_vbitseti_h<const IMM4: u32>(a: m128i) -> m128i {
-    static_assert_uimm_bits!(IMM4, 4);
-    unsafe { transmute(__lsx_vbitseti_h(transmute(a), IMM4)) }
-}
-
-#[inline]
-#[target_feature(enable = "lsx")]
-#[stable(feature = "stdarch_loongarch_simd", since = "1.101.0")]
-pub fn lsx_vbitseti_w<const IMM5: u32>(a: m128i) -> m128i {
-    static_assert_uimm_bits!(IMM5, 5);
-    unsafe { transmute(__lsx_vbitseti_w(transmute(a), IMM5)) }
-}
-
-#[inline]
-#[target_feature(enable = "lsx")]
-#[stable(feature = "stdarch_loongarch_simd", since = "1.101.0")]
-pub fn lsx_vbitseti_d<const IMM6: u32>(a: m128i) -> m128i {
-    static_assert_uimm_bits!(IMM6, 6);
-    unsafe { transmute(__lsx_vbitseti_d(transmute(a), IMM6)) }
-}
-
-#[inline]
-#[target_feature(enable = "lsx")]
-#[stable(feature = "stdarch_loongarch_simd", since = "1.101.0")]
-pub fn lsx_vbitrevi_b<const IMM3: u32>(a: m128i) -> m128i {
-    static_assert_uimm_bits!(IMM3, 3);
-    unsafe { transmute(__lsx_vbitrevi_b(transmute(a), IMM3)) }
-}
-
-#[inline]
-#[target_feature(enable = "lsx")]
-#[stable(feature = "stdarch_loongarch_simd", since = "1.101.0")]
-pub fn lsx_vbitrevi_h<const IMM4: u32>(a: m128i) -> m128i {
-    static_assert_uimm_bits!(IMM4, 4);
-    unsafe { transmute(__lsx_vbitrevi_h(transmute(a), IMM4)) }
-}
-
-#[inline]
-#[target_feature(enable = "lsx")]
-#[stable(feature = "stdarch_loongarch_simd", since = "1.101.0")]
-pub fn lsx_vbitrevi_w<const IMM5: u32>(a: m128i) -> m128i {
-    static_assert_uimm_bits!(IMM5, 5);
-    unsafe { transmute(__lsx_vbitrevi_w(transmute(a), IMM5)) }
-}
-
-#[inline]
-#[target_feature(enable = "lsx")]
-#[stable(feature = "stdarch_loongarch_simd", since = "1.101.0")]
-pub fn lsx_vbitrevi_d<const IMM6: u32>(a: m128i) -> m128i {
-    static_assert_uimm_bits!(IMM6, 6);
-    unsafe { transmute(__lsx_vbitrevi_d(transmute(a), IMM6)) }
 }
 
 #[inline]
