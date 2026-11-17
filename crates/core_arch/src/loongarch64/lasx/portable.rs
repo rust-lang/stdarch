@@ -940,6 +940,31 @@ impl_vv_v!("lasx", lasx_xvfcmp_cult_d, simd_ext_fcmp_cult, m256d, f64x4, m256d, 
 impl_vv_v!("lasx", lasx_xvfcmp_cun_d, simd_ext_fcmp_cun, m256d, f64x4, m256d, f64x4, m256i, i64x4);
 impl_vv_v!("lasx", lasx_xvfcmp_cune_d, simd_ne, m256d, f64x4, m256d, f64x4, m256i, i64x4);
 
+impl_v_v!("lasx", lasx_xvexth_h_b, simd_ext_exth, m256i, i8x32, m256i, i16x16);
+impl_v_v!("lasx", lasx_xvexth_hu_bu, simd_ext_exth, m256i, u8x32, m256i, u16x16);
+impl_v_v!("lasx", lasx_xvexth_w_h, simd_ext_exth, m256i, i16x16, m256i, i32x8);
+impl_v_v!("lasx", lasx_xvexth_wu_hu, simd_ext_exth, m256i, u16x16, m256i, u32x8);
+impl_v_v!("lasx", lasx_xvexth_d_w, simd_ext_exth, m256i, i32x8, m256i, i64x4);
+impl_v_v!("lasx", lasx_xvexth_du_wu, simd_ext_exth, m256i, u32x8, m256i, u64x4);
+impl_v_v!("lasx", lasx_vext2xv_h_b, simd_ext_ext2, m256i, i8x32, m256i, i16x16);
+impl_v_v!("lasx", lasx_vext2xv_hu_bu, simd_ext_ext2, m256i, u8x32, m256i, u16x16);
+impl_v_v!("lasx", lasx_vext2xv_w_b, simd_ext_ext2, m256i, i8x32, m256i, i32x8);
+impl_v_v!("lasx", lasx_vext2xv_wu_bu, simd_ext_ext2, m256i, u8x32, m256i, u32x8);
+impl_v_v!("lasx", lasx_vext2xv_d_b, simd_ext_ext2, m256i, i8x32, m256i, i64x4);
+impl_v_v!("lasx", lasx_vext2xv_du_bu, simd_ext_ext2, m256i, u8x32, m256i, u64x4);
+impl_v_v!("lasx", lasx_vext2xv_w_h, simd_ext_ext2, m256i, i16x16, m256i, i32x8);
+impl_v_v!("lasx", lasx_vext2xv_wu_hu, simd_ext_ext2, m256i, u16x16, m256i, u32x8);
+impl_v_v!("lasx", lasx_vext2xv_d_h, simd_ext_ext2, m256i, i16x16, m256i, i64x4);
+impl_v_v!("lasx", lasx_vext2xv_du_hu, simd_ext_ext2, m256i, u16x16, m256i, u64x4);
+impl_v_v!("lasx", lasx_vext2xv_d_w, simd_ext_ext2, m256i, i32x8, m256i, i64x4);
+impl_v_v!("lasx", lasx_vext2xv_du_wu, simd_ext_ext2, m256i, u32x8, m256i, u64x4);
+
+impl_vu_v!("lasx", lasx_xvsllwil_h_b, simd_ext_sllwil, m256i, i8x32, m256i, i16x16, 3);
+impl_vu_v!("lasx", lasx_xvsllwil_hu_bu, simd_ext_sllwil, m256i, u8x32, m256i, u16x16, 3);
+impl_vu_v!("lasx", lasx_xvsllwil_w_h, simd_ext_sllwil, m256i, i16x16, m256i, i32x8, 4);
+impl_vu_v!("lasx", lasx_xvsllwil_wu_hu, simd_ext_sllwil, m256i, u16x16, m256i, u32x8, 4);
+impl_vu_v!("lasx", lasx_xvsllwil_d_w, simd_ext_sllwil, m256i, i32x8, m256i, i64x4, 5);
+impl_vu_v!("lasx", lasx_xvsllwil_du_wu, simd_ext_sllwil, m256i, u32x8, m256i, u64x4, 5);
 impl_vu_v!("lasx", lasx_xvsrari_b, simd_ext_shrri, m256i, i8x32, m256i, i8x32, 3);
 impl_vu_v!("lasx", lasx_xvsrlri_b, simd_ext_shrri, m256i, u8x32, m256i, u8x32, 3);
 impl_vu_v!("lasx", lasx_xvsrari_h, simd_ext_shrri, m256i, i16x16, m256i, i16x16, 4);

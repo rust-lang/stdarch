@@ -317,11 +317,37 @@ pub(super) const unsafe fn simd_ext_stx<T: Copy>(a: T, b: *mut i8, c: i64) {
     core::ptr::write_unaligned(b, a);
 }
 
+#[inline(always)]
+pub(super) const fn lanes<E>(n: usize) -> usize {
+    n * size_of::<E>() / 16
+}
+
+pub(super) const fn idx_seq<const N: usize>(o: usize) -> [u32; N] {
+    let mut r = [0; N];
+    let mut i = 0;
+    while i < N {
+        r[i] = (o + i) as u32;
+        i += 1;
+    }
+    r
+}
+
 pub(super) const fn idx_step2<const N: usize>(o: usize) -> [u32; N] {
     let mut r = [0; N];
     let mut i = 0;
     while i < N {
         r[i] = (2 * i + o) as u32;
+        i += 1;
+    }
+    r
+}
+
+pub(super) const fn idx_half<const N: usize>(lanes: usize, hi: bool) -> [u32; N] {
+    let p = N / lanes;
+    let mut r = [0; N];
+    let mut i = 0;
+    while i < N {
+        r[i] = ((i / p) * 2 * p + if hi { p } else { 0 } + i % p) as u32;
         i += 1;
     }
     r
@@ -343,6 +369,65 @@ const unsafe fn simd_ext_od<E: SimdElement, F: SimdElement, const N: usize, cons
 ) -> Simd<F, H> {
     let r: Simd<E, H> = simd_shuffle!(a, a, idx_step2::<H>(1));
     simd_as(r)
+}
+
+#[inline(always)]
+#[rustc_const_unstable(feature = "stdarch_const_helpers", issue = "none")]
+pub(super) const unsafe fn simd_ext_exth<
+    E: SimdElement,
+    F: SimdElement,
+    const N: usize,
+    const H: usize,
+>(
+    a: Simd<E, N>,
+) -> Simd<F, H> {
+    let r: Simd<E, H> = simd_shuffle!(a, a, idx_half::<H>(lanes::<E>(N), true));
+    simd_as(r)
+}
+
+#[inline(always)]
+#[rustc_const_unstable(feature = "stdarch_const_helpers", issue = "none")]
+pub(super) const unsafe fn simd_ext_extl<
+    E: SimdElement,
+    F: SimdElement,
+    const N: usize,
+    const H: usize,
+>(
+    a: Simd<E, N>,
+) -> Simd<F, H> {
+    let r: Simd<E, H> = simd_shuffle!(a, a, idx_half::<H>(lanes::<E>(N), false));
+    simd_as(r)
+}
+
+#[inline(always)]
+#[rustc_const_unstable(feature = "stdarch_const_helpers", issue = "none")]
+pub(super) const unsafe fn simd_ext_ext2<
+    E: SimdElement,
+    F: SimdElement,
+    const N: usize,
+    const H: usize,
+>(
+    a: Simd<E, N>,
+) -> Simd<F, H> {
+    let r: Simd<E, H> = simd_shuffle!(a, a, idx_seq::<H>(0));
+    simd_as(r)
+}
+
+#[inline(always)]
+#[rustc_const_unstable(feature = "stdarch_const_helpers", issue = "none")]
+pub(super) const unsafe fn simd_ext_sllwil<
+    E: SimdElement,
+    F: SimdElement,
+    const N: usize,
+    const H: usize,
+>(
+    a: Simd<E, N>,
+    imm: u32,
+) -> Simd<F, H>
+where
+    Simd<F, H>: const SimdExt,
+{
+    simd_shl(simd_ext_extl::<E, F, N, H>(a), simd_ext_splat(imm as i64))
 }
 
 macro_rules! impl_widen_op {
@@ -740,6 +825,23 @@ macro_rules! impl_vugv {
 }
 
 pub(super) use impl_vugv;
+
+macro_rules! impl_v_v {
+    ($ft:literal, $name:ident, $op:ident, $oa:ty, $ia:ty, $or:ty, $ir:ty) => {
+        #[inline]
+        #[target_feature(enable = $ft)]
+        #[stable(feature = "stdarch_loongarch_simd", since = "1.101.0")]
+        pub fn $name(a: $oa) -> $or {
+            unsafe {
+                let a: $ia = transmute(a);
+                let r: $ir = $op(a);
+                transmute(r)
+            }
+        }
+    };
+}
+
+pub(super) use impl_v_v;
 
 macro_rules! impl_vv_v {
     (
