@@ -876,6 +876,7 @@ impl_vsv!("lasx", lasx_xvmini_h, simd_imin, m256i, i16x16, 5);
 impl_vsv!("lasx", lasx_xvmini_w, simd_imin, m256i, i32x8, 5);
 impl_vsv!("lasx", lasx_xvmini_d, simd_imin, m256i, i64x4, 5);
 
+impl_vvvv!("lasx", lasx_xvbitsel_v, simd_ext_bitsel, m256i, u8x32);
 impl_vvvv!("lasx", lasx_xvmadd_b, simd_ext_madd, m256i, i8x32);
 impl_vvvv!("lasx", lasx_xvmadd_h, simd_ext_madd, m256i, i16x16);
 impl_vvvv!("lasx", lasx_xvmadd_w, simd_ext_madd, m256i, i32x8);

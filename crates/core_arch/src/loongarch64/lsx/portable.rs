@@ -550,6 +550,7 @@ impl_vsv!("lsx", lsx_vmini_h, simd_imin, m128i, i16x8, 5);
 impl_vsv!("lsx", lsx_vmini_w, simd_imin, m128i, i32x4, 5);
 impl_vsv!("lsx", lsx_vmini_d, simd_imin, m128i, i64x2, 5);
 
+impl_vvvv!("lsx", lsx_vbitsel_v, simd_ext_bitsel, m128i, u8x16);
 impl_vvvv!("lsx", lsx_vmadd_b, simd_ext_madd, m128i, i8x16);
 impl_vvvv!("lsx", lsx_vmadd_h, simd_ext_madd, m128i, i16x8);
 impl_vvvv!("lsx", lsx_vmadd_w, simd_ext_madd, m128i, i32x4);

@@ -145,8 +145,6 @@ unsafe extern "llvm-intrinsic" {
     fn __lsx_vnori_b(a: __v16u8, b: u32) -> __v16u8;
     #[link_name = "llvm.loongarch.lsx.vxori.b"]
     fn __lsx_vxori_b(a: __v16u8, b: u32) -> __v16u8;
-    #[link_name = "llvm.loongarch.lsx.vbitsel.v"]
-    fn __lsx_vbitsel_v(a: __v16u8, b: __v16u8, c: __v16u8) -> __v16u8;
     #[link_name = "llvm.loongarch.lsx.vbitseli.b"]
     fn __lsx_vbitseli_b(a: __v16u8, b: __v16u8, c: u32) -> __v16u8;
     #[link_name = "llvm.loongarch.lsx.vfcvt.h.s"]
@@ -1318,13 +1316,6 @@ pub fn lsx_vnori_b<const IMM8: u32>(a: m128i) -> m128i {
 pub fn lsx_vxori_b<const IMM8: u32>(a: m128i) -> m128i {
     static_assert_uimm_bits!(IMM8, 8);
     unsafe { transmute(__lsx_vxori_b(transmute(a), IMM8)) }
-}
-
-#[inline]
-#[target_feature(enable = "lsx")]
-#[stable(feature = "stdarch_loongarch_simd", since = "1.101.0")]
-pub fn lsx_vbitsel_v(a: m128i, b: m128i, c: m128i) -> m128i {
-    unsafe { transmute(__lsx_vbitsel_v(transmute(a), transmute(b), transmute(c))) }
 }
 
 #[inline]

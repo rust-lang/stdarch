@@ -1659,6 +1659,7 @@ asm-fmts = vd, vj, ui8
 data-types = UV16QI, UV16QI, UQI
 
 /// lsx_vbitsel_v
+impl = portable
 name = lsx_vbitsel_v
 asm-fmts = vd, vj, vk, va
 data-types = UV16QI, UV16QI, UV16QI, UV16QI
