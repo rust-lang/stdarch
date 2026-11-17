@@ -316,6 +316,18 @@ pub(super) const unsafe fn simd_ext_stx<T: Copy>(a: T, b: *mut i8, c: i64) {
     core::ptr::write_unaligned(b, a);
 }
 
+#[inline(always)]
+#[rustc_const_unstable(feature = "stdarch_const_helpers", issue = "none")]
+pub(super) const unsafe fn simd_ext_shrri<T: Copy + const SimdExt>(a: T, imm: u32) -> T {
+    if imm == 0 {
+        a
+    } else {
+        let r = simd_shr(a, simd_ext_splat(imm as i64 - 1));
+        let r = simd_and(r, simd_ext_splat(1));
+        simd_add(simd_shr(a, simd_ext_splat(imm as i64)), r)
+    }
+}
+
 macro_rules! impl_vavg {
     ($ft:literal, $name:ident, $oty:ty, $ity:ty, $wty:ty) => {
         #[inline]
@@ -641,3 +653,34 @@ macro_rules! impl_vugv {
 }
 
 pub(super) use impl_vugv;
+
+macro_rules! impl_vu_v {
+    ($ft:literal, $name:ident, $op:ident, $oa:ty, $ia:ty, $or:ty, $ir:ty, $ibs:expr) => {
+        #[inline]
+        #[target_feature(enable = $ft)]
+        #[stable(feature = "stdarch_loongarch_simd", since = "1.101.0")]
+        pub fn $name<const IMM: u32>(a: $oa) -> $or {
+            static_assert_uimm_bits!(IMM, $ibs);
+            unsafe {
+                let a: $ia = transmute(a);
+                let r: $ir = $op(a, IMM);
+                transmute(r)
+            }
+        }
+    };
+    ($ft:literal, $name:ident, $op:ident, $oa:ty, $ia:ty, $or:ty, $ir:ty, $ibs:expr, const) => {
+        #[inline]
+        #[target_feature(enable = $ft)]
+        #[stable(feature = "stdarch_loongarch_simd", since = "1.101.0")]
+        pub fn $name<const IMM: u32>(a: $oa) -> $or {
+            static_assert_uimm_bits!(IMM, $ibs);
+            unsafe {
+                let a: $ia = transmute(a);
+                let r: $ir = $op::<IMM, _, _>(a);
+                transmute(r)
+            }
+        }
+    };
+}
+
+pub(super) use impl_vu_v;

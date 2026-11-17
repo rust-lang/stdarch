@@ -15,6 +15,10 @@ lsx_vsrai_b
 lsx_vsrai_h
 lsx_vsrai_w
 lsx_vsrai_d
+lsx_vsrari_b
+lsx_vsrari_h
+lsx_vsrari_w
+lsx_vsrari_d
 lsx_vsrl_b
 lsx_vsrl_h
 lsx_vsrl_w
@@ -23,6 +27,10 @@ lsx_vsrli_b
 lsx_vsrli_h
 lsx_vsrli_w
 lsx_vsrli_d
+lsx_vsrlri_b
+lsx_vsrlri_h
+lsx_vsrlri_w
+lsx_vsrlri_d
 lsx_vadd_b
 lsx_vadd_h
 lsx_vadd_w
@@ -338,6 +346,10 @@ lasx_xvsrai_b
 lasx_xvsrai_h
 lasx_xvsrai_w
 lasx_xvsrai_d
+lasx_xvsrari_b
+lasx_xvsrari_h
+lasx_xvsrari_w
+lasx_xvsrari_d
 lasx_xvsrl_b
 lasx_xvsrl_h
 lasx_xvsrl_w
@@ -346,6 +358,10 @@ lasx_xvsrli_b
 lasx_xvsrli_h
 lasx_xvsrli_w
 lasx_xvsrli_d
+lasx_xvsrlri_b
+lasx_xvsrlri_h
+lasx_xvsrlri_w
+lasx_xvsrlri_d
 lasx_xvadd_b
 lasx_xvadd_h
 lasx_xvadd_w
