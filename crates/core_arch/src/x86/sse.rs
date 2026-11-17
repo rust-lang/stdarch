@@ -1213,17 +1213,10 @@ pub const unsafe fn _mm_load_ps(p: *const f32) -> __m128 {
 #[target_feature(enable = "sse")]
 #[cfg_attr(test, assert_instr(movups))]
 #[stable(feature = "simd_x86", since = "1.27.0")]
+#[expect(clippy::cast_ptr_alignment)]
 #[rustc_const_unstable(feature = "stdarch_const_x86", issue = "149298")]
 pub const unsafe fn _mm_loadu_ps(p: *const f32) -> __m128 {
-    // Note: Using `*p` would require `f32` alignment, but `movups` has no
-    // alignment restrictions.
-    let mut dst = _mm_undefined_ps();
-    ptr::copy_nonoverlapping(
-        p as *const u8,
-        ptr::addr_of_mut!(dst) as *mut u8,
-        mem::size_of::<__m128>(),
-    );
-    dst
+    p.cast::<__m128>().read_unaligned()
 }
 
 /// Loads four `f32` values from aligned memory into a `__m128` in reverse
@@ -1356,13 +1349,10 @@ pub const unsafe fn _mm_store_ps(p: *mut f32, a: __m128) {
 #[target_feature(enable = "sse")]
 #[cfg_attr(test, assert_instr(movups))]
 #[stable(feature = "simd_x86", since = "1.27.0")]
+#[expect(clippy::cast_ptr_alignment)]
 #[rustc_const_unstable(feature = "stdarch_const_x86", issue = "149298")]
 pub const unsafe fn _mm_storeu_ps(p: *mut f32, a: __m128) {
-    ptr::copy_nonoverlapping(
-        ptr::addr_of!(a) as *const u8,
-        p as *mut u8,
-        mem::size_of::<__m128>(),
-    );
+    p.cast::<__m128>().write_unaligned(a)
 }
 
 /// Stores four 32-bit floats into *aligned* memory in reverse order.

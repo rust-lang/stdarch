@@ -16,7 +16,7 @@
 use crate::{
     core_arch::{simd::*, x86::*},
     intrinsics::simd::*,
-    mem, ptr,
+    mem,
 };
 
 #[cfg(test)]
@@ -1618,15 +1618,10 @@ pub const unsafe fn _mm256_store_ps(mem_addr: *mut f32, a: __m256) {
 #[target_feature(enable = "avx")]
 #[cfg_attr(test, assert_instr(vmovup))]
 #[stable(feature = "simd_x86", since = "1.27.0")]
+#[expect(clippy::cast_ptr_alignment)]
 #[rustc_const_unstable(feature = "stdarch_const_x86", issue = "149298")]
 pub const unsafe fn _mm256_loadu_pd(mem_addr: *const f64) -> __m256d {
-    let mut dst = _mm256_undefined_pd();
-    ptr::copy_nonoverlapping(
-        mem_addr as *const u8,
-        ptr::addr_of_mut!(dst) as *mut u8,
-        mem::size_of::<__m256d>(),
-    );
-    dst
+    mem_addr.cast::<__m256d>().read_unaligned()
 }
 
 /// Stores 256-bits (composed of 4 packed double-precision (64-bit)
@@ -1652,15 +1647,10 @@ pub const unsafe fn _mm256_storeu_pd(mem_addr: *mut f64, a: __m256d) {
 #[target_feature(enable = "avx")]
 #[cfg_attr(test, assert_instr(vmovups))]
 #[stable(feature = "simd_x86", since = "1.27.0")]
+#[expect(clippy::cast_ptr_alignment)]
 #[rustc_const_unstable(feature = "stdarch_const_x86", issue = "149298")]
 pub const unsafe fn _mm256_loadu_ps(mem_addr: *const f32) -> __m256 {
-    let mut dst = _mm256_undefined_ps();
-    ptr::copy_nonoverlapping(
-        mem_addr as *const u8,
-        ptr::addr_of_mut!(dst) as *mut u8,
-        mem::size_of::<__m256>(),
-    );
-    dst
+    mem_addr.cast::<__m256>().read_unaligned()
 }
 
 /// Stores 256-bits (composed of 8 packed single-precision (32-bit)
@@ -1721,13 +1711,7 @@ pub const unsafe fn _mm256_store_si256(mem_addr: *mut __m256i, a: __m256i) {
 #[stable(feature = "simd_x86", since = "1.27.0")]
 #[rustc_const_unstable(feature = "stdarch_const_x86", issue = "149298")]
 pub const unsafe fn _mm256_loadu_si256(mem_addr: *const __m256i) -> __m256i {
-    let mut dst = _mm256_undefined_si256();
-    ptr::copy_nonoverlapping(
-        mem_addr as *const u8,
-        ptr::addr_of_mut!(dst) as *mut u8,
-        mem::size_of::<__m256i>(),
-    );
-    dst
+    mem_addr.read_unaligned()
 }
 
 /// Stores 256-bits of integer data from `a` into memory.
