@@ -915,6 +915,10 @@ impl_vavgr!("lasx", lasx_xvavgr_hu, m256i, u16x16, u32x16);
 impl_vavgr!("lasx", lasx_xvavgr_wu, m256i, u32x8, u64x8);
 impl_vavgr!("lasx", lasx_xvavgr_du, m256i, u64x4, u128x4);
 
+impl_vuv!("lasx", lasx_xvsubi_bu, simd_sub, m256i, u8x32, 5);
+impl_vuv!("lasx", lasx_xvsubi_hu, simd_sub, m256i, u16x16, 5);
+impl_vuv!("lasx", lasx_xvsubi_wu, simd_sub, m256i, u32x8, 5);
+impl_vuv!("lasx", lasx_xvsubi_du, simd_sub, m256i, u64x4, 5);
 impl_vuv!("lasx", lasx_xvandi_b, simd_and, m256i, u8x32, 8);
 impl_vuv!("lasx", lasx_xvori_b, simd_or, m256i, u8x32, 8);
 impl_vuv!("lasx", lasx_xvxori_b, simd_xor, m256i, u8x32, 8);

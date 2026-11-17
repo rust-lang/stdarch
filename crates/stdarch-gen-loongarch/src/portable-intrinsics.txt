@@ -35,6 +35,10 @@ lsx_vsub_b
 lsx_vsub_h
 lsx_vsub_w
 lsx_vsub_d
+lsx_vsubi_bu
+lsx_vsubi_hu
+lsx_vsubi_wu
+lsx_vsubi_du
 lsx_vmax_b
 lsx_vmax_h
 lsx_vmax_w
@@ -354,6 +358,10 @@ lasx_xvsub_b
 lasx_xvsub_h
 lasx_xvsub_w
 lasx_xvsub_d
+lasx_xvsubi_bu
+lasx_xvsubi_hu
+lasx_xvsubi_wu
+lasx_xvsubi_du
 lasx_xvmax_b
 lasx_xvmax_h
 lasx_xvmax_w

@@ -43,14 +43,6 @@ unsafe extern "llvm-intrinsic" {
     fn __lsx_vsrlri_w(a: __v4i32, b: u32) -> __v4i32;
     #[link_name = "llvm.loongarch.lsx.vsrlri.d"]
     fn __lsx_vsrlri_d(a: __v2i64, b: u32) -> __v2i64;
-    #[link_name = "llvm.loongarch.lsx.vsubi.bu"]
-    fn __lsx_vsubi_bu(a: __v16i8, b: u32) -> __v16i8;
-    #[link_name = "llvm.loongarch.lsx.vsubi.hu"]
-    fn __lsx_vsubi_hu(a: __v8i16, b: u32) -> __v8i16;
-    #[link_name = "llvm.loongarch.lsx.vsubi.wu"]
-    fn __lsx_vsubi_wu(a: __v4i32, b: u32) -> __v4i32;
-    #[link_name = "llvm.loongarch.lsx.vsubi.du"]
-    fn __lsx_vsubi_du(a: __v2i64, b: u32) -> __v2i64;
     #[link_name = "llvm.loongarch.lsx.vsat.b"]
     fn __lsx_vsat_b(a: __v16i8, b: u32) -> __v16i8;
     #[link_name = "llvm.loongarch.lsx.vsat.h"]
@@ -937,38 +929,6 @@ pub fn lsx_vsrlri_w<const IMM5: u32>(a: m128i) -> m128i {
 pub fn lsx_vsrlri_d<const IMM6: u32>(a: m128i) -> m128i {
     static_assert_uimm_bits!(IMM6, 6);
     unsafe { transmute(__lsx_vsrlri_d(transmute(a), IMM6)) }
-}
-
-#[inline]
-#[target_feature(enable = "lsx")]
-#[stable(feature = "stdarch_loongarch_simd", since = "1.101.0")]
-pub fn lsx_vsubi_bu<const IMM5: u32>(a: m128i) -> m128i {
-    static_assert_uimm_bits!(IMM5, 5);
-    unsafe { transmute(__lsx_vsubi_bu(transmute(a), IMM5)) }
-}
-
-#[inline]
-#[target_feature(enable = "lsx")]
-#[stable(feature = "stdarch_loongarch_simd", since = "1.101.0")]
-pub fn lsx_vsubi_hu<const IMM5: u32>(a: m128i) -> m128i {
-    static_assert_uimm_bits!(IMM5, 5);
-    unsafe { transmute(__lsx_vsubi_hu(transmute(a), IMM5)) }
-}
-
-#[inline]
-#[target_feature(enable = "lsx")]
-#[stable(feature = "stdarch_loongarch_simd", since = "1.101.0")]
-pub fn lsx_vsubi_wu<const IMM5: u32>(a: m128i) -> m128i {
-    static_assert_uimm_bits!(IMM5, 5);
-    unsafe { transmute(__lsx_vsubi_wu(transmute(a), IMM5)) }
-}
-
-#[inline]
-#[target_feature(enable = "lsx")]
-#[stable(feature = "stdarch_loongarch_simd", since = "1.101.0")]
-pub fn lsx_vsubi_du<const IMM5: u32>(a: m128i) -> m128i {
-    static_assert_uimm_bits!(IMM5, 5);
-    unsafe { transmute(__lsx_vsubi_du(transmute(a), IMM5)) }
 }
 
 #[inline]

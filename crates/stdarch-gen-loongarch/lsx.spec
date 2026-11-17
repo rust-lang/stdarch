@@ -444,21 +444,25 @@ asm-fmts = vd, vj, vk
 data-types = V2DI, V2DI, V2DI
 
 /// lsx_vsubi_bu
+impl = portable
 name = lsx_vsubi_bu
 asm-fmts = vd, vj, ui5
 data-types = V16QI, V16QI, UQI
 
 /// lsx_vsubi_hu
+impl = portable
 name = lsx_vsubi_hu
 asm-fmts = vd, vj, ui5
 data-types = V8HI, V8HI, UQI
 
 /// lsx_vsubi_wu
+impl = portable
 name = lsx_vsubi_wu
 asm-fmts = vd, vj, ui5
 data-types = V4SI, V4SI, UQI
 
 /// lsx_vsubi_du
+impl = portable
 name = lsx_vsubi_du
 asm-fmts = vd, vj, ui5
 data-types = V2DI, V2DI, UQI

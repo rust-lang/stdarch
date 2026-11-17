@@ -593,6 +593,10 @@ impl_vavgr!("lsx", lsx_vavgr_hu, m128i, u16x8, u32x8);
 impl_vavgr!("lsx", lsx_vavgr_wu, m128i, u32x4, u64x4);
 impl_vavgr!("lsx", lsx_vavgr_du, m128i, u64x2, u128x2);
 
+impl_vuv!("lsx", lsx_vsubi_bu, simd_sub, m128i, u8x16, 5);
+impl_vuv!("lsx", lsx_vsubi_hu, simd_sub, m128i, u16x8, 5);
+impl_vuv!("lsx", lsx_vsubi_wu, simd_sub, m128i, u32x4, 5);
+impl_vuv!("lsx", lsx_vsubi_du, simd_sub, m128i, u64x2, 5);
 impl_vuv!("lsx", lsx_vandi_b, simd_and, m128i, u8x16, 8);
 impl_vuv!("lsx", lsx_vori_b, simd_or, m128i, u8x16, 8);
 impl_vuv!("lsx", lsx_vxori_b, simd_xor, m128i, u8x16, 8);
