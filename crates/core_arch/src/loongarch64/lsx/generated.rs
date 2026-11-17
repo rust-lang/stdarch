@@ -305,14 +305,6 @@ unsafe extern "llvm-intrinsic" {
     fn __lsx_vfrintrne_s(a: __v4f32) -> __v4f32;
     #[link_name = "llvm.loongarch.lsx.vfrintrne.d"]
     fn __lsx_vfrintrne_d(a: __v2f64) -> __v2f64;
-    #[link_name = "llvm.loongarch.lsx.vstelm.b"]
-    fn __lsx_vstelm_b(a: __v16i8, b: *mut i8, c: i32, d: u32);
-    #[link_name = "llvm.loongarch.lsx.vstelm.h"]
-    fn __lsx_vstelm_h(a: __v8i16, b: *mut i8, c: i32, d: u32);
-    #[link_name = "llvm.loongarch.lsx.vstelm.w"]
-    fn __lsx_vstelm_w(a: __v4i32, b: *mut i8, c: i32, d: u32);
-    #[link_name = "llvm.loongarch.lsx.vstelm.d"]
-    fn __lsx_vstelm_d(a: __v2i64, b: *mut i8, c: i32, d: u32);
     #[link_name = "llvm.loongarch.lsx.vaddwev.d.w"]
     fn __lsx_vaddwev_d_w(a: __v4i32, b: __v4i32) -> __v2i64;
     #[link_name = "llvm.loongarch.lsx.vaddwev.w.h"]
@@ -1741,42 +1733,6 @@ pub fn lsx_vfrintrne_s(a: m128) -> m128 {
 #[stable(feature = "stdarch_loongarch_simd", since = "1.101.0")]
 pub fn lsx_vfrintrne_d(a: m128d) -> m128d {
     unsafe { transmute(__lsx_vfrintrne_d(transmute(a))) }
-}
-
-#[inline]
-#[target_feature(enable = "lsx")]
-#[stable(feature = "stdarch_loongarch_simd", since = "1.101.0")]
-pub unsafe fn lsx_vstelm_b<const IMM_S8: i32, const IMM4: u32>(a: m128i, mem_addr: *mut i8) {
-    static_assert_simm_bits!(IMM_S8, 8);
-    static_assert_uimm_bits!(IMM4, 4);
-    __lsx_vstelm_b(transmute(a), mem_addr, IMM_S8, IMM4)
-}
-
-#[inline]
-#[target_feature(enable = "lsx")]
-#[stable(feature = "stdarch_loongarch_simd", since = "1.101.0")]
-pub unsafe fn lsx_vstelm_h<const IMM_S8: i32, const IMM3: u32>(a: m128i, mem_addr: *mut i8) {
-    static_assert_simm_bits!(IMM_S8, 8);
-    static_assert_uimm_bits!(IMM3, 3);
-    __lsx_vstelm_h(transmute(a), mem_addr, IMM_S8, IMM3)
-}
-
-#[inline]
-#[target_feature(enable = "lsx")]
-#[stable(feature = "stdarch_loongarch_simd", since = "1.101.0")]
-pub unsafe fn lsx_vstelm_w<const IMM_S8: i32, const IMM2: u32>(a: m128i, mem_addr: *mut i8) {
-    static_assert_simm_bits!(IMM_S8, 8);
-    static_assert_uimm_bits!(IMM2, 2);
-    __lsx_vstelm_w(transmute(a), mem_addr, IMM_S8, IMM2)
-}
-
-#[inline]
-#[target_feature(enable = "lsx")]
-#[stable(feature = "stdarch_loongarch_simd", since = "1.101.0")]
-pub unsafe fn lsx_vstelm_d<const IMM_S8: i32, const IMM1: u32>(a: m128i, mem_addr: *mut i8) {
-    static_assert_simm_bits!(IMM_S8, 8);
-    static_assert_uimm_bits!(IMM1, 1);
-    __lsx_vstelm_d(transmute(a), mem_addr, IMM_S8, IMM1)
 }
 
 #[inline]

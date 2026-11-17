@@ -557,6 +557,16 @@ pub(super) const unsafe fn simd_ext_fcmp_cule<F: Copy, I: Copy + const SimdExt>(
 
 #[inline(always)]
 #[rustc_const_unstable(feature = "stdarch_const_helpers", issue = "none")]
+pub(super) const unsafe fn simd_ext_stelm<const I: i32, const J: u32, T: Copy + SimdExt>(
+    a: T,
+    b: *mut i8,
+) {
+    let b = b.offset(I as isize) as *mut T::Elem;
+    core::ptr::write_unaligned(b, simd_extract!(a, J));
+}
+
+#[inline(always)]
+#[rustc_const_unstable(feature = "stdarch_const_helpers", issue = "none")]
 pub(super) const unsafe fn simd_ext_extrins<const I: u32, E: SimdElement, const N: usize>(
     a: Simd<E, N>,
     b: Simd<E, N>,
@@ -989,3 +999,22 @@ macro_rules! impl_vvu_v {
 }
 
 pub(super) use impl_vvu_v;
+
+macro_rules! impl_vgsu {
+    (
+        $ft:literal, $name:ident, $op:ident, $oty:ty, $ity:ty, $gty:ty,
+        $sbs:expr, $ubs:expr, const, unsafe
+    ) => {
+        #[inline]
+        #[target_feature(enable = $ft)]
+        #[stable(feature = "stdarch_loongarch_simd", since = "1.101.0")]
+        pub unsafe fn $name<const IMM_S: i32, const IMM: u32>(a: $oty, b: $gty) {
+            static_assert_simm_bits!(IMM_S, $sbs);
+            static_assert_uimm_bits!(IMM, $ubs);
+            let a: $ity = transmute(a);
+            $op::<IMM_S, IMM, _>(a, b);
+        }
+    };
+}
+
+pub(super) use impl_vgsu;

@@ -660,6 +660,11 @@ impl_vuv!("lsx", lsx_vandi_b, simd_and, m128i, u8x16, 8);
 impl_vuv!("lsx", lsx_vori_b, simd_or, m128i, u8x16, 8);
 impl_vuv!("lsx", lsx_vxori_b, simd_xor, m128i, u8x16, 8);
 
+impl_vgsu!("lsx", lsx_vstelm_b, simd_ext_stelm, m128i, i8x16, *mut i8, 8, 4, const, unsafe);
+impl_vgsu!("lsx", lsx_vstelm_h, simd_ext_stelm, m128i, i16x8, *mut i8, 8, 3, const, unsafe);
+impl_vgsu!("lsx", lsx_vstelm_w, simd_ext_stelm, m128i, i32x4, *mut i8, 8, 2, const, unsafe);
+impl_vgsu!("lsx", lsx_vstelm_d, simd_ext_stelm, m128i, i64x2, *mut i8, 8, 1, const, unsafe);
+
 #[cfg(test)]
 mod tests {
     use crate::{

@@ -313,14 +313,6 @@ unsafe extern "llvm-intrinsic" {
     fn __lasx_xvfrintrne_s(a: __v8f32) -> __v8f32;
     #[link_name = "llvm.loongarch.lasx.xvfrintrne.d"]
     fn __lasx_xvfrintrne_d(a: __v4f64) -> __v4f64;
-    #[link_name = "llvm.loongarch.lasx.xvstelm.b"]
-    fn __lasx_xvstelm_b(a: __v32i8, b: *mut i8, c: i32, d: u32);
-    #[link_name = "llvm.loongarch.lasx.xvstelm.h"]
-    fn __lasx_xvstelm_h(a: __v16i16, b: *mut i8, c: i32, d: u32);
-    #[link_name = "llvm.loongarch.lasx.xvstelm.w"]
-    fn __lasx_xvstelm_w(a: __v8i32, b: *mut i8, c: i32, d: u32);
-    #[link_name = "llvm.loongarch.lasx.xvstelm.d"]
-    fn __lasx_xvstelm_d(a: __v4i64, b: *mut i8, c: i32, d: u32);
     #[link_name = "llvm.loongarch.lasx.xvpickve.w"]
     fn __lasx_xvpickve_w(a: __v8i32, b: u32) -> __v8i32;
     #[link_name = "llvm.loongarch.lasx.xvpickve.d"]
@@ -1793,42 +1785,6 @@ pub fn lasx_xvfrintrne_s(a: m256) -> m256 {
 #[stable(feature = "stdarch_loongarch_simd", since = "1.101.0")]
 pub fn lasx_xvfrintrne_d(a: m256d) -> m256d {
     unsafe { transmute(__lasx_xvfrintrne_d(transmute(a))) }
-}
-
-#[inline]
-#[target_feature(enable = "lasx")]
-#[stable(feature = "stdarch_loongarch_simd", since = "1.101.0")]
-pub unsafe fn lasx_xvstelm_b<const IMM_S8: i32, const IMM4: u32>(a: m256i, mem_addr: *mut i8) {
-    static_assert_simm_bits!(IMM_S8, 8);
-    static_assert_uimm_bits!(IMM4, 4);
-    __lasx_xvstelm_b(transmute(a), mem_addr, IMM_S8, IMM4)
-}
-
-#[inline]
-#[target_feature(enable = "lasx")]
-#[stable(feature = "stdarch_loongarch_simd", since = "1.101.0")]
-pub unsafe fn lasx_xvstelm_h<const IMM_S8: i32, const IMM3: u32>(a: m256i, mem_addr: *mut i8) {
-    static_assert_simm_bits!(IMM_S8, 8);
-    static_assert_uimm_bits!(IMM3, 3);
-    __lasx_xvstelm_h(transmute(a), mem_addr, IMM_S8, IMM3)
-}
-
-#[inline]
-#[target_feature(enable = "lasx")]
-#[stable(feature = "stdarch_loongarch_simd", since = "1.101.0")]
-pub unsafe fn lasx_xvstelm_w<const IMM_S8: i32, const IMM2: u32>(a: m256i, mem_addr: *mut i8) {
-    static_assert_simm_bits!(IMM_S8, 8);
-    static_assert_uimm_bits!(IMM2, 2);
-    __lasx_xvstelm_w(transmute(a), mem_addr, IMM_S8, IMM2)
-}
-
-#[inline]
-#[target_feature(enable = "lasx")]
-#[stable(feature = "stdarch_loongarch_simd", since = "1.101.0")]
-pub unsafe fn lasx_xvstelm_d<const IMM_S8: i32, const IMM1: u32>(a: m256i, mem_addr: *mut i8) {
-    static_assert_simm_bits!(IMM_S8, 8);
-    static_assert_uimm_bits!(IMM1, 1);
-    __lasx_xvstelm_d(transmute(a), mem_addr, IMM_S8, IMM1)
 }
 
 #[inline]

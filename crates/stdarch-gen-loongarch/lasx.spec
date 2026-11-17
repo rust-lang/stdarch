@@ -2673,21 +2673,25 @@ asm-fmts = xd, rj, si12
 data-types = VOID, V32QI, CVPOINTER, SI
 
 /// lasx_xvstelm_b
+impl = portable
 name = lasx_xvstelm_b
 asm-fmts = xd, rj, si8, idx
 data-types = VOID, V32QI, CVPOINTER, SI, UQI
 
 /// lasx_xvstelm_h
+impl = portable
 name = lasx_xvstelm_h
 asm-fmts = xd, rj, si8, idx
 data-types = VOID, V16HI, CVPOINTER, SI, UQI
 
 /// lasx_xvstelm_w
+impl = portable
 name = lasx_xvstelm_w
 asm-fmts = xd, rj, si8, idx
 data-types = VOID, V8SI, CVPOINTER, SI, UQI
 
 /// lasx_xvstelm_d
+impl = portable
 name = lasx_xvstelm_d
 asm-fmts = xd, rj, si8, idx
 data-types = VOID, V4DI, CVPOINTER, SI, UQI

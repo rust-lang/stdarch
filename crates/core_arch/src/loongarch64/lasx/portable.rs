@@ -1100,6 +1100,11 @@ impl_vuv!("lasx", lasx_xvandi_b, simd_and, m256i, u8x32, 8);
 impl_vuv!("lasx", lasx_xvori_b, simd_or, m256i, u8x32, 8);
 impl_vuv!("lasx", lasx_xvxori_b, simd_xor, m256i, u8x32, 8);
 
+impl_vgsu!("lasx", lasx_xvstelm_b, simd_ext_stelm, m256i, i8x32, *mut i8, 8, 4, const, unsafe);
+impl_vgsu!("lasx", lasx_xvstelm_h, simd_ext_stelm, m256i, i16x16, *mut i8, 8, 3, const, unsafe);
+impl_vgsu!("lasx", lasx_xvstelm_w, simd_ext_stelm, m256i, i32x8, *mut i8, 8, 2, const, unsafe);
+impl_vgsu!("lasx", lasx_xvstelm_d, simd_ext_stelm, m256i, i64x4, *mut i8, 8, 1, const, unsafe);
+
 #[cfg(test)]
 mod tests {
     use crate::{

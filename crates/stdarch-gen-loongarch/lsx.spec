@@ -2725,21 +2725,25 @@ asm-fmts = vd, vj
 data-types = V2DF, V2DF
 
 /// lsx_vstelm_b
+impl = portable
 name = lsx_vstelm_b
 asm-fmts = vd, rj, si8, idx
 data-types = VOID, V16QI, CVPOINTER, SI, UQI
 
 /// lsx_vstelm_h
+impl = portable
 name = lsx_vstelm_h
 asm-fmts = vd, rj, si8, idx
 data-types = VOID, V8HI, CVPOINTER, SI, UQI
 
 /// lsx_vstelm_w
+impl = portable
 name = lsx_vstelm_w
 asm-fmts = vd, rj, si8, idx
 data-types = VOID, V4SI, CVPOINTER, SI, UQI
 
 /// lsx_vstelm_d
+impl = portable
 name = lsx_vstelm_d
 asm-fmts = vd, rj, si8, idx
 data-types = VOID, V2DI, CVPOINTER, SI, UQI

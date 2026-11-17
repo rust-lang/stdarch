@@ -353,6 +353,10 @@ lsx_vfrintrp_s
 lsx_vfrintrp_d
 lsx_vfrintrm_s
 lsx_vfrintrm_d
+lsx_vstelm_b
+lsx_vstelm_h
+lsx_vstelm_w
+lsx_vstelm_d
 lsx_vfrintrz_s
 lsx_vfrintrz_d
 lsx_vmuh_b
@@ -705,6 +709,10 @@ lasx_xvshuf4i_h
 lasx_xvshuf4i_w
 lasx_xvld
 lasx_xvst
+lasx_xvstelm_b
+lasx_xvstelm_h
+lasx_xvstelm_w
+lasx_xvstelm_d
 lasx_xvinsve0_w
 lasx_xvinsve0_d
 lasx_xvldx
