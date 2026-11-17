@@ -353,6 +353,20 @@ pub(super) const fn idx_half<const N: usize>(lanes: usize, hi: bool) -> [u32; N]
     r
 }
 
+pub(super) const fn idx_pack<const N: usize>(lanes: usize) -> [u32; N] {
+    let h = N / 2;
+    let p = h / lanes;
+    let mut r = [0; N];
+    let mut i = 0;
+    while i < N {
+        let l = i / (2 * p);
+        let j = i % (2 * p);
+        r[i] = if j < p { l * p + j } else { h + l * p + j - p } as u32;
+        i += 1;
+    }
+    r
+}
+
 #[inline(always)]
 #[rustc_const_unstable(feature = "stdarch_const_helpers", issue = "none")]
 const unsafe fn simd_ext_ev<E: SimdElement, F: SimdElement, const N: usize, const H: usize>(
@@ -428,6 +442,22 @@ where
     Simd<F, H>: const SimdExt,
 {
     simd_shl(simd_ext_extl::<E, F, N, H>(a), simd_ext_splat(imm as i64))
+}
+
+#[inline(always)]
+#[rustc_const_unstable(feature = "stdarch_const_helpers", issue = "none")]
+pub(super) const unsafe fn simd_ext_narrow2<
+    W: SimdElement,
+    E: SimdElement,
+    const H: usize,
+    const M: usize,
+>(
+    a: Simd<W, H>,
+    b: Simd<W, H>,
+) -> Simd<E, M> {
+    let a: Simd<E, H> = simd_as(a);
+    let b: Simd<E, H> = simd_as(b);
+    simd_shuffle!(b, a, idx_pack::<M>(lanes::<E>(M)))
 }
 
 macro_rules! impl_widen_op {

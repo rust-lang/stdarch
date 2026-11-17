@@ -1928,6 +1928,7 @@ asm-fmts = vd, vj, vk
 data-types = V8HI, V4SF, V4SF
 
 /// lsx_vfcvt_s_d
+impl = portable
 name = lsx_vfcvt_s_d
 asm-fmts = vd, vj, vk
 data-types = V4SF, V2DF, V2DF
@@ -2064,6 +2065,7 @@ asm-fmts = vd, vj
 data-types = V4SF, V8HI
 
 /// lsx_vfcvth_d_s
+impl = portable
 name = lsx_vfcvth_d_s
 asm-fmts = vd, vj
 data-types = V2DF, V4SF
@@ -2074,6 +2076,7 @@ asm-fmts = vd, vj
 data-types = V4SF, V8HI
 
 /// lsx_vfcvtl_d_s
+impl = portable
 name = lsx_vfcvtl_d_s
 asm-fmts = vd, vj
 data-types = V2DF, V4SF
@@ -2119,21 +2122,25 @@ asm-fmts = vd, vj
 data-types = UV2DI, V2DF
 
 /// lsx_vffint_s_w
+impl = portable
 name = lsx_vffint_s_w
 asm-fmts = vd, vj
 data-types = V4SF, V4SI
 
 /// lsx_vffint_d_l
+impl = portable
 name = lsx_vffint_d_l
 asm-fmts = vd, vj
 data-types = V2DF, V2DI
 
 /// lsx_vffint_s_wu
+impl = portable
 name = lsx_vffint_s_wu
 asm-fmts = vd, vj
 data-types = V4SF, UV4SI
 
 /// lsx_vffint_d_lu
+impl = portable
 name = lsx_vffint_d_lu
 asm-fmts = vd, vj
 data-types = V2DF, UV2DI

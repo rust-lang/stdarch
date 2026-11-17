@@ -2032,21 +2032,25 @@ asm-fmts = xd, xj
 data-types = UV4DI, V4DF
 
 /// lasx_xvffint_s_w
+impl = portable
 name = lasx_xvffint_s_w
 asm-fmts = xd, xj
 data-types = V8SF, V8SI
 
 /// lasx_xvffint_d_l
+impl = portable
 name = lasx_xvffint_d_l
 asm-fmts = xd, xj
 data-types = V4DF, V4DI
 
 /// lasx_xvffint_s_wu
+impl = portable
 name = lasx_xvffint_s_wu
 asm-fmts = xd, xj
 data-types = V8SF, UV8SI
 
 /// lasx_xvffint_d_lu
+impl = portable
 name = lasx_xvffint_d_lu
 asm-fmts = xd, xj
 data-types = V4DF, UV4DI

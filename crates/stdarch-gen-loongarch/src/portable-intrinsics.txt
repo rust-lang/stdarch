@@ -178,6 +178,7 @@ lsx_vfmul_s
 lsx_vfmul_d
 lsx_vfdiv_s
 lsx_vfdiv_d
+lsx_vfcvt_s_d
 lsx_vfsqrt_s
 lsx_vfsqrt_d
 lsx_vandn_v
@@ -341,6 +342,12 @@ lsx_vfrecip_s
 lsx_vfrecip_d
 lsx_vfrsqrt_s
 lsx_vfrsqrt_d
+lsx_vfcvth_d_s
+lsx_vfcvtl_d_s
+lsx_vffint_s_w
+lsx_vffint_d_l
+lsx_vffint_s_wu
+lsx_vffint_d_lu
 lsx_vfrintrp_s
 lsx_vfrintrp_d
 lsx_vfrintrm_s
@@ -718,6 +725,10 @@ lasx_xvfrecip_s
 lasx_xvfrecip_d
 lasx_xvfrsqrt_s
 lasx_xvfrsqrt_d
+lasx_xvffint_s_w
+lasx_xvffint_d_l
+lasx_xvffint_s_wu
+lasx_xvffint_d_lu
 lasx_xvfrintrp_s
 lasx_xvfrintrp_d
 lasx_xvfrintrm_s
