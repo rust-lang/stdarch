@@ -131,14 +131,8 @@ unsafe extern "llvm-intrinsic" {
     fn __lasx_xvshuf_w(a: __v8i32, b: __v8i32, c: __v8i32) -> __v8i32;
     #[link_name = "llvm.loongarch.lasx.xvshuf.d"]
     fn __lasx_xvshuf_d(a: __v4i64, b: __v4i64, c: __v4i64) -> __v4i64;
-    #[link_name = "llvm.loongarch.lasx.xvandi.b"]
-    fn __lasx_xvandi_b(a: __v32u8, b: u32) -> __v32u8;
-    #[link_name = "llvm.loongarch.lasx.xvori.b"]
-    fn __lasx_xvori_b(a: __v32u8, b: u32) -> __v32u8;
     #[link_name = "llvm.loongarch.lasx.xvnori.b"]
     fn __lasx_xvnori_b(a: __v32u8, b: u32) -> __v32u8;
-    #[link_name = "llvm.loongarch.lasx.xvxori.b"]
-    fn __lasx_xvxori_b(a: __v32u8, b: u32) -> __v32u8;
     #[link_name = "llvm.loongarch.lasx.xvbitseli.b"]
     fn __lasx_xvbitseli_b(a: __v32u8, b: __v32u8, c: u32) -> __v32u8;
     #[link_name = "llvm.loongarch.lasx.xvfcvt.h.s"]
@@ -1348,33 +1342,9 @@ pub fn lasx_xvshuf_d(a: m256i, b: m256i, c: m256i) -> m256i {
 #[inline]
 #[target_feature(enable = "lasx")]
 #[stable(feature = "stdarch_loongarch_simd", since = "1.101.0")]
-pub fn lasx_xvandi_b<const IMM8: u32>(a: m256i) -> m256i {
-    static_assert_uimm_bits!(IMM8, 8);
-    unsafe { transmute(__lasx_xvandi_b(transmute(a), IMM8)) }
-}
-
-#[inline]
-#[target_feature(enable = "lasx")]
-#[stable(feature = "stdarch_loongarch_simd", since = "1.101.0")]
-pub fn lasx_xvori_b<const IMM8: u32>(a: m256i) -> m256i {
-    static_assert_uimm_bits!(IMM8, 8);
-    unsafe { transmute(__lasx_xvori_b(transmute(a), IMM8)) }
-}
-
-#[inline]
-#[target_feature(enable = "lasx")]
-#[stable(feature = "stdarch_loongarch_simd", since = "1.101.0")]
 pub fn lasx_xvnori_b<const IMM8: u32>(a: m256i) -> m256i {
     static_assert_uimm_bits!(IMM8, 8);
     unsafe { transmute(__lasx_xvnori_b(transmute(a), IMM8)) }
-}
-
-#[inline]
-#[target_feature(enable = "lasx")]
-#[stable(feature = "stdarch_loongarch_simd", since = "1.101.0")]
-pub fn lasx_xvxori_b<const IMM8: u32>(a: m256i) -> m256i {
-    static_assert_uimm_bits!(IMM8, 8);
-    unsafe { transmute(__lasx_xvxori_b(transmute(a), IMM8)) }
 }
 
 #[inline]

@@ -1621,6 +1621,7 @@ asm-fmts = vd, vj, vk
 data-types = UV16QI, UV16QI, UV16QI
 
 /// lsx_vandi_b
+impl = portable
 name = lsx_vandi_b
 asm-fmts = vd, vj, ui8
 data-types = UV16QI, UV16QI, UQI
@@ -1632,6 +1633,7 @@ asm-fmts = vd, vj, vk
 data-types = UV16QI, UV16QI, UV16QI
 
 /// lsx_vori_b
+impl = portable
 name = lsx_vori_b
 asm-fmts = vd, vj, ui8
 data-types = UV16QI, UV16QI, UQI
@@ -1654,6 +1656,7 @@ asm-fmts = vd, vj, vk
 data-types = UV16QI, UV16QI, UV16QI
 
 /// lsx_vxori_b
+impl = portable
 name = lsx_vxori_b
 asm-fmts = vd, vj, ui8
 data-types = UV16QI, UV16QI, UQI

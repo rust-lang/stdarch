@@ -1606,6 +1606,7 @@ asm-fmts = xd, xj, xk
 data-types = UV32QI, UV32QI, UV32QI
 
 /// lasx_xvandi_b
+impl = portable
 name = lasx_xvandi_b
 asm-fmts = xd, xj, ui8
 data-types = UV32QI, UV32QI, UQI
@@ -1617,6 +1618,7 @@ asm-fmts = xd, xj, xk
 data-types = UV32QI, UV32QI, UV32QI
 
 /// lasx_xvori_b
+impl = portable
 name = lasx_xvori_b
 asm-fmts = xd, xj, ui8
 data-types = UV32QI, UV32QI, UQI
@@ -1639,6 +1641,7 @@ asm-fmts = xd, xj, xk
 data-types = UV32QI, UV32QI, UV32QI
 
 /// lasx_xvxori_b
+impl = portable
 name = lasx_xvxori_b
 asm-fmts = xd, xj, ui8
 data-types = UV32QI, UV32QI, UQI
