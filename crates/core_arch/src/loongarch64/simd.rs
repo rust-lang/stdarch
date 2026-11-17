@@ -328,6 +328,42 @@ pub(super) const unsafe fn simd_ext_shrri<T: Copy + const SimdExt>(a: T, imm: u3
     }
 }
 
+#[inline(always)]
+#[rustc_const_unstable(feature = "stdarch_const_helpers", issue = "none")]
+pub(super) const unsafe fn simd_ext_fcmp_cne<F: Copy, I: Copy>(a: F, b: F) -> I {
+    simd_or(simd_lt::<F, I>(a, b), simd_gt::<F, I>(a, b))
+}
+
+#[inline(always)]
+#[rustc_const_unstable(feature = "stdarch_const_helpers", issue = "none")]
+pub(super) const unsafe fn simd_ext_fcmp_cor<F: Copy, I: Copy>(a: F, b: F) -> I {
+    simd_and(simd_eq::<F, I>(a, a), simd_eq::<F, I>(b, b))
+}
+
+#[inline(always)]
+#[rustc_const_unstable(feature = "stdarch_const_helpers", issue = "none")]
+pub(super) const unsafe fn simd_ext_fcmp_cun<F: Copy, I: Copy>(a: F, b: F) -> I {
+    simd_or(simd_ne::<F, I>(a, a), simd_ne::<F, I>(b, b))
+}
+
+#[inline(always)]
+#[rustc_const_unstable(feature = "stdarch_const_helpers", issue = "none")]
+pub(super) const unsafe fn simd_ext_fcmp_cueq<F: Copy, I: Copy + const SimdExt>(a: F, b: F) -> I {
+    simd_ext_not(simd_ext_fcmp_cne::<F, I>(a, b))
+}
+
+#[inline(always)]
+#[rustc_const_unstable(feature = "stdarch_const_helpers", issue = "none")]
+pub(super) const unsafe fn simd_ext_fcmp_cult<F: Copy, I: Copy + const SimdExt>(a: F, b: F) -> I {
+    simd_ext_not(simd_ge::<F, I>(a, b))
+}
+
+#[inline(always)]
+#[rustc_const_unstable(feature = "stdarch_const_helpers", issue = "none")]
+pub(super) const unsafe fn simd_ext_fcmp_cule<F: Copy, I: Copy + const SimdExt>(a: F, b: F) -> I {
+    simd_ext_not(simd_gt::<F, I>(a, b))
+}
+
 macro_rules! impl_vavg {
     ($ft:literal, $name:ident, $oty:ty, $ity:ty, $wty:ty) => {
         #[inline]
@@ -653,6 +689,27 @@ macro_rules! impl_vugv {
 }
 
 pub(super) use impl_vugv;
+
+macro_rules! impl_vv_v {
+    (
+        $ft:literal, $name:ident, $op:ident,
+        $oa:ty, $ia:ty, $ob:ty, $ib:ty, $or:ty, $ir:ty
+    ) => {
+        #[inline]
+        #[target_feature(enable = $ft)]
+        #[stable(feature = "stdarch_loongarch_simd", since = "1.101.0")]
+        pub fn $name(a: $oa, b: $ob) -> $or {
+            unsafe {
+                let a: $ia = transmute(a);
+                let b: $ib = transmute(b);
+                let r: $ir = $op(a, b);
+                transmute(r)
+            }
+        }
+    };
+}
+
+pub(super) use impl_vv_v;
 
 macro_rules! impl_vu_v {
     ($ft:literal, $name:ident, $op:ident, $oa:ty, $ia:ty, $or:ty, $ir:ty, $ibs:expr) => {

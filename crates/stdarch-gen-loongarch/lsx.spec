@@ -3699,101 +3699,121 @@ asm-fmts = vd, vj, vk
 data-types = V4SI, V4SF, V4SF
 
 /// lsx_vfcmp_ceq_d
+impl = portable
 name = lsx_vfcmp_ceq_d
 asm-fmts = vd, vj, vk
 data-types = V2DI, V2DF, V2DF
 
 /// lsx_vfcmp_ceq_s
+impl = portable
 name = lsx_vfcmp_ceq_s
 asm-fmts = vd, vj, vk
 data-types = V4SI, V4SF, V4SF
 
 /// lsx_vfcmp_cle_d
+impl = portable
 name = lsx_vfcmp_cle_d
 asm-fmts = vd, vj, vk
 data-types = V2DI, V2DF, V2DF
 
 /// lsx_vfcmp_cle_s
+impl = portable
 name = lsx_vfcmp_cle_s
 asm-fmts = vd, vj, vk
 data-types = V4SI, V4SF, V4SF
 
 /// lsx_vfcmp_clt_d
+impl = portable
 name = lsx_vfcmp_clt_d
 asm-fmts = vd, vj, vk
 data-types = V2DI, V2DF, V2DF
 
 /// lsx_vfcmp_clt_s
+impl = portable
 name = lsx_vfcmp_clt_s
 asm-fmts = vd, vj, vk
 data-types = V4SI, V4SF, V4SF
 
 /// lsx_vfcmp_cne_d
+impl = portable
 name = lsx_vfcmp_cne_d
 asm-fmts = vd, vj, vk
 data-types = V2DI, V2DF, V2DF
 
 /// lsx_vfcmp_cne_s
+impl = portable
 name = lsx_vfcmp_cne_s
 asm-fmts = vd, vj, vk
 data-types = V4SI, V4SF, V4SF
 
 /// lsx_vfcmp_cor_d
+impl = portable
 name = lsx_vfcmp_cor_d
 asm-fmts = vd, vj, vk
 data-types = V2DI, V2DF, V2DF
 
 /// lsx_vfcmp_cor_s
+impl = portable
 name = lsx_vfcmp_cor_s
 asm-fmts = vd, vj, vk
 data-types = V4SI, V4SF, V4SF
 
 /// lsx_vfcmp_cueq_d
+impl = portable
 name = lsx_vfcmp_cueq_d
 asm-fmts = vd, vj, vk
 data-types = V2DI, V2DF, V2DF
 
 /// lsx_vfcmp_cueq_s
+impl = portable
 name = lsx_vfcmp_cueq_s
 asm-fmts = vd, vj, vk
 data-types = V4SI, V4SF, V4SF
 
 /// lsx_vfcmp_cule_d
+impl = portable
 name = lsx_vfcmp_cule_d
 asm-fmts = vd, vj, vk
 data-types = V2DI, V2DF, V2DF
 
 /// lsx_vfcmp_cule_s
+impl = portable
 name = lsx_vfcmp_cule_s
 asm-fmts = vd, vj, vk
 data-types = V4SI, V4SF, V4SF
 
 /// lsx_vfcmp_cult_d
+impl = portable
 name = lsx_vfcmp_cult_d
 asm-fmts = vd, vj, vk
 data-types = V2DI, V2DF, V2DF
 
 /// lsx_vfcmp_cult_s
+impl = portable
 name = lsx_vfcmp_cult_s
 asm-fmts = vd, vj, vk
 data-types = V4SI, V4SF, V4SF
 
 /// lsx_vfcmp_cun_d
+impl = portable
 name = lsx_vfcmp_cun_d
 asm-fmts = vd, vj, vk
 data-types = V2DI, V2DF, V2DF
 
 /// lsx_vfcmp_cune_d
+impl = portable
 name = lsx_vfcmp_cune_d
 asm-fmts = vd, vj, vk
 data-types = V2DI, V2DF, V2DF
 
 /// lsx_vfcmp_cune_s
+impl = portable
 name = lsx_vfcmp_cune_s
 asm-fmts = vd, vj, vk
 data-types = V4SI, V4SF, V4SF
 
 /// lsx_vfcmp_cun_s
+impl = portable
 name = lsx_vfcmp_cun_s
 asm-fmts = vd, vj, vk
 data-types = V4SI, V4SF, V4SF

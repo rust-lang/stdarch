@@ -3787,101 +3787,121 @@ asm-fmts = xd, xj, xk
 data-types = V8SI, V8SF, V8SF
 
 /// lasx_xvfcmp_ceq_d
+impl = portable
 name = lasx_xvfcmp_ceq_d
 asm-fmts = xd, xj, xk
 data-types = V4DI, V4DF, V4DF
 
 /// lasx_xvfcmp_ceq_s
+impl = portable
 name = lasx_xvfcmp_ceq_s
 asm-fmts = xd, xj, xk
 data-types = V8SI, V8SF, V8SF
 
 /// lasx_xvfcmp_cle_d
+impl = portable
 name = lasx_xvfcmp_cle_d
 asm-fmts = xd, xj, xk
 data-types = V4DI, V4DF, V4DF
 
 /// lasx_xvfcmp_cle_s
+impl = portable
 name = lasx_xvfcmp_cle_s
 asm-fmts = xd, xj, xk
 data-types = V8SI, V8SF, V8SF
 
 /// lasx_xvfcmp_clt_d
+impl = portable
 name = lasx_xvfcmp_clt_d
 asm-fmts = xd, xj, xk
 data-types = V4DI, V4DF, V4DF
 
 /// lasx_xvfcmp_clt_s
+impl = portable
 name = lasx_xvfcmp_clt_s
 asm-fmts = xd, xj, xk
 data-types = V8SI, V8SF, V8SF
 
 /// lasx_xvfcmp_cne_d
+impl = portable
 name = lasx_xvfcmp_cne_d
 asm-fmts = xd, xj, xk
 data-types = V4DI, V4DF, V4DF
 
 /// lasx_xvfcmp_cne_s
+impl = portable
 name = lasx_xvfcmp_cne_s
 asm-fmts = xd, xj, xk
 data-types = V8SI, V8SF, V8SF
 
 /// lasx_xvfcmp_cor_d
+impl = portable
 name = lasx_xvfcmp_cor_d
 asm-fmts = xd, xj, xk
 data-types = V4DI, V4DF, V4DF
 
 /// lasx_xvfcmp_cor_s
+impl = portable
 name = lasx_xvfcmp_cor_s
 asm-fmts = xd, xj, xk
 data-types = V8SI, V8SF, V8SF
 
 /// lasx_xvfcmp_cueq_d
+impl = portable
 name = lasx_xvfcmp_cueq_d
 asm-fmts = xd, xj, xk
 data-types = V4DI, V4DF, V4DF
 
 /// lasx_xvfcmp_cueq_s
+impl = portable
 name = lasx_xvfcmp_cueq_s
 asm-fmts = xd, xj, xk
 data-types = V8SI, V8SF, V8SF
 
 /// lasx_xvfcmp_cule_d
+impl = portable
 name = lasx_xvfcmp_cule_d
 asm-fmts = xd, xj, xk
 data-types = V4DI, V4DF, V4DF
 
 /// lasx_xvfcmp_cule_s
+impl = portable
 name = lasx_xvfcmp_cule_s
 asm-fmts = xd, xj, xk
 data-types = V8SI, V8SF, V8SF
 
 /// lasx_xvfcmp_cult_d
+impl = portable
 name = lasx_xvfcmp_cult_d
 asm-fmts = xd, xj, xk
 data-types = V4DI, V4DF, V4DF
 
 /// lasx_xvfcmp_cult_s
+impl = portable
 name = lasx_xvfcmp_cult_s
 asm-fmts = xd, xj, xk
 data-types = V8SI, V8SF, V8SF
 
 /// lasx_xvfcmp_cun_d
+impl = portable
 name = lasx_xvfcmp_cun_d
 asm-fmts = xd, xj, xk
 data-types = V4DI, V4DF, V4DF
 
 /// lasx_xvfcmp_cune_d
+impl = portable
 name = lasx_xvfcmp_cune_d
 asm-fmts = xd, xj, xk
 data-types = V4DI, V4DF, V4DF
 
 /// lasx_xvfcmp_cune_s
+impl = portable
 name = lasx_xvfcmp_cune_s
 asm-fmts = xd, xj, xk
 data-types = V8SI, V8SF, V8SF
 
 /// lasx_xvfcmp_cun_s
+impl = portable
 name = lasx_xvfcmp_cun_s
 asm-fmts = xd, xj, xk
 data-types = V8SI, V8SF, V8SF

@@ -593,6 +593,27 @@ impl_vavgr!("lsx", lsx_vavgr_hu, m128i, u16x8, u32x8);
 impl_vavgr!("lsx", lsx_vavgr_wu, m128i, u32x4, u64x4);
 impl_vavgr!("lsx", lsx_vavgr_du, m128i, u64x2, u128x2);
 
+impl_vv_v!("lsx", lsx_vfcmp_ceq_s, simd_eq, m128, f32x4, m128, f32x4, m128i, i32x4);
+impl_vv_v!("lsx", lsx_vfcmp_cle_s, simd_le, m128, f32x4, m128, f32x4, m128i, i32x4);
+impl_vv_v!("lsx", lsx_vfcmp_clt_s, simd_lt, m128, f32x4, m128, f32x4, m128i, i32x4);
+impl_vv_v!("lsx", lsx_vfcmp_cne_s, simd_ext_fcmp_cne, m128, f32x4, m128, f32x4, m128i, i32x4);
+impl_vv_v!("lsx", lsx_vfcmp_cor_s, simd_ext_fcmp_cor, m128, f32x4, m128, f32x4, m128i, i32x4);
+impl_vv_v!("lsx", lsx_vfcmp_cueq_s, simd_ext_fcmp_cueq, m128, f32x4, m128, f32x4, m128i, i32x4);
+impl_vv_v!("lsx", lsx_vfcmp_cule_s, simd_ext_fcmp_cule, m128, f32x4, m128, f32x4, m128i, i32x4);
+impl_vv_v!("lsx", lsx_vfcmp_cult_s, simd_ext_fcmp_cult, m128, f32x4, m128, f32x4, m128i, i32x4);
+impl_vv_v!("lsx", lsx_vfcmp_cun_s, simd_ext_fcmp_cun, m128, f32x4, m128, f32x4, m128i, i32x4);
+impl_vv_v!("lsx", lsx_vfcmp_cune_s, simd_ne, m128, f32x4, m128, f32x4, m128i, i32x4);
+impl_vv_v!("lsx", lsx_vfcmp_ceq_d, simd_eq, m128d, f64x2, m128d, f64x2, m128i, i64x2);
+impl_vv_v!("lsx", lsx_vfcmp_cle_d, simd_le, m128d, f64x2, m128d, f64x2, m128i, i64x2);
+impl_vv_v!("lsx", lsx_vfcmp_clt_d, simd_lt, m128d, f64x2, m128d, f64x2, m128i, i64x2);
+impl_vv_v!("lsx", lsx_vfcmp_cne_d, simd_ext_fcmp_cne, m128d, f64x2, m128d, f64x2, m128i, i64x2);
+impl_vv_v!("lsx", lsx_vfcmp_cor_d, simd_ext_fcmp_cor, m128d, f64x2, m128d, f64x2, m128i, i64x2);
+impl_vv_v!("lsx", lsx_vfcmp_cueq_d, simd_ext_fcmp_cueq, m128d, f64x2, m128d, f64x2, m128i, i64x2);
+impl_vv_v!("lsx", lsx_vfcmp_cule_d, simd_ext_fcmp_cule, m128d, f64x2, m128d, f64x2, m128i, i64x2);
+impl_vv_v!("lsx", lsx_vfcmp_cult_d, simd_ext_fcmp_cult, m128d, f64x2, m128d, f64x2, m128i, i64x2);
+impl_vv_v!("lsx", lsx_vfcmp_cun_d, simd_ext_fcmp_cun, m128d, f64x2, m128d, f64x2, m128i, i64x2);
+impl_vv_v!("lsx", lsx_vfcmp_cune_d, simd_ne, m128d, f64x2, m128d, f64x2, m128i, i64x2);
+
 impl_vu_v!("lsx", lsx_vsrari_b, simd_ext_shrri, m128i, i8x16, m128i, i8x16, 3);
 impl_vu_v!("lsx", lsx_vsrlri_b, simd_ext_shrri, m128i, u8x16, m128i, u8x16, 3);
 impl_vu_v!("lsx", lsx_vsrari_h, simd_ext_shrri, m128i, i16x8, m128i, i16x8, 4);
