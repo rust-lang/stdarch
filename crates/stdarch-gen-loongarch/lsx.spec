@@ -2448,16 +2448,19 @@ asm-fmts = vd, vj, ui5
 data-types = V16QI, V16QI, UQI
 
 /// lsx_vextrins_b
+impl = portable
 name = lsx_vextrins_b
 asm-fmts = vd, vj, ui8
 data-types = V16QI, V16QI, V16QI, USI
 
 /// lsx_vextrins_h
+impl = portable
 name = lsx_vextrins_h
 asm-fmts = vd, vj, ui8
 data-types = V8HI, V8HI, V8HI, USI
 
 /// lsx_vextrins_w
+impl = portable
 name = lsx_vextrins_w
 asm-fmts = vd, vj, ui8
 data-types = V4SI, V4SI, V4SI, USI
@@ -3581,6 +3584,7 @@ asm-fmts = vd, vj, ui7
 data-types = UV2DI, UV2DI, V2DI, USI
 
 /// lsx_vpermi_w
+impl = portable
 name = lsx_vpermi_w
 asm-fmts = vd, vj, ui8
 data-types = V4SI, V4SI, V4SI, USI

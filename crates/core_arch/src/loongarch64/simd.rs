@@ -367,6 +367,31 @@ pub(super) const fn idx_pack<const N: usize>(lanes: usize) -> [u32; N] {
     r
 }
 
+pub(super) const fn idx_extrins<const N: usize>(lanes: usize, imm: u32) -> [u32; N] {
+    let p = N / lanes;
+    let d = (imm >> 4) as usize & (p - 1);
+    let s = imm as usize & (p - 1);
+    let mut r = [0; N];
+    let mut i = 0;
+    while i < N {
+        r[i] = if i % p == d { N + (i / p) * p + s } else { i } as u32;
+        i += 1;
+    }
+    r
+}
+
+pub(super) const fn idx_permi_w<const N: usize>(imm: u32) -> [u32; N] {
+    let mut r = [0; N];
+    let mut i = 0;
+    while i < N {
+        let s = (imm >> (2 * (i % 4))) as usize & 3;
+        let b = (i / 4) * 4 + s;
+        r[i] = if i % 4 < 2 { N + b } else { b } as u32;
+        i += 1;
+    }
+    r
+}
+
 #[inline(always)]
 #[rustc_const_unstable(feature = "stdarch_const_helpers", issue = "none")]
 const unsafe fn simd_ext_ev<E: SimdElement, F: SimdElement, const N: usize, const H: usize>(
@@ -528,6 +553,24 @@ pub(super) const unsafe fn simd_ext_fcmp_cult<F: Copy, I: Copy + const SimdExt>(
 #[rustc_const_unstable(feature = "stdarch_const_helpers", issue = "none")]
 pub(super) const unsafe fn simd_ext_fcmp_cule<F: Copy, I: Copy + const SimdExt>(a: F, b: F) -> I {
     simd_ext_not(simd_gt::<F, I>(a, b))
+}
+
+#[inline(always)]
+#[rustc_const_unstable(feature = "stdarch_const_helpers", issue = "none")]
+pub(super) const unsafe fn simd_ext_extrins<const I: u32, E: SimdElement, const N: usize>(
+    a: Simd<E, N>,
+    b: Simd<E, N>,
+) -> Simd<E, N> {
+    simd_shuffle!(a, b, idx_extrins::<N>(lanes::<E>(N), I))
+}
+
+#[inline(always)]
+#[rustc_const_unstable(feature = "stdarch_const_helpers", issue = "none")]
+pub(super) const unsafe fn simd_ext_permi_w<const I: u32, E: SimdElement, const N: usize>(
+    a: Simd<E, N>,
+    b: Simd<E, N>,
+) -> Simd<E, N> {
+    simd_shuffle!(a, b, idx_permi_w::<N>(I))
 }
 
 macro_rules! impl_vavg {
@@ -924,3 +967,25 @@ macro_rules! impl_vu_v {
 }
 
 pub(super) use impl_vu_v;
+
+macro_rules! impl_vvu_v {
+    (
+        $ft:literal, $name:ident, $op:ident,
+        $oa:ty, $ia:ty, $ob:ty, $ib:ty, $or:ty, $ir:ty, $ibs:expr, const
+    ) => {
+        #[inline]
+        #[target_feature(enable = $ft)]
+        #[stable(feature = "stdarch_loongarch_simd", since = "1.101.0")]
+        pub fn $name<const IMM: u32>(a: $oa, b: $ob) -> $or {
+            static_assert_uimm_bits!(IMM, $ibs);
+            unsafe {
+                let a: $ia = transmute(a);
+                let b: $ib = transmute(b);
+                let r: $ir = $op::<IMM, _, _>(a, b);
+                transmute(r)
+            }
+        }
+    };
+}
+
+pub(super) use impl_vvu_v;

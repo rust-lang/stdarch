@@ -338,6 +338,7 @@ lsx_vrotri_b
 lsx_vrotri_h
 lsx_vrotri_w
 lsx_vrotri_d
+lsx_vpermi_w
 lsx_vfrecip_s
 lsx_vfrecip_d
 lsx_vfrsqrt_s
@@ -370,6 +371,9 @@ lsx_vsllwil_wu_hu
 lsx_vsllwil_du_wu
 lsx_vldi
 lsx_vbsll_v
+lsx_vextrins_b
+lsx_vextrins_h
+lsx_vextrins_w
 lsx_vbsrl_v
 
 # LASX intrinsics
@@ -672,6 +676,7 @@ lasx_vext2xv_du_wu
 lasx_vext2xv_wu_bu
 lasx_vext2xv_du_hu
 lasx_vext2xv_du_bu
+lasx_xvpermi_d
 lasx_xvpackev_b
 lasx_xvpackev_h
 lasx_xvpackev_w
@@ -685,6 +690,8 @@ lasx_xvshuf4i_h
 lasx_xvshuf4i_w
 lasx_xvld
 lasx_xvst
+lasx_xvinsve0_w
+lasx_xvinsve0_d
 lasx_xvldx
 lasx_xvstx
 lasx_xvrotr_b
@@ -729,6 +736,7 @@ lasx_xvffint_s_w
 lasx_xvffint_d_l
 lasx_xvffint_s_wu
 lasx_xvffint_d_lu
+lasx_xvpermi_w
 lasx_xvfrintrp_s
 lasx_xvfrintrp_d
 lasx_xvfrintrm_s
@@ -749,6 +757,10 @@ lasx_xvsllwil_d_w
 lasx_xvsllwil_hu_bu
 lasx_xvsllwil_wu_hu
 lasx_xvsllwil_du_wu
+lasx_xvshuf4i_d
 lasx_xvldi
 lasx_xvbsll_v
+lasx_xvextrins_b
+lasx_xvextrins_h
+lasx_xvextrins_w
 lasx_xvbsrl_v

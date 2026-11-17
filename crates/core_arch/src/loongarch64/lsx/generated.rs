@@ -235,12 +235,6 @@ unsafe extern "llvm-intrinsic" {
     fn __lsx_vfrstp_b(a: __v16i8, b: __v16i8, c: __v16i8) -> __v16i8;
     #[link_name = "llvm.loongarch.lsx.vfrstp.h"]
     fn __lsx_vfrstp_h(a: __v8i16, b: __v8i16, c: __v8i16) -> __v8i16;
-    #[link_name = "llvm.loongarch.lsx.vextrins.b"]
-    fn __lsx_vextrins_b(a: __v16i8, b: __v16i8, c: u32) -> __v16i8;
-    #[link_name = "llvm.loongarch.lsx.vextrins.h"]
-    fn __lsx_vextrins_h(a: __v8i16, b: __v8i16, c: u32) -> __v8i16;
-    #[link_name = "llvm.loongarch.lsx.vextrins.w"]
-    fn __lsx_vextrins_w(a: __v4i32, b: __v4i32, c: u32) -> __v4i32;
     #[link_name = "llvm.loongarch.lsx.vextrins.d"]
     fn __lsx_vextrins_d(a: __v2i64, b: __v2i64, c: u32) -> __v2i64;
     #[link_name = "llvm.loongarch.lsx.vmskltz.b"]
@@ -621,8 +615,6 @@ unsafe extern "llvm-intrinsic" {
     fn __lsx_vssrarni_wu_d(a: __v4u32, b: __v4i32, c: u32) -> __v4u32;
     #[link_name = "llvm.loongarch.lsx.vssrarni.du.q"]
     fn __lsx_vssrarni_du_q(a: __v2u64, b: __v2i64, c: u32) -> __v2u64;
-    #[link_name = "llvm.loongarch.lsx.vpermi.w"]
-    fn __lsx_vpermi_w(a: __v4i32, b: __v4i32, c: u32) -> __v4i32;
     #[link_name = "llvm.loongarch.lsx.vssrlrn.b.h"]
     fn __lsx_vssrlrn_b_h(a: __v8i16, b: __v8i16) -> __v16i8;
     #[link_name = "llvm.loongarch.lsx.vssrlrn.h.w"]
@@ -1503,30 +1495,6 @@ pub fn lsx_vfrstp_b(a: m128i, b: m128i, c: m128i) -> m128i {
 #[stable(feature = "stdarch_loongarch_simd", since = "1.101.0")]
 pub fn lsx_vfrstp_h(a: m128i, b: m128i, c: m128i) -> m128i {
     unsafe { transmute(__lsx_vfrstp_h(transmute(a), transmute(b), transmute(c))) }
-}
-
-#[inline]
-#[target_feature(enable = "lsx")]
-#[stable(feature = "stdarch_loongarch_simd", since = "1.101.0")]
-pub fn lsx_vextrins_b<const IMM8: u32>(a: m128i, b: m128i) -> m128i {
-    static_assert_uimm_bits!(IMM8, 8);
-    unsafe { transmute(__lsx_vextrins_b(transmute(a), transmute(b), IMM8)) }
-}
-
-#[inline]
-#[target_feature(enable = "lsx")]
-#[stable(feature = "stdarch_loongarch_simd", since = "1.101.0")]
-pub fn lsx_vextrins_h<const IMM8: u32>(a: m128i, b: m128i) -> m128i {
-    static_assert_uimm_bits!(IMM8, 8);
-    unsafe { transmute(__lsx_vextrins_h(transmute(a), transmute(b), IMM8)) }
-}
-
-#[inline]
-#[target_feature(enable = "lsx")]
-#[stable(feature = "stdarch_loongarch_simd", since = "1.101.0")]
-pub fn lsx_vextrins_w<const IMM8: u32>(a: m128i, b: m128i) -> m128i {
-    static_assert_uimm_bits!(IMM8, 8);
-    unsafe { transmute(__lsx_vextrins_w(transmute(a), transmute(b), IMM8)) }
 }
 
 #[inline]
@@ -3014,14 +2982,6 @@ pub fn lsx_vssrarni_wu_d<const IMM6: u32>(a: m128i, b: m128i) -> m128i {
 pub fn lsx_vssrarni_du_q<const IMM7: u32>(a: m128i, b: m128i) -> m128i {
     static_assert_uimm_bits!(IMM7, 7);
     unsafe { transmute(__lsx_vssrarni_du_q(transmute(a), transmute(b), IMM7)) }
-}
-
-#[inline]
-#[target_feature(enable = "lsx")]
-#[stable(feature = "stdarch_loongarch_simd", since = "1.101.0")]
-pub fn lsx_vpermi_w<const IMM8: u32>(a: m128i, b: m128i) -> m128i {
-    static_assert_uimm_bits!(IMM8, 8);
-    unsafe { transmute(__lsx_vpermi_w(transmute(a), transmute(b), IMM8)) }
 }
 
 #[inline]

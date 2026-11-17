@@ -647,6 +647,11 @@ impl_vu_v!("lsx", lsx_vsrlri_w, simd_ext_shrri, m128i, u32x4, m128i, u32x4, 5);
 impl_vu_v!("lsx", lsx_vsrari_d, simd_ext_shrri, m128i, i64x2, m128i, i64x2, 6);
 impl_vu_v!("lsx", lsx_vsrlri_d, simd_ext_shrri, m128i, u64x2, m128i, u64x2, 6);
 
+impl_vvu_v!("lsx", lsx_vextrins_b, simd_ext_extrins, m128i, i8x16, m128i, i8x16, m128i, i8x16, 8, const);
+impl_vvu_v!("lsx", lsx_vextrins_h, simd_ext_extrins, m128i, i16x8, m128i, i16x8, m128i, i16x8, 8, const);
+impl_vvu_v!("lsx", lsx_vextrins_w, simd_ext_extrins, m128i, i32x4, m128i, i32x4, m128i, i32x4, 8, const);
+impl_vvu_v!("lsx", lsx_vpermi_w, simd_ext_permi_w, m128i, i32x4, m128i, i32x4, m128i, i32x4, 8, const);
+
 impl_vuv!("lsx", lsx_vsubi_bu, simd_sub, m128i, u8x16, 5);
 impl_vuv!("lsx", lsx_vsubi_hu, simd_sub, m128i, u16x8, 5);
 impl_vuv!("lsx", lsx_vsubi_wu, simd_sub, m128i, u32x4, 5);
