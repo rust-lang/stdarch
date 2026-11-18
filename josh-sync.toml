@@ -5,3 +5,6 @@ path = "library/stdarch"
 [[post-pull]]
 cmd = ["cargo", "fmt"]
 commit-message = "Run `cargo fmt`"
+
+[push-pr]
+suffix = "r? @ghost"
