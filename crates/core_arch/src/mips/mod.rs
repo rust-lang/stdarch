@@ -2,9 +2,9 @@
 
 // Building this module (even if unused) for non-fp64 targets fails with an LLVM
 // error.
-#[cfg(target_feature = "fp64")]
+#[cfg(any(target_feature = "fp64", doc))]
 mod msa;
-#[cfg(target_feature = "fp64")]
+#[cfg(any(target_feature = "fp64", doc))]
 #[unstable(feature = "stdarch_mips", issue = "111198")]
 pub use self::msa::*;
 
