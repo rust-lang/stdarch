@@ -32,6 +32,10 @@ pub enum ArgPrep {
         #[serde(rename = "maximum")]
         max: i64,
     },
+    ImmediateNoRange {
+        #[allow(dead_code)]
+        immediate: String,
+    },
     Nothing {},
 }
 
@@ -151,6 +155,13 @@ impl TryFrom<ArgPrep> for Constraint {
     fn try_from(prep: ArgPrep) -> Result<Self, Self::Error> {
         let parsed_ints = match prep {
             ArgPrep::Immediate { min, max } => Ok((min, max)),
+            ArgPrep::ImmediateNoRange { immediate } => {
+                if immediate.starts_with("imm") {
+                    Ok((0, 1))
+                } else {
+                    panic!("Unhandled immediate type: {:?}", immediate);
+                }
+            }
             _ => Err(()),
         };
         if let Ok((min, max)) = parsed_ints {
