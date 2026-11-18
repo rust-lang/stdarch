@@ -125,12 +125,12 @@ impl SupportedArchitecture for Arm {
             // Skip A64-specific intrinsics on A32
             .filter(|i| !(a32 && i.arch_tags == vec!["A64".to_string()]))
             // Skip SVE intrinsics on big endian
-            .filter(|i| !(big_endian && (i.extension == "SVE" || i.extension == "SVE2")))
+            .filter(|i| !(big_endian && (i.extensions[0] == "SVE" || i.extensions[0] == "SVE2")))
             // Skip SVE intrinsics when testing against GCC as our wrappers run into ICEs
             // See <https://gcc.gnu.org/bugzilla/show_bug.cgi?id=125818>
             .filter(|i| {
                 !(matches!(cli_options.cc_arg_style, CcArgStyle::Gcc)
-                    && (i.extension == "SVE" || i.extension == "SVE2"))
+                    && (i.extensions[0] == "SVE" || i.extensions[0] == "SVE2"))
             })
             .take(sample_size)
             .collect::<Vec<_>>();

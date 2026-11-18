@@ -10,6 +10,13 @@ RUN wget "https://github.com/riscv-collab/riscv-gnu-toolchain/releases/download/
     -O riscv-toolchain.tar.xz
 RUN tar -xJf riscv-toolchain.tar.xz
 
+RUN wget https://ci-mirrors.rust-lang.org/llvm/llvm-22.1.4-x86_64.tar.gz -O llvm.tar.xz
+RUN mkdir llvm
+RUN tar -xvf llvm.tar.xz --strip-components=1 -C llvm
+
+ENV CLANG_PATH="/llvm/bin/clang"
+ENV GCC_PATH=/riscv/bin/riscv32-unknown-linux-gnu-gcc
+
 ENV CARGO_TARGET_RISCV32GC_UNKNOWN_LINUX_GNU_LINKER=/riscv/bin/riscv32-unknown-linux-gnu-gcc \
     CARGO_TARGET_RISCV32GC_UNKNOWN_LINUX_GNU_RUNNER="qemu-riscv32 -cpu max -L /riscv/sysroot" \
     OBJDUMP=llvm-objdump

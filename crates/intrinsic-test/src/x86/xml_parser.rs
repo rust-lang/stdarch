@@ -144,6 +144,6 @@ fn xml_to_intrinsic(intr: XMLIntrinsic) -> Result<Intrinsic<X86>, Box<dyn std::e
         arguments,
         results: result.unwrap(),
         arch_tags: intr.cpuid,
-        extension: intr.tech,
+        extensions: vec![intr.tech],
     })
 }

@@ -17,8 +17,8 @@ pub struct Intrinsic<A: SupportedArchitecture> {
     /// Any architecture-specific tags.
     pub arch_tags: Vec<String>,
 
-    /// Specific extension that the intrinsic is from
-    pub extension: String,
+    /// Specific extension(s) that the intrinsic is from
+    pub extensions: Vec<String>,
 }
 
 impl<A: SupportedArchitecture> Intrinsic<A> {

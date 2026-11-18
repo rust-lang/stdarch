@@ -115,7 +115,7 @@ fn parse_intrinsic(
         arguments: ArgumentList { args: arguments },
         results: result,
         arch_tags: Vec::new(),
-        extension: extension_for(name)?.to_string(),
+        extensions: vec![extension_for(name)?.to_string()],
     })
 }
 

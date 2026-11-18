@@ -1,0 +1,14 @@
+clz_32
+clz_64
+ctz_32
+ctz_64
+cpop_32
+cpop_64
+ror_32
+ror_64
+rol_32
+rol_64
+rev8_32
+rev8_64
+brev8_32
+brev8_64

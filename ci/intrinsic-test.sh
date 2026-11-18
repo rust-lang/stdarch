@@ -71,6 +71,19 @@ case ${TARGET} in
         ARCH=loongarch64
         RUNTIME_RUSTFLAGS=-Ctarget-feature=+lsx,+lasx,+frecipe
         ;;
+
+    riscv64*)
+        export CFLAGS="-I/usr/riscv64-linux-gnu/include/"
+        ARCH=riscv64
+        RUNTIME_RUSTFLAGS=
+        ;;
+
+    riscv32*)
+        export CFLAGS="-I/riscv/sysroot/usr/include --sysroot=/riscv/sysroot"
+        ARCH=riscv32
+        RUNTIME_RUSTFLAGS=
+        ;;
+
     *)
         ;;
 
@@ -91,6 +104,13 @@ case "${TARGET}" in
             --bin intrinsic-test -- crates/stdarch-gen-loongarch \
             --skip "crates/intrinsic-test/missing_${ARCH}_common.txt" \
             --skip "crates/intrinsic-test/missing_${ARCH}_${CC_KIND}.txt" \
+            --target "${TARGET}" \
+            --cc-arg-style "${CC_ARG_STYLE}"
+        ;;
+    riscv*)
+            cargo run "${INTRINSIC_TEST}" --release \
+            --bin intrinsic-test -- crates/stdarch-gen-riscv \
+            --skip "crates/intrinsic-test/missing_riscv_common.txt" \
             --target "${TARGET}" \
             --cc-arg-style "${CC_ARG_STYLE}"
         ;;
