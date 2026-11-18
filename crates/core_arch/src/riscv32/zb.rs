@@ -33,7 +33,7 @@ unsafe extern "llvm-intrinsic" {
 /// Version: v1.0.1
 ///
 /// Section: 3.47
-#[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
+#[stable(feature = "stdarch_riscv_zb", since = "CURRENT_RUSTC_VERSION")]
 #[target_feature(enable = "zbkx")]
 #[cfg_attr(test, assert_instr(xperm8))]
 #[inline]
@@ -53,7 +53,7 @@ pub fn xperm8_32(rs1: u32, rs2: u32) -> u32 {
 /// Version: v1.0.1
 ///
 /// Section: 3.48
-#[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
+#[stable(feature = "stdarch_riscv_zb", since = "CURRENT_RUSTC_VERSION")]
 #[target_feature(enable = "zbkx")]
 #[cfg_attr(test, assert_instr(xperm4))]
 #[inline]
@@ -70,7 +70,7 @@ pub fn xperm4_32(rs1: u32, rs2: u32) -> u32 {
 /// Version: v1.0.0
 ///
 /// Section: 2.12
-#[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
+#[stable(feature = "stdarch_riscv_zb", since = "CURRENT_RUSTC_VERSION")]
 #[target_feature(enable = "zbkc")]
 #[cfg_attr(test, assert_instr(clmulh))]
 #[inline]
@@ -87,7 +87,7 @@ pub fn clmulh_32(rs1: u32, rs2: u32) -> u32 {
 /// Version: v1.0.0
 ///
 /// Section: 2.13
-#[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
+#[stable(feature = "stdarch_riscv_zb", since = "CURRENT_RUSTC_VERSION")]
 #[target_feature(enable = "zbc")]
 #[cfg_attr(test, assert_instr(clmulr))]
 #[inline]
@@ -109,10 +109,9 @@ pub fn clmulr_32(rs1: u32, rs2: u32) -> u32 {
 ///
 /// Section: 3.49
 #[target_feature(enable = "zbkb")]
-// See #1464
-// #[cfg_attr(test, assert_instr(zip))]
+#[cfg_attr(test, assert_instr(zip))]
 #[inline]
-#[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
+#[stable(feature = "stdarch_riscv_zb", since = "CURRENT_RUSTC_VERSION")]
 pub fn zip_32(rs: u32) -> u32 {
     unsafe { _zip_32(rs) }
 }
@@ -131,7 +130,7 @@ pub fn zip_32(rs: u32) -> u32 {
 #[target_feature(enable = "zbkb")]
 #[cfg_attr(test, assert_instr(unzip))]
 #[inline]
-#[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
+#[stable(feature = "stdarch_riscv_zb", since = "CURRENT_RUSTC_VERSION")]
 pub fn unzip_32(rs: u32) -> u32 {
     unsafe { _unzip_32(rs) }
 }
