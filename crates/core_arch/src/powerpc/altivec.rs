@@ -230,6 +230,11 @@ unsafe extern "llvm-intrinsic" {
     #[link_name = "llvm.umin.v4i32"]
     fn vminuw(a: vector_unsigned_int, b: vector_unsigned_int) -> vector_unsigned_int;
 
+    #[link_name = "llvm.ppc.altivec.vmaxfp"]
+    fn vmaxfp(a: vector_float, b: vector_float) -> vector_float;
+    #[link_name = "llvm.ppc.altivec.vminfp"]
+    fn vminfp(a: vector_float, b: vector_float) -> vector_float;
+
     #[link_name = "llvm.ppc.altivec.vsubsbs"]
     fn vsubsbs(a: vector_signed_char, b: vector_signed_char) -> vector_signed_char;
     #[link_name = "llvm.ppc.altivec.vsubshs"]
@@ -416,7 +421,7 @@ unsafe extern "llvm-intrinsic" {
 }
 
 #[macro_use]
-mod sealed {
+pub(crate) mod sealed {
     use super::*;
 
     #[unstable(feature = "stdarch_powerpc", issue = "111145")]
@@ -1662,6 +1667,8 @@ mod sealed {
     test_impl! { vec_vminuh (a: vector_unsigned_short, b: vector_unsigned_short) -> vector_unsigned_short [vminuh, vminuh] }
     test_impl! { vec_vminuw (a: vector_unsigned_int, b: vector_unsigned_int) -> vector_unsigned_int [vminuw, vminuw] }
 
+    test_impl! { vec_vminfp (a: vector_float, b: vector_float) -> vector_float [vminfp, vminfp / xvminsp] }
+
     #[unstable(feature = "stdarch_powerpc", issue = "111145")]
     pub trait VectorMin<Other> {
         type Result;
@@ -1669,6 +1676,7 @@ mod sealed {
     }
 
     impl_vec_trait! { [VectorMin vec_min] ~(vminub, vminsb, vminuh, vminsh, vminuw, vminsw) }
+    impl_vec_trait! { [VectorMin vec_min] vec_vminfp(vector_float, vector_float) -> vector_float }
 
     test_impl! { vec_vmaxsb (a: vector_signed_char, b: vector_signed_char) -> vector_signed_char [vmaxsb, vmaxsb] }
     test_impl! { vec_vmaxsh (a: vector_signed_short, b: vector_signed_short) -> vector_signed_short [vmaxsh, vmaxsh] }
@@ -1678,6 +1686,8 @@ mod sealed {
     test_impl! { vec_vmaxuh (a: vector_unsigned_short, b: vector_unsigned_short) -> vector_unsigned_short [vmaxuh, vmaxuh] }
     test_impl! { vec_vmaxuw (a: vector_unsigned_int, b: vector_unsigned_int) -> vector_unsigned_int [vmaxuw, vmaxuw] }
 
+    test_impl! { vec_vmaxfp (a: vector_float, b: vector_float) -> vector_float [vmaxfp, vmaxfp / xvmaxsp] }
+
     #[unstable(feature = "stdarch_powerpc", issue = "111145")]
     pub trait VectorMax<Other> {
         type Result;
@@ -1685,6 +1695,7 @@ mod sealed {
     }
 
     impl_vec_trait! { [VectorMax vec_max] ~(vmaxub, vmaxsb, vmaxuh, vmaxsh, vmaxuw, vmaxsw) }
+    impl_vec_trait! { [VectorMax vec_max] vec_vmaxfp(vector_float, vector_float) -> vector_float }
 
     #[inline]
     #[target_feature(enable = "altivec")]
@@ -4792,7 +4803,7 @@ mod endian {
 pub use self::endian::*;
 
 #[cfg(test)]
-mod tests {
+pub(crate) mod tests {
     use super::*;
 
     use std::mem::transmute;
@@ -6225,20 +6236,6 @@ mod tests {
     [2, 1, 0, 0, 2, 1, 0, 0, 2, 1, 0, 0, 2, 1, 0, 0],
     [0, 0, 1, 2, 0, 0, 1, 2, 0, 0, 1, 2, 0, 0, 1, 2] }
 
-    macro_rules! test_vec_min {
-        { $name: ident, $ty: ident, [$($a:expr),+], [$($b:expr),+], [$($d:expr),+] } => {
-            #[simd_test(enable = "altivec")]
-            fn $name() {
-                let a: s_t_l!($ty) = $ty::new($($a),+).into();
-                let b: s_t_l!($ty) = $ty::new($($b),+).into();
-
-                let d = $ty::new($($d),+);
-                let r = $ty::from(unsafe { vec_min(a, b) });
-                assert_eq!(d, r);
-            }
-         }
-    }
-
     test_vec_min! { test_vec_min_i32x4, i32x4,
     [-1, 0, 1, 2],
     [2, 1, -1, -2],
@@ -6269,19 +6266,10 @@ mod tests {
     [2, 1, 0, 0, 2, 1, 0, 0, 2, 1, 0, 0, 2, 1, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] }
 
-    macro_rules! test_vec_max {
-        { $name: ident, $ty: ident, [$($a:expr),+], [$($b:expr),+], [$($d:expr),+] } => {
-            #[simd_test(enable = "altivec")]
-            fn $name() {
-                let a: s_t_l!($ty) = $ty::new($($a),+).into();
-                let b: s_t_l!($ty) = $ty::new($($b),+).into();
-
-                let d = $ty::new($($d),+);
-                let r = $ty::from(unsafe { vec_max(a, b) });
-                assert_eq!(d, r);
-            }
-         }
-    }
+    test_vec_min! { test_vec_min_f32x4, f32x4,
+    [-1.0, 0.0, 1.0, 2.0],
+    [2.0, 1.0, -1.0, -2.0],
+    [-1.0, 0.0, -1.0, -2.0] }
 
     test_vec_max! { test_vec_max_i32x4, i32x4,
     [-1, 0, 1, 2],
@@ -6312,6 +6300,11 @@ mod tests {
     [0, 0, 1, 2, 0, 0, 1, 2, 0, 0, 1, 2, 0, 0, 1, 2],
     [2, 1, 0, 0, 2, 1, 0, 0, 2, 1, 0, 0, 2, 1, 0, 0],
     [2, 1, 1, 2, 2, 1, 1, 2, 2, 1, 1, 2, 2, 1, 1, 2] }
+
+    test_vec_max! { test_vec_max_f32x4, f32x4,
+    [-1.0, 0.0, 1.0, 2.0],
+    [2.0, 1.0, -1.0, -2.0],
+    [2.0, 1.0, 1.0, 2.0] }
 
     macro_rules! test_vec_perm {
         {$name:ident,
