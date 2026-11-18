@@ -550,6 +550,7 @@ impl_vsv!("lsx", lsx_vmini_h, simd_imin, m128i, i16x8, 5);
 impl_vsv!("lsx", lsx_vmini_w, simd_imin, m128i, i32x4, 5);
 impl_vsv!("lsx", lsx_vmini_d, simd_imin, m128i, i64x2, 5);
 
+impl_vvvv!("lsx", lsx_vbitsel_v, simd_ext_bitsel, m128i, u8x16);
 impl_vvvv!("lsx", lsx_vmadd_b, simd_ext_madd, m128i, i8x16);
 impl_vvvv!("lsx", lsx_vmadd_h, simd_ext_madd, m128i, i16x8);
 impl_vvvv!("lsx", lsx_vmadd_w, simd_ext_madd, m128i, i32x4);
@@ -591,6 +592,78 @@ impl_vavgr!("lsx", lsx_vavgr_bu, m128i, u8x16, u16x16);
 impl_vavgr!("lsx", lsx_vavgr_hu, m128i, u16x8, u32x8);
 impl_vavgr!("lsx", lsx_vavgr_wu, m128i, u32x4, u64x4);
 impl_vavgr!("lsx", lsx_vavgr_du, m128i, u64x2, u128x2);
+
+impl_vv_v!("lsx", lsx_vhaddw_h_b, simd_ext_haddw, m128i, i8x16, m128i, i8x16, m128i, i16x8);
+impl_vv_v!("lsx", lsx_vhaddw_w_h, simd_ext_haddw, m128i, i16x8, m128i, i16x8, m128i, i32x4);
+impl_vv_v!("lsx", lsx_vhsubw_h_b, simd_ext_hsubw, m128i, i8x16, m128i, i8x16, m128i, i16x8);
+impl_vv_v!("lsx", lsx_vhsubw_w_h, simd_ext_hsubw, m128i, i16x8, m128i, i16x8, m128i, i32x4);
+impl_vv_v!("lsx", lsx_vfcmp_ceq_s, simd_eq, m128, f32x4, m128, f32x4, m128i, i32x4);
+impl_vv_v!("lsx", lsx_vfcmp_cle_s, simd_le, m128, f32x4, m128, f32x4, m128i, i32x4);
+impl_vv_v!("lsx", lsx_vfcmp_clt_s, simd_lt, m128, f32x4, m128, f32x4, m128i, i32x4);
+impl_vv_v!("lsx", lsx_vfcmp_cne_s, simd_ext_fcmp_cne, m128, f32x4, m128, f32x4, m128i, i32x4);
+impl_vv_v!("lsx", lsx_vfcmp_cor_s, simd_ext_fcmp_cor, m128, f32x4, m128, f32x4, m128i, i32x4);
+impl_vv_v!("lsx", lsx_vfcmp_cueq_s, simd_ext_fcmp_cueq, m128, f32x4, m128, f32x4, m128i, i32x4);
+impl_vv_v!("lsx", lsx_vfcmp_cule_s, simd_ext_fcmp_cule, m128, f32x4, m128, f32x4, m128i, i32x4);
+impl_vv_v!("lsx", lsx_vfcmp_cult_s, simd_ext_fcmp_cult, m128, f32x4, m128, f32x4, m128i, i32x4);
+impl_vv_v!("lsx", lsx_vfcmp_cun_s, simd_ext_fcmp_cun, m128, f32x4, m128, f32x4, m128i, i32x4);
+impl_vv_v!("lsx", lsx_vfcmp_cune_s, simd_ne, m128, f32x4, m128, f32x4, m128i, i32x4);
+impl_vv_v!("lsx", lsx_vfcmp_ceq_d, simd_eq, m128d, f64x2, m128d, f64x2, m128i, i64x2);
+impl_vv_v!("lsx", lsx_vfcmp_cle_d, simd_le, m128d, f64x2, m128d, f64x2, m128i, i64x2);
+impl_vv_v!("lsx", lsx_vfcmp_clt_d, simd_lt, m128d, f64x2, m128d, f64x2, m128i, i64x2);
+impl_vv_v!("lsx", lsx_vfcmp_cne_d, simd_ext_fcmp_cne, m128d, f64x2, m128d, f64x2, m128i, i64x2);
+impl_vv_v!("lsx", lsx_vfcmp_cor_d, simd_ext_fcmp_cor, m128d, f64x2, m128d, f64x2, m128i, i64x2);
+impl_vv_v!("lsx", lsx_vfcmp_cueq_d, simd_ext_fcmp_cueq, m128d, f64x2, m128d, f64x2, m128i, i64x2);
+impl_vv_v!("lsx", lsx_vfcmp_cule_d, simd_ext_fcmp_cule, m128d, f64x2, m128d, f64x2, m128i, i64x2);
+impl_vv_v!("lsx", lsx_vfcmp_cult_d, simd_ext_fcmp_cult, m128d, f64x2, m128d, f64x2, m128i, i64x2);
+impl_vv_v!("lsx", lsx_vfcmp_cun_d, simd_ext_fcmp_cun, m128d, f64x2, m128d, f64x2, m128i, i64x2);
+impl_vv_v!("lsx", lsx_vfcmp_cune_d, simd_ne, m128d, f64x2, m128d, f64x2, m128i, i64x2);
+impl_vv_v!("lsx", lsx_vfcvt_s_d, simd_ext_narrow2, m128d, f64x2, m128d, f64x2, m128, f32x4);
+
+impl_v_v!("lsx", lsx_vexth_h_b, simd_ext_exth, m128i, i8x16, m128i, i16x8);
+impl_v_v!("lsx", lsx_vexth_hu_bu, simd_ext_exth, m128i, u8x16, m128i, u16x8);
+impl_v_v!("lsx", lsx_vexth_w_h, simd_ext_exth, m128i, i16x8, m128i, i32x4);
+impl_v_v!("lsx", lsx_vexth_wu_hu, simd_ext_exth, m128i, u16x8, m128i, u32x4);
+impl_v_v!("lsx", lsx_vexth_d_w, simd_ext_exth, m128i, i32x4, m128i, i64x2);
+impl_v_v!("lsx", lsx_vexth_du_wu, simd_ext_exth, m128i, u32x4, m128i, u64x2);
+impl_v_v!("lsx", lsx_vffint_s_w, simd_as, m128i, i32x4, m128, f32x4);
+impl_v_v!("lsx", lsx_vffint_s_wu, simd_as, m128i, u32x4, m128, f32x4);
+impl_v_v!("lsx", lsx_vffint_d_l, simd_as, m128i, i64x2, m128d, f64x2);
+impl_v_v!("lsx", lsx_vffint_d_lu, simd_as, m128i, u64x2, m128d, f64x2);
+impl_v_v!("lsx", lsx_vfcvth_d_s, simd_ext_exth, m128, f32x4, m128d, f64x2);
+impl_v_v!("lsx", lsx_vfcvtl_d_s, simd_ext_extl, m128, f32x4, m128d, f64x2);
+
+impl_vu_v!("lsx", lsx_vsllwil_h_b, simd_ext_sllwil, m128i, i8x16, m128i, i16x8, 3);
+impl_vu_v!("lsx", lsx_vsllwil_hu_bu, simd_ext_sllwil, m128i, u8x16, m128i, u16x8, 3);
+impl_vu_v!("lsx", lsx_vsllwil_w_h, simd_ext_sllwil, m128i, i16x8, m128i, i32x4, 4);
+impl_vu_v!("lsx", lsx_vsllwil_wu_hu, simd_ext_sllwil, m128i, u16x8, m128i, u32x4, 4);
+impl_vu_v!("lsx", lsx_vsllwil_d_w, simd_ext_sllwil, m128i, i32x4, m128i, i64x2, 5);
+impl_vu_v!("lsx", lsx_vsllwil_du_wu, simd_ext_sllwil, m128i, u32x4, m128i, u64x2, 5);
+impl_vu_v!("lsx", lsx_vsrari_b, simd_ext_shrri, m128i, i8x16, m128i, i8x16, 3);
+impl_vu_v!("lsx", lsx_vsrlri_b, simd_ext_shrri, m128i, u8x16, m128i, u8x16, 3);
+impl_vu_v!("lsx", lsx_vsrari_h, simd_ext_shrri, m128i, i16x8, m128i, i16x8, 4);
+impl_vu_v!("lsx", lsx_vsrlri_h, simd_ext_shrri, m128i, u16x8, m128i, u16x8, 4);
+impl_vu_v!("lsx", lsx_vsrari_w, simd_ext_shrri, m128i, i32x4, m128i, i32x4, 5);
+impl_vu_v!("lsx", lsx_vsrlri_w, simd_ext_shrri, m128i, u32x4, m128i, u32x4, 5);
+impl_vu_v!("lsx", lsx_vsrari_d, simd_ext_shrri, m128i, i64x2, m128i, i64x2, 6);
+impl_vu_v!("lsx", lsx_vsrlri_d, simd_ext_shrri, m128i, u64x2, m128i, u64x2, 6);
+
+impl_vvu_v!("lsx", lsx_vextrins_b, simd_ext_extrins, m128i, i8x16, m128i, i8x16, m128i, i8x16, 8, const);
+impl_vvu_v!("lsx", lsx_vextrins_h, simd_ext_extrins, m128i, i16x8, m128i, i16x8, m128i, i16x8, 8, const);
+impl_vvu_v!("lsx", lsx_vextrins_w, simd_ext_extrins, m128i, i32x4, m128i, i32x4, m128i, i32x4, 8, const);
+impl_vvu_v!("lsx", lsx_vpermi_w, simd_ext_permi_w, m128i, i32x4, m128i, i32x4, m128i, i32x4, 8, const);
+
+impl_vuv!("lsx", lsx_vsubi_bu, simd_sub, m128i, u8x16, 5);
+impl_vuv!("lsx", lsx_vsubi_hu, simd_sub, m128i, u16x8, 5);
+impl_vuv!("lsx", lsx_vsubi_wu, simd_sub, m128i, u32x4, 5);
+impl_vuv!("lsx", lsx_vsubi_du, simd_sub, m128i, u64x2, 5);
+impl_vuv!("lsx", lsx_vandi_b, simd_and, m128i, u8x16, 8);
+impl_vuv!("lsx", lsx_vori_b, simd_or, m128i, u8x16, 8);
+impl_vuv!("lsx", lsx_vxori_b, simd_xor, m128i, u8x16, 8);
+
+impl_vgsu!("lsx", lsx_vstelm_b, simd_ext_stelm, m128i, i8x16, *mut i8, 8, 4, const, unsafe);
+impl_vgsu!("lsx", lsx_vstelm_h, simd_ext_stelm, m128i, i16x8, *mut i8, 8, 3, const, unsafe);
+impl_vgsu!("lsx", lsx_vstelm_w, simd_ext_stelm, m128i, i32x4, *mut i8, 8, 2, const, unsafe);
+impl_vgsu!("lsx", lsx_vstelm_d, simd_ext_stelm, m128i, i64x2, *mut i8, 8, 1, const, unsafe);
 
 #[cfg(test)]
 mod tests {

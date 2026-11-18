@@ -120,21 +120,25 @@ asm-fmts = xd, xj, xk
 data-types = V4DI, V4DI, V4DI
 
 /// lasx_xvsrari_b
+impl = portable
 name = lasx_xvsrari_b
 asm-fmts = xd, xj, ui3
 data-types = V32QI, V32QI, UQI
 
 /// lasx_xvsrari_h
+impl = portable
 name = lasx_xvsrari_h
 asm-fmts = xd, xj, ui4
 data-types = V16HI, V16HI, UQI
 
 /// lasx_xvsrari_w
+impl = portable
 name = lasx_xvsrari_w
 asm-fmts = xd, xj, ui5
 data-types = V8SI, V8SI, UQI
 
 /// lasx_xvsrari_d
+impl = portable
 name = lasx_xvsrari_d
 asm-fmts = xd, xj, ui6
 data-types = V4DI, V4DI, UQI
@@ -208,21 +212,25 @@ asm-fmts = xd, xj, xk
 data-types = V4DI, V4DI, V4DI
 
 /// lasx_xvsrlri_b
+impl = portable
 name = lasx_xvsrlri_b
 asm-fmts = xd, xj, ui3
 data-types = V32QI, V32QI, UQI
 
 /// lasx_xvsrlri_h
+impl = portable
 name = lasx_xvsrlri_h
 asm-fmts = xd, xj, ui4
 data-types = V16HI, V16HI, UQI
 
 /// lasx_xvsrlri_w
+impl = portable
 name = lasx_xvsrlri_w
 asm-fmts = xd, xj, ui5
 data-types = V8SI, V8SI, UQI
 
 /// lasx_xvsrlri_d
+impl = portable
 name = lasx_xvsrlri_d
 asm-fmts = xd, xj, ui6
 data-types = V4DI, V4DI, UQI
@@ -444,21 +452,25 @@ asm-fmts = xd, xj, xk
 data-types = V4DI, V4DI, V4DI
 
 /// lasx_xvsubi_bu
+impl = portable
 name = lasx_xvsubi_bu
 asm-fmts = xd, xj, ui5
 data-types = V32QI, V32QI, UQI
 
 /// lasx_xvsubi_hu
+impl = portable
 name = lasx_xvsubi_hu
 asm-fmts = xd, xj, ui5
 data-types = V16HI, V16HI, UQI
 
 /// lasx_xvsubi_wu
+impl = portable
 name = lasx_xvsubi_wu
 asm-fmts = xd, xj, ui5
 data-types = V8SI, V8SI, UQI
 
 /// lasx_xvsubi_du
+impl = portable
 name = lasx_xvsubi_du
 asm-fmts = xd, xj, ui5
 data-types = V4DI, V4DI, UQI
@@ -1312,11 +1324,13 @@ asm-fmts = xd, xj, xk
 data-types = UV4DI, UV4DI, UV4DI
 
 /// lasx_xvhaddw_h_b
+impl = portable
 name = lasx_xvhaddw_h_b
 asm-fmts = xd, xj, xk
 data-types = V16HI, V32QI, V32QI
 
 /// lasx_xvhaddw_w_h
+impl = portable
 name = lasx_xvhaddw_w_h
 asm-fmts = xd, xj, xk
 data-types = V8SI, V16HI, V16HI
@@ -1342,11 +1356,13 @@ asm-fmts = xd, xj, xk
 data-types = UV4DI, UV8SI, UV8SI
 
 /// lasx_xvhsubw_h_b
+impl = portable
 name = lasx_xvhsubw_h_b
 asm-fmts = xd, xj, xk
 data-types = V16HI, V32QI, V32QI
 
 /// lasx_xvhsubw_w_h
+impl = portable
 name = lasx_xvhsubw_w_h
 asm-fmts = xd, xj, xk
 data-types = V8SI, V16HI, V16HI
@@ -1606,6 +1622,7 @@ asm-fmts = xd, xj, xk
 data-types = UV32QI, UV32QI, UV32QI
 
 /// lasx_xvandi_b
+impl = portable
 name = lasx_xvandi_b
 asm-fmts = xd, xj, ui8
 data-types = UV32QI, UV32QI, UQI
@@ -1617,6 +1634,7 @@ asm-fmts = xd, xj, xk
 data-types = UV32QI, UV32QI, UV32QI
 
 /// lasx_xvori_b
+impl = portable
 name = lasx_xvori_b
 asm-fmts = xd, xj, ui8
 data-types = UV32QI, UV32QI, UQI
@@ -1639,11 +1657,13 @@ asm-fmts = xd, xj, xk
 data-types = UV32QI, UV32QI, UV32QI
 
 /// lasx_xvxori_b
+impl = portable
 name = lasx_xvxori_b
 asm-fmts = xd, xj, ui8
 data-types = UV32QI, UV32QI, UQI
 
 /// lasx_xvbitsel_v
+impl = portable
 name = lasx_xvbitsel_v
 asm-fmts = xd, xj, xk, xa
 data-types = UV32QI, UV32QI, UV32QI, UV32QI
@@ -2012,21 +2032,25 @@ asm-fmts = xd, xj
 data-types = UV4DI, V4DF
 
 /// lasx_xvffint_s_w
+impl = portable
 name = lasx_xvffint_s_w
 asm-fmts = xd, xj
 data-types = V8SF, V8SI
 
 /// lasx_xvffint_d_l
+impl = portable
 name = lasx_xvffint_d_l
 asm-fmts = xd, xj
 data-types = V4DF, V4DI
 
 /// lasx_xvffint_s_wu
+impl = portable
 name = lasx_xvffint_s_wu
 asm-fmts = xd, xj
 data-types = V8SF, UV8SI
 
 /// lasx_xvffint_d_lu
+impl = portable
 name = lasx_xvffint_d_lu
 asm-fmts = xd, xj
 data-types = V4DF, UV4DI
@@ -2052,6 +2076,7 @@ asm-fmts = xd, xj, rk
 data-types = V4DI, V4DI, SI
 
 /// lasx_xvpermi_w
+impl = portable
 name = lasx_xvpermi_w
 asm-fmts = xd, xj, ui8
 data-types = V8SI, V8SI, V8SI, USI
@@ -2135,31 +2160,37 @@ asm-fmts = xd, xj, xk
 data-types = UV4DI, UV4DI, UV4DI
 
 /// lasx_xvsllwil_h_b
+impl = portable
 name = lasx_xvsllwil_h_b
 asm-fmts = xd, xj, ui3
 data-types = V16HI, V32QI, UQI
 
 /// lasx_xvsllwil_w_h
+impl = portable
 name = lasx_xvsllwil_w_h
 asm-fmts = xd, xj, ui4
 data-types = V8SI, V16HI, UQI
 
 /// lasx_xvsllwil_d_w
+impl = portable
 name = lasx_xvsllwil_d_w
 asm-fmts = xd, xj, ui5
 data-types = V4DI, V8SI, UQI
 
 /// lasx_xvsllwil_hu_bu
+impl = portable
 name = lasx_xvsllwil_hu_bu
 asm-fmts = xd, xj, ui3
 data-types = UV16HI, UV32QI, UQI
 
 /// lasx_xvsllwil_wu_hu
+impl = portable
 name = lasx_xvsllwil_wu_hu
 asm-fmts = xd, xj, ui4
 data-types = UV8SI, UV16HI, UQI
 
 /// lasx_xvsllwil_du_wu
+impl = portable
 name = lasx_xvsllwil_du_wu
 asm-fmts = xd, xj, ui5
 data-types = UV4DI, UV8SI, UQI
@@ -2335,6 +2366,7 @@ asm-fmts = xd, xj, xk
 data-types = V16HI, V16HI, V16HI, V16HI
 
 /// lasx_xvshuf4i_d
+impl = portable
 name = lasx_xvshuf4i_d
 asm-fmts = xd, xj, ui8
 data-types = V4DI, V4DI, V4DI, USI
@@ -2352,16 +2384,19 @@ asm-fmts = xd, xj, ui5
 data-types = V32QI, V32QI, UQI
 
 /// lasx_xvextrins_b
+impl = portable
 name = lasx_xvextrins_b
 asm-fmts = xd, xj, ui8
 data-types = V32QI, V32QI, V32QI, USI
 
 /// lasx_xvextrins_h
+impl = portable
 name = lasx_xvextrins_h
 asm-fmts = xd, xj, ui8
 data-types = V16HI, V16HI, V16HI, USI
 
 /// lasx_xvextrins_w
+impl = portable
 name = lasx_xvextrins_w
 asm-fmts = xd, xj, ui8
 data-types = V8SI, V8SI, V8SI, USI
@@ -2638,31 +2673,37 @@ asm-fmts = xd, rj, si12
 data-types = VOID, V32QI, CVPOINTER, SI
 
 /// lasx_xvstelm_b
+impl = portable
 name = lasx_xvstelm_b
 asm-fmts = xd, rj, si8, idx
 data-types = VOID, V32QI, CVPOINTER, SI, UQI
 
 /// lasx_xvstelm_h
+impl = portable
 name = lasx_xvstelm_h
 asm-fmts = xd, rj, si8, idx
 data-types = VOID, V16HI, CVPOINTER, SI, UQI
 
 /// lasx_xvstelm_w
+impl = portable
 name = lasx_xvstelm_w
 asm-fmts = xd, rj, si8, idx
 data-types = VOID, V8SI, CVPOINTER, SI, UQI
 
 /// lasx_xvstelm_d
+impl = portable
 name = lasx_xvstelm_d
 asm-fmts = xd, rj, si8, idx
 data-types = VOID, V4DI, CVPOINTER, SI, UQI
 
 /// lasx_xvinsve0_w
+impl = portable
 name = lasx_xvinsve0_w
 asm-fmts = xd, xj, ui3
 data-types = V8SI, V8SI, V8SI, UQI
 
 /// lasx_xvinsve0_d
+impl = portable
 name = lasx_xvinsve0_d
 asm-fmts = xd, xj, ui2
 data-types = V4DI, V4DI, V4DI, UQI
@@ -2779,61 +2820,73 @@ asm-fmts = xd, xj
 data-types = V32QI, V32QI
 
 /// lasx_vext2xv_h_b
+impl = portable
 name = lasx_vext2xv_h_b
 asm-fmts = xd, xj
 data-types = V16HI, V32QI
 
 /// lasx_vext2xv_w_h
+impl = portable
 name = lasx_vext2xv_w_h
 asm-fmts = xd, xj
 data-types = V8SI, V16HI
 
 /// lasx_vext2xv_d_w
+impl = portable
 name = lasx_vext2xv_d_w
 asm-fmts = xd, xj
 data-types = V4DI, V8SI
 
 /// lasx_vext2xv_w_b
+impl = portable
 name = lasx_vext2xv_w_b
 asm-fmts = xd, xj
 data-types = V8SI, V32QI
 
 /// lasx_vext2xv_d_h
+impl = portable
 name = lasx_vext2xv_d_h
 asm-fmts = xd, xj
 data-types = V4DI, V16HI
 
 /// lasx_vext2xv_d_b
+impl = portable
 name = lasx_vext2xv_d_b
 asm-fmts = xd, xj
 data-types = V4DI, V32QI
 
 /// lasx_vext2xv_hu_bu
+impl = portable
 name = lasx_vext2xv_hu_bu
 asm-fmts = xd, xj
 data-types = V16HI, V32QI
 
 /// lasx_vext2xv_wu_hu
+impl = portable
 name = lasx_vext2xv_wu_hu
 asm-fmts = xd, xj
 data-types = V8SI, V16HI
 
 /// lasx_vext2xv_du_wu
+impl = portable
 name = lasx_vext2xv_du_wu
 asm-fmts = xd, xj
 data-types = V4DI, V8SI
 
 /// lasx_vext2xv_wu_bu
+impl = portable
 name = lasx_vext2xv_wu_bu
 asm-fmts = xd, xj
 data-types = V8SI, V32QI
 
 /// lasx_vext2xv_du_hu
+impl = portable
 name = lasx_vext2xv_du_hu
 asm-fmts = xd, xj
 data-types = V4DI, V16HI
 
 /// lasx_vext2xv_du_bu
+impl = portable
 name = lasx_vext2xv_du_bu
 asm-fmts = xd, xj
 data-types = V4DI, V32QI
@@ -2844,6 +2897,7 @@ asm-fmts = xd, xj, ui8
 data-types = V32QI, V32QI, V32QI, USI
 
 /// lasx_xvpermi_d
+impl = portable
 name = lasx_xvpermi_d
 asm-fmts = xd, xj, ui8
 data-types = V4DI, V4DI, USI
@@ -3402,16 +3456,19 @@ asm-fmts = xd, xj
 data-types = V32QI, V32QI
 
 /// lasx_xvexth_h_b
+impl = portable
 name = lasx_xvexth_h_b
 asm-fmts = xd, xj
 data-types = V16HI, V32QI
 
 /// lasx_xvexth_w_h
+impl = portable
 name = lasx_xvexth_w_h
 asm-fmts = xd, xj
 data-types = V8SI, V16HI
 
 /// lasx_xvexth_d_w
+impl = portable
 name = lasx_xvexth_d_w
 asm-fmts = xd, xj
 data-types = V4DI, V8SI
@@ -3422,16 +3479,19 @@ asm-fmts = xd, xj
 data-types = V4DI, V4DI
 
 /// lasx_xvexth_hu_bu
+impl = portable
 name = lasx_xvexth_hu_bu
 asm-fmts = xd, xj
 data-types = UV16HI, UV32QI
 
 /// lasx_xvexth_wu_hu
+impl = portable
 name = lasx_xvexth_wu_hu
 asm-fmts = xd, xj
 data-types = UV8SI, UV16HI
 
 /// lasx_xvexth_du_wu
+impl = portable
 name = lasx_xvexth_du_wu
 asm-fmts = xd, xj
 data-types = UV4DI, UV8SI
@@ -3771,101 +3831,121 @@ asm-fmts = xd, xj, xk
 data-types = V8SI, V8SF, V8SF
 
 /// lasx_xvfcmp_ceq_d
+impl = portable
 name = lasx_xvfcmp_ceq_d
 asm-fmts = xd, xj, xk
 data-types = V4DI, V4DF, V4DF
 
 /// lasx_xvfcmp_ceq_s
+impl = portable
 name = lasx_xvfcmp_ceq_s
 asm-fmts = xd, xj, xk
 data-types = V8SI, V8SF, V8SF
 
 /// lasx_xvfcmp_cle_d
+impl = portable
 name = lasx_xvfcmp_cle_d
 asm-fmts = xd, xj, xk
 data-types = V4DI, V4DF, V4DF
 
 /// lasx_xvfcmp_cle_s
+impl = portable
 name = lasx_xvfcmp_cle_s
 asm-fmts = xd, xj, xk
 data-types = V8SI, V8SF, V8SF
 
 /// lasx_xvfcmp_clt_d
+impl = portable
 name = lasx_xvfcmp_clt_d
 asm-fmts = xd, xj, xk
 data-types = V4DI, V4DF, V4DF
 
 /// lasx_xvfcmp_clt_s
+impl = portable
 name = lasx_xvfcmp_clt_s
 asm-fmts = xd, xj, xk
 data-types = V8SI, V8SF, V8SF
 
 /// lasx_xvfcmp_cne_d
+impl = portable
 name = lasx_xvfcmp_cne_d
 asm-fmts = xd, xj, xk
 data-types = V4DI, V4DF, V4DF
 
 /// lasx_xvfcmp_cne_s
+impl = portable
 name = lasx_xvfcmp_cne_s
 asm-fmts = xd, xj, xk
 data-types = V8SI, V8SF, V8SF
 
 /// lasx_xvfcmp_cor_d
+impl = portable
 name = lasx_xvfcmp_cor_d
 asm-fmts = xd, xj, xk
 data-types = V4DI, V4DF, V4DF
 
 /// lasx_xvfcmp_cor_s
+impl = portable
 name = lasx_xvfcmp_cor_s
 asm-fmts = xd, xj, xk
 data-types = V8SI, V8SF, V8SF
 
 /// lasx_xvfcmp_cueq_d
+impl = portable
 name = lasx_xvfcmp_cueq_d
 asm-fmts = xd, xj, xk
 data-types = V4DI, V4DF, V4DF
 
 /// lasx_xvfcmp_cueq_s
+impl = portable
 name = lasx_xvfcmp_cueq_s
 asm-fmts = xd, xj, xk
 data-types = V8SI, V8SF, V8SF
 
 /// lasx_xvfcmp_cule_d
+impl = portable
 name = lasx_xvfcmp_cule_d
 asm-fmts = xd, xj, xk
 data-types = V4DI, V4DF, V4DF
 
 /// lasx_xvfcmp_cule_s
+impl = portable
 name = lasx_xvfcmp_cule_s
 asm-fmts = xd, xj, xk
 data-types = V8SI, V8SF, V8SF
 
 /// lasx_xvfcmp_cult_d
+impl = portable
 name = lasx_xvfcmp_cult_d
 asm-fmts = xd, xj, xk
 data-types = V4DI, V4DF, V4DF
 
 /// lasx_xvfcmp_cult_s
+impl = portable
 name = lasx_xvfcmp_cult_s
 asm-fmts = xd, xj, xk
 data-types = V8SI, V8SF, V8SF
 
 /// lasx_xvfcmp_cun_d
+impl = portable
 name = lasx_xvfcmp_cun_d
 asm-fmts = xd, xj, xk
 data-types = V4DI, V4DF, V4DF
 
 /// lasx_xvfcmp_cune_d
+impl = portable
 name = lasx_xvfcmp_cune_d
 asm-fmts = xd, xj, xk
 data-types = V4DI, V4DF, V4DF
 
 /// lasx_xvfcmp_cune_s
+impl = portable
 name = lasx_xvfcmp_cune_s
 asm-fmts = xd, xj, xk
 data-types = V8SI, V8SF, V8SF
 
 /// lasx_xvfcmp_cun_s
+impl = portable
 name = lasx_xvfcmp_cun_s
 asm-fmts = xd, xj, xk
 data-types = V8SI, V8SF, V8SF
@@ -4030,76 +4110,91 @@ asm-fmts = xd, vj
 data-types = V4DI, V2DI
 
 /// lasx_concat_128_s
+impl = portable
 name = lasx_concat_128_s
 asm-fmts = xd, vj, vk
 data-types = V8SF, V4SF, V4SF
 
 /// lasx_concat_128_d
+impl = portable
 name = lasx_concat_128_d
 asm-fmts = xd, vj, vk
 data-types = V4DF, V2DF, V2DF
 
 /// lasx_concat_128
+impl = portable
 name = lasx_concat_128
 asm-fmts = xd, vj, vk
 data-types = V4DI, V2DI, V2DI
 
 /// lasx_extract_128_lo_s
+impl = portable
 name = lasx_extract_128_lo_s
 asm-fmts = vd, xj
 data-types = V4SF, V8SF
 
 /// lasx_extract_128_hi_s
+impl = portable
 name = lasx_extract_128_hi_s
 asm-fmts = vd, xj
 data-types = V4SF, V8SF
 
 /// lasx_extract_128_lo_d
+impl = portable
 name = lasx_extract_128_lo_d
 asm-fmts = vd, xj
 data-types = V2DF, V4DF
 
 /// lasx_extract_128_hi_d
+impl = portable
 name = lasx_extract_128_hi_d
 asm-fmts = vd, xj
 data-types = V2DF, V4DF
 
 /// lasx_extract_128_lo
+impl = portable
 name = lasx_extract_128_lo
 asm-fmts = vd, xj
 data-types = V2DI, V4DI
 
 /// lasx_extract_128_hi
+impl = portable
 name = lasx_extract_128_hi
 asm-fmts = vd, xj
 data-types = V2DI, V4DI
 
 /// lasx_insert_128_lo_s
+impl = portable
 name = lasx_insert_128_lo_s
 asm-fmts = xd, xj, vk
 data-types = V8SF, V8SF, V4SF
 
 /// lasx_insert_128_hi_s
+impl = portable
 name = lasx_insert_128_hi_s
 asm-fmts = xd, xj, vk
 data-types = V8SF, V8SF, V4SF
 
 /// lasx_insert_128_lo_d
+impl = portable
 name = lasx_insert_128_lo_d
 asm-fmts = xd, xj, vk
 data-types = V4DF, V4DF, V2DF
 
 /// lasx_insert_128_hi_d
+impl = portable
 name = lasx_insert_128_hi_d
 asm-fmts = xd, xj, vk
 data-types = V4DF, V4DF, V2DF
 
 /// lasx_insert_128_lo
+impl = portable
 name = lasx_insert_128_lo
 asm-fmts = xd, xj, vk
 data-types = V4DI, V4DI, V2DI
 
 /// lasx_insert_128_hi
+impl = portable
 name = lasx_insert_128_hi
 asm-fmts = xd, xj, vk
 data-types = V4DI, V4DI, V2DI

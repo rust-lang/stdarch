@@ -1,5 +1,6 @@
 //! LoongArch64 SIMD helpers
 
+use crate::core_arch::simd::{Simd, SimdElement};
 use crate::intrinsics::simd::*;
 
 // Internal extension trait for concrete `Simd<T, N>` types.
@@ -97,6 +98,12 @@ pub(super) const unsafe fn simd_ext_bitrev<T: Copy + const SimdExt>(a: T, b: T) 
 #[rustc_const_unstable(feature = "stdarch_const_helpers", issue = "none")]
 pub(super) const unsafe fn simd_ext_bitset<T: Copy + const SimdExt>(a: T, b: T) -> T {
     simd_or(simd_ext_shl(simd_ext_splat(1), b), a)
+}
+
+#[inline(always)]
+#[rustc_const_unstable(feature = "stdarch_const_helpers", issue = "none")]
+pub(super) const unsafe fn simd_ext_bitsel<T: Copy + const SimdExt>(a: T, b: T, c: T) -> T {
+    simd_or(simd_ext_andn(c, a), simd_and(c, b))
 }
 
 #[inline(always)]
@@ -308,6 +315,272 @@ pub(super) const unsafe fn simd_ext_st<const I: i32, T: Copy>(a: T, b: *mut i8) 
 pub(super) const unsafe fn simd_ext_stx<T: Copy>(a: T, b: *mut i8, c: i64) {
     let b = b.offset(c as isize) as *mut T;
     core::ptr::write_unaligned(b, a);
+}
+
+#[inline(always)]
+pub(super) const fn lanes<E>(n: usize) -> usize {
+    n * size_of::<E>() / 16
+}
+
+pub(super) const fn idx_seq<const N: usize>(o: usize) -> [u32; N] {
+    let mut r = [0; N];
+    let mut i = 0;
+    while i < N {
+        r[i] = (o + i) as u32;
+        i += 1;
+    }
+    r
+}
+
+pub(super) const fn idx_step2<const N: usize>(o: usize) -> [u32; N] {
+    let mut r = [0; N];
+    let mut i = 0;
+    while i < N {
+        r[i] = (2 * i + o) as u32;
+        i += 1;
+    }
+    r
+}
+
+pub(super) const fn idx_half<const N: usize>(lanes: usize, hi: bool) -> [u32; N] {
+    let p = N / lanes;
+    let mut r = [0; N];
+    let mut i = 0;
+    while i < N {
+        r[i] = ((i / p) * 2 * p + if hi { p } else { 0 } + i % p) as u32;
+        i += 1;
+    }
+    r
+}
+
+pub(super) const fn idx_pack<const N: usize>(lanes: usize) -> [u32; N] {
+    let h = N / 2;
+    let p = h / lanes;
+    let mut r = [0; N];
+    let mut i = 0;
+    while i < N {
+        let l = i / (2 * p);
+        let j = i % (2 * p);
+        r[i] = if j < p { l * p + j } else { h + l * p + j - p } as u32;
+        i += 1;
+    }
+    r
+}
+
+pub(super) const fn idx_extrins<const N: usize>(lanes: usize, imm: u32) -> [u32; N] {
+    let p = N / lanes;
+    let d = (imm >> 4) as usize & (p - 1);
+    let s = imm as usize & (p - 1);
+    let mut r = [0; N];
+    let mut i = 0;
+    while i < N {
+        r[i] = if i % p == d { N + (i / p) * p + s } else { i } as u32;
+        i += 1;
+    }
+    r
+}
+
+pub(super) const fn idx_permi_w<const N: usize>(imm: u32) -> [u32; N] {
+    let mut r = [0; N];
+    let mut i = 0;
+    while i < N {
+        let s = (imm >> (2 * (i % 4))) as usize & 3;
+        let b = (i / 4) * 4 + s;
+        r[i] = if i % 4 < 2 { N + b } else { b } as u32;
+        i += 1;
+    }
+    r
+}
+
+#[inline(always)]
+#[rustc_const_unstable(feature = "stdarch_const_helpers", issue = "none")]
+const unsafe fn simd_ext_ev<E: SimdElement, F: SimdElement, const N: usize, const H: usize>(
+    a: Simd<E, N>,
+) -> Simd<F, H> {
+    let r: Simd<E, H> = simd_shuffle!(a, a, idx_step2::<H>(0));
+    simd_as(r)
+}
+
+#[inline(always)]
+#[rustc_const_unstable(feature = "stdarch_const_helpers", issue = "none")]
+const unsafe fn simd_ext_od<E: SimdElement, F: SimdElement, const N: usize, const H: usize>(
+    a: Simd<E, N>,
+) -> Simd<F, H> {
+    let r: Simd<E, H> = simd_shuffle!(a, a, idx_step2::<H>(1));
+    simd_as(r)
+}
+
+#[inline(always)]
+#[rustc_const_unstable(feature = "stdarch_const_helpers", issue = "none")]
+pub(super) const unsafe fn simd_ext_exth<
+    E: SimdElement,
+    F: SimdElement,
+    const N: usize,
+    const H: usize,
+>(
+    a: Simd<E, N>,
+) -> Simd<F, H> {
+    let r: Simd<E, H> = simd_shuffle!(a, a, idx_half::<H>(lanes::<E>(N), true));
+    simd_as(r)
+}
+
+#[inline(always)]
+#[rustc_const_unstable(feature = "stdarch_const_helpers", issue = "none")]
+pub(super) const unsafe fn simd_ext_extl<
+    E: SimdElement,
+    F: SimdElement,
+    const N: usize,
+    const H: usize,
+>(
+    a: Simd<E, N>,
+) -> Simd<F, H> {
+    let r: Simd<E, H> = simd_shuffle!(a, a, idx_half::<H>(lanes::<E>(N), false));
+    simd_as(r)
+}
+
+#[inline(always)]
+#[rustc_const_unstable(feature = "stdarch_const_helpers", issue = "none")]
+pub(super) const unsafe fn simd_ext_ext2<
+    E: SimdElement,
+    F: SimdElement,
+    const N: usize,
+    const H: usize,
+>(
+    a: Simd<E, N>,
+) -> Simd<F, H> {
+    let r: Simd<E, H> = simd_shuffle!(a, a, idx_seq::<H>(0));
+    simd_as(r)
+}
+
+#[inline(always)]
+#[rustc_const_unstable(feature = "stdarch_const_helpers", issue = "none")]
+pub(super) const unsafe fn simd_ext_sllwil<
+    E: SimdElement,
+    F: SimdElement,
+    const N: usize,
+    const H: usize,
+>(
+    a: Simd<E, N>,
+    imm: u32,
+) -> Simd<F, H>
+where
+    Simd<F, H>: const SimdExt,
+{
+    simd_shl(simd_ext_extl::<E, F, N, H>(a), simd_ext_splat(imm as i64))
+}
+
+#[inline(always)]
+#[rustc_const_unstable(feature = "stdarch_const_helpers", issue = "none")]
+pub(super) const unsafe fn simd_ext_narrow2<
+    W: SimdElement,
+    E: SimdElement,
+    const H: usize,
+    const M: usize,
+>(
+    a: Simd<W, H>,
+    b: Simd<W, H>,
+) -> Simd<E, M> {
+    let a: Simd<E, H> = simd_as(a);
+    let b: Simd<E, H> = simd_as(b);
+    simd_shuffle!(b, a, idx_pack::<M>(lanes::<E>(M)))
+}
+
+macro_rules! impl_widen_op {
+    ($name:ident, $op:ident, $fa:ident, $fb:ident) => {
+        #[inline(always)]
+        #[rustc_const_unstable(feature = "stdarch_const_helpers", issue = "none")]
+        pub(super) const unsafe fn $name<
+            A: SimdElement,
+            B: SimdElement,
+            R: SimdElement,
+            const N: usize,
+            const H: usize,
+        >(
+            a: Simd<A, N>,
+            b: Simd<B, N>,
+        ) -> Simd<R, H> {
+            $op($fa::<A, R, N, H>(a), $fb::<B, R, N, H>(b))
+        }
+    };
+}
+
+impl_widen_op!(simd_ext_haddw, simd_add, simd_ext_od, simd_ext_ev);
+impl_widen_op!(simd_ext_hsubw, simd_sub, simd_ext_od, simd_ext_ev);
+
+#[inline(always)]
+#[rustc_const_unstable(feature = "stdarch_const_helpers", issue = "none")]
+pub(super) const unsafe fn simd_ext_shrri<T: Copy + const SimdExt>(a: T, imm: u32) -> T {
+    if imm == 0 {
+        a
+    } else {
+        let r = simd_shr(a, simd_ext_splat(imm as i64 - 1));
+        let r = simd_and(r, simd_ext_splat(1));
+        simd_add(simd_shr(a, simd_ext_splat(imm as i64)), r)
+    }
+}
+
+#[inline(always)]
+#[rustc_const_unstable(feature = "stdarch_const_helpers", issue = "none")]
+pub(super) const unsafe fn simd_ext_fcmp_cne<F: Copy, I: Copy>(a: F, b: F) -> I {
+    simd_or(simd_lt::<F, I>(a, b), simd_gt::<F, I>(a, b))
+}
+
+#[inline(always)]
+#[rustc_const_unstable(feature = "stdarch_const_helpers", issue = "none")]
+pub(super) const unsafe fn simd_ext_fcmp_cor<F: Copy, I: Copy>(a: F, b: F) -> I {
+    simd_and(simd_eq::<F, I>(a, a), simd_eq::<F, I>(b, b))
+}
+
+#[inline(always)]
+#[rustc_const_unstable(feature = "stdarch_const_helpers", issue = "none")]
+pub(super) const unsafe fn simd_ext_fcmp_cun<F: Copy, I: Copy>(a: F, b: F) -> I {
+    simd_or(simd_ne::<F, I>(a, a), simd_ne::<F, I>(b, b))
+}
+
+#[inline(always)]
+#[rustc_const_unstable(feature = "stdarch_const_helpers", issue = "none")]
+pub(super) const unsafe fn simd_ext_fcmp_cueq<F: Copy, I: Copy + const SimdExt>(a: F, b: F) -> I {
+    simd_ext_not(simd_ext_fcmp_cne::<F, I>(a, b))
+}
+
+#[inline(always)]
+#[rustc_const_unstable(feature = "stdarch_const_helpers", issue = "none")]
+pub(super) const unsafe fn simd_ext_fcmp_cult<F: Copy, I: Copy + const SimdExt>(a: F, b: F) -> I {
+    simd_ext_not(simd_ge::<F, I>(a, b))
+}
+
+#[inline(always)]
+#[rustc_const_unstable(feature = "stdarch_const_helpers", issue = "none")]
+pub(super) const unsafe fn simd_ext_fcmp_cule<F: Copy, I: Copy + const SimdExt>(a: F, b: F) -> I {
+    simd_ext_not(simd_gt::<F, I>(a, b))
+}
+
+#[inline(always)]
+#[rustc_const_unstable(feature = "stdarch_const_helpers", issue = "none")]
+pub(super) const unsafe fn simd_ext_stelm<const I: i32, const J: u32, T: Copy + SimdExt>(
+    a: T,
+    b: *mut i8,
+) {
+    let b = b.offset(I as isize) as *mut T::Elem;
+    core::ptr::write_unaligned(b, simd_extract!(a, J));
+}
+
+#[inline(always)]
+#[rustc_const_unstable(feature = "stdarch_const_helpers", issue = "none")]
+pub(super) const unsafe fn simd_ext_extrins<const I: u32, E: SimdElement, const N: usize>(
+    a: Simd<E, N>,
+    b: Simd<E, N>,
+) -> Simd<E, N> {
+    simd_shuffle!(a, b, idx_extrins::<N>(lanes::<E>(N), I))
+}
+
+#[inline(always)]
+#[rustc_const_unstable(feature = "stdarch_const_helpers", issue = "none")]
+pub(super) const unsafe fn simd_ext_permi_w<const I: u32, E: SimdElement, const N: usize>(
+    a: Simd<E, N>,
+    b: Simd<E, N>,
+) -> Simd<E, N> {
+    simd_shuffle!(a, b, idx_permi_w::<N>(I))
 }
 
 macro_rules! impl_vavg {
@@ -635,3 +908,113 @@ macro_rules! impl_vugv {
 }
 
 pub(super) use impl_vugv;
+
+macro_rules! impl_v_v {
+    ($ft:literal, $name:ident, $op:ident, $oa:ty, $ia:ty, $or:ty, $ir:ty) => {
+        #[inline]
+        #[target_feature(enable = $ft)]
+        #[stable(feature = "stdarch_loongarch_simd", since = "1.101.0")]
+        pub fn $name(a: $oa) -> $or {
+            unsafe {
+                let a: $ia = transmute(a);
+                let r: $ir = $op(a);
+                transmute(r)
+            }
+        }
+    };
+}
+
+pub(super) use impl_v_v;
+
+macro_rules! impl_vv_v {
+    (
+        $ft:literal, $name:ident, $op:ident,
+        $oa:ty, $ia:ty, $ob:ty, $ib:ty, $or:ty, $ir:ty
+    ) => {
+        #[inline]
+        #[target_feature(enable = $ft)]
+        #[stable(feature = "stdarch_loongarch_simd", since = "1.101.0")]
+        pub fn $name(a: $oa, b: $ob) -> $or {
+            unsafe {
+                let a: $ia = transmute(a);
+                let b: $ib = transmute(b);
+                let r: $ir = $op(a, b);
+                transmute(r)
+            }
+        }
+    };
+}
+
+pub(super) use impl_vv_v;
+
+macro_rules! impl_vu_v {
+    ($ft:literal, $name:ident, $op:ident, $oa:ty, $ia:ty, $or:ty, $ir:ty, $ibs:expr) => {
+        #[inline]
+        #[target_feature(enable = $ft)]
+        #[stable(feature = "stdarch_loongarch_simd", since = "1.101.0")]
+        pub fn $name<const IMM: u32>(a: $oa) -> $or {
+            static_assert_uimm_bits!(IMM, $ibs);
+            unsafe {
+                let a: $ia = transmute(a);
+                let r: $ir = $op(a, IMM);
+                transmute(r)
+            }
+        }
+    };
+    ($ft:literal, $name:ident, $op:ident, $oa:ty, $ia:ty, $or:ty, $ir:ty, $ibs:expr, const) => {
+        #[inline]
+        #[target_feature(enable = $ft)]
+        #[stable(feature = "stdarch_loongarch_simd", since = "1.101.0")]
+        pub fn $name<const IMM: u32>(a: $oa) -> $or {
+            static_assert_uimm_bits!(IMM, $ibs);
+            unsafe {
+                let a: $ia = transmute(a);
+                let r: $ir = $op::<IMM, _, _>(a);
+                transmute(r)
+            }
+        }
+    };
+}
+
+pub(super) use impl_vu_v;
+
+macro_rules! impl_vvu_v {
+    (
+        $ft:literal, $name:ident, $op:ident,
+        $oa:ty, $ia:ty, $ob:ty, $ib:ty, $or:ty, $ir:ty, $ibs:expr, const
+    ) => {
+        #[inline]
+        #[target_feature(enable = $ft)]
+        #[stable(feature = "stdarch_loongarch_simd", since = "1.101.0")]
+        pub fn $name<const IMM: u32>(a: $oa, b: $ob) -> $or {
+            static_assert_uimm_bits!(IMM, $ibs);
+            unsafe {
+                let a: $ia = transmute(a);
+                let b: $ib = transmute(b);
+                let r: $ir = $op::<IMM, _, _>(a, b);
+                transmute(r)
+            }
+        }
+    };
+}
+
+pub(super) use impl_vvu_v;
+
+macro_rules! impl_vgsu {
+    (
+        $ft:literal, $name:ident, $op:ident, $oty:ty, $ity:ty, $gty:ty,
+        $sbs:expr, $ubs:expr, const, unsafe
+    ) => {
+        #[inline]
+        #[target_feature(enable = $ft)]
+        #[stable(feature = "stdarch_loongarch_simd", since = "1.101.0")]
+        pub unsafe fn $name<const IMM_S: i32, const IMM: u32>(a: $oty, b: $gty) {
+            static_assert_simm_bits!(IMM_S, $sbs);
+            static_assert_uimm_bits!(IMM, $ubs);
+            let a: $ity = transmute(a);
+            $op::<IMM_S, IMM, _>(a, b);
+        }
+    };
+}
+
+pub(super) use impl_vgsu;
