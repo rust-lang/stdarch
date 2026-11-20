@@ -34,16 +34,18 @@ unsafe extern "llvm-intrinsic" {
 ///
 /// # Safety
 ///
-/// - `mem_addr` must be valid for writes of the whole `XSAVE` area that
-///   `save_mask` and `XCR0` require.
+/// - `mem_addr` must meet the [pointer safety requirements](crate::ptr#safety)
+///   for writing the whole `XSAVE` area required by `save_mask` and
+///   `XCR0`, and for reading the `XSTATE_BV` field in its header.
 /// - `mem_addr` must be 64-byte aligned.
+/// - The `XSTATE_BV` field (the 8 bytes at offset 512 in the `XSAVE` area)
+///   must be initialized. Its bits outside `save_mask & XCR0` are preserved.
 ///
 /// The saved features are the ones requested in `save_mask` and also
 /// enabled in `XCR0`, the extended control register that records which
-/// processor state features are enabled. The area is at least 512 bytes,
-/// plus an extended region for every additional enabled feature.
-///
-
+/// processor state features are enabled.
+/// The area includes a 512-byte legacy region, a 64-byte header, and an
+/// extended region whose size depends on the enabled features.
 #[inline]
 #[target_feature(enable = "xsave")]
 #[cfg_attr(test, assert_instr(xsave64))]
@@ -80,16 +82,18 @@ pub unsafe fn _xrstor64(mem_addr: *const u8, rs_mask: u64) {
 ///
 /// # Safety
 ///
-/// - `mem_addr` must be valid for writes of the whole `XSAVE` area that
-///   `save_mask` and `XCR0` require.
+/// - `mem_addr` must meet the [pointer safety requirements](crate::ptr#safety)
+///   for writing the whole `XSAVE` area required by `save_mask` and
+///   `XCR0`, and for reading the `XSTATE_BV` field in its header.
 /// - `mem_addr` must be 64-byte aligned.
+/// - The `XSTATE_BV` field (the 8 bytes at offset 512 in the `XSAVE` area)
+///   must be initialized. Its bits outside `save_mask & XCR0` are preserved.
 ///
 /// The saved features are the ones requested in `save_mask` and also
 /// enabled in `XCR0`, the extended control register that records which
-/// processor state features are enabled. The area is at least 512 bytes,
-/// plus an extended region for every additional enabled feature.
-///
-
+/// processor state features are enabled.
+/// The area includes a 512-byte legacy region, a 64-byte header, and an
+/// extended region whose size depends on the enabled features.
 #[inline]
 #[target_feature(enable = "xsave,xsaveopt")]
 #[cfg_attr(test, assert_instr(xsaveopt64))]
@@ -109,16 +113,16 @@ pub unsafe fn _xsaveopt64(mem_addr: *mut u8, save_mask: u64) {
 ///
 /// # Safety
 ///
-/// - `mem_addr` must be valid for writes of the whole `XSAVE` area that
-///   `save_mask` and `XCR0` require.
+/// - `mem_addr` must meet the [pointer safety requirements](crate::ptr#safety)
+///   for writing the whole `XSAVE` area required by `save_mask` and
+///   `XCR0`.
 /// - `mem_addr` must be 64-byte aligned.
 ///
 /// The saved features are the ones requested in `save_mask` and also
 /// enabled in `XCR0`, the extended control register that records which
-/// processor state features are enabled. The area is at least 512 bytes,
-/// plus an extended region for every additional enabled feature.
-///
-
+/// processor state features are enabled.
+/// The area includes a 512-byte legacy region, a 64-byte header, and an
+/// extended region whose size depends on the enabled features.
 #[inline]
 #[target_feature(enable = "xsave,xsavec")]
 #[cfg_attr(test, assert_instr(xsavec64))]
@@ -139,16 +143,16 @@ pub unsafe fn _xsavec64(mem_addr: *mut u8, save_mask: u64) {
 ///
 /// # Safety
 ///
-/// - `mem_addr` must be valid for writes of the whole `XSAVE` area that
-///   `save_mask` and `XCR0` require.
+/// - `mem_addr` must meet the [pointer safety requirements](crate::ptr#safety)
+///   for writing the whole `XSAVE` area required by `save_mask` and
+///   `XCR0 | IA32_XSS`.
 /// - `mem_addr` must be 64-byte aligned.
 ///
-/// The saved features are the ones requested in `save_mask` and also
-/// enabled in `XCR0`, the extended control register that records which
-/// processor state features are enabled. The area is at least 512 bytes,
-/// plus an extended region for every additional enabled feature.
-///
-
+/// The saved features are the ones requested in `save_mask` and enabled in
+/// either `XCR0` or `IA32_XSS`, which control user and supervisor state
+/// components, respectively.
+/// The area includes a 512-byte legacy region, a 64-byte header, and an
+/// extended region whose size depends on the enabled features.
 #[inline]
 #[target_feature(enable = "xsave,xsaves")]
 #[cfg_attr(test, assert_instr(xsaves64))]
