@@ -39,7 +39,7 @@ jobs:
     needs: [style]
     name: Test
     runs-on: ${{ matrix.target.os }}
-    continue-on-error: ${{ matrix.target.tuple == 'riscv32gc-unknown-linux-gnu' }}
+    continue-on-error: ${{ matrix.continue_on_error || false }}
     strategy:
       matrix:
         profile:
@@ -168,6 +168,7 @@ jobs:
               os: ubuntu-latest
             test_everything: true
             build_std: true
+            continue_on_error: true
           - target:
               tuple: riscv64gc-unknown-linux-gnu
               os: ubuntu-latest
