@@ -7,6 +7,8 @@ on:
     # Run at 04:00 UTC every Monday and Thursday
     - cron: '0 4 * * 1,4'
 
+permissions: {}
+
 jobs:
   pull:
     if: github.repository == 'rust-lang/stdarch'
@@ -23,3 +25,6 @@ jobs:
     secrets:
       zulip-api-token: ${{ secrets.ZULIP_API_TOKEN }}
       github-app-secret: ${{ secrets.APP_PRIVATE_KEY }}
+    permissions:
+      contents: write # Required by the josh-sync workflow to push the `rustc-pull` branch.
+      pull-requests: write # Required by the josh-sync workflow to open the sync pull request.
