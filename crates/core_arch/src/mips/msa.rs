@@ -9045,6 +9045,7 @@ pub unsafe fn __msa_xori_b<const IMM8: i32>(a: v16u8) -> v16u8 {
 mod tests {
     use crate::{
         core_arch::{mips::msa::*, simd::*},
+        hint::black_box,
         mem,
     };
     use stdarch_test::simd_test;
@@ -13109,18 +13110,20 @@ mod tests {
         let b = f32x4::new(5.0, 6.0, 7.0, 8.0);
         let c = f32x4::new(9.0, 10.0, 11.0, 12.0);
         let r = f32x4::new(
-            1.0 * 5.0 + 9.0,
-            2.0 * 6.0 + 10.0,
-            3.0 * 7.0 + 11.0,
-            4.0 * 8.0 + 12.0,
+            1.0 + 5.0 * 9.0,
+            2.0 + 6.0 * 10.0,
+            3.0 + 7.0 * 11.0,
+            4.0 + 8.0 * 12.0,
         );
 
+        // FIXME(llvm): Constant evaluation of fma miscompiles,
+        // see https://github.com/llvm/llvm-project/pull/245047
         assert_eq!(
             r,
             mem::transmute(__msa_fmadd_w(
-                mem::transmute(a),
-                mem::transmute(b),
-                mem::transmute(c)
+                black_box(mem::transmute(a)),
+                black_box(mem::transmute(b)),
+                black_box(mem::transmute(c))
             ))
         );
     }
@@ -13130,14 +13133,16 @@ mod tests {
         let a = f64x2::new(1.0, 2.0);
         let b = f64x2::new(3.0, 4.0);
         let c = f64x2::new(5.0, 6.0);
-        let r = f64x2::new(1.0 * 3.0 + 5.0, 2.0 * 4.0 + 6.0);
+        let r = f64x2::new(1.0 + 3.0 * 5.0, 2.0 + 4.0 * 6.0);
 
+        // FIXME(llvm): Constant evaluation of fma miscompiles,
+        // see https://github.com/llvm/llvm-project/pull/245047
         assert_eq!(
             r,
             mem::transmute(__msa_fmadd_d(
-                mem::transmute(a),
-                mem::transmute(b),
-                mem::transmute(c)
+                black_box(mem::transmute(a)),
+                black_box(mem::transmute(b)),
+                black_box(mem::transmute(c))
             ))
         );
     }
