@@ -69,16 +69,16 @@ jobs:
             os: ubuntu-latest
           - tuple: powerpc64le-unknown-linux-gnu
             os: ubuntu-latest
-          # MIPS targets disabled since they are dropped to tier 3.
-          # See https://github.com/rust-lang/compiler-team/issues/648
-          #- tuple: mips-unknown-linux-gnu
-          #  os: ubuntu-latest
-          #- tuple: mips64-unknown-linux-gnuabi64
-          #  os: ubuntu-latest
-          #- tuple: mips64el-unknown-linux-gnuabi64
-          #  os: ubuntu-latest
-          #- tuple: mipsel-unknown-linux-musl
-          #  os: ubuntu-latest
+          - tuple: mips-unknown-linux-gnu
+            os: ubuntu-latest
+          # FIXME(llvm24): https://github.com/llvm/llvm-project/pull/242740
+          # - tuple: mips64-unknown-linux-gnuabi64
+          #   os: ubuntu-latest
+          - tuple: mips64el-unknown-linux-gnuabi64
+            os: ubuntu-latest
+          # FIXME: bad toolchain
+          # - tuple: mipsel-unknown-linux-musl
+          #   os: ubuntu-latest
           - tuple: s390x-unknown-linux-gnu
             os: ubuntu-latest
           - tuple: i586-unknown-linux-gnu
@@ -181,24 +181,28 @@ jobs:
               tuple: x86_64-unknown-linux-gnu
               os: ubuntu-latest
             test_everything: true
-          # MIPS targets disabled since they are dropped to tier 3.
-          # See https://github.com/rust-lang/compiler-team/issues/648
-          #- target:
-          #    tuple: mips-unknown-linux-gnu
-          #    os: ubuntu-latest
-          #  norun: true
-          #- target:
-          #    tuple: mips64-unknown-linux-gnuabi64
-          #    os: ubuntu-latest
-          #  norun: true
-          #- target:
-          #    tuple: mips64el-unknown-linux-gnuabi64
-          #    os: ubuntu-latest
-          #  norun: true
-          #- target:
-          #    tuple: mipsel-unknown-linux-musl
-          #    os: ubuntu-latest
-          #  norun: true
+          - target:
+              tuple: mips-unknown-linux-gnu
+              os: ubuntu-latest
+            continue_on_error: true
+            build_std: true
+          # FIXME(llvm24): https://github.com/llvm/llvm-project/pull/242740
+          # - target:
+          #     tuple: mips64-unknown-linux-gnuabi64
+          #     os: ubuntu-latest
+          #   continue_on_error: true
+          #   build_std: true
+          - target:
+              tuple: mips64el-unknown-linux-gnuabi64
+              os: ubuntu-latest
+            continue_on_error: true
+            build_std: true
+          # FIXME: bad toolchain
+          # - target:
+          #     tuple: mipsel-unknown-linux-musl
+          #     os: ubuntu-latest
+          #   continue_on_error: true
+          #   build_std: true
           - target:
               tuple: aarch64-apple-darwin
               os: macos-15
