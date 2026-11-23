@@ -8,3 +8,6 @@ commit-message = "Run `cargo fmt`"
 
 [push-pr]
 suffix = "r? @ghost"
+
+[pull-pr]
+suffix = "r? @ghost"
