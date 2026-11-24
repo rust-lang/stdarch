@@ -29,3 +29,16 @@ vusdot_lane_s32
 vusdot_laneq_s32
 vusdotq_lane_s32
 vusdotq_laneq_s32
+
+# Bad codegen for BE in LLVM 23 (https://github.com/llvm/llvm-project/issues/240293)
+vget_low_bf16
+vget_low_f16
+vget_low_f32
+vget_low_p8
+vget_low_p16
+vget_low_s8
+vget_low_s16
+vget_low_s32
+vget_low_u8
+vget_low_u16
+vget_low_u32
