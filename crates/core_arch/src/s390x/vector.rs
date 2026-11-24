@@ -99,13 +99,7 @@ impl From<vector_bool_int> for m32x4 {
     }
 }
 
-#[repr(C, packed)]
-struct PackedTuple<T, U> {
-    x: T,
-    y: U,
-}
-
-#[allow(improper_ctypes)]
+#[expect(improper_ctypes)]
 #[rustfmt::skip]
 unsafe extern "llvm-intrinsic" {
     #[link_name = "llvm.nearbyint.v4f32"] fn nearbyint_v4f32(a: vector_float) -> vector_float;
@@ -157,13 +151,13 @@ unsafe extern "llvm-intrinsic" {
     #[link_name = "llvm.s390.vfaezh"] fn vfaezh(a: vector_signed_short, b: vector_signed_short, c: i32) -> vector_signed_short;
     #[link_name = "llvm.s390.vfaezf"] fn vfaezf(a: vector_signed_int, b: vector_signed_int, c: i32) -> vector_signed_int;
 
-    #[link_name = "llvm.s390.vfaebs"] fn vfaebs(a: vector_signed_char, b: vector_signed_char, c: i32) -> PackedTuple<vector_signed_char, i32>;
-    #[link_name = "llvm.s390.vfaehs"] fn vfaehs(a: vector_signed_short, b: vector_signed_short, c: i32) -> PackedTuple<vector_signed_short, i32>;
-    #[link_name = "llvm.s390.vfaefs"] fn vfaefs(a: vector_signed_int, b: vector_signed_int, c: i32) -> PackedTuple<vector_signed_int, i32>;
+    #[link_name = "llvm.s390.vfaebs"] fn vfaebs(a: vector_signed_char, b: vector_signed_char, c: i32) -> (vector_signed_char, i32);
+    #[link_name = "llvm.s390.vfaehs"] fn vfaehs(a: vector_signed_short, b: vector_signed_short, c: i32) -> (vector_signed_short, i32);
+    #[link_name = "llvm.s390.vfaefs"] fn vfaefs(a: vector_signed_int, b: vector_signed_int, c: i32) -> (vector_signed_int, i32);
 
-    #[link_name = "llvm.s390.vfaezbs"] fn vfaezbs(a: vector_signed_char, b: vector_signed_char, c: i32) -> PackedTuple<vector_signed_char, i32>;
-    #[link_name = "llvm.s390.vfaezhs"] fn vfaezhs(a: vector_signed_short, b: vector_signed_short, c: i32) -> PackedTuple<vector_signed_short, i32>;
-    #[link_name = "llvm.s390.vfaezfs"] fn vfaezfs(a: vector_signed_int, b: vector_signed_int, c: i32) -> PackedTuple<vector_signed_int, i32>;
+    #[link_name = "llvm.s390.vfaezbs"] fn vfaezbs(a: vector_signed_char, b: vector_signed_char, c: i32) -> (vector_signed_char, i32);
+    #[link_name = "llvm.s390.vfaezhs"] fn vfaezhs(a: vector_signed_short, b: vector_signed_short, c: i32) -> (vector_signed_short, i32);
+    #[link_name = "llvm.s390.vfaezfs"] fn vfaezfs(a: vector_signed_int, b: vector_signed_int, c: i32) -> (vector_signed_int, i32);
 
     #[link_name = "llvm.s390.vll"] fn vll(a: u32, b: *const u8) -> vector_signed_char;
     #[link_name = "llvm.s390.vstl"] fn vstl(a: vector_signed_char, b: u32, c: *mut u8);
@@ -182,13 +176,13 @@ unsafe extern "llvm-intrinsic" {
     #[link_name = "llvm.s390.vpklsf"] fn vpklsf(a: vector_signed_int, b: vector_signed_int) -> vector_unsigned_short;
     #[link_name = "llvm.s390.vpklsg"] fn vpklsg(a: vector_signed_long_long, b: vector_signed_long_long) -> vector_unsigned_int;
 
-    #[link_name = "llvm.s390.vpkshs"] fn vpkshs(a: vector_signed_short, b: vector_signed_short) -> PackedTuple<vector_signed_char, i32>;
-    #[link_name = "llvm.s390.vpksfs"] fn vpksfs(a: vector_signed_int, b: vector_signed_int) -> PackedTuple<vector_signed_short, i32>;
-    #[link_name = "llvm.s390.vpksgs"] fn vpksgs(a: vector_signed_long_long, b: vector_signed_long_long) -> PackedTuple<vector_signed_int, i32>;
+    #[link_name = "llvm.s390.vpkshs"] fn vpkshs(a: vector_signed_short, b: vector_signed_short) -> (vector_signed_char, i32);
+    #[link_name = "llvm.s390.vpksfs"] fn vpksfs(a: vector_signed_int, b: vector_signed_int) -> (vector_signed_short, i32);
+    #[link_name = "llvm.s390.vpksgs"] fn vpksgs(a: vector_signed_long_long, b: vector_signed_long_long) -> (vector_signed_int, i32);
 
-    #[link_name = "llvm.s390.vpklshs"] fn vpklshs(a: vector_unsigned_short, b: vector_unsigned_short) -> PackedTuple<vector_unsigned_char, i32>;
-    #[link_name = "llvm.s390.vpklsfs"] fn vpklsfs(a: vector_unsigned_int, b: vector_unsigned_int) -> PackedTuple<vector_unsigned_short, i32>;
-    #[link_name = "llvm.s390.vpklsgs"] fn vpklsgs(a: vector_unsigned_long_long, b: vector_unsigned_long_long) -> PackedTuple<vector_unsigned_int, i32>;
+    #[link_name = "llvm.s390.vpklshs"] fn vpklshs(a: vector_unsigned_short, b: vector_unsigned_short) -> (vector_unsigned_char, i32);
+    #[link_name = "llvm.s390.vpklsfs"] fn vpklsfs(a: vector_unsigned_int, b: vector_unsigned_int) -> (vector_unsigned_short, i32);
+    #[link_name = "llvm.s390.vpklsgs"] fn vpklsgs(a: vector_unsigned_long_long, b: vector_unsigned_long_long) -> (vector_unsigned_int, i32);
 
     #[link_name = "llvm.s390.vavgb"] fn vavgb(a: vector_signed_char, b: vector_signed_char) -> vector_signed_char;
     #[link_name = "llvm.s390.vavgh"] fn vavgh(a: vector_signed_short, b: vector_signed_short) -> vector_signed_short;
@@ -254,26 +248,26 @@ unsafe extern "llvm-intrinsic" {
 
     #[link_name = "llvm.s390.vbperm"] fn vbperm(a: vector_unsigned_char, b: vector_unsigned_char) -> vector_unsigned_long_long;
 
-    #[link_name = "llvm.s390.vftcisb"] fn vftcisb(a: vector_float, b: u32) -> PackedTuple<vector_bool_int, i32>;
-    #[link_name = "llvm.s390.vftcidb"] fn vftcidb(a: vector_double, b: u32) -> PackedTuple<vector_bool_long_long, i32>;
+    #[link_name = "llvm.s390.vftcisb"] fn vftcisb(a: vector_float, b: u32) -> (vector_bool_int, i32);
+    #[link_name = "llvm.s390.vftcidb"] fn vftcidb(a: vector_double, b: u32) -> (vector_bool_long_long, i32);
 
     #[link_name = "llvm.s390.vtm"] fn vtm(a: i8x16, b: i8x16) -> i32;
 
-    #[link_name = "llvm.s390.vstrsb"] fn vstrsb(a: vector_unsigned_char, b: vector_unsigned_char, c: vector_unsigned_char) -> PackedTuple<vector_unsigned_char, i32>;
-    #[link_name = "llvm.s390.vstrsh"] fn vstrsh(a: vector_unsigned_short, b: vector_unsigned_short, c: vector_unsigned_char) -> PackedTuple<vector_unsigned_char, i32>;
-    #[link_name = "llvm.s390.vstrsf"] fn vstrsf(a: vector_unsigned_int, b: vector_unsigned_int, c: vector_unsigned_char) -> PackedTuple<vector_unsigned_char, i32>;
+    #[link_name = "llvm.s390.vstrsb"] fn vstrsb(a: vector_unsigned_char, b: vector_unsigned_char, c: vector_unsigned_char) -> (vector_unsigned_char, i32);
+    #[link_name = "llvm.s390.vstrsh"] fn vstrsh(a: vector_unsigned_short, b: vector_unsigned_short, c: vector_unsigned_char) -> (vector_unsigned_char, i32);
+    #[link_name = "llvm.s390.vstrsf"] fn vstrsf(a: vector_unsigned_int, b: vector_unsigned_int, c: vector_unsigned_char) -> (vector_unsigned_char, i32);
 
-    #[link_name = "llvm.s390.vstrszb"] fn vstrszb(a: vector_unsigned_char, b: vector_unsigned_char, c: vector_unsigned_char) -> PackedTuple<vector_unsigned_char, i32>;
-    #[link_name = "llvm.s390.vstrszh"] fn vstrszh(a: vector_unsigned_short, b: vector_unsigned_short, c: vector_unsigned_char) -> PackedTuple<vector_unsigned_char, i32>;
-    #[link_name = "llvm.s390.vstrszf"] fn vstrszf(a: vector_unsigned_int, b: vector_unsigned_int, c: vector_unsigned_char) -> PackedTuple<vector_unsigned_char, i32>;
+    #[link_name = "llvm.s390.vstrszb"] fn vstrszb(a: vector_unsigned_char, b: vector_unsigned_char, c: vector_unsigned_char) -> (vector_unsigned_char, i32);
+    #[link_name = "llvm.s390.vstrszh"] fn vstrszh(a: vector_unsigned_short, b: vector_unsigned_short, c: vector_unsigned_char) -> (vector_unsigned_char, i32);
+    #[link_name = "llvm.s390.vstrszf"] fn vstrszf(a: vector_unsigned_int, b: vector_unsigned_int, c: vector_unsigned_char) -> (vector_unsigned_char, i32);
 
     #[link_name = "llvm.s390.vistrb"] fn vistrb(a: vector_unsigned_char) -> vector_unsigned_char;
     #[link_name = "llvm.s390.vistrh"] fn vistrh(a: vector_unsigned_short) -> vector_unsigned_short;
     #[link_name = "llvm.s390.vistrf"] fn vistrf(a: vector_unsigned_int) -> vector_unsigned_int;
 
-    #[link_name = "llvm.s390.vistrbs"] fn vistrbs(a: vector_unsigned_char) -> PackedTuple<vector_unsigned_char, i32>;
-    #[link_name = "llvm.s390.vistrhs"] fn vistrhs(a: vector_unsigned_short) -> PackedTuple<vector_unsigned_short, i32>;
-    #[link_name = "llvm.s390.vistrfs"] fn vistrfs(a: vector_unsigned_int) -> PackedTuple<vector_unsigned_int, i32>;
+    #[link_name = "llvm.s390.vistrbs"] fn vistrbs(a: vector_unsigned_char) -> (vector_unsigned_char, i32);
+    #[link_name = "llvm.s390.vistrhs"] fn vistrhs(a: vector_unsigned_short) -> (vector_unsigned_short, i32);
+    #[link_name = "llvm.s390.vistrfs"] fn vistrfs(a: vector_unsigned_int) -> (vector_unsigned_int, i32);
 
     #[link_name = "llvm.s390.vmslg"] fn vmslg(a: vector_unsigned_long_long, b: vector_unsigned_long_long, c: u128, d: u32) -> u128;
 
@@ -281,17 +275,17 @@ unsafe extern "llvm-intrinsic" {
     #[link_name = "llvm.s390.vstrch"] fn vstrch(a: vector_unsigned_short, b: vector_unsigned_short, c: vector_unsigned_short, d: u32) -> vector_bool_short;
     #[link_name = "llvm.s390.vstrcf"] fn vstrcf(a: vector_unsigned_int, b: vector_unsigned_int, c: vector_unsigned_int, d: u32) -> vector_bool_int;
 
-    #[link_name = "llvm.s390.vstrcbs"] fn vstrcbs(a: vector_unsigned_char, b: vector_unsigned_char, c: vector_unsigned_char, d: u32) -> PackedTuple<vector_bool_char, i32>;
-    #[link_name = "llvm.s390.vstrchs"] fn vstrchs(a: vector_unsigned_short, b: vector_unsigned_short, c: vector_unsigned_short, d: u32) -> PackedTuple<vector_bool_short, i32>;
-    #[link_name = "llvm.s390.vstrcfs"] fn vstrcfs(a: vector_unsigned_int, b: vector_unsigned_int, c: vector_unsigned_int, d: u32) -> PackedTuple<vector_bool_int, i32>;
+    #[link_name = "llvm.s390.vstrcbs"] fn vstrcbs(a: vector_unsigned_char, b: vector_unsigned_char, c: vector_unsigned_char, d: u32) -> (vector_bool_char, i32);
+    #[link_name = "llvm.s390.vstrchs"] fn vstrchs(a: vector_unsigned_short, b: vector_unsigned_short, c: vector_unsigned_short, d: u32) -> (vector_bool_short, i32);
+    #[link_name = "llvm.s390.vstrcfs"] fn vstrcfs(a: vector_unsigned_int, b: vector_unsigned_int, c: vector_unsigned_int, d: u32) -> (vector_bool_int, i32);
 
     #[link_name = "llvm.s390.vstrczb"] fn vstrczb(a: vector_unsigned_char, b: vector_unsigned_char, c: vector_unsigned_char, d: u32) -> vector_bool_char;
     #[link_name = "llvm.s390.vstrczh"] fn vstrczh(a: vector_unsigned_short, b: vector_unsigned_short, c: vector_unsigned_short, d: u32) -> vector_bool_short;
     #[link_name = "llvm.s390.vstrczf"] fn vstrczf(a: vector_unsigned_int, b: vector_unsigned_int, c: vector_unsigned_int, d: u32) -> vector_bool_int;
 
-    #[link_name = "llvm.s390.vstrczbs"] fn vstrczbs(a: vector_unsigned_char, b: vector_unsigned_char, c: vector_unsigned_char, d: u32) -> PackedTuple<vector_bool_char, i32>;
-    #[link_name = "llvm.s390.vstrczhs"] fn vstrczhs(a: vector_unsigned_short, b: vector_unsigned_short, c: vector_unsigned_short, d: u32) -> PackedTuple<vector_bool_short, i32>;
-    #[link_name = "llvm.s390.vstrczfs"] fn vstrczfs(a: vector_unsigned_int, b: vector_unsigned_int, c: vector_unsigned_int, d: u32) -> PackedTuple<vector_bool_int, i32>;
+    #[link_name = "llvm.s390.vstrczbs"] fn vstrczbs(a: vector_unsigned_char, b: vector_unsigned_char, c: vector_unsigned_char, d: u32) -> (vector_bool_char, i32);
+    #[link_name = "llvm.s390.vstrczhs"] fn vstrczhs(a: vector_unsigned_short, b: vector_unsigned_short, c: vector_unsigned_short, d: u32) -> (vector_bool_short, i32);
+    #[link_name = "llvm.s390.vstrczfs"] fn vstrczfs(a: vector_unsigned_int, b: vector_unsigned_int, c: vector_unsigned_int, d: u32) -> (vector_bool_int, i32);
 
     #[link_name = "llvm.s390.vfeeb"] fn vfeeb(a: i8x16, b: i8x16) -> i8x16;
     #[link_name = "llvm.s390.vfeeh"] fn vfeeh(a: i16x8, b: i16x8) -> i16x8;
@@ -301,13 +295,13 @@ unsafe extern "llvm-intrinsic" {
     #[link_name = "llvm.s390.vfeezh"] fn vfeezh(a: i16x8, b: i16x8) -> i16x8;
     #[link_name = "llvm.s390.vfeezf"] fn vfeezf(a: i32x4, b: i32x4) -> i32x4;
 
-    #[link_name = "llvm.s390.vfeebs"] fn vfeebs(a: i8x16, b: i8x16) -> PackedTuple<i8x16, i32>;
-    #[link_name = "llvm.s390.vfeehs"] fn vfeehs(a: i16x8, b: i16x8) -> PackedTuple<i16x8, i32>;
-    #[link_name = "llvm.s390.vfeefs"] fn vfeefs(a: i32x4, b: i32x4) -> PackedTuple<i32x4, i32>;
+    #[link_name = "llvm.s390.vfeebs"] fn vfeebs(a: i8x16, b: i8x16) -> (i8x16, i32);
+    #[link_name = "llvm.s390.vfeehs"] fn vfeehs(a: i16x8, b: i16x8) -> (i16x8, i32);
+    #[link_name = "llvm.s390.vfeefs"] fn vfeefs(a: i32x4, b: i32x4) -> (i32x4, i32);
 
-    #[link_name = "llvm.s390.vfeezbs"] fn vfeezbs(a: i8x16, b: i8x16) -> PackedTuple<i8x16, i32>;
-    #[link_name = "llvm.s390.vfeezhs"] fn vfeezhs(a: i16x8, b: i16x8) -> PackedTuple<i16x8, i32>;
-    #[link_name = "llvm.s390.vfeezfs"] fn vfeezfs(a: i32x4, b: i32x4) -> PackedTuple<i32x4, i32>;
+    #[link_name = "llvm.s390.vfeezbs"] fn vfeezbs(a: i8x16, b: i8x16) -> (i8x16, i32);
+    #[link_name = "llvm.s390.vfeezhs"] fn vfeezhs(a: i16x8, b: i16x8) -> (i16x8, i32);
+    #[link_name = "llvm.s390.vfeezfs"] fn vfeezfs(a: i32x4, b: i32x4) -> (i32x4, i32);
 
     #[link_name = "llvm.s390.vfeneb"] fn vfeneb(a: i8x16, b: i8x16) -> i8x16;
     #[link_name = "llvm.s390.vfeneh"] fn vfeneh(a: i16x8, b: i16x8) -> i16x8;
@@ -317,13 +311,13 @@ unsafe extern "llvm-intrinsic" {
     #[link_name = "llvm.s390.vfenezh"] fn vfenezh(a: i16x8, b: i16x8) -> i16x8;
     #[link_name = "llvm.s390.vfenezf"] fn vfenezf(a: i32x4, b: i32x4) -> i32x4;
 
-    #[link_name = "llvm.s390.vfenebs"] fn vfenebs(a: i8x16, b: i8x16) -> PackedTuple<i8x16, i32>;
-    #[link_name = "llvm.s390.vfenehs"] fn vfenehs(a: i16x8, b: i16x8) -> PackedTuple<i16x8, i32>;
-    #[link_name = "llvm.s390.vfenefs"] fn vfenefs(a: i32x4, b: i32x4) -> PackedTuple<i32x4, i32>;
+    #[link_name = "llvm.s390.vfenebs"] fn vfenebs(a: i8x16, b: i8x16) -> (i8x16, i32);
+    #[link_name = "llvm.s390.vfenehs"] fn vfenehs(a: i16x8, b: i16x8) -> (i16x8, i32);
+    #[link_name = "llvm.s390.vfenefs"] fn vfenefs(a: i32x4, b: i32x4) -> (i32x4, i32);
 
-    #[link_name = "llvm.s390.vfenezbs"] fn vfenezbs(a: i8x16, b: i8x16) -> PackedTuple<i8x16, i32>;
-    #[link_name = "llvm.s390.vfenezhs"] fn vfenezhs(a: i16x8, b: i16x8) -> PackedTuple<i16x8, i32>;
-    #[link_name = "llvm.s390.vfenezfs"] fn vfenezfs(a: i32x4, b: i32x4) -> PackedTuple<i32x4, i32>;
+    #[link_name = "llvm.s390.vfenezbs"] fn vfenezbs(a: i8x16, b: i8x16) -> (i8x16, i32);
+    #[link_name = "llvm.s390.vfenezhs"] fn vfenezhs(a: i16x8, b: i16x8) -> (i16x8, i32);
+    #[link_name = "llvm.s390.vfenezfs"] fn vfenezfs(a: i32x4, b: i32x4) -> (i32x4, i32);
 
     #[link_name = "llvm.s390.vclfnhs"] fn vclfnhs(a: vector_signed_short, immarg: i32) -> vector_float;
     #[link_name = "llvm.s390.vclfnls"] fn vclfnls(a: vector_signed_short, immarg: i32) -> vector_float;
@@ -2042,7 +2036,7 @@ mod sealed {
                     #[inline]
                     #[target_feature(enable = "vector")]
                     unsafe fn $m(self, b: Self) -> (Self::Result, i32) {
-                        let PackedTuple { x, y } = $fun::<{ FindImm::$imm as i32 }>(transmute(self), transmute(b));
+                        let (x, y) = $fun::<{ FindImm::$imm as i32 }>(transmute(self), transmute(b));
                         (transmute(x), y)
                     }
                 }
@@ -2071,7 +2065,7 @@ mod sealed {
                     #[inline]
                     #[target_feature(enable = "vector")]
                     unsafe fn $m(self, b: Self) -> (Self::Result, i32) {
-                        let PackedTuple { x, y } = $fun::<{ FindImm::$imm as i32 }>(transmute(self), transmute(b));
+                        let (x, y) = $fun::<{ FindImm::$imm as i32 }>(transmute(self), transmute(b));
                         (transmute(x), y)
                     }
                 }
@@ -2216,7 +2210,7 @@ mod sealed {
                 unsafe fn $name<const IMM: i32>(
                     a: $ty,
                     b: $ty,
-                ) -> PackedTuple<$ty, i32> {
+                ) -> ($ty, i32) {
                     super::$name(a, b, IMM)
                 }
             )*
@@ -2533,8 +2527,7 @@ mod sealed {
                     a: $ty,
                     b: $ty,
                 ) -> ($outty, i32) {
-                    let PackedTuple { x, y } = super::$intr(a, b);
-                    (x, y)
+                    super::$intr(a, b)
                 }
 
                 #[unstable(feature = "stdarch_s390x", issue = "135681")]
@@ -3184,8 +3177,7 @@ mod sealed {
         #[inline]
         #[target_feature(enable = "vector")]
         unsafe fn vec_fp_test_data_class<const CLASS: u32>(self) -> (Self::Result, i32) {
-            let PackedTuple { x, y } = vftcisb(self, CLASS);
-            (x, y)
+            vftcisb(self, CLASS)
         }
     }
 
@@ -3196,8 +3188,7 @@ mod sealed {
         #[inline]
         #[target_feature(enable = "vector")]
         unsafe fn vec_fp_test_data_class<const CLASS: u32>(self) -> (Self::Result, i32) {
-            let PackedTuple { x, y } = vftcidb(self, CLASS);
-            (x, y)
+            vftcidb(self, CLASS)
         }
     }
 
@@ -3321,15 +3312,13 @@ mod sealed {
                     #[inline]
                     #[target_feature(enable = "vector-enhancements-2")]
                     unsafe fn vec_search_string_cc(self, b: Self, c: vector_unsigned_char) -> (vector_unsigned_char, i32) {
-                        let PackedTuple { x,y } = $intr_s(transmute(self), transmute(b), c);
-                        (x, y)
+                        $intr_s(transmute(self), transmute(b), c)
                     }
 
                     #[inline]
                     #[target_feature(enable = "vector-enhancements-2")]
                     unsafe fn vec_search_string_until_zero_cc(self, b: Self, c: vector_unsigned_char) -> (vector_unsigned_char, i32) {
-                        let PackedTuple { x,y } = $intr_sz(transmute(self), transmute(b), c);
-                        (x, y)
+                        $intr_sz(transmute(self), transmute(b), c)
                     }
                 }
 
@@ -3549,9 +3538,9 @@ mod sealed {
         unsafe fn vec_cp_until_zero_cc(self) -> (Self, i32);
     }
 
-    test_impl! { vec_vistrbs (a: vector_unsigned_char) -> PackedTuple<vector_unsigned_char, i32> [vistrbs, vistrbs] }
-    test_impl! { vec_vistrhs (a: vector_unsigned_short) -> PackedTuple<vector_unsigned_short, i32> [vistrhs, vistrhs] }
-    test_impl! { vec_vistrfs (a: vector_unsigned_int) -> PackedTuple<vector_unsigned_int, i32> [vistrfs, vistrfs] }
+    test_impl! { vec_vistrbs (a: vector_unsigned_char) -> (vector_unsigned_char, i32) [vistrbs, vistrbs] }
+    test_impl! { vec_vistrhs (a: vector_unsigned_short) -> (vector_unsigned_short, i32) [vistrhs, vistrhs] }
+    test_impl! { vec_vistrfs (a: vector_unsigned_int) -> (vector_unsigned_int, i32) [vistrfs, vistrfs] }
 
     macro_rules! impl_vec_copy_until_zero_cc {
         ($($intr:ident $ty:ident)*) => {
@@ -3561,7 +3550,7 @@ mod sealed {
                     #[inline]
                     #[target_feature(enable = "vector")]
                     unsafe fn vec_cp_until_zero_cc(self) -> (Self, i32) {
-                        let PackedTuple { x,y } = $intr(transmute(self));
+                        let (x, y) = $intr(transmute(self));
                         (transmute(x), y)
                     }
                 }
@@ -3728,7 +3717,7 @@ mod sealed {
                     #[target_feature(enable = "vector")]
                     unsafe fn vstrcs<const IMM: u32>(self, b: Self, c: Self) -> (Self::Result, i32) {
                         const { validate_compare_range_imm };
-                        let PackedTuple { x, y } = $vstrcs(self, b, c, IMM);
+                        let (x, y) = $vstrcs(self, b, c, IMM);
                         (x,y)
                     }
 
@@ -3736,7 +3725,7 @@ mod sealed {
                     #[target_feature(enable = "vector")]
                     unsafe fn vstrczs<const IMM: u32>(self, b: Self, c: Self) -> (Self::Result, i32) {
                         const { validate_compare_range_imm };
-                        let PackedTuple { x, y } = $vstrczs(self, b, c, IMM);
+                        let (x, y) = $vstrczs(self, b, c, IMM);
                         (x,y)
                     }
                 }
@@ -3910,28 +3899,28 @@ mod sealed {
                     #[inline]
                     #[target_feature(enable = "vector")]
                     unsafe fn vec_cmpeq_idx_cc(self, other: Self) -> (Self::Result, i32) {
-                        let PackedTuple { x, y } = $cmpeq_cc(transmute(self), transmute(other));
+                        let (x, y) = $cmpeq_cc(transmute(self), transmute(other));
                         (transmute(x), y)
                     }
 
                     #[inline]
                     #[target_feature(enable = "vector")]
                     unsafe fn vec_cmpne_idx_cc(self, other: Self) -> (Self::Result, i32) {
-                        let PackedTuple { x, y } = $cmpne_cc(transmute(self), transmute(other));
+                        let (x, y) = $cmpne_cc(transmute(self), transmute(other));
                         (transmute(x),y)
                     }
 
                     #[inline]
                     #[target_feature(enable = "vector")]
                     unsafe fn vec_cmpeq_or_0_idx_cc(self, other: Self) -> (Self::Result, i32) {
-                        let PackedTuple { x, y } = $cmpeq_or_0_cc(transmute(self), transmute(other));
+                        let (x, y) = $cmpeq_or_0_cc(transmute(self), transmute(other));
                         (transmute(x), y)
                     }
 
                     #[inline]
                     #[target_feature(enable = "vector")]
                     unsafe fn vec_cmpne_or_0_idx_cc(self, other: Self) -> (Self::Result, i32) {
-                        let PackedTuple { x, y } = $cmpne_or_0_cc(transmute(self), transmute(other));
+                        let (x, y) = $cmpne_or_0_cc(transmute(self), transmute(other));
                         (transmute(x),y)
                     }
                 }

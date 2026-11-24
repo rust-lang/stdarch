@@ -8,26 +8,7 @@ use crate::ptr;
 #[cfg(test)]
 use stdarch_test::assert_instr;
 
-#[repr(C, packed)]
-struct EncodeKey128Output(u32, __m128i, __m128i, __m128i, __m128i, __m128i, __m128i);
-
-#[repr(C, packed)]
-struct EncodeKey256Output(
-    u32,
-    __m128i,
-    __m128i,
-    __m128i,
-    __m128i,
-    __m128i,
-    __m128i,
-    __m128i,
-);
-
-#[repr(C, packed)]
-struct AesOutput(u8, __m128i);
-
-#[repr(C, packed)]
-struct WideAesOutput(
+type WideAesOutput = (
     u8,
     __m128i,
     __m128i,
@@ -39,24 +20,40 @@ struct WideAesOutput(
     __m128i,
 );
 
-#[allow(improper_ctypes)]
+#[expect(improper_ctypes)]
 unsafe extern "llvm-intrinsic" {
     #[link_name = "llvm.x86.loadiwkey"]
     fn loadiwkey(integrity_key: __m128i, key_lo: __m128i, key_hi: __m128i, control: u32);
 
     #[link_name = "llvm.x86.encodekey128"]
-    fn encodekey128(key_metadata: u32, key: __m128i) -> EncodeKey128Output;
+    fn encodekey128(
+        key_metadata: u32,
+        key: __m128i,
+    ) -> (u32, __m128i, __m128i, __m128i, __m128i, __m128i, __m128i);
     #[link_name = "llvm.x86.encodekey256"]
-    fn encodekey256(key_metadata: u32, key_lo: __m128i, key_hi: __m128i) -> EncodeKey256Output;
+    fn encodekey256(
+        key_metadata: u32,
+        key_lo: __m128i,
+        key_hi: __m128i,
+    ) -> (
+        u32,
+        __m128i,
+        __m128i,
+        __m128i,
+        __m128i,
+        __m128i,
+        __m128i,
+        __m128i,
+    );
 
     #[link_name = "llvm.x86.aesenc128kl"]
-    fn aesenc128kl(data: __m128i, handle: *const u8) -> AesOutput;
+    fn aesenc128kl(data: __m128i, handle: *const u8) -> (u8, __m128i);
     #[link_name = "llvm.x86.aesdec128kl"]
-    fn aesdec128kl(data: __m128i, handle: *const u8) -> AesOutput;
+    fn aesdec128kl(data: __m128i, handle: *const u8) -> (u8, __m128i);
     #[link_name = "llvm.x86.aesenc256kl"]
-    fn aesenc256kl(data: __m128i, handle: *const u8) -> AesOutput;
+    fn aesenc256kl(data: __m128i, handle: *const u8) -> (u8, __m128i);
     #[link_name = "llvm.x86.aesdec256kl"]
-    fn aesdec256kl(data: __m128i, handle: *const u8) -> AesOutput;
+    fn aesdec256kl(data: __m128i, handle: *const u8) -> (u8, __m128i);
 
     #[link_name = "llvm.x86.aesencwide128kl"]
     fn aesencwide128kl(
@@ -156,7 +153,7 @@ pub unsafe fn _mm_loadiwkey(
 #[stable(feature = "keylocker_x86", since = "1.89.0")]
 #[cfg_attr(test, assert_instr(encodekey128))]
 pub unsafe fn _mm_encodekey128_u32(key_params: u32, key: __m128i, handle: *mut u8) -> u32 {
-    let EncodeKey128Output(control, key0, key1, key2, _, _, _) = encodekey128(key_params, key);
+    let (control, key0, key1, key2, _, _, _) = encodekey128(key_params, key);
     ptr::write_unaligned(handle.cast(), [key0, key1, key2]);
     control
 }
@@ -184,8 +181,7 @@ pub unsafe fn _mm_encodekey256_u32(
     key_hi: __m128i,
     handle: *mut u8,
 ) -> u32 {
-    let EncodeKey256Output(control, key0, key1, key2, key3, _, _, _) =
-        encodekey256(key_params, key_lo, key_hi);
+    let (control, key0, key1, key2, key3, _, _, _) = encodekey256(key_params, key_lo, key_hi);
     ptr::write_unaligned(handle.cast(), [key0, key1, key2, key3]);
     control
 }
@@ -201,7 +197,7 @@ pub unsafe fn _mm_encodekey256_u32(
 #[stable(feature = "keylocker_x86", since = "1.89.0")]
 #[cfg_attr(test, assert_instr(aesenc128kl))]
 pub unsafe fn _mm_aesenc128kl_u8(output: *mut __m128i, input: __m128i, handle: *const u8) -> u8 {
-    let AesOutput(status, result) = aesenc128kl(input, handle);
+    let (status, result) = aesenc128kl(input, handle);
     *output = result;
     status
 }
@@ -217,7 +213,7 @@ pub unsafe fn _mm_aesenc128kl_u8(output: *mut __m128i, input: __m128i, handle: *
 #[stable(feature = "keylocker_x86", since = "1.89.0")]
 #[cfg_attr(test, assert_instr(aesdec128kl))]
 pub unsafe fn _mm_aesdec128kl_u8(output: *mut __m128i, input: __m128i, handle: *const u8) -> u8 {
-    let AesOutput(status, result) = aesdec128kl(input, handle);
+    let (status, result) = aesdec128kl(input, handle);
     *output = result;
     status
 }
@@ -233,7 +229,7 @@ pub unsafe fn _mm_aesdec128kl_u8(output: *mut __m128i, input: __m128i, handle: *
 #[stable(feature = "keylocker_x86", since = "1.89.0")]
 #[cfg_attr(test, assert_instr(aesenc256kl))]
 pub unsafe fn _mm_aesenc256kl_u8(output: *mut __m128i, input: __m128i, handle: *const u8) -> u8 {
-    let AesOutput(status, result) = aesenc256kl(input, handle);
+    let (status, result) = aesenc256kl(input, handle);
     *output = result;
     status
 }
@@ -249,7 +245,7 @@ pub unsafe fn _mm_aesenc256kl_u8(output: *mut __m128i, input: __m128i, handle: *
 #[stable(feature = "keylocker_x86", since = "1.89.0")]
 #[cfg_attr(test, assert_instr(aesdec256kl))]
 pub unsafe fn _mm_aesdec256kl_u8(output: *mut __m128i, input: __m128i, handle: *const u8) -> u8 {
-    let AesOutput(status, result) = aesdec256kl(input, handle);
+    let (status, result) = aesdec256kl(input, handle);
     *output = result;
     status
 }
@@ -270,7 +266,7 @@ pub unsafe fn _mm_aesencwide128kl_u8(
     handle: *const u8,
 ) -> u8 {
     let input = &*ptr::slice_from_raw_parts(input, 8);
-    let WideAesOutput(status, out0, out1, out2, out3, out4, out5, out6, out7) = aesencwide128kl(
+    let (status, out0, out1, out2, out3, out4, out5, out6, out7) = aesencwide128kl(
         handle, input[0], input[1], input[2], input[3], input[4], input[5], input[6], input[7],
     );
     *output.cast() = [out0, out1, out2, out3, out4, out5, out6, out7];
@@ -293,7 +289,7 @@ pub unsafe fn _mm_aesdecwide128kl_u8(
     handle: *const u8,
 ) -> u8 {
     let input = &*ptr::slice_from_raw_parts(input, 8);
-    let WideAesOutput(status, out0, out1, out2, out3, out4, out5, out6, out7) = aesdecwide128kl(
+    let (status, out0, out1, out2, out3, out4, out5, out6, out7) = aesdecwide128kl(
         handle, input[0], input[1], input[2], input[3], input[4], input[5], input[6], input[7],
     );
     *output.cast() = [out0, out1, out2, out3, out4, out5, out6, out7];
@@ -316,7 +312,7 @@ pub unsafe fn _mm_aesencwide256kl_u8(
     handle: *const u8,
 ) -> u8 {
     let input = &*ptr::slice_from_raw_parts(input, 8);
-    let WideAesOutput(status, out0, out1, out2, out3, out4, out5, out6, out7) = aesencwide256kl(
+    let (status, out0, out1, out2, out3, out4, out5, out6, out7) = aesencwide256kl(
         handle, input[0], input[1], input[2], input[3], input[4], input[5], input[6], input[7],
     );
     *output.cast() = [out0, out1, out2, out3, out4, out5, out6, out7];
@@ -339,7 +335,7 @@ pub unsafe fn _mm_aesdecwide256kl_u8(
     handle: *const u8,
 ) -> u8 {
     let input = &*ptr::slice_from_raw_parts(input, 8);
-    let WideAesOutput(status, out0, out1, out2, out3, out4, out5, out6, out7) = aesdecwide256kl(
+    let (status, out0, out1, out2, out3, out4, out5, out6, out7) = aesdecwide256kl(
         handle, input[0], input[1], input[2], input[3], input[4], input[5], input[6], input[7],
     );
     *output.cast() = [out0, out1, out2, out3, out4, out5, out6, out7];

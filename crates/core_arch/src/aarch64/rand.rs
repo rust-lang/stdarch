@@ -5,18 +5,13 @@
 #[cfg(test)]
 use stdarch_test::assert_instr;
 
+#[expect(improper_ctypes)]
 unsafe extern "llvm-intrinsic" {
     #[link_name = "llvm.aarch64.rndr"]
-    fn rndr_() -> Tuple;
+    fn rndr_() -> (u64, bool);
 
     #[link_name = "llvm.aarch64.rndrrs"]
-    fn rndrrs_() -> Tuple;
-}
-
-#[repr(C)]
-struct Tuple {
-    bits: u64,
-    status: bool,
+    fn rndrrs_() -> (u64, bool);
 }
 
 /// Stores a 64-bit random number into the object pointed to by the argument and returns
@@ -28,7 +23,7 @@ struct Tuple {
 #[cfg_attr(test, assert_instr(mrs))]
 #[unstable(feature = "stdarch_aarch64_rand", issue = "153514")]
 pub unsafe fn __rndr(value: *mut u64) -> i32 {
-    let Tuple { bits, status } = rndr_();
+    let (bits, status) = rndr_();
     unsafe { *value = bits };
     status as i32
 }
@@ -42,7 +37,7 @@ pub unsafe fn __rndr(value: *mut u64) -> i32 {
 #[cfg_attr(test, assert_instr(mrs))]
 #[unstable(feature = "stdarch_aarch64_rand", issue = "153514")]
 pub unsafe fn __rndrrs(value: *mut u64) -> i32 {
-    let Tuple { bits, status } = rndrrs_();
+    let (bits, status) = rndrrs_();
     unsafe { *value = bits };
     status as i32
 }
