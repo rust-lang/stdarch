@@ -6,7 +6,7 @@ RUN apt-get update && \
     gcc-loongarch64-linux-gnu libc6-dev-loong64-cross \
     wget
 
-RUN wget https://ci-mirrors.rust-lang.org/llvm/llvm-22.1.4-x86_64.tar.gz -O llvm.tar.xz
+RUN wget https://ci-mirrors.rust-lang.org/llvm/llvm-23.1.6-x86_64.tar.gz -O llvm.tar.xz
 RUN mkdir llvm
 RUN tar -xvf llvm.tar.xz --strip-components=1 -C llvm
 

@@ -14,11 +14,3 @@ _mm512_mask_reduce_max_pd
 _mm512_mask_reduce_max_ps
 _mm512_mask_reduce_min_pd
 _mm512_mask_reduce_min_ps
-
-# Rounding errors in release mode
-_mm_maskz_fmadd_sd
-_mm_maskz_fmadd_ss
-_mm_maskz_fmsub_sd
-_mm_maskz_fmsub_ss
-_mm_maskz_fnmadd_sd
-_mm_maskz_fnmadd_ss
