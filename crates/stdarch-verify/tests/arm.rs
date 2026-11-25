@@ -167,6 +167,10 @@ static SVBOOLX2: Type = Type::Pred(2);
 static SVBOOLX3: Type = Type::Pred(3);
 static SVBOOLX4: Type = Type::Pred(4);
 static SVCOUNT: Type = Type::Pred(1);
+static SVBF16: Type = Type::SVBF(1);
+static SVBF16X2: Type = Type::SVBF(2);
+static SVBF16X3: Type = Type::SVBF(3);
+static SVBF16X4: Type = Type::SVBF(4);
 static SVF16: Type = Type::SVF(16, 1);
 static SVF16X2: Type = Type::SVF(16, 2);
 static SVF16X3: Type = Type::SVF(16, 3);
@@ -236,6 +240,7 @@ enum Type {
     SVI(u8, u8),
     SVU(u8, u8),
     SVF(u8, u8),
+    SVBF(u8),
     Never,
 }
 
@@ -649,6 +654,10 @@ fn parse_ty_base(s: &str) -> &'static Type {
         "svboolx3_t" => &SVBOOLX3,
         "svboolx4_t" => &SVBOOLX4,
         "svcount_t" => &SVCOUNT,
+        "svbfloat16_t" => &SVBF16,
+        "svbfloat16x2_t" => &SVBF16X2,
+        "svbfloat16x3_t" => &SVBF16X3,
+        "svbfloat16x4_t" => &SVBF16X4,
         "svfloat16_t" => &SVF16,
         "svfloat16x2_t" => &SVF16X2,
         "svfloat16x3_t" => &SVF16X3,
