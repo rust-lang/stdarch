@@ -42,5 +42,5 @@ RUN find /opt/hexagon-toolchain -type d -exec chmod a+rx {} + 2>/dev/null; \
 ENV PATH="/opt/hexagon-toolchain/bin:${PATH}" \
     CARGO_TARGET_HEXAGON_UNKNOWN_LINUX_MUSL_LINKER=hexagon-unknown-linux-musl-clang \
     CARGO_TARGET_HEXAGON_UNKNOWN_LINUX_MUSL_RUNNER="qemu-hexagon -L /opt/hexagon-toolchain/target/hexagon-unknown-linux-musl" \
-    CARGO_UNSTABLE_BUILD_STD_FEATURES=llvm-libunwind \
+    CARGO_UNSTABLE_BUILD_STD_FEATURES=panic-unwind,backtrace,default,llvm-libunwind \
     OBJDUMP=llvm-objdump

@@ -41,7 +41,7 @@ jobs:
     needs: [style]
     name: Test
     runs-on: ${{ matrix.target.os }}
-    continue-on-error: ${{ matrix.target.tuple == 'riscv32gc-unknown-linux-gnu' }}
+    continue-on-error: ${{ matrix.continue_on_error || false }}
     strategy:
       matrix:
         profile:
@@ -71,16 +71,16 @@ jobs:
             os: ubuntu-latest
           - tuple: powerpc64le-unknown-linux-gnu
             os: ubuntu-latest
-          # MIPS targets disabled since they are dropped to tier 3.
-          # See https://github.com/rust-lang/compiler-team/issues/648
-          #- tuple: mips-unknown-linux-gnu
-          #  os: ubuntu-latest
-          #- tuple: mips64-unknown-linux-gnuabi64
-          #  os: ubuntu-latest
-          #- tuple: mips64el-unknown-linux-gnuabi64
-          #  os: ubuntu-latest
-          #- tuple: mipsel-unknown-linux-musl
-          #  os: ubuntu-latest
+          - tuple: mips-unknown-linux-gnu
+            os: ubuntu-latest
+          # FIXME(llvm24): https://github.com/llvm/llvm-project/pull/242740
+          # - tuple: mips64-unknown-linux-gnuabi64
+          #   os: ubuntu-latest
+          - tuple: mips64el-unknown-linux-gnuabi64
+            os: ubuntu-latest
+          # FIXME: bad toolchain
+          # - tuple: mipsel-unknown-linux-musl
+          #   os: ubuntu-latest
           - tuple: s390x-unknown-linux-gnu
             os: ubuntu-latest
           - tuple: i586-unknown-linux-gnu
@@ -99,9 +99,8 @@ jobs:
             os: ubuntu-latest
           - tuple: loongarch64-unknown-linux-gnu
             os: ubuntu-latest
-          # hexagon doesn't build at the moment due to a libc issue.
-          # - tuple: hexagon-unknown-linux-musl
-          #   os: ubuntu-latest
+          - tuple: hexagon-unknown-linux-musl
+            os: ubuntu-latest
           - tuple: wasm32-wasip1
             os: ubuntu-latest
 
@@ -171,6 +170,7 @@ jobs:
               os: ubuntu-latest
             test_everything: true
             build_std: true
+            continue_on_error: true
           - target:
               tuple: riscv64gc-unknown-linux-gnu
               os: ubuntu-latest
@@ -183,24 +183,28 @@ jobs:
               tuple: x86_64-unknown-linux-gnu
               os: ubuntu-latest
             test_everything: true
-          # MIPS targets disabled since they are dropped to tier 3.
-          # See https://github.com/rust-lang/compiler-team/issues/648
-          #- target:
-          #    tuple: mips-unknown-linux-gnu
-          #    os: ubuntu-latest
-          #  norun: true
-          #- target:
-          #    tuple: mips64-unknown-linux-gnuabi64
-          #    os: ubuntu-latest
-          #  norun: true
-          #- target:
-          #    tuple: mips64el-unknown-linux-gnuabi64
-          #    os: ubuntu-latest
-          #  norun: true
-          #- target:
-          #    tuple: mipsel-unknown-linux-musl
-          #    os: ubuntu-latest
-          #  norun: true
+          - target:
+              tuple: mips-unknown-linux-gnu
+              os: ubuntu-latest
+            continue_on_error: true
+            build_std: true
+          # FIXME(llvm24): https://github.com/llvm/llvm-project/pull/242740
+          # - target:
+          #     tuple: mips64-unknown-linux-gnuabi64
+          #     os: ubuntu-latest
+          #   continue_on_error: true
+          #   build_std: true
+          - target:
+              tuple: mips64el-unknown-linux-gnuabi64
+              os: ubuntu-latest
+            continue_on_error: true
+            build_std: true
+          # FIXME: bad toolchain
+          # - target:
+          #     tuple: mipsel-unknown-linux-musl
+          #     os: ubuntu-latest
+          #   continue_on_error: true
+          #   build_std: true
           - target:
               tuple: aarch64-apple-darwin
               os: macos-15
@@ -213,12 +217,11 @@ jobs:
               tuple: amdgcn-amd-amdhsa
               os: ubuntu-latest
             norun: true
-        # hexagon doesn't build at the moment due to a libc issue.
-        # - target:
-        #     tuple: hexagon-unknown-linux-musl
-        #     os: ubuntu-latest
-        #   norun: true
-        #   build_std: true
+          - target:
+              tuple: hexagon-unknown-linux-musl
+              os: ubuntu-latest
+            build_std: true
+            norun: true
 
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
