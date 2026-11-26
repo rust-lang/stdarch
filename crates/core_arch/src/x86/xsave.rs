@@ -34,6 +34,21 @@ unsafe extern "llvm-intrinsic" {
 /// Intel® 64 and IA-32 Architectures Software Developer’s Manual, Volume 1.
 ///
 /// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=_xsave)
+///
+/// # Safety
+///
+/// - `mem_addr` must meet the [pointer safety requirements](crate::ptr#safety)
+///   for writing the whole `XSAVE` area required by `save_mask` and
+///   `XCR0`, and for reading the `XSTATE_BV` field in its header.
+/// - `mem_addr` must be 64-byte aligned.
+/// - The `XSTATE_BV` field (the 8 bytes at offset 512 in the `XSAVE` area)
+///   must be initialized. Its bits outside `save_mask & XCR0` are preserved.
+///
+/// The saved features are the ones requested in `save_mask` and also
+/// enabled in `XCR0`, the extended control register that records which
+/// processor state features are enabled.
+/// The area includes a 512-byte legacy region, a 64-byte header, and an
+/// extended region whose size depends on the enabled features.
 #[inline]
 #[target_feature(enable = "xsave")]
 #[cfg_attr(test, assert_instr(xsave))]
@@ -99,6 +114,21 @@ pub unsafe fn _xgetbv(xcr_no: u32) -> u64 {
 /// be equal to or better than using the `XSAVE` instruction.
 ///
 /// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=_xsaveopt)
+///
+/// # Safety
+///
+/// - `mem_addr` must meet the [pointer safety requirements](crate::ptr#safety)
+///   for writing the whole `XSAVE` area required by `save_mask` and
+///   `XCR0`, and for reading the `XSTATE_BV` field in its header.
+/// - `mem_addr` must be 64-byte aligned.
+/// - The `XSTATE_BV` field (the 8 bytes at offset 512 in the `XSAVE` area)
+///   must be initialized. Its bits outside `save_mask & XCR0` are preserved.
+///
+/// The saved features are the ones requested in `save_mask` and also
+/// enabled in `XCR0`, the extended control register that records which
+/// processor state features are enabled.
+/// The area includes a 512-byte legacy region, a 64-byte header, and an
+/// extended region whose size depends on the enabled features.
 #[inline]
 #[target_feature(enable = "xsave,xsaveopt")]
 #[cfg_attr(test, assert_instr(xsaveopt))]
@@ -115,6 +145,19 @@ pub unsafe fn _xsaveopt(mem_addr: *mut u8, save_mask: u64) {
 /// and `XCR0`. `mem_addr` must be aligned on a 64-byte boundary.
 ///
 /// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=_xsavec)
+///
+/// # Safety
+///
+/// - `mem_addr` must meet the [pointer safety requirements](crate::ptr#safety)
+///   for writing the whole `XSAVE` area required by `save_mask` and
+///   `XCR0`.
+/// - `mem_addr` must be 64-byte aligned.
+///
+/// The saved features are the ones requested in `save_mask` and also
+/// enabled in `XCR0`, the extended control register that records which
+/// processor state features are enabled.
+/// The area includes a 512-byte legacy region, a 64-byte header, and an
+/// extended region whose size depends on the enabled features.
 #[inline]
 #[target_feature(enable = "xsave,xsavec")]
 #[cfg_attr(test, assert_instr(xsavec))]
@@ -132,6 +175,19 @@ pub unsafe fn _xsavec(mem_addr: *mut u8, save_mask: u64) {
 /// and `XCR0`. `mem_addr` must be aligned on a 64-byte boundary.
 ///
 /// [Intel's documentation](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=_xsaves)
+///
+/// # Safety
+///
+/// - `mem_addr` must meet the [pointer safety requirements](crate::ptr#safety)
+///   for writing the whole `XSAVE` area required by `save_mask` and
+///   `XCR0 | IA32_XSS`.
+/// - `mem_addr` must be 64-byte aligned.
+///
+/// The saved features are the ones requested in `save_mask` and enabled in
+/// either `XCR0` or `IA32_XSS`, which control user and supervisor state
+/// components, respectively.
+/// The area includes a 512-byte legacy region, a 64-byte header, and an
+/// extended region whose size depends on the enabled features.
 #[inline]
 #[target_feature(enable = "xsave,xsaves")]
 #[cfg_attr(test, assert_instr(xsaves))]
