@@ -30,9 +30,9 @@ mod zk;
 
 #[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
 pub use p::*;
-#[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
+#[stable(feature = "stdarch_riscv_zb", since = "CURRENT_RUSTC_VERSION")]
 pub use zb::*;
-#[unstable(feature = "riscv_ext_intrinsics", issue = "114544")]
+#[stable(feature = "stdarch_riscv_zk", since = "CURRENT_RUSTC_VERSION")]
 pub use zk::*;
 
 use crate::arch::asm;
