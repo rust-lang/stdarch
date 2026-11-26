@@ -29,6 +29,13 @@ pub(crate) const fn assert_eq_m128h(a: __m128h, b: __m128h) {
     assert_eq!(a.as_f16x8(), b.as_f16x8());
 }
 
+// FIXME: use `f16b`
+#[track_caller]
+#[rustc_const_unstable(feature = "stdarch_const_helpers", issue = "none")]
+pub(crate) const fn assert_eq_m128bh(a: __m128bh, b: __m128bh) {
+    assert_eq!(a.as_u16x8(), b.as_u16x8());
+}
+
 #[track_caller]
 #[rustc_const_unstable(feature = "stdarch_const_helpers", issue = "none")]
 pub(crate) const fn assert_eq_m256i(a: __m256i, b: __m256i) {
@@ -53,6 +60,13 @@ pub(crate) const fn assert_eq_m256h(a: __m256h, b: __m256h) {
     assert_eq!(a.as_f16x16(), b.as_f16x16());
 }
 
+// FIXME: use `f16b`
+#[track_caller]
+#[rustc_const_unstable(feature = "stdarch_const_helpers", issue = "none")]
+pub(crate) const fn assert_eq_m256bh(a: __m256bh, b: __m256bh) {
+    assert_eq!(a.as_u16x16(), b.as_u16x16());
+}
+
 #[track_caller]
 #[rustc_const_unstable(feature = "stdarch_const_helpers", issue = "none")]
 pub(crate) const fn assert_eq_m512i(a: __m512i, b: __m512i) {
@@ -75,6 +89,13 @@ pub(crate) const fn assert_eq_m512d(a: __m512d, b: __m512d) {
 #[rustc_const_unstable(feature = "stdarch_const_helpers", issue = "none")]
 pub(crate) const fn assert_eq_m512h(a: __m512h, b: __m512h) {
     assert_eq!(a.as_f16x32(), b.as_f16x32());
+}
+
+// FIXME: use `f16b`
+#[track_caller]
+#[rustc_const_unstable(feature = "stdarch_const_helpers", issue = "none")]
+pub(crate) const fn assert_eq_m512bh(a: __m512bh, b: __m512bh) {
+    assert_eq!(a.as_u16x32(), b.as_u16x32());
 }
 
 #[target_feature(enable = "sse2")]
